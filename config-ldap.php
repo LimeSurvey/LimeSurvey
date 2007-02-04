@@ -35,7 +35,7 @@
 ******************************************************************/
 
 /*********************************************/
-/* Ldap servers                              */
+/* LDAP servers                              */
 /*********************************************/
 
 $serverId=0;
@@ -44,9 +44,9 @@ $serverId=0;
 // corresponds to the certificate's identity
 $ldap_server[$serverId]['server'] = "ldap.mycompany.org";
 
-// Define the TCP port on which the Ldap server is listenning
-// This should be 389 for standard ldap servers
-// or 686 for standard ldaps connections
+// Define the TCP port on which the LDAP server is listenning
+// This should be 389 for standard LDAP servers
+// or 686 for standard LDAPS connections
 $ldap_server[$serverId]['port'] = "686"; 
 
 // Define the ldap protocol to use

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-02-04 00:19+0100\n"
+"PO-Revision-Date: 2007-02-04 12:04+0100\n"
 "Last-Translator: \n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -2808,6 +2808,9 @@ msgstr "Proband hinzufügen oder bearbeiten"
 msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
 msgstr "Sie können dieses Feld leer lassen und automatisch eindeutige Zugangsschlüssel generieren lassen mit 'Generiere eindeutige Zugangsschlüssel'"
 
+msgid "Update Token"
+msgstr "Proband aktualisieren"
+
 msgid "Add Token"
 msgstr "Zugangschlüssel hinzufügen"
 
@@ -3000,4 +3003,106 @@ msgstr "Eine Datenbank namens \"%s\" existiert schon."
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/admin.php:103
 msgid "Do you want to populate that database now by creating the necessary tables?"
 msgstr "Möchten Sie in der Datenbank nun die notwendigen Tabellen anlegen?"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:66
+msgid "Bulgarian"
+msgstr "Bulgarisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:70
+msgid "Chinese (Traditional)"
+msgstr "Chinesisch (Traditionell)"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:74
+msgid "Chinese (Simplified)"
+msgstr "Chinesisch (Vereinfacht)"
+
+msgid "Croatian"
+msgstr "Kroatisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:82
+msgid "Danish"
+msgstr "Dänisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:86
+msgid "Dutch"
+msgstr "Niederländisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:90
+msgid "English"
+msgstr "Englisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:94
+msgid "Finnish"
+msgstr "Finnisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:99
+msgid "French"
+msgstr "Französisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:103
+msgid "German"
+msgstr "Deutsch (Sie-Form)"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:107
+msgid "German informal"
+msgstr "Deutsch (Du-Form)"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:111
+msgid "Greek"
+msgstr "Griechisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:115
+msgid "Hebrew"
+msgstr "Hebräisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:119
+msgid "Hungarian"
+msgstr "Ungarisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:123
+msgid "Italian"
+msgstr "Italienisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:127
+msgid "Japanese"
+msgstr "Japanisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:131
+msgid "Lithuanian"
+msgstr "Litauisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:135
+msgid "Norwegian"
+msgstr "Norwegisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:139
+msgid "Portuguese"
+msgstr "Portugiesisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:143
+msgid "Portuguese (Brazilian)"
+msgstr "Portugiesisch (Brasilien)"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:148
+msgid "Russian"
+msgstr "Russisch"
+
+msgid "Romanian"
+msgstr "Rumänisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:156
+msgid "Slovenian"
+msgstr "Slovenisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:160
+msgid "Spanish"
+msgstr "Spanisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:164
+msgid "Swedish"
+msgstr "Schwedisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:168
+msgid "Vietnamese"
+msgstr "Vietnamesisch"
 

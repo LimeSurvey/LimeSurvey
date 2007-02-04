@@ -63,109 +63,109 @@
         unset($supportedLanguages);
 
 	    // Bulgarian
-	    $supportedLanguages['bg']['description'] = 'Bulgarian';
+	    $supportedLanguages['bg']['description'] = _('Bulgarian');
 	    $supportedLanguages['bg']['nativedescription'] = '&#x0411;&#x044a;&#x043b;&#x0433;&#x0430;&#x0440;&#x0441;&#x043a;&#x0438;';
 
         // Chinese (Simplified)
-	    $supportedLanguages['cnt']['description'] = 'Chinese (Traditional)';
+	    $supportedLanguages['cnt']['description'] = _('Chinese (Traditional)');
 	    $supportedLanguages['cnt']['nativedescription'] = '&#31616;&#20307;&#20013;&#25991;';
 
         // Chinese (Traditional)
-	    $supportedLanguages['cns']['description'] = 'Chinese (Simplified)';
+	    $supportedLanguages['cns']['description'] = _('Chinese (Simplified)');
 	    $supportedLanguages['cns']['nativedescription'] = '&#31616;&#20307;&#20013;&#25991;';
 
         // Croatian
-	    $supportedLanguages['hr']['description'] = 'Croatian';
+	    $supportedLanguages['hr']['description'] = _('Croatian');
 	    $supportedLanguages['hr']['nativedescription'] = 'Croatian';
 
 	    // Danish
-	    $supportedLanguages['da']['description'] = 'Danish';
+	    $supportedLanguages['da']['description'] = _('Danish');
 	    $supportedLanguages['da']['nativedescription'] = 'Dansk';
 
 	    // Dutch
-	    $supportedLanguages['nl']['description'] = 'Dutch';
+	    $supportedLanguages['nl']['description'] = _('Dutch');
 	    $supportedLanguages['nl']['nativedescription'] = 'Nederlands';
 
 	    /* English */
-	    $supportedLanguages['en']['description'] = 'English';
+	    $supportedLanguages['en']['description'] = _('English');
 	    $supportedLanguages['en']['nativedescription'] = 'English';
 
 	    // Finnish
-	    $supportedLanguages['fi']['description'] = 'Finnish';
+	    $supportedLanguages['fi']['description'] = _('Finnish');
 	    $supportedLanguages['fi']['nativedescription'] = 'Suomi';
 
 
 	    // French
-	    $supportedLanguages['fr']['description'] = 'French';
+	    $supportedLanguages['fr']['description'] = _('French');
 	    $supportedLanguages['fr']['nativedescription'] = 'Fran&#231;ais';
 
    	    // German
-	    $supportedLanguages['de']['description'] = 'German';
+	    $supportedLanguages['de']['description'] = _('German');
 	    $supportedLanguages['de']['nativedescription'] = 'Deutsch (Sie)';
 
         // German informal
-	    $supportedLanguages['de_informal']['description'] = 'German informal';
+	    $supportedLanguages['de_informal']['description'] = _('German informal');
 	    $supportedLanguages['de_informal']['nativedescription'] = 'Deutsch (Du)';
 
 	    // Greek
-	    $supportedLanguages['gr']['description'] = 'Greek';
+	    $supportedLanguages['gr']['description'] = _('Greek');
 	    $supportedLanguages['gr']['nativedescription'] = '&#949;&#955;&#955;&#951;&#957;&#953;&#954;&#940;';
 
 	    // Hebrew
-	    $supportedLanguages['he']['description'] = 'Hebrew';
+	    $supportedLanguages['he']['description'] = _('Hebrew');
 	    $supportedLanguages['he']['nativedescription'] = ' &#1506;&#1489;&#1512;&#1497;&#1514;';
 
 	    // Hungarian
-	    $supportedLanguages['hu']['description'] = 'Hungarian';
+	    $supportedLanguages['hu']['description'] = _('Hungarian');
 	    $supportedLanguages['hu']['nativedescription'] = 'Magyar';
 
 	    // Italian
-	    $supportedLanguages['it']['description'] = 'Italian';
+	    $supportedLanguages['it']['description'] = _('Italian');
 	    $supportedLanguages['it']['nativedescription'] = 'Italiano';
 
 	    // Japanese
-	    $supportedLanguages['jp']['description'] = 'Japanese';
+	    $supportedLanguages['jp']['description'] = _('Japanese');
 	    $supportedLanguages['jp']['nativedescription'] = '&#x65e5;&#x672c;&#x8a9e;';
 
 	    // Lithuanian
-	    $supportedLanguages['lt']['description'] = 'Lithuanian';
+	    $supportedLanguages['lt']['description'] = _('Lithuanian');
 	    $supportedLanguages['lt']['nativedescription'] = 'Lietuvi&#371;';
 	    
 	    // Norwegian
-	    $supportedLanguages['no']['description'] = 'Norwegian';
+	    $supportedLanguages['no']['description'] = _('Norwegian');
 	    $supportedLanguages['no']['nativedescription'] = 'Norsk bokm&#229;l';
 
 	    // Portuguese
-	    $supportedLanguages['pt']['description'] = 'Portuguese';
+	    $supportedLanguages['pt']['description'] = _('Portuguese');
 	    $supportedLanguages['pt']['nativedescription'] = 'Portugu&#234;s';
 
 	    // Brazilian Portuguese
-	    $supportedLanguages['pt_br']['description'] = 'Portuguese (Brazilian)';
+	    $supportedLanguages['pt_br']['description'] = _('Portuguese (Brazilian)');
 	    $supportedLanguages['pt_br']['nativedescription'] = 'Portugu&#234;s do Brasil';
 
 
 	    // Russian
-	    $supportedLanguages['ru']['description'] = 'Russian';
+	    $supportedLanguages['ru']['description'] = _('Russian');
 	    $supportedLanguages['ru']['nativedescription'] = '&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;';
 
 	    // Romanian
-	    $supportedLanguages['ro']['description'] = 'Romanian';
+	    $supportedLanguages['ro']['description'] = _('Romanian');
 	    $supportedLanguages['ro']['nativedescription'] = 'Romanian?';
 
 	    // Slovenian
-	    $supportedLanguages['si']['description'] = 'Slovenian';
+	    $supportedLanguages['si']['description'] = _('Slovenian');
 	    $supportedLanguages['si']['nativedescription'] = 'Sloven&#353;&#269;ina';
 
 	    // Spanish
-	    $supportedLanguages['es']['description'] = 'Spanish';
+	    $supportedLanguages['es']['description'] = _('Spanish');
 	    $supportedLanguages['es']['nativedescription'] = 'Espa&#241;ol';
 
 	    // Swedish
-	    $supportedLanguages['se']['description'] = 'Swedish';
+	    $supportedLanguages['se']['description'] = _('Swedish');
 	    $supportedLanguages['se']['nativedescription'] = 'Svenska';
 
 	    // Vietnamese
-	    $supportedLanguages['vn']['description'] = 'Vietnamese';
+	    $supportedLanguages['vn']['description'] = _('Vietnamese');
 	    $supportedLanguages['vn']['nativedescription'] = 'Ti&#7871;ng Vi&#7879;t';
 
 

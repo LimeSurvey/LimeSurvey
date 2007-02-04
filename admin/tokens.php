@@ -86,7 +86,7 @@ if ($subaction == "export") //EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
 	return;
 }
 
-if ($subaction == "delete") {$_SESSION['metaHeader']="<meta http-equiv=\"refresh\" content=\"1;URL={$scriptname}?action=tokens&amp;subaction=browse&amp;sid={$_GET['sid']}&amp;start=$start&amp;limit=$limit&amp;order=$order\" />";}
+if ($subaction == "delete" ) {$_SESSION['metaHeader']="<meta http-equiv=\"refresh\" content=\"1;URL={$scriptname}?action=tokens&amp;subaction=browse&amp;sid={$_GET['sid']}&amp;start=$start&amp;limit=$limit&amp;order=$order\" />";}
 //Show Help
 $tokenoutput .= "<script type='text/javascript'>\n"
 ."<!--\n"
@@ -317,22 +317,22 @@ $tokenoutput .= "\t<tr>\n"
 ."\t\t\t<table align='center' bgcolor='#DDDDDD' cellpadding='2' style='border: 1px solid #555555'>\n"
 ."\t\t\t\t<tr>\n"
 ."\t\t\t\t\t<td align='center'>\n"
-."\t\t\t\t\t<strong>"._("Total Records in this Token Table:")." $tkcount</strong><br />\n";
+."\t\t\t\t\t<strong>"._("Total Records in this Token Table").": $tkcount</strong><br />\n";
 $tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE token IS NULL OR token=''";
 $tksr = db_execute_num($tksq);
 while ($tkr = $tksr->FetchRow())
-{$tokenoutput .= "\t\t\t\t\t\t"._("Total With No Unique Token:")." $tkr[0] / $tkcount<br />\n";}
+{$tokenoutput .= "\t\t\t\t\t\t"._("Total With No Unique Token").": $tkr[0] / $tkcount<br />\n";}
 
 $tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE (sent!='N' and sent<>'')";
 
 $tksr = db_execute_num($tksq);
 while ($tkr = $tksr->FetchRow())
-{$tokenoutput .= "\t\t\t\t\t\t"._("Total Invitations Sent:")." $tkr[0] / $tkcount<br />\n";}
+{$tokenoutput .= "\t\t\t\t\t\t"._("Total Invitations Sent").": $tkr[0] / $tkcount<br />\n";}
 $tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE (completed!='N' and completed<>'')";
 
 $tksr = db_execute_num($tksq);
 while ($tkr = $tksr->FetchRow())
-{$tokenoutput .= "\t\t\t\t\t\t"._("Total Surveys Completed:")." $tkr[0] / $tkcount\n";}
+{$tokenoutput .= "\t\t\t\t\t\t"._("Total Surveys Completed").": $tkr[0] / $tkcount\n";}
 $tokenoutput .= "\t\t\t\t\t</font></td>\n"
 ."\t\t\t\t</tr>\n"
 ."\t\t\t</table>\n"
@@ -666,7 +666,7 @@ if ($subaction == "kill")
 }
 
 
-if (returnglobal('action') == "email")
+if ($subaction == "email")
 {
 	$tokenoutput .= "\t<tr bgcolor='#555555'>\n\t\t<td colspan='2' height='4'>"
 	."<font size='1' face='verdana' color='white'><strong>"
@@ -686,7 +686,7 @@ if (returnglobal('action') == "email")
 		$subject=Replacefields($thissurvey['email_invite_subj'], $fieldsarray);
 		$textarea=Replacefields($thissurvey['email_invite'], $fieldsarray);
 
-		$tokenoutput .= "<form method='post' action='tokens.php?sid=$surveyid'><table width='100%' align='center' bgcolor='#DDDDDD'>\n"
+		$tokenoutput .= "<form method='post' action='$scriptname?action=tokens&amp;sid=$surveyid'><table width='100%' align='center' bgcolor='#DDDDDD'>\n"
 		."\n";
 		if (isset($_GET['tid']) && $_GET['tid'])
 		{
@@ -714,7 +714,7 @@ if (returnglobal('action') == "email")
 		._("Send Invitations")."'>\n"
 		."\t<input type='hidden' name='ok' value='absolutely' />\n"
 		."\t<input type='hidden' name='sid' value='{$_GET['sid']}' />\n"
-		."\t<input type='hidden' $subaction value='email' /></td></tr>\n";
+		."\t<input type='hidden' name='subaction' value='email' /></td></tr>\n";
 		if (isset($_GET['tid']) && $_GET['tid']) {$tokenoutput .= "\t<input type='hidden' name='tid' value='{$_GET['tid']}' />";}
 		$tokenoutput .= "\n"
 		."</table></form>\n";
@@ -813,7 +813,7 @@ if (returnglobal('action') == "email")
 	$tokenoutput .= "</td></tr></table>\n";
 }
 
-if (returnglobal('action') == "remind")
+if ($subaction == "remind")
 {
 	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 	._("Email Reminder").":</strong></font></td></tr>\n"
@@ -823,7 +823,7 @@ if (returnglobal('action') == "remind")
 		//GET SURVEY DETAILS
 		$thissurvey=getSurveyInfo($surveyid);
 		if (!$thissurvey['email_remind']) {$thissurvey['email_remind']=str_replace("\n", "\r\n", _("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"));}
-		$tokenoutput .= "<form method='post' action='$homeurl/tokens.php'><table width='100%' align='center' bgcolor='#DDDDDD'>\n"
+		$tokenoutput .= "<form method='post' action='$scriptname?action=tokens'><table width='100%' align='center' bgcolor='#DDDDDD'>\n"
 		."\t\n"
 		."\t<tr>\n"
 		."\t\t<td align='right' width='150'><strong>"._("From").":</strong></font></td>\n"
@@ -872,7 +872,7 @@ if (returnglobal('action') == "remind")
 		."\t\t\t<input type='submit' value='"._("Send Reminders")."' />\n"
 		."\t<input type='hidden' name='ok' value='absolutely'>\n"
 		."\t<input type='hidden' name='sid' value='{$_GET['sid']}'>\n"
-		."\t<input type='hidden' $subaction value='remind'>\n"
+		."\t<input type='hidden' name='subaction' value='remind'>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n";
 		if (isset($_GET['tid']) && $_GET['tid']) {$tokenoutput .= "\t<input type='hidden' name='tid' value='{$_GET['tid']}'>\n";}
@@ -1283,25 +1283,25 @@ if ($subaction == "upload")
 		$tokenoutput .= "<br /><strong>"._("Importing CSV File")."</strong><br />\n<font color='green'>"._("Success")."</font><br /><br />\n"
 		._("Creating Token Entries")."<br />\n";
 		$xz = 0; $xx = 0;
-		$handle = fopen($the_full_file_path, "r");
-		if ($handle == false) {$tokenoutput .= "Failed to open the uploaded file!\n";}
-		while (!feof($handle))
+		// This allows to read file with MAC line endings too
+		@ini_set('auto_detect_line_endings', true);  
+		// open it and trim the ednings
+		$tokenlistarray = array_map('rtrim',file($the_full_file_path));
+		if (!isset($tokenlistarray)) {$tokenoutput .= "Failed to open the uploaded file!\n";}
+		foreach ($tokenlistarray as $buffer)
 		{
-			$buffer=getLine($handle); //Function determines line endings including \r (mac)
-			//$buffer = fgets($handle, 4096); //4096 could be increased if very long lines are being used
-
-			if (substr($buffer, -2) == "\r\n") {$buffer = substr($buffer, 0, -2);}
-			elseif (substr($buffer, -1) == "\n") {$buffer = substr($buffer, 0, -1);}
-			elseif (substr($buffer, -1) == "\r") {$buffer = substr($buffer, 0, -1);}
 			if(function_exists('mb_convert_encoding')) {$buffer=mb_convert_encoding($buffer,"UTF-8","auto");} //Sometimes mb_convert_encoding doesn't exist
-			$firstname = ""; $lastname = ""; $email = ""; $token = ""; $language=""; //Clear out values from the last path, in case the next line is missing a value
-			if (!$xx)
+			$firstname = ""; $lastname = ""; $email = ""; $token = ""; $language=""; $attribute1=""; $attribute2=""; //Clear out values from the last path, in case the next line is missing a value
+			if ($xx==0)
 			{
 				//THIS IS THE FIRST LINE. IT IS THE HEADINGS. IGNORE IT
 			}
 			else
 			{
-				$line = explode(",", $connect->escape($buffer));
+		
+        		$line = convertCSVRowToArray($buffer,',','"');
+        		// sanitize it befire writing into table
+        		$line = array_map('sanitize_sql_string',$line); 
 				$elements = count($line);
 				if ($elements > 1)
 				{
@@ -1330,13 +1330,9 @@ if ($subaction == "upload")
 					}
 					//CHECK FOR DUPLICATES?
 					$iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
-					. "(firstname, lastname, email, token, language";
-					if (isset($attribute1)) {$iq .= ", attribute_1";}
-					if (isset($attribute2)) {$iq .= ", attribute_2";}
+					. "(firstname, lastname, email, token, language, attribute_1, attribute_2";
 					$iq .=") \n"
-					. "VALUES ('$firstname', '$lastname', '$email', '$token', '$language'";
-					if (isset($attribute1)) {$iq .= ", '$attribute1'";}
-					if (isset($attribute2)) {$iq .= ", '$attribute2'";}
+					. "VALUES ('$firstname', '$lastname', '$email', '$token', '$language' , '$attribute1', '$attribute2'";
 					$iq .= ")";
 					//$tokenoutput .= "<pre style='text-align: left'>$iq</pre>\n"; //Debugging info
 					$ir = $connect->Execute($iq) or die ("Couldn't insert line<br />\n$buffer<br />\n".htmlspecialchars($connect->ErrorMsg())."<pre style='text-align: left'>$iq</pre>\n");
@@ -1348,7 +1344,6 @@ if ($subaction == "upload")
 		$tokenoutput .= "<font color='green'>"._("Success")."</font><br /><br />\n";
 		$message=str_replace("{TOKENCOUNT}", $xz, _("{TOKENCOUNT} Records Created"));
 		$tokenoutput .= "<i>$message</i><br />\n";
-		fclose($handle);
 		unlink($the_full_file_path);
 	}
 	$tokenoutput .= "\t\t\t</td></tr></table>\n";
@@ -1418,13 +1413,13 @@ if ($subaction == "uploadldap") {
 			$tokenoutput .= "<i>$message</i><br />\n";
 		}
 		else {
-			$errormessage="<strong><font color='red'>"._("Error").":</font> "._("Can't bind to the Ldap directory")."</strong>\n";
+			$errormessage="<strong><font color='red'>"._("Error").":</font> "._("Can't bind to the LDAP directory")."</strong>\n";
 			formldap($errormessage);
 		}
 		@ldap_close($ds);
 	}
 	else {
-		$errormessage="<strong><font color='red'>"._("Error").":</font> "._("Can't connect to the Ldap directory")."</strong>\n";
+		$errormessage="<strong><font color='red'>"._("Error").":</font> "._("Can't connect to the LDAP directory")."</strong>\n";
 		formldap($errormessage);
 	}
 }
@@ -1471,7 +1466,7 @@ function formldap($error=false)
 	}
 	else {
 		$tokenoutput .= '<br />\n';
-		$tokenoutput .= _('Select the Ldap query you want:');
+		$tokenoutput .= _('Select the LDAP query you want:');
 		$tokenoutput .= '<br />';
 		$tokenoutput .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . "' method='post'>";
 		$tokenoutput .= "<select name='ldapQueries' style='length=35'><br />";

@@ -629,7 +629,7 @@ if ($surveyid)
 
 		if($sumrows5['edit_survey_property'])
 		{
-			$surveysummary2 .= _("Regenerate Question Numbers:")
+			$surveysummary2 .= _("Regenerate Question Codes:")
 			. " [<a href='$scriptname?action=renumberquestions&amp;sid=$surveyid&amp;style=straight' "
 			. "onClick='return confirm(\"Are you sure?\")' "
 			. ">"._("Straight")."</a>] "
