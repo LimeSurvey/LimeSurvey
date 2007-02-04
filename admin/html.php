@@ -218,8 +218,8 @@ if ($action == "checksettings" || $action == "changelang")
 
 if ($surveyid)
 {
-	$query = "SELECT * FROM ".db_table_name('surveys_rights')." WHERE  sid = {$surveyid} AND uid = ".$_SESSION['loginID'] ." LIMIT 1";
-	$result = $connect->Execute($query);
+	$query = "SELECT * FROM ".db_table_name('surveys_rights')." WHERE  sid = {$surveyid} AND uid = ".$_SESSION['loginID'];
+	$result = $connect->SelectLimit($query, 1);
 	if($result->RecordCount() > 0)
 	{
 		$surveysummary = "<script type='text/javascript'>\n"

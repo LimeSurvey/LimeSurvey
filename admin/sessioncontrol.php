@@ -70,6 +70,7 @@ if(isset($_SESSION['loginID'])) {GetSessionUserRights($_SESSION['loginID']);}
 function GetSessionUserRights($loginID)
 {
 	global $dbprefix,$connect; 
+	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
     $squery = "SELECT create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label FROM {$dbprefix}users WHERE uid=$loginID";	//		added by Dennis
 	$sresult = $connect->Execute($squery);
 	if(@$fields = $sresult->FetchRow())

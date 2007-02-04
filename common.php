@@ -58,6 +58,7 @@ if($_SERVER['SERVER_SOFTWARE'] == "Xitami") //Deal with Xitami Issue
 	$_SERVER['PHP_SELF'] = substr($_SERVER['SERVER_URL'], 0, -1) .$_SERVER['SCRIPT_NAME'];
 }
 
+
 /*
 * $sourcefrom variable checks the location of the current script against
 * the administration directory, and if the current script is running
@@ -105,6 +106,9 @@ else {
 	if ($databasetype=='odbc_mssql') {$dbport="Driver={SQL Server};Server=$databaselocation;";}
 	$connect->Connect($dbport, $databaseuser, $databasepass);
 }
+
+# TODO: seems to be defaulting to ADODB_FETCH_NUM. New behaviour - can't see why
+$connect->SetFetchMode(ADODB_FETCH_ASSOC);
 
 $dbexistsbutempty=(checkifemptydb() && $database_exists);
 

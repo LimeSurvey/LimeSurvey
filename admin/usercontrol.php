@@ -44,9 +44,10 @@ if (!isset($_SESSION['loginID']))
 		
 		if (isset($_POST['user']) && isset($_POST['email']))
 			{
-			$query = "SELECT user, DECODE(password, '{$codeString}') AS password FROM {$dbprefix}users WHERE user='{$_POST['user']}' AND email='{$_POST['email']}' LIMIT 1";
+			include("database.php");
+			$query = "SELECT user, ".db_decrypt('password', '{$codeString}')." AS password FROM {$dbprefix}users WHERE user='{$_POST['user']}' AND email='{$_POST['email']}' LIMIT 1";
 			$result = $connect->Execute($query) or die ($query."<br />".$connect->ErrorMsg());
-			//echo $query;
+			
 			if ($result->RecordCount() < 1) 
 				{
 				// wrong or unknown username and/or email
@@ -84,25 +85,39 @@ if (!isset($_SESSION['loginID']))
 			}	
 		}	
 	elseif($action == "login")	// normal login 		
-		{
+		{		
 		$loginsummary = "<br /><strong>".$clang->gT("Login")."</strong><br />\n";
 		
 		if (isset($_POST['user']) && isset($_POST['password']))
 			{
-			$query = "SELECT uid, user, DECODE(password, '{$codeString}') AS password, parent_id, email, lang FROM {$dbprefix}users WHERE user='{$_POST['user']}' LIMIT 1";
-			$result = $connect->Execute($query) or die ($query."<br />".$connect->ErrorMsg());
-			//echo $query;
+			include("database.php");
+			
+			// build query
+			switch ($connect->databaseType) {
+				case 'mysql': 
+					$query = "SELECT uid, user, ".db_decrypt('password','{$codeString}')." AS password, parent_id, email, lang FROM {$dbprefix}users WHERE user='{$_POST['user']}'";
+					break;
+				case 'odbc_mssql':
+					$query = "SELECT uid, [user], ".db_decrypt('password','{$codeString}')." AS password, parent_id, email, lang FROM {$dbprefix}users WHERE [user]='{$_POST['user']}'";
+					break;
+				default: die ("Couldn't create query for connection type '$connect->databaseType'"); 	
+			}
+			$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+			$result = $connect->SelectLimit($query, 1) or die ($query."<br />".$connect->ErrorMsg());
+			
 			if ($result->RecordCount() < 1) 
 				{
 				// wrong or unknown username and/or email
 				$loginsummary .= "<br />".$clang->gT("User name and/or email not found!")."<br />";
 				$loginsummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+				
 				}
 			else 
 				{
 				$fields = $result->FetchRow();
-				//echo("Passwort aus der DB: " . $fields['password'] . "<br />");
-				//echo("eingegebenes Passwort " . $_POST['password'] . "<br />");
+		//		echo "<br /> <br />$fields[0]; $fields[1]; $fields[2];" . "<br />";
+		//		echo("Passwort aus der DB: " . $fields['password'] . "<br />");
+		//		echo("eingegebenes Passwort " . $_POST['password'] . "<br />");
 				if ($_POST['password'] == $fields['password']) 
 					{
 					// Anmeldung ERFOLGREICH

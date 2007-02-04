@@ -48,6 +48,19 @@ function db_quote($str)
 }
 
 /*
+* Return the correct decryption function for use in select statements   
+*/
+function db_decrypt($crypt_str_col, $pass_str)
+{
+	global $connect;
+	switch ($connect->databaseType) {
+		case 'mysql'	  : return "DECODE($crypt_str_col, '$pass_str')";
+		case 'odbc_mssql' : return "[$crypt_str_col]";
+		default: die ("Couldn't create decryption function for connection type '$connect->databaseType'"); 
+	}	
+}
+
+/*
 * Gets the maximum question_order field value for a group
 * @gid: The id of the group
 */
