@@ -81,8 +81,8 @@ if (!$surveyid)
 	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
 	echo "\t\t<center><br />\n"
 	."\t\t\t<font color='RED'><strong>"._('ERROR')."</strong></font><br />\n"
-	."\t\t\t"._("You have not provided a survey identification number")."<br />\n"
-	."\t\t\t"._("Please contact")." $siteadminname ( $siteadminemail ) "._("for further assistance")."\n"
+	."\t\t\t".$clang->gT("You have not provided a survey identification number")."<br />\n"
+	."\t\t\t".$clang->gT("Please contact")." $siteadminname ( $siteadminemail ) ".$clang->gT("for further assistance")."\n"
 	."\t\t</center><br />\n";
 //	$output=file("$tpldir/default/endpage.pstpl");
 //	foreach($output as $op)
@@ -132,9 +132,9 @@ if ($thissurvey['expiry'] < date("Y-m-d") && $thissurvey['useexpiry'] == "Y")
 //	}
 	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
 	echo "\t\t<center><br />\n"
-	."\t\t\t"._("This survey is no longer available.")."<br /><br />\n"
-	."\t\t\t"._("Please contact")." <i>{$thissurvey['adminname']}</i> (<i>{$thissurvey['adminemail']}</i>) "
-	._("for further assistance")."<br /><br />\n";
+	."\t\t\t".$clang->gT("This survey is no longer available.")."<br /><br />\n"
+	."\t\t\t".$clang->gT("Please contact")." <i>{$thissurvey['adminname']}</i> (<i>{$thissurvey['adminemail']}</i>) "
+	.$clang->gT("for further assistance")."<br /><br />\n";
 //	$output=file("$tpldir/default/endpage.pstpl");
 //	foreach ($output as $op)
 //	{
@@ -159,10 +159,10 @@ if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $this
 //	}
 	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
 	echo "\t\t<center><br />\n"
-	."\t\t\t<font color='RED'><strong>"._("Error")."</strong></font><br />\n"
-	."\t\t\t"._("You have already completed this survey.")."<br /><br />\n"
-	."\t\t\t"._("Please contact")." <i>{$thissurvey['adminname']}</i> (<i>{$thissurvey['adminemail']}</i>) "
-	._("for further assistance")."<br /><br />\n";
+	."\t\t\t<font color='RED'><strong>".$clang->gT("Error")."</strong></font><br />\n"
+	."\t\t\t".$clang->gT("You have already completed this survey.")."<br /><br />\n"
+	."\t\t\t".$clang->gT("Please contact")." <i>{$thissurvey['adminname']}</i> (<i>{$thissurvey['adminemail']}</i>) "
+	.$clang->gT("for further assistance")."<br /><br />\n";
 //	$output=file("$tpldir/default/endpage.pstpl");
 //	foreach($output as $op)
 //	{
@@ -204,12 +204,12 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 	// if (loadname is not set) or if ((loadname is set) and (loadname is NULL))
 	if (!isset($_POST['loadname']) || (isset($_POST['loadname']) && ($_POST['loadname'] == null)))
 	{
-		$errormsg .= _("You did not provide a name")."<br />\n";
+		$errormsg .= $clang->gT("You did not provide a name")."<br />\n";
 	}
 	// if (loadpass is not set) or if ((loadpass is set) and (loadpass is NULL))
 	if (!isset($_POST['loadpass']) || (isset($_POST['loadpass']) && ($_POST['loadpass'] == null)))
 	{
-		$errormsg .= _("You did not provide a password")."<br />\n";
+		$errormsg .= $clang->gT("You did not provide a password")."<br />\n";
 	}
 
 	// Load session before loading the values from the saved data
@@ -224,15 +224,15 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 
 	loadanswers();
 	// <-- END NEW FEATURE - SAVE
-	$_POST['move'] = " "._("next")." >> ";
+	$_POST['move'] = " ".$clang->gT("next")." >> ";
 
 	if ($errormsg)
 	{
-		$_POST['loadall'] = _("Load Unfinished Survey");
+		$_POST['loadall'] = $clang->gT("Load Unfinished Survey");
 	}
 }
 //Allow loading of saved survey
-if (isset($_POST['loadall']) && $_POST['loadall'] == _("Load Unfinished Survey"))
+if (isset($_POST['loadall']) && $_POST['loadall'] == $clang->gT("Load Unfinished Survey"))
 {
 	require_once("load.php");
 }
@@ -264,12 +264,12 @@ if ($tokensexist == 1 && returnglobal('token'))
 //		}
 		echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 		echo "\t<center><br />\n"
-		."\t"._("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
-		."\t"._("The token you have provided is either not valid, or has already been used.")."\n"
-		."\t"._("For further information contact")." {$thissurvey['adminname']} "
+		."\t".$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
+		."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."\n"
+		."\t".$clang->gT("For further information contact")." {$thissurvey['adminname']} "
 		."(<a href='mailto:{$thissurvey['adminemail']}'>"
 		."{$thissurvey['adminemail']}</a>)<br /><br />\n"
-		."\t<a href='javascript: self.close()'>"._("Close this Window")."</a><br />&nbsp;\n";
+		."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
 //		foreach(file("$thistpl/endpage.pstpl") as $op)
 //		{
 //			echo templatereplace($op);
@@ -389,7 +389,7 @@ function loadanswers()
 	$result = db_execute_assoc($query) or die ("Error loading results<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	if ($result->RecordCount() < 1)
 	{
-		$errormsg .= _("There is no matching saved survey")."<br />\n";
+		$errormsg .= $clang->gT("There is no matching saved survey")."<br />\n";
 	}
 	else
 	{
@@ -453,7 +453,7 @@ function getTokenData($surveyid, $token)
 function makegraph($thisstep, $total)
 {
 	global $thissurvey;
-	global $thistpl, $publicurl;
+	global $thistpl, $publicurl, $clang;
 	$chart=$thistpl."/chart.jpg";
 	if (!is_file($chart)) {$shchart="chart.jpg";}
 	else {$shchart = "$publicurl/templates/{$thissurvey['templatedir']}/chart.jpg";}
@@ -464,7 +464,7 @@ function makegraph($thisstep, $total)
 	$graph .= "<td width='100' align='left'>\n"
 	. "<table cellspacing='0' cellpadding='0' border='0' width='100%'>\n"
 	. "<tr><td class='progressbar'>\n"
-	. "<img src='$shchart' height='12' width='$size' align='left' alt='$size% "._("complete")."'>\n"
+	. "<img src='$shchart' height='12' width='$size' align='left' alt='$size% ".$clang->gT("complete")."'>\n"
 	. "</td></tr>\n"
 	. "</table>\n"
 	. "</td>\n"
@@ -672,9 +672,9 @@ function checkmandatorys($backok=null)
 					{
 						//The number of questions not answered is equal to the number of questions
 						//This section gets used if it is a multiple choice type question
-						if (isset($_POST['move']) && $_POST['move'] == " << "._("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
-						if (isset($_POST['move']) && $_POST['move'] == " "._("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-						if (isset($_POST['move']) && $_POST['move'] == " "._("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._("next")." >> ";}
+						if (isset($_POST['move']) && $_POST['move'] == " << ".$clang->gT("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
+						if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+						if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " ".$clang->gT("next")." >> ";}
 						$notanswered[]=substr($multiname, 5, strlen($multiname));
 						$$multiname=0;
 						$$multiname2=0;
@@ -693,9 +693,9 @@ function checkmandatorys($backok=null)
 			elseif ((!isset($_POST[$multiname]) || !$_POST[$multiname]) && (!isset($_POST[$dtcm]) || $_POST[$dtcm] == "on"))
 			{
 				//One of the mandatory questions hasn't been asnwered
-				if (isset($_POST['move']) && $_POST['move'] == " << "._("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == " "._("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == " "._("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._("next")." >> ";}
+				if (isset($_POST['move']) && $_POST['move'] == " << ".$clang->gT("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " ".$clang->gT("next")." >> ";}
 				$notanswered[]=$mfns[$mi];
 			}
 			else
@@ -711,9 +711,9 @@ function checkmandatorys($backok=null)
 			if ($$multiname == $$multiname2) //so far all multiple choice options are unanswered
 			{
 				//The number of questions not answered is equal to the number of questions
-				if (isset($_POST['move']) && $_POST['move'] == " << "._("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == " "._("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == " "._("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._("next")." >> ";}
+				if (isset($_POST['move']) && $_POST['move'] == " << ".$clang->gT("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " ".$clang->gT("next")." >> ";}
 				$notanswered[]=substr($multiname, 5, strlen($multiname));
 				$$multiname="";
 				$$multiname2="";
@@ -740,9 +740,9 @@ function checkconditionalmandatorys($backok=null)
 					if ($$multiname == $$multiname2) //For this lot all multiple choice options are unanswered
 					{
 						//The number of questions not answered is equal to the number of questions
-						if (isset($_POST['move']) && $_POST['move'] == " << "._("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
-						if (isset($_POST['move']) && $_POST['move'] == " "._("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-						if (isset($_POST['move']) && $_POST['move'] == " "._("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._("next")." >> ";}
+						if (isset($_POST['move']) && $_POST['move'] == " << ".$clang->gT("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
+						if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+						if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " ".$clang->gT("next")." >> ";}
 						$notanswered[]=substr($multiname, 5, strlen($multiname));
 						$$multiname=0;
 						$$multiname2=0;
@@ -762,9 +762,9 @@ function checkconditionalmandatorys($backok=null)
 			}
 			elseif ((isset($_POST[$dccm]) && $_POST[$dccm] == "on") && (!isset($_POST[$multiname]) || !$_POST[$multiname]) && (!isset($_POST[$dtccm]) || $_POST[$dtccm] == "on")) // Question and Answers is on, there is no answer, but it's a multiple
 			{
-				if (isset($_POST['move']) && $_POST['move'] == " << "._("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == " "._("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == " "._("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._("next")." >> ";}
+				if (isset($_POST['move']) && $_POST['move'] == " << ".$clang->gT("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " ".$clang->gT("next")." >> ";}
 				$notanswered[]=$cmfns[$mi];
 			}
 			elseif (isset($_POST[$dccm]) && $_POST[$dccm] == "on")
@@ -780,9 +780,9 @@ function checkconditionalmandatorys($backok=null)
 			if ($$multiname == $$multiname2) //so far all multiple choice options are unanswered
 			{
 				//The number of questions not answered is equal to the number of questions
-				if (isset($_POST['move']) && $_POST['move'] == " << "._("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == " "._("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == " "._("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._("next")." >> ";}
+				if (isset($_POST['move']) && $_POST['move'] == " << ".$clang->gT("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " ".$clang->gT("next")." >> ";}
 				$notanswered[]=substr($multiname, 5, strlen($multiname));
 			}
 		}
@@ -828,9 +828,9 @@ function checkpregs($backok=null)
 		}
 		if (isset($notvalidated) && is_array($notvalidated))
 		{
-			if (isset($_POST['move']) && $_POST['move'] == " << "._("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if (isset($_POST['move']) && $_POST['move'] == " "._("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if (isset($_POST['move']) && $_POST['move'] == " "._("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " "._("next")." >> ";}
+			if (isset($_POST['move']) && $_POST['move'] == " << ".$clang->gT("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " ".$clang->gT("next")." >> ";}
 			return $notvalidated;
 		}
 	}
@@ -921,7 +921,7 @@ function submittokens()
 			{
 				$langdir="$homeurl/lang/english"; //default to english if there is no matching language dir
 			}
-			$message = _("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}");
+			$message = $clang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}");
 		}
 
 		$message=Replacefields($message, $fieldsarray);
@@ -939,21 +939,21 @@ function sendsubmitnotification($sendnotification)
 
 	$subject = "$sitename Survey Submitted";
 
-	$message = _("Survey Submitted")." - {$thissurvey['name']}\r\n"
-	. _("A new response was entered for your survey")."\r\n\r\n";
+	$message = $clang->gT("Survey Submitted")." - {$thissurvey['name']}\r\n"
+	. $clang->gT("A new response was entered for your survey")."\r\n\r\n";
 	if ($thissurvey['allowsave'] == "Y" && isset($_SESSION['scid']))
 	{
-		$message .= _("Click the following link to reload the survey:")."\r\n";
+		$message .= $clang->gT("Click the following link to reload the survey:")."\r\n";
 		$message .= "  $publicurl/index.php?sid=$surveyid&loadall=reload&scid=".$_SESSION['scid']."&loadname=".urlencode($_SESSION['holdname'])."&loadpass=".urlencode($_SESSION['holdpass'])."\r\n\r\n";
 	}
 
-	$message .= _("Click the following link to see the individual response:")."\r\n"
+	$message .= $clang->gT("Click the following link to see the individual response:")."\r\n"
 	. "  $homeurl/browse.php?sid=$surveyid&action=id&id=".$_SESSION['srid']."\r\n\r\n"
 	// Add link to edit individual responses from notification email
-	. _("Click the following link to edit the individual response:")."\r\n"
+	. $clang->gT("Click the following link to edit the individual response:")."\r\n"
 
 	. "  $homeurl/dataentry.php?sid=$surveyid&action=edit&surveytable=survey_$surveyid&id=".$_SESSION['srid']."\r\n\r\n"
-	. _("View statistics by clicking here:")."\r\n"
+	. $clang->gT("View statistics by clicking here:")."\r\n"
 	. "  $homeurl/statistics.php?sid=$surveyid\r\n\r\n";
 	if ($sendnotification > 1)
 	{ //Send results as well. Currently just bare-bones - will be extended in later release
@@ -994,20 +994,20 @@ function submitfailed()
 	doHeader();
 	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 	$completed = "<br /><strong><font size='2' color='red'>"
-	. _("Did Not Save")."</strong></font><br /><br />\n\n"
-	. _("An unexpected error has occurred and your responses cannot be saved.")."<br /><br />\n";
+	. $clang->gT("Did Not Save")."</strong></font><br /><br />\n\n"
+	. $clang->gT("An unexpected error has occurred and your responses cannot be saved.")."<br /><br />\n";
 	if ($thissurvey['adminemail'])
 	{
-		$completed .= _("Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point.")."<br /><br />\n";
-		$email=_("An error occurred saving a response to survey id")." ".$thissurvey['name']." - $surveyid\n\n";
-		$email .= _("DATA TO BE ENTERED").":\n";
+		$completed .= $clang->gT("Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point.")."<br /><br />\n";
+		$email=$clang->gT("An error occurred saving a response to survey id")." ".$thissurvey['name']." - $surveyid\n\n";
+		$email .= $clang->gT("DATA TO BE ENTERED").":\n";
 		foreach ($_SESSION['insertarray'] as $value)
 		{
 			$email .= "$value: {$_SESSION[$value]}\n";
 		}
-		$email .= "\n"._("SQL CODE THAT FAILED").":\n"
+		$email .= "\n".$clang->gT("SQL CODE THAT FAILED").":\n"
 		. "$subquery\n\n"
-		. _("ERROR MESSAGE").":\n"
+		. $clang->gT("ERROR MESSAGE").":\n"
 		. $connect->ErrorMsg()."\n\n";
 		MailTextMessage($email, _DNSAVEEMAIL5, $thissurvey['adminemail'], $thissurvey['adminemail'], "PHPSurveyor");
 		echo "<!-- EMAIL CONTENTS:\n$email -->\n";
@@ -1017,7 +1017,7 @@ function submitfailed()
 	}
 	else
 	{
-		$completed .= "<a href='javascript:location.reload()'>"._("Try to submit again")."</a><br /><br />\n";
+		$completed .= "<a href='javascript:location.reload()'>".$clang->gT("Try to submit again")."</a><br /><br />\n";
 		$completed .= $subquery;
 	}
 	return $completed;
@@ -1055,15 +1055,15 @@ function buildsurveysession()
 		{
 ?>
 	<center><br />
-	<?php echo _("This is a controlled survey. You need a valid token to participate.") ?><br /><br />
-	<?php echo _("If you have been issued with a token, please enter it in the box below and click continue.") ?><br />&nbsp;
+	<?php echo $clang->gT("This is a controlled survey. You need a valid token to participate.") ?><br /><br />
+	<?php echo $clang->gT("If you have been issued with a token, please enter it in the box below and click continue.") ?><br />&nbsp;
 	<form method='get' action='<?php echo $_SERVER['PHP_SELF'] ?>'>
 	<table align='center'>
 		<tr>
 			<td align='center' valign='middle'>
 			<input type='hidden' name='sid' value='<?php echo $surveyid ?>' id='sid' />
-			<?php echo _("Token") ?>: <input class='text' type='text' name='token'>
-			<input class='submit' type='submit' value='<?php echo _("Continue") ?>' />
+			<?php echo $clang->gT("Token") ?>: <input class='text' type='text' name='token'>
+			<input class='submit' type='submit' value='<?php echo $clang->gT("Continue") ?>' />
 			</td>
 		</tr>
 	</table>
@@ -1101,12 +1101,12 @@ function buildsurveysession()
 //			}
 			echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 			echo "\t<center><br />\n"
-			."\t"._("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
-			."\t"._("The token you have provided is either not valid, or has already been used.")."\n"
-			."\t"._("For further information contact")." {$thissurvey['adminname']} "
+			."\t".$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
+			."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."\n"
+			."\t".$clang->gT("For further information contact")." {$thissurvey['adminname']} "
 			."(<a href='mailto:{$thissurvey['adminemail']}'>"
 			."{$thissurvey['adminemail']}</a>)<br /><br />\n"
-			."\t<a href='javascript: self.close()'>"._("Close this Window")."</a><br />&nbsp;\n";
+			."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
 //			foreach(file("$thistpl/endpage.pstpl") as $op)
 //			{
 //				echo templatereplace($op);
@@ -1213,11 +1213,11 @@ function buildsurveysession()
 //		}
 		echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 		echo "\t<center><br />\n"
-		."\t"._("This survey does not yet have any questions and cannot be tested or completed.")."<br /><br />\n"
-		."\t"._("For further information contact")." {$thissurvey['adminname']}"
+		."\t".$clang->gT("This survey does not yet have any questions and cannot be tested or completed.")."<br /><br />\n"
+		."\t".$clang->gT("For further information contact")." {$thissurvey['adminname']}"
 		." (<a href='mailto:{$thissurvey['adminemail']}'>"
 		."{$thissurvey['adminemail']}</a>)<br /><br />\n"
-		."\t<a href='javascript: self.close()'>"._("Close this Window")."</a><br />&nbsp;\n";
+		."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
 //		foreach(file("$thistpl/endpage.pstpl") as $op)
 //		{
 //			echo templatereplace($op);
@@ -1459,46 +1459,46 @@ function surveymover()
 	//a user presses enter.
 	//
 	//Attribute accesskey added for keyboard navigation.
-	global $thissurvey;
+	global $thissurvey, $clang;
 	global $surveyid, $presentinggroupdescription;
 	$surveymover = "";
 	if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] != "A")
 	{
-		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\" ". _("last")." \" id=\"movelast\" />";
+		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\" ". $clang->gT("last")." \" id=\"movelast\" />";
 	}
 	else
 	{
-		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\" ". _("next")." >> \" id=\"movenext\" />";
+		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\" ". $clang->gT("next")." >> \" id=\"movenext\" />";
 	}
 	if (isset($_SESSION['step']) && $_SESSION['step'] > 0 && $thissurvey['format'] != "A" && $thissurvey['allowprev'] != "N")
 	{
 		$surveymover .= "<input class='submit' accesskey='p' type='button' onclick=\"javascript:document.phpsurveyor.move.value = this.value; document.phpsurveyor.submit();\" value=' << "
-		. _("prev")." ' name='move2' />\n";
+		. $clang->gT("prev")." ' name='move2' />\n";
 	}
 	if (isset($_SESSION['step']) && $_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
 	{
 		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
-		. _("next")." >> ' name='move2' />\n";
+		. $clang->gT("next")." >> ' name='move2' />\n";
 	}
 	if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	{
 		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
-		. _("next")." >> ' name='move2' />\n";
+		. $clang->gT("next")." >> ' name='move2' />\n";
 	}
 	if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && $presentinggroupdescription == "yes")
 	{
 		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
-		. _("next")." >> ' name='move2' />\n";
+		. $clang->gT("next")." >> ' name='move2' />\n";
 	}
 	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] != "A")
 	{
 		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' accesskey='l' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
-		. _("last")." ' name='move2' />\n";
+		. $clang->gT("last")." ' name='move2' />\n";
 	}
 	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] == "A")
 	{
 		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
-		. _("submit")." ' name='move2' />\n";
+		. $clang->gT("submit")." ' name='move2' />\n";
 	}
 	$surveymover .= "<input type='hidden' name='PHPSESSID' value='".session_id()."' id='PHPSESSID' />\n";
 	return $surveymover;
