@@ -6,25 +6,27 @@ $locale = new phpsurveyor_lang('en'); // Char code
 print $locale->getTranslation("Hello World!");
 */
 
-require_once(dirname(__FILE__).'/../php-gettext/gettext.php');
-require_once(dirname(__FILE__).'/../php-gettext/streams.php');
+
+require_once($rootdir.'/classes/php-gettext/gettext.php');
+require_once($rootdir.'/classes/php-gettext/streams.php');
 
 class phpsurveyor_lang {
 
     var $gettextclass;
-   
+    
     function phpsurveyor_lang($langcode){
         if ( $langcode != "en" ) {
-            $streamer = new FileReader(dirname(__FILE__).'/locale/'.$langcode.'/LC_MESSAGES/'.$langcode.'.mo');
+        	global $rootdir;
+            $streamer = new FileReader($rootdir.'/locale/'.$langcode.'/LC_MESSAGES/'.$langcode.'.mo');
             $this->gettextclass = new gettext_reader($streamer);
         } else {
             $this->gettextclass = false;
         }
     }
    
-    function getTranslation($string)
+    function gT($string)
     {
-        if ($this->gettextclass)
+    	if ($this->gettextclass)
         {
             return $this->gettextclass->translate($string);
         } else {
