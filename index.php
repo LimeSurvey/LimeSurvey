@@ -49,11 +49,11 @@ session_start();
 if (isset($_GET['lang']))
 {
 	$_GET['lang'] = preg_replace("/[^a-zA-Z0-9_]/", "", $_GET['lang']);
-	if ($_GET['lang']) SetSurveyLanguage( $surveyid, $_GET['lang']);
+	if ($_GET['lang']) $clang = SetSurveyLanguage( $surveyid, $_GET['lang']);
 	
 } else if (isset($_SESSION['s_lang']))
 {
-	SetSurveyLanguage( $surveyid, $_SESSION['s_lang']);
+	$clang = SetSurveyLanguage( $surveyid, $_SESSION['s_lang']);
 }
 
 ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
@@ -363,7 +363,7 @@ switch ($thissurvey['format'])
 function loadanswers()
 {
 	global $dbprefix,$surveyid,$errormsg;
-	global $thissurvey;
+	global $thissurvey, $clang;
 
 	if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 	{

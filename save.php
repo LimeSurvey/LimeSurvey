@@ -95,7 +95,7 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 }
 
 //SAVE if on page with questions or on submit page
-if ((isset($_POST['fieldnames']) && $_POST['fieldnames']) || (isset($_POST['move']) && $_POST['move'] == " "._("submit")." "))
+if ((isset($_POST['fieldnames']) && $_POST['fieldnames']) || (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("submit")." "))
 {
 	if ($thissurvey['active'] == "Y") 	// Only save if active
 	{
@@ -141,7 +141,7 @@ if ($thissurvey['allowsave'] == "Y"  && isset($_POST['saveall']) && !isset($_SES
 function showsaveform()
 {
 	//Show 'SAVE FORM' only when click the 'Save so far' button the first time, or when duplicate is found on SAVE FORM.
-	global $thistpl, $errormsg, $thissurvey, $surveyid;
+	global $thistpl, $errormsg, $thissurvey, $surveyid, $clang;
 
 	sendcacheheaders();
 	echo "<html>\n";
@@ -162,7 +162,7 @@ function showsaveform()
 	//PRESENT OPTIONS SCREEN
 	if (isset($errormsg) && $errormsg != "")
 	{
-		$errormsg .= "<p>"._("Please try again.")."</p>";
+		$errormsg .= "<p>".$clang->gT("Please try again.")."</p>";
 	}
 	foreach(file("$thistpl/save.pstpl") as $op)
 	{
@@ -198,14 +198,14 @@ function savedcontrol()
 	// - "value" which is the value of the response
 	//We start by generating the first 5 values which are consistent for all rows.
 
-	global $connect, $surveyid, $dbprefix, $thissurvey, $errormsg, $publicurl, $sitename, $timeadjust;
+	global $connect, $surveyid, $dbprefix, $thissurvey, $errormsg, $publicurl, $sitename, $timeadjust, $clang;
 
 	//Check that the required fields have been completed.
 	$errormsg="";
-	if (!isset($_POST['savename']) || !$_POST['savename']) {$errormsg.=_("You must supply a name for this saved session.")."<br />\n";}
-	if (!isset($_POST['savepass']) || !$_POST['savepass']) {$errormsg.=_("You must supply a password for this saved session.")."<br />\n";}
+	if (!isset($_POST['savename']) || !$_POST['savename']) {$errormsg.=$clang->gT("You must supply a name for this saved session.")."<br />\n";}
+	if (!isset($_POST['savepass']) || !$_POST['savepass']) {$errormsg.=$clang->gT("You must supply a password for this saved session.")."<br />\n";}
 	if (!isset($_POST['savepass']) && isset($_POST['savepass2']) && $_POST['savepass'] != $_POST['savepass2'])
-	{$errormsg.=_("Your passwords do not match.")."<br />\n";}
+	{$errormsg.=$clang->gT("Your passwords do not match.")."<br />\n";}
 
 	if ($errormsg)
 	{
@@ -220,7 +220,7 @@ function savedcontrol()
 	list($count) = $result->FetchRow();
 	if ($count > 0)
 	{
-		$errormsg.=_("This name has already been used for this survey. You must use a unique save name.")."<br />\n";
+		$errormsg.=$clang->gT("This name has already been used for this survey. You must use a unique save name.")."<br />\n";
 		return;
 	}
 	else
@@ -275,13 +275,13 @@ function savedcontrol()
 			if (validate_email($_POST['saveemail']))
 			{
 				// --> START ENHANCEMENT
-				$subject=_("Saved Survey Details") . " - " . $thissurvey['name'];
+				$subject=$clang->gT("Saved Survey Details") . " - " . $thissurvey['name'];
 				// <-- END ENHANCEMENT
-				$message=_("You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off.");
+				$message=$clang->gT("You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off.");
 				$message.="\n\n".$thissurvey['name']."\n\n";
-				$message.=_("Name").": ".$_POST['savename']."\n";
-				$message.=_("Password").": ".$_POST['savepass']."\n\n";
-				$message.=_("Reload your survey by clicking on the following URL:").":\n";
+				$message.=$clang->gT("Name").": ".$_POST['savename']."\n";
+				$message.=$clang->gT("Password").": ".$_POST['savepass']."\n\n";
+				$message.=$clang->gT("Reload your survey by clicking on the following URL:").":\n";
 				$message.=$publicurl."/index.php?sid=$surveyid&loadall=reload&scid=".$scid."&loadname=".urlencode($_POST['savename'])."&loadpass=".urlencode($_POST['savepass']);
 
 				if (returnglobal('token')){$message.="&token=".returnglobal('token');}
@@ -308,7 +308,7 @@ function createinsertquery()
 
 	global $thissurvey;
 	global $deletenonvalues, $thistpl;
-	global $surveyid, $connect;
+	global $surveyid, $connect, $clang;
 	$fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
 
 	if (isset($_SESSION['insertarray']) && is_array($_SESSION['insertarray']))
@@ -360,7 +360,7 @@ function createinsertquery()
 			{
 				$query .= ",`refurl`";
 			}
-			if ((isset($_POST['move']) && $_POST['move'] == " "._("submit")." "))
+			if ((isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("submit")." "))
 			{
 				$query .= ",`submitdate`";
 			}
@@ -379,7 +379,7 @@ function createinsertquery()
 			{
 				$query .= ", '".getenv("HTTP_REFERER")."'";
 			}
-			if ((isset($_POST['move']) && $_POST['move'] == " "._("submit")." "))
+			if ((isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("submit")." "))
 			{
 				$query .= ", '".date("Y-m-d H:i:s")."'";
 			}
@@ -399,7 +399,7 @@ function createinsertquery()
 				{
 					$query .= "ipaddr = '".$_SERVER['REMOTE_ADDR']."',";
 				}
-				if ((isset($_POST['move']) && $_POST['move'] == " "._("submit")." "))
+				if ((isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("submit")." "))
 				{
 					$query .= "submitdate = '".date("Y-m-d H:i:s")."',";
 				}
@@ -414,7 +414,7 @@ function createinsertquery()
 			else
 			{
 				$query = "";
-				if ((isset($_POST['move']) && $_POST['move'] == " "._("submit")." "))
+				if ((isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("submit")." "))
 				{
 					$query = "UPDATE {$thissurvey['tablename']} SET ";
 					$query .= "submitdate = '".date("Y-m-d H:i:s")."' ";
@@ -436,9 +436,9 @@ function createinsertquery()
 		{
 			echo templatereplace($op);
 		}
-		echo "<br /><center><font face='verdana' size='2'><font color='red'><strong>"._("Error")."</strong></font><br /><br />\n";
-		echo _("Cannot submit results - there are none to submit.")."<br /><br />\n";
-		echo "<font size='1'>"._("This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br /><br />If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem.")."<br />\n";
+		echo "<br /><center><font face='verdana' size='2'><font color='red'><strong>".$clang->gT("Error")."</strong></font><br /><br />\n";
+		echo $clang->gT("Cannot submit results - there are none to submit.")."<br /><br />\n";
+		echo "<font size='1'>".$clang->gT("This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br /><br />If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem.")."<br />\n";
 		echo "</font></center><br /><br />";
 		exit;
 	}

@@ -1100,7 +1100,7 @@ function browsemenubar()
 	."onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Get statistics from these responses")."')\">"
 	."<img name='Statistics' src='$imagefiles/statistics.png' title='' align='left' /></a>\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n"
-	. "\t\t\t<a href='$scriptname?action=exportresults&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Export Results to Application")."')\"><img name='Export' src='$imagefiles/export.png' " .
+	. "\t\t\t<a href='$scriptname?action=exportresults&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Results to Application")."')\"><img name='Export' src='$imagefiles/export.png' " .
 			"title='' alt=''align='left'  blank')\"></a>\n"
 	. "\t\t\t<a href='spss.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Export result to a SPSS command file")."')\"><img src='$imagefiles/exportspss.png' align='left' title='"
 	. $clang->gT("Export result to a SPSS command file")."' border='0' alt='". $clang->gT("Export result to a SPSS command file")."'></a>\n"
@@ -1988,7 +1988,7 @@ function SetInterfaceLanguage($languagetoset)
 function SetSurveyLanguage($surveyid, $language)// SetSurveyLanguage($surveyid)
 {
 
-				global $clang, $rootdir;
+				global $rootdir;
 				// see if language actually is present in survey
 				$query = "SELECT language, additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
 				$result = db_execute_assoc($query);
@@ -2014,7 +2014,7 @@ function SetSurveyLanguage($surveyid, $language)// SetSurveyLanguage($surveyid)
 //			bind_textdomain_codeset($_SESSION['s_lang'],'UTF-8');
 //			textdomain($_SESSION['s_lang']);
 
-		return $_SESSION['s_lang'];
+		return $clang;
 }
 
 

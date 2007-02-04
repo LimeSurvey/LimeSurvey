@@ -45,21 +45,21 @@ if (!isset($_SESSION['step'])) {$_SESSION['step']=0;}
 if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
 if (!isset($_POST['thisstep'])) {$_POST['thisstep'] = "";}
 if (!isset($gl)) {$gl=array("null");}
-if (isset($_POST['move']) && $_POST['move'] == " << "._("prev")." ") {$_SESSION['step'] = $_POST['thisstep']-1;}
-if (isset($_POST['move']) && $_POST['move'] == " "._("next")." >> ") {$_SESSION['step']=$_POST['thisstep']+1;}
-if (isset($_POST['move']) && $_POST['move'] == " "._("last")." ") {$_SESSION['step'] = $_POST['thisstep']+1;}
+if (isset($_POST['move']) && $_POST['move'] == " << ".$clang->gT("prev")." ") {$_SESSION['step'] = $_POST['thisstep']-1;}
+if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("next")." >> ") {$_SESSION['step']=$_POST['thisstep']+1;}
+if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." ") {$_SESSION['step'] = $_POST['thisstep']+1;}
 
 // --> START NEW FEATURE - SAVE
 // If on SUBMIT page and select SAVE SO FAR it will return to SUBMIT page
-if ($_SESSION['step'] > $_SESSION['totalsteps'] && $_POST['move'] != " "._("submit")." ")
+if ($_SESSION['step'] > $_SESSION['totalsteps'] && $_POST['move'] != " ".$clang->gT("submit")." ")
 {
-	$_POST['move'] = " "._("last")." ";
+	$_POST['move'] = " ".$clang->gT("last")." ";
 }
 // <-- END NEW FEATURE - SAVE
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
 //First, see if we are moving backwards or doing a Save so far, and its OK not to check:
-if ($allowmandbackwards==1 && ((isset($_POST['move']) &&  $_POST['move'] == " << "._("prev")." ") || (isset($_POST['saveall']) && $_POST['saveall'] == _("Save your responses so far"))))
+if ($allowmandbackwards==1 && ((isset($_POST['move']) &&  $_POST['move'] == " << ".$clang->gT("prev")." ") || (isset($_POST['saveall']) && $_POST['saveall'] == $clang->gT("Save your responses so far"))))
 {
 	$backok="Y";
 }
@@ -83,15 +83,15 @@ if (session_id()=='')
 }
 
 //SEE IF THIS GROUP SHOULD DISPLAY
-if (isset($_POST['move']) && $_SESSION['step'] != 0 && $_POST['move'] != " "._("last")." " && $_POST['move'] != " "._("submit")." ")
+if (isset($_POST['move']) && $_SESSION['step'] != 0 && $_POST['move'] != " ".$clang->gT("last")." " && $_POST['move'] != " ".$clang->gT("submit")." ")
 {
 	while(checkgroupfordisplay($_SESSION['grouplist'][$_SESSION['step']-1][0]) === false)
 	{
-		if (isset($_POST['move']) && $_POST['move'] == " << "._("prev")." ") {$_SESSION['step']=$_SESSION['step']-1;}
-		if (isset($_POST['move']) && $_POST['move'] == " "._("next")." >> ") {$_SESSION['step']=$_SESSION['step']+1;}
+		if (isset($_POST['move']) && $_POST['move'] == " << ".$clang->gT("prev")." ") {$_SESSION['step']=$_SESSION['step']-1;}
+		if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("next")." >> ") {$_SESSION['step']=$_SESSION['step']+1;}
 		if ($_SESSION['step']-1 == $_SESSION['totalsteps'])
 		{
-			$_POST['move'] = " "._("last")." ";
+			$_POST['move'] = " ".$clang->gT("last")." ";
 			break;
 		}
 	}
@@ -99,7 +99,7 @@ if (isset($_POST['move']) && $_SESSION['step'] != 0 && $_POST['move'] != " "._("
 
 //SUBMIT ###############################################################################
 // --> START NEW FEATURE - SAVE
-if (isset($_POST['move']) && $_POST['move'] == " "._("submit")." ")
+if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("submit")." ")
 // <-- END NEW FEATURE - SAVE
 {
 
@@ -134,9 +134,9 @@ if (isset($_POST['move']) && $_POST['move'] == " "._("submit")." ")
 				echo templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
 			}
 
-			$completed = "<br /><strong><font size='2' color='red'>"._("Did Not Save")."</font></strong><br /><br />\n\n";
-			$completed .= _("Your survey responses have not been recorded. This survey is not yet active.")."<br /><br />\n";
-			$completed .= "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall'>"._("Clear Responses")."</a><br /><br />\n";
+			$completed = "<br /><strong><font size='2' color='red'>".$clang->gT("Did Not Save")."</font></strong><br /><br />\n\n";
+			$completed .= $clang->gT("Your survey responses have not been recorded. This survey is not yet active.")."<br /><br />\n";
+			$completed .= "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
 		}
 		else
 		{
@@ -169,10 +169,10 @@ if (isset($_POST['move']) && $_POST['move'] == " "._("submit")." ")
 			}
 
 			$completed = "<br /><font size='2'><font color='green'><strong>"
-			._("Thank you")."</strong></font><br /><br />\n\n"
-			. _("Your survey responses have been recorded.")."<br />\n"
+			.$clang->gT("Thank you")."</strong></font><br /><br />\n\n"
+			. $clang->gT("Your survey responses have been recorded.")."<br />\n"
 			. "<a href='javascript:window.close()'>"
-			._("Close this Window")."</a></font><br /><br />\n";
+			.$clang->gT("Close this Window")."</a></font><br /><br />\n";
 
 			//Update the token if needed and send a confirmation email
 			if (isset($_POST['token']) && $_POST['token'])
@@ -221,7 +221,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._("submit")." ")
 }
 
 //LAST PHASE ###########################################################################
-if (isset($_POST['move']) && $_POST['move'] == " "._("last")." " && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
+if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." " && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
 {
 	//READ TEMPLATES, INSERT DATA AND PRESENT PAGE
 	sendcacheheaders();
@@ -293,7 +293,7 @@ if ($surveyexists <1)
 		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
 	echo "\t<center><br />\n";
-	echo "\t"._("Sorry. There is no matching survey.")."<br />&nbsp;\n";
+	echo "\t".$clang->gT("Sorry. There is no matching survey.")."<br />&nbsp;\n";
 //	foreach(file("$thistpl/endpage.pstpl") as $op)
 //	{
 //		echo templatereplace($op);
@@ -334,7 +334,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 
 	if ($thissurvey['active'] != "Y")
 	{
-		echo "\t\t<center><font color='red' size='2'>"._("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
+		echo "\t\t<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
 	}
 	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
 	echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
@@ -714,7 +714,7 @@ echo "\n";
 
 if ($thissurvey['active'] != "Y")
 {
-	echo "\t\t<center><font color='red' size='2'>"._("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
+	echo "\t\t<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
 }
 
 

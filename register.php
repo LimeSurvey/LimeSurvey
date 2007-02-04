@@ -55,7 +55,7 @@ GetBaseLanguageFromSurveyID($surveyid);
 //Check that the email is a valid style address
 if (!validate_email(returnglobal('register_email')))
 {
-	$register_errormsg=_("The email you used is not valid. Please try again.");
+	$register_errormsg=$clang->gT("The email you used is not valid. Please try again.");
 	include "index.php";
 	exit;
 }
@@ -66,7 +66,7 @@ $query = "SELECT email FROM {$dbprefix}tokens_$surveyid\n"
 $result = $connect->Execute($query) or die ($query."<br />".htmlspecialchars($connect->ErrorMsg()));
 if (($result->RecordCount()) > 0)
 {
-	$register_errormsg=_("The email you used has already been registered.");
+	$register_errormsg=$clang->gT("The email you used has already been registered.");
 	include "index.php";
 	exit;
 }
@@ -132,9 +132,9 @@ if (MailtextMessage($message, $subject, returnglobal('register_email'), $from, $
 	$query = "UPDATE {$dbprefix}tokens_$surveyid\n"
 	."SET sent='$today' WHERE tid=$tid";
 	$result=$connect->Execute($query) or die ("$query<br />".htmlspecialchars($connect->ErrorMsg()));
-	$html="<center>"._("Thank you for registering to participate in this survey.<br /><br />\nAn email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.<br /><br />\nSurvey Administrator {ADMINNAME} ({ADMINEMAIL})");
+	$html="<center>".$clang->gT("Thank you for registering to participate in this survey.<br /><br />\nAn email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.<br /><br />\nSurvey Administrator {ADMINNAME} ({ADMINEMAIL})");
 	$html=Replacefields($html, $fieldsarray);
-	$html .= "<br /><br />\n<input type='submit' onclick='javascript: self.close()' value='"._("Close this Window")."'></center>\n";
+	$html .= "<br /><br />\n<input type='submit' onclick='javascript: self.close()' value='".$clang->gT("Close this Window")."'></center>\n";
 }
 else
 {

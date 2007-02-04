@@ -45,15 +45,15 @@ if (!isset($_SESSION['step'])) {$_SESSION['step'] = 0;}
 if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
 if (!isset($_POST['thisstep'])) {$_POST['thisstep'] = "";}
 
-if (isset($_POST['move']) && $_POST['move'] == " << "._("prev")." ") {$_SESSION['step'] = $_POST['thisstep']-1;}
-if (isset($_POST['move']) && $_POST['move'] == " "._("next")." >> ") {$_SESSION['step'] = $_POST['thisstep']+1;}
-if (isset($_POST['move']) && $_POST['move'] == " "._("last")." ") {$_SESSION['step'] = $_POST['thisstep']+1;}
+if (isset($_POST['move']) && $_POST['move'] == " << ".$clang->gT("prev")." ") {$_SESSION['step'] = $_POST['thisstep']-1;}
+if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("next")." >> ") {$_SESSION['step'] = $_POST['thisstep']+1;}
+if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." ") {$_SESSION['step'] = $_POST['thisstep']+1;}
 
 // --> START NEW FEATURE - SAVE
 // If on SUBMIT page and select SAVE SO FAR it will return to SUBMIT page
 if ($_SESSION['step'] > $_SESSION['totalsteps'])
 {
-	$_POST['move'] = " "._("last")." ";
+	$_POST['move'] = " ".$clang->gT("last")." ";
 }
 // <-- END NEW FEATURE - SAVE
 
@@ -66,7 +66,7 @@ $notanswered=addtoarray_single(checkmandatorys(),checkconditionalmandatorys());
 $notvalidated=checkpregs();
 
 //SUBMIT
-if ((isset($_POST['move']) && $_POST['move'] == " "._("submit")." ") && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
+if ((isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("submit")." ") && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
 {
 	if ($thissurvey['private'] == "Y")
 	{
@@ -110,9 +110,9 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._("submit")." ") && (!isset(
 			echo templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
 		}
 
-		$completed = "<br /><strong><font size='2' color='red'>"._("Did Not Save")."</strong></font><br /><br />\n\n"
-		. _("Your survey responses have not been recorded. This survey is not yet active.")."<br /><br />\n"
-		. "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall'>"._("Clear Responses")."</a><br /><br />\n"
+		$completed = "<br /><strong><font size='2' color='red'>".$clang->gT("Did Not Save")."</strong></font><br /><br />\n\n"
+		. $clang->gT("Your survey responses have not been recorded. This survey is not yet active.")."<br /><br />\n"
+		. "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n"
 		. "<font size='1'>$subquery</font>\n";
 	}
 	else
@@ -146,10 +146,10 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._("submit")." ") && (!isset(
 
 		//Create text for use in later print section
 		$completed = "<br /><strong><font size='2'><font color='green'>"
-		. _("Thank you")."</strong></font><br /><br />\n\n"
-		. _("Your survey responses have been recorded.")."<br />\n"
+		. $clang->gT("Thank you")."</strong></font><br /><br />\n\n"
+		. $clang->gT("Your survey responses have been recorded.")."<br />\n"
 		. "<a href='javascript:window.close()'>"
-		. _("Close this Window")."</a></font><br /><br />\n";
+		. $clang->gT("Close this Window")."</a></font><br /><br />\n";
 
 		//Update the token if needed and send a confirmation email
 		if (isset($_POST['token']) && $_POST['token'])
@@ -196,7 +196,7 @@ if ((isset($_POST['move']) && $_POST['move'] == " "._("submit")." ") && (!isset(
 }
 
 //LAST PHASE
-if (isset($_POST['move']) && $_POST['move'] == " "._("last")." " && (!isset($notanswered) && !$notanswered) && (!isset($notvalidated) && !$notvalidated))
+if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." " && (!isset($notanswered) && !$notanswered) && (!isset($notvalidated) && !$notvalidated))
 {
 	//READ TEMPLATES, INSERT DATA AND PRESENT PAGE
 	sendcacheheaders();
@@ -256,7 +256,7 @@ if ($surveyexists <1)
 //	}
 	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 	echo "\t<center><br />\n"
-	."\t"._("Sorry. There is no matching survey.")."<br />&nbsp;\n";
+	."\t".$clang->gT("Sorry. There is no matching survey.")."<br />&nbsp;\n";
 //	foreach(file("$thistpl/endpage.pstpl") as $op)
 //	{
 //		echo templatereplace($op);
@@ -296,7 +296,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
 	if ($thissurvey['active'] != "Y")
 	{
-		echo "\t\t<center><font color='red' size='2'>"._("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
+		echo "\t\t<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
 	}
 	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid'>\n";
 	echo "\n<input type='hidden' name='token' value='$token' id='token'>\n";
@@ -593,7 +593,7 @@ echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
 echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
 echo "\n";
 
-if ($thissurvey['active'] != "Y") {echo "\t\t<center><font color='red' size='2'>"._("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";}
+if ($thissurvey['active'] != "Y") {echo "\t\t<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";}
 
 
 if (is_array($conditions)) //if conditions exist, create hidden inputs for previously answered questions
