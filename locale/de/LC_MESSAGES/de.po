@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-02-02 22:50+0100\n"
+"PO-Revision-Date: 2007-02-04 00:19+0100\n"
 "Last-Translator: \n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1346,6 +1346,9 @@ msgstr "Umfrage-Sicherheitseinstellungen"
 msgid "Do Survey"
 msgstr "Umfrage ausführen/testen"
 
+msgid "Please select a language:"
+msgstr "Bitte wählen Sie eine Sprache aus:"
+
 msgid "Edit Current Survey"
 msgstr "Diese Umfrage bearbeiten"
 
@@ -2607,6 +2610,13 @@ msgstr "Wenn Sie Tokens initialisieren für diese Umfrage, wird die Umfrage nur 
 msgid "Do you want to create a tokens table for this survey?"
 msgstr "Möchten Sie eine Probandentabelle mit Zugangsschlüsseln für diese Umfrage erstellen?"
 
+msgid "The following old token tables could be restored:"
+msgstr "Die folgenden alten Zugangsschlüssel-Tabelle können wiederhergestellt werden:"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:3214
+msgid "Restore"
+msgstr "Wiederherstellen"
+
 msgid "Display Tokens"
 msgstr "Zeige Probanden an"
 
@@ -2798,6 +2808,9 @@ msgstr "Proband hinzufügen oder bearbeiten"
 msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
 msgstr "Sie können dieses Feld leer lassen und automatisch eindeutige Zugangsschlüssel generieren lassen mit 'Generiere eindeutige Zugangsschlüssel'"
 
+msgid "Add Token"
+msgstr "Zugangschlüssel hinzufügen"
+
 msgid "Updated Token"
 msgstr "Proband aktualisiert"
 
@@ -2819,7 +2832,7 @@ msgstr "LDAP Einträge hochladen"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1246
 msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
-msgstr ""
+msgstr "LDAP Abfragen werden durch den Administrator in der Datei config-ldap.php definiert"
 
 msgid "Upload file not found. Check your permissions and path for the upload directory"
 msgstr "Hochgeladene Datei nicht gefunden. überprüfen Sie Ihre Berechtigung und den Pfad des Upload-Verzeichnisses."
@@ -2842,11 +2855,11 @@ msgstr ""
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1420
 msgid "Can't connect to the Ldap directory"
-msgstr ""
+msgstr "Mit dem LDAP Verzeichnis konnte nicht verbunden werden"
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1464
-msgid "Ldap disabled or no LDAP query defined."
-msgstr ""
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1461
+msgid "LDAP is disabled or no LDAP query defined."
+msgstr "LDAP is deaktiviert oder keine LDAP Abfrage definiert."
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1471
 msgid "Select the Ldap query you want:"

@@ -41,8 +41,8 @@ if ($enableLdap)
     {
 	require_once(dirname(__FILE__).'/../config-ldap.php');
     }
-if (!isset($action)) {$action=returnglobal('action');}
-if (!isset($subaction)) {$subaction=returnglobal('subaction');}
+//if (!isset($action)) {$action=returnglobal('action');}
+//if (!isset($subaction)) {$subaction=returnglobal('subaction');}
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($order)) {$order=returnglobal('order');}
 if (!isset($limit)) {$limit=returnglobal('limit');}
@@ -235,14 +235,14 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 			."</font></td></tr>\n"
 			."<tr>\n"
 			."<td bgcolor='#DDDDDD' align='center'><form method='post' >\n"
-			."The following old token tables could be restored:<br />\n"
+			._("The following old token tables could be restored:")."<br />\n"
 			."<select size='4' name='oldtable'>\n";
 			foreach($oldlist as $ol)
 			{
 				$tokenoutput .= "<option>".$ol."</option>\n";
 			}
 			$tokenoutput .= "</select><br />\n"
-			."<input type='submit' value='Restore'>\n"
+			."<input type='submit' value='"._("Restore")."'>\n"
 			."<input type='hidden' name='restoretable' value='Y'>\n"
 			."<input type='hidden' name='sid' value='$surveyid'>\n"
 			."</form></td>\n"
@@ -453,11 +453,11 @@ if ($subaction == "browse" || $subaction == "search")
 	."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 	."\t\t\t\n"
 	."\t\t\t<table align='left' cellpadding='0' cellspacing='0' border='0'>\n"
-	."\t\t\t\t<tr><td><form method='post' action='$homeurl/tokens.php'>\n"
+	."\t\t\t\t<tr><td><form method='post' action='$scriptname?action=tokens'>\n"
 	."\t\t\t\t\t<input type='text' name='searchstring' value='$searchstring'>\n"
 	."\t\t\t\t\t<input type='submit' value='"._("Search")."'>\n"
 	."\t\t\t\t<input type='hidden' name='order' value='$order'>\n"
-	."\t\t\t\t<input type='hidden' $subaction value='search'>\n"
+	."\t\t\t\t<input type='hidden' name='subaction' value='search'>\n"
 	."\t\t\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
 	."\t\t\t\t</form></td>\n"
 	."\t\t\t</tr></table>\n"
@@ -1051,6 +1051,7 @@ if ($subaction == "edit" || $subaction == "addnew")
 		$edresult = $connect->Execute($edquery);
 		$edfieldcount = $edresult->FieldCount();
 	}
+	
 	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 	._("Add or Edit Token")."</strong></font></td></tr>\n"
 	."\t<tr><td align='center'>\n"
@@ -1058,7 +1059,10 @@ if ($subaction == "edit" || $subaction == "addnew")
 	."<table width='100%' bgcolor='#CCCCCC' align='center'>\n"
 	."<tr>\n"
 	."\t<td align='right' width='20%'><strong>ID:</strong></font></td>\n"
-	."\t<td bgcolor='#EEEEEE'>{}Auto</font></td>\n"
+	."\t<td bgcolor='#EEEEEE'>";
+	if ($subaction == "edit")
+	{$tokenoutput .=$_GET['tid'];} else {$tokenoutput .="Auto";} 
+    $tokenoutput .= "</font></td>\n"
 	."</tr>\n"
 	."<tr>\n"
 	."\t<td align='right' width='20%'><strong>"._("First Name").":</strong></font></td>\n"
@@ -1093,7 +1097,10 @@ if ($subaction == "edit" || $subaction == "addnew")
 ."<tr>\n"
 	."\t<td align='right' width='20%'><strong>"._("Language").":</strong></font></td>\n"
 	."\t<td bgcolor='#EEEEEE'>";
-	$tokenoutput .= languageDropdownClean($surveyid,GetBaseLanguageFromSurveyID($surveyid));
+	if (isset($language)) {$tokenoutput .= languageDropdownClean($surveyid,$language);}
+    else {
+	       $tokenoutput .= languageDropdownClean($surveyid,GetBaseLanguageFromSurveyID($surveyid));
+	     }
 	$tokenoutput .= "</font></td>\n"
 	."</tr>\n"
 
@@ -1138,7 +1145,7 @@ if ($subaction == "edit" || $subaction == "addnew")
 	switch($subaction)
 	{
 		case "edit":
-		$tokenoutput .= "\t\t<input type='submit' value='"._("Update")."'>\n"
+		$tokenoutput .= "\t\t<input type='submit' value='"._("Update Token")."'>\n"
 		               ."\t\t<input type='hidden' name='subaction' value='updatetoken'>\n"
 		               ."\t\t<input type='hidden' name='tid' value='{$_GET['tid']}'>\n";
 		break;
@@ -1436,11 +1443,11 @@ $tokenoutput .= helpscreen()
 
 function form($error=false)
 {
-	global $surveyid, $tokenoutput;
+	global $surveyid, $tokenoutput,$scriptname;
 
 	if ($error) {$tokenoutput .= $error . "<br /><br />\n";}
 
-	$tokenoutput .= "<form enctype='multipart/form-data' action='" . $_SERVER['PHP_SELF'] . "' method='post'>\n"
+	$tokenoutput .= "<form enctype='multipart/form-data' action='$scriptname?action=tokens' method='post'>\n"
 	. "<input type='hidden' name='subaction' value='upload' />\n"
 	. "<input type='hidden' name='sid' value='$surveyid' />\n"
 	. "Upload a file<br />\n"

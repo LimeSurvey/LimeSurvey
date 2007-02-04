@@ -44,6 +44,7 @@ if (!isset($qid)) {$qid=returnglobal('qid');}            //QuestionID
 if (!isset($lid)) {$lid=returnglobal('lid');}            //LabelID
 if (!isset($code)) {$code=returnglobal('code');}         // ??
 if (!isset($action)) {$action=returnglobal('action');}   //Desired action
+if (!isset($subaction)) {$subaction=returnglobal('subaction');}//Desired sibaction
 if (!isset($ok)) {$ok=returnglobal('ok');}               // ??
 if (!isset($fp)) {$fp=returnglobal('filev');}                 //??
 if (!isset($elem)) {$elem=returnglobal('elem');}              //??
@@ -174,8 +175,8 @@ if(isset($_SESSION['loginID']) && $action!='login')
       $action=="editsurvey" || $action=="updatesurvey" || $action=="ordergroups" || $action=="addusertogroup" ||
       $action=="uploadf" || $action=="newsurvey" || $action=="listsurveys" ||
       $action=="addgroup" || $action=="editgroup" || $action=="surveyrights" ) include("html.php");
-
-  if (!isset($printablesurveyoutput))   // For a few actions we dont want to have the header
+// echo $action.$subaction;
+  if (!isset($printablesurveyoutput) && $subaction!='export' )   // For a few actions we dont want to have the header
     {  
     if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
     $adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput;  // Alle future output is written into this and then outputted at the end of file
@@ -233,7 +234,7 @@ if(isset($_SESSION['loginID']) && $action!='login')
   
   
   
-  if (!isset($printablesurveyoutput))
+  if (!isset($printablesurveyoutput) && $subaction!='export')
   {  
   $adminoutput.= "\t\t</td>\n".helpscreen()
               . "\t</tr>\n"
