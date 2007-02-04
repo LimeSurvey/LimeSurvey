@@ -35,11 +35,11 @@
 */
 require_once(dirname(__FILE__).'/../config.php');
 
-$action = returnglobal('action');
 $surveyid = returnglobal('sid');
 $id = returnglobal('id');
 $saver['scid']=returnglobal('save_scid');
 $surveytable = "{$dbprefix}survey_$surveyid";
+$dataentryoutput ='';
 
 include_once("login_check.php");
 
@@ -52,8 +52,8 @@ if($actsurrows['browse_response']){
 	$surveyoptions = browsemenubar();
 	if (!$database_exists)
 	{
-		//echo "</table>\n";
-		echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		//$dataentryoutput .= "</table>\n";
+		$dataentryoutput .= "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		.$clang->gT("Data Entry")."</strong></font></td></tr>\n"
 		."\t<tr  bgcolor='#CCCCCC'><td align='center'>$setfont\n"
@@ -64,12 +64,12 @@ if($actsurrows['browse_response']){
 		.$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"></font><br />\n"
 		."</td></tr></table>\n"
 		."</body>\n";
-		exit;
+		return;
 	}
-	if (!$surveyid && !$action)
+	if (!$surveyid && !$subaction)
 	{
-		//echo "</table>\n";
-		echo "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		//$dataentryoutput .= "</table>\n";
+		$dataentryoutput .= "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		.$clang->gT("Data Entry")."</strong></font></td></tr>\n"
 		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
@@ -77,19 +77,18 @@ if($actsurrows['browse_response']){
 		.$clang->gT("You have not selected a survey for data-entry.")."<br /><br />\n"
 		."<input type='submit' value='"
 		.$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
-		."</font></td></tr></table>\n"
-		."</body>\n";
-		exit;
+		."</font></td></tr></table>\n";
+		return;
 	}
 	
-	if ($action == "edit" || $action == "" || $action == "editsaved")
+	if ($subaction == "edit" || $subaction == "" || $subaction == "editsaved")
 	{
 		GetBaseLanguageFromSurveyID($surveyid);
 	}
 	
-	if ($action == "insert")
+	if ($subaction == "insert")
 	{
-		echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		$dataentryoutput .= "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		.$clang->gT("Data Entry")."</strong></font></td></tr>\n"
 		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
@@ -129,9 +128,9 @@ if($actsurrows['browse_response']){
 			}
 			if ($errormsg)
 			{
-				echo $errormsg;
-				echo "Try again:<br />
-					   <form method='post'>
+				$dataentryoutput .= $errormsg;
+				$dataentryoutput .= "Try again:<br />
+    				 <form method='post'>
 					  <table class='outlinetable' cellspacing='0' align='center'>
 					  <tr>
 					   <td align='right'>".$clang->gT("Identifier:")."</td>
@@ -146,22 +145,22 @@ if($actsurrows['browse_response']){
 				{
 					if (substr($key, 0, 4) != "save" && $key != "action" && $key != "surveytable" && $key !="sid" && $key != "datestamp" && $key !="ipaddr")
 					{
-						echo "<input type='hidden' name='$key' value='$val'>\n";
+						$dataentryoutput .= "<input type='hidden' name='$key' value='$val'>\n";
 					}
 				}
-				echo "</td></tr><tr><td></td><td><input type='submit' value='".$clang->gT("submit")."'>
+				$dataentryoutput .= "</td></tr><tr><td></td><td><input type='submit' value='".$clang->gT("submit")."'>
 					 <input type='hidden' name='sid' value='$surveyid'>
 					 <input type='hidden' name='surveytable' value='".$_POST['surveytable']."'>
-					 <input type='hidden' name='action' value='".$_POST['action']."'>
+					 <input type='hidden' name='subaction' value='".$_POST['action']."'>
 					 <input type='hidden' name='save' value='on'></td>";
 				if (isset($_POST['datestamp']))
 				{
-					echo "<input type='hidden' name='datestamp' value='".$_POST['datestamp']."'>\n";
+					$dataentryoutput .= "<input type='hidden' name='datestamp' value='".$_POST['datestamp']."'>\n";
 				}
 				if (isset($_POST['ipaddr']))
 				{
-					echo "<input type='hidden' name='ipaddr' value='".$_POST['ipaddr']."'>\n";
-				}echo "</table></form>\n";
+					$dataentryoutput .= "<input type='hidden' name='ipaddr' value='".$_POST['ipaddr']."'>\n";
+				}$dataentryoutput .= "</table></form>\n";
 			}
 			else
 			{
@@ -203,7 +202,7 @@ if($actsurrows['browse_response']){
 								."'".$key."',\n"
 								."NULL,\n"
 								."'".$val."')\n";
-								//echo "$insert<br />\n";
+								//$dataentryoutput .= "$insert<br />\n";
 								if (!$result=$connect->Execute($insert))
 								{
 									$failed=1;
@@ -213,7 +212,7 @@ if($actsurrows['browse_response']){
 					}
 					if (!isset($failed) || $failed < 1)
 					{
-						echo "<font color='green'>".$clang->gT("Your survey responses have been saved succesfully")."</font><br />\n";
+						$dataentryoutput .= "<font color='green'>".$clang->gT("Your survey responses have been saved succesfully")."</font><br />\n";
 						if ($saver['email'])
 						{
 							//Send email
@@ -231,19 +230,19 @@ if($actsurrows['browse_response']){
 								if (MailTextMessage($message, $subject, $saver['email'], $from, $sitename))
 								{
 									$emailsent="Y";
-									echo "<font color='green'>".$clang->gT("An email has been sent with details about your saved survey")."</font><br />\n";
+									$dataentryoutput .= "<font color='green'>".$clang->gT("An email has been sent with details about your saved survey")."</font><br />\n";
 								}
 							}
 						}
 					}
 					else
 					{
-						echo "<font color='red'>".$clang->gT("An error occurred and your survey responses were not saved.")."</font><br />\n<pre>$insert</pre>".htmlspecialchars($connect->ErrorMsg())."<br />\n";
+						$dataentryoutput .= "<font color='red'>".$clang->gT("An error occurred and your survey responses were not saved.")."</font><br />\n<pre>$insert</pre>".htmlspecialchars($connect->ErrorMsg())."<br />\n";
 					}
 				}
 				else
 				{
-					echo "ERROR: $insert1<br />".htmlspecialchars($connect->ErrorMsg());
+					$dataentryoutput .= "ERROR: $insert1<br />".htmlspecialchars($connect->ErrorMsg());
 				}
 			}
 		}
@@ -334,13 +333,13 @@ if($actsurrows['browse_response']){
 				$col_name .= ", ipaddr\n";
 				$insertqr .= ", '{$_POST['ipaddr']}'";
 			}
-			//		echo "\t\t\t<strong>Inserting data</strong><br />\n"
+			//		$dataentryoutput .= "\t\t\t<strong>Inserting data</strong><br />\n"
 			//			."SID: $surveyid, ($surveytable)<br /><br />\n";
 			$SQL = "INSERT INTO $surveytable
 					($col_name)
 					VALUES 
 					($insertqr)";
-			//echo $SQL; //Debugging line
+			//$dataentryoutput .= $SQL; //Debugging line
 			$iinsert = $connect->Execute($SQL) or die ("Could not insert your data:<br />$SQL<br />\n" . htmlspecialchars($connect->ErrorMsg()) . "\n<pre style='text-align: left'>$SQL</pre>\n</body>\n");
 			if (returnglobal('redo')=="yes")
 			{
@@ -356,52 +355,52 @@ if($actsurrows['browse_response']){
 				}
 				else
 				{
-					echo "Couldn't delete saved data<br />$dquery<br />".htmlspecialchars($connect->ErrorMsg());
+					$dataentryoutput .= "Couldn't delete saved data<br />$dquery<br />".htmlspecialchars($connect->ErrorMsg());
 				}
 			}
-			echo "\t\t\t<font color='green'><strong>".$clang->gT("Success")."</strong></font><br />\n";
+			$dataentryoutput .= "\t\t\t<font color='green'><strong>".$clang->gT("Success")."</strong></font><br />\n";
 	
 			$fquery = "SELECT id FROM $surveytable ORDER BY id DESC LIMIT 1";
 			$fresult = db_execute_assoc($fquery);
 			while ($frow = $fresult->FetchRow())
 			{
-				echo "\t\t\t".$clang->gT("The entry was assigned the following record id: ")." {$frow['id']}<br />\n";
+				$dataentryoutput .= "\t\t\t".$clang->gT("The entry was assigned the following record id: ")." {$frow['id']}<br />\n";
 				$thisid=$frow['id'];
 			}
 		}
 	
 	
-		echo "\t\t\t</font><br />[<a href='dataentry.php?sid=$surveyid'>".$clang->gT("Add Another Record")."</a>]<br />\n";
-		echo "[<a href='$scriptname?sid=$surveyid'>".$clang->gT("Return to Survey Administration")."</a><br />\n";
+		$dataentryoutput .= "\t\t\t</font><br />[<a href='$scriptname?action=dataentry&amp;sid=$surveyid'>".$clang->gT("Add Another Record")."</a>]<br />\n";
+		$dataentryoutput .= "[<a href='$scriptname?sid=$surveyid'>".$clang->gT("Return to Survey Administration")."</a><br />\n";
 		if (isset($thisid))
 		{
-			echo "\t\t\t[<a href='browse.php?sid=$surveyid&action=id&id=$thisid'>".$clang->gT("View This Record")."</a>]<br />\n";
+			$dataentryoutput .= "\t\t\t[<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$thisid'>".$clang->gT("View This Record")."</a>]<br />\n";
 		}
 		if (isset($_POST['save']) && $_POST['save'] == "on")
 		{
-			echo "\t\t\t[<a href='saved.php?sid=$surveyid&action=all'>".$clang->gT("Browse Saved Responses")."</a>]<br />\n";
+			$dataentryoutput .= "\t\t\t[<a href='saved.php?sid=$surveyid&action=all'>".$clang->gT("Browse Saved Responses")."</a>]<br />\n";
 		}
-		echo "\t\t\t[<a href='browse.php?sid=$surveyid&action=all&limit=50'>".$clang->gT("Browse Responses")."</a>]<br />\n"
+		$dataentryoutput .= "\t\t\t[<a href='$scriptname?action=browse&amp;sid=$surveyid&subaction=all&limit=50'>".$clang->gT("Browse Responses")."</a>]<br />\n"
 		."\t</td></tr>\n"
 		."</table>\n"
 		."</body>\n";
 	
 	}
 	
-	elseif ($action == "edit" || $action == "editsaved")
+	elseif ($subaction == "edit" || $subaction == "editsaved")
 	{
-		echo "<table width='99%' align='center' style='margin: 3px 6px; border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		$dataentryoutput .= "<table width='99%' align='center' style='margin: 3px 6px; border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		.$clang->gT("Browse Responses")."</strong></font></td></tr>\n";
-		if (isset($surveyheader)) {echo $surveyheader;}
-		echo $surveyoptions
+		if (isset($surveyheader)) {$dataentryoutput .= $surveyheader;}
+		$dataentryoutput .= $surveyoptions
 		."</table>\n";
 	
 		//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
 		$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$surveyid'";
 		$fnresult = db_execute_assoc($fnquery);
 		$fncount = $fnresult->RecordCount();
-		//echo "$fnquery<br /><br />\n";
+		//$dataentryoutput .= "$fnquery<br /><br />\n";
 		$arows = array(); //Create an empty array in case FetchRow does not return any rows
 		while ($fnrow = $fnresult->FetchRow())
 		{
@@ -487,15 +486,15 @@ if($actsurrows['browse_response']){
 	
 		//	foreach ($fnames as $fnm)
 		//		{
-		//echo "<!-- DEBUG FNAMES: $fnm[0], $fnm[1], $fnm[2], $fnm[3], $fnm[4], $fnm[5], $fnm[6]";
-		//if (isset($fnm[7])){echo $fnm[7];}
-		//echo ",";
-		//if (isset($fnm[8])) {echo $fnm[8];}
-		//echo " -->\n";
+		//$dataentryoutput .= "<!-- DEBUG FNAMES: $fnm[0], $fnm[1], $fnm[2], $fnm[3], $fnm[4], $fnm[5], $fnm[6]";
+		//if (isset($fnm[7])){$dataentryoutput .= $fnm[7];}
+		//$dataentryoutput .= ",";
+		//if (isset($fnm[8])) {$dataentryoutput .= $fnm[8];}
+		//$dataentryoutput .= " -->\n";
 		//		}
 	
 		//SHOW INDIVIDUAL RECORD
-		if ($action == "edit")
+		if ($subaction == "edit")
 		{
 			$idquery = "SELECT * FROM $surveytable WHERE id=$id";
 			$idresult = db_execute_assoc($idquery) or die ("Couldn't get individual record<br />$idquery<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -504,7 +503,7 @@ if($actsurrows['browse_response']){
 				$results[]=$idrow;
 			}
 		}
-		elseif ($action == "editsaved")
+		elseif ($subaction == "editsaved")
 		{
 			if (isset($_GET['public']) && $_GET['public']=="true")
 			{
@@ -548,9 +547,9 @@ if($actsurrows['browse_response']){
 			$results1['ipaddr']=$saver['ip'];
 			$results[]=$results1;
 		}
-		//	echo "<pre>";print_r($results);echo "</pre>";
+		//	$dataentryoutput .= "<pre>";print_r($results);$dataentryoutput .= "</pre>";
 	
-		echo "<form method='post' action='dataentry.php' name='editsurvey' id='editsurvey'>\n"
+		$dataentryoutput .= "<form method='post' action='$scriptname?action=dataentry' name='editsurvey' id='editsurvey'>\n"
 		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		.$clang->gT("Data Entry")."</strong></font></td></tr>\n"
@@ -560,60 +559,60 @@ if($actsurrows['browse_response']){
 	
 		foreach ($results as $idrow)
 		{
-			//echo "<pre>"; print_r($idrow);echo "</pre>";
+			//$dataentryoutput .= "<pre>"; print_r($idrow);$dataentryoutput .= "</pre>";
 			for ($i=0; $i<$nfncount+1; $i++)
 			{
-				//echo "<pre>"; print_r($fnames[$i]);echo "</pre>";
+				//$dataentryoutput .= "<pre>"; print_r($fnames[$i]);$dataentryoutput .= "</pre>";
 				$answer = $idrow[$fnames[$i][0]];
 				$question=$fnames[$i][2];
-				echo "\t<tr>\n"
+				$dataentryoutput .= "\t<tr>\n"
 				."\t\t<td bgcolor='#EEEEEE' valign='top' align='right' width='25%'>$setfont"
 				."\n";
-				echo "\t\t\t<strong>{$fnames[$i][2]}</strong>\n";
-				echo "\t\t</font></td>\n"
+				$dataentryoutput .= "\t\t\t<strong>{$fnames[$i][2]}</strong>\n";
+				$dataentryoutput .= "\t\t</font></td>\n"
 				."\t\t<td valign='top'>\n";
-				//echo "\t\t\t-={$fnames[$i][3]}=-"; //Debugging info
+				//$dataentryoutput .= "\t\t\t-={$fnames[$i][3]}=-"; //Debugging info
 				switch ($fnames[$i][3])
 				{
 					case "X": //Boilerplate question
-					echo "";
+					$dataentryoutput .= "";
 					break;
 					case "Q":
-					echo "\t\t\t{$fnames[$i][6]}&nbsp;<input type='text' name='{$fnames[$i][0]}' value='"
+					$dataentryoutput .= "\t\t\t{$fnames[$i][6]}&nbsp;<input type='text' name='{$fnames[$i][0]}' value='"
 					.$idrow[$fnames[$i][0]] . "'>\n";
 					break;
 					case "id":
-					echo "\t\t\t{$idrow[$fnames[$i][0]]} <font color='red' size='1'>".$clang->gT("Cannot be modified")."</font>\n";
+					$dataentryoutput .= "\t\t\t{$idrow[$fnames[$i][0]]} <font color='red' size='1'>".$clang->gT("Cannot be modified")."</font>\n";
 					break;
 					case "5": //5 POINT CHOICE radio-buttons
 					for ($x=1; $x<=5; $x++)
 					{
-						echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='$x'";
-						if ($idrow[$fnames[$i][0]] == $x) {echo " checked";}
-						echo " />$x \n";
+						$dataentryoutput .= "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='$x'";
+						if ($idrow[$fnames[$i][0]] == $x) {$dataentryoutput .= " checked";}
+						$dataentryoutput .= " />$x \n";
 					}
 					break;
 					case "D": //DATE
-					echo "\t\t\t<input type='text' size='10' name='{$fnames[$i][0]}' value='{$idrow[$fnames[$i][0]]}' />\n";
+					$dataentryoutput .= "\t\t\t<input type='text' size='10' name='{$fnames[$i][0]}' value='{$idrow[$fnames[$i][0]]}' />\n";
 					break;
 					case "G": //GENDER drop-down list
-					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n"
+					$dataentryoutput .= "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 					."\t\t\t\t<option value=''";
-					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
-					echo ">".$clang->gT("Please choose")."..</option>\n"
+					if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected";}
+					$dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n"
 					."\t\t\t\t<option value='F'";
-					if ($idrow[$fnames[$i][0]] == "F") {echo " selected";}
-					echo ">".$clang->gT("Female")."</option>\n"
+					if ($idrow[$fnames[$i][0]] == "F") {$dataentryoutput .= " selected";}
+					$dataentryoutput .= ">".$clang->gT("Female")."</option>\n"
 					."\t\t\t\t<option value='M'";
-					if ($idrow[$fnames[$i][0]] == "M") {echo " selected";}
-					echo ">".$clang->gT("Male")."</option>\n"
+					if ($idrow[$fnames[$i][0]] == "M") {$dataentryoutput .= " selected";}
+					$dataentryoutput .= ">".$clang->gT("Male")."</option>\n"
 					."\t\t\t</select>\n";
 					break;
 					case "W":
 					case "Z":
 					if (substr($fnames[$i][0], -5) == "other")
 					{
-						echo "\t\t\t$setfont<input type='text' name='{$fnames[$i][0]}' value='"
+						$dataentryoutput .= "\t\t\t$setfont<input type='text' name='{$fnames[$i][0]}' value='"
 						.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' /></font>\n";
 					}
 					else
@@ -622,16 +621,16 @@ if($actsurrows['browse_response']){
 						$lresult = db_execute_assoc($lquery);
 						//$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnames[$i][7]} ORDER BY sortorder, answer";
 						//$lresult = $connect->Execute($lquery);
-						echo "\t\t\t<select name='{$fnames[$i][0]}'>\n"
+						$dataentryoutput .= "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 						."\t\t\t\t<option value=''";
-						if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
-						echo ">".$clang->gT("Please choose")."..</option>\n";
+						if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected";}
+						$dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
 	
 						while ($llrow = $lresult->FetchRow())
 						{
-							echo "\t\t\t\t<option value='{$llrow['code']}'";
-							if ($idrow[$fnames[$i][0]] == $llrow['code']) {echo " selected";}
-							echo ">{$llrow['title']}</option>\n";
+							$dataentryoutput .= "\t\t\t\t<option value='{$llrow['code']}'";
+							if ($idrow[$fnames[$i][0]] == $llrow['code']) {$dataentryoutput .= " selected";}
+							$dataentryoutput .= ">{$llrow['title']}</option>\n";
 						}
 						$oquery="SELECT other FROM {$dbprefix}questions WHERE qid={$fnames[$i][7]}";
 						$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -641,34 +640,34 @@ if($actsurrows['browse_response']){
 						}
 						if ($fother =="Y")
 						{
-							echo "<option value='-oth-'";
-							if ($idrow[$fnames[$i][0]] == "-oth-"){echo " selected";}
-							echo ">".$clang->gT("Other")."</option>\n";
+							$dataentryoutput .= "<option value='-oth-'";
+							if ($idrow[$fnames[$i][0]] == "-oth-"){$dataentryoutput .= " selected";}
+							$dataentryoutput .= ">".$clang->gT("Other")."</option>\n";
 						}
-						echo "\t\t\t</select>\n";
+						$dataentryoutput .= "\t\t\t</select>\n";
 					}
 					break;
 					case "L": //LIST drop-down
 					case "!": //List (Radio)
 					if (substr($fnames[$i][0], -5) == "other")
 					{
-						echo "\t\t\t$setfont<input type='text' name='{$fnames[$i][0]}' value='"
+						$dataentryoutput .= "\t\t\t$setfont<input type='text' name='{$fnames[$i][0]}' value='"
 						.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' /></font>\n";
 					}
 					else
 					{
 						$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnames[$i][7]} ORDER BY sortorder, answer";
 						$lresult = db_execute_assoc($lquery);
-						echo "\t\t\t<select name='{$fnames[$i][0]}'>\n"
+						$dataentryoutput .= "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 						."\t\t\t\t<option value=''";
-						if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
-						echo ">".$clang->gT("Please choose")."..</option>\n";
+						if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected";}
+						$dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
 	
 						while ($llrow = $lresult->FetchRow())
 						{
-							echo "\t\t\t\t<option value='{$llrow['code']}'";
-							if ($idrow[$fnames[$i][0]] == $llrow['code']) {echo " selected";}
-							echo ">{$llrow['answer']}</option>\n";
+							$dataentryoutput .= "\t\t\t\t<option value='{$llrow['code']}'";
+							if ($idrow[$fnames[$i][0]] == $llrow['code']) {$dataentryoutput .= " selected";}
+							$dataentryoutput .= ">{$llrow['answer']}</option>\n";
 						}
 						$oquery="SELECT other FROM {$dbprefix}questions WHERE qid={$fnames[$i][7]}";
 						$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -678,29 +677,29 @@ if($actsurrows['browse_response']){
 						}
 						if ($fother =="Y")
 						{
-							echo "<option value='-oth-'";
-							if ($idrow[$fnames[$i][0]] == "-oth-"){echo " selected";}
-							echo ">".$clang->gT("Other")."</option>\n";
+							$dataentryoutput .= "<option value='-oth-'";
+							if ($idrow[$fnames[$i][0]] == "-oth-"){$dataentryoutput .= " selected";}
+							$dataentryoutput .= ">".$clang->gT("Other")."</option>\n";
 						}
-						echo "\t\t\t</select>\n";
+						$dataentryoutput .= "\t\t\t</select>\n";
 					}
 					break;
 					case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
 					$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnames[$i][7]} ORDER BY sortorder, answer";
 					$lresult = db_execute_assoc($lquery);
-					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n"
+					$dataentryoutput .= "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 					."\t\t\t\t<option value=''";
-					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
-					echo ">".$clang->gT("Please choose")."..</option>\n";
+					if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected";}
+					$dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
 	
 					while ($llrow = $lresult->FetchRow())
 					{
-						echo "\t\t\t\t<option value='{$llrow['code']}'";
-						if ($idrow[$fnames[$i][0]] == $llrow['code']) {echo " selected";}
-						echo ">{$llrow['answer']}</option>\n";
+						$dataentryoutput .= "\t\t\t\t<option value='{$llrow['code']}'";
+						if ($idrow[$fnames[$i][0]] == $llrow['code']) {$dataentryoutput .= " selected";}
+						$dataentryoutput .= ">{$llrow['answer']}</option>\n";
 					}
 					$i++;
-					echo "\t\t\t</select>\n"
+					$dataentryoutput .= "\t\t\t</select>\n"
 					."\t\t\t<br />\n"
 					."\t\t\t<textarea cols='45' rows='5' name='{$fnames[$i][0]}'>"
 					.htmlspecialchars($idrow[$fnames[$i][0]]) . "</textarea>\n";
@@ -721,7 +720,7 @@ if($actsurrows['browse_response']){
 					$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$thisqid ORDER BY sortorder, answer";
 					$ansresult = db_execute_assoc($ansquery);
 					$anscount = $ansresult->RecordCount();
-					echo "\t\t\t<script type='text/javascript'>\n"
+					$dataentryoutput .= "\t\t\t<script type='text/javascript'>\n"
 					."\t\t\t<!--\n"
 					."\t\t\t\tfunction rankthis_$thisqid(\$code, \$value)\n"
 					."\t\t\t\t\t{\n"
@@ -845,7 +844,7 @@ if($actsurrows['browse_response']){
 						}
 					}
 					$choicelist .= "\t\t\t\t\t\t</select>\n";
-					echo "\t\t\t<table align='left' border='0' cellspacing='5'>\n"
+					$dataentryoutput .= "\t\t\t<table align='left' border='0' cellspacing='5'>\n"
 					."\t\t\t\t<tr>\n"
 					."\t\t\t\t\t<td align='left' valign='top' width='200' style='border: solid 1 #111111' bgcolor='silver'>\n"
 					."\t\t\t\t\t\t$setfont<strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
@@ -861,8 +860,8 @@ if($actsurrows['browse_response']){
 					."\t\t\t</table>\n"
 					."\t\t\t<input type='hidden' name='multi' value='$anscount' />\n"
 					."\t\t\t<input type='hidden' name='lastfield' value='";
-					if (isset($multifields)) {echo $multifields;}
-					echo "' />\n";
+					if (isset($multifields)) {$dataentryoutput .= $multifields;}
+					$dataentryoutput .= "' />\n";
 					$choicelist="";
 					$ranklist="";
 					unset($answers);
@@ -883,17 +882,17 @@ if($actsurrows['browse_response']){
 					while ($fnames[$i][3] == "M" && $question != "" && $question == $fnames[$i][2])
 					{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
-						//echo substr($fnames[$i][0], strlen($fnames[$i][0])-5, 5)."<br />\n";
+						//$dataentryoutput .= substr($fnames[$i][0], strlen($fnames[$i][0])-5, 5)."<br />\n";
 						if (substr($fnames[$i][0], -5) == "other")
 						{
-							echo "\t\t\t$setfont<input type='text' name='{$fnames[$i][0]}' value='"
+							$dataentryoutput .= "\t\t\t$setfont<input type='text' name='{$fnames[$i][0]}' value='"
 							.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' /></font>\n";
 						}
 						else
 						{
-							echo "\t\t\t$setfont<input type='checkbox' name='{$fnames[$i][0]}' value='Y'";
-							if ($idrow[$fnames[$i][0]] == "Y") {echo " checked";}
-							echo " />{$fnames[$i][6]}</font><br />\n";
+							$dataentryoutput .= "\t\t\t$setfont<input type='checkbox' name='{$fnames[$i][0]}' value='Y'";
+							if ($idrow[$fnames[$i][0]] == "Y") {$dataentryoutput .= " checked";}
+							$dataentryoutput .= " />{$fnames[$i][6]}</font><br />\n";
 						}
 						if ($i<$nfncount)
 						{
@@ -912,9 +911,9 @@ if($actsurrows['browse_response']){
 					while ($fnames[$i][3] == "U" && $question != "" && $question == $fnames[$i][2])
 					{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
-						echo "\t\t\t$setfont<input type='checkbox' name='{$fnames[$i][0]}' value='Y'";
-						if ($idrow[$fnames[$i][0]] == "Y") {echo " checked";}
-						echo " />{$fnames[$i][6]}<br />\n";
+						$dataentryoutput .= "\t\t\t$setfont<input type='checkbox' name='{$fnames[$i][0]}' value='Y'";
+						if ($idrow[$fnames[$i][0]] == "Y") {$dataentryoutput .= " checked";}
+						$dataentryoutput .= " />{$fnames[$i][6]}<br />\n";
 						if ($i<$nfncount)
 						{
 							$i++;
@@ -931,212 +930,212 @@ if($actsurrows['browse_response']){
 					case "I": //FILE CSV ONE
 					$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnames[$i][7]} ORDER BY sortorder, answer";
 					$lresult = db_execute_assoc($lquery);
-					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n"
+					$dataentryoutput .= "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 					."\t\t\t\t<option value=''";
-					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
-					echo ">".$clang->gT("Please choose")."..</option>\n";
+					if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected";}
+					$dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
 	
 					while ($llrow = $lresult->FetchRow())
 					{
-						echo "\t\t\t\t<option value='{$llrow['code']}'";
-						if ($idrow[$fnames[$i][0]] == $llrow['code']) {echo " selected";}
-						echo ">{$llrow['answer']}</option>\n";
+						$dataentryoutput .= "\t\t\t\t<option value='{$llrow['code']}'";
+						if ($idrow[$fnames[$i][0]] == $llrow['code']) {$dataentryoutput .= " selected";}
+						$dataentryoutput .= ">{$llrow['answer']}</option>\n";
 					}
-					echo "\t\t\t</select>\n";
+					$dataentryoutput .= "\t\t\t</select>\n";
 					break;
 	
 					case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
-					echo "<table>\n";
+					$dataentryoutput .= "<table>\n";
 					while ($fnames[$i][3] == "P")
 					{
 						$thefieldname=$fnames[$i][0];
 						if (substr($thefieldname, -7) == "comment")
 						{
-							echo "\t\t<td>$setfont<input type='text' name='{$fnames[$i][0]}' size='50' value='"
+							$dataentryoutput .= "\t\t<td>$setfont<input type='text' name='{$fnames[$i][0]}' size='50' value='"
 							.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' /></font></td>\n"
 							."\t</tr>\n";
 						}
 						elseif (substr($fnames[$i][0], -5) == "other")
 						{
-							echo "\t<tr>\n"
+							$dataentryoutput .= "\t<tr>\n"
 							."\t\t<td>\n"
 							."\t\t\t<input type='text' name='{$fnames[$i][0]}' size='30' value='"
 							.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n"
 							."\t\t</td>\n"
 							."\t\t<td>\n";
 							$i++;
-							echo "\t\t\t<input type='text' name='{$fnames[$i][0]}' size='50' value='"
+							$dataentryoutput .= "\t\t\t<input type='text' name='{$fnames[$i][0]}' size='50' value='"
 							.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n"
 							."\t\t</td>\n"
 							."\t</tr>\n";
 						}
 						else
 						{
-							echo "\t<tr>\n"
+							$dataentryoutput .= "\t<tr>\n"
 							."\t\t<td>$setfont<input type='checkbox' name=\"{$fnames[$i][0]}\" value='Y'";
-							if ($idrow[$fnames[$i][0]] == "Y") {echo " checked";}
-							echo " />{$fnames[$i][6]}</font></td>\n";
+							if ($idrow[$fnames[$i][0]] == "Y") {$dataentryoutput .= " checked";}
+							$dataentryoutput .= " />{$fnames[$i][6]}</font></td>\n";
 						}
 						$i++;
 					}
-					echo "</table>\n";
+					$dataentryoutput .= "</table>\n";
 					$i--;
 					break;
 					case "N": //NUMERICAL TEXT
-					echo keycontroljs()
+					$dataentryoutput .= keycontroljs()
 					."\t\t\t<input type='text' name='{$fnames[$i][0]}' value='{$idrow[$fnames[$i][0]]}' "
 					."onKeyPress=\"return goodchars(event,'0123456789.,')\" />\n";
 					break;
 					case "S": //SHORT FREE TEXT
-					echo "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='"
+					$dataentryoutput .= "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='"
 					.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n";
 					break;
 					case "T": //LONG FREE TEXT
-					echo "\t\t\t<textarea rows='5' cols='45' name='{$fnames[$i][0]}'>"
+					$dataentryoutput .= "\t\t\t<textarea rows='5' cols='45' name='{$fnames[$i][0]}'>"
 					.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "</textarea>\n";
 					break;
 					case "U": //HUGE FREE TEXT
-					echo "\t\t\t<textarea rows='50' cols='70' name='{$fnames[$i][0]}'>"
+					$dataentryoutput .= "\t\t\t<textarea rows='50' cols='70' name='{$fnames[$i][0]}'>"
 					.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "</textarea>\n";
 					break;
 					case "Y": //YES/NO radio-buttons
-					echo "\t\t\t<select name='{$fnames[$i][0]}'>\n"
+					$dataentryoutput .= "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 					."\t\t\t\t<option value=''";
-					if ($idrow[$fnames[$i][0]] == "") {echo " selected";}
-					echo ">".$clang->gT("Please choose")."..</option>\n"
+					if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected";}
+					$dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n"
 					."\t\t\t\t<option value='Y'";
-					if ($idrow[$fnames[$i][0]] == "Y") {echo " selected";}
-					echo ">".$clang->gT("Yes")."</option>\n"
+					if ($idrow[$fnames[$i][0]] == "Y") {$dataentryoutput .= " selected";}
+					$dataentryoutput .= ">".$clang->gT("Yes")."</option>\n"
 					."\t\t\t\t<option value='N'";
-					if ($idrow[$fnames[$i][0]] == "N") {echo " selected";}
-					echo ">".$clang->gT("No")."</option>\n"
+					if ($idrow[$fnames[$i][0]] == "N") {$dataentryoutput .= " selected";}
+					$dataentryoutput .= ">".$clang->gT("No")."</option>\n"
 					."\t\t\t</select>\n";
 					break;
 					case "A": //ARRAY (5 POINT CHOICE) radio-buttons
-					echo "<table>\n";
+					$dataentryoutput .= "<table>\n";
 					$thisqid=$fnames[$i][7];
 					while ($fnames[$i][7] == $thisqid)
 					{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
-						echo "\t<tr>\n"
+						$dataentryoutput .= "\t<tr>\n"
 						."\t\t<td align='right'>$setfont{$fnames[$i][6]}</font></td>\n"
 						."\t\t<td>$setfont\n";
 						for ($j=1; $j<=5; $j++)
 						{
-							echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='$j'";
-							if ($idrow[$fnames[$i][0]] == $j) {echo " checked";}
-							echo " />$j&nbsp;\n";
+							$dataentryoutput .= "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='$j'";
+							if ($idrow[$fnames[$i][0]] == $j) {$dataentryoutput .= " checked";}
+							$dataentryoutput .= " />$j&nbsp;\n";
 						}
-						echo "\t\t</font></td>\n"
+						$dataentryoutput .= "\t\t</font></td>\n"
 						."\t</tr>\n";
 						$i++;
 					}
-					echo "</table>\n";
+					$dataentryoutput .= "</table>\n";
 					$i--;
 					break;
 					case "B": //ARRAY (10 POINT CHOICE) radio-buttons
-					echo "<table>\n";
+					$dataentryoutput .= "<table>\n";
 					$thisqid=$fnames[$i][7];
 					while ($fnames[$i][7] == $thisqid)
 					{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
-						echo "\t<tr>\n"
+						$dataentryoutput .= "\t<tr>\n"
 						."\t\t<td align='right'>$setfont{$fnames[$i][6]}</font></td>\n"
 						."\t\t<td>$setfont\n";
 						for ($j=1; $j<=10; $j++)
 						{
-							echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='$j'";
-							if ($idrow[$fnames[$i][0]] == $j) {echo " checked";}
-							echo " />$j&nbsp;\n";
+							$dataentryoutput .= "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='$j'";
+							if ($idrow[$fnames[$i][0]] == $j) {$dataentryoutput .= " checked";}
+							$dataentryoutput .= " />$j&nbsp;\n";
 						}
-						echo "\t\t</font></td>\n"
+						$dataentryoutput .= "\t\t</font></td>\n"
 						."\t</tr>\n";
 						$i++;
 					}
 					$i--;
-					echo "</table>\n";
+					$dataentryoutput .= "</table>\n";
 					break;
 					case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-					echo "<table>\n";
+					$dataentryoutput .= "<table>\n";
 					$thisqid=$fnames[$i][7];
 					while ($fnames[$i][7] == $thisqid)
 					{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
-						echo "\t<tr>\n"
+						$dataentryoutput .= "\t<tr>\n"
 						."\t\t<td align='right'>$setfont{$fnames[$i][6]}</font></td>\n"
 						."\t\t<td>$setfont\n"
 						."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='Y'";
-						if ($idrow[$fnames[$i][0]] == "Y") {echo " checked";}
-						echo " />".$clang->gT("Yes")."&nbsp;\n"
+						if ($idrow[$fnames[$i][0]] == "Y") {$dataentryoutput .= " checked";}
+						$dataentryoutput .= " />".$clang->gT("Yes")."&nbsp;\n"
 						."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='U'";
-						if ($idrow[$fnames[$i][0]] == "U") {echo " checked";}
-						echo " />".$clang->gT("Uncertain")."&nbsp;\n"
+						if ($idrow[$fnames[$i][0]] == "U") {$dataentryoutput .= " checked";}
+						$dataentryoutput .= " />".$clang->gT("Uncertain")."&nbsp;\n"
 						."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='N'";
-						if ($idrow[$fnames[$i][0]] == "N") {echo " checked";}
-						echo " />".$clang->gT("No")."&nbsp;\n"
+						if ($idrow[$fnames[$i][0]] == "N") {$dataentryoutput .= " checked";}
+						$dataentryoutput .= " />".$clang->gT("No")."&nbsp;\n"
 						."\t\t</font></td>\n"
 						."\t</tr>\n";
 						$i++;
 					}
 					$i--;
-					echo "</table>\n";
+					$dataentryoutput .= "</table>\n";
 					break;
 					case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
-					echo "<table>\n";
+					$dataentryoutput .= "<table>\n";
 					$thisqid=$fnames[$i][7];
 					while ($fnames[$i][7] == $thisqid)
 					{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
-						echo "\t<tr>\n"
+						$dataentryoutput .= "\t<tr>\n"
 						."\t\t<td align='right'>$setfont{$fnames[$i][6]}</font></td>\n"
 						."\t\t<td>$setfont\n"
 						."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='I'";
-						if ($idrow[$fnames[$i][0]] == "I") {echo " checked";}
-						echo " />Increase&nbsp;\n"
+						if ($idrow[$fnames[$i][0]] == "I") {$dataentryoutput .= " checked";}
+						$dataentryoutput .= " />Increase&nbsp;\n"
 						."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='S'";
-						if ($idrow[$fnames[$i][0]] == "I") {echo " checked";}
-						echo " />Same&nbsp;\n"
+						if ($idrow[$fnames[$i][0]] == "I") {$dataentryoutput .= " checked";}
+						$dataentryoutput .= " />Same&nbsp;\n"
 						."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='D'";
-						if ($idrow[$fnames[$i][0]] == "D") {echo " checked";}
-						echo " />Decrease&nbsp;\n"
+						if ($idrow[$fnames[$i][0]] == "D") {$dataentryoutput .= " checked";}
+						$dataentryoutput .= " />Decrease&nbsp;\n"
 						."\t\t</font></td>\n"
 						."\t</tr>\n";
 						$i++;
 					}
 					$i--;
-					echo "</table>\n";
+					$dataentryoutput .= "</table>\n";
 					break;
 					case "F": //ARRAY (Flexible Labels)
 					case "H":
-					echo "<table>\n";
+					$dataentryoutput .= "<table>\n";
 					$thisqid=$fnames[$i][7];
 					while (isset($fnames[$i][7]) && $fnames[$i][7] == $thisqid)
 					{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
-						echo "\t<tr>\n"
+						$dataentryoutput .= "\t<tr>\n"
 						."\t\t<td align='right' valign='top'>$setfont{$fnames[$i][6]}</font></td>\n";
 						$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid='{$fnames[$i][8]}' order by sortorder, code";
 						$fresult = db_execute_assoc($fquery);
-						echo "\t\t<td>$setfont\n";
+						$dataentryoutput .= "\t\t<td>$setfont\n";
 						while ($frow=$fresult->FetchRow())
 						{
-							echo "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='{$frow['code']}'";
-							if ($idrow[$fnames[$i][0]] == $frow['code']) {echo " checked";}
-							echo " />".$frow['title']."&nbsp;\n";
+							$dataentryoutput .= "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='{$frow['code']}'";
+							if ($idrow[$fnames[$i][0]] == $frow['code']) {$dataentryoutput .= " checked";}
+							$dataentryoutput .= " />".$frow['title']."&nbsp;\n";
 						}
-						echo "\t\t</font></td>\n"
+						$dataentryoutput .= "\t\t</font></td>\n"
 						."\t</tr>\n";
 						$i++;
 					}
 					$i--;
-					echo "</table>\n";
+					$dataentryoutput .= "</table>\n";
 					break;
 					default: //This really only applies to tokens for non-private surveys
-					echo "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='"
+					$dataentryoutput .= "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='"
 					.$idrow[$fnames[$i][0]] . "'>\n";
 					break;
 				}
-				echo "		</td>
+				$dataentryoutput .= "		</td>
 							</tr>
 							<tr>
 								<td colspan='2' bgcolor='#CCCCCC' height='1'>
@@ -1144,23 +1143,23 @@ if($actsurrows['browse_response']){
 							</tr>\n";
 			}
 		}
-		echo "</table>\n"
+		$dataentryoutput .= "</table>\n"
 		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-		if ($action == "edit")
+		if ($subaction == "edit")
 		{
-			echo "	<tr>
+			$dataentryoutput .= "	<tr>
 						<td bgcolor='#CCCCCC' align='center'>
 						 <input type='submit' value='".$clang->gT("Update Entry")."'>
 						 <input type='hidden' name='id' value='$id'>
 						 <input type='hidden' name='sid' value='$surveyid'>
-						 <input type='hidden' name='action' value='update'>
+						 <input type='hidden' name='subaction' value='update'>
 						 <input type='hidden' name='surveytable' value='{$dbprefix}survey_$surveyid'>
 						</td>
 					</tr>\n";
 		}
-		elseif ($action == "editsaved")
+		elseif ($subaction == "editsaved")
 		{
-			echo "<script type='text/javascript'>
+			$dataentryoutput .= "<script type='text/javascript'>
 				  <!--
 					function saveshow(value)
 						{
@@ -1175,45 +1174,45 @@ if($actsurrows['browse_response']){
 						}
 				  //-->
 				  </script>\n";
-			echo "\t<tr>\n";
-			echo "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
-			echo "\t\t\t<input type='checkbox' name='save' id='save' onChange='saveshow(this.id)' onLoad='saveshow(this.id)'><label for='save'>".$clang->gT("Save as a partially completed survey")."</label>\n";
-			echo "<div name='saveoptions' id='saveoptions' style='display: none'>\n";
-			echo "<table align='center' class='outlinetable' cellspacing='0'>
+			$dataentryoutput .= "\t<tr>\n";
+			$dataentryoutput .= "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
+			$dataentryoutput .= "\t\t\t<input type='checkbox' name='save' id='save' onChange='saveshow(this.id)' onLoad='saveshow(this.id)'><label for='save'>".$clang->gT("Save as a partially completed survey")."</label>\n";
+			$dataentryoutput .= "<div name='saveoptions' id='saveoptions' style='display: none'>\n";
+			$dataentryoutput .= "<table align='center' class='outlinetable' cellspacing='0'>
 				  <tr><td align='right'>".$clang->gT("Identifier:")."</td>
 				  <td><input type='text' name='save_identifier'";
 			if (returnglobal('identifier'))
 			{
-				echo " value=\"".stripslashes(stripslashes(returnglobal('identifier')))."\"";
+				$dataentryoutput .= " value=\"".stripslashes(stripslashes(returnglobal('identifier')))."\"";
 			}
-			echo "></td></tr>
+			$dataentryoutput .= "></td></tr>
 				  </table>\n"
 			."<input type='hidden' name='save_password' value='".returnglobal('accesscode')."'>\n"
 			."<input type='hidden' name='save_confirmpassword' value='".returnglobal('accesscode')."'>\n"
 			."<input type='hidden' name='save_email' value='".$saver['email']."'>\n"
 			."<input type='hidden' name='save_scid' value='".$saver['scid']."'>\n"
 			."<input type='hidden' name='redo' value='yes'>\n";
-			echo "\t\t</td>\n";
-			echo "\t</tr>"
+			$dataentryoutput .= "\t\t</td>\n";
+			$dataentryoutput .= "\t</tr>"
 			."</div>\n";
-			echo "	<tr>
+			$dataentryoutput .= "	<tr>
 					<td bgcolor='#CCCCCC' align='center'>
 					 <input type='submit' value='".$clang->gT("submit")."'>
 					 <input type='hidden' name='sid' value='$surveyid'>
-					 <input type='hidden' name='action' value='insert'>
+					 <input type='hidden' name='subaction' value='insert'>
 					 <input type='hidden' name='surveytable' value='{$dbprefix}survey_$surveyid'>
 					</td>
 				</tr>\n";
 		}
 	
-		echo  "</table>\n"
+		$dataentryoutput .=  "</table>\n"
 		."</form>\n";
 	}
 	
 	
-	elseif ($action == "update")
+	elseif ($subaction == "update")
 	{
-		echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		$dataentryoutput .= "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		.$clang->gT("Data Entry")."</strong></font></td></tr>\n"
 		."\t<tr><td align='center'>\n";
@@ -1299,7 +1298,7 @@ if($actsurrows['browse_response']){
 		while (ob_get_level() > 0) {
 			ob_end_flush();
 		}
-		echo "<font color='green'><strong>".$clang->gT("Success")."</strong></font><br />\n"
+		$dataentryoutput .= "<font color='green'><strong>".$clang->gT("Success")."</strong></font><br />\n"
 		.$clang->gT("Record has been updated.")."<br /><br />\n"
 		."<a href='browse.php?sid=$surveyid&action=id&id=$id'>".$clang->gT("View This Record")."</a>\n<br />\n"
 		."<a href='browse.php?sid=$surveyid&action=all'>".$clang->gT("Browse Responses")."</a><br />\n"
@@ -1307,10 +1306,10 @@ if($actsurrows['browse_response']){
 		."</body>\n";
 	}
 	
-	elseif ($action == "delete")
+	elseif ($subaction == "delete")
 	{
 		$thissurvey=getSurveyInfo($surveyid);
-		echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		$dataentryoutput .= "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		.$clang->gT("Data Entry")."</strong></font></td></tr>\n"
 		."\t<tr  bgcolor='#CCCCCC'><td align='center'>$setfont\n"
@@ -1319,9 +1318,9 @@ if($actsurrows['browse_response']){
 		."\t\t</font></td>\n"
 		."\t</tr>\n";
 		$delquery = "DELETE FROM $surveytable WHERE id=$id";
-		echo "\t<tr>\n";
+		$dataentryoutput .= "\t<tr>\n";
 		$delresult = $connect->Execute($delquery) or die ("Couldn't delete record $id<br />\n".htmlspecialchars($connect->ErrorMsg()));
-		echo "\t\t<td align='center'><br />$setfont<strong>".$clang->gT("Record Deleted")." (ID: $id)</strong><br /><br />\n"
+		$dataentryoutput .= "\t\t<td align='center'><br />$setfont<strong>".$clang->gT("Record Deleted")." (ID: $id)</strong><br /><br />\n"
 		."\t\t\t<a href='browse.php?sid=$surveyid&action=all'>".$clang->gT("Browse Responses")."</a></font>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
@@ -1336,7 +1335,7 @@ if($actsurrows['browse_response']){
 		//This is the default, presenting a blank dataentry form
 		$fieldmap=createFieldMap($surveyid);
 		// PRESENT SURVEY DATAENTRY SCREEN
-		echo "<table width='99%' align='center' style='margin: 3px 6px; border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		$dataentryoutput .= "<table width='99%' align='center' style='margin: 3px 6px; border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		.$clang->gT("Browse Responses")."</strong></font></td></tr>\n"
 		.$surveyoptions
@@ -1352,12 +1351,14 @@ if($actsurrows['browse_response']){
 			$baselang = $_GET['language'];
 		}
 	
-		echo "<form action='dataentry.php' name='addsurvey' method='post' id='addsurvey'>\n"
+		$dataentryoutput .= "<form action='$scriptname?action=dataentry' name='addsurvey' method='post' id='addsurvey'>\n"
 		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='3' height='4'><font size='1' face='verdana' color='white'><strong>"
 		.$clang->gT("Data Entry")."</strong></font></td></tr>\n"
 		."\t<tr bgcolor='#777777'>\n"
-		."\t\t<td align='left'>$langlistbox</td><td colspan='2' align='center'><font color='white'>\n"
+		."\t\t<td align='left'>";
+		if (count(GetAdditionalLanguagesFromSurveyID($surveyid))>0) {$dataentryoutput.=$langlistbox;}
+        $dataentryoutput .= "</td><td colspan='2' align='center'><font color='white'>\n"
 		."\t\t\t<strong>".$thissurvey['name']."</strong>\n"
 		."\t\t\t<br />$setfont".$thissurvey['description']."</font></font>\n"
 		."\t\t</td>\n"
@@ -1365,7 +1366,7 @@ if($actsurrows['browse_response']){
 	
 		if ($thissurvey['private'] == "N") //Give entry field for token id
 		{
-			echo "\t<tr>\n"
+			$dataentryoutput .= "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
 			."\t\t<td valign='top' align='right' width='30%'>$setfont<strong>".$clang->gT("Token").":</strong></font></td>\n"
 			."\t\t<td valign='top' style='padding-left: 20px'>\n"
@@ -1375,7 +1376,7 @@ if($actsurrows['browse_response']){
 		}
 		if ($thissurvey['datestamp'] == "Y") //Give datestampentry field
 		{
-			echo "\t<tr>\n"
+			$dataentryoutput .= "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
 			."\t\t<td valign='top' align='right' width='30%'>$setfont<strong>"
 			.$clang->gT("Datestamp").":</strong></font></td>\n"
@@ -1386,7 +1387,7 @@ if($actsurrows['browse_response']){
 		}
 		if ($thissurvey['ipaddr'] == "Y") //Give ipaddress field
 		{
-			echo "\t<tr>\n"
+			$dataentryoutput .= "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
 			."\t\t<td valign='top' align='right' width='30%'>$setfont<strong>"
 			.$clang->gT("IP-Address").":</strong></font></td>\n"
@@ -1405,7 +1406,7 @@ if($actsurrows['browse_response']){
 		{
 			$deqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid={$degrow['gid']} AND language='{$baselang}'";
 			$deqresult = db_execute_assoc($deqquery);
-			echo "\t<tr>\n"
+			$dataentryoutput .= "\t<tr>\n"
 			."\t\t<td colspan='3' align='center' bgcolor='#AAAAAA'>$setfont<strong>{$degrow['group_name']}</strong></font></td>\n"
 			."\t</tr>\n";
 			$gid = $degrow['gid'];
@@ -1537,45 +1538,45 @@ if($actsurrows['browse_response']){
 				if ($explanation)
 				{
 					$explanation = "<font color='maroon' size='1'>[".$clang->gT("Only answer this if the following conditions are met:")."]<br />$explanation\n";
-					echo "<tr bgcolor='$bgc'><td colspan='3'>$setfont$explanation</font></td></tr>\n";
+					$dataentryoutput .= "<tr bgcolor='$bgc'><td colspan='3'>$setfont$explanation</font></td></tr>\n";
 				}
 	
 				//END OF GETTING CONDITIONS
 	
 				$qid = $deqrow['qid'];
 				$fieldname = "$surveyid"."X"."$gid"."X"."$qid";
-				echo "\t<tr bgcolor='$bgc'>\n"
+				$dataentryoutput .= "\t<tr bgcolor='$bgc'>\n"
 				."\t\t<td valign='top' width='1%'>$setfont<font size='1'>{$deqrow['title']}</font></font></td>\n"
 				."\t\t<td valign='top' align='right' width='30%'>";
 				if ($deqrow['mandatory']=="Y") //question is mandatory
 				{
-					echo "$setfont<font color='red'>*</font></font>";
+					$dataentryoutput .= "$setfont<font color='red'>*</font></font>";
 				}
-				echo "<strong>{$deqrow['question']}</strong></td>\n"
+				$dataentryoutput .= "<strong>{$deqrow['question']}</strong></td>\n"
 				."\t\t<td valign='top' style='padding-left: 20px'>\n";
 				//DIFFERENT TYPES OF DATA FIELD HERE
 				if ($deqrow['help'])
 				{
 					$hh = addcslashes($deqrow['help'], "\0..\37'\""); //Escape ASCII decimal 0-32 plus single and double quotes to make JavaScript happy.
 					$hh = htmlspecialchars($hh, ENT_QUOTES); //Change & " ' < > to HTML entities to make HTML happy.
-					echo "\t\t\t<img src='$imagefiles/help.gif' alt='".$clang->gT("Help about this question")."' align='right' onClick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\" />\n";
+					$dataentryoutput .= "\t\t\t<img src='$imagefiles/help.gif' alt='".$clang->gT("Help about this question")."' align='right' onClick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\" />\n";
 				}
 				switch($deqrow['type'])
 				{
 					case "5": //5 POINT CHOICE radio-buttons
-					echo "\t\t\t<select name='$fieldname'>\n"
+					$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n"
 					."\t\t\t\t<option value=''>".$clang->gT("No answer")."</option>\n";
 					for ($x=1; $x<=5; $x++)
 					{
-						echo "\t\t\t\t<option value='$x'>$x</option>\n";
+						$dataentryoutput .= "\t\t\t\t<option value='$x'>$x</option>\n";
 					}
-					echo "\t\t\t</select>\n";
+					$dataentryoutput .= "\t\t\t</select>\n";
 					break;
 					case "D": //DATE
-					echo "\t\t\t<input type='text' name='$fieldname' size='10' />\n";
+					$dataentryoutput .= "\t\t\t<input type='text' name='$fieldname' size='10' />\n";
 					break;
 					case "G": //GENDER drop-down list
-					echo "\t\t\t<select name='$fieldname'>\n"
+					$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n"
 					."\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n"
 					."\t\t\t\t<option value='F'>".$clang->gT("Female")."</option>\n"
 					."\t\t\t\t<option value='M'>".$clang->gT("Male")."</option>\n"
@@ -1585,30 +1586,30 @@ if($actsurrows['browse_response']){
 					case "^": //Slider
 					$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$dearesult = db_execute_assoc($deaquery);
-					echo "\t\t\t<table>\n";
+					$dataentryoutput .= "\t\t\t<table>\n";
 					while ($dearow = $dearesult->FetchRow())
 					{
-						echo "\t\t\t\t<tr><td align='right'>$setfont"
+						$dataentryoutput .= "\t\t\t\t<tr><td align='right'>$setfont"
 						.$dearow['answer']
 						."</font></td>\n"
 						."\t\t\t\t\t<td><input type='text' name='$fieldname{$dearow['code']}'></td>\n"
 						."\t\t\t\t</tr>\n";
 					}
-					echo "\t\t\t</table>\n";
+					$dataentryoutput .= "\t\t\t</table>\n";
 					break;
 					case "W": //Flexible List drop-down/radio-button
 					case "Z":
 					$deaquery = "SELECT * FROM {$dbprefix}labels WHERE lid={$deqrow['lid']} ORDER BY sortorder, code";
 					$dearesult = db_execute_assoc($deaquery);
-					echo "\t\t\t<select name='$fieldname'>\n";
+					$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n";
 					while ($dearow = $dearesult->FetchRow())
 					{
-						echo "\t\t\t\t<option value='{$dearow['code']}'";
-						echo ">{$dearow['title']}</option>\n";
+						$dataentryoutput .= "\t\t\t\t<option value='{$dearow['code']}'";
+						$dataentryoutput .= ">{$dearow['title']}</option>\n";
 					}
-					echo "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n";
+					$dataentryoutput .= "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n";
 	
-					$oquery="SELECT other FROM {$dbprefix}questions WHERE qid={$deqrow['qid']} AND language='{$baselang}";
+					$oquery="SELECT other FROM {$dbprefix}questions WHERE qid={$deqrow['qid']} AND language='{$baselang}'";
 					$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
 					while($orow = $oresult->FetchRow())
 					{
@@ -1616,12 +1617,12 @@ if($actsurrows['browse_response']){
 					}
 					if ($fother == "Y")
 					{
-						echo "<option value='-oth-'>".$clang->gT("Other")."</option>\n";
+						$dataentryoutput .= "<option value='-oth-'>".$clang->gT("Other")."</option>\n";
 					}
-					echo "\t\t\t</select>\n";
+					$dataentryoutput .= "\t\t\t</select>\n";
 					if ($fother == "Y")
 					{
-						echo "\t\t\t$setfont"
+						$dataentryoutput .= "\t\t\t$setfont"
 						.$clang->gT("Other").":</font>"
 						."<input type='text' name='{$fieldname}other' value='' />\n";
 					}
@@ -1631,16 +1632,16 @@ if($actsurrows['browse_response']){
 					$defexists="";
 					$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$dearesult = db_execute_assoc($deaquery);
-					echo "\t\t\t<select name='$fieldname'>\n";
+					$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n";
 					while ($dearow = $dearesult->FetchRow())
 					{
-						echo "\t\t\t\t<option value='{$dearow['code']}'";
-						if ($dearow['default_value'] == "Y") {echo " selected"; $defexists = "Y";}
-						echo ">{$dearow['answer']}</option>\n";
+						$dataentryoutput .= "\t\t\t\t<option value='{$dearow['code']}'";
+						if ($dearow['default_value'] == "Y") {$dataentryoutput .= " selected"; $defexists = "Y";}
+						$dataentryoutput .= ">{$dearow['answer']}</option>\n";
 					}
-					if (!$defexists) {echo "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n";}
+					if (!$defexists) {$dataentryoutput .= "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n";}
 	
-					$oquery="SELECT other FROM {$dbprefix}questions WHERE qid={$deqrow['qid']} AND language='{$baselang}";
+					$oquery="SELECT other FROM {$dbprefix}questions WHERE qid={$deqrow['qid']} AND language='{$baselang}'";
 					$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
 					while($orow = $oresult->FetchRow())
 					{
@@ -1648,12 +1649,12 @@ if($actsurrows['browse_response']){
 					}
 					if ($fother == "Y")
 					{
-						echo "<option value='-oth-'>".$clang->gT("Other")."</option>\n";
+						$dataentryoutput .= "<option value='-oth-'>".$clang->gT("Other")."</option>\n";
 					}
-					echo "\t\t\t</select>\n";
+					$dataentryoutput .= "\t\t\t</select>\n";
 					if ($fother == "Y")
 					{
-						echo "\t\t\t$setfont"
+						$dataentryoutput .= "\t\t\t$setfont"
 						.$clang->gT("Other").":</font>"
 						."<input type='text' name='{$fieldname}other' value='' />\n";
 					}
@@ -1662,15 +1663,15 @@ if($actsurrows['browse_response']){
 					$defexists="";
 					$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY sortorder, answer";
 					$dearesult = db_execute_assoc($deaquery);
-					echo "\t\t\t<select name='$fieldname'>\n";
+					$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n";
 					while ($dearow = $dearesult->FetchRow())
 					{
-						echo "\t\t\t\t<option value='{$dearow['code']}'";
-						if ($dearow['default_value'] == "Y") {echo " selected"; $defexists = "Y";}
-						echo ">{$dearow['answer']}</option>\n";
+						$dataentryoutput .= "\t\t\t\t<option value='{$dearow['code']}'";
+						if ($dearow['default_value'] == "Y") {$dataentryoutput .= " selected"; $defexists = "Y";}
+						$dataentryoutput .= ">{$dearow['answer']}</option>\n";
 					}
-					if (!$defexists) {echo "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n";}
-					echo "\t\t\t</select>\n"
+					if (!$defexists) {$dataentryoutput .= "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n";}
+					$dataentryoutput .= "\t\t\t</select>\n"
 					."\t\t\t<br />".$clang->gT("Comment").":<br />\n"
 					."\t\t\t<textarea cols='40' rows='5' name='$fieldname"
 					."comment'></textarea>\n";
@@ -1680,7 +1681,7 @@ if($actsurrows['browse_response']){
 					$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$thisqid ORDER BY sortorder, answer";
 					$ansresult = db_execute_assoc($ansquery);
 					$anscount = $ansresult->RecordCount();
-					echo "\t\t\t<script type='text/javascript'>\n"
+					$dataentryoutput .= "\t\t\t<script type='text/javascript'>\n"
 					."\t\t\t<!--\n"
 					."\t\t\t\tfunction rankthis_$thisqid(\$code, \$value)\n"
 					."\t\t\t\t\t{\n"
@@ -1821,7 +1822,7 @@ if($actsurrows['browse_response']){
 					}
 					$choicelist .= "\t\t\t\t\t\t</select>\n";
 	
-					echo "\t\t\t<table align='left' border='0' cellspacing='5'>\n"
+					$dataentryoutput .= "\t\t\t<table align='left' border='0' cellspacing='5'>\n"
 					."\t\t\t\t<tr>\n"
 					."\t\t\t\t\t<td align='left' valign='top' width='200' style='border: solid 1 #111111' bgcolor='silver'>\n"
 					."\t\t\t\t\t\t$setfont<strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
@@ -1837,8 +1838,8 @@ if($actsurrows['browse_response']){
 					."\t\t\t</table>\n"
 					."\t\t\t<input type='hidden' name='multi' value='$anscount' />\n"
 					."\t\t\t<input type='hidden' name='lastfield' value='";
-					if (isset($multifields)) {echo $multifields;}
-					echo "' />\n";
+					if (isset($multifields)) {$dataentryoutput .= $multifields;}
+					$dataentryoutput .= "' />\n";
 					$choicelist="";
 					$ranklist="";
 					unset($answers);
@@ -1863,39 +1864,39 @@ if($actsurrows['browse_response']){
 						$maxrows=ceil(100*($meacount/$dcols)/100); //Always rounds up to nearest whole number
 						$divider=" </td>\n <td valign='top' width='$width%' nowrap>";
 						$upto=0;
-						echo "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";
+						$dataentryoutput .= "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";
 						while ($mearow = $mearesult->FetchRow())
 						{
 							if ($upto == $maxrows)
 							{
-								echo $divider;
+								$dataentryoutput .= $divider;
 								$upto=0;
 							}
-							echo "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' id='answer$fieldname{$mearow['code']}' value='Y'";
-							if ($mearow['default_value'] == "Y") {echo " checked";}
-							echo " /><label for='$fieldname{$mearow['code']}'>{$mearow['answer']}</label></font><br />\n";
+							$dataentryoutput .= "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' id='answer$fieldname{$mearow['code']}' value='Y'";
+							if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
+							$dataentryoutput .= " /><label for='$fieldname{$mearow['code']}'>{$mearow['answer']}</label></font><br />\n";
 							$upto++;
 						}
 						if ($deqrow['other'] == "Y")
 						{
-							echo "\t\t\t".$clang->gT("Other")." <input type='text' name='$fieldname";
-							echo "other' />\n";
+							$dataentryoutput .= "\t\t\t".$clang->gT("Other")." <input type='text' name='$fieldname";
+							$dataentryoutput .= "other' />\n";
 						}
-						echo "</td></tr></table>\n";
+						$dataentryoutput .= "</td></tr></table>\n";
 						//Let's break the presentation into columns.
 					}
 					else
 					{
 						while ($mearow = $mearesult->FetchRow())
 						{
-							echo "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' id='answer$fieldname{$mearow['code']}' value='Y'";
-							if ($mearow['default_value'] == "Y") {echo " checked";}
-							echo " /><label for='$fieldname{$mearow['code']}'>{$mearow['answer']}</label></font><br />\n";
+							$dataentryoutput .= "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' id='answer$fieldname{$mearow['code']}' value='Y'";
+							if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
+							$dataentryoutput .= " /><label for='$fieldname{$mearow['code']}'>{$mearow['answer']}</label></font><br />\n";
 						}
 						if ($deqrow['other'] == "Y")
 						{
-							echo "\t\t\t".$clang->gT("Other")." <input type='text' name='$fieldname";
-							echo "other' />\n";
+							$dataentryoutput .= "\t\t\t".$clang->gT("Other")." <input type='text' name='$fieldname";
+							$dataentryoutput .= "other' />\n";
 						}
 					}
 					break;
@@ -1904,183 +1905,183 @@ if($actsurrows['browse_response']){
 					$mearesult = db_execute_assoc($meaquery);
 					while ($mearow = $mearesult->FetchRow())
 					{
-						echo "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'";
-						if ($mearow['default_value'] == "Y") {echo " checked";}
-						echo " />{$mearow['answer']}<br />\n";
+						$dataentryoutput .= "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'";
+						if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
+						$dataentryoutput .= " />{$mearow['answer']}<br />\n";
 					}
 					break;
 					case "I": //FILE CSV ONE - LIST drop-down/radio-button list
 					$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$dearesult = db_execute_assoc($deaquery);
-					echo "\t\t\t<select name='$fieldname'>\n";
+					$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n";
 					while ($dearow = $dearesult->FetchRow())
 					{
-						echo "\t\t\t\t<option value='{$dearow['code']}'";
-						if ($dearow['default_value'] == "Y") {echo " selected"; $defexists = "Y";}
-						echo ">{$dearow['answer']}</option>\n";
+						$dataentryoutput .= "\t\t\t\t<option value='{$dearow['code']}'";
+						if ($dearow['default_value'] == "Y") {$dataentryoutput .= " selected"; $defexists = "Y";}
+						$dataentryoutput .= ">{$dearow['answer']}</option>\n";
 					}
-					if (!$defexists) {echo "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n";}
+					if (!$defexists) {$dataentryoutput .= "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n";}
 					break;
 					case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
-					echo "<table border='0'>\n";
+					$dataentryoutput .= "<table border='0'>\n";
 					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$mearesult = db_execute_assoc($meaquery);
 					while ($mearow = $mearesult->FetchRow())
 					{
-						echo "\t<tr>\n";
-						echo "\t\t<td>\n";
-						echo "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'";
-						if ($mearow['default_value'] == "Y") {echo " checked";}
-						echo " />{$mearow['answer']}\n";
-						echo "\t\t</font></td>\n";
+						$dataentryoutput .= "\t<tr>\n";
+						$dataentryoutput .= "\t\t<td>\n";
+						$dataentryoutput .= "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'";
+						if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
+						$dataentryoutput .= " />{$mearow['answer']}\n";
+						$dataentryoutput .= "\t\t</font></td>\n";
 						//This is the commments field:
-						echo "\t\t<td>\n";
-						echo "\t\t\t<input type='text' name='$fieldname{$mearow['code']}comment' size='50' />\n";
-						echo "\t\t</td>\n";
-						echo "\t</tr>\n";
+						$dataentryoutput .= "\t\t<td>\n";
+						$dataentryoutput .= "\t\t\t<input type='text' name='$fieldname{$mearow['code']}comment' size='50' />\n";
+						$dataentryoutput .= "\t\t</td>\n";
+						$dataentryoutput .= "\t</tr>\n";
 					}
 					if ($deqrow['other'] == "Y")
 					{
-						echo "\t<tr>\n";
-						echo "\t\t<td style='padding-left: 22px'>$setfont".$clang->gT("Other").":</font></td>\n";
-						echo "\t\t<td>\n";
-						echo "\t\t\t<input type='text' name='$fieldname"."other' size='50'/>\n";
-						echo "\t\t</td>\n";
-						echo "\t</tr>\n";
+						$dataentryoutput .= "\t<tr>\n";
+						$dataentryoutput .= "\t\t<td style='padding-left: 22px'>$setfont".$clang->gT("Other").":</font></td>\n";
+						$dataentryoutput .= "\t\t<td>\n";
+						$dataentryoutput .= "\t\t\t<input type='text' name='$fieldname"."other' size='50'/>\n";
+						$dataentryoutput .= "\t\t</td>\n";
+						$dataentryoutput .= "\t</tr>\n";
 					}
-					echo "</table>\n";
+					$dataentryoutput .= "</table>\n";
 					break;
 					case "N": //NUMERICAL TEXT
-					echo keycontroljs();
-					echo "\t\t\t<input type='text' name='$fieldname' onKeyPress=\"return goodchars(event,'0123456789.,')\" />";
+					$dataentryoutput .= keycontroljs();
+					$dataentryoutput .= "\t\t\t<input type='text' name='$fieldname' onKeyPress=\"return goodchars(event,'0123456789.,')\" />";
 					break;
 					case "S": //SHORT FREE TEXT
-					echo "\t\t\t<input type='text' name='$fieldname' />\n";
+					$dataentryoutput .= "\t\t\t<input type='text' name='$fieldname' />\n";
 					break;
 					case "T": //LONG FREE TEXT
-					echo "\t\t\t<textarea cols='40' rows='5' name='$fieldname'></textarea>\n";
+					$dataentryoutput .= "\t\t\t<textarea cols='40' rows='5' name='$fieldname'></textarea>\n";
 					break;
 					case "U": //LONG FREE TEXT
-					echo "\t\t\t<textarea cols='50' rows='70' name='$fieldname'></textarea>\n";
+					$dataentryoutput .= "\t\t\t<textarea cols='50' rows='70' name='$fieldname'></textarea>\n";
 					break;
 					case "Y": //YES/NO radio-buttons
-					echo "\t\t\t<select name='$fieldname'>\n";
-					echo "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n";
-					echo "\t\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n";
-					echo "\t\t\t\t<option value='N'>".$clang->gT("No")."</option>\n";
-					echo "\t\t\t</select>\n";
+					$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n";
+					$dataentryoutput .= "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n";
+					$dataentryoutput .= "\t\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n";
+					$dataentryoutput .= "\t\t\t\t<option value='N'>".$clang->gT("No")."</option>\n";
+					$dataentryoutput .= "\t\t\t</select>\n";
 					break;
 					case "A": //ARRAY (5 POINT CHOICE) radio-buttons
 					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$mearesult = db_execute_assoc($meaquery);
-					echo "<table>\n";
+					$dataentryoutput .= "<table>\n";
 					while ($mearow = $mearesult->FetchRow())
 					{
-						echo "\t<tr>\n";
-						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
-						echo "\t\t<td>$setfont\n";
-						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
-						echo "\t\t\t\t<option value=''>".$clang->gT("Please choose")."..</option>\n";
+						$dataentryoutput .= "\t<tr>\n";
+						$dataentryoutput .= "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
+						$dataentryoutput .= "\t\t<td>$setfont\n";
+						$dataentryoutput .= "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
+						$dataentryoutput .= "\t\t\t\t<option value=''>".$clang->gT("Please choose")."..</option>\n";
 						for ($i=1; $i<=5; $i++)
 						{
-							echo "\t\t\t\t<option value='$i'>$i</option>\n";
+							$dataentryoutput .= "\t\t\t\t<option value='$i'>$i</option>\n";
 						}
-						echo "\t\t\t</select>\n";
-						echo "\t\t</font></td>\n";
-						echo "\t</tr>\n";
+						$dataentryoutput .= "\t\t\t</select>\n";
+						$dataentryoutput .= "\t\t</font></td>\n";
+						$dataentryoutput .= "\t</tr>\n";
 					}
-					echo "</table>\n";
+					$dataentryoutput .= "</table>\n";
 					break;
 					case "B": //ARRAY (10 POINT CHOICE) radio-buttons
 					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$mearesult = db_execute_assoc($meaquery);
-					echo "<table>\n";
+					$dataentryoutput .= "<table>\n";
 					while ($mearow = $mearesult->FetchRow())
 					{
-						echo "\t<tr>\n";
-						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
-						echo "\t\t<td>\n";
-						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
-						echo "\t\t\t\t<option value=''>".$clang->gT("Please choose")."..</option>\n";
+						$dataentryoutput .= "\t<tr>\n";
+						$dataentryoutput .= "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
+						$dataentryoutput .= "\t\t<td>\n";
+						$dataentryoutput .= "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
+						$dataentryoutput .= "\t\t\t\t<option value=''>".$clang->gT("Please choose")."..</option>\n";
 						for ($i=1; $i<=10; $i++)
 						{
-							echo "\t\t\t\t<option value='$i'>$i</option>\n";
+							$dataentryoutput .= "\t\t\t\t<option value='$i'>$i</option>\n";
 						}
-						echo "</select>\n";
-						echo "\t\t</td>\n";
-						echo "\t</tr>\n";
+						$dataentryoutput .= "</select>\n";
+						$dataentryoutput .= "\t\t</td>\n";
+						$dataentryoutput .= "\t</tr>\n";
 					}
-					echo "</table>\n";
+					$dataentryoutput .= "</table>\n";
 					break;
 					case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
 					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$mearesult=db_execute_assoc($meaquery);
-					echo "<table>\n";
+					$dataentryoutput .= "<table>\n";
 					while ($mearow = $mearesult->FetchRow())
 					{
-						echo "\t<tr>\n";
-						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
-						echo "\t\t<td>\n";
-						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
-						echo "\t\t\t\t<option value=''>".$clang->gT("Please choose")."..</option>\n";
-						echo "\t\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n";
-						echo "\t\t\t\t<option value='U'>".$clang->gT("Uncertain")."</option>\n";
-						echo "\t\t\t\t<option value='N'>".$clang->gT("No")."</option>\n";
-						echo "\t\t\t</select>\n";
-						echo "\t\t</td>\n";
-						echo "</tr>\n";
+						$dataentryoutput .= "\t<tr>\n";
+						$dataentryoutput .= "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
+						$dataentryoutput .= "\t\t<td>\n";
+						$dataentryoutput .= "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
+						$dataentryoutput .= "\t\t\t\t<option value=''>".$clang->gT("Please choose")."..</option>\n";
+						$dataentryoutput .= "\t\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n";
+						$dataentryoutput .= "\t\t\t\t<option value='U'>".$clang->gT("Uncertain")."</option>\n";
+						$dataentryoutput .= "\t\t\t\t<option value='N'>".$clang->gT("No")."</option>\n";
+						$dataentryoutput .= "\t\t\t</select>\n";
+						$dataentryoutput .= "\t\t</td>\n";
+						$dataentryoutput .= "</tr>\n";
 					}
-					echo "</table>\n";
+					$dataentryoutput .= "</table>\n";
 					break;
 					case "E": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
 					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".htmlspecialchars($connect->ErrorMsg()));
-					echo "<table>\n";
+					$dataentryoutput .= "<table>\n";
 					while ($mearow = $mearesult->FetchRow())
 					{
-						echo "\t<tr>\n";
-						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
-						echo "\t\t<td>\n";
-						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
-						echo "\t\t\t\t<option value=''>".$clang->gT("Please choose")."..</option>\n";
-						echo "\t\t\t\t<option value='I'>".$clang->gT("Increase")."</option>\n";
-						echo "\t\t\t\t<option value='S'>".$clang->gT("Same")."</option>\n";
-						echo "\t\t\t\t<option value='D'>".$clang->gT("Decrease")."</option>\n";
-						echo "\t\t\t</select>\n";
-						echo "\t\t</td>\n";
-						echo "</tr>\n";
+						$dataentryoutput .= "\t<tr>\n";
+						$dataentryoutput .= "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
+						$dataentryoutput .= "\t\t<td>\n";
+						$dataentryoutput .= "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
+						$dataentryoutput .= "\t\t\t\t<option value=''>".$clang->gT("Please choose")."..</option>\n";
+						$dataentryoutput .= "\t\t\t\t<option value='I'>".$clang->gT("Increase")."</option>\n";
+						$dataentryoutput .= "\t\t\t\t<option value='S'>".$clang->gT("Same")."</option>\n";
+						$dataentryoutput .= "\t\t\t\t<option value='D'>".$clang->gT("Decrease")."</option>\n";
+						$dataentryoutput .= "\t\t\t</select>\n";
+						$dataentryoutput .= "\t\t</td>\n";
+						$dataentryoutput .= "</tr>\n";
 					}
-					echo "</table>\n";
+					$dataentryoutput .= "</table>\n";
 					break;
 					case "F": //ARRAY (Flexible Labels)
 					case "H":
 					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".htmlspecialchars($connect->ErrorMsg()));
-					echo "<table>\n";
+					$dataentryoutput .= "<table>\n";
 					while ($mearow = $mearesult->FetchRow())
 					{
-						echo "\t<tr>\n";
-						echo "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
-						echo "\t\t<td>\n";
-						echo "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
-						echo "\t\t\t\t<option value=''>".$clang->gT("Please choose")."..</option>\n";
+						$dataentryoutput .= "\t<tr>\n";
+						$dataentryoutput .= "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
+						$dataentryoutput .= "\t\t<td>\n";
+						$dataentryoutput .= "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
+						$dataentryoutput .= "\t\t\t\t<option value=''>".$clang->gT("Please choose")."..</option>\n";
 						$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid={$deqrow['lid']} ORDER BY sortorder, code";
 						$fresult = db_execute_assoc($fquery);
 						while ($frow = $fresult->FetchRow())
 						{
-							echo "\t\t\t\t<option value='{$frow['code']}'>".$frow['title']."</option>\n";
+							$dataentryoutput .= "\t\t\t\t<option value='{$frow['code']}'>".$frow['title']."</option>\n";
 						}
-						echo "\t\t\t</select>\n";
-						echo "\t\t</td>\n";
-						echo "</tr>\n";
+						$dataentryoutput .= "\t\t\t</select>\n";
+						$dataentryoutput .= "\t\t</td>\n";
+						$dataentryoutput .= "</tr>\n";
 					}
-					echo "</table>\n";
+					$dataentryoutput .= "</table>\n";
 					break;
 				}
-				//echo " [$surveyid"."X"."$gid"."X"."$qid]";
-				echo "\t\t</td>\n";
-				echo "\t</tr>\n";
-				echo "\t<tr><td colspan='3' height='2' bgcolor='silver'></td></tr>\n";
+				//$dataentryoutput .= " [$surveyid"."X"."$gid"."X"."$qid]";
+				$dataentryoutput .= "\t\t</td>\n";
+				$dataentryoutput .= "\t</tr>\n";
+				$dataentryoutput .= "\t<tr><td colspan='3' height='2' bgcolor='silver'></td></tr>\n";
 			}
 		}
 	
@@ -2089,7 +2090,7 @@ if($actsurrows['browse_response']){
 			if ($thissurvey['allowsave'] == "Y")
 			{
 				//Show Save Option
-				echo "<script type='text/javascript'>
+				$dataentryoutput .= "<script type='text/javascript'>
 					  <!--
 						function saveshow(value)
 							{
@@ -2104,11 +2105,11 @@ if($actsurrows['browse_response']){
 							}
 					  //-->
 					  </script>\n";
-				echo "\t<tr>\n";
-				echo "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
-				echo "\t\t\t<input type='checkbox' name='save' id='save' onChange='saveshow(this.id)' onLoad='saveshow(this.id)'><label for='save'>".$clang->gT("Save as a partially completed survey")."</label>\n";
-				echo "<div name='saveoptions' id='saveoptions' style='display: none'>\n";
-				echo "<table align='center' class='outlinetable' cellspacing='0'>
+				$dataentryoutput .= "\t<tr>\n";
+				$dataentryoutput .= "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
+				$dataentryoutput .= "\t\t\t<input type='checkbox' name='save' id='save' onChange='saveshow(this.id)' onLoad='saveshow(this.id)'><label for='save'>".$clang->gT("Save as a partially completed survey")."</label>\n";
+				$dataentryoutput .= "<div name='saveoptions' id='saveoptions' style='display: none'>\n";
+				$dataentryoutput .= "<table align='center' class='outlinetable' cellspacing='0'>
 					  <tr><td align='right'>".$clang->gT("Identifier:")."</td>
 					  <td><input type='text' name='save_identifier'></td></tr>
 					  <tr><td align='right'>".$clang->gT("Password:")."</td>
@@ -2118,57 +2119,54 @@ if($actsurrows['browse_response']){
 					  <tr><td align='right'>".$clang->gT("Email:")."</td>
 					  <td><input type='text' name='save_email'></td></tr>
 					  </table>\n";
-				echo "\t\t</font></td>\n";
-				echo "\t</tr>\n";
+				$dataentryoutput .= "\t\t</font></td>\n";
+				$dataentryoutput .= "\t</tr>\n";
 			}
-			echo "\t<tr>\n";
-			echo "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
-			echo "\t\t\t<input type='submit' value='".$clang->gT("submit")."' />\n";
-			echo "\t\t</font></td>\n";
-			echo "\t</tr>\n";
+			$dataentryoutput .= "\t<tr>\n";
+			$dataentryoutput .= "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
+			$dataentryoutput .= "\t\t\t<input type='submit' value='".$clang->gT("submit")."' />\n";
+			$dataentryoutput .= "\t\t</font></td>\n";
+			$dataentryoutput .= "\t</tr>\n";
 		}
 		elseif ($thissurvey['active'] == "N")
 		{
-			echo "\t<tr>\n";
-			echo "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
-			echo "\t\t\t<font color='red'><strong>".$clang->gT("This survey is not yet active. Your response cannot be saved")."\n";
-			echo "\t\t</strong></font></font></td>\n";
-			echo "\t</tr>\n";
+			$dataentryoutput .= "\t<tr>\n";
+			$dataentryoutput .= "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
+			$dataentryoutput .= "\t\t\t<font color='red'><strong>".$clang->gT("This survey is not yet active. Your response cannot be saved")."\n";
+			$dataentryoutput .= "\t\t</strong></font></font></td>\n";
+			$dataentryoutput .= "\t</tr>\n";
 		}
 		else
 		{
-			echo "</form>\n";
-			echo "\t<tr>\n";
-			echo "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
-			echo "\t\t\t<font color='red'><strong>".$clang->gT("Error")."</strong></font><br />\n";
-			echo "\t\t\t".$clang->gT("The survey you selected does not exist")."</font><br /><br />\n";
-			echo "\t\t\t<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
-			echo "\t\t</td>\n";
-			echo "\t</tr>\n";
-			echo "</table>";
-			echo getAdminFooter("$langdir/instructions.html#Editing and Deleting Responses", "Using PHPSurvey to Edit Responses");
-			exit;
+			$dataentryoutput .= "</form>\n";
+			$dataentryoutput .= "\t<tr>\n";
+			$dataentryoutput .= "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
+			$dataentryoutput .= "\t\t\t<font color='red'><strong>".$clang->gT("Error")."</strong></font><br />\n";
+			$dataentryoutput .= "\t\t\t".$clang->gT("The survey you selected does not exist")."</font><br /><br />\n";
+			$dataentryoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+			$dataentryoutput .= "\t\t</td>\n";
+			$dataentryoutput .= "\t</tr>\n";
+			$dataentryoutput .= "</table>";
+			return;
 		}
-		echo "\t<tr>\n";
-		echo "\t<td>\n";
-		echo "\t<input type='hidden' name='action' value='insert' />\n";
-		echo "\t<input type='hidden' name='surveytable' value='$surveytable' />\n";
-		echo "\t<input type='hidden' name='sid' value='$surveyid' />\n";
-		echo "\t</td>\n";
-		echo "\t</tr>\n";
-		echo "</table>\n";
-		echo "\t</form>\n";
+		$dataentryoutput .= "\t<tr>\n";
+		$dataentryoutput .= "\t<td>\n";
+		$dataentryoutput .= "\t<input type='hidden' name='subaction' value='insert' />\n";
+		$dataentryoutput .= "\t<input type='hidden' name='surveytable' value='$surveytable' />\n";
+		$dataentryoutput .= "\t<input type='hidden' name='sid' value='$surveyid' />\n";
+		$dataentryoutput .= "\t</td>\n";
+		$dataentryoutput .= "\t</tr>\n";
+		$dataentryoutput .= "</table>\n";
+		$dataentryoutput .= "\t</form>\n";
 	}
-	echo "&nbsp;";
-	echo getAdminFooter("$langdir/instructions.html#Editing and Deleting Responses", "Using PHPSurvey to Edit Responses");
+	$dataentryoutput .= "&nbsp;";
 
 	}
 else
 	{	
-	$action = "browse_response";
+	$subaction = "browse_response";
 	include("access_denied.php");
 	include("admin.php");
-	//echo("Wird gel?scht: " . $sumrows5['DELETE_SURVEY']);	
 	}
 
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-02-04 12:04+0100\n"
+"PO-Revision-Date: 2007-02-04 18:43+0100\n"
 "Last-Translator: \n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -11,6 +11,7 @@ msgstr ""
 "X-Poedit-Basepath: D:\\web\\xampp\\htdocs\\phpsurveyor\n"
 "X-Poedit-Country: german\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: gT\n"
 "X-Poedit-SearchPath-0: D:\\web\\xampp\\htdocs\\phpsurveyor\n"
 
 msgid "Administration"
@@ -179,9 +180,6 @@ msgstr "Zeige letzten 50 Antworten an"
 
 msgid "Dataentry Screen for Survey"
 msgstr "Dateneingabemaske für die Umfrage"
-
-msgid "Printable Version of Survey"
-msgstr "Druckbare Version der Umfrage"
 
 msgid "Get statistics from these responses"
 msgstr "Zeige Statistiken dieser Antworten an"
@@ -713,7 +711,7 @@ msgstr "Die Umfrage konnte nicht aktiviert werden."
 msgid "Main Admin Screen"
 msgstr "Zurück zur Hauptseite"
 
-msgid "Survey has been activated. Results table has been succesfully created."
+msgid "Survey has been activated. Results table has been successfully created."
 msgstr "Die Umfrage wurde aktiviert. Die Ergebnis-Tabelle wurde erfolgreich erstellt."
 
 msgid "This is not an anonymous survey. A token table must also be created."
@@ -1349,6 +1347,9 @@ msgstr "Umfrage ausführen/testen"
 msgid "Please select a language:"
 msgstr "Bitte wählen Sie eine Sprache aus:"
 
+msgid "Printable Version of Survey"
+msgstr "Druckbare Version der Umfrage"
+
 msgid "Edit Current Survey"
 msgstr "Diese Umfrage bearbeiten"
 
@@ -1423,7 +1424,7 @@ msgstr "Wenn Zugangsschlüssel benutzt werden, kann man sich für diesen Fragebo
 msgid "Participants can save partially finished surveys"
 msgstr "Teilnehmer können teilweise fertiggestellte Umfrage zwischenspeichern."
 
-msgid "Regenerate Question Numbers:"
+msgid "Regenerate Question Codes:"
 msgstr "Fragen-Codes neu erzeugen:"
 
 msgid "Straight"
@@ -2644,16 +2645,16 @@ msgstr "Generiere eindeutige Probanden-Nummer"
 msgid "Drop tokens table"
 msgstr "Probanden-Tabelle löschen"
 
-msgid "Total Records in this Token Table:"
+msgid "Total Records in this Token Table"
 msgstr "Anzahl Probanden"
 
-msgid "Total With No Unique Token:"
+msgid "Total With No Unique Token"
 msgstr "Anzahl Probanden ohne Zugangsschlüssel"
 
-msgid "Total Invitations Sent:"
+msgid "Total Invitations Sent"
 msgstr "Anzahl Eingeladene Probanden"
 
-msgid "Total Surveys Completed:"
+msgid "Total Surveys Completed"
 msgstr "Anzahl ausgefüllte Umfragen"
 
 msgid "All token entries have been deleted."
@@ -2852,21 +2853,21 @@ msgstr "{TOKENCOUNT} Einträge erstellt"
 msgid "Uploading LDAP Query"
 msgstr "Lade LDAP Abfrage hoch"
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1414
-msgid "Can't bind to the Ldap directory"
-msgstr ""
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1420
+msgid "Can't bind to the LDAP directory"
+msgstr "Mit dem LDAP Verzeichnis konnte BIND nicht ausgeführt werden"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1420
-msgid "Can't connect to the Ldap directory"
+msgid "Can't connect to the LDAP directory"
 msgstr "Mit dem LDAP Verzeichnis konnte nicht verbunden werden"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1461
 msgid "LDAP is disabled or no LDAP query defined."
 msgstr "LDAP is deaktiviert oder keine LDAP Abfrage definiert."
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1471
-msgid "Select the Ldap query you want:"
-msgstr ""
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1469
+msgid "Select the LDAP query you want:"
+msgstr "Wählen Sie bitte die LDAP Abfrage aus:"
 
 msgid "Forgot Password"
 msgstr "Passwort vergessen"

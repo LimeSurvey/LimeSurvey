@@ -1460,7 +1460,7 @@ function formldap($error=false)
 
 	if (! isset($ldap_queries) || ! is_array($ldap_queries) || count($ldap_queries) == 0) {
 		$tokenoutput .= '<br />';
-		$tokenoutput .= _('LDAP is disabled or no LDAP query defined.');
+		$tokenoutput .= $clang->gT('LDAP is disabled or no LDAP query defined.');
 		$tokenoutput .= '<br /><br /><br />';
 		$tokenoutput .= '</center>';
 	}

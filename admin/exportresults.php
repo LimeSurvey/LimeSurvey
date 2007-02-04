@@ -44,11 +44,12 @@ if (!isset($type)) {$type=returnglobal('type');}
 
 //Ensure script is not run directly, avoid path disclosure
 if (empty($surveyid)) {die ("Cannot run this script directly");}
+include_once("login_check.php");
+$exportoutput="";
 
 if (!$style)
 {
-	sendcacheheaders();
-	$excesscols[]="id";
+    $excesscols[]="id";
 	$thissurvey=getSurveyInfo($surveyid);
 	//FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
 	$query=" SELECT other, {$dbprefix}questions.type, {$dbprefix}questions.gid, {$dbprefix}questions.qid FROM {$dbprefix}questions, {$dbprefix}groups "
@@ -104,19 +105,22 @@ if (!$style)
 	if ($thissurvey["ipaddr"]=='Y') {$excesscols[]='ipaddr';}
 
 	$afieldcount = count($excesscols);
-	echo $htmlheader
-	."<br />\n"
-	."<form action='export.php' method='post'>\n"
+    $exportoutput .= "<table width='99%' align='center' style='margin: 5px; border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+    ."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Export Results")."</strong></font></td></tr>\n";
+    $exportoutput .= browsemenubar();
+    $exportoutput .= "</table>\n";	
+	$exportoutput .= "<br />\n"
+	."<form action='$scriptname?action=export' method='post'>\n"
 	."<table align='center'><tr>"
 	."<td valign='top'>\n"
 	."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 	."\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
 	."<font size='1' face='verdana' color='white'><strong>"
 	.$clang->gT("Export Responses");
-	if (isset($_POST['sql'])) {echo " - ".$clang->gT("Filtered from Statistics Script");}
-	if (returnglobal('id')<>'') {echo " - ".$clang->gT("Single Response");}
-	echo "</strong> ($afieldcount Cols)</font></td></tr>\n"
-	."\t<tr><td height='8' bgcolor='silver'>$setfont<font size='1'><strong>"
+	if (isset($_POST['sql'])) {$exportoutput .= " - ".$clang->gT("Filtered from Statistics Script");}
+	if (returnglobal('id')<>'') {$exportoutput .= " - ".$clang->gT("Single Response");}
+	$exportoutput .= "</strong> ($afieldcount ".$clang->gT("Columns").")</font></td></tr>\n"
+	."\t<tr><td height='8' bgcolor='silver'><font size='1'><strong>"
 	.$clang->gT("Questions")."</strong></font></font></td></tr>\n"
 	."\t<tr>\n"
 	."\t\t<td>\n"
@@ -131,7 +135,7 @@ if (!$style)
 	.$clang->gT("Question Codes")."</label>\n"
 	."\t\t</font></font></td>\n"
 	."\t</tr>\n"
-	."\t<tr><td height='8' bgcolor='silver'>$setfont<font size='1'><strong>"
+	."\t<tr><td height='8' bgcolor='silver'><font size='1'><strong>"
 	.$clang->gT("Answers")."</strong></font></font></td></tr>\n"
 	."\t<tr>\n"
 	."\t\t<td>\n"
@@ -143,7 +147,7 @@ if (!$style)
 	.$clang->gT("Full Answers")."</label>\n"
 	."\t\t</font></font></td>\n"
 	."\t</tr>\n"
-	."\t<tr><td height='8' bgcolor='silver'>$setfont<font size='1'><strong>"
+	."\t<tr><td height='8' bgcolor='silver'><font size='1'><strong>"
 	.$clang->gT("Format")."</strong></font></font></td></tr>\n"
 	."\t<tr>\n"
 	."\t\t<td>\n"
@@ -170,19 +174,17 @@ if (!$style)
 	."\t\t<td align=\"center\" bgcolor='silver'>\n";
 	if (isset($_POST['sql']))
 	{
-		echo "\t<input type='hidden' name='sql' value=\""
+		$exportoutput .= "\t<input type='hidden' name='sql' value=\""
 		.stripcslashes($_POST['sql'])
 		."\">\n";
 	}
 	if (returnglobal('id')<>'')
 	{
-		echo "\t<input type='hidden' name='answerid' value=\""
+		$exportoutput .= "\t<input type='hidden' name='answerid' value=\""
 		.stripcslashes(returnglobal('id'))
 		."\">\n";
 	}
-	echo "\t\t\t<input type='submit' value='"
-	.$clang->gT("Close Window")."' onClick=\"self.close()\">\n"
-	."\t\t</td>\n"
+	$exportoutput .= "</td>\n"
 	."\t</tr>\n"
 	."</table>\n"
 	."</td>";
@@ -195,7 +197,7 @@ if (!$style)
 		$result=$connect->Execute($query) or die("Couldn't get table list<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 		$tablecount=$result->RecordCount();
 	}
-	echo "<td valign='top'>\n"
+	$exportoutput .= "<td valign='top'>\n"
 	."<table align='center' width='150' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>"
 	."\t<tr>\n"
 	."\t\t<td height='8' bgcolor='#555555'><font face='verdana' color='white' size='1'><strong>"
@@ -203,48 +205,45 @@ if (!$style)
 	."\t\t</font></td>\n"
 	."\t</tr>\n"
 	."\t<tr>\n"
-	."\t\t<td bgcolor='silver' height='8'><strong>$setfont<font size='1'>\n"
+	."\t\t<td bgcolor='silver' height='8'><strong><font size='1'>\n"
 	."\t\t\t".$clang->gT("Choose columns").":\n"
-	."\t\t</font></font></strong></td>\n"
-	."\t</tr>\n"
-	."\t<tr>\n"
-	."\t\t<td>$setfont\n";
+	."\t\t</font></strong>";
 	if ($afieldcount > 255)
 	{
-		echo "\t\t\t<img src='$imagefiles/showhelp.png' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
+		$exportoutput .= "\t\t\t<img src='$imagefiles/showhelp.png' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
 		.$clang->gT("Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below.")
 		."\")'>";
 	}
 	else
 	{
-		echo "\t\t\t<img src='$imagefiles/showhelp.png' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
+		$exportoutput .= "\t\t\t<img src='$imagefiles/help.gif' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
 		.$clang->gT("Choose the columns you wish to export.")
 		."\")'>";
 	}
-	echo "\t\t</font></td>\n"
+	$exportoutput .= "\t\t</font></td>\n"
 	."\t</tr>\n"
 	."\t<tr>\n"
-	."\t\t<td align='center'>$setfont<font size='1'>\n"
+	."\t\t<td align='center'><font size='1'>\n"
 	."\t\t\t<select name='colselect[]' multiple size='15'>\n";
 	$i=1;
 	foreach($excesscols as $ec)
 	{
-		echo "<option value='$ec'";
+		$exportoutput .= "<option value='$ec'";
 		if (isset($_POST['summary']))
 		{
 			if (in_array($ec, $_POST['summary']))
 			{
-				echo "selected";
+				$exportoutput .= "selected";
 			}
 		}
 		elseif ($i<256)
 		{
-			echo " selected";
+			$exportoutput .= " selected";
 		}
-		echo ">$i: $ec</option>\n";
+		$exportoutput .= ">$i: $ec</option>\n";
 		$i++;
 	}
-	echo "\t\t\t</select><br />\n"
+	$exportoutput .= "\t\t\t</select><br />\n"
 	."\t\t<img src='$imagefiles/blank.gif' height='7' alt=''></font></font></td>\n"
 	."\t</tr>\n"
 	."</table>\n"
@@ -254,7 +253,7 @@ if (!$style)
 		//OPTIONAL EXTRAS (FROM TOKENS TABLE)
 		if ($tablecount > 0)
 		{
-			echo "<td valign='top'>\n"
+			$exportoutput .= "<td valign='top'>\n"
 			."<table align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>"
 			."\t<tr>\n"
 			."\t\t<td height='8' bgcolor='#555555'><font face='verdana' color='white' size='1'><strong>"
@@ -262,12 +261,12 @@ if (!$style)
 			."\t\t</font></td>\n"
 			."\t</tr>\n"
 			."\t<tr>\n"
-			."\t\t<td bgcolor='silver' height='8'><strong>$setfont<font size='1'>\n"
+			."\t\t<td bgcolor='silver' height='8'><strong><font size='1'>\n"
 			.$clang->gT("Choose Token Fields").":"
 			."\t\t</font></font></strong></td>\n"
 			."\t</tr>\n"
 			."\t<tr>\n"
-			."\t\t<td>$setfont<font size='1'>"
+			."\t\t<td><font size='1'>"
 			."<img src='$imagefiles/showhelp.png' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
 			.$clang->gT("Your survey can export associated token data with each response. Select any additional fields you would like to export.")
 			."\")'><br /><br />\n"
@@ -284,22 +283,21 @@ if (!$style)
 			$rowcount = $result->FieldCount();
 			if ($rowcount > 7)
 			{
-				echo "<input type='checkbox' name='attribute_1' id='attribute_1'>"
+				$exportoutput .= "<input type='checkbox' name='attribute_1' id='attribute_1'>"
 				."<label for='attribute_1'>".$clang->gT("Attribute 1")."</label><br />\n"
 				."<input type='checkbox' name='attribute_2' id='attribute_2'>"
 				."<label for='attribute_2'>".$clang->gT("Attribute 2")."</label><br />\n";
 			}
-			echo "\t\t</font></font></td>\n"
+			$exportoutput .= "\t\t</font></font></td>\n"
 			."\t</tr>\n"
 			."</table>"
 			."</td>";
 		}
 	}
-	echo "</tr>\n"
+	$exportoutput .= "</tr>\n"
 	."</table><br />\n"
-	."\t</form>\n"
-	.getAdminFooter("$langdir/instructions.html", "General PHPSurveyor Instructions");
-	exit;
+	."\t</form>\n";
+	return;
 }
 
 //HERE WE EXPORT THE ACTUAL RESULTS
@@ -613,7 +611,7 @@ if ($type == "doc")
 }
 else
 {
-	echo $firstline; //Sending the header row
+	$exportoutput .= $firstline; //Sending the header row
 }
 
 
@@ -672,11 +670,11 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
 	{
 		if ($type == "csv")
 		{
-			echo "\"".implode("\"$separator\"", str_replace("\"", "\"\"", str_replace("\r\n", " ", $drow))) . "\"\n"; //create dump from each row
+			$exportoutput .= "\"".implode("\"$separator\"", str_replace("\"", "\"\"", str_replace("\r\n", " ", $drow))) . "\"\n"; //create dump from each row
 		}
 		else
 		{
-			echo implode($separator, str_replace("\r\n", " ", $drow)) . "\n"; //create dump from each row
+			$exportoutput .= implode($separator, str_replace("\r\n", " ", $drow)) . "\n"; //create dump from each row
 		}
 	}
 }
@@ -689,7 +687,7 @@ elseif ($answers == "long")
 	{
 		if ($type == "doc")
 		{
-			echo "\n\n\nNEW RECORD\n";
+			$exportoutput .= "\n\n\nNEW RECORD\n";
 		}
 		if (!ini_get('safe_mode'))
 		{
@@ -753,32 +751,32 @@ elseif ($answers == "long")
 			{
 				$ftype = "-";
 			}
-			if ($type == "csv") {echo "\"";}
-			if ($type == "doc") {echo "\n$ftitle\n\t";}
+			if ($type == "csv") {$exportoutput .= "\"";}
+			if ($type == "doc") {$exportoutput .= "\n$ftitle\n\t";}
 			switch ($ftype)
 			{
 				case "-": //JASONS SPECIAL TYPE
-				echo $drow[$i];
+				$exportoutput .= $drow[$i];
 				break;
 				case "R": //RANKING TYPE
 				$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = ?";
 				$lr = db_execute_assoc($lq, array($drow[$i]));
 				while ($lrow = $lr->FetchRow())
 				{
-					echo $lrow['answer'];
+					$exportoutput .= $lrow['answer'];
 				}
 				break;
 				case "L": //DROPDOWN LIST
 				case "!":
 				if (substr($fieldinfo, -5, 5) == "other")
 				{
-					echo $drow[$i];
+					$exportoutput .= $drow[$i];
 				}
 				else
 				{
 					if ($drow[$i] == "-oth-")
 					{
-						echo $clang->gT("Other");
+						$exportoutput .= $clang->gT("Other");
 					}
 					else
 					{
@@ -786,8 +784,8 @@ elseif ($answers == "long")
 						$lr = db_execute_assoc($lq, array($drow[$i])) or die($lq."<br />ERROR:<br />".htmlspecialchars($connect->ErrorMsg()));
 						while ($lrow = $lr->FetchRow())
 						{
-							//if ($lrow['code'] == $drow[$i]) {echo $lrow['answer'];}
-							echo $lrow['answer'];
+							//if ($lrow['code'] == $drow[$i]) {$exportoutput .= $lrow['answer'];}
+							$exportoutput .= $lrow['answer'];
 						}
 					}
 				}
@@ -796,13 +794,13 @@ elseif ($answers == "long")
 				case "Z":
 				if (substr($fieldinfo, -5, 5) == "other")
 				{
-					echo $drow[$i];
+					$exportoutput .= $drow[$i];
 				}
 				else
 				{
 					if ($drow[$i] == "-oth-")
 					{
-						echo $clang->gT("Other");
+						$exportoutput .= $clang->gT("Other");
 					}
 					else
 					{
@@ -810,7 +808,7 @@ elseif ($answers == "long")
 						$fresult = db_execute_assoc($fquery) or die("ERROR:".$fquery."\n".$qq."\n".htmlspecialchars($connect->ErrorMsg()));
 						while ($frow = $fresult->FetchRow())
 						{
-							echo $frow['title'];
+							$exportoutput .= $frow['title'];
 						}
 					}
 				}
@@ -821,44 +819,44 @@ elseif ($answers == "long")
 				$found = "";
 				while ($lrow = $lr->FetchRow())
 				{
-					if ($lrow['code'] == $drow[$i]) {echo $lrow['answer']; $found = "Y";}
+					if ($lrow['code'] == $drow[$i]) {$exportoutput .= $lrow['answer']; $found = "Y";}
 				}
-				if ($found != "Y") {if ($type == "csv") {echo str_replace("\"", "\"\"", $drow[$i]);} else {echo str_replace("\r\n", " ", $drow[$i]);}}
+				if ($found != "Y") {if ($type == "csv") {$exportoutput .= str_replace("\"", "\"\"", $drow[$i]);} else {$exportoutput .= str_replace("\r\n", " ", $drow[$i]);}}
 				break;
 				case "Y": //YES\NO
 				switch($drow[$i])
 				{
-					case "Y": echo $clang->gT("Yes"); break;
-					case "N": echo $clang->gT("No"); break;
-					default: echo $clang->gT("N/A"); break;
+					case "Y": $exportoutput .= $clang->gT("Yes"); break;
+					case "N": $exportoutput .= $clang->gT("No"); break;
+					default: $exportoutput .= $clang->gT("N/A"); break;
 				}
 				break;
 				case "G": //GENDER
 				switch($drow[$i])
 				{
-					case "M": echo $clang->gT("Male"); break;
-					case "F": echo $clang->gT("Female"); break;
-					default: echo $clang->gT("N/A"); break;
+					case "M": $exportoutput .= $clang->gT("Male"); break;
+					case "F": $exportoutput .= $clang->gT("Female"); break;
+					default: $exportoutput .= $clang->gT("N/A"); break;
 				}
 				break;
 				case "M": //multioption
 				case "P":
 				if (substr($fieldinfo, -5, 5) == "other")
 				{
-					echo "$drow[$i]";
+					$exportoutput .= "$drow[$i]";
 				}
 				elseif (substr($fieldinfo, -7, 7) == "comment")
 				{
-					echo "$drow[$i]";
+					$exportoutput .= "$drow[$i]";
 				}
 				else
 				{
 					switch($drow[$i])
 					{
-						case "Y": echo $clang->gT("Yes"); break;
-						case "N": echo $clang->gT("No"); break;
-						case "": echo $clang->gT("No"); break;
-						default: echo $drow[$i]; break;
+						case "Y": $exportoutput .= $clang->gT("Yes"); break;
+						case "N": $exportoutput .= $clang->gT("No"); break;
+						case "": $exportoutput .= $clang->gT("No"); break;
+						default: $exportoutput .= $drow[$i]; break;
 					}
 				}
 				break;
@@ -866,26 +864,26 @@ elseif ($answers == "long")
 				switch($drow[$i])
 				{
 					case "Y":
-					echo $clang->gT("Yes");
+					$exportoutput .= $clang->gT("Yes");
 					break;
 					case "N":
-					echo $clang->gT("No");
+					$exportoutput .= $clang->gT("No");
 					break;
 					case "U":
-					echo $clang->gT("Uncertain");
+					$exportoutput .= $clang->gT("Uncertain");
 					break;
 				}
 				case "E":
 				switch($drow[$i])
 				{
 					case "I":
-					echo $clang->gT("Increase");
+					$exportoutput .= $clang->gT("Increase");
 					break;
 					case "S":
-					echo $clang->gT("Same");
+					$exportoutput .= $clang->gT("Same");
 					break;
 					case "D":
-					echo $clang->gT("Decrease");
+					$exportoutput .= $clang->gT("Decrease");
 					break;
 				}
 				break;
@@ -895,7 +893,7 @@ elseif ($answers == "long")
 				$fresult = db_execute_assoc($fquery) or die("ERROR:".$fquery."\n".$qq."\n".htmlspecialchars($connect->ErrorMsg()));
 				while ($frow = $fresult->FetchRow())
 				{
-					echo $frow['title'];
+					$exportoutput .= $frow['title'];
 				}
 				break;
 				default: $tempresult=$dresult->FetchField($i);
@@ -905,26 +903,26 @@ elseif ($answers == "long")
 					if ($tokenresult = db_execute_assoc($tokenquery)) //or die ("Couldn't get token info<br />$tokenquery<br />".$connect->ErrorMsg());
 					while ($tokenrow=$tokenresult->FetchRow())
 					{
-						echo "{$tokenrow['lastname']}, {$tokenrow['firstname']}";
+						$exportoutput .= "{$tokenrow['lastname']}, {$tokenrow['firstname']}";
 					}
 					else
 					{
-						echo "Tokens problem - token table missing";
+						$exportoutput .= "Tokens problem - token table missing";
 					}
 				}
 				else
 				{
 					if ($type == "csv")
-					{echo str_replace("\r\n", "\n", str_replace("\"", "\"\"", $drow[$i]));}
+					{$exportoutput .= str_replace("\r\n", "\n", str_replace("\"", "\"\"", $drow[$i]));}
 					else
-					{echo str_replace("\r\n", " ", $drow[$i]);}
+					{$exportoutput .= str_replace("\r\n", " ", $drow[$i]);}
 				}
 			}
-			if ($type == "csv") {echo "\"";}
-			echo "$separator";
+			if ($type == "csv") {$exportoutput .= "\"";}
+			$exportoutput .= "$separator";
 			$ftype = "";
 		}
-		echo "\n";
+		$exportoutput .= "\n";
 	}
 }
 ?>

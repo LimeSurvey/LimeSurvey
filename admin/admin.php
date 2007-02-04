@@ -150,6 +150,12 @@ if(isset($_SESSION['loginID']) && $action!='login')
   	include("database.php");
   }
 
+  if ($action=="exportresults")  { include("exportresults.php"); }
+  else  
+  if ($action=="statistics")  {	include("statistics.php"); }
+  else  
+  if ($action=="dataentry")  {	include("dataentry.php"); }
+  else  
   if ($action=="browse")  {	include("browse.php"); }
   else  
   if ($action=="tokens")  {	include("tokens.php"); }
@@ -194,7 +200,11 @@ if(isset($_SESSION['loginID']) && $action!='login')
   
   // For some output we dont want to have the standard admin menu bar
   if (!isset($labelsoutput)  && !isset($templatesoutput) && !isset($printablesurveyoutput) && 
-      !isset($assessmentsoutput) && !isset($tokenoutput) && !isset($browseoutput)) {$adminoutput.= showadminmenu();}
+      !isset($assessmentsoutput) && !isset($tokenoutput) && !isset($browseoutput) &&
+      !isset($dataentryoutput) && !isset($statisticsoutput)&& !isset($exportoutput)) 
+      {
+        $adminoutput.= showadminmenu();
+      }
     
   
   if (isset($templatesoutput)) {$adminoutput.= $templatesoutput;}
@@ -233,6 +243,9 @@ if(isset($_SESSION['loginID']) && $action!='login')
   if (isset($deactivateoutput)) {$adminoutput.= $deactivateoutput;} 	
   if (isset($tokenoutput)) {$adminoutput.= $tokenoutput;} 	
   if (isset($browseoutput)) {$adminoutput.= $browseoutput;} 	
+  if (isset($dataentryoutput)) {$adminoutput.= $dataentryoutput;} 	
+  if (isset($statisticsoutput)) {$adminoutput.= $statisticsoutput;} 	
+  if (isset($exportoutput)) {$adminoutput.= $exportoutput;} 	
   
   
   

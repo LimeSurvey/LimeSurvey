@@ -1094,7 +1094,7 @@ function browsemenubar()
 	. "\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all&amp;limit=50&amp;order=desc'" .
 			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Display Last 50 Responses")."')\">" .
 			"<img name='ViewLast' src='$imagefiles/viewlast.png' title='' align='left' /></a>\n"
-	. "\t\t\t<a href='dataentry.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Dataentry Screen for Survey")."')\">" .
+	. "\t\t\t<a href='$scriptname?action=dataentry&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Dataentry Screen for Survey")."')\">" .
 	  "<img name='DataEntry' src='$imagefiles/dataentry.png' title='' align='left' /></a>\n"
 	. "\t\t\t<a href='$scriptname?action=statistics&amp;sid=$surveyid' "
 	."onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Get statistics from these responses")."')\">"
@@ -1106,9 +1106,6 @@ function browsemenubar()
 	. $clang->gT("Export result to a SPSS command file")."' border='0' alt='". $clang->gT("Export result to a SPSS command file")."'></a>\n"
 	. "\t\t\t<a href='importoldresponses.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Import answers from a deactivated survey table")."')\" >" .
 			"<img name='Export' src='$imagefiles/importold.png' title='' alt=''align='left' /></a>\n"
-	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n"
-	. "\t\t\t<a href='resultsdump.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Backup results table as SQL file")."')\">" .
-			"<img name='SaveDump' src='$imagefiles/exportcsv.png' title='' align='left' /></a>\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n"
 	. "\t\t\t<a href='".$homeurl."/saved.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("View Saved but not submitted Responses")."')\" >" .
 		"<img src='$imagefiles/saved.png' title='' align='left'  name='BrowseSaved' /></a>\n"
@@ -1392,7 +1389,7 @@ function createFieldMap($surveyid, $style="null") {
 
 	//This function generates an array containing the fieldcode, and matching data in the same
 	//order as the activate script
-	global $dbprefix, $connect, $globalfieldmap;
+	global $dbprefix, $connect, $globalfieldmap, $clang;
 
 	//checks to see if fieldmap has already been built for this page.
 	if (isset($globalfieldmap) && $globalfieldmap[0] == $surveyid) {
