@@ -90,7 +90,7 @@ echo "</td></tr></table>\n";
 
 function showSavedList($surveyid)
 {
-	global $dbprefix, $connect;
+	global $dbprefix, $connect, $clang;
 	$query = "SELECT scid, identifier, ip, saved_date, email, access_code\n"
 	."FROM {$dbprefix}saved_control\n"
 	."WHERE sid=$surveyid\n"
@@ -131,7 +131,7 @@ function showSavedList($surveyid)
 
 function savedmenubar()
 {
-	global $surveyid, $scriptname, $imagefiles;
+	global $surveyid, $scriptname, $imagefiles, $clang;
 	//BROWSE MENU BAR
 	if (!isset($surveyoptions)) {$surveyoptions="";}
 	$surveyoptions .= "\t<tr bgcolor='#999999'>\n"
