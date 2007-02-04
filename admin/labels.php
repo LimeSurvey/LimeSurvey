@@ -63,10 +63,10 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
                     . "\t\t\t<tr bgcolor='#555555'>\n"
                     . "\t\t\t\t<td colspan='2' height='8'>\n"
                     . "\t\t\t\t<font size='1' color='white'><strong>"
-	._("Label Sets Administration")."</strong></font></td></tr>\n"
+	.$clang->gT("Label Sets Administration")."</strong></font></td></tr>\n"
 	."<tr bgcolor='#999999'>\n"
 	."\t<td>\n"
-	."\t<a href='$scriptname' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Return to Survey Administration")."');return false\">" .
+	."\t<a href='$scriptname' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Return to Survey Administration")."');return false\">" .
 			"<img name='Administration' src='$imagefiles/home.png' title='' alt='' align='left'  /></a>"
 	."\t<img src='$imagefiles/blank.gif' width='11' height='20' border='0' hspace='0' align='left' alt='' />\n"
 	."\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
@@ -76,16 +76,16 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 	."\t<td align='right' width='620'>\n"
 	."<a href=\"#\" onClick=\"showhelp('show')\"" 
 	."onmouseout=\"hideTooltip()\"" 
-	."onmouseover=\"showTooltip(event,'"._("Show Help")."');return false\">" 
+	."onmouseover=\"showTooltip(event,'".$clang->gT("Show Help")."');return false\">" 
 	."<img src='$imagefiles/showhelp.png' name='ShowHelp' title=''" 
-	."alt='". _("Show Help")."' align='right'  /></a>"	
+	."alt='". $clang->gT("Show Help")."' align='right'  /></a>"	
 	."\t<img src='$imagefiles/blank.gif' width='42' height='20' align='right' hspace='0' border='0'  alt='' />\n"
 	."\t<img src='$imagefiles/seperator.gif' align='right' hspace='0' border='0' alt='' />\n"
 	."<a href=\"#\" onClick=\"window.open('admin.php?action=newlabelset', '_top')\"" 
 	."onmouseout=\"hideTooltip()\"" 
-	."onmouseover=\"showTooltip(event,'"._("Add new label set")."');return false\">"
-	."<img src='$imagefiles/add.png' align='right' name='AddLabel' title='' alt='". _("Add new label set")."' /></a>\n"	 
-	."\t<font class='boxcaption'>"._("Labelsets").": </font>"
+	."onmouseover=\"showTooltip(event,'".$clang->gT("Add new label set")."');return false\">"
+	."<img src='$imagefiles/add.png' align='right' name='AddLabel' title='' alt='". $clang->gT("Add new label set")."' /></a>\n"	 
+	."\t<font class='boxcaption'>".$clang->gT("Labelsets").": </font>"
 	."\t<select class='listboxsurveys' "
 	."onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
 	$labelsets=getlabelsets();
@@ -100,7 +100,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 	}
 	$labelsoutput.= "<option value=''";
 	if (!isset($lid) || $lid<1) {$labelsoutput.= " selected";}
-	$labelsoutput.= ">"._("Please Choose...")."</option>\n";
+	$labelsoutput.= ">".$clang->gT("Please Choose...")."</option>\n";
 	
 	$labelsoutput.= "\t</select>\n"
 	."\t</td>\n"
@@ -124,14 +124,14 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		."<td colspan='4' align='center'><font color='white'><strong>\n"
 		."<input type='image' src='$imagefiles/close.gif' align='right' "
 		."onClick=\"window.open('admin.php?action=labels&amp;lid=$lid', '_top')\" />\n";
-		if ($action == "newlabelset") {$labelsoutput.= _("Create New Label Set"); $langids="en";}
-		else {$labelsoutput.= _("Edit Label Set");}
+		if ($action == "newlabelset") {$labelsoutput.= $clang->gT("Create New Label Set"); $langids="en";}
+		else {$labelsoutput.= $clang->gT("Edit Label Set");}
 		$langidsarray=explode(" ",trim($langids)); //Make an array of it
 		$labelsoutput.= "</strong></font></td>\n"
 		."\t</tr>\n"
 		."\t<tr>\n"
 		."<td align='right' width='25%'>\n"
-		."\t<strong>"._("Set Name").":</strong>"
+		."\t<strong>".$clang->gT("Set Name").":</strong>"
 		."</td>\n"
 		."<td>\n"
 		."\t<input type='hidden' name='languageids' id='languageids' value='$langids' />"
@@ -141,7 +141,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		."</td>\n"
 		."\t</tr>\n"
 		// Additional languages listbox
-    	. "\t<tr><td align='right'><font class='settingcaption'>"._("Languages").":</font></td>\n"
+    	. "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Languages").":</font></td>\n"
 		. "<td><select multiple style='min-width:250px;' size='5' id='additional_languages' name='additional_languages'>";
 		foreach ($langidsarray as $langid) 
 			{
@@ -151,7 +151,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 
 			//  Add/Remove Buttons
 			$labelsoutput.= "</select></td>"
-			. "<td align=left><INPUT type=\"button\" value=\"<< "._('Add')."\" onclick=\"DoAdd()\" ID=\"AddBtn\" /><br /> <INPUT type=\"button\" value=\""._('Remove')." >>\" onclick=\"DoRemove(1,'"._("You cannot remove this items since you need at least one language in a labelset.")."')\" ID=\"RemoveBtn\"  /></td>\n"
+			. "<td align=left><INPUT type=\"button\" value=\"<< "._('Add')."\" onclick=\"DoAdd()\" ID=\"AddBtn\" /><br /> <INPUT type=\"button\" value=\""._('Remove')." >>\" onclick=\"DoRemove(1,'".$clang->gT("You cannot remove this items since you need at least one language in a labelset.")."')\" ID=\"RemoveBtn\"  /></td>\n"
 
 			// Available languages listbox
 			. "<td align=left width='45%'><select size='5' id='available_languages' name='available_languages'>";
@@ -168,8 +168,8 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		."<td></td><td></td>\n"
 		."<td>\n"
     	."<br /><input type='submit' value='";
-		if ($action == "newlabelset") {$labelsoutput.= _("Add");}
-		  else {$labelsoutput.= _("Update");}
+		if ($action == "newlabelset") {$labelsoutput.= $clang->gT("Add");}
+		  else {$labelsoutput.= $clang->gT("Update");}
 		$labelsoutput.= "' />\n"
 		."<input type='hidden' name='action' value='";
 		if ($action == "newlabelset") {$labelsoutput.= "insertlabelset";}
@@ -193,15 +193,15 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			."\t</td></tr>\n"
 			."\t<tr bgcolor='black'>\n"
 			."<td colspan='2' align='center'><font color='white'><strong>\n"
-			.""._("Import Label Set")."\n"
+			."".$clang->gT("Import Label Set")."\n"
 			."</strong></font></td>\n"
 			."\t</tr>\n"
 			."\t<tr>\n"
 			."<td align='right'><strong>"
-			._("Select SQL File:")."</strong></td>\n"
+			.$clang->gT("Select SQL File:")."</strong></td>\n"
 			."<td><input name=\"the_file\" type=\"file\" size=\"35\" />"
 			."</td></tr>\n"
-			."\t<tr><td></td><td><input type='submit' value='"._("Import Label Set")."' />\n"
+			."\t<tr><td></td><td><input type='submit' value='".$clang->gT("Import Label Set")."' />\n"
 			."\t<input type='hidden' name='action' value='importlabels' /></TD>\n"
 			."\t</tr></table></form>\n";
 		}
@@ -230,22 +230,22 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			$labelsoutput.= "\t<table width='100%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 			."<tr bgcolor='#555555'><td height='4' colspan='2'>"
 			."<font size='1' face='verdana' color='white'><strong>"
-			._("Label Set").":</strong> {$row['label_name']}</font></td></tr>\n"
+			.$clang->gT("Label Set").":</strong> {$row['label_name']}</font></td></tr>\n"
 			."<tr bgcolor='#999999'>\n"
 			."\t<td>\n"
 			."\t<input type='image' src='$imagefiles/close.gif' title='"
-			._("Close Window")."' align='right' "
+			.$clang->gT("Close Window")."' align='right' "
 			."onClick=\"window.open('admin.php?action=labels', '_top')\" />\n"
 			."\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />\n"
 			."\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
 			."\t<img src='$imagefiles/blank.gif' width='60' height='20' border='0' hspace='0' align='left' alt='' />\n"
 			."\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
-			."\t<a href='admin.php?action=editlabelset&amp;lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Edit label set")."');return false\">" .
+			."\t<a href='admin.php?action=editlabelset&amp;lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Edit label set")."');return false\">" .
 			"<img name='EditLabelsetButton' src='$imagefiles/edit.png' alt='' align='left'  /></a>" 
-			."\t<a href='admin.php?action=deletelabelset&amp;lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Delete label set")."');return false\">"
-			."<img src='$imagefiles/delete.png' border='0' alt='' title='' align='left' onClick=\"return confirm('"._("Are you sure?")."')\" /></a>\n"
-			."\t<a href='dumplabel.php?lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'"._("Export Label Set")."');return false\">" .
-					"<img src='$imagefiles/exportcsv.png' alt='"._("Export Label Set")."' title='' align='left' /></a>" 
+			."\t<a href='admin.php?action=deletelabelset&amp;lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Delete label set")."');return false\">"
+			."<img src='$imagefiles/delete.png' border='0' alt='' title='' align='left' onClick=\"return confirm('".$clang->gT("Are you sure?")."')\" /></a>\n"
+			."\t<a href='dumplabel.php?lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Label Set")."');return false\">" .
+					"<img src='$imagefiles/exportcsv.png' alt='".$clang->gT("Export Label Set")."' title='' align='left' /></a>" 
 			."\t</td>\n"
 			."</tr>\n"
 			."\t</table>\n";
@@ -263,7 +263,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		$labelsoutput.= "\t<table width='100%' align='center' style='border: solid; border-width: 1px; border-color: #555555' cellspacing='0'>\n"
 		."<tr bgcolor='#555555' >\n"
 		."\t<td colspan='4'><strong><font size='1' face='verdana' color='white'>\n"
-		._("Labels")
+		.$clang->gT("Labels")
 		."\t</font></strong></td>\n"
 		."</tr>\n"
         ."\t<tr><td colspan='4'>\n"        ."<form method='post' action='admin.php'>\n"
@@ -285,16 +285,16 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
                 ."<thead align='center'>"
         		."<tr bgcolor='#BBBBBB'>\n"
         		."\t<td width='25%' align=right><strong><font size='1' face='verdana' >\n"
-        		._("Code")
+        		.$clang->gT("Code")
         		."\t</font></strong></td>\n"
         		."\t<td width='35%'><strong><font size='1' face='verdana'>\n"
-        		._("Title")
+        		.$clang->gT("Title")
         		."\t</font></strong></td>\n"
         		."\t<td width='25%'><strong><font size='1' face='verdana'>\n"
-        		._("Action")
+        		.$clang->gT("Action")
         		."\t</font></strong></td>\n"
         		."\t<td width='15%' align=center><strong><font size='1' face='verdana'>\n"
-        		._("Order")
+        		.$clang->gT("Order")
         		."\t</font></strong></td>\n"
         		."</tr></thead>"
                 ."<tbody align='center'>";
@@ -325,25 +325,25 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     			."\t<td width='25%'>\n";
     			if ($activeuse == 0)
     			{
-    				$labelsoutput.= "\t<input type='submit' name='method' value='"._("Del")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+    				$labelsoutput.= "\t<input type='submit' name='method' value='".$clang->gT("Del")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
     			}
     			$labelsoutput.= "\t</td>\n"
     			."\t<td>\n";
     			if ($position > 0)
     			{
-    				$labelsoutput.= "\t<input type='submit' name='method' value='"._("Up")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+    				$labelsoutput.= "\t<input type='submit' name='method' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
     			};
     			if ($position < $labelcount-1)
     			{
     				// Fill the sortorder hiddenfield so we now what field is moved down
-                    $labelsoutput.= "\t<input type='submit' name='method' value='"._("Dn")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+                    $labelsoutput.= "\t<input type='submit' name='method' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
     			}
     			$labelsoutput.= "\t</td></tr>\n";
     			$position++;
     		}
     	    if ($labelcount>0)  
             {                       
-                $labelsoutput.= "\t<tr><td colspan=4><center><input type='submit' name='method' value='"._("Save All")."'  />"
+                $labelsoutput.= "\t<tr><td colspan=4><center><input type='submit' name='method' value='".$clang->gT("Save All")."'  />"
                 ."</center></td></tr>\n";
             }
 
@@ -356,7 +356,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     			."\t<input type='text' maxlength='100' name='inserttitle_$lslanguage' size='80' />\n"
     			."\t</td>\n"
     			."\t<td width='25%'>\n"
-    			."\t<input type='submit' name='method' value='"._("Add new label")."' />\n"
+    			."\t<input type='submit' name='method' value='".$clang->gT("Add new label")."' />\n"
     			."\t</td>\n"
     			."\t<td>\n"
                 ."<script type='text/javascript'>\n"
@@ -373,7 +373,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     			$labelsoutput.= "<tr>\n"
     			."\t<td colspan='4' align='center'>\n"
     			."<font color='red' size='1'><i><strong>"
-    			._("Warning")."</strong>: "._("You cannot change codes, add or delete entries in this label set because it is being used by an active survey.")."</i></strong></font>\n"
+    			.$clang->gT("Warning")."</strong>: ".$clang->gT("You cannot change codes, add or delete entries in this label set because it is being used by an active survey.")."</i></strong></font>\n"
     			."\t</td>\n"
     			."</tr>\n";
     		}
@@ -394,7 +394,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		."<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'><tbody align='center'>\n"
 		."\t<tr><td width='80%'></td>"
 		."<td></td><td><input type='submit' name='method' value='"
-		._("Fix Sort")."' /></td>\n"
+		.$clang->gT("Fix Sort")."' /></td>\n"
 		."</tr></tbody></table>"
 		."\t<input type='hidden' name='lid' value='$lid' />\n"
 		."\t<input type='hidden' name='action' value='modlabelsetanswers' />\n"
@@ -404,7 +404,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			$labelsoutput.= "<tr>\n"
 			."\t<td colspan='4' align='center'>\n"
 			."<font color='red' size='1'><i><strong>"
-			._("Warning")."</strong>: "._("Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys.")."</i><br />";
+			.$clang->gT("Warning")."</strong>: ".$clang->gT("Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys.")."</i><br />";
 			foreach ($qidarray as $qd) {$labelsoutput.= "[<a href='".$qd['url']."'>".$qd['title']."</a>] ";}
 			$labelsoutput.= "</strong></font>\n"
 			."\t</td>\n"
@@ -429,7 +429,7 @@ function updateset($lid)
 	$query = "UPDATE ".db_table_name('labelsets')." SET label_name='{$_POST['label_name']}', languages='{$_POST['languageids']}' WHERE lid=$lid";
 	if (!$result = $connect->Execute($query))
 	{
-		$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\""._("Update of Label Set failed")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+		$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Update of Label Set failed")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
 	}
 }
 
@@ -445,7 +445,7 @@ function deletelabelset($lid)
 	$count = $result->RecordCount();
 	if ($count > 0)
 	{
-		$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\""._("Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first.")."\")\n //-->\n</script>\n";
+		$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first.")."\")\n //-->\n</script>\n";
 		return false;
 	}
 	else //There are no dependencies. We can delete this safely
@@ -469,7 +469,7 @@ function insertlabelset()
 	$query = "INSERT INTO ".db_table_name('labelsets')." (label_name,languages) VALUES ('{$_POST['label_name']}','{$_POST['languageids']}')";
 	if (!$result = $connect->Execute($query))
 	{
-		$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\""._("Update of Label Set failed")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+		$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Update of Label Set failed")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
 	}
 	else
 	{
@@ -496,11 +496,11 @@ function modlabelsetanswers($lid)
 		}
 	}
 	if (!isset($_POST['method'])) {
-		$_POST['method'] = _("Save");
+		$_POST['method'] = $clang->gT("Save");
 	}
 	switch($_POST['method'])
 	{
-		case _("Add new label"):
+		case $clang->gT("Add new label"):
 		if (isset($_POST['insertcode']) && $_POST['insertcode']!='')
 		{
    			$query = "select max(sortorder) as maxorder from ".db_table_name('labels')." where lid='$lid'";
@@ -519,7 +519,7 @@ function modlabelsetanswers($lid)
 		}
 		break;
 		// Save all labels with one button
-		case _("Save All"):
+		case $clang->gT("Save All"):
             //Determine autoids by evaluating the hidden field		
             $sortorderids=explode(' ', trim($_POST['sortorderids']));
             $codeids=explode(' ', trim($_POST['codeids']));
@@ -542,7 +542,7 @@ function modlabelsetanswers($lid)
 		break;
 
         // Pressing the Up button
-		case _("Up"):
+		case $clang->gT("Up"):
 		$newsortorder=$_POST['sortorder']-1;
 		$oldsortorder=$_POST['sortorder'];
 		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder=-1 WHERE lid=$lid AND sortorder='$newsortorder'";
@@ -554,7 +554,7 @@ function modlabelsetanswers($lid)
 		break;
 
         // Pressing the Down button
-		case _("Dn"):
+		case $clang->gT("Dn"):
 		$newsortorder=$_POST['sortorder']+1;
 		$oldsortorder=$_POST['sortorder'];
 		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder=-1 WHERE lid=$lid AND sortorder='$newsortorder'";
@@ -566,7 +566,7 @@ function modlabelsetanswers($lid)
 		break;
 		
 		// Delete Button
-		case _("Del"):
+		case $clang->gT("Del"):
 		$query = "DELETE FROM ".db_table_name('labels')." WHERE lid=$lid AND sortorder='{$_POST['sortorder']}'";
 		if (!$result = $connect->Execute($query))
 		{
@@ -575,7 +575,7 @@ function modlabelsetanswers($lid)
 		break;
 		
 		// Fix Sortorder button
-		case _("Fix Sort"):
+		case $clang->gT("Fix Sort"):
 		fixorder($lid);
 		break;
 	}

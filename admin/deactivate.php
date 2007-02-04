@@ -42,25 +42,25 @@ $deactivateoutput='';
 if (!isset($_GET['ok']) || !$_GET['ok'])
 {
 	$deactivateoutput .= "<br />\n<table width='500' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	$deactivateoutput .= "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>"._("Deactivate Survey")." ($surveyid)</strong></font></td></tr>\n";
+	$deactivateoutput .= "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Deactivate Survey")." ($surveyid)</strong></font></td></tr>\n";
 	$deactivateoutput .= "\t<tr>\n";
 	$deactivateoutput .= "\t\t<td align='center' bgcolor='#FFEEEE'>\n";
 	$deactivateoutput .= "\t\t\t<font color='red'><strong>";
-	$deactivateoutput .= _("Warning")."<br />"._("READ THIS CAREFULLY BEFORE PROCEEDING");
+	$deactivateoutput .= $clang->gT("Warning")."<br />".$clang->gT("READ THIS CAREFULLY BEFORE PROCEEDING");
 	$deactivateoutput .= "\t\t</strong></font></td>\n";
 	$deactivateoutput .= "\t</tr>\n";
 	$deactivateoutput .= "\t<tr>";
 	$deactivateoutput .= "\t\t<td>\n";
-	$deactivateoutput .= "\t\t\t"._("In an active survey, a table is created to store all the data-entry records.")."\n";
-	$deactivateoutput .= "\t\t\t<p>"._("When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using PHPSurveyor any more.")."</p>\n";
-	$deactivateoutput .= "\t\t\t<p>"._("De-activated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators.")."</p>\n";
-	$deactivateoutput .= "\t\t\t<p>"._("Your responses table will be renamed to:")." {$dbprefix}old_{$_GET['sid']}_{$date}</p>\n";
-	$deactivateoutput .= "\t\t\t<p>"._("You should export your responses before de-activating. Click \"Cancel\" to return to the main admin screen without de-activating this survey.")."</p>\n";
+	$deactivateoutput .= "\t\t\t".$clang->gT("In an active survey, a table is created to store all the data-entry records.")."\n";
+	$deactivateoutput .= "\t\t\t<p>".$clang->gT("When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using PHPSurveyor any more.")."</p>\n";
+	$deactivateoutput .= "\t\t\t<p>".$clang->gT("De-activated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators.")."</p>\n";
+	$deactivateoutput .= "\t\t\t<p>".$clang->gT("Your responses table will be renamed to:")." {$dbprefix}old_{$_GET['sid']}_{$date}</p>\n";
+	$deactivateoutput .= "\t\t\t<p>".$clang->gT("You should export your responses before de-activating. Click \"Cancel\" to return to the main admin screen without de-activating this survey.")."</p>\n";
 	$deactivateoutput .= "\t\t</td>\n";
 	$deactivateoutput .= "\t</tr>\n";
 	$deactivateoutput .= "\t<tr>\n";
 	$deactivateoutput .= "\t\t<td align='center'>\n";
-	$deactivateoutput .= "\t\t\t<input type='submit' value='"._("De-Activate Survey")."' onClick=\"window.open('$scriptname?action=deactivate&amp;ok=Y&amp;sid={$_GET['sid']}', '_top')\">\n";
+	$deactivateoutput .= "\t\t\t<input type='submit' value='".$clang->gT("De-Activate Survey")."' onClick=\"window.open('$scriptname?action=deactivate&amp;ok=Y&amp;sid={$_GET['sid']}', '_top')\">\n";
 	$deactivateoutput .= "\t\t<br />&nbsp;</td>\n";
 	$deactivateoutput .= "\t</tr>\n";
 	$deactivateoutput .= "</table><br />&nbsp;\n";
@@ -75,7 +75,7 @@ else
 		$toldtable="{$dbprefix}tokens_{$_GET['sid']}";
 		$tnewtable="{$dbprefix}old_tokens_{$_GET['sid']}_{$date}";
 		$tdeactivatequery = "RENAME TABLE $toldtable TO $tnewtable";
-		$tdeactivateresult = $connect->Execute($tdeactivatequery) or die ("Couldn't deactivate tokens table because:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>"._("Main Admin Screen")."</a>");
+		$tdeactivateresult = $connect->Execute($tdeactivatequery) or die ("Couldn't deactivate tokens table because:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
 	}
 
 	$oldtable="{$dbprefix}survey_{$_GET['sid']}";
@@ -107,26 +107,26 @@ else
 	$deactivatequery = "UPDATE {$dbprefix}surveys SET active='N' WHERE sid=$surveyid";
 	$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
 	$deactivateoutput .= "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	$deactivateoutput .= "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>"._("Deactivate Survey")." ($surveyid)</strong></font></td></tr>\n";
+	$deactivateoutput .= "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Deactivate Survey")." ($surveyid)</strong></font></td></tr>\n";
 	$deactivateoutput .= "\t<tr>\n";
 	$deactivateoutput .= "\t\t<td align='center'>\n";
-	$deactivateoutput .= "\t\t\t<strong>"._("Survey Has Been De-Activated")."\n";
+	$deactivateoutput .= "\t\t\t<strong>".$clang->gT("Survey Has Been De-Activated")."\n";
 	$deactivateoutput .= "\t\t</strong></td>\n";
 	$deactivateoutput .= "\t</tr>\n";
 	$deactivateoutput .= "\t<tr>\n";
 	$deactivateoutput .= "\t\t<td>\n";
-	$deactivateoutput .= "\t\t\t"._("The responses table has been renamed to: ")." $newtable.\n";
-	$deactivateoutput .= "\t\t\t"._("The responses to this survey are no longer available using PHPSurveyor.")."\n";
-	$deactivateoutput .= "\t\t\t<p>"._("You should note the name of this table in case you need to access this information later.")."</p>\n";
+	$deactivateoutput .= "\t\t\t".$clang->gT("The responses table has been renamed to: ")." $newtable.\n";
+	$deactivateoutput .= "\t\t\t".$clang->gT("The responses to this survey are no longer available using PHPSurveyor.")."\n";
+	$deactivateoutput .= "\t\t\t<p>".$clang->gT("You should note the name of this table in case you need to access this information later.")."</p>\n";
 	if (isset($toldtable) && $toldtable)
 	{
-		$deactivateoutput .= "\t\t\t"._("The tokens table associated with this survey has been renamed to: ")." $tnewtable.\n";
+		$deactivateoutput .= "\t\t\t".$clang->gT("The tokens table associated with this survey has been renamed to: ")." $tnewtable.\n";
 	}
 	$deactivateoutput .= "\t\t</td>\n";
 	$deactivateoutput .= "\t</tr>\n";
 	$deactivateoutput .= "\t<tr>\n";
 	$deactivateoutput .= "\t\t<td align='center'>\n";
-	$deactivateoutput .= "\t\t\t<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\">\n";
+	$deactivateoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\">\n";
 	$deactivateoutput .= "\t\t</td>\n";
 	$deactivateoutput .= "\t</tr>\n";
 	$deactivateoutput .= "</table>\n";

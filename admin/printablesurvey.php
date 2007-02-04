@@ -127,8 +127,8 @@ while ($degrow = $degresult->FetchRow())
 		$distinctresult=db_execute_assoc($distinctquery);
 		while ($distinctrow=$distinctresult->FetchRow())
 		{
-			if ($x > 0) {$explanation .= " <i>"._("and")."</i> ";}
-			$explanation .= _("if you answered")." ";
+			if ($x > 0) {$explanation .= " <i>".$clang->gT("and")."</i> ";}
+			$explanation .= $clang->gT("if you answered")." ";
 			$conquery="SELECT cid, cqid, {$dbprefix}questions.title,\n"
 			."{$dbprefix}questions.question, value, {$dbprefix}questions.type,\n"
 			."{$dbprefix}questions.lid, cfieldname\n"
@@ -147,15 +147,15 @@ while ($degrow = $degresult->FetchRow())
 					case "Y":
 					switch ($conrow['value'])
 					{
-						case "Y": $conditions[]=_("Yes"); break;
-						case "N": $conditions[]=_("No"); break;
+						case "Y": $conditions[]=$clang->gT("Yes"); break;
+						case "N": $conditions[]=$clang->gT("No"); break;
 					}
 					break;
 					case "G":
 					switch($conrow['value'])
 					{
-						case "M": $conditions[]=_("Male"); break;
-						case "F": $conditions[]=_("Female"); break;
+						case "M": $conditions[]=$clang->gT("Male"); break;
+						case "F": $conditions[]=$clang->gT("Female"); break;
 					} // switch
 					break;
 					case "A":
@@ -165,17 +165,17 @@ while ($degrow = $degresult->FetchRow())
 					case "C":
 					switch($conrow['value'])
 					{
-						case "Y": $conditions[]=_("Yes"); break;
-						case "U": $conditions[]=_("Uncertain"); break;
-						case "N": $conditions[]=_("No"); break;
+						case "Y": $conditions[]=$clang->gT("Yes"); break;
+						case "U": $conditions[]=$clang->gT("Uncertain"); break;
+						case "N": $conditions[]=$clang->gT("No"); break;
 					} // switch
 					break;
 					case "E":
 					switch($conrow['value'])
 					{
-						case "I": $conditions[]=_("Increase"); break;
-						case "D": $conditions[]=_("Decrease"); break;
-						case "S": $conditions[]=_("Same"); break;
+						case "I": $conditions[]=$clang->gT("Increase"); break;
+						case "D": $conditions[]=$clang->gT("Decrease"); break;
+						case "S": $conditions[]=$clang->gT("Same"); break;
 					}
 					case "F":
 					case "H":
@@ -222,20 +222,20 @@ while ($degrow = $degresult->FetchRow())
 			}
 			if (count($conditions) > 1)
 			{
-				$explanation .=  "'".implode("' "._("or")." '", $conditions)."'";
+				$explanation .=  "'".implode("' ".$clang->gT("or")." '", $conditions)."'";
 			}
 			elseif (count($conditions) == 1)
 			{
 				$explanation .= "'".$conditions[0]."'";
 			}
 			unset($conditions);
-			$explanation .= " "._("to question")." '".$distinctrow['title']." $answer_section'";
+			$explanation .= " ".$clang->gT("to question")." '".$distinctrow['title']." $answer_section'";
 			$x++;
 		}
 
 		if ($explanation)
 		{
-			$explanation = "["._("Only answer this question")." ".$explanation."]";
+			$explanation = "[".$clang->gT("Only answer this question")." ".$explanation."]";
 			$printablesurveyoutput .="<tr bgcolor='$bgc'><td colspan='3'>$explanation</td></tr>\n";
 		}
 
@@ -247,7 +247,7 @@ while ($degrow = $degresult->FetchRow())
 		$printablesurveyoutput .="\t\t<td valign='top' align='left' colspan='3'>\n";
 		if ($deqrow['mandatory'] == "Y")
 		{
-			$printablesurveyoutput .=_("*");
+			$printablesurveyoutput .=$clang->gT("*");
 		}
 		$printablesurveyoutput .="\t\t\t<strong>{$deqrow['title']}: {$deqrow['question']}</strong>\n";
 		$printablesurveyoutput .="\t\t</td>\n";
@@ -266,20 +266,20 @@ while ($degrow = $degresult->FetchRow())
 		switch($deqrow['type'])
 		{
 			case "5":  //5 POINT CHOICE
-			$printablesurveyoutput .="\t\t\t<u>"._("Please choose <strong>only one</strong> of the following:")."</u><br />\n";
+			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose <strong>only one</strong> of the following:")."</u><br />\n";
 			for ($i=1; $i<=5; $i++)
 			{
 				$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='$i' readonly='readonly' />$i \n";
 			}
 			break;
 			case "D":  //DATE
-			$printablesurveyoutput .="\t\t\t<u>"._("Please enter a date:")."</u><br />\n";
+			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please enter a date:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<input type='text' class='boxstyle' name='$fieldname' size='30' value='&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;' readonly='readonly' />\n";
 			break;
 			case "G":  //GENDER
-			$printablesurveyoutput .="\t\t\t<u>"._("Please choose <strong>only one</strong> of the following:")."</u><br />\n";
-			$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='F' readonly='readonly' />"._("Female")."<br />\n";
-			$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='M' readonly='readonly' />"._("Male")."<br />\n";
+			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose <strong>only one</strong> of the following:")."</u><br />\n";
+			$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='F' readonly='readonly' />".$clang->gT("Female")."<br />\n";
+			$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='M' readonly='readonly' />".$clang->gT("Male")."<br />\n";
 			break;
 			case "W": //Flexible List
 			case "Z":
@@ -292,7 +292,7 @@ while ($degrow = $degresult->FetchRow())
 			{
 				$dcols=0;
 			}
-			$printablesurveyoutput .="\t\t\t<u>"._("Please choose <strong>only one</strong> of the following:")."</u><br />\n";
+			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose <strong>only one</strong> of the following:")."</u><br />\n";
 			$deaquery = "SELECT * FROM {$dbprefix}labels WHERE lid={$deqrow['lid']} AND language='{$surveyprintlang}' ORDER BY sortorder, title";
 			$dearesult = db_execute_assoc($deaquery) or die("ERROR: $deaquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 			$deacount=$dearesult->RecordCount();
@@ -316,7 +316,7 @@ while ($degrow = $degresult->FetchRow())
 				}
 				if ($deqrow['other'] == "Y")
 				{
-					$printablesurveyoutput .="\t\t\t<input type='checkbox' readonly='readonly' />"._("Other")." <input type='text' size='30' readonly='readonly' /><br />\n";
+					$printablesurveyoutput .="\t\t\t<input type='checkbox' readonly='readonly' />".$clang->gT("Other")." <input type='text' size='30' readonly='readonly' /><br />\n";
 				}
 				$printablesurveyoutput .="</td></tr></table>\n";
 				//Let's break the presentation into columns.
@@ -329,7 +329,7 @@ while ($degrow = $degresult->FetchRow())
 				}
 				if ($deqrow['other'] == "Y")
 				{
-					$printablesurveyoutput .="\t\t\t<input type='checkbox' readonly='readonly' />"._("Other")." <input type='text' size='30' readonly='readonly' /><br />\n";
+					$printablesurveyoutput .="\t\t\t<input type='checkbox' readonly='readonly' />".$clang->gT("Other")." <input type='text' size='30' readonly='readonly' /><br />\n";
 				}
 			}
 			break;
@@ -344,7 +344,7 @@ while ($degrow = $degresult->FetchRow())
 			{
 				$dcols=0;
 			}
-			$printablesurveyoutput .="\t\t\t<u>"._("Please choose <strong>only one</strong> of the following:")."</u><br />\n";
+			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose <strong>only one</strong> of the following:")."</u><br />\n";
 			$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$dearesult = db_execute_assoc($deaquery);
 			$deacount=$dearesult->RecordCount();
@@ -368,7 +368,7 @@ while ($degrow = $degresult->FetchRow())
 				}
 				if ($deqrow['other'] == "Y")
 				{
-					$printablesurveyoutput .="\t\t\t<input type='checkbox' readonly='readonly' />"._("Other")." <input type='text' size='30' readonly='readonly' /><br />\n";
+					$printablesurveyoutput .="\t\t\t<input type='checkbox' readonly='readonly' />".$clang->gT("Other")." <input type='text' size='30' readonly='readonly' /><br />\n";
 				}
 				$printablesurveyoutput .="</td></tr></table>\n";
 				//Let's break the presentation into columns.
@@ -381,26 +381,26 @@ while ($degrow = $degresult->FetchRow())
 				}
 				if ($deqrow['other'] == "Y")
 				{
-					$printablesurveyoutput .="\t\t\t<input type='checkbox' readonly='readonly' />"._("Other")." <input type='text' size='30' readonly='readonly' /><br />\n";
+					$printablesurveyoutput .="\t\t\t<input type='checkbox' readonly='readonly' />".$clang->gT("Other")." <input type='text' size='30' readonly='readonly' /><br />\n";
 				}
 			}
 			break;
 			case "O":  //LIST WITH COMMENT
-			$printablesurveyoutput .="\t\t\t<u>"._("Please choose <strong>only one</strong> of the following:")."</u><br />\n";
+			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose <strong>only one</strong> of the following:")."</u><br />\n";
 			$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer ";
 			$dearesult = db_execute_assoc($deaquery);
 			while ($dearow = $dearesult->FetchRow())
 			{
 				$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' readonly='readonly' />{$dearow['answer']}<br />\n";
 			}
-			$printablesurveyoutput .="\t\t\t<u>"._("Make a comment on your choice here:")."</u><br />\n";
+			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Make a comment on your choice here:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<textarea class='boxstyle' cols='50' rows='8' name='$fieldname"."comment"."' readonly='readonly'></textarea>\n";
 			break;
 			case "R":  //RANKING Type Question
 			$reaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$rearesult = db_execute_assoc($reaquery) or die ("Couldn't get ranked answers<br />".htmlspecialchars($connect->ErrorMsg()));
 			$reacount = $rearesult->RecordCount();
-			$printablesurveyoutput .="\t\t\t<u>"._("Please number each box in order of preference from 1 to")." $reacount</u><br />\n";
+			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please number each box in order of preference from 1 to")." $reacount</u><br />\n";
 			while ($rearow = $rearesult->FetchRow())
 			{
 				$printablesurveyoutput .="\t\t\t<table cellspacing='1' cellpadding='0'><tr><td width='20' height='20' bgcolor='white' style='border: solid 1 #111111'>&nbsp;</td>\n";
@@ -417,7 +417,7 @@ while ($degrow = $degresult->FetchRow())
 			{
 				$dcols=0;
 			}
-			$printablesurveyoutput .="\t\t\t<u>"._("Please choose <strong>all</strong> that apply:")."</u><br />\n";
+			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose <strong>all</strong> that apply:")."</u><br />\n";
 			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
 			$meacount = $mearesult->RecordCount();
@@ -441,7 +441,7 @@ while ($degrow = $degresult->FetchRow())
 				}
 				if ($deqrow['other'] == "Y")
 				{
-					$printablesurveyoutput .="\t\t\t"._("Other").": <input type='text' class='boxstyle' size='60' name='$fieldname" . "other' readonly='readonly' />\n";
+					$printablesurveyoutput .="\t\t\t".$clang->gT("Other").": <input type='text' class='boxstyle' size='60' name='$fieldname" . "other' readonly='readonly' />\n";
 				}
 				$printablesurveyoutput .="</td></tr></table>\n";
 			}
@@ -453,12 +453,12 @@ while ($degrow = $degresult->FetchRow())
 				}
 				if ($deqrow['other'] == "Y")
 				{
-					$printablesurveyoutput .="\t\t\t"._("Other").": <input type='text' class='boxstyle' size='60' name='$fieldname" . "other' readonly='readonly' />\n";
+					$printablesurveyoutput .="\t\t\t".$clang->gT("Other").": <input type='text' class='boxstyle' size='60' name='$fieldname" . "other' readonly='readonly' />\n";
 				}
 			}
 			break;
 			case "J":  //FILE CSV MORE
-			$printablesurveyoutput .="\t\t\t<u>"._("Please choose <strong>all</strong> that apply:")."</u><br />\n";
+			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose <strong>all</strong> that apply:")."</u><br />\n";
 			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
 			while ($mearow = $mearesult->FetchRow())
@@ -467,7 +467,7 @@ while ($degrow = $degresult->FetchRow())
 			}
 			break;
 			case "I":  //FILE CSV ONE
-			$printablesurveyoutput .="\t\t\t<u>"._("Please choose <strong>only one</strong> of the following:").":</u><br />\n";
+			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose <strong>only one</strong> of the following:").":</u><br />\n";
 			$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$dearesult = db_execute_assoc($deaquery);
 			while ($dearow = $mearesult->FetchRow())
@@ -479,7 +479,7 @@ while ($degrow = $degresult->FetchRow())
 			case "P":  //MULTIPLE OPTIONS WITH COMMENTS
 			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
-			$printablesurveyoutput .="\t\t\t<u>"._("Please choose all that apply and provide a comment:")."</u><br />\n";
+			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose all that apply and provide a comment:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<table border='0'>\n";
 			while ($mearow = $mearesult->FetchRow())
 			{
@@ -494,7 +494,7 @@ while ($degrow = $degresult->FetchRow())
 			$printablesurveyoutput .="\t\t\t</table>\n";
 			break;
 			case "Q":  //MULTIPLE SHORT TEXT
-			$printablesurveyoutput .="\t\t\t<u>"._("Please write your answer(s) here:")."</u><br />\n";
+			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please write your answer(s) here:")."</u><br />\n";
 			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
 			$printablesurveyoutput .="\t\t\t<table border='0'>\n";
@@ -509,30 +509,30 @@ while ($degrow = $degresult->FetchRow())
 			$printablesurveyoutput .="\t\t\t</table>\n";
 			break;
 			case "S":  //SHORT TEXT
-			$printablesurveyoutput .="\t\t\t<u>"._("Please write your answer here:")."</u><br />\n";
+			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please write your answer here:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<input type='text' name='$fieldname' size='60' class='boxstyle' readonly='readonly' />\n";
 			break;
 			case "T":  //LONG TEXT
-			$printablesurveyoutput .="\t\t\t<u>"._("Please write your answer here:")."</u><br />\n";
+			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please write your answer here:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<textarea class='boxstyle' cols='50' rows='8' name='$fieldname' readonly='readonly'></textarea>\n";
 			break;
 			case "U":  //HUGE TEXT
-			$printablesurveyoutput .="\t\t\t<u>"._("Please write your answer here:")."</u><br />\n";
+			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please write your answer here:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<textarea class='boxstyle' cols='70' rows='50' name='$fieldname' readonly='readonly'></textarea>\n";
 			break;
 			case "N":  //NUMERICAL
-			$printablesurveyoutput .="\t\t\t<u>"._("Please write your answer here:")."</u><br />\n";
+			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please write your answer here:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<input type='text' size='40' class='boxstyle' readonly='readonly' />\n";
 			break;
 			case "Y":  //YES/NO
-			$printablesurveyoutput .="\t\t\t<u>"._("Please choose <strong>only one</strong> of the following:")."</u><br />\n";
-			$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='Y' readonly='readonly' />"._("Yes")."<br />\n";
-			$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='N' readonly='readonly' />"._("No")."<br />\n";
+			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose <strong>only one</strong> of the following:")."</u><br />\n";
+			$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='Y' readonly='readonly' />".$clang->gT("Yes")."<br />\n";
+			$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='N' readonly='readonly' />".$clang->gT("No")."<br />\n";
 			break;
 			case "A":  //ARRAY (5 POINT CHOICE)
 			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}'  ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
-			$printablesurveyoutput .="\t\t\t<u>"._("Please choose the appropriate response for each item:")."</u><br />\n";
+			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose the appropriate response for each item:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<table>\n";
 			while ($mearow = $mearesult->FetchRow())
 			{
@@ -551,7 +551,7 @@ while ($degrow = $degresult->FetchRow())
 			case "B":  //ARRAY (10 POINT CHOICE)
 			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
-			$printablesurveyoutput .="\t\t\t<u>"._("Please choose the appropriate response for each item:")."</u><br />";
+			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose the appropriate response for each item:")."</u><br />";
 			$printablesurveyoutput .="\t\t\t<table border='0'>\n";
 			while ($mearow = $mearesult->FetchRow())
 			{
@@ -570,16 +570,16 @@ while ($degrow = $degresult->FetchRow())
 			case "C":  //ARRAY (YES/UNCERTAIN/NO)
 			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
-			$printablesurveyoutput .="\t\t\t<u>"._("Please choose the appropriate response for each item:")."</u><br />\n";
+			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose the appropriate response for each item:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<table>\n";
 			while ($mearow = $mearesult->FetchRow())
 			{
 				$printablesurveyoutput .="\t\t\t\t<tr>\n";
 				$printablesurveyoutput .="\t\t\t\t\t<td align='left'>{$mearow['answer']}</td>\n";
 				$printablesurveyoutput .="\t\t\t\t\t<td>\n";
-				$printablesurveyoutput .="\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y' readonly='readonly' />"._("Yes")."&nbsp;\n";
-				$printablesurveyoutput .="\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='U' readonly='readonly' />"._("Uncertain")."&nbsp;\n";
-				$printablesurveyoutput .="\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='N' readonly='readonly' />"._("No")."&nbsp;\n";
+				$printablesurveyoutput .="\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y' readonly='readonly' />".$clang->gT("Yes")."&nbsp;\n";
+				$printablesurveyoutput .="\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='U' readonly='readonly' />".$clang->gT("Uncertain")."&nbsp;\n";
+				$printablesurveyoutput .="\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='N' readonly='readonly' />".$clang->gT("No")."&nbsp;\n";
 				$printablesurveyoutput .="\t\t\t\t\t</td>\n";
 				$printablesurveyoutput .="\t\t\t\t</tr>\n";
 			}
@@ -588,16 +588,16 @@ while ($degrow = $degresult->FetchRow())
 			case "E":  //ARRAY (Increase/Same/Decrease)
 			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}'  ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
-			$printablesurveyoutput .="\t\t\t<u>"._("Please choose the appropriate response for each item:")."</u><br />\n";
+			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose the appropriate response for each item:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<table>\n";
 			while ($mearow = $mearesult->FetchRow())
 			{
 				$printablesurveyoutput .="\t\t\t\t<tr>\n";
 				$printablesurveyoutput .="\t\t\t\t\t<td align='left'>{$mearow['answer']}</td>\n";
 				$printablesurveyoutput .="\t\t\t\t\t<td>\n";
-				$printablesurveyoutput .="\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='I' readonly='readonly' />"._("Increase")."&nbsp;\n";
-				$printablesurveyoutput .="\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='S' readonly='readonly' />"._("Same")."&nbsp;\n";
-				$printablesurveyoutput .="\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='D' readonly='readonly' />"._("Decrease")."&nbsp;\n";
+				$printablesurveyoutput .="\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='I' readonly='readonly' />".$clang->gT("Increase")."&nbsp;\n";
+				$printablesurveyoutput .="\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='S' readonly='readonly' />".$clang->gT("Same")."&nbsp;\n";
+				$printablesurveyoutput .="\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='D' readonly='readonly' />".$clang->gT("Decrease")."&nbsp;\n";
 				$printablesurveyoutput .="\t\t\t\t\t</td>\n";
 				$printablesurveyoutput .="\t\t\t\t</tr>\n";
 			}
@@ -608,7 +608,7 @@ while ($degrow = $degresult->FetchRow())
 			$headstyle="style='padding-left: 20px; padding-right: 7px'";
 			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
-			$printablesurveyoutput .="\t\t\t<u>"._("Please choose the appropriate response for each item:")."</u><br />\n";
+			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose the appropriate response for each item:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<table align='left' cellspacing='0'><tr><td></td>\n";
 			$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid='{$deqrow['lid']}'  AND language='{$surveyprintlang}' ORDER BY sortorder, code";
 			$fresult = db_execute_assoc($fquery);
@@ -645,7 +645,7 @@ while ($degrow = $degresult->FetchRow())
 			$headstyle="style='padding-left: 20px; padding-right: 7px'";
 			$fquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$fresult = db_execute_assoc($fquery);
-			$printablesurveyoutput .="\t\t\t<u>"._("Please choose the appropriate response for each item:")."</u><br />\n";
+			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose the appropriate response for each item:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<table align='left' cellspacing='0'><tr><td></td>\n";
 			$meaquery = "SELECT * FROM {$dbprefix}labels WHERE lid='{$deqrow['lid']}'  AND language='{$surveyprintlang}' ORDER BY sortorder, code";
 			$mearesult = db_execute_assoc($meaquery);
@@ -688,8 +688,8 @@ $printablesurveyoutput .="\t\t<td colspan='3' align='center'>\n";
 $printablesurveyoutput .="\t\t\t<table width='100%' border='1' style='border-collapse: collapse'>\n";
 $printablesurveyoutput .="\t\t\t\t<tr>\n";
 $printablesurveyoutput .="\t\t\t\t\t<td align='center'>\n";
-$printablesurveyoutput .="\t\t\t\t\t\t<strong>"._("Submit Your Survey.")."</strong><br />\n";
-$printablesurveyoutput .="\t\t\t\t\t\t"._("Thank you for completing this survey.")." "._("Please fax your completed survey to:")." $surveyfaxto";
+$printablesurveyoutput .="\t\t\t\t\t\t<strong>".$clang->gT("Submit Your Survey.")."</strong><br />\n";
+$printablesurveyoutput .="\t\t\t\t\t\t".$clang->gT("Thank you for completing this survey.")." ".$clang->gT("Please fax your completed survey to:")." $surveyfaxto";
 if ($surveyuseexpiry=="Y")
 {
 	$printablesurveyoutput .=" by $surveyexpirydate";

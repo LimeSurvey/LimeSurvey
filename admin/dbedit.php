@@ -407,7 +407,7 @@ function addAnswer($qid, $dbprefix) {
 				 '".sprintf("%05d", $_POST['sortorder'])."')";
 		$result = $connect->Execute($query, $_POST['answer']);
 	} else {
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be added. There is already an answer with this code")."\")\n //-->\n</script>\n";
+		echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be added. There is already an answer with this code")."\")\n //-->\n</script>\n";
 	}
 }
 
@@ -461,7 +461,7 @@ function delGroup($surveyid, $gid, $dbprefix) {
 	global $connect;
 	global $databasename;
 	if (!is_numeric($gid)) {
-		return _("Error");
+		return $clang->gT("Error");
 	} elseif ($_GET['ok'] == "yes") {
 		if (!isActivated($surveyid)) {
 			$query = "SELECT qid FROM {$dbprefix}questions WHERE gid=".$gid;
@@ -495,7 +495,7 @@ function delGroup($surveyid, $gid, $dbprefix) {
 function delSurvey($surveyid, $dbprefix) {
 	global $connect;
 	if (!is_numeric($surveyid)) { //make sure it's just a number!
-		return _("Error")." "._("You have not selected a survey to delete");
+		return $clang->gT("Error")." ".$clang->gT("You have not selected a survey to delete");
 	} elseif ($_GET['ok'] == "yes") {
 		$tablelist = $connect->MetaTables(); //Get a list of table names
 
@@ -560,7 +560,7 @@ function updateAnswer($qid, $dbprefix) {
 			$result = $connect->Execute($query) or die($connect->ErrorMsg());
 			$query = "UPDATE {$dbprefix}answers SET qid=$qid WHERE qid=99999999";
 			$result = $connect->Execute($query) or die($connect->ErrorMsg());
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\""._("Answer could not be updated. There is already an answer with this code")."\")\n //-->\n</script>\n";
+			echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be updated. There is already an answer with this code")."\")\n //-->\n</script>\n";
 		}
 	}
 	$query = "DELETE FROM {$dbprefix}answers WHERE qid=99999999";

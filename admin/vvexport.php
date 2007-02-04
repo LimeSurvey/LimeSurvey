@@ -46,9 +46,9 @@ if (!$action == "export")
 	echo $htmlheader;
 	echo "<br /><form method='post' action='vvexport.php?sid=$surveyid'>
     	<table align='center' class='outlinetable'>
-        <tr><th colspan='2'>"._("Export a VV survey file")."</th></tr>
+        <tr><th colspan='2'>".$clang->gT("Export a VV survey file")."</th></tr>
         <tr>
-         <td align='right'>"._("Export Survey").":</td>
+         <td align='right'>".$clang->gT("Export Survey").":</td>
          <td><input type='text' size=4 value='$surveyid' name='sid' readonly></td>
         </tr>
         <tr>
@@ -57,8 +57,8 @@ if (!$action == "export")
          </td>
          <td>
           <select name='method' >
-           <option value='deactivate'>"._("Export, then de-activate survey")."</option>
-           <option value='none' selected>"._("Export but leave survey active")."</option>
+           <option value='deactivate'>".$clang->gT("Export, then de-activate survey")."</option>
+           <option value='none' selected>".$clang->gT("Export but leave survey active")."</option>
           </select>
          </td>
         </tr>
@@ -66,11 +66,11 @@ if (!$action == "export")
          <td>&nbsp;
          </td>
          <td>
-          <input type='submit' value='"._("Export Responses")."' onClick='return confirm(\""._("If you have chosen to export and de-activate, this will rename your current responses table and it will not be easy to restore it. Are you sure?")."\")'>&nbsp;
+          <input type='submit' value='".$clang->gT("Export Responses")."' onClick='return confirm(\"".$clang->gT("If you have chosen to export and de-activate, this will rename your current responses table and it will not be easy to restore it. Are you sure?")."\")'>&nbsp;
           <input type='hidden' name='action' value='export'>
          </td>
         </tr>
-        <tr><td colspan='2' align='center'>[<a href='$scriptname?sid=$surveyid'>"._("Return to Survey Administration")."</a>]</td></tr>
+        <tr><td colspan='2' align='center'>[<a href='$scriptname?sid=$surveyid'>".$clang->gT("Return to Survey Administration")."</a>]</td></tr>
         </table>
         </form>";        
 }
@@ -158,7 +158,7 @@ elseif (isset($surveyid) && $surveyid)
 			$toldtable="tokens_{$_GET['sid']}";
 			$tnewtable="old_tokens_{$_GET['sid']}_{$date}";
 			$tdeactivatequery = "RENAME TABLE ".db_table_name($toldtable)." TO ".db_table_name($tnewtable);
-			$tdeactivateresult = $connect->Execute($tdeactivatequery) or die ("\n\n"._("Error")."Couldn't deactivate tokens table because:<br />".$connect->ErrorMsg()."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>"._("Main Admin Screen")."</a>");
+			$tdeactivateresult = $connect->Execute($tdeactivatequery) or die ("\n\n".$clang->gT("Error")."Couldn't deactivate tokens table because:<br />".$connect->ErrorMsg()."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
 		}
 		$oldtable="survey_{$_GET['sid']}";
 		$newtable="old_{$_GET['sid']}_{$date}";
@@ -175,7 +175,7 @@ elseif (isset($surveyid) && $surveyid)
 
 		//Rename survey responses table
 		$deactivatequery = "RENAME TABLE ".db_table_name($oldtable)." TO ".db_table_name($newtable);
-		$deactivateresult = $connect->Execute($deactivatequery) or die ("\n\n"._("Error")."Couldn't deactivate because:<br />".$connect->ErrorMsg()."<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
+		$deactivateresult = $connect->Execute($deactivatequery) or die ("\n\n".$clang->gT("Error")."Couldn't deactivate because:<br />".$connect->ErrorMsg()."<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
 		break;
 		case "delete": //Delete the rows
 		break;

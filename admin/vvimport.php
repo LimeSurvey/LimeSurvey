@@ -60,18 +60,18 @@ if ($action != "upload")
 		echo "<br />
 		<form enctype='multipart/form-data' method='post' action='vvimport.php?sid=$surveyid'>
 		<table class='outlinetable' align='center'>		
-		<tr><th colspan=2>"._("Import a VV survey file")."</th></tr>
-		<tr><td>"._("File:")."</td><td><input type='file' name='the_file'></td></tr>
-		<tr><td>"._("Survey ID:")."</td><td><input type='text' size=2 name='sid' value='$surveyid' readonly></td></tr>
-		<tr><td>"._("Exclude record IDs?")."</td><td><input type='checkbox' name='noid' value='noid' checked></td></tr>
+		<tr><th colspan=2>".$clang->gT("Import a VV survey file")."</th></tr>
+		<tr><td>".$clang->gT("File:")."</td><td><input type='file' name='the_file'></td></tr>
+		<tr><td>".$clang->gT("Survey ID:")."</td><td><input type='text' size=2 name='sid' value='$surveyid' readonly></td></tr>
+		<tr><td>".$clang->gT("Exclude record IDs?")."</td><td><input type='checkbox' name='noid' value='noid' checked></td></tr>
         <!-- this next item should only appear if noid is not checked -->
-		<tr><td>"._("When an imported record matches an existing record ID:")."</td><td><select name='insert' >
-        <option value='error' selected>"._("Report an error (and skip the new record).")."</option>
-        <option value='renumber'>"._("Renumber the new record.")."</option>
-        <option value='ignore'>"._("Ignore the new record.")."</option>
-        <option value='replace'>"._("Replace the existing record.")."</option>
+		<tr><td>".$clang->gT("When an imported record matches an existing record ID:")."</td><td><select name='insert' >
+        <option value='error' selected>".$clang->gT("Report an error (and skip the new record).")."</option>
+        <option value='renumber'>".$clang->gT("Renumber the new record.")."</option>
+        <option value='ignore'>".$clang->gT("Ignore the new record.")."</option>
+        <option value='replace'>".$clang->gT("Replace the existing record.")."</option>
         </select></td></tr>
-		<tr><td>&nbsp;</td><td><input type='submit' value='"._("Upload")."'>
+		<tr><td>&nbsp;</td><td><input type='submit' value='".$clang->gT("Upload")."'>
 		<input type='hidden' name='action' value='upload' />
 		</td></tr>
 		</table>
@@ -82,9 +82,9 @@ if ($action != "upload")
 		echo "<br /><table class='outlinetable' align='center'>
 		<tr><th colspan=2>Import a VV survey file</th></tr>
 		<tr><td colspan='2' align='center'>
-		<strong>"._("Cannot import the VVExport file.")."</strong><br /><br />
+		<strong>".$clang->gT("Cannot import the VVExport file.")."</strong><br /><br />
 		".("This survey is not active. You must activate the survey before attempting to import a VVexport file.")."<br /><br />
-		[<a href='$scriptname?sid=4'>"._("Return to Survey Administration")."</a>]
+		[<a href='$scriptname?sid=4'>".$clang->gT("Return to Survey Administration")."</a>]
 		</td></tr>
 		</table>";		
 	}
@@ -101,18 +101,18 @@ else
 
 	if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 	{
-		echo "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
-		echo _("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
-		//echo "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+		echo "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+		echo $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
+		//echo "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 		echo "</font></td></tr></table>\n";
 		echo "</body>\n</html>\n";
 		exit;
 	}
 	// IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
-	echo "<strong><font color='green'>"._("Success")."</font></strong><br />\n";
-	echo _("File upload succeeded.")."<br /><br />\n";
-	echo _("Reading file..")."<br />\n";
+	echo "<strong><font color='green'>".$clang->gT("Success")."</font></strong><br />\n";
+	echo $clang->gT("File upload succeeded.")."<br /><br />\n";
+	echo $clang->gT("Reading file..")."<br />\n";
 	$handle = fopen($the_full_file_path, "r");
 	while (!feof($handle))
 	{
@@ -224,7 +224,7 @@ else
 			if (!$result)
 			{
 				echo "<table align='center' class='outlintable'>
-				      <tr><td>"._("Import Failed on Record")." $recordcount "._("because")." [".$connect->ErrorMsg()."]
+				      <tr><td>".$clang->gT("Import Failed on Record")." $recordcount ".$clang->gT("because")." [".$connect->ErrorMsg()."]
 					  </td></tr></table>\n";
 			}
 			else
@@ -237,10 +237,10 @@ else
 
 	if ($noid == "noid" || $insertstyle == "renumber")
 	{
-		echo "<br /><i><strong><font color='red'>"._("Important Note:<br />Do NOT refresh this page, as this will import the file again and produce duplicates")."</font></strong></i><br /><br />";
+		echo "<br /><i><strong><font color='red'>".$clang->gT("Important Note:<br />Do NOT refresh this page, as this will import the file again and produce duplicates")."</font></strong></i><br /><br />";
 	}
-	echo _("Total records imported:")." ".$importcount."<br /><br />";
-	echo "[<a href='browse.php?sid=$surveyid'>"._("Browse Responses")."</a>]";
+	echo $clang->gT("Total records imported:")." ".$importcount."<br /><br />";
+	echo "[<a href='browse.php?sid=$surveyid'>".$clang->gT("Browse Responses")."</a>]";
 	echo "</td></tr></table>";
 }
 ?>

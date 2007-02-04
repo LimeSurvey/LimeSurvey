@@ -61,15 +61,15 @@ if (!function_exists('array_combine')) {
 $importsurvey = "<br />\n";
 $importsurvey .= "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 $importsurvey .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-._("Import Survey")."</strong></font></td></tr>\n";
+.$clang->gT("Import Survey")."</strong></font></td></tr>\n";
 $importsurvey .= "\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 
 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 {
-	$importsurvey .= "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
-	$importsurvey .= _("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
+	$importsurvey .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+	$importsurvey .= $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
 	$importsurvey .= "</font></td></tr></table>\n";
 	$importsurvey .= "</body>\n</html>\n";
 	return;
@@ -77,9 +77,9 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
-$importsurvey .= "<strong><font color='green'>"._("Success")."</font></strong><br />\n";
-$importsurvey .= _("File upload succeeded.")."<br /><br />\n";
-$importsurvey .= _("Reading file..")."<br />\n";
+$importsurvey .= "<strong><font color='green'>".$clang->gT("Success")."</font></strong><br />\n";
+$importsurvey .= $clang->gT("File upload succeeded.")."<br /><br />\n";
+$importsurvey .= $clang->gT("Reading file..")."<br />\n";
 $handle = fopen($the_full_file_path, "r");
 while (!feof($handle))
 {
@@ -109,8 +109,8 @@ elseif
     }
 else    // unknown file - show error message
   {
-    $importsurvey .= "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
-  	$importsurvey .= _("This file is not a PHPSurveyor survey file. Import failed.")."<br /><br />\n";
+    $importsurvey .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+  	$importsurvey .= $clang->gT("This file is not a PHPSurveyor survey file. Import failed.")."<br /><br />\n";
   	$importsurvey .= "</font></td></tr></table>\n";
   	$importsurvey .= "</body>\n</html>\n";
   	unlink($the_full_file_path);
@@ -360,9 +360,9 @@ $surveyid=$surveyrowdata["sid"];
 
 if (!$surveyid)
 {
-	$importsurvey .= "<br /><strong><font color='red'>"._("Error")."</strong></font><br />\n";
-	$importsurvey .= _("Import of this survey file failed")."<br />\n";
-	$importsurvey .= _("File does not contain PHPSurveyor data in the correct format.")."<br />\n"; //Couldn't find the SID - cannot continue
+	$importsurvey .= "<br /><strong><font color='red'>".$clang->gT("Error")."</strong></font><br />\n";
+	$importsurvey .= $clang->gT("Import of this survey file failed")."<br />\n";
+	$importsurvey .= $clang->gT("File does not contain PHPSurveyor data in the correct format.")."<br />\n"; //Couldn't find the SID - cannot continue
 	$importsurvey .= "</font></td></tr></table>\n";
 	$importsurvey .= "</body>\n</html>\n";
 	unlink($the_full_file_path); //Delete the uploaded file
@@ -517,7 +517,7 @@ if ($importversion<=100)
     $values=array_values($surveylsrowdata);
     $values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
     $insert = "insert INTO {$dbprefix}surveys_languagesettings (".implode(',',array_keys($surveylsrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
-    $iresult = $connect->Execute($insert) or die("<br />"._("Import of this survey file failed")."<br />\n<font size='1'>[$insert]</font><hr>$surveyarray[0]<br /><br />\n" . $connect->ErrorMsg() . "</body>\n</html>");
+    $iresult = $connect->Execute($insert) or die("<br />".$clang->gT("Import of this survey file failed")."<br />\n<font size='1'>[$insert]</font><hr>$surveyarray[0]<br /><br />\n" . $connect->ErrorMsg() . "</body>\n</html>");
 
 
 
@@ -528,7 +528,7 @@ if ($importversion<=100)
 $values=array_values($surveyrowdata);
 $values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
 $insert = "insert INTO {$dbprefix}surveys (".implode(',',array_keys($surveyrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
-$iresult = $connect->Execute($insert) or die("<br />"._("Import of this survey file failed")."<br />\n<font size='1'>[$insert]</font><hr>$surveyarray[0]<br /><br />\n" . $connect->ErrorMsg());
+$iresult = $connect->Execute($insert) or die("<br />".$clang->gT("Import of this survey file failed")."<br />\n<font size='1'>[$insert]</font><hr>$surveyarray[0]<br /><br />\n" . $connect->ErrorMsg());
 
 $oldsid=$surveyid;
 
@@ -545,7 +545,7 @@ if ($importversion>=111)
         $newvalues=array_values($surveylsrowdata);
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
         $lsainsert = "insert INTO {$dbprefix}surveys_languagesettings (".implode(',',array_keys($surveylsrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
-		$lsiresult=$connect->Execute($lsainsert) or die("<br />"._("Import of this survey file failed")."<br />\n<font size='1'>[$lsainsert]</font><hr><br />\n" . $connect->ErrorMsg() );
+		$lsiresult=$connect->Execute($lsainsert) or die("<br />".$clang->gT("Import of this survey file failed")."<br />\n<font size='1'>[$lsainsert]</font><hr><br />\n" . $connect->ErrorMsg() );
 	}	
 		
 }
@@ -686,7 +686,7 @@ if (isset($grouparray) && $grouparray) {
 		//Now an additional integrity check if there are any groups not belonging into this survey
 		if ($gsid != $surveyid)
 		{
-			$importsurvey .= "<br />\n<font color='red'><strong>"._("Error")."</strong></font>"
+			$importsurvey .= "<br />\n<font color='red'><strong>".$clang->gT("Error")."</strong></font>"
 			."<br />\nA group in the sql file does not come from the same Survey. Import of survey stopped.<br /><br />\n";
 			return;
 		}
@@ -703,7 +703,7 @@ if (isset($grouparray) && $grouparray) {
         $newvalues=array_values($grouprowdata);
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
         $ginsert = "insert INTO {$dbprefix}groups (".implode(',',array_keys($grouprowdata)).") VALUES (".implode(',',$newvalues).")"; 
-		$gres = $connect->Execute($ginsert) or die("<strong>"._("Error")."</strong> Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+		$gres = $connect->Execute($ginsert) or die("<strong>".$clang->gT("Error")."</strong> Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
 		//GET NEW GID
 		$newgid=$connect->Insert_ID();
 
@@ -753,7 +753,7 @@ if (isset($grouparray) && $grouparray) {
                     $newvalues=array_values($questionrowdata);
                     $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                     $qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-					$qres = $connect->Execute($qinsert) or die ("<strong>"._("Error")."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+					$qres = $connect->Execute($qinsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
 
 					$qidquery = "SELECT qid, lid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1"; //Get last question added (finds new qid)
 					$qidres = db_execute_assoc($qidquery);
@@ -791,7 +791,7 @@ if (isset($grouparray) && $grouparray) {
                                 $newvalues=array_values($answerrowdata);
                                 $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                                 $ainsert = "insert INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-								$ares = $connect->Execute($ainsert) or die ("<strong>"._("Error")."</strong> Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+								$ares = $connect->Execute($ainsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
 								
 								if ($type == "M" || $type == "P") {
 									$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid,
@@ -1001,24 +1001,24 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 
 // DO SURVEY_RIGHTS
 $isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($newsid,".$_SESSION['loginID'].",1,1,1,1,1,1)";
-$isrresult = $connect->Execute($isrquery) or die("<strong>"._("Error")."</strong> Failed to insert survey rights<br />\n$isrquery<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+$isrresult = $connect->Execute($isrquery) or die("<strong>".$clang->gT("Error")."</strong> Failed to insert survey rights<br />\n$isrquery<br />\n".$connect->ErrorMsg()."</body>\n</html>");
 
-$importsurvey .= "<br />\n<strong><font color='green'>"._("Success")."</font></strong><br />\n";
-$importsurvey .= "<strong><u>"._("Survey Import Summary")."</u></strong><br />\n";
-$importsurvey .= "<ul>\n\t<li>"._("Surveys").": $countsurveys</li>\n";
+$importsurvey .= "<br />\n<strong><font color='green'>".$clang->gT("Success")."</font></strong><br />\n";
+$importsurvey .= "<strong><u>".$clang->gT("Survey Import Summary")."</u></strong><br />\n";
+$importsurvey .= "<ul>\n\t<li>".$clang->gT("Surveys").": $countsurveys</li>\n";
 if ($importversion>=111)
     {
-    $importsurvey .= "\t<li>"._("Languages").": $countlanguages</li>\n";
+    $importsurvey .= "\t<li>".$clang->gT("Languages").": $countlanguages</li>\n";
     }
-$importsurvey .= "\t<li>"._("Groups").": $countgroups</li>\n";
-$importsurvey .= "\t<li>"._("Questions").": $countquestions</li>\n";
-$importsurvey .= "\t<li>"._("Answers").": $countanswers</li>\n";
-$importsurvey .= "\t<li>"._("Conditions").": $countconditions</li>\n";
-$importsurvey .= "\t<li>"._("Label Sets").": $countlabelsets ("._("Labels").": $countlabels)</li>\n";
-$importsurvey .= "\t<li>"._("Question Attributes").": $countquestion_attributes</li>\n";
-$importsurvey .= "\t<li>"._("Assessments").": $countassessments</li>\n</ul>\n";
+$importsurvey .= "\t<li>".$clang->gT("Groups").": $countgroups</li>\n";
+$importsurvey .= "\t<li>".$clang->gT("Questions").": $countquestions</li>\n";
+$importsurvey .= "\t<li>".$clang->gT("Answers").": $countanswers</li>\n";
+$importsurvey .= "\t<li>".$clang->gT("Conditions").": $countconditions</li>\n";
+$importsurvey .= "\t<li>".$clang->gT("Label Sets").": $countlabelsets (".$clang->gT("Labels").": $countlabels)</li>\n";
+$importsurvey .= "\t<li>".$clang->gT("Question Attributes").": $countquestion_attributes</li>\n";
+$importsurvey .= "\t<li>".$clang->gT("Assessments").": $countassessments</li>\n</ul>\n";
 
-$importsurvey .= "<strong>"._("Import of Survey is completed.")."</strong><br />\n";
+$importsurvey .= "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />\n";
 $importsurvey .= "</font></td></tr></table><br />\n";
 unlink($the_full_file_path);
 

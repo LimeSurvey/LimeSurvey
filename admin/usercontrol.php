@@ -40,7 +40,7 @@ if (!isset($_SESSION['loginID']))
 	{
 	if($action == "forgotpass")
 		{
-		$loginsummary = "<br /><strong>"._("Forgot Password")."</strong><br />\n";
+		$loginsummary = "<br /><strong>".$clang->gT("Forgot Password")."</strong><br />\n";
 		
 		if (isset($_POST['user']) && isset($_POST['email']))
 			{
@@ -50,8 +50,8 @@ if (!isset($_SESSION['loginID']))
 			if ($result->RecordCount() < 1) 
 				{
 				// wrong or unknown username and/or email
-				$loginsummary .= "<br />"._("User name and/or email not found!")."<br />";
-				$loginsummary .= "<br /><br /><a href='$scriptname?action=forgotpassword'>"._("Continue")."</a><br />&nbsp;\n";
+				$loginsummary .= "<br />".$clang->gT("User name and/or email not found!")."<br />";
+				$loginsummary .= "<br /><br /><a href='$scriptname?action=forgotpassword'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 				}
 			else 
 				{
@@ -59,9 +59,9 @@ if (!isset($_SESSION['loginID']))
 				 
 				// send Mail
 			
-				$body = _("Your data:") . "<br />\n";;
-				$body .= _("Username") . ": " . $fields['user'] . "<br />\n";
-				$body .= _("Password") . ": " . $fields['password'] . "<br />\n";
+				$body = $clang->gT("Your data:") . "<br />\n";;
+				$body .= $clang->gT("Username") . ": " . $fields['user'] . "<br />\n";
+				$body .= $clang->gT("Password") . ": " . $fields['password'] . "<br />\n";
 				
 				$subject = 'User Data';
 				$to = $_POST['email'];
@@ -70,22 +70,22 @@ if (!isset($_SESSION['loginID']))
 				
 				if(MailTextMessage($body, $subject, $to, $from, $sitename))
 					{			
-					$loginsummary .= "<br />"._("Username").": {$fields['user']}<br />"._("Email").": {$_POST['email']}<br />";
-					$loginsummary .= "<br />"._("An email with your login data was sent to you.");
-					$loginsummary .= "<br /><br /><a href='$scriptname'>"._("Continue")."</a><br />&nbsp;\n";
+					$loginsummary .= "<br />".$clang->gT("Username").": {$fields['user']}<br />".$clang->gT("Email").": {$_POST['email']}<br />";
+					$loginsummary .= "<br />".$clang->gT("An email with your login data was sent to you.");
+					$loginsummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 					}
 				else
 					{
-					$tmp = str_replace("{NAME}", "<strong>".$fields['user']."</strong>", _("Email to {NAME} ({EMAIL}) failed."));
+					$tmp = str_replace("{NAME}", "<strong>".$fields['user']."</strong>", $clang->gT("Email to {NAME} ({EMAIL}) failed."));
 					$loginsummary .= "<br />".str_replace("{EMAIL}", $_POST['email'], $tmp) . "<br />";
-					$loginsummary .= "<br /><br /><a href='$scriptname?action=forgotpassword'>"._("Continue")."</a><br />&nbsp;\n";
+					$loginsummary .= "<br /><br /><a href='$scriptname?action=forgotpassword'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 					}
 				}									
 			}	
 		}	
 	elseif($action == "login")	// normal login 		
 		{
-		$loginsummary = "<br /><strong>"._("Login")."</strong><br />\n";
+		$loginsummary = "<br /><strong>".$clang->gT("Login")."</strong><br />\n";
 		
 		if (isset($_POST['user']) && isset($_POST['password']))
 			{
@@ -95,8 +95,8 @@ if (!isset($_SESSION['loginID']))
 			if ($result->RecordCount() < 1) 
 				{
 				// wrong or unknown username and/or email
-				$loginsummary .= "<br />"._("User name and/or email not found!")."<br />";
-				$loginsummary .= "<br /><br /><a href='$scriptname'>"._("Continue")."</a><br />&nbsp;\n";
+				$loginsummary .= "<br />".$clang->gT("User name and/or email not found!")."<br />";
+				$loginsummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 				}
 			else 
 				{
@@ -112,16 +112,16 @@ if (!isset($_SESSION['loginID']))
 					$_SESSION['adminlang'] = $fields['lang']; 
 					$login = true;
 
-					$loginsummary .= "<br />" .str_replace("{NAME}", $_SESSION['user'], _("Welcome {NAME}")) . "<br />";				
-					$loginsummary .= _("Login successful.");
+					$loginsummary .= "<br />" .str_replace("{NAME}", $_SESSION['user'], $clang->gT("Welcome {NAME}")) . "<br />";				
+					$loginsummary .= $clang->gT("Login successful.");
 					$loginsummary .= "<br /><br />\n";
 					GetSessionUserRights($_SESSION['loginID']);
 					
 					}
 				else 
 					{
-					$loginsummary .= "<br />"._("User name and/or email not found!")."<br />";
-					$loginsummary .= "<br /><br /><a href='$scriptname'>"._("Continue")."</a><br />&nbsp;\n";
+					$loginsummary .= "<br />".$clang->gT("User name and/or email not found!")."<br />";
+					$loginsummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 					}
 				}	
 			}
@@ -129,17 +129,17 @@ if (!isset($_SESSION['loginID']))
 	}
 elseif ($action == "logout")
 	{
-	$logoutsummary = "<br /><strong>"._("Logout")."</strong><br />\n";
+	$logoutsummary = "<br /><strong>".$clang->gT("Logout")."</strong><br />\n";
 	
 	killSession();
 					
-	$logoutsummary .= _("Logout successful.");
-	$logoutsummary .= "<br /><br /><a href='$scriptname'>"._("Main Admin Screen")."</a><br />&nbsp;\n";
+	$logoutsummary .= $clang->gT("Logout successful.");
+	$logoutsummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Main Admin Screen")."</a><br />&nbsp;\n";
 	}
 
 elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 	{
-	$addsummary = "<br /><strong>"._("Add User")."</strong><br />\n";
+	$addsummary = "<br /><strong>".$clang->gT("Add User")."</strong><br />\n";
 	
 	$new_user = html_entity_decode($_POST['new_user']);
 	$new_email = html_entity_decode($_POST['new_email']);
@@ -149,12 +149,12 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 	if(!validate_email($new_email))	
 		{
         $valid_email = false;		
-		$addsummary .= "<br /><strong>"._("Failed to add User.")."</strong><br />\n" . " " . _("Email address ist not valid.")."<br />\n";     
+		$addsummary .= "<br /><strong>".$clang->gT("Failed to add User.")."</strong><br />\n" . " " . $clang->gT("Email address ist not valid.")."<br />\n";     
       	}
 	if(empty($new_user))
 		{
-		if($valid_email) $addsummary .= "<br /><strong>"._("Failed to add User.")."</strong><br />\n" . " "; 
-		$addsummary .= _("Username was not supplied.")."<br />\n";
+		if($valid_email) $addsummary .= "<br /><strong>".$clang->gT("Failed to add User.")."</strong><br />\n" . " "; 
+		$addsummary .= $clang->gT("Username was not supplied.")."<br />\n";
 		}		
 	elseif($valid_email)
 		{
@@ -178,10 +178,10 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 				"manage_label"=>$srow['manage_label']));
 			
 			// send Mail			
-			$body = _("You were signed in. Your data:") . "<br />\n";;
-			$body .= _("Username") . ": " . $new_user . "<br />\n";
-			$body .= _("Password") . ": " . $new_pass . "<br />\n";
-			$body .= "<a href='" . $homeurl . "/admin.php'>"._("Login")."</a><br />\n";
+			$body = $clang->gT("You were signed in. Your data:") . "<br />\n";;
+			$body .= $clang->gT("Username") . ": " . $new_user . "<br />\n";
+			$body .= $clang->gT("Password") . ": " . $new_pass . "<br />\n";
+			$body .= "<a href='" . $homeurl . "/admin.php'>".$clang->gT("Login")."</a><br />\n";
 			
 			$subject = 'Registration';
 			$to = $new_email;
@@ -190,33 +190,33 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 			
 			if(MailTextMessage($body, $subject, $to, $from, $sitename))
 				{			
-				$addsummary .= "<br />"._("Username").": $new_user<br />"._("Email").": $new_email<br />";
-				$addsummary .= "<br />"._("An email with a generated password was sent to the user.");
+				$addsummary .= "<br />".$clang->gT("Username").": $new_user<br />".$clang->gT("Email").": $new_email<br />";
+				$addsummary .= "<br />".$clang->gT("An email with a generated password was sent to the user.");
 				}
 			else
 				{
-				// Muss noch mal gesendet werden oder andere Möglichkeit
-				$tmp = str_replace("{NAME}", "<strong>".$new_user."</strong>", _("Email to {NAME} ({EMAIL}) failed."));
+				// Muss noch mal gesendet werden oder andere M??glichkeit
+				$tmp = str_replace("{NAME}", "<strong>".$new_user."</strong>", $clang->gT("Email to {NAME} ({EMAIL}) failed."));
 				$addsummary .= "<br />".str_replace("{EMAIL}", $new_email, $tmp) . "<br />";
 				}
 			
 			$addsummary .= "<br />\t\t\t<form method='post' action='$scriptname'>"
-				  ."<input type='submit' value='"._("Set User Rights")."'>"
+				  ."<input type='submit' value='".$clang->gT("Set User Rights")."'>"
 				  ."<input type='hidden' name='action' value='setuserrights'>"
 				  ."<input type='hidden' name='user' value='{$new_user}'>"
 				  ."<input type='hidden' name='uid' value='{$newqid}'>"
 				  ."</form>";						
 			}
 		else{
-			$addsummary .= "<br /><strong>"._("Failed to add User.")."</strong><br />\n" . " " . _("Username and/or email address already exists.")."<br />\n";		
+			$addsummary .= "<br /><strong>".$clang->gT("Failed to add User.")."</strong><br />\n" . " " . $clang->gT("Username and/or email address already exists.")."<br />\n";		
 			}						
 		}	
-	$addsummary .= "<br /><a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
+	$addsummary .= "<br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 	}
 
 elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($_POST['uid'] == $_SESSION['loginID'])))
 	{	
-	$addsummary = "<br /><strong>"._("Deleting User")."</strong><br />\n";
+	$addsummary = "<br /><strong>".$clang->gT("Deleting User")."</strong><br />\n";
 		
 	$adminquery = "SELECT uid FROM {$dbprefix}users WHERE parent_id=0 LIMIT 1";
 	$adminresult = $connect->Execute($adminquery);
@@ -224,7 +224,7 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($_POST[
 		
 	if($row['uid'] == $_POST['uid'])	// it's the superadmin !!!
 		{		
-		$addsummary .= "<br />"._("Admin cannot be deleted!")."<br />\n";	
+		$addsummary .= "<br />".$clang->gT("Admin cannot be deleted!")."<br />\n";	
 		}
 	else
 		{		
@@ -242,7 +242,7 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($_POST[
 			
 			if($isallowed)
 				{
-				// Wenn ein Benutzer gelˆscht wird, werden die von ihm erstellten Benutzer dem Benutzer
+				// Wenn ein Benutzer gel??scht wird, werden die von ihm erstellten Benutzer dem Benutzer
 				// zugeordnet, von dem er selbst erstellt wurde
 				$squery = "SELECT parent_id FROM {$dbprefix}users WHERE uid={$_POST['uid']}";
 				$sresult = $connect->Execute($squery);
@@ -257,25 +257,25 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($_POST[
 				
 				if($_POST['uid'] == $_SESSION['loginID']) killSession();	// user deleted himself
 				
-				$addsummary .= "<br />"._("Username").": {$_POST['user']}<br />\n";								
+				$addsummary .= "<br />".$clang->gT("Username").": {$_POST['user']}<br />\n";								
 				}
 			else
 				{			
 				include("access_denied.php");
-				//$addsummary .= "<br />"._("You are not allowed to perform this operation!")."<br />\n";			
+				//$addsummary .= "<br />".$clang->gT("You are not allowed to perform this operation!")."<br />\n";			
 				}
 			}
 		else
 			{
-			$addsummary .= "<br />"._("Could not delete user. User was not supplied.")."<br />\n";
+			$addsummary .= "<br />".$clang->gT("Could not delete user. User was not supplied.")."<br />\n";
 			}				
 		}
-	$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
+	$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 	}
 
 elseif ($action == "moduser")
 	{
-	$addsummary = "<br /><strong>"._("Modifying User")."</strong><br />\n";
+	$addsummary = "<br /><strong>".$clang->gT("Modifying User")."</strong><br />\n";
 		
 	if($_POST['uid'] == $_SESSION['loginID'])
 		{		
@@ -289,13 +289,13 @@ elseif ($action == "moduser")
 			{
 			$valid_email = false;		
 			$failed = true;
-			$addsummary .= "<br /><strong>"._("Could not modify User Data.")."</strong><br />\n" . " "._("Email address ist not valid.")."<br />\n";     
+			$addsummary .= "<br /><strong>".$clang->gT("Could not modify User Data.")."</strong><br />\n" . " ".$clang->gT("Email address ist not valid.")."<br />\n";     
 			}
 		if(empty($pass))
 			{
 			$failed = true;
-			if($valid_email) $addsummary .= "<br /><strong>"._("Could not modify User Data.")."</strong><br />\n";
-			$addsummary .= _("Password was not supplied.");		
+			if($valid_email) $addsummary .= "<br /><strong>".$clang->gT("Could not modify User Data.")."</strong><br />\n";
+			$addsummary .= $clang->gT("Password was not supplied.");		
 			}
 		elseif($valid_email)
 			{
@@ -305,25 +305,25 @@ elseif ($action == "moduser")
 			
 			if($uresult)
 				{
-				$addsummary .= "<br />"._("Username").": $user<br />"._("Password").": $pass<br />\n";
+				$addsummary .= "<br />".$clang->gT("Username").": $user<br />".$clang->gT("Password").": $pass<br />\n";
 				}
 			else
 				{
 				// Username and/or email adress already exists.
-				$addsummary .= "<br /><strong>"._("Could not modify User Data.")."</strong><br />\n" . " "._("Email address already exists.")."<br />\n";     
+				$addsummary .= "<br /><strong>".$clang->gT("Could not modify User Data.")."</strong><br />\n" . " ".$clang->gT("Email address already exists.")."<br />\n";     
 				}				
 			}		
 		if($failed)
 			{
 			$addsummary .= "<br /><br /><form method='post' action='$scriptname'>"
-						 ."<input type='submit' value='"._("Back")."'>"
+						 ."<input type='submit' value='".$clang->gT("Back")."'>"
 						 ."<input type='hidden' name='action' value='modifyuser'>"
 						 ."<input type='hidden' name='uid' value='{$_POST['uid']}'>"
 						 ."</form>";
 			}
 		else
 			{
-			$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
+			$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 			}
 		}
 	else
@@ -334,7 +334,7 @@ elseif ($action == "moduser")
 
 elseif ($action == "userrights")
 	{	
-	$addsummary = "<br /><strong>"._("Set User Rights")."</strong><br />\n";
+	$addsummary = "<br /><strong>".$clang->gT("Set User Rights")."</strong><br />\n";
 	
 	if($_POST['uid'] != $_SESSION['loginID'])
 		{
@@ -360,8 +360,8 @@ elseif ($action == "userrights")
 			if(isset($_POST['manage_label']))$rights['manage_label']=1;			else $rights['manage_label']=0;
 		
 			setuserrights($_POST['uid'], $rights);
-			$addsummary .= "<br />"._("Update user rights successful.")."<br />\n"; 						
-			$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
+			$addsummary .= "<br />".$clang->gT("Update user rights successful.")."<br />\n"; 						
+			$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 			}
 		else
 			{
@@ -370,8 +370,8 @@ elseif ($action == "userrights")
 		}
 	else
 		{			
-		$addsummary .= "<br />"._("You are not allowed to change your own rights!")."<br />\n";		
-		$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>"._("Continue")."</a><br />&nbsp;\n";
+		$addsummary .= "<br />".$clang->gT("You are not allowed to change your own rights!")."<br />\n";		
+		$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
 	}
 

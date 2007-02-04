@@ -42,25 +42,25 @@ include_once("login_check.php");
 $importquestion = "<br />\n"
 ."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 ."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-._("Import Question")."</strong></td></tr>\n"
+.$clang->gT("Import Question")."</strong></td></tr>\n"
 ."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 
 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 {
-	$importquestion .= "<strong><font color='red'>"._("Error")."</font></strong><br />\n"
-	._("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n"
+	$importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
+	.$clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n"
 	."<input type='submit' value='"
-	._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n"
+	.$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n"
 	."</td></tr></table>\n";
 	return;
 }
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
-$importquestion .= "<strong><font color='green'>"._("Success")."</font></strong><br />\n"
-._("File upload succeeded.")."<br /><br />\n"
-._("Reading file..")."\n";
+$importquestion .= "<strong><font color='green'>".$clang->gT("Success")."</font></strong><br />\n"
+.$clang->gT("File upload succeeded.")."<br /><br />\n"
+.$clang->gT("Reading file..")."\n";
 $handle = fopen($the_full_file_path, "r");
 while (!feof($handle))
 {
@@ -72,22 +72,22 @@ fclose($handle);
 
 if (!$_POST['sid'])
 {
-	$importquestion .= _("No SID (Survey) has been provided. Cannot import question.")."<br /><br />\n"
+	$importquestion .= $clang->gT("No SID (Survey) has been provided. Cannot import question.")."<br /><br />\n"
 	."<input type='submit' value='"
-	._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n"
+	.$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n"
 	."</td></tr></table>\n";
 	return;
 }
 if (!$_POST['gid'])
 {
-	$importquestion .= _("No GID (Group) has been provided. Cannot import question")."<br /><br />\n"
+	$importquestion .= $clang->gT("No GID (Group) has been provided. Cannot import question")."<br /><br />\n"
 	."</td></tr></table>\n";
 	return;
 }
 if (substr($bigarray[0], 0, 27) != "# PHPSurveyor Question Dump")
 {
-	$importquestion .= "<strong><font color='red'>"._("Error")."</font></strong><br />\n"
-	._("This file is not a PHPSurveyor question file. Import failed.")."<br /><br />\n"
+	$importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
+	.$clang->gT("This file is not a PHPSurveyor question file. Import failed.")."<br /><br />\n"
 	."</td></tr></table>\n";
 	return;
 }
@@ -315,7 +315,7 @@ if (isset($questionarray) && $questionarray) {
         $newvalues=array_values($questionrowdata);
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
         $qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-		$qres = $connect->Execute($qinsert) or die ("<strong>"._("Error")."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+		$qres = $connect->Execute($qinsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
 		$newqid=$connect->Insert_ID();
 		$newrank=0;
 		//NOW DO NESTED ANSWERS FOR THIS QID
@@ -329,7 +329,7 @@ if (isset($questionarray) && $questionarray) {
                         $newvalues=array_values($answerrowdata);
                         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                         $ainsert = "insert INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-				$ares = $connect->Execute($ainsert) or die ("<strong>"._("Error")."</strong> Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+				$ares = $connect->Execute($ainsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
 				
 				if ($type == "M" || $type == "P") {
 					$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid,
@@ -414,24 +414,24 @@ if (isset($question_attributesarray) && $question_attributesarray) {//ONLY DO TH
 
 
 
-$importquestion .= "<strong><font color='green'>"._("Success")."</font></strong><br /><br />\n"
-."<strong><u>"._("Question Import Summary")."</u></strong><br />\n"
-."\t<li>"._("Questions").": ";
+$importquestion .= "<strong><font color='green'>".$clang->gT("Success")."</font></strong><br /><br />\n"
+."<strong><u>".$clang->gT("Question Import Summary")."</u></strong><br />\n"
+."\t<li>".$clang->gT("Questions").": ";
 if (isset($countquestions)) {$importquestion .= $countquestions;}
 $importquestion .= "</li>\n"
-."\t<li>"._("Answers").": ";
+."\t<li>".$clang->gT("Answers").": ";
 if (isset($countanswers)) {$importquestion .= $countanswers;}
 $importquestion .= "</li>\n"
-."\t<li>"._("Label Sets").": ";
+."\t<li>".$clang->gT("Label Sets").": ";
 if (isset($countlabelsets)) {$importquestion .= $countlabelsets;}
 $importquestion .= " (";
 if (isset($countlabels)) {$importquestion .= $countlabels;}
 $importquestion .= ")</li>\n";
-$importquestion .= "\t<li>"._("Question Attributes:");
+$importquestion .= "\t<li>".$clang->gT("Question Attributes:");
 if (isset($countquestion_attributes)) {$importquestion .= $countquestion_attributes;}
 $importquestion .= "</li></ul><br />\n";
 
-$importquestion .= "<strong>"._("Import of Survey is completed.")."</strong><br />&nbsp;\n"
+$importquestion .= "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />&nbsp;\n"
 ."</td></tr></table><br/>\n";
 
 

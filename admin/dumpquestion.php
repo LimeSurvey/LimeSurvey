@@ -53,10 +53,10 @@ if (!$qid)
 	echo $htmlheader;
 	echo "<br />\n";
 	echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._("Export Question")."</strong></td></tr>\n";
+	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Export Question")."</strong></td></tr>\n";
 	echo "\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
-	echo "$setfont<br /><strong><font color='red'>"._("Error")."</font></strong><br />\n"._("No QID has been provided. Cannot dump question.")."<br />\n";
-	echo "<br /><input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	echo "$setfont<br /><strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n".$clang->gT("No QID has been provided. Cannot dump question.")."<br />\n";
+	echo "<br /><input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	echo "\t</td></tr>\n";
 	echo "</table>\n";
 	echo "</body></html>\n";

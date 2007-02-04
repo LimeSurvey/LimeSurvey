@@ -56,25 +56,25 @@ if (!function_exists('array_combine')) {
 
 $importgroup = "<br />\n";
 $importgroup .= "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-$importgroup .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._("Import Group")."</strong></td></tr>\n";
+$importgroup .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Import Group")."</strong></td></tr>\n";
 $importgroup .= "\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 
 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 {
-	$importgroup .= "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
-	$importgroup .= _("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
-	$importgroup .= "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	$importgroup .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+	$importgroup .= $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
+	$importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	$importgroup .= "</td></tr></table>\n";
 	exit;
 }
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
-$importgroup .= "<strong><font color='green'>"._("Success")."</font></strong><br />\n";
-$importgroup .= _("File upload succeeded.")."<br /><br />\n";
-$importgroup .= _("Reading file..")."<br />\n";
+$importgroup .= "<strong><font color='green'>".$clang->gT("Success")."</font></strong><br />\n";
+$importgroup .= $clang->gT("File upload succeeded.")."<br /><br />\n";
+$importgroup .= $clang->gT("Reading file..")."<br />\n";
 $handle = fopen($the_full_file_path, "r");
 while (!feof($handle))
 {
@@ -86,9 +86,9 @@ fclose($handle);
 
 if (substr($bigarray[0], 0, 24) != "# PHPSurveyor Group Dump")
 {
-	$importgroup .= "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
-	$importgroup .= _("This file is not a PHPSurveyor group file. Import failed.")."<br /><br />\n";
-	$importgroup .= "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	$importgroup .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+	$importgroup .= $clang->gT("This file is not a PHPSurveyor group file. Import failed.")."<br /><br />\n";
+	$importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	$importgroup .= "</td></tr></table>\n";
 	unlink($the_full_file_path);
 	exit;
@@ -349,7 +349,7 @@ if (isset($grouparray) && $grouparray) {
         $newvalues=array_values($grouprowdata);
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
         $ginsert = "insert INTO {$dbprefix}groups (".implode(',',array_keys($grouprowdata)).") VALUES (".implode(',',$newvalues).")"; 
-		$gres = $connect->Execute($ginsert) or die("<strong>"._("Error")."</strong> Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+		$gres = $connect->Execute($ginsert) or die("<strong>".$clang->gT("Error")."</strong> Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
 
 		//GET NEW GID
 		$newgid=$connect->Insert_ID();
@@ -383,7 +383,7 @@ if (isset($grouparray) && $grouparray) {
                     $newvalues=array_values($questionrowdata);
                     $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                     $qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-					$qres = $connect->Execute($qinsert) or die ("<strong>"._("Error")."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+					$qres = $connect->Execute($qinsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
 
 					$qidquery = "SELECT qid, lid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1"; //Get last question added (finds new qid)
 					$qidres = db_execute_assoc($qidquery);
@@ -404,7 +404,7 @@ if (isset($grouparray) && $grouparray) {
                                 $newvalues=array_values($answerrowdata);
                                 $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                                 $ainsert = "insert INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-								$ares = $connect->Execute($ainsert) or die ("<strong>"._("Error")."</strong> Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+								$ares = $connect->Execute($ainsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
 								
 								if ($type == "M" || $type == "P") {
 									$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid,
@@ -539,36 +539,36 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
             $conditioninsert = "insert INTO {$dbprefix}conditions (".implode(',',array_keys($conditionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
 			$result=$connect->Execute($conditioninsert) or die ("Couldn't insert condition<br />$conditioninsert<br />".$connect->ErrorMsg());
 		} else {
-			$importgroup .= "<font size=1>"._("Condition for $oldqid skipped ($oldcqid does not exist)")."</font><br />";
+			$importgroup .= "<font size=1>".$clang->gT("Condition for $oldqid skipped ($oldcqid does not exist)")."</font><br />";
 		}
 		unset($newcqid);
 	}
 }
 
 
-$importgroup .= "<br />\n<strong><font color='green'>"._("Success")."</font></strong><br />\n"
-."<strong><u>"._("Group Import Summary")."</u></strong><br />\n"
-."<ul>\n\t<li>"._("Groups").": ";
+$importgroup .= "<br />\n<strong><font color='green'>".$clang->gT("Success")."</font></strong><br />\n"
+."<strong><u>".$clang->gT("Group Import Summary")."</u></strong><br />\n"
+."<ul>\n\t<li>".$clang->gT("Groups").": ";
 if (isset($countgroups)) {$importgroup .= $countgroups;}
 $importgroup .= "</li>\n"
-."\t<li>"._("Questions").": ";
+."\t<li>".$clang->gT("Questions").": ";
 if (isset($countquestions)) {$importgroup .= $countquestions;}
 $importgroup .= "</li>\n"
-."\t<li>"._("Answers").": ";
+."\t<li>".$clang->gT("Answers").": ";
 if (isset($countanswers)) {$importgroup .= $countanswers;}
 $importgroup .= "</li>\n"
-."\t<li>"._("Conditions").": ";
+."\t<li>".$clang->gT("Conditions").": ";
 if (isset($countconditions)) {$importgroup .= $countconditions;}
 $importgroup .= "</li>\n"
-."\t<li>"._("Label Set").": ";
+."\t<li>".$clang->gT("Label Set").": ";
 if (isset($countlabelsets)) {$importgroup .= $countlabelsets;}
-$importgroup .= " ("._("Labels").": ";
+$importgroup .= " (".$clang->gT("Labels").": ";
 if (isset($countlabels)) {$importgroup .= $countlabels;}
 $importgroup .= ")</li>\n";
-$importgroup .= "\t<li>"._("Question Attributes:");
+$importgroup .= "\t<li>".$clang->gT("Question Attributes:");
 if (isset($countquestion_attributes)) {$importgroup .= " $countquestion_attributes";}
 $importgroup .= ")</li>\n</ul>\n";
-$importgroup .= "<strong>"._("Import of group is completed.")."</strong><br />&nbsp;\n"
+$importgroup .= "<strong>".$clang->gT("Import of group is completed.")."</strong><br />&nbsp;\n"
 ."</td></tr></table><br />\n";
 
 

@@ -95,7 +95,7 @@ echo $htmlheader;
 <table width='99%' align='center' style='margin: 5px; border: 1px solid #555555' cellpadding='1' cellspacing='0'>
   <tr bgcolor='#555555'>
    <td colspan='2' height='4'>
-    <font size='1' face='verdana' color='white'><strong><? echo _("Quick Statistics") ?></strong></font>
+    <font size='1' face='verdana' color='white'><strong><? echo $clang->gT("Quick Statistics") ?></strong></font>
    </td>
   </tr>
 <? echo $surveyoptions ?>
@@ -250,8 +250,8 @@ if(!isset($_POST['action'])) {
 	<tr>
 	<td colspan='2' style='text-align: center; border: 1px;'>
 	<? presentQuestionList($questions) ?>
-	<input type='button' value='<? echo _("Select all"); ?>' onClick='selectAll("questions")'>
-	<input type='submit' value='<? echo _("Proceed"); ?>'>
+	<input type='button' value='<? echo $clang->gT("Select all"); ?>' onClick='selectAll("questions")'>
+	<input type='submit' value='<? echo $clang->gT("Proceed"); ?>'>
 	</td>
 	</tr>
 	</table>
@@ -292,7 +292,7 @@ function presentQuestionList($questions) {
 	<table class='filter' width='99%' align='center'>
 	<tr>
 	<th>
-	<? echo _("Question List") ?>
+	<? echo $clang->gT("Question List") ?>
 	</th>
 	</tr>
 	<tr>
@@ -305,7 +305,7 @@ function presentQuestionList($questions) {
 			if($currentgroup != "") {
 				echo "    </optgroup>\n";
 			}
-			echo "    <optgroup label='"._("Group").": ".$question['group_name']."'>\n";
+			echo "    <optgroup label='".$clang->gT("Group").": ".$question['group_name']."'>\n";
 		}
 		if(count($question['parts']) > 1) {
 			echo "     <option value=''>".$question['title'].": ".$question['question']."</option>\n";
@@ -362,15 +362,15 @@ function presentAnswerList($questions) {
 					case "N":
 					case "D":
 					echo "     <select name='method$inputname' id='method$inputname'>\n";
-					echo "      <option selected='selected' value='like'>"._("Like")."</option>\n";
-					echo "      <option value='equals'>"._("Equals")."</option>\n";
+					echo "      <option selected='selected' value='like'>".$clang->gT("Like")."</option>\n";
+					echo "      <option value='equals'>".$clang->gT("Equals")."</option>\n";
 					echo "     </select><br />\n";
 					echo "     <input type='text' name='$inputname' id='$valuename'><br />\n";
 					break;
 					default:
 					echo "     <select name='method$inputname' id='method$inputname'>\n";
-					echo "      <option selected='selected' value='in'>"._("Equals")."</option>\n";
-					echo "      <option value='notin'>"._("Not Equals")."</option>\n";
+					echo "      <option selected='selected' value='in'>".$clang->gT("Equals")."</option>\n";
+					echo "      <option value='notin'>".$clang->gT("Not Equals")."</option>\n";
 					echo "     </select><br />\n";
 					echo "     <select multiple size='5' name='$inputname' id='$valuename'>\n";
 					foreach($part['answers'] as $answer) {
@@ -379,7 +379,7 @@ function presentAnswerList($questions) {
 					echo "     </select><br />\n";
 					break;
 				}
-				echo "     <input type='button' value='"._("Add")."' onClick='addCondition(\"$inputname\")'>";
+				echo "     <input type='button' value='".$clang->gT("Add")."' onClick='addCondition(\"$inputname\")'>";
 				echo "    </div>\n";
 			}
 		}
@@ -426,7 +426,7 @@ function presentFilterConditions() {
 	<table width='99%' align='center'>
 	<tr>
 	<th>
-	<? echo _("Filter Conditions") ?>
+	<? echo $clang->gT("Filter Conditions") ?>
 	</th>
 	</tr>
 	<tr>
@@ -500,7 +500,7 @@ function getAnswerArray($data) {
 			"id"=>$row['code'],
 			"answers"=>array(0=>array("qid"=>$qid,
 			"code"=>$row['code'],
-			"answer"=>_("Short free text"),
+			"answer"=>$clang->gT("Short free text"),
 			"default_answer"=>"",
 			"sortorder"=>0)
 			)
@@ -556,17 +556,17 @@ function getAnswerArray($data) {
 			$output[$i]["id"]=$row['code'];
 			$output[$i]["answers"][]=array("qid"=>$qid,
 			"code"=>"Y",
-			"answer"=>_("Yes"),
+			"answer"=>$clang->gT("Yes"),
 			"default_answer"=>"",
 			"sortorder"=>0);
 			$output[$i]["answers"][]=array("qid"=>$qid,
 			"code"=>"U",
-			"answer"=>_("Uncertain"),
+			"answer"=>$clang->gT("Uncertain"),
 			"default_answer"=>"",
 			"sortorder"=>1);
 			$output[$i]["answers"][]=array("qid"=>$qid,
 			"code"=>"N",
-			"answer"=>_("No"),
+			"answer"=>$clang->gT("No"),
 			"default_answer"=>"",
 			"sortorder"=>0);
 			$i++;
@@ -583,17 +583,17 @@ function getAnswerArray($data) {
 			$output[$i]["id"]=$row['code'];
 			$output[$i]["answers"][]=array("qid"=>$qid,
 			"code"=>"I",
-			"answer"=>_("Increase"),
+			"answer"=>$clang->gT("Increase"),
 			"default_answer"=>"",
 			"sortorder"=>0);
 			$output[$i]["answers"][]=array("qid"=>$qid,
 			"code"=>"S",
-			"answer"=>_("Same"),
+			"answer"=>$clang->gT("Same"),
 			"default_answer"=>"",
 			"sortorder"=>1);
 			$output[$i]["answers"][]=array("qid"=>$qid,
 			"code"=>"D",
-			"answer"=>_("Decrease"),
+			"answer"=>$clang->gT("Decrease"),
 			"default_answer"=>"",
 			"sortorder"=>0);
 			$i++;
@@ -633,12 +633,12 @@ function getAnswerArray($data) {
 		"id"=>"",
 		"answers"=>array(0=>array("qid"=>$qid,
 		"code"=>"Y",
-		"answer"=>_("Yes"),
+		"answer"=>$clang->gT("Yes"),
 		"default_value"=>"",
 		"sortorder"=>0),
 		1=>array("qid"=>$qid,
 		"code"=>"N",
-		"answer"=>_("No"),
+		"answer"=>$clang->gT("No"),
 		"default_value"=>"",
 		"sortorder"=>1)
 		)
@@ -660,12 +660,12 @@ function getAnswerArray($data) {
 		"id"=>"",
 		"answers"=>array(0=>array("qid"=>$qid,
 		"code"=>"M",
-		"answer"=>_("Male"),
+		"answer"=>$clang->gT("Male"),
 		"default_value"=>"",
 		"sortorder"=>0),
 		array("qid"=>$qid,
 		"code"=>"F",
-		"answer"=>_("Female"),
+		"answer"=>$clang->gT("Female"),
 		"default_value"=>"",
 		"sortorder"=>1)
 		)
@@ -676,7 +676,7 @@ function getAnswerArray($data) {
 		"id"=>"",
 		"answers"    =>array(0=>array("qid"=>$qid,
 		"code"=>"",
-		"answer"=>_("Date"),
+		"answer"=>$clang->gT("Date"),
 		"default_value"=>"",
 		"sortorder"=>1))
 		);
@@ -686,7 +686,7 @@ function getAnswerArray($data) {
 		"id"=>"",
 		"answers"    =>array(0=>array("qid"=>$qid,
 		"code"=>"",
-		"answer"=>_("Numerical"),
+		"answer"=>$clang->gT("Numerical"),
 		"default_value"=>"",
 		"sortorder"=>1)
 		)
@@ -697,7 +697,7 @@ function getAnswerArray($data) {
 		"id"=>"",
 		"answers"    =>array(0=>array("qid"=>$qid,
 		"code"=>"",
-		"answer"=>_("Short free text"),
+		"answer"=>$clang->gT("Short free text"),
 		"default_value"=>"",
 		"sortorder"=>1)
 		)
@@ -708,7 +708,7 @@ function getAnswerArray($data) {
 		"id"=>"",
 		"answers"    =>array(0=>array("qid"=>$qid,
 		"code"=>"",
-		"answer"=>_("Long free text"),
+		"answer"=>$clang->gT("Long free text"),
 		"default_value"=>"",
 		"sortorder"=>1)
 		)
@@ -719,7 +719,7 @@ function getAnswerArray($data) {
 		"id"=>"",
 		"answers"    =>array(0=>array("qid"=>$qid,
 		"code"=>"",
-		"answer"=>_("Huge free text"),
+		"answer"=>$clang->gT("Huge free text"),
 		"default_value"=>"",
 		"sortorder"=>1)
 		)
