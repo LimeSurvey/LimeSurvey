@@ -42,14 +42,14 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && $action != "logout
 {
 	if($action == "forgotpassword")
 	{
-		$loginsummary = "<form name='forgot' id='forgot' method='post' action='$rooturl/admin/admin.php' ><br /><strong>"._("You have to enter user name and email.")."</strong><br />	<br />
+		$loginsummary = "<form name='forgot' id='forgot' method='post' action='$rooturl/admin/admin.php' ><br /><strong>".$clang->gT("You have to enter user name and email.")."</strong><br />	<br />
 							<table>
 								<tr>
-									<td><p>"._("Username")."</p></td>
+									<td><p>".$clang->gT("Username")."</p></td>
 									<td><input name='user' type='text' id='user' size='40' maxlength='40' value='' /></td>
 								</tr>
 								<tr>
-									<td><p>"._("Email")."</p></td>
+									<td><p>".$clang->gT("Email")."</p></td>
 									<td><input name='email' id='email' type='text' size='40' maxlength='40' value='' /></td>
 								</tr>
 								<tr>
@@ -59,21 +59,21 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && $action != "logout
 								</tr>
 								<tr>
 									<td>&nbsp;</td>
-									<td><a href='$scriptname'>"._("Main Admin Screen")."</a></td>
+									<td><a href='$scriptname'>".$clang->gT("Main Admin Screen")."</a></td>
 								</tr>
 							</table>						
 						</form>";	
 	}
 	else
 	{
-		$loginsummary = "<form name='login' id='login' method='post' action='$rooturl/admin/admin.php' ><br /><strong>"._("You have to login first.")."</strong><br />	<br />
+		$loginsummary = "<form name='login' id='login' method='post' action='$rooturl/admin/admin.php' ><br /><strong>".$clang->gT("You have to login first.")."</strong><br />	<br />
 							<table>
 								<tr>
-									<td>"._("Username")."</td>
+									<td>".$clang->gT("Username")."</td>
 									<td><input name='user' type='text' id='user' size='40' maxlength='40' value='' /></td>
 								</tr>
 								<tr>
-									<td>"._("Password")."</td>
+									<td>".$clang->gT("Password")."</td>
 									<td><input name='password' id='password' type='password' size='40' maxlength='40' /></td>
 								</tr>
 								<tr>
@@ -83,7 +83,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && $action != "logout
 								</tr>
 								<tr>
 									<td>&nbsp;</td>
-									<td><a href='$scriptname?action=forgotpassword'>"._("Forgot Your Password?")."</a><br />&nbsp;\n</td>
+									<td><a href='$scriptname?action=forgotpassword'>".$clang->gT("Forgot Your Password?")."</a><br />&nbsp;\n</td>
 								</tr>
 							</table>
 						</form>";
@@ -92,7 +92,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && $action != "logout
 		$loginsummary .=  "\t<form name='language' id='language' method='post' action='$rooturl/admin/admin.php' >"
 		. "\t<table><tr>\n"
 		. "\t\t<td align='center' >\n"
-		. "\t\t\t"._("Current Language").":\n"
+		. "\t\t\t".$clang->gT("Current Language").":\n"
 		. "\t\t</td><td>\n"
 		. "\t\t\t<select name='lang' onChange='form.submit()'>\n";
 		foreach (getlanguagedata() as $langkey=>$languagekind)

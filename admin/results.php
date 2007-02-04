@@ -206,10 +206,10 @@ function makeSummaryFromRawData($results, $surveyid=null, $gid=null, $qid=null) 
 					case "S":
 					case "H":
 					if ($result[$row][1] != "") {
-						if (!isset($summary[$row]['summary'][_("Answered")])) {
-							$summary[$row]['summary'][_("Answered")]=1;
+						if (!isset($summary[$row]['summary'][$clang->gT("Answered")])) {
+							$summary[$row]['summary'][$clang->gT("Answered")]=1;
 						} else {
-							$summary[$row]['summary'][_("Answered")]++;
+							$summary[$row]['summary'][$clang->gT("Answered")]++;
 						}
 					}
 					break;
@@ -241,44 +241,44 @@ function makeSummaryFromRawData($results, $surveyid=null, $gid=null, $qid=null) 
 			case "L":
 			case "O":
 			$answers=getAnswersSingle($surveyid, $gid, $qid);
-			$answers[]=array("code"=>"", "answer"=>_("No answer"));
+			$answers[]=array("code"=>"", "answer"=>$clang->gT("No answer"));
 			break;
 			case "W":
 			case "Z":
 			$answers=getLabelSet($thisquestion['lid']);
-			$answers[]=array("code"=>"", "answer"=>_("No answer"));
+			$answers[]=array("code"=>"", "answer"=>$clang->gT("No answer"));
 			break;
 			case "C":
-			$answers[]=array("code"=>"Y", "answer"=>_("Yes"));
-			$answers[]=array("code"=>"U", "answer"=>_("Uncertain"));
-			$answers[]=array("code"=>"N", "answer"=>_("No"));
+			$answers[]=array("code"=>"Y", "answer"=>$clang->gT("Yes"));
+			$answers[]=array("code"=>"U", "answer"=>$clang->gT("Uncertain"));
+			$answers[]=array("code"=>"N", "answer"=>$clang->gT("No"));
 			break;
 			case "E":
-			$answers[]=array("code"=>"I", "answer"=>_("Increase"));
-			$answers[]=array("code"=>"S", "answer"=>_("Same"));
-			$answers[]=array("code"=>"D", "answer"=>_("Decrease"));
-			$answers[]=array("code"=>"", "answer"=>_("No answer"));
+			$answers[]=array("code"=>"I", "answer"=>$clang->gT("Increase"));
+			$answers[]=array("code"=>"S", "answer"=>$clang->gT("Same"));
+			$answers[]=array("code"=>"D", "answer"=>$clang->gT("Decrease"));
+			$answers[]=array("code"=>"", "answer"=>$clang->gT("No answer"));
 			break;
 			case "M":
 			case "P":
-			$answers[]=array("code"=>"Y", "answer"=>_("Yes"));
-			$answers[]=array("code"=>"", "answer"=>_("No answer"));
+			$answers[]=array("code"=>"Y", "answer"=>$clang->gT("Yes"));
+			$answers[]=array("code"=>"", "answer"=>$clang->gT("No answer"));
 			break;
 			case "Y":
-			$answers[]=array("code"=>"Y", "answer"=>_("Yes"));
-			$answers[]=array("code"=>"N", "answer"=>_("No"));
-			$answers[]=array("code"=>"", "answer"=>_("No answer"));
+			$answers[]=array("code"=>"Y", "answer"=>$clang->gT("Yes"));
+			$answers[]=array("code"=>"N", "answer"=>$clang->gT("No"));
+			$answers[]=array("code"=>"", "answer"=>$clang->gT("No answer"));
 			break;
 			case "G":
-			$answers[]=array("code"=>"M", "answer"=>_("Male"));
-			$answers[]=array("code"=>"F", "answer"=>_("Female"));
-			$answers[]=array("code"=>"", "answer"=>_("No answer"));
+			$answers[]=array("code"=>"M", "answer"=>$clang->gT("Male"));
+			$answers[]=array("code"=>"F", "answer"=>$clang->gT("Female"));
+			$answers[]=array("code"=>"", "answer"=>$clang->gT("No answer"));
 			break;
 			case "T":
 			case "S":
 			case "U":
-			$answers[]=array("code"=>_("Answered"), "answer"=>_("Answered"));
-			$answers[]=array("code"=>"", "answer"=>_("No answer"));
+			$answers[]=array("code"=>$clang->gT("Answered"), "answer"=>$clang->gT("Answered"));
+			$answers[]=array("code"=>"", "answer"=>$clang->gT("No answer"));
 			break;
 		} // switch
 
@@ -304,7 +304,7 @@ function makeSummaryFromRawData($results, $surveyid=null, $gid=null, $qid=null) 
 		$newarray[$thisquestion['sid']."X".$thisquestion['gid']."X".$thisquestion['qid']]['question']=$thisquestion['question'];
 		foreach ($summary as $sum) {
 			ereg("\[(.*)\]", $sum['question'], $regs);
-			$newarray[$thisquestion['sid']."X".$thisquestion['gid']."X".$thisquestion['qid']]['summary'][$regs[1]]=$sum['summary'][_("Yes")];
+			$newarray[$thisquestion['sid']."X".$thisquestion['gid']."X".$thisquestion['qid']]['summary'][$regs[1]]=$sum['summary'][$clang->gT("Yes")];
 		}
 		$summary=$newarray;
 	}
@@ -352,16 +352,16 @@ function giveMeRawDataFromFieldNames($surveyid, $gid, $qid, $fieldlimiters=array
 			$answers=getLabelSet($thisquestion['lid']);
 			break;
 			case "Y":
-			$answers[]=array("code"=>"Y", "answer"=>_("Yes"));
-			$answers[]=array("code"=>"N", "answer"=>_("No"));
+			$answers[]=array("code"=>"Y", "answer"=>$clang->gT("Yes"));
+			$answers[]=array("code"=>"N", "answer"=>$clang->gT("No"));
 			break;
 			case "G":
-			$answers[]=array("code"=>"M", "answer"=>_("Male"));
-			$answers[]=array("code"=>"F", "answer"=>_("Female"));
+			$answers[]=array("code"=>"M", "answer"=>$clang->gT("Male"));
+			$answers[]=array("code"=>"F", "answer"=>$clang->gT("Female"));
 			break;
 		} // switch
-		$answers[]=array("code"=>"", "answer"=>_("No answer"));
-		$answers[]=array("code"=>"-oth-", "answer"=>_("Other"));
+		$answers[]=array("code"=>"", "answer"=>$clang->gT("No answer"));
+		$answers[]=array("code"=>"-oth-", "answer"=>$clang->gT("Other"));
 
 		switch($questiontype) {
 			case "A":
@@ -375,16 +375,16 @@ function giveMeRawDataFromFieldNames($surveyid, $gid, $qid, $fieldlimiters=array
 			}
 			break;
 			case "E":
-			$values[]=array("code"=>"I", "answer"=>_("Increase"));
-			$values[]=array("code"=>"S", "answer"=>_("Same"));
-			$values[]=array("code"=>"D", "answer"=>_("Decrease"));
+			$values[]=array("code"=>"I", "answer"=>$clang->gT("Increase"));
+			$values[]=array("code"=>"S", "answer"=>$clang->gT("Same"));
+			$values[]=array("code"=>"D", "answer"=>$clang->gT("Decrease"));
 			break;
 			case "C":
 			case "M":
 			case "P":
-			$values[]=array("code"=>"Y", "answer"=>_("Yes"));
-			$values[]=array("code"=>"U", "answer"=>_("Uncertain"));
-			$values[]=array("code"=>"N", "answer"=>_("No"));
+			$values[]=array("code"=>"Y", "answer"=>$clang->gT("Yes"));
+			$values[]=array("code"=>"U", "answer"=>$clang->gT("Uncertain"));
+			$values[]=array("code"=>"N", "answer"=>$clang->gT("No"));
 			break;
 			case "F":
 			case "H":
@@ -392,7 +392,7 @@ function giveMeRawDataFromFieldNames($surveyid, $gid, $qid, $fieldlimiters=array
 			$values = getLabelSet($thisquestion['lid']);
 			break;
 		}
-		$values[]=array("code"=>"", "answer"=>_("No answer"));
+		$values[]=array("code"=>"", "answer"=>$clang->gT("No answer"));
 
 		switch($questiontype) {
 			case "L":

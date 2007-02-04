@@ -80,11 +80,11 @@ if($actsurrows['edit_survey_property']){
         . "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
         . "\t\t\t<tr bgcolor='#555555'>\n"
         . "\t\t\t\t<td colspan='2' height='8'>\n"
-        . "\t\t\t\t\t<font size='1' color='white'><strong>"._("Assessments")."</strong></font></td></tr>\n";
+        . "\t\t\t\t\t<font size='1' color='white'><strong>".$clang->gT("Assessments")."</strong></font></td></tr>\n";
 	
 	$assessmentsoutput.= "\t<tr bgcolor='#999999'>\n"
 	. "\t\t<td>\n"
-	. "\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Return to Survey Administration")."');return false\">" .
+	. "\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Return to Survey Administration")."');return false\">" .
 			"<img name='Administration' src='$imagefiles/home.png' title='' alt='' align='left'  /></a>\n"
 	. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left' />\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
@@ -93,7 +93,7 @@ if($actsurrows['edit_survey_property']){
 	$assessmentsoutput.= "</table>";
 	
 	if ($surveyid == "") {
-		$assessmentsoutput.= _("No SID Provided");
+		$assessmentsoutput.= $clang->gT("No SID Provided");
 		exit;
 	}
 	
@@ -105,15 +105,15 @@ if($actsurrows['edit_survey_property']){
 		$groupselect.="<option value='".$group['gid']."'>".$group['group_name']."</option>\n";
 	}
 	$groupselect .="</select>\n";
-	$headings=array(_("Scope"), _("Group"), _("Minimum"), _("Maximum"), _("Heading"), _("Message"), _("URL"));
-	$inputs=array("<select name='scope'><option value='T'>"._("Total")."</option><option value='G'>"._("Group")."</option></select>",
+	$headings=array($clang->gT("Scope"), $clang->gT("Group"), $clang->gT("Minimum"), $clang->gT("Maximum"), $clang->gT("Heading"), $clang->gT("Message"), $clang->gT("URL"));
+	$inputs=array("<select name='scope'><option value='T'>".$clang->gT("Total")."</option><option value='G'>".$clang->gT("Group")."</option></select>",
 	$groupselect,
 	"<input type='text' name='minimum' />",
 	"<input type='text' name='maximum' />",
 	"<input type='text' name='name' />",
 	"<textarea name='message'></textarea />",
 	"<input type='text' name='link' />");
-	$actiontitle=_("Add");
+	$actiontitle=$clang->gT("Add");
 	$actionvalue="assessmentadd";
 	$thisid="";
 	
@@ -125,9 +125,9 @@ if($actsurrows['edit_survey_property']){
 		}
 		$scopeselect = "<select name='scope'><option ";
 		if ($editdata['scope'] == "T") {$scopeselect .= "selected ";}
-		$scopeselect .= "value='T'>"._("Total")."</option><option value='G'";
+		$scopeselect .= "value='T'>".$clang->gT("Total")."</option><option value='G'";
 		if ($editdata['scope'] == "G") {$scopeselect .= " selected";}
-		$scopeselect .= "'>"._("Group")."</option></select>";
+		$scopeselect .= "'>".$clang->gT("Group")."</option></select>";
 		$groupselect=str_replace("'".$editdata['gid']."'", "'".$editdata['gid']."' selected", $groupselect);
 		$inputs=array($scopeselect,
 		$groupselect,
@@ -136,7 +136,7 @@ if($actsurrows['edit_survey_property']){
 		"<input type='text' name='name' value='".htmlentities(stripslashes($editdata['name']), ENT_QUOTES)."' />",
 		"<textarea name='message'>".htmlentities(stripslashes($editdata['message']), ENT_QUOTES)."</textarea>",
 		"<input type='text' name='link' value='".$editdata['link']."' />");
-		$actiontitle=_("Edit");
+		$actiontitle=$clang->gT("Edit");
 		$actionvalue="assessmentupdate";
 		$thisid=$editdata['id'];
 	}
@@ -144,14 +144,14 @@ if($actsurrows['edit_survey_property']){
 	//PRESENT THE PAGE
 	
 	$assessmentsoutput.= "<br /><table align='center' class='outlinetable' cellspacing='0' width='90%'>
-		<tr><th>"._("If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission")."</th></tr>
+		<tr><th>".$clang->gT("If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission")."</th></tr>
 		<tr><td>";
 	$assessmentsoutput.= "<table cellspacing='1' align='center' width='90%'>
 		<tr><th>ID</th><th>SID</th>\n";
 	foreach ($headings as $head) {
 		$assessmentsoutput.= "<th>$head</th>\n";
 	}
-	$assessmentsoutput.= "<th>"._("Actions")."</th>";
+	$assessmentsoutput.= "<th>".$clang->gT("Actions")."</th>";
 	$assessmentsoutput.= "</tr>\n";
 	foreach($assessments as $assess) {
 		$assessmentsoutput.= "<tr>\n";
@@ -161,12 +161,12 @@ if($actsurrows['edit_survey_property']){
 		$assessmentsoutput.= "<td>
 			   <table width='100%'>
 				<tr><td align='center'><form method='post' action='admin.php?sid=$surveyid'>
-				 <input type='submit' value='"._("Edit")."' />
+				 <input type='submit' value='".$clang->gT("Edit")."' />
 				 <input type='hidden' name='action' value='assessmentedit' />
 				 <input type='hidden' name='id' value='".$assess['id']."' />
 				 </form></td>
 				 <td align='center'><form method='post' action='admin.php?sid=$surveyid'>
-				 <input type='submit' value='"._("Delete")."' onClick='return confirm(\""._("Are you sure you want to delete this entry.")."\")' />
+				 <input type='submit' value='".$clang->gT("Delete")."' onClick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.")."\")' />
 				 <input type='hidden' name='action' value='assessmentdelete' />
 				 <input type='hidden' name='id' value='".$assess['id']."' />
 				 </form>

@@ -39,7 +39,7 @@ $action=returnglobal('action');
 $scid=returnglobal('scid');
 
 //Ensure script is not run directly, avoid path disclosure
-if (empty($surveyid)) {die (_("Error")." - Cannot run this script directly");}
+if (empty($surveyid)) {die ($clang->gT("Error")." - Cannot run this script directly");}
 
 sendcacheheaders();
 
@@ -70,7 +70,7 @@ if ($action == "delete" && $surveyid && $scid)
 echo "<table><tr><td></td></tr></table>\n"
 ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-. _("Browse Saved Responses").":</strong> <font color='#EEEEEE'>".$thissurvey['name']."</font></font></td></tr>\n";
+. $clang->gT("Browse Saved Responses").":</strong> <font color='#EEEEEE'>".$thissurvey['name']."</font></font></td></tr>\n";
 echo savedmenubar();
 echo "</table>\n";
 echo "<table><tr><td></td></tr></table>\n"
@@ -80,11 +80,11 @@ switch ($action)
 {
 	case "all":
 	case "delete":
-	echo "<center>".$setfont._("Saved Responses:") . " ". getSavedCount($surveyid)."</font></center>";
+	echo "<center>".$setfont.$clang->gT("Saved Responses:") . " ". getSavedCount($surveyid)."</font></center>";
 	showSavedList($surveyid);
 	break;
 	default:
-	echo "<center>".$setfont._("Saved Responses:") . " ". getSavedCount($surveyid)."</font></center>";
+	echo "<center>".$setfont.$clang->gT("Saved Responses:") . " ". getSavedCount($surveyid)."</font></center>";
 }
 echo "</td></tr></table>\n";
 
@@ -100,11 +100,11 @@ function showSavedList($surveyid)
 	{
 		echo "<table class='outlinetable' cellspacing='0' align='center'>\n";
 		echo "<tr><th>SCID</th><th>"
-		._("Identifier")."</th><th>"
-		._("IP Address")."</th><th>"
-		._("Date Saved")."</th><th>"
-		._("Email Address")."</th><th>"
-		._("Action")."</th>"
+		.$clang->gT("Identifier")."</th><th>"
+		.$clang->gT("IP Address")."</th><th>"
+		.$clang->gT("Date Saved")."</th><th>"
+		.$clang->gT("Email Address")."</th><th>"
+		.$clang->gT("Action")."</th>"
 		."</tr>\n";
 		while($row=$result->FetchRow())
 		{
@@ -116,9 +116,9 @@ function showSavedList($surveyid)
 				<td><a href='mailto:".$row['email']."'>".$row['email']."</td>
 				<td align='center'>
 				[<a href='saved.php?sid=$surveyid&amp;action=delete&amp;scid=".$row['scid']."'"
-			." onClick='return confirm(\""._("Are you sure you want to delete this entry?")."\")'"
-			.">"._("Delete")."</a>]
-				[<a href='dataentry.php?sid=$surveyid&amp;action=editsaved&amp;identifier=".rawurlencode ($row['identifier'])."&amp;scid=".$row['scid']."&amp;accesscode=".$row['access_code']."'>"._("Edit")."</a>]
+			." onClick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?")."\")'"
+			.">".$clang->gT("Delete")."</a>]
+				[<a href='dataentry.php?sid=$surveyid&amp;action=editsaved&amp;identifier=".rawurlencode ($row['identifier'])."&amp;scid=".$row['scid']."&amp;accesscode=".$row['access_code']."'>".$clang->gT("Edit")."</a>]
 				</td>
 			   </tr>\n";
 		} // while
@@ -126,7 +126,7 @@ function showSavedList($surveyid)
 	}
 }
 
-//				[<a href='saved.php?sid=$surveyid&amp;action=remind&amp;scid=".$row['scid']."'>"._("Remind")."</a>]
+//				[<a href='saved.php?sid=$surveyid&amp;action=remind&amp;scid=".$row['scid']."'>".$clang->gT("Remind")."</a>]
 //               c_schmitz: Since its without function at the moment i removed it from the above lines
 
 function savedmenubar()
@@ -137,17 +137,17 @@ function savedmenubar()
 	$surveyoptions .= "\t<tr bgcolor='#999999'>\n"
 	. "\t\t<td>\n"
 	. "\t\t\t<a href='$scriptname?sid=$surveyid' onmouseout=\"hideTooltip()\" " .
-			"onmouseover=\"showTooltip(event,'"._("Return to Survey Administration")."')\" >" .
+			"onmouseover=\"showTooltip(event,'".$clang->gT("Return to Survey Administration")."')\" >" .
 			"<img name='Administration' src='$imagefiles/home.png' title='' align='left'></a>\n"
 	. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 	. "\t\t\t<a href='saved.php?sid=$surveyid' onmouseout=\"hideTooltip()\" " .
-			"onmouseover=\"showTooltip(event,'". _("Show summary information")."')\">" .
+			"onmouseover=\"showTooltip(event,'". $clang->gT("Show summary information")."')\">" .
 			"<img name='SurveySummary' src='$imagefiles/summary.png' title=''  align='left'></a>\n"
-	. "\t\t\t<a href='saved.php?sid=$surveyid&amp;action=all' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". _("Display Responses")."')\">" .
+	. "\t\t\t<a href='saved.php?sid=$surveyid&amp;action=all' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Display Responses")."')\">" .
 	"<img name='ViewAll' src='$imagefiles/document.png' title=''  align='left'></a>\n"
 	//. "\t\t\t<input type='image' name='ViewLast' src='$imagefiles/viewlast.png' title='"
-	//. _("Display Last 50 Responses")."'  align='left'  onClick=\"window.open('saved.php?sid=$surveyid&action=all&limit=50&order=desc', '_top')\">\n"
+	//. $clang->gT("Display Last 50 Responses")."'  align='left'  onClick=\"window.open('saved.php?sid=$surveyid&action=all&limit=50&order=desc', '_top')\">\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"
 	. "\t\t</td>\n"
 	. "\t</tr>\n";

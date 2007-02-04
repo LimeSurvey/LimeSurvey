@@ -40,16 +40,16 @@ if (empty($homedir)) {die ("Cannot run this script directly");}
 
 echo "<br />\n";
 echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"._("Import Label Set")."</strong></td></tr>\n";
+echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Import Label Set")."</strong></td></tr>\n";
 echo "\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
 $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 
 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 {
-	echo "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
-	echo _("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
-	echo "<input type='submit' value='"._("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	echo "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+	echo $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
+	echo "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	echo "</td></tr></table>\n";
 	echo "</body>\n</html>\n";
 	exit;
@@ -60,9 +60,9 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 $csarray=buildLabelsetCSArray();
 //$csarray is now a keyed array with the Checksum of each of the label sets, and the lid as the key
 
-echo "<strong><font color='green'>"._("Success")."</font></strong><br />\n";
-echo _("File upload succeeded.")."<br /><br />\n";
-echo _("Reading file..")."<br />\n";
+echo "<strong><font color='green'>".$clang->gT("Success")."</font></strong><br />\n";
+echo $clang->gT("File upload succeeded.")."<br /><br />\n";
+echo $clang->gT("Reading file..")."<br />\n";
 $handle = fopen($the_full_file_path, "r");
 while (!feof($handle))
 {
@@ -74,9 +74,9 @@ fclose($handle);
 
 if (substr($bigarray[1], 0, 25) != "# SURVEYOR LABEL SET DUMP")
 {
-	echo "<strong><font color='red'>"._("Error")."</font></strong><br />\n";
-	echo _("This file is not a PHPSurveyor question file. Import failed.")."<br /><br />\n";
-	echo "<input type='submit' value='"._("Return to Labels Admin")."' onClick=\"window.open('labels.php', '_top')\">\n";
+	echo "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+	echo $clang->gT("This file is not a PHPSurveyor question file. Import failed.")."<br /><br />\n";
+	echo "<input type='submit' value='".$clang->gT("Return to Labels Admin")."' onClick=\"window.open('labels.php', '_top')\">\n";
 	echo "</td></tr></table>\n";
 	echo "</body>\n</html>\n";
 	exit;
@@ -209,17 +209,17 @@ if (isset($lsmatch))
 	$query = "DELETE FROM {$dbprefix}labelsets WHERE lid=$newlid";
 	$result=$connect->Execute($query) or die("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
 	$newlid=$lsmatch;
-	echo "<p><i><font color='red'>"._("There was a duplicate labelset, so this set was not imported. The duplicate will be used instead.")."</font></i></p>\n";
+	echo "<p><i><font color='red'>".$clang->gT("There was a duplicate labelset, so this set was not imported. The duplicate will be used instead.")."</font></i></p>\n";
 }
 
 echo "<strong>LID:</strong> $newlid<br />\n";
-echo "<br />\n<strong><font color='green'>"._("Success")."</font></strong><br />\n";
-echo "<strong><u>"._("Question Import Summary")."</u></strong><br />\n";
-echo "\t<li>"._("Labelsets").": $countlabelsets</li>\n";
-echo "\t<li>"._("Labels").": $countlabels</li></ul><br />\n";
+echo "<br />\n<strong><font color='green'>".$clang->gT("Success")."</font></strong><br />\n";
+echo "<strong><u>".$clang->gT("Question Import Summary")."</u></strong><br />\n";
+echo "\t<li>".$clang->gT("Labelsets").": $countlabelsets</li>\n";
+echo "\t<li>".$clang->gT("Labels").": $countlabels</li></ul><br />\n";
 
-echo "<strong>"._("Import of Survey is completed.")."</strong><br />\n";
-echo "<input type='submit' value='"._("Return to Labels Admin")."' onClick=\"window.open('labels.php?lid=$newlid', '_top')\">\n";
+echo "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />\n";
+echo "<input type='submit' value='".$clang->gT("Return to Labels Admin")."' onClick=\"window.open('labels.php?lid=$newlid', '_top')\">\n";
 
 echo "</td></tr></table>\n";
 echo "</body>\n</html>";

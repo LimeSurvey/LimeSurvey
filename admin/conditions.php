@@ -52,14 +52,14 @@ if(isset($_POST['cquestions'])) {
 
 echo "<table width='100%' border='0' bgcolor='#555555' cellspacing='0' cellpadding='0'>\n"
 ."\t<tr><td align='center'><font color='white'><strong>"
-._("Condition Designer")."</strong></font></td></tr>\n"
+.$clang->gT("Condition Designer")."</strong></font></td></tr>\n"
 ."</table>\n";
 
 
 if (!isset($surveyid))
 {
 	echo "<br /><center><strong>"
-	._("You have not selected a Survey.")." "._("You cannot run this script directly.")
+	.$clang->gT("You have not selected a Survey.")." ".$clang->gT("You cannot run this script directly.")
 	."</strong></center>\n"
 	."</body></html>\n";
 	exit;
@@ -67,7 +67,7 @@ if (!isset($surveyid))
 if (!isset($_GET['qid']) && !isset($_POST['qid']))
 {
 	echo "<br /><center><strong>"
-	._("You have not selected a Question.")." "._("You cannot run this script directly.")
+	.$clang->gT("You have not selected a Question.")." ".$clang->gT("You cannot run this script directly.")
 	."</strong></center>\n"
 	."</body></html>\n";
 	exit;
@@ -144,14 +144,14 @@ if (isset($_POST['action']) && $_POST['action'] == "copyconditions")
 	}
 	else
 	{
-		$message = _("Did not copy questions").": ";
+		$message = $clang->gT("Did not copy questions").": ";
 		if (!isset($copyconditionsfrom))
 		{
-			$message .= _("No condition selected to copy from").". ";
+			$message .= $clang->gT("No condition selected to copy from").". ";
 		}
 		if (!isset($copyconditionsto))
 		{
-			$message .= _("No question selected to copy condition to").".";
+			$message .= $clang->gT("No question selected to copy condition to").".";
 		}
 		echo "<script type=\"text/javascript\">\n<!--\nalert('$message');\n//-->\n</script>\n";
 	}
@@ -300,14 +300,14 @@ if ($questionscount > 0)
 					}
 					break;
 					case "C":
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "Y", _("Yes"));
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "U", _("Uncertain"));
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "N", _("No"));
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "Y", $clang->gT("Yes"));
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "U", $clang->gT("Uncertain"));
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "N", $clang->gT("No"));
 					break;
 					case "E":
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "I", _("Increase"));
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "S", _("Same"));
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "D", _("Decrease"));
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "I", $clang->gT("Increase"));
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "S", $clang->gT("Same"));
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "D", $clang->gT("Decrease"));
 					break;
 					case "F":
 					case "H":
@@ -321,7 +321,7 @@ if ($questionscount > 0)
 					}
 					break;
 				}
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "", _("No answer"));
+				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "", $clang->gT("No answer"));
 			}
 		}
 		elseif ($rows['type'] == "R")
@@ -343,7 +343,7 @@ if ($questionscount > 0)
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, $qck[0], $qck[1]);
 				}
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, "", _("No answer"));
+				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, "", $clang->gT("No answer"));
 			}
 			unset($quicky);
 		}
@@ -353,21 +353,21 @@ if ($questionscount > 0)
 			switch ($rows['type'])
 			{
 				case "Y":
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "Y", _("Yes"));
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "N", _("No"));
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", _("No answer"));
+				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "Y", $clang->gT("Yes"));
+				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "N", $clang->gT("No"));
+				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", $clang->gT("No answer"));
 				break;
 				case "G":
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "F", _("Female"));
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "M", _("Male"));
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", _("No answer"));
+				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "F", $clang->gT("Female"));
+				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "M", $clang->gT("Male"));
+				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", $clang->gT("No answer"));
 				break;
 				case "5":
 				for ($i=1; $i<=5; $i++)
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $i, $i);
 				}
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", _("No answer"));
+				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", $clang->gT("No answer"));
 				break;
 				case "W":
 				case "Z":
@@ -394,7 +394,7 @@ if ($questionscount > 0)
 				if ($rows['type'] != "M" && $rows['type'] != "P" && $rows['type'] != "J" && $rows['type'] != "I")
 
 				{
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", _("No answer"));
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", $clang->gT("No answer"));
 				}
 				break;
 			}
@@ -488,7 +488,7 @@ $showreplace="$questiontitle<img src='$imagefiles/speaker.png' alt=\""
 . "\" onClick=\"alert('"
 . htmlspecialchars(addslashes(strip_tags($questiontext)))
 . "')\" />";
-$onlyshow=str_replace("{QID}", $showreplace, _("Only show question {QID} IF"));
+$onlyshow=str_replace("{QID}", $showreplace, $clang->gT("Only show question {QID} IF"));
 echo "\t\t\t<strong>$onlyshow</strong>\n"
 ."\t\t</td>\n"
 ."\t</tr>\n";
@@ -511,14 +511,14 @@ if ($conditionscount > 0)
 			echo "\t\t\t\t<tr bgcolor='#E1FFE1'>\n"
 			."\t\t\t\t\t<td valign='middle' align='center'>\n"
 			."<font size='1'><strong>"
-			._("and")."</strong></font>";
+			.$clang->gT("and")."</strong></font>";
 		}
 		elseif (isset($currentfield))
 		{
 			echo "\t\t\t\t<tr bgcolor='#E1FFE1'>\n"
 			."\t\t\t\t\t<td valign='top' align='center'>\n"
 			."<font size='1'><strong>"
-			._("OR")."</strong></font>";
+			.$clang->gT("OR")."</strong></font>";
 		}
 		echo "\t<tr bgcolor='#E1FFE1'>\n"
 		."\t<td><form style='margin-bottom:0;' name='del{$rows['cid']}' id='del{$rows['cid']}' method='post' action='{$_SERVER['PHP_SELF']}'>\n"
@@ -539,7 +539,7 @@ if ($conditionscount > 0)
 		}
 		echo "\t\t</font></td>\n"
 		."\t\t<td align='center' valign='middle' width='15%'><font size='1'>"
-		._("Equals")."</font></td>"
+		.$clang->gT("Equals")."</font></td>"
 		."\t\t\t\t\n"
 		."\t\t\t\t\t<td align='left' valign='middle' width='30%'>\n"
 		."\t\t\t\t\t\t<font size='1' face='verdana'>\n";
@@ -586,12 +586,12 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 	echo "\t<table width='100%'><tr bgcolor='#CDCDCD'>\n"
 	."\t\t<td colspan='3' align='center'>\n"
 	."\t\t<strong>"
-	._("Copy Conditions")."</strong>\n"
+	.$clang->gT("Copy Conditions")."</strong>\n"
 	."\t\t</td>\n"
 	."\t</tr>\n";
 
 	echo "\t<tr>\n"
-	."\t\t<th>"._("Condition")."</font></th><th></th><th>"._("Question")."</th>\n"
+	."\t\t<th>".$clang->gT("Condition")."</font></th><th></th><th>".$clang->gT("Question")."</th>\n"
 	."\t</tr>\n";
 
 	echo "\t<tr>\n"
@@ -604,7 +604,7 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 	echo "\t\t</select>\n"
 	."\t\t</td>\n"
 	."\t\t<td align='center'>\n"
-	."\t\t"._("copy to")."\n"
+	."\t\t".$clang->gT("copy to")."\n"
 	."\t\t</td>\n"
 	."\t\t<td align='center'>\n"
 	."\t\t<select name='copyconditionsto[]' multiple style='font-family:verdana; font-size:10; width:220' size='4'>\n";
@@ -617,7 +617,7 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 	."\t</tr>\n";
 
 	echo "\t<tr><td colspan='3' align='center'>\n"
-	."<input type='submit' value='"._("Copy Conditions")."' onclick=\"return confirm('"._("Are you sure you want to copy these condition(s) to the questions you have selected?")."')\" />"
+	."<input type='submit' value='".$clang->gT("Copy Conditions")."' onclick=\"return confirm('".$clang->gT("Are you sure you want to copy these condition(s) to the questions you have selected?")."')\" />"
 	."\t\t\n";
 
 	echo "<input type='hidden' name='action' value='copyconditions' />\n"
@@ -634,17 +634,17 @@ echo "<form action='{$_SERVER['PHP_SELF']}' name='addconditions' id='addconditio
 echo "<table width='100%' border='0' >";
 echo "\t<tr bgcolor='#CDCDCD'>\n"
 ."\t\t<td colspan='3' align='center'>\n"
-."\t\t\t<strong>"._("Add Condition")."</strong>\n"
+."\t\t\t<strong>".$clang->gT("Add Condition")."</strong>\n"
 ."\t\t</td>\n"
 ."\t</tr>\n"
 ."\t<tr bgcolor='#EFEFEF'>\n"
 ."\t\t<th width='40%'>\n"
-."\t\t\t<strong>"._("Question")."</strong>\n"
+."\t\t\t<strong>".$clang->gT("Question")."</strong>\n"
 ."\t\t</th>\n"
 ."\t\t<th width='20%'>\n"
 ."\t\t</th>\n"
 ."\t\t<th width='40%'>\n"
-."\t\t\t<strong>"._("Answer")."</strong>\n"
+."\t\t\t<strong>".$clang->gT("Answer")."</strong>\n"
 ."\t\t</th>\n"
 ."\t</tr>\n"
 ."\t<tr>\n"
@@ -668,7 +668,7 @@ echo "\t\t\t</select>\n"
 //echo "\t\t\t\t<option value='='>Equals</option>\n";
 //echo "\t\t\t\t<option value='!'>Does not equal</option>\n";
 //echo "\t\t\t</select>\n";
-echo "\t\t\t"._("Equals")."\n"
+echo "\t\t\t".$clang->gT("Equals")."\n"
 ."\t\t</td>\n"
 ."\t\t<td valign='top' align='center'>\n"
 ."\t\t\t<select name='canswers[]' multiple id='canswers' style='font-family:verdana; font-size:10; width:220' size='5'>\n";
@@ -677,8 +677,8 @@ echo "\t\t\t</select>\n"
 ."\t</tr>\n"
 ."\t<tr>\n"
 ."\t\t<td colspan='3' align='center'>\n"
-."\t\t\t<input type='reset' value='"._("Clear")."' onClick=\"clearAnswers()\" />\n"
-."\t\t\t<input type='submit' value='"._("Add Condition")."' />\n"
+."\t\t\t<input type='reset' value='".$clang->gT("Clear")."' onClick=\"clearAnswers()\" />\n"
+."\t\t\t<input type='submit' value='".$clang->gT("Add Condition")."' />\n"
 ."<input type='hidden' name='sid' value='$surveyid' />\n"
 ."<input type='hidden' name='qid' value='$qid' />\n"
 ."<input type='hidden' name='action' value='insertcondition' />\n"
@@ -694,7 +694,7 @@ echo "\t<tr><td colspan='3'></td></tr>\n"
 ."\t\t</td>\n";
 echo "\t<tr bgcolor='#CDCDCD'><td colspan=3 height='10'></td></tr>\n"
 ."\t\t<tr><td colspan='3' align='center'>\n"
-."\t\t\t<input type='submit' value='"._("Close Window")."' onClick=\"window.close()\"  />\n"
+."\t\t\t<input type='submit' value='".$clang->gT("Close Window")."' onClick=\"window.close()\"  />\n"
 ."\t\t</td>\n"
 ."\t</tr>\n";
 echo "\t<tr><td colspan='3'></td></tr>\n"

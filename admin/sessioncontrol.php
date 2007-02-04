@@ -55,9 +55,12 @@ elseif (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='' )
 	{
 	$_SESSION['adminlang']=$defaultlang;
 	}
-// for debug purposes
-// echo 'Domain:*'.$_SESSION['adminlang'].'*';	
-SetInterfaceLanguage($_SESSION['adminlang']);
+// OLD LANGUAGE SETTING
+//SetInterfaceLanguage($_SESSION['adminlang']);
+
+// Construct the language class, and set the language.
+require_once($rootdir.'/classes/core/language.php');
+$clang = new phpsurveyor_lang($_SESSION['adminlang']);
 
 // get user rights
 if(isset($_SESSION['loginID'])) {GetSessionUserRights($_SESSION['loginID']);}
