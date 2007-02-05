@@ -95,16 +95,15 @@ if (!isset($_SESSION['loginID']))
 			// build query
 			switch ($connect->databaseType) {
 				case 'mysql': 
-					$query = "SELECT uid, user, ".db_decrypt('password','{$codeString}')." AS password, parent_id, email, lang FROM {$dbprefix}users WHERE user='{$_POST['user']}'";
+					$query = "SELECT uid, user, ".db_decrypt('password',$codeString)." AS password, parent_id, email, lang FROM {$dbprefix}users WHERE user='{$_POST['user']}'";
 					break;
 				case 'odbc_mssql':
-					$query = "SELECT uid, [user], ".db_decrypt('password','{$codeString}')." AS password, parent_id, email, lang FROM {$dbprefix}users WHERE [user]='{$_POST['user']}'";
+					$query = "SELECT uid, [user], ".db_decrypt('password',$codeString)." AS password, parent_id, email, lang FROM {$dbprefix}users WHERE [user]='{$_POST['user']}'";
 					break;
 				default: die ("Couldn't create query for connection type '$connect->databaseType'"); 	
 			}
 			$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 			$result = $connect->SelectLimit($query, 1) or die ($query."<br />".$connect->ErrorMsg());
-			
 			if ($result->RecordCount() < 1) 
 				{
 				// wrong or unknown username and/or email
