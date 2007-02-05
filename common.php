@@ -216,7 +216,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 		$adminmenu .="<a href=\"#\" onclick=\"window.open('$scriptname?action=editusergroups', '_top')\""
 					. "onmouseout=\"hideTooltip()\""
 					. "onmouseover=\"showTooltip(event,'".$clang->gT("Create/Edit Groups")."');return false\">" .
-					"<img src='$imagefiles/tokens.png' title='' align='left' alt='".$clang->gT("Create/Edit Groups")."' /></a>\n" ;
+					"<img src='$imagefiles/usergroup.png' title='' align='left' alt='".$clang->gT("Create/Edit Groups")."' /></a>\n" ;
 
 		// check settings
         //"\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='34'  align='left'>\n".
