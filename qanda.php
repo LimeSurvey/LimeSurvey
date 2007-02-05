@@ -753,7 +753,7 @@ function do_list_flexible_dropdown($ia)
 
 function do_list_radio($ia)
 {
-	global $dbprefix, $dropdownthreshold, $lwcdropdowns, $connect;
+	global $dbprefix, $dropdownthreshold, $lwcdropdowns, $connect, $clang;
 	global $shownoanswer;
 	$answer="";
 	$qidattributes=getQuestionAttributes($ia[0]);

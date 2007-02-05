@@ -287,8 +287,8 @@ if ($surveyid)
 		$sumquery2 = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='".$defaultlang."'"; //Getting a count of groups for this survey
 		$sumresult2 = $connect->Execute($sumquery2);
 		$sumcount2 = $sumresult2->RecordCount();
-		$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid LIMIT 1 "; //Getting data for this survey
-		$sumresult1 = db_execute_assoc($sumquery1);
+		$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid"; //Getting data for this survey
+		$sumresult1 = db_select_limit_assoc($sumquery1, 1);
 		$surveysummary .= "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
 
 		$s1row = $sumresult1->FetchRow();

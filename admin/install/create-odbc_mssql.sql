@@ -3,15 +3,15 @@
 --
 
 CREATE TABLE [dbo].[prefix_answers] (
-  [qid] int DEFAULT 0 NOT NULL,
-  [code] nvarchar(5)  NOT NULL,
-  [answer] ntext  NOT NULL,
-  [default_value] nvarchar(1)  DEFAULT 'N' NOT NULL,
-  [sortorder] nvarchar(5)  NULL
-)
-ON [PRIMARY]
-TEXTIMAGE_ON [PRIMARY]
-;
+	[qid] [int] NOT NULL default '0' ,
+	[code] [varchar] (5) NOT NULL default '' ,
+	[answer] [varchar] (100)  NOT NULL , -- n.b. changed from TEXT type
+	[default_value] [char] (1) NOT NULL default 'N',
+	[sortorder] [int] NOT NULL ,
+	[language] [varchar] (20) default 'en'
+	PRIMARY KEY  (qid,code,language)
+) 
+GO
 
 --
 -- Structure for table assessments :
@@ -52,15 +52,15 @@ ON [PRIMARY]
 --
 
 CREATE TABLE [dbo].[prefix_groups] (
-  [gid] int IDENTITY(1, 1) NOT NULL,
-  [sid] int DEFAULT 0 NOT NULL,
-  [group_name] nvarchar(100)  NOT NULL,
-  [description] ntext  NULL,
-  [sortorder] nvarchar(5)  NULL
-)
-ON [PRIMARY]
-TEXTIMAGE_ON [PRIMARY]
-;
+	[gid] [int] IDENTITY (1, 1) NOT NULL ,
+	[sid] [int] NOT NULL ,
+	[group_name] [nvarchar] (100) NOT NULL default '',
+	[group_code] [nvarchar] (50) NOT NULL default '',
+	[group_order] [int] NOT NULL default '0' ,
+	[description] [ntext] NULL ,
+	[language] [varchar] (20) NOT NULL 
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
 
 --
 -- Structure for table labels :

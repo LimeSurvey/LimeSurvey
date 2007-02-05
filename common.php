@@ -367,6 +367,15 @@ function &db_execute_assoc($sql,$inputarr=false)
 	return $dataset;
 }
 
+function &db_select_limit_assoc($sql,$numrows=-1,$offset=-1,$inputarr=false)
+{
+	global $connect;
+
+	$connect->SetFetchMode(ADODB_FETCH_ASSOC);
+	$dataset=$connect->SelectLimit($sql,$numrows=-1,$offset=-1,$inputarr=false) or die($sql);
+	return $dataset;
+}
+
 function db_quote_id($id)
 {
 	global $connect;
@@ -1833,6 +1842,7 @@ function templatereplace($line)
 	{
 		$savereturn.= "&amp;token=".returnglobal('token');
 	}
+	
 	$savereturn .= "'>".$clang->gT("Return To Survey")."</a>";
 	if (strpos($line, "{SAVEERROR}") !== false) $line=str_replace("{SAVEERROR}", $errormsg, $line);
 	if (strpos($line, "{SAVEHEADING}") !== false) $line=str_replace("{SAVEHEADING}", $clang->gT("Save Your Unfinished Survey"), $line);

@@ -284,8 +284,8 @@ if(isset($surveyid))
 			}
 			else
 			{
-				$query = "SELECT qid FROM ".db_table_name('questions')." ORDER BY qid DESC LIMIT 1"; //get last question id
-				$result=db_execute_assoc($query);
+				$query = "SELECT qid FROM ".db_table_name('questions')." ORDER BY qid DESC"; //get last question id
+				$result=db_select_limit_assoc($query, 1);
 				while ($row=$result->FetchRow()) {$qid = $row['qid'];}
 			}
 			if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
