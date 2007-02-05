@@ -35,14 +35,13 @@
 */
 //import responses from an old_ survey table into an active survey
 require_once(dirname(__FILE__).'/../config.php');
-
-if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
-if (!isset($action)) {$action = returnglobal('action');}
-if (!isset($oldtable)) {$oldtable = returnglobal('oldtable');}
-
 include_once("login_check.php");
 
-if (!$action == "import")
+if (!isset($oldtable)) {$oldtable=returnglobal('oldtable');}
+if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
+
+
+if (!$subaction == "import")
 {
 	// show UI for choosing old table
 
@@ -54,8 +53,13 @@ if (!$action == "import")
 		$optionElements .= "\t\t\t<option>{$row[0]}</option>\n";
 	}
 
-	echo $htmlheader;
-	echo "<br /><table align='center' class='outlinetable'>
+	$importoldresponsesoutput = "";
+    $importoldresponsesoutput .= "<table width='99%' align='center' style='margin: 5px; border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+    ."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Quick Statistics")."</strong></font></td></tr>\n";
+    //Get the menubar
+    $importoldresponsesoutput .= browsemenubar();
+    $importoldresponsesoutput .= "</table>\n";
+	$importoldresponsesoutput .= "<br /><table align='center' class='outlinetable'>
 		<tr>
 			<th colspan='2'>".$clang->gT("Import responses from an old (deactivated) survey table into an active survey")."</th>
 		</tr>
@@ -75,17 +79,13 @@ if (!$action == "import")
 		 </td>
 		</tr>
 		<tr>
-		 <td>&nbsp;
-		 </td>
-		 <td>
+		 <td colspan='2' align='center'>
 		  <input type='submit' value='".$clang->gT("Import Responses")."' onClick='return confirm(\"Are you sure?\")'>&nbsp;
+ 	 	  <input type='hidden' name='subaction' value='import'>
 		 </td>
 		</tr>
-		 <input type='hidden' name='action' value='import'>
 		</form>
-		<tr><td colspan='2' align='center'>[<a href='browse.php?sid=$surveyid'>".$clang->gT("Return to Survey Administration")."</a>]</td></tr>
-		</table>
-</body></html>";
+		</table><br />&nbsp;";
 }
 elseif (isset($surveyid) && $surveyid && isset($oldtable))
 {
@@ -153,7 +153,7 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
 
 	$result = $connect->Execute($query) or die("Error:<br />$query<br />".$connect->ErrorMsg());
 
-	header("Location: {$homeurl}/browse.php?sid={$surveyid}");
+	header("Location: $scriptname?action=browse&sid=$surveyid");
 }
 
 ?>

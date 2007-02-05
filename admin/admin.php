@@ -36,7 +36,7 @@
 
 require_once(dirname(__FILE__).'/../config.php');  // config.php itself includes common.php
 
-if (!isset($adminlang)) {$adminlang=returnglobal('adminlang');}              //??
+if (!isset($adminlang)) {$adminlang=returnglobal('adminlang');}              // Admin language
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}  //SurveyID
 if (!isset($ugid)) {$ugid=returnglobal('ugid');}         //Usergroup-ID
 if (!isset($gid)) {$gid=returnglobal('gid');}            //GroupID
@@ -44,13 +44,21 @@ if (!isset($qid)) {$qid=returnglobal('qid');}            //QuestionID
 if (!isset($lid)) {$lid=returnglobal('lid');}            //LabelID
 if (!isset($code)) {$code=returnglobal('code');}         // ??
 if (!isset($action)) {$action=returnglobal('action');}   //Desired action
-if (!isset($subaction)) {$subaction=returnglobal('subaction');}//Desired sibaction
+if (!isset($subaction)) {$subaction=returnglobal('subaction');}//Desired subaction
 if (!isset($ok)) {$ok=returnglobal('ok');}               // ??
-if (!isset($fp)) {$fp=returnglobal('filev');}                 //??
-if (!isset($elem)) {$elem=returnglobal('elem');}              //??
+if (!isset($fp)) {$fp=returnglobal('filev');}            //??
+if (!isset($elem)) {$elem=returnglobal('elem');}         //??
 
-$adminoutput='';
+if ($action != "showprintablesurvey")
+{
+  if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
+  $adminoutput = getAdminHeader($_SESSION['metaHeader']);  // Alle future output is written into this and then outputted at the end of file
+  $_SESSION['metaHeader']='';    
 
+  $adminoutput .= "<table width='100%' border='0' cellpadding='0' cellspacing='0'>\n"
+  ."\t<tr>\n"
+  ."\t\t<td valign='top' align='center' bgcolor='#BBBBBB'>\n";
+} else {$adminoutput='';}
 include_once("login_check.php");
   
 
@@ -150,6 +158,10 @@ if(isset($_SESSION['loginID']) && $action!='login')
   	include("database.php");
   }
 
+  if ($action=="importoldresponses")  { include("importoldresponses.php"); }
+  else
+  if ($action=="saved")  { include("saved.php"); }
+  else
   if ($action=="exportresults")  { include("exportresults.php"); }
   else  
   if ($action=="statistics")  {	include("statistics.php"); }
@@ -182,18 +194,8 @@ if(isset($_SESSION['loginID']) && $action!='login')
       $action=="editsurvey" || $action=="updatesurvey" || $action=="ordergroups" || $action=="addusertogroup" ||
       $action=="uploadf" || $action=="newsurvey" || $action=="listsurveys" ||
       $action=="addgroup" || $action=="editgroup" || $action=="surveyrights" ) include("html.php");
-// echo $action.$subaction;
-  if (!isset($printablesurveyoutput) && $subaction!='export' )   // For a few actions we dont want to have the header
-    {  
-    if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
-    $adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput;  // Alle future output is written into this and then outputted at the end of file
-    $_SESSION['metaHeader']='';    
-    $adminoutput .= "<table width='100%' border='0' cellpadding='0' cellspacing='0'>\n"
-    ."\t<tr>\n"
-    ."\t\t<td valign='top' align='center' bgcolor='#BBBBBB'>\n";
-    }
 
-  
+
   
 
 
@@ -201,7 +203,8 @@ if(isset($_SESSION['loginID']) && $action!='login')
   // For some output we dont want to have the standard admin menu bar
   if (!isset($labelsoutput)  && !isset($templatesoutput) && !isset($printablesurveyoutput) && 
       !isset($assessmentsoutput) && !isset($tokenoutput) && !isset($browseoutput) &&
-      !isset($dataentryoutput) && !isset($statisticsoutput)&& !isset($exportoutput)) 
+      !isset($dataentryoutput) && !isset($statisticsoutput)&& !isset($savedsurveyoutput) &&
+      !isset($exportoutput) && !isset($importoldresponsesoutput)) 
       {
         $adminoutput.= showadminmenu();
       }
@@ -246,7 +249,8 @@ if(isset($_SESSION['loginID']) && $action!='login')
   if (isset($dataentryoutput)) {$adminoutput.= $dataentryoutput;} 	
   if (isset($statisticsoutput)) {$adminoutput.= $statisticsoutput;} 	
   if (isset($exportoutput)) {$adminoutput.= $exportoutput;} 	
-  
+  if (isset($savedsurveyoutput)) {$adminoutput.= $savedsurveyoutput;} 	
+  if (isset($importoldresponsesoutput)) {$adminoutput.= $importoldresponsesoutput;} 	
   
   
   if (!isset($printablesurveyoutput) && $subaction!='export')

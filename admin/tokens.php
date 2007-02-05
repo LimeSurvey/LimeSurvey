@@ -83,7 +83,8 @@ if ($subaction == "export") //EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
 		}
 		$tokenoutput .= "\n";
 	}
-	return;
+	echo $tokenoutput;
+	exit;
 }
 
 if ($subaction == "delete" ) {$_SESSION['metaHeader']="<meta http-equiv=\"refresh\" content=\"1;URL={$scriptname}?action=tokens&amp;subaction=browse&amp;sid={$_GET['sid']}&amp;start=$start&amp;limit=$limit&amp;order=$order\" />";}

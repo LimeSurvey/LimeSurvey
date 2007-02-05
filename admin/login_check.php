@@ -38,7 +38,7 @@ if(isset($_POST['user']) && isset($_POST['password']) || ($action == "forgotpass
 
 
 // login form
-if(!isset($_SESSION['loginID']) && $action != "forgotpass" && $action != "logout") // && $action != "login")	// added by Dennis
+if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logout" || ($action == "logout" && !isset($_SESSION['loginID'])))) // && $action != "login")	// added by Dennis
 {
 	if($action == "forgotpassword")
 	{
@@ -129,7 +129,7 @@ if (isset($loginsummary)) {
 }
 
 // logout user
-if ($action == "logout") // && isset($_SESSION['loginID']))
+if ($action == "logout" && isset($_SESSION['loginID']))
 {
 	$adminoutput.= "<table width='100%' border='0' cellpadding='0' cellspacing='0'>\n"
 	."\t<tr>\n"

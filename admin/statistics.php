@@ -74,8 +74,6 @@ if (!$surveyid)
 //Delete any stats files from the temp directory that aren't from today.
 deleteNotPattern($tempdir, "STATS_*.png","STATS_".date("d")."*.png");
 
-//Get the menubar
-$surveyoptions=browsemenubar();
 
 $statisticsoutput .= "\t<script type='text/javascript'>
       <!--
@@ -90,7 +88,8 @@ $statisticsoutput .= "\t<script type='text/javascript'>
 
 $statisticsoutput .= "<table width='99%' align='center' style='margin: 5px; border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 ."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Quick Statistics")."</strong></font></td></tr>\n";
-$statisticsoutput .= $surveyoptions;
+//Get the menubar
+$statisticsoutput .= browsemenubar();
 $statisticsoutput .= "</table>\n"
 ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1'"
 ." cellspacing='0'>\n"

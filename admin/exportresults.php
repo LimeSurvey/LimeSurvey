@@ -110,7 +110,7 @@ if (!$style)
     $exportoutput .= browsemenubar();
     $exportoutput .= "</table>\n";	
 	$exportoutput .= "<br />\n"
-	."<form action='$scriptname?action=export' method='post'>\n"
+	."<form action='$scriptname?action=exportresults' method='post'>\n"
 	."<table align='center'><tr>"
 	."<td valign='top'>\n"
 	."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
@@ -165,7 +165,7 @@ if (!$style)
 	."\t<tr><td height='2' bgcolor='silver'></td></tr>\n"
 	."\t<tr>\n"
 	."\t\t<td align='center' bgcolor='silver'>\n"
-	."\t\t\t$setfont<input type='submit' value='"
+	."\t\t\t<input type='submit' value='"
 	.$clang->gT("Export Data")."'>\n"
 	."\t\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
 	."\t\t</font></td>\n"
@@ -206,11 +206,11 @@ if (!$style)
 	."\t</tr>\n"
 	."\t<tr>\n"
 	."\t\t<td bgcolor='silver' height='8'><strong><font size='1'>\n"
-	."\t\t\t".$clang->gT("Choose columns").":\n"
+	."\t\t\t".$clang->gT("Choose Columns").":\n"
 	."\t\t</font></strong>";
 	if ($afieldcount > 255)
 	{
-		$exportoutput .= "\t\t\t<img src='$imagefiles/showhelp.png' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
+		$exportoutput .= "\t\t\t<img src='$imagefiles/help.gif' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
 		.$clang->gT("Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below.")
 		."\")'>";
 	}
@@ -267,7 +267,7 @@ if (!$style)
 			."\t</tr>\n"
 			."\t<tr>\n"
 			."\t\t<td><font size='1'>"
-			."<img src='$imagefiles/showhelp.png' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
+			."<img src='$imagefiles/help.gif' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
 			.$clang->gT("Your survey can export associated token data with each response. Select any additional fields you would like to export.")
 			."\")'><br /><br />\n"
 			."<input type='checkbox' name='first_name' id='first_name'>"
@@ -925,4 +925,6 @@ elseif ($answers == "long")
 		$exportoutput .= "\n";
 	}
 }
+echo $exportoutput;
+exit;
 ?>

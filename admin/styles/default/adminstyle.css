@@ -219,8 +219,8 @@ span.settingcaption
 		display:none;
 		z-index:20000;
 		padding:2px;
-		font-size:0.9em;
-		-moz-border-radius:6px;	/* Rounded edges in Firefox */
+		font-size:0.8em;
+		-moz-border-radius:5px;	/* Rounded edges in Firefox */
 		font-family: "Verdana", "Lucida Sans Unicode", Arial, sans-serif;		
    }
    
@@ -233,7 +233,7 @@ span.settingcaption
 		filter:alpha(opacity=70);
 		-khtml-opacity: 0.7;
 		-moz-opacity: 0.7;
-		-moz-border-radius:6px;	/* Rounded edges in Firefox */
+		-moz-border-radius:5px;	/* Rounded edges in Firefox */
 }	 
 
 /*

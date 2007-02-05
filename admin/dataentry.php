@@ -378,7 +378,7 @@ if($actsurrows['browse_response']){
 		}
 		if (isset($_POST['save']) && $_POST['save'] == "on")
 		{
-			$dataentryoutput .= "\t\t\t[<a href='saved.php?sid=$surveyid&action=all'>".$clang->gT("Browse Saved Responses")."</a>]<br />\n";
+			$dataentryoutput .= "\t\t\t[<a href='$scriptname?action=saved&amp;sid=$surveyid&subaction=all'>".$clang->gT("Browse Saved Responses")."</a>]<br />\n";
 		}
 		$dataentryoutput .= "\t\t\t[<a href='$scriptname?action=browse&amp;sid=$surveyid&subaction=all&limit=50'>".$clang->gT("Browse Responses")."</a>]<br />\n"
 		."\t</td></tr>\n"

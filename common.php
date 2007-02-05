@@ -1117,10 +1117,10 @@ function browsemenubar()
 			"title='' alt=''align='left'  blank')\"></a>\n"
 	. "\t\t\t<a href='spss.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Export result to a SPSS command file")."')\"><img src='$imagefiles/exportspss.png' align='left' title='"
 	. $clang->gT("Export result to a SPSS command file")."' border='0' alt='". $clang->gT("Export result to a SPSS command file")."'></a>\n"
-	. "\t\t\t<a href='importoldresponses.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Import answers from a deactivated survey table")."')\" >" .
+	. "\t\t\t<a href='$scriptname?action=importoldresponses&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Import answers from a deactivated survey table")."')\" >" .
 			"<img name='Export' src='$imagefiles/importold.png' title='' alt=''align='left' /></a>\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n"
-	. "\t\t\t<a href='".$homeurl."/saved.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("View Saved but not submitted Responses")."')\" >" .
+	. "\t\t\t<a href='$scriptname?action=saved&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("View Saved but not submitted Responses")."')\" >" .
 		"<img src='$imagefiles/saved.png' title='' align='left'  name='BrowseSaved' /></a>\n"
 	. "\t\t\t<a href='vvexport.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Import a VV survey file")."')\">\n"
 	. "<img src='$imagefiles/importvv.png' align='left' title='' border='0' alt='' /></a>\n"
@@ -2551,7 +2551,7 @@ function modify_database($sqlfile='', $sqlstring='') {
 				$command = str_replace('$siteadminemail', $siteadminemail, $command); // variables By Moses
 				$command = str_replace('$defaultlang', $defaultlang, $command); // variables By Moses
 				$command = str_replace('$codeString', $codeString, $command); // variables By Moses
-				if (! db_execute_num($command)) { Echo $command;
+				if (! db_execute_num($command)) { echo $command;
 				$success = false;
 				}
 				$command = '';

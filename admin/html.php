@@ -531,7 +531,7 @@ if ($surveyid)
 			. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
 			if ($s1row['allowsave'] == "Y")
 			{
-				$surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/saved.php?sid=$surveyid', '_top')\""
+				$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=saved&amp;sid=$surveyid', '_top')\""
 				. "onmouseout=\"hideTooltip()\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("View Saved but not submitted Responses")."');return false\">"
 				. "<img src='$imagefiles/saved.png' title='' align='left'  name='BrowseSaved' alt='".$clang->gT("View Saved but not submitted Responses")."' /></a>"

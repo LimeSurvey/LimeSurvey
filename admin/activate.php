@@ -458,12 +458,12 @@ else
 	if (isset($surveynotprivate) && $surveynotprivate) //This survey is tracked, and therefore a tokens table MUST exist
 	{
 		$activateoutput .= $clang->gT("This is not an anonymous survey. A token table must also be created.")."<br /><br />\n";
-		$activateoutput .= "<input type='submit' value='".$clang->gT("Initialise Tokens")."' onClick=\"window.open('tokens.php?sid={$_GET['sid']}&amp;createtable=Y', '_top')\" />\n";
+		$activateoutput .= "<input type='submit' value='".$clang->gT("Initialise Tokens")."' onClick=\"window.open('$scriptname?action=tokens&amp;sid={$_GET['sid']}&amp;createtable=Y', '_top')\" />\n";
 	}
 	elseif (isset($surveyallowsregistration) && $surveyallowsregistration == "TRUE")
 	{
 		$activateoutput .= $clang->gT("This survey allows public registration. A token table must also be created.")."<br /><br />\n";
-		$activateoutput .= "<input type='submit' value='".$clang->gT("Initialise Tokens")."' onClick=\"window.open('tokens.php?sid={$_GET['sid']}&amp;createtable=Y', '_top')\" />\n";
+		$activateoutput .= "<input type='submit' value='".$clang->gT("Initialise Tokens")."' onClick=\"window.open('$scriptname?action=tokens&amp;sid={$_GET['sid']}&amp;createtable=Y', '_top')\" />\n";
 	}
 	else
 	{

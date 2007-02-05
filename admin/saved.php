@@ -35,18 +35,17 @@
 */
 include_once(dirname(__FILE__).'/../config.php');
 $surveyid=returnglobal('sid');
-$action=returnglobal('action');
+//$action=returnglobal('action');
 $scid=returnglobal('scid');
 
 //Ensure script is not run directly, avoid path disclosure
 if (empty($surveyid)) {die ($clang->gT("Error")." - Cannot run this script directly");}
 
-sendcacheheaders();
 
 $thissurvey=getSurveyInfo($surveyid);
-echo $htmlheader;
+$savedsurveyoutput='';
 
-if ($action == "delete" && $surveyid && $scid)
+if ($subaction == "delete" && $surveyid && $scid)
 {
 	$query = "DELETE FROM {$dbprefix}saved_control
 			  WHERE scid=$scid
@@ -63,30 +62,30 @@ if ($action == "delete" && $surveyid && $scid)
 	}
 	else
 	{
-		echo  "Couldn't delete<br />$query<br />".$connect->ErrorMsg();
+		$savedsurveyoutput .=  "Couldn't delete<br />$query<br />".$connect->ErrorMsg();
 	}
 }
 
-echo "<table><tr><td></td></tr></table>\n"
+$savedsurveyoutput .= "<table><tr><td></td></tr></table>\n"
 ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+$savedsurveyoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 . $clang->gT("Browse Saved Responses").":</strong> <font color='#EEEEEE'>".$thissurvey['name']."</font></font></td></tr>\n";
-echo savedmenubar();
-echo "</table>\n";
-echo "<table><tr><td></td></tr></table>\n"
+$savedsurveyoutput .= savedmenubar();
+$savedsurveyoutput .= "</table>\n";
+$savedsurveyoutput .= "<table><tr><td></td></tr></table>\n"
 ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-echo "<tr><td>";
-switch ($action)
+$savedsurveyoutput .= "<tr><td>";
+switch ($subaction)
 {
 	case "all":
 	case "delete":
-	echo "<center>".$setfont.$clang->gT("Saved Responses:") . " ". getSavedCount($surveyid)."</font></center>";
+	$savedsurveyoutput .= "<center>".$setfont.$clang->gT("Saved Responses:") . " ". getSavedCount($surveyid)."</font></center>";
 	showSavedList($surveyid);
 	break;
 	default:
-	echo "<center>".$setfont.$clang->gT("Saved Responses:") . " ". getSavedCount($surveyid)."</font></center>";
+	$savedsurveyoutput .= "<center>".$setfont.$clang->gT("Saved Responses:") . " ". getSavedCount($surveyid)."</font></center>";
 }
-echo "</td></tr></table>\n";
+$savedsurveyoutput .= "</td></tr></table><br />&nbsp;\n";
 
 function showSavedList($surveyid)
 {
@@ -98,8 +97,8 @@ function showSavedList($surveyid)
 	$result = db_execute_assoc($query) or die ("Couldn't summarise saved entries<br />$query<br />".$connect->ErrorMsg());
 	if ($result->RecordCount() > 0)
 	{
-		echo "<table class='outlinetable' cellspacing='0' align='center'>\n";
-		echo "<tr><th>SCID</th><th>"
+		$savedsurveyoutput .= "<table class='outlinetable' cellspacing='0' align='center'>\n";
+		$savedsurveyoutput .= "<tr><th>SCID</th><th>"
 		.$clang->gT("Identifier")."</th><th>"
 		.$clang->gT("IP Address")."</th><th>"
 		.$clang->gT("Date Saved")."</th><th>"
@@ -108,21 +107,21 @@ function showSavedList($surveyid)
 		."</tr>\n";
 		while($row=$result->FetchRow())
 		{
-			echo "<tr>
+			$savedsurveyoutput .= "<tr>
 				<td>".$row['scid']."</td>
 				<td>".$row['identifier']."</td>
 				<td>".$row['ip']."</td>
 				<td>".$row['saved_date']."</td>
 				<td><a href='mailto:".$row['email']."'>".$row['email']."</td>
 				<td align='center'>
-				[<a href='saved.php?sid=$surveyid&amp;action=delete&amp;scid=".$row['scid']."'"
+				[<a href='$scriptname?action=saved&amp;sid=$surveyid&amp;subaction=delete&amp;scid=".$row['scid']."'"
 			." onClick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?")."\")'"
 			.">".$clang->gT("Delete")."</a>]
 				[<a href='dataentry.php?sid=$surveyid&amp;action=editsaved&amp;identifier=".rawurlencode ($row['identifier'])."&amp;scid=".$row['scid']."&amp;accesscode=".$row['access_code']."'>".$clang->gT("Edit")."</a>]
 				</td>
 			   </tr>\n";
 		} // while
-		echo "</table>\n";
+		$savedsurveyoutput .= "</table><br />&nbsp\n";
 	}
 }
 
@@ -141,10 +140,10 @@ function savedmenubar()
 			"<img name='Administration' src='$imagefiles/home.png' title='' align='left'></a>\n"
 	. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-	. "\t\t\t<a href='saved.php?sid=$surveyid' onmouseout=\"hideTooltip()\" " .
+	. "\t\t\t<a href='$scriptname?action=saved&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" " .
 			"onmouseover=\"showTooltip(event,'". $clang->gT("Show summary information")."')\">" .
 			"<img name='SurveySummary' src='$imagefiles/summary.png' title=''  align='left'></a>\n"
-	. "\t\t\t<a href='saved.php?sid=$surveyid&amp;action=all' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Display Responses")."')\">" .
+	. "\t\t\t<a href='$scriptname?action=saved&amp;sid=$surveyid&amp;subaction=all' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Display Responses")."')\">" .
 	"<img name='ViewAll' src='$imagefiles/document.png' title=''  align='left'></a>\n"
 	//. "\t\t\t<input type='image' name='ViewLast' src='$imagefiles/viewlast.png' title='"
 	//. $clang->gT("Display Last 50 Responses")."'  align='left'  onClick=\"window.open('saved.php?sid=$surveyid&action=all&limit=50&order=desc', '_top')\">\n"
