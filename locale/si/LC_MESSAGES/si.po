@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor Slovenianlanguage file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-02-04 20:18+0100\n"
+"PO-Revision-Date: 2007-02-05 20:58+0100\n"
 "Last-Translator: Gasper Koren <gasper@fdvinfo.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -27,10 +27,10 @@ msgstr ""
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/question.php:55
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/question.php:87
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/survey.php:69
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1731
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:152
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1201
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2126
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1741
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:151
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1200
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2127
 msgid "submit"
 msgstr "pošlji"
 
@@ -39,57 +39,57 @@ msgid "Please try again."
 msgstr "Prosimo, poskusite znova."
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/save.php:205
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:114
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:113
 msgid "You must supply a name for this saved session."
 msgstr "Za shranjeno anketo morate vpisati ime."
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/save.php:206
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:115
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:114
 msgid "You must supply a password for this saved session."
 msgstr "Za shranjeno anketo morate vpisati geslo."
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/save.php:208
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:116
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:115
 msgid "Your passwords do not match."
 msgstr "Gesli se ne ujemata."
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/save.php:223
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:127
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:126
 msgid "This name has already been used for this survey. You must use a unique save name."
 msgstr "To ime je bilo že uporabljeno za to anketo. Izbrati morate drugo ime."
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/save.php:278
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:222
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:221
 msgid "Saved Survey Details"
 msgstr "Podatki o shranjeni anketi"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/save.php:280
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:223
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:222
 msgid "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
 msgstr "Vi ali nekdo drug je z uporabo vašega e-naslova shranil nedokončano anketo. Spodnje podatke lahko uporabite za vrnitev na to anketo in nadaljevanje izpolnjevanja od točke, kjer ste končali."
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/save.php:282
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1842
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1853
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1824
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:225
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:224
 msgid "Name"
 msgstr "Ime"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/save.php:283
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1845
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1866
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1856
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1877
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1308
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1484
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/login_check.php:76
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:226
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:64
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:183
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:308
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:225
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:65
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:197
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:322
 msgid "Password"
 msgstr "Geslo"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/save.php:284
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:227
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:226
 msgid "Reload your survey by clicking on the following URL:"
 msgstr "Ponovno lahko začnete z anketo s klikom na to povezavo:"
 
@@ -97,11 +97,12 @@ msgstr "Ponovno lahko začnete z anketo s klikom na to povezavo:"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/index.php:162
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:2418
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:2617
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:929
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:942
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/vvimport.php:104
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/importlabel.php:50
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/importlabel.php:77
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/templates.php:122
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:384
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/browse.php:61
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/browse.php:74
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/browse.php:98
@@ -143,7 +144,6 @@ msgstr "Ponovno lahko začnete z anketo s klikom na to povezavo:"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/importquestion.php:332
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dumpsurvey.php:66
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dumplabel.php:58
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:386
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:121
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:139
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:387
@@ -155,10 +155,10 @@ msgstr "Ponovno lahko začnete z anketo s klikom na to povezavo:"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:1422
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:60
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:76
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:113
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:114
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:115
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:116
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2143
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2144
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/install/createdb.php:66
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/install/createdb.php:98
 msgid "Error"
@@ -237,7 +237,7 @@ msgstr "naprej"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/index.php:231
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/index.php:235
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1773
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1783
 msgid "Load Unfinished Survey"
 msgstr "Naloži nedokončano anketo"
 
@@ -265,7 +265,7 @@ msgstr "Za dodatne informacije se obrnite na"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/question.php:158
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/survey.php:152
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/register.php:137
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1828
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1838
 msgid "Close this Window"
 msgstr "Zapri okno"
 
@@ -318,7 +318,7 @@ msgstr "nazaj"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/survey.php:50
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/survey.php:56
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/survey.php:199
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1775
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1785
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/templates.php:219
 msgid "last"
 msgstr "zadnje"
@@ -411,24 +411,24 @@ msgid "If you have been issued with a token, please enter it in the box below an
 msgstr "Če vam je bilo posredovano dostopno geslo, ga vpišite v spodnje polje in kliknite za nadaljevanje."
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/index.php:1065
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:281
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:402
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:406
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:413
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:414
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:418
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:419
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:440
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:441
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:737
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:280
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:400
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:404
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:411
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:412
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:416
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:417
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:438
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:439
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:735
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:522
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:1086
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1370
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1371
 msgid "Token"
 msgstr "Dostopno geslo"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/index.php:1066
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1924
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1935
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1467
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1730
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1751
@@ -468,16 +468,16 @@ msgstr "Dostopno geslo"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:199
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:796
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:954
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:54
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:75
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:81
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:99
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:124
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:214
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:273
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:326
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:364
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:374
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:55
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:76
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:82
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:111
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:138
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:228
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:287
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:340
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:378
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:388
 msgid "Continue"
 msgstr "Nadaljuj"
 
@@ -627,8 +627,8 @@ msgstr "Na eno ali več vprašanj niste odgovorili z veljavnim odgovorom. Z anke
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:2443
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:2603
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:2612
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1319
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1327
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1329
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1337
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/conditions.php:324
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/conditions.php:346
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/conditions.php:358
@@ -648,7 +648,7 @@ msgstr "Na eno ali več vprašanj niste odgovorili z veljavnim odgovorom. Z anke
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/results.php:281
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/results.php:363
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/results.php:395
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1567
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1568
 msgid "No answer"
 msgstr "Brez odgovora"
 
@@ -663,23 +663,23 @@ msgstr "(npr.: 2003-12-25 za Božič)"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:563
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:608
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:703
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:603
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:628
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:665
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:694
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:937
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1006
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1579
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1609
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1641
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1672
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1922
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1968
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1983
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2004
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2025
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2045
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2066
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:602
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:627
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:664
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:693
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:936
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1005
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1580
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1610
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1642
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1673
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1923
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1969
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1984
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2005
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2026
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2046
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2067
 msgid "Please choose"
 msgstr "Prosimo, izberite"
 
@@ -692,35 +692,35 @@ msgstr "Prosimo, izberite"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:1370
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:1456
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:2565
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1303
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1495
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1561
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1313
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1505
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1571
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1581
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:510
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:522
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:542
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:779
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:803
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/statistics.php:965
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/statistics.php:1303
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/statistics.php:1331
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/statistics.php:1370
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/results.php:364
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:512
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:524
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:544
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:781
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:805
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:319
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:332
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:371
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:384
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:444
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:456
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:646
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:683
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1619
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1625
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1651
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1657
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1881
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1897
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1945
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:645
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:682
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1620
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1626
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1652
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1658
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1882
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1898
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1946
 msgid "Other"
 msgstr "Drugo"
 
@@ -733,8 +733,8 @@ msgid "Please enter your comment here"
 msgstr "Prosimo, vpišite svoj komentar"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:1232
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:830
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1795
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:829
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1796
 msgid "Remove this item"
 msgstr "Odstrani ta element"
 
@@ -747,15 +747,15 @@ msgid "highest ranking item, moving through to your lowest ranking item."
 msgstr "najvišje ocenjenim in nadaljujte do najnižje ocenjenega elementa."
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:1278
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:852
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1828
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:851
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1829
 msgid "Your Choices"
 msgstr "Vaše izbire"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:1286
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:1291
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:857
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1833
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:856
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1834
 msgid "Your Ranking"
 msgstr "Vaša razvrstitev"
 
@@ -780,9 +780,12 @@ msgstr "V to polje lahko vpisujete samo številke"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:1750
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:2007
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:2045
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1311
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1317
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1333
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1321
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1327
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1343
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:829
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:856
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:867
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:2020
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:2030
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:2152
@@ -825,28 +828,29 @@ msgstr "V to polje lahko vpisujete samo številke"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/results.php:385
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/stats.php:559
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/stats.php:636
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:831
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:858
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:869
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:988
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:150
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:168
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:529
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:580
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1009
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1070
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1444
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1462
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1969
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2026
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1008
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1069
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1445
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1463
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1970
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2027
 msgid "Yes"
 msgstr "da"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:1756
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:2009
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:2057
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1318
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1334
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1328
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1344
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:830
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:857
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:858
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:870
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:2022
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:2032
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:2155
@@ -886,26 +890,23 @@ msgstr "da"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/results.php:387
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/stats.php:569
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/stats.php:641
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:832
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:859
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:860
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:872
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:990
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:151
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:170
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:530
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:582
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1012
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1076
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1445
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1464
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1970
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2028
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1011
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1075
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1446
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1465
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1971
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2029
 msgid "No"
 msgstr "ne"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:1786
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1326
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1336
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:838
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/conditions.php:361
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/statistics.php:341
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/statistics.php:670
@@ -913,17 +914,17 @@ msgstr "ne"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/results.php:274
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/results.php:360
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/stats.php:668
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:840
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:158
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:281
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:606
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1452
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1580
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:605
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1453
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1581
 msgid "Female"
 msgstr "ženski"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:1792
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1325
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1335
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:837
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/conditions.php:362
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/statistics.php:344
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/statistics.php:671
@@ -931,179 +932,178 @@ msgstr "ženski"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/results.php:273
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/results.php:359
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/stats.php:663
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:839
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:157
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:282
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:609
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1451
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1581
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:608
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1452
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1582
 msgid "Male"
 msgstr "moški"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:2008
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:2050
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1335
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1345
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:873
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/conditions.php:304
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/statistics.php:456
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/statistics.php:1235
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/results.php:253
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/results.php:386
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/stats.php:564
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:875
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:169
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:581
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1073
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1463
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2027
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1072
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1464
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2028
 msgid "Uncertain"
 msgstr "neodločen"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:2211
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:2249
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1341
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1351
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:880
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/conditions.php:308
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/statistics.php:490
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/statistics.php:1246
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/results.php:257
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/results.php:378
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/stats.php:586
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:882
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:176
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:598
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1470
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2046
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1471
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2047
 msgid "Increase"
 msgstr "povečalo"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:2212
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:2254
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1343
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1353
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:883
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/conditions.php:309
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/statistics.php:493
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/statistics.php:1247
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/results.php:258
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/results.php:379
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/stats.php:591
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:885
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:178
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:599
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1472
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2047
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1473
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2048
 msgid "Same"
 msgstr "ostalo enako"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:2213
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/qanda.php:2261
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1342
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1352
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:886
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/conditions.php:310
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/statistics.php:496
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/statistics.php:1248
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/results.php:259
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/results.php:380
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/stats.php:596
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:888
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:177
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/printablesurvey.php:600
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1471
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2048
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1472
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2049
 msgid "Decrease"
 msgstr "zmanjšalo"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:188
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:192
 msgid "Administration"
 msgstr "Upravljanje"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:191
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:195
 msgid "Logged in as"
 msgstr "Prijavljeni ste kot"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:198
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:199
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:202
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:203
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/templates.php:436
 msgid "Default Administration Page"
 msgstr "Glavna stran za upravljanje"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:208
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:210
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:212
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:214
 msgid "Modify Security Settings"
 msgstr "Spremeni varnostne nastavitve"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:214
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:215
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:218
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:219
 msgid "Create/Edit Groups"
 msgstr "Ustvari/uredi skupine"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:221
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:223
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:225
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:227
 msgid "Check Settings"
 msgstr "Preveri nastavitve"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:231
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:232
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:235
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:236
 msgid "Check Data Integrity"
 msgstr "Preveri konsistentnost podatkov"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:252
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:253
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:256
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:257
 msgid "Delete Entire Survey"
 msgstr "Izbriši celotno anketo"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:265
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:267
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:269
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:271
 msgid "List Surveys"
 msgstr "Seznam anket"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:276
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:277
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:280
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:281
 msgid "Backup Entire Database"
 msgstr "Izdelaj varnostno kopijo celotne baze podatkov"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:289
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:290
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:293
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:294
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1088
 msgid "Edit/Add Label Sets"
 msgstr "Uredi/Dodaj sezname odgovorov"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:302
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:303
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:306
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:307
 msgid "Template Editor"
 msgstr "Urejevalnik predlog"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:311
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:313
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:315
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:317
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/labels.php:79
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/labels.php:81
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:272
 msgid "Show Help"
 msgstr "Prikaži pomoč"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:316
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:318
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:132
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:320
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:322
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:146
 msgid "Logout"
 msgstr "Odjava"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:325
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:326
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:329
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:330
 msgid "Create or Import New Survey"
 msgstr "Ustvari ali uvozi novo anketo"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:328
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:332
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:182
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/importsurvey.php:1008
 msgid "Surveys"
 msgstr "Ankete"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:410
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:457
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:553
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:664
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:689
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:732
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:2775
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:2797
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:2819
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:2845
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:423
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:470
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:566
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:677
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:702
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:745
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:2786
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:2808
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:2830
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:2856
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:2007
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:2129
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:2325
@@ -1111,152 +1111,152 @@ msgstr "Ankete"
 msgid "Please Choose..."
 msgstr "Prosimo, izberite..."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:411
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:665
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:690
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:733
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:2798
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:2820
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:424
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:678
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:703
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:746
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:2809
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:2831
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:585
 msgid "None"
 msgstr "Noben"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:574
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:587
 msgid "5 Point Choice"
 msgstr "5-stopenjska lestvica"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:575
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:588
 msgid "Array (5 Point Choice)"
 msgstr "Lestvica (5-stopenjska)"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:576
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:589
 msgid "Array (10 Point Choice)"
 msgstr "Lestvica (10-stopenjska)"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:577
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:590
 msgid "Array (Yes/No/Uncertain)"
 msgstr "Lestvica (da/ne/neodločen)"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:578
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:591
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/stats.php:679
 msgid "Date"
 msgstr "Datum"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:579
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:592
 msgid "Array (Increase, Same, Decrease)"
 msgstr "Lestvica (povečalo/ostalo enako/zmanjšalo)"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:580
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:593
 msgid "Array (Flexible Labels)"
 msgstr "Lestvica (prilagodljivi odgovori)"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:581
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:594
 msgid "Gender"
 msgstr "Spol"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:582
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:595
 msgid "Array (Flexible Labels) by Column"
 msgstr "Lestvica (prilagodljivi odgovori) po stolpcih"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:583
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:596
 msgid "Language Switch"
 msgstr "Zamenjava jezika"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:584
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:597
 msgid "List (Radio)"
 msgstr "Seznam (izbirni gumbi)"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:585
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:598
 msgid "Multiple Options"
 msgstr "Več možnih odgovorov"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:586
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:599
 msgid "Numerical Input"
 msgstr "Številski odgovor"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:587
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:600
 msgid "List With Comment"
 msgstr "Seznam s komentarjem"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:588
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:601
 msgid "Multiple Options With Comments"
 msgstr "Več možnih odgovorov s komentarjem"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:589
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:602
 msgid "Multiple Short Text"
 msgstr "Več kratkih tekstovnih vnosov"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:590
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:603
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:503
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/statistics.php:1007
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:505
 msgid "Ranking"
 msgstr "Razvrščanje"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:591
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:604
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/stats.php:503
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/stats.php:700
 msgid "Short free text"
 msgstr "Kratko besedilo"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:592
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:605
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/stats.php:711
 msgid "Long free text"
 msgstr "Dolgo besedilo"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:593
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:606
 msgid "Huge Free Text"
 msgstr "Ogromno besedilo"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:594
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:607
 msgid "List (Flexible Labels) (Dropdown)"
 msgstr "Lestvica (prilagodljivi odgovori) (padajoč meni)"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:595
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:608
 msgid "Boilerplate Question"
 msgstr "Navidezno vprašanje"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:596
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:609
 msgid "Yes/No"
 msgstr "Da/Ne"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:597
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:610
 msgid "List (Flexible Labels) (Radio)"
 msgstr "Lestvica (prilagodljivi odgovori) (ena možna izbira)"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:598
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:611
 msgid "List (Dropdown)"
 msgstr "Seznam (padajoč seznam)"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:624
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:637
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:620
 msgid "No email notification"
 msgstr "Brez obvestila po elektronski pošti"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:625
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:638
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:623
 msgid "Basic email notification"
 msgstr "Osnovno obvestilo po elektronski pošti"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:626
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:639
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:626
 msgid "Detailed email notification with result codes"
 msgstr "Podrobno obvestilo po elektronski pošti skupaj s kodami odgovorov"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:926
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:939
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/install/index.php:48
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/install/index.php:65
 msgid "PHPSurveyor Setup"
 msgstr "PHPSurveyor nastavitve"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:931
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:944
 msgid "It appears as if some tables or fields are missing from your database."
 msgstr "Kaže, da nekatere tabele ali polja v podatkovni bazi manjkajo."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:933
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:946
 msgid "Check Database Fields"
 msgstr "Preveri polja v podatkovni bazi"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1084
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1097
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/vvimport.php:87
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/assessments.php:87
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/saved.php:140
@@ -1264,126 +1264,122 @@ msgstr "Preveri polja v podatkovni bazi"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/labels.php:69
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/importoldresponses.php:86
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:275
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:375
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:374
 msgid "Return to Survey Administration"
 msgstr "Nazaj na upravljanje z anketo"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1089
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1102
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/saved.php:145
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:279
 msgid "Show summary information"
 msgstr "Pokaži povzetek"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1092
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1105
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/saved.php:147
 msgid "Display Responses"
 msgstr "Prikaži odgovore"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1095
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1108
 msgid "Display Last 50 Responses"
 msgstr "Prikaži zadnjih 50 odgovorov"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1097
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1110
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:415
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:416
 msgid "Dataentry Screen for Survey"
 msgstr "Stran za vnos podatkov za anketo"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1100
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1113
 msgid "Get statistics from these responses"
 msgstr "Izdelaj statistike odgovorov"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1103
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1116
 msgid "Export Results to Application"
 msgstr "Izvoz rezultatov"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1105
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1106
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1118
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1119
 msgid "Export result to a SPSS command file"
 msgstr "Izvoz podatkov v SPSS"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1107
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1120
 msgid "Import answers from a deactivated survey table"
 msgstr "Uvozi podatke iz tabele deaktivirane ankete"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1110
-msgid "Backup results table as SQL file"
-msgstr "Izdelaj varnostno kopijo rezultatov v obliki SQL datoteke"
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1113
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1123
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:536
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:537
 msgid "View Saved but not submitted Responses"
 msgstr "Prikaži odgovore nedokončanih (shranjenih) anket"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1115
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1125
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/vvimport.php:63
 msgid "Import a VV survey file"
 msgstr "Uvozi VV datoteko ankete"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1117
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1127
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/vvexport.php:49
 msgid "Export a VV survey file"
 msgstr "Izvozi VV datoteko ankete"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1512
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1674
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1522
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1675
 msgid "Comment"
 msgstr "Komentar"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1699
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1709
 msgid "There is 1 question in this survey"
 msgstr "V tej anketi je eno vprašanje"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1703
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1713
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "V tej anketi je {NUMBEROFQUESTIONS} vprašanj."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1741
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1751
 msgid "A Note On Privacy"
 msgstr "Obvestilo o zasebnosti"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1741
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1751
 msgid "This survey is anonymous.<br>The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr "Ta anketa je anonimna.<br>Vaši odgovori na anketna vprašanja, ki se shranjujejo v bazo odgovorov ne vsebujejo nobenih informacij, prek katerih bi vas bilo mogoče identificirati, razen v primeru ko so le te del odgovora na anketno vprašanje. Če odgovarjate na anketo, ki za dostop uporablja identifikacijsko geslo, se podatki o geslu ne hranijo skupaj z odgovori na anketna vprašanja. Identifikacijski podatki se hranijo v posebni bazi in služijo zgolj kot informacija, če ste že (oz. še niste) odgovorili na anketo. Gesel v nobenem primeru ni mogoče povezati z odgovori na anketo."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1750
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1760
 msgid "Are you sure you want to clear all your responses?"
 msgstr "Ali ste prepričani, da želite izbrisati vse vaše odgovore?"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1751
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1761
 msgid "Exit and Clear Survey"
 msgstr "Izhod brez pošiljanja odgovorov"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1781
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1791
 msgid "Save Survey and Return"
 msgstr "Shrani anketo in se vrni"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1799
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1809
 msgid "<strong>Thank You<br /><br />You have completed answering the questions in this survey.</strong><br /><br />Click on 'Submit' now to complete the process and save your answers."
 msgstr "<strong>Najlepša hvala<br  /><br />Z odgovarjanjem na anketo ste zaključili.<strong><br /><br />S klikom na 'Pošlji podatke' boste shranili vaše odgovore."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1805
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1815
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr "Če želite preveriti vaše odgovore ali jih popraviti, lahko to storite s klikanjem na gumb [<<  Nazaj ]."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1826
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1836
 msgid "Answers Cleared"
 msgstr "Odgovori so izbrisani"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1827
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1837
 msgid "Restart this Survey"
 msgstr "Ponovno začni z anketo"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1835
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1846
 msgid "Return To Survey"
 msgstr "Nazaj na anketo"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1837
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1848
 msgid "Save Your Unfinished Survey"
 msgstr "Shrani nedokončano anketo"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1838
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1849
 msgid ""
 "Enter a name and password for this survey and click save below.<br />\n"
 "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.<br /><br />\n"
@@ -1393,42 +1389,42 @@ msgstr ""
 "Vaša anketa bo shranjena s tem imenom in geslom in jo lahko dokončate kasneje, če se prijavite s tem imenom in geslom.<br /><br />\n"
 "Če boste vpisali tudi vaš elektronski naslov, boste prejeli vse potrebne podatke prejeli tudi po elektronski pošti."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1848
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1859
 msgid "Repeat Password"
 msgstr "Ponovi geslo"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1851
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1862
 msgid "Your Email"
 msgstr "Vaš elektronski naslov"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1854
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1865
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1430
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:2874
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:2927
 msgid "Save Now"
 msgstr "Shrani"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1859
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1870
 msgid "Load A Previously Saved Survey"
 msgstr "Naloži shranjeno anketo"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1860
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1871
 msgid "You can load a survey that you have previously saved from this screen.<br />Type in the 'name' you used to save the survey, and the password.<br />"
 msgstr "Ponovno lahko naložite vašo shranjeno anketo.<br />Vpišite ime in geslo s katerim ste shranili anketo.<br />"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1863
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1874
 msgid "Saved name"
 msgstr "Shranjeno ime"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1869
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1880
 msgid "Load Now"
 msgstr "Naloži anketo"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1875
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1886
 msgid "You must be registered to complete this survey"
 msgstr "Če želite odgovoriti na to anketo, morate biti registrirani."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1876
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1887
 msgid ""
 "You may register for this survey if you wish to take part.<br />\n"
 "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
@@ -1436,34 +1432,34 @@ msgstr ""
 "Če želite sodelovati v anketi se lahko registrirate.<br >\n"
 "V spodnji obrazec vnesite svoje podatke. Navodila za sodelovanje boste v kratkem prejeli po elektronski pošti."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1883
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:275
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:430
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:431
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:728
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1894
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:274
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:428
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:429
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:726
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:510
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:1068
 msgid "First Name"
 msgstr "Ime"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1890
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:277
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:425
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:426
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:731
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1901
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:276
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:423
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:424
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:729
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:514
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:1074
 msgid "Last Name"
 msgstr "Priimek"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1897
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1908
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:433
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:434
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/saved.php:106
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:435
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:436
 msgid "Email Address"
 msgstr "Elektronski naslov"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1931
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/common.php:1942
 msgid "Your Assessment"
 msgstr "Vaša ocena"
 
@@ -1532,8 +1528,8 @@ msgstr "Prišlo je do napake pri nalaganju datoteke. Vzrok za napako so lahko na
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:1283
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:1344
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:1411
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:362
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1302
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:361
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1301
 msgid "Success"
 msgstr "Uspešno"
 
@@ -1578,11 +1574,11 @@ msgstr "Skupno število uvoženih zapisov"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/browse.php:284
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/browse.php:559
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:2834
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:384
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:395
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1305
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1325
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1341
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:383
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:394
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1304
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1324
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1340
 msgid "Browse Responses"
 msgstr "Preglej odgovore"
 
@@ -1720,8 +1716,8 @@ msgstr "Uvozi seznam odgovorov"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/deactivate.php:129
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:64
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:79
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2145
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:137
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2146
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:151
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/install/createdb.php:54
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/install/createdb.php:70
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/install/createdb.php:102
@@ -1896,6 +1892,165 @@ msgstr "Naloži datoteko"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/templates.php:594
 msgid "Preview:"
 msgstr "Predogled:"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:109
+msgid "Export Results"
+msgstr "Izvozi rezultate"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:119
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/vvexport.php:69
+msgid "Export Responses"
+msgstr "Izvozi odgovore"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:120
+msgid "Filtered from Statistics Script"
+msgstr "Izločeno iz statistike"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:121
+msgid "Single Response"
+msgstr "Možen je samo en odgovor"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:122
+msgid "Columns"
+msgstr "Stolpci"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:124
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:930
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/importsurvey.php:1014
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/importgroup.php:554
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/importquestion.php:419
+msgid "Questions"
+msgstr "Vprašanja"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:129
+msgid "Abbreviated headings"
+msgstr "Skrajšana vprašanja"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:132
+msgid "Full headings"
+msgstr "Vprašanja v celoti"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:135
+msgid "Question Codes"
+msgstr "Kode vprašanj"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:139
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1149
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/importsurvey.php:1015
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/importgroup.php:557
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/importquestion.php:422
+msgid "Answers"
+msgstr "Odgovori"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:144
+msgid "Answer Codes"
+msgstr "Kode odgovorov"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:147
+msgid "Full Answers"
+msgstr "Odgovori v celoti"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:151
+msgid "Format"
+msgstr "Oblika"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:156
+msgid "Microsoft Word"
+msgstr "Microsoft Word"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:159
+msgid "Microsoft Excel"
+msgstr "Microsoft Excel"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:162
+msgid "CSV Comma Delimited"
+msgstr "besedilo CSV (ločeno z vejico)"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:169
+msgid "Export Data"
+msgstr "Izvoz podatkov"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:204
+msgid "Column Control"
+msgstr "Upravljanje stolpcev"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:209
+msgid "Choose columns"
+msgstr "Izberi stolpce"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:213
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:219
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:270
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/admin.php:292
+msgid "Help"
+msgstr "Pomoč"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:214
+msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
+msgstr "Anketa vsebuje več kot 255 spremenljivk (stolpcev z odgovori). Programi za delo s preglednicami (npr. Excel) so omejeni na največ 255 stolpcev. Izberite stolpce, ki jih želite izvoziti iz spodnjega spiska."
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:220
+msgid "Choose the columns you wish to export."
+msgstr "Izberite stolpce, ki jih želite izvoziti."
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:260
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:119
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:137
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:150
+msgid "Token Control"
+msgstr "Upravljanje z dostopnimi gesli"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:265
+msgid "Choose Token Fields"
+msgstr "Izberi polja dostopnih gesel"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:271
+msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
+msgstr "Skupaj z odgovori lahko izvozite tudi podatke o dostopnih geslih. Izberite dodatna polja, ki jih želite vključiti v izvoz podatkov."
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:278
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:732
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1306
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1482
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1860
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/login_check.php:52
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:518
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:1080
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:74
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:207
+msgid "Email"
+msgstr "Elektronski naslov"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:287
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:444
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:738
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:3226
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:3713
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:265
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:542
+msgid "Attribute 1"
+msgstr "Lastnost 1"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:289
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:449
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:741
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:3228
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:3714
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:266
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:546
+msgid "Attribute 2"
+msgstr "Lastnost 2"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:463
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:464
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1393
+msgid "IP-Address"
+msgstr "IP naslov"
+
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:831
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/exportresults.php:839
+msgid "N/A"
+msgstr "N/A"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/browse.php:62
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:61
@@ -2411,14 +2566,6 @@ msgstr "Skrij podrobnosti za to skupino"
 msgid "Add New Question to Group"
 msgstr "Dodaj novo vprašanje k tej skupini"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:930
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/importsurvey.php:1014
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/importgroup.php:554
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/importquestion.php:419
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:120
-msgid "Questions"
-msgstr "Vprašanja"
-
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:969
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/conditions.php:594
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/conditions.php:642
@@ -2556,14 +2703,6 @@ msgstr "Izbrati morate seznam odgovorov za to vprašanje"
 msgid "Other:"
 msgstr "Drugo:"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1149
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/importsurvey.php:1015
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/importgroup.php:557
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/importquestion.php:422
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:135
-msgid "Answers"
-msgstr "Odgovori"
-
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1172
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:2256
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:2279
@@ -2595,7 +2734,7 @@ msgstr "Vrstni red"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1224
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/labels.php:328
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/labels.php:569
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:603
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:616
 msgid "Del"
 msgstr "Izbriši"
 
@@ -2606,7 +2745,7 @@ msgstr "Izbriši"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:3543
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/labels.php:334
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/labels.php:545
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:579
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:592
 msgid "Up"
 msgstr "Gor"
 
@@ -2617,14 +2756,14 @@ msgstr "Gor"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:3547
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/labels.php:339
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/labels.php:557
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:591
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:604
 msgid "Dn"
 msgstr "Dol"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1242
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/labels.php:346
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/labels.php:522
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:556
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:569
 msgid "Save All"
 msgstr "Shrani vse"
 
@@ -2633,7 +2772,7 @@ msgid "New Answer"
 msgstr "Nov odgovor"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1260
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:534
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:547
 msgid "Add new Answer"
 msgstr "Dodaj nov odgovor"
 
@@ -2643,7 +2782,7 @@ msgid "You cannot change codes, add or delete entries in this label set because 
 msgstr "Pri tem seznamu odgovorov ne morete spreminjati kod odgovorov, dodajati ali spreminjati vnosov, ker je seznam uporabljen v anketi, ki je trenutno aktivna."
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1303
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:278
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:292
 msgid "Modifying User"
 msgstr "Spreminjanje uporabnika"
 
@@ -2655,27 +2794,14 @@ msgstr "Spreminjanje uporabnika"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:2950
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/login_check.php:48
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/login_check.php:72
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:63
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:73
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:182
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:193
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:260
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:308
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:64
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:74
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:196
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:207
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:274
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:322
 msgid "Username"
 msgstr "Uporabniško ime"
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1306
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1482
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1860
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/login_check.php:52
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:279
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:734
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:518
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:1080
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:73
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:193
-msgid "Email"
-msgstr "Elektronski naslov"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1307
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1483
@@ -2689,8 +2815,8 @@ msgstr "Osveži"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1342
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1597
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:204
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:337
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:218
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:351
 msgid "Set User Rights"
 msgstr "Nastavi pravice uporabnika"
 
@@ -2722,7 +2848,7 @@ msgstr "Spremeni"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1914
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:2694
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:3033
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:142
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:156
 msgid "Add User"
 msgstr "Dodaj uporabnika"
 
@@ -2844,7 +2970,7 @@ msgstr "Izbriši uporabnika"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:1944
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:2805
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:270
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:284
 msgid "Could not delete user. User was not supplied."
 msgstr "Brisanje uporabnika ni mogoče. Uporabnik ni bil podan."
 
@@ -2876,7 +3002,7 @@ msgstr "Lastnosti vprašanja:"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:2565
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:3768
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/conditions.php:521
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1518
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1519
 msgid "OR"
 msgstr "ALI"
 
@@ -2920,7 +3046,7 @@ msgstr "Uredi vprašanje"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:2307
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:2338
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:2366
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:586
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:585
 msgid "Cannot be modified"
 msgstr "Spremembe niso možne"
 
@@ -2970,9 +3096,9 @@ msgstr "Uporabnik dodan."
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:2718
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:2724
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:2778
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:152
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:156
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:211
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:166
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:170
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:225
 msgid "Failed to add User."
 msgstr "Dodajanje uporabnika ni uspelo."
 
@@ -3005,7 +3131,7 @@ msgid "Failed to add User Group."
 msgstr "Dodajanje skupine uporabnikov je spodletelo."
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:2790
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:219
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:233
 msgid "Deleting User"
 msgstr "Brisanje uporabnika"
 
@@ -3122,26 +3248,6 @@ msgstr "Omogoči javno registracijo uporabnikov za sodelovanje v anketi?"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:3712
 msgid "Token Attribute Names:"
 msgstr "Imena lastnosti dostopnih gesel:"
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:3226
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:3713
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:288
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:446
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:740
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:265
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:542
-msgid "Attribute 1"
-msgstr "Lastnost 1"
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:3228
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:3714
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:290
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:451
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:743
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:266
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:546
-msgid "Attribute 2"
-msgstr "Lastnost 2"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:3229
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/html.php:3715
@@ -3450,7 +3556,7 @@ msgid "Select the field number you would like to use for your answers:"
 msgstr "Izberite številko polja, ki ga želite uporabiti za odgovore:"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/saved.php:73
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:382
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:381
 msgid "Browse Saved Responses"
 msgstr "Prebrskaj shranjene odgovore"
 
@@ -3484,16 +3590,9 @@ msgstr "Izvoz vprašanja"
 msgid "No QID has been provided. Cannot dump question."
 msgstr "Manjka številka vprašanja (QID). Vprašanja ni mogoče izbrisati."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/admin.php:244
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/admin.php:257
 msgid "Using the PHPSurveyor Admin Script"
 msgstr "Uporaba administracijske skripte za PHPSurveyor"
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/admin.php:279
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:214
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:220
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:271
-msgid "Help"
-msgstr "Pomoč"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/vvexport.php:51
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dumpsurvey.php:63
@@ -3507,11 +3606,6 @@ msgstr "Izvozi in deaktiviraj anketo"
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/vvexport.php:61
 msgid "Export but leave survey active"
 msgstr "Izvozi in ohrani anketo aktivno"
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/vvexport.php:69
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:115
-msgid "Export Responses"
-msgstr "Izvozi odgovore"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/vvexport.php:69
 msgid "If you have chosen to export and de-activate, this will rename your current responses table and it will not be easy to restore it. Are you sure?"
@@ -3599,7 +3693,6 @@ msgstr "Seznam odgovorov"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/labels.php:237
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/conditions.php:697
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:184
 msgid "Close Window"
 msgstr "Zapri okno"
 
@@ -4096,7 +4189,7 @@ msgstr "Manjka SID (številka ankete). Vprašanja ni mogoče uvoziti."
 msgid "No GID (Group) has been provided. Cannot import question"
 msgstr "Manjka GID (številka skupine). Vprašanja ni mogoče uvoziti."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:111
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:124
 msgid ""
 "Group could not be added.\\n"
 "\\n"
@@ -4106,62 +4199,62 @@ msgstr ""
 "\\n"
 "Manjka ime skupine za naslednje jezike"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:133
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:146
 msgid "Error: The database reported the following error:"
 msgstr "Napaka - v podatkovni bazi se je pojavila naslednja napaka:"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:165
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:178
 msgid "Group could not be updated"
 msgstr "Skupine ni mogoče posodobiti"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:187
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:210
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:200
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:223
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:236
 msgid "Group could not be deleted"
 msgstr "Skupine ni mogoče izbrisati"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:231
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:400
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:244
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:413
 msgid "Answer could not be added. You must insert a code in the mandatory field"
 msgstr "Odgovora ni mogoče dodati. Vnesti morate kodo vprašanja v obvezno polje"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:269
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:414
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:282
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:427
 msgid "Question could not be created."
 msgstr "Vprašanja ni mogoče ustvariti."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:347
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:360
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "Vprašanja ni mogoče posodobiti. Pogoji pri drugih vprašanjih se nanašajo na to vprašanje, zato bi spreminjanje tipa vprašanja lahko povzročilo težave. Tip vprašanja boste lahko spremenili, če odstranite te pogoje."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:374
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:391
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:387
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:404
 msgid "Question could not be updated"
 msgstr "Vprašanja ni mogoče posodobiti"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:385
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:398
 msgid "Answers can't be deleted"
 msgstr "Odgovorov ni mogoče izbrisati"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:463
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:504
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:476
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:517
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "Vprašanja ni mogoče izbrisati. Pogoji pri drugih vprašanjih se nanašajo na to vprašanje. Vprašanje boste lahko izbrisali, če bodo ti pogoji odstranjeni"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:488
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:525
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:501
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:538
 msgid "Question could not be deleted"
 msgstr "Vprašanja ni mogoče izbrisati"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:842
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:855
 msgid "Survey could not be updated"
 msgstr "Ankete ni mogoče posodobiti"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:895
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:908
 msgid "Survey could not be created because it did not have a short title"
 msgstr "Ankete ni mogoče ustvariti. Manjka kratek naslov ankete"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:956
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/database.php:969
 msgid "Survey could not be created"
 msgstr "Ankete ni mogoče ustvariti"
 
@@ -4267,102 +4360,12 @@ msgstr "Ogromno besedilo"
 msgid "No LID has been provided. Cannot dump label set."
 msgstr "Manjka LID številka. Seznama odgovorov ni mogoče izbrisati."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:116
-msgid "Filtered from Statistics Script"
-msgstr "Izločeno iz statistike"
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:117
-msgid "Single Response"
-msgstr "Možen je samo en odgovor"
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:125
-msgid "Abbreviated headings"
-msgstr "Skrajšana vprašanja"
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:128
-msgid "Full headings"
-msgstr "Vprašanja v celoti"
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:131
-msgid "Question Codes"
-msgstr "Kode vprašanj"
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:140
-msgid "Answer Codes"
-msgstr "Kode odgovorov"
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:143
-msgid "Full Answers"
-msgstr "Odgovori v celoti"
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:147
-msgid "Format"
-msgstr "Oblika"
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:152
-msgid "Microsoft Word"
-msgstr "Microsoft Word"
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:155
-msgid "Microsoft Excel"
-msgstr "Microsoft Excel"
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:158
-msgid "CSV Comma Delimited"
-msgstr "besedilo CSV (ločeno z vejico)"
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:165
-msgid "Export Data"
-msgstr "Izvoz podatkov"
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:202
-msgid "Column Control"
-msgstr "Upravljanje stolpcev"
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:207
-msgid "Choose columns"
-msgstr "Izberi stolpce"
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:215
-msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
-msgstr "Anketa vsebuje več kot 255 spremenljivk (stolpcev z odgovori). Programi za delo s preglednicami (npr. Excel) so omejeni na največ 255 stolpcev. Izberite stolpce, ki jih želite izvoziti iz spodnjega spiska."
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:221
-msgid "Choose the columns you wish to export."
-msgstr "Izberite stolpce, ki jih želite izvoziti."
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:261
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:119
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:137
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:150
-msgid "Token Control"
-msgstr "Upravljanje z dostopnimi gesli"
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:266
-msgid "Choose Token Fields"
-msgstr "Izberi polja dostopnih gesel"
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:272
-msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
-msgstr "Skupaj z odgovori lahko izvozite tudi podatke o dostopnih geslih. Izberite dodatna polja, ki jih želite vključiti v izvoz podatkov."
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:465
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:466
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1392
-msgid "IP-Address"
-msgstr "IP naslov"
-
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:833
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/export.php:841
-msgid "N/A"
-msgstr "N/A"
-
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:121
 msgid "You have not selected a survey"
 msgstr "Niste izbrali ankete"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/tokens.php:139
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2144
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2145
 msgid "The survey you selected does not exist"
 msgstr "Anketa, ki ste jo izbrali ne obstaja"
 
@@ -4870,11 +4873,11 @@ msgstr "Tabela z gesli za to anketo je bila preimenovana v:"
 
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:58
 #: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:74
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:94
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:556
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1218
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1315
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1358
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:93
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:555
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1217
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1314
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1357
 msgid "Data Entry"
 msgstr "Vnos podatkov"
 
@@ -4882,96 +4885,96 @@ msgstr "Vnos podatkov"
 msgid "You have not selected a survey for data-entry."
 msgstr "Niste izbrali ankete za vnos podatkov."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:137
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1183
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2112
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:136
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1182
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2113
 msgid "Identifier:"
 msgstr "Identifikator:"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:139
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2114
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:138
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2115
 msgid "Password:"
 msgstr "Geslo:"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:141
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2116
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:140
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2117
 msgid "Confirm Password:"
 msgstr "Potrdi geslo:"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:143
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2118
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:142
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2119
 msgid "Email:"
 msgstr "Elektronski naslov:"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:216
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:215
 msgid "Your survey responses have been saved succesfully"
 msgstr "Vaši odgovori so bili uspešno shranjeni"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:234
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:233
 msgid "An email has been sent with details about your saved survey"
 msgstr "Poslano je bilo elektronsko sporočilo s podatki o vaši shranjeni anketi."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:241
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:240
 msgid "An error occurred and your survey responses were not saved."
 msgstr "Prišlo je do napake in vaši odgovori niso bili shranjeni."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:368
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:367
 msgid "The entry was assigned the following record id: "
 msgstr "Vnos je bil dodan za zapis z identifikacijsko številko:"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:374
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:373
 msgid "Add Another Record"
 msgstr "Dodaj še en zapis"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:378
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1304
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:377
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1303
 msgid "View This Record"
 msgstr "Preglej ta zapis"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:558
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:557
 msgid "Editing Response"
 msgstr "Urejanje zapisa"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1153
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1152
 msgid "Update Entry"
 msgstr "Posodobi vnos"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1180
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2109
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1179
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2110
 msgid "Save as a partially completed survey"
 msgstr "Shrani kot delno izpolnjeno anketo"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1303
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1302
 msgid "Record has been updated."
 msgstr "Zapis je bil posodobljen."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1324
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1323
 msgid "Record Deleted"
 msgstr "Zapis izbrisan"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1381
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1382
 msgid "Datestamp"
 msgstr "Datum"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1434
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1509
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1435
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1510
 msgid "AND"
 msgstr "IN"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1526
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1530
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1527
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1531
 msgid "to question {QUESTION}, you answered {ANSWER}"
 msgstr "na vprašanje {QUESTION}, ste odgovorili z {ANSWER}"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1539
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1540
 msgid "Only answer this if the following conditions are met:"
 msgstr "Odgovarjanje mogoče samo, če je zadoščeno naslednjim pogojem:"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1561
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:1562
 msgid "Help about this question"
 msgstr "Pomoč pri tem vprašanju"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2134
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/dataentry.php:2135
 msgid "This survey is not yet active. Your response cannot be saved"
 msgstr "Ta anketa še ni aktivna. Vaših odgovorov ni mogoče shraniti"
 
@@ -4979,90 +4982,90 @@ msgstr "Ta anketa še ni aktivna. Vaših odgovorov ni mogoče shraniti"
 msgid "Forgot Password"
 msgstr "Pozabljeno geslo"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:53
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:98
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:123
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:54
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:110
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:137
 msgid "User name and/or email not found!"
 msgstr "Uporabniško ime in/ali elektronski naslov ne obstaja!"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:62
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:63
 msgid "Your data:"
 msgstr "Vaši podatki:"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:74
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:75
 msgid "An email with your login data was sent to you."
 msgstr "Poslano vam je bilo elektronsko sporočilo s podatki za prijavo."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:79
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:199
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:80
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:213
 msgid "Email to {NAME} ({EMAIL}) failed."
 msgstr "Pošiljanje elektronskega sporočila za {NAME} ({EMAIL}) ni bilo uspešno"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:88
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:184
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:89
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:198
 msgid "Login"
 msgstr "Prijava"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:115
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:129
 msgid "Welcome {NAME}"
 msgstr "Pozdravljeni {NAME}"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:116
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:130
 msgid "Login successful."
 msgstr "Prijava uspela."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:136
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:150
 msgid "Logout successful."
 msgstr "Odjava uspela."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:152
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:292
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:166
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:306
 msgid "Email address ist not valid."
 msgstr "Neveljaven elektronski naslov."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:157
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:171
 msgid "Username was not supplied."
 msgstr "Ni bilo podano uporabniško ime."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:181
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:195
 msgid "You were signed in. Your data:"
 msgstr "Vpisali ste se. Vaši podatki:"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:194
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:208
 msgid "An email with a generated password was sent to the user."
 msgstr "Uporabniku je bilo poslano elektronsko sporočilo z geslom."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:211
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:225
 msgid "Username and/or email address already exists."
 msgstr "Uporabniško ime in/ali elektronski naslov že obstaja."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:227
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:241
 msgid "Admin cannot be deleted!"
 msgstr "Administratorja ni mogoče izbrisati!"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:292
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:297
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:313
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:306
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:311
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:327
 msgid "Could not modify User Data."
 msgstr "Urejanje uporabniških podatkov ni bilo mogoče."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:298
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:312
 msgid "Password was not supplied."
 msgstr "Niste vpisali gesla."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:313
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:327
 msgid "Email address already exists."
 msgstr "Elektronski naslov naslov že obstaja."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:319
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:333
 msgid "Back"
 msgstr "Nazaj"
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:363
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:377
 msgid "Update user rights successful."
 msgstr "Posodobitev uporabniških pravic je uspela."
 
-#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:373
+#: /home/skrat/web/phpsurveyor/svn/source/phpsurveyor/admin/usercontrol.php:387
 msgid "You are not allowed to change your own rights!"
 msgstr "Nimate dovoljenja za spreminjanje svojih lastnih pravic!"
 
