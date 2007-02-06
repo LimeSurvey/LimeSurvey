@@ -186,7 +186,9 @@ if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("submit")." ")
 				sendsubmitnotification($thissurvey['sendnotification']);
 			}
 
-
+		//RL: insert token for prize draw in db
+			$mytoken=submittokenforprizedraw();
+			
 			session_unset();
 			session_destroy();
 
@@ -196,12 +198,15 @@ if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("submit")." ")
 			{
 				//Automatically redirect the page to the "url" setting for the survey
 				session_write_close();
-				header("Location: {$thissurvey['url']}");
+//RL: added token in redirect
+				$redir = $thissurvey['url']."?token=".$mytoken;
+				header("Location: {$redir}");
 			}
+
 
 			doHeader();
 			echo $content;
-
+			
 		}
 
 //		foreach(file("$thistpl/completed.pstpl") as $op)
@@ -218,6 +223,7 @@ if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("submit")." ")
 			echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 
 		exit;
+
 }
 
 //LAST PHASE ###########################################################################
