@@ -673,6 +673,7 @@ if ($surveyid)
 		. "\t<tr $showstyle id='surveydetails7'><td align='right' valign='top'><strong>"
 		. $clang->gT("Template:")."</strong></td>\n"
 		. "\t\t<td> {$s1row['template']}</td></tr>\n"
+		
 		. "\t<tr $showstyle id='surveydetails8'><td align='right' valign='top'><strong>"
 		. $clang->gT("Base Language:")."</strong></td>\n";
 		if (!$s1row['language']) {$language=getLanguageNameFromCode($currentadminlang);} else {$language=getLanguageNameFromCode($s1row['language']);}
@@ -3330,6 +3331,8 @@ if ($action == "editsurvey")
 					$editsurvey .= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
 				}
 			}
+			$editsurvey .= "</select></td>"
+			. " </tr>\n";
 
 			$editsurvey .= "</select></td>"
 			. " </tr>\n"
@@ -3405,7 +3408,6 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
         . "<table width='100%' border='0'>\n\t<tr><td bgcolor='black' align='center'>"
 		. "\t\t<font class='settingcaption'><font color='white'>".$clang->gT("Edit Survey - Step 2 of 2")."</font></font></td></tr></table>\n"
 		. '<div class="tab-pane" id="tab-pane-1">';
-//		echo implode(' ', $grplangs);  For debug purposes
 		foreach ($grplangs as $grouplang)
 		{
     		$esquery = "SELECT * FROM ".db_table_name("surveys_languagesettings")." WHERE surveyls_survey_id=$surveyid and surveyls_language='$grouplang'";
