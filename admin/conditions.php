@@ -35,22 +35,22 @@
 */
 
 require_once(dirname(__FILE__).'/../config.php');
+include_once("login_check.php");
 
 
 $surveyid=returnglobal('sid');
+$conditionsoutput='';
 
 //Ensure script is not run directly, avoid path disclosure
 if (empty($surveyid)) {die("No SID provided.");}
 
-sendcacheheaders();
+// ToDo: activate this again
+//if(isset($_POST['cquestions'])) {
+//	echo str_replace("<body ", "<body onload='getAnswers(\"".$_POST['cquestions']."\")'", $htmlheader);
+//}; 
 
-if(isset($_POST['cquestions'])) {
-	echo str_replace("<body ", "<body onload='getAnswers(\"".$_POST['cquestions']."\")'", $htmlheader);
-} else {
-	echo $htmlheader;
-}
 
-echo "<table width='100%' border='0' bgcolor='#555555' cellspacing='0' cellpadding='0'>\n"
+$conditionsoutput .= "<table width='100%' border='0' bgcolor='#555555' cellspacing='0' cellpadding='0'>\n"
 ."\t<tr><td align='center'><font color='white'><strong>"
 .$clang->gT("Condition Designer")."</strong></font></td></tr>\n"
 ."</table>\n";
@@ -58,27 +58,27 @@ echo "<table width='100%' border='0' bgcolor='#555555' cellspacing='0' cellpaddi
 
 if (!isset($surveyid))
 {
-	echo "<br /><center><strong>"
+	$conditionsoutput .= "<br /><center><strong>"
 	.$clang->gT("You have not selected a Survey.")." ".$clang->gT("You cannot run this script directly.")
 	."</strong></center>\n"
 	."</body></html>\n";
-	exit;
+	return;
 }
 if (!isset($_GET['qid']) && !isset($_POST['qid']))
 {
-	echo "<br /><center><strong>"
+	$conditionsoutput .= "<br /><center><strong>"
 	.$clang->gT("You have not selected a Question.")." ".$clang->gT("You cannot run this script directly.")
 	."</strong></center>\n"
 	."</body></html>\n";
-	exit;
+	return;
 }
 
 //ADD NEW ENTRY IF THIS IS AN ADD
-if (isset($_POST['action']) && $_POST['action'] == "insertcondition")
+if (isset($_POST['subaction']) && $_POST['subaction'] == "insertcondition")
 {
 	if (!isset($_POST['canswers']) || !isset($_POST['cquestions']))
 	{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.\")\n //-->\n</script>\n";
+		$conditionsoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.\")\n //-->\n</script>\n";
 	}
 	else
 	{
@@ -91,13 +91,13 @@ if (isset($_POST['action']) && $_POST['action'] == "insertcondition")
 	}
 }
 //DELETE ENTRY IF THIS IS DELETE
-if (isset($_POST['action']) && $_POST['action'] == "delete")
+if (isset($_POST['subaction']) && $_POST['subaction'] == "delete")
 {
 	$query = "DELETE FROM {$dbprefix}conditions WHERE cid={$_POST['cid']}";
 	$result = $connect->Execute($query) or die ("Couldn't delete condition<br />$query<br />".$connect->ErrorMsg());
 }
 //COPY CONDITIONS IF THIS IS COPY
-if (isset($_POST['action']) && $_POST['action'] == "copyconditions")
+if (isset($_POST['subaction']) && $_POST['subaction'] == "copyconditions")
 {
 	$qid=returnglobal('qid');
 	$copyconditionsfrom=returnglobal('copyconditionsfrom');
@@ -153,7 +153,7 @@ if (isset($_POST['action']) && $_POST['action'] == "copyconditions")
 		{
 			$message .= $clang->gT("No question selected to copy condition to").".";
 		}
-		echo "<script type=\"text/javascript\">\n<!--\nalert('$message');\n//-->\n</script>\n";
+		$conditionsoutput .= "<script type=\"text/javascript\">\n<!--\nalert('$message');\n//-->\n</script>\n";
 	}
 }
 
@@ -403,7 +403,7 @@ if ($questionscount > 0)
 }
 
 //JAVASCRIPT TO SHOW MATCHING ANSWERS TO SELECTED QUESTION
-echo "<script type='text/javascript'>\n"
+$conditionsoutput .= "<script type='text/javascript'>\n"
 ."<!--\n"
 ."\tvar Fieldnames = new Array();\n"
 ."\tvar Codes = new Array();\n"
@@ -416,7 +416,7 @@ if (isset($canswers))
 	foreach($canswers as $can)
 	{
 		$an=str_replace("'", "`", $can[2]);
-		echo "\t\tFieldnames[$jn]='$can[0]';\n"
+		$conditionsoutput .= "\t\tFieldnames[$jn]='$can[0]';\n"
 		."\t\tCodes[$jn]='$can[1]';\n"
 		."\t\tAnswers[$jn]='$an';\n";
 		$jn++;
@@ -428,33 +428,33 @@ if (isset($cquestions))
 {
 	foreach ($cquestions as $cqn)
 	{
-		echo "\t\tQFieldnames[$jn]='$cqn[3]';\n"
+		$conditionsoutput .= "\t\tQFieldnames[$jn]='$cqn[3]';\n"
 		."\t\tQcqids[$jn]='$cqn[1]';\n";
 		$jn++;
 	}
 }
-echo "\n"
+$conditionsoutput .= "\n"
 ."\tfunction clearAnswers()\n"
 ."\t\t{\n"
 ."\t\t\tfor (var i=document.getElementById('canswers').options.length-1; i>=0; i--)\n"
 ."\t\t\t\t{\n";
-//echo "alert(i);\n";
-echo "\t\t\t\t\tdocument.getElementById('canswers').options[i] = null;\n"
+//$conditionsoutput .= "alert(i);\n";
+$conditionsoutput .= "\t\t\t\t\tdocument.getElementById('canswers').options[i] = null;\n"
 ."\t\t\t\t}\n"
 ."\t\t}\n";
 
-echo "\tfunction getAnswers(fname)\n"
+$conditionsoutput .= "\tfunction getAnswers(fname)\n"
 ."\t\t{\n";
-//echo "\t\talert(getElementById('canswers').options.length)\n";
-//echo "\t\t\t{\n";
-echo "\t\t\tfor (var i=document.getElementById('canswers').options.length-1; i>=0; i--)\n"
+//$conditionsoutput .= "\t\talert(getElementById('canswers').options.length)\n";
+//$conditionsoutput .= "\t\t\t{\n";
+$conditionsoutput .= "\t\t\tfor (var i=document.getElementById('canswers').options.length-1; i>=0; i--)\n"
 ."\t\t\t\t{\n";
-//echo "alert(i);\n";
-echo "\t\t\t\t\tdocument.getElementById('canswers').options[i] = null;\n"
+//$conditionsoutput .= "alert(i);\n";
+$conditionsoutput .= "\t\t\t\t\tdocument.getElementById('canswers').options[i] = null;\n"
 ."\t\t\t\t}\n";
-//echo "\t\t\t}\n";
-//echo "\t\t\talert(fname);\n";
-echo "\t\t\tvar Keys = new Array();\n"
+//$conditionsoutput .= "\t\t\t}\n";
+//$conditionsoutput .= "\t\t\talert(fname);\n";
+$conditionsoutput .= "\t\t\tvar Keys = new Array();\n"
 ."\t\t\tfor (var i=0;i<Fieldnames.length;i++)\n"
 ."\t\t\t\t{\n"
 ."\t\t\t\tif (Fieldnames[i] == fname)\n"
@@ -469,18 +469,18 @@ echo "\t\t\tvar Keys = new Array();\n"
 ."\t\t\t\t\tdocument.getElementById('cqid').value=Qcqids[i];\n"
 ."\t\t\t\t\t}\n"
 ."\t\t\t\t}\n";
-//echo "\t\t\talert(Keys.length);\n";
-echo "\t\t\tfor (var i=0;i<Keys.length;i++)\n"
+//$conditionsoutput .= "\t\t\talert(Keys.length);\n";
+$conditionsoutput .= "\t\t\tfor (var i=0;i<Keys.length;i++)\n"
 ."\t\t\t\t{\n";
-//echo "\t\t\t\talert(Answers[Keys[i]]);\n";
-echo "\t\t\t\tdocument.getElementById('canswers').options[document.getElementById('canswers').options.length] = new Option(Answers[Keys[i]], Codes[Keys[i]]);\n"
+//$conditionsoutput .= "\t\t\t\talert(Answers[Keys[i]]);\n";
+$conditionsoutput .= "\t\t\t\tdocument.getElementById('canswers').options[document.getElementById('canswers').options.length] = new Option(Answers[Keys[i]], Codes[Keys[i]]);\n"
 ."\t\t\t\t}\n"
 ."\t\t}\n"
 ."//-->\n"
 ."</script>\n";
 
 //SHOW FORM TO CREATE IT!
-echo "<table width='100%' align='center' cellspacing='0' cellpadding='0' style='border-style: solid; border-width: 1; border-color: #555555'>\n"
+$conditionsoutput .= "<table width='100%' align='center' cellspacing='0' cellpadding='0' style='border-style: solid; border-width: 1; border-color: #555555'>\n"
 ."\t<tr bgcolor='#CCFFCC'>\n"
 ."\t\t<td  align='center' >\n";
 $showreplace="$questiontitle<img src='$imagefiles/speaker.png' alt=\""
@@ -489,7 +489,7 @@ $showreplace="$questiontitle<img src='$imagefiles/speaker.png' alt=\""
 . htmlspecialchars(addslashes(strip_tags($questiontext)))
 . "')\" />";
 $onlyshow=str_replace("{QID}", $showreplace, $clang->gT("Only show question {QID} IF"));
-echo "\t\t\t<strong>$onlyshow</strong>\n"
+$conditionsoutput .= "\t\t\t<strong>$onlyshow</strong>\n"
 ."\t\t</td>\n"
 ."\t</tr>\n";
 
@@ -508,36 +508,36 @@ if ($conditionscount > 0)
 	{
 		if (isset($currentfield) && $currentfield != $rows['cfieldname'])
 		{
-			echo "\t\t\t\t<tr bgcolor='#E1FFE1'>\n"
+			$conditionsoutput .= "\t\t\t\t<tr bgcolor='#E1FFE1'>\n"
 			."\t\t\t\t\t<td valign='middle' align='center'>\n"
 			."<font size='1'><strong>"
 			.$clang->gT("and")."</strong></font>";
 		}
 		elseif (isset($currentfield))
 		{
-			echo "\t\t\t\t<tr bgcolor='#E1FFE1'>\n"
+			$conditionsoutput .= "\t\t\t\t<tr bgcolor='#E1FFE1'>\n"
 			."\t\t\t\t\t<td valign='top' align='center'>\n"
 			."<font size='1'><strong>"
 			.$clang->gT("OR")."</strong></font>";
 		}
-		echo "\t<tr bgcolor='#E1FFE1'>\n"
-		."\t<td><form style='margin-bottom:0;' name='del{$rows['cid']}' id='del{$rows['cid']}' method='post' action='{$_SERVER['PHP_SELF']}'>\n"
+		$conditionsoutput .= "\t<tr bgcolor='#E1FFE1'>\n"
+		."\t<td><form style='margin-bottom:0;' name='del{$rows['cid']}' id='del{$rows['cid']}' method='post' action='$scriptname?action=conditions'>\n"
 		."\t\t<table width='100%' style='height: 13px;' cellspacing='0' cellpadding='0'><tr><td valign='middle' align='right' width='50%'><font size='1' face='verdana'>\n";
 		//BUILD FIELDNAME?
 		foreach ($cquestions as $cqn)
 		{
 			if ($cqn[3] == $rows['cfieldname'])
 			{
-				echo "\t\t\t$cqn[0] (qid{$rows['cqid']})\n";
+				$conditionsoutput .= "\t\t\t$cqn[0] (qid{$rows['cqid']})\n";
 				$conditionsList[]=array("cid"=>$rows['cid'],
 				"text"=>$cqn[0]." ({$rows['value']})");
 			}
 			else
 			{
-				//echo "\t\t\t<font color='red'>ERROR: Delete this condition. It is out of order.</font>\n";
+				//$conditionsoutput .= "\t\t\t<font color='red'>ERROR: Delete this condition. It is out of order.</font>\n";
 			}
 		}
-		echo "\t\t</font></td>\n"
+		$conditionsoutput .= "\t\t</font></td>\n"
 		."\t\t<td align='center' valign='middle' width='15%'><font size='1'>"
 		.$clang->gT("Equals")."</font></td>"
 		."\t\t\t\t\n"
@@ -545,17 +545,17 @@ if ($conditionscount > 0)
 		."\t\t\t\t\t\t<font size='1' face='verdana'>\n";
 		foreach ($canswers as $can)
 		{
-			//echo $rows['cfieldname'] . "- $can[0]<br />";
-			//echo $can[1];
+			//$conditionsoutput .= $rows['cfieldname'] . "- $can[0]<br />";
+			//$conditionsoutput .= $can[1];
 			if ($can[0] == $rows['cfieldname'] && $can[1] == $rows['value'])
 			{
-				echo "\t\t\t\t\t\t$can[2] ($can[1])\n";
+				$conditionsoutput .= "\t\t\t\t\t\t$can[2] ($can[1])\n";
 			}
 		}
-		echo "\t\t\t\t\t</font></td>\n"
+		$conditionsoutput .= "\t\t\t\t\t</font></td>\n"
 		."\t\t\t\t\t<td align='right' valign='middle' >\n"
 		."\t\t\t\t\t\t<input type='submit' value='Del' style='font-family: verdana; font-size: 8; height:15' />\n"
-		."\t\t\t\t\t<input type='hidden' name='action' value='delete' />\n"
+		."\t\t\t\t\t<input type='hidden' name='subaction' value='delete' />\n"
 		."\t\t\t\t\t<input type='hidden' name='cid' value='{$rows['cid']}' />\n"
 		."\t\t\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
 		."\t\t\t\t\t<input type='hidden' name='qid' value='$qid' />\n"
@@ -564,44 +564,44 @@ if ($conditionscount > 0)
 		."\t</tr>\n";
 		$currentfield=$rows['cfieldname'];
 	}
-	echo "\t<tr>\n"
+	$conditionsoutput .= "\t<tr>\n"
 	."\t\t<td height='3'>\n"
 	."\t\t</td>\n"
 	."\t</tr>\n";
 }
 else
 {
-	echo "\t<tr>\n"
+	$conditionsoutput .= "\t<tr>\n"
 	."\t\t<td colspan='3' height='3'>\n"
 	."\t\t</td>\n"
 	."\t</tr>\n";
 }
 
-echo "\t<tr bgcolor='#555555'><td colspan='3'></td></tr>\n";
+$conditionsoutput .= "\t<tr bgcolor='#555555'><td colspan='3'></td></tr>\n";
 
 if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 0)
 {
-	echo "<tr bgcolor='#555555'><td colspan='3'><form action='".$_SERVER['PHP_SELF']."' name='copyconditions' id='copyconditions' method='post'>\n";
+	$conditionsoutput .= "<tr bgcolor='#555555'><td colspan='3'><form action='$scriptname?action=conditions' name='copyconditions' id='copyconditions' method='post'>\n";
 
-	echo "\t<table width='100%'><tr bgcolor='#CDCDCD'>\n"
+	$conditionsoutput .= "\t<table width='100%'><tr bgcolor='#CDCDCD'>\n"
 	."\t\t<td colspan='3' align='center'>\n"
 	."\t\t<strong>"
 	.$clang->gT("Copy Conditions")."</strong>\n"
 	."\t\t</td>\n"
 	."\t</tr>\n";
 
-	echo "\t<tr>\n"
+	$conditionsoutput .= "\t<tr>\n"
 	."\t\t<th>".$clang->gT("Condition")."</font></th><th></th><th>".$clang->gT("Question")."</th>\n"
 	."\t</tr>\n";
 
-	echo "\t<tr>\n"
+	$conditionsoutput .= "\t<tr>\n"
 	."\t\t<td align='center'>\n"
 	."\t\t<select name='copyconditionsfrom[]' multiple style='font-family:verdana; font-size:10; width:220; background-color: #E1FFE1' size='4' >\n";
 	foreach ($conditionsList as $cl)
 	{
-		echo "<option value='".$cl['cid']."'>".$cl['text']."</option>\n";
+		$conditionsoutput .= "<option value='".$cl['cid']."'>".$cl['text']."</option>\n";
 	}
-	echo "\t\t</select>\n"
+	$conditionsoutput .= "\t\t</select>\n"
 	."\t\t</td>\n"
 	."\t\t<td align='center'>\n"
 	."\t\t".$clang->gT("copy to")."\n"
@@ -610,29 +610,29 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 	."\t\t<select name='copyconditionsto[]' multiple style='font-family:verdana; font-size:10; width:220' size='4'>\n";
 	foreach ($pquestions as $pq)
 	{
-		echo "<option value='{$pq['fieldname']}'>".$pq['text']."</option>\n";
+		$conditionsoutput .= "<option value='{$pq['fieldname']}'>".$pq['text']."</option>\n";
 	}
-	echo "\t\t</select>\n";
-	echo "\t\t</td>\n"
+	$conditionsoutput .= "\t\t</select>\n";
+	$conditionsoutput .= "\t\t</td>\n"
 	."\t</tr>\n";
 
-	echo "\t<tr><td colspan='3' align='center'>\n"
+	$conditionsoutput .= "\t<tr><td colspan='3' align='center'>\n"
 	."<input type='submit' value='".$clang->gT("Copy Conditions")."' onclick=\"return confirm('".$clang->gT("Are you sure you want to copy these condition(s) to the questions you have selected?")."')\" />"
 	."\t\t\n";
 
-	echo "<input type='hidden' name='action' value='copyconditions' />\n"
+	$conditionsoutput .= "<input type='hidden' name='subaction' value='copyconditions' />\n"
 	."<input type='hidden' name='sid' value='$surveyid' />\n"
 	."<input type='hidden' name='qid' value='$qid' />\n"
 	."</td></tr></table></form>\n";
 
-	echo "\t<tr ><td colspan='3'></td></tr>\n"
+	$conditionsoutput .= "\t<tr ><td colspan='3'></td></tr>\n"
 	."\t<tr bgcolor='#555555'><td colspan='3'></td></tr>\n";
 }
 
-echo "</table>\n";
-echo "<form action='{$_SERVER['PHP_SELF']}' name='addconditions' id='addconditions' method='post'>\n";
-echo "<table width='100%' border='0' >";
-echo "\t<tr bgcolor='#CDCDCD'>\n"
+$conditionsoutput .= "</table>\n";
+$conditionsoutput .= "<form action='$scriptname?action=conditions' name='addconditions' id='addconditions' method='post'>\n";
+$conditionsoutput .= "<table width='100%' border='0' >";
+$conditionsoutput .= "\t<tr bgcolor='#CDCDCD'>\n"
 ."\t\t<td colspan='3' align='center'>\n"
 ."\t\t\t<strong>".$clang->gT("Add Condition")."</strong>\n"
 ."\t\t</td>\n"
@@ -654,26 +654,26 @@ if (isset($cquestions))
 {
 	foreach ($cquestions as $cqn)
 	{
-		echo "\t\t\t\t<option value='$cqn[3]'";
+		$conditionsoutput .= "\t\t\t\t<option value='$cqn[3]'";
 		if (isset($_POST['cquestions']) && $cqn[3] == $_POST['cquestions']) {
-			echo " selected";
+			$conditionsoutput .= " selected";
 		}
-		echo ">$cqn[0]</option>\n";
+		$conditionsoutput .= ">$cqn[0]</option>\n";
 	}
 }
-echo "\t\t\t</select>\n"
+$conditionsoutput .= "\t\t\t</select>\n"
 ."\t\t</td>\n"
 ."\t\t<td align='center'>\n";
-//echo "\t\t\t<select name='method' id='method' style='font-family:verdana; font-size:10'>\n";
-//echo "\t\t\t\t<option value='='>Equals</option>\n";
-//echo "\t\t\t\t<option value='!'>Does not equal</option>\n";
-//echo "\t\t\t</select>\n";
-echo "\t\t\t".$clang->gT("Equals")."\n"
+//$conditionsoutput .= "\t\t\t<select name='method' id='method' style='font-family:verdana; font-size:10'>\n";
+//$conditionsoutput .= "\t\t\t\t<option value='='>Equals</option>\n";
+//$conditionsoutput .= "\t\t\t\t<option value='!'>Does not equal</option>\n";
+//$conditionsoutput .= "\t\t\t</select>\n";
+$conditionsoutput .= "\t\t\t".$clang->gT("Equals")."\n"
 ."\t\t</td>\n"
 ."\t\t<td valign='top' align='center'>\n"
 ."\t\t\t<select name='canswers[]' multiple id='canswers' style='font-family:verdana; font-size:10; width:220' size='5'>\n";
 
-echo "\t\t\t</select>\n"
+$conditionsoutput .= "\t\t\t</select>\n"
 ."\t</tr>\n"
 ."\t<tr>\n"
 ."\t\t<td colspan='3' align='center'>\n"
@@ -681,25 +681,24 @@ echo "\t\t\t</select>\n"
 ."\t\t\t<input type='submit' value='".$clang->gT("Add Condition")."' />\n"
 ."<input type='hidden' name='sid' value='$surveyid' />\n"
 ."<input type='hidden' name='qid' value='$qid' />\n"
-."<input type='hidden' name='action' value='insertcondition' />\n"
+."<input type='hidden' name='subaction' value='insertcondition' />\n"
 ."<input type='hidden' name='cqid' id='cqid' value='' />\n"
 ."\t\t</td>\n"
 ."\t</tr>\n"
 ."</table>\n"
 ."</form>\n"
 ."<table width='100%'  border='0'>\n";
-echo "\t<tr><td colspan='3'></td></tr>\n"
+$conditionsoutput .= "\t<tr><td colspan='3'></td></tr>\n"
 ."\t<tr bgcolor='#555555'>\n"
 ."\t\t<td height='5' colspan='3'>\n"
 ."\t\t</td>\n";
-echo "\t<tr bgcolor='#CDCDCD'><td colspan=3 height='10'></td></tr>\n"
+$conditionsoutput .= "\t<tr bgcolor='#CDCDCD'><td colspan=3 height='10'></td></tr>\n"
 ."\t\t<tr><td colspan='3' align='center'>\n"
 ."\t\t\t<input type='submit' value='".$clang->gT("Close Window")."' onClick=\"window.close()\"  />\n"
 ."\t\t</td>\n"
 ."\t</tr>\n";
-echo "\t<tr><td colspan='3'></td></tr>\n"
-."</table>\n";
+$conditionsoutput .= "\t<tr><td colspan='3'></td></tr>\n"
+."</table><br />&nbsp\n";
 
-echo getAdminFooter("$langdir/instructions.html#conditions", "Using PHPSurveyor`s Conditions");
 
 ?>

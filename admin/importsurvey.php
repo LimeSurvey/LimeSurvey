@@ -1023,12 +1023,16 @@ $importsurvey .= "</font></td></tr></table><br />\n";
 unlink($the_full_file_path);
 
 
-function convertToArray($string, $seperator, $start, $end) {
-	$begin=strpos($string, $start)+strlen($start);
-	$len=strpos($string, $end)-$begin;
-	$order=substr($string, $begin, $len);
-	$orders=explode($seperator, $order);
-	return $orders;
+function convertToArray($stringtoconvert, $seperator, $start, $end) 
+// this function is still used to read SQL files from version 1.0 or older
+{
+	$begin=strpos($stringtoconvert, $start)+strlen($start);
+	$len=strpos($stringtoconvert, $end)-$begin;
+	$stringtoconvert=substr($stringtoconvert, $begin, $len);
+    $stringtoconvert=str_replace('\n',"\n",$stringtoconvert);  //removes masking
+    $stringtoconvert=stripslashes($stringtoconvert);
+	$resultarray=explode($seperator, $stringtoconvert);
+	return $resultarray;
 }
 
 ?>

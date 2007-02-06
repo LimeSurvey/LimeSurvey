@@ -2998,9 +2998,12 @@ function convertCSVRowToArray($string, $seperator, $quotechar)
 }
 
 function CSVUnquote($field)
+// This function removes surrounding and masking quotes from the CSV field
+// c_schmitz
 {
-  $field=substr($field,1,strlen($field)-2);
-  return str_replace('""','"',$field);
+    $field=substr($field,1,strlen($field)-2);
+    $field=str_replace('""','"',$field);
+    return $field;
 }
 
 

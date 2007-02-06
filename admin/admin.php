@@ -158,6 +158,8 @@ if(isset($_SESSION['loginID']) && $action!='login')
   	include("database.php");
   }
 
+  if ($action=="conditions")  { include("conditions.php"); }
+  else
   if ($action=="importoldresponses")  { include("importoldresponses.php"); }
   else
   if ($action=="saved")  { include("saved.php"); }
@@ -204,7 +206,7 @@ if(isset($_SESSION['loginID']) && $action!='login')
   if (!isset($labelsoutput)  && !isset($templatesoutput) && !isset($printablesurveyoutput) && 
       !isset($assessmentsoutput) && !isset($tokenoutput) && !isset($browseoutput) &&
       !isset($dataentryoutput) && !isset($statisticsoutput)&& !isset($savedsurveyoutput) &&
-      !isset($exportoutput) && !isset($importoldresponsesoutput)) 
+      !isset($exportoutput) && !isset($importoldresponsesoutput)&& !isset($conditionsoutput)) 
       {
         $adminoutput.= showadminmenu();
       }
@@ -251,6 +253,9 @@ if(isset($_SESSION['loginID']) && $action!='login')
   if (isset($exportoutput)) {$adminoutput.= $exportoutput;} 	
   if (isset($savedsurveyoutput)) {$adminoutput.= $savedsurveyoutput;} 	
   if (isset($importoldresponsesoutput)) {$adminoutput.= $importoldresponsesoutput;} 	
+  if (isset($conditionsoutput)) {$adminoutput.= $conditionsoutput;} 	
+  
+  
   
   
   if (!isset($printablesurveyoutput) && $subaction!='export')
