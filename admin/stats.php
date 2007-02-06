@@ -39,6 +39,8 @@ require_once(dirname(__FILE__).'/../config.php');
 include_once("login_check.php");
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
+if (isset($_SESSION['adminlang'])) {$language = $_SESSION['adminlang'];} else {	$language = GetBaseLanguageFromSurveyID($surveyid);};
+//RL: 
 
 if ($usejpgraph == 1 && isset($jpgraphdir)) //JPGRAPH CODING SUBMITTED BY Pieterjan Heyse
 {
@@ -65,6 +67,7 @@ if ($usejpgraph == 1 && isset($jpgraphdir)) //JPGRAPH CODING SUBMITTED BY Pieter
 $query = "SELECT ".db_table_name("questions").".*, group_name, group_order\n"
         ."FROM ".db_table_name("questions").", ".db_table_name("groups")."\n"
         ."WHERE ".db_table_name("groups").".gid=".db_table_name("questions").".gid\n"
+        ."AND ".db_table_name("groups").".language='".$language."' AND ".db_table_name("questions").".language='".$language."'\n"
         ."AND ".db_table_name("questions").".sid=$surveyid";
 $result = db_execute_assoc($query) or die("Couldn't do it!<br />$query<br />".$connect->ErrorMsg());
 $rows = $result->GetRows();
