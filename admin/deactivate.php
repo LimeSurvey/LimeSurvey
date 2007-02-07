@@ -36,6 +36,7 @@
 //Ensure script is not run directly, avoid path disclosure
 if (empty($homedir)) {die ("Cannot run this script directly");}
 include_once("login_check.php");
+include_once("database.php");
 
 $date = date('YmdHi'); //'Hi' adds 24hours+minutes to name to allow multiple deactiviations in a day
 $deactivateoutput='';
@@ -74,7 +75,7 @@ else
 	{
 		$toldtable="{$dbprefix}tokens_{$_GET['sid']}";
 		$tnewtable="{$dbprefix}old_tokens_{$_GET['sid']}_{$date}";
-		$tdeactivatequery = "RENAME TABLE $toldtable TO $tnewtable";
+		$tdeactivatequery = db_rename_table($toldtable ,$tnewtable);
 		$tdeactivateresult = $connect->Execute($tdeactivatequery) or die ("Couldn't deactivate tokens table because:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
 	}
 
@@ -83,8 +84,8 @@ else
 
 	//Update the auto_increment value from the table before renaming
 	$new_autonumber_start=0;
-	$query = "SELECT id FROM $oldtable ORDER BY id desc LIMIT 1";
-	$result = db_execute_assoc($query) or die("Error getting latest id number<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+	$query = "SELECT id FROM $oldtable ORDER BY id desc";
+	$result = db_select_limit_assoc($query, 1) or die("Error getting latest id number<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	while ($row=$result->FetchRow())
 	{
 		if (strlen($row['id']) > 12) //Handle very large autonumbers (like those using IP prefixes)
@@ -102,8 +103,9 @@ else
 	$query = "UPDATE {$dbprefix}surveys SET autonumber_start=$new_autonumber_start WHERE sid=$surveyid";
 	@$result = $connect->Execute($query); //Note this won't die if it fails - that's deliberate.
 
-	$deactivatequery = "RENAME TABLE $oldtable TO $newtable";
+	$deactivatequery = db_rename_table($oldtable,$newtable);
 	$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
+	
 	$deactivatequery = "UPDATE {$dbprefix}surveys SET active='N' WHERE sid=$surveyid";
 	$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
 	$deactivateoutput .= "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";

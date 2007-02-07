@@ -467,7 +467,7 @@ function mandatory_popup($ia, $notanswered=null)
 }
 
 function validation_popup($ia, $notvalidated=null)
-{
+{   
 	//This sets the validation popup message to show if required
 	//Called from question.php, group.php or survey.php
 	if ($notvalidated === null) {unset($notvalidated);}
@@ -498,7 +498,8 @@ function do_boilerplate($ia)
 
 function do_5pointchoice($ia)
 {
-	global $shownoanswer;
+	global $shownoanswer, $clang;
+	
 	$answer="";
 	for ($fp=1; $fp<=5; $fp++)
 	{
@@ -1811,7 +1812,8 @@ function do_gender($ia)
 
 function do_array_5point($ia)
 {
-	global $dbprefix, $shownoanswer, $notanswered, $thissurvey;
+	global $dbprefix, $shownoanswer, $notanswered, $thissurvey, $clang;
+	
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}

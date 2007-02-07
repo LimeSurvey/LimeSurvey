@@ -349,20 +349,20 @@ function createinsertquery()
 			."(".implode(', ', array_map('db_quote_id',$colnames));
 			if ($thissurvey['datestamp'] == "Y")
 			{
-				$query .= ",`datestamp`";
+				$query .= ",".db_quote_id('datestamp');
 			}
 			if ($thissurvey['ipaddr'] == "Y")
 			{
-				$query .= ",`ipaddr`";
+				$query .= ",".db_quote_id('ipaddr');
 			}
-			$query .= ",`startlanguage`";
+			$query .= ",".db_quote_id('startlanguage'); 
 			if ($thissurvey['refurl'] == "Y")
 			{
-				$query .= ",`refurl`";
+				$query .= ",".db_quote_id('refurl'); 
 			}
 			if ((isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("submit")." "))
 			{
-				$query .= ",`submitdate`";
+				$query .= ",".db_quote_id('submitdate'); 
 			}
 			$query .=") ";
 			$query .="VALUES (".implode(", ", $values);

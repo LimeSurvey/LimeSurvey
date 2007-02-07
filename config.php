@@ -36,17 +36,15 @@
 
 // === Basic Setup
 
-$databasetype       =   "mysql";       // ADOdb database driver - either mysql or odbc_mssql
-$databaselocation   =   "localhost";     // Network location of your Database - for odbc_mssql use the mssql servername, not localhost or IP
+$databasetype       =   "odbc_mssql";       // ADOdb database driver - either mysql or odbc_mssql
+$databaselocation   =   "development";     // Network location of your Database - for odbc_mssql use the mssql servername, not localhost or IP
 $databaseport       =   "default";     // The port of your Database - if you use a standard port leave on default
-$databasename       =   "phpsurveyor"; // The name of the database that we will create
-$databaseuser       =   "root";        // The name of a user with rights to create db (or if db already exists, then rights within that db)
-$databasepass       =   "";            // Password of db user
-$databasetabletype  =   "MyISAM";      // Default mySQL table type (only used if creating db automatically through script -eg "MyISAM" or "InnoDB"
+$databasename       =   "eCareDev"; // The name of the database that we will create
+$databaseuser       =   "sa";        // The name of a user with rights to create db (or if db already exists, then rights within that db)
+$databasepass       =   "h3althsolv3";            // Password of db user
+//$databasetabletype  =   "MyISAM";      // Default mySQL table type (only used if creating db automatically through script -eg "MyISAM" or "InnoDB"
 $dbprefix           =   "phpsv_";      // A global prefix that can be added to all PHPSurveyor tables. Use this if you are sharing
                                        // a database with other applications. Suggested prefix is "phpsv_"
-
-$codeString 		=   "hU+*jzR2#";	   //added by Dennis
 
 $useidprefix        =   0;             // Set this to 1 if you want to use a prefix on survey responses (useful for replicated/pooled databases)
 $idprefix           =   0;             // Leave this as 0 to use your server's IP address. Alternatively, use a number here - characters WILL NOT WORK.
@@ -67,6 +65,7 @@ $rootsymlinked      =   0;  // if your root document dir is symlinked PHPSurveyo
 
     //The following url and dir locations do not need to be modified unless you have a non-standard
     //PHPSurveyor installation. Do not change unless you know what you are doing.
+    
     $homeurl        =   "$rooturl/admin"; // The website location (url) of the admin scripts
     $publicurl      =   "$rooturl";       // The public website location (url) of the public survey script
     $tempurl        =   "$rooturl/tmp";
@@ -78,11 +77,12 @@ $rootsymlinked      =   0;  // if your root document dir is symlinked PHPSurveyo
                                           // example: "x:/phpsurveyor/tmp". We don't know why.
 
 // Site Info
-$sitename           =   "PHPSurveyor";    // The official name of the site (appears in the Window title)
+$sitename           =   "Bonaccord Form Builder";    // The official name of the site (appears in the Window title)
 $scriptname         =   "admin.php";      // The name of the admin script (can be changed to the experimental admin interface index.php)
 $accesscontrol      =   1;                // make 0 for no access control
 $defaultuser        =   "admin";          // This is the default username when security is first turned on
 $defaultpass        =   "password";       // This is the default password for when security is first turned on
+$codeString			= 	"codeString";	  // Added 
 
 // Site Settings
 $lwcdropdowns       =   "R";              // SHOW LISTS WITH COMMENT in Public Survey as Radio Buttons (R) or Dropdown List (L)
@@ -109,6 +109,8 @@ $shownoanswer       =   1;      // Show "no answer" for non mandatory questions
 
 $debug              =   1;      // Switch this to 1 if you are looking for errors 
 
+$clang				=   'en';
+
 // Email Settings
 // These settings determine how PHPSurveyor will send emails
 
@@ -120,12 +122,12 @@ $emailmethod        =   "mail";           // The following values can be used:
                                           // sendmail  -  use Sendmail Mailer
                                           // smtp      -  use SMTP relaying
 
-$emailsmtphost      =   "localhost";    // Sets the SMTP host. All hosts must be separated by a semicolon.
+$emailsmtphost      =   "earth";    // Sets the SMTP host. All hosts must be separated by a semicolon.
                                                 // You can also specify a different port for each host by using
                                                 // this format: [hostname:port] (e.g. "smtp1.example.com:25;smtp2.example.com").
 
-$emailsmtpuser      =   "";               // SMTP authorisation username - only set this if your server requires authorization - if you set it you HAVE to set a password too
-$emailsmtppassword  =   "";               // SMTP authorisation password - empty password is not allowed
+$emailsmtpuser      =   "tomt";               // SMTP authorisation username - only set this if your server requires authorization - if you set it you HAVE to set a password too
+$emailsmtppassword  =   "Rufus12";               // SMTP authorisation password - empty password is not allowed
 
 $maxemails          =   50;              // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
 

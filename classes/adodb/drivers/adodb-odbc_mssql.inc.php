@@ -51,10 +51,10 @@ class  ADODB_odbc_mssql extends ADODB_odbc {
 	{
 	global $ADODB_FETCH_MODE;
 		$save = $ADODB_FETCH_MODE;
-		$ADODB_FETCH_MODE = ADODB_FETCH_NUM;
+		$this->SetFetchMode(ADODB_FETCH_NUM);
 		$row = $this->GetRow("execute sp_server_info 2");
-		$ADODB_FETCH_MODE = $save;
-		if (!is_array($row)) return false;
+		$this->SetFetchMode($save);
+		if (!is_array($row)) return false;		
 		$arr['description'] = $row[2];
 		$arr['version'] = ADOConnection::_findvers($arr['description']);
 		return $arr;

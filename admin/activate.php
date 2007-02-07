@@ -38,6 +38,8 @@
 if (empty($homedir)) {die ("Cannot run this script directly");}
 include_once("login_check.php");
 
+
+
 $activateoutput='';
 if (!isset($_GET['ok']) || !$_GET['ok'])
 {
@@ -45,8 +47,8 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	{
 		//Fix a question id - requires renumbering a question
 		$oldqid = $_GET['fixnumbering'];
-		$query = "SELECT qid FROM {$dbprefix}questions ORDER BY qid DESC LIMIT 1";
-		$result = db_execute_assoc($query) or die("$query<br />".$connect->ErrorMsg());
+		$query = "SELECT qid FROM {$dbprefix}questions ORDER BY qid DESC";
+		$result = db_select_limit_assoc($query, 1) or die("$query<br />".$connect->ErrorMsg());
 		while ($row=$result->FetchRow()) {$lastqid=$row['qid'];}
 		$newqid=$lastqid+1;
 		$query = "UPDATE {$dbprefix}questions SET qid=$newqid WHERE qid=$oldqid";
@@ -89,6 +91,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	//  # "R" -> RANKING
 	//  # "U" -> FILE CSV MORE
 	//  # "I" -> FILE CSV ONE
+
 
 	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('L', 'O', 'M', 'P', 'A', 'B', 'C', 'E', 'F', 'R', 'J', '!', '^')";
 	$chkresult = db_execute_assoc($chkquery) or die ("Couldn't get list of questions<br />$chkquery<br />".$connect->ErrorMsg());
@@ -146,7 +149,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	. "{$dbprefix}questions.gid "
 	. "FROM {$dbprefix}conditions, {$dbprefix}questions, {$dbprefix}groups "
 	. "WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid "
-	. "AND {$dbprefix}questions.gid={$dbprefix}groups.gid ORDER BY qid";
+	. "AND {$dbprefix}questions.gid={$dbprefix}groups.gid ORDER BY {$dbprefix}conditions.qid";
 	$conresult=db_execute_assoc($conquery) or die("Couldn't check conditions for relative consistency<br />$conquery<br />".$connect->ErrorMsg());
 	//2: Check each conditions cqid that it occurs later than the cqid
 	while ($conrow=$conresult->FetchRow())
@@ -188,7 +191,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 		$fix = "[<a href='$scriptname?action=activate&amp;sid=$surveyid&amp;fixnumbering=".$badquestion['qid']."'>Click Here to Fix</a>]";
 		$failedcheck[]=array($badquestion['qid'], $badquestion['question'], ": Bad duplicate fieldname $fix", $badquestion['gid']);
 	}
-
+  
 	//IF ANY OF THE CHECKS FAILED, PRESENT THIS SCREEN
 	if (isset($failedcheck) && $failedcheck)
 	{
@@ -213,9 +216,11 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 		$activateoutput .= "\t\t</td>\n";
 		$activateoutput .= "\t</tr>\n";
 		$activateoutput .= "</table>\n";
+		
+		echo $activateoutput;
 		exit;
 	}
-
+   
 	$activateoutput .= "<br />\n<table width='500' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 	$activateoutput .= "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Activate Survey")." ($surveyid)</strong></font></td></tr>\n";
 	$activateoutput .= "\t<tr>\n";
@@ -244,11 +249,10 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 else
 {
 	//Create the survey responses table
-	$createsurvey = "CREATE TABLE {$dbprefix}survey_{$_GET['sid']} (\n";
-	$createsurvey .= "  id BIGINT(11) NOT NULL auto_increment,\n";
+	$createsurvey = "id I NOTNULL AUTO,\n";
 	// --> START NEW FEATURE - SAVE
-	$createsurvey .= " submitdate datetime NOT NULL default '0000-00-00 00:00:00',\n";
-	$createsurvey .= " startlanguage varchar(20) NOT NULL ,\n";
+	$createsurvey .= " submitdate T NOTNULL DEF '0000-00-00 00:00:00',\n";
+	$createsurvey .= " startlanguage C(20) NOTNULL ,\n";
 	// --> END NEW FEATURE - SAVE
 	//Check for any additional fields for this survey and create necessary fields (token and datestamp)
 	$pquery = "SELECT private, allowregister, datestamp, ipaddr, refurl FROM {$dbprefix}surveys WHERE sid={$_GET['sid']}";
@@ -257,7 +261,7 @@ else
 	{
 		if ($prow['private'] == "N")
 		{
-			$createsurvey .= "  token VARCHAR(10),\n";
+			$createsurvey .= "  token C(10),\n";
 			$surveynotprivate="TRUE";
 		}
 		if ($prow['allowregister'] == "Y")
@@ -266,16 +270,16 @@ else
 		}
 		if ($prow['datestamp'] == "Y")
 		{
-			$createsurvey .= " datestamp DATETIME NOT NULL,\n";
+			$createsurvey .= " datestamp T NOTNULL,\n";
 		}
 		if ($prow['ipaddr'] == "Y")
 		{
-			$createsurvey .= " ipaddr MEDIUMTEXT,\n";
+			$createsurvey .= " ipaddr X,\n";
 		}
 		//Check to see if 'refurl' field is required.
 		if ($prow['refurl'] == "Y")
 		{
-			$createsurvey .= " refurl MEDIUMTEXT,\n";
+			$createsurvey .= " refurl X,\n";
 		}
 	}
 	//Get list of questions for the base language
@@ -288,6 +292,8 @@ else
 	$aresult = db_execute_assoc($aquery);
 	while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
 	{
+		if ( substr($createsurvey, strlen($createsurvey)-2, 2) != ",\n") {$createsurvey .= ",\n";}
+		
 		if ($arow['type'] != "M" && $arow['type'] != "A" && $arow['type'] != "B" &&
 		    $arow['type'] != "C" && $arow['type'] != "E" && $arow['type'] != "F" &&
 		    $arow['type'] != "H" && $arow['type'] != "P" && $arow['type'] != "R" &&
@@ -297,41 +303,41 @@ else
 			switch($arow['type'])
 			{
 				case "N":  //NUMERICAL
-				$createsurvey .= " TINYTEXT";
+				$createsurvey .= " C";
 				break;
 				case "S":  //SHORT TEXT
-				$createsurvey .= " TINYTEXT";
+				$createsurvey .= " C";
 				break;
 				case "L":  //LIST (RADIO)
 				case "!":  //LIST (DROPDOWN)
 				case "W":
 				case "Z":
-				$createsurvey .= " VARCHAR(5)";
+				$createsurvey .= " C(5)";
 				if ($arow['other'] == "Y")
 				{
-					$createsurvey .= ",\n`{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other` TEXT";
+					$createsurvey .= ",\n`{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other` X";
 				}
 				break;
 				case "I":  // CSV ONE
-				$createsurvey .= " VARCHAR(5)";
+				$createsurvey .= " C(5)";
 				break;
 				case "O": //DROPDOWN LIST WITH COMMENT
-				$createsurvey .= " VARCHAR(5),\n `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}comment` TEXT";
+				$createsurvey .= " C(5),\n `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}comment` X";
 				break;
 				case "T":  //LONG TEXT
-				$createsurvey .= " TEXT";
+				$createsurvey .= " X";
 				break;
 				case "U":  //HUGE TEXT
-				$createsurvey .= " TEXT";
+				$createsurvey .= " X";
 				break;
 				case "D":  //DATE
-				$createsurvey .= " DATE";
+				$createsurvey .= " D";
 				break;
 				case "5":  //5 Point Choice
 				case "G":  //Gender
 				case "Y":  //YesNo
 				case "X":  //Boilerplate
-				$createsurvey .= " VARCHAR(1)";
+				$createsurvey .= " C(1)";
 				break;
 			}
 		}
@@ -344,19 +350,19 @@ else
 			$abresult=db_execute_assoc($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 			while ($abrow=$abresult->FetchRow())
 			{
-				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` VARCHAR(5),\n";
+				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` C(5),\n";
 				if ($abrow['other']=="Y") {$alsoother="Y";}
 				if ($arow['type'] == "P")
 				{
-					$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}comment` TINYTEXT,\n";
+					$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}comment` C,\n";
 				}
 			}
 			if ((isset($alsoother) && $alsoother=="Y") && ($arow['type']=="M" || $arow['type']=="P"))
 			{
-				$createsurvey .= " `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other` TINYTEXT,\n";
+				$createsurvey .= " `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other` C,\n";
 				if ($arow['type']=="P")
 				{
-					$createsurvey .= " `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}othercomment` TINYTEXT,\n";
+					$createsurvey .= " `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}othercomment` C,\n";
 				}
 			}
 		}
@@ -366,7 +372,7 @@ else
 			$abresult=db_execute_assoc($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 			while ($abrow = $abresult->FetchRow())
 			{
-				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` TINYTEXT,\n";
+				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` C,\n";
 			}
 		}
 		elseif ($arow['type'] == "J")
@@ -375,7 +381,7 @@ else
 			$abresult=db_execute_assoc($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 			while ($abrow = $abresultt->FetchRow())
 			{
-				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` VARCHAR(5),\n";
+				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` C(5),\n";
 			}
 		}
 		elseif ($arow['type'] == "R")
@@ -386,17 +392,21 @@ else
 			$abcount=$abresult->RecordCount();
 			for ($i=1; $i<=$abcount; $i++)
 			{
-				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}$i` VARCHAR(5),\n";
+				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}$i` C(5),\n";
 			}
 		}
-		if ( substr($createsurvey, strlen($createsurvey)-2, 2) != ",\n") {$createsurvey .= ",\n";}
+		
 	}
-	//$createsurvey = substr($createsurvey, 0, strlen($createsurvey)-2);
-	$createsurvey .= "  UNIQUE(id)\n";
-	$createsurvey .= ") TYPE=MyISAM;";
-	//$activateoutput .= "<pre style='text-align: left'>$createsurvey</pre>\n"; //Debugging info
-
-	$createtable=$connect->Execute($createsurvey) or die
+   
+	$tabname = "{$dbprefix}survey_{$_GET['sid']}";
+    $taboptarray = array('mysql' => 'TYPE=ISAM');
+    $dict = NewDataDictionary($connect);
+    $sqlarray = $dict->CreateTableSQL($tabname, $createsurvey, $taboptarray);  
+    
+    echo "<pre>";
+    print_r($createsurvey);
+	echo "<\pre>";
+    $dict->ExecuteSQLArray($sqlarray) or die
 	(
 	"<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n" .
 	"<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Activate Survey")." ($surveyid)</strong></font></td></tr>\n" .
@@ -472,4 +482,5 @@ else
 	$activateoutput .= "\t\t\t\t</font></font></td></tr></table><br />&nbsp;\n";
 	
 }
+
 ?>
