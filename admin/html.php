@@ -1487,8 +1487,8 @@ if ($action == "editusers")
 	. "\t\t<th></th>\n"
 	. "\t</tr>\n";
 
-	//$userlist = getuserlist();
-	$_SESSION['userlist'] = getuserlistforuser($_SESSION['loginID'], 0, NULL);
+	$_SESSION['userlist'] = getuserlist();
+	//$_SESSION['userlist'] = getuserlistforuser($_SESSION['loginID'], 0, NULL);
 	$ui = count($_SESSION['userlist']);
 	$usrhimself = $_SESSION['userlist'][0];
 	unset($_SESSION['userlist'][0]);

@@ -755,9 +755,10 @@ function getuserlist()
 	$uquery = "SELECT * FROM ".db_table_name('users')." ORDER BY user";
 	$uresult = db_execute_assoc($uquery);
 	$userlist = array();
-	while ($urow = $uresult->FetchRow())
+	while ($srow = $uresult->FetchRow())
 	{
-		$userlist[] = array("user"=>$urow['user'], "password"=>$urow['password'], "security"=>$urow['security']);
+		$userlist[] = array("user"=>$srow['user'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id'], "create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "move_user"=>$srow['move_user'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);			//added by Dennis modified by Moses
+
 	}
 	return $userlist;
 }
@@ -2601,7 +2602,8 @@ function strip_tags_full($string) {
 }
 
 // gets all users who are successors from an user
-function getuserlistforuser($uid, $level, $userlist)	//added by Dennis
+// commented out for now 
+/*function getuserlistforuser($uid, $level, $userlist)	//added by Dennis
     {
 	global $connect, $dbprefix, $codeString;
 
@@ -2639,7 +2641,7 @@ function getuserlistforuser($uid, $level, $userlist)	//added by Dennis
 						}
 			}
     return $userlist;
-    }
+    }*/
 
 // adds Usergroups in Database by Moses
 function addUserGroupInDB($group_name, $group_description) {
@@ -2699,11 +2701,13 @@ function setuserrights($uid, $rights)
 	. ", manage_template=".$rights['manage_template']
 	. ", manage_label=".$rights['manage_label'];
 	$uquery = "UPDATE ".db_table_name('users')." SET ".$updates." WHERE uid = ".$uid;
-	$test = 0;
-	foreach($rights as $right)
-		{
-			if(!$right) {
-					$test = 1;
+
+// commented this out since it makes no sense
+//	$test = 0;
+//	foreach($rights as $right)
+//		{
+//			if(!$right) {
+/*					$test = 1;
 			}
 		}
 	if($test) {
@@ -2732,7 +2736,7 @@ function setuserrights($uid, $rights)
 				$utwoquery = "UPDATE ".db_table_name('users')." SET ".$updates." WHERE uid = ".$user['uid'];
 				$connect->Execute($utwoquery) or die (htmlspecialchars($connect->ErrorMsg()));
 			}
-	}
+	} */
 	return $connect->Execute($uquery);
 	}
 
