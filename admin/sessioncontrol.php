@@ -36,7 +36,7 @@
 //SESSIONCONTROL.PHP FILE MANAGES ADMIN SESSIONS. 
 //Ensure script is not run directly, avoid path disclosure
 
-if (empty($dbprefix)) {die ("Cannot run this script directly");}
+if (!isset($dbprefix)) {die ("Cannot run this script directly");}
 
 session_name("PHPSurveyorAdmin");
 if (session_id() == "") session_start();
