@@ -28,7 +28,7 @@ class phpsurveyor_lang {
     {
     	if ($this->gettextclass)
         {
-            return $this->gettextclass->translate($string);
+            return str_replace('&lsquo;','?',$this->gettextclass->translate($string));
         } else {
             return $string;
         }
