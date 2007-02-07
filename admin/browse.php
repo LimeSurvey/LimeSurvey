@@ -49,6 +49,8 @@ if (empty($surveyid)) {die("No SID provided.");}
 $query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
 $result = db_execute_assoc($query) or die("Error selecting language: <br />".$query."<br />".$connect->ErrorMsg());
 
+require_once(dirname(__FILE__).'/sessioncontrol.php');
+
 $language = $_SESSION['adminlang'];
 //RL: set language for questions and labels to current admin language
 
@@ -377,7 +379,12 @@ elseif ($subaction == "all")
 		}
 		elseif ($fnrow['type'] == "R")
 		{
-			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.language='{$language}' AND {$dbprefix}questions.language='{$language}' AND {$dbprefix}questions.qid={$fnrow['qid']} AND {$dbprefix}questions.sid=$surveyid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM 
+			{$dbprefix}answers, {$dbprefix}questions 
+			WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND 
+			{$dbprefix}answers.language='{$language}' AND {$dbprefix}questions.language='{$language}'
+			{$dbprefix}questions.qid={$fnrow['qid']} AND {$dbprefix}questions.sid=$surveyid 
+			ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 			$i2result = $connect->Execute($i2query);
 			$i2count = $i2result->RecordCount();
 			for ($i=1; $i<=$i2count; $i++)
