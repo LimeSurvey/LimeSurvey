@@ -1032,7 +1032,7 @@ function buildsurveysession()
 	global $thissurvey;
 	global $tokensexist, $thistpl;
 	global $surveyid, $dbprefix, $connect;
-	global $register_errormsg;
+	global $register_errormsg, $clang;
 
 	//This function builds all the required session variables when a survey is first started.
 	//It is called from each various format script (ie: group.php, question.php, survey.php)
