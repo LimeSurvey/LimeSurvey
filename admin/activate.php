@@ -403,9 +403,6 @@ else
     $dict = NewDataDictionary($connect);
     $sqlarray = $dict->CreateTableSQL($tabname, $createsurvey, $taboptarray);  
     
-    echo "<pre>";
-    print_r($createsurvey);
-	echo "<\pre>";
     $dict->ExecuteSQLArray($sqlarray) or die
 	(
 	"<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n" .
