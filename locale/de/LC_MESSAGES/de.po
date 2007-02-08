@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-02-04 18:43+0100\n"
+"PO-Revision-Date: 2007-02-08 23:31+0100\n"
 "Last-Translator: \n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -23,8 +23,10 @@ msgstr "Eingeloggt als"
 msgid "Default Administration Page"
 msgstr "Haupt-Administrationsseite"
 
-msgid "Modify Security Settings"
-msgstr "Sicherheitseinstellungen ändern"
+# D:\web\xampp\htdocs\phpsurveyor/common.php:213
+# D:\web\xampp\htdocs\phpsurveyor/common.php:214
+msgid "Create/Edit Users"
+msgstr "Erzeuge/Bearbeite User"
 
 # D:\web\xampp\htdocs\phpsurveyor/common.php:213
 # D:\web\xampp\htdocs\phpsurveyor/common.php:214
@@ -194,10 +196,6 @@ msgstr "Ergebnisse in eine SPSS Datei exportieren"
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/importoldresponses.php:58
 msgid "Import answers from a deactivated survey table"
 msgstr "Importiere Antworten aus einer alten deaktivierten Umfrage"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/common.php:953
-msgid "Backup results table as SQL file"
-msgstr "Ergebnisse als SQL-Datei speichern"
 
 msgid "View Saved but not submitted Responses"
 msgstr "Zeige zwischengespeicherte Antworten"
@@ -1176,6 +1174,9 @@ msgstr "Umfrage exportieren"
 msgid "No SID has been provided. Cannot dump survey"
 msgstr "Es wurde keine SID angegeben. Kann Umfrage nicht exportieren."
 
+msgid "Export Results"
+msgstr "Ergebnisse exportieren"
+
 msgid "Export Responses"
 msgstr "Antworten exportieren"
 
@@ -1184,6 +1185,9 @@ msgstr "Gefiltert vom Statistik Skript"
 
 msgid "Single Response"
 msgstr "Einzelne Antwort"
+
+msgid "Columns"
+msgstr "Spalten"
 
 msgid "Questions"
 msgstr "Fragen"
@@ -1225,7 +1229,7 @@ msgstr "Daten exportieren"
 msgid "Column Control"
 msgstr "Spalten Kontrolle"
 
-msgid "Choose columns"
+msgid "Choose Columns"
 msgstr "Spalten auswählen"
 
 msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
@@ -1341,8 +1345,11 @@ msgstr "Diese Umfrage kann nicht aktiviert werden."
 msgid "Survey Security Settings"
 msgstr "Umfrage-Sicherheitseinstellungen"
 
-msgid "Do Survey"
-msgstr "Umfrage ausführen/testen"
+msgid "Test This Survey"
+msgstr "Diese Umfrage testen"
+
+msgid "Execute This Survey"
+msgstr "Diese Umfrage ausführen"
 
 msgid "Please select a language:"
 msgstr "Bitte wählen Sie eine Sprache aus:"
@@ -1356,10 +1363,11 @@ msgstr "Diese Umfrage bearbeiten"
 msgid "Delete Current Survey"
 msgstr "Diese Umfrage löschen"
 
-msgid "Order the groups in that Survey"
-msgstr "Reihenfolge der Gruppen in der Umfrage anpassen"
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:3463
+msgid "Change Group Order"
+msgstr "Ändern der Gruppen Reihenfolge"
 
-msgid "Export this Survey"
+msgid "Export Current Survey"
 msgstr "Diese Umfrage exportieren"
 
 msgid "Set Assessment Rules"
@@ -1519,8 +1527,8 @@ msgstr "Das Löschen dieser Gruppe löscht auch alle möglichen Fragen und Antwo
 msgid "Delete Current Group"
 msgstr "Diese Gruppe löschen"
 
-msgid "Reorder the questions of this group"
-msgstr "Fragen in dieser Gruppe neu ordnen"
+msgid "Change Question Order"
+msgstr "Fragen-Reihenfolge ändern"
 
 msgid "Export Current Group"
 msgstr "Diese Gruppe exportieren"
@@ -1654,14 +1662,11 @@ msgstr "Übergeordneten User erfolgreich gesetzt."
 msgid "User Control"
 msgstr "Benutzer-Administration"
 
-msgid "Creator"
-msgstr "Ersteller"
+msgid "Created by"
+msgstr "Angelegt von"
 
 msgid "Edit User"
 msgstr "Benutzer bearbeiten"
-
-msgid "Change"
-msgstr "Bearbeiten"
 
 msgid "Add User"
 msgstr "Benutzer hinzufügen"
@@ -1792,9 +1797,6 @@ msgstr "Frage aktualisieren"
 
 msgid "Save"
 msgstr "Speichern"
-
-msgid "Change Question Order"
-msgstr "Fragen-Reihenfolge ändern"
 
 msgid "Import Group"
 msgstr "Gruppen importieren"
@@ -2076,10 +2078,6 @@ msgstr ""
 msgid "URL Description:"
 msgstr "URL Beschreibung:"
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:3463
-msgid "Change Group Order"
-msgstr "Ändern der Gruppen Reihenfolge"
-
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1855
 msgid "The uploaded file is bigger than the upload_max_filesize directive in php.ini"
 msgstr "Die hochgeladene Datei ist grösser als die upload_max_filesize Directive in der php.ini"
@@ -2189,6 +2187,9 @@ msgstr "Beschriftungsvorlage"
 msgid "Import of Survey is completed."
 msgstr "Import der Umfrage abgeschlossen."
 
+msgid "Quick Statistics"
+msgstr "Statistiken"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/importoldresponses.php:58
 msgid "Import responses from an old (deactivated) survey table into an active survey"
 msgstr "Importiere Antworten aus einer alten deaktivierten Umfrage in die aktuelle Umfrage"
@@ -2273,6 +2274,9 @@ msgstr "Überprüfung der Datenkonsistenz<br /><font size='1'>Wenn Fehler gezeig
 
 msgid "Label Sets Administration"
 msgstr "Beschriftung-Set Administration"
+
+msgid "Add New Label Set"
+msgstr "Neues Beschriftung-Set hinzufügen"
 
 msgid "Add new label set"
 msgstr "Neues Beschriftung-Set hinzufügen"
@@ -2395,9 +2399,6 @@ msgstr "Datum Gespeichert"
 
 msgid "Are you sure you want to delete this entry?"
 msgstr "Sind Sie sicher, dass Sie diesen Eintrag löschen wollen?"
-
-msgid "Quick Statistics"
-msgstr "Statistiken"
 
 msgid "Filter Settings"
 msgstr "Filter Einstellungen"
@@ -2714,6 +2715,9 @@ msgstr "Proband bearbeiten"
 
 msgid "Delete Token Entry"
 msgstr "Proband löschen"
+
+msgid "Do Survey"
+msgstr "Umfrage ausführen/testen"
 
 msgid "Update Response"
 msgstr "Antworten bearbeiten"

@@ -166,7 +166,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		. "email varchar(100) NULL,\n "
 		. "token varchar(10) NULL,\n "
 		. "language varchar(2) NULL,\n "
-		. "sent varchar(15) NULL DEFAULT 'N',\n "
+		. "sent varchar(17) NULL DEFAULT 'N',\n "
 		. "completed varchar(15) NULL DEFAULT 'N',\n "
 
 		. "attribute_1 varchar(100) NULL,\n"
