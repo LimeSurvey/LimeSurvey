@@ -201,7 +201,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			.$clang->gT("Select SQL File:")."</strong></td>\n"
 			."<td><input name=\"the_file\" type=\"file\" size=\"35\" />"
 			."</td></tr>\n"
-			."\t<tr><td></td><td><input type='submit' value='".$clang->gT("Import Label Set")."' />\n"
+			."\t<tr><td></td><td><input type='submit' value='".html_escape($clang->gT("Import Label Set"))."' />\n"
 			."\t<input type='hidden' name='action' value='importlabels' /></TD>\n"
 			."\t</tr></table></form>\n";
 		}
@@ -325,25 +325,25 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     			."\t<td width='25%'>\n";
     			if ($activeuse == 0)
     			{
-    				$labelsoutput.= "\t<input type='submit' name='method' value='".$clang->gT("Del")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+    				$labelsoutput.= "\t<input type='submit' name='method' value='".html_escape($clang->gT("Del"))."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
     			}
     			$labelsoutput.= "\t</td>\n"
     			."\t<td>\n";
     			if ($position > 0)
     			{
-    				$labelsoutput.= "\t<input type='submit' name='method' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+    				$labelsoutput.= "\t<input type='submit' name='method' value='".html_escape($clang->gT("Up"))."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
     			};
     			if ($position < $labelcount-1)
     			{
     				// Fill the sortorder hiddenfield so we now what field is moved down
-                    $labelsoutput.= "\t<input type='submit' name='method' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+                    $labelsoutput.= "\t<input type='submit' name='method' value='".html_escape($clang->gT("Dn"))."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
     			}
     			$labelsoutput.= "\t</td></tr>\n";
     			$position++;
     		}
     	    if ($labelcount>0)  
             {                       
-                $labelsoutput.= "\t<tr><td colspan=4><center><input type='submit' name='method' value='".$clang->gT("Save All")."'  />"
+                $labelsoutput.= "\t<tr><td colspan=4><center><input type='submit' name='method' value='".html_escape($clang->gT("Save All"))."'  />"
                 ."</center></td></tr>\n";
             }
 
@@ -356,7 +356,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     			."\t<input type='text' maxlength='100' name='inserttitle_$lslanguage' size='80' />\n"
     			."\t</td>\n"
     			."\t<td width='25%'>\n"
-    			."\t<input type='submit' name='method' value='".$clang->gT("Add new label")."' />\n"
+    			."\t<input type='submit' name='method' value='".html_escape($clang->gT("Add new label"))."' />\n"
     			."\t</td>\n"
     			."\t<td>\n"
                 ."<script type='text/javascript'>\n"

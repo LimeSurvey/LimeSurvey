@@ -215,7 +215,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 				}
 			
 			$addsummary .= "<br />\t\t\t<form method='post' action='$scriptname'>"
-				  ."<input type='submit' value='".$clang->gT("Set User Rights")."'>"
+				  ."<input type='submit' value='".html_escape($clang->gT("Set User Rights"))."'>"
 				  ."<input type='hidden' name='action' value='setuserrights'>"
 				  ."<input type='hidden' name='user' value='{$new_user}'>"
 				  ."<input type='hidden' name='uid' value='{$newqid}'>"
@@ -330,7 +330,7 @@ elseif ($action == "moduser")
 		if($failed)
 			{
 			$addsummary .= "<br /><br /><form method='post' action='$scriptname'>"
-						 ."<input type='submit' value='".$clang->gT("Back")."'>"
+						 ."<input type='submit' value='".html_escape($clang->gT("Back"))."'>"
 						 ."<input type='hidden' name='action' value='modifyuser'>"
 						 ."<input type='hidden' name='uid' value='{$_POST['uid']}'>"
 						 ."</form>";

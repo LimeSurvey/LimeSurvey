@@ -161,12 +161,12 @@ if($actsurrows['edit_survey_property']){
 		$assessmentsoutput.= "<td>
 			   <table width='100%'>
 				<tr><td align='center'><form method='post' action='admin.php?sid=$surveyid'>
-				 <input type='submit' value='".$clang->gT("Edit")."' />
+				 <input type='submit' value='".html_escape($clang->gT("Edit"))."' />
 				 <input type='hidden' name='action' value='assessmentedit' />
 				 <input type='hidden' name='id' value='".$assess['id']."' />
 				 </form></td>
 				 <td align='center'><form method='post' action='admin.php?sid=$surveyid'>
-				 <input type='submit' value='".$clang->gT("Delete")."' onClick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.")."\")' />
+				 <input type='submit' value='".html_escape($clang->gT("Delete"))."' onClick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.")."\")' />
 				 <input type='hidden' name='action' value='assessmentdelete' />
 				 <input type='hidden' name='id' value='".$assess['id']."' />
 				 </form>

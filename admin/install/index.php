@@ -68,7 +68,7 @@ if (!$database_exists)
 		$adminoutput.= sprintf(_('A database named "%s" does already exist.'),$databasename)."</font></strong></font><br /><br />\n";
 		$adminoutput.= $clang->gT("Do you want to populate that database now by creating the necessary tables?")."<br /><br />\n";
 		$adminoutput.= "<form method='post' action='createdb.php'>";
-		$adminoutput.= "<input type='submit' name='createdbstep2' value='".$clang->gT("Populate Database")."'></form>";
+		$adminoutput.= "<input type='submit' name='createdbstep2' value='".html_escape($clang->gT("Populate Database"))."'></form>";
 		}
 else
 	{

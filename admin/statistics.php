@@ -638,8 +638,8 @@ $statisticsoutput .= "\t\t\t</table>\n"
 ."\t\t\t\t<tr><td align='center'>$setfont<input type='radio' id='viewsummaryall' name='summary' value='$allfield'"
 ."><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label></font></td></tr>\n"
 ."\t\t<tr><td align='center' bgcolor='#CCCCCC'>\n\t\t\t<br />\n"
-."\t\t\t<input type='submit' value='".$clang->gT("View Stats")."'>\n"
-."\t\t\t<input type='button' value='".$clang->gT("Clear")."' onClick=\"window.open('$scriptname?action=statistics&amp;sid=$surveyid', '_top')\">\n"
+."\t\t\t<input type='submit' value='".html_escape($clang->gT("View Stats"))."'>\n"
+."\t\t\t<input type='button' value='".html_escape($clang->gT("Clear"))."' onClick=\"window.open('$scriptname?action=statistics&amp;sid=$surveyid', '_top')\">\n"
 ."\t\t<br />&nbsp;\n"
 ."\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
 ."\t\t<input type='hidden' name='display' value='stats'>\n"
@@ -1367,7 +1367,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					if ($al[0] == "")
 					{$fname=$clang->gT("No answer");}
 					elseif ($al[0] == $clang->gT("Other") || $al[0] == "Answers")
-					{$fname="$al[1] <input type='submit' value='".$clang->gT("Browse")."' onclick=\"window.open('listcolumn.php?sid=$surveyid&amp;column=$al[2]&amp;sql=".urlencode($sql)."', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\">";}
+					{$fname="$al[1] <input type='submit' value='".html_escape($clang->gT("Browse"))."' onclick=\"window.open('listcolumn.php?sid=$surveyid&amp;column=$al[2]&amp;sql=".urlencode($sql)."', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\">";}
 					elseif ($qtype == "S" || $qtype == "T" || $qtype == "Q")
 					{
 						if ($al[0] == "Answer")

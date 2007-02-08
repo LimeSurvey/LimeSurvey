@@ -80,7 +80,7 @@ if (!$subaction == "import")
 		</tr>
 		<tr>
 		 <td colspan='2' align='center'>
-		  <input type='submit' value='".$clang->gT("Import Responses")."' onClick='return confirm(\"Are you sure?\")'>&nbsp;
+		  <input type='submit' value='".html_escape($clang->gT("Import Responses"))."' onClick='return confirm(\"Are you sure?\")'>&nbsp;
  	 	  <input type='hidden' name='subaction' value='import'>
 		 </td>
 		</tr>

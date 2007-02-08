@@ -121,7 +121,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 		if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path)) {
 			echo "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
 			echo $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
-			echo "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\" />\n";
+			echo "<input type='submit' value='".html_escape($clang->gT("Main Admin Screen"))."' onClick=\"window.open('$scriptname', '_top')\" />\n";
 			echo "</td></tr></table>\n";
 			echo "</body>\n</html>\n";
 			exit;
@@ -555,7 +555,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	.makeoptions($otherfiles, "name", "name", "")
 	."</select>"
 	."</td></tr><tr><td align='right'>$setfont"
-	."<input type='submit' value='".$clang->gT("Delete")."' onClick=\"javascript:return confirm('Are you sure you want to delete this file?')\"";
+	."<input type='submit' value='".html_escape($clang->gT("Delete"))."' onClick=\"javascript:return confirm('Are you sure you want to delete this file?')\"";
 	if ($templatename == "default") {
 		$templatesoutput.= " disabled";
 	}
@@ -569,7 +569,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	."<form enctype='multipart/form-data' name='importsurvey' action='admin.php' method='post'>\n"
 	."<table><tr> <td align='right' valign='top' style='border: solid 1 #000080'>\n"
 	."<strong>"._('Upload a File').":</strong><br /><input name=\"the_file\" type=\"file\" size=\"7\" /><br />"
-	."<input type='submit' value='".$clang->gT("Upload")."'";
+	."<input type='submit' value='".html_escape($clang->gT("Upload"))."'";
 	if ($templatename == "default") {
 		$templatesoutput.= " disabled";
 	}

@@ -61,7 +61,7 @@ if($actsurrows['delete_survey'])
 	{
 		echo "<br /><font color='red'><strong>".$clang->gT("Error")."</strong></font><br />\n";
 		echo $clang->gT("You have not selected a survey to delete")."<br /><br />\n";
-		echo "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+		echo "<input type='submit' value='".html_escape($clang->gT("Main Admin Screen"))."' onClick=\"window.open('$scriptname', '_top')\">\n";
 		echo "</td></tr></table>\n";
 		echo "</body>\n</html>";
 		exit;
@@ -93,8 +93,8 @@ if($actsurrows['delete_survey'])
 		echo "\t</tr>\n";
 		echo "\t<tr>\n";
 		echo "\t\t<td align='center'><br />\n";
-		echo "\t\t\t<input type='submit'  value='".$clang->gT("Cancel")."' onClick=\"window.open('admin.php?sid=$surveyid', '_top')\" /><br />\n";
-		echo "\t\t\t<input type='submit'  value='".$clang->gT("Delete")."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;ok=Y','_top')\" />\n";
+		echo "\t\t\t<input type='submit'  value='".html_escape($clang->gT("Cancel"))."' onClick=\"window.open('admin.php?sid=$surveyid', '_top')\" /><br />\n";
+		echo "\t\t\t<input type='submit'  value='".html_escape($clang->gT("Delete"))."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;ok=Y','_top')\" />\n";
 		echo "\t\t</td>\n";
 		echo "\t</tr>\n";
 		echo "</table>\n";
@@ -151,7 +151,7 @@ if($actsurrows['delete_survey'])
 		echo "\t<tr>\n";
 		echo "\t\t<td align='center'>$setfont<br />\n";
 		echo "\t\t\t<strong>".$clang->gT("This survey has been deleted.")."<br /><br />\n";
-		echo "\t\t\t<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+		echo "\t\t\t<input type='submit' value='".html_escape($clang->gT("Main Admin Screen"))."' onClick=\"window.open('$scriptname', '_top')\">\n";
 		echo "\t\t</strong></font></td>\n";
 		echo "\t</tr>\n";
 		echo "</table>\n";

@@ -61,7 +61,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	$deactivateoutput .= "\t</tr>\n";
 	$deactivateoutput .= "\t<tr>\n";
 	$deactivateoutput .= "\t\t<td align='center'>\n";
-	$deactivateoutput .= "\t\t\t<input type='submit' value='".$clang->gT("De-Activate Survey")."' onClick=\"window.open('$scriptname?action=deactivate&amp;ok=Y&amp;sid={$_GET['sid']}', '_top')\">\n";
+	$deactivateoutput .= "\t\t\t<input type='submit' value='".html_escape($clang->gT("De-Activate Survey"))."' onClick=\"window.open('$scriptname?action=deactivate&amp;ok=Y&amp;sid={$_GET['sid']}', '_top')\">\n";
 	$deactivateoutput .= "\t\t<br />&nbsp;</td>\n";
 	$deactivateoutput .= "\t</tr>\n";
 	$deactivateoutput .= "</table><br />&nbsp;\n";
@@ -128,7 +128,7 @@ else
 	$deactivateoutput .= "\t</tr>\n";
 	$deactivateoutput .= "\t<tr>\n";
 	$deactivateoutput .= "\t\t<td align='center'>\n";
-	$deactivateoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\">\n";
+	$deactivateoutput .= "\t\t\t<input type='submit' value='".html_escape($clang->gT("Main Admin Screen"))."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\">\n";
 	$deactivateoutput .= "\t\t</td>\n";
 	$deactivateoutput .= "\t</tr>\n";
 	$deactivateoutput .= "</table>\n";

@@ -71,7 +71,7 @@ if ($action != "upload")
         <option value='ignore'>".$clang->gT("Ignore the new record.")."</option>
         <option value='replace'>".$clang->gT("Replace the existing record.")."</option>
         </select></td></tr>
-		<tr><td>&nbsp;</td><td><input type='submit' value='".$clang->gT("Upload")."'>
+		<tr><td>&nbsp;</td><td><input type='submit' value='".html_escape($clang->gT("Upload"))."'>
 		<input type='hidden' name='action' value='upload' />
 		</td></tr>
 		</table>
@@ -103,7 +103,7 @@ else
 	{
 		echo "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
 		echo $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
-		//echo "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+		//echo "<input type='submit' value='".html_escape($clang->gT("Main Admin Screen"))."' onClick=\"window.open('$scriptname', '_top')\">\n";
 		echo "</font></td></tr></table>\n";
 		echo "</body>\n</html>\n";
 		exit;

@@ -243,7 +243,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 				$tokenoutput .= "<option>".$ol."</option>\n";
 			}
 			$tokenoutput .= "</select><br />\n"
-			."<input type='submit' value='".$clang->gT("Restore")."'>\n"
+			."<input type='submit' value='".html_escape($clang->gT("Restore"))."'>\n"
 			."<input type='hidden' name='restoretable' value='Y'>\n"
 			."<input type='hidden' name='sid' value='$surveyid'>\n"
 			."</form></td>\n"
@@ -456,7 +456,7 @@ if ($subaction == "browse" || $subaction == "search")
 	."\t\t\t<table align='left' cellpadding='0' cellspacing='0' border='0'>\n"
 	."\t\t\t\t<tr><td><form method='post' action='$scriptname?action=tokens'>\n"
 	."\t\t\t\t\t<input type='text' name='searchstring' value='$searchstring'>\n"
-	."\t\t\t\t\t<input type='submit' value='".$clang->gT("Search")."'>\n"
+	."\t\t\t\t\t<input type='submit' value='".html_escape($clang->gT("Search"))."'>\n"
 	."\t\t\t\t<input type='hidden' name='order' value='$order'>\n"
 	."\t\t\t\t<input type='hidden' name='subaction' value='search'>\n"
 	."\t\t\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
@@ -467,7 +467,7 @@ if ($subaction == "browse" || $subaction == "search")
 	."\t\t<font size='1' face='verdana'>"
 	."&nbsp;".$clang->gT("Records Displayed:")."<input type='text' size='4' value='$limit' name='limit'>"
 	."&nbsp;".$clang->gT("Starting From:")."<input type='text' size='4' value='$start' name='start'>"
-	."&nbsp;<input type='submit' value='".$clang->gT("Show")."'>\n"
+	."&nbsp;<input type='submit' value='".html_escape($clang->gT("Show"))."'>\n"
 	."\t\t</font>\n"
 	."\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
 	."\t\t<input type='hidden' name='subaction' value='browse'>\n"
@@ -794,7 +794,7 @@ if ($subaction == "email")
 				$tokenoutput .= str_replace("{EMAILCOUNT}", "$lefttosend", $clang->gT("There are {EMAILCOUNT} emails still to be sent."));
 				$tokenoutput .= "<br /><br />\n";
 				$message = html_escape($_POST['message']);
-				$tokenoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Continue")."' />\n"
+				$tokenoutput .= "\t\t\t<input type='submit' value='".html_escape($clang->gT("Continue"))."' />\n"
 				."\t\t\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
 				."\t\t\t<input type='hidden' $subaction value=\"email\" />\n"
 				."\t\t\t<input type='hidden' name='sid' value=\"{$_POST['sid']}\" />\n"
@@ -870,7 +870,7 @@ if ($subaction == "remind")
 		."\t<tr>\n"
 		."\t\t<td></td>\n"
 		."\t\t<td align='left'>\n"
-		."\t\t\t<input type='submit' value='".$clang->gT("Send Reminders")."' />\n"
+		."\t\t\t<input type='submit' value='".html_escape($clang->gT("Send Reminders"))."' />\n"
 		."\t<input type='hidden' name='ok' value='absolutely'>\n"
 		."\t<input type='hidden' name='sid' value='{$_GET['sid']}'>\n"
 		."\t<input type='hidden' name='subaction' value='remind'>\n"
@@ -952,7 +952,7 @@ if ($subaction == "remind")
 				.$clang->gT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below.")."<br /><br />\n"
 				.str_replace("{EMAILCOUNT}", $lefttosend, $clang->gT("There are {EMAILCOUNT} emails still to be sent."))
 				."<br />\n"
-				."\t\t\t<input type='submit' value='".$clang->gT("Continue")."' />\n"
+				."\t\t\t<input type='submit' value='".html_escape($clang->gT("Continue"))."' />\n"
 				."\t\t</td>\n"
 				."\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
 				."\t<input type='hidden' $subaction value=\"remind\" />\n"
@@ -1146,12 +1146,12 @@ if ($subaction == "edit" || $subaction == "addnew")
 	switch($subaction)
 	{
 		case "edit":
-		$tokenoutput .= "\t\t<input type='submit' value='".$clang->gT("Update Token")."'>\n"
+		$tokenoutput .= "\t\t<input type='submit' value='".html_escape($clang->gT("Update Token"))."'>\n"
 		               ."\t\t<input type='hidden' name='subaction' value='updatetoken'>\n"
 		               ."\t\t<input type='hidden' name='tid' value='{$_GET['tid']}'>\n";
 		break;
 		case "addnew":
-		$tokenoutput .= "\t\t<input type='submit' value='".$clang->gT("Add Token")."'>\n"
+		$tokenoutput .= "\t\t<input type='submit' value='".html_escape($clang->gT("Add Token"))."'>\n"
 		               ."\t\t<input type='hidden' name='subaction' value='inserttoken'>\n";
 		break;
 	}
