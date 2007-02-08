@@ -1469,14 +1469,14 @@ function formldap($error=false)
 		$tokenoutput .= '<br />\n';
 		$tokenoutput .= _('Select the LDAP query you want:');
 		$tokenoutput .= '<br />';
-		$tokenoutput .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . "' method='post'>";
+		$tokenoutput .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . "?action=tokens' method='post'>";
 		$tokenoutput .= "<select name='ldapQueries' style='length=35'><br />";
 		foreach ($ldap_queries as $q_number => $q) {
 			$tokenoutput .= " <option value=".$q_number.">".$q['name']."</option>";
 		}
 		$tokenoutput .= "</select><br />";
 		$tokenoutput .= "<input type='hidden' name='sid' value='$surveyid' />";
-		$tokenoutput .= "<input type='hidden' $subaction value='uploadldap' />";
+		$tokenoutput .= "<input type='hidden' name='subaction' value='uploadldap' />";
 		$tokenoutput .= "<input type='submit' name='submit'>";
 		$tokenoutput .= '</form></font>';
 	}
