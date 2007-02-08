@@ -54,6 +54,8 @@ if (isset($_GET['lang']))
 } else if (isset($_SESSION['s_lang']))
 {
 	$clang = SetSurveyLanguage( $surveyid, $_SESSION['s_lang']);
+} else {
+	$clang = SetSurveyLanguage( $surveyid, $defaultlang);
 }
 
 ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
