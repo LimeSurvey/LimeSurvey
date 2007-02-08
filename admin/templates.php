@@ -182,14 +182,14 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 		$normalfiles[]=$fl["name"];
 	}
 	
-	$screens[]=array("name"=>$clang->gT("Welcome Page"));
-	$screens[]=array("name"=>$clang->gT("Question Page"));
-	$screens[]=array("name"=>$clang->gT("Submit Page"));
-	$screens[]=array("name"=>$clang->gT("Completed Page"));
-	$screens[]=array("name"=>$clang->gT("Clear All Page"));
-	$screens[]=array("name"=>$clang->gT("Register Page"));
-	$screens[]=array("name"=>$clang->gT("Load Page"));
-	$screens[]=array("name"=>$clang->gT("Save Page"));
+	$screens[]=array("name"=>html_escape($clang->gT("Welcome Page")));
+	$screens[]=array("name"=>html_escape($clang->gT("Question Page")));
+	$screens[]=array("name"=>html_escape($clang->gT("Submit Page")));
+	$screens[]=array("name"=>html_escape($clang->gT("Completed Page")));
+	$screens[]=array("name"=>html_escape($clang->gT("Clear All Page")));
+	$screens[]=array("name"=>html_escape($clang->gT("Register Page")));
+	$screens[]=array("name"=>html_escape($clang->gT("Load Page")));
+	$screens[]=array("name"=>html_escape($clang->gT("Save Page")));
 	
 	//Page Display Instructions
 	$Welcome=array("startpage.pstpl", "welcome.pstpl", "navigator.pstpl", "endpage.pstpl");
@@ -446,7 +446,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 			" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Create new template")."')\">" .
 			"<img src='$imagefiles/add.png' alt='' align='right' title='' /></a>"
 	."<font face='verdana' size='2' color='white'><strong>".$clang->gT("Template:")."</strong> </font>"
-	."<select name='templatedir' onchange='javascript: window.open(\"admin.php?action=templates&amp;editfile=$editfile&amp;screenname=$screenname&amp;templatename=\"+this.value, \"_top\")'>\n"
+	."<select name='templatedir' onchange='javascript: window.open(\"admin.php?action=templates&amp;editfile=$editfile&amp;screenname=".html_escape($screenname)."&amp;templatename=\"+this.value, \"_top\")'>\n"
 	.makeoptions($templates, "name", "name", $templatename)
 	."</select>&nbsp;\n"
 	."</td></tr></table>\n"
@@ -486,7 +486,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
                  " /></a>";
         }
 	$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' height='10' border='0' hspace='0' align='left' />\n"
-	."\t\t\t\t\t<a href='#' onClick='javascript:window.open(\"admin.php?action=templatezip&amp;editfile=$editfile&amp;screenname=$screenname&amp;templatename=$templatename\", \"_top\")'".
+	."\t\t\t\t\t<a href='#' onClick='javascript:window.open(\"admin.php?action=templatezip&amp;editfile=$editfile&amp;screenname=".html_escape($screenname)."&amp;templatename=$templatename\", \"_top\")'".
 			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Template")."')\">" .
 					"<img name='Export' src='$imagefiles/exportcsv.png' alt='' align='left' title='' /></a>\n"
 	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
@@ -520,12 +520,12 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	."\t\t\t\t\t\t<td align='center' valign='top' width='80%'>"
 	. "<form name='editTemplate' method='post' action='admin.php'>\n"
 	. "\t\t\t<input type='hidden' name='templatename' value='$templatename' />\n"
-	. "\t\t\t<input type='hidden' name='screenname' value='$screenname' />\n"
+	. "\t\t\t<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
 	. "\t\t\t<input type='hidden' name='editfile' value='$editfile' />\n"
 	. "\t\t\t<input type='hidden' name='action' value='templatesavechanges' />\n"
 	. "\t\t\t\t<table width='100%' align='center'><tr><td>"
 	."$setfont<strong>".$clang->gT("Standard Files:")."</strong><font size='1'><br />\n"
-	."<select size='12' name='editfile' onChange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;screenname=$screenname&amp;editfile=\"+this.value, \"_top\")'>\n"
+	."<select size='12' name='editfile' onChange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;screenname=".html_escape($screenname)."&amp;editfile=\"+this.value, \"_top\")'>\n"
 	.makeoptions($files, "name", "name", $editfile)
 	."</select><br /><br />\n"
 	."\t\t\t\t\t\t</font></font></td>\n"
@@ -561,7 +561,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	}
 	$templatesoutput.= " /></font>\n"
 	."<input type='hidden' name='editfile' value='$editfile' />\n"
-	."<input type='hidden' name='screenname' value='$screenname' />\n"
+	."<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
 	."<input type='hidden' name='templatename' value='$templatename' />\n"
 	."<input type='hidden' name='action' value='templatefiledelete' />\n"
 	."</td>\n"
@@ -575,7 +575,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	}
 	$templatesoutput.= " />\n"
 	."<input type='hidden' name='editfile' value='$editfile' />\n"
-	."<input type='hidden' name='screenname' value='$screenname' />\n"
+	."<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
 	."<input type='hidden' name='templatename' value='$templatename' />\n"
 	."<input type='hidden' name='action' value='templateupload' />\n"
 	."</td></table></form>\n"
