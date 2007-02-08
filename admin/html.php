@@ -361,7 +361,7 @@ if ($surveyid)
 		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n";
 		// survey rights
 
-		if($s1row['creator_id'] == $_SESSION['loginID'])
+		if($s1row['owner_id'] == $_SESSION['loginID'])
 		{
 			$surveysummary .= "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=surveysecurity&amp;sid=$surveyid', '_top')\"" .
 			"onmouseout=\"hideTooltip()\""
@@ -374,20 +374,27 @@ if ($surveyid)
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
 		
+		if ($activated == "N")
+        {
+            $icontext=$clang->gT("Test This Survey");
+        } else
+            {
+            $icontext=$clang->gT("Execute This Survey");
+            }
 		if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
 		{
 			$surveysummary .= "<a href=\"#\" accesskey='d' onclick=\"window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y', '_blank')\""
 			. "onmouseout=\"hideTooltip()\""
-			. "onmouseover=\"showTooltip(event,'".$clang->gT("Do Survey")."');return false\">"
+			. "onmouseover=\"showTooltip(event,'$icontext');return false\">"
 			."<img  src='$imagefiles/do.png' title='' "
-			. "name='DoSurvey' align='left' alt='".$clang->gT("Do Survey")."' /></a>";
+			. "name='DoSurvey' align='left' alt='$icontext' /></a>";
 		
 		} else {
 			$surveysummary .= "<a href=\"#\" accesskey='d' onclick=\"hideTooltip(); document.getElementById('testsurvpopup').style.visibility='visible';\""
 			. "onmouseout=\"hideTooltip()\""
-			. "onmouseover=\"showTooltip(event,'".$clang->gT("Do Survey")."');return false\">"
+			. "onmouseover=\"showTooltip(event,'$icontext');return false\">"
 			."<img  src='$imagefiles/do.png' title='' "
-			. "name='DoSurvey' align='left' alt='".$clang->gT("Do Survey")."' /></a>";
+			. "name='DoSurvey' align='left' alt='$icontext' /></a>";
 			
 			$tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 			$baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -488,8 +495,8 @@ if ($surveyid)
 		{
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=ordergroups&amp;sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
-			. "onmouseover=\"showTooltip(event,'".$clang->gT("Order the groups in that Survey")."');return false\">" .
-			"<img src='$imagefiles/reorder.png' title='' alt='".$clang->gT("Order the groups in that Survey")."' align='left' name='ordergroups' /></a>" ;
+			. "onmouseover=\"showTooltip(event,'".$clang->gT("Change Group Order")."');return false\">" .
+			"<img src='$imagefiles/reorder.png' title='' alt='".$clang->gT("Change Group Order")."' align='left' name='ordergroups' /></a>" ;
 		}
 		else
 		{
@@ -500,8 +507,8 @@ if ($surveyid)
 		{
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/dumpsurvey.php?sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
-			. "onmouseover=\"showTooltip(event,'". $clang->gT("Export this Survey")."');return false\">" .
-			"<img src='$imagefiles/exportcsv.png' title='' alt='". $clang->gT("Export this Survey")."' align='left' name='ExportSurvey' /></a>" ;
+			. "onmouseover=\"showTooltip(event,'". $clang->gT("Export Current Survey")."');return false\">" .
+			"<img src='$imagefiles/exportcsv.png' title='' alt='". $clang->gT("Export Current Survey")."' align='left' name='ExportSurvey' /></a>" ;
 		}
 		else
 		{
@@ -776,7 +783,7 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 	$usergroupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='135' height='20' border='0' hspace='0' align='left' />\n"
 	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
 
-	if($ugid && $_SESSION['loginID'] == $grow['creator_id'])
+	if($ugid && $_SESSION['loginID'] == $grow['owner_id'])
 	{
 		$usergroupsummary .=  "<a href=\"#\" onclick=\"window.open('$scriptname?action=editusergroup&amp;ugid=$ugid','_top')\""
 		. "onmouseout=\"hideTooltip()\""
@@ -788,7 +795,7 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 		$usergroupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='45' height='20' border='0' hspace='0' align='left' />\n";
 	}
 
-	if($ugid && $_SESSION['loginID'] == $grow['creator_id'])
+	if($ugid && $_SESSION['loginID'] == $grow['owner_id'])
 	{
 		$usergroupsummary .= "\t\t\t\t\t<a href='$scriptname?action=delusergroup&amp;ugid=$ugid' onclick=\"return confirm('".$clang->gT("Are you sure you want to delete this entry.")."')\""
 		. "onmouseout=\"hideTooltip()\""
@@ -875,8 +882,8 @@ if ($gid)   // Show the group toolbar
 		if(($activated!="Y" && getQuestionSum($surveyid, $gid)>1) && $sumrows5['define_questions'])
 		{
 			$groupsummary .= "<a href='$scriptname?action=orderquestions&amp;sid=$surveyid&amp;gid=$gid' onmouseout=\"hideTooltip()\""
-			. "onmouseover=\"showTooltip(event,'".$clang->gT("Reorder the questions of this group")."');return false\">"
-			. "<img src='$imagefiles/reorder.png' title='' alt=''name='updatequestionorder' align='left' /></a>" ;
+			. "onmouseover=\"showTooltip(event,'".$clang->gT("Change Question Order")."');return false\">"
+			. "<img src='$imagefiles/reorder.png' title='' alt='".$clang->gT("Change Question Order")."' name='updatequestionorder' align='left' /></a>" ;
 		}
 		else
 		{
@@ -1483,7 +1490,7 @@ if ($action == "editusers")
 	. "\t\t<th>".$clang->gT("Email")."</th>\n"
 	. "\t\t<th>".$clang->gT("Full name")."</th>\n"
 	. "\t\t<th>".$clang->gT("Password")."</th>\n"
-	. "\t\t<th>".$clang->gT("Creator")."</th>\n"
+	. "\t\t<th>".$clang->gT("Created by")."</th>\n"
 	. "\t\t<th></th>\n"
 	. "\t</tr>\n";
 
@@ -1552,28 +1559,16 @@ if ($action == "editusers")
 		{
 			$usersummary .= "\t\t<td align='center'>"
 			."<form name='parentsform{$usr['uid']}'action='$scriptname?action=setnewparents' method='post'>"
-			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
-			."<select name='parent' size='1' onChange='document.getElementById(\"button{$usr['uid']}\").innerHTML = \"<input type=\\\"submit\\\" value=\\\"".$clang->gT("Change")."\\\">\"'>";
+			."<input type='hidden' name='uid' value='{$usr['uid']}' />";
+//			."<select name='parent' size='1' onChange='document.getElementById(\"button{$usr['uid']}\").innerHTML = \"<input type=\\\"submit\\\" value=\\\"".$clang->gT("Change")."\\\">\"'>";
 			//."<select name='parent' size='1' onChange='document.getElementById(\"button{$usr['uid']}\").createElement(\"input\")'>";
 			if($usr['uid'] != $usrhimself['uid'])
 			{
-				$usersummary .= "<option value='{$usrhimself['uid']}'";
+//				$usersummary .= "<option value='{$usrhimself['uid']}'";
 				if($usr['parent_id'] == $usrhimself['uid']) {
-					$usersummary .= "selected";
-				}
-				$usersummary .=">".$usrhimself['user']."</option>\n";
-			}
-			foreach ($_SESSION['userlist'] as $usrpar)
-			{
-				if($usr['uid'] != $usrpar['uid']) {
-					$usersummary .= "<option value='{$usrpar['uid']}' ";
-					if($usr['parent_id'] == $usrpar['uid']) {
-						$usersummary .= "selected";
-					}
-					$usersummary .=">".$usrpar['user']."</option>\n";
+					$usersummary .= $usrhimself['user'];
 				}
 			}
-			$usersummary .= "</select>";
 			$usersummary .= "<div id='button{$usr['uid']}'></div>\n";
 			$usersummary .= "</form></td>\n";
 		}
@@ -1637,7 +1632,7 @@ if ($action == "addusergroup")
 
 if ($action == "editusergroup")
 {
-	$query = "SELECT * FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND creator_id = ".$_SESSION['loginID']." LIMIT 1";
+	$query = "SELECT * FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND owner_id = ".$_SESSION['loginID']." LIMIT 1";
 	$result = db_execute_assoc($query);
 	$esrow = $result->FetchRow();
 	$usersummary = "<form action='$scriptname' name='editusergroup' method='post'>"
@@ -1650,7 +1645,7 @@ if ($action == "editusergroup")
 	. "\t\t<td><textarea cols='50' rows='4' name='description'>{$esrow['description']}</textarea></td></tr>\n"
 	. "\t<tr><td colspan='2' align='center'><input type='submit' value='".html_escape($clang->gT("Update User Group"))."' />\n"
 	. "\t<input type='hidden' name='action' value='editusergroupindb' />\n"
-	. "\t<input type='hidden' name='creator_id' value='".$_SESSION['loginID']."' />\n"
+	. "\t<input type='hidden' name='owner_id' value='".$_SESSION['loginID']."' />\n"
 	. "\t<input type='hidden' name='ugid' value='$ugid' />\n"
 	. "\t</td></tr>\n"
 	. "</table>\n"
@@ -1659,7 +1654,7 @@ if ($action == "editusergroup")
 
 if ($action == "mailusergroup")
 {
-	$query = "SELECT a.ugid, a.name, a.creator_id, b.uid FROM ".db_table_name('user_groups') ." AS a LEFT JOIN ".db_table_name('user_in_groups') ." AS b ON a.ugid = b.ugid WHERE a.ugid = {$ugid} AND uid = {$_SESSION['loginID']} ORDER BY name";
+	$query = "SELECT a.ugid, a.name, a.owner_id, b.uid FROM ".db_table_name('user_groups') ." AS a LEFT JOIN ".db_table_name('user_in_groups') ." AS b ON a.ugid = b.ugid WHERE a.ugid = {$ugid} AND uid = {$_SESSION['loginID']} ORDER BY name";
 	$result = db_execute_assoc($query);
 	$crow = $result->FetchRow();
 	$eguquery = "SELECT * FROM ".db_table_name("user_in_groups")." AS a INNER JOIN ".db_table_name("users")." AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " AND b.uid != {$_SESSION['loginID']} ORDER BY b.user";
@@ -1703,13 +1698,13 @@ if ($action == "delusergroup")
 
 	if(!empty($_GET['ugid']) && $_GET['ugid'] > -1)
 	{
-		$query = "SELECT ugid, name, creator_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND creator_id = ".$_SESSION['loginID']." LIMIT 1";
+		$query = "SELECT ugid, name, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND owner_id = ".$_SESSION['loginID']." LIMIT 1";
 		$result = db_execute_assoc($query);
 		if($result->RecordCount() > 0)
 		{
 			$row = $result->FetchRow();
 
-			$remquery = "DELETE FROM ".db_table_name('user_groups')." WHERE ugid = {$_GET['ugid']} AND creator_id = {$_SESSION['loginID']}";
+			$remquery = "DELETE FROM ".db_table_name('user_groups')." WHERE ugid = {$_GET['ugid']} AND owner_id = {$_SESSION['loginID']}";
 			if($connect->Execute($remquery))
 			{
 				$usersummary .= "<br />".$clang->gT("Group Name").": {$row['name']}<br />\n";
@@ -1836,7 +1831,7 @@ if ($action == "editusergroups"  )
 	{
 		$ugid = $_GET['ugid'];
 
-		$query = "SELECT a.ugid, a.name, a.creator_id, a.description, b.uid FROM ".db_table_name('user_groups') ." AS a LEFT JOIN ".db_table_name('user_in_groups') ." AS b ON a.ugid = b.ugid WHERE a.ugid = {$ugid} AND uid = {$_SESSION['loginID']} ORDER BY name";
+		$query = "SELECT a.ugid, a.name, a.owner_id, a.description, b.uid FROM ".db_table_name('user_groups') ." AS a LEFT JOIN ".db_table_name('user_in_groups') ." AS b ON a.ugid = b.ugid WHERE a.ugid = {$ugid} AND uid = {$_SESSION['loginID']} ORDER BY name";
 		$result = db_execute_assoc($query);
 		$crow = $result->FetchRow();
 
@@ -1862,7 +1857,7 @@ if ($action == "editusergroups"  )
 			. "\t\t<th>".$clang->gT("Action")."</th>\n"
 			. "\t</tr>\n";
 
-			$query2 = "SELECT ugid FROM ".db_table_name('user_groups')." WHERE ugid = ".$ugid." AND creator_id = ".$_SESSION['loginID']." LIMIT 1";
+			$query2 = "SELECT ugid FROM ".db_table_name('user_groups')." WHERE ugid = ".$ugid." AND owner_id = ".$_SESSION['loginID']." LIMIT 1";
 			$result2 = db_execute_assoc($query2);
 			$row2 = $result2->FetchRow();
 
@@ -1870,9 +1865,9 @@ if ($action == "editusergroups"  )
 			$usergroupentries='';
 			while ($egurow = $eguresult->FetchRow())
 			{
-				if($egurow['uid'] == $crow['creator_id'])
+				if($egurow['uid'] == $crow['owner_id'])
 				{
-					$usergroupcreator = "\t<tr bgcolor='#999999'>\n"
+					$usergroupowner = "\t<tr bgcolor='#999999'>\n"
 					. "\t<td align='center'><strong>{$egurow['user']}</strong></td>\n"
 					. "\t<td align='center'><strong>{$egurow['email']}</strong></td>\n"
 					. "\t\t<td align='center'>\n";
@@ -1887,7 +1882,7 @@ if ($action == "editusergroups"  )
 				. "\t<td align='center'>{$egurow['email']}</td>\n"
 				. "\t\t<td align='center' style='padding-top:10px;'>\n";
 
-				// creator and not himself    or    not creator and himself
+				// owner and not himself    or    not owner and himself
 				if((isset($row2['ugid']) && $_SESSION['loginID'] != $egurow['uid']) || (!isset($row2['ugid']) && $_SESSION['loginID'] == $egurow['uid']))
 				{
 					$usergroupentries .= "\t\t\t<form method='post' action='$scriptname?action=deleteuserfromgroup&ugid=$ugid'>"
@@ -1901,7 +1896,7 @@ if ($action == "editusergroups"  )
 				. "\t</tr>\n";
 				$row++;
 			}
-			$usergroupsummary .= $usergroupcreator;
+			$usergroupsummary .= $usergroupowner;
             if (isset($usergroupentries)) {$usergroupsummary .= $usergroupentries;};
 
 			if(isset($row2['ugid']))
@@ -1931,7 +1926,7 @@ if($action == "deleteuserfromgroup") {
 	$uid = $_POST['uid'];
 	$usersummary = "<br /><strong>".$clang->gT("Delete User")."</strong><br />\n";
 
-	$query = "SELECT ugid, creator_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$ugid." AND ((creator_id = ".$_SESSION['loginID']." AND creator_id != ".$uid.") OR (creator_id != ".$_SESSION['loginID']." AND $uid = ".$_SESSION['loginID']."))";
+	$query = "SELECT ugid, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$ugid." AND ((owner_id = ".$_SESSION['loginID']." AND owner_id != ".$uid.") OR (owner_id != ".$_SESSION['loginID']." AND $uid = ".$_SESSION['loginID']."))";
 	$result = db_execute_assoc($query);
 	if($result->RecordCount() > 0)
 	{
@@ -2499,7 +2494,7 @@ if($action == "orderquestions")
         $cnt=0;
     	while($oqrow = $oqresult->FetchRow())
     	{
-  			$orderquestions.="<li class='movableNode' id='".$ogrows['gid']."'>\n" ;
+  			$orderquestions.="<li class='movableNode'>\n" ;
      				$orderquestions.= "\t<input style='float:right;";
                   if ($cnt == 0){$orderquestions.="visibility:hidden;";}
                   $orderquestions.="' type='submit' name='questionordermethod' value='".html_escape($clang->gT("Up"))."' onclick=\"this.form.sortorder.value='{$oqrow['question_order']}'\" />\n";
@@ -2508,7 +2503,7 @@ if($action == "orderquestions")
       				// Fill the sortorder hiddenfield so we now what field is moved down
                       $orderquestions.= "\t<input type='submit' style='float:right;' name='questionordermethod' value='".html_escape($clang->gT("Dn"))."' onclick=\"this.form.sortorder.value='{$oqrow['question_order']}'\" />\n";
       			}
-  			$orderquestions.=$oqrow['title']."</li>\n" ;
+  			$orderquestions.=$oqrow['title'].": ".$oqrow['question']."</li>\n" ;
   
   			$cnt++;
   		}
@@ -2654,7 +2649,7 @@ if($action == "addusertogroup")
 {
 	$addsummary = "<br /><strong>".$clang->gT("Adding User to group")."...</strong><br />\n";
 
-	$query = "SELECT ugid, creator_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND creator_id = ".$_SESSION['loginID']." AND creator_id != ".$_POST['uid'];
+	$query = "SELECT ugid, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$_POST['uid'];
 	$result = db_execute_assoc($query);
 	if($result->RecordCount() > 0)
 	{
@@ -2694,7 +2689,7 @@ if($action == "addsurveysecurity")
 {
 	$addsummary = "<br /><strong>".$clang->gT("Add User")."</strong><br />\n";
 
-	$query = "SELECT sid, creator_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND creator_id = ".$_SESSION['loginID']." AND creator_id != ".$_POST['uid'];
+	$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$_POST['uid'];
 	$result = db_execute_assoc($query);
 	if($result->RecordCount() > 0)
 	{
@@ -2737,7 +2732,7 @@ if($action == "addusergroupsurveysecurity")
 {
 	$addsummary = "<br /><strong>".$clang->gT("Add User Group")."</strong><br />\n";
 
-	$query = "SELECT sid, creator_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND creator_id = ".$_SESSION['loginID'];
+	$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];
 	$result = db_execute_assoc($query);
 	if($result->RecordCount() > 0)
 	{
@@ -2790,7 +2785,7 @@ if($action == "delsurveysecurity"){
 	{
 		$addsummary = "<br /><strong>".$clang->gT("Deleting User")."</strong><br />\n";
 
-		$query = "SELECT sid, creator_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND creator_id = ".$_SESSION['loginID']." AND creator_id != ".$_POST['uid'];
+		$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$_POST['uid'];
 		$result = db_execute_assoc($query);
 		if($result->RecordCount() > 0)
 		{
@@ -2816,7 +2811,7 @@ if($action == "delsurveysecurity"){
 
 if($action == "setsurveysecurity")
 {
-	$query = "SELECT sid, creator_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND creator_id = ".$_SESSION['loginID']." AND creator_id != ".$_POST['uid'];
+	$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$_POST['uid'];
 	$result = db_execute_assoc($query);
 	if($result->RecordCount() > 0)
 	{
@@ -2888,7 +2883,7 @@ if($action == "setsurveysecurity")
 
 if($action == "setusergroupsurveysecurity")
 {
-	$query = "SELECT sid, creator_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND creator_id = ".$_SESSION['loginID'];//." AND creator_id != ".$_POST['uid'];
+	$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];//." AND owner_id != ".$_POST['uid'];
 	$result = db_execute_assoc($query);
 	if($result->RecordCount() > 0)
 	{
@@ -2939,7 +2934,7 @@ if($action == "setusergroupsurveysecurity")
 
 if($action == "surveysecurity")
 {
-	$query = "SELECT sid FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND creator_id = ".$_SESSION['loginID'];
+	$query = "SELECT sid FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];
 	$result = db_execute_assoc($query);
 	if($result->RecordCount() > 0)
 	{
@@ -3062,10 +3057,10 @@ elseif ($action == "surveyrights")
 	$addsummary = "<br /><strong>".$clang->gT("Set Survey Rights")."</strong><br />\n";
 
 	if(isset($_POST['uid'])){
-		$query = "SELECT sid, creator_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND creator_id = ".$_SESSION['loginID']." AND creator_id != ".$_POST['uid'];
+		$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$_POST['uid'];
 	}
 	else{
-		$query = "SELECT sid, creator_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND creator_id = ".$_SESSION['loginID'];//." AND creator_id != ".$_POST['uid'];
+		$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];//." AND owner_id != ".$_POST['uid'];
 	}
 	$result = db_execute_assoc($query);
 	if($result->RecordCount() > 0)

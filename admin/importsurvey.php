@@ -399,8 +399,8 @@ else
     $sfieldcontents=convertToArray($surveyarray[0], "', '", "('", "')");
     }
 $surveyrowdata=array_combine($sfieldorders,$sfieldcontents);
-// Set new creator ID
-$surveyrowdata['creator_id']=$_SESSION['loginID'];
+// Set new owner ID
+$surveyrowdata['owner_id']=$_SESSION['loginID'];
 // Set new survey ID
 $surveyrowdata['sid']=$newsid;
 

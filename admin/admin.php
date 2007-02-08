@@ -158,6 +158,8 @@ if(isset($_SESSION['loginID']) && $action!='login')
   	include("database.php");
   }
 
+  if ($action=="deletesurvey")  { include("deletesurvey.php"); }
+  else
   if ($action=="conditions")  { include("conditions.php"); }
   else
   if ($action=="importoldresponses")  { include("importoldresponses.php"); }
@@ -254,6 +256,7 @@ if(isset($_SESSION['loginID']) && $action!='login')
   if (isset($savedsurveyoutput)) {$adminoutput.= $savedsurveyoutput;} 	
   if (isset($importoldresponsesoutput)) {$adminoutput.= $importoldresponsesoutput;} 	
   if (isset($conditionsoutput)) {$adminoutput.= $conditionsoutput;} 	
+  if (isset($deletesurveyoutput)) {$adminoutput.= $deletesurveyoutput;} 	
   
   
   

@@ -35,6 +35,7 @@
 */
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix)) {die ("Cannot run this script directly");}
+include_once("login_check.php");
 
 if (!isset($action)) {$action=returnglobal('action');}
 
@@ -945,7 +946,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		while ($isresult->RecordCount()>0);
 
 		$isquery = "INSERT INTO {$dbprefix}surveys\n"
-		. "(sid, creator_id, admin, active, useexpiry, expires, "
+		. "(sid, owner_id, admin, active, useexpiry, expires, "
 		. "adminemail, private, faxto, format, template, url, "
 		. "language, datestamp, ipaddr, refurl, usecookie, notification, allowregister, attribute1, attribute2, "
 		. "allowsave, autoredirect, allowprev,datecreated)\n"
@@ -975,7 +976,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		$isresult = $connect->Execute($isquery);
 
 		// Insert into survey_rights
-		$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($surveyid,". $_SESSION['loginID'].",1,1,1,1,1,1)"; //ADDED by Moses inserts survey rights for creator
+		$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($surveyid,". $_SESSION['loginID'].",1,1,1,1,1,1)"; //ADDED by Moses inserts survey rights for owner
 		$isrresult = $connect->Execute($isrquery) or die ($isrquery."<br />".$connect->ErrorMsg()); //ADDED by Moses
 		if ($isresult)
 		{

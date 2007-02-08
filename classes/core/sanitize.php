@@ -68,7 +68,7 @@ define("LDAP", 64);
 define("UTF8", 128);
 
 // get register_globals ini setting - jp
-$register_globals = (bool) ini_get('register_gobals');
+$register_globals = (bool) ini_get('register_globals');
 if ($register_globals == TRUE) { define("REGISTER_GLOBALS", 1); } else { define("REGISTER_GLOBALS", 0); }
 
 // get magic_quotes_gpc ini setting - jp

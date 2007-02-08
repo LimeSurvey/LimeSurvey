@@ -173,7 +173,7 @@ CREATE TABLE `prefix_saved_control` (
 
 CREATE TABLE `prefix_surveys` (
   `sid` int(11) NOT NULL,
-  `creator_id` int(11) NOT NULL,
+  `owner_id` int(11) NOT NULL,
   `admin` varchar(50) default NULL,
   `active` char(1) NOT NULL default 'N',
   `expires` date default NULL,
@@ -267,7 +267,7 @@ CREATE TABLE `prefix_user_groups` (
 	`ugid` int(10) unsigned NOT NULL auto_increment PRIMARY KEY,
 	`name` varchar(20) NOT NULL UNIQUE,
 	`description` TEXT NOT NULL default '',
-	`creator_id` int(10) unsigned NOT NULL
+	`owner_id` int(10) unsigned NOT NULL
 ) TYPE=MyISAM;
 
 CREATE TABLE `prefix_user_in_groups` (

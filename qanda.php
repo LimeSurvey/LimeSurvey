@@ -583,7 +583,7 @@ function do_language($ia)
 function do_list_dropdown($ia)
 {
 	global $dbprefix,  $dropdownthreshold, $lwcdropdowns, $connect;
-	global $shownoanswer;
+	global $shownoanswer, $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
 	$answer="";
 	if (isset($defexists)) {unset ($defexists);}
@@ -670,7 +670,7 @@ function do_list_dropdown($ia)
 function do_list_flexible_dropdown($ia)
 {
 	global $dbprefix, $dropdownthreshold, $lwcdropdowns, $connect;
-	global $shownoanswer;
+	global $shownoanswer, $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
 	$answer="";
 	$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
@@ -857,7 +857,7 @@ function do_list_radio($ia)
 function do_list_flexible_radio($ia)
 {
 	global $dbprefix, $dropdownthreshold, $lwcdropdowns, $connect;
-	global $shownoanswer;
+	global $shownoanswer, $clang;
 	$answer="";
 	$qidattributes=getQuestionAttributes($ia[0]);
 	if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
@@ -1101,7 +1101,7 @@ function do_listwithcomment($ia)
 
 function do_ranking($ia)
 {
-	global $dbprefix, $imagefiles;
+	global $dbprefix, $imagefiles, $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
 	$answer="";
 	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
@@ -1395,7 +1395,7 @@ function do_multiplechoice($ia)
 
 function do_multiplechoice_withcomments($ia)
 {
-	global $dbprefix;
+	global $dbprefix, $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
 	$answer  = "\t\t\t<table class='question'>\n"
 	. "\t\t\t\t<tr>\n"
@@ -2289,7 +2289,7 @@ function do_array_increasesamedecrease($ia)
 
 function do_array_flexible($ia)
 {
-	global $dbprefix, $connect, $thissurvey;
+	global $dbprefix, $connect, $thissurvey, $clang;
 	global $shownoanswer;
 	global $repeatheadings;
 	global $notanswered;

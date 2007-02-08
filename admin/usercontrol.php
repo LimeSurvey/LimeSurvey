@@ -262,8 +262,11 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($_POST[
 				$sresult = $connect->Execute($squery);
 				$fields = $sresult->FetchRow($sresult);
 				
+				if (isset($fields[0]))
+				{
 				$uquery = "UPDATE {$dbprefix}users SET parent_id={$fields[0]} WHERE parent_id={$_POST['uid']}";	//		added by Dennis
-				$uresult = $connect->Execute($uquery);	
+				$uresult = $connect->Execute($uquery);
+                }	
 				
 				//DELETE USER FROM TABLE
 				$dquery="DELETE FROM {$dbprefix}users WHERE uid={$_POST['uid']}";	//	added by Dennis

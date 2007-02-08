@@ -138,7 +138,8 @@ $usejpgraph         =   0; //Set to 1 to enable
 $jpgraphdir         =   "/var/apache/htdocs/jpgraph"; //The location of the jpgraph class (where jpgraph.php is)
                                                       // If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir="C:\\Inetpub\\wwwroot\\jpgraph"
 $jpgraphfont        =   "FF_ARIAL"; //The font to use with graphs. A failsafe setting would be "FF_FONT1"
-
+$jpgraphfontdir     =   "";        //On debian based systems, the fonts aren't in the old font dir of XFree86 : (/usr/X11R6/lib/X11/fonts/truetype/)
+                                   //To have beautiful fonts with JpGraph it might be necessary to set this to a new path , for example: /usr/share/fonts/truetype/msttcorefonts/
 
 // CMS Integration Settings
 // Set $embedded to true and specify the header and footer functions if the survey is to be displayed embedded in a CMS

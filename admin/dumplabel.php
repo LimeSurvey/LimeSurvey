@@ -46,16 +46,15 @@ if (empty($_GET['lid'])) {die ("Cannot run this script directly");}
 $lid=$_GET['lid'];
 
 require_once(dirname(__FILE__).'/../config.php');
+include_once("login_check.php");
 
-//echo $htmlheader;
 if (!$lid)
 {
-	echo $htmlheader;
 	echo "<br />\n";
 	echo "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Export Label Set")."</strong></td></tr>\n";
-	echo "\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
-	echo "$setfont<br /><strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n".$clang->gT("No LID has been provided. Cannot dump label set.")."<br />\n";
+	echo "\t<tr bgcolor='#CCCCCC'><td align='center'>\n";
+	echo "<br /><strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n".$clang->gT("No LID has been provided. Cannot dump label set.")."<br />\n";
 	echo "<br /><input type='submit' value='".html_escape($clang->gT("Main Admin Screen"))."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	echo "\t</td></tr>\n";
 	echo "</table>\n";
@@ -65,7 +64,7 @@ if (!$lid)
 
 $dumphead = "# PHPSurveyor Label Set Dump\n"
 . "# DBVersion $dbversionnumber\n"
-." # This is a dumped label set from the PHPSurveyor Script\n"
+. "# This is a dumped label set from the PHPSurveyor Script\n"
 . "# http://www.phpsurveyor.org/\n"
 . "# Do not change this header!\n";
 
@@ -79,7 +78,8 @@ $adump = BuildCSVFromQuery($aquery);
 
 $fn = "phpsurveyor_labelset_$lid.csv";
 
-//header("Content-Type: application/msword"); //EXPORT INTO MSWORD
+
+header("Content-Type: application/download");
 header("Content-Disposition: attachment; filename=$fn");
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");

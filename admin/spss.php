@@ -28,6 +28,8 @@
 #############################################################
 */
 require_once(dirname(__FILE__).'/../config.php');
+include_once("login_check.php");
+
 if (!isset($imagefiles)) {$imagefiles="./images";}
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($style)) {$style=returnglobal('style');}

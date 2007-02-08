@@ -209,9 +209,9 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 		// edit users
 		$adminmenu .= "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=editusers', '_top')\"" .
 					"onmouseout=\"hideTooltip()\""
-					. "onmouseover=\"showTooltip(event,'".$clang->gT("Modify Security Settings")."');return false\">" .
+					. "onmouseover=\"showTooltip(event,'".$clang->gT("Create/Edit Users")."');return false\">" .
 					 "<img src='$imagefiles/security.png' name='AdminSecurity'"
-					." title='' alt='".$clang->gT("Modify Security Settings")."'  align='left' /></a>";
+					." title='' alt='".$clang->gT("Create/Edit Users")."'  align='left' /></a>";
 
 		$adminmenu .="<a href=\"#\" onclick=\"window.open('$scriptname?action=editusergroups', '_top')\""
 					. "onmouseout=\"hideTooltip()\""
@@ -251,7 +251,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 			if($actsurrows['delete_survey'])
 				{
 				$adminmenu  .="<a href=\"#\""
-							. "onClick=\"window.open('deletesurvey.php?sid=$surveyid', '_top')\""
+							. "onClick=\"window.open('$scriptname?action=deletesurvey&amp;sid=$surveyid', '_top')\""
 							. "onmouseout=\"hideTooltip()\""
 							. "onmouseover=\"showTooltip(event,'".$clang->gT("Delete Entire Survey")."');return false\">"
 							."<img src='$imagefiles/delete.png' name='DeleteSurvey' alt='". $clang->gT("Delete Entire Survey")." ($surveyid)' title='' align='left' />"
@@ -400,7 +400,7 @@ function db_table_name($name)
 function getsurveylist()
     {
     global $surveyid, $dbprefix, $scriptname, $connect, $clang;
-    $surveyidquery = "SELECT a.sid, a.creator_id, surveyls_title, surveyls_description, a.admin, a.active, surveyls_welcometext, a.useexpiry, a.expires, "
+    $surveyidquery = "SELECT a.sid, a.owner_id, surveyls_title, surveyls_description, a.admin, a.active, surveyls_welcometext, a.useexpiry, a.expires, "
 					. "a.adminemail, a.private, a.faxto, a.format, a.template, a.url, "
 					. "a.language, a.datestamp, a.ipaddr, a.refurl, a.usecookie, a.notification, a.allowregister, a.attribute1, a.attribute2, "
 					. "a.allowsave, a.autoredirect, a.allowprev, a.datecreated FROM ".db_table_name('surveys')." AS a INNER JOIN ".db_table_name('surveys_rights')." AS b ON a.sid = b.sid "
@@ -659,7 +659,7 @@ function getNotificationlist($notificationcode)
 */
 function getgrouplist($gid)
 {
-	global $surveyid, $dbprefix, $scriptname, $connect;
+	global $surveyid, $dbprefix, $scriptname, $connect, $clang;
 	$groupselecter="";
 	if (!$surveyid) {$surveyid=$_POST['sid'];}
 	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
@@ -2842,8 +2842,8 @@ function getusergrouplist()
     {
     global $dbprefix, $scriptname, $connect, $clang;
 
-	//$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE creator_id = {$_SESSION['loginID']} ORDER BY name";
-	$squery = "SELECT a.ugid, a.name, a.creator_id, b.uid FROM ".db_table_name('user_groups') ." AS a LEFT JOIN ".db_table_name('user_in_groups') ." AS b ON a.ugid = b.ugid WHERE uid = {$_SESSION['loginID']} ORDER BY name";
+	//$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE owner_id = {$_SESSION['loginID']} ORDER BY name";
+	$squery = "SELECT a.ugid, a.name, a.owner_id, b.uid FROM ".db_table_name('user_groups') ." AS a LEFT JOIN ".db_table_name('user_in_groups') ." AS b ON a.ugid = b.ugid WHERE uid = {$_SESSION['loginID']} ORDER BY name";
 
     $sresult = db_execute_assoc($squery);
     if (!$sresult) {return "Database Error";}
@@ -2854,7 +2854,7 @@ function getusergrouplist()
         foreach($groupnames as $gn)
             {
 			$selecter .= "\t\t\t<option ";
-            if($_SESSION['loginID'] == $gn['creator_id']) {$selecter .= " style=\"font-weight: bold;\"";}
+            if($_SESSION['loginID'] == $gn['owner_id']) {$selecter .= " style=\"font-weight: bold;\"";}
 			if (isset($_GET['ugid']) && $gn['ugid'] == $_GET['ugid']) {$selecter .= " selected"; $svexist = 1;}
             $selecter .=" value='$scriptname?action=editusergroups&amp;ugid={$gn['ugid']}'>{$gn['name']}</option>\n";
             }

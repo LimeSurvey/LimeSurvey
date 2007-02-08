@@ -34,13 +34,14 @@
 #############################################################
 */
 include_once(dirname(__FILE__).'/../config.php');
+include_once("login_check.php");
+
 $surveyid=returnglobal('sid');
 //$action=returnglobal('action');
 $scid=returnglobal('scid');
 
 //Ensure script is not run directly, avoid path disclosure
 if (empty($surveyid)) {die ($clang->gT("Error")." - Cannot run this script directly");}
-
 
 $thissurvey=getSurveyInfo($surveyid);
 $savedsurveyoutput='';

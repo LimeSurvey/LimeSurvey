@@ -46,6 +46,7 @@ if (empty($_GET['qid'])) {die ("Cannot run this script directly");}
 $qid = $_GET['qid'];
 
 require_once(dirname(__FILE__).'/../config.php');
+include_once("login_check.php");
 
 //echo $htmlheader;
 if (!$qid)
