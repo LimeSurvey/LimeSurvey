@@ -181,7 +181,7 @@ if(isset($_SESSION['loginID']) && $action!='login')
   if ($action=="checkintegrity")  {	include("integritycheck.php"); }
   else
   if ($action=="labels" || $action=="newlabelset" || $action=="insertlabelset" ||
-      $action=="deletelabelset" || $action=="editlabelset" || $action=="modlabelsetanswers") { include("labels.php");}
+      $action=="deletelabelset" || $action=="editlabelset" || $action=="modlabelsetanswers" || $action=="updateset") { include("labels.php");}
   else    
   if ($action=="templates" || $action=="templatecopy" || $action=="templatesavechanges" || $action=="templaterename"
       || $action=="templateupload" || $action=="templatefiledelete" || $action=="templatezip")  {	include("templates.php"); }
