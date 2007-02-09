@@ -121,7 +121,7 @@ if (!isset($surveyid) || !$surveyid)
 	."\t<tr><td align='center'><br /><font color='red'><strong>"
 	.$clang->gT("Error")."</strong></font><br />".$clang->gT("You have not selected a survey")."<br /><br />"
 	."<input type='submit' value='"
-	.$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br /><br /></td></tr>\n"
+	.html_escape($clang->gT("Main Admin Screen"))."' onClick=\"window.open('$scriptname', '_top')\"><br /><br /></td></tr>\n"
 	."</table>\n"
 	."</body>\n</html>";
 	return;
@@ -139,7 +139,7 @@ if (!$chcount)
 	."\t<tr><td align='center'><br /><font color='red'><strong>"
 	.$clang->gT("Error")."</strong></font><br />".$clang->gT("The survey you selected does not exist")
 	."<br /><br />\n\t<input type='submit' value='"
-	.$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br /><br /></td></tr>\n"
+	.html_escape($clang->gT("Main Admin Screen"))."' onClick=\"window.open('$scriptname', '_top')\"><br /><br /></td></tr>\n"
 	."</table>\n"
 	."</body>\n</html>";
 	return;
@@ -228,7 +228,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		$tokenoutput .= "\t\t\t<input type='submit' value='"
 		.$clang->gT("Initialise Tokens")."' onClick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;createtable=Y', '_top')\"><br />\n"
 		."\t\t\t<input type='submit' value='"
-		.$clang->gT("Main Admin Screen")."' onClick=\"window.open('$homeurl/admin.php?sid=$surveyid', '_top')\"><br /><br />\n";
+		.html_escape($clang->gT("Main Admin Screen"))."' onClick=\"window.open('$homeurl/admin.php?sid=$surveyid', '_top')\"><br /><br />\n";
 		if ($tcount>0)
 		{
 			$tokenoutput .= "<table width='350' border='0' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'><tr>\n"
@@ -572,7 +572,7 @@ if ($subaction == "browse" || $subaction == "search")
 		$tokenoutput .= "\n\t\t</td>\n";
 		if ($brow['completed'] != "N" && $brow['completed']!="" && $surveyprivate == "N")
 		{
-			$tokenoutput .= "\t\t<form action='$homeurl/browse.php' method='post' target='_blank'>\n"
+			$tokenoutput .= "\t\t<form action='$homeurl/$scriptname?action=browse' method='post' target='_blank'>\n"
 			."\t\t<td align='center' valign='top'>\n"
 			."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='V' title='"
 			.$clang->gT("View Response")."' />\n"
@@ -588,7 +588,7 @@ if ($subaction == "browse" || $subaction == "search")
 			list($id) = $result->FetchRow();
 			if  ($id)
 			{
-				$tokenoutput .= "\t\t<form action='$homeurl/dataentry.php' method='post' target='_blank'>\n"
+				$tokenoutput .= "\t\t<form action='$homeurl/$scriptname&action=dataentry' method='post' target='_blank'>\n"
 				."\t\t<td align='center' valign='top'>\n"
 				."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='U' title='"
 				.$clang->gT("Update Response")."' />\n"
@@ -658,7 +658,7 @@ if ($subaction == "kill")
 		.$clang->gT("The tokens table has now been removed and tokens are no longer required to access this survey.<br /> A backup of this table has been made and can be accessed by your system administrator.")."<br />\n"
 		."(\"{$dbprefix}old_tokens_{$_GET['sid']}_$date\")"."<br /><br />\n"
 		."<input type='submit' value='"
-		.$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\" />\n"
+		.html_escape($clang->gT("Main Admin Screen"))."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\" />\n"
 		."</span>\n";
 	}
 	$tokenoutput .= "</font></td></tr></table>\n"

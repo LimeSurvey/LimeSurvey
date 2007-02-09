@@ -417,7 +417,7 @@ if ($surveyid)
 
 		if($sumrows5['browse_response'])
 		{
-			$surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/dataentry.php?sid=$surveyid', '_blank')\""
+			$surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/".$scriptname."?action=dataentry&amp;sid=$surveyid', '_blank')\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Dataentry Screen for Survey")."');return false\">"
 			. "<img src='$imagefiles/dataentry.png' title='' align='left' alt='".$clang->gT("Dataentry Screen for Survey")."'"

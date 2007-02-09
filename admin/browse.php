@@ -242,10 +242,10 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	."\t<tr bgcolor='#999999'><td colspan='2'>\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
-	."\t\t\t<a href='dataentry.php?action=edit&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
+	."\t\t\t<a href='$scriptname?action=dataentry&amp;subaction=edit&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
 			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Edit this entry")."')\">" .
 			"<img align='left' src='$imagefiles/edit.png' title='' alt='' /></a>\n"
-	."\t\t\t<a href='dataentry.php?action=delete&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
+	."\t\t\t<a href='$scriptname?action=dataentry&amp;subaction=delete&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
 			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Delete this entry")."')\">" 
 	."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='' title='' onClick=\"return confirm('".$clang->gT("Are you sure you want to delete this entry.")."')\" /></a>\n"
 	. "\t\t\t<a href='export.php?sid=$surveyid&id=$id'" .
@@ -513,7 +513,7 @@ elseif ($subaction == "all")
 	}
 	$browseoutput .=("\t\t</td>\n"
 	."\t\t<td align='right'>\n"
-	."\t\t<form action='browse.php' method='post'><font size='1' face='verdana'>\n"
+	."\t\t<form action='$scriptname?action=browse' method='post'><font size='1' face='verdana'>\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />\n"
 	."\t\t\t".$clang->gT("Records Displayed:")."<input type='text' size='4' value='$dtcount2' name='limit'>\n"
 	."\t\t\t".$clang->gT("Starting From:")."<input type='text' size='4' value='$start' name='start'>\n"
@@ -542,7 +542,7 @@ elseif ($subaction == "all")
 		}
 		$browseoutput .= "\t<tr bgcolor='$bgcc' valign='top'>\n"
 		."\t\t<td align='center'><font face='verdana' size='1'>\n"
-		."\t\t\t<a href='browse.php?sid=$surveyid&amp;subaction=id&amp;id={$dtrow['id']}' title='View this record'>"
+		."\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id={$dtrow['id']}' title='View this record'>"
 		."{$dtrow['id']}</a></font></td>\n";
 
 		$i = 0;

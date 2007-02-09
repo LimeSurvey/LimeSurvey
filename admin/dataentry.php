@@ -228,7 +228,7 @@ if($actsurrows['browse_response']){
 								$message.=$clang->gT("Name").": ".$saver['identifier']."\n";
 								$message.=$clang->gT("Password").": ".$saver['password']."\n\n";
 								$message.=$clang->gT("Reload your survey by clicking on the following URL:").":\n";
-								$message.=$homeurl."/dataentry.php?sid=$surveyid&action=editsaved&identifier=".$saver['identifier']."&accesscode=".$saver['password']."&public=true";
+								$message.=$homeurl."/".$scriptname."?action=dataentry&sid=$surveyid&subaction=editsaved&identifier=".$saver['identifier']."&accesscode=".$saver['password']."&public=true";
 								$from = $thissurvey['adminemail'];
 	
 								if (MailTextMessage($message, $subject, $saver['email'], $from, $sitename))
@@ -1330,8 +1330,8 @@ if($actsurrows['browse_response']){
 		}
 		$dataentryoutput .= "<font color='green'><strong>".$clang->gT("Success")."</strong></font><br />\n"
 		.$clang->gT("Record has been updated.")."<br /><br />\n"
-		."<a href='browse.php?sid=$surveyid&action=id&id=$id'>".$clang->gT("View This Record")."</a>\n<br />\n"
-		."<a href='browse.php?sid=$surveyid&action=all'>".$clang->gT("Browse Responses")."</a><br />\n"
+		."<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$id'>".$clang->gT("View This Record")."</a>\n<br />\n"
+		."<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all'>".$clang->gT("Browse Responses")."</a><br />\n"
 		."</td></tr></table>\n"
 		."</body>\n";
 	}
@@ -1351,7 +1351,7 @@ if($actsurrows['browse_response']){
 		$dataentryoutput .= "\t<tr>\n";
 		$delresult = $connect->Execute($delquery) or die ("Couldn't delete record $id<br />\n".htmlspecialchars($connect->ErrorMsg()));
 		$dataentryoutput .= "\t\t<td align='center'><br />$setfont<strong>".$clang->gT("Record Deleted")." (ID: $id)</strong><br /><br />\n"
-		."\t\t\t<a href='browse.php?sid=$surveyid&action=all'>".$clang->gT("Browse Responses")."</a></font>\n"
+		."\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all'>".$clang->gT("Browse Responses")."</a></font>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
 		."</table>\n"

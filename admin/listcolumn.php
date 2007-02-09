@@ -77,7 +77,7 @@ echo "</td></tr>\n";
 while ($row=$result->FetchRow())
 {
 	echo  "<tr><td valign='top' align='center' >$setfont"
-	. "<a href='browse.php?sid=$surveyid&action=id&id=".$row['id']."' target='home'>"
+	. "<a href='$scriptname?action=browse&sid=$surveyid&subaction=id&id=".$row['id']."' target='home'>"
 	. $row['id']."</a></td>"
 	. "<td valign='top'>$setfont".$row[$column]."</td></tr>\n";
 }

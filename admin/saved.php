@@ -118,7 +118,7 @@ function showSavedList($surveyid)
 				[<a href='$scriptname?action=saved&amp;sid=$surveyid&amp;subaction=delete&amp;scid=".$row['scid']."'"
 			." onClick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?")."\")'"
 			.">".$clang->gT("Delete")."</a>]
-				[<a href='dataentry.php?sid=$surveyid&amp;action=editsaved&amp;identifier=".rawurlencode ($row['identifier'])."&amp;scid=".$row['scid']."&amp;accesscode=".$row['access_code']."'>".$clang->gT("Edit")."</a>]
+				[<a href='".$scriptname."?action=dataentry&amp;sid=$surveyid&amp;subaction=editsaved&amp;identifier=".rawurlencode ($row['identifier'])."&amp;scid=".$row['scid']."&amp;accesscode=".$row['access_code']."'>".$clang->gT("Edit")."</a>]
 				</td>
 			   </tr>\n";
 		} // while
