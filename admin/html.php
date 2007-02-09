@@ -1092,9 +1092,9 @@ if ($qid)  // Show the question toolbar
 		if ($qrrow['type'] == "F" ||$qrrow['type'] == "H")
 		{
 			$questionsummary .= " (LID: {$qrrow['lid']}) "
-			. "<input align='top' type='image' src='$imagefiles/labels.png' title='"
-			. $clang->gT("Edit/Add Label Sets")."' height='15' width='15' hspace='0' name='EditThisLabelSet' "
-			. "onClick=\"window.open('labels.php?lid={$qrrow['lid']}', '_blank')\">\n";
+			. "<input align='top' type='image' src='$imagefiles/labelssmall.png' title='"
+			. $clang->gT("Edit/Add Label Sets")."' name='EditThisLabelSet' "
+			. "onClick=\"window.open('$scriptname?action=labels&amp;lid={$qrrow['lid']}', '_blank')\" />\n";
 		}
 		$questionsummary .="</td></tr>\n";
 		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "!" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R" || $qrrow['type'] == "F" ||$qrrow['type'] == "H"))
@@ -1495,7 +1495,6 @@ if ($action == "editusers")
 	. "\t</tr>\n";
 
 	$_SESSION['userlist'] = getuserlist();
-	//$_SESSION['userlist'] = getuserlistforuser($_SESSION['loginID'], 0, NULL);
 	$ui = count($_SESSION['userlist']);
 	$usrhimself = $_SESSION['userlist'][0];
 	unset($_SESSION['userlist'][0]);
@@ -1505,7 +1504,7 @@ if ($action == "editusers")
 	. "\t<td align='center'><strong>{$usrhimself['user']}</strong></td>\n"
 	. "\t<td align='center'><strong>{$usrhimself['email']}</strong></td>\n"
 	. "\t\t<td align='center'><strong>{$usrhimself['full_name']}</strong></td>\n"
-	. "\t\t<td align='center'><strong>{$usrhimself['password']}</strong></td>\n";
+	. "\t\t<td align='center'><strong>********</strong></td>\n";
 	if($usrhimself['parent_id']!=0) {
 		$usersummary .= "\t\t<td align='center'>{$usrhimself['parent']}</td>\n";
 	}
@@ -1617,11 +1616,11 @@ if ($action == "editusers")
 
 if ($action == "addusergroup")
 {
-	$usersummary = "<form action='$scriptname' name='addnewusergroup' method='post'><table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
+	$usersummary = "<form action='$scriptname'  method='post'><table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
 		. "\t\t<strong><font color='white'>".$clang->gT("Add User Group")."</font></strong></td></tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<td align='right'><strong>".$clang->gT("Name:")."</strong></td>\n"
-		. "\t\t<td><input type='text' size='50' name='group_name' /><font color='red' face='verdana' size='1' />".$clang->gT("Required")."</td></tr>\n"
+		. "\t\t<td><input type='text' size='50' name='group_name' /><font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></td></tr>\n"
 		. "\t<tr><td align='right'><strong>".$clang->gT("Description:")."</strong>(".$clang->gT("Optional").")</td>\n"
 		. "\t\t<td><textarea cols='50' rows='4' name='group_description'></textarea></td></tr>\n"
 		. "\t<tr><td colspan='2' align='center'><input type='submit' value='".html_escape($clang->gT("Add Group"))."' />\n"

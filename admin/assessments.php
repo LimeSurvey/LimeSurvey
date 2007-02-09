@@ -160,12 +160,12 @@ if($actsurrows['edit_survey_property']){
 		}
 		$assessmentsoutput.= "<td>
 			   <table width='100%'>
-				<tr><td align='center'><form method='post' action='admin.php?sid=$surveyid'>
+				<tr><td align='center'><form method='post' action='$scriptname?sid=$surveyid'>
 				 <input type='submit' value='".html_escape($clang->gT("Edit"))."' />
 				 <input type='hidden' name='action' value='assessmentedit' />
 				 <input type='hidden' name='id' value='".$assess['id']."' />
 				 </form></td>
-				 <td align='center'><form method='post' action='admin.php?sid=$surveyid'>
+				 <td align='center'><form method='post' action='$scriptname?sid=$surveyid'>
 				 <input type='submit' value='".html_escape($clang->gT("Delete"))."' onClick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.")."\")' />
 				 <input type='hidden' name='action' value='assessmentdelete' />
 				 <input type='hidden' name='id' value='".$assess['id']."' />
@@ -177,7 +177,7 @@ if($actsurrows['edit_survey_property']){
 		$assessmentsoutput.= "</tr>\n";
 	}
 	$assessmentsoutput.= "</table>";
-	$assessmentsoutput.= "<br /><form method='post' action='admin.php?sid=$surveyid'><table align='center' cellspacing='1'>\n";
+	$assessmentsoutput.= "<br /><form method='post' action='$scriptname?sid=$surveyid'><table align='center' cellspacing='1'>\n";
 	$assessmentsoutput.= "<tr><th colspan='2'>$actiontitle</th></tr>\n";
 	$i=0;
 	

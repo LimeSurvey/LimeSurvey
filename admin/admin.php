@@ -54,7 +54,7 @@ if ($action != "showprintablesurvey")
   if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
   $adminoutput = getAdminHeader($_SESSION['metaHeader']);  // Alle future output is written into this and then outputted at the end of file
   $_SESSION['metaHeader']='';    
-
+  $adminoutput .= helpscreenscript();
   $adminoutput .= "<table width='100%' border='0' cellpadding='0' cellspacing='0'>\n"
   ."\t<tr>\n"
   ."\t\t<td valign='top' align='center' bgcolor='#BBBBBB'>\n";
@@ -271,16 +271,12 @@ if(isset($_SESSION['loginID']) && $action!='login')
 }
   
 sendcacheheaders();
+
 echo $adminoutput;
 
-  
-  function helpscreen()
-  // This functions loads the nescessary helpscreens for each action and hides the help window
-  // 
+  function helpscreenscript()
+  // returns the script part for online help to be included outside a table
   {
-  	global $homeurl, $langdir,  $imagefiles;
-  	global $surveyid, $gid, $qid, $action, $clang;
-
   	$helpoutput= "<script type='text/javascript'>\n"
     ."\tfunction showhelp(action)\n"
     ."\t\t{\n"
@@ -294,8 +290,19 @@ echo $adminoutput;
     ."\t\t\tdocument.getElementById(name).style.display='';\n"
     ."\t\t\t}\n"
     ."\t\t}\n"
-    ."</script>\n" 
-    ."\t\t<td id='help' width='200' valign='top' style='display: none' bgcolor='#CCCCCC'>\n"
+    ."</script>\n"; 
+    return $helpoutput;
+  }
+
+
+  function helpscreen()
+  // This functions loads the nescessary helpscreens for each action and hides the help window
+  // 
+  {
+  	global $homeurl, $langdir,  $imagefiles;
+  	global $surveyid, $gid, $qid, $action, $clang;
+
+    $helpoutput="\t\t<td id='help' width='200' valign='top' style='display: none' bgcolor='#CCCCCC'>\n"
   	."\t\t\t<table width='100%'><tr><td>"
   	."<table width='100%' align='center' cellspacing='0'>\n"
   	."\t\t\t\t<tr>\n"
