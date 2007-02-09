@@ -249,9 +249,9 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 else
 {
 	//Create the survey responses table
-	$createsurvey = "id I NOTNULL AUTO,\n";
+	$createsurvey = "id I NOTNULL AUTO PRIMARY,\n";
 	// --> START NEW FEATURE - SAVE
-	$createsurvey .= " submitdate T NOTNULL DEF '0000-00-00 00:00:00',\n";
+	$createsurvey .= " submitdate T NOTNULL DEFAULT '0000-00-00 00:00:00',\n";
 	$createsurvey .= " startlanguage C(20) NOTNULL ,\n";
 	// --> END NEW FEATURE - SAVE
 	//Check for any additional fields for this survey and create necessary fields (token and datestamp)
