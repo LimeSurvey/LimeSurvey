@@ -173,7 +173,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		. "attribute_2 varchar(100) NULL,\n"
 		. "mpid int NULL,\n"
 		. "PRIMARY KEY (tid),\n"
-		. "INDEX (token)) TYPE=MyISAM;";
+		. "INDEX (token));";
 		$ctresult = $connect->Execute($createtokentable) or die ("Completely mucked up<br />$createtokentable<br /><br />".htmlspecialchars($connect->ErrorMsg()));
 		$tokenoutput .= "\t<tr>\n"
 		."\t\t<td align='center'>\n"

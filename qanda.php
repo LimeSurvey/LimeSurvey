@@ -1241,7 +1241,7 @@ function do_ranking($ia)
 
 	$choicelist = "\t\t\t\t\t\t<select size='$anscount' name='CHOICES_{$ia[0]}' ";
 	if (isset($choicewidth)) {$choicelist.=$choicewidth;}
-	$choicelist .= " id='CHOICES_{$ia[0]}' onClick=\"rankthis_{$ia[0]}(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" class='select'>\n";
+    $choicelist .= " id='CHOICES_{$ia[0]}' onClick=\"if (this.options.length>0 && this.selectedIndex<0) {this.options[this.options.length-1].selected=true;}; rankthis_{$ia[0]}(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" class='select'>\n";
 	if (_PHPVERSION <= "4.2.0")
 	{
 		foreach ($chosen as $chs) {$choose[]=$chs[0];}

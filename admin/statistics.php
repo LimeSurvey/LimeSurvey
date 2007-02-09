@@ -103,7 +103,7 @@ $statisticsoutput .= "</table>\n"
 ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1'"
 ." cellspacing='0'>\n"
 ."<tr><td align='center' bgcolor='#555555' height='22'>"
-."<input type='image' src='$imagefiles/plus.gif' align='right' onClick='show(\"filtersettings\"); hide(\"sqlbuilder\")'><input type='image' src='$imagefiles/minus.gif' align='right' onClick='hide(\"filtersettings\")'>"
+."<input type='image' src='$imagefiles/plus.gif' align='right' onClick='show(\"filtersettings\")'><input type='image' src='$imagefiles/minus.gif' align='right' onClick='hide(\"filtersettings\")'>"
 ."<font size='2' face='verdana' color='#FF9900'><strong>".$clang->gT("Filter Settings")."</strong></font>"
 ."</td></tr>\n"
 ."</table>\n"
@@ -721,7 +721,6 @@ if (isset($_POST['display']) && $_POST['display'])
 {
 	$statisticsoutput .= "<script type='text/javascript'>
     <!-- 
-     hide('sqlbuilder'); 
      hide('filtersettings'); 
     //-->
     </script>\n";
@@ -1467,11 +1466,11 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					$graph->legend->SetFont(constant($jpgraphfont), FS_NORMAL, $fontsize);
 					$graph->legend->SetPos(0.015, $legendtop, 'right', 'top');
 					$graph->legend->SetFillColor("silver");
+    				$graph->SetAntiAliasing();
 
 				}
 				$graph->title->SetColor("#EEEEEE");
 				$graph->SetMarginColor("#666666");
-				$graph->SetAntiAliasing();
 				// Set A title for the plot
 				//$graph->title->Set($qquestion);
 				$graph->title->SetFont(constant($jpgraphfont),FS_BOLD,13);

@@ -1361,17 +1361,9 @@ function buildsurveysession()
 		{
 			$_SESSION['insertarray'][] = $fieldname;
 			if ($arow['other'] == "Y") { $_SESSION['insertarray'][] = $fieldname."other";}
-			//go through answers, and if there is a default, register it now so that conditions work properly the first time
-// Original Query
-//			$abquery = "SELECT ".db_table_name('answers').".*\n"
-//			. "FROM ".db_table_name('answers').", ".db_table_name('questions')."\n"
-//			. "WHERE ".db_table_name('answers').".qid=".db_table_name('questions').".qid\n"
-//			. "AND sid=$surveyid\n"
-//			. "AND ".db_table_name('questions').".qid={$arow['qid']}\n"
-//			. "AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' \n"
-//			. "ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
 
-// Optimized Query
+		//go through answers, and if there is a default, register it now so that conditions work properly the first time
+
 			$abquery = "SELECT a.code, a.default_value\n"
 			. " FROM ".db_table_name('answers')." as a \n"
 			. " WHERE a.qid={$arow['qid']}\n"
@@ -1405,7 +1397,7 @@ function buildsurveysession()
 //			$conditions = "N";
 //		}
 
-		if ($arow['hasconditions']==1)
+		if ($arow['hasconditions']>0)
 		{
 			$conditions = "Y";
 		}
