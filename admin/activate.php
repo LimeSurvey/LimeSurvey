@@ -36,7 +36,7 @@
 
 //Ensure script is not run directly, avoid path disclosure
 if (empty($homedir)) {die ("Cannot run this script directly");}
-include_once("login_check.php");
+
 
 
 

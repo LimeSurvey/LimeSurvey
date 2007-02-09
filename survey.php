@@ -438,10 +438,6 @@ echo "\t//-->\n";
 echo "\t</script>\n\n";
 // <-- END NEW FEATURE - SAVE
 
-//foreach(file("$thistpl/welcome.pstpl") as $op)
-//{
-//	echo templatereplace($op);
-//}
 echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"));
 
 echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"

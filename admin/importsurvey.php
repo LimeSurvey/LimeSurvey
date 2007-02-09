@@ -35,7 +35,6 @@
 */
 //Ensure script is not run directly, avoid path disclosure
 if (empty($homedir)) {die ("Cannot run this script directly");}
-include_once("login_check.php");
 
 
 // array_combine function is PHP5 only so we have to provide 
@@ -536,9 +535,8 @@ $oldsid=$surveyid;
 if ($importversion>=111)
 {
     $fieldorders=convertCSVRowToArray($surveylsarray[0],',','"');
-    $count=0;
+    unset($surveylsarray[0]);
 	foreach ($surveylsarray as $slsrow) {
-        if ($count==0) {$count++; continue;}
         $fieldcontents=convertCSVRowToArray($slsrow,',','"');
 		$surveylsrowdata=array_combine($fieldorders,$fieldcontents);
         $surveylsrowdata['surveyls_survey_id']=$newsid;     

@@ -2983,10 +2983,12 @@ function BuildCSVFromQuery($Query)
 		$ColumnValues = "";
 		foreach ($Row as $Key=>$Value)
 		{
-			$ColumnValues .= CSVEscape(str_replace("\r\n", "\n", $Value)) . ",";
+			$Value=str_replace("\r\n", "\n", $Value);
+			$Value=str_replace("\r", "\n", $Value);
+			$ColumnValues .= CSVEscape($Value) . ",";
 		}
 		$ColumnValues = substr($ColumnValues, 0, -1); //strip off last comma space
-		$Output .= "$ColumnValues\n";
+		$Output .= str_replace("\n","\\n","$ColumnValues")."\n";
 	}
 	return $Output;
 }

@@ -36,9 +36,7 @@
 if (isset($_GET['sid'])) {$surveyid = $_GET['sid'];}
 if (isset($_GET['ok'])) {$ok = $_GET['ok'];}
 
-require_once(dirname(__FILE__).'/../config.php');
-
-include_once("login_check.php");
+if (empty($homedir)) {die ("Cannot run this script directly");}
 
 $actsurquery = "SELECT delete_survey FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
 //$actsurresult = $connect->Execute($actsurquery) or die($connect->ErrorMsg());	
@@ -91,7 +89,7 @@ if($actsurrows['delete_survey'])
 		$deletesurveyoutput .= "\t<tr>\n";
 		$deletesurveyoutput .= "\t\t<td align='center'><br />\n";
 		$deletesurveyoutput .= "\t\t\t<input type='submit'  value='".html_escape($clang->gT("Cancel"))."' onClick=\"window.open('admin.php?sid=$surveyid', '_top')\" /><br />\n";
-		$deletesurveyoutput .= "\t\t\t<input type='submit'  value='".html_escape($clang->gT("Delete"))."' onClick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;ok=Y','_top')\" />\n";
+		$deletesurveyoutput .= "\t\t\t<input type='submit'  value='".html_escape($clang->gT("Delete"))."' onClick=\"window.open('$scriptname?action=deletesurvey&amp;sid=$surveyid&amp;ok=Y','_top')\" />\n";
 		$deletesurveyoutput .= "\t\t</td>\n";
 		$deletesurveyoutput .= "\t</tr>\n";
 		$deletesurveyoutput .= "</table>\n";
