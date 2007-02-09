@@ -1,4 +1,4 @@
-<table align='center' width='100%' cellpadding='25' cellspacing='0' border='1' style='border-collapse: collapse;border-color:#111111'>
+<table align='center' width='100%' cellpadding='25' cellspacing='0' border='1' style='border-collapse: collapse' bordercolor='#111111'>
 	<tr>
 		<td align='left' bgcolor='#17479E'>
 			<font size='4' color='#E5E5E5'><b>{SURVEYNAME}</b></font><br />
@@ -7,8 +7,8 @@
 	</tr>
 	<tr>
 		<td align='left' bgcolor='#E5E5E5'>
-			<font size='2'>{WELCOME}</font><br /><br />
-			<i>Click on the "next >> " button to begin.<br /><br /> 						Click here if you don't want to participate:</i>
+			<font size='2'>{WELCOME}<br /><br />
+			<i><br /><br />
 			{CLEARALL}
 		</td>
 	</tr>
