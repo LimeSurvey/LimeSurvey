@@ -2183,7 +2183,7 @@ function html_escape($str) {
 // If you want to echo the header use doHeader() !
 function getHeader()
 {
-	global $embedded, $surveyid;
+	global $embedded, $surveyid, $rooturl;
 
 	if (isset($surveyid)) {$surveylanguage=GetBaseLanguageFromSurveyID($surveyid);}
 	else {$surveylanguage='en';}
@@ -2191,14 +2191,14 @@ function getHeader()
 	{
 		return  "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\">\n"
 		. "<head>\n"
-		. "<link type=\"text/css\" rel=\"StyleSheet\" href=\"scripts/slider/swing.css\" />\n"
-		. "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />"
-		. "<script type=\"text/javascript\" src=\"scripts/slider/range.js\"></script>\n"
-		. "<script type=\"text/javascript\" src=\"scripts/slider/timer.js\"></script>\n"
-		. "<script type=\"text/javascript\" src=\"scripts/slider/slider.js\"></script>\n"
-		. "<script type=\"text/javascript\" src=\"scripts/calendar/calendar.js\"></script>\n"
-		. "<script type=\"text/javascript\" src=\"scripts/calendar/lang/calendar-".$surveylanguage.".js\"></script>\n"
-		. "<script type=\"text/javascript\" src=\"scripts/calendar/calendar-setup.js\"></script>\n";
+		. "<link type=\"text/css\" rel=\"StyleSheet\" href=\"".$rooturl."/scripts/slider/swing.css\" />\n"
+		. "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"".$rooturl."/scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />"
+		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/slider/range.js\"></script>\n"
+		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/slider/timer.js\"></script>\n"
+		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/slider/slider.js\"></script>\n"
+		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/calendar.js\"></script>\n"
+		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/lang/calendar-".$surveylanguage.".js\"></script>\n"
+		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/calendar-setup.js\"></script>\n";
 	}
 
 	global $embedded_headerfunc;
