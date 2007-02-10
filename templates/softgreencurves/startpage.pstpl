@@ -74,7 +74,7 @@ body{
 	border-color: #AAAAAA;
 	background-color: #DDFFDD;
 	font-family: verdana;
-	font-size: 8;
+	font-size: 8pt;
 	}
 .graph
 	{

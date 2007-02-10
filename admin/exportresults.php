@@ -269,7 +269,7 @@ if (!$style)
 			."\t\t<td><font size='1'>"
 			."<img src='$imagefiles/help.gif' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
 			.$clang->gT("Your survey can export associated token data with each response. Select any additional fields you would like to export.")
-			."\")'><br /><br />\n"
+			."\")' /><br /><br />\n"
 			."<input type='checkbox' name='first_name' id='first_name'>"
 			."<label for='first_name'>".$clang->gT("First Name")."</label><br />\n"
 			."<input type='checkbox' name='last_name' id='last_name'>"

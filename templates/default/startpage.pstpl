@@ -6,36 +6,36 @@
 body.default
 	{
 	font-family: verdana;
-	font-size: 11;
+	font-size: 11px;
 	}
 .question
     {
     font-family: verdana;
-    font-size: 11;
+    font-size: 11px;
     }
 .questionhelp
     {
-	font-size: 11;
+	font-size: 10px;
     }        
 .clearall
     {
-    font-size: 11;
+    font-size: 11px;
     }
 .answertext
 	{
 	font-family: verdana;
-	font-size: 11;
+	font-size: 11px;
 	}
 .array1
 	{
 	font-family: verdana;
-	font-size: 11;
+	font-size: 11px;
     text-align:center;
 	}
 .array2
 	{
 	font-family: verdana;
-	font-size: 11;
+	font-size: 11px;
     text-align:center;
 	}
 

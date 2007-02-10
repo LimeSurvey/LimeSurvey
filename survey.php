@@ -598,7 +598,7 @@ if (is_array($conditions)) //if conditions exist, create hidden inputs for previ
 	{
 		if (in_array($SESak, $_SESSION['insertarray']))
 		{
-			echo "<input type='hidden' name='java$SESak' id='java$SESak' value='" . $_SESSION[$SESak] . "'>\n";
+			echo "<input type='hidden' name='java$SESak' id='java$SESak' value='" . $_SESSION[$SESak] . "' />\n";
 		}
 	}
 }

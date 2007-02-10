@@ -1731,7 +1731,7 @@ function templatereplace($line)
 
 	if (strpos($line, "{SID}") !== false) $line=str_replace("{SID}", $surveyid, $line);
 	if ($help) {
-		if (strpos($line, "{QUESTIONHELP}") !== false) $line=str_replace("{QUESTIONHELP}", "<img src='".$imagefiles."/help.gif' alt='Help' align='left'>".$help, $line);
+		if (strpos($line, "{QUESTIONHELP}") !== false) $line=str_replace("{QUESTIONHELP}", "<img src='".$imagefiles."/help.gif' alt='Help' align='left' />".$help, $line);
 		if (strpos($line, "{QUESTIONHELPPLAINTEXT}") !== false) $line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
 	}
 	else
@@ -1741,7 +1741,7 @@ function templatereplace($line)
 	}
 	if (strpos($line, "{NAVIGATOR}") !== false) $line=str_replace("{NAVIGATOR}", $navigator, $line);
 	if (strpos($line, "{SUBMITBUTTON}") !== false) {
-		$submitbutton="<input class='submit' type='submit' value=' ".$clang->gT("submit")." ' name='move2' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\">";
+		$submitbutton="<input class='submit' type='submit' value=' ".$clang->gT("submit")." ' name='move2' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" />";
 		$line=str_replace("{SUBMITBUTTON}", $submitbutton, $line);
 	}
 	if (strpos($line, "{COMPLETED}") !== false) $line=str_replace("{COMPLETED}", $completed, $line);
@@ -1751,7 +1751,7 @@ function templatereplace($line)
 		$line=str_replace("{URL}", $linkreplace, $line);
 	}
 	if (strpos($line, "{PRIVACY}") !== false) $line=str_replace("{PRIVACY}", $privacy, $line);
-	if (strpos($line, "{PRIVACYMESSAGE}") !== false) $line=str_replace("{PRIVACYMESSAGE}", "<strong><i>".$clang->gT("A Note On Privacy")."</i></strong><br />".$clang->gT("This survey is anonymous.<br>The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."), $line);
+	if (strpos($line, "{PRIVACYMESSAGE}") !== false) $line=str_replace("{PRIVACYMESSAGE}", "<strong><i>".$clang->gT("A Note On Privacy")."</i></strong><br />".$clang->gT("This survey is anonymous.<br />The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."), $line);
 	if (strpos($line, "{CLEARALL}") !== false) 	{
 		$clearall = "\t\t\t\t\t<div class='clearall'>"
 		. "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall";
@@ -1809,7 +1809,7 @@ function templatereplace($line)
 		}
 		$line=str_replace("{TEMPLATEURL}", $templateurl, $line);
 	}
-	if (strpos($line, "{SUBMITCOMPLETE}") !== false) $line=str_replace("{SUBMITCOMPLETE}", $clang->gT("<strong>Thank You<br /><br />You have completed answering the questions in this survey.</strong><br /><br />Click on 'Submit' now to complete the process and save your answers."), $line);
+	if (strpos($line, "{SUBMITCOMPLETE}") !== false) $line=str_replace("{SUBMITCOMPLETE}", $clang->gT("<strong>Thank You!<br /><br />You have completed answering the questions in this survey.</strong><br /><br />Click on 'Submit' now to complete the process and save your answers."), $line);
 	if (strpos($line, "{SUBMITREVIEW}") !== false) {
 		if (isset($thissurvey['allowprev']) && $thissurvey['allowprev'] == "N") {
 			$strreview = "";
