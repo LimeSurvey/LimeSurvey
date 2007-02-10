@@ -327,7 +327,7 @@ if ($questionscount > 0)
 		elseif ($rows['type'] == "R")
 		{
 			$aquery="SELECT * FROM {$dbprefix}answers "
-			."WHERE qid={$rows['qid']}AND ".db_table_name('answers').".language='".GetBaseLanguageFromSurveyID($surveyid)."' " 
+			."WHERE qid={$rows['qid']} AND ".db_table_name('answers').".language='".GetBaseLanguageFromSurveyID($surveyid)."' " 
 			."ORDER BY sortorder, answer";
 			$aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to Ranking question<br />$aquery<br />".$connect->ErrorMsg());
 			$acount=$aresult->RecordCount();
@@ -591,7 +591,7 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 	."\t</tr>\n";
 
 	$conditionsoutput .= "\t<tr>\n"
-	."\t\t<th>".$clang->gT("Condition")."</font></th><th></th><th>".$clang->gT("Question")."</th>\n"
+	."\t\t<th>".$clang->gT("Condition")."</th><th></th><th>".$clang->gT("Question")."</th>\n"
 	."\t</tr>\n";
 
 	$conditionsoutput .= "\t<tr>\n"
@@ -698,7 +698,7 @@ $conditionsoutput .= "\t<tr bgcolor='#CDCDCD'><td colspan=3 height='10'></td></t
 ."\t\t</td>\n"
 ."\t</tr>\n";
 $conditionsoutput .= "\t<tr><td colspan='3'></td></tr>\n"
-."</table><br />&nbsp\n";
+."</table><br />&nbsp;\n";
 
 
 ?>

@@ -195,39 +195,38 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	//IF ANY OF THE CHECKS FAILED, PRESENT THIS SCREEN
 	if (isset($failedcheck) && $failedcheck)
 	{
-		$activateoutput .= "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+		$activateoutput .= "<br />\n<table bgcolor='#FFFFFF' width='500' align='center' style='border: 1px solid #555555' cellpadding='6' cellspacing='0'>\n";
 		$activateoutput .= "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Activate Survey")." ($surveyid)</strong></font></td></tr>\n";
 		$activateoutput .= "\t<tr>\n";
 		$activateoutput .= "\t\t<td align='center' bgcolor='#ffeeee'>\n";
 		$activateoutput .= "\t\t\t<font color='red'><strong>".$clang->gT("Error")."</strong><br />\n";
-		$activateoutput .= "\t\t\t".$clang->gT("Survey does not pass consistency check")."</font></font>\n";
+		$activateoutput .= "\t\t\t".$clang->gT("Survey does not pass consistency check")."</font>\n";
 		$activateoutput .= "\t\t</td>\n";
 		$activateoutput .= "\t</tr>\n";
 		$activateoutput .= "\t<tr>\n";
 		$activateoutput .= "\t\t<td>\n";
-		$activateoutput .= "\t\t\t<strong>".$clang->gT("The following problems have been found:")."</strong></font><br />\n";
+		$activateoutput .= "\t\t\t<strong>".$clang->gT("The following problems have been found:")."</strong><br />\n";
 		$activateoutput .= "\t\t\t<ul>\n";
 		foreach ($failedcheck as $fc)
 		{
-			$activateoutput .= "\t\t\t\t<li> Question qid-{$fc[0]} (\"<a href='$scriptname?sid=$surveyid&amp;gid=$fc[3]&amp;qid=$fc[0]'>{$fc[1]}</a>\") {$fc[2]}</font></li>\n";
+			$activateoutput .= "\t\t\t\t<li> Question qid-{$fc[0]} (\"<a href='$scriptname?sid=$surveyid&amp;gid=$fc[3]&amp;qid=$fc[0]'>{$fc[1]}</a>\"){$fc[2]}</li>\n";
 		}
 		$activateoutput .= "\t\t\t</ul>\n";
-		$activateoutput .= "\t\t\t".$clang->gT("The survey cannot be activated until these problems have been resolved.")."</font>\n";
+		$activateoutput .= "\t\t\t".$clang->gT("The survey cannot be activated until these problems have been resolved.")."\n";
 		$activateoutput .= "\t\t</td>\n";
 		$activateoutput .= "\t</tr>\n";
-		$activateoutput .= "</table>\n";
+		$activateoutput .= "</table><br />&nbsp;\n";
 		
-		echo $activateoutput;
-		exit;
+		return;
 	}
    
-	$activateoutput .= "<br />\n<table width='500' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+	$activateoutput .= "<br />\n<table bgcolor='#FFFFFF' width='500' align='center' style='border: 1px solid #555555' cellpadding='6' cellspacing='0'>\n";
 	$activateoutput .= "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Activate Survey")." ($surveyid)</strong></font></td></tr>\n";
 	$activateoutput .= "\t<tr>\n";
 	$activateoutput .= "\t\t<td align='center' bgcolor='#ffeeee'>\n";
 	$activateoutput .= "\t\t\t<font color='red'><strong>".$clang->gT("Warning")."</strong><br />\n";
 	$activateoutput .= "\t\t\t".$clang->gT("READ THIS CAREFULLY BEFORE PROCEEDING")."\n";
-	$activateoutput .= "\t\t\t</font></font>\n";
+	$activateoutput .= "\t\t\t</font>\n";
 	$activateoutput .= "\t\t</td>\n";
 	$activateoutput .= "\t</tr>\n";
 	$activateoutput .= "\t<tr>\n";
@@ -455,7 +454,7 @@ else
 		}
 	}
 
-	$activateoutput .= "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+	$activateoutput .= "<br />\n<table bgcolor='#FFFFFF' width='350' align='center' style='border: 1px solid #555555' cellpadding='6' cellspacing='0'>\n";
 	$activateoutput .= "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Activate Survey")." ($surveyid)</strong></font></td></tr>\n";
 	$activateoutput .= "\t\t\t\t<tr><td align='center'><font color='green'>".$clang->gT("Survey has been activated. Results table has been successfully created.")."<br /><br />\n";
 

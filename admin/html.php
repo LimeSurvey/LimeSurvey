@@ -533,9 +533,9 @@ if ($surveyid)
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n"
 			. "<a href=\"#\" onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
-			. "onmouseover=\"showTooltip(event,'".$clang->gT("Browse Responses for this Survey")."');return false\">" .
-			"<img src='$imagefiles/browse.png' title=''align='left' name='BrowseSurveyResults' alt='".$clang->gT("Browse Responses for this Survey")."' /></a>\n"
-			. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0'>\n";
+			. "onmouseover=\"showTooltip(event,'".$clang->gT("Browse Responses For This Survey")."');return false\">" .
+			"<img src='$imagefiles/browse.png' title=''align='left' name='BrowseSurveyResults' alt='".$clang->gT("Browse Responses For This Survey")."' /></a>\n"
+			. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n";
 			if ($s1row['allowsave'] == "Y")
 			{
 				$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=saved&amp;sid=$surveyid', '_top')\""
@@ -2080,7 +2080,7 @@ if ($action == "copyquestion")
 	while ($eqrow = $eqresult->FetchRow())
 	{
 		$eqrow = array_map('htmlspecialchars', $eqrow);
-		$editquestion = "<form action='$scriptname' name='editquestion' method='post'>\n<table width='100%' border='0'>\n"
+		$editquestion = "<form action='$scriptname' method='post'>\n<table width='100%' border='0'>\n"
 		. "\t<tr>\n"
 		. "\t\t<td colspan='2' bgcolor='black' align='center'>\n"
 		. "\t\t\t<font color='white'><strong>".$clang->gT("Copy Question")."</strong><br />".$clang->gT("Note: You MUST enter a new question code")."</font>\n"

@@ -76,7 +76,7 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
-$importsurvey .= "<strong><font color='green'>".$clang->gT("Success")."</font></strong><br />\n";
+$importsurvey .= "<strong><font color='green'>".$clang->gT("Success")."!</font></strong><br />\n";
 $importsurvey .= $clang->gT("File upload succeeded.")."<br /><br />\n";
 $importsurvey .= $clang->gT("Reading file..")."<br />\n";
 $handle = fopen($the_full_file_path, "r");
@@ -576,6 +576,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
             {
             $labelsetrowdata['languages']=$newlanguage;
             } 
+        unset($labelsetrowdata['lid']);
         $newvalues=array_values($labelsetrowdata);
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
         $lsainsert = "insert INTO {$dbprefix}labelsets (".implode(',',array_keys($labelsetrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
@@ -584,7 +585,8 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 		// Get the new insert id for the labels inside this labelset
 		$newlid=$connect->Insert_ID();
 
-		$importsurvey .= "OLDLID: $oldlid   NEWLID: $newlid";
+//		$importsurvey .= "OLDLID: $oldlid   NEWLID: $newlid";  
+//      For debugging label import
 
 		if ($labelsarray) {
 		    $count=0;

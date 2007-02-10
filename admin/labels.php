@@ -435,7 +435,7 @@ function updateset($lid)
 function deletelabelset($lid)
 // language proof
 {
-	global $dbprefix, $connect;
+	global $dbprefix, $connect, $clang, $labelsoutput;
 	//CHECK THAT THERE ARE NO QUESTIONS THAT RELY ON THIS LID
 	$query = "SELECT qid FROM ".db_table_name('questions')." WHERE type IN ('F','H') AND lid=$lid";
 	$result = $connect->Execute($query) or die("Error");
