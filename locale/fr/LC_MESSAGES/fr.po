@@ -2,31 +2,33 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-11-30 08:11+0100\n"
-"Last-Translator: GAUGRY Sébastien\n"
+"PO-Revision-Date: 2007-02-10 14:38+0100\n"
+"Last-Translator: b00z00\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Basepath: E:\\www\\phpsurveyor\n"
+"X-Poedit-Basepath: C:\\wamp\\www\\phpsurveyor\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-Country: FRANCE\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-SearchPath-0: \\\\buttle\\c$\\var\\www\\html\\phpsurveyor-dev\n"
-"X-Poedit-SearchPath-1: E:\\www\\phpsurveyor\n"
+"X-Poedit-KeywordsList: gT\n"
+"X-Poedit-SearchPath-0: C:\\wamp\\www\\phpsurveyor\n"
 
 msgid "Administration"
 msgstr "Administration"
 
 # E:\www\phpsurveyor/common.php:190
 msgid "Logged in as"
-msgstr "Connecté sous :"
+msgstr "Connecté en tant que :"
 
 msgid "Default Administration Page"
 msgstr "Page d&lsquo;administration générale"
 
-msgid "Modify Security Settings"
-msgstr "Modifier les paramètres de sécurité"
+# E:\www\phpsurveyor/common.php:219
+# E:\www\phpsurveyor/common.php:220
+msgid "Create/Edit Users"
+msgstr "Créer/Editer des utilisateurs"
 
 # E:\www\phpsurveyor/common.php:219
 # E:\www\phpsurveyor/common.php:220
@@ -36,7 +38,7 @@ msgstr "Créer/Editer des groupes"
 msgid "Check Settings"
 msgstr "Vérifier les paramètres"
 
-msgid "Check Data Consistency"
+msgid "Check Data Integrity"
 msgstr "Vérifier la cohérence des données"
 
 msgid "Delete Entire Survey"
@@ -78,34 +80,52 @@ msgstr "Aucun"
 msgid "5 Point Choice"
 msgstr "Alignement de 5 boutons radio"
 
+msgid "Array (5 Point Choice)"
+msgstr "Ligne de 5 boutons radio"
+
+msgid "Array (10 Point Choice)"
+msgstr "Ligne de 10 boutons radio"
+
+msgid "Array (Yes/No/Uncertain)"
+msgstr "Ligne (Oui/Non/Indifférent)"
+
 # E:\www\phpsurveyor/common.php:503
 # E:\www\phpsurveyor/admin/navigator.php:1659
 msgid "Date"
 msgstr "Date"
 
+msgid "Array (Increase, Same, Decrease)"
+msgstr "Ligne (Augmenter, Sans changement, Diminuer)"
+
+msgid "Array (Flexible Labels)"
+msgstr "Ligne de boutons radio (Etiquettes personnalisées)"
+
 msgid "Gender"
 msgstr "Genre"
 
-msgid "List (Dropdown)"
-msgstr "Liste déroulante"
+msgid "Array (Flexible Labels) by Column"
+msgstr "Ligne de boutons radio (Etiquettes personnalisées en colonne)"
+
+msgid "Language Switch"
+msgstr "Changement de langue"
 
 msgid "List (Radio)"
 msgstr "Boutons radio"
 
-msgid "List With Comment"
-msgstr "Liste déroulante avec commentaire"
-
 msgid "Multiple Options"
 msgstr "Cases à cocher"
+
+msgid "Numerical Input"
+msgstr "Entrée numérique"
+
+msgid "List With Comment"
+msgstr "Liste déroulante avec commentaire"
 
 msgid "Multiple Options With Comments"
 msgstr "Cases à cocher avec commentaire"
 
 msgid "Multiple Short Text"
 msgstr "Zone de texte court multilignes"
-
-msgid "Numerical Input"
-msgstr "Entrée numérique"
 
 msgid "Ranking"
 msgstr "Classement"
@@ -119,35 +139,20 @@ msgstr "Zone de texte longue"
 msgid "Huge Free Text"
 msgstr "Zone de texte immense"
 
-msgid "Yes/No"
-msgstr "Oui/Non"
-
-msgid "Array (5 Point Choice)"
-msgstr "Ligne de 5 boutons radio"
-
-msgid "Array (10 Point Choice)"
-msgstr "Ligne de 10 boutons radio"
-
-msgid "Array (Yes/No/Uncertain)"
-msgstr "Ligne (Oui/Non/Indifférent)"
-
-msgid "Array (Increase, Same, Decrease)"
-msgstr "Ligne (Augmenter, Sans changement, Diminuer)"
-
-msgid "Array (Flexible Labels)"
-msgstr "Ligne de boutons radio (Etiquettes personnalisées)"
-
-msgid "Array (Flexible Labels) by Column"
-msgstr "Ligne de boutons radio (Etiquettes personnalisées en colonne)"
+msgid "List (Flexible Labels) (Dropdown)"
+msgstr "Liste déroulante et étiquettes personnaliées"
 
 msgid "Boilerplate Question"
 msgstr "Texte fixe"
 
-msgid "List (Flexible Labels) (Dropdown)"
-msgstr "Liste déroulante et étiquettes personnaliées"
+msgid "Yes/No"
+msgstr "Oui/Non"
 
 msgid "List (Flexible Labels) (Radio)"
 msgstr "Bouton radio et étiquettes personnalisées"
+
+msgid "List (Dropdown)"
+msgstr "Liste déroulante"
 
 msgid "No email notification"
 msgstr "Aucune notification par mail"
@@ -185,9 +190,6 @@ msgstr "Afficher les 50 dernières réponses"
 msgid "Dataentry Screen for Survey"
 msgstr "Ecran de saisie de données pour le questionnaire"
 
-msgid "Printable Version of Survey"
-msgstr "Version imprimable du questionnaire"
-
 msgid "Get statistics from these responses"
 msgstr "Donner les statistiques de ces réponses"
 
@@ -200,10 +202,6 @@ msgstr "Exporter le résultat dans un fichier de commandes SPSS"
 
 msgid "Import answers from a deactivated survey table"
 msgstr "Importer des réponses d&lsquo;un ancien (désactivé) questionnaire"
-
-# E:\www\phpsurveyor/common.php:953
-msgid "Backup results table as SQL file"
-msgstr "Sauvegarder les résultats dans un fichier SQL"
 
 msgid "View Saved but not submitted Responses"
 msgstr "Voir les réponses enregistrées mais non validées"
@@ -513,6 +511,9 @@ msgstr "Veuillez sélectionner seulement une réponse ci-dessous"
 msgid "Check any that apply"
 msgstr "Cochez la ou les réponses"
 
+msgid "Choose your language"
+msgstr "Choisissez votre langue"
+
 # E:\www\phpsurveyor/qanda.php:366
 # E:\www\phpsurveyor/admin/printablesurvey.php:247
 msgid "*"
@@ -700,9 +701,6 @@ msgstr "Le probléme suivant a été rencontré :"
 msgid "The survey cannot be activated until these problems have been resolved."
 msgstr "Le questionnaire ne peut pas être activé jusqu&lsquo;à ce que ces problémes soient résolus."
 
-msgid "Main Admin Screen"
-msgstr "Ecran principal d&lsquo;administration"
-
 msgid "Warning"
 msgstr "Avertissement"
 
@@ -721,16 +719,13 @@ msgstr "Cependant vous pouvez toujours :<ul><li>Editer(changer) les codes de vos
 msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
 msgstr "Une fois que les données sont saisies dans votre questionnaire, si vous voulez ajouter ou enlever des groupes ou questions, vous devez désactiver ce questionnaire, ce qui déplacera toutes les données qui ont déjà été saisies dans une table d&lsquo;archivage séparée."
 
-msgid "Cancel"
-msgstr "Annuler"
-
-msgid "Activate"
-msgstr "Activer"
-
 msgid "Survey could not be actived."
 msgstr "Le questionnaire ne peut pas être activé."
 
-msgid "Survey has been activated. Results table has been succesfully created."
+msgid "Main Admin Screen"
+msgstr "Ecran principal d&lsquo;administration"
+
+msgid "Survey has been activated. Results table has been successfully created."
 msgstr "Le questionnaire a été activé. La table des réponses a été créée avec succés."
 
 msgid "This is not an anonymous survey. A token table must also be created."
@@ -745,41 +740,12 @@ msgstr "Ce questionnaire permet les enregistrements publics. Une table d&lsquo;i
 msgid "This survey is now active, and responses can be recorded."
 msgstr "Ce questionnaire est maintenant activé, et les réponses peuvent être enregistrées."
 
-msgid "The defined surveyor database does not exist"
-msgstr "La base de données de PHPSurveyor n&lsquo;existe pas"
-
-msgid "Either your selected database has not yet been created or there is a problem accessing it."
-msgstr "Soit votre base de données n&lsquo;a pas été créée soit il y a un probléme pour y accéder."
-
-msgid "PHPSurveyor can attempt to create this database for you."
-msgstr "PHPSurveyor peut tenter de créer la base de données pour vous."
-
-msgid "Your selected database name is:"
-msgstr "Le nom de votre base de données sera :"
-
-msgid "Create Database"
-msgstr "Créer la base de données"
-
-msgid "Populate Database"
-msgstr "Peupler la base de données"
-
-# E:\www\phpsurveyor/admin/admin.php:102
-#, php-format
-msgid "A database named \"%s\" does already exist."
-msgstr "Une base de données intitulée \"%s\" existe déjà."
-
-# E:\www\phpsurveyor/admin/admin.php:103
-msgid "Do you want to populate that database now by creating the necessary tables?"
-msgstr "Voulez-vous compléter la base de données maintenant en créant les tables nécessaires ?"
+# C:\wamp\www\phpsurveyor/admin/admin.php:218
+msgid "Using the PHPSurveyor Admin Script"
+msgstr "Utilisation du script d'administration de PHPSurveyor"
 
 msgid "Help"
 msgstr "Aide"
-
-msgid "Add"
-msgstr "Ajout"
-
-msgid "Update"
-msgstr "Mise à jour"
 
 msgid "Assessments"
 msgstr "Evaluations"
@@ -835,6 +801,9 @@ msgstr "URL"
 msgid "Total"
 msgstr "Questionnaire complet"
 
+msgid "Add"
+msgstr "Ajout"
+
 msgid "Edit"
 msgstr "Editer"
 
@@ -854,6 +823,12 @@ msgstr "Etes-vous sûr de vouloir supprimer cette réponse ?"
 
 msgid "Browse Responses"
 msgstr "Parcourir les réponses"
+
+msgid "The defined surveyor database does not exist"
+msgstr "La base de données de PHPSurveyor n&lsquo;existe pas"
+
+msgid "Either your selected database has not yet been created or there is a problem accessing it."
+msgstr "Soit votre base de données n&lsquo;a pas été créée soit il y a un probléme pour y accéder."
 
 msgid "You have not selected a survey to browse."
 msgstr "Vous n&lsquo;avez pas sélectionné de questionnaire à parcourir."
@@ -965,6 +940,12 @@ msgstr "Effacer la sélection"
 msgid "Close Window"
 msgstr "Fermer la fenêtre"
 
+msgid "Create Database"
+msgstr "Créer la base de données"
+
+msgid "Populate Database"
+msgstr "Peupler la base de données"
+
 #, php-format
 msgid "Database `%s` has been successfully populated."
 msgstr "Base de données `%s` complétée avec succès."
@@ -981,8 +962,14 @@ msgstr "Veuillez cliquer ci-dessous pour peupler la base de données"
 msgid "Could not create database"
 msgstr "Impossible de créer la base de données"
 
-msgid "Group could not be added. It is missing the group name for the following languages "
-msgstr "Le groupe ne peut pas être ajouté. Il manque le nom du groupe pour les langues suivantes"
+msgid ""
+"Group could not be added.\\n"
+"\\n"
+"It is missing the group name for the following languages"
+msgstr ""
+"Le groupe ne peut pas être ajouté.\\n"
+"\\n"
+"Il manque le nom du groupe pour les langues suivantes"
 
 # E:\www\phpsurveyor/admin/database.php:116
 msgid "Error: The database reported the following error:"
@@ -1125,48 +1112,6 @@ msgstr "Ce questionnaire n&lsquo;est pas encore activé. Votre réponse ne peut 
 msgid "The survey you selected does not exist"
 msgstr "Le questionnaire que vous avez sélectionné n&lsquo;existe pas"
 
-msgid "Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. </font>"
-msgstr "Contrôle de cohérence de données<br /><font size='1'>Si des erreurs apparaissent, il faudra relancer ce script plusieurs fois. </font>"
-
-msgid "The following conditions should be deleted"
-msgstr "Les conditions suivantes peuvent être effacées"
-
-msgid "All conditions meet consistency standards"
-msgstr "Toutes les conditions sont cohérentes"
-
-msgid "The following question attributes should be deleted"
-msgstr "Les attributs de question qui suivent peuvent être effacés"
-
-msgid "All question_attributes meet consistency standards"
-msgstr "Les attributs des questions sont cohérents"
-
-msgid "The following assessments should be deleted"
-msgstr "Les évaluations suivantes peuvent être effacées"
-
-msgid "All assessments meet consistency standards"
-msgstr "Toutes les évaluations sont cohérentes"
-
-msgid "The following answers should be deleted"
-msgstr "Les réponses suivantes peuvent être effacées"
-
-msgid "All answers meet consistency standards"
-msgstr "Toutes les réponses sont cohérentes"
-
-msgid "The following questions should be deleted"
-msgstr "Les questions suivantes peuvent être effacées"
-
-msgid "All questions meet consistency standards"
-msgstr "Toutes les questions sont cohérentes"
-
-msgid "The following groups should be deleted"
-msgstr "Les groupes suivants peuvent être effacés"
-
-msgid "All groups meet consistency standards"
-msgstr "Tous les groupes sont cohérents"
-
-msgid "No database action required"
-msgstr "Pas d&lsquo;action à faire sur la base de données"
-
 msgid "Answer could not be added. There is already an answer with this code"
 msgstr "La réponse ne peut pas être ajoutée. Il y a déjà une réponse avec ce code"
 
@@ -1194,8 +1139,11 @@ msgstr "Votre table de réponses sera renommée en :"
 msgid "You should export your responses before de-activating. Click \"Cancel\" to return to the main admin screen without de-activating this survey."
 msgstr "Vous devriez exporter vos réponses avant de désactiver. Cliquez sur \"Annuler\" pour retourner à l&lsquo;écran principal d&lsquo;administration sans désactiver ce questionnaire."
 
-msgid "De-Activate"
-msgstr "Désactiver"
+msgid "De-Activate Survey"
+msgstr "Désactiver le questionnaire"
+
+msgid "Survey Has Been De-Activated"
+msgstr "Le questionnaire a été désactivé"
 
 msgid "The responses table has been renamed to: "
 msgstr "La table réponses a été renommée en : "
@@ -1227,6 +1175,9 @@ msgstr "Ce questionnaire est activé et une table des réponses existe. Si vous 
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
 msgstr "Ce questionnaire a une table d&lsquo;invitations associée. Si vous supprimez ce questionnaire cette table d&lsquo;invitations sera supprimée. Il est recommandé d&lsquo;exporter ou de faire une sauvegarde de ces invitations avant de supprimer ce questionnaire."
 
+msgid "Cancel"
+msgstr "Annuler"
+
 msgid "This survey has been deleted."
 msgstr "Ce questionnaire a été supprimé."
 
@@ -1248,6 +1199,9 @@ msgstr "Exporter le questionnaire"
 msgid "No SID has been provided. Cannot dump survey"
 msgstr "Aucun QID n&lsquo;a été fourni. Impossible d&lsquo;exporter le questionnaire."
 
+msgid "Export Results"
+msgstr "Exporter les résultats"
+
 msgid "Export Responses"
 msgstr "Exporter les réponses"
 
@@ -1256,6 +1210,9 @@ msgstr "Filtré par le script des statistiques"
 
 msgid "Single Response"
 msgstr "Réponse unique"
+
+msgid "Columns"
+msgstr "Colonnes"
 
 msgid "Questions"
 msgstr "Questions"
@@ -1298,7 +1255,7 @@ msgstr "Exporter les données"
 msgid "Column Control"
 msgstr "Titre de la colonne"
 
-msgid "Choose columns"
+msgid "Choose Columns"
 msgstr "Choisir les colonnes"
 
 msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
@@ -1370,6 +1327,10 @@ msgstr "Inactif"
 msgid "Create Survey"
 msgstr "Créer un questionnaire"
 
+# C:\wamp\www\phpsurveyor/admin/html.php:94
+msgid "No Surveys available - please create one."
+msgstr "Pas de questionnaire disponible. Veuillez en créer un."
+
 msgid "PHPSurveyor System Summary"
 msgstr "Résumé système PHPSurveyor"
 
@@ -1421,8 +1382,17 @@ msgstr "Impossible d&lsquo;activer ce questionnaire"
 msgid "Survey Security Settings"
 msgstr "Paramètres de sécurité du questionnaire"
 
-msgid "Do Survey"
-msgstr "Tester le questionnaire"
+msgid "Test This Survey"
+msgstr "Tester ce questionnaire"
+
+msgid "Execute This Survey"
+msgstr "Exécuter ce questionnaire"
+
+msgid "Please select a language:"
+msgstr "SVP sélectionnez une langue :"
+
+msgid "Printable Version of Survey"
+msgstr "Version imprimable du questionnaire"
 
 msgid "Edit Current Survey"
 msgstr "Editer le questionnaire courant"
@@ -1430,11 +1400,14 @@ msgstr "Editer le questionnaire courant"
 msgid "Delete Current Survey"
 msgstr "Supprimer le questionnaire courant"
 
-msgid "Order the groups in that Survey"
-msgstr "Ordonner les groupes dans ce questionnaire :"
+# C:\wamp\www\phpsurveyor/admin/html.php:498
+# C:\wamp\www\phpsurveyor/admin/html.php:499
+# C:\wamp\www\phpsurveyor/admin/html.php:3524
+msgid "Change Group Order"
+msgstr "Changer l'ordre des groupes"
 
-msgid "Export this Survey"
-msgstr "Exporter ce questionnaire"
+msgid "Export Current Survey"
+msgstr "Exporter le questionnaire courant"
 
 msgid "Set Assessment Rules"
 msgstr "Définir des régles d&lsquo;évaluation"
@@ -1497,8 +1470,8 @@ msgstr "Si les invitations sont utilisées, les destinataires doivent être enre
 msgid "Participants can save partially finished surveys"
 msgstr "Les participants peuvent sauvegarder un remplissage partiel du questionnaire"
 
-msgid "Regenerate Question Numbers:"
-msgstr "Régénération de la numérotation des questions :"
+msgid "Regenerate Question Codes:"
+msgstr "Régénérer les codes des questions :"
 
 msgid "Straight"
 msgstr "Complet"
@@ -1588,8 +1561,8 @@ msgstr "Supprimer ce groupe supprimera également toutes les questions et répon
 msgid "Delete Current Group"
 msgstr "Supprimer le groupe en cours"
 
-msgid "Reorder the questions of this group"
-msgstr "Réorganiser les questions de ce groupe"
+msgid "Change Question Order"
+msgstr "Changer l'ordre questions"
 
 msgid "Export Current Group"
 msgstr "Exporter le groupe en cours"
@@ -1666,9 +1639,6 @@ msgstr "Vous devez choisir un jeu d&lsquo;étiquettes pour cette question"
 msgid "Other:"
 msgstr "Autre :"
 
-msgid "Upload completed"
-msgstr "Envoi terminé"
-
 msgid "Base Language"
 msgstr "Langue de base"
 
@@ -1676,7 +1646,7 @@ msgid "Code"
 msgstr "Code :"
 
 msgid "Order"
-msgstr "Commander"
+msgstr "Trier"
 
 msgid "New Answer"
 msgstr "Nouvelle réponse"
@@ -1684,26 +1654,17 @@ msgstr "Nouvelle réponse"
 msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
 msgstr "Vous ne pouvez pas changer des codes, ajouter ou supprimer des entrées dans ce jeu d&lsquo;étiquettes parce que celles-ci sont utilisées par un questionnaire activé."
 
-# E:\www\phpsurveyor/admin/html.php:1028
-msgid "You have to enter user name and email."
-msgstr "Vous devez entrer un nom d'utilisateur et un mail."
+msgid "Modifying User"
+msgstr "Modification de l&lsquo;utilisateur"
 
 msgid "Username"
 msgstr "Nom d&lsquo;utilisateur"
 
-# E:\www\phpsurveyor/admin/html.php:1048
-msgid "You have to login first."
-msgstr "Vous devez d'abord vous connecter."
-
-# E:\www\phpsurveyor/admin/html.php:1064
-msgid "Forgot Your Password?"
-msgstr "Oubli du mot de passe ?"
-
-msgid "Modifying User"
-msgstr "Modification de l&lsquo;utilisateur"
-
 msgid "Full name"
 msgstr "Nom complet"
+
+msgid "Update"
+msgstr "Mise à jour"
 
 msgid "Set User Rights"
 msgstr "Définition des droits utilisateur"
@@ -1719,14 +1680,11 @@ msgstr "Définition du parent réussie."
 msgid "User Control"
 msgstr "Contrôle utilisateur"
 
-msgid "Creator"
-msgstr "Créateur"
+msgid "Created by"
+msgstr "Créé par :"
 
 msgid "Edit User"
 msgstr "Editer un utilisateur"
-
-msgid "Change"
-msgstr "Changer"
 
 msgid "Add User"
 msgstr "Ajouter un utilisateur"
@@ -1746,8 +1704,9 @@ msgstr "Optionnel"
 msgid "Add Group"
 msgstr "Ajouter un groupe"
 
-msgid "Edit Group for Creator"
-msgstr "Edition du groupe pour le créateur"
+# E:\www\phpsurveyor/admin/usercontrol.php:342
+msgid "Edit User Group (Owner: "
+msgstr "Editer le groupe de l'utilisateur (Propriétaire :"
 
 msgid "Update User Group"
 msgstr "Mise à jour du groupe d'utilisateurs"
@@ -1789,8 +1748,16 @@ msgstr "Impossible de supprimer le groupe d'utilisateurs."
 msgid "Could not delete user group. No group selected."
 msgstr "Impossible de supprimer le groupe d'utilisateurs. Aucun groupe sélectionné."
 
+#, fuzzy
+msgid "Adding User Group"
+msgstr "Ajouter un groupe d'utilisateurs"
+
 msgid "Description: "
 msgstr "Description :"
+
+# E:\www\phpsurveyor/admin/usercontrol.php:342
+msgid "User group successfully added!"
+msgstr "Groupe d'utilisateurs ajouté avec succès !"
 
 # E:\www\phpsurveyor/admin/usercontrol.php:153
 # E:\www\phpsurveyor/admin/usercontrol.php:157
@@ -1838,8 +1805,8 @@ msgstr "Attributs de la question"
 msgid "Import Question"
 msgstr "Importer la question"
 
-msgid "Select SQL File:"
-msgstr "Sélectionner un fichier SQL :"
+msgid "Select CSV File"
+msgstr "Sélectionner un fichier CSV :"
 
 msgid "Copy Question"
 msgstr "Copier une question"
@@ -1865,17 +1832,20 @@ msgstr "Mise à jour de la question"
 msgid "Save"
 msgstr "Sauver"
 
-msgid "Save Order"
-msgstr "Sauver l'ordre"
+msgid "Import Group"
+msgstr "Importer le groupe"
+
+msgid "Select CSV File:"
+msgstr "Sélectionner un fichier CSV :"
 
 msgid "Edit Group"
 msgstr "Editer un groupe"
 
-msgid "Import Group"
-msgstr "Importer le groupe"
-
 msgid "Update Group"
 msgstr "Mise à jour du groupe"
+
+msgid "Adding User to group"
+msgstr "Ajouter un utilisateur au groupe"
 
 msgid "User added."
 msgstr "Utilisateur ajouté."
@@ -2171,8 +2141,18 @@ msgstr "Erreur lors de l'envoi du fichier. Vous devez choisir un fichier CSV val
 msgid "(This field is mandatory.)"
 msgstr "(Ce champ est obligatoire)"
 
+# C:\wamp\www\phpsurveyor/admin/html.php:3738
+msgid "This setting cannot be changed later!"
+msgstr "Ce paramètre ne peut pas être changé après !"
+
+msgid "Date Format"
+msgstr "Format date"
+
 msgid "Import Survey"
 msgstr "Importer le questionnaire"
+
+msgid "Select CSV/SQL File:"
+msgstr "Sélectionner un fichier CSV/SQL :"
 
 msgid "You need to upload the file"
 msgstr "Vous devez envoyer le fichier"
@@ -2225,8 +2205,8 @@ msgstr "Jeu d&lsquo;étiquettes"
 msgid "Labels"
 msgstr "Etiquettes"
 
-msgid "Import of Group is completed."
-msgstr "L&lsquo;importation du groupe est terminée."
+msgid "Import of group is completed."
+msgstr "L'importation du groupe est terminée."
 
 msgid "Import Label Set"
 msgstr "Importer le jeu d&lsquo;étiquettes"
@@ -2249,6 +2229,9 @@ msgstr "Jeux d'étiquettes"
 msgid "Import of Survey is completed."
 msgstr "L&lsquo;importation du questionnaire est terminée."
 
+msgid "Quick Statistics"
+msgstr "Statistiques flash"
+
 msgid "Import responses from an old (deactivated) survey table into an active survey"
 msgstr "Importation de la table des réponses d&lsquo;un ancien (désactivé) questionnaire dans un questionnaire activé"
 
@@ -2264,6 +2247,9 @@ msgstr "Aucun SID (Questionnaire) n&lsquo;a été fourni. Impossible d&lsquo;imp
 msgid "No GID (Group) has been provided. Cannot import question"
 msgstr "Aucun GID (Groupe) n&lsquo;a été fourni. Impossible d&lsquo;importer une question."
 
+msgid "Label Sets"
+msgstr "Jeu d&lsquo;étiquettes"
+
 msgid "This file is not a PHPSurveyor survey file. Import failed."
 msgstr "Ce fichier n&lsquo;est pas un fichier de questionnaire PHPSurveyor. L&lsquo;importation a échoué."
 
@@ -2276,8 +2262,62 @@ msgstr "Mauvais format de données dans le fichier de données PHPSurveyor."
 msgid "Survey Import Summary"
 msgstr "Résumé de l&lsquo;importation du questionnaire"
 
+msgid "Languages"
+msgstr "Langues"
+
+msgid "Question Attributes"
+msgstr "Attributs de la question"
+
+msgid "Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. </font>"
+msgstr "Contrôle de cohérence de données<br /><font size='1'>Si des erreurs apparaissent, il faudra relancer ce script plusieurs fois. </font>"
+
+msgid "The following conditions should be deleted"
+msgstr "Les conditions suivantes peuvent être effacées"
+
+msgid "All conditions meet consistency standards"
+msgstr "Toutes les conditions sont cohérentes"
+
+msgid "The following question attributes should be deleted"
+msgstr "Les attributs de question qui suivent peuvent être effacés"
+
+msgid "All question_attributes meet consistency standards"
+msgstr "Les attributs des questions sont cohérents"
+
+msgid "The following assessments should be deleted"
+msgstr "Les évaluations suivantes peuvent être effacées"
+
+msgid "All assessments meet consistency standards"
+msgstr "Toutes les évaluations sont cohérentes"
+
+msgid "The following answers should be deleted"
+msgstr "Les réponses suivantes peuvent être effacées"
+
+msgid "All answers meet consistency standards"
+msgstr "Toutes les réponses sont cohérentes"
+
+msgid "The following questions should be deleted"
+msgstr "Les questions suivantes peuvent être effacées"
+
+msgid "All questions meet consistency standards"
+msgstr "Toutes les questions sont cohérentes"
+
+msgid "The following groups should be deleted"
+msgstr "Les groupes suivants peuvent être effacés"
+
+msgid "All groups meet consistency standards"
+msgstr "Tous les groupes sont cohérents"
+
+msgid "No database action required"
+msgstr "Pas d&lsquo;action à faire sur la base de données"
+
+msgid "Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. "
+msgstr "Contrôle de cohérence de données<br /><font size='1'>Si des erreurs apparaissent, il faudra relancer ce script plusieurs fois."
+
 msgid "Label Sets Administration"
 msgstr "Administration des jeux d&lsquo;étiquettes"
+
+msgid "Add New Label Set"
+msgstr "Ajouter un nouveau jeu d&lsquo;étiquettes"
 
 msgid "Add new label set"
 msgstr "Ajouter un nouveau jeu d&lsquo;étiquettes"
@@ -2291,8 +2331,12 @@ msgstr "Editer des jeux d&lsquo;étiquettes"
 msgid "Set Name"
 msgstr "Nom du jeu"
 
-msgid "Languages"
-msgstr "Langues"
+# C:\wamp\www\phpsurveyor/admin/labels.php:154
+msgid "You cannot remove this items since you need at least one language in a labelset."
+msgstr "Vous ne pouvez pas enlever ces éléments car il faut au moins une langue dans un jeu d'étiquettes."
+
+msgid "Select SQL File:"
+msgstr "Sélectionner un fichier SQL :"
 
 msgid "Edit label set"
 msgstr "Editer un jeu d&lsquo;étiquettes"
@@ -2322,8 +2366,24 @@ msgstr "La mise à jour du jeu d&lsquo;étiquettes a échoué"
 msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
 msgstr "Impossible de supprimer le jeu d&lsquo;étiquettes - Il y a des questions qui y sont reliées. Vous devez supprimer ces questions en premier."
 
+# E:\www\phpsurveyor/admin/html.php:1028
+msgid "You have to enter user name and email."
+msgstr "Vous devez entrer un nom d'utilisateur et un mail."
+
+# E:\www\phpsurveyor/admin/html.php:1048
+msgid "You have to login first."
+msgstr "Vous devez d'abord vous connecter."
+
+# E:\www\phpsurveyor/admin/html.php:1064
+msgid "Forgot Your Password?"
+msgstr "Oubli du mot de passe ?"
+
 msgid "if you answered"
 msgstr "si vous avez répondu"
+
+# C:\wamp\www\phpsurveyor/admin/printablesurvey.php:225
+msgid "or"
+msgstr "ou"
 
 msgid "to question"
 msgstr "à la  question"
@@ -2381,9 +2441,6 @@ msgstr "Date de sauvegarde"
 
 msgid "Are you sure you want to delete this entry?"
 msgstr "Etes-vous sûr de vouloir supprimer cette entrée ?"
-
-msgid "Quick Statistics"
-msgstr "Statistiques flash"
 
 msgid "Filter Settings"
 msgstr "Paramètres de filtre"
@@ -2597,6 +2654,13 @@ msgstr "Si vous initialisez des invitations pour ce questionnaire, seuls les uti
 msgid "Do you want to create a tokens table for this survey?"
 msgstr "Voulez-vous créer des invitations pour ce questionnaire ?"
 
+msgid "The following old token tables could be restored:"
+msgstr "Ces anciennes tables d'invitations peuvent être restaurées :"
+
+# E:\www\phpsurveyor/admin/html.php:3228
+msgid "Restore"
+msgstr "Restaurer"
+
 msgid "Display Tokens"
 msgstr "Afficher les invitations"
 
@@ -2605,6 +2669,9 @@ msgstr "Ajouter une nouvelle invitation"
 
 msgid "Import Tokens from CSV File"
 msgstr "Importer les invitations à partir d&lsquo;un fichier CSV"
+
+msgid "Import Tokens from LDAP Query"
+msgstr "Importer les invitations à partir d'une requête LDAP"
 
 msgid "Export Tokens to CSV file"
 msgstr "Exporter des invitations vers un fichier CSV"
@@ -2621,16 +2688,16 @@ msgstr "Générer les codes d&lsquo;invitations"
 msgid "Drop tokens table"
 msgstr "Effacer la table des invitations"
 
-msgid "Total Records in this Token Table:"
-msgstr "Nombre total d&lsquo;enregistrement(s) dans cette table d&lsquo;invitations :"
+msgid "Total Records in this Token Table"
+msgstr "Nombre total d&lsquo;enregistrement(s) dans cette table d&lsquo;invitations"
 
-msgid "Total With No Unique Token:"
-msgstr "Nombre total d&lsquo;invitations sans code unique :"
+msgid "Total With No Unique Token"
+msgstr "Nombre total d'invitations sans code unique :"
 
-msgid "Total Invitations Sent:"
-msgstr "Nombre total d&lsquo;invitations envoyée(s) :"
+msgid "Total Invitations Sent"
+msgstr "Nombre total d'invitations envoyée(s) :"
 
-msgid "Total Surveys Completed:"
+msgid "Total Surveys Completed"
 msgstr "Nombre total de questionnaire(s) terminé(s) :"
 
 msgid "All token entries have been deleted."
@@ -2690,6 +2757,9 @@ msgstr "Editer l&lsquo;invitation"
 
 msgid "Delete Token Entry"
 msgstr "Supprimer l&lsquo;invitation"
+
+msgid "Do Survey"
+msgstr "Tester le questionnaire"
 
 msgid "Update Response"
 msgstr "Mettre à jour la réponse"
@@ -2784,6 +2854,12 @@ msgstr "Ajouter ou éditer une invitation"
 msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
 msgstr "Vous pouvez laisser cela à blanc et générer automatiquement des invitations avec `Générer les codes d&lsquo;invitations`"
 
+msgid "Update Token"
+msgstr "Mise à jour de l&lsquo;invitation"
+
+msgid "Add Token"
+msgstr "Ajouter une invitation"
+
 msgid "Updated Token"
 msgstr "Mise à jour de l&lsquo;invitation"
 
@@ -2800,6 +2876,13 @@ msgstr "Note :"
 msgid "File should be a standard CSV (comma delimited) file with no quotes. The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [attribute1], [attribute2]\"."
 msgstr "Le fichier doit être un fichier CSV standard (délimiteur: virgule) sans guillements. La première ligne doit contenir des informations d'entête (elle sera enlevée). Les données devront être dans cet ordre : \"Prénom, Nom, Mail, [Invitation], [Attribut_1], [Attribut_2]\"."
 
+msgid "Upload LDAP entries"
+msgstr "Télécharger une entrée LDAP"
+
+# C:\wamp\www\phpsurveyor/admin/tokens.php:1246
+msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
+msgstr "Les requêtes LDAP sont définies par l'administrateur dans le fichier config-ldap.php"
+
 msgid "Upload file not found. Check your permissions and path for the upload directory"
 msgstr "Fichier téléchargé non trouvé. Vérifier vos permissions et le chemin du répertoire de téléchargement (upload)"
 
@@ -2811,6 +2894,25 @@ msgstr "Création des entrées des invitations"
 
 msgid "{TOKENCOUNT} Records Created"
 msgstr "{TOKENCOUNT} enregistrements crées"
+
+msgid "Uploading LDAP Query"
+msgstr "Télécharger une requête LDAP"
+
+# C:\wamp\www\phpsurveyor/admin/tokens.php:1414
+msgid "Can't bind to the LDAP directory"
+msgstr "Ne peut se lier à l'annuaire LDAP"
+
+# C:\wamp\www\phpsurveyor/admin/tokens.php:1420
+msgid "Can't connect to the LDAP directory"
+msgstr "Ne peut se connecter à l'annuaire LDAP"
+
+# C:\wamp\www\phpsurveyor/admin/tokens.php:1464
+msgid "LDAP is disabled or no LDAP query defined."
+msgstr "LDAP désactivé ou aucune requête LDAP définie."
+
+# C:\wamp\www\phpsurveyor/admin/tokens.php:1471
+msgid "Select the LDAP query you want:"
+msgstr "Choisissez la requête LDAP que vous voulez :"
 
 msgid "Forgot Password"
 msgstr "Oubli du mot de passe"
@@ -2944,34 +3046,128 @@ msgstr "Note importante :<br >Ne pas ACTUALISER cette page sous peine d&lsquo;im
 msgid "Total records imported:"
 msgstr "Nombre d&lsquo;enregistrement(s) importé(s) :"
 
-msgid "Checking to ensure all tables exist"
-msgstr "Vérification de l'existence de toutes les tables"
+msgid "Welcome to PHPSurveyor Setup!"
+msgstr "Bienvenue dans l'installation de PHPSurveyor"
 
-msgid "Checking"
-msgstr "Vérification"
+# C:\wamp\www\phpsurveyor/admin/install/index.php:48
+msgid "The database defined in config.php does not exist."
+msgstr "La base de données mentionnée dans le fichier config.php n'existe pas."
 
-msgid "Table Created"
-msgstr "Table créée"
+msgid "PHPSurveyor can attempt to create this database for you."
+msgstr "PHPSurveyor peut tenter de créer la base de données pour vous."
 
-# E:\www\phpsurveyor/admin/checkfields.php:224
-# E:\www\phpsurveyor/admin/checkfields.php:290
-msgid "OK"
-msgstr "OK"
+msgid "Your selected database name is:"
+msgstr "Le nom de votre base de données sera :"
 
-msgid "Checking to ensure all fields exist"
-msgstr "Vérification de l'existence de tous les champs"
+# E:\www\phpsurveyor/admin/admin.php:102
+#, php-format
+msgid "A database named \"%s\" does already exist."
+msgstr "Une base de données intitulée \"%s\" existe déjà."
 
-msgid "Checking to ensure all tables initialized:"
-msgstr "Vérification de l'initialisation de toutes les tables :"
+# E:\www\phpsurveyor/admin/admin.php:103
+msgid "Do you want to populate that database now by creating the necessary tables?"
+msgstr "Voulez-vous compléter la base de données maintenant en créant les tables nécessaires ?"
 
-# E:\www\phpsurveyor/admin/install/upgrade-mysql.php:298
-msgid "Table_fixed"
-msgstr "Table corrigée"
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:66
+msgid "Bulgarian"
+msgstr "Bulgare"
 
-# E:\www\phpsurveyor/admin/install/upgrade-mysql.php:304
-msgid "User Table Initialized"
-msgstr "Table Utilisateur initialisée"
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:70
+msgid "Chinese (Traditional)"
+msgstr "Chinois (Traditionnel)"
 
-msgid "Field Created"
-msgstr "Champ créé"
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:74
+msgid "Chinese (Simplified)"
+msgstr "Chinois (Simplifié)"
+
+msgid "Croatian"
+msgstr "Croate"
+
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:82
+msgid "Danish"
+msgstr "Danois"
+
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:86
+msgid "Dutch"
+msgstr "Flamand"
+
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:90
+msgid "English"
+msgstr "Anglais"
+
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:94
+msgid "Finnish"
+msgstr "Finlandais"
+
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:99
+msgid "French"
+msgstr "Français"
+
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:103
+msgid "German"
+msgstr "Allemand"
+
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:107
+#, fuzzy
+msgid "German informal"
+msgstr "Allemand (informel)"
+
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:111
+msgid "Greek"
+msgstr "Grec"
+
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:115
+msgid "Hebrew"
+msgstr "Hébreux"
+
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:119
+msgid "Hungarian"
+msgstr "Hongrois"
+
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:123
+msgid "Italian"
+msgstr "Italien"
+
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:127
+msgid "Japanese"
+msgstr "Japonais"
+
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:131
+msgid "Lithuanian"
+msgstr "Lithuanien"
+
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:135
+msgid "Norwegian"
+msgstr "Norvégien"
+
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:139
+msgid "Portuguese"
+msgstr "Portugais"
+
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:143
+msgid "Portuguese (Brazilian)"
+msgstr "Portugais (Brésil)"
+
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:148
+msgid "Russian"
+msgstr "Russe"
+
+msgid "Romanian"
+msgstr "Roumain"
+
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:156
+msgid "Slovenian"
+msgstr "Slovène"
+
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:160
+msgid "Spanish"
+msgstr "Espagnol"
+
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:164
+msgid "Swedish"
+msgstr "Suédois"
+
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:168
+msgid "Vietnamese"
+msgstr "Vietnamien"
 
