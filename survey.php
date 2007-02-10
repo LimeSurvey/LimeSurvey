@@ -236,9 +236,9 @@ if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." " && (!i
 //	}
 	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 	echo "\n"
-	."\n<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n"
-	."\n<input type='hidden' name='sid' value='$surveyid' id='sid'>\n"
-	."\n<input type='hidden' name='token' value='$token' id='token'>\n"
+	."\n<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep' />\n"
+	."\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n"
+	."\n<input type='hidden' name='token' value='$token' id='token' />\n"
 	."\n</form>\n";
 	doFooter();
 	exit;
@@ -298,8 +298,8 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	{
 		echo "\t\t<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
 	}
-	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid'>\n";
-	echo "\n<input type='hidden' name='token' value='$token' id='token'>\n";
+	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
+	echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
 	echo "\n</form>\n";
 //	foreach(file("$thistpl/endpage.pstpl") as $op)
 //	{

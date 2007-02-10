@@ -360,7 +360,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 	{
 		$answer .= "on"; //Ifthis is single format, then it must be showing. Needed for checking conditional mandatories
 	}
-	$answer .= "'>\n"; //for conditional mandatory questions
+	$answer .= "' />\n"; //for conditional mandatory questions
 
 	if ($ia[6] == "Y")
 	{
@@ -505,18 +505,14 @@ function do_5pointchoice($ia)
 	{
 		$answer .= "\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]$fp' value='$fp'";
 		if ($_SESSION[$ia[1]] == $fp) {$answer .= " checked";}
-		// --> START NEW FEATURE - SAVE
 		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/><label for='answer$ia[1]$fp' class='answertext'>$fp</label>\n";
-		// --> END NEW FEATURE - SAVE
-
 	}
+	
 	if ($ia[6] != "Y"  && $shownoanswer == 1) // Add "No Answer" option if question is not mandatory
 	{
 		$answer .= "\t\t\t<input class='radio' type='radio' name='$ia[1]' id='NoAnswer' value=''";
 		if (!$_SESSION[$ia[1]]) {$answer .= " checked";}
-		// --> START NEW FEATURE - SAVE
 		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/><label for='NoAnswer' class='answertext'>".$clang->gT("No answer")."</label>\n";
-		// --> END NEW FEATURE - SAVE
 
 	}
 	$answer .= "\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}'>\n";
@@ -527,10 +523,7 @@ function do_5pointchoice($ia)
 function do_date($ia)
 {
 	global $clang;
-	// --> START NEW FEATURE - SAVE
-//	$answer = "\t\t\t<input class='text' type='text' size=10 name='$ia[1]' id='answer{$ia[1]}' value=\"".$_SESSION[$ia[1]]."\" onChange='modfield(this.name)'/><button type='reset' id='f_trigger_b'>...</button>\n"
 	$answer = "\t\t\t<input class='text' type='text' size=10 name='$ia[1]' id='answer{$ia[1]}' value=\"".$_SESSION[$ia[1]]."\" onChange='modfield(this.name)'/><button type='reset' id='f_trigger_{$ia[1]}'>...</button>\n"
-	// --> END NEW FEATURE - SAVE
 	. "\t\t\t<table class='question'>\n"
 	. "\t\t\t\t<tr>\n"
 	. "\t\t\t\t\t<td>\n"
@@ -1235,7 +1228,7 @@ function do_ranking($ia)
 		{
 			$ranklist .= "style='display:none'";
 		}
-		$ranklist .= " id='cut_{$ia[0]}$i' onClick=\"deletethis_{$ia[0]}(document.phpsurveyor.RANK_{$ia[0]}$i.value, document.phpsurveyor.fvalue_{$ia[0]}$i.value, document.phpsurveyor.RANK_{$ia[0]}$i.name, this.id)\"><br />\n";
+		$ranklist .= " id='cut_{$ia[0]}$i' onClick=\"deletethis_{$ia[0]}(document.phpsurveyor.RANK_{$ia[0]}$i.value, document.phpsurveyor.fvalue_{$ia[0]}$i.value, document.phpsurveyor.RANK_{$ia[0]}$i.name, this.id)\" /><br />\n";
 		$inputnames[]=$myfname;
 	}
 
@@ -1836,13 +1829,16 @@ function do_array_5point($ia)
 	}
 	if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory
 	{
-		$answer .= "\t\t\t\t\t<td class='array1'>".$clang->gT("No answer")."</td>\n";
+		$answer .= "\t\t\t\t\t<td class='array1'></td><td class='array1'>".$clang->gT("No answer")."</td>\n";
 	}
 	$answer .= "\t\t\t\t</tr>\n";
 	while ($ansrow = $ansresult->FetchRow())
 	{
 		$myfname = $ia[1].$ansrow['code'];
+
 		$answertext=answer_replace($ansrow['answer']);
+		if (strpos($answertext,'|')) {$answertext=substr($answertext,0,strpos($answertext,'|'));}
+
 		/* Check if this item has not been answered: the 'notanswered' variable must be an array,
 		containing a list of unanswered questions, the current question must be in the array,
 		and there must be no answer available for the item in this session. */
@@ -1853,43 +1849,49 @@ function do_array_5point($ia)
 		$htmltbody2 = "";
 		if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == false)
 		{
-			$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'>";
+			$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'  />";
 		} else if (($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "S") || ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == true))
 		{
 			$selected = getArrayFiltersForQuestion($ia[0]);
 			if (!in_array($ansrow['code'],$selected))
 			{
-				$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'>";
+				$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' />";
 				$_SESSION[$myfname] = "";
 			} else
 			{
-				$htmltbody2 = "<tbody id='javatbd$myfname' style='display: '><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on'>";
+				$htmltbody2 = "<tbody id='javatbd$myfname' style='display: '><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on' />";
 			}
 		}
 		$answer .= "\t\t\t\t$htmltbody2<tr class='$trbc'>\n"
 		. "\t\t\t\t\t<td align='right' width='$answerwidth%'>$answertext\n"
 		. "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
 		if (isset($_SESSION[$myfname])){$answer .= $_SESSION[$myfname];}
-		$answer .= "'></td>\n";
+		$answer .= "' /></td>\n";
 		for ($i=1; $i<=5; $i++)
 		{
 			$answer .= "\t\t\t\t\t<td><label for='answer$myfname-$i'>"
 			."<input class='radio' type='radio' name='$myfname' id='answer$myfname-$i' value='$i' title='$i'";
 			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $i) {$answer .= " checked";}
 			// --> START NEW FEATURE - SAVE
-			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/></label></td>\n";
+			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)' /></label></td>\n";
 			// --> END NEW FEATURE - SAVE
 		}
+		$answertext2=answer_replace($ansrow['answer']);
+		if (strpos($answertext2,'|')) {
+		    $answertext2=substr($answertext2,strpos($answertext2,'|')+1);
+			$answer .= "\t\t\t\t\t<td align='left' width='$answerwidth%'>$answertext2</td>\n";
+		} else  {$answer .= "\t\t\t\t\t<td>&nbsp;</td>\n";}
+		
 		if ($ia[6] != "Y" && $shownoanswer == 1)
 		{
 			$answer .= "\t\t\t\t\t<td align='center'><label for='answer$myfname-'>"
 			."<input class='radio' type='radio' name='$myfname' id='answer$myfname-' value='' title='".$clang->gT("No answer")."'";
 			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
 			// --> START NEW FEATURE - SAVE
-			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'/></label></td>\n";
+			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)' /></label></td>\n";
 			// --> END NEW FEATURE - SAVE
 		}
-		$answer .= "\t\t\t\t</tr></tbody>\n";
+		$answer .= "\t\t\t\t</tr>\n";
 		$fn++;
 		$inputnames[]=$myfname;
 	}
@@ -1940,7 +1942,7 @@ function do_array_10point($ia)
 		$htmltbody2 = "";
 		if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == false)
 		{
-			$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'>";
+			$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' />";
 		} else if (($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "S") || ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == true))
 		{
 			$selected = getArrayFiltersForQuestion($ia[0]);

@@ -1783,7 +1783,7 @@ function templatereplace($line)
 		{
 			if (!isset($_SESSION['step']) || !$_SESSION['step'])  //First page, show LOAD
 			{
-				$saveall = "<input type='submit' name='loadall' value='".html_escape($clang->gT("Load Unfinished Survey"))."' class='saveall'>";
+				$saveall = "<input type='submit' name='loadall' value='".html_escape($clang->gT("Load Unfinished Survey"))."' class='saveall' />";
 			}
 			elseif (isset($_SESSION['scid']) && (isset($_POST['move']) && $_POST['move'] == " "._('last')." "))  //Already saved and on Submit Page, dont show Save So Far button
 			{
@@ -1791,7 +1791,7 @@ function templatereplace($line)
 			}
 			else
 			{
-				$saveall="<input type='submit' name='saveall' value='"._('Save Survey and Return')."' class='saveall' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\">";  // Show Save So Far button
+				$saveall="<input type='submit' name='saveall' value='"._('Save Survey and Return')."' class='saveall' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" />";  // Show Save So Far button
 			}
 		}
 		else
