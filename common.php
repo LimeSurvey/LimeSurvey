@@ -2997,6 +2997,47 @@ function CSVUnquote($field)
     return $field;
 }
 
-
+/**
+* CleanLanguagesFromSurvey() removes any languages from survey tables that are not in the passed list
+* @param string $sid - the currently selected survey
+* @param string $availlangs - space seperated list of languages in survey
+* @return bool - always returns true
+*/
+function CleanLanguagesFromSurvey($sid, $availlangs)
+{
+	global $connect;
+	
+	$baselang = GetBaseLanguageFromSurveyID($sid);
+	
+	if (!empty($availlangs) && $availlangs != " ")
+	{
+		$langs = explode(" ",$availlangs);
+		if($langs[count($langs)-1] == "") array_pop($langs);
+	}
+	
+	$sqllang = "language <> '".$baselang."' ";;
+	
+	if (!empty($availlangs) && $availlangs != " ")
+	{
+		foreach ($langs as $lang)
+		{
+			$sqllang .= "and language <> '".$lang."' ";
+		}
+	}
+	
+	// Remove From Questions Table
+	$query = "DELETE FROM ".db_table_name('questions')." WHERE sid='{$sid}' and ($sqllang)";
+	return $connect->Execute($query) or die($connect->ErrorMsg()) ;
+	
+	// Remove From Groups Table
+	$query = "DELETE FROM ".db_table_name('groups')." WHERE sid='{$sid}' and ($sqllang)";
+	return $connect->Execute($query) or die($connect->ErrorMsg()) ;
+	
+	// Remove From Answers Table
+	$query = "DELETE FROM ".db_table_name('answers')." WHERE sid='{$sid}' and ($sqllang)";
+	return $connect->Execute($query) or die($connect->ErrorMsg()) ;
+	
+	return true;
+}
 
 ?>
