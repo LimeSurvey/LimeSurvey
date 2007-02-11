@@ -46,10 +46,12 @@ if (_PHPVERSION >= '4.2.0') {settype($surveyid, "int");} else {settype($surveyid
 session_start();
 
 // Set the language of the survey, either from POST, GET parameter of session var
-if (isset($_POST['lang']) && $_POST['lang']!='')
+if (isset($_POST['lang']) && $_POST['lang']!='')  // this one comes from the language question
 {
     $_POST['lang'] = preg_replace("/[^a-zA-Z0-9_]/", "", $_POST['lang']);
 	if ($_POST['lang']) $clang = SetSurveyLanguage( $surveyid, $_POST['lang']);
+	UpdateSessionGroupList();  // to refresh the language strings in the group list session variable
+	UpdateFieldArray();        // to refresh caption titel and question
 } 
 else 
 if (isset($_GET['lang']))
@@ -369,7 +371,7 @@ switch ($thissurvey['format'])
 	require_once("question.php");
 }
 
-// --> START NEW FEATURE - SAVE
+
 function loadanswers()
 {
 	global $dbprefix,$surveyid,$errormsg;
@@ -441,7 +443,7 @@ function loadanswers()
 	}
 	return true;
 }
-// --> END NEW FEATURE - SAVE
+
 
 function getTokenData($surveyid, $token)
 {
@@ -1080,10 +1082,7 @@ function buildsurveysession()
 	<br />&nbsp;</center>
 <?php
 		}
-//		foreach(file("$thistpl/endpage.pstpl") as $op)
-//		{
-//			echo templatereplace($op);
-//		}
+
 		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 		exit;
 	}
@@ -1099,15 +1098,9 @@ function buildsurveysession()
 			sendcacheheaders();
 			doHeader();
 			//TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
-//			foreach(file("$thistpl/startpage.pstpl") as $op)
-//			{
-//				echo templatereplace($op);
-//			}
+
 			echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-//			foreach(file("$thistpl/survey.pstpl") as $op)
-//			{
-//				echo "\t".templatereplace($op);
-//			}
+
 			echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 			echo "\t<center><br />\n"
 			."\t".$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
@@ -1116,10 +1109,7 @@ function buildsurveysession()
 			."(<a href='mailto:{$thissurvey['adminemail']}'>"
 			."{$thissurvey['adminemail']}</a>)<br /><br />\n"
 			."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
-//			foreach(file("$thistpl/endpage.pstpl") as $op)
-//			{
-//				echo templatereplace($op);
-//			}
+
 			echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 			exit;
 		}
@@ -1151,27 +1141,11 @@ function buildsurveysession()
 	if (!isset($_SESSION['s_lang'])) {
 		SetSurveyLanguage($surveyid, $language_to_set);
 	}
-//end RL
 
 
-	//1. SESSION VARIABLE: grouplist
-	//A list of groups in this survey, ordered by group name.
-
-	$query = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='".$_SESSION['s_lang']."' ORDER BY ".db_table_name('groups').".group_order";
-	$result = db_execute_assoc($query) or die ("Couldn't get group list<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-	while ($row = $result->FetchRow())
-	{
-		$_SESSION['grouplist'][]=array($row['gid'], $row['group_name'], $row['description']);
-	}
+UpdateSessionGroupList();
 
 
-// Original Query
-//	$query = "SELECT * FROM ".db_table_name('questions').", ".db_table_name('groups')."\n"
-//	."WHERE ".db_table_name('questions').".gid=".db_table_name('groups').".gid\n"
-//	."AND ".db_table_name('questions').".sid=$surveyid\n"
-//	."AND ".db_table_name('groups').".language='".$_SESSION['s_lang']."' "
-//	."AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' "
-//	."ORDER BY ".db_table_name('groups').".group_order";
 
 // Optimized Query
 	// Change query to use sub-select to see if conditions exist.
@@ -1211,15 +1185,7 @@ function buildsurveysession()
 	{
 		sendcacheheaders();
 		doHeader();
-//		foreach(file("$thistpl/startpage.pstpl") as $op)
-//		{
-//			echo templatereplace($op);
-//		}
 		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-//		foreach(file("$thistpl/survey.pstpl") as $op)
-//		{
-//			echo "\t".templatereplace($op);
-//		}
 		echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 		echo "\t<center><br />\n"
 		."\t".$clang->gT("This survey does not yet have any questions and cannot be tested or completed.")."<br /><br />\n"
@@ -1227,16 +1193,13 @@ function buildsurveysession()
 		." (<a href='mailto:{$thissurvey['adminemail']}'>"
 		."{$thissurvey['adminemail']}</a>)<br /><br />\n"
 		."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
-//		foreach(file("$thistpl/endpage.pstpl") as $op)
-//		{
-//			echo templatereplace($op);
-//		}
+
 		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 		exit;
 	}
 
 	//Perform a case insensitive natural sort on group name then question title of a multidimensional array
-	usort($arows, 'CompareGroupThenTitle');
+//	usort($arows, 'CompareGroupThenTitle');
 
 	//3. SESSION VARIABLE - insertarray
 	//An array containing information about used to insert the data into the db at the submit stage
@@ -1262,14 +1225,6 @@ function buildsurveysession()
 		$arow['type'] == "C" || $arow['type'] == "E" || $arow['type'] == "F" ||
 		$arow['type'] == "H" || $arow['type'] == "P" || $arow['type'] == "^")
 		{
-// Original Query
-//			$abquery = "SELECT ".db_table_name('answers').".*, ".db_table_name('questions').".other\n"
-//			. "FROM ".db_table_name('answers').", ".db_table_name('questions')."\n"
-//			. "WHERE ".db_table_name('answers').".qid=".db_table_name('questions').".qid\n"
-//			. "AND sid=$surveyid AND ".db_table_name('questions').".qid={$arow['qid']}\n"
-//			. "AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' \n"
-//			. "AND ".db_table_name('answers').".language='".$_SESSION['s_lang']."' \n"
-//			. "ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
 
 // Optimized Query
 			$abquery = "SELECT ".db_table_name('answers').".code, ".db_table_name('questions').".other\n"
@@ -1304,15 +1259,7 @@ function buildsurveysession()
 		}
 		elseif ($arow['type'] == "R")
 		{
-// Original Query
-//			$abquery = "SELECT ".db_table_name('answers').".*, ".db_table_name('questions').".other\n"
-//			. "FROM ".db_table_name('answers').", ".db_table_name('questions')."\n"
-//			. "WHERE ".db_table_name('answers').".qid=".db_table_name('questions').".qid\n"
-//			. "AND sid=$surveyid\n"
-//			. "AND ".db_table_name('questions').".qid={$arow['qid']}\n"
-//			. "AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' \n"
-//			. "AND ".db_table_name('answers').".language='".$_SESSION['s_lang']."' \n"
-//			. " ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+
 
 // Optimized Query
 			$abquery = "SELECT ".db_table_name('answers').".code, ".db_table_name('questions').".other\n"
@@ -1336,15 +1283,6 @@ function buildsurveysession()
 
 		elseif ($arow['type'] == "Q" || $arow['type'] == "J" )
 		{
-// Original Query
-//			$abquery = "SELECT ".db_table_name('answers').".*,".db_table_name('questions').".other\n"
-//			. "FROM ".db_table_name('answers').", ".db_table_name('questions')."\n"
-//			. "WHERE ".db_table_name('answers').".qid=".db_table_name('questions').".qid\n"
-//			. "AND sid=$surveyid\n"
-//			. "AND ".db_table_name('questions').".qid={$arow['qid']}\n"
-//			. "AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' \n"
-//			. "AND ".db_table_name('answers').".language='".$_SESSION['s_lang']."' \n"
-//			. "ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
 
 // Optimized Query
 			$abquery = "SELECT ".db_table_name('answers').".code\n"
@@ -1617,4 +1555,38 @@ function doAssessment($surveyid)
 		return $assessments;
 	}
 }
+
+function UpdateSessionGroupList()
+//1. SESSION VARIABLE: grouplist
+//A list of groups in this survey, ordered by group name.
+{
+   global $surveyid;
+    unset ($_SESSION['grouplist']);
+	$query = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='".$_SESSION['s_lang']."' ORDER BY ".db_table_name('groups').".group_order";
+	$result = db_execute_assoc($query) or die ("Couldn't get group list<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+	while ($row = $result->FetchRow())
+	{
+		$_SESSION['grouplist'][]=array($row['gid'], $row['group_name'], $row['description']);
+	}
+}
+
+function UpdateFieldArray()
+//The FieldArray contains all necessary information regarding the questions
+//This function is needed to update it in case the survey is switched to another language
+{
+    global $surveyid;
+
+    foreach($_SESSION['fieldarray'] as &$questionarray) 
+    {
+       	$query = "SELECT * FROM ".db_table_name('questions')." WHERE qid=".$questionarray[0]." AND language='".$_SESSION['s_lang']."'";
+    	$result = db_execute_assoc($query) or die ("Couldn't get question <br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+    	while ($row = $result->FetchRow())
+    	{
+    		$questionarray[2]=$row['title'];
+    		$questionarray[3]=$row['question'];
+    	}
+    }
+}
+
+
 ?>

@@ -49,13 +49,11 @@ if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = 
 if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step']=$_POST['thisstep']+1;}
 if (isset($_POST['move']) && $_POST['move'] == "movelast") {$_SESSION['step'] = $_POST['thisstep']+1;}
 
-// --> START NEW FEATURE - SAVE
 // If on SUBMIT page and select SAVE SO FAR it will return to SUBMIT page
 if ($_SESSION['step'] > $_SESSION['totalsteps'] && $_POST['move'] != "movesubmit")
 {
 	$_POST['move'] = "movelast";
 }
-// <-- END NEW FEATURE - SAVE
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
 //First, see if we are moving backwards or doing a Save so far, and its OK not to check:
