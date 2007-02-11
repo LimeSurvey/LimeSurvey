@@ -802,6 +802,7 @@ if(isset($surveyid))
 			$_POST['expires']="'".$_POST['expires']."'";
 		}
 
+		CleanLanguagesFromSurvey($_POST['sid'],$_POST['languageids']);
 
 		$usquery = "UPDATE {$dbprefix}surveys \n"
 		. "SET admin='{$_POST['admin']}', useexpiry='{$_POST['useexpiry']}',\n"
@@ -816,6 +817,7 @@ if(isset($surveyid))
 		. "attribute2='{$_POST['attribute2']}', allowsave='{$_POST['allowsave']}',\n"
 		. "autoredirect='{$_POST['autoredirect']}', allowprev='{$_POST['allowprev']}'\n"
 		. "WHERE sid={$_POST['sid']}";
+		
 		$usresult = $connect->Execute($usquery) or die("Error updating<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
 		$sqlstring ='';
 		foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
