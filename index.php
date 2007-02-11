@@ -45,20 +45,28 @@ if (!isset($surveyid)) {	$surveyid=returnglobal('sid');}
 if (_PHPVERSION >= '4.2.0') {settype($surveyid, "int");} else {settype($surveyid, "integer");}
 session_start();
 
-// Set the language of the survey, either from GET parameter of session var
+// Set the language of the survey, either from POST, GET parameter of session var
+if (isset($_POST['lang']) && $_POST['lang']!='')
+{
+    $_POST['lang'] = preg_replace("/[^a-zA-Z0-9_]/", "", $_POST['lang']);
+	if ($_POST['lang']) $clang = SetSurveyLanguage( $surveyid, $_POST['lang']);
+} 
+else 
 if (isset($_GET['lang']))
 {
 	$_GET['lang'] = preg_replace("/[^a-zA-Z0-9_]/", "", $_GET['lang']);
 	if ($_GET['lang']) $clang = SetSurveyLanguage( $surveyid, $_GET['lang']);
 	
-} else if (isset($_SESSION['s_lang']))
+} 
+else 
+if (isset($_SESSION['s_lang']))
 {
 	$clang = SetSurveyLanguage( $surveyid, $_SESSION['s_lang']);
 } else {
 	$clang = SetSurveyLanguage( $surveyid, $defaultlang);
 }
 
-ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
+//ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
 
 if ( $embedded_inc != '' )
 require_once( $embedded_inc );
@@ -101,7 +109,7 @@ getreferringurl();
 
 if (!isset($token)) {$token=trim(returnglobal('token'));}
 //GET BASIC INFORMATION ABOUT THIS SURVEY
-$thissurvey=getSurveyInfo($surveyid);
+$thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);
 
 if (is_array($thissurvey)) {$surveyexists=1;} else {$surveyexists=0;}
 
@@ -330,7 +338,7 @@ if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
 }
 
 
-// --> START NEW FEATURE - SAVE
+
 // SAVE POSTED ANSWERS TO DATABASE IF MOVE (NEXT,PREV,LAST, or SUBMIT) or RETURNING FROM SAVE FORM
 if (isset($_POST['move']) || isset($_POST['saveprompt']))
 {
@@ -341,7 +349,7 @@ if (isset($_POST['move']) || isset($_POST['saveprompt']))
 		loadanswers();
 	}
 }
-// --> END NEW FEATURE - SAVE
+
 
 
 sendcacheheaders();
@@ -879,9 +887,8 @@ function submittokens()
 	global $dbprefix, $surveyid, $connect;
 	global $sitename, $thistpl;
 
-	// TLR change to put date into sent and completed
-	//	$utquery = "UPDATE ".db_table_name('tokens')."_$surveyid\n"
-	//			 . "SET completed='Y'\n"
+	// Put date into sent and completed
+	
 	$today = date("Y-m-d Hi");
 	$utquery = "UPDATE {$dbprefix}tokens_$surveyid\n"
 	. "SET completed='$today'\n"
@@ -1388,14 +1395,7 @@ function buildsurveysession()
 //		Separate query for each row no necessary because query above includes a sub-select now.
 //		Increases performance by at least 17% and reduces number of queries executed
 //		//Check to see if there are any conditions set for this question
-//		if (conditionscount($arow['qid']) > 0)
-//		{
-//			$conditions = "Y";
-//		}
-//		else
-//		{
-//			$conditions = "N";
-//		}
+
 
 		if ($arow['hasconditions']>0)
 		{
@@ -1458,40 +1458,42 @@ function surveymover()
 	$surveymover = "";
 	if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] != "A")
 	{
-		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\" ". $clang->gT("last")." \" id=\"movelast\" />";
+		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\"movelast\" id=\"movelast\" />";
 	}
 	else
 	{
-		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\" ". $clang->gT("next")." >> \" id=\"movenext\" />";
+		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" />";
 	}
+	
+	
 	if (isset($_SESSION['step']) && $_SESSION['step'] > 0 && $thissurvey['format'] != "A" && $thissurvey['allowprev'] != "N")
 	{
-		$surveymover .= "<input class='submit' accesskey='p' type='button' onclick=\"javascript:document.phpsurveyor.move.value = this.value; document.phpsurveyor.submit();\" value=' << "
+		$surveymover .= "<input class='submit' accesskey='p' type='button' onclick=\"javascript:document.phpsurveyor.move.value = 'moveprev'; document.phpsurveyor.submit();\" value=' << "
 		. $clang->gT("prev")." ' name='move2' />\n";
 	}
 	if (isset($_SESSION['step']) && $_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
 	{
-		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
+		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.phpsurveyor.move.value = 'movenext';\" value=' "
 		. $clang->gT("next")." >> ' name='move2' />\n";
 	}
 	if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	{
-		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
+		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.phpsurveyor.move.value = 'movenext';\" value=' "
 		. $clang->gT("next")." >> ' name='move2' />\n";
 	}
 	if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && $presentinggroupdescription == "yes")
 	{
-		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
+		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = 'movenext';\" value=' "
 		. $clang->gT("next")." >> ' name='move2' />\n";
 	}
 	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] != "A")
 	{
-		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' accesskey='l' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
+		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' accesskey='l' onclick=\"javascript:document.phpsurveyor.move.value = 'movelast';\" value=' "
 		. $clang->gT("last")." ' name='move2' />\n";
 	}
 	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] == "A")
 	{
-		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" value=' "
+		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = 'movesubmit';\" value=' "
 		. $clang->gT("submit")." ' name='move2' />\n";
 	}
 	$surveymover .= "<input type='hidden' name='PHPSESSID' value='".session_id()."' id='PHPSESSID' />\n";

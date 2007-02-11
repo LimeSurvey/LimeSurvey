@@ -45,22 +45,22 @@ if (!isset($_SESSION['step'])) {$_SESSION['step']=0;}
 if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
 if (!isset($_POST['thisstep'])) {$_POST['thisstep'] = "";}
 if (!isset($_POST['newgroupondisplay'])) {$_POST['newgroupondisplay'] = "";}
-if (isset($_POST['move']) && $_POST['move'] == " << ".$clang->gT("prev")." " && !$_POST['newgroupondisplay']) {$_SESSION['step'] = $_POST['thisstep']-1;}
-elseif (isset($_POST['move']) && $_POST['move'] == " << ".$clang->gT("prev")." " && $_POST['newgroupondisplay'] == "Y") {$_SESSION['step'] = $_POST['thisstep'];}
-if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("next")." >> ") {$_SESSION['step'] = $_POST['thisstep']+1;}
-if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." ") {$_SESSION['step'] = $_POST['thisstep']+1;}
+if (isset($_POST['move']) && $_POST['move'] == "moveprev" && !$_POST['newgroupondisplay']) {$_SESSION['step'] = $_POST['thisstep']-1;}
+elseif (isset($_POST['move']) && $_POST['move'] == "moveprev" && $_POST['newgroupondisplay'] == "Y") {$_SESSION['step'] = $_POST['thisstep'];}
+if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep']+1;}
+if (isset($_POST['move']) && $_POST['move'] == "movelast") {$_SESSION['step'] = $_POST['thisstep']+1;}
 
 // --> START NEW FEATURE - SAVE
 // If on SUBMIT page and select SAVE SO FAR it will return to SUBMIT page
-if ($_SESSION['step'] > $_SESSION['totalsteps'] && $_POST['move'] != " ".$clang->gT("submit")." ")
+if ($_SESSION['step'] > $_SESSION['totalsteps'] && $_POST['move'] != "movesubmit")
 {
-	$_POST['move'] = " ".$clang->gT("last")." ";
+	$_POST['move'] = "movelast";
 }
 // <-- END NEW FEATURE - SAVE
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
 //First, see if we are moving backwards or doing a Save so far, and its OK not to check:
-if ($allowmandbackwards==1 && ((isset($_POST['move']) &&  $_POST['move'] == " << ".$clang->gT("prev")." ") || (isset($_POST['saveall']) && $_POST['saveall'] == $clang->gT("Save your responses so far"))))
+if ($allowmandbackwards==1 && ((isset($_POST['move']) &&  $_POST['move'] == "moveprev") || (isset($_POST['saveall']) && $_POST['saveall'] == $clang->gT("Save your responses so far"))))
 {
 	$backok="Y";
 }
@@ -84,7 +84,7 @@ if (session_id()=='')
 }
 
 //SUBMIT
-if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("submit")." ")
+if (isset($_POST['move']) && $_POST['move'] == "movesubmit")
 {
 	if ($thissurvey['refurl'] == "Y")
 	{
@@ -200,7 +200,7 @@ if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("submit")." ")
 }
 
 //LAST PHASE ###########################################################################
-if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." " && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
+if (isset($_POST['move']) && $_POST['move'] == "movelast" && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
 {
 	last();
 	exit;
@@ -333,7 +333,7 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 	{
 		//matches have not been found in ALL distinct cqids. The question WILL NOT be displayed
 		$questionsSkipped++;
-		if (returnglobal('move') == " ".$clang->gT("next")." >> ")
+		if (returnglobal('move') == "movenext")
 		{
 			$currentquestion++;
 			if(isset($_SESSION['fieldarray'][$currentquestion]))
@@ -360,7 +360,7 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 				exit;
 			}
 		}
-		elseif (returnglobal('move') == " << ".$clang->gT("prev")." ")
+		elseif (returnglobal('move') == "moveprev")
 		{
 			$currentquestion--;
 			$ia=$_SESSION['fieldarray'][$currentquestion];
@@ -370,7 +370,7 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 	}
 }
 
-if ($questionsSkipped == 0 && $newgroup == "Y" && isset($_POST['move']) && $_POST['move'] == " << ".$clang->gT("prev")." " && (isset($_POST['grpdesc']) && $_POST['grpdesc']=="Y")) //a small trick to manage moving backwards from a group description
+if ($questionsSkipped == 0 && $newgroup == "Y" && isset($_POST['move']) && $_POST['move'] == "moveprev" && (isset($_POST['grpdesc']) && $_POST['grpdesc']=="Y")) //a small trick to manage moving backwards from a group description
 {
 	//This does not work properly in all instances.
 	$currentquestion++;
@@ -491,7 +491,7 @@ echo "\t\tfunction modlanguage(name)\n";
 echo "\t\t\t{\n";
 echo "\t\t\t\ttemp=document.getElementById(name).value;\n";
 echo "\t\t\t\tif (temp!='') {\n";
-echo "\t\t\t\t\tdocument.getElementById('s_lang').value=temp;\n";
+echo "\t\t\t\t\tdocument.getElementById('lang').value=temp;\n";
 echo "\t\t\t\t}\n";
 echo "\t\t\t} \n";
 echo "\n";
@@ -515,7 +515,7 @@ echo "\n\n<!-- START THE SURVEY -->\n";
 //}
 echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 
-if ($newgroup == "Y" && $groupdescription && (isset($_POST['move']) && $_POST['move'] != " << ".$clang->gT("prev")." "))
+if ($newgroup == "Y" && $groupdescription && (isset($_POST['move']) && $_POST['move'] != "moveprev"))
 {
 	$presentinggroupdescription = "yes";
 	echo "\n\n<!-- START THE GROUP DESCRIPTION -->\n";

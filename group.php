@@ -45,21 +45,21 @@ if (!isset($_SESSION['step'])) {$_SESSION['step']=0;}
 if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
 if (!isset($_POST['thisstep'])) {$_POST['thisstep'] = "";}
 if (!isset($gl)) {$gl=array("null");}
-if (isset($_POST['move']) && $_POST['move'] == " << ".$clang->gT("prev")." ") {$_SESSION['step'] = $_POST['thisstep']-1;}
-if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("next")." >> ") {$_SESSION['step']=$_POST['thisstep']+1;}
-if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." ") {$_SESSION['step'] = $_POST['thisstep']+1;}
+if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep']-1;}
+if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step']=$_POST['thisstep']+1;}
+if (isset($_POST['move']) && $_POST['move'] == "movelast") {$_SESSION['step'] = $_POST['thisstep']+1;}
 
 // --> START NEW FEATURE - SAVE
 // If on SUBMIT page and select SAVE SO FAR it will return to SUBMIT page
-if ($_SESSION['step'] > $_SESSION['totalsteps'] && $_POST['move'] != " ".$clang->gT("submit")." ")
+if ($_SESSION['step'] > $_SESSION['totalsteps'] && $_POST['move'] != "movesubmit")
 {
-	$_POST['move'] = " ".$clang->gT("last")." ";
+	$_POST['move'] = "movelast";
 }
 // <-- END NEW FEATURE - SAVE
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
 //First, see if we are moving backwards or doing a Save so far, and its OK not to check:
-if ($allowmandbackwards==1 && ((isset($_POST['move']) &&  $_POST['move'] == " << ".$clang->gT("prev")." ") || (isset($_POST['saveall']) && $_POST['saveall'] == $clang->gT("Save your responses so far"))))
+if ($allowmandbackwards==1 && ((isset($_POST['move']) &&  $_POST['move'] == "moveprev") || (isset($_POST['saveall']) && $_POST['saveall'] == $clang->gT("Save your responses so far"))))
 {
 	$backok="Y";
 }
@@ -83,24 +83,22 @@ if (session_id()=='')
 }
 
 //SEE IF THIS GROUP SHOULD DISPLAY
-if (isset($_POST['move']) && $_SESSION['step'] != 0 && $_POST['move'] != " ".$clang->gT("last")." " && $_POST['move'] != " ".$clang->gT("submit")." ")
+if (isset($_POST['move']) && $_SESSION['step'] != 0 && $_POST['move'] != "movelast" && $_POST['move'] != "movesubmit")
 {
 	while(checkgroupfordisplay($_SESSION['grouplist'][$_SESSION['step']-1][0]) === false)
 	{
-		if (isset($_POST['move']) && $_POST['move'] == " << ".$clang->gT("prev")." ") {$_SESSION['step']=$_SESSION['step']-1;}
-		if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("next")." >> ") {$_SESSION['step']=$_SESSION['step']+1;}
+		if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step']=$_SESSION['step']-1;}
+		if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step']=$_SESSION['step']+1;}
 		if ($_SESSION['step']-1 == $_SESSION['totalsteps'])
 		{
-			$_POST['move'] = " ".$clang->gT("last")." ";
+			$_POST['move'] = "movelast";
 			break;
 		}
 	}
 }
 
 //SUBMIT ###############################################################################
-// --> START NEW FEATURE - SAVE
-if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("submit")." ")
-// <-- END NEW FEATURE - SAVE
+if (isset($_POST['move']) && $_POST['move'] == "movesubmit")
 {
 
 	if ($thissurvey['refurl'] == "Y")                 {
@@ -116,21 +114,13 @@ if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("submit")." ")
 		{
 			sendcacheheaders();
 			doHeader();
-//			foreach(file("$thistpl/startpage.pstpl") as $op)
-//			{
-//				echo templatereplace($op);
-//			}
-			echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
+			echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
 			//Check for assessments
 			$assessments = doAssessment($surveyid);
 			if ($assessments)
 			{
-//				foreach(file("$thistpl/assessment.pstpl") as $op)
-//				{
-//					echo templatereplace($op);
-//				}
 				echo templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
 			}
 
@@ -149,21 +139,15 @@ if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("submit")." ")
 			}
 
 			$content='';
-//			foreach(file("$thistpl/startpage.pstpl") as $op)
-//			{
-//				$content .= templatereplace($op);
-//			}
-				$content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+
+			$content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
 			//echo $thissurvey['url'];
 			//Check for assessments
 			$assessments = doAssessment($surveyid);
 			if ($assessments)
 			{
-//				foreach(file("$thistpl/assessment.pstpl") as $op)
-//				{
-//					$content .= templatereplace($op);
-//				}
+
 				$content .= templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
 
 			}
@@ -225,7 +209,7 @@ if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("submit")." ")
 }
 
 //LAST PHASE ###########################################################################
-if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." " && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
+if (isset($_POST['move']) && $_POST['move'] == "movelast" && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
 {
 	//READ TEMPLATES, INSERT DATA AND PRESENT PAGE
 	sendcacheheaders();

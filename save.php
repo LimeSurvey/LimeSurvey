@@ -138,6 +138,7 @@ if ($thissurvey['allowsave'] == "Y"  && isset($_POST['saveall']) && !isset($_SES
 }
 
 
+
 function showsaveform()
 {
 	//Show 'SAVE FORM' only when click the 'Save so far' button the first time, or when duplicate is found on SAVE FORM.
@@ -182,6 +183,8 @@ function showsaveform()
 	echo "</html>\n";
 	exit;
 }
+
+
 
 function savedcontrol()
 {

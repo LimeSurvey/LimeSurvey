@@ -45,15 +45,15 @@ if (!isset($_SESSION['step'])) {$_SESSION['step'] = 0;}
 if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
 if (!isset($_POST['thisstep'])) {$_POST['thisstep'] = "";}
 
-if (isset($_POST['move']) && $_POST['move'] == " << ".$clang->gT("prev")." ") {$_SESSION['step'] = $_POST['thisstep']-1;}
-if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("next")." >> ") {$_SESSION['step'] = $_POST['thisstep']+1;}
-if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." ") {$_SESSION['step'] = $_POST['thisstep']+1;}
+if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep']-1;}
+if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep']+1;}
+if (isset($_POST['move']) && $_POST['move'] == "movelast") {$_SESSION['step'] = $_POST['thisstep']+1;}
 
 // --> START NEW FEATURE - SAVE
 // If on SUBMIT page and select SAVE SO FAR it will return to SUBMIT page
 if ($_SESSION['step'] > $_SESSION['totalsteps'])
 {
-	$_POST['move'] = " ".$clang->gT("last")." ";
+	$_POST['move'] = "movelast";
 }
 // <-- END NEW FEATURE - SAVE
 
@@ -66,7 +66,7 @@ $notanswered=addtoarray_single(checkmandatorys(),checkconditionalmandatorys());
 $notvalidated=checkpregs();
 
 //SUBMIT
-if ((isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("submit")." ") && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
+if ((isset($_POST['move']) && $_POST['move'] == "movesubmit") && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
 {
 	if ($thissurvey['private'] == "Y")
 	{
@@ -196,7 +196,7 @@ if ((isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("submit")." ") &&
 }
 
 //LAST PHASE
-if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." " && (!isset($notanswered) && !$notanswered) && (!isset($notvalidated) && !$notvalidated))
+if (isset($_POST['move']) && $_POST['move'] == "movelast" && (!isset($notanswered) && !$notanswered) && (!isset($notvalidated) && !$notvalidated))
 {
 	//READ TEMPLATES, INSERT DATA AND PRESENT PAGE
 	sendcacheheaders();
@@ -269,30 +269,20 @@ if ($surveyexists <1)
 if (!isset($_SESSION['step']) || !$_SESSION['step'])
 {
 	$totalquestions = buildsurveysession();
-	// --> START NEW FEATURE - SAVE
+
 	// Now shows welcome message and next page will be Save page if Allow Saves is on
 	sendcacheheaders();
 	doHeader();
-//	foreach(file("$thistpl/startpage.pstpl") as $op)
-//	{
-//		echo templatereplace($op);
-//	}
+
 	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' name='phpsurveyor'>\n";
 
 	echo "\n\n<!-- START THE SURVEY -->\n";
 
-//	foreach(file("$thistpl/welcome.pstpl") as $op)
-//	{
-//		echo "\t\t\t".templatereplace($op);
-//	}
 	echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"));
 	echo "\n";
 	$navigator = surveymover();
-//	foreach(file("$thistpl/navigator.pstpl") as $op)
-//	{
-//		echo templatereplace($op);
-//	}
+
 	echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
 	if ($thissurvey['active'] != "Y")
 	{
@@ -301,14 +291,9 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
 	echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
 	echo "\n</form>\n";
-//	foreach(file("$thistpl/endpage.pstpl") as $op)
-//	{
-//		echo templatereplace($op);
-//	}
 	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 	doFooter();
 	exit;
-	// <-- END NEW FEATURE - SAVE
 }
 
 //******************************************************************************************************

@@ -762,13 +762,20 @@ function gettemplatelist()
 }
 
 
-function getSurveyInfo($surveyid)
+function getSurveyInfo($surveyid, $languagecode='')
+// Gets all survey infos in one big array including the language specific settings
+// if $languagecode is not set then the base language from the survey is used
+// 
 {
 	global $dbprefix, $siteadminname, $siteadminemail, $connect;
+	// if no language code is set then get the base language one
+    if (!isset($languagecode) || $languagecode=='')
+	{
+	   $languagecode=GetBaseLanguageFromSurveyID($surveyid);;
+    }
 	$query="SELECT * FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
 	$result=db_execute_assoc($query) or die ("Couldn't access surveys<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
-	$query2="SELECT * FROM ".db_table_name('surveys_languagesettings')." WHERE surveyls_survey_id=$surveyid and surveyls_language='$s_lang'";
+	$query2="SELECT * FROM ".db_table_name('surveys_languagesettings')." WHERE surveyls_survey_id=$surveyid and surveyls_language='$languagecode'";
 	$result2=db_execute_assoc($query2) or die ("Couldn't access surveys<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	while ($row=$result->FetchRow())
 	{
@@ -1979,31 +1986,26 @@ function SetInterfaceLanguage($languagetoset)
 function SetSurveyLanguage($surveyid, $language)// SetSurveyLanguage($surveyid)
 {
 
-				global $rootdir;
-				// see if language actually is present in survey
-				$query = "SELECT language, additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
-				$result = db_execute_assoc($query);
-				while ($result && ($row=$result->FetchRow())) {
-					$additional_languages = $row['additional_languages'];
-					$default_language = $row['language'];
-				}
+		global $rootdir;
+		// see if language actually is present in survey
+		$query = "SELECT language, additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
+		$result = db_execute_assoc($query);
+		while ($result && ($row=$result->FetchRow())) {
+			$additional_languages = $row['additional_languages'];
+			$default_language = $row['language'];
+		}
 
-				//echo "Language: ".$language."<br>Default language: ".$default_language."<br>Available languages: ".$additional_languages."<br />";
-				if ((isset($additional_languages) && strpos($additional_languages, $language) === false) or (isset($default_language) && $default_language == $language) or !isset($language)) {
-					// Language not supported, or default language for survey, fall back to survey's default language
-					$_SESSION['s_lang'] = $default_language;
-					//echo "Language not supported, resorting to ".$_SESSION['s_lang']."<br />";
-				} else {
-					$_SESSION['s_lang'] = $language;
-					//echo "Language will be set to ".$_SESSION['s_lang']."<br />";
-				}
-				require_once($rootdir.'/classes/core/language.php');
-				$clang = new phpsurveyor_lang($_SESSION['s_lang']);
-				//SetInterfaceLanguage($_SESSION['s_lang']);
-//
-//			if (!function_exists('bind_textdomain_codeset')) echo "You need at least PHP 4.2.x to run PHPSurveyor." and die;
-//			bind_textdomain_codeset($_SESSION['s_lang'],'UTF-8');
-//			textdomain($_SESSION['s_lang']);
+		//echo "Language: ".$language."<br>Default language: ".$default_language."<br>Available languages: ".$additional_languages."<br />";
+		if ((isset($additional_languages) && strpos($additional_languages, $language) === false) or (isset($default_language) && $default_language == $language) or !isset($language)) {
+			// Language not supported, or default language for survey, fall back to survey's default language
+			$_SESSION['s_lang'] = $default_language;
+			//echo "Language not supported, resorting to ".$_SESSION['s_lang']."<br />";
+		} else {
+			$_SESSION['s_lang'] = $language;
+			//echo "Language will be set to ".$_SESSION['s_lang']."<br />";
+		}
+		require_once($rootdir.'/classes/core/language.php');
+		$clang = new phpsurveyor_lang($_SESSION['s_lang']);
 
 		return $clang;
 }

@@ -567,7 +567,7 @@ function do_language($ia)
 	}
 	$answer .= "\t\t\t\t\t</select>\n";
 	$inputnames[]=$ia[1];
-    $answer .= "\n\t\t\t<input type='hidden' name='s_lang' id='s_lang' value='' />";
+    $answer .= "\n\t\t\t<input type='hidden' name='lang' id='lang' value='' />";
 		
 	return array($answer, $inputnames);
 }
