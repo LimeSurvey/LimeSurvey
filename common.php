@@ -239,29 +239,6 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 			{
 			$adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left' />\n";
 			}
-		// delete Survey
-		if ($surveyid)
-			{
-			global $dbprefix, $connect;
-
-			$actsurquery = "SELECT delete_survey FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
-			//$actsurresult = $connect->Execute($actsurquery) or die($connect->ErrorMsg());
-			$actsurresult = &db_execute_assoc($actsurquery);
-			$actsurrows = $actsurresult->FetchRow();
-			if($actsurrows['delete_survey'])
-				{
-				$adminmenu  .="<a href=\"#\""
-							. "onClick=\"window.open('$scriptname?action=deletesurvey&amp;sid=$surveyid', '_top')\""
-							. "onmouseout=\"hideTooltip()\""
-							. "onmouseover=\"showTooltip(event,'".$clang->gT("Delete Entire Survey")."');return false\">"
-							."<img src='$imagefiles/delete.png' name='DeleteSurvey' alt='". $clang->gT("Delete Entire Survey")." ($surveyid)' title='' align='left' />"
-                            ."</a>" ;
-				}
-			}
-		else
-			{
-			  $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left' />\n";
-			}
 
 		// list surveys
 		$adminmenu .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=listsurveys', '_top')\""
@@ -1900,21 +1877,21 @@ function templatereplace($line)
 		{
 			$registerform .= " value='".returnglobal('register_firstname')."'";
 		}
-		$registerform .= "></td></tr>"
+		$registerform .= " /></td></tr>"
 		."<tr><td align='right'>".$clang->gT("Last Name").":</td>\n"
 		."<td align='left'><input class='text' type='text' name='register_lastname'";
 		if (isset($_POST['register_lastname']))
 		{
 			$registerform .= " value='".returnglobal('register_lastname')."'";
 		}
-		$registerform .= "></td></tr>\n"
+		$registerform .= " /></td></tr>\n"
 		."<tr><td align='right'>".$clang->gT("Email Address").":</td>\n"
 		."<td align='left'><input class='text' type='text' name='register_email'";
 		if (isset($_POST['register_email']))
 		{
 			$registerform .= " value='".returnglobal('register_email')."'";
 		}
-		$registerform .= "></td></tr>\n";
+		$registerform .= " /></td></tr>\n";
 		if(isset($thissurvey['attribute1']) && $thissurvey['attribute1'])
 		{
 			$registerform .= "<tr><td align='right'>".$thissurvey['attribute1'].":</td>\n"
@@ -1923,7 +1900,7 @@ function templatereplace($line)
 			{
 				$registerform .= " value='".returnglobal('register_attribute1')."'";
 			}
-			$registerform .= "></td></tr>\n";
+			$registerform .= " /></td></tr>\n";
 		}
 		if(isset($thissurvey['attribute2']) && $thissurvey['attribute2'])
 		{
@@ -1933,7 +1910,7 @@ function templatereplace($line)
 			{
 				$registerform .= " value='".returnglobal('register_attribute2')."'";
 			}
-			$registerform .= "></td></tr>\n";
+			$registerform .= " /></td></tr>\n";
 		}
 		$registerform .= "<tr><td></td><td><input class='submit' type='submit' value='".html_escape($clang->gT("Continue"))."'>"
 		."</td></tr>\n"

@@ -479,7 +479,8 @@ if ($surveyid)
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
 
-		if ($sumcount3 == 0 && $sumcount2 == 0 && $sumrows5['delete_survey'])
+
+		if ($sumrows5['delete_survey'])
 		{
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=delsurvey&amp;sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""

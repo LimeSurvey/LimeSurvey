@@ -583,6 +583,7 @@ else
 	. $surveyoptions;
 	$browseoutput .= "</table>\n";
 	$gnquery = "SELECT count(id) FROM $surveytable";
+	echo $gnquery;
 	$gnresult = db_execute_num($gnquery);
 	while ($gnrow = $gnresult->FetchRow())
 	{

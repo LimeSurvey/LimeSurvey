@@ -400,10 +400,12 @@ else
 	$tabname = "{$dbprefix}survey_{$_GET['sid']}";
     $taboptarray = array('mysql' => 'TYPE=ISAM');
     $dict = NewDataDictionary($connect);
+//    echo $tabname.'<br>'.$createsurvey.'<br>'.$taboptarray;
     $sqlarray = $dict->CreateTableSQL($tabname, $createsurvey, $taboptarray);  
     
-    $dict->ExecuteSQLArray($sqlarray) or die
-	(
+    $execresult=$dict->ExecuteSQLArray($sqlarray,1);
+    if ($execresult==0 || $execresult==1)
+	{
 	"<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n" .
 	"<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Activate Survey")." ($surveyid)</strong></font></td></tr>\n" .
 	"<tr><td>\n" .
@@ -412,8 +414,8 @@ else
 	"DB ".$clang->gT("Error").":<br />\n<font color='red'>" . $connect->ErrorMsg() . "</font>\n" .
 	"<pre>$createsurvey</pre>\n" .
 	"</td></tr></table></br>&nbsp;\n" .
-	"</body>\n</html>"
-	);
+	"</body>\n</html>";
+	}
 
 	$anquery = "SELECT autonumber_start FROM {$dbprefix}surveys WHERE sid={$_GET['sid']}";
 	if ($anresult=db_execute_assoc($anquery))

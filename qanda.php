@@ -523,7 +523,7 @@ function do_5pointchoice($ia)
 function do_date($ia)
 {
 	global $clang;
-	$answer = "\t\t\t<input class='text' type='text' size=10 name='$ia[1]' id='answer{$ia[1]}' value=\"".$_SESSION[$ia[1]]."\" onChange='modfield(this.name)'/><button type='reset' id='f_trigger_{$ia[1]}'>...</button>\n"
+	$answer = "\t\t\t<input class='text' type='text' size=10 name='$ia[1]' id='answer{$ia[1]}' value=\"".$_SESSION[$ia[1]]."\" onChange='modfield(this.name)' /><button type='reset' id='f_trigger_{$ia[1]}'>...</button>\n"
 	. "\t\t\t<table class='question'>\n"
 	. "\t\t\t\t<tr>\n"
 	. "\t\t\t\t\t<td>\n"
@@ -1214,7 +1214,7 @@ function do_ranking($ia)
 			$ranklist .= htmlspecialchars($thistext, ENT_QUOTES);
 			$ranklist .= "'";
 		}
-		$ranklist .= " onFocus=\"this.blur()\">\n";
+		$ranklist .= " onFocus=\"this.blur()\" />\n";
 		$ranklist .= "\t\t\t\t\t\t<input type='hidden' name='$myfname' id='fvalue_{$ia[0]}$i' value='";
 		$chosen[]=""; //create array
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
@@ -1364,7 +1364,7 @@ function do_multiplechoice($ia)
 		$answer .= "\t\t\t\t\t\t<label for='answer$myfname'>".$clang->gT("Other").":</label> <input class='text' type='text' name='$myfname' id='answer$myfname'";
 		if (isset($_SESSION[$myfname])) {$answer .= " value='".htmlspecialchars($_SESSION[$myfname],ENT_QUOTES)."'";}
 		// --> START NEW FEATURE - SAVE
-		$answer .= " onChange='modfield(this.name)'/>\n"
+		$answer .= " onChange='modfield(this.name)' />\n"
 		. "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
 		// --> END NEW FEATURE - SAVE
 
@@ -1602,7 +1602,7 @@ function do_shortfreetext($ia)
 	// --> START NEW FEATURE - SAVE
 	$answer = "\t\t\t<input class='text' type='text' size='$tiwidth' name='$ia[1]' id='answer$ia[1]' value=\""
 	.str_replace ("\"", "'", str_replace("\\", "", $_SESSION[$ia[1]]))
-	."\" maxlength='$maxsize' onChange='modfield(this.name)'/>\n";
+	."\" maxlength='$maxsize' onChange='modfield(this.name)' />\n";
 	// --> END NEW FEATURE - SAVE
 
 	$inputnames[]=$ia[1];
