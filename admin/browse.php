@@ -383,7 +383,7 @@ elseif ($subaction == "all")
 			{$dbprefix}answers, {$dbprefix}questions 
 			WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND 
 			{$dbprefix}answers.language='{$language}' AND {$dbprefix}questions.language='{$language}'
-			{$dbprefix}questions.qid={$fnrow['qid']} AND {$dbprefix}questions.sid=$surveyid 
+			AND {$dbprefix}questions.qid={$fnrow['qid']} AND {$dbprefix}questions.sid=$surveyid 
 			ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 			$i2result = $connect->Execute($i2query);
 			$i2count = $i2result->RecordCount();
@@ -583,7 +583,6 @@ else
 	. $surveyoptions;
 	$browseoutput .= "</table>\n";
 	$gnquery = "SELECT count(id) FROM $surveytable";
-	echo $gnquery;
 	$gnresult = db_execute_num($gnquery);
 	while ($gnrow = $gnresult->FetchRow())
 	{
