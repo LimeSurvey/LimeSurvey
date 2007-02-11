@@ -3000,7 +3000,7 @@ function CSVUnquote($field)
 /**
 * CleanLanguagesFromSurvey() removes any languages from survey tables that are not in the passed list
 * @param string $sid - the currently selected survey
-* @param string $availlangs - space seperated list of languages in survey
+* @param string $availlangs - space seperated list of additional languages in survey
 * @return bool - always returns true
 */
 function CleanLanguagesFromSurvey($sid, $availlangs)
