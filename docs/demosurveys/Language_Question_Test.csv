@@ -1,0 +1,91 @@
+# PHPSurveyor Survey Dump
+# DBVersion 111
+# This is a dumped survey from the PHPSurveyor Script
+# http://www.phpsurveyor.org/
+# Do not change this header!
+
+#
+# SURVEYS TABLE
+#
+"sid","owner_id","admin","active","expires","adminemail","private","faxto","format","template","url","language","additional_languages","datestamp","usecookie","notification","allowregister","attribute1","attribute2","allowsave","autonumber_start","autoredirect","allowprev","ipaddr","useexpiry","refurl","datecreated"
+"31565","1","","N","2007-02-11","","Y","","S","default","","en","hr nl ","N","N","0","N","","","Y","0","N","Y","N","N","N","2007-02-11"
+
+#
+# GROUPS TABLE
+#
+"gid","sid","group_name","group_code","group_order","description","language"
+"11","31565","group_name_hr","","0","description_hr","hr"
+"11","31565","group_name_nl","","0","description_nl","nl"
+"11","31565","group_name_en","","0","description_en","en"
+
+#
+# QUESTIONS TABLE
+#
+"qid","sid","gid","type","title","question","preg","help","other","mandatory","lid","question_order","language"
+"49","31565","11","I","code_en","qeustion_en","","questionhelp_en","N","N","0","0","en"
+"49","31565","11","I","code_en","qeustion_cr","","questionhelp_cr","N","N","0","1","hr"
+"49","31565","11","I","code_en","qeustion_nl","","questionhelp_nl","N","N","0","1","nl"
+"50","31565","11","M","code","question_en","preg","help_en","N","N","1","1","en"
+"50","31565","11","M","code","question_cr","preg","questionhelp_cr","N","N","1","2","hr"
+"50","31565","11","M","code","question_nl","preg","questionhelp_nl","N","N","1","2","nl"
+
+#
+# ANSWERS TABLE
+#
+"qid","code","answer","default_value","sortorder","language"
+"50","c1","answer_en1","","1","en"
+"50","c1","answer_cr1","","1","hr"
+"50","c1","answer_nl1","","1","nl"
+"50","c2","answer_en2","","2","en"
+"50","c2","answer_cr2","","2","hr"
+"50","c2","answer_nl2","","2","nl"
+"50","c3","answer_en3","","3","en"
+"50","c3","answer_cr3","","3","hr"
+"50","c3","answer_nl3","","3","nl"
+"50","c1","answer_en1","","1","en"
+"50","c1","answer_cr1","","1","hr"
+"50","c1","answer_nl1","","1","nl"
+"50","c2","answer_en2","","2","en"
+"50","c2","answer_cr2","","2","hr"
+"50","c2","answer_nl2","","2","nl"
+"50","c3","answer_en3","","3","en"
+"50","c3","answer_cr3","","3","hr"
+"50","c3","answer_nl3","","3","nl"
+"50","c1","answer_en1","","1","en"
+"50","c1","answer_cr1","","1","hr"
+"50","c1","answer_nl1","","1","nl"
+"50","c2","answer_en2","","2","en"
+"50","c2","answer_cr2","","2","hr"
+"50","c2","answer_nl2","","2","nl"
+"50","c3","answer_en3","","3","en"
+"50","c3","answer_cr3","","3","hr"
+"50","c3","answer_nl3","","3","nl"
+
+#
+# CONDITIONS TABLE
+#
+
+#
+# LABELSETS TABLE
+#
+
+#
+# LABELS TABLE
+#
+
+#
+# QUESTION_ATTRIBUTES TABLE
+#
+
+#
+# ASSESSMENTS TABLE
+#
+
+#
+# SURVEYS_LANGUAGESETTINGS TABLE
+#
+"surveyls_survey_id","surveyls_language","surveyls_title","surveyls_description","surveyls_welcometext","surveyls_urldescription","surveyls_email_invite_subj","surveyls_email_invite","surveyls_email_remind_subj","surveyls_email_remind","surveyls_email_register_subj","surveyls_email_register","surveyls_email_confirm_subj","surveyls_email_confirm"
+"31565","en","Test for language question","description_en","welcome_en","urldescrip_en","Invitation to participate in survey","Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n""{SURVEYNAME}""\n\n""{SURVEYDESCRIPTION}""\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}","Reminder to participate in survey","Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n""{SURVEYNAME}""\n\n""{SURVEYDESCRIPTION}""\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}","Survey Registration Confirmation","Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.","Confirmation of completed survey","Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}"
+"31565","hr","short_title_hr","description_hr","welcome_hr","urldescrip_hr","example@example.com","email_invite_hr","example@example.com","email_remind_hr","example@example.com","email_register_hr","example@example.com","email_confirm_hr"
+"31565","nl","short_title_nl","description_nl","welcome_nl","urldescrip_nl","example@example.com","email_invite_nl","example@example.com","email_remind_nl","example@example.com","email_register_nl","example@example.com","email_confirm_nl"
+

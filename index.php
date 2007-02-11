@@ -51,7 +51,7 @@ if (isset($_POST['lang']) && $_POST['lang']!='')  // this one comes from the lan
     $_POST['lang'] = preg_replace("/[^a-zA-Z0-9_]/", "", $_POST['lang']);
 	if ($_POST['lang']) $clang = SetSurveyLanguage( $surveyid, $_POST['lang']);
 	UpdateSessionGroupList();  // to refresh the language strings in the group list session variable
-	UpdateFieldArray();        // to refresh caption titel and question
+	UpdateFieldArray();        // to refresh question titles and question text 
 } 
 else 
 if (isset($_GET['lang']))
