@@ -3,7 +3,7 @@
 
 /*******************************************************************************
  *
- *      SHA256 static class for PHP4, debug output version
+ *      SHA256 static class for PHP4
  *      implemented by feyd _at_ devnetwork .dot. net
  *      specification from http://csrc.nist.gov/cryptval/shs/sha256-384-512.pdf
  *
@@ -249,20 +249,12 @@ class SHA256 extends hash
                                 );
                 }
                
-                echo "\nPadded Message::\n";
-                for($i = 0, $numChunks = sizeof($hashData->chunks); $i < $numChunks; $i++)
-                {
-                        echo memdump($hashData->chunks[$i]) . "\n";
-                }
-               
                 $W = array();
                 for($i = 0, $numChunks = sizeof($hashData->chunks); $i < $numChunks; $i++)
                 {
                         //      initialize the registers
                         for($j = 0; $j < 8; $j++)
                                 ${$vars{$j}} = $hashData->hash[$j];
-                       
-                        echo "\n\nChunk " . ($i + 1) . ' of ' . $numChunks . " ::\nhash " . memdump($hashData->hash);
                        
                         //      the SHA-256 compression function
                         for($j = 0; $j < 64; $j++)
@@ -290,16 +282,11 @@ class SHA256 extends hash
                                 $c = $b;
                                 $b = $a;
                                 $a = SHA256::sum($T1, $T2);
-                               
-                                echo ' t' . sprintf('%02d',$j+1) . ' ' . memdump(array($a, $b, $c, $d, $e, $f, $g, $h));
                         }
                        
                         //      compute the next hash set
                         for($j = 0; $j < 8; $j++)
                                 $hashData->hash[$j] = SHA256::sum(${$vars{$j}}, $hashData->hash[$j]);
-                       
-                        echo 'DONE ' . memdump($hashData->hash);
-                        echo "\n\nW::\n" . memdump($W, 4) . "\n";
                 }
         }
        
@@ -334,65 +321,6 @@ class SHA256 extends hash
                
                 return $str;
         }
-}
-
-
-//      dump passed memory
-function memdump($data, $brk = 0)
-{
-        if(is_array($data))
-        {
-                $n = 0;
-                $b = -1;
-                $brk_step = $brk - 1;
-               
-                $o = '';
-                for($n = 0, $y = sizeof($data); $n < $y; $n++, $b %= $brk)
-                {
-                        if($n != 0)
-                        {
-                                if($brk > 0)
-                                {
-                                        $o .= ($b == $brk_step ? "\n" : ' ');
-                                }
-                                else
-                                {
-                                        $o .= ' ';
-                                }
-                        }
-                       
-                        $o .= memdump($data[$n]);
-                       
-                        ++$b;
-                }
-               
-                $o .= "\n";
-        }
-        else
-        {
-                $n = 0;
-                $b = 0;
-                if(is_integer($data) || is_float($data))
-                        $data = pack('N',$data);
-                $o = '';
-                for($i = 0, $j = strlen($data); $i < $j; $i++, $b = $i % 4)
-                {
-                        $o .= sprintf('%02x', ord($data{$i}));
-                        //      only process when 32-bits have passed through
-                        if($i != 0 && $b == 3)
-                        {
-                                //      process new line points
-                                if($n == 3)
-                                        $o .= "\n";
-                                elseif($j > 4)
-                                        $o .= ' ';
-                                ++$n;
-                                $n %= 4;
-                        }
-                }
-        }
-       
-        return $o;
 }
 
 
@@ -444,11 +372,9 @@ function hexerize($str)
 
 //      testing functions
 
-function test1($it = 10000)
+function test1()
 {
-        $it = intval($it);
-        if($it === 0)
-                $it = 10000;
+        $it = 1;
        
         echo '<pre>';
 
@@ -469,11 +395,9 @@ function test1($it = 10000)
         echo '</pre>';
 }
 
-function test2($it = 10000)
+function test2()
 {
-        $it = intval($it);
-        if($it === 0)
-                $it = 10000;
+        $it = 1;
        
         echo '<pre>';
        
@@ -486,7 +410,7 @@ function test2($it = 10000)
                 for($x = 0; $x < $it; $x++)
                         $o = SHA256::hash($str);
                 list($e1,$e2) = explode(' ', microtime());
-                echo $o . "\n";
+                echo $o;
                 echo 'processing took ' . (($e2 - $s2 + $e1 - $s1) / $it) . ' seconds.' . "\n\n\n";
         }
        
@@ -513,15 +437,15 @@ function testSpeedHash($it = 10)
         echo '<pre>' . "\n";
        
         $test = array(
-                /*''=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',*/
-                'abc'=>'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad',/*
+                ''=>'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+                'abc'=>'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad',
                 'message digest'=>'f7846f55cf23e14eebeab5b4e1550cad5b509e3348fbc4efa3a1413d393cb650',
                 'secure hash algorithm'=>'f30ceb2bb2829e79e4ca9753d35a8ecc00262d164cc077080295381cbd643f0d',
                 'SHA256 is considered to be safe'=>'6819d915c73f4d1e77e4e1b52d1fa0f9cf9beaead3939f15874bd988e2a23630',
                 'abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq'=>'248d6a61d20638b8e5c026930c3e6039a33ce45964ff2167f6ecedd419db06c1',
                 'For this sample, this 63-byte string will be used as input data'=>'f08a78cbbaee082b052ae0708f32fa1e50c5c421aa772ba5dbb406a2ea6be342',
                 'This is exactly 64 bytes long, not counting the terminating byte'=>'ab64eff7e88e2e46165e29f2bce41826bd4c7b3552f6b382a9e7d3af47c245f8',
-*/            );
+                );
        
         foreach($test as $str => $hash)
         {
@@ -549,5 +473,13 @@ function testSpeedHash($it = 10)
        
         echo '</pre>';
 }
+
+//testSpeedHash(1);
+
+//--------------
+//      END REMOVAL HERE
+//--------------
+
+/* EOF :: Document Settings: tab:4; */
 
 ?>
