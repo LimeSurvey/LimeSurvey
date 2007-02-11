@@ -2489,14 +2489,17 @@ function getArrayFiltersOutGroup($qid)
  * @return bool Returns true if database was modified successfully.
  */
 function modify_database($sqlfile='', $sqlstring='') {
-
+	
 	global $dbprefix;
 	global $defaultuser;
 	global $defaultpass;
 	global $siteadminemail;
 	global $defaultlang;
 	global $codeString;
+	global $rootdir;
 
+	require_once($rootdir."/admin/classes/core/SHA256.php");
+	
 	$success = true;  // Let's be optimistic
 
 	if (!empty($sqlfile)) {
@@ -2527,10 +2530,9 @@ function modify_database($sqlfile='', $sqlstring='') {
 				$command .= $line;
 				$command = str_replace('prefix_', $dbprefix, $command); // Table prefixes
 				$command = str_replace('$defaultuser', $defaultuser, $command); // variables By Moses
-				$command = str_replace('$defaultpass', $defaultpass, $command); // variables By Moses
+				$command = str_replace('$defaultpass', SHA256::hash($defaultpass), $command); // variables By Moses
 				$command = str_replace('$siteadminemail', $siteadminemail, $command); // variables By Moses
 				$command = str_replace('$defaultlang', $defaultlang, $command); // variables By Moses
-				$command = str_replace('$codeString', $codeString, $command); // variables By Moses
 				if (! db_execute_num($command)) { echo $command;
 				$success = false;
 				}
