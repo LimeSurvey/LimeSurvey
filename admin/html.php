@@ -1316,7 +1316,7 @@ if ($action == "modifyuser")
 		. "\t\t<th>".$clang->gT("Full name")."</th>\n"
 		. "\t\t<th>".$clang->gT("Password")."</th>\n"
 		. "\t</tr>\n";
-		$muq = "SELECT a.user, DECODE(a.password, '{$codeString}') AS decpassword, a.full_name, a.email, a.uid, b.user AS parent FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$_POST['uid']}' LIMIT 1";	//	added by Dennis
+		$muq = "SELECT a.users_name, a.full_name, a.email, a.uid, b.users_name AS parent FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$_POST['uid']}' LIMIT 1";	//	added by Dennis
 		//echo($muq);
 
 		$mur = db_execute_assoc($muq);
@@ -1324,13 +1324,12 @@ if ($action == "modifyuser")
 		while ($mrw = $mur->FetchRow())
 		{
 			$mrw = array_map('htmlspecialchars', $mrw);
-			$decodeString = "DECODE(a.password, '{$codeString}')";	//	added by Dennis
-			$usersummary .= "\t<td align='center'><strong>{$mrw['user']}</strong>\n"
+			$usersummary .= "\t<td align='center'><strong>{$mrw['users_name']}</strong>\n"
 			. "\t<td align='center'>\n\t\t<input type='text' name='email' value=\"{$mrw['email']}\" /></td>\n"
 			. "\t<td align='center'>\n\t\t<input type='text' name='full_name' value=\"{$mrw['full_name']}\" /></td>\n"
-			. "\t\t<input type='hidden' name='user' value=\"{$mrw['user']}\" /></td>\n"
+			. "\t\t<input type='hidden' name='user' value=\"{$mrw['users_name']}\" /></td>\n"
 			. "\t\t<input type='hidden' name='uid' value=\"{$mrw['uid']}\" /></td>\n";	// added by Dennis
-			$usersummary .= "\t<td align='center'>\n\t\t<input type='text' name='pass' value=\"{$mrw['decpassword']}\" /></td>\n";
+			$usersummary .= "\t<td align='center'>\n\t\t<input type='text' name='pass' value=\"\" /></td>\n";
 		}
 		$usersummary .= "\t</tr>\n\t<tr><td colspan='4' align='center'>\n"
 		. "\t\t<input type='submit' value='".html_escape($clang->gT("Update"))."' />\n"
@@ -1560,7 +1559,7 @@ if ($action == "editusers")
 			$usersummary .= "\t\t<td align='center'>"
 			."<form name='parentsform{$usr['uid']}'action='$scriptname?action=setnewparents' method='post'>"
 			."<input type='hidden' name='uid' value='{$usr['uid']}' />";
-//			."<select name='parent' size='1' onChange='document.getElementById(\"button{$usr['uid']}\").innerHTML = \"<input type=\\\"submit\\\" value=\\\"".$clang->gT("Change")."\\\">\"'>";
+			//."<select name='parent' size='1' onChange='document.getElementById(\"button{$usr['uid']}\").innerHTML = \"<input type=\\\"submit\\\" value=\\\"".$clang->gT("Change")."\\\">\"'>"
 			//."<select name='parent' size='1' onChange='document.getElementById(\"button{$usr['uid']}\").createElement(\"input\")'>";
 			if($usr['uid'] != $usrhimself['uid'])
 			{
