@@ -2756,7 +2756,7 @@ function getgroupuserlist()
     {
     global $ugid, $dbprefix, $scriptname, $connect, $clang;
 
-	$surveyidquery = "SELECT a.uid, a.user FROM ".db_table_name('users')." AS a LEFT JOIN (SELECT uid AS id FROM ".db_table_name('user_in_groups')." WHERE ugid = {$ugid}) AS b ON a.uid = b.id WHERE ISNULL(id) ORDER BY a.user";
+	$surveyidquery = "SELECT a.uid, a.users_name FROM ".db_table_name('users')." AS a LEFT JOIN (SELECT uid AS id FROM ".db_table_name('user_in_groups')." WHERE ugid = {$ugid}) AS b ON a.uid = b.id WHERE ISNULL(id) ORDER BY a.users_name";
 
     $surveyidresult = db_execute_assoc($surveyidquery);
     if (!$surveyidresult) {return "Database Error";}
@@ -2778,7 +2778,7 @@ function getsurveyuserlist()
     {
     global $surveyid, $dbprefix, $scriptname, $connect, $clang;
 
-	$surveyidquery = "SELECT a.uid, a.user FROM ".db_table_name('users')." AS a LEFT OUTER JOIN (SELECT uid AS id FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid}) AS b ON a.uid = b.id WHERE ISNULL(id) ORDER BY a.user";
+	$surveyidquery = "SELECT a.uid, a.users_name FROM ".db_table_name('users')." AS a LEFT OUTER JOIN (SELECT uid AS id FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid}) AS b ON a.uid = b.id WHERE ISNULL(id) ORDER BY a.users_name";
 
     $surveyidresult = db_execute_assoc($surveyidquery);
     if (!$surveyidresult) {return "Database Error";}
