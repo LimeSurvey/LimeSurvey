@@ -3301,15 +3301,21 @@ if ($action == "editsurvey")
 			// Additional languages listbox
 			. "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Additional Languages").":</font></td>\n"
 			. "\t\t<td><select multiple style='min-width:250px;'  size='5' id='additional_languages' name='additional_languages'>";
+			$jsX=0;
+			$jsRemLang ="<script type=\"text/javascript\">\nvar mylangs = new Array() \n";
+
 			foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
 			{
 				if ($langname && $langname!=$esrow['language']) // base languag must not be shown here
 				{
+					$jsRemLang .="mylangs[$jsX] = \"$langname\"\n";
 					$editsurvey .= "\t\t\t<option id='".$langname."' value='".$langname."'";
 					$editsurvey .= ">".getLanguageNameFromCode($langname)."</option>\n";
+					$jsX++;
 				}
 			}
-
+			$jsRemLang .= "</script>\n";
+			$editsurvey .= $jsRemLang;
 			//  Add/Remove Buttons
 			$editsurvey .= "</select></td>"
 			. "<td align=left><INPUT type=\"button\" value=\"<< "._('Add')."\" onclick=\"DoAdd()\" ID=\"AddBtn\" /><BR /> <INPUT type=\"button\" value=\""._('Remove')." >>\" onclick=\"DoRemove(0,'')\" ID=\"RemoveBtn\"  /></td>\n"
@@ -3350,7 +3356,7 @@ if ($action == "editsurvey")
 			$editsurvey .= ">".$clang->gT("No")."</option>\n"
 			. "</select></td></tr>";
 
-			$editsurvey .= "\t<tr><td colspan='4' align='center'><input type='submit' onClick='return UpdateLanguageIDs();' class='standardbtn' value='".html_escape($clang->gT("Save and Continue"))." >>' />\n"
+			$editsurvey .= "\t<tr><td colspan='4' align='center'><input type='submit' onClick='return UpdateLanguageIDs(mylangs,\"".$clang->gT("All questions, answers, etc for removed languages will be lost. Are you sure?")."\");' class='standardbtn' value='".html_escape($clang->gT("Save and Continue"))." >>' />\n"
 			. "\t<input type='hidden' name='action' value='updatesurvey' />\n"
 			. "\t<input type='hidden' name='sid' value=\"{$esrow['sid']}\" />\n"
 			. "\t<input type='hidden' name='languageids' id='languageids' value=\"{$esrow['additional_languages']}\" />\n"
