@@ -236,9 +236,9 @@ TYPE = MyISAM;
 
 CREATE TABLE `prefix_users` (
   `uid` int(11) NOT NULL auto_increment PRIMARY KEY,
-  `user` varchar(20) NOT NULL UNIQUE default '',
+  `users_name` varchar(20) NOT NULL UNIQUE default '',
   `password` BLOB NOT NULL default '',
-	`full_name` varchar(50) NOT NULL,
+  `full_name` varchar(50) NOT NULL,
   `parent_id` int(10) unsigned NOT NULL,
   `lang` varchar(20),
   `email` varchar(50) NOT NULL UNIQUE,
