@@ -1446,9 +1446,11 @@ class PHPMailer
             $result = $this->Hostname;
         elseif ($this->ServerVar('SERVER_NAME') != "")
             $result = $this->ServerVar('SERVER_NAME');
-        else
-            $result = "localhost.localdomain";
-
+        if($this->ServerVar('SERVER_NAME') == "" || $this->ServerVar('SERVER_NAME') == "localhost" )
+        {
+        	$tmpvar1 = explode("@",$this->From);
+        	$result = $tmpvar1[1];
+        }
         return $result;
     }
 
