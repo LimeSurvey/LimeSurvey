@@ -3027,15 +3027,15 @@ function CleanLanguagesFromSurvey($sid, $availlangs)
 	
 	// Remove From Questions Table
 	$query = "DELETE FROM ".db_table_name('questions')." WHERE sid='{$sid}' and ($sqllang)";
-	return $connect->Execute($query) or die($connect->ErrorMsg());
+	$connect->Execute($query) or die($connect->ErrorMsg());
 	
 	// Remove From Groups Table
 	$query = "DELETE FROM ".db_table_name('groups')." WHERE sid='{$sid}' and ($sqllang)";
-	return $connect->Execute($query) or die($connect->ErrorMsg());
+	$connect->Execute($query) or die($connect->ErrorMsg());
 	
 	// Remove From Answers Table
 	$query = "DELETE FROM ".db_table_name('answers')." WHERE sid='{$sid}' and ($sqllang)";
-	return $connect->Execute($query) or die($connect->ErrorMsg());
+	$connect->Execute($query) or die($connect->ErrorMsg());
 	
 	return true;
 }
@@ -3060,8 +3060,8 @@ function FixLanguagesOnSurvey($sid, $availlangs)
 	
 	$baselang = GetBaseLanguageFromSurveyID($sid);
 	
-	$query = "SELECT * FROM ".db_table_name('groups')." WHERE sid='{$sid}' AND  language='{$baselang}'  ORDER BY group_order";
-	$result = db_execute_num($query) or die($connect->ErrorMsg());
+	$query = "SELECT * FROM ".db_table_name('groups')." WHERE sid='{$sid}' AND language='{$baselang}'  ORDER BY group_order";
+	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
 	if ($result->RecordCount() > 0)
 	{
 		while($group = $result->FetchRow())
@@ -3069,19 +3069,16 @@ function FixLanguagesOnSurvey($sid, $availlangs)
 			foreach ($langs as $lang)
 			{
 				$query = "SELECT gid FROM ".db_table_name('groups')." WHERE sid='{$sid}' AND gid='{$group['gid']}' AND language='{$lang}'";
-				$gresult = db_execute_num($query) or die($connect->ErrorMsg());
-				if ($result->RecordCount() < 1)
+				$gresult = db_execute_assoc($query) or die($connect->ErrorMsg());
+				if ($gresult->RecordCount() < 1)
 				{
 					$query = "INSERT INTO ".db_table_name('groups')." (gid,sid,group_name,group_order,description,language) VALUES('{$group['gid']}','{$group['sid']}','{$group['group_name']}','{$group['group_order']}','{$group['description']}','{$lang}')";
-					$giresult = db_execute_num($query) or die($connect->ErrorMsg());
+					$connect->Execute($query) or die($connect->ErrorMsg());
 				}
 			}
 		}
 	}
-	reset($lang);
-	
-
-	
+	reset($langs);
 	return true;
 }
 
