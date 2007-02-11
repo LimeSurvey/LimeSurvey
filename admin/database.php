@@ -48,23 +48,6 @@ function db_quote($str)
 	return $connect->escape($str);
 }
 
-
-/*
-* Return the correct decryption function for use in select statements  
-* n.b. There is no native (documented) field decryption function in SQL Server, 
-* passwords remain as plain text. Even on MySQL the use of DECODE is likely 
-* to be removed at some point in favour of encryption using PHP. 
-*/
-function db_decrypt($crypt_str_col, $pass_str)
-{
-	global $connect;
-	switch ($connect->databaseType) {
-		case 'mysql'	  : return "DECODE($crypt_str_col, '$pass_str')";
-		case 'odbc_mssql' : return "[$crypt_str_col]";
-		default: die ("Couldn't create decryption function for connection type '$connect->databaseType'"); 
-	}	
-}
-
 /*
  * Return a sql statement for renaming a table
  */
