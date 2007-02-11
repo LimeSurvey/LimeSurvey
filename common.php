@@ -729,7 +729,7 @@ function getgrouplistlang($gid, $language)
 function getuserlist()
 {
 	global $dbprefix, $connect;
-	$uquery = "SELECT * FROM ".db_table_name('users')." ORDER BY users_name";
+	$uquery = "SELECT * FROM ".db_table_name('users')." ORDER BY uid";
 	$uresult = db_execute_assoc($uquery);
 	$userlist = array();
 	while ($srow = $uresult->FetchRow())
