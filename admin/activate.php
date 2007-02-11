@@ -302,10 +302,10 @@ else
 			switch($arow['type'])
 			{
 				case "N":  //NUMERICAL
-				$createsurvey .= " C";
+				$createsurvey .= " C(20)";
 				break;
 				case "S":  //SHORT TEXT
-				$createsurvey .= " C";
+				$createsurvey .= " C(255)";
 				break;
 				case "L":  //LIST (RADIO)
 				case "!":  //LIST (DROPDOWN)
@@ -353,15 +353,15 @@ else
 				if ($abrow['other']=="Y") {$alsoother="Y";}
 				if ($arow['type'] == "P")
 				{
-					$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}comment` C,\n";
+					$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}comment` C(255),\n";
 				}
 			}
 			if ((isset($alsoother) && $alsoother=="Y") && ($arow['type']=="M" || $arow['type']=="P"))
 			{
-				$createsurvey .= " `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other` C,\n";
+				$createsurvey .= " `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other` C(255),\n";
 				if ($arow['type']=="P")
 				{
-					$createsurvey .= " `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}othercomment` C,\n";
+					$createsurvey .= " `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}othercomment` C(255),\n";
 				}
 			}
 		}
@@ -371,7 +371,7 @@ else
 			$abresult=db_execute_assoc($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 			while ($abrow = $abresult->FetchRow())
 			{
-				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` C,\n";
+				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` C(255),\n";
 			}
 		}
 		elseif ($arow['type'] == "J")
@@ -396,13 +396,12 @@ else
 		}
 		
 	}
-   
+
 	$tabname = "{$dbprefix}survey_{$_GET['sid']}";
     $taboptarray = array('mysql' => 'TYPE=ISAM');
     $dict = NewDataDictionary($connect);
-//    echo $tabname.'<br>'.$createsurvey.'<br>'.$taboptarray;
     $sqlarray = $dict->CreateTableSQL($tabname, $createsurvey, $taboptarray);  
-    
+
     $execresult=$dict->ExecuteSQLArray($sqlarray,1);
     if ($execresult==0 || $execresult==1)
 	{
