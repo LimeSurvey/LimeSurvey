@@ -42,7 +42,7 @@ $date = date('YmdHi'); //'Hi' adds 24hours+minutes to name to allow multiple dea
 $deactivateoutput='';
 if (!isset($_GET['ok']) || !$_GET['ok'])
 {
-	$deactivateoutput .= "<br />\n<table width='500' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+	$deactivateoutput .= "<br />\n<table bgcolor='#FFFFFF' width='500' align='center' style='border: 1px solid #555555' cellpadding='6' cellspacing='0'>\n";
 	$deactivateoutput .= "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Deactivate Survey")." ($surveyid)</strong></font></td></tr>\n";
 	$deactivateoutput .= "\t<tr>\n";
 	$deactivateoutput .= "\t\t<td align='center' bgcolor='#FFEEEE'>\n";
@@ -108,7 +108,7 @@ else
 	
 	$deactivatequery = "UPDATE {$dbprefix}surveys SET active='N' WHERE sid=$surveyid";
 	$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
-	$deactivateoutput .= "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+	$deactivateoutput .= "<br />\n<table bgcolor='#FFFFFF' width='350' align='center' style='border: 1px solid #555555' cellpadding='6' cellspacing='0'>\n";
 	$deactivateoutput .= "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Deactivate Survey")." ($surveyid)</strong></font></td></tr>\n";
 	$deactivateoutput .= "\t<tr>\n";
 	$deactivateoutput .= "\t\t<td align='center'>\n";
@@ -126,12 +126,7 @@ else
 	}
 	$deactivateoutput .= "\t\t</td>\n";
 	$deactivateoutput .= "\t</tr>\n";
-	$deactivateoutput .= "\t<tr>\n";
-	$deactivateoutput .= "\t\t<td align='center'>\n";
-	$deactivateoutput .= "\t\t\t<input type='submit' value='".html_escape($clang->gT("Main Admin Screen"))."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\">\n";
-	$deactivateoutput .= "\t\t</td>\n";
-	$deactivateoutput .= "\t</tr>\n";
-	$deactivateoutput .= "</table>\n";
+	$deactivateoutput .= "</table><br/>&nbsp;\n";
 }
 
 ?>

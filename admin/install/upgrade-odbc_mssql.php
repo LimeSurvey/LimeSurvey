@@ -9,7 +9,7 @@ function db_upgrade($oldversion) {
 /// older versions to match current functionality 
 
 
-    if ($oldversion < 109) {
+    if ($oldversion < 112) {
 //       delete_records("log_display", "module", "lesson");
     }
 
