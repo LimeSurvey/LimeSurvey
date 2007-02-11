@@ -1505,8 +1505,8 @@ if ($action == "editusers")
 	. "\t<td align='center'><strong>{$usrhimself['email']}</strong></td>\n"
 	. "\t\t<td align='center'><strong>{$usrhimself['full_name']}</strong></td>\n"
 	. "\t\t<td align='center'><strong>********</strong></td>\n";
-	if($usrhimself['parent_id']!=0) {
-		$usersummary .= "\t\t<td align='center'>{$usrhimself['parent']}</td>\n";
+	if(isset($usrhimself['parent_id']) && $usrhimself['parent_id']!=0) {
+		$usersummary .= "\t\t<td align='center'>{$_SESSION['userlist'][$usrhimself['parent_id']]['user']}</td>\n";
 	}
 	else
 	{
