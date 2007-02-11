@@ -2494,6 +2494,7 @@ function modify_database($sqlfile='', $sqlstring='') {
 	global $defaultuser;
 	global $defaultpass;
 	global $siteadminemail;
+	global $siteadminname;
 	global $defaultlang;
 	global $codeString;
 	global $rootdir;
@@ -2531,6 +2532,7 @@ function modify_database($sqlfile='', $sqlstring='') {
 				$command = str_replace('prefix_', $dbprefix, $command); // Table prefixes
 				$command = str_replace('$defaultuser', $defaultuser, $command); // variables By Moses
 				$command = str_replace('$defaultpass', SHA256::hash($defaultpass), $command); // variables By Moses
+				$command = str_replace('$siteadminname', $siteadminname, $command); 
 				$command = str_replace('$siteadminemail', $siteadminemail, $command); // variables By Moses
 				$command = str_replace('$defaultlang', $defaultlang, $command); // variables By Moses
 				if (! db_execute_num($command)) { echo $command;
