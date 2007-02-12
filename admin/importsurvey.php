@@ -901,7 +901,7 @@ if (isset($question_attributesarray) && $question_attributesarray) {//ONLY DO TH
 
         $newvalues=array_values($qarowdata);
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-        $qainsert = "insert INTO {$dbprefix}groups (".implode(',',array_keys($qarowdata)).") VALUES (".implode(',',$newvalues).")"; 
+        $qainsert = "insert INTO {$dbprefix}question_attributes (".implode(',',array_keys($qarowdata)).") VALUES (".implode(',',$newvalues).")"; 
 		$result=$connect->Execute($qainsert) or die ("Couldn't insert question_attribute<br />$qainsert<br />".$connect->ErrorMsg());
 	}
 }
