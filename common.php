@@ -2158,6 +2158,11 @@ function html_escape($str) {
 	htmlspecialchars( $str, ENT_QUOTES ));
 }
 
+// make a string safe to include in a JavaScript String parameter.
+function javascript_escape($str) {
+	return str_replace('\'',"\\'",$str);
+}
+
 // This function returns the header as result string
 // If you want to echo the header use doHeader() !
 function getHeader()
