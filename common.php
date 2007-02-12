@@ -3030,16 +3030,22 @@ function CleanLanguagesFromSurvey($sid, $availlangs)
 		}
 	}
 	
+	// Remove From Answers Table
+	$query = "SELECT qid FROM ".db_table_name('questions')." WHERE sid='{$sid}' and ($sqllang)";
+	$qidresult = $connect->Execute($query) or die($connect->ErrorMsg());
+	while ($qrow =  $qidresult->FetchRow())
+	{
+		$myqid = $qrow[0];
+		$query = "DELETE FROM ".db_table_name('answers')." WHERE qid='$myqid' and ($sqllang)";
+		$connect->Execute($query) or die($connect->ErrorMsg());
+	}
+	
 	// Remove From Questions Table
 	$query = "DELETE FROM ".db_table_name('questions')." WHERE sid='{$sid}' and ($sqllang)";
 	$connect->Execute($query) or die($connect->ErrorMsg());
 	
 	// Remove From Groups Table
 	$query = "DELETE FROM ".db_table_name('groups')." WHERE sid='{$sid}' and ($sqllang)";
-	$connect->Execute($query) or die($connect->ErrorMsg());
-	
-	// Remove From Answers Table
-	$query = "DELETE FROM ".db_table_name('answers')." WHERE sid='{$sid}' and ($sqllang)";
 	$connect->Execute($query) or die($connect->ErrorMsg());
 	
 	return true;
