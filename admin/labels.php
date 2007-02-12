@@ -149,7 +149,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 
 			//  Add/Remove Buttons
 			$labelsoutput.= "</select></td>"
-			. "<td align=left><INPUT type=\"button\" value=\"<< "._('Add')."\" onclick=\"DoAdd()\" ID=\"AddBtn\" /><br /> <INPUT type=\"button\" value=\""._('Remove')." >>\" onclick=\"DoRemove(1,'".$clang->gT("You cannot remove this items since you need at least one language in a labelset.")."')\" ID=\"RemoveBtn\"  /></td>\n"
+			. "<td align=left><INPUT type=\"button\" value=\"<< ".html_escape($clang->gT("Add"))."\" onclick=\"DoAdd()\" ID=\"AddBtn\" /><br /> <INPUT type=\"button\" value=\"".html_escape($clang->gT("Remove"))." >>\" onclick=\"DoRemove(1,'".javascript_escape($clang->gT("You cannot remove this items since you need at least one language in a labelset."))."')\" ID=\"RemoveBtn\"  /></td>\n"
 
 			// Available languages listbox
 			. "<td align=left width='45%'><select size='5' id='available_languages' name='available_languages'>";
