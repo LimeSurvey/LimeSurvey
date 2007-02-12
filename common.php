@@ -335,6 +335,15 @@ function &db_execute_num($sql,$inputarr=false)
 	return $dataset;
 }
 
+function &db_select_limit_num($sql,$numrows=-1,$offset=-1,$inputarr=false)
+{
+	global $connect;
+
+	$connect->SetFetchMode(ADODB_FETCH_NUM);
+	$dataset=$connect->SelectLimit($sql,$numrows=-1,$offset=-1,$inputarr=false) or die($sql);
+	return $dataset;
+}
+
 function &db_execute_assoc($sql,$inputarr=false)
 {
 	global $connect;
