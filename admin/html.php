@@ -278,13 +278,14 @@ if ($surveyid)
 		. "-->\n"
 		. "</script>\n";
 
+		$baselang = GetBaseLanguageFromSurveyID($surveyid);
 		$sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
-		$sumquery3 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND language='".$defaultlang."'"; //Getting a count of questions for this survey
+		$sumquery3 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND language='".$baselang."'"; //Getting a count of questions for this survey
 		$sumresult5 = db_execute_assoc($sumquery5);
 		$sumrows5 = $sumresult5->FetchRow();
 		$sumresult3 = $connect->Execute($sumquery3);
 		$sumcount3 = $sumresult3->RecordCount();
-		$sumquery2 = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='".$defaultlang."'"; //Getting a count of groups for this survey
+		$sumquery2 = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='".$baselang."'"; //Getting a count of groups for this survey
 		$sumresult2 = $connect->Execute($sumquery2);
 		$sumcount2 = $sumresult2->RecordCount();
 		$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid"; //Getting data for this survey
@@ -584,9 +585,9 @@ if ($surveyid)
 		. "\t\t<select class=\"listboxgroups\" name='groupselect' "
 		. "onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
 
-		if (getgrouplistlang($gid, $defaultlang))
+		if (getgrouplistlang($gid, $baselang))
 		{
-			$surveysummary .= getgrouplistlang($gid, $defaultlang);
+			$surveysummary .= getgrouplistlang($gid, $baselang);
 		}
 		else
 		{
@@ -833,12 +834,13 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 
 if ($gid)   // Show the group toolbar
 {
+	// TODO: check that surveyid and thus baselang are always set here
 	$sumquery4 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND
-	gid=$gid AND language='".$defaultlang."'"; //Getting a count of questions for this survey
+	gid=$gid AND language='".$baselang."'"; //Getting a count of questions for this survey
 	$sumresult4 = $connect->Execute($sumquery4);
 	$sumcount4 = $sumresult4->RecordCount();
 	$grpquery ="SELECT * FROM ".db_table_name('groups')." WHERE gid=$gid AND
-	language='".$defaultlang."' ORDER BY ".db_table_name('groups').".group_order";
+	language='".$baselang."' ORDER BY ".db_table_name('groups').".group_order";
 	$grpresult = db_execute_assoc($grpquery);
 	$groupsummary = "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
 	while ($grow = $grpresult->FetchRow())
@@ -961,11 +963,12 @@ if ($gid)   // Show the group toolbar
 
 if ($qid)  // Show the question toolbar
 {
+	// TODO: check that surveyid is set and that so is $baselang
 	//Show Question Details
-	$qrq = "SELECT * FROM ".db_table_name('answers')." WHERE qid=$qid AND language='".$defaultlang."' ORDER BY sortorder, answer";
+	$qrq = "SELECT * FROM ".db_table_name('answers')." WHERE qid=$qid AND language='".$baselang."' ORDER BY sortorder, answer";
 	$qrr = $connect->Execute($qrq);
 	$qct = $qrr->RecordCount();
-	$qrquery = "SELECT * FROM ".db_table_name('questions')." WHERE gid=$gid AND sid=$surveyid AND qid=$qid AND language='".$defaultlang."'";
+	$qrquery = "SELECT * FROM ".db_table_name('questions')." WHERE gid=$gid AND sid=$surveyid AND qid=$qid AND language='".$baselang."'";
 	$qrresult = db_execute_assoc($qrquery) or die($qrquery."<br />".$connect->ErrorMsg());
 	$questionsummary = "<table width='100%' align='center' bgcolor='#EEEEEE' border='0'>\n";
 	while ($qrrow = $qrresult->FetchRow())
