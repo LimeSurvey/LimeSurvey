@@ -103,7 +103,7 @@ if ($action == "checksettings" || $action == "changelang")
 	$query = "SELECT sid FROM ".db_table_name('surveys')." WHERE active='Y'";
 	$result = $connect->Execute($query);
 	$activesurveycount=$result->RecordCount();
-	$query = "SELECT user FROM ".db_table_name('users');
+	$query = "SELECT users_name FROM ".db_table_name('users');
 	$result = $connect->Execute($query);
 	$usercount = $result->RecordCount();
 	$tablelist = $connect->MetaTables();
