@@ -2077,7 +2077,8 @@ if ($action == "addquestion")
 
 if ($action == "copyquestion")
 {
-	$eqquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language='".$defaultlang."'";
+	// TODO: make sure baselang is set (should be if surveyid is)
+	$eqquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language='".$baselang."'";
 	$eqresult = db_execute_assoc($eqquery);
 	$qattributes=questionAttributes();
 	while ($eqrow = $eqresult->FetchRow())
