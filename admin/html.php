@@ -1870,7 +1870,7 @@ if ($action == "editusergroups"  )
 				if($egurow['uid'] == $crow['owner_id'])
 				{
 					$usergroupowner = "\t<tr bgcolor='#999999'>\n"
-					. "\t<td align='center'><strong>{$egurow['user']}</strong></td>\n"
+					. "\t<td align='center'><strong>{$egurow['users_name']}</strong></td>\n"
 					. "\t<td align='center'><strong>{$egurow['email']}</strong></td>\n"
 					. "\t\t<td align='center'>\n";
 					continue;
@@ -1880,7 +1880,7 @@ if ($action == "editusergroups"  )
 				if($row == 1){ $usergroupentries .= "\t<tr>\n\t<td height=\"20\" colspan=\"6\"></td>\n\t</tr>"; $row++;}
 				if(($row % 2) == 0) $usergroupentries .= "\t<tr  bgcolor='#999999'>\n";
 				else $usergroupentries .= "\t<tr>\n";
-				$usergroupentries .= "\t<td align='center'>{$egurow['user']}</td>\n"
+				$usergroupentries .= "\t<td align='center'>{$egurow['users_name']}</td>\n"
 				. "\t<td align='center'>{$egurow['email']}</td>\n"
 				. "\t\t<td align='center' style='padding-top:10px;'>\n";
 
@@ -1889,7 +1889,7 @@ if ($action == "editusergroups"  )
 				{
 					$usergroupentries .= "\t\t\t<form method='post' action='$scriptname?action=deleteuserfromgroup&ugid=$ugid'>"
 					." <input type='submit' value='".html_escape($clang->gT("Delete"))."' onClick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.")."\")' />"
-					." <input type='hidden' name='user' value='{$egurow['user']}' />"
+					." <input type='hidden' name='user' value='{$egurow['users_name']}' />"
 					." <input name='uid' type='hidden' value='{$egurow['uid']}' />"
 					." <input name='ugid' type='hidden' value='{$ugid}' />";
 				}
@@ -2984,7 +2984,7 @@ if($action == "surveysecurity")
 				else
 					$surveysecurity .= "\t<tr>\n";
 
-				$surveysecurity .= "\t<td align='center'>{$resul2row['user']}\n"
+				$surveysecurity .= "\t<td align='center'>{$resul2row['users_name']}\n"
 								 . "\t<td align='center'>";
 					
 				if(isset($group_names) > 0)

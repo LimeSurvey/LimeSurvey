@@ -2783,7 +2783,7 @@ function getgroupuserlist()
         foreach($surveynames as $sv)
             {
 			$surveyselecter .= "\t\t\t<option";
-            $surveyselecter .=" value='{$sv['uid']}'>{$sv['user']}</option>\n";
+            $surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']}</option>\n";
             }
         }
     $surveyselecter = "\t\t\t<option value='-1' selected>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;
@@ -2805,7 +2805,7 @@ function getsurveyuserlist()
         foreach($surveynames as $sv)
             {
 			$surveyselecter .= "\t\t\t<option";
-            $surveyselecter .=" value='{$sv['uid']}'>{$sv['user']}</option>\n";
+            $surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']}</option>\n";
             }
         }
     if (!isset($svexist)) {$surveyselecter = "\t\t\t<option value='-1' selected>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;}
