@@ -1302,7 +1302,7 @@ if ($subaction == "upload")
 		
         		$line = convertCSVRowToArray($buffer,',','"');
         		// sanitize it befire writing into table
-        		$line = array_map('sanitize_sql_string',$line); 
+        		$line = array_map('db_quote',$line); 
 				$elements = count($line);
 				if ($elements > 1)
 				{

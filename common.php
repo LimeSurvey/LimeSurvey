@@ -369,6 +369,13 @@ function db_quote_id($id)
 	return $quote.str_replace($quote,$quote.$quote,$id).$quote;
 }
 
+function db_quote($str)
+{
+	global $connect;
+	return $connect->escape($str);
+}
+
+
 function db_table_name($name)
 {
 	global $dbprefix;

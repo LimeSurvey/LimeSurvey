@@ -421,8 +421,8 @@ else
 function updateset($lid)
 {
 	global $dbprefix, $connect; 
-	$_POST['label_name'] = sanitize_sql_string($_POST['label_name']);
-	$_POST['languageids'] = sanitize_sql_string($_POST['languageids']);
+	$_POST['label_name'] = db_quote($_POST['label_name']);
+	$_POST['languageids'] = db_quote($_POST['languageids']);
 	$query = "UPDATE ".db_table_name('labelsets')." SET label_name='{$_POST['label_name']}', languages='{$_POST['languageids']}' WHERE lid=$lid";
 	if (!$result = $connect->Execute($query))
 	{
@@ -461,8 +461,8 @@ function insertlabelset()
 {
 	global $dbprefix, $connect;
 //	$labelsoutput.= $_POST['languageids'];  For debug purposes
-	$_POST['label_name'] = sanitize_sql_string($_POST['label_name']);
-	$_POST['languageids'] = sanitize_sql_string($_POST['languageids']);
+	$_POST['label_name'] = db_quote($_POST['label_name']);
+	$_POST['languageids'] = db_quote($_POST['languageids']);
 	$query = "INSERT INTO ".db_table_name('labelsets')." (label_name,languages) VALUES ('{$_POST['label_name']}','{$_POST['languageids']}')";
 	if (!$result = $connect->Execute($query))
 	{
@@ -507,6 +507,8 @@ function modlabelsetanswers($lid)
 
         	foreach ($lslanguages as $lslanguage)
         	{
+			$_POST['insertcode'] = db_quote($_POST['insertcode']);
+			$_POST['inserttitle_'.$lslanguage] = db_quote($_POST['inserttitle_'.$lslanguage]);
     			$query = "INSERT INTO ".db_table_name('labels')." (lid, code, title, sortorder,language) VALUES ($lid, '{$_POST['insertcode']}', '{$_POST['inserttitle_'.$lslanguage]}', '$newsortorder','$lslanguage')";
                 if (!$result = $connect->Execute($query))
     			{

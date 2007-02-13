@@ -42,12 +42,6 @@ if (!isset($action)) {$action=returnglobal('action');}
 if (get_magic_quotes_gpc())
 $_POST  = array_map('stripslashes', $_POST);
 
-function db_quote($str)
-{
-	global $connect;
-	return $connect->escape($str);
-}
-
 /*
  * Return a sql statement for renaming a table
  */

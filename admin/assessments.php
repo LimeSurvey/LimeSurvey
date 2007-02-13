@@ -63,9 +63,9 @@ if($actsurrows['edit_survey_property']){
 				  gid=".$_POST['gid'].",
 				  minimum='".$_POST['minimum']."',
 				  maximum='".$_POST['maximum']."',
-				  name='".sanitize_sql_string($_POST['name'])."',
-				  message='".sanitize_sql_string($_POST['message'])."',
-				  link='".sanitize_sql_string($_POST['link'])."'
+				  name='".db_quote($_POST['name'])."',
+				  message='".db_quote($_POST['message'])."',
+				  link='".db_quote($_POST['link'])."'
 				  WHERE id=".$_POST['id'];
 		$result = $connect->Execute($query) or die("Error updating<br />$query<br />".$connect->ErrorMsg());
 	} elseif ($action == "assessmentdelete") {

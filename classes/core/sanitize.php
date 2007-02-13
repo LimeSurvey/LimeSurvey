@@ -37,7 +37,7 @@
 //           alphanumeric
 // sanitize_system_string($string) -- input string, returns string stripped of special
 //           characters
-// sanitize_sql_string($string) -- input string, returns string with slashed out quotes
+// OSBOLETE: sanitize_sql_string($string) -- input string, returns string with slashed out quotes
 // sanitize_html_string($string) -- input string, returns string with html replacements
 //           for special characters
 // sanitize_int($integer) -- input integer, returns ONLY the integer (no extraneous
@@ -55,6 +55,7 @@
 // 20031121 jp - added defines for magic_quotes and register_globals, added ; to replacements
 //               in sanitize_sql_string() function, created rudimentary testing pages
 // 20031221 gz - added nice_addslashes and changed sanitize_sql_string to use it
+// 20070213 lemeur - marked sanitize_sql_string as obsolete, should use db_quote instead
 //
 /////////////////////////////////////////
 
@@ -121,6 +122,7 @@ function sanitize_system_string($string, $min='', $max='')
 }
 
 // sanitize a string for SQL input (simple slash out quotes and slashes)
+// OBSOLETE: should use db_quote from common.php instead since it is DB independent
 function sanitize_sql_string($string, $min='', $max='')
 {
 	$string = nice_addslashes($string); //gz
