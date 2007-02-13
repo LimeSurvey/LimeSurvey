@@ -3003,14 +3003,14 @@ if($action == "surveysecurity")
 				$surveysecurity .= "<form method='post' action='$scriptname?sid={$surveyid}'>"
 				."<input type='submit' value='".html_escape($clang->gT("Delete"))."' onClick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.")."\")' />"
 				."<input type='hidden' name='action' value='delsurveysecurity' />"
-				."<input type='hidden' name='user' value='{$resul2row['user']}' />"
+				."<input type='hidden' name='user' value='{$resul2row['users_name']}' />"
 				."<input type='hidden' name='uid' value='{$resul2row['uid']}' />"
 				."</form>";
 
 				$surveysecurity .= "<form method='post' action='$scriptname?sid={$surveyid}'>"
 				."<input type='submit' value='".html_escape($clang->gT("Set Survey Rights"))."' />"
 				."<input type='hidden' name='action' value='setsurveysecurity' />"
-				."<input type='hidden' name='user' value='{$resul2row['user']}' />"
+				."<input type='hidden' name='user' value='{$resul2row['users_name']}' />"
 				."<input type='hidden' name='uid' value='{$resul2row['uid']}' />"
 				."</form>\n";
 
