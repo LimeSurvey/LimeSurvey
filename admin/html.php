@@ -2483,8 +2483,8 @@ if($action == "orderquestions")
       }
     
     	//Get the questions for this group
-    	$defaultlang = GetBaseLanguageFromSurveyID($surveyid);
-    	$oqquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='".$defaultlang."' order by question_order" ;
+    	$baselang = GetBaseLanguageFromSurveyID($surveyid);
+    	$oqquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='".$baselang."' order by question_order" ;
     	$oqresult = db_execute_assoc($oqquery);
     	
         $orderquestions = "<table width='100%' border='0'>\n\t<tr ><td colspan='2' bgcolor='black' align='center'>"
