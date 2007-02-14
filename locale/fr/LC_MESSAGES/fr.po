@@ -2,28 +2,28 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-02-10 14:38+0100\n"
+"PO-Revision-Date: 2007-02-14 20:20+0100\n"
 "Last-Translator: b00z00\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Basepath: C:\\wamp\\www\\phpsurveyor\n"
+"X-Poedit-Basepath: D:\\www\\phpsurveyor\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-Country: FRANCE\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: gT\n"
-"X-Poedit-SearchPath-0: C:\\wamp\\www\\phpsurveyor\n"
+"X-Poedit-SearchPath-0: D:\\www\\phpsurveyor\n"
 
 msgid "Administration"
 msgstr "Administration"
 
 # E:\www\phpsurveyor/common.php:190
 msgid "Logged in as"
-msgstr "Connecté en tant que :"
+msgstr "Connecté en tant que "
 
 msgid "Default Administration Page"
-msgstr "Page d&lsquo;administration générale"
+msgstr "Page d`administration générale"
 
 # E:\www\phpsurveyor/common.php:219
 # E:\www\phpsurveyor/common.php:220
@@ -41,9 +41,6 @@ msgstr "Vérifier les paramètres"
 msgid "Check Data Integrity"
 msgstr "Vérifier la cohérence des données"
 
-msgid "Delete Entire Survey"
-msgstr "Supprimer tout le questionnaire"
-
 msgid "List Surveys"
 msgstr "Lister les questionnaires"
 
@@ -51,7 +48,7 @@ msgid "Backup Entire Database"
 msgstr "Sauvegarder entiérement la base de données"
 
 msgid "Edit/Add Label Sets"
-msgstr "Editer/Ajouter des jeux d&lsquo;étiquettes"
+msgstr "Editer/Ajouter des jeux d`étiquettes"
 
 msgid "Template Editor"
 msgstr "Editeur de modèles"
@@ -176,7 +173,7 @@ msgid "Check Database Fields"
 msgstr "Contrôle des champs de la base de données"
 
 msgid "Return to Survey Administration"
-msgstr "Retourner à l&lsquo;écran d&lsquo;administration générale"
+msgstr "Retourner à l`écran d`administration générale"
 
 msgid "Show summary information"
 msgstr "Afficher un résumé"
@@ -260,8 +257,8 @@ msgid "A Note On Privacy"
 msgstr "Note sur la vie privée"
 
 # E:\www\phpsurveyor/common.php:1558
-msgid "This survey is anonymous.<br>The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
-msgstr "Ce questionnaire est anonyme.<br>L'enregistrement de vos réponses ne contient aucune information d'identification sur vous, à moins qu'une question ne vous ait été posée dans ce sens. Si vous avez répondu à un questionnaire utilisant des invitations, vous pouvez être assuré(e) que le code de l'invitation n'est pas enregistré avec votre réponse. Les invitations sont gérées dans une base de données séparée qui n'est mise à jour que pour indiquer si vous avez ou non utilisé votre invitation pour remplir le questionnaire. Il n'y a aucun moyen de faire le lien entre les invitations et les réponses enregistrées pour ce questionnaire."
+msgid "This survey is anonymous.<br />The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "Ce questionnaire est anonyme.<br />L'enregistrement de vos réponses ne contient aucune information d'identification sur vous, à moins qu'une question ne vous ait été posée dans ce sens. Si vous avez répondu à un questionnaire utilisant des invitations, vous pouvez être assuré(e) que le code de l'invitation n'est pas enregistré avec votre réponse. Les invitations sont gérées dans une base de données séparée qui n'est mise à jour que pour indiquer si vous avez ou non utilisé votre invitation pour remplir le questionnaire. Il n'y a aucun moyen de faire le lien entre les invitations et les réponses enregistrées pour ce questionnaire."
 
 msgid "Are you sure you want to clear all your responses?"
 msgstr "Etes-vous sûr de vouloir effacer toutes vos réponses ?"
@@ -279,7 +276,7 @@ msgid "Save Survey and Return"
 msgstr "Sauvegarder le questionnaire et le continuer"
 
 # E:\www\phpsurveyor/common.php:1574
-msgid "<strong>Thank You<br /><br />You have completed answering the questions in this survey.</strong><br /><br />Click on 'Submit' now to complete the process and save your answers."
+msgid "<strong>Thank You!<br /><br />You have completed answering the questions in this survey.</strong><br /><br />Click on 'Submit' now to complete the process and save your answers."
 msgstr "<strong>Merci<br /><br />Vous avez fini de remplir ce questionnaire.</strong><br /><br />Cliquez sur 'Envoyer' maintenant pour terminer le processus et sauvegarder vos réponses."
 
 # E:\www\phpsurveyor/common.php:1575
@@ -366,12 +363,6 @@ msgstr "Continuer"
 msgid "Your Assessment"
 msgstr "Votre évaluation"
 
-msgid "prev"
-msgstr "Précédent"
-
-msgid "next"
-msgstr "Suivant"
-
 msgid "Save your responses so far"
 msgstr "Sauvegarder les réponses faites jusqu'ici"
 
@@ -421,6 +412,9 @@ msgstr "Vous n'avez pas fourni de nom"
 msgid "You did not provide a password"
 msgstr "Vous n'avez pas fourni de mot de passe"
 
+msgid "next"
+msgstr "Suivant"
+
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "C'est un questionnaire privé. Vous devez avoir une invitation pour y participer."
 
@@ -435,6 +429,9 @@ msgstr "Pas de questionnaire correspondant enregistré"
 
 msgid "complete"
 msgstr "Terminé"
+
+msgid "prev"
+msgstr "Précédent"
 
 msgid ""
 "Dear {FIRSTNAME},\n"
@@ -467,7 +464,7 @@ msgid "Click the following link to reload the survey:"
 msgstr "Cliquez sur le lien suivant pour recharger le questionnaire :"
 
 msgid "Click the following link to see the individual response:"
-msgstr "Cliquez sur le lien suivant pour voir votre réponse personnelle"
+msgstr "Cliquez sur le lien suivant pour voir la réponse individuelle"
 
 msgid "Click the following link to edit the individual response:"
 msgstr "Cliquez sur le lien suivant pour éditer cette réponse :"
@@ -819,7 +816,7 @@ msgid "Delete"
 msgstr "Supprimer"
 
 msgid "Are you sure you want to delete this entry."
-msgstr "Etes-vous sûr de vouloir supprimer cette réponse ?"
+msgstr "Etes-vous sûr de vouloir supprimer cet élément ?"
 
 msgid "Browse Responses"
 msgstr "Parcourir les réponses"
@@ -846,7 +843,7 @@ msgid "Edit this entry"
 msgstr "Editer cette réponse"
 
 msgid "Delete this entry"
-msgstr "Supprimer cette réponse"
+msgstr "Supprimer cet élement"
 
 msgid "Export this Response"
 msgstr "Exporter cette réponse"
@@ -1185,7 +1182,7 @@ msgid "Export Question"
 msgstr "Exporter la question"
 
 msgid "Export Label Set"
-msgstr "Exporter le jeu d&lsquo;étiquettes"
+msgstr "Exporter le jeu d`étiquettes"
 
 msgid "No LID has been provided. Cannot dump label set."
 msgstr "Aucun JID (LID) fourni. Impossible d&lsquo;exporter ce jeu d&lsquo;étiquettes."
@@ -1404,15 +1401,15 @@ msgstr "Supprimer le questionnaire courant"
 # C:\wamp\www\phpsurveyor/admin/html.php:499
 # C:\wamp\www\phpsurveyor/admin/html.php:3524
 msgid "Change Group Order"
-msgstr "Changer l'ordre des groupes"
+msgstr "Changer l`ordre des groupes"
 
 msgid "Export Current Survey"
 msgstr "Exporter le questionnaire courant"
 
 msgid "Set Assessment Rules"
-msgstr "Définir des régles d&lsquo;évaluation"
+msgstr "Définir des régles d`évaluation"
 
-msgid "Browse Responses for this Survey"
+msgid "Browse Responses For This Survey"
 msgstr "Parcourir les réponses pour ce questionnaire"
 
 msgid "Activate/Edit Tokens for this Survey"
@@ -1541,13 +1538,13 @@ msgid "Mail to all Members"
 msgstr "Messages à tous les membres"
 
 msgid "Edit Current User Group"
-msgstr "Editer le groupe d'utilisateurs en cours"
+msgstr "Editer ce groupe d`utilisateurs"
 
 msgid "Delete Current User Group"
-msgstr "Supprimer le groupe d'utilisateurs courant"
+msgstr "Supprimer ce groupe d`utilisateurs"
 
 msgid "Add New User Group"
-msgstr "Ajouter un nouveau groupe d'utilisateurs"
+msgstr "Ajouter un nouveau groupe d`utilisateurs"
 
 msgid "User Groups"
 msgstr "Groupes d'utilisateurs"
@@ -1562,7 +1559,7 @@ msgid "Delete Current Group"
 msgstr "Supprimer le groupe en cours"
 
 msgid "Change Question Order"
-msgstr "Changer l'ordre questions"
+msgstr "Changer l`ordre des questions"
 
 msgid "Export Current Group"
 msgstr "Exporter le groupe en cours"
@@ -1690,7 +1687,7 @@ msgid "Add User"
 msgstr "Ajouter un utilisateur"
 
 msgid "Add User Group"
-msgstr "Ajouter un groupe d'utilisateurs"
+msgstr "Ajouter un groupe d`utilisateurs"
 
 msgid "Name:"
 msgstr "Nom :"
@@ -1748,9 +1745,8 @@ msgstr "Impossible de supprimer le groupe d'utilisateurs."
 msgid "Could not delete user group. No group selected."
 msgstr "Impossible de supprimer le groupe d'utilisateurs. Aucun groupe sélectionné."
 
-#, fuzzy
 msgid "Adding User Group"
-msgstr "Ajouter un groupe d'utilisateurs"
+msgstr "Ajouter un groupe d`utilisateurs"
 
 msgid "Description: "
 msgstr "Description :"
@@ -1967,6 +1963,10 @@ msgstr "URL de fin :"
 
 msgid "Automatically load URL when survey complete?"
 msgstr "Charger automatiquement l&lsquo;URL quand le questionnaire est terminé ?"
+
+# D:\www\phpsurveyor/admin/html.php:3363
+msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
+msgstr "Toutes les questions, réponses,etc...associées aux langues supprimées seront perdues. Etes-vous sûr ?"
 
 msgid "Save and Continue"
 msgstr "Sauvegarder et continuer"
@@ -2314,19 +2314,19 @@ msgid "Data Consistency Check<br /><font size='1'>If errors are showing up you m
 msgstr "Contrôle de cohérence de données<br /><font size='1'>Si des erreurs apparaissent, il faudra relancer ce script plusieurs fois."
 
 msgid "Label Sets Administration"
-msgstr "Administration des jeux d&lsquo;étiquettes"
+msgstr "Administration des jeux d`étiquettes"
 
 msgid "Add New Label Set"
-msgstr "Ajouter un nouveau jeu d&lsquo;étiquettes"
+msgstr "Ajouter un nouveau jeu d`étiquettes"
 
 msgid "Add new label set"
-msgstr "Ajouter un nouveau jeu d&lsquo;étiquettes"
+msgstr "Ajouter un nouveau jeu d`étiquettes"
 
 msgid "Create New Label Set"
-msgstr "Créer un nouveau jeu d&lsquo;étiquettes"
+msgstr "Créer un nouveau jeu d`étiquettes"
 
 msgid "Edit Label Set"
-msgstr "Editer des jeux d&lsquo;étiquettes"
+msgstr "Editer des jeux d`étiquettes"
 
 msgid "Set Name"
 msgstr "Nom du jeu"
@@ -2339,10 +2339,10 @@ msgid "Select SQL File:"
 msgstr "Sélectionner un fichier SQL :"
 
 msgid "Edit label set"
-msgstr "Editer un jeu d&lsquo;étiquettes"
+msgstr "Editer le jeu d`étiquettes"
 
 msgid "Delete label set"
-msgstr "Supprimer un jeu d&lsquo;étiquettes"
+msgstr "Supprimer le jeu d`étiquettes"
 
 # labels.php:231
 msgid "Are you sure?"
@@ -2925,6 +2925,9 @@ msgstr "Nom d'utilisateur et/ou mail non trouvé !"
 msgid "Your data:"
 msgstr "Vos informations :"
 
+msgid "New Password"
+msgstr "Nouveau mot de passe"
+
 # E:\www\phpsurveyor/admin/usercontrol.php:75
 msgid "An email with your login data was sent to you."
 msgstr "Un mail avec vos informations de connexion vous a été envoyé."
@@ -2978,9 +2981,9 @@ msgstr "L'administrateur ne peut pas être effacé !"
 msgid "Could not modify User Data."
 msgstr "Modification impossible des données de l'utilisateur."
 
-# E:\www\phpsurveyor/admin/usercontrol.php:283
-msgid "Password was not supplied."
-msgstr "Le mot de passe n'a pas été fourni."
+# D:\www\phpsurveyor/admin/usercontrol.php:316
+msgid "Unchanged"
+msgstr "Inchangé"
 
 # E:\www\phpsurveyor/admin/admin.php:102
 msgid "Email address already exists."
@@ -3108,9 +3111,8 @@ msgid "German"
 msgstr "Allemand"
 
 # C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:107
-#, fuzzy
 msgid "German informal"
-msgstr "Allemand (informel)"
+msgstr "Allemand (tutoiement)"
 
 # C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:111
 msgid "Greek"
