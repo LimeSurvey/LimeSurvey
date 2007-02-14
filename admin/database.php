@@ -51,9 +51,10 @@ function db_rename_table($oldtable, $newtable)
 	switch ($connect->databaseType) {
 		case 'mysql'	  : return "RENAME TABLE $oldtable TO $newtable";
 		case 'odbc_mssql' : return "EXEC sp_rename '$oldtable', '$newtable'";
-		default: die ("Couldn't create rename query for connection type '$connect->databaseType'"); 
+		default: die ("Couldn't create 'rename table' query for connection type '$connect->databaseType'"); 
 	}		
 }
+
 
 /*
 * Gets the maximum question_order field value for a group

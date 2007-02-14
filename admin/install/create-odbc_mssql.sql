@@ -1,270 +1,317 @@
---
--- Structure for table answers :
---
+-- phpSurveyor MS SQL Server 2000 database schema
 
-CREATE TABLE [dbo].[prefix_answers] (
-	[qid] [int] NOT NULL default '0' ,
-	[code] [varchar] (5) NOT NULL default '' ,
-	[answer] [varchar] (100)  NOT NULL , -- n.b. changed from TEXT type
-	[default_value] [char] (1) NOT NULL default 'N',
-	[sortorder] [int] NOT NULL ,
-	[language] [varchar] (20) default 'en'
-	PRIMARY KEY  (qid,code,language)
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table [answers]
+-- 
+
+CREATE TABLE [prefix_answers] (
+  [qid] INT NOT NULL default '0',
+  [code] VARCHAR(5) NOT NULL default '',
+  [answer] varchar(255) NOT NULL, -- TEXT type in MySQL, can't be used in ORDER BY
+  [default_value] char(1) NOT NULL default 'N',
+  [sortorder] INT NOT NULL,
+  [language] VARCHAR(20) default 'en',
+  PRIMARY KEY  ([qid],[code],[language])
+) 
+GO
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table [assessments]
+-- 
+
+CREATE TABLE [prefix_assessments] (
+  [id] INT NOT NULL IDENTITY (1,1),
+  [sid] INT NOT NULL default '0',
+  [scope] VARCHAR(5) NOT NULL default '',
+  [gid] INT NOT NULL default '0',
+  [name] text NOT NULL,
+  [minimum] VARCHAR(50) NOT NULL default '',
+  [maximum] VARCHAR(50) NOT NULL default '',
+  [message] text NOT NULL,
+  [link] text NOT NULL,
+  PRIMARY KEY  ([id])
+) 
+GO
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table [conditions]
+-- 
+
+CREATE TABLE [prefix_conditions] (
+  [cid] INT NOT NULL IDENTITY (1,1),
+  [qid] INT NOT NULL default '0',
+  [cqid] INT NOT NULL default '0',
+  [cfieldname] VARCHAR(50) NOT NULL default '',
+  [method] char(2) NOT NULL default '',
+  [value] VARCHAR(5) NOT NULL default '',
+  PRIMARY KEY  ([cid])
+) 
+GO
+
+-- 
+-- Table structure for table [groups]
+-- 
+
+CREATE TABLE [prefix_groups] (
+  [gid] INT NOT NULL IDENTITY (1,1),
+  [sid] INT NOT NULL default '0',
+  [group_name] VARCHAR(100) NOT NULL default '',
+  [group_order] INT NOT NULL default '0',
+  [description] text,
+  [language] VARCHAR(20) default 'en',
+  PRIMARY KEY  ([gid],[language])
+) 
+GO
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table [labels]
+-- 
+
+CREATE TABLE [prefix_labels] (
+  [lid] INT NOT NULL default '0',
+  [code] VARCHAR(10) NOT NULL default '',
+  [title] VARCHAR(100) NOT NULL default '',
+  [sortorder] INT NOT NULL,
+  [language] VARCHAR(20) default 'en',
+  PRIMARY KEY  ([lid],[sortorder],[language]),
+) 
+GO
+
+CREATE INDEX labels_code_idx 
+  ON [prefix_labels] ([code])
+GO
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table [labelsets]
+-- 
+
+CREATE TABLE [prefix_labelsets] (
+  [lid] INT NOT NULL IDENTITY (1,1),
+  [label_name] VARCHAR(100) NOT NULL default '',
+  [languages] VARCHAR(200) default 'en',
+  PRIMARY KEY  ([lid])
+) 
+GO
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table [question_attributes]
+-- 
+
+CREATE TABLE [prefix_question_attributes] (
+  [qaid] INT NOT NULL IDENTITY (1,1),
+  [qid] INT NOT NULL default '0',
+  [attribute] VARCHAR(50) default NULL,
+  [value] VARCHAR(20) default NULL,
+  PRIMARY KEY  ([qaid])
+) 
+GO
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table [questions]
+-- 
+
+CREATE TABLE [prefix_questions] (
+  [qid] INT NOT NULL IDENTITY (1,1),
+  [sid] INT NOT NULL default '0',
+  [gid] INT NOT NULL default '0',
+  [type] char(1) NOT NULL default 'T',
+  [title] VARCHAR(20) NOT NULL default '',
+  [question] text NOT NULL,
+  [preg] text,
+  [help] text,
+  [other] char(1) NOT NULL default 'N',
+  [mandatory] char(1) default NULL,
+  [lid] INT NOT NULL default '0',
+  [question_order] INT NOT NULL,
+  [language] VARCHAR(20) default 'en',
+  PRIMARY KEY  ([qid],[language])
+) 
+GO
+
+-- --------------------------------------------------------
+
+
+-- 
+-- Table structure for table [saved_control]
+-- 
+
+CREATE TABLE [prefix_saved_control] (
+  [scid] INT NOT NULL IDENTITY (1,1),
+  [sid] INT NOT NULL default '0',
+  [srid] INT NOT NULL default '0',
+  [identifier] text NOT NULL,
+  [access_code] text NOT NULL,
+  [email] VARCHAR(200) default NULL,
+  [ip] text NOT NULL,
+  [saved_thisstep] text NOT NULL,
+  [status] char(1) NOT NULL default '',
+  [saved_date] datetime NOT NULL default '0000-00-00 00:00:00',
+  [refurl] text,
+  PRIMARY KEY  ([scid])
+) 
+GO
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table [surveys]
+-- 
+
+CREATE TABLE [prefix_surveys] (
+  [sid] INT NOT NULL,
+  [owner_id] INT NOT NULL,
+  [admin] VARCHAR(50) default NULL,
+  [active] char(1) NOT NULL default 'N',
+  [expires] DATETIME default NULL,
+  [adminemail] VARCHAR(100) default NULL,
+  [private] char(1) default NULL,
+  [faxto] VARCHAR(20) default NULL,
+  [format] char(1) default NULL,
+  [template] VARCHAR(100) default 'default',
+  [url] VARCHAR(255) default NULL,
+  [language] VARCHAR(50) default NULL,
+  [additional_languages] VARCHAR(255) default NULL,
+  [datestamp] char(1) default 'N',
+  [usecookie] char(1) default 'N',
+  [notification] char(1) default '0',
+  [allowregister] char(1) default 'N',
+  [attribute1] VARCHAR(255) default NULL,
+  [attribute2] VARCHAR(255) default NULL,
+  [allowsave] char(1) default 'Y',
+  [autonumber_start] bigINT default '0',
+  [autoredirect] char(1) default 'N',
+  [allowprev] char(1) default 'Y',
+  [ipaddr] char(1) default 'N',
+  [useexpiry] char(1) NOT NULL default 'N',
+  [refurl] char(1) default 'N',
+  [datecreated] DATETIME default NULL,
+  PRIMARY KEY  ([sid])
+) 
+GO
+
+-- 
+-- Table structure for table [surveys_languagesettings]
+-- 
+
+if EXISTS (select * from dbo.sysobjects where id = object_id(N'[dbo].[prefix_surveys_languagesettings]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE [dbo].[prefix_surveys_languagesettings]
+GO
+
+CREATE TABLE [prefix_surveys_languagesettings] (
+  [surveyls_survey_id] INT NOT NULL DEFAULT 0, -- UNSIGNED integer in MySQL
+  [surveyls_language] VARCHAR(45) NOT NULL DEFAULT 'en',
+  [surveyls_title] VARCHAR(200) NOT NULL,
+  [surveyls_description] TEXT NULL,
+  [surveyls_welcometext] TEXT NULL,
+  [surveyls_urldescription] VARCHAR(255) NULL,
+  [surveyls_email_invite_subj] VARCHAR(255) NULL,
+  [surveyls_email_invite] TEXT NULL,
+  [surveyls_email_remind_subj] VARCHAR(255) NULL,
+  [surveyls_email_remind] TEXT NULL,
+  [surveyls_email_register_subj] VARCHAR(255) NULL,
+  [surveyls_email_register] TEXT NULL,
+  [surveyls_email_confirm_subj] VARCHAR(255) NULL,
+  [surveyls_email_confirm] TEXT NULL,
+  PRIMARY KEY ([surveyls_survey_id],[surveyls_language])
+)
+GO
+
+-- 
+-- Table structure for table [users]
+-- 
+
+CREATE TABLE [prefix_users] (
+  [uid] INT NOT NULL IDENTITY (1,1) PRIMARY KEY,
+  [users_name] VARCHAR(20) NOT NULL UNIQUE default '',
+  [password] TEXT NOT NULL default '', -- BLOB in MySQL
+  [full_name] VARCHAR(50) NOT NULL,
+  [parent_id] INT NOT NULL,  -- UNSIGNED integer in MySQL
+  [lang] VARCHAR(20),
+  [email] VARCHAR(50) NOT NULL UNIQUE,
+  [create_survey] TINYINT NOT NULL default '0',
+  [create_user] TINYINT NOT NULL default '0',
+  [delete_user] TINYINT NOT NULL default '0',
+  [move_user] TINYINT NOT NULL default '0',
+  [configurator] TINYINT NOT NULL default '0',
+  [manage_template] TINYINT NOT NULL default '0',
+  [manage_label] TINYINT NOT NULL default '0'
+) 
+GO
+
+-- 
+-- Table structure for table [surveys_rights]
+-- 
+
+CREATE TABLE [prefix_surveys_rights] (
+	[sid] INT NOT NULL default '0',  -- UNSIGNED integer in MySQL
+	[uid] INT NOT NULL default '0',   -- UNSIGNED integer in MySQL
+	[edit_survey_property] TINYINT NOT NULL default '0',
+	[define_questions] TINYINT NOT NULL default '0',
+	[browse_response] TINYINT NOT NULL default '0',
+	[export] TINYINT NOT NULL default '0',
+	[delete_survey] TINYINT NOT NULL default '0',
+	[activate_survey] TINYINT NOT NULL default '0',
+	PRIMARY KEY ([sid], [uid])
+) 
+GO
+
+-- 
+-- Table structure for table [user_groups]
+-- 
+
+CREATE TABLE [prefix_user_groups] (
+	[ugid] INT NOT NULL IDENTITY (1,1) PRIMARY KEY, -- UNSIGNED integer in MySQL
+	[name] VARCHAR(20) NOT NULL UNIQUE,
+	[description] TEXT NOT NULL default '',
+	[owner_id] INT NOT NULL  -- UNSIGNED integer in MySQL
+) 
+GO
+
+-- 
+-- Table structure for table [user_in_groups]
+-- 
+
+CREATE TABLE [prefix_user_in_groups] (
+	[ugid] INT NOT NULL, -- UNSIGNED integer in MySQL
+	[uid] INT NOT NULL -- UNSIGNED integer in MySQL
 ) 
 GO
 
 --
--- Structure for table assessments :
+-- Table structure for table [settings_global]
 --
 
-CREATE TABLE [dbo].[prefix_assessments] (
-  [id] int IDENTITY(1, 1) NOT NULL,
-  [sid] int DEFAULT 0 NOT NULL,
-  [scope] nvarchar(5)  NOT NULL,
-  [gid] int DEFAULT 0 NOT NULL,
-  [name] text  NOT NULL,
-  [minimum] nvarchar(50)  NOT NULL,
-  [maximum] nvarchar(50)  NOT NULL,
-  [message] ntext  NOT NULL,
-  [link] ntext  NOT NULL
-)
-ON [PRIMARY]
-TEXTIMAGE_ON [PRIMARY]
-;
-
---
--- Structure for table conditions :
---
-
-CREATE TABLE [dbo].[prefix_conditions] (
-  [cid] int IDENTITY(1, 1) NOT NULL,
-  [qid] int DEFAULT 0 NOT NULL,
-  [cqid] int DEFAULT 0 NOT NULL,
-  [cfieldname] nvarchar(50)  NOT NULL,
-  [method] nvarchar(2)  NOT NULL,
-  [value] nvarchar(5)  NOT NULL
-)
-ON [PRIMARY]
-;
-
---
--- Structure for table groups :
---
-
-CREATE TABLE [dbo].[prefix_groups] (
-	[gid] [int] IDENTITY (1, 1) NOT NULL ,
-	[sid] [int] NOT NULL ,
-	[group_name] [nvarchar] (100) NOT NULL default '',
-	[group_code] [nvarchar] (50) NOT NULL default '',
-	[group_order] [int] NOT NULL default '0' ,
-	[description] [ntext] NULL ,
-	[language] [varchar] (20) NOT NULL 
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+CREATE TABLE [prefix_settings_global] (
+  [stg_name] VARCHAR(50) NOT NULL default '',
+  [stg_value] VARCHAR(255) NOT NULL default '',
+  PRIMARY KEY  ([stg_name])
+) 
 GO
 
 --
--- Structure for table labels :
+-- Table [settings_global]
 --
 
-CREATE TABLE [dbo].[prefix_labels] (
-  [lid] int DEFAULT 0 NOT NULL,
-  [code] nvarchar(5)  NOT NULL,
-  [title] nvarchar(100)  NOT NULL,
-  [sortorder] nvarchar(5)  NULL
-)
-ON [PRIMARY]
-;
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '110');
+GO
 
 --
--- Structure for table labelsets :
+-- Table [users]
 --
 
-CREATE TABLE [dbo].[prefix_labelsets] (
-  [lid] int IDENTITY(1, 1) NOT NULL,
-  [label_name] nvarchar(100)  NOT NULL
-)
-ON [PRIMARY]
-;
-
---
--- Structure for table question_attributes :
---
-
-CREATE TABLE [dbo].[prefix_question_attributes] (
-  [qaid] int IDENTITY(1, 1) NOT NULL,
-  [qid] int NOT NULL,
-  [attribute] nvarchar(50)  NULL,
-  [value] nvarchar(20)  NULL
-)
-ON [PRIMARY]
-;
-
-
-CREATE TABLE [dbo].[prefix_settings_global] (
-  [stg_name] nvarchar(50) NOT NULL,
-  [stg_value] nvarchar(255) NULL
-)
-ON [PRIMARY]
-;
-
-
---
--- Structure for table questions :
---
-
-CREATE TABLE [dbo].[prefix_questions] (
-  [qid] int IDENTITY(1, 1) NOT NULL,
-  [sid] int DEFAULT 0 NOT NULL,
-  [gid] int DEFAULT 0 NOT NULL,
-  [type] nvarchar(1)  DEFAULT 'T' NOT NULL,
-  [title] nvarchar(20)  NOT NULL,
-  [question] ntext  NOT NULL,
-  [preg] ntext  NULL,
-  [help] ntext  NULL,
-  [other] nvarchar(1)  DEFAULT 'N' NOT NULL,
-  [mandatory] nvarchar(1)  NULL,
-  [lid] int DEFAULT 0 NOT NULL
-)
-ON [PRIMARY]
-TEXTIMAGE_ON [PRIMARY]
-;
-
---
--- Structure for table saved_control :
---
-
-CREATE TABLE [dbo].[prefix_saved_control] (
-  [scid] int IDENTITY(1, 1) NOT NULL,
-  [sid] int CONSTRAINT [DF__saved_contr__sid__108B795B] DEFAULT 0 NOT NULL,
-  [srid] int CONSTRAINT [DF__saved_cont__srid__117F9D94] DEFAULT 0 NOT NULL,
-  [identifier] ntext  NOT NULL,
-  [access_code] ntext  NOT NULL,
-  [email] nvarchar(200)  NULL,
-  [ip] ntext  NOT NULL,
-  [refurl] ntext  NULL,
-  [saved_thisstep] ntext  NOT NULL,
-  [status] nvarchar(1)  NOT NULL,
-  [saved_date] datetime NULL
-)
-ON [PRIMARY]
-TEXTIMAGE_ON [PRIMARY]
-;
-
---
--- Structure for table surveys :
---
-
-CREATE TABLE [dbo].[prefix_surveys] (
-  [sid] int NOT NULL,
-  [short_title] nvarchar(200)  NOT NULL,
-  [description] ntext  NULL,
-  [datecreated] datetime NULL,
-  [admin] nvarchar(50)  NULL,
-  [active] nvarchar(1)  DEFAULT 'N' NOT NULL,
-  [welcome] ntext  NULL,
-  [useexpiry] nvarchar(1)  DEFAULT 'N' NOT NULL,
-  [expires] datetime NULL,
-  [adminemail] nvarchar(100)  NULL,
-  [private] nvarchar(1)  NULL,
-  [faxto] nvarchar(20)  NULL,
-  [format] nvarchar(1)  NULL,
-  [template] nvarchar(100)  DEFAULT 'default' NULL,
-  [url] nvarchar(255)  NULL,
-  [urldescrip] nvarchar(255)  NULL,
-  [language] nvarchar(50)  NULL,
-  [datestamp] nvarchar(1)  DEFAULT 'N' NULL,
-  [ipaddr] nvarchar(1)  DEFAULT 'N' NULL,
-  [refurl] nvarchar(1)  DEFAULT 'N' NULL,
-  [usecookie] nvarchar(1)  DEFAULT 'N' NULL,
-  [notification] nvarchar(1)  DEFAULT '0' NULL,
-  [allowregister] nvarchar(1)  DEFAULT 'N' NULL,
-  [attribute1] nvarchar(255)  NULL,
-  [attribute2] nvarchar(255)  NULL,
-  [email_invite_subj] nvarchar(255)  NULL,
-  [email_invite] ntext  NULL,
-  [email_remind_subj] nvarchar(255)  NULL,
-  [email_remind] ntext  NULL,
-  [email_register_subj] nvarchar(255)  NULL,
-  [email_register] ntext  NULL,
-  [email_confirm_subj] nvarchar(255)  NULL,
-  [email_confirm] ntext  NULL,
-  [allowsave] nvarchar(1)  DEFAULT 'Y' NULL,
-  [autonumber_start] bigint DEFAULT 19533676560910059 NULL,
-  [autoredirect] nvarchar(1)  DEFAULT 'N' NULL,
-  [allowprev] nvarchar(1)  DEFAULT 'Y' NULL
-)
-ON [PRIMARY]
-TEXTIMAGE_ON [PRIMARY]
-;
-
---
--- Structure for table users :
---
-
-CREATE TABLE [dbo].[prefix_users] (
-  [user] nvarchar(20)  NOT NULL,
-  [password] nvarchar(20)  NOT NULL,
-  [security] nvarchar(10)  NOT NULL
-)
-ON [PRIMARY]
-;
-
---
--- Definition for indices :
---
-
-ALTER TABLE [dbo].[prefix_assessments]
-ADD CONSTRAINT [PK_assessments]
-PRIMARY KEY CLUSTERED ([id])
-ON [PRIMARY]
-;
-
-ALTER TABLE [dbo].[prefix_conditions]
-ADD CONSTRAINT [PK_conditions]
-PRIMARY KEY CLUSTERED ([cid])
-ON [PRIMARY]
-;
-
-ALTER TABLE [dbo].[prefix_groups]
-ADD CONSTRAINT [PK_groups]
-PRIMARY KEY CLUSTERED ([gid])
-ON [PRIMARY]
-;
-
-ALTER TABLE [dbo].[prefix_labelsets]
-ADD CONSTRAINT [PK_labelsets]
-PRIMARY KEY CLUSTERED ([lid])
-ON [PRIMARY]
-;
-
-ALTER TABLE [dbo].[prefix_question_attributes]
-ADD CONSTRAINT [PK_question_attributes]
-PRIMARY KEY CLUSTERED ([qaid])
-ON [PRIMARY]
-;
-
-ALTER TABLE [dbo].[prefix_questions]
-ADD CONSTRAINT [PK_questions]
-PRIMARY KEY CLUSTERED ([qid])
-ON [PRIMARY]
-;
-
-ALTER TABLE [dbo].[prefix_saved_control]
-ADD CONSTRAINT [PK_saved_control]
-PRIMARY KEY CLUSTERED ([scid])
-ON [PRIMARY]
-;
-
-ALTER TABLE [dbo].[prefix_surveys]
-ADD CONSTRAINT [PK_surveys]
-PRIMARY KEY CLUSTERED ([sid])
-ON [PRIMARY];
-
-ALTER TABLE [dbo].[prefix_settings_global]
-ADD CONSTRAINT [PK_settings_global]
-PRIMARY KEY CLUSTERED ([stg_name])
-ON [PRIMARY];
-
--- if you change the database scheme then change this version too and implement the changes in the upgrade_*.php too
-
-INSERT INTO [prefix_settings_global] values('DBVersion','108');
+INSERT INTO [prefix_users] VALUES (NULL, '$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);
+GO

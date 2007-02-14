@@ -45,7 +45,7 @@ if (!$subaction == "import")
 {
 	// show UI for choosing old table
 
-	$query = "SHOW TABLES LIKE '{$dbprefix}old\_{$surveyid}\_%'";
+	$query = db_select_tables_like("{$dbprefix}old\_{$surveyid}\_%");
 	$result = db_execute_num($query) or die("Error:<br />$query<br />".$connect->ErrorMsg());
 	$optionElements = '';
 	while ($row = $result->FetchRow())

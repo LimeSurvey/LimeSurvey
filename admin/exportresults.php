@@ -193,7 +193,7 @@ if (!$style)
 	while ($rows = $result->FetchRow()) {$surveyprivate=$rows['private'];}
 	if ($surveyprivate == "N")
 	{
-		$query="SHOW TABLES LIKE '{$dbprefix}tokens_$surveyid'"; //SEE IF THERE IS AN ASSOCIATED TOKENS TABLE
+		$query=db_select_tables_like("{$dbprefix}tokens_$surveyid"); //SEE IF THERE IS AN ASSOCIATED TOKENS TABLE
 		$result=$connect->Execute($query) or die("Couldn't get table list<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 		$tablecount=$result->RecordCount();
 	}

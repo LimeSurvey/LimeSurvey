@@ -207,8 +207,8 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 	}
 	else
 	{
-		$query="SHOW TABLES LIKE '{$dbprefix}old_tokens_".$surveyid."_%'";
-		$result=db_execute_num($query) or die("COuldn't get old table list<br />".$query."<br />".htmlspecialchars($connect->ErrorMsg()));
+		$query=db_select_tables_like("{$dbprefix}old_tokens_".$surveyid."_%");
+		$result=db_execute_num($query) or die("Couldn't get old table list<br />".$query."<br />".htmlspecialchars($connect->ErrorMsg()));
 		$tcount=$result->RecordCount();
 		if ($tcount > 0)
 		{
@@ -485,7 +485,7 @@ if ($subaction == "browse" || $subaction == "search")
 		. "OR lastname LIKE '%$searchstring%' "
 		. "OR email LIKE '%$searchstring%' "
 		. "OR token LIKE '%$searchstring%'";
-		if ($bfieldcount == 9)
+		if ($bfieldcount == 9) 
 		{
 			$bquery .= " OR attribute_1 like '%$searchstring%' "
 			. "OR attribute_2 like '%$searchstring%'";

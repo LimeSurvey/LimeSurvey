@@ -382,6 +382,21 @@ function db_table_name($name)
 	return db_quote_id($dbprefix.$name);
 }
 
+/*
+ *  Return a sql statement for finding LIKE named tables
+ */
+function db_select_tables_like($table)
+{
+	global $connect;
+	switch ($connect->databaseType) {
+		case 'mysql'	  : 
+			return "SHOW TABLES LIKE '$table'";
+		case 'odbc_mssql' : 
+			return "SELECT * FROM INFORMATION_SCHEMA.TABLES where TABLE_TYPE='BASE TABLE' and TABLE_NAME LIKE '$table'";
+		default: die ("Couldn't create 'select tables like' query for connection type '$connect->databaseType'"); 
+	}	
+}
+
 /**
 * getsurveylist() Queries the database (survey table) for a list of existing surveys
 * @global string $surveyid
