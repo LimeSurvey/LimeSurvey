@@ -485,13 +485,6 @@ function modlabelsetanswers($lid)
 	$rwlabelset=$rslabelset->FetchRow();
 	$lslanguages=explode(" ", trim($rwlabelset['languages'])); 
 	
-	if (get_magic_quotes_gpc() == "0")
-	{
-		if (isset($_POST['title']))
-		{
-			$_POST['title'] = addcslashes($_POST['title'], "'");
-		}
-	}
 	if (!isset($_POST['method'])) {
 		$_POST['method'] = $clang->gT("Save");
 	}
@@ -505,9 +498,9 @@ function modlabelsetanswers($lid)
        		$newsortorder=sprintf("%05d", $result->fields['maxorder']+1);
 
 
+		$_POST['insertcode'] = db_quote($_POST['insertcode']);
         	foreach ($lslanguages as $lslanguage)
         	{
-			$_POST['insertcode'] = db_quote($_POST['insertcode']);
 			$_POST['inserttitle_'.$lslanguage] = db_quote($_POST['inserttitle_'.$lslanguage]);
     			$query = "INSERT INTO ".db_table_name('labels')." (lid, code, title, sortorder,language) VALUES ($lid, '{$_POST['insertcode']}', '{$_POST['inserttitle_'.$lslanguage]}', '$newsortorder','$lslanguage')";
                 if (!$result = $connect->Execute($query))
@@ -517,6 +510,7 @@ function modlabelsetanswers($lid)
 			}
 		}
 		break;
+
 		// Save all labels with one button
 		case $clang->gT("Save All", "unescaped"):
             //Determine autoids by evaluating the hidden field		
@@ -524,10 +518,16 @@ function modlabelsetanswers($lid)
             $codeids=explode(' ', trim($_POST['codeids']));
             $count=0; 
 
+		// Quote each code_codeid first
+		foreach ($codeids as $codeid)
+		{
+			$_POST['code_'.$codeid] = db_quote($_POST['code_'.$codeid]);
+		}
          	foreach ($sortorderids as $sortorderid)
         	{
         		$langid=substr($sortorderid,0,strpos($sortorderid,'_')); 
         		$orderid=substr($sortorderid,strpos($sortorderid,'_')+1,20);
+			$_POST['title_'.$sortorderid] = db_quote($_POST['title_'.$sortorderid]);
                 $query = "UPDATE ".db_table_name('labels')." SET code='".$_POST['code_'.$codeids[$count]]."', title='{$_POST['title_'.$sortorderid]}' WHERE sortorder=$orderid and language='$langid'";
         		//$labelsoutput.= $query;  DP
         		if (!$result = $connect->Execute($query))
