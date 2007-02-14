@@ -24,13 +24,42 @@ class phpsurveyor_lang {
         }
     }
    
-    function gT($string)
+    function gT($string, $escapemode = 'html')
     {
     	if ($this->gettextclass)
         {
-            return str_replace('&lsquo;','\'',$this->gettextclass->translate($string));
+	    $basestring=str_replace('&lsquo;','\'',$this->gettextclass->translate($string));
+	    switch ($escapemode)
+	    {
+		case 'html':
+			return html_escape($basestring);
+			break;
+		case 'js':
+			return javascript__escape($basestring);
+			break;
+		case 'unescaped':
+			return $basestring;
+			break;
+		default:
+			return "Unsupported EscapeMode in gT method";
+			break;
+	    }
         } else {
-            return $string;
+	    switch ($escapemode)
+	    {
+		case 'html':
+			return html_escape($string);
+			break;
+		case 'js':
+			return javascript_escape($string);
+			break;
+		case 'unescaped':
+			return $string;
+			break;
+		default:
+			return "Unsupported EscapeMode in gT method";
+			break;
+	    }
         }
     }
 

@@ -50,7 +50,7 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 {
 	echo "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
 	echo $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
-	echo "<input type='submit' value='".html_escape($clang->gT("Main Admin Screen"))."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	echo "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	echo "</td></tr></table>\n";
 	echo "</body>\n</html>\n";
 	exit;
@@ -77,7 +77,7 @@ if (substr($bigarray[1], 0, 25) != "# SURVEYOR LABEL SET DUMP")
 {
 	echo "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
 	echo $clang->gT("This file is not a PHPSurveyor question file. Import failed.")."<br /><br />\n";
-	echo "<input type='submit' value='".html_escape($clang->gT("Return to Labels Admin"))."' onClick=\"window.open('$scriptname?action=labels', '_top')\">\n";
+	echo "<input type='submit' value='".$clang->gT("Return to Labels Admin")."' onClick=\"window.open('$scriptname?action=labels', '_top')\">\n";
 	echo "</td></tr></table>\n";
 	echo "</body>\n</html>\n";
 	exit;
@@ -220,7 +220,7 @@ echo "\t<li>".$clang->gT("Labelsets").": $countlabelsets</li>\n";
 echo "\t<li>".$clang->gT("Labels").": $countlabels</li></ul><br />\n";
 
 echo "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />\n";
-echo "<input type='submit' value='".html_escape($clang->gT("Return to Labels Admin"))."' onClick=\"window.open('$scriptname?action=labels&amp;lid=$newlid', '_top')\">\n";
+echo "<input type='submit' value='".$clang->gT("Return to Labels Admin")."' onClick=\"window.open('$scriptname?action=labels&amp;lid=$newlid', '_top')\">\n";
 
 echo "</td></tr></table>\n";
 echo "</body>\n</html>";

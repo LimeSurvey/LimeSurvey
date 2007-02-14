@@ -149,7 +149,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 
 			//  Add/Remove Buttons
 			$labelsoutput.= "</select></td>"
-			. "<td align=left><INPUT type=\"button\" value=\"<< ".html_escape($clang->gT("Add"))."\" onclick=\"DoAdd()\" ID=\"AddBtn\" /><br /> <INPUT type=\"button\" value=\"".html_escape($clang->gT("Remove"))." >>\" onclick=\"DoRemove(1,'".javascript_escape($clang->gT("You cannot remove this items since you need at least one language in a labelset."))."')\" ID=\"RemoveBtn\"  /></td>\n"
+			. "<td align=left><INPUT type=\"button\" value=\"<< ".$clang->gT("Add")."\" onclick=\"DoAdd()\" ID=\"AddBtn\" /><br /> <INPUT type=\"button\" value=\"".$clang->gT("Remove")." >>\" onclick=\"DoRemove(1,'".$clang->gT("You cannot remove this items since you need at least one language in a labelset.", "js")."')\" ID=\"RemoveBtn\"  /></td>\n"
 
 			// Available languages listbox
 			. "<td align=left width='45%'><select size='5' id='available_languages' name='available_languages'>";
@@ -199,7 +199,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			.$clang->gT("Select SQL File:")."</strong></td>\n"
 			."<td><input name=\"the_file\" type=\"file\" size=\"35\" />"
 			."</td></tr>\n"
-			."\t<tr><td></td><td><input type='submit' value='".html_escape($clang->gT("Import Label Set"))."' />\n"
+			."\t<tr><td></td><td><input type='submit' value='".$clang->gT("Import Label Set")."' />\n"
 			."\t<input type='hidden' name='action' value='importlabels' /></TD>\n"
 			."\t</tr></table></form>\n";
 		}
@@ -322,25 +322,25 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     			."\t<td width='25%'>\n";
     			if ($activeuse == 0)
     			{
-    				$labelsoutput.= "\t<input type='submit' name='method' value='".html_escape($clang->gT("Del"))."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+    				$labelsoutput.= "\t<input type='submit' name='method' value='".$clang->gT("Del")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
     			}
     			$labelsoutput.= "\t</td>\n"
     			."\t<td>\n";
     			if ($position > 0)
     			{
-    				$labelsoutput.= "\t<input type='submit' name='method' value='".html_escape($clang->gT("Up"))."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+    				$labelsoutput.= "\t<input type='submit' name='method' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
     			};
     			if ($position < $labelcount-1)
     			{
     				// Fill the sortorder hiddenfield so we now what field is moved down
-                    $labelsoutput.= "\t<input type='submit' name='method' value='".html_escape($clang->gT("Dn"))."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+                    $labelsoutput.= "\t<input type='submit' name='method' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
     			}
     			$labelsoutput.= "\t</td></tr>\n";
     			$position++;
     		}
     	    if ($labelcount>0)  
             {                       
-                $labelsoutput.= "\t<tr><td colspan=4><center><input type='submit' name='method' value='".html_escape($clang->gT("Save All"))."'  />"
+                $labelsoutput.= "\t<tr><td colspan=4><center><input type='submit' name='method' value='".$clang->gT("Save All")."'  />"
                 ."</center></td></tr>\n";
             }
 
@@ -353,7 +353,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     			."\t<input type='text' maxlength='100' name='inserttitle_$lslanguage' size='80' />\n"
     			."\t</td>\n"
     			."\t<td width='25%'>\n"
-    			."\t<input type='submit' name='method' value='".html_escape($clang->gT("Add new label"))."' />\n"
+    			."\t<input type='submit' name='method' value='".$clang->gT("Add new label")."' />\n"
     			."\t</td>\n"
     			."\t<td>\n"
                 ."<script type='text/javascript'>\n"
@@ -497,7 +497,7 @@ function modlabelsetanswers($lid)
 	}
 	switch($_POST['method'])
 	{
-		case $clang->gT("Add new label"):
+		case $clang->gT("Add new label", "unescaped"):
 		if (isset($_POST['insertcode']) && $_POST['insertcode']!='')
 		{
    			$query = "select max(sortorder) as maxorder from ".db_table_name('labels')." where lid='$lid'";
@@ -518,7 +518,7 @@ function modlabelsetanswers($lid)
 		}
 		break;
 		// Save all labels with one button
-		case $clang->gT("Save All"):
+		case $clang->gT("Save All", "unescaped"):
             //Determine autoids by evaluating the hidden field		
             $sortorderids=explode(' ', trim($_POST['sortorderids']));
             $codeids=explode(' ', trim($_POST['codeids']));
@@ -541,7 +541,7 @@ function modlabelsetanswers($lid)
 		break;
 
         // Pressing the Up button
-		case $clang->gT("Up"):
+		case $clang->gT("Up", "unescaped"):
 		$newsortorder=$_POST['sortorder']-1;
 		$oldsortorder=$_POST['sortorder'];
 		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder=-1 WHERE lid=$lid AND sortorder='$newsortorder'";
@@ -553,7 +553,7 @@ function modlabelsetanswers($lid)
 		break;
 
         // Pressing the Down button
-		case $clang->gT("Dn"):
+		case $clang->gT("Dn", "unescaped"):
 		$newsortorder=$_POST['sortorder']+1;
 		$oldsortorder=$_POST['sortorder'];
 		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder=-1 WHERE lid=$lid AND sortorder='$newsortorder'";
@@ -565,7 +565,7 @@ function modlabelsetanswers($lid)
 		break;
 		
 		// Delete Button
-		case $clang->gT("Del"):
+		case $clang->gT("Del", "unescaped"):
 		$query = "DELETE FROM ".db_table_name('labels')." WHERE lid=$lid AND sortorder='{$_POST['sortorder']}'";
 		if (!$result = $connect->Execute($query))
 		{
@@ -574,7 +574,7 @@ function modlabelsetanswers($lid)
 		break;
 		
 		// Fix Sortorder button
-		case $clang->gT("Fix Sort"):
+		case $clang->gT("Fix Sort", "unescaped"):
 		fixorder($lid);
 		break;
 	}

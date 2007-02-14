@@ -66,7 +66,7 @@ if (!$action == "export")
          <td>&nbsp;
          </td>
          <td>
-          <input type='submit' value='".html_escape($clang->gT("Export Responses"))."' onClick='return confirm(\"".$clang->gT("If you have chosen to export and de-activate, this will rename your current responses table and it will not be easy to restore it. Are you sure?")."\")'>&nbsp;
+          <input type='submit' value='".$clang->gT("Export Responses")."' onClick='return confirm(\"".$clang->gT("If you have chosen to export and de-activate, this will rename your current responses table and it will not be easy to restore it. Are you sure?")."\")'>&nbsp;
           <input type='hidden' name='action' value='export'>
          </td>
         </tr>

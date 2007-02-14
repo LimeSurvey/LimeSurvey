@@ -382,7 +382,7 @@ function presentAnswerList($questions) {
 					echo "     </select><br />\n";
 					break;
 				}
-				echo "     <input type='button' value='".html_escape($clang->gT("Add"))."' onClick='addCondition(\"$inputname\")'>";
+				echo "     <input type='button' value='".$clang->gT("Add")."' onClick='addCondition(\"$inputname\")'>";
 				echo "    </div>\n";
 			}
 		}

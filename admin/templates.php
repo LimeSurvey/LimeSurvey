@@ -121,7 +121,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 		if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path)) {
 			echo "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
 			echo $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
-			echo "<input type='submit' value='".html_escape($clang->gT("Main Admin Screen"))."' onClick=\"window.open('$scriptname', '_top')\" />\n";
+			echo "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\" />\n";
 			echo "</td></tr></table>\n";
 			echo "</body>\n</html>\n";
 			exit;
@@ -182,14 +182,14 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 		$normalfiles[]=$fl["name"];
 	}
 	
-	$screens[]=array("name"=>html_escape($clang->gT("Welcome Page")));
-	$screens[]=array("name"=>html_escape($clang->gT("Question Page")));
-	$screens[]=array("name"=>html_escape($clang->gT("Submit Page")));
-	$screens[]=array("name"=>html_escape($clang->gT("Completed Page")));
-	$screens[]=array("name"=>html_escape($clang->gT("Clear All Page")));
-	$screens[]=array("name"=>html_escape($clang->gT("Register Page")));
-	$screens[]=array("name"=>html_escape($clang->gT("Load Page")));
-	$screens[]=array("name"=>html_escape($clang->gT("Save Page")));
+	$screens[]=array("name"=>$clang->gT("Welcome Page"));
+	$screens[]=array("name"=>$clang->gT("Question Page"));
+	$screens[]=array("name"=>$clang->gT("Submit Page"));
+	$screens[]=array("name"=>$clang->gT("Completed Page"));
+	$screens[]=array("name"=>$clang->gT("Clear All Page"));
+	$screens[]=array("name"=>$clang->gT("Register Page"));
+	$screens[]=array("name"=>$clang->gT("Load Page"));
+	$screens[]=array("name"=>$clang->gT("Save Page"));
 	
 	//Page Display Instructions
 	$Welcome=array("startpage.pstpl", "welcome.pstpl", "navigator.pstpl", "endpage.pstpl");
@@ -243,7 +243,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	
 	$addbr=false;
 	switch($screenname) {
-		case $clang->gT("Question Page"):
+		case $clang->gT("Question Page", "unescaped"):
 		unset($files);
 		foreach ($Question as $qs) {
 			$files[]=array("name"=>$qs);
@@ -272,7 +272,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/navigator.pstpl"));
 		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/endpage.pstpl"));
 		break;
-		case $clang->gT("Welcome Page"):
+		case $clang->gT("Welcome Page", "unescaped"):
 		unset($files);
 		$myoutput[]="";
 		foreach ($Welcome as $qs) {
@@ -280,7 +280,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 			$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/$qs"));
 		}
 		break;
-		case $clang->gT("Register Page"):
+		case $clang->gT("Register Page", "unescaped"):
 		unset($files);
 		foreach($Register as $qs) {
 			$files[]=array("name"=>$qs);
@@ -303,7 +303,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 		}
 		$myoutput[]= "\n";
 		break;
-		case $clang->gT("Save Page"):
+		case $clang->gT("Save Page", "unescaped"):
 		unset($files);
 		foreach($Save as $qs) {
 			$files[]=array("name"=>$qs);
@@ -322,7 +322,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 		}
 		$myoutput[]= "\n";
 		break;
-		case $clang->gT("Load Page"):
+		case $clang->gT("Load Page", "unescaped"):
 		unset($files);
 		foreach($Load as $qs) {
 			$files[]=array("name"=>$qs);
@@ -341,7 +341,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 		}
 		$myoutput[]= "\n";
 		break;
-		case $clang->gT("Clear All Page"):
+		case $clang->gT("Clear All Page", "unescaped"):
 		unset($files);
 		foreach ($Clearall as $qs) {
 			$files[]=array("name"=>$qs);
@@ -360,7 +360,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 		}
 		$myoutput[]= "\n";
 		break;
-		case $clang->gT("Submit Page"):
+		case $clang->gT("Submit Page", "unescaped"):
 		unset($files);
 		$myoutput[]="";
 		foreach ($Submit as $qs) {
@@ -368,7 +368,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 			$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/$qs"));
 		}
 		break;
-		case $clang->gT("Completed Page"):
+		case $clang->gT("Completed Page", "unescaped"):
 		unset($files);
 		$myoutput[]="";
 		foreach ($Completed as $qs) {
@@ -555,7 +555,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	.makeoptions($otherfiles, "name", "name", "")
 	."</select>"
 	."</td></tr><tr><td align='right'>$setfont"
-	."<input type='submit' value='".html_escape($clang->gT("Delete"))."' onClick=\"javascript:return confirm('Are you sure you want to delete this file?')\"";
+	."<input type='submit' value='".$clang->gT("Delete")."' onClick=\"javascript:return confirm('Are you sure you want to delete this file?')\"";
 	if ($templatename == "default") {
 		$templatesoutput.= " disabled";
 	}
@@ -569,7 +569,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	."<form enctype='multipart/form-data' name='importsurvey' action='admin.php' method='post'>\n"
 	."<table><tr> <td align='right' valign='top' style='border: solid 1 #000080'>\n"
 	."<strong>"._('Upload a File').":</strong><br /><input name=\"the_file\" type=\"file\" size=\"7\" /><br />"
-	."<input type='submit' value='".html_escape($clang->gT("Upload"))."'";
+	."<input type='submit' value='".$clang->gT("Upload")."'";
 	if ($templatename == "default") {
 		$templatesoutput.= " disabled";
 	}

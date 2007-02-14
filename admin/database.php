@@ -540,7 +540,7 @@ if(isset($surveyid))
 		switch($_POST['method'])
 		{
 			// Add a new answer button
-			case $clang->gT("Add new Answer"):
+			case $clang->gT("Add new Answer", "unescaped"):
 			if (isset($_POST['insertcode']) && $_POST['insertcode']!='')
 			{
 				$_POST  = array_map('db_quote', $_POST);
@@ -562,7 +562,7 @@ if(isset($surveyid))
 			}
 		break;
 		// Save all answers with one button
-		case $clang->gT("Save All"):
+		case $clang->gT("Save All", "unescaped"):
 			//Determine autoids by evaluating the hidden field		
             $sortorderids=explode(' ', trim($_POST['sortorderids']));
             $codeids=explode(' ', trim($_POST['codeids']));
@@ -585,7 +585,7 @@ if(isset($surveyid))
 		break;
 
 		// Pressing the Up button
-		case $clang->gT("Up"):
+		case $clang->gT("Up", "unescaped"):
 		$newsortorder=$_POST['sortorder']-1;
 		$oldsortorder=$_POST['sortorder'];
 		$cdquery = "UPDATE ".db_table_name('answers')." SET sortorder=-1 WHERE qid=$qid AND sortorder='$newsortorder'";
@@ -597,7 +597,7 @@ if(isset($surveyid))
 		break;
 
         // Pressing the Down button
-		case $clang->gT("Dn"):
+		case $clang->gT("Dn", "unescaped"):
 		$newsortorder=$_POST['sortorder']+1;
 		$oldsortorder=$_POST['sortorder'];
 		$cdquery = "UPDATE ".db_table_name('answers')." SET sortorder=-1 WHERE qid=$qid AND sortorder='$newsortorder'";
@@ -609,7 +609,7 @@ if(isset($surveyid))
 		break;
 		
 		// Delete Button
-		case $clang->gT("Del"):
+		case $clang->gT("Del", "unescaped"):
 			$query = "DELETE FROM ".db_table_name('answers')." WHERE qid={$qid} AND sortorder='{$_POST['sortorder']}'";
 			if (!$result = $connect->Execute($query))
 			{
@@ -632,10 +632,10 @@ if(isset($surveyid))
 		if (isset($_POST['default_value'])) {$_POST['oldanswer'] = db_quote($_POST['default_value']);}
 		switch ($_POST['ansaction'])
 		{
-			case $clang->gT("Fix Sort"):
+			case $clang->gT("Fix Sort", "unescaped"):
 			fixsortorderAnswers($_POST['qid']);
 			break;
-			case $clang->gT("Sort Alpha"):
+			case $clang->gT("Sort Alpha", "unescaped"):
 			$uaquery = "SELECT * FROM {$dbprefix}answers WHERE qid='{$_POST['qid']}' ORDER BY answer";
 			$uaresult = db_execute_assoc($uaquery) or die("Cannot get answers<br />".htmlspecialchars($uaquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
 			while($uarow=$uaresult->FetchRow())
@@ -655,7 +655,7 @@ if(isset($surveyid))
 				$i++;
 			} // foreach
 			break;
-			case $clang->gT("Add"):
+			case $clang->gT("Add", "unescaped"):
 			if ((trim($_POST['code'])=='') || (trim($_POST['answer'])==''))
 			{
 				echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be added. You must include both a Code and an Answer")."\")\n //-->\n</script>\n";
@@ -676,7 +676,7 @@ if(isset($surveyid))
 				}
 			}
 			break;
-			case $clang->gT("Save"):
+			case $clang->gT("Save", "unescaped"):
 			if ((trim($_POST['code'])=='') || (trim($_POST['answer'])==''))
 			{
 				echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be updated. You must include both a Code and an Answer")."\")\n //-->\n</script>\n";
@@ -712,7 +712,7 @@ if(isset($surveyid))
 				}
 			}
 			break;
-			case $clang->gT("Del"):
+			case $clang->gT("Del", "unescaped"):
 			$ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_POST['qid']} AND value='{$_POST['oldcode']}'";
 			$ccresult = db_execute_assoc($ccquery) or die ("Couldn't get list of cqids for this answer<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
 			$cccount=$ccresult->RecordCount();
@@ -729,7 +729,7 @@ if(isset($surveyid))
 			}
 			fixsortorderAnswers($qid);
 			break;
-			case $clang->gT("Up"):
+			case $clang->gT("Up", "unescaped"):
 			$newsortorder=sprintf("%05d", $_POST['sortorder']-1);
 			$replacesortorder=$newsortorder;
 			$newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
@@ -740,7 +740,7 @@ if(isset($surveyid))
 			$cdquery = "UPDATE {$dbprefix}answers SET sortorder='$newreplacesortorder' WHERE qid=$qid AND sortorder='PEND'";
 			$cdresult=$connect->Execute($cdquery) or die(htmlspecialchars($connect->ErrorMsg()));
 			break;
-			case $clang->gT("Dn"):
+			case $clang->gT("Dn", "unescaped"):
 			$newsortorder=sprintf("%05d", $_POST['sortorder']+1);
 			$replacesortorder=$newsortorder;
 			$newreplacesortorder=sprintf("%05d", $_POST['sortorder']);

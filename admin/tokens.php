@@ -121,7 +121,7 @@ if (!isset($surveyid) || !$surveyid)
 	."\t<tr><td align='center'><br /><font color='red'><strong>"
 	.$clang->gT("Error")."</strong></font><br />".$clang->gT("You have not selected a survey")."<br /><br />"
 	."<input type='submit' value='"
-	.html_escape($clang->gT("Main Admin Screen"))."' onClick=\"window.open('$scriptname', '_top')\"><br /><br /></td></tr>\n"
+	.$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br /><br /></td></tr>\n"
 	."</table>\n"
 	."</body>\n</html>";
 	return;
@@ -139,7 +139,7 @@ if (!$chcount)
 	."\t<tr><td align='center'><br /><font color='red'><strong>"
 	.$clang->gT("Error")."</strong></font><br />".$clang->gT("The survey you selected does not exist")
 	."<br /><br />\n\t<input type='submit' value='"
-	.html_escape($clang->gT("Main Admin Screen"))."' onClick=\"window.open('$scriptname', '_top')\"><br /><br /></td></tr>\n"
+	.$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br /><br /></td></tr>\n"
 	."</table>\n"
 	."</body>\n</html>";
 	return;
@@ -228,7 +228,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		$tokenoutput .= "\t\t\t<input type='submit' value='"
 		.$clang->gT("Initialise Tokens")."' onClick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;createtable=Y', '_top')\"><br />\n"
 		."\t\t\t<input type='submit' value='"
-		.html_escape($clang->gT("Main Admin Screen"))."' onClick=\"window.open('$homeurl/admin.php?sid=$surveyid', '_top')\"><br /><br />\n";
+		.$clang->gT("Main Admin Screen")."' onClick=\"window.open('$homeurl/admin.php?sid=$surveyid', '_top')\"><br /><br />\n";
 		if ($tcount>0)
 		{
 			$tokenoutput .= "<table width='350' border='0' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'><tr>\n"
@@ -243,7 +243,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 				$tokenoutput .= "<option>".$ol."</option>\n";
 			}
 			$tokenoutput .= "</select><br />\n"
-			."<input type='submit' value='".html_escape($clang->gT("Restore"))."'>\n"
+			."<input type='submit' value='".$clang->gT("Restore")."'>\n"
 			."<input type='hidden' name='restoretable' value='Y'>\n"
 			."<input type='hidden' name='sid' value='$surveyid'>\n"
 			."</form></td>\n"
@@ -456,7 +456,7 @@ if ($subaction == "browse" || $subaction == "search")
 	."\t\t\t<table align='left' cellpadding='0' cellspacing='0' border='0'>\n"
 	."\t\t\t\t<tr><td><form method='post' action='$scriptname?action=tokens'>\n"
 	."\t\t\t\t\t<input type='text' name='searchstring' value='$searchstring'>\n"
-	."\t\t\t\t\t<input type='submit' value='".html_escape($clang->gT("Search"))."'>\n"
+	."\t\t\t\t\t<input type='submit' value='".$clang->gT("Search")."'>\n"
 	."\t\t\t\t<input type='hidden' name='order' value='$order'>\n"
 	."\t\t\t\t<input type='hidden' name='subaction' value='search'>\n"
 	."\t\t\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
@@ -467,7 +467,7 @@ if ($subaction == "browse" || $subaction == "search")
 	."\t\t<font size='1' face='verdana'>"
 	."&nbsp;".$clang->gT("Records Displayed:")."<input type='text' size='4' value='$limit' name='limit'>"
 	."&nbsp;".$clang->gT("Starting From:")."<input type='text' size='4' value='$start' name='start'>"
-	."&nbsp;<input type='submit' value='".html_escape($clang->gT("Show"))."'>\n"
+	."&nbsp;<input type='submit' value='".$clang->gT("Show")."'>\n"
 	."\t\t</font>\n"
 	."\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
 	."\t\t<input type='hidden' name='subaction' value='browse'>\n"
@@ -658,7 +658,7 @@ if ($subaction == "kill")
 		.$clang->gT("The tokens table has now been removed and tokens are no longer required to access this survey.<br /> A backup of this table has been made and can be accessed by your system administrator.")."<br />\n"
 		."(\"{$dbprefix}old_tokens_{$_GET['sid']}_$date\")"."<br /><br />\n"
 		."<input type='submit' value='"
-		.html_escape($clang->gT("Main Admin Screen"))."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\" />\n"
+		.$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\" />\n"
 		."</span>\n";
 	}
 	$tokenoutput .= "</font></td></tr></table>\n"
@@ -794,7 +794,7 @@ if ($subaction == "email")
 				$tokenoutput .= str_replace("{EMAILCOUNT}", "$lefttosend", $clang->gT("There are {EMAILCOUNT} emails still to be sent."));
 				$tokenoutput .= "<br /><br />\n";
 				$message = html_escape($_POST['message']);
-				$tokenoutput .= "\t\t\t<input type='submit' value='".html_escape($clang->gT("Continue"))."' />\n"
+				$tokenoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Continue")."' />\n"
 				."\t\t\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
 				."\t\t\t<input type='hidden' $subaction value=\"email\" />\n"
 				."\t\t\t<input type='hidden' name='sid' value=\"{$_POST['sid']}\" />\n"
@@ -870,7 +870,7 @@ if ($subaction == "remind")
 		."\t<tr>\n"
 		."\t\t<td></td>\n"
 		."\t\t<td align='left'>\n"
-		."\t\t\t<input type='submit' value='".html_escape($clang->gT("Send Reminders"))."' />\n"
+		."\t\t\t<input type='submit' value='".$clang->gT("Send Reminders")."' />\n"
 		."\t<input type='hidden' name='ok' value='absolutely'>\n"
 		."\t<input type='hidden' name='sid' value='{$_GET['sid']}'>\n"
 		."\t<input type='hidden' name='subaction' value='remind'>\n"
@@ -952,7 +952,7 @@ if ($subaction == "remind")
 				.$clang->gT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below.")."<br /><br />\n"
 				.str_replace("{EMAILCOUNT}", $lefttosend, $clang->gT("There are {EMAILCOUNT} emails still to be sent."))
 				."<br />\n"
-				."\t\t\t<input type='submit' value='".html_escape($clang->gT("Continue"))."' />\n"
+				."\t\t\t<input type='submit' value='".$clang->gT("Continue")."' />\n"
 				."\t\t</td>\n"
 				."\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
 				."\t<input type='hidden' $subaction value=\"remind\" />\n"
@@ -1146,12 +1146,12 @@ if ($subaction == "edit" || $subaction == "addnew")
 	switch($subaction)
 	{
 		case "edit":
-		$tokenoutput .= "\t\t<input type='submit' value='".html_escape($clang->gT("Update Token"))."'>\n"
+		$tokenoutput .= "\t\t<input type='submit' value='".$clang->gT("Update Token")."'>\n"
 		               ."\t\t<input type='hidden' name='subaction' value='updatetoken'>\n"
 		               ."\t\t<input type='hidden' name='tid' value='{$_GET['tid']}'>\n";
 		break;
 		case "addnew":
-		$tokenoutput .= "\t\t<input type='submit' value='".html_escape($clang->gT("Add Token"))."'>\n"
+		$tokenoutput .= "\t\t<input type='submit' value='".$clang->gT("Add Token")."'>\n"
 		               ."\t\t<input type='hidden' name='subaction' value='inserttoken'>\n";
 		break;
 	}

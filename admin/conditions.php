@@ -617,7 +617,7 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 	."\t</tr>\n";
 
 	$conditionsoutput .= "\t<tr><td colspan='3' align='center'>\n"
-	."<input type='submit' value='".html_escape($clang->gT("Copy Conditions"))."' onclick=\"return confirm('".$clang->gT("Are you sure you want to copy these condition(s) to the questions you have selected?")."')\" />"
+	."<input type='submit' value='".$clang->gT("Copy Conditions")."' onclick=\"return confirm('".$clang->gT("Are you sure you want to copy these condition(s) to the questions you have selected?")."')\" />"
 	."\t\t\n";
 
 	$conditionsoutput .= "<input type='hidden' name='subaction' value='copyconditions' />\n"
@@ -677,8 +677,8 @@ $conditionsoutput .= "\t\t\t</select>\n"
 ."\t</tr>\n"
 ."\t<tr>\n"
 ."\t\t<td colspan='3' align='center'>\n"
-."\t\t\t<input type='reset' value='".html_escape($clang->gT("Clear"))."' onClick=\"clearAnswers()\" />\n"
-."\t\t\t<input type='submit' value='".html_escape($clang->gT("Add Condition"))."' />\n"
+."\t\t\t<input type='reset' value='".$clang->gT("Clear")."' onClick=\"clearAnswers()\" />\n"
+."\t\t\t<input type='submit' value='".$clang->gT("Add Condition")."' />\n"
 ."<input type='hidden' name='sid' value='$surveyid' />\n"
 ."<input type='hidden' name='qid' value='$qid' />\n"
 ."<input type='hidden' name='subaction' value='insertcondition' />\n"
@@ -694,7 +694,7 @@ $conditionsoutput .= "\t<tr><td colspan='3'></td></tr>\n"
 ."\t\t</td>\n";
 $conditionsoutput .= "\t<tr bgcolor='#CDCDCD'><td colspan=3 height='10'></td></tr>\n"
 ."\t\t<tr><td colspan='3' align='center'>\n"
-."\t\t\t<input type='submit' value='".html_escape($clang->gT("Close Window"))."' onClick=\"window.close()\"  />\n"
+."\t\t\t<input type='submit' value='".$clang->gT("Close Window")."' onClick=\"window.close()\"  />\n"
 ."\t\t</td>\n"
 ."\t</tr>\n";
 $conditionsoutput .= "\t<tr><td colspan='3'></td></tr>\n"

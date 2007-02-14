@@ -152,7 +152,7 @@ if($actsurrows['browse_response']){
 						$dataentryoutput .= "<input type='hidden' name='$key' value='$val'>\n";
 					}
 				}
-				$dataentryoutput .= "</td></tr><tr><td></td><td><input type='submit' value='".html_escape($clang->gT("submit"))."'>
+				$dataentryoutput .= "</td></tr><tr><td></td><td><input type='submit' value='".$clang->gT("submit")."'>
 					 <input type='hidden' name='sid' value='$surveyid'>
 					 <input type='hidden' name='surveytable' value='".$_POST['surveytable']."'>
 					 <input type='hidden' name='subaction' value='".$_POST['action']."'>
@@ -1169,7 +1169,7 @@ if($actsurrows['browse_response']){
 		{
 			$dataentryoutput .= "	<tr>
 						<td bgcolor='#CCCCCC' align='center'>
-						 <input type='submit' value='".html_escape($clang->gT("Update Entry"))."'>
+						 <input type='submit' value='".$clang->gT("Update Entry")."'>
 						 <input type='hidden' name='id' value='$id'>
 						 <input type='hidden' name='sid' value='$surveyid'>
 						 <input type='hidden' name='subaction' value='update'>
@@ -1217,7 +1217,7 @@ if($actsurrows['browse_response']){
 			."</div>\n";
 			$dataentryoutput .= "	<tr>
 					<td bgcolor='#CCCCCC' align='center'>
-					 <input type='submit' value='".html_escape($clang->gT("submit"))."'>
+					 <input type='submit' value='".$clang->gT("submit")."'>
 					 <input type='hidden' name='sid' value='$surveyid'>
 					 <input type='hidden' name='subaction' value='insert'>
 					 <input type='hidden' name='surveytable' value='{$dbprefix}survey_$surveyid'>
@@ -2156,7 +2156,7 @@ if($actsurrows['browse_response']){
 			}
 			$dataentryoutput .= "\t<tr>\n";
 			$dataentryoutput .= "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
-			$dataentryoutput .= "\t\t\t<input type='submit' value='".html_escape($clang->gT("submit"))."' />\n";
+			$dataentryoutput .= "\t\t\t<input type='submit' value='".$clang->gT("submit")."' />\n";
 			$dataentryoutput .= "\t\t</font></td>\n";
 			$dataentryoutput .= "\t</tr>\n";
 		}
@@ -2175,7 +2175,7 @@ if($actsurrows['browse_response']){
 			$dataentryoutput .= "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
 			$dataentryoutput .= "\t\t\t<font color='red'><strong>".$clang->gT("Error")."</strong></font><br />\n";
 			$dataentryoutput .= "\t\t\t".$clang->gT("The survey you selected does not exist")."</font><br /><br />\n";
-			$dataentryoutput .= "\t\t\t<input type='submit' value='".html_escape($clang->gT("Main Admin Screen"))."' onClick=\"window.open('$scriptname', '_top')\">\n";
+			$dataentryoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 			$dataentryoutput .= "\t\t</td>\n";
 			$dataentryoutput .= "\t</tr>\n";
 			$dataentryoutput .= "</table>";

@@ -1233,25 +1233,25 @@ if (returnglobal('viewanswer'))
 			."\t<td width='25%'>\n";
 			if ($activated == 0)
 			{
-				$vasummary .= "\t<input type='submit' name='method' value='".html_escape($clang->gT("Del"))."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+				$vasummary .= "\t<input type='submit' name='method' value='".$clang->gT("Del")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
 			}
 			$vasummary .= "\t</td>\n"
 			."\t<td>\n";
 			if ($position > 0)
 			{
-				$vasummary .= "\t<input type='submit' name='method' value='".html_escape($clang->gT("Up"))."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+				$vasummary .= "\t<input type='submit' name='method' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
 			};
 			if ($position < $anscount-1)
 			{
 				// Fill the sortorder hiddenfield so we now what field is moved down
-				$vasummary .= "\t<input type='submit' name='method' value='".html_escape($clang->gT("Dn"))."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+				$vasummary .= "\t<input type='submit' name='method' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
 			}
 			$vasummary .= "\t</td></tr>\n";
 			$position++;
 		}
 		if ($anscount > 0)
 		{
-			$vasummary .= "\t<tr><td colspan=4><center><input type='submit' name='method' value='".html_escape($clang->gT("Save All"))."'  />"
+			$vasummary .= "\t<tr><td colspan=4><center><input type='submit' name='method' value='".$clang->gT("Save All")."'  />"
 			."</center></td></tr>\n";
 		}
 		$position=sprintf("%05d", $position);
@@ -1269,7 +1269,7 @@ if (returnglobal('viewanswer'))
 			."\t<input type='text' maxlength='100' name='insertanswer_$anslang' size='80' />\n"
 			."\t</td>\n"
 			."\t<td width='25%'>\n"
-			."\t<input type='submit' name='method' value='".html_escape($clang->gT("Add new Answer"))."' />\n"
+			."\t<input type='submit' name='method' value='".$clang->gT("Add new Answer")."' />\n"
 			."\t<input type='hidden' name='action' value='modanswer' />\n"
 			."\t</td>\n"
 			."\t<td>\n"
@@ -1335,7 +1335,7 @@ if ($action == "modifyuser")
 			$usersummary .= "\t<td align='center'>\n\t\t<input type='text' name='pass' value=\"\" /></td>\n";
 		}
 		$usersummary .= "\t</tr>\n\t<tr><td colspan='4' align='center'>\n"
-		. "\t\t<input type='submit' value='".html_escape($clang->gT("Update"))."' />\n"
+		. "\t\t<input type='submit' value='".$clang->gT("Update")."' />\n"
 		. "<input type='hidden' name='action' value='moduser' /></td></tr>\n"
 		. "</form></table>\n";
 	}
@@ -1438,7 +1438,7 @@ if ($action == "setuserrights")
 
 				$usersummary .= "\t\t\t<tr><form method='post' action='$scriptname'></tr>"	// added by Dennis
 				."\t\n\t<tr><td colspan='8' align='center'>"
-				."<input type='submit' value='".html_escape($clang->gT("Save Now"))."' />"
+				."<input type='submit' value='".$clang->gT("Save Now")."' />"
 				."<input type='hidden' name='action' value='userrights' />"
 				."<input type='hidden' name='uid' value='{$_POST['uid']}' /></td></tr>"
 				."</form>"
@@ -1517,7 +1517,7 @@ if ($action == "editusers")
 	}
 	$usersummary .= "\t\t<td align='center' style='padding-top:10px;'>\n"
 	."\t\t\t<form method='post' action='$scriptname'>"
-	."<input type='submit' value='".html_escape($clang->gT("Edit User"))."' />"
+	."<input type='submit' value='".$clang->gT("Edit User")."' />"
 	."<input type='hidden' name='action' value='modifyuser' />"
 	."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
 	."</form>";
@@ -1526,7 +1526,7 @@ if ($action == "editusers")
 	if ($usrhimself['parent_id'] != 0 && ($_SESSION['USER_RIGHT_DELETE_USER'] == 1 || ($usrhimself['uid'] == $_SESSION['loginID'])))
 	{
 		$usersummary .= "\t\t\t<form method='post' action='$scriptname?action=deluser'>"
-		."<input type='submit' value='".html_escape($clang->gT("Delete"))."' onClick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.")."\")' />"
+		."<input type='submit' value='".$clang->gT("Delete")."' onClick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.")."\")' />"
 		."<input type='hidden' name='action' value='deluser' />"
 		."<input type='hidden' name='user' value='{$usrhimself['user']}' />"
 		."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
@@ -1584,7 +1584,7 @@ if ($action == "editusers")
 		if ($usr['parent_id'] != 0 && ($_SESSION['USER_RIGHT_DELETE_USER'] == 1 || ($usr['uid'] == $_SESSION['loginID'])))
 		{
 			$usersummary .= "\t\t\t<form method='post' action='$scriptname?action=deluser'>"
-			."<input type='submit' value='".html_escape($clang->gT("Delete"))."' onClick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.")."\")' />"
+			."<input type='submit' value='".$clang->gT("Delete")."' onClick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.")."\")' />"
 			."<input type='hidden' name='action' value='deluser' />"
 			."<input type='hidden' name='user' value='{$usr['user']}' />"
 			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
@@ -1592,7 +1592,7 @@ if ($action == "editusers")
 		}
 
 		$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
-		."<input type='submit' value='".html_escape($clang->gT("Set User Rights"))."' />"
+		."<input type='submit' value='".$clang->gT("Set User Rights")."' />"
 		."<input type='hidden' name='action' value='setuserrights' />"
 		."<input type='hidden' name='user' value='{$usr['user']}' />"
 		."<input type='hidden' name='uid' value='{$usr['uid']}' />"
@@ -1610,7 +1610,7 @@ if ($action == "editusers")
 		. "\t\t<td align='center'><input type='text' name='new_user' /></td>\n"
 		. "\t\t<td align='center'><input type='text' name='new_email' /></td>\n"
 		. "\t\t<td align='center'><input type='text' name='new_full_name' /></td>\n"
-		. "\t\t<td align='center'><input type='submit' value='".html_escape($clang->gT("Add User"))."' />"
+		. "\t\t<td align='center'><input type='submit' value='".$clang->gT("Add User")."' />"
 		. "<input type='hidden' name='action' value='adduser' /></td>\n"
 		. "\t</tr>\n";
 	}
@@ -1626,7 +1626,7 @@ if ($action == "addusergroup")
 		. "\t\t<td><input type='text' size='50' name='group_name' /><font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></td></tr>\n"
 		. "\t<tr><td align='right'><strong>".$clang->gT("Description:")."</strong>(".$clang->gT("Optional").")</td>\n"
 		. "\t\t<td><textarea cols='50' rows='4' name='group_description'></textarea></td></tr>\n"
-		. "\t<tr><td colspan='2' align='center'><input type='submit' value='".html_escape($clang->gT("Add Group"))."' />\n"
+		. "\t<tr><td colspan='2' align='center'><input type='submit' value='".$clang->gT("Add Group")."' />\n"
 		. "\t<input type='hidden' name='action' value='usergroupindb' />\n"
 		. "\t</td></table>\n"
 		. "</form>\n";
@@ -1645,7 +1645,7 @@ if ($action == "editusergroup")
 	. "\t\t<td><input type='text' size='50' name='name' value=\"{$esrow['name']}\" /></td></tr>\n"
 	. "\t<tr><td align='right'><strong>".$clang->gT("Description:")."</strong>(optional)</td>\n"
 	. "\t\t<td><textarea cols='50' rows='4' name='description'>{$esrow['description']}</textarea></td></tr>\n"
-	. "\t<tr><td colspan='2' align='center'><input type='submit' value='".html_escape($clang->gT("Update User Group"))."' />\n"
+	. "\t<tr><td colspan='2' align='center'><input type='submit' value='".$clang->gT("Update User Group")."' />\n"
 	. "\t<input type='hidden' name='action' value='editusergroupindb' />\n"
 	. "\t<input type='hidden' name='owner_id' value='".$_SESSION['loginID']."' />\n"
 	. "\t<input type='hidden' name='ugid' value='$ugid' />\n"
@@ -1684,7 +1684,7 @@ if ($action == "mailusergroup")
 	. "\t\t<td><input type='text' size='50' name='subject' value='' /></td></tr>\n"
 	. "\t<tr><td align='right'><strong>".$clang->gT("Message:")."</strong></td>\n"
 	. "\t\t<td><textarea cols='50' rows='4' name='body'></textarea></td></tr>\n"
-	. "\t<tr><td colspan='2' align='center'><input type='submit' value='".html_escape($clang->gT("Send"))."'>\n"
+	. "\t<tr><td colspan='2' align='center'><input type='submit' value='".$clang->gT("Send")."'>\n"
 	. "<input type='reset' value='Reset'><br />"
 	. "\t<input type='hidden' name='action' value='mailsendusergroup' />\n"
 	. "\t<input type='hidden' name='addressee' value='$addressee' />\n"
@@ -1888,7 +1888,7 @@ if ($action == "editusergroups"  )
 				if((isset($row2['ugid']) && $_SESSION['loginID'] != $egurow['uid']) || (!isset($row2['ugid']) && $_SESSION['loginID'] == $egurow['uid']))
 				{
 					$usergroupentries .= "\t\t\t<form method='post' action='$scriptname?action=deleteuserfromgroup&ugid=$ugid'>"
-					." <input type='submit' value='".html_escape($clang->gT("Delete"))."' onClick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.")."\")' />"
+					." <input type='submit' value='".$clang->gT("Delete")."' onClick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.")."\")' />"
 					." <input type='hidden' name='user' value='{$egurow['users_name']}' />"
 					." <input name='uid' type='hidden' value='{$egurow['uid']}' />"
 					." <input name='ugid' type='hidden' value='{$ugid}' />";
@@ -1909,7 +1909,7 @@ if ($action == "editusergroups"  )
 				. "\t\t\t\t<select name='uid' class=\"listboxgroups\">\n"
 				. getgroupuserlist()
 				. "\t\t\t\t</select></td>\n"
-				. "\t\t\t\t<td align='center'><input type='submit' value='".html_escape($clang->gT("Add User"))."' />\n"
+				. "\t\t\t\t<td align='center'><input type='submit' value='".$clang->gT("Add User")."' />\n"
 				. "\t\t\t\t<input type='hidden' name='action' value='addusertogroup' /></td></form>\n"
 				. "\t\t\t</td>\n"
 				. "\t\t</tr>\n"
@@ -2062,7 +2062,7 @@ if ($action == "addquestion")
 		. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Select CSV File").":</strong></td>\n"
 		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"50\" /></td></tr>\n"
 		. "\t<tr><td colspan='2' align='center'><input type='submit' "
-		. "value='".html_escape($clang->gT("Import Question"))."' />\n"
+		. "value='".$clang->gT("Import Question")."' />\n"
 		. "\t<input type='hidden' name='action' value='importquestion' />\n"
 		. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
 		. "\t<input type='hidden' name='gid' value='$gid' />\n"
@@ -2177,7 +2177,7 @@ if ($action == "copyquestion")
 		{
 			$editquestion .= "\t<tr>\n"
 			. "\t\t<input type='hidden' name='copyanswers' value='Y'>\n"
-			. "\t\t<td colspan='2' align='center'><input type='submit' value='".html_escape($clang->gT("Copy Question"))."' /></td>\n"
+			. "\t\t<td colspan='2' align='center'><input type='submit' value='".$clang->gT("Copy Question")."' /></td>\n"
 			. "\t\t<input type='hidden' name='action' value='copynewquestion' />\n"
 			. "\t\t<input type='hidden' name='sid' value='$sid' />\n"
 			. "\t\t<input type='hidden' name='oldqid' value='$qid' />\n"
@@ -2198,7 +2198,7 @@ if ($action == "copyquestion")
 			. "</td>\n"
 			. "\t</tr>\n"
 			. "\t<tr>\n"
-			. "\t\t<td colspan='2' align='center'><input type='submit' value='".html_escape($clang->gT("Copy Question"))."' />\n"
+			. "\t\t<td colspan='2' align='center'><input type='submit' value='".$clang->gT("Copy Question")."' />\n"
 			. "\t\t<input type='hidden' name='action' value='copynewquestion' />\n"
 			. "\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
 			. "\t\t<input type='hidden' name='oldqid' value='$qid' />\n"
@@ -2387,7 +2387,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   		. "\t</tr>\n";
 	
 	
-	$editquestion .= "\t<tr><td align='center' colspan='2'><input type='submit' value='".html_escape($clang->gT("Update Question"))."' />\n"
+	$editquestion .= "\t<tr><td align='center' colspan='2'><input type='submit' value='".$clang->gT("Update Question")."' />\n"
 	. "\t<input type='hidden' name='action' value='updatequestion' />\n"
 	. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
 	. "\t<input type='hidden' name='qid' value='$qid' /></td></tr></table></div></form>\n"
@@ -2406,7 +2406,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
                           <tr>  			  
 						  <td nowrap width='50%' ><select id='QTlist' name='attribute_name' >
 						  </select></td><td align='center' width='20%'><input type='text' id='QTtext' size='6' name='attribute_value'  /></td>
-						  <td align='center'><input type='submit' value='".html_escape($clang->gT("Add"))."' />
+						  <td align='center'><input type='submit' value='".$clang->gT("Add")."' />
 						  <input type='hidden' name='action' value='addattribute' />
 						  <input type='hidden' name='sid' value='$surveyid' />
 					      <input type='hidden' name='qid' value='$qid' />
@@ -2457,7 +2457,7 @@ if($action == "orderquestions")
     	   switch($_POST['questionordermethod'])
     	   {
             // Pressing the Up button
-    		case $clang->gT("Up"):
+    		case $clang->gT("Up", "unescaped"):
     		$newsortorder=$_POST['sortorder']-1;
     		$oldsortorder=$_POST['sortorder'];
     		$cdquery = "UPDATE ".db_table_name('questions')." SET question_order=-1 WHERE gid=$gid AND question_order=$newsortorder";
@@ -2469,7 +2469,7 @@ if($action == "orderquestions")
     		break;
     
             // Pressing the Down button
-    		case $clang->gT("Dn"):
+    		case $clang->gT("Dn", "unescaped"):
     		$newsortorder=$_POST['sortorder']+1;
     		$oldsortorder=$_POST['sortorder'];
     		$cdquery = "UPDATE ".db_table_name('questions')." SET question_order=-1 WHERE gid=$gid AND question_order=$newsortorder";
@@ -2500,11 +2500,11 @@ if($action == "orderquestions")
   			$orderquestions.="<li class='movableNode'>\n" ;
      				$orderquestions.= "\t<input style='float:right;";
                   if ($cnt == 0){$orderquestions.="visibility:hidden;";}
-                  $orderquestions.="' type='submit' name='questionordermethod' value='".html_escape($clang->gT("Up"))."' onclick=\"this.form.sortorder.value='{$oqrow['question_order']}'\" />\n";
+                  $orderquestions.="' type='submit' name='questionordermethod' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$oqrow['question_order']}'\" />\n";
       			if ($cnt < $questioncount-1)
       			{
       				// Fill the sortorder hiddenfield so we now what field is moved down
-                      $orderquestions.= "\t<input type='submit' style='float:right;' name='questionordermethod' value='".html_escape($clang->gT("Dn"))."' onclick=\"this.form.sortorder.value='{$oqrow['question_order']}'\" />\n";
+                      $orderquestions.= "\t<input type='submit' style='float:right;' name='questionordermethod' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$oqrow['question_order']}'\" />\n";
       			}
   			$orderquestions.=$oqrow['title'].": ".$oqrow['question']."</li>\n" ;
   
@@ -2558,7 +2558,7 @@ if ($action == "addgroup")
 		$newgroup.= "</div>" 
         . "\t<input type='hidden' name='action' value='insertnewgroup' />\n"
 		. "\t<input type='hidden' name='sid' value='$surveyid' /></td></tr>"
-		. "\t<tr><td colspan='2' align='center'><input type='submit' value='".html_escape($clang->gT("Add Group"))."' />\n"
+		. "\t<tr><td colspan='2' align='center'><input type='submit' value='".$clang->gT("Add Group")."' />\n"
 		. "\t</td></table>\n"
 		. "</form></td></tr>\n"
 		. "<tr><td align='center'><strong>".$clang->gT("OR")."</strong></td></tr>\n"
@@ -2568,7 +2568,7 @@ if ($action == "addgroup")
 		. "\t\n"
 		. "\t\t<td align='right'><strong>".$clang->gT("Select CSV File:")."</strong></td>\n"
 		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\" /></td></tr>\n"
-		. "\t<tr><td colspan='2' align='center'><input type='submit' value='".html_escape($clang->gT("Import Group"))."' />\n"
+		. "\t<tr><td colspan='2' align='center'><input type='submit' value='".$clang->gT("Import Group")."' />\n"
 		. "\t<input type='hidden' name='action' value='importgroup' />\n"
 		. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
 		. "\t</td></tr>\n</table></form>\n";
@@ -2634,7 +2634,7 @@ if ($action == "editgroup")
 			. "\t</span></div><div class='settingrow'></div></div>"; // THis empty div class is needed for forcing the tabpage border under the button
 		}
 		$editgroup .= '</div>';
-		$editgroup .= "\t<p><input type='submit' class='standardbtn' value='".html_escape($clang->gT("Update Group"))."' />\n"
+		$editgroup .= "\t<p><input type='submit' class='standardbtn' value='".$clang->gT("Update Group")."' />\n"
 		. "\t<input type='hidden' name='action' value='updategroup' />\n"
 		. "\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n"
 		. "\t<input type='hidden' name='gid' value='{$gid}' />\n"
@@ -2705,7 +2705,7 @@ if($action == "addsurveysecurity")
 			{
 				$addsummary .= "<br />".$clang->gT("User added.")."<br />\n";
 				$addsummary .= "<br /><form method='post' action='$scriptname?sid={$surveyid}'>"
-				."<input type='submit' value='".html_escape($clang->gT("Set Survey Rights"))."' />"
+				."<input type='submit' value='".$clang->gT("Set Survey Rights")."' />"
 				."<input type='hidden' name='action' value='setsurveysecurity' />"
 				//."<input type='hidden' name='user' value='{$_POST['user']}'>"
 				."<input type='hidden' name='uid' value='{$_POST['uid']}' />"
@@ -2759,7 +2759,7 @@ if($action == "addusergroupsurveysecurity")
 					$addsummary .= "<br />".$clang->gT("User Group added.")."<br />\n";
 					$_SESSION['uids'] = $uid_arr;
 					$addsummary .= "<br /><form method='post' action='$scriptname?sid={$surveyid}'>"
-					."<input type='submit' value='".html_escape($clang->gT("Set Survey Rights"))."' />"
+					."<input type='submit' value='".$clang->gT("Set Survey Rights")."' />"
 					."<input type='hidden' name='action' value='setusergroupsurveysecurity' />"
 					."<input type='hidden' name='ugid' value='{$_POST['ugid']}' />"
 					."</form>\n";
@@ -2870,7 +2870,7 @@ if($action == "setsurveysecurity")
 			$usersummary .=" /></td>\n";
 
 			$usersummary .= "\t\n\t<tr><td colspan='6' align='center'>"
-			."<input type='submit' value='".html_escape($clang->gT("Save Now"))."' />"
+			."<input type='submit' value='".$clang->gT("Save Now")."' />"
 			."<input type='hidden' name='action' value='surveyrights' />"
 			."<input type='hidden' name='uid' value='{$_POST['uid']}' /></td></tr>"
 			."</form>"
@@ -2923,7 +2923,7 @@ if($action == "setusergroupsurveysecurity")
 		$usersummary .=" /></td>\n";
 
 		$usersummary .= "\t\n\t<tr><td colspan='6' align='center'>"
-		."<input type='submit' value='".html_escape($clang->gT("Save Now"))."' />"
+		."<input type='submit' value='".$clang->gT("Save Now")."' />"
 		."<input type='hidden' name='action' value='surveyrights' />"
 		."<input type='hidden' name='ugid' value='{$_POST['ugid']}' /></td></tr>"
 		."</form>"
@@ -3001,14 +3001,14 @@ if($action == "surveysecurity")
 				. "\t\t<td align='center' style='padding-top:10px;'>\n";
 
 				$surveysecurity .= "<form method='post' action='$scriptname?sid={$surveyid}'>"
-				."<input type='submit' value='".html_escape($clang->gT("Delete"))."' onClick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.")."\")' />"
+				."<input type='submit' value='".$clang->gT("Delete")."' onClick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.")."\")' />"
 				."<input type='hidden' name='action' value='delsurveysecurity' />"
 				."<input type='hidden' name='user' value='{$resul2row['users_name']}' />"
 				."<input type='hidden' name='uid' value='{$resul2row['uid']}' />"
 				."</form>";
 
 				$surveysecurity .= "<form method='post' action='$scriptname?sid={$surveyid}'>"
-				."<input type='submit' value='".html_escape($clang->gT("Set Survey Rights"))."' />"
+				."<input type='submit' value='".$clang->gT("Set Survey Rights")."' />"
 				."<input type='hidden' name='action' value='setsurveysecurity' />"
 				."<input type='hidden' name='user' value='{$resul2row['users_name']}' />"
 				."<input type='hidden' name='uid' value='{$resul2row['uid']}' />"
@@ -3029,7 +3029,7 @@ if($action == "surveysecurity")
 		. "\t\t\t\t\t</select>\n"
 		. "\t\t\t\t</td>\n"
 
-		. "\t\t<td align='center'><input type='submit' value='".html_escape($clang->gT("Add User"))."' />"
+		. "\t\t<td align='center'><input type='submit' value='".$clang->gT("Add User")."' />"
 		. "<input type='hidden' name='action' value='addsurveysecurity' /></td></form>\n"
 		. "\t</tr>\n";
 		//. "\t</table>\n";
@@ -3044,7 +3044,7 @@ if($action == "surveysecurity")
 		. "\t\t\t\t\t</select>\n"
 		. "\t\t\t\t</td>\n"
 
-		. "\t\t<td align='center'><input type='submit' value='".html_escape($clang->gT("Add Group"))."' />"
+		. "\t\t<td align='center'><input type='submit' value='".$clang->gT("Add Group")."' />"
 		. "<input type='hidden' name='action' value='addusergroupsurveysecurity' /></td></form>\n"
 		. "\t</tr>\n"
 		. "\t</table>\n";
@@ -3360,7 +3360,7 @@ if ($action == "editsurvey")
 			$editsurvey .= ">".$clang->gT("No")."</option>\n"
 			. "</select></td></tr>";
 
-			$editsurvey .= "\t<tr><td colspan='4' align='center'><input type='submit' onClick='return UpdateLanguageIDs(mylangs,\"".$clang->gT("All questions, answers, etc for removed languages will be lost. Are you sure?")."\");' class='standardbtn' value='".html_escape($clang->gT("Save and Continue"))." >>' />\n"
+			$editsurvey .= "\t<tr><td colspan='4' align='center'><input type='submit' onClick='return UpdateLanguageIDs(mylangs,\"".$clang->gT("All questions, answers, etc for removed languages will be lost. Are you sure?")."\");' class='standardbtn' value='".$clang->gT("Save and Continue")." >>' />\n"
 			. "\t<input type='hidden' name='action' value='updatesurvey' />\n"
 			. "\t<input type='hidden' name='sid' value=\"{$esrow['sid']}\" />\n"
 			. "\t<input type='hidden' name='languageids' id='languageids' value=\"{$esrow['additional_languages']}\" />\n"
@@ -3433,50 +3433,50 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
 
 			$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Invitation Email Subject:")."</span>\n"
 			. "\t\t<span class='settingentry'><input type='text' size='54' name='email_invite_subj_".$esrow['surveyls_language']."' id='email_invite_subj' value=\"{$esrow['surveyls_email_invite_subj']}\" />\n"
-			. "\t\t<input type='hidden' name='email_invite_subj_default_".$esrow['surveyls_language']."' id='email_invite_subj_default' value='".html_escape($clang->gT("Invitation to participate in survey"))."' />\n"
-			. "\t\t<input type='button' value='".html_escape($clang->gT("Use default"))."' onClick='javascript: fillin(\"email_invite_subj\",\"email_invite_subj_default\")' />\n"
+			. "\t\t<input type='hidden' name='email_invite_subj_default_".$esrow['surveyls_language']."' id='email_invite_subj_default' value='".$clang->gT("Invitation to participate in survey")."' />\n"
+			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onClick='javascript: fillin(\"email_invite_subj\",\"email_invite_subj_default\")' />\n"
 			. "\t</span></div>\n";
 			$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Invitation Email:")."</span>\n"
 			. "\t\t<span class='settingentry'><textarea cols=50 rows=5 name='email_invite_".$esrow['surveyls_language']."' id='email_invite'>{$esrow['surveyls_email_invite']}</textarea>\n"
 			. "\t\t<input type='hidden' name='email_invite_default_".$esrow['surveyls_language']."' id='email_invite_default' value='".html_escape($clang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"))."' />\n"
-			. "\t\t<input type='button' value='".html_escape($clang->gT("Use default"))."' onClick='javascript: fillin(\"email_invite\",\"email_invite_default\")' />\n"
+			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onClick='javascript: fillin(\"email_invite\",\"email_invite_default\")' />\n"
 			. "\t</span></div>\n";
 			$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Email Reminder Subject:")."</span>\n"
 			. "\t\t<span class='settingentry'><input type='text' size='54' name='email_remind_subj_".$esrow['surveyls_language']."' id='email_remind_subj' value=\"{$esrow['surveyls_email_remind_subj']}\" />\n"
-			. "\t\t<input type='hidden' name='email_remind_subj_default_".$esrow['surveyls_language']."' id='email_remind_subj_default' value='".html_escape($clang->gT("Reminder to participate in survey"))."' />\n"
-			. "\t\t<input type='button' value='".html_escape($clang->gT("Use default"))."' onClick='javascript: fillin(\"email_remind_subj\",\"email_remind_subj_default\")' />\n"
+			. "\t\t<input type='hidden' name='email_remind_subj_default_".$esrow['surveyls_language']."' id='email_remind_subj_default' value='".$clang->gT("Reminder to participate in survey")."' />\n"
+			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onClick='javascript: fillin(\"email_remind_subj\",\"email_remind_subj_default\")' />\n"
 			. "\t</span></div>\n";
 			$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Email Reminder:")."</span>\n"
 			. "\t\t<span class='settingentry'><textarea cols=50 rows=5 name='email_remind_".$esrow['surveyls_language']."' id='email_remind'>{$esrow['surveyls_email_remind']}</textarea>\n"
 			. "\t\t<input type='hidden' name='email_remind_default_".$esrow['surveyls_language']."' id='email_remind_default' value='".html_escape($clang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"))."' />\n"
-			. "\t\t<input type='button' value='".html_escape($clang->gT("Use default"))."' onClick='javascript: fillin(\"email_remind\",\"email_remind_default\")' />\n"
+			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onClick='javascript: fillin(\"email_remind\",\"email_remind_default\")' />\n"
 			. "\t</span></div>\n";
 			$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Confirmation Email Subject")."</span>\n"
 			. "\t\t<span class='settingentry'><input type='text' size='54' name='email_confirm_subj_".$esrow['surveyls_language']."' id='email_confirm_subj' value=\"{$esrow['surveyls_email_confirm_subj']}\" />\n"
-			. "\t\t<input type='hidden' name='email_confirm_subj_default_".$esrow['surveyls_language']."' id='email_confirm_subj_default' value='".html_escape($clang->gT("Confirmation of completed survey"))."' />\n"
-			. "\t\t<input type='button' value='".html_escape($clang->gT("Use default"))."' onClick='javascript: fillin(\"email_confirm_subj\",\"email_confirm_subj_default\")' />\n"
+			. "\t\t<input type='hidden' name='email_confirm_subj_default_".$esrow['surveyls_language']."' id='email_confirm_subj_default' value='".$clang->gT("Confirmation of completed survey")."' />\n"
+			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onClick='javascript: fillin(\"email_confirm_subj\",\"email_confirm_subj_default\")' />\n"
 			. "\t</span></div>\n";
 			$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Confirmation Email")."</span>\n"
 			. "\t\t<span class='settingentry'><textarea cols=50 rows=5 name='email_confirm_".$esrow['surveyls_language']."' id='email_confirm'>{$esrow['surveyls_email_confirm']}</textarea>\n"
-			. "\t\t<input type='hidden' name='email_confirm_default_".$esrow['surveyls_language']."' id='email_confirm_default' value='".html_escape($clang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}"))."' />\n"
-			. "\t\t<input type='button' value='".html_escape($clang->gT("Use default"))."' onClick='javascript: fillin(\"email_confirm\",\"email_confirm_default\")'>\n"
+			. "\t\t<input type='hidden' name='email_confirm_default_".$esrow['surveyls_language']."' id='email_confirm_default' value='".$clang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}")."' />\n"
+			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onClick='javascript: fillin(\"email_confirm\",\"email_confirm_default\")'>\n"
 			. "\t</span></div>\n";
 			$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Public registration Email Subject:")."</span>\n"
 			. "\t\t<span class='settingentry'><input type='text' size='54' name='email_register_subj_".$esrow['surveyls_language']."' id='email_register_subj' value=\"{$esrow['surveyls_email_register_subj']}\" />\n"
-			. "\t\t<input type='hidden' name='email_register_subj_default_".$esrow['surveyls_language']."' id='email_register_subj_default' value='".html_escape($clang->gT("Survey Registration Confirmation"))."' />\n"
-			. "\t\t<input type='button' value='".html_escape($clang->gT("Use default"))."' onClick='javascript:  fillin(\"email_register_subj\",\"email_register_subj_default\")' />\n"
+			. "\t\t<input type='hidden' name='email_register_subj_default_".$esrow['surveyls_language']."' id='email_register_subj_default' value='".$clang->gT("Survey Registration Confirmation")."' />\n"
+			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onClick='javascript:  fillin(\"email_register_subj\",\"email_register_subj_default\")' />\n"
 			. "\t</span></div>\n";
 			$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Public registration Email:")."</span>\n"
 			. "\t\t<span class='settingentry'><textarea cols=50 rows=5 name='email_register_".$esrow['surveyls_language']."' id='email_register'>{$esrow['surveyls_email_register']}</textarea>\n"
-			. "\t\t<input type='hidden' name='email_register_default_".$esrow['surveyls_language']."' id='email_register_default' value='".html_escape($clang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."))."' />\n"
-			. "\t\t<input type='button' value='".html_escape($clang->gT("Use default"))."' onClick='javascript:  fillin(\"email_register\",\"email_register_default\")' />\n"
+			. "\t\t<input type='hidden' name='email_register_default_".$esrow['surveyls_language']."' id='email_register_default' value='".$clang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.")."' />\n"
+			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onClick='javascript:  fillin(\"email_register\",\"email_register_default\")' />\n"
 			. "\t</span class='settingentry'></div>\n"
 			. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("URL Description:")."</span>\n"
 			. "\t\t<span class='settingentry'><input type='text' size='50' name='urldescrip_".$esrow['surveyls_language']."' value=\"{$esrow['surveyls_urldescription']}\" />\n"
 			. "\t</span></div></div>";
 		}
 		$editsurvey .= '</div>';
-		$editsurvey .= "\t<p><input type='submit' class='standardbtn' value='".html_escape($clang->gT("Save"))."' />\n"
+		$editsurvey .= "\t<p><input type='submit' class='standardbtn' value='".$clang->gT("Save")."' />\n"
 		. "\t<input type='hidden' name='action' value='updatesurvey2' />\n"
 		. "\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n"
 		. "\t<input type='hidden' name='language' value=\"{$esrow['surveyls_language']}\" />\n"
@@ -3505,7 +3505,7 @@ if ($action == "ordergroups")
 	   switch($_POST['groupordermethod'])
 	   {
         // Pressing the Up button
-		case $clang->gT("Up"):
+		case $clang->gT("Up", "unescaped"):
 		$newsortorder=$_POST['sortorder']-1;
 		$oldsortorder=$_POST['sortorder'];
 		$cdquery = "UPDATE ".db_table_name('groups')." SET group_order=-1 WHERE sid=$surveyid AND group_order=$newsortorder";
@@ -3517,7 +3517,7 @@ if ($action == "ordergroups")
 		break;
 
         // Pressing the Down button
-		case $clang->gT("Dn"):
+		case $clang->gT("Dn", "unescaped"):
 		$newsortorder=$_POST['sortorder']+1;
 		$oldsortorder=$_POST['sortorder'];
 		$cdquery = "UPDATE ".db_table_name('groups')." SET group_order=-1 WHERE sid=$surveyid AND group_order=$newsortorder";
@@ -3546,11 +3546,11 @@ if ($action == "ordergroups")
 			$ordergroups.="<li class='movableNode' id='".$ogrows['gid']."'>\n" ;
    				$ordergroups.= "\t<input style='float:right;";
                 if ($cnt == 0){$ordergroups.="visibility:hidden;";}
-                $ordergroups.="' type='submit' name='groupordermethod' value='".html_escape($clang->gT("Up"))."' onclick=\"this.form.sortorder.value='{$ogrows['group_order']}'\" />\n";
+                $ordergroups.="' type='submit' name='groupordermethod' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$ogrows['group_order']}'\" />\n";
     			if ($cnt < $groupcount-1)
     			{
     				// Fill the sortorder hiddenfield so we now what field is moved down
-                    $ordergroups.= "\t<input type='submit' style='float:right;' name='groupordermethod' value='".html_escape($clang->gT("Dn"))."' onclick=\"this.form.sortorder.value='{$ogrows['group_order']}'\" />\n";
+                    $ordergroups.= "\t<input type='submit' style='float:right;' name='groupordermethod' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$ogrows['group_order']}'\" />\n";
     			}
 			$ordergroups.=$ogrows['group_name']."</li>\n" ;
 
@@ -3687,19 +3687,19 @@ if ($action == "newsurvey")
 		. "\t\t\t<option value='N'>".$clang->gT("No")."</option>\n"
 		. "\t\t</select></td>\n\t</tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Invitation Email Subject:")."</font></td>\n"
-		. "\t\t<td><input type='text' size='54' name='email_invite_subj' value='".html_escape($clang->gT("Invitation to participate in survey"))."' />\n"
+		. "\t\t<td><input type='text' size='54' name='email_invite_subj' value='".$clang->gT("Invitation to participate in survey")."' />\n"
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Invitation Email:")."</font></td>\n"
 		. "\t\t<td><textarea cols=50 rows=5 name='email_invite'>".$clang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."</textarea>\n"
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Email Reminder Subject:")."</font></td>\n"
-		. "\t\t<td><input type='text' size='54' name='email_remind_subj' value='".html_escape($clang->gT("Reminder to participate in survey"))."' />\n"
+		. "\t\t<td><input type='text' size='54' name='email_remind_subj' value='".$clang->gT("Reminder to participate in survey")."' />\n"
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Email Reminder:")."</font></td>\n"
 		. "\t\t<td><textarea cols=50 rows=5 name='email_remind'>".$clang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."</textarea>\n"
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Confirmation Email Subject")."</font></td>\n"
-		. "\t\t<td><input type='text' size='54' name='email_confirm_subj' value='".html_escape($clang->gT("Confirmation of completed survey"))."' />\n"
+		. "\t\t<td><input type='text' size='54' name='email_confirm_subj' value='".$clang->gT("Confirmation of completed survey")."' />\n"
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Confirmation Email")."</font></td>\n"
 		. "\t\t<td><textarea cols=50 rows=5 name='email_confirm'>".$clang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}")."</textarea>\n"
@@ -3710,7 +3710,7 @@ if ($action == "newsurvey")
 		. "\t\t\t<option value='N' selected>".$clang->gT("No")."</option>\n"
 		. "\t\t</select></td>\n\t</tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Public registration Email Subject:")."</font></td>\n"
-		. "\t\t<td><input type='text' size='54' name='email_register_subj' value='".html_escape($clang->gT("Survey Registration Confirmation"))."' />\n"
+		. "\t\t<td><input type='text' size='54' name='email_register_subj' value='".$clang->gT("Survey Registration Confirmation")."' />\n"
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Public registration Email:")."</font></td>\n"
 		. "\t\t<td><textarea cols=50 rows=5 name='email_register'>".$clang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.")."</textarea>\n"
@@ -3767,7 +3767,7 @@ if ($action == "newsurvey")
 		. "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
 		. "\t\t\t<option value='N' selected>".$clang->gT("No")."</option>\n"
 		. "</select></td></tr>"
-		. "\t<tr><td colspan='2' align='center'><input type='submit' value='".html_escape($clang->gT("Create Survey"))."' />\n"
+		. "\t<tr><td colspan='2' align='center'><input type='submit' value='".$clang->gT("Create Survey")."' />\n"
 		. "\t<input type='hidden' name='action' value='insertnewsurvey' /></td>\n"
 		. "\t</tr>\n"
 		. "</table></form>\n";
@@ -3778,7 +3778,7 @@ if ($action == "newsurvey")
 		. "\t\t<font class='settingcaption'><font color='white'>".$clang->gT("Import Survey")."</font></font></td></tr>\n\t<tr>"
 		. "\t\t<td align='right'><font class='settingcaption'>".$clang->gT("Select CSV/SQL File:")."</font></td>\n"
 		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\" /></td></tr>\n"
-		. "\t<tr><td colspan='2' align='center'><input type='submit' value='".html_escape($clang->gT("Import Survey"))."' />\n"
+		. "\t<tr><td colspan='2' align='center'><input type='submit' value='".$clang->gT("Import Survey")."' />\n"
 		. "\t<input type='hidden' name='action' value='importsurvey' /></TD>\n"
 		. "\t</tr>\n</table></form>\n";
 		// Here we do setup the date javascript
@@ -3900,7 +3900,7 @@ function upload()
 	. "<font face='verdana' size='2' color='green'><b>"
 	. $clang->gT("You must upload a CSV file")."</font><br />\n"
 	. "<input type='file' name='the_file' size='35' /><br />\n"
-	. "<input type='submit' value='".html_escape($clang->gT("Upload CSV file"))."' />\n"
+	. "<input type='submit' value='".$clang->gT("Upload CSV file")."' />\n"
 	. "</form></font>\n\n";
 }
 

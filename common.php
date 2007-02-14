@@ -1798,7 +1798,7 @@ function templatereplace($line)
 		{
 			if (!isset($_SESSION['step']) || !$_SESSION['step'])  //First page, show LOAD
 			{
-				$saveall = "<input type='submit' name='loadall' value='".html_escape($clang->gT("Load Unfinished Survey"))."' class='saveall' />";
+				$saveall = "<input type='submit' name='loadall' value='".$clang->gT("Load Unfinished Survey")."' class='saveall' />";
 			}
 			elseif (isset($_SESSION['scid']) && (isset($_POST['move']) && $_POST['move'] == " "._('last')." "))  //Already saved and on Submit Page, dont show Save So Far button
 			{
@@ -1880,7 +1880,7 @@ function templatereplace($line)
 		. "<tr><td align='right'>".$clang->gT("Your Email")."</td><td><input type='text' name='saveemail' value='";
 		if (isset($_POST['saveemail'])) {$saveform .= html_escape(auto_unescape($_POST['saveemail']));}
 		$saveform .= "'></td></tr>\n"
-		. "<tr><td></td><td><input type='submit' name='savesubmit' value='".html_escape($clang->gT("Save Now"))."'></td></tr>\n"
+		. "<tr><td></td><td><input type='submit' name='savesubmit' value='".$clang->gT("Save Now")."'></td></tr>\n"
 		. "</table>";
 		$line=str_replace("{SAVEFORM}", $saveform, $line);
 	}
@@ -1895,7 +1895,7 @@ function templatereplace($line)
 		. "<tr><td align='right'>".$clang->gT("Password").":</td><td><input type='password' name='loadpass' value='";
 		if (isset($_POST['loadpass'])) {$loadform .= html_escape(auto_unescape($_POST['loadpass']));}
 		$loadform .= "'></td></tr>\n"
-		. "<tr><td></td><td><input type='submit' value='".html_escape($clang->gT("Load Now"))."'></td></tr></table>\n";
+		. "<tr><td></td><td><input type='submit' value='".$clang->gT("Load Now")."'></td></tr></table>\n";
 		$line=str_replace("{LOADFORM}", $loadform, $line);
 	}
 
@@ -1950,7 +1950,7 @@ function templatereplace($line)
 			}
 			$registerform .= " /></td></tr>\n";
 		}
-		$registerform .= "<tr><td></td><td><input class='submit' type='submit' value='".html_escape($clang->gT("Continue"))."'>"
+		$registerform .= "<tr><td></td><td><input class='submit' type='submit' value='".$clang->gT("Continue")."'>"
 		."</td></tr>\n"
 		."</form>\n"
 		."</table>\n";

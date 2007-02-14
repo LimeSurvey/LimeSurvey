@@ -67,7 +67,7 @@ if (!$database_exists) //DATABASE DOESN'T EXIST OR CAN'T CONNECT
 	."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
 	. $clang->gT("The defined surveyor database does not exist")."<br />\n"
 	. $clang->gT("Either your selected database has not yet been created or there is a problem accessing it.")."<br /><br />\n"
-	."<input type='submit' value='".html_escape($clang->gT("Main Admin Screen"))."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
+	."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
 	."</td></tr></table>\n"
 	."</body>\n</html>";
 	return;
@@ -118,7 +118,7 @@ else //SURVEY MATCHING $surveyid DOESN'T EXIST
 	."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 	."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
 	. $clang->gT("There is no matching survey.")." ($surveyid)<br /><br />\n"
-	."<input type='submit' value='".html_escape($clang->gT("Main Admin Screen"))."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
+	."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
 	."</td></tr></table>\n"
 	."</body>\n</html>";
 	return;
@@ -517,7 +517,7 @@ elseif ($subaction == "all")
 	."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />\n"
 	."\t\t\t".$clang->gT("Records Displayed:")."<input type='text' size='4' value='$dtcount2' name='limit'>\n"
 	."\t\t\t".$clang->gT("Starting From:")."<input type='text' size='4' value='$start' name='start'>\n"
-	."\t\t\t<input type='submit' value='".html_escape($clang->gT("Show"))."'>\n"
+	."\t\t\t<input type='submit' value='".$clang->gT("Show")."'>\n"
 	."\t\t</font>\n"
 	."\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
 	."\t\t<input type='hidden' name='action' value='all'>\n");
