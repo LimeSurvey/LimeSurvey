@@ -137,14 +137,14 @@ function savedmenubar()
 	$surveyoptions .= "\t<tr bgcolor='#999999'>\n"
 	. "\t\t<td>\n"
 	. "\t\t\t<a href='$scriptname?sid=$surveyid' onmouseout=\"hideTooltip()\" " .
-			"onmouseover=\"showTooltip(event,'".$clang->gT("Return to Survey Administration")."')\" >" .
+			"onmouseover=\"showTooltip(event,'".$clang->gT("Return to Survey Administration", "js")."')\" >" .
 			"<img name='Administration' src='$imagefiles/home.png' title='' align='left'></a>\n"
 	. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 	. "\t\t\t<a href='$scriptname?action=saved&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" " .
-			"onmouseover=\"showTooltip(event,'". $clang->gT("Show summary information")."')\">" .
+			"onmouseover=\"showTooltip(event,'".$clang->gT("Show summary information", "js")."')\">" .
 			"<img name='SurveySummary' src='$imagefiles/summary.png' title=''  align='left'></a>\n"
-	. "\t\t\t<a href='$scriptname?action=saved&amp;sid=$surveyid&amp;subaction=all' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Display Responses")."')\">" .
+	. "\t\t\t<a href='$scriptname?action=saved&amp;sid=$surveyid&amp;subaction=all' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Display Responses", "js")."')\">" .
 	"<img name='ViewAll' src='$imagefiles/document.png' title=''  align='left'></a>\n"
 	//. "\t\t\t<input type='image' name='ViewLast' src='$imagefiles/viewlast.png' title='"
 	//. $clang->gT("Display Last 50 Responses")."'  align='left'  onClick=\"window.open('saved.php?sid=$surveyid&action=all&limit=50&order=desc', '_top')\">\n"

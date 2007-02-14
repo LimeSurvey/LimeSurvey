@@ -35,7 +35,7 @@ class phpsurveyor_lang {
 			return html_escape($basestring);
 			break;
 		case 'js':
-			return javascript__escape($basestring);
+			return javascript_escape($basestring);
 			break;
 		case 'unescaped':
 			return $basestring;

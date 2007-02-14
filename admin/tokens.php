@@ -270,40 +270,40 @@ if ($row["attribute2"]) {$attr2_name = $row["attribute2"];} else {$attr2_name=$c
 $tokenoutput .= "\t<tr bgcolor='#999999'>\n"
 ."\t\t<td>\n"
 ."\t\t\t<a href=\"#\" onClick=\"showhelp('show')\" onmouseout=\"hideTooltip()\""
-			."onmouseover=\"showTooltip(event,'".$clang->gT("Show Help")."');return false\">" .
+			."onmouseover=\"showTooltip(event,'".$clang->gT("Show Help", "js")."');return false\">" .
 					"<img src='$imagefiles/showhelp.png' title='' align='right'></a>\n"
 ."\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\" onmouseout=\"hideTooltip()\""
-			."onmouseover=\"showTooltip(event,'".$clang->gT("Return to Survey Administration")."');return false\">" .
+			."onmouseover=\"showTooltip(event,'".$clang->gT("Return to Survey Administration", "js")."');return false\">" .
 		"<img name='HomeButton' src='$imagefiles/home.png' align='left' ></a>\n"
 ."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
 ."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-."\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show summary information")."');return false\" >" .
+."\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show summary information", "js")."');return false\" >" .
 		"<img name='SummaryButton' src='$imagefiles/summary.png' title='' align='left' ></a>\n"
 ."\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse', '_top')\" onmouseout=\"hideTooltip()\""
-			."onmouseover=\"showTooltip(event,'".$clang->gT("Display Tokens")."');return false\">" .
+			."onmouseover=\"showTooltip(event,'".$clang->gT("Display Tokens", "js")."');return false\">" .
 					"<img name='ViewAllButton' src='$imagefiles/document.png' title='' align='left' ></a>\n"
 ."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' border='0' hspace='0' align='left'>\n"
 ."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 ."\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnew', '_top')\" onmouseout=\"hideTooltip()\"" .
-		"onmouseover=\"showTooltip(event,'".$clang->gT("Add new token entry")."');return false\">" .
+		"onmouseover=\"showTooltip(event,'".$clang->gT("Add new token entry", "js")."');return false\">" .
 				"<img name='AddNewButton' src='$imagefiles/add.png' title='' align='left' ></a>\n"
 ."\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=import', '_top')\" onmouseout=\"hideTooltip()\" ".
-		"onmouseover=\"showTooltip(event,'".$clang->gT("Import Tokens from CSV File")."');return false\"> <img name='ImportButton' src='$imagefiles/importcsv.png' title='' align='left'></a>"
+		"onmouseover=\"showTooltip(event,'".$clang->gT("Import Tokens from CSV File", "js")."');return false\"> <img name='ImportButton' src='$imagefiles/importcsv.png' title='' align='left'></a>"
 ."\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=importldap', '_top')\" onmouseout=\"hideTooltip()\" ".
-                "onmouseover=\"showTooltip(event,'".$clang->gT("Import Tokens from LDAP Query")."');return false\"> <img name='ImportLdapButton' src='$imagefiles/importldap.png' title='' align='left'></a>"
+                "onmouseover=\"showTooltip(event,'".$clang->gT("Import Tokens from LDAP Query", "js")."');return false\"> <img name='ImportLdapButton' src='$imagefiles/importldap.png' title='' align='left'></a>"
 ."\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=export', '_top')\" onmouseout=\"hideTooltip()\"" .
-	"onmouseover=\"showTooltip(event,'".$clang->gT("Export Tokens to CSV file")."');return false\">".
+	"onmouseover=\"showTooltip(event,'".$clang->gT("Export Tokens to CSV file", "js")."');return false\">".
 		"<img name='ExportButton' src='$imagefiles/exportcsv.png' align='left' ></a>\n"
 ."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-."\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=email', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Send email invitation")."');return false\">" .
+."\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=email', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Send email invitation", "js")."');return false\">" .
 		"<img name='InviteButton' src='$imagefiles/invite.png' title='' align='left'></a>\n"
-."\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=remind', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Send email reminder")."');return false\">" .
+."\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=remind', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Send email reminder", "js")."');return false\">" .
 		"<img name='RemindButton' src='$imagefiles/remind.png' title='' align='left' ></a>\n"
 ."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-."\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=tokenify', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Generate Tokens")."');return false\">" .
+."\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=tokenify', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Generate Tokens", "js")."');return false\">" .
 		"<img name='TokenifyButton' src='$imagefiles/tokenify.png' title='' align='left'></a>\n"
 ."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-."\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Drop tokens table")."');return false\">" .
+."\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Drop tokens table", "js")."');return false\">" .
 		"<img name='DeleteTokensButton' src='$imagefiles/delete.png' title='' align='left' ></a>\n"
 ."\t\t</td>\n"
 ."\t</tr>\n";
@@ -439,17 +439,17 @@ if ($subaction == "browse" || $subaction == "search")
 	."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='31' height='20' border='0' hspace='0' align='left'>\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 	."\t\t\t<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=0&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" .
-			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show start..")."');return false\">".
+			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show start..", "js")."');return false\">".
 			"<img name='DBeginButton' align='left' src='$imagefiles/databegin.png' title=''/></a>\n"
 	."\t\t\t<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" .
-			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show previous...")."');return false\">" .
+			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show previous...", "js")."');return false\">" .
 			"<img name='DBackButton' align='left' src='$imagefiles/databack.png' title='' /></a>\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='13' height='20' border='0' hspace='0' align='left'>\n"
 	."\t\t\t<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" .
-			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show next...")."');return false\">" .
+			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show next...", "js")."');return false\">" .
 			"<img name='DForwardButton' align='left' src='$imagefiles/dataforward.png' title=''/></a>\n"
 	."\t\t\t<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" .
-			" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show last...")."');return false\">".
+			" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show last...", "js")."');return false\">".
 			"<img name='DEndButton' align='left'  src='$imagefiles/dataend.png' title=''/></a>\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 	."\t\t\t\n"

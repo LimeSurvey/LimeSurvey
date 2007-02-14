@@ -433,7 +433,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	. "\t\t\t<tr bgcolor='#999999'>\n"
 	. "\t\t\t\t<td>\n"
 	. "\t\t\t\t\t<a href='$scriptname'" .
-			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Default Administration Page")."')\">" .
+			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Default Administration Page", "js")."')\">" .
 			"<img src='$imagefiles/home.png' name='HomeButton' alt='' title='' align='left' /></a>\n"
 	. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left' />\n"
 	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />"
@@ -443,7 +443,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	."<img src='$imagefiles/blank.gif' align='right' border='0' hspace='0' width='60' height='10' alt='' />"
 	."<img src='$imagefiles/seperator.gif' align='right' alt='' border='0' hspace='0' />"
 	."<a href='#' onClick=\"javascript: copyprompt('".$clang->gT("Create new template called:")."', '".$clang->gT("NewTemplate")."', 'default', 'copy')\"" .
-			" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Create new template")."')\">" .
+			" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Create new template", "js")."')\">" .
 			"<img src='$imagefiles/add.png' alt='' align='right' title='' /></a>"
 	."<font face='verdana' size='2' color='white'><strong>".$clang->gT("Template:")."</strong> </font>"
 	."<select name='templatedir' onchange='javascript: window.open(\"admin.php?action=templates&amp;editfile=$editfile&amp;screenname=".html_escape($screenname)."&amp;templatename=\"+this.value, \"_top\")'>\n"
@@ -475,23 +475,23 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
     {
             $templatesoutput.= "\t\t\t\t\t" .
     			 "<img name='EditName' src='$imagefiles/noedit.png' alt='' align='left' title=''" .
-    			 " onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("You can\'t edit the default template.")."')\" ".
+    			 " onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("You can\'t edit the default template.", "js")."')\" ".
                  " />";
     }
     else 
         {	
             $templatesoutput.= "\t\t\t\t\t<a href='#' onClick=\"javascript: copyprompt('".$clang->gT("Rename this template to:")."', '$templatename', '$templatename', 'rename')\">" .
     			 "<img name='EditName' src='$imagefiles/edit.png' alt='' align='left' title=''" .
-    			 " onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Rename this template")."')\" ".
+    			 " onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Rename this template", "js")."')\" ".
                  " /></a>";
         }
 	$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' height='10' border='0' hspace='0' align='left' />\n"
 	."\t\t\t\t\t<a href='#' onClick='javascript:window.open(\"admin.php?action=templatezip&amp;editfile=$editfile&amp;screenname=".html_escape($screenname)."&amp;templatename=$templatename\", \"_top\")'".
-			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Template")."')\">" .
+			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Template", "js")."')\">" .
 					"<img name='Export' src='$imagefiles/exportcsv.png' alt='' align='left' title='' /></a>\n"
 	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
 	."\t\t\t\t\t" .
-			"<a href='#' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Copy Template")."')\"" .
+			"<a href='#' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Copy Template", "js")."')\"" .
 			"onClick=\"javascript: copyprompt('".$clang->gT("Make a copy of this template")."', '".$clang->gT("copy_of_")."$templatename', '$templatename', 'copy')\">" .
 			"<img name='MakeCopy' src='$imagefiles/copy.png' alt='' align='left' title='' /></a>"
 	."</td><td align='right'>\n"

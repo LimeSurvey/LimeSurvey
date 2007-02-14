@@ -243,22 +243,22 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
 	."\t\t\t<a href='$scriptname?action=dataentry&amp;subaction=edit&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
-			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Edit this entry")."')\">" .
+			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Edit this entry", "js")."')\">" .
 			"<img align='left' src='$imagefiles/edit.png' title='' alt='' /></a>\n"
 	."\t\t\t<a href='$scriptname?action=dataentry&amp;subaction=delete&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
-			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Delete this entry")."')\">" 
+			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Delete this entry", "js")."')\">" 
 	."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='' title='' onClick=\"return confirm('".$clang->gT("Are you sure you want to delete this entry.")."')\" /></a>\n"
 	. "\t\t\t<a href='export.php?sid=$surveyid&id=$id'" .
-		"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Export this Response")."')\">" .
+		"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export this Response", "js")."')\">" .
 		"<img name='Export' src='$imagefiles/exportcsv.png' title='' alt='". $clang->gT("Export this Response")."'align='left' /></a>\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' width='20' height='20' border='0' hspace='0' align='left' alt='' />\n"
 	."\t\t\t<a href='$scriptname?action=browse&amp;subaction=id&amp;id=$last&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
-			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Show last...")."')\">".
+			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show last...", "js")."')\">".
 		"<img name='DataBack' align='left' src='$imagefiles/databack.png' title='' /></a>\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
 	."\t\t\t<a href='$scriptname?action=browse&amp;subaction=id&amp;id=$next&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
-			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Show next...")."')\">" .
+			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show next...", "js")."')\">" .
 		"<img name='DataForward' align='left' src='$imagefiles/dataforward.png' title='' /></a>\n"
 	."\t\t</td>\n"
 	."\t</tr>\n"
@@ -497,17 +497,17 @@ elseif ($subaction == "all")
 		$browseoutput .= "\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />\n"
 		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
 		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=0&amp;limit=$limit'" .
-				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Show start..")."');return false\">" .
+				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show start..", "js")."');return false\">" .
 						"<img name='DataBegin' align='left' src='$imagefiles/databegin.png' title='' /></a>\n"
 		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;surveytable=$surveytable&amp;start=$last&amp;limit=$limit'" .
-				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Show previous...")."');return false\">" .
+				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show previous...", "js")."');return false\">" .
 				"<img name='DataBack' align='left'  src='$imagefiles/databack.png' title='' /></a>\n"
 		."\t\t\t<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
 		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;surveytable=$surveytable&amp;start=$next&amp;limit=$limit'" .
-				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Show next...")."');return false\">".
+				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show next...", "js")."');return false\">".
 				"<img name='DataForward' align='left' src='$imagefiles/dataforward.png' title='' /></a>\n"
 		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit'" .
-				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'". $clang->gT("Show last...")."');return false\">" .
+				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show last...", "js")."');return false\">" .
 				"<img name='DataEnd' align='left' src='$imagefiles/dataend.png' title='' /></a>\n"
 		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
 	}
