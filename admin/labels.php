@@ -537,7 +537,7 @@ function modlabelsetanswers($lid)
         		$langid=substr($sortorderid,0,strpos($sortorderid,'_')); 
         		$orderid=substr($sortorderid,strpos($sortorderid,'_')+1,20);
 			$_POST['title_'.$sortorderid] = db_quote($_POST['title_'.$sortorderid]);
-                $query = "UPDATE ".db_table_name('labels')." SET code='".$_POST['code_'.$codeids[$count]]."', title='{$_POST['title_'.$sortorderid]}' WHERE sortorder=$orderid and language='$langid'";
+                $query = "UPDATE ".db_table_name('labels')." SET code='".$_POST['code_'.$codeids[$count]]."', title='{$_POST['title_'.$sortorderid]}' WHERE lid=$lid AND sortorder=$orderid AND language='$langid'";
         		//$labelsoutput.= $query;  DP
         		if (!$result = $connect->Execute($query))
         		{
