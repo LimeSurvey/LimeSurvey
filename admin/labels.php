@@ -345,7 +345,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
             }
 
     		$position=sprintf("%05d", $position);
-    		if ($activeuse == 0)
+    		if ($activeuse == 0 && $first)
     		{   $labelsoutput.= "<tr><td><br /></td></tr><tr><td width='25%' align=right>"
   			    ."<strong>".$clang->gT("New label").":</strong> <input type='text' maxlength='10' name='insertcode' size='10' id='addnewlabelcode' />\n"
     			."\t</td>\n"
@@ -365,6 +365,15 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     			."</tr>\n";
     	
     		}
+		elseif ($activeuse == 0  && !$first)
+		{
+    			$labelsoutput.= "<tr>\n"
+    			."\t<td colspan='4' align='center'>\n"
+    			."<font color='green' size='1'><i><strong>"
+    			.$clang->gT("Warning")."</strong>: ".$clang->gT("Inserting New labels must be done on the first language folder.")."</i></strong></font>\n"
+    			."\t</td>\n"
+    			."</tr>\n";
+		}
     		else
     		{
     			$labelsoutput.= "<tr>\n"
