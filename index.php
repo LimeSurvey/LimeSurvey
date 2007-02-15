@@ -92,7 +92,7 @@ if (!$surveyid)
 //	}
 	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
 	echo "\t\t<center><br />\n"
-	."\t\t\t<font color='RED'><strong>"._('ERROR')."</strong></font><br />\n"
+	."\t\t\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
 	."\t\t\t".$clang->gT("You have not provided a survey identification number")."<br />\n"
 	."\t\t\t".$clang->gT("Please contact")." $siteadminname ( $siteadminemail ) ".$clang->gT("for further assistance")."\n"
 	."\t\t</center><br />\n";

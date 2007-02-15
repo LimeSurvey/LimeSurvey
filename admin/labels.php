@@ -347,7 +347,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     		$position=sprintf("%05d", $position);
     		if ($activeuse == 0)
     		{   $labelsoutput.= "<tr><td><br /></td></tr><tr><td width='25%' align=right>"
-  			    ."<strong>"._('New label').":</strong> <input type='text' maxlength='10' name='insertcode' size='10' id='addnewlabelcode' />\n"
+  			    ."<strong>".$clang->gT("New label").":</strong> <input type='text' maxlength='10' name='insertcode' size='10' id='addnewlabelcode' />\n"
     			."\t</td>\n"
     			."\t<td width='35%'>\n"
     			."\t<input type='text' maxlength='100' name='inserttitle_$lslanguage' size='80' />\n"
@@ -505,7 +505,7 @@ function modlabelsetanswers($lid)
     			$query = "INSERT INTO ".db_table_name('labels')." (lid, code, title, sortorder,language) VALUES ($lid, '{$_POST['insertcode']}', '{$_POST['inserttitle_'.$lslanguage]}', '$newsortorder','$lslanguage')";
                 if (!$result = $connect->Execute($query))
     			{
-    				$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".('Failed to insert label')." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+    				$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert label", "js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
     			}
 			}
 		}

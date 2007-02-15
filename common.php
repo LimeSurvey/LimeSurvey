@@ -1800,13 +1800,13 @@ function templatereplace($line)
 			{
 				$saveall = "<input type='submit' name='loadall' value='".$clang->gT("Load Unfinished Survey")."' class='saveall' />";
 			}
-			elseif (isset($_SESSION['scid']) && (isset($_POST['move']) && $_POST['move'] == " "._('last')." "))  //Already saved and on Submit Page, dont show Save So Far button
+			elseif (isset($_SESSION['scid']) && (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." "))  //Already saved and on Submit Page, dont show Save So Far button
 			{
 				$saveall="";
 			}
 			else
 			{
-				$saveall="<input type='submit' name='saveall' value='"._('Save Survey and Return')."' class='saveall' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" />";  // Show Save So Far button
+				$saveall="<input type='submit' name='saveall' value='".$clang->gT("Save Survey and Return")."' class='saveall' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" />";  // Show Save So Far button
 			}
 		}
 		else

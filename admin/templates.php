@@ -541,7 +541,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	if (is_writable("$publicdir/templates/$templatename")) {
 		$templatesoutput.= "<input align='right' type='submit' value='Save Changes'";
 		if ($templatename == "default") {
-			$templatesoutput.= " style='color: #BBBBBB;' disabled alt='"._('Changes cannot be saved to the default template.')."'";
+			$templatesoutput.= " style='color: #BBBBBB;' disabled alt='".$clang->gT("Changes cannot be saved to the default template.")."'";
 		}
 		$templatesoutput.= " />";
 	}
@@ -568,7 +568,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	."</table></form></td></tr><tr><td></td><td align='right' valign='top'>"
 	."<form enctype='multipart/form-data' name='importsurvey' action='admin.php' method='post'>\n"
 	."<table><tr> <td align='right' valign='top' style='border: solid 1 #000080'>\n"
-	."<strong>"._('Upload a File').":</strong><br /><input name=\"the_file\" type=\"file\" size=\"7\" /><br />"
+	."<strong>".$clang->gT("Upload a File").":</strong><br /><input name=\"the_file\" type=\"file\" size=\"7\" /><br />"
 	."<input type='submit' value='".$clang->gT("Upload")."'";
 	if ($templatename == "default") {
 		$templatesoutput.= " disabled";

@@ -1181,7 +1181,7 @@ if (returnglobal('viewanswer'))
 		$anscount = $result->RecordCount();
         $vasummary .= "<div class='tab-page'>"
                 ."<h2 class='tab'>".getLanguageNameFromCode($anslang, false);
-        if ($anslang==GetBaseLanguageFromSurveyID($surveyid)) {$vasummary .= '('._('Base Language').')';}
+        if ($anslang==GetBaseLanguageFromSurveyID($surveyid)) {$vasummary .= '('.$clang->gT("Base Language").')';}
                 
         $vasummary .= "</h2>\t<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'>\n"
                 ."<thead align='center'>"
@@ -1258,7 +1258,7 @@ if (returnglobal('viewanswer'))
 		if ($activated == 0)
 		{
 			$vasummary .= "<tr><td><br /></td></tr><tr><td width='25%' align=right>"
-			."<strong>"._('New Answer').":</strong> ";
+			."<strong>".$clang->gT("New Answer").":</strong> ";
             if ($first==true) 
                 { 
                 $vasummary .= "<input type='text' maxlength='10' name='insertcode' size='10' id='addnewanswercode' />\n";
@@ -2252,7 +2252,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
                                      // Todo: handler in case that record is not found  
 
 	$editquestion .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($eqrow['language'],false);
-	if ($eqrow['language']==GetBaseLanguageFromSurveyID($surveyid)) {$editquestion .= '('._('Base Language').')';}
+	if ($eqrow['language']==GetBaseLanguageFromSurveyID($surveyid)) {$editquestion .= '('.$clang->gT("Base Language").')';}
 	$eqrow  = array_map('htmlspecialchars', $eqrow);
 	$editquestion .= '</h2>';
 	$editquestion .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Code:")."</span>\n"
@@ -2275,7 +2275,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	{
 	    $aqrow = $aqresult->FetchRow();
 		$editquestion .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($aqrow['language'],false);
-		if ($aqrow['language']==GetBaseLanguageFromSurveyID($surveyid)) {$editquestion .= '('._('Base Language').')';}
+		if ($aqrow['language']==GetBaseLanguageFromSurveyID($surveyid)) {$editquestion .= '('.$clang->gT("Base Language").')';}
 		$aqrow  = array_map('htmlspecialchars', $aqrow);
 		$editquestion .= '</h2>';
 		$editquestion .=  "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Question:")."</span>\n"
@@ -2545,7 +2545,7 @@ if ($action == "addgroup")
 		foreach ($grplangs as $grouplang)
 		{
 			$newgroup .= '<div class="tab-page"> <h2 class="tab">'.GetLanguageNameFromCode($grouplang);
-			if ($grouplang==$baselang) {$newgroup .= '('._('Base Language').')';}
+			if ($grouplang==$baselang) {$newgroup .= '('.$clang->gT("Base Language").')';}
 			$newgroup .= "</h2>"
             . "<table width='100%' border='0'>"
     		. "\t\t<tr><td align='right'><strong>".$clang->gT("Title").":</strong></td>\n"
@@ -2622,7 +2622,7 @@ if ($action == "editgroup")
 		while ($esrow = $egresult->FetchRow())
 		{
 			$editgroup .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($esrow['language'],false);
-			if ($esrow['language']==GetBaseLanguageFromSurveyID($surveyid)) {$editgroup .= '('._('Base Language').')';}
+			if ($esrow['language']==GetBaseLanguageFromSurveyID($surveyid)) {$editgroup .= '('.$clang->gT("Base Language").')';}
 			$esrow = array_map('htmlspecialchars', $esrow);
 			$editgroup .= '</h2>';
 			$editgroup .= "<form name='editgroup' action='$scriptname' method='post'>\n";
@@ -3322,7 +3322,7 @@ if ($action == "editsurvey")
 			$editsurvey .= $jsRemLang;
 			//  Add/Remove Buttons
 			$editsurvey .= "</select></td>"
-			. "<td align=left><INPUT type=\"button\" value=\"<< "._('Add')."\" onclick=\"DoAdd()\" ID=\"AddBtn\" /><BR /> <INPUT type=\"button\" value=\""._('Remove')." >>\" onclick=\"DoRemove(0,'')\" ID=\"RemoveBtn\"  /></td>\n"
+			. "<td align=left><INPUT type=\"button\" value=\"<< ".$clang->gT("Add")."\" onclick=\"DoAdd()\" ID=\"AddBtn\" /><BR /> <INPUT type=\"button\" value=\"".$clang->gT("Remove")." >>\" onclick=\"DoRemove(0,'')\" ID=\"RemoveBtn\"  /></td>\n"
 
 			// Available languages listbox
 			. "\t\t<td align=left><select size='5' id='available_languages' name='available_languages'>";
@@ -3418,7 +3418,7 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
     		$esresult = db_execute_assoc($esquery);
     		$esrow = $esresult->FetchRow();
 			$editsurvey .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($esrow['surveyls_language'],false);
-			if ($esrow['surveyls_language']==GetBaseLanguageFromSurveyID($surveyid)) {$editsurvey .= '('._('Base Language').')';}
+			if ($esrow['surveyls_language']==GetBaseLanguageFromSurveyID($surveyid)) {$editsurvey .= '('.$clang->gT("Base Language").')';}
 			$editsurvey .= '</h2>';
 			$esrow = array_map('htmlspecialchars', $esrow);
 			$editsurvey .= "<form name='addnewsurvey' action='$scriptname' method='post'>\n";
@@ -3613,7 +3613,7 @@ if ($action == "newsurvey")
 		. "\t\t<font class='settingcaption'><font color='white'>".$clang->gT("Create Survey")."</font></font></td></tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<td align='right' width='25%'><font class='settingcaption'>".$clang->gT("Title").":</font></td>\n"
-		. "\t\t<td><input type='text' size='50' id='surveyls_title' name='surveyls_title' /><font size=1> "._('(This field is mandatory.)')."</font></td></tr>\n"
+		. "\t\t<td><input type='text' size='50' id='surveyls_title' name='surveyls_title' /><font size=1> ".$clang->gT("(This field is mandatory.)")."</font></td></tr>\n"
 		. "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Description:")."</font>	</td>\n"
 		. "\t\t<td><textarea cols='50' rows='5' name='description'></textarea></td></tr>\n"
 		. "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Welcome:")."</font></td>\n"
@@ -3745,7 +3745,7 @@ if ($action == "newsurvey")
 			$newsurvey .= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
 		}
 
-		$newsurvey .= "\t\t</select><font size='1'> "._('This setting cannot be changed later!')."</font></td>\n"
+		$newsurvey .= "\t\t</select><font size='1'> ".$clang->gT("This setting cannot be changed later!")."</font></td>\n"
 		. "\t</tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Expires?")."</font></td>\n"
 		. "\t\t\t<td><select name='useexpiry'><option value='Y'>".$clang->gT("Yes")."</option>\n"
@@ -3753,7 +3753,7 @@ if ($action == "newsurvey")
 		. "<tr><td align='right'><font class='settingcaption'>".$clang->gT("Expiry Date:")."</font></td>\n"
 		. "\t\t<td><input type='text' id='f_date_b' size='12' name='expires' value='"
 		. date("Y-m-d")."' /><button type='reset' id='f_trigger_b'>...</button>"
-		. "<font size='1'> "._('Date Format').": YYYY-MM-DD</font></td></tr>\n"
+		. "<font size='1'> ".$clang->gT("Date Format").": YYYY-MM-DD</font></td></tr>\n"
 		. "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("End URL:")."</font></td>\n"
 		. "\t\t<td><input type='text' size='50' name='url' value='http://";
 		if (isset($esrow)) {$newsurvey .= $esrow['url'];}

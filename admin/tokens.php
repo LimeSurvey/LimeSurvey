@@ -1455,7 +1455,7 @@ function form($error=false)
 
 function formldap($error=false)
 {
-	global $surveyid, $tokenoutput, $ldap_queries;
+	global $surveyid, $tokenoutput, $ldap_queries, $clang;
 
 	if ($error) {$tokenoutput .= $error . "<br /><br />\n";}
 
@@ -1466,8 +1466,8 @@ function formldap($error=false)
 		$tokenoutput .= '</center>';
 	}
 	else {
-		$tokenoutput .= '<br />\n';
-		$tokenoutput .= _('Select the LDAP query you want:');
+		$tokenoutput .= '<br />';
+		$tokenoutput .= $clang->gT("Select the LDAP query you want to run:");
 		$tokenoutput .= '<br />';
 		$tokenoutput .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . "?action=tokens' method='post'>";
 		$tokenoutput .= "<select name='ldapQueries' style='length=35'><br />";
