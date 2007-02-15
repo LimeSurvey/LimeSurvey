@@ -92,15 +92,15 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 				$copyfile=$copydirname."/".$file;
 				$newfile=$newdirname."/".$file;
 				if (!copy($copyfile, $newfile)) {
-					echo "<script type=\"text/javascript\">\n<!--\nalert('Failed to copy $file to new template directory.');\n//-->\n</script>";
+					echo "<script type=\"text/javascript\">\n<!--\nalert(\"".$clang-gT("Failed to copy","js")." $file ".$clang->gT("to new template directory.","js")."\");\n//-->\n</script>";
 				}
 			}
 			$templates[]=array("name"=>$_GET['newname'], "dir"=>$newdirname);
 			$templatename=$_GET['newname'];
 		} elseif($mkdirresult == 2) {
-			echo "<script type=\"text/javascript\">\n<!--\nalert('Directory with the name `".$_GET['newname']."` already exists - choose another name');\n//-->\n</script>";
+			echo "<script type=\"text/javascript\">\n<!--\nalert(\"".$clang->gT("Directory with the name","js")." `".$_GET['newname']."` ".$clang->gT("already exists - choose another name","js")."\");\n//-->\n</script>";
 		} else {
-			echo "<script type=\"text/javascript\">\n<!--\nalert('Unable to create directory `".$_GET['newname']."`. Maybe you don't have permission.');\n//-->\n</script>";
+			echo "<script type=\"text/javascript\">\n<!--\nalert(\"".$clang->gT("Unable to create directory","js")." `".$_GET['newname']."`. ".$clang->gT("Maybe you don't have permission.","js")."\");\n//-->\n</script>";
 		}
 	}
 	
@@ -108,7 +108,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 		$newdirname=$publicdir."/templates/".$_GET['newname'];
 		$olddirname=$publicdir."/templates/".$_GET['copydir'];
 		if (!rename($olddirname, $newdirname)) {
-			echo "<script type=\"text/javascript\">\n<!--\nalert('Directory could not be renamed to `".$_GET['newname']."`. Maybe you don't have permission.');\n//-->\n</script>";
+			echo "<script type=\"text/javascript\">\n<!--\nalert(\"".$clang->gT("Directory could not be renamed to","js")." `".$_GET['newname']."`. ".$clang->gT("Maybe you don't have permission.","js")."\");\n//-->\n</script>";
 		} else {
 			$templates[]=array("name"=>$_GET['newname'], "dir"=>$newdirname);
 			$templatename=$_GET['newname'];
@@ -208,7 +208,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 			$copyfile="$publicdir/templates/default/".$file['name'];
 			$newfile=$thisfile;
 			if (!@copy($copyfile, $newfile)) {
-				echo "<script type=\"text/javascript\">\n<!--\nalert('Failed to copy ".$file['name']." to new template directory.');\n//-->\n</script>";
+				echo "<script type=\"text/javascript\">\n<!--\nalert(\"".$clang->gT("Failed to copy","js")." ".$file['name']." ".$clang->gT("to new template directory.","js")."\");\n//-->\n</script>";
 			}
 		}
 	}

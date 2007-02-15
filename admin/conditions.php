@@ -78,7 +78,7 @@ if (isset($_POST['subaction']) && $_POST['subaction'] == "insertcondition")
 {
 	if (!isset($_POST['canswers']) || !isset($_POST['cquestions']))
 	{
-		$conditionsoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.\")\n //-->\n</script>\n";
+		$conditionsoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.","js")."\")\n //-->\n</script>\n";
 	}
 	else
 	{
@@ -144,14 +144,14 @@ if (isset($_POST['subaction']) && $_POST['subaction'] == "copyconditions")
 	}
 	else
 	{
-		$message = $clang->gT("Did not copy questions").": ";
+		$message = $clang->gT("Did not copy questions","js").": ";
 		if (!isset($copyconditionsfrom))
 		{
-			$message .= $clang->gT("No condition selected to copy from").". ";
+			$message .= $clang->gT("No condition selected to copy from","js").". ";
 		}
 		if (!isset($copyconditionsto))
 		{
-			$message .= $clang->gT("No question selected to copy condition to").".";
+			$message .= $clang->gT("No question selected to copy condition to","js").".";
 		}
 		$conditionsoutput .= "<script type=\"text/javascript\">\n<!--\nalert('$message');\n//-->\n</script>\n";
 	}

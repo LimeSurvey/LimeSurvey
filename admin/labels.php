@@ -426,7 +426,7 @@ function updateset($lid)
 	$query = "UPDATE ".db_table_name('labelsets')." SET label_name='{$_POST['label_name']}', languages='{$_POST['languageids']}' WHERE lid=$lid";
 	if (!$result = $connect->Execute($query))
 	{
-		$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Update of Label Set failed")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+		$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Update of Label Set failed","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
 	}
 }
 
@@ -442,7 +442,7 @@ function deletelabelset($lid)
 	$count = $result->RecordCount();
 	if ($count > 0)
 	{
-		$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first.")."\")\n //-->\n</script>\n";
+		$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first.","js")."\")\n //-->\n</script>\n";
 		return false;
 	}
 	else //There are no dependencies. We can delete this safely
@@ -466,7 +466,7 @@ function insertlabelset()
 	$query = "INSERT INTO ".db_table_name('labelsets')." (label_name,languages) VALUES ('{$_POST['label_name']}','{$_POST['languageids']}')";
 	if (!$result = $connect->Execute($query))
 	{
-		$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Update of Label Set failed")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+		$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Update of Label Set failed","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
 	}
 	else
 	{
@@ -532,7 +532,7 @@ function modlabelsetanswers($lid)
         		//$labelsoutput.= $query;  DP
         		if (!$result = $connect->Execute($query))
         		{
-        			$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".('Failed to update label')." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+        			$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang-gT("Failed to update label","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
     			}
     			$count++;
     			if ($count>count($codeids)-1) {$count=0;}
@@ -569,7 +569,7 @@ function modlabelsetanswers($lid)
 		$query = "DELETE FROM ".db_table_name('labels')." WHERE lid=$lid AND sortorder='{$_POST['sortorder']}'";
 		if (!$result = $connect->Execute($query))
 		{
-			$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".('Failed to delete label')." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+			$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to delete label","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
 		}
 		break;
 		
