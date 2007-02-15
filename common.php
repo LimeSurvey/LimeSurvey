@@ -188,7 +188,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                     . "\t\t<td>\n"
                     . "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
                     . "\t\t\t<tr bgcolor='#555555'>\n"
-                    . "\t\t\t\t<td colspan='2' height='8'>\n"
+                    . "\t\t\t\t<td colspan='2' height='8' align='left'>\n"
                     . "\t\t\t\t<font size='1' color='white'><strong>".$clang->gT("Administration")."</strong>";
 		if(isset($_SESSION['loginID']))
 			{

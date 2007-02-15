@@ -55,7 +55,7 @@ if ($action != "showprintablesurvey")
   $adminoutput = getAdminHeader($_SESSION['metaHeader']);  // Alle future output is written into this and then outputted at the end of file
   $_SESSION['metaHeader']='';    
   $adminoutput .= helpscreenscript();
-  $adminoutput .= "<table width='100%' border='0' cellpadding='0' cellspacing='0'>\n"
+  $adminoutput .= "<table width='100%' border='0' cellpadding='0' cellspacing='0' >\n"
   ."\t<tr>\n"
   ."\t\t<td valign='top' align='center' bgcolor='#BBBBBB'>\n";
 } else {$adminoutput='';}

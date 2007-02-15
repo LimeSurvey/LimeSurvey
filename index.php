@@ -39,6 +39,7 @@
 // Optimized By				: swales
 
 require_once(dirname(__FILE__).'/config.php');
+ini_set('session.gc_maxlifetime', 3000);
 
 if (!isset($surveyid)) {	$surveyid=returnglobal('sid');}
 //This next line is for security reasons. It ensures that the $surveyid value is never anything but a number.

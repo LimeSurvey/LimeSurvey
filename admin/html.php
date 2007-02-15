@@ -131,7 +131,7 @@ if ($action == "checksettings" || $action == "changelang")
 	{$activetokens=count($tokenlist);} else {$activetokens=0;}
 	$cssummary = "<table><tr><td height='1'></td></tr></table>\n"
 	. "<form action='$scriptname'>"
-	. "<table align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
+	. "<table class='table2columns' align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
 	. "cellpadding='1' cellspacing='0' width='600'>\n"
 	. "\t<tr>\n"
 	. "\t\t<td colspan='2' align='center' bgcolor='#BBBBBB'>\n"
@@ -300,7 +300,7 @@ if ($surveyid)
 		$surveysummary .= "\t<tr>\n"
 		. "\t\t<td colspan='2'>\n"
 		. "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		. "\t\t\t\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
+		. "\t\t\t\t<tr bgcolor='#555555'><td align='left'colspan='2' height='4'>"
 		. "<font size='1' face='verdana' color='white'><strong>".$clang->gT("Survey")."</strong> "
 		. "<font color='silver'>{$s1row['surveyls_title']} (ID:$surveyid)</font></font></td></tr>\n"
 		. "\t\t\t\t<tr bgcolor='#999999'><td align='right' height='22'>\n";
@@ -606,7 +606,7 @@ if ($surveyid)
                  || $action=="setsurveysecurity" ||  $action=="setusergroupsurveysecurity" || $action=="delsurveysecurity" 
                  || $action=="editsurvey" || $action=="addgroup" || $action=="ordergroups" || $action=="updatesurvey") {$showstyle="style='display: none'";}
 		if (!isset($showstyle)) {$showstyle="";}
-		$surveysummary .= "\t<tr $showstyle id='surveydetails0'><td align='right' valign='top' width='15%'>"
+		$surveysummary .= "\t<tr $showstyle id='surveydetails0'><td><table class='table2columns'><tr><td align='right' valign='top' width='15%'>"
 		. "<strong>".$clang->gT("Title").":</strong></td>\n"
 		. "\t<td class='settingentryhighlight'><strong>{$s1row['surveyls_title']} "
 		. "(ID {$s1row['sid']})</strong></td></tr>\n";
@@ -737,7 +737,7 @@ if ($surveyid)
 		}
 		$surveysummary .= "</font></td></tr>\n"
 		. $surveysummary2
-		. "</table>\n";
+		. "</table></table>\n";
 	}
 	else
 	{
@@ -757,8 +757,8 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 	$usergroupsummary .= "\t<tr>\n"
 	. "\t\t<td colspan='2'>\n"
 	. "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-	. "\t\t\t\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
-	. "<font size='1' face='verdana' color='white'><strong>".$clang->gT("User Group")."</strong> ";
+	. "\t\t\t\t<tr bgcolor='#555555'><td colspan='2' height='4' align='left'>"
+	. "<font size='1' face='verdana' color='white'><strong>".$clang->gT("User Groups")."</strong> ";
 	if($ugid)
 	{
 		$usergroupsummary .= "<font color='silver'>{$grow['name']}</font></td></tr>\n";
@@ -849,7 +849,7 @@ if ($gid)   // Show the group toolbar
 		$groupsummary .= "\t<tr>\n"
 		. "\t\t<td colspan='2'>\n"
 		. "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		. "\t\t\t\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
+		. "\t\t\t\t<tr bgcolor='#555555'><td align='left' colspan='2' height='4'>"
 		. "<font size='1' face='verdana' color='white'><strong>".$clang->gT("Group")."</strong> "
 		. "<font color='silver'>{$grow['group_name']} (ID:$gid)</font></font></td></tr>\n"
 		. "\t\t\t\t<tr bgcolor='#AAAAAA'>\n"
@@ -949,7 +949,7 @@ if ($gid)   // Show the group toolbar
 		if ($qid) {$gshowstyle="style='display: none'";}
 		else	  {$gshowstyle="";}
 
-		$groupsummary .= "\t<tr $gshowstyle id='surveydetails20'><td width='20%' align='right'><strong>"
+		$groupsummary .= "\t<tr><td><table class='table2columns'><tr $gshowstyle id='surveydetails20'><td width='20%' align='right'><strong>"
 		. $clang->gT("Title").":</strong></td>\n"
 		. "\t<td>"
 		. "{$grow['group_name']} ({$grow['gid']})</td></tr>\n"
@@ -958,7 +958,7 @@ if ($gid)   // Show the group toolbar
 		if (trim($grow['description'])!='') {$groupsummary .=$grow['description'];}
 		$groupsummary .= "</td></tr>\n";
 	}
-	$groupsummary .= "\n</table>\n";
+	$groupsummary .= "\n</table></table>\n";
 }
 
 if ($qid)  // Show the question toolbar
@@ -977,7 +977,7 @@ if ($qid)  // Show the question toolbar
 		$questionsummary .= "\t<tr>\n"
 		. "\t\t<td colspan='2'>\n"
 		. "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		. "\t\t\t\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+		. "\t\t\t\t<tr bgcolor='#555555'><td colspan='2' height='4' align='left'><font size='1' face='verdana' color='white'><strong>"
 		. $clang->gT("Question")."</strong> <font color='silver'>{$qrrow['question']} (ID:$qid)</font></font></td></tr>\n"
 		. "\t\t\t\t<tr bgcolor='#AAAAAA'>\n"
 		. "\t\t\t\t\t<td>\n"
@@ -1072,7 +1072,7 @@ if ($qid)  // Show the question toolbar
 		. "\t</tr>\n";
 		if (returnglobal('viewanswer') || $action =="editquestion")	{$qshowstyle = "style='display: none'";}
 		else							{$qshowstyle = "";}
-		$questionsummary .= "\t<tr $qshowstyle id='surveydetails30'><td width='20%' align='right'><strong>"
+		$questionsummary .= "\t<tr><td><table class='table2columns'><tr $qshowstyle id='surveydetails30'><td width='20%' align='right'><strong>"
 		. $clang->gT("Code:")."</strong></td>\n"
 		. "\t<td>{$qrrow['title']}";
 		if ($qrrow['mandatory'] == "Y") {$questionsummary .= ": (<i>".$clang->gT("Mandatory Question")."</i>)";}
@@ -1125,7 +1125,7 @@ if ($qid)  // Show the question toolbar
 		}
 		$qid_attributes=getQuestionAttributes($qid);
 	}
-	$questionsummary .= "</table>\n";
+	$questionsummary .= "</table></table>\n";
 }
 
 if (returnglobal('viewanswer'))
@@ -2084,7 +2084,7 @@ if ($action == "copyquestion")
 	while ($eqrow = $eqresult->FetchRow())
 	{
 		$eqrow = array_map('htmlspecialchars', $eqrow);
-		$editquestion = "<form action='$scriptname' method='post'>\n<table width='100%' border='0'>\n"
+		$editquestion = "<form action='$scriptname' method='post'>\n<table width='100%' border='0' >\n"
 		. "\t<tr>\n"
 		. "\t\t<td colspan='2' bgcolor='black' align='center'>\n"
 		. "\t\t\t<font color='white'><strong>".$clang->gT("Copy Question")."</strong><br />".$clang->gT("Note: You MUST enter a new question code")."</font>\n"
@@ -2296,21 +2296,21 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   		. "\t\t<td align='right'><strong>".$clang->gT("Type:")."</strong></td>\n";
   		if ($activated != "Y")
   		{
-  			$editquestion .= "\t\t<td><SELECT id='question_type' name='type' "
+  			$editquestion .= "\t\t<td align='left'><SELECT id='question_type' name='type' "
   			. "onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
   			. getqtypelist($eqrow['type'])
   			. "\t\t</select></td>\n";
   		}
   		else
   		{
-  			$editquestion .= "\t\t<td>{}[{$eqrow['type']}] - ".$clang->gT("Cannot be modified")." - ".$clang->gT("Survey is currently active.")."\n"
+  			$editquestion .= "\t\t<td align='left'>{}[{$eqrow['type']}] - ".$clang->gT("Cannot be modified")." - ".$clang->gT("Survey is currently active.")."\n"
   			. "\t\t\t<input type='hidden' name='type' id='question_type' value='{$eqrow['type']}' />\n"
   			. "\t\t</td>\n";
   		}
   
   		$editquestion  .="\t</tr><tr id='LabelSets' style='display: none'>\n"
   		. "\t\t<td align='right'><strong>".$clang->gT("Label Set:")."</strong></td>\n"
-  		. "\t\t<td>\n";
+  		. "\t\t<td align='left'>\n";
   		
 		$qattributes=questionAttributes();
   		if ($activated != "Y")
@@ -2342,7 +2342,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   		. "\t</tr>\n"
   		. "\t<tr>\n"
   		. "\t<td align='right'><strong>".$clang->gT("Group:")."</strong></td>\n"
-  		. "\t\t<td><select name='gid'>\n"
+  		. "\t\t<td align='left'><select name='gid'>\n"
   		. getgrouplist3($eqrow['gid'])
   		. "\t\t</select></td>\n"
   		. "\t</tr>\n";
@@ -2351,7 +2351,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   		
   		if ($activated != "Y")
   		{
-  			$editquestion .= "\t\t<td>\n"
+  			$editquestion .= "\t\t<td align='left'>\n"
   			. "\t\t\t<label for='OY'>".$clang->gT("Yes")."</label><input id='OY' type='radio' name='other' value='Y'";
   			if ($eqrow['other'] == "Y") {$editquestion .= " checked";}
   			$editquestion .= " />&nbsp;&nbsp;\n"
@@ -2362,14 +2362,14 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   		}
   		else
   		{
-  			$editquestion .= "<td> [{$eqrow['other']}] - ".$clang->gT("Cannot be modified")." - ".$clang->gT("Survey is currently active.")."\n"
+  			$editquestion .= "<td align='left'> [{$eqrow['other']}] - ".$clang->gT("Cannot be modified")." - ".$clang->gT("Survey is currently active.")."\n"
   			. "\t\t\t<input type='hidden' name='other' value=\"{$eqrow['other']}\" /></td>\n";
   		}
   		$editquestion .= "\t</tr>\n";
   
   		$editquestion .= "\t<tr id='MandatorySelection'>\n"
   		. "\t\t<td align='right'><strong>".$clang->gT("Mandatory:")."</strong></td>\n"
-  		. "\t\t<td>\n"
+  		. "\t\t<td align='left'>\n"
   		. "\t\t\t<label for='MY'>".$clang->gT("Yes")."</label><input id='MY' type='radio' name='mandatory' value='Y'";
   		if ($eqrow['mandatory'] == "Y") {$editquestion .= " checked";}
   		$editquestion .= " />&nbsp;&nbsp;\n"
@@ -2381,7 +2381,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   		
   		$editquestion .= "\t<tr id='Validation'>\n"
   		. "\t\t<td align='right'><strong>".$clang->gT("Validation:")."</strong></td>\n"
-  		. "\t\t<td>\n"
+  		. "\t\t<td align='left'>\n"
   		. "\t\t<input type='text' name='preg' size=50 value=\"".$eqrow['preg']."\" />\n"
   		. "\t\t</td>\n"
   		. "\t</tr>\n";
@@ -3116,7 +3116,7 @@ if ($action == "editsurvey")
 		{
 			$esrow = array_map('htmlspecialchars', $esrow);
 			$editsurvey = include2var('./scripts/addremove.js');
-			$editsurvey .= "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0'>\n\t<tr><td colspan='4' bgcolor='black' align='center'>"
+			$editsurvey .= "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0' class='table2columns'>\n\t<tr><td colspan='4' bgcolor='black' align='center'>"
 			. "\t\t<font class='settingcaption'><font color='white'>".$clang->gT("Edit Survey - Step 1 of 2")."</font></font></td></tr>\n"
 			. "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Administrator:")."</font></td>\n"
 			. "\t\t<td><input type='text' size='50' name='admin' value=\"{$esrow['admin']}\" /></td></tr>\n"

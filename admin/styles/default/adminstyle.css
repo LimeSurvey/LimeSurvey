@@ -1,9 +1,6 @@
 body    {
 		font-family:verdana,arial,sans-serif; 
-	    margin-left: 0px;
-	    margin-top: 0px;
-	    margin-right: 0px;
-	    margin-bottom: 0px;
+	    margin: 0px;
         text-align:left;
         }
 
@@ -16,10 +13,7 @@ body    {
         
 .footer
         {
-	    margin-left: 0px;
-	    margin-top: 0px;
-	    margin-right: 0px;
-	    margin-bottom: 0px;
+	    margin: 0px;
 	    background-color: #000000;
 	    padding:5px;
         text-align:center;
@@ -50,6 +44,17 @@ th,a,p,div
         }
 
 
+table.table2columns
+{
+  width:100%;
+}
+
+
+.table2columns td+td
+		{
+		text-align:left;
+		}
+
 .outlinetable
 		{
 		border: 1px solid #111111;
@@ -61,6 +66,8 @@ th,a,p,div
 		background-color: #EEEEEE; 
 		border: 1px solid #CCCCCC
 		}
+
+
 		
 .outlinetable th
 		{
