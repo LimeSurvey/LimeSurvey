@@ -214,6 +214,7 @@ if(isset($_SESSION['loginID']) && $action!='login')
       }
     
   
+  if (isset($databaseoutput))  {$adminoutput.= $databaseoutput;} 	
   if (isset($templatesoutput)) {$adminoutput.= $templatesoutput;}
   if (isset($accesssummary  )) {$adminoutput.= $accesssummary;}	// added by Dennis
   if (isset($surveysummary  )) {$adminoutput.= $surveysummary;}

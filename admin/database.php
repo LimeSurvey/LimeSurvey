@@ -71,6 +71,8 @@ function get_max_order($gid)
 	return $gv['max'];
 }
 
+$databaseoutput ='';
+
 if(isset($surveyid))
 {
 	$actsurquery = "SELECT define_questions, edit_survey_property, delete_survey FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
@@ -117,7 +119,7 @@ if(isset($surveyid))
 		}
         if ($errorstring!='') 
         {
-            echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be added.\\n\\nIt is missing the group name for the following languages","js").":\\n".$errorstring."\")\n //-->\n</script>\n";
+            $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be added.\\n\\nIt is missing the group name for the following languages","js").":\\n".$errorstring."\")\n //-->\n</script>\n";
         }  
 
 		else
@@ -139,10 +141,10 @@ if(isset($surveyid))
                      }
 				if (!$result)
 				{
-					echo $clang->gT("Error: The database reported the following error:")."<br />\n";
-					echo "<font color='red'>" . htmlspecialchars($connect->ErrorMsg()) . "</font>\n";
-					echo "<pre>".htmlspecialchars($query)."</pre>\n";
-					echo "</body>\n</html>";
+					$databaseoutput .= $clang->gT("Error: The database reported the following error:")."<br />\n";
+					$databaseoutput .= "<font color='red'>" . htmlspecialchars($connect->ErrorMsg()) . "</font>\n";
+					$databaseoutput .= "<pre>".htmlspecialchars($query)."</pre>\n";
+					$databaseoutput .= "</body>\n</html>";
 					exit;
 				}
 			}
@@ -166,12 +168,12 @@ if(isset($surveyid))
 				$ugresult = $connect->Execute($ugquery);
 				if ($ugresult)
 				{
-					//echo "<script type=\"text/javascript\">\n<!--\n alert(\"Your Group ($group_name) has been updated!\")\n //-->\n< /script>\n";
+					//$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"Your Group ($group_name) has been updated!\")\n //-->\n< /script>\n";
 					$groupsummary = getgrouplist($_POST['gid']);
 				}
 				else
 				{
-					echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be updated","js")."\")\n //-->\n</script>\n";
+					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be updated","js")."\")\n //-->\n</script>\n";
 				}
 			}
 		}
@@ -182,7 +184,6 @@ if(isset($surveyid))
 	{
 		if (!isset($gid)) $gid=returnglobal('gid');
 		$query = "DELETE FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid";
-		echo $query;
 		$result = $connect->Execute($query) or die($connect->ErrorMsg()) ;
 		
 		if ($result)
@@ -193,7 +194,7 @@ if(isset($surveyid))
 		}
 		else
 		{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be deleted","js")."\n$error\")\n //-->\n</script>\n";
+			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be deleted","js")."\n$error\")\n //-->\n</script>\n";
 		}
 	}
 
@@ -216,7 +217,7 @@ if(isset($surveyid))
 			}
 			if ($total != $qtodel*3)
 			{
-				echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be deleted","js")."\")\n //-->\n</script>\n";
+				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be deleted","js")."\")\n //-->\n</script>\n";
 			}
 		}
 		$query = "DELETE FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid";
@@ -229,7 +230,7 @@ if(isset($surveyid))
 		}
 		else
 		{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be deleted","js")."\n$error\")\n //-->\n</script>\n";
+			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be deleted","js")."\n$error\")\n //-->\n</script>\n";
 		}
 	}
 
@@ -237,7 +238,7 @@ if(isset($surveyid))
 	{
 		if (!$_POST['title'])
 		{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be added. You must insert a code in the mandatory field","js")."\")\n //-->\n</script>\n";
+			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be added. You must insert a code in the mandatory field","js")."\")\n //-->\n</script>\n";
 		}
 		else
 		{
@@ -248,24 +249,24 @@ if(isset($surveyid))
 			." VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
 			." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',".getMaxquestionorder($_POST['gid']).",'{$baselang}')";
 			$result = $connect->Execute($query);
+			// Get the last inserted questionid for other languages
+			$qid=$connect->Insert_ID();
+
 			// Add other languages
 			if ($result)
 			{
-				$query = "SELECT qid FROM ".db_table_name('questions')." WHERE gid='{$_POST['gid']}' AND sid='{$_POST['sid']}' AND title='{$_POST['title']}' AND language='{$baselang}'";
-				$result2 = db_execute_assoc($query);
-				while ($res = $result2->FetchRow()) {$curquest = $res['qid'];}
 				$addlangs = GetAdditionalLanguagesFromSurveyID($_POST['sid']);
 				foreach ($addlangs as $alang)
 				{
 					if ($alang != "")
 					{	
 						$query = "INSERT INTO ".db_table_name('questions')." (qid, sid, gid, type, title, question, preg, help, other, mandatory, lid, question_order, language)"
-						." VALUES ('$curquest','{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
+						." VALUES ('$qid','{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
 						." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',".getMaxquestionorder($_POST['gid']).",'{$alang}')";
 						$result2 = $connect->Execute($query);
 						if (!$result2)
 						{
-							echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question in lang={$alang} could not be created.","js")."\\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+							$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question in lang={$alang} could not be created.","js")."\\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
 
 						}
 					}
@@ -275,14 +276,8 @@ if(isset($surveyid))
 			
 			if (!$result)
 			{
-				echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be created.","js")."\\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be created.","js")."\\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
 
-			}
-			else
-			{
-				$query = "SELECT qid FROM ".db_table_name('questions')." ORDER BY qid DESC"; //get last question id
-				$result=db_select_limit_assoc($query, 1);
-				while ($row=$result->FetchRow()) {$qid = $row['qid'];}
 			}
 			if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
 			{
@@ -317,11 +312,11 @@ if(isset($surveyid))
 				$question_number=1;
 				$group_number++;
 			}
-			//echo "GROUP: ".$grow['group_name']."<br />";
+			//$databaseoutput .= "GROUP: ".$grow['group_name']."<br />";
 			$usql="UPDATE ".db_table_name('questions')."\n"
 			."SET question_order='".str_pad($question_number, 4, "0", STR_PAD_LEFT)."'\n"
 			."WHERE qid=".$grow['qid'];
-			//echo "[$sql]";
+			//$databaseoutput .= "[$sql]";
 			$uresult=$connect->Execute($usql) or die("Error: ".htmlspecialchars($connect->ErrorMsg()));
 			$question_number++;
 			$groupname=$grow['group_name'];
@@ -353,7 +348,7 @@ if(isset($surveyid))
 		$_POST  = array_map('db_quote', $_POST);
 		if (isset($cccount) && $cccount)
 		{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question.","js")." ($qidlist)\")\n //-->\n</script>\n";
+			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question.","js")." ($qidlist)\")\n //-->\n</script>\n";
 		}
 		else
 		{
@@ -380,7 +375,7 @@ if(isset($surveyid))
 						$uqresult = $connect->Execute($uqquery) or die ("Error Update Question: ".htmlspecialchars($uqquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
 						if (!$uqresult)
 						{
-							echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+							$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
 						}
 					}
 				}
@@ -391,13 +386,13 @@ if(isset($surveyid))
 					$result = $connect->Execute($query) or die("Error: ".htmlspecialchars($connect->ErrorMsg()));
 					if (!$result)
 					{
-						echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers can't be deleted","js")."\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";
+						$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers can't be deleted","js")."\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";
 					}
 				}
 			}
 			else
 			{
-				echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\")\n //-->\n</script>\n";
+				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\")\n //-->\n</script>\n";
 			}
 		}
 	}
@@ -406,7 +401,7 @@ if(isset($surveyid))
 	{
 		if (!$_POST['title'])
 		{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be added. You must insert a code in the mandatory field","js")."\")\n //-->\n</script>\n";
+			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be added. You must insert a code in the mandatory field","js")."\")\n //-->\n</script>\n";
 		}
 		else
 		{
@@ -420,7 +415,7 @@ if(isset($surveyid))
 			$newqid = $connect->Insert_ID();
 			if (!$result)
 			{
-				echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be created.","js")."\\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";
+				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be created.","js")."\\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";
 
 			}
 			if (returnglobal('copyanswers') == "Y")
@@ -469,7 +464,7 @@ if(isset($surveyid))
 		if (isset($qidarray)) {$qidlist=implode(", ", $qidarray);}
 		if ($cccount) //there are conditions dependant on this question
 		{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed","js")." ($qidlist)\")\n //-->\n</script>\n";
+			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed","js")." ($qidlist)\")\n //-->\n</script>\n";
 		}
 		else
 		{
@@ -494,7 +489,7 @@ if(isset($surveyid))
 			}
 			else
 			{
-				echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be deleted","js")."\n$error\")\n //-->\n</script>\n";
+				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be deleted","js")."\n$error\")\n //-->\n</script>\n";
 			}
 		}
 	}
@@ -510,7 +505,7 @@ if(isset($surveyid))
 		if (isset($qidarray) && $qidarray) {$qidlist=implode(", ", $qidarray);}
 		if ($cccount) //there are conditions dependant on this question
 		{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed","js")." ($qidlist)\")\n //-->\n</script>\n";
+			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed","js")." ($qidlist)\")\n //-->\n</script>\n";
 		}
 		else
 		{
@@ -531,7 +526,7 @@ if(isset($surveyid))
 		}
 		else
 		{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be deleted","js")."\n$error\")\n //-->\n</script>\n";
+			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be deleted","js")."\n$error\")\n //-->\n</script>\n";
 		}
 	}
 
@@ -556,7 +551,7 @@ if(isset($surveyid))
 	    				$query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language) VALUES ('{$_POST['qid']}', '{$_POST['insertcode']}', '{$_POST['insertanswer_'.$anslang]}', '{$newsortorder}', '{$_POST['default']}','$anslang')";
 	       		    		if (!$result = $connect->Execute($query))
 					{
-						echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+						$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
 					}
 				}
 			}
@@ -576,7 +571,7 @@ if(isset($surveyid))
         		answer='{$_POST['answer_'.$sortorderid]}' WHERE qid='$qid' and sortorder=$orderid and language='$langid'";
         		if (!$result = $connect->Execute($query))
         		{
-        			echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update answers","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+        			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update answers","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
     			}
     			$count++;
     			if ($count>count($codeids)-1) {$count=0;}
@@ -613,7 +608,7 @@ if(isset($surveyid))
 			$query = "DELETE FROM ".db_table_name('answers')." WHERE qid={$qid} AND sortorder='{$_POST['sortorder']}'";
 			if (!$result = $connect->Execute($query))
 			{
-				echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to delete answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to delete answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
 			}
             fixsortorderAnswers($qid);
 		break;
@@ -658,7 +653,7 @@ if(isset($surveyid))
 			case $clang->gT("Add", "unescaped"):
 			if ((trim($_POST['code'])=='') || (trim($_POST['answer'])==''))
 			{
-				echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be added. You must include both a Code and an Answer","js")."\")\n //-->\n</script>\n";
+				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be added. You must include both a Code and an Answer","js")."\")\n //-->\n</script>\n";
 			}
 			else
 			{
@@ -667,7 +662,7 @@ if(isset($surveyid))
 				$matchcount = $uaresult->RecordCount();
 				if ($matchcount) //another answer exists with the same code
 				{
-					echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be added. There is already an answer with this code","js")."\")\n //-->\n</script>\n";
+					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be added. There is already an answer with this code","js")."\")\n //-->\n</script>\n";
 				}
 				else
 				{
@@ -679,7 +674,7 @@ if(isset($surveyid))
 			case $clang->gT("Save", "unescaped"):
 			if ((trim($_POST['code'])=='') || (trim($_POST['answer'])==''))
 			{
-				echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be updated. You must include both a Code and an Answer","js")."\")\n //-->\n</script>\n";
+				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be updated. You must include both a Code and an Answer","js")."\")\n //-->\n</script>\n";
 			}
 			else
 			{
@@ -696,13 +691,13 @@ if(isset($surveyid))
 				}
 				if (isset($matchcount) && $matchcount) //another answer exists with the same code
 				{
-					echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be updated. There is already an answer with this code","js")."\")\n //-->\n</script>\n";
+					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be updated. There is already an answer with this code","js")."\")\n //-->\n</script>\n";
 				}
 				else
 				{
 					if (isset($cccount) && $cccount) // there are conditions dependent upon this answer to this question
 					{
-						echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be updated. You have changed the answer code, but there are conditions to other questions which are dependant upon the old answer code to this question. You must delete these conditions before you can change the code to this answer.","js")." ($qidlist)\")\n //-->\n</script>\n";
+						$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be updated. You have changed the answer code, but there are conditions to other questions which are dependant upon the old answer code to this question. You must delete these conditions before you can change the code to this answer.","js")." ($qidlist)\")\n //-->\n</script>\n";
 					}
 					else
 					{
@@ -720,7 +715,7 @@ if(isset($surveyid))
 			if (isset($qidarray) && $qidarray) {$qidlist=implode(", ", $qidarray);}
 			if ($cccount)
 			{
-				echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be deleted. There are conditions for other questions that rely on this answer. You cannot delete this answer until those conditions are removed","js")." ($qidlist)\")\n //-->\n</script>\n";
+				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be deleted. There are conditions for other questions that rely on this answer. You cannot delete this answer until those conditions are removed","js")." ($qidlist)\")\n //-->\n</script>\n";
 			}
 			else
 			{
@@ -850,7 +845,7 @@ if(isset($surveyid))
 		}
 		else
 		{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Survey could not be updated","js")."\n".$connect->ErrorMsg() ." ($usquery)\")\n //-->\n</script>\n";
+			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Survey could not be updated","js")."\n".$connect->ErrorMsg() ." ($usquery)\")\n //-->\n</script>\n";
 		}
 	}
 
@@ -865,7 +860,7 @@ if(isset($surveyid))
 		}
 		else
 		{
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang-gT("ERROR deleting Survey id","js")." ($surveyid)!\n$error\")\n //-->\n</script>\n";
+			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang-gT("ERROR deleting Survey id","js")." ($surveyid)!\n$error\")\n //-->\n</script>\n";
 
 		}
 	}
@@ -903,7 +898,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 	if ($_POST['url'] == "http://") {$_POST['url']="";}
 	if (!$_POST['surveyls_title'])
 	{
-		echo "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Survey could not be created because it did not have a short title","js")."\")\n //-->\n</script>\n";
+		$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Survey could not be created because it did not have a short title","js")."\")\n //-->\n</script>\n";
 	}
 	else
 	{
@@ -965,8 +960,8 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		else
 		{
 			$errormsg=$clang->gT("Survey could not be created","js")." - ".$connect->ErrorMsg();
-			echo "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
-			echo htmlspecialchars($isquery);
+			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
+			$databaseoutput .= htmlspecialchars($isquery);
 		}
 	}
 }

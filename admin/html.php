@@ -405,9 +405,9 @@ if ($surveyid)
 			$surveysummary .="<DIV class=\"testsurvpopup\" id=\"testsurvpopup\"><table width=\"100%\"><tr><td>".$clang->gT("Please select a language:")."</td></tr>";
 			foreach ($tmp_survlangs as $tmp_lang)
 			{
-				$surveysummary .= "<tr><td><a href=\"#\" accesskey='d' onclick=\"document.getElementById('testsurvpopup').style.visibility='hidden'; window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=".$tmp_lang."', '_blank')\" /><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></td></tr>";
+				$surveysummary .= "<tr><td><a href=\"#\" accesskey='d' onclick=\"document.getElementById('testsurvpopup').style.visibility='hidden'; window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=".$tmp_lang."', '_blank')\"><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></td></tr>";
 			}
-			$surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('testsurvpopup').style.visibility='hidden';\" /><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td><tr></table></DIV>";
+			$surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('testsurvpopup').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></DIV>";
 			
 			if (count($tmp_survlangs) > 2)
 			{
@@ -456,9 +456,9 @@ if ($surveyid)
 			$surveysummary .="<DIV class=\"testsurvpopup\" id=\"printpopup\"><table width=\"100%\"><tr><td>".$clang->gT("Please select a language:")."</td></tr>";
 			foreach ($tmp_survlangs as $tmp_lang)
 			{
-				$surveysummary .= "<tr><td><a href=\"#\" accesskey='d' onclick=\"document.getElementById('printpopup').style.visibility='hidden'; window.open('$scriptname?action=showprintablesurvey&amp;sid=$surveyid&amp;lang=".$tmp_lang."', '_blank')\" /><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></td></tr>";
+				$surveysummary .= "<tr><td><a href=\"#\" accesskey='d' onclick=\"document.getElementById('printpopup').style.visibility='hidden'; window.open('$scriptname?action=showprintablesurvey&amp;sid=$surveyid&amp;lang=".$tmp_lang."', '_blank')\"><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></td></tr>";
 			}
-			$surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('printpopup').style.visibility='hidden';\" /><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td><tr></table></DIV>";
+			$surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('printpopup').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></DIV>";
 			
 			$surveysummary .= "<script type='text/javascript'>document.getElementById('printpopup').style.left='152px';</script>";
 			if (count($tmp_survlangs) > 2)
@@ -1124,8 +1124,9 @@ if ($qid)  // Show the question toolbar
 			. "\t<td>{$qrrow['other']}</td></tr>\n";
 		}
 		$qid_attributes=getQuestionAttributes($qid);
+	    $questionsummary .= "</table>";		
 	}
-	$questionsummary .= "</table></table>\n";
+	$questionsummary .= "</table>";
 }
 
 if (returnglobal('viewanswer'))
@@ -1961,7 +1962,7 @@ if ($action == "addquestion")
 
 	if($sumrows5['define_questions'])
 	{
-		$newquestion =  "\t<form action='$scriptname' name='addnewquestion' method='post'>\n"
+		$newquestion =  "\t<form action='$scriptname' name='addnewquestion1' method='post'>\n"
 		. "<table width='100%' border='0'>\n\n"
 		. "\t<tr>\n"
 		. "\t\t<td colspan='2' bgcolor='black' align='center'>"
@@ -1971,7 +1972,7 @@ if ($action == "addquestion")
 		. "\t<tr>\n"
 		. "\t\t<td align='right'  width='35%'><strong>".$clang->gT("Code:")."</strong></td>\n"
 		. "\t\t<td><input type='text' size='20' name='title' />"
-		. "<font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</td></tr>\n"
+		. "<font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></td></tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Question:")."</strong></td>\n"
 		. "\t\t<td><textarea cols='50' rows='3' name='question'></textarea></td>\n"
