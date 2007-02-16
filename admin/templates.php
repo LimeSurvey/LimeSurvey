@@ -214,7 +214,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	}
 
 	
-	if (!$screenname) {$screenname=$clang->gT("Welcome Page");}
+	if (!$screenname) {$screenname=$clang->gT("Welcome Page", "unescaped");}
 	if ($screenname != $clang->gT("Welcome Page")) {$_SESSION['step']=1;} else {unset($_SESSION['step']);} //This helps handle the load/save buttons
 	if ($screenname == $clang->gT("Submit Page")) {$_POST['move'] = " ".$clang->gT("last")." ";}
 	//FAKE DATA FOR TEMPLATES
