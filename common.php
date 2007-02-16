@@ -1756,7 +1756,7 @@ function templatereplace($line)
 	}
 	if (strpos($line, "{NAVIGATOR}") !== false) $line=str_replace("{NAVIGATOR}", $navigator, $line);
 	if (strpos($line, "{SUBMITBUTTON}") !== false) {
-		$submitbutton="<input class='submit' type='submit' value=' ".$clang->gT("submit")." ' name='move2' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" />";
+		$submitbutton="<input class='submit' type='submit' value=' ".$clang->gT("submit")." ' name='move2' onclick=\"javascript:document.phpsurveyor.move.value = 'movesubmit';\" />";
 		$line=str_replace("{SUBMITBUTTON}", $submitbutton, $line);
 	}
 	if (strpos($line, "{COMPLETED}") !== false) $line=str_replace("{COMPLETED}", $completed, $line);
