@@ -432,6 +432,59 @@ function updateset($lid)
 	global $dbprefix, $connect; 
 	$_POST['label_name'] = db_quote($_POST['label_name']);
 	$_POST['languageids'] = db_quote($_POST['languageids']);
+
+	// Get added and deleted languagesid arrays
+	$newlanidarray=explode(" ",trim($_POST['languageids']));
+	$oldlangidsarray=array();
+	$query = "SELECT languages FROM ".db_table_name('labelsets')." WHERE lid=".$lid;
+	$result=db_execute_assoc($query);
+	if ($result)
+	{
+		while ($row=$result->FetchRow()) {$oldlangids=$row['languages'];}
+		$oldlangidsarray=explode(" ",trim($oldlangids));
+	}
+	$addlangidsarray=array_diff($newlanidarray,$oldlangidsarray);
+	$dellangidsarray=array_diff($oldlangidsarray,$newlanidarray);
+
+	// If new languages are added, create labels' codes and sortorder for the new languages	
+	$query = "SELECT code,sortorder FROM ".db_table_name('labels')." WHERE lid=".$lid." GROUP BY code,sortorder";
+	$result=db_execute_assoc($query);
+	if ($result) { while ($row=$result->FetchRow()) {$oldcodesarray[$row['code']]=$row['sortorder'];} }
+	$sqlvalues='';
+	foreach ($addlangidsarray as $addedlangid)
+	{
+		foreach ($oldcodesarray as $oldcode => $oldsortorder)
+		{
+			$sqlvalues .= ", ($lid, '$oldcode', '$oldsortorder', '$addedlangid')";
+		}	
+	}	
+	if ($sqlvalues)
+	{
+		$query = "INSERT INTO ".db_table_name('labels')." (lid,code,sortorder,language) VALUES ".trim($sqlvalues,',');
+		$result=db_execute_assoc($query);
+		if (!$result)
+		{
+			$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to Copy already defined labels to added languages","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+		}
+	}
+
+	// If languages are removed, delete labels for these languages
+	$sqlwherelang='';
+	foreach ($dellangidsarray as $dellangid)
+	{
+		$sqlwherelang .= " OR language='".$dellangid."'";
+	}
+	if ($sqlwherelang)
+	{
+		$query = "DELETE FROM ".db_table_name('labels')." WHERE lid=$lid AND (".trim($sqlwherelang, ' OR').")";
+		$result=db_execute_assoc($query);
+		if (!$result)
+		{
+			$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to delete labels for removed languages","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+		}
+	}
+
+	// Update the labelset itself
 	$query = "UPDATE ".db_table_name('labelsets')." SET label_name='{$_POST['label_name']}', languages='{$_POST['languageids']}' WHERE lid=$lid";
 	if (!$result = $connect->Execute($query))
 	{
