@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-02-14 20:20+0100\n"
+"PO-Revision-Date: 2007-02-16 19:45+0100\n"
 "Last-Translator: b00z00\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -328,7 +328,7 @@ msgstr "Charger un questionnaire précédemment sauvegardé"
 
 # E:\www\phpsurveyor/common.php:1638
 msgid "You can load a survey that you have previously saved from this screen.<br />Type in the 'name' you used to save the survey, and the password.<br />"
-msgstr "Vous pouvez, depuis cet écran, charger un questionnaire que vous avez précédemment sauvegardé.<br />Renseignez le 'nom' que vous avez utilisé pour la sauvegarde, et le mot de passe.<br />"
+msgstr "Vous pouvez, depuis cet écran, charger un questionnaire que vous avez précédemment sauvegardé.<br />Renseignez le nom  et le mot de passe que vous avez utilisés lors de la sauvegarde.<br />"
 
 msgid "Saved name"
 msgstr "Nom de sauvegarde"
@@ -678,7 +678,7 @@ msgid "This question is a multiple answer type question but has no answers."
 msgstr "Cette question est à réponses multiples mais n&lsquo;a aucune réponse de définie."
 
 msgid "This question does not have a question 'type' set."
-msgstr "Cette question n&lsquo;a pas de type de question paramètré."
+msgstr "Cette question n&lsquo;a pas de type défini."
 
 msgid "This question requires a Labelset, but none is set."
 msgstr "Un jeu d&lsquo;étiquettes est requis pour cette question. Aucun n&lsquo;est saisi."
@@ -884,6 +884,10 @@ msgstr "Vous ne pouvez pas exécuter directement ce script."
 msgid "You have not selected a Question."
 msgstr "Vous n&lsquo;avez pas sélectionné de question."
 
+# D:\www\phpsurveyor/admin/conditions.php:81
+msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
+msgstr "Votre condition ne peut pas être ajoutée ! Elle ne comprend pas de question et/ou réponse sur laquelle cette condition est basée. Assurez-vous d'avoir choisi une question et une réponse."
+
 msgid "Did not copy questions"
 msgstr "Questions non copiées"
 
@@ -991,7 +995,7 @@ msgid "Question could not be updated"
 msgstr "La question ne peut pas être mise à jour"
 
 msgid "Answers can't be deleted"
-msgstr "Les réponses ne peuvent être supprimées"
+msgstr "Les réponses ne peuvent pas être supprimées"
 
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "La question ne peut pas être supprimée. Il y a des conditions qui se fondent sur cette question.  Vous ne pourrez pas supprimer cette question tant que ces conditions ne sont pas enlevées"
@@ -1002,8 +1006,18 @@ msgstr "La question ne peut pas être supprimée"
 msgid "Add new Answer"
 msgstr "Ajouter une nouvelle réponse"
 
+# E:\www\phpsurveyor/admin/usercontrol.php:153
+# E:\www\phpsurveyor/admin/usercontrol.php:157
+# E:\www\phpsurveyor/admin/usercontrol.php:171
+msgid "Failed to insert answer"
+msgstr "Echec de la création de la réponse"
+
 msgid "Save All"
 msgstr "Sauver tout"
+
+# E:\www\phpsurveyor/admin/usercontrol.php:342
+msgid "Failed to update answers"
+msgstr "Echec de la mise à jour des réponses"
 
 msgid "Up"
 msgstr "Haut"
@@ -1014,8 +1028,18 @@ msgstr "Bas"
 msgid "Del"
 msgstr "Supprimer"
 
+# E:\www\phpsurveyor/admin/usercontrol.php:153
+# E:\www\phpsurveyor/admin/usercontrol.php:157
+# E:\www\phpsurveyor/admin/usercontrol.php:171
+msgid "Failed to delete answer"
+msgstr "Echec de la suppression de la réponse"
+
 msgid "Survey could not be updated"
 msgstr "Le questionnaire ne peut pas être mis à jour"
+
+# D:\www\phpsurveyor/admin/database.php:868
+msgid "ERROR deleting Survey id"
+msgstr "ERREUR en effaçant le questionnaire avec de ID"
 
 msgid "Survey could not be created because it did not have a short title"
 msgstr "Le questionnaire ne peut pas être crée parce qu&lsquo;il n&lsquo;a pas de titre"
@@ -1101,7 +1125,7 @@ msgid "Only answer this if the following conditions are met:"
 msgstr "Répondre seulement à cette question si les conditions suivantes sont réunies :"
 
 msgid "Help about this question"
-msgstr "Aide sur cette question"
+msgstr "Aide pour cette question"
 
 msgid "This survey is not yet active. Your response cannot be saved"
 msgstr "Ce questionnaire n&lsquo;est pas encore activé. Votre réponse ne peut pas être sauvegardée"
@@ -1530,7 +1554,7 @@ msgstr "Vous devez ajouter des groupes"
 msgid "You need to add questions"
 msgstr "Vous devez ajouter des questions"
 
-msgid "User Group"
+msgid "User Groups"
 msgstr "Groupes d'utilisateurs"
 
 # E:\www\phpsurveyor/admin/html.php:694
@@ -1545,9 +1569,6 @@ msgstr "Supprimer ce groupe d`utilisateurs"
 
 msgid "Add New User Group"
 msgstr "Ajouter un nouveau groupe d`utilisateurs"
-
-msgid "User Groups"
-msgstr "Groupes d'utilisateurs"
 
 msgid "Edit Current Group"
 msgstr "Editer le groupe en cours"
@@ -1889,6 +1910,9 @@ msgstr "Parcourir les réponses"
 
 msgid "Survey Security"
 msgstr "Sécurité du questionnaire"
+
+msgid "User Group"
+msgstr "Groupes d'utilisateurs"
 
 msgid "User"
 msgstr "Utilisateur"
@@ -2268,8 +2292,12 @@ msgstr "Langues"
 msgid "Question Attributes"
 msgstr "Attributs de la question"
 
-msgid "Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. </font>"
-msgstr "Contrôle de cohérence de données<br /><font size='1'>Si des erreurs apparaissent, il faudra relancer ce script plusieurs fois. </font>"
+# D:\www\phpsurveyor/admin/integritycheck.php:52
+msgid "Data Consistency Check"
+msgstr "Vérification de la cohérence des données"
+
+msgid "If errors are showing up you might have to execute this script repeatedly."
+msgstr "Si des erreurs apparaissent, il faudra relancer ce script plusieurs fois."
 
 msgid "The following conditions should be deleted"
 msgstr "Les conditions suivantes peuvent être effacées"
@@ -2354,17 +2382,43 @@ msgstr "Nouveau jeu d&lsquo;étiquettes_NEW_LABEL"
 msgid "Add new label"
 msgstr "Ajouter un nouveau jeu d&lsquo;étiquettes_ADD_NEW_LABEL"
 
+# D:\www\phpsurveyor/admin/labels.php:373
+msgid "Inserting New labels must be done on the first language folder."
+msgstr "La création de nouvelles étiquettes doit être faite dans le dossier de la première langue."
+
 msgid "Fix Sort"
 msgstr "Tri"
 
 msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
 msgstr "Quelques questionnaires utilisent actuellement ce jeu d&lsquo;étiquettes. Modifier les codes, ajouter ou supprimer des entrées de ce jeu pourrait entrainer des effets indésirables dans d&lsquo;autres questionnaires."
 
+# D:\www\phpsurveyor/admin/labels.php:467
+msgid "Failed to Copy already defined labels to added languages"
+msgstr "Echec de la copie des étiquettes existantes dans les langues supplémentaires"
+
+# D:\www\phpsurveyor/admin/labels.php:483
+msgid "Failed to delete labels for removed languages"
+msgstr "Echec de la suppression des étiquettes pour les langues retirées"
+
 msgid "Update of Label Set failed"
 msgstr "La mise à jour du jeu d&lsquo;étiquettes a échoué"
 
 msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
 msgstr "Impossible de supprimer le jeu d&lsquo;étiquettes - Il y a des questions qui y sont reliées. Vous devez supprimer ces questions en premier."
+
+# E:\www\phpsurveyor/admin/usercontrol.php:153
+# E:\www\phpsurveyor/admin/usercontrol.php:157
+# E:\www\phpsurveyor/admin/usercontrol.php:171
+msgid "Failed to insert label"
+msgstr "Echec de la création de l'étiquette"
+
+# E:\www\phpsurveyor/admin/usercontrol.php:342
+msgid "Failed to update label"
+msgstr "Echec de la mise à jour de l'étiquette"
+
+# E:\www\phpsurveyor/admin/usercontrol.php:342
+msgid "Failed to delete label"
+msgstr "Echec de la suppression de l'étiquette"
 
 # E:\www\phpsurveyor/admin/html.php:1028
 msgid "You have to enter user name and email."
@@ -2513,7 +2567,7 @@ msgid "Null values are ignored in calculations"
 msgstr "Des valeurs nulles sont ignorées dans les calculs"
 
 msgid "Q1 and Q3 calculated using <a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>minitab method</a>"
-msgstr "Q1 et Q3 ont été calculés avec <a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>la méthode MINITAB</a>"
+msgstr "Q1 et Q3 ont été calculés avec la <a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>méthode MINITAB</a>"
 
 msgid "Count"
 msgstr "Décompte"
@@ -2550,6 +2604,33 @@ msgstr "Numérique"
 msgid "Huge free text"
 msgstr "Zone de texte long"
 
+# E:\www\phpsurveyor/admin/usercontrol.php:342
+msgid "Failed to copy"
+msgstr "Echec de la copie"
+
+msgid "to new template directory."
+msgstr "dans le nouveau dossier de modèles."
+
+# D:\www\phpsurveyor/admin/templates.php:101
+msgid "Directory with the name"
+msgstr "Le dossier avec le nom"
+
+# D:\www\phpsurveyor/admin/templates.php:101
+msgid "already exists - choose another name"
+msgstr "exite déjà. Choisissez un autre nom"
+
+# C:\wamp\www\phpsurveyor/admin/tokens.php:1414
+msgid "Unable to create directory"
+msgstr "Impossible de créer le dossier"
+
+# D:\www\phpsurveyor/admin/templates.php:103
+# D:\www\phpsurveyor/admin/templates.php:111
+msgid "Maybe you don't have permission."
+msgstr "Peut-être n'avez-vous pas la permission."
+
+msgid "Directory could not be renamed to"
+msgstr "Le dossier ne peut pas être renommé en"
+
 msgid "Welcome Page"
 msgstr "Page d&lsquo;accueil"
 
@@ -2557,7 +2638,7 @@ msgid "Question Page"
 msgstr "Page de question"
 
 msgid "Submit Page"
-msgstr "Envoyer la page"
+msgstr "Page d'envoi"
 
 msgid "Completed Page"
 msgstr "Page complétée"
@@ -2625,7 +2706,7 @@ msgstr "Edition en cours :"
 
 # E:\www\phpsurveyor/admin/templates.php:604
 msgid "Changes cannot be saved to the default template."
-msgstr "Les modifications ne peuvent pas être sauvegarder pour le modèle par défaut."
+msgstr "Les modifications ne peuvent pas être sauvegardées pour le modèle par défaut."
 
 msgid "Other Files:"
 msgstr "Autres fichiers :"
@@ -2911,8 +2992,8 @@ msgid "LDAP is disabled or no LDAP query defined."
 msgstr "LDAP désactivé ou aucune requête LDAP définie."
 
 # C:\wamp\www\phpsurveyor/admin/tokens.php:1471
-msgid "Select the LDAP query you want:"
-msgstr "Choisissez la requête LDAP que vous voulez :"
+msgid "Select the LDAP query you want to run:"
+msgstr "Choisissez la requête LDAP que vous voulez exécuter :"
 
 msgid "Forgot Password"
 msgstr "Oubli du mot de passe"
