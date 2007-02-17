@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-02-12 01:49+0100\n"
+"PO-Revision-Date: 2007-02-17 23:05+0100\n"
 "Last-Translator: \n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -859,6 +859,10 @@ msgstr "Dieses Script kann nicht direkt gestartet werden."
 msgid "You have not selected a Question."
 msgstr "Sie haben keine Frage ausgewählt."
 
+# D:\web\xampp\htdocs\phpsurveyor/admin/conditions.php:81
+msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
+msgstr "Ihre Bedingung konnte nicht hinzugefügt werden. Sie enthielt nicht die Frage und/oder Antworte auf der die Bedingung basiert. Bitte wählen Sie eine Frage und eine Antwort aus."
+
 msgid "Did not copy questions"
 msgstr "Fragen wurden nicht kopiert"
 
@@ -977,8 +981,14 @@ msgstr "Frage konnte nicht gelöscht werden."
 msgid "Add new Answer"
 msgstr "Neue Antwort hinzufügen"
 
+msgid "Failed to insert answer"
+msgstr "Konnte Antwort nicht hinzufügen."
+
 msgid "Save All"
 msgstr "Alles Speichern"
+
+msgid "Failed to update answers"
+msgstr "Konnte Antworten nicht aktualisieren"
 
 msgid "Up"
 msgstr "Hoch"
@@ -989,8 +999,15 @@ msgstr "Runter"
 msgid "Del"
 msgstr "Löschen"
 
+msgid "Failed to delete answer"
+msgstr "Konnte Anwort nicht löschen"
+
 msgid "Survey could not be updated"
 msgstr "Umfrage konnte nicht aktualisiert werden."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/database.php:863
+msgid "ERROR deleting Survey id"
+msgstr "FEHLER beim Löschen der Umfrage ID"
 
 msgid "Survey could not be created because it did not have a short title"
 msgstr "Umfrage konnte nicht erstellt werden. Bitte geben Sie einen Titel für diese Umfrage an."
@@ -1494,8 +1511,8 @@ msgstr "Sie müssen Gruppen hinzufügen."
 msgid "You need to add questions"
 msgstr "Sie müssen Fragen hinzufügen."
 
-msgid "User Group"
-msgstr "Benutzergruppe"
+msgid "User Groups"
+msgstr "Benutzergruppen"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:707
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1703
@@ -1511,9 +1528,6 @@ msgstr "Diese Benutzergruppe löschen"
 
 msgid "Add New User Group"
 msgstr "Neue Benutzergruppe hinzufügen"
-
-msgid "User Groups"
-msgstr "Benutzergruppen"
 
 msgid "Edit Current Group"
 msgstr "Diese Gruppe bearbeiten"
@@ -1852,6 +1866,9 @@ msgstr "Antworten anzeigen"
 
 msgid "Survey Security"
 msgstr "Umfrage-Sicherheit"
+
+msgid "User Group"
+msgstr "Benutzergruppe"
 
 msgid "User"
 msgstr "Benutzer"
@@ -2228,8 +2245,12 @@ msgstr "Sprachen"
 msgid "Question Attributes"
 msgstr "Fragen-Attribute:"
 
-msgid "Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. </font>"
-msgstr "Überprüfung der Datenkonsitenz<br ><font size='1'>Wenn Fehler gezeigt werden, sollten Sie dieses Script nochmals ausführen. <font>"
+# D:\web\xampp\htdocs\phpsurveyor/admin/integritycheck.php:52
+msgid "Data Consistency Check"
+msgstr "Datenintegritätsprüfung"
+
+msgid "If errors are showing up you might have to execute this script repeatedly."
+msgstr "Wenn Fehler gezeigt werden, sollten Sie dieses Script nochmals ausführen."
 
 msgid "The following conditions should be deleted"
 msgstr "Die folgenden Bedingungen sollten gelöscht werden:"
@@ -2314,17 +2335,38 @@ msgstr "Neue Beschriftung"
 msgid "Add new label"
 msgstr "Neue Beschriftung hinzufügen"
 
+# D:\web\xampp\htdocs\phpsurveyor/admin/labels.php:373
+msgid "Inserting New labels must be done on the first language folder."
+msgstr "Neue Labels dürfen nur auf der ersten Seite eingefügt werden."
+
 msgid "Fix Sort"
 msgstr "Sort Check"
 
 msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
 msgstr "Mindestens eine Umfrage benutzt momentan dieses Beschriftung-Set. ändern der Codes, Hinzufügen oder Löschen von Einträgen dieses Beschriftung-Set kann ungewollte Ergebnisse nach sich ziehen."
 
+# D:\web\xampp\htdocs\phpsurveyor/admin/labels.php:467
+msgid "Failed to Copy already defined labels to added languages"
+msgstr "Fehler beim Kopieren von vorhanendenen Labels zu der hinzugefügten Sprache"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/labels.php:483
+msgid "Failed to delete labels for removed languages"
+msgstr "Konnte die Label für gelöschte Fragen nicht entfernen"
+
 msgid "Update of Label Set failed"
 msgstr "Aktualisieren des Beschriftung-Set fehlgeschlagen"
 
 msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
 msgstr "Konnte Beschriftung-Set nicht löschen - Es gibt Fragen, die auf diesem Beschriftung-Set basieren. Sie müssen zuerst diese Fragen löschen."
+
+msgid "Failed to insert label"
+msgstr "Konnte Label nicht einfügen"
+
+msgid "Failed to update label"
+msgstr "Fehler beim Aktualisieren des Labels"
+
+msgid "Failed to delete label"
+msgstr "Fehler beim Löschen des Labels"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1235
 msgid "You have to enter user name and email."
@@ -2508,6 +2550,32 @@ msgstr "Zahleneingabe"
 
 msgid "Huge free text"
 msgstr "Ausführlicher Freitext"
+
+msgid "Failed to copy"
+msgstr "Fehler beim Kopieren"
+
+msgid "to new template directory."
+msgstr "in das neue Vorlagen Verzeichnis."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/templates.php:101
+msgid "Directory with the name"
+msgstr "Verzeichnis mit dem Namen"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/templates.php:101
+msgid "already exists - choose another name"
+msgstr "existiert bereits - wählen Sie einen anderen Namen"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1420
+msgid "Unable to create directory"
+msgstr "Verzeichnis konnte nicht erstellt werden"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/templates.php:103
+# D:\web\xampp\htdocs\phpsurveyor/admin/templates.php:111
+msgid "Maybe you don't have permission."
+msgstr "Evenuell haben Sie keine Rechte."
+
+msgid "Directory could not be renamed to"
+msgstr "Verzeichnis konnte nicht umbenannt werden nach"
 
 msgid "Welcome Page"
 msgstr "Startseite"
@@ -2871,7 +2939,7 @@ msgid "LDAP is disabled or no LDAP query defined."
 msgstr "LDAP is deaktiviert oder keine LDAP Abfrage definiert."
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1469
-msgid "Select the LDAP query you want:"
+msgid "Select the LDAP query you want to run:"
 msgstr "Wählen Sie bitte die LDAP Abfrage aus:"
 
 msgid "Forgot Password"
