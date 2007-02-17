@@ -295,31 +295,31 @@ if(isset($surveyid))
 		//a methodical numbering method
 		$question_number=1;
 		$group_number=0;
-		$gselect="SELECT *\n"
-		."FROM ".db_table_name('questions').", ".db_table_name('groups')."\n"
-		."WHERE ".db_table_name('questions').".gid=".db_table_name('groups').".gid\n"
-		."AND ".db_table_name('questions').".sid=$surveyid\n"
-		."ORDER BY ".db_table_name('groups').".group_order, title";
+		$gselect="SELECT a.qid, a.gid\n"
+		."FROM ".db_table_name('questions')." as a, ".db_table_name('groups')."\n"
+		."WHERE a.gid=".db_table_name('groups').".gid\n"
+		."AND a.sid=$surveyid\n"
+		."group BY a.gid, a.qid\n"
+		."ORDER BY ".db_table_name('groups').".group_order, question_order";
 		$gresult=db_execute_assoc($gselect) or die ("Error: ".htmlspecialchars($connect->ErrorMsg()));
 		$grows = array(); //Create an empty array in case FetchRow does not return any rows
 		while ($grow = $gresult->FetchRow()) {$grows[] = $grow;} // Get table output into array
-		usort($grows, 'CompareGroupThenTitle');
+//		usort($grows, 'CompareGroupThenTitle');
 		foreach($grows as $grow)
 		{
 			//Go through all the questions
-			if ((isset($_GET['style']) && $_GET['style']=="bygroup") && (!isset($groupname) || $groupname != $grow['group_name']))
+			if ((isset($_GET['style']) && $_GET['style']=="bygroup") && (!isset($group_number) || $group_number != $grow['gid']))
 			{
 				$question_number=1;
 				$group_number++;
 			}
-			//$databaseoutput .= "GROUP: ".$grow['group_name']."<br />";
 			$usql="UPDATE ".db_table_name('questions')."\n"
-			."SET question_order='".str_pad($question_number, 4, "0", STR_PAD_LEFT)."'\n"
+			."SET title='".str_pad($question_number, 4, "0", STR_PAD_LEFT)."'\n"
 			."WHERE qid=".$grow['qid'];
 			//$databaseoutput .= "[$sql]";
 			$uresult=$connect->Execute($usql) or die("Error: ".htmlspecialchars($connect->ErrorMsg()));
 			$question_number++;
-			$groupname=$grow['group_name'];
+			$group_number=$grow['gid'];
 		}
 	}
 
