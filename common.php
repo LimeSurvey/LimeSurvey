@@ -3118,9 +3118,58 @@ function FixLanguagesOnSurvey($sid, $availlangs)
 					$connect->Execute($query) or die($connect->ErrorMsg());
 				}
 			}
+			reset($langs);
 		}
 	}
-	reset($langs);
+	
+	$quests = array();
+	$query = "SELECT * FROM ".db_table_name('questions')." WHERE sid='{$sid}' AND language='{$baselang}' ORDER BY question_order";
+	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+	if ($result->RecordCount() > 0)
+	{
+		while($question = $result->FetchRow())
+		{
+			array_push($quests,$question['qid']);
+			foreach ($langs as $lang)
+			{
+				$query = "SELECT qid FROM ".db_table_name('questions')." WHERE sid='{$sid}' AND qid='{$question['qid']}' AND language='{$lang}'";
+				$gresult = db_execute_assoc($query) or die($connect->ErrorMsg());
+				if ($gresult->RecordCount() < 1)
+				{
+					$query = "INSERT INTO ".db_table_name('questions')." (qid,sid,gid,type,title,question,preg,help,other,mandatory,lid,question_order,language) VALUES('{$question['qid']}','{$question['sid']}','{$question['gid']}','{$question['type']}','{$question['title']}','{$question['question']}','{$question['preg']}','{$question['help']}','{$question['other']}','{$question['mandatory']}','{$question['lid']}','{$question['question_order']}','{$lang}')";
+					$connect->Execute($query) or die($connect->ErrorMsg());
+				}
+			}
+			reset($langs);
+		}
+	}	
+	
+	$sqlans = "";
+	foreach ($quests as $quest)
+	{
+		$sqlans .= " and qid = '".$quest."' ";
+	}
+	
+	$query = "SELECT * FROM ".db_table_name('answers')." WHERE language='{$baselang}' {$sqlans} ORDER BY qid, code";
+	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+	if ($result->RecordCount() > 0)
+	{
+		while($answer = $result->FetchRow())
+		{
+			foreach ($langs as $lang)
+			{
+				$query = "SELECT qid FROM ".db_table_name('answers')." WHERE code='{$answer['code']}' AND qid='{$answer['qid']}' AND language='{$lang}'";
+				$gresult = db_execute_assoc($query) or die($connect->ErrorMsg());
+				if ($gresult->RecordCount() < 1)
+				{
+					$query = "INSERT INTO ".db_table_name('answers')." (qid,code,answer,default_value,sortorder,language) VALUES('{$answer['qid']}','{$answer['code']}','{$answer['answer']}','{$answer['default_value']}','{$answer['sortorder']}','{$lang}')";
+					$connect->Execute($query) or die($connect->ErrorMsg());
+				}
+			}
+			reset($langs);
+		}
+	}	
+	
 	return true;
 }
 
