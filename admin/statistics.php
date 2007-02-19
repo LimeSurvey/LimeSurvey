@@ -1086,6 +1086,9 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					if ($q1 != $q1b)
 					{
 						//ODD NUMBER
+						//TODO: This is going to be trick to replicate under MS SQL Server, as there is no LIMIT x,y equivalent
+						// It can be done, but it may require having different queries.
+						// There are a number of queries in this unit that need to be fixed 
 						$query = $querystarter . " ORDER BY `$fieldname`*1 LIMIT $q1c, 2";
 						$result=db_execute_assoc($query) or die("1st Quartile query failed<br />".$connect->ErrorMsg());
 						while ($row=$result->FetchRow())
@@ -1101,6 +1104,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					else
 					{
 						//EVEN NUMBER
+						//TODO: See note above for 'ODD'
 						$query = $querystarter . " ORDER BY `$fieldname`*1 LIMIT $q1c, 1";
 						$result=db_execute_assoc($query) or die ("1st Quartile query failed<br />".$connect->ErrorMsg());
 						while ($row=$result->FetchRow()) {$showem[]=array("1st Quartile (Q1)", $row[$fieldname]);}

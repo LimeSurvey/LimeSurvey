@@ -1320,10 +1320,10 @@ if ($action == "modifyuser")
 		. "\t\t<th>".$clang->gT("Full name")."</th>\n"
 		. "\t\t<th>".$clang->gT("Password")."</th>\n"
 		. "\t</tr>\n";
-		$muq = "SELECT a.users_name, a.full_name, a.email, a.uid, b.users_name AS parent FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$_POST['uid']}' LIMIT 1";	//	added by Dennis
+		$muq = "SELECT a.users_name, a.full_name, a.email, a.uid, b.users_name AS parent FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$_POST['uid']}'";	//	added by Dennis
 		//echo($muq);
 
-		$mur = db_execute_assoc($muq);
+		$mur = db_select_limit_assoc($muq, 1);
 		$usersummary .= "\t<tr><form action='$scriptname' method='post'>";
 		while ($mrw = $mur->FetchRow())
 		{
@@ -1635,8 +1635,8 @@ if ($action == "addusergroup")
 
 if ($action == "editusergroup")
 {
-	$query = "SELECT * FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND owner_id = ".$_SESSION['loginID']." LIMIT 1";
-	$result = db_execute_assoc($query);
+	$query = "SELECT * FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND owner_id = ".$_SESSION['loginID'];
+	$result = db_select_limit_assoc($query, 1);
 	$esrow = $result->FetchRow();
 	$usersummary = "<form action='$scriptname' name='editusergroup' method='post'>"
 	. "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
@@ -1701,8 +1701,8 @@ if ($action == "delusergroup")
 
 	if(!empty($_GET['ugid']) && $_GET['ugid'] > -1)
 	{
-		$query = "SELECT ugid, name, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND owner_id = ".$_SESSION['loginID']." LIMIT 1";
-		$result = db_execute_assoc($query);
+		$query = "SELECT ugid, name, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND owner_id = ".$_SESSION['loginID'];
+		$result = db_select_limit_assoc($query, 1);
 		if($result->RecordCount() > 0)
 		{
 			$row = $result->FetchRow();
@@ -1860,8 +1860,8 @@ if ($action == "editusergroups"  )
 			. "\t\t<th>".$clang->gT("Action")."</th>\n"
 			. "\t</tr>\n";
 
-			$query2 = "SELECT ugid FROM ".db_table_name('user_groups')." WHERE ugid = ".$ugid." AND owner_id = ".$_SESSION['loginID']." LIMIT 1";
-			$result2 = db_execute_assoc($query2);
+			$query2 = "SELECT ugid FROM ".db_table_name('user_groups')." WHERE ugid = ".$ugid." AND owner_id = ".$_SESSION['loginID'];
+			$result2 = db_select_limit_assoc($query2, 1);
 			$row2 = $result2->FetchRow();
 
 			$row = 1;

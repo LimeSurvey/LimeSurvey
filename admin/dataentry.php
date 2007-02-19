@@ -375,8 +375,8 @@ if($actsurrows['browse_response']){
 			}
 			$dataentryoutput .= "\t\t\t<font color='green'><strong>".$clang->gT("Success")."</strong></font><br />\n";
 	
-			$fquery = "SELECT id FROM $surveytable ORDER BY id DESC LIMIT 1";
-			$fresult = db_execute_assoc($fquery);
+			$fquery = "SELECT id FROM $surveytable ORDER BY id DESC";
+			$fresult = db_select_limit_assoc($fquery, 1);
 			while ($frow = $fresult->FetchRow())
 			{
 				$dataentryoutput .= "\t\t\t".$clang->gT("The entry was assigned the following record id: ")." {$frow['id']}<br />\n";

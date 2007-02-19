@@ -397,7 +397,7 @@ else
 		
 	}
 
-	$tabname = "{$dbprefix}survey_{$_GET['sid']}";
+	$tabname = "{$dbprefix}survey_{$_GET['sid']}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
     $taboptarray = array('mysql' => 'TYPE=ISAM');
     $dict = NewDataDictionary($connect);
     $sqlarray = $dict->CreateTableSQL($tabname, $createsurvey, $taboptarray);  

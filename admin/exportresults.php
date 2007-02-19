@@ -278,8 +278,8 @@ if (!$style)
 			."<label for='email_address'>".$clang->gT("Email")."</label><br />\n"
 			."<input type='checkbox' name='token' id='token'>"
 			."<label for='token'>".$clang->gT("Token")."</label><br />\n";
-			$query = "SELECT * FROM {$dbprefix}tokens_$surveyid LIMIT 1"; //SEE IF TOKENS TABLE HAS ATTRIBUTE FIELDS
-			$result = $connect->Execute($query) or die ($query."<br />".htmlspecialchars($connect->ErrorMsg()));
+			$query = "SELECT * FROM {$dbprefix}tokens_$surveyid"; //SEE IF TOKENS TABLE HAS ATTRIBUTE FIELDS
+			$result = db_select_limit_assoc($query, 1) or die ($query."<br />".htmlspecialchars($connect->ErrorMsg()));
 			$rowcount = $result->FieldCount();
 			if ($rowcount > 7)
 			{
@@ -380,8 +380,8 @@ if ((isset($_POST['first_name']) && $_POST['first_name']=="on")  || (isset($_POS
 	. " LEFT OUTER JOIN {$dbprefix}tokens_$surveyid"
 	. " ON $surveytable.token = {$dbprefix}tokens_$surveyid.token";
 }
-$dquery .=" ORDER BY id LIMIT 1";
-$dresult = $connect->Execute($dquery) or die($clang->gT("Error")." getting results<br />$dquery<br />".htmlspecialchars($connect->ErrorMsg()));
+$dquery .=" ORDER BY id";
+$dresult = db_select_limit_assoc($dquery, 1) or die($clang->gT("Error")." getting results<br />$dquery<br />".htmlspecialchars($connect->ErrorMsg()));
 $fieldcount = $dresult->FieldCount();
 $firstline="";
 $faid="";

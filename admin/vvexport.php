@@ -164,8 +164,8 @@ elseif (isset($surveyid) && $surveyid)
 		$newtable="old_{$_GET['sid']}_{$date}";
 
 		//Update the auto_increment value from the table before renaming
-		$query = "SELECT id FROM ".db_table_name($oldtable)." ORDER BY id desc LIMIT 1";
-		$result = db_execute_assoc($query) or die("Couldn't get latest id from table<br />$query<br />".$connect->ErrorMsg());
+		$query = "SELECT id FROM ".db_table_name($oldtable)." ORDER BY id desc";
+		$result = db_select_limit_assoc($query, 1) or die("Couldn't get latest id from table<br />$query<br />".$connect->ErrorMsg());
 		while ($row=$result->FetchRow())
 		{
 			$new_autonumber_start=$row['id']+1;

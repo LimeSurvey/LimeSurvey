@@ -113,6 +113,8 @@ $tokenoutput .= "<table width='100%' border='0' cellpadding='0' cellspacing='0'>
 
 $tokenoutput .= "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 
+
+
 // MAKE SURE THAT THERE IS A SID
 if (!isset($surveyid) || !$surveyid)
 {
@@ -158,23 +160,30 @@ $tkquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
 if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no tokens table exists
 {
 	if (isset($_GET['createtable']) && $_GET['createtable']=="Y")
-	{
-		$createtokentable = "CREATE TABLE ".db_table_name("tokens_$surveyid")." (\n"
-		. "tid int NOT NULL auto_increment,\n "
-		. "firstname varchar(40) NULL,\n "
-		. "lastname varchar(40) NULL,\n "
-		. "email varchar(100) NULL,\n "
-		. "token varchar(10) NULL,\n "
-		. "language varchar(2) NULL,\n "
-		. "sent varchar(17) NULL DEFAULT 'N',\n "
-		. "completed varchar(15) NULL DEFAULT 'N',\n "
+	{				
+		$createtokentable= 
+		"tid int I NOTNULL AUTO PRIMARY,\n "
+		. "firstname C(40) ,\n "
+		. "lastname C(40) ,\n "
+		. "email C(100) ,\n "
+		. "token C(10) ,\n "
+		. "language C(2) ,\n "
+		. "sent C(17) DEFAULT 'N',\n "
+		. "completed C(15) DEFAULT 'N',\n "
+		. "attribute_1 C(100) ,\n"
+		. "attribute_2 C(100) ,\n"
+		. "mpid I ";
+		
 
-		. "attribute_1 varchar(100) NULL,\n"
-		. "attribute_2 varchar(100) NULL,\n"
-		. "mpid int NULL,\n"
-		. "PRIMARY KEY (tid),\n"
-		. "INDEX (token));";
-		$ctresult = $connect->Execute($createtokentable) or die ("Completely mucked up<br />$createtokentable<br /><br />".htmlspecialchars($connect->ErrorMsg()));
+		$tabname = "{$dbprefix}tokens_{$surveyid}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
+    	//$taboptarray = array('mysql' => 'TYPE=ISAM'); #TODO: should this be an ISAM table??
+    	$dict = NewDataDictionary($connect);
+    	$sqlarray = $dict->CreateTableSQL($tabname, $createtokentable/*, $taboptarray*/);  
+    	$execresult=$dict->ExecuteSQLArray($sqlarray, false) or die ("Failed to create token table <br />$sqlarray<br /><br />".htmlspecialchars($connect->ErrorMsg())); 
+    	
+    	$createtokentableindex = $dict->CreateIndexSQL("{$tabname}_idx", $tabname, array('token'));
+    	$dict->ExecuteSQLArray($createtokentableindex, false) or die ("Failed to create token table index<br />$createtokentableindex<br /><br />".htmlspecialchars($connect->ErrorMsg()));
+    	
 		$tokenoutput .= "\t<tr>\n"
 		."\t\t<td align='center'>\n"
 		."\t\t\t<br /><br />\n"
@@ -190,6 +199,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 	}
 	elseif (returnglobal('restoretable') == "Y" && returnglobal('oldtable'))
 	{
+		#TODO: make the table rename use datadict
 		$query = "RENAME TABLE ".db_quote_id(returnglobal('oldtable'))." TO ".db_table_name("tokens_$surveyid");
 		$result=$connect->Execute($query) or die("Failed Rename!<br />".$query."<br />".htmlspecialchars($connect->ErrorMsg()));
 		$tokenoutput .= "\t<tr>\n"
@@ -404,8 +414,8 @@ if (!$subaction)
 	.$clang->gT("Are you sure you want to delete all unique token numbers?")."\")'>".$clang->gT("Delete all unique token numbers")."</a></li>\n"
 	."\t\t\t<li><a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall' onClick='return confirm(\""
 	.$clang->gT("Are you really sure you want to delete ALL token entries?")."\")'>".$clang->gT("Delete all token entries")."</a></li>\n";
-	$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." LIMIT 1";
-	$bresult = $connect->Execute($bquery) or die($clang->gT("Error")." counting fields<br />".htmlspecialchars($connect->ErrorMsg()));
+	$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
+	$bresult = db_select_limit_assoc($bquery, 1) or die($clang->gT("Error")." counting fields<br />".htmlspecialchars($connect->ErrorMsg()));
 	$bfieldcount=$bresult->FieldCount();
 	if ($bfieldcount==7)
 	{
@@ -475,8 +485,8 @@ if ($subaction == "browse" || $subaction == "search")
 	."\t\t<input type='hidden' name='searchstring' value='$searchstring'>\n"
 	."\t\t</form></td>\n"
 	."\t</tr>\n";
-	$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." LIMIT 1";
-	$bresult = $connect->Execute($bquery) or die($clang->gT("Error")." counting fields<br />".htmlspecialchars($connect->ErrorMsg()));
+	$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
+	$bresult = db_select_limit_assoc($bquery, 1) or die($clang->gT("Error")." counting fields<br />".htmlspecialchars($connect->ErrorMsg()));
 	$bfieldcount=$bresult->FieldCount()-1;
 	$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
 	if ($searchstring)
@@ -814,6 +824,7 @@ if ($subaction == "email")
 	$tokenoutput .= "</td></tr></table>\n";
 }
 
+
 if ($subaction == "remind")
 {
 	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
@@ -1048,8 +1059,8 @@ if ($subaction == "edit" || $subaction == "addnew")
 	}
 	if ($subaction != "edit")
 	{
-		$edquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." LIMIT 1";
-		$edresult = $connect->Execute($edquery);
+		$edquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
+		$edresult = db_select_limit_assoc($edquery, 1);
 		$edfieldcount = $edresult->FieldCount();
 	}
 	

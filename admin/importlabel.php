@@ -151,8 +151,8 @@ if ($labelsetarray)
 		$newlid=$connect->Insert_ID();
 
 		//GET NEW LID
-		$nlidquery="SELECT lid FROM {$dbprefix}labelsets ORDER BY lid DESC LIMIT 1";
-		$nlidresult=db_execute_assoc($nlidquery);
+		$nlidquery="SELECT lid FROM {$dbprefix}labelsets ORDER BY lid DESC";
+		$nlidresult=db_select_limit_assoc($nlidquery, 1);
 		while ($nlidrow=$nlidresult->FetchRow()) {$newlid=$nlidrow['lid'];}
 		$labelreplacements[]=array($oldlid, $newlid);
 		if ($labelarray)

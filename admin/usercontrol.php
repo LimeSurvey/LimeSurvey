@@ -47,8 +47,8 @@ if (!isset($_SESSION['loginID']))
 		if (isset($_POST['user']) && isset($_POST['email']))
 		{
 			include("database.php");
-			$query = "SELECT users_name, password, uid FROM {$dbprefix}users WHERE users_name='{$_POST['user']}' AND email='{$_POST['email']}' LIMIT 1";
-			$result = $connect->Execute($query) or die ($query."<br />".$connect->ErrorMsg());
+			$query = "SELECT users_name, password, uid FROM {$dbprefix}users WHERE users_name='{$_POST['user']}' AND email='{$_POST['email']}'";
+			$result = db_select_limit_assoc($query, 1) or die ($query."<br />".$connect->ErrorMsg());
 
 			if ($result->RecordCount() < 1)
 			{
@@ -223,8 +223,8 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($_POST[
 {
 	$addsummary = "<br /><strong>".$clang->gT("Deleting User")."</strong><br />\n";
 
-	$adminquery = "SELECT uid FROM {$dbprefix}users WHERE parent_id=0 LIMIT 1";
-	$adminresult = $connect->Execute($adminquery);
+	$adminquery = "SELECT uid FROM {$dbprefix}users WHERE parent_id=0";
+	$adminresult = db_select_limit_assoc($adminquery, 1);
 	$row=$adminresult->FetchRow();
 
 	if($row['uid'] == $_POST['uid'])	// it's the superadmin !!!
