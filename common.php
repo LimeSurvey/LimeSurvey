@@ -3147,10 +3147,10 @@ function FixLanguagesOnSurvey($sid, $availlangs)
 	$sqlans = "";
 	foreach ($quests as $quest)
 	{
-		$sqlans .= " and qid = '".$quest."' ";
+		$sqlans .= " OR qid = '".$quest."' ";
 	}
 	
-	$query = "SELECT * FROM ".db_table_name('answers')." WHERE language='{$baselang}' {$sqlans} ORDER BY qid, code";
+	$query = "SELECT * FROM ".db_table_name('answers')." WHERE language='{$baselang}' and (".trim($sqlans,' OR').") ORDER BY qid, code";
 	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
 	if ($result->RecordCount() > 0)
 	{
