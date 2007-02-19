@@ -754,10 +754,7 @@ if (isset($grouparray) && $grouparray) {
                     $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                     $qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
 					$qres = $connect->Execute($qinsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
-
-					$qidquery = "SELECT qid, lid FROM {$dbprefix}questions ORDER BY qid DESC"; //Get last question added (finds new qid)
-					$qidres = db_select_limit_assoc($qidquery, 1);
-					while ($qrow = $qidres->FetchRow()) {$newqid = $qrow['qid']; $oldlid=$qrow['lid'];}
+		$newqid=$connect->Insert_ID();
 					
 					$newrank=0;
 					$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
