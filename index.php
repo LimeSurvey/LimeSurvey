@@ -670,6 +670,7 @@ function checkconfield($value)
 
 function checkmandatorys($backok=null)
 {
+	global $clang;
 	if ((isset($_POST['mandatory']) && $_POST['mandatory']) && (!isset($backok) || $backok != "Y"))
 	{
 		$chkmands=explode("|", $_POST['mandatory']); //These are the mandatory questions to check
