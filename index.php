@@ -1158,7 +1158,7 @@ UpdateSessionGroupList();
     ." WHERE ".db_table_name('questions').".sid=".$surveyid."\n"
     ." AND ".db_table_name('groups').".language='".$_SESSION['s_lang']."'\n"
     ." AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."'\n"
-    ." ORDER BY ".db_table_name('groups').".group_order";
+    ." ORDER BY ".db_table_name('groups').".group_order,".db_table_name('questions').".question_order";
 
  //var_dump($_SESSION);
 //	echo $query."<br>";
