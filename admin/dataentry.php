@@ -1406,7 +1406,7 @@ if($actsurrows['browse_response']){
 		{
 			$dataentryoutput .= "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
-			."\t\t<td valign='top' align='right' width='30%'>$setfont<font color='red'><strong>".$clang->gT("Token").":</strong></font></td>\n"
+			."\t\t<td valign='top' align='right' width='30%'>$setfont<font color='red'>*</font><strong>".$clang->gT("Token").":</strong></font></td>\n"
 			."\t\t<td valign='top' style='padding-left: 20px'>\n"
 			."\t\t\t<input type='text' name='token'>\n"
 			."\t\t</td>\n"
