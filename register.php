@@ -132,7 +132,7 @@ if (MailtextMessage($message, $subject, returnglobal('register_email'), $from, $
 	$query = "UPDATE {$dbprefix}tokens_$surveyid\n"
 	."SET sent='$today' WHERE tid=$tid";
 	$result=$connect->Execute($query) or die ("$query<br />".htmlspecialchars($connect->ErrorMsg()));
-	$html="<center>".$clang->gT("Thank you for registering to participate in this survey.<br /><br />\nAn email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.<br /><br />\nSurvey Administrator {ADMINNAME} ({ADMINEMAIL})");
+	$html="<center>".$clang->gT("Thank you for registering to participate in this survey.")."<br /><br />\n".$clang->gT("An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.")."<br /><br />\n".$clang->gT("Survey Administrator")." {ADMINNAME} ({ADMINEMAIL})";
 	$html=Replacefields($html, $fieldsarray);
 	$html .= "<br /><br />\n<input type='submit' onclick='javascript: self.close()' value='".$clang->gT("Close this Window")."'></center>\n";
 }

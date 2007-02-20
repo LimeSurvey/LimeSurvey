@@ -1170,7 +1170,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					$statisticsoutput .= "\t<tr>\n"
 					."\t\t<td colspan='3' align='center' bgcolor='#EEEEEE'>\n"
 					."\t\t\t$setfont<font size='1'>".$clang->gT("Null values are ignored in calculations")."<br />\n"
-					."\t\t\t".$clang->gT("Q1 and Q3 calculated using <a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>minitab method</a>")
+					."\t\t\t".$clang->gT("Q1 and Q3 calculated using")." <a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".$clang->gT("minitab method")."</a>"
 					."</font></font>\n"
 					."\t\t</td>\n"
 					."\t</tr>\n</table>\n";

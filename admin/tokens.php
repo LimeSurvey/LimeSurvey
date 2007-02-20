@@ -651,7 +651,7 @@ if ($subaction == "kill")
 	if (!isset($_GET['ok']) || !$_GET['ok'])
 	{
 		$tokenoutput .= "<font color='red'><strong>".$clang->gT("Warning")."</strong></font><br />\n"
-		.$clang->gT("If you delete this table tokens will no longer be required to access this survey.<br />A backup of this table will be made if you proceed. Your system administrator will be able to access this table.")."<br />\n"
+		.$clang->gT("If you delete this table tokens will no longer be required to access this survey.")."<br />".$clang->gT("A backup of this table will be made if you proceed. Your system administrator will be able to access this table.")."<br />\n"
 		."( \"old_tokens_{$_GET['sid']}_$date\" )<br /><br />\n"
 		."<input type='submit' value='"
 		.$clang->gT("Delete Tokens")."' onClick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill&amp;ok=surething', '_top')\" /><br />\n"
@@ -665,7 +665,7 @@ if ($subaction == "kill")
 		$deactivatequery = "RENAME TABLE ".db_table_name($oldtable)." TO ".db_table_name($newtable);
 		$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />\n".htmlspecialchars($connect->ErrorMsg())."<br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
 		$tokenoutput .= "<span style='display: block; text-align: center; width: 70%'>\n"
-		.$clang->gT("The tokens table has now been removed and tokens are no longer required to access this survey.<br /> A backup of this table has been made and can be accessed by your system administrator.")."<br />\n"
+		.$clang->gT("The tokens table has now been removed and tokens are no longer required to access this survey.")."<br /> ".$clang->gT("A backup of this table has been made and can be accessed by your system administrator.")."<br />\n"
 		."(\"{$dbprefix}old_tokens_{$_GET['sid']}_$date\")"."<br /><br />\n"
 		."<input type='submit' value='"
 		.$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\" />\n"

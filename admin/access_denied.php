@@ -119,17 +119,17 @@ if (isset($_SESSION['loginID']))
 	
 	/*elseif(returnglobal('action') == "importsurvey")
 		{		
-		$accesssummary .= $clang->gT("<p>You are not allowed to import a survey!</p>");
+		$accesssummary .= "<p>".$clang->gT("You are not allowed to import a survey!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}	
 	elseif(returnglobal('action') == "importgroup")
 		{		
-		$accesssummary .= $clang->gT("<p>You are not allowed to import a group!</p>");
+		$accesssummary .= "<p>".$clang->gT("You are not allowed to import a group!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
 	elseif(returnglobal('action') == "importquestion")
 		{		
-		$accesssummary .= $clang->gT("<p>You are not allowed to to import a question!</p>");
+		$accesssummary .= "<p>".$clang->gT("You are not allowed to to import a question!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}*/
 		

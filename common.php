@@ -1766,7 +1766,7 @@ function templatereplace($line)
 		$line=str_replace("{URL}", $linkreplace, $line);
 	}
 	if (strpos($line, "{PRIVACY}") !== false) $line=str_replace("{PRIVACY}", $privacy, $line);
-	if (strpos($line, "{PRIVACYMESSAGE}") !== false) $line=str_replace("{PRIVACYMESSAGE}", "<strong><i>".$clang->gT("A Note On Privacy")."</i></strong><br />".$clang->gT("This survey is anonymous.<br />The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."), $line);
+	if (strpos($line, "{PRIVACYMESSAGE}") !== false) $line=str_replace("{PRIVACYMESSAGE}", "<strong><i>".$clang->gT("A Note On Privacy")."</i></strong><br />".$clang->gT("This survey is anonymous.")."<br />".$clang->gT("The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."), $line);
 	if (strpos($line, "{CLEARALL}") !== false) 	{
 		$clearall = "\t\t\t\t\t<div class='clearall'>"
 		. "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall";
@@ -1824,7 +1824,7 @@ function templatereplace($line)
 		}
 		$line=str_replace("{TEMPLATEURL}", $templateurl, $line);
 	}
-	if (strpos($line, "{SUBMITCOMPLETE}") !== false) $line=str_replace("{SUBMITCOMPLETE}", $clang->gT("<strong>Thank You!<br /><br />You have completed answering the questions in this survey.</strong><br /><br />Click on 'Submit' now to complete the process and save your answers."), $line);
+	if (strpos($line, "{SUBMITCOMPLETE}") !== false) $line=str_replace("{SUBMITCOMPLETE}", "<strong>".$clang->gT("Thank You!")."<br /><br />".$clang->gT("You have completed answering the questions in this survey.")."</strong><br /><br />".$clang->gT("Click on 'Submit' now to complete the process and save your answers."), $line);
 	if (strpos($line, "{SUBMITREVIEW}") !== false) {
 		if (isset($thissurvey['allowprev']) && $thissurvey['allowprev'] == "N") {
 			$strreview = "";
@@ -1864,7 +1864,7 @@ function templatereplace($line)
 	$savereturn .= "'>".$clang->gT("Return To Survey")."</a>";
 	if (strpos($line, "{SAVEERROR}") !== false) $line=str_replace("{SAVEERROR}", $errormsg, $line);
 	if (strpos($line, "{SAVEHEADING}") !== false) $line=str_replace("{SAVEHEADING}", $clang->gT("Save Your Unfinished Survey"), $line);
-	if (strpos($line, "{SAVEMESSAGE}") !== false) $line=str_replace("{SAVEMESSAGE}", $clang->gT("Enter a name and password for this survey and click save below.<br />\nYour survey will be saved using that name and password, and can be completed later by logging in with the same name and password.<br /><br />\nIf you give an email address, an email containing the details will be sent to you."), $line);
+	if (strpos($line, "{SAVEMESSAGE}") !== false) $line=str_replace("{SAVEMESSAGE}", $clang->gT("Enter a name and password for this survey and click save below.")."<br />\n".$clang->gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.")."<br /><br />\n".$clang->gT("If you give an email address, an email containing the details will be sent to you."), $line);
 	if (strpos($line, "{RETURNTOSURVEY}") !== false) $line=str_replace("{RETURNTOSURVEY}", $savereturn, $line);
 	if (strpos($line, "{SAVEFORM}") !== false) {
 		//SAVE SURVEY DETAILS
@@ -1886,7 +1886,7 @@ function templatereplace($line)
 	}
 	if (strpos($line, "{LOADERROR}") !== false) $line=str_replace("{LOADERROR}", $errormsg, $line);
 	if (strpos($line, "{LOADHEADING}") !== false) $line=str_replace("{LOADHEADING}", $clang->gT("Load A Previously Saved Survey"), $line);
-	if (strpos($line, "{LOADMESSAGE}") !== false) $line=str_replace("{LOADMESSAGE}", $clang->gT("You can load a survey that you have previously saved from this screen.<br />Type in the 'name' you used to save the survey, and the password.<br />"), $line);
+	if (strpos($line, "{LOADMESSAGE}") !== false) $line=str_replace("{LOADMESSAGE}", $clang->gT("You can load a survey that you have previously saved from this screen.")."<br />".$clang->gT("Type in the 'name' you used to save the survey, and the password.")."<br />", $line);
 	if (strpos($line, "{LOADFORM}") !== false) {
 		//LOAD SURVEY DETAILS
 		$loadform = "<table><tr><td align='right'>".$clang->gT("Saved name").":</td><td><input type='text' name='loadname' value='";
@@ -1902,7 +1902,7 @@ function templatereplace($line)
 	//REGISTER SURVEY DETAILS
 	if (strpos($line, "{REGISTERERROR}") !== false) $line=str_replace("{REGISTERERROR}", $register_errormsg, $line);
 	if (strpos($line, "{REGISTERMESSAGE1}") !== false) $line=str_replace("{REGISTERMESSAGE1}", $clang->gT("You must be registered to complete this survey"), $line);
-	if (strpos($line, "{REGISTERMESSAGE2}") !== false) $line=str_replace("{REGISTERMESSAGE2}", $clang->gT("You may register for this survey if you wish to take part.<br />\nEnter your details below, and an email containing the link to participate in this survey will be sent immediately."), $line);
+	if (strpos($line, "{REGISTERMESSAGE2}") !== false) $line=str_replace("{REGISTERMESSAGE2}", $clang->gT("You may register for this survey if you wish to take part.")."<br />\n".$clang->gT("Enter your details below, and an email containing the link to participate in this survey will be sent immediately."), $line);
 	if (strpos($line, "{REGISTERFORM}") !== false)
 	{
 		$registerform="<form method='post' action='register.php'>\n"
