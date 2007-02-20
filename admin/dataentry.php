@@ -92,6 +92,8 @@ if($actsurrows['browse_response']){
 	
 	if ($subaction == "insert")
 	{
+		$thissurvey=getSurveyInfo($surveyid); // To check the private status
+		$errormsg="";
 		$dataentryoutput .= "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		.$clang->gT("Data Entry")."</strong></font></td></tr>\n"
@@ -133,7 +135,7 @@ if($actsurrows['browse_response']){
 			if ($errormsg)
 			{
 				$dataentryoutput .= $errormsg;
-				$dataentryoutput .= "Try again:<br />
+				$dataentryoutput .= $clang->gT("Try again").":<br />
     				 <form method='post'>
 					  <table class='outlinetable' cellspacing='0' align='center'>
 					  <tr>
@@ -249,6 +251,10 @@ if($actsurrows['browse_response']){
 					$dataentryoutput .= "ERROR: $insert1<br />".htmlspecialchars($connect->ErrorMsg());
 				}
 			}
+		}
+		elseif ($thissurvey['private'] == 'N' && (!isset($_POST['token']) || !$_POST['token']))
+		{// First Check if the survey is private and if a token has been provided
+			$errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("This survey is not anonymous, you must supply a valid token")."</strong>\n";	
 		}
 		else
 		{
@@ -384,7 +390,7 @@ if($actsurrows['browse_response']){
 			}
 		}
 	
-	
+		$dataentryoutput .= $errormsg;	
 		$dataentryoutput .= "\t\t\t</font><br />[<a href='$scriptname?action=dataentry&amp;sid=$surveyid'>".$clang->gT("Add Another Record")."</a>]<br />\n";
 		$dataentryoutput .= "[<a href='$scriptname?sid=$surveyid'>".$clang->gT("Return to Survey Administration")."</a><br />\n";
 		if (isset($thisid))
@@ -1314,7 +1320,7 @@ if($actsurrows['browse_response']){
 			}
 		}
 		$updateqr = substr($updateqr, 0, -3);
-		if (isset($_POST['datestampe']) && $_POST['datestamp']) {$updateqr .= ", datestamp='{$_POST['datestamp']}'";}
+		if (isset($_POST['datestamp']) && $_POST['datestamp']) {$updateqr .= ", datestamp='{$_POST['datestamp']}'";}
 		if (isset($_POST['ipaddr']) && $_POST['ipaddr']) {$updateqr .= ", ipaddr='{$_POST['ipaddr']}'";}
 		if (isset($_POST['token']) && $_POST['token']) {$updateqr .= ", token='{$_POST['token']}'";}
 		$updateqr .= " WHERE id=$id";
@@ -1400,7 +1406,7 @@ if($actsurrows['browse_response']){
 		{
 			$dataentryoutput .= "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
-			."\t\t<td valign='top' align='right' width='30%'>$setfont<strong>".$clang->gT("Token").":</strong></font></td>\n"
+			."\t\t<td valign='top' align='right' width='30%'>$setfont<font color='red'><strong>".$clang->gT("Token").":</strong></font></td>\n"
 			."\t\t<td valign='top' style='padding-left: 20px'>\n"
 			."\t\t\t<input type='text' name='token'>\n"
 			."\t\t</td>\n"
