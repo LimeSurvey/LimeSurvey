@@ -42,11 +42,8 @@ $databaseport       =   "default";     // The port of your Database - if you use
 $databasename       =   "phpsurveyor"; // The name of the database that we will create
 $databaseuser       =   "root";        // The name of a user with rights to create db (or if db already exists, then rights within that db)
 $databasepass       =   "";            // Password of db user
-$databasetabletype  =   "MyISAM";      // Default mySQL table type (only used if creating db automatically through script -eg "MyISAM" or "InnoDB"
 $dbprefix           =   "phpsv_";      // A global prefix that can be added to all PHPSurveyor tables. Use this if you are sharing
                                        // a database with other applications. Suggested prefix is "phpsv_"
-
-$codeString 		=   "hU+*jzR2#";	   //added by Dennis
 
 $useidprefix        =   0;             // Set this to 1 if you want to use a prefix on survey responses (useful for replicated/pooled databases)
 $idprefix           =   0;             // Leave this as 0 to use your server's IP address. Alternatively, use a number here - characters WILL NOT WORK.
@@ -80,7 +77,7 @@ $rootsymlinked      =   0;  // if your root document dir is symlinked PHPSurveyo
 // Site Info
 $sitename           =   "PHPSurveyor";    // The official name of the site (appears in the Window title)
 $scriptname         =   "admin.php";      // The name of the admin script (can be changed to the experimental admin interface index.php)
-$accesscontrol      =   1;                // make 0 for no access control
+$accesscontrol      =   1;                // Set this to 0 for no access control
 $defaultuser        =   "admin";          // This is the default username when security is first turned on
 $defaultpass        =   "password";       // This is the default password for when security is first turned on
 
@@ -91,14 +88,6 @@ $dropdownthreshold  =   "25";             // The number of answers to a list typ
 $repeatheadings     =   "25";             // The number of answers to show before repeating the headings in array (flexible) questions. Set to 0 to turn this feature off
 $minrepeatheadings  =   3;                // The minimum number of remaing answers that are required before repeating the headings in array (flexible) questions.
 $defaultlang        =   "en";             // The default language to use - the available languages are the directory names in the /locale dir - for example de = German
-
-$OS                 =   PHP_OS;
-
-$apachedir          =   "";            // If left empty, the script will attempt to find htpasswd itself
-                                       // otherwise, set this to the location of the "htpasswd" executable
-                                       // usually found in the apache "bin" directory
-$mysqldir           =   "";            // If left empty the script will attempte to find mysql binary directory itself
-                                       // otherwise, set this to the location of the mysql binary files
 
 $timeadjust         =   0;      // Number of hours to adjust between your webserver local time and your own local time (for datestamping responses)
 $allowexportalldb   =   1;      // 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported

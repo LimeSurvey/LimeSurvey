@@ -53,6 +53,9 @@ require_once (dirname(__FILE__).'/classes/core/sanitize.php');
 $dbprefix=strtolower($dbprefix);
 define("_PHPVERSION", phpversion());
 
+// find out the OS we are running on
+$OS = PHP_OS;
+
 if($_SERVER['SERVER_SOFTWARE'] == "Xitami") //Deal with Xitami Issue
 {
 	$_SERVER['PHP_SELF'] = substr($_SERVER['SERVER_URL'], 0, -1) .$_SERVER['SCRIPT_NAME'];
@@ -129,24 +132,6 @@ if ($sourcefrom == "admin")
     *
     */
 	$htmlheader = getAdminHeader();
-}
-
-
-//TURN OFF OPTIONS THAT DON'T WORK IN SAFE MODE IF NECESSARY
-if (!ini_get('safe_mode') && (!eregi('shell_exec',ini_get('disable_functions'))))
-{
-	// Only do this if safe_mode is OFF
-	if (isset($mysqldir)) {$mysqlbin=$mysqldir;}
-	if ((substr($OS, 0, 3) != "WIN") && (substr($OS, 0, 4) != "OS/2") )
-	{
-		//USING LINUX: Find the location of various files and put that in the appropriate variables!
-		if (!isset($mysqlbin) || !$mysqlbin)
-		{
-			$temp=shell_exec('which mysqldump');
-			@list($mysqlbin, $discard)=explode(" ", $temp);
-			$mysqlbin=substr($mysqlbin, 0, strlen($mysqlbin)-11);
-		}
-	}
 }
 
 
@@ -2534,7 +2519,6 @@ function modify_database($sqlfile='', $sqlstring='') {
 	global $siteadminemail;
 	global $siteadminname;
 	global $defaultlang;
-	global $codeString;
 	global $rootdir;
 
 	require_once($rootdir."/admin/classes/core/SHA256.php");
