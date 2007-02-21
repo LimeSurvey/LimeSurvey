@@ -503,8 +503,7 @@ if ($subaction == "browse" || $subaction == "search")
 	}
 	if (!isset($order) || !$order) {$bquery .= " ORDER BY tid";}
 	else {$bquery .= " ORDER BY $order"; }
-	$bquery .= " LIMIT $start, $limit";
-	$bresult = db_execute_assoc($bquery) or die ($clang->gT("Error").": $bquery<br />".htmlspecialchars($connect->ErrorMsg()));
+	$bresult = db_select_limit_assoc($bquery, $start, $limit) or die ($clang->gT("Error").": $bquery<br />".htmlspecialchars($connect->ErrorMsg()));
 	$bgc="";
 
 	$tokenoutput .= "<tr><td colspan='2'>\n"
@@ -1223,9 +1222,10 @@ if ($subaction == "inserttoken")
 		$data['attribute_1'] = $_POST['attribute1'];
 		$data['attribute_2'] = $_POST['attribute2'];
 	}
-    $tblInsert=db_table_name('tokens_'.$surveyid);
-	$inquery = $connect->GetInsertSQL($tblInsert, $data);
-	$inresult = $connect->Execute($inquery) or die ("Add new record failed:<br />\n$inquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
+    $tblInsert=db_table_name('tokens_'.$surveyid);;
+	//$inquery = $connect->GetInsertSQL($tblInsert, $data); # this wasn't working on SQL Server'
+	//$inresult = $connect->Execute($inquery) or die ("Add new record failed:<br />\n$inquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
+	$inresult = $connect->AutoExecute($tblInsert, $data, 'INSERT') or die ("Add new record failed:<br />\n$inquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 	$tokenoutput .= "<br /><font color='green'><strong>".$clang->gT("Success")."</strong></font><br />\n"
 	."<br />".$clang->gT("Added New Token")."<br /><br />\n"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse'>".$clang->gT("Display Tokens")."</a><br />\n"

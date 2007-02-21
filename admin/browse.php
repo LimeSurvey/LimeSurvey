@@ -469,11 +469,17 @@ elseif ($subaction == "all")
 	{
 		$dtquery = "SELECT * FROM $surveytable ORDER BY id";
 	}
-	if ($order == "desc") {$dtquery .= " DESC LIMIT $limit";}
-	if (isset($start) && isset($limit) && !isset($order)) {$dtquery .= " LIMIT $start, $limit";}
-	if (!isset($limit)) {$dtquery .= " LIMIT $limit";}
-	if (!isset($start)) {$start = 0;}
-	$dtresult = db_execute_assoc($dtquery) or die("Couldn't get surveys<br />$dtquery<br />".$connect->ErrorMsg());
+	if ($order == "desc") {$dtquery .= " DESC";}
+	
+	if (isset($limit))
+	{ 
+		if (!isset($start)) {$start = 0;} 
+		$dtresult = db_select_limit_assoc($dtquery, $limit, $start) or die("Couldn't get surveys<br />$dtquery<br />".$connect->ErrorMsg());
+	}
+	else
+	{
+		$dtresult = db_execute_assoc($dtquery) or die("Couldn't get surveys<br />$dtquery<br />".$connect->ErrorMsg());	 	
+	}
 	$dtcount2 = $dtresult->RecordCount();
 	$cells = $fncount+1;
 
