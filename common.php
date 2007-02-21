@@ -2104,6 +2104,9 @@ function questionAttributes()
 	$qattributes[]=array("name"=>"array_filter",
 	"types"=>"ABFCE",
 	"help"=>"Filter an Array's Answers from a Multiple Options Question");
+	$qattributes[]=array("name"=>"max_answers",
+	"types"=>"M",
+	"help"=>"Limit the number of possible answers");
 
 	// --> START ENHANCEMENT - DISPLAY ROWS
 	$qattributes[]=array("name"=>"display_rows",

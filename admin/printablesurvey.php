@@ -417,7 +417,14 @@ while ($degrow = $degresult->FetchRow())
 			{
 				$dcols=0;
 			}
-			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose")."<strong> ".$clang->gT("all")."</strong> ".$clang->gT("that apply:")."</u><br />\n";
+			if (!$maxansw=arraySearchByKey("max_answers", $qidattributes, "attribute", 1))
+			{
+				$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose")."<strong> ".$clang->gT("all")."</strong> ".$clang->gT("that apply:")."</u><br />\n";
+			}
+			else
+			{
+				$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose")."<strong> ".$clang->gT("at most")." ".$maxansw['value']."</strong> ".$clang->gT("answers:")."</u><br />\n";
+			}
 			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
 			$meacount = $mearesult->RecordCount();

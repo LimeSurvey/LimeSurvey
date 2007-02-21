@@ -275,8 +275,16 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 		$values=do_multiplechoice($ia);
 		if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
 		{
-			$qtitle .= "<br />\n<strong><i><font size='1'>"
-			. $clang->gT("Check any that apply")."</font></i></strong>";
+			if (!$maxansw=arraySearchByKey("max_answers", $qidattributes, "attribute", 1))
+			{
+				$qtitle .= "<br />\n<strong><i><font size='1'>"
+				. $clang->gT("Check any that apply")."</font></i></strong>";
+			}
+			else
+			{
+				$qtitle .= "<br />\n<strong><i><font size='1'>"
+				. $clang->gT("Check at most")." ".$maxansw['value']." ".$clang->gT("answers")."</font></i></strong>";
+			}
 		}
 		break;
 		case "J": //FILE CSV MORE
@@ -1310,6 +1318,25 @@ function do_multiplechoice($ia)
 	{
 		$dcols=0;
 	}
+	// Check if the max_answers attribute is set
+	$maxansw=0;
+	$callmaxanswscriptcheckbox = "";
+	$callmaxanswscriptother = "";
+	$maxanswscript = "";
+	if ($maxanswattr=arraySearchByKey("max_answers", $qidattributes, "attribute", 1))
+	{
+		$maxansw=$maxanswattr['value'];
+		$callmaxanswscriptcheckbox = "limitmaxansw_{$ia[0]}(this);";
+		$callmaxanswscriptother = "onkeyup='limitmaxansw_{$ia[0]}(this)'";
+
+		$maxanswscript = "\t\t\t<script type='text/javascript'>\n"
+			. "\t\t\t<!--\n"
+			. "\t\t\t\tfunction limitmaxansw_{$ia[0]}(me)\n"
+			. "\t\t\t\t\t{\n"
+			. "\t\t\t\t\tmax=$maxansw\n"
+			. "\t\t\t\t\tcount=0;\n"
+			. "\t\t\t\t\tif (max == 0) { return count; }\n";
+	}
 	$answer  = "\t\t\t<table class='question'>\n"
 	. "\t\t\t\t<tr>\n"
 	. "\t\t\t\t\t<td>&nbsp;</td>\n"
@@ -1347,8 +1374,10 @@ function do_multiplechoice($ia)
 		$answer .= "\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='$ia[1]{$ansrow['code']}' id='answer$ia[1]{$ansrow['code']}' value='Y'";
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "Y") {$answer .= " checked";}
 		// --> START NEW FEATURE - SAVE
-		$answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)' /><label for='answer$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
+		$answer .= " onClick='".$callmaxanswscriptcheckbox."checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)' /><label for='answer$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
 		// --> END NEW FEATURE - SAVE
+
+		if ($maxansw > 0) {$maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
 
 		$fn++;
 		$answer .= "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
@@ -1364,9 +1393,11 @@ function do_multiplechoice($ia)
 		$answer .= "\t\t\t\t\t\t<label for='answer$myfname'>".$clang->gT("Other").":</label> <input class='text' type='text' name='$myfname' id='answer$myfname'";
 		if (isset($_SESSION[$myfname])) {$answer .= " value='".htmlspecialchars($_SESSION[$myfname],ENT_QUOTES)."'";}
 		// --> START NEW FEATURE - SAVE
-		$answer .= " onChange='modfield(this.name)' />\n"
+		$answer .= " onChange='modfield(this.name)' ".$callmaxanswscriptother."/>\n"
 		. "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
 		// --> END NEW FEATURE - SAVE
+
+		if ($maxansw > 0) { $maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').value != '') { count += 1; }\n"; }
 
 		if (isset($_SESSION[$myfname])) {$answer .= htmlspecialchars($_SESSION[$myfname],ENT_QUOTES);}
 
@@ -1383,6 +1414,21 @@ function do_multiplechoice($ia)
 	}
 	$answer .= "\t\t\t\t</tr>\n"
 	. "\t\t\t</table>\n";
+
+	if ( $maxansw > 0 )
+	{
+		$maxanswscript .= "\t\t\t\t\tif (count > max)\n"
+			. "\t\t\t\t\t\t{\n"
+			. "\t\t\t\t\t\talert('".$clang->gT("Please choose at most")." ' + max + ' ".$clang->gT("answer(s) for question")." \"".$ia[3]."\"');\n"
+			. "\t\t\t\t\t\tif (me.type == 'checkbox') {me.checked = false;}\n"
+			. "\t\t\t\t\t\tif (me.type == 'text') {me.value = '';}\n"
+			. "\t\t\t\t\t\treturn max;\n"
+			. "\t\t\t\t\t\t}\n"
+			. "\t\t\t\t\t}\n"
+			. "\t\t\t//-->\n"
+			. "\t\t\t</script>\n";
+		$answer = $maxanswscript . $answer;
+	}
 	return array($answer, $inputnames);
 }
 
