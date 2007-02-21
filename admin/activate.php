@@ -397,6 +397,8 @@ else
 		
 	}
 
+	// If last question is of type MCABCEFHP^QJR let's get rid of the ending coma in createsurvey
+	$createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a coma
 	$tabname = "{$dbprefix}survey_{$_GET['sid']}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
     $taboptarray = array('mysql' => 'TYPE=ISAM');
     $dict = NewDataDictionary($connect);
