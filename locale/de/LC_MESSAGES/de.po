@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-02-17 23:05+0100\n"
+"PO-Revision-Date: 2007-02-21 23:08+0100\n"
 "Last-Translator: \n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -250,9 +250,12 @@ msgstr "Absenden"
 msgid "A Note On Privacy"
 msgstr "Eine Bemerkung zum Datenschutz"
 
+msgid "This survey is anonymous."
+msgstr "Dies ist eine anonyme Umfrage."
+
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:1558
-msgid "This survey is anonymous.<br />The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
-msgstr "Dieser Fragebogen ist anonym.<br />Die Daten mit Ihren Antworten enthalten keinerlei auf Sie zurückzuführende/identifizierende Informationen, es sei denn eine bestimmte Fragen haben Sie explizit danach gefragt. Wenn Sie für diese Umfrage einen Zugangsschlüssel benutzt haben, so können Sie sicher sein, dass der Zugangsschlüssel nicht zusammen mit den Daten abgespeichert wurde. Er wird einer getrennten Datenbank aufbewahrt und nur aktualisiert, um zu speichern ob sie diese Umfrage abgeschlossen haben oder nicht. Es gibt keinen Weg die Zugangsschlüssel mit den Umfrageergebnissen zusammenzuführen."
+msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "Die Daten mit Ihren Antworten enthalten keinerlei auf Sie zurückzuführende/identifizierende Informationen, es sei denn eine bestimmte Fragen haben Sie explizit danach gefragt. Wenn Sie für diese Umfrage einen Zugangsschlüssel benutzt haben, so können Sie sicher sein, dass der Zugangsschlüssel nicht zusammen mit den Daten abgespeichert wurde. Er wird einer getrennten Datenbank aufbewahrt und nur aktualisiert, um zu speichern ob sie diese Umfrage abgeschlossen haben oder nicht. Es gibt keinen Weg die Zugangsschlüssel mit den Umfrageergebnissen zusammenzuführen."
 
 msgid "Are you sure you want to clear all your responses?"
 msgstr "Sind sie wirklich sicher, dass Sie alle Ihre  Antworten löschen wollen?"
@@ -269,9 +272,15 @@ msgstr "Abschließen"
 msgid "Save Survey and Return"
 msgstr "Umfrage zwischenspeichern und weitermachen"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/common.php:1574
-msgid "<strong>Thank You!<br /><br />You have completed answering the questions in this survey.</strong><br /><br />Click on 'Submit' now to complete the process and save your answers."
-msgstr "<strong>Vielen Dank!<br /><br />Sie haben alle Fragen beantwortet.</strong><br /><br />Klicken Sie nun auf 'Absenden', um den Vorgang abzuschliessen und Ihre Antworten endgültig abzusenden."
+msgid "Thank You!"
+msgstr "Vielen Dank!"
+
+msgid "You have completed answering the questions in this survey."
+msgstr "Sie haben die Beantwortung der Fragen in dieser Umfrage abgeschlossen."
+
+# D:\web\xampp\htdocs\phpsurveyor/common.php:1812
+msgid "Click on 'Submit' now to complete the process and save your answers."
+msgstr "Klicken Sie auf nun 'Absenden' um die Umfrage abzuschließen und Ihre Antworten zu speichern."
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:1575
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
@@ -292,15 +301,17 @@ msgstr "Zur Umfrage zurückkehren"
 msgid "Save Your Unfinished Survey"
 msgstr "Umfrage zwischenspeichern"
 
+# D:\web\xampp\htdocs\phpsurveyor/common.php:1852
+msgid "Enter a name and password for this survey and click save below."
+msgstr "Geben Sie einen Namen und ein Passwort für diese Umfrage an und klicken Sie auf Speichern."
+
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:1624
-msgid ""
-"Enter a name and password for this survey and click save below.<br />\n"
-"Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.<br /><br />\n"
-"If you give an email address, an email containing the details will be sent to you."
-msgstr ""
-"Geben Sie einen Namen und ein Passwort für diese Umfrage ein und klicken Sie unten auf 'Speichern'.<br />\n"
-"Ihre Umfrage  wird dann unter diesem Namen und Passwort gespeichert und kann dann später von Ihnen vollendet werden, wenn Sie sich unter Ihrem Namen und Passwort wieder anmelden.<br /><br />\n"
-"Wenn Sie eine Email-Adresse angeben, wird auch eine Email an Sie mit diesen Daten versandt."
+msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
+msgstr "Ihre Umfrage  wird dann unter diesem Namen und Passwort gespeichert und kann dann später von Ihnen weitergeführt und abgeschlossen werden, wenn Sie sich unter Ihrem Namen und Passwort wieder anmelden."
+
+# D:\web\xampp\htdocs\phpsurveyor/common.php:1852
+msgid "If you give an email address, an email containing the details will be sent to you."
+msgstr "Wenn Sie eine Emailadresse angeben, wird Ihnen eine Email mit weitere Einzelheiten zugesandt."
 
 msgid "Name"
 msgstr "Name"
@@ -321,8 +332,12 @@ msgid "Load A Previously Saved Survey"
 msgstr "Zwischengespeicherte Umfrage laden"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:1638
-msgid "You can load a survey that you have previously saved from this screen.<br />Type in the 'name' you used to save the survey, and the password.<br />"
-msgstr "Auf dieser Seite könenn Sie eine zwischengespeichterte Umfrage laden.<br />Bitte geben Sie den Namen ein, den Sie benutzt haben, als Sie Ihre Umfragedaten zwischengespeichert haben (und natürlich das Passwort)."
+msgid "You can load a survey that you have previously saved from this screen."
+msgstr "Auf dieser Seite könenn Sie eine vorher zwischengespeichterte Umfrage laden."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/common.php:1638
+msgid "Type in the 'name' you used to save the survey, and the password."
+msgstr "Bitte geben Sie den Namen ein, den Sie benutzt haben, als Sie Ihre Umfragedaten zwischengespeichert haben (und natürlich das Passwort)."
 
 msgid "Saved name"
 msgstr "Gespeicherter Name"
@@ -334,13 +349,13 @@ msgstr "Jetzt laden"
 msgid "You must be registered to complete this survey"
 msgstr "Sie müssen registriert sein, um an dieser Umfrage teilzunehmen."
 
+# D:\web\xampp\htdocs\phpsurveyor/common.php:1890
+msgid "You may register for this survey if you wish to take part."
+msgstr "Sie müssen Sich für die Umfrage registrieren, wenn Sie teilnehmen wollen."
+
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:1644
-msgid ""
-"You may register for this survey if you wish to take part.<br />\n"
-"Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
-msgstr ""
-"Wenn Sie an dieser Umfrage teilnehmen möchten, müssen Sie sich registrieren.<br />\n"
-"Bitte geben Sie unten die notwendigen Daten ein und nach dem Absenden erhalten Sie per Email einen Link zu der Umfrage."
+msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr "Bitte geben Sie unten die notwendigen Daten ein und nach dem Absenden erhalten Sie per Email einen Link zu der Umfrage."
 
 msgid "First Name"
 msgstr "Vorname"
@@ -493,6 +508,12 @@ msgstr "Bitte wählen Sie einen Punkt aus der Liste aus."
 msgid "Check any that apply"
 msgstr "Bitte wählen Sie einen oder mehrere Punkte aus der Liste aus."
 
+msgid "Check at most"
+msgstr "Wählen Sie maximal"
+
+msgid "answers"
+msgstr "Antworten"
+
 msgid "Choose your language"
 msgstr "Wählen Sie Ihre Sprache"
 
@@ -562,6 +583,12 @@ msgstr "Klicken Sie auf die Schere rechts von jedem Element, um das"
 msgid "to remove the last entry in your ranked list"
 msgstr "zuletzt hinzugefügte Element aus der Liste zu entfernen"
 
+msgid "Please choose at most"
+msgstr "Bitte wählen Sie maximal"
+
+msgid "answer(s) for question"
+msgstr "Antwort(en) für die Frage"
+
 msgid "Make a comment on your choice here:"
 msgstr "Bitte schreiben Sie einen Kommentar zu Ihrer Auswahl"
 
@@ -574,15 +601,15 @@ msgstr "Die angegebene Email-Adresse ist ungültig. Bitte versuchen Sie es erneu
 msgid "The email you used has already been registered."
 msgstr "Die angegeben Email wurde schon einmal benutzt."
 
+msgid "Thank you for registering to participate in this survey."
+msgstr "Vielen Dank, dass Sie sich für die Teilnahme an dieser Umfrage registriert haben."
+
 # D:\xampp\xampp\htdocs\phpsurveyor/register.php:135
-msgid ""
-"Thank you for registering to participate in this survey.<br /><br />\n"
-"An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.<br /><br />\n"
-"Survey Administrator {ADMINNAME} ({ADMINEMAIL})"
-msgstr ""
-"Vielen Dank, dass sie sich für diese Umfrage registriert haben.<br /> <br />\n"
-"Eine Email wurde an Sie gerade an Ihre Emailadresse versandt mit Einzelheiten, wie sie auf die Umfrage zugreifen können. Bitte folgen Sie einfach dem Link in der Email um fortzufahren.<br /><br />\n"
-"Mit freundlichen Grüßen{ADMINNAME} ({ADMINEMAIL}"
+msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
+msgstr "Eine Email wurde an Sie gerade an Ihre Emailadresse versandt mit Einzelheiten, wie sie auf die Umfrage zugreifen können. Bitte folgen Sie einfach dem Link in der Email um fortzufahren."
+
+msgid "Survey Administrator"
+msgstr "Umfrage-Administrator"
 
 msgid "Please try again."
 msgstr "Bitte versuchen Sie es erneut."
@@ -613,8 +640,12 @@ msgstr "Rufen Sie die Umfrage auf, indem Sie auf folgende URL klicken:"
 msgid "Cannot submit results - there are none to submit."
 msgstr "Kann keine Ergebnisse abschicken, da keine vorhanden sind."
 
-msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br /><br />If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
-msgstr "Dieser Fehler kann auftreten, wenn Sie Ihre Antworten bereits abgeschickt haben und in Ihrem Browser auf 'aktualisieren' geklickt haben. In diesem Fall wurden Ihre Fragen bereits gespeichert."
+# D:\web\xampp\htdocs\phpsurveyor/save.php:444
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
+msgstr "Diese Fehler kann auftreten, wenn Sie Ihre Antworten schon abgesendet haben und in Ihrem Browser auf 'Aktualisieren' geklickt haben. In diesem Fall sind Ihre Antworten schon gespeichert worden. "
+
+msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "Wenn Sie diese Nachricht während einer Umfrage erhalten, sollten Sie den 'Zurück'-Button in Ihrem Browser nutzen and dann die vorherige Seite neu laden. Obwhol Sie Antworten von der letzten Seite verlieren könnten, werden Ihre anderen vorherigen Antworten noch vorhanden sein. Diese Problem kann auchtauchen, wenn der Server überlastet ist. Wir bitten um Entschuldigung."
 
 msgid "Access denied!"
 msgstr "Zugriff verweigert!"
@@ -691,11 +722,38 @@ msgstr "Lesen Sie dies sorgfältig durch, bevor Sie fortfahren."
 msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
 msgstr "Sie sollten eine Umfrage nur aktivieren, wenn Sie ganz sicher sind, dass ihre Fragen komplett und keine Änderungen mehr notwendig sind."
 
-msgid "Once a survey is activated you can no longer:<ul><li>Add or delete groups</li><li>Add or remove answers to Multiple Answer questions</li><li>Add or delete questions</li></ul>"
-msgstr "Sobald eine Umfrage einmal aktiviert ist, können Sie nicht mehr:<ul><li>Gruppen hinzufügen oder löschen</li><li>Antworten für Mehrfachauswahl-Fragen hinzufügen oder löschen</li><li>Fragen hinzufügen oder löschen</li></ul>"
+# D:\web\xampp\htdocs\phpsurveyor/admin/activate.php:235
+msgid "Once a survey is activated you can no longer:"
+msgstr "Nachdem Sie die Umfrage aktiviert haben, können Sie nicht mehr:"
 
-msgid "However you can still:<ul><li>Edit (change) your questions code, text or type</li><li>Edit (change) your group names</li><li>Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)</li><li>Change survey name or description</li></ul>"
-msgstr "Jedoch können Sie immer noch:<ul><li>Ihre Frage-Codes, Frage-Text oder Frage-Typ ändern</li><li>Die Gruppennamen ändern</li><li>Vordefinierte Antworten hinzufügen, ändern, löschen (ausser für Mehrfachauswahl-Fragen)</li><li>Den Umfrage Namen oder die Beschreibung ändern.</li></ul>"
+msgid "Add or delete groups"
+msgstr "Gruppen hinzufügen oder löschen"
+
+msgid "Add or remove answers to Multiple Answer questions"
+msgstr "Antworten hinzufügen oder löschen"
+
+msgid "Add or delete questions"
+msgstr "Fragen hinzufügen oder löschen"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/activate.php:236
+msgid "However you can still:"
+msgstr "Sie können immer noch:"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/activate.php:236
+msgid "Edit (change) your questions code, text or type"
+msgstr "Fragecodes, -text oder -typ"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/activate.php:236
+msgid "Edit (change) your group names"
+msgstr "Gruppenname bearbeiten"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/activate.php:236
+msgid "Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)"
+msgstr "Vordefinierte Antworten bearbeiten (ausser bei Fragen mit  Mehrfach-Auswahl)"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/activate.php:236
+msgid "Change survey name or description"
+msgstr "Umfrage-Namen und Beschreibung ändern"
 
 msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
 msgstr "Sobald Daten in die Umfrage eingegeben wurden und Sie Gruppen oder Fragen noch hinzufügen oder löschen wollen, müssen Sie die Umfrage deaktivieren. Dies hat zur Folge, dass alle eingegebenen Daten in eine separate Archiv-Tabelle verschoben werden."
@@ -1021,6 +1079,9 @@ msgstr "Dateneingabe"
 msgid "You have not selected a survey for data-entry."
 msgstr "Sie haben keine Umfrage zur Dateneingabe ausgewählt."
 
+msgid "Try again"
+msgstr "Nochmal versuchen"
+
 msgid "Identifier:"
 msgstr "Name:"
 
@@ -1041,6 +1102,10 @@ msgstr "Es wurde eine Email mit den Einzelheiten ihrer zwischengespeicherten Umf
 
 msgid "An error occurred and your survey responses were not saved."
 msgstr "Ein Fehler ist aufgetreten, daher wurden Ihre Antworten für diese Umfrage nicht gespeichert."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/dataentry.php:257
+msgid "This survey is not anonymous, you must supply a valid token"
+msgstr "Diese Umfrage ist nicht anonym - Sie müssen einen Zugangsschlüssel angeben"
 
 msgid "Success"
 msgstr "Erfolgreich"
@@ -1410,9 +1475,6 @@ msgstr "Gruppen"
 
 msgid "Title"
 msgstr "Titel"
-
-msgid "This survey is anonymous."
-msgstr "Dies ist eine anonyme Umfrage."
 
 msgid "This survey is NOT anonymous."
 msgstr "Diese Umfrage ist nicht anonym."
@@ -2291,9 +2353,6 @@ msgstr "Alle Gruppen sind konsistent."
 msgid "No database action required"
 msgstr "Es sind keine Datenänderungen notwendig."
 
-msgid "Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. "
-msgstr "Überprüfung der Datenkonsistenz<br /><font size='1'>Wenn Fehler gezeigt werden, sollten Sie dieses Script nochmals ausführen. <font>"
-
 msgid "Label Sets Administration"
 msgstr "Beschriftung-Set Administration"
 
@@ -2392,8 +2451,8 @@ msgstr " war bei der Frage"
 msgid "Only answer this question"
 msgstr "Bitte beantworten Sie diese Frage nur,"
 
-msgid "Please choose <strong>only one</strong> of the following:"
-msgstr "Bitte <strong>nur eine Antwort<strong> aus folgenden Möglichkeiten wählen"
+msgid "Please choose *only one* of the following:"
+msgstr "Bitte wählen Sie nur eine der folgenden Antworten aus:"
 
 msgid "Please enter a date:"
 msgstr "Bitte ein datum eingeben"
@@ -2401,8 +2460,14 @@ msgstr "Bitte ein datum eingeben"
 msgid "Please number each box in order of preference from 1 to"
 msgstr "Bitte nummerieren Sie jede Box in der Reigenfolge Ihrer Präferenz, beginnen mit 1 bis"
 
-msgid "Please choose <strong>all</strong> that apply:"
-msgstr "Bitte <strong>alle<strong> auswählen, die zutreffen"
+msgid "Please choose *all* that apply:"
+msgstr "Bitte alle wählen Sie alle Punke aus, die zutreffen:"
+
+msgid "Please choose *at most* "
+msgstr "Bitte wählen Sie *maximal*"
+
+msgid "answers:"
+msgstr "Antworten:"
 
 msgid "Please choose all that apply and provide a comment:"
 msgstr "Bitte alle auswählen die zutreffen und einen Kommentar dazuschreiben"
@@ -2513,8 +2578,13 @@ msgstr "3ter Viertelwert (Q3 Oberes Quartil)"
 msgid "Null values are ignored in calculations"
 msgstr "*Null-Werte werden in Berechnungen ausgelassen"
 
-msgid "Q1 and Q3 calculated using <a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>minitab method</a>"
-msgstr "*Q1 und Q3 wurden nach der <a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>'minitab' Methode</a> berechnet"
+# D:\web\xampp\htdocs\phpsurveyor/admin/statistics.php:1173
+msgid "Q1 and Q3 calculated using"
+msgstr "Q1 and Q1 werden berechnet durch die"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/statistics.php:1173
+msgid "minitab method"
+msgstr "minitab-Methode"
 
 msgid "Count"
 msgstr "Anzahl"
@@ -2800,14 +2870,21 @@ msgstr "Sende eine Erinnerungs-E-Mail für diesen Eintrag"
 msgid "Delete Tokens Table"
 msgstr "Probandentabelle löschen"
 
-msgid "If you delete this table tokens will no longer be required to access this survey.<br />A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
-msgstr "Wenn Sie diese Probandentabelle löschen, sind keine Zugangsschlüssel mehr nötig, um auf die Umfrage zuzugreifen. <br />Wenn Sie fortfahren, wird eine Sicherheitskopie dieser Tabelle erstellt. Der Systemadministrator kann dann auf diese Daten zugreifen."
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:654
+msgid "If you delete this table tokens will no longer be required to access this survey."
+msgstr "Wenn Sie diese Zugangsschlüssel-Tabelle löschen, benötigt man nicht länger einen Zugangsschlüssel um auf die Umfrage zuzugreifen."
+
+msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
+msgstr "Wenn Sie fortfahren, wird eine Sicherheitskopie dieser Tabelle erstellt. Der Systemadministrator kann dann auf diese Daten zugreifen."
 
 msgid "Delete Tokens"
 msgstr "Lösche die Probandentabelle"
 
-msgid "The tokens table has now been removed and tokens are no longer required to access this survey.<br /> A backup of this table has been made and can be accessed by your system administrator."
-msgstr "Die Probandentabelle wurde gelöscht, und es sind jetzt keine Zugangsschlüssel mehr nötig, um die Umfrage auszufüllen.<br /> Eine Sicherheitskopie dieser Tabelle wurde erstellt. Nur der Systemadministrator kann auf diese Daten zugreifen."
+msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
+msgstr "Die Probandentabelle wurde gelöscht, und es sind jetzt keine Zugangsschlüssel mehr nötig, um die Umfrage auszufüllen."
+
+msgid "A backup of this table has been made and can be accessed by your system administrator."
+msgstr "Eine Sicherheitskopie dieser Tabelle wurde erstellt. Nur der Systemadministrator kann auf diese Daten zugreifen."
 
 msgid "Email Invitation"
 msgstr "Einladung an Probanden versenden"
@@ -3054,8 +3131,12 @@ msgstr "Import fehlgeschlagen für Datensatz"
 msgid "because"
 msgstr "Grund:"
 
-msgid "Important Note:<br />Do NOT refresh this page, as this will import the file again and produce duplicates"
-msgstr "Achtung:<br />Diese Seite bitte NICHT aktualisieren, da ansonsten die Datei nochmal importiert wird und Duplikate erzeugt werden"
+# D:\web\xampp\htdocs\phpsurveyor/admin/vvimport.php:235
+msgid "Important Note:"
+msgstr "Wichtige Anmerkung:"
+
+msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
+msgstr "Diese Seite bitte NICHT aktualisieren, da ansonsten die Datei nochmal importiert wird und Duplikate erzeugt werden"
 
 msgid "Total records imported:"
 msgstr "Anzahl Datensätze importiert:"
