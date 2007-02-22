@@ -793,6 +793,7 @@ if(isset($surveyid))
 		}
 
 		CleanLanguagesFromSurvey($_POST['sid'],$_POST['languageids']);
+		FixLanguageConsistency($_POST['sid'],$_POST['languageids']);
 
 		$usquery = "UPDATE {$dbprefix}surveys \n"
 		. "SET admin='{$_POST['admin']}', useexpiry='{$_POST['useexpiry']}',\n"
