@@ -137,7 +137,7 @@ if (!ini_get('safe_mode') && (!eregi('shell_exec',ini_get('disable_functions')))
 {
 	// Only do this if safe_mode is OFF
 	if (isset($mysqldir)) {$mysqlbin=$mysqldir;}
-	if ((substr($OS, 0, 3) != "WIN") && (substr($OS, 0, 4) != "OS/2") )
+	if (isset($OS) && (substr($OS, 0, 3) != "WIN") && (substr($OS, 0, 4) != "OS/2") )
 	{
 		//USING LINUX: Find the location of various files and put that in the appropriate variables!
 		if (!isset($mysqlbin) || !$mysqlbin)
