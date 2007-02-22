@@ -3086,12 +3086,12 @@ function CleanLanguagesFromSurvey($sid, $availlangs)
 }
 
 /**
-* FixLanguagesOnSurvey() fixes missing groups,questions,answers for languages on a survey
+* FixLanguageConsistency() fixes missing groups,questions,answers for languages on a survey
 * @param string $sid - the currently selected survey
 * @param string $availlangs - space seperated list of additional languages in survey
 * @return bool - always returns true
 */
-function FixLanguagesOnSurvey($sid, $availlangs)
+function FixLanguageConsistency($sid, $availlangs)
 {
 	global $connect;
 	
@@ -3117,7 +3117,7 @@ function FixLanguagesOnSurvey($sid, $availlangs)
 				$gresult = db_execute_assoc($query) or die($connect->ErrorMsg());
 				if ($gresult->RecordCount() < 1)
 				{
-					$query = "INSERT INTO ".db_table_name('groups')." (gid,sid,group_name,group_order,description,language) VALUES('{$group['gid']}','{$group['sid']}','{$group['group_name']}','{$group['group_order']}','{$group['description']}','{$lang}')";
+					$query = "INSERT INTO ".db_table_name('groups')." (gid,sid,group_name,group_order,description,language) VALUES('{$group['gid']}','{$group['sid']}',{$connect->qstr($group['group_name'])},'{$group['group_order']}',{$connect->qstr($group['description'])},'{$lang}')";
 					$connect->Execute($query) or die($connect->ErrorMsg());
 				}
 			}
@@ -3139,8 +3139,8 @@ function FixLanguagesOnSurvey($sid, $availlangs)
 				$gresult = db_execute_assoc($query) or die($connect->ErrorMsg());
 				if ($gresult->RecordCount() < 1)
 				{
-					$query = "INSERT INTO ".db_table_name('questions')." (qid,sid,gid,type,title,question,preg,help,other,mandatory,lid,question_order,language) VALUES('{$question['qid']}','{$question['sid']}','{$question['gid']}','{$question['type']}','{$question['title']}','{$question['question']}','{$question['preg']}','{$question['help']}','{$question['other']}','{$question['mandatory']}','{$question['lid']}','{$question['question_order']}','{$lang}')";
-					$connect->Execute($query) or die($connect->ErrorMsg());
+					$query = "INSERT INTO ".db_table_name('questions')." (qid,sid,gid,type,title,question,preg,help,other,mandatory,lid,question_order,language) VALUES('{$question['qid']}','{$question['sid']}','{$question['gid']}','{$question['type']}',{$connect->qstr($question['title'])},{$connect->qstr($question['question'])},{$connect->qstr($question['preg'])},{$connect->qstr($question['help'])},'{$question['other']}','{$question['mandatory']}','{$question['lid']}','{$question['question_order']}','{$lang}')";
+					$connect->Execute($query) or die(print "$query\n: ".$connect->ErrorMsg());
 				}
 			}
 			reset($langs);
@@ -3165,7 +3165,7 @@ function FixLanguagesOnSurvey($sid, $availlangs)
 				$gresult = db_execute_assoc($query) or die($connect->ErrorMsg());
 				if ($gresult->RecordCount() < 1)
 				{
-					$query = "INSERT INTO ".db_table_name('answers')." (qid,code,answer,default_value,sortorder,language) VALUES('{$answer['qid']}','{$answer['code']}','{$answer['answer']}','{$answer['default_value']}','{$answer['sortorder']}','{$lang}')";
+					$query = "INSERT INTO ".db_table_name('answers')." (qid,code,answer,default_value,sortorder,language) VALUES('{$answer['qid']}',{$connect->qstr($answer['code'])},{$connect->qstr($answer['answer'])},{$connect->qstr($answer['default_value'])},'{$answer['sortorder']}','{$lang}')";
 					$connect->Execute($query) or die($connect->ErrorMsg());
 				}
 			}
