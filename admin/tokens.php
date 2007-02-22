@@ -329,6 +329,9 @@ $tokenoutput .= "\t<tr>\n"
 ."\t\t\t\t<tr>\n"
 ."\t\t\t\t\t<td align='center'>\n"
 ."\t\t\t\t\t<strong>".$clang->gT("Total Records in this Token Table").": $tkcount</strong><br />\n";
+
+
+
 $tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE token IS NULL OR token=''";
 $tksr = db_execute_num($tksq);
 while ($tkr = $tksr->FetchRow())
@@ -338,10 +341,11 @@ $tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE (sent!
 
 $tksr = db_execute_num($tksq);
 while ($tkr = $tksr->FetchRow())
+
 {$tokenoutput .= "\t\t\t\t\t\t".$clang->gT("Total Invitations Sent").": $tkr[0] / $tkcount<br />\n";}
 $tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE (completed!='N' and completed<>'')";
 
-$tksr = db_execute_num($tksq);
+$tksr = db_execute_num($tksq) or die ("Couldn't execute token selection query<br />$abquery<br />".$connect->ErrorMsg());
 while ($tkr = $tksr->FetchRow())
 {$tokenoutput .= "\t\t\t\t\t\t".$clang->gT("Total Surveys Completed").": $tkr[0] / $tkcount\n";}
 $tokenoutput .= "\t\t\t\t\t</font></td>\n"
@@ -1222,7 +1226,8 @@ if ($subaction == "inserttoken")
 		$data['attribute_1'] = $_POST['attribute1'];
 		$data['attribute_2'] = $_POST['attribute2'];
 	}
-    $tblInsert=db_table_name('tokens_'.$surveyid);;
+    $tblInsert=db_table_name('tokens_'.$surveyid);
+
 	//$inquery = $connect->GetInsertSQL($tblInsert, $data); # this wasn't working on SQL Server'
 	//$inresult = $connect->Execute($inquery) or die ("Add new record failed:<br />\n$inquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 	$inresult = $connect->AutoExecute($tblInsert, $data, 'INSERT') or die ("Add new record failed:<br />\n$inquery<br />\n".htmlspecialchars($connect->ErrorMsg()));

@@ -901,8 +901,8 @@ function submittokens()
 	$utresult = $connect->Execute($utquery) or die ("Couldn't update tokens table!<br />\n$utquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 
 	// TLR change to put date into sent and completed
-	$cnfquery = "SELECT * FROM ".db_table_name('tokens')."_$surveyid WHERE token='{$_POST['token']}' AND completed!='N' AND completed!=''";
-
+	$cnfquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." WHERE token='{$_POST['token']}' AND completed!='N' AND completed!=''";
+  
 	$cnfresult = db_execute_assoc($cnfquery);
 	while ($cnfrow = $cnfresult->FetchRow())
 	{
