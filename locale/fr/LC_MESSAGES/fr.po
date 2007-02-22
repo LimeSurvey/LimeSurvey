@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-02-16 19:45+0100\n"
+"PO-Revision-Date: 2007-02-22 19:16+0100\n"
 "Last-Translator: b00z00\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -45,7 +45,7 @@ msgid "List Surveys"
 msgstr "Lister les questionnaires"
 
 msgid "Backup Entire Database"
-msgstr "Sauvegarder entiérement la base de données"
+msgstr "Sauvegarder entièrement la base de données"
 
 msgid "Edit/Add Label Sets"
 msgstr "Editer/Ajouter des jeux d`étiquettes"
@@ -137,7 +137,7 @@ msgid "Huge Free Text"
 msgstr "Zone de texte immense"
 
 msgid "List (Flexible Labels) (Dropdown)"
-msgstr "Liste déroulante et étiquettes personnaliées"
+msgstr "Liste déroulante et étiquettes personnalisées"
 
 msgid "Boilerplate Question"
 msgstr "Texte fixe"
@@ -256,9 +256,12 @@ msgstr "Envoyer"
 msgid "A Note On Privacy"
 msgstr "Note sur la vie privée"
 
+msgid "This survey is anonymous."
+msgstr "Ce questionnaire est anonyme."
+
 # E:\www\phpsurveyor/common.php:1558
-msgid "This survey is anonymous.<br />The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
-msgstr "Ce questionnaire est anonyme.<br />L'enregistrement de vos réponses ne contient aucune information d'identification sur vous, à moins qu'une question ne vous ait été posée dans ce sens. Si vous avez répondu à un questionnaire utilisant des invitations, vous pouvez être assuré(e) que le code de l'invitation n'est pas enregistré avec votre réponse. Les invitations sont gérées dans une base de données séparée qui n'est mise à jour que pour indiquer si vous avez ou non utilisé votre invitation pour remplir le questionnaire. Il n'y a aucun moyen de faire le lien entre les invitations et les réponses enregistrées pour ce questionnaire."
+msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "L'enregistrement de vos réponses ne contient aucune information d'identification sur vous, à moins qu'une question ne vous ait été posée dans ce sens. Si vous avez répondu à un questionnaire utilisant des invitations, vous pouvez être assuré(e) que le code de l'invitation n'est pas enregistré avec votre réponse. Les invitations sont gérées dans une base de données séparée qui n'est mise à jour que pour indiquer si vous avez ou non utilisé votre invitation pour remplir le questionnaire. Il n'y a aucun moyen de faire le lien entre les invitations et les réponses enregistrées pour ce questionnaire."
 
 msgid "Are you sure you want to clear all your responses?"
 msgstr "Etes-vous sûr de vouloir effacer toutes vos réponses ?"
@@ -275,13 +278,19 @@ msgstr "Dernier"
 msgid "Save Survey and Return"
 msgstr "Sauvegarder le questionnaire et le continuer"
 
-# E:\www\phpsurveyor/common.php:1574
-msgid "<strong>Thank You!<br /><br />You have completed answering the questions in this survey.</strong><br /><br />Click on 'Submit' now to complete the process and save your answers."
-msgstr "<strong>Merci<br /><br />Vous avez fini de remplir ce questionnaire.</strong><br /><br />Cliquez sur 'Envoyer' maintenant pour terminer le processus et sauvegarder vos réponses."
+msgid "Thank You!"
+msgstr "Merci !"
+
+msgid "You have completed answering the questions in this survey."
+msgstr "Vous avez répondu à toutes les questions de ce questionnaire."
+
+# D:\www\phpsurveyor/common.php:1812
+msgid "Click on 'Submit' now to complete the process and save your answers."
+msgstr "Cliquez maintenant sur 'Envoyer' pour terminer la procédure et sauvegarder vos réponses. "
 
 # E:\www\phpsurveyor/common.php:1575
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
-msgstr "Si vous voulez vérifier l'une de vos réponses et/ou la changer, vous pouvez le faire maintenant en cliquant sur le bouton [&lt;&lt;Précédent] pour parcourir vos réponses."
+msgstr "Si vous voulez vérifier l'une de vos réponses et/ou la changer, vous pouvez le faire maintenant en cliquant sur le bouton [<<Précédente] pour parcourir vos réponses."
 
 msgid "Answers Cleared"
 msgstr "Réponses effacées"
@@ -298,15 +307,17 @@ msgstr "Retourner au questionnaire"
 msgid "Save Your Unfinished Survey"
 msgstr "Sauvegarder votre questionnaire non terminé"
 
+# D:\www\phpsurveyor/common.php:1852
+msgid "Enter a name and password for this survey and click save below."
+msgstr "Entrez un nom et un mot de passe pour ce questionnaire puis cliquez sur 'Sauvegarder' ci-dessous."
+
 # E:\www\phpsurveyor/common.php:1624
-msgid ""
-"Enter a name and password for this survey and click save below.<br />\n"
-"Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.<br /><br />\n"
-"If you give an email address, an email containing the details will be sent to you."
-msgstr ""
-"Entrez un nom et un mot de passe pour ce questionnaire et cliquez sur sauvegarder ci-dessous.<br />\n"
-"Votre questionnaire sera sauvegardé en utilisant ce nom et ce mot de passe et vous pourrez le compléter plus tard en vous connectant avec les mêmes identifiants.<br /><br />\n"
-"Si vous donnez une adresse mail, un message contenant ces informations vous sera envoyé."
+msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
+msgstr "Votre questionnaire sera enregistré avec ce nom et ce mot de passe et pourra être complété plus tard en vous connectant avec les mêmes nom et mot de passe."
+
+# D:\www\phpsurveyor/common.php:1852
+msgid "If you give an email address, an email containing the details will be sent to you."
+msgstr "Si vous donnez une adresse mail, un message contenant les détails vous sera envoyé."
 
 msgid "Name"
 msgstr "Nom"
@@ -327,8 +338,12 @@ msgid "Load A Previously Saved Survey"
 msgstr "Charger un questionnaire précédemment sauvegardé"
 
 # E:\www\phpsurveyor/common.php:1638
-msgid "You can load a survey that you have previously saved from this screen.<br />Type in the 'name' you used to save the survey, and the password.<br />"
-msgstr "Vous pouvez, depuis cet écran, charger un questionnaire que vous avez précédemment sauvegardé.<br />Renseignez le nom  et le mot de passe que vous avez utilisés lors de la sauvegarde.<br />"
+msgid "You can load a survey that you have previously saved from this screen."
+msgstr "Vous pouvez, depuis cet écran, charger un questionnaire que vous avez précédemment sauvegardé."
+
+# E:\www\phpsurveyor/common.php:1638
+msgid "Type in the 'name' you used to save the survey, and the password."
+msgstr "Renseignez le nom et le mot de passe que vous avez utilisés lors de la sauvegarde."
 
 msgid "Saved name"
 msgstr "Nom de sauvegarde"
@@ -338,15 +353,15 @@ msgid "Load Now"
 msgstr "Charger maintenant"
 
 msgid "You must be registered to complete this survey"
-msgstr "Vous devez être enregistré pour compléter ce questionnaire"
+msgstr "Vous devez être enregistré(e) pour compléter ce questionnaire"
+
+# D:\www\phpsurveyor/common.php:1890
+msgid "You may register for this survey if you wish to take part."
+msgstr "Vous devez vous enregistrer si vous souhaitez participer à ce questionnaire."
 
 # E:\www\phpsurveyor/common.php:1644
-msgid ""
-"You may register for this survey if you wish to take part.<br />\n"
-"Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
-msgstr ""
-"Vous devez vous enregistrer si vous souhaitez participer à ce questionnaire.<br />\n"
-"Entrez vos informations ci-dessous et un mail contenant un lien pour y participer vous sera envoyé immédiatement."
+msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr "Entrez vos informations ci-dessous et un mail contenant un lien pour y participer vous sera envoyé immédiatement."
 
 msgid "First Name"
 msgstr "Prénom"
@@ -508,6 +523,12 @@ msgstr "Veuillez sélectionner seulement une réponse ci-dessous"
 msgid "Check any that apply"
 msgstr "Cochez la ou les réponses"
 
+msgid "Check at most"
+msgstr "Vérifier au plus"
+
+msgid "answers"
+msgstr "réponses"
+
 msgid "Choose your language"
 msgstr "Choisissez votre langue"
 
@@ -577,6 +598,12 @@ msgstr "Cliquer sur les ciseaux à droite de chaque élément"
 msgid "to remove the last entry in your ranked list"
 msgstr "pour enlever le dernier élément de votre classement"
 
+msgid "Please choose at most"
+msgstr "Veuillez choisir au plus"
+
+msgid "answer(s) for question"
+msgstr "réponse(s) pour la question"
+
 msgid "Make a comment on your choice here:"
 msgstr "Faites le commentaire de votre choix ici :"
 
@@ -589,14 +616,14 @@ msgstr "L'adresse mail utilisée n'est pas valide. Veuillez réessayer."
 msgid "The email you used has already been registered."
 msgstr "L'adresse mail utilisée a déjà été enregistrée."
 
-msgid ""
-"Thank you for registering to participate in this survey.<br /><br />\n"
-"An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.<br /><br />\n"
-"Survey Administrator {ADMINNAME} ({ADMINEMAIL})"
-msgstr ""
-"Merci de vous enregistrer pour participer à ce questionnaire.<br /><br />\n"
-"Un mail a été envoyé à l'adresse que vous avez fournie avec les détails d'accès à ce questionnaire. Veuillez suivre le lien dans ce mail pour participer.<br /><br />\n"
-"Administrateur du questionnaire {ADMINNAME} ({ADMINEMAIL})"
+msgid "Thank you for registering to participate in this survey."
+msgstr "Merci de vous être enregistré(e) pour participer à ce questionnaire."
+
+msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
+msgstr "Un mail a été envoyé à l'adresse que vous avez fournie avec les détails d'accès à ce questionnaire. Veuillez suivre le lien dans ce mail pour participer."
+
+msgid "Survey Administrator"
+msgstr "Administrateur du questionnaire"
 
 msgid "Please try again."
 msgstr "Veuillez réessayer SVP."
@@ -625,8 +652,12 @@ msgstr "Rechargez votre questionnaire en cliquant sur l'URL suivante :"
 msgid "Cannot submit results - there are none to submit."
 msgstr "Impossible d'envoyer les réponses car il n'y en a aucune (vide)."
 
-msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br /><br />If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
-msgstr "Cette erreur peut se produire si vous avez déjà envoyé vos réponses et actualisé la page de votre navigateur avec 'Actualiser'. Dans ce cas, vos réponses ont déjà été sauvées.<br /><br />Si vous obtenez ce message au milieu du remplissage d'un questionnaire, vous devriez choisir '<-Précédente' dans votre navigateur et rafraîchir la page obtenue. Bien que vous perdiez vos réponses de la dernière page, toutes les autres sont conservées. Ce problème peut se produire si le serveur est surchargé ou énormément utilisé. Nous nous excusons pour ce problème."
+# D:\www\phpsurveyor/save.php:452
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
+msgstr "Cetet erreur peut survenir si vous avez déjà sauvegardé vos réponses et que vous pressé sur le bouton 'Rafraichir' de votre navigateur. Dans ce cas, vos réponses sont déjà sauvegardées."
+
+msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "Si vous obtenez ce message au milieu du remplissage d'un questionnaire, vous devriez choisir '<-Précédente' dans votre navigateur et rafraîchir la page obtenue. Bien que vous perdiez vos réponses de la dernière page, toutes les autres sont conservées. Ce problème peut se produire si le serveur est surchargé ou énormément utilisé. Nous nous excusons pour ce problème."
 
 # E:\www\phpsurveyor/admin/access_denied.php:43
 msgid "Access denied!"
@@ -707,11 +738,38 @@ msgstr "LIRE CECI ATTENTIVEMENT AVANT DE POURSUIVRE"
 msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
 msgstr "Vous devriez activer un questionnaire seulement si vous êtes absolument certain que la configuration de votre questionnaire est terminée et n&lsquo;aura pas besoin d&lsquo;être modifiée."
 
-msgid "Once a survey is activated you can no longer:<ul><li>Add or delete groups</li><li>Add or remove answers to Multiple Answer questions</li><li>Add or delete questions</li></ul>"
-msgstr "Un fois qu'un questionnaire est activé vous ne pouvez plus :<ul><li>Ajouter ou supprimer de groupes</li><li>Ajouter ou enlever des réponses aux questions à réponses multiples</li><li>Ajouter ou supprimer des questions</li></ul>"
+# D:\www\phpsurveyor/admin/activate.php:235
+msgid "Once a survey is activated you can no longer:"
+msgstr "Une fois le questionnaire activé, vous ne pourrez plus :"
 
-msgid "However you can still:<ul><li>Edit (change) your questions code, text or type</li><li>Edit (change) your group names</li><li>Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)</li><li>Change survey name or description</li></ul>"
-msgstr "Cependant vous pouvez toujours :<ul><li>Editer(changer) les codes de vos questions, le texte ou le type </li><li>Editer (changer) les noms de vos groupes</li><li>Ajouter, Enlever ou Editer les réponses prédéfinies des questions (à l'exception des questions à réponses multiples)</li><li>Changer le nom du questionnaire ou sa description</li></ul>"
+msgid "Add or delete groups"
+msgstr "Ajouter ou supprimer des groupes"
+
+msgid "Add or remove answers to Multiple Answer questions"
+msgstr "Ajouter ou supprimer des réponses à des questions à réponses multiples"
+
+msgid "Add or delete questions"
+msgstr "Ajouter ou suppprimer des questions"
+
+# D:\www\phpsurveyor/admin/activate.php:236
+msgid "However you can still:"
+msgstr "Cependant vous pourrez toujours :"
+
+# D:\www\phpsurveyor/admin/activate.php:236
+msgid "Edit (change) your questions code, text or type"
+msgstr "Editez (changez) le code, le texte ou le type de vos questions"
+
+# D:\www\phpsurveyor/admin/activate.php:236
+msgid "Edit (change) your group names"
+msgstr "Editez (changez) les noms de vos groupes"
+
+# D:\www\phpsurveyor/admin/activate.php:236
+msgid "Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)"
+msgstr "Ajouter, supprimer ou éditer les réponses pré enregistrées de la question (sauf pour les questions à réponses multiples)"
+
+# D:\www\phpsurveyor/admin/activate.php:236
+msgid "Change survey name or description"
+msgstr "Changez le nom ou la description du questionnaire"
 
 msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
 msgstr "Une fois que les données sont saisies dans votre questionnaire, si vous voulez ajouter ou enlever des groupes ou questions, vous devez désactiver ce questionnaire, ce qui déplacera toutes les données qui ont déjà été saisies dans une table d&lsquo;archivage séparée."
@@ -1053,6 +1111,9 @@ msgstr "Entrée de données"
 msgid "You have not selected a survey for data-entry."
 msgstr "Vous n&lsquo;avez pas sélectionné de questionnaire pour la saisie des données."
 
+msgid "Try again"
+msgstr "Essayez à nouveau"
+
 msgid "Identifier:"
 msgstr "Identification :"
 
@@ -1073,6 +1134,10 @@ msgstr "Un mail vous a été envoyé avec les détails sur le questionnaire enre
 
 msgid "An error occurred and your survey responses were not saved."
 msgstr "Une erreur est survenue et vos réponses n'ont pas été sauvegardées."
+
+# D:\www\phpsurveyor/admin/dataentry.php:257
+msgid "This survey is not anonymous, you must supply a valid token"
+msgstr "Ce questionnaire n'est pas anonyme, vous devez fournir une invitation valable."
 
 msgid "Success"
 msgstr "Succés"
@@ -1456,9 +1521,6 @@ msgstr "Groupes"
 
 msgid "Title"
 msgstr "Titre"
-
-msgid "This survey is anonymous."
-msgstr "Ce questionnaire est anonyme."
 
 msgid "This survey is NOT anonymous."
 msgstr "Ce questionnaire n&lsquo;EST PAS anonyme."
@@ -2338,9 +2400,6 @@ msgstr "Tous les groupes sont cohérents"
 msgid "No database action required"
 msgstr "Pas d&lsquo;action à faire sur la base de données"
 
-msgid "Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. "
-msgstr "Contrôle de cohérence de données<br /><font size='1'>Si des erreurs apparaissent, il faudra relancer ce script plusieurs fois."
-
 msgid "Label Sets Administration"
 msgstr "Administration des jeux d`étiquettes"
 
@@ -2445,8 +2504,8 @@ msgstr "à la  question"
 msgid "Only answer this question"
 msgstr "Répondez à cette question"
 
-msgid "Please choose <strong>only one</strong> of the following:"
-msgstr "Choisissez <strong>seulement une</strong> des réponses suivantes :"
+msgid "Please choose *only one* of the following:"
+msgstr "Veuillez sélectionner SEULEMENT une réponse"
 
 msgid "Please enter a date:"
 msgstr "Entrez une date :"
@@ -2454,8 +2513,14 @@ msgstr "Entrez une date :"
 msgid "Please number each box in order of preference from 1 to"
 msgstr "Numérotez chaque case dans l'ordre de vos préférences de 1 à"
 
-msgid "Please choose <strong>all</strong> that apply:"
-msgstr "Choisissez <strong>toutes</strong> les réponses qui conviennent :"
+msgid "Please choose *all* that apply:"
+msgstr "Choisissez TOUTES les réponses qui conviennent :"
+
+msgid "Please choose *at most* "
+msgstr "Veuillez choisir AU PLUS"
+
+msgid "answers:"
+msgstr "Réponses :"
 
 msgid "Please choose all that apply and provide a comment:"
 msgstr "Choisissez toutes les réponses qui conviennent et laissez un commentaire :"
@@ -2566,8 +2631,13 @@ msgstr "3ème Quartile (Q3)"
 msgid "Null values are ignored in calculations"
 msgstr "Des valeurs nulles sont ignorées dans les calculs"
 
-msgid "Q1 and Q3 calculated using <a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>minitab method</a>"
-msgstr "Q1 et Q3 ont été calculés avec la <a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>méthode MINITAB</a>"
+# D:\www\phpsurveyor/admin/statistics.php:1173
+msgid "Q1 and Q3 calculated using"
+msgstr "Q1 et Q3 sont calculés en utilisant"
+
+# D:\www\phpsurveyor/admin/statistics.php:1173
+msgid "minitab method"
+msgstr "méthode minitab"
 
 msgid "Count"
 msgstr "Décompte"
@@ -2854,14 +2924,21 @@ msgstr "Envoyer un rappel par mail à cette entrée"
 msgid "Delete Tokens Table"
 msgstr "Suppression de la table des invitations"
 
-msgid "If you delete this table tokens will no longer be required to access this survey.<br />A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
-msgstr "Si vous supprimez cette table, des invitations ne seront plus requises pour accéder à ce questionnaire. <br />Une sauvegarde de cette table sera effectuée si vous la supprimez. Votre administrateur système pourra accéder à cette table."
+# D:\www\phpsurveyor/admin/tokens.php:657
+msgid "If you delete this table tokens will no longer be required to access this survey."
+msgstr "Si vous effacez cette table, les invitations ne seront plus nécessaires pour accéder à ce questionnaire."
+
+msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
+msgstr "Une sauvegarde de cette table sera effectuée si vous la supprimez. Votre administrateur système pourra accéder à cette table."
 
 msgid "Delete Tokens"
 msgstr "Supprimer les invitations"
 
-msgid "The tokens table has now been removed and tokens are no longer required to access this survey.<br /> A backup of this table has been made and can be accessed by your system administrator."
-msgstr "La table des invitations a maintenant été enlevée et des invitations ne sont plus requises pour accéder à ce questionnaire. <br /> Une sauvegarde de cette table a été effectuée.Un administrateur système pourra y accéder."
+msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
+msgstr "La table des invitations a maintenant été enlevée et les invitations ne sont plus requises pour accéder à ce questionnaire."
+
+msgid "A backup of this table has been made and can be accessed by your system administrator."
+msgstr " Une sauvegarde de cette table a été effectuée et un administrateur système pourra y accéder."
 
 msgid "Email Invitation"
 msgstr "Invitation par mail"
@@ -3124,8 +3201,12 @@ msgstr "Echec de l&lsquo;importation sur l&lsquo;enregistrement"
 msgid "because"
 msgstr "parce que"
 
-msgid "Important Note:<br />Do NOT refresh this page, as this will import the file again and produce duplicates"
-msgstr "Note importante :<br >Ne pas ACTUALISER cette page sous peine d&lsquo;importer de nouveau le fichier et de créer des doublons"
+# D:\www\phpsurveyor/admin/vvimport.php:235
+msgid "Important Note:"
+msgstr "Note importante :"
+
+msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
+msgstr "Ne pas ACTUALISER cette page sous peine d&lsquo;importer de nouveau le fichier et de créer des doublons"
 
 msgid "Total records imported:"
 msgstr "Nombre d&lsquo;enregistrement(s) importé(s) :"
