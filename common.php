@@ -53,9 +53,6 @@ require_once (dirname(__FILE__).'/classes/core/sanitize.php');
 $dbprefix=strtolower($dbprefix);
 define("_PHPVERSION", phpversion());
 
-// find out the OS we are running on
-$OS = PHP_OS;
-
 if($_SERVER['SERVER_SOFTWARE'] == "Xitami") //Deal with Xitami Issue
 {
 	$_SERVER['PHP_SELF'] = substr($_SERVER['SERVER_URL'], 0, -1) .$_SERVER['SCRIPT_NAME'];
@@ -132,6 +129,24 @@ if ($sourcefrom == "admin")
     *
     */
 	$htmlheader = getAdminHeader();
+}
+
+
+//TURN OFF OPTIONS THAT DON'T WORK IN SAFE MODE IF NECESSARY
+if (!ini_get('safe_mode') && (!eregi('shell_exec',ini_get('disable_functions'))))
+{
+	// Only do this if safe_mode is OFF
+	if (isset($mysqldir)) {$mysqlbin=$mysqldir;}
+	if ((substr($OS, 0, 3) != "WIN") && (substr($OS, 0, 4) != "OS/2") )
+	{
+		//USING LINUX: Find the location of various files and put that in the appropriate variables!
+		if (!isset($mysqlbin) || !$mysqlbin)
+		{
+			$temp=shell_exec('which mysqldump');
+			@list($mysqlbin, $discard)=explode(" ", $temp);
+			$mysqlbin=substr($mysqlbin, 0, strlen($mysqlbin)-11);
+		}
+	}
 }
 
 
@@ -2522,6 +2537,7 @@ function modify_database($sqlfile='', $sqlstring='') {
 	global $siteadminemail;
 	global $siteadminname;
 	global $defaultlang;
+	global $codeString;
 	global $rootdir;
 
 	require_once($rootdir."/admin/classes/core/SHA256.php");
@@ -3160,4 +3176,41 @@ function FixLanguagesOnSurvey($sid, $availlangs)
 	return true;
 }
 
+/**
+* GetGroupDepsForConditions() get Dependencies between groups caused by conditions 
+* @param string $sid - the currently selected survey
+* @return array - returns an array describing the conditions
+*/
+function GetGroupDepsForConditions($sid)
+{
+	global $connect, $clang;
+	$condarray = Array();
+
+	$condquery = "SELECT tg.gid, tg.group_name, "
+		. "tg2.gid, tg2.group_name, tq.qid, tc.cid, tq2.qid FROM "
+		. db_table_name('conditions')." AS tc, "
+		. db_table_name('questions')." AS tq, "
+		. db_table_name('questions')." AS tq2, "
+		. db_table_name('groups')." AS tg ,"
+		. db_table_name('groups')." AS tg2 "
+		. "WHERE tc.qid = tq.qid AND tq.sid=$sid "
+		. "AND tq.gid = tg.gid AND tg2.gid = tq2.gid "
+		. "AND tq2.qid=tc.cqid AND tq.gid != tg2.gid";
+	$condresult=$connect->Execute($condquery) or die($connect->ErrorMsg());
+	
+	if ($condresult->RecordCount() > 0) {
+		while ($condrow = $condresult->FetchRow())
+		{
+			$depgid=$condrow[0];
+			$targetgid=$condrow[2];
+			$depqid=$condrow[4];
+			$cqid=$condrow[5];
+			$condarray[$depgid][$targetgid]['depgpname'] = $condrow[1];
+			$condarray[$depgid][$targetgid]['targetgpname'] = $condrow[3];
+			$condarray[$depgid][$targetgid]['conditions'][$depqid][$cqid] = $condrow[6];
+		}
+		return $condarray;
+	}
+	return null;
+}
 ?>
