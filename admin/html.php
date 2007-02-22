@@ -2493,31 +2493,78 @@ if($action == "orderquestions")
     //        . "<tr> <td >".("Question Name")."</td><td>".("Action")."</td></tr>"
             . "</table>\n";
 
-	$condquery = "SELECT tc.cid FROM ".db_table_name('conditions')." AS tc, ".db_table_name('questions')." AS tq WHERE tc.qid = tq.qid AND tq.sid=$surveyid AND tq.gid=$gid";
-	$condresult=$connect->Execute($condquery) or die($connect->ErrorMsg());
-	if ($condresult->RecordCount() > 0) {
-		$orderquestions .= "<li class='movableNode'><strong><font color='orange'>".$clang->gT("Warning").":</font> ".$clang->gT("Current group is using conditional questions")."</strong><br /><br />".$clang->gT("Re-ordering questions in this group")." ".$clang->gT("can corrupt the survey if questions on which conditions are based, are reordered after questions having the conditions set")."<br /></li>\n";
+//	$condquery = "SELECT tc.cid FROM ".db_table_name('conditions')." AS tc, ".db_table_name('questions')." AS tq WHERE tc.qid = tq.qid AND tq.sid=$surveyid AND tq.gid=$gid";
+//	$condresult=$connect->Execute($condquery) or die($connect->ErrorMsg());
+//	if ($condresult->RecordCount() > 0) {
+//		$orderquestions .= "<li class='movableNode'><strong><font color='orange'>".$clang->gT("Warning").":</font> ".$clang->gT("Current group is using conditional questions")."</strong><br /><br />".$clang->gT("Re-ordering questions in this group")." ".$clang->gT("can corrupt the survey if questions on which conditions are based, are reordered after questions having the conditions set")."<br /></li>\n";
+//	}
+	$questdepsarray = GetQuestDepsForConditions($surveyid,$gid);
+	if (!is_null($questdepsarray))
+	{
+		$orderquestions .= "<li class='movableNode'><strong><font color='orange'>".$clang->gT("Warning").":</font> ".$clang->gT("Current group is using conditional questions")."</strong><br /><br /><i>".$clang->gT("Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set")."</i></strong><br /><br/>".$clang->gT("The following questions are concerned").":<ul>\n";
+		foreach ($questdepsarray as $depqid => $depquestrow)
+		{
+			foreach ($depquestrow as $targqid => $targcid)
+			{
+				$orderquestions .= "<li>".$clang->gT("Question")." <a href='#' onClick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$gid."&amp;qid=".$depqid."')\">[QID: ".$depqid."] </a> ".$clang->gT("depends on question")." <a href='#' onClick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$gid."&amp;qid=".$targqid."')\">[QID: ".$targqid."] </a> ";
+			}
+			$orderquestions .= "</li>\n";
+		}
+		$orderquestions .= "</ul></li>";
 	}
 
     	$orderquestions	.= "<form method='post'>";	
     
        	$questioncount = $oqresult->RecordCount();        
-        $cnt=0;
-    	while($oqrow = $oqresult->FetchRow())
-    	{
-  			$orderquestions.="<li class='movableNode'>\n" ;
-     				$orderquestions.= "\t<input style='float:right;";
-                  if ($cnt == 0){$orderquestions.="visibility:hidden;";}
-                  $orderquestions.="' type='submit' name='questionordermethod' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$oqrow['question_order']}'\" />\n";
-      			if ($cnt < $questioncount-1)
-      			{
-      				// Fill the sortorder hiddenfield so we now what field is moved down
-                      $orderquestions.= "\t<input type='submit' style='float:right;' name='questionordermethod' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$oqrow['question_order']}'\" />\n";
-      			}
-  			$orderquestions.=$oqrow['title'].": ".$oqrow['question']."</li>\n" ;
-  
-  			$cnt++;
-  		}
+	$oqarray = $oqresult->GetArray();
+	for($i=0; $i < $questioncount ; $i++)
+	{
+		$downdisabled = "";
+		$updisabled = "";
+		if ( !is_null($questdepsarray) && $i < $questioncount-1 &&
+		  array_key_exists($oqarray[$i+1]['qid'],$questdepsarray) &&
+		  array_key_exists($oqarray[$i]['qid'],$questdepsarray[$oqarray[$i+1]['qid']]) )
+		{
+			$downdisabled = "disabled=\"true\"";
+			//echo "TIBO Downdisabled ".$oqarray[$i]['qid'];
+		}
+		if ( !is_null($questdepsarray) && $i !=0  &&
+		  array_key_exists($oqarray[$i]['qid'],$questdepsarray) &&
+		  array_key_exists($oqarray[$i-1]['qid'],$questdepsarray[$oqarray[$i]['qid']]) )
+		{
+			$updisabled = "disabled=\"true\"";
+			//echo "TIBO UPdisabled ".$oqarray[$i]['qid'];
+		}
+
+		$orderquestions.="<li class='movableNode'>\n" ;
+		$orderquestions.= "\t<input style='float:right;";
+		if ($i == 0) {$orderquestions.="visibility:hidden;";}
+		$orderquestions.="' type='submit' name='questionordermethod' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$oqarray[$i]['question_order']}'\" ".$updisabled."/>\n";
+		if ($i < $questioncount-1)
+		{
+			// Fill the sortorder hiddenfield so we now what fi        eld is moved down
+			$orderquestions.= "\t<input type='submit' style='float:right;' name='questionordermethod' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$oqarray[$i]['question_order']}'\" ".$downdisabled."/>\n";
+		}
+		$orderquestions.=$oqarray[$i]['title'].": ".$oqarray[$i]['question']."</li>\n" ;
+	}
+	
+//        $cnt=0;
+//    	while($oqrow = $oqresult->FetchRow())
+//    	{
+//  			$orderquestions.="<li class='movableNode'>\n" ;
+//     				$orderquestions.= "\t<input style='float:right;";
+//                  if ($cnt == 0){$orderquestions.="visibility:hidden;";}
+//                  $orderquestions.="' type='submit' name='questionordermethod' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$oqrow['question_order']}'\" />\n";
+//      			if ($cnt < $questioncount-1)
+//      			{
+//      				// Fill the sortorder hiddenfield so we now what field is moved down
+//                      $orderquestions.= "\t<input type='submit' style='float:right;' name='questionordermethod' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$oqrow['question_order']}'\" />\n";
+//      			}
+//  			$orderquestions.=$oqrow['title'].": ".$oqrow['question']."</li>\n" ;
+//  
+//  			$cnt++;
+//  		}
+
   		$orderquestions.="</ul>\n"
   		. "\t<input type='hidden' name='sortorder' />"
   		. "\t<input type='hidden' name='action' value='orderquestions' />" 

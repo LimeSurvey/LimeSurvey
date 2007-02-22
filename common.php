@@ -3194,4 +3194,36 @@ function GetGroupDepsForConditions($sid)
 	}
 	return null;
 }
+
+/**
+* GetQuestDepsForConditions() get Dependencies between groups caused by conditions 
+* @param string $sid - the currently selected survey
+* @param string $gid - the group inside which we want to check the question conditions
+* @return array - returns an array describing the conditions
+*/
+function GetQuestDepsForConditions($sid,$gid)
+{
+	global $connect, $clang;
+	$condarray = Array();
+
+	$condquery = "SELECT tq.qid as depqid, tq2.qid as targqid, tc.cid FROM "
+		. db_table_name('conditions')." AS tc, "
+		. db_table_name('questions')." AS tq, "
+		. db_table_name('questions')." AS tq2 "
+		. "WHERE tc.qid = tq.qid AND tq.sid=$sid "
+		. "AND tq.gid=$gid AND  tq2.qid=tc.cqid AND tq2.gid=tq.gid";
+	$condresult=$connect->Execute($condquery) or die($connect->ErrorMsg());
+	
+	if ($condresult->RecordCount() > 0) {
+		while ($condrow = $condresult->FetchRow())
+		{
+			$depqid=$condrow['depqid'];
+			$targetqid=$condrow['targqid'];
+			$condid=$condrow['cid'];
+			$condarray[$depqid][$targetqid][] = $condid;
+		}
+		return $condarray;
+	}
+	return null;
+}
 ?>
