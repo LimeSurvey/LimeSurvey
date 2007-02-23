@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-02-21 23:08+0100\n"
+"PO-Revision-Date: 2007-02-23 19:15+0100\n"
 "Last-Translator: \n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1871,6 +1871,20 @@ msgstr "Frage aktualisieren"
 msgid "Save"
 msgstr "Speichern"
 
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2504
+msgid "Current group is using conditional questions"
+msgstr "Die aktuelle Gruppe nutzt Fragen mit Bedingungen"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2504
+msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr ""
+
+msgid "The following questions are concerned"
+msgstr "Die folgenden Fragen sind betroffen"
+
+msgid "depends on question"
+msgstr "hängt ab von Frage"
+
 msgid "Import Group"
 msgstr "Gruppen importieren"
 
@@ -2157,6 +2171,23 @@ msgstr ""
 
 msgid "URL Description:"
 msgstr "URL Beschreibung:"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:3595
+msgid "Current survey has questions with conditions outside their own group"
+msgstr ""
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:3595
+msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr ""
+
+msgid "The following groups are concerned"
+msgstr "Die folgenden Gruppen sind betroffen"
+
+msgid "depends on group"
+msgstr "Hängt ab von Gruppe"
+
+msgid "for question(s)"
+msgstr "für Frage(n)"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1855
 msgid "The uploaded file is bigger than the upload_max_filesize directive in php.ini"

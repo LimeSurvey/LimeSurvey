@@ -267,7 +267,7 @@ if(isset($_SESSION['loginID']) && $action!='login')
   $adminoutput.= "\t\t</td>\n".helpscreen()
               . "\t</tr>\n"
               . "</table>\n"
-              . getAdminFooter("$langdir/instructions.html", $clang->gT("Using the PHPSurveyor Admin Script"));
+              . getAdminFooter("http://docs.phpsurveyor.org", $clang->gT("PHPSurveyor Online Manual"));
   }
 }
   
