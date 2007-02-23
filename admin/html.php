@@ -2454,7 +2454,6 @@ if($action == "orderquestions")
 	{
     	if (isset($_POST['questionordermethod']))
     	{
-           // Todo: Check if conditions to the questions in that to be moved group are connected. If yes then only move that group within the condition limit
     	   switch($_POST['questionordermethod'])
     	   {
             // Pressing the Up button
@@ -2493,20 +2492,17 @@ if($action == "orderquestions")
     //        . "<tr> <td >".("Question Name")."</td><td>".("Action")."</td></tr>"
             . "</table>\n";
 
-//	$condquery = "SELECT tc.cid FROM ".db_table_name('conditions')." AS tc, ".db_table_name('questions')." AS tq WHERE tc.qid = tq.qid AND tq.sid=$surveyid AND tq.gid=$gid";
-//	$condresult=$connect->Execute($condquery) or die($connect->ErrorMsg());
-//	if ($condresult->RecordCount() > 0) {
-//		$orderquestions .= "<li class='movableNode'><strong><font color='orange'>".$clang->gT("Warning").":</font> ".$clang->gT("Current group is using conditional questions")."</strong><br /><br />".$clang->gT("Re-ordering questions in this group")." ".$clang->gT("can corrupt the survey if questions on which conditions are based, are reordered after questions having the conditions set")."<br /></li>\n";
-//	}
+	// Get the condition dependecy array for all questions in this array and group
 	$questdepsarray = GetQuestDepsForConditions($surveyid,$gid);
 	if (!is_null($questdepsarray))
 	{
-		$orderquestions .= "<li class='movableNode'><strong><font color='orange'>".$clang->gT("Warning").":</font> ".$clang->gT("Current group is using conditional questions")."</strong><br /><br /><i>".$clang->gT("Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set")."</i></strong><br /><br/>".$clang->gT("The following questions are concerned").":<ul>\n";
+		$orderquestions .= "<li class='movableNode'><strong><font color='orange'>".$clang->gT("Warning").":</font> ".$clang->gT("Current group is using conditional questions")."</strong><br /><br /><i>".$clang->gT("Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set")."</i></strong><br /><br/>".$clang->gT("See the conditions marked on the following questions").":<ul>\n";
 		foreach ($questdepsarray as $depqid => $depquestrow)
 		{
 			foreach ($depquestrow as $targqid => $targcid)
 			{
-				$orderquestions .= "<li>".$clang->gT("Question")." <a href='#' onClick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$gid."&amp;qid=".$depqid."')\">[QID: ".$depqid."] </a> ".$clang->gT("depends on question")." <a href='#' onClick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$gid."&amp;qid=".$targqid."')\">[QID: ".$targqid."] </a> ";
+				$listcid=implode("-",$targcid);
+				$orderquestions .= "<li><a href='#' onClick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$gid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\">".$clang->gT("Condition(s) for")." [QID: ".$depqid."] </a> ";
 			}
 			$orderquestions .= "</li>\n";
 		}
@@ -2547,23 +2543,6 @@ if($action == "orderquestions")
 		}
 		$orderquestions.=$oqarray[$i]['title'].": ".$oqarray[$i]['question']."</li>\n" ;
 	}
-	
-//        $cnt=0;
-//    	while($oqrow = $oqresult->FetchRow())
-//    	{
-//  			$orderquestions.="<li class='movableNode'>\n" ;
-//     				$orderquestions.= "\t<input style='float:right;";
-//                  if ($cnt == 0){$orderquestions.="visibility:hidden;";}
-//                  $orderquestions.="' type='submit' name='questionordermethod' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$oqrow['question_order']}'\" />\n";
-//      			if ($cnt < $questioncount-1)
-//      			{
-//      				// Fill the sortorder hiddenfield so we now what field is moved down
-//                      $orderquestions.= "\t<input type='submit' style='float:right;' name='questionordermethod' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$oqrow['question_order']}'\" />\n";
-//      			}
-//  			$orderquestions.=$oqrow['title'].": ".$oqrow['question']."</li>\n" ;
-//  
-//  			$cnt++;
-//  		}
 
   		$orderquestions.="</ul>\n"
   		. "\t<input type='hidden' name='sortorder' />"
@@ -3588,7 +3567,9 @@ if ($action == "ordergroups")
 		. "\t\t<font class='settingcaption'><font color='white'>".$clang->gT("Change Group Order")."</font></font></td></tr>"
 		. "</table>\n";
 
-	// Get groups containing questions with conditions outside the group
+	// Get groups dependencies regarding conditions
+	// => Get an array of groups containing questions with conditions outside the group
+	// $groupdepsarray[dependent-gid][target-gid]['conditions'][qid-having-conditions]=Array(cids...)
 	$groupdepsarray = GetGroupDepsForConditions($surveyid);
 	if (!is_null($groupdepsarray))
 	{
@@ -3597,10 +3578,11 @@ if ($action == "ordergroups")
 		{
 			foreach($depgrouprow as $targgid => $targrow)
 			{
-				$ordergroups .= "<li>".$clang->gT("Group")." <a href='#' onClick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."')\">".$targrow['depgpname']."</a> ".$clang->gT("depends on group")." <a href='#' onClick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$targgid."')\">".$targrow['targetgpname']."</a> ".$clang->gT("for question(s)").":";
+				$ordergroups .= "<li>".$clang->gT("Group")." <a href='#' onClick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."')\">".$targrow['depgpname']."</a> ".$clang->gT("depends on group")." <a href='#' onClick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$targgid."')\">".$targrow['targetgpname']."</a> ".$clang->gT("see the marked conditions on").":";
 				foreach($targrow['conditions'] as $depqid => $depqrow)
 				{
-					$ordergroups .= " [<a href='admin.php?sid=".$surveyid."&amp;gid=".$depgid."&amp;qid=".$depqid."'>QID: ".$depqid."</a>]";
+					$listcid=implode("-",$depqrow);
+					$ordergroups .= " <a href='#' onClick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\">".$clang->gT("Condition(s) for")." [QID: ".$depqid."]</a>";
 				}
 				$ordergroups .= "</li>\n";
 			}

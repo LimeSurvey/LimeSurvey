@@ -73,6 +73,13 @@ if (!isset($_GET['qid']) && !isset($_POST['qid']))
 	return;
 }
 
+$markcidarray=Array();
+if (isset($_GET['markcid']))
+{
+	$markcidarray=explode("-",$_GET['markcid']);
+	
+}
+
 //ADD NEW ENTRY IF THIS IS AN ADD
 if (isset($_POST['subaction']) && $_POST['subaction'] == "insertcondition")
 {
@@ -506,6 +513,16 @@ if ($conditionscount > 0)
 {
 	while ($rows=$result->FetchRow())
 	{
+		if (is_null(array_search($rows['cid'], $markcidarray)) || // PHP4
+			array_search($rows['cid'], $markcidarray) === FALSE) // PHP5
+			// === required cause key 0 would otherwise be interpreted as FALSE
+		{
+			$markcidstyle="";
+		}
+		else {
+			$markcidstyle="background-color: orange;";
+		}
+
 		if (isset($currentfield) && $currentfield != $rows['cfieldname'])
 		{
 			$conditionsoutput .= "\t\t\t\t<tr bgcolor='#E1FFE1'>\n"
@@ -520,7 +537,7 @@ if ($conditionscount > 0)
 			."<font size='1'><strong>"
 			.$clang->gT("OR")."</strong></font>";
 		}
-		$conditionsoutput .= "\t<tr bgcolor='#E1FFE1'>\n"
+		$conditionsoutput .= "\t<tr bgcolor='#E1FFE1' style='$markcidstyle'>\n"
 		."\t<td><form style='margin-bottom:0;' name='del{$rows['cid']}' id='del{$rows['cid']}' method='post' action='$scriptname?action=conditions'>\n"
 		."\t\t<table width='100%' style='height: 13px;' cellspacing='0' cellpadding='0'><tr><td valign='middle' align='right' width='50%'><font size='1' face='verdana'>\n";
 		//BUILD FIELDNAME?

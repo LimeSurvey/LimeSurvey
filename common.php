@@ -3160,15 +3160,78 @@ function FixLanguageConsistency($sid, $availlangs)
 /**
 * GetGroupDepsForConditions() get Dependencies between groups caused by conditions 
 * @param string $sid - the currently selected survey
-* @return array - returns an array describing the conditions
+* @param string $depgid - (optionnal) get only the dependencies applying to the group with gid depgid
+* @param string $targgid - (optionnal) get only the dependencies for groups dependents on group targgid
+* @param string $index-by - (optionnal) "by-depgid" for result indexed with $res[$depgid][$targgid]
+* 					"by-targgid" for result indexed with $res[$targgid][$depgid]
+* @return array - returns an array describing the conditions or NULL if no dependecy is found
+*
+* Example outupt assumin $index-by="by-depgid":
+*Array 
+*(
+*    [125] => Array				// Group Id 125 is dependent on
+*        (
+*            [123] => Array			// Group Id 123
+*                (
+*                    [depgpname] => G3		// GID-125 has name G3
+*                    [targetgpname] => G1	// GID-123 has name G1
+*                    [conditions] => Array
+*                        (
+*                            [189] => Array	// Because Question Id 189
+*                                (
+*                                    [0] => 9	// Have condition 9 set
+*                                    [1] => 10	// and condition 10 set
+*                                    [2] => 14  // and condition 14 set
+*                                )
+*
+*                        )
+*
+*                )
+*
+*            [124] => Array			// GID 125 is also dependent on GID 124
+*                (
+*                    [depgpname] => G3
+*                    [targetgpname] => G2
+*                    [conditions] => Array
+*                        (
+*                            [189] => Array	// Because Question Id 189 have conditions set
+*                                (
+*                                    [0] => 11
+*                                )
+*
+*                            [215] => Array	// And because Question Id 215 have conditions set
+*                                (
+*                                    [0] => 12
+*                                )
+*
+*                        )
+*
+*                )
+*
+*        )
+*
+*)
+*
+* Usage example:
+*	* Get all group dependencies for SID $sid indexed by depgid:
+*		$result=GetGroupDepsForConditions($sid);
+*	* Get all group dependencies for GID $gid in survey $sid indexed by depgid:
+*		$result=GetGroupDepsForConditions($sid,$gid);
+*	* Get all group dependents on group $gid in survey $sid indexed by targgid:
+*		$result=GetGroupDepsForConditions($sid,"all",$gid,"by-targgid");
 */
-function GetGroupDepsForConditions($sid)
+function GetGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="by-depgid")
 {
 	global $connect, $clang;
 	$condarray = Array();
 
+	$sqldepgid="";
+	$sqltarggid="";
+	if ($depgid != "all") {$sqldepgid="AND tq.gid=$depgid";}
+	if ($targgid != "all") {$sqltarggid="AND tq2.gid=$targgid";}
+
 	$condquery = "SELECT tg.gid, tg.group_name, "
-		. "tg2.gid, tg2.group_name, tq.qid, tc.cid, tq2.qid FROM "
+		. "tg2.gid, tg2.group_name, tq.qid, tc.cid FROM "
 		. db_table_name('conditions')." AS tc, "
 		. db_table_name('questions')." AS tq, "
 		. db_table_name('questions')." AS tq2, "
@@ -3176,7 +3239,7 @@ function GetGroupDepsForConditions($sid)
 		. db_table_name('groups')." AS tg2 "
 		. "WHERE tc.qid = tq.qid AND tq.sid=$sid "
 		. "AND tq.gid = tg.gid AND tg2.gid = tq2.gid "
-		. "AND tq2.qid=tc.cqid AND tq.gid != tg2.gid";
+		. "AND tq2.qid=tc.cqid AND tq.gid != tg2.gid $sqldepgid $sqltarggid";
 	$condresult=$connect->Execute($condquery) or die($connect->ErrorMsg());
 	
 	if ($condresult->RecordCount() > 0) {
@@ -3186,9 +3249,21 @@ function GetGroupDepsForConditions($sid)
 			$targetgid=$condrow[2];
 			$depqid=$condrow[4];
 			$cqid=$condrow[5];
-			$condarray[$depgid][$targetgid]['depgpname'] = $condrow[1];
-			$condarray[$depgid][$targetgid]['targetgpname'] = $condrow[3];
-			$condarray[$depgid][$targetgid]['conditions'][$depqid][$cqid] = $condrow[6];
+			
+			switch ($indexby)
+			{
+				case "by-depgid":
+				$condarray[$depgid][$targetgid]['depgpname'] = $condrow[1];
+				$condarray[$depgid][$targetgid]['targetgpname'] = $condrow[3];
+				$condarray[$depgid][$targetgid]['conditions'][$depqid][]=$cqid;
+				break;
+
+				case "by-targgid":
+				$condarray[$targetgid][$depgid]['depgpname'] = $condrow[1];
+				$condarray[$targetgid][$depgid]['targetgpname'] = $condrow[3];
+				$condarray[$targetgid][$depgid]['conditions'][$depqid][] = $cqid;
+				break;
+			}
 		}
 		return $condarray;
 	}
@@ -3198,20 +3273,53 @@ function GetGroupDepsForConditions($sid)
 /**
 * GetQuestDepsForConditions() get Dependencies between groups caused by conditions 
 * @param string $sid - the currently selected survey
-* @param string $gid - the group inside which we want to check the question conditions
-* @return array - returns an array describing the conditions
+* @param string $gid - (optionnal) only search dependecies inside the Group Id $gid
+* @param string $depqid - (optionnal) get only the dependencies applying to the question with qid depqid
+* @param string $targqid - (optionnal) get only the dependencies for questions dependents on question Id targqid
+* @param string $index-by - (optionnal) "by-depqid" for result indexed with $res[$depqid][$targqid]
+* 					"by-targqid" for result indexed with $res[$targqid][$depqid]
+* @return array - returns an array describing the conditions or NULL if no dependecy is found
+*
+* Example outupt assumin $index-by="by-depqid":
+*Array
+*(
+*    [184] => Array		// Question Id 184
+*        (
+*            [183] => Array	// Depends on Question Id 183
+*                (
+*                    [0] => 5	// Because of condition Id 5
+*                )
+*
+*        )
+*
+*)
+*
+* Usage example:
+*	* Get all questions dependencies for Survey $sid and group $gid indexed by depqid:
+*		$result=GetQuestDepsForConditions($sid,$gid);
+*	* Get all questions dependencies for question $qid in survey/group $sid/$gid indexed by depqid:
+*		$result=GetGroupDepsForConditions($sid,$gid,$qid);
+*	* Get all questions dependents on question $qid in survey/group $sid/$gid indexed by targqid:
+*		$result=GetGroupDepsForConditions($sid,$gid,,"all",$qid,"by-targgid");
 */
-function GetQuestDepsForConditions($sid,$gid)
+function GetQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",$indexby="by-depqid")
 {
 	global $connect, $clang;
 	$condarray = Array();
+
+	$sqlgid="";
+	$sqldepqid="";
+	$sqltargqid="";
+	if ($gid != "all") {$sqlgid="AND tq.gid=$gid";}
+	if ($depqid != "all") {$sqldepqid="AND tq.qid=$depqid";}
+	if ($targqid != "all") {$sqltargqid="AND tq2.qid=$targqid";}
 
 	$condquery = "SELECT tq.qid as depqid, tq2.qid as targqid, tc.cid FROM "
 		. db_table_name('conditions')." AS tc, "
 		. db_table_name('questions')." AS tq, "
 		. db_table_name('questions')." AS tq2 "
 		. "WHERE tc.qid = tq.qid AND tq.sid=$sid "
-		. "AND tq.gid=$gid AND  tq2.qid=tc.cqid AND tq2.gid=tq.gid";
+		. "AND  tq2.qid=tc.cqid AND tq2.gid=tq.gid $sqlgid $sqldepqid $sqltargqid";
 	$condresult=$connect->Execute($condquery) or die($connect->ErrorMsg());
 	
 	if ($condresult->RecordCount() > 0) {
@@ -3220,7 +3328,16 @@ function GetQuestDepsForConditions($sid,$gid)
 			$depqid=$condrow['depqid'];
 			$targetqid=$condrow['targqid'];
 			$condid=$condrow['cid'];
-			$condarray[$depqid][$targetqid][] = $condid;
+			switch ($indexby)
+			{
+				case "by-depqid":
+				$condarray[$depqid][$targetqid][] = $condid;
+				break;
+
+				case "by-targqid":
+				$condarray[$targetqid][$depqid][] = $condid;
+				break;
+			}
 		}
 		return $condarray;
 	}
