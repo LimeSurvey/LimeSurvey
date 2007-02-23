@@ -52,7 +52,7 @@ if (!isset($elem)) {$elem=returnglobal('elem');}         //??
 if ($action != "showprintablesurvey")
 {
   if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
-  $adminoutput = getAdminHeader($_SESSION['metaHeader']);  // Alle future output is written into this and then outputted at the end of file
+  $adminoutput = getAdminHeader($_SESSION['metaHeader']);  // All future output is written into this and then outputted at the end of file
   $_SESSION['metaHeader']='';    
   $adminoutput .= helpscreenscript();
   $adminoutput .= "<table width='100%' border='0' cellpadding='0' cellspacing='0' >\n"
@@ -63,7 +63,7 @@ include_once("login_check.php");
   
 
 if ($action == "activate")
-	{
+{
 	$surquery = "SELECT activate_survey FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
 	$surresult = $connect->Execute($surquery) or die($connect->ErrorMsg());		
 	$surrows = $surresult->FetchRow();
@@ -76,7 +76,7 @@ if ($action == "activate")
 		{
 		include("access_denied.php");		
 		}	
-	}
+}
 	
 if ($action == "deactivate")
 {
@@ -95,7 +95,7 @@ if ($action == "deactivate")
 }
 
 if ($action == "importsurvey")
-	{
+{
 	if($_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		{
 		include("importsurvey.php");
@@ -104,12 +104,12 @@ if ($action == "importsurvey")
 		{
 		include("access_denied.php");		
 		}
-	}
+}
 
 
 
 if ($action == "importgroup")
-	{
+{
 	/*$surquery = "SELECT define_questions FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
 	$surresult = $connect->Execute($surquery) or die($connect->ErrorMsg());		
 	$surrows = $surresult->FetchRow();
@@ -123,9 +123,9 @@ if ($action == "importgroup")
 		include("access_denied.php");		
 		}*/
 	
-	}
+}
 if ($action == "importquestion")
-	{
+{
 	/*$surquery = "SELECT define_questions FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
 	$surresult = $connect->Execute($surquery) or die($connect->ErrorMsg());		
 	$surrows = $surresult->FetchRow();
@@ -138,7 +138,7 @@ if ($action == "importquestion")
 		{
 		include("access_denied.php");		
 		}*/
-	}
+}
 
 
 

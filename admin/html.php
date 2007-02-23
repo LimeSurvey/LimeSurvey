@@ -842,6 +842,10 @@ if ($gid)   // Show the group toolbar
 	$grpquery ="SELECT * FROM ".db_table_name('groups')." WHERE gid=$gid AND
 	language='".$baselang."' ORDER BY ".db_table_name('groups').".group_order";
 	$grpresult = db_execute_assoc($grpquery);
+
+	// Check if other questions/groups are dependent upon this group
+	$condarray=GetGroupDepsForConditions($surveyid,"all",$gid,"by-targgid");	
+
 	$groupsummary = "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
 	while ($grow = $grpresult->FetchRow())
 	{
@@ -873,10 +877,20 @@ if ($gid)   // Show the group toolbar
 
 		if ((($sumcount4 == 0 && $activated != "Y") || $activated != "Y") && $sumrows5['define_questions'])
 		{
-			$groupsummary .= "\t\t\t\t\t<a href='$scriptname?action=delgroup&amp;sid=$surveyid&amp;gid=$gid' onclick=\"return confirm('".$clang->gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?")."')\""
-			. "onmouseout=\"hideTooltip()\""
-			. "onmouseover=\"showTooltip(event,'".$clang->gT("Delete Current Group", "js")."');return false\">"
-			. "<img src='$imagefiles/delete.png' alt='' name='DeleteWholeGroup' title='' align='left' border='0' hspace='0' /></a>";
+			if (is_null($condarray))
+			{
+				$groupsummary .= "\t\t\t\t\t<a href='$scriptname?action=delgroup&amp;sid=$surveyid&amp;gid=$gid' onclick=\"return confirm('".$clang->gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?")."')\""
+				. "onmouseout=\"hideTooltip()\""
+				. "onmouseover=\"showTooltip(event,'".$clang->gT("Delete Current Group", "js")."');return false\">"
+				. "<img src='$imagefiles/delete.png' alt='' name='DeleteWholeGroup' title='' align='left' border='0' hspace='0' /></a>";
+			}
+			else
+			{
+				$groupsummary .= "\t\t\t\t\t<a href='$scriptname?sid=$surveyid&amp;gid=$gid' onclick=\"alert('".$clang->gT("Impossible to delete this group because there is at least one question having a condition on its content")."')\""
+				. "onmouseout=\"hideTooltip()\""
+				. "onmouseover=\"showTooltip(event,'".$clang->gT("Disabled")."-".$clang->gT("Delete Current Group", "js")."');return false\">"
+				. "<img src='$imagefiles/delete.png' alt='' name='DeleteWholeGroup' title='' align='left' border='0' hspace='0' /></a>";
+			}
 		}
 		else
 		{
@@ -957,6 +971,22 @@ if ($gid)   // Show the group toolbar
 		. $clang->gT("Description:")."</strong></td>\n\t<td>";
 		if (trim($grow['description'])!='') {$groupsummary .=$grow['description'];}
 		$groupsummary .= "</td></tr>\n";
+
+		if (!is_null($condarray))
+		{
+			$groupsummary .= "\t<tr $gshowstyle id='surveydetails22'><td valign='top' align='right'><strong>"
+			. $clang->gT("Questions with conditions to this group").":</strong></td>\n"
+			. "\t<td>";
+			foreach ($condarray[$gid] as $depgid => $deprow)
+			{
+				foreach ($deprow['conditions'] as $depqid => $depcid)
+				{
+					//$groupsummary .= "[QID: ".$depqid."]"; 
+					$listcid=implode("-",$depcid);
+					$groupsummary .= " <a href='#' onClick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\">[QID: ".$depqid."]</a>"; 
+				}
+			}
+		}
 	}
 	$groupsummary .= "\n</table></table>\n";
 }
@@ -971,6 +1001,10 @@ if ($qid)  // Show the question toolbar
 	$qrquery = "SELECT * FROM ".db_table_name('questions')." WHERE gid=$gid AND sid=$surveyid AND qid=$qid AND language='".$baselang."'";
 	$qrresult = db_execute_assoc($qrquery) or die($qrquery."<br />".$connect->ErrorMsg());
 	$questionsummary = "<table width='100%' align='center' bgcolor='#EEEEEE' border='0'>\n";
+
+	// Check if other questions in the Survey are dependent upon this question
+	$condarray=GetQuestDepsForConditions($surveyid,"all","all",$qid,"by-targqid","outsidegroup");
+
 	while ($qrrow = $qrresult->FetchRow())
 	{
 		$qrrow = array_map('htmlspecialchars', $qrrow);
@@ -1000,12 +1034,24 @@ if ($qid)  // Show the question toolbar
 
 		if ((($qct == 0 && $activated != "Y") || $activated != "Y") && $sumrows5['define_questions'])
 		{
-			$questionsummary .= "\t\t\t\t\t<a href='$scriptname?action=delquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'" .
-			"onclick=\"return confirm('".$clang->gT("Deleting this question will also delete any answers it includes. Are you sure you want to continue?")."')\""
-			. "onmouseout=\"hideTooltip()\""
-			. "onmouseover=\"showTooltip(event,'".$clang->gT("Delete Current Question", "js")."');return false\">"
-			. "<img src='$imagefiles/delete.png' name='DeleteWholeQuestion' alt= '' title='' "
-			."align='left' border='0' hspace='0' /></a>\n";
+			if (is_null($condarray))
+			{
+				$questionsummary .= "\t\t\t\t\t<a href='$scriptname?action=delquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'" .
+				"onclick=\"return confirm('".$clang->gT("Deleting this question will also delete any answers it includes. Are you sure you want to continue?")."')\""
+				. "onmouseout=\"hideTooltip()\""
+				. "onmouseover=\"showTooltip(event,'".$clang->gT("Delete Current Question", "js")."');return false\">"
+				. "<img src='$imagefiles/delete.png' name='DeleteWholeQuestion' alt= '' title='' "
+				."align='left' border='0' hspace='0' /></a>\n";
+			}
+			else
+			{
+				$questionsummary .= "\t\t\t\t\t<a href='$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid'" .
+				"onclick=\"alert('".$clang->gT("Impossible to delete this question because  there is at least one question having a condition on it")."')\""
+				. "onmouseout=\"hideTooltip()\""
+				. "onmouseover=\"showTooltip(event,'".$clang->gT("Disabled")."-".$clang->gT("Delete Current Question", "js")."');return false\">"
+				. "<img src='$imagefiles/delete.png' name='DeleteWholeQuestion' alt= '' title='' "
+				."align='left' border='0' hspace='0' /></a>\n";
+			}
 		}
 		else {$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";}
 		$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
@@ -1122,6 +1168,18 @@ if ($qid)  // Show the question toolbar
 			. "<td align='right' valign='top'><strong>"
 			. $clang->gT("Other:")."</strong></td>\n"
 			. "\t<td>{$qrrow['other']}</td></tr>\n";
+		}
+		if (!is_null($condarray))
+		{
+			$questionsummary .= "\t<tr $qshowstyle id='surveydetails38'>"
+			. "<td align='right' valign='top'><strong>"
+			. $clang->gT("Other questions having conditions on this question:")
+			. "\t<td>";
+			foreach ($condarray[$qid] as $depqid => $depcid)
+			{
+				$listcid=implode("-",$depcid);
+				$questionsummary .= " <a href='#' onClick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\">[QID: ".$depqid."]</a>";
+			}	
 		}
 		$qid_attributes=getQuestionAttributes($qid);
 	    $questionsummary .= "</table>";		

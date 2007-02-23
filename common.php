@@ -3230,8 +3230,8 @@ function GetGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="b
 	if ($depgid != "all") {$sqldepgid="AND tq.gid=$depgid";}
 	if ($targgid != "all") {$sqltarggid="AND tq2.gid=$targgid";}
 
-	$condquery = "SELECT tg.gid, tg.group_name, "
-		. "tg2.gid, tg2.group_name, tq.qid, tc.cid FROM "
+	$condquery = "SELECT tg.gid as depgid, tg.group_name as depgpname, "
+		. "tg2.gid as targgid, tg2.group_name as targgpname, tq.qid as depqid, tc.cid FROM "
 		. db_table_name('conditions')." AS tc, "
 		. db_table_name('questions')." AS tq, "
 		. db_table_name('questions')." AS tq2, "
@@ -3245,23 +3245,27 @@ function GetGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="b
 	if ($condresult->RecordCount() > 0) {
 		while ($condrow = $condresult->FetchRow())
 		{
-			$depgid=$condrow[0];
-			$targetgid=$condrow[2];
-			$depqid=$condrow[4];
-			$cqid=$condrow[5];
 			
 			switch ($indexby)
 			{
 				case "by-depgid":
+				$depgid=$condrow[0];
+				$targetgid=$condrow[2];
+				$depqid=$condrow[4];
+				$cid=$condrow[5];
 				$condarray[$depgid][$targetgid]['depgpname'] = $condrow[1];
 				$condarray[$depgid][$targetgid]['targetgpname'] = $condrow[3];
-				$condarray[$depgid][$targetgid]['conditions'][$depqid][]=$cqid;
+				$condarray[$depgid][$targetgid]['conditions'][$depqid][]=$cid;
 				break;
 
 				case "by-targgid":
-				$condarray[$targetgid][$depgid]['depgpname'] = $condrow[1];
-				$condarray[$targetgid][$depgid]['targetgpname'] = $condrow[3];
-				$condarray[$targetgid][$depgid]['conditions'][$depqid][] = $cqid;
+				$depgid=$condrow['depgid'];
+				$targetgid=$condrow['targgid'];
+				$depqid=$condrow['depqid'];
+				$cid=$condrow['cid'];
+				$condarray[$targetgid][$depgid]['depgpname'] = $condrow['depgpname'];
+				$condarray[$targetgid][$depgid]['targetgpname'] = $condrow['targgpname'];
+				$condarray[$targetgid][$depgid]['conditions'][$depqid][] = $cid;
 				break;
 			}
 		}
@@ -3300,9 +3304,9 @@ function GetGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="b
 *	* Get all questions dependencies for question $qid in survey/group $sid/$gid indexed by depqid:
 *		$result=GetGroupDepsForConditions($sid,$gid,$qid);
 *	* Get all questions dependents on question $qid in survey/group $sid/$gid indexed by targqid:
-*		$result=GetGroupDepsForConditions($sid,$gid,,"all",$qid,"by-targgid");
+*		$result=GetGroupDepsForConditions($sid,$gid,"all",$qid,"by-targgid");
 */
-function GetQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",$indexby="by-depqid")
+function GetQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",$indexby="by-depqid", $searchscope="samegroup")
 {
 	global $connect, $clang;
 	$condarray = Array();
@@ -3310,16 +3314,18 @@ function GetQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",
 	$sqlgid="";
 	$sqldepqid="";
 	$sqltargqid="";
+	$sqlsearchscope="";
 	if ($gid != "all") {$sqlgid="AND tq.gid=$gid";}
 	if ($depqid != "all") {$sqldepqid="AND tq.qid=$depqid";}
 	if ($targqid != "all") {$sqltargqid="AND tq2.qid=$targqid";}
+	if ($searchscope == "samegroup") {$sqlsearchscope="AND tq2.gid=tq.gid";}
 
 	$condquery = "SELECT tq.qid as depqid, tq2.qid as targqid, tc.cid FROM "
 		. db_table_name('conditions')." AS tc, "
 		. db_table_name('questions')." AS tq, "
 		. db_table_name('questions')." AS tq2 "
 		. "WHERE tc.qid = tq.qid AND tq.sid=$sid "
-		. "AND  tq2.qid=tc.cqid AND tq2.gid=tq.gid $sqlgid $sqldepqid $sqltargqid";
+		. "AND  tq2.qid=tc.cqid $sqlsearchscope $sqlgid $sqldepqid $sqltargqid";
 	$condresult=$connect->Execute($condquery) or die($connect->ErrorMsg());
 	
 	if ($condresult->RecordCount() > 0) {
