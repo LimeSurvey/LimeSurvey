@@ -311,8 +311,11 @@ function &db_execute_num($sql,$inputarr=false)
 {
 	global $connect;
 
-	$connect->SetFetchMode(ADODB_FETCH_NUM);
+// Todo: Set fetchmode to previous state after changing 
+	//$oldfetchmode=
+    $connect->SetFetchMode(ADODB_FETCH_NUM);
 	$dataset=$connect->Execute($sql,$inputarr);
+	//$connect->SetFetchMode($oldfetchmode);
 	return $dataset;
 }
 
@@ -320,7 +323,6 @@ function &db_select_limit_num($sql,$numrows=-1,$offset=-1,$inputarr=false)
 {
 	global $connect;
 
-	$connect->SetFetchMode(ADODB_FETCH_NUM);
 	$dataset=$connect->SelectLimit($sql,$numrows=-1,$offset=-1,$inputarr=false) or die($sql);
 	return $dataset;
 }
@@ -328,9 +330,11 @@ function &db_select_limit_num($sql,$numrows=-1,$offset=-1,$inputarr=false)
 function &db_execute_assoc($sql,$inputarr=false)
 {
 	global $connect;
-
-	$connect->SetFetchMode(ADODB_FETCH_ASSOC);
+// Todo: Set fetchmode to previous state after changing 
+//	$oldfetchmode=
+    $connect->SetFetchMode(ADODB_FETCH_ASSOC);
 	$dataset=$connect->Execute($sql,$inputarr) or die($sql);
+//	$connect->SetFetchMode($oldfetchmode);
 	return $dataset;
 }
 
