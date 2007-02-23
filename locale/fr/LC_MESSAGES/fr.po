@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-02-22 19:16+0100\n"
+"PO-Revision-Date: 2007-02-23 18:55+0100\n"
 "Last-Translator: b00z00\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgid "Logged in as"
 msgstr "Connecté en tant que "
 
 msgid "Default Administration Page"
-msgstr "Page d`administration générale"
+msgstr "Page d'administration générale"
 
 # E:\www\phpsurveyor/common.php:219
 # E:\www\phpsurveyor/common.php:220
@@ -48,7 +48,7 @@ msgid "Backup Entire Database"
 msgstr "Sauvegarder entièrement la base de données"
 
 msgid "Edit/Add Label Sets"
-msgstr "Editer/Ajouter des jeux d`étiquettes"
+msgstr "Editer/Ajouter des jeux d'étiquettes"
 
 msgid "Template Editor"
 msgstr "Editeur de modèles"
@@ -173,7 +173,7 @@ msgid "Check Database Fields"
 msgstr "Contrôle des champs de la base de données"
 
 msgid "Return to Survey Administration"
-msgstr "Retourner à l`écran d`administration générale"
+msgstr "Retourner à l'écran d'administration générale"
 
 msgid "Show summary information"
 msgstr "Afficher un résumé"
@@ -198,7 +198,7 @@ msgid "Export result to a SPSS command file"
 msgstr "Exporter le résultat dans un fichier de commandes SPSS"
 
 msgid "Import answers from a deactivated survey table"
-msgstr "Importer des réponses d&lsquo;un ancien (désactivé) questionnaire"
+msgstr "Importer des réponses d'un ancien (désactivé) questionnaire"
 
 msgid "View Saved but not submitted Responses"
 msgstr "Voir les réponses enregistrées mais non validées"
@@ -706,13 +706,13 @@ msgid "You are not allowed to perform this operation!"
 msgstr "Vous n'êtes pas autorisé à effectuer cette opération !"
 
 msgid "This question is a multiple answer type question but has no answers."
-msgstr "Cette question est à réponses multiples mais n&lsquo;a aucune réponse de définie."
+msgstr "Cette question est à réponses multiples mais n'a aucune réponse de définie."
 
 msgid "This question does not have a question 'type' set."
-msgstr "Cette question n&lsquo;a pas de type défini."
+msgstr "Cette question n'a pas de type défini."
 
 msgid "This question requires a Labelset, but none is set."
-msgstr "Un jeu d&lsquo;étiquettes est requis pour cette question. Aucun n&lsquo;est saisi."
+msgstr "Un jeu d'étiquettes est requis pour cette question. Aucun n'est défini."
 
 msgid "This question has a condition set, however the condition is based on a question that appears after it."
 msgstr "Cette question a une condition paramètrée, toutefois la condition est basée sur une question qui apparaît aprés elle."
@@ -721,13 +721,13 @@ msgid "Activate Survey"
 msgstr "Activer le questionnaire"
 
 msgid "Survey does not pass consistency check"
-msgstr "Le questionnaire n&lsquo;est pas validé par le contrôle de cohérence"
+msgstr "Le questionnaire n'est pas validé par le contrôle de cohérence"
 
 msgid "The following problems have been found:"
 msgstr "Le probléme suivant a été rencontré :"
 
 msgid "The survey cannot be activated until these problems have been resolved."
-msgstr "Le questionnaire ne peut pas être activé jusqu&lsquo;à ce que ces problémes soient résolus."
+msgstr "Le questionnaire ne peut pas être activé jusqu'à ce que ces problémes soient résolus."
 
 msgid "Warning"
 msgstr "Avertissement"
@@ -736,7 +736,7 @@ msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
 msgstr "LIRE CECI ATTENTIVEMENT AVANT DE POURSUIVRE"
 
 msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
-msgstr "Vous devriez activer un questionnaire seulement si vous êtes absolument certain que la configuration de votre questionnaire est terminée et n&lsquo;aura pas besoin d&lsquo;être modifiée."
+msgstr "Vous devriez activer un questionnaire seulement si vous êtes absolument certain que la configuration de votre questionnaire est terminée et n'aura pas besoin d'être modifiée."
 
 # D:\www\phpsurveyor/admin/activate.php:235
 msgid "Once a survey is activated you can no longer:"
@@ -772,25 +772,25 @@ msgid "Change survey name or description"
 msgstr "Changez le nom ou la description du questionnaire"
 
 msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
-msgstr "Une fois que les données sont saisies dans votre questionnaire, si vous voulez ajouter ou enlever des groupes ou questions, vous devez désactiver ce questionnaire, ce qui déplacera toutes les données qui ont déjà été saisies dans une table d&lsquo;archivage séparée."
+msgstr "Une fois que les données sont saisies dans votre questionnaire, si vous voulez ajouter ou enlever des groupes ou questions, vous devez désactiver ce questionnaire, ce qui déplacera toutes les données qui ont déjà été saisies dans une table d'archivage séparée."
 
 msgid "Survey could not be actived."
 msgstr "Le questionnaire ne peut pas être activé."
 
 msgid "Main Admin Screen"
-msgstr "Ecran principal d&lsquo;administration"
+msgstr "Ecran principal d'administration"
 
 msgid "Survey has been activated. Results table has been successfully created."
 msgstr "Le questionnaire a été activé. La table des réponses a été créée avec succés."
 
 msgid "This is not an anonymous survey. A token table must also be created."
-msgstr "Ce n&lsquo;est pas un questionnaire anonyme. Une table d&lsquo;invitations doit donc être créée."
+msgstr "Ce n'est pas un questionnaire anonyme. Une table d'invitations doit donc être créée."
 
 msgid "Initialise Tokens"
 msgstr "Initialiser les invitations"
 
 msgid "This survey allows public registration. A token table must also be created."
-msgstr "Ce questionnaire permet les enregistrements publics. Une table d&lsquo;invitations doit aussi être créée."
+msgstr "Ce questionnaire permet les enregistrements publics. Une table d'invitations doit aussi être créée."
 
 msgid "This survey is now active, and responses can be recorded."
 msgstr "Ce questionnaire est maintenant activé, et les réponses peuvent être enregistrées."
@@ -863,7 +863,7 @@ msgid "Edit"
 msgstr "Editer"
 
 msgid "If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission"
-msgstr "Si vous créez des évaluations sur cette page, pour le questionnaire sélectionné, celles-ci auront lieu à la fin du questionnaire après l&lsquo;envoi définitif des réponses"
+msgstr "Si vous créez des évaluations sur cette page, pour le questionnaire sélectionné, celles-ci auront lieu à la fin du questionnaire après l'envoi définitif des réponses"
 
 # E:\www\phpsurveyor/admin/assessments.php:145
 # E:\www\phpsurveyor/admin/tokens.php:499
@@ -880,22 +880,22 @@ msgid "Browse Responses"
 msgstr "Parcourir les réponses"
 
 msgid "The defined surveyor database does not exist"
-msgstr "La base de données de PHPSurveyor n&lsquo;existe pas"
+msgstr "La base de données de PHPSurveyor n'existe pas"
 
 msgid "Either your selected database has not yet been created or there is a problem accessing it."
-msgstr "Soit votre base de données n&lsquo;a pas été créée soit il y a un probléme pour y accéder."
+msgstr "Soit votre base de données n'a pas été créée soit il y a un probléme pour y accéder."
 
 msgid "You have not selected a survey to browse."
-msgstr "Vous n&lsquo;avez pas sélectionné de questionnaire à parcourir."
+msgstr "Vous n'avez pas sélectionné de questionnaire à parcourir."
 
 msgid "This survey has not been activated. There are no results to browse."
-msgstr "Ce questionnaire n&lsquo;a pas été activé. Aucun résultat à parcourir."
+msgstr "Ce questionnaire n'a pas été activé. Aucun résultat à parcourir."
 
 msgid "There is no matching survey."
-msgstr "Il n&lsquo;y a pas de questionnaire associé."
+msgstr "Il n'y a pas de questionnaire correspondant."
 
 msgid "View Response"
-msgstr "Visualisation de la réponse d&lsquo;ID "
+msgstr "Voir la réponse"
 
 msgid "Edit this entry"
 msgstr "Editer cette réponse"
@@ -934,13 +934,13 @@ msgid "Condition Designer"
 msgstr "Concepteur de conditions"
 
 msgid "You have not selected a Survey."
-msgstr "Vous n&lsquo;avez pas sélectionné de questionnaire."
+msgstr "Vous n'avez pas sélectionné de questionnaire."
 
 msgid "You cannot run this script directly."
 msgstr "Vous ne pouvez pas exécuter directement ce script."
 
 msgid "You have not selected a Question."
-msgstr "Vous n&lsquo;avez pas sélectionné de question."
+msgstr "Vous n'avez pas sélectionné de question."
 
 # D:\www\phpsurveyor/admin/conditions.php:81
 msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
@@ -1007,10 +1007,10 @@ msgstr "Peupler la base de données"
 
 #, php-format
 msgid "Database `%s` has been successfully populated."
-msgstr "Base de données `%s` complétée avec succès."
+msgstr "Base de données `%s` peuplée avec succès."
 
 msgid "Database Information not provided. This script must be run from admin.php only."
-msgstr "Les informations de la base de données ne sont pas fournies. Ce script doit être exécuté à partir d&lsquo;admin.php seulement."
+msgstr "Les informations de la base de données ne sont pas fournies. Ce script doit être exécuté à partir d'admin.php seulement."
 
 msgid "Database has been created."
 msgstr "Base de données créée."
@@ -1047,7 +1047,7 @@ msgid "Question could not be created."
 msgstr "La question ne peut pas être crée."
 
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
-msgstr "La question ne peut pas être mise à jour. Il y a des conditions pour d&lsquo;autres questions qui se fondent sur les réponses à cette question et changer le type poserait des problèmes. Vous devez supprimer ces conditions avant de pouvoir changer le type de cette question."
+msgstr "La question ne peut pas être mise à jour. Il y a des conditions pour d'autres questions qui se fondent sur les réponses à cette question et changer le type poserait des problèmes. Vous devez supprimer ces conditions avant de pouvoir changer le type de cette question."
 
 msgid "Question could not be updated"
 msgstr "La question ne peut pas être mise à jour"
@@ -1100,7 +1100,7 @@ msgid "ERROR deleting Survey id"
 msgstr "ERREUR en effaçant le questionnaire avec de ID"
 
 msgid "Survey could not be created because it did not have a short title"
-msgstr "Le questionnaire ne peut pas être crée parce qu&lsquo;il n&lsquo;a pas de titre"
+msgstr "Le questionnaire ne peut pas être crée parce qu'il n'a pas de titre"
 
 msgid "Survey could not be created"
 msgstr "Le questionnaire ne peut pas être crée"
@@ -1109,7 +1109,7 @@ msgid "Data Entry"
 msgstr "Entrée de données"
 
 msgid "You have not selected a survey for data-entry."
-msgstr "Vous n&lsquo;avez pas sélectionné de questionnaire pour la saisie des données."
+msgstr "Vous n'avez pas sélectionné de questionnaire pour la saisie des données."
 
 msgid "Try again"
 msgstr "Essayez à nouveau"
@@ -1143,7 +1143,7 @@ msgid "Success"
 msgstr "Succés"
 
 msgid "The entry was assigned the following record id: "
-msgstr "L&lsquo;entrée était assignée à l&lsquo;ID de l&lsquo;enregistrement suivant : "
+msgstr "L'entrée était assignée à l'ID de l'enregistrement suivant : "
 
 msgid "Add Another Record"
 msgstr "Ajouter un autre enregistrement"
@@ -1167,7 +1167,7 @@ msgid "Save as a partially completed survey"
 msgstr "Sauvegarder les réponses partielles au questionnaire"
 
 msgid "Record has been updated."
-msgstr "L&lsquo;enregistrement a été mis à jour."
+msgstr "L'enregistrement a été mis à jour."
 
 msgid "Record Deleted"
 msgstr "Enregistrement supprimé"
@@ -1193,16 +1193,16 @@ msgid "Help about this question"
 msgstr "Aide pour cette question"
 
 msgid "This survey is not yet active. Your response cannot be saved"
-msgstr "Ce questionnaire n&lsquo;est pas encore activé. Votre réponse ne peut pas être sauvegardée"
+msgstr "Ce questionnaire n'est pas encore activé. Votre réponse ne peut pas être sauvegardée"
 
 msgid "The survey you selected does not exist"
-msgstr "Le questionnaire que vous avez sélectionné n&lsquo;existe pas"
+msgstr "Le questionnaire que vous avez sélectionné n'existe pas"
 
 msgid "Answer could not be added. There is already an answer with this code"
 msgstr "La réponse ne peut pas être ajoutée. Il y a déjà une réponse avec ce code"
 
 msgid "You have not selected a survey to delete"
-msgstr "Vous n&lsquo;avez pas sélectionné de questionnaire à supprimer"
+msgstr "Vous n'avez pas sélectionné de questionnaire à supprimer"
 
 msgid "Answer could not be updated. There is already an answer with this code"
 msgstr "La réponse ne peut pas être mise à jour. Il y a déjà une réponse avec ce code"
@@ -1217,13 +1217,13 @@ msgid "When you de-activate a survey all the data entered in the original table 
 msgstr "Lorsque vous désactivez un questionnaire, toutes les données saisies dans la table originale seront déplacées ailleurs, ainsi lorsque vous réactiverez le questionnaire la table sera vide. Vous ne pourrez plus accéder à  ces données avec PHPSurveyor."
 
 msgid "De-activated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
-msgstr "Seul un administrateur système peut accéder aux données d&lsquo;un questionnaire désactivé en utilisant un gestionnaire de bases de données tel que PhpMyAdmin. Si votre questionnaire utilise des invitations, cette table sera également renommée et seul un administrateur système y aura accès."
+msgstr "Seul un administrateur système peut accéder aux données d'un questionnaire désactivé en utilisant un gestionnaire de bases de données tel que PhpMyAdmin. Si votre questionnaire utilise des invitations, cette table sera également renommée et seul un administrateur système y aura accès."
 
 msgid "Your responses table will be renamed to:"
 msgstr "Votre table de réponses sera renommée en :"
 
 msgid "You should export your responses before de-activating. Click \"Cancel\" to return to the main admin screen without de-activating this survey."
-msgstr "Vous devriez exporter vos réponses avant de désactiver. Cliquez sur \"Annuler\" pour retourner à l&lsquo;écran principal d&lsquo;administration sans désactiver ce questionnaire."
+msgstr "Vous devriez exporter vos réponses avant de désactiver. Cliquez sur \"Annuler\" pour retourner à l'écran principal d'administration sans désactiver ce questionnaire."
 
 msgid "De-Activate Survey"
 msgstr "Désactiver le questionnaire"
@@ -1238,10 +1238,10 @@ msgid "The responses to this survey are no longer available using PHPSurveyor."
 msgstr "Les réponses à ce questionnaire ne sont plus disponibles via PHPSurveyor."
 
 msgid "You should note the name of this table in case you need to access this information later."
-msgstr "Vous devriez noter le nom de cette table dans le cas où vous auriez besoin d&lsquo;y accéder ultérieurement."
+msgstr "Vous devriez noter le nom de cette table dans le cas où vous auriez besoin d'y accéder ultérieurement."
 
 msgid "The tokens table associated with this survey has been renamed to: "
-msgstr "La table d&lsquo;invitations liée à ce questionnaire a été renommée en : "
+msgstr "La table d'invitations liée à ce questionnaire a été renommée en : "
 
 msgid "Delete Survey"
 msgstr "Supprimer le questionnaire"
@@ -1253,13 +1253,13 @@ msgid "This process will delete this survey, and all related groups, questions a
 msgstr "Cette procédure supprimera ce questionnaire, tous ses groupes associés, ses réponses des questions ainsi que ses conditions."
 
 msgid "We recommend that before you delete this survey you export the entire survey from the main administration screen."
-msgstr "Il est recommandé avant de supprimer ce questionnaire de l&lsquo;exporter entiérement à partir de l&lsquo;écran principal d&lsquo;administration."
+msgstr "Il est recommandé avant de supprimer ce questionnaire de l'exporter entiérement à partir de l'écran principal d'administration."
 
 msgid "This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey."
-msgstr "Ce questionnaire est activé et une table des réponses existe. Si vous supprimez ce questionnaire, ses réponses seront supprimées. Il est recommandé d&lsquo;exporter les réponses avant de supprimer ce questionnaire."
+msgstr "Ce questionnaire est activé et une table des réponses existe. Si vous supprimez ce questionnaire, ses réponses seront supprimées. Il est recommandé d'exporter les réponses avant de supprimer ce questionnaire."
 
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
-msgstr "Ce questionnaire a une table d&lsquo;invitations associée. Si vous supprimez ce questionnaire cette table d&lsquo;invitations sera supprimée. Il est recommandé d&lsquo;exporter ou de faire une sauvegarde de ces invitations avant de supprimer ce questionnaire."
+msgstr "Ce questionnaire a une table d'invitations associée. Si vous supprimez ce questionnaire cette table d'invitations sera supprimée. Il est recommandé d'exporter ou de faire une sauvegarde de ces invitations avant de supprimer ce questionnaire."
 
 msgid "Cancel"
 msgstr "Annuler"
@@ -1271,19 +1271,19 @@ msgid "Export Question"
 msgstr "Exporter la question"
 
 msgid "Export Label Set"
-msgstr "Exporter le jeu d`étiquettes"
+msgstr "Exporter le jeu d'étiquettes"
 
 msgid "No LID has been provided. Cannot dump label set."
-msgstr "Aucun JID (LID) fourni. Impossible d&lsquo;exporter ce jeu d&lsquo;étiquettes."
+msgstr "Aucun JID (LID) fourni. Impossible d'exporter ce jeu d'étiquettes."
 
 msgid "No QID has been provided. Cannot dump question."
-msgstr "Aucun QID n&lsquo;a été fourni. Impossible d&lsquo;exporter la question."
+msgstr "Aucun QID n'a été fourni. Impossible d'exporter la question."
 
 msgid "Export Survey"
 msgstr "Exporter le questionnaire"
 
 msgid "No SID has been provided. Cannot dump survey"
-msgstr "Aucun QID n&lsquo;a été fourni. Impossible d&lsquo;exporter le questionnaire."
+msgstr "Aucun QID n'a été fourni. Impossible d'exporter le questionnaire."
 
 msgid "Export Results"
 msgstr "Exporter les résultats"
@@ -1354,7 +1354,7 @@ msgid "Token Control"
 msgstr "Contrôle des invitations"
 
 msgid "Choose Token Fields"
-msgstr "Choisir les champs d&lsquo;invitations"
+msgstr "Choisir les champs d'invitations"
 
 msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
 msgstr "Votre questionnaire peut exporter les données des invitations associés avec chaque réponse. Sélectionnez tous les champs additionnels à exporter."
@@ -1439,10 +1439,10 @@ msgid "De-activated Surveys"
 msgstr "Questionnaire(s) désactivé(s)"
 
 msgid "Active Token Tables"
-msgstr "Table(s) d&lsquo;invitation(s) activée(s)"
+msgstr "Table(s) d'invitation(s) activée(s)"
 
 msgid "De-activated Token Tables"
-msgstr "Table(s) d&lsquo;invitation(s) désactivée(s)"
+msgstr "Table(s) d'invitation(s) désactivée(s)"
 
 msgid "This survey is not currently active"
 msgstr "Ce questionnaire est actuellement désactivé"
@@ -1463,7 +1463,7 @@ msgid "De-activate this Survey"
 msgstr "Désactiver ce questionnaire"
 
 msgid "Cannot Activate this Survey"
-msgstr "Impossible d&lsquo;activer ce questionnaire"
+msgstr "Impossible d'activer ce questionnaire"
 
 msgid "Survey Security Settings"
 msgstr "Paramètres de sécurité du questionnaire"
@@ -1490,13 +1490,13 @@ msgstr "Supprimer le questionnaire courant"
 # C:\wamp\www\phpsurveyor/admin/html.php:499
 # C:\wamp\www\phpsurveyor/admin/html.php:3524
 msgid "Change Group Order"
-msgstr "Changer l`ordre des groupes"
+msgstr "Changer l'ordre des groupes"
 
 msgid "Export Current Survey"
 msgstr "Exporter le questionnaire courant"
 
 msgid "Set Assessment Rules"
-msgstr "Définir des régles d`évaluation"
+msgstr "Définir des régles d'évaluation"
 
 msgid "Browse Responses For This Survey"
 msgstr "Parcourir les réponses pour ce questionnaire"
@@ -1523,7 +1523,7 @@ msgid "Title"
 msgstr "Titre"
 
 msgid "This survey is NOT anonymous."
-msgstr "Ce questionnaire n&lsquo;EST PAS anonyme."
+msgstr "Ce questionnaire n'EST PAS anonyme."
 
 msgid "It is presented question by question."
 msgstr "Présentation : une question par page."
@@ -1545,7 +1545,7 @@ msgid "Referer-URL"
 msgstr "Referer-URL"
 
 msgid "It uses cookies for access control."
-msgstr "Utilisation des cookies pour le contrôle d&lsquo;accès."
+msgstr "Utilisation des cookies pour le contrôle d'accès."
 
 msgid "If tokens are used, the public may register for this survey"
 msgstr "Si les invitations sont utilisées, les destinataires doivent être enregistrés pour remplir ce questionnaire"
@@ -1608,7 +1608,7 @@ msgid "Survey table name is"
 msgstr "Le nom de la table du questionnaire est"
 
 msgid "Survey cannot be activated yet."
-msgstr "Impossible d&lsquo;activer le questionnaire maintenant."
+msgstr "Impossible d'activer le questionnaire maintenant."
 
 msgid "You need to add groups"
 msgstr "Vous devez ajouter des groupes"
@@ -1624,25 +1624,34 @@ msgid "Mail to all Members"
 msgstr "Messages à tous les membres"
 
 msgid "Edit Current User Group"
-msgstr "Editer ce groupe d`utilisateurs"
+msgstr "Editer ce groupe d'utilisateurs"
 
 msgid "Delete Current User Group"
-msgstr "Supprimer ce groupe d`utilisateurs"
+msgstr "Supprimer ce groupe d'utilisateurs"
 
 msgid "Add New User Group"
-msgstr "Ajouter un nouveau groupe d`utilisateurs"
+msgstr "Ajouter un nouveau groupe d'utilisateurs"
 
 msgid "Edit Current Group"
 msgstr "Editer le groupe en cours"
 
 msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
-msgstr "Supprimer ce groupe supprimera également toutes les questions et réponses qu&lsquo;il contient. Etes-vous sûr de vouloir continuer ?"
+msgstr "Supprimer ce groupe supprimera également toutes les questions et réponses qu'il contient. Etes-vous sûr de vouloir continuer ?"
 
 msgid "Delete Current Group"
 msgstr "Supprimer le groupe en cours"
 
+# D:\www\phpsurveyor/admin/html.php:889
+msgid "Impossible to delete this group because there is at least one question having a condition on its content"
+msgstr "impossible d'effacer ce groupe car il possède une question servant à définir au moins une condition."
+
+# D:\www\phpsurveyor/admin/html.php:891
+# D:\www\phpsurveyor/admin/html.php:1051
+msgid "Disabled"
+msgstr "Désactivé"
+
 msgid "Change Question Order"
-msgstr "Changer l`ordre des questions"
+msgstr "Changer l'ordre des questions"
 
 msgid "Export Current Group"
 msgstr "Exporter le groupe en cours"
@@ -1659,14 +1668,22 @@ msgstr "Masquer les détails de ce groupe"
 msgid "Add New Question to Group"
 msgstr "Ajouter une nouvelle question au groupe"
 
+# D:\www\phpsurveyor/admin/html.php:3548
+msgid "Questions with conditions to this group"
+msgstr "Questions avec des conditions dans ce groupe."
+
 msgid "Edit Current Question"
 msgstr "Editer la question en cours"
 
 msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
-msgstr "Supprimer cette question supprimera également toutes les réponses qu&lsquo;elle contient. Etes-vous sûr de vouloir continuer ?"
+msgstr "Supprimer cette question supprimera également toutes les réponses qu'elle contient. Etes-vous sûr de vouloir continuer ?"
 
 msgid "Delete Current Question"
 msgstr "Supprimer la question en cours"
+
+# D:\www\phpsurveyor/admin/html.php:1049
+msgid "Impossible to delete this question because  there is at least one question having a condition on it"
+msgstr "Impossible de supprimer cette question car des conditions reposent sur celle-ci"
 
 msgid "Export this Question"
 msgstr "Exporter cette question"
@@ -1714,10 +1731,13 @@ msgid "You need to add answers to this question"
 msgstr "Vous devez ajouter des réponses à cette question"
 
 msgid "You need to choose a Label Set for this question"
-msgstr "Vous devez choisir un jeu d&lsquo;étiquettes pour cette question"
+msgstr "Vous devez choisir un jeu d'étiquettes pour cette question"
 
 msgid "Other:"
 msgstr "Autre :"
+
+msgid "Other questions having conditions on this question:"
+msgstr "Autres questions dont les conditions dépendent de celle-ci :"
 
 msgid "Base Language"
 msgstr "Langue de base"
@@ -1732,13 +1752,13 @@ msgid "New Answer"
 msgstr "Nouvelle réponse"
 
 msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
-msgstr "Vous ne pouvez pas changer des codes, ajouter ou supprimer des entrées dans ce jeu d&lsquo;étiquettes parce que celles-ci sont utilisées par un questionnaire activé."
+msgstr "Vous ne pouvez pas changer des codes, ajouter ou supprimer des entrées dans ce jeu d'étiquettes parce que celles-ci sont utilisées par un questionnaire activé."
 
 msgid "Modifying User"
-msgstr "Modification de l&lsquo;utilisateur"
+msgstr "Modification de l'utilisateur"
 
 msgid "Username"
-msgstr "Nom d&lsquo;utilisateur"
+msgstr "Nom d'utilisateur"
 
 msgid "Full name"
 msgstr "Nom complet"
@@ -1770,7 +1790,7 @@ msgid "Add User"
 msgstr "Ajouter un utilisateur"
 
 msgid "Add User Group"
-msgstr "Ajouter un groupe d`utilisateurs"
+msgstr "Ajouter un groupe d'utilisateurs"
 
 msgid "Name:"
 msgstr "Nom :"
@@ -1829,7 +1849,7 @@ msgid "Could not delete user group. No group selected."
 msgstr "Impossible de supprimer le groupe d'utilisateurs. Aucun groupe sélectionné."
 
 msgid "Adding User Group"
-msgstr "Ajouter un groupe d`utilisateurs"
+msgstr "Ajouter un groupe d'utilisateurs"
 
 msgid "Description: "
 msgstr "Description :"
@@ -1849,7 +1869,7 @@ msgid "Group already exists!"
 msgstr "Le nom du groupe existe déjà."
 
 msgid "Group name was not supplied!"
-msgstr "Le nom du groupe n&lsquo;était pas rempli !"
+msgstr "Le nom du groupe n'était pas rempli !"
 
 # E:\www\phpsurveyor/admin/html.php:1806
 msgid "Mail not sent!"
@@ -1867,13 +1887,13 @@ msgid "Delete User"
 msgstr "Supprimer un utilisateur"
 
 msgid "Could not delete user. User was not supplied."
-msgstr "Impossible de supprimer l&lsquo;utilisateur. Le nom d&lsquo;utilisateur n&lsquo;était pas rempli."
+msgstr "Impossible de supprimer l'utilisateur. Le nom d'utilisateur n'était pas rempli."
 
 msgid "Add Question"
 msgstr "Ajouter une question"
 
 msgid "Label Set:"
-msgstr "Jeu d&lsquo;étiquettes :"
+msgstr "Jeu d'étiquettes :"
 
 msgid "Mandatory:"
 msgstr "Obligatoire :"
@@ -1910,6 +1930,20 @@ msgstr "Mise à jour de la question"
 
 msgid "Save"
 msgstr "Sauver"
+
+# D:\www\phpsurveyor/admin/html.php:2499
+msgid "Current group is using conditional questions"
+msgstr "Le groupe en cours comprend des questions affichées sous condition"
+
+# D:\www\phpsurveyor/admin/html.php:3548
+msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "La réorganisation des questions dans ce groupe est restreinte pour être sûr que les questions sur lesquelles se basent des conditions, ne sont pas réordonnées après la définition des conditions"
+
+msgid "See the conditions marked on the following questions"
+msgstr "Voir les conditions affectées à ces questions"
+
+msgid "Condition(s) for"
+msgstr "Condition(s) pour"
 
 msgid "Import Group"
 msgstr "Importer le groupe"
@@ -1991,7 +2025,7 @@ msgid "Edit Survey - Step 1 of 2"
 msgstr "Edition du questionnaire - Etape 1 sur 2"
 
 msgid "Admin Email:"
-msgstr "Mail de l&lsquo;administrateur :"
+msgstr "Mail de l'administrateur :"
 
 msgid "Format:"
 msgstr "Format :"
@@ -2021,10 +2055,10 @@ msgid "Anonymous?"
 msgstr "Anonyme :"
 
 msgid "Allow public registration?"
-msgstr "Permettre l&lsquo;enregistrement public ?"
+msgstr "Permettre l'enregistrement public ?"
 
 msgid "Token Attribute Names:"
-msgstr "Nom des champs supplémentaires pour l&lsquo;enregistrement public :"
+msgstr "Nom des champs supplémentaires pour l'enregistrement public :"
 
 msgid "Date Stamp?"
 msgstr "Réponses datées :"
@@ -2048,7 +2082,7 @@ msgid "End URL:"
 msgstr "URL de fin :"
 
 msgid "Automatically load URL when survey complete?"
-msgstr "Charger automatiquement l&lsquo;URL quand le questionnaire est terminé ?"
+msgstr "Charger automatiquement l'URL quand le questionnaire est terminé ?"
 
 # D:\www\phpsurveyor/admin/html.php:3363
 msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
@@ -2064,7 +2098,7 @@ msgid "Edit Survey - Step 2 of 2"
 msgstr "Edition du questionnaire - Etape 2 sur 2"
 
 msgid "Invitation Email Subject:"
-msgstr "Objet du mail d&lsquo;invitation :"
+msgstr "Objet du mail d'invitation :"
 
 msgid "Invitation to participate in survey"
 msgstr "Invitation à participer à un questionnaire"
@@ -2176,13 +2210,13 @@ msgid "Confirmation Email"
 msgstr "Confirmation par mail :"
 
 msgid "Public registration Email Subject:"
-msgstr "Objet du mail d&lsquo;enregistrement public :"
+msgstr "Objet du mail d'enregistrement public :"
 
 msgid "Survey Registration Confirmation"
 msgstr "Confirmation de l'enregistrement de la participation au questionnaire"
 
 msgid "Public registration Email:"
-msgstr "Mail de l&lsquo;enregistrement public :"
+msgstr "Mail de l'enregistrement public :"
 
 msgid ""
 "Dear {FIRSTNAME},\n"
@@ -2207,6 +2241,24 @@ msgstr ""
 
 msgid "URL Description:"
 msgstr "Description de l'URL :"
+
+# D:\www\phpsurveyor/admin/html.php:3548
+msgid "Current survey has questions with conditions outside their own group"
+msgstr "Le questionnaire en cours possède des questions avec des conditions en dehors de leur propre groupe."
+
+# D:\www\phpsurveyor/admin/html.php:3548
+msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "La réorganisation des groupes est restreinte pour être sûr que les questions sur lesquelles se basent des conditions, ne sont pas réordonnées après la définition des conditions"
+
+msgid "The following groups are concerned"
+msgstr "Les groupes suivants sont concernés"
+
+msgid "depends on group"
+msgstr "dépend du groupe"
+
+# D:\www\phpsurveyor/admin/html.php:3581
+msgid "see the marked conditions on"
+msgstr "voir les conditions affectées sur"
 
 # E:\www\phpsurveyor/admin/html.php:1907
 msgid "The uploaded file is bigger than the upload_max_filesize directive in php.ini"
@@ -2268,7 +2320,7 @@ msgid "Select the field number you would like to use for your answers:"
 msgstr "Sélectionnez le numéro du champ que vous voulez utiliser pour vos réponses :"
 
 msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder."
-msgstr "Une erreur s&lsquo;est produite durant la transmission de votre fichier.  Ceci peut être provoqué par des permissions incorrectes dans votre dossier admin."
+msgstr "Une erreur s'est produite durant la transmission de votre fichier.  Ceci peut être provoqué par des permissions incorrectes dans votre dossier admin."
 
 msgid "File upload succeeded."
 msgstr "Fichier transmis avec succès."
@@ -2277,16 +2329,16 @@ msgid "Reading file.."
 msgstr "Lecture du fichier.."
 
 msgid "This file is not a PHPSurveyor group file. Import failed."
-msgstr "Ce fichier n&lsquo;est pas un fichier de groupe PHPSurveyor. L&lsquo;importation a échoué."
+msgstr "Ce fichier n'est pas un fichier de groupe PHPSurveyor. L'importation a échoué."
 
 msgid "Group Import Summary"
-msgstr "Résumé de l&lsquo;importation de groupe"
+msgstr "Résumé de l'importation de groupe"
 
 msgid "Conditions"
 msgstr "Conditions"
 
 msgid "Label Set"
-msgstr "Jeu d&lsquo;étiquettes"
+msgstr "Jeu d'étiquettes"
 
 msgid "Labels"
 msgstr "Etiquettes"
@@ -2295,31 +2347,31 @@ msgid "Import of group is completed."
 msgstr "L'importation du groupe est terminée."
 
 msgid "Import Label Set"
-msgstr "Importer le jeu d&lsquo;étiquettes"
+msgstr "Importer le jeu d'étiquettes"
 
 msgid "This file is not a PHPSurveyor question file. Import failed."
-msgstr "Ce fichier n&lsquo;est pas un fichier de question PHPSurveyor. L&lsquo;importation a échoué."
+msgstr "Ce fichier n'est pas un fichier de question PHPSurveyor. L'importation a échoué."
 
 msgid "Return to Labels Admin"
-msgstr "Retour à l&lsquo;administration des jeux d&lsquo;etiquettes"
+msgstr "Retour à l'administration des jeux d'etiquettes"
 
 msgid "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead."
-msgstr "Il y a un doublon dans les jeux d&lsquo;étiquettes donc ce jeu n&lsquo;a pas été importé. Le doublon sera utlisé à la place."
+msgstr "Il y a un doublon dans les jeux d'étiquettes donc ce jeu n'a pas été importé. Le doublon sera utilisé à la place."
 
 msgid "Question Import Summary"
-msgstr "Résumé de l&lsquo;importation de question"
+msgstr "Résumé de l'importation de question"
 
 msgid "Labelsets"
 msgstr "Jeux d'étiquettes"
 
 msgid "Import of Survey is completed."
-msgstr "L&lsquo;importation du questionnaire est terminée."
+msgstr "L'importation du questionnaire est terminée."
 
 msgid "Quick Statistics"
 msgstr "Statistiques flash"
 
 msgid "Import responses from an old (deactivated) survey table into an active survey"
-msgstr "Importation de la table des réponses d&lsquo;un ancien (désactivé) questionnaire dans un questionnaire activé"
+msgstr "Importation de la table des réponses d'un ancien (désactivé) questionnaire dans un questionnaire activé"
 
 msgid "Target Survey ID"
 msgstr "ID du questionnaire cible"
@@ -2328,25 +2380,25 @@ msgid "Import Responses"
 msgstr "Importer les réponses"
 
 msgid "No SID (Survey) has been provided. Cannot import question."
-msgstr "Aucun SID (Questionnaire) n&lsquo;a été fourni. Impossible d&lsquo;importer une question."
+msgstr "Aucun SID (Questionnaire) n'a été fourni. Impossible d'importer une question."
 
 msgid "No GID (Group) has been provided. Cannot import question"
-msgstr "Aucun GID (Groupe) n&lsquo;a été fourni. Impossible d&lsquo;importer une question."
+msgstr "Aucun GID (Groupe) n'a été fourni. Impossible d'importer une question."
 
 msgid "Label Sets"
-msgstr "Jeu d&lsquo;étiquettes"
+msgstr "Jeu d'étiquettes"
 
 msgid "This file is not a PHPSurveyor survey file. Import failed."
-msgstr "Ce fichier n&lsquo;est pas un fichier de questionnaire PHPSurveyor. L&lsquo;importation a échoué."
+msgstr "Ce fichier n'est pas un fichier de questionnaire PHPSurveyor. L'importation a échoué."
 
 msgid "Import of this survey file failed"
-msgstr "L&lsquo;importation de ce fichier questionnaire a échoué"
+msgstr "L'importation de ce fichier questionnaire a échoué"
 
 msgid "File does not contain PHPSurveyor data in the correct format."
 msgstr "Mauvais format de données dans le fichier de données PHPSurveyor."
 
 msgid "Survey Import Summary"
-msgstr "Résumé de l&lsquo;importation du questionnaire"
+msgstr "Résumé de l'importation du questionnaire"
 
 msgid "Languages"
 msgstr "Langues"
@@ -2398,22 +2450,22 @@ msgid "All groups meet consistency standards"
 msgstr "Tous les groupes sont cohérents"
 
 msgid "No database action required"
-msgstr "Pas d&lsquo;action à faire sur la base de données"
+msgstr "Pas d'action à faire sur la base de données"
 
 msgid "Label Sets Administration"
-msgstr "Administration des jeux d`étiquettes"
+msgstr "Administration des jeux d'étiquettes"
 
 msgid "Add New Label Set"
-msgstr "Ajouter un nouveau jeu d`étiquettes"
+msgstr "Ajouter un nouveau jeu d'étiquettes"
 
 msgid "Add new label set"
-msgstr "Ajouter un nouveau jeu d`étiquettes"
+msgstr "Ajouter un nouveau jeu d'étiquettes"
 
 msgid "Create New Label Set"
-msgstr "Créer un nouveau jeu d`étiquettes"
+msgstr "Créer un nouveau jeu d'étiquettes"
 
 msgid "Edit Label Set"
-msgstr "Editer des jeux d`étiquettes"
+msgstr "Editer des jeux d'étiquettes"
 
 msgid "Set Name"
 msgstr "Nom du jeu"
@@ -2426,20 +2478,20 @@ msgid "Select SQL File:"
 msgstr "Sélectionner un fichier SQL :"
 
 msgid "Edit label set"
-msgstr "Editer le jeu d`étiquettes"
+msgstr "Editer le jeu d'étiquettes"
 
 msgid "Delete label set"
-msgstr "Supprimer le jeu d`étiquettes"
+msgstr "Supprimer le jeu d'étiquettes"
 
 # labels.php:231
 msgid "Are you sure?"
 msgstr "Etes-vous sûr?"
 
 msgid "New label"
-msgstr "Nouveau jeu d&lsquo;étiquettes_NEW_LABEL"
+msgstr "Nouvelle étiquette"
 
 msgid "Add new label"
-msgstr "Ajouter un nouveau jeu d&lsquo;étiquettes_ADD_NEW_LABEL"
+msgstr "Ajouter une nouvelle étiquette"
 
 # D:\www\phpsurveyor/admin/labels.php:373
 msgid "Inserting New labels must be done on the first language folder."
@@ -2449,7 +2501,7 @@ msgid "Fix Sort"
 msgstr "Tri"
 
 msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
-msgstr "Quelques questionnaires utilisent actuellement ce jeu d&lsquo;étiquettes. Modifier les codes, ajouter ou supprimer des entrées de ce jeu pourrait entrainer des effets indésirables dans d&lsquo;autres questionnaires."
+msgstr "Quelques questionnaires utilisent actuellement ce jeu d'étiquettes. Modifier les codes, ajouter ou supprimer des entrées de ce jeu pourrait entrainer des effets indésirables dans d'autres questionnaires."
 
 # D:\www\phpsurveyor/admin/labels.php:467
 msgid "Failed to Copy already defined labels to added languages"
@@ -2460,10 +2512,10 @@ msgid "Failed to delete labels for removed languages"
 msgstr "Echec de la suppression des étiquettes pour les langues retirées"
 
 msgid "Update of Label Set failed"
-msgstr "La mise à jour du jeu d&lsquo;étiquettes a échoué"
+msgstr "La mise à jour du jeu d'étiquettes a échoué"
 
 msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
-msgstr "Impossible de supprimer le jeu d&lsquo;étiquettes - Il y a des questions qui y sont reliées. Vous devez supprimer ces questions en premier."
+msgstr "Impossible de supprimer le jeu d'étiquettes - Il y a des questions qui y sont reliées. Vous devez supprimer ces questions en premier."
 
 # E:\www\phpsurveyor/admin/usercontrol.php:153
 # E:\www\phpsurveyor/admin/usercontrol.php:157
@@ -2589,10 +2641,10 @@ msgid "Results"
 msgstr "Résultats"
 
 msgid "No of records in this query"
-msgstr "Nombre d&lsquo;enregistrement(s) pour ce filtre "
+msgstr "Nombre d'enregistrement(s) pour ce filtre "
 
 msgid "Total records in survey"
-msgstr "Nombre total d&lsquo;enregistrements dans le questionnaire "
+msgstr "Nombre total d'enregistrements dans le questionnaire "
 
 msgid "Percentage of total"
 msgstr "Pourcentage du total "
@@ -2702,7 +2754,7 @@ msgid "Directory could not be renamed to"
 msgstr "Le dossier ne peut pas être renommé en"
 
 msgid "Welcome Page"
-msgstr "Page d&lsquo;accueil"
+msgstr "Page d'accueil"
 
 msgid "Question Page"
 msgstr "Page de question"
@@ -2791,13 +2843,13 @@ msgid "Preview:"
 msgstr "Aperçu :"
 
 msgid "You have not selected a survey"
-msgstr "Vous n&lsquo;avez pas sélectionné de questionnaire"
+msgstr "Vous n'avez pas sélectionné de questionnaire"
 
 msgid "A token table has been created for this survey."
 msgstr "Une table des invitations a été créée pour ce questionnaire."
 
 msgid "Tokens have not been initialised for this survey."
-msgstr "Aucune invitation n&lsquo;a été initialisée pour ce questionnaire."
+msgstr "Aucune invitation n'a été initialisée pour ce questionnaire."
 
 msgid "If you initialise tokens for this survey, the survey will only be accessible to users who have been assigned a token."
 msgstr "Si vous initialisez des invitations pour ce questionnaire, seuls les utilisateurs ayant une invitation pourront y accéder."
@@ -2819,7 +2871,7 @@ msgid "Add new token entry"
 msgstr "Ajouter une nouvelle invitation"
 
 msgid "Import Tokens from CSV File"
-msgstr "Importer les invitations à partir d&lsquo;un fichier CSV"
+msgstr "Importer les invitations à partir d'un fichier CSV"
 
 msgid "Import Tokens from LDAP Query"
 msgstr "Importer les invitations à partir d'une requête LDAP"
@@ -2834,13 +2886,13 @@ msgid "Send email reminder"
 msgstr "Envoyer les rappels par mail"
 
 msgid "Generate Tokens"
-msgstr "Générer les codes d&lsquo;invitations"
+msgstr "Générer les codes d'invitations"
 
 msgid "Drop tokens table"
 msgstr "Effacer la table des invitations"
 
 msgid "Total Records in this Token Table"
-msgstr "Nombre total d&lsquo;enregistrement(s) dans cette table d&lsquo;invitations"
+msgstr "Nombre total d'enregistrement(s) dans cette table d'invitations"
 
 msgid "Total With No Unique Token"
 msgstr "Nombre total d'invitations sans code unique :"
@@ -2855,16 +2907,16 @@ msgid "All token entries have been deleted."
 msgstr "Toutes les invitations ont été supprimées"
 
 msgid "All invite entries have been set to 'Not Invited'."
-msgstr "Tous les statuts d&lsquo;envoi des invitations ont été définis à N"
+msgstr "Tous les statuts d'envoi des invitations ont été définis à N"
 
 msgid "All unique token numbers have been removed."
 msgstr "Tous les codes des invitations ont été enlevés"
 
 msgid "Token Database Administration Options"
-msgstr "Options d&lsquo;administration de la table d&lsquo;invitations "
+msgstr "Options d'administration de la table d'invitations "
 
 msgid "Are you really sure you want to reset all invitation records to NO?"
-msgstr "Etes-vous sûr de vouloir réinitialiser le statut de l&lsquo;envoi de toutes les invitations à NON envoyées ?"
+msgstr "Etes-vous sûr de vouloir réinitialiser le statut de l'envoi de toutes les invitations à NON ENVOYEES ?"
 
 msgid "Set all entries to 'No invitation sent'."
 msgstr "Mettre toutes les invitations à NON envoyées"
@@ -2882,7 +2934,7 @@ msgid "Delete all token entries"
 msgstr "Supprimer toutes les invitations"
 
 msgid "Update tokens table with new fields"
-msgstr "Mettre à jour la table d&lsquo;invitations avec des nouveaux champs"
+msgstr "Mettre à jour la table d'invitations avec des nouveaux champs"
 
 msgid "Search"
 msgstr "Chercher"
@@ -2904,10 +2956,10 @@ msgid "MPID"
 msgstr "MPID"
 
 msgid "Edit Token Entry"
-msgstr "Editer l&lsquo;invitation"
+msgstr "Editer l'invitation"
 
 msgid "Delete Token Entry"
-msgstr "Supprimer l&lsquo;invitation"
+msgstr "Supprimer l'invitation"
 
 msgid "Do Survey"
 msgstr "Tester le questionnaire"
@@ -2956,7 +3008,7 @@ msgid "Sending Invitations"
 msgstr "Envoi invitations"
 
 msgid "Sending to TID No:"
-msgstr "Envoyé à l&lsquo;IID (TID) No :"
+msgstr "Envoyé à l'IID (TID) No :"
 
 msgid "Invitation Sent To:"
 msgstr "Invitation envoyée à :"
@@ -2965,19 +3017,19 @@ msgid "Mail to {FIRSTNAME} {LASTNAME} ({EMAIL}) Failed"
 msgstr "Le mail à {FIRSTNAME} {LASTNAME} ({EMAIL}) a échoué"
 
 msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
-msgstr "Il y a plus de mail en suspens qui peuvent être envoyés en groupe (batch). Continuez d&lsquo;envoyer des mails en cliquant ci-dessous."
+msgstr "Il y a plus de mail en suspens qui peuvent être envoyés en groupe (batch). Continuez d'envoyer des mails en cliquant ci-dessous."
 
 msgid "There are {EMAILCOUNT} emails still to be sent."
 msgstr "Il y a encore {EMAILCOUNT} mails à envoyer."
 
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
-msgstr "Il n&lsquo;y avait aucun mail éligible à envoyer : aucun n&lsquo;a satisfait les critères - mail valide, invitation déjà envoyée, questionnaire déjà completé et invitation obtenue."
+msgstr "Il n'y avait aucun mail éligible à envoyer car aucun n'a satisfait les critères : mail valide, invitation pas encore envoyée, questionnaire déjà completé et invitation obtenue."
 
 msgid "Email Reminder"
 msgstr "Rappel par mail"
 
 msgid "Start at TID No:"
-msgstr "Commencer à l&lsquo;IID (TID) No :"
+msgstr "Commencer à l'IID (TID) No :"
 
 msgid "Send Reminders"
 msgstr "Envoyer rappels"
@@ -2989,13 +3041,13 @@ msgid "Reminder Sent To:"
 msgstr "Rappel envoyé à :"
 
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
-msgstr "Il n&lsquo;y avait aucun mail éligible à envoyer : aucun n&lsquo;a satisfait les critères - mail valide, invitation envoyée mais questionnaire pas encore completé."
+msgstr "Il n'y avait aucun mail éligible à envoyer : aucun n';a satisfait les critères - mail valide, invitation envoyée mais questionnaire pas encore complété."
 
 msgid "Create Tokens"
 msgstr "Créer les invitations"
 
 msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
-msgstr "Cliquer sur OUI va générer des invitations pour ceux de la liste d&lsquo;invitations qui n&lsquo;en ont pas reçues. Etes-vous d&lsquo;accord ?"
+msgstr "Cliquer sur OUI va générer des invitations pour ceux de la liste d'invitations qui n'en ont pas reçues. Etes-vous d'accord ?"
 
 msgid "{TOKENCOUNT} tokens have been created"
 msgstr "{TOKENCOUNT} invitations ont été créées"
@@ -3004,22 +3056,22 @@ msgid "Token has been deleted."
 msgstr "Une invitation a été supprimée."
 
 msgid "Reloading Screen. Please wait."
-msgstr "Actualisation de l&lsquo;écran. Veuillez patienter."
+msgstr "Actualisation de l'écran. Veuillez patienter."
 
 msgid "Add or Edit Token"
 msgstr "Ajouter ou éditer une invitation"
 
 msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
-msgstr "Vous pouvez laisser cela à blanc et générer automatiquement des invitations avec `Générer les codes d&lsquo;invitations`"
+msgstr "Vous pouvez laisser cela à blanc et générer automatiquement des invitations avec `Générer les codes d'invitations`"
 
 msgid "Update Token"
-msgstr "Mise à jour de l&lsquo;invitation"
+msgstr "Mise à jour de l'invitation"
 
 msgid "Add Token"
 msgstr "Ajouter une invitation"
 
 msgid "Updated Token"
-msgstr "Mise à jour de l&lsquo;invitation"
+msgstr "Mise à jour de l'invitation"
 
 msgid "Added New Token"
 msgstr "Ajouter une nouvelle invitation"
@@ -3116,7 +3168,7 @@ msgid "Email address ist not valid."
 msgstr "L'adresse mail n'est pas valide."
 
 msgid "Username was not supplied."
-msgstr "Le nom d&lsquo;utilisateur n&lsquo;était pas rempli."
+msgstr "Le nom d'utilisateur n'était pas rempli."
 
 # E:\www\phpsurveyor/admin/usercontrol.php:176
 msgid "You were signed in. Your data:"
@@ -3166,7 +3218,7 @@ msgid "Export but leave survey active"
 msgstr "Exporter mais laisser le questionnaire activé"
 
 msgid "If you have chosen to export and de-activate, this will rename your current responses table and it will not be easy to restore it. Are you sure?"
-msgstr "Si vous choisissez d&lsquo;exporter et de désactiver le questionnaire, cela renommera votre table de réponses et cela ne sera pas facile de la restaurer. Etes-vous sûr ?"
+msgstr "Si vous choisissez d'exporter et de désactiver le questionnaire, cela renommera votre table de réponses et cela ne sera pas facile de la restaurer. Etes-vous sûr ?"
 
 msgid "File:"
 msgstr "Fichier :"
@@ -3190,13 +3242,13 @@ msgid "Ignore the new record."
 msgstr "Ignorer le nouvel enregistrement."
 
 msgid "Replace the existing record."
-msgstr "Remplacer l&lsquo;enregistement existant."
+msgstr "Remplacer l'enregistement existant."
 
 msgid "Cannot import the VVExport file."
 msgstr "Impossible d'importer le fichier VV."
 
 msgid "Import Failed on Record"
-msgstr "Echec de l&lsquo;importation sur l&lsquo;enregistrement"
+msgstr "Echec de l'importation sur l'enregistrement"
 
 msgid "because"
 msgstr "parce que"
@@ -3206,10 +3258,10 @@ msgid "Important Note:"
 msgstr "Note importante :"
 
 msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
-msgstr "Ne pas ACTUALISER cette page sous peine d&lsquo;importer de nouveau le fichier et de créer des doublons"
+msgstr "Ne pas ACTUALISER cette page sous peine d'importer de nouveau le fichier et de créer des doublons"
 
 msgid "Total records imported:"
-msgstr "Nombre d&lsquo;enregistrement(s) importé(s) :"
+msgstr "Nombre d'enregistrement(s) importé(s) :"
 
 msgid "Welcome to PHPSurveyor Setup!"
 msgstr "Bienvenue dans l'installation de PHPSurveyor"
