@@ -3234,6 +3234,7 @@ function GetGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="b
 	if ($depgid != "all") {$sqldepgid="AND tq.gid=$depgid";}
 	if ($targgid != "all") {$sqltarggid="AND tq2.gid=$targgid";}
 
+	$baselang = GetBaseLanguageFromSurveyID($sid);
 	$condquery = "SELECT tg.gid as depgid, tg.group_name as depgpname, "
 		. "tg2.gid as targgid, tg2.group_name as targgpname, tq.qid as depqid, tc.cid FROM "
 		. db_table_name('conditions')." AS tc, "
@@ -3241,22 +3242,22 @@ function GetGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="b
 		. db_table_name('questions')." AS tq2, "
 		. db_table_name('groups')." AS tg ,"
 		. db_table_name('groups')." AS tg2 "
-		. "WHERE tc.qid = tq.qid AND tq.sid=$sid "
+		. "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tg.language='{$baselang}' AND tg2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
 		. "AND tq.gid = tg.gid AND tg2.gid = tq2.gid "
 		. "AND tq2.qid=tc.cqid AND tq.gid != tg2.gid $sqldepgid $sqltarggid";
-	$condresult=$connect->Execute($condquery) or die($connect->ErrorMsg());
+	$condresult=db_execute_assoc($condquery) or die($connect->ErrorMsg());
 	
 	if ($condresult->RecordCount() > 0) {
 		while ($condrow = $condresult->FetchRow())
 		{
-			
+
 			switch ($indexby)
 			{
 				case "by-depgid":
-				$depgid=$condrow[0];
-				$targetgid=$condrow[2];
-				$depqid=$condrow[4];
-				$cid=$condrow[5];
+				$depgid=$condrow['depgid'];
+				$targetgid=$condrow['targgid'];
+				$depqid=$condrow['depqid'];
+				$cid=$condrow['cid'];
 				$condarray[$depgid][$targetgid]['depgpname'] = $condrow[1];
 				$condarray[$depgid][$targetgid]['targetgpname'] = $condrow[3];
 				$condarray[$depgid][$targetgid]['conditions'][$depqid][]=$cid;
@@ -3314,7 +3315,8 @@ function GetQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",
 {
 	global $connect, $clang;
 	$condarray = Array();
-
+	
+	$baselang = GetBaseLanguageFromSurveyID($sid);
 	$sqlgid="";
 	$sqldepqid="";
 	$sqltargqid="";
@@ -3328,10 +3330,10 @@ function GetQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",
 		. db_table_name('conditions')." AS tc, "
 		. db_table_name('questions')." AS tq, "
 		. db_table_name('questions')." AS tq2 "
-		. "WHERE tc.qid = tq.qid AND tq.sid=$sid "
+		. "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
 		. "AND  tq2.qid=tc.cqid $sqlsearchscope $sqlgid $sqldepqid $sqltargqid";
-	$condresult=$connect->Execute($condquery) or die($connect->ErrorMsg());
-	
+	$condresult=db_execute_assoc($condquery) or die($connect->ErrorMsg());
+
 	if ($condresult->RecordCount() > 0) {
 		while ($condrow = $condresult->FetchRow())
 		{
