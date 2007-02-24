@@ -1268,7 +1268,7 @@ if (returnglobal('viewanswer'))
 			if ($first) {$codeids=$codeids.' '.$row['sortorder'];}
 			
 			$vasummary .= "<tr><td width='25%' align=right>\n";
-
+			if ($row['default_value'] == 'Y') $vasummary .= "<font color='#FF0000'>".$clang->gT("Default")."</font>";
 			if ($activated > 1)
 			{
 				$vasummary .= "\t{$row['code']}"
@@ -1294,6 +1294,7 @@ if (returnglobal('viewanswer'))
 			{
 				$vasummary .= "\t<input type='submit' name='method' value='".$clang->gT("Del")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
 			}
+			$vasummary .= "\t<input type='submit' name='method' value='".$clang->gT("Default")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
 			$vasummary .= "\t</td>\n"
 			."\t<td>\n";
 			if ($position > 0)
@@ -1316,36 +1317,36 @@ if (returnglobal('viewanswer'))
 		$position=sprintf("%05d", $position);
 		if ($activated == 0)
 		{
-			$vasummary .= "<tr><td><br /></td></tr><tr><td width='25%' align=right>"
-			."<strong>".$clang->gT("New Answer").":</strong> ";
-            if ($first==true) 
-                { 
-                $vasummary .= "<input type='text' maxlength='10' name='insertcode' size='10' id='addnewanswercode' />\n";
-                $first=false;
-                }
-			$vasummary .= "\t</td>\n"
-			."\t<td width='35%'>\n"
-			."\t<input type='text' maxlength='100' name='insertanswer_$anslang' size='80' />\n"
-			."\t</td>\n"
-			."\t<td width='25%'>\n"
-			."\t<input type='submit' name='method' value='".$clang->gT("Add new Answer")."' />\n"
-			."\t<input type='hidden' name='action' value='modanswer' />\n"
-			."\t</td>\n"
-			."\t<td>\n"
-			."<script type='text/javascript'>\n"
-			."<!--\n"
-			."document.getElementById('addnewanswercode').focus();\n"
-			."//-->\n"
-			."</script>\n"
-			."\t</td>\n"
-			."</tr>\n";
+			if ($first==true)
+			{
+				$vasummary .= "<tr><td><br /></td></tr><tr><td width='25%' align=right>"
+				."<strong>".$clang->gT("New Answer").":</strong> ";
+            	$vasummary .= "<input type='text' maxlength='10' name='insertcode' size='10' id='addnewanswercode' />\n";
+            	$first=false;
+				$vasummary .= "\t</td>\n"
+				."\t<td width='35%'>\n"
+				."\t<input type='text' maxlength='100' name='insertanswer' size='80' />\n"
+				."\t</td>\n"
+				."\t<td width='25%'>\n"
+				."\t<input type='submit' name='method' value='".$clang->gT("Add new Answer")."' />\n"
+				."\t<input type='hidden' name='action' value='modanswer' />\n"
+				."\t</td>\n"
+				."\t<td>\n"
+				."<script type='text/javascript'>\n"
+				."<!--\n"
+				."document.getElementById('addnewanswercode').focus();\n"
+				."//-->\n"
+				."</script>\n"
+				."\t</td>\n"
+				."</tr>\n";
+			}
 		}
 		else
 		{
 			$vasummary .= "<tr>\n"
 			."\t<td colspan='4' align='center'>\n"
 			."<font color='red' size='1'><i><strong>"
-			.$clang->gT("Warning")."</strong>: ".$clang->gT("You cannot change codes, add or delete entries in this label set because it is being used by an active survey.")."</i></strong></font>\n"
+			.$clang->gT("Warning")."</strong>: ".$clang->gT("You cannot add answers because they are being used by an active survey.")."</i></strong></font>\n"
 			."\t</td>\n"
 			."</tr>\n";
 		}

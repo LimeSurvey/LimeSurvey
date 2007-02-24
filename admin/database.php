@@ -544,11 +544,16 @@ if(isset($surveyid))
 				$newsortorder=sprintf("%05d", $result->fields['maxorder']+1);
 				$anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 				$baselang = GetBaseLanguageFromSurveyID($surveyid);
-				array_unshift($anslangs,$baselang);
+				// Add new Answer for Base Language Question
+				$query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language) VALUES ('{$_POST['qid']}', {$connect->qstr($_POST['insertcode'])}, {$connect->qstr($_POST['insertanswer'])}, '{$newsortorder}', 'N','$baselang')";
+	       		if (!$result = $connect->Execute($query))
+				{
+					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+				}
 				foreach ($anslangs as $anslang)
 				{
 					if(!isset($_POST['default'])) $_POST['default'] = "";
-	    				$query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language) VALUES ('{$_POST['qid']}', '{$_POST['insertcode']}', '{$_POST['insertanswer_'.$anslang]}', '{$newsortorder}', '{$_POST['default']}','$anslang')";
+	    				$query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language) VALUES ('{$_POST['qid']}', {$connect->qstr($_POST['insertcode'])}, {$connect->qstr($_POST['insertanswer'])}, '{$newsortorder}', 'N','$anslang')";
 	       		    		if (!$result = $connect->Execute($query))
 					{
 						$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
@@ -609,6 +614,35 @@ if(isset($surveyid))
 				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to delete answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
 			}
             fixsortorderAnswers($qid);
+		break;
+		
+		// Default Button
+		case $clang->gT("Default", "unescaped"):
+			$query = "SELECT default_value from ".db_table_name('answers')." where qid={$qid} AND sortorder='{$_POST['sortorder']}' GROUP BY default_value";
+			$result = db_execute_assoc($query);
+			$row = $result->FetchRow();
+			if ($row['default_value'] == "Y")
+			{
+				$query = "UPDATE ".db_table_name('answers')." SET default_value='N' WHERE qid={$qid} AND sortorder='{$_POST['sortorder']}'";
+				if (!$result = $connect->Execute($query))
+				{
+					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to make answer not default","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+				}
+			} else {	
+				$query = "SELECT type from ".db_table_name('questions')." where qid={$qid} GROUP BY qid";
+				$result = db_execute_assoc($query);
+				$row = $result->FetchRow();
+				if ($row['type'] == "O" || $row['type'] == "L" || $row['type'] == "!")
+				{   // SINGLE CHOICE QUESTION, SET ALL RECORDS TO N, THEN WE SET ONE TO Y
+					$query = "UPDATE ".db_table_name('answers')." SET default_value='N' WHERE qid={$qid}";
+					$result = $connect->Execute($query);
+				}
+				$query = "UPDATE ".db_table_name('answers')." SET default_value='Y' WHERE qid={$qid} AND sortorder='{$_POST['sortorder']}'";
+				if (!$result = $connect->Execute($query))
+				{
+					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to make answer default","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+				}
+			}
 		break;
 		}
 		/*
