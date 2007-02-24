@@ -125,7 +125,6 @@ if (isset($loginsummary)) {
 	$adminoutput.= "\t\t</td>\n";
 	$adminoutput.= "\t</tr>\n";
 	$adminoutput.= "</table>\n";
-	$adminoutput.= getAdminFooter("http://docs.phpsurveyor.org", "PHPSurveyor Online Manual");
 }
 
 // logout user
@@ -140,7 +139,6 @@ if ($action == "logout" && isset($_SESSION['loginID']))
 	$adminoutput.= "\t\t</td>\n";
 	$adminoutput.= "\t</tr>\n";
 	$adminoutput.= "</table>\n";
-	$adminoutput.= getAdminFooter("http://docs.phpsurveyor.org", "PHPSurveyor Online Manual");
 	
 }
 ?>
