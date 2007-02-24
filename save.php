@@ -409,7 +409,7 @@ function createinsertquery()
 				//TODO: Special case for MS SQL Server, as the default value for submitdate
 				// isn't appearing in schema for the table created in activate.php.
 				// This is a quick hack until I figure out what happened to the default value
-				else if ($connect->databaseType = 'odbc_msmsql')
+				else if ($connect->databaseType == 'odbc_msmsql')
 				{
 				    $query .= "submitdate = '".date("0000-00-00 00:00:00")."',";	
 				}
