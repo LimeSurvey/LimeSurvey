@@ -256,7 +256,7 @@ if(isset($_SESSION['loginID']) && $action!='login')
   if (isset($conditionsoutput)) {$adminoutput.= $conditionsoutput;} 	
   if (isset($deletesurveyoutput)) {$adminoutput.= $deletesurveyoutput;} 	
   
-  
+
   
   
   if (!isset($printablesurveyoutput) && $subaction!='export')
@@ -270,6 +270,17 @@ if(isset($_SESSION['loginID']) && $action!='login')
               . getAdminFooter("http://docs.phpsurveyor.org", $clang->gT("PHPSurveyor Online Manual"));
   }
 }
+  else
+  { //not logged in
+    if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
+    $adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput;  // All future output is written into this and then outputted at the end of file
+    unset($_SESSION['metaHeader']);    
+    $adminoutput.= "\t\t</td>\n".helpscreen()
+                . "\t</tr>\n"
+                . "</table>\n"
+                . getAdminFooter("http://docs.phpsurveyor.org", $clang->gT("PHPSurveyor Online Manual"));
+  
+  }
   
 sendcacheheaders();
 
