@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-02-23 18:55+0100\n"
+"PO-Revision-Date: 2007-02-24 02:01+0100\n"
 "Last-Translator: b00z00\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -795,9 +795,8 @@ msgstr "Ce questionnaire permet les enregistrements publics. Une table d'invitat
 msgid "This survey is now active, and responses can be recorded."
 msgstr "Ce questionnaire est maintenant activé, et les réponses peuvent être enregistrées."
 
-# C:\wamp\www\phpsurveyor/admin/admin.php:218
-msgid "Using the PHPSurveyor Admin Script"
-msgstr "Utilisation du script d'administration de PHPSurveyor"
+msgid "PHPSurveyor Online Manual"
+msgstr "Manuel en ligne de PHPSurveyor"
 
 msgid "Help"
 msgstr "Aide"
