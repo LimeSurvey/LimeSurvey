@@ -562,13 +562,12 @@ if(isset($surveyid))
             $sortorderids=explode(' ', trim($_POST['sortorderids']));
             $codeids=explode(' ', trim($_POST['codeids']));
             $count=0; 
-
          	foreach ($sortorderids as $sortorderid)
         	{
         		$langid=substr($sortorderid,0,strpos($sortorderid,'_')); 
         		$orderid=substr($sortorderid,strpos($sortorderid,'_')+1,20);
-        		$query = "UPDATE ".db_table_name('answers')." SET code='".$_POST['code_'.$codeids[$count]]."', 
-        		answer='{$_POST['answer_'.$sortorderid]}' WHERE qid='$qid' and sortorder=$orderid and language='$langid'";
+        		$query = "UPDATE ".db_table_name('answers')." SET code=".$connect->qstr($_POST['code_'.$codeids[$count]]).", 
+        		answer={$connect->qstr($_POST['answer_'.$sortorderid])} WHERE qid='$qid' and sortorder=$orderid and language='$langid'";
         		if (!$result = $connect->Execute($query))
         		{
         			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update answers","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
@@ -576,7 +575,6 @@ if(isset($surveyid))
     			$count++;
     			if ($count>count($codeids)-1) {$count=0;}
 		    }
-
 		break;
 
 		// Pressing the Up button
