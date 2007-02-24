@@ -3332,7 +3332,8 @@ function GetQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",
 		. db_table_name('questions')." AS tq2 "
 		. "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
 		. "AND  tq2.qid=tc.cqid $sqlsearchscope $sqlgid $sqldepqid $sqltargqid";
-	$condresult=db_execute_assoc($condquery) or die($connect->ErrorMsg());
+
+		$condresult=db_execute_assoc($condquery) or die($connect->ErrorMsg());
 
 	if ($condresult->RecordCount() > 0) {
 		while ($condrow = $condresult->FetchRow())
