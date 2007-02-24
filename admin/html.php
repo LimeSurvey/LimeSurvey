@@ -1295,7 +1295,7 @@ if (returnglobal('viewanswer'))
 				$vasummary .= "\t<input type='submit' name='method' value='".$clang->gT("Del")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
 			}
 			// Don't show Default Button for array question types
-			if ($qtype != "A" && $qtype != "B" && $qtype != "C" && $qtype != "E" && $qtype != "F" && $qtype != "H") $vasummary .= "\t<input type='submit' name='method' value='".$clang->gT("Default")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+			if ($qtype != "A" && $qtype != "B" && $qtype != "C" && $qtype != "E" && $qtype != "F" && $qtype != "H" && $qtype != "R" && $qtype != "Q") $vasummary .= "\t<input type='submit' name='method' value='".$clang->gT("Default")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
 			$vasummary .= "\t</td>\n"
 			."\t<td>\n";
 			if ($position > 0)
