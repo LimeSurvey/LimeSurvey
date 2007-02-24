@@ -51,10 +51,7 @@ if (!isset($elem)) {$elem=returnglobal('elem');}         //??
 
 if ($action != "showprintablesurvey")
 {
-  if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
-  $adminoutput = getAdminHeader($_SESSION['metaHeader']);  // All future output is written into this and then outputted at the end of file
-  $_SESSION['metaHeader']='';    
-  $adminoutput .= helpscreenscript();
+  $adminoutput = helpscreenscript();
   $adminoutput .= "<table width='100%' border='0' cellpadding='0' cellspacing='0' >\n"
   ."\t<tr>\n"
   ."\t\t<td valign='top' align='center' bgcolor='#BBBBBB'>\n";
@@ -264,6 +261,9 @@ if(isset($_SESSION['loginID']) && $action!='login')
   
   if (!isset($printablesurveyoutput) && $subaction!='export')
   {  
+  if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
+  $adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput;  // All future output is written into this and then outputted at the end of file
+  unset($_SESSION['metaHeader']);    
   $adminoutput.= "\t\t</td>\n".helpscreen()
               . "\t</tr>\n"
               . "</table>\n"
