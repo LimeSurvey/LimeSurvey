@@ -427,10 +427,10 @@ if(isset($surveyid))
 				while ($qr1 = $r1->FetchRow())
 				{
 					$qr1 = array_map('db_quote', $qr1);
-					$i1 = "INSERT INTO {$dbprefix}answers (qid, code, answer, default_value, sortorder) "
+					$i1 = "INSERT INTO {$dbprefix}answers (qid, code, answer, default_value, sortorder, language) "
 					. "VALUES ('$newqid', '{$qr1['code']}', "
 					. "'{$qr1['answer']}', '{$qr1['default_value']}', "
-					. "'{$qr1['sortorder']}')";
+					. "'{$qr1['sortorder']}', '{$qr1['language']}')";
 					$ir1 = $connect->Execute($i1);
 				}
 			}
