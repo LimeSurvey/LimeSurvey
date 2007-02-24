@@ -35,6 +35,8 @@ Thank you to everyone who helped with this new release!
 Changes from 1.0 to 1.45a
 
 - Import tokens from LDAP queries (tlemeur)
+- Added support for Microsoft SQL Server database (ferrisoxide)
+- Improved multi-db support (ferrisoxide)
 - Moved the english docs to online site (c_schmitz)
 - Added a new question attribute to limit the maximum number of answers in Multiple Options questions (attribute max_answers) (tlemeur)
 - Added a new user athentication system with user right/roles & groups (moses)
