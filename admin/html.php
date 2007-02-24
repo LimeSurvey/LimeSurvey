@@ -889,7 +889,7 @@ if ($gid)   // Show the group toolbar
 				$groupsummary .= "\t\t\t\t\t<a href='$scriptname?sid=$surveyid&amp;gid=$gid' onclick=\"alert('".$clang->gT("Impossible to delete this group because there is at least one question having a condition on its content")."')\""
 				. "onmouseout=\"hideTooltip()\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("Disabled")."-".$clang->gT("Delete Current Group", "js")."');return false\">"
-				. "<img src='$imagefiles/delete.png' alt='' name='DeleteWholeGroup' title='' align='left' border='0' hspace='0' /></a>";
+				. "<img src='$imagefiles/delete_disabled.png' alt='' name='DeleteWholeGroup' title='' align='left' border='0' hspace='0' /></a>";
 			}
 		}
 		else
@@ -1049,7 +1049,7 @@ if ($qid)  // Show the question toolbar
 				"onclick=\"alert('".$clang->gT("Impossible to delete this question because  there is at least one question having a condition on it")."')\""
 				. "onmouseout=\"hideTooltip()\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("Disabled")."-".$clang->gT("Delete Current Question", "js")."');return false\">"
-				. "<img src='$imagefiles/delete.png' name='DeleteWholeQuestion' alt= '' title='' "
+				. "<img src='$imagefiles/delete_disabled.png' name='DeleteWholeQuestion' alt= '' title='' "
 				."align='left' border='0' hspace='0' /></a>\n";
 			}
 		}
