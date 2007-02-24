@@ -42,7 +42,7 @@ $databaseport       =   "default";     // The port of your Database - if you use
 $databasename       =   "phpsurveyor"; // The name of the database that we will create
 $databaseuser       =   "root";        // The name of a user with rights to create db (or if db already exists, then rights within that db)
 $databasepass       =   "";            // Password of db user
-$dbprefix           =   "phpsv_";      // A global prefix that can be added to all PHPSurveyor tables. Use this if you are sharing
+$dbprefix           =   "";      // A global prefix that can be added to all PHPSurveyor tables. Use this if you are sharing
                                        // a database with other applications. Suggested prefix is "phpsv_"
 
 $useidprefix        =   0;             // Set this to 1 if you want to use a prefix on survey responses (useful for replicated/pooled databases)
@@ -96,7 +96,7 @@ $allowmandbackwards =   1;      // Allow moving backwards (ie: << prev) through 
 $deletenonvalues    =   1;      // By default, PHPSurveyor does not save responses to conditional questions that haven't been answered/shown. To have PHPSurveyor save these responses change this value to 0.
 $shownoanswer       =   1;      // Show "no answer" for non mandatory questions
 
-$debug              =   1;      // Switch this to 1 if you are looking for errors 
+$debug              =   0;      // Switch this to 1 if you are looking for errors 
 
 // Email Settings
 // These settings determine how PHPSurveyor will send emails

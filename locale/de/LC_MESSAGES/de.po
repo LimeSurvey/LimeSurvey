@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-02-23 19:15+0100\n"
+"PO-Revision-Date: 2007-02-24 22:25+0100\n"
 "Last-Translator: \n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -779,9 +779,8 @@ msgstr "Diese Umfrage erlaubt öffentliche Registrierungen. Daher muss eine Zuga
 msgid "This survey is now active, and responses can be recorded."
 msgstr "Diese Umfrage ist jetzt aktiv und Antworten können erfasst werden."
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/admin.php:218
-msgid "Using the PHPSurveyor Admin Script"
-msgstr "Bedienungsanleitung für die PHPSurveyor Administration"
+msgid "PHPSurveyor Online Manual"
+msgstr "PHPSurveyor Online Bedienungsanleitung"
 
 msgid "Help"
 msgstr "Hilfe"
@@ -1059,6 +1058,15 @@ msgstr "Löschen"
 
 msgid "Failed to delete answer"
 msgstr "Konnte Anwort nicht löschen"
+
+msgid "Default"
+msgstr "Voreingestellt"
+
+msgid "Failed to make answer not default"
+msgstr "Konnte Antworten nicht zurücksetzen"
+
+msgid "Failed to make answer default"
+msgstr "Konnte Antworten nicht als Voreinstellung setzen"
 
 msgid "Survey could not be updated"
 msgstr "Umfrage konnte nicht aktualisiert werden."
@@ -1600,6 +1608,15 @@ msgstr "Das Löschen dieser Gruppe löscht auch alle möglichen Fragen und Antwo
 msgid "Delete Current Group"
 msgstr "Diese Gruppe löschen"
 
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:889
+msgid "Impossible to delete this group because there is at least one question having a condition on its content"
+msgstr "Es ist unmöglich diese Gruppe zu löschen, da es mindestens eine Frage gibt, die Bedingungen zu eine Frage in dieser Gruppe hat."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:891
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1051
+msgid "Disabled"
+msgstr "Deaktiviert"
+
 msgid "Change Question Order"
 msgstr "Fragen-Reihenfolge ändern"
 
@@ -1618,6 +1635,10 @@ msgstr "Details dieser Gruppe verstecken"
 msgid "Add New Question to Group"
 msgstr "Neue Frage zu dieser Gruppe hinzufügen"
 
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:3595
+msgid "Questions with conditions to this group"
+msgstr "Fragen mit Bedingungen zu dieser Gruppe"
+
 msgid "Edit Current Question"
 msgstr "Diese Frage bearbeiten"
 
@@ -1626,6 +1647,10 @@ msgstr "Das Löschen dieser Frage löscht auch alle möglichen Antworten, die si
 
 msgid "Delete Current Question"
 msgstr "Diese Frage löschen"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1049
+msgid "Impossible to delete this question because  there is at least one question having a condition on it"
+msgstr "Es ist unmöglich diese Frage zu löschen, da mindestens eine Frage eine Bedingung darauf gesetzt hat"
 
 msgid "Export this Question"
 msgstr "Diese Frage exportieren"
@@ -1685,6 +1710,9 @@ msgstr "Sie müssen ein Beschriftung-Set für diese Frage auswählen"
 msgid "Other:"
 msgstr "'Sonstige:' Angabe möglich:"
 
+msgid "Other questions having conditions on this question:"
+msgstr "Andere Fragen haben Bedingung, die auf dieser Frage basieren:"
+
 msgid "Base Language"
 msgstr "Basis-Sprache"
 
@@ -1707,8 +1735,8 @@ msgstr "Reihenfolge"
 msgid "New Answer"
 msgstr "Neue Antwort"
 
-msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
-msgstr "Sie können die Codes nicht ändern und keine Einträge hinzufügen oder löschen, weil dieses Beschriftung-Set in einer aktiven Umfrage benutzt wird."
+msgid "You cannot add answers because they are being used by an active survey."
+msgstr "Sie können Antworten nicht hinzufügen das Sie von einer aktiven Umfrage genutzt werden."
 
 msgid "Modifying User"
 msgstr "Benutzer bearbeiten"
@@ -1877,13 +1905,13 @@ msgstr "Die aktuelle Gruppe nutzt Fragen mit Bedingungen"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2504
 msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
-msgstr ""
+msgstr "Das Verändern der Reihenfolge in dieser Gruppe ist bestimmten Beschränkungen unterworfen, um sicherzustellen, dass Fragen mit Bedingungen nicht vor Fragen verschoben werden von denen die Bedingung abhängt."
 
-msgid "The following questions are concerned"
-msgstr "Die folgenden Fragen sind betroffen"
+msgid "See the conditions marked on the following questions"
+msgstr "Die Bedingungen auf den folgenden Fragen"
 
-msgid "depends on question"
-msgstr "hängt ab von Frage"
+msgid "Condition(s) for"
+msgstr "Bedingung(en) für"
 
 msgid "Import Group"
 msgstr "Gruppen importieren"
@@ -2174,11 +2202,11 @@ msgstr "URL Beschreibung:"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:3595
 msgid "Current survey has questions with conditions outside their own group"
-msgstr ""
+msgstr "Die aktuelle Umfrage besitzt Fragen mit Bedingungen ausserhalb der eigenen Gruppe."
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:3595
 msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
-msgstr ""
+msgstr "Das Verändern der Gruppen-Reihenfolge ist bestimmten Beschränkungen unterworfen, um sicherzustellen, dass Fragen mit Bedingungen nicht vor Fragen verschoben werden von denen die Bedingung abhängt."
 
 msgid "The following groups are concerned"
 msgstr "Die folgenden Gruppen sind betroffen"
@@ -2186,8 +2214,9 @@ msgstr "Die folgenden Gruppen sind betroffen"
 msgid "depends on group"
 msgstr "Hängt ab von Gruppe"
 
-msgid "for question(s)"
-msgstr "für Frage(n)"
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:3641
+msgid "see the marked conditions on"
+msgstr "Sehen sie die markierten Bedingungen auf"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1855
 msgid "The uploaded file is bigger than the upload_max_filesize directive in php.ini"
@@ -2428,6 +2457,9 @@ msgstr "Neue Beschriftung hinzufügen"
 # D:\web\xampp\htdocs\phpsurveyor/admin/labels.php:373
 msgid "Inserting New labels must be done on the first language folder."
 msgstr "Neue Labels dürfen nur auf der ersten Seite eingefügt werden."
+
+msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
+msgstr "Sie können die Codes nicht ändern und keine Einträge hinzufügen oder löschen, weil dieses Beschriftung-Set in einer aktiven Umfrage benutzt wird."
 
 msgid "Fix Sort"
 msgstr "Sort Check"
