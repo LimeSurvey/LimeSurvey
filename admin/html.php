@@ -1178,7 +1178,7 @@ if ($qid)  // Show the question toolbar
 			foreach ($condarray[$qid] as $depqid => $depcid)
 			{
 				$listcid=implode("-",$depcid);
-				$questionsummary .= " <a href='#' onClick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\">[QID: ".$depqid."]</a>";
+				$questionsummary .= " <a href='#' onClick=\"window.open('admin.php?sid=".$surveyid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\">[QID: ".$depqid."]</a>";
 			}	
 		}
 		$qid_attributes=getQuestionAttributes($qid);
