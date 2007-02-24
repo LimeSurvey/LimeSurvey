@@ -1055,16 +1055,15 @@ function fixsortorderAnswers($qid) //Function rewrites the sortorder for a group
 
 function fixsortorderQuestions($qid,$gid=0) //Function rewrites the sortorder for questions
 {
-	global $dbprefix, $connect;
-	if ($qid != 0)
-    	{
-    	$result = db_execute_assoc("SELECT gid FROM ".db_table_name('questions')." WHERE qid='{$qid}' group by gid");
+	global $dbprefix, $connect, $surveyid;
+	$baselang = GetBaseLanguageFromSurveyID($surveyid);
+	if ($gid == 0)
+    {
+    	$result = db_execute_assoc("SELECT gid FROM ".db_table_name('questions')." WHERE qid='{$qid}' and language='{$baselang}'");
     	$row=$result->FetchRow();
     	$gid=$row['gid'];
-    	}
-	//$cdresult = db_execute_assoc("SELECT qid FROM ".db_table_name('questions')." WHERE gid='{$gid}' group by qid ORDER BY question_order, title");
-	// Removed the ORDER BY as it doesn't work on SQL Server (can't ORDER BY columns that aren't grouped). Would this actually work elsewhere?
-	$cdresult = db_execute_assoc("SELECT qid FROM ".db_table_name('questions')." WHERE gid='{$gid}' group by qid");
+    }
+	$cdresult = db_execute_assoc("SELECT qid FROM ".db_table_name('questions')." WHERE gid='{$gid}' and language='{$baselang}' ORDER BY question_order, title ASC");
 	$position=0;
 	while ($cdrow=$cdresult->FetchRow())
 	{
