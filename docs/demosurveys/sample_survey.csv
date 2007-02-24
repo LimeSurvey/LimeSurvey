@@ -13,12 +13,12 @@
 #
 # GROUPS TABLE
 #
-"gid","sid","group_name","group_code","group_order","description","language"
-"14","40","Single Choice Questions","","8","","en"
-"15","40","Multiple Choice Questions","","7","This group consist only of Multiple Choice questions.","en"
-"11","40","Array Questions","","0","This is a group with the different array questions.","en"
-"12","40","Text Questions","","9","","en"
-"13","40","Mask Questions","","6","This is the group description.","en"
+"gid","sid","group_name","group_order","description","language"
+"14","40","Single Choice Questions","8","","en"
+"15","40","Multiple Choice Questions","7","This group consist only of Multiple Choice questions.","en"
+"11","40","Array Questions","0","This is a group with the different array questions.","en"
+"12","40","Text Questions","9","","en"
+"13","40","Mask Questions","6","This is the group description.","en"
 
 #
 # QUESTIONS TABLE
