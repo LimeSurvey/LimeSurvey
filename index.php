@@ -122,7 +122,7 @@ $i = 0; $tokensexist = 0;
 $tablelist = $connect->MetaTables() or die ("Error getting tokens<br />".htmlspecialchars($connect->ErrorMsg()));
 foreach ($tablelist as $tbl)
 {
-	if ($tbl == db_table_name('tokens')."_$surveyid") {$tokensexist = 1;}
+	if (db_quote_id($tbl) == db_table_name('tokens_'.$surveyid)) $tokensexist = 1;
 }
 
 
