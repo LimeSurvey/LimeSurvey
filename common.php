@@ -1077,8 +1077,8 @@ function fixsortorderQuestions($qid,$gid=0) //Function rewrites the sortorder fo
 function fixsortorderGroups() //Function rewrites the sortorder for groups
 {
 	global $dbprefix, $connect, $surveyid;
-	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
-	$cdresult = db_execute_assoc("SELECT gid FROM ".db_table_name('groups')." group by gid ORDER BY group_order, group_name");
+	$baselang = GetBaseLanguageFromSurveyID($surveyid);
+	$cdresult = db_execute_assoc("SELECT gid FROM ".db_table_name('groups')." WHERE language='{$baselang}' ORDER BY group_order, group_name");
 	$position=0;
 	while ($cdrow=$cdresult->FetchRow())
 	{
