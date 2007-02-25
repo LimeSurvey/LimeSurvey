@@ -51,8 +51,8 @@ $result = db_execute_assoc($query) or die("Error selecting language: <br />".$qu
 
 require_once(dirname(__FILE__).'/sessioncontrol.php');
 
-$language = $_SESSION['adminlang'];
-//RL: set language for questions and labels to current admin language
+// Set language for questions and labels to base language of this survey
+$language = GetBaseLanguageFromSurveyID($surveyid);
 
 
 $surveyoptions = browsemenubar();
@@ -155,18 +155,18 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	{
 		$fnames[] = array("token", "token", "Token ID");
 	}
-	$fnames[] = array("submitdate", "submitdate", "Date Submitted");
+	$fnames[] = array("submitdate", "submitdate", $clang->gT("Date Submitted"));
 	if ($datestamp == "Y") //add datetime to list if survey is datestamped
 	{
-		$fnames[] = array("datestamp", "datestamp", "Date Stamp");
+		$fnames[] = array("datestamp", "datestamp", $clang->gT("Date Stamp"));
 	}
 	if ($ipaddr == "Y") //add ipaddr to list if survey should save submitters IP address
 	{
-		$fnames[] = array("ipaddr", "ipaddr", "IP Address");
+		$fnames[] = array("ipaddr", "ipaddr", $clang->gT("IP Address"));
 	}
 	if ($refurl == "Y") //add refer_URL  to list if survey should save referring URL
 	{
-		$fnames[] = array("refurl", "refurl", "Referring URL");
+		$fnames[] = array("refurl", "refurl", $clang->gT("Referring URL"));
 	}
 	foreach ($fnrows as $fnrow)
 	{
@@ -335,18 +335,18 @@ elseif ($subaction == "all")
 	{
 		$fnames[] = array("token", "Token", "Token ID", "0");
 	}
-	$fnames[] = array("submitdate", "submitdate", "Date Submitted", "0");
+	$fnames[] = array("submitdate", "submitdate", $clang->gT("Date Submitted"), "0");
 	if ($datestamp == "Y") //Add datestamp
 	{
-		$fnames[] = array("datestamp", "Datestamp", "Date Stamp", "0");
+		$fnames[] = array("datestamp", "Datestamp", $clang->gT("Date Stamp"), "0");
 	}
 	if ($ipaddr == "Y") // Add IP Address
 	{
-		$fnames[] = array("ipaddr", "IPAddress", "IP Address", "0");
+		$fnames[] = array("ipaddr", "IPAddress", $clang->gT("IP Address"), "0");
 	}
 	if ($refurl == "Y") // refurl
 	{
-		$fnames[] = array("refurl", "refurl", "Referring URL", "0");
+		$fnames[] = array("refurl", "refurl", $clang->gT("Referring URL"), "0");
 	}
 	foreach ($fnrows as $fnrow)
 	{

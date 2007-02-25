@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-02-24 22:25+0100\n"
+"PO-Revision-Date: 2007-02-25 20:31+0100\n"
 "Last-Translator: \n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -85,7 +85,7 @@ msgid "Date"
 msgstr "Datum"
 
 msgid "Array (Increase, Same, Decrease)"
-msgstr "MAtrix (Zunahme/Gleich/Abnahme)"
+msgstr "Matrix (Zunahme/Gleich/Abnahme)"
 
 msgid "Array (Flexible Labels)"
 msgstr "Matrix (Flexible Beschriftungen)"
@@ -94,7 +94,7 @@ msgid "Gender"
 msgstr "Geschlecht"
 
 msgid "Array (Flexible Labels) by Column"
-msgstr "MAtrix (Flexible Beschriftungen) nach Spalte"
+msgstr "Matrix (Flexible Beschriftungen) nach Spalte"
 
 msgid "Language Switch"
 msgstr "Sprachwechsel"
@@ -1464,7 +1464,7 @@ msgid "Browse Responses For This Survey"
 msgstr "Ergebnisse dieser Umfrage ansehen"
 
 msgid "Activate/Edit Tokens for this Survey"
-msgstr "Probanden aktivierenbearbeiten für diese Umfrage"
+msgstr "Probanden aktivieren/bearbeiten für diese Umfrage"
 
 msgid "Close this Survey"
 msgstr "Diese Umfrage schließen"
@@ -1659,10 +1659,10 @@ msgid "Copy Current Question"
 msgstr "Diese Frage kopieren"
 
 msgid "Set Conditions for this Question"
-msgstr "Bedingungen für diese Frage setzten"
+msgstr "Bedingungen für diese Frage setzen"
 
 msgid "Edit/Add Answers for this Question"
-msgstr "Antworten hinzufügenbearbeiten für diese Frage"
+msgstr "Antworten hinzufügen/bearbeiten für diese Frage"
 
 msgid "Close this Question"
 msgstr "Diese Frage schließen"
@@ -1711,7 +1711,7 @@ msgid "Other:"
 msgstr "'Sonstige:' Angabe möglich:"
 
 msgid "Other questions having conditions on this question:"
-msgstr "Andere Fragen haben Bedingung, die auf dieser Frage basieren:"
+msgstr "Fragen mit Bedingungen, die auf dieser Frage basieren:"
 
 msgid "Base Language"
 msgstr "Basis-Sprache"

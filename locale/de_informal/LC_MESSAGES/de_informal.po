@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-02-24 22:31+0100\n"
+"PO-Revision-Date: 2007-02-25 18:05+0100\n"
 "Last-Translator: \n"
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -77,28 +77,28 @@ msgid "5 Point Choice"
 msgstr "5 Punkte Auswahl"
 
 msgid "Array (5 Point Choice)"
-msgstr "Feld (5 Punkte Auswahl)"
+msgstr "Matrix (5 Punkte Auswahl)"
 
 msgid "Array (10 Point Choice)"
-msgstr "Feld (10 Punkte Auswahl)"
+msgstr "Matrix (10 Punkte Auswahl)"
 
 msgid "Array (Yes/No/Uncertain)"
-msgstr "Feld (Ja/Nein/Unsicher)"
+msgstr "Matrix (Ja/Nein/Unsicher)"
 
 msgid "Date"
 msgstr "Datum"
 
 msgid "Array (Increase, Same, Decrease)"
-msgstr "Feld (Zunahme/Gleich/Abnahme)"
+msgstr "Matrix (Zunahme/Gleich/Abnahme)"
 
 msgid "Array (Flexible Labels)"
-msgstr "Feld (Flexible Beschriftungen)"
+msgstr "Matrix (Flexible Beschriftungen)"
 
 msgid "Gender"
 msgstr "Geschlecht"
 
 msgid "Array (Flexible Labels) by Column"
-msgstr "Array (Flexible Beschriftungen) nach Spalte"
+msgstr "Matrix (Flexible Beschriftungen) nach Spalte"
 
 msgid "Language Switch"
 msgstr "Sprachwechsel"
@@ -270,9 +270,6 @@ msgstr "Umfrage verlassen und löschen"
 msgid "Load Unfinished Survey"
 msgstr "Zwischengespeicherte Umfrage laden"
 
-msgid "last"
-msgstr "Abschließen"
-
 msgid "Save Survey and Return"
 msgstr "Umfrage speichern und zurückkehren"
 
@@ -426,9 +423,6 @@ msgstr "Du hast keinen Namen angegeben"
 msgid "You did not provide a password"
 msgstr "Du hast kein Passwort angegeben"
 
-msgid "next"
-msgstr "Weiter"
-
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "Um an dieser Umfrage teilzunehmen, benötigst Du einen passenden Zugangsschlüssel."
 
@@ -443,9 +437,6 @@ msgstr "Es gibt keine entsprechende Unmfrage."
 
 msgid "complete"
 msgstr "vollständig"
-
-msgid "prev"
-msgstr "Zurück"
 
 msgid ""
 "Dear {FIRSTNAME},\n"
@@ -506,6 +497,15 @@ msgstr "Schlüsselwort"
 
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Für diese Umfrage wurden noch keine Fragen angelegt. Sie kann weder getestet noch abgeschlossen werden."
+
+msgid "prev"
+msgstr "Zurück"
+
+msgid "next"
+msgstr "Weiter"
+
+msgid "last"
+msgstr "Abschließen"
 
 msgid "Choose only one of the following"
 msgstr "Bitte wähle einen Punkt aus der Liste aus."
@@ -1645,7 +1645,7 @@ msgstr ""
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:891
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1051
 msgid "Disabled"
-msgstr ""
+msgstr "Inaktiv"
 
 msgid "Change Question Order"
 msgstr "Fragen-Reihenfolge ändern"

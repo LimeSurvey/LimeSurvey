@@ -947,7 +947,7 @@ function submittokens()
 function sendsubmitnotification($sendnotification)
 {
 	global $thissurvey;
-	global $dbprefix;
+	global $dbprefix, $clang;
 	global $sitename, $homeurl, $surveyid, $publicurl;
 
 	$subject = "$sitename Survey Submitted";

@@ -77,8 +77,8 @@ if (!$surveyid)
 	exit;
 }
 
-if (isset($_SESSION['adminlang'])) {$language = $_SESSION['adminlang'];} else {	$language = GetBaseLanguageFromSurveyID($surveyid);};
-//RL: set language for questions and labels to current admin language for browsing responses
+// Set language for questions and labels to base language of this survey
+$language = GetBaseLanguageFromSurveyID($surveyid);
 
 //Delete any stats files from the temp directory that aren't from today.
 deleteNotPattern($tempdir, "STATS_*.png","STATS_".date("d")."*.png");
@@ -950,7 +950,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 		if (substr($rt, 0, 1) == "M" || substr($rt, 0, 1) == "J") //MULTIPLE OPTION, THEREFORE MULTIPLE FIELDS.
 		{
 			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
-			$nquery = "SELECT title, type, question, lid, other FROM ".db_table_name("questions")." AND language='{$language}' WHERE qid='$qqid'";
+			$nquery = "SELECT title, type, question, lid, other FROM ".db_table_name("questions")." WHERE language='{$language}' and qid='$qqid'";
 			$nresult = db_execute_num($nquery) or die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
 			while ($nrow=$nresult->FetchRow())
 			{
