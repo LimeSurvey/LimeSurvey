@@ -561,7 +561,7 @@ function do_language($ia)
 	global $dbprefix, $surveyid, $clang;
 	$answerlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	$answerlangs [] = GetBaseLanguageFromSurveyID($surveyid);
-	$answer = "\n\t\t\t\t\t<select name='$ia[1]' id='$ia[1]' onChange='checkconditions(this.value, this.name, this.type);modfield(this.name);modlanguage(this.name)'>\n";
+	$answer = "\n\t\t\t\t\t<select name='$ia[1]' id='$ia[1]' onChange='checkconditions(this.value, this.name, this.type);modfield(this.name);document.getElementById(\"lang\").value=this.value;'>\n";
 	if (!$_SESSION[$ia[1]]) {$answer .= "\t\t\t\t\t\t<option value='' selected>".$clang->gT("Please choose")."..</option>\n";}
 	foreach ($answerlangs as $ansrow)
 	{
