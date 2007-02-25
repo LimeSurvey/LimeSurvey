@@ -103,10 +103,22 @@ class gettext_reader {
     $this->enable_cache = $enable_cache;
 
     // $MAGIC1 = (int)0x950412de; //bug in PHP 5
-    $MAGIC1 = (int) - 1794895138;
+    //$MAGIC1 = (int) - 1794895138;
     // $MAGIC2 = (int)0xde120495; //bug
-    $MAGIC2 = (int) - 569244523;
+    //$MAGIC2 = (int) - 569244523;
 
+    if (0x7fffffff < (int) 0xffffffff) 
+    {
+    	// Size of int is more than 32 bits.
+    	$MAGIC1 = (int) 0x950412de;
+    	$MAGIC2 = (int) 0xde120495;
+    } else 
+    {
+    	// Size of int is 32 bits.
+		$MAGIC1 = (int) - 1794895138;
+		$MAGIC2 = (int) - 569244523;
+    }
+    
     $this->STREAM = $Reader;
     $magic = $this->readint();
     if ($magic == $MAGIC1) {
