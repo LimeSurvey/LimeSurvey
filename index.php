@@ -40,6 +40,7 @@
 
 require_once(dirname(__FILE__).'/config.php');
 ini_set('session.gc_maxlifetime', 3000);
+ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
 
 if (!isset($surveyid)) {	$surveyid=returnglobal('sid');}
 //This next line is for security reasons. It ensures that the $surveyid value is never anything but a number.
@@ -69,7 +70,6 @@ if (isset($_SESSION['s_lang']))
 	$clang = SetSurveyLanguage( $surveyid, $defaultlang);
 }
 
-//ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
 
 if ( $embedded_inc != '' )
 require_once( $embedded_inc );
@@ -237,7 +237,7 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 
 	loadanswers();
 	// <-- END NEW FEATURE - SAVE
-	$_POST['move'] = " ".$clang->gT("next")." >> ";
+	$_POST['move'] = "movenext";
 
 	if ($errormsg)
 	{
@@ -686,9 +686,9 @@ function checkmandatorys($backok=null)
 					{
 						//The number of questions not answered is equal to the number of questions
 						//This section gets used if it is a multiple choice type question
-						if (isset($_POST['move']) && $_POST['move'] == " << ".$clang->gT("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
-						if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-						if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " ".$clang->gT("next")." >> ";}
+						if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep'];}
+						if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep'];}
+						if (isset($_POST['move']) && $_POST['move'] == "movelast") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == "movenext";}
 						$notanswered[]=substr($multiname, 5, strlen($multiname));
 						$$multiname=0;
 						$$multiname2=0;
@@ -707,9 +707,9 @@ function checkmandatorys($backok=null)
 			elseif ((!isset($_POST[$multiname]) || !$_POST[$multiname]) && (!isset($_POST[$dtcm]) || $_POST[$dtcm] == "on"))
 			{
 				//One of the mandatory questions hasn't been asnwered
-				if (isset($_POST['move']) && $_POST['move'] == " << ".$clang->gT("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " ".$clang->gT("next")." >> ";}
+				if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($_POST['move']) && $_POST['move'] == "movelast") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == "movenext";}
 				$notanswered[]=$mfns[$mi];
 			}
 			else
@@ -725,9 +725,9 @@ function checkmandatorys($backok=null)
 			if ($$multiname == $$multiname2) //so far all multiple choice options are unanswered
 			{
 				//The number of questions not answered is equal to the number of questions
-				if (isset($_POST['move']) && $_POST['move'] == " << ".$clang->gT("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " ".$clang->gT("next")." >> ";}
+				if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($_POST['move']) && $_POST['move'] == "movelast") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == "movenext";}
 				$notanswered[]=substr($multiname, 5, strlen($multiname));
 				$$multiname="";
 				$$multiname2="";
@@ -754,9 +754,9 @@ function checkconditionalmandatorys($backok=null)
 					if ($$multiname == $$multiname2) //For this lot all multiple choice options are unanswered
 					{
 						//The number of questions not answered is equal to the number of questions
-						if (isset($_POST['move']) && $_POST['move'] == " << ".$clang->gT("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
-						if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-						if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " ".$clang->gT("next")." >> ";}
+						if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep'];}
+						if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep'];}
+						if (isset($_POST['move']) && $_POST['move'] == "movelast") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == "movenext";}
 						$notanswered[]=substr($multiname, 5, strlen($multiname));
 						$$multiname=0;
 						$$multiname2=0;
@@ -776,9 +776,9 @@ function checkconditionalmandatorys($backok=null)
 			}
 			elseif ((isset($_POST[$dccm]) && $_POST[$dccm] == "on") && (!isset($_POST[$multiname]) || !$_POST[$multiname]) && (!isset($_POST[$dtccm]) || $_POST[$dtccm] == "on")) // Question and Answers is on, there is no answer, but it's a multiple
 			{
-				if (isset($_POST['move']) && $_POST['move'] == " << ".$clang->gT("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " ".$clang->gT("next")." >> ";}
+				if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($_POST['move']) && $_POST['move'] == "movelast") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == "movenext";}
 				$notanswered[]=$cmfns[$mi];
 			}
 			elseif (isset($_POST[$dccm]) && $_POST[$dccm] == "on")
@@ -794,9 +794,9 @@ function checkconditionalmandatorys($backok=null)
 			if ($$multiname == $$multiname2) //so far all multiple choice options are unanswered
 			{
 				//The number of questions not answered is equal to the number of questions
-				if (isset($_POST['move']) && $_POST['move'] == " << ".$clang->gT("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " ".$clang->gT("next")." >> ";}
+				if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($_POST['move']) && $_POST['move'] == "movelast") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == "movenext";}
 				$notanswered[]=substr($multiname, 5, strlen($multiname));
 			}
 		}
@@ -842,9 +842,9 @@ function checkpregs($backok=null)
 		}
 		if (isset($notvalidated) && is_array($notvalidated))
 		{
-			if (isset($_POST['move']) && $_POST['move'] == " << ".$clang->gT("prev")." ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("next")." >> ") {$_SESSION['step'] = $_POST['thisstep'];}
-			if (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." ") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == " ".$clang->gT("next")." >> ";}
+			if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($_POST['move']) && $_POST['move'] == "movelast") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == "movenext";}
 			return $notvalidated;
 		}
 	}

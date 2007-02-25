@@ -95,7 +95,7 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 }
 
 //SAVE if on page with questions or on submit page
-if ((isset($_POST['fieldnames']) && $_POST['fieldnames']) || (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("submit")." "))
+if ((isset($_POST['fieldnames']) && $_POST['fieldnames']) || (isset($_POST['move']) && $_POST['move'] == "movesubmit"))
 {
 	if ($thissurvey['active'] == "Y") 	// Only save if active
 	{
@@ -363,7 +363,7 @@ function createinsertquery()
 			{
 				$query .= ",".db_quote_id('refurl'); 
 			}
-			if ((isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("submit")." "))
+			if ((isset($_POST['move']) && $_POST['move'] == "movesubmit"))
 			{
 				$query .= ",".db_quote_id('submitdate'); 
 			}
@@ -382,7 +382,7 @@ function createinsertquery()
 			{
 				$query .= ", '".getenv("HTTP_REFERER")."'";
 			}
-			if ((isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("submit")." "))
+			if ((isset($_POST['move']) && $_POST['move'] == "movesubmit"))
 			{
 				$query .= ", '".date("Y-m-d H:i:s")."'";
 			}
@@ -402,7 +402,7 @@ function createinsertquery()
 				{
 					$query .= "ipaddr = '".$_SERVER['REMOTE_ADDR']."',";
 				}
-				if ((isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("submit")." "))
+				if ((isset($_POST['move']) && $_POST['move'] == "movesubmit"))
 				{
 					$query .= "submitdate = '".date("Y-m-d H:i:s")."',";
 				}
@@ -424,7 +424,7 @@ function createinsertquery()
 			else
 			{
 				$query = "";
-				if ((isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("submit")." "))
+				if ((isset($_POST['move']) && $_POST['move'] == "movesubmit"))
 				{
 					$query = "UPDATE {$thissurvey['tablename']} SET ";
 					$query .= "submitdate = '".date("Y-m-d H:i:s")."' ";

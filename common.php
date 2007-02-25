@@ -1785,7 +1785,7 @@ function templatereplace($line)
 			{
 				$saveall = "<input type='submit' name='loadall' value='".$clang->gT("Load Unfinished Survey")."' class='saveall' />";
 			}
-			elseif (isset($_SESSION['scid']) && (isset($_POST['move']) && $_POST['move'] == " ".$clang->gT("last")." "))  //Already saved and on Submit Page, dont show Save So Far button
+			elseif (isset($_SESSION['scid']) && (isset($_POST['move']) && $_POST['move'] == "movelast"))  //Already saved and on Submit Page, dont show Save So Far button
 			{
 				$saveall="";
 			}
