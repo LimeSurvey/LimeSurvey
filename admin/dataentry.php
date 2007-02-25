@@ -548,7 +548,7 @@ if($actsurrows['browse_response']){
 				$saver['scid']=$svrow['scid'];
 				$saver['ip']=$svrow['ip'];
 			}
-			$svquery = "SELECT * FROM {$dbprefix}saved WHERE scid=".$saver['scid'];
+			$svquery = "SELECT * FROM {$dbprefix}saved_control WHERE scid=".$saver['scid'];
 			$svresult=db_execute_assoc($svquery) or die("Error getting saved info<br />$svquery<br />".htmlspecialchars($connect->ErrorMsg()));
 			while($svrow=$svresult->FetchRow())
 			{

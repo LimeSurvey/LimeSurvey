@@ -329,11 +329,14 @@ if(isset($surveyid))
 		$cqresult=db_execute_assoc($cqquery) or die ("Couldn't get question type to check for change<br />".htmlspecialchars($cqquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
 		while ($cqr=$cqresult->FetchRow()) {$oldtype=$cqr['type'];}
 
-		global $change;
-		$change = "0";
-		if (($oldtype == "J" && $_POST['type']== "I") || ($oldtype == "I" && $_POST['type']== "J") || ($oldtype == $_POST['type']))
+    	$keepanswers = "0";
+		
+		// This prevents the loss of answers for some interchangeable language types - God give me question objects - please!
+		if (($oldtype == "!" && $_POST['type']== "L") || ($oldtype == "L" && $_POST['type']== "!") ||
+            ($oldtype == "W" && $_POST['type']== "Z") || ($oldtype == "Z" && $_POST['type']== "W") ||        
+            ($oldtype == $_POST['type']))
 		{
-			$change = "1";
+			$keepanswers = "1";
 		}
 
 		if ($oldtype != $_POST['type'])
@@ -380,7 +383,7 @@ if(isset($surveyid))
 					}
 				}
 				
-				if ($oldtype !=  $_POST['type'] & $change == "0")
+				if ($keepanswers == "0")
 				{
 					$query = "DELETE FROM {$dbprefix}answers WHERE qid={$_POST['qid']}";
 					$result = $connect->Execute($query) or die("Error: ".htmlspecialchars($connect->ErrorMsg()));

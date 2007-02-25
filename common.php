@@ -604,7 +604,7 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 		"!"=>$clang->gT("List (Dropdown)")
 		//            "^"=>$clang->gT("Slider"),
 		);
-//echo $SelectedCode;
+        asort($qtypes);
 		if ($ReturnType == "array") {return $qtypes;}
 		$qtypeselecter = "";
 		foreach($qtypes as $TypeCode=>$TypeDescription)
