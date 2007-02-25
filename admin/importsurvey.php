@@ -401,6 +401,7 @@ $surveyrowdata=array_combine($sfieldorders,$sfieldcontents);
 $surveyrowdata['owner_id']=$_SESSION['loginID'];
 // Set new survey ID
 $surveyrowdata['sid']=$newsid;
+$surveyrowdata['active']='N';
 
 
 if ($importversion<=100)
@@ -729,6 +730,7 @@ if (isset($grouparray) && $grouparray) {
 					unset($questionrowdata['qid']);
 					$questionrowdata["sid"] = $newsid;
 					$questionrowdata["gid"] = $newgid;
+                    $questionrowdata['language']=$newlanguage;
                     // Version <=100 doesn't have a language field yet so we set it now
             		if ($importversion<=100)  
                         {
