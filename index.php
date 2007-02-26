@@ -531,7 +531,7 @@ function checkgroupfordisplay($gid)
 			{
 				//Iterate through each condition for this question and check if it is met.
 				$query2= "SELECT type, gid FROM ".db_table_name('questions')."\n"
-				." WHERE qid={$row['cqid']} AND language=".$_SESSION['s_lang'];
+				." WHERE qid={$row['cqid']} AND language='".$_SESSION['s_lang']."'";
 				$result2=db_execute_assoc($query2) or die ("Coudn't get type from questions<br />$ccquery<br />".htmlspecialchars($connect->ErrorMsg()));
 				while($row2=$result2->FetchRow())
 				{
