@@ -2506,7 +2506,7 @@ function do_array_flexiblecolumns($ia)
 	}
 	foreach ($answers as $ld)
 	{
-		if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
+		if (!isset($trbc) || $trbc == "array2") {$trbc = "array1";} else {$trbc = "array2";}
 		/* Check if this item has not been answered: the 'notanswered' variable must be an array,
 		containing a list of unanswered questions, the current question must be in the array,
 		and there must be no answer available for the item in this session. */
@@ -2544,6 +2544,7 @@ function do_array_flexiblecolumns($ia)
 			// --> END NEW FEATURE - SAVE
 
 		}
+	    unset($trbc);
 		$answer .= "\t\t\t\t</tr>\n";
 		$fn++;
 	}
