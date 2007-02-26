@@ -2581,15 +2581,13 @@ if($action == "orderquestions")
 		  array_key_exists($oqarray[$i+1]['qid'],$questdepsarray) &&
 		  array_key_exists($oqarray[$i]['qid'],$questdepsarray[$oqarray[$i+1]['qid']]) )
 		{
-			$downdisabled = "disabled=\"true\"";
-			//echo "TIBO Downdisabled ".$oqarray[$i]['qid'];
+			$downdisabled = "disabled=\"true\" class=\"disabledbtn\"";
 		}
 		if ( !is_null($questdepsarray) && $i !=0  &&
 		  array_key_exists($oqarray[$i]['qid'],$questdepsarray) &&
 		  array_key_exists($oqarray[$i-1]['qid'],$questdepsarray[$oqarray[$i]['qid']]) )
 		{
-			$updisabled = "disabled=\"true\"";
-			//echo "TIBO UPdisabled ".$oqarray[$i]['qid'];
+			$updisabled = "disabled=\"true\" class=\"disabledbtn\"";
 		}
 
 		$orderquestions.="<li class='movableNode'>\n" ;
@@ -3668,13 +3666,13 @@ if ($action == "ordergroups")
 			   array_key_exists($ogarray[$i+1]['gid'],$groupdepsarray) &&
 			   array_key_exists($ogarray[$i]['gid'],$groupdepsarray[$ogarray[$i+1]['gid']]) )
 			{
-				$downdisabled = "disabled=\"true\"";
+				$downdisabled = "disabled=\"true\" class=\"disabledbtn\"";
 			}
 			if ( !is_null($groupdepsarray) && $i !=0  && 
 			   array_key_exists($ogarray[$i]['gid'],$groupdepsarray) &&
 			   array_key_exists($ogarray[$i-1]['gid'],$groupdepsarray[$ogarray[$i]['gid']]) )
 			{
-				$updisabled = "disabled=\"true\"";
+				$updisabled = "disabled=\"true\" class=\"disabledbtn\"";
 			}
 	
 			$ordergroups.="<li class='movableNode' id='".$ogarray[$i]['gid']."'>\n" ;
