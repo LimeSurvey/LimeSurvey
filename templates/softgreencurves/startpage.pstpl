@@ -93,4 +93,4 @@ body{
 	}
 </style>
 </head>
-<body vlink='#003300' link='#003300'>
+<body vlink='#003300' link='#003300' onload="checkconditions('none','none','none')">

@@ -101,7 +101,7 @@ body
 	}
 </style>
 </head>
-<body bgcolor='#0099CC' link='#000080' vlink='#000080' alink='#FFFF00'>
+<body bgcolor='#0099CC' link='#000080' vlink='#000080' alink='#FFFF00' onload="checkconditions('none','none','none')">
 <table width='95%' align='center' style='border-collapse: collapse; border-color:#0A47FF' bgcolor='#E5F9FF' border='1' cellspacing='0'>
 	<tr>
 		<td>
