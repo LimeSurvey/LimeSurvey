@@ -961,13 +961,13 @@ function sendsubmitnotification($sendnotification)
 	}
 
 	$message .= $clang->gT("Click the following link to see the individual response:")."\r\n"
-	. "  $homeurl/browse.php?sid=$surveyid&action=id&id=".$_SESSION['srid']."\r\n\r\n"
+	. "  $homeurl/admin.php?action=browse&sid=$surveyid&subaction=id&id=".$_SESSION['srid']."\r\n\r\n"
 	// Add link to edit individual responses from notification email
 	. $clang->gT("Click the following link to edit the individual response:")."\r\n"
 
-	. "  $homeurl/dataentry.php?sid=$surveyid&action=edit&surveytable=survey_$surveyid&id=".$_SESSION['srid']."\r\n\r\n"
+	. "  $homeurl/admin.php?action=dataentry&sid=$surveyid&subaction=edit&surveytable=survey_$surveyid&id=".$_SESSION['srid']."\r\n\r\n"
 	. $clang->gT("View statistics by clicking here:")."\r\n"
-	. "  $homeurl/statistics.php?sid=$surveyid\r\n\r\n";
+	. "  $homeurl/admin.php?action=statistics&sid=$surveyid\r\n\r\n";
 	if ($sendnotification > 1)
 	{ //Send results as well. Currently just bare-bones - will be extended in later release
 		$message .= "----------------------------\r\n";
