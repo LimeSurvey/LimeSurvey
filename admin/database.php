@@ -331,7 +331,7 @@ if(isset($surveyid))
 
     	$keepanswers = "0";
 		
-		// This prevents the loss of answers for some interchangeable language types - God give me question objects - please!
+		// This prevents the loss of answers for some interchangeable question types - God give me question objects - please!
 		if (($oldtype == "!" && $_POST['type']== "L") || ($oldtype == "L" && $_POST['type']== "!") ||
             ($oldtype == "W" && $_POST['type']== "Z") || ($oldtype == "Z" && $_POST['type']== "W") ||        
             ($oldtype == $_POST['type']))

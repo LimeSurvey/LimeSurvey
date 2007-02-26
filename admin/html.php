@@ -886,7 +886,7 @@ if ($gid)   // Show the group toolbar
 			}
 			else
 			{
-				$groupsummary .= "\t\t\t\t\t<a href='$scriptname?sid=$surveyid&amp;gid=$gid' onclick=\"alert('".$clang->gT("Impossible to delete this group because there is at least one question having a condition on its content")."')\""
+				$groupsummary .= "\t\t\t\t\t<a href='$scriptname?sid=$surveyid&amp;gid=$gid' onclick=\"alert('".$clang->gT("Impossible to delete this group because there is at least one question having a condition on its content","js")."')\" "
 				. "onmouseout=\"hideTooltip()\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("Disabled")."-".$clang->gT("Delete Current Group", "js")."');return false\">"
 				. "<img src='$imagefiles/delete_disabled.png' alt='' name='DeleteWholeGroup' title='' align='left' border='0' hspace='0' /></a>";
@@ -1046,7 +1046,7 @@ if ($qid)  // Show the question toolbar
 			else
 			{
 				$questionsummary .= "\t\t\t\t\t<a href='$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid'" .
-				"onclick=\"alert('".$clang->gT("Impossible to delete this question because  there is at least one question having a condition on it")."')\""
+				"onclick=\"alert('".$clang->gT("Impossible to delete this question because  there is at least one question having a condition on it","js")."')\""
 				. "onmouseout=\"hideTooltip()\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("Disabled")."-".$clang->gT("Delete Current Question", "js")."');return false\">"
 				. "<img src='$imagefiles/delete_disabled.png' name='DeleteWholeQuestion' alt= '' title='' "
@@ -2562,7 +2562,7 @@ if($action == "orderquestions")
 			foreach ($depquestrow as $targqid => $targcid)
 			{
 				$listcid=implode("-",$targcid);
-				$orderquestions .= "<li><a href='#' onClick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$gid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\">".$clang->gT("Condition(s) for")." [QID: ".$depqid."] </a> ";
+				$orderquestions .= "<li><a href='#' onClick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$gid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\"> [QID: ".$depqid."] </a> ";
 			}
 			$orderquestions .= "</li>\n";
 		}
@@ -3644,7 +3644,7 @@ if ($action == "ordergroups")
 				foreach($targrow['conditions'] as $depqid => $depqrow)
 				{
 					$listcid=implode("-",$depqrow);
-					$ordergroups .= " <a href='#' onClick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\">".$clang->gT("Condition(s) for")." [QID: ".$depqid."]</a>";
+					$ordergroups .= " <a href='#' onClick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\"> [QID: ".$depqid."]</a>";
 				}
 				$ordergroups .= "</li>\n";
 			}

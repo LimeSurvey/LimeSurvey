@@ -3258,8 +3258,8 @@ function GetGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="b
 				$targetgid=$condrow['targgid'];
 				$depqid=$condrow['depqid'];
 				$cid=$condrow['cid'];
-				$condarray[$depgid][$targetgid]['depgpname'] = $condrow[1];
-				$condarray[$depgid][$targetgid]['targetgpname'] = $condrow[3];
+				$condarray[$depgid][$targetgid]['depgpname'] = $condrow['depgpname'];
+				$condarray[$depgid][$targetgid]['targetgpname'] = $condrow['targgpname'];
 				$condarray[$depgid][$targetgid]['conditions'][$depqid][]=$cid;
 				break;
 
