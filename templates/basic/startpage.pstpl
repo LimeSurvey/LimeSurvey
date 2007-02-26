@@ -19,5 +19,5 @@ img { border: 0; }
 .errormandatory { font-size: 13px; font-weight: bold; color:#ff0000; }
 </style>
 </head>
-<body onload="checkconditions('none','none','none')">
+<body>
 

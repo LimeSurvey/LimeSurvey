@@ -60,7 +60,7 @@ body.default
 	
 </style>
 </head>
-<body class='default' onload="checkconditions('none','none','none')">
+<body class='default'>
 <table width='75%' align='center' style='border-collapse: collapse' border='1' cellspacing='0'>
 	<tr>
 		<td>

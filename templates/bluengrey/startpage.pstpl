@@ -15,6 +15,13 @@ body {
 	border: 0px;
 }
 
+.errormandatory 
+	{
+	font-size:12px;
+	font-weight:bold;
+	color:RED;
+	}
+
 font{
 	font-family: Verdana;
 	font-size: 10px;
@@ -103,7 +110,7 @@ font{
 	}
 </style>
 </head>
-<body onload="checkconditions('none','none','none')">
+<body>
 <br/>
 <table width='85%' align='center' style='border-collapse:collapse; border-color:#444444;' bgcolor='#E9E9E9' border='2' cellspacing='0'>
 	<tr>

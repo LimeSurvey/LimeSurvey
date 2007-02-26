@@ -1675,8 +1675,7 @@ function templatereplace($line)
 	global $assessments;
 	global $errormsg, $clang;
 
-
-	if (ereg("^</head>", $line))
+	if (strpos ($line,"</head>"))
 	{
 		$line=str_replace("</head>",
 		"<script type=\"text/javascript\"><!-- \n"

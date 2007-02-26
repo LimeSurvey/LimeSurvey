@@ -89,7 +89,7 @@ body{
 	}
 </style>
 </head>
-<body bgcolor='#C0C0C0' onload="checkconditions('none','none','none')">
+<body bgcolor='#C0C0C0'>
 <table width='75%' align='center' style='border-collapse: collapse;border-color:#333333' bgcolor='#EDEDED' border='1' cellspacing='0'>
 	<tr>
 		<td>
