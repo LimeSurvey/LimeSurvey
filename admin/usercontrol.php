@@ -122,6 +122,12 @@ if (!isset($_SESSION['loginID']))
 					$loginsummary .= "<br /><br />\n";
 					GetSessionUserRights($_SESSION['loginID']);
 
+					if (isset($_POST['refererargs']) && $_POST['refererargs'])
+					{
+						$_SESSION['metaHeader']="<meta http-equiv=\"refresh\""
+						. " content=\"2;URL={$scriptname}?".$_POST['refererargs']."\" />";
+					}
+
 				}
 				else
 				{
