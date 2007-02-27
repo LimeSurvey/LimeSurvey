@@ -115,14 +115,13 @@ if (isset($_SESSION['loginID']))
 		$accesssummary .= "<p>".$clang->gT("You are not allowed to delete this group!")."</p>";
 		$accesssummary .= "<a href='$scriptname?action=editusergroups'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
-
-	
-	/*elseif(returnglobal('action') == "importsurvey")
+	elseif($action == "importsurvey")
 		{		
 		$accesssummary .= "<p>".$clang->gT("You are not allowed to import a survey!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}	
-	elseif(returnglobal('action') == "importgroup")
+
+	/*elseif(returnglobal('action') == "importgroup")
 		{		
 		$accesssummary .= "<p>".$clang->gT("You are not allowed to import a group!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";

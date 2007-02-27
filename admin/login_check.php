@@ -86,7 +86,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
 								<tr>
 									<td>&nbsp;</td>
 									<td align='center'><input type='hidden' name='action' value='login' />
-									<td align='center'><input type='hidden' name='refererargs' value='".$refererargs."' />
+									<input type='hidden' name='refererargs' value='".$refererargs."' />
 									<input class='action' type='submit' value='Login' /><br />&nbsp;\n</td>
 								</tr>
 								<tr>

@@ -284,10 +284,11 @@ else
 }
 for ($i=0; $i<=$stoppoint+1; $i++)
 {
-	if ($i<$stoppoint-2 || $i==count($bigarray)-1) {$question_attributesarray[] = $bigarray[$i];}
+	if ($i<$stoppoint-2) {$question_attributesarray[] = $bigarray[$i];}
 	unset($bigarray[$i]);
 }
 $bigarray = array_values($bigarray);
+
 
 //ASSESSMENTS
 if (array_search("# SURVEYS_LANGUAGESETTINGS TABLE\n", $bigarray))
@@ -369,7 +370,7 @@ if (!$surveyid)
 
 // Use the existing surveyid if it does not already exists
 // This allows the URL links to the survey to keep working because the sid did not change
-	$newsid = $surveyid;
+	$newsid = $surveyid; 
 	$isquery = "SELECT sid FROM {$dbprefix}surveys WHERE sid=$newsid";
 	$isresult = db_execute_assoc($isquery);
 	if ($isresult->RecordCount()>0)
@@ -1019,7 +1020,7 @@ $importsurvey .= "\t<li>".$clang->gT("Assessments").": $countassessments</li>\n<
 $importsurvey .= "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />\n";
 $importsurvey .= "</td></tr></table><br />\n";
 unlink($the_full_file_path);
-
+unset ($surveyid);  // Crazy but necessary because else the html script will search for user rights
 
 function convertToArray($stringtoconvert, $seperator, $start, $end) 
 // this function is still used to read SQL files from version 1.0 or older
