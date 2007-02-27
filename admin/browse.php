@@ -301,8 +301,8 @@ elseif ($subaction == "all")
 		$browseoutput .= "\n<table width='100%' align='center' border='0' bgcolor='#EFEFEF'>\n"
 		."\t<tr>\n"
 		."\t\t<td align='center' $singleborderstyle>$setfont\n"
-		."\t\t\tShowing Filtered Results<br />\n"
-		."\t\t\t&nbsp;[<a href=\"javascript:window.close()\">Close</a>]"
+		."\t\t\t".$clang->gT("Showing Filtered Results")."<br />\n"
+		."\t\t\t&nbsp;[<a href=\"javascript:window.close()\">".$clang->gT("Close")."</a>]"
 		."\t\t</font></td>\n"
 		."\t</tr>\n"
 		."</table>\n";

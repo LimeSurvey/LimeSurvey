@@ -35,6 +35,8 @@
 */
 //Ensure script is not run directly, avoid path disclosure
 require_once(dirname(__FILE__).'/../../config.php');
+require_once($rootdir.'/classes/core/language.php');
+$clang = new phpsurveyor_lang("en");
 
 $dbname = $databasename;
 

@@ -81,7 +81,14 @@ $slashlesshome=str_replace(array("\\", "/"), "", $homedir);
 // echo $slashlesspath." - ".$slashlesshome;
 
 if (eregi($slashlesshome, $slashlesspath) || eregi("dump", $_SERVER['PHP_SELF'])) {
-	$sourcefrom="admin";
+	if (!eregi($slashlesshome."install", $slashlesspath))
+	{
+		$sourcefrom="admin";
+	}
+	else
+	{
+		$sourcefrom="install";
+	}
 } else {
 	$sourcefrom="public";
 }
