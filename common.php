@@ -1791,6 +1791,9 @@ function templatereplace($line)
 		//Set up save/load feature
 		if ($thissurvey['allowsave'] == "Y")
 		{
+			// Find out if the user has any saved data
+			
+			//die(returnglobal('token'));
 			if (!isset($_SESSION['step']) || !$_SESSION['step'])  //First page, show LOAD
 			{
 				$saveall = "<input type='submit' name='loadall' value='".$clang->gT("Load Unfinished Survey")."' class='saveall' />";
@@ -1890,6 +1893,8 @@ function templatereplace($line)
 		. "<tr><td align='right'>".$clang->gT("Password").":</td><td><input type='password' name='loadpass' value='";
 		if (isset($_POST['loadpass'])) {$loadform .= html_escape(auto_unescape($_POST['loadpass']));}
 		$loadform .= "'></td></tr>\n"
+		. "<tr><td align='right'>".$clang->gT("Security Question:")."</td><td><table><tr><td valign='center'><img src='images/verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table></td></tr>\n"
+		. "<tr><td align='right'></td><td></td></tr>\n"
 		. "<tr><td></td><td><input type='submit' value='".$clang->gT("Load Now")."'></td></tr></table>\n";
 		$line=str_replace("{LOADFORM}", $loadform, $line);
 	}
