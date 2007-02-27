@@ -1282,7 +1282,11 @@ function getextendedanswer($fieldcode, $value)
 	// Performance Improvement	: 36%
 	// Optimized By				: swales
 
-	global $dbprefix, $surveyid, $connect;
+	global $dbprefix, $surveyid, $connect, $clang;
+
+	// use Survey base language if s_lang isn't set in _SESSION (when browsing answers)
+	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
+	if (isset($_SESSION['s_lang'])) $s_lang = $_SESSION['s_lang'];
 
 	//Fieldcode used to determine question, $value used to match against answer code
 	//Returns NULL if question type does not suit
@@ -1290,7 +1294,7 @@ function getextendedanswer($fieldcode, $value)
 	{
 		$fields=arraySearchByKey($fieldcode, createFieldMap($surveyid), "fieldname", 1);
 		//Find out the question type
-		$query = "SELECT type, lid FROM ".db_table_name('questions')." WHERE qid={$fields['qid']} AND language='".$_SESSION['s_lang']."'";
+		$query = "SELECT type, lid FROM ".db_table_name('questions')." WHERE qid={$fields['qid']} AND language='".$s_lang."'";
 		$result = db_execute_assoc($query) or die ("Couldn't get question type - getextendedanswer() in common.php<br />".htmlspecialchars($connect->ErrorMsg()));
 		while($row=$result->FetchRow())
 		{
@@ -1305,7 +1309,7 @@ function getextendedanswer($fieldcode, $value)
 			case "^":
 			case "I":
 			case "R":
-			$query = "SELECT code, answer FROM ".db_table_name('answers')." WHERE qid={$fields['qid']} AND code='".$connect->escape($value)."' AND language='".$_SESSION['s_lang']."'";
+			$query = "SELECT code, answer FROM ".db_table_name('answers')." WHERE qid={$fields['qid']} AND code='".$connect->escape($value)."' AND language='".$s_lang."'";
 			$result = db_execute_assoc($query, $fields['qid'], $value) or die ("Couldn't get answer type L - getextendedanswer() in common.php<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 			while($row=$result->FetchRow())
 			{
@@ -1360,7 +1364,7 @@ function getextendedanswer($fieldcode, $value)
 			case "H":
 			case "W":
 			case "Z":
-			$query = "SELECT title FROM ".db_table_name('labels')." WHERE lid=$this_lid AND code='$value' AND language='".$_SESSION['s_lang']."'";
+			$query = "SELECT title FROM ".db_table_name('labels')." WHERE lid=$this_lid AND code='$value' AND language='".$s_lang."'";
 			$result = db_execute_assoc($query) or die ("Couldn't get answer type F/H - getextendedanswer() in common.php");
 			while($row=$result->FetchRow())
 			{
