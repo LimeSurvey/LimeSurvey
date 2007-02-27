@@ -235,7 +235,7 @@ else
 		echo "<br /><i><strong><font color='red'>".$clang->gT("Important Note:")."<br />".$clang->gT("Do NOT refresh this page, as this will import the file again and produce duplicates")."</font></strong></i><br /><br />";
 	}
 	echo $clang->gT("Total records imported:")." ".$importcount."<br /><br />";
-	echo "[<a href='browse.php?sid=$surveyid'>".$clang->gT("Browse Responses")."</a>]";
+	echo "[<a href='admin.php?action=browse&amp;sid=$surveyid'>".$clang->gT("Browse Responses")."</a>]";
 	echo "</td></tr></table>";
 }
 ?>
