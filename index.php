@@ -225,6 +225,12 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 		$errormsg .= $clang->gT("You did not provide a password")."<br />\n";
 	}
 
+	// if security question asnwer is incorrect
+	if (!isset($_POST['loadsecurity']) || $_POST['loadsecurity'] != $_SESSION['secanswer'])
+	{
+		$errormsg .= $clang->gT("Answer to security question is incorrect")."<br />\n";
+	}
+	
 	// Load session before loading the values from the saved data
 	if (isset($_GET['loadall']))
 	{
@@ -235,7 +241,7 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 	$_SESSION['holdname']=$_POST['loadname']; //Session variable used to load answers every page.
 	$_SESSION['holdpass']=$_POST['loadpass']; //Session variable used to load answers every page.
 
-	loadanswers();
+	if ($errormsg == "") loadanswers();
 	// <-- END NEW FEATURE - SAVE
 	$_POST['move'] = "movenext";
 
