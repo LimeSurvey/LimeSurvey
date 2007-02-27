@@ -1869,15 +1869,17 @@ function templatereplace($line)
 		$saveform = "<table><tr><td align='right'>".$clang->gT("Name").":</td><td><input type='text' name='savename' value='";
 		if (isset($_POST['savename'])) {$saveform .= html_escape(auto_unescape($_POST['savename']));}
 		$saveform .= "'></td></tr>\n"
-		. "<tr><td align='right'>".$clang->gT("Password")."</td><td><input type='password' name='savepass' value='";
+		. "<tr><td align='right'>".$clang->gT("Password").":</td><td><input type='password' name='savepass' value='";
 		if (isset($_POST['savepass'])) {$saveform .= html_escape(auto_unescape($_POST['savepass']));}
 		$saveform .= "'></td></tr>\n"
-		. "<tr><td align='right'>".$clang->gT("Repeat Password")."</td><td><input type='password' name='savepass2' value='";
+		. "<tr><td align='right'>".$clang->gT("Repeat Password").":</td><td><input type='password' name='savepass2' value='";
 		if (isset($_POST['savepass2'])) {$saveform .= html_escape(auto_unescape($_POST['savepass2']));}
 		$saveform .= "'></td></tr>\n"
-		. "<tr><td align='right'>".$clang->gT("Your Email")."</td><td><input type='text' name='saveemail' value='";
+		. "<tr><td align='right'>".$clang->gT("Your Email").":</td><td><input type='text' name='saveemail' value='";
 		if (isset($_POST['saveemail'])) {$saveform .= html_escape(auto_unescape($_POST['saveemail']));}
 		$saveform .= "'></td></tr>\n"
+		."<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='center'><img src='images/verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table></td></tr>\n"
+		. "<tr><td align='right'></td><td></td></tr>\n"
 		. "<tr><td></td><td><input type='submit' name='savesubmit' value='".$clang->gT("Save Now")."'></td></tr>\n"
 		. "</table>";
 		$line=str_replace("{SAVEFORM}", $saveform, $line);
@@ -1893,7 +1895,7 @@ function templatereplace($line)
 		. "<tr><td align='right'>".$clang->gT("Password").":</td><td><input type='password' name='loadpass' value='";
 		if (isset($_POST['loadpass'])) {$loadform .= html_escape(auto_unescape($_POST['loadpass']));}
 		$loadform .= "'></td></tr>\n"
-		. "<tr><td align='right'>".$clang->gT("Security Question:")."</td><td><table><tr><td valign='center'><img src='images/verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table></td></tr>\n"
+		. "<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='center'><img src='images/verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table></td></tr>\n"
 		. "<tr><td align='right'></td><td></td></tr>\n"
 		. "<tr><td></td><td><input type='submit' value='".$clang->gT("Load Now")."'></td></tr></table>\n";
 		$line=str_replace("{LOADFORM}", $loadform, $line);
