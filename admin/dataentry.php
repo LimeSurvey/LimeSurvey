@@ -87,7 +87,7 @@ if($actsurrows['browse_response']){
 	
 	if ($subaction == "edit" || $subaction == "" || $subaction == "editsaved")
 	{
-		GetBaseLanguageFromSurveyID($surveyid);
+		$language = GetBaseLanguageFromSurveyID($surveyid);
 	}
 	
 	if ($subaction == "insert")
@@ -425,7 +425,7 @@ if($actsurrows['browse_response']){
 		$fnresult = db_execute_assoc($fnquery);
 		$fncount = $fnresult->RecordCount();
 		//$dataentryoutput .= "$fnquery<br /><br />\n";
-		$arows = array(); //Create an empty array in case FetchRow does not return any rows
+		$fnrows = array(); //Create an empty array in case FetchRow does not return any rows
 		while ($fnrow = $fnresult->FetchRow())
 		{
 			$fnrows[] = $fnrow;
