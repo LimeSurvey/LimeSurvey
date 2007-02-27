@@ -222,8 +222,7 @@ function savedcontrol()
 	//All the fields are correct. Now make sure there's not already a matching saved item
 	$query = "SELECT COUNT(*) FROM {$dbprefix}saved_control\n"
 	."WHERE sid=$surveyid\n"
-	."AND identifier='".$_POST['savename']."'\n"
-	."AND access_code='".md5($_POST['savepass'])."'\n";
+	."AND identifier='".$_POST['savename']."'\n";
 	$result = db_execute_num($query) or die("Error checking for duplicates!<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	list($count) = $result->FetchRow();
 	if ($count > 0)
