@@ -123,7 +123,7 @@ if (!isset($_SESSION['loginID']))
 					if (isset($_POST['refererargs']) && $_POST['refererargs'])
 					{
 						$_SESSION['metaHeader']="<meta http-equiv=\"refresh\""
-						. " content=\"2;URL={$scriptname}?".$_POST['refererargs']."\" />";
+						. " content=\"1;URL={$scriptname}?".$_POST['refererargs']."\" />";
 						$loginsummary .= "<br /><font size='1'><i>".$clang->gT("Reloading Screen. Please wait.")."</i></font>\n";
 					}
 					$loginsummary .= "<br /><br />\n";
