@@ -228,7 +228,7 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 	// if security question asnwer is incorrect
 	if (!isset($_POST['loadsecurity']) || $_POST['loadsecurity'] != $_SESSION['secanswer'])
 	{
-		$errormsg .= $clang->gT("Answer to security question is incorrect")."<br />\n";
+		$errormsg .= $clang->gT("The answer to security question is incorrect")."<br />\n";
 	}
 	
 	// Load session before loading the values from the saved data

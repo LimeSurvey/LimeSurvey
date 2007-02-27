@@ -207,8 +207,13 @@ function savedcontrol()
 	$errormsg="";
 	if (!isset($_POST['savename']) || !$_POST['savename']) {$errormsg.=$clang->gT("You must supply a name for this saved session.")."<br />\n";}
 	if (!isset($_POST['savepass']) || !$_POST['savepass']) {$errormsg.=$clang->gT("You must supply a password for this saved session.")."<br />\n";}
-	if (!isset($_POST['savepass']) && isset($_POST['savepass2']) && $_POST['savepass'] != $_POST['savepass2'])
+	if ((isset($_POST['savepass']) && !isset($_POST['savepass2'])) || $_POST['savepass'] != $_POST['savepass2'])
 	{$errormsg.=$clang->gT("Your passwords do not match.")."<br />\n";}
+	// if security question asnwer is incorrect
+	if (!isset($_POST['loadsecurity']) || $_POST['loadsecurity'] != $_SESSION['secanswer'])
+	{
+		$errormsg .= $clang->gT("The answer to security question is incorrect")."<br />\n";
+	}
 
 	if ($errormsg)
 	{
