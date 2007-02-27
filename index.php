@@ -378,6 +378,10 @@ switch ($thissurvey['format'])
 	require_once("question.php");
 }
 
+if (isset($_POST['saveall']))
+{
+	print "<SCRIPT LANGUAGE='JavaScript'> alert('".$clang->gT("Survey Saved","js")."'); </SCRIPT>";
+}
 
 function loadanswers()
 {
