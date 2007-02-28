@@ -202,8 +202,8 @@ else
 function getAssessments($surveyid) {
 	global $dbprefix, $connect;
 	$query = "SELECT id, sid, scope, gid, minimum, maximum, name, message, link
-			  FROM {$dbprefix}assessments
-			  WHERE sid=$surveyid
+			  FROM ".db_table_name('assessments')."
+			  WHERE sid='$surveyid'
 			  ORDER BY scope, gid";
 	$result=db_execute_assoc($query) or die("Error getting assessments<br />$query<br />".$connect->ErrorMsg());
 	$output=array();
@@ -215,9 +215,10 @@ function getAssessments($surveyid) {
 
 function getGroups($surveyid) {
 	global $dbprefix, $connect;
+	$baselang = GetBaseLanguageFromSurveyID($sid);
 	$query = "SELECT gid, group_name
-			  FROM {$dbprefix}groups
-			  WHERE sid=$surveyid
+			  FROM ".db_table_name('groups')."
+			  WHERE sid='$surveyid' and language='$baselang'
 			  ORDER BY group_order";
 	$result = db_execute_assoc($query) or die("Error getting groups<br />$query<br />".$connect->ErrorMsg());
 	$output=array();
