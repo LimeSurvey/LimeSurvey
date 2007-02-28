@@ -133,7 +133,7 @@ if($actsurrows['delete_survey'])
 		$gres = $connect->Execute($gdel);
 		
 		$slsdel = "DELETE FROM {$dbprefix}surveys_languagesettings WHERE surveyls_survey_id=$surveyid";
-    	$slsres = mysql_query($slsdel);
+    	$slsres = $connect->Execute($slsdel);
 	
 		$sdel = "DELETE FROM {$dbprefix}surveys WHERE sid=$surveyid";
 		$sres = $connect->Execute($sdel);
