@@ -1683,7 +1683,7 @@ function templatereplace($line)
 	global $completed, $register_errormsg;
 	global $notanswered, $privacy, $surveyid;
 	global $publicurl, $templatedir, $token;
-	global $assessments;
+	global $assessments, $s_lang;
 	global $errormsg, $clang;
 
 	if (strpos ($line,"</head>"))
@@ -1850,7 +1850,15 @@ function templatereplace($line)
 	}
 
 	if (strpos($line, "{ANSWERSCLEARED}") !== false) $line=str_replace("{ANSWERSCLEARED}", $clang->gT("Answers Cleared"), $line);
-	if (strpos($line, "{RESTART}") !== false) $line=str_replace("{RESTART}",  "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;token=".returnglobal('token')."'>".$clang->gT("Restart this Survey")."</a>", $line);
+	if (strpos($line, "{RESTART}") !== false)
+	{
+		if ($thissurvey['active'] == "N") 
+		{
+			$line=str_replace("{RESTART}",  "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;newtest=Y&amp;lang=".$s_lang."'>".$clang->gT("Restart this Survey")."</a>", $line);
+		} else {
+			$line=str_replace("{RESTART}",  "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;token=".returnglobal('token')."&amp;lang=".$s_lang."'>".$clang->gT("Restart this Survey")."</a>", $line);
+		}
+	}
 	if (strpos($line, "{CLOSEWINDOW}") !== false) $line=str_replace("{CLOSEWINDOW}", "<a href='javascript:%20self.close()'>".$clang->gT("Close this Window")."</a>", $line);
 
 	$savereturn = "<a href='index.php?sid=$surveyid";

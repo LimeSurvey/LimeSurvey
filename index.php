@@ -123,6 +123,8 @@ if (isset($_GET['tokenSEC']) && $_GET['tokenSEC'] == 1)
 	}
 }
 
+if (isset($_GET['newtest']) && $_GET['newtest'] = "Y") unset($_GET['token']);
+
 //GET BASIC INFORMATION ABOUT THIS SURVEY
 $thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);
 
@@ -312,6 +314,7 @@ if ($tokensexist == 1 && returnglobal('token'))
 //CLEAR SESSION IF REQUESTED
 if (isset($_GET['move']) && $_GET['move'] == "clearall")
 {
+	$s_lang = $_SESSION['s_lang'];
 	session_unset();
 	session_destroy();
 	sendcacheheaders();
