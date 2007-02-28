@@ -1585,10 +1585,20 @@ function UpdateSessionGroupList()
 function UpdateFieldArray()
 //The FieldArray contains all necessary information regarding the questions
 //This function is needed to update it in case the survey is switched to another language
+// Todo: Test this!
 {
     global $surveyid;
 
-    foreach($_SESSION['fieldarray'] as &$questionarray) 
+    reset($_SESSION['fieldarray']);
+    while ( list($key) = each($_SESSION['fieldarray']) ) {
+      $questionarray =& $myArray[$key];
+   	  $questionarray[2]=$row['title'];
+  	  $questionarray[3]=$row['question'];
+      unset($questionarray);
+    }
+
+// This seems to only work in PHP 5 because of the referenced (&) array in the foreach construct
+/*    foreach($_SESSION['fieldarray'] as &$questionarray) 
     {
        	$query = "SELECT * FROM ".db_table_name('questions')." WHERE qid=".$questionarray[0]." AND language='".$_SESSION['s_lang']."'";
     	$result = db_execute_assoc($query) or die ("Couldn't get question <br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -1598,6 +1608,7 @@ function UpdateFieldArray()
     		$questionarray[3]=$row['question'];
     	}
     }
+    */
 }
 
 
