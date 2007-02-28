@@ -120,7 +120,8 @@ if (!isset($_SESSION['loginID']))
 					$loginsummary .= "<br />" .str_replace("{NAME}", $_SESSION['user'], $clang->gT("Welcome {NAME}")) . "<br />";
 					$loginsummary .= $clang->gT("Login successful.");
 
-					if (isset($_POST['refererargs']) && $_POST['refererargs'])
+					if (isset($_POST['refererargs']) && $_POST['refererargs'] &&
+						strpos($_POST['refererargs'], "action=logout") === FALSE)
 					{
 						$_SESSION['metaHeader']="<meta http-equiv=\"refresh\""
 						. " content=\"1;URL={$scriptname}?".$_POST['refererargs']."\" />";
