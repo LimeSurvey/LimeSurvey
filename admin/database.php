@@ -548,7 +548,7 @@ if(isset($surveyid))
 				$anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 				$baselang = GetBaseLanguageFromSurveyID($surveyid);
 				// Add new Answer for Base Language Question
-				$query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language) VALUES ('{$_POST['qid']}', {$connect->qstr($_POST['insertcode'])}, {$connect->qstr($_POST['insertanswer'])}, '{$newsortorder}', 'N','$baselang')";
+				$query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language) VALUES ('{$_POST['qid']}', ".$connect->qstr($_POST['insertcode']).", ".$connect->qstr($_POST['insertanswer']).", '{$newsortorder}', 'N','$baselang')";
 	       		if (!$result = $connect->Execute($query))
 				{
 					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
@@ -556,7 +556,7 @@ if(isset($surveyid))
 				foreach ($anslangs as $anslang)
 				{
 					if(!isset($_POST['default'])) $_POST['default'] = "";
-	    				$query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language) VALUES ('{$_POST['qid']}', {$connect->qstr($_POST['insertcode'])}, {$connect->qstr($_POST['insertanswer'])}, '{$newsortorder}', 'N','$anslang')";
+	    				$query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language) VALUES ('{$_POST['qid']}', ".$connect->qstr($_POST['insertcode']).",".$connect->qstr($_POST['insertanswer']).", '{$newsortorder}', 'N','$anslang')";
 	       		    		if (!$result = $connect->Execute($query))
 					{
 						$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
@@ -574,8 +574,8 @@ if(isset($surveyid))
         	{
         		$langid=substr($sortorderid,0,strpos($sortorderid,'_')); 
         		$orderid=substr($sortorderid,strpos($sortorderid,'_')+1,20);
-        		$query = "UPDATE ".db_table_name('answers')." SET code=".$connect->qstr($_POST['code_'.$codeids[$count]]).", 
-        		answer={$connect->qstr($_POST['answer_'.$sortorderid])} WHERE qid='$qid' and sortorder=$orderid and language='$langid'";
+        		$query = "UPDATE ".db_table_name('answers')." SET code=".$connect->qstr($_POST['code_'.$codeids[$count]]).
+                         ",	answer=".$connect->qstr($_POST['answer_'.$sortorderid])." WHERE qid='$qid' and sortorder=$orderid and language='$langid'";
         		if (!$result = $connect->Execute($query))
         		{
         			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update answers","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
