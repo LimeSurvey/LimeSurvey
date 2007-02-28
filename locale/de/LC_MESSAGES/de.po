@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-02-25 22:25+0100\n"
+"PO-Revision-Date: 2007-02-28 21:53+0100\n"
 "Last-Translator: \n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -266,9 +266,6 @@ msgstr "Umfrage verlassen und löschen"
 msgid "Load Unfinished Survey"
 msgstr "Zwischengespeicherte Umfrage laden"
 
-msgid "last"
-msgstr "Abschließen"
-
 msgid "Save Survey and Return"
 msgstr "Umfrage zwischenspeichern und weitermachen"
 
@@ -324,6 +321,9 @@ msgstr "Passwort wiederholen"
 
 msgid "Your Email"
 msgstr "Deine E-Mail"
+
+msgid "Security Question"
+msgstr "Sicherheitsfrage"
 
 msgid "Save Now"
 msgstr "Jetzt Speichern"
@@ -421,8 +421,10 @@ msgstr "Sie haben keinen Namen angegeben"
 msgid "You did not provide a password"
 msgstr "Sie haben kein Passwort angegeben"
 
-msgid "next"
-msgstr "Weiter"
+# D:\web\xampp\htdocs\phpsurveyor/index.php:231
+# D:\web\xampp\htdocs\phpsurveyor/save.php:215
+msgid "The answer to security question is incorrect"
+msgstr "Die Antwort zur Sicherheitabfrage ist falsch."
 
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "Um an dieser Umfrage teilzunehmen, benötigen Sie ein passenden Zugangsschlüssel."
@@ -433,14 +435,14 @@ msgstr "Das von ihnen angegebene Schlüsselwort ist entweder ungültig oder wurd
 msgid "For further information contact"
 msgstr "Um weitere Informationen zu erhalten, kontaktieren Sie bitte"
 
+msgid "Survey Saved"
+msgstr "Umfrage gespeichert"
+
 msgid "There is no matching saved survey"
 msgstr "Es gibt keine entsprechende Unmfrage."
 
 msgid "complete"
 msgstr "vollständig"
-
-msgid "prev"
-msgstr "Zurück"
 
 msgid ""
 "Dear {FIRSTNAME},\n"
@@ -510,6 +512,15 @@ msgstr "Schlüsselwort"
 
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Für diese Umfrage wurden noch keine Fragen angelegt. Sie kann weder getestet noch abgeschlossen werden."
+
+msgid "prev"
+msgstr "Zurück"
+
+msgid "next"
+msgstr "Weiter"
+
+msgid "last"
+msgstr "Abschließen"
 
 msgid "Choose only one of the following"
 msgstr "Bitte wählen Sie einen Punkt aus der Liste aus."
@@ -695,6 +706,9 @@ msgstr "Sie sind nicht berechtigt Bewertungsrichtlinien zu setzen."
 msgid "You are not allowed to delete this group!"
 msgstr "Sie sind nicht berechtigt diese Gruppe zu löschen!"
 
+msgid "You are not allowed to import a survey!"
+msgstr "Sie sind nicht berechtigt eine Umfrage zu importieren!"
+
 msgid "You are not allowed to perform this operation!"
 msgstr "Sie sind nicht berechtigt diese Operation durchzuführen!"
 
@@ -877,6 +891,20 @@ msgstr "Diese Umfrage wurde noch nicht aktiviert. Es gibt keine Antworten, die S
 msgid "There is no matching survey."
 msgstr "Es gibt keine entsprechende Umfrage."
 
+msgid "Date Submitted"
+msgstr "Datum Abgeschickt"
+
+msgid "Date Stamp"
+msgstr "Datumsstempel"
+
+msgid "IP Address"
+msgstr "IP-Adresse protokollieren?"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1773
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1995
+msgid "Referring URL"
+msgstr "Referrer-URL"
+
 msgid "View Response"
 msgstr "Antwort anzeigen"
 
@@ -894,6 +922,23 @@ msgstr "Zeige vorherigen.."
 
 msgid "Show next..."
 msgstr "Zeige nächsten.."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/browse.php:304
+msgid "Showing Filtered Results"
+msgstr "Zeige gefilterte Ergebnisse"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:795
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/labels.php:251
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:224
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1005
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1029
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1037
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1043
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1046
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1047
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:1446
+msgid "Close"
+msgstr "Schließen"
 
 msgid "Data View Control"
 msgstr "Ansicht der Daten"
@@ -1919,9 +1964,6 @@ msgstr "Das Verändern der Reihenfolge in dieser Gruppe ist bestimmten Beschrän
 msgid "See the conditions marked on the following questions"
 msgstr "Die Bedingungen auf den folgenden Fragen"
 
-msgid "Condition(s) for"
-msgstr "Bedingung(en) für"
-
 msgid "Import Group"
 msgstr "Gruppen importieren"
 
@@ -2571,9 +2613,6 @@ msgstr "Zwischengespeicherte Antworten:"
 msgid "Identifier"
 msgstr "Identifizierung"
 
-msgid "IP Address"
-msgstr "IP-Adresse protokollieren?"
-
 msgid "Date Saved"
 msgstr "Datum Gespeichert"
 
@@ -2620,6 +2659,9 @@ msgstr "Anteil in Prozent"
 msgid "SQL"
 msgstr "SQL"
 
+msgid "Browse"
+msgstr "Ansehen"
+
 msgid "Field Summary for"
 msgstr "Feld Zusammenfassung für"
 
@@ -2663,9 +2705,6 @@ msgstr "Anzahl"
 
 msgid "Percentage"
 msgstr "Prozent"
-
-msgid "Browse"
-msgstr "Ansehen"
 
 msgid "Select all"
 msgstr "Alle auswählen"

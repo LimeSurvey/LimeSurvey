@@ -133,7 +133,7 @@ else
 		$numrow = $query->RecordCount();
 	
 		while($row=$query->FetchRow()){
-			set_time_limit(5);
+			@set_time_limit(5);
 			$result .= "INSERT INTO ".$table." VALUES(";
 			for($j=0; $j<$num_fields; $j++) {
 				$row[$j] = addslashes($row[$j]);

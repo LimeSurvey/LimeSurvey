@@ -731,11 +731,10 @@ if (isset($grouparray) && $grouparray) {
 					unset($questionrowdata['qid']);
 					$questionrowdata["sid"] = $newsid;
 					$questionrowdata["gid"] = $newgid;
-                    $questionrowdata['language']=$newlanguage;
                     // Version <=100 doesn't have a language field yet so we set it now
             		if ($importversion<=100)  
                         {
-                        $grouprowdata['language']=$newlanguage;
+                        $questionrowdata['language']=$newlanguage;
                         } 
 					$oldqid=$qid;
 

@@ -36,7 +36,7 @@
 
 if (empty($homedir)) {die("Cannot run this script directly");}
 if ($accesscontrol <> 1) {return;}
-require_once($rootdir."/admin/classes/core/SHA256.php");
+require_once($homedir."/classes/core/SHA256.php");
 
 if (!isset($_SESSION['loginID']))
 {
