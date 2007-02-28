@@ -58,7 +58,7 @@ if (isset($_GET['lang']))
 	$surveyprintlang=GetbaseLanguageFromSurveyid($surveyid);
 }
 
-$desquery = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid) WHERE sid=$surveyid and phpsv_surveys_languagesettings.surveyls_language=".$connect->qstr($surveyprintlang); //Getting data for this survey
+$desquery = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid) WHERE sid=$surveyid and surveyls_language=".$connect->qstr($surveyprintlang); //Getting data for this survey
 
 $desresult = db_execute_assoc($desquery);
 while ($desrow = $desresult->FetchRow())
