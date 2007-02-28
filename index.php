@@ -110,7 +110,19 @@ if (!$surveyid)
 //Check to see if a refering URL has been captured.
 getreferringurl();
 
+// Get token
 if (!isset($token)) {$token=trim(returnglobal('token'));}
+
+// If token was submitted from token form
+if (isset($_GET['tokenSEC']) && $_GET['tokenSEC'] == 1)
+{
+	if (!isset($_GET['loadsecurity']) || $_GET['loadsecurity'] != $_SESSION['secanswer'])
+	{
+		$secerror = $clang->gT("The answer to security question is incorrect")."<br />\n";
+		$_GET['token'] = "";
+	}
+}
+
 //GET BASIC INFORMATION ABOUT THIS SURVEY
 $thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);
 
@@ -1052,7 +1064,7 @@ function buildsurveysession()
 	// Performance Improvement	: 17%
 	// Optimized By				: swales
 
-	global $thissurvey;
+	global $thissurvey, $secerror;
 	global $tokensexist, $thistpl;
 	global $surveyid, $dbprefix, $connect;
 	global $register_errormsg, $clang;
@@ -1078,17 +1090,24 @@ function buildsurveysession()
 		{
 ?>
 	<center><br />
+	<?php if (isset($secerror)) echo "<font color='#FF0000'>".$secerror."</font><br />"; ?>
 	<?php echo $clang->gT("This is a controlled survey. You need a valid token to participate.") ?><br /><br />
 	<?php echo $clang->gT("If you have been issued with a token, please enter it in the box below and click continue.") ?><br />&nbsp;
 	<form method='get' action='<?php echo $_SERVER['PHP_SELF'] ?>'>
 	<table align='center'>
 		<tr>
-			<td align='center' valign='middle'>
+			<td align='right' valign='middle'>
 			<input type='hidden' name='sid' value='<?php echo $surveyid ?>' id='sid' />
-			<?php echo $clang->gT("Token") ?>: <input class='text' type='text' name='token'>
-			<input class='submit' type='submit' value='<?php echo $clang->gT("Continue") ?>' />
+			<input type='hidden' name='tokenSEC' value='1' id='sid' />
+			<?php echo $clang->gT("Token") ?>:</td><td align='left' valign='middle'><input class='text' type='text' name='token'>
 			</td>
 		</tr>
+		<tr>
+			<td align='center' valign='middle'>
+			<?php echo $clang->gT("Security Question"); ?>:</td><td align='left' valign='middle'><table><tr><td valign='center'><img src='images/verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table>
+			</td>
+		</tr>
+		<tr><td colspan="2" align="center"><input class='submit' type='submit' value='<?php echo $clang->gT("Continue") ?>' /></td></tr>
 	</table>
 	</form>
 	<br />&nbsp;</center>
