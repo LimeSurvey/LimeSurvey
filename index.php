@@ -60,7 +60,6 @@ if (isset($_GET['lang']))
 {
 	$_GET['lang'] = preg_replace("/[^a-zA-Z0-9_]/", "", $_GET['lang']);
 	if ($_GET['lang']) $clang = SetSurveyLanguage( $surveyid, $_GET['lang']);
-	
 } 
 else 
 if (isset($_SESSION['s_lang']))
@@ -1611,12 +1610,16 @@ function UpdateFieldArray()
 {
     global $surveyid;
 
-    reset($_SESSION['fieldarray']);
-    while ( list($key) = each($_SESSION['fieldarray']) ) {
-      $questionarray =& $myArray[$key];
-   	  $questionarray[2]=$row['title'];
-  	  $questionarray[3]=$row['question'];
-      unset($questionarray);
+    if (isset($_SESSION['fieldarray'])) 
+    {
+    	reset($_SESSION['fieldarray']);
+    	while ( list($key) = each($_SESSION['fieldarray']) )
+    	{
+      		$questionarray =& $myArray[$key];
+   	  		$questionarray[2]=$row['title'];
+  	  		$questionarray[3]=$row['question'];
+      		unset($questionarray);
+    	}
     }
 
 // This seems to only work in PHP 5 because of the referenced (&) array in the foreach construct

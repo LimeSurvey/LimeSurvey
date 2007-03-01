@@ -1929,7 +1929,6 @@ function templatereplace($line)
 		. "<tr><td></td><td><input type='submit' value='".$clang->gT("Load Now")."'></td></tr></table>\n";
 		$line=str_replace("{LOADFORM}", $loadform, $line);
 	}
-
 	//REGISTER SURVEY DETAILS
 	if (strpos($line, "{REGISTERERROR}") !== false) $line=str_replace("{REGISTERERROR}", $register_errormsg, $line);
 	if (strpos($line, "{REGISTERMESSAGE1}") !== false) $line=str_replace("{REGISTERMESSAGE1}", $clang->gT("You must be registered to complete this survey"), $line);
@@ -1961,6 +1960,11 @@ function templatereplace($line)
 			$registerform .= " value='".returnglobal('register_email')."'";
 		}
 		$registerform .= " /></td></tr>\n";
+		if (!isset($_GET['lang']) || !isset($_POST['lang'])) $reglang = GetBaseLanguageFromSurveyID($surveyid);
+		if (isset($_GET['lang'])) $reglang = $_GET['lang'];
+		if (isset($_POST['lang'])) $reglang = $_POST['lang'];
+		$registerform .= "<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='center'><img src='images/verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table></td></tr>\n"
+		. "<tr><td align='right'><input type='hidden' name='lang' value='".$reglang."'></td><td></td></tr>\n";
 		if(isset($thissurvey['attribute1']) && $thissurvey['attribute1'])
 		{
 			$registerform .= "<tr><td align='right'>".$thissurvey['attribute1'].":</td>\n"

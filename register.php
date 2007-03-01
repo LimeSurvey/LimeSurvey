@@ -35,6 +35,7 @@
 */
 //THESE WILL BEMOVED INTO THE LANGUAGE FILE ONCE COMPLETED
 require_once(dirname(__FILE__).'/config.php');
+require_once($rootdir.'/classes/core/language.php');
 
 $surveyid=returnglobal('sid');
 
@@ -48,16 +49,37 @@ if (!isset($surveyid))
 	include "index.php";
 	exit;
 }
-
+session_start();
 $thissurvey=getSurveyInfo($surveyid);
-GetBaseLanguageFromSurveyID($surveyid);
+
+// Get passed language from form, so that we dont loose this!
+if (!isset($_POST['lang']) || $_POST['lang'] == "")
+{
+	$baselang = GetBaseLanguageFromSurveyID($surveyid);
+	$clang = new phpsurveyor_lang($baselang);
+} else {
+	$clang = new phpsurveyor_lang($_POST['lang']);
+}
+
+
+$register_errormsg = "";
+
+// Check the security question's answer
+if (!isset($_POST['loadsecurity']) || $_POST['loadsecurity'] != $_SESSION['secanswer'])
+{
+	$register_errormsg .= $clang->gT("The answer to security question is incorrect")."<br />\n";
+}
 
 //Check that the email is a valid style address
 if (!validate_email(returnglobal('register_email')))
 {
-	$register_errormsg=$clang->gT("The email you used is not valid. Please try again.");
-	include "index.php";
-	exit;
+	$register_errormsg .= $clang->gT("The email you used is not valid. Please try again.");
+}
+
+if ($register_errormsg != "")
+{
+		include "index.php";
+		exit;
 }
 
 //Check if this email already exists in token database
