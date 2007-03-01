@@ -51,12 +51,27 @@ if ($font_rand == 1)
 	$font = "../fonts/verait.ttf";
 }
 
+$line_rand = rand(1,3);
+if ($line_rand == 1)
+{
+	$line_color = $black;
+} else if ($line_rand == 2) 
+{
+	$line_color = $red;
+} else if ($line_rand == 3) 
+{
+	$line_color = $blue;
+}
 
 // Fill image, make transparent
 ImageFill($im, 0, 0, $grey_shade);
-imagecolortransparent ($im, $white);
+//imagecolortransparent ($im, $white);
+imageline($im,0,0,0,20,$line_color); 
+imageline($im,74,0,74,19,$line_color); 
+imageline($im,0,0,74,0,$line_color); 
+imageline($im,0,19,74,19,$line_color); 
 // Write math question in a nice TTF Font
-ImageTTFText($im, 10, 0, 2, 16,$font_color, $font,  $num1." + ".$num2." =" );
+ImageTTFText($im, 10, 0, 3, 16,$font_color, $font,  $num1." + ".$num2." =" );
 
 // Display Image
 ImagePNG($im);
