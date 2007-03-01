@@ -213,7 +213,8 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		$activeuse=$result->RecordCount();
 		while ($row=$result->FetchRow()) {$activesurveys[]=$row['surveyls_title'];}
 		//NOW ALSO COUNT UP HOW MANY QUESTIONS ARE USING THIS LABELSET, TO GIVE WARNING ABOUT CHANGES
-		$query = "SELECT * FROM ".db_table_name('questions')." WHERE type IN ('F','H') AND lid=$lid";
+		$baselang = GetBaseLanguageFromSurveyID($sid);
+		$query = "SELECT * FROM ".db_table_name('questions')." WHERE type IN ('F','H','Z','W') AND lid='$lid' and language='$baselang'";
 		$result = db_execute_assoc($query);
 		$totaluse=$result->RecordCount();
 		while($row=$result->FetchRow())
