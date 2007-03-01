@@ -918,7 +918,7 @@ function submittokens()
 
 	// Put date into sent and completed
 	
-	$today = date("Y-m-d Hi");
+	$today = date("Y-m-d");
 	$utquery = "UPDATE {$dbprefix}tokens_$surveyid\n"
 	. "SET completed='$today'\n"
 
