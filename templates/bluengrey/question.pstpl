@@ -1,28 +1,31 @@
-<br/><table width='97%' align='center' border='1' style='border-collapse: collapse; border-color:#666666;' bgcolor='#FFFFFF'>
-	<tr>
-		<td>
-			<table width='100%' cellspacing='0'>
-				<tr>
-					<td valign="middle" colspan='2'>
-						<font style="font-size: 12px;"><b>{QUESTION_CODE}: {QUESTION}</b></font>
-					</td>
-				</tr>
-				<tr>
-					<td width='30%'></td><td align="left" valign="middle">
-						<blockquote><font style="font-size: 10px;">{ANSWER}</font></blockquote>
-				  </td>
-				</tr>
-				<tr>
-					<td valign="middle">
-						<font style="font-size: 10px; font-style: italic;">{QUESTIONHELP}</font>
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-</table>
-<table>
-	<tr>
-		<td height='1'></td>
-	</tr>
-</table>
+    <br>
+    <table width='97%' align='center' border='1' style='border-collapse: collapse; border-color:#666666;' bgcolor='white'>
+      <tr>
+        <td>
+          <table width='100%' cellspacing='0'>
+            <tr>
+              <td valign="middle">
+                <font style="font-size: 12px;"><b>{QUESTION_CODE}: {QUESTION}</b></font>
+              </td>
+            </tr>
+            <tr>
+              <td align="center">
+                <font style="font-size: 10px;">{ANSWER}</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="middle">
+                <font style="font-size: 10px; font-style: italic;">{QUESTIONHELP}</font>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td height='1'></td>
+      </tr>
+    </table>
+
+
