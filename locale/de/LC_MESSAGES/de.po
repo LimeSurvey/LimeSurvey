@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-02-28 21:53+0100\n"
+"PO-Revision-Date: 2007-03-01 23:02+0100\n"
 "Last-Translator: \n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -409,6 +409,11 @@ msgstr "Bitte kontaktieren Sie"
 msgid "for further assistance"
 msgstr "für weitere Unterstützung."
 
+# D:\web\xampp\htdocs\phpsurveyor/index.php:231
+# D:\web\xampp\htdocs\phpsurveyor/save.php:215
+msgid "The answer to security question is incorrect"
+msgstr "Die Antwort zur Sicherheitabfrage ist falsch."
+
 msgid "This survey is no longer available."
 msgstr "Diese Umfrage ist beendet und steht nicht mehr zur Verfügung."
 
@@ -420,11 +425,6 @@ msgstr "Sie haben keinen Namen angegeben"
 
 msgid "You did not provide a password"
 msgstr "Sie haben kein Passwort angegeben"
-
-# D:\web\xampp\htdocs\phpsurveyor/index.php:231
-# D:\web\xampp\htdocs\phpsurveyor/save.php:215
-msgid "The answer to security question is incorrect"
-msgstr "Die Antwort zur Sicherheitabfrage ist falsch."
 
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "Um an dieser Umfrage teilzunehmen, benötigen Sie ein passenden Zugangsschlüssel."
@@ -2369,14 +2369,17 @@ msgstr "Zurück zur Beschriftung-Set Administration"
 msgid "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead."
 msgstr "Das Beschriftungsset wurde nicht importiert, da es doppelt vorhanden ist. Stattdessen wird das Duplikat genutzt."
 
-msgid "Question Import Summary"
-msgstr "Fragen-Import übersicht"
+msgid "Label Set Import Summary"
+msgstr "Beschriftung-Set Import Zusammenfassung"
 
-msgid "Labelsets"
-msgstr "Beschriftungsvorlage"
+msgid "Label Sets"
+msgstr "Beschriftung-Sets"
 
-msgid "Import of Survey is completed."
-msgstr "Import der Umfrage abgeschlossen."
+msgid "Languages"
+msgstr "Sprachen"
+
+msgid "Import of Label Set is completed."
+msgstr "Import des Beschriftungssets abgeschlossen."
 
 msgid "Quick Statistics"
 msgstr "Statistiken"
@@ -2397,8 +2400,11 @@ msgstr "keine SID (Umfrage) angegeben. Kann Frage nicht importieren."
 msgid "No GID (Group) has been provided. Cannot import question"
 msgstr "keine GID (Gruppe) angegeben. Kann Frage nicht importieren."
 
-msgid "Label Sets"
-msgstr "Beschriftung-Sets"
+msgid "Question Import Summary"
+msgstr "Fragen-Import übersicht"
+
+msgid "Import of Survey is completed."
+msgstr "Import der Umfrage abgeschlossen."
 
 msgid "This file is not a PHPSurveyor survey file. Import failed."
 msgstr "Diese Datei ist keine PHPSurveyor-Umfrage-Datei. Import fehlgeschlagen."
@@ -2411,9 +2417,6 @@ msgstr "Diese Datei enthält keine PHPSurveyor-Daten im richtigen Format."
 
 msgid "Survey Import Summary"
 msgstr "Umfragen-Import übersicht"
-
-msgid "Languages"
-msgstr "Sprachen"
 
 msgid "Question Attributes"
 msgstr "Fragen-Attribute:"
@@ -2472,6 +2475,9 @@ msgstr "Neues Beschriftung-Set hinzufügen"
 
 msgid "Add new label set"
 msgstr "Neues Beschriftung-Set hinzufügen"
+
+msgid "Labelsets"
+msgstr "Beschriftungsvorlage"
 
 msgid "Create New Label Set"
 msgstr "Neues Beschriftung-Set"
