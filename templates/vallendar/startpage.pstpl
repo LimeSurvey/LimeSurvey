@@ -87,6 +87,12 @@ body{
 	font-family: verdana;
 	font-size: 10pt;
 	}
+.asterisk
+    {
+    color: #FF0000;
+    font-size: 9pt;
+    font-family: verdana;
+    }
 </style>
 </head>
 <body bgcolor='#C0C0C0'>

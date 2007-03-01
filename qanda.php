@@ -372,7 +372,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 
 	if ($ia[6] == "Y")
 	{
-		$qtitle = $clang->gT("*").$qtitle;
+		$qtitle = '<span class=\'asterisk\'>'.$clang->gT('*').'</span>'.$qtitle;
 	}
 	//If this question is mandatory but wasn't answered in the last page
 	//add a message HIGHLIGHTING the question

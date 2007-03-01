@@ -115,6 +115,12 @@ body
 	background-color: #E1E1E1;
 	color: #777777;
 	}
+.asterisk
+    {
+    color: #FF0000;
+    font-size: 9pt;
+    font-family: verdana;
+    }
 </style>
 </head>
 <body>

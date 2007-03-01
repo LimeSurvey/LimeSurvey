@@ -110,6 +110,12 @@ body{
 	font-weight:bold;
 	color:RED;
 	}
+.asterisk
+    {
+    color: #FF0000;
+    font-size: 9pt;
+    font-family: verdana;
+    }
 </style>
 </head>
 <body bgcolor='#FF9933' link='#0000FF' vlink='#800080' alink='#FF0000'>

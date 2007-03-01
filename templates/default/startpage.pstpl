@@ -58,7 +58,12 @@ body.default
     color:black;
     background-color:#999999;
     }
-    
+.asterisk
+    {
+    color: #FF0000;
+    font-size: 9pt;
+    font-family: verdana;
+    }
 </style>
 </head>
 <body class='default'>

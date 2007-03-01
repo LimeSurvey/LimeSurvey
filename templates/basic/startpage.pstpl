@@ -17,6 +17,12 @@ img { border: 0; }
 .array1 { background-color: #eeeeee; }
 .array2 { background-color: #ffffff; }
 .errormandatory { font-size: 13px; font-weight: bold; color:#ff0000; }
+.asterisk
+    {
+    color: #FF0000;
+    font-size: 9pt;
+    font-family: verdana;
+    }
 </style>
 </head>
 <body>

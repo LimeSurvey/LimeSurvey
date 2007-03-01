@@ -109,6 +109,12 @@ font{
 	font-family: Verdana;
 	font-size: 12pt;
 	}
+.asterisk
+    {
+    color: #FF0000;
+    font-size: 9pt;
+    font-family: verdana;
+    }
 </style>
 </head>
 <body>

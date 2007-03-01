@@ -91,6 +91,12 @@ body{
 	{
 	background-color: #EEFFEE;
 	}
+.asterisk
+    {
+    color: #FF0000;
+    font-size: 9pt;
+    font-family: verdana;
+    }
 </style>
 </head>
 <body vlink='#003300' link='#003300'>
