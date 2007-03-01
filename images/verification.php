@@ -10,6 +10,9 @@ Header("Content-Type: image/png");
 $im = ImageCreate(75, 20); 
 $white = ImageColorAllocate($im, 255, 255, 255);
 $black = ImageColorAllocate($im, 0, 0, 0);
+$red = ImageColorAllocate($im, 255, 0, 0);
+$blue = ImageColorAllocate($im, 0, 0, 255);
+$grey_shade = ImageColorAllocate($im, 204, 204, 204);
 
 // Create the random numberes
 srand((double)microtime()*1000000); 
@@ -25,12 +28,35 @@ while ($found == false)
 		break;
 	}
 }
+$font_c_rand = rand(1,3);
+if ($font_c_rand == 1)
+{
+	$font_color = $black;
+} else if ($font_c_rand == 2) 
+{
+	$font_color = $red;
+} else if ($font_c_rand == 3) 
+{
+	$font_color = $blue;
+}
+
+$font_rand = rand(1,3);
+if ($font_rand == 1)
+{
+	$font = "../fonts/verabd.ttf";
+} else if ($font_rand == 2) {
+	$font = "../fonts/vera.ttf";
+} else if ($font_rand == 3)
+{
+	$font = "../fonts/verait.ttf";
+}
+
 
 // Fill image, make transparent
-ImageFill($im, 0, 0, $white);
+ImageFill($im, 0, 0, $grey_shade);
 imagecolortransparent ($im, $white);
 // Write math question in a nice TTF Font
-ImageTTFText($im, 10, 0, 2, 16,$black, "../fonts/verabd.ttf",  $num1." + ".$num2." =" );
+ImageTTFText($im, 10, 0, 2, 16,$font_color, $font,  $num1." + ".$num2." =" );
 
 // Display Image
 ImagePNG($im);
