@@ -184,7 +184,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		$labelsoutput.= "</table></form>\n";
 		if ($action == "newlabelset")
 		{
-			$labelsoutput.= "<form enctype='multipart/form-data' name='importlabels' action='admin.php?action=labels' method='post'>\n"
+			$labelsoutput.= "<form enctype='multipart/form-data' name='importlabels' action='admin.php' method='post'>\n"
 			."<table width='100%' bgcolor='#DDDDDD'>\n"
 			."\t<tr><td colspan='2' align='center'>\n"
 			."<strong>OR</strong>\n"
