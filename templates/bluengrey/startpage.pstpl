@@ -75,15 +75,15 @@ font{
 .graph	
 	{
 	border: solid;
-	border-width: 1;
+	border-width: 1px;
 	border-color: #FFFFFF;
-	background-color: EFEFEF;
+	background-color: #EFEFEF;
 	font-family: Verdana;
 	font-size: 10px;
 	}
 .innergraph
 	{
-	background-color: EFEFEF;
+	background-color: #EFEFEF;
 	color: #777777;
 	font-family: Verdana;
 	font-size: 10px;
@@ -95,12 +95,13 @@ font{
 	}
 .array1 
 	{
-	background-color: #D1D1D1;
-	text-alignment: left;
+  background-color: #D1D1D1;
+  text-align: center;
 	}
 .array2
 	{
 	background-color: #EFEFEF;
+  text-align: center;
 	}
 .question
 	{
