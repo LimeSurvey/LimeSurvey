@@ -527,7 +527,7 @@ if ($importversion<=100)
 
 $values=array_values($surveyrowdata);
 $values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
-$insert = "insert INTO {$dbprefix}surveys (".implode(',',array_keys($surveyrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
+$insert = "INSERT INTO {$dbprefix}surveys (".implode(',',array_keys($surveyrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
 $iresult = $connect->Execute($insert) or die("<br />".$clang->gT("Import of this survey file failed")."<br />\n<font size='1'>[$insert]</font><hr>$surveyarray[0]<br /><br />\n" . $connect->ErrorMsg());
 
 $oldsid=$surveyid;
@@ -539,11 +539,15 @@ if ($importversion>=111)
     unset($surveylsarray[0]);
 	foreach ($surveylsarray as $slsrow) {
         $fieldcontents=convertCSVRowToArray($slsrow,',','"');
-		$surveylsrowdata=array_combine($fieldorders,$fieldcontents);
+	$surveylsrowdata=array_combine($fieldorders,$fieldcontents);
+	// convert back the '\'.'n' cahr from the CSV file to true return char "\n"
+	$surveylsrowdata=array_map('convertCsvreturn2return', $surveylsrowdata);
+	// Convert the \n return char from welcometext to <br />
+	$surveylsrowdata['surveyls_welcometext'] = str_replace("\n", "<br />", $surveylsrowdata['surveyls_welcometext']);
         $surveylsrowdata['surveyls_survey_id']=$newsid;     
         $newvalues=array_values($surveylsrowdata);
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-        $lsainsert = "insert INTO {$dbprefix}surveys_languagesettings (".implode(',',array_keys($surveylsrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
+        $lsainsert = "INSERT INTO {$dbprefix}surveys_languagesettings (".implode(',',array_keys($surveylsrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
 		$lsiresult=$connect->Execute($lsainsert) or die("<br />".$clang->gT("Import of this survey file failed")."<br />\n<font size='1'>[$lsainsert]</font><hr><br />\n" . $connect->ErrorMsg() );
 	}	
 		
@@ -1031,6 +1035,11 @@ function convertToArray($stringtoconvert, $seperator, $start, $end)
     $stringtoconvert=stripslashes($stringtoconvert);
 	$resultarray=explode($seperator, $stringtoconvert);
 	return $resultarray;
+}
+
+function convertCsvreturn2return($string)
+{
+	return str_replace('\n', "\n", $string);
 }
 
 ?>
