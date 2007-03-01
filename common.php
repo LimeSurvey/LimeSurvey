@@ -1960,7 +1960,7 @@ function templatereplace($line)
 			$registerform .= " value='".returnglobal('register_email')."'";
 		}
 		$registerform .= " /></td></tr>\n";
-		if (!isset($_GET['lang']) || !isset($_POST['lang'])) $reglang = GetBaseLanguageFromSurveyID($surveyid);
+		if (!isset($_GET['lang']) && !isset($_POST['lang'])) $reglang = GetBaseLanguageFromSurveyID($surveyid);
 		if (isset($_GET['lang'])) $reglang = $_GET['lang'];
 		if (isset($_POST['lang'])) $reglang = $_POST['lang'];
 		$registerform .= "<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='center'><img src='images/verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table></td></tr>\n"
