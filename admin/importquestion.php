@@ -250,7 +250,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 		$result2 = db_execute_num($query2) or die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
 		while($row2=$result2->FetchRow())
 		{
-			$thisset .= implode('',$row2);
+			$thisset .= implode('.',$row2);
 		} // while
 		$newcs=dechex(crc32($thisset)*1);
 		if (isset($csarray))

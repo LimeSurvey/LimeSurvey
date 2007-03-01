@@ -37,22 +37,6 @@
 if (empty($homedir)) {die ("Cannot run this script directly");}
 
 
-// array_combine function is PHP5 only so we have to provide 
-// our own in case it doesn't exist like in PHP 4
-if (!function_exists('array_combine')) {
-   function array_combine($a, $b) {
-       $c = array();
-       if (is_array($a) && is_array($b))
-           while (list(, $va) = each($a))
-               if (list(, $vb) = each($b))
-                   $c[$va] = $vb;
-               else
-                   break 1;
-       return $c;
-   }
-}
-
-
 // A FILE TO IMPORT A DUMPED SURVEY FILE, AND CREATE A NEW SURVEY
 
 

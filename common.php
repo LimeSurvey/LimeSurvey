@@ -2079,7 +2079,7 @@ function SetSurveyLanguage($surveyid, $language)// SetSurveyLanguage($surveyid)
 
 function buildLabelsetCSArray()
 {
-	global $dbprefix, $connect;
+	global $connect;
 	// BUILD CHECKSUMS FOR ALL EXISTING LABEL SETS
 	$query = "SELECT lid
               FROM ".db_table_name('labelsets')."
@@ -2089,14 +2089,14 @@ function buildLabelsetCSArray()
 	while ($row=$result->FetchRow())
 	{
 		$thisset="";
-		$query2 = "SELECT code, title, sortorder
+		$query2 = "SELECT code, title, sortorder, language
                    FROM ".db_table_name('labels')."
                    WHERE lid={$row['lid']}
                    ORDER BY sortorder, code";
 		$result2 = db_execute_num($query2) or die("Died querying labelset $lid<br />$query2<br />".htmlspecialchars($connect->ErrorMsg()));
 		while($row2=$result2->FetchRow())
 		{
-			$thisset .= implode('', $row2);
+			$thisset .= implode('.', $row2);
 		} // while
 		$csarray[$row['lid']]=dechex(crc32($thisset)*1);
 	}
@@ -3408,4 +3408,21 @@ function GetQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",
 	}
 	return null;
 }
+
+// array_combine function is PHP5 only so we have to provide 
+// our own in case it doesn't exist like in PHP 4
+if (!function_exists('array_combine')) {
+   function array_combine($a, $b) {
+       $c = array();
+       if (is_array($a) && is_array($b))
+           while (list(, $va) = each($a))
+               if (list(, $vb) = each($b))
+                   $c[$va] = $vb;
+               else
+                   break 1;
+       return $c;
+   }
+}
+
+
 ?>

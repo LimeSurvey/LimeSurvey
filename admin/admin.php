@@ -36,18 +36,18 @@
 
 require_once(dirname(__FILE__).'/../config.php');  // config.php itself includes common.php
 
-if (!isset($adminlang)) {$adminlang=returnglobal('adminlang');}              // Admin language
-if (!isset($surveyid)) {$surveyid=returnglobal('sid');}  //SurveyID
-if (!isset($ugid)) {$ugid=returnglobal('ugid');}         //Usergroup-ID
-if (!isset($gid)) {$gid=returnglobal('gid');}            //GroupID
-if (!isset($qid)) {$qid=returnglobal('qid');}            //QuestionID
-if (!isset($lid)) {$lid=returnglobal('lid');}            //LabelID
-if (!isset($code)) {$code=returnglobal('code');}         // ??
-if (!isset($action)) {$action=returnglobal('action');}   //Desired action
-if (!isset($subaction)) {$subaction=returnglobal('subaction');}//Desired subaction
-if (!isset($ok)) {$ok=returnglobal('ok');}               // ??
-if (!isset($fp)) {$fp=returnglobal('filev');}            //??
-if (!isset($elem)) {$elem=returnglobal('elem');}         //??
+if (!isset($adminlang)) {$adminlang=returnglobal('adminlang');} // Admin language
+if (!isset($surveyid)) {$surveyid=returnglobal('sid');}         //SurveyID
+if (!isset($ugid)) {$ugid=returnglobal('ugid');}                //Usergroup-ID
+if (!isset($gid)) {$gid=returnglobal('gid');}                   //GroupID
+if (!isset($qid)) {$qid=returnglobal('qid');}                   //QuestionID
+if (!isset($lid)) {$lid=returnglobal('lid');}                   //LabelID
+if (!isset($code)) {$code=returnglobal('code');}                // ??
+if (!isset($action)) {$action=returnglobal('action');}          //Desired action
+if (!isset($subaction)) {$subaction=returnglobal('subaction');} //Desired subaction
+if (!isset($ok)) {$ok=returnglobal('ok');}                      // ??
+if (!isset($fp)) {$fp=returnglobal('filev');}                   //??
+if (!isset($elem)) {$elem=returnglobal('elem');}                //??
 
 if ($action != "showprintablesurvey")
 {

@@ -37,20 +37,6 @@
 if (empty($homedir)) {die ("Cannot run this script directly");}
 include_once("login_check.php");
 
-// array_combine function is PHP5 only so we have to provide 
-// our own in case it doesn't exist like in PHP 4
-if (!function_exists('array_combine')) {
-   function array_combine($a, $b) {
-       $c = array();
-       if (is_array($a) && is_array($b))
-           while (list(, $va) = each($a))
-               if (list(, $vb) = each($b))
-                   $c[$va] = $vb;
-               else
-                   break 1;
-       return $c;
-   }
-}
 
 // A FILE TO IMPORT A DUMPED SURVEY FILE, AND CREATE A NEW SURVEY
 
@@ -298,7 +284,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 		$result2 = db_execute_num($query2) or die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
 		while($row2=$result2->FetchRow())
 		{
-			$thisset .= implode('',$row2);
+			$thisset .= implode('.',$row2);
 		} // while
 		$newcs=dechex(crc32($thisset)*1);
 		if (isset($csarray))

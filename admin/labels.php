@@ -52,7 +52,8 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 	if ($action == "importlabels")
 	{
 		include("importlabel.php");
-		exit;
+        if (isset($importlabeloutput)) {echo $importlabeloutput;}
+        exit;
 	}
 	
 
@@ -104,6 +105,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 	."\t</td>\n"
 	."</tr>\n"
 	."\t</table>\n";
+
 
 	if ($action!='labels' || isset($lid))  {$labelsoutput.="<table ><tr><td></td></tr></table>\n";}
     	
