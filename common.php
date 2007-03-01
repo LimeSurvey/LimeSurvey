@@ -389,6 +389,27 @@ function db_select_tables_like($table)
 	}	
 }
 
+/*
+ *  Return a boolean stating if the table(s) exist(s)
+ *  Accepts '%' in names since it uses the 'like' statement
+ */
+function db_tables_exist($table)
+{
+	global $connect;
+
+	$surveyHasTokensTblQ = db_select_tables_like("$table");
+	$surveyHasTokensTblResult = db_execute_num($surveyHasTokensTblQ);
+
+	if ($surveyHasTokensTblResult->RecordCount() >= 1)
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+}
+
 /**
 * getsurveylist() Queries the database (survey table) for a list of existing surveys
 * @global string $surveyid

@@ -555,7 +555,8 @@ elseif ($subaction == "all")
 		if ($private == "N")
 		{
 			$SQL = "Select * FROM {$dbprefix}tokens_$surveyid WHERE token=?";
-			if ($SQLResult = db_execute_assoc($SQL, $dtrow['token']))
+			if ( db_tables_exist("{$dbprefix}tokens_$surveyid") &&
+				$SQLResult = db_execute_assoc($SQL, $dtrow['token']))
 			{
 				$TokenRow = $SQLResult->FetchRow();
 			}
