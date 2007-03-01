@@ -2647,7 +2647,9 @@ function strip_tags_full($string) {
 	$string=str_replace('??', '?', $string);
 	$string=str_replace('??', '?', $string);
 	$string=str_replace('?~H', '?', $string);
-
+	
+	$string=str_replace(chr(13), "", $strTmp);
+	
 	$string=trim($string);
 	if ($string == '-oth-') $string='';
 

@@ -323,7 +323,7 @@ foreach ($fields as $field){
 			$query = "SELECT question FROM {$dbprefix}questions 
 			WHERE sid ='".$surveyid."' AND language='".$language."' 
 			AND qid='".$field["qid"]."'";
-			$result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".ErrorMsg());
+			$result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());
 			$row = $result->FetchRow();
 			echo "VARIABLE LABELS ".$field["id"]." '".
 			substr(strip_tags_full($row["question"]), 0, 59)."'.\n";

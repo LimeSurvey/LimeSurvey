@@ -7,7 +7,7 @@ session_start();
 Header("Content-Type: image/png");
 
 // Create Image
-$im = ImageCreate(70, 22); 
+$im = ImageCreate(75, 20); 
 $white = ImageColorAllocate($im, 255, 255, 255);
 $black = ImageColorAllocate($im, 0, 0, 0);
 
