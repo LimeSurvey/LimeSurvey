@@ -167,7 +167,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		. "lastname C(40) ,\n "
 		. "email C(100) ,\n "
 		. "token C(10) ,\n "
-		. "language C(2) ,\n "
+		. "language C(25) ,\n "
 		. "sent C(17) DEFAULT 'N',\n "
 		. "completed C(15) DEFAULT 'N',\n "
 		. "attribute_1 C(100) ,\n"
@@ -1227,9 +1227,7 @@ if ($subaction == "inserttoken")
 		$data['attribute_2'] = $_POST['attribute2'];
 	}
     $tblInsert=db_table_name('tokens_'.$surveyid);
-
-	//$inquery = $connect->GetInsertSQL($tblInsert, $data); # this wasn't working on SQL Server'
-	//$inresult = $connect->Execute($inquery) or die ("Add new record failed:<br />\n$inquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
+    
 	$inresult = $connect->AutoExecute($tblInsert, $data, 'INSERT') or die ("Add new record failed:<br />\n$inquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 	$tokenoutput .= "<br /><font color='green'><strong>".$clang->gT("Success")."</strong></font><br />\n"
 	."<br />".$clang->gT("Added New Token")."<br /><br />\n"
