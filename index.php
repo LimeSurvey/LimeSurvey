@@ -61,12 +61,13 @@ if (isset($_GET['lang']))
 	$_GET['lang'] = preg_replace("/[^a-zA-Z0-9_]/", "", $_GET['lang']);
 	if ($_GET['lang']) $clang = SetSurveyLanguage( $surveyid, $_GET['lang']);
 } 
-else 
+
 if (isset($_SESSION['s_lang']))
 {
 	$clang = SetSurveyLanguage( $surveyid, $_SESSION['s_lang']);
 } else {
-	$clang = SetSurveyLanguage( $surveyid, $defaultlang);
+	$baselang = GetBaseLanguageFromSurveyID($sid);
+	$clang = SetSurveyLanguage( $surveyid, $baselang);
 }
 
 
