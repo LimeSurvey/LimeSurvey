@@ -20,7 +20,7 @@ http://docs.phpsurveyor.org
 
 HOW TO UPGRADE from all earlier versions of PHPSurveyor (<1.08)
 -------------------------------------------------------
-We are sorry bu you can't upgrade from versions <= 1.0.8. Serious! 
+We are sorry but you can't upgrade from versions <= 1.0.8. Serious! 
 The database structure has changed that much it wouldn't be feasible.
 
 Upgrades from 1.45a are done automatically if there are any and you are entering the admin for the first time.
