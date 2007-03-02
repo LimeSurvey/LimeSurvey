@@ -187,7 +187,7 @@ if(isset($_SESSION['loginID']) && $action!='login')
   if ($action=="assessments" || $action=="assessmentdelete" || $action=="assessmentedit" || $action=="foo"
       || $action=="assessmentadd" || $action=="assessmentupdate" || $action=="foo")  {	include("assessments.php"); }
   else    
-  if ($surveyid || $action=="listurveys" || $action=="checksettings" || $action=="changelang" || $action=="adduser" || 
+  if (isset($surveyid) || $action=="listurveys" || $action=="checksettings" || $action=="changelang" || $action=="adduser" || 
       $action=="deluser" || $action=="moduser" || $action=="userrights" || $action=="modifyuser" ||
       $action=="editusers" || $action=="addusergroup" || $action=="editusergroup" || $action=="mailusergroup" ||
       $action=="delusergroup" || $action=="usergroupindb" || $action=="mailsendusergroup" || $action=="editusergroupindb" ||

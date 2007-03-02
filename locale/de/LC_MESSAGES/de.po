@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-03-01 23:02+0100\n"
+"PO-Revision-Date: 2007-03-02 20:55+0100\n"
 "Last-Translator: \n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -281,7 +281,7 @@ msgstr "Klicken Sie auf nun 'Absenden' um die Umfrage abzuschließen und Ihre An
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:1575
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
-msgstr "Wenn Sie irgendeine Deiner Antworten nochmals überprüfen oder ändern wollen, so können Sie dies, indem Sie auf 'Zurück' klicken und Sie Ihre Antworten nochmals durchschauen."
+msgstr "Wenn Sie irgendeine Ihrer Antworten nochmals überprüfen oder ändern wollen, so können Sie dies, indem Sie auf [Zurück] klicken und Sie Ihre Antworten nochmals durchschauen."
 
 msgid "Answers Cleared"
 msgstr "Antworten gelöscht"
@@ -549,7 +549,7 @@ msgid "This question is mandatory"
 msgstr "Bitte beantworten Sie diese Frage"
 
 msgid "Please complete all parts"
-msgstr "Bitte beenden Sie alle BereicheTeile"
+msgstr "Bitte beantworten Sie alle Bereiche/Teile der Frage(n)"
 
 msgid "Please rank all items"
 msgstr "Bitte bringen Sie alle Elemente in eine Rangfolge"

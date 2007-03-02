@@ -78,8 +78,8 @@ $rootsymlinked      =   0;  // if your root document dir is symlinked PHPSurveyo
 $sitename           =   "PHPSurveyor";    // The official name of the site (appears in the Window title)
 $scriptname         =   "admin.php";      // The name of the admin script (can be changed to the experimental admin interface index.php)
 $accesscontrol      =   1;                // Set this to 0 for no access control
-$defaultuser        =   "admin";          // This is the default username when security is first turned on
-$defaultpass        =   "password";       // This is the default password for when security is first turned on
+$defaultuser        =   "admin";          // This is the default username when PHPSurveyor is installed
+$defaultpass        =   "password";       // This is the default password for the default user when PHPSurveyor is installed
 
 // Site Settings
 $lwcdropdowns       =   "R";              // SHOW LISTS WITH COMMENT in Public Survey as Radio Buttons (R) or Dropdown List (L)
