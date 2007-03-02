@@ -108,7 +108,7 @@ if ((isset($_POST['fieldnames']) && $_POST['fieldnames']) || (isset($_POST['move
 			{
         	   $_SESSION['srid'] = $tempID;
 			}
-		} else {die ("A fatal error occured while trying to save the previous page: ".$subquery."<br />".$connect->ErrorMsg());}
+		} 
 	}
 }
 
