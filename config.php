@@ -123,8 +123,8 @@ $maxemails          =   50;              // The maximum number of emails to send
 // PHPSurveyor has been tested using version 1.13. Documentation for this is available at the
 // jpgraph website. PHPSurveyor cannot assist in the setting up of this system.
 // To use JPGraph adjust the next two lines, and adjust the location as suites.
-$usejpgraph         =   0; //Set to 1 to enable
-$jpgraphdir         =   "/var/apache/htdocs/jpgraph"; //The location of the jpgraph class (where jpgraph.php is)
+$usejpgraph         =   1; //Set to 1 to enable
+$jpgraphdir         =   "D:\web\\xampp\htdocs\jpgraph\src"; //The location of the jpgraph class (where jpgraph.php is)
                                                       // If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir="C:\\Inetpub\\wwwroot\\jpgraph"
 $jpgraphfont        =   "FF_ARIAL"; //The font to use with graphs. A failsafe setting would be "FF_FONT1"
 $jpgraphfontdir     =   "";        //On debian based systems, the fonts aren't in the old font dir of XFree86 : (/usr/X11R6/lib/X11/fonts/truetype/)

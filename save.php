@@ -103,12 +103,12 @@ if ((isset($_POST['fieldnames']) && $_POST['fieldnames']) || (isset($_POST['move
 		$subquery = createinsertquery();
 		if ($result=$connect->Execute($subquery))
 		{
-			$srid = $connect->Insert_ID();
-			if ($srid > 0)  //Was an Insert, not an Update
+			$tempID=$connect->Insert_ID(); // Find out id immediately if inserted 
+            if (substr($subquery,0,6)=='INSERT')
 			{
-				$_SESSION['srid'] = $srid;
+        	   $_SESSION['srid'] = $tempID;
 			}
-		}
+		} else {die ("A fatal error occured while trying to save the previous page: ".$subquery."<br />".$connect->ErrorMsg());}
 	}
 }
 

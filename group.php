@@ -638,20 +638,13 @@ echo "\t\t}\n"
 
 
 echo "\n\n<!-- START THE GROUP -->\n";
-//foreach(file("$thistpl/startgroup.pstpl") as $op)
-//{
-//	echo "\t".templatereplace($op);
-//}
-	echo templatereplace(file_get_contents("$thistpl/startgroup.pstpl"));
+echo templatereplace(file_get_contents("$thistpl/startgroup.pstpl"));
 echo "\n";
 
 if ($groupdescription)
 {
-//	foreach(file("$thistpl/groupdescription.pstpl") as $op)
-//	{
-//		echo "\t\t".templatereplace($op);
-//	}
-		echo templatereplace(file_get_contents("$thistpl/groupdescription.pstpl"));
+
+	echo templatereplace(file_get_contents("$thistpl/groupdescription.pstpl"));
 
 }
 echo "\n";
@@ -669,32 +662,21 @@ if (isset($qanda) && is_array($qanda))
 		$answer=$qa[1];
 		$help=$qa[2];
 		$questioncode=$qa[5];
-//		foreach(file("$thistpl/question.pstpl") as $op)
-//		{
-//			echo "\t\t\t\t\t".templatereplace($op)."\n";
-//		}
-			echo templatereplace(file_get_contents("$thistpl/question.pstpl"));
-
+		echo templatereplace(file_get_contents("$thistpl/question.pstpl"));
 		echo "\t\t\t\t</div>\n";
 	}
 }
 echo "\n\n<!-- END THE GROUP -->\n";
-//foreach(file("$thistpl/endgroup.pstpl") as $op)
-//{
-//	echo "\t\t\t\t".templatereplace($op);
-//}
-	echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"));
+
+echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"));
 
 echo "\n";
 
 $navigator = surveymover(); //This gets globalised in the templatereplace function
 
 echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
-//foreach(file("$thistpl/navigator.pstpl") as $op)
-//{
-//	echo "\t\t".templatereplace($op);
-//}
-	echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
+
+echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
 
 echo "\n";
 
@@ -743,10 +725,7 @@ echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thiss
 echo "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
 echo "<input type='hidden' name='token' value='$token' id='token' />\n";
 echo "</form>\n";
-//foreach(file("$thistpl/endpage.pstpl") as $op)
-//{
-//	echo templatereplace($op);
-//}
+
 	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 
 echo "\n";

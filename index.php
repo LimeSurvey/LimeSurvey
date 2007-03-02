@@ -1607,7 +1607,7 @@ function UpdateSessionGroupList()
 function UpdateFieldArray()
 //The FieldArray contains all necessary information regarding the questions
 //This function is needed to update it in case the survey is switched to another language
-// Todo: Test this!
+
 {
     global $surveyid;
 
