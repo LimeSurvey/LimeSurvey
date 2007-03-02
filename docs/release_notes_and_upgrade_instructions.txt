@@ -1,13 +1,13 @@
-Welcome to PHPSurveyor!
+Welcome to PHPSurveyor v1.46b!
 
 Warning:
-THIS IS AN ALPHA RELEASE. IT SHOULD NO BET USED FOR PRODUCTION!
+THIS IS AN BETA RELEASE. It should be pretty stable, but it SHOULD NOT be used FOR PRODUCTION!
 IF YOU DO SO, YOU DO IT (as always) AT YOUR OWN RISK!
 
-This release does have the following requirement:
+This release does have the following requirements:
 
 -MySQL 4.1 or higher
--PHP 4.1 or higher with deactivated SAFE_MODE (which is a pretty standard setting)
+-PHP 4.1 or higher 
 -mbstring library installed. (for localizations)
 
 
@@ -18,11 +18,14 @@ http://docs.phpsurveyor.org
 
 
 
-HOW TO UPGRADE from all earlier versions of PHPSurveyor
+HOW TO UPGRADE from all earlier versions of PHPSurveyor (<1.08)
 -------------------------------------------------------
-You can't upgrade. Serious! The database structure has changed that much it wouldn't be feasible.
+We are sorry bu you can't upgrade from versions <= 1.0.8. Serious! 
+The database structure has changed that much it wouldn't be feasible.
 
-However you can import surveys from version 1.0 when you create a new survey in this new version.
+Upgrades from 1.45a are done automatically if there are any and you are entering the admin for the first time.
+
+However you can import old surveys from version 1.0 when you create a new survey in this new version.
 
 Just do a new installation as described on http://docs.phpsurveyor.org.
 
@@ -30,6 +33,29 @@ Just do a new installation as described on http://docs.phpsurveyor.org.
 
 
 Thank you to everyone who helped with this new release!
+
+
+Changes from 1.45a to 1.46b
+-Added captcha feature to prevent automatic registering (machaven)
+-Fixed PHP 4 compatibility - it runs now on PHP4 again.
+-Fixed bug #648: [Survey at Runtime] Bypass mandatory question (c_schmitz)
+-Fixed bug #676: [Survey at Runtime] Only Answers of first two groups saved in database (c_schmitz)
+-Fixed bug #673: [Survey at Runtime] Error when: Testing Survey --> Exit --> Restart this Survey (machaven)
+-Fixed bug #672: [Import / Export] Label set administration - Export/Import (c_schmitz)
+-Fixed bug #597: [Import / Export] SPSS export (machaven)
+-Fixed bug #493: [Import / Export] SPSS buggy (need change) (machaven)
+-Fixed bug #669: [Survey at Runtime] Questions not displayed when survey is Group by Group and condition question is in a previous group (c_schmitz)
+-Fixed bug #671: [Installation] new Installation: failure common.php on line 3122 (c_schmitz)
+-Fixed bug #670: [Import / Export] Import survey v1.00 in v1.45 fails (c_schmitz)
+-Fixed bug #667: [Survey at Runtime] Error when editing responses via direct link from e-mail (lemeur)
+-Fixed bug #668: [Survey at Runtime] Invalid query created when only questions in group are conditional (c_schmitz)
+-Fixed bug #604: [Survey Design] Shading of Array Flexible Labels (by Column) not working correctly when you have an odd number of answers (c_schmitz)
+-Fixed bug #545: [Survey Design] Using default (c_schmitz)
+-Fixed bug #643: [Statistics] Huge text Counts are not being calculated (machaven)
+-Fixed bug #589: [Survey Design] Change from list to radio deletes answers (c_schmitz)
+-Fixed bug #579: [Data Entry (non public)] Answer not saved (machaven)
+-Fixed bug #612: [Survey at Runtime] Wrong database table name used in admin/dataentry.php (c_schmitz)
+... and numerous small changes and bug fixes by lemeur, ferrisoxide, b00z00, machaven and c_schmitz
 
 
 Changes from 1.0 to 1.45a
