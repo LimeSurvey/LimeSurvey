@@ -66,7 +66,7 @@ if (isset($_SESSION['s_lang']))
 {
 	$clang = SetSurveyLanguage( $surveyid, $_SESSION['s_lang']);
 } else {
-	$baselang = GetBaseLanguageFromSurveyID($sid);
+	$baselang = GetBaseLanguageFromSurveyID($surveyid);
 	$clang = SetSurveyLanguage( $surveyid, $baselang);
 }
 
