@@ -232,7 +232,7 @@ foreach ($filters as $flt)
 	{
 		case "Q":
 		$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
-		$query = "SELECT code, answer FROM {$dbprefix}answers WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
+		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
 		$result = db_execute_assoc($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 		$counter2=0;
 		while ($row = $result->FetchRow())
@@ -992,7 +992,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 		elseif (substr($rt, 0, 1) == "Q") //Multiple short text
 		{
 			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
-			$nquery = "SELECT title, type, question, other FROM {$dbprefix}questions WHERE qid='".substr($qqid, 0, strlen($qqid)-1)."' AND language='{$language}'";
+			$nquery = "SELECT title, type, question, other FROM ".db_table_name("questions")." WHERE qid='".substr($qqid, 0, strlen($qqid)-1)."' AND language='{$language}'";
 			$nresult = db_execute_num($nquery) or die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
 			$count = substr($qqid, strlen($qqid)-1);
 			while ($nrow=$nresult->FetchRow())

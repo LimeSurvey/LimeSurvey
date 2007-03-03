@@ -66,7 +66,7 @@ while ($desrow = $desresult->FetchRow())
 	$surveyname = $desrow['surveyls_title'];
 	$surveydesc = $desrow['surveyls_description'];
 	$surveyactive = $desrow['active'];
-	$surveytable = "{$dbprefix}survey_{$desrow['sid']}";
+	$surveytable = db_table_name("survey_".$desrow['sid']);
 	$surveyuseexpiry = $desrow['useexpiry'];
 	$surveyexpirydate = $desrow['expires'];
 	$surveyfaxto = $desrow['faxto'];
@@ -91,12 +91,12 @@ $printablesurveyoutput .="\t</tr>\n";
 
 $fieldmap=createFieldMap($surveyid);
 
-$degquery = "SELECT * FROM {$dbprefix}groups WHERE sid='{$surveyid}' AND language='{$surveyprintlang}' ORDER BY {$dbprefix}groups.group_order";
+$degquery = "SELECT * FROM ".db_table_name("groups")." WHERE sid='{$surveyid}' AND language='{$surveyprintlang}' ORDER BY ".db_table_name("groups").".group_order";
 $degresult = db_execute_assoc($degquery);
 // GROUP NAME
 while ($degrow = $degresult->FetchRow())
 {
-	$deqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid={$degrow['gid']} AND language='{$surveyprintlang}' ORDER BY question_order";
+	$deqquery = "SELECT * FROM ".db_table_name("questions")." WHERE sid=$surveyid AND gid={$degrow['gid']} AND language='{$surveyprintlang}' ORDER BY question_order";
 	$deqresult = db_execute_assoc($deqquery);
 	$deqrows = array(); //Create an empty array in case FetchRow does not return any rows
 	while ($deqrow = $deqresult->FetchRow()) {$deqrows[] = $deqrow;} // Get table output into array
@@ -123,19 +123,19 @@ while ($degrow = $degresult->FetchRow())
 		//GET ANY CONDITIONS THAT APPLY TO THIS QUESTION
 		$explanation = ""; //reset conditions explanation
 		$x=0;
-		$distinctquery="SELECT DISTINCT cqid, {$dbprefix}questions.title FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid AND {$dbprefix}conditions.qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY cqid";
+		$distinctquery="SELECT DISTINCT cqid, ".db_table_name("questions").".title FROM ".db_table_name("conditions").", ".db_table_name("questions")." WHERE ".db_table_name("conditions").".cqid=".db_table_name("questions").".qid AND ".db_table_name("conditions").".qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY cqid";
 		$distinctresult=db_execute_assoc($distinctquery);
 		while ($distinctrow=$distinctresult->FetchRow())
 		{
 			if ($x > 0) {$explanation .= " <i>".$clang->gT("and")."</i> ";}
 			$explanation .= $clang->gT("if you answered")." ";
-			$conquery="SELECT cid, cqid, {$dbprefix}questions.title,\n"
-			."{$dbprefix}questions.question, value, {$dbprefix}questions.type,\n"
-			."{$dbprefix}questions.lid, cfieldname\n"
-			."FROM {$dbprefix}conditions, {$dbprefix}questions\n"
-			."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid\n"
-			."AND {$dbprefix}conditions.cqid={$distinctrow['cqid']}\n"
-			."AND {$dbprefix}conditions.qid={$deqrow['qid']} AND language='{$surveyprintlang}'";
+			$conquery="SELECT cid, cqid, ".db_table_name("questions").".title,\n"
+			."".db_table_name("questions").".question, value, ".db_table_name("questions").".type,\n"
+			."".db_table_name("questions").".lid, cfieldname\n"
+			."FROM ".db_table_name("conditions").", ".db_table_name("questions")."\n"
+			."WHERE ".db_table_name("conditions").".cqid=".db_table_name("questions").".qid\n"
+			."AND ".db_table_name("conditions").".cqid={$distinctrow['cqid']}\n"
+			."AND ".db_table_name("conditions").".qid={$deqrow['qid']} AND language='{$surveyprintlang}'";
 			$conresult=db_execute_assoc($conquery) or die("$conquery<br />".htmlspecialchars($connect->ErrorMsg()));
 			$conditions=array();
 			while ($conrow=$conresult->FetchRow())
@@ -183,7 +183,7 @@ while ($degrow = $degresult->FetchRow())
 					case "L":
 					default:
 					$value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
-					$fquery = "SELECT * FROM {$dbprefix}labels\n"
+					$fquery = "SELECT * FROM ".db_table_name("labels")."\n"
 					. "WHERE lid='{$conrow['lid']}'\n"
 					. "AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
 					$fresult=db_execute_assoc($fquery) or die("$fquery<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -202,7 +202,7 @@ while ($degrow = $degresult->FetchRow())
 					case "C":
 					case "E":
 					$thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
-					$ansquery="SELECT answer FROM {$dbprefix}answers WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion[0]['aid']}' AND language='{$surveyprintlang}'";
+					$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion[0]['aid']}' AND language='{$surveyprintlang}'";
 					$ansresult=db_execute_assoc($ansquery);
 					while ($ansrow=$ansresult->FetchRow())
 					{
@@ -210,7 +210,7 @@ while ($degrow = $degresult->FetchRow())
 					}
 					break;
 					default:
-					$ansquery="SELECT answer FROM {$dbprefix}answers WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
+					$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
 					$ansresult=db_execute_assoc($ansquery);
 					while ($ansrow=$ansresult->FetchRow())
 					{
@@ -293,7 +293,7 @@ while ($degrow = $degresult->FetchRow())
 				$dcols=0;
 			}
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose *only one* of the following:")."</u><br />\n";
-			$deaquery = "SELECT * FROM {$dbprefix}labels WHERE lid={$deqrow['lid']} AND language='{$surveyprintlang}' ORDER BY sortorder, title";
+			$deaquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} AND language='{$surveyprintlang}' ORDER BY sortorder, title";
 			$dearesult = db_execute_assoc($deaquery) or die("ERROR: $deaquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 			$deacount=$dearesult->RecordCount();
 			if ($deqrow['other'] == "Y") {$deacount++;}
@@ -345,7 +345,7 @@ while ($degrow = $degresult->FetchRow())
 				$dcols=0;
 			}
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose *only one* of the following:")."</u><br />\n";
-			$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
+			$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$dearesult = db_execute_assoc($deaquery);
 			$deacount=$dearesult->RecordCount();
 			if ($deqrow['other'] == "Y") {$deacount++;}
@@ -387,7 +387,7 @@ while ($degrow = $degresult->FetchRow())
 			break;
 			case "O":  //LIST WITH COMMENT
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose *only one* of the following:")."</u><br />\n";
-			$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer ";
+			$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer ";
 			$dearesult = db_execute_assoc($deaquery);
 			while ($dearow = $dearesult->FetchRow())
 			{
@@ -397,7 +397,7 @@ while ($degrow = $degresult->FetchRow())
 			$printablesurveyoutput .="\t\t\t<textarea class='boxstyle' cols='50' rows='8' name='$fieldname"."comment"."' readonly='readonly'></textarea>\n";
 			break;
 			case "R":  //RANKING Type Question
-			$reaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
+			$reaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$rearesult = db_execute_assoc($reaquery) or die ("Couldn't get ranked answers<br />".htmlspecialchars($connect->ErrorMsg()));
 			$reacount = $rearesult->RecordCount();
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please number each box in order of preference from 1 to")." $reacount</u><br />\n";
@@ -425,7 +425,7 @@ while ($degrow = $degresult->FetchRow())
 			{
 				$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose *at most* ").$maxansw['value']."</strong> ".$clang->gT("answers:")."</u><br />\n";
 			}
-			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
+			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
 			$meacount = $mearesult->RecordCount();
 			if ($deqrow['other'] == "Y") {$meacount++;}
@@ -466,7 +466,7 @@ while ($degrow = $degresult->FetchRow())
 			break;
 			case "J":  //FILE CSV MORE
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose *all* that apply:")."</u><br />\n";
-			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
+			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
 			while ($mearow = $mearesult->FetchRow())
 			{
@@ -475,7 +475,7 @@ while ($degrow = $degresult->FetchRow())
 			break;
 			case "I":  //FILE CSV ONE
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose *only one* of the following:")."</u><br />\n";
-			$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
+			$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$dearesult = db_execute_assoc($deaquery);
 			while ($dearow = $mearesult->FetchRow())
 			{
@@ -484,7 +484,7 @@ while ($degrow = $degresult->FetchRow())
 			break;
 
 			case "P":  //MULTIPLE OPTIONS WITH COMMENTS
-			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
+			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose all that apply and provide a comment:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<table border='0'>\n";
@@ -502,7 +502,7 @@ while ($degrow = $degresult->FetchRow())
 			break;
 			case "Q":  //MULTIPLE SHORT TEXT
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please write your answer(s) here:")."</u><br />\n";
-			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
+			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
 			$printablesurveyoutput .="\t\t\t<table border='0'>\n";
 			while ($mearow = $mearesult->FetchRow())
@@ -537,7 +537,7 @@ while ($degrow = $degresult->FetchRow())
 			$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='N' readonly='readonly' />".$clang->gT("No")."<br />\n";
 			break;
 			case "A":  //ARRAY (5 POINT CHOICE)
-			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}'  ORDER BY sortorder, answer";
+			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}'  ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose the appropriate response for each item:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<table>\n";
@@ -556,7 +556,7 @@ while ($degrow = $degresult->FetchRow())
 			$printablesurveyoutput .="\t\t\t</table>\n";
 			break;
 			case "B":  //ARRAY (10 POINT CHOICE)
-			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
+			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose the appropriate response for each item:")."</u><br />";
 			$printablesurveyoutput .="\t\t\t<table border='0'>\n";
@@ -575,7 +575,7 @@ while ($degrow = $degresult->FetchRow())
 			$printablesurveyoutput .="\t\t\t</table>\n";
 			break;
 			case "C":  //ARRAY (YES/UNCERTAIN/NO)
-			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
+			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose the appropriate response for each item:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<table>\n";
@@ -593,7 +593,7 @@ while ($degrow = $degresult->FetchRow())
 			$printablesurveyoutput .="\t\t\t</table>\n";
 			break;
 			case "E":  //ARRAY (Increase/Same/Decrease)
-			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}'  ORDER BY sortorder, answer";
+			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}'  ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose the appropriate response for each item:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<table>\n";
@@ -613,11 +613,11 @@ while ($degrow = $degresult->FetchRow())
 			case "F": //ARRAY (Flexible Labels)
 			//$headstyle="style='border-left-style: solid; border-left-width: 1px; border-left-color: #AAAAAA'";
 			$headstyle="style='padding-left: 20px; padding-right: 7px'";
-			$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
+			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose the appropriate response for each item:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<table align='left' cellspacing='0'><tr><td></td>\n";
-			$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid='{$deqrow['lid']}'  AND language='{$surveyprintlang}' ORDER BY sortorder, code";
+			$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$deqrow['lid']}'  AND language='{$surveyprintlang}' ORDER BY sortorder, code";
 			$fresult = db_execute_assoc($fquery);
 			$fcount = $fresult->RecordCount();
 			$fwidth = "120";
@@ -650,11 +650,11 @@ while ($degrow = $degresult->FetchRow())
 			case "H": //ARRAY (Flexible Labels) by Column
 			//$headstyle="style='border-left-style: solid; border-left-width: 1px; border-left-color: #AAAAAA'";
 			$headstyle="style='padding-left: 20px; padding-right: 7px'";
-			$fquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
+			$fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$fresult = db_execute_assoc($fquery);
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose the appropriate response for each item:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<table align='left' cellspacing='0'><tr><td></td>\n";
-			$meaquery = "SELECT * FROM {$dbprefix}labels WHERE lid='{$deqrow['lid']}'  AND language='{$surveyprintlang}' ORDER BY sortorder, code";
+			$meaquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$deqrow['lid']}'  AND language='{$surveyprintlang}' ORDER BY sortorder, code";
 			$mearesult = db_execute_assoc($meaquery);
 			$fcount = $fresult->RecordCount();
 			$fwidth = "120";

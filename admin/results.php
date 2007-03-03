@@ -517,7 +517,7 @@ function returnQuestionResults($surveyid, $questionfields, $sql=null) {
 function getAnswersSingle($surveyid, $gid, $qid) {
 	global $dbprefix, $connect;
 	$query = "SELECT *
-			  FROM {$dbprefix}answers
+			  FROM ".db_table_name("answers")."
 			  WHERE qid=$qid
 			  ORDER BY sortorder, answer";
 	$result = db_execute_assoc($query);
@@ -531,7 +531,7 @@ function getAnswersSingle($surveyid, $gid, $qid) {
 function getLabelSet($lid) {
 	global $dbprefix, $connect;
 	$query = "SELECT *
-			  FROM {$dbprefix}labels
+			  FROM ".db_table_name("labels")."
 			  WHERE lid=$lid
 			  ORDER BY sortorder, title";
 	$result = db_execute_assoc($query) or die($connect->ErrorMsg());

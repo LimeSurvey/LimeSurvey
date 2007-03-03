@@ -46,7 +46,7 @@ include_once("login_check.php");
 if (empty($surveyid)) {die("No SID provided.");}
 
 //Select public language file
-$query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
+$query = "SELECT language FROM ".db_table_name("surveys")." WHERE sid=$surveyid";
 $result = db_execute_assoc($query) or die("Error selecting language: <br />".$query."<br />".$connect->ErrorMsg());
 
 require_once(dirname(__FILE__).'/sessioncontrol.php');
@@ -94,7 +94,7 @@ if ($actcount > 0)
 {
 	while ($actrow = $actresult->FetchRow())
 	{
-		$surveytable = "{$dbprefix}survey_{$actrow['sid']}";
+		$surveytable = db_table_name("survey_".$actrow['sid']);
 		$surveyname = "{$actrow['surveyls_title']}";
 		if ($actrow['active'] == "N") //SURVEY IS NOT ACTIVE YET
 		{
@@ -136,10 +136,10 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	."<table><tr><td></td></tr></table>\n";
 
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-	$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys 
-	WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}groups.sid={$dbprefix}surveys.sid 
-	AND {$dbprefix}questions.sid='$surveyid' AND 
-	{$dbprefix}questions.language='{$language}' AND {$dbprefix}groups.language='{$language}' ORDER BY {$dbprefix}groups.group_order, {$dbprefix}questions.title";
+	$fnquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups").", ".db_table_name("surveys")." 
+	WHERE ".db_table_name("questions").".gid=".db_table_name("groups").".gid AND ".db_table_name("groups").".sid=".db_table_name("surveys").".sid 
+	AND ".db_table_name("questions").".sid='$surveyid' AND 
+	".db_table_name("questions").".language='{$language}' AND ".db_table_name("groups").".language='{$language}' ORDER BY ".db_table_name("groups").".group_order, ".db_table_name("questions").".title";
 	$fnresult = db_execute_assoc($fnquery);
 	$fncount = 0;
 
@@ -180,7 +180,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 		$fnrow['type'] == "J" ||
 		$fnrow['type'] == "P" || $fnrow['type'] == "^")
 		{
-			$fnrquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnrow['qid']} AND	language='{$language}' ORDER BY sortorder, answer";
+			$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} AND	language='{$language}' ORDER BY sortorder, answer";
 			$fnrresult = db_execute_assoc($fnrquery);
 			while ($fnrrow = $fnrresult->FetchRow())
 			{
@@ -194,7 +194,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 		}
 		elseif ($fnrow['type'] == "R")
 		{
-			$fnrquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnrow['qid']} AND
+			$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} AND
 			language='{$language}'
 			ORDER BY sortorder, answer";
 			$fnrresult = $connect->Execute($fnrquery);
@@ -310,10 +310,10 @@ elseif ($subaction == "all")
 	}
 	$browseoutput .= "</table>\n";
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-	$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, 
-	{$dbprefix}surveys WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND 
-	{$dbprefix}questions.language='{$language}' AND {$dbprefix}groups.language='{$language}' AND
-	{$dbprefix}groups.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$surveyid' ORDER BY {$dbprefix}groups.group_order";
+	$fnquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups").", 
+	".db_table_name("surveys")." WHERE ".db_table_name("questions").".gid=".db_table_name("groups").".gid AND 
+	".db_table_name("questions").".language='{$language}' AND ".db_table_name("groups").".language='{$language}' AND
+	".db_table_name("groups").".sid=".db_table_name("surveys").".sid AND ".db_table_name("questions").".sid='$surveyid' ORDER BY ".db_table_name("groups").".group_order";
 	$fnresult = db_execute_assoc($fnquery);
 	$fncount = 0;
 
@@ -379,12 +379,12 @@ elseif ($subaction == "all")
 		}
 		elseif ($fnrow['type'] == "R")
 		{
-			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM 
-			{$dbprefix}answers, {$dbprefix}questions 
-			WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND 
-			{$dbprefix}answers.language='{$language}' AND {$dbprefix}questions.language='{$language}'
-			AND {$dbprefix}questions.qid={$fnrow['qid']} AND {$dbprefix}questions.sid=$surveyid 
-			ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+			$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM 
+			".db_table_name("answers").", ".db_table_name("questions")." 
+			WHERE ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND 
+			".db_table_name("answers").".language='{$language}' AND ".db_table_name("questions").".language='{$language}'
+			AND ".db_table_name("questions").".qid={$fnrow['qid']} AND ".db_table_name("questions").".sid=$surveyid 
+			ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
 			$i2result = $connect->Execute($i2query);
 			$i2count = $i2result->RecordCount();
 			for ($i=1; $i<=$i2count; $i++)
@@ -396,11 +396,11 @@ elseif ($subaction == "all")
 		}
 		else
 		{
-			$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions 
-			WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND 
-			{$dbprefix}answers.language='{$language}' AND {$dbprefix}questions.language='{$language}' AND
-			{$dbprefix}questions.qid={$fnrow['qid']} AND {$dbprefix}questions.sid=$surveyid 
-			ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+			$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")." 
+			WHERE ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND 
+			".db_table_name("answers").".language='{$language}' AND ".db_table_name("questions").".language='{$language}' AND
+			".db_table_name("questions").".qid={$fnrow['qid']} AND ".db_table_name("questions").".sid=$surveyid 
+			ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
 			$i2result = db_execute_assoc($i2query);
 			$otherexists = "";
 			while ($i2row = $i2result->FetchRow())
@@ -554,8 +554,8 @@ elseif ($subaction == "all")
 		$i = 0;
 		if ($private == "N")
 		{
-			$SQL = "Select * FROM {$dbprefix}tokens_$surveyid WHERE token=?";
-			if ( db_tables_exist("{$dbprefix}tokens_$surveyid") &&
+			$SQL = "Select * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token=?";
+			if ( db_tables_exist(db_table_name('tokens_'.$surveyid)) &&
 				$SQLResult = db_execute_assoc($SQL, $dtrow['token']))
 			{
 				$TokenRow = $SQLResult->FetchRow();
