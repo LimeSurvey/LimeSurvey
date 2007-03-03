@@ -42,12 +42,12 @@ $action = returnglobal('action');
 $surveyid = returnglobal('sid');
 $id = returnglobal('id');
 $saver['scid']=returnglobal('save_scid');
-$surveytable = "{$dbprefix}survey_$surveyid";
+$surveytable = db_table_name("survey_".$surveyid);
 $dataentryoutput ='';
 
 include_once("login_check.php");
 
-$actsurquery = "SELECT browse_response FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
+$actsurquery = "SELECT browse_response FROM ".db_table_name("surveys_rights")." WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
 $actsurresult = $connect->Execute($actsurquery) or die($connect->ErrorMsg());		
 $actsurrows = $actsurresult->FetchRow();
 
@@ -122,8 +122,8 @@ if($actsurrows['browse_response']){
 			if (!$errormsg && $saver['identifier'] && !returnglobal('redo'))
 			{
 				//All the fields are correct. Now make sure there's not already a matching saved item
-				$query = "SELECT * FROM {$dbprefix}saved_control\n"
-				."WHERE sid=$surveyid\n"
+				$query = "SELECT * FROM ".db_table_name("saved_control")
+				." WHERE sid=$surveyid\n"
 				."AND identifier='".$saver['identifier']."'\n"
 				."AND access_code='$password'\n";
 				$result = $connect->Execute($query) or die("Error checking for duplicates!<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -173,14 +173,12 @@ if($actsurrows['browse_response']){
 				if (returnglobal('redo')=="yes")
 				{
 					//Delete all the existing entries
-					$delete="DELETE FROM {$dbprefix}saved
-							 WHERE scid=".$saver['scid'];
+					$delete="DELETE FROM ".db_table_name("saved")." WHERE scid=".$saver['scid'];
 					$result=$connect->Execute($delete) or die("Couldn't delete old record<br />$delete<br />".htmlspecialchars($connect->ErrorMsg()));
-					$delete="DELETE FROM {$dbprefix}saved_control
-							 WHERE scid=".$saver['scid'];
+					$delete="DELETE FROM ".db_table_name("saved_control")." WHERE scid=".$saver['scid'];
 					$result=$connect->Execute($delete) or die("Couldn't delete old record<br />$delete<br />".htmlspecialchars($connect->ErrorMsg()));
 				}
-				$insert1=$connect->GetInsertSQL("{$dbprefix}saved_control", array(
+				$insert1=$connect->GetInsertSQL(db_table_name("saved_control"), array(
 				'sid' => $surveyid,
 				'identifier' => $saver['identifier'],
 				'access_code' => $password,
@@ -199,16 +197,10 @@ if($actsurrows['browse_response']){
 						{
 							if($val)
 							{
-								$insert="INSERT INTO {$dbprefix}saved\n"
-								. "(`scid`,\n`datestamp`, `fieldname`,\n`ipaddr`,"
-								. "`value`)\n"
-								."VALUES (\n"
-								."'$scid',\n"
-								."'".date("Y-m-d H:i:s")."',\n"
-								."'".$key."',\n"
-								."NULL,\n"
-								."'".$val."')\n";
-								//$dataentryoutput .= "$insert<br />\n";
+								$insert="INSERT INTO  ".db_table_name("saved")
+								. "(`scid`, `datestamp`, `fieldname`, `ipaddr`, `value`)"
+								."VALUES ( '$scid','".date("Y-m-d H:i:s")."', '".$key."',NULL, "
+								."'".$val."')";
 								if (!$result=$connect->Execute($insert))
 								{
 									$failed=1;
@@ -260,10 +252,10 @@ if($actsurrows['browse_response']){
 		{
 			//BUILD THE SQL TO INSERT RESPONSES
 
-			$iquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE 
-			{$dbprefix}questions.gid={$dbprefix}groups.gid AND 
-			{$dbprefix}questions.language = '{$language}' AND {$dbprefix}groups.language = '{$language}' AND
-			{$dbprefix}questions.sid=$surveyid ORDER BY {$dbprefix}groups.group_order, title";
+			$iquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups")." WHERE 
+			".db_table_name("questions").".gid=".db_table_name("groups").".gid AND 
+			".db_table_name("questions").".language = '{$language}' AND ".db_table_name("groups").".language = '{$language}' AND
+			".db_table_name("questions").".sid=$surveyid ORDER BY ".db_table_name("groups").".group_order, title";
 			$iresult = db_execute_assoc($iquery);
 			$col_name="";
 			$insertqr="";
@@ -287,10 +279,10 @@ if($actsurrows['browse_response']){
 				}
 				elseif ($irow['type'] == "R")
 				{
-					$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE 
-					{$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid={$irow['qid']} AND 
-					{$dbprefix}questions.language = '{$language}' AND {$dbprefix}answers.language = '{$language}' AND
-					{$dbprefix}questions.sid=$surveyid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+					$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")." WHERE 
+					".db_table_name("answers").".qid=".db_table_name("questions").".qid AND ".db_table_name("questions").".qid={$irow['qid']} AND 
+					".db_table_name("questions").".language = '{$language}' AND ".db_table_name("answers").".language = '{$language}' AND
+					".db_table_name("questions").".sid=$surveyid ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
 					$i2result = $connect->Execute($i2query);
 					$i2count = $i2result->RecordCount();
 					for ($i=1; $i<=$i2count; $i++)
@@ -302,11 +294,11 @@ if($actsurrows['browse_response']){
 				}
 				else
 				{
-					$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions 
-					WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND 
-					{$dbprefix}questions.language = '{$language}' AND {$dbprefix}answers.language = '{$language}' AND
-					{$dbprefix}questions.qid={$irow['qid']} 
-					AND {$dbprefix}questions.sid=$surveyid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+					$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")." 
+					WHERE ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND 
+					".db_table_name("questions").".language = '{$language}' AND ".db_table_name("answers").".language = '{$language}' AND
+					".db_table_name("questions").".qid={$irow['qid']} 
+					AND ".db_table_name("questions").".sid=$surveyid ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
 					$i2result = db_execute_assoc($i2query);
 					while ($i2row = $i2result->FetchRow())
 					{
@@ -366,12 +358,10 @@ if($actsurrows['browse_response']){
 			{
 				//This submission of data came from a saved session. Must delete the
 				//saved session now that it has been recorded in the responses table
-				$dquery = "DELETE FROM {$dbprefix}saved_control
-						  WHERE scid=".$saver['scid'];
+				$dquery = "DELETE FROM ".db_table_name("saved_control")." WHERE scid=".$saver['scid'];
 				if ($dresult=$connect->Execute($dquery))
 				{
-					$dquery = "DELETE FROM {$dbprefix}saved
-							  WHERE scid=".$saver['scid'];
+					$dquery = "DELETE FROM ".db_table_name("saved")." WHERE scid=".$saver['scid'];
 					$dresult=$connect->Execute($dquery) or die("Couldn't delete saved data<br />$dquery<br />".htmlspecialchars($connect->ErrorMsg()));
 				}
 				else
@@ -418,10 +408,10 @@ if($actsurrows['browse_response']){
 		."</table>\n";
 	
 		//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-		$fnquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups, {$dbprefix}surveys WHERE 
-		{$dbprefix}questions.gid={$dbprefix}groups.gid AND 
-		{$dbprefix}questions.language = '{$language}' AND {$dbprefix}groups.language = '{$language}' AND
-		{$dbprefix}questions.sid={$dbprefix}surveys.sid AND {$dbprefix}questions.sid='$surveyid'";
+		$fnquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups").", ".db_table_name("surveys")." WHERE 
+		".db_table_name("questions").".gid=".db_table_name("groups").".gid AND 
+		".db_table_name("questions").".language = '{$language}' AND ".db_table_name("groups").".language = '{$language}' AND
+		".db_table_name("questions").".sid=".db_table_name("surveys").".sid AND ".db_table_name("questions").".sid='$surveyid'";
 		$fnresult = db_execute_assoc($fnquery);
 		$fncount = $fnresult->RecordCount();
 		//$dataentryoutput .= "$fnquery<br /><br />\n";
@@ -459,7 +449,7 @@ if($actsurrows['browse_response']){
 			$fquestion = $fnrow['question'];
 			if ($fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || $fnrow['type'] == "E" || $fnrow['type'] == "F" || $fnrow['type'] == "H" || $fnrow['type'] == "P" || $fnrow['type'] == "Q" || $fnrow['type'] == "^" || $fnrow['type'] == "J")
 			{
-				$fnrquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnrow['qid']} ORDER BY sortorder, answer";
+				$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} ORDER BY sortorder, answer";
 				$fnrresult = db_execute_assoc($fnrquery);
 				while ($fnrrow = $fnrresult->FetchRow())
 				{
@@ -480,7 +470,7 @@ if($actsurrows['browse_response']){
 			}
 			elseif ($fnrow['type'] == "R")
 			{
-				$fnrquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnrow['qid']} ORDER BY sortorder, answer";
+				$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} ORDER BY sortorder, answer";
 				$fnrresult = $connect->Execute($fnrquery);
 				$fnrcount = $fnrresult->RecordCount();
 				for ($j=1; $j<=$fnrcount; $j++)
@@ -537,7 +527,7 @@ if($actsurrows['browse_response']){
 			{
 				$password=$_GET['accesscode'];
 			}
-			$svquery = "SELECT * FROM {$dbprefix}saved_control
+			$svquery = "SELECT * FROM ".db_table_name("saved_control")."
 						WHERE sid=$surveyid
 						AND identifier='".$_GET['identifier']."'
 						AND access_code='".$password."'";
@@ -548,7 +538,7 @@ if($actsurrows['browse_response']){
 				$saver['scid']=$svrow['scid'];
 				$saver['ip']=$svrow['ip'];
 			}
-			$svquery = "SELECT * FROM {$dbprefix}saved_control WHERE scid=".$saver['scid'];
+			$svquery = "SELECT * FROM ".db_table_name("saved_control")." WHERE scid=".$saver['scid'];
 			$svresult=db_execute_assoc($svquery) or die("Error getting saved info<br />$svquery<br />".htmlspecialchars($connect->ErrorMsg()));
 			while($svrow=$svresult->FetchRow())
 			{
@@ -641,11 +631,11 @@ if($actsurrows['browse_response']){
 					}
 					else
 					{
-						$lquery = "SELECT * FROM {$dbprefix}labels WHERE lid={$fnames[$i][8]} AND
-						{$dbprefix}labels.language = '{$language}' AND 
+						$lquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$fnames[$i][8]} AND
+						".db_table_name("labels").".language = '{$language}' AND 
 						ORDER BY sortorder, code";
 						$lresult = db_execute_assoc($lquery);
-						//$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnames[$i][7]} ORDER BY sortorder, answer";
+						//$lquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnames[$i][7]} ORDER BY sortorder, answer";
 						//$lresult = $connect->Execute($lquery);
 						$dataentryoutput .= "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 						."\t\t\t\t<option value=''";
@@ -658,7 +648,7 @@ if($actsurrows['browse_response']){
 							if ($idrow[$fnames[$i][0]] == $llrow['code']) {$dataentryoutput .= " selected";}
 							$dataentryoutput .= ">{$llrow['title']}</option>\n";
 						}
-						$oquery="SELECT other FROM {$dbprefix}questions WHERE qid={$fnames[$i][7]} AND {$dbprefix}questions.language = '{$language}'";
+						$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$fnames[$i][7]} AND ".db_table_name("questions").".language = '{$language}'";
 						$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
 						while($orow = $oresult->FetchRow())
 						{
@@ -682,7 +672,7 @@ if($actsurrows['browse_response']){
 					}
 					else
 					{
-						$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnames[$i][7]} AND {$dbprefix}answers.language = '{$language}' ORDER BY sortorder, answer";
+						$lquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnames[$i][7]} AND ".db_table_name("answers").".language = '{$language}' ORDER BY sortorder, answer";
 						$lresult = db_execute_assoc($lquery);
 						$dataentryoutput .= "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 						."\t\t\t\t<option value=''";
@@ -695,7 +685,7 @@ if($actsurrows['browse_response']){
 							if ($idrow[$fnames[$i][0]] == $llrow['code']) {$dataentryoutput .= " selected";}
 							$dataentryoutput .= ">{$llrow['answer']}</option>\n";
 						}
-						$oquery="SELECT other FROM {$dbprefix}questions WHERE qid={$fnames[$i][7]} AND {$dbprefix}questions.language = '{$language}'";
+						$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$fnames[$i][7]} AND ".db_table_name("questions").".language = '{$language}'";
 						$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
 						while($orow = $oresult->FetchRow())
 						{
@@ -711,7 +701,7 @@ if($actsurrows['browse_response']){
 					}
 					break;
 					case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
-					$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnames[$i][7]} AND {$dbprefix}answers.language = '{$language}' ORDER BY sortorder, answer";
+					$lquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnames[$i][7]} AND ".db_table_name("answers").".language = '{$language}' ORDER BY sortorder, answer";
 					$lresult = db_execute_assoc($lquery);
 					$dataentryoutput .= "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 					."\t\t\t\t<option value=''";
@@ -743,7 +733,7 @@ if($actsurrows['browse_response']){
 						}
 						$i++;
 					}
-					$ansquery = "SELECT * FROM {$dbprefix}answers WHERE {$dbprefix}answers.language = '{$language}' AND qid=$thisqid ORDER BY sortorder, answer";
+					$ansquery = "SELECT * FROM ".db_table_name("answers")." WHERE ".db_table_name("answers").".language = '{$language}' AND qid=$thisqid ORDER BY sortorder, answer";
 					$ansresult = db_execute_assoc($ansquery);
 					$anscount = $ansresult->RecordCount();
 					$dataentryoutput .= "\t\t\t<script type='text/javascript'>\n"
@@ -954,7 +944,7 @@ if($actsurrows['browse_response']){
 					break;
 	
 					case "I": //FILE CSV ONE
-					$lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$fnames[$i][7]} AND {$dbprefix}answers.language = '{$language}' ORDER BY sortorder, answer";
+					$lquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnames[$i][7]} AND ".db_table_name("answers").".language = '{$language}' ORDER BY sortorder, answer";
 					$lresult = db_execute_assoc($lquery);
 					$dataentryoutput .= "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 					."\t\t\t\t<option value=''";
@@ -1140,7 +1130,7 @@ if($actsurrows['browse_response']){
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 						$dataentryoutput .= "\t<tr>\n"
 						."\t\t<td align='right' valign='top'>$setfont{$fnames[$i][6]}</font></td>\n";
-						$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid='{$fnames[$i][8]}' order by sortorder, code";
+						$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$fnames[$i][8]}' order by sortorder, code";
 						$fresult = db_execute_assoc($fquery);
 						$dataentryoutput .= "\t\t<td>$setfont\n";
 						while ($frow=$fresult->FetchRow())
@@ -1179,7 +1169,7 @@ if($actsurrows['browse_response']){
 						 <input type='hidden' name='id' value='$id'>
 						 <input type='hidden' name='sid' value='$surveyid'>
 						 <input type='hidden' name='subaction' value='update'>
-						 <input type='hidden' name='surveytable' value='{$dbprefix}survey_$surveyid'>
+						 <input type='hidden' name='surveytable' value='".db_table_name("survey_".$surveyid)."'>
 						</td>
 					</tr>\n";
 		}
@@ -1226,7 +1216,7 @@ if($actsurrows['browse_response']){
 					 <input type='submit' value='".$clang->gT("submit")."'>
 					 <input type='hidden' name='sid' value='$surveyid'>
 					 <input type='hidden' name='subaction' value='insert'>
-					 <input type='hidden' name='surveytable' value='{$dbprefix}survey_$surveyid'>
+					 <input type='hidden' name='surveytable' value='".db_table_name("survey_".$surveyid)."'>
 					</td>
 				</tr>\n";
 		}
@@ -1242,11 +1232,11 @@ if($actsurrows['browse_response']){
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		.$clang->gT("Data Entry")."</strong></font></td></tr>\n"
 		."\t<tr><td align='center'>\n";
-		$iquery = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE 
-		{$dbprefix}questions.gid={$dbprefix}groups.gid  AND
-		{$dbprefix}questions.language = '{$language}' AND  {$dbprefix}groups.language = '{$language}' AND
-		{$dbprefix}questions.sid=$surveyid 
-		ORDER BY {$dbprefix}groups.group_order, title";
+		$iquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups")." WHERE 
+		".db_table_name("questions").".gid=".db_table_name("groups").".gid  AND
+		".db_table_name("questions").".language = '{$language}' AND  ".db_table_name("groups").".language = '{$language}' AND
+		".db_table_name("questions").".sid=$surveyid 
+		ORDER BY ".db_table_name("groups").".group_order, title";
 		$iresult = db_execute_assoc($iquery);
 	
 		$updateqr = "UPDATE $surveytable SET \n";
@@ -1277,10 +1267,10 @@ if($actsurrows['browse_response']){
 			}
 			elseif ($irow['type'] == "R")
 			{
-				$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions 
-				WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND 
-				 {$dbprefix}questions.language = '{$language}' AND  {$dbprefix}answers.language = '{$language}' AND
-				{$dbprefix}questions.qid={$irow['qid']} AND {$dbprefix}questions.sid=$surveyid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+				$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")." 
+				WHERE ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND 
+				 ".db_table_name("questions").".language = '{$language}' AND  ".db_table_name("answers").".language = '{$language}' AND
+				".db_table_name("questions").".qid={$irow['qid']} AND ".db_table_name("questions").".sid=$surveyid ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
 				$i2result = $connect->Execute($i2query);
 				$i2count = $i2result->RecordCount();
 				for ($x=1; $x<=$i2count; $x++)
@@ -1291,10 +1281,10 @@ if($actsurrows['browse_response']){
 			}
 			else
 			{
-				$i2query = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions 
-				WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND 
-				{$dbprefix}questions.language = '{$language}' AND  {$dbprefix}answers.language = '{$language}' AND
-				{$dbprefix}questions.qid={$irow['qid']} AND {$dbprefix}questions.sid=$surveyid ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+				$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")." 
+				WHERE ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND 
+				".db_table_name("questions").".language = '{$language}' AND  ".db_table_name("answers").".language = '{$language}' AND
+				".db_table_name("questions").".qid={$irow['qid']} AND ".db_table_name("questions").".sid=$surveyid ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
 				$i2result = db_execute_assoc($i2query);
 				$otherexists = "";
 				while ($i2row = $i2result->FetchRow())
@@ -1437,12 +1427,12 @@ if($actsurrows['browse_response']){
 	
 	
 		// SURVEY NAME AND DESCRIPTION TO GO HERE
-		$degquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid AND language='{$baselang}' ORDER BY {$dbprefix}groups.group_order";
+		$degquery = "SELECT * FROM ".db_table_name("groups")." WHERE sid=$surveyid AND language='{$baselang}' ORDER BY ".db_table_name("groups").".group_order";
 		$degresult = db_execute_assoc($degquery);
 		// GROUP NAME
 		while ($degrow = $degresult->FetchRow())
 		{
-			$deqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid={$degrow['gid']} AND language='{$baselang}'";
+			$deqquery = "SELECT * FROM ".db_table_name("questions")." WHERE sid=$surveyid AND gid={$degrow['gid']} AND language='{$baselang}'";
 			$deqresult = db_execute_assoc($deqquery);
 			$dataentryoutput .= "\t<tr>\n"
 			."\t\t<td colspan='3' align='center' bgcolor='#AAAAAA'>$setfont<strong>{$degrow['group_name']}</strong></font></td>\n"
@@ -1466,12 +1456,12 @@ if($actsurrows['browse_response']){
 				//GET ANY CONDITIONS THAT APPLY TO THIS QUESTION
 				$explanation = ""; //reset conditions explanation
 				$x=0;
-				$distinctquery="SELECT DISTINCT cqid, {$dbprefix}questions.title FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid AND {$dbprefix}conditions.qid={$deqrow['qid']} ORDER BY cqid";
+				$distinctquery="SELECT DISTINCT cqid, ".db_table_name("questions").".title FROM ".db_table_name("conditions").", ".db_table_name("questions")." WHERE ".db_table_name("conditions").".cqid=".db_table_name("questions").".qid AND ".db_table_name("conditions").".qid={$deqrow['qid']} ORDER BY cqid";
 				$distinctresult=db_execute_assoc($distinctquery);
 				while ($distinctrow=$distinctresult->FetchRow())
 				{
 					if ($x > 0) {$explanation .= " <i>".$clang->gT("AND")."</i><br />";}
-					$conquery="SELECT cid, cqid, cfieldname, {$dbprefix}questions.title, {$dbprefix}questions.lid, {$dbprefix}questions.question, value, {$dbprefix}questions.type FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid AND {$dbprefix}conditions.cqid={$distinctrow['cqid']} AND {$dbprefix}conditions.qid={$deqrow['qid']}";
+					$conquery="SELECT cid, cqid, cfieldname, ".db_table_name("questions").".title, ".db_table_name("questions").".lid, ".db_table_name("questions").".question, value, ".db_table_name("questions").".type FROM ".db_table_name("conditions").", ".db_table_name("questions")." WHERE ".db_table_name("conditions").".cqid=".db_table_name("questions").".qid AND ".db_table_name("conditions").".cqid={$distinctrow['cqid']} AND ".db_table_name("conditions").".qid={$deqrow['qid']}";
 					$conresult=db_execute_assoc($conquery);
 					while ($conrow=$conresult->FetchRow())
 					{
@@ -1514,7 +1504,7 @@ if($actsurrows['browse_response']){
 							case "H":
 							default:
 							$value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
-							$fquery = "SELECT * FROM {$dbprefix}labels\n"
+							$fquery = "SELECT * FROM ".db_table_name("labels")."\n"
 							. "WHERE lid='{$conrow['lid']}'\n"
 							. "AND code='{$conrow['value']}'";
 							$fresult=db_execute_assoc($fquery) or die("$fquery<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -1535,7 +1525,7 @@ if($actsurrows['browse_response']){
 							case "F":
 							case "H":
 							$thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
-							$ansquery="SELECT answer FROM {$dbprefix}answers WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion[0]['aid']}' AND language='{$baselang}'";
+							$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion[0]['aid']}' AND language='{$baselang}'";
 							$ansresult=db_execute_assoc($ansquery);
 							$i=0;
 							while ($ansrow=$ansresult->FetchRow())
@@ -1548,7 +1538,7 @@ if($actsurrows['browse_response']){
 							$operator=$clang->gT("AND");	// this is a dirty, DIRTY fix but it works since only array questions seem to be ORd
 							break;
 							default:
-							$ansquery="SELECT answer FROM {$dbprefix}answers WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$baselang}'";
+							$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$baselang}'";
 							$ansresult=db_execute_assoc($ansquery);
 							while ($ansrow=$ansresult->FetchRow())
 							{
@@ -1622,7 +1612,7 @@ if($actsurrows['browse_response']){
 					break;
 					case "Q": //MULTIPLE SHORT TEXT
 					case "^": //Slider
-					$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$dearesult = db_execute_assoc($deaquery);
 					$dataentryoutput .= "\t\t\t<table>\n";
 					while ($dearow = $dearesult->FetchRow())
@@ -1637,7 +1627,7 @@ if($actsurrows['browse_response']){
 					break;
 					case "W": //Flexible List drop-down/radio-button
 					case "Z":
-					$deaquery = "SELECT * FROM {$dbprefix}labels WHERE lid={$deqrow['lid']} ORDER BY sortorder, code";
+					$deaquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} ORDER BY sortorder, code";
 					$dearesult = db_execute_assoc($deaquery);
 					$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n";
 					while ($dearow = $dearesult->FetchRow())
@@ -1647,7 +1637,7 @@ if($actsurrows['browse_response']){
 					}
 					$dataentryoutput .= "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n";
 	
-					$oquery="SELECT other FROM {$dbprefix}questions WHERE qid={$deqrow['qid']} AND language='{$baselang}'";
+					$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$deqrow['qid']} AND language='{$baselang}'";
 					$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
 					while($orow = $oresult->FetchRow())
 					{
@@ -1668,7 +1658,7 @@ if($actsurrows['browse_response']){
 					case "L": //LIST drop-down/radio-button list
 					case "!":
 					$defexists="";
-					$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY sortorder, answer";
+					$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY sortorder, answer";
 					$dearesult = db_execute_assoc($deaquery);
 					$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n";
 					while ($dearow = $dearesult->FetchRow())
@@ -1679,7 +1669,7 @@ if($actsurrows['browse_response']){
 					}
 					if (!$defexists) {$dataentryoutput .= "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n";}
 	
-					$oquery="SELECT other FROM {$dbprefix}questions WHERE qid={$deqrow['qid']} AND language='{$baselang}'";
+					$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$deqrow['qid']} AND language='{$baselang}'";
 					$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
 					while($orow = $oresult->FetchRow())
 					{
@@ -1699,7 +1689,7 @@ if($actsurrows['browse_response']){
 					break;
 					case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
 					$defexists="";
-					$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY sortorder, answer";
+					$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY sortorder, answer";
 					$dearesult = db_execute_assoc($deaquery);
 					$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n";
 					while ($dearow = $dearesult->FetchRow())
@@ -1716,7 +1706,7 @@ if($actsurrows['browse_response']){
 					break;
 					case "R": //RANKING TYPE QUESTION
 					$thisqid=$deqrow['qid'];
-					$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$thisqid AND language='{$baselang}' ORDER BY sortorder, answer";
+					$ansquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid=$thisqid AND language='{$baselang}' ORDER BY sortorder, answer";
 					$ansresult = db_execute_assoc($ansquery);
 					$anscount = $ansresult->RecordCount();
 					$dataentryoutput .= "\t\t\t<script type='text/javascript'>\n"
@@ -1892,7 +1882,7 @@ if($actsurrows['browse_response']){
 					{
 						$dcols=0;
 					}
-					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY sortorder, answer";
+					$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY sortorder, answer";
 					$mearesult = db_execute_assoc($meaquery);
 					$meacount = $mearesult->RecordCount();
 					if ($deqrow['other'] == "Y") {$meacount++;}
@@ -1939,7 +1929,7 @@ if($actsurrows['browse_response']){
 					}
 					break;
 					case "J": //FILE CSV MORE
-					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$mearesult = db_execute_assoc($meaquery);
 					while ($mearow = $mearesult->FetchRow())
 					{
@@ -1949,7 +1939,7 @@ if($actsurrows['browse_response']){
 					}
 					break;
 					case "I": //FILE CSV ONE - LIST drop-down/radio-button list
-					$deaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$dearesult = db_execute_assoc($deaquery);
 					$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n";
 					while ($dearow = $dearesult->FetchRow())
@@ -1962,7 +1952,7 @@ if($actsurrows['browse_response']){
 					break;
 					case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
 					$dataentryoutput .= "<table border='0'>\n";
-					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$mearesult = db_execute_assoc($meaquery);
 					while ($mearow = $mearesult->FetchRow())
 					{
@@ -2010,7 +2000,7 @@ if($actsurrows['browse_response']){
 					$dataentryoutput .= "\t\t\t</select>\n";
 					break;
 					case "A": //ARRAY (5 POINT CHOICE) radio-buttons
-					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$mearesult = db_execute_assoc($meaquery);
 					$dataentryoutput .= "<table>\n";
 					while ($mearow = $mearesult->FetchRow())
@@ -2031,7 +2021,7 @@ if($actsurrows['browse_response']){
 					$dataentryoutput .= "</table>\n";
 					break;
 					case "B": //ARRAY (10 POINT CHOICE) radio-buttons
-					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$mearesult = db_execute_assoc($meaquery);
 					$dataentryoutput .= "<table>\n";
 					while ($mearow = $mearesult->FetchRow())
@@ -2052,7 +2042,7 @@ if($actsurrows['browse_response']){
 					$dataentryoutput .= "</table>\n";
 					break;
 					case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$mearesult=db_execute_assoc($meaquery);
 					$dataentryoutput .= "<table>\n";
 					while ($mearow = $mearesult->FetchRow())
@@ -2072,7 +2062,7 @@ if($actsurrows['browse_response']){
 					$dataentryoutput .= "</table>\n";
 					break;
 					case "E": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".htmlspecialchars($connect->ErrorMsg()));
 					$dataentryoutput .= "<table>\n";
 					while ($mearow = $mearesult->FetchRow())
@@ -2093,7 +2083,7 @@ if($actsurrows['browse_response']){
 					break;
 					case "F": //ARRAY (Flexible Labels)
 					case "H":
-					$meaquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".htmlspecialchars($connect->ErrorMsg()));
 					$dataentryoutput .= "<table>\n";
 					while ($mearow = $mearesult->FetchRow())
@@ -2103,7 +2093,7 @@ if($actsurrows['browse_response']){
 						$dataentryoutput .= "\t\t<td>\n";
 						$dataentryoutput .= "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
 						$dataentryoutput .= "\t\t\t\t<option value=''>".$clang->gT("Please choose")."..</option>\n";
-						$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid={$deqrow['lid']} ORDER BY sortorder, code";
+						$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} ORDER BY sortorder, code";
 						$fresult = db_execute_assoc($fquery);
 						while ($frow = $fresult->FetchRow())
 						{
