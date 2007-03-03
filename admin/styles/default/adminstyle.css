@@ -298,3 +298,25 @@ span.settingcaption
 		-moz-opacity: 0.95;
 		-moz-border-radius:6px;	/* Rounded edges in Firefox */
 	}
+
+	.previewpopup{
+		font-family:arial,verdana,sans-serif;
+		font-size: 11px;
+		position: absolute;
+		width: 100px;
+		height: 110px;
+		background-color: #FFFF66;
+		top: 287px;
+		left: 478px;
+		border-style: solid;
+		border-width: 1px;
+		border-color: #000000;
+		padding: 8px;
+		z-index:10000;
+		opacity:0.7;
+		visibility:hidden;
+		filter:alpha(opacity=95);
+		-khtml-opacity: 0.95;
+		-moz-opacity: 0.95;
+		-moz-border-radius:6px;	/* Rounded edges in Firefox */
+	}

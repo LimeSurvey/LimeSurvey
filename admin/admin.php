@@ -155,6 +155,8 @@ if(isset($_SESSION['loginID']) && $action!='login')
   	include("database.php");
   }
 
+  if ($action=="previewquestion")  { include("preview.php"); }
+  else
   if ($action=="deletesurvey")  { include("deletesurvey.php"); }
   else
   if ($action=="conditions")  { include("conditions.php"); }

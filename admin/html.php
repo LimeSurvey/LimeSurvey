@@ -51,6 +51,7 @@ if ($action == "listsurveys")
 				    <td><strong>".$clang->gT("Visibility")."</strong></td>
 				    <td><strong>".$clang->gT("Status")."</strong></td>
 				    <td colspan=\"3\"><strong>".$clang->gT("Action")."</strong></td>
+				    <td colspan=\"3\"><strong>".$clang->gT("Responses")."</strong></td>
 				  </tr>" ; 
 
 		while($rows = $result->FetchRow())
@@ -63,31 +64,45 @@ if ($action == "listsurveys")
 			if($rows['active']=="Y")
 			{
 				$status=$clang->gT("Active") ;
+				// Survey Responses - added by DLR
+				$gnquery = "SELECT count(id) FROM ".db_table_name("survey_".$rows['sid']);
+			    $gnresult = db_execute_num($gnquery);
+				while ($gnrow = $gnresult->FetchRow())	     
+                {
+					$responses=$gnrow[0];
+	            }
 			}
 			else $status =$clang->gT("Inactive") ;
 
 			$datecreated=$rows['datecreated'] ;
 
 			$listsurveys.="<tr>
-					    <td><a href='".$scriptname."?sid=".$rows['sid']."'>".$rows['surveyls_title']."</a></td>".
+					    <td><a href='".$scriptname."?sid=".$rows['sid']."'>".$rows['short_title']."</a></td>".
 					    "<td>".$datecreated."</td>".
 					    "<td>".$visibility."</td>" .
 					    "<td>".$status."</td>".
 					    "<td>&nbsp;</td>
-					    <td>&nbsp;</td>
-					    <td>&nbsp;</td>
-					  </tr>" ; 
+					    <td>&nbsp;</td>";
+
+					    if ($status=="Active")
+					    {
+					        $listsurveys .= "<td colspan=\"3\" align='center'>".$responses."</td>";
+					    }else{
+						$listsurveys .= "<td>&nbsp;</td>";
+					    }
+					    $listsurvey .= "</tr>" ;
 		}
 		if($_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		{
-			$listsurveys.="<tr bgcolor='#BBBBBB'>
-				    <td><a href='".$scriptname."?action=newsurvey'><img border=0 src='".$imagefiles."/add.png' alt='' onmouseout=\"hideTooltip()\" " .
-				    "onmouseover=\"showTooltip(event,'".$clang->gT("Create Survey", "js")."');return false\" />" .
+			
+					$listsurveys.="<tr bgcolor='#BBBBBB'>
+				    <td><a href='".$scriptname."?action=newsurvey'><img border=0 src='".$imagefiles."/add.png' onmouseout=\"hideTooltip()\" " .
+				    "onmouseover=\"showTooltip(event,'"._("Create Survey")."');return false\">" .
 				    "</a></td>
 				    <td>&nbsp;</td>
 				    <td>&nbsp;</td>
-				    <td colspan=\"4\">&nbsp;</td>
-				  </tr>";
+				    <td colspan=\"5\">&nbsp;</td>".
+				  "</tr>";
 		}
 		$listsurveys.="</table><br />" ;
 	}
@@ -1088,6 +1103,36 @@ if ($qid)  // Show the question toolbar
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Set Conditions for this Question", "js")."');return false\">"
 			. "<img src='$imagefiles/conditions.png' title='' alt='' align='left' name='SetQuestionConditions' /></a>\n"
 			. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
+		}
+		else
+		{
+			$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
+		}
+		if($sumrows5['define_questions'])
+		{
+			$questionsummary .= "<a href=\"#\" accesskey='d' onclick=\"hideTooltip(); document.getElementById('previewquestion').style.visibility='visible';\""
+			. "onmouseout=\"hideTooltip()\""
+			. "onmouseover=\"showTooltip(event,'".$clang->gT("Preview This Question", "js")."');return false\">"
+			. "<img src='$imagefiles/preview.png' title='' alt='' align='left' name='previewQuestion' /></a>\n"
+			. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
+			
+			$tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+			$baselang = GetBaseLanguageFromSurveyID($surveyid);
+			$tmp_survlangs[] = $baselang;
+
+			// Test Survey Language Selection Popup
+			$surveysummary .="<DIV class=\"previewpopup\" id=\"previewquestion\"><table width=\"100%\"><tr><td>".$clang->gT("Please select a language:")."</td></tr>";
+			foreach ($tmp_survlangs as $tmp_lang)
+			{
+				$surveysummary .= "<tr><td><a href=\"#\" accesskey='d' onclick=\"document.getElementById('previewquestion').style.visibility='hidden'; window.open('$scriptname?action=previewquestion&amp;sid=$surveyid&amp;qid=$qid&amp;lang=".$tmp_lang."', '_blank')\"><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></td></tr>";
+			}
+			$surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('previewquestion').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></DIV>";
+			
+			if (count($tmp_survlangs) > 2)
+			{
+				$tmp_pheight = 110 + ((count($tmp_survlangs)-2) * 20);
+				$surveysummary .= "<script type='text/javascript'>document.getElementById('previewquestion').style.height='".$tmp_pheight."px';</script>";
+			}
 		}
 		else
 		{
