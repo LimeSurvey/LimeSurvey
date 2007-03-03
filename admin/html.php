@@ -1110,28 +1110,37 @@ if ($qid)  // Show the question toolbar
 		}
 		if($sumrows5['define_questions'])
 		{
-			$questionsummary .= "<a href=\"#\" accesskey='d' onclick=\"hideTooltip(); document.getElementById('previewquestion').style.visibility='visible';\""
+			if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
+			{
+			$questionsummary .= "<a href=\"#\" accesskey='d' onclick=\"window.open('$scriptname?action=previewquestion&amp;sid=$surveyid&amp;qid=$qid', '_blank')\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Preview This Question", "js")."');return false\">"
-			. "<img src='$imagefiles/preview.png' title='' alt='' align='left' name='previewQuestion' /></a>\n"
+			. "<img src='$imagefiles/preview.png' title='' alt='' align='left' name='previewquestion' /></a>\n"
 			. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
+			} else {
+				$questionsummary .= "<a href=\"#\" accesskey='d' onclick=\"hideTooltip(); document.getElementById('previewquestion').style.visibility='visible';\""
+				. "onmouseout=\"hideTooltip()\""
+				. "onmouseover=\"showTooltip(event,'".$clang->gT("Preview This Question", "js")."');return false\">"
+				. "<img src='$imagefiles/preview.png' title='' alt='' align='left' name='previewquestion' /></a>\n"
+				. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
 			
-			$tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-			$baselang = GetBaseLanguageFromSurveyID($surveyid);
-			$tmp_survlangs[] = $baselang;
+				$tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+				$baselang = GetBaseLanguageFromSurveyID($surveyid);
+				$tmp_survlangs[] = $baselang;
 
-			// Test Survey Language Selection Popup
-			$surveysummary .="<DIV class=\"previewpopup\" id=\"previewquestion\"><table width=\"100%\"><tr><td>".$clang->gT("Please select a language:")."</td></tr>";
-			foreach ($tmp_survlangs as $tmp_lang)
-			{
-				$surveysummary .= "<tr><td><a href=\"#\" accesskey='d' onclick=\"document.getElementById('previewquestion').style.visibility='hidden'; window.open('$scriptname?action=previewquestion&amp;sid=$surveyid&amp;qid=$qid&amp;lang=".$tmp_lang."', '_blank')\"><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></td></tr>";
-			}
-			$surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('previewquestion').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></DIV>";
+				// Test Survey Language Selection Popup
+				$surveysummary .="<DIV class=\"previewpopup\" id=\"previewquestion\"><table width=\"100%\"><tr><td>".$clang->gT("Please select a language:")."</td></tr>";
+				foreach ($tmp_survlangs as $tmp_lang)
+				{
+					$surveysummary .= "<tr><td><a href=\"#\" accesskey='d' onclick=\"document.getElementById('previewquestion').style.visibility='hidden'; window.open('$scriptname?action=previewquestion&amp;sid=$surveyid&amp;qid=$qid&amp;lang=".$tmp_lang."', '_blank')\"><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></td></tr>";
+				}
+				$surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('previewquestion').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></DIV>";
 			
-			if (count($tmp_survlangs) > 2)
-			{
-				$tmp_pheight = 110 + ((count($tmp_survlangs)-2) * 20);
-				$surveysummary .= "<script type='text/javascript'>document.getElementById('previewquestion').style.height='".$tmp_pheight."px';</script>";
+				if (count($tmp_survlangs) > 2)
+				{
+					$tmp_pheight = 110 + ((count($tmp_survlangs)-2) * 20);
+					$surveysummary .= "<script type='text/javascript'>document.getElementById('previewquestion').style.height='".$tmp_pheight."px';</script>";
+				}
 			}
 		}
 		else
