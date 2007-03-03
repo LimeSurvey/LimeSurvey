@@ -63,11 +63,9 @@ $qrows = $qresult->FetchRow();
 $ia = array(0 => $qid, 1 => "FIELDNAME", 2 => $qrows['title'], 3 => $qrows['question'], 4 => $qrows['type'], 5 => $qrows['gid'],
 6 => $qrows['mandatory'], 7 => $qrows['other']);
 $answers = retrieveAnswers($ia);
-//die(print_r($answers[0]));
 $thistpl="$publicdir/templates";
 
 echo "\t\t\t\t<div id='question$qa[4]'";
-if ($answers[0][3] != "Y") {echo ">\n";} else {echo " style='display: none'>\n";}
 $question="<label for='$answers[0][7]'>" . $answers[0][0] . "</label>";
 $answer=$answers[0][1];
 $help=$answers[0][2];
