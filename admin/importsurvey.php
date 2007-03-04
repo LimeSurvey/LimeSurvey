@@ -323,8 +323,9 @@ if (isset($assessmentsarray)) {$countassessments=count($assessmentsarray);} else
 if ($importversion>=111)
 {
     if ($countsurveys>0){$countsurveys--;};
-    if ($countgroups>0){$countgroups--;};
-    if ($countquestions>0){$countquestions--;};
+    if ($countanswers>0){$countanswers=($countanswers-1)/$countlanguages;}; 
+    if ($countgroups>0){$countgroups=($countgroups-1)/$countlanguages;};
+    if ($countquestions>0){$countquestions=($countquestions-1)/$countlanguages;}; 
     if ($countassessments>0){$countassessments--;};
     if ($countconditions>0){$countconditions--;};
     if ($countlabelsets>0){$countlabelsets--;};
@@ -538,6 +539,11 @@ if ($importversion>=111)
 }
 
 
+// DO SURVEY_RIGHTS
+$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($newsid,".$_SESSION['loginID'].",1,1,1,1,1,1)";
+$isrresult = $connect->Execute($isrquery) or die("<strong>".$clang->gT("Error")."</strong> Failed to insert survey rights<br />\n$isrquery<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+
+
 
 //DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEIR NEW LID IS FOR THE QUESTIONS
 if (isset($labelsetsarray) && $labelsetsarray) {
@@ -655,6 +661,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 // DO GROUPS, QUESTIONS FOR GROUPS, THEN ANSWERS FOR QUESTIONS IN A NESTED FORMAT!
 if (isset($grouparray) && $grouparray) {
     $count=0;
+    $currentgid='';
 	foreach ($grouparray as $ga) {
         if ($importversion>=111)
         {
@@ -668,8 +675,12 @@ if (isset($grouparray) && $grouparray) {
         		$gafieldorders=convertToArray($ga, "`, `", "(`", "`)");
 				//Get field values into array
         		$gacfieldcontents=convertToArray($ga, "', '", "('", "')");
-            }		
+            }
 		$grouprowdata=array_combine($gafieldorders,$gacfieldcontents);
+        // remember group id
+        if ($currentgid=='' || ($currentgid!=$grouprowdata['gid'])) {$currentgid=$grouprowdata['gid'];$newgroup=true;}
+          else 
+            if ($currentgid==$grouprowdata['gid']) {$newgroup=false;}    		
 		$gid=$grouprowdata['gid'];
 		$gsid=$grouprowdata['sid'];
 		//Now an additional integrity check if there are any groups not belonging into this survey
@@ -680,7 +691,8 @@ if (isset($grouparray) && $grouparray) {
 			return;
 		}
 		//remove the old group id
-		unset($grouprowdata['gid']);
+		if ($newgroup) {unset($grouprowdata['gid']);} 
+            else {$grouprowdata['gid']=$newgid;}
         //replace old surveyid by new surveyid
         $grouprowdata['sid']=$newsid;  
         // Version <=100 dont have a language field yet so we set it now
@@ -694,11 +706,13 @@ if (isset($grouparray) && $grouparray) {
         $ginsert = "insert INTO {$dbprefix}groups (".implode(',',array_keys($grouprowdata)).") VALUES (".implode(',',$newvalues).")"; 
 		$gres = $connect->Execute($ginsert) or die("<strong>".$clang->gT("Error")."</strong> Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
 		//GET NEW GID
-		$newgid=$connect->Insert_ID();
+		if ($newgroup) {$newgid=$connect->Insert_ID();}
 
 		//NOW DO NESTED QUESTIONS FOR THIS GID
-		if (isset($questionarray) && $questionarray) {
+		
+		if (isset($questionarray) && $questionarray && $newgroup) {
 		    $count=0;  
+            $currentqid='';
 			foreach ($questionarray as $qa) {
                 if ($importversion>=111)
                 {
@@ -712,11 +726,17 @@ if (isset($grouparray) && $grouparray) {
         				$qacfieldcontents=convertToArray($qa, "', '", "('", "')");
                     }
         		$questionrowdata=array_combine($qafieldorders,$qacfieldcontents);
+                if ($currentqid=='' || ($currentqid!=$questionrowdata['qid'])) {$currentqid=$questionrowdata['qid'];$newquestion=true;}
+                  else 
+                    if ($currentqid==$questionrowdata['qid']) {$newquestion=false;}    		
+
 				$thisgid=$questionrowdata['gid'];
 				if ($thisgid == $gid) {
 					$qid = $questionrowdata['qid'];
 					// Remove qid field
-					unset($questionrowdata['qid']);
+					if ($newquestion) {unset($questionrowdata['qid']);}
+					   else {$questionrowdata['qid']=$newqid;}
+					
 					$questionrowdata["sid"] = $newsid;
 					$questionrowdata["gid"] = $newgid;
                     // Version <=100 doesn't have a language field yet so we set it now
@@ -743,13 +763,13 @@ if (isset($grouparray) && $grouparray) {
                     $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                     $qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
 					$qres = $connect->Execute($qinsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
-		$newqid=$connect->Insert_ID();
+		            if ($newquestion) {$newqid=$connect->Insert_ID();}
 					
 					$newrank=0;
 					$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
 					
 					//NOW DO NESTED ANSWERS FOR THIS QID
-					if (isset($answerarray) && $answerarray) {
+					if (isset($answerarray) && $answerarray && $newquestion) {
 					    $count=0; 
 						foreach ($answerarray as $aa) {
                             if ($importversion>=111)
@@ -985,13 +1005,10 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 	}
 }
 
-// DO SURVEY_RIGHTS
-$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($newsid,".$_SESSION['loginID'].",1,1,1,1,1,1)";
-$isrresult = $connect->Execute($isrquery) or die("<strong>".$clang->gT("Error")."</strong> Failed to insert survey rights<br />\n$isrquery<br />\n".$connect->ErrorMsg()."</body>\n</html>");
 
-$importsurvey .= "<br />\n<strong><font color='green'>".$clang->gT("Success")."</font></strong><br />\n";
+$importsurvey .= "<br />\n<strong><font color='green'>".$clang->gT("Success")."</font></strong><br /><br />\n";
 $importsurvey .= "<strong><u>".$clang->gT("Survey Import Summary")."</u></strong><br />\n";
-$importsurvey .= "<ul>\n\t<li>".$clang->gT("Surveys").": $countsurveys</li>\n";
+$importsurvey .= "<ul style=\"text-align:left;\">\n\t<li>".$clang->gT("Surveys").": $countsurveys</li>\n";
 if ($importversion>=111)
     {
     $importsurvey .= "\t<li>".$clang->gT("Languages").": $countlanguages</li>\n";

@@ -96,7 +96,7 @@ $qquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid";
 $qdump = BuildCSVFromQuery($qquery);
 
 //5: Answers table
-$aquery = "SELECT {$dbprefix}answers.* FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$surveyid";
+$aquery = "SELECT {$dbprefix}answers.* FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.language={$dbprefix}questions.language AND {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$surveyid";
 $adump = BuildCSVFromQuery($aquery);
 
 //6: Conditions table
