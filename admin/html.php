@@ -97,7 +97,7 @@ if ($action == "listsurveys")
 			
 					$listsurveys.="<tr bgcolor='#BBBBBB'>
 				    <td><a href='".$scriptname."?action=newsurvey'><img border=0 src='".$imagefiles."/add.png' onmouseout=\"hideTooltip()\" " .
-				    "onmouseover=\"showTooltip(event,'"._("Create Survey")."');return false\">" .
+				    "onmouseover=\"showTooltip(event,'".$clang->gT("Create Survey")."');return false\">" .
 				    "</a></td>
 				    <td>&nbsp;</td>
 				    <td>&nbsp;</td>

@@ -1616,7 +1616,7 @@ function UpdateFieldArray()
     	reset($_SESSION['fieldarray']);
     	while ( list($key) = each($_SESSION['fieldarray']) )
     	{
-      		$questionarray =& $myArray[$key];
+      		$questionarray =& $_SESSION['fieldarray'][$key];
    	  		$questionarray[2]=$row['title'];
   	  		$questionarray[3]=$row['question'];
       		unset($questionarray);

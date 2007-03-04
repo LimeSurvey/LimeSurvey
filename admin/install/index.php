@@ -65,7 +65,7 @@ if (!$database_exists)
 		.$clang->gT("PHPSurveyor Setup")."</strong></td></tr>\n"
 		."\t<tr bgcolor='#CCCCCC'><td align='center'>\n";
 		$adminoutput.= "<br /><strong><font color='green'>\n";
-		$adminoutput.= sprintf(_('A database named "%s" does already exist.'),$databasename)."</font></strong></font><br /><br />\n";
+		$adminoutput.= sprintf($clang->gT('A database named "%s" does already exist.'),$databasename)."</font></strong></font><br /><br />\n";
 		$adminoutput.= $clang->gT("Do you want to populate that database now by creating the necessary tables?")."<br /><br />\n";
 		$adminoutput.= "<form method='post' action='createdb.php'>";
 		$adminoutput.= "<input type='submit' name='createdbstep2' value='".$clang->gT("Populate Database")."'></form>";
