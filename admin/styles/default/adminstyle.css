@@ -181,6 +181,24 @@ textarea{
   color:#FF0000;
 }
 
+.warningtitle
+{
+	font-weight: bold;
+	color: #FF0000;
+}
+
+.successtitle
+{
+	font-weight: bold;
+	color: #009900;
+}
+
+{
+	font-weight: bold;
+	color: #FF0000;
+}
+
+
 font.settingcaption
         {
             vertical-align: top;

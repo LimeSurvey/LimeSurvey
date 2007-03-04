@@ -23,24 +23,24 @@
 #
 "qid","sid","gid","type","title","question","preg","help","other","mandatory","lid","question_order","language"
 "49","31565","11","I","code_en","qeustion_en","","questionhelp_en","N","N","0","0","en"
-"49","31565","11","I","code_en","qeustion_cr","","questionhelp_cr","N","N","0","1","hr"
-"49","31565","11","I","code_en","qeustion_nl","","questionhelp_nl","N","N","0","1","nl"
-"50","31565","11","M","code","question_en","preg","help_en","N","N","1","1","en"
-"50","31565","11","M","code","question_cr","preg","questionhelp_cr","N","N","1","2","hr"
-"50","31565","11","M","code","question_nl","preg","questionhelp_nl","N","N","1","2","nl"
+"49","31565","11","I","code_en","qeustion_hr","","questionhelp_cr","N","N","0","0","hr"
+"49","31565","11","I","code_en","qeustion_nl","","questionhelp_nl","N","N","0","0","nl"
+"50","31565","11","M","code","question_en","preg","questionhelp_en","N","N","0","1","en"
+"50","31565","11","M","code","question_hr","preg","questionhelp_hr","N","N","0","1","hr"
+"50","31565","11","M","code","question_nl","preg","questionhelp_nl","N","N","0","1","nl"
 
 #
 # ANSWERS TABLE
 #
 "qid","code","answer","default_value","sortorder","language"
 "50","c1","answer_en1","","1","en"
-"50","c1","answer_cr1","","1","hr"
+"50","c1","answer_hr1","","1","hr"
 "50","c1","answer_nl1","","1","nl"
 "50","c2","answer_en2","","2","en"
-"50","c2","answer_cr2","","2","hr"
+"50","c2","answer_hr2","","2","hr"
 "50","c2","answer_nl2","","2","nl"
 "50","c3","answer_en3","","3","en"
-"50","c3","answer_cr3","","3","hr"
+"50","c3","answer_hr3","","3","hr"
 "50","c3","answer_nl3","","3","nl"
 
 #

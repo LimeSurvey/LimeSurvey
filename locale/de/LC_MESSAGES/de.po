@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-03-02 20:55+0100\n"
+"PO-Revision-Date: 2007-03-04 21:35+0100\n"
 "Last-Translator: \n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1416,6 +1416,9 @@ msgstr "Status"
 msgid "Action"
 msgstr "Aktion"
 
+msgid "Responses"
+msgstr "Antworten"
+
 msgid "Private"
 msgstr "Privat"
 
@@ -1714,6 +1717,9 @@ msgstr "Diese Frage kopieren"
 
 msgid "Set Conditions for this Question"
 msgstr "Bedingungen für diese Frage setzen"
+
+msgid "Preview This Question"
+msgstr "Vorschau dieser Frage"
 
 msgid "Edit/Add Answers for this Question"
 msgstr "Antworten hinzufügen/bearbeiten für diese Frage"
@@ -2452,6 +2458,16 @@ msgstr "Die folgenden Antworten sollten gelöscht werden:"
 msgid "All answers meet consistency standards"
 msgstr "Alle Antworten sind konsistent."
 
+# D:\web\xampp\htdocs\phpsurveyor/admin/integritycheck.php:202
+msgid "Language specific settings missing"
+msgstr "Sprechspezifische Einstellungen fehlen"
+
+msgid "The following surveys should be deleted"
+msgstr "Die folgenden Umfrage können gelöscht werden"
+
+msgid "All survey settings meet consistency standards"
+msgstr "Alle Umfrage-Einstellungen sind konsistent."
+
 msgid "The following questions should be deleted"
 msgstr "Die folgenden Fragen sollten gelöscht werden:"
 
@@ -2466,6 +2482,12 @@ msgstr "Alle Gruppen sind konsistent."
 
 msgid "No database action required"
 msgstr "Es sind keine Datenänderungen notwendig."
+
+msgid "Deleting Groups"
+msgstr "Lösche Gruppen"
+
+msgid "Deleting group id"
+msgstr "Lösche Gruppen-ID"
 
 msgid "Label Sets Administration"
 msgstr "Beschriftung-Set Administration"

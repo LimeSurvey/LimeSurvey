@@ -53,14 +53,14 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 	$importgroup .= $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
 	$importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	$importgroup .= "</td></tr></table>\n";
-	exit;
+	return;
 }
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
 $importgroup .= "<strong><font color='green'>".$clang->gT("Success")."</font></strong><br />\n";
 $importgroup .= $clang->gT("File upload succeeded.")."<br /><br />\n";
-$importgroup .= $clang->gT("Reading file..")."<br />\n";
+$importgroup .= $clang->gT("Reading file...")."<br />\n";
 $handle = fopen($the_full_file_path, "r");
 while (!feof($handle))
 {
@@ -77,7 +77,7 @@ if (substr($bigarray[0], 0, 24) != "# PHPSurveyor Group Dump")
 	$importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
 	$importgroup .= "</td></tr></table>\n";
 	unlink($the_full_file_path);
-	exit;
+	return;
 }
 
 for ($i=0; $i<9; $i++)
@@ -218,25 +218,25 @@ if (!isset($noconditions) || $noconditions != "Y")
 }
 $bigarray = array_values($bigarray);
 
-if (isset($grouparray)) {$countgroups = count($grouparray)-1;} else {$countgroups=0;}
+$countgroups=0;
 if (isset($questionarray))
     {
     $questionfieldnames=convertCSVRowToArray($questionarray[0],',','"');
     unset($questionarray[0]);
-    $countquestions = count($questionarray);
+    $countquestions = 0;
     }
-    else {$countquestions=0;}
+
 if (isset($answerarray)) 
     {
     $answerfieldnames=convertCSVRowToArray($answerarray[0],',','"');
     unset($answerarray[0]);
-    $countanswers = count($answerarray);
+    $countanswers = 0;
     }
-    else {$countanswers=0;}
-if (isset($conditionsarray)) {$countconditions = count($conditionsarray)-1;} else {$countlabelsets=0;}
-if (isset($labelsetsarray)) {$countlabelsets = count($labelsetsarray)-1;} else {$countlabelsets=0;}
-if (isset($labelsarray)) {$countlabels = count($labelsarray)-1;}  else {$countlabels=0;}
-if (isset($question_attributesarray)) {$countquestion_attributes = count($question_attributesarray);} else {$countquestion_attributes=0;}
+
+$countconditions = 0;
+$countlabelsets = 0;
+$countlabels = 0;
+$countquestion_attributes = 0;
 
 $newsid = $_POST["sid"];
 
@@ -256,7 +256,8 @@ if (isset($labelsetsarray) && $labelsetsarray) {
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
         $lsainsert = "insert INTO {$dbprefix}labelsets (".implode(',',array_keys($labelsetrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
 		$lsiresult=$connect->Execute($lsainsert);
-
+        $countlabelsets++; 
+         
 		if ($labelsarray) {
             $lfieldorders=convertCSVRowToArray($labelsarray[0],',','"');
             unset($labelsarray[0]);
@@ -306,6 +307,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 			$query = "DELETE FROM {$dbprefix}labelsets WHERE lid=$newlid";
 			$result=$connect->Execute($query) or die("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
 			$newlid=$lsmatch;
+			$countlabelsets--;
 		}
 		else
 		{
@@ -325,6 +327,19 @@ if (isset($grouparray) && $grouparray) {
 		//GET ORDER OF FIELDS
         $gacfieldcontents=convertCSVRowToArray($ga,',','"');
 		$grouprowdata=array_combine($gafieldorders,$gacfieldcontents);
+		
+		
+		$surveylanguages=GetAdditionalLanguagesFromSurveyID($sid);
+		$surveylanguages[]=GetBaseLanguageFromSurveyID($sid);
+		if (!array_key_exists($grouprowdata['language'],$surveylanguages)) 
+		{
+            $skippedlanguages[]=$grouprowdata['language'];
+            continue ;
+             
+        }
+		
+		
+		
 		$gid=$grouprowdata['gid'];
 		$surveyid=$grouprowdata['sid'];
 		$oldsid=$surveyid;
@@ -336,7 +351,8 @@ if (isset($grouparray) && $grouparray) {
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
         $ginsert = "insert INTO {$dbprefix}groups (".implode(',',array_keys($grouprowdata)).") VALUES (".implode(',',$newvalues).")"; 
 		$gres = $connect->Execute($ginsert) or die("<strong>".$clang->gT("Error")."</strong> Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
-
+        $countgroups++;
+        
 		//GET NEW GID
 		$newgid=$connect->Insert_ID();
 		
@@ -370,7 +386,7 @@ if (isset($grouparray) && $grouparray) {
                     $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                     $qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
 					$qres = $connect->Execute($qinsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
-
+                    $countquestions++;
 					$qidquery = "SELECT qid, lid FROM {$dbprefix}questions ORDER BY qid DESC"; //Get last question added (finds new qid)
 					$qidres = db_select_limit_assoc($qidquery, 1);
 					while ($qrow = $qidres->FetchRow()) {$newqid = $qrow['qid']; $oldlid=$qrow['lid'];}
@@ -391,7 +407,7 @@ if (isset($grouparray) && $grouparray) {
                                 $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                                 $ainsert = "insert INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
 								$ares = $connect->Execute($ainsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
-								
+								$countanswers++;
 								if ($type == "M" || $type == "P") {
 									$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid,
 									"newcfieldname"=>$newsid."X".$newgid."X".$newqid,
@@ -479,6 +495,7 @@ if (isset($question_attributesarray) && $question_attributesarray) {//ONLY DO TH
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
         $qainsert = "insert INTO {$dbprefix}question_attributes (".implode(',',array_keys($qarowdata)).") VALUES (".implode(',',$newvalues).")"; 
 		$result=$connect->Execute($qainsert) or die ("Couldn't insert question_attribute<br />$qainsert<br />".$connect->ErrorMsg());
+        $countquestion_attributes++;		
 	}
 }
 
@@ -532,18 +549,31 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 }
 
 
-$importgroup .= "<br />\n<strong><font color='green'>".$clang->gT("Success")."</font></strong><br />\n"
-."<strong><u>".$clang->gT("Group Import Summary")."</u></strong><br />\n"
+if (isset($skippedlanguages))
+{
+    $importgroup.='<font class="successtitle">'.$clang->gT("Import partially successful.")."</font><BR /><BR />";
+    $importgroup.=$clang->gT("The following languages in this group were not imported since the survey does not contain such a language: ")."<br />";
+    foreach  ($skippedlanguages as $sl)
+    {
+    $importgroup.= getLanguageNameFromCode($grouprowdata['language'], false).'<br />';
+    }
+    $importgroup.='<br />';
+}
+else
+{
+    $importgroup .= "<br />\n<strong><font class='successtitle'>".$clang->gT("Success")."</font></strong><br />\n";
+}
+$importgroup .="<strong><u>".$clang->gT("Group Import Summary")."</u></strong><br />\n"
 ."<ul>\n\t<li>".$clang->gT("Groups").": ";
 if (isset($countgroups)) {$importgroup .= $countgroups;}
 $importgroup .= "</li>\n"
-."\t<li>".$clang->gT("Questions").": ";
+    ."\t<li>".$clang->gT("Questions").": ";
 if (isset($countquestions)) {$importgroup .= $countquestions;}
 $importgroup .= "</li>\n"
-."\t<li>".$clang->gT("Answers").": ";
+    ."\t<li>".$clang->gT("Answers").": ";
 if (isset($countanswers)) {$importgroup .= $countanswers;}
 $importgroup .= "</li>\n"
-."\t<li>".$clang->gT("Conditions").": ";
+    ."\t<li>".$clang->gT("Conditions").": ";
 if (isset($countconditions)) {$importgroup .= $countconditions;}
 $importgroup .= "</li>\n"
 ."\t<li>".$clang->gT("Label Set").": ";
@@ -552,10 +582,10 @@ $importgroup .= " (".$clang->gT("Labels").": ";
 if (isset($countlabels)) {$importgroup .= $countlabels;}
 $importgroup .= ")</li>\n";
 $importgroup .= "\t<li>".$clang->gT("Question Attributes:");
-if (isset($countquestion_attributes)) {$importgroup .= " $countquestion_attributes";}
+$importgroup .= " $countquestion_attributes";
 $importgroup .= ")</li>\n</ul>\n";
 $importgroup .= "<strong>".$clang->gT("Import of group is completed.")."</strong><br />&nbsp;\n"
-."</td></tr></table><br />\n";
+."</td></tr></table><br />&nbsp;\n";
 
 
 unlink($the_full_file_path);

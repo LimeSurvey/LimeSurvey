@@ -619,7 +619,7 @@ if ($surveyid)
 		if ($gid || $qid || $action=="deactivate"|| $action=="activate" || $action=="surveysecurity" 
                  || $action=="surveyrights" || $action=="addsurveysecurity" || $action=="addusergroupsurveysecurity" 
                  || $action=="setsurveysecurity" ||  $action=="setusergroupsurveysecurity" || $action=="delsurveysecurity" 
-                 || $action=="editsurvey" || $action=="addgroup" || $action=="ordergroups" || $action=="updatesurvey") {$showstyle="style='display: none'";}
+                 || $action=="editsurvey" || $action=="addgroup" || $action=="importgroup"|| $action=="ordergroups" || $action=="updatesurvey") {$showstyle="style='display: none'";}
 		if (!isset($showstyle)) {$showstyle="";}
 		$surveysummary .= "\t<tr $showstyle id='surveydetails0'><td><table class='table2columns'><tr><td align='right' valign='top' width='15%'>"
 		. "<strong>".$clang->gT("Title").":</strong></td>\n"
