@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-02-28 19:06+0100\n"
+"PO-Revision-Date: 2007-03-04 13:39+0100\n"
 "Last-Translator: b00z00\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -415,6 +415,11 @@ msgstr "Veuillez contacter"
 msgid "for further assistance"
 msgstr "pour plus d'aide"
 
+# D:\www\phpsurveyor/index.php:231
+# D:\www\phpsurveyor/save.php:215
+msgid "The answer to security question is incorrect"
+msgstr "La réponse à la question de sécurité est incorrecte"
+
 msgid "This survey is no longer available."
 msgstr "Ce questionnaire n'est plus disponible."
 
@@ -426,11 +431,6 @@ msgstr "Vous n'avez pas fourni de nom"
 
 msgid "You did not provide a password"
 msgstr "Vous n'avez pas fourni de mot de passe"
-
-# D:\www\phpsurveyor/index.php:231
-# D:\www\phpsurveyor/save.php:215
-msgid "The answer to security question is incorrect"
-msgstr "La réponse à la question de sécurité est incorrecte"
 
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "C'est un questionnaire privé. Vous devez avoir une invitation pour y participer."
@@ -1442,6 +1442,9 @@ msgstr "Statut"
 msgid "Action"
 msgstr "Action"
 
+msgid "Responses"
+msgstr "Réponses"
+
 msgid "Private"
 msgstr "Privé"
 
@@ -1738,6 +1741,9 @@ msgstr "Copier la question en cours"
 
 msgid "Set Conditions for this Question"
 msgstr "Affecter des conditions à cette question"
+
+msgid "Preview This Question"
+msgstr "Prévisualiser cette question"
 
 msgid "Edit/Add Answers for this Question"
 msgstr "Editer/Ajouter des réponses pour cette question"
@@ -2400,14 +2406,17 @@ msgstr "Retour à l'administration des jeux d'etiquettes"
 msgid "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead."
 msgstr "Il y a un doublon dans les jeux d'étiquettes donc ce jeu n'a pas été importé. Le doublon sera utilisé à la place."
 
-msgid "Question Import Summary"
-msgstr "Résumé de l'importation de question"
+msgid "Label Set Import Summary"
+msgstr "Résumé de l'importation du jeu d'étiquettes"
 
-msgid "Labelsets"
-msgstr "Jeux d'étiquettes"
+msgid "Label Sets"
+msgstr "Jeu d'étiquettes"
 
-msgid "Import of Survey is completed."
-msgstr "L'importation du questionnaire est terminée."
+msgid "Languages"
+msgstr "Langues"
+
+msgid "Import of Label Set is completed."
+msgstr "L'importation du jeu d'étiquette est terminée."
 
 msgid "Quick Statistics"
 msgstr "Statistiques flash"
@@ -2427,8 +2436,11 @@ msgstr "Aucun SID (Questionnaire) n'a été fourni. Impossible d'importer une qu
 msgid "No GID (Group) has been provided. Cannot import question"
 msgstr "Aucun GID (Groupe) n'a été fourni. Impossible d'importer une question."
 
-msgid "Label Sets"
-msgstr "Jeu d'étiquettes"
+msgid "Question Import Summary"
+msgstr "Résumé de l'importation de question"
+
+msgid "Import of Survey is completed."
+msgstr "L'importation du questionnaire est terminée."
 
 msgid "This file is not a PHPSurveyor survey file. Import failed."
 msgstr "Ce fichier n'est pas un fichier de questionnaire PHPSurveyor. L'importation a échoué."
@@ -2441,9 +2453,6 @@ msgstr "Mauvais format de données dans le fichier de données PHPSurveyor."
 
 msgid "Survey Import Summary"
 msgstr "Résumé de l'importation du questionnaire"
-
-msgid "Languages"
-msgstr "Langues"
 
 msgid "Question Attributes"
 msgstr "Attributs de la question"
@@ -2502,6 +2511,9 @@ msgstr "Ajouter un nouveau jeu d'étiquettes"
 
 msgid "Add new label set"
 msgstr "Ajouter un nouveau jeu d'étiquettes"
+
+msgid "Labelsets"
+msgstr "Jeux d'étiquettes"
 
 msgid "Create New Label Set"
 msgstr "Créer un nouveau jeu d'étiquettes"
