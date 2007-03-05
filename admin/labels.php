@@ -198,7 +198,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			."\t</tr>\n"
 			."\t<tr>\n"
 			."<td align='right'><strong>"
-			.$clang->gT("Select SQL File:")."</strong></td>\n"
+			.$clang->gT("Select CSV File:")."</strong></td>\n"
 			."<td><input name=\"the_file\" type=\"file\" size=\"35\" />"
 			."</td></tr>\n"
 			."\t<tr><td></td><td><input type='submit' value='".$clang->gT("Import Label Set")."' />\n"
@@ -590,14 +590,19 @@ function modlabelsetanswers($lid)
 		}
          	foreach ($sortorderids as $sortorderid)
         	{
-        		$langid=substr($sortorderid,0,strpos($sortorderid,'_')); 
-        		$orderid=substr($sortorderid,strpos($sortorderid,'_')+1,20);
-			$_POST['title_'.$sortorderid] = db_quote($_POST['title_'.$sortorderid]);
+        		$langid=substr($sortorderid,0,strrpos($sortorderid,'_')); 
+        		$orderid=substr($sortorderid,strrpos($sortorderid,'_')+1,20);
+			    $_POST['title_'.$sortorderid] = db_quote($_POST['title_'.$sortorderid]);
                 $query = "UPDATE ".db_table_name('labels')." SET code='".$_POST['code_'.$codeids[$count]]."', title='{$_POST['title_'.$sortorderid]}' WHERE lid=$lid AND sortorder=$orderid AND language='$langid'";
-        		//$labelsoutput.= $query;  DP
-        		if (!$result = $connect->Execute($query))
+        		echo $query;  
+        		if (!$result = $connect->Execute($query)) 
+        		// if update didn't work we assume the label does not exist and insert it
         		{
-        			$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang-gT("Failed to update label","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+                    $query = "insert into ".db_table_name('labels')." SET code='".$_POST['code_'.$codeids[$count]]."', title='{$_POST['title_'.$sortorderid]}', lid=$lid , sortorder=$orderid , language='$langid'";
+            		if (!$result = $connect->Execute($query))
+            		{
+            			$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update label","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+        			}
     			}
     			$count++;
     			if ($count>count($codeids)-1) {$count=0;}

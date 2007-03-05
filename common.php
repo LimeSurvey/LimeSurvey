@@ -911,7 +911,7 @@ function checkifemptydb()
 {
 	global $connect;
 	$tablelist = $connect->MetaTables('TABLES');
-	if (count($tablelist)==0) {Return(true);}
+	if (array_key_exists(db_table_name('surveys'),$tablelist)) {Return(true);}
 	else {Return(false);}
 }
 
