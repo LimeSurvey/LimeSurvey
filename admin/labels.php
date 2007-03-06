@@ -379,11 +379,12 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		}
     		else
     		{
-    			$labelsoutput.= "<tr>\n"
+    			$labelsoutput .= "<tr>\n"
     			."\t<td colspan='4' align='center'>\n"
     			."<font color='red' size='1'><i><strong>"
-    			.$clang->gT("Warning")."</strong>: ".$clang->gT("You cannot change codes, add or delete entries in this label set because it is being used by an active survey.")."</i></strong></font>\n"
-    			."\t</td>\n"
+    			.$clang->gT("Warning")."</strong>: ".$clang->gT("You cannot change codes, add or delete entries in this label set because it is being used by an active survey.")."</i></strong></font><br />\n";
+    			foreach ($qidarray as $qd) {$labelsoutput.= "[<a href='".$qd['url']."'>".$qd['title']."</a>] ";}
+    			$labelsoutput .= "\t</td>\n"
     			."</tr>\n";
     		}
         $first=false;
@@ -502,7 +503,7 @@ function deletelabelset($lid)
 {
 	global $dbprefix, $connect, $clang, $labelsoutput;
 	//CHECK THAT THERE ARE NO QUESTIONS THAT RELY ON THIS LID
-	$query = "SELECT qid FROM ".db_table_name('questions')." WHERE type IN ('F','H') AND lid=$lid";
+	$query = "SELECT qid FROM ".db_table_name('questions')." WHERE type IN ('F','H','W','Z') AND lid=$lid";
 	$result = $connect->Execute($query) or die("Error");
 	$count = $result->RecordCount();
 	if ($count > 0)
