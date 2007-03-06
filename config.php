@@ -96,7 +96,10 @@ $allowmandbackwards =   1;      // Allow moving backwards (ie: << prev) through 
 $deletenonvalues    =   1;      // By default, PHPSurveyor does not save responses to conditional questions that haven't been answered/shown. To have PHPSurveyor save these responses change this value to 0.
 $shownoanswer       =   1;      // Show "no answer" for non mandatory questions
 
-$debug              =   0;      // Switch this to 1 if you are looking for errors 
+
+
+$debug              =   0;      // Switch this to 1 if you are looking for errors
+$sessionlifetime    =   3600;   // How long until a survey session expires in seconds
 
 // Email Settings
 // These settings determine how PHPSurveyor will send emails

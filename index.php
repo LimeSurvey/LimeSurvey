@@ -39,13 +39,41 @@
 // Optimized By				: swales
 
 require_once(dirname(__FILE__).'/config.php');
-ini_set('session.gc_maxlifetime', 3000);
+ini_set('session.gc_maxlifetime', $sessionlifetime);
 ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
+
 
 if (!isset($surveyid)) {	$surveyid=returnglobal('sid');}
 //This next line is for security reasons. It ensures that the $surveyid value is never anything but a number.
 if (_PHPVERSION >= '4.2.0') {settype($surveyid, "int");} else {settype($surveyid, "integer");}
+
+//DEFAULT SETTINGS FOR TEMPLATES
+if (!$publicdir) {$publicdir=".";}
+$tpldir="$publicdir/templates";
+
 session_start();
+
+if (!isset($_SESSION['grouplist'])  && (isset($_POST['move'])) )
+// geez ... a session time out! RUN! 
+{
+    require_once($rootdir.'/classes/core/language.php');
+	$baselang = GetBaseLanguageFromSurveyID($surveyid);
+	$clang = new phpsurveyor_lang($baselang);
+	//A nice exit
+	sendcacheheaders();
+	doHeader();
+
+	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
+	echo "\t\t<center><br />\n"
+	."\t\t\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
+	."\t\t\t".$clang->gT("We are sorry but your session has expired.")."<BR />".$clang->gT("Either you have been inactive for too long or there were problems with your connection.")."<br />\n"
+	."\t\t\t".$clang->gT("Please contact")." $siteadminname ( $siteadminemail ) ".$clang->gT("for further assistance").".\n"
+	."\t\t</center><br />\n";
+
+	echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
+	doFooter();
+	exit;
+};
 
 // Set the language of the survey, either from POST, GET parameter of session var
 if (isset($_POST['lang']) && $_POST['lang']!='')  // this one comes from the language question
@@ -75,9 +103,6 @@ if ( $embedded_inc != '' )
 require_once( $embedded_inc );
 
 
-//DEFAULT SETTINGS FOR TEMPLATES
-if (!$publicdir) {$publicdir=".";}
-$tpldir="$publicdir/templates";
 
 //CHECK FOR REQUIRED INFORMATION (sid)
 if (!$surveyid)
@@ -86,22 +111,14 @@ if (!$surveyid)
 	//A nice exit
 	sendcacheheaders();
 	doHeader();
-//	$output=file("$tpldir/default/startpage.pstpl");
-//	foreach($output as $op)
-//	{
-//		echo templatereplace($op);
-//	}
+
 	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
 	echo "\t\t<center><br />\n"
 	."\t\t\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
 	."\t\t\t".$clang->gT("You have not provided a survey identification number")."<br />\n"
 	."\t\t\t".$clang->gT("Please contact")." $siteadminname ( $siteadminemail ) ".$clang->gT("for further assistance")."\n"
 	."\t\t</center><br />\n";
-//	$output=file("$tpldir/default/endpage.pstpl");
-//	foreach($output as $op)
-//	{
-//		echo templatereplace($op);
-//	}
+
 	echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
 	doFooter();
 	exit;
@@ -152,21 +169,13 @@ if ($thissurvey['expiry'] < date("Y-m-d") && $thissurvey['useexpiry'] == "Y")
 {
 	sendcacheheaders();
 	doHeader();
-//	$output=file("$tpldir/default/startpage.pstpl");
-//	foreach ($output as $op)
-//	{
-//		echo templatereplace($op);
-//	}
+
 	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
 	echo "\t\t<center><br />\n"
 	."\t\t\t".$clang->gT("This survey is no longer available.")."<br /><br />\n"
 	."\t\t\t".$clang->gT("Please contact")." <i>{$thissurvey['adminname']}</i> (<i>{$thissurvey['adminemail']}</i>) "
 	.$clang->gT("for further assistance")."<br /><br />\n";
-//	$output=file("$tpldir/default/endpage.pstpl");
-//	foreach ($output as $op)
-//	{
-//		echo templatereplace($op);
-//	}
+
 	echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
 	doFooter();
 	exit;
@@ -179,22 +188,14 @@ if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $this
 {
 	sendcacheheaders();
 	doHeader();
-//	$output=file("$tpldir/default/startpage.pstpl");
-//	foreach($output as $op)
-//	{
-//		echo templatereplace($op);
-//	}
+
 	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
 	echo "\t\t<center><br />\n"
 	."\t\t\t<font color='RED'><strong>".$clang->gT("Error")."</strong></font><br />\n"
 	."\t\t\t".$clang->gT("You have already completed this survey.")."<br /><br />\n"
 	."\t\t\t".$clang->gT("Please contact")." <i>{$thissurvey['adminname']}</i> (<i>{$thissurvey['adminemail']}</i>) "
 	.$clang->gT("for further assistance")."<br /><br />\n";
-//	$output=file("$tpldir/default/endpage.pstpl");
-//	foreach($output as $op)
-//	{
-//		echo templatereplace($op);
-//	}
+
 	echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
 	doFooter();
 	exit;
@@ -286,15 +287,7 @@ if ($tokensexist == 1 && returnglobal('token'))
 		sendcacheheaders();
 		doHeader();
 		//TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
-//		foreach(file("$thistpl/startpage.pstpl") as $op)
-//		{
-//			echo templatereplace($op);
-//		}
 		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-//		foreach(file("$thistpl/survey.pstpl") as $op)
-//		{
-//			echo "\t".templatereplace($op);
-//		}
 		echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 		echo "\t<center><br />\n"
 		."\t".$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
@@ -323,10 +316,6 @@ if (isset($_GET['move']) && $_GET['move'] == "clearall")
 		header("Location: {$_GET['redirect']}");
 	}
 	doHeader();
-//	foreach(file("$thistpl/startpage.pstpl") as $op)
-//	{
-//		echo templatereplace($op);
-//	}
 	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 	echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
 	."\t<script type='text/javascript'>\n"
@@ -338,16 +327,8 @@ if (isset($_GET['move']) && $_GET['move'] == "clearall")
 	."\t</script>\n\n";
 
 	//Present the clear all page using clearall.pstpl template
-//	foreach(file("$thistpl/clearall.pstpl") as $op)
-//	{
-//		echo templatereplace($op);
-//	}
 	echo templatereplace(file_get_contents("$thistpl/clearall.pstpl"));
 
-//	foreach(file("$thistpl/endpage.pstpl") as $op)
-//	{
-//		echo templatereplace($op);
-//	}
 	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 	doFooter();
 	exit;
@@ -857,7 +838,7 @@ function checkpregs($backok=null)
 					} // while
 					if (isset($preg) && $preg)
 					{
-						if (!preg_match($preg, $_POST[$field]))
+						if (!@preg_match($preg, $_POST[$field]))
 						{
 							$notvalidated[]=$field;
 						}
@@ -1468,7 +1449,7 @@ function surveymover()
 		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.phpsurveyor.move.value = 'movesubmit';\" value=' "
 		. $clang->gT("submit")." ' name='move2' />\n";
 	}
-	$surveymover .= "<input type='hidden' name='PHPSESSID' value='".session_id()."' id='PHPSESSID' />\n";
+//	$surveymover .= "<input type='hidden' name='PHPSESSID' value='".session_id()."' id='PHPSESSID' />\n";
 	return $surveymover;
 }
 

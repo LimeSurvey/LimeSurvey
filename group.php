@@ -73,13 +73,6 @@ $notanswered=addtoarray_single(checkmandatorys($backok),checkconditionalmandator
 //CHECK PREGS
 $notvalidated=checkpregs($backok);
 
-// Check for session timeout
-if (session_id()=='')
-{
-	echo "Sorry, your sessions seems to have expired. Please restart the survey. (1)";
-	die();
-}
-
 //SEE IF THIS GROUP SHOULD DISPLAY
 if (isset($_POST['move']) && $_SESSION['step'] != 0 && $_POST['move'] != "movelast" && $_POST['move'] != "movesubmit")
 {
