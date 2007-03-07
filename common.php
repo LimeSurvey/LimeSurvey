@@ -3166,8 +3166,7 @@ function FixLanguageConsistency($sid, $availlangs)
 				}
 			}
 			reset($langs);
-		}
-	}	
+		}	
 	
 	$sqlans = "";
 	foreach ($quests as $quest)
@@ -3194,7 +3193,7 @@ function FixLanguageConsistency($sid, $availlangs)
 			reset($langs);
 		}
 	}	
-	
+	}
 	return true;
 }
 
