@@ -597,7 +597,6 @@ function modlabelsetanswers($lid)
         		$orderid=substr($sortorderid,strrpos($sortorderid,'_')+1,20);
 			    $_POST['title_'.$sortorderid] = db_quote($_POST['title_'.$sortorderid]);
                 $query = "UPDATE ".db_table_name('labels')." SET code='".$_POST['code_'.$codeids[$count]]."', title='{$_POST['title_'.$sortorderid]}' WHERE lid=$lid AND sortorder=$orderid AND language='$langid'";
-        		echo $query;  
         		if (!$result = $connect->Execute($query)) 
         		// if update didn't work we assume the label does not exist and insert it
         		{
