@@ -46,6 +46,7 @@ if ($action == "listsurveys")
 		$listsurveys= "<br /><table  align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
 		. "cellpadding='1' cellspacing='0' width='800'>
 				  <tr bgcolor='#BBBBBB'>
+				    <td height=\"22\" width='22'>&nbsp</strong></td>
 				    <td height=\"22\"><strong>".$clang->gT("Survey")."</strong></td>
 				    <td><strong>".$clang->gT("Date Created")."</strong></td>
 				    <td><strong>".$clang->gT("Visibility")."</strong></td>
@@ -56,6 +57,10 @@ if ($action == "listsurveys")
 
 		while($rows = $result->FetchRow())
 		{
+			$sidsecurityQ = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid='{$rows['sid']}' AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
+			$sidsecurityR = db_execute_assoc($sidsecurityQ);
+			$sidsecurity = $sidsecurityR->FetchRow();
+			
 			if($rows['private']=="Y")
 			{
 				$visibility=$clang->gT("Private") ;
@@ -63,7 +68,13 @@ if ($action == "listsurveys")
 			else $visibility =$clang->gT("Public") ;
 			if($rows['active']=="Y")
 			{
-				$status=$clang->gT("Active") ;
+				if ($rows['useexpiry']=='Y' && $rows['expires'] < date("Y-m-d"))
+				{
+					$status=$clang->gT("Expired") ;
+				} else {
+					$status=$clang->gT("Active") ;
+				}
+				
 				// Survey Responses - added by DLR
 				$gnquery = "SELECT count(id) FROM ".db_table_name("survey_".$rows['sid']);
 			    $gnresult = db_execute_num($gnquery);
@@ -76,8 +87,51 @@ if ($action == "listsurveys")
 
 			$datecreated=$rows['datecreated'] ;
 
-			$listsurveys.="<tr>
-					    <td><a href='".$scriptname."?sid=".$rows['sid']."'>".$rows['surveyls_title']."</a></td>".
+			$listsurveys.="<tr>";
+
+			if ($rows['active']=="Y")
+			{
+				if ($rows['useexpiry']=='Y' && $rows['expires'] < date("Y-m-d"))
+				{
+					$listsurveys .= "<td><img src='$imagefiles/expired.png' title='' "
+					. "alt='".$clang->gT("This survey is active but expired.")."' align='left' width='20'"
+					. "onmouseout=\"hideTooltip()\""
+					. "onmouseover=\"showTooltip(event,'".$clang->gT("This survey is active but expired", "js")."');return false\" />\n";
+				}
+				else
+				{
+					if ($sidsecurity['activate_survey'])
+					{
+						$listsurveys .= "<td><a href=\"#\" onClick=\"window.open('$scriptname?action=deactivate&amp;sid={$rows['sid']}', '_top')\""
+						. "onmouseout=\"hideTooltip()\""
+						. "onmouseover=\"showTooltip(event,'".$clang->gT("De-activate this Survey", "js")."');return false\">"
+						. "<img src='$imagefiles/active.png' name='DeactivateSurvey' "
+						. "alt='".$clang->gT("De-activate this Survey")."'  border='0' hspace='0' align='left' width='20' /></a></td>\n";
+					} else 
+					{
+						$listsurveys .= "<td><img src='$imagefiles/active.png' title='' "
+						. "alt='".$clang->gT("This survey is currently active")."' align='left' border='0' hspace='0' align='left' width='20' "
+						. "onmouseout=\"hideTooltip()\""
+						. "onmouseover=\"showTooltip(event,'".$clang->gT("This survey is currently active", "js")."');return false\" /></td>\n";
+					}
+				}
+			} else {
+				if ($sidsecurity['activate_survey'])
+				{
+					$listsurveys .= "<td><a href=\"#\" onClick=\"window.open('$scriptname?action=activate&amp;sid={$rows['sid']}', '_top')\""
+					. "onmouseout=\"hideTooltip()\""
+					. "onmouseover=\"showTooltip(event,'".$clang->gT("Activate this Survey", "js")."');return false\">" .
+					"<img src='$imagefiles/inactive.png' name='ActivateSurvey' title='' alt='".$clang->gT("Activate this Survey")."' border='0' hspace='0' align='left' width='20' /></a></td>\n" ;	
+				} else 
+				{
+					$listsurveys .= "<td><img src='$imagefiles/inactive.png'"
+					. "title='' alt='".$clang->gT("This survey is not currently active")."' border='0' hspace='0' align='left'"
+					. "onmouseout=\"hideTooltip()\""
+					. "onmouseover=\"showTooltip(event,'".$clang->gT("This survey is not currently active", "js")."');return false\" /></td>\n";
+				}			
+			}
+			
+			$listsurveys.="<td><a href='".$scriptname."?sid=".$rows['sid']."'>".$rows['surveyls_title']."</a></td>".
 					    "<td>".$datecreated."</td>".
 					    "<td>".$visibility."</td>" .
 					    "<td>".$status."</td>".
@@ -92,18 +146,13 @@ if ($action == "listsurveys")
 					    }
 					    $listsurveys .= "</tr>" ;
 		}
-		if($_SESSION['USER_RIGHT_CREATE_SURVEY'])
-		{
-			
-					$listsurveys.="<tr bgcolor='#BBBBBB'>
-				    <td><a href='".$scriptname."?action=newsurvey'><img border=0 src='".$imagefiles."/add.png' onmouseout=\"hideTooltip()\" " .
-				    "onmouseover=\"showTooltip(event,'".$clang->gT("Create Survey","js")."');return false\">" .
-				    "</a></td>
-				    <td>&nbsp;</td>
-				    <td>&nbsp;</td>
-				    <td colspan=\"5\">&nbsp;</td>".
-				  "</tr>";
-		}
+
+		$listsurveys.="<tr bgcolor='#BBBBBB'>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td colspan=\"6\">&nbsp;</td>".
+		"</tr>";
 		$listsurveys.="</table><br />" ;
 	}
 	else $listsurveys="<br /><strong> ".$clang->gT("No Surveys available - please create one.")." </strong><br /><br />" ;
