@@ -111,7 +111,7 @@ $statisticsoutput .= "</table>\n"
 ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 
 // 1: Get list of questions from survey
-$query = "SELECT ".db_table_name("questions").".*, group_name\n"
+$query = "SELECT ".db_table_name("questions").".*, group_name, group_order\n"
 ."FROM ".db_table_name("questions").", ".db_table_name("groups")."\n"
 ."WHERE ".db_table_name("groups").".gid=".db_table_name("questions").".gid\n"
 ."AND ".db_table_name("groups").".language='".$language."'\n"
