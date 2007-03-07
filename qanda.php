@@ -2581,15 +2581,16 @@ function retrieve_Answer($code)
 	//IE: Q1: What is your name? [Jason]
 	//    Q2: Hi [Jason] how are you ?
 	//This function is called from the retriveAnswers function.
-	global $dbprefix, $connect;
+	global $dbprefix, $connect, $clang;
 	//Find question details
 	if (isset($_SESSION[$code]))
 	{
 		$questiondetails=getsidgidqid($code);
+		//die(print_r($questiondetails));
 		//the getsidgidqid function is in common.php and returns
 		//a SurveyID, GroupID, QuestionID and an Answer code
 		//extracted from a "fieldname" - ie: 1X2X3a
-		$query="SELECT type FROM {$dbprefix}questions WHERE qid=".$questiondetails['qid']."  AND language='".$_SESSION['s_lang']."'";
+		$query="SELECT type FROM {$dbprefix}questions WHERE qid='".$questiondetails['qid']."'  AND language='".$_SESSION['s_lang']."'";
 		$result=db_execute_assoc($query) or die("Error getting reference question type<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 		while($row=$result->FetchRow())
 		{
@@ -2600,6 +2601,7 @@ function retrieve_Answer($code)
 			switch($type)
 			{
 				case "L":
+				case "!":
 				case "P":
 				if ($_SESSION[$code]== "-oth-")
 				{
@@ -2615,7 +2617,7 @@ function retrieve_Answer($code)
 				}
 				else
 				{
-					$query="SELECT * FROM {$dbprefix}answers WHERE qid=".$questiondetails['qid']." AND code='".$_SESSION[$code]."'  AND language='".$_SESSION['s_lang']."'";
+					$query="SELECT * FROM {$dbprefix}answers WHERE qid='".$questiondetails['qid']."' AND code='".$_SESSION[$code]."'  AND language='".$_SESSION['s_lang']."'";
 					$result=db_execute_assoc($query) or die("Error getting answer<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 					while($row=$result->FetchRow())
 					{
@@ -2625,7 +2627,7 @@ function retrieve_Answer($code)
 				break;
 				case "M":
 				case "P":
-				$query="SELECT * FROM {$dbprefix}answers WHERE qid=".$questiondetails['qid']." AND language='".$_SESSION['s_lang']."'";
+				$query="SELECT * FROM {$dbprefix}answers WHERE qid='".$questiondetails['qid']."' AND language='".$_SESSION['s_lang']."'";
 				$result=db_execute_assoc($query) or die("Error getting answer<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 				while($row=$result->FetchRow())
 				{
