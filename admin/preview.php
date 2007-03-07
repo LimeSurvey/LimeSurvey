@@ -33,7 +33,7 @@
 # Suite 330, Boston, MA  02111-1307, USA.					#
 #############################################################
 */
-session_start();
+
 require_once(dirname(__FILE__).'/../common.php');
 include_once("login_check.php");
 require_once(dirname(__FILE__).'/sessioncontrol.php');
@@ -65,7 +65,7 @@ $ia = array(0 => $qid, 1 => "FIELDNAME", 2 => $qrows['title'], 3 => $qrows['ques
 $answers = retrieveAnswers($ia);
 $thistpl="$publicdir/templates";
 
-echo "\t\t\t\t<div id='question$qa[4]'";
+echo "\t\t\t\t<div id='question'";
 $question="<label for='$answers[0][7]'>" . $answers[0][0] . "</label>";
 $answer=$answers[0][1];
 $help=$answers[0][2];
