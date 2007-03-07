@@ -878,7 +878,7 @@ if (isset($_POST['display']) && $_POST['display'])
 		."\t\t\t<input type='hidden' name='sql' value=\"$sql\">\n"
 		."\t\t\t<input type='hidden' name='subaction' value='all'>\n"
 		."\t\t</form>\n"
-		."\t\t<td width='50%'><form action='$scriptname?action=export' method='post' target='_blank'>\n"
+		."\t\t<td width='50%'><form action='$scriptname?action=exportresults' method='post' target='_blank'>\n"
 		."\t\t<input type='submit' value='".$clang->gT("Export")."' >\n"
 		."\t\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
 		."\t\t\t<input type='hidden' name='sql' value=\"$sql\">\n";
