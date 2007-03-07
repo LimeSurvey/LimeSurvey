@@ -215,14 +215,13 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		$activeuse=$result->RecordCount();
 		while ($row=$result->FetchRow()) {$activesurveys[]=$row['surveyls_title'];}
 		//NOW ALSO COUNT UP HOW MANY QUESTIONS ARE USING THIS LABELSET, TO GIVE WARNING ABOUT CHANGES
-		$baselang = GetBaseLanguageFromSurveyID($sid);
-		$query = "SELECT * FROM ".db_table_name('questions')." WHERE type IN ('F','H','Z','W') AND lid='$lid' and language='$baselang'";
+		$query = "SELECT * FROM ".db_table_name('questions')." WHERE type IN ('F','H','Z','W') AND lid='$lid' GROUP BY qid";
 		$result = db_execute_assoc($query);
 		$totaluse=$result->RecordCount();
 		while($row=$result->FetchRow())
 		{
 			$qidarray[]=array("url"=>"$scriptname?sid=".$row['sid']."&amp;gid=".$row['gid']."&amp;qid=".$row['qid'], "title"=>"QID: ".$row['qid']);
-		} // while
+		}
 		//NOW GET THE ANSWERS AND DISPLAY THEM
 		$query = "SELECT * FROM ".db_table_name('labelsets')." WHERE lid=$lid";
 		$result = db_execute_assoc($query);
@@ -368,22 +367,25 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     			."</tr>\n";
     	
     		}
-		elseif ($activeuse == 0  && !$first)
-		{
+			elseif ($activeuse == 0  && !$first)
+			{
     			$labelsoutput.= "<tr>\n"
     			."\t<td colspan='4' align='center'>\n"
     			."<font color='green' size='1'><i><strong>"
     			.$clang->gT("Warning")."</strong>: ".$clang->gT("Inserting New labels must be done on the first language folder.")."</i></strong></font>\n"
     			."\t</td>\n"
     			."</tr>\n";
-		}
+			}
     		else
     		{
     			$labelsoutput .= "<tr>\n"
     			."\t<td colspan='4' align='center'>\n"
     			."<font color='red' size='1'><i><strong>"
     			.$clang->gT("Warning")."</strong>: ".$clang->gT("You cannot change codes, add or delete entries in this label set because it is being used by an active survey.")."</i></strong></font><br />\n";
-    			foreach ($qidarray as $qd) {$labelsoutput.= "[<a href='".$qd['url']."'>".$qd['title']."</a>] ";}
+    			if ($totaluse > 0)
+    			{
+    				foreach ($qidarray as $qd) {$labelsoutput.= "[<a href='".$qd['url']."'>".$qd['title']."</a>] ";}
+    			}
     			$labelsoutput .= "\t</td>\n"
     			."</tr>\n";
     		}
