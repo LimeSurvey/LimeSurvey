@@ -227,6 +227,8 @@ if(isset($_SESSION['loginID']) && $action!='login')
   if (isset($addsummary     )) {$adminoutput.= $addsummary;}
   if (isset($answersummary  )) {$adminoutput.= $answersummary;}
   if (isset($cssummary      )) {$adminoutput.= $cssummary;}
+
+
   
   if (isset($editgroup)) {$adminoutput.= $editgroup;}
   if (isset($editquestion)) {$adminoutput.= $editquestion;}
@@ -238,11 +240,12 @@ if(isset($_SESSION['loginID']) && $action!='login')
   if (isset($orderquestions)) {$adminoutput.= $orderquestions;}
   if (isset($surveysecurity)) {$adminoutput.= $surveysecurity;}
   if (isset($newsurvey)) {$adminoutput.= $newsurvey;}
-  if (isset($newgroup)) {$adminoutput.= $newgroup;}
-  if (isset($newquestion)) {$adminoutput.= $newquestion;}
+  if (isset($newgroupoutput)) {$adminoutput.= $newgroupoutput;}
+  if (isset($newquestionoutput)) {$adminoutput.= $newquestionoutput;}
   if (isset($newanswer)) {$adminoutput.= $newanswer;}
   if (isset($editanswer)) {$adminoutput.= $editanswer;}
   if (isset($assessmentsoutput)) {$adminoutput.= $assessmentsoutput;}
+
   if (isset($importsurvey)) {$adminoutput.= $importsurvey;}
   if (isset($importgroup)) {$adminoutput.= $importgroup;}
   if (isset($importquestion)) {$adminoutput.= $importquestion;}

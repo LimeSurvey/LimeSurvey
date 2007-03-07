@@ -25,9 +25,9 @@
 "49","31565","11","I","code_en","qeustion_en","","questionhelp_en","N","N","0","0","en"
 "49","31565","11","I","code_en","qeustion_hr","","questionhelp_cr","N","N","0","0","hr"
 "49","31565","11","I","code_en","qeustion_nl","","questionhelp_nl","N","N","0","0","nl"
-"50","31565","11","M","code","question_en","preg","questionhelp_en","N","N","0","1","en"
-"50","31565","11","M","code","question_hr","preg","questionhelp_hr","N","N","0","1","hr"
-"50","31565","11","M","code","question_nl","preg","questionhelp_nl","N","N","0","1","nl"
+"50","31565","11","M","code","question_en","","questionhelp_en","N","N","0","1","en"
+"50","31565","11","M","code","question_hr","","questionhelp_hr","N","N","0","1","hr"
+"50","31565","11","M","code","question_nl","","questionhelp_nl","N","N","0","1","nl"
 
 #
 # ANSWERS TABLE

@@ -742,7 +742,7 @@ elseif ($answers == "long")
 						break;
 						default:
 						$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
-						$ftitle=$fielddata['title'].":";
+						if (isset($fielddata['title'])) {$ftitle=$fielddata['title'].":";} else {$ftitle='';}
 					} // switch
 				}
 			}

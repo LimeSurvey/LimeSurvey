@@ -44,7 +44,7 @@ if ($action == "listsurveys")
 
 	if($result->RecordCount() > 0) {
 		$listsurveys= "<br /><table  align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
-		. "cellpadding='1' cellspacing='0' width='600'>
+		. "cellpadding='1' cellspacing='0' width='800'>
 				  <tr bgcolor='#BBBBBB'>
 				    <td height=\"22\"><strong>".$clang->gT("Survey")."</strong></td>
 				    <td><strong>".$clang->gT("Date Created")."</strong></td>
@@ -77,7 +77,7 @@ if ($action == "listsurveys")
 			$datecreated=$rows['datecreated'] ;
 
 			$listsurveys.="<tr>
-					    <td><a href='".$scriptname."?sid=".$rows['sid']."'>".$rows['short_title']."</a></td>".
+					    <td><a href='".$scriptname."?sid=".$rows['sid']."'>".$rows['surveyls_title']."</a></td>".
 					    "<td>".$datecreated."</td>".
 					    "<td>".$visibility."</td>" .
 					    "<td>".$status."</td>".
@@ -90,7 +90,7 @@ if ($action == "listsurveys")
 					    }else{
 						$listsurveys .= "<td>&nbsp;</td>";
 					    }
-					    $listsurvey .= "</tr>" ;
+					    $listsurveys .= "</tr>" ;
 		}
 		if($_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		{
@@ -2083,7 +2083,7 @@ if ($action == "addquestion")
 
 	if($sumrows5['define_questions'])
 	{
-		$newquestion =  "\t<form action='$scriptname' name='addnewquestion1' method='post'>\n"
+		$newquestionoutput =  "\t<form action='$scriptname' name='addnewquestion1' method='post'>\n"
 		. "<table width='100%' border='0'>\n\n"
 		. "\t<tr>\n"
 		. "\t\t<td colspan='2' bgcolor='black' align='center'>"
@@ -2110,31 +2110,31 @@ if ($action == "addquestion")
 		. "\t\t</select></td>\n"
 		. "\t</tr>\n";
 
-		$newquestion .= "\t<tr id='Validation'>\n"
+		$newquestionoutput .= "\t<tr id='Validation'>\n"
 		. "\t\t<td align='right'><strong>".$clang->gT("Validation:")."</strong></td>\n"
 		. "\t\t<td>\n"
 		. "\t\t<input type='text' name='preg' size=50 />\n"
 		. "\t\t</td>\n"
 		. "\t</tr>\n";
 
-		$newquestion .= "\t<tr id='LabelSets' style='display: none'>\n"
+		$newquestionoutput .= "\t<tr id='LabelSets' style='display: none'>\n"
 		. "\t\t<td align='right'><strong>".$clang->gT("Label Set:")."</strong></td>\n"
 		. "\t\t<td>\n"
 		. "\t\t<select name='lid' >\n";
 		$labelsets=getlabelsets();
 		if (count($labelsets)>0)
 		{
-			$newquestion .= "\t\t\t<option value=''>".$clang->gT("Please Choose...")."</option>\n";
+			$newquestionoutput .= "\t\t\t<option value=''>".$clang->gT("Please Choose...")."</option>\n";
 			foreach ($labelsets as $lb)
 			{
-				$newquestion .= "\t\t\t<option value='{$lb[0]}'>{$lb[1]}</option>\n";
+				$newquestionoutput .= "\t\t\t<option value='{$lb[0]}'>{$lb[1]}</option>\n";
 			}
 		}
-		$newquestion .= "\t\t</select>\n"
+		$newquestionoutput .= "\t\t</select>\n"
 		. "\t\t</td>\n"
 		. "\t</tr>\n";
 
-		$newquestion .= "\t<tr id='OtherSelection' style='display: none'>\n"
+		$newquestionoutput .= "\t<tr id='OtherSelection' style='display: none'>\n"
 		. "\t\t<td align='right'><strong>".$clang->gT("Other:")."</strong></td>\n"
 		. "\t\t<td>\n"
 		. "\t\t\t<label for='OY'>".$clang->gT("Yes")."</label>"
@@ -2144,7 +2144,7 @@ if ($action == "addquestion")
 		. "\t\t</td>\n"
 		. "\t</tr>\n";
 
-		$newquestion .= "\t<tr id='MandatorySelection'>\n"
+		$newquestionoutput .= "\t<tr id='MandatorySelection'>\n"
 		. "\t\t<td align='right'><strong>".$clang->gT("Mandatory:")."</strong></td>\n"
 		. "\t\t<td>\n"
 		. "\t\t\t<label for='MY'>".$clang->gT("Yes")."</label>"
@@ -2157,18 +2157,18 @@ if ($action == "addquestion")
 		//Question attributes
 		$qattributes=questionAttributes();
 
-		$newquestion .= "\t<tr id='QTattributes'>
+		$newquestionoutput .= "\t<tr id='QTattributes'>
 							<td align='right'><strong>".$clang->gT("Question Attributes:")."</strong></td>
 							<td><select id='QTlist' name='attribute_name' >
 							</select>
 							<input type='text' id='QTtext' name='attribute_value'  /></td></tr>\n";
-		$newquestion .= "\t<tr>\n"
+		$newquestionoutput .= "\t<tr>\n"
 		. "\t\t<td colspan='2' align='center'>";
 
-		if (isset($eqrow)) {$newquestion .= questionjavascript($eqrow['type'], $qattributes);}
-		else {$newquestion .= questionjavascript('', $qattributes);}
+		if (isset($eqrow)) {$newquestionoutput .= questionjavascript($eqrow['type'], $qattributes);}
+		else {$newquestionoutput .= questionjavascript('', $qattributes);}
 
-		$newquestion .= "<input type='submit' value='"
+		$newquestionoutput .= "<input type='submit' value='"
 		. $clang->gT("Add Question")."' />\n"
 		. "\t\n"
 		. "\t<input type='hidden' name='action' value='insertnewquestion' />\n"
@@ -2687,19 +2687,19 @@ if ($action == "addgroup")
 		$grplangs[] = $baselang;
 		$grplangs = array_reverse($grplangs);
 
-		$newgroup = "<tr><td><form action='$scriptname' name='addnewgroupfrom' method='post'>"
+		$newgroupoutput = "<tr><td><form action='$scriptname' name='addnewgroupfrom' method='post'>"
                    ."<table width='100%' border='0'><tr>\n"
                    ."\t<td colspan='2' bgcolor='black' align='center'>\n\t\t<strong><font color='white'>".$clang->gT("Add Group")."</font></strong></td>"
                    ."</tr></table>\n";
 
 
-		$newgroup .="<table width='100%' border='0'>\n\t<tr><td>\n"
+		$newgroupoutput .="<table width='100%' border='0'>\n\t<tr><td>\n"
 		. '<div class="tab-pane" id="tab-pane-1">';
 		foreach ($grplangs as $grouplang)
 		{
-			$newgroup .= '<div class="tab-page"> <h2 class="tab">'.GetLanguageNameFromCode($grouplang);
-			if ($grouplang==$baselang) {$newgroup .= '('.$clang->gT("Base Language").')';}
-			$newgroup .= "</h2>"
+			$newgroupoutput .= '<div class="tab-page"> <h2 class="tab">'.GetLanguageNameFromCode($grouplang);
+			if ($grouplang==$baselang) {$newgroupoutput .= '('.$clang->gT("Base Language").')';}
+			$newgroupoutput .= "</h2>"
             . "<table width='100%' border='0'>"
     		. "\t\t<tr><td align='right'><strong>".$clang->gT("Title").":</strong></td>\n"
     		. "\t\t<td><input type='text' size='50' name='group_name_$grouplang' /><font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></td></tr>\n"
@@ -2708,7 +2708,7 @@ if ($action == "addgroup")
     		. "</table></div>";
         }
 
-		$newgroup.= "</div>" 
+		$newgroupoutput.= "</div>" 
         . "\t<input type='hidden' name='action' value='insertnewgroup' />\n"
 		. "\t<input type='hidden' name='sid' value='$surveyid' /></td></tr>"
 		. "\t<tr><td colspan='2' align='center'><input type='submit' value='".$clang->gT("Add Group")."' />\n"
@@ -4009,23 +4009,23 @@ function replacenewline ($texttoreplace)
 
 function questionjavascript($type, $qattributes)
 {
-	$newquestion = "<script type='text/javascript'>\n"
+	$newquestionoutput = "<script type='text/javascript'>\n"
 	. "<!--\n"
     ."if (navigator.userAgent.indexOf(\"Gecko\") != -1)\n"
 	."window.addEventListener(\"load\", init_gecko_select_hack, false);\n";	
 	$jc=0;
-	$newquestion .= "\t\t\tvar qtypes = new Array();\n";
-	$newquestion .= "\t\t\tvar qnames = new Array();\n\n";
+	$newquestionoutput .= "\t\t\tvar qtypes = new Array();\n";
+	$newquestionoutput .= "\t\t\tvar qnames = new Array();\n\n";
 	foreach ($qattributes as $key=>$val)
 	{
 		foreach ($val as $vl)
 		{
-			$newquestion .= "\t\t\tqtypes[$jc]='".$key."';\n";
-			$newquestion .= "\t\t\tqnames[$jc]='".$vl['name']."';\n";
+			$newquestionoutput .= "\t\t\tqtypes[$jc]='".$key."';\n";
+			$newquestionoutput .= "\t\t\tqnames[$jc]='".$vl['name']."';\n";
 			$jc++;
 		}
 	}
-	$newquestion .= "\t\t\t function buildQTlist(type)
+	$newquestionoutput .= "\t\t\t function buildQTlist(type)
 				{
 				document.getElementById('QTattributes').style.display='none';
 				for (var i=document.getElementById('QTlist').options.length-1; i>=0; i--)
@@ -4041,7 +4041,7 @@ function questionjavascript($type, $qattributes)
 						}
 					}
 				}";
-	$newquestion .="\nfunction OtherSelection(QuestionType)\n"
+	$newquestionoutput .="\nfunction OtherSelection(QuestionType)\n"
 	. "\t{\n"
 	. "if (QuestionType == '') {QuestionType=document.getElementById('question_type').value;}\n"
 	. "\tif (QuestionType == 'M' || QuestionType == 'P' || QuestionType == 'L' || QuestionType == '!')\n"
@@ -4077,7 +4077,7 @@ function questionjavascript($type, $qattributes)
 	. "-->\n"
 	. "</script>\n";
 
-	return $newquestion;
+	return $newquestionoutput;
 }
 
 
