@@ -1281,10 +1281,10 @@ function returnquestiontitlefromfieldcode($fieldcode)
 function getsidgidqid($fieldcode)
 {
 	list($fsid, $fgid, $fqid) = split("X", $fieldcode);
-	$legitqs=getLegitQids($fsid);
+	//$legitqs=getLegitQids($fsid);
 	if (!$fqid) {$fqid=0;}
-	$oldfqid=$fqid;
-	while(!in_array($fqid, $legitqs))
+	/*$oldfqid=$fqid;
+	while (!in_array($fqid, $legitqs))
 	{
 		$fqid=substr($fqid, 0, strlen($fqid)-1);
 	}
@@ -1296,8 +1296,9 @@ function getsidgidqid($fieldcode)
 	else
 	{
 		$faid="";
-	}
-	return array("sid"=>$fsid, "gid"=>$fgid, "qid"=>$fqid, "aid"=>$faid);
+	}*/
+	//return array("sid"=>$fsid, "gid"=>$fgid, "qid"=>$fqid, "aid"=>$faid);
+	return array("sid"=>$fsid, "gid"=>$fgid, "qid"=>$fqid);
 }
 
 /*
