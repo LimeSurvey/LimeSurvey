@@ -561,7 +561,10 @@ if ($surveyid)
 				. "<img src='$imagefiles/saved.png' title='' align='left'  name='BrowseSaved' alt='".$clang->gT("View Saved but not submitted Responses")."' /></a>"
 				. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n";
 			}
-			$surveysummary .="<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\""
+		}
+		if ($activated == "Y" && ($sumrows5['browse_response'] || $sumrows5['export'] || $sumrows5['activate_survey']))
+		{
+						$surveysummary .="<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Activate/Edit Tokens for this Survey", "js")."');return false\">" .
 			"<img src='$imagefiles/tokens.png' title='' align='left'  name='TokensControl' alt='".$clang->gT("Activate/Edit Tokens for this Survey")."' /></a>\n" ;
@@ -1200,7 +1203,7 @@ if ($qid)  // Show the question toolbar
 		$qtypes = getqtypelist("", "array"); //qtypes = array(type code=>type description)
 		$questionsummary .= "\t<tr $qshowstyle id='surveydetails34'><td align='right' valign='top'><strong>"
 		.$clang->gT("Type:")."</strong></td>\n\t<td>{$qtypes[$qrrow['type']]}";
-		if ($qrrow['type'] == "F" ||$qrrow['type'] == "H")
+		if (($qrrow['type'] == "F" ||$qrrow['type'] == "H") && $sumrows5['define_questions'])
 		{
 			$questionsummary .= " (LID: {$qrrow['lid']}) "
 			. "<input align='top' type='image' src='$imagefiles/labelssmall.png' title='"
