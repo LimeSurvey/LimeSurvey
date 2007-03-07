@@ -3166,33 +3166,33 @@ function FixLanguageConsistency($sid, $availlangs)
 				}
 			}
 			reset($langs);
-		}	
-	
-	$sqlans = "";
-	foreach ($quests as $quest)
-	{
-		$sqlans .= " OR qid = '".$quest."' ";
-	}
-	
-	$query = "SELECT * FROM ".db_table_name('answers')." WHERE language='{$baselang}' and (".trim($sqlans,' OR').") ORDER BY qid, code";
-	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
-	if ($result->RecordCount() > 0)
-	{
-		while($answer = $result->FetchRow())
-		{
-			foreach ($langs as $lang)
-			{
-				$query = "SELECT qid FROM ".db_table_name('answers')." WHERE code='{$answer['code']}' AND qid='{$answer['qid']}' AND language='{$lang}'";
-				$gresult = db_execute_assoc($query) or die($connect->ErrorMsg());
-				if ($gresult->RecordCount() < 1)
-				{
-					$query = "INSERT INTO ".db_table_name('answers')." (qid,code,answer,default_value,sortorder,language) VALUES('{$answer['qid']}',".$connect->qstr($answer['code']).",".$connect->qstr($answer['answer']).",".$connect->qstr($answer['default_value']).",'{$answer['sortorder']}','{$lang}')";
-					$connect->Execute($query) or die($connect->ErrorMsg());
-				}
-			}
-			reset($langs);
 		}
-	}	
+
+		$sqlans = "";
+		foreach ($quests as $quest)
+		{
+			$sqlans .= " OR qid = '".$quest."' ";
+		}
+
+		$query = "SELECT * FROM ".db_table_name('answers')." WHERE language='{$baselang}' and (".trim($sqlans,' OR').") ORDER BY qid, code";
+		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+		if ($result->RecordCount() > 0)
+		{
+			while($answer = $result->FetchRow())
+			{
+				foreach ($langs as $lang)
+				{
+					$query = "SELECT qid FROM ".db_table_name('answers')." WHERE code='{$answer['code']}' AND qid='{$answer['qid']}' AND language='{$lang}'";
+					$gresult = db_execute_assoc($query) or die($connect->ErrorMsg());
+					if ($gresult->RecordCount() < 1)
+					{
+						$query = "INSERT INTO ".db_table_name('answers')." (qid,code,answer,default_value,sortorder,language) VALUES('{$answer['qid']}',".$connect->qstr($answer['code']).",".$connect->qstr($answer['answer']).",".$connect->qstr($answer['default_value']).",'{$answer['sortorder']}','{$lang}')";
+						$connect->Execute($query) or die($connect->ErrorMsg());
+					}
+				}
+				reset($langs);
+			}
+		}
 	}
 	return true;
 }
