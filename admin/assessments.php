@@ -215,7 +215,7 @@ function getAssessments($surveyid) {
 
 function getGroups($surveyid) {
 	global $dbprefix, $connect;
-	$baselang = GetBaseLanguageFromSurveyID($sid);
+	$baselang = GetBaseLanguageFromSurveyID($surveyid);
 	$query = "SELECT gid, group_name
 			  FROM ".db_table_name('groups')."
 			  WHERE sid='$surveyid' and language='$baselang'

@@ -2031,25 +2031,9 @@ function GetAdditionalLanguagesFromSurveyID($surveyid)
 	return $additional_languages;
 }
 
-/*
-function SetInterfaceLanguage($languagetoset)
-{
-
-	if (function_exists('T_setlocale'))  {@T_setlocale(LC_MESSAGES, $languagetoset); }
-	@setlocale(LC_ALL,'en_GB', 'en_US','en_UK','en_EN','en_GB.utf8','english','en_US.utf-8'); // one of these should be present.. its weird but works
-	@putenv("LANG=$languagetoset");  // these both suckers are needed to overwrite the path in the end
-	@putenv("LANGUAGE=$languagetoset");
-
-	bindtextdomain($languagetoset, dirname(__FILE__).'/locale');
-	if (!function_exists('bind_textdomain_codeset')) echo "You need at least PHP 4.2.x to run PHPSurveyor." and die;
-	bind_textdomain_codeset($languagetoset,'UTF-8');
-	textdomain($languagetoset);
-	return $languagetoset;
-}
-*/
 
 
-//NEW for multilanguage surveys
+//For multilanguage surveys
 function SetSurveyLanguage($surveyid, $language)// SetSurveyLanguage($surveyid)
 {
 

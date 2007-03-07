@@ -1490,13 +1490,13 @@ function doAssessment($surveyid)
 				if (($field['fieldname'] != "datestamp") and
 				($field['fieldname'] != "ipaddr"))
 				{
-					$fieldmap[$i]['answer']=$_SESSION[$field['fieldname']];
+					if (isset($_SESSION[$field['fieldname']])) {$fieldmap[$i]['answer']=$_SESSION[$field['fieldname']];}
+					 else {$fieldmap[$i]['answer']=0;}
 					$groups[]=$field['gid'];
-					$total=$total+$_SESSION[$field['fieldname']];
+					if (isset ($_SESSION[$field['fieldname']])) {$total=$total+$_SESSION[$field['fieldname']];}
 					$i++;
 				}
 			}
-
 			$groups=array_unique($groups);
 
 			foreach($groups as $group)
@@ -1507,7 +1507,7 @@ function doAssessment($surveyid)
 					if ($field['gid'] == $group && isset($field['answer']))
 					{
 						//$grouptotal=$grouptotal+$field['answer'];
-						$grouptotal=$grouptotal+$_SESSION[$field['fieldname']];
+						if (isset ($_SESSION[$field['fieldname']])) {$grouptotal=$grouptotal+$_SESSION[$field['fieldname']];}
 					}
 				}
 				$subtotal[$group]=$grouptotal;
@@ -1524,8 +1524,8 @@ function doAssessment($surveyid)
 					{
 						if ($val >= $assessed['min'] && $val <= $assessed['max'])
 						{
-							$assessments .= "\t\t\t<!-- GROUP ASSESSMENT: Score: $total -->
-	`							<table align='center'>
+							$assessments .= "\t\t\t<!-- GROUP ASSESSMENT: Score: $val -->
+        					    <table align='center'>
 								 <tr>
 								  <th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $val), stripslashes($assessed['name']))."
 								  </th>
