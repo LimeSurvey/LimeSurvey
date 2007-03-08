@@ -352,7 +352,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
   			    ."<strong>".$clang->gT("New label").":</strong> <input type='text' maxlength='10' name='insertcode' size='10' id='addnewlabelcode' />\n"
     			."\t</td>\n"
     			."\t<td width='35%'>\n"
-    			."\t<input type='text' maxlength='100' name='inserttitle_$lslanguage' size='80' />\n"
+    			."\t<input type='text' maxlength='100' name='inserttitle' size='80' />\n"
     			."\t</td>\n"
     			."\t<td width='25%'>\n"
     			."\t<input type='submit' name='method' value='".$clang->gT("Add new label")."' />\n"
@@ -569,12 +569,12 @@ function modlabelsetanswers($lid)
 		$_POST['insertcode'] = db_quote($_POST['insertcode']);
         	foreach ($lslanguages as $lslanguage)
         	{
-			$_POST['inserttitle_'.$lslanguage] = db_quote($_POST['inserttitle_'.$lslanguage]);
-    			$query = "INSERT INTO ".db_table_name('labels')." (lid, code, title, sortorder,language) VALUES ($lid, '{$_POST['insertcode']}', '{$_POST['inserttitle_'.$lslanguage]}', '$newsortorder','$lslanguage')";
-                if (!$result = $connect->Execute($query))
-    			{
-    				$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert label", "js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
-    			}
+        			$_POST['inserttitle'] = db_quote($_POST['inserttitle']);
+    				$query = "INSERT INTO ".db_table_name('labels')." (lid, code, title, sortorder,language) VALUES ($lid, '{$_POST['insertcode']}', '{$_POST['inserttitle']}', '$newsortorder','$lslanguage')";
+                	if (!$result = $connect->Execute($query))
+    				{
+    					$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert label", "js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+    				}
 			}
 		}
 		break;
