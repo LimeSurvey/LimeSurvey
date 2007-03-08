@@ -117,7 +117,7 @@ else {
 # TODO: seems to be defaulting to ADODB_FETCH_NUM. New behaviour - can't see why
 $connect->SetFetchMode(ADODB_FETCH_ASSOC);
 
-$dbexistsbutempty=(checkifemptydb() && $database_exists);
+$dbexistsbutempty=($database_exists && checkifemptydb());
 
 // The following line is for mysql debug purposes
 //$tmpresult=@mysql_query("SET SESSION SQL_MODE='STRICT_ALL_TABLES'");
@@ -909,10 +909,10 @@ function checkactivations()
 
 function checkifemptydb()
 {
-	global $connect;
+	global $connect, $dbprefix;
 	$tablelist = $connect->MetaTables('TABLES');
-	if (array_key_exists(db_table_name('surveys'),$tablelist)) {Return(true);}
-	else {Return(false);}
+	if ( in_array($dbprefix.'surveys',$tablelist) ) {Return(false);}
+	else {Return(true);}
 }
 
 
