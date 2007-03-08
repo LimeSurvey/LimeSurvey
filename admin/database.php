@@ -159,7 +159,7 @@ if(isset($surveyid))
 		$_POST  = array_map('db_quote', $_POST);
 		$grplangs = GetAdditionalLanguagesFromSurveyID($_POST['sid']);
 		$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);
-		array_push($grplangs,$baselang[0].$baselang[1]);
+		array_push($grplangs,$baselang);
 		foreach ($grplangs as $grplang)
 		{
 			if (isset($grplang) && $grplang != "")
@@ -360,7 +360,7 @@ if(isset($surveyid))
 				
 				$questlangs = GetAdditionalLanguagesFromSurveyID($_POST['sid']);
 				$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);
-				array_push($questlangs,$baselang[0].$baselang[1]);
+				array_push($questlangs,$baselang);
 				foreach ($questlangs as $qlang)
 				{
 					if (isset($qlang) && $qlang != "")
