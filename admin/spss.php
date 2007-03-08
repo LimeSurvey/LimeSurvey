@@ -27,6 +27,8 @@
 # Suite 330, Boston, MA  02111-1307, USA.					#
 #############################################################
 */
+error_reporting(E_ALL ^ E_NOTICE); // No Notices!
+
 require_once(dirname(__FILE__).'/../config.php');
 include_once("login_check.php");
 
@@ -38,13 +40,17 @@ if (!isset($type)) {$type=returnglobal('type');}
 
 if (empty($surveyid)) {die("Cannot run this script directly");}
 #Get all legitimate question ids
-
+/*
 header("Content-Type: application/octetstream");
 header("Content-Disposition: ".
 (strpos($_SERVER["HTTP_USER_AGENT"],"MSIE 5.5")?""
 :"attachment; ").
-"filename=survey.sps");
+"filename=survey.sps");*/
 
+// Get Base Language:
+
+$language = GetBaseLanguageFromSurveyID($surveyid);
+$clang = new phpsurveyor_lang($language);
 
 sendcacheheaders();
 $query = "SELECT DISTINCT qid FROM ".db_table_name("questions")." WHERE sid=$surveyid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
@@ -67,8 +73,8 @@ $num_fields = $num_results;
 # Build array that has to be returned
 for ($i=0; $i < $num_results; $i++) {
 	$row = $result->FetchRow();
-	if ($row["attribute1"]) {$attr1_name = $row["attribute1"];} else {$attr1_name=_TL_ATTR1;}
-	if ($row["attribute2"]) {$attr2_name = $row["attribute2"];} else {$attr2_name=_TL_ATTR2;}
+	if ($row["attribute1"]) {$attr1_name = $row["attribute1"];} else {$attr1_name = $clang->gT("Attribute 1");}
+	if ($row["attribute2"]) {$attr2_name = $row["attribute2"];} else {$attr2_name = $clang->gT("Attribute 2");}
 	$surveyprivate=$row['private'];
 	$language=$row['language'];
 }
@@ -82,13 +88,13 @@ if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
 		$token_fields[]=$row[0];
 	}
 	if (in_array("firstname", $token_fields)) {
-		$fields[$fieldno++]=array("id"=>"fname","name"=>_TL_FIRST,"code"=>"", "qid"=>0,"type"=>"A40" );
+		$fields[$fieldno++]=array("id"=>"fname","name"=>$clang->gT("First Name"),"code"=>"", "qid"=>0,"type"=>"A40" );
 	}
 	if (in_array("lastname", $token_fields)) {
-		$fields[$fieldno++]=array("id"=>"lname","name"=>_TL_LAST,"code"=>"", "qid"=>0,"type"=>"A40" );
+		$fields[$fieldno++]=array("id"=>"lname","name"=> $clang->gT("Last Name"),"code"=>"", "qid"=>0,"type"=>"A40" );
 	}
 	if (in_array("email", $token_fields)) {
-		$fields[$fieldno++]=array("id"=>"email","name"=>_TL_EMAIL,"code"=>"", "qid"=>0,"type"=>"A100");
+		$fields[$fieldno++]=array("id"=>"email","name"=> $clang->gT("Email"),"code"=>"", "qid"=>0,"type"=>"A100");
 	}
 	if (in_array("attribute_1", $token_fields)) {
 		$fields[$fieldno++]=array("id"=>"attr1","name"=>$attr1_name,"code"=>"", "qid"=>0,"type"=>"A100");
@@ -134,7 +140,14 @@ for ($i=0; $i < $num_results; $i++) {
 			$teststring="";
 			while ($val_row = $val_result->FetchRow())
 			{
-				if ($val_row[$fieldname] != "-oth-") $teststring .= $val_row[$fieldname];
+				if ($val_row[$fieldname] == "Y")
+				{
+					$teststring .= "1";
+				}
+				else if ($val_row[$fieldname] != "-oth-")
+				{
+					$teststring .= $val_row[$fieldname];
+				}
 				if ($val_size < strlen($val_row[$fieldname])) $val_size = strlen($val_row[$fieldname]);
 			}
 			if (is_numeric($teststring))
@@ -245,8 +258,8 @@ for ($i=0; $i < $num_results; $i++) {
 
 	$row = $result->FetchRow();
 	$fieldno = 0;
-	while ($fieldno < $num_fields){
-	
+	while ($fieldno < $num_fields)
+	{
 			//echo " field: ".$fields[$fieldno]["id"]." id : ".$fields[$fieldno]["qid"]." val:".$row[$fieldno]."-type: ".$fields[$fieldno]["type"]." |<br> ";
 		if ($fieldno % 20 == 0) echo chr(65+intval($fieldno/20))." ";
 		//if ($i==0) { echo "Field: $fieldno - Dati: ";var_dump($fields[$fieldno]);echo "\n"; }
@@ -254,7 +267,31 @@ for ($i=0; $i < $num_results; $i++) {
 			#convert mysql  datestamp (yyyy-mm-dd hh:mm:ss) to SPSS datetime (dd-mmm-yyyy hh:mm:ss) format
 			list( $year, $month, $day, $hour, $minute, $second ) = split( '([^0-9])', $row[$fieldno] );
 			echo "'".date("d-m-Y H:i:s", mktime( $hour, $minute, $second, $month, $day, $year ) )."' ";
-		}else {
+		} else if ($fields[$fieldno]["ftype"] == "M") 
+		{
+			if ($fields[$fieldno]["code"] == "other")
+			{
+				$strTmp=substr(strip_tags_full($row[$fieldno]), 0, 59);
+				echo "'$strTmp' ";
+			} else if ($row[$fieldno] == "Y")
+			{
+				echo "'1' ";
+			} else {
+				echo "'2' ";
+			}
+		} else if ($fields[$fieldno]["ftype"] == "P") 
+		{
+			if ($fields[$fieldno]["code"] == "other" || $fields[$fieldno]["code"] == "comment" || $fields[$fieldno]["code"] == "othercomment")
+			{
+				$strTmp=substr(strip_tags_full($row[$fieldno]), 0, 59);
+				echo "'$strTmp' ";
+			} else if ($row[$fieldno] == "Y")
+			{
+				echo "'1' ";
+			} else {
+				echo "'2' ";
+			}
+		} else {
 			$strTmp=substr(strip_tags_full($row[$fieldno]), 0, 59);
 			//if ($strTmp=='') $strTmp='.';
 			echo "'$strTmp' ";
@@ -278,10 +315,12 @@ foreach ($fields as $field){
 	$field["id"]=="attr2"){
 		echo "VARIABLE LABELS ".$field["id"]." '".substr(strip_tags_full($field["name"]), 0, 59)."'.\n";//minni"<br />";
 	} elseif ($field["name"]=="id") {
-		echo "VARIABLE LABELS ".$field["id"]." 'Record ID'.\n";//minni"<br />";
-	} elseif ($field["name"]=="stamp") {
-		echo "VARIABLE LABELS ".$field["id"]." 'Completion Date'.\n";//minni"<br />";
-	}else{
+		echo "VARIABLE LABELS ".$field["id"]." '".$clang->gT("Record ID")."'.\n";//minni"<br />";
+	} elseif ($field["name"]=="submitda") {
+		echo "VARIABLE LABELS ".$field["id"]." '".$clang->gT("Completion Date")."'.\n";//minni"<br />";
+	} elseif ($field["name"]=="startlan") {
+		echo "VARIABLE LABELS ".$field["id"]." '".$clang->gT("Start Language")."'.\n";//minni"<br />";
+	}else{       
 		#If a split question
 		if ($field["code"] != ""){
 			#Lookup the question
@@ -318,6 +357,10 @@ foreach ($fields as $field){
 				echo "VARIABLE LABELS ".$field["id"]." '".
 				substr(strip_tags_full($question_text), 0, 59)." - OTHER'.\n";
 			}
+			if (substr($field['sql_name'], -7)=='comment') {
+				echo "VARIABLE LABELS ".$field["id"]." '".
+				substr(strip_tags_full($question_text), 0, 59)." - COMMENT'.\n";
+			}
 		}else{
 			$test=explode ("X", $field["name"]);
 			$query = "SELECT question FROM {$dbprefix}questions 
@@ -338,7 +381,7 @@ foreach ($fields as $field)
 {
 	if ($field["qid"]!=0)
 	{
-		if ($field['ftype'] != "T" && $field['ftype'] != "S" && $field['ftype'] != "U" && $field['ftype'] != "A" && $field['ftype'] != "B" && $field['ftype'] != "F")
+		if ($field['ftype'] != "T" && $field['ftype'] != "S" && $field['ftype'] != "U" && $field['ftype'] != "A" && $field['ftype'] != "B" && $field['ftype'] != "F" && $field['ftype'] != "M" && $field['ftype'] != "P")
 		{
 			$query = "SELECT {$dbprefix}answers.code, {$dbprefix}answers.answer, 
 			{$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE 
@@ -390,6 +433,18 @@ foreach ($fields as $field)
 					}
 				}
 			}
+		}
+		if ($field['ftype'] == "M" && $field['code'] != "other")
+		{
+			echo "VALUE LABELS ".$field["id"]."\n";
+			echo "1 \"".$clang->gT("Yes")."\"\n";
+			echo "2 \"".$clang->gT("No")."\".\n";
+		}
+		if ($field['ftype'] == "P" && $field['code'] != "other" && $field['code'] != "comment" && $field['code'] != "othercomment")
+		{
+			echo "VALUE LABELS ".$field["id"]."\n";
+			echo "1 \"".$clang->gT("Yes")."\"\n";
+			echo "2 \"".$clang->gT("No")."\".\n";
 		}
 	}
 }
