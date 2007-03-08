@@ -24,7 +24,7 @@ CREATE TABLE `prefix_answers` (
   `sortorder` int(11) NOT NULL,
   `language` varchar(20) default 'en',
   PRIMARY KEY  (`qid`,`code`,`language`)
-) TYPE=MyISAM;
+) TYPE=MyISAM CHARACTER SET utf8;
 
 -- --------------------------------------------------------
 
@@ -43,7 +43,7 @@ CREATE TABLE `prefix_assessments` (
   `message` text NOT NULL,
   `link` text NOT NULL,
   PRIMARY KEY  (`id`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) TYPE=MyISAM AUTO_INCREMENT=1 CHARACTER SET utf8;
 
 -- --------------------------------------------------------
 
@@ -59,7 +59,7 @@ CREATE TABLE `prefix_conditions` (
   `method` char(2) NOT NULL default '',
   `value` varchar(5) NOT NULL default '',
   PRIMARY KEY  (`cid`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) TYPE=MyISAM AUTO_INCREMENT=1 CHARACTER SET utf8;
 
 
 -- 
@@ -74,7 +74,7 @@ CREATE TABLE `prefix_groups` (
   `description` text,
   `language` varchar(20) default 'en',
   PRIMARY KEY  (`gid`,`language`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) TYPE=MyISAM AUTO_INCREMENT=1 CHARACTER SET utf8;
 
 -- --------------------------------------------------------
 
@@ -90,7 +90,7 @@ CREATE TABLE `prefix_labels` (
   `language` varchar(20) default 'en',
   PRIMARY KEY  (`lid`,`sortorder`,`language`),
   KEY `ixcode` (`code`)
-) TYPE=MyISAM;
+) TYPE=MyISAM CHARACTER SET utf8;
 
 -- --------------------------------------------------------
 
@@ -103,7 +103,7 @@ CREATE TABLE `prefix_labelsets` (
   `label_name` varchar(100) NOT NULL default '',
   `languages` varchar(200) default 'en',
   PRIMARY KEY  (`lid`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) TYPE=MyISAM AUTO_INCREMENT=1 CHARACTER SET utf8;
 
 -- --------------------------------------------------------
 
@@ -117,7 +117,7 @@ CREATE TABLE `prefix_question_attributes` (
   `attribute` varchar(50) default NULL,
   `value` varchar(20) default NULL,
   PRIMARY KEY  (`qaid`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) TYPE=MyISAM AUTO_INCREMENT=1 CHARACTER SET utf8;
 
 -- --------------------------------------------------------
 
@@ -140,7 +140,7 @@ CREATE TABLE `prefix_questions` (
   `question_order` int(11) NOT NULL,
   `language` varchar(20) default 'en',
   PRIMARY KEY  (`qid`,`language`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) TYPE=MyISAM AUTO_INCREMENT=1 CHARACTER SET utf8;
 
 -- --------------------------------------------------------
 
@@ -162,7 +162,7 @@ CREATE TABLE `prefix_saved_control` (
   `saved_date` datetime NOT NULL default '0000-00-00 00:00:00',
   `refurl` text,
   PRIMARY KEY  (`scid`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) TYPE=MyISAM AUTO_INCREMENT=1 CHARACTER SET utf8;
 
 -- --------------------------------------------------------
 
@@ -199,7 +199,7 @@ CREATE TABLE `prefix_surveys` (
   `refurl` char(1) default 'N',
   `datecreated` date default NULL,
   PRIMARY KEY  (`sid`)
-) TYPE=MyISAM;
+) TYPE=MyISAM CHARACTER SET utf8;
 
 
 -- 
@@ -225,7 +225,7 @@ CREATE TABLE `prefix_surveys_languagesettings` (
   `surveyls_email_confirm` TEXT NULL,
   PRIMARY KEY (`surveyls_survey_id`, `surveyls_language`)
 )
-TYPE = MyISAM;
+TYPE = MyISAM CHARACTER SET utf8;
 
 
 
@@ -248,7 +248,7 @@ CREATE TABLE `prefix_users` (
   `configurator` tinyint(1) NOT NULL default '0',
   `manage_template` tinyint(1) NOT NULL default '0',
   `manage_label` tinyint(1) NOT NULL default '0'
-) TYPE=MyISAM;
+) TYPE=MyISAM CHARACTER SET utf8;
 
 CREATE TABLE `prefix_surveys_rights` (
 	`sid` int(10) unsigned NOT NULL default '0',
@@ -260,19 +260,19 @@ CREATE TABLE `prefix_surveys_rights` (
 	`delete_survey` tinyint(1) NOT NULL default '0',
 	`activate_survey` tinyint(1) NOT NULL default '0',
 	PRIMARY KEY (sid, uid)
-) TYPE=MyISAM;
+) TYPE=MyISAM CHARACTER SET utf8;
 
 CREATE TABLE `prefix_user_groups` (
 	`ugid` int(10) unsigned NOT NULL auto_increment PRIMARY KEY,
 	`name` varchar(20) NOT NULL UNIQUE,
 	`description` TEXT NOT NULL default '',
 	`owner_id` int(10) unsigned NOT NULL
-) TYPE=MyISAM;
+) TYPE=MyISAM CHARACTER SET utf8;
 
 CREATE TABLE `prefix_user_in_groups` (
 	`ugid` int(10) unsigned NOT NULL,
 	`uid` int(10) unsigned NOT NULL
-) TYPE=MyISAM;
+) TYPE=MyISAM CHARACTER SET utf8;
 --
 -- Table structure for table `settings_global`
 --
@@ -281,7 +281,7 @@ CREATE TABLE `prefix_settings_global` (
   `stg_name` varchar(50) NOT NULL default '',
   `stg_value` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`stg_name`)
-) TYPE=MyISAM;
+) TYPE=MyISAM CHARACTER SET utf8;
 
 --
 -- Table `settings_global`
