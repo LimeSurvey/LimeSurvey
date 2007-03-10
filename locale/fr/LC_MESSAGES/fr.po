@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-03-04 13:39+0100\n"
+"PO-Revision-Date: 2007-03-10 14:39+0100\n"
 "Last-Translator: b00z00\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -406,14 +406,22 @@ msgstr "Ce questionnaire n'est pas activé. Vous ne pourrez pas sauver vos répo
 msgid "ERROR"
 msgstr "ERREUR"
 
-msgid "You have not provided a survey identification number"
-msgstr "Vous n'avez pas fourni d'identifiant de questionnaire"
+# D:\www\phpsurveyor/index.php:69
+msgid "We are sorry but your session has expired."
+msgstr "Désolé mais votre session a expiré."
+
+# D:\www\phpsurveyor/index.php:69
+msgid "Either you have been inactive for too long or there were problems with your connection."
+msgstr "Soit vous avez été inactif depuis trop longtemps, soit il y a eu un problème avec votre connexion."
 
 msgid "Please contact"
 msgstr "Veuillez contacter"
 
 msgid "for further assistance"
 msgstr "pour plus d'aide"
+
+msgid "You have not provided a survey identification number"
+msgstr "Vous n'avez pas fourni d'identifiant de questionnaire"
 
 # D:\www\phpsurveyor/index.php:231
 # D:\www\phpsurveyor/save.php:215
@@ -1452,14 +1460,32 @@ msgstr "Privé"
 msgid "Public"
 msgstr "Public"
 
+msgid "Expired"
+msgstr "Expiré"
+
 msgid "Active"
 msgstr "Activé"
 
 msgid "Inactive"
 msgstr "Inactif"
 
-msgid "Create Survey"
-msgstr "Créer un questionnaire"
+msgid "This survey is active but expired."
+msgstr "Ce questionnaire est activé mais expiré."
+
+msgid "This survey is active but expired"
+msgstr "Ce questionnaire est activé mais expiré"
+
+msgid "De-activate this Survey"
+msgstr "Désactiver ce questionnaire"
+
+msgid "This survey is currently active"
+msgstr "Ce questionnaire est actuellement activé"
+
+msgid "Activate this Survey"
+msgstr "Activer ce questionnaire"
+
+msgid "This survey is not currently active"
+msgstr "Ce questionnaire est actuellement désactivé"
 
 # C:\wamp\www\phpsurveyor/admin/html.php:94
 msgid "No Surveys available - please create one."
@@ -1491,24 +1517,6 @@ msgstr "Table(s) d'invitation(s) activée(s)"
 
 msgid "De-activated Token Tables"
 msgstr "Table(s) d'invitation(s) désactivée(s)"
-
-msgid "This survey is not currently active"
-msgstr "Ce questionnaire est actuellement désactivé"
-
-msgid "Activate this Survey"
-msgstr "Activer ce questionnaire"
-
-msgid "This survey is active but expired."
-msgstr "Ce questionnaire est activé mais expiré."
-
-msgid "This survey is active but expired"
-msgstr "Ce questionnaire est activé mais expiré"
-
-msgid "This survey is currently active"
-msgstr "Ce questionnaire est actuellement activé"
-
-msgid "De-activate this Survey"
-msgstr "Désactiver ce questionnaire"
 
 msgid "Cannot Activate this Survey"
 msgstr "Impossible d'activer ce questionnaire"
@@ -2324,6 +2332,9 @@ msgstr "Aucun fichier n'a été envoyé"
 msgid "Error on file transfer. You must select a CSV file"
 msgstr "Erreur lors de l'envoi du fichier. Vous devez choisir un fichier CSV valide."
 
+msgid "Create Survey"
+msgstr "Créer un questionnaire"
+
 msgid "(This field is mandatory.)"
 msgstr "(Ce champ est obligatoire)"
 
@@ -2373,11 +2384,19 @@ msgstr "Une erreur s'est produite durant la transmission de votre fichier.  Ceci
 msgid "File upload succeeded."
 msgstr "Fichier transmis avec succès."
 
-msgid "Reading file.."
-msgstr "Lecture du fichier.."
+msgid "Reading file..."
+msgstr "Lecture du fichier..."
 
 msgid "This file is not a PHPSurveyor group file. Import failed."
 msgstr "Ce fichier n'est pas un fichier de groupe PHPSurveyor. L'importation a échoué."
+
+# E:\www\phpsurveyor/admin/usercontrol.php:120
+msgid "Import partially successful."
+msgstr "Importation partiellement réussie."
+
+# D:\www\phpsurveyor/admin/importgroup.php:555
+msgid "The following languages in this group were not imported since the survey does not contain such a language: "
+msgstr "Les langues suivantes de ce groupe n'ont pas été importées car le questionnaire ne contient pas ces langues :"
 
 msgid "Group Import Summary"
 msgstr "Résumé de l'importation de groupe"
@@ -2396,6 +2415,9 @@ msgstr "L'importation du groupe est terminée."
 
 msgid "Import Label Set"
 msgstr "Importer le jeu d'étiquettes"
+
+msgid "Reading file.."
+msgstr "Lecture du fichier.."
 
 msgid "This file is not a PHPSurveyor question file. Import failed."
 msgstr "Ce fichier n'est pas un fichier de question PHPSurveyor. L'importation a échoué."
@@ -2488,6 +2510,16 @@ msgstr "Les réponses suivantes peuvent être effacées"
 msgid "All answers meet consistency standards"
 msgstr "Toutes les réponses sont cohérentes"
 
+# D:\www\phpsurveyor/admin/integritycheck.php:202
+msgid "Language specific settings missing"
+msgstr "Les paramètres spécifiques à la langue sont manquants"
+
+msgid "The following surveys should be deleted"
+msgstr "Les questionnaires suivants peuvent être effacés"
+
+msgid "All survey settings meet consistency standards"
+msgstr "Tous les réglages de ce questionnaire sont cohérents"
+
 msgid "The following questions should be deleted"
 msgstr "Les questions suivantes peuvent être effacées"
 
@@ -2502,6 +2534,12 @@ msgstr "Tous les groupes sont cohérents"
 
 msgid "No database action required"
 msgstr "Pas d'action à faire sur la base de données"
+
+msgid "Deleting Groups"
+msgstr "Suppession des groupes"
+
+msgid "Deleting group id"
+msgstr "Suppession du groupe d'ID"
 
 msgid "Label Sets Administration"
 msgstr "Administration des jeux d'étiquettes"
@@ -2527,9 +2565,6 @@ msgstr "Nom du jeu"
 # C:\wamp\www\phpsurveyor/admin/labels.php:154
 msgid "You cannot remove this items since you need at least one language in a labelset."
 msgstr "Vous ne pouvez pas enlever ces éléments car il faut au moins une langue dans un jeu d'étiquettes."
-
-msgid "Select SQL File:"
-msgstr "Sélectionner un fichier SQL :"
 
 msgid "Edit label set"
 msgstr "Editer le jeu d'étiquettes"
@@ -2666,6 +2701,15 @@ msgstr "Date de sauvegarde"
 
 msgid "Are you sure you want to delete this entry?"
 msgstr "Etes-vous sûr de vouloir supprimer cette entrée ?"
+
+msgid "Record ID"
+msgstr "Enregistrement d'ID"
+
+msgid "Completion Date"
+msgstr "Date de réponse"
+
+msgid "Start Language"
+msgstr "Langue de base"
 
 msgid "Filter Settings"
 msgstr "Paramètres de filtre"
