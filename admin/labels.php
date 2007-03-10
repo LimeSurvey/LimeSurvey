@@ -37,6 +37,9 @@
 // ToDo: Prevent users from creating/savin labels with the same code in the same label set
 include_once("login_check.php");
 
+if (get_magic_quotes_gpc())
+$_POST  = array_map('stripslashes', $_POST);
+
 if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 	{
 
