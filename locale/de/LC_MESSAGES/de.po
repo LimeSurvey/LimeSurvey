@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-03-04 21:35+0100\n"
+"PO-Revision-Date: 2007-03-10 23:56+0100\n"
 "Last-Translator: \n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -400,14 +400,22 @@ msgstr "Diese Umfrage ist momentan nicht aktiv. Sie werden sie nicht abschließe
 msgid "ERROR"
 msgstr "FEHLER"
 
-msgid "You have not provided a survey identification number"
-msgstr "Sie haben keine Identifikationsnummer für den Fragebogen angegeben."
+# D:\web\xampp\htdocs\phpsurveyor/index.php:69
+msgid "We are sorry but your session has expired."
+msgstr "Es tut uns leid, aber Ihre Sitzung ist abgelaufen."
+
+# D:\web\xampp\htdocs\phpsurveyor/index.php:69
+msgid "Either you have been inactive for too long or there were problems with your connection."
+msgstr "Entweder sind Sie zu lange inaktive gewesen oder es gab ein Problem mit Ihrer Verbindung."
 
 msgid "Please contact"
 msgstr "Bitte kontaktieren Sie"
 
 msgid "for further assistance"
 msgstr "für weitere Unterstützung."
+
+msgid "You have not provided a survey identification number"
+msgstr "Sie haben keine Identifikationsnummer für den Fragebogen angegeben."
 
 # D:\web\xampp\htdocs\phpsurveyor/index.php:231
 # D:\web\xampp\htdocs\phpsurveyor/save.php:215
@@ -1425,14 +1433,32 @@ msgstr "Privat"
 msgid "Public"
 msgstr "Öffentlich"
 
+msgid "Expired"
+msgstr "Abgelaufen"
+
 msgid "Active"
 msgstr "Aktiv"
 
 msgid "Inactive"
 msgstr "Inaktiv"
 
-msgid "Create Survey"
-msgstr "Erstelle Umfrage"
+msgid "This survey is active but expired."
+msgstr "Diese Umfrage ist aktiv aber ausgelaufen."
+
+msgid "This survey is active but expired"
+msgstr "Diese Umfrage ist aktiv aber ausgelaufen"
+
+msgid "De-activate this Survey"
+msgstr "Diese Umfrage deaktivieren"
+
+msgid "This survey is currently active"
+msgstr "Diese Umfrage ist momentan aktiv."
+
+msgid "Activate this Survey"
+msgstr "Diese Umfrage aktivieren"
+
+msgid "This survey is not currently active"
+msgstr "Diese Umfrage ist momentan nicht aktiv."
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:94
 msgid "No Surveys available - please create one."
@@ -1465,29 +1491,11 @@ msgstr "Aktive Probanden-Tabellen"
 msgid "De-activated Token Tables"
 msgstr "Deaktivierte Probanden-Tabellen"
 
-msgid "This survey is not currently active"
-msgstr "Diese Umfrage ist momentan nicht aktiv."
-
-msgid "Activate this Survey"
-msgstr "Diese Umfrage aktivieren"
-
-msgid "This survey is active but expired."
-msgstr "Diese Umfrage ist aktiv aber ausgelaufen."
-
-msgid "This survey is active but expired"
-msgstr "Diese Umfrage ist aktiv aber ausgelaufen"
-
-msgid "This survey is currently active"
-msgstr "Diese Umfrage ist momentan aktiv."
-
-msgid "De-activate this Survey"
-msgstr "Diese Umfrage deaktivieren"
-
 msgid "Cannot Activate this Survey"
 msgstr "Diese Umfrage kann nicht aktiviert werden."
 
 msgid "Survey Security Settings"
-msgstr "Umfrage-Sicherheitseinstellungen"
+msgstr "Sicherheitseinstellungen der aktuellen Umfrage"
 
 msgid "Test This Survey"
 msgstr "Diese Umfrage testen"
@@ -2291,6 +2299,9 @@ msgstr "Keine Datei hochgeladen"
 msgid "Error on file transfer. You must select a CSV file"
 msgstr "Fehler beim Datei-Upload. Sie müssen eine CSV-Datei angeben"
 
+msgid "Create Survey"
+msgstr "Erstelle Umfrage"
+
 msgid "(This field is mandatory.)"
 msgstr "(Dies ist ein Pflichtfeld.)"
 
@@ -2341,11 +2352,18 @@ msgstr "Es ist ein Fehler aufgetreten beim Upload ihrer Datei. Grund dafür kön
 msgid "File upload succeeded."
 msgstr "Datei erfolgreich hochgeladen."
 
-msgid "Reading file.."
-msgstr "Lese Datei.."
+msgid "Reading file..."
+msgstr "Lese Datei..."
 
 msgid "This file is not a PHPSurveyor group file. Import failed."
 msgstr "Diese Datei enthält keine PHPSurveyor-Daten im richtigen Format."
+
+msgid "Import partially successful."
+msgstr "Import teilweise erfolgreich."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/importgroup.php:555
+msgid "The following languages in this group were not imported since the survey does not contain such a language: "
+msgstr "Die folgenden Sprachen in der Grupper wurden nicht importiert, da die Umfrage eine solche Sprache nicht enthält:"
 
 msgid "Group Import Summary"
 msgstr "Gruppen-Import übersicht"
@@ -2364,6 +2382,9 @@ msgstr "Import der Gruppe abgeschlossen."
 
 msgid "Import Label Set"
 msgstr "Beschriftung-Set importieren"
+
+msgid "Reading file.."
+msgstr "Lese Datei.."
 
 msgid "This file is not a PHPSurveyor question file. Import failed."
 msgstr "Diese Datei ist keine PHPSurveyor-Umfrage-Datei. Import fehlgeschlagen."
@@ -2514,9 +2535,6 @@ msgstr "Name setzen"
 msgid "You cannot remove this items since you need at least one language in a labelset."
 msgstr "Sie können diese Sprache nicht entfernen, da sie mindestens eine Sprache in einem Beschriftungsset benötigen."
 
-msgid "Select SQL File:"
-msgstr "SQL-Datei auswählen:"
-
 msgid "Edit label set"
 msgstr "Beschriftung-Set bearbeiten"
 
@@ -2646,6 +2664,15 @@ msgstr "Datum Gespeichert"
 
 msgid "Are you sure you want to delete this entry?"
 msgstr "Sind Sie sicher, dass Sie diesen Eintrag löschen wollen?"
+
+msgid "Record ID"
+msgstr "Umfrage ID"
+
+msgid "Completion Date"
+msgstr "Abgabe-Datum"
+
+msgid "Start Language"
+msgstr "Start-Sprache"
 
 msgid "Filter Settings"
 msgstr "Filter Einstellungen"
