@@ -1483,7 +1483,7 @@ if ($action == "adduser" || $action=="deluser" || $action == "moduser" || $actio
 
 if ($action == "modifyuser")
 {
-	if($_SESSION['loginID'] == $_POST['uid'])
+	if($_SESSION['loginID'] == 1 || $_SESSION['loginID'] == $_POST['uid'])
 	{
 		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='4' bgcolor='black' align='center'>\n"
 		. "\t\t<strong><font color='white'>".$clang->gT("Modifying User")."</td></tr>\n"
@@ -1689,13 +1689,15 @@ if ($action == "editusers")
 	{
 		$usersummary .= "\t\t<td align='center'><strong>---</strong></td>\n";
 	}
+	if ($_SESSION['loginID'] == 1)
+		{
 	$usersummary .= "\t\t<td align='center' style='padding-top:10px;'>\n"
 	."\t\t\t<form method='post' action='$scriptname'>"
 	."<input type='submit' value='".$clang->gT("Edit User")."' />"
 	."<input type='hidden' name='action' value='modifyuser' />"
 	."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
 	."</form>";
-
+		}
 	// users are allowed to delete all successor users (but the admin not himself)
 	if ($usrhimself['parent_id'] != 0 && ($_SESSION['USER_RIGHT_DELETE_USER'] == 1 || ($usrhimself['uid'] == $_SESSION['loginID'])))
 	{
@@ -1740,7 +1742,7 @@ if ($action == "editusers")
 			//."<select name='parent' size='1' onChange='document.getElementById(\"button{$usr['uid']}\").createElement(\"input\")'>";
 			if($usr['uid'] != $usrhimself['uid'])
 			{
-//				$usersummary .= "<option value='{$usrhimself['uid']}'";
+				//$usersummary .= "<option value='{$usrhimself['uid']}'";
 				if($usr['parent_id'] == $usrhimself['uid']) {
 					$usersummary .= $usrhimself['user'];
 				}
@@ -1755,7 +1757,8 @@ if ($action == "editusers")
 
 		$usersummary .= "\t\t<td align='center' style='padding-top:10px;'>\n";
 		// users are allowed to delete all successor users (but the admin not himself)
-		if ($usr['parent_id'] != 0 && ($_SESSION['USER_RIGHT_DELETE_USER'] == 1 || ($usr['uid'] == $_SESSION['loginID'])))
+		//  || ($usr['uid'] == $_SESSION['loginID']))
+		if ($_SESSION['loginID'] == 1 || ($_SESSION['USER_RIGHT_DELETE_USER'] == 1  && $usr['parent_id'] == $_SESSION['loginID']))
 		{
 			$usersummary .= "\t\t\t<form method='post' action='$scriptname?action=deluser'>"
 			."<input type='submit' value='".$clang->gT("Delete")."' onClick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.")."\")' />"
@@ -1764,14 +1767,23 @@ if ($action == "editusers")
 			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
 			."</form>";
 		}
-
-		$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
-		."<input type='submit' value='".$clang->gT("Set User Rights")."' />"
-		."<input type='hidden' name='action' value='setuserrights' />"
-		."<input type='hidden' name='user' value='{$usr['user']}' />"
-		."<input type='hidden' name='uid' value='{$usr['uid']}' />"
-		."</form>";
-
+		if ($_SESSION['loginID'] == 1 || ($_SESSION['USER_RIGHT_CREATE_USER'] == 1 && ($usr['parent_id'] == $_SESSION['loginID'])))
+		{
+			$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
+			."<input type='submit' value='".$clang->gT("Set User Rights")."' />"
+			."<input type='hidden' name='action' value='setuserrights' />"
+			."<input type='hidden' name='user' value='{$usr['user']}' />"
+			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
+			."</form>";
+		}
+		if ($_SESSION['loginID'] == 1 || ($_SESSION['USER_RIGHT_CREATE_USER'] == 1 && ($usr['uid'] == $_SESSION['loginID'] || $usr['parent_id'] == $_SESSION['loginID'])))
+		{
+			$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
+			."<input type='submit' value='".$clang->gT("Edit User")."' />"
+			."<input type='hidden' name='action' value='modifyuser' />"
+			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
+			."</form>";
+		}
 		$usersummary .= "\t\t</td>\n"
 		. "\t</tr>\n";
 		$row++;
