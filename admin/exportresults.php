@@ -45,7 +45,9 @@ if (!isset($type)) {$type=returnglobal('type');}
 //Ensure script is not run directly, avoid path disclosure
 if (empty($surveyid)) {die ("Cannot run this script directly");}
 include_once("login_check.php");
-include_once($homedir."/classes/excelwriter/Writer.php");
+include_once($homedir."/classes/excelwriter/Worksheet.php");
+include_once($homedir."/classes/excelwriter/Workbook.php");
+
 $exportoutput="";
 
 if (!$style)
@@ -311,9 +313,17 @@ switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c
 	$separator="\t";
 	break;
 	case "xls":
-      $xls =& new Spreadsheet_Excel_Writer();
-      $xls->send("results.xls");
-      $sheet =& $xls->addWorksheet('Survey Results');
+      header("Content-type: application/vnd.ms-excel");
+      header("Content-Disposition: attachment; filename=results.xls" );
+      header("Expires: 0");
+      header("Cache-Control: must-revalidate, post-check=0,pre-check=0");
+      header("Pragma: public");
+
+
+      $workbook = new Workbook("-");
+      // Creating the first worksheet
+      $sheet =& $workbook->add_worksheet('Survey Results');
+
       $separator="|";
 	break;
 	case "csv":
@@ -966,7 +976,7 @@ elseif ($answers == "long")
          else {$exportoutput .= "\n";}
     }
 }
-if ($type=='xls') { $xls->close();}
+if ($type=='xls') { $workbook->close();}
     else {echo $exportoutput;}
 exit;
 ?>
