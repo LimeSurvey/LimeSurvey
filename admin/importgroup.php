@@ -319,6 +319,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 	}
 }
 
+
 // DO GROUPS, QUESTIONS FOR GROUPS, THEN ANSWERS FOR QUESTIONS IN A NESTED FORMAT!
 if (isset($grouparray) && $grouparray) {
     $gafieldorders=convertCSVRowToArray($grouparray[0],',','"');
@@ -329,9 +330,9 @@ if (isset($grouparray) && $grouparray) {
 		$grouprowdata=array_combine($gafieldorders,$gacfieldcontents);
 		
 		
-		$surveylanguages=GetAdditionalLanguagesFromSurveyID($sid);
-		$surveylanguages[]=GetBaseLanguageFromSurveyID($sid);
-		if (!array_key_exists($grouprowdata['language'],$surveylanguages)) 
+		$surveylanguages=GetAdditionalLanguagesFromSurveyID($surveyid);
+		$surveylanguages[]=GetBaseLanguageFromSurveyID($surveyid);
+		if (!in_array($grouprowdata['language'],$surveylanguages)) 
 		{
             $skippedlanguages[]=$grouprowdata['language'];
             continue ;
@@ -341,8 +342,7 @@ if (isset($grouparray) && $grouparray) {
 		
 		
 		$gid=$grouprowdata['gid'];
-		$surveyid=$grouprowdata['sid'];
-		$oldsid=$surveyid;
+		$oldsid=$grouprowdata['sid'];
         unset($grouprowdata['gid']);
         $grouprowdata['sid']=$newsid;
 		$oldgid=$gid;

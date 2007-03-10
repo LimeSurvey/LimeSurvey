@@ -298,6 +298,11 @@ if (isset($questionarray) && $questionarray) {
 		unset($questionrowdata['qid']);
 		$questionrowdata["sid"] = $newsid;
 		$questionrowdata["gid"] = $newgid;
+
+        $qmaxqo = "select max(question_order) as maxqo from ".db_table_name('questions')." where sid=$newsid and gid=$newgid";
+		$qres = db_execute_assoc($qmaxqo) or die ("<strong>".$clang->gT("Error")."</strong> Failed to find out maximum question order value<br />\n$qmaxqo<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+        $qrow=$qres->FetchRow();
+		$questionrowdata["question_order"]= $qrow['maxqo']+1; // echo $questionrowdata["question_order"];
         // Now we will fix up the label id 
 		$type = $questionrowdata["type"]; //Get the type
 		if ($type == "F" || $type == "H" || $type == "W" || $type == "Z") 
