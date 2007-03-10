@@ -881,13 +881,15 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 	. "\t\t\t\t\t<td align='right' width='480'>\n"
 	. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' align='right' border='0' width='82' height='20' />\n"
 	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='right' border='0' hspace='0' />\n";
-
-	$usergroupsummary .= "<a href='$scriptname?action=addusergroup'"
-	."onmouseout=\"hideTooltip()\""
-	."onmouseover=\"showTooltip(event,'".$clang->gT("Add New User Group", "js")."');return false\">" .
-	"<img src='$imagefiles/add.png' title='' alt='' " .
-	"align='right' name='AddNewUserGroup' onClick=\"window.open('', '_top')\" /></a>\n";
-
+	
+	if ($_SESSION['loginID'] == 1)
+	{
+		$usergroupsummary .= "<a href='$scriptname?action=addusergroup'"
+		."onmouseout=\"hideTooltip()\""
+		."onmouseover=\"showTooltip(event,'".$clang->gT("Add New User Group", "js")."');return false\">" .
+		"<img src='$imagefiles/add.png' title='' alt='' " .
+		"align='right' name='AddNewUserGroup' onClick=\"window.open('', '_top')\" /></a>\n";
+	}
 	$usergroupsummary .= "\t\t\t\t\t<font class=\"boxcaption\">".$clang->gT("User Groups").":</font>&nbsp;<select class=\"listboxgroups\" name='ugid' "
 	. "onChange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n"
 	. getusergrouplist()
@@ -1689,15 +1691,16 @@ if ($action == "editusers")
 	{
 		$usersummary .= "\t\t<td align='center'><strong>---</strong></td>\n";
 	}
+	$usersummary .= "\t\t<td align='center' style='padding-top:10px;'>\n";
+	
 	if ($_SESSION['loginID'] == 1)
-		{
-	$usersummary .= "\t\t<td align='center' style='padding-top:10px;'>\n"
-	."\t\t\t<form method='post' action='$scriptname'>"
-	."<input type='submit' value='".$clang->gT("Edit User")."' />"
-	."<input type='hidden' name='action' value='modifyuser' />"
-	."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
-	."</form>";
-		}
+	{
+		$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
+		."<input type='submit' value='".$clang->gT("Edit User")."' />"
+		."<input type='hidden' name='action' value='modifyuser' />"
+		."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
+		."</form>";
+	}
 	// users are allowed to delete all successor users (but the admin not himself)
 	if ($usrhimself['parent_id'] != 0 && ($_SESSION['USER_RIGHT_DELETE_USER'] == 1 || ($usrhimself['uid'] == $_SESSION['loginID'])))
 	{
@@ -1733,6 +1736,13 @@ if ($action == "editusers")
 		// passwords of other users will not be displayed
 		$usersummary .=  "\t\t<td align='center'>******</td>\n";
 
+		// Get Parent's User Name
+		$uquery = "SELECT users_name FROM ".db_table_name('users')." WHERE uid=".$usr['parent_id'];
+		$uresult = db_execute_assoc($uquery);
+		$userlist = array();
+		$srow = $uresult->FetchRow();
+		$usr['parent'] = $srow['users_name'];
+		
 		if($_SESSION['USER_RIGHT_MOVE_USER'])
 		{
 			$usersummary .= "\t\t<td align='center'>"
@@ -1752,7 +1762,16 @@ if ($action == "editusers")
 		}
 		else
 		{
-			$usersummary .= "\t\t<td align='center'>{$usr['parent']}</td>\n";
+			
+			
+			//TODO: Find out why parent isn't set
+			if (isset($usr['parent']))
+			{
+				$usersummary .= "\t\t<td align='center'>{$usr['parent']}</td>\n";
+			} else 
+			{
+				$usersummary .= "\t\t<td align='center'>-----</td>\n";
+			}
 		}
 
 		$usersummary .= "\t\t<td align='center' style='padding-top:10px;'>\n";
@@ -1776,7 +1795,7 @@ if ($action == "editusers")
 			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
 			."</form>";
 		}
-		if ($_SESSION['loginID'] == 1 || ($_SESSION['USER_RIGHT_CREATE_USER'] == 1 && ($usr['uid'] == $_SESSION['loginID'] || $usr['parent_id'] == $_SESSION['loginID'])))
+		if ($_SESSION['loginID'] == 1 || $usr['uid'] == $_SESSION['loginID'] || ($_SESSION['USER_RIGHT_CREATE_USER'] == 1 && $usr['parent_id'] == $_SESSION['loginID']))
 		{
 			$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
 			."<input type='submit' value='".$clang->gT("Edit User")."' />"
@@ -1805,7 +1824,9 @@ if ($action == "editusers")
 
 if ($action == "addusergroup")
 {
-	$usersummary = "<form action='$scriptname'  method='post'><table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
+	if ($_SESSION['loginID'] == 1)
+	{
+		$usersummary = "<form action='$scriptname'  method='post'><table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
 		. "\t\t<strong><font color='white'>".$clang->gT("Add User Group")."</font></strong></td></tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<td align='right'><strong>".$clang->gT("Name:")."</strong></td>\n"
@@ -1816,28 +1837,32 @@ if ($action == "addusergroup")
 		. "\t<input type='hidden' name='action' value='usergroupindb' />\n"
 		. "\t</td></table>\n"
 		. "</form>\n";
+	}
 }
 
 if ($action == "editusergroup")
 {
-	$query = "SELECT * FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND owner_id = ".$_SESSION['loginID'];
-	$result = db_select_limit_assoc($query, 1);
-	$esrow = $result->FetchRow();
-	$usersummary = "<form action='$scriptname' name='editusergroup' method='post'>"
-	. "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
-	. "\t\t<strong><font color='white'>".$clang->gT("Edit User Group (Owner: ").$_SESSION['user'].")</font></strong></td></tr>\n"
-	. "\t<tr>\n"
-	. "\t\t<td align='right' width='20%'><strong>".$clang->gT("Name:")."</strong></td>\n"
-	. "\t\t<td><input type='text' size='50' name='name' value=\"{$esrow['name']}\" /></td></tr>\n"
-	. "\t<tr><td align='right'><strong>".$clang->gT("Description:")."</strong>(optional)</td>\n"
-	. "\t\t<td><textarea cols='50' rows='4' name='description'>{$esrow['description']}</textarea></td></tr>\n"
-	. "\t<tr><td colspan='2' align='center'><input type='submit' value='".$clang->gT("Update User Group")."' />\n"
-	. "\t<input type='hidden' name='action' value='editusergroupindb' />\n"
-	. "\t<input type='hidden' name='owner_id' value='".$_SESSION['loginID']."' />\n"
-	. "\t<input type='hidden' name='ugid' value='$ugid' />\n"
-	. "\t</td></tr>\n"
-	. "</table>\n"
-	. "\t</form>\n";
+	if ($_SESSION['loginID'] == 1)
+	{
+		$query = "SELECT * FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND owner_id = ".$_SESSION['loginID'];
+		$result = db_select_limit_assoc($query, 1);
+		$esrow = $result->FetchRow();
+		$usersummary = "<form action='$scriptname' name='editusergroup' method='post'>"
+		. "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
+		. "\t\t<strong><font color='white'>".$clang->gT("Edit User Group (Owner: ").$_SESSION['user'].")</font></strong></td></tr>\n"
+		. "\t<tr>\n"
+		. "\t\t<td align='right' width='20%'><strong>".$clang->gT("Name:")."</strong></td>\n"
+		. "\t\t<td><input type='text' size='50' name='name' value=\"{$esrow['name']}\" /></td></tr>\n"
+		. "\t<tr><td align='right'><strong>".$clang->gT("Description:")."</strong>(optional)</td>\n"
+		. "\t\t<td><textarea cols='50' rows='4' name='description'>{$esrow['description']}</textarea></td></tr>\n"
+		. "\t<tr><td colspan='2' align='center'><input type='submit' value='".$clang->gT("Update User Group")."' />\n"
+		. "\t<input type='hidden' name='action' value='editusergroupindb' />\n"
+		. "\t<input type='hidden' name='owner_id' value='".$_SESSION['loginID']."' />\n"
+		. "\t<input type='hidden' name='ugid' value='$ugid' />\n"
+		. "\t</td></tr>\n"
+		. "</table>\n"
+		. "\t</form>\n";
+	}
 }
 
 if ($action == "mailusergroup")
@@ -1851,8 +1876,8 @@ if ($action == "mailusergroup")
 	$to = '';
 	while ($egurow = $eguresult->FetchRow())
 	{
-		$to .= $egurow['user']. ' <'.$egurow['email'].'>'. ', ' ;
-		$addressee .= $egurow['user'].', ';
+		$to .= $egurow['users_name']. ' <'.$egurow['email'].'>'. ', ' ;
+		$addressee .= $egurow['users_name'].', ';
 	}
 
 	$to = substr("$to", 0, -2);
@@ -1882,6 +1907,8 @@ if ($action == "mailusergroup")
 
 if ($action == "delusergroup")
 {
+		if ($_SESSION['loginID'] == 1)
+	{
 	$usersummary = "<br /><strong>".$clang->gT("Deleting User Group")."</strong><br />\n";
 
 	if(!empty($_GET['ugid']) && $_GET['ugid'] > -1)
@@ -1912,6 +1939,7 @@ if ($action == "delusergroup")
 		$usersummary .= "<br />".$clang->gT("Could not delete user group. No group selected.")."<br />\n";
 	}
 	$usersummary .= "<br /><a href='$scriptname?action=editusergroups'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+	}
 }
 
 if ($action == "usergroupindb") {
