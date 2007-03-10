@@ -45,6 +45,7 @@ if (!isset($type)) {$type=returnglobal('type');}
 //Ensure script is not run directly, avoid path disclosure
 if (empty($surveyid)) {die ("Cannot run this script directly");}
 include_once("login_check.php");
+include_once($homedir."/classes/excelwriter/Writer.php");
 $exportoutput="";
 
 if (!$style)
@@ -310,9 +311,10 @@ switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c
 	$separator="\t";
 	break;
 	case "xls":
-	header("Content-Disposition: attachment; filename=survey.xls");
-	header("Content-type: application/vnd.ms-excel");
-	$separator="\t";
+      $xls =& new Spreadsheet_Excel_Writer();
+      $xls->send("results.xls");
+      $sheet =& $xls->addWorksheet('Survey Results');
+      $separator="|";
 	break;
 	case "csv":
 	header("Content-Disposition: attachment; filename=survey.csv");
@@ -609,6 +611,21 @@ if ($type == "doc")
 	}
 	//print_r($fieldmap);
 }
+elseif ($type == "xls")
+{
+	//var_dump ($firstline);
+    $flarray=explode($separator, $firstline);
+	$fli=0;
+//    $format = $xls->addFormat();
+//    $format->setBold();
+//    $format->setColor("green");	
+	foreach ($flarray as $fl)
+	{
+      $sheet->write(0,$fli,$fl);
+      $fli++;
+	}
+	//print_r($fieldmap);
+}
 else
 {
 	$exportoutput .= $firstline; //Sending the header row
@@ -666,13 +683,24 @@ $dquery .= "ORDER BY $surveytable.id";
 if ($answers == "short") //Nice and easy. Just dump the data straight
 {
 	$dresult = db_execute_assoc($dquery);
+	$rowcounter=0;
 	while ($drow = $dresult->FetchRow())
 	{
-		if ($type == "csv")
+		$rowcounter++;
+        if ($type == "csv")
 		{
 			$exportoutput .= "\"".implode("\"$separator\"", str_replace("\"", "\"\"", str_replace("\r\n", " ", $drow))) . "\"\n"; //create dump from each row
 		}
-		else
+        elseif ($type == "xls")
+        {
+        	$colcounter=0;
+        	foreach ($drow as $rowfield)
+        	{
+              $sheet->write($rowcounter,$colcounter,$rowfield);
+              $colcounter++;
+        	}
+        }		
+        else
 		{
 			$exportoutput .= implode($separator, str_replace("\r\n", " ", $drow)) . "\n"; //create dump from each row
 		}
@@ -683,8 +711,10 @@ elseif ($answers == "long")
 	$debug="";
 	$dresult = db_execute_num($dquery) or die("ERROR: $dquery -".htmlspecialchars($connect->ErrorMsg()));
 	$fieldcount = $dresult->FieldCount();
+    $rowcounter=0;
 	while ($drow = $dresult->FetchRow())
 	{
+		$rowcounter++;
 		if ($type == "doc")
 		{
 			$exportoutput .= "\n\n\nNEW RECORD\n";
@@ -922,9 +952,21 @@ elseif ($answers == "long")
 			$exportoutput .= "$separator";
 			$ftype = "";
 		}
-		$exportoutput .= "\n";
-	}
+		
+        IF ($type=='xls')
+        {
+            $rowarray=explode($separator, $exportoutput);
+        	$fli=0;
+        	foreach ($rowarray as $row)
+        	{
+              $sheet->write($rowcounter,$fli,$row);
+              $fli++;
+        	}
+        }
+         else {$exportoutput .= "\n";}
+    }
 }
-echo $exportoutput;
+if ($type=='xls') { $xls->close();}
+    else {echo $exportoutput;}
 exit;
 ?>
