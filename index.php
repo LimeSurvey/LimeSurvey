@@ -1088,7 +1088,7 @@ function buildsurveysession()
 		</tr>
 		<tr>
 			<td align='center' valign='middle'>
-			<?php echo $clang->gT("Security Question"); ?>:</td><td align='left' valign='middle'><table><tr><td valign='center'><img src='images/verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table>
+			<?php echo $clang->gT("Security Question"); ?>:</td><td align='left' valign='middle'><table><tr><td valign='center'><img src='verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table>
 			</td>
 		</tr>
 		<tr><td colspan="2" align="center"><input class='submit' type='submit' value='<?php echo $clang->gT("Continue") ?>' /></td></tr>
