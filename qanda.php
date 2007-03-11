@@ -617,7 +617,7 @@ function do_list_dropdown($ia)
 		}
 		$answer .= ">".$clang->gT("Other")."</option>\n";
 	}
-	if ($_SESSION[$ia[1]] && (!isset($defexists) || !$defexists) && $ia[6] != "Y" && $shownoanswer == 1) {$answer .= "\t\t\t\t\t\t<option value=' '>".$clang->gT("No answer")."</option>\n";}
+	if ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != "") && (!isset($defexists) || !$defexists) && $ia[6] != "Y" && $shownoanswer == 1) {$answer .= "\t\t\t\t\t\t<option value=' '>".$clang->gT("No answer")."</option>\n";}
 	$answer .= "\t\t\t\t\t</select>\n";
 	$sselect = "\n\t\t\t\t\t<select name='$ia[1]' id='answer$ia[1]' onChange='checkconditions(this.value, this.name, this.type);modfield(this.name);";
 	if (isset($other) && $other=="Y")
@@ -712,7 +712,7 @@ function do_list_flexible_dropdown($ia)
 		}
 		$answer .= ">".$clang->gT("Other")."</option>\n";
 	}
-	if ($_SESSION[$ia[1]] && (!isset($defexists) || !$defexists) && $ia[6] != "Y" && $shownoanswer == 1) {$answer .= "\t\t\t\t\t\t<option value=' '>".$clang->gT("No answer")."</option>\n";}
+	if ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != "") && (!isset($defexists) || !$defexists) && $ia[6] != "Y" && $shownoanswer == 1) {$answer .= "\t\t\t\t\t\t<option value=' '>".$clang->gT("No answer")."</option>\n";}
 	$answer .= "\t\t\t\t\t</select>\n";
 	$sselect = "\n\t\t\t\t\t<select name='$ia[1]' id='answer$ia[1]' onChange='checkconditions(this.value, this.name, this.type);modfield(this.name);";
 	if (isset($other) && $other=="Y")
@@ -811,6 +811,7 @@ function do_list_radio($ia)
 
 		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
 	}
+	
 	if (isset($other) && $other=="Y")
 	{
 		$rowcounter++;
@@ -836,7 +837,7 @@ function do_list_radio($ia)
 	{
 		$rowcounter++;
 		$answer .= "\t\t\t\t\t\t  <input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]NANS' value=' ' ";
-		if ((!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
+		if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == "") && (!isset($defexists) || !$defexists)) || ($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
 		{
 			$answer .= " checked"; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
 		}
@@ -948,7 +949,7 @@ function do_list_flexible_radio($ia)
 	{
 		$rowcounter++;
 		$answer .= "\t\t\t\t\t\t  <input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]NANS' value=' ' ";
-		if ((!isset($defexists) || $defexists != "Y") && (!isset($_SESSION[$ia[1]]) || !$_SESSION[$ia[1]]))
+		if ((!isset($defexists) || $defexists != "Y") && (!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == ""))
 		{
 			$answer .= " checked"; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
 		}
@@ -1007,11 +1008,11 @@ function do_listwithcomment($ia)
 			// --> START NEW FEATURE - SAVE
 			$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]' value=' ' onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)'";
 			// --> END NEW FEATURE - SAVE
-			if ((!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
+			if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == "") && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
 			{
 				$answer .= "checked />";
 			}
-			elseif ($_SESSION[$ia[1]] && (!isset($defexists) || !$defexists))
+			elseif ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != "") && (!isset($defexists) || !$defexists))
 			{
 				$answer .= " />";
 			}
@@ -1062,11 +1063,11 @@ function do_listwithcomment($ia)
 		}
 		if ($ia[6] != "Y" && $shownoanswer == 1)
 		{
-			if ((!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
+			if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == "") && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
 			{
 				$answer .= "\t\t\t\t\t\t<option value=' ' selected>".$clang->gT("No answer")."</option>\n";
 			}
-			elseif ($_SESSION[$ia[1]] && (!isset($defexists) || !$defexists))
+			elseif ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != "") && (!isset($defexists) || !$defexists))
 			{
 				$answer .= "\t\t\t\t\t\t<option value=' '>".$clang->gT("No answer")."</option>\n";
 			}
