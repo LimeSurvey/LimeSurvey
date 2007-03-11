@@ -18,7 +18,7 @@ $grey_shade = ImageColorAllocate($im, 204, 204, 204);
 srand((double)microtime()*1000000); 
 
 $num1 = rand(1,5);
-$found == false;
+$found = false;
 while ($found == false)
 {
 	$num2 = rand(1,100);
