@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-03-10 23:56+0100\n"
+"PO-Revision-Date: 2007-03-11 23:36+0100\n"
 "Last-Translator: \n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1102,6 +1102,10 @@ msgstr "Neue Antwort hinzufügen"
 
 msgid "Failed to insert answer"
 msgstr "Konnte Antwort nicht hinzufügen."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/database.php:566
+msgid "Invalid answer code supplied"
+msgstr "Ungültiger Antwortcode angegeben"
 
 msgid "Save All"
 msgstr "Alles Speichern"
@@ -3011,10 +3015,6 @@ msgstr "Eingeladen?"
 msgid "Completed?"
 msgstr "Ausgefüllt?"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:497
-msgid "MPID"
-msgstr "MPID"
-
 msgid "Edit Token Entry"
 msgstr "Proband bearbeiten"
 
@@ -3144,8 +3144,8 @@ msgstr "Komma getrennte Datei (CSV) hochladen"
 msgid "Note:"
 msgstr "Anmerkung:"
 
-msgid "File should be a standard CSV (comma delimited) file with no quotes. The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [attribute1], [attribute2]\"."
-msgstr "Die Datei sollte eine Standard CSV-Datei sein (Komma-getrennt und ohne Anführungszeichen). Die erste Zeile sollte Feldnamen enthalten (diese werden entfernt). Die Daten/Felder sollten in folgender Reihenfolge sein: 'vorname, name, email, [token], [attribute1], [attribute2]'."
+msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [language code], [attribute1], [attribute2]\"."
+msgstr "Die Datei sollte eine Standard CSV-Datei sein (Komma-getrennt mit doppelten Anführungszeichen). Die erste Zeile sollte die Feldnamen enthalten (diese Zeile wird übersprungen). Die Daten/Felder sollten in folgender Reihenfolge sein: \"vorname, name, email, [token], [attribute1], [attribute2]\"."
 
 msgid "Upload LDAP entries"
 msgstr "LDAP Einträge hochladen"
@@ -3163,11 +3163,32 @@ msgstr "Importiere CSV-Datei"
 msgid "Creating Token Entries"
 msgstr "Erstelle Zugangsschlüssel-Einträge"
 
-msgid "{TOKENCOUNT} Records Created"
-msgstr "{TOKENCOUNT} Einträge erstellt"
+msgid "Failed"
+msgstr "Fehlgeschlagen"
+
+msgid "Records in CSV"
+msgstr "Datensätze in CSV-Datei"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1380
+msgid "Records met minumum requirements"
+msgstr "Datensätze erfüllen die Grundanforderungen"
+
+msgid "Records imported"
+msgstr "Datensätze importiert"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1382
+msgid "Duplicate records removed"
+msgstr "Doppelte Datensätze entfernt"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1383
+msgid "Records with invalid email address removed"
+msgstr "Datensätze mit ungültiger Email-Adresse entfernt"
 
 msgid "Uploading LDAP Query"
 msgstr "Lade LDAP Abfrage hoch"
+
+msgid "{TOKENCOUNT} Records Created"
+msgstr "{TOKENCOUNT} Einträge erstellt"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1420
 msgid "Can't bind to the LDAP directory"
