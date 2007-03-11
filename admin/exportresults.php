@@ -972,6 +972,7 @@ elseif ($answers == "long")
               $sheet->write($rowcounter,$fli,$row);
               $fli++;
         	}
+        	$exportoutput='';
         }
          else {$exportoutput .= "\n";}
     }
