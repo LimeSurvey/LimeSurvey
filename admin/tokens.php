@@ -573,11 +573,11 @@ if ($subaction == "browse" || $subaction == "search")
 		."\t\t<th align='left' valign='top'>"
 		."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=attribute_2&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 		."<img src='$imagefiles/downarrow.png' alt='"
-		.$clang->gT("Sort by: ").$clang->gT("Attribute 2")."' border='0' align='left'></a>".$attr2_name."</th>\n"
-		."\t\t<th align='left' valign='top'>"
-		."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=mpid&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-		."<img src='$imagefiles/downarrow.png' alt='"
-		.$clang->gT("Sort by: ").$clang->gT("MPID")."' border='0' align='left'></a>".$clang->gT("MPID")."</th>\n";
+		.$clang->gT("Sort by: ").$clang->gT("Attribute 2")."' border='0' align='left'></a>".$attr2_name."</th>\n";
+		//."\t\t<th align='left' valign='top'>"
+		//."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=mpid&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
+		//."<img src='$imagefiles/downarrow.png' alt='"
+		//.$clang->gT("Sort by: ").$clang->gT("MPID")."' border='0' align='left'></a>".$clang->gT("MPID")."</th>\n";
 	}
 	$tokenoutput .= "\t\t<th align='left' valign='top' colspan='2'>".$clang->gT("Actions")."</th>\n"
 	."\t</tr>\n";
@@ -1337,7 +1337,7 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
         		$line = array_map('db_quote',$line);
 				if (isset($line[0]) && $line[0] != "" & isset($line[1]) && $line[1] != "" && isset($line[2]) && $line[2] != "")
 				{
-					$dupquery = "SELECT firstname, lastname from ".db_table_name("tokens_$surveyid")." where email=".$connect->qstr($line[2])."";
+					$dupquery = "SELECT firstname, lastname from ".db_table_name("tokens_$surveyid")." where email=".$connect->qstr($line[2])." and firstname = ".$connect->qstr($line[0])." and lastname= ".$connect->qstr($line[1])."";
 					$dupresult = $connect->Execute($dupquery);
 					if ($dupresult->RecordCount() > 0)
 					{
@@ -1346,6 +1346,7 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 					}
 					else 
 					{
+						$line[2] = trim($line[2]);
 						if (!eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$", $line[2]))
 						{
 							$xe++;
