@@ -43,12 +43,12 @@ if ($font_c_rand == 1)
 $font_rand = rand(1,3);
 if ($font_rand == 1)
 {
-	$font = "../fonts/verabd.ttf";
+	$font = "fonts/verabd.ttf";
 } else if ($font_rand == 2) {
-	$font = "../fonts/vera.ttf";
+	$font = "fonts/vera.ttf";
 } else if ($font_rand == 3)
 {
-	$font = "../fonts/verait.ttf";
+	$font = "fonts/verait.ttf";
 }
 
 $line_rand = rand(1,3);
