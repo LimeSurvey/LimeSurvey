@@ -3053,8 +3053,11 @@ function CSVUnquote($field)
 // This function removes surrounding and masking quotes from the CSV field
 // c_schmitz
 {
-    $field=substr($field,1,strlen($field)-2);
+    print $field.":";
+	$field = preg_replace ("/^\040*\"/", "", $field);
+	$field = preg_replace ("/\"\040*$/", "", $field);
     $field=str_replace('""','"',$field);
+    print $field."\n";
     return $field;
 }
 
