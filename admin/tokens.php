@@ -71,18 +71,18 @@ if ($subaction == "export" && $sumrows5['export']) //EXPORT FEATURE SUBMITTED BY
 	$tokenoutput .= "Tid, Firstname, Lastname, Email, Token , Language, Attribute1, Attribute2, mpid\n";
 	while ($brow = $bresult->FetchRow())
 	{
-		$tokenoutput .= trim($brow['tid']).",";
-		$tokenoutput .= trim($brow['firstname']).",";
-		$tokenoutput .= trim($brow['lastname']).",";
-		$tokenoutput .= trim($brow['email']).",";
-		$tokenoutput .= trim($brow['token']).",";
-		$tokenoutput .= trim($brow['language']);
+		$tokenoutput .= '"'.trim($brow['tid'])."\",";
+		$tokenoutput .= '"'.trim($brow['firstname'])."\",";
+		$tokenoutput .= '"'.trim($brow['lastname'])."\",";
+		$tokenoutput .= '"'.trim($brow['email'])."\",";
+		$tokenoutput .= '"'.trim($brow['token'])."\",";
+		$tokenoutput .= '"'.trim($brow['language'])."\"";
 		if($bfieldcount > 8)
 		{
 			$tokenoutput .= ",";
-			$tokenoutput .= trim($brow['attribute_1']).",";
-			$tokenoutput .= trim($brow['attribute_2']).",";
-			$tokenoutput .= trim($brow['mpid']);
+			$tokenoutput .= '"'.trim($brow['attribute_1'])."\",";
+			$tokenoutput .= '"'.trim($brow['attribute_2'])."\",";
+			$tokenoutput .= '"'.trim($brow['mpid'])."\"";
 		}
 		$tokenoutput .= "\n";
 	}
@@ -1265,7 +1265,7 @@ if ($subaction == "import" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 	."\t<tr>\n"
 	."\t\t<td align='center'>\n"
 	."\t\t\t<font size='1'><strong>".$clang->gT("Note:")."</strong><br />\n"
-	."\t\t\t".$clang->gT("File should be a standard CSV (comma delimited) file with no quotes. The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [language code], [attribute1], [attribute2]\".")."\n"
+	."\t\t\t".$clang->gT("File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [language code], [attribute1], [attribute2]\".")."\n"
 	."\t\t</font></td>\n"
 	."\t</tr>\n"
 	."</table><br />\n"
