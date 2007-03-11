@@ -1265,7 +1265,7 @@ if ($subaction == "import" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 	."\t<tr>\n"
 	."\t\t<td align='center'>\n"
 	."\t\t\t<font size='1'><strong>".$clang->gT("Note:")."</strong><br />\n"
-	."\t\t\t".$clang->gT("File should be a standard CSV (comma delimited) file with no quotes. The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [attribute1], [attribute2]\".")."\n"
+	."\t\t\t".$clang->gT("File should be a standard CSV (comma delimited) file with no quotes. The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [language code], [attribute1], [attribute2]\".")."\n"
 	."\t\t</font></td>\n"
 	."\t</tr>\n"
 	."</table><br />\n"
@@ -1315,7 +1315,7 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 	{
 		$tokenoutput .= "<br /><strong>".$clang->gT("Importing CSV File")."</strong><br />\n<font color='green'>".$clang->gT("Success")."</font><br /><br />\n"
 		.$clang->gT("Creating Token Entries")."<br />\n";
-		$xz = 0; $xx = 0;
+		$xz = 0; $xx = 0; $xy = 0; $xv = 0; $xe = 0;
 		// This allows to read file with MAC line endings too
 		@ini_set('auto_detect_line_endings', true);  
 		// open it and trim the ednings
@@ -1334,48 +1334,48 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 		
         		$line = convertCSVRowToArray($buffer,',','"');
         		// sanitize it befire writing into table
-        		$line = array_map('db_quote',$line); 
-				$elements = count($line);
-				if ($elements > 1)
+        		$line = array_map('db_quote',$line);
+				if (isset($line[0]) && $line[0] != "" & isset($line[1]) && $line[1] != "" && isset($line[2]) && $line[2] != "")
 				{
-					$firstname = '';
-					$lastname = '';
-					$email = '';
-					$token = '';
-					$language = '';
-					$attribute1 = '';
-					$attribute2 = '';
-					$xy = 0;
-					foreach($line as $el)
+					$dupquery = "SELECT firstname, lastname from ".db_table_name("tokens_$surveyid")." where email=".$connect->qstr($line[2])."";
+					$dupresult = $connect->Execute($dupquery);
+					if ($dupresult->RecordCount() > 0)
 					{
-						//$tokenoutput .= "[$el]($xy)<br />\n"; //Debugging info
-						if ($xy < $elements)
-						{ if ($xy == 0) {$tid_temp = $el;}
-							if ($xy == 1) {$firstname = $el;}
-							if ($xy == 2) {$lastname = $el;}
-							if ($xy == 3) {$email = trim($el);}
-							if ($xy == 4) {$token = trim($el);}
-							if ($xy == 5) {$language = trim($el);}
-							if ($xy == 6) {$attribute1 = trim($el);}
-							if ($xy == 7) {$attribute2 = trim($el);}
-						}
+						$dupfound = $dupresult->FetchRow();
 						$xy++;
 					}
-					//CHECK FOR DUPLICATES?
-					$iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
-					. "(firstname, lastname, email, token, language, attribute_1, attribute_2";
-					$iq .=") \n"
-					. "VALUES ('$firstname', '$lastname', '$email', '$token', '$language' , '$attribute1', '$attribute2'";
-					$iq .= ")";
-					//$tokenoutput .= "<pre style='text-align: left'>$iq</pre>\n"; //Debugging info
-					$ir = $connect->Execute($iq) or die ("Couldn't insert line<br />\n$buffer<br />\n".htmlspecialchars($connect->ErrorMsg())."<pre style='text-align: left'>$iq</pre>\n");
-					$xz++;
+					else 
+					{
+						if (!eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$", $line[2]))
+						{
+							$xe++;
+						} else 
+						{
+							if (!isset($line[3])) $line[3] = "";
+							if (!isset($line[4])) $line[4] = "";
+							if (!isset($line[5])) $line[5] = "";
+							if (!isset($line[6])) $line[6] = "";
+							$iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
+								. "(firstname, lastname, email, token, language, attribute_1, attribute_2";
+							$iq .=") \n"
+								. "VALUES (".$connect->qstr($line[0]).", ".$connect->qstr($line[1]).", ".$connect->qstr($line[2]).", ".$connect->qstr($line[3]).", ".strtolower($connect->qstr($line[4]))." , ".$connect->qstr($line[5]).", ".$connect->qstr($line[6])."";
+							$iq .= ")";
+							$ir = $connect->Execute($iq) or die ("Couldn't insert line<br />\n$buffer<br />\n".htmlspecialchars($connect->ErrorMsg())."<pre style='text-align: left'>$iq</pre>\n");
+							$xz++;
+						}
+					}
+					$xv++;
 				}
 			}
 			$xx++;
 		}
+		$xx = $xx-1;
 		$tokenoutput .= "<font color='green'>".$clang->gT("Success")."</font><br /><br />\n";
-		$message=str_replace("{TOKENCOUNT}", $xz, $clang->gT("{TOKENCOUNT} Records Created"));
+		$message = "$xx ".$clang->gT("Records in CSV").".<br />\n";
+		$message .= "$xv ".$clang->gT("Records met minumum requirements").".<br />\n";
+		$message .= "$xz ".$clang->gT("Records created").".<br />\n";
+		$message .= "$xy ".$clang->gT("Duplicate records removed").".<br />\n";
+		$message .= "$xe ".$clang->gT("Records with an invalid email address removed").".<br />\n";
 		$tokenoutput .= "<i>$message</i><br />\n";
 		unlink($the_full_file_path);
 	}
