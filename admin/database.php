@@ -539,7 +539,7 @@ if(isset($surveyid))
 		{
 			// Add a new answer button
 			case $clang->gT("Add new Answer", "unescaped"):
-			if (isset($_POST['insertcode']) && $_POST['insertcode']!='')
+			if (isset($_POST['insertcode']) && $_POST['insertcode']!='' && $_POST['insertcode'] != "0")
 			{
 				$_POST  = array_map('db_quote', $_POST);
 				$query = "select max(sortorder) as maxorder from ".db_table_name('answers')." where qid='$qid'";
@@ -562,6 +562,8 @@ if(isset($surveyid))
 						$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
 					}
 				}
+			} else {
+				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Invalid answer code supplied","js")."\")\n //-->\n</script>\n";
 			}
 		break;
 		// Save all answers with one button
@@ -574,12 +576,15 @@ if(isset($surveyid))
         	{
         		$langid=substr($sortorderid,0,strpos($sortorderid,'_')); 
         		$orderid=substr($sortorderid,strpos($sortorderid,'_')+1,20);
-        		$query = "UPDATE ".db_table_name('answers')." SET code=".$connect->qstr($_POST['code_'.$codeids[$count]]).
-                         ",	answer=".$connect->qstr($_POST['answer_'.$sortorderid])." WHERE qid='$qid' and sortorder=$orderid and language='$langid'";
-        		if (!$result = $connect->Execute($query))
+        		if ($_POST['code_'.$codeids[$count]] != "0")
         		{
-        			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update answers","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
-    			}
+        			$query = "UPDATE ".db_table_name('answers')." SET code=".$connect->qstr($_POST['code_'.$codeids[$count]]).
+                         	 ",	answer=".$connect->qstr($_POST['answer_'.$sortorderid])." WHERE qid='$qid' and sortorder=$orderid and language='$langid'";
+        			if (!$result = $connect->Execute($query))
+        			{
+        				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update answers","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+    				}
+        		}
     			$count++;
     			if ($count>count($codeids)-1) {$count=0;}
 		    }
