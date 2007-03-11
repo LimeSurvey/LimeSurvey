@@ -1378,9 +1378,9 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 		}
 		$message = "$xx ".$clang->gT("Records in CSV").".<br />\n";
 		$message .= "$xv ".$clang->gT("Records met minumum requirements").".<br />\n";
-		$message .= "$xz ".$clang->gT("Records created").".<br />\n";
+		$message .= "$xz ".$clang->gT("Records imported").".<br />\n";
 		$message .= "$xy ".$clang->gT("Duplicate records removed").".<br />\n";
-		$message .= "$xe ".$clang->gT("Records with an invalid email address removed").".<br />\n";
+		$message .= "$xe ".$clang->gT("Records with invalid email address removed").".<br />\n";
 		$tokenoutput .= "<i>$message</i><br />\n";
 		unlink($the_full_file_path);
 	}
