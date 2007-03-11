@@ -1352,7 +1352,7 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 						} else 
 						{
 							if (!isset($line[3])) $line[3] = "";
-							if (!isset($line[4])) $line[4] = "";
+							if (!isset($line[4]) || $line[4] == "") $line[4] = GetBaseLanguageFromSurveyID($surveyid);
 							if (!isset($line[5])) $line[5] = "";
 							if (!isset($line[6])) $line[6] = "";
 							$iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
