@@ -37,14 +37,14 @@
 // === Basic Setup
 
 $databasetype       =   "mysql";       // ADOdb database driver - either mysql or odbc_mssql
-$databaselocation   =   "localhost";     // Network location of your Database - for odbc_mssql use the mssql servername, not localhost or IP
+$databaselocation   =   "localhost";   // Network location of your Database - for odbc_mssql use the mssql servername, not localhost or IP
 $databaseport       =   "default";     // The port of your Database - if you use a standard port leave on default
 $databasename       =   "phpsurveyor"; // The name of the database that we will create
 $databaseuser       =   "root";        // The name of a user with rights to create db (or if db already exists, then rights within that db)
 $databasepass       =   "";            // Password of db user
 $dbprefix           =   "phpsv_";      // A global prefix that can be added to all PHPSurveyor tables. Use this if you are sharing
                                        // a database with other applications. Suggested prefix is "phpsv_"
-
+$databasetabletype  =   "InnoDB";		   // Storage engine used for survey results table, if availible InnoDB is recommended. Default is ISAM
 $useidprefix        =   0;             // Set this to 1 if you want to use a prefix on survey responses (useful for replicated/pooled databases)
 $idprefix           =   0;             // Leave this as 0 to use your server's IP address. Alternatively, use a number here - characters WILL NOT WORK.
 
