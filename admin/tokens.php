@@ -1370,7 +1370,12 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 			$xx++;
 		}
 		$xx = $xx-1;
-		$tokenoutput .= "<font color='green'>".$clang->gT("Success")."</font><br /><br />\n";
+		if ($xz != 0)
+		{
+			$tokenoutput .= "<font color='green'>".$clang->gT("Success")."</font><br /><br />\n";
+		} else {
+			$tokenoutput .= "<font color='red'>".$clang->gT("Failed")."</font><br /><br />\n";
+		}
 		$message = "$xx ".$clang->gT("Records in CSV").".<br />\n";
 		$message .= "$xv ".$clang->gT("Records met minumum requirements").".<br />\n";
 		$message .= "$xz ".$clang->gT("Records created").".<br />\n";
