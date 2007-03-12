@@ -47,7 +47,7 @@ if (!isset($_SESSION['loginID']))
 		if (isset($_POST['user']) && isset($_POST['email']))
 		{
 			include("database.php");
-			$query = "SELECT users_name, password, uid FROM {$dbprefix}users WHERE users_name='{$_POST['user']}' AND email='{$_POST['email']}'";
+			$query = "SELECT users_name, password, uid FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($_POST['user'])." AND email=".$connect->qstr($_POST['email']);
 			$result = db_select_limit_assoc($query, 1) or die ($query."<br />".$connect->ErrorMsg());
 
 			if ($result->RecordCount() < 1)
@@ -73,7 +73,7 @@ if (!isset($_SESSION['loginID']))
 
 				if(MailTextMessage($body, $subject, $to, $from, $sitename))
 				{
-					$query = "UPDATE {$dbprefix}users SET password='".SHA256::hash($new_pass)."' WHERE uid={$fields['uid']}";
+					$query = "UPDATE ".db_table_name('users')." SET password='".SHA256::hash($new_pass)."' WHERE uid={$fields['uid']}";
 					$connect->Execute($query);
 					$loginsummary .= "<br />".$clang->gT("Username").": {$fields['users_name']}<br />".$clang->gT("Email").": {$_POST['email']}<br />";
 					$loginsummary .= "<br />".$clang->gT("An email with your login data was sent to you.");
@@ -95,7 +95,7 @@ if (!isset($_SESSION['loginID']))
 		if (isset($_POST['user']) && isset($_POST['password']))
 		{
 			include("database.php");
-			$query = "SELECT uid, users_name, password, parent_id, email, lang FROM {$dbprefix}users WHERE users_name='{$_POST['user']}'";
+			$query = "SELECT uid, users_name, password, parent_id, email, lang FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($_POST['user']);
 			$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 			$result = $connect->SelectLimit($query, 1) or die ($query."<br />".$connect->ErrorMsg());
 			if ($result->RecordCount() < 1)
@@ -179,7 +179,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 			$newqid = $connect->Insert_ID();
 
 			// add new user to userlist
-			$squery = "SELECT uid, users_name, password, parent_id, email, create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label FROM {$dbprefix}users WHERE uid='{$newqid}'";			//added by Dennis
+			$squery = "SELECT uid, users_name, password, parent_id, email, create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label FROM ".db_table_name('users')." WHERE uid='{$newqid}'";			//added by Dennis
 			$sresult = db_execute_assoc($squery);
 			$srow = $sresult->FetchRow();
 
@@ -262,7 +262,7 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($_POST[
 
 				if (isset($fields[0]))
 				{
-					$uquery = "UPDATE {$dbprefix}users SET parent_id={$fields[0]} WHERE parent_id={$_POST['uid']}";	//		added by Dennis
+					$uquery = "UPDATE ".db_table_name('users')." SET parent_id={$fields[0]} WHERE parent_id={$_POST['uid']}";	//		added by Dennis
 					$uresult = $connect->Execute($uquery);
 				}
 
@@ -311,9 +311,9 @@ elseif ($action == "moduser")
 			$failed = false;
 			if(empty($pass))
 			{
-				$uquery = "UPDATE {$dbprefix}users SET email='{$email}', full_name='{$full_name}' WHERE uid={$_POST['uid']}";
+				$uquery = "UPDATE ".db_table_name('users')." SET email='{$email}', full_name='{$full_name}' WHERE uid={$_POST['uid']}";
 			} else {
-				$uquery = "UPDATE {$dbprefix}users SET email='{$email}', full_name='{$full_name}', password='".SHA256::hash($pass)."' WHERE uid={$_POST['uid']}";
+				$uquery = "UPDATE ".db_table_name('users')." SET email='{$email}', full_name='{$full_name}', password='".SHA256::hash($pass)."' WHERE uid={$_POST['uid']}";
 			}
 			
 			$uresult = $connect->Execute($uquery);
