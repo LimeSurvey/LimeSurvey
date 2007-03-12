@@ -189,17 +189,21 @@ if(isset($_SESSION['loginID']) && $action!='login')
   if ($action=="assessments" || $action=="assessmentdelete" || $action=="assessmentedit" || $action=="foo"
       || $action=="assessmentadd" || $action=="assessmentupdate" || $action=="foo")  {	include("assessments.php"); }
   else    
-  if (isset($surveyid) || $action=="listurveys" || $action=="changelang" || $action=="adduser" || 
-      $action=="deluser" || $action=="moduser" || $action=="userrights" || $action=="modifyuser" ||
-      $action=="editusers" || $action=="addusergroup" || $action=="editusergroup" || $action=="mailusergroup" ||
-      $action=="delusergroup" || $action=="usergroupindb" || $action=="mailsendusergroup" || $action=="editusergroupindb" ||
-      $action=="editusergroups" || $action=="deleteuserfromgroup" || $action=="checksettings" ||
-      $action=="editsurvey" || $action=="updatesurvey" || $action=="ordergroups" || $action=="addusertogroup" ||
+  if (isset($surveyid) || $action=="listurveys" || $action=="changelang" ||  $action=="checksettings" ||
+      $action=="editsurvey" || $action=="updatesurvey" || $action=="ordergroups"  ||
       $action=="uploadf" || $action=="newsurvey" || $action=="listsurveys" || $action=="setuserrights" ||
-      $action=="addgroup" || $action=="editgroup" || $action=="surveyrights" ) include("html.php");
+       $action=="surveyrights" ) include("html.php");
       
  if ($action=="addquestion" || $action=="copyquestion" || $action=="editquestion"  || $action=="orderquestions" ||
      $action=="editattribute" || $action=="delattribute" || $action=="addattribute" ) include ("questionhandling.php");
+
+ if ($action=="adduser" || $action=="deluser" || $action=="moduser" || 
+     $action=="userrights" || $action=="modifyuser" || $action=="editusers" || 
+     $action=="addusergroup" || $action=="editusergroup" || $action=="mailusergroup" ||
+     $action=="delusergroup" || $action=="usergroupindb" || $action=="mailsendusergroup" || 
+     $action=="editusergroupindb" || $action=="editusergroups" || $action=="deleteuserfromgroup" ||
+     $action=="addgroup" || $action=="editgroup" || $action=="addusertogroup" ) include ("userrighthandling.php");
+
   
   // For some output we dont want to have the standard admin menu bar
   if (!isset($labelsoutput)  && !isset($templatesoutput) && !isset($printablesurveyoutput) && 
