@@ -169,13 +169,13 @@ if(isset($_SESSION['loginID']) && $action!='login')
   else  
   if ($action=="statistics")  {	include("statistics.php"); }
   else  
-  if ($action=="dataentry")  {	include("dataentry.php"); }
+  if ($action=="dataentry")  { include("dataentry.php"); }
   else  
   if ($action=="browse")  {	include("browse.php"); }
   else  
   if ($action=="tokens")  {	include("tokens.php"); }
   else  
-  if ($action=="showprintablesurvey")  {	include("printablesurvey.php"); }
+  if ($action=="showprintablesurvey")  { include("printablesurvey.php"); }
   else  
   if ($action=="checkintegrity")  {	include("integritycheck.php"); }
   else
@@ -183,19 +183,21 @@ if(isset($_SESSION['loginID']) && $action!='login')
       $action=="deletelabelset" || $action=="editlabelset" || $action=="modlabelsetanswers" || 
       $action=="updateset" || $action=="importlabels") { include("labels.php");}
   else    
-  if ($action=="templates" || $action=="templatecopy" || $action=="templatesavechanges" || $action=="templaterename"
-      || $action=="templateupload" || $action=="templatefiledelete" || $action=="templatezip")  {	include("templates.php"); }
+  if ($action=="templates" || $action=="templatecopy" || $action=="templatesavechanges" || 
+      $action=="templaterename" || $action=="templateupload" || $action=="templatefiledelete" || 
+      $action=="templatezip")  { include("templates.php"); }
   else    
-  if ($action=="assessments" || $action=="assessmentdelete" || $action=="assessmentedit" || $action=="foo"
-      || $action=="assessmentadd" || $action=="assessmentupdate" || $action=="foo")  {	include("assessments.php"); }
+  if ($action=="assessments"   || $action=="assessmentdelete" || $action=="assessmentedit" ||
+      $action=="assessmentadd" || $action=="assessmentupdate")  {	include("assessments.php"); }
   else    
   if (isset($surveyid) || $action=="listurveys" || $action=="changelang" ||  $action=="checksettings" ||
       $action=="editsurvey" || $action=="updatesurvey" || $action=="ordergroups"  ||
-      $action=="uploadf" || $action=="newsurvey" || $action=="listsurveys" || $action=="setuserrights" ||
-       $action=="surveyrights" ) include("html.php");
+      $action=="uploadf" || $action=="newsurvey" || $action=="listsurveys" || 
+      $action=="setuserrights" || $action=="surveyrights" ) include("html.php");
       
- if ($action=="addquestion" || $action=="copyquestion" || $action=="editquestion"  || $action=="orderquestions" ||
-     $action=="editattribute" || $action=="delattribute" || $action=="addattribute" ) include ("questionhandling.php");
+ if ($action=="addquestion" || $action=="copyquestion" || $action=="editquestion"  || 
+     $action=="orderquestions" || $action=="editattribute" || $action=="delattribute" || 
+     $action=="addattribute" ) include ("questionhandling.php");
 
  if ($action=="adduser" || $action=="deluser" || $action=="moduser" || 
      $action=="userrights" || $action=="modifyuser" || $action=="editusers" || 
