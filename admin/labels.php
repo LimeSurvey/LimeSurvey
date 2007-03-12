@@ -322,7 +322,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     			
     			$labelsoutput.= "\t</td>\n"
     			."\t<td width='35%'>\n"
-    			."\t<input type='text' name='title_{$row['language']}_{$row['sortorder']}' maxlength='100' size='80' value=\"{$row['title']}\" />\n"
+    			."\t<input type='text' name='title_{$row['language']}_{$row['sortorder']}' maxlength='100' size='80' value=\"".html_escape($row['title'])."\" />\n"
     			."\t</td>\n"
     			."\t<td width='25%'>\n";
     			if ($activeuse == 0)

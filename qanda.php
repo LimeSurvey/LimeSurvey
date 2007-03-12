@@ -2437,7 +2437,7 @@ function do_array_flexible($ia)
 			{
 				$answer .= "\t\t\t\t\t<td align='center' width='$cellwidth%'><label for='answer$myfname-$ld'>";
 				$answer .= "<input class='radio' type='radio' name='$myfname' value='$ld' id='answer$myfname-$ld' title='"
-				. $labelans[$thiskey]."'";
+				. html_escape($labelans[$thiskey])."'";
 				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ld) {$answer .= " checked";}
 				// --> START NEW FEATURE - SAVE
 				$answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)' /></label></td>\n";
@@ -2538,7 +2538,7 @@ function do_array_flexiblecolumns($ia)
 			$answer .= "\t\t\t\t\t<td align='center' class='$trbc' width='$cellwidth%'>"
 			. "<label for='answer$myfname-".$ansrow['code']."'>";
 			$answer .= "<input class='radio' type='radio' name='$myfname' value='".$ansrow['code']."' id='answer$myfname-".$ansrow['code']."'"
-			. " title='".$ansrow['answer']."'";
+			. " title='".html_escape($ansrow['answer'])."'";
 			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ansrow['code']) {$answer .= " checked";}
 			// --> START NEW FEATURE - SAVE
 			$answer .= " onClick='checkconditions(this.value, this.name, this.type)' onChange='modfield(this.name)' /></label></td>\n";
