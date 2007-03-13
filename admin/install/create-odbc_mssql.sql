@@ -313,5 +313,5 @@ GO
 -- Table [users]
 --
 
-INSERT INTO [prefix_users] VALUES (NULL, '$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);
+INSERT INTO [prefix_users] VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);
 GO
