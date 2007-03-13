@@ -39,7 +39,7 @@ include_once("login_check.php");
 
 // A FILE TO IMPORT A DUMPED question FILE, AND CREATE A NEW SURVEY
 
-$importquestion = "<br />\n"
+$importquestion = "<br /><table width='100%' align='center'><tr><td>\n";
 ."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 ."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 .$clang->gT("Import Question")."</strong></td></tr>\n"

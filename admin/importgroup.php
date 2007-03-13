@@ -40,10 +40,10 @@ include_once("login_check.php");
 
 // A FILE TO IMPORT A DUMPED SURVEY FILE, AND CREATE A NEW SURVEY
 
-$importgroup = "<br />\n";
+$importgroup = "<br /><table width='100%' align='center'><tr><td>\n";
 $importgroup .= "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-$importgroup .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Import Group")."</strong></td></tr>\n";
-$importgroup .= "\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
+$importgroup .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Import Group")."</strong></font></td></tr>\n";
+$importgroup .= "\t<tr bgcolor='#CCCCCC'><td align='center'>\n";
 
 $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 
@@ -358,14 +358,21 @@ if (isset($grouparray) && $grouparray) {
 		
 		//NOW DO NESTED QUESTIONS FOR THIS GID
 		if (isset($questionarray) && $questionarray) {
+            $currentqid='';
 			foreach ($questionarray as $qa) {
                 $qacfieldcontents=convertCSVRowToArray($qa,',','"');
         		$questionrowdata=array_combine($questionfieldnames,$qacfieldcontents);
+                if ($currentqid=='' || ($currentqid!=$questionrowdata['qid'])) {$currentqid=$questionrowdata['qid'];$newquestion=true;}
+                  else 
+                    if ($currentqid==$questionrowdata['qid']) {$newquestion=false;}   
+                     		
 				$thisgid=$questionrowdata['gid'];
 				if ($thisgid == $gid) {
 					$qid = $questionrowdata['qid'];
 					// Remove qid field
-					unset($questionrowdata['qid']);
+					if ($newquestion) {unset($questionrowdata['qid']);}
+					   else {$questionrowdata['qid']=$newqid;}
+					   
 					$questionrowdata["sid"] = $newsid;
 					$questionrowdata["gid"] = $newgid;
 					$oldqid=$qid;
@@ -382,15 +389,13 @@ if (isset($grouparray) && $grouparray) {
 						}
                     }
 					$other = $questionrowdata["other"]; //Get 'other' field value
-                    $newvalues=array_values($questionrowdata);
+                    $oldlid = $questionrowdata['lid'];
+                     $newvalues=array_values($questionrowdata);
                     $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                     $qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
 					$qres = $connect->Execute($qinsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+                    if ($newquestion) {$newqid=$connect->Insert_ID();}
                     $countquestions++;
-					$qidquery = "SELECT qid, lid FROM {$dbprefix}questions ORDER BY qid DESC"; //Get last question added (finds new qid)
-					$qidres = db_select_limit_assoc($qidquery, 1);
-					while ($qrow = $qidres->FetchRow()) {$newqid = $qrow['qid']; $oldlid=$qrow['lid'];}
-					
 					$newrank=0;
 					$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
 					//NOW DO NESTED ANSWERS FOR THIS QID

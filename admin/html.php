@@ -813,7 +813,7 @@ if ($surveyid)
 }
 
 
-if ($gid)   // Show the group toolbar
+if ($surveyid && $gid )   // Show the group toolbar
 {
 	// TODO: check that surveyid and thus baselang are always set here
 	$sumquery4 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND
@@ -972,7 +972,7 @@ if ($gid)   // Show the group toolbar
 	$groupsummary .= "\n</table></table>\n";
 }
 
-if ($qid)  // Show the question toolbar
+if ($surveyid && $gid && $qid)  // Show the question toolbar
 {
 	// TODO: check that surveyid is set and that so is $baselang
 	//Show Question Details
