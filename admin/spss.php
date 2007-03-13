@@ -40,12 +40,12 @@ if (!isset($type)) {$type=returnglobal('type');}
 
 if (empty($surveyid)) {die("Cannot run this script directly");}
 #Get all legitimate question ids
-/*
+
 header("Content-Type: application/octetstream");
 header("Content-Disposition: ".
 (strpos($_SERVER["HTTP_USER_AGENT"],"MSIE 5.5")?""
 :"attachment; ").
-"filename=survey.sps");*/
+"filename=survey.sps");
 
 // Get Base Language:
 
