@@ -5,7 +5,7 @@
 *  The majority of this is _NOT_ my code.  I simply ported it from the
 *  PERL Spreadsheet::WriteExcel module.
 *
-*  The author of the Spreadsheet::WriteExcel module is John McNamara
+*  The author of the Spreadsheet::WriteExcel module is John McNamara 
 *  <jmcnamara@cpan.org>
 *
 *  I _DO_ maintain this code, and John McNamara has nothing to do with the
@@ -14,8 +14,8 @@
 *
 *  License Information:
 *
-*    Spreadsheet::WriteExcel:  A library for generating Excel Spreadsheets
-*    Copyright (C) 2002 Xavier Noguer xnoguer@rezebra.com
+*    Spreadsheet_Excel_Writer:  A library for generating Excel Spreadsheets
+*    Copyright (c) 2002-2003 Xavier Noguer xnoguer@rezebra.com
 *
 *    This library is free software; you can redistribute it and/or
 *    modify it under the terms of the GNU Lesser General Public
@@ -32,13 +32,16 @@
 *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+
 /**
 * Class for creating OLE streams for Excel Spreadsheets
 *
-* @author Xavier Noguer <xnoguer@rezebra.com>
-* @package Spreadsheet_WriteExcel
+* @author   Xavier Noguer <xnoguer@rezebra.com>
+* @category FileFormats
+* @package  Spreadsheet_Excel_Writer
 */
-class OLEwriter
+
+class Spreadsheet_Excel_Writer_OLEwriter 
 {
     /**
     * Filename for the OLE stream
@@ -96,16 +99,17 @@ class OLEwriter
     var $_root_start;
 
     /**
-    * Class for creating an OLEwriter
+    * Constructor for the OLEwriter class
     *
     * @param string $OLEfilename the name of the file for the OLE stream
     */
-    function OLEwriter($OLEfilename)
+    function Spreadsheet_Excel_Writer_OLEwriter($OLEfilename)
     {
         $this->_OLEfilename  = $OLEfilename;
         $this->_filehandle   = "";
         $this->_tmp_filename = "";
         $this->_fileclosed   = 0;
+        $this->_biff_only    = 0;
         //$this->_size_allowed = 0;
         $this->_biffsize     = 0;
         $this->_booksize     = 0;
@@ -116,10 +120,12 @@ class OLEwriter
         $this->_initialize();
     }
 
-/**
-* Check for a valid filename and store the filehandle.
-* Filehandle "-" writes to STDOUT
-*/
+    /**
+    * Check for a valid filename and store the filehandle.
+    * Filehandle "-" writes to STDOUT
+    *
+    * @access private
+    */
     function _initialize()
     {
         $OLEfile = $this->_OLEfilename;
@@ -129,7 +135,7 @@ class OLEwriter
             $this->_tmp_filename = tempnam("/tmp", "OLEwriter");
             $fh = fopen($this->_tmp_filename,"wb");
             if ($fh == false) {
-                die("Can't create temporary file.");
+                $this->raiseError("Can't create temporary file.");
             }
         }
         else
@@ -137,10 +143,10 @@ class OLEwriter
             // Create a new file, open for writing (in binmode)
             $fh = fopen($OLEfile,"wb");
             if ($fh == false) {
-                die("Can't open $OLEfile. It may be in use or protected.");
+                $this->raiseError("Can't open $OLEfile. It may be in use or protected.");
             }
         }
-
+ 
         // Store filehandle
         $this->_filehandle = $fh;
     }
@@ -154,16 +160,16 @@ class OLEwriter
     *   $maxsize    = $big_blocks * 512 bytes = 7087104
     *
     * @access public
-    * @see Workbook::store_OLE_file()
+    * @see Spreadsheet_Excel_Writer_Workbook::store_OLE_file()
     * @param integer $biffsize The size of the data to be written to the OLE stream
     * @return integer 1 for success
     */
-    function set_size($biffsize)
+    function setSize($biffsize)
     {
         $maxsize = 7087104; // TODO: extend max size
  
         if ($biffsize > $maxsize) {
-            die("Maximum file size, $maxsize, exceeded.");
+            $this->raiseError("Maximum file size, $maxsize, exceeded.");
         }
  
         $this->_biffsize = $biffsize;
@@ -181,8 +187,10 @@ class OLEwriter
 
     /**
     * Calculate various sizes needed for the OLE stream
+    *
+    * @access private
     */
-    function _calculate_sizes()
+    function _calculateSizes()
     {
         $datasize = $this->_booksize;
         if ($datasize % 512 == 0) {
@@ -203,24 +211,23 @@ class OLEwriter
     * having to wait for DESTROY.
     *
     * @access public
-    * @see Workbook::store_OLE_file()
+    * @see Spreadsheet_Excel_Writer_Workbook::store_OLE_file()
     */
     function close() 
     {
         //return if not $this->{_size_allowed};
-        $this->_write_padding();
-        $this->_write_property_storage();
-        $this->_write_big_block_depot();
+        $this->_writePadding();
+        $this->_writePropertyStorage();
+        $this->_writeBigBlockDepot();
         // Close the filehandle 
         fclose($this->_filehandle);
         if(($this->_OLEfilename == '-') or ($this->_OLEfilename == ''))
         {
             $fh = fopen($this->_tmp_filename, "rb");
             if ($fh == false) {
-                die("Can't read temporary file.");
+                $this->raiseError("Can't read temporary file.");
             }
             fpassthru($fh);
-            // Delete the temporary file.
             @unlink($this->_tmp_filename);
         }
         $this->_fileclosed = 1;
@@ -232,7 +239,7 @@ class OLEwriter
     *
     * @param string $data string of bytes to be written
     */
-    function write($data) //por ahora sólo a STDOUT
+    function write($data)
     {
         fwrite($this->_filehandle,$data,strlen($data));
     }
@@ -241,9 +248,9 @@ class OLEwriter
     /**
     * Write OLE header block.
     */
-    function write_header()
+    function writeHeader()
     {
-        $this->_calculate_sizes();
+        $this->_calculateSizes();
         $root_start      = $this->_root_start;
         $num_lists       = $this->_list_blocks;
         $id              = pack("nnnn", 0xD0CF, 0x11E0, 0xA1B1, 0x1AE1);
@@ -285,8 +292,10 @@ class OLEwriter
 
     /**
     * Write big block depot.
+    *
+    * @access private
     */
-    function _write_big_block_depot()
+    function _writeBigBlockDepot()
     {
         $num_blocks   = $this->_big_blocks;
         $num_lists    = $this->_list_blocks;
@@ -313,17 +322,19 @@ class OLEwriter
         }
     }
 
-/**
-* Write property storage. TODO: add summary sheets
-*/
-    function _write_property_storage()
+    /**
+    * Write property storage. TODO: add summary sheets
+    *
+    * @access private
+    */
+    function _writePropertyStorage()
     {
         //$rootsize = -2;
         /***************  name         type   dir start size */
-        $this->_write_pps("Root Entry", 0x05,   1,   -2, 0x00);
-        $this->_write_pps("Book",       0x02,  -1, 0x00, $this->_booksize);
-        $this->_write_pps('',           0x00,  -1, 0x00, 0x0000);
-        $this->_write_pps('',           0x00,  -1, 0x00, 0x0000);
+        $this->_writePps("Root Entry", 0x05,   1,   -2, 0x00);
+        $this->_writePps("Book",       0x02,  -1, 0x00, $this->_booksize);
+        $this->_writePps('',           0x00,  -1, 0x00, 0x0000);
+        $this->_writePps('',           0x00,  -1, 0x00, 0x0000);
     }
 
 /**
@@ -336,7 +347,7 @@ class OLEwriter
 * @param integer $size  size of the property storage.
 * @access private
 */
-    function _write_pps($name,$type,$dir,$start,$size)
+    function _writePps($name,$type,$dir,$start,$size)
     {
         $length  = 0;
         $rawname = '';
@@ -392,8 +403,10 @@ class OLEwriter
 
     /**
     * Pad the end of the file
+    *
+    * @access private
     */
-    function _write_padding()
+    function _writePadding()
     {
         $biffsize = $this->_biffsize;
         if ($biffsize < 4096) {

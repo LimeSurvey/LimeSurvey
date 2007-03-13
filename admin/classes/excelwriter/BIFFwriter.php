@@ -14,8 +14,8 @@
 *
 *  License Information:
 *
-*    Spreadsheet::WriteExcel:  A library for generating Excel Spreadsheets
-*    Copyright (C) 2002 Xavier Noguer xnoguer@rezebra.com
+*    Spreadsheet_Excel_Writer:  A library for generating Excel Spreadsheets
+*    Copyright (c) 2002-2003 Xavier Noguer xnoguer@rezebra.com
 *
 *    This library is free software; you can redistribute it and/or
 *    modify it under the terms of the GNU Lesser General Public
@@ -32,6 +32,7 @@
 *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+
 /**
 * Class for writing Excel BIFF records.
 * 
@@ -44,31 +45,57 @@
 * formula entered into a cell; one describes the size and location of a 
 * window into a document; another describes a picture format.
 *
-* @author Xavier Noguer <xnoguer@rezebra.com>
-* @package Spreadsheet_WriteExcel
+* @author   Xavier Noguer <xnoguer@rezebra.com>
+* @category FileFormats
+* @package  Spreadsheet_Excel_Writer
 */
 
-class BIFFWriter
+class Spreadsheet_Excel_Writer_BIFFwriter 
 {
+    /**
+    * The BIFF/Excel version (5). 
+    * @var integer
+    */
     var $_BIFF_version = 0x0500;
 
-/**
-* Constructor
-*
-* @access public
-*/
-    function BIFFwriter()
+    /**
+    * The byte order of this architecture. 0 => little endian, 1 => big endian 
+    * @var integer
+    */
+    var $_byte_order;
+
+    /**
+    * The string containing the data of the BIFF stream
+    * @var string
+    */
+    var $_data;
+
+    /**
+    * The size of the data in bytes. Should be the same as strlen($this->_data)
+    * @var integer
+    */
+    var $_datasize;
+
+    /**
+    * The maximun length for a BIFF record. See _addContinue()
+    * @var integer
+    * @see _addContinue()
+    */
+    var $_limit;
+ 
+    /**
+    * Constructor
+    *
+    * @access public
+    */
+    function Spreadsheet_Excel_Writer_BIFFwriter()
     {
-        // The byte order of this architecture. 0 => little endian, 1 => big endian
         $this->_byte_order = '';
-        // The string containing the data of the BIFF stream
         $this->_data       = '';
-        // Should be the same as strlen($this->_data)
         $this->_datasize   = 0;
-        // The maximun length for a BIFF record. See _add_continue()
         $this->_limit      = 2080;   
         // Set the byte order
-        $this->_set_byte_order();
+        $this->_setByteOrder();
     }
 
 /**
@@ -77,7 +104,7 @@ class BIFFWriter
 *
 * @access private
 */
-    function _set_byte_order()
+    function _setByteOrder()
     {
         if ($this->_byte_order == '')
         {
@@ -92,10 +119,8 @@ class BIFFWriter
             }
             else {
                 // Give up. I'll fix this in a later version.
-                die("Required floating point format not supported ".
-                    "on this platform. See the portability section ".
-                    "of the documentation."
-                   );
+                $this->raiseError("Required floating point format not supported ".
+                    "on this platform.");
             }
         }
         $this->_byte_order = $byte_order;
@@ -110,7 +135,7 @@ class BIFFWriter
     function _prepend($data)
     {
         if (strlen($data) > $this->_limit) {
-            $data = $this->_add_continue($data);
+            $data = $this->_addContinue($data);
         }
         $this->_data      = $data.$this->_data;
         $this->_datasize += strlen($data);
@@ -125,7 +150,7 @@ class BIFFWriter
     function _append($data)
     {
         if (strlen($data) > $this->_limit) {
-            $data = $this->_add_continue($data);
+            $data = $this->_addContinue($data);
         }
         $this->_data      = $this->_data.$data;
         $this->_datasize += strlen($data);
@@ -138,7 +163,7 @@ class BIFFWriter
 * @param  integer $type type of BIFF file to write: 0x0005 Workbook, 0x0010 Worksheet.
 * @access private
 */
-    function _store_bof($type)
+    function _storeBof($type)
     {
         $record  = 0x0809;        // Record identifier
         $length  = 0x0008;        // Number of bytes to follow
@@ -160,7 +185,7 @@ class BIFFWriter
 *
 * @access private
 */
-    function _store_eof() 
+    function _storeEof() 
     {
         $record    = 0x000A;   // Record identifier
         $length    = 0x0000;   // Number of bytes to follow
@@ -180,7 +205,7 @@ class BIFFWriter
 * @return string        A very convenient string of continue blocks
 * @access private
 */
-    function _add_continue($data)
+    function _addContinue($data)
     {
         $limit      = $this->_limit;
         $record     = 0x003C;         // Record identifier
@@ -197,7 +222,7 @@ class BIFFWriter
             $tmp .= $header;
             $tmp .= substr($data, $i, $limit);
         }
-
+ 
         // Retrieve the last chunk of data
         $header  = pack("vv", $record, strlen($data) - $i);
         $tmp    .= $header;
