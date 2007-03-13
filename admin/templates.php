@@ -500,11 +500,11 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	."<img src='$imagefiles/blank.gif' width='23' align='right' alt='minimise' border='0' hspace='0' />"
 	."<font face='verdana' size='2' color='white'><strong>".$clang->gT("Screen:")."</strong> </font>"
 	. "<select name='screenname' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;editfile=$editfile&amp;screenname=\"+this.value, \"_top\")'>\n"
-	. makeoptions($screens, "name", "name", $screenname)
+	. makeoptions($screens, "name", "name", html_escape($screenname) )
 	. "</select>&nbsp;\n"
 	."</td></tr></table>\n"
 	."<table><tr><td height='1'></td></tr></table>\n";
-	
+
 	//FILE CONTROL DETAILS
 	$templatesoutput.= "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 	. "\t\t\t<tr bgcolor='#555555'>\n"
