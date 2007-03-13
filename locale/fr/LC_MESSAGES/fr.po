@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-03-10 14:39+0100\n"
+"PO-Revision-Date: 2007-03-12 21:40+0100\n"
 "Last-Translator: b00z00\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -1111,6 +1111,10 @@ msgstr "Ajouter une nouvelle réponse"
 # E:\www\phpsurveyor/admin/usercontrol.php:171
 msgid "Failed to insert answer"
 msgstr "Echec de la création de la réponse"
+
+# D:\www\phpsurveyor/admin/database.php:566
+msgid "Invalid answer code supplied"
+msgstr "Mauvais code de réponse fourni"
 
 msgid "Save All"
 msgstr "Sauver tout"
@@ -3049,10 +3053,6 @@ msgstr "Invitation envoyée ?"
 msgid "Completed?"
 msgstr "Complété ?"
 
-# E:\www\phpsurveyor/admin/tokens.php:497
-msgid "MPID"
-msgstr "MPID"
-
 msgid "Edit Token Entry"
 msgstr "Editer l'invitation"
 
@@ -3181,7 +3181,7 @@ msgstr "Envoyer le fichier CSV"
 msgid "Note:"
 msgstr "Note :"
 
-msgid "File should be a standard CSV (comma delimited) file with no quotes. The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [attribute1], [attribute2]\"."
+msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [language code], [attribute1], [attribute2]\"."
 msgstr "Le fichier doit être un fichier CSV standard (délimiteur: virgule) sans guillements. La première ligne doit contenir des informations d'entête (elle sera enlevée). Les données devront être dans cet ordre : \"Prénom, Nom, Mail, [Invitation], [Attribut_1], [Attribut_2]\"."
 
 msgid "Upload LDAP entries"
@@ -3200,11 +3200,32 @@ msgstr "Importation du fichier CSV"
 msgid "Creating Token Entries"
 msgstr "Création des entrées des invitations"
 
-msgid "{TOKENCOUNT} Records Created"
-msgstr "{TOKENCOUNT} enregistrements crées"
+msgid "Failed"
+msgstr "échoué"
+
+msgid "Records in CSV"
+msgstr "Enregistrements dans le CSV"
+
+# D:\www\phpsurveyor/admin/tokens.php:1381
+msgid "Records met minumum requirements"
+msgstr "Les enregistrements remplissent les conditions minimums"
+
+msgid "Records imported"
+msgstr "enregistrement(s) importé(s)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1383
+msgid "Duplicate records removed"
+msgstr "Enregistrements en double supprimés"
+
+# D:\www\phpsurveyor/admin/tokens.php:1384
+msgid "Records with invalid email address removed"
+msgstr "Enregistrements avec une adresse mail invalide enlevés"
 
 msgid "Uploading LDAP Query"
 msgstr "Télécharger une requête LDAP"
+
+msgid "{TOKENCOUNT} Records Created"
+msgstr "{TOKENCOUNT} enregistrements crées"
 
 # C:\wamp\www\phpsurveyor/admin/tokens.php:1414
 msgid "Can't bind to the LDAP directory"
