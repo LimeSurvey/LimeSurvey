@@ -45,7 +45,7 @@ header("Content-Type: application/octetstream");
 header("Content-Disposition: ".
 (strpos($_SERVER["HTTP_USER_AGENT"],"MSIE 5.5")?""
 :"attachment; ").
-"filename=survey.sps");
+"filename=survey_".$surveyid.".sps");
 
 // Get Base Language:
 
@@ -144,6 +144,18 @@ for ($i=0; $i < $num_results; $i++) {
 				{
 					$teststring .= "1";
 				}
+				if ($val_row[$fieldname] == "F")
+				{
+					$teststring .= "1";
+				}
+				if ($val_row[$fieldname] == "M")
+				{
+					$teststring .= "2";
+				}
+				if ($val_row[$fieldname] == "N")
+				{
+					$teststring .= "2";
+				}
 				else if ($val_row[$fieldname] != "-oth-")
 				{
 					$teststring .= $val_row[$fieldname];
@@ -178,7 +190,7 @@ for ($i=0; $i < $num_results; $i++) {
 		$fgid=$fielddata['gid'];
 		$code=$fielddata['aid'];
 	}
-	$tempArray=array($fieldno++ =>array("id"=>"d".$fieldno,"name"=>substr($fieldname, 0, 8),"qid"=>$qid, "code"=>$code, "type"=>"$fieldtype", "ftype"=>"$ftype","sql_name"=>$row["Field"]));
+	$tempArray=array($fieldno++ =>array("id"=>"d".$fieldno,"name"=>substr($fieldname, 0, 8),"qid"=>$qid, "code"=>$code, "type"=>"$fieldtype", "ftype"=>"$ftype","sql_name"=>$row["Field"],"size"=>$val_size));
 	$fields = $fields + $tempArray;
 }
 
@@ -267,6 +279,26 @@ for ($i=0; $i < $num_results; $i++) {
 			#convert mysql  datestamp (yyyy-mm-dd hh:mm:ss) to SPSS datetime (dd-mmm-yyyy hh:mm:ss) format
 			list( $year, $month, $day, $hour, $minute, $second ) = split( '([^0-9])', $row[$fieldno] );
 			echo "'".date("d-m-Y H:i:s", mktime( $hour, $minute, $second, $month, $day, $year ) )."' ";
+		} else if ($fields[$fieldno]["ftype"] == "Y") 
+		{
+			if ($row[$fieldno] == "Y")
+			{
+				echo "'1' ";
+			} else if ($row[$fieldno] == "N"){
+				echo "'2' ";
+			} else {
+				echo "'0' ";
+			}
+		} else if ($fields[$fieldno]["ftype"] == "G") 
+		{
+			if ($row[$fieldno] == "F")
+			{
+				echo "'1' ";
+			} else if ($row[$fieldno] == "M"){
+				echo "'2' ";
+			} else {
+				echo "'0' ";
+			}
 		} else if ($fields[$fieldno]["ftype"] == "M") 
 		{
 			if ($fields[$fieldno]["code"] == "other")
@@ -434,13 +466,25 @@ foreach ($fields as $field)
 				}
 			}
 		}
-		if ($field['ftype'] == "M" && $field['code'] != "other")
+		if ($field['ftype'] == "M" && $field['code'] != "other" && $field['size'] > 0)
 		{
 			echo "VALUE LABELS ".$field["id"]."\n";
 			echo "1 \"".$clang->gT("Yes")."\"\n";
 			echo "2 \"".$clang->gT("No")."\".\n";
 		}
 		if ($field['ftype'] == "P" && $field['code'] != "other" && $field['code'] != "comment" && $field['code'] != "othercomment")
+		{
+			echo "VALUE LABELS ".$field["id"]."\n";
+			echo "1 \"".$clang->gT("Yes")."\"\n";
+			echo "2 \"".$clang->gT("No")."\".\n";
+		}
+		if ($field['ftype'] == "G" && $field['size'] > 0)
+		{
+			echo "VALUE LABELS ".$field["id"]."\n";
+			echo "1 \"".$clang->gT("Female")."\"\n";
+			echo "2 \"".$clang->gT("Male")."\".\n";
+		}
+		if ($field['ftype'] == "Y" && $field['size'] > 0)
 		{
 			echo "VALUE LABELS ".$field["id"]."\n";
 			echo "1 \"".$clang->gT("Yes")."\"\n";
