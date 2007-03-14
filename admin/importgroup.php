@@ -341,12 +341,18 @@ if (isset($grouparray) && $grouparray) {
 		
 		
 		
-		$gid=$grouprowdata['gid'];
+		$oldgid=$grouprowdata['gid'];
 		$oldsid=$grouprowdata['sid'];
         unset($grouprowdata['gid']);
         $grouprowdata['sid']=$newsid;
-		$oldgid=$gid;
+   
+        // find tou the maximum group order and use this grouporder+1 to assign it to the new group 
+        $qmaxgo = "select max(group_order) as maxgo from ".db_table_name('groups')." where sid=$newsid";
+		$gres = db_execute_assoc($qmaxgo) or die ("<strong>".$clang->gT("Error")."</strong> Failed to find out maximum group order value<br />\n$qmaxqo<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+        $grow=$gres->FetchRow();
+		$grouprowdata["group_order"]= $grow['maxgo']+1; 
 
+        // Everything set - now insert it
         $newvalues=array_values($grouprowdata);
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
         $ginsert = "insert INTO {$dbprefix}groups (".implode(',',array_keys($grouprowdata)).") VALUES (".implode(',',$newvalues).")"; 
@@ -367,7 +373,7 @@ if (isset($grouparray) && $grouparray) {
                     if ($currentqid==$questionrowdata['qid']) {$newquestion=false;}   
                      		
 				$thisgid=$questionrowdata['gid'];
-				if ($thisgid == $gid) {
+				if ($thisgid == $oldgid) {
 					$qid = $questionrowdata['qid'];
 					// Remove qid field
 					if ($newquestion) {unset($questionrowdata['qid']);}

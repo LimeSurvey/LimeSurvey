@@ -325,9 +325,11 @@ if(isset($surveyid))
 
 	elseif ($action == "updatequestion" && $actsurrows['define_questions'])
 	{
-		$cqquery = "SELECT type FROM ".db_table_name('questions')." WHERE qid={$_POST['qid']}";
+		$cqquery = "SELECT type, gid FROM ".db_table_name('questions')." WHERE qid={$_POST['qid']}";
 		$cqresult=db_execute_assoc($cqquery) or die ("Couldn't get question type to check for change<br />".htmlspecialchars($cqquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
-		while ($cqr=$cqresult->FetchRow()) {$oldtype=$cqr['type'];}
+		$cqr=$cqresult->FetchRow();
+        $oldtype=$cqr['type'];
+		$oldgid=$cqr['gid'];
 
     	$keepanswers = "0";
 		
@@ -364,12 +366,13 @@ if(isset($surveyid))
 				foreach ($questlangs as $qlang)
 				{
 					if (isset($qlang) && $qlang != "")
-					{
-						$uqquery = "UPDATE {$dbprefix}questions "
+					{ // ToDo: Sanitize the POST variables !
+						$uqquery = "UPDATE ".db_table_name('questions')
 						. "SET type='{$_POST['type']}', title='{$_POST['title']}', "
 						. "question='{$_POST['question_'.$qlang]}', preg='{$_POST['preg']}', help='{$_POST['help_'.$qlang]}', "
 						. "gid='{$_POST['gid']}', other='{$_POST['other']}', "
 						. "mandatory='{$_POST['mandatory']}'";
+        				if ($oldgid!=$_POST['gid'])  {$uqquery .=', question_order=9999 '; } // set it to a very high value so fixsortorder puts it always after the last question in the new group
 						if (isset($_POST['lid']) && trim($_POST['lid'])!="")
 						{
 							$uqquery.=", lid='{$_POST['lid']}' ";
@@ -382,10 +385,15 @@ if(isset($surveyid))
 						}
 					}
 				}
-				
+                // if the group has changed then fix the sortorder of old and new group
+				if ($oldgid!=$_POST['gid']) 
+                {
+                    fixsortorderQuestions(0,$oldgid);
+                    fixsortorderQuestions(0,$_POST['gid']);
+                }
 				if ($keepanswers == "0")
 				{
-					$query = "DELETE FROM {$dbprefix}answers WHERE qid={$_POST['qid']}";
+					$query = "DELETE FROM ".db_table_name('answers')." WHERE qid={$_POST['qid']}";
 					$result = $connect->Execute($query) or die("Error: ".htmlspecialchars($connect->ErrorMsg()));
 					if (!$result)
 					{
