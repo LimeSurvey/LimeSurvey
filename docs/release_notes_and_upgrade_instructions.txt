@@ -1,4 +1,4 @@
-Welcome to PHPSurveyor v1.46b!
+Welcome to PHPSurveyor v1.47b!
 
 Warning:
 THIS IS AN BETA RELEASE. It should be pretty stable, but it SHOULD NOT be used FOR PRODUCTION!

@@ -1315,7 +1315,7 @@ if (returnglobal('viewanswer'))
 
 			$vasummary .= "\t</td>\n"
 			."\t<td width='35%'>\n"
-			."\t<input type='text' name='answer_{$row['language']}_{$row['sortorder']}' maxlength='100' size='80' value=\"{$row['answer']}\" />\n"
+			."\t<input type='text' name='answer_{$row['language']}_{$row['sortorder']}' maxlength='1000' size='80' value=\"{$row['answer']}\" />\n"
 			."\t</td>\n"
 			."\t<td width='25%'>\n";
 			if ($activated == 0)
@@ -1354,7 +1354,7 @@ if (returnglobal('viewanswer'))
             	$first=false;
 				$vasummary .= "\t</td>\n"
 				."\t<td width='35%'>\n"
-				."\t<input type='text' maxlength='100' name='insertanswer' size='80' />\n"
+				."\t<input type='text' maxlength='1000' name='insertanswer' size='80' />\n"
 				."\t</td>\n"
 				."\t<td width='25%'>\n"
 				."\t<input type='submit' name='method' value='".$clang->gT("Add new Answer")."' />\n"
