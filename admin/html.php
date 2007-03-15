@@ -947,18 +947,18 @@ if ($surveyid && $gid )   // Show the group toolbar
 
 		$groupsummary .= "\t<tr><td><table class='table2columns'><tr $gshowstyle id='surveydetails20'><td width='20%' align='right'><strong>"
 		. $clang->gT("Title").":</strong></td>\n"
-		. "\t<td>"
+		. "\t<td align='left'>"
 		. "{$grow['group_name']} ({$grow['gid']})</td></tr>\n"
 		. "\t<tr $gshowstyle id='surveydetails21'><td valign='top' align='right'><strong>"
-		. $clang->gT("Description:")."</strong></td>\n\t<td>";
+		. $clang->gT("Description:")."</strong></td>\n\t<td align='left'>";
 		if (trim($grow['description'])!='') {$groupsummary .=$grow['description'];}
 		$groupsummary .= "</td></tr>\n";
 
 		if (!is_null($condarray))
 		{
-			$groupsummary .= "\t<tr $gshowstyle id='surveydetails22'><td valign='top' align='right'><strong>"
+			$groupsummary .= "\t<tr $gshowstyle id='surveydetails22'><td align='right'><strong>"
 			. $clang->gT("Questions with conditions to this group").":</strong></td>\n"
-			. "\t<td>";
+			. "\t<td valign='bottom' align='left'>";
 			foreach ($condarray[$gid] as $depgid => $deprow)
 			{
 				foreach ($deprow['conditions'] as $depqid => $depcid)
@@ -1148,25 +1148,25 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		else							{$qshowstyle = "";}
 		$questionsummary .= "\t<tr><td><table class='table2columns'><tr $qshowstyle id='surveydetails30'><td width='20%' align='right'><strong>"
 		. $clang->gT("Code:")."</strong></td>\n"
-		. "\t<td>{$qrrow['title']}";
+		. "\t<td align='left'>{$qrrow['title']}";
 		if ($qrrow['mandatory'] == "Y") {$questionsummary .= ": (<i>".$clang->gT("Mandatory Question")."</i>)";}
 		else {$questionsummary .= ": (<i>".$clang->gT("Optional Question")."</i>)";}
 		$questionsummary .= "</td></tr>\n"
 		. "\t<tr $qshowstyle id='surveydetails31'><td align='right' valign='top'><strong>"
-		. $clang->gT("Question:")."</strong></td>\n\t<td>{$qrrow['question']}</td></tr>\n"
+		. $clang->gT("Question:")."</strong></td>\n\t<td align='left'>{$qrrow['question']}</td></tr>\n"
 		. "\t<tr $qshowstyle id='surveydetails32'><td align='right' valign='top'><strong>"
-		. $clang->gT("Help:")."</strong></td>\n\t<td>";
+		. $clang->gT("Help:")."</strong></td>\n\t<td align='left'>";
 		if (trim($qrrow['help'])!=''){$questionsummary .= "{$qrrow['help']}";}
 		$questionsummary .= "</td></tr>\n";
 		if ($qrrow['preg'])
 		{
 			$questionsummary .= "\t<tr $qshowstyle id='surveydetails33'><td align='right' valign='top'><strong>"
-			. $clang->gT("Validation:")."</strong></td>\n\t<td>{$qrrow['preg']}"
+			. $clang->gT("Validation:")."</strong></td>\n\t<td align='left'>{$qrrow['preg']}"
 			. "</td></tr>\n";
 		}
 		$qtypes = getqtypelist("", "array"); //qtypes = array(type code=>type description)
 		$questionsummary .= "\t<tr $qshowstyle id='surveydetails34'><td align='right' valign='top'><strong>"
-		.$clang->gT("Type:")."</strong></td>\n\t<td>{$qtypes[$qrrow['type']]}";
+		.$clang->gT("Type:")."</strong></td>\n\t<td align='left'>{$qtypes[$qrrow['type']]}";
 		if (($qrrow['type'] == "F" ||$qrrow['type'] == "H") && $sumrows5['define_questions'])
 		{
 			$questionsummary .= " (LID: {$qrrow['lid']}) "
@@ -1177,7 +1177,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		$questionsummary .="</td></tr>\n";
 		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "!" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R" || $qrrow['type'] == "F" ||$qrrow['type'] == "H"))
 		{
-			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails35'><td></td><td>"
+			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails35'><td></td><td align='left'>"
 			. "<font face='verdana' size='1' color='green'>"
 			. $clang->gT("Warning").": ". $clang->gT("You need to add answers to this question")." "
 			. "<input type='image' src='$imagefiles/answers.png' title='"
@@ -1187,7 +1187,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		if (!$qrrow['lid'] && ($qrrow['type'] == "F" ||$qrrow['type'] == "H"))
 		{
 			$questionsummary .= "\t\t<tr $qshowstyle id='surveydetails36'><td></td>"
-			. "<td><font face='verdana' size='1' color='green'>"
+			. "<td align='left'><font face='verdana' size='1' color='green'>"
 			. $clang->gT("Warning").": ".$clang->gT("You need to choose a Label Set for this question")."</font></td></tr>\n";
 		}
 		if ($qrrow['type'] == "M" or $qrrow['type'] == "P")
@@ -1195,14 +1195,14 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			$questionsummary .= "\t<tr $qshowstyle id='surveydetails37'>"
 			. "<td align='right' valign='top'><strong>"
 			. $clang->gT("Other:")."</strong></td>\n"
-			. "\t<td>{$qrrow['other']}</td></tr>\n";
+			. "\t<td align='left'>{$qrrow['other']}</td></tr>\n";
 		}
 		if (!is_null($condarray))
 		{
 			$questionsummary .= "\t<tr $qshowstyle id='surveydetails38'>"
 			. "<td align='right' valign='top'><strong>"
 			. $clang->gT("Other questions having conditions on this question:")
-			. "\t<td>";
+			. "\t<td align='left' valign='bottom'>";
 			foreach ($condarray[$qid] as $depqid => $depcid)
 			{
 				$listcid=implode("-",$depcid);
