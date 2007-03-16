@@ -756,7 +756,7 @@ if ($surveyid)
 		$surveysummary .= "\t<td align='left'>$language</td></tr>\n";
 
 		$additionnalLanguagesArray = GetAdditionalLanguagesFromSurveyID($surveyid);
-		// get the rowspan of the Additionnal langues row
+		// get the rowspan of the Additionnal languages row
 		// is at least 1 even if no additionnal language is present
 		$additionnalLanguagesCount = count($additionnalLanguagesArray);
 		if ($additionnalLanguagesCount == 0) $additionnalLanguagesCount = 1;
