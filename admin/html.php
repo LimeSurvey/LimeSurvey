@@ -759,7 +759,7 @@ if ($surveyid)
 		// get the rowspan of the Additionnal langues row
 		// is at least 1 even if no additionnal language is present
 		$additionnalLanguagesCount = count($additionnalLanguagesArray);
-		if ($additionnalLanguagesCount == 0) $additionnalLanguagesCount = 1
+		if ($additionnalLanguagesCount == 0) $additionnalLanguagesCount = 1;
 		$surveysummary .= "\t<tr $showstyle id='surveydetails12'><td align='right' valign='top' rowspan='".$additionnalLanguagesCount."'><strong>"
 		. $clang->gT("Additional Languages").":</strong></td>\n";
 
