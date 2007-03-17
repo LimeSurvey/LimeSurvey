@@ -60,7 +60,7 @@ class gettext_reader {
    * @access private
    * @return Integer from the Stream
    */
-  function readint() {
+  /*function readint() {
       if ($this->BYTEORDER == 0) {
         // low endian
         return array_shift(unpack('V', $this->STREAM->read(4)));
@@ -68,7 +68,19 @@ class gettext_reader {
         // big endian
         return array_shift(unpack('N', $this->STREAM->read(4)));
       }
-    }
+    }*/
+  // Fix for array_shift bug affecting some php versions
+  function readint() {
+  	if ($this->BYTEORDER == 0) {
+    	// low endian
+    	$low_end = unpack('V', $this->STREAM->read(4));
+    	return array_shift($low_end);
+  	} else {
+   		// big endian
+    	$big_end = unpack('N', $this->STREAM->read(4));
+    	return array_shift($big_end);
+  	}
+  }
 
   /**
    * Reads an array of Integers from the Stream
