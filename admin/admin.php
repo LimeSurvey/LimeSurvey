@@ -193,7 +193,7 @@ if(isset($_SESSION['loginID']) && $action!='login')
   if (isset($surveyid) || $action=="listurveys" || $action=="changelang" ||  $action=="checksettings" ||
       $action=="editsurvey" || $action=="updatesurvey" || $action=="ordergroups"  ||
       $action=="uploadf" || $action=="newsurvey" || $action=="listsurveys" || 
-      $action=="setuserrights" || $action=="surveyrights" ) include("html.php");
+       $action=="surveyrights" ) include("html.php");
       
  if ($action=="addquestion" || $action=="copyquestion" || $action=="editquestion"  || 
      $action=="orderquestions" || $action=="editattribute" || $action=="delattribute" || 
@@ -204,7 +204,7 @@ if(isset($_SESSION['loginID']) && $action!='login')
      $action=="addusergroup" || $action=="editusergroup" || $action=="mailusergroup" ||
      $action=="delusergroup" || $action=="usergroupindb" || $action=="mailsendusergroup" || 
      $action=="editusergroupindb" || $action=="editusergroups" || $action=="deleteuserfromgroup" ||
-     $action=="addgroup" || $action=="editgroup" || $action=="addusertogroup" ) include ("userrighthandling.php");
+     $action=="addgroup" || $action=="editgroup" || $action=="addusertogroup" || $action=="setuserrights") include ("userrighthandling.php");
 
   
   // For some output we dont want to have the standard admin menu bar

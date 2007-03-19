@@ -292,7 +292,7 @@ elseif ($action == "moduser")
 {
 	$addsummary = "<br /><strong>".$clang->gT("Modifying User")."</strong><br />\n";
 
-	if($_POST['uid'] == $_SESSION['loginID'])
+	if($_POST['uid'] == $_SESSION['loginID'] || $_SESSION['loginID'] == 1)
 	{
 		$user = html_entity_decode($_POST['user']);
 		$email = html_entity_decode($_POST['email']);
