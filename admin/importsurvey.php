@@ -541,7 +541,7 @@ if ($importversion>=111)
 
 // DO SURVEY_RIGHTS
 $isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($newsid,".$_SESSION['loginID'].",1,1,1,1,1,1)";
-$isrresult = $connect->Execute($isrquery) or die("<strong>".$clang->gT("Error")."</strong> Failed to insert survey rights<br />\n$isrquery<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+@$isrresult = $connect->Execute($isrquery);
 
 
 

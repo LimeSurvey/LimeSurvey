@@ -39,6 +39,8 @@ Thank you to everyone who helped with this new release!
 Changes from 1.46b to 1.47b - Release Date: 2007/03/14
 
 
+- New feature: Preview questions as they are being edited (machaven)
+- New feature: Survey List with User Details
 - Fixed Export button target in statistics (lemeur)
 - SPSS export updated (machaven)
 - Reworked the token import to being more stable (machaven)
@@ -59,6 +61,11 @@ Changes from 1.46b to 1.47b - Release Date: 2007/03/14
 - Fixed bug #680: [Translation] Language Switch type question doesn't totally swicth (c_schmitz)
 - Fixed bug #683: [Survey Design] Import of groups (c_schmitz)
 - Fixed bug #684: [Survey Design] Import of groups (c_schmitz)
+- Fixed bug #691: Internal Server Error when INSERTANS is used to show previous answers (machaven)
+- Fixed bug #693: INSERTANS: Different text displayed depending on question type (machaven)
+- Fixed bug #797: User-Managment: User with little rights has access to activate and edit tokkens (machaven)
+- Fixed bug #700: User-Managment: User with little rights has access to create/edit users (machaven)
+- Fixed bug #692: Labelset - save all without having changed anything - error message (machaven)
 
 
 ... and numerous small changes, translations and bug fixes by gasper_koren, lemeur, ferrisoxide, b00z00, machaven and c_schmitz
