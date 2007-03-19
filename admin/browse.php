@@ -45,6 +45,10 @@ include_once("login_check.php");
 //Ensure script is not run directly, avoid path disclosure
 if (empty($surveyid)) {die("No SID provided.");}
 
+$sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
+$sumresult5 = db_execute_assoc($sumquery5);
+$sumrows5 = $sumresult5->FetchRow();
+
 //Select public language file
 $query = "SELECT language FROM ".db_table_name("surveys")." WHERE sid=$surveyid";
 $result = db_execute_assoc($query) or die("Error selecting language: <br />".$query."<br />".$connect->ErrorMsg());
@@ -244,11 +248,14 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
 	."\t\t\t<a href='$scriptname?action=dataentry&amp;subaction=edit&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
 			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Edit this entry", "js")."')\">" .
-			"<img align='left' src='$imagefiles/edit.png' title='' alt='' /></a>\n"
-	."\t\t\t<a href='$scriptname?action=dataentry&amp;subaction=delete&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
+			"<img align='left' src='$imagefiles/edit.png' title='' alt='' /></a>\n";
+	if ($sumrows5['delete_survey'])
+	{
+		$browseoutput .=  "\t\t\t<a href='$scriptname?action=dataentry&amp;subaction=delete&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
 			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Delete this entry", "js")."')\">" 
-	."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='' title='' onClick=\"return confirm('".$clang->gT("Are you sure you want to delete this entry.")."')\" /></a>\n"
-	. "\t\t\t<a href='$scriptname?action=exportresults&amp;sid=$surveyid&amp;id=$id'" .
+		."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='' title='' onClick=\"return confirm('".$clang->gT("Are you sure you want to delete this entry.")."')\" /></a>\n";
+	}
+	 $browseoutput .= "\t\t\t<a href='$scriptname?action=exportresults&amp;sid=$surveyid&amp;id=$id'" .
 		"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export this Response", "js")."')\">" .
 		"<img name='Export' src='$imagefiles/exportcsv.png' title='' alt='". $clang->gT("Export this Response")."'align='left' /></a>\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
