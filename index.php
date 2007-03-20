@@ -987,14 +987,14 @@ function sendsubmitnotification($sendnotification)
 				$message .= "\r\n";
 				if (isset($_SESSION[$value]))
 				{
-					foreach (explode("\n",getextendedanswer($value,$_SESSION[$value])) as $line) $message .= "\t". $line;
+					foreach (explode("\r\n",getextendedanswer($value,$_SESSION[$value])) as $line) $message .= "\t" . $line . "\r\n";
 				}
 			}
 			elseif (isset($_SESSION[$value]))
 			{
 				$message .= getextendedanswer($value, $_SESSION[$value]);
+				$message .= "\r\n";
 			}
-			$message .= "\r\n";
 		}
 		$message .= "----------------------------\r\n\r\n";
 	}
