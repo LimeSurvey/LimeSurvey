@@ -181,25 +181,25 @@ if ($action == "setuserrights")
 				$parent = $sresult->FetchRow();
 
 				if($parent['create_survey']) {
-					$usersummary .= "\t\t<th align='center'>create survey</th>\n";
+					$usersummary .= "\t\t<th align='center'>".$clang->gT("Create Survey")."</th>\n";
 				}
 				if($parent['configurator']) {
-					$usersummary .= "\t\t<th align='center'>configurator</th>\n";
+					$usersummary .= "\t\t<th align='center'>".$clang->gT("Configurator")."</th>\n";
 				}
 				if($parent['create_user']) {
-					$usersummary .= "\t\t<th align='center'>create user</th>\n";
+					$usersummary .= "\t\t<th align='center'>".$clang->gT("Create User")."</th>\n";
 				}
 				if($parent['delete_user']) {
-					$usersummary .= "\t\t<th align='center'>delete user</th>\n";
+					$usersummary .= "\t\t<th align='center'>".$clang->gT("Delete User")."</th>\n";
 				}
 				if($parent['move_user']) {
-					$usersummary .= "\t\t<th align='center'>move user</th>\n";
+					$usersummary .= "\t\t<th align='center'>".$clang->gT("Move User")."</th>\n";
 				}
 				if($parent['manage_template']) {
-					$usersummary .= "\t\t<th align='center'>manage template</th>\n";
+					$usersummary .= "\t\t<th align='center'>".$clang->gT("Manage Template")."</th>\n";
 				}
 				if($parent['manage_label']) {
-					$usersummary .= "\t\t<th align='center'>manage label</th>\n";
+					$usersummary .= "\t\t<th align='center'>".$clang->gT("Manage Labels")."</th>\n";
 				}
 
 				$usersummary .="\t\t<th></th>\n\t</tr>\n"
