@@ -981,7 +981,16 @@ function sendsubmitnotification($sendnotification)
 		{
 			$questiontitle=returnquestiontitlefromfieldcode($value);
 			$message .= "$questiontitle:   ";
-			if (isset($_SESSION[$value]))
+			$details = arraySearchByKey($value, createFieldMap($surveyid),"fieldname", 1);
+			if ( $details['type'] == "T" or $details['type'] == "U")
+			{
+				$message .= "\r\n";
+				if (isset($_SESSION[$value]))
+				{
+					foreach (explode("\n",getextendedanswer($value,$_SESSION[$value])) as $line) $message .= "\t". $line;
+				}
+			}
+			elseif (isset($_SESSION[$value]))
 			{
 				$message .= getextendedanswer($value, $_SESSION[$value]);
 			}
