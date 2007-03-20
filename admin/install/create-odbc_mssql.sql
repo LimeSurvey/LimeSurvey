@@ -153,13 +153,13 @@ CREATE TABLE [prefix_saved_control] (
   [scid] INT NOT NULL IDENTITY (1,1),
   [sid] INT NOT NULL default '0',
   [srid] INT NOT NULL default '0',
-  [identifier] text NOT NULL,
+  [identifier] varchar(255) NOT NULL,
   [access_code] text NOT NULL,
   [email] VARCHAR(200) default NULL,
   [ip] text NOT NULL,
   [saved_thisstep] text NOT NULL,
   [status] char(1) NOT NULL default '',
-  [saved_date] datetime NOT NULL default '0000-00-00 00:00:00',
+  [saved_date] datetime, -- note: in mySQL [save_date] does not allow nullls and uses 0000-00-00 as default
   [refurl] text,
   PRIMARY KEY  ([scid])
 ) 

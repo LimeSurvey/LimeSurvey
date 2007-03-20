@@ -98,17 +98,19 @@ if($actsurrows['delete_survey'])
 	else //delete the survey
 	{
 		$tablelist = $connect->MetaTables();
+		$dict = NewDataDictionary($connect);
 	
 		if (in_array("{$dbprefix}survey_$surveyid", $tablelist)) //delete the survey_$surveyid table
-		{
-			$dsquery = "DROP TABLE `{$dbprefix}survey_$surveyid`";
-			$dsresult = $connect->Execute($dsquery) or die ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
+		{			
+			$dsquery = $dict->DropTableSQL("{$dbprefix}survey_$surveyid");	
+			$dict->ExecuteSQLArray($sqlarray);		
+			$dsresult = $dict->ExecuteSQLArray($dsquery) or die ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
 		}
 	
 		if (in_array("{$dbprefix}tokens_$surveyid", $tablelist)) //delete the tokens_$surveyid table
 		{
-			$dsquery = "DROP TABLE `{$dbprefix}tokens_$surveyid`";
-			$dsresult = $connect->Execute($dsquery) or die ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
+			$dsquery = $dict->DropTableSQL("{$dbprefix}tokens_$surveyid");
+			$dsresult = $dict->ExecuteSQLArray($dsquery) or die ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
 		}
 	
 		$dsquery = "SELECT qid FROM {$dbprefix}questions WHERE sid=$surveyid";

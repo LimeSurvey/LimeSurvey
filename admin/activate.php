@@ -250,7 +250,16 @@ else
 	//Create the survey responses table
 	$createsurvey = "id I NOTNULL AUTO PRIMARY,\n";
 	// --> START NEW FEATURE - SAVE
-	$createsurvey .= " submitdate T NOTNULL DEFAULT '0000-00-00 00:00:00',\n";
+	//TODO: In MS SQL Server dates start from 1753-01-01 (start of Gregorian calendar)
+	// If we're using 000-00-00 00:00:00 or 1753-01-01 00:00:00 as a sort of magic number to 
+	// represent 'no date', wouldn't it make more sense to allow NULLs here and represent
+	// 'no date' with a null value? Will this screw anything else up?
+	// For MS Server I'm going to allow NULLs and see what happens [tom]
+	if ($connect->databaseType == 'odbc_msmsql') {
+	  $createsurvey .= " submitdate T,\n";
+	} else {
+	  $createsurvey .= " submitdate T NOTNULL DEFAULT '0000-00-00 00:00:00',\n";	
+	}  
 	$createsurvey .= " startlanguage C(20) NOTNULL ,\n";
 	// --> END NEW FEATURE - SAVE
 	//Check for any additional fields for this survey and create necessary fields (token and datestamp)
@@ -260,7 +269,7 @@ else
 	{
 		if ($prow['private'] == "N")
 		{
-			$createsurvey .= "  token C(10),\n";
+			$createsurvey .= "  token C(36),\n";
 			$surveynotprivate="TRUE";
 		}
 		if ($prow['allowregister'] == "Y")
