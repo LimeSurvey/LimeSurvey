@@ -555,7 +555,7 @@ elseif ($subaction == "all")
 		}
 		$browseoutput .= "\t<tr bgcolor='$bgcc' valign='top'>\n"
 		."\t\t<td align='center'><font face='verdana' size='1'>\n"
-		."\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id={$dtrow['id']}' title='View this record'>"
+		."\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id={$dtrow['id']}' title='".$clang->gT("View This Record")."'>"
 		."{$dtrow['id']}</a></font></td>\n";
 
 		$i = 0;
