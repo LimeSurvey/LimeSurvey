@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-03-12 21:40+0100\n"
+"PO-Revision-Date: 2007-03-20 19:21+0100\n"
 "Last-Translator: b00z00\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -1676,22 +1676,6 @@ msgstr "Vous devez ajouter des groupes"
 msgid "You need to add questions"
 msgstr "Vous devez ajouter des questions"
 
-msgid "User Groups"
-msgstr "Groupes d'utilisateurs"
-
-# E:\www\phpsurveyor/admin/html.php:694
-msgid "Mail to all Members"
-msgstr "Messages à tous les membres"
-
-msgid "Edit Current User Group"
-msgstr "Editer ce groupe d'utilisateurs"
-
-msgid "Delete Current User Group"
-msgstr "Supprimer ce groupe d'utilisateurs"
-
-msgid "Add New User Group"
-msgstr "Ajouter un nouveau groupe d'utilisateurs"
-
 msgid "Edit Current Group"
 msgstr "Editer le groupe en cours"
 
@@ -1817,211 +1801,14 @@ msgstr "Nouvelle réponse"
 msgid "You cannot add answers because they are being used by an active survey."
 msgstr "Vous ne pouvez pas changer des réponses car elles sont utilisées dans un questionnaire activé."
 
-msgid "Modifying User"
-msgstr "Modification de l'utilisateur"
-
-msgid "Username"
-msgstr "Nom d'utilisateur"
-
-msgid "Full name"
-msgstr "Nom complet"
-
-msgid "Update"
-msgstr "Mise à jour"
-
-msgid "Set User Rights"
-msgstr "Définition des droits utilisateur"
-
-# E:\www\phpsurveyor/admin/html.php:1460
-msgid "Setting new Parent"
-msgstr "Définition d'un nouveau parent"
-
-# E:\www\phpsurveyor/admin/usercontrol.php:120
-msgid "Set Parent successful."
-msgstr "Définition du parent réussie."
-
-msgid "User Control"
-msgstr "Contrôle utilisateur"
-
-msgid "Created by"
-msgstr "Créé par :"
-
-msgid "Edit User"
-msgstr "Editer un utilisateur"
-
 msgid "Add User"
 msgstr "Ajouter un utilisateur"
 
-msgid "Add User Group"
-msgstr "Ajouter un groupe d'utilisateurs"
-
-msgid "Name:"
-msgstr "Nom :"
-
-msgid "Required"
-msgstr "Obligatoire"
-
-msgid "Optional"
-msgstr "Optionnel"
-
-msgid "Add Group"
-msgstr "Ajouter un groupe"
-
-# E:\www\phpsurveyor/admin/usercontrol.php:342
-msgid "Edit User Group (Owner: "
-msgstr "Editer le groupe de l'utilisateur (Propriétaire :"
-
-msgid "Update User Group"
-msgstr "Mise à jour du groupe d'utilisateurs"
-
-# E:\www\phpsurveyor/admin/html.php:1683
-msgid "To:"
-msgstr "A :"
-
-# E:\www\phpsurveyor/admin/html.php:1685
-msgid "Send me a copy:"
-msgstr "M'envoyer une copie :"
-
-msgid "Subject:"
-msgstr "Objet :"
-
-# E:\www\phpsurveyor/admin/assessments.php:99
-# E:\www\phpsurveyor/admin/navigator.php:882
-# E:\www\phpsurveyor/admin/navigator.php:929
-# E:\www\phpsurveyor/admin/navigator.php:942
-# E:\www\phpsurveyor/admin/navigator.php:962
-# E:\www\phpsurveyor/admin/tokens.php:658
-# E:\www\phpsurveyor/admin/tokens.php:808
-msgid "Message:"
-msgstr "Message :"
-
-# E:\www\phpsurveyor/admin/html.php:1691
-msgid "Send"
-msgstr "Envoyer"
-
-msgid "Deleting User Group"
-msgstr "Suppession du groupe d'utilisateurs"
-
-msgid "Group Name"
-msgstr "Nom du groupe "
-
-msgid "Could not delete user group."
-msgstr "Impossible de supprimer le groupe d'utilisateurs."
-
-msgid "Could not delete user group. No group selected."
-msgstr "Impossible de supprimer le groupe d'utilisateurs. Aucun groupe sélectionné."
-
-msgid "Adding User Group"
-msgstr "Ajouter un groupe d'utilisateurs"
-
-msgid "Description: "
-msgstr "Description :"
-
-# E:\www\phpsurveyor/admin/usercontrol.php:342
-msgid "User group successfully added!"
-msgstr "Groupe d'utilisateurs ajouté avec succès !"
-
-# E:\www\phpsurveyor/admin/usercontrol.php:153
-# E:\www\phpsurveyor/admin/usercontrol.php:157
-# E:\www\phpsurveyor/admin/usercontrol.php:171
-msgid "Failed to add Group!"
-msgstr "Echec de la création du groupe !"
-
-# E:\www\phpsurveyor/admin/admin.php:102
-msgid "Group already exists!"
-msgstr "Le nom du groupe existe déjà."
-
-msgid "Group name was not supplied!"
-msgstr "Le nom du groupe n'était pas rempli !"
-
-# E:\www\phpsurveyor/admin/html.php:1806
-msgid "Mail not sent!"
-msgstr "Email non envoyé !"
-
-# E:\www\phpsurveyor/admin/usercontrol.php:342
-msgid "Edit User Group Successfully!"
-msgstr "Réussite de la mise à jour du groupe d'utilisateurs !"
-
-# E:\www\phpsurveyor/admin/usercontrol.php:342
-msgid "Failed to update!"
-msgstr "Echec de la mise à jour  !"
-
-msgid "Delete User"
-msgstr "Supprimer un utilisateur"
-
-msgid "Could not delete user. User was not supplied."
-msgstr "Impossible de supprimer l'utilisateur. Le nom d'utilisateur n'était pas rempli."
-
-msgid "Add Question"
-msgstr "Ajouter une question"
-
-msgid "Label Set:"
-msgstr "Jeu d'étiquettes :"
-
-msgid "Mandatory:"
-msgstr "Obligatoire :"
-
-msgid "Question Attributes:"
-msgstr "Attributs de la question"
-
-msgid "Import Question"
-msgstr "Importer la question"
-
-msgid "Select CSV File"
-msgstr "Sélectionner un fichier CSV :"
-
-msgid "Copy Question"
-msgstr "Copier une question"
-
-msgid "Note: You MUST enter a new question code"
-msgstr "Note : vous devez OBLIGATOIREMENT saisir un nouveau code pour la question"
-
-msgid "Group:"
-msgstr "Groupe :"
-
-msgid "Copy Answers?"
-msgstr "Copier les réponses ?"
-
-msgid "Copy Attributes?"
-msgstr "Copier les attributs ?"
-
-msgid "Edit Question"
-msgstr "Editer la question"
-
-msgid "Update Question"
-msgstr "Mise à jour de la question"
-
-msgid "Save"
-msgstr "Sauver"
-
-# D:\www\phpsurveyor/admin/html.php:2499
-msgid "Current group is using conditional questions"
-msgstr "Le groupe en cours comprend des questions affichées sous condition"
-
-# D:\www\phpsurveyor/admin/html.php:3548
-msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
-msgstr "La réorganisation des questions dans ce groupe est restreinte pour être sûr que les questions sur lesquelles se basent des conditions, ne sont pas réordonnées après la définition des conditions"
-
-msgid "See the conditions marked on the following questions"
-msgstr "Voir les conditions affectées à ces questions"
-
-msgid "Import Group"
-msgstr "Importer le groupe"
-
-msgid "Select CSV File:"
-msgstr "Sélectionner un fichier CSV :"
-
-msgid "Edit Group"
-msgstr "Editer un groupe"
-
-msgid "Update Group"
-msgstr "Mise à jour du groupe"
-
-msgid "Adding User to group"
-msgstr "Ajouter un utilisateur au groupe"
-
 msgid "User added."
 msgstr "Utilisateur ajouté."
+
+msgid "Set Survey Rights"
+msgstr "Définir les droits sur ce questionnaire"
 
 # E:\www\phpsurveyor/admin/usercontrol.php:153
 # E:\www\phpsurveyor/admin/usercontrol.php:157
@@ -2037,8 +1824,8 @@ msgstr "Le nom d'utilisateur existe déjà."
 msgid "No Username selected."
 msgstr "Pas de nom d'utilisateur sélectionné"
 
-msgid "Set Survey Rights"
-msgstr "Définir les droits sur ce questionnaire"
+msgid "Add User Group"
+msgstr "Ajouter un groupe d'utilisateurs"
 
 msgid "User Group added."
 msgstr "Groupe d'utilisateurs ajouté."
@@ -2051,6 +1838,12 @@ msgstr "Echec de la création du groupe d'utilisateurs"
 
 msgid "Deleting User"
 msgstr "Supprimer un utilisateur"
+
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+msgid "Could not delete user. User was not supplied."
+msgstr "Impossible de supprimer l'utilisateur. Le nom d'utilisateur n'était pas rempli."
 
 msgid "Edit Survey Properties"
 msgstr "Editer les propriétés du questionnaire"
@@ -2072,6 +1865,9 @@ msgstr "Groupes d'utilisateurs"
 
 msgid "User"
 msgstr "Utilisateur"
+
+msgid "Add Group"
+msgstr "Ajouter un groupe"
 
 # E:\www\phpsurveyor/admin/usercontrol.php:342
 msgid "Update survey rights successful."
@@ -2114,6 +1910,9 @@ msgstr "Notification de l'administrateur :"
 msgid "Anonymous?"
 msgstr "Anonyme :"
 
+msgid "Cannot be changed"
+msgstr "Ne peut pas être modifié"
+
 msgid "Allow public registration?"
 msgstr "Permettre l'enregistrement public ?"
 
@@ -2123,13 +1922,33 @@ msgstr "Nom des champs supplémentaires pour l'enregistrement public :"
 msgid "Date Stamp?"
 msgstr "Réponses datées :"
 
+msgid "Responses will not be date stamped."
+msgstr "Les réponses ne seront pas datées"
+
+msgid "Responses will be date stamped."
+msgstr "Les réponses seront datées"
+
 msgid "Save IP Address?"
 msgstr "Sauvegarder l'adresse IP :"
+
+msgid "Responses will not have the IP address logged."
+msgstr "Les réponses ne contiendront pas l'adresse IP"
+
+msgid "Responses will have the IP address logged"
+msgstr "Les réponses contiendront l'adresse IP"
 
 # E:\www\phpsurveyor/admin/html.php:1785
 # E:\www\phpsurveyor/admin/html.php:2047
 msgid "Save Referring URL?"
 msgstr "Sauvegarder l'URL référente ?"
+
+# D:\www\phpsurveyor/admin/html.php:1992
+msgid "Responses will not have their referring URL logged."
+msgstr "Les réponses ne contiendront pas l'URL référente"
+
+# D:\www\phpsurveyor/admin/html.php:1993
+msgid "Responses will have their referring URL logged."
+msgstr "Les réponses contiendront l'URL référente"
 
 # E:\www\phpsurveyor/admin/html.php:3228
 msgid "Remove"
@@ -2302,6 +2121,9 @@ msgstr ""
 msgid "URL Description:"
 msgstr "Description de l'URL :"
 
+msgid "Save"
+msgstr "Sauver"
+
 # D:\www\phpsurveyor/admin/html.php:3548
 msgid "Current survey has questions with conditions outside their own group"
 msgstr "Le questionnaire en cours possède des questions avec des conditions en dehors de leur propre groupe."
@@ -2382,6 +2204,9 @@ msgstr "Visualisation :"
 msgid "Select the field number you would like to use for your answers:"
 msgstr "Sélectionnez le numéro du champ que vous voulez utiliser pour vos réponses :"
 
+msgid "Import Group"
+msgstr "Importer le groupe"
+
 msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder."
 msgstr "Une erreur s'est produite durant la transmission de votre fichier.  Ceci peut être provoqué par des permissions incorrectes dans votre dossier admin."
 
@@ -2413,6 +2238,9 @@ msgstr "Jeu d'étiquettes"
 
 msgid "Labels"
 msgstr "Etiquettes"
+
+msgid "Question Attributes:"
+msgstr "Attributs de la question"
 
 msgid "Import of group is completed."
 msgstr "L'importation du groupe est terminée."
@@ -2455,6 +2283,9 @@ msgstr "ID du questionnaire cible"
 
 msgid "Import Responses"
 msgstr "Importer les réponses"
+
+msgid "Import Question"
+msgstr "Importer la question"
 
 msgid "No SID (Survey) has been provided. Cannot import question."
 msgstr "Aucun SID (Questionnaire) n'a été fourni. Impossible d'importer une question."
@@ -2569,6 +2400,12 @@ msgstr "Nom du jeu"
 # C:\wamp\www\phpsurveyor/admin/labels.php:154
 msgid "You cannot remove this items since you need at least one language in a labelset."
 msgstr "Vous ne pouvez pas enlever ces éléments car il faut au moins une langue dans un jeu d'étiquettes."
+
+msgid "Update"
+msgstr "Mise à jour"
+
+msgid "Select CSV File:"
+msgstr "Sélectionner un fichier CSV :"
 
 msgid "Edit label set"
 msgstr "Editer le jeu d'étiquettes"
@@ -2690,6 +2527,53 @@ msgstr "Merci d'avoir complété ce questionnaire."
 
 msgid "Please fax your completed survey to:"
 msgstr "SVP faxez ce questionnaire rempli à :"
+
+msgid "Add Question"
+msgstr "Ajouter une question"
+
+msgid "Required"
+msgstr "Obligatoire"
+
+msgid "Label Set:"
+msgstr "Jeu d'étiquettes :"
+
+msgid "Mandatory:"
+msgstr "Obligatoire :"
+
+msgid "Select CSV File"
+msgstr "Sélectionner un fichier CSV :"
+
+msgid "Copy Question"
+msgstr "Copier une question"
+
+msgid "Note: You MUST enter a new question code"
+msgstr "Note : vous devez OBLIGATOIREMENT saisir un nouveau code pour la question"
+
+msgid "Group:"
+msgstr "Groupe :"
+
+msgid "Copy Answers?"
+msgstr "Copier les réponses ?"
+
+msgid "Copy Attributes?"
+msgstr "Copier les attributs ?"
+
+msgid "Edit Question"
+msgstr "Editer la question"
+
+msgid "Update Question"
+msgstr "Mise à jour de la question"
+
+# D:\www\phpsurveyor/admin/html.php:2499
+msgid "Current group is using conditional questions"
+msgstr "Le groupe en cours comprend des questions affichées sous condition"
+
+# D:\www\phpsurveyor/admin/html.php:3548
+msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "La réorganisation des questions dans ce groupe est restreinte pour être sûr que les questions sur lesquelles se basent des conditions, ne sont pas réordonnées après la définition des conditions"
+
+msgid "See the conditions marked on the following questions"
+msgstr "Voir les conditions affectées à ces questions"
 
 msgid "Answered"
 msgstr "Nombre de réponses déjà données"
@@ -3297,12 +3181,18 @@ msgstr "Vous avez été enregistré. Vos informations :"
 msgid "An email with a generated password was sent to the user."
 msgstr "Un mail avec un mot de passe généré a été envoyé à l'utilisateur."
 
+msgid "Set User Rights"
+msgstr "Définition des droits utilisateur"
+
 # E:\www\phpsurveyor/admin/admin.php:102
 msgid "Username and/or email address already exists."
 msgstr "le nom d'utlisateur et/ou l'adresse mail existe déjà."
 
 msgid "Admin cannot be deleted!"
 msgstr "L'administrateur ne peut pas être effacé !"
+
+msgid "Modifying User"
+msgstr "Modification de l'utilisateur"
 
 # E:\www\phpsurveyor/admin/usercontrol.php:277
 # E:\www\phpsurveyor/admin/usercontrol.php:282
@@ -3329,6 +3219,156 @@ msgstr "Réussite de la mise à jour des droits de l'utilisateur."
 # E:\www\phpsurveyor/admin/usercontrol.php:250
 msgid "You are not allowed to change your own rights!"
 msgstr "Vous n'êtes pas autorisé à changer vos propres droits !"
+
+msgid "User Groups"
+msgstr "Groupes d'utilisateurs"
+
+# E:\www\phpsurveyor/admin/html.php:694
+msgid "Mail to all Members"
+msgstr "Messages à tous les membres"
+
+msgid "Edit Current User Group"
+msgstr "Editer ce groupe d'utilisateurs"
+
+msgid "Delete Current User Group"
+msgstr "Supprimer ce groupe d'utilisateurs"
+
+msgid "Add New User Group"
+msgstr "Ajouter un nouveau groupe d'utilisateurs"
+
+msgid "Full name"
+msgstr "Nom complet"
+
+msgid "Configurator"
+msgstr "Configurateur"
+
+# E:\www\phpsurveyor/common.php:219
+# E:\www\phpsurveyor/common.php:220
+msgid "Create User"
+msgstr "Créer un utilisateur"
+
+msgid "Delete User"
+msgstr "Supprimer un utilisateur"
+
+msgid "Move User"
+msgstr "Déplacer un utilisateur"
+
+msgid "Manage Template"
+msgstr "Gérer les modèles"
+
+msgid "Manage Labels"
+msgstr "Gérer les jeux d'étiquettes"
+
+# E:\www\phpsurveyor/admin/html.php:1460
+msgid "Setting new Parent"
+msgstr "Définition d'un nouveau parent"
+
+# E:\www\phpsurveyor/admin/usercontrol.php:120
+msgid "Set Parent successful."
+msgstr "Définition du parent réussie."
+
+msgid "User Control"
+msgstr "Contrôle utilisateur"
+
+msgid "Created by"
+msgstr "Créé par :"
+
+msgid "Edit User"
+msgstr "Editer un utilisateur"
+
+msgid "Name:"
+msgstr "Nom :"
+
+msgid "Optional"
+msgstr "Optionnel"
+
+# E:\www\phpsurveyor/admin/usercontrol.php:342
+msgid "Edit User Group (Owner: "
+msgstr "Editer le groupe de l'utilisateur (Propriétaire :"
+
+msgid "Update User Group"
+msgstr "Mise à jour du groupe d'utilisateurs"
+
+# E:\www\phpsurveyor/admin/html.php:1683
+msgid "To:"
+msgstr "A :"
+
+# E:\www\phpsurveyor/admin/html.php:1685
+msgid "Send me a copy:"
+msgstr "M'envoyer une copie :"
+
+msgid "Subject:"
+msgstr "Objet :"
+
+# E:\www\phpsurveyor/admin/assessments.php:99
+# E:\www\phpsurveyor/admin/navigator.php:882
+# E:\www\phpsurveyor/admin/navigator.php:929
+# E:\www\phpsurveyor/admin/navigator.php:942
+# E:\www\phpsurveyor/admin/navigator.php:962
+# E:\www\phpsurveyor/admin/tokens.php:658
+# E:\www\phpsurveyor/admin/tokens.php:808
+msgid "Message:"
+msgstr "Message :"
+
+# E:\www\phpsurveyor/admin/html.php:1691
+msgid "Send"
+msgstr "Envoyer"
+
+msgid "Deleting User Group"
+msgstr "Suppession du groupe d'utilisateurs"
+
+msgid "Group Name"
+msgstr "Nom du groupe "
+
+msgid "Could not delete user group."
+msgstr "Impossible de supprimer le groupe d'utilisateurs."
+
+msgid "Could not delete user group. No group selected."
+msgstr "Impossible de supprimer le groupe d'utilisateurs. Aucun groupe sélectionné."
+
+msgid "Adding User Group"
+msgstr "Ajouter un groupe d'utilisateurs"
+
+msgid "Description: "
+msgstr "Description :"
+
+# E:\www\phpsurveyor/admin/usercontrol.php:342
+msgid "User group successfully added!"
+msgstr "Groupe d'utilisateurs ajouté avec succès !"
+
+# E:\www\phpsurveyor/admin/usercontrol.php:153
+# E:\www\phpsurveyor/admin/usercontrol.php:157
+# E:\www\phpsurveyor/admin/usercontrol.php:171
+msgid "Failed to add Group!"
+msgstr "Echec de la création du groupe !"
+
+# E:\www\phpsurveyor/admin/admin.php:102
+msgid "Group already exists!"
+msgstr "Le nom du groupe existe déjà."
+
+msgid "Group name was not supplied!"
+msgstr "Le nom du groupe n'était pas rempli !"
+
+# E:\www\phpsurveyor/admin/html.php:1806
+msgid "Mail not sent!"
+msgstr "Email non envoyé !"
+
+# E:\www\phpsurveyor/admin/usercontrol.php:342
+msgid "Edit User Group Successfully!"
+msgstr "Réussite de la mise à jour du groupe d'utilisateurs !"
+
+# E:\www\phpsurveyor/admin/usercontrol.php:342
+msgid "Failed to update!"
+msgstr "Echec de la mise à jour  !"
+
+msgid "Edit Group"
+msgstr "Editer un groupe"
+
+msgid "Update Group"
+msgstr "Mise à jour du groupe"
+
+msgid "Adding User to group"
+msgstr "Ajouter un utilisateur au groupe"
 
 msgid "Export, then de-activate survey"
 msgstr "Exporter et ensuite désactiver le questionnaire"
