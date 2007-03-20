@@ -218,10 +218,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		$activeuse=$result->RecordCount();
 		while ($row=$result->FetchRow()) {$activesurveys[]=$row['surveyls_title'];}
 		//NOW ALSO COUNT UP HOW MANY QUESTIONS ARE USING THIS LABELSET, TO GIVE WARNING ABOUT CHANGES
-		//$query = "SELECT * FROM ".db_table_name('questions')." WHERE type IN ('F','H','Z','W') AND lid='$lid' GROUP BY qid";
-		//TODO: Need to check on this. The query about won't work in MS SQL Server, but I can't see the need to group by
-		// qid (pimary key). 
-		$query = "SELECT * FROM ".db_table_name('questions')." WHERE type IN ('F','H','Z','W') AND lid='$lid'";
+		$query = "SELECT * FROM ".db_table_name('questions')." WHERE type IN ('F','H','Z','W') AND lid='$lid' GROUP BY qid";
 		$result = db_execute_assoc($query);
 		$totaluse=$result->RecordCount();
 		while($row=$result->FetchRow())
