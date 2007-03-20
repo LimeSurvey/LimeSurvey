@@ -549,7 +549,7 @@ if(isset($surveyid))
 			case $clang->gT("Add new Answer", "unescaped"):
 			if (isset($_POST['insertcode']) && $_POST['insertcode']!='' && $_POST['insertcode'] != "0")
 			{
-				$_POST  = array_map('db_quote', $_POST);
+				//$_POST  = array_map('db_quote', $_POST);//Removed: qstr is used in SQL below
 				$query = "select max(sortorder) as maxorder from ".db_table_name('answers')." where qid='$qid'";
 				$result = $connect->Execute($query);
 				$newsortorder=sprintf("%05d", $result->fields['maxorder']+1);
