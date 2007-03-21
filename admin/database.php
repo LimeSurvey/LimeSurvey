@@ -579,7 +579,8 @@ if(isset($surveyid))
 			//Determine autoids by evaluating the hidden field		
             $sortorderids=explode(' ', trim($_POST['sortorderids']));
             $codeids=explode(' ', trim($_POST['codeids']));
-            $count=0; 
+            $count=0;
+            $invalidCode = 0;
          	foreach ($sortorderids as $sortorderid)
         	{
         		$langid=substr($sortorderid,0,strpos($sortorderid,'_')); 
@@ -592,10 +593,13 @@ if(isset($surveyid))
         			{
         				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update answers","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
     				}
+        		} else {
+        			$invalidCode = 1;
         		}
     			$count++;
     			if ($count>count($codeids)-1) {$count=0;}
 		    }
+		    if ($invalidCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers with a code of 0 (zero) are not allowed, and will not be saved","js")."\")\n //-->\n</script>\n";
 		break;
 
 		// Pressing the Up button
