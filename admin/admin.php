@@ -36,6 +36,8 @@
 
 require_once(dirname(__FILE__).'/../config.php');  // config.php itself includes common.php
 
+ini_set('session.gc_maxlifetime', '72000');
+
 if (!isset($adminlang)) {$adminlang=returnglobal('adminlang');} // Admin language
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}         //SurveyID
 if (!isset($ugid)) {$ugid=returnglobal('ugid');}                //Usergroup-ID
