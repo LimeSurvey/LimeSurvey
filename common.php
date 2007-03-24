@@ -557,7 +557,7 @@ function getMaxquestionorder($gid)
 	{
 		return "0" ;
 	}
-	else return ++$current_max ;
+	else return $current_max ;
 }
 
 

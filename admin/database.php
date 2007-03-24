@@ -247,7 +247,7 @@ if(isset($surveyid))
 			$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);	
 			$query = "INSERT INTO ".db_table_name('questions')." (sid, gid, type, title, question, preg, help, other, mandatory, lid, question_order, language)"
 			." VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
-			." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',".getMaxquestionorder($_POST['gid']).",'{$baselang}')";
+			." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',".(getMaxquestionorder($_POST['gid'])+1).",'{$baselang}')";
 			$result = $connect->Execute($query);
 			// Get the last inserted questionid for other languages
 			$qid=$connect->Insert_ID();
