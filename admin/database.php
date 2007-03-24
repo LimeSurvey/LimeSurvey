@@ -551,6 +551,7 @@ if(isset($surveyid))
 			if (isset($_POST['insertcode']) && $_POST['insertcode']!='' && $_POST['insertcode'] != "0")
 			{
 				//$_POST  = array_map('db_quote', $_POST);//Removed: qstr is used in SQL below
+				$_POST['insertcode']=sanitize_paranoid_string($_POST['insertcode']);
 				$query = "select max(sortorder) as maxorder from ".db_table_name('answers')." where qid='$qid'";
 				$result = $connect->Execute($query);
 				$newsortorder=sprintf("%05d", $result->fields['maxorder']+1);
@@ -588,6 +589,7 @@ if(isset($surveyid))
         		$orderid=substr($sortorderid,strpos($sortorderid,'_')+1,20);
         		if ($_POST['code_'.$codeids[$count]] != "0")
         		{
+     				$_POST['code_'.$codeids[$count]]=sanitize_paranoid_string($_POST['code_'.$codeids[$count]]);
         			$query = "UPDATE ".db_table_name('answers')." SET code=".$connect->qstr($_POST['code_'.$codeids[$count]]).
                          	 ",	answer=".$connect->qstr($_POST['answer_'.$sortorderid])." WHERE qid='$qid' and sortorder=$orderid and language='$langid'";
         			if (!$result = $connect->Execute($query))

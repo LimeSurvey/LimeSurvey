@@ -49,7 +49,7 @@ $useidprefix        =   0;             // Set this to 1 if you want to use a pre
 $idprefix           =   0;             // Leave this as 0 to use your server's IP address. Alternatively, use a number here - characters WILL NOT WORK.
 
 // FILE LOCATIONS
-$rooturl            =   "http://{$_SERVER['SERVER_NAME']}/phpsurveyor"; //The root web url for your phpsurveyor installation. 
+$rooturl            =   "https://{$_SERVER['SERVER_NAME']}/phpsurveyor"; //The root web url for your phpsurveyor installation. 
 
 $rootdir            =   dirname(__FILE__); // This is the physical disk location for your phpsurveyor installation. Normally you don't have to touch this setting.
                                            // If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir="C:\Inetpub\wwwroot\phpsurveyor"!

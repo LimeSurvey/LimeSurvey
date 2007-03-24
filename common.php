@@ -345,12 +345,13 @@ function &db_execute_assoc($sql,$inputarr=false)
 	return $dataset;
 }
 
-function &db_select_limit_assoc($sql,$numrows=-1,$offset=-1,$inputarr=false)
+function &db_select_limit_assoc($sql,$numrows=-1,$offset=-1,$inputarr=false,$dieonerror=true)
 {
 	global $connect;
 
 	$connect->SetFetchMode(ADODB_FETCH_ASSOC);
-	$dataset=$connect->SelectLimit($sql,$numrows=-1,$offset=-1,$inputarr=false) or die($sql);
+	$dataset=$connect->SelectLimit($sql,$numrows=-1,$offset=-1,$inputarr=false);
+    if (!$dataset && $dieonerror) {die($sql);}
 	return $dataset;
 }
 

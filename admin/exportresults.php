@@ -390,7 +390,6 @@ $dresult = db_select_limit_assoc($dquery, 1) or die($clang->gT("Error")." gettin
 $fieldcount = $dresult->FieldCount();
 $firstline="";
 $faid="";
-$debug="";
 for ($i=0; $i<$fieldcount; $i++)
 {
 	//Iterate through column names and output headings
@@ -572,7 +571,6 @@ for ($i=0; $i<$fieldcount; $i++)
 				{
 					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code= '$faid'";
 					$lr = db_execute_assoc($lq);
-					$debug .= " | QUERY FOR ANSWER CODE [$lq]";
 					while ($lrow=$lr->FetchRow())
 					{
 						$fquest .= " [".$lrow['answer']."]";
@@ -606,13 +604,12 @@ $firstline .= "\n";
 if ($type == "doc")
 {
 	$flarray=explode($separator, $firstline);
-	$fli=0;
+	$fli=1;
 	foreach ($flarray as $fl)
 	{
 		$fieldmap[$fli]['title']=$fl;
 		$fli++;
 	}
-	//print_r($fieldmap);
 }
 elseif ($type == "xls")
 {
@@ -711,8 +708,8 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
 }
 elseif ($answers == "long")
 {
-	$debug="";
-	$dresult = db_execute_num($dquery) or die("ERROR: $dquery -".htmlspecialchars($connect->ErrorMsg()));
+//	echo $dquery;
+    $dresult = db_execute_num($dquery) or die("ERROR: $dquery -".htmlspecialchars($connect->ErrorMsg()));
 	$fieldcount = $dresult->FieldCount();
     $rowcounter=0;
 	while ($drow = $dresult->FetchRow())
@@ -720,7 +717,7 @@ elseif ($answers == "long")
 		$rowcounter++;
 		if ($type == "doc")
 		{
-			$exportoutput .= "\n\n\nNEW RECORD\n";
+			$exportoutput .= "\n\n\n".$clang->gT('NEW RECORD')."\n";
 		}
 		if (!ini_get('safe_mode'))
 		{
@@ -728,7 +725,6 @@ elseif ($answers == "long")
 		}
 		for ($i=0; $i<$fieldcount; $i++) //For each field, work out the QID
 		{
-			$debug .= "\n";
 			$field=$dresult->FetchField($i);
 			$fieldinfo=$field->name;
 			if ($fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "ipaddr"&& $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && $fieldinfo != "attribute_1" && $fieldinfo != "attribute_2")
@@ -755,6 +751,12 @@ elseif ($answers == "long")
 				{
 					switch($fieldinfo)
 					{
+						case "datestamp":
+						$ftitle=$clang->gT("Time Submitted").":";
+						break;
+						case "ipaddr":
+						$ftitle=$clang->gT("IP Address").":";
+						break;
 						case "firstname":
 						$ftitle=$clang->gT("First Name").":";
 						break;
