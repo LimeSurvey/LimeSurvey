@@ -331,14 +331,15 @@ if(isset($surveyid))
         $oldtype=$cqr['type'];
 		$oldgid=$cqr['gid'];
 
-    	$keepanswers = "0";
+    	$keepanswers = "1"; // Generally we try to keep answers if the question type has changed
 		
-		// This prevents the loss of answers for some interchangeable question types - God give me question objects - please!
-		if (($oldtype == "!" && $_POST['type']== "L") || ($oldtype == "L" && $_POST['type']== "!") ||
-            ($oldtype == "W" && $_POST['type']== "Z") || ($oldtype == "Z" && $_POST['type']== "W") ||        
-            ($oldtype == $_POST['type']))
+		// Thes are the questions types that have no answers and therefore we delete the answer in that case
+		if (($_POST['type']== "5") || ($_POST['type']== "D") || ($_POST['type']== "G") ||
+            ($_POST['type']== "I") || ($_POST['type']== "N") || ($_POST['type']== "S") ||        
+            ($_POST['type']== "T") || ($_POST['type']== "U") || ($_POST['type']== "X") ||        
+            ($_POST['type']=="Y"))
 		{
-			$keepanswers = "1";
+			$keepanswers = "0";
 		}
 
 		if ($oldtype != $_POST['type'])
