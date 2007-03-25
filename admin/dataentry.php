@@ -1624,12 +1624,12 @@ if($actsurrows['browse_response']){
 					$deaquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} ORDER BY sortorder, code";
 					$dearesult = db_execute_assoc($deaquery);
 					$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n";
+					$dataentryoutput .= "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n";
 					while ($dearow = $dearesult->FetchRow())
 					{
 						$dataentryoutput .= "\t\t\t\t<option value='{$dearow['code']}'";
 						$dataentryoutput .= ">{$dearow['title']}</option>\n";
 					}
-					$dataentryoutput .= "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n";
 	
 					$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$deqrow['qid']} AND language='{$baselang}'";
 					$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -1655,13 +1655,15 @@ if($actsurrows['browse_response']){
 					$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY sortorder, answer";
 					$dearesult = db_execute_assoc($deaquery);
 					$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n";
-					while ($dearow = $dearesult->FetchRow())
+					$datatemp='';
+                    while ($dearow = $dearesult->FetchRow())
 					{
-						$dataentryoutput .= "\t\t\t\t<option value='{$dearow['code']}'";
-						if ($dearow['default_value'] == "Y") {$dataentryoutput .= " selected"; $defexists = "Y";}
-						$dataentryoutput .= ">{$dearow['answer']}</option>\n";
+						$datatemp .= "\t\t\t\t<option value='{$dearow['code']}'";
+						if ($dearow['default_value'] == "Y") {$datatemp .= " selected"; $defexists = "Y";}
+						$datatemp .= ">{$dearow['answer']}</option>\n";
 					}
-					if (!$defexists) {$dataentryoutput .= "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n";}
+					if (!$defexists) {$dataentryoutput .= "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n".$datatemp;}
+					 else {$dataentryoutput .=$datatemp;}
 	
 					$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$deqrow['qid']} AND language='{$baselang}'";
 					$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -1686,13 +1688,15 @@ if($actsurrows['browse_response']){
 					$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY sortorder, answer";
 					$dearesult = db_execute_assoc($deaquery);
 					$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n";
+					$datatemp='';
 					while ($dearow = $dearesult->FetchRow())
 					{
-						$dataentryoutput .= "\t\t\t\t<option value='{$dearow['code']}'";
-						if ($dearow['default_value'] == "Y") {$dataentryoutput .= " selected"; $defexists = "Y";}
-						$dataentryoutput .= ">{$dearow['answer']}</option>\n";
+						$datatemp .= "\t\t\t\t<option value='{$dearow['code']}'";
+						if ($dearow['default_value'] == "Y") {$datatemp .= " selected"; $defexists = "Y";}
+						$datatemp .= ">{$dearow['answer']}</option>\n";
 					}
-					if (!$defexists) {$dataentryoutput .= "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n";}
+					if (!$defexists) {$dataentryoutput .= "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n".$datatemp;}
+					 else  {$dataentryoutput .= $datatemp;}
 					$dataentryoutput .= "\t\t\t</select>\n"
 					."\t\t\t<br />".$clang->gT("Comment").":<br />\n"
 					."\t\t\t<textarea cols='40' rows='5' name='$fieldname"
