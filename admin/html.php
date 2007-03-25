@@ -707,10 +707,10 @@ if ($surveyid)
 		{
 			$surveysummary2 .= $clang->gT("Regenerate Question Codes:")
 			. " [<a href='$scriptname?action=renumberquestions&amp;sid=$surveyid&amp;style=straight' "
-			. "onClick='return confirm(\"Are you sure?\")' "
+			. "onClick='return confirm(\"".$clang->gT("Are you sure you want regenerate the question codes?","js")."\")' "
 			. ">".$clang->gT("Straight")."</a>] "
 			. "[<a href='$scriptname?action=renumberquestions&amp;sid=$surveyid&amp;style=bygroup' "
-			. "onClick='return confirm(\"Are you sure?\")' "
+			. "onClick='return confirm(\"".$clang->gT("Are you sure you want regenerate the question codes?","js")."\")' "
 			. ">".$clang->gT("By Group")."</a>]";
 			$surveysummary2 .= "</td></tr>\n";
 		}

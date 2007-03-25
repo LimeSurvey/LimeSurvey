@@ -135,7 +135,7 @@ if (isset($_GET['tokenSEC']) && $_GET['tokenSEC'] == 1)
 {
 	if (!isset($_GET['loadsecurity']) || $_GET['loadsecurity'] != $_SESSION['secanswer'])
 	{
-		$secerror = $clang->gT("The answer to security question is incorrect")."<br />\n";
+		$secerror = $clang->gT("The answer to the security question is incorrect")."<br />\n";
 		$_GET['token'] = "";
 	}
 }
@@ -243,7 +243,7 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 	// if security question asnwer is incorrect
 	if (!isset($_POST['loadsecurity']) || $_POST['loadsecurity'] != $_SESSION['secanswer'])
 	{
-		$errormsg .= $clang->gT("The answer to security question is incorrect")."<br />\n";
+		$errormsg .= $clang->gT("The answer to the security question is incorrect")."<br />\n";
 	}
 	
 	// Load session before loading the values from the saved data

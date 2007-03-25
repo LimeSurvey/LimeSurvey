@@ -212,7 +212,7 @@ function savedcontrol()
 	// if security question asnwer is incorrect
 	if (!isset($_POST['loadsecurity']) || $_POST['loadsecurity'] != $_SESSION['secanswer'])
 	{
-		$errormsg .= $clang->gT("The answer to security question is incorrect")."<br />\n";
+		$errormsg .= $clang->gT("The answer to the security question is incorrect")."<br />\n";
 	}
 
 	if ($errormsg)
