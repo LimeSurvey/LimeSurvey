@@ -1,42 +1,48 @@
 msgid ""
-""
-msgstr "Project-Id-Version: PHPSurveyor Dutch Language file\n"
+msgstr ""
+"Project-Id-Version: PHPSurveyor Dutch Language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-08-03 23:50+0100\n"
-"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
+"PO-Revision-Date: 2007-03-26 11:51+0100\n"
+"Last-Translator: Johan Geertsma <johan@jgeertsma.com>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Basepath: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+"X-Poedit-Basepath: D:\\phpsurveyor\n"
 "X-Poedit-Language: Dutch\n"
 "X-Poedit-Country: NETHERLANDS\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-SearchPath-0: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+"X-Poedit-KeywordsList: gT\n"
+"X-Poedit-SearchPath-0: D:\\phpsurveyor\n"
 
 msgid "Administration"
 msgstr "Beheer"
 
+# D:\phpsurveyor/common.php:183
+msgid "Logged in as"
+msgstr "Ingelogd als"
+
 msgid "Default Administration Page"
 msgstr "Standaard beheerpagina"
 
-msgid "Activate Security"
-msgstr "Activeer beveiliging"
+msgid "Create/Edit Users"
+msgstr "Maak/Wijzig Gebruikers"
 
-msgid "Modify Security Settings"
-msgstr "Wijzigen beveiligingsinstellingen"
+# D:\phpsurveyor/common.php:206
+# D:\phpsurveyor/common.php:207
+msgid "Create/Edit Groups"
+msgstr "Maak/Bewerk Groepen"
 
 msgid "Check Settings"
 msgstr "Controleren instellingen"
 
-msgid "Check Database"
-msgstr "Controleren database"
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:217
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1851
+msgid "Check Data Integrity"
+msgstr "De controle van consistente gegevens"
 
 msgid "List Surveys"
 msgstr "Toon vragenlijsten"
-
-msgid "Delete Entire Survey"
-msgstr "Wissen volledige vragenlijst"
 
 msgid "Backup Entire Database"
 msgstr "Backup gehele database"
@@ -49,6 +55,12 @@ msgstr "Sjablooneditor:"
 
 msgid "Show Help"
 msgstr "Toon help"
+
+# D:\phpsurveyor/common.php:285
+# D:\phpsurveyor/common.php:287
+# D:\phpsurveyor/admin/usercontrol.php:144
+msgid "Logout"
+msgstr "Uitloggen"
 
 msgid "Create or Import New Survey"
 msgstr "Toevoegen of importeren nieuwe vragenlijst"
@@ -65,32 +77,50 @@ msgstr "Geen"
 msgid "5 Point Choice"
 msgstr "5 punt keuze"
 
+msgid "Array (5 Point Choice)"
+msgstr "Matrix (5 punten)"
+
+msgid "Array (10 Point Choice)"
+msgstr "Matrix (10 punten)"
+
+msgid "Array (Yes/No/Uncertain)"
+msgstr "Matrix (Ja/Nee/Weet niet)"
+
 msgid "Date"
 msgstr "Datum"
+
+msgid "Array (Increase, Same, Decrease)"
+msgstr "Matrix (Meer, Gelijk, Minder)"
+
+msgid "Array (Flexible Labels)"
+msgstr "Matrix (opties kolomsgewijs)"
 
 msgid "Gender"
 msgstr "Geslacht"
 
-msgid "List (Dropdown)"
-msgstr "Lijst enkele keuze (Dropdown)"
+msgid "Array (Flexible Labels) by Column"
+msgstr "Matrix (opties rijgewijs)"
+
+msgid "Language Switch"
+msgstr "Wijzig Taal:"
 
 msgid "List (Radio)"
 msgstr "Lijst enkele keuze (Radioknoppen)"
 
-msgid "List With Comment"
-msgstr "Lijst enkele keuze met opmerkingen"
-
 msgid "Multiple Options"
 msgstr "Meerkeuze"
+
+msgid "Numerical Input"
+msgstr "Numerieke vraag"
+
+msgid "List With Comment"
+msgstr "Lijst enkele keuze met opmerkingen"
 
 msgid "Multiple Options With Comments"
 msgstr "Meerkeuzevraag met opmerkingen"
 
 msgid "Multiple Short Text"
 msgstr "Meerdere korte antwoorden"
-
-msgid "Numerical Input"
-msgstr "Numerieke vraag"
 
 msgid "Ranking"
 msgstr "Schaal"
@@ -104,35 +134,20 @@ msgstr "Lang vrij antwoord"
 msgid "Huge Free Text"
 msgstr "Lang vrij antwoord"
 
-msgid "Yes/No"
-msgstr "Ja/Nee"
-
-msgid "Array (5 Point Choice)"
-msgstr "Matrix (5 punten)"
-
-msgid "Array (10 Point Choice)"
-msgstr "Matrix (10 punten)"
-
-msgid "Array (Yes/No/Uncertain)"
-msgstr "Matrix (Ja/Nee/Weet niet)"
-
-msgid "Array (Increase, Same, Decrease)"
-msgstr "Matrix (Meer, Gelijk, Minder)"
-
-msgid "Array (Flexible Labels)"
-msgstr "Matrix (opties kolomsgewijs)"
-
-msgid "Array (Flexible Labels) by Column"
-msgstr "Matrix (opties rijgewijs)"
+msgid "List (Flexible Labels) (Dropdown)"
+msgstr "Lijstselectie enkel (eigen opties) (dropdown)"
 
 msgid "Boilerplate Question"
 msgstr "Opmerking"
 
-msgid "List (Flexible Labels) (Dropdown)"
-msgstr "Lijstselectie enkel (eigen opties) (dropdown)"
+msgid "Yes/No"
+msgstr "Ja/Nee"
 
 msgid "List (Flexible Labels) (Radio)"
 msgstr "Lijstselectie enkel (eigen opties) (radioknoppen)"
+
+msgid "List (Dropdown)"
+msgstr "Lijst enkele keuze (Dropdown)"
 
 msgid "No email notification"
 msgstr "Geen e-mail bevestiging"
@@ -170,9 +185,6 @@ msgstr "Toon laatste 50 responses"
 msgid "Dataentry Screen for Survey"
 msgstr "Invoerscherm van de vragenlijst"
 
-msgid "Printable Version of Survey"
-msgstr "Printbare versie van de vragenlijst"
-
 msgid "Get statistics from these responses"
 msgstr "Toon statistieken van deze responses"
 
@@ -185,9 +197,6 @@ msgstr "Exporteer resultaten naar SPSS importbestand"
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:950
 msgid "Import answers from a deactivated survey table"
 msgstr "Importeer antwoorden van een gedeactiveerde vragenlijst"
-
-msgid "Backup results table as SQL file"
-msgstr "Backup responses als SQL bestand"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:955
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:407
@@ -235,21 +244,6 @@ msgstr "Zelfde"
 msgid "Comment"
 msgstr "Opmerking"
 
-msgid "Load Unfinished Survey"
-msgstr "Laad onvoltooide vragenlijst"
-
-msgid "last"
-msgstr "Laatste"
-
-msgid "Save Survey and Return"
-msgstr "Bewaar vragenlijst en keer terug"
-
-msgid "Are you sure you want to clear all your responses?"
-msgstr "Weet u zeker dat u alle antwoorden wilt verwijderen?"
-
-msgid "Exit and Clear Survey"
-msgstr "Afbreken en antwoorden verwijderen"
-
 msgid "There is 1 question in this survey"
 msgstr "Er is slechts 1 vraag in deze vragenlijst."
 
@@ -263,12 +257,33 @@ msgstr "Versturen"
 msgid "A Note On Privacy"
 msgstr "Een opmerking over uw privacy"
 
+msgid "This survey is anonymous."
+msgstr "Deze vragenlijst is anoniem."
 
-msgid "This survey is anonymous.<br />The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
-msgstr "<strong><i>Privacy statement<i><strong><br >Deze vragenlijst is anoniem.<br />De bewaarde antwoorden bevatten geen identiteitsgegevens tenzij u deze bij een bepaalde vraag hebt ingevuld. Indien u via een toegangscode deelneemt kunnen wij u verzekeren dat deze niet wordt bewaard in combinatie met uw antwoorden maar wel is opgeslagen in een aparte tabel. De tabel met toegangscodes wordt gebruikt om na te kijken of een vragenlijst reeds voor de betreffende toegangscode is ingevuld. Er is geen enkele manier om de codes te koppelen aan de antwoorden."
+msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "<strong><i>Privacy statement<i><strong><br >Deze vragenlijst is anoniem.<br />De bewaarde antwoorden bevatten geen identiteitsgegevens tenzij u deze bij een bepaalde vraag hebt ingevuld. Indien u via een toegangscode deelneemt kunnen wij u verzekeren dat deze niet wordt bewaard in combinatie met uw antwoorden maar wel is opgeslagen in een aparte tabel. De tabel met toegangscodes wordt gebruikt om na te kijken of een vragenlijst reeds voor de betreffende toegangscode is ingevuld. Er is geen enkele manier om de codes te koppelen aan de antwoorden. "
 
-msgid "<strong>Thank You<br /><br />You have completed answering the questions in this survey.</strong><br /><br />Click on 'Submit' now to complete the process and save your answers."
-msgstr "<strong>Dank u<br ><br >U heeft alle vragen in deze vragenlijst beantwoord.<strong><br ><br >Klik op [-._SUBMIT.-] om uw antwoorden te versturen."
+msgid "Are you sure you want to clear all your responses?"
+msgstr "Weet u zeker dat u alle antwoorden wilt verwijderen?"
+
+msgid "Exit and Clear Survey"
+msgstr "Afbreken en antwoorden verwijderen"
+
+msgid "Load Unfinished Survey"
+msgstr "Laad onvoltooide vragenlijst"
+
+msgid "Save Survey and Return"
+msgstr "Bewaar vragenlijst en keer terug"
+
+msgid "Thank You!"
+msgstr "Dank u"
+
+msgid "You have completed answering the questions in this survey."
+msgstr "U bent klaar met het beantwoorden van de vragen in deze vragenlijst."
+
+# D:\phpsurveyor/common.php:1847
+msgid "Click on 'Submit' now to complete the process and save your answers."
+msgstr "Klik op 'Verstuur' om het proces te beeindigen en uw antwoorden op te slaan."
 
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr "Als u uw antwoorden nog eens wilt nakijken of wijzigen, kunt u door de vragenlijst heen en weer bladeren met de [<< -._PREV.-] en [-._NEXT.- >>] knoppen."
@@ -282,6 +297,23 @@ msgstr "Begin opnieuw met deze vragenlijst"
 msgid "Close this Window"
 msgstr "Sluit dit venster"
 
+msgid "Return To Survey"
+msgstr "Terug naar de vragenlijst"
+
+msgid "Save Your Unfinished Survey"
+msgstr "Bewaar de incomplete vragenlijst"
+
+# D:\phpsurveyor/common.php:1895
+msgid "Enter a name and password for this survey and click save below."
+msgstr "Geef een naam en wachtwoord voor deze vragenlijst en klik hieronder op opslaan."
+
+msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
+msgstr "Uw vragelijst zal worden opgeslagen door gebruik te maken van die naam en dat wachtwoord en kan later worden aangevuld door in te loggen met de door u opgegeven inloggevens."
+
+# D:\phpsurveyor/common.php:1895
+msgid "If you give an email address, an email containing the details will be sent to you."
+msgstr "Als u een email adres opgeeft, wordt er een email met details naar u verzonden."
+
 msgid "Name"
 msgstr "Naam"
 
@@ -294,21 +326,20 @@ msgstr "Herhaal wachtwoord"
 msgid "Your Email"
 msgstr "Uw e-mailadres"
 
+msgid "Security Question"
+msgstr "Veiligheidsvraag"
+
 msgid "Save Now"
 msgstr "Bewaar nu"
 
-msgid "Return To Survey"
-msgstr "Terug naar de vragenlijst"
+msgid "Load A Previously Saved Survey"
+msgstr "Laad een eerder opgeslagen vragenlijst"
 
-msgid "Save Your Unfinished Survey"
-msgstr "Bewaar de incomplete vragenlijst"
+msgid "You can load a survey that you have previously saved from this screen."
+msgstr "U kunt een vragenlijst die u hier eerder heeft opgeslagen inladen. Vul de door u bij het bewaren opgegeven 'naam'  en wachtwoord in."
 
-msgid ""
-"Enter a name and password for this survey and click save below.<br />\n"
-"Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.<br /><br />\n"
-"If you give an email address, an email containing the details will be sent to you."
-msgstr "Vul een naam en wachtwoord in voor deze vragenlijst en druk op bewaar.<br >Uw vragenlijst wordt opgeslagen en kan later worden aangevuld door in te loggen met de door u opgegeven inloggevens.<br ><br >\n"
-"Als u een e-mail adres opgeeft worden de inloggegevens naar uw e-mail gestuurd."
+msgid "Type in the 'name' you used to save the survey, and the password."
+msgstr "Vul de door u bij het bewaren opgegeven 'naam'  en wachtwoord in."
 
 msgid "Saved name"
 msgstr "Bewaarde naam"
@@ -316,20 +347,15 @@ msgstr "Bewaarde naam"
 msgid "Load Now"
 msgstr "Laad vragenlijst"
 
-msgid "Load A Previously Saved Survey"
-msgstr "Laad een eerder opgeslagen vragenlijst"
-
-msgid "You can load a survey that you have previously saved from this screen.<br />Type in the 'name' you used to save the survey, and the password.<br />"
-msgstr "U kunt een vragenlijst die u hier eerder heeft opgeslagen inladen.<br >Vul de door u bij het bewaren opgegeven 'naam'  en wachtwoord in<br ><br >"
-
 msgid "You must be registered to complete this survey"
 msgstr "Registratie is vereist om deel te nemen aan deze vragenlijst."
 
-msgid ""
-"You may register for this survey if you wish to take part.<br />\n"
-"Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
-msgstr "U moet uzelf aanmelden om deel te nemen aan deze vragenlijst.<br >\n"
-"Vul volgende gegevens in en u zal onmiddellijk een email ontvangen met daarin een link naar de vragenlijst."
+# D:\phpsurveyor/common.php:1936
+msgid "You may register for this survey if you wish to take part."
+msgstr "U kunt zich registreren voor deze vragenlijst indien u wilt deelnemen."
+
+msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr "Vul volgende gegevens in en u zal onmiddellijk een email ontvangen met daarin een link naar de vragenlijst."
 
 msgid "First Name"
 msgstr "Voornaam"
@@ -345,12 +371,6 @@ msgstr "Ga verder"
 
 msgid "Your Assessment"
 msgstr "Uw toets"
-
-msgid "prev"
-msgstr "Vorige"
-
-msgid "next"
-msgstr "Volgende"
 
 msgid "Save your responses so far"
 msgstr "Sla uw antwoorden tot nu toe op"
@@ -380,14 +400,29 @@ msgstr "Deze vragenlijst is momenteel niet actief. Uw antwoorden kunnen niet wor
 msgid "ERROR"
 msgstr "FOUT"
 
-msgid "You have not provided a survey identification number"
-msgstr "U hebt geen vragenlijstnummer opgegeven."
+# D:\phpsurveyor/index.php:69
+msgid "We are sorry but your session has expired."
+msgstr "Tot onze spijt is uw sessie verlopen."
+
+# D:\phpsurveyor/index.php:69
+msgid "Either you have been inactive for too long or there were problems with your connection."
+msgstr "Of u bent te lang inactief geweest of er waren problemen met uw verbinding."
 
 msgid "Please contact"
 msgstr "Neem contact op met"
 
 msgid "for further assistance"
 msgstr "voor hulp"
+
+msgid "You have not provided a survey identification number"
+msgstr "U hebt geen vragenlijstnummer opgegeven."
+
+# D:\phpsurveyor/index.php:138
+# D:\phpsurveyor/index.php:246
+# D:\phpsurveyor/register.php:70
+# D:\phpsurveyor/save.php:215
+msgid "The answer to security question is incorrect"
+msgstr "Het antwoord op de veiligheidsvraag is fout"
 
 msgid "This survey is no longer available."
 msgstr "Deze vragenlijst is niet meer beschikbaar."
@@ -410,6 +445,9 @@ msgstr "De code die u hebt ingegeven is ongeldig of ze werd reeds gebruikt."
 msgid "For further information contact"
 msgstr "Voor meer informatie neem contact op met"
 
+msgid "Survey Saved"
+msgstr "Vragenlijst opgeslagen"
+
 msgid "There is no matching saved survey"
 msgstr "Er is geen vragenlijst gevonden bij deze naam"
 
@@ -430,7 +468,8 @@ msgid ""
 "Sincerely,\n"
 "\n"
 "{ADMINNAME}"
-msgstr "Beste {FIRSTNAME},\n"
+msgstr ""
+"Beste {FIRSTNAME},\n"
 "\n"
 "Dit e-mail bericht bevestigt dat u de vragenlijst  {SURVEYNAME} heeft ingevuld en dat uw antwoorden zijn opgeslagen. Dank u voor uw deelname.\n"
 "\n"
@@ -490,11 +529,29 @@ msgstr "Toegangscode"
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Er zijn nog geen vragen aangemaakt voor deze vragenlijst en er valt dus niets te testen of in te vullen."
 
+msgid "prev"
+msgstr "Vorige"
+
+msgid "next"
+msgstr "Volgende"
+
+msgid "last"
+msgstr "Laatste"
+
 msgid "Choose only one of the following"
 msgstr "Kies één van volgende opties"
 
 msgid "Check any that apply"
 msgstr "Selecteer de toepasselijke opties"
+
+msgid "Check at most"
+msgstr "Controleer tenminste"
+
+msgid "answers"
+msgstr "antwoorden"
+
+msgid "Choose your language"
+msgstr "Kies uw taal"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/qanda.php:366
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/printablesurvey.php:247
@@ -515,6 +572,10 @@ msgstr "Rangschik alle opties"
 
 msgid "Please check at least one item"
 msgstr "Kies minimaal één optie"
+
+# D:\phpsurveyor/qanda.php:462
+msgid "You cannot proceed until you enter some text for one or more questions."
+msgstr "U kunt pas doorgaan nadat u tekst voor 1 of meerdere vragen hebt toegevoegd."
 
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
 msgstr "Eén of meer verplichte vragen zijn niet beantwoord. U kunt niet verdergaan zonder ze te beantwoorden."
@@ -558,6 +619,12 @@ msgstr "Klik op de schaar rechts naast een optie"
 msgid "to remove the last entry in your ranked list"
 msgstr "om deze te verwijderen uit uw rangschikking"
 
+msgid "Please choose at most"
+msgstr "Kies a.u.b. tenminste"
+
+msgid "answer(s) for question"
+msgstr "antwoord(en) voor vraag"
+
 msgid "Make a comment on your choice here:"
 msgstr "Plaats voor een toelichting op uw antwoord"
 
@@ -570,13 +637,17 @@ msgstr "Het emailadres dat u opgaf is ongeldig. Probeert u het nog eens."
 msgid "The email you used has already been registered."
 msgstr "Het emailadres dat u opgaf is reeds geregistreerd."
 
-msgid ""
-"Thank you for registering to participate in this survey.<br /><br />\n"
-"An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.<br /><br />\n"
-"Survey Administrator {ADMINNAME} ({ADMINEMAIL})"
-msgstr "Bedankt voor uw aanmelding om deel te nemen aan deze vragenlijst.<br ><br >\n"
+msgid "Thank you for registering to participate in this survey."
+msgstr "Bedankt voor uw deelname aan deze vragenlijst."
+
+msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
+msgstr ""
+"Bedankt voor uw aanmelding om deel te nemen aan deze vragenlijst.<br ><br >\n"
 "Er is een email met toegangsgegevens voor deze vragenlijst gestuurd naar het opgegeven adres. Volg de link in deze email om de vragenlijst te beginnen.<br ><br >\n"
 "De beheerder van deze vragenlijst {ADMINNAME} ({ADMINEMAIL})"
+
+msgid "Survey Administrator"
+msgstr "Vragenlijst Beheerder:"
 
 msgid "Please try again."
 msgstr "Probeert u het nog eens."
@@ -605,8 +676,61 @@ msgstr "Herlaad de vragenlijst door op de volgende link te klikken:"
 msgid "Cannot submit results - there are none to submit."
 msgstr "U kunt de gegeven nog niet insturen omdat u nog niets heeft ingevuld."
 
-msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br /><br />If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
-msgstr "Deze fout kan voorkomen als u uw antwoorden reeds heeft verstuurd en daarna op 'ververs' heeft gedrukt in uw browser.<br ><br >Als u deze fout krijgt terwijl u de vragenlijst aan het invullen bent, kunt u  op '<- Terug' klikken  in uw browser en vervolgens het scherm verversen of herladen. De antwoorden van de laatste pagina gaan daarmee verloren, maar de andere antwoorden blijven dan in ieder geval behouden. Dit probleem kan voorkomen als de server tijdelijk te zwaar wordt belast. Onze verontschuldigingen voor het ongemak."
+# D:\phpsurveyor/save.php:456
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
+msgstr "Deze fout kan voorkomen als u al antwoorden heeft verstuurd en op 'opnieuw' in uw browser heeft gedrukt. In dit geval zijn uw antwoorden reeds verzonden."
+
+msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "Als u deze fout krijgt terwijl u de vragenlijst aan het invullen bent, kunt u  op '<- Terug' klikken  in uw browser en vervolgens het scherm verversen of herladen. De antwoorden van de laatste pagina gaan daarmee verloren, maar de andere antwoorden blijven dan in ieder geval behouden. Dit probleem kan voorkomen als de server tijdelijk te zwaar wordt belast. Onze verontschuldigingen voor het ongemak."
+
+# D:\phpsurveyor/admin/access_denied.php:43
+msgid "Access denied!"
+msgstr "Toegang geweigerd!"
+
+msgid "You are not allowed to create new surveys!"
+msgstr "U mag geen nieuwe vragenlijsten maken!"
+
+msgid "You are not allowed to delete this survey!"
+msgstr "U mag deze vragenlijst niet verwijderen!"
+
+msgid "You are not allowed to add new questions for this survey!"
+msgstr "U mag geen nieuwe vragen aan deze vragenlijst toevoegen!"
+
+msgid "You are not allowed to activate this survey!"
+msgstr "U mag deze vragenlijst niet activeren!"
+
+msgid "You are not allowed to deactivate this survey!"
+msgstr "U mag deze vragenlijst niet de-activeren!"
+
+msgid "You are not allowed to add a group to this survey!"
+msgstr "U mag geen groep toevoegen aan deze vragenlijst!"
+
+msgid "You are not allowed to order groups in this survey!"
+msgstr "U mag geen groepen herschikken in deze vragenlijst!"
+
+msgid "You are not allowed to edit this survey!"
+msgstr "U mag deze vragenlijst niet aanpassen!"
+
+msgid "You are not allowed to edit groups in this survey!"
+msgstr "U mag geen groepen wijzigen in deze vragenlijst!"
+
+# D:\phpsurveyor/admin/access_denied.php:103
+msgid "You are not allowed to browse response!"
+msgstr "U heeft geen toegang om door antwoorden te bladeren!"
+
+# D:\phpsurveyor/admin/access_denied.php:108
+msgid "You are not allowed to set assessment rules!"
+msgstr "U mag geen beoordelings regels instellen!"
+
+msgid "You are not allowed to delete this group!"
+msgstr "U mag deze groep niet verwijderen!"
+
+msgid "You are not allowed to import a survey!"
+msgstr "U mag geen vragenlijst importeren!"
+
+# D:\phpsurveyor/admin/access_denied.php:137
+msgid "You are not allowed to perform this operation!"
+msgstr "U bent niet gemachtigd deze taak uit te voeren!"
 
 msgid "This question is a multiple answer type question but has no answers."
 msgstr "Dit is een meerkeuzevraag, maar er zijn geen antwoorden."
@@ -632,9 +756,6 @@ msgstr "De volgende problemen zijn gevonden:"
 msgid "The survey cannot be activated until these problems have been resolved."
 msgstr "De vragenlijst kan niet worden geactiveerd zolang deze problemen niet zijn opgelost"
 
-msgid "Main Admin Screen"
-msgstr "Hoofd beheerscherm"
-
 msgid "Warning"
 msgstr "Waarschuwing"
 
@@ -644,25 +765,50 @@ msgstr "LEES DIT ZORGVULDIG ALVORENS VERDER TE GAAN"
 msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
 msgstr "Activeer een vragenlijst pas als u er absoluut zeker van bent dat de vragenlijst compleet is en u geen aanpassingen meer zult moeten verrichten."
 
-msgid "Once a survey is activated you can no longer:<ul><li>Add or delete groups</li><li>Add or remove answers to Multiple Answer questions</li><li>Add or delete questions</li></ul>"
-msgstr "Als een vragenlijst is geactiveerd, kunt u volgende zaken niet meer:<ul><li>Toevoegen en wissen van groepen</li><li>Toevoegen en wissen van antwoorden van meerkeuzevragen<li></li>Toevoegen en wissen van antwoorden</li></ul>"
+# D:\phpsurveyor/admin/activate.php:235
+msgid "Once a survey is activated you can no longer:"
+msgstr "Wanneer een vragenlijst is geactiveerd kunt u niet meer:"
 
-msgid "However you can still:<ul><li>Edit (change) your questions code, text or type</li><li>Edit (change) your group names</li><li>Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)</li><li>Change survey name or description</li></ul>"
-msgstr "U kunt wel<ul><li>De vraagcode, tekst of het type veranderen</li><li>De namen van de groepen veranderen</li><li>Voorgedefinieerde antwoorden (behalve die van meerkeuzevragen) toevoegen, wissen of aanpassen</li><li>De naam of omschrijving van de vragenlijst wijzigen</li><ul>"
+# D:\phpsurveyor/admin/activate.php:235
+msgid "Add or delete groups"
+msgstr "Groepen toevoegen of verwijderen"
+
+msgid "Add or remove answers to Multiple Answer questions"
+msgstr "Toevoegen of verwijderen aan Meerdere Antwoord Vragen"
+
+msgid "Add or delete questions"
+msgstr "Toevoegen of verwijderen van vragen"
+
+# D:\phpsurveyor/admin/activate.php:236
+msgid "However you can still:"
+msgstr "Maar u kunt nog wel:"
+
+# D:\phpsurveyor/admin/activate.php:236
+msgid "Edit (change) your questions code, text or type"
+msgstr "Bewerk (wijzig) uw vragen code, tekst of type"
+
+# D:\phpsurveyor/admin/activate.php:236
+msgid "Edit (change) your group names"
+msgstr "Bewerk (wijzig) uw groepsnamen"
+
+# D:\phpsurveyor/admin/activate.php:236
+msgid "Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)"
+msgstr "Toevoegen, Verwijderen of Bewerken van voor-gedefinieerde antwoorden (behalve voor Meerdere-antwoord vragen)"
+
+# D:\phpsurveyor/admin/activate.php:236
+msgid "Change survey name or description"
+msgstr "Wijzig vragenlijst naam of omschrijving"
 
 msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
 msgstr "Als u groepen of vragen wilt toevoegen of verwijderen terwijl er reeds ingevulde vragenlijst zijn zult u de vragenlijst moeten deactiveren waardoor de reeds ingevoerde gegevens naar een archief worden verplaatst."
 
-msgid "Cancel"
-msgstr "Annuleer"
-
-msgid "Activate"
-msgstr "Activeer"
-
 msgid "Survey could not be actived."
 msgstr "Vragenlijst kon niet worden geactiveerd."
 
-msgid "Survey has been activated. Results table has been succesfully created."
+msgid "Main Admin Screen"
+msgstr "Hoofd beheerscherm"
+
+msgid "Survey has been activated. Results table has been successfully created."
 msgstr "De vragenlijst is geactiveerd. De deelnametabel is  aangemaakt."
 
 msgid "This is not an anonymous survey. A token table must also be created."
@@ -677,29 +823,11 @@ msgstr "Deze vragenlijst vereist openbare aanmelding. Er moet ook een toegangsco
 msgid "This survey is now active, and responses can be recorded."
 msgstr "De vragenlijst is nu actief en antwoorden zullen worden opgeslagen."
 
-msgid "The defined surveyor database does not exist"
-msgstr "De ingestelde PHPSurveyor database bestaat niet"
-
-msgid "Either your selected database has not yet been created or there is a problem accessing it."
-msgstr "Ofwel is uw database nog niet aangemaakt, danwel is het niet mogelijk de database te benaderen."
-
-msgid "PHPSurveyor can attempt to create this database for you."
-msgstr "PHPSurveyor kan proberen de database voor u aan te maken."
-
-msgid "Your selected database name is:"
-msgstr "De door u ingestelde naam van de database is:"
-
-msgid "Create Database"
-msgstr "Maak database aan"
+msgid "PHPSurveyor Online Manual"
+msgstr "PHPSurveyor Online Handleiding"
 
 msgid "Help"
 msgstr "Toon help"
-
-msgid "Add"
-msgstr "Toevoegen"
-
-msgid "Update"
-msgstr "Bijwerken"
 
 msgid "Assessments"
 msgstr "Toetsen"
@@ -757,6 +885,9 @@ msgstr "URL"
 msgid "Total"
 msgstr "URL"
 
+msgid "Add"
+msgstr "Toevoegen"
+
 msgid "Edit"
 msgstr "Bewerk"
 
@@ -776,6 +907,12 @@ msgstr "Weet u zeker dat u deze respons wil wissen?"
 msgid "Browse Responses"
 msgstr "Bekijken responses"
 
+msgid "The defined surveyor database does not exist"
+msgstr "De ingestelde PHPSurveyor database bestaat niet"
+
+msgid "Either your selected database has not yet been created or there is a problem accessing it."
+msgstr "Ofwel is uw database nog niet aangemaakt, danwel is het niet mogelijk de database te benaderen."
+
 msgid "You have not selected a survey to browse."
 msgstr "U hebt geen vragenlijst opgegeven om te bekijken."
 
@@ -784,6 +921,20 @@ msgstr "Deze vragenlijst is niet geactiveerd. Er zijn geen antwoorden om te beki
 
 msgid "There is no matching survey."
 msgstr "Er is geen bijpassende vragenlijst."
+
+msgid "Date Submitted"
+msgstr "Datum verstuurd"
+
+msgid "Date Stamp"
+msgstr "Datering?"
+
+msgid "IP Address"
+msgstr "IP Adres"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1852
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2114
+msgid "Referring URL"
+msgstr "Verwijzer URL"
 
 msgid "View Response"
 msgstr "Bekijk respons"
@@ -803,11 +954,31 @@ msgstr "Toon laatste..."
 msgid "Show next..."
 msgstr "Toon volgende.."
 
+# D:\phpsurveyor/admin/browse.php:304
+msgid "Showing Filtered Results"
+msgstr "Gefilterde Resultaten Tonen"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:874
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/labels.php:251
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:224
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1006
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1030
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1038
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1044
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1047
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1048
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:1437
+msgid "Close"
+msgstr "Sluiten"
+
 msgid "Data View Control"
 msgstr "Controle dataweergave"
 
 msgid "Show start.."
 msgstr "Toon begin.."
+
+msgid "Show previous..."
+msgstr "Toon vorige..."
 
 msgid "Records Displayed:"
 msgstr "Aantal weergegeven records:"
@@ -817,26 +988,6 @@ msgstr "Starten vanaf:"
 
 msgid "Show"
 msgstr "Toon"
-
-msgid "Checking to ensure all tables exist"
-msgstr "Bezig met verifi&euml;ren dat alle tabellen bestaan"
-
-msgid "Checking"
-msgstr "Bezig met controleren"
-
-msgid "Table Created"
-msgstr "Tabel aangemaakt"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/checkfields.php:225
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/checkfields.php:291
-msgid "OK"
-msgstr "OK"
-
-msgid "Checking to ensure all fields exist"
-msgstr "Bezig met verifi&euml;ren dat alle velden bestaan"
-
-msgid "Field Created"
-msgstr "Veld aangemaakt"
 
 msgid "Condition Designer"
 msgstr "Voorwaardenontwerper"
@@ -851,6 +1002,10 @@ msgstr "U kunt dit script niet zelfstandig draaien."
 
 msgid "You have not selected a Question."
 msgstr "U heeft geen vraag geselecteerd"
+
+# D:\phpsurveyor/admin/conditions.php:88
+msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
+msgstr "Uw voorwaarde kon niet worden toegevoegd! Het bevatte niet de vraag en/of antwoord waarop de voorwaarde is gebaseerd. Wees er zeker van dat u een vraag en een antwoord selecteerd."
 
 msgid "Did not copy questions"
 msgstr "De vraag is niet gekopieerd"
@@ -908,6 +1063,16 @@ msgstr "Wis"
 msgid "Close Window"
 msgstr "Sluit venster"
 
+msgid "Create Database"
+msgstr "Maak database aan"
+
+msgid "Populate Database"
+msgstr "Vul database"
+
+#, php-format
+msgid "Database `%s` has been successfully populated."
+msgstr "Database `%s` is succesvol aangemaakt."
+
 msgid "Database Information not provided. This script must be run from admin.php only."
 msgstr "Database informatie ontbreekt. Dit script kan alleen vanuit admin.php worden gestart."
 
@@ -917,14 +1082,18 @@ msgstr "Database is aangemaakt."
 msgid "Please click below to populate the database"
 msgstr "Klik alstublieft hieronder  om de database te vullen"
 
-msgid "Populate Database"
-msgstr "Vul database"
-
 msgid "Could not create database"
 msgstr "Kon de database niet aanmaken"
 
-msgid "Group could not be added. It is missing the mandatory group name"
-msgstr "Groep kon niet worden aangemaakt. De verplichte groepnaam ontbreekt"
+msgid ""
+"Group could not be added.\\n"
+"\\n"
+"It is missing the group name for the following languages"
+msgstr "Groep kon niet worden toegevoegd. De verplichte groepsnaam voor de volgende taal ontbreekt"
+
+# D:\phpsurveyor/admin/database.php:144
+msgid "Error: The database reported the following error:"
+msgstr "FOUT: De database geeft de volgende melding:"
 
 msgid "Group could not be updated"
 msgstr "Groep kon niet worden bijgewerkt"
@@ -953,37 +1122,24 @@ msgstr "Vraag kon niet worden gewist. Er zijn voorwaarden voor andere vragen die
 msgid "Question could not be deleted"
 msgstr "Vraag kon niet worden gewist"
 
-msgid "Fix Sort"
-msgstr "Herstel sorteervolgorde"
+msgid "Add new Answer"
+msgstr "Nieuw Antwoord toevoegen"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:473
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:981
-msgid "Sort Alpha"
-msgstr "Sorteer alfabetisch"
+# D:\phpsurveyor/admin/database.php:562
+# D:\phpsurveyor/admin/database.php:570
+msgid "Failed to insert answer"
+msgstr "Antwoord toevoegen mislukt"
 
-msgid "Answer could not be added. You must include both a Code and an Answer"
-msgstr "Antwoord kon niet worden toegevoegd. U moet zowel een antwoordcode als een antwoord opgeven"
+# D:\phpsurveyor/admin/database.php:574
+msgid "Invalid answer code supplied"
+msgstr "Foutief antwoord code gegeven"
 
-msgid "Answer could not be added. There is already an answer with this code"
-msgstr "Antwoord kon niet worden toegevoegd. Er is al een antwoord met deze antwoordcode"
+msgid "Save All"
+msgstr "Alles bewaren"
 
-msgid "Save"
-msgstr "Bewaar"
-
-msgid "Answer could not be updated. You must include both a Code and an Answer"
-msgstr "Antwoord kon niet worden bijgewerkt. U moet zowel een antwoordcode als een antwoord opgeven"
-
-msgid "Answer could not be updated. There is already an answer with this code"
-msgstr "Antwoord kon niet worden bijgewerkt. Er is al een antwoord met deze antwoordcode"
-
-msgid "Answer could not be updated. You have changed the answer code, but there are conditions to other questions which are dependant upon the old answer code to this question. You must delete these conditions before you can change the code to this answer."
-msgstr "Antwoord kon niet worden bijgewerkt. U heeft de code veranderd, maar er zijn voorwaarden voor andere vragen die afhangen van antwoorden op deze vraag en het veranderen van de antwoordcode van dit antwoord zou voor problemen zorgen. U moet deze voorwaarden verwijderen voor u de antwoordcode van deze vraag kunt veranderen"
-
-msgid "Del"
-msgstr "Wis"
-
-msgid "Answer could not be deleted. There are conditions for other questions that rely on this answer. You cannot delete this answer until those conditions are removed"
-msgstr "Antwoord kon niet worden verwijderd. Er zijn voorwaarden voor andere vragen die afhangen van antwoorden op deze vraag en het verwijderen van dit antwoord zou voor problemen zorgen. U moet deze voorwaarden verwijderen voor u dit antwoord kunt wissen"
+# D:\phpsurveyor/admin/database.php:593
+msgid "Failed to update answers"
+msgstr "Antwoorden bijwerken mislukt"
 
 msgid "Up"
 msgstr "Omhoog"
@@ -991,20 +1147,45 @@ msgstr "Omhoog"
 msgid "Dn"
 msgstr "Omlaag"
 
+msgid "Del"
+msgstr "Wis"
+
+# D:\phpsurveyor/admin/database.php:630
+msgid "Failed to delete answer"
+msgstr "Verwijderen antwoorden mislukt"
+
+msgid "Default"
+msgstr "Standaard"
+
+# D:\phpsurveyor/admin/database.php:645
+msgid "Failed to make answer not default"
+msgstr "Niet gelukt om het antwoord niet standaard te maken"
+
+# D:\phpsurveyor/admin/database.php:659
+msgid "Failed to make answer default"
+msgstr "Niet gelukt om het antwoord standaard te maken"
+
+msgid "Survey could not be updated"
+msgstr "De vragenlijst kon niet bijgewerkt worden"
+
+# D:\phpsurveyor/admin/database.php:912
+msgid "ERROR deleting Survey id"
+msgstr "FOUT verwijderen Vragenlijst id"
+
 msgid "Survey could not be created because it did not have a short title"
 msgstr "De vragenlijst kon niet aangemaakt worden omdat er geen korte titel is opgegeven"
 
 msgid "Survey could not be created"
 msgstr "De vragenlijst kon niet aangemaakt worden"
 
-msgid "Survey could not be updated"
-msgstr "De vragenlijst kon niet bijgewerkt worden"
-
 msgid "Data Entry"
 msgstr "Gegevensinvoer"
 
 msgid "You have not selected a survey for data-entry."
 msgstr "U heeft geen vragenlijst geselecteerd voor gegevensinvoer."
+
+msgid "Try again"
+msgstr "Probeer opnieuw"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:133
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:1179
@@ -1029,6 +1210,10 @@ msgstr "Uw heeft een e-mail ontvangen met gegevens over de door u bewaarde vrage
 
 msgid "An error occurred and your survey responses were not saved."
 msgstr "Er heeft zich een onverwachte fout voorgedaan, uw antwoorden zijn niet opgeslagen."
+
+# D:\phpsurveyor/admin/dataentry.php:249
+msgid "This survey is not anonymous, you must supply a valid token"
+msgstr "Deze vragenlijst is niet anoniem, u dient geldige  toegangscode op te geven"
 
 msgid "Success"
 msgstr "Succesvol"
@@ -1089,65 +1274,14 @@ msgstr "Deze vragenlijst is nog niet actief. Uw antwoorden worden niet bewaard"
 msgid "The survey you selected does not exist"
 msgstr "De vragenlijst die u heeft geselecteerd bestaat niet"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:52
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:301
-msgid "Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. </font>"
-msgstr "Consistentietoets invoer<br /><font size='1'>Als er fouten optreden kunt u proberen deze opdracht meerdere malen uit te voeren.</font>"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:89
-msgid "The following conditions should be deleted"
-msgstr "De volgende voorwaarde moet worden verwijderd"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:97
-msgid "All conditions meet consistency standards"
-msgstr "Alle voorwaarden zijn consistent"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:113
-msgid "The following question attributes should be deleted"
-msgstr "De volgende vraagattributen moeten worden verwijderd"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:119
-msgid "All question_attributes meet consistency standards"
-msgstr "Alle vraagattributen zijn consistent"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:149
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:159
-msgid "The following assessments should be deleted"
-msgstr "De volgende toetsen moeten worden verwijderd"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:155
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:165
-msgid "All assessments meet consistency standards"
-msgstr "Alle toetsen zijn consistent"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:184
-msgid "The following answers should be deleted"
-msgstr "De volgende antwoorden moeten worden verwijderd"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:190
-msgid "All answers meet consistency standards"
-msgstr "Alle antwoorden zijn consistent"
-
-msgid "The following questions should be deleted"
-msgstr "De volgende vraag moet worden verwijderd"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:219
-msgid "All questions meet consistency standards"
-msgstr "Alle vragen zijn consistent"
-
-msgid "The following groups should be deleted"
-msgstr "De volgende groepen moeten worden verwijderd"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:240
-msgid "All groups meet consistency standards"
-msgstr "Alle groepen zijn consistent"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:244
-msgid "No database action required"
-msgstr "Geen database handeling verijst"
+msgid "Answer could not be added. There is already an answer with this code"
+msgstr "Antwoord kon niet worden toegevoegd. Er is al een antwoord met deze antwoordcode"
 
 msgid "You have not selected a survey to delete"
 msgstr "U heeft geen vragenlijst geselecteerd om te verwijderen"
+
+msgid "Answer could not be updated. There is already an answer with this code"
+msgstr "Antwoord kon niet worden bijgewerkt. Er is al een antwoord met deze antwoordcode"
 
 msgid "Deactivate Survey"
 msgstr "Deactiveren vragenlijst"
@@ -1158,7 +1292,7 @@ msgstr "Voor een actieve vragenlijst wordt een tabel aangemaakt waarin alle gege
 msgid "When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using PHPSurveyor any more."
 msgstr "Wanneer u een vragenlijst deactiveert, worden deze gegevens naar een andere tabel verplaatst. Na reactivatie wordt de tabel geleegd. U kunt de antwoorden dan niet langer met PHPSurveyor bekijken."
 
-msgid "De-activated survey data can only be accessed by system administrators using a MySQL data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
+msgid "De-activated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
 msgstr "Gedeactiveerde vragenlijstgegevens kunnen momenteel alleen door systeembeheerders met een MySQL tool zoals phpMyAdmin worden bekeken. Als uw vragenlijst toegangscodes gebruikt, zal ook deze tabel worden hernoemd en is deze alleen toegankelijk voor systeembeheerders."
 
 msgid "Your responses table will be renamed to:"
@@ -1167,8 +1301,11 @@ msgstr "Uw repsonstabel wordt hernoemd naar:"
 msgid "You should export your responses before de-activating. Click \"Cancel\" to return to the main admin screen without de-activating this survey."
 msgstr "U moet uw responses exporteren voordat u de vragenlijst deactiveert. Klik op 'Annuleer' om naar het hoofdmenu terug te keren zonder deze vragenlijst te deactiveren"
 
-msgid "De-Activate"
-msgstr "Deactiveer"
+msgid "De-Activate Survey"
+msgstr "Deactiveren vragenlijst"
+
+msgid "Survey Has Been De-Activated"
+msgstr "De vragenlijst is gedeactiveerd."
 
 msgid "The responses table has been renamed to: "
 msgstr "De responstabel wordt hernoemd naar: "
@@ -1200,6 +1337,9 @@ msgstr "Deze vragenlijst is actief en er bestaat een responstabel. Als u deze vr
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
 msgstr "Deze vragenlijst heeft een toegangscodetabel. Als u de vragenlijst wist, zal ook deze tabel worden verwijderd. Het is aan te raden deze tabel te exporteren of  er een backup van te maken alvorens deze vragenlijst te verwijderen."
 
+msgid "Cancel"
+msgstr "Annuleer"
+
 msgid "This survey has been deleted."
 msgstr "Deze vragenlijst is verwijderd."
 
@@ -1221,6 +1361,9 @@ msgstr "Exporteer vragenlijst"
 msgid "No SID has been provided. Cannot dump survey"
 msgstr "Er is geen SID opgegeven waardoor de vragenlijst niet kan worden verwijderd."
 
+msgid "Export Results"
+msgstr "Exporteer antwoorden"
+
 msgid "Export Responses"
 msgstr "Exporteer antwoorden"
 
@@ -1229,6 +1372,9 @@ msgstr "Gefilterd uit de statistieken"
 
 msgid "Single Response"
 msgstr "Enkele respons"
+
+msgid "Columns"
+msgstr "Kolommen"
 
 msgid "Questions"
 msgstr "Vragen"
@@ -1271,7 +1417,7 @@ msgstr "Exporteer gegevens"
 msgid "Column Control"
 msgstr "Beheer kolomopmaak"
 
-msgid "Choose columns"
+msgid "Choose Columns"
 msgstr "Kies kolommen"
 
 msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
@@ -1319,8 +1465,63 @@ msgstr "Attribuut 2"
 msgid "N/A"
 msgstr "Niet van toepassing"
 
-msgid "Create Survey"
-msgstr "Aanmaken vragenlijst"
+msgid "Survey"
+msgstr "Vragenlijst"
+
+msgid "Date Created"
+msgstr "Datum aangemaakt"
+
+# D:\phpsurveyor/admin/html.php:52
+msgid "Visibility"
+msgstr "Zichtbaarheid"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:556
+msgid "Status"
+msgstr "Status:"
+
+msgid "Action"
+msgstr "Bewerking"
+
+msgid "Responses"
+msgstr "Antwoorden"
+
+msgid "Private"
+msgstr "Privé"
+
+# D:\phpsurveyor/admin/html.php:68
+msgid "Public"
+msgstr "Publiek"
+
+msgid "Expired"
+msgstr "Vervallen"
+
+msgid "Active"
+msgstr "Actief"
+
+msgid "Inactive"
+msgstr "In-actief"
+
+msgid "This survey is active but expired."
+msgstr "Deze vragenlijst is momenteel actief maar verlopen"
+
+msgid "This survey is active but expired"
+msgstr "Deze vragenlijst is momenteel actief maar verlopen"
+
+msgid "De-activate this Survey"
+msgstr "Deactiveer deze vragenlijst"
+
+msgid "This survey is currently active"
+msgstr "Deze vragenlijst is momenteel actief"
+
+msgid "Activate this Survey"
+msgstr "Activeer deze vragenlijst"
+
+msgid "This survey is not currently active"
+msgstr "Deze vragenlijst is momenteel inactief"
+
+# D:\phpsurveyor/admin/html.php:158
+msgid "No Surveys available - please create one."
+msgstr "Geen Vragenlijsten aanwezig - maak er één aub."
 
 msgid "PHPSurveyor System Summary"
 msgstr "Samenvatting PHPSurveyor Systeem"
@@ -1349,55 +1550,44 @@ msgstr "Actieve toegangscodetabellen"
 msgid "De-activated Token Tables"
 msgstr "Inactieve toegangscodetabellen"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:217
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1851
-msgid "Check PHPSurveyor Data Integrity"
-msgstr "Controleer integriteit PHPSurveyor gegevens"
-
-msgid "Survey"
-msgstr "Vragenlijst"
-
-msgid "This survey is not currently active"
-msgstr "Deze vragenlijst is momenteel inactief"
-
-msgid "Activate this Survey"
-msgstr "Activeer deze vragenlijst"
-
-msgid "This survey is active but expired."
-msgstr "Deze vragenlijst is momenteel actief maar verlopen"
-
-msgid "This survey is active but expired"
-msgstr "Deze vragenlijst is momenteel actief maar verlopen"
-
-msgid "This survey is currently active"
-msgstr "Deze vragenlijst is momenteel actief"
-
-msgid "De-activate this Survey"
-msgstr "Deactiveer deze vragenlijst"
-
 msgid "Cannot Activate this Survey"
 msgstr "Vragenlijst kan niet worden geactiveeerd"
 
-msgid "Do Survey"
-msgstr "Voer vragenlijst uit"
+msgid "Survey Security Settings"
+msgstr "Wijzigen beveiligingsinstellingen"
+
+msgid "Test This Survey"
+msgstr "Test deze vragenlijst"
+
+msgid "Execute This Survey"
+msgstr "Uitvoeren huidige vragenlijst"
+
+msgid "Please select a language:"
+msgstr "Selecteer een taal a.u.b.:"
+
+msgid "Printable Version of Survey"
+msgstr "Printbare versie van de vragenlijst"
 
 msgid "Edit Current Survey"
 msgstr "Bewerk huidige vragenlijst"
 
-msgid "Order the groups in that Survey"
-msgstr "Orden de groepen in de vragenlijst"
-
 msgid "Delete Current Survey"
 msgstr "Verwijder huidige vragenlijst"
 
-msgid "Export this Survey"
+# D:\phpsurveyor/admin/html.php:564
+# D:\phpsurveyor/admin/html.php:565
+# D:\phpsurveyor/admin/html.php:2242
+msgid "Change Group Order"
+msgstr "Wijzig Groepsvolgorde"
+
+msgid "Export Current Survey"
 msgstr "Exporteer huidige vragenlijst"
 
 msgid "Set Assessment Rules"
 msgstr "Maak toetsregels"
 
-msgid "Browse Responses for this Survey"
-msgstr "Bekijk responses van deze vragenlijst"
+msgid "Browse Responses For This Survey"
+msgstr "Bekijk antwoordenvan deze vragenlijst"
 
 msgid "Activate/Edit Tokens for this Survey"
 msgstr "ActiveerBewerk toegangscodes voor deze vragenlijst"
@@ -1417,11 +1607,8 @@ msgstr "Voeg nieuwe groep aan deze vragenlijst toe"
 msgid "Groups"
 msgstr "Groepen"
 
-msgid "Title:"
-msgstr "Titel:"
-
-msgid "This survey is anonymous."
-msgstr "Deze vragenlijst is anoniem."
+msgid "Title"
+msgstr "Titel"
 
 msgid "This survey is NOT anonymous."
 msgstr "Deze vragenlijst is NIET anoniem."
@@ -1457,7 +1644,7 @@ msgid "Participants can save partially finished surveys"
 msgstr "Respondenten kunnen incomplete vragenlijsten bewaren"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:501
-msgid "Regenerate Question Numbers:"
+msgid "Regenerate Question Codes:"
 msgstr "Genereer vraagnummers opnieuw:"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:504
@@ -1488,20 +1675,19 @@ msgstr "Vervaldatum:"
 msgid "Template:"
 msgstr "Sjabloon:"
 
-msgid "Language:"
-msgstr "Taal:"
+msgid "Base Language:"
+msgstr "Standaard taal:"
 
-msgid "Exit Link:"
+msgid "Additional Languages"
+msgstr "Additionele talen"
+
+msgid "Exit Link"
 msgstr "Uitgangslink:"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:556
-msgid "Status:"
-msgstr "Status:"
-
-msgid "Number of groups in survey:"
+msgid "Number of groups in survey"
 msgstr "Aantal groepen in de vragenlijst:"
 
-msgid "Number of questions in survey:"
+msgid "Number of questions in survey"
 msgstr "Aantal vragen in de vragenlijst:"
 
 msgid "Survey is not currently active."
@@ -1510,7 +1696,7 @@ msgstr "De vragenlijst is momenteel inactief."
 msgid "Survey is currently active."
 msgstr "De vragenlijst is momenteel actief."
 
-msgid "Survey table name is:"
+msgid "Survey table name is"
 msgstr "Naam van de vragenlijsttabel is:"
 
 msgid "Survey cannot be activated yet."
@@ -1525,14 +1711,23 @@ msgstr "U moet nog vragen toevoegen"
 msgid "Edit Current Group"
 msgstr "Bewerk huidige groep"
 
-msgid "Delete Current Group"
-msgstr "Verwijder huidige groep"
-
 msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
 msgstr "Het verwijderen van deze groep zal ook de bijbehorende vragen en antwoorden wissen. Bent u zeker dat u wilt verdergaan?"
 
-msgid "Reorder the questions of this group"
-msgstr "Herorden de vragen in deze groep"
+msgid "Delete Current Group"
+msgstr "Verwijder huidige groep"
+
+# D:\phpsurveyor/admin/html.php:870
+msgid "Impossible to delete this group because there is at least one question having a condition on its content"
+msgstr "Het is niet mogelijk deze groep te verwijderen, omdat er minstens één conditionele vraag m.b.t. de inhoud vanaf hangt"
+
+# D:\phpsurveyor/admin/html.php:872
+# D:\phpsurveyor/admin/html.php:1032
+msgid "Disabled"
+msgstr "Uitgeschakeld"
+
+msgid "Change Question Order"
+msgstr "Aanpassen vragenvolgorde"
 
 msgid "Export Current Group"
 msgstr "Exporteer huidige groep"
@@ -1549,14 +1744,21 @@ msgstr "Verberg gegevens van deze groep"
 msgid "Add New Question to Group"
 msgstr "Voeg nieuwe vraag aan deze groep toe"
 
+msgid "Questions with conditions to this group"
+msgstr "Vragen met condities in deze groep"
+
 msgid "Edit Current Question"
 msgstr "Bewerk huidige vraag"
+
+msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
+msgstr "Het verwijderen van deze veraag zal ook de bijbehorende antwoorden wissen. Bent u zeker dat u wil verdergaan?"
 
 msgid "Delete Current Question"
 msgstr "Verwijder huidige vraag"
 
-msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
-msgstr "Het verwijderen van deze veraag zal ook de bijbehorende antwoorden wissen. Bent u zeker dat u wil verdergaan?"
+# D:\phpsurveyor/admin/html.php:1030
+msgid "Impossible to delete this question because  there is at least one question having a condition on it"
+msgstr "Het is niet mogelijk deze groep te verwijderen, omdat er minstens één conditionele vraag vanaf hangt"
 
 msgid "Export this Question"
 msgstr "Exporteer huidige vraag"
@@ -1566,6 +1768,9 @@ msgstr "Kopieer huidige vraag"
 
 msgid "Set Conditions for this Question"
 msgstr "Stel voorwaarden voor deze vraag in"
+
+msgid "Preview This Question"
+msgstr "Voorbeschouwing van deze vraag"
 
 msgid "Edit/Add Answers for this Question"
 msgstr "Bewerk/Voeg-toe  antwoorden bij deze vraag"
@@ -1633,8 +1838,11 @@ msgstr "U moet nog een label set voor deze vraag selecteren"
 msgid "Other:"
 msgstr "Anders:"
 
-msgid "Upload completed"
-msgstr "Upload gereed"
+msgid "Other questions having conditions on this question:"
+msgstr "Andere vragen met condities tot deze vraag:"
+
+msgid "Base Language"
+msgstr "Standaard taal:"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:874
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/labels.php:251
@@ -1649,110 +1857,100 @@ msgstr "Upload gereed"
 msgid "Code"
 msgstr "Code"
 
-msgid "Default"
-msgstr "Standaard"
+msgid "Order"
+msgstr "Volgorde"
 
-msgid "Action"
-msgstr "Bewerking"
+msgid "New Answer"
+msgstr "Nieuw Antwoord"
 
-msgid "Move"
-msgstr "Verplaats"
-
-msgid "User Control"
-msgstr "Gebruikersbeheer"
-
-msgid ""
-"You have not yet initialised security settings for your survey system and subsequently there are no restrictions on access.</p>\n"
-"If you click on the 'initialise security' button below, standard APACHE security settings will be added to the administration directory of this script. You will then need to use the default access username and password to access the administration and data entry scripts."
-msgstr "U heeft de beveiligingsinstellingen van uw vragenlijstbeheer nog niet opgestart waardoor er geen beperkingen op de toegang zijn.<p>\n"
-"Als u op 'Activeren beveiliging'  drukt, wordt de standaard APACHE beveiliging toegepast op de beheersectie van deze site. Vanaf dan zijn een gebruikersnaam en paswoord noodazakelijk om toegang te krijgen."
-
-msgid "Username"
-msgstr "Gebruikersnaam"
-
-msgid "It is highly recommended that once your security system has been initialised you change this default password."
-msgstr "Het is aanbevolen dat u dit standaard paswoord na het starten van het beveiligingssysteem verandert."
-
-msgid "Initialise Security"
-msgstr "Opstarten beveiliging"
-
-msgid "User"
-msgstr "Gebruiker"
-
-msgid "Security"
-msgstr "Beveiliging"
-
-msgid "No users exist in your table. We recommend you 'turn off' security. You can then 'turn it on' again."
-msgstr "Er bestaan geen gebruikers in uw tabel. Het is aanbevolen de beveiliging 'uit te zetten'. Daarna kunt u het weer 'aan zetten'."
+msgid "You cannot add answers because they are being used by an active survey."
+msgstr "U kunt geen antwoorden toevoegen, omdat deze labelset in een actieve vragenlijst wordt gebruikt."
 
 msgid "Add User"
 msgstr "Voeg gebruiker toe"
 
-msgid "Turn Off Security"
-msgstr "Zet beveiliging uit"
+msgid "User added."
+msgstr "Gebruiker toegevoegd"
 
-msgid "Add Question"
-msgstr "Voeg vraag toe"
+msgid "Set Survey Rights"
+msgstr "Vragenlijst rechten instellen"
 
-msgid "Required"
-msgstr "Verplicht"
+# D:\phpsurveyor/admin/html.php:1424
+# D:\phpsurveyor/admin/html.php:1430
+# D:\phpsurveyor/admin/html.php:1484
+# D:\phpsurveyor/admin/usercontrol.php:164
+# D:\phpsurveyor/admin/usercontrol.php:168
+# D:\phpsurveyor/admin/usercontrol.php:223
+# D:\phpsurveyor/admin/userrighthandling.php:960
+# D:\phpsurveyor/admin/userrighthandling.php:966
+msgid "Failed to add User."
+msgstr "Toevoegen gebruiker mislukt"
 
-msgid "Label Set:"
-msgstr "Labelset:"
+# D:\phpsurveyor/admin/html.php:1424
+# D:\phpsurveyor/admin/userrighthandling.php:960
+msgid "Username already exists."
+msgstr "Gebruikersnaam bestaat al"
 
-msgid "Mandatory:"
-msgstr "Verplicht:"
+# D:\phpsurveyor/admin/html.php:1430
+# D:\phpsurveyor/admin/html.php:1484
+# D:\phpsurveyor/admin/userrighthandling.php:966
+msgid "No Username selected."
+msgstr "Geen gebruikersnaam geselecteerd."
 
-msgid "Question Attributes:"
-msgstr "Vraagattributen:"
+msgid "Add User Group"
+msgstr "Voeg gebruikersgroep toe"
 
-msgid "Import Question"
-msgstr "Importeer vraag"
+# D:\phpsurveyor/admin/html.php:1466
+msgid "User Group added."
+msgstr "Gebruikers Groep toegevoegd."
 
-msgid "Select SQL File:"
-msgstr "Selecteer SQL bestand:"
+# D:\phpsurveyor/admin/html.php:1478
+msgid "Failed to add User Group."
+msgstr "Toevoegen Gebruikers Groep mislukt"
 
-msgid "Copy Question"
-msgstr "Kopieer vraag"
+msgid "Deleting User"
+msgstr "Bezig met het wissen van de gebruiker"
 
-msgid "Note: You MUST enter a new question code"
-msgstr "opmerking: u MOET een nieuwe vraagcode voor de vraag opgeven"
+msgid "Username"
+msgstr "Gebruikersnaam"
 
-msgid "Group:"
-msgstr "Groep:"
+msgid "Could not delete user. User was not supplied."
+msgstr "Kon de gebruiker verwijderen, omdat de gebruikersnaam ontbreekt."
 
-msgid "Copy Answers?"
-msgstr "Antwoorden kopieren?"
+msgid "Edit Survey Properties"
+msgstr "Wijzig vragenlijst eigenschappen"
 
-msgid "Copy Attributes?"
-msgstr "Attributen kopieren?"
+msgid "Define Questions"
+msgstr "Vragen"
 
-msgid "Edit Question"
-msgstr "Wijzig vraag"
+msgid "Export"
+msgstr "Exporteer gegevens"
 
-msgid "Update Question"
-msgstr "Werk vraag bij"
+msgid "Browse Response"
+msgstr "Bekijken responses"
 
-msgid "Save Order"
-msgstr "Opslagvolgorde"
+msgid "Survey Security"
+msgstr "Vragenlijst Veiligheid"
+
+msgid "User Group"
+msgstr "Gebruikersgroep"
+
+msgid "User"
+msgstr "Gebruiker"
 
 msgid "Add Group"
 msgstr "Voeg groep toe"
 
-msgid "Optional"
-msgstr "Optioneel"
+# D:\phpsurveyor/admin/html.php:1796
+msgid "Update survey rights successful."
+msgstr "Rechten met succes bijgewerkt."
 
-msgid "Import Group"
-msgstr "Importeer groep"
+# D:\phpsurveyor/admin/html.php:1800
+msgid "Failed to update survey rights!"
+msgstr "Rechten bijwerken mislukt!"
 
-msgid "Edit Group for Survey ID"
-msgstr "Wijzig groep in vragenlijst (SID)"
-
-msgid "Update Group"
-msgstr "Werk groep bij"
-
-msgid "Edit Survey"
-msgstr "Wijzig vragenlijst"
+msgid "Edit Survey - Step 1 of 2"
+msgstr "Wijzig vragenlijst - Stap 1 van 2"
 
 msgid "Admin Email:"
 msgstr "E-mail beheerder:"
@@ -1788,15 +1986,68 @@ msgstr "Bewaren toestaan?"
 msgid "Show [<< Prev] button"
 msgstr "Toon [<<Vorige] knop"
 
-msgid "Notification:"
-msgstr "Melding:"
+msgid "Admin Notification:"
+msgstr "Beheerders melding:"
 
 msgid "Anonymous?"
 msgstr "Anoniem?"
 
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1780
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2089
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:505
+msgid "Allow public registration?"
+msgstr "Openbare aanmelding toestaan?"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1799
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2100
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:368
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:376
+msgid "Token Attribute Names:"
+msgstr "Attribuutnamen toegangscodes:"
+
+msgid "Date Stamp?"
+msgstr "Datering?"
+
+msgid "Save IP Address?"
+msgstr "IP Adres opslaan?"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1852
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2114
+msgid "Save Referring URL?"
+msgstr "Verwijzer URL opslaan?"
+
+# D:\phpsurveyor/admin/html.php:2032
+# D:\phpsurveyor/admin/labels.php:157
+msgid "Remove"
+msgstr "Verwijder"
+
+msgid "Expires?"
+msgstr "Vervalt?"
+
+msgid "End URL:"
+msgstr "Afsluiting URL:"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1915
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2145
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:352
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:374
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:496
+msgid "Automatically load URL when survey complete?"
+msgstr "URL automatisch laden na afronding vragenlijst?"
+
+# D:\phpsurveyor/admin/html.php:2070
+msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
+msgstr "Alle vragen, antwoorden, etc voor verwijderde talen zullen verloren gaan. Weet u het zeker?"
+
+msgid "Save and Continue"
+msgstr "Opslaan en doorgaan"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1745
 msgid "This will replace the existing text. Continue?"
 msgstr "Dit zal de bestaande tekst vervangen. Doorgaan?"
+
+msgid "Edit Survey - Step 2 of 2"
+msgstr "Wijzig vragenlijst - Stap 2 van 2"
 
 msgid "Invitation Email Subject:"
 msgstr "Onderwerp E-mail uitnodiging:"
@@ -1829,7 +2080,8 @@ msgid ""
 "----------------------------------------------\n"
 "Click here to do the survey:\n"
 "{SURVEYURL}"
-msgstr "Geachte {FIRSTNAME},\n"
+msgstr ""
+"Geachte {FIRSTNAME},\n"
 "\n"
 "U bent uitgenodigd om deel te nemen aan een onderzoek.\n"
 "\n"
@@ -1879,7 +2131,8 @@ msgid ""
 "----------------------------------------------\n"
 "Click here to do the survey:\n"
 "{SURVEYURL}"
-msgstr "Geachte {FIRSTNAME},\n"
+msgstr ""
+"Geachte {FIRSTNAME},\n"
 "\n"
 "Recent bent u uitgenodigd om aan een onderzoek deel te nemeny.\n"
 "\n"
@@ -1908,12 +2161,6 @@ msgstr "Bevestiging afronding vragenlijst"
 
 msgid "Confirmation Email"
 msgstr "Bevestiging E-mail"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1780
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2089
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:505
-msgid "Allow public registration?"
-msgstr "Openbare aanmelding toestaan?"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1789
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2094
@@ -1947,7 +2194,8 @@ msgid ""
 "{SURVEYURL}\n"
 "\n"
 "If you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."
-msgstr "Geachte {FIRSTNAME},\n"
+msgstr ""
+"Geachte {FIRSTNAME},\n"
 "\n"
 "U, of iemand die uw E-mail adres gebruikt, heeft zich aangemeld voor deelname aan de online vragenlijst getiteld {SURVEYNAME}.\n"
 "\n"
@@ -1957,40 +2205,30 @@ msgstr "Geachte {FIRSTNAME},\n"
 "\n"
 "Als u vragen heeft over de vragenlijst, of als u zich niet heeft aangemeld voor deelname en meent dat u deze E-mail ten onrechte heeft ontvangen, kunt u contact opnemen met {ADMINNAME} via {ADMINEMAIL}."
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1799
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2100
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:368
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:376
-msgid "Token Attribute Names:"
-msgstr "Attribuutnamen toegangscodes:"
-
-msgid "Date Stamp?"
-msgstr "Datering?"
-
-msgid "IP Address"
-msgstr "IP Adres"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1852
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2114
-msgid "Referring URL"
-msgstr "Verwijzer URL"
-
-msgid "End URL:"
-msgstr "Afsluiting URL:"
-
 msgid "URL Description:"
 msgstr "URL omschrijving:"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1915
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2145
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:352
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:374
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:496
-msgid "Automatically load URL when survey complete?"
-msgstr "URL automatisch laden na afronding vragenlijst?"
+msgid "Save"
+msgstr "Bewaar"
 
-msgid "Update survey"
-msgstr "Bijwerken deelname"
+# D:\phpsurveyor/admin/html.php:2251
+msgid "Current survey has questions with conditions outside their own group"
+msgstr "Huidige vragenlijst bevat vragen met condities buiten deze groep."
+
+# D:\phpsurveyor/admin/html.php:2251
+msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "Het hergroeperen van groepen is beperkt om ervoor te zorgen dat vragen met een conditie niet opnieuw worden gegroepeerd nadat er condities zijn ingesteld."
+
+msgid "The following groups are concerned"
+msgstr "Het betreft de volgende groepen"
+
+# D:\phpsurveyor/admin/html.php:2256
+msgid "depends on group"
+msgstr "hangt af van groep"
+
+# D:\phpsurveyor/admin/html.php:2256
+msgid "see the marked conditions on"
+msgstr "zie de gemarkeerde condities op"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1974
 msgid "The uploaded file is bigger than the upload_max_filesize directive in php.ini"
@@ -2008,8 +2246,24 @@ msgstr "Er is geen bestand aangekomen"
 msgid "Error on file transfer. You must select a CSV file"
 msgstr "Fout tijdens bestandsoverdracht. U moet een CSV bestand selecteren"
 
+msgid "Create Survey"
+msgstr "Aanmaken vragenlijst"
+
+msgid "(This field is mandatory.)"
+msgstr "(Dit is een verplicht veld)"
+
+# D:\phpsurveyor/admin/html.php:2497
+msgid "This setting cannot be changed later!"
+msgstr "Deze instelling kan later niet worden aangepast!"
+
+msgid "Date Format"
+msgstr "Datumformaat"
+
 msgid "Import Survey"
 msgstr "Importeer vragenlijst"
+
+msgid "Select CSV/SQL File:"
+msgstr "Selecteer CSV/SQL bestand:"
 
 msgid "You need to upload the file"
 msgstr "U moet het bestand uploaden"
@@ -2039,17 +2293,28 @@ msgstr "Weergave:"
 msgid "Select the field number you would like to use for your answers:"
 msgstr "Selecteer het veldnummer dat u voor uw antwoorden wilt gebruiken:"
 
+msgid "Import Group"
+msgstr "Importeer groep"
+
 msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder."
 msgstr "Er deed zich een fout voor bij het uploaden van uw bestand. Dit kan komen door onjuiste toegangsrechten in uw admin map."
 
 msgid "File upload succeeded."
 msgstr "Bestandsoverdracht gelukt."
 
-msgid "Reading file.."
+msgid "Reading file..."
 msgstr "Bezig met lezen van het bestand.."
 
 msgid "This file is not a PHPSurveyor group file. Import failed."
 msgstr "Dit bestand is geen PHPSurveyor groep bestand. Import mislukt"
+
+# D:\phpsurveyor/admin/importgroup.php:565
+msgid "Import partially successful."
+msgstr "Importeren gedeeltelijk geslaagd."
+
+# D:\phpsurveyor/admin/importgroup.php:566
+msgid "The following languages in this group were not imported since the survey does not contain such a language: "
+msgstr "De volgende talen in deze groep zijn niet geimporteerd omdat de vragenlijst deze taal niet bevat:"
 
 msgid "Group Import Summary"
 msgstr "Samenvatting van import groep"
@@ -2063,11 +2328,17 @@ msgstr "Labelset"
 msgid "Labels"
 msgstr "Labels"
 
-msgid "Import of Group is completed."
+msgid "Question Attributes:"
+msgstr "Vraagattributen:"
+
+msgid "Import of group is completed."
 msgstr "Import van de groep is voltooid."
 
 msgid "Import Label Set"
 msgstr "Importeren label set"
+
+msgid "Reading file.."
+msgstr "Bezig met lezen van het bestand.."
 
 msgid "This file is not a PHPSurveyor question file. Import failed."
 msgstr "Dit bestand is geen PHPSurveyor vraagbestand. Import mislukt"
@@ -2079,14 +2350,20 @@ msgstr "Terug naar Labelbeheer"
 msgid "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead."
 msgstr "Deze labelset bestond al, de labelset is dus niet ge&iuml;mporteerd. De bestaande wordt gebruikt."
 
-msgid "Question Import Summary"
-msgstr "Samenvatting van import vraag"
+msgid "Label Set Import Summary"
+msgstr "Samenvatting van de vragenlijst import"
 
-msgid "Labelsets"
-msgstr "Labelsets"
+msgid "Label Sets"
+msgstr "Labelset"
 
-msgid "Import of Survey is completed."
-msgstr "Import van de vragenlijst is voltooid."
+msgid "Languages"
+msgstr "Talen:"
+
+msgid "Import of Label Set is completed."
+msgstr "Import van de Label Set is voltooid."
+
+msgid "Quick Statistics"
+msgstr "Eenvoudige statistieken"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/importoldresponses.php:58
 msgid "Import responses from an old (deactivated) survey table into an active survey"
@@ -2098,11 +2375,20 @@ msgstr "Nummer (SID) van de doelvragenlijst"
 msgid "Import Responses"
 msgstr "Importeer responses"
 
+msgid "Import Question"
+msgstr "Importeer vraag"
+
 msgid "No SID (Survey) has been provided. Cannot import question."
 msgstr "Er is geen SID (Vragenlijst) opgegeven waardoor de vraag niet kan worden ge&iuml;mporteerd."
 
 msgid "No GID (Group) has been provided. Cannot import question"
 msgstr "Er is geen GID (groep) opgegeven waardoor de vraag niet kan worden ge&iuml;mporteerd."
+
+msgid "Question Import Summary"
+msgstr "Samenvatting van import vraag"
+
+msgid "Import of Survey is completed."
+msgstr "Import van de vragenlijst is voltooid."
 
 msgid "This file is not a PHPSurveyor survey file. Import failed."
 msgstr "Dit is geen PHPSurveyor bestand. Import mislukt."
@@ -2116,11 +2402,100 @@ msgstr "Bestand bevat geen PHPSurveyor gegevens in het juiste formaat"
 msgid "Survey Import Summary"
 msgstr "Samenvatting van de vragenlijst import"
 
+msgid "Question Attributes"
+msgstr "Vraagattributen:"
+
+# D:\phpsurveyor/admin/integritycheck.php:52
+# D:\phpsurveyor/admin/integritycheck.php:326
+msgid "Data Consistency Check"
+msgstr "De controle van consistente gegevens"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:52
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:301
+msgid "If errors are showing up you might have to execute this script repeatedly."
+msgstr "Als er fouten optreden kunt u proberen deze opdracht meerdere malen uit te voeren."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:89
+msgid "The following conditions should be deleted"
+msgstr "De volgende voorwaarde moet worden verwijderd"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:97
+msgid "All conditions meet consistency standards"
+msgstr "Alle voorwaarden zijn consistent"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:113
+msgid "The following question attributes should be deleted"
+msgstr "De volgende vraagattributen moeten worden verwijderd"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:119
+msgid "All question_attributes meet consistency standards"
+msgstr "Alle vraagattributen zijn consistent"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:149
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:159
+msgid "The following assessments should be deleted"
+msgstr "De volgende toetsen moeten worden verwijderd"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:155
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:165
+msgid "All assessments meet consistency standards"
+msgstr "Alle toetsen zijn consistent"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:184
+msgid "The following answers should be deleted"
+msgstr "De volgende antwoorden moeten worden verwijderd"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:190
+msgid "All answers meet consistency standards"
+msgstr "Alle antwoorden zijn consistent"
+
+# D:\phpsurveyor/admin/integritycheck.php:202
+msgid "Language specific settings missing"
+msgstr "Taalafhankelijke instellingen niet aanwezig"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:184
+msgid "The following surveys should be deleted"
+msgstr "De volgende vragenlijsten moeten worden verwijderd"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:219
+msgid "All survey settings meet consistency standards"
+msgstr "Alle vragen zijn consistent"
+
+msgid "The following questions should be deleted"
+msgstr "De volgende vraag moet worden verwijderd"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:219
+msgid "All questions meet consistency standards"
+msgstr "Alle vragen zijn consistent"
+
+msgid "The following groups should be deleted"
+msgstr "De volgende groepen moeten worden verwijderd"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:240
+msgid "All groups meet consistency standards"
+msgstr "Alle groepen zijn consistent"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:244
+msgid "No database action required"
+msgstr "Geen database handeling verijst"
+
+msgid "Deleting Groups"
+msgstr "Bezig met het wissen van Groepen"
+
+msgid "Deleting group id"
+msgstr "Bezig met het wissen van de gebruikers id"
+
 msgid "Label Sets Administration"
 msgstr "Labelsetbeheer"
 
+msgid "Add New Label Set"
+msgstr "Voeg nieuwe labelset toe"
+
 msgid "Add new label set"
 msgstr "Voeg nieuwe labelset toe"
+
+msgid "Labelsets"
+msgstr "Labelsets"
 
 msgid "Create New Label Set"
 msgstr "Maak nieuwe labelset aan"
@@ -2131,23 +2506,52 @@ msgstr "Wijzig labelset"
 msgid "Set Name"
 msgstr "Naam van de labelset"
 
+# D:\phpsurveyor/admin/labels.php:157
+msgid "You cannot remove this items since you need at least one language in a labelset."
+msgstr "U kunt deze items niet verwijderen, omdat er minstens één taal in de set aanwezig dient te zijn."
+
+msgid "Update"
+msgstr "Bijwerken"
+
+msgid "Select CSV File:"
+msgstr "Selecteer CSV bestand:"
+
 msgid "Edit label set"
 msgstr "Wijzig labelset"
 
 msgid "Delete label set"
 msgstr "Verwijder labelset"
 
-msgid "Title"
-msgstr "Titel"
+# D:\phpsurveyor/admin/labels.php:247
+msgid "Are you sure?"
+msgstr "Weet u het zeker?"
 
-msgid "Order"
-msgstr "Volgorde"
+msgid "New label"
+msgstr "Nieuw label"
+
+msgid "Add new label"
+msgstr "Voeg nieuw label toe"
+
+# D:\phpsurveyor/admin/labels.php:378
+msgid "Inserting New labels must be done on the first language folder."
+msgstr "Het toevoegen van nieuwe labels dient te worden uitgevoerd in de eerste talenmap."
 
 msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
 msgstr "U kunt de codes niet veranderen, items toevoegen of verwijderen omdat deze labelset in een actieve vragenlijst wordt gebruikt."
 
+msgid "Fix Sort"
+msgstr "Herstel sorteervolgorde"
+
 msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
 msgstr "Er zijn vragenlijsten actief die deze labelset gebruiken. Codes wijzigen, toevoegen of verwijderen in deze label set zou ongewenste gevolgen kunnen hebben."
+
+# D:\phpsurveyor/admin/labels.php:476
+msgid "Failed to Copy already defined labels to added languages"
+msgstr "Kopieren van reeds gedefineerde Labels naar toegevoegde talen is niet gelukt"
+
+# D:\phpsurveyor/admin/labels.php:492
+msgid "Failed to delete labels for removed languages"
+msgstr "Het is niet gelukt om labels van verwijderde talen te verwijderen"
 
 msgid "Update of Label Set failed"
 msgstr "Bijwerken van de labelset mislukt"
@@ -2155,27 +2559,36 @@ msgstr "Bijwerken van de labelset mislukt"
 msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
 msgstr "De labelset kon niet worden verwijderd - Er zijn vragen die deze set gebruiken. U moet deze eerst wissen."
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:370
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:376
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:517
-msgid "Start ID numbers at:"
-msgstr "Start ID nummer op:"
+# D:\phpsurveyor/admin/labels.php:579
+msgid "Failed to insert label"
+msgstr "Niet gelukt om label toe te voegen"
 
-msgid "Add Survey"
-msgstr "Voeg vragenlijst toe"
+# D:\phpsurveyor/admin/labels.php:609
+msgid "Failed to update label"
+msgstr "Niet gelukt label bij te werken"
 
-msgid "Expires:"
-msgstr "Vervalt:"
+# D:\phpsurveyor/admin/labels.php:647
+msgid "Failed to delete label"
+msgstr "Niet gelukt label te verwijderen"
 
-msgid "Are you sure you want to delete this entry?"
-msgstr "Weet u zeker dat u deze respons wilt wissen?"
+# D:\phpsurveyor/admin/login_check.php:45
+msgid "You have to enter user name and email."
+msgstr "U dient een gebruikers naam en wachtwoord in te vullen."
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1682
-msgid "Slider"
-msgstr "Schuifknop"
+# D:\phpsurveyor/admin/login_check.php:76
+msgid "You have to login first."
+msgstr "U dient eerst in te loggen."
+
+# D:\phpsurveyor/admin/login_check.php:94
+msgid "Forgot Your Password?"
+msgstr "Wachtwoord vergeten?"
 
 msgid "if you answered"
 msgstr "Als u heeft geantwoord"
+
+# D:\phpsurveyor/admin/printablesurvey.php:225
+msgid "or"
+msgstr "of"
 
 msgid "to question"
 msgstr "op vraag"
@@ -2183,8 +2596,8 @@ msgstr "op vraag"
 msgid "Only answer this question"
 msgstr "Beantwoord alleen deze vraag"
 
-msgid "Please choose <strong>only one</strong> of the following:"
-msgstr "Kies <strong>één<strong> van volgende antwoorden:"
+msgid "Please choose *only one* of the following:"
+msgstr "Kies au.b. één van de volgende"
 
 msgid "Please enter a date:"
 msgstr "Vul een datum in:"
@@ -2192,8 +2605,14 @@ msgstr "Vul een datum in:"
 msgid "Please number each box in order of preference from 1 to"
 msgstr "Geef een nummer voor elke optie volgens uw voorkeur van 1 tot"
 
-msgid "Please choose <strong>all</strong> that apply:"
-msgstr "Selecteer  <strong>alle</strong> toepasselijke antwoorden"
+msgid "Please choose *all* that apply:"
+msgstr "Selecteer alles wat voldoet"
+
+msgid "Please choose *at most* "
+msgstr "Selecteer a.u.b *ten minste*"
+
+msgid "answers:"
+msgstr "Antwoorden:"
 
 msgid "Please choose all that apply and provide a comment:"
 msgstr "Selecteer alle toepasselijke antwoorden en geef uw commentaar"
@@ -2216,6 +2635,53 @@ msgstr "Bedankt voor uw deelname aan deze vragenlijst."
 msgid "Please fax your completed survey to:"
 msgstr "Fax uw vragenlijst alstublieft naar:"
 
+msgid "Add Question"
+msgstr "Voeg vraag toe"
+
+msgid "Required"
+msgstr "Verplicht"
+
+msgid "Label Set:"
+msgstr "Labelset:"
+
+msgid "Mandatory:"
+msgstr "Verplicht:"
+
+msgid "Select CSV File"
+msgstr "Selecteer CSV bestand:"
+
+msgid "Copy Question"
+msgstr "Kopieer vraag"
+
+msgid "Note: You MUST enter a new question code"
+msgstr "opmerking: u MOET een nieuwe vraagcode voor de vraag opgeven"
+
+msgid "Group:"
+msgstr "Groep:"
+
+msgid "Copy Answers?"
+msgstr "Antwoorden kopieren?"
+
+msgid "Copy Attributes?"
+msgstr "Attributen kopieren?"
+
+msgid "Edit Question"
+msgstr "Wijzig vraag"
+
+msgid "Update Question"
+msgstr "Werk vraag bij"
+
+# D:\phpsurveyor/admin/questionhandling.php:574
+msgid "Current group is using conditional questions"
+msgstr "Huidige groep gebruikt conditionele vragen"
+
+# D:\phpsurveyor/admin/questionhandling.php:574
+msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "Vragen herschikken in deze groep is beperkt mogelijk om ervoor te zorgen dat vragen gebaseerd op condities niet worden herschikt nadat de condities zijn ingesteld"
+
+msgid "See the conditions marked on the following questions"
+msgstr "Stel condities voor de volgende vragen in"
+
 msgid "Answered"
 msgstr "Beantwoord"
 
@@ -2229,8 +2695,17 @@ msgstr "Identificatie"
 msgid "Date Saved"
 msgstr "Bewaardatum"
 
-msgid "Quick Statistics"
-msgstr "Eenvoudige statistieken"
+msgid "Are you sure you want to delete this entry?"
+msgstr "Weet u zeker dat u deze respons wilt wissen?"
+
+msgid "Record ID"
+msgstr "Record ID"
+
+msgid "Completion Date"
+msgstr "Datum van voltooiing"
+
+msgid "Start Language"
+msgstr "Start taal"
 
 msgid "Filter Settings"
 msgstr "Filterinstellingen"
@@ -2286,6 +2761,9 @@ msgstr "Percentage van het totaal"
 msgid "SQL"
 msgstr "SQL"
 
+msgid "Browse"
+msgstr "Blader"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:1034
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:1320
 msgid "Field Summary for"
@@ -2325,9 +2803,13 @@ msgstr "3e kwartiel (K3)"
 msgid "Null values are ignored in calculations"
 msgstr "Ontbrekende waarden zijn genegeerd in de brekeningen"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:1163
-msgid "Q1 and Q3 calculated using <a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>minitab method</a>"
-msgstr "K1 en K3 zijn berekend middels de <a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>minitab methode</a>"
+# D:\phpsurveyor/admin/statistics.php:1173
+msgid "Q1 and Q3 calculated using"
+msgstr "Q1 en Q3 berekend door gebruik te maken van"
+
+# D:\phpsurveyor/admin/statistics.php:1173
+msgid "minitab method"
+msgstr "minitab methode"
 
 msgid "Count"
 msgstr "Telling"
@@ -2336,8 +2818,61 @@ msgstr "Telling"
 msgid "Percentage"
 msgstr "Percentage"
 
-msgid "Browse"
-msgstr "Blader"
+msgid "Select all"
+msgstr "Alles selecteren"
+
+# D:\phpsurveyor/admin/stats.php:257
+msgid "Proceed"
+msgstr "Doorgaan"
+
+msgid "Question List"
+msgstr "Vragen Lijst"
+
+# D:\phpsurveyor/admin/stats.php:368
+msgid "Like"
+msgstr "Als"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/conditions.php:539
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/conditions.php:668
+msgid "Not Equals"
+msgstr "Niet gelijk aan"
+
+msgid "Filter Conditions"
+msgstr "Condities"
+
+msgid "Numerical"
+msgstr "Numerieke vraag"
+
+msgid "Huge free text"
+msgstr "Lang vrij antwoord"
+
+# D:\phpsurveyor/admin/templates.php:95
+# D:\phpsurveyor/admin/templates.php:211
+msgid "Failed to copy"
+msgstr "Kopieren mislukt"
+
+msgid "to new template directory."
+msgstr "Naar nieuw sjabloonfolder."
+
+# D:\phpsurveyor/admin/templates.php:101
+msgid "Directory with the name"
+msgstr "Folder met de naam"
+
+# D:\phpsurveyor/admin/templates.php:101
+msgid "already exists - choose another name"
+msgstr "bestaat al -  kies een andere naam"
+
+# D:\phpsurveyor/admin/templates.php:103
+msgid "Unable to create directory"
+msgstr "Niet mogelijk om directory te maken"
+
+# D:\phpsurveyor/admin/templates.php:103
+# D:\phpsurveyor/admin/templates.php:111
+msgid "Maybe you don't have permission."
+msgstr "Wellicht heeft u geen rechten"
+
+msgid "Directory could not be renamed to"
+msgstr "Folder kon niet worden hernoemd naar"
 
 msgid "Welcome Page"
 msgstr "Welkomstpagina"
@@ -2372,15 +2907,15 @@ msgstr "Laad pagina"
 msgid "Save Page"
 msgstr "Bewaar pagina"
 
-msgid "Create new template"
-msgstr "Maak nieuw sjabloon aan"
-
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/templates.php:511
 msgid "Create new template called:"
 msgstr "Maak nieuw sjabloon aan onder naam:"
 
 msgid "NewTemplate"
 msgstr "NieuwSjabloon"
+
+msgid "Create new template"
+msgstr "Maak nieuw sjabloon aan"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/templates.php:529
 msgid "This template can be modified"
@@ -2389,22 +2924,25 @@ msgstr "Dit sjabloon kan worden gewijzigd"
 msgid "This template cannot be modified"
 msgstr "Dit sjabloon kan niet  worden gewijzigd"
 
-msgid "Rename this template"
-msgstr "Hernoem dit sjabloon"
+# D:\phpsurveyor/admin/templates.php:478
+msgid "You can\\'t edit the default template."
+msgstr "U kunt de standaard template niet bewerken."
 
 msgid "Rename this template to:"
 msgstr "Hernoem dit sjabloon naar:"
 
+msgid "Rename this template"
+msgstr "Hernoem dit sjabloon"
+
 msgid "Export Template"
 msgstr "Exporteer sjabloon"
+
+msgid "Copy Template"
+msgstr "Kopieer sjabloon"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/templates.php:545
 msgid "Make a copy of this template"
 msgstr "Maak een kopie van dit sjabloon"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/templates.php:546
-msgid "Create a copy of this template called:"
-msgstr "Maak een kopie van dit sjabloon onder de naam:"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/templates.php:546
 msgid "copy_of_"
@@ -2425,8 +2963,15 @@ msgstr "Standaardbestanden:"
 msgid "Now editing:"
 msgstr "Wordt momenteel gewijzigd:"
 
+# D:\phpsurveyor/admin/templates.php:544
+msgid "Changes cannot be saved to the default template."
+msgstr "Wijzigingen kunnen in de standaard template niet worden opgeslagen."
+
 msgid "Other Files:"
 msgstr "Andere bestanden:"
+
+msgid "Upload a File"
+msgstr "Upload een bestand"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/templates.php:622
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:72
@@ -2452,6 +2997,13 @@ msgstr "Als u de toegangscodes voor deze vragenlijst activeert, zal deze vragenl
 msgid "Do you want to create a tokens table for this survey?"
 msgstr "Wilt u een toegangscodetabel voor deze vragenlijst aanmaken?"
 
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:89
+msgid "The following old token tables could be restored:"
+msgstr "De volgende oude toegangscode tabel kon niet worden hersteld:"
+
+msgid "Restore"
+msgstr "Herstellen"
+
 msgid "Display Tokens"
 msgstr "Toon toegangscodes"
 
@@ -2460,6 +3012,9 @@ msgstr "Voegen nieuwe toegangscode toe"
 
 msgid "Import Tokens from CSV File"
 msgstr "Importeer toegangscodes uit CSV bestand"
+
+msgid "Import Tokens from LDAP Query"
+msgstr "Importeer toegangscodes uit LDAP zoekopdracht"
 
 msgid "Export Tokens to CSV file"
 msgstr "Exporteer toegangscodes naar CSV bestand"
@@ -2476,16 +3031,16 @@ msgstr "Maak toegangscodes aan"
 msgid "Drop tokens table"
 msgstr "Verwijder toegangscodetabel"
 
-msgid "Total Records in this Token Table:"
+msgid "Total Records in this Token Table"
 msgstr "Totaal aantal records in deze toegangscodetabel:"
 
-msgid "Total With No Unique Token:"
+msgid "Total With No Unique Token"
 msgstr "Totaal zonder unieke toegangscode:"
 
-msgid "Total Invitations Sent:"
+msgid "Total Invitations Sent"
 msgstr "Totaal aantal uitnodigingen verstuurd:"
 
-msgid "Total Surveys Completed:"
+msgid "Total Surveys Completed"
 msgstr "Totaal aantal vragenlijsten voltooid:"
 
 msgid "All token entries have been deleted."
@@ -2527,21 +3082,23 @@ msgstr "Vind"
 msgid "Sort by: "
 msgstr "Sorteer op: "
 
+msgid "Language"
+msgstr "Taal:"
+
 msgid "Invite sent?"
 msgstr "Uitnodiging verstuurd?"
 
 msgid "Completed?"
 msgstr "Voltooid?"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:497
-msgid "MPID"
-msgstr "MPID"
-
 msgid "Edit Token Entry"
 msgstr "Wijzig toegangscoderecord"
 
 msgid "Delete Token Entry"
 msgstr "Verwijder toegangscoderecord"
+
+msgid "Do Survey"
+msgstr "Voer vragenlijst uit"
 
 msgid "Update Response"
 msgstr "Werk respons bij"
@@ -2555,14 +3112,21 @@ msgstr "Verstuur herinnerings E-mail naar deze deelnemer"
 msgid "Delete Tokens Table"
 msgstr "Verwijder toegangscodetabel"
 
-msgid "If you delete this table tokens will no longer be required to access this survey.<br>A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
-msgstr "Als u deze tabel wist, zijn er niet langer toegangscodes nodig om deze vragenlijst in te vullen. Er wordt een backup van deze tabel gemaakt als u verdergaat. Alleen de systeembeheerder heeft nog toegang tot deze tabel."
+# D:\phpsurveyor/admin/tokens.php:675
+msgid "If you delete this table tokens will no longer be required to access this survey."
+msgstr "Als u deze tabel verwijderd, zullen toegangscodes niet langer nodig zijn."
+
+msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
+msgstr " Er wordt een backup van deze tabel gemaakt als u verdergaat. Alleen de systeembeheerder heeft nog toegang tot deze tabel."
 
 msgid "Delete Tokens"
 msgstr "Verwijder toegangscodes"
 
-msgid "The tokens table has now been removed and tokens are no longer required to access this survey.<BR> A backup of this table has been made and can be accessed by your system administrator."
-msgstr "De toegangscodetabel is nu verwijderd en er is geen toegangscode meer nodig om de vragenlijst in te vullen. Er is een backup gemaakt waar alleen de systeembeheerder toegang toe heeft."
+msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
+msgstr "De toegangscodetabel is nu verwijderd en er is geen toegangscode meer nodig om de vragenlijst in te vullen."
+
+msgid "A backup of this table has been made and can be accessed by your system administrator."
+msgstr "Er is een backup gemaakt waar alleen de systeembeheerder toegang toe heeft."
 
 msgid "Email Invitation"
 msgstr "E-mail uitnodiging"
@@ -2622,7 +3186,7 @@ msgstr "Maak toegangscodes"
 msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
 msgstr "Als u bevestigt zullen toegangscodes voor alle deelnemers in de lijst die geen paswoord hebben automatisch aangemaakt worden. Is dit OK?"
 
-msgid "TOKENCOUNT} tokens have been created"
+msgid "{TOKENCOUNT} tokens have been created"
 msgstr "{TOKENCOUNT} toegangscodes zijn aangemaakt"
 
 msgid "Token has been deleted."
@@ -2637,6 +3201,12 @@ msgstr "Toevoegen of bewerken toegangscode"
 msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
 msgstr "U kunt dit leeg laten en automatisch toegangscodes genereren met 'Aanmaken toegangscodes'"
 
+msgid "Update Token"
+msgstr "Toegangscode bijgewerken"
+
+msgid "Add Token"
+msgstr "Toegangscode toegevoegen"
+
 msgid "Updated Token"
 msgstr "Toegangscode bijgewerkt"
 
@@ -2650,8 +3220,16 @@ msgstr "Upload CSV bestand"
 msgid "Note:"
 msgstr "Opmerking:"
 
-msgid "File should be a standard CSV (comma delimited) file with no quotes. The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [attribute1], [attribute2]\"."
+msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [language code], [attribute1], [attribute2]\"."
 msgstr "Het bestand moet een standaard CSV (kommagescheiden) bestand zijn zonder aanhalingstekens. De eerste regel moet de koptekst bevatten (zal niet worden ge&iuml;mporteerd. De gegevens moeten geordend zijn als 'voornaam, naam, e-mail, [paswoord], [attribute1], [attribute2]'."
+
+# D:\phpsurveyor/admin/tokens.php:1279
+msgid "Upload LDAP entries"
+msgstr "Uploadn LDAP regels"
+
+# D:\phpsurveyor/admin/tokens.php:1286
+msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
+msgstr "LDAP zoekopdrachten worden ingesteld door de administrator in het bestand: config-ldap.php"
 
 msgid "Upload file not found. Check your permissions and path for the upload directory"
 msgstr "Uploadbestand niet gevonden. Controleer de toegangsrechten en het pad naar de upload map"
@@ -2662,53 +3240,269 @@ msgstr "Bezig met het importeren van het CSV bestand"
 msgid "Creating Token Entries"
 msgstr "Bezig met het aanmaken van de toegangscodes"
 
+msgid "Failed"
+msgstr "Niet gelukt"
+
+# D:\phpsurveyor/admin/tokens.php:1380
+msgid "Records in CSV"
+msgstr "Gegevens in CSV"
+
+# D:\phpsurveyor/admin/tokens.php:1381
+msgid "Records met minumum requirements"
+msgstr "Gegevens voldoen aan minumumvereisten"
+
+msgid "Records imported"
+msgstr "Totaal aantal ge&iuml;mporteerde records:"
+
+# D:\phpsurveyor/admin/tokens.php:1383
+msgid "Duplicate records removed"
+msgstr "Dubbele gegevens verwijderd"
+
+# D:\phpsurveyor/admin/tokens.php:1384
+msgid "Records with invalid email address removed"
+msgstr "Gegevens met foutieve email adressen verwijderd"
+
+msgid "Uploading LDAP Query"
+msgstr "Upload LDAP zoekopdracht"
+
 msgid "{TOKENCOUNT} Records Created"
 msgstr "{TOKENCOUNT} records aangemaakt"
 
-msgid "Creating default htaccess file"
-msgstr "Aanmaken standaard htaccess bestand"
+# D:\phpsurveyor/admin/tokens.php:1455
+msgid "Can't bind to the LDAP directory"
+msgstr "Kan niet verbinden met de LDAP folder"
 
-msgid "Couldn't create htaccess file. Check your config.php for $homedir setting, and that you have write permission in the correct directory."
-msgstr "Kon het htaccess bestand niet aanmaken. Controleer of de $homedir instelling correct is ingesteld in config.php en of u  schrijfrechten heeft in de juiste mappen."
+# D:\phpsurveyor/admin/tokens.php:1461
+msgid "Can't connect to the LDAP directory"
+msgstr "Kan geen verbinding met de LDAP folder opzetten"
 
-msgid "Security Levels are now set up!"
-msgstr "Beveiligingsniveaus zijn nu ingesteld!"
+# D:\phpsurveyor/admin/tokens.php:1502
+msgid "LDAP is disabled or no LDAP query defined."
+msgstr "LDAP is uitgeschakeld of er is geen LDAP zoekopdracht gedefinieerd"
 
-msgid "Creating default users"
-msgstr "Bezig met het aanmaken van de standaardgebruikers"
+# D:\phpsurveyor/admin/tokens.php:1508
+msgid "Select the LDAP query you want to run:"
+msgstr "Selecteer de LDAP zoekopdracht die u wilt laten uitvoeren:"
 
-msgid "Updating users table"
-msgstr "Bijwerken gebruikerstabel"
+msgid "Forgot Password"
+msgstr "Wachtwoord vergeten"
 
-msgid "Error occurred creating htpasswd file"
-msgstr "Er heeft zich een fout voorgedaan bij het aanmaken van het htpasswd bestand"
+# D:\phpsurveyor/admin/usercontrol.php:56
+# D:\phpsurveyor/admin/usercontrol.php:104
+# D:\phpsurveyor/admin/usercontrol.php:135
+msgid "User name and/or email not found!"
+msgstr "Gebruikersnaam en/of email niet gevonden!"
 
-msgid "If you are using a windows server it is recommended that you copy the apache htpasswd.exe file into your admin folder for this function to work properly. This file is usually found in /apache group/apache/bin/"
-msgstr "Als u een Windows server gebruikt, bevelen we u aan dat het apache htpasswd.exe bestand in uw admin map te plaatsen. Het bestand bevindt zich meestal in de map /apache group/apache/bin"
+# D:\phpsurveyor/admin/usercontrol.php:65
+msgid "Your data:"
+msgstr "Uw gegevens:"
 
-msgid "Removing security settings"
-msgstr "Verwijderen beveiligingsinstellingen"
+msgid "New Password"
+msgstr "Nieuw wachtwoord"
 
-msgid "Access file, password file and user database deleted"
-msgstr "Toegangsbestand, paswoordbestand en gebruikersdatabase zijn verwijderd"
+# D:\phpsurveyor/admin/usercontrol.php:79
+msgid "An email with your login data was sent to you."
+msgstr "Een email met uw login gegevens is naar u verzonden."
 
-msgid "Adding User"
-msgstr "Bezig met het toevoegen van de gebruiker"
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:733
+msgid "Email to {NAME} ({EMAIL}) failed."
+msgstr "Versturen van E-mail naar {NAME} ({EMAIL}) is mislukt"
 
-msgid "Could not add user. Username and/or password were not supplied"
-msgstr "Kon de gebruiker niet toevoegen. Gebruikersnaam en/of paswoord ontbreken"
+# D:\phpsurveyor/admin/usercontrol.php:93
+# D:\phpsurveyor/admin/usercontrol.php:196
+msgid "Login"
+msgstr "Inloggen"
 
-msgid "Deleting User"
-msgstr "Bezig met het wissen van de gebruiker"
+msgid "Welcome {NAME}"
+msgstr "Welkom {NAME}:"
 
-msgid "Could not delete user. Username was not supplied."
-msgstr "Kon de gebruiker niet wissen omdat de gebruikersnaam ontbreekt."
+# D:\phpsurveyor/admin/usercontrol.php:121
+msgid "Login successful."
+msgstr "Succesvol ingelogd."
+
+# D:\phpsurveyor/admin/usercontrol.php:148
+msgid "Logout successful."
+msgstr "Succesvol uitgelogd."
+
+# D:\phpsurveyor/admin/usercontrol.php:164
+# D:\phpsurveyor/admin/usercontrol.php:307
+msgid "Email address ist not valid."
+msgstr "Email adres is niet geldig."
+
+msgid "Username was not supplied."
+msgstr "Gebruikersnaam ontbreekt."
+
+# D:\phpsurveyor/admin/usercontrol.php:193
+msgid "You were signed in. Your data:"
+msgstr "U bent ingeschreven. Uw gegevens:"
+
+# D:\phpsurveyor/admin/usercontrol.php:206
+msgid "An email with a generated password was sent to the user."
+msgstr "Een email met een aangemaakt wachtwoord is verzonden naar de gebruiker."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:504
+msgid "Set User Rights"
+msgstr "Rechten instellen"
+
+# D:\phpsurveyor/admin/usercontrol.php:223
+msgid "Username and/or email address already exists."
+msgstr "Gebruikersnaam en/of email adres bestaat al."
+
+msgid "Admin cannot be deleted!"
+msgstr "Beheerder kon niet worden verwijderd!"
 
 msgid "Modifying User"
 msgstr "Bezig met het bewerken van de gebruikersgegevens"
 
-msgid "Could not modify user. Username and/or password were not supplied"
-msgstr "Kon de gebruikersgegevens niet bewerken omdat de gebruikersnaam en/of paswoord ontbreken"
+# D:\phpsurveyor/admin/usercontrol.php:307
+# D:\phpsurveyor/admin/usercontrol.php:331
+msgid "Could not modify User Data."
+msgstr "Kon gebruiker gegevens niet bewerken."
+
+# D:\phpsurveyor/admin/usercontrol.php:323
+msgid "Unchanged"
+msgstr "Ongewijzigd"
+
+# D:\phpsurveyor/admin/usercontrol.php:331
+msgid "Email address already exists."
+msgstr "Email adres bestaat al."
+
+# D:\phpsurveyor/admin/usercontrol.php:337
+msgid "Back"
+msgstr "Terug"
+
+# D:\phpsurveyor/admin/usercontrol.php:381
+msgid "Update user rights successful."
+msgstr "Gebruikers rechten met succes bijgewerkt."
+
+# D:\phpsurveyor/admin/usercontrol.php:391
+msgid "You are not allowed to change your own rights!"
+msgstr "U kunt niet uw eigen rechten aanpassen!"
+
+msgid "User Groups"
+msgstr "Gebruikesgroepen"
+
+# D:\phpsurveyor/admin/userrighthandling.php:69
+# D:\phpsurveyor/admin/userrighthandling.php:532
+# D:\phpsurveyor/admin/userrighthandling.php:626
+msgid "Mail to all Members"
+msgstr "Mail naar alle leden"
+
+msgid "Edit Current User Group"
+msgstr "Bewerk huidige gebruikersgroep"
+
+msgid "Delete Current User Group"
+msgstr "Verwijder huidige gebruikersgroep"
+
+msgid "Add New User Group"
+msgstr "Voeg nieuwe gebruikersgroep toe"
+
+msgid "Full name"
+msgstr "Volledige naam"
+
+# D:\phpsurveyor/admin/userrighthandling.php:296
+msgid "Setting new Parent"
+msgstr "Nieuwe ouder ingesteld"
+
+# D:\phpsurveyor/admin/userrighthandling.php:297
+msgid "Set Parent successful."
+msgstr "Ouder met succes ingesteld"
+
+msgid "User Control"
+msgstr "Gebruikersbeheer"
+
+msgid "Created by"
+msgstr "Aangemaakt door"
+
+msgid "Edit User"
+msgstr "Wijzig gebruiker"
+
+msgid "Name:"
+msgstr "Naam:"
+
+msgid "Optional"
+msgstr "Optioneel"
+
+# D:\phpsurveyor/admin/userrighthandling.php:496
+msgid "Edit User Group (Owner: "
+msgstr "Bewerk Gebruikers Groep (Eigenaar:"
+
+msgid "Update User Group"
+msgstr "Werk gebruikersgroep bij"
+
+# D:\phpsurveyor/admin/userrighthandling.php:534
+msgid "To:"
+msgstr "Naar:"
+
+# D:\phpsurveyor/admin/userrighthandling.php:536
+msgid "Send me a copy:"
+msgstr "Zend mij en kopie:"
+
+msgid "Subject:"
+msgstr "Onderwerp:"
+
+msgid "Message:"
+msgstr "Bericht:"
+
+# D:\phpsurveyor/admin/userrighthandling.php:542
+msgid "Send"
+msgstr "Verstuur"
+
+msgid "Deleting User Group"
+msgstr "Bezig met het wissen van de gebruikersgroep"
+
+msgid "Group Name"
+msgstr "Groepsnaam"
+
+msgid "Could not delete user group."
+msgstr "Kon gebruikersgroep niet wissen."
+
+msgid "Could not delete user group. No group selected."
+msgstr "Kon gebruikersgroep niet wissen. Geen groep geselecteerd."
+
+msgid "Adding User Group"
+msgstr "Bezig met het toevoegen van de gebruikersgroep"
+
+msgid "Description: "
+msgstr "Omschrijving:"
+
+# D:\phpsurveyor/admin/userrighthandling.php:606
+msgid "User group successfully added!"
+msgstr "Gebruikersgroep met succes toegevoegd!"
+
+msgid "Failed to add Group!"
+msgstr "Toevoegen van Groep niet gelukt!"
+
+# D:\phpsurveyor/admin/userrighthandling.php:612
+msgid "Group already exists!"
+msgstr "Groep bestaat al!"
+
+msgid "Group name was not supplied!"
+msgstr "Groepsnaam ontbreekt."
+
+# D:\phpsurveyor/admin/userrighthandling.php:661
+msgid "Mail not sent!"
+msgstr "Mail niet verzonden!"
+
+# D:\phpsurveyor/admin/userrighthandling.php:679
+msgid "Edit User Group Successfully!"
+msgstr "Gebruikersgroep met succes bewerkt!"
+
+# D:\phpsurveyor/admin/userrighthandling.php:684
+msgid "Failed to update!"
+msgstr "Niet gelukt om bij te werken."
+
+msgid "Delete User"
+msgstr "Verwijder Gebruiker"
+
+msgid "Edit Group"
+msgstr "Bewerp Groep"
+
+msgid "Update Group"
+msgstr "Werk groep bij"
+
+msgid "Adding User to group"
+msgstr "Bezig met het toevoegen van de gebruiker aan groep"
 
 msgid "Export, then de-activate survey"
 msgstr "Exporteer en deactiveer huidige vragenlijst "
@@ -2751,6 +3545,10 @@ msgstr "Negeer het nieuwe record"
 msgid "Replace the existing record."
 msgstr "Vervang het bestaande record"
 
+# D:\phpsurveyor/admin/vvimport.php:80
+msgid "Cannot import the VVExport file."
+msgstr "Kan bestand VVExport niet importeren."
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:225
 msgid "Import Failed on Record"
 msgstr "Importeren van record is mislukt"
@@ -2758,9 +3556,138 @@ msgstr "Importeren van record is mislukt"
 msgid "because"
 msgstr "omdat"
 
+# D:\phpsurveyor/admin/vvimport.php:235
+msgid "Important Note:"
+msgstr "Belangrijke opmerking:"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:238
-msgid "Important Note:<br />Do NOT refresh this page, as this will import the file again and produce duplicates"
-msgstr "Belangrijk:<br/>Ververs deze pagina NIET omdat het bestand anders opnieuw zal worden ingelezen wat tot doublures zal leiden."
+msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
+msgstr "Belangrijk: Ververs deze pagina NIET omdat het bestand anders opnieuw zal worden ingelezen wat tot doublures zal leiden."
 
 msgid "Total records imported:"
 msgstr "Totaal aantal ge&iuml;mporteerde records:"
+
+msgid "Welcome to PHPSurveyor Setup!"
+msgstr "Welkom bij de PHPSurveyor Configuratie!"
+
+# D:\phpsurveyor/admin/install/index.php:51
+msgid "The database defined in config.php does not exist."
+msgstr "De database opgegeven in config.php bestaat niet."
+
+msgid "PHPSurveyor can attempt to create this database for you."
+msgstr "PHPSurveyor kan proberen de database voor u aan te maken."
+
+msgid "Your selected database name is:"
+msgstr "De door u ingestelde naam van de database is:"
+
+# D:\phpsurveyor/admin/install/index.php:68
+#, php-format
+msgid "A database named \"%s\" does already exist."
+msgstr "Een database met de naam \"%s\" bestaat reeds."
+
+# D:\phpsurveyor/admin/install/index.php:69
+msgid "Do you want to populate that database now by creating the necessary tables?"
+msgstr "Wilt u die database nu vullen door de noodzakelijke tabellen aan te maken?"
+
+# D:\phpsurveyor/classes/core/surveytranslator.php:67
+msgid "Bulgarian"
+msgstr "Bulgaars"
+
+# D:\phpsurveyor/classes/core/surveytranslator.php:71
+msgid "Chinese (Traditional)"
+msgstr "Chinees (Tradiotineel)"
+
+# D:\phpsurveyor/classes/core/surveytranslator.php:75
+msgid "Chinese (Simplified)"
+msgstr "Chinees (vereenvoudigd)"
+
+msgid "Croatian"
+msgstr "Kroatisch"
+
+# D:\phpsurveyor/classes/core/surveytranslator.php:83
+msgid "Danish"
+msgstr "Deens"
+
+# D:\phpsurveyor/classes/core/surveytranslator.php:87
+msgid "Dutch"
+msgstr "Nederlands"
+
+# D:\phpsurveyor/classes/core/surveytranslator.php:91
+msgid "English"
+msgstr "Engels"
+
+# D:\phpsurveyor/classes/core/surveytranslator.php:95
+msgid "Finnish"
+msgstr "Fins"
+
+# D:\phpsurveyor/classes/core/surveytranslator.php:100
+msgid "French"
+msgstr "Frans"
+
+# D:\phpsurveyor/classes/core/surveytranslator.php:104
+msgid "German"
+msgstr "Duits"
+
+# D:\phpsurveyor/classes/core/surveytranslator.php:108
+msgid "German informal"
+msgstr "Duits informeel"
+
+# D:\phpsurveyor/classes/core/surveytranslator.php:112
+msgid "Greek"
+msgstr "Grieks"
+
+# D:\phpsurveyor/classes/core/surveytranslator.php:116
+msgid "Hebrew"
+msgstr "Hebreeuws"
+
+# D:\phpsurveyor/classes/core/surveytranslator.php:120
+msgid "Hungarian"
+msgstr "Hongaars"
+
+# D:\phpsurveyor/classes/core/surveytranslator.php:124
+msgid "Italian"
+msgstr "Italiaans"
+
+# D:\phpsurveyor/classes/core/surveytranslator.php:128
+msgid "Japanese"
+msgstr "Japans"
+
+# D:\phpsurveyor/classes/core/surveytranslator.php:132
+msgid "Lithuanian"
+msgstr "Litouws"
+
+# D:\phpsurveyor/classes/core/surveytranslator.php:136
+msgid "Norwegian"
+msgstr "Noors"
+
+# D:\phpsurveyor/classes/core/surveytranslator.php:140
+msgid "Portuguese"
+msgstr "Porugees"
+
+# D:\phpsurveyor/classes/core/surveytranslator.php:144
+msgid "Portuguese (Brazilian)"
+msgstr "Portugees (Brazilie)"
+
+# D:\phpsurveyor/classes/core/surveytranslator.php:149
+msgid "Russian"
+msgstr "Rusisch"
+
+msgid "Romanian"
+msgstr "Roemeens"
+
+# D:\phpsurveyor/classes/core/surveytranslator.php:157
+msgid "Slovenian"
+msgstr "Sloveens"
+
+# D:\phpsurveyor/classes/core/surveytranslator.php:161
+msgid "Spanish"
+msgstr "Spaans"
+
+# D:\phpsurveyor/classes/core/surveytranslator.php:165
+msgid "Swedish"
+msgstr "Zweeds"
+
+# D:\phpsurveyor/classes/core/surveytranslator.php:169
+msgid "Vietnamese"
+msgstr "Vietnamees"
+
