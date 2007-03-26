@@ -813,6 +813,7 @@ function getSurveyInfo($surveyid, $languagecode='')
 // 
 {
 	global $dbprefix, $siteadminname, $siteadminemail, $connect;
+	$thissurvey=false;
 	// if no language code is set then get the base language one
     if (!isset($languagecode) || $languagecode=='')
 	{
@@ -866,7 +867,7 @@ function getSurveyInfo($surveyid, $languagecode='')
 		if (!$thissurvey['adminemail']) {$thissurvey['adminemail']=$siteadminemail;}
 		if (!$thissurvey['urldescrip']) {$thissurvey['urldescrip']=$thissurvey['url'];}
 	}
-	@return $thissurvey;
+	return $thissurvey;
 }
 
 

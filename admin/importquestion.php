@@ -223,9 +223,10 @@ if (isset($labelsetsarray) && $labelsetsarray) {
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
         $lsainsert = "insert INTO {$dbprefix}labelsets (".implode(',',array_keys($labelsetrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
 		$lsiresult=$connect->Execute($lsainsert);
+        $newlid=$connect->Insert_ID();
 
 		if ($labelsarray) {
-            $lfieldorders  =convertCSVRowToArray($labelsetsarray[0],',','"');
+            $lfieldorders  =convertCSVRowToArray($labelsarray[0],',','"');
 			foreach ($labelsarray as $la) {
 				//GET ORDER OF FIELDS
                 $lfieldcontents=convertCSVRowToArray($la,',','"');
