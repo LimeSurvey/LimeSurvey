@@ -583,11 +583,34 @@ if(isset($surveyid))
             $codeids=explode(' ', trim($_POST['codeids']));
             $count=0;
             $invalidCode = 0;
+            $duplicateCode = 0;
+            
+            $testarray = array();
+            
+            for ($i=0; $i<count($sortorderids); $i++)
+            {
+            	array_push($testarray,$_POST['code_'.$codeids[$i]]);
+            }
+             //die(print_r($testarray));
+ 			$dupanswers = array();
+			for ($i=0; $i<=count($testarray); $i++)
+			{
+				$value = $testarray[$i];
+				if (count($testarray) > 1 )
+				{
+					unset($testarray[$i]);
+					if (in_array($value, $testarray))
+					{
+						array_push($dupanswers,$value);
+					}
+				}
+			}
+
          	foreach ($sortorderids as $sortorderid)
         	{
         		$langid=substr($sortorderid,0,strpos($sortorderid,'_')); 
         		$orderid=substr($sortorderid,strpos($sortorderid,'_')+1,20);
-        		if ($_POST['code_'.$codeids[$count]] != "0")
+        		if ($_POST['code_'.$codeids[$count]] != "0" && !in_array($_POST['code_'.$codeids[$count]],$dupanswers))
         		{
      				$_POST['code_'.$codeids[$count]]=sanitize_paranoid_string($_POST['code_'.$codeids[$count]]);
         			$query = "UPDATE ".db_table_name('answers')." SET code=".$connect->qstr($_POST['code_'.$codeids[$count]]).
@@ -597,12 +620,14 @@ if(isset($surveyid))
         				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update answers","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
     				}
         		} else {
-        			$invalidCode = 1;
+        			if ($_POST['code_'.$codeids[$count]] == "0") $invalidCode = 1;
+        			if (in_array($_POST['code_'.$codeids[$count]],$dupanswers)) $duplicateCode = 1;
         		}
     			$count++;
     			if ($count>count($codeids)-1) {$count=0;}
 		    }
 		    if ($invalidCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers with a code of 0 (zero) are not allowed, and will not be saved","js")."\")\n //-->\n</script>\n";
+			if ($duplicateCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Duplicate codes found, these entries won't be updated","js")."\")\n //-->\n</script>\n";
 		break;
 
 		// Pressing the Up button
