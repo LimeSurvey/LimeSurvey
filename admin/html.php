@@ -475,7 +475,7 @@ if ($surveyid)
 			
 			if (count($tmp_survlangs) > 2)
 			{
-				$tmp_pheight = 127 + ((count($tmp_survlangs)-2) * 28);
+				$tmp_pheight = 127 + ((count($tmp_survlangs)-2) * 32);
 				$surveysummary .= "<script type='text/javascript'>document.getElementById('testsurvpopup').style.height='".$tmp_pheight."px';</script>";
 			}
 		}
@@ -1108,7 +1108,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			
 				if (count($tmp_survlangs) > 2)
 				{
-					$tmp_pheight = 127 + ((count($tmp_survlangs)-2) * 28);
+					$tmp_pheight = 127 + ((count($tmp_survlangs)-2) * 32);
 					$surveysummary .= "<script type='text/javascript'>document.getElementById('previewquestion').style.height='".$tmp_pheight."px';</script>";
 				}
 			}
