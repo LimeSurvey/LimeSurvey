@@ -317,10 +317,10 @@ if ($action == "editusers")
 	. "\t\t<th></th>\n"
 	. "\t</tr>\n";
 
-	$_SESSION['userlist'] = getuserlist();
-	$ui = count($_SESSION['userlist']);
-	$usrhimself = $_SESSION['userlist'][0];
-	unset($_SESSION['userlist'][0]);
+	$userlist = getuserlist();
+	$ui = count($userlist);
+	$usrhimself = $userlist[0];
+	unset($userlist[0]);
 
 	//	output users
 	$usersummary .= "\t<tr bgcolor='#999999'>\n"
@@ -329,7 +329,7 @@ if ($action == "editusers")
 	. "\t\t<td align='center'><strong>{$usrhimself['full_name']}</strong></td>\n"
 	. "\t\t<td align='center'><strong>********</strong></td>\n";
 	if(isset($usrhimself['parent_id']) && $usrhimself['parent_id']!=0) {
-		$usersummary .= "\t\t<td align='center'>{$_SESSION['userlist'][$usrhimself['parent_id']]['user']}</td>\n";
+		$usersummary .= "\t\t<td align='center'>{$userlist[$usrhimself['parent_id']]['user']}</td>\n";
 	}
 	else
 	{
@@ -337,7 +337,7 @@ if ($action == "editusers")
 	}
 	$usersummary .= "\t\t<td align='center' style='padding-top:10px;'>\n";
 	
-	if ($_SESSION['loginID'] == 1)
+	if ($_SESSION['loginID'] == "1")
 	{
 		$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
 		."<input type='submit' value='".$clang->gT("Edit User")."' />"
@@ -360,14 +360,12 @@ if ($action == "editusers")
 	. "\t</tr>\n";
 
 	// empty row
-	if(!empty($_SESSION['userlist']))
-	$usersummary .= "\t<tr>\n\t<td height=\"20\" colspan=\"6\"></td>\n\t</tr>";
-
+	if(count($userlist) > 0) $usersummary .= "\t<tr>\n\t<td height=\"20\" colspan=\"6\"></td>\n\t</tr>";
+		
 	// other users
 	$row = 0;
-	//foreach ($_SESSION['userlist'] as $usr)
-	$usr_arr = $_SESSION['userlist'];
-	for($i=1; $i<=count($_SESSION['userlist']); $i++)
+	$usr_arr = $userlist;
+	for($i=1; $i<=count($usr_arr); $i++)
 	{
 		$usr = $usr_arr[$i];
 		if(($row % 2) == 0) $usersummary .= "\t<tr  bgcolor='#999999'>\n";
@@ -417,11 +415,11 @@ if ($action == "editusers")
 				$usersummary .= "\t\t<td align='center'>-----</td>\n";
 			}
 		}
-
+		
 		$usersummary .= "\t\t<td align='center' style='padding-top:10px;'>\n";
 		// users are allowed to delete all successor users (but the admin not himself)
 		//  || ($usr['uid'] == $_SESSION['loginID']))
-		if ($_SESSION['loginID'] == 1 || ($_SESSION['USER_RIGHT_DELETE_USER'] == 1  && $usr['parent_id'] == $_SESSION['loginID']))
+		if ($_SESSION['loginID'] == "1" || ($_SESSION['USER_RIGHT_DELETE_USER'] == 1  && $usr['parent_id'] == $_SESSION['loginID']))
 		{
 			$usersummary .= "\t\t\t<form method='post' action='$scriptname?action=deluser'>"
 			."<input type='submit' value='".$clang->gT("Delete")."' onClick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.")."\")' />"
@@ -430,7 +428,7 @@ if ($action == "editusers")
 			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
 			."</form>";
 		}
-		if ($_SESSION['loginID'] == 1 || ($_SESSION['USER_RIGHT_CREATE_USER'] == 1 && ($usr['parent_id'] == $_SESSION['loginID'])))
+		if ($_SESSION['loginID'] == "1" || ($_SESSION['USER_RIGHT_CREATE_USER'] == 1 && ($usr['parent_id'] == $_SESSION['loginID'])))
 		{
 			$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
 			."<input type='submit' value='".$clang->gT("Set User Rights")."' />"
@@ -439,7 +437,7 @@ if ($action == "editusers")
 			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
 			."</form>";
 		}
-		if ($_SESSION['loginID'] == 1 || $usr['uid'] == $_SESSION['loginID'] || ($_SESSION['USER_RIGHT_CREATE_USER'] == 1 && $usr['parent_id'] == $_SESSION['loginID']))
+		if ($_SESSION['loginID'] == "1" || $usr['uid'] == $_SESSION['loginID'] || ($_SESSION['USER_RIGHT_CREATE_USER'] == 1 && $usr['parent_id'] == $_SESSION['loginID']))
 		{
 			$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
 			."<input type='submit' value='".$clang->gT("Edit User")."' />"
