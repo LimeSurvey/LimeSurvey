@@ -1256,7 +1256,7 @@ if (returnglobal('viewanswer'))
 	. "\t<input type='hidden' name='gid' value='$gid' />\n"
 	. "\t<input type='hidden' name='qid' value='$qid' />\n"
 	. "\t<input type='hidden' name='viewanswer' value='Y' />\n"
-	."<input type='hidden' name='sortorder' value='' />\n"
+	. "<input type='hidden' name='sortorder' value='' />\n"
 	. "\t<input type='hidden' name='action' value='modanswer' />\n";
 	$vasummary .= "<div class='tab-pane' id='tab-pane-1'>";
 	$first=true;
@@ -1287,7 +1287,17 @@ if (returnglobal('viewanswer'))
         		."\t</font></strong></td>\n"
         		."\t<td width='15%' align=center><strong><font size='1' face='verdana'>\n"
         		.$clang->gT("Order")
-        		."\t</font></strong></td>\n"
+        		."\t</font></strong>";
+              	
+              	// this is a dirty trick to make an invisible 'Save all' button the default button of the form so everything gets save on pressing enter
+              	// it might not be accessible save to non CSS-browsers
+                if ($anscount > 0)
+              	{
+              		$vasummary .= "\t<input style='display: none' type='submit' name='method' value='".$clang->gT("Save All")."'  />";
+              	}
+        		
+        		
+                $vasummary .= "</td>\n"
         		."</tr></thead>"
                 ."<tbody align='center'>";
 		while ($row=$result->FetchRow())
