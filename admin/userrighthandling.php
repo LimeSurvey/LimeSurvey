@@ -129,7 +129,19 @@ if ($action == "adduser" || $action=="deluser" || $action == "moduser" || $actio
 
 if ($action == "modifyuser")
 {
-	if($_SESSION['loginID'] == 1 || $_SESSION['loginID'] == $_POST['uid'])
+	$userlist = getuserlist();
+	foreach ($userlist as $usr)
+	{
+		if ($usr['uid'] == $_POST['uid'])
+		{
+				$squery = "SELECT create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label FROM {$dbprefix}users WHERE uid={$usr['parent_id']}";	//		added by Dennis
+				$sresult = $connect->Execute($squery);
+				$parent = $sresult->FetchRow();
+				break;
+		}
+	}
+	
+	if($_SESSION['loginID'] == 1 || $_SESSION['loginID'] == $_POST['uid'] || $parent['create_user'] == 1)
 	{
 		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='4' bgcolor='black' align='center'>\n"
 		. "\t\t<strong><font color='white'>".$clang->gT("Modifying User")."</td></tr>\n"
