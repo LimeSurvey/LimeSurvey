@@ -182,8 +182,8 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 			$squery = "SELECT uid, users_name, password, parent_id, email, create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label FROM ".db_table_name('users')." WHERE uid='{$newqid}'";			//added by Dennis
 			$sresult = db_execute_assoc($squery);
 			$srow = $sresult->FetchRow();
-
-			array_push($_SESSION['userlist'], array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'],
+			$userlist = getuserlist();
+			array_push($userlist, array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'],
 			"password"=>$srow["password"], "parent_id"=>$srow['parent_id'], // "level"=>$level,
 			"create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'],
 			"delete_user"=>$srow['delete_user'], "move_user"=>$srow['move_user'], "manage_template"=>$srow['manage_template'],
@@ -243,7 +243,8 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($_POST[
 		if (isset($_POST['uid']))
 		{
 			// is the user allowed to delete?
-			foreach ($_SESSION['userlist'] as $usr)
+			$userlist = getuserlist();
+			foreach ($userlist as $usr)
 			{
 				if ($usr['uid'] == $_POST['uid'])
 				{
@@ -356,7 +357,8 @@ elseif ($action == "userrights")
 
 	if($_POST['uid'] != $_SESSION['loginID'])
 	{
-		foreach ($_SESSION['userlist'] as $usr)
+		$userlist = getuserlist();
+		foreach ($userlist as $usr)
 		{
 			if ($usr['uid'] == $_POST['uid'])
 			{
