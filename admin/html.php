@@ -1108,7 +1108,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			
 				if (count($tmp_survlangs) > 2)
 				{
-					$tmp_pheight = 110 + ((count($tmp_survlangs)-2) * 20);
+					$tmp_pheight = 125 + ((count($tmp_survlangs)-2) * 20);
 					$surveysummary .= "<script type='text/javascript'>document.getElementById('previewquestion').style.height='".$tmp_pheight."px';</script>";
 				}
 			}
