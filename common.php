@@ -2229,17 +2229,17 @@ function getHeader()
 	else {$surveylanguage='en';}
 	if ( !$embedded )
 	{
-		return  "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\">\n"
-		. "<head>\n"
-		. "<link type=\"text/css\" rel=\"StyleSheet\" href=\"".$rooturl."/scripts/slider/swing.css\" />\n"
-		. "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"".$rooturl."/scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />"
-		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/slider/range.js\"></script>\n"
-		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/slider/timer.js\"></script>\n"
-		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/slider/slider.js\"></script>\n"
-		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/calendar.js\"></script>\n"
-		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/lang/calendar-".$surveylanguage.".js\"></script>\n"
-		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/calendar-setup.js\"></script>\n";
-	}
+		return  "<?xml version=\"1.0\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
+        		. "<html><head>\n"
+        		. "<link type=\"text/css\" rel=\"StyleSheet\" href=\"".$rooturl."/scripts/slider/swing.css\" />\n"
+        		. "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"".$rooturl."/scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />"
+        		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/slider/range.js\"></script>\n"
+        		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/slider/timer.js\"></script>\n"
+        		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/slider/slider.js\"></script>\n"
+        		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/calendar.js\"></script>\n"
+        		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/lang/calendar-".$surveylanguage.".js\"></script>\n"
+        		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/calendar-setup.js\"></script>\n";
+        	}
 
 	global $embedded_headerfunc;
 
@@ -2282,7 +2282,7 @@ function getAdminHeader($meta=false)
 {
 	global $sitename;
 	if (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='') {$_SESSION['adminlang']='en';}
-	$strAdminHeader="<!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\">\n"
+	$strAdminHeader="<?xml version=\"1.0\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
 	."<html>\n<head>\n"
 	. "<!--[if lt IE 7]>\n"
 	. "<script defer type=\"text/javascript\" src=\"scripts/pngfix.js\"></script>\n"
