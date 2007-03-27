@@ -32,8 +32,8 @@
 *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-require_once 'Spreadsheet/Excel/Writer/Parser.php';
-require_once 'Spreadsheet/Excel/Writer/BIFFwriter.php';
+require_once $homedir.'/classes/pear/Spreadsheet/Excel/Writer/Parser.php';
+require_once $homedir.'/classes/pear/Spreadsheet/Excel/Writer/BIFFwriter.php';
 
 /**
 * Class for generating Excel Spreadsheets

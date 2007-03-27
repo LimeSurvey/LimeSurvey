@@ -30,8 +30,8 @@ define('OLE_DATA_SIZE_SMALL', 0x1000);
 define('OLE_LONG_INT_SIZE',        4);
 define('OLE_PPS_SIZE',          0x80);
 
-require_once('PEAR.php');
-require_once 'OLE/PPS.php';
+require_once($homedir.'/classes/pear/PEAR.php');
+require_once $homedir.'/classes/pear/OLE/PPS.php';
 
 /**
 * OLE package base class.

@@ -20,8 +20,8 @@
 // $Id: PPS.php,v 1.5 2003/12/14 18:12:28 xnoguer Exp $
 
 
-require_once('PEAR.php');
-require_once('OLE.php');
+require_once($homedir.'/classes/pear/PEAR.php');
+require_once($homedir.'/classes/pear/OLE/OLE.php');
 
 /**
 * Class for creating PPS's for OLE containers

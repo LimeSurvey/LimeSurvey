@@ -45,7 +45,7 @@ if (!isset($type)) {$type=returnglobal('type');}
 //Ensure script is not run directly, avoid path disclosure
 if (empty($surveyid)) {die ("Cannot run this script directly");}
 include_once("login_check.php");
-include_once($homedir."/classes/excelwriter/Writer.php");
+include_once($homedir."/classes/pear/Spreadsheet/Excel/Writer.php");
 
 $exportoutput="";
 
@@ -314,9 +314,11 @@ switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c
 	case "xls":
 
       $workbook = new Spreadsheet_Excel_Writer();
+      $workbook->setVersion(8);
       $workbook->send('results.xls');
       // Creating the first worksheet
       $sheet =& $workbook->addWorksheet('Survey Results');
+      $sheet->setInputEncoding('utf-8');
       $separator="|";
 	break;
 	case "csv":
