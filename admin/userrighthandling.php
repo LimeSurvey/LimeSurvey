@@ -385,7 +385,7 @@ if ($action == "editusers")
 		$userlist = array();
 		$srow = $uresult->FetchRow();
 		$usr['parent'] = $srow['users_name'];
-		
+		/*
 		if($_SESSION['USER_RIGHT_MOVE_USER'])
 		{
 			$usersummary .= "\t\t<td align='center'>"
@@ -404,7 +404,7 @@ if ($action == "editusers")
 			$usersummary .= "</form></td>\n";
 		}
 		else
-		{
+		{*/
 			
 			
 			//TODO: Find out why parent isn't set
@@ -415,7 +415,7 @@ if ($action == "editusers")
 			{
 				$usersummary .= "\t\t<td align='center'>-----</td>\n";
 			}
-		}
+		//}
 		
 		$usersummary .= "\t\t<td align='center' style='padding-top:10px;'>\n";
 		// users are allowed to delete all successor users (but the admin not himself)
