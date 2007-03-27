@@ -71,7 +71,7 @@ if (!$database_exists) //DATABASE DOESN'T EXIST OR CAN'T CONNECT
 	."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
 	. $clang->gT("The defined surveyor database does not exist")."<br />\n"
 	. $clang->gT("Either your selected database has not yet been created or there is a problem accessing it.")."<br /><br />\n"
-	."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
+	."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\"><br />\n"
 	."</td></tr></table>\n"
 	."</body>\n</html>";
 	return;
@@ -84,7 +84,7 @@ if (!$surveyid && !$subaction) //NO SID OR ACTION PROVIDED
 	."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
 	. $clang->gT("You have not selected a survey to browse.")."<br /><br />\n"
 	."<input type='submit' value='"
-	. $clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
+	. $clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\"><br />\n"
 	."</td></tr></table>\n";
 	return;
 }
@@ -108,7 +108,7 @@ if ($actcount > 0)
 			."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
 			. $clang->gT("This survey has not been activated. There are no results to browse.")."<br /><br />\n"
 			."<input type='submit' value='"
-			. $clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\"><br />\n"
+			. $clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\"><br />\n"
 			."</td></tr></table>\n"
 			."</body>\n</html>";
 			return;
@@ -122,7 +122,7 @@ else //SURVEY MATCHING $surveyid DOESN'T EXIST
 	."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 	."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
 	. $clang->gT("There is no matching survey.")." ($surveyid)<br /><br />\n"
-	."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
+	."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\"><br />\n"
 	."</td></tr></table>\n"
 	."</body>\n</html>";
 	return;
@@ -253,7 +253,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	{
 		$browseoutput .=  "\t\t\t<a href='$scriptname?action=dataentry&amp;subaction=delete&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
 			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Delete this entry", "js")."')\">" 
-		."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='' title='' onClick=\"return confirm('".$clang->gT("Are you sure you want to delete this entry.")."')\" /></a>\n";
+		."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='' title='' onclick=\"return confirm('".$clang->gT("Are you sure you want to delete this entry.")."')\" /></a>\n";
 	}
 	 $browseoutput .= "\t\t\t<a href='$scriptname?action=exportresults&amp;sid=$surveyid&amp;id=$id'" .
 		"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export this Response", "js")."')\">" .
@@ -290,7 +290,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	."<table width='99%' align='center'>\n"
 	."\t<tr>\n"
 	."\t\t<td $singleborderstyle bgcolor='#EEEEEE' align='center'>\n";
-	if (isset($_POST['sql']) && $_POST['sql']) {$browseoutput .= "\t\t\t<input type='submit' value='Close Window' onClick=\"window.close();\" />\n";}
+	if (isset($_POST['sql']) && $_POST['sql']) {$browseoutput .= "\t\t\t<input type='submit' value='Close Window' onclick=\"window.close();\" />\n";}
 	$browseoutput .= "\t\t</td>\n"
 	."\t</tr>\n"
 	."</table>\n";

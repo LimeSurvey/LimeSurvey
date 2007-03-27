@@ -52,7 +52,7 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 	$importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
 	.$clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n"
 	."<input type='submit' value='"
-	.$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n"
+	.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n"
 	."</td></tr></table>\n";
 	return;
 }
@@ -74,7 +74,7 @@ if (!$_POST['sid'])
 {
 	$importquestion .= $clang->gT("No SID (Survey) has been provided. Cannot import question.")."<br /><br />\n"
 	."<input type='submit' value='"
-	.$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n"
+	.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n"
 	."</td></tr></table>\n";
 	return;
 }

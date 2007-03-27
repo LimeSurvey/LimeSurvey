@@ -2712,7 +2712,7 @@ http://www.stanford.edu/dept/itss/docs/oracle/10g/server.101/b10759/statements_1
 	 * @param [multiple]		true for listbox, false for popup
 	 * @param [size]		#rows to show for listbox. not used by popup
 	 * @param [selectAttr]		additional attributes to defined for SELECT tag.
-	 *				useful for holding javascript onChange='...' handlers.
+	 *				useful for holding javascript onchange='...' handlers.
 	 & @param [compareFields0]	when we have 2 cols in recordset, we compare the defstr with 
 	 *				column 0 (1st col) if this is true. This is not documented.
 	 *

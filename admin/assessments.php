@@ -84,7 +84,7 @@ if($actsurrows['edit_survey_property']){
 	
 	$assessmentsoutput.= "\t<tr bgcolor='#999999'>\n"
 	. "\t\t<td>\n"
-	. "\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?sid=$surveyid', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Return to Survey Administration", "js")."');return false\">" .
+	. "\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Return to Survey Administration", "js")."');return false\">" .
 			"<img name='Administration' src='$imagefiles/home.png' title='' alt='' align='left'  /></a>\n"
 	. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left' />\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
@@ -166,7 +166,7 @@ if($actsurrows['edit_survey_property']){
 				 <input type='hidden' name='id' value='".$assess['id']."' />
 				 </form></td>
 				 <td align='center'><form method='post' action='$scriptname?sid=$surveyid'>
-				 <input type='submit' value='".$clang->gT("Delete")."' onClick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.")."\")' />
+				 <input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.")."\")' />
 				 <input type='hidden' name='action' value='assessmentdelete' />
 				 <input type='hidden' name='id' value='".$assess['id']."' />
 				 </form>

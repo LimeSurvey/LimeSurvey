@@ -102,7 +102,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
 		. "\t\t<td align='center' >\n"
 		. "\t\t\t".$clang->gT("Current Language").":\n"
 		. "\t\t</td><td>\n"
-		. "\t\t\t<select name='lang' onChange='form.submit()'>\n";
+		. "\t\t\t<select name='lang' onchange='form.submit()'>\n";
 		foreach (getlanguagedata() as $langkey=>$languagekind)
 		{
 			$loginsummary .= "\t\t\t\t<option value='$langkey'";

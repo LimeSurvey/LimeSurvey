@@ -239,7 +239,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	$activateoutput .= "\t</tr>\n";
 	$activateoutput .= "\t<tr>\n";
 	$activateoutput .= "\t\t<td align='center'>\n";
-	$activateoutput .= "\t\t\t<input type='submit' value=\"".$clang->gT("Activate Survey")."\" onClick=\"window.open('$scriptname?action=activate&amp;ok=Y&amp;sid={$_GET['sid']}', '_top')\" />\n";
+	$activateoutput .= "\t\t\t<input type='submit' value=\"".$clang->gT("Activate Survey")."\" onclick=\"window.open('$scriptname?action=activate&amp;ok=Y&amp;sid={$_GET['sid']}', '_top')\" />\n";
 	$activateoutput .= "\t\t<br />&nbsp;</td>\n";
 	$activateoutput .= "\t</tr>\n";
 	$activateoutput .= "</table><br />&nbsp;\n";
@@ -477,12 +477,12 @@ else
 	if (isset($surveynotprivate) && $surveynotprivate) //This survey is tracked, and therefore a tokens table MUST exist
 	{
 		$activateoutput .= $clang->gT("This is not an anonymous survey. A token table must also be created.")."<br /><br />\n";
-		$activateoutput .= "<input type='submit' value='".$clang->gT("Initialise Tokens")."' onClick=\"window.open('$scriptname?action=tokens&amp;sid={$_GET['sid']}&amp;createtable=Y', '_top')\" />\n";
+		$activateoutput .= "<input type='submit' value='".$clang->gT("Initialise Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid={$_GET['sid']}&amp;createtable=Y', '_top')\" />\n";
 	}
 	elseif (isset($surveyallowsregistration) && $surveyallowsregistration == "TRUE")
 	{
 		$activateoutput .= $clang->gT("This survey allows public registration. A token table must also be created.")."<br /><br />\n";
-		$activateoutput .= "<input type='submit' value='".$clang->gT("Initialise Tokens")."' onClick=\"window.open('$scriptname?action=tokens&amp;sid={$_GET['sid']}&amp;createtable=Y', '_top')\" />\n";
+		$activateoutput .= "<input type='submit' value='".$clang->gT("Initialise Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid={$_GET['sid']}&amp;createtable=Y', '_top')\" />\n";
 	}
 	else
 	{

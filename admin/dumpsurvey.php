@@ -66,7 +66,7 @@ if (!$surveyid)
 	.$clang->gT("Error")."</font></strong><br />\n"
 	.$clang->gT("No SID has been provided. Cannot dump survey")."<br />\n"
 	."<br /><input type='submit' value='"
-	.$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n"
+	.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n"
 	."\t</td></tr>\n"
 	."</table>\n"
 	."</body></html>\n";

@@ -577,7 +577,7 @@ if($action == "orderquestions")
 			foreach ($depquestrow as $targqid => $targcid)
 			{
 				$listcid=implode("-",$targcid);
-				$orderquestions .= "<li><a href='#' onClick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$gid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\"> [QID: ".$depqid."] </a> ";
+				$orderquestions .= "<li><a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$gid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\"> [QID: ".$depqid."] </a> ";
 			}
 			$orderquestions .= "</li>\n";
 		}

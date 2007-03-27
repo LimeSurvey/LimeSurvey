@@ -56,7 +56,7 @@ if (!$gid)
 	echo "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Export Question")."</strong></td></tr>\n";
 	echo "\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 	echo "$setfont<br /><strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"._EQ_NOGID."<br />\n";
-	echo "<br /><input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	echo "<br /><input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
 	echo "\t</td></tr>\n";
 	echo "</table>\n";
 	echo "</body></html>\n";

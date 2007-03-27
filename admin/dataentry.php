@@ -65,7 +65,7 @@ if($actsurrows['browse_response']){
 		.$clang->gT("The defined surveyor database does not exist")."<br />\n"
 		.$clang->gT("Either your selected database has not yet been created or there is a problem accessing it.")."<br /><br />\n"
 		."<input type='submit' value='"
-		.$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"></font><br />\n"
+		.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\"></font><br />\n"
 		."</td></tr></table>\n"
 		."</body>\n";
 		return;
@@ -80,7 +80,7 @@ if($actsurrows['browse_response']){
 		."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
 		.$clang->gT("You have not selected a survey for data-entry.")."<br /><br />\n"
 		."<input type='submit' value='"
-		.$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\"><br />\n"
+		.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\"><br />\n"
 		."</font></td></tr></table>\n";
 		return;
 	}
@@ -841,11 +841,11 @@ if($actsurrows['browse_response']){
 						{
 							$ranklist .= "style='display:none'";
 						}
-						$ranklist .= " id='cut_$thisqid$j' onClick=\"deletethis_$thisqid(document.editsurvey.RANK_$thisqid$j.value, document.editsurvey.d$myfname$j.value, document.editsurvey.RANK_$thisqid$j.id, this.id)\"></font><br />\n\n";
+						$ranklist .= " id='cut_$thisqid$j' onclick=\"deletethis_$thisqid(document.editsurvey.RANK_$thisqid$j.value, document.editsurvey.d$myfname$j.value, document.editsurvey.RANK_$thisqid$j.id, this.id)\"></font><br />\n\n";
 					}
 	
 					if (!isset($choicelist)) {$choicelist="";}
-					$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES_$thisqid' onClick=\"rankthis_$thisqid(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080; width: 150'>\n";
+					$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES_$thisqid' onclick=\"rankthis_$thisqid(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080; width: 150'>\n";
 					foreach ($answers as $ans)
 					{
 						if (!in_array($ans, $chosen))
@@ -1186,7 +1186,7 @@ if($actsurrows['browse_response']){
 				  </script>\n";
 			$dataentryoutput .= "\t<tr>\n";
 			$dataentryoutput .= "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
-			$dataentryoutput .= "\t\t\t<input type='checkbox' name='save' id='save' onChange='saveshow(this.id)' onLoad='saveshow(this.id)'><label for='save'>".$clang->gT("Save as a partially completed survey")."</label>\n";
+			$dataentryoutput .= "\t\t\t<input type='checkbox' name='save' id='save' onchange='saveshow(this.id)' onLoad='saveshow(this.id)'><label for='save'>".$clang->gT("Save as a partially completed survey")."</label>\n";
 			$dataentryoutput .= "<div name='saveoptions' id='saveoptions' style='display: none'>\n";
 			$dataentryoutput .= "<table align='center' class='outlinetable' cellspacing='0'>
 				  <tr><td align='right'>".$clang->gT("Identifier:")."</td>
@@ -1581,7 +1581,7 @@ if($actsurrows['browse_response']){
 				{
 					$hh = addcslashes($deqrow['help'], "\0..\37'\""); //Escape ASCII decimal 0-32 plus single and double quotes to make JavaScript happy.
 					$hh = htmlspecialchars($hh, ENT_QUOTES); //Change & " ' < > to HTML entities to make HTML happy.
-					$dataentryoutput .= "\t\t\t<img src='$imagefiles/help.gif' alt='".$clang->gT("Help about this question")."' align='right' onClick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\" />\n";
+					$dataentryoutput .= "\t\t\t<img src='$imagefiles/help.gif' alt='".$clang->gT("Help about this question")."' align='right' onclick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\" />\n";
 				}
 				switch($deqrow['type'])
 				{
@@ -1825,10 +1825,10 @@ if($actsurrows['browse_response']){
 							$ranklist .= "style='display:none'";
 						}
 						$mfn=$fieldname.$i;
-						$ranklist .= " id='cut_$thisqid$i' onClick=\"deletethis_$thisqid(document.addsurvey.RANK_$thisqid$i.value, document.addsurvey.d$fieldname$i.value, document.addsurvey.RANK_$thisqid$i.id, this.id)\"><br />\n\n";
+						$ranklist .= " id='cut_$thisqid$i' onclick=\"deletethis_$thisqid(document.addsurvey.RANK_$thisqid$i.value, document.addsurvey.d$fieldname$i.value, document.addsurvey.RANK_$thisqid$i.id, this.id)\"><br />\n\n";
 					}
 					if (!isset($choicelist)) {$choicelist="";}
-					$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES_$thisqid' onClick=\"rankthis_$thisqid(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080; width: 150'>\n";
+					$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES_$thisqid' onclick=\"rankthis_$thisqid(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080; width: 150'>\n";
 					foreach ($answers as $ans)
 					{
 						if (_PHPVERSION < "4.2.0")
@@ -2133,7 +2133,7 @@ if($actsurrows['browse_response']){
 					  </script>\n";
 				$dataentryoutput .= "\t<tr>\n";
 				$dataentryoutput .= "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
-				$dataentryoutput .= "\t\t\t<input type='checkbox' name='save' id='save' onChange='saveshow(this.id)' onLoad='saveshow(this.id)'><label for='save'>".$clang->gT("Save as a partially completed survey")."</label>\n";
+				$dataentryoutput .= "\t\t\t<input type='checkbox' name='save' id='save' onchange='saveshow(this.id)' onLoad='saveshow(this.id)'><label for='save'>".$clang->gT("Save as a partially completed survey")."</label>\n";
 				$dataentryoutput .= "<div name='saveoptions' id='saveoptions' style='display: none'>\n";
 				$dataentryoutput .= "<table align='center' class='outlinetable' cellspacing='0'>
 					  <tr><td align='right'>".$clang->gT("Identifier:")."</td>
@@ -2169,7 +2169,7 @@ if($actsurrows['browse_response']){
 			$dataentryoutput .= "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
 			$dataentryoutput .= "\t\t\t<font color='red'><strong>".$clang->gT("Error")."</strong></font><br />\n";
 			$dataentryoutput .= "\t\t\t".$clang->gT("The survey you selected does not exist")."</font><br /><br />\n";
-			$dataentryoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+			$dataentryoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
 			$dataentryoutput .= "\t\t</td>\n";
 			$dataentryoutput .= "\t</tr>\n";
 			$dataentryoutput .= "</table>";

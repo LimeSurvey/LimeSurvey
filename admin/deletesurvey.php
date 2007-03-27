@@ -56,7 +56,7 @@ if($actsurrows['delete_survey'])
 	{
 		$deletesurveyoutput .= "<br /><font color='red'><strong>".$clang->gT("Error")."</strong></font><br />\n";
 		$deletesurveyoutput .= $clang->gT("You have not selected a survey to delete")."<br /><br />\n";
-		$deletesurveyoutput .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+		$deletesurveyoutput .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
 		$deletesurveyoutput .= "</td></tr></table>\n";
 		$deletesurveyoutput .= "</body>\n</html>";
 		return;
@@ -88,8 +88,8 @@ if($actsurrows['delete_survey'])
 		$deletesurveyoutput .= "\t</tr>\n";
 		$deletesurveyoutput .= "\t<tr>\n";
 		$deletesurveyoutput .= "\t\t<td align='center'><br />\n";
-		$deletesurveyoutput .= "\t\t\t<input type='submit'  value='".$clang->gT("Cancel")."' onClick=\"window.open('admin.php?sid=$surveyid', '_top')\" /><br />\n";
-		$deletesurveyoutput .= "\t\t\t<input type='submit'  value='".$clang->gT("Delete")."' onClick=\"window.open('$scriptname?action=deletesurvey&amp;sid=$surveyid&amp;ok=Y','_top')\" />\n";
+		$deletesurveyoutput .= "\t\t\t<input type='submit'  value='".$clang->gT("Cancel")."' onclick=\"window.open('admin.php?sid=$surveyid', '_top')\" /><br />\n";
+		$deletesurveyoutput .= "\t\t\t<input type='submit'  value='".$clang->gT("Delete")."' onclick=\"window.open('$scriptname?action=deletesurvey&amp;sid=$surveyid&amp;ok=Y','_top')\" />\n";
 		$deletesurveyoutput .= "\t\t</td>\n";
 		$deletesurveyoutput .= "\t</tr>\n";
 		$deletesurveyoutput .= "</table>\n";
@@ -148,7 +148,7 @@ if($actsurrows['delete_survey'])
 		$deletesurveyoutput .= "\t<tr>\n";
 		$deletesurveyoutput .= "\t\t<td align='center'>$setfont<br />\n";
 		$deletesurveyoutput .= "\t\t\t<strong>".$clang->gT("This survey has been deleted.")."<br /><br />\n";
-		$deletesurveyoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+		$deletesurveyoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
 		$deletesurveyoutput .= "\t\t</strong></font></td>\n";
 		$deletesurveyoutput .= "\t</tr>\n";
 		$deletesurveyoutput .= "</table>\n";

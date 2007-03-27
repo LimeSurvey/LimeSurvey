@@ -52,7 +52,7 @@ if (!$database_exists)
 	.$clang->gT("PHPSurveyor can attempt to create this database for you.")."<br /><br />\n"
 	.$clang->gT("Your selected database name is:")."<strong> $databasename</strong><br />\n"
 	."<br /><input type='submit' value='"
-	.$clang->gT("Create Database")."' onClick='location.href=\"createdb.php\"' /></center>\n"
+	.$clang->gT("Create Database")."' onclick='location.href=\"createdb.php\"' /></center>\n"
 	."</td></tr></table>\n"
 	."</body>\n</html>\n";
 }

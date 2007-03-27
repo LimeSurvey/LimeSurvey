@@ -76,20 +76,20 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 	."\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
 	."\t</td>\n"
 	."\t<td align='right' width='620'>\n"
-	."<a href=\"#\" onClick=\"showhelp('show')\"" 
+	."<a href=\"#\" onclick=\"showhelp('show')\"" 
 	."onmouseout=\"hideTooltip()\"" 
 	."onmouseover=\"showTooltip(event,'".$clang->gT("Show Help", "js")."');return false\">" 
 	."<img src='$imagefiles/showhelp.png' name='ShowHelp' title=''" 
 	."alt='". $clang->gT("Show Help")."' align='right'  /></a>"	
 	."\t<img src='$imagefiles/blank.gif' width='42' height='20' align='right' hspace='0' border='0'  alt='' />\n"
 	."\t<img src='$imagefiles/seperator.gif' align='right' hspace='0' border='0' alt='' />\n"
-	."<a href=\"#\" onClick=\"window.open('admin.php?action=newlabelset', '_top')\"" 
+	."<a href=\"#\" onclick=\"window.open('admin.php?action=newlabelset', '_top')\"" 
 	."onmouseout=\"hideTooltip()\"" 
 	."onmouseover=\"showTooltip(event,'".$clang->gT("Add New Label Set", "js")."');return false\">"
 	."<img src='$imagefiles/add.png' align='right' name='AddLabel' title='' alt='". $clang->gT("Add new label set")."' /></a>\n"	 
 	."\t<font class='boxcaption'>".$clang->gT("Labelsets").": </font>"
 	."\t<select class='listboxsurveys' "
-	."onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
+	."onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
 	$labelsets=getlabelsets();
 	if (count($labelsets)>0)
 	{
@@ -126,7 +126,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		."\t<tr bgcolor='black'>\n"
 		."<td colspan='4' align='center'><font color='white'><strong>\n"
 		."<input type='image' src='$imagefiles/close.gif' align='right' "
-		."onClick=\"window.open('admin.php?action=labels&amp;lid=$lid', '_top')\" />\n";
+		."onclick=\"window.open('admin.php?action=labels&amp;lid=$lid', '_top')\" />\n";
 		if ($action == "newlabelset") {$labelsoutput.= $clang->gT("Create New Label Set"); $langids="en";}
 		else {$labelsoutput.= $clang->gT("Edit Label Set");}
 		$langidsarray=explode(" ",trim($langids)); //Make an array of it
@@ -238,13 +238,13 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			."\t<td>\n"
 			."\t<input type='image' src='$imagefiles/close.gif' title='"
 			.$clang->gT("Close Window")."' align='right' "
-			."onClick=\"window.open('admin.php?action=labels', '_top')\" />\n"
+			."onclick=\"window.open('admin.php?action=labels', '_top')\" />\n"
 			."\t<img src='$imagefiles/blank.gif' width='50' height='20' border='0' hspace='0' align='left' alt='' />\n"
 			."\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
 			."\t<a href='admin.php?action=editlabelset&amp;lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Edit label set", "js")."');return false\">" .
 			"<img name='EditLabelsetButton' src='$imagefiles/edit.png' alt='' align='left'  /></a>" 
 			."\t<a href='admin.php?action=deletelabelset&amp;lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Delete label set", "js")."');return false\">"
-			."<img src='$imagefiles/delete.png' border='0' alt='' title='' align='left' onClick=\"return confirm('".$clang->gT("Are you sure?")."')\" /></a>\n"
+			."<img src='$imagefiles/delete.png' border='0' alt='' title='' align='left' onclick=\"return confirm('".$clang->gT("Are you sure?")."')\" /></a>\n"
 			."\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
 			."\t<a href='dumplabel.php?lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Label Set", "js")."');return false\">" .
 					"<img src='$imagefiles/exportcsv.png' alt='".$clang->gT("Export Label Set")."' title='' align='left' /></a>" 

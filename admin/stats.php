@@ -253,7 +253,7 @@ if(!isset($_POST['action'])) {
 	<tr>
 	<td colspan='2' style='text-align: center; border: 1px;'>
 	<? presentQuestionList($questions) ?>
-	<input type='button' value='<? echo $clang->gT("Select all"); ?>' onClick='selectAll("questions")'>
+	<input type='button' value='<? echo $clang->gT("Select all"); ?>' onclick='selectAll("questions")'>
 	<input type='submit' value='<? echo $clang->gT("Proceed"); ?>'>
 	</td>
 	</tr>
@@ -300,7 +300,7 @@ function presentQuestionList($questions) {
 	</tr>
 	<tr>
 	<td style='text-align: center'>
-	<select multiple name='questions[]' id='questions' size='10' onDblClick='alert(this.value)' onChange='display(this.value)'>
+	<select multiple name='questions[]' id='questions' size='10' onDblClick='alert(this.value)' onchange='display(this.value)'>
 	<?
 	$currentgroup="";
 	foreach($questions as $question) {
@@ -382,7 +382,7 @@ function presentAnswerList($questions) {
 					echo "     </select><br />\n";
 					break;
 				}
-				echo "     <input type='button' value='".$clang->gT("Add")."' onClick='addCondition(\"$inputname\")'>";
+				echo "     <input type='button' value='".$clang->gT("Add")."' onclick='addCondition(\"$inputname\")'>";
 				echo "    </div>\n";
 			}
 		}
@@ -447,7 +447,7 @@ function presentFilterConditions() {
 	}
 	?>
 	</select><br />
-	<input type='button' value='Remove' id='removecondition' onClick='removeCondition()' />
+	<input type='button' value='Remove' id='removecondition' onclick='removeCondition()' />
 	</td>
 	</tr>
 	</table>

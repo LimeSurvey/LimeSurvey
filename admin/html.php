@@ -102,7 +102,7 @@ if ($action == "listsurveys")
 				{
 					if ($sidsecurity['activate_survey'])
 					{
-						$listsurveys .= "<td><a href=\"#\" onClick=\"window.open('$scriptname?action=deactivate&amp;sid={$rows['sid']}', '_top')\""
+						$listsurveys .= "<td><a href=\"#\" onclick=\"window.open('$scriptname?action=deactivate&amp;sid={$rows['sid']}', '_top')\""
 						. "onmouseout=\"hideTooltip()\""
 						. "onmouseover=\"showTooltip(event,'".$clang->gT("De-activate this Survey", "js")."');return false\">"
 						. "<img src='$imagefiles/active.png' name='DeactivateSurvey' "
@@ -118,7 +118,7 @@ if ($action == "listsurveys")
 			} else {
 				if ($sidsecurity['activate_survey'])
 				{
-					$listsurveys .= "<td><a href=\"#\" onClick=\"window.open('$scriptname?action=activate&amp;sid={$rows['sid']}', '_top')\""
+					$listsurveys .= "<td><a href=\"#\" onclick=\"window.open('$scriptname?action=activate&amp;sid={$rows['sid']}', '_top')\""
 					. "onmouseout=\"hideTooltip()\""
 					. "onmouseover=\"showTooltip(event,'".$clang->gT("Activate this Survey", "js")."');return false\">" .
 					"<img src='$imagefiles/inactive.png' name='ActivateSurvey' title='' alt='".$clang->gT("Activate this Survey")."' border='0' hspace='0' align='left' width='20' /></a></td>\n" ;	
@@ -222,7 +222,7 @@ if ($action == "checksettings" || $action == "changelang")
 	. "\t\t<td align='right' >\n"
 	. "\t\t\t<strong>".$clang->gT("Current Language").":</strong>\n"
 	. "\t\t</td><td>\n"
-	. "\t\t\t<select name='lang' onChange='form.submit()'>\n";
+	. "\t\t\t<select name='lang' onchange='form.submit()'>\n";
 	foreach (getlanguagedata() as $langkey=>$languagekind)
 	{
 		$cssummary .= "\t\t\t\t<option value='$langkey'";
@@ -376,7 +376,7 @@ if ($surveyid)
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("This survey is not currently active", "js")."');return false\" />\n";
 			if($sumrows5['activate_survey'])
 			{
-				$surveysummary .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=activate&amp;sid=$surveyid', '_top')\""
+				$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=activate&amp;sid=$surveyid', '_top')\""
 				. "onmouseout=\"hideTooltip()\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("Activate this Survey", "js")."');return false\">" .
 				"<img src='$imagefiles/activate.png' name='ActivateSurvey' title='' alt='".$clang->gT("Activate this Survey")."' align='left' /></a>\n" ;
@@ -404,7 +404,7 @@ if ($surveyid)
 			}
 			if($sumrows5['activate_survey'])
 			{
-				$surveysummary .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=deactivate&amp;sid=$surveyid', '_top')\""
+				$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=deactivate&amp;sid=$surveyid', '_top')\""
 				. "onmouseout=\"hideTooltip()\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("De-activate this Survey", "js")."');return false\">" .
 				"<img src='$imagefiles/deactivate.png' name='DeactivateSurvey' "
@@ -428,7 +428,7 @@ if ($surveyid)
 
 		if($s1row['owner_id'] == $_SESSION['loginID'])
 		{
-			$surveysummary .= "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=surveysecurity&amp;sid=$surveyid', '_top')\"" .
+			$surveysummary .= "\t\t\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=surveysecurity&amp;sid=$surveyid', '_top')\"" .
 			"onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Survey Security Settings", "js")."');return false\">" .
 			"<img src='$imagefiles/survey_security.png' name='SurveySecurity'"
@@ -643,14 +643,14 @@ if ($surveyid)
 		}
 		elseif($sumrows5['define_questions'])
 		{
-			$surveysummary .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=addgroup&amp;sid=$surveyid', '_top')\""
+			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=addgroup&amp;sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Add New Group to Survey", "js")."');return false\"> " .
 			"<img src='$imagefiles/add.png' title='' alt=''align='right'  name='AddNewGroup' /></a>\n" ;
 		}
 		$surveysummary .= "<font class=\"boxcaption\">".$clang->gT("Groups").":</font>"
 		. "\t\t<select class=\"listboxgroups\" name='groupselect' "
-		. "onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
+		. "onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
 
 		if (getgrouplistlang($gid, $baselang))
 		{
@@ -707,10 +707,10 @@ if ($surveyid)
 		{
 			$surveysummary2 .= $clang->gT("Regenerate Question Codes:")
 			. " [<a href='$scriptname?action=renumberquestions&amp;sid=$surveyid&amp;style=straight' "
-			. "onClick='return confirm(\"".$clang->gT("Are you sure you want regenerate the question codes?","js")."\")' "
+			. "onclick='return confirm(\"".$clang->gT("Are you sure you want regenerate the question codes?","js")."\")' "
 			. ">".$clang->gT("Straight")."</a>] "
 			. "[<a href='$scriptname?action=renumberquestions&amp;sid=$surveyid&amp;style=bygroup' "
-			. "onClick='return confirm(\"".$clang->gT("Are you sure you want regenerate the question codes?","js")."\")' "
+			. "onclick='return confirm(\"".$clang->gT("Are you sure you want regenerate the question codes?","js")."\")' "
 			. ">".$clang->gT("By Group")."</a>]";
 			$surveysummary2 .= "</td></tr>\n";
 		}
@@ -935,10 +935,10 @@ if ($surveyid && $gid )   // Show the group toolbar
 			."onmouseout=\"hideTooltip()\""
 			."onmouseover=\"showTooltip(event,'".$clang->gT("Add New Question to Group", "js")."');return false\">" .
 			"<img src='$imagefiles/add.png' title='' alt='' " .
-			"align='right' name='AddNewQuestion' onClick=\"window.open('', '_top')\" /></a>\n";
+			"align='right' name='AddNewQuestion' onclick=\"window.open('', '_top')\" /></a>\n";
 		}
 		$groupsummary .= "\t\t\t\t\t<font class=\"boxcaption\">".$clang->gT("Questions").":</font>&nbsp;<select class=\"listboxquestions\" name='qid' "
-		. "onChange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n"
+		. "onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n"
 		. getquestions()
 		. "\t\t\t\t\t</select>\n"
 		. "\t\t\t\t</td></tr>\n"
@@ -968,7 +968,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 				{
 					//$groupsummary .= "[QID: ".$depqid."]"; 
 					$listcid=implode("-",$depcid);
-					$groupsummary .= " <a href='#' onClick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\">[QID: ".$depqid."]</a>"; 
+					$groupsummary .= " <a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\">[QID: ".$depqid."]</a>"; 
 				}
 			}
 		}
@@ -1068,7 +1068,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		}
 		if($sumrows5['define_questions'])
 		{
-			$questionsummary .= "<a href='#' onClick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=475, width=650, scrollbars=yes, resizable=yes, left=50, top=50')\""
+			$questionsummary .= "<a href='#' onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=475, width=650, scrollbars=yes, resizable=yes, left=50, top=50')\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Set Conditions for this Question", "js")."');return false\">"
 			. "<img src='$imagefiles/conditions.png' title='' alt='' align='left' name='SetQuestionConditions' /></a>\n"
@@ -1175,7 +1175,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			$questionsummary .= " (LID: {$qrrow['lid']}) "
 			. "<input align='top' type='image' src='$imagefiles/labelssmall.png' title='"
 			. $clang->gT("Edit/Add Label Sets")."' name='EditThisLabelSet' "
-			. "onClick=\"window.open('$scriptname?action=labels&amp;lid={$qrrow['lid']}', '_blank')\" />\n";
+			. "onclick=\"window.open('$scriptname?action=labels&amp;lid={$qrrow['lid']}', '_blank')\" />\n";
 		}
 		$questionsummary .="</td></tr>\n";
 		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "!" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R" || $qrrow['type'] == "F" ||$qrrow['type'] == "H"))
@@ -1185,7 +1185,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			. $clang->gT("Warning").": ". $clang->gT("You need to add answers to this question")." "
 			. "<input type='image' src='$imagefiles/answers.png' title='"
 			. $clang->gT("Edit/Add Answers for this Question")."' name='EditThisQuestionAnswers'"
-			. "onClick=\"window.open('".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;viewanswer=Y', '_top')\" /></font></td></tr>\n";
+			. "onclick=\"window.open('".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;viewanswer=Y', '_top')\" /></font></td></tr>\n";
 		}
 		if (!$qrrow['lid'] && ($qrrow['type'] == "F" ||$qrrow['type'] == "H"))
 		{
@@ -1209,7 +1209,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			foreach ($condarray[$qid] as $depqid => $depcid)
 			{
 				$listcid=implode("-",$depcid);
-				$questionsummary .= " <a href='#' onClick=\"window.open('admin.php?sid=".$surveyid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\">[QID: ".$depqid."]</a>";
+				$questionsummary .= " <a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\">[QID: ".$depqid."]</a>";
 			}	
 		}
 		$qid_attributes=getQuestionAttributes($qid);
@@ -1722,7 +1722,7 @@ if($action == "surveysecurity")
 				. "\t\t<td align='center' style='padding-top:10px;'>\n";
 
 				$surveysecurity .= "<form method='post' action='$scriptname?sid={$surveyid}'>"
-				."<input type='submit' value='".$clang->gT("Delete")."' onClick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.")."\")' />"
+				."<input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.")."\")' />"
 				."<input type='hidden' name='action' value='delsurveysecurity' />"
 				."<input type='hidden' name='user' value='{$resul2row['users_name']}' />"
 				."<input type='hidden' name='uid' value='{$resul2row['uid']}' />"
@@ -2081,7 +2081,7 @@ if ($action == "editsurvey")
 			$editsurvey .= ">".$clang->gT("No")."</option>\n"
 			. "</select></td></tr>";
 
-			$editsurvey .= "\t<tr><td colspan='4' align='center'><input type='submit' onClick='return UpdateLanguageIDs(mylangs,\"".$clang->gT("All questions, answers, etc for removed languages will be lost. Are you sure?")."\");' class='standardbtn' value='".$clang->gT("Save and Continue")." >>' />\n"
+			$editsurvey .= "\t<tr><td colspan='4' align='center'><input type='submit' onclick='return UpdateLanguageIDs(mylangs,\"".$clang->gT("All questions, answers, etc for removed languages will be lost. Are you sure?")."\");' class='standardbtn' value='".$clang->gT("Save and Continue")." >>' />\n"
 			. "\t<input type='hidden' name='action' value='updatesurvey' />\n"
 			. "\t<input type='hidden' name='sid' value=\"{$esrow['sid']}\" />\n"
 			. "\t<input type='hidden' name='languageids' id='languageids' value=\"{$esrow['additional_languages']}\" />\n"
@@ -2157,42 +2157,42 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
 			$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Invitation Email Subject:")."</span>\n"
 			. "\t\t<span class='settingentry'><input type='text' size='54' name='email_invite_subj_".$esrow['surveyls_language']."' id='email_invite_subj_{$grouplang}' value=\"{$esrow['surveyls_email_invite_subj']}\" />\n"
 			. "\t\t<input type='hidden' name='email_invite_subj_default_".$esrow['surveyls_language']."' id='email_invite_subj_default_{$grouplang}' value='".$bplang->gT("Invitation to participate in survey")."' />\n"
-			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onClick='javascript: fillin(\"email_invite_subj_{$grouplang}\",\"email_invite_subj_default_{$grouplang}\")' />\n"
+			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_invite_subj_{$grouplang}\",\"email_invite_subj_default_{$grouplang}\")' />\n"
 			. "\t</span></div>\n";
 			$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Invitation Email:")."</span>\n"
 			. "\t\t<span class='settingentry'><textarea cols=50 rows=5 name='email_invite_".$esrow['surveyls_language']."' id='email_invite_{$grouplang}'>{$esrow['surveyls_email_invite']}</textarea>\n"
 			. "\t\t<input type='hidden' name='email_invite_default_".$esrow['surveyls_language']."' id='email_invite_default_{$grouplang}' value='".$bplang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."' />\n"
-			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onClick='javascript: fillin(\"email_invite_{$grouplang}\",\"email_invite_default_{$grouplang}\")' />\n"
+			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_invite_{$grouplang}\",\"email_invite_default_{$grouplang}\")' />\n"
 			. "\t</span></div>\n";
 			$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Email Reminder Subject:")."</span>\n"
 			. "\t\t<span class='settingentry'><input type='text' size='54' name='email_remind_subj_".$esrow['surveyls_language']."' id='email_remind_subj_{$grouplang}' value=\"{$esrow['surveyls_email_remind_subj']}\" />\n"
 			. "\t\t<input type='hidden' name='email_remind_subj_default_".$esrow['surveyls_language']."' id='email_remind_subj_default_{$grouplang}' value='".$bplang->gT("Reminder to participate in survey")."' />\n"
-			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onClick='javascript: fillin(\"email_remind_subj_{$grouplang}\",\"email_remind_subj_default_{$grouplang}\")' />\n"
+			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_remind_subj_{$grouplang}\",\"email_remind_subj_default_{$grouplang}\")' />\n"
 			. "\t</span></div>\n";
 			$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Email Reminder:")."</span>\n"
 			. "\t\t<span class='settingentry'><textarea cols=50 rows=5 name='email_remind_".$esrow['surveyls_language']."' id='email_remind_{$grouplang}'>{$esrow['surveyls_email_remind']}</textarea>\n"
 			. "\t\t<input type='hidden' name='email_remind_default_".$esrow['surveyls_language']."' id='email_remind_default_{$grouplang}' value='".$bplang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."' />\n"
-			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onClick='javascript: fillin(\"email_remind_{$grouplang}\",\"email_remind_default_{$grouplang}\")' />\n"
+			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_remind_{$grouplang}\",\"email_remind_default_{$grouplang}\")' />\n"
 			. "\t</span></div>\n";
 			$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Confirmation Email Subject")."</span>\n"
 			. "\t\t<span class='settingentry'><input type='text' size='54' name='email_confirm_subj_".$esrow['surveyls_language']."' id='email_confirm_subj_{$grouplang}' value=\"{$esrow['surveyls_email_confirm_subj']}\" />\n"
 			. "\t\t<input type='hidden' name='email_confirm_subj_default_".$esrow['surveyls_language']."' id='email_confirm_subj_default_{$grouplang}' value='".$bplang->gT("Confirmation of completed survey")."' />\n"
-			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onClick='javascript: fillin(\"email_confirm_subj_{$grouplang}\",\"email_confirm_subj_default_{$grouplang}\")' />\n"
+			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_confirm_subj_{$grouplang}\",\"email_confirm_subj_default_{$grouplang}\")' />\n"
 			. "\t</span></div>\n";
 			$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Confirmation Email")."</span>\n"
 			. "\t\t<span class='settingentry'><textarea cols=50 rows=5 name='email_confirm_".$esrow['surveyls_language']."' id='email_confirm_{$grouplang}'>{$esrow['surveyls_email_confirm']}</textarea>\n"
 			. "\t\t<input type='hidden' name='email_confirm_default_".$esrow['surveyls_language']."' id='email_confirm_default_{$grouplang}' value='".$bplang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}")."' />\n"
-			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onClick='javascript: fillin(\"email_confirm_{$grouplang}\",\"email_confirm_default_{$grouplang}\")'>\n"
+			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_confirm_{$grouplang}\",\"email_confirm_default_{$grouplang}\")'>\n"
 			. "\t</span></div>\n";
 			$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Public registration Email Subject:")."</span>\n"
 			. "\t\t<span class='settingentry'><input type='text' size='54' name='email_register_subj_".$esrow['surveyls_language']."' id='email_register_subj_{$grouplang}' value=\"{$esrow['surveyls_email_register_subj']}\" />\n"
 			. "\t\t<input type='hidden' name='email_register_subj_default_".$esrow['surveyls_language']."' id='email_register_subj_default_{$grouplang}' value='".$bplang->gT("Survey Registration Confirmation")."' />\n"
-			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onClick='javascript:  fillin(\"email_register_subj_{$grouplang}\",\"email_register_subj_default_{$grouplang}\")' />\n"
+			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onclick='javascript:  fillin(\"email_register_subj_{$grouplang}\",\"email_register_subj_default_{$grouplang}\")' />\n"
 			. "\t</span></div>\n";
 			$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Public registration Email:")."</span>\n"
 			. "\t\t<span class='settingentry'><textarea cols=50 rows=5 name='email_register_{$grouplang}' id='email_register_{$grouplang}'>{$esrow['surveyls_email_register']}</textarea>\n"
 			. "\t\t<input type='hidden' name='email_register_default_".$esrow['surveyls_language']."' id='email_register_default_{$grouplang}' value='".$bplang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.")."' />\n"
-			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onClick='javascript:  fillin(\"email_register_{$grouplang}\",\"email_register_default_{$grouplang}\")' />\n"
+			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onclick='javascript:  fillin(\"email_register_{$grouplang}\",\"email_register_default_{$grouplang}\")' />\n"
 			. "\t</span class='settingentry'></div>\n"
 			. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("URL Description:")."</span>\n"
 			. "\t\t<span class='settingentry'><input type='text' size='50' name='urldescrip_".$esrow['surveyls_language']."' value=\"{$esrow['surveyls_urldescription']}\" />\n"
@@ -2267,11 +2267,11 @@ if ($action == "ordergroups")
 		{
 			foreach($depgrouprow as $targgid => $targrow)
 			{
-				$ordergroups .= "<li>".$clang->gT("Group")." <a href='#' onClick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."')\">".$targrow['depgpname']."</a> ".$clang->gT("depends on group")." <a href='#' onClick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$targgid."')\">".$targrow['targetgpname']."</a> ".$clang->gT("see the marked conditions on").":";
+				$ordergroups .= "<li>".$clang->gT("Group")." <a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."')\">".$targrow['depgpname']."</a> ".$clang->gT("depends on group")." <a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$targgid."')\">".$targrow['targetgpname']."</a> ".$clang->gT("see the marked conditions on").":";
 				foreach($targrow['conditions'] as $depqid => $depqrow)
 				{
 					$listcid=implode("-",$depqrow);
-					$ordergroups .= " <a href='#' onClick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\"> [QID: ".$depqid."]</a>";
+					$ordergroups .= " <a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\"> [QID: ".$depqid."]</a>";
 				}
 				$ordergroups .= "</li>\n";
 			}

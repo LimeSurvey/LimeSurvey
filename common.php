@@ -186,7 +186,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                     . "\t\t\t</tr>\n"
                     . "\t\t\t<tr bgcolor='#999999'>\n"
                     . "\t\t\t\t<td>\n"
-                    . "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname', '_top')\"" .
+                    . "\t\t\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname', '_top')\"" .
                      "onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Default Administration Page", "js")."');return false\">" .
                      "<img src='$imagefiles/home.png' name='HomeButton' alt='".$clang->gT("Default Administration Page")."' "
                     ."title=''" ."align='left' /></a>\n";
@@ -195,7 +195,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n";
 
 		// edit users
-		$adminmenu .= "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=editusers', '_top')\"" .
+		$adminmenu .= "\t\t\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=editusers', '_top')\"" .
 					"onmouseout=\"hideTooltip()\""
 					. "onmouseover=\"showTooltip(event,'".$clang->gT("Create/Edit Users", "js")."');return false\">" .
 					 "<img src='$imagefiles/security.png' name='AdminSecurity'"
@@ -208,7 +208,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 
 		// check settings
         //"\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='34'  align='left'>\n".
-						$adminmenu .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=checksettings', '_top')\""
+						$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=checksettings', '_top')\""
 					    . "onmouseout=\"hideTooltip()\""
                       	. "onmouseover=\"showTooltip(event,'".$clang->gT("Check Settings", "js")."');return false\">"
 						. "\t\t\t\t\t<img src='$imagefiles/summary.png' name='CheckSettings' title='"
@@ -218,7 +218,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 		// check data cosistency
         if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 			{
-			$adminmenu .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=checkintegrity', '_top')\"".
+			$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=checkintegrity', '_top')\"".
 						   "onmouseout=\"hideTooltip()\""
 						  ."onmouseover=\"showTooltip(event,'".$clang->gT("Check Data Integrity", "js")."');return false\">".
 						"<img src='$imagefiles/checkdb.png' name='CheckDataINtegrity' title=''  alt='".$clang->gT("Check Data Integrity")."' align='left' /></a>\n";
@@ -229,18 +229,18 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 			}
 
 		// list surveys
-		$adminmenu .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=listsurveys', '_top')\""
+		$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=listsurveys', '_top')\""
 		 			."onmouseout=\"hideTooltip()\""
                     ."onmouseover=\"showTooltip(event,'".$clang->gT("List Surveys", "js")."');return false\">\n"
 		 			."<img src='$imagefiles/surveylist.png' name='ListSurveys' title=''"
-		 			."  alt='".$clang->gT("List Surveys")."' align='left' onClick=\"window.open('$scriptname?action=listsurveys', '_top')\" />"
+		 			."  alt='".$clang->gT("List Surveys")."' align='left' onclick=\"window.open('$scriptname?action=listsurveys', '_top')\" />"
                     ."</a>" ;
 
 		// db backup & label editor
 		if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 			{
 			$adminmenu  .= "<a href=\"#\""
-						. "onClick=\"window.open('dumpdb.php?action=dumpdb', '_top')\""
+						. "onclick=\"window.open('dumpdb.php?action=dumpdb', '_top')\""
 						. "onmouseout=\"hideTooltip()\""
 						. "onmouseover=\"showTooltip(event,'".$clang->gT("Backup Entire Database", "js")."');return false\">"
 						."<img src='$imagefiles/backup.png' name='ExportDB' title='' alt='". $clang->gT("Backup Entire Database")."($surveyid)' align='left' />"
@@ -253,7 +253,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 			}
 		if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			{
-			$adminmenu  .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=labels', '_top')\""
+			$adminmenu  .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=labels', '_top')\""
 						. "onmouseout=\"hideTooltip()\""
 						. "onmouseover=\"showTooltip(event,'".$clang->gT("Edit/Add Label Sets", "js")."');return false\">" .
 						 "<img src='$imagefiles/labels.png' align='left' name='LabelsEditor' title='' alt='". $clang->gT("Edit/Add Label Sets")."' /></a>\n"
@@ -266,7 +266,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
         if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 			{
 	        $adminmenu .= "<a href=\"#\" " .
-	        			  "onClick=\"window.open('$scriptname?action=templates', '_top')\""
+	        			  "onclick=\"window.open('$scriptname?action=templates', '_top')\""
 	                    . "onmouseout=\"hideTooltip()\""
 	                    . "onmouseover=\"showTooltip(event,'".$clang->gT("Template Editor", "js")."');return false\">" .
 	                    "<img src='$imagefiles/templates.png' name='EditTemplates' title='' alt='". $clang->gT("Template Editor")."' align='left' /></a>\n"
@@ -275,12 +275,12 @@ $singleborderstyle = "style='border: 1px solid #111111'";
         if(isset($_SESSION['loginID'])) //ADDED by Moses to prevent errors by reading db while not logged in.
 	        {
 	        $adminmenu .= "\t\t\t\t<td align='right' width='430'>\n"
-	                    . "<a href=\"#\" onClick=\"showhelp('show')\""
+	                    . "<a href=\"#\" onclick=\"showhelp('show')\""
 	                    . "onmouseout=\"hideTooltip()\""
 	                    . "onmouseover=\"showTooltip(event,'".$clang->gT("Show Help", "js")."');return false\">"
 	                    . "<img src='$imagefiles/showhelp.png' name='ShowHelp' title=''"
 	                    . "alt='". $clang->gT("Show Help")."' align='right'  /></a>"
-		                . "\t\t\t\t\t<a href=\"#\" onClick=\"window.open('$scriptname?action=logout', '_top')\""
+		                . "\t\t\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=logout', '_top')\""
                         . "onmouseout=\"hideTooltip()\""
 					    . "onmouseover=\"showTooltip(event,'".$clang->gT("Logout", "js")."');return false\">"
                         . "<img src='$imagefiles/logout.png' name='Logout'"
@@ -289,14 +289,14 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 
 			if($_SESSION['USER_RIGHT_CREATE_SURVEY'] == 1)
 				{
-			$adminmenu .= "<a href=\"#\" onClick=\"window.open('$scriptname?action=newsurvey', '_top')\""
+			$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=newsurvey', '_top')\""
 						. "onmouseout=\"hideTooltip()\""
 						. "onmouseover=\"showTooltip(event,'".$clang->gT("Create or Import New Survey", "js")."');return false\">" .
 						"<img src='$imagefiles/add.png' align='right' name='AddSurvey' title='' alt='". $clang->gT("Create or Import New Survey")."' /></a>\n";
 	             }
 			$adminmenu .= "\t\t\t\t\t<font class=\"boxcaption\">".$clang->gT("Surveys").":</font>"
 	                    . "\t\t\t\t\t<select class=\"listboxsurveys\""
-	                    . "onChange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
+	                    . "onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
 	                    . getsurveylist()
 	                    . "\t\t\t\t\t</select>\n"
 	                    . "\t\t\t\t</td>\n";
@@ -974,7 +974,7 @@ function checkfortables()
 		."\t\t"
 		.$clang->gT("It appears as if some tables or fields are missing from your database.")."<br /><br />\n"
 		."\t\t<input type='submit' value='"
-		.$clang->gT("Check Database Fields")."' onClick=\"window.open('checkfields.php', '_top')\" />\n"
+		.$clang->gT("Check Database Fields")."' onclick=\"window.open('checkfields.php', '_top')\" />\n"
 		."\t</td></tr>\n"
 		."</table>\n"
 		."</body></html>\n";
@@ -1793,7 +1793,7 @@ function templatereplace($line)
 		{
 			$clearall .= "&amp;token=".returnglobal('token');
 		}
-		$clearall .="' onClick='return confirm(\""
+		$clearall .="' onclick='return confirm(\""
 		. $clang->gT("Are you sure you want to clear all your responses?")."\")'>["
 		. $clang->gT("Exit and Clear Survey")."]</a></div>\n";
 
@@ -2262,10 +2262,10 @@ function getAdminFooter($url, $explanation)
 	global $versionnumber, $setfont, $imagefiles;
 	$strHTMLFooter = "<div class='footer'>\n"
 	. "\t\t\t<div style='float:left; min-width:107;'><img alt='Help - $explanation' src='$imagefiles/help.gif' "
-	. "onClick=\"window.open('$url')\" onMouseOver=\"document.body.style.cursor='pointer'\" "
+	. "onclick=\"window.open('$url')\" onMouseOver=\"document.body.style.cursor='pointer'\" "
 	. "onMouseOut=\"document.body.style.cursor='auto'\" /></div>\n"
 	. "\t\t\t<div style='float:right;'><img alt='Donate to PHPSurveyor' src='$imagefiles/donate.gif' "
-	. "onClick=\"window.open('http://sourceforge.net/project/project_donations.php?group_id=74605')\" onMouseOver=\"document.body.style.cursor='pointer'\" "
+	. "onclick=\"window.open('http://sourceforge.net/project/project_donations.php?group_id=74605')\" onMouseOver=\"document.body.style.cursor='pointer'\" "
 	. "onMouseOut=\"document.body.style.cursor='auto'\" /></div>\n"
 	. "\t\t\t<div class='subtitle'><a class='subtitle' href='http://www.phpsurveyor.org' target='_blank'>PHPSurveyor</a><br />Version $versionnumber</div>"
 	. "</div></body>\n</html>";
@@ -2927,7 +2927,7 @@ function languageDropdown($surveyid,$selected)
 	$slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
 	array_unshift($slangs,$baselang);
-	$html = "<select class='listboxquestions' name='langselect' onChange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n";
+	$html = "<select class='listboxquestions' name='langselect' onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n";
 	foreach ($slangs as $lang)
 	{
 		if ($lang == $selected) $html .= "\t<option value='{$_SERVER['PHP_SELF']}?sid={$surveyid}&language={$lang}' selected>".getLanguageNameFromCode($lang,false)."</option>\n";

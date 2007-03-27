@@ -492,7 +492,7 @@ $conditionsoutput .= "<table width='100%' align='center' cellspacing='0' cellpad
 ."\t\t<td  align='center' >\n";
 $showreplace="$questiontitle<img src='$imagefiles/speaker.png' alt=\""
 . htmlspecialchars($questiontext)
-. "\" onClick=\"alert('"
+. "\" onclick=\"alert('"
 . htmlspecialchars(addslashes(strip_tags($questiontext)))
 . "')\" />";
 $onlyshow=str_replace("{QID}", $showreplace, $clang->gT("Only show question {QID} IF"));
@@ -666,7 +666,7 @@ $conditionsoutput .= "\t<tr bgcolor='#CDCDCD'>\n"
 ."\t</tr>\n"
 ."\t<tr>\n"
 ."\t\t<td valign='top' align='center'>\n"
-."\t\t\t<select onClick=\"getAnswers(this.options[this.selectedIndex].value)\" name='cquestions' id='cquestions' style='font-family:verdana; font-size:10; width:220' size='5'>\n";
+."\t\t\t<select onclick=\"getAnswers(this.options[this.selectedIndex].value)\" name='cquestions' id='cquestions' style='font-family:verdana; font-size:10; width:220' size='5'>\n";
 if (isset($cquestions))
 {
 	foreach ($cquestions as $cqn)
@@ -694,7 +694,7 @@ $conditionsoutput .= "\t\t\t</select>\n"
 ."\t</tr>\n"
 ."\t<tr>\n"
 ."\t\t<td colspan='3' align='center'>\n"
-."\t\t\t<input type='reset' value='".$clang->gT("Clear")."' onClick=\"clearAnswers()\" />\n"
+."\t\t\t<input type='reset' value='".$clang->gT("Clear")."' onclick=\"clearAnswers()\" />\n"
 ."\t\t\t<input type='submit' value='".$clang->gT("Add Condition")."' />\n"
 ."<input type='hidden' name='sid' value='$surveyid' />\n"
 ."<input type='hidden' name='qid' value='$qid' />\n"
@@ -711,7 +711,7 @@ $conditionsoutput .= "\t<tr><td colspan='3'></td></tr>\n"
 ."\t\t</td>\n";
 $conditionsoutput .= "\t<tr bgcolor='#CDCDCD'><td colspan=3 height='10'></td></tr>\n"
 ."\t\t<tr><td colspan='3' align='center'>\n"
-."\t\t\t<input type='submit' value='".$clang->gT("Close Window")."' onClick=\"window.close()\"  />\n"
+."\t\t\t<input type='submit' value='".$clang->gT("Close Window")."' onclick=\"window.close()\"  />\n"
 ."\t\t</td>\n"
 ."\t</tr>\n";
 $conditionsoutput .= "\t<tr><td colspan='3'></td></tr>\n"

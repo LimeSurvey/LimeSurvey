@@ -103,7 +103,7 @@ $statisticsoutput .= "</table>\n"
 ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1'"
 ." cellspacing='0'>\n"
 ."<tr><td align='center' bgcolor='#555555' height='22'>"
-."<input type='image' src='$imagefiles/plus.gif' align='right' onClick='show(\"filtersettings\")'><input type='image' src='$imagefiles/minus.gif' align='right' onClick='hide(\"filtersettings\")'>"
+."<input type='image' src='$imagefiles/plus.gif' align='right' onclick='show(\"filtersettings\")'><input type='image' src='$imagefiles/minus.gif' align='right' onclick='hide(\"filtersettings\")'>"
 ."<font size='2' face='verdana' color='#FF9900'><strong>".$clang->gT("Filter Settings")."</strong></font>"
 ."</td></tr>\n"
 ."</table>\n"
@@ -219,7 +219,7 @@ foreach ($filters as $flt)
 		if (isset($_POST['summary']) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE))
 		{$statisticsoutput .= " CHECKED";}
 		$statisticsoutput .= ">&nbsp;"
-		."<img src='$imagefiles/speaker.png' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onClick=\"alert('".$clang->gT("Question","js").": ".$niceqtext."')\"></strong>"
+		."<img src='$imagefiles/speaker.png' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onclick=\"alert('".$clang->gT("Question","js").": ".$niceqtext."')\"></strong>"
 		."<br />\n";
 		if ($flt[2] == "N") {$statisticsoutput .= "</font>";}
 		if ($flt[2] != "N") {$statisticsoutput .= "\t\t\t\t<select name='";}
@@ -246,7 +246,7 @@ foreach ($filters as $flt)
 			$statisticsoutput .= ">&nbsp;"
 			."&nbsp;<img src='$imagefiles/speaker.png' align='bottom' alt=\""
 			.str_replace("\"", "`", $flt[5])
-			." [$flt[1]]\" onClick=\"alert('".$clang->gT("Question","js").": ".FlattenText($row[1])." "
+			." [$flt[1]]\" onclick=\"alert('".$clang->gT("Question","js").": ".FlattenText($row[1])." "
 			."')\">"
 			."<br />\n"
 			."\t\t\t\t\t<font size='1'>".$clang->gT("Responses Containing").":</font><br />\n"
@@ -271,7 +271,7 @@ foreach ($filters as $flt)
 		$statisticsoutput .= ">&nbsp;"
 		."&nbsp;<img src='$imagefiles/speaker.png' align='bottom' alt=\""
 		.str_replace("\"", "`", $flt[5])." \" "
-		."onClick=\"alert('".$clang->gT("Question","js").": ".$niceqtext." "
+		."onclick=\"alert('".$clang->gT("Question","js").": ".$niceqtext." "
 		."')\">"
 		."<br />\n"
 		."\t\t\t\t\t<font size='1'>".$clang->gT("Responses Containing").":</font><br />\n"
@@ -290,7 +290,7 @@ foreach ($filters as $flt)
 		$statisticsoutput .= ">&nbsp;"
 		."&nbsp;<img src='$imagefiles/speaker.png' align='bottom' alt=\""
 		.str_replace("\"", "`", $flt[5])
-		." [$flt[1]]\" onClick=\"alert('".$clang->gT("Question","js").": ".$niceqtext." "
+		." [$flt[1]]\" onclick=\"alert('".$clang->gT("Question","js").": ".$niceqtext." "
 		."')\">"
 		."<br />\n"
 		."\t\t\t\t\t<font size='1'>".$clang->gT("Responses Containing").":</font><br />\n"
@@ -320,7 +320,7 @@ foreach ($filters as $flt)
 		$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>$setfont<strong>$flt[3]</strong>"
 		."&nbsp;<img src='$imagefiles/speaker.png' align='bottom' alt=\""
 		.str_replace("\"", "`", $flt[5])
-		." \" onClick=\"alert('".$clang->gT("Question","js").": ".$niceqtext." "
+		." \" onclick=\"alert('".$clang->gT("Question","js").": ".$niceqtext." "
 		."')\">"
 		."<br />\n"
 		."\t\t\t\t\t<font size='1'>".$clang->gT("Date (YYYY-MM-DD) equals").":<br />\n"
@@ -381,7 +381,7 @@ foreach ($filters as $flt)
 			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {$statisticsoutput .= " CHECKED";}
 			$statisticsoutput .= ">&nbsp;"
 			."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
-			.str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('".$clang->gT("Question","js").": "
+			.str_replace("\"", "`", $flt[5])." [$row[1]]\" onclick=\"alert('".$clang->gT("Question","js").": "
 			.$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
 			."<br />\n"
 			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple 2>\n";
@@ -418,7 +418,7 @@ foreach ($filters as $flt)
 			$statisticsoutput .= ">&nbsp;"
 			."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
 			.str_replace("\"", "`", $flt[5])
-			." [$row[1]]\" onClick=\"alert('".$clang->gT("Question","js").": ".$niceqtext." "
+			." [$row[1]]\" onclick=\"alert('".$clang->gT("Question","js").": ".$niceqtext." "
 			.str_replace("'", "`", $row[1])
 			."')\">"
 			."<br />\n"
@@ -455,7 +455,7 @@ foreach ($filters as $flt)
 			{$statisticsoutput .= " CHECKED";}
 			$statisticsoutput .= ">&nbsp;"
 			."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
-			.str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('".$clang->gT("Question","js").": ".$niceqtext." "
+			.str_replace("\"", "`", $flt[5])." [$row[1]]\" onclick=\"alert('".$clang->gT("Question","js").": ".$niceqtext." "
 			.str_replace("'", "`", $row[1])."')\">"
 			."<br />\n"
 			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple 2>\n"
@@ -492,7 +492,7 @@ foreach ($filters as $flt)
 			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {$statisticsoutput .= " CHECKED";}
 			$statisticsoutput .= ">&nbsp;"
 			."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
-			.str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('".$clang->gT("Question","js")
+			.str_replace("\"", "`", $flt[5])." [$row[1]]\" onclick=\"alert('".$clang->gT("Question","js")
 			.": ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
 			."<br />\n"
 			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple 2>\n"
@@ -530,7 +530,7 @@ foreach ($filters as $flt)
 			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {$statisticsoutput .= " CHECKED";}
 			$statisticsoutput .= ">&nbsp;"
 			."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
-			.str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('".$clang->gT("Question","js")
+			.str_replace("\"", "`", $flt[5])." [$row[1]]\" onclick=\"alert('".$clang->gT("Question","js")
 			.": ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
 			."<br />\n";
 			$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$flt[6]} AND language='{$language}' ORDER BY sortorder, code";
@@ -573,7 +573,7 @@ foreach ($filters as $flt)
 			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary']) !== FALSE) {$statisticsoutput .= " CHECKED";}
 			$statisticsoutput .= ">&nbsp;"
 			."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
-			.str_replace("\"", "`", $flt[5])." [$row[1]]\" onClick=\"alert('".$clang->gT("Question","js")
+			.str_replace("\"", "`", $flt[5])." [$row[1]]\" onclick=\"alert('".$clang->gT("Question","js")
 			.": ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
 			."<br />\n"
 			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$i}[]' multiple 2>\n";
@@ -591,7 +591,7 @@ foreach ($filters as $flt)
 		//Link to rankwinner script - awaiting completion
 		//          $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr bgcolor='#DDDDDD'>\n"
 		//              ."<td colspan=$count align=center>$setfont"
-		//              ."<input type='button' value='Show Rank Summary' onClick=\"window.open('rankwinner.php?sid=$surveyid&amp;qid=$flt[0]', '_blank', 'toolbar=no, directories=no, location=no, status=yes, menubar=no, resizable=no, scrollbars=no, width=400, height=300, left=100, top=100')\">"
+		//              ."<input type='button' value='Show Rank Summary' onclick=\"window.open('rankwinner.php?sid=$surveyid&amp;qid=$flt[0]', '_blank', 'toolbar=no, directories=no, location=no, status=yes, menubar=no, resizable=no, scrollbars=no, width=400, height=300, left=100, top=100')\">"
 		//              ."</td></tr>\n\t\t\t\t<tr>\n";
 		$counter=0;
 		unset($answers);
@@ -606,7 +606,7 @@ foreach ($filters as $flt)
 		if (isset($_POST['summary']) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE))
 		{$statisticsoutput .= " CHECKED";}
 		$statisticsoutput .= ">&nbsp;"
-		."<img src='$imagefiles/speaker.png' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onClick=\"alert('".$clang->gT("Question","js").": ".$niceqtext."')\"></strong>"
+		."<img src='$imagefiles/speaker.png' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onclick=\"alert('".$clang->gT("Question","js").": ".$niceqtext."')\"></strong>"
 		."<br />\n";
 		$statisticsoutput .= "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple 2>\n";
 		$allfields[]=$myfield;
@@ -651,7 +651,7 @@ $statisticsoutput .= "\t\t\t</table>\n"
 ."><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label></font></td></tr>\n"
 ."\t\t<tr><td align='center' bgcolor='#CCCCCC'>\n\t\t\t<br />\n"
 ."\t\t\t<input type='submit' value='".$clang->gT("View Stats")."'>\n"
-."\t\t\t<input type='button' value='".$clang->gT("Clear")."' onClick=\"window.open('$scriptname?action=statistics&amp;sid=$surveyid', '_top')\">\n"
+."\t\t\t<input type='button' value='".$clang->gT("Clear")."' onclick=\"window.open('$scriptname?action=statistics&amp;sid=$surveyid', '_top')\">\n"
 ."\t\t<br />&nbsp;\n"
 ."\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
 ."\t\t<input type='hidden' name='display' value='stats'>\n"

@@ -50,7 +50,7 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 {
 	$importlabeloutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
 	$importlabeloutput .= $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
-	$importlabeloutput .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	$importlabeloutput .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
 	$importlabeloutput .= "</td></tr></table>\n";
 	$importlabeloutput .= "</body>\n</html>\n";
 	return;
@@ -76,7 +76,7 @@ if (substr($bigarray[0], 0, 28) != "# PHPSurveyor Label Set Dump")
 {
 	$importlabeloutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
 	$importlabeloutput .= $clang->gT("This file is not a PHPSurveyor question file. Import failed.")."<br /><br />\n";
-	$importlabeloutput .= "<input type='submit' value='".$clang->gT("Return to Labels Admin")."' onClick=\"window.open('$scriptname?action=labels', '_top')\">\n";
+	$importlabeloutput .= "<input type='submit' value='".$clang->gT("Return to Labels Admin")."' onclick=\"window.open('$scriptname?action=labels', '_top')\">\n";
 	$importlabeloutput .= "</td></tr></table>\n";
 	$importlabeloutput .= "</body>\n</html>\n";
 	return;
@@ -222,7 +222,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 
 
 $importlabeloutput .= "<strong>".$clang->gT("Import of Label Set is completed.")."</strong><br />\n";
-$importlabeloutput .= "<input type='submit' value='".$clang->gT("Return to Labels Admin")."' onClick=\"window.open('$scriptname?action=labels&amp;lid=$newlid', '_top')\">\n";
+$importlabeloutput .= "<input type='submit' value='".$clang->gT("Return to Labels Admin")."' onclick=\"window.open('$scriptname?action=labels&amp;lid=$newlid', '_top')\">\n";
 
 $importlabeloutput .= "</td></tr></table>\n";
 $importlabeloutput .= "</body>\n</html>";

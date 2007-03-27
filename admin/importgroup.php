@@ -51,7 +51,7 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 {
 	$importgroup .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
 	$importgroup .= $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
-	$importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	$importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
 	$importgroup .= "</td></tr></table>\n";
 	return;
 }
@@ -74,7 +74,7 @@ if (substr($bigarray[0], 0, 24) != "# PHPSurveyor Group Dump")
 {
 	$importgroup .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
 	$importgroup .= $clang->gT("This file is not a PHPSurveyor group file. Import failed.")."<br /><br />\n";
-	$importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onClick=\"window.open('$scriptname', '_top')\">\n";
+	$importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
 	$importgroup .= "</td></tr></table>\n";
 	unlink($the_full_file_path);
 	return;
