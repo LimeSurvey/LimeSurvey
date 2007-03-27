@@ -291,11 +291,12 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($_POST[
 
 elseif ($action == "moduser")
 {
+	
 	$addsummary = "<br /><strong>".$clang->gT("Modifying User")."</strong><br />\n";
 
 	if($_POST['uid'] == $_SESSION['loginID'] || $_SESSION['loginID'] == 1)
 	{
-		$user = html_entity_decode($_POST['user']);
+		$users_name = html_entity_decode($_POST['user']);
 		$email = html_entity_decode($_POST['email']);
 		$pass = html_entity_decode($_POST['pass']);
 		$full_name = html_entity_decode($_POST['full_name']);
@@ -321,10 +322,10 @@ elseif ($action == "moduser")
 
 			if($uresult && empty($pass))
 			{
-				$addsummary .= "<br />".$clang->gT("Username").": $user<br />".$clang->gT("Password").": {".$clang->gT("Unchanged")."}<br />\n";
+				$addsummary .= "<br />".$clang->gT("Username").": $users_name<br />".$clang->gT("Password").": {".$clang->gT("Unchanged")."}<br />\n";
 			} elseif($uresult && !empty($pass))
 			{
-				$addsummary .= "<br />".$clang->gT("Username").": $user<br />".$clang->gT("Password").": $pass<br />\n";
+				$addsummary .= "<br />".$clang->gT("Username").": $users_name<br />".$clang->gT("Password").": $pass<br />\n";
 			}
 			else
 			{
