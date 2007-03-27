@@ -589,7 +589,7 @@ if(isset($surveyid))
             
             for ($i=0; $i<count($sortorderids); $i++)
             {
-            	array_push($testarray,$_POST['code_'.$codeids[$i]]);
+            	if (isset($codeids[$i])) array_push($testarray,$_POST['code_'.$codeids[$i]]);
             }
              //die(print_r($testarray));
  			$dupanswers = array();
