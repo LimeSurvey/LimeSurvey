@@ -608,8 +608,8 @@ if(isset($surveyid))
 
          	foreach ($sortorderids as $sortorderid)
         	{
-        		$langid=substr($sortorderid,0,strpos($sortorderid,'_')); 
-        		$orderid=substr($sortorderid,strpos($sortorderid,'_')+1,20);
+        		$langid=substr($sortorderid,0,strrpos($sortorderid,'_')); 
+        		$orderid=substr($sortorderid,strrpos($sortorderid,'_')+1,20);
         		if ($_POST['code_'.$codeids[$count]] != "0" && !in_array($_POST['code_'.$codeids[$count]],$dupanswers))
         		{
      				$_POST['code_'.$codeids[$count]]=sanitize_paranoid_string($_POST['code_'.$codeids[$count]]);
