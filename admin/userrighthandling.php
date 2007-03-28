@@ -43,9 +43,9 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 	$usergroupsummary = "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
 	$usergroupsummary .= "\t<tr>\n"
 	. "\t\t<td colspan='2'>\n"
-	. "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-	. "\t\t\t\t<tr bgcolor='#555555'><td colspan='2' height='4' align='left'>"
-	. "<font size='1' face='verdana' color='white'><strong>".$clang->gT("User Groups")."</strong> ";
+	. "\t\t\t<table class='menubar'>\n"
+	. "\t\t\t\t<tr><td colspan='2' height='4' align='left'>"
+	. "<strong>".$clang->gT("User Groups")."</strong> ";
 	if($ugid)
 	{
 		$usergroupsummary .= "<font color='silver'>{$grow['name']}</font></td></tr>\n";
@@ -56,7 +56,7 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 	}
 
 
-	$usergroupsummary .= "\t\t\t\t<tr bgcolor='#AAAAAA'>\n"
+	$usergroupsummary .= "\t\t\t\t<tr>\n"
 	. "\t\t\t\t\t<td>\n";
 
 	$usergroupsummary .=  "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='55' height='20' border='0' hspace='0' align='left' />\n"

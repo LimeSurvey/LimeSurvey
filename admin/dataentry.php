@@ -394,9 +394,9 @@ if($actsurrows['browse_response']){
 	
 	elseif ($subaction == "edit" || $subaction == "editsaved")
 	{
-		$dataentryoutput .= "<table width='99%' align='center' style='margin: 3px 6px; border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		.$clang->gT("Browse Responses")."</strong></font></td></tr>\n";
+		$dataentryoutput .= "<table >\n"
+		."\t<tr ><td colspan='2' height='4'><strong>"
+		.$clang->gT("Browse Responses")."</strong></td></tr>\n";
 		if (isset($surveyheader)) {$dataentryoutput .= $surveyheader;}
 		$dataentryoutput .= $surveyoptions
 		."</table>\n";

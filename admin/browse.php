@@ -61,13 +61,13 @@ $language = GetBaseLanguageFromSurveyID($surveyid);
 
 $surveyoptions = browsemenubar();
 $browseoutput = "<table><tr><td></td></tr></table>\n"
-."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+."<table class='menubar'>\n";
 
 if (!$database_exists) //DATABASE DOESN'T EXIST OR CAN'T CONNECT
 {
-	$browseoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-	. $clang->gT("Browse Responses")."</strong></font></td></tr>\n"
-	."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
+	$browseoutput .= "\t<tr ><td colspan='2' height='4'><strong>"
+	. $clang->gT("Browse Responses")."</strong></td></tr>\n"
+	."\t<tr><td align='center'>$setfont\n"
 	."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
 	. $clang->gT("The defined surveyor database does not exist")."<br />\n"
 	. $clang->gT("Either your selected database has not yet been created or there is a problem accessing it.")."<br /><br />\n"
@@ -78,9 +78,9 @@ if (!$database_exists) //DATABASE DOESN'T EXIST OR CAN'T CONNECT
 }
 if (!$surveyid && !$subaction) //NO SID OR ACTION PROVIDED
 {
-	$browseoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-	. $clang->gT("Browse Responses")."</strong></font></td></tr>\n"
-	."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
+	$browseoutput .= "\t<tr ><td colspan='2' height='4'><strong>"
+	. $clang->gT("Browse Responses")."</strong></td></tr>\n"
+	."\t<tr><td align='center'>$setfont\n"
 	."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
 	. $clang->gT("You have not selected a survey to browse.")."<br /><br />\n"
 	."<input type='submit' value='"
@@ -102,13 +102,13 @@ if ($actcount > 0)
 		$surveyname = "{$actrow['surveyls_title']}";
 		if ($actrow['active'] == "N") //SURVEY IS NOT ACTIVE YET
 		{
-			$browseoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-			. $clang->gT("Browse Responses").": <font color='silver'>$surveyname</font></strong></td></font></tr>\n"
-			."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
+			$browseoutput .= "\t<tr><td colspan='2' height='4'><strong>"
+			. $clang->gT("Browse Responses").": <font color='silver'>$surveyname</font></strong></td></tr>\n"
+			."\t<tr><td align='center'>\n"
 			."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
 			. $clang->gT("This survey has not been activated. There are no results to browse.")."<br /><br />\n"
 			."<input type='submit' value='"
-			. $clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\"><br />\n"
+			. $clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" /><br />\n"
 			."</td></tr></table>\n"
 			."</body>\n</html>";
 			return;
@@ -117,9 +117,9 @@ if ($actcount > 0)
 }
 else //SURVEY MATCHING $surveyid DOESN'T EXIST
 {
-	$browseoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-	. $clang->gT("Browse Responses")."</strong></font></td></tr>\n"
-	."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
+	$browseoutput .= "\t<tr><td colspan='2' height='4'><strong>"
+	. $clang->gT("Browse Responses")."</strong></td></tr>\n"
+	."\t<tr><td align='center'>\n"
 	."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
 	. $clang->gT("There is no matching survey.")." ($surveyid)<br /><br />\n"
 	."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\"><br />\n"
@@ -134,7 +134,7 @@ $qulanguage = GetBaseLanguageFromSurveyID($surveyid);
 if ($subaction == "id") // Looking at a SINGLE entry
 {
 	//SHOW HEADER
-	$browseoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Browse Responses").": <font color='silver'>$surveyname</font></strong></font></td></tr>\n";
+	$browseoutput .= "\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Browse Responses").": <font color='silver'>$surveyname</font></strong></td></tr>\n";
 	if (!isset($_POST['sql']) || !$_POST['sql']) {$browseoutput .= "$surveyoptions";} // Don't show options if coming from tokens script
 	$browseoutput .= "</table>\n"
 	."<table><tr><td></td></tr></table>\n";
@@ -298,8 +298,8 @@ if ($subaction == "id") // Looking at a SINGLE entry
 
 elseif ($subaction == "all")
 {
-	$browseoutput .= ("\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-	. $clang->gT("Browse Responses").":</strong> <font color='#EEEEEE'>$surveyname</font></font></td></tr>\n");
+	$browseoutput .= ("\t<tr><td colspan='2' height='4'><strong>"
+	. $clang->gT("Browse Responses").":</strong> <font color='#EEEEEE'>$surveyname</font></td></tr>\n");
 
 	if (!isset($_POST['sql']))
 	{$browseoutput .= "$surveyoptions";} //don't show options when called from another script with a filter on
@@ -501,10 +501,10 @@ elseif ($subaction == "all")
 	if ($end < 0) {$end=0;}
 
 	$browseoutput .= "<table><tr><td></td></tr></table>\n"
-	."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-	."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-	. $clang->gT("Data View Control").":</strong></font></td></tr>\n"
-	."\t<tr bgcolor='#999999'><td align='left'>\n";
+	."<table class='menubar'>\n"
+	."\t<tr ><td colspan='2' height='4'><strong>"
+	. $clang->gT("Data View Control").":</strong></td></tr>\n"
+	."\t<tr><td align='left'>\n";
 	if (!isset($_POST['sql']))
 	{
 		$browseoutput .= "\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />\n"
@@ -592,8 +592,8 @@ elseif ($subaction == "all")
 }
 else
 {
-	$browseoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-	. $clang->gT("Browse Responses").":</strong> <font color='#EEEEEE'>$surveyname</font></font></td></tr>\n"
+	$browseoutput .= "\t<tr><td colspan='2' height='4'><strong>"
+	. $clang->gT("Browse Responses").":</strong> <font color='#EEEEEE'>$surveyname</font></td></tr>\n"
 	. $surveyoptions;
 	$browseoutput .= "</table>\n";
 	$gnquery = "SELECT count(id) FROM $surveytable";

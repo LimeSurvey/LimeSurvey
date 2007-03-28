@@ -174,17 +174,17 @@ $singleborderstyle = "style='border: 1px solid #111111'";
         $adminmenu  = "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
                     . "\t<tr>\n"
                     . "\t\t<td>\n"
-                    . "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-                    . "\t\t\t<tr bgcolor='#555555'>\n"
+                    . "\t\t\t<table class='menubar'>\n"
+                    . "\t\t\t<tr>\n"
                     . "\t\t\t\t<td colspan='2' height='8' align='left'>\n"
-                    . "\t\t\t\t<font size='1' color='white'><strong>".$clang->gT("Administration")."</strong>";
+                    . "\t\t\t\t<strong>".$clang->gT("Administration")."</strong>";
 		if(isset($_SESSION['loginID']))
 			{
 			$adminmenu  .= " --  ".$clang->gT("Logged in as"). ": <strong>". $_SESSION['user'] ."</strong>"."\n";
 			}
-       	$adminmenu .= "\t\t\t\t</font></td>\n"
+       	$adminmenu .= "\t\t\t\t</td>\n"
                     . "\t\t\t</tr>\n"
-                    . "\t\t\t<tr bgcolor='#999999'>\n"
+                    . "\t\t\t<tr>\n"
                     . "\t\t\t\t<td>\n"
                     . "\t\t\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname', '_top')\"" .
                      "onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Default Administration Page", "js")."');return false\">" .
@@ -1124,7 +1124,7 @@ function browsemenubar()
 {
 	global $surveyid, $scriptname, $imagefiles, $homeurl, $clang;
 	//BROWSE MENU BAR
-	$browsemenubar = "\t<tr bgcolor='#999999'>\n"
+	$browsemenubar = "\t<tr>\n"
 	. "\t\t<td>\n"
 	. "\t\t\t<a href='$scriptname?sid=$surveyid' onmouseout=\"hideTooltip()\" " .
 			"onmouseover=\"showTooltip(event,'".$clang->gT("Return to Survey Administration", "js")."')\">" .

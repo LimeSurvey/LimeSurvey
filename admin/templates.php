@@ -424,13 +424,13 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	$templatesoutput.= "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
 	. "\t<tr>\n"
 	. "\t\t<td>\n"
-	. "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-	. "\t\t\t<tr bgcolor='#555555'>\n"
+	. "\t\t\t<table class='menubar'>\n"
+	. "\t\t\t<tr>\n"
 	. "\t\t\t\t<td colspan='2' height='8'>\n"
-	. "\t\t\t\t\t$setfont<font size='1' color='white'><strong>".$file_version."</strong>\n"
-	. "\t\t\t\t</font></font></td>\n"
+	. "\t\t\t\t\t<strong>".$file_version."</strong>\n"
+	. "\t\t\t\t</td>\n"
 	. "\t\t\t</tr>\n"
-	. "\t\t\t<tr bgcolor='#999999'>\n"
+	. "\t\t\t<tr >\n"
 	. "\t\t\t\t<td>\n"
 	. "\t\t\t\t\t<a href='$scriptname'" .
 			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Default Administration Page", "js")."')\">" .
@@ -453,13 +453,13 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	."<table><tr><td height='1'></td></tr></table>\n";
 	
 	//TEMPLATE DETAILS
-	$templatesoutput.= "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-	. "\t\t\t<tr bgcolor='#555555'>\n"
+	$templatesoutput.= "\t\t\t<table class='menubar'>\n"
+	. "\t\t\t<tr>\n"
 	. "\t\t\t\t<td colspan='2' height='8'>\n"
-	. "\t\t\t\t\t$setfont<font size='1' color='white'><strong>".$clang->gT("Template:")." <i>$templatename</i></strong>\n"
-	. "\t\t\t\t</font></font></td>\n"
+	. "\t\t\t\t\t<strong>".$clang->gT("Template:")." <i>$templatename</i></strong>\n"
+	. "\t\t\t\t</td>\n"
 	. "\t\t\t</tr>\n"
-	. "\t\t\t<tr bgcolor='#999999'>\n"
+	. "\t\t\t<tr>\n"
 	. "\t\t\t\t<td>\n";
 	if (is_writable("$publicdir/templates/$templatename")) {
 		$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/trafficgreen.png' alt='".$clang->gT("This template can be modified")."' hspace='0' align='left' />\n";
@@ -506,14 +506,14 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	."<table><tr><td height='1'></td></tr></table>\n";
 
 	//FILE CONTROL DETAILS
-	$templatesoutput.= "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-	. "\t\t\t<tr bgcolor='#555555'>\n"
+	$templatesoutput.= "\t\t\t<table class='menubar'>\n"
+	. "\t\t\t<tr>\n"
 	. "\t\t\t\t<td colspan='2' height='8'>\n"
-	. "\t\t\t\t\t$setfont<font size='1' color='white'><strong>".$clang->gT("File Control:")."</strong>\n"
-	. "\t\t\t\t</font></font></td>\n"
+	. "\t\t\t\t\t<strong>".$clang->gT("File Control:")."</strong>\n"
+	. "\t\t\t\t</td>\n"
 	. "\t\t\t</tr>\n"
-	. "\t\t\t<tr bgcolor='#999999'>"
-	. "\t\t\t\t<td align='center' bgcolor='#DDDDDD'>\n";
+	. "\t\t\t<tr>"
+	. "\t\t\t\t<td align='center' >\n";
 	
 	$templatesoutput.= "\t\t\t\t<table width='100%' border='0'>\n"
 	."\t\t\t\t\t<tr>\n"
@@ -588,7 +588,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	."</table>";
 	
 	//SAMPLE ROW
-	$templatesoutput.= "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+	$templatesoutput.= "\t\t\t<table class='menubar'>\n"
 	. "\t\t\t<tr bgcolor='#555555'>\n"
 	. "\t\t\t\t<td colspan='2' height='8'>\n"
 	. "\t\t\t\t\t$setfont<font size='1' color='white'><strong>".$clang->gT("Preview:")."</strong>\n"

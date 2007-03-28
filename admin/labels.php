@@ -63,12 +63,12 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 	$labelsoutput.= "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
                     . "\t<tr>\n"
                     . "\t\t<td>\n"
-                    . "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-                    . "\t\t\t<tr bgcolor='#555555'>\n"
+                    . "\t\t\t<table class='menubar'>\n"
+                    . "\t\t\t<tr >\n"
                     . "\t\t\t\t<td colspan='2' height='8'>\n"
-                    . "\t\t\t\t<font size='1' color='white'><strong>"
-	.$clang->gT("Label Sets Administration")."</strong></font></td></tr>\n"
-	."<tr bgcolor='#999999'>\n"
+                    . "\t\t\t\t<strong>"
+	.$clang->gT("Label Sets Administration")."</strong></td></tr>\n"
+	."<tr >\n"
 	."\t<td>\n"
 	."\t<a href='$scriptname' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Return to Survey Administration", "js")."');return false\">" .
 			"<img name='Administration' src='$imagefiles/home.png' title='' alt='' align='left'  /></a>"
@@ -230,11 +230,10 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		$result = db_execute_assoc($query);
 		while ($row=$result->FetchRow())
 		{
-			$labelsoutput.= "\t<table width='100%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-			."<tr bgcolor='#555555'><td height='4' colspan='2'>"
-			."<font size='1' face='verdana' color='white'><strong>"
-			.$clang->gT("Label Set").":</strong> {$row['label_name']}</font></td></tr>\n"
-			."<tr bgcolor='#999999'>\n"
+			$labelsoutput.= "\t<table class='menubar'>\n"
+			."<tr><td height='4' colspan='2'>"
+			."<strong>".$clang->gT("Label Set").":</strong> {$row['label_name']}</td></tr>\n"
+			."<tr>\n"
 			."\t<td>\n"
 			."\t<input type='image' src='$imagefiles/close.gif' title='"
 			.$clang->gT("Close Window")."' align='right' "

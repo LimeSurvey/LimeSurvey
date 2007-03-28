@@ -1,340 +1,289 @@
-body    {
-		font-family:verdana,arial,sans-serif; 
-	    margin: 0px;
-        text-align:left;
-        }
-
-.boxstyle
-        {
-        border-color: #111111; 
-        border-width: 1; 
-        border-style: solid;
-        }
-        
-.footer
-        {
-	    margin: 0px;
-	    background-color: #000000;
-	    padding:5px;
-        text-align:center;
-        color: #ffffff;
-	    height: 30px; 
-        }
-        
-
-img     {
-		border: 0px ;  
-	    }
-
-
-th,a,p,div
-		{
-		font-size:10pt
-		}
-
-
-.maintitle
-        {
-		font-size:14pt;
-		font-weight: bold;
-		color: #FFFFFF;
-		background-color:black;
-		text-align:center;
-		margin:auto;
-        }
-
-
-table.table2columns
-{
-  width:100%;
+body {
+	font-family: verdana, arial, sans-serif;
+	margin: 0;
+	text-align: left;
 }
-
-
-.table2columns td+td
-		{
-		text-align:left;
-		}
-
-.outlinetable
-		{
-		border: 1px solid #111111;
-		}
-		
-.outlinetable td
-		{
-		font-size:10pt; 
-		background-color: #EEEEEE; 
-		border: 1px solid #CCCCCC
-		}
-
-
-		
-.outlinetable th
-		{
-		font-size:10pt; 
-		background-color: #777777; 
-		color: #FFFFFF;
-		}
-
-ul 		{
-		font-size:10pt; 
-		color: #000000;
-		}
-		
-td 		{
-		font-size:10pt; color: #000000;
-		}
-		
-.btstyle{
-		font-size: 11px;
-        }
-
-.standardbtn
-        {
-		height: 20;
-		color: #000000;
-		font-size: 11px;
-        }
-
-.disabledbtn
-        {
-		height: 20;
-		color: #999999;
-		font-size: 11px;
-        }
-        
-input,select
-        {
-		background-color: #EEEFFF; 
-		font-family: verdana,arial,sans-serif;
-		font-size: 10px;
-		color: #000080;
-		}
-		
-action  {
-        text-align:left;   
-        }		
-		
-textarea{
-		background-color: #EEEFFF; 
-		font-size: 10px;
-		color: #000080;
-		}
-
-.subtitle
-	 	{
-		font-size: 10px; 
-		color: #FFFFFF;
-	 	}
-.listboxsurveys
-        {
-        	margin-top: 10px; 
-        	height: 20px; 
-        	font-size: 10px;
-        	color: #333333; 
-        	background: SILVER; 
-        	width: 180px;
-        }
-.listboxgroups
-        {
-        	margin-top: 10px;
-        	height: 20px;
-        	font-size: 10px;
-        	color: #333333;
-        	background: SILVER;
-        	width: 180px;
-        }
-.listboxquestions
-        {
-        	margin-top: 10px;
-        	height: 20px;
-        	font-size: 10px;
-        	color: #333333;
-        	background: SILVER;
-        	width: 180px;
-        }
-.boxcaption
-        {
-        	font-size: 12px;
-			font-weight: bold;
-			vertical-align: middle;
-        }
-.saveOrderbtn
-	   {
-	     	border: thin solid #000000;
-			text-decoration: none;
-			background-color: #D4D0C8;
-			font-weight: bold;
-			color: #000000;
-			margin: 5px;
-	   }
-        
-.settingentryhighlight
-{
-  color:#000080;
-  font-weight: bold;
+.boxstyle {
+	border-color: #111;
+	border-width: 1;
+	border-style: solid;
 }
-
-.statusentryhighlight
-{
-  font-size: 10px;
-  color:#FF0000;
+.footer {
+	margin: 0;
+	padding: 5px;
+	text-align: center;
+	color: #fff;
+	height: 30px;
+	background: #000;
 }
-
-.warningtitle
-{
+img {
+	border: 0;
+}
+th, a, p, div {
+	font-size: 10pt;
+}
+.maintitle {
+	font-size: 14pt;
 	font-weight: bold;
-	color: #FF0000;
+	color: #FFF;
+	text-align: center;
+	margin: auto;
+	background: black;
 }
 
-.successtitle
-{
+
+table.menubar {
+	width: 100%;
+	border-color: #555;
+	border-width: 1px;
+	border-style: solid;
+    border-collapse: collapse;
+	
+}
+.menubar tr:first-child {
+	background: #555;
+}
+.menubar tr {
+	background: #999;
+}
+.menubar td:first-child {
+	color: #FFF;
+	font-size: 8pt;
+}
+
+
+table.table2columns {
+	width: 100%;
+}
+.table2columns td+td {
+	text-align: left;
+}
+.outlinetable {
+	border: 1px solid #111;
+}
+.outlinetable td {
+	font-size: 10pt;
+	border: 1px solid #CCC;
+	background: #EEE;
+}
+.outlinetable th {
+	font-size: 10pt;
+	color: #FFF;
+	background: #777;
+}
+ul {
+	font-size: 10pt;
+	color: #000;
+}
+td {
+	font-size: 10pt;
+	color: #000;
+}
+.btstyle {
+	font-size: 11px;
+}
+.standardbtn {
+	height: 20;
+	color: #000;
+	font-size: 11px;
+}
+.disabledbtn {
+	height: 20;
+	color: #999;
+	font-size: 11px;
+}
+input, select {
+	color: #000080;
+	background: #EEEFFF;
+	font: 10px verdana, arial, sans-serif;
+}
+action {
+	text-align: left;
+}
+textarea {
+	font-size: 10px;
+	color: #000080;
+	background: #EEEFFF;
+}
+.subtitle {
+	font-size: 10px;
+	color: #FFF;
+}
+.listboxsurveys {
+	margin-top: 10px;
+	height: 20px;
+	font-size: 10px;
+	color: #333;
+	background: SILVER;
+	width: 180px;
+}
+.listboxgroups {
+	margin-top: 10px;
+	height: 20px;
+	font-size: 10px;
+	color: #333;
+	background: SILVER;
+	width: 180px;
+}
+.listboxquestions {
+	margin-top: 10px;
+	height: 20px;
+	font-size: 10px;
+	color: #333;
+	background: SILVER;
+	width: 180px;
+}
+.boxcaption {
+	font-size: 12px;
 	font-weight: bold;
-	color: #009900;
+	vertical-align: middle;
 }
-
-{
+.saveOrderbtn {
+	border: thin solid #000;
+	text-decoration: none;
 	font-weight: bold;
-	color: #FF0000;
+	color: #000;
+	margin: 5px;
+	background: #D4D0C8;
+}
+.settingentryhighlight {
+	color: #000080;
+	font-weight: bold;
+}
+.statusentryhighlight {
+	font-size: 10px;
+	color: #F00;
+}
+.warningtitle {
+	font-weight: bold;
+	color: #F00;
+}
+.successtitle {
+	font-weight: bold;
+	color: #090;
+}
+ {
+	font-weight: bold;
+	color: #F00;
+}
+font.settingcaption {
+	vertical-align: top;
+	text-align: right;
+	font-size: 13px;
+	font-weight: bold;
+}
+span.settingcaption {
+	float: left;
+	width: 150px;
+	text-align: right;
+	font-size: 13px;
+	font-weight: bold;
+	clear: left;
+	margin-bottom: 10px;
+}
+.settingentry {
+	float: left;
+	width: 450px;
+	padding-left: 5px;
+	font-size: 13px;
+	text-align: left;
+	clear: right;
+	margin-bottom: 10px;
+}
+.settingrow {
+	width: 620px;
+	float: center;
+	clear: left;
+	margin-bottom: 20px;
+}
+
+#dhtmlgoodies_tooltip {
+	border: 1px solid #000;
+	position: absolute;
+	display: none;
+	z-index: 20000;
+	padding: 2px;
+	-moz-border-radius: 5px;
+	background: #FF6;
+	font: 0.8em "Verdana", "Lucida Sans Unicode", Arial, sans-serif;
+}
+#dhtmlgoodies_tooltipShadow {
+	position: absolute;
+	display: none;
+	z-index: 10000;
+	opacity: 0.7;
+	filter: alpha(opacity=70);
+	-khtml-opacity: 0.7;
+	-moz-opacity: 0.7;
+	-moz-border-radius: 5px;
+	background: #555;
+}
+.movableNodeul {
+	padding-left: 0;
+	margin-left: 0;
+	margin-top: 0;
+	padding-top: 0;
+	width: 50em;
+}
+.movableNode {
+	list-style-type: none;
+	border: 1px solid #999;
+	padding: 0.5em;
+	width: 50em;
+	text-align: left;
+	margin-top: 2px;
+	background: #EEE;
 }
 
 
-font.settingcaption
-        {
-            vertical-align: top;
-            text-align : right;
-        	font-size: 13px;
-			font-weight: bold;
-        }       
+.testsurvpopup {
+	position: absolute;
+	width: 100px;
+	height: 110px;
+	top: 151px;
+	left: 80px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #000;
+	padding: 8px;
+	z-index: 10000;
+	opacity: 0.7;
+	visibility: hidden;
+	filter: alpha(opacity=95);
+	-khtml-opacity: 0.95;
+	-moz-opacity: 0.95;
+	-moz-border-radius: 6px;
+	background: #FF6;
+	font: 11px arial, verdana, sans-serif;
+}
 
-        
-span.settingcaption
-    {
-            float:left;
-            width:150px;
-            text-align : right;
-        	font-size: 13px;
-			font-weight: bold;
-            clear:left;
-            margin-bottom: 10px;
-    }       
+.testsurvpopup	td {
+    background: #FF6;
+}
 
-.settingentry
-    {
-            float:left;
-            width:450px;
-            padding-left: 5px;
-            font-size: 13px;
-            text-align:left;
-            clear:right;
-            margin-bottom: 10px;
-    }           
-   
-.settingrow
-    {
-            width:620px;
-            float:center;
-            clear:left;
-            margin-bottom: 20px;
-            
-    }
-
-         
-/**
- *  CSS Classes related with the tooltips displayed over 
- * 	the images. 
- */ 	
-#dhtmlgoodies_tooltip{
-		background-color:#FFFF66;
-		border:1px solid #000;
-		position:absolute;
-		display:none;
-		z-index:20000;
-		padding:2px;
-		font-size:0.8em;
-		-moz-border-radius:5px;	/* Rounded edges in Firefox */
-		font-family: "Verdana", "Lucida Sans Unicode", Arial, sans-serif;		
-   }
-   
-#dhtmlgoodies_tooltipShadow{
-		position:absolute;
-		background-color:#555;
-		display:none;
-		z-index:10000;
-		opacity:0.7;
-		filter:alpha(opacity=70);
-		-khtml-opacity: 0.7;
-		-moz-opacity: 0.7;
-		-moz-border-radius:5px;	/* Rounded edges in Firefox */
-}	 
-
-/*
- *  CSS Classes related with the reordering 
- */ 	
+.testsurvpopup	td:first-child {
+    color: #000;
+	font-size: 10pt;
+}
 
 
-	
-.movableNodeul{
-	   /* cursor: move; */
-		padding-left:0px;
-		margin-left:0px;
-		margin-top:0px;
-		padding-top:0px;
-		width:50em;
-	}
-	
-	
-.movableNode{
-		list-style-type:none;
-		border:1px solid #999;
-		padding:0.5em;
-		width: 50em;
-        text-align: left; 
-		background-color:#EEE;
-		margin-top:2px;
-
-	}
-
-.testsurvpopup{
-		font-family:arial,verdana,sans-serif;
-		font-size: 11px;
-		position: absolute;
-		width: 100px;
-		height: 110px;
-		background-color: #FFFF66;
-		top: 151px;
-		left: 80px;
-		border-style: solid;
-		border-width: 1px;
-		border-color: #000000;
-		padding: 8px;
-		z-index:10000;
-		opacity:0.7;
-		visibility:hidden;
-		filter:alpha(opacity=95);
-		-khtml-opacity: 0.95;
-		-moz-opacity: 0.95;
-		-moz-border-radius:6px;	/* Rounded edges in Firefox */
-	}
-
-	.previewpopup{
-		font-family:arial,verdana,sans-serif;
-		font-size: 11px;
-		position: absolute;
-		width: 110px;
-		height: 125px;
-		background-color: #FFFF66;
-		top: 287px;
-		left: 473px;
-		border-style: solid;
-		border-width: 1px;
-		border-color: #000000;
-		padding: 8px;
-		z-index:10000;
-		opacity:0.7;
-		visibility:hidden;
-		filter:alpha(opacity=95);
-		-khtml-opacity: 0.95;
-		-moz-opacity: 0.95;
-		-moz-border-radius:6px;	/* Rounded edges in Firefox */
-	}
+.previewpopup {
+	position: absolute;
+	width: 110px;
+	height: 125px;
+	top: 287px;
+	left: 473px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #000;
+	padding: 8px;
+	z-index: 10000;
+	opacity: 0.7;
+	visibility: hidden;
+	filter: alpha(opacity=95);
+	-khtml-opacity: 0.95;
+	-moz-opacity: 0.95;
+	-moz-border-radius: 6px;
+	background: #FF6;
+	font: 11px arial, verdana, sans-serif;
+}

@@ -77,12 +77,12 @@ if($actsurrows['edit_survey_property']){
     $assessmentsoutput=  "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
         . "\t<tr>\n"
         . "\t\t<td>\n"
-        . "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-        . "\t\t\t<tr bgcolor='#555555'>\n"
+        . "\t\t\t<table class='menubar'>\n"
+        . "\t\t\t<tr>\n"
         . "\t\t\t\t<td colspan='2' height='8'>\n"
-        . "\t\t\t\t\t<font size='1' color='white'><strong>".$clang->gT("Assessments")."</strong></font></td></tr>\n";
+        . "\t\t\t\t\t<strong>".$clang->gT("Assessments")."</strong></td></tr>\n";
 	
-	$assessmentsoutput.= "\t<tr bgcolor='#999999'>\n"
+	$assessmentsoutput.= "\t<tr >\n"
 	. "\t\t<td>\n"
 	. "\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Return to Survey Administration", "js")."');return false\">" .
 			"<img name='Administration' src='$imagefiles/home.png' title='' alt='' align='left'  /></a>\n"

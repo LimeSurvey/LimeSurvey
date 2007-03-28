@@ -363,11 +363,11 @@ if ($surveyid)
 		//BUTTON BAR
 		$surveysummary .= "\t<tr>\n"
 		. "\t\t<td colspan='2'>\n"
-		. "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		. "\t\t\t\t<tr bgcolor='#555555'><td align='left'colspan='2' height='4'>"
-		. "<font size='1' face='verdana' color='white'><strong>".$clang->gT("Survey")."</strong> "
-		. "<font color='silver'>{$s1row['surveyls_title']} (ID:$surveyid)</font></font></td></tr>\n"
-		. "\t\t\t\t<tr bgcolor='#999999'><td align='right' height='22'>\n";
+		. "\t\t\t<table class='menubar'>\n"
+		. "\t\t\t\t<tr><td align='left'colspan='2' height='4'>"
+		. "<strong>".$clang->gT("Survey")."</strong> "
+		. "<font color='silver'>{$s1row['surveyls_title']} (ID:$surveyid)</font></td></tr>\n"
+		. "\t\t\t\t<tr ><td align='right' height='22'>\n";
 		if ($activated == "N" && $sumcount3>0)
 		{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/inactive.png' "
@@ -838,11 +838,11 @@ if ($surveyid && $gid )   // Show the group toolbar
 		$grow = array_map('htmlspecialchars', $grow);
 		$groupsummary .= "\t<tr>\n"
 		. "\t\t<td colspan='2'>\n"
-		. "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		. "\t\t\t<table class='menubar'>\n"
 		. "\t\t\t\t<tr bgcolor='#555555'><td align='left' colspan='2' height='4'>"
-		. "<font size='1' face='verdana' color='white'><strong>".$clang->gT("Group")."</strong> "
-		. "<font color='silver'>{$grow['group_name']} (ID:$gid)</font></font></td></tr>\n"
-		. "\t\t\t\t<tr bgcolor='#AAAAAA'>\n"
+		. "<strong>".$clang->gT("Group")."</strong> "
+		. "<font color='silver'>{$grow['group_name']} (ID:$gid)</font></td></tr>\n"
+		. "\t\t\t\t<tr>\n"
 		. "\t\t\t\t\t<td>\n"
 		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='55' height='20' border='0' hspace='0' align='left' />\n"
 		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
@@ -996,10 +996,10 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		$qrrow = array_map('htmlspecialchars', $qrrow);
 		$questionsummary .= "\t<tr>\n"
 		. "\t\t<td colspan='2'>\n"
-		. "\t\t\t<table width='100%' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		. "\t\t\t\t<tr bgcolor='#555555'><td colspan='2' height='4' align='left'><font size='1' face='verdana' color='white'><strong>"
-		. $clang->gT("Question")."</strong> <font color='silver'>{$qrrow['question']} (ID:$qid)</font></font></td></tr>\n"
-		. "\t\t\t\t<tr bgcolor='#AAAAAA'>\n"
+		. "\t\t\t<table class='menubar'>\n"
+		. "\t\t\t\t<tr><td colspan='2' height='4' align='left'><strong>"
+		. $clang->gT("Question")."</strong> <font color='silver'>{$qrrow['question']} (ID:$qid)</font></td></tr>\n"
+		. "\t\t\t\t<tr>\n"
 		. "\t\t\t\t\t<td>\n"
 		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='55' height='20' border='0' hspace='0' align='left' />\n"
 		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
