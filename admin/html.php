@@ -226,7 +226,7 @@ if ($action == "checksettings" || $action == "changelang")
 	foreach (getlanguagedata() as $langkey=>$languagekind)
 	{
 		$cssummary .= "\t\t\t\t<option value='$langkey'";
-		if ($langkey == $_SESSION['adminlang']) {$cssummary .= " selected";}
+		if ($langkey == $_SESSION['adminlang']) {$cssummary .= " selected='selected'";}
 		$cssummary .= ">".$languagekind['description']." - ".$languagekind['nativedescription']."</option>\n";
 	}
 	$cssummary .= "\t\t\t</select>\n"
@@ -466,12 +466,12 @@ if ($surveyid)
 			$tmp_survlangs[] = $baselang;
 
 			// Test Survey Language Selection Popup
-			$surveysummary .="<DIV class=\"testsurvpopup\" id=\"testsurvpopup\"><table width=\"100%\"><tr><td>".$clang->gT("Please select a language:")."</td></tr>";
+			$surveysummary .="<div class=\"testsurvpopup\" id=\"testsurvpopup\"><table width=\"100%\"><tr><td>".$clang->gT("Please select a language:")."</td></tr>";
 			foreach ($tmp_survlangs as $tmp_lang)
 			{
 				$surveysummary .= "<tr><td><a href=\"#\" accesskey='d' onclick=\"document.getElementById('testsurvpopup').style.visibility='hidden'; window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=".$tmp_lang."', '_blank')\"><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></td></tr>";
 			}
-			$surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('testsurvpopup').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></DIV>";
+			$surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('testsurvpopup').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></div>";
 			
 			if (count($tmp_survlangs) > 2)
 			{
@@ -517,12 +517,12 @@ if ($surveyid)
 			$tmp_survlangs[] = $baselang;
 
 			// Test Survey Language Selection Popup
-			$surveysummary .="<DIV class=\"testsurvpopup\" id=\"printpopup\"><table width=\"100%\"><tr><td>".$clang->gT("Please select a language:")."</td></tr>";
+			$surveysummary .="<div class=\"testsurvpopup\" id=\"printpopup\"><table width=\"100%\"><tr><td>".$clang->gT("Please select a language:")."</td></tr>";
 			foreach ($tmp_survlangs as $tmp_lang)
 			{
 				$surveysummary .= "<tr><td><a href=\"#\" accesskey='d' onclick=\"document.getElementById('printpopup').style.visibility='hidden'; window.open('$scriptname?action=showprintablesurvey&amp;sid=$surveyid&amp;lang=".$tmp_lang."', '_blank')\"><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></td></tr>";
 			}
-			$surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('printpopup').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></DIV>";
+			$surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('printpopup').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></div>";
 			
 			$surveysummary .= "<script type='text/javascript'>document.getElementById('printpopup').style.left='152px';</script>";
 			if (count($tmp_survlangs) > 2)
@@ -773,6 +773,7 @@ if ($surveyid)
 				$surveysummary .= "<td align='left'>".getLanguageNameFromCode($langname)."</td></tr>\n";
 			}
 		}
+		if ($first) $surveysummary .= "\t</tr>";
 
 		if ($s1row['surveyls_urldescription']==""){$s1row['surveyls_urldescription']=$s1row['url'];}
 		$surveysummary .= "\t<tr $showstyle id='surveydetails9'><td align='right' valign='top'><strong>"
@@ -1099,12 +1100,12 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 				$tmp_survlangs[] = $baselang;
 
 				// Test Survey Language Selection Popup
-				$surveysummary .="<DIV class=\"previewpopup\" id=\"previewquestion\"><table width=\"100%\"><tr><td>".$clang->gT("Please select a language:")."</td></tr>";
+				$surveysummary .="<div class=\"previewpopup\" id=\"previewquestion\"><table width=\"100%\"><tr><td>".$clang->gT("Please select a language:")."</td></tr>";
 				foreach ($tmp_survlangs as $tmp_lang)
 				{
 					$surveysummary .= "<tr><td><a href=\"#\" accesskey='d' onclick=\"document.getElementById('previewquestion').style.visibility='hidden'; window.open('$scriptname?action=previewquestion&amp;sid=$surveyid&amp;qid=$qid&amp;lang=".$tmp_lang."', '_blank')\"><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></td></tr>";
 				}
-				$surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('previewquestion').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></DIV>";
+				$surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('previewquestion').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></div>";
 			
 				if (count($tmp_survlangs) > 2)
 				{

@@ -438,11 +438,11 @@ function getsurveylist()
             {
             $surveyselecter .= "\t\t\t<option";
 			if($_SESSION['loginID'] == $sv[1]) {$surveyselecter .= " style=\"font-weight: bold;\"";}
-			if ($sv[0] == $surveyid) {$surveyselecter .= " selected"; $svexist = 1;}
+			if ($sv[0] == $surveyid) {$surveyselecter .= " selected='selected'"; $svexist = 1;}
             $surveyselecter .=" value='$scriptname?sid=$sv[0]'>$sv[2]</option>\n";
             }
         }
-    if (!isset($svexist)) {$surveyselecter = "\t\t\t<option selected>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;}
+    if (!isset($svexist)) {$surveyselecter = "\t\t\t<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;}
     else {$surveyselecter = "\t\t\t<option value='$scriptname?sid='>".$clang->gT("None")."</option>\n".$surveyselecter;}
     return $surveyselecter;
     }
@@ -472,7 +472,7 @@ function getquestions()
 	{
 		$qrow['title'] = htmlspecialchars($qrow['title']);
 		$questionselecter .= "\t\t<option value='$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid={$qrow['qid']}'";
-		if ($qid == $qrow['qid']) {$questionselecter .= " selected"; $qexists="Y";}
+		if ($qid == $qrow['qid']) {$questionselecter .= " selected='selected'"; $qexists="Y";}
 		$questionselecter .=">{$qrow['title']}:";
 		$questionselecter .= " ";
 		$question=strip_tags($qrow['question']);
@@ -489,7 +489,7 @@ function getquestions()
 
 	if (!isset($qexists))
 	{
-		$questionselecter = "\t\t<option selected>".$clang->gT("Please Choose...")."</option>\n".$questionselecter;
+		$questionselecter = "\t\t<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$questionselecter;
 	}
 	return $questionselecter;
 }
@@ -582,10 +582,10 @@ function getanswers()
 	while ($arow = $aresult->FetchRow())
 	{
 		$answerselecter .= "\t\t<option value='$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;code={$arow['code']}'";
-		if ($code == $arow['code']) {$answerselecter .= " selected"; $aexists="Y";}
+		if ($code == $arow['code']) {$answerselecter .= " selected='selected'"; $aexists="Y";}
 		$answerselecter .= ">{$arow['code']}: {$arow['answer']}</option>\n";
 	}
-	if (!$aexists) {$answerselecter = "\t\t<option selected>".$clang->gT("Please Choose...")."</option>\n".$answerselecter;}
+	if (!$aexists) {$answerselecter = "\t\t<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$answerselecter;}
 	return $answerselecter;
 }
 
@@ -639,7 +639,7 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 		foreach($qtypes as $TypeCode=>$TypeDescription)
 		{
 			$qtypeselecter .= "\t\t<option value='$TypeCode'";
-			if ($SelectedCode == $TypeCode) {$qtypeselecter .= " selected";}
+			if ($SelectedCode == $TypeCode) {$qtypeselecter .= " selected='selected'";}
 			$qtypeselecter .= ">$TypeDescription</option>\n";
 		}
 		return $qtypeselecter;
@@ -691,12 +691,12 @@ function getgrouplist($gid)
 	while($gv = $gidresult->FetchRow())
 	{
 		$groupselecter .= "\t\t<option";
-		if ($gv[0] == $gid) {$groupselecter .= " selected"; $gvexist = 1;}
+		if ($gv[0] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1;}
 		$groupselecter .= " value='$scriptname?sid=$surveyid&amp;gid=$gv[0]'>".htmlspecialchars($gv[1])."</option>\n";
 	}
 	if ($groupselecter)
 	{
-		if (!isset($gvexist)) {$groupselecter = "\t\t<option selected>".$clang->gT("Please Choose...")."</option>\n".$groupselecter;}
+		if (!isset($gvexist)) {$groupselecter = "\t\t<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$groupselecter;}
 		else {$groupselecter .= "\t\t<option value='$scriptname?sid=$surveyid&amp;gid='>".$clang->gT("None")."</option>\n";}
 	}
 	return $groupselecter;
@@ -716,12 +716,12 @@ function getgrouplist2($gid)
 	while ($gv = $gidresult->FetchRow())
 	{
 		$groupselecter .= "\t\t<option";
-		if ($gv[0] == $gid) {$groupselecter .= " selected"; $gvexist = 1;}
+		if ($gv[0] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1;}
 		$groupselecter .= " value='$gv[0]'>".htmlspecialchars($gv[1])."</option>\n";
 	}
 	if ($groupselecter)
 	{
-		if (!$gvexist) {$groupselecter = "\t\t<option selected>".$clang->gT("Please Choose...")."</option>\n".$groupselecter;}
+		if (!$gvexist) {$groupselecter = "\t\t<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$groupselecter;}
 		else {$groupselecter .= "\t\t<option value=''>".$clang->gT("None")."</option>\n";}
 	}
 	return $groupselecter;
@@ -741,7 +741,7 @@ function getgrouplist3($gid)
 	while ($gv = $gidresult->FetchRow())
 	{
 		$groupselecter .= "\t\t<option";
-		if ($gv[0] == $gid) {$groupselecter .= " selected"; $gvexist = 1;}
+		if ($gv[0] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1;}
 		$groupselecter .= " value='$gv[0]'>".htmlspecialchars($gv[1])."</option>\n";
 	}
 	return $groupselecter;
@@ -759,12 +759,12 @@ function getgrouplistlang($gid, $language)
 	while($gv = $gidresult->FetchRow())
 	{
 		$groupselecter .= "\t\t<option";
-		if ($gv[0] == $gid) {$groupselecter .= " selected"; $gvexist = 1;}
+		if ($gv[0] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1;}
 		$groupselecter .= " value='$scriptname?sid=$surveyid&amp;gid=$gv[0]'>".htmlspecialchars($gv[1])."</option>\n";
 	}
 	if ($groupselecter)
 	{
-		if (!isset($gvexist)) {$groupselecter = "\t\t<option selected>".$clang->gT("Please Choose...")."</option>\n".$groupselecter;}
+		if (!isset($gvexist)) {$groupselecter = "\t\t<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$groupselecter;}
 		else {$groupselecter .= "\t\t<option value='$scriptname?sid=$surveyid&amp;gid='>".$clang->gT("None")."</option>\n";}
 	}
 	return $groupselecter;
@@ -2262,11 +2262,11 @@ function getAdminFooter($url, $explanation)
 	global $versionnumber, $setfont, $imagefiles;
 	$strHTMLFooter = "<div class='footer'>\n"
 	. "\t\t\t<div style='float:left; min-width:107;'><img alt='Help - $explanation' src='$imagefiles/help.gif' "
-	. "onclick=\"window.open('$url')\" onMouseOver=\"document.body.style.cursor='pointer'\" "
-	. "onMouseOut=\"document.body.style.cursor='auto'\" /></div>\n"
+	. "onclick=\"window.open('$url')\" onmouseover=\"document.body.style.cursor='pointer'\" "
+	. "onmouseout=\"document.body.style.cursor='auto'\" /></div>\n"
 	. "\t\t\t<div style='float:right;'><img alt='Donate to PHPSurveyor' src='$imagefiles/donate.gif' "
-	. "onclick=\"window.open('http://sourceforge.net/project/project_donations.php?group_id=74605')\" onMouseOver=\"document.body.style.cursor='pointer'\" "
-	. "onMouseOut=\"document.body.style.cursor='auto'\" /></div>\n"
+	. "onclick=\"window.open('http://sourceforge.net/project/project_donations.php?group_id=74605')\" onmouseover=\"document.body.style.cursor='pointer'\" "
+	. "onmouseout=\"document.body.style.cursor='auto'\" /></div>\n"
 	. "\t\t\t<div class='subtitle'><a class='subtitle' href='http://www.phpsurveyor.org' target='_blank'>PHPSurveyor</a><br />Version $versionnumber</div>"
 	. "</div></body>\n</html>";
 	return $strHTMLFooter;
@@ -2835,7 +2835,7 @@ function getgroupuserlist()
             $surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']}</option>\n";
             }
         }
-    $surveyselecter = "\t\t\t<option value='-1' selected>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;
+    $surveyselecter = "\t\t\t<option value='-1' selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;
     return $surveyselecter;
     }
 
