@@ -928,7 +928,7 @@ if ($action == "editgroup")
 			$editgroup .= "<form name='editgroup' action='$scriptname' method='post'>\n";
 			$editgroup .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Title").":</span>\n"
 			. "\t\t<span class='settingentry'><input type='text' size='50' name='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
-			. "\t</span class='settingentry'></div>\n"
+			. "\t</span></div>\n"
 			. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Description:")."</span>\n"
 			. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
 			. "\t</span></div><div class='settingrow'></div></div>"; // THis empty div class is needed for forcing the tabpage border under the button

@@ -809,7 +809,7 @@ if ($surveyid)
 		}
 		$surveysummary .= "</font></td></tr>\n"
 		. $surveysummary2
-		. "</table></table>\n";
+		. "</table></td></tr></table>\n";
 	}
 	else
 	{
@@ -974,7 +974,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 			}
 		}
 	}
-	$groupsummary .= "\n</table></table>\n";
+	$groupsummary .= "\n</table></td></tr></table>\n";
 }
 
 if ($surveyid && $gid && $qid)  // Show the question toolbar
@@ -1216,7 +1216,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		$qid_attributes=getQuestionAttributes($qid);
 	    $questionsummary .= "</table>";		
 	}
-	$questionsummary .= "</table>";
+	$questionsummary .= "</td></tr></table>";
 }
 
 if (returnglobal('viewanswer'))
@@ -2194,7 +2194,7 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
 			. "\t\t<span class='settingentry'><textarea cols=50 rows=5 name='email_register_{$grouplang}' id='email_register_{$grouplang}'>{$esrow['surveyls_email_register']}</textarea>\n"
 			. "\t\t<input type='hidden' name='email_register_default_".$esrow['surveyls_language']."' id='email_register_default_{$grouplang}' value='".$bplang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.")."' />\n"
 			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onclick='javascript:  fillin(\"email_register_{$grouplang}\",\"email_register_default_{$grouplang}\")' />\n"
-			. "\t</span class='settingentry'></div>\n"
+			. "\t</span></div>\n"
 			. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("URL Description:")."</span>\n"
 			. "\t\t<span class='settingentry'><input type='text' size='50' name='urldescrip_".$esrow['surveyls_language']."' value=\"{$esrow['surveyls_urldescription']}\" />\n"
 			. "\t</span></div></div>";
@@ -2579,7 +2579,6 @@ function replacenewline ($texttoreplace)
 function questionjavascript($type, $qattributes)
 {
 	$newquestionoutput = "<script type='text/javascript'>\n"
-	. "<!--\n"
     ."if (navigator.userAgent.indexOf(\"Gecko\") != -1)\n"
 	."window.addEventListener(\"load\", init_gecko_select_hack, false);\n";	
 	$jc=0;
@@ -2643,7 +2642,6 @@ function questionjavascript($type, $qattributes)
 	. "\tbuildQTlist(QuestionType);\n"
 	. "\t}\n"
 	. "\tOtherSelection('$type');\n"
-	. "-->\n"
 	. "</script>\n";
 
 	return $newquestionoutput;

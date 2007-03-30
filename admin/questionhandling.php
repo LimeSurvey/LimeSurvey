@@ -67,7 +67,7 @@ if ($action == "addquestion")
 		$newquestionoutput .= "\t<tr id='Validation'>\n"
 		. "\t\t<td align='right'><strong>".$clang->gT("Validation:")."</strong></td>\n"
 		. "\t\t<td>\n"
-		. "\t\t<input type='text' name='preg' size=50 />\n"
+		. "\t\t<input type='text' name='preg' size='50' />\n"
 		. "\t\t</td>\n"
 		. "\t</tr>\n";
 
@@ -94,7 +94,7 @@ if ($action == "addquestion")
 		. "\t\t\t<label for='OY'>".$clang->gT("Yes")."</label>"
 		. "<input id='OY' type='radio' name='other' value='Y' />&nbsp;&nbsp;\n"
 		. "\t\t\t<label for='ON'>".$clang->gT("No")."</label>"
-		. "<input id='ON' type='radio' name='other' value='N' checked />\n"
+		. "<input id='ON' type='radio' name='other' value='N' checked='checked' />\n"
 		. "\t\t</td>\n"
 		. "\t</tr>\n";
 
@@ -104,7 +104,7 @@ if ($action == "addquestion")
 		. "\t\t\t<label for='MY'>".$clang->gT("Yes")."</label>"
 		. "<input id='MY' type='radio' name='mandatory' value='Y' />&nbsp;&nbsp;\n"
 		. "\t\t\t<label for='MN'>".$clang->gT("No")."</label>"
-		. "<input id='MN' type='radio' name='mandatory' value='N' checked />\n"
+		. "<input id='MN' type='radio' name='mandatory' value='N' checked='checked' />\n"
 		. "\t\t</td>\n"
 		. "\t</tr>\n";
 
@@ -153,50 +153,63 @@ if ($action == "addquestion")
 
 if ($action == "copyquestion")
 {
-	// TODO: make sure baselang is set (should be if surveyid is)
-	$eqquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language='".$baselang."'";
-	$eqresult = db_execute_assoc($eqquery);
+	$questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+	$baselang = GetBaseLanguageFromSurveyID($surveyid);
+	array_unshift($questlangs,$baselang);
 	$qattributes=questionAttributes();
-	while ($eqrow = $eqresult->FetchRow())
+	$editquestion ="<table width='100%' border='0'>\n\t<tr><td bgcolor='black' align='center'>"
+	. "\t\t<font class='settingcaption'><font color='white'>".$clang->gT("Copy Question")."</font></font></td></tr></table>\n"
+	. "<form name='frmeditquestion' action='$scriptname' method='post'>\n"
+	. '<div class="tab-pane" id="tab-pane-1">';
+	foreach ($questlangs as $language)
 	{
+    	$egquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND qid=$qid and language=".db_quote($language);
+        $egresult = db_execute_assoc($egquery);
+	    $eqrow = $egresult->FetchRow();
 		$eqrow = array_map('htmlspecialchars', $eqrow);
-		$editquestion = "<form action='$scriptname' method='post'>\n<table width='100%' border='0' >\n"
-		. "\t<tr>\n"
-		. "\t\t<td colspan='2' bgcolor='black' align='center'>\n"
-		. "\t\t\t<font color='white'><strong>".$clang->gT("Copy Question")."</strong><br />".$clang->gT("Note: You MUST enter a new question code")."</font>\n"
-		. "\t\t</td>\n"
-		. "\t</tr>\n"
-		. "\t<tr>\n"
-		. "\t\t<td align='right'><strong>".$clang->gT("Code:")."</strong></td>\n"
-		. "\t\t<td><input type='text' size='20' name='title' value='' /></td>\n"
-		. "\t</tr>\n"
-		. "\t<tr>\n"
-		. "\t\t<td align='right' valign='top'><strong>".$clang->gT("Question:")."</strong></td>\n"
-		. "\t\t<td><textarea cols='50' rows='4' name='question'>{$eqrow['question']}</textarea></td>\n"
-		. "\t</tr>\n"
-		. "\t<tr>\n"
-		. "\t\t<td align='right' valign='top'><strong>".$clang->gT("Help:")."</strong></td>\n"
-		. "\t\t<td><textarea cols='50' rows='4' name='help'>{$eqrow['help']}</textarea></td>\n"
-		. "\t</tr>\n"
-		. "\t<tr>\n"
-		. "\t\t<td align='right'><strong>".$clang->gT("Type:")."</strong></td>\n"
-		. "\t\t<td><SELECT name='type' onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
-		. getqtypelist($eqrow['type'])
-		. "\t\t</select></td>\n"
-		. "\t</tr>\n";
+    	$editquestion .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($eqrow['language'],false);
+    	if ($eqrow['language']==GetBaseLanguageFromSurveyID($surveyid)) 
+        {
+            $editquestion .= "(".$clang->gT("Base Language").")</h2>"
+            . "\t<div class='settingrow'><span >".$clang->gT("Note: You MUST enter a new question code!")            
+        	. "\t</span></div>\n"
+        	. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Code:")."</span>\n"
+        	. "\t\t<span class='settingentry'><input type='text' size='50' name='title' value='' />\n"
+        	. "\t</span></div>\n";
+        }
+    	else {
+    	        $editquestion .= '</h2>';
+             }    
+		$editquestion .=  "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Question:")."</span>\n"
+		. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='question_{$eqrow['language']}'>{$eqrow['question']}</textarea>\n"
+		. "\t</span></div>\n"
+		. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Help:")."</span>\n"
+		. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='help_{$eqrow['language']}'>{$eqrow['help']}</textarea>\n"
+		. "\t</span></div>\n"
+		. "\t<div class='settingrow'><span class='settingcaption'>&nbsp;</span>\n"
+		. "\t\t<span class='settingentry'>&nbsp;\n"
+		. "\t</span></div>\n";
+		$editquestion .= '</div>';
+    }
+    $editquestion .= "\t<table><tr>\n"
+	. "\t\t<td align='right'><strong>".$clang->gT("Type:")."</strong></td>\n"
+	. "\t\t<td><select name='type' onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
+	. getqtypelist($eqrow['type'])
+	. "\t\t</select></td>\n"
+	. "\t</tr>\n";
 
-		$editquestion .= "\t<tr id='Validation'>\n"
-		. "\t\t<td align='right'><strong>".$clang->gT("Validation:")."</strong></td>\n"
-		. "\t\t<td>\n"
-		. "\t\t<input type='text' name='preg' size=50 value=\"".$eqrow['preg']."\" />\n"
-		. "\t\t</td>\n"
-		. "\t</tr>\n";
+	$editquestion .= "\t<tr id='Validation'>\n"
+	. "\t\t<td align='right'><strong>".$clang->gT("Validation:")."</strong></td>\n"
+	. "\t\t<td>\n"
+	. "\t\t<input type='text' name='preg' size='50' value=\"".$eqrow['preg']."\" />\n"
+	. "\t\t</td>\n"
+	. "\t</tr>\n";
 
-		$editquestion .= "\t<tr id='LabelSets' style='display: none'>\n"
-		. "\t\t<td align='right'><strong>".$clang->gT("Label Set:")."</strong></td>\n"
-		. "\t\t<td>\n"
-		. "\t\t<select name='lid' >\n";
-		$labelsets=getlabelsets();
+	$editquestion .= "\t<tr id='LabelSets' style='display: none'>\n"
+	. "\t\t<td align='right'><strong>".$clang->gT("Label Set:")."</strong></td>\n"
+	. "\t\t<td>\n"
+	. "\t\t<select name='lid' >\n";
+	$labelsets=getlabelsets();
 		if (count($labelsets)>0)
 		{
 			if (!$eqrow['lid'])
@@ -237,10 +250,10 @@ if ($action == "copyquestion")
 		. "\t\t<td align='right'><strong>".$clang->gT("Mandatory:")."</strong></td>\n"
 		. "\t\t<td>\n"
 		. "\t\t\t".$clang->gT("Yes")." <input type='radio' name='mandatory' value='Y'";
-		if ($eqrow['mandatory'] == "Y") {$editquestion .= " checked";}
+		if ($eqrow['mandatory'] == "Y") {$editquestion .= " checked='checked'";}
 		$editquestion .= " />&nbsp;&nbsp;\n"
 		. "\t\t\t".$clang->gT("No")." <input type='radio' name='mandatory' value='N'";
-		if ($eqrow['mandatory'] != "Y") {$editquestion .= " checked";}
+		if ($eqrow['mandatory'] != "Y") {$editquestion .= " checked='checked'";}
 		$editquestion .= " />\n"
 		. "\t\t</td>\n"
 		. "\t</tr>\n"
@@ -253,13 +266,13 @@ if ($action == "copyquestion")
 		{
 			$editquestion .= "\t<tr>\n"
 			. "\t\t<input type='hidden' name='copyanswers' value='Y'>\n"
-			. "\t\t<td colspan='2' align='center'><input type='submit' value='".$clang->gT("Copy Question")."' /></td>\n"
+			. "\t\t<td colspan='2' align='center'><input type='submit' value='".$clang->gT("Copy Question")."' />\n"
 			. "\t\t<input type='hidden' name='action' value='copynewquestion' />\n"
 			. "\t\t<input type='hidden' name='sid' value='$sid' />\n"
 			. "\t\t<input type='hidden' name='oldqid' value='$qid' />\n"
 			. "\t\t<input type='hidden' name='gid' value='$gid' />\n"
-			. "\t</form></tr>\n"
-			. "</table>\n";
+			. "\t</td></tr>\n"
+			. "</table></form>\n";
 		}
 		else
 		{
@@ -281,7 +294,6 @@ if ($action == "copyquestion")
 			. "\t</td></tr>\n"
 			. "</table>\n</form>\n";
 		}
-	}
 }
 
 if ($action == "editquestion" || $action == "editattribute" || $action == "delattribute" || $action == "addattribute")
@@ -333,16 +345,16 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	$editquestion .= '</h2>';
 	$editquestion .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Code:")."</span>\n"
 	. "\t\t<span class='settingentry'><input type='text' size='50' name='title' value=\"{$eqrow['title']}\" />\n"
-	. "\t</span class='settingentry'></div>\n";
+	. "\t</span></div>\n";
 	$editquestion .=  "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Question:")."</span>\n"
 	. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='question_{$eqrow['language']}'>{$eqrow['question']}</textarea>\n"
-	. "\t</span class='settingentry'></div>\n"
+	. "\t</span></div>\n"
 	. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Help:")."</span>\n"
 	. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='help_{$eqrow['language']}'>{$eqrow['help']}</textarea>\n"
-	. "\t</span class='settingentry'></div>\n"
+	. "\t</span></div>\n"
 	. "\t<div class='settingrow'><span class='settingcaption'>&nbsp;</span>\n"
 	. "\t\t<span class='settingentry'>&nbsp;\n"
-	. "\t</span class='settingentry'></div>\n";
+	. "\t</span></div>\n";
 	$editquestion .= '</div>';
 	
 	$aqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language != '{$baselang}'";
@@ -356,13 +368,13 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		$editquestion .= '</h2>';
 		$editquestion .=  "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Question:")."</span>\n"
 		. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='question_{$aqrow['language']}'>{$aqrow['question']}</textarea>\n"
-		. "\t</span class='settingentry'></div>\n"
+		. "\t</span></div>\n"
 		. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Help:")."</span>\n"
 		. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='help_{$aqrow['language']}'>{$aqrow['help']}</textarea>\n"
-		. "\t</span class='settingentry'></div>\n"
+		. "\t</span></div>\n"
 		. "\t<div class='settingrow'><span class='settingcaption'>&nbsp;</span>\n"
 		. "\t\t<span class='settingentry'>&nbsp;\n"
-		. "\t</span class='settingentry'></div>\n";
+		. "\t</span></div>\n";
 		$editquestion .= '</div>';
 	}
 	
@@ -372,7 +384,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   		. "\t\t<td align='right'><strong>".$clang->gT("Type:")."</strong></td>\n";
   		if ($activated != "Y")
   		{
-  			$editquestion .= "\t\t<td align='left'><SELECT id='question_type' name='type' "
+  			$editquestion .= "\t\t<td align='left'><select id='question_type' name='type' "
   			. "onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
   			. getqtypelist($eqrow['type'])
   			. "\t\t</select></td>\n";
@@ -402,7 +414,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   				foreach ($labelsets as $lb)
   				{
   					$editquestion .= "\t\t\t<option value='{$lb[0]}'";
-  					if ($eqrow['lid'] == $lb[0]) {$editquestion .= " selected";}
+  					if ($eqrow['lid'] == $lb[0]) {$editquestion .= " selected='selected'";}
   					$editquestion .= ">{$lb[1]}</option>\n";
   				}
   			}
@@ -432,7 +444,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   			if ($eqrow['other'] == "Y") {$editquestion .= " checked";}
   			$editquestion .= " />&nbsp;&nbsp;\n"
   			. "\t\t\t<label for='ON'>".$clang->gT("No")."</label><input id='ON' type='radio' name='other' value='N'";
-  			if ($eqrow['other'] == "N" || $eqrow['other'] == "" ) {$editquestion .= " checked";}
+  			if ($eqrow['other'] == "N" || $eqrow['other'] == "" ) {$editquestion .= " checked='checked'";}
   			$editquestion .= " />\n"
   			. "\t\t</td>\n";
   		}
@@ -447,10 +459,10 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   		. "\t\t<td align='right'><strong>".$clang->gT("Mandatory:")."</strong></td>\n"
   		. "\t\t<td align='left'>\n"
   		. "\t\t\t<label for='MY'>".$clang->gT("Yes")."</label><input id='MY' type='radio' name='mandatory' value='Y'";
-  		if ($eqrow['mandatory'] == "Y") {$editquestion .= " checked";}
+  		if ($eqrow['mandatory'] == "Y") {$editquestion .= " checked='checked'";}
   		$editquestion .= " />&nbsp;&nbsp;\n"
   		. "\t\t\t<label for='MN'>".$clang->gT("No")."</label><input id='MN' type='radio' name='mandatory' value='N'";
-  		if ($eqrow['mandatory'] != "Y") {$editquestion .= " checked";}
+  		if ($eqrow['mandatory'] != "Y") {$editquestion .= " checked='checked'";}
   		$editquestion .= " />\n"
   		. "\t\t</td>\n"
   		. "\t</tr>\n";
@@ -458,7 +470,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   		$editquestion .= "\t<tr id='Validation'>\n"
   		. "\t\t<td align='right'><strong>".$clang->gT("Validation:")."</strong></td>\n"
   		. "\t\t<td align='left'>\n"
-  		. "\t\t<input type='text' name='preg' size=50 value=\"".$eqrow['preg']."\" />\n"
+  		. "\t\t<input type='text' name='preg' size='50' value=\"".$eqrow['preg']."\" />\n"
   		. "\t\t</td>\n"
   		. "\t</tr>\n";
 	
@@ -480,7 +492,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
    					      </tr>
 						  <tr><th colspan='4' height='5'></th></tr>
                           <tr>  			  
-						  <td nowrap width='50%' ><select id='QTlist' name='attribute_name' >
+						  <td nowrap='nowrap' width='50%' ><select id='QTlist' name='attribute_name' >
 						  </select></td><td align='center' width='20%'><input type='text' id='QTtext' size='6' name='attribute_value'  /></td>
 						  <td align='center'><input type='submit' value='".$clang->gT("Add")."' />
 						  <input type='hidden' name='action' value='addattribute' />

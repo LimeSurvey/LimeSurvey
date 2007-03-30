@@ -365,7 +365,7 @@ function db_quote_id($id)
 function db_quote($str)
 {
 	global $connect;
-	return $connect->escape($str);
+	return $connect->qstr($str, get_magic_quotes_gpc());
 }
 
 
@@ -3147,7 +3147,7 @@ function FixLanguageConsistency($sid, $availlangs)
 				$gresult = db_execute_assoc($query) or die($connect->ErrorMsg());
 				if ($gresult->RecordCount() < 1)
 				{
-					$query = "INSERT INTO ".db_table_name('groups')." (gid,sid,group_name,group_order,description,language) VALUES('{$group['gid']}','{$group['sid']}',".$connect->qstr($group['group_name']).",'{$group['group_order']}',".$connect->qstr($group['description']).",'{$lang}')";
+					$query = "INSERT INTO ".db_table_name('groups')." (gid,sid,group_name,group_order,description,language) VALUES('{$group['gid']}','{$group['sid']}',".db_quote($group['group_name']).",'{$group['group_order']}',".db_quote($group['description']).",'{$lang}')";
 					$connect->Execute($query) or die($connect->ErrorMsg());
 				}
 			}
@@ -3169,7 +3169,7 @@ function FixLanguageConsistency($sid, $availlangs)
 				$gresult = db_execute_assoc($query) or die($connect->ErrorMsg());
 				if ($gresult->RecordCount() < 1)
 				{
-					$query = "INSERT INTO ".db_table_name('questions')." (qid,sid,gid,type,title,question,preg,help,other,mandatory,lid,question_order,language) VALUES('{$question['qid']}','{$question['sid']}','{$question['gid']}','{$question['type']}',".$connect->qstr($question['title']).",".$connect->qstr($question['question']).",".$connect->qstr($question['preg']).",".$connect->qstr($question['help']).",'{$question['other']}','{$question['mandatory']}','{$question['lid']}','{$question['question_order']}','{$lang}')";
+					$query = "INSERT INTO ".db_table_name('questions')." (qid,sid,gid,type,title,question,preg,help,other,mandatory,lid,question_order,language) VALUES('{$question['qid']}','{$question['sid']}','{$question['gid']}','{$question['type']}',".db_quote($question['title']).",".db_quote($question['question']).",".db_quote($question['preg']).",".db_quote($question['help']).",'{$question['other']}','{$question['mandatory']}','{$question['lid']}','{$question['question_order']}','{$lang}')";
 					$connect->Execute($query) or die(print "$query\n: ".$connect->ErrorMsg());
 				}
 			}
@@ -3194,7 +3194,7 @@ function FixLanguageConsistency($sid, $availlangs)
 					$gresult = db_execute_assoc($query) or die($connect->ErrorMsg());
 					if ($gresult->RecordCount() < 1)
 					{
-						$query = "INSERT INTO ".db_table_name('answers')." (qid,code,answer,default_value,sortorder,language) VALUES('{$answer['qid']}',".$connect->qstr($answer['code']).",".$connect->qstr($answer['answer']).",".$connect->qstr($answer['default_value']).",'{$answer['sortorder']}','{$lang}')";
+						$query = "INSERT INTO ".db_table_name('answers')." (qid,code,answer,default_value,sortorder,language) VALUES('{$answer['qid']}',".db_quote($answer['code']).",".db_quote($answer['answer']).",".db_quote($answer['default_value']).",'{$answer['sortorder']}','{$lang}')";
 						$connect->Execute($query) or die($connect->ErrorMsg());
 					}
 				}
