@@ -571,7 +571,7 @@ if ($conditionscount > 0)
 		}
 		$conditionsoutput .= "\t\t\t\t\t</font></td>\n"
 		."\t\t\t\t\t<td align='right' valign='middle' >\n"
-		."\t\t\t\t\t\t<input type='submit' value='Del' style='font-family: verdana; font-size: 8; height:15' />\n"
+		."\t\t\t\t\t\t<input type='submit' value='".$clang->gT("Delete")."' style='font-family: verdana; font-size: 8; height:15' />\n"
 		."\t\t\t\t\t<input type='hidden' name='subaction' value='delete' />\n"
 		."\t\t\t\t\t<input type='hidden' name='cid' value='{$rows['cid']}' />\n"
 		."\t\t\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
