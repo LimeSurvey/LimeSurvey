@@ -2396,7 +2396,7 @@ function MailTextMessage($body, $subject, $to, $from, $sitename)
 	$mail->From = $fromemail;
 	$mail->AddAddress($to);
 	$mail->FromName = $fromname;
-	$mail->AddCustomHeader("X-Surveymailer=$sitename:Emailer (PHPSurveyor.sourceforge.net)");
+	$mail->AddCustomHeader("X-Surveymailer: $sitename:Emailer (PHPSurveyor.sourceforge.net)");
 	$body = strip_tags($body);
 	$body = str_replace("&quot;", '"', $body);
 	if (get_magic_quotes_gpc() != "0")	{$body = stripcslashes($body);}
