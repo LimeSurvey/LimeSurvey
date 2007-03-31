@@ -58,7 +58,7 @@ if (!$action == "export")
          <td>
           <select name='method' >
            <option value='deactivate'>".$clang->gT("Export, then de-activate survey")."</option>
-           <option value='none' selected>".$clang->gT("Export but leave survey active")."</option>
+           <option value='none' selected='selected'>".$clang->gT("Export but leave survey active")."</option>
           </select>
          </td>
         </tr>

@@ -106,7 +106,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
 		foreach (getlanguagedata() as $langkey=>$languagekind)
 		{
 			$loginsummary .= "\t\t\t\t<option value='$langkey'";
-			if (isset($_SESSION['adminlang']) && $langkey == $_SESSION['adminlang']) {$loginsummary .= " selected";}
+			if (isset($_SESSION['adminlang']) && $langkey == $_SESSION['adminlang']) {$loginsummary .= " selected='selected'";}
 			$loginsummary .= ">".$languagekind['description']." - ".$languagekind['nativedescription']."</option>\n";
 		}
 		$loginsummary .= "\t\t\t</select>\n"

@@ -61,7 +61,7 @@ if ($action != "upload")
 		<tr><td>".$clang->gT("Exclude record IDs?")."</td><td><input type='checkbox' name='noid' value='noid' checked></td></tr>
         <!-- this next item should only appear if noid is not checked -->
 		<tr><td>".$clang->gT("When an imported record matches an existing record ID:")."</td><td><select name='insert' >
-        <option value='error' selected>".$clang->gT("Report an error (and skip the new record).")."</option>
+        <option value='error' selected='selected'>".$clang->gT("Report an error (and skip the new record).")."</option>
         <option value='renumber'>".$clang->gT("Renumber the new record.")."</option>
         <option value='ignore'>".$clang->gT("Ignore the new record.")."</option>
         <option value='replace'>".$clang->gT("Replace the existing record.")."</option>

@@ -2390,7 +2390,7 @@ if ($action == "newsurvey")
 		. "\t\t<td><input type='text' size='50' name='faxto' /></td></tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Format:")."</font></td>\n"
 		. "\t\t<td><select name='format'>\n"
-		. "\t\t\t<option value='S' selected>".$clang->gT("Question by Question")."</option>\n"
+		. "\t\t\t<option value='S' selected='selected'>".$clang->gT("Question by Question")."</option>\n"
 		. "\t\t\t<option value='G'>".$clang->gT("Group by Group")."</option>\n"
 		. "\t\t\t<option value='A'>".$clang->gT("All in one")."</option>\n"
 		. "\t\t</select></td>\n"
@@ -2447,7 +2447,7 @@ if ($action == "newsurvey")
 		. "\t</tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Anonymous?")."</font></td>\n"
 		. "\t\t<td><select name='private'>\n"
-		. "\t\t\t<option value='Y' selected>".$clang->gT("Yes")."</option>\n"
+		. "\t\t\t<option value='Y' selected='selected'>".$clang->gT("Yes")."</option>\n"
 		. "\t\t\t<option value='N'>".$clang->gT("No")."</option>\n"
 		. "\t\t</select></td>\n\t</tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Invitation Email Subject:")."</font></td>\n"
@@ -2471,7 +2471,7 @@ if ($action == "newsurvey")
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Allow public registration?")."</font></td>\n"
 		. "\t\t<td><select name='allowregister'>\n"
 		. "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
-		. "\t\t\t<option value='N' selected>".$clang->gT("No")."</option>\n"
+		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
 		. "\t\t</select></td>\n\t</tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Public registration Email Subject:")."</font></td>\n"
 		. "\t\t<td><input type='text' size='54' name='email_register_subj' value='".$clang->gT("Survey Registration Confirmation")."' />\n"
@@ -2485,17 +2485,17 @@ if ($action == "newsurvey")
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Date Stamp?")."</font></td>\n"
 		. "\t\t<td><select name='datestamp'>\n"
 		. "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
-		. "\t\t\t<option value='N' selected>".$clang->gT("No")."</option>\n"
+		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
 		. "\t\t</select></td>\n\t</tr>\n";
 		// IP Address
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Save IP Address?")."</font></td>\n"
 		. "\t\t<td><select name='ipaddr'>\n"                                . "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
-		. "\t\t\t<option value='N' selected>".$clang->gT("No")."</option>\n"
+		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
 		. "\t\t</select></td>\n\t</tr>\n";
 		// Referring URL
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Save Referring URL?")."</font></td>\n"
 		. "\t\t<td><select name='refurl'>\n"                                . "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
-		. "\t\t\t<option value='N' selected>".$clang->gT("No")."</option>\n"
+		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
 		. "\t\t</select></td>\n\t</tr>\n";
 		//Survey Language
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Base Language:")."</font></td>\n"
@@ -2513,7 +2513,7 @@ if ($action == "newsurvey")
 		. "\t</tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Expires?")."</font></td>\n"
 		. "\t\t\t<td><select name='useexpiry'><option value='Y'>".$clang->gT("Yes")."</option>\n"
-		. "\t\t\t<option value='N' selected>".$clang->gT("No")."</option></select></td></tr>\n"
+		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option></select></td></tr>\n"
 		. "<tr><td align='right'><font class='settingcaption'>".$clang->gT("Expiry Date:")."</font></td>\n"
 		. "\t\t<td><input type='text' id='f_date_b' size='12' name='expires' value='"
 		. date("Y-m-d")."' /><button type='reset' id='f_trigger_b'>...</button>"
@@ -2529,7 +2529,7 @@ if ($action == "newsurvey")
 		. "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Automatically load URL when survey complete?")."</font></td>\n"
 		. "\t\t<td><select name='autoredirect'>\n"
 		. "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
-		. "\t\t\t<option value='N' selected>".$clang->gT("No")."</option>\n"
+		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
 		. "</select></td></tr>"
 		. "\t<tr><td colspan='2' align='center'><input type='submit' value='".$clang->gT("Create Survey")."' />\n"
 		. "\t<input type='hidden' name='action' value='insertnewsurvey' /></td>\n"
@@ -2543,7 +2543,7 @@ if ($action == "newsurvey")
 		. "\t\t<td align='right'><font class='settingcaption'>".$clang->gT("Select CSV/SQL File:")."</font></td>\n"
 		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\" /></td></tr>\n"
 		. "\t<tr><td colspan='2' align='center'><input type='submit' value='".$clang->gT("Import Survey")."' />\n"
-		. "\t<input type='hidden' name='action' value='importsurvey' /></TD>\n"
+		. "\t<input type='hidden' name='action' value='importsurvey' /></td>\n"
 		. "\t</tr>\n</table></form>\n";
 		// Here we do setup the date javascript
 		$newsurvey .= "<script type=\"text/javascript\">\n"

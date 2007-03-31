@@ -363,11 +363,18 @@ function db_quote_id($id)
 }
 
 function db_quote($str)
+// This functions escapes the string only inside 
+{
+	global $connect;
+	return $connect->escape($str);
+}
+
+function db_quoteall($str)  
+// This functions escapes the string inside and puts quotes around the string according to the used db type
 {
 	global $connect;
 	return $connect->qstr($str, get_magic_quotes_gpc());
 }
-
 
 function db_table_name($name)
 {
@@ -2857,7 +2864,7 @@ function getsurveyuserlist()
             $surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']}</option>\n";
             }
         }
-    if (!isset($svexist)) {$surveyselecter = "\t\t\t<option value='-1' selected>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;}
+    if (!isset($svexist)) {$surveyselecter = "\t\t\t<option value='-1' selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;}
     else {$surveyselecter = "\t\t\t<option value='-1'>".$clang->gT("None")."</option>\n".$surveyselecter;}
     return $surveyselecter;
     }
@@ -2882,7 +2889,7 @@ function getsurveyusergrouplist()
             $surveyselecter .=" value='{$sv['ugid']}'>{$sv['name']}</option>\n";
             }
         }
-    if (!isset($svexist)) {$surveyselecter = "\t\t\t<option value='-1' selected>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;}
+    if (!isset($svexist)) {$surveyselecter = "\t\t\t<option value='-1' selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;}
     else {$surveyselecter = "\t\t\t<option value='-1'>".$clang->gT("None")."</option>\n".$surveyselecter;}
     return $surveyselecter;
     }
@@ -2908,7 +2915,7 @@ function getusergrouplist()
             $selecter .=" value='$scriptname?action=editusergroups&amp;ugid={$gn['ugid']}'>{$gn['name']}</option>\n";
             }
         }
-    if (!isset($svexist)) {$selecter = "\t\t\t<option value='-1' selected>".$clang->gT("Please Choose...")."</option>\n".$selecter;}
+    if (!isset($svexist)) {$selecter = "\t\t\t<option value='-1' selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$selecter;}
     //else {$selecter = "\t\t\t<option value='-1'>".$clang->gT("None")."</option>\n".$selecter;}
     return $selecter;
     }
@@ -2930,7 +2937,7 @@ function languageDropdown($surveyid,$selected)
 	$html = "<select class='listboxquestions' name='langselect' onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n";
 	foreach ($slangs as $lang)
 	{
-		if ($lang == $selected) $html .= "\t<option value='{$_SERVER['PHP_SELF']}?sid={$surveyid}&language={$lang}' selected>".getLanguageNameFromCode($lang,false)."</option>\n";
+		if ($lang == $selected) $html .= "\t<option value='{$_SERVER['PHP_SELF']}?sid={$surveyid}&language={$lang}' selected='selected'>".getLanguageNameFromCode($lang,false)."</option>\n";
 		if ($lang != $selected) $html .= "\t<option value='{$_SERVER['PHP_SELF']}?sid={$surveyid}&language={$lang}'>".getLanguageNameFromCode($lang,false)."</option>\n";
 	}
 	$html .= "</select>";
@@ -2946,7 +2953,7 @@ function languageDropdownClean($surveyid,$selected)
 	$html = "<select class='listboxquestions' name='language')\">\n";
 	foreach ($slangs as $lang)
 	{
-		if ($lang == $selected) $html .= "\t<option value='$lang' selected>".getLanguageNameFromCode($lang,false)."</option>\n";
+		if ($lang == $selected) $html .= "\t<option value='$lang' selected='selected'>".getLanguageNameFromCode($lang,false)."</option>\n";
 		if ($lang != $selected) $html .= "\t<option value='$lang'>".getLanguageNameFromCode($lang,false)."</option>\n";
 	}
 	$html .= "</select>";

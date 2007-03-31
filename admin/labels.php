@@ -43,6 +43,9 @@ $_POST  = array_map('stripslashes', $_POST);
 if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 	{
 
+
+	if (isset($_POST['sortorder'])) {$_POST['sortorder']=sanitize_int($_POST['sortorder']);}
+
 	if (!isset($action)) {$action=returnglobal('action');}
 	if (!isset($lid)) {$lid=returnglobal('lid');}
 	$labelsoutput= include2var('./scripts/addremove.js');
@@ -96,12 +99,12 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		foreach ($labelsets as $lb)
 		{
 			$labelsoutput.="<option value='admin.php?action=labels&amp;lid={$lb[0]}'";
-			if ($lb[0] == $lid) {$labelsoutput.= " selected";}
+			if ($lb[0] == $lid) {$labelsoutput.= " selected='selected'";}
 			$labelsoutput.= ">{$lb[1]}</option>\n";
 		}
 	}
 	$labelsoutput.= "<option value=''";
-	if (!isset($lid) || $lid<1) {$labelsoutput.= " selected";}
+	if (!isset($lid) || $lid<1) {$labelsoutput.= " selected='selected'";}
 	$labelsoutput.= ">".$clang->gT("Please Choose...")."</option>\n";
 	
 	$labelsoutput.= "\t</select>\n"
@@ -145,7 +148,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		."\t</tr>\n"
 		// Additional languages listbox
     	. "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Languages").":</font></td>\n"
-		. "<td><select multiple style='min-width:250px;' size='5' id='additional_languages' name='additional_languages'>";
+		. "<td><select multiple='multiple' style='min-width:250px;' size='5' id='additional_languages' name='additional_languages'>";
 		foreach ($langidsarray as $langid) 
 			{
 					$labelsoutput.=  "\t<option id='".$langid."' value='".$langid."'";
@@ -154,10 +157,10 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 
 			//  Add/Remove Buttons
 			$labelsoutput.= "</select></td>"
-			. "<td align=left><INPUT type=\"button\" value=\"<< ".$clang->gT("Add")."\" onclick=\"DoAdd()\" ID=\"AddBtn\" /><br /> <INPUT type=\"button\" value=\"".$clang->gT("Remove")." >>\" onclick=\"DoRemove(1,'".$clang->gT("You cannot remove this items since you need at least one language in a labelset.", "js")."')\" ID=\"RemoveBtn\"  /></td>\n"
+			. "<td align='left'><input type=\"button\" value=\"<< ".$clang->gT("Add")."\" onclick=\"DoAdd()\" id=\"AddBtn\" /><br /> <input type=\"button\" value=\"".$clang->gT("Remove")." >>\" onclick=\"DoRemove(1,'".$clang->gT("You cannot remove this items since you need at least one language in a labelset.", "js")."')\" id=\"RemoveBtn\"  /></td>\n"
 
 			// Available languages listbox
-			. "<td align=left width='45%'><select size='5' id='available_languages' name='available_languages'>";
+			. "<td align='left' width='45%'><select size='5' id='available_languages' name='available_languages'>";
 			foreach (getLanguageData() as  $langkey=>$langname)
 			{
 				if (in_array($langkey,$langidsarray)==false)  // base languag must not be shown here
@@ -205,7 +208,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			."<td><input name=\"the_file\" type=\"file\" size=\"35\" />"
 			."</td></tr>\n"
 			."\t<tr><td></td><td><input type='submit' value='".$clang->gT("Import Label Set")."' />\n"
-			."\t<input type='hidden' name='action' value='importlabels' /></TD>\n"
+			."\t<input type='hidden' name='action' value='importlabels' /></td>\n"
 			."\t</tr></table></form>\n";
 		}
 	}
@@ -288,7 +291,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
                 ."\t<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'>\n"
                 ."<thead align='center'>"
         		."<tr bgcolor='#BBBBBB'>\n"
-        		."\t<td width='25%' align=right><strong><font size='1' face='verdana' >\n"
+        		."\t<td width='25%' align='right'><strong><font size='1' face='verdana' >\n"
         		.$clang->gT("Code")
         		."\t</font></strong></td>\n"
         		."\t<td width='35%'><strong><font size='1' face='verdana'>\n"
@@ -297,7 +300,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
         		."\t<td width='25%'><strong><font size='1' face='verdana'>\n"
         		.$clang->gT("Action")
         		."\t</font></strong></td>\n"
-        		."\t<td width='15%' align=center><strong><font size='1' face='verdana'>\n"
+        		."\t<td width='15%' align='center'><strong><font size='1' face='verdana'>\n"
         		.$clang->gT("Order")
         		."\t</font></strong></td>\n"
         		."</tr></thead>"
@@ -306,7 +309,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     		{
                 $sortorderids=$sortorderids.' '.$row['language'].'_'.$row['sortorder'];
     			if ($first) {$codeids=$codeids.' '.$row['sortorder'];}                 
-    			$labelsoutput.= "<tr><td width='25%' align=right>\n";
+    			$labelsoutput.= "<tr><td width='25%' align='right'>\n";
 
     			if ($activeuse > 0)
     			{
@@ -347,13 +350,13 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     		}
     	    if ($labelcount>0)  
             {                       
-                $labelsoutput.= "\t<tr><td colspan=4><center><input type='submit' name='method' value='".$clang->gT("Save All")."'  />"
+                $labelsoutput.= "\t<tr><td colspan='4'><center><input type='submit' name='method' value='".$clang->gT("Save All")."'  />"
                 ."</center></td></tr>\n";
             }
 
     		$position=sprintf("%05d", $position);
     		if ($activeuse == 0 && $first)
-    		{   $labelsoutput.= "<tr><td><br /></td></tr><tr><td width='25%' align=right>"
+    		{   $labelsoutput.= "<tr><td><br /></td></tr><tr><td width='25%' align='right'>"
   			    ."<strong>".$clang->gT("New label").":</strong> <input type='text' maxlength='10' name='insertcode' size='10' id='addnewlabelcode' />\n"
     			."\t</td>\n"
     			."\t<td width='35%'>\n"
@@ -377,7 +380,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     			$labelsoutput.= "<tr>\n"
     			."\t<td colspan='4' align='center'>\n"
     			."<font color='green' size='1'><i><strong>"
-    			.$clang->gT("Warning")."</strong>: ".$clang->gT("Inserting New labels must be done on the first language folder.")."</i></strong></font>\n"
+    			.$clang->gT("Warning")."</strong>: ".$clang->gT("Inserting New labels must be done on the first language folder.")."</i></font>\n"
     			."\t</td>\n"
     			."</tr>\n";
 			}
@@ -415,7 +418,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		."</tr></tbody></table>"
 		."\t<input type='hidden' name='lid' value='$lid' />\n"
 		."\t<input type='hidden' name='action' value='modlabelsetanswers' />\n"
-		."</form>\n";
+		."</form></td></tr>\n";
 		if ($totaluse > 0 && $activeuse == 0) //If there are surveys using this labelset, but none are active warn about modifying
 		{
 			$labelsoutput.= "<tr>\n"
@@ -429,6 +432,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		}
 		$labelsoutput.= "\t</table>\n";
 	}
+		$labelsoutput.="</td></tr></table>";	
 	}
 else
 	{
@@ -440,12 +444,12 @@ else
 //************************FUNCTIONS********************************
 function updateset($lid)
 {
-	global $dbprefix, $connect; 
-	$_POST['label_name'] = db_quote($_POST['label_name']);
-	$_POST['languageids'] = db_quote($_POST['languageids']);
-
+	global $dbprefix, $connect, $labelsoutput; 
 	// Get added and deleted languagesid arrays
 	$newlanidarray=explode(" ",trim($_POST['languageids']));
+
+	$_POST['languageids'] = db_quoteall($_POST['languageids']);
+	$_POST['label_name'] = db_quoteall($_POST['label_name']);
 	$oldlangidsarray=array();
 	$query = "SELECT languages FROM ".db_table_name('labelsets')." WHERE lid=".$lid;
 	$result=db_execute_assoc($query);
@@ -496,7 +500,7 @@ function updateset($lid)
 	}
 
 	// Update the labelset itself
-	$query = "UPDATE ".db_table_name('labelsets')." SET label_name='{$_POST['label_name']}', languages='{$_POST['languageids']}' WHERE lid=$lid";
+	$query = "UPDATE ".db_table_name('labelsets')." SET label_name={$_POST['label_name']}, languages={$_POST['languageids']} WHERE lid=$lid";
 	if (!$result = $connect->Execute($query))
 	{
 		$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Update of Label Set failed","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
@@ -532,11 +536,11 @@ function deletelabelset($lid)
 
 function insertlabelset()
 {
-	global $dbprefix, $connect;
+	global $dbprefix, $connect, $clang, $labelsoutput;
 //	$labelsoutput.= $_POST['languageids'];  For debug purposes
-	$_POST['label_name'] = db_quote($_POST['label_name']);
-	$_POST['languageids'] = db_quote($_POST['languageids']);
-	$query = "INSERT INTO ".db_table_name('labelsets')." (label_name,languages) VALUES ('{$_POST['label_name']}','{$_POST['languageids']}')";
+	$_POST['label_name'] = db_quoteall($_POST['label_name']);
+	$_POST['languageids'] = db_quoteall($_POST['languageids']);
+	$query = "INSERT INTO ".db_table_name('labelsets')." (label_name,languages) VALUES ({$_POST['label_name']},{$_POST['languageids']})";
 	if (!$result = $connect->Execute($query))
 	{
 		$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Update of Label Set failed","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
@@ -551,7 +555,7 @@ function insertlabelset()
 
 function modlabelsetanswers($lid)
 {
-	global $dbprefix, $connect, $clang;
+	global $dbprefix, $connect, $clang, $labelsoutput;
 	
 	$qulabelset = "SELECT * FROM ".db_table_name('labelsets')." WHERE lid='$lid'";
 	$rslabelset = db_execute_assoc($qulabelset) or die($connect->ErrorMsg());
@@ -571,11 +575,11 @@ function modlabelsetanswers($lid)
        		$newsortorder=sprintf("%05d", $result->fields['maxorder']+1);
 
 
-		$_POST['insertcode'] = db_quote($_POST['insertcode']);
+     		$_POST['insertcode'] = db_quoteall($_POST['insertcode']);
+   			$_POST['inserttitle'] = db_quoteall($_POST['inserttitle']);
         	foreach ($lslanguages as $lslanguage)
         	{
-        			$_POST['inserttitle'] = db_quote($_POST['inserttitle']);
-    				$query = "INSERT INTO ".db_table_name('labels')." (lid, code, title, sortorder,language) VALUES ($lid, '{$_POST['insertcode']}', '{$_POST['inserttitle']}', '$newsortorder','$lslanguage')";
+    				$query = "INSERT INTO ".db_table_name('labels')." (lid, code, title, sortorder,language) VALUES ($lid, {$_POST['insertcode']}, {$_POST['inserttitle']}, '$newsortorder','$lslanguage')";
                 	if (!$result = $connect->Execute($query))
     				{
     					$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert label", "js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
@@ -594,18 +598,18 @@ function modlabelsetanswers($lid)
 		// Quote each code_codeid first
 		foreach ($codeids as $codeid)
 		{
-			$_POST['code_'.$codeid] = db_quote($_POST['code_'.$codeid]);
+			$_POST['code_'.$codeid] = db_quoteall($_POST['code_'.$codeid]);
 		}
          	foreach ($sortorderids as $sortorderid)
         	{
         		$langid=substr($sortorderid,0,strrpos($sortorderid,'_')); 
         		$orderid=substr($sortorderid,strrpos($sortorderid,'_')+1,20);
-			    $_POST['title_'.$sortorderid] = db_quote($_POST['title_'.$sortorderid]);
-                $query = "UPDATE ".db_table_name('labels')." SET code='".$_POST['code_'.$codeids[$count]]."', title='{$_POST['title_'.$sortorderid]}' WHERE lid=$lid AND sortorder=$orderid AND language='$langid'";
+			    $_POST['title_'.$sortorderid] = db_quoteall($_POST['title_'.$sortorderid]);
+                $query = "UPDATE ".db_table_name('labels')." SET code=".$_POST['code_'.$codeids[$count]].", title={$_POST['title_'.$sortorderid]} WHERE lid=$lid AND sortorder=$orderid AND language='$langid'";
         		if (!$result = $connect->Execute($query)) 
         		// if update didn't work we assume the label does not exist and insert it
         		{
-                    $query = "insert into ".db_table_name('labels')." SET code='".$_POST['code_'.$codeids[$count]]."', title='{$_POST['title_'.$sortorderid]}', lid=$lid , sortorder=$orderid , language='$langid'";
+                    $query = "insert into ".db_table_name('labels')." SET code=".$_POST['code_'.$codeids[$count]].", title={$_POST['title_'.$sortorderid]}, lid=$lid , sortorder=$orderid , language='$langid'";
             		if (!$result = $connect->Execute($query))
             		{
             			$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update label","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
@@ -619,9 +623,9 @@ function modlabelsetanswers($lid)
 
         // Pressing the Up button
 		case $clang->gT("Up", "unescaped"):
-		$newsortorder=$_POST['sortorder']-1;
+        $newsortorder=$_POST['sortorder']-1;
 		$oldsortorder=$_POST['sortorder'];
-		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder=-1 WHERE lid=$lid AND sortorder='$newsortorder'";
+		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder=-1 WHERE lid=$lid AND sortorder=$newsortorder";
 		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
 		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder=$newsortorder WHERE lid=$lid AND sortorder=$oldsortorder";
 		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
@@ -660,7 +664,7 @@ function modlabelsetanswers($lid)
 
 function fixorder($lid) //Function rewrites the sortorder for a group of answers
 {
-	global $dbprefix, $connect;
+	global $dbprefix, $connect, $labelsoutput;
 	$qulabelset = "SELECT * FROM ".db_table_name('labelsets')." WHERE lid=$lid";
 	$rslabelset = db_execute_assoc($qulabelset) or die($connect->ErrorMsg());
 	$rwlabelset=$rslabelset->FetchRow();

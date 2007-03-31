@@ -50,7 +50,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         . "\t<tr>\n"
         . "\t\t<td colspan='2' align='center' bgcolor='#BBBBBB'>\n"
         . "\t\t\t<strong>".$clang->gT("Data Consistency Check")."<br /><font size='1'>".$clang->gT("If errors are showing up you might have to execute this script repeatedly.")."</font></strong>\n"
-        . "\t\t</font></td>\n"
+        . "\t\t</td>\n"
         . "\t</tr>\n"
         . "\t<tr><td align='center'>"
         . "<br />\n";
@@ -313,7 +313,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
                               ."</form>\n";
         }
         $integritycheck .= "<br /><br />\n"
-        ."</font></td></tr></table>\n"
+        ."</td></tr></table>\n"
         ."<table><tr><td height='1'></td></tr></table>\n";
     }
     elseif ($ok == "Y")
@@ -324,7 +324,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         . "\t<tr>\n"
         . "\t\t<td colspan='2' align='center' bgcolor='#BBBBBB'>\n"
         . "\t\t\t<strong>".$clang->gT("Data Consistency Check")."<br /><font size='1'>".$clang->gT("If errors are showing up you might have to execute this script repeatedly.")."</strong>\n"
-        . "\t\t</font></td>\n"
+        . "\t\t</td>\n"
         . "\t</tr>\n"
         . "\t<tr><td align='center'>";
         $cdelete=returnglobal('cdelete');

@@ -562,7 +562,7 @@ function do_language($ia)
 	$answerlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	$answerlangs [] = GetBaseLanguageFromSurveyID($surveyid);
 	$answer = "\n\t\t\t\t\t<select name='$ia[1]' id='$ia[1]' onchange='checkconditions(this.value, this.name, this.type);modfield(this.name);document.getElementById(\"lang\").value=this.value;'>\n";
-	if (!$_SESSION[$ia[1]]) {$answer .= "\t\t\t\t\t\t<option value='' selected>".$clang->gT("Please choose")."..</option>\n";}
+	if (!$_SESSION[$ia[1]]) {$answer .= "\t\t\t\t\t\t<option value='' selected='selected'>".$clang->gT("Please choose")."..</option>\n";}
 	foreach ($answerlangs as $ansrow)
 	{
 		$answer .= "\t\t\t\t\t\t<option value='{$ansrow}'";
@@ -607,7 +607,7 @@ function do_list_dropdown($ia)
 		elseif ($ansrow['default_value'] == "Y") {$answer .= " selected"; $defexists = "Y";}
 		$answer .= ">{$ansrow['answer']}</option>\n";
 	}
-	if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) {$answer = "\t\t\t\t\t\t<option value='' selected>".$clang->gT("Please choose")."..</option>\n".$answer;}
+	if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) {$answer = "\t\t\t\t\t\t<option value='' selected='selected'>".$clang->gT("Please choose")."..</option>\n".$answer;}
 	if (isset($other) && $other=="Y")
 	{
 		$answer .= "\t\t\t\t\t\t<option value='-oth-'";
@@ -702,7 +702,7 @@ function do_list_flexible_dropdown($ia)
 		}
 		$answer .= ">{$ansrow['title']}</option>\n";
 	}
-	if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) {$answer = "\t\t\t\t\t\t<option value='' selected>".$clang->gT("Please choose")."..</option>\n".$answer;}
+	if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) {$answer = "\t\t\t\t\t\t<option value='' selected='selected'>".$clang->gT("Please choose")."..</option>\n".$answer;}
 	if (isset($other) && $other=="Y")
 	{
 		$answer .= "\t\t\t\t\t\t<option value='-oth-'";
@@ -1065,7 +1065,7 @@ function do_listwithcomment($ia)
 		{
 			if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == "") && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
 			{
-				$answer .= "\t\t\t\t\t\t<option value=' ' selected>".$clang->gT("No answer")."</option>\n";
+				$answer .= "\t\t\t\t\t\t<option value=' ' selected='selected'>".$clang->gT("No answer")."</option>\n";
 			}
 			elseif ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != "") && (!isset($defexists) || !$defexists))
 			{
