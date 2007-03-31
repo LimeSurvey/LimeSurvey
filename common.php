@@ -878,10 +878,24 @@ function getSurveyInfo($surveyid, $languagecode='')
 }
 
 
-function getlabelsets()
+function getlabelsets($languages=null)
+// Returns a list with label sets
+// if the $languages paramter is provided then only labelset containing all of the languages in the paramter are provided
 {
 	global $dbprefix, $connect, $surveyid;
-	$query = "SELECT ".db_table_name('labelsets').".lid as lid, label_name FROM ".db_table_name('labelsets')." order by label_name";
+	if ($languages){
+	  $languagesarray=explode(' ',trim($languages));
+    } 
+	$query = "SELECT ".db_table_name('labelsets').".lid as lid, label_name FROM ".db_table_name('labelsets');
+	if ($languages){
+        $query .=" where ";
+        foreach  ($languagesarray as $item)
+        {
+        $query .=" languages like '%$item %' and ";
+        }
+        $query .=" 1=1 ";
+    }
+    $query .=" order by label_name";
 	$result = db_execute_assoc($query) or die ("Couldn't get list of label sets<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	$labelsets=array();
 	while ($row=$result->FetchRow())

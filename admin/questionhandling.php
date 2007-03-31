@@ -404,7 +404,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   		if ($activated != "Y")
   		{
   			$editquestion .= "\t\t<select name='lid' >\n";
-  			$labelsets=getlabelsets();
+  			$labelsets=getlabelsets(GetBaseLanguageFromSurveyID($surveyid));
   			if (count($labelsets)>0)
   			{
   				if (!$eqrow['lid'])
