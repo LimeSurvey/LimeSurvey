@@ -863,9 +863,7 @@ if (isset($_POST['display']) && $_POST['display'])
 		$statisticsoutput .= $clang->gT("Percentage of total")
 		.": $percent%<br />";
 	}
-	$statisticsoutput .= "\n\t\t<br />\n"
-	."\t\t<font size='1'><strong>".$clang->gT("SQL").":</strong> $query\n"
-	."\t</font></td></tr>\n";
+	$statisticsoutput .= "\n\t\t</td></tr>\n";
 	if (isset ($selects) && $selects) {$sql=implode(" AND ", $selects);}
 	elseif (!empty($newsql)) {$sql = $newsql;}
 	if (!isset($sql) || !$sql) {$sql="NULL";}
