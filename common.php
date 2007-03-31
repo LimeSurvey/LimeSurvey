@@ -892,7 +892,7 @@ function getlabelsets($languages=null)
         $query .=" where ";
         foreach  ($languagesarray as $item)
         {
-        $query .=" languages like '%$item %' and ";
+        $query .=" ((languages like '% $item %') or (languages='$item') or (languages like '% $item') or (languages like '$item %')) and ";
         }
         $query .=" 1=1 ";
     }
