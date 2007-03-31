@@ -473,11 +473,9 @@ if ($surveyid)
 			}
 			$surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('testsurvpopup').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></div>";
 			
-			if (count($tmp_survlangs) > 2)
-			{
-				$tmp_pheight = 127 + ((count($tmp_survlangs)-2) * 32);
-				$surveysummary .= "<script type='text/javascript'>document.getElementById('testsurvpopup').style.height='".$tmp_pheight."px';</script>";
-			}
+			$tmp_pheight = getPopupHeight();
+			$surveysummary .= "<script type='text/javascript'>document.getElementById('testsurvpopup').style.height='".$tmp_pheight."px';</script>";
+
 		}
 
 		if($sumrows5['browse_response'])
@@ -1094,7 +1092,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("Preview This Question", "js")."');return false\">"
 				. "<img src='$imagefiles/preview.png' title='' alt='' align='left' name='previewquestion' /></a>\n"
 				. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
-			
+						
 				$tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 				$baselang = GetBaseLanguageFromSurveyID($surveyid);
 				$tmp_survlangs[] = $baselang;
@@ -1106,12 +1104,8 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 					$surveysummary .= "<tr><td><a href=\"#\" accesskey='d' onclick=\"document.getElementById('previewquestion').style.visibility='hidden'; window.open('$scriptname?action=previewquestion&amp;sid=$surveyid&amp;qid=$qid&amp;lang=".$tmp_lang."', '_blank')\"><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></td></tr>";
 				}
 				$surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('previewquestion').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></div>";
-			
-				if (count($tmp_survlangs) > 2)
-				{
-					$tmp_pheight = 127 + ((count($tmp_survlangs)-2) * 32);
-					$surveysummary .= "<script type='text/javascript'>document.getElementById('previewquestion').style.height='".$tmp_pheight."px';</script>";
-				}
+				$tmp_pheight = getPopupHeight();
+				$surveysummary .= "<script type='text/javascript'>document.getElementById('previewquestion').style.height='".$tmp_pheight."px';</script>";
 			}
 		}
 		else
@@ -2561,6 +2555,40 @@ if ($action == "newsurvey")
 	{
 		include("access_denied.php");
 	}
+}
+
+function getPopupHeight() 
+{
+	global $clang, $surveyid;
+	
+	$rowheight = 16;
+	$height = 0;
+	$bottomPad = 1;
+	
+	// header text height
+	$htext = ceil(strlen($clang->gT("Please select a language:")) / 17);
+	$height += $rowheight * $htext;
+		
+	// language list height
+	$survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+	$baselang = GetBaseLanguageFromSurveyID($surveyid);
+	$survlangs[] = $baselang;
+	rsort($survlangs);
+	
+	foreach ($survlangs as $lang)
+	{
+		$ltext = ceil(strlen(getLanguageNameFromCode($lang,false)) / 10);
+		$height += $rowheight * $ltext;
+		//if ($ltext > 1) $height += (($ltext-1) * -1);
+	}
+
+	// footer height
+	$ftext = ceil(count($clang->gT("Cancel")) / 17);
+	$height += $rowheight * $ftext;
+	
+	$height += $bottomPad;
+	
+	return $height;
 }
 
 function replacenewline ($texttoreplace)
