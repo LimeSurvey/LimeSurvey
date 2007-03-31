@@ -569,7 +569,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 		// set the new language
 		if ($importversion<=100)
             {
-            $labelsetrowdata['languages']=$newlanguage;
+            $labelsetrowdata['languages']=$newlanguage.' ';
             } 
         unset($labelsetrowdata['lid']);
         $newvalues=array_values($labelsetrowdata);
