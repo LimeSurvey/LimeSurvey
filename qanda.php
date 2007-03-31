@@ -786,8 +786,8 @@ function do_list_radio($ia)
 		$denominator=$dcols; //Change this to set the number of columns
 		$width=sprintf("%0d", 100/$denominator);
 		$maxrows=ceil(100*($anscount/$dcols)/100); //Always rounds up to nearest whole number
-		$answer .= "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";
-		$divider=" </td>\n <td valign='top' width='$width%' nowrap>";
+		$answer .= "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap='nowrap'>";
+		$divider=" </td>\n <td valign='top' width='$width%' nowrap='nowrap'>";
 	}
 	else
 	{
@@ -899,8 +899,8 @@ function do_list_flexible_radio($ia)
 		$denominator=$dcols; //Change this to set the number of columns
 		$width=sprintf("%0d", 100/$denominator);
 		$maxrows=ceil(100*($anscount/$dcols)/100); //Always rounds up to nearest whole number
-		$answer .= "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";
-		$divider=" </td>\n <td valign='top' width='$width%' nowrap>";
+		$answer .= "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap='nowrap'>";
+		$divider=" </td>\n <td valign='top' width='$width%' nowrap='nowrap'>";
 	}
 	else
 	{
@@ -1361,8 +1361,8 @@ function do_multiplechoice($ia)
 	{
 		$width=sprintf("%0d", 100/$dcols);
 		$maxrows=ceil(100*($anscount/$dcols)/100); //Always rounds up to nearest whole number
-		$answer .= "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";
-		$divider=" </td>\n <td valign='top' width='$width%' nowrap>";
+		$answer .= "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap='nowrap'>";
+		$divider=" </td>\n <td valign='top' width='$width%' nowrap='nowrap'>";
 		$closetable=true;
 	}
 	$fn = 1;

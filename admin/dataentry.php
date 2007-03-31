@@ -1888,9 +1888,9 @@ if($actsurrows['browse_response']){
 					{
 						$width=sprintf("%0d", 100/$dcols);
 						$maxrows=ceil(100*($meacount/$dcols)/100); //Always rounds up to nearest whole number
-						$divider=" </td>\n <td valign='top' width='$width%' nowrap>";
+						$divider=" </td>\n <td valign='top' width='$width%' nowrap='nowrap'>";
 						$upto=0;
-						$dataentryoutput .= "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";
+						$dataentryoutput .= "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap='nowrap'>";
 						while ($mearow = $mearesult->FetchRow())
 						{
 							if ($upto == $maxrows)

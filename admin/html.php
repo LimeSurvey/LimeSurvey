@@ -46,7 +46,7 @@ if ($action == "listsurveys")
 		$listsurveys= "<br /><table  align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
 		. "cellpadding='1' cellspacing='0' width='800'>
 				  <tr bgcolor='#BBBBBB'>
-				    <td height=\"22\" width='22'>&nbsp</strong></td>
+				    <td height=\"22\" width='22'>&nbsp</td>
 				    <td height=\"22\"><strong>".$clang->gT("Survey")."</strong></td>
 				    <td><strong>".$clang->gT("Date Created")."</strong></td>
 				    <td><strong>".$clang->gT("Visibility")."</strong></td>

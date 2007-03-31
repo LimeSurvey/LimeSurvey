@@ -60,15 +60,14 @@ function db_rename_table($oldtable, $newtable)
 * Gets the maximum question_order field value for a group
 * @gid: The id of the group
 */
-function get_max_order($gid)
+function get_max_question_order($gid)
 {
 	global $connect ;
 	global $dbprefix ;
-	$query="SELECT MAX(question_order) as max FROM {$dbprefix}questions where gid=".$gid ;
-	//$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, help, other, mandatory, lid) VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}', '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}')";
-	$result = $connect->Execute($query) or die($query);
+	$query="SELECT MAX(question_order) as maxorder FROM {$dbprefix}questions where gid=".$gid ;
+	$result = db_execute_assoc($query);
 	$gv = $result->FetchRow();
-	return $gv['max'];
+	return $gv['maxorder'];
 }
 
 $databaseoutput ='';
@@ -411,20 +410,37 @@ if(isset($surveyid))
 
 	elseif ($action == "copynewquestion" && $actsurrows['define_questions'])
 	{
+
 		if (!$_POST['title'])
 		{
-			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be added. You must insert a code in the mandatory field","js")."\")\n //-->\n</script>\n";
+			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be added. You must insert a code in the mandatory field","js")."\")\n //-->\n</script>\n";
 		}
 		else
 		{
 			$_POST  = array_map('db_quote', $_POST);
+    		$questlangs = GetAdditionalLanguagesFromSurveyID($_POST['sid']);
+    		$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);
+    		
 			if (!isset($_POST['lid']) || $_POST['lid']=='') {$_POST['lid']=0;}
 			//Get maximum order from the question group
-			$max=get_max_order($_POST['gid'])+1 ;
-
-			$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, help, other, mandatory, lid, question_order) VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}', '{$_POST['question']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',$max)";
+			$max=get_max_question_order($_POST['gid'])+1 ;
+            // Insert the base language of the question
+			$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, help, other, mandatory, lid, question_order, language) 
+                      VALUES ({$_POST['sid']}, {$_POST['gid']}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$baselang]."', '".$_POST['help_'.$baselang]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',$max,".db_quoteall($baselang).")";
 			$result = $connect->Execute($query) or die($connect->ErrorMsg());
 			$newqid = $connect->Insert_ID();
+			if (!$result)
+			{
+				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be created.","js")."\\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";
+
+			}
+            
+            foreach ($questlangs as $qlanguage)
+            { 
+			$query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, lid, question_order, language) 
+                      VALUES ($newqid,{$_POST['sid']}, {$_POST['gid']}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$qlanguage]."', '".$_POST['help_'.$qlanguage]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',$max,".db_quoteall($qlanguage).")";
+			$result = $connect->Execute($query) or die($connect->ErrorMsg());
+			}
 			if (!$result)
 			{
 				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be created.","js")."\\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";

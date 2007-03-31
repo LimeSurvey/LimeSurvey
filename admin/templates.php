@@ -564,11 +564,11 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	."<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
 	."<input type='hidden' name='templatename' value='$templatename' />\n"
 	."<input type='hidden' name='action' value='templatefiledelete' />\n"
-	."</td>\n"
+	."</td></tr>\n"
 	."</table></form></td></tr><tr><td></td><td align='right' valign='top'>"
 	."<form enctype='multipart/form-data' name='importsurvey' action='admin.php' method='post'>\n"
 	."<table><tr> <td align='right' valign='top' style='border: solid 1 #000080'>\n"
-	."<strong>".$clang->gT("Upload a File").":</strong><br /><input name=\"the_file\" type=\"file\" size=\"7\" /><br />"
+	."<strong>".$clang->gT("Upload a File").":</strong></td></tr><tr><td><input name=\"the_file\" type=\"file\" size=\"7\" /><br />"
 	."<input type='submit' value='".$clang->gT("Upload")."'";
 	if ($templatename == "default") {
 		$templatesoutput.= " disabled";
@@ -578,24 +578,24 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	."<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
 	."<input type='hidden' name='templatename' value='$templatename' />\n"
 	."<input type='hidden' name='action' value='templateupload' />\n"
-	."</td></table></form>\n"
+	."</td></tr></table></form>\n"
 	."\t\t\t\t\t\t</td>\n"
 	."\t\t\t\t\t</tr>\n"
 	."\t\t\t\t</table>\n"
 	."\t\t\t</td>\n"
 	."\t</tr>"
 	."</table>"
-	."</table>";
+	."</td></tr></table>";
 	
 	//SAMPLE ROW
 	$templatesoutput.= "\t\t\t<table class='menubar'>\n"
-	. "\t\t\t<tr bgcolor='#555555'>\n"
+	. "\t\t\t<tr>\n"
 	. "\t\t\t\t<td colspan='2' height='8'>\n"
 	. "\t\t\t\t\t$setfont<font size='1' color='white'><strong>".$clang->gT("Preview:")."</strong>\n"
 	. "\t\t\t\t</font></font></td>\n"
 	. "\t\t\t</tr>\n"
 	."\t<tr>\n"
-	."\t\t<td width='90%' align='center' bgcolor='#555555'>\n";
+	."\t\t<td width='90%' align='center' >\n";
 	
 	
 	unlink_wc($tempdir, "template_temp_*.html"); //Delete any older template files
@@ -764,7 +764,7 @@ function makeoptions($array, $value, $text, $selectedvalue) {
 	foreach ($array as $ar) {
 		$return .= "<option value='".$ar[$value]."'";
 		if ($ar[$value] == $selectedvalue) {
-			$return .= " selected";
+			$return .= " selected='selected'";
 		}
 		$return .= ">".$ar[$text]."</option>\n";
 	}

@@ -301,9 +301,9 @@ while ($degrow = $degresult->FetchRow())
 			{
 				$width=sprintf("%0d", 100/$dcols);
 				$maxrows=ceil(100*($meacount/$dcols)/100); //Always rounds up to nearest whole number
-				$divider="</td>\n <td valign='top' width='$width%' nowrap>";
+				$divider="</td>\n <td valign='top' width='$width%' nowrap='nowrap'>";
 				$upto=0;
-				$printablesurveyoutput .="<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";
+				$printablesurveyoutput .="<table class='question'><tr>\n <td valign='top' width='$width%' nowrap='nowrap'>";
 				while ($dearow = $dearesult->FetchRow())
 				{
 					if ($upto == $maxrows)
@@ -353,9 +353,9 @@ while ($degrow = $degresult->FetchRow())
 			{
 				$width=sprintf("%0d", 100/$dcols);
 				$maxrows=ceil(100*($meacount/$dcols)/100); //Always rounds up to nearest whole number
-				$divider=" </td>\n <td valign='top' width='$width%' nowrap>";
+				$divider=" </td>\n <td valign='top' width='$width%' nowrap='nowrap'>";
 				$upto=0;
-				$printablesurveyoutput .="<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";
+				$printablesurveyoutput .="<table class='question'><tr>\n <td valign='top' width='$width%' nowrap='nowrap'>";
 				while ($dearow = $dearesult->FetchRow())
 				{
 					if ($upto == $maxrows)
@@ -433,9 +433,9 @@ while ($degrow = $degresult->FetchRow())
 			{
 				$width=sprintf("%0d", 100/$dcols);
 				$maxrows=ceil(100*($meacount/$dcols)/100); //Always rounds up to nearest whole number
-				$divider=" </td>\n <td valign='top' width='$width%' nowrap>";
+				$divider=" </td>\n <td valign='top' width='$width%' nowrap='nowrap'>";
 				$upto=0;
-				$printablesurveyoutput .="<table class='question'><tr>\n <td valign='top' width='$width%' nowrap>";
+				$printablesurveyoutput .="<table class='question'><tr>\n <td valign='top' width='$width%' nowrap='nowrap'>";
 				while ($mearow = $mearesult->FetchRow())
 				{
 					if ($upto == $maxrows)

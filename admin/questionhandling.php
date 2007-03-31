@@ -163,7 +163,7 @@ if ($action == "copyquestion")
 	. '<div class="tab-pane" id="tab-pane-1">';
 	foreach ($questlangs as $language)
 	{
-    	$egquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND qid=$qid and language=".db_quote($language);
+    	$egquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND qid=$qid and language=".db_quoteall($language);
         $egresult = db_execute_assoc($egquery);
 	    $eqrow = $egresult->FetchRow();
 		$eqrow = array_map('htmlspecialchars', $eqrow);
@@ -530,7 +530,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		. "</td></tr></table>\n"
 		. "</form>\n</table>";
 	}
-    $editquestion .= "</table>";
+    $editquestion .= "</td></tr></table>";
 	$editquestion .= questionjavascript($eqrow['type'], $qattributes);
 }
 

@@ -886,8 +886,11 @@ if ($action == "editgroup")
 	{
 		$grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
-		$grplangs[] = $baselang;
+
+		if (isset($grplangs)) {array_unshift($grplangs, $baselang);}
+		else {$grplangs[] = $baselang;}
 		$grplangs = array_flip($grplangs);
+		
 
 		$egquery = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid";
 		$egresult = db_execute_assoc($egquery);
@@ -918,6 +921,7 @@ if ($action == "editgroup")
 		$egresult = db_execute_assoc($egquery);
 		$editgroup ="<table width='100%' border='0'>\n\t<tr><td bgcolor='black' align='center'>"
 		. "\t\t<font class='settingcaption'><font color='white'>".$clang->gT("Edit Group")."</font></font></td></tr></table>\n"
+		. "<form name='editgroup' action='$scriptname' method='post'>\n"
 		. '<div class="tab-pane" id="tab-pane-1">';
 		while ($esrow = $egresult->FetchRow())
 		{
@@ -925,12 +929,11 @@ if ($action == "editgroup")
 			if ($esrow['language']==GetBaseLanguageFromSurveyID($surveyid)) {$editgroup .= '('.$clang->gT("Base Language").')';}
 			$esrow = array_map('htmlspecialchars', $esrow);
 			$editgroup .= '</h2>';
-			$editgroup .= "<form name='editgroup' action='$scriptname' method='post'>\n";
 			$editgroup .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Title").":</span>\n"
-			. "\t\t<span class='settingentry'><input type='text' size='50' name='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
+			. "\t\t<span class='settingentry'><input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
 			. "\t</span></div>\n"
 			. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Description:")."</span>\n"
-			. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
+			. "\t\t<span class='settingentry'><textarea cols='70' rows='8' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
 			. "\t</span></div><div class='settingrow'></div></div>"; // THis empty div class is needed for forcing the tabpage border under the button
 		}
 		$editgroup .= '</div>';
