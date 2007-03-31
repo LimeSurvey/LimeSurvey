@@ -464,7 +464,7 @@ if ($surveyid)
 			$tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 			$baselang = GetBaseLanguageFromSurveyID($surveyid);
 			$tmp_survlangs[] = $baselang;
-
+			rsort($tmp_survlangs);
 			// Test Survey Language Selection Popup
 			$surveysummary .="<div class=\"testsurvpopup\" id=\"testsurvpopup\"><table width=\"100%\"><tr><td>".$clang->gT("Please select a language:")."</td></tr>";
 			foreach ($tmp_survlangs as $tmp_lang)
@@ -1096,6 +1096,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 				$tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 				$baselang = GetBaseLanguageFromSurveyID($surveyid);
 				$tmp_survlangs[] = $baselang;
+				rsort($tmp_survlangs);
 
 				// Test Survey Language Selection Popup
 				$surveysummary .="<div class=\"previewpopup\" id=\"previewquestion\"><table width=\"100%\"><tr><td>".$clang->gT("Please select a language:")."</td></tr>";
@@ -2561,9 +2562,9 @@ function getPopupHeight()
 {
 	global $clang, $surveyid;
 	
-	$rowheight = 16;
+	$rowheight = 17;
 	$height = 0;
-	$bottomPad = 1;
+	$bottomPad = 15;
 	
 	// header text height
 	$htext = ceil(strlen($clang->gT("Please select a language:")) / 17);
@@ -2573,13 +2574,12 @@ function getPopupHeight()
 	$survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
 	$survlangs[] = $baselang;
-	rsort($survlangs);
 	
 	foreach ($survlangs as $lang)
 	{
-		$ltext = ceil(strlen(getLanguageNameFromCode($lang,false)) / 10);
+		$ltext = ceil(strlen(getLanguageNameFromCode($lang,false)) / 17);
 		$height += $rowheight * $ltext;
-		//if ($ltext > 1) $height += (($ltext-1) * -1);
+		if ($ltext > 1) $height += ($ltext * 3);
 	}
 
 	// footer height
