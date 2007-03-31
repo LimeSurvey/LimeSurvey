@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-03-27 18:19+0100\n"
+"PO-Revision-Date: 2007-03-31 16:16+0100\n"
 "Last-Translator: \n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1094,6 +1094,9 @@ msgstr "Frage konnte nicht aktualisiert werden."
 msgid "Answers can't be deleted"
 msgstr "Frage konnte nicht gelöscht werden."
 
+msgid "Question could not be added. You must insert a code in the mandatory field"
+msgstr "Frage konnte nicht hinzugefügt werden. Sie müssen einen Code eingeben."
+
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "Frage konnte nicht gelöscht werden. Es gibt Bedingungen in anderen Fragen, welche von den Antworten auf diese Frage abhängen. Sie können diese Frage nicht löschen, solange diese Bedingungen nicht entfernt wurden."
 
@@ -1119,6 +1122,10 @@ msgstr "Konnte Antworten nicht aktualisieren"
 # D:\web\xampp\htdocs\phpsurveyor/admin/database.php:605
 msgid "Answers with a code of 0 (zero) are not allowed, and will not be saved"
 msgstr "Antworten mit einem Fragecode von '0' sind nicht erlaubt und werden nicht gespeichert."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/database.php:646
+msgid "Duplicate codes found, these entries won't be updated"
+msgstr "Doppelte Codes gefunden, diese Einträge werden nicht aktualisiert"
 
 msgid "Up"
 msgstr "Hoch"
@@ -2541,8 +2548,8 @@ msgstr "CSV-Datei auswählen:"
 msgid "Copy Question"
 msgstr "Frage kopieren"
 
-msgid "Note: You MUST enter a new question code"
-msgstr "Anmerkung: Sie MÜSSEN einen neuen Frage-Code eingeben"
+msgid "Note: You MUST enter a new question code!"
+msgstr "Anmerkung: Sie MÜSSEN einen neuen Frage-Code eingeben!"
 
 msgid "Group:"
 msgstr "Gruppe:"

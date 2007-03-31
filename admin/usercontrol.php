@@ -190,17 +190,18 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 			"manage_label"=>$srow['manage_label']));
 
 			// send Mail
-			$body = $clang->gT("You were signed in. Your data:") . "<br />\n";;
+			$body = $clang->gT("You were signed in on the site")." ".$sitename."<br />\n";
+			$body .= $clang->gT("Your data:")."<br />\n";
 			$body .= $clang->gT("Username") . ": " . $new_user . "<br />\n";
 			$body .= $clang->gT("Password") . ": " . $new_pass . "<br />\n";
-			$body .= "<a href='" . $homeurl . "/admin.php'>".$clang->gT("Login")."</a><br />\n";
+			$body .= "<a href='" . $homeurl . "/admin.php'>".$clang->gT("Login here")."</a><br />\n";
 
 			$subject = 'Registration';
 			$to = $new_email;
 			$from = $siteadminemail;
 			$sitename = $siteadminname;
 
-			if(MailTextMessage($body, $subject, $to, $from, $sitename))
+			if(MailTextMessage($body, $subject, $to, $from, $sitename, true)
 			{
 				$addsummary .= "<br />".$clang->gT("Username").": $new_user<br />".$clang->gT("Email").": $new_email<br />";
 				$addsummary .= "<br />".$clang->gT("An email with a generated password was sent to the user.");

@@ -2370,7 +2370,7 @@ function ReplaceFields ($text,$fieldsarray)
 	return $text;
 }
 
-function MailTextMessage($body, $subject, $to, $from, $sitename)
+function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false)
 {
 	global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword;
 
@@ -2397,10 +2397,18 @@ function MailTextMessage($body, $subject, $to, $from, $sitename)
 	$mail->AddAddress($to);
 	$mail->FromName = $fromname;
 	$mail->AddCustomHeader("X-Surveymailer: $sitename:Emailer (PHPSurveyor.sourceforge.net)");
-	$body = strip_tags($body);
-	$body = str_replace("&quot;", '"', $body);
 	if (get_magic_quotes_gpc() != "0")	{$body = stripcslashes($body);}
-	$mail->Body = $body;
+	$textbody = strip_tags($body);
+	$textbody = str_replace("&quot;", '"', $textbody);
+    if (ishtml) { 
+        $mail->IsHTML(true);
+    	$mail->Body = $body;
+    	$mail->AltBody = $textbody;
+    } else
+        {
+    	$mail->Body = $textbody;
+        }
+
 	$mail->Subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
 	return $mail->Send();
 }
