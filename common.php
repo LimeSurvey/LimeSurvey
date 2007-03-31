@@ -39,6 +39,7 @@ if (!isset($dbprefix)) {die("Cannot run this script directly");}
 $versionnumber = "1.47b";
 $dbversionnumber = 111;
 if ($debug==1) {error_reporting(E_ALL);} //For debug purposes - switch on in config.phh
+@set_time_limit(60); // Maximum execution time - works only if safe_mode is off
 
 ##################################################################################
 ## DO NOT EDIT BELOW HERE

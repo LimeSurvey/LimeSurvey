@@ -75,7 +75,7 @@ if ($action == "addquestion")
 		. "\t\t<td align='right'><strong>".$clang->gT("Label Set:")."</strong></td>\n"
 		. "\t\t<td>\n"
 		. "\t\t<select name='lid' >\n";
-		$labelsets=getlabelsets();
+		$labelsets=getlabelsets(GetBaseLanguageFromSurveyID($surveyid));
 		if (count($labelsets)>0)
 		{
 			$newquestionoutput .= "\t\t\t<option value=''>".$clang->gT("Please Choose...")."</option>\n";
@@ -209,7 +209,7 @@ if ($action == "copyquestion")
 	. "\t\t<td align='right'><strong>".$clang->gT("Label Set:")."</strong></td>\n"
 	. "\t\t<td>\n"
 	. "\t\t<select name='lid' >\n";
-	$labelsets=getlabelsets();
+	$labelsets=getlabelsets(GetBaseLanguageFromSurveyID($surveyid));
 		if (count($labelsets)>0)
 		{
 			if (!$eqrow['lid'])
