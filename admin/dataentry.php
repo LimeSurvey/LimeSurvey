@@ -1539,7 +1539,7 @@ if($actsurrows['browse_response']){
 								$conditions[]=$ansrow['answer'];
 							}
 							$operator=$clang->gT("OR");
-							$conditions = array_unique($conditions);
+							if (isset($conditions)) $conditions = array_unique($conditions);
 							break;
 						}
 					}
@@ -1550,6 +1550,7 @@ if($actsurrows['browse_response']){
 					}
 					else
 					{
+						if(empty($conditions[0])) $conditions[0] = $clang->gT("No Answer");
 						$explanation .= " -" . str_replace("{ANSWER}", "'{$conditions[0]}'", $clang->gT("to question {QUESTION}, you answered {ANSWER}"));
 					}
 					unset($conditions);
