@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-03-31 16:16+0100\n"
+"PO-Revision-Date: 2007-03-31 18:20+0100\n"
 "Last-Translator: \n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1239,6 +1239,9 @@ msgstr "UND"
 msgid "to question {QUESTION}, you answered {ANSWER}"
 msgstr "Die Frage {QUESTION} haben sie mit {ANSWER} beantwortet"
 
+msgid "No Answer"
+msgstr "Keine Antwort"
+
 msgid "Only answer this if the following conditions are met:"
 msgstr "Beantworten Sie diese Frage nur, wenn folgende Bedingungen erfüllt sind:"
 
@@ -1527,6 +1530,9 @@ msgstr "Diese Umfrage ausführen"
 
 msgid "Please select a language:"
 msgstr "Bitte wählen Sie eine Sprache aus:"
+
+msgid "This survey is not active, data entry is not allowed"
+msgstr "Diese Umfrage ist nicht aktiv - Dateneingabe ist nicht erlaubt"
 
 msgid "Printable Version of Survey"
 msgstr "Druckbare Version der Umfrage"
@@ -3166,8 +3172,11 @@ msgstr "Email-Adresse ist nicht gültig."
 msgid "Username was not supplied."
 msgstr "Es wurde kein Benutzername angegeben."
 
-msgid "You were signed in. Your data:"
-msgstr "Sie wurden eingetragen. Ihre Daten lauten:"
+msgid "You were signed in on the site"
+msgstr "Sie wurden eingetragen auf der Webseite"
+
+msgid "Login here"
+msgstr "Anmeldung hier"
 
 msgid "An email with a generated password was sent to the user."
 msgstr "Es wurde eine Email mit einem generierten Passwort an den Benutzer versandt."
