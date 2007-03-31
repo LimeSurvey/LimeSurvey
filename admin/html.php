@@ -478,17 +478,23 @@ if ($surveyid)
 
 		}
 
-		if($sumrows5['browse_response'])
+		if($activated == "Y" && $sumrows5['browse_response'])
 		{
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/".$scriptname."?action=dataentry&amp;sid=$surveyid', '_blank')\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Dataentry Screen for Survey", "js")."');return false\">"
 			. "<img src='$imagefiles/dataentry.png' title='' align='left' alt='".$clang->gT("Dataentry Screen for Survey")."'"
 			. "name='DoDataentry' /></a>\n";
-		}
-		else
+		} 
+		else if (!$sumrows5['browse_response'])
 		{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
+		} else {
+			$surveysummary .= "<a href=\"#\" onclick=\"alert('".$clang->gT("This survey is not active, data entry is not allowed","js")."')\""
+			. "onmouseout=\"hideTooltip()\""
+			. "onmouseover=\"showTooltip(event,'".$clang->gT("Dataentry Screen for Survey", "js")."');return false\">"
+			. "<img src='$imagefiles/dataentry_disabled.png' title='' align='left' alt='".$clang->gT("Dataentry Screen for Survey")."'"
+			. "name='DoDataentry' /></a>\n";
 		}
 		
 		if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
