@@ -513,7 +513,8 @@ if ($surveyid)
 			$tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 			$baselang = GetBaseLanguageFromSurveyID($surveyid);
 			$tmp_survlangs[] = $baselang;
-
+			rsort($tmp_survlangs);
+			
 			// Test Survey Language Selection Popup
 			$surveysummary .="<div class=\"testsurvpopup\" id=\"printpopup\"><table width=\"100%\"><tr><td>".$clang->gT("Please select a language:")."</td></tr>";
 			foreach ($tmp_survlangs as $tmp_lang)
@@ -523,11 +524,10 @@ if ($surveyid)
 			$surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('printpopup').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></div>";
 			
 			$surveysummary .= "<script type='text/javascript'>document.getElementById('printpopup').style.left='152px';</script>";
-			if (count($tmp_survlangs) > 2)
-			{
-				$tmp_pheight = 110 + ((count($tmp_survlangs)-2) * 20);
-				$surveysummary .= "<script type='text/javascript'>document.getElementById('printpopup').style.height='".$tmp_pheight."px';</script>";
-			}
+			
+			$tmp_pheight = getPopupHeight();
+			$surveysummary .= "<script type='text/javascript'>document.getElementById('printpopup').style.height='".$tmp_pheight."px';</script>";
+			
 		}
 
 		if($sumrows5['edit_survey_property'])
