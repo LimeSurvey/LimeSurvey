@@ -628,12 +628,26 @@ if(isset($surveyid))
         		$orderid=substr($sortorderid,strrpos($sortorderid,'_')+1,20);
         		if ($_POST['code_'.$codeids[$count]] != "0" && !in_array($_POST['code_'.$codeids[$count]],$dupanswers))
         		{
-     				$_POST['code_'.$codeids[$count]]=sanitize_paranoid_string($_POST['code_'.$codeids[$count]]);
+     				$oldcode=false;
+        			$query = "SELECT code from ".db_table_name('answers')." WHERE qid=".$connect->qstr($qid)." and sortorder=".$connect->qstr($orderid)." ";
+     				$result = $connect->SelectLimit($query, 1);
+     				if($result->RecordCount() > 0)
+					{
+						$tmpcode = $result->FetchRow();
+						$oldcode=$tmpcode['code'];
+					}
+        			$_POST['code_'.$codeids[$count]]=sanitize_paranoid_string($_POST['code_'.$codeids[$count]]);
         			$query = "UPDATE ".db_table_name('answers')." SET code=".$connect->qstr($_POST['code_'.$codeids[$count]]).
-                         	 ",	answer=".$connect->qstr($_POST['answer_'.$sortorderid])." WHERE qid='$qid' and sortorder=$orderid and language='$langid'";
-        			if (!$result = $connect->Execute($query))
+                         	 ",	answer=".$connect->qstr($_POST['answer_'.$sortorderid])." WHERE qid=".$connect->qstr($qid)." and sortorder=".$connect->qstr($orderid)." and language=".$connect->qstr($langid)."";
+                    if (!$result = $connect->Execute($query))
         			{
         				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update answers","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+    				}
+    				if ($oldcode != false)
+    				{
+    					// Update the Answer code in conditions (updates if row exists right)
+    					$query = "UPDATE ".db_table_name('conditions')." SET value = ".$connect->qstr($_POST['code_'.$codeids[$count]])." where cqid='$qid' and value='$oldcode'";
+        				$result = $connect->Execute($query);
     				}
         		} else {
         			if ($_POST['code_'.$codeids[$count]] == "0") $invalidCode = 1;
