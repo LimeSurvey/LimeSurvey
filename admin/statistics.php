@@ -130,7 +130,7 @@ foreach ($rows as $row)
 	$row['group_name'],
 	strip_tags($row['question']),
 	$row['lid']);
-	
+
 }
 //var_dump($filters);
 // SHOW ID FIELD
@@ -720,8 +720,8 @@ foreach ($fieldmap as $field)
 if (isset($_POST['display']) && $_POST['display'])
 {
 	$statisticsoutput .= "<script type='text/javascript'>
-    <!-- 
-     hide('filtersettings'); 
+    <!--
+     hide('filtersettings');
     //-->
     </script>\n";
 	// 1: Get list of questions with answers chosen
@@ -1086,7 +1086,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 						//ODD NUMBER
 						//TODO: This is going to be trick to replicate under MS SQL Server, as there is no LIMIT x,y equivalent
 						// It can be done, but it may require having different queries.
-						// There are a number of queries in this unit that need to be fixed 
+						// There are a number of queries in this unit that need to be fixed
 						$query = $querystarter . " ORDER BY `$fieldname`*1 LIMIT $q1c, 2";
 						$result=db_execute_assoc($query) or die("1st Quartile query failed<br />".$connect->ErrorMsg());
 						while ($row=$result->FetchRow())
@@ -1441,15 +1441,15 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					$graph->img->SetMargin(50,50,50,50);
 					$graph->xaxis->SetTickLabels($justcode);
 					$graph->xaxis->SetFont(constant($jpgraphfont), FS_NORMAL, 8);
-					$graph->xaxis->SetColor("silver");
-					$graph->xaxis->title->Set($clang->gT("Code"));
+					$graph->xaxis->SetColor("black");
+				//	$graph->xaxis->title->Set($clang->gT("Code"));
 					$graph->xaxis->title->SetFont(constant($jpgraphfont), FS_BOLD, 9);
-					$graph->xaxis->title->SetColor("silver");
+					$graph->xaxis->title->SetColor("black");
 					$graph->yaxis->SetFont(constant($jpgraphfont), FS_NORMAL, 8);
-					$graph->yaxis->SetColor("silver");
+					$graph->yaxis->SetColor("black");
 					$graph->yaxis->title->Set($clang->gT("Count")." / $results");
 					$graph->yaxis->title->SetFont(constant($jpgraphfont), FS_BOLD, 9);
-					$graph->yaxis->title->SetColor("silver");
+					$graph->yaxis->title->SetColor("black");
 					//$graph->Set90AndMargin();
 				} else { //Pie Charts
 					$totallines=countLines($lbl);
@@ -1467,12 +1467,12 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					$graph = new PieGraph(640,$gheight,'png');
 					$graph->legend->SetFont(constant($jpgraphfont), FS_NORMAL, $fontsize);
 					$graph->legend->SetPos(0.015, $legendtop, 'right', 'top');
-					$graph->legend->SetFillColor("silver");
+					$graph->legend->SetFillColor("white");
     				$graph->SetAntiAliasing();
 
 				}
 				$graph->title->SetColor("#EEEEEE");
-				$graph->SetMarginColor("#666666");
+				$graph->SetMarginColor("#FFFFFF");
 				// Set A title for the plot
 				//$graph->title->Set($qquestion);
 				$graph->title->SetFont(constant($jpgraphfont),FS_BOLD,13);
@@ -1481,13 +1481,13 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					$p1 = new BarPlot($grawdata);
 					$p1->SetWidth(0.8);
 					$p1->SetValuePos("center");
-					$p1->SetFillColor("#FF9900");
+					$p1->SetFillColor("#4f81bd");
 					if (!in_array(0, $grawdata)) { //don't show shadows if any of the values are 0 - jpgraph bug
 						$p1->SetShadow();
 					}
 					$p1->value->Show();
-					$p1->value->SetFont(constant($jpgraphfont),FS_NORMAL,8);
-					$p1->value->SetColor("#555555");
+					$p1->value->SetFont(constant($jpgraphfont),FS_BOLD,8);
+					$p1->value->SetColor("#FFFFFF");
 				} else { //Pie Chart
 					$p1 = new PiePlot3d($gdata);
 					//                        $statisticsoutput .= "<pre>";print_r($lbl);$statisticsoutput .= "</pre>";
@@ -1496,8 +1496,8 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					$p1->SetLegends($lbl);
 					$p1->SetSize(200);
 					$p1->SetCenter(0.375,$setcentrey);
-					$p1->value->SetColor("#FF9900");
-					$p1->value->SetFont(constant($jpgraphfont),FS_NORMAL,10);
+					$p1->value->SetColor("#000000");
+					$p1->value->SetFont(constant($jpgraphfont),FS_NORMAL,12);
 					// Set how many pixels each slice should explode
 					//$p1->Explode(array(0,15,15,25,15));
 				}
