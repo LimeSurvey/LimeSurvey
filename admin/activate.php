@@ -178,18 +178,24 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	}
 	//CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE
 	$fieldmap=createFieldMap($surveyid, "full");
-	foreach($fieldmap as $fielddata)
+	if (isset($fieldmap))
 	{
-		$fieldlist[]=$fielddata['fieldname'];
+    	foreach($fieldmap as $fielddata)
+    	{
+    		$fieldlist[]=$fielddata['fieldname'];
+    	}
+    	$fieldlist=array_reverse($fieldlist); //let's always change the later duplicate, not the earlier one
 	}
-	$fieldlist=array_reverse($fieldlist); //let's always change the later duplicate, not the earlier one
 	$checkKeysUniqueComparison = create_function('$value','if ($value > 1) return true;');
-	$duplicates = array_keys (array_filter (array_count_values($fieldlist), $checkKeysUniqueComparison));
-	foreach ($duplicates as $dup)
+	@$duplicates = array_keys (array_filter (array_count_values($fieldlist), $checkKeysUniqueComparison));
+	if (isset($duplicates))
 	{
-		$badquestion=arraySearchByKey($dup, $fieldmap, "fieldname", 1);
-		$fix = "[<a href='$scriptname?action=activate&amp;sid=$surveyid&amp;fixnumbering=".$badquestion['qid']."'>Click Here to Fix</a>]";
-		$failedcheck[]=array($badquestion['qid'], $badquestion['question'], ": Bad duplicate fieldname $fix", $badquestion['gid']);
+        foreach ($duplicates as $dup)
+    	{
+    		$badquestion=arraySearchByKey($dup, $fieldmap, "fieldname", 1);
+    		$fix = "[<a href='$scriptname?action=activate&amp;sid=$surveyid&amp;fixnumbering=".$badquestion['qid']."'>Click Here to Fix</a>]";
+    		$failedcheck[]=array($badquestion['qid'], $badquestion['question'], ": Bad duplicate fieldname $fix", $badquestion['gid']);
+    	}
 	}
   
 	//IF ANY OF THE CHECKS FAILED, PRESENT THIS SCREEN
