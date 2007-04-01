@@ -1155,28 +1155,28 @@ function browsemenubar()
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n"
 	. "\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid' onmouseout=\"hideTooltip()\"" .
 			" onmouseover=\"showTooltip(event,'".$clang->gT("Show summary information", "js")."')\"" .
-			"><img name='SurveySummary' src='$imagefiles/summary.png' title='' align='left' /></a>\n"
+			"><img name='SurveySummary' src='$imagefiles/summary.png' title='' alt='' align='left' /></a>\n"
 	. "\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all' onmouseout=\"hideTooltip()\"" .
 			"onmouseover=\"showTooltip(event,'".$clang->gT("Display Responses", "js")."')\">" .
-			"<img name='ViewAll' src='$imagefiles/document.png' title='' align='left' /></a>\n"
+			"<img name='ViewAll' src='$imagefiles/document.png' title='' alt='' align='left' /></a>\n"
 	. "\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all&amp;limit=50&amp;order=desc'" .
 			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Display Last 50 Responses", "js")."')\">" .
-			"<img name='ViewLast' src='$imagefiles/viewlast.png' title='' align='left' /></a>\n"
+			"<img name='ViewLast' src='$imagefiles/viewlast.png' title='' alt='' align='left' /></a>\n"
 	. "\t\t\t<a href='$scriptname?action=dataentry&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Dataentry Screen for Survey", "js")."')\">" .
-	  "<img name='DataEntry' src='$imagefiles/dataentry.png' title='' align='left' /></a>\n"
+	  "<img name='DataEntry' src='$imagefiles/dataentry.png' title='' alt='' align='left' /></a>\n"
 	. "\t\t\t<a href='$scriptname?action=statistics&amp;sid=$surveyid' "
 	."onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Get statistics from these responses", "js")."')\">"
-	."<img name='Statistics' src='$imagefiles/statistics.png' title='' align='left' /></a>\n"
+	."<img name='Statistics' src='$imagefiles/statistics.png' title='' alt='' align='left' /></a>\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n"
 	. "\t\t\t<a href='$scriptname?action=exportresults&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Results to Application", "js")."')\"><img name='Export' src='$imagefiles/export.png' " .
-			"title='' alt=''align='left'  blank')\"></a>\n"
+			"title='' alt=''align='left' /></a>\n"
 	. "\t\t\t<a href='spss.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export result to a SPSS command file", "js")."')\"><img src='$imagefiles/exportspss.png' align='left' title='"
-	. $clang->gT("Export result to a SPSS command file")."' border='0' alt='". $clang->gT("Export result to a SPSS command file")."'></a>\n"
+	. $clang->gT("Export result to a SPSS command file")."' border='0' alt='". $clang->gT("Export result to a SPSS command file")."' /></a>\n"
 	. "\t\t\t<a href='$scriptname?action=importoldresponses&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Import answers from a deactivated survey table", "js")."')\" >" .
 			"<img name='Export' src='$imagefiles/importold.png' title='' alt=''align='left' /></a>\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n"
 	. "\t\t\t<a href='$scriptname?action=saved&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("View Saved but not submitted Responses", "js")."')\" >" .
-		"<img src='$imagefiles/saved.png' title='' align='left'  name='BrowseSaved' /></a>\n"
+		"<img src='$imagefiles/saved.png' title='' alt='' align='left'  name='BrowseSaved' /></a>\n"
 	. "\t\t\t<a href='vvimport.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Import a VV survey file", "js")."')\">\n"
 	. "<img src='$imagefiles/importvv.png' align='left' title='' border='0' alt='' /></a>\n"
 	. "\t\t\t<a href='vvexport.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export a VV survey file", "js")."')\">" .
