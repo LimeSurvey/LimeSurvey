@@ -103,7 +103,7 @@ $statisticsoutput .= "</table>\n"
 ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1'"
 ." cellspacing='0'>\n"
 ."<tr><td align='center' bgcolor='#555555' height='22'>"
-."<input type='image' src='$imagefiles/plus.gif' align='right' onclick='show(\"filtersettings\")'><input type='image' src='$imagefiles/minus.gif' align='right' onclick='hide(\"filtersettings\")'>"
+."<input type='image' src='$imagefiles/plus.gif' align='right' onclick='show(\"filtersettings\")' /><input type='image' src='$imagefiles/minus.gif' align='right' onclick='hide(\"filtersettings\")' />"
 ."<font size='2' face='verdana' color='#FF9900'><strong>".$clang->gT("Filter Settings")."</strong></font>"
 ."</td></tr>\n"
 ."</table>\n"
@@ -146,15 +146,15 @@ $statisticsoutput .= "<td align='center'>$setfont<strong>id</strong><br />";
 $statisticsoutput .= "\t\t\t\t\t<font size='1'>".$clang->gT("Number greater than").":<br />\n"
 ."\t\t\t\t\t<input type='text' name='$myfield2' value='";
 if (isset($_POST[$myfield2])){$statisticsoutput .= $_POST[$myfield2];}
-$statisticsoutput .= "'><br />\n"
+$statisticsoutput .= "' /><br />\n"
 ."\t\t\t\t\t".$clang->gT("Number Less Than").":<br />\n"
 ."\t\t\t\t\t<input type='text' name='$myfield3' value='";
 if (isset($_POST[$myfield3])) {$statisticsoutput .= $_POST[$myfield3];}
-$statisticsoutput .= "'><br />\n";
+$statisticsoutput .= "' /><br />\n";
 $statisticsoutput .= "\t\t\t\t\t=<br />
             <input type='text' name='$myfield4' value='";
 if (isset($_POST[$myfield4])) {$statisticsoutput .= $_POST[$myfield4];}
-$statisticsoutput .= "'><br /></font></font></td>\n";
+$statisticsoutput .= "' /><br /></font></font></td>\n";
 $allfields[]=$myfield2;
 $allfields[]=$myfield3;
 $allfields[]=$myfield4;
@@ -172,15 +172,15 @@ if (isset($datestamp) && $datestamp == "Y") {
 	."\t\t\t\t\t<font size='1'>".$clang->gT("Date (YYYY-MM-DD) equals").":<br />\n"
 	."\t\t\t\t\t<input name='$myfield3' type='text' value='";
 	if (isset($_POST[$myfield3])) {$statisticsoutput .= $_POST[$myfield3];}
-	$statisticsoutput .= "' ".substr(2, 0, -13) ."; width:80'><br />\n"
+	$statisticsoutput .= "' ".substr(2, 0, -13) ."; width:80' /><br />\n"
 	."\t\t\t\t\t&nbsp;&nbsp;".$clang->gT("OR between").":<br />\n"
 	."\t\t\t\t\t<input name='$myfield4' value='";
 	if (isset($_POST[$myfield4])) {$statisticsoutput .= $_POST[$myfield4];}
 	$statisticsoutput .= "' type='text' ".substr(2, 0, -13)
-	."; width:65'> ".$clang->gT("and")." <input  name='$myfield5' value='";
+	."; width:65' /> ".$clang->gT("and")." <input  name='$myfield5' value='";
 	if (isset($_POST[$myfield5])) {$statisticsoutput .= $_POST[$myfield5];}
 	$statisticsoutput .= "' type='text' ".substr(2, 0, -13)
-	."; width:65'></font></font>\n";
+	."; width:65' /></font></font>\n";
 	$allfields[]=$myfield2;
 	$allfields[]=$myfield3;
 	$allfields[]=$myfield4;
@@ -217,14 +217,14 @@ foreach ($filters as $flt)
 		if ($flt[2] == "N") {$myfield = "N$myfield";}
 		$statisticsoutput .= "<input type='checkbox' name='summary[]' value='$myfield'";
 		if (isset($_POST['summary']) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE))
-		{$statisticsoutput .= " CHECKED";}
-		$statisticsoutput .= ">&nbsp;"
+		{$statisticsoutput .= " checked='checked'";}
+		$statisticsoutput .= " />&nbsp;"
 		."<img src='$imagefiles/speaker.png' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onclick=\"alert('".$clang->gT("Question","js").": ".$niceqtext."')\"></strong>"
 		."<br />\n";
 		if ($flt[2] == "N") {$statisticsoutput .= "</font>";}
 		if ($flt[2] != "N") {$statisticsoutput .= "\t\t\t\t<select name='";}
 		if ($flt[2] == "M" || $flt[2] == "P" || $flt[2] == "R" || $flt[2] == "J") {$statisticsoutput .= "M";}
-		if ($flt[2] != "N") {$statisticsoutput .= "{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple 2>\n";}
+		if ($flt[2] != "N") {$statisticsoutput .= "{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple='multiple'>\n";}
 		$allfields[]=$myfield;
 	}
 	$statisticsoutput .= "\t\t\t\t\t<!-- QUESTION TYPE = $flt[2] -->\n";
@@ -242,8 +242,8 @@ foreach ($filters as $flt)
 			$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>$setfont<strong>$flt[3]-".$row[0]."</strong></font>";
 			$statisticsoutput .= "<input type='checkbox' name='summary[]' value='$myfield2'";
 			if (isset($_POST['summary']) && (array_search("Q{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $_POST['summary']) !== FALSE))
-			{$statisticsoutput .= " CHECKED";}
-			$statisticsoutput .= ">&nbsp;"
+			{$statisticsoutput .= " checked='checked'";}
+			$statisticsoutput .= " />&nbsp;"
 			."&nbsp;<img src='$imagefiles/speaker.png' align='bottom' alt=\""
 			.str_replace("\"", "`", $flt[5])
 			." [$flt[1]]\" onclick=\"alert('".$clang->gT("Question","js").": ".FlattenText($row[1])." "
@@ -253,7 +253,7 @@ foreach ($filters as $flt)
 			."\t\t\t\t\t<input type='text' name='$myfield2' value='";
 			if (isset($_POST[$myfield2]))
 			{$statisticsoutput .= $_POST[$myfield2];}
-			$statisticsoutput .= "'>";
+			$statisticsoutput .= "' />";
 			$counter2++;
 			$allfields[]=$myfield2;
 		}
@@ -267,8 +267,8 @@ foreach ($filters as $flt)
 		."$setfont<strong>$flt[3]</strong></font>";
 		$statisticsoutput .= "<input type='checkbox' name='summary[]' value='$myfield2'";
 		if (isset($_POST['summary']) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE))
-		{$statisticsoutput .= " CHECKED";}
-		$statisticsoutput .= ">&nbsp;"
+		{$statisticsoutput .= " checked='checked'";}
+		$statisticsoutput .= " />&nbsp;"
 		."&nbsp;<img src='$imagefiles/speaker.png' align='bottom' alt=\""
 		.str_replace("\"", "`", $flt[5])." \" "
 		."onclick=\"alert('".$clang->gT("Question","js").": ".$niceqtext." "
@@ -286,8 +286,8 @@ foreach ($filters as $flt)
 		."$setfont<strong>$flt[3]</strong></font>";
 		$statisticsoutput .= "<input type='checkbox' name='summary[]' value='$myfield2'";
 		if (isset($_POST['summary']) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE))
-		{$statisticsoutput .= " CHECKED";}
-		$statisticsoutput .= ">&nbsp;"
+		{$statisticsoutput .= " checked='checked'";}
+		$statisticsoutput .= " />&nbsp;"
 		."&nbsp;<img src='$imagefiles/speaker.png' align='bottom' alt=\""
 		.str_replace("\"", "`", $flt[5])
 		." [$flt[1]]\" onclick=\"alert('".$clang->gT("Question","js").": ".$niceqtext." "
@@ -296,7 +296,7 @@ foreach ($filters as $flt)
 		."\t\t\t\t\t<font size='1'>".$clang->gT("Responses Containing").":</font><br />\n"
 		."\t\t\t\t\t<input type='text' name='$myfield2' value='";
 		if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
-		$statisticsoutput .= "'>";
+		$statisticsoutput .= "' />";
 		$allfields[]=$myfield2;
 		break;
 		case "N": // Numerical
@@ -305,11 +305,11 @@ foreach ($filters as $flt)
 		$statisticsoutput .= "\t\t\t\t\t<font size='1'>".$clang->gT("Number greater than").":</font><br />\n"
 		."\t\t\t\t\t<input type='text' name='$myfield2' value='";
 		if (isset($_POST[$myfield2])){$statisticsoutput .= $_POST[$myfield2];}
-		$statisticsoutput .= "'><br />\n"
+		$statisticsoutput .= "' /><br />\n"
 		."\t\t\t\t\t".$clang->gT("Number Less Than").":<br />\n"
 		."\t\t\t\t\t<input type='text' name='$myfield3' value='";
 		if (isset($_POST[$myfield3])) {$statisticsoutput .= $_POST[$myfield3];}
-		$statisticsoutput .= "'><br />\n";
+		$statisticsoutput .= "' /><br />\n";
 		$allfields[]=$myfield2;
 		$allfields[]=$myfield3;
 		break;
@@ -326,15 +326,15 @@ foreach ($filters as $flt)
 		."\t\t\t\t\t<font size='1'>".$clang->gT("Date (YYYY-MM-DD) equals").":<br />\n"
 		."\t\t\t\t\t<input name='$myfield3' type='text' value='";
 		if (isset($_POST[$myfield3])) {$statisticsoutput .= $_POST[$myfield3];}
-		$statisticsoutput .= "' ".substr(2, 0, -13) ."; width:80'><br />\n"
+		$statisticsoutput .= "' ".substr(2, 0, -13) ."; width:80' /><br />\n"
 		."\t\t\t\t\t&nbsp;&nbsp;".$clang->gT("OR between").":<br />\n"
 		."\t\t\t\t\t<input name='$myfield4' value='";
 		if (isset($_POST[$myfield4])) {$statisticsoutput .= $_POST[$myfield4];}
 		$statisticsoutput .= "' type='text' ".substr(2, 0, -13)
-		."; width:65'> ".$clang->gT("and")." <input  name='$myfield5' value='";
+		."; width:65' /> ".$clang->gT("and")." <input  name='$myfield5' value='";
 		if (isset($_POST[$myfield5])) {$statisticsoutput .= $_POST[$myfield5];}
 		$statisticsoutput .= "' type='text' ".substr(2, 0, -13)
-		."; width:65'></font></font>\n";
+		."; width:65' /></font></font>\n";
 		break;
 		case "5": // 5 point choice
 		for ($i=1; $i<=5; $i++)
@@ -376,15 +376,15 @@ foreach ($filters as $flt)
 			$statisticsoutput .= " -->\n";
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 
-			$statisticsoutput .= "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])</B>"
+			$statisticsoutput .= "\t\t\t\t<td align='center'>$setfont<b>$flt[3] ($row[0])</b>"
 			."<input type='checkbox' name='summary[]' value='$myfield2'";
-			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {$statisticsoutput .= " CHECKED";}
-			$statisticsoutput .= ">&nbsp;"
+			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {$statisticsoutput .= " checked='checked'";}
+			$statisticsoutput .= " />&nbsp;"
 			."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
 			.str_replace("\"", "`", $flt[5])." [$row[1]]\" onclick=\"alert('".$clang->gT("Question","js").": "
 			.$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
 			."<br />\n"
-			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple 2>\n";
+			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n";
 			for ($i=1; $i<=5; $i++)
 			{
 				$statisticsoutput .= "\t\t\t\t\t<option value='$i'";
@@ -412,17 +412,17 @@ foreach ($filters as $flt)
 			$statisticsoutput .= " -->\n";
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 
-			$statisticsoutput .= "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])</B>"; //heading
+			$statisticsoutput .= "\t\t\t\t<td align='center'>$setfont<b>$flt[3] ($row[0])</b>"; //heading
 			$statisticsoutput .= "<input type='checkbox' name='summary[]' value='$myfield2'";
-			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {$statisticsoutput .= " CHECKED";}
-			$statisticsoutput .= ">&nbsp;"
+			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {$statisticsoutput .= " checked='checked'";}
+			$statisticsoutput .= " />&nbsp;"
 			."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
 			.str_replace("\"", "`", $flt[5])
 			." [$row[1]]\" onclick=\"alert('".$clang->gT("Question","js").": ".$niceqtext." "
 			.str_replace("'", "`", $row[1])
 			."')\">"
 			."<br />\n"
-			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple 2>\n";
+			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n";
 			for ($i=1; $i<=10; $i++)
 			{
 				$statisticsoutput .= "\t\t\t\t\t<option value='$i'";
@@ -449,16 +449,16 @@ foreach ($filters as $flt)
 			if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
 			$statisticsoutput .= " -->\n";
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
-			$statisticsoutput .= "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])</B>"
+			$statisticsoutput .= "\t\t\t\t<td align='center'>$setfont<b>$flt[3] ($row[0])</b>"
 			."<input type='checkbox' name='summary[]' value='$myfield2'";
 			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE)
-			{$statisticsoutput .= " CHECKED";}
-			$statisticsoutput .= ">&nbsp;"
+			{$statisticsoutput .= " checked='checked'";}
+			$statisticsoutput .= " />&nbsp;"
 			."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
 			.str_replace("\"", "`", $flt[5])." [$row[1]]\" onclick=\"alert('".$clang->gT("Question","js").": ".$niceqtext." "
 			.str_replace("'", "`", $row[1])."')\">"
 			."<br />\n"
-			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple 2>\n"
+			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n"
 			."\t\t\t\t\t<option value='Y'";
 			if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("Y", $_POST[$myfield2])) {$statisticsoutput .= " selected";}
 			$statisticsoutput .= ">".$clang->gT("Yes")."</option>\n"
@@ -487,15 +487,15 @@ foreach ($filters as $flt)
 			if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
 			$statisticsoutput .= " -->\n";
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
-			$statisticsoutput .= "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])</B>"
+			$statisticsoutput .= "\t\t\t\t<td align='center'>$setfont<b>$flt[3] ($row[0])</b>"
 			."<input type='checkbox' name='summary[]' value='$myfield2'";
-			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {$statisticsoutput .= " CHECKED";}
-			$statisticsoutput .= ">&nbsp;"
+			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {$statisticsoutput .= " checked='checked'";}
+			$statisticsoutput .= " />&nbsp;"
 			."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
 			.str_replace("\"", "`", $flt[5])." [$row[1]]\" onclick=\"alert('".$clang->gT("Question","js")
 			.": ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
 			."<br />\n"
-			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple 2>\n"
+			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n"
 			."\t\t\t\t\t<option value='I'";
 			if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("I", $_POST[$myfield2])) {$statisticsoutput .= " selected";}
 			$statisticsoutput .= ">".$clang->gT("Increase")."</option>\n"
@@ -525,10 +525,10 @@ foreach ($filters as $flt)
 			if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
 			$statisticsoutput .= " -->\n";
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
-			$statisticsoutput .= "\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($row[0])</B>"
+			$statisticsoutput .= "\t\t\t\t<td align='center'>$setfont<b>$flt[3] ($row[0])</b>"
 			."<input type='checkbox' name='summary[]' value='$myfield2'";
-			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {$statisticsoutput .= " CHECKED";}
-			$statisticsoutput .= ">&nbsp;"
+			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {$statisticsoutput .= " checked='checked'";}
+			$statisticsoutput .= " />&nbsp;"
 			."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
 			.str_replace("\"", "`", $flt[5])." [$row[1]]\" onclick=\"alert('".$clang->gT("Question","js")
 			.": ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
@@ -536,7 +536,7 @@ foreach ($filters as $flt)
 			$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$flt[6]} AND language='{$language}' ORDER BY sortorder, code";
 			//$statisticsoutput .= $fquery;
 			$fresult = db_execute_assoc($fquery);
-			$statisticsoutput .= "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple 2>\n";
+			$statisticsoutput .= "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n";
 			while ($frow = $fresult->FetchRow())
 			{
 				$statisticsoutput .= "\t\t\t\t\t<option value='{$frow['code']}'";
@@ -568,15 +568,15 @@ foreach ($filters as $flt)
 			$statisticsoutput .= "<!-- $myfield2 - ";
 			if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
 			$statisticsoutput .= " -->\n"
-			."\t\t\t\t<td align='center'>$setfont<B>$flt[3] ($i)</B>"
+			."\t\t\t\t<td align='center'>$setfont<b>$flt[3] ($i)</b>"
 			."<input type='checkbox' name='summary[]' value='$myfield2'";
-			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary']) !== FALSE) {$statisticsoutput .= " CHECKED";}
-			$statisticsoutput .= ">&nbsp;"
+			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary']) !== FALSE) {$statisticsoutput .= " checked='checked'";}
+			$statisticsoutput .= " />&nbsp;"
 			."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
 			.str_replace("\"", "`", $flt[5])." [$row[1]]\" onclick=\"alert('".$clang->gT("Question","js")
 			.": ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
 			."<br />\n"
-			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$i}[]' multiple 2>\n";
+			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$i}[]' multiple='multiple'>\n";
 			foreach ($answers as $ans)
 			{
 				$statisticsoutput .= "\t\t\t\t\t<option value='$ans[0]'";
@@ -604,11 +604,11 @@ foreach ($filters as $flt)
 		."$setfont<strong>$flt[3]&nbsp;"; //Heading (Question No)
 		$statisticsoutput .= "<input type='checkbox' name='summary[]' value='$myfield'";
 		if (isset($_POST['summary']) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE))
-		{$statisticsoutput .= " CHECKED";}
-		$statisticsoutput .= ">&nbsp;"
+		{$statisticsoutput .= " checked='checked'";}
+		$statisticsoutput .= " />&nbsp;"
 		."<img src='$imagefiles/speaker.png' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onclick=\"alert('".$clang->gT("Question","js").": ".$niceqtext."')\"></strong>"
 		."<br />\n";
-		$statisticsoutput .= "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple 2>\n";
+		$statisticsoutput .= "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple='multiple'>\n";
 		$allfields[]=$myfield;
 		$query = "SELECT code, title FROM ".db_table_name("labels")." WHERE lid={$flt[6]} AND language='{$language}' ORDER BY sortorder, title";
 		$result = db_execute_num($query) or die("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
@@ -648,13 +648,13 @@ $statisticsoutput .= "\t\t\t</table>\n"
 ."\t\t<tr><td bgcolor='#CCCCCC' align='center'>\n"
 ."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
 ."\t\t\t\t<tr><td align='center'>$setfont<input type='radio' id='viewsummaryall' name='summary' value='$allfield'"
-."><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label></font></td></tr>\n"
+." /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label></font></td></tr>\n"
 ."\t\t<tr><td align='center' bgcolor='#CCCCCC'>\n\t\t\t<br />\n"
-."\t\t\t<input type='submit' value='".$clang->gT("View Stats")."'>\n"
-."\t\t\t<input type='button' value='".$clang->gT("Clear")."' onclick=\"window.open('$scriptname?action=statistics&amp;sid=$surveyid', '_top')\">\n"
+."\t\t\t<input type='submit' value='".$clang->gT("View Stats")."' />\n"
+."\t\t\t<input type='button' value='".$clang->gT("Clear")."' onclick=\"window.open('$scriptname?action=statistics&amp;sid=$surveyid', '_top')\" />\n"
 ."\t\t<br />&nbsp;\n"
-."\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
-."\t\t<input type='hidden' name='display' value='stats'>\n"
+."\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
+."\t\t<input type='hidden' name='display' value='stats' />\n"
 ."\t</td></tr>\n"
 ."</table>\n"
 ."</td></tr></table>\n"
@@ -871,15 +871,15 @@ if (isset($_POST['display']) && $_POST['display'])
 	{
 		$statisticsoutput .= "\t<tr>"
 		."\t\t<td align='right' width='50%'><form action='$scriptname?action=browse' method='post' target='_blank'>\n"
-		."\t\t<input type='submit' value='".$clang->gT("Browse")."' >\n"
-		."\t\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
-		."\t\t\t<input type='hidden' name='sql' value=\"$sql\">\n"
-		."\t\t\t<input type='hidden' name='subaction' value='all'>\n"
+		."\t\t<input type='submit' value='".$clang->gT("Browse")."'  />\n"
+		."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
+		."\t\t\t<input type='hidden' name='sql' value=\"$sql\" />\n"
+		."\t\t\t<input type='hidden' name='subaction' value='all' />\n"
 		."\t\t</form>\n"
 		."\t\t<td width='50%'><form action='$scriptname?action=exportresults' method='post' target='_blank'>\n"
-		."\t\t<input type='submit' value='".$clang->gT("Export")."' >\n"
-		."\t\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
-		."\t\t\t<input type='hidden' name='sql' value=\"$sql\">\n";
+		."\t\t<input type='submit' value='".$clang->gT("Export")."'  />\n"
+		."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
+		."\t\t\t<input type='hidden' name='sql' value=\"$sql\" />\n";
 		//Add the fieldnames
 		if (isset($_POST['summary']) && $_POST['summary'])
 		{
@@ -890,7 +890,7 @@ if (isset($_POST['display']) && $_POST['display'])
 					case "N":
 					case "T":
 					$field = substr($viewfields, 1, strlen($viewfields)-1);
-					$statisticsoutput .= "\t\t\t<input type='hidden' name='summary[]' value='$field'>\n";
+					$statisticsoutput .= "\t\t\t<input type='hidden' name='summary[]' value='$field' />\n";
 					break;
 					case "M":
 					list($lsid, $lgid, $lqid) = explode("X", substr($viewfields, 1, strlen($viewfields)-1));
@@ -899,7 +899,7 @@ if (isset($_POST['display']) && $_POST['display'])
 					while ($arow=$aresult->FetchRow()) // go through every possible answer
 					{
 						$field = substr($viewfields, 1, strlen($viewfields)-1).$arow[0];
-						$statisticsoutput .= "\t\t\t<input type='hidden' name='summary[]' value='$field'>\n";
+						$statisticsoutput .= "\t\t\t<input type='hidden' name='summary[]' value='$field' />\n";
 					}
 					$aquery = "SELECT other FROM ".db_table_name("questions")." WHERE qid=$lqid AND language='{$language}'";
 					$aresult = db_execute_num($aquery);
@@ -907,13 +907,13 @@ if (isset($_POST['display']) && $_POST['display'])
 						if ($arow[0] == "Y") {
 							//$statisticsoutput .= $arow[0];
 							$field = substr($viewfields, 1, strlen($viewfields)-1)."other";
-							$statisticsoutput .= "\t\t\t<input type='hidden' name='summary[]' value='$field'>\n";
+							$statisticsoutput .= "\t\t\t<input type='hidden' name='summary[]' value='$field' />\n";
 						}
 					} // while
 					break;
 					default:
 					$field = $viewfields;
-					$statisticsoutput .= "\t\t\t<input type='hidden' name='summary[]' value='$field'>\n";
+					$statisticsoutput .= "\t\t\t<input type='hidden' name='summary[]' value='$field' />\n";
 					break;
 				}
 			}
@@ -1380,14 +1380,14 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					if ($al[0] == "")
 					{$fname=$clang->gT("No answer");}
 					elseif ($al[0] == $clang->gT("Other") || $al[0] == "Answers")
-					{$fname="$al[1] <input type='submit' value='".$clang->gT("Browse")."' onclick=\"window.open('listcolumn.php?sid=$surveyid&amp;column=$al[2]&amp;sql=".urlencode($sql)."', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\">";}
+					{$fname="$al[1] <input type='submit' value='".$clang->gT("Browse")."' onclick=\"window.open('listcolumn.php?sid=$surveyid&amp;column=$al[2]&amp;sql=".urlencode($sql)."', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";}
 					elseif ($qtype == "S" || $qtype == "T" || $qtype == "Q")
 					{
 						if ($al[0] == "Answer")
 						{
 							$fname= "$al[1] <input type='submit' value='"
 							. $clang->gT("Browse")."' onclick=\"window.open('listcolumn.php?sid=$surveyid&amp;column=$al[2]&amp;sql="
-							. urlencode($sql)."', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\">";
+							. urlencode($sql)."', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
 						}
 						elseif ($al[0] == "NoAnswer")
 						{
