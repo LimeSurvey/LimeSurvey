@@ -186,7 +186,7 @@ if (isset($datestamp) && $datestamp == "Y") {
 	$allfields[]=$myfield4;
 	$allfields[]=$myfield5;
 }
-$statisticsoutput .= "</td></tr></table>";
+$statisticsoutput .= "</tr></table></td></tr>";
 
 // 2: Get answers for each question
 if (!isset($currentgroup)) {$currentgroup="";}
@@ -219,7 +219,7 @@ foreach ($filters as $flt)
 		if (isset($_POST['summary']) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE))
 		{$statisticsoutput .= " checked='checked'";}
 		$statisticsoutput .= " />&nbsp;"
-		."<img src='$imagefiles/speaker.png' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onclick=\"alert('".$clang->gT("Question","js").": ".$niceqtext."')\"></strong>"
+		."<img src='$imagefiles/speaker.png' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onclick=\"alert('".$clang->gT("Question","js").": ".$niceqtext."')\" /></strong>"
 		."<br />\n";
 		if ($flt[2] == "N") {$statisticsoutput .= "</font>";}
 		if ($flt[2] != "N") {$statisticsoutput .= "\t\t\t\t<select name='";}
@@ -247,7 +247,7 @@ foreach ($filters as $flt)
 			."&nbsp;<img src='$imagefiles/speaker.png' align='bottom' alt=\""
 			.str_replace("\"", "`", $flt[5])
 			." [$flt[1]]\" onclick=\"alert('".$clang->gT("Question","js").": ".FlattenText($row[1])." "
-			."')\">"
+			."')\" />"
 			."<br />\n"
 			."\t\t\t\t\t<font size='1'>".$clang->gT("Responses Containing").":</font><br />\n"
 			."\t\t\t\t\t<input type='text' name='$myfield2' value='";
@@ -272,7 +272,7 @@ foreach ($filters as $flt)
 		."&nbsp;<img src='$imagefiles/speaker.png' align='bottom' alt=\""
 		.str_replace("\"", "`", $flt[5])." \" "
 		."onclick=\"alert('".$clang->gT("Question","js").": ".$niceqtext." "
-		."')\">"
+		."')\" />"
 		."<br />\n"
 		."\t\t\t\t\t<font size='1'>".$clang->gT("Responses Containing").":</font><br />\n"
 		."\t\t\t\t\t<textarea name='$myfield2' rows='3' cols='80'>";
@@ -291,7 +291,7 @@ foreach ($filters as $flt)
 		."&nbsp;<img src='$imagefiles/speaker.png' align='bottom' alt=\""
 		.str_replace("\"", "`", $flt[5])
 		." [$flt[1]]\" onclick=\"alert('".$clang->gT("Question","js").": ".$niceqtext." "
-		."')\">"
+		."')\" />"
 		."<br />\n"
 		."\t\t\t\t\t<font size='1'>".$clang->gT("Responses Containing").":</font><br />\n"
 		."\t\t\t\t\t<input type='text' name='$myfield2' value='";
@@ -321,7 +321,7 @@ foreach ($filters as $flt)
 		."&nbsp;<img src='$imagefiles/speaker.png' align='bottom' alt=\""
 		.str_replace("\"", "`", $flt[5])
 		." \" onclick=\"alert('".$clang->gT("Question","js").": ".$niceqtext." "
-		."')\">"
+		."')\" />"
 		."<br />\n"
 		."\t\t\t\t\t<font size='1'>".$clang->gT("Date (YYYY-MM-DD) equals").":<br />\n"
 		."\t\t\t\t\t<input name='$myfield3' type='text' value='";
@@ -382,7 +382,7 @@ foreach ($filters as $flt)
 			$statisticsoutput .= " />&nbsp;"
 			."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
 			.str_replace("\"", "`", $flt[5])." [$row[1]]\" onclick=\"alert('".$clang->gT("Question","js").": "
-			.$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
+			.$niceqtext." ".str_replace("'", "`", $row[1])."')\" />"
 			."<br />\n"
 			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n";
 			for ($i=1; $i<=5; $i++)
@@ -420,7 +420,7 @@ foreach ($filters as $flt)
 			.str_replace("\"", "`", $flt[5])
 			." [$row[1]]\" onclick=\"alert('".$clang->gT("Question","js").": ".$niceqtext." "
 			.str_replace("'", "`", $row[1])
-			."')\">"
+			."')\" />"
 			."<br />\n"
 			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n";
 			for ($i=1; $i<=10; $i++)
@@ -456,7 +456,7 @@ foreach ($filters as $flt)
 			$statisticsoutput .= " />&nbsp;"
 			."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
 			.str_replace("\"", "`", $flt[5])." [$row[1]]\" onclick=\"alert('".$clang->gT("Question","js").": ".$niceqtext." "
-			.str_replace("'", "`", $row[1])."')\">"
+			.str_replace("'", "`", $row[1])."')\" />"
 			."<br />\n"
 			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n"
 			."\t\t\t\t\t<option value='Y'";
@@ -493,7 +493,7 @@ foreach ($filters as $flt)
 			$statisticsoutput .= " />&nbsp;"
 			."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
 			.str_replace("\"", "`", $flt[5])." [$row[1]]\" onclick=\"alert('".$clang->gT("Question","js")
-			.": ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
+			.": ".$niceqtext." ".str_replace("'", "`", $row[1])."')\" />"
 			."<br />\n"
 			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n"
 			."\t\t\t\t\t<option value='I'";
@@ -531,7 +531,7 @@ foreach ($filters as $flt)
 			$statisticsoutput .= " />&nbsp;"
 			."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
 			.str_replace("\"", "`", $flt[5])." [$row[1]]\" onclick=\"alert('".$clang->gT("Question","js")
-			.": ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
+			.": ".$niceqtext." ".str_replace("'", "`", $row[1])."')\" />"
 			."<br />\n";
 			$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$flt[6]} AND language='{$language}' ORDER BY sortorder, code";
 			//$statisticsoutput .= $fquery;
@@ -574,7 +574,7 @@ foreach ($filters as $flt)
 			$statisticsoutput .= " />&nbsp;"
 			."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
 			.str_replace("\"", "`", $flt[5])." [$row[1]]\" onclick=\"alert('".$clang->gT("Question","js")
-			.": ".$niceqtext." ".str_replace("'", "`", $row[1])."')\">"
+			.": ".$niceqtext." ".str_replace("'", "`", $row[1])."')\" />"
 			."<br />\n"
 			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$i}[]' multiple='multiple'>\n";
 			foreach ($answers as $ans)
@@ -606,7 +606,7 @@ foreach ($filters as $flt)
 		if (isset($_POST['summary']) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE))
 		{$statisticsoutput .= " checked='checked'";}
 		$statisticsoutput .= " />&nbsp;"
-		."<img src='$imagefiles/speaker.png' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onclick=\"alert('".$clang->gT("Question","js").": ".$niceqtext."')\"></strong>"
+		."<img src='$imagefiles/speaker.png' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onclick=\"alert('".$clang->gT("Question","js").": ".$niceqtext."')\" /></strong>"
 		."<br />\n";
 		$statisticsoutput .= "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple='multiple'>\n";
 		$allfields[]=$myfield;
@@ -618,7 +618,7 @@ foreach ($filters as $flt)
 			if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {$statisticsoutput .= " selected";}
 			$statisticsoutput .= ">$row[1]</option>\n";
 		} // while
-		$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</font>\n";
+		$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</font></td>\n";
 		break;
 		default:
 		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
@@ -629,7 +629,7 @@ foreach ($filters as $flt)
 			if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {$statisticsoutput .= " selected";}
 			$statisticsoutput .= ">$row[1]</option>\n";
 		}
-		$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</font>\n";
+		$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</font></td>\n";
 
 		break;
 	}
@@ -637,7 +637,7 @@ foreach ($filters as $flt)
 	if (!isset($counter)) {$counter=0;}
 	$counter++;
 }
-$statisticsoutput .= "\n\t\t\t\t</tr>\n";
+$statisticsoutput .= "\n\t\t\t\t</td></tr>\n";
 if (isset($allfields))
 {
 	$allfield=implode("|", $allfields);
@@ -875,7 +875,7 @@ if (isset($_POST['display']) && $_POST['display'])
 		."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
 		."\t\t\t<input type='hidden' name='sql' value=\"$sql\" />\n"
 		."\t\t\t<input type='hidden' name='subaction' value='all' />\n"
-		."\t\t</form>\n"
+		."\t\t</form></td>\n"
 		."\t\t<td width='50%'><form action='$scriptname?action=exportresults' method='post' target='_blank'>\n"
 		."\t\t<input type='submit' value='".$clang->gT("Export")."'  />\n"
 		."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
