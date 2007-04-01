@@ -322,7 +322,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
                 }
     			else
     			{
-    				$labelsoutput.= "\t<input type='text' name='code_{$row['sortorder']}' maxlength='10' size='10' value=\"{$row['code']}\" />\n";
+    				$labelsoutput.= "\t<input type='text' name='code_{$row['sortorder']}' maxlength='5' size='10' value=\"{$row['code']}\" />\n";
     			}
     			
     			$labelsoutput.= "\t</td>\n"
@@ -357,7 +357,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     		$position=sprintf("%05d", $position);
     		if ($activeuse == 0 && $first)
     		{   $labelsoutput.= "<tr><td><br /></td></tr><tr><td width='25%' align='right'>"
-  			    ."<strong>".$clang->gT("New label").":</strong> <input type='text' maxlength='10' name='insertcode' size='10' id='addnewlabelcode' />\n"
+  			    ."<strong>".$clang->gT("New label").":</strong> <input type='text' maxlength='5' name='insertcode' size='10' id='addnewlabelcode' />\n"
     			."\t</td>\n"
     			."\t<td width='35%'>\n"
     			."\t<input type='text' maxlength='100' name='inserttitle' size='80' />\n"

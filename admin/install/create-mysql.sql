@@ -18,7 +18,7 @@
 
 CREATE TABLE `prefix_answers` (
   `qid` int(11) NOT NULL default '0',
-  `code` varchar(10) NOT NULL default '',
+  `code` varchar(5) NOT NULL default '',
   `answer` text NOT NULL,
   `default_value` char(1) NOT NULL default 'N',
   `sortorder` int(11) NOT NULL,
@@ -84,7 +84,7 @@ CREATE TABLE `prefix_groups` (
 
 CREATE TABLE `prefix_labels` (
   `lid` int(11) NOT NULL default '0',
-  `code` varchar(10) NOT NULL default '',
+  `code` varchar(5) NOT NULL default '',
   `title` varchar(100) NOT NULL default '',
   `sortorder` int(11) NOT NULL,
   `language` varchar(20) default 'en',

@@ -1325,7 +1325,7 @@ if (returnglobal('viewanswer'))
 			}
 			else
 			{
-				$vasummary .= "\t<input type='text' name='code_{$row['sortorder']}' maxlength='10' size='10' value=\"{$row['code']}\" />\n";
+				$vasummary .= "\t<input type='text' name='code_{$row['sortorder']}' maxlength='5' size='10' value=\"{$row['code']}\" />\n";
 			}
 
 			$vasummary .= "\t</td>\n"
@@ -1365,7 +1365,7 @@ if (returnglobal('viewanswer'))
 			{
 				$vasummary .= "<tr><td><br /></td></tr><tr><td width='25%' align=right>"
 				."<strong>".$clang->gT("New Answer").":</strong> ";
-            	$vasummary .= "<input type='text' maxlength='10' name='insertcode' size='10' id='addnewanswercode' />\n";
+            	$vasummary .= "<input type='text' maxlength='5' name='insertcode' size='10' id='addnewanswercode' />\n";
             	$first=false;
 				$vasummary .= "\t</td>\n"
 				."\t<td width='35%'>\n"

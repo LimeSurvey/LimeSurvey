@@ -8,7 +8,7 @@
 
 CREATE TABLE [prefix_answers] (
   [qid] INT NOT NULL default '0',
-  [code] VARCHAR(10) NOT NULL default '',
+  [code] VARCHAR(5) NOT NULL default '',
   [answer] varchar(255) NOT NULL, -- TEXT type in MySQL, can't be used in ORDER BY
   [default_value] char(1) NOT NULL default 'N',
   [sortorder] INT NOT NULL,
@@ -77,7 +77,7 @@ GO
 
 CREATE TABLE [prefix_labels] (
   [lid] INT NOT NULL default '0',
-  [code] VARCHAR(10) NOT NULL default '',
+  [code] VARCHAR(5) NOT NULL default '',
   [title] VARCHAR(100) NOT NULL default '',
   [sortorder] INT NOT NULL,
   [language] VARCHAR(20) default 'en',
