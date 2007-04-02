@@ -261,7 +261,7 @@ else
 	// represent 'no date', wouldn't it make more sense to allow NULLs here and represent
 	// 'no date' with a null value? Will this screw anything else up?
 	// For MS Server I'm going to allow NULLs and see what happens [tom]
-	if ($connect->databaseType == 'odbc_msmsql') {
+	if ($connect->databaseType == 'odbc_mssql') {
 	  $createsurvey .= " submitdate T,\n";
 	} else {
 	  $createsurvey .= " submitdate T NOTNULL DEFAULT '0000-00-00 00:00:00',\n";	
