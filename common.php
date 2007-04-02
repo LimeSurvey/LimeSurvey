@@ -38,8 +38,15 @@
 if (!isset($dbprefix)) {die("Cannot run this script directly");}
 $versionnumber = "1.47b";
 $dbversionnumber = 111;
-if ($debug==1) {error_reporting(E_ALL);} //For debug purposes - switch on in config.phh
+
+
+if ($debug==1) {
+        error_reporting(E_ALL); //For debug purposes - switch on in config.phh
+        // The following line is for mysql debug purposes
+        $tmpresult=@mysql_query("SET SESSION SQL_MODE='STRICT_ALL_TABLES'");
+        } 
 @set_time_limit(60); // Maximum execution time - works only if safe_mode is off
+
 
 ##################################################################################
 ## DO NOT EDIT BELOW HERE
@@ -120,8 +127,6 @@ $connect->SetFetchMode(ADODB_FETCH_ASSOC);
 
 $dbexistsbutempty=($database_exists && checkifemptydb());
 
-// The following line is for mysql debug purposes
-//$tmpresult=@mysql_query("SET SESSION SQL_MODE='STRICT_ALL_TABLES'");
 
 if ($databasetype=='mysql') {$connect->Execute("SET CHARACTER SET 'utf8'");}
 
@@ -672,7 +677,7 @@ function getNotificationlist($notificationcode)
 	foreach($ntypes as $ntcode=>$ntdescription)
 	{
 		$ntypeselector .= "\t\t<option value='$ntcode'";
-		if ($notificationcode == $ntcode) {$ntypeselector .= " selected";}
+		if ($notificationcode == $ntcode) {$ntypeselector .= " selected='selected'";}
 		$ntypeselector .= ">$ntdescription</option>\n";
 	}
 	return $ntypeselector;

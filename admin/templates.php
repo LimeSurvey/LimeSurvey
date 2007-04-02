@@ -488,7 +488,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' height='10' border='0' hspace='0' align='left' />\n"
 	."\t\t\t\t\t<a href='#' onclick='javascript:window.open(\"admin.php?action=templatezip&amp;editfile=$editfile&amp;screenname=".html_escape($screenname)."&amp;templatename=$templatename\", \"_top\")'".
 			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Template", "js")."')\">" .
-					"<img name='Export' src='$imagefiles/exportcsv.png' alt='' align='left' title='' /></a>\n"
+					"<img name='Export' src='$imagefiles/export.png' alt='' align='left' title='' /></a>\n"
 	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
 	."\t\t\t\t\t" .
 			"<a href='#' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Copy Template", "js")."')\"" .
@@ -539,7 +539,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	}
 	$templatesoutput.= "</textarea><br />\n";
 	if (is_writable("$publicdir/templates/$templatename")) {
-		$templatesoutput.= "<input align='right' type='submit' value='Save Changes'";
+		$templatesoutput.= "<input align='right' type='submit' value='".$clang->gT("Save Changes")."'";
 		if ($templatename == "default") {
 			$templatesoutput.= " style='color: #BBBBBB;' disabled alt='".$clang->gT("Changes cannot be saved to the default template.")."'";
 		}

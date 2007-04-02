@@ -563,7 +563,7 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 
 if (isset($skippedlanguages))
 {
-    $importgroup.='<font class="successtitle">'.$clang->gT("Import partially successful.")."</font><BR /><BR />";
+    $importgroup.='<font class="successtitle">'.$clang->gT("Import partially successful.")."</font><br /><br />";
     $importgroup.=$clang->gT("The following languages in this group were not imported since the survey does not contain such a language: ")."<br />";
     foreach  ($skippedlanguages as $sl)
     {

@@ -69,7 +69,7 @@ function retrieveConditionInfo($ia)
 		."AND {$dbprefix}conditions.qid=$ia[0] "
 		."AND {$dbprefix}questions.language='".$_SESSION['s_lang']."' "
 		."ORDER BY {$dbprefix}conditions.cqid, {$dbprefix}conditions.cfieldname";
-		$cresult = db_execute_assoc($cquery) or die ("OOPS<BR />$cquery<br />".htmlspecialchars($connect->ErrorMsg()));
+		$cresult = db_execute_assoc($cquery) or die ("OOPS<br />$cquery<br />".htmlspecialchars($connect->ErrorMsg()));
 		while ($crow = $cresult->FetchRow())
 		{
 			$conditions[] = array ($crow['qid'], $crow['cqid'], $crow['cfieldname'], $crow['value'], $crow['type'], $crow['sid']."X".$crow['gid']."X".$crow['cqid']);

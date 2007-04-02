@@ -1,6 +1,6 @@
 //We have form validation and other stuff..
 
-function validatefilename ( form )
+function validatefilename (form, strmessage )
 {
   // see http://www.thesitewizard.com/archive/validation.shtml
   // for an explanation of this script and how to use it on your
@@ -8,7 +8,7 @@ function validatefilename ( form )
 
   // ** START **
   if (form.the_file.value == "") {
-    alert( "Please select an sql file to import" );
+    alert( strmessage );
     form.the_file.focus();
     return false ;
   }

@@ -66,7 +66,7 @@ if (!isset($_SESSION['grouplist'])  && (isset($_POST['move'])) )
 	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
 	echo "\t\t<center><br />\n"
 	."\t\t\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
-	."\t\t\t".$clang->gT("We are sorry but your session has expired.")."<BR />".$clang->gT("Either you have been inactive for too long or there were problems with your connection.")."<br />\n"
+	."\t\t\t".$clang->gT("We are sorry but your session has expired.")."<br />".$clang->gT("Either you have been inactive for too long or there were problems with your connection.")."<br />\n"
 	."\t\t\t".$clang->gT("Please contact")." $siteadminname ( $siteadminemail ) ".$clang->gT("for further assistance").".\n"
 	."\t\t</center><br />\n";
 

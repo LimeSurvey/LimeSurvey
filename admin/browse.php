@@ -601,7 +601,7 @@ else
 	while ($gnrow = $gnresult->FetchRow())
 	{
 		$browseoutput .= "<table width='100%' border='0'>\n"
-		."\t<tr><td align='center'>$setfont{$gnrow[0]} responses in this database</font></td></tr>\n"
+		."\t<tr><td align='center'>$setfont{$gnrow[0]} ".$clang->gT("responses for this survey")."</font></td></tr>\n"
 		."</table>\n";
 	}
 }

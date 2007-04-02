@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-03-31 18:20+0100\n"
+"PO-Revision-Date: 2007-04-02 23:21+0100\n"
 "Last-Translator: \n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -926,10 +926,10 @@ msgid "Export this Response"
 msgstr "Diese Antwort exportieren"
 
 msgid "Show last..."
-msgstr "Zeige vorherigen.."
+msgstr "Zeige letzten..."
 
 msgid "Show next..."
-msgstr "Zeige nächsten.."
+msgstr "Zeige nächste..."
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/browse.php:304
 msgid "Showing Filtered Results"
@@ -952,7 +952,7 @@ msgid "Data View Control"
 msgstr "Ansicht der Daten"
 
 msgid "Show start.."
-msgstr "Zeige ersten.."
+msgstr "Zeige ersten..."
 
 msgid "Show previous..."
 msgstr "Zeige vorherige..."
@@ -968,6 +968,9 @@ msgstr "Anzeigen"
 
 msgid "View This Record"
 msgstr "Diesen Datensatz anzeigen"
+
+msgid "responses for this survey"
+msgstr "Antworten für diese Umfrage"
 
 msgid "Condition Designer"
 msgstr "Bedingungs Designer"
@@ -2184,6 +2187,9 @@ msgstr "Die Einstellung kann später nicht geändert werden."
 msgid "Date Format"
 msgstr "Datumsformat"
 
+msgid "Please select a file to import!"
+msgstr "Bitte wählen Sie eine Datei zum Importieren aus!"
+
 msgid "Import Survey"
 msgstr "Umfrage importieren"
 
@@ -2642,10 +2648,6 @@ msgstr "Gesamtzahl der Datensätze dieser Umfrage"
 
 msgid "Percentage of total"
 msgstr "Anteil in Prozent"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:870
-msgid "SQL"
-msgstr "SQL"
 
 msgid "Browse"
 msgstr "Ansehen"

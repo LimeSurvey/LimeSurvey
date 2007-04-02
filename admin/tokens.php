@@ -1484,9 +1484,9 @@ function form($error=false)
 	$tokenoutput .= "<form enctype='multipart/form-data' action='$scriptname?action=tokens' method='post'>\n"
 	. "<input type='hidden' name='subaction' value='upload' />\n"
 	. "<input type='hidden' name='sid' value='$surveyid' />\n"
-	. "Upload a file<br />\n"
+	. $clang->gT("Upload a File")."<br />\n"
 	. "<input type='file' name='the_file' size='35' /><br />\n"
-	. "<input type='submit' value='Upload' />\n"
+	. "<input type='submit' value='".$clang->gT("Upload")."' />\n"
 	. "</form>\n\n";
 
 } # END form

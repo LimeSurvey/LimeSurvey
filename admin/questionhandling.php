@@ -130,7 +130,7 @@ if ($action == "addquestion")
 		. "\t<input type='hidden' name='gid' value='$gid' />\n"
 		. "</td></tr></table>\n"
 		. "\t</form>\n"
-		. "\t<form enctype='multipart/form-data' name='importquestion' action='$scriptname' method='post' onsubmit=\"return validatefilename(this);\">\n"
+		. "\t<form enctype='multipart/form-data' name='importquestion' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
 		. "<table width='100%' border='0' >\n\t"
 		. "<tr><td colspan='2' align='center'><strong>".$clang->gT("OR")."</strong></td></tr>\n"
 		. "<tr><td colspan='2' bgcolor='black' align='center'>\n"

@@ -862,7 +862,7 @@ if ($action == "addgroup")
 		. "\t</td></table>\n"
 		. "</form></td></tr>\n"
 		. "<tr><td align='center'><strong>".$clang->gT("OR")."</strong></td></tr>\n"
-		. "<tr><td><form enctype='multipart/form-data' name='importgroup' action='$scriptname' method='post' onsubmit=\"return validatefilename(this);\">"
+		. "<tr><td><form enctype='multipart/form-data' name='importgroup' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
 		. "<table width='100%' border='0'>\n\t<tr><td colspan='3' bgcolor='black' align='center'>\n"
 		. "\t\t<strong><font color='white'>".$clang->gT("Import Group")."</font></strong></td></tr>\n\t<tr>"
 		. "\t\n"
