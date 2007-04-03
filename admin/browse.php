@@ -45,6 +45,15 @@ include_once("login_check.php");
 //Ensure script is not run directly, avoid path disclosure
 if (empty($surveyid)) {die("No SID provided.");}
 
+//Check if results table exists
+$tablelist = $connect->MetaTables() or die ("Error getting tokens<br />".htmlspecialchars($connect->ErrorMsg()));
+foreach ($tablelist as $tbl)
+{
+	if (db_quote_id($tbl) == db_table_name('survey_'.$surveyid)) $resultsexist = 1;
+}
+
+if (!isset($resultsexist)) die("Your results table is missing!");
+
 $sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
 $sumresult5 = db_execute_assoc($sumquery5);
 $sumrows5 = $sumresult5->FetchRow();
