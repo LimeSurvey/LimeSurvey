@@ -41,7 +41,11 @@ if (!isset($action)) {$action = returnglobal('action');}
 
 include_once("login_check.php");
 
-if (!$action == "export")
+$sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
+$sumresult5 = db_execute_assoc($sumquery5);
+$sumrows5 = $sumresult5->FetchRow();
+
+if (!$action == "export" && $sumrows5['export'] == "1")
 {
 	echo $htmlheader;
 	echo "<br /><form method='post' action='vvexport.php?sid=$surveyid'>
@@ -49,30 +53,21 @@ if (!$action == "export")
         <tr><th colspan='2'>".$clang->gT("Export a VV survey file")."</th></tr>
         <tr>
          <td align='right'>".$clang->gT("Export Survey").":</td>
-         <td><input type='text' size=4 value='$surveyid' name='sid' readonly></td>
-        </tr>
-        <tr>
-         <td align='right'>
-          Mode:
-         </td>
-         <td>
-          <select name='method' >
-           <option value='deactivate'>".$clang->gT("Export, then de-activate survey")."</option>
-           <option value='none' selected='selected'>".$clang->gT("Export but leave survey active")."</option>
-          </select>
-         </td>
+         <td><input type='text' size='4' value='$surveyid' name='sid' readonly='readonly' /></td>
         </tr>
         <tr>
          <td>&nbsp;
          </td>
          <td>
-          <input type='submit' value='".$clang->gT("Export Responses")."' onclick='return confirm(\"".$clang->gT("If you have chosen to export and de-activate, this will rename your current responses table and it will not be easy to restore it. Are you sure?")."\")'>&nbsp;
-          <input type='hidden' name='action' value='export'>
+          <input type='submit' value='".$clang->gT("Export Responses")."' />&nbsp;
+          <input type='hidden' name='action' value='export' />
          </td>
         </tr>
         <tr><td colspan='2' align='center'>[<a href='$scriptname?sid=$surveyid'>".$clang->gT("Return to Survey Administration")."</a>]</td></tr>
         </table>
-        </form>";        
+        </form>
+    </body>
+</html>";        
 }
 elseif (isset($surveyid) && $surveyid)
 {
@@ -146,42 +141,6 @@ elseif (isset($surveyid) && $surveyid)
 	//echo "<pre>"; print_r($fieldnames); echo "</pre>";
 	//echo "<pre>"; print_r($fieldmap); echo "</pre>";
 
-	//Now lets finalised according to the "method"
-	if (!isset($method)) {$method=returnglobal('method');}
-	switch($method)
-	{
-		case "deactivate": //Deactivate the survey
-		$date = date('YmdHi'); //'Hi' adds 24hours+minutes to name to allow multiple deactiviations in a day
-		$tablelist = $connect->MetaTables();
-		if (in_array("{$dbprefix}tokens_{$_GET['sid']}", $tablelist))
-		{
-			$toldtable="tokens_{$_GET['sid']}";
-			$tnewtable="old_tokens_{$_GET['sid']}_{$date}";
-			$tdeactivatequery = "RENAME TABLE ".db_table_name($toldtable)." TO ".db_table_name($tnewtable);
-			$tdeactivateresult = $connect->Execute($tdeactivatequery) or die ("\n\n".$clang->gT("Error")."Couldn't deactivate tokens table because:<br />".$connect->ErrorMsg()."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
-		}
-		$oldtable="survey_{$_GET['sid']}";
-		$newtable="old_{$_GET['sid']}_{$date}";
-
-		//Update the auto_increment value from the table before renaming
-		$query = "SELECT id FROM ".db_table_name($oldtable)." ORDER BY id desc";
-		$result = db_select_limit_assoc($query, 1) or die("Couldn't get latest id from table<br />$query<br />".$connect->ErrorMsg());
-		while ($row=$result->FetchRow())
-		{
-			$new_autonumber_start=$row['id']+1;
-		}
-		$query = "UPDATE ".db_table_name('surveys')." SET autonumber_start=$new_autonumber_start WHERE sid=$surveyid";
-		$result = $connect->Execute($query); //Note this won't kill the script if it fails
-
-		//Rename survey responses table
-		$deactivatequery = "RENAME TABLE ".db_table_name($oldtable)." TO ".db_table_name($newtable);
-		$deactivateresult = $connect->Execute($deactivatequery) or die ("\n\n".$clang->gT("Error")."Couldn't deactivate because:<br />".$connect->ErrorMsg()."<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
-		break;
-		case "delete": //Delete the rows
-		break;
-		default:
-
-	} // switch
 }
 
 ?>
