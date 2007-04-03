@@ -69,7 +69,7 @@ if (!$action == "export" && $sumrows5['export'] == "1")
     </body>
 </html>";        
 }
-elseif (isset($surveyid) && $surveyid)
+elseif (isset($surveyid) && $surveyid && $sumrows5['export'] == "1")
 {
 	//Export is happening
 	header("Content-Disposition: attachment; filename=vvexport_$surveyid.xls");
