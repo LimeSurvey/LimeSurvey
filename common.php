@@ -2971,8 +2971,8 @@ function languageDropdown($surveyid,$selected)
 	$html = "<select class='listboxquestions' name='langselect' onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n";
 	foreach ($slangs as $lang)
 	{
-		if ($lang == $selected) $html .= "\t<option value='{$_SERVER['PHP_SELF']}?sid={$surveyid}&language={$lang}' selected='selected'>".getLanguageNameFromCode($lang,false)."</option>\n";
-		if ($lang != $selected) $html .= "\t<option value='{$_SERVER['PHP_SELF']}?sid={$surveyid}&language={$lang}'>".getLanguageNameFromCode($lang,false)."</option>\n";
+		if ($lang == $selected) $html .= "\t<option value='{$_SERVER['PHP_SELF']}?action=dataentry&sid={$surveyid}&language={$lang}' selected='selected'>".getLanguageNameFromCode($lang,false)."</option>\n";
+		if ($lang != $selected) $html .= "\t<option value='{$_SERVER['PHP_SELF']}?action=dataentry&sid={$surveyid}&language={$lang}'>".getLanguageNameFromCode($lang,false)."</option>\n";
 	}
 	$html .= "</select>";
 	return $html;
