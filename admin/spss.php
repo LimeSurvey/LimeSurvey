@@ -32,14 +32,17 @@ error_reporting(E_ALL ^ E_NOTICE); // No Notices!
 require_once(dirname(__FILE__).'/../config.php');
 include_once("login_check.php");
 
-if (!isset($imagefiles)) {$imagefiles="./images";}
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
-if (!isset($style)) {$style=returnglobal('style');}
-if (!isset($answers)) {$answers=returnglobal('answers');}
-if (!isset($type)) {$type=returnglobal('type');}
-
 if (empty($surveyid)) {die("Cannot run this script directly");}
-#Get all legitimate question ids
+
+$sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
+$sumresult5 = db_execute_assoc($sumquery5);
+$sumrows5 = $sumresult5->FetchRow();
+
+if ($sumrows5['export'] != "1")
+{
+	exit;
+}
 
 header("Content-Type: application/octetstream");
 header("Content-Disposition: ".

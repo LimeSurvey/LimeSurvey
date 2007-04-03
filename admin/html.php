@@ -344,9 +344,9 @@ if ($surveyid)
 
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
 		$sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
-		$sumquery3 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND language='".$baselang."'"; //Getting a count of questions for this survey
 		$sumresult5 = db_execute_assoc($sumquery5);
 		$sumrows5 = $sumresult5->FetchRow();
+		$sumquery3 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND language='".$baselang."'"; //Getting a count of questions for this survey
 		$sumresult3 = $connect->Execute($sumquery3);
 		$sumcount3 = $sumresult3->RecordCount();
 		$sumquery2 = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='".$baselang."'"; //Getting a count of groups for this survey
