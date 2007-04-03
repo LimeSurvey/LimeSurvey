@@ -102,7 +102,6 @@ if($actsurrows['browse_response']){
 		if (isset($_POST['save']) && $_POST['save'] == "on")
 		{
 			//Save this, don't submit to final response table
-			GetBaseLanguageFromSurveyID($surveyid);
 			$saver['identifier']=returnglobal('save_identifier');
 			$saver['password']=returnglobal('save_password');
 			$saver['passwordconfirm']=returnglobal('save_confirmpassword');
@@ -158,6 +157,7 @@ if($actsurrows['browse_response']){
 					 <input type='hidden' name='sid' value='$surveyid'>
 					 <input type='hidden' name='surveytable' value='".$_POST['surveytable']."'>
 					 <input type='hidden' name='subaction' value='".$_POST['action']."'>
+					 <input type='hidden' name='language' value='".$_POST['language']."'>
 					 <input type='hidden' name='save' value='on'></td>";
 				if (isset($_POST['datestamp']))
 				{
@@ -251,10 +251,10 @@ if($actsurrows['browse_response']){
 		else
 		{
 			//BUILD THE SQL TO INSERT RESPONSES
-
+			$baselang = GetBaseLanguageFromSurveyID($surveyid);
 			$iquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups")." WHERE 
 			".db_table_name("questions").".gid=".db_table_name("groups").".gid AND 
-			".db_table_name("questions").".language = '{$language}' AND ".db_table_name("groups").".language = '{$language}' AND
+			".db_table_name("questions").".language = '{$baselang}' AND ".db_table_name("groups").".language = '{$baselang}' AND
 			".db_table_name("questions").".sid=$surveyid ORDER BY ".db_table_name("groups").".group_order, title";
 			$iresult = db_execute_assoc($iquery);
 			$col_name="";
@@ -326,7 +326,7 @@ if($actsurrows['browse_response']){
 					}
 				}
 			}
-	
+			
 			$col_name = substr($col_name, 0, -3); //Strip off the last comma-space
 			$insertqr = substr($insertqr, 0, -3); //Strip off the last comma-space
 	
@@ -345,6 +345,11 @@ if($actsurrows['browse_response']){
 			{
 				$col_name .= ", ipaddr\n";
 				$insertqr .= ", '{$_POST['ipaddr']}'";
+			}
+			if (isset($_POST['language']) && $_POST['language']) // handle language
+			{
+				$col_name .= ", startlanguage\n";
+				$insertqr .= ", '{$_POST['language']}'";
 			}
 			//		$dataentryoutput .= "\t\t\t<strong>Inserting data</strong><br />\n"
 			//			."SID: $surveyid, ($surveytable)<br /><br />\n";
@@ -375,7 +380,7 @@ if($actsurrows['browse_response']){
 		}
 	
 		$dataentryoutput .= $errormsg;	
-		$dataentryoutput .= "\t\t\t</font><br />[<a href='$scriptname?action=dataentry&amp;sid=$surveyid'>".$clang->gT("Add Another Record")."</a>]<br />\n";
+		$dataentryoutput .= "\t\t\t</font><br />[<a href='$scriptname?action=dataentry&amp;sid=$surveyid&amp;language=".$_POST['language']."'>".$clang->gT("Add Another Record")."</a>]<br />\n";
 		$dataentryoutput .= "[<a href='$scriptname?sid=$surveyid'>".$clang->gT("Return to Survey Administration")."</a><br />\n";
 		if (isset($thisid))
 		{
@@ -1210,6 +1215,7 @@ if($actsurrows['browse_response']){
 					 <input type='submit' value='".$clang->gT("submit")."'>
 					 <input type='hidden' name='sid' value='$surveyid'>
 					 <input type='hidden' name='subaction' value='insert'>
+					 <input type='hidden' name='language' value='".$datalang."'>
 					 <input type='hidden' name='surveytable' value='".db_table_name("survey_".$surveyid)."'>
 					</td>
 				</tr>\n";
@@ -2176,11 +2182,18 @@ if($actsurrows['browse_response']){
 			$dataentryoutput .= "</table>";
 			return;
 		}
+		if (!isset($_GET['language']))
+		{
+			$datalang = GetBaseLanguageFromSurveyID($surveyid);
+		} else {
+			$datalang = $_GET['language'];
+		}
 		$dataentryoutput .= "\t<tr>\n";
 		$dataentryoutput .= "\t<td>\n";
 		$dataentryoutput .= "\t<input type='hidden' name='subaction' value='insert' />\n";
 		$dataentryoutput .= "\t<input type='hidden' name='surveytable' value='$surveytable' />\n";
 		$dataentryoutput .= "\t<input type='hidden' name='sid' value='$surveyid' />\n";
+		$dataentryoutput .= "\t<input type='hidden' name='language' value='$datalang' />\n";
 		$dataentryoutput .= "\t</td>\n";
 		$dataentryoutput .= "\t</tr>\n";
 		$dataentryoutput .= "</table>\n";
