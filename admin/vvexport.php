@@ -45,7 +45,12 @@ $sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surv
 $sumresult5 = db_execute_assoc($sumquery5);
 $sumrows5 = $sumresult5->FetchRow();
 
-if (!$action == "export" && $sumrows5['export'] == "1")
+if ($sumrows5['export'] != "1")
+{
+	exit;
+}
+
+if (!$action == "export")
 {
 	echo $htmlheader;
 	echo "<br /><form method='post' action='vvexport.php?sid=$surveyid'>
@@ -69,7 +74,7 @@ if (!$action == "export" && $sumrows5['export'] == "1")
     </body>
 </html>";        
 }
-elseif (isset($surveyid) && $surveyid && $sumrows5['export'] == "1")
+elseif (isset($surveyid) && $surveyid)
 {
 	//Export is happening
 	header("Content-Disposition: attachment; filename=vvexport_$surveyid.xls");
