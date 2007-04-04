@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-03-20 19:21+0100\n"
+"PO-Revision-Date: 2007-04-04 20:28+0100\n"
 "Last-Translator: b00z00\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -425,7 +425,7 @@ msgstr "Vous n'avez pas fourni d'identifiant de questionnaire"
 
 # D:\www\phpsurveyor/index.php:231
 # D:\www\phpsurveyor/save.php:215
-msgid "The answer to security question is incorrect"
+msgid "The answer to the security question is incorrect"
 msgstr "La réponse à la question de sécurité est incorrecte"
 
 msgid "This survey is no longer available."
@@ -972,6 +972,12 @@ msgstr "A partir de :"
 msgid "Show"
 msgstr "Afficher"
 
+msgid "View This Record"
+msgstr "Visualiser cet enregistrement"
+
+msgid "responses for this survey"
+msgstr "réponses pour ce questionnaire"
+
 msgid "Condition Designer"
 msgstr "Concepteur de conditions"
 
@@ -1097,6 +1103,9 @@ msgstr "La question ne peut pas être mise à jour"
 msgid "Answers can't be deleted"
 msgstr "Les réponses ne peuvent pas être supprimées"
 
+msgid "Question could not be added. You must insert a code in the mandatory field"
+msgstr "La question ne peut pas être ajoutée. Vous devez inclure un code dans le champ obligatoire."
+
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "La question ne peut pas être supprimée. Il y a des conditions qui se fondent sur cette question.  Vous ne pourrez pas supprimer cette question tant que ces conditions ne sont pas enlevées"
 
@@ -1122,6 +1131,14 @@ msgstr "Sauver tout"
 # E:\www\phpsurveyor/admin/usercontrol.php:342
 msgid "Failed to update answers"
 msgstr "Echec de la mise à jour des réponses"
+
+# D:\www\phpsurveyor/admin/database.php:605
+msgid "Answers with a code of 0 (zero) are not allowed, and will not be saved"
+msgstr "Les réponses avec 0 (zéro) comme code ne sont pas permises et ne seront pas sauvegardées"
+
+# D:\www\phpsurveyor/admin/database.php:660
+msgid "Duplicate codes found, these entries won't be updated"
+msgstr "Doublons sur le codes trouvés, ces entrées ne seront pas mises à jour."
 
 msgid "Up"
 msgstr "Haut"
@@ -1205,9 +1222,6 @@ msgstr "L'entrée était assignée à l'ID de l'enregistrement suivant : "
 msgid "Add Another Record"
 msgstr "Ajouter un autre enregistrement"
 
-msgid "View This Record"
-msgstr "Visualiser cet enregistrement"
-
 msgid "Browse Saved Responses"
 msgstr "Parcourir les réponses sauvegardées"
 
@@ -1242,6 +1256,9 @@ msgstr "ET"
 
 msgid "to question {QUESTION}, you answered {ANSWER}"
 msgstr "à la question {QUESTION}, vous avez répondu {ANSWER}"
+
+msgid "No Answer"
+msgstr "Pas de réponse"
 
 msgid "Only answer this if the following conditions are met:"
 msgstr "Répondre seulement à cette question si les conditions suivantes sont réunies :"
@@ -1425,6 +1442,13 @@ msgstr "Attribut_1"
 msgid "Attribute 2"
 msgstr "Attribut_2"
 
+# D:\www\phpsurveyor/admin/exportresults.php:720
+msgid "NEW RECORD"
+msgstr "NOUVEL ENREGISTREMENT"
+
+msgid "Time Submitted"
+msgstr "Heure d'envoi"
+
 # E:\www\phpsurveyor/admin/export.php:813
 # E:\www\phpsurveyor/admin/export.php:821
 msgid "N/A"
@@ -1537,6 +1561,9 @@ msgstr "Exécuter ce questionnaire"
 msgid "Please select a language:"
 msgstr "SVP sélectionnez une langue :"
 
+msgid "This survey is not active, data entry is not allowed"
+msgstr "Ce questionnaire n'est pas activé, la saisie de données n'est pas permise."
+
 msgid "Printable Version of Survey"
 msgstr "Version imprimable du questionnaire"
 
@@ -1615,6 +1642,9 @@ msgstr "Les participants peuvent sauvegarder un remplissage partiel du questionn
 
 msgid "Regenerate Question Codes:"
 msgstr "Régénérer les codes des questions :"
+
+msgid "Are you sure you want regenerate the question codes?"
+msgstr "Etes-vous sûr de vouloir régénérer les codes des questions ?"
 
 msgid "Straight"
 msgstr "Complet"
@@ -2171,6 +2201,9 @@ msgstr "Ce paramètre ne peut pas être changé après !"
 msgid "Date Format"
 msgstr "Format date"
 
+msgid "Please select a file to import!"
+msgstr "SVP sélectionnez un fichier à importer !"
+
 msgid "Import Survey"
 msgstr "Importer le questionnaire"
 
@@ -2283,6 +2316,10 @@ msgstr "ID du questionnaire cible"
 
 msgid "Import Responses"
 msgstr "Importer les réponses"
+
+# labels.php:231
+msgid "Are you sure?"
+msgstr "Etes-vous sûr?"
 
 msgid "Import Question"
 msgstr "Importer la question"
@@ -2413,10 +2450,6 @@ msgstr "Editer le jeu d'étiquettes"
 msgid "Delete label set"
 msgstr "Supprimer le jeu d'étiquettes"
 
-# labels.php:231
-msgid "Are you sure?"
-msgstr "Etes-vous sûr?"
-
 msgid "New label"
 msgstr "Nouvelle étiquette"
 
@@ -2546,8 +2579,8 @@ msgstr "Sélectionner un fichier CSV :"
 msgid "Copy Question"
 msgstr "Copier une question"
 
-msgid "Note: You MUST enter a new question code"
-msgstr "Note : vous devez OBLIGATOIREMENT saisir un nouveau code pour la question"
+msgid "Note: You MUST enter a new question code!"
+msgstr "Note : vous devez OBLIGATOIREMENT saisir un nouveau code pour la question !"
 
 msgid "Group:"
 msgstr "Groupe :"
@@ -2634,10 +2667,6 @@ msgstr "Nombre total d'enregistrements dans le questionnaire "
 
 msgid "Percentage of total"
 msgstr "Pourcentage du total "
-
-# E:\www\phpsurveyor/admin/statistics.php:861
-msgid "SQL"
-msgstr "SQL"
 
 msgid "Browse"
 msgstr "Parcourir"
@@ -2811,6 +2840,9 @@ msgstr "Fichiers standards :"
 
 msgid "Now editing:"
 msgstr "Edition en cours :"
+
+msgid "Save Changes"
+msgstr "Sauvegarder les changements"
 
 # E:\www\phpsurveyor/admin/templates.php:604
 msgid "Changes cannot be saved to the default template."
@@ -3174,8 +3206,14 @@ msgid "Username was not supplied."
 msgstr "Le nom d'utilisateur n'était pas rempli."
 
 # E:\www\phpsurveyor/admin/usercontrol.php:176
-msgid "You were signed in. Your data:"
-msgstr "Vous avez été enregistré. Vos informations :"
+msgid "You were signed in on the site"
+msgstr "Vous avez été enregistré sur le site"
+
+# E:\www\phpsurveyor/common.php:213
+# E:\www\phpsurveyor/common.php:215
+# E:\www\phpsurveyor/admin/usercontrol.php:91
+msgid "Login here"
+msgstr "Connexion"
 
 # E:\www\phpsurveyor/admin/usercontrol.php:188
 msgid "An email with a generated password was sent to the user."
@@ -3369,15 +3407,6 @@ msgstr "Mise à jour du groupe"
 
 msgid "Adding User to group"
 msgstr "Ajouter un utilisateur au groupe"
-
-msgid "Export, then de-activate survey"
-msgstr "Exporter et ensuite désactiver le questionnaire"
-
-msgid "Export but leave survey active"
-msgstr "Exporter mais laisser le questionnaire activé"
-
-msgid "If you have chosen to export and de-activate, this will rename your current responses table and it will not be easy to restore it. Are you sure?"
-msgstr "Si vous choisissez d'exporter et de désactiver le questionnaire, cela renommera votre table de réponses et cela ne sera pas facile de la restaurer. Etes-vous sûr ?"
 
 msgid "File:"
 msgstr "Fichier :"
