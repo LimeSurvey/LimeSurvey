@@ -2375,26 +2375,26 @@ if ($action == "newsurvey")
 		. "\t\t<font class='settingcaption'><font color='white'>".$clang->gT("Create Survey")."</font></font></td></tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<td align='right' width='25%'><font class='settingcaption'>".$clang->gT("Title").":</font></td>\n"
-		. "\t\t<td><input type='text' size='50' id='surveyls_title' name='surveyls_title' /><font size=1> ".$clang->gT("(This field is mandatory.)")."</font></td></tr>\n"
+		. "\t\t<td align='left'><input type='text' size='50' id='surveyls_title' name='surveyls_title' /><font size=1> ".$clang->gT("(This field is mandatory.)")."</font></td></tr>\n"
 		. "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Description:")."</font>	</td>\n"
-		. "\t\t<td><textarea cols='50' rows='5' name='description'></textarea></td></tr>\n"
+		. "\t\t<td align='left'><textarea cols='50' rows='5' name='description'></textarea></td></tr>\n"
 		. "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Welcome:")."</font></td>\n"
-		. "\t\t<td><textarea cols='50' rows='5' name='welcome'></textarea></td></tr>\n"
+		. "\t\t<td align='left'><textarea cols='50' rows='5' name='welcome'></textarea></td></tr>\n"
 		. "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Administrator:")."</font></td>\n"
-		. "\t\t<td><input type='text' size='50' name='admin' /></td></tr>\n"
+		. "\t\t<td align='left'><input type='text' size='50' name='admin' /></td></tr>\n"
 		. "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Admin Email:")."</font></td>\n"
-		. "\t\t<td><input type='text' size='50' name='adminemail' /></td></tr>\n";
+		. "\t\t<td align='left'><input type='text' size='50' name='adminemail' /></td></tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Fax To:")."</font></td>\n"
-		. "\t\t<td><input type='text' size='50' name='faxto' /></td></tr>\n";
+		. "\t\t<td align='left'><input type='text' size='50' name='faxto' /></td></tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Format:")."</font></td>\n"
-		. "\t\t<td><select name='format'>\n"
+		. "\t\t<td align='left'><select name='format'>\n"
 		. "\t\t\t<option value='S' selected='selected'>".$clang->gT("Question by Question")."</option>\n"
 		. "\t\t\t<option value='G'>".$clang->gT("Group by Group")."</option>\n"
 		. "\t\t\t<option value='A'>".$clang->gT("All in one")."</option>\n"
 		. "\t\t</select></td>\n"
 		. "\t</tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Template:")."</font></td>\n"
-		. "\t\t<td><select name='template'>\n";
+		. "\t\t<td align='left'><select name='template'>\n";
 		foreach (gettemplatelist() as $tname)
 		{
 			$newsurvey .= "\t\t\t<option value='$tname'";
@@ -2406,7 +2406,7 @@ if ($action == "newsurvey")
 		. "\t</tr>\n";
 		//COOKIES
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Use Cookies?")."</font></td>\n"
-		. "\t\t<td><select name='usecookie'>\n"
+		. "\t\t<td align='left'><select name='usecookie'>\n"
 		. "\t\t\t<option value='Y'";
 		if (isset($esrow) && $esrow['usecookie'] == "Y") {$newsurvey .= " selected='selected'";}
 		$newsurvey .= ">".$clang->gT("Yes")."</option>\n"
@@ -2417,7 +2417,7 @@ if ($action == "newsurvey")
 		. "\t</tr>\n";
 		//ALLOW SAVES
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Allow Saves?")."</font></td>\n"
-		. "\t\t<td><select name='allowsave'>\n"
+		. "\t\t<td align='left'><select name='allowsave'>\n"
 		. "\t\t\t<option value='Y'";
 		if (!isset($esrow['allowsave']) || !$esrow['allowsave'] || $esrow['allowsave'] == "Y") {$newsurvey .= " selected='selected'";}
 		$newsurvey .= ">".$clang->gT("Yes")."</option>\n"
@@ -2428,7 +2428,7 @@ if ($action == "newsurvey")
 		. "\t</tr>\n";
 		//ALLOW PREV
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Show [<< Prev] button")."</font></td>\n"
-		. "\t\t<td><select name='allowprev'>\n"
+		. "\t\t<td align='left'><select name='allowprev'>\n"
 		. "\t\t\t<option value='Y'";
 		if (!isset($esrow['allowprev']) || !$esrow['allowprev'] || $esrow['allowprev'] == "Y") {$newsurvey .= " selected='selected'";}
 		$newsurvey .= ">".$clang->gT("Yes")."</option>\n"
@@ -2439,65 +2439,65 @@ if ($action == "newsurvey")
 		. "\t</tr>\n";
 		//NOTIFICATIONS
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Admin Notification:")."</font></td>\n"
-		. "\t\t<td><select name='notification'>\n"
+		. "\t\t<td align='left'><select name='notification'>\n"
 		. getNotificationlist(0)
 		. "\t\t</select></td>\n"
 		. "\t</tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Anonymous?")."</font></td>\n"
-		. "\t\t<td><select name='private'>\n"
+		. "\t\t<td align='left'><select name='private'>\n"
 		. "\t\t\t<option value='Y' selected='selected'>".$clang->gT("Yes")."</option>\n"
 		. "\t\t\t<option value='N'>".$clang->gT("No")."</option>\n"
 		. "\t\t</select></td>\n\t</tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Invitation Email Subject:")."</font></td>\n"
-		. "\t\t<td><input type='text' size='54' name='email_invite_subj' value='".$clang->gT("Invitation to participate in survey")."' />\n"
+		. "\t\t<td align='left'><input type='text' size='54' name='email_invite_subj' value='".$clang->gT("Invitation to participate in survey")."' />\n"
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Invitation Email:")."</font></td>\n"
-		. "\t\t<td><textarea cols=50 rows=5 name='email_invite'>".$clang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."</textarea>\n"
+		. "\t\t<td align='left'><textarea cols=50 rows=5 name='email_invite'>".$clang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."</textarea>\n"
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Email Reminder Subject:")."</font></td>\n"
-		. "\t\t<td><input type='text' size='54' name='email_remind_subj' value='".$clang->gT("Reminder to participate in survey")."' />\n"
+		. "\t\t<td align='left'><input type='text' size='54' name='email_remind_subj' value='".$clang->gT("Reminder to participate in survey")."' />\n"
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Email Reminder:")."</font></td>\n"
-		. "\t\t<td><textarea cols=50 rows=5 name='email_remind'>".$clang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."</textarea>\n"
+		. "\t\t<td align='left'><textarea cols=50 rows=5 name='email_remind'>".$clang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."</textarea>\n"
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Confirmation Email Subject")."</font></td>\n"
-		. "\t\t<td><input type='text' size='54' name='email_confirm_subj' value='".$clang->gT("Confirmation of completed survey")."' />\n"
+		. "\t\t<td align='left'><input type='text' size='54' name='email_confirm_subj' value='".$clang->gT("Confirmation of completed survey")."' />\n"
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Confirmation Email")."</font></td>\n"
-		. "\t\t<td><textarea cols=50 rows=5 name='email_confirm'>".$clang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}")."</textarea>\n"
+		. "\t\t<td align='left'><textarea cols=50 rows=5 name='email_confirm'>".$clang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}")."</textarea>\n"
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Allow public registration?")."</font></td>\n"
-		. "\t\t<td><select name='allowregister'>\n"
+		. "\t\t<td align='left'><select name='allowregister'>\n"
 		. "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
 		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
 		. "\t\t</select></td>\n\t</tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Public registration Email Subject:")."</font></td>\n"
-		. "\t\t<td><input type='text' size='54' name='email_register_subj' value='".$clang->gT("Survey Registration Confirmation")."' />\n"
+		. "\t\t<td align='left'><input type='text' size='54' name='email_register_subj' value='".$clang->gT("Survey Registration Confirmation")."' />\n"
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Public registration Email:")."</font></td>\n"
-		. "\t\t<td><textarea cols=50 rows=5 name='email_register'>".$clang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.")."</textarea>\n"
+		. "\t\t<td align='left'><textarea cols=50 rows=5 name='email_register'>".$clang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.")."</textarea>\n"
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td align='right' valign='top'><font class='settingcaption'>".$clang->gT("Token Attribute Names:")."</font></td>\n"
-		. "\t\t<td><font class='settingcaption'><input type='text' size='25' name='attribute1' />(".$clang->gT("Attribute 1").")<br />"
+		. "\t\t<td align='left'><font class='settingcaption'><input type='text' size='25' name='attribute1' />(".$clang->gT("Attribute 1").")<br />"
 		. "<input type='text' size='25' name='attribute2' />(".$clang->gT("Attribute 2").")</font></td>\n\t</tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Date Stamp?")."</font></td>\n"
-		. "\t\t<td><select name='datestamp'>\n"
+		. "\t\t<td align='left'><select name='datestamp'>\n"
 		. "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
 		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
 		. "\t\t</select></td>\n\t</tr>\n";
 		// IP Address
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Save IP Address?")."</font></td>\n"
-		. "\t\t<td><select name='ipaddr'>\n"                                . "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
+		. "\t\t<td align='left'><select name='ipaddr'>\n"                                . "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
 		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
 		. "\t\t</select></td>\n\t</tr>\n";
 		// Referring URL
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Save Referring URL?")."</font></td>\n"
-		. "\t\t<td><select name='refurl'>\n"                                . "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
+		. "\t\t<td align='left'><select name='refurl'>\n"                                . "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
 		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
 		. "\t\t</select></td>\n\t</tr>\n";
 		//Survey Language
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Base Language:")."</font></td>\n"
-		. "\t\t<td><select name='language'>\n";
+		. "\t\t<td align='left'><select name='language'>\n";
 
 
 		foreach (getLanguageData() as  $langkey2=>$langname)
@@ -2510,22 +2510,22 @@ if ($action == "newsurvey")
 		$newsurvey .= "\t\t</select><font size='1'> ".$clang->gT("This setting cannot be changed later!")."</font></td>\n"
 		. "\t</tr>\n";
 		$newsurvey .= "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Expires?")."</font></td>\n"
-		. "\t\t\t<td><select name='useexpiry'><option value='Y'>".$clang->gT("Yes")."</option>\n"
+		. "\t\t\t<td align='left'><select name='useexpiry'><option value='Y'>".$clang->gT("Yes")."</option>\n"
 		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option></select></td></tr>\n"
 		. "<tr><td align='right'><font class='settingcaption'>".$clang->gT("Expiry Date:")."</font></td>\n"
-		. "\t\t<td><input type='text' id='f_date_b' size='12' name='expires' value='"
+		. "\t\t<td align='left'><input type='text' id='f_date_b' size='12' name='expires' value='"
 		. date("Y-m-d")."' /><button type='reset' id='f_trigger_b'>...</button>"
 		. "<font size='1'> ".$clang->gT("Date Format").": YYYY-MM-DD</font></td></tr>\n"
 		. "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("End URL:")."</font></td>\n"
-		. "\t\t<td><input type='text' size='50' name='url' value='http://";
+		. "\t\t<td align='left'><input type='text' size='50' name='url' value='http://";
 		if (isset($esrow)) {$newsurvey .= $esrow['url'];}
 		$newsurvey .= "' /></td></tr>\n"
 		. "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("URL Description:")."</font></td>\n"
-		. "\t\t<td><input type='text' size='50' name='urldescrip' value='";
+		. "\t\t<td align='left'><input type='text' size='50' name='urldescrip' value='";
 		if (isset($esrow)) {$newsurvey .= $esrow['surveyls_urldescription'];}
 		$newsurvey .= "' /></td></tr>\n"
 		. "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Automatically load URL when survey complete?")."</font></td>\n"
-		. "\t\t<td><select name='autoredirect'>\n"
+		. "\t\t<td align='left'><select name='autoredirect'>\n"
 		. "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
 		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
 		. "</select></td></tr>"
@@ -2539,7 +2539,7 @@ if ($action == "newsurvey")
 		. "<tr><td colspan='2' bgcolor='black' align='center'>\n"
 		. "\t\t<font class='settingcaption'><font color='white'>".$clang->gT("Import Survey")."</font></font></td></tr>\n\t<tr>"
 		. "\t\t<td align='right'><font class='settingcaption'>".$clang->gT("Select CSV/SQL File:")."</font></td>\n"
-		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\" /></td></tr>\n"
+		. "\t\t<td align='left'><input name=\"the_file\" type=\"file\" size=\"35\" /></td></tr>\n"
 		. "\t<tr><td colspan='2' align='center'><input type='submit' value='".$clang->gT("Import Survey")."' />\n"
 		. "\t<input type='hidden' name='action' value='importsurvey' /></td>\n"
 		. "\t</tr>\n</table></form>\n";

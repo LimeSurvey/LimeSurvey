@@ -46,19 +46,19 @@ if ($action == "addquestion")
 		. "\t</tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<td align='right'  width='35%'><strong>".$clang->gT("Code:")."</strong></td>\n"
-		. "\t\t<td><input type='text' size='20' name='title' />"
+		. "\t\t<td align='left'><input type='text' size='20' name='title' />"
 		. "<font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></td></tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Question:")."</strong></td>\n"
-		. "\t\t<td><textarea cols='50' rows='3' name='question'></textarea></td>\n"
+		. "\t\t<td align='left'><textarea cols='50' rows='3' name='question'></textarea></td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Help:")."</strong></td>\n"
-		. "\t\t<td><textarea cols='50' rows='3' name='help'></textarea></td>\n"
+		. "\t\t<td align='left'><textarea cols='50' rows='3' name='help'></textarea></td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Type:")."</strong></td>\n"
-		. "\t\t<td><select name='type' id='question_type' "
+		. "\t\t<td align='left'><select name='type' id='question_type' "
 		. "onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
 		. "$qtypeselect"
 		. "\t\t</select></td>\n"
@@ -66,14 +66,14 @@ if ($action == "addquestion")
 
 		$newquestionoutput .= "\t<tr id='Validation'>\n"
 		. "\t\t<td align='right'><strong>".$clang->gT("Validation:")."</strong></td>\n"
-		. "\t\t<td>\n"
+		. "\t\t<td align='left'>\n"
 		. "\t\t<input type='text' name='preg' size='50' />\n"
 		. "\t\t</td>\n"
 		. "\t</tr>\n";
 
 		$newquestionoutput .= "\t<tr id='LabelSets' style='display: none'>\n"
 		. "\t\t<td align='right'><strong>".$clang->gT("Label Set:")."</strong></td>\n"
-		. "\t\t<td>\n"
+		. "\t\t<td align='left'>\n"
 		. "\t\t<select name='lid' >\n";
 		$labelsets=getlabelsets(GetBaseLanguageFromSurveyID($surveyid));
 		if (count($labelsets)>0)
@@ -90,7 +90,7 @@ if ($action == "addquestion")
 
 		$newquestionoutput .= "\t<tr id='OtherSelection' style='display: none'>\n"
 		. "\t\t<td align='right'><strong>".$clang->gT("Other:")."</strong></td>\n"
-		. "\t\t<td>\n"
+		. "\t\t<td align='left'>\n"
 		. "\t\t\t<label for='OY'>".$clang->gT("Yes")."</label>"
 		. "<input id='OY' type='radio' name='other' value='Y' />&nbsp;&nbsp;\n"
 		. "\t\t\t<label for='ON'>".$clang->gT("No")."</label>"
@@ -100,7 +100,7 @@ if ($action == "addquestion")
 
 		$newquestionoutput .= "\t<tr id='MandatorySelection'>\n"
 		. "\t\t<td align='right'><strong>".$clang->gT("Mandatory:")."</strong></td>\n"
-		. "\t\t<td>\n"
+		. "\t\t<td align='left'>\n"
 		. "\t\t\t<label for='MY'>".$clang->gT("Yes")."</label>"
 		. "<input id='MY' type='radio' name='mandatory' value='Y' />&nbsp;&nbsp;\n"
 		. "\t\t\t<label for='MN'>".$clang->gT("No")."</label>"
@@ -113,7 +113,7 @@ if ($action == "addquestion")
 
 		$newquestionoutput .= "\t<tr id='QTattributes'>
 							<td align='right'><strong>".$clang->gT("Question Attributes:")."</strong></td>
-							<td><select id='QTlist' name='attribute_name' >
+							<td align='left'><select id='QTlist' name='attribute_name' >
 							</select>
 							<input type='text' id='QTtext' name='attribute_value'  /></td></tr>\n";
 		$newquestionoutput .= "\t<tr>\n"
@@ -136,7 +136,7 @@ if ($action == "addquestion")
 		. "<tr><td colspan='2' bgcolor='black' align='center'>\n"
 		. "\t\t<strong><font color='white'>".$clang->gT("Import Question")."</font></strong></td></tr>\n\t<tr>"
 		. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Select CSV File").":</strong></td>\n"
-		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"50\" /></td></tr>\n"
+		. "\t\t<td align='left'><input name=\"the_file\" type=\"file\" size=\"50\" /></td></tr>\n"
 		. "\t<tr><td colspan='2' align='center'><input type='submit' "
 		. "value='".$clang->gT("Import Question")."' />\n"
 		. "\t<input type='hidden' name='action' value='importquestion' />\n"
