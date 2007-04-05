@@ -51,6 +51,13 @@ body.default
     font-weight:bold;
     color:RED;
     }
+.warningjs
+    {
+    font-size:12px;
+    font-weight:bold;
+    color:RED;
+    }
+
 .saveall
     {
     font-size:10px;
@@ -68,6 +75,7 @@ body.default
 </head>
 <body class='default'>
 <table width='75%' align='center' border='1' style='border-collapse: collapse; border-color: #111111' bgcolor='white'>
+{CHECKJAVASCRIPT}
 	<tr>
 		<td align='center'>
 			<table width='100%' cellspacing='0'>

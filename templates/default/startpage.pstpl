@@ -51,6 +51,14 @@ body.default
     font-weight:bold;
     color:RED;
     }
+
+.warningjs 
+    {
+    font-size:12px;
+    font-weight:bold;
+    color:RED;
+    }
+
 .saveall
     {
     font-size:10px;

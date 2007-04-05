@@ -1,4 +1,5 @@
 <table width="100%">
+        {CHECKJAVASCRIPT}
 	<tr bgcolor='#2F5376'>
 		<td> 
 		<div align="center">

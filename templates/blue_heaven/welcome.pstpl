@@ -1,4 +1,5 @@
 <table align='center' width='100%' cellpadding='25' cellspacing='0' border='1' style='border-collapse: collapse;border-color:#111111'>
+{CHECKJAVASCRIPT}
 	<tr>
 		<td align='center' bgcolor='#E5F9FF'>
 			<font size='5' color='#0A47FF'><b>{SURVEYNAME}</b></font><br /><br />

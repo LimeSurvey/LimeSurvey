@@ -91,6 +91,12 @@ body{
 	{
 	background-color: #EEFFEE;
 	}
+.warningjs
+        {
+        font-size:12px;
+        font-weight:bold;
+        color:RED;
+        }
 .asterisk
     {
     color: #FF0000;
