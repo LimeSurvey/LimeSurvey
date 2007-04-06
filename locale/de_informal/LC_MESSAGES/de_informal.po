@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-03-11 23:52+0100\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2007-04-06 20:51+0100\n"
+"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -240,6 +240,10 @@ msgstr "Unverändert"
 msgid "Comment"
 msgstr "Kommentar"
 
+# D:\web\xampp\htdocs\phpsurveyor/common.php:1768
+msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
+msgstr "Achtung: Javascript ist in Deinem Browser deaktiviert. Es kann sein, dass Du daher die Umfrage nicht abschließen werden kannst. Bitte überprüfe Deine Browser-Einstellungen."
+
 msgid "There is 1 question in this survey"
 msgstr "Es gibt nur eine Frage in dieser Umfrage."
 
@@ -426,8 +430,8 @@ msgstr "Du hast keine Identifikationsnummer für den Fragebogen angegeben."
 # D:\web\xampp\htdocs\phpsurveyor/index.php:246
 # D:\web\xampp\htdocs\phpsurveyor/register.php:70
 # D:\web\xampp\htdocs\phpsurveyor/save.php:215
-msgid "The answer to security question is incorrect"
-msgstr "Die Antwort zur Sicherheitabfrage ist falsch."
+msgid "The answer to the security question is incorrect"
+msgstr "Die Antwort zur Sicherheitabfrage ist falsch"
 
 msgid "This survey is no longer available."
 msgstr "Diese Umfrage ist beendet und steht nicht mehr zur Verfügung."
@@ -968,6 +972,12 @@ msgstr "Start von:"
 msgid "Show"
 msgstr "Anzeigen"
 
+msgid "View This Record"
+msgstr "Diesen Datensatz anzeigen"
+
+msgid "responses for this survey"
+msgstr "Antworten für diese Umfrage"
+
 msgid "Condition Designer"
 msgstr "Bedingungs Designer"
 
@@ -1093,6 +1103,9 @@ msgstr "Frage konnte nicht aktualisiert werden."
 msgid "Answers can't be deleted"
 msgstr "Frage konnte nicht gelöscht werden."
 
+msgid "Question could not be added. You must insert a code in the mandatory field"
+msgstr "Frage konnte nicht hinzugefügt werden. Du musst einen Code eingeben."
+
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "Frage konnte nicht gelöscht werden. Es gibt Bedingungen in anderen Fragen, welche von den Antworten auf diese Frage abhängen. Du kannst diese Frage nicht löschen, solange diese Bedingungen nicht entfernt wurden."
 
@@ -1123,6 +1136,14 @@ msgstr "Alles Speichern"
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1823
 msgid "Failed to update answers"
 msgstr "Konnte Antworten nicht aktualisieren"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/database.php:659
+msgid "Answers with a code of 0 (zero) are not allowed, and will not be saved"
+msgstr "Antworten mit einem Fragecode von '0' sind nicht erlaubt und werden nicht gespeichert."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/database.php:660
+msgid "Duplicate codes found, these entries won't be updated"
+msgstr "Doppelte Codes gefunden, diese Einträge werden nicht aktualisiert"
 
 msgid "Up"
 msgstr "Hoch"
@@ -1211,9 +1232,6 @@ msgstr "Dem Eintrag wurde folgende Datensatz-ID zugewiesen: "
 msgid "Add Another Record"
 msgstr "Einen weiteren Datensatz hinzufügen"
 
-msgid "View This Record"
-msgstr "Diesen Datensatz anzeigen"
-
 msgid "Browse Saved Responses"
 msgstr "Gespeicherte Antworten anzeigen"
 
@@ -1248,6 +1266,9 @@ msgstr "UND"
 
 msgid "to question {QUESTION}, you answered {ANSWER}"
 msgstr "Die Frage {QUESTION} hast Du mit {ANSWER} beantwortet"
+
+msgid "No Answer"
+msgstr "Keine Antwort"
 
 msgid "Only answer this if the following conditions are met:"
 msgstr "Beantworte diese Frage nur, wenn folgende Bedingungen erfüllt sind:"
@@ -1430,6 +1451,13 @@ msgstr "Name Attribute 1"
 msgid "Attribute 2"
 msgstr "Name Attribute 2"
 
+# D:\web\xampp\htdocs\phpsurveyor/admin/exportresults.php:730
+msgid "NEW RECORD"
+msgstr "NEUER DATENSATZ"
+
+msgid "Time Submitted"
+msgstr "Abgesendet"
+
 msgid "N/A"
 msgstr "Nicht zutreffend"
 
@@ -1533,6 +1561,9 @@ msgstr "Diese Umfrage ausführen"
 msgid "Please select a language:"
 msgstr "Bitte wähle eine Sprache aus:"
 
+msgid "This survey is not active, data entry is not allowed"
+msgstr "Diese Umfrage ist nicht aktiv - Dateneingabe ist nicht erlaubt"
+
 msgid "Printable Version of Survey"
 msgstr "Druckbare Version der Umfrage"
 
@@ -1613,6 +1644,9 @@ msgstr "Teilnehmer können teilweise fertiggestellte Umfrage zwischenspeichern."
 msgid "Regenerate Question Codes:"
 msgstr "Fragen-Codes neu erzeugen:"
 
+msgid "Are you sure you want regenerate the question codes?"
+msgstr "Bist Du wirklich sicher, dass Du die Fragencodes neu erzeugen lassen willst?"
+
 msgid "Straight"
 msgstr "Normal aufsteigend"
 
@@ -1672,24 +1706,6 @@ msgstr "Du müssen Gruppen hinzufügen."
 
 msgid "You need to add questions"
 msgstr "Du müssen Fragen hinzufügen."
-
-msgid "User Groups"
-msgstr "Benutzergruppen"
-
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:781
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1674
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1765
-msgid "Mail to all Members"
-msgstr "Nachricht an alle Mitglieder"
-
-msgid "Edit Current User Group"
-msgstr "Diese Benutzergruppe bearbeiten"
-
-msgid "Delete Current User Group"
-msgstr "Diese Benutzergruppe löschen"
-
-msgid "Add New User Group"
-msgstr "Neue Benutzergruppe hinzufügen"
 
 msgid "Edit Current Group"
 msgstr "Diese Gruppe bearbeiten"
@@ -1833,201 +1849,14 @@ msgstr "Neue Antwort"
 msgid "You cannot add answers because they are being used by an active survey."
 msgstr "Du kannst die Codes nicht ändern und keine Einträge hinzufügen oder löschen, weil dieses Beschriftung-Set in einer aktiven Umfrage benutzt wird."
 
-msgid "Modifying User"
-msgstr "Benutzer bearbeiten"
-
-msgid "Username"
-msgstr "Benutzername"
-
-msgid "Full name"
-msgstr "Vor- und Nachname"
-
-msgid "Update"
-msgstr "aktualisieren"
-
-msgid "Set User Rights"
-msgstr "Setze Benutzerrechte"
-
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1473
-msgid "Setting new Parent"
-msgstr "Übergeordneten User setzen"
-
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1474
-msgid "Set Parent successful."
-msgstr "Übergeordneten User erfolgreich gesetzt."
-
-msgid "User Control"
-msgstr "Benutzer-Administration"
-
-msgid "Created by"
-msgstr "Angelegt von"
-
-msgid "Edit User"
-msgstr "Benutzer bearbeiten"
-
 msgid "Add User"
 msgstr "Benutzer hinzufügen"
 
-msgid "Add User Group"
-msgstr "Benutzergruppe hinzufügen"
-
-msgid "Name:"
-msgstr "Name:"
-
-msgid "Required"
-msgstr "Pflichtangabe"
-
-msgid "Optional"
-msgstr "Optionale Frage"
-
-msgid "Add Group"
-msgstr "Gruppe hinzufügen"
-
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1639
-msgid "Edit User Group (Owner: "
-msgstr "Bearbeite Benutzergruppe (Eigentümer:"
-
-msgid "Update User Group"
-msgstr "Benutzergruppe aktualisieren"
-
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1676
-msgid "To:"
-msgstr "An:"
-
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1678
-msgid "Send me a copy:"
-msgstr "Sende eine Kopie an:"
-
-msgid "Subject:"
-msgstr "Betreff:"
-
-msgid "Message:"
-msgstr "Nachricht:"
-
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1684
-msgid "Send"
-msgstr "Sende"
-
-msgid "Deleting User Group"
-msgstr "Lösche Benutzergruppe"
-
-msgid "Group Name"
-msgstr "Gruppenname"
-
-msgid "Could not delete user group."
-msgstr "Konnte Benutzergruppe nicht löschen."
-
-msgid "Could not delete user group. No group selected."
-msgstr "Konnte Benutzergruppe nicht löschen. Es wurde keine Gruppe ausgewählt."
-
-msgid "Adding User Group"
-msgstr "Füge Benutzergruppe hinzu"
-
-msgid "Description: "
-msgstr "Beschreibung:"
-
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1745
-msgid "User group successfully added!"
-msgstr "Benutzergruppe erfolgreich hinzugefügt!"
-
-msgid "Failed to add Group!"
-msgstr "Konnte Gruppe nicht hinzufügen."
-
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1751
-msgid "Group already exists!"
-msgstr "Gruppe existiert bereits."
-
-msgid "Group name was not supplied!"
-msgstr "Es wurde kein Gruppenname angegeben."
-
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1800
-msgid "Mail not sent!"
-msgstr "Mail wurde nicht versendet."
-
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1818
-msgid "Edit User Group Successfully!"
-msgstr "Benutzergruppe erfolgreich geändert."
-
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1823
-msgid "Failed to update!"
-msgstr "Fehler beim Aktualisieren der Daten!"
-
-msgid "Delete User"
-msgstr "Lösche Benutzer"
-
-msgid "Could not delete user. User was not supplied."
-msgstr "Konnte Benutzer nicht löschen. Kein Benutzername angegeben."
-
-msgid "Add Question"
-msgstr "Frage hinzufügen"
-
-msgid "Label Set:"
-msgstr "Beschriftung-Set:"
-
-msgid "Mandatory:"
-msgstr "Pflichtangabe:"
-
-msgid "Question Attributes:"
-msgstr "Frage-Attribute:"
-
-msgid "Import Question"
-msgstr "Fragen importieren"
-
-msgid "Select CSV File"
-msgstr "CSV-Datei auswählen"
-
-msgid "Copy Question"
-msgstr "Frage kopieren"
-
-msgid "Note: You MUST enter a new question code"
-msgstr "Anmerkung: Du MUSST einen neuen Frage-Code eingeben"
-
-msgid "Group:"
-msgstr "Gruppe:"
-
-msgid "Copy Answers?"
-msgstr "Fragen kopieren?"
-
-msgid "Copy Attributes?"
-msgstr "Attribute kopieren?"
-
-msgid "Edit Question"
-msgstr "Bearbeite Frage"
-
-msgid "Update Question"
-msgstr "Frage aktualisieren"
-
-msgid "Save"
-msgstr "Speichern"
-
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2559
-msgid "Current group is using conditional questions"
-msgstr "Die aktuelle Gruppe nutzt Fragen mit Bedingungen"
-
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2559
-msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
-msgstr "Das Verändern der Reihenfolge in dieser Gruppe ist bestimmten Beschränkungen unterworfen, um sicherzustellen, dass Fragen mit Bedingungen nicht vor Fragen verschoben werden von denen die Bedingung abhängt."
-
-msgid "See the conditions marked on the following questions"
-msgstr "Bedingungen für diese Frage setzten"
-
-msgid "Import Group"
-msgstr "Gruppen importieren"
-
-msgid "Select CSV File:"
-msgstr "CSV-Datei auswählen:"
-
-msgid "Edit Group"
-msgstr "Gruppe bearbeiten"
-
-msgid "Update Group"
-msgstr "Gruppe aktualisieren"
-
-msgid "Adding User to group"
-msgstr "Füge Benutzer zu Gruppe hinzu"
-
 msgid "User added."
 msgstr "Benutzer hinzugefügt."
+
+msgid "Set Survey Rights"
+msgstr "Setze Umfrage-Benutzerrechte"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2667
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2673
@@ -2050,8 +1879,8 @@ msgstr "Benutzername existiert bereits."
 msgid "No Username selected."
 msgstr "Kein Username gewählt."
 
-msgid "Set Survey Rights"
-msgstr "Setze Umfrage-Benutzerrechte"
+msgid "Add User Group"
+msgstr "Benutzergruppe hinzufügen"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2755
 msgid "User Group added."
@@ -2063,6 +1892,12 @@ msgstr "Konnte Benutzergruppe nicht hinzufügen."
 
 msgid "Deleting User"
 msgstr "Lösche Benutzer"
+
+msgid "Username"
+msgstr "Benutzername"
+
+msgid "Could not delete user. User was not supplied."
+msgstr "Konnte Benutzer nicht löschen. Kein Benutzername angegeben."
 
 msgid "Edit Survey Properties"
 msgstr "Umfrage-Einstellungen bearbeiten"
@@ -2084,6 +1919,9 @@ msgstr "Benutzergruppe"
 
 msgid "User"
 msgstr "Benutzer"
+
+msgid "Add Group"
+msgstr "Gruppe hinzufügen"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:3085
 msgid "Update survey rights successful."
@@ -2131,6 +1969,9 @@ msgstr "Admin Benachrichtigung:"
 msgid "Anonymous?"
 msgstr "Anonym?"
 
+msgid "Cannot be changed"
+msgstr "Kann nicht geändert werden"
+
 msgid "Allow public registration?"
 msgstr "Offene Registrierung erlauben?"
 
@@ -2140,13 +1981,33 @@ msgstr "Zugangsschlüssel Schlüssel:"
 msgid "Date Stamp?"
 msgstr "Zeit-Datumsstempel?"
 
+msgid "Responses will not be date stamped."
+msgstr "Antworten werden nicht mit einem Zeitstempel versehen."
+
+msgid "Responses will be date stamped."
+msgstr "Antworten werden mit einem Zeitstempel versehen."
+
 msgid "Save IP Address?"
 msgstr "IP-Adresse speichern?"
+
+msgid "Responses will not have the IP address logged."
+msgstr "IP-Adressen der Antwortenden werden nicht protokolliert."
+
+msgid "Responses will have the IP address logged"
+msgstr "IP-Adressen der Antwortenden werden protokolliert"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1773
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1995
 msgid "Save Referring URL?"
 msgstr "Referrer-URL speichern?"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2004
+msgid "Responses will not have their referring URL logged."
+msgstr "Referrer-URL wird nicht gespeichert"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2005
+msgid "Responses will have their referring URL logged."
+msgstr "Referrer-URL wird gespeichert."
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:3321
 # D:\web\xampp\htdocs\phpsurveyor/admin/labels.php:152
@@ -2310,6 +2171,9 @@ msgstr ""
 msgid "URL Description:"
 msgstr "URL Beschreibung:"
 
+msgid "Save"
+msgstr "Speichern"
+
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:3636
 msgid "Current survey has questions with conditions outside their own group"
 msgstr "Die aktuelle Umfrage besitzt Fragen mit Bedingungen ausserhalb der eigenen Gruppe."
@@ -2358,6 +2222,9 @@ msgstr "Die Einstellung kann später nicht geändert werden."
 msgid "Date Format"
 msgstr "Datumsformat"
 
+msgid "Please select a file to import!"
+msgstr "Bitte wähle eine Datei zum Importieren aus!"
+
 msgid "Import Survey"
 msgstr "Umfrage importieren"
 
@@ -2391,6 +2258,9 @@ msgstr "Visualisierung:"
 msgid "Select the field number you would like to use for your answers:"
 msgstr "Wähle die Feldnummer aus, die Du für Deine Antworten nutzen möchtest:"
 
+msgid "Import Group"
+msgstr "Gruppen importieren"
+
 msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder."
 msgstr "Es ist ein Fehler aufgetreten beim Upload Deiner Datei. Grund dafür könnten fehlerhafte Einstellungen der Berechtigungen des /tmp Ordners sein."
 
@@ -2422,6 +2292,9 @@ msgstr "Beschriftung-Set"
 
 msgid "Labels"
 msgstr "Antworten"
+
+msgid "Question Attributes:"
+msgstr "Frage-Attribute:"
 
 msgid "Import of group is completed."
 msgstr "Import der Gruppe abgeschlossen."
@@ -2464,8 +2337,18 @@ msgstr "Importiere Antworten aus einer alten deaktivierten Umfrage in die aktuel
 msgid "Target Survey ID"
 msgstr "Ziel-Umfrage ID:"
 
+msgid "Source table"
+msgstr "Urspungs-Tabelle"
+
 msgid "Import Responses"
 msgstr "Antworten importieren"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/labels.php:231
+msgid "Are you sure?"
+msgstr "Sind Sie sicher?"
+
+msgid "Import Question"
+msgstr "Fragen importieren"
 
 msgid "No SID (Survey) has been provided. Cannot import question."
 msgstr "keine SID (Umfrage) angegeben. Kann Frage nicht importieren."
@@ -2582,15 +2465,17 @@ msgstr "Name setzen"
 msgid "You cannot remove this items since you need at least one language in a labelset."
 msgstr "Du kannst diese Sprache nicht entfernen, da mindestens eine Sprache in einem Beschriftungsset benötigt wird."
 
+msgid "Update"
+msgstr "aktualisieren"
+
+msgid "Select CSV File:"
+msgstr "CSV-Datei auswählen:"
+
 msgid "Edit label set"
 msgstr "Beschriftung-Set bearbeiten"
 
 msgid "Delete label set"
 msgstr "Beschriftung-Set löschen"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/labels.php:231
-msgid "Are you sure?"
-msgstr "Sind Sie sicher?"
 
 msgid "New label"
 msgstr "Neue Beschriftung"
@@ -2708,6 +2593,53 @@ msgstr "Vielen Dank für die Beantwortung des Fragebogens."
 msgid "Please fax your completed survey to:"
 msgstr "Bitte faxen Du den ausgefüllten Fragebogen an:"
 
+msgid "Add Question"
+msgstr "Frage hinzufügen"
+
+msgid "Required"
+msgstr "Pflichtangabe"
+
+msgid "Label Set:"
+msgstr "Beschriftung-Set:"
+
+msgid "Mandatory:"
+msgstr "Pflichtangabe:"
+
+msgid "Select CSV File"
+msgstr "CSV-Datei auswählen"
+
+msgid "Copy Question"
+msgstr "Frage kopieren"
+
+msgid "Note: You MUST enter a new question code!"
+msgstr "Anmerkung: Du MUSST einen neuen Frage-Code eingeben!"
+
+msgid "Group:"
+msgstr "Gruppe:"
+
+msgid "Copy Answers?"
+msgstr "Fragen kopieren?"
+
+msgid "Copy Attributes?"
+msgstr "Attribute kopieren?"
+
+msgid "Edit Question"
+msgstr "Bearbeite Frage"
+
+msgid "Update Question"
+msgstr "Frage aktualisieren"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2559
+msgid "Current group is using conditional questions"
+msgstr "Die aktuelle Gruppe nutzt Fragen mit Bedingungen"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2559
+msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "Das Verändern der Reihenfolge in dieser Gruppe ist bestimmten Beschränkungen unterworfen, um sicherzustellen, dass Fragen mit Bedingungen nicht vor Fragen verschoben werden von denen die Bedingung abhängt."
+
+msgid "See the conditions marked on the following questions"
+msgstr "Bedingungen für diese Frage setzten"
+
 msgid "Answered"
 msgstr "Beantwortet"
 
@@ -2767,10 +2699,6 @@ msgstr "Gesamtzahl der Datensätze dieser Umfrage"
 
 msgid "Percentage of total"
 msgstr "Anteil in Prozent"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:870
-msgid "SQL"
-msgstr "SQL"
 
 msgid "Browse"
 msgstr "Ansehen"
@@ -2944,6 +2872,9 @@ msgstr "Standard-Dateien:"
 
 msgid "Now editing:"
 msgstr "In Bearbeitung:"
+
+msgid "Save Changes"
+msgstr "Änderungen Speichern"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/templates.php:544
 msgid "Changes cannot be saved to the default template."
@@ -3311,12 +3242,20 @@ msgid "Username was not supplied."
 msgstr "Es wurde kein Benutzername angegeben."
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/usercontrol.php:186
-msgid "You were signed in. Your data:"
-msgstr "Du wurdest angemeldet. Deine Daten lauten:"
+msgid "You were signed in on the site"
+msgstr "Du wurdest registriert auf der Webseite"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/usercontrol.php:93
+# D:\web\xampp\htdocs\phpsurveyor/admin/usercontrol.php:189
+msgid "Login here"
+msgstr "Anmeldung hier"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/usercontrol.php:199
 msgid "An email with a generated password was sent to the user."
 msgstr "Es wurde eine Email mit einem generierten Passwort an den Benutzer versandt."
+
+msgid "Set User Rights"
+msgstr "Setze Benutzerrechte"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/admin.php:102
 msgid "Username and/or email address already exists."
@@ -3324,6 +3263,9 @@ msgstr "Benutzername oder Email-Adresse existiert bereits."
 
 msgid "Admin cannot be deleted!"
 msgstr "Der Admin kann nicht gelöscht werden!"
+
+msgid "Modifying User"
+msgstr "Benutzer bearbeiten"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/usercontrol.php:300
 # D:\web\xampp\htdocs\phpsurveyor/admin/usercontrol.php:324
@@ -3350,14 +3292,145 @@ msgstr "Benutzerrechte erfolgreich geändert."
 msgid "You are not allowed to change your own rights!"
 msgstr "Du bist nicht berechtigt Deine eigenen Rechte zu ändern!"
 
-msgid "Export, then de-activate survey"
-msgstr "Exportieren, dann Umfrage deaktivieren"
+msgid "User Groups"
+msgstr "Benutzergruppen"
 
-msgid "Export but leave survey active"
-msgstr "Nur exportieren und Umfrage aktiv lassen"
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:781
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1674
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1765
+msgid "Mail to all Members"
+msgstr "Nachricht an alle Mitglieder"
 
-msgid "If you have chosen to export and de-activate, this will rename your current responses table and it will not be easy to restore it. Are you sure?"
-msgstr "Sofern Du 'Exportieren, dann Umfrage deaktivieren' ausgewählt hast, wird Deine gegenwärtige Antwortentabelle umbenannt und es ist nicht einfach diese wiederherzustellen. Sind sie sicher, dass SIe das wollen?"
+msgid "Edit Current User Group"
+msgstr "Diese Benutzergruppe bearbeiten"
+
+msgid "Delete Current User Group"
+msgstr "Diese Benutzergruppe löschen"
+
+msgid "Add New User Group"
+msgstr "Neue Benutzergruppe hinzufügen"
+
+msgid "Full name"
+msgstr "Vor- und Nachname"
+
+msgid "Configurator"
+msgstr "Konfigurator"
+
+msgid "Create User"
+msgstr "User anlegen"
+
+msgid "Delete User"
+msgstr "Lösche Benutzer"
+
+msgid "Move User"
+msgstr "User verschieben"
+
+msgid "Manage Template"
+msgstr "Vorlagen verwalten"
+
+msgid "Manage Labels"
+msgstr "Beschriftungssets verwalten"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1473
+msgid "Setting new Parent"
+msgstr "Übergeordneten User setzen"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1474
+msgid "Set Parent successful."
+msgstr "Übergeordneten User erfolgreich gesetzt."
+
+msgid "User Control"
+msgstr "Benutzer-Administration"
+
+msgid "Created by"
+msgstr "Angelegt von"
+
+msgid "Edit User"
+msgstr "Benutzer bearbeiten"
+
+msgid "Name:"
+msgstr "Name:"
+
+msgid "Optional"
+msgstr "Optionale Frage"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1639
+msgid "Edit User Group (Owner: "
+msgstr "Bearbeite Benutzergruppe (Eigentümer:"
+
+msgid "Update User Group"
+msgstr "Benutzergruppe aktualisieren"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1676
+msgid "To:"
+msgstr "An:"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1678
+msgid "Send me a copy:"
+msgstr "Sende eine Kopie an:"
+
+msgid "Subject:"
+msgstr "Betreff:"
+
+msgid "Message:"
+msgstr "Nachricht:"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1684
+msgid "Send"
+msgstr "Sende"
+
+msgid "Deleting User Group"
+msgstr "Lösche Benutzergruppe"
+
+msgid "Group Name"
+msgstr "Gruppenname"
+
+msgid "Could not delete user group."
+msgstr "Konnte Benutzergruppe nicht löschen."
+
+msgid "Could not delete user group. No group selected."
+msgstr "Konnte Benutzergruppe nicht löschen. Es wurde keine Gruppe ausgewählt."
+
+msgid "Adding User Group"
+msgstr "Füge Benutzergruppe hinzu"
+
+msgid "Description: "
+msgstr "Beschreibung:"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1745
+msgid "User group successfully added!"
+msgstr "Benutzergruppe erfolgreich hinzugefügt!"
+
+msgid "Failed to add Group!"
+msgstr "Konnte Gruppe nicht hinzufügen."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1751
+msgid "Group already exists!"
+msgstr "Gruppe existiert bereits."
+
+msgid "Group name was not supplied!"
+msgstr "Es wurde kein Gruppenname angegeben."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1800
+msgid "Mail not sent!"
+msgstr "Mail wurde nicht versendet."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1818
+msgid "Edit User Group Successfully!"
+msgstr "Benutzergruppe erfolgreich geändert."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1823
+msgid "Failed to update!"
+msgstr "Fehler beim Aktualisieren der Daten!"
+
+msgid "Edit Group"
+msgstr "Gruppe bearbeiten"
+
+msgid "Update Group"
+msgstr "Gruppe aktualisieren"
+
+msgid "Adding User to group"
+msgstr "Füge Benutzer zu Gruppe hinzu"
 
 msgid "File:"
 msgstr "Datei:"
