@@ -92,9 +92,9 @@ if ($action == "addquestion")
 		. "\t\t<td align='right'><strong>".$clang->gT("Other:")."</strong></td>\n"
 		. "\t\t<td align='left'>\n"
 		. "\t\t\t<label for='OY'>".$clang->gT("Yes")."</label>"
-		. "<input id='OY' type='radio' name='other' value='Y' />&nbsp;&nbsp;\n"
+		. "<input id='OY' type='radio' class='radiobtn' name='other' value='Y' />&nbsp;&nbsp;\n"
 		. "\t\t\t<label for='ON'>".$clang->gT("No")."</label>"
-		. "<input id='ON' type='radio' name='other' value='N' checked='checked' />\n"
+		. "<input id='ON' type='radio' class='radiobtn' name='other' value='N' checked='checked' />\n"
 		. "\t\t</td>\n"
 		. "\t</tr>\n";
 
@@ -102,9 +102,9 @@ if ($action == "addquestion")
 		. "\t\t<td align='right'><strong>".$clang->gT("Mandatory:")."</strong></td>\n"
 		. "\t\t<td align='left'>\n"
 		. "\t\t\t<label for='MY'>".$clang->gT("Yes")."</label>"
-		. "<input id='MY' type='radio' name='mandatory' value='Y' />&nbsp;&nbsp;\n"
+		. "<input id='MY' type='radio' class='radiobtn' name='mandatory' value='Y' />&nbsp;&nbsp;\n"
 		. "\t\t\t<label for='MN'>".$clang->gT("No")."</label>"
-		. "<input id='MN' type='radio' name='mandatory' value='N' checked='checked' />\n"
+		. "<input id='MN' type='radio' class='radiobtn' name='mandatory' value='N' checked='checked' />\n"
 		. "\t\t</td>\n"
 		. "\t</tr>\n";
 
@@ -237,10 +237,10 @@ if ($action == "copyquestion")
 		. "\t\t<td align='right'><strong>".$clang->gT("Other:")."</strong></td>\n";
 
 		$editquestion .= "\t\t<td>\n"
-		. "\t\t\t".$clang->gT("Yes")." <input type='radio' name='other' value='Y'";
+		. "\t\t\t".$clang->gT("Yes")." <input type='radio' class='radiobtn' name='other' value='Y'";
 		if ($eqrow['other'] == "Y") {$editquestion .= " checked";}
 		$editquestion .= " />&nbsp;&nbsp;\n"
-		. "\t\t\t".$clang->gT("No")." <input type='radio' name='other' value='N'";
+		. "\t\t\t".$clang->gT("No")." <input type='radio' class='radiobtn' name='other' value='N'";
 		if ($eqrow['other'] == "N") {$editquestion .= " checked";}
 		$editquestion .= " />\n"
 		. "\t\t</td>\n"
@@ -249,10 +249,10 @@ if ($action == "copyquestion")
 		$editquestion .= "\t<tr id='MandatorySelection'>\n"
 		. "\t\t<td align='right'><strong>".$clang->gT("Mandatory:")."</strong></td>\n"
 		. "\t\t<td>\n"
-		. "\t\t\t".$clang->gT("Yes")." <input type='radio' name='mandatory' value='Y'";
+		. "\t\t\t".$clang->gT("Yes")." <input type='radio' class='radiobtn' name='mandatory' value='Y'";
 		if ($eqrow['mandatory'] == "Y") {$editquestion .= " checked='checked'";}
 		$editquestion .= " />&nbsp;&nbsp;\n"
-		. "\t\t\t".$clang->gT("No")." <input type='radio' name='mandatory' value='N'";
+		. "\t\t\t".$clang->gT("No")." <input type='radio' class='radiobtn' name='mandatory' value='N'";
 		if ($eqrow['mandatory'] != "Y") {$editquestion .= " checked='checked'";}
 		$editquestion .= " />\n"
 		. "\t\t</td>\n"
@@ -278,12 +278,12 @@ if ($action == "copyquestion")
 		{
 
 			$editquestion .= "<strong>".$clang->gT("Copy Answers?")."</strong></td>\n"
-			. "\t\t<td><input type='checkbox' checked name='copyanswers' value='Y' />"
+			. "\t\t<td><input type='checkbox' class='checkboxbtn' checked name='copyanswers' value='Y' />"
 			. "</td>\n"
 			. "\t</tr>\n"
 			. "\t<tr>\n"
 			. "\t\t<td align='right'><strong>".$clang->gT("Copy Attributes?")."</strong></td>\n"
-			. "\t\t<td><input type='checkbox' checked name='copyattributes' value='Y' />"
+			. "\t\t<td><input type='checkbox' class='checkboxbtn' checked name='copyattributes' value='Y' />"
 			. "</td>\n"
 			. "\t</tr>\n"
 			. "\t<tr>\n"
@@ -440,10 +440,10 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   		if ($activated != "Y")
   		{
   			$editquestion .= "\t\t<td align='left'>\n"
-  			. "\t\t\t<label for='OY'>".$clang->gT("Yes")."</label><input id='OY' type='radio' name='other' value='Y'";
+  			. "\t\t\t<label for='OY'>".$clang->gT("Yes")."</label><input id='OY' type='radio' class='radiobtn' name='other' value='Y'";
   			if ($eqrow['other'] == "Y") {$editquestion .= " checked";}
   			$editquestion .= " />&nbsp;&nbsp;\n"
-  			. "\t\t\t<label for='ON'>".$clang->gT("No")."</label><input id='ON' type='radio' name='other' value='N'";
+  			. "\t\t\t<label for='ON'>".$clang->gT("No")."</label><input id='ON' type='radio' class='radiobtn' name='other' value='N'";
   			if ($eqrow['other'] == "N" || $eqrow['other'] == "" ) {$editquestion .= " checked='checked'";}
   			$editquestion .= " />\n"
   			. "\t\t</td>\n";
@@ -458,10 +458,10 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   		$editquestion .= "\t<tr id='MandatorySelection'>\n"
   		. "\t\t<td align='right'><strong>".$clang->gT("Mandatory:")."</strong></td>\n"
   		. "\t\t<td align='left'>\n"
-  		. "\t\t\t<label for='MY'>".$clang->gT("Yes")."</label><input id='MY' type='radio' name='mandatory' value='Y'";
+  		. "\t\t\t<label for='MY'>".$clang->gT("Yes")."</label><input id='MY' type='radio' class='radiobtn' name='mandatory' value='Y'";
   		if ($eqrow['mandatory'] == "Y") {$editquestion .= " checked='checked'";}
   		$editquestion .= " />&nbsp;&nbsp;\n"
-  		. "\t\t\t<label for='MN'>".$clang->gT("No")."</label><input id='MN' type='radio' name='mandatory' value='N'";
+  		. "\t\t\t<label for='MN'>".$clang->gT("No")."</label><input id='MN' type='radio' class='radiobtn' name='mandatory' value='N'";
   		if ($eqrow['mandatory'] != "Y") {$editquestion .= " checked='checked'";}
   		$editquestion .= " />\n"
   		. "\t\t</td>\n"

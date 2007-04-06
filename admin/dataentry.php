@@ -600,7 +600,7 @@ if($actsurrows['browse_response']){
 					case "5": //5 POINT CHOICE radio-buttons
 					for ($x=1; $x<=5; $x++)
 					{
-						$dataentryoutput .= "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='$x'";
+						$dataentryoutput .= "\t\t\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='$x'";
 						if ($idrow[$fnames[$i][0]] == $x) {$dataentryoutput .= " checked";}
 						$dataentryoutput .= " />$x \n";
 					}
@@ -905,7 +905,7 @@ if($actsurrows['browse_response']){
 						}
 						else
 						{
-							$dataentryoutput .= "\t\t\t$setfont<input type='checkbox' name='{$fnames[$i][0]}' value='Y'";
+							$dataentryoutput .= "\t\t\t$setfont<input type='checkbox' class='checkboxbtn' name='{$fnames[$i][0]}' value='Y'";
 							if ($idrow[$fnames[$i][0]] == "Y") {$dataentryoutput .= " checked";}
 							$dataentryoutput .= " />{$fnames[$i][6]}</font><br />\n";
 						}
@@ -926,7 +926,7 @@ if($actsurrows['browse_response']){
 					while ($fnames[$i][3] == "U" && $question != "" && $question == $fnames[$i][2])
 					{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
-						$dataentryoutput .= "\t\t\t$setfont<input type='checkbox' name='{$fnames[$i][0]}' value='Y'";
+						$dataentryoutput .= "\t\t\t$setfont<input type='checkbox' class='checkboxbtn' name='{$fnames[$i][0]}' value='Y'";
 						if ($idrow[$fnames[$i][0]] == "Y") {$dataentryoutput .= " checked";}
 						$dataentryoutput .= " />{$fnames[$i][6]}<br />\n";
 						if ($i<$nfncount)
@@ -987,7 +987,7 @@ if($actsurrows['browse_response']){
 						else
 						{
 							$dataentryoutput .= "\t<tr>\n"
-							."\t\t<td>$setfont<input type='checkbox' name=\"{$fnames[$i][0]}\" value='Y'";
+							."\t\t<td>$setfont<input type='checkbox' class='checkboxbtn' name=\"{$fnames[$i][0]}\" value='Y'";
 							if ($idrow[$fnames[$i][0]] == "Y") {$dataentryoutput .= " checked";}
 							$dataentryoutput .= " />{$fnames[$i][6]}</font></td>\n";
 						}
@@ -1037,7 +1037,7 @@ if($actsurrows['browse_response']){
 						."\t\t<td>$setfont\n";
 						for ($j=1; $j<=5; $j++)
 						{
-							$dataentryoutput .= "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='$j'";
+							$dataentryoutput .= "\t\t\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='$j'";
 							if ($idrow[$fnames[$i][0]] == $j) {$dataentryoutput .= " checked";}
 							$dataentryoutput .= " />$j&nbsp;\n";
 						}
@@ -1059,7 +1059,7 @@ if($actsurrows['browse_response']){
 						."\t\t<td>$setfont\n";
 						for ($j=1; $j<=10; $j++)
 						{
-							$dataentryoutput .= "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='$j'";
+							$dataentryoutput .= "\t\t\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='$j'";
 							if ($idrow[$fnames[$i][0]] == $j) {$dataentryoutput .= " checked";}
 							$dataentryoutput .= " />$j&nbsp;\n";
 						}
@@ -1079,13 +1079,13 @@ if($actsurrows['browse_response']){
 						$dataentryoutput .= "\t<tr>\n"
 						."\t\t<td align='right'>$setfont{$fnames[$i][6]}</font></td>\n"
 						."\t\t<td>$setfont\n"
-						."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='Y'";
+						."\t\t\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='Y'";
 						if ($idrow[$fnames[$i][0]] == "Y") {$dataentryoutput .= " checked";}
 						$dataentryoutput .= " />".$clang->gT("Yes")."&nbsp;\n"
-						."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='U'";
+						."\t\t\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='U'";
 						if ($idrow[$fnames[$i][0]] == "U") {$dataentryoutput .= " checked";}
 						$dataentryoutput .= " />".$clang->gT("Uncertain")."&nbsp;\n"
-						."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='N'";
+						."\t\t\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='N'";
 						if ($idrow[$fnames[$i][0]] == "N") {$dataentryoutput .= " checked";}
 						$dataentryoutput .= " />".$clang->gT("No")."&nbsp;\n"
 						."\t\t</font></td>\n"
@@ -1104,13 +1104,13 @@ if($actsurrows['browse_response']){
 						$dataentryoutput .= "\t<tr>\n"
 						."\t\t<td align='right'>$setfont{$fnames[$i][6]}</font></td>\n"
 						."\t\t<td>$setfont\n"
-						."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='I'";
+						."\t\t\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='I'";
 						if ($idrow[$fnames[$i][0]] == "I") {$dataentryoutput .= " checked";}
 						$dataentryoutput .= " />Increase&nbsp;\n"
-						."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='S'";
+						."\t\t\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='S'";
 						if ($idrow[$fnames[$i][0]] == "I") {$dataentryoutput .= " checked";}
 						$dataentryoutput .= " />Same&nbsp;\n"
-						."\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='D'";
+						."\t\t\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='D'";
 						if ($idrow[$fnames[$i][0]] == "D") {$dataentryoutput .= " checked";}
 						$dataentryoutput .= " />Decrease&nbsp;\n"
 						."\t\t</font></td>\n"
@@ -1134,7 +1134,7 @@ if($actsurrows['browse_response']){
 						$dataentryoutput .= "\t\t<td>$setfont\n";
 						while ($frow=$fresult->FetchRow())
 						{
-							$dataentryoutput .= "\t\t\t<input type='radio' name='{$fnames[$i][0]}' value='{$frow['code']}'";
+							$dataentryoutput .= "\t\t\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='{$frow['code']}'";
 							if ($idrow[$fnames[$i][0]] == $frow['code']) {$dataentryoutput .= " checked";}
 							$dataentryoutput .= " />".$frow['title']."&nbsp;\n";
 						}
@@ -1191,7 +1191,7 @@ if($actsurrows['browse_response']){
 				  </script>\n";
 			$dataentryoutput .= "\t<tr>\n";
 			$dataentryoutput .= "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
-			$dataentryoutput .= "\t\t\t<input type='checkbox' name='save' id='save' onchange='saveshow(this.id)' onLoad='saveshow(this.id)'><label for='save'>".$clang->gT("Save as a partially completed survey")."</label>\n";
+			$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='save' id='save' onchange='saveshow(this.id)' onLoad='saveshow(this.id)'><label for='save'>".$clang->gT("Save as a partially completed survey")."</label>\n";
 			$dataentryoutput .= "<div name='saveoptions' id='saveoptions' style='display: none'>\n";
 			$dataentryoutput .= "<table align='center' class='outlinetable' cellspacing='0'>
 				  <tr><td align='right'>".$clang->gT("Identifier:")."</td>
@@ -1905,7 +1905,7 @@ if($actsurrows['browse_response']){
 								$dataentryoutput .= $divider;
 								$upto=0;
 							}
-							$dataentryoutput .= "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' id='answer$fieldname{$mearow['code']}' value='Y'";
+							$dataentryoutput .= "\t\t\t$setfont<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['code']}' id='answer$fieldname{$mearow['code']}' value='Y'";
 							if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
 							$dataentryoutput .= " /><label for='$fieldname{$mearow['code']}'>{$mearow['answer']}</label></font><br />\n";
 							$upto++;
@@ -1922,7 +1922,7 @@ if($actsurrows['browse_response']){
 					{
 						while ($mearow = $mearesult->FetchRow())
 						{
-							$dataentryoutput .= "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' id='answer$fieldname{$mearow['code']}' value='Y'";
+							$dataentryoutput .= "\t\t\t$setfont<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['code']}' id='answer$fieldname{$mearow['code']}' value='Y'";
 							if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
 							$dataentryoutput .= " /><label for='$fieldname{$mearow['code']}'>{$mearow['answer']}</label></font><br />\n";
 						}
@@ -1938,7 +1938,7 @@ if($actsurrows['browse_response']){
 					$mearesult = db_execute_assoc($meaquery);
 					while ($mearow = $mearesult->FetchRow())
 					{
-						$dataentryoutput .= "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'";
+						$dataentryoutput .= "\t\t\t$setfont<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['code']}' value='Y'";
 						if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
 						$dataentryoutput .= " />{$mearow['answer']}<br />\n";
 					}
@@ -1963,7 +1963,7 @@ if($actsurrows['browse_response']){
 					{
 						$dataentryoutput .= "\t<tr>\n";
 						$dataentryoutput .= "\t\t<td>\n";
-						$dataentryoutput .= "\t\t\t$setfont<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y'";
+						$dataentryoutput .= "\t\t\t$setfont<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['code']}' value='Y'";
 						if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
 						$dataentryoutput .= " />{$mearow['answer']}\n";
 						$dataentryoutput .= "\t\t</font></td>\n";
@@ -2140,7 +2140,7 @@ if($actsurrows['browse_response']){
 					  </script>\n";
 				$dataentryoutput .= "\t<tr>\n";
 				$dataentryoutput .= "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
-				$dataentryoutput .= "\t\t\t<input type='checkbox' name='save' id='save' onchange='saveshow(this.id)' onLoad='saveshow(this.id)'><label for='save'>".$clang->gT("Save as a partially completed survey")."</label>\n";
+				$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='save' id='save' onchange='saveshow(this.id)' onLoad='saveshow(this.id)'><label for='save'>".$clang->gT("Save as a partially completed survey")."</label>\n";
 				$dataentryoutput .= "<div name='saveoptions' id='saveoptions' style='display: none'>\n";
 				$dataentryoutput .= "<table align='center' class='outlinetable' cellspacing='0'>
 					  <tr><td align='right'>".$clang->gT("Identifier:")."</td>

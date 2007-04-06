@@ -1561,32 +1561,32 @@ if($action == "setsurveysecurity")
 			. "<form action='$scriptname?sid={$surveyid}' method='post'>\n";
 
 			//content
-			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"edit_survey_property\" value=\"edit_survey_property\"";
+			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"edit_survey_property\" value=\"edit_survey_property\"";
 			if($resul2row['edit_survey_property']) {
 				$usersummary .= " checked ";
 			}
 			$usersummary .=" /></td>\n";
-			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"define_questions\" value=\"define_questions\"";
+			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"define_questions\" value=\"define_questions\"";
 			if($resul2row['define_questions']) {
 				$usersummary .= " checked ";
 			}
 			$usersummary .=" /></td>\n";
-			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"browse_response\" value=\"browse_response\"";
+			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"browse_response\" value=\"browse_response\"";
 			if($resul2row['browse_response']) {
 				$usersummary .= " checked ";
 			}
 			$usersummary .=" /></td>\n";
-			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"export\" value=\"export\"";
+			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"export\" value=\"export\"";
 			if($resul2row['export']) {
 				$usersummary .= " checked ";
 			}
 			$usersummary .=" /></td>\n";
-			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"delete_survey\" value=\"delete_survey\"";
+			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"delete_survey\" value=\"delete_survey\"";
 			if($resul2row['delete_survey']) {
 				$usersummary .= " checked ";
 			}
 			$usersummary .=" /></td>\n";
-			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"activate_survey\" value=\"activate_survey\"";
+			$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"activate_survey\" value=\"activate_survey\"";
 			if($resul2row['activate_survey']) {
 				$usersummary .= " checked ";
 			}
@@ -1626,22 +1626,22 @@ if($action == "setusergroupsurveysecurity")
 		. "<form action='$scriptname?sid={$surveyid}' method='post'>\n";
 
 		//content
-		$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"edit_survey_property\" value=\"edit_survey_property\"";
+		$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"edit_survey_property\" value=\"edit_survey_property\"";
 
 		$usersummary .=" /></td>\n";
-		$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"define_questions\" value=\"define_questions\"";
+		$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"define_questions\" value=\"define_questions\"";
 
 		$usersummary .=" /></td>\n";
-		$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"browse_response\" value=\"browse_response\"";
+		$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"browse_response\" value=\"browse_response\"";
 
 		$usersummary .=" /></td>\n";
-		$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"export\" value=\"export\"";
+		$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"export\" value=\"export\"";
 
 		$usersummary .=" /></td>\n";
-		$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"delete_survey\" value=\"delete_survey\"";
+		$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"delete_survey\" value=\"delete_survey\"";
 
 		$usersummary .=" /></td>\n";
-		$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"activate_survey\" value=\"activate_survey\"";
+		$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"activate_survey\" value=\"activate_survey\"";
 
 		$usersummary .=" /></td>\n";
 

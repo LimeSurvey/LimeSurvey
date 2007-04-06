@@ -220,49 +220,49 @@ if ($action == "setuserrights")
 				."<form action='$scriptname' method='post'>\n";
 				//content
 				if($parent['create_survey']) {
-					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"create_survey\" value=\"create_survey\"";
+					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"create_survey\" value=\"create_survey\"";
 					if($usr['create_survey']) {
 						$usersummary .= " checked ";
 					}
 					$usersummary .=" /></td>\n";
 				}
 				if($parent['configurator']) {
-					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"configurator\" value=\"configurator\"";
+					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"configurator\" value=\"configurator\"";
 					if($usr['configurator']) {
 						$usersummary .= " checked ";
 					}
 					$usersummary .=" /></td>\n";
 				}
 				if($parent['create_user']) {
-					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"create_user\" value=\"create_user\"";
+					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"create_user\" value=\"create_user\"";
 					if($usr['create_user']) {
 						$usersummary .= " checked ";
 					}
 					$usersummary .=" /></td>\n";
 				}
 				if($parent['delete_user']) {
-					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"delete_user\" value=\"delete_user\"";
+					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"delete_user\" value=\"delete_user\"";
 					if($usr['delete_user']) {
 						$usersummary .= " checked ";
 					}
 					$usersummary .=" /></td>\n";
 				}
 				if($parent['move_user']) {
-					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"move_user\" value=\"move_user\"";
+					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"move_user\" value=\"move_user\"";
 					if($usr['move_user']) {
 						$usersummary .= " checked ";
 					}
 					$usersummary .=" /></td>\n";
 				}
 				if($parent['manage_template']) {
-					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"manage_template\" value=\"manage_template\"";
+					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"manage_template\" value=\"manage_template\"";
 					if($usr['manage_template']) {
 						$usersummary .= " checked ";
 					}
 					$usersummary .=" /></td>\n";
 				}
 				if($parent['manage_label']) {
-					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\" name=\"manage_label\" value=\"manage_label\"";
+					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"manage_label\" value=\"manage_label\"";
 					if($usr['manage_label']) {
 						$usersummary .= " checked ";
 					}
@@ -545,7 +545,7 @@ if ($action == "mailusergroup")
 	. "\t\t<td align='right' width='20%'><strong>".$clang->gT("To:")."</strong></td>\n"
 	. "\t\t<td><input type='text' size='50' name='to' value=\"{$to}\" /></td></tr>\n"
 	. "\t\t<td align='right' width='20%'><strong>".$clang->gT("Send me a copy:")."</strong></td>\n"
-	. "\t\t<td><input name='copymail' type='checkbox' value='1' /></td></tr>\n"
+	. "\t\t<td><input name='copymail' type='checkbox' class='checkboxbtn' value='1' /></td></tr>\n"
 	. "\t\t<td align='right' width='20%'><strong>".$clang->gT("Subject:")."</strong></td>\n"
 	. "\t\t<td><input type='text' size='50' name='subject' value='' /></td></tr>\n"
 	. "\t<tr><td align='right'><strong>".$clang->gT("Message:")."</strong></td>\n"

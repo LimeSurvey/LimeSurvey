@@ -215,7 +215,7 @@ foreach ($filters as $flt)
 		."$setfont<strong>$flt[3]&nbsp;"; //Heading (Question No)
 		if ($flt[2] == "M" || $flt[2] == "P" || $flt[2] == "R" || $flt[2] == "J") {$myfield = "M$myfield";}
 		if ($flt[2] == "N") {$myfield = "N$myfield";}
-		$statisticsoutput .= "<input type='checkbox' name='summary[]' value='$myfield'";
+		$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield'";
 		if (isset($_POST['summary']) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE))
 		{$statisticsoutput .= " checked='checked'";}
 		$statisticsoutput .= " />&nbsp;"
@@ -240,7 +240,7 @@ foreach ($filters as $flt)
 			$myfield2 = "Q".$myfield."$row[0]";
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 			$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>$setfont<strong>$flt[3]-".$row[0]."</strong></font>";
-			$statisticsoutput .= "<input type='checkbox' name='summary[]' value='$myfield2'";
+			$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 			if (isset($_POST['summary']) && (array_search("Q{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $_POST['summary']) !== FALSE))
 			{$statisticsoutput .= " checked='checked'";}
 			$statisticsoutput .= " />&nbsp;"
@@ -265,7 +265,7 @@ foreach ($filters as $flt)
 		$myfield2="T$myfield";
 		$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>"
 		."$setfont<strong>$flt[3]</strong></font>";
-		$statisticsoutput .= "<input type='checkbox' name='summary[]' value='$myfield2'";
+		$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 		if (isset($_POST['summary']) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE))
 		{$statisticsoutput .= " checked='checked'";}
 		$statisticsoutput .= " />&nbsp;"
@@ -284,7 +284,7 @@ foreach ($filters as $flt)
 		$myfield2="T$myfield";
 		$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>"
 		."$setfont<strong>$flt[3]</strong></font>";
-		$statisticsoutput .= "<input type='checkbox' name='summary[]' value='$myfield2'";
+		$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 		if (isset($_POST['summary']) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE))
 		{$statisticsoutput .= " checked='checked'";}
 		$statisticsoutput .= " />&nbsp;"
@@ -377,7 +377,7 @@ foreach ($filters as $flt)
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 
 			$statisticsoutput .= "\t\t\t\t<td align='center'>$setfont<b>$flt[3] ($row[0])</b>"
-			."<input type='checkbox' name='summary[]' value='$myfield2'";
+			."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {$statisticsoutput .= " checked='checked'";}
 			$statisticsoutput .= " />&nbsp;"
 			."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
@@ -413,7 +413,7 @@ foreach ($filters as $flt)
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 
 			$statisticsoutput .= "\t\t\t\t<td align='center'>$setfont<b>$flt[3] ($row[0])</b>"; //heading
-			$statisticsoutput .= "<input type='checkbox' name='summary[]' value='$myfield2'";
+			$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {$statisticsoutput .= " checked='checked'";}
 			$statisticsoutput .= " />&nbsp;"
 			."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
@@ -450,7 +450,7 @@ foreach ($filters as $flt)
 			$statisticsoutput .= " -->\n";
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 			$statisticsoutput .= "\t\t\t\t<td align='center'>$setfont<b>$flt[3] ($row[0])</b>"
-			."<input type='checkbox' name='summary[]' value='$myfield2'";
+			."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE)
 			{$statisticsoutput .= " checked='checked'";}
 			$statisticsoutput .= " />&nbsp;"
@@ -488,7 +488,7 @@ foreach ($filters as $flt)
 			$statisticsoutput .= " -->\n";
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 			$statisticsoutput .= "\t\t\t\t<td align='center'>$setfont<b>$flt[3] ($row[0])</b>"
-			."<input type='checkbox' name='summary[]' value='$myfield2'";
+			."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {$statisticsoutput .= " checked='checked'";}
 			$statisticsoutput .= " />&nbsp;"
 			."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
@@ -526,7 +526,7 @@ foreach ($filters as $flt)
 			$statisticsoutput .= " -->\n";
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 			$statisticsoutput .= "\t\t\t\t<td align='center'>$setfont<b>$flt[3] ($row[0])</b>"
-			."<input type='checkbox' name='summary[]' value='$myfield2'";
+			."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {$statisticsoutput .= " checked='checked'";}
 			$statisticsoutput .= " />&nbsp;"
 			."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
@@ -569,7 +569,7 @@ foreach ($filters as $flt)
 			if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
 			$statisticsoutput .= " -->\n"
 			."\t\t\t\t<td align='center'>$setfont<b>$flt[3] ($i)</b>"
-			."<input type='checkbox' name='summary[]' value='$myfield2'";
+			."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary']) !== FALSE) {$statisticsoutput .= " checked='checked'";}
 			$statisticsoutput .= " />&nbsp;"
 			."<img src='$imagefiles/speaker.png' align='bottom' alt=\""
@@ -602,7 +602,7 @@ foreach ($filters as $flt)
 		case "Z":
 		$statisticsoutput .= "\t\t\t\t<td align='center'>"
 		."$setfont<strong>$flt[3]&nbsp;"; //Heading (Question No)
-		$statisticsoutput .= "<input type='checkbox' name='summary[]' value='$myfield'";
+		$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield'";
 		if (isset($_POST['summary']) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE))
 		{$statisticsoutput .= " checked='checked'";}
 		$statisticsoutput .= " />&nbsp;"
@@ -647,7 +647,7 @@ $statisticsoutput .= "\t\t\t</table>\n"
 ."\t\t</td></tr>\n"
 ."\t\t<tr><td bgcolor='#CCCCCC' align='center'>\n"
 ."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
-."\t\t\t\t<tr><td align='center'>$setfont<input type='radio' id='viewsummaryall' name='summary' value='$allfield'"
+."\t\t\t\t<tr><td align='center'>$setfont<input type='radio' class='radiobtn' id='viewsummaryall' name='summary' value='$allfield'"
 ." /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label></font></td></tr>\n"
 ."\t\t<tr><td align='center' bgcolor='#CCCCCC'>\n\t\t\t<br />\n"
 ."\t\t\t<input type='submit' value='".$clang->gT("View Stats")."' />\n"
