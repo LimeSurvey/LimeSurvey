@@ -1344,7 +1344,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					{
 						$query = "SELECT count(`$al[2]`) FROM ".db_table_name("survey_$surveyid")." WHERE `$al[2]` != ''";
 					}
-					elseif ($qtype == "T" || $qtype == "S" || $qtype == "Q")
+					elseif ($qtype == "U" || $qtype == "T" || $qtype == "S" || $qtype == "Q")
 					{
 						if($al[0]=="Answers")
 						{
@@ -1381,7 +1381,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					{$fname=$clang->gT("No answer");}
 					elseif ($al[0] == $clang->gT("Other") || $al[0] == "Answers")
 					{$fname="$al[1] <input type='submit' value='".$clang->gT("Browse")."' onclick=\"window.open('listcolumn.php?sid=$surveyid&amp;column=$al[2]&amp;sql=".urlencode($sql)."', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";}
-					elseif ($qtype == "S" || $qtype == "T" || $qtype == "Q")
+					elseif ($qtype == "S" || $qtype == "U" || $qtype == "T" || $qtype == "Q")
 					{
 						if ($al[0] == "Answer")
 						{
