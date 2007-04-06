@@ -70,7 +70,7 @@ if (!$subaction == "import")
 		</tr>
 		<tr>
 		 <td align='right'>
-		  Source table:
+		  ".$clang->gT("Source table").":
 		 </td>
 		 <td>
 		  <select name='oldtable' >
