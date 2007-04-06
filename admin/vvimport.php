@@ -34,30 +34,26 @@
 #############################################################
 */
 
-require_once(dirname(__FILE__).'/../config.php');
 
-if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
-if (!isset($action)) {$action=returnglobal('action');}
+if (!isset($dbprefix)) {die ("Cannot run this script directly");}
 if (!isset($noid)) {$noid=returnglobal('noid');}
 if (!isset($insertstyle)) {$insertstyle=returnglobal('insert');}
 
 include_once("login_check.php");
 
-if ($action != "upload")
+if ($subaction != "upload")
 {
-	//PRESENT FORM
-	echo $htmlheader;
-
 	//Make sure that the survey is active
 	$tablelist = $connect->MetaTables();
 	if (in_array("{$dbprefix}survey_$surveyid", $tablelist))
 	{
-		echo "<br />
-		<form enctype='multipart/form-data' method='post' action='vvimport.php?sid=$surveyid'>
+
+		$vvoutput= "<br />
+		<form enctype='multipart/form-data' method='post' action='admin.php?sid=$surveyid'>
 		<table class='outlinetable' align='center'>		
 		<tr><th colspan=2>".$clang->gT("Import a VV survey file")."</th></tr>
-		<tr><td>".$clang->gT("File:")."</td><td><input type='file' name='the_file'></td></tr>
-		<tr><td>".$clang->gT("Survey ID:")."</td><td><input type='text' size=2 name='sid' value='$surveyid' readonly></td></tr>
+		<tr><td>".$clang->gT("File:")."</td><td><input type='file' size=50 name='the_file'></td></tr>
+		<tr><td>".$clang->gT("Survey ID:")."</td><td><input type='text' size=10 name='sid' value='$surveyid' readonly></td></tr>
 		<tr><td>".$clang->gT("Exclude record IDs?")."</td><td><input type='checkbox' name='noid' value='noid' checked></td></tr>
         <!-- this next item should only appear if noid is not checked -->
 		<tr><td>".$clang->gT("When an imported record matches an existing record ID:")."</td><td><select name='insert' >
@@ -66,15 +62,16 @@ if ($action != "upload")
         <option value='ignore'>".$clang->gT("Ignore the new record.")."</option>
         <option value='replace'>".$clang->gT("Replace the existing record.")."</option>
         </select></td></tr>
-		<tr><td>&nbsp;</td><td><input type='submit' value='".$clang->gT("Upload")."'>
-		<input type='hidden' name='action' value='upload' />
+		<tr><td colspan='2' align='center' ><input type='submit' value='".$clang->gT("Upload")."'>
+		<input type='hidden' name='action' value='vvimport' />
+		<input type='hidden' name='subaction' value='upload' />
 		</td></tr>
 		</table>
-		</form>";
+		</form><br />";
 	}
 	else
 	{
-		echo "<br /><table class='outlinetable' align='center'>
+		$vvoutput .= "<br /><table class='outlinetable' align='center'>
 		<tr><th colspan=2>Import a VV survey file</th></tr>
 		<tr><td colspan='2' align='center'>
 		<strong>".$clang->gT("Cannot import the VVExport file.")."</strong><br /><br />
@@ -88,26 +85,24 @@ if ($action != "upload")
 }
 else
 {
-	echo $htmlheader;
-	echo "<br /><table class='outlinetable' align='center'>
+	$vvoutput = "<br /><table class='outlinetable' align='center'>
 		<tr><th>Upload</th></tr>
 		<tr><td align='center'>";
 	$the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 
 	if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 	{
-		echo "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-		echo $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
-		//echo "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
-		echo "</font></td></tr></table>\n";
-		echo "</body>\n</html>\n";
-		exit;
+		$vvoutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+		$vvoutput .= $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
+		//$vvoutput .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
+		$vvoutput .= "</font></td></tr></table>\n";
+		return;
 	}
 	// IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
-	echo "<strong><font color='green'>".$clang->gT("Success")."</font></strong><br />\n";
-	echo $clang->gT("File upload succeeded.")."<br /><br />\n";
-	echo $clang->gT("Reading file..")."<br />\n";
+	$vvoutput .= "<strong><font color='green'>".$clang->gT("Success")."</font></strong><br />\n";
+	$vvoutput .= $clang->gT("File upload succeeded.")."<br /><br />\n";
+	$vvoutput .= $clang->gT("Reading file..")."<br />\n";
 	$handle = fopen($the_full_file_path, "r");
 	while (!feof($handle))
 	{
@@ -133,8 +128,8 @@ else
 	if ($noid == "noid") {unset($realfieldnames[0]);}
 	unset($bigarray[1]); //delete the second line
 
-	//	echo "<tr><td valign='top'><strong>Import Fields:<pre>"; print_r($fieldnames); echo "</pre></td>";
-	//	echo "<td valign='top'><strong>Actual Fields:<pre>"; print_r($realfieldnames); echo '</pre></td></tr>';
+	//	$vvoutput .= "<tr><td valign='top'><strong>Import Fields:<pre>"; print_r($fieldnames); $vvoutput .= "</pre></td>";
+	//	$vvoutput .= "<td valign='top'><strong>Actual Fields:<pre>"; print_r($realfieldnames); $vvoutput .= '</pre></td></tr>';
 
 	//See if any fields in the import file don't exist in the active survey
 	$missing = array_diff($fieldnames, $realfieldnames);
@@ -218,7 +213,7 @@ else
 			}
 			if (!$result)
 			{
-				echo "<table align='center' class='outlintable'>
+				$vvoutput .= "<table align='center' class='outlintable'>
 				      <tr><td>".$clang->gT("Import Failed on Record")." $recordcount ".$clang->gT("because")." [".$connect->ErrorMsg()."]
 					  </td></tr></table>\n";
 			}
@@ -232,10 +227,10 @@ else
 
 	if ($noid == "noid" || $insertstyle == "renumber")
 	{
-		echo "<br /><i><strong><font color='red'>".$clang->gT("Important Note:")."<br />".$clang->gT("Do NOT refresh this page, as this will import the file again and produce duplicates")."</font></strong></i><br /><br />";
+		$vvoutput .= "<br /><i><strong><font color='red'>".$clang->gT("Important Note:")."<br />".$clang->gT("Do NOT refresh this page, as this will import the file again and produce duplicates")."</font></strong></i><br /><br />";
 	}
-	echo $clang->gT("Total records imported:")." ".$importcount."<br /><br />";
-	echo "[<a href='admin.php?action=browse&amp;sid=$surveyid'>".$clang->gT("Browse Responses")."</a>]";
-	echo "</td></tr></table>";
+	$vvoutput .= $clang->gT("Total records imported:")." ".$importcount."<br /><br />";
+	$vvoutput .= "[<a href='admin.php?action=browse&amp;sid=$surveyid'>".$clang->gT("Browse Responses")."</a>]";
+	$vvoutput .= "</td></tr></table>";
 }
 ?>

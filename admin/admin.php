@@ -157,6 +157,10 @@ if(isset($_SESSION['loginID']) && $action!='login')
   	include("database.php");
   }
 
+  if ($action=="vvexport")  { include("vvexport.php"); }
+  else
+  if ($action=="vvimport")  { include("vvimport.php"); }
+  else
   if ($action=="previewquestion")  { include("preview.php"); }
   else
   if ($action=="deletesurvey")  { include("deletesurvey.php"); }
@@ -213,7 +217,8 @@ if(isset($_SESSION['loginID']) && $action!='login')
   if (!isset($labelsoutput)  && !isset($templatesoutput) && !isset($printablesurveyoutput) && 
       !isset($assessmentsoutput) && !isset($tokenoutput) && !isset($browseoutput) &&
       !isset($dataentryoutput) && !isset($statisticsoutput)&& !isset($savedsurveyoutput) &&
-      !isset($exportoutput) && !isset($importoldresponsesoutput)&& !isset($conditionsoutput)) 
+      !isset($exportoutput) && !isset($importoldresponsesoutput) && !isset($conditionsoutput) &&
+      !isset($vvoutput)) 
       {
         $adminoutput.= showadminmenu();
       }
@@ -266,6 +271,7 @@ if(isset($_SESSION['loginID']) && $action!='login')
   if (isset($importoldresponsesoutput)) {$adminoutput.= $importoldresponsesoutput;} 	
   if (isset($conditionsoutput)) {$adminoutput.= $conditionsoutput;} 	
   if (isset($deletesurveyoutput)) {$adminoutput.= $deletesurveyoutput;} 	
+  if (isset($vvoutput)) {$adminoutput.= $vvoutput;} 	
   
 
   

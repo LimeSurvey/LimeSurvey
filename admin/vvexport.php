@@ -34,11 +34,9 @@
 #############################################################
 */
 //Exports all responses to a survey in special "Verified Voting" format.
-require_once(dirname(__FILE__).'/../config.php');
 
-if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
-if (!isset($action)) {$action = returnglobal('action');}
 
+if (!isset($dbprefix)) {die ("Cannot run this script directly");}
 include_once("login_check.php");
 
 $sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
@@ -47,38 +45,31 @@ $sumrows5 = $sumresult5->FetchRow();
 
 if ($sumrows5['export'] != "1")
 {
-	exit;
+	return;
 }
-
-if (!$action == "export")
+if (!$subaction == "export")
 {
-	echo $htmlheader;
-	echo "<br /><form method='post' action='vvexport.php?sid=$surveyid'>
-    	<table align='center' class='outlinetable'>
-        <tr><th colspan='2'>".$clang->gT("Export a VV survey file")."</th></tr>
-        <tr>
-         <td align='right'>".$clang->gT("Export Survey").":</td>
-         <td><input type='text' size='4' value='$surveyid' name='sid' readonly='readonly' /></td>
-        </tr>
-        <tr>
-         <td>&nbsp;
-         </td>
-         <td>
-          <input type='submit' value='".$clang->gT("Export Responses")."' />&nbsp;
-          <input type='hidden' name='action' value='export' />
-         </td>
-        </tr>
-        <tr><td colspan='2' align='center'>[<a href='$scriptname?sid=$surveyid'>".$clang->gT("Return to Survey Administration")."</a>]</td></tr>
-        </table>
-        </form>
-    </body>
-</html>";        
+	$vvoutput = "<br /><form method='post' action='admin.php?action=vvexport&sid=$surveyid'>"
+    	."<table align='center' class='outlinetable'>"
+        ."<tr><th colspan='2'>".$clang->gT("Export a VV survey file")."</th></tr>"
+        ."<tr>"
+        ."<td align='right'>".$clang->gT("Export Survey").":</td>"
+        ."<td><input type='text' size='10' value='$surveyid' name='sid' readonly='readonly' /></td>"
+        ."</tr>"
+        ."<tr>"
+        ."<td colspan='2' align='center'>"
+        ."<input type='submit' value='".$clang->gT("Export Responses")."' />&nbsp;"
+        ."<input type='hidden' name='subaction' value='export' />"
+        ."</td>"
+        ."</tr>"
+        ."<tr><td colspan='2' align='center'>[<a href='$scriptname?sid=$surveyid'>".$clang->gT("Return to Survey Administration")."</a>]</td></tr>"
+        ."</table>";
 }
 elseif (isset($surveyid) && $surveyid)
 {
 	//Export is happening
-	header("Content-Disposition: attachment; filename=vvexport_$surveyid.xls");
-	header("Content-type: application/vnd.ms-excel");
+	header("Content-Disposition: attachment; filename=vvexport_$surveyid.csv");
+	header("Content-type: text/comma-separated-values; charset=UTF-8");
 	Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 	$s="\t";
 
@@ -95,7 +86,7 @@ elseif (isset($surveyid) && $surveyid)
 	foreach ($fieldnames as $field)
 	{
 		$fielddata=arraySearchByKey($field, $fieldmap, "fieldname", 1);
-		//echo "<pre>";print_r($fielddata);echo "</pre>";
+		//$vvoutput .= "<pre>";print_r($fielddata);$vvoutput .= "</pre>";
 		if (count($fielddata) < 1) {$firstline.=$field;}
 		else
 		//{$firstline.=str_replace("\n", " ", str_replace("\t", "   ", strip_tags($fielddata['question'])));}
@@ -103,8 +94,8 @@ elseif (isset($surveyid) && $surveyid)
 		$firstline .= $s;
 		$secondline .= $field.$s;
 	}
-	echo $firstline."\n";
-	echo $secondline."\n";
+	$vvoutput = $firstline."\n";
+	$vvoutput .= $secondline."\n";
 	$query = "SELECT * FROM $surveytable";
 	$result = db_execute_assoc($query) or die("Error:<br />$query<br />".$connect->ErrorMsg());
 
@@ -136,15 +127,15 @@ elseif (isset($surveyid) && $surveyid)
 			$sun[]=$value;
 		}
 		$beach=implode($s, $sun);
-		echo $beach;
+		$vvoutput .= $beach;
 		unset($sun);
-		echo "\n";
+		$vvoutput .= "\n";
 	}
 
-	//echo "<pre>$firstline</pre>";
-	//echo "<pre>$secondline</pre>";
-	//echo "<pre>"; print_r($fieldnames); echo "</pre>";
-	//echo "<pre>"; print_r($fieldmap); echo "</pre>";
+	//$vvoutput .= "<pre>$firstline</pre>";
+	//$vvoutput .= "<pre>$secondline</pre>";
+	//$vvoutput .= "<pre>"; print_r($fieldnames); $vvoutput .= "</pre>";
+	//$vvoutput .= "<pre>"; print_r($fieldmap); $vvoutput .= "</pre>";
 
 }
 

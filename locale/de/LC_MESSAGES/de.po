@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-04-02 23:21+0100\n"
+"PO-Revision-Date: 2007-04-04 23:07+0100\n"
 "Last-Translator: \n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -2821,6 +2821,9 @@ msgstr "Standard-Dateien:"
 msgid "Now editing:"
 msgstr "In Bearbeitung:"
 
+msgid "Save Changes"
+msgstr "Änderungen Speichern"
+
 # D:\web\xampp\htdocs\phpsurveyor/admin/templates.php:604
 msgid "Changes cannot be saved to the default template."
 msgstr "Änderungen am Standardtemplate können nicht gespeichert werden."
@@ -3350,15 +3353,6 @@ msgstr "Gruppe aktualisieren"
 
 msgid "Adding User to group"
 msgstr "Füge Benutzer zu Gruppe hinzu"
-
-msgid "Export, then de-activate survey"
-msgstr "Exportieren, dann Umfrage deaktivieren"
-
-msgid "Export but leave survey active"
-msgstr "Nur exportieren und Umfrage aktiv lassen"
-
-msgid "If you have chosen to export and de-activate, this will rename your current responses table and it will not be easy to restore it. Are you sure?"
-msgstr "Sofern Sie 'Exportieren, dann Umfrage deaktivieren' ausgewählt haben, wird Ihre gegenwärtige Antwortentabelle umbenannt und es ist nicht einfach diese wiederherzustellen. Sind sie sicher, dass SIe das wollen?"
 
 msgid "File:"
 msgstr "Datei:"
