@@ -1390,7 +1390,7 @@ Calendar.prototype.showAtElement = function (el, opts) {
 		var br = Calendar.getAbsolutePos(cp);
 		document.body.removeChild(cp);
 		if (Calendar.is_ie) {
-			br.y += document.body.scrollTop;
+            if (/MSIE 7/.test(navigator.userAgent)) { br.y+=window.scrollY; } else { br.y+=document.body.scrollTop; }
 			br.x += document.body.scrollLeft;
 		} else {
 			br.y += window.scrollY;
