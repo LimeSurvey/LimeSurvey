@@ -98,7 +98,7 @@ $shownoanswer       =   1;      // Show "no answer" for non mandatory questions
 
 
 
-$debug              =   0;      // Switch this to 1 if you are looking for errors
+$debug              =   1;      // Switch this to 1 if you are looking for errors
 $sessionlifetime    =   3600;   // How long until a survey session expires in seconds
 
 // Email Settings
