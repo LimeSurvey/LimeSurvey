@@ -93,10 +93,10 @@ td {
 	font-size: 11px;
 }
 .checkboxbtn {
-	background-color: #BBBBBB;
+	background-color: transparent;
 }
 .radiobtn {
-	background-color: #BBBBBB;
+	background-color: transparent;
 }
 input, select {
 	color: #000080;
