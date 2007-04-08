@@ -480,10 +480,7 @@ if ($surveyid)
 
 		if($activated == "Y" && $sumrows5['browse_response'])
 		{
-			$surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/".$scriptname."?action=dataentry&amp;sid=$surveyid', '_blank')\""
-			. "onmouseout=\"hideTooltip()\""
-			. "onmouseover=\"showTooltip(event,'".$clang->gT("Dataentry Screen for Survey", "js")."');return false\">"
-			. "<img src='$imagefiles/dataentry.png' title='' align='left' alt='".$clang->gT("Dataentry Screen for Survey")."'"
+			$surveysummary .= "<a href=\"$homeurl/$scriptname?action=dataentry&sid=$sid\"> <img src='$imagefiles/dataentry.png' title='' align='left' alt='".$clang->gT("Dataentry Screen for Survey")."'"
 			. "name='DoDataentry' /></a>\n";
 		} 
 		else if (!$sumrows5['browse_response'])
