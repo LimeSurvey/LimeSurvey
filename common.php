@@ -356,7 +356,7 @@ function &db_select_limit_assoc($sql,$numrows=-1,$offset=-1,$inputarr=false,$die
 	global $connect;
 
 	$connect->SetFetchMode(ADODB_FETCH_ASSOC);
-	$dataset=$connect->SelectLimit($sql,$numrows=-1,$offset=-1,$inputarr=false);
+	$dataset=$connect->SelectLimit($sql,$numrows,$offset,$inputarr=false);
     if (!$dataset && $dieonerror) {die($sql);}
 	return $dataset;
 }
