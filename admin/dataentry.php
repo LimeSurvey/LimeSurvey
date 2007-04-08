@@ -448,7 +448,7 @@ if($actsurrows['browse_response']){
 			$fquestion = $fnrow['question'];
 			if ($fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || $fnrow['type'] == "E" || $fnrow['type'] == "F" || $fnrow['type'] == "H" || $fnrow['type'] == "P" || $fnrow['type'] == "Q" || $fnrow['type'] == "^" || $fnrow['type'] == "J")
 			{
-				$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} ORDER BY sortorder, answer";
+				$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} and language='{$language}' ORDER BY sortorder, answer";
 				$fnrresult = db_execute_assoc($fnrquery);
 				while ($fnrrow = $fnrresult->FetchRow())
 				{
@@ -466,10 +466,11 @@ if($actsurrows['browse_response']){
 						$fnames[] = array("$field"."othercomment", "$ftitle"."othercomment", "{$fnrow['question']}(other comment)", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
 					}
 				}
+				
 			}
 			elseif ($fnrow['type'] == "R")
 			{
-				$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} ORDER BY sortorder, answer";
+				$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} and language='{$language}' ORDER BY sortorder, answer";
 				$fnrresult = $connect->Execute($fnrquery);
 				$fnrcount = $fnrresult->RecordCount();
 				for ($j=1; $j<=$fnrcount; $j++)
@@ -1168,6 +1169,7 @@ if($actsurrows['browse_response']){
 						 <input type='hidden' name='id' value='$id'>
 						 <input type='hidden' name='sid' value='$surveyid'>
 						 <input type='hidden' name='subaction' value='update'>
+						 <input type='hidden' name='language' value='".$_GET['language']."'>
 						 <input type='hidden' name='surveytable' value='".db_table_name("survey_".$surveyid)."'>
 						</td>
 					</tr>\n";
@@ -1313,6 +1315,7 @@ if($actsurrows['browse_response']){
 		if (isset($_POST['datestamp']) && $_POST['datestamp']) {$updateqr .= ", datestamp='{$_POST['datestamp']}'";}
 		if (isset($_POST['ipaddr']) && $_POST['ipaddr']) {$updateqr .= ", ipaddr='{$_POST['ipaddr']}'";}
 		if (isset($_POST['token']) && $_POST['token']) {$updateqr .= ", token='{$_POST['token']}'";}
+		if (isset($_POST['language']) && $_POST['language']) {$updateqr .= ", startlanguage='{$_POST['language']}'";}
 		$updateqr .= " WHERE id=$id";
 		$updateres = $connect->Execute($updateqr) or die("Update failed:<br />\n" . htmlspecialchars($connect->ErrorMsg()) . "\n<pre style='text-align: left'>$updateqr</pre>");
 		$thissurvey=getSurveyInfo($surveyid);

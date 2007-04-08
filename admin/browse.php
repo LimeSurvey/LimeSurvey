@@ -245,7 +245,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	}
 	else {$idquery .= "id=$id";}
 	$idresult = db_execute_assoc($idquery) or die ("Couldn't get entry<br />\n$idquery<br />\n".$connect->ErrorMsg());
-	while ($idrow = $idresult->FetchRow()) {$id=$idrow['id'];}
+	while ($idrow = $idresult->FetchRow()) {$id=$idrow['id']; $rlangauge=$idrow['startlanguage'];}
 	$next=$id+1;
 	$last=$id-1;
 	$browseoutput .= "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
@@ -255,7 +255,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	."\t<tr bgcolor='#999999'><td colspan='2'>\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
-	."\t\t\t<a href='$scriptname?action=dataentry&amp;subaction=edit&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
+	."\t\t\t<a href='$scriptname?action=dataentry&amp;subaction=edit&amp;id=$id&amp;sid=$surveyid&amp;language=$rlangauge&amp;surveytable=$surveytable'" .
 			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Edit this entry", "js")."')\">" .
 			"<img align='left' src='$imagefiles/edit.png' title='' alt='' /></a>\n";
 	if ($sumrows5['delete_survey'])
