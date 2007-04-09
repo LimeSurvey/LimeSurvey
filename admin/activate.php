@@ -180,24 +180,24 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	$fieldmap=createFieldMap($surveyid, "full");
 	if (isset($fieldmap))
 	{
-    	foreach($fieldmap as $fielddata)
-    	{
-    		$fieldlist[]=$fielddata['fieldname'];
-    	}
-    	$fieldlist=array_reverse($fieldlist); //let's always change the later duplicate, not the earlier one
+		foreach($fieldmap as $fielddata)
+		{
+			$fieldlist[]=$fielddata['fieldname'];
+		}
+		$fieldlist=array_reverse($fieldlist); //let's always change the later duplicate, not the earlier one
 	}
 	$checkKeysUniqueComparison = create_function('$value','if ($value > 1) return true;');
 	@$duplicates = array_keys (array_filter (array_count_values($fieldlist), $checkKeysUniqueComparison));
 	if (isset($duplicates))
 	{
-        foreach ($duplicates as $dup)
-    	{
-    		$badquestion=arraySearchByKey($dup, $fieldmap, "fieldname", 1);
-    		$fix = "[<a href='$scriptname?action=activate&amp;sid=$surveyid&amp;fixnumbering=".$badquestion['qid']."'>Click Here to Fix</a>]";
-    		$failedcheck[]=array($badquestion['qid'], $badquestion['question'], ": Bad duplicate fieldname $fix", $badquestion['gid']);
-    	}
+		foreach ($duplicates as $dup)
+		{
+			$badquestion=arraySearchByKey($dup, $fieldmap, "fieldname", 1);
+			$fix = "[<a href='$scriptname?action=activate&amp;sid=$surveyid&amp;fixnumbering=".$badquestion['qid']."'>Click Here to Fix</a>]";
+			$failedcheck[]=array($badquestion['qid'], $badquestion['question'], ": Bad duplicate fieldname $fix", $badquestion['gid']);
+		}
 	}
-  
+
 	//IF ANY OF THE CHECKS FAILED, PRESENT THIS SCREEN
 	if (isset($failedcheck) && $failedcheck)
 	{
@@ -222,10 +222,10 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 		$activateoutput .= "\t\t</td>\n";
 		$activateoutput .= "\t</tr>\n";
 		$activateoutput .= "</table><br />&nbsp;\n";
-		
+
 		return;
 	}
-   
+
 	$activateoutput .= "<br />\n<table bgcolor='#FFFFFF' width='500' align='center' style='border: 1px solid #555555' cellpadding='6' cellspacing='0'>\n";
 	$activateoutput .= "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Activate Survey")." ($surveyid)</strong></font></td></tr>\n";
 	$activateoutput .= "\t<tr>\n";
@@ -257,15 +257,15 @@ else
 	$createsurvey = "id I NOTNULL AUTO PRIMARY,\n";
 	// --> START NEW FEATURE - SAVE
 	//TODO: In MS SQL Server dates start from 1753-01-01 (start of Gregorian calendar)
-	// If we're using 000-00-00 00:00:00 or 1753-01-01 00:00:00 as a sort of magic number to 
+	// If we're using 000-00-00 00:00:00 or 1753-01-01 00:00:00 as a sort of magic number to
 	// represent 'no date', wouldn't it make more sense to allow NULLs here and represent
 	// 'no date' with a null value? Will this screw anything else up?
 	// For MS Server I'm going to allow NULLs and see what happens [tom]
 	if ($connect->databaseType == 'odbc_mssql') {
-	  $createsurvey .= " submitdate T,\n";
+		$createsurvey .= " submitdate T,\n";
 	} else {
-	  $createsurvey .= " submitdate T NOTNULL DEFAULT '0000-00-00 00:00:00',\n";	
-	}  
+		$createsurvey .= " submitdate T NOTNULL DEFAULT '0000-00-00 00:00:00',\n";
+	}
 	$createsurvey .= " startlanguage C(20) NOTNULL ,\n";
 	// --> END NEW FEATURE - SAVE
 	//Check for any additional fields for this survey and create necessary fields (token and datestamp)
@@ -298,20 +298,20 @@ else
 	}
 	//Get list of questions for the base language
 	$aquery = " SELECT * FROM ".db_table_name('questions').", ".db_table_name('groups')
-              ." WHERE ".db_table_name('questions').".gid=".db_table_name('groups').".gid "
-              ." AND ".db_table_name('questions').".sid={$_GET['sid']} "
-              ." AND ".db_table_name('groups').".language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
-              ." AND ".db_table_name('questions').".language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
-              ." ORDER BY ".db_table_name('groups').".group_order, title";
+	." WHERE ".db_table_name('questions').".gid=".db_table_name('groups').".gid "
+	." AND ".db_table_name('questions').".sid={$_GET['sid']} "
+	." AND ".db_table_name('groups').".language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
+	." AND ".db_table_name('questions').".language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
+	." ORDER BY ".db_table_name('groups').".group_order, title";
 	$aresult = db_execute_assoc($aquery);
 	while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
 	{
 		if ( substr($createsurvey, strlen($createsurvey)-2, 2) != ",\n") {$createsurvey .= ",\n";}
-		
+
 		if ($arow['type'] != "M" && $arow['type'] != "A" && $arow['type'] != "B" &&
-		    $arow['type'] != "C" && $arow['type'] != "E" && $arow['type'] != "F" &&
-		    $arow['type'] != "H" && $arow['type'] != "P" && $arow['type'] != "R" &&
-		    $arow['type'] != "Q" && $arow['type'] != "^" && $arow['type'] != "J")
+		$arow['type'] != "C" && $arow['type'] != "E" && $arow['type'] != "F" &&
+		$arow['type'] != "H" && $arow['type'] != "P" && $arow['type'] != "R" &&
+		$arow['type'] != "Q" && $arow['type'] != "^" && $arow['type'] != "J")
 		{
 			$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}`";
 			switch($arow['type'])
@@ -326,12 +326,12 @@ else
 				case "!":  //LIST (DROPDOWN)
 				case "W":
 				case "Z":
-				$createsurvey .= " C(5)";
-				if ($arow['other'] == "Y")
-				{
-					$createsurvey .= ",\n`{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other` X";
-				}
-				break;
+					$createsurvey .= " C(5)";
+					if ($arow['other'] == "Y")
+					{
+						$createsurvey .= ",\n`{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other` X";
+					}
+					break;
 				case "I":  // CSV ONE
 				$createsurvey .= " C(5)";
 				break;
@@ -409,21 +409,21 @@ else
 				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}$i` C(5),\n";
 			}
 		}
-		
+
 	}
 
 	// If last question is of type MCABCEFHP^QJR let's get rid of the ending coma in createsurvey
 	$createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a coma
 	$tabname = "{$dbprefix}survey_{$_GET['sid']}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
-    
-	$taboptarray = array('mysql' => 'TYPE='.$databasetabletype);
-    $dict = NewDataDictionary($connect);
-    $sqlarray = $dict->CreateTableSQL($tabname, $createsurvey, $taboptarray);  
 
-    $execresult=$dict->ExecuteSQLArray($sqlarray,1);
-    if ($execresult==0 || $execresult==1)
+	$taboptarray = array('mysql' => 'TYPE='.$databasetabletype);
+	$dict = NewDataDictionary($connect);
+	$sqlarray = $dict->CreateTableSQL($tabname, $createsurvey, $taboptarray);
+
+	$execresult=$dict->ExecuteSQLArray($sqlarray,1);
+	if ($execresult==0 || $execresult==1)
 	{
-	"<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n" .
+	$activateoutput .= "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n" .
 	"<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Activate Survey")." ($surveyid)</strong></font></td></tr>\n" .
 	"<tr><td>\n" .
 	"<font color='red'>".$clang->gT("Survey could not be actived.")."</font><br />\n" .
@@ -433,69 +433,71 @@ else
 	"</td></tr></table></br>&nbsp;\n" .
 	"</body>\n</html>";
 	}
-
-	$anquery = "SELECT autonumber_start FROM {$dbprefix}surveys WHERE sid={$_GET['sid']}";
-	if ($anresult=db_execute_assoc($anquery))
+	if ($execresult != 0 && $execresult !=1)
 	{
-		//if there is an autonumber_start field, start auto numbering here
-		while($row=$anresult->FetchRow())
+		$anquery = "SELECT autonumber_start FROM {$dbprefix}surveys WHERE sid={$_GET['sid']}";
+		if ($anresult=db_execute_assoc($anquery))
 		{
-			if ($row['autonumber_start'] > 0)
+			//if there is an autonumber_start field, start auto numbering here
+			while($row=$anresult->FetchRow())
 			{
-				$autonumberquery = "ALTER TABLE {$dbprefix}survey_{$_GET['sid']} AUTO_INCREMENT = ".$row['autonumber_start'];
-				if ($result = $connect->Execute($autonumberquery))
+				if ($row['autonumber_start'] > 0)
 				{
-					//We're happy it worked!
-				}
-				else
-				{
-					//Continue regardless - it's not the end of the world
+					$autonumberquery = "ALTER TABLE {$dbprefix}survey_{$_GET['sid']} AUTO_INCREMENT = ".$row['autonumber_start'];
+					if ($result = $connect->Execute($autonumberquery))
+					{
+						//We're happy it worked!
+					}
+					else
+					{
+						//Continue regardless - it's not the end of the world
+					}
 				}
 			}
 		}
-	}
-	if (isset($useidprefix) && $useidprefix == 1 && !isset($autonumberquery))
-	{
-		if (!isset($idprefix) || $idprefix == 0 || is_string($idprefix))
+		if (isset($useidprefix) && $useidprefix == 1 && !isset($autonumberquery))
 		{
-			$idprefix="";
-			$elements=explode(".", $_SERVER['SERVER_ADDR']);
-			foreach ($elements as $element)
+			if (!isset($idprefix) || $idprefix == 0 || is_string($idprefix))
 			{
-				$idprefix.=sprintf("%03d", $element);
+				$idprefix="";
+				$elements=explode(".", $_SERVER['SERVER_ADDR']);
+				foreach ($elements as $element)
+				{
+					$idprefix.=sprintf("%03d", $element);
+				}
+			}
+			$idprefix = "{$idprefix}0000000"; //Setting 7 zeros at the end allows for up to 9,999,999 responses
+			$autonumberquery = "ALTER TABLE {$dbprefix}survey_{$_GET['sid']} AUTO_INCREMENT = ".$idprefix;
+			if (!$result = $connect->Execute($autonumberquery))
+			{
+				$activateoutput .= "There was an error defining the autonumbering to start at $idprefix.<br />";
 			}
 		}
-		$idprefix = "{$idprefix}0000000"; //Setting 7 zeros at the end allows for up to 9,999,999 responses
-		$autonumberquery = "ALTER TABLE {$dbprefix}survey_{$_GET['sid']} AUTO_INCREMENT = ".$idprefix;
-		if (!$result = $connect->Execute($autonumberquery))
+
+		$activateoutput .= "<br />\n<table bgcolor='#FFFFFF' width='350' align='center' style='border: 1px solid #555555' cellpadding='6' cellspacing='0'>\n";
+		$activateoutput .= "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Activate Survey")." ($surveyid)</strong></font></td></tr>\n";
+		$activateoutput .= "\t\t\t\t<tr><td align='center'><font color='green'>".$clang->gT("Survey has been activated. Results table has been successfully created.")."<br /><br />\n";
+
+		$acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid={$_GET['sid']}";
+		$acresult = $connect->Execute($acquery);
+
+		if (isset($surveynotprivate) && $surveynotprivate) //This survey is tracked, and therefore a tokens table MUST exist
 		{
-			$activateoutput .= "There was an error defining the autonumbering to start at $idprefix.<br />";
+			$activateoutput .= $clang->gT("This is not an anonymous survey. A token table must also be created.")."<br /><br />\n";
+			$activateoutput .= "<input type='submit' value='".$clang->gT("Initialise Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid={$_GET['sid']}&amp;createtable=Y', '_top')\" />\n";
 		}
+		elseif (isset($surveyallowsregistration) && $surveyallowsregistration == "TRUE")
+		{
+			$activateoutput .= $clang->gT("This survey allows public registration. A token table must also be created.")."<br /><br />\n";
+			$activateoutput .= "<input type='submit' value='".$clang->gT("Initialise Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid={$_GET['sid']}&amp;createtable=Y', '_top')\" />\n";
+		}
+		else
+		{
+			$activateoutput .= $clang->gT("This survey is now active, and responses can be recorded.")."<br /><br />\n";
+		}
+		$activateoutput .= "\t\t\t\t</font></font></td></tr></table><br />&nbsp;\n";
 	}
 
-	$activateoutput .= "<br />\n<table bgcolor='#FFFFFF' width='350' align='center' style='border: 1px solid #555555' cellpadding='6' cellspacing='0'>\n";
-	$activateoutput .= "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Activate Survey")." ($surveyid)</strong></font></td></tr>\n";
-	$activateoutput .= "\t\t\t\t<tr><td align='center'><font color='green'>".$clang->gT("Survey has been activated. Results table has been successfully created.")."<br /><br />\n";
-
-	$acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid={$_GET['sid']}";
-	$acresult = $connect->Execute($acquery);
-
-	if (isset($surveynotprivate) && $surveynotprivate) //This survey is tracked, and therefore a tokens table MUST exist
-	{
-		$activateoutput .= $clang->gT("This is not an anonymous survey. A token table must also be created.")."<br /><br />\n";
-		$activateoutput .= "<input type='submit' value='".$clang->gT("Initialise Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid={$_GET['sid']}&amp;createtable=Y', '_top')\" />\n";
-	}
-	elseif (isset($surveyallowsregistration) && $surveyallowsregistration == "TRUE")
-	{
-		$activateoutput .= $clang->gT("This survey allows public registration. A token table must also be created.")."<br /><br />\n";
-		$activateoutput .= "<input type='submit' value='".$clang->gT("Initialise Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid={$_GET['sid']}&amp;createtable=Y', '_top')\" />\n";
-	}
-	else
-	{
-		$activateoutput .= $clang->gT("This survey is now active, and responses can be recorded.")."<br /><br />\n";
-	}
-	$activateoutput .= "\t\t\t\t</font></font></td></tr></table><br />&nbsp;\n";
-	
 }
 
 ?>
