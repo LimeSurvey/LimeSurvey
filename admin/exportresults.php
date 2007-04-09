@@ -326,7 +326,7 @@ switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c
       $workbook->send('results.xls');
       // Creating the first worksheet
       $sheet =& $workbook->addWorksheet('Survey Results');
-      $sheet->setInputEncoding('utf-8');
+      $sheet->setInputEncoding('UTF-16LE');
       $separator="|";
 	break;
 	case "csv":
@@ -356,7 +356,7 @@ if (isset($_POST['colselect']))
 	{
 		$selectfields.= "$surveytable.`$cs`, ";
 	}
-	$selectfields = substr($selectfields, 0, strlen($selectfields)-2);
+	$selectfields = mb_substr($selectfields, 0, strlen($selectfields)-2);
 }
 else
 {
@@ -492,7 +492,7 @@ for ($i=0; $i<$fieldcount; $i++)
 			$qr = db_execute_assoc($qq);
 			while ($qrow=$qr->FetchRow())
 			{$qname=$qrow['question'];}
-			$qname=substr($qname, 0, 15)."..";
+			$qname=mb_substr($qname, 0, 15)."..";
 			$qname=strip_tags($qname);
 			$firstline = str_replace("\n", "", $firstline);
 			$firstline = str_replace("\r", "", $firstline);
@@ -546,9 +546,9 @@ for ($i=0; $i<$fieldcount; $i++)
 				}
 				break;
 				case "P": //multioption with comment
-				if (substr($faid, -7, 7) == "comment")
+				if (mb_substr($faid, -7, 7) == "comment")
 				{
-					$faid=substr($faid, 0, -7);
+					$faid=mb_substr($faid, 0, -7);
 					$comment=true;
 				}
 				if ($faid == "other")
@@ -603,7 +603,7 @@ for ($i=0; $i<$fieldcount; $i++)
 	}
 }
 
-if ($type == "csv") { $firstline = substr(trim($firstline),0,strlen($firstline)-1);}
+if ($type == "csv") { $firstline = mb_substr(trim($firstline),0,strlen($firstline)-1);}
 else
 {
 	$firstline = trim($firstline);
@@ -631,7 +631,7 @@ elseif ($type == "xls")
 //    $format->setColor("green");	
 	foreach ($flarray as $fl)
 	{
-      $sheet->write(0,$fli,$fl);
+      $sheet->write(0,$fli,mb_convert_encoding($fl, "UTF-16LE", "UTF-8"));      
       $fli++;
 	}
 	//print_r($fieldmap);
@@ -706,7 +706,8 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
         	$colcounter=0;
         	foreach ($drow as $rowfield)
         	{
-              $sheet->write($rowcounter,$colcounter,$rowfield);
+        	  $rowfield=str_replace("–","-",$rowfield);
+              $sheet->write($rowcounter,$colcounter,mb_convert_encoding($rowfield, "UTF-16LE", "UTF-8"));
               $colcounter++;
         	}
         }		
@@ -813,7 +814,7 @@ elseif ($answers == "long")
 				break;
 				case "L": //DROPDOWN LIST
 				case "!":
-				if (substr($fieldinfo, -5, 5) == "other")
+				if (mb_substr($fieldinfo, -5, 5) == "other")
 				{
 					$exportoutput .= $drow[$i];
 				}
@@ -837,7 +838,7 @@ elseif ($answers == "long")
 				break;
 				case "W":
 				case "Z":
-				if (substr($fieldinfo, -5, 5) == "other")
+				if (mb_substr($fieldinfo, -5, 5) == "other")
 				{
 					$exportoutput .= $drow[$i];
 				}
@@ -886,11 +887,11 @@ elseif ($answers == "long")
 				break;
 				case "M": //multioption
 				case "P":
-				if (substr($fieldinfo, -5, 5) == "other")
+				if (mb_substr($fieldinfo, -5, 5) == "other")
 				{
 					$exportoutput .= "$drow[$i]";
 				}
-				elseif (substr($fieldinfo, -7, 7) == "comment")
+				elseif (mb_substr($fieldinfo, -7, 7) == "comment")
 				{
 					$exportoutput .= "$drow[$i]";
 				}
