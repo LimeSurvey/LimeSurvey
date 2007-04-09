@@ -1319,11 +1319,6 @@ if($actsurrows['browse_response']){
 		$updateqr .= " WHERE id=$id";
 		$updateres = $connect->Execute($updateqr) or die("Update failed:<br />\n" . htmlspecialchars($connect->ErrorMsg()) . "\n<pre style='text-align: left'>$updateqr</pre>");
 		$thissurvey=getSurveyInfo($surveyid);
-		if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect']=='Y' && $thissurvey['url']) {
-			session_write_close();
-			$url=$thissurvey['url'];
-			header("Location: $url");
-		}
 		while (ob_get_level() > 0) {
 			ob_end_flush();
 		}
