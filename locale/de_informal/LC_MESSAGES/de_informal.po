@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-04-09 18:19+0100\n"
+"PO-Revision-Date: 2007-04-10 20:43+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -931,8 +931,8 @@ msgstr "Diesen Eintrag löschen"
 msgid "Export this Response"
 msgstr "Diese Antwort exportieren"
 
-msgid "Show last..."
-msgstr "Zeige vorherigen.."
+msgid "Show previous..."
+msgstr "Zeige vorherige:"
 
 msgid "Show next..."
 msgstr "Zeige nächsten.."
@@ -960,8 +960,8 @@ msgstr "Ansicht der Daten"
 msgid "Show start.."
 msgstr "Zeige ersten.."
 
-msgid "Show previous..."
-msgstr "Zeige vorherige:"
+msgid "Show last..."
+msgstr "Zeige vorherigen.."
 
 msgid "Records Displayed:"
 msgstr "Angezeigte Datensätze:"
@@ -1195,6 +1195,10 @@ msgstr "Dateneingabe"
 msgid "You have not selected a survey for data-entry."
 msgstr "Du hast keine Umfrage zur Dateneingabe ausgewählt."
 
+# D:\web\xampp\htdocs\phpsurveyor/admin/dataentry.php:257
+msgid "This survey is not anonymous, you must supply a valid token"
+msgstr "Diese Umfrage ist nicht anonym - Sie müssen einen Zugangsschlüssel angeben"
+
 msgid "Try again"
 msgstr "Nochmal versuchen"
 
@@ -1213,15 +1217,13 @@ msgstr "E-Mail"
 msgid "Your survey responses have been saved succesfully"
 msgstr "Deine Antworten auf diese Umfrage sind erfolgreich gespeichert worden."
 
+# D:\xampp\xampp\htdocs\phpsurveyor/save.php:266
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:219
+msgid "You, someone using your email address, or the administrator has saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
+msgstr "Du, jemand der Deine Email-Adresse nutzt oder der Administrator, hat Antworten auf eine Umfrage zwischengespeichert. Die folgenden Angaben kannst Du dazu verwenden, um zu dieser Umfrage zurückzukehren und das Ausfülllen der Umfrage fortzuführen."
+
 msgid "An email has been sent with details about your saved survey"
 msgstr "Es wurde eine Email mit den Einzelheiten Deiner zwischengespeicherten Umfrage an Dich versandt."
-
-msgid "An error occurred and your survey responses were not saved."
-msgstr "Ein Fehler ist aufgetreten, daher wurden Deine Antworten für diese Umfrage nicht gespeichert."
-
-# D:\web\xampp\htdocs\phpsurveyor/admin/dataentry.php:257
-msgid "This survey is not anonymous, you must supply a valid token"
-msgstr "Diese Umfrage ist nicht anonym - Sie müssen einen Zugangsschlüssel angeben"
 
 msgid "Success"
 msgstr "Erfolgreich"
@@ -1244,8 +1246,8 @@ msgstr "Kann nicht geändert werden."
 msgid "Update Entry"
 msgstr "Eintrag aktualisieren"
 
-msgid "Save as a partially completed survey"
-msgstr "Teilweise beantworteten Fragebogen zwischenspeichern"
+msgid "Save for further completion by survey user"
+msgstr "Speichern für weitere Bearbeitung durch Umfrage-Teilnehmer"
 
 msgid "Record has been updated."
 msgstr "Datensatz aktualisiert."
