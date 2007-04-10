@@ -1,7 +1,7 @@
-Welcome to PHPSurveyor v1.47b!
+Welcome to PHPSurveyor v1.48RC!
 
 Warning:
-THIS IS AN BETA RELEASE. It should be pretty stable, but it SHOULD NOT be used FOR PRODUCTION!
+THIS IS AN RELEASE CANDIDATE. It should be pretty stable, but it SHOULD NOT be used FOR PRODUCTION!
 IF YOU DO SO, YOU DO IT (as always) AT YOUR OWN RISK!
 
 This release does have the following requirements:
@@ -35,46 +35,73 @@ Just do a new installation as described on http://docs.phpsurveyor.org.
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.47b to 1.48RC - Release Date: 2007/04/10
 
-Changes from 1.46b to 1.47b - Release Date: 2007/03/14
+Fixed bug #773: [Data Entry (non public)] If Input is done via DataEntry-Screen, no Language-Code is sent to Database (machaven)
+Fixed bug #781: [Statistics] User Interface on Statistics Screen: Some minor errors (machaven)
+Fixed bug #746: [Survey Design] Error: Group Import - Died querying labelset (c_schmitz)
+Fixed bug #784: [Data Entry (non public)] When clicking on Test this survey, get the SQL instead of the actual screen (c_schmitz)
+Fixed bug #783: [Security] When clicking on the Security icon, I get the SQL in the Browser Window (c_schmitz)
+Fixed bug #774: [Survey at Runtime] IE7 problem with calendar frame (c_schmitz)
+Fixed bug #787: [Installation] Installation fails with MySQL 5.0.37 (c_schmitz)
+Fixed bug #763: [Data Entry (non public)] possible to choose label set other language - dont appear (c_schmitz)
+Fixed bug #762: [Data Entry (non public)] building jpgraph statistics very slow (c_schmitz)
+Fixed bug #767: [Statistics] Statistics-Screen: Number of Responses in Huge Free Text are not correctly (c_schmitz)
+Fixed bug #768: [Assessments] Help-Menu is displayed, where it makes no sense (c_schmitz)
+Fixed bug #786: [Survey at Runtime] Special characters in answer-codes leads to not store answers in survey-results table; Truncated answer-codes (c_schmitz)
+Fixed bug #771: [Import / Export] VV-Export: User with little rights see option to export an de-activate survey (machaven)
+Fixed bug #757: [Data Entry (non public)] Error Message on DataEntry-Screen (c_schmitz)
+Fixed bug #756: [Print View] Wrong Size of Language-Selection-Popup for Printable Surveys (machaven)
+Fixed bug #755: [Survey Design] Question copied not showed (c_schmitz)
+Fixed bug #752: [Import / Export] Excel export with german language has charset problems (c_schmitz)
+Fixed bug #758: [Installation] Conditions Screen: Delete-Button "Del" not translated into German "Löschen" (c_schmitz)
+Fixed bug #759: [Data Entry (non public)] Warning on DataEntry-Screen: Warning: array_unique() [function.array-unique] (machaven)
+Fixed bug #754: [Survey Design] Add/Edit Answer to this Question: Save All produces Error Popup (c_schmitz)
+Fixed bug #748: [Translation] German privacy notice typo (c_schmitz)
+Fixed bug #750: [Survey Design] Question conditions (machaven)
+Fixed bug #749: [Survey Design] Creating new answers options with ENTER deletes the first answer (c_schmitz)
+Fixed bug #740: [Import / Export] Import of questions typ array, flexible label (c_schmitz)
+Fixed bug #744: [Survey Design] Layout Problem: (machaven)
+Fixed bug #737: [Translation] Newline typo (c_schmitz)
+Fixed bug #747: [Security] New users disappear (machaven)
+Fixed bug #738: [Survey Design] Problem with javascript deactivate (lemeur)
+Fixed bug #739: [Translation] Regenerate Question Codes: Popup is not translated (c_schmitz)
+Fixed bug #728: [Survey Design] Answers with code 0 can't be changed (machaven)
+Fixed bug #730: [Survey at Runtime] Mandatory Question with Array (Flexible Labels) does not work (c_schmitz)
+Fixed bug #729: [Data Entry (non public)] Data Entry Screen: every submittting status message are displayed (machaven)
+Fixed bug #726: [Assessments] No survey-tables / token table types (machaven)
+Fixed bug #736: [Survey at Runtime] Survey Format "All in One" and Next-Button is displayed (c_schmitz)
+Fixed bug #727: [Statistics] Save edited Answer redirecets to End-URL of the survey (c_schmitz)
+Fixed bug #724: [Security] Not all users are displayed in Create/Edit-Users Overview (machaven)
+Fixed bug #719: [Data Entry (non public)] User-Managment: User with little rights is allowed to delete single entry (machaven)
+Fixed bug #722: [Survey Design] Adding a single forward quote ( ' ) in an answer item generates a \' in the output. (lemeur)
+Fixed bug #714: [Translation] switch language question missing (c_schmitz)
+Fixed bug #715: [Assessments] Notifications: Send email notifications with results codes. (lemeur)
+Fixed bug #723: [Translation] No German Translation at "Set User Rights" (machaven)
+Fixed bug #717: [Data Entry (non public)] Down Arrow Key (c_schmitz)
+Fixed bug #707: [Survey Design] Unconsistent styles on different browsers (lemeur)
+Fixed bug #716: [Security] Cannot Set User Rights (machaven)
+Fixed bug #712: [Survey at Runtime] PHP Fatal error: Only variables can be passed by reference in gettext.php on line 66 (machaven)
+Fixed bug #711: [Statistics] Export single survey record to .CSV fails (lemeur)
+Fixed bug #699: [Survey Design] Change of question type from list to multiple options (with commentary)/matrix/list with commentary/deletes answers (c_schmitz)
+Fixed bug #702: [Survey Design] Field length for answers seems to be limited to 100 characters (c_schmitz)
 
+Special thanks to el-matador-69 for its ongoing help in finding and eliminating bugs.
+Thank you to all the translators who are keeping the application and documentation up to date!
+And last but not least to everyone in the PHPSurveyor developer team - without your help this wouldn't have been possible!
+
+
+Changes from 1.00b to 1.47b - Release Date: 2007/03/14
 
 - New feature: Preview questions as they are being edited (machaven)
 - New feature: Survey List with User Details
 - Fixed Export button target in statistics (lemeur)
 - SPSS export updated (machaven)
 - Reworked the token import to being more stable (machaven)
-- Reworked the Excel import to be OpenOffice.org compatible
+- Reworked the Excel export to be OpenOffice.org compatible
 - MySQL now correctly handles utf-8 chars (Please re-install to fix this) (machaven & c_schmitz)
 - Added a setting to config.php to manage the maximum session time (c_schmitz)
 - Added a proper error message when taking a survey and the session is timing out for any reason (c_schmitz)
-- Fixed bug #689: [Security] Memory size error (machaven)
-- Fixed bug #703: [Survey at Runtime] Another infamous single quote issue in labels (lemeur)
-- Fixed bug #575: [Import / Export] Export to Excel: Umlaute (c_schmitz)
-- Fixed bug #632: [Import / Export] Exporting to MS Word - fields and answers not matched up (c_schmitz)
-- Fixed bug #656: [Assessments] Assessments don't work properly; HTML source code shows wrong calculation results (c_schmitz)
-- Fixed bug #690: [Statistics] Firefox-Problem: No "Show Statistic"-Button and some questions are not displayed (c_schmitz)
-- Fixed bug #678: [Statistics] Filter in Statistic-Screens displays Questions without Order (lemeur)
-- Fixed bug #636: [Survey at Runtime] Session Time-out Issues (c_schmitz)
-- Fixed bug #688: [Survey Design] Labelset administration wrong import type shown (c_schmitz)
-- Fixed bug #685: [Installation] Installation in existing MySQL DB (c_schmitz)
-- Fixed bug #680: [Translation] Language Switch type question doesn't totally swicth (c_schmitz)
-- Fixed bug #683: [Survey Design] Import of groups (c_schmitz)
-- Fixed bug #684: [Survey Design] Import of groups (c_schmitz)
-- Fixed bug #691: Internal Server Error when INSERTANS is used to show previous answers (machaven)
-- Fixed bug #693: INSERTANS: Different text displayed depending on question type (machaven)
-- Fixed bug #797: User-Managment: User with little rights has access to activate and edit tokkens (machaven)
-- Fixed bug #700: User-Managment: User with little rights has access to create/edit users (machaven)
-- Fixed bug #692: Labelset - save all without having changed anything - error message (machaven)
-
-
-... and numerous small changes, translations and bug fixes by gasper_koren, lemeur, ferrisoxide, b00z00, machaven and c_schmitz
-
-
-
-
-
-Changes from 1.0 to 1.46b - Release Date: 2007/03/03
 - Added captcha feature to prevent automatic registering (machaven)
 - Import tokens from LDAP queries (tlemeur)
 - Added support for Microsoft SQL Server database (ferrisoxide)

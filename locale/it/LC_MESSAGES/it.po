@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: PHPSurveyor Italian language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-04-07 19:55+0200\n"
-"PO-Revision-Date: 2007-04-10 16:25+0100\n"
-"Last-Translator: mario <mario.marani@libero.it>\n"
+"PO-Revision-Date: 2007-04-10 21:09+0100\n"
+"Last-Translator: Mario <mario.marani@libero.it>\n"
 "Language-Team: Mario Marani <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -2260,11 +2260,11 @@ msgstr "Salva URL di riferimento?"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:2004
 msgid "Responses will not have their referring URL logged."
-msgstr ""
+msgstr "Le risposte non verranno collegate all'URL registrata."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:2005
 msgid "Responses will have their referring URL logged."
-msgstr ""
+msgstr "Le risposte verranno collegate all'URL registrata."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:2048
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/labels.php:160
@@ -2459,9 +2459,9 @@ msgid ""
 msgstr ""
 "Caro {FIRSTNAME},\n"
 "\n"
-"Questa e-mail ti è stata inviata per confermarti che hai completato corretamente l'indagine initolata {SURVEYNAME}  e che le tue risposte sono state salvate. Grazie per la partecipazione.\n"
+"Questa e-mail ti è stata inviata per confermarti che hai completato corretamente il questionario initolato {SURVEYNAME}  e che le tue risposte sono state salvate. Grazie per la partecipazione.\n"
 "\n"
-"Se hai ulteriori domande circa questo messaggio, contatta {ADMINNAME} all&#039;indirizzo e-mail {ADMINEMAIL}.\n"
+"Se hai ulteriori domande circa questo messaggio, contatta {ADMINNAME} all'indirizzo e-mail {ADMINEMAIL}.\n"
 "\n"
 "Cordiali saluti\n"
 "\n"
@@ -2497,13 +2497,13 @@ msgid ""
 msgstr ""
 "Caro {FIRSTNAME},\n"
 "\n"
-"Tu, o qualcuno che ha utilizzato il tuo indirizzo e-mail, ti sei registrato per partecipare all'indagine on line intitolata {SURVEYNAME}.\n"
+"Ti sei registrato (o qualcuno che ha utilizzato il tuo indirizzo e-mail) per partecipare all'indagine on line intitolata {SURVEYNAME}.\n"
 "\n"
-"Per completare il relativo, fai clic sul seguente indirizzo:\n"
+"Per completare il questionario fai clic sul seguente indirizzo:\n"
 "\n"
 "{SURVEYURL}\n"
 "\n"
-"Se hai qualche domanda circa il questionario, o se non ti sei registrato e ritieni che questa e-mail ti sia pervenuta per errore, ti preghiamo di contattare  {ADMINNAME} all&#039;indirizzo {ADMINEMAIL}."
+"Se hai qualche domanda, o se non ti sei registrato e ritieni che questa e-mail ti sia pervenuta per errore, ti preghiamo di contattare  {ADMINNAME} all'indirizzo {ADMINEMAIL}."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:2196
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:2523
@@ -2522,7 +2522,7 @@ msgstr "Il questionario corrente presenta domande con condizioni al di fuori del
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:2264
 msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
-msgstr ""
+msgstr "Il riordino dei gruppi è limitato per assicurare che le domande sulle cui condizioni sono basate non sono riordinate "
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:2264
 msgid "The following groups are concerned"
@@ -2666,7 +2666,7 @@ msgstr "Esporta domanda"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/dumpquestion.php:59
 msgid "No QID has been provided. Cannot dump question."
-msgstr "L&#039;ID delle domande (QID) non è stato inserito. Impossibile fare il dump della domanda."
+msgstr "L'ID delle domande (QID) non è stato inserito. Impossibile fare il dump della domanda."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/spss.php:353
 msgid "Record ID"
@@ -2765,11 +2765,11 @@ msgstr "Gestione Etichette"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/userrighthandling.php:309
 msgid "Setting new Parent"
-msgstr ""
+msgstr "Imposta nuova gerarchia"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/userrighthandling.php:310
 msgid "Set Parent successful."
-msgstr ""
+msgstr "Nuova gerarchia imposrata con successo. "
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/userrighthandling.php:323
 msgid "User Control"
@@ -2963,7 +2963,7 @@ msgstr "Il database è stato creato."
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/createdb.php:94
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/install/createdb.php:94
 msgid "Please click below to populate the database"
-msgstr "Fai clic sul seguente link per l&#039;inserimento dei dati nel database"
+msgstr "Fai clic sul seguente link per l'inserimento dei dati nel database"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/createdb.php:101
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/install/createdb.php:101
@@ -3067,11 +3067,11 @@ msgstr "Aggiungi nuova etichetta"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/labels.php:383
 msgid "Inserting New labels must be done on the first language folder."
-msgstr ""
+msgstr "L'inserimento di nuove etichette deve essere fatto nella cartella prima lingua"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/labels.php:392
 msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
-msgstr "Impossibile modificare i codici, aggiungere o eliminare elementi in questo gruppo di etichette perchè è utilizzato da un&#039;indagine attiva."
+msgstr "Impossibile modificare i codici, aggiungere o eliminare elementi in questo gruppo di etichette perchè è utilizzato da una indagine attiva."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/labels.php:417
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/labels.php:658
@@ -3084,7 +3084,7 @@ msgstr "Alcune indagini usano questo gruppo di etichette. Modificare i codici, a
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/labels.php:482
 msgid "Failed to Copy already defined labels to added languages"
-msgstr ""
+msgstr "Copia fallita. Etichette già definite nelle lingue aggiunte"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/labels.php:498
 msgid "Failed to delete labels for removed languages"
@@ -3097,7 +3097,7 @@ msgstr "Aggiornamento del gruppo di etichette non riuscito"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/labels.php:522
 msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
-msgstr "Impossibile cancellare il gruppo di etichette - Ci sono delle domande che dipendono da esso. E&#039; necessario eliminare prima queste domande."
+msgstr "Impossibile cancellare il gruppo di etichette - Ci sono delle domande che dipendono da esso. E' necessario eliminare prima queste domande."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/labels.php:585
 msgid "Failed to insert label"
@@ -3117,7 +3117,7 @@ msgstr "Questa domanda è una domanda a scelta multipla senza risposte."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:114
 msgid "This question does not have a question 'type' set."
-msgstr "Questa domanda non contiene il parametro &#039;tipologia&#039;."
+msgstr "Questa domanda non contiene il parametro 'tipologia'"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:121
 msgid "This question requires a Labelset, but none is set."
@@ -3137,7 +3137,7 @@ msgstr "Sono stati riscontrati i seguenti problemi:"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:221
 msgid "The survey cannot be activated until these problems have been resolved."
-msgstr "L&#039;indagine non può essere attivata prima di risolvere i problemi emersi"
+msgstr "L'indagine non può essere attivata prima di risolvere i problemi emersi"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:234
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deactivate.php:50
@@ -3146,7 +3146,7 @@ msgstr "LEGGERE ATTENTAMENTE PRIMA DI PROCEDERE"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:240
 msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
-msgstr "Attivare un&#039;indagine solo dopo aver inserito tutti i dati e quando non sono necessarie ulteriori modifiche."
+msgstr "Attivare una indagine solo dopo aver inserito tutti i dati e quando non sono necessarie ulteriori modifiche."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:241
 msgid "Once a survey is activated you can no longer:"
@@ -3186,15 +3186,15 @@ msgstr "Cambiare il nome dell'indagine o la sua descrizione"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:243
 msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
-msgstr "Una volta inseriti tutti i dati, per eliminare o aggiungere nuovi gruppi, è necessario disattivare l&#039;indagine. Tutti i dati inseriti verranno esportati in un altro file."
+msgstr "Una volta inseriti tutti i dati, per eliminare o aggiungere nuovi gruppi, è necessario disattivare l'indagine. Tutti i dati inseriti verranno esportati in un altro file."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:429
 msgid "Survey could not be actived."
-msgstr "Impossibile attivare l&#039;indagine."
+msgstr "Impossibile attivare l'indagine."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:478
 msgid "Survey has been activated. Results table has been successfully created."
-msgstr "L&#039;indagine è stata attivata. Le tabelle dei risultati sono state create con successo."
+msgstr "L'indagine è stata attivata. Le tabelle dei risultati sono state create con successo."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:485
 msgid "This is not an anonymous survey. A token table must also be created."
@@ -3208,11 +3208,11 @@ msgstr "Genera gli identificativi"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:490
 msgid "This survey allows public registration. A token table must also be created."
-msgstr "Questa indagine consente una registrazione pubblica. E&#039; necessario creare una tabella degli identificativi."
+msgstr "Questa indagine consente una registrazione pubblica. E'  necessario creare una tabella degli identificativi."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:495
 msgid "This survey is now active, and responses can be recorded."
-msgstr "Indagine attiva. Si può procedere con l&#039;inserimento delle domande."
+msgstr "Indagine attiva. Si può procedere con l'inserimento delle domande."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deletesurvey.php:58
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/dbedit.php:499
@@ -3225,23 +3225,23 @@ msgstr "Eliminare questa indagine?"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deletesurvey.php:74
 msgid "This process will delete this survey, and all related groups, questions answers and conditions."
-msgstr "Questa operazione eliminerà l&#039;indagine e tutti i relativi gruppi, domande, risposte e condizioni."
+msgstr "Questa operazione eliminerà l'indagine e tutti i relativi gruppi, domande, risposte e condizioni."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deletesurvey.php:75
 msgid "We recommend that before you delete this survey you export the entire survey from the main administration screen."
-msgstr "Si consiglia di esportare l&#039;indagine dalla pagina di amministrazione generale prima di eliminarla."
+msgstr "Si consiglia di esportare l'indagine dalla pagina di amministrazione generale prima di eliminarla."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deletesurvey.php:79
 msgid "This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey."
-msgstr "Questa indagine è attiva ed esiste un database delle risposte. Eliminando l&#039;indagine si eliminano anche le risposte. Si consiglia di esportare le risposte prima di eliminare l&#039;indagine."
+msgstr "Questa indagine è attiva ed esiste un database delle risposte. Eliminando l'indagine si eliminano anche le risposte. Si consiglia di esportare le risposte prima di eliminare l'indagine."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deletesurvey.php:84
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
-msgstr "Questa indagine è associata ad una tabella di identificativi. Eliminando l&#039;indagine si eliminano anche tutti gli identificativi. Si consiglia di esportare o fare il backup degli identificativi prima di eliminare l&#039;indagine."
+msgstr "Questa indagine è associata ad una tabella di identificativi. Eliminando l'indagine si eliminano anche tutti gli identificativi. Si consiglia di esportare o fare il backup degli identificativi prima di eliminare l'indagine."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deletesurvey.php:150
 msgid "This survey has been deleted."
-msgstr "L&#039;indagine è stata eliminata."
+msgstr "L'indagine è stata eliminata."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/importsurvey.php:95
 msgid "This file is not a PHPSurveyor survey file. Import failed."
@@ -3307,7 +3307,7 @@ msgstr "Non hai selezionato alcuna domanda."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/conditions.php:88
 msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
-msgstr ""
+msgstr "Le condizioni non possono essere aggiunte! Assicurati di aver selezionato una domanda ed una risposta."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/conditions.php:154
 msgid "Did not copy questions"
@@ -3494,7 +3494,7 @@ msgstr "Il gruppo corrente usa domanda condizionali"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/questionhandling.php:586
 msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
-msgstr ""
+msgstr "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/questionhandling.php:586
 msgid "See the conditions marked on the following questions"
@@ -3572,7 +3572,7 @@ msgstr "Importazione di risposte da un vecchio (disattivato) questionario in un 
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/importoldresponses.php:68
 msgid "Target Survey ID"
-msgstr "ID dell&#039;indagine:"
+msgstr "ID dell'indagine:"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/importoldresponses.php:73
 msgid "Source table"
@@ -3654,7 +3654,7 @@ msgstr "Numero di record in questa query"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/statistics.php:859
 msgid "Total records in survey"
-msgstr "Record totali nell&#039;indagine"
+msgstr "Record totali nell'indagine"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/statistics.php:863
 msgid "Percentage of total"
@@ -3752,12 +3752,14 @@ msgid "Question Import Summary"
 msgstr "Riepilogo importazione domande"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/database.php:121
-#, fuzzy
 msgid ""
 "Group could not be added.\\n"
 "\\n"
 "It is missing the group name for the following languages"
-msgstr "Impossibile aggiungere gruppo. Inserire il nome del gruppo nel campo obbligatorio nome del gruppo"
+msgstr ""
+"Impossibile aggiungere gruppo. \\n"
+"\\n"
+" Manca il nome del gruppo per le seguenti lingue"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/database.php:143
 msgid "Error: The database reported the following error:"
@@ -3797,9 +3799,8 @@ msgid "Answers can't be deleted"
 msgstr "Impossibile eliminare le risposte"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/database.php:416
-#, fuzzy
 msgid "Question could not be added. You must insert a code in the mandatory field"
-msgstr "Impossibile aggiungere domanda. Inserire il Codice nel campo obbligatorio"
+msgstr "Impossibile aggiungere domanda. Inserire un codice nel campo obbligatorio"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/database.php:495
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/database.php:536
@@ -3846,7 +3847,7 @@ msgstr "Impostazione della risposta come quella di default fallita"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/database.php:959
 msgid "Survey could not be updated"
-msgstr "Impossibile aggiornare l&#039;indagine"
+msgstr "Impossibile aggiornare l'indagine"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/database.php:974
 msgid "ERROR deleting Survey id"
@@ -3854,11 +3855,11 @@ msgstr "ERRORE nell'eliminazione del'ID dell'Indagine"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/database.php:1012
 msgid "Survey could not be created because it did not have a short title"
-msgstr "Impossibile creare l&#039;indagine. Inserire un titolo"
+msgstr "Impossibile creare l'indagine. Inserire un titolo"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/database.php:1073
 msgid "Survey could not be created"
-msgstr "Impossibile creare l&#039;indagine"
+msgstr "Impossibile creare l'indagine"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/integritycheck.php:52
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/integritycheck.php:326
@@ -3946,7 +3947,7 @@ msgstr "Elimina ID Gruppo"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/dumpsurvey.php:67
 msgid "No SID has been provided. Cannot dump survey"
-msgstr "L&#039;ID dell&#039;indagine (SID) non è stato inserito. Impossibile fare il dump dell&#039;indagine"
+msgstr "L'ID dell'indagine (SID) non è stato inserito. Impossibile fare il dump dell'indagine"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/stats.php:256
 msgid "Select all"
@@ -4007,12 +4008,12 @@ msgstr "Nessuna indagine selezionata"
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:145
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/dataentry.php:2178
 msgid "The survey you selected does not exist"
-msgstr "L&#039;indagine selezionata è inesistente"
+msgstr "L'indagine selezionata è inesistente"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:193
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:211
 msgid "A token table has been created for this survey."
-msgstr "E&#039; stata creata una tabella degli identificativi per questa indagine."
+msgstr "E' stata creata una tabella degli identificativi per questa indagine."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:236
 msgid "Tokens have not been initialised for this survey."
@@ -4020,16 +4021,15 @@ msgstr "Gli identificativi non sono stati attivati."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:239
 msgid "If you initialise tokens for this survey, the survey will only be accessible to users who have been assigned a token."
-msgstr "Attivando gli identificativi per questa indagine, l&#039;accesso all&#039;indagine sarà riservata solo agli utenti con un identificativo."
+msgstr "Attivando gli identificativi per questa indagine, l'accesso all'indagine sarà riservata solo agli utenti con un identificativo."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:241
 msgid "Do you want to create a tokens table for this survey?"
 msgstr "Creare una tabella degli identificativi per questa indagine?"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:255
-#, fuzzy
 msgid "The following old token tables could be restored:"
-msgstr "Le seguenti condizioni dovrebbero essere eliminate"
+msgstr "Le seguenti tabelle di vecchi identificativi potrebbero essere ricaricate:"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:262
 msgid "Restore"
@@ -4125,7 +4125,7 @@ msgstr "Elimina codici associati agli identificativi"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:436
 msgid "Are you really sure you want to delete ALL token entries?"
-msgstr "Procedere nell&#039;eliminazione delle voci di TUTTI gli identificativi?"
+msgstr "Procedere nell'eliminazione delle voci di TUTTI gli identificativi?"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:436
 msgid "Delete all token entries"
@@ -4242,7 +4242,7 @@ msgstr "Invio degli inviti in corso"
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:882
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:922
 msgid "Sending to TID No:"
-msgstr "Invia a ID dell&#039;identificativo n.:"
+msgstr "Invia a ID dell'identificativo n.:"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:808
 msgid "Invitation Sent To:"
@@ -4264,7 +4264,7 @@ msgstr "Ci sono ancora {EMAILCOUNT} e-mail in attesa di invio."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:840
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
-msgstr "Nessun messaggio e-mail da inviare. I messaggi non soddisfano i seguenti criteri - indirizzo e-mail valido, non è stato ancora inviato un invito, l&#039;indagine è già stata completata, l&#039;utente ha già un identificativo"
+msgstr "Nessun messaggio e-mail da inviare. I messaggi non soddisfano i seguenti criteri - indirizzo e-mail valido, non è stato ancora inviato un invito, l'indagine è già stata completata, l'utente ha già un identificativo."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:852
 msgid "Email Reminder"
@@ -4272,7 +4272,7 @@ msgstr "Invia sollecita"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:874
 msgid "Start at TID No:"
-msgstr "Incomincia dall&#039;ID dell&#039;identificativo n.:"
+msgstr "Incomincia dall'ID dell'identificativo n.:"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:905
 msgid "Send Reminders"
@@ -4288,7 +4288,7 @@ msgstr "Sollecito inviato a:"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:1003
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
-msgstr "Nessun messaggio e-mail da inviare. I messaggi non soddisfano i seguenti criteri - indirizzo e-mail valido, un invito è già stato inviato ma l&#039;indagine non è stata completata."
+msgstr "Nessun messaggio e-mail da inviare. I messaggi non soddisfano i seguenti criteri - indirizzo e-mail valido, un invito è già stato inviato ma il questionario  non è stato completato."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:1015
 msgid "Create Tokens"
@@ -4357,11 +4357,11 @@ msgstr "Carica le immissioni LDAP"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:1286
 msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
-msgstr ""
+msgstr "Le query LDAP sono definite dall'amministratore nel file config-ldap.php"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:1311
 msgid "Upload file not found. Check your permissions and path for the upload directory"
-msgstr "Lista di upload non trovata. Controlla i tuoi permessi ed il percorso per vedere se c&#039;è l&#039;indice di upload"
+msgstr "Lista di upload non trovata. Controlla i tuoi permessi ed il percorso per vedere se c'è l'indice di upload"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:1316
 msgid "Importing CSV File"
@@ -4396,9 +4396,8 @@ msgid "Records with invalid email address removed"
 msgstr "Rimossi i Record con indirizzo e-mail non corretto "
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:1393
-#, fuzzy
 msgid "Uploading LDAP Query"
-msgstr "Operazioni di caricamento del file CSV in corso"
+msgstr "Caricamento Query LDAP"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:1451
 msgid "{TOKENCOUNT} Records Created"
@@ -4406,7 +4405,7 @@ msgstr "{TOKENCOUNT} voci sono state create"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:1455
 msgid "Can't bind to the LDAP directory"
-msgstr ""
+msgstr "Non può collegare la directory LDAP"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:1461
 msgid "Can't connect to the LDAP directory"
@@ -4414,11 +4413,11 @@ msgstr "Impossibile connettersi alla directory LDAP"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:1502
 msgid "LDAP is disabled or no LDAP query defined."
-msgstr ""
+msgstr "LDAP disabilitato o nessuna quesry LDAP definita"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:1508
 msgid "Select the LDAP query you want to run:"
-msgstr ""
+msgstr "Seleziona la query LDAP che vuoi lanciare:"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/printablesurvey.php:131
 msgid "if you answered"
@@ -4552,15 +4551,15 @@ msgstr "Disattivazione indagine"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deactivate.php:55
 msgid "In an active survey, a table is created to store all the data-entry records."
-msgstr "Un&#039;indagine attiva contiene un database dove vengono memorizzati tutti i dati."
+msgstr "Una indagine attiva contiene un database dove vengono memorizzati tutti i dati."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deactivate.php:56
 msgid "When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using PHPSurveyor any more."
-msgstr "Disattivando l&#039;indagine tutti i dati inseriti verranno spostati altrove. Il database verrà svuotato attivando di nuovo l&#039;indagine. Non sarà più possibile accedere a queste informazioni tramite PHPSurveyor."
+msgstr "Disattivando l'indagine tutti i dati inseriti verranno spostati altrove. Il database verrà svuotato attivando di nuovo l'indagine. Non sarà più possibile accedere a queste informazioni tramite PHPSurveyor."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deactivate.php:57
 msgid "De-activated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
-msgstr "Le informazioni di una indagine  disattivata possono essere visualizzate solo dagli amministratori di sistema mediante uno strumento di accesso al database MySQL come PhpMyAdmin. Se l&#039;indagine utilizza identificativi, la relativa tabella verrà rinominata e sarà accessibile solo dgli amministratori di sistema."
+msgstr "Le informazioni di una indagine  disattivata possono essere visualizzate solo dagli amministratori di sistema mediante uno strumento di accesso al database MySQL come PhpMyAdmin. Se l'indagine utilizza identificativi, la relativa tabella verrà rinominata e sarà accessibile solo dgli amministratori di sistema."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deactivate.php:58
 msgid "Your responses table will be renamed to:"
@@ -4568,7 +4567,7 @@ msgstr "La tabella delle risposte verrà rinominata:"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deactivate.php:59
 msgid "You should export your responses before de-activating. Click \"Cancel\" to return to the main admin screen without de-activating this survey."
-msgstr "Si consiglia di esportare le risposte prima di disattivare l&#039;indagine. Clicca su Chiudi per ritornare alla schermata principale dell&#039;amministrazione senza disattivare questa indagine."
+msgstr "Si consiglia di esportare le risposte prima di disattivare l'indagine. Clicca su Chiudi per ritornare alla schermata principale dell'amministrazione senza disattivare questa indagine."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deactivate.php:64
 msgid "De-Activate Survey"
@@ -4606,7 +4605,7 @@ msgstr "Data entry"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/dataentry.php:81
 msgid "You have not selected a survey for data-entry."
-msgstr "Non è stata selezionata nessuna indagine per l&#039;inserimento dei dati."
+msgstr "Non è stata selezionata nessuna indagine per l'inserimento dei dati."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/dataentry.php:118
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/save.php:208
@@ -4626,7 +4625,7 @@ msgstr "Le password non coincidono."
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/dataentry.php:131
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/save.php:230
 msgid "This name has already been used for this survey. You must use a unique save name."
-msgstr "Questo nome &egrave; gi&agrave; utilizzato in questa indagine. Bisogna utilizzare un nome univoco."
+msgstr "Questo nome è già utilizzato in questa indagine. Bisogna utilizzare un nome univoco."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/dataentry.php:137
 msgid "Try again"
@@ -4686,7 +4685,7 @@ msgstr "Un messaggio e-mail è stato inviato con i dati con i quali hai salvato 
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/dataentry.php:238
 msgid "An error occurred and your survey responses were not saved."
-msgstr "Si &egrave; verificato un errore. Le tue risposte non sono state salvate."
+msgstr "Si è verificato un errore. Le tue risposte non sono state salvate."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/dataentry.php:249
 msgid "This survey is not anonymous, you must supply a valid token"
@@ -4694,7 +4693,7 @@ msgstr "Questa indagine non è anonima, è necessario fornire un identificativo 
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/dataentry.php:379
 msgid "The entry was assigned the following record id: "
-msgstr "E&#039; stato assegnato il seguente ID: "
+msgstr "E' stato assegnato il seguente ID: "
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/dataentry.php:383
 msgid "Add Another Record"
@@ -4753,7 +4752,7 @@ msgstr "Aggiorna"
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/dataentry.php:1194
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/dataentry.php:2143
 msgid "Save as a partially completed survey"
-msgstr "Salva come un&#039;indagine parzialmente completata"
+msgstr "Salva come un questionario  parzialmente completato"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/dataentry.php:1328
 msgid "Record has been updated."
@@ -4922,9 +4921,8 @@ msgid "This error can occur if you have already submitted your responses and pre
 msgstr "Questo errore viene generato se hai già inviato le tue risposte ed hai premuto il pulsante \"aggiorna\" sul tuo browser. In questo caso le tue risposte sono state già salvate."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/save.php:449
-#, fuzzy
 msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
-msgstr "L&#039; errore pu&ograve; essere dovuto al fatto che le risposte sono gi&agrave; state inviate e salvate e si &egrave; cliccato il tasto &#039;aggiorna&#039; del proprio browser. <br /><br />Se ricevi questo messaggio mentre stai completando un questionario, scegli  'INDIETRO' sul browser quindi aggiorna/ricarica la pagina precedente. Anche se perderai le risposte date nell'ultima pagina tuttavia le altre continueranno ad esistere. Questo problema accade se il server web è in overload. Ci scusiamo per questo inconveniente. "
+msgstr "Se ricevi questo messaggio mentre stai ancora completando il questionario, dovresti fare clic sul pulsante 'INDIETRO' del browser e quindi aggiornare/ricaricare la pagina. Anche se perderai le risposte date nell'ultima pagina tuttavia le altre continueranno ad esistere. Questo problema accade se il server web è in overload. Ci scusiamo per questo inconveniente. "
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:68
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:117
@@ -4955,15 +4953,15 @@ msgstr "per ulteriori informazioni"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:118
 msgid "You have not provided a survey identification number"
-msgstr "Inserire il numero di identificazione dell&#039;indagine."
+msgstr "Inserire il numero di identificazione dell'indagine."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:175
 msgid "This survey is no longer available."
-msgstr "Questa indagine non &egrave; pi&ugrave; disponibile."
+msgstr "Questa indagine non è  disponibile."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:195
 msgid "You have already completed this survey."
-msgstr "Hai gi&agrave; completato il questionario."
+msgstr "Hai già completato il questionario."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:235
 msgid "You did not provide a name"
@@ -4983,12 +4981,12 @@ msgstr "Carica questionario non terminato"
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:1087
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:1130
 msgid "This is a controlled survey. You need a valid token to participate."
-msgstr "Questa indagine &egrave; moderata. Per partecipare &egrave; necessario avere un Identificativo."
+msgstr "Questa indagine è moderata. Per partecipare è necessario avere un Identificativo."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:294
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:1131
 msgid "The token you have provided is either not valid, or has already been used."
-msgstr "L&#039Identificativo inserito non &egrave; valido o &egrave; gi&agrave; usato da un altro utente."
+msgstr "L'identificativo inserito non è valido o è già usato da un altro utente."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:295
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:1132
@@ -5013,7 +5011,7 @@ msgstr "Questionario salvato"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:411
 msgid "There is no matching saved survey"
-msgstr "Non vi &egrave; alcun questionario salvato corrispondente ai dati inseriti"
+msgstr "Non vi è alcun questionario salvato corrispondente ai dati inseriti"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:486
 msgid "complete"
@@ -5025,7 +5023,7 @@ msgstr "Indagine presentata"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:962
 msgid "A new response was entered for your survey"
-msgstr "Una nuova risposta &egrave; stata inserita per la tua indagine"
+msgstr "Una nuova risposta è stata inserita per la tua indagine"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:965
 msgid "Click the following link to reload the survey:"
@@ -5056,11 +5054,11 @@ msgstr "Errore. Le risposte non sono state salvate."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:1029
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
-msgstr "Le risposte non sono state perse e sono state inviate all&#039;amministratore di sistema. Verranno inserite nel database in un secondo momento."
+msgstr "Le risposte non sono state perse e sono state inviate all'amministratore di sistema. Verranno inserite nel database in un secondo momento."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:1030
 msgid "An error occurred saving a response to survey id"
-msgstr "Errore durante il salvataggio di una risposta per l&#039;ID dell&#039;indagine"
+msgstr "Errore durante il salvataggio di una risposta per l'ID dell'indagine"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:1031
 msgid "DATA TO BE ENTERED"
@@ -5076,7 +5074,7 @@ msgstr "MESSAGGIO DI ERRORE"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:1048
 msgid "Try to submit again"
-msgstr "Ripetere l&#039;inserimento"
+msgstr "Ripetere l'inserimento"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:1088
 msgid "If you have been issued with a token, please enter it in the box below and click continue."
@@ -5091,7 +5089,7 @@ msgstr "Domanda di Sicurezza"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:1215
 msgid "This survey does not yet have any questions and cannot be tested or completed."
-msgstr "L&#039;indagine non contiene domande. Pertanto non pu&ograve; essere avviata o testata."
+msgstr "L'indagine non contiene domande. Pertanto non può essere avviata o testata."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:1434
 msgid "prev"
@@ -5116,7 +5114,7 @@ msgstr "Salva le risposte fin qui fornite"
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/question.php:106
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/survey.php:114
 msgid "Your survey responses have not been recorded. This survey is not yet active."
-msgstr "Le risposte dell&#039;indagine non sono state salvate. L&#039;indagine non &egrave; ancora attiva."
+msgstr "Le risposte dell'indagine non sono state salvate. L'indagine non è ancora attiva."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/group.php:120
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/question.php:107
@@ -5134,13 +5132,13 @@ msgstr "Grazie"
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/question.php:132
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/survey.php:142
 msgid "Your survey responses have been recorded."
-msgstr "Le risposte dell&#039;indagine sono state salvate."
+msgstr "Le risposte dell'indagine sono state salvate."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/group.php:275
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/question.php:185
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/survey.php:219
 msgid "Sorry. There is no matching survey."
-msgstr "Spiacente. Non &egrave; stata trovata alcuna indagine."
+msgstr "Spiacente. Non è stata trovata alcuna indagine."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/group.php:316
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/group.php:678
@@ -5148,24 +5146,23 @@ msgstr "Spiacente. Non &egrave; stata trovata alcuna indagine."
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/question.php:525
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/survey.php:486
 msgid "This survey is not currently active. You will not be able to save your responses."
-msgstr "L&#039;indagine non &egrave; attiva. Impossibile salvare le risposte."
+msgstr "L'indagine non è attiva. Impossibile salvare le risposte."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/register.php:76
 msgid "The email you used is not valid. Please try again."
-msgstr "L&#039;indirizzo e-mail che hai inserito non è corretto. Prova di nuovo."
+msgstr "L'indirizzo e-mail che hai inserito non è corretto. Prova di nuovo."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/register.php:91
 msgid "The email you used has already been registered."
-msgstr "L&#039;indirizzo e-mail che hai inserito &egrave; gi&agrave; registrato."
+msgstr "L'indirizzo e-mail che hai inserito è già registrato."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/register.php:157
 msgid "Thank you for registering to participate in this survey."
 msgstr "Grazie per la registrazione alla partecipazione al questionario."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/register.php:157
-#, fuzzy
 msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
-msgstr "Grazie  per esserti registrato per participare a questa indagine.<br ><br >n&Egrave; stata inviata una e-mail al tuo indirizzo con le indicazioni per accedere al questionario. Fai clic sul link presente nella e-mail per continuare.<br ><br >nL&#039;Amministratore dell&#039;indagine {ADMINNAME} ({ADMINEMAIL})"
+msgstr "E' stata inviata una e-mail all'indirizzo che hai fornito. Segui il collegamento presente nella e-mail per procedere."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/register.php:157
 msgid "Survey Administrator"
@@ -5251,7 +5248,7 @@ msgstr "Fai clic su una opzione della lista a sinistra, incominciando"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/qanda.php:1276
 msgid "highest ranking item, moving through to your lowest ranking item."
-msgstr "dal pi&ugrave; basso al pi&ugrave; alto."
+msgstr "dal più basso al più alto."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/qanda.php:1301
 msgid "Click on the scissors next to each item on the right"
@@ -5259,7 +5256,7 @@ msgstr "Fai clic sulla icona delle forbici a destra di ogni articolo"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/qanda.php:1302
 msgid "to remove the last entry in your ranked list"
-msgstr "per eliminare l&#039;ultimo dato inserito nella classifica"
+msgstr "per eliminare l'ultimo dato inserito nella classifica"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/qanda.php:1423
 msgid "Please choose at most"
@@ -5309,7 +5306,7 @@ msgstr "Lista questionari"
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/common.php:251
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/common.php:252
 msgid "Backup Entire Database"
-msgstr "Backup dell&#039;intero Database"
+msgstr "Backup dell'intero Database"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/common.php:277
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/common.php:278
@@ -5440,7 +5437,7 @@ msgstr "Attenzione: Javascript è disabilitato nel tuo browser. Potrebbe non ess
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/common.php:1780
 msgid "There is 1 question in this survey"
-msgstr "Vi &egrave; 1 domanda in questo questionario."
+msgstr "Vi è 1 domanda in questo questionario."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/common.php:1784
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
@@ -5451,17 +5448,16 @@ msgid "A Note On Privacy"
 msgstr "Nota sulla privacy"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/common.php:1822
-#, fuzzy
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
-msgstr "Questa indagine &egrave; anonima.<br >I record delle risposte non contengono alcuna informazione che possa identificarti, a meno che nel questionario non siano presenti specifiche domande a riguardo. Se hai risposto ad un questionario con un identificativo per l'accesso puoi essere sicuro che tale identificativo non verrà in alcun modo associato alle risposte. Essi sono gestiti in un database separato che contiene dati solo in riferimento alla compilazione o meno del questionario. Non esiste alcun modo per associare gli identificativi alle risposte fornite."
+msgstr "Il record delle risposte fornite non contiene alcuna informazione che ti identifichi a meno che non sia prevista, all'interno del questionario, qualche domanda che possa identificarti. Anche se hai risposto ad un questionario con identificativi di accesso non vi è alcun collegamento tra questi e le tue risposte. Gli identificativi sono gestiti in un differente database aggiornato solo per tener conto se hai completato o meno il questionario. Non vi è alcuna possibilità di collegare gli identificativi alle tue risposte."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/common.php:1831
 msgid "Are you sure you want to clear all your responses?"
-msgstr "Procedere nell&#039;eliminazione di tutte le risposte?"
+msgstr "Procedere nell'eliminazione di tutte le risposte?"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/common.php:1832
 msgid "Exit and Clear Survey"
-msgstr "Azzera e esci dall&#039;indagine"
+msgstr "Azzera e esci dal questionario"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/common.php:1865
 msgid "Save Survey and Return"
