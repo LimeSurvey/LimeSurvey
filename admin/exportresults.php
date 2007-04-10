@@ -975,7 +975,7 @@ elseif ($answers == "long")
         	$fli=0;
         	foreach ($rowarray as $row)
         	{
-              $sheet->write($rowcounter,$fli,$row);
+              $sheet->write($rowcounter,$fli,mb_convert_encoding($row, "UTF-16LE", "UTF-8"));
               $fli++;
         	}
         	$exportoutput='';

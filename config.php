@@ -44,7 +44,7 @@ $databaseuser       =   "root";        // The name of a user with rights to crea
 $databasepass       =   "";            // Password of db user
 $dbprefix           =   "phpsv_";      // A global prefix that can be added to all PHPSurveyor tables. Use this if you are sharing
                                        // a database with other applications. Suggested prefix is "phpsv_"
-$databasetabletype  =   "myISAM";		   // Storage engine mysql should use when creating survey results tables and token tables (if mysql is used). If available, InnoDB is recommended. Default is myISAM.
+$databasetabletype  =   "myISAM";	   // Storage engine mysql should use when creating survey results tables and token tables (if mysql is used). If available, InnoDB is recommended. Default is myISAM.
 $useidprefix        =   0;             // Set this to 1 if you want to use a prefix on survey responses (useful for replicated/pooled databases)
 $idprefix           =   0;             // Leave this as 0 to use your server's IP address. Alternatively, use a number here - characters WILL NOT WORK.
 
@@ -98,7 +98,7 @@ $shownoanswer       =   1;      // Show "no answer" for non mandatory questions
 
 
 
-$debug              =   1;      // Switch this to 1 if you are looking for errors
+$debug              =   0;      // Switch this to 1 if you are looking for errors
 $sessionlifetime    =   3600;   // How long until a survey session expires in seconds
 
 // Email Settings
@@ -112,14 +112,14 @@ $emailmethod        =   "mail";           // The following values can be used:
                                           // sendmail  -  use Sendmail Mailer
                                           // smtp      -  use SMTP relaying
 
-$emailsmtphost      =   "localhost";    // Sets the SMTP host. All hosts must be separated by a semicolon.
-                                                // You can also specify a different port for each host by using
-                                                // this format: [hostname:port] (e.g. "smtp1.example.com:25;smtp2.example.com").
+$emailsmtphost      =   "localhost";      // Sets the SMTP host. All hosts must be separated by a semicolon.
+                                          // You can also specify a different port for each host by using
+                                          // this format: [hostname:port] (e.g. "smtp1.example.com:25;smtp2.example.com").
 
 $emailsmtpuser      =   "";               // SMTP authorisation username - only set this if your server requires authorization - if you set it you HAVE to set a password too
 $emailsmtppassword  =   "";               // SMTP authorisation password - empty password is not allowed
 
-$maxemails          =   50;              // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
+$maxemails          =   50;               // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
 
 // JPGRAPH Settings
 // To use jpgraph you must install and set up jpgraph, available from http://www.aditus.nu/jpgraph/
@@ -130,8 +130,8 @@ $usejpgraph         =   0; //Set to 1 to enable
 $jpgraphdir         =   "/var/apache/htdocs/jpgraph"; //The location of the jpgraph class (where jpgraph.php is)
                                                       // If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir="C:\\Inetpub\\wwwroot\\jpgraph"
 $jpgraphfont        =   "FF_ARIAL"; //The font to use with graphs. A failsafe setting would be "FF_FONT1"
-$jpgraphfontdir     =   "";        //On debian based systems, the fonts aren't in the old font dir of XFree86 : (/usr/X11R6/lib/X11/fonts/truetype/)
-                                   //To have beautiful fonts with JpGraph it might be necessary to set this to a new path , for example: /usr/share/fonts/truetype/msttcorefonts/
+$jpgraphfontdir     =   "";         //On debian based systems, the fonts aren't in the old font dir of XFree86 : (/usr/X11R6/lib/X11/fonts/truetype/)
+                                    //To have beautiful fonts with JpGraph it might be necessary to set this to a new path , for example: /usr/share/fonts/truetype/msttcorefonts/
 
 // CMS Integration Settings
 // Set $embedded to true and specify the header and footer functions if the survey is to be displayed embedded in a CMS
