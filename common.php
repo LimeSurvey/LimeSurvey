@@ -1822,7 +1822,7 @@ function templatereplace($line)
 	if (strpos($line, "{PRIVACYMESSAGE}") !== false) $line=str_replace("{PRIVACYMESSAGE}", "<strong><i>".$clang->gT("A Note On Privacy")."</i></strong><br />".$clang->gT("This survey is anonymous.")."<br />".$clang->gT("The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."), $line);
 	if (strpos($line, "{CLEARALL}") !== false) 	{
 		$clearall = "\t\t\t\t\t<div class='clearall'>"
-		. "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall";
+		. "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall&amp;lang=".$_SESSION['s_lang'];
 		if (returnglobal('token'))
 		{
 			$clearall .= "&amp;token=".returnglobal('token');
@@ -1914,7 +1914,11 @@ function templatereplace($line)
 		{
 			$line=str_replace("{RESTART}",  "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;newtest=Y&amp;lang=".$s_lang."'>".$clang->gT("Restart this Survey")."</a>", $line);
 		} else {
-			$line=str_replace("{RESTART}",  "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;token=".returnglobal('token')."&amp;lang=".$s_lang."'>".$clang->gT("Restart this Survey")."</a>", $line);
+			$restart_extra = "";
+			$restart_token = returnglobal('token');
+			if (!empty($restart_token)) $restart_extra .= "&amp;token=".$restart_token;
+			if (!empty($_GET['lang'])) $restart_extra .= "&amp;lang=".$_GET['lang'];
+			$line=str_replace("{RESTART}",  "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid".$restart_extra."'>".$clang->gT("Restart this Survey")."</a>", $line);
 		}
 	}
 	if (strpos($line, "{CLOSEWINDOW}") !== false) $line=str_replace("{CLOSEWINDOW}", "<a href='javascript:%20self.close()'>".$clang->gT("Close this Window")."</a>", $line);
