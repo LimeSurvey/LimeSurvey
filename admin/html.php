@@ -1244,7 +1244,7 @@ if (returnglobal('viewanswer'))
 		}
 	}
 
-	// Print Key Contorl JavaScript
+	// Print Key Control JavaScript
 	$vasummary = keycontroljs();
 
 	$vasummary .= "\t<table width='100%' align='center' border='0' bgcolor='#EEEEEE'>\n"
@@ -1291,7 +1291,7 @@ if (returnglobal('viewanswer'))
         		.$clang->gT("Order")
         		."\t</font></strong>";
               	
-              	// this is a dirty trick to make an invisible 'Save all' button the default button of the form so everything gets save on pressing enter
+              	// this is a dirty trick to make an invisible 'Save all' button the default button of the form so everything gets saved on pressing enter
               	// it might not be accessible save to non CSS-browsers
                 if ($anscount > 0)
               	{
@@ -1312,20 +1312,17 @@ if (returnglobal('viewanswer'))
 			
 			$vasummary .= "<tr><td width='25%' align=right>\n";
 			if ($row['default_value'] == 'Y') $vasummary .= "<font color='#FF0000'>".$clang->gT("Default")."</font>";
-			if ($activated > 1)
+
+			if (($activated != 'Y' && $first) || ($activated == 'Y' && $first && (($qtype=='O')  || ($qtype=='L') || ($qtype=='!') ))) 
 			{
-				$vasummary .= "\t{$row['code']}"
-				."<input type='hidden' name='code_{$row['sortorder']}' value=\"{$row['code']}\" maxlength='5' size='5'"
-				."onKeyPress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_-')\""
+				$vasummary .= "\t<input type='test' name='code_{$row['sortorder']}' value=\"{$row['code']}\" maxlength='5' size='5'"
+				."onKeyPress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ')\""
 				." />";
-			}
-			elseif (!$first)
-			{
-				$vasummary .= "\t{$row['code']}";
 			}
 			else
 			{
-				$vasummary .= "\t<input type='text' name='code_{$row['sortorder']}' maxlength='5' size='10' value=\"{$row['code']}\" />\n";
+				$vasummary .= "\t{$row['code']}";
+				$vasummary .= "\t<input type='hidden' name='code_{$row['sortorder']}' maxlength='5' size='5' value=\"{$row['code']}\" />\n";
 			}
 
 			$vasummary .= "\t</td>\n"
@@ -1333,10 +1330,17 @@ if (returnglobal('viewanswer'))
 			."\t<input type='text' name='answer_{$row['language']}_{$row['sortorder']}' maxlength='1000' size='80' value=\"{$row['answer']}\" />\n"
 			."\t</td>\n"
 			."\t<td width='25%'>\n";
-			if ($activated == 0)
+			
+			// Deactivate delete button for active surveys
+			if ($activated != 'Y' || ($activated == 'Y' && (($qtype=='O' ) || ($qtype=='L' ) ||($qtype=='!' ))))
 			{
 				$vasummary .= "\t<input type='submit' name='method' value='".$clang->gT("Del")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
 			}
+			else
+			{
+				$vasummary .= "\t<input type='submit' disabled='disabled 'name='method' value='".$clang->gT("Del")."' />\n";
+			}
+
 			// Don't show Default Button for array question types
 			if ($qtype != "A" && $qtype != "B" && $qtype != "C" && $qtype != "E" && $qtype != "F" && $qtype != "H" && $qtype != "R" && $qtype != "Q") $vasummary .= "\t<input type='submit' name='method' value='".$clang->gT("Default")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
 			$vasummary .= "\t</td>\n"
@@ -1359,9 +1363,10 @@ if (returnglobal('viewanswer'))
 			."</center></td></tr>\n";
 		}
 		$position=sprintf("%05d", $position);
-		if ($activated == 0)
+		if ($activated != 'Y' || (($activated == 'Y') && (($qtype=='O' ) || ($qtype=='L' ) ||($qtype=='!' ))))
 		{
-			if ($first==true)
+			
+            if ($first==true)
 			{
 				$vasummary .= "<tr><td><br /></td></tr><tr><td width='25%' align=right>"
 				."<strong>".$clang->gT("New Answer").":</strong> ";
@@ -1390,7 +1395,7 @@ if (returnglobal('viewanswer'))
 			$vasummary .= "<tr>\n"
 			."\t<td colspan='4' align='center'>\n"
 			."<font color='red' size='1'><i><strong>"
-			.$clang->gT("Warning")."</strong>: ".$clang->gT("You cannot add answers because they are being used by an active survey.")."</i></strong></font>\n"
+			.$clang->gT("Warning")."</strong>: ".$clang->gT("You cannot add answers or edit answer codes for this question type because the survey is active.")."</i></strong></font>\n"
 			."\t</td>\n"
 			."</tr>\n";
 		}
