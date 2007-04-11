@@ -544,7 +544,8 @@ if ($subaction == "browse" || $subaction == "search")
 	}
 	if (!isset($order) || !$order) {$bquery .= " ORDER BY tid";}
 	else {$bquery .= " ORDER BY $order"; }
-	$bresult = db_select_limit_assoc($bquery, $start, $limit) or die ($clang->gT("Error").": $bquery<br />".htmlspecialchars($connect->ErrorMsg()));
+	//die($bquery.":::".$start.":::".$limit);
+	$bresult = db_select_limit_assoc($bquery, $limit, $start) or die ($clang->gT("Error").": $bquery<br />".htmlspecialchars($connect->ErrorMsg()));
 	$bgc="";
 
 	$tokenoutput .= "<tr><td colspan='2'>\n"
