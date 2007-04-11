@@ -1498,7 +1498,7 @@ $tokenoutput .= helpscreen()
 
 function form($error=false)
 {
-	global $surveyid, $tokenoutput,$scriptname;
+	global $surveyid, $tokenoutput,$scriptname, $clang;
 
 	if ($error) {$tokenoutput .= $error . "<br /><br />\n";}
 
