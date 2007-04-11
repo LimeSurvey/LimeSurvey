@@ -1278,7 +1278,7 @@ if (returnglobal('viewanswer'))
         $vasummary .= "</h2>\t<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'>\n"
                 ."<thead align='center'>"
         		."<tr bgcolor='#BBBBBB'>\n"
-        		."\t<td width='25%' align=right><strong><font size='1' face='verdana' >\n"
+        		."\t<td width='25%' align='right'><strong><font size='1' face='verdana' >\n"
         		.$clang->gT("Code")
         		."\t</font></strong></td>\n"
         		."\t<td width='35%'><strong><font size='1' face='verdana'>\n"
@@ -1287,7 +1287,7 @@ if (returnglobal('viewanswer'))
         		."\t<td width='25%'><strong><font size='1' face='verdana'>\n"
         		.$clang->gT("Action")
         		."\t</font></strong></td>\n"
-        		."\t<td width='15%' align=center><strong><font size='1' face='verdana'>\n"
+        		."\t<td width='15%' align='center'><strong><font size='1' face='verdana'>\n"
         		.$clang->gT("Order")
         		."\t</font></strong>";
               	
@@ -1310,13 +1310,13 @@ if (returnglobal('viewanswer'))
 			$sortorderids=$sortorderids.' '.$row['language'].'_'.$row['sortorder'];
 			if ($first) {$codeids=$codeids.' '.$row['sortorder'];}
 			
-			$vasummary .= "<tr><td width='25%' align=right>\n";
+			$vasummary .= "<tr><td width='25%' align='right'>\n";
 			if ($row['default_value'] == 'Y') $vasummary .= "<font color='#FF0000'>".$clang->gT("Default")."</font>";
 
 			if (($activated != 'Y' && $first) || ($activated == 'Y' && $first && (($qtype=='O')  || ($qtype=='L') || ($qtype=='!') ))) 
 			{
-				$vasummary .= "\t<input type='test' name='code_{$row['sortorder']}' value=\"{$row['code']}\" maxlength='5' size='5'"
-				."onKeyPress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ')\""
+				$vasummary .= "\t<input type='text' name='code_{$row['sortorder']}' value=\"{$row['code']}\" maxlength='5' size='5'"
+				."onkeypress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ')\""
 				." />";
 			}
 			else
@@ -1359,7 +1359,7 @@ if (returnglobal('viewanswer'))
 		}
 		if ($anscount > 0)
 		{
-			$vasummary .= "\t<tr><td colspan=4><center><input type='submit' name='method' value='".$clang->gT("Save All")."'  />"
+			$vasummary .= "\t<tr><td colspan='4'><center><input type='submit' name='method' value='".$clang->gT("Save All")."'  />"
 			."</center></td></tr>\n";
 		}
 		$position=sprintf("%05d", $position);
@@ -1368,7 +1368,7 @@ if (returnglobal('viewanswer'))
 			
             if ($first==true)
 			{
-				$vasummary .= "<tr><td><br /></td></tr><tr><td width='25%' align=right>"
+				$vasummary .= "<tr><td><br /></td></tr><tr><td width='25%' align='right'>"
 				."<strong>".$clang->gT("New Answer").":</strong> ";
             	$vasummary .= "<input type='text' maxlength='5' name='insertcode' size='10' id='addnewanswercode' />\n";
             	$first=false;

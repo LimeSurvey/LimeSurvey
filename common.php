@@ -1058,7 +1058,7 @@ function conditionscount($qid)
 function keycontroljs()
 {
 	$kcjs="
-    <SCRIPT TYPE=\"text/javascript\">
+    <script type=\"text/javascript\">
     <!--
 
     function getkey(e)
@@ -1090,7 +1090,7 @@ function keycontroljs()
      return false;
        }
     //-->
-    </SCRIPT>
+    </script>
 ";
 	return $kcjs;
 }

@@ -969,7 +969,7 @@ if($actsurrows['browse_response']){
 					case "N": //NUMERICAL TEXT
 					$dataentryoutput .= keycontroljs()
 					."\t\t\t<input type='text' name='{$fnames[$i][0]}' value='{$idrow[$fnames[$i][0]]}' "
-					."onKeyPress=\"return goodchars(event,'0123456789.,')\" />\n";
+					."onkeypress=\"return goodchars(event,'0123456789.,')\" />\n";
 					break;
 					case "S": //SHORT FREE TEXT
 					$dataentryoutput .= "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='"
@@ -1953,7 +1953,7 @@ if($actsurrows['browse_response']){
 					break;
 					case "N": //NUMERICAL TEXT
 					$dataentryoutput .= keycontroljs();
-					$dataentryoutput .= "\t\t\t<input type='text' name='$fieldname' onKeyPress=\"return goodchars(event,'0123456789.,')\" />";
+					$dataentryoutput .= "\t\t\t<input type='text' name='$fieldname' onkeypress=\"return goodchars(event,'0123456789.,')\" />";
 					break;
 					case "S": //SHORT FREE TEXT
 					$dataentryoutput .= "\t\t\t<input type='text' name='$fieldname' />\n";

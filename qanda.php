@@ -628,7 +628,7 @@ function do_list_dropdown($ia)
 	$answer = $sselect.$answer;
 	if (isset($other) && $other=="Y")
 	{
-		$answer = "\n<SCRIPT TYPE=\"text/javascript\">\n"
+		$answer = "\n<script type=\"text/javascript\">\n"
 		."<!--\n"
 		."function showhideother(name, value)\n"
 		."\t{\n"
@@ -643,7 +643,7 @@ function do_list_dropdown($ia)
 		."\t\tdocument.getElementById(hiddenothername).style.display='none';\n"
 		."\t\t}\n"
 		."\t}\n"
-		."//--></SCRIPT>\n".$answer;
+		."//--></script>\n".$answer;
 		$answer .= "<input type='text' id='othertext".$ia[1]."' name='$ia[1]other' style='display:";
 
 		$inputnames[]=$ia[1]."other";
@@ -723,7 +723,7 @@ function do_list_flexible_dropdown($ia)
 	$answer = $sselect.$answer;
 	if (isset($other) && $other=="Y")
 	{
-		$answer = "\n<SCRIPT TYPE=\"text/javascript\">\n"
+		$answer = "\n<script type=\"text/javascript\">\n"
 		."<!--\n"
 		."function showhideother(name, value)\n"
 		."\t{\n"
@@ -738,7 +738,7 @@ function do_list_flexible_dropdown($ia)
 		."\t\tdocument.getElementById(hiddenothername).style.display='none';\n"
 		."\t\t}\n"
 		."\t}\n"
-		."//--></SCRIPT>\n".$answer;
+		."//--></script>\n".$answer;
 		$answer .= "<input type='text' id='othertext".$ia[1]."' name='$ia[1]other' style='display:";
 		if ($_SESSION[$ia[1]] != "-oth-")
 		{
@@ -1617,7 +1617,7 @@ function do_numerical($ia)
 	// --> START NEW FEATURE - SAVE
 	$answer = keycontroljs()
 	. "\t\t\t<input class='text' type='text' size='$tiwidth' name='$ia[1]' "
-	. "id='answer{$ia[1]}' value=\"{$_SESSION[$ia[1]]}\" onKeyPress=\"return goodchars(event,'0123456789.')\" onchange='modfield(this.name)'"
+	. "id='answer{$ia[1]}' value=\"{$_SESSION[$ia[1]]}\" onkeypress=\"return goodchars(event,'0123456789.')\" onchange='modfield(this.name)'"
 	. "maxlength='$maxsize' /><br />\n"
 	. "\t\t\t<font size='1'><i>".$clang->gT("Only numbers may be entered in this field")."</i></font>\n";
 	// --> END NEW FEATURE - SAVE
