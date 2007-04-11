@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-04-10 20:43+0100\n"
+"PO-Revision-Date: 2007-04-11 21:45+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -13,8 +13,7 @@ msgstr ""
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: gT\n"
-"X-Poedit-SearchPath-0: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
-"X-Poedit-SearchPath-1: D:\\web\\xampp\\htdocs\\phpsurveyor\n"
+"X-Poedit-SearchPath-0: D:\\web\\xampp\\htdocs\\phpsurveyor\n"
 
 msgid "Administration"
 msgstr "Administration"
@@ -281,7 +280,7 @@ msgid "Thank You!"
 msgstr "Vielen Dank!"
 
 msgid "You have completed answering the questions in this survey."
-msgstr "Sie haben die Beantwortung der Fragen in dieser Umfrage abgeschlossen."
+msgstr "Du hast auf alle Fragen in dieser Umfrage geantwortet."
 
 # D:\web\xampp\htdocs\phpsurveyor/common.php:1812
 msgid "Click on 'Submit' now to complete the process and save your answers."
@@ -452,7 +451,7 @@ msgid "The token you have provided is either not valid, or has already been used
 msgstr "Das von Dir angegebene Schlüsselwort ist entweder ungültig oder wurde bereits verwendet."
 
 msgid "For further information contact"
-msgstr "Um weitere Informationen zu erhalten, kontaktieren Sie bitte"
+msgstr "Um weitere Informationen zu erhalten, kontaktiere bitte"
 
 msgid "Survey Saved"
 msgstr "Umfrage gespeichert"
@@ -539,7 +538,7 @@ msgid "Check any that apply"
 msgstr "Bitte wähle einen oder mehrere Punkte aus der Liste aus."
 
 msgid "Check at most"
-msgstr "Wählen Sie maximal"
+msgstr "Wähle maximal"
 
 msgid "answers"
 msgstr "Antworten"
@@ -614,7 +613,7 @@ msgid "to remove the last entry in your ranked list"
 msgstr "zuletzt hinzugefügte Element aus der Liste zu entfernen"
 
 msgid "Please choose at most"
-msgstr "Bitte wählen Sie maximal"
+msgstr "Bitte wähle maximal"
 
 msgid "answer(s) for question"
 msgstr "Antwort(en) für die Frage"
@@ -632,7 +631,7 @@ msgid "The email you used has already been registered."
 msgstr "Die angegeben Email wurde schon einmal benutzt."
 
 msgid "Thank you for registering to participate in this survey."
-msgstr "Vielen Dank, dass Sie sich für die Teilnahme an dieser Umfrage registriert haben."
+msgstr "Vielen Dank, dass Du Dich für die Teilnahme an dieser Umfrage registriert hast."
 
 # D:\xampp\xampp\htdocs\phpsurveyor/register.php:135
 msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
@@ -774,7 +773,7 @@ msgstr "Fragen hinzufügen oder löschen"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/activate.php:236
 msgid "However you can still:"
-msgstr "Sie können immer noch:"
+msgstr "Du kannst immer noch:"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/activate.php:236
 msgid "Edit (change) your questions code, text or type"
@@ -1197,7 +1196,7 @@ msgstr "Du hast keine Umfrage zur Dateneingabe ausgewählt."
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/dataentry.php:257
 msgid "This survey is not anonymous, you must supply a valid token"
-msgstr "Diese Umfrage ist nicht anonym - Sie müssen einen Zugangsschlüssel angeben"
+msgstr "Diese Umfrage ist nicht anonym - Du benötigst einen gültigen Zugangsschlüssel"
 
 msgid "Try again"
 msgstr "Nochmal versuchen"
@@ -2347,7 +2346,7 @@ msgstr "Antworten importieren"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/labels.php:231
 msgid "Are you sure?"
-msgstr "Sind Sie sicher?"
+msgstr "Bist Du sicher?"
 
 msgid "Import Question"
 msgstr "Fragen importieren"
@@ -2385,7 +2384,7 @@ msgid "Data Consistency Check"
 msgstr "Datenintegritätsprüfung"
 
 msgid "If errors are showing up you might have to execute this script repeatedly."
-msgstr "Wenn Fehler gezeigt werden, sollten Sie dieses Script nochmals ausführen."
+msgstr "Wenn Fehler gezeigt werden, solltest Du dieses Script nochmals ausführen."
 
 msgid "The following conditions should be deleted"
 msgstr "Die folgenden Bedingungen sollten gelöscht werden:"
@@ -2535,9 +2534,17 @@ msgstr "Fehler beim Löschen des Labels"
 msgid "You have to enter user name and email."
 msgstr "Du musst Username und Email angeben."
 
+msgid "Check Data"
+msgstr "Daten überprüfen"
+
 # D:\web\xampp\htdocs\phpsurveyor/admin/login_check.php:69
 msgid "You have to login first."
 msgstr "Du musst dich erst anmelden."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/usercontrol.php:93
+# D:\web\xampp\htdocs\phpsurveyor/admin/usercontrol.php:189
+msgid "Login"
+msgstr "Anmeldung"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/login_check.php:86
 msgid "Forgot Your Password?"
@@ -2557,7 +2564,7 @@ msgid "Only answer this question"
 msgstr "Bitte beantworte diese Frage nur,"
 
 msgid "Please choose *only one* of the following:"
-msgstr "Bitte wählen Sie nur eine der folgenden Antworten aus:"
+msgstr "Bitte wähle nur eine der folgenden Antworten aus:"
 
 msgid "Please enter a date:"
 msgstr "Bitte ein Datum eingeben"
@@ -2566,10 +2573,10 @@ msgid "Please number each box in order of preference from 1 to"
 msgstr "Bitte nummeriere jede Box in der Reihenfolge Deiner Präferenz, beginnend von 1 bis"
 
 msgid "Please choose *all* that apply:"
-msgstr "Bitte alle wählen Sie alle Punke aus, die zutreffen:"
+msgstr "Bitte wähle alle Punkte aus, die zutreffen:"
 
 msgid "Please choose *at most* "
-msgstr "Bitte wählen Sie *maximal*"
+msgstr "Bitte wähle *maximal*"
 
 msgid "answers:"
 msgstr "Antworten:"
@@ -2788,7 +2795,7 @@ msgstr "Verzeichnis mit dem Namen"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/templates.php:101
 msgid "already exists - choose another name"
-msgstr "existiert bereits - wählen Sie einen anderen Namen"
+msgstr "existiert bereits - wähle einen anderen Namen"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1417
 msgid "Unable to create directory"
@@ -2797,7 +2804,7 @@ msgstr "Verzeichnis konnte nicht erstellt werden"
 # D:\web\xampp\htdocs\phpsurveyor/admin/templates.php:103
 # D:\web\xampp\htdocs\phpsurveyor/admin/templates.php:111
 msgid "Maybe you don't have permission."
-msgstr "Evenuell haben Sie keine Rechte."
+msgstr "Eventuell hast Du keine Berechtigung."
 
 msgid "Directory could not be renamed to"
 msgstr "Verzeichnis konnte nicht umbenannt werden nach"
@@ -2896,6 +2903,9 @@ msgstr "Vorschau:"
 
 msgid "You have not selected a survey"
 msgstr "Du hast keine Umfrage ausgewählt."
+
+msgid "Token table could not be created."
+msgstr "Zugangsschlüssel-Tabelle konnte nicht erzeugt werden."
 
 msgid "A token table has been created for this survey."
 msgstr "Es wurde eine Zugangsschlüsseltabelle für diese Umfrage erstellt."
@@ -3025,10 +3035,10 @@ msgstr "Zugangsschlüsseltabelle löschen"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:657
 msgid "If you delete this table tokens will no longer be required to access this survey."
-msgstr "Wenn Sie diese Zugangsschlüssel-Tabelle löschen, benötigt man nicht länger einen Zugangsschlüssel um auf die Umfrage zuzugreifen."
+msgstr "Wenn Du diese Zugangsschlüssel-Tabelle löscht, benötigt man nicht länger einen Zugangsschlüssel um auf die Umfrage zuzugreifen."
 
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
-msgstr "Wenn Sie fortfahren, wird eine Sicherheitskopie dieser Tabelle erstellt. Der Systemadministrator kann dann auf diese Daten zugreifen."
+msgstr "Wenn Du fortfährst, wird eine Sicherheitskopie dieser Tabelle erstellt. Der Systemadministrator kann dann auf diese Daten zugreifen."
 
 msgid "Delete Tokens"
 msgstr "Lösche die Zugangsschlüsseltabelle"
@@ -3193,7 +3203,7 @@ msgstr "LDAP is deaktiviert oder keine LDAP Abfrage definiert."
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1470
 msgid "Select the LDAP query you want to run:"
-msgstr "Wählen Sie bitte die LDAP Abfrage aus:"
+msgstr "Wähle bitte die LDAP Abfrage aus:"
 
 msgid "Forgot Password"
 msgstr "Passwort vergessen"
@@ -3220,16 +3230,15 @@ msgid "Email to {NAME} ({EMAIL}) failed."
 msgstr "Email für {NAME} ({EMAIL}) fehlgeschlagen."
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/usercontrol.php:93
-# D:\web\xampp\htdocs\phpsurveyor/admin/usercontrol.php:189
-msgid "Login"
-msgstr "Anmeldung"
+msgid "Logging in..."
+msgstr "Anmelden..."
 
 msgid "Welcome {NAME}"
 msgstr "Willkommen {NAME}"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/usercontrol.php:121
-msgid "Login successful."
-msgstr "Anmelden erfolgreich."
+msgid "You logged in successfully."
+msgstr "Du wurdest erfolgreich angemeldet."
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/usercontrol.php:141
 msgid "Logout successful."

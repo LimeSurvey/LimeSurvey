@@ -90,7 +90,7 @@ if (!isset($_SESSION['loginID']))
 	}
 	elseif($action == "login")	// normal login
 	{
-		$loginsummary = "<br /><strong>".$clang->gT("Login")."</strong><br />\n";
+		$loginsummary = "<br /><strong>".$clang->gT("Logging in...")."</strong><br />\n";
 
 		if (isset($_POST['user']) && isset($_POST['password']))
 		{
@@ -118,7 +118,7 @@ if (!isset($_SESSION['loginID']))
 					$login = true;
 
 					$loginsummary .= "<br />" .str_replace("{NAME}", $_SESSION['user'], $clang->gT("Welcome {NAME}")) . "<br />";
-					$loginsummary .= $clang->gT("Login successful.");
+					$loginsummary .= $clang->gT("You logged in successfully.");
 
 					if (isset($_POST['refererargs']) && $_POST['refererargs'] &&
 						strpos($_POST['refererargs'], "action=logout") === FALSE)

@@ -505,7 +505,7 @@ if ($subaction == "browse" || $subaction == "search")
 	."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
 	."\t\t\t\n"
 	."\t\t\t<table align='left' cellpadding='0' cellspacing='0' border='0'>\n"
-	."\t\t\t\t<tr><td><form method='post' action='$scriptname?action=tokens'>\n"
+	."\t\t\t\t<tr><td valign='middle'><form method='post' action='$scriptname?action=tokens'>\n"
 	."\t\t\t\t\t<input type='text' name='searchstring' value='$searchstring'>\n"
 	."\t\t\t\t\t<input type='submit' value='".$clang->gT("Search")."'>\n"
 	."\t\t\t\t<input type='hidden' name='order' value='$order'>\n"

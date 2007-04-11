@@ -55,7 +55,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
 								<tr>
 									<td>&nbsp;</td>
 									<td><input type='hidden' name='action' value='forgotpass' />
-									<input class='action' type='submit' value='Check data' /><br />&nbsp;\n</td>
+									<input class='action' type='submit' value='".$clang->gT("Check Data")."' /><br />&nbsp;\n</td>
 								</tr>
 								<tr>
 									<td>&nbsp;</td>
@@ -87,7 +87,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
 									<td>&nbsp;</td>
 									<td align='center'><input type='hidden' name='action' value='login' />
 									<input type='hidden' name='refererargs' value='".$refererargs."' />
-									<input class='action' type='submit' value='Login' /><br />&nbsp;\n</td>
+									<input class='action' type='submit' value='".$clang->gT("Login")."' /><br />&nbsp;\n</td>
 								</tr>
 								<tr>
 									<td>&nbsp;</td>

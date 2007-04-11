@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-04-10 20:45+0100\n"
+"PO-Revision-Date: 2007-04-11 21:38+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -337,7 +337,7 @@ msgstr "Zwischengespeicherte Umfrage laden"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:1638
 msgid "You can load a survey that you have previously saved from this screen."
-msgstr "Auf dieser Seite könenn Sie eine vorher zwischengespeichterte Umfrage laden."
+msgstr "Auf dieser Seite können Sie eine vorher zwischengespeichterte Umfrage laden."
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:1638
 msgid "Type in the 'name' you used to save the survey, and the password."
@@ -2492,9 +2492,15 @@ msgstr "Fehler beim Löschen des Labels"
 msgid "You have to enter user name and email."
 msgstr "Sie müssen Username und Email angeben."
 
+msgid "Check Data"
+msgstr "Daten überprüfen"
+
 # Checking to ensure all fields exist
 msgid "You have to login first."
 msgstr "Sie müssen sich erst anmelden."
+
+msgid "Login"
+msgstr "Anmelden"
 
 msgid "Forgot Your Password?"
 msgstr "Haben Sie Ihr Passwort vergessen?"
@@ -2852,6 +2858,9 @@ msgstr "Vorschau:"
 msgid "You have not selected a survey"
 msgstr "Sie haben keine Umfrage ausgewählt."
 
+msgid "Token table could not be created."
+msgstr "Zugangsschlüssel Tabelle konnte nicht erstellt werden."
+
 msgid "A token table has been created for this survey."
 msgstr "Es wurde eine Probandentabelle für diese Umfrage erstellt."
 
@@ -3168,14 +3177,15 @@ msgstr "Es wurde eine Email mit den Login-Daten an Sie versandt."
 msgid "Email to {NAME} ({EMAIL}) failed."
 msgstr "Email für {NAME} ({EMAIL}) fehlgeschlagen."
 
-msgid "Login"
-msgstr "Anmeldung"
+# D:\web\xampp\htdocs\phpsurveyor/admin/usercontrol.php:93
+msgid "Logging in..."
+msgstr "Anmelden..."
 
 msgid "Welcome {NAME}"
 msgstr "Willkommen {NAME}"
 
-msgid "Login successful."
-msgstr "Anmelden erfolgreich."
+msgid "You logged in successfully."
+msgstr "Sie haben sich erfolgreich eingeloggt."
 
 msgid "Logout successful."
 msgstr "Abmelden erfolgreich."

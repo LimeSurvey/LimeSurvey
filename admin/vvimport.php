@@ -66,6 +66,7 @@ if ($subaction != "upload")
 		<input type='hidden' name='action' value='vvimport' />
 		<input type='hidden' name='subaction' value='upload' />
 		</td></tr>
+        <tr><td colspan='2' align='center'>[<a href='$scriptname?action=browse&amp;sid=$surveyid'>".$clang->gT("Return to Survey Administration")."</a>]</td></tr>
 		</table>
 		</form><br />";
 	}
