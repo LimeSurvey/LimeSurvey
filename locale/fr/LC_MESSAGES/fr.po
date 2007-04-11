@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-04-04 20:28+0100\n"
+"PO-Revision-Date: 2007-04-11 19:46+0100\n"
 "Last-Translator: b00z00\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -241,6 +241,10 @@ msgstr "Sans changement"
 
 msgid "Comment"
 msgstr "Commentaire"
+
+# D:\www\phpsurveyor/common.php:1768
+msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
+msgstr "Attention : l'exécution du Javascript est désactivé dans votre navigateur. Vous risquez de ne pas pouvoir répondre à toutes les questions. Veuillez vérifier les réglages de votre navigateur."
 
 msgid "There is 1 question in this survey"
 msgstr "Il y a 1 question dans ce questionnaire"
@@ -941,7 +945,7 @@ msgstr "Supprimer cet élement"
 msgid "Export this Response"
 msgstr "Exporter cette réponse"
 
-msgid "Show last..."
+msgid "Show previous..."
 msgstr "Montrer le précédent..."
 
 msgid "Show next..."
@@ -960,7 +964,7 @@ msgstr "Navigation dans les données "
 msgid "Show start.."
 msgstr "Montrer le début..."
 
-msgid "Show previous..."
+msgid "Show last..."
 msgstr "Montrer le précédent..."
 
 msgid "Records Displayed:"
@@ -1092,7 +1096,7 @@ msgid "Answer could not be added. You must insert a code in the mandatory field"
 msgstr "La réponse ne peut pas être ajoutée. Vous devez inclure un code dans le champ obligatoire."
 
 msgid "Question could not be created."
-msgstr "La question ne peut pas être crée."
+msgstr "La question ne peut pas être créée."
 
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "La question ne peut pas être mise à jour. Il y a des conditions pour d'autres questions qui se fondent sur les réponses à cette question et changer le type poserait des problèmes. Vous devez supprimer ces conditions avant de pouvoir changer le type de cette question."
@@ -1185,6 +1189,10 @@ msgstr "Entrée de données"
 msgid "You have not selected a survey for data-entry."
 msgstr "Vous n'avez pas sélectionné de questionnaire pour la saisie des données."
 
+# D:\www\phpsurveyor/admin/dataentry.php:257
+msgid "This survey is not anonymous, you must supply a valid token"
+msgstr "Ce questionnaire n'est pas anonyme, vous devez fournir une invitation valable."
+
 msgid "Try again"
 msgstr "Essayez à nouveau"
 
@@ -1203,15 +1211,11 @@ msgstr "Mail :"
 msgid "Your survey responses have been saved succesfully"
 msgstr "Vos réponses à ce questionnaire ont été sauvegardées avec succès"
 
+msgid "You, someone using your email address, or the administrator has saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
+msgstr "Vous, quelqu'un utilisant votre adresse mail ou un administrateur a sauvegardé ses réponses partielles à un questionnaire. Les informations suivantes peuvent être utilisées pour retourner à ce questionnaire et le continuer où vous en étiez."
+
 msgid "An email has been sent with details about your saved survey"
 msgstr "Un mail vous a été envoyé avec les détails sur le questionnaire enregistré."
-
-msgid "An error occurred and your survey responses were not saved."
-msgstr "Une erreur est survenue et vos réponses n'ont pas été sauvegardées."
-
-# D:\www\phpsurveyor/admin/dataentry.php:257
-msgid "This survey is not anonymous, you must supply a valid token"
-msgstr "Ce questionnaire n'est pas anonyme, vous devez fournir une invitation valable."
 
 msgid "Success"
 msgstr "Succés"
@@ -1234,8 +1238,9 @@ msgstr "Ne peut pas être modifié"
 msgid "Update Entry"
 msgstr "Mettre à jour la réponse"
 
-msgid "Save as a partially completed survey"
-msgstr "Sauvegarder les réponses partielles au questionnaire"
+#, fuzzy
+msgid "Save for further completion by survey user"
+msgstr "Sauvegarder pour compléter le questionnaire ultérieurement "
 
 msgid "Record has been updated."
 msgstr "L'enregistrement a été mis à jour."
@@ -2314,6 +2319,9 @@ msgstr "Importation de la table des réponses d'un ancien (désactivé) question
 msgid "Target Survey ID"
 msgstr "ID du questionnaire cible"
 
+msgid "Source table"
+msgstr "Table source"
+
 msgid "Import Responses"
 msgstr "Importer les réponses"
 
@@ -2862,6 +2870,9 @@ msgstr "Aperçu :"
 
 msgid "You have not selected a survey"
 msgstr "Vous n'avez pas sélectionné de questionnaire"
+
+msgid "Token table could not be created."
+msgstr "La table des invitations ne peut pas être créée."
 
 msgid "A token table has been created for this survey."
 msgstr "Une table des invitations a été créée pour ce questionnaire."
