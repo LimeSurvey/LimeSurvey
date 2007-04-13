@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-04-11 21:38+0100\n"
+"PO-Revision-Date: 2007-04-13 23:34+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1825,8 +1825,8 @@ msgstr "Reihenfolge"
 msgid "New Answer"
 msgstr "Neue Antwort"
 
-msgid "You cannot add answers because they are being used by an active survey."
-msgstr "Sie können Antworten nicht hinzufügen das Sie von einer aktiven Umfrage genutzt werden."
+msgid "You cannot add answers or edit answer codes for this question type because the survey is active."
+msgstr "Sie können für diese Frage bzw. Fragetypen leider keine Antworten hinzufügen oder Fragecodes ändern, da die Umfrage aktiv ist."
 
 msgid "Add User"
 msgstr "Benutzer hinzufügen"
@@ -3149,6 +3149,162 @@ msgstr "Mit dem LDAP Verzeichnis konnte BIND nicht ausgeführt werden"
 # D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1420
 msgid "Can't connect to the LDAP directory"
 msgstr "Mit dem LDAP Verzeichnis konnte nicht verbunden werden"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1500
+msgid "ARMSCII-8 Armenian"
+msgstr "ARMSCII-8 Armenisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1501
+msgid "US ASCII"
+msgstr "US ASCII"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1502
+msgid "Automatic"
+msgstr "Automatisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1503
+msgid "Big5 Traditional Chinese"
+msgstr "Big5 Traditionelles Chinesisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1504
+msgid "Binary pseudo charset"
+msgstr "Binär Pseudo Zeichensatz"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1505
+msgid "Windows Central European"
+msgstr "Windows Zentral-Europäisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1506
+msgid "Windows Cyrillic"
+msgstr "Windows Kyrillisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1507
+msgid "Windows Arabic"
+msgstr "Windows Arabisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1508
+msgid "Windows Baltic"
+msgstr "Windows Baltisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1509
+msgid "DOS West European"
+msgstr "DOS West Europäisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1510
+msgid "DOS Central European"
+msgstr "DOS Zentral-Europäisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:148
+msgid "DOS Russian"
+msgstr "DOS Russisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1512
+msgid "SJIS for Windows Japanese"
+msgstr "SJIS für Windows Japanisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1513
+msgid "DEC West European"
+msgstr "DEC West Europäisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1514
+msgid "UJIS for Windows Japanese"
+msgstr "UJIS für Windows Japanisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1515
+msgid "EUC-KR Korean"
+msgstr "EUC-KR Koreanisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1516
+msgid "GB2312 Simplified Chinese"
+msgstr "GB2312 Vereinfachtes Chinesisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1517
+msgid "GBK Simplified Chinese"
+msgstr "GBK Vereinfachtes Chinesisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1518
+msgid "GEOSTD8 Georgian"
+msgstr "GEOSTD8 Georgisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1519
+msgid "ISO 8859-7 Greek"
+msgstr "ISO 8859-7 Griechisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1520
+msgid "ISO 8859-8 Hebrew"
+msgstr "ISO 8859-8 Hebräisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1521
+msgid "HP West European"
+msgstr "HP West Europäisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1522
+msgid "DOS Kamenicky Czech-Slovak"
+msgstr "DOS Kamenicky Tschechisch-Slovakisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1523
+msgid "KOI8-R Relcom Russian"
+msgstr "KOI8-R Relcom Russisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1524
+msgid "KOI8-U Ukrainian"
+msgstr "KOI8-U Ukrainisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1525
+msgid "cp1252 West European"
+msgstr "cp1252 West-Europäisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1526
+msgid "ISO 8859-2 Central European"
+msgstr "ISO 8859-2 Zentral-Europäisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1527
+msgid "ISO 8859-9 Turkish"
+msgstr "ISO 8859-9 Türkisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1528
+msgid "ISO 8859-13 Baltic"
+msgstr "ISO 8859-13 Baltisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1529
+msgid "Mac Central European"
+msgstr "Mac Zentral-Europäisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1530
+msgid "Mac West European"
+msgstr "Mac West-Europäisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:127
+msgid "Shift-JIS Japanese"
+msgstr "Shift-JIS Japanisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:164
+msgid "7bit Swedish"
+msgstr "7bit Schwedisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1533
+msgid "TIS620 Thai"
+msgstr "TIS620 Thai"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1534
+msgid "UCS-2 Unicode"
+msgstr "UCS-2 Unicode"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:127
+msgid "EUC-JP Japanese"
+msgstr "EUC-JP Japanisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1536
+msgid "UTF-8 Unicode"
+msgstr "UTF-8 Unicode"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1548
+msgid "Choose the CSV file to upload:"
+msgstr "Wählen Sie eine CSV-Datei zum Hochladen aus:"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1550
+msgid "Character set of the file:"
+msgstr "Zeichenkodierung der Datei:"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:1461
 msgid "LDAP is disabled or no LDAP query defined."
