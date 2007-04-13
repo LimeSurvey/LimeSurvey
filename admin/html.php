@@ -1316,13 +1316,12 @@ if (returnglobal('viewanswer'))
 			if (($activated != 'Y' && $first) || ($activated == 'Y' && $first && (($qtype=='O')  || ($qtype=='L') || ($qtype=='!') ))) 
 			{
 				$vasummary .= "\t<input type='text' name='code_{$row['sortorder']}' value=\"{$row['code']}\" maxlength='5' size='5'"
-				."onkeypress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ')\""
+				."onkeypress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
 				." />";
 			}
 			else
 			{
 				$vasummary .= "\t{$row['code']}";
-				$vasummary .= "\t<input type='hidden' name='code_{$row['sortorder']}' maxlength='5' size='5' value=\"{$row['code']}\" />\n";
 			}
 
 			$vasummary .= "\t</td>\n"
@@ -1370,7 +1369,11 @@ if (returnglobal('viewanswer'))
 			{
 				$vasummary .= "<tr><td><br /></td></tr><tr><td width='25%' align='right'>"
 				."<strong>".$clang->gT("New Answer").":</strong> ";
-            	$vasummary .= "<input type='text' maxlength='5' name='insertcode' size='10' id='addnewanswercode' />\n";
+				$vasummary .= "\t<input type='text' name='insertcode' value=\"{$row['code']}\"id='addnewanswercode' maxlength='5' size='5'"
+				."onkeypress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
+				." />";
+
+
             	$first=false;
 				$vasummary .= "\t</td>\n"
 				."\t<td width='35%'>\n"

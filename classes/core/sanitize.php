@@ -99,7 +99,7 @@ function my_utf8_decode($string)
 // paranoid sanitization -- only let the alphanumeric set through
 function sanitize_paranoid_string($string, $min='', $max='')
 {
-	$string = preg_replace("/[^a-zA-Z0-9]/", "", $string);
+	$string = preg_replace("/[^_a-zA-Z0-9]/", "", $string);
 	$len = strlen($string);
 	if((($min != '') && ($len < $min)) || (($max != '') && ($len > $max)))
 	return FALSE;
