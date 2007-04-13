@@ -332,13 +332,19 @@ if(isset($surveyid))
 
     	$keepanswers = "1"; // Generally we try to keep answers if the question type has changed
 		
-		// Thes are the questions types that have no answers and therefore we delete the answer in that case
+		// These are the questions types that have no answers and therefore we delete the answer in that case
 		if (($_POST['type']== "5") || ($_POST['type']== "D") || ($_POST['type']== "G") ||
             ($_POST['type']== "I") || ($_POST['type']== "N") || ($_POST['type']== "S") ||        
             ($_POST['type']== "T") || ($_POST['type']== "U") || ($_POST['type']== "X") ||        
             ($_POST['type']=="Y"))
 		{
 			$keepanswers = "0";
+		}
+
+		// These are the questions types that have the other option therefore we set everything else to 'No Other'
+		if (($_POST['type']!= "L") && ($_POST['type']!= "!") && ($_POST['type']!= "P") && ($_POST['type']!="Q"))
+		{
+			$_POST['other']='N';
 		}
 
 		if ($oldtype != $_POST['type'])
