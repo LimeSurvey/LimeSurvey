@@ -39,6 +39,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	{
 
 	$file_version="PHPSurveyor Template Editor ".$versionnumber;
+	$_SESSION['s_lang']=$_SESSION['adminlang'];
 	if(get_magic_quotes_gpc())
 	{
 		$_GET = array_map("stripslashes", $_GET);
@@ -461,7 +462,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	. "\t\t\t</tr>\n"
 	. "\t\t\t<tr>\n"
 	. "\t\t\t\t<td>\n";
-	if (is_writable("$publicdir/templates/$templatename")) {
+	if (is_writable("$publicdir/templates/$templatename") && ($templatename != "default") ) {
 		$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/trafficgreen.png' alt='".$clang->gT("This template can be modified")."' hspace='0' align='left' />\n";
 	} else {
 		$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/trafficred.png' alt='".$clang->gT("This template cannot be modified")."' hspace='0' align='left' />\n";
