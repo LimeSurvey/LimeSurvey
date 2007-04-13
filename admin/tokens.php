@@ -1280,8 +1280,8 @@ if ($subaction == "import" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
 	."<font size='1' face='verdana' color='white'><strong>"
 	.$clang->gT("Upload CSV File")."</strong></font></td></tr>\n"
-	."\t<tr><td align='center'>\n";
-	form();
+	."\t<tr><td align='center'><br>\n";
+	form_csv_upload();
 	$tokenoutput .= "<table width='500' bgcolor='#eeeeee'>\n"
 	."\t<tr>\n"
 	."\t\t<td align='center'>\n"
@@ -1344,7 +1344,7 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 		if (!isset($tokenlistarray)) {$tokenoutput .= "Failed to open the uploaded file!\n";}
 		foreach ($tokenlistarray as $buffer)
 		{
-			if(function_exists('mb_convert_encoding')) {$buffer=mb_convert_encoding($buffer,"UTF-8","auto");} //Sometimes mb_convert_encoding doesn't exist
+            $buffer=@mb_convert_encoding($buffer,"UTF-8",$_POST['csvcharset']);
 			$firstname = ""; $lastname = ""; $email = ""; $token = ""; $language=""; $attribute1=""; $attribute2=""; //Clear out values from the last path, in case the next line is missing a value
 			if ($xx==0)
 			{
@@ -1491,20 +1491,65 @@ $tokenoutput .= "\t\t<table><tr><td></td></tr></table>\n"
 
 
 
-function form($error=false)
+function form_csv_upload($error=false)
 {
 	global $surveyid, $tokenoutput,$scriptname, $clang;
 
 	if ($error) {$tokenoutput .= $error . "<br /><br />\n";}
 
+   $encodingsarray = array("armscii8"=>$clang->gT("ARMSCII-8 Armenian")
+               ,"ascii"=>$clang->gT("US ASCII")
+               ,"auto"=>$clang->gT("Automatic")
+               ,"big5"=>$clang->gT("Big5 Traditional Chinese")
+               ,"binary"=>$clang->gT("Binary pseudo charset")
+               ,"cp1250"=>$clang->gT("Windows Central European")
+               ,"cp1251"=>$clang->gT("Windows Cyrillic")
+               ,"cp1256"=>$clang->gT("Windows Arabic")
+               ,"cp1257"=>$clang->gT("Windows Baltic")
+               ,"cp850"=>$clang->gT("DOS West European")
+               ,"cp852"=>$clang->gT("DOS Central European")
+               ,"cp866"=>$clang->gT("DOS Russian")
+               ,"cp932"=>$clang->gT("SJIS for Windows Japanese")
+               ,"dec8"=>$clang->gT("DEC West European")
+               ,"eucjpms"=>$clang->gT("UJIS for Windows Japanese")
+               ,"euckr"=>$clang->gT("EUC-KR Korean")
+               ,"gb2312"=>$clang->gT("GB2312 Simplified Chinese")
+               ,"gbk"=>$clang->gT("GBK Simplified Chinese")
+               ,"geostd8"=>$clang->gT("GEOSTD8 Georgian")
+               ,"greek"=>$clang->gT("ISO 8859-7 Greek")
+               ,"hebrew"=>$clang->gT("ISO 8859-8 Hebrew")
+               ,"hp8"=>$clang->gT("HP West European")
+               ,"keybcs2"=>$clang->gT("DOS Kamenicky Czech-Slovak")
+               ,"koi8r"=>$clang->gT("KOI8-R Relcom Russian")
+               ,"koi8u"=>$clang->gT("KOI8-U Ukrainian")
+               ,"latin1"=>$clang->gT("cp1252 West European")
+               ,"latin2"=>$clang->gT("ISO 8859-2 Central European")
+               ,"latin5"=>$clang->gT("ISO 8859-9 Turkish")
+               ,"latin7"=>$clang->gT("ISO 8859-13 Baltic")
+               ,"macce"=>$clang->gT("Mac Central European")
+               ,"macroman"=>$clang->gT("Mac West European")
+               ,"sjis"=>$clang->gT("Shift-JIS Japanese")
+               ,"swe7"=>$clang->gT("7bit Swedish")
+               ,"tis620"=>$clang->gT("TIS620 Thai")
+               ,"ucs2"=>$clang->gT("UCS-2 Unicode")
+               ,"ujis"=>$clang->gT("EUC-JP Japanese")
+               ,"utf8"=>$clang->gT("UTF-8 Unicode")); 
+    asort($encodingsarray);               
+    $charsetsout='';
+    foreach  ($encodingsarray as $charset=>$title)
+    {
+    $charsetsout.="<option value='$charset' ";
+    if ($charset=='auto') {$charsetsout.=" selected ='selected'";}
+    $charsetsout.=">$title ($charset)</option>";
+    }
 	$tokenoutput .= "<form enctype='multipart/form-data' action='$scriptname?action=tokens' method='post'>\n"
 	. "<input type='hidden' name='subaction' value='upload' />\n"
 	. "<input type='hidden' name='sid' value='$surveyid' />\n"
-	. $clang->gT("Upload a File")."<br />\n"
-	. "<input type='file' name='the_file' size='35' /><br />\n"
+	. $clang->gT("Choose the CSV file to upload:")."\n"
+	. "<input type='file' name='the_file' size='35' /><p />\n"
+	. $clang->gT("Character set of the file:")."<select name='csvcharset' size='1'>$charsetsout</select><p />\n"
 	. "<input type='submit' value='".$clang->gT("Upload")."' />\n"
 	. "</form>\n\n";
-
 } # END form
 
 function formldap($error=false)

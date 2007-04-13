@@ -42,8 +42,6 @@ $dbversionnumber = 111;
 
 if ($debug==1) {
         error_reporting(E_ALL); //For debug purposes - switch on in config.phh
-        // The following line is for mysql debug purposes
-        $tmpresult=@mysql_query("SET SESSION SQL_MODE='STRICT_ALL_TABLES'");
         } 
 @set_time_limit(60); // Maximum execution time - works only if safe_mode is off
 
@@ -128,7 +126,10 @@ $connect->SetFetchMode(ADODB_FETCH_ASSOC);
 $dbexistsbutempty=($database_exists && checkifemptydb());
 
 
-if ($databasetype=='mysql') {$connect->Execute("SET CHARACTER SET 'utf8'");}
+if ($databasetype=='mysql') {
+    if ($debug==1) { @$connect->Execute("SET SESSION SQL_MODE='STRICT_ALL_TABLES, ANSI'"); } 
+    $connect->Execute("SET CHARACTER SET 'utf8'");
+}
 
 
 //Admin menus and standards
