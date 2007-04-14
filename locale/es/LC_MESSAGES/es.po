@@ -10,30 +10,159 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-10-12 00:12+0200\n"
-"Last-Translator: Juan Rafael Fernández García <juanrafael.fernandez@hispalinux.es>\n"
+"PO-Revision-Date: 2007-04-07 03:33-0300\n"
+"Last-Translator: Esteban Adrián Pérez <dgeaperez@yahoo.com.ar>\n"
 "Language-Team:  <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: gT\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: C:\\documentos\\Estudio\\activa\\gador\\phpsurvey.dev\n"
 
-msgid "Tokens"
-msgstr "Tokens"
+msgid "Administration"
+msgstr "Administración:"
 
-msgid "Female"
-msgstr "Femenino"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:189
+msgid "Logged in as"
+msgstr "Ingresó como"
 
-msgid "Male"
-msgstr "Masculino"
+msgid "Default Administration Page"
+msgstr "Inicio de Página de Administración"
 
-msgid "No answer"
-msgstr "Sin respuesta"
+msgid "Create/Edit Users"
+msgstr "Crear/editar usuarios"
 
-msgid "N/A"
-msgstr "No disponible"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:212
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:213
+msgid "Create/Edit Groups"
+msgstr "Crear/Editar Grupos"
 
-msgid "Please choose"
-msgstr "Escoja, por favor"
+msgid "Check Settings"
+msgstr "Revisar Opciones del Sistema"
+
+msgid "Check Data Integrity"
+msgstr "Verificar Integridad de Datos"
+
+msgid "List Surveys"
+msgstr "Listar cuestionarios"
+
+msgid "Backup Entire Database"
+msgstr "Hacer copia de seguridad de toda la base de datos"
+
+msgid "Edit/Add Label Sets"
+msgstr "Modificar/Agregar Conjuntos de Etiquetas"
+
+msgid "Template Editor"
+msgstr "Editor de plantillas"
+
+msgid "Show Help"
+msgstr "Mostrar Ayuda"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:291
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:293
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:144
+msgid "Logout"
+msgstr "Cerrar Sesión"
+
+msgid "Create or Import New Survey"
+msgstr "Crear o Importar una Nueva Encuesta"
+
+msgid "Surveys"
+msgstr "Encuestas"
+
+msgid "Please Choose..."
+msgstr "Por favor elija.."
+
+msgid "None"
+msgstr "Ninguna"
+
+msgid "5 Point Choice"
+msgstr "Elegir entre 5 Puntos"
+
+msgid "Array (5 Point Choice)"
+msgstr "Arreglo (Elegir entre 5 Puntos)"
+
+msgid "Array (10 Point Choice)"
+msgstr "Arreglo (Elegir entre 10 Puntos)"
+
+msgid "Array (Yes/No/Uncertain)"
+msgstr "Serie de opciones (Sí/No/No sé)"
+
+msgid "Date"
+msgstr "Fecha"
+
+msgid "Array (Increase, Same, Decrease)"
+msgstr "Arreglo (Ampliar, Mantener, Reducir)"
+
+msgid "Array (Flexible Labels)"
+msgstr "Arreglo (Etiquetas Flexibles)"
+
+msgid "Gender"
+msgstr "Género"
+
+msgid "Array (Flexible Labels) by Column"
+msgstr "Array (Etiquetas Flexibles) por Columna"
+
+msgid "Language Switch"
+msgstr "Cambiar Idioma:"
+
+msgid "List (Radio)"
+msgstr "Lista (Radio)"
+
+msgid "Multiple Options"
+msgstr "Opción Múltiple"
+
+msgid "Numerical Input"
+msgstr "Entrada Numérica"
+
+msgid "List With Comment"
+msgstr "Lista con Comentarios"
+
+msgid "Multiple Options With Comments"
+msgstr "Múltiples Opciones con Comentarios"
+
+msgid "Multiple Short Text"
+msgstr "Múltiples Textos Cortos"
+
+msgid "Ranking"
+msgstr "OrdenarFila"
+
+msgid "Short free text"
+msgstr "Texto corto"
+
+msgid "Long free text"
+msgstr "Texto largo"
+
+msgid "Huge Free Text"
+msgstr "Texto libre enorme"
+
+msgid "List (Flexible Labels) (Dropdown)"
+msgstr "Lista (Etiquetas Flexibles) (Lista desplegable)"
+
+msgid "Boilerplate Question"
+msgstr "Pregunta estándar"
+
+msgid "Yes/No"
+msgstr "Sí/No"
+
+msgid "List (Flexible Labels) (Radio)"
+msgstr "Lista (Etiquetas Flexibles) (Radio)"
+
+msgid "List (Dropdown)"
+msgstr "Lista (Dropdown)"
+
+msgid "No email notification"
+msgstr "Ninguna notificación por correo"
+
+msgid "Basic email notification"
+msgstr "Notificación básica por correo"
+
+msgid "Detailed email notification with result codes"
+msgstr "Notificación detallada por correo con los códigos de resultados"
+
+msgid "PHPSurveyor Setup"
+msgstr "Configuración de PHPSurveyor"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:49
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:770
@@ -102,704 +231,49 @@ msgstr "Escoja, por favor"
 msgid "Error"
 msgstr "Error"
 
-msgid "complete"
-msgstr "completo"
-
-msgid "Increase"
-msgstr "Aumento"
-
-msgid "Same"
-msgstr "Iguales"
-
-msgid "Decrease"
-msgstr "Disminución"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:54
-msgid "<font color='red'>*</font>"
-msgstr "<font color='red'>*</font>"
-
-msgid "Confirmation"
-msgstr "Confirmación"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:57
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:1359
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:403
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:407
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:414
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:415
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:419
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:420
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:475
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1070
-msgid "Token"
-msgstr "Token"
-
-msgid "Continue"
-msgstr "Continuar"
-
-msgid "Accept"
-msgstr "Aceptar"
-
-msgid "prev"
-msgstr "anterior"
-
-msgid "next"
-msgstr "sig."
-
-msgid "last"
-msgstr "último"
-
-msgid "submit"
-msgstr "enviar"
-
-msgid "Please choose one of the following"
-msgstr "Por favor elija una de los siguientes"
-
-msgid "Please enter your comment here"
-msgstr "Por favor  teclee su comentario aquí"
-
-msgid "Only numbers may be entered in this field"
-msgstr "Sólo se aceptan números en este campo"
-
-msgid "Exit and Clear Survey"
-msgstr "Salir y reiniciar la encuesta"
-
-msgid "This question is mandatory"
-msgstr "Esta pregunta es de respuesta obligatoria"
-
-msgid "Please complete all parts"
-msgstr "Por favor  complete todas las partes"
-
-msgid "Please check at least one item"
-msgstr "Por favor seleccione al menos un elemento"
-
-msgid "Please rank all items"
-msgstr "Por favor clasifique todos los elementos"
-
-msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
-msgstr "Una o más preguntas obligatorias no se han contestado. No podrá proseguir hasta que no haya completado estas"
-
-msgid "This question must be answered correctly"
-msgstr "Esta pregunta debe ser contestada correctamente"
-
-msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
-msgstr "Una o más preguntas no fueron contestadas de forma correcta. Usted no puede proceder hasta que dichas respuestas sean válidas"
-
-msgid "Format: YYYY-MM-DD"
-msgstr "Formato: AAAA-MM-DD"
-
-msgid "(eg: 2003-12-25 for Christmas day)"
-msgstr "(p.ej.: 2003-12-25 para Navidad)"
-
-msgid "Remove this item"
-msgstr "Eliminar este elemento"
-
-msgid "Click on an item in the list on the left, starting with your"
-msgstr "Pulse en un elemento de la lista de la izquierda, empezando por el"
-
-msgid "highest ranking item, moving through to your lowest ranking item."
-msgstr "elemento con más alta clasificación hasta llegar al elemento con más baja clasificación."
-
-msgid "Your Choices"
-msgstr "Sus Opciones"
-
-msgid "Your Ranking"
-msgstr "Su Clasificación"
-
-msgid "Click on the scissors next to each item on the right"
-msgstr "Pulse en las tijeras que hay a la derecha de cada elemento"
-
-msgid "to remove the last entry in your ranked list"
-msgstr "para eliminar la última entrada de su lista ordenada"
-
-msgid "You have not provided a survey identification number"
-msgstr "No ha proporcionado el número de identificación de la encuesta"
-
-msgid "Please contact"
-msgstr "Por favor contacte con"
-
-msgid "for further assistance"
-msgstr "si desea más ayuda"
-
-msgid "Answers Cleared"
-msgstr "Respuestas borradas"
-
-msgid "Restart this Survey"
-msgstr "Reiniciar la Encuesta"
-
-msgid "Close this Window"
-msgstr "Cerrar esta ventana"
-
-msgid "Are you sure you want to clear all your responses?"
-msgstr "¿Está seguro de eliminar todas sus respuestas?"
-
-msgid "Are you sure you want to save your responses?"
-msgstr "¿Está seguro de que desea guardar sus respuestas?"
-
-msgid "Cannot submit results - there are none to submit."
-msgstr "No se pueden enviar los resultados - no hay resultados que enviar."
-
-msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br /><br />If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
-msgstr "Este error puede ocurrir si ya ha enviado sus respuestas y pulsado «Recargar esta página» en su navegador. En este caso, sus respuestas ya habían sido guardadas.<br /><br />Si recibe este mensaje cuando lleva una encuesta completada sólo a medias, debe pulsar en «<- Volver a la página anterior» de su navegador y después refrescar/recargar la página previa. A pesar de que perderá las respuestas de la última página, al menos seguirán existiendo todas las demás. Este problema puede producirse si el servidor web está sobrecargado o tiene un uso excesivo. Pedimos disculpas por el problema."
-
-msgid "Your survey responses have not been recorded. This survey is not yet active."
-msgstr "Sus respuestas no han sido guardadas porque la encuesta no se ha activado aún."
-
-msgid "Clear Responses"
-msgstr "Borrar las respuestas"
-
-msgid "Thank you"
-msgstr "Gracias"
-
-msgid "Your survey responses have been recorded."
-msgstr "Sus respuestas han sido guardadas."
-
-msgid "Survey Completed"
-msgstr "Encuesta Completada"
-
-msgid "Did Not Save"
-msgstr "No se guardó"
-
-msgid "An unexpected error has occurred and your responses cannot be saved."
-msgstr "Ha ocurrido un error inesperado y sus respuestas no han podido ser guardadas."
-
-msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
-msgstr "Sus respuestas no se han perdido, han sido enviadas por correo electrónico al administrador de la encuesta para su posterior incorporación a nuestra base de datos."
-
-msgid "An error occurred saving a response to survey id"
-msgstr "Ha sucedido un error al guardar una respuesta de la encuesta identificada con"
-
-msgid "DATA TO BE ENTERED"
-msgstr "DATOS QUE SERÁN GUARDADOS"
-
-msgid "SQL CODE THAT FAILED"
-msgstr "EL CODIGO SQL QUE HA FALLADO"
-
-msgid "ERROR MESSAGE"
-msgstr "MENSAJE DE ERROR"
-
-msgid "Error saving survey results to database"
-msgstr "Error al guardar los resultados de la encuesta en la base de datos"
-
-msgid "Try to submit again"
-msgstr "Intente enviarla otra vez"
-
-msgid "Sorry. There is no matching survey."
-msgstr "Lo sentimos. No hay ninguna encuesta que coincida."
-
-msgid "This is a controlled survey. You need a valid token to participate."
-msgstr "Esta encuesta tiene control de acceso. Necesita un token válido para participar."
-
-msgid "If you have been issued with a token, please enter it in the box below and click continue."
-msgstr "Si se le ha proporcionado un token, por favor de tecléelo en la caja de abajo y pulse en continuar."
-
-msgid "The token you have provided is either not valid, or has already been used."
-msgstr "El token que se le ha proporcionado no es válido o ya fue usado."
-
-msgid "This survey does not yet have any questions and cannot be tested or completed."
-msgstr "Esta encuesta todavía no tiene preguntas y no puede ser probada ni completada."
-
-msgid "For further information contact"
-msgstr "Para más información contactar con"
-
-msgid "This survey is not currently active. You will not be able to save your responses."
-msgstr "Esta encuesta no está activa. No podrá guardar sus respuestas."
-
-msgid "This survey is no longer available."
-msgstr "Esta encuesta ya no está disponible."
-
-msgid "You have already completed this survey."
-msgstr "Ya ha completado esta encuesta."
-
-msgid "Choose only one of the following"
-msgstr "Elija solamente una entrada de las siguientes"
-
-msgid "Check any that apply"
-msgstr "Seleccione las entradas que correspondan"
-
-msgid "Survey Submitted"
-msgstr "Encuesta enviada"
-
-msgid "A new response was entered for your survey"
-msgstr "Se añadió una nueva respuesta a su encuesta"
-
-msgid "Click the following link to see the individual response:"
-msgstr "Pulse en el siguiente enlace para ver la respuesta individual:"
-
-msgid "View statistics by clicking here:"
-msgstr "Vea las estadísticas pulsando aquí:"
-
-msgid "Click the following link to edit the individual response:"
-msgstr "Pulse en el siguiente enlace para editar la respuesta individual:"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:137
-msgid "(<strong><i>A Note On Privacy</i></strong><br />"
-msgstr "(<strong><i><Nota sobre privacidad</i></strong><br />"
-
-msgid "This survey is anonymous.<br />"
-msgstr "Esta encuesta es anónima.<br />"
-
-msgid "The record kept of your survey responses does not contain any "
-msgstr "El registro de sus respuestas a la encuesta no contiene "
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:140
-msgid "identifying information about you unless a specific question "
-msgstr "información identificativa sobre usted a menos que alguna pregunta específica "
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:141
-msgid "in the survey has asked for this. If you have responded to a "
-msgstr "de la encuesta haya preguntado esto. Si ha respondido a una "
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:142
-msgid "survey that used an identifying token to allow you to access "
-msgstr "encuesta que usaba un token identificativo para permitirle el acceso "
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:143
-msgid "the survey, you can rest assured that the identifying token "
-msgstr "a la encuesta, puede quedar tranquilo, que el token identificativo "
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:144
-msgid "is not kept with your responses. It is managed in a separate "
-msgstr "no se guarda con sus respuestas. Se trata en una "
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:145
-msgid "database, and will only be updated to indicate that you have "
-msgstr "base de datos separada, y sólo se actualizará para indicar que usted ha "
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:146
-msgid "(or haven't) completed this survey. There is no way of matching "
-msgstr "completado (o no) la encuesta. No hay modo de relacionar "
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:147
-msgid "identification tokens with survey responses in this survey."
-msgstr "tokens identificativos con las respuestas a una encuesta."
-
-msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
-msgstr "Hay {NUMBEROFQUESTIONS} preguntas en esta encuesta."
-
-msgid "There is 1 question in this survey."
-msgstr "Hay una pregunta en este encuesta."
-
-msgid "You must be registered to complete this survey"
-msgstr "Debe haberse dado de alta para completar esta encuesta"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:153
-msgid ""
-"You may register for this survey if you wish to take part.<br />\n"
-")"
-msgstr ""
-"Puede inscribirse en esta encuesta si desea participar.<br />\n"
-")"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:154
-msgid "Enter your details below, and an email containing the link to "
-msgstr "Introduzca sus datos a continuación, y se le enviará inmediatamente un mensaje de correo electrónico "
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:155
-msgid "participate in this survey will be sent immediately."
-msgstr "con el enlace para participar."
-
-msgid "Email Address"
-msgstr "Correo electrónico"
-
-msgid "First Name"
-msgstr "Nombre"
-
-msgid "Last Name"
-msgstr "Apellido"
-
-msgid "The email you used is not valid. Please try again."
-msgstr "La dirección de correo electrónico no es válida. Por favor, vuelva a intentarlo."
-
-msgid "The email you used has already been registered."
-msgstr "La dirección de correo electrónico que usó ya fue registrada previamente."
-
-msgid "{SURVEYNAME} Registration Confirmation"
-msgstr "{SURVEYNAME} Confirmación de Registro"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:162
-msgid ""
-"Thank you for registering to participate in this survey.<br /><br />\n"
-")"
-msgstr ""
-"Gracias por inscribirse para participar en esta encuesta.<br /><br />\n"
-")"
-
-msgid "An email has been sent to the address you provided with access details "
-msgstr "Se le ha enviado un correo electrónico con los datos de acceso a esta encuesta "
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:164
-msgid "for this survey. Please follow the link in that email to proceed.<br /><br />\n"
-msgstr "a la dirección que indicó . Por favor siga el enlace del correo para continuar.<br /><br />\n"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:165
-msgid "Survey Administrator {ADMINNAME} ({ADMINEMAIL})"
-msgstr "Administrador de la Encuesta {ADMINNAME} ({ADMINEMAIL})"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:167
-msgid "<strong>Thank You<br /><br />)"
-msgstr "<strong>Gracias<br /><br />)"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:168
-msgid "You have completed answering the questions in this survey.</strong><br /><br />"
-msgstr "Ha respondido a todas las preguntas de la encuesta.</strong><br /><br />"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:169
-msgid "Click on ["
-msgstr "Pulse en ["
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:169
-msgid "] now to complete the process and save your answers."
-msgstr "] ahora para completar el proceso y guardar sus respuestas."
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:170
-msgid "If you want to check any of the answers you have made, and/or change them, )"
-msgstr "Si desea comprobar alguna de las respuestas que ha escrito, y/o cambiarlas, )"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:171
-msgid "you can do that now by clicking on the [<< "
-msgstr "puede hacerlo ahora pulsando en el botón [<< "
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:171
-msgid "] button and browsing "
-msgstr "y buscándola "
-
-msgid "through your responses."
-msgstr "entre sus respuestas."
-
-msgid "Please choose <strong>only one</strong> of the following:"
-msgstr "Por favor, marque <strong>sólo una</strong> de las siguientes:"
-
-msgid "Please write your answer here:"
-msgstr "Por favor, escriba su respuesta aquí:"
-
-msgid "Please choose <strong>all</strong> that apply:"
-msgstr "Por favor, marque <strong>todas</strong> las que correspondan:"
-
-msgid "Please choose all that apply and provide a comment:"
-msgstr "Por favor, elija todas las que correspondan y escriba un comentario:"
-
-msgid "Please choose the appropriate response for each item:"
-msgstr "Por favor, elija la respuesta apropiada para cada entrada:"
-
-msgid "Please write your answer(s) here:"
-msgstr "Por favor, escriba su(s) respuesta(s) aquí:"
-
-msgid "Please enter a date:"
-msgstr "Por favor, introduzca la fecha:"
-
-msgid "Make a comment on your choice here:"
-msgstr "Comente su opción aquí:"
-
-msgid "Please number each box in order of preference from 1 to"
-msgstr "Por favor, enumere cada recuadro en orden de preferencia desde 1 a"
-
-msgid "Submit Your Survey."
-msgstr "Enviar su encuesta."
-
-msgid "Thank you for completing this survey."
-msgstr "Gracias por completar esta encuesta."
-
-msgid "Please fax your completed survey to:"
-msgstr "Por favor, envíe un fax con su encuesta completada a:"
-
-msgid "Only answer this question"
-msgstr "Sólo responda esta pregunta"
-
-msgid "if you answered"
-msgstr "si usted respondió"
-
-msgid "and"
-msgstr "y"
-
-msgid "to question"
-msgstr "a la pregunta"
-
-msgid "or"
-msgstr "o"
-
-msgid "Save your responses so far"
-msgstr "Guardar las respuestas realizadas hasta ahora"
-
-msgid "Save Your Unfinished Survey"
-msgstr "Guardar una encuesta no terminada"
-
-msgid "Return To Survey"
-msgstr "Volver a la encuesta"
-
-msgid "Name"
-msgstr "Nombre"
-
-msgid "Password"
-msgstr "Contraseña"
-
-msgid "Repeat Password"
-msgstr "Repita la contraseña"
-
-msgid "Your Email"
-msgstr "Su correo electrónico"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:202
-msgid ""
-"Enter a name and password for this survey and click save below.<br />\n"
-")"
-msgstr ""
-"Elija un nombre y una contraseña para esta encuesta y pulse en en el guardar de abajo.<br />\n"
-")"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:203
-msgid "Your survey will be saved using that name and password, and can be "
-msgstr "Su encuesta se guardará con ese nombre y esa contraseña, y"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:204
-msgid "completed later by logging in with the same name and password.<br /><br />\n"
-msgstr "se podrá completar más tarde conectándose con el mismo nombre y contraseña.<br /><br />\n"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:205
-msgid "If you give an email address, an email containing the details will be sent "
-msgstr "Si nos da su cuenta de correo electrónico, se le enviará un correo "
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:206
-msgid "to you."
-msgstr "con los detalles."
-
-msgid "Save Now"
-msgstr "Guardar ahora"
-
-msgid "You must supply a name for this saved session."
-msgstr "Usted debe proporcionar un nombre para esta sesión guardada."
-
-msgid "You must supply a password for this saved session."
-msgstr "Usted debe proporcionar una contraseña para esta sesión guardada."
-
-msgid "You must re-enter a password for this saved session."
-msgstr "Debe volver a introducir la contraseña para esta sesión guardada."
-
-msgid "Your passwords do not match."
-msgstr "Sus contraseñas no concuerdan."
-
-msgid "This name has already been used for this survey. You must use a unique save name."
-msgstr "Este nombre ya ha sido utilizado para esta encuesta. Debe utilizar un nombre único para guardar."
-
-msgid "Please try again."
-msgstr "Por favor, vuelva a intentarlo."
-
-msgid "Saved Survey Details"
-msgstr "Detalles de la encuesta guardada"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:215
-msgid "You, or someone using your email address, have saved "
-msgstr "Usted, o alguien que utilizaba su cuenta de correo, ha guardado "
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:216
-msgid "a survey in progress. The following details can be used "
-msgstr "una encuesta sincompletar. Puede utilizar los siguientes detalles "
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:217
-msgid "to return to this survey and continue where you left "
-msgstr "para volver a la encuesta y continuar donde "
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:218
-msgid "off."
-msgstr "la dejó."
-
-msgid "Reload your survey by clicking on the following URL:"
-msgstr "Recargue su encuesta haciendo click en la siguiente URL:"
-
-msgid "Your survey responses have been saved succesfully"
-msgstr "Sus respuestas a esta encuesta fueron guardadas con éxito"
-
-msgid "An error occurred and your survey responses were not saved."
-msgstr "Se ha producido un error, y sus respuestas no fueron guardadas."
-
-msgid "An email has been sent with details about your saved survey."
-msgstr "Un correo electrónico fue enviado con los detalles de su encuesta guardada."
-
-msgid "Load unfinished survey"
-msgstr "Recuperar una encuesta no terminada"
-
-msgid "Load A Previously Saved Survey"
-msgstr "Cargar una encuesta guardada previamente"
-
-msgid "You can load a survey that you have previously saved from this screen.<br />\n"
-msgstr "Puede cargar una encuesta que ha guardado previamente desde esta pantalla.<br />\n"
-
-msgid "Type in the 'name' you used to save the survey, and the password.<br /><br />\n"
-msgstr "Escriba el «nombre» que usó para guardar la encuesta, y la contraseña.<br /><br />\n"
-
-msgid "Saved name"
-msgstr "Nombre guardado"
-
-msgid "Load Now"
-msgstr "Recuperar Ahora"
-
-msgid "You did not provide a name"
-msgstr "No ingresó el Nombre"
-
-msgid "You did not provide a password"
-msgstr "No ingresó la contraseña"
-
-msgid "There is no matching saved survey"
-msgstr "No existen encuestas con dicho nombre"
-
-msgid "Your Assessment"
-msgstr "Sus Evaluaciones"
-
-msgid "Administration"
-msgstr "Administración"
-
-msgid "Default Administration Page"
-msgstr "Inicio de Página de Administración"
-
-msgid "Activate Security"
-msgstr "Activar Seguridad"
-
-msgid "Modify Security Settings"
-msgstr "Modificar Opciones de Seguridad"
-
-msgid "Check Settings"
-msgstr "Revisar Opciones del Sistema"
-
-msgid "Check Database"
-msgstr "Revisar la Base de Datos"
-
-msgid "Delete Entire Survey"
-msgstr "Borrar la Encuesta"
-
-msgid "Backup Entire Database"
-msgstr "Hacer copia de seguridad de toda la base de datos"
-
-msgid "Edit/Add Label Sets"
-msgstr "Modificar/Agregar Conjuntos de Etiquetas"
-
-msgid "Template Editor"
-msgstr "Editor de plantillas"
-
-msgid "Show Help"
-msgstr "Mostrar Ayuda"
-
-msgid "Create or Import New Survey"
-msgstr "Crear o Importar una Nueva Encuesta"
-
-msgid "Surveys"
-msgstr "Encuestas"
-
-msgid "Please Choose..."
-msgstr "Por favor elija.."
-
-msgid "None"
-msgstr "Ninguna"
-
-msgid "5 Point Choice"
-msgstr "Elegir entre 5 Puntos"
-
-msgid "Date"
-msgstr "Fecha"
-
-msgid "Gender"
-msgstr "Género"
-
-msgid "List (Dropdown)"
-msgstr "Lista (Dropdown)"
-
-msgid "List (Radio)"
-msgstr "Lista (Radio)"
-
-msgid "List With Comment"
-msgstr "Lista con Comentarios"
-
-msgid "Multiple Options"
-msgstr "Opción Múltiple"
-
-msgid "Multiple Options With Comments"
-msgstr "Múltiples Opciones con Comentarios"
-
-msgid "Multiple Short Text"
-msgstr "Múltiples Textos Cortos"
-
-msgid "Numerical Input"
-msgstr "Entrada Numérica"
-
-msgid "Ranking"
-msgstr "OrdenarFila"
-
-msgid "Short free text"
-msgstr "Texto corto"
-
-msgid "Long free text"
-msgstr "Texto largo"
-
-msgid "Huge Free Text"
-msgstr "Texto libre enorme"
-
-msgid "Yes/No"
-msgstr "Sí/No"
-
-msgid "Array (5 Point Choice)"
-msgstr "Arreglo (Elegir entre 5 Puntos)"
-
-msgid "Array (10 Point Choice)"
-msgstr "Arreglo (Elegir entre 10 Puntos)"
-
-msgid "Array (Yes/No/Uncertain)"
-msgstr "Serie de opciones (Sí/No/No sé)"
-
-msgid "Array (Increase, Same, Decrease)"
-msgstr "Arreglo (Ampliar, Mantener, Reducir)"
-
-msgid "Array (Flexible Labels)"
-msgstr "Arreglo (Etiquetas Flexibles)"
-
-msgid "Array (Flexible Labels) by Column"
-msgstr "Array (Etiquetas Flexibles) por Columna"
-
-msgid "Boilerplate Question"
-msgstr "Pregunta estándar"
-
-msgid "List (Flexible Labels) (Dropdown)"
-msgstr "Lista (Etiquetas Flexibles) (Lista desplegable)"
-
-msgid "List (Flexible Labels) (Radio)"
-msgstr "Lista (Etiquetas Flexibles) (Radio)"
-
-msgid "No email notification"
-msgstr "Ninguna notificación por correo"
-
-msgid "Basic email notification"
-msgstr "Notificación básica por correo"
-
-msgid "Detailed email notification with result codes"
-msgstr "Notificación detallada por correo con los códigos de resultados"
-
-msgid "PHPSurveyor Setup"
-msgstr "Configuración de PHPSurveyor"
-
 msgid "It appears as if some tables or fields are missing from your database."
 msgstr "Parece como si faltaran algunas tablas o campos en la base de datos."
 
 msgid "Check Database Fields"
 msgstr "Revisar Campos de la Base de Datos"
 
-msgid ""
-"Dear {FIRSTNAME},\n"
-"\n"
-"This email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n"
-"\n"
-"If you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n"
-"\n"
-"Sincerely,\n"
-"\n"
-"{ADMINNAME}"
-msgstr ""
-"Estimado {FIRSTNAME}:\n"
-"\n"
-"Este correo es para confirmar que ha completado la encuesta titulada {SURVEYNAME} y sus respuestas han quedado guardadas. Gracias por su participación.\n"
-"\n"
-"Si tiene alguna duda con respecto a este correo, por favor póngase en contacto con {ADMINNAME} en {ADMINEMAIL}.\n"
-"\n"
-"Suyo afectísimo\n"
-"\n"
-"{ADMINNAME}"
+msgid "Return to Survey Administration"
+msgstr "Regresar a la Administración de Encuestas"
+
+msgid "Show summary information"
+msgstr "Mostrar información"
+
+msgid "Display Responses"
+msgstr "Mostrar Todas las Contestaciones"
+
+msgid "Display Last 50 Responses"
+msgstr "Mostrar últimas 50 Contestaciones"
+
+msgid "Dataentry Screen for Survey"
+msgstr "Pantalla de Entrada de Datos para la Encuesta"
+
+msgid "Get statistics from these responses"
+msgstr "Generar estadísticas a partir de estas contestaciones"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:1178
+msgid "Export Results to Application"
+msgstr "Exportar los resultados a"
+
+msgid "Export result to a SPSS command file"
+msgstr "Exportar los resultados a un archivo de comandos SPSS"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/importoldresponses.php:58
+msgid "Import answers from a deactivated survey table"
+msgstr "Importar respuestas de un cuestionario inactivo."
+
+msgid "View Saved but not submitted Responses"
+msgstr "Ver las respuestas guardadas pero no enviadas"
+
+msgid "Import a VV survey file"
+msgstr "Importar un Archivo de encuesta VV"
+
+msgid "Export a VV survey file"
+msgstr "Exportar un Archivo de encuesta VV"
 
 msgid "Other"
 msgstr "Otro"
@@ -874,8 +348,537 @@ msgstr "Sí"
 msgid "No"
 msgstr "No"
 
+msgid "No answer"
+msgstr "Sin respuesta"
+
+msgid "Male"
+msgstr "Masculino"
+
+msgid "Female"
+msgstr "Femenino"
+
 msgid "Uncertain"
 msgstr "Dudoso"
+
+msgid "Increase"
+msgstr "Aumento"
+
+msgid "Decrease"
+msgstr "Disminución"
+
+msgid "Same"
+msgstr "Iguales"
+
+msgid "Comment"
+msgstr "Comentario"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:1768
+msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
+msgstr "Aviso: La ejecución de JavaScript está deshabilitada en su navegador. Es posible q no pueda responder todas las preguntas del questionario. Por favor, verifique los parámetros de su navegador."
+
+msgid "There is 1 question in this survey"
+msgstr "Hay una pregunta en este cuestionario."
+
+msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
+msgstr "Hay {NUMBEROFQUESTIONS} preguntas en esta encuesta."
+
+msgid "submit"
+msgstr "enviar"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:1822
+msgid "A Note On Privacy"
+msgstr "Nota sobre la privacidad"
+
+msgid "This survey is anonymous."
+msgstr "Esta encuesta es anónima."
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:1822
+msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "Los registros que contiene sus respuestas al cuestionario no contienen ninguna identificación suya a menos q una pregunta específicamente así lo haga. Si responde a este cuestionario utilizando una llamada que le da acceso al cuestionario, puede estar seguro que la misma no se asocia a ninguna de sus respuestas. Esto se administra en una base de datos separada, que sólo se acualiza para que ha completado o no el cuestionario. No hay manera de identificar sus respuestas."
+
+msgid "Are you sure you want to clear all your responses?"
+msgstr "¿Está seguro de eliminar todas sus respuestas?"
+
+msgid "Exit and Clear Survey"
+msgstr "Salir y reiniciar la encuesta"
+
+msgid "Load Unfinished Survey"
+msgstr "Recuperar un cuestionario no terminado"
+
+msgid "Save Survey and Return"
+msgstr "Guardar cuestionario y regresar"
+
+msgid "Thank You!"
+msgstr "¡Gracias!"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:168
+msgid "You have completed answering the questions in this survey."
+msgstr "Ha respondido a todas las preguntas del cuestionario"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:169
+msgid "Click on 'Submit' now to complete the process and save your answers."
+msgstr "Presione \"Enviar\" para completar el proceso y guardar sus respuestas."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:170
+msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
+msgstr "Si desea comprobar cualquiera de las respuestas ingresadas y/o cambiar alguna, puede hacerlo ahora con el botón [<< Prev] y revisarlas."
+
+msgid "Answers Cleared"
+msgstr "Respuestas borradas"
+
+msgid "Restart this Survey"
+msgstr "Reiniciar la Encuesta"
+
+msgid "Close this Window"
+msgstr "Cerrar esta ventana"
+
+msgid "Return To Survey"
+msgstr "Volver a la encuesta"
+
+msgid "Save Your Unfinished Survey"
+msgstr "Guardar una encuesta no terminada"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:202
+msgid "Enter a name and password for this survey and click save below."
+msgstr "Elija un nombre y una contraseña para este cuestonario y pulse en \"Guardar\"."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:203
+msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
+msgstr "Su cuestionario se guardará con ese nombre y contraseña, y lo podrá completar luego ingresando con el mismo nombre de usuario y contraseña."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:205
+msgid "If you give an email address, an email containing the details will be sent to you."
+msgstr "Si nos da su dirección de correo electrónico, se le enviará un mensaje con los detalles."
+
+msgid "Name"
+msgstr "Nombre"
+
+msgid "Password"
+msgstr "Contraseña"
+
+msgid "Repeat Password"
+msgstr "Repita la contraseña"
+
+msgid "Your Email"
+msgstr "Su correo electrónico"
+
+msgid "Security Question"
+msgstr "Pregunta de seguridad"
+
+msgid "Save Now"
+msgstr "Guardar ahora"
+
+msgid "Load A Previously Saved Survey"
+msgstr "Cargar una encuesta guardada previamente"
+
+msgid "You can load a survey that you have previously saved from this screen."
+msgstr "Puede recuperar un cuestionario guardado previamente desde esta pantalla."
+
+msgid "Type in the 'name' you used to save the survey, and the password."
+msgstr "Escriba el «nombre» que usó para guardar el cuestionario y la contraseña."
+
+msgid "Saved name"
+msgstr "Nombre guardado"
+
+msgid "Load Now"
+msgstr "Recuperar Ahora"
+
+msgid "You must be registered to complete this survey"
+msgstr "Debe haberse dado de alta para completar esta encuesta"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:153
+msgid "You may register for this survey if you wish to take part."
+msgstr "Puede inscribirse en este cuestionario si desea participar."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:154
+msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr "Introduzca sus datos a continuación, y se le enviará inmediatamente un mensaje de correo electrónico."
+
+msgid "First Name"
+msgstr "Nombre"
+
+msgid "Last Name"
+msgstr "Apellido"
+
+msgid "Email Address"
+msgstr "Correo electrónico"
+
+msgid "Continue"
+msgstr "Continuar"
+
+msgid "Your Assessment"
+msgstr "Sus Evaluaciones"
+
+msgid "Save your responses so far"
+msgstr "Guardar las respuestas realizadas hasta ahora"
+
+msgid "Did Not Save"
+msgstr "No se guardó"
+
+msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr "Sus respuestas no han sido guardadas porque la encuesta no se ha activado aún."
+
+msgid "Clear Responses"
+msgstr "Borrar las respuestas"
+
+msgid "Thank you"
+msgstr "Gracias"
+
+msgid "Your survey responses have been recorded."
+msgstr "Sus respuestas han sido guardadas."
+
+msgid "Sorry. There is no matching survey."
+msgstr "Lo sentimos. No hay ninguna encuesta que coincida."
+
+msgid "This survey is not currently active. You will not be able to save your responses."
+msgstr "Esta encuesta no está activa. No podrá guardar sus respuestas."
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/group.php:492
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/question.php:468
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/survey.php:377
+msgid "Date is not valid!"
+msgstr "¡La fecha no es válida!"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/index.php:68
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/index.php:117
+msgid "ERROR"
+msgstr "ERROR"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/index.php:69
+msgid "We are sorry but your session has expired."
+msgstr "Lamentablemente su sesión ha expirado."
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/index.php:69
+msgid "Either you have been inactive for too long or there were problems with your connection."
+msgstr "O bien ha estado inactivo por mucho tiempo o hubo algún problema con su conexión."
+
+msgid "Please contact"
+msgstr "Por favor contacte con"
+
+msgid "for further assistance"
+msgstr "si desea más ayuda"
+
+msgid "You have not provided a survey identification number"
+msgstr "No ha proporcionado el número de identificación de la encuesta"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/index.php:138
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/index.php:246
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/register.php:70
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/save.php:215
+msgid "The answer to the security question is incorrect"
+msgstr "La respuesta a la pregunta de seguridad es incorrecta."
+
+msgid "This survey is no longer available."
+msgstr "Esta encuesta ya no está disponible."
+
+msgid "You have already completed this survey."
+msgstr "Ya ha completado esta encuesta."
+
+msgid "You did not provide a name"
+msgstr "No ingresó el Nombre"
+
+msgid "You did not provide a password"
+msgstr "No ingresó la contraseña"
+
+msgid "This is a controlled survey. You need a valid token to participate."
+msgstr "Esta encuesta tiene control de acceso. Necesita un token válido para participar."
+
+msgid "The token you have provided is either not valid, or has already been used."
+msgstr "El token que se le ha proporcionado no es válido o ya fue usado."
+
+msgid "For further information contact"
+msgstr "Para más información contactar con"
+
+msgid "Survey Saved"
+msgstr "Cuestionario guardado"
+
+msgid "There is no matching saved survey"
+msgstr "No existen encuestas con dicho nombre"
+
+msgid "complete"
+msgstr "completo"
+
+msgid ""
+"Dear {FIRSTNAME},\n"
+"\n"
+"This email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n"
+"\n"
+"If you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n"
+"\n"
+"Sincerely,\n"
+"\n"
+"{ADMINNAME}"
+msgstr ""
+"Estimado {FIRSTNAME}:\n"
+"\n"
+"Este correo es para confirmar que ha completado la encuesta titulada {SURVEYNAME} y sus respuestas han quedado guardadas. Gracias por su participación.\n"
+"\n"
+"Si tiene alguna duda con respecto a este correo, por favor póngase en contacto con {ADMINNAME} en {ADMINEMAIL}.\n"
+"\n"
+"Suyo afectísimo\n"
+"\n"
+"{ADMINNAME}"
+
+msgid "Survey Submitted"
+msgstr "Encuesta enviada"
+
+msgid "A new response was entered for your survey"
+msgstr "Se añadió una nueva respuesta a su encuesta"
+
+msgid "Click the following link to reload the survey:"
+msgstr "Pulse en el siguiente enlace para recuperar el cuestionario:"
+
+msgid "Click the following link to see the individual response:"
+msgstr "Pulse en el siguiente enlace para ver la respuesta individual:"
+
+msgid "Click the following link to edit the individual response:"
+msgstr "Pulse en el siguiente enlace para editar la respuesta individual:"
+
+msgid "View statistics by clicking here:"
+msgstr "Vea las estadísticas pulsando aquí:"
+
+msgid "An unexpected error has occurred and your responses cannot be saved."
+msgstr "Ha ocurrido un error inesperado y sus respuestas no han podido ser guardadas."
+
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr "Sus respuestas no se han perdido, han sido enviadas por correo electrónico al administrador de la encuesta para su posterior incorporación a nuestra base de datos."
+
+msgid "An error occurred saving a response to survey id"
+msgstr "Ha sucedido un error al guardar una respuesta de la encuesta identificada con"
+
+msgid "DATA TO BE ENTERED"
+msgstr "DATOS QUE SERÁN GUARDADOS"
+
+msgid "SQL CODE THAT FAILED"
+msgstr "EL CODIGO SQL QUE HA FALLADO"
+
+msgid "ERROR MESSAGE"
+msgstr "MENSAJE DE ERROR"
+
+msgid "Try to submit again"
+msgstr "Intente enviarla otra vez"
+
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
+msgstr "Si se le ha proporcionado un token, por favor de tecléelo en la caja de abajo y pulse en continuar."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:57
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:1359
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:403
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:407
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:414
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:415
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:419
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:420
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:475
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1070
+msgid "Token"
+msgstr "Token"
+
+msgid "This survey does not yet have any questions and cannot be tested or completed."
+msgstr "Esta encuesta todavía no tiene preguntas y no puede ser probada ni completada."
+
+msgid "prev"
+msgstr "anterior"
+
+msgid "next"
+msgstr "sig."
+
+msgid "last"
+msgstr "último"
+
+msgid "Choose only one of the following"
+msgstr "Elija solamente una entrada de las siguientes"
+
+msgid "Check any that apply"
+msgstr "Seleccione las entradas que correspondan"
+
+msgid "Check at most"
+msgstr "Tilde al menos"
+
+msgid "answers"
+msgstr "respuestas"
+
+msgid "Choose your language"
+msgstr "Elija su Idioma"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/qanda.php:375
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/printablesurvey.php:250
+msgid "*"
+msgstr "*"
+
+msgid "This question must be answered correctly"
+msgstr "Esta pregunta debe ser contestada correctamente"
+
+msgid "This question is mandatory"
+msgstr "Esta pregunta es de respuesta obligatoria"
+
+msgid "Please complete all parts"
+msgstr "Por favor  complete todas las partes"
+
+msgid "Please rank all items"
+msgstr "Por favor clasifique todos los elementos"
+
+msgid "Please check at least one item"
+msgstr "Por favor seleccione al menos un elemento"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/qanda.php:462
+msgid "You cannot proceed until you enter some text for one or more questions."
+msgstr "No puede continuar hasta que no complete una o más preguntas."
+
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
+msgstr "Una o más preguntas obligatorias no se han contestado. No podrá proseguir hasta que no haya completado estas"
+
+msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
+msgstr "Una o más preguntas no fueron contestadas de forma correcta. Usted no puede proceder hasta que dichas respuestas sean válidas"
+
+msgid "Format: YYYY-MM-DD"
+msgstr "Formato: AAAA-MM-DD"
+
+msgid "(eg: 2003-12-25 for Christmas day)"
+msgstr "(p.ej.: 2003-12-25 para Navidad)"
+
+msgid "Please choose"
+msgstr "Escoja, por favor"
+
+msgid "Please choose one of the following"
+msgstr "Por favor elija una de los siguientes"
+
+msgid "Please enter your comment here"
+msgstr "Por favor  teclee su comentario aquí"
+
+msgid "Remove this item"
+msgstr "Eliminar este elemento"
+
+msgid "Click on an item in the list on the left, starting with your"
+msgstr "Pulse en un elemento de la lista de la izquierda, empezando por el"
+
+msgid "highest ranking item, moving through to your lowest ranking item."
+msgstr "elemento con más alta clasificación hasta llegar al elemento con más baja clasificación."
+
+msgid "Your Choices"
+msgstr "Sus Opciones"
+
+msgid "Your Ranking"
+msgstr "Su Clasificación"
+
+msgid "Click on the scissors next to each item on the right"
+msgstr "Pulse en las tijeras que hay a la derecha de cada elemento"
+
+msgid "to remove the last entry in your ranked list"
+msgstr "para eliminar la última entrada de su lista ordenada"
+
+msgid "Please choose at most"
+msgstr "Escoja al menos"
+
+msgid "answer(s) for question"
+msgstr "respuesta(s) para la pregunta"
+
+msgid "Make a comment on your choice here:"
+msgstr "Comente su opción aquí:"
+
+msgid "Only numbers may be entered in this field"
+msgstr "Sólo se aceptan números en este campo"
+
+msgid "The email you used is not valid. Please try again."
+msgstr "La dirección de correo electrónico no es válida. Por favor, vuelva a intentarlo."
+
+msgid "The email you used has already been registered."
+msgstr "La dirección de correo electrónico que usó ya fue registrada previamente."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:162
+msgid "Thank you for registering to participate in this survey."
+msgstr "Gracias por inscribirse para participar en este cuestionario."
+
+msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
+msgstr "Se le ha enviado un mensaje de correo electrónico con los datos de acceso a este cuestionario."
+
+msgid "Survey Administrator"
+msgstr "Administrador del cuestionario:"
+
+msgid "Please try again."
+msgstr "Por favor, vuelva a intentarlo."
+
+msgid "You must supply a name for this saved session."
+msgstr "Usted debe proporcionar un nombre para esta sesión guardada."
+
+msgid "You must supply a password for this saved session."
+msgstr "Usted debe proporcionar una contraseña para esta sesión guardada."
+
+msgid "Your passwords do not match."
+msgstr "Sus contraseñas no concuerdan."
+
+msgid "This name has already been used for this survey. You must use a unique save name."
+msgstr "Este nombre ya ha sido utilizado para esta encuesta. Debe utilizar un nombre único para guardar."
+
+msgid "Saved Survey Details"
+msgstr "Detalles de la encuesta guardada"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/save.php:287
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/dataentry.php:220
+msgid "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
+msgstr "Usted, o alguien utilizando su dirección de correo, ha guardado un cuestionario en proceso. Los siguentes detalles pueden ser utilizados para reresar al cuestionario y continuar desde donde lo dejó."
+
+msgid "Reload your survey by clicking on the following URL:"
+msgstr "Recargue su encuesta haciendo click en la siguiente URL:"
+
+msgid "Cannot submit results - there are none to submit."
+msgstr "No se pueden enviar los resultados - no hay resultados que enviar."
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/save.php:449
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
+msgstr "Este error puede ocurrir si ya ha enviado sus respuestas y presionó el botón de \"Recargar\" en su navegador. En este caso, sus respuestas ya habían sido guardadas."
+
+msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "Si recibe este error en el medio del proceso de respuesat de un custionario, debería utilizar el botón '<- Regresar' de su navegador y recién refrescar/recargar la página anterior. Si bien perderá las respuestas de la última pagina se mantendrán las respuestas anteriores. Esta situación puede deberse a que el servidor esté sobrecargado. Nuestras disculpas por el invonveniente."
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/access_denied.php:43
+msgid "Access denied!"
+msgstr "Acceso denegado"
+
+msgid "You are not allowed to create new surveys!"
+msgstr "¡No puede crear un nuevo cuestionario!"
+
+msgid "You are not allowed to delete this survey!"
+msgstr "¡No puede eliminar el cuestionario!"
+
+msgid "You are not allowed to add new questions for this survey!"
+msgstr "¡No puede agregar una nueva pregunta al cuestionario!"
+
+msgid "You are not allowed to activate this survey!"
+msgstr "¡No puede activar el cuestionario!"
+
+msgid "You are not allowed to deactivate this survey!"
+msgstr "¡No puede descativar el cuestionario!"
+
+msgid "You are not allowed to add a group to this survey!"
+msgstr "¡No puede agregar un nuevo grupo al cuestionario!"
+
+msgid "You are not allowed to order groups in this survey!"
+msgstr "¡No puede ordenar los grupos del cuestionario!"
+
+msgid "You are not allowed to edit this survey!"
+msgstr "¡No puede editar el cuestionario!"
+
+msgid "You are not allowed to edit groups in this survey!"
+msgstr "¡No puede editar los grupos del cuestionario!"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/access_denied.php:103
+msgid "You are not allowed to browse response!"
+msgstr "No está habilitado para ver las respuestas."
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/access_denied.php:108
+msgid "You are not allowed to set assessment rules!"
+msgstr "No está habilitado para indicar reglas."
+
+msgid "You are not allowed to delete this group!"
+msgstr "¡No puede eliminar este grupo!"
+
+msgid "You are not allowed to import a survey!"
+msgstr "¡No puede importar un cuestionario!"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/access_denied.php:137
+msgid "You are not allowed to perform this operation!"
+msgstr "No está habilitado para realizar esta operación."
 
 msgid "This question is a multiple answer type question but has no answers."
 msgstr "Esta pregunta  es de múltiples respuestas pero aún no tiene respuestas asignadas a ella"
@@ -901,9 +904,6 @@ msgstr "Se han encontrado los siguientes problemas:"
 msgid "The survey cannot be activated until these problems have been resolved."
 msgstr "La encuesta no podrá ser activada hasta que se hayan resuelto todos los problemas"
 
-msgid "Main Admin Screen"
-msgstr "Pantalla de Administración Principal"
-
 msgid "Warning"
 msgstr "Advertencia"
 
@@ -913,26 +913,51 @@ msgstr "LEA CUIDADOSAMENTE ESTO ANTES DE CONTINUAR"
 msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
 msgstr "Debe activar una encuesta sólo cuando esté absolutamente seguro(a) de que la configuración de la encuesta es la correcta y que no habrá más cambios."
 
-msgid "Once a survey is activated you can no longer:<ul><li>Add or delete groups</li><li>Add or remove answers to Multiple Answer questions</li><li>Add or delete questions</li></ul>"
-msgstr "Una vez que la encuesta es activada no podrá:<ul><li>Agregar o borrar Grupos</li><li>Agregar o borrar respuestas a preguntas de Respuesta Múltiple</li><li>Agregar o borrar preguntas</li></ul>"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/activate.php:241
+msgid "Once a survey is activated you can no longer:"
+msgstr "una vez activado el cuestionario no se le permitirá:"
 
-msgid "However you can still:<ul><li>Edit (change) your questions code, text or type</li><li>Edit (change) your group names</li><li>Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)</li><li>Change survey name or description</li></ul>"
-msgstr "Aunque aún podrá:<ul><li>Modificar los códigos, texto o tipo de las preguntas</li><li>Modificar los nombres de los grupos</li><li>Agregar, borrar o modificar respuestas de preguntas predefinidas (con la excepción de las preguntas de del tipo de múltiples respuestas)</li><li>Cambiar el nombre o la descripción de la encuesta</li></ul>"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/activate.php:241
+msgid "Add or delete groups"
+msgstr "Agregar o eliminar grupos"
+
+msgid "Add or remove answers to Multiple Answer questions"
+msgstr "Debe agregar o eliminar respuestas a esta pregunta de respeusta múltiple"
+
+msgid "Add or delete questions"
+msgstr "Agregar o eliminar pregunta"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/activate.php:242
+msgid "However you can still:"
+msgstr "Sin embargo, aún podrá:"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/activate.php:242
+msgid "Edit (change) your questions code, text or type"
+msgstr "Editar (cambiar) los códigos de sus preguntas, texto o tipo."
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/activate.php:242
+msgid "Edit (change) your group names"
+msgstr "Editar (cambiar) el nombre de los grupos"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/activate.php:242
+msgid "Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)"
+msgstr "Agregar, editar o eliminar respuestas predefinidas (excepto las Multi- respuestas)"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/activate.php:242
+msgid "Change survey name or description"
+msgstr "Cambiar el nombre o descripción del cuestionario"
 
 msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
 msgstr "Si desea agregar o borra grupos o preguntas una vez que la encuesta ya haya sido contestada por lo menos una vez, deberá desactivar la encuesta, lo cual moverá toda la información ya existente a otra tabla para ser archivada."
 
-msgid "Cancel"
-msgstr "Cancelar"
-
-msgid "Activate"
-msgstr "Activar"
-
 msgid "Survey could not be actived."
 msgstr "La encuesta no pudo ser activada."
 
-msgid "Survey has been activated. Results table has been succesfully created."
-msgstr "La encuesta ha sido activada. La tabla de resultados ha sido creada con éxito."
+msgid "Main Admin Screen"
+msgstr "Pantalla de Administración Principal"
+
+msgid "Survey has been activated. Results table has been successfully created."
+msgstr "El cuestionario ha sido activado. La tabla de resultados ha sido creada con éxito."
 
 msgid "This is not an anonymous survey. A token table must also be created."
 msgstr "Esta no es una encuesta anónima. Se debe crear una tabla de tokens."
@@ -946,35 +971,14 @@ msgstr "Esta encuesta admite registro público. Es necesario crear la tabla de t
 msgid "This survey is now active, and responses can be recorded."
 msgstr "La encuesta ha sido activada, y ahora las respuestas pueden ser almacenadas."
 
-msgid "The defined surveyor database does not exist"
-msgstr "La base de datos del sistema no existe"
-
-msgid "Either your selected database has not yet been created or there is a problem accessing it."
-msgstr "O la base de datos seleccionada no ha sido creada o hay problemas para acceder a ella."
-
-msgid "PHPSurveyor can attempt to create this database for you."
-msgstr "PHPSurveyor puede intentar crear la base de datos por usted."
-
-msgid "Your selected database name is:"
-msgstr "El nombre de la base de datos seleccionada es:"
-
-msgid "Create Database"
-msgstr "Crear Base de Datos"
+msgid "PHPSurveyor Online Manual"
+msgstr "Manual de PHPSurveyor"
 
 msgid "Help"
 msgstr "Ayuda"
 
-msgid "Add"
-msgstr "Agregar"
-
-msgid "Update"
-msgstr "Actualizar"
-
 msgid "Assessments"
 msgstr "Evaluaciones"
-
-msgid "Return to Survey Administration"
-msgstr "Regresar a la Administración de Encuestas"
 
 msgid "No SID Provided"
 msgstr "No SID Provisto"
@@ -1011,6 +1015,9 @@ msgstr "URL"
 msgid "Total"
 msgstr "Total"
 
+msgid "Add"
+msgstr "Agregar"
+
 msgid "Edit"
 msgstr "Modificar"
 
@@ -1029,6 +1036,12 @@ msgstr "¿Está seguro de que quiere borrar esta entrada?"
 msgid "Browse Responses"
 msgstr "Examinar las respuestas"
 
+msgid "The defined surveyor database does not exist"
+msgstr "La base de datos del sistema no existe"
+
+msgid "Either your selected database has not yet been created or there is a problem accessing it."
+msgstr "O la base de datos seleccionada no ha sido creada o hay problemas para acceder a ella."
+
 msgid "You have not selected a survey to browse."
 msgstr "No ha elegido qué encuesta va a examinar."
 
@@ -1037,6 +1050,20 @@ msgstr "Esta encuesta no ha sido activada. No hay resultados que examinar."
 
 msgid "There is no matching survey."
 msgstr "No se encontró ninguna encuesta."
+
+msgid "Date Submitted"
+msgstr "Cita enviada"
+
+msgid "Date Stamp"
+msgstr "Guardar la fecha"
+
+msgid "IP Address"
+msgstr "Dirección IP"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1773
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1995
+msgid "Referring URL"
+msgstr "URL de referencia"
 
 msgid "View Response"
 msgstr "Ver Respuesta"
@@ -1056,11 +1083,21 @@ msgstr "Mostrar anterior..."
 msgid "Show next..."
 msgstr "Mostrar siguiente..."
 
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/browse.php:320
+msgid "Showing Filtered Results"
+msgstr "Mostrar los resultados filtrados"
+
+msgid "Close"
+msgstr "Cerrar"
+
 msgid "Data View Control"
 msgstr "Vista de Control de Datos"
 
 msgid "Show start.."
 msgstr "Mostrar inicio.."
+
+msgid "Show previous..."
+msgstr "Mostrar anterior"
 
 msgid "Records Displayed:"
 msgstr "Registros Desplegados:"
@@ -1071,25 +1108,11 @@ msgstr "Empezando desde:"
 msgid "Show"
 msgstr "Mostrar"
 
-msgid "Checking to ensure all tables exist"
-msgstr "Verificando que todas las tablas existan"
+msgid "View This Record"
+msgstr "Ver Este Registro"
 
-msgid "Checking"
-msgstr "Verificando"
-
-msgid "Table Created"
-msgstr "Tabla Creada"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/checkfields.php:223
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/checkfields.php:289
-msgid "OK"
-msgstr "De acuerdo"
-
-msgid "Checking to ensure all fields exist"
-msgstr "Verificando que todos los campos existan"
-
-msgid "Field Created"
-msgstr "Campo Creado"
+msgid "responses for this survey"
+msgstr "respuestas a este cuestionario"
 
 msgid "Condition Designer"
 msgstr "Diseñador de Condiciones"
@@ -1103,6 +1126,10 @@ msgstr "No puede ejecutar este guión directamente."
 msgid "You have not selected a Question."
 msgstr "No ha seleccionado una pregunta."
 
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/conditions.php:88
+msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
+msgstr "¡No puede agregarse su condición! Esto no incluye la pregunta y/o respuesta sobre las cuales la condición está basada. Por favor, asegúrese de haber seleccionado una pregunta y una respuesta."
+
 msgid "Did not copy questions"
 msgstr "No se copiaron las preguntas"
 
@@ -1114,6 +1141,9 @@ msgstr "No se ha seleccionado una pregunta como destino para copiar"
 
 msgid "Only show question {QID} IF"
 msgstr "Sólo mostrar la respuesta {QID} SI"
+
+msgid "and"
+msgstr "y"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/conditions.php:524
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:1507
@@ -1147,11 +1177,51 @@ msgstr "Agregar Condición"
 msgid "Answer"
 msgstr "Respuesta"
 
+msgid "Select Condition"
+msgstr "Seleccionar condición"
+
+msgid "Less"
+msgstr "Menor"
+
+msgid "Less or Equal"
+msgstr "Menor o Igual"
+
+msgid "Equal"
+msgstr "Igual"
+
+msgid "Not Equal"
+msgstr "Diferente"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/conditions.php:709
+msgid "Greater or Equal"
+msgstr "Mayor o igual"
+
+msgid "Greater"
+msgstr "Mayor"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/conditions.php:711
+msgid "Regular Expresion"
+msgstr "Expresión regular"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/conditions.php:711
+msgid "Constant Value or Regular Expresion"
+msgstr "Constante o Expresión Regular"
+
 msgid "Clear"
 msgstr "Borrar"
 
 msgid "Close Window"
 msgstr "Cerrar Ventana"
+
+msgid "Create Database"
+msgstr "Crear Base de Datos"
+
+msgid "Populate Database"
+msgstr "Rellenar Base de Datos"
+
+#, php-format
+msgid "Database `%s` has been successfully populated."
+msgstr "La Base de Datos `%s` ha sido creada."
 
 msgid "Database Information not provided. This script must be run from admin.php only."
 msgstr "La información para acceder a la base de datos no se ha dado. Este guión debe ser ejecutado desde el admin.php solamente."
@@ -1162,14 +1232,18 @@ msgstr "La Base de Datos ha sido creada."
 msgid "Please click below to populate the database"
 msgstr "Haga clic para rellenar la base de datos"
 
-msgid "Populate Database"
-msgstr "Rellenar Base de Datos"
-
 msgid "Could not create database"
 msgstr "No se pudo crear la base de datos"
 
-msgid "Group could not be added. It is missing the mandatory group name"
-msgstr "No se pudo agregar el grupo. Falta el nombre del grupo."
+msgid ""
+"Group could not be added.\\n"
+"\\n"
+"It is missing the group name for the following languages"
+msgstr "No se pudo agregar el grupo. Falta el nombre del grupo para los idiomas:"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:143
+msgid "Error: The database reported the following error:"
+msgstr "Error: La base de datos informó el siguiente error:"
 
 msgid "Group could not be updated"
 msgstr "No se pudo actualizar el grupo."
@@ -1192,41 +1266,41 @@ msgstr "No se pudo actualizar la pregunta"
 msgid "Answers can't be deleted"
 msgstr "No se pueden borrar las respuestas"
 
+msgid "Question could not be added. You must insert a code in the mandatory field"
+msgstr "No se pudo agregar la pregunta. Debe incluir un código en el campo obligatorio"
+
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "No se pudo borrar la pregunta. Hay condiciones en otras preguntas que dependen de esta pregunta. No podrá borrar esta pregunta hasta que se quiten estas condiciones."
 
 msgid "Question could not be deleted"
 msgstr "No se pudo borrar la pregunta."
 
-msgid "Fix Sort"
-msgstr "Corregir Orden"
+msgid "Add new Answer"
+msgstr "Agregar una nueva respuesta"
 
-msgid "Sort Alpha"
-msgstr "Ordenar Alfabéticamente"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:580
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:588
+msgid "Failed to insert answer"
+msgstr "No se pudo agregar la respuesta"
 
-msgid "Answer could not be added. You must include both a Code and an Answer"
-msgstr "No se pudo agregar la respuesta. Debe incluir el Código y una Respuesta."
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:592
+msgid "Invalid answer code supplied"
+msgstr "Se indicó un código de respuesta no válido"
 
-msgid "Answer could not be added. There is already an answer with this code"
-msgstr "No se pudo agregar la respuesta. Ya existe una respuesta con este código."
+msgid "Save All"
+msgstr "Guardar todo"
 
-msgid "Save"
-msgstr "Guardar"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:644
+msgid "Failed to update answers"
+msgstr "Falló la actualización de respuestas"
 
-msgid "Answer could not be updated. You must include both a Code and an Answer"
-msgstr "No se pudo actualizar la respuesta. Debe incluir el Código y una Respuesta."
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:659
+msgid "Answers with a code of 0 (zero) are not allowed, and will not be saved"
+msgstr "Las respuestas con código 0 (cero) no están permitidas y no serán guardadas"
 
-msgid "Answer could not be updated. There is already an answer with this code"
-msgstr "No se pudo actualizar la respuesta. Ya existe una respuesta con este código."
-
-msgid "Answer could not be updated. You have changed the answer code, but there are conditions to other questions which are dependant upon the old answer code to this question. You must delete these conditions before you can change the code to this answer."
-msgstr "No se pudo agregar la respuesta. Ha cambiado su código, pero hay condiciones en otras preguntas que dependen del código anterior. Debe borrar las condiciones antes de poder cambiar el código a esta respuesta."
-
-msgid "Del"
-msgstr "Borrar"
-
-msgid "Answer could not be deleted. There are conditions for other questions that rely on this answer. You cannot delete this answer until those conditions are removed"
-msgstr "No se pudo borrar la respuesta. Hay condiciones en otras preguntas que dependen de esta respuesta. No puede borrar esta respuesta hasta que se quiten estas condiciones."
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:660
+msgid "Duplicate codes found, these entries won't be updated"
+msgstr "Se halló una duplicidad en los códigos, estas entradas no serán actualizadas."
 
 msgid "Up"
 msgstr "Arriba"
@@ -1234,20 +1308,45 @@ msgstr "Arriba"
 msgid "Dn"
 msgstr "Abajo"
 
+msgid "Del"
+msgstr "Borrar"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:692
+msgid "Failed to delete answer"
+msgstr "no se pudo eliminar la respuesta"
+
+msgid "Default"
+msgstr "Por defecto"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:707
+msgid "Failed to make answer not default"
+msgstr "No se pudo quitar la respuesta por omisión"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:721
+msgid "Failed to make answer default"
+msgstr "No se pudo establecer la respuesta por omisión"
+
+msgid "Survey could not be updated"
+msgstr "No se pudo actualizar la encuesta."
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:974
+msgid "ERROR deleting Survey id"
+msgstr "ERROR eliminado la identificación del cuestionario"
+
 msgid "Survey could not be created because it did not have a short title"
 msgstr "No se pudo crear la encuesta porque no tenía el título corto."
 
 msgid "Survey could not be created"
 msgstr "No se pudo crear la encuesta."
 
-msgid "Survey could not be updated"
-msgstr "No se pudo actualizar la encuesta."
-
 msgid "Data Entry"
 msgstr "Entrada de Datos"
 
 msgid "You have not selected a survey for data-entry."
 msgstr "No ha seleccionado una encuesta para la cual realizar la entrada de datos."
+
+msgid "Try again"
+msgstr "Intente otra vez"
 
 msgid "Identifier:"
 msgstr "Identificador:"
@@ -1261,6 +1360,19 @@ msgstr "Confirmar Contraseña:"
 msgid "Email:"
 msgstr "Correo Electrónico:"
 
+msgid "Your survey responses have been saved succesfully"
+msgstr "Sus respuestas a esta encuesta fueron guardadas con éxito"
+
+msgid "An email has been sent with details about your saved survey"
+msgstr "Un mensaje de correo electrónico fue enviado con los detalles de su cuestionario guardado."
+
+msgid "An error occurred and your survey responses were not saved."
+msgstr "Se ha producido un error, y sus respuestas no fueron guardadas."
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/dataentry.php:249
+msgid "This survey is not anonymous, you must supply a valid token"
+msgstr "Este cuestionario no es anónimo, debe ingresar un código de llamada válido"
+
 msgid "Success"
 msgstr "éxito"
 
@@ -1269,9 +1381,6 @@ msgstr "A la entrada se le asignó el siguiente id: "
 
 msgid "Add Another Record"
 msgstr "Agregar Otro Registro"
-
-msgid "View This Record"
-msgstr "Ver Este Registro"
 
 msgid "Browse Saved Responses"
 msgstr "Examinar las respuestas guardadas"
@@ -1308,14 +1417,14 @@ msgstr "Y"
 msgid "to question {QUESTION}, you answered {ANSWER}"
 msgstr "a la pregunta {QUESTION}, contestó {ANSWER}"
 
+msgid "No Answer"
+msgstr "Sin responder"
+
 msgid "Only answer this if the following conditions are met:"
 msgstr "Contestar a esta pregunta sólo bajo las siguientes condiciones:"
 
 msgid "Help about this question"
 msgstr "Ayuda sobre esta pregunta"
-
-msgid "Comment"
-msgstr "Comentario"
 
 msgid "This survey is not yet active. Your response cannot be saved"
 msgstr "Esta encuesta no ha sido activada. Sus respuestas no serán almacenadas."
@@ -1323,50 +1432,14 @@ msgstr "Esta encuesta no ha sido activada. Sus respuestas no serán almacenadas.
 msgid "The survey you selected does not exist"
 msgstr "La encuesta que seleccionó no existe"
 
-msgid "Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. </font>"
-msgstr "Verificación de Consistencia de Datos<br /><font size='1'>Si aparecen errores, puede que usted deba ejecutar este guión repetidas veces. </font>"
-
-msgid "The following conditions should be deleted"
-msgstr "Las siguientes condiciones deberían ser borradas"
-
-msgid "All conditions meet consistency standards"
-msgstr "Todas las condiciones son consistentes"
-
-msgid "The following question attributes should be deleted"
-msgstr "Los siguientes atributos de preguntas deberían ser borrados"
-
-msgid "All question_attributes meet consistency standards"
-msgstr "Todos los atributos de preguntas son consistentes"
-
-msgid "The following assessments should be deleted"
-msgstr "Las siguientes evaluaciones deberían ser borradas"
-
-msgid "All assessments meet consistency standards"
-msgstr "Todas las evaluaciones son consistentes"
-
-msgid "The following answers should be deleted"
-msgstr "Las siguientes respuestas deberían ser borradas"
-
-msgid "All answers meet consistency standards"
-msgstr "Todas las respuestas son consistentes"
-
-msgid "The following questions should be deleted"
-msgstr "Las siguientes preguntas deberían ser borradas"
-
-msgid "All questions meet consistency standards"
-msgstr "Todas las preguntas son consistentes"
-
-msgid "The following groups should be deleted"
-msgstr "Los siguientes grupos deberían ser borrados"
-
-msgid "All groups meet consistency standards"
-msgstr "Todos los grupos son consistentes"
-
-msgid "No database action required"
-msgstr "No se requiere acción de la base de datos"
+msgid "Answer could not be added. There is already an answer with this code"
+msgstr "No se pudo agregar la respuesta. Ya existe una respuesta con este código."
 
 msgid "You have not selected a survey to delete"
 msgstr "No seleccionó qué encuesta borrar."
+
+msgid "Answer could not be updated. There is already an answer with this code"
+msgstr "No se pudo actualizar la respuesta. Ya existe una respuesta con este código."
 
 msgid "Deactivate Survey"
 msgstr "Desactivar Encuesta"
@@ -1377,8 +1450,8 @@ msgstr "En una encuesta activa, una tabla es creada para el almacenamiento de la
 msgid "When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using PHPSurveyor any more."
 msgstr "Cuando desactiva una encuesta TODOS los datos que fueron introducidos en la tabla original serán movidos a otra tabla, y cuando se vuelva a activar nuevamente la encuesta, la tabla estará vacía. Ya no tendrá acceso a estos datos por medio de PHPSurveyor."
 
-msgid "De-activated survey data can only be accessed by system administrators using a MySQL data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
-msgstr "Los datos de una encuesta que ha sido desactivada sólo pueden ser accesados por un usuario con acceso a la base de datos. Si su encuesta utiliza tokens, esta tabla también será renombrada y sólo será accesible a los administradores del sistema."
+msgid "De-activated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
+msgstr "Los datos de un cuestionario que ha sido desactivado sólo pueden ser vistos por un usuario con acceso a la base de datos. Si su cuestionario utiliza llamadas, esta tabla también será renombrada y sólo será accesible a los administradores del sistema."
 
 msgid "Your responses table will be renamed to:"
 msgstr "La tabla de contestaciones será renombrada a:"
@@ -1386,8 +1459,11 @@ msgstr "La tabla de contestaciones será renombrada a:"
 msgid "You should export your responses before de-activating. Click \"Cancel\" to return to the main admin screen without de-activating this survey."
 msgstr "Sugerimos que exporte las respuestas antes de desactivar la encuesta. Pulse en «Cancelar» para regresar a la pantalla de administración sin desactivar la encuesta."
 
-msgid "De-Activate"
-msgstr "Desactivar"
+msgid "De-Activate Survey"
+msgstr "Desactivar cuestionario"
+
+msgid "Survey Has Been De-Activated"
+msgstr "El cuestionario ha sido desactivado"
 
 msgid "The responses table has been renamed to: "
 msgstr "La tabla de respuestas ha sido renombrada a: "
@@ -1419,6 +1495,9 @@ msgstr "Esta encuesta está activa y existe una tabla de contestaciones. Si la b
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
 msgstr "Esta encuesta está activa y existe una tabla de tokens. Si la borra, estos tokens serán borrados. Recomendamos que los exporte antes de borrar la encuesta."
 
+msgid "Cancel"
+msgstr "Cancelar"
+
 msgid "This survey has been deleted."
 msgstr "Se ha borrado la encuesta."
 
@@ -1440,6 +1519,9 @@ msgstr "Exportar Encuesta"
 msgid "No SID has been provided. Cannot dump survey"
 msgstr "No se indicó un SID. No se pudo exportar la encuesta"
 
+msgid "Export Results"
+msgstr "Exportar resultados"
+
 msgid "Export Responses"
 msgstr "Exportar Respuestas"
 
@@ -1448,6 +1530,9 @@ msgstr "Filtrado del guión de estadísticas"
 
 msgid "Single Response"
 msgstr "Respuesta única"
+
+msgid "Columns"
+msgstr "Columnas"
 
 msgid "Questions"
 msgstr "Preguntas"
@@ -1490,8 +1575,8 @@ msgstr "Exportar los Datos"
 msgid "Column Control"
 msgstr "Control de Columnas"
 
-msgid "Choose columns"
-msgstr "Elegir columnas"
+msgid "Choose Columns"
+msgstr "Elija las columnas"
 
 msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
 msgstr "Su encuesta contiene más de 255 columnas de respuestas. Las aplicaciones de Hoja de cálculos como Excel están limitadas a una carga de no más de 255. Seleccione las columnas que desea exportar en la lista a continuación."
@@ -1516,6 +1601,73 @@ msgstr "Atributo_1"
 
 msgid "Attribute 2"
 msgstr "Atributo_2"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/exportresults.php:730
+msgid "NEW RECORD"
+msgstr "NUEVO REGISTRO"
+
+msgid "Time Submitted"
+msgstr "Teimpo enviado"
+
+msgid "N/A"
+msgstr "No disponible"
+
+msgid "Survey"
+msgstr "Encuesta"
+
+msgid "Date Created"
+msgstr "Datos Creados"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:52
+msgid "Visibility"
+msgstr "Visibilidad"
+
+msgid "Status"
+msgstr "Estado"
+
+msgid "Action"
+msgstr "Acción"
+
+msgid "Responses"
+msgstr "Respuestas"
+
+msgid "Private"
+msgstr "Privado"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:68
+msgid "Public"
+msgstr "Pública"
+
+msgid "Expired"
+msgstr "Expiro"
+
+msgid "Active"
+msgstr "Activo"
+
+msgid "Inactive"
+msgstr "Inactivo"
+
+msgid "This survey is active but expired."
+msgstr "Este cuestionario está actualmente activa pero ha expirado."
+
+msgid "This survey is active but expired"
+msgstr "Este cuestionario está actualmente activa pero ha expirado"
+
+msgid "De-activate this Survey"
+msgstr "Desactivar esta Encuesta"
+
+msgid "This survey is currently active"
+msgstr "Esta encuesta está actualmente activa"
+
+msgid "Activate this Survey"
+msgstr "Activar esta Encuesta"
+
+msgid "This survey is not currently active"
+msgstr "Esta encuesta actualmente NO está activa"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:158
+msgid "No Surveys available - please create one."
+msgstr "no existen cuestionarios - Por favor cree uno."
 
 msgid "PHPSurveyor System Summary"
 msgstr "Resumen de PHPSurveyor"
@@ -1544,32 +1696,23 @@ msgstr "Tablas de Tokens Activadas"
 msgid "De-activated Token Tables"
 msgstr "Tablas de Tokens Desactivadas"
 
-msgid "Check PHPSurveyor Data Integrity"
-msgstr "Verificar Integridad de Datos de PHPSurveyor"
-
-msgid "Survey"
-msgstr "Encuesta"
-
-msgid "This survey is not currently active"
-msgstr "Esta encuesta actualmente NO está activa"
-
-msgid "Activate this Survey"
-msgstr "Activar esta Encuesta"
-
-msgid "This survey is currently active"
-msgstr "Esta encuesta está actualmente activa"
-
-msgid "De-activate this Survey"
-msgstr "Desactivar esta Encuesta"
-
 msgid "Cannot Activate this Survey"
 msgstr "No se puede activar esta Encuesta"
 
-msgid "Do Survey"
-msgstr "Contestar la Encuesta"
+msgid "Survey Security Settings"
+msgstr "Modificar Opciones de Seguridad del cuestinario"
 
-msgid "Dataentry Screen for Survey"
-msgstr "Pantalla de Entrada de Datos para la Encuesta"
+msgid "Test This Survey"
+msgstr "Probar el cuestionario"
+
+msgid "Execute This Survey"
+msgstr "Ejecutar el cuestionario"
+
+msgid "Please select a language:"
+msgstr "Por favor, seleccione un idioma:"
+
+msgid "This survey is not active, data entry is not allowed"
+msgstr "El cuestionario no está activo y no se permite el ingreso de datos"
 
 msgid "Printable Version of Survey"
 msgstr "Versión Imprimible de la Encuesta"
@@ -1580,17 +1723,20 @@ msgstr "Modificar Encuesta Seleccionada"
 msgid "Delete Current Survey"
 msgstr "Borrar Encuesta Seleccionada"
 
-msgid "Export this Survey"
-msgstr "Exportar esta Encuesta"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:568
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:569
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2255
+msgid "Change Group Order"
+msgstr "Cambiar el orden de los grupos"
+
+msgid "Export Current Survey"
+msgstr "Exportar el cuestionario actual"
 
 msgid "Set Assessment Rules"
 msgstr "Fijar reglas de evaluación"
 
-msgid "Browse Responses for this Survey"
-msgstr "Examinar las Respuestas a esta encuesta"
-
-msgid "View Saved but not submitted Responses"
-msgstr "Ver las respuestas guardadas pero no enviadas"
+msgid "Browse Responses For This Survey"
+msgstr "Examinar las Respuestas de este cuestionario"
 
 msgid "Activate/Edit Tokens for this Survey"
 msgstr "Activar/Modificar los tokens de esta encuesta"
@@ -1610,11 +1756,8 @@ msgstr "Agregar Nuevo Grupo a la Encuesta"
 msgid "Groups"
 msgstr "Grupos"
 
-msgid "Title:"
-msgstr "Título:"
-
-msgid "This survey is anonymous."
-msgstr "Esta encuesta es anónima."
+msgid "Title"
+msgstr "Título"
 
 msgid "This survey is NOT anonymous."
 msgstr "Esta encuesta NO es anónima."
@@ -1634,6 +1777,11 @@ msgstr "Las respuestas tendrán estampado de fecha"
 msgid "IP Addresses will be logged"
 msgstr "La Dirección IP será guardada en un fichero de registro"
 
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1773
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1995
+msgid "Referer-URL"
+msgstr "URL Referente"
+
 msgid "It uses cookies for access control."
 msgstr "Utiliza 'cookies' para el control de acceso."
 
@@ -1643,8 +1791,11 @@ msgstr "Si se utilizan tokens, el público puede darse de alta en esta encuesta"
 msgid "Participants can save partially finished surveys"
 msgstr "Los participantes pueden guardar encuestas parcialmente terminadas"
 
-msgid "Regenerate Question Numbers:"
-msgstr "Regenerar Número de las Preguntas:"
+msgid "Regenerate Question Codes:"
+msgstr "Regenerar los códigos de las preguntas:"
+
+msgid "Are you sure you want regenerate the question codes?"
+msgstr "¿Está seguro que desea guardar sus respuestas?"
 
 msgid "Straight"
 msgstr "Todo"
@@ -1673,20 +1824,20 @@ msgstr "Expiración:"
 msgid "Template:"
 msgstr "Plantilla:"
 
-msgid "Language:"
-msgstr "Idioma:"
+msgid "Base Language:"
+msgstr "Idioma por omisión:"
 
-msgid "Exit Link:"
-msgstr "Enlace:"
+msgid "Additional Languages"
+msgstr "Idiomas adicionales:"
 
-msgid "Status:"
-msgstr "Estado:"
+msgid "Exit Link"
+msgstr "Enlace de salida"
 
-msgid "Number of groups in survey:"
-msgstr "Número de grupos en la encuesta:"
+msgid "Number of groups in survey"
+msgstr "Número de grupos en el cuestionario"
 
-msgid "Number of questions in survey:"
-msgstr "Número de preguntas en la encuesta:"
+msgid "Number of questions in survey"
+msgstr "Número de pregunatas en el cuestionario"
 
 msgid "Survey is not currently active."
 msgstr "La encuesta NO está activa."
@@ -1694,8 +1845,8 @@ msgstr "La encuesta NO está activa."
 msgid "Survey is currently active."
 msgstr "La encuesta está activa."
 
-msgid "Survey table name is:"
-msgstr "El nombre de la tabla de la encuesta es:"
+msgid "Survey table name is"
+msgstr "El nombre de la tabla del cuestionario es:"
 
 msgid "Survey cannot be activated yet."
 msgstr "La encuesta no puede ser activada aún."
@@ -1709,14 +1860,23 @@ msgstr "Debe agregar preguntas"
 msgid "Edit Current Group"
 msgstr "Modificar Grupo Seleccionado"
 
-msgid "Delete Current Group"
-msgstr "Borrar Grupo Seleccionado"
-
 msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
 msgstr "Suprimir este grupo también suprimirá cualesquiera preguntas y respuestas que contenga. ¿Está usted seguro de que desea continuar?"
 
-msgid "Reorder the questions of this group"
-msgstr "Reordenar las preguntas de este grupo"
+msgid "Delete Current Group"
+msgstr "Borrar Grupo Seleccionado"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:879
+msgid "Impossible to delete this group because there is at least one question having a condition on its content"
+msgstr "No se puede eliminar el grupo porque al menos una de sus preguntas está asociada a una condición."
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:881
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1041
+msgid "Disabled"
+msgstr "Deshabilitado"
+
+msgid "Change Question Order"
+msgstr "Cambiar el orden de las preguntas"
 
 msgid "Export Current Group"
 msgstr "Exportar el grupo actual"
@@ -1733,14 +1893,21 @@ msgstr "Ocultar Detalles de este Grupo"
 msgid "Add New Question to Group"
 msgstr "Agregar Nueva Pregunta al Grupo"
 
+msgid "Questions with conditions to this group"
+msgstr "Preguntas con condiciones en este grupo"
+
 msgid "Edit Current Question"
 msgstr "Modificar Pregunta Seleccionada"
+
+msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
+msgstr "Suprimir esta pregunta también suprimirá cualquier respuesta que incluya. ¿Está usted seguro de que desea continuar?"
 
 msgid "Delete Current Question"
 msgstr "Borrar Pregunta Seleccionada"
 
-msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
-msgstr "Suprimir esta pregunta también suprimirá cualquier respuesta que incluya. ¿Está usted seguro de que desea continuar?"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1039
+msgid "Impossible to delete this question because  there is at least one question having a condition on it"
+msgstr "No se puede elmininar la pregunta porque al menos otra pregunta tiene una condición dependiente de ella"
 
 msgid "Export this Question"
 msgstr "Exportar esta Pregunta"
@@ -1750,6 +1917,9 @@ msgstr "Copiar Pregunta Seleccionada"
 
 msgid "Set Conditions for this Question"
 msgstr "Establecer Condiciones para esta Pregunta"
+
+msgid "Preview This Question"
+msgstr "Probar esta Pregunta"
 
 msgid "Edit/Add Answers for this Question"
 msgstr "Modificar/Agregar respuestas para esta pregunta"
@@ -1793,114 +1963,110 @@ msgstr "Debe seleccionar un conjunto de etiquetas para esta pregunta"
 msgid "Other:"
 msgstr "Otro:"
 
-msgid "Upload completed"
-msgstr "Envío completado"
+msgid "Other questions having conditions on this question:"
+msgstr "Otras preguntas que tienen condiciones dependientes:"
+
+msgid "Base Language"
+msgstr "Idioma por omisión:"
 
 msgid "Code"
 msgstr "Código"
 
-msgid "Default"
-msgstr "Por defecto"
+msgid "Order"
+msgstr "Orden"
 
-msgid "Action"
-msgstr "Acción"
+msgid "New Answer"
+msgstr "Nueva respuesta"
 
-msgid "Move"
-msgstr "Mover"
-
-msgid "User Control"
-msgstr "Control de Usuarios"
-
-msgid ""
-"You have not yet initialised security settings for your survey system and subsequently there are no restrictions on access.</p>\n"
-"If you click on the 'initialise security' button below, standard APACHE security settings will be added to the administration directory of this script. You will then need to use the default access username and password to access the administration and data entry scripts."
-msgstr ""
-"Aún no ha inicializado las opciones de seguridad del sistema de encuestas y consiguientemente no hay restricciones de acceso.</p>\n"
-"Si pulsa en el botón «Inicializar Seguridad» de abajo, se agregarán al directorio de administración de la aplicación las opciones estándar de seguridad de APACHE. Entonces deberá utilizar los valores preconfigurados de nombre de usuario y contraseña para acceder a la pantalla de administración y a los guiones de entrada de datos."
-
-msgid "Username"
-msgstr "Nombre de usuario"
-
-msgid "It is highly recommended that once your security system has been initialised you change this default password."
-msgstr "Se recomienda que una vez que haya inicializado el sistema de seguridad cambie la contraseña por defecto."
-
-msgid "Initialise Security"
-msgstr "Inicializar seguridad"
-
-msgid "User"
-msgstr "Usuario"
-
-msgid "Security"
-msgstr "Seguridad"
-
-msgid "No users exist in your table. We recommend you 'turn off' security. You can then 'turn it on' again."
-msgstr "No existen usuarios en su tabla. Se recomienda desactivar la seguridad para luego activarla nuevamente."
+msgid "You cannot add answers because they are being used by an active survey."
+msgstr "No puede agregar respuestas porque están siendo utilizadas en un cuestionario activo."
 
 msgid "Add User"
 msgstr "Agregar Usuario"
 
-msgid "Turn Off Security"
-msgstr "Desactivar Seguridad"
+msgid "User added."
+msgstr "Usuario agregado"
 
-msgid "Add Question"
-msgstr "Agregar Pregunta"
+msgid "Set Survey Rights"
+msgstr "Establecer permisos para el cuestionario"
 
-msgid "Required"
-msgstr "Obligatorio"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1440
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1446
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1500
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:164
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:168
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:224
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:974
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:980
+msgid "Failed to add User."
+msgstr "No se pudo agregar el Usuario."
 
-msgid "Label Set:"
-msgstr "Etiquetas:"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1440
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:974
+msgid "Username already exists."
+msgstr "El usuario ya existe."
 
-msgid "Mandatory:"
-msgstr "Obligatoria:"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1446
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1500
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:980
+msgid "No Username selected."
+msgstr "No se seleccionó ningun usuario."
 
-msgid "Question Attributes:"
-msgstr "Atributos de la pregunta:"
+msgid "Add User Group"
+msgstr "Agregar grupo de usuarios"
 
-msgid "Import Question"
-msgstr "Importar Pregunta"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1482
+msgid "User Group added."
+msgstr "Se agrego el Grupo."
 
-msgid "Select SQL File:"
-msgstr "Seleccionar Archivo SQL:"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1494
+msgid "Failed to add User Group."
+msgstr "No se pudo agregar el Grupo de Usuarios."
 
-msgid "Copy Question"
-msgstr "Copiar Pregunta"
+msgid "Deleting User"
+msgstr "Borrando el Usuario"
 
-msgid "Note: You MUST enter a new question code"
-msgstr "Nota: Debe introducir un código de pregunta nuevo"
+msgid "Username"
+msgstr "Nombre de usuario"
 
-msgid "Group:"
-msgstr "Grupo:"
+msgid "Could not delete user. User was not supplied."
+msgstr "No se puede borrar el usuario. Indique el nombre del usuario."
 
-msgid "Copy Answers?"
-msgstr "¿Copiar Respuestas?"
+msgid "Edit Survey Properties"
+msgstr "Editar las propiedades del cuestionario"
 
-msgid "Copy Attributes?"
-msgstr "¿Copiar los atributos?"
+msgid "Define Questions"
+msgstr "Defina las preguntas"
 
-msgid "Edit Question"
-msgstr "Editar Pregunta"
+msgid "Export"
+msgstr "Exportar"
 
-msgid "Update Question"
-msgstr "Actualizar Pregunta"
+msgid "Browse Response"
+msgstr "Revisar las respuestas"
 
-msgid "Save Order"
-msgstr "Guardar orden"
+msgid "Survey Security"
+msgstr "Parámetros de seguridad del cuestionario"
+
+msgid "User Group"
+msgstr "grupo de usuarios"
+
+msgid "User"
+msgstr "Usuario"
 
 msgid "Add Group"
 msgstr "Agregar Grupo"
 
-msgid "Optional"
-msgstr "Opcional"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1812
+msgid "Update survey rights successful."
+msgstr "Se actualizaron con éxito los permisos del cuestionario."
 
-msgid "Import Group"
-msgstr "Importar grupo"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1816
+msgid "Failed to update survey rights!"
+msgstr "No se pudieron actualizar los permisos del cuestionario."
 
-msgid "Edit Group for Survey ID"
-msgstr "Editar Grupo para la Encuesta con "
-
-msgid "Update Group"
-msgstr "Actualizar Grupo"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1843
+msgid "Edit Survey - Step 1 of 2"
+msgstr "Editar Cuestionario - Paso 1 de 2"
 
 msgid "Admin Email:"
 msgstr "Correo electrónico del administrador:"
@@ -1926,14 +2092,79 @@ msgstr "¿Confirmar Guardar?"
 msgid "Show [<< Prev] button"
 msgstr "Mostrar el botón [<< Anterior]"
 
-msgid "Notification:"
-msgstr "Notificación:"
+msgid "Admin Notification:"
+msgstr "Notificación del administrador:"
 
 msgid "Anonymous?"
 msgstr "¿Anónimo?"
 
+msgid "Cannot be changed"
+msgstr "No se puede modificar"
+
+msgid "Allow public registration?"
+msgstr "¿Permitir inscripción pública?"
+
+msgid "Token Attribute Names:"
+msgstr "Nombres de los atributos de los Tokens:"
+
+msgid "Date Stamp?"
+msgstr "¿Marcar la fecha?"
+
+msgid "Responses will not be date stamped."
+msgstr "Las respuestas no tendrán registro de fecha"
+
+msgid "Responses will be date stamped."
+msgstr "Las respuestas tendrán registro de fecha"
+
+msgid "Save IP Address?"
+msgstr "¿Guardar la dirección IP?"
+
+msgid "Responses will not have the IP address logged."
+msgstr "Las respuestas no tendrán registrada la dirección IP."
+
+msgid "Responses will have the IP address logged"
+msgstr "Las respuestas tendrán registrada la dirección IP."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1773
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1995
+msgid "Save Referring URL?"
+msgstr "¿Guardar la URL de referencia?"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2004
+msgid "Responses will not have their referring URL logged."
+msgstr "La respuestas no registrarán la URL referente."
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2005
+msgid "Responses will have their referring URL logged."
+msgstr "La respuestas registrarán la URL referente."
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2048
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:160
+msgid "Remove"
+msgstr "Quitar"
+
+msgid "Expires?"
+msgstr "¿Expira?"
+
+msgid "End URL:"
+msgstr "URL de salida:"
+
+msgid "Automatically load URL when survey complete?"
+msgstr "¿Cargar la URL automáticamente cuando se haya completado la encuesta?"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2083
+msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
+msgstr "Se perderán todas las preguntas, respuestas, etc para los idiomas eliminados. ¿Está seguro?"
+
+msgid "Save and Continue"
+msgstr "Guardar y continuar"
+
 msgid "This will replace the existing text. Continue?"
 msgstr "Esto sustituirá al texto actual. ¿Proceder?"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2133
+msgid "Edit Survey - Step 2 of 2"
+msgstr "Editar Cuestionario - Paso 2 de 2"
 
 msgid "Invitation Email Subject:"
 msgstr "Asunto del correo de invitación:"
@@ -2047,9 +2278,6 @@ msgstr "Confirmación de encuesta completada"
 msgid "Confirmation Email"
 msgstr "Mensaje de confirmación"
 
-msgid "Allow public registration?"
-msgstr "¿Permitir inscripción pública?"
-
 msgid "Public registration Email Subject:"
 msgstr "Asunto del correo de registro público:"
 
@@ -2074,34 +2302,36 @@ msgstr ""
 "\n"
 "Usted, o alguien utilizando su dirección de correo electrónico, se ha registrado para participar en una encuesta en línea titulada {SURVEYNAME}.\n"
 "\n"
-"Para completarla, pulse en la siguiente URL:\n\n{SURVEYURL}\n\n"
+"Para completarla, pulse en la siguiente URL:\n"
+"\n"
+"{SURVEYURL}\n"
+"\n"
 "Si tiene dudas con respecto a dicha encuesta, o si usted no se registró para participar y cree que este correo es un error, por favor, póngase en contacto con {ADMINNAME} en {ADMINEMAIL}."
-
-msgid "Token Attribute Names:"
-msgstr "Nombres de los atributos de los Tokens:"
-
-msgid "Date Stamp?"
-msgstr "¿Marcar la fecha?"
-
-msgid "IP Address"
-msgstr "Dirección IP"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1773
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1995
-msgid "Referring URL"
-msgstr "URL de referencia"
-
-msgid "End URL:"
-msgstr "URL de salida:"
 
 msgid "URL Description:"
 msgstr "Descripción de la URL:"
 
-msgid "Automatically load URL when survey complete?"
-msgstr "¿Cargar la URL automáticamente cuando se haya completado la encuesta?"
+msgid "Save"
+msgstr "Guardar"
 
-msgid "Update survey"
-msgstr "Actualizar la encuesta"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2264
+msgid "Current survey has questions with conditions outside their own group"
+msgstr "El presente cuestionario tiene preguntas con condiciones fuera de su propio grupo."
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2264
+msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "Se restringe el reordenamiento de los grupos para asegurar que las preguntas en las cuales se basan sus condiciones no se reordenen luego de sus dependientes."
+
+msgid "The following groups are concerned"
+msgstr "Los siguientes grupos están involucrados"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2269
+msgid "depends on group"
+msgstr "depende del grupo"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2269
+msgid "see the marked conditions on"
+msgstr "ver las condiciones marcadas en"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1855
 msgid "The uploaded file is bigger than the upload_max_filesize directive in php.ini"
@@ -2122,8 +2352,24 @@ msgstr "Error en la transferencia del fichero.Debe seleccionar un archivo CSV"
 msgid "Create Survey"
 msgstr "Crear Encuesta"
 
+msgid "(This field is mandatory.)"
+msgstr "(Esta pregunta es obligatoria)"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2510
+msgid "This setting cannot be changed later!"
+msgstr "¡Este dato no podrá ser cambiado luego!"
+
+msgid "Date Format"
+msgstr "Formato de la fecha"
+
+msgid "Please select a file to import!"
+msgstr "¡Por favor seleccione un archivo para importar!"
+
 msgid "Import Survey"
 msgstr "Importar Encuesta"
+
+msgid "Select CSV/SQL File:"
+msgstr "Seleccione un archivo CSV/SQL:"
 
 msgid "You need to upload the file"
 msgstr "Debe enviar el archivo"
@@ -2152,17 +2398,28 @@ msgstr "Visualización:"
 msgid "Select the field number you would like to use for your answers:"
 msgstr "Seleccione el número del campo que desea utilizar para sus respuestas:"
 
+msgid "Import Group"
+msgstr "Importar grupo"
+
 msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder."
 msgstr "Ha ocurrido un error al subir el archivo. Puede ser causado porque el directorio de administración tenga permisos incorrectos."
 
 msgid "File upload succeeded."
 msgstr "Se subió el archivo con éxito."
 
-msgid "Reading file.."
-msgstr "Leyendo el archivo.."
+msgid "Reading file..."
+msgstr "Leyendo archivo.."
 
 msgid "This file is not a PHPSurveyor group file. Import failed."
 msgstr "El archivo no contiene un formato PHPSurveyor válido."
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/importgroup.php:566
+msgid "Import partially successful."
+msgstr "Importación parcialmente exitosa."
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/importgroup.php:567
+msgid "The following languages in this group were not imported since the survey does not contain such a language: "
+msgstr "Los siguientes idiomas en este grupo no se importaron debido a que el cuestionario no los contiene:"
 
 msgid "Group Import Summary"
 msgstr "Resumen de la Importación del Grupo"
@@ -2176,11 +2433,17 @@ msgstr "Conjunto de Etiquetas"
 msgid "Labels"
 msgstr "Etiquetas"
 
-msgid "Import of Group is completed."
-msgstr "Se completó con éxito la importación del grupo."
+msgid "Question Attributes:"
+msgstr "Atributos de la pregunta:"
+
+msgid "Import of group is completed."
+msgstr "Se completó la importación del grupo."
 
 msgid "Import Label Set"
 msgstr "Importar Etiquetas"
+
+msgid "Reading file.."
+msgstr "Leyendo el archivo.."
 
 msgid "This file is not a PHPSurveyor question file. Import failed."
 msgstr "Este archivo no es un archivo de pregunta PHPSurveyor válido. Falló la importación."
@@ -2191,14 +2454,20 @@ msgstr "Regresar a la Administración de Etiquetas"
 msgid "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead."
 msgstr "Hubo un conjunto de etiquetas duplicado, por lo que este conjunto no fue importado. El duplicado será utilizado en su lugar."
 
-msgid "Question Import Summary"
-msgstr "Resumen de la Importación de la Pregunta"
+msgid "Label Set Import Summary"
+msgstr "Resultado de la importación de las etiquetas"
 
-msgid "Labelsets"
-msgstr "Conjuntos de etiquetas"
+msgid "Label Sets"
+msgstr "Juego de Etiquetas"
 
-msgid "Import of Survey is completed."
-msgstr "Se completó con éxito la importación de la encuesta."
+msgid "Languages"
+msgstr "Idiomas:"
+
+msgid "Import of Label Set is completed."
+msgstr "Se completó la iportación de las etiquetas."
+
+msgid "Quick Statistics"
+msgstr "Estadísticas Rápidas"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/importoldresponses.php:58
 msgid "Import responses from an old (deactivated) survey table into an active survey"
@@ -2207,14 +2476,31 @@ msgstr "Importar respuestas de la tabla de una encuesta vieja (deactivada) a una
 msgid "Target Survey ID"
 msgstr "ID de la encuesta destino"
 
+msgid "Source table"
+msgstr "Tabla origen"
+
 msgid "Import Responses"
 msgstr "Importar respuestas"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/importoldresponses.php:83
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:252
+msgid "Are you sure?"
+msgstr "¿Está seguro?"
+
+msgid "Import Question"
+msgstr "Importar Pregunta"
 
 msgid "No SID (Survey) has been provided. Cannot import question."
 msgstr "No se indicó un SID (Encuesta). No se pudo importar la pregunta."
 
 msgid "No GID (Group) has been provided. Cannot import question"
 msgstr "No se indicó un GID (Grupo). No se pudo importar la pregunta"
+
+msgid "Question Import Summary"
+msgstr "Resumen de la Importación de la Pregunta"
+
+msgid "Import of Survey is completed."
+msgstr "Se completó con éxito la importación de la encuesta."
 
 msgid "This file is not a PHPSurveyor survey file. Import failed."
 msgstr "El formato del archivo no es de PHPSurveyor. La importación falló."
@@ -2228,11 +2514,84 @@ msgstr "El archivo no contiene un formato PHPSurveyor válido."
 msgid "Survey Import Summary"
 msgstr "Resumen de la importación de la encuesta"
 
+#, fuzzy
+msgid "Question Attributes"
+msgstr "Atributos de la pregunta:"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/integritycheck.php:52
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/integritycheck.php:326
+msgid "Data Consistency Check"
+msgstr "Verificación de Consistencia de Datos"
+
+msgid "If errors are showing up you might have to execute this script repeatedly."
+msgstr "Si aparecen errores, deberá ejecutar este proceso repetidas veces."
+
+msgid "The following conditions should be deleted"
+msgstr "Las siguientes condiciones deberían ser borradas"
+
+msgid "All conditions meet consistency standards"
+msgstr "Todas las condiciones son consistentes"
+
+msgid "The following question attributes should be deleted"
+msgstr "Los siguientes atributos de preguntas deberían ser borrados"
+
+msgid "All question_attributes meet consistency standards"
+msgstr "Todos los atributos de preguntas son consistentes"
+
+msgid "The following assessments should be deleted"
+msgstr "Las siguientes evaluaciones deberían ser borradas"
+
+msgid "All assessments meet consistency standards"
+msgstr "Todas las evaluaciones son consistentes"
+
+msgid "The following answers should be deleted"
+msgstr "Las siguientes respuestas deberían ser borradas"
+
+msgid "All answers meet consistency standards"
+msgstr "Todas las respuestas son consistentes"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/integritycheck.php:202
+msgid "Language specific settings missing"
+msgstr "No se encuentran los datos especificos del idioma"
+
+msgid "The following surveys should be deleted"
+msgstr "Los siguientes cuestionarios deberían ser eliminados"
+
+msgid "All survey settings meet consistency standards"
+msgstr "Los parámetros del cuestionario satisfacen las consistencias estándar"
+
+msgid "The following questions should be deleted"
+msgstr "Las siguientes preguntas deberían ser borradas"
+
+msgid "All questions meet consistency standards"
+msgstr "Todas las preguntas son consistentes"
+
+msgid "The following groups should be deleted"
+msgstr "Los siguientes grupos deberían ser borrados"
+
+msgid "All groups meet consistency standards"
+msgstr "Todos los grupos son consistentes"
+
+msgid "No database action required"
+msgstr "No se requiere acción de la base de datos"
+
+msgid "Deleting Groups"
+msgstr "Borrando grupos"
+
+msgid "Deleting group id"
+msgstr "Borrando la identificación del grupo"
+
 msgid "Label Sets Administration"
 msgstr "Administración de Etiquetas"
 
+msgid "Add New Label Set"
+msgstr "Agregar un nuevo grupo de etiquetas"
+
 msgid "Add new label set"
 msgstr "Agregar Etiquetas"
+
+msgid "Labelsets"
+msgstr "Conjuntos de etiquetas"
 
 msgid "Create New Label Set"
 msgstr "Crear Nuevo Conjunto de Etiquetas"
@@ -2243,23 +2602,48 @@ msgstr "Modificar conjunto de etiquetas"
 msgid "Set Name"
 msgstr "Nombre del Conjunto"
 
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:160
+msgid "You cannot remove this items since you need at least one language in a labelset."
+msgstr "No puede eliminar estos ítems debido a que se necesita al menos un idioma en un juego de etiquetas."
+
+msgid "Update"
+msgstr "Actualizar"
+
+msgid "Select CSV File:"
+msgstr "Seleccionar Archivo CSV:"
+
 msgid "Edit label set"
 msgstr "Modificar Etiquetas"
 
 msgid "Delete label set"
 msgstr "Borrar Etiquetas"
 
-msgid "Title"
-msgstr "Título"
+msgid "New label"
+msgstr "Nueva Etiqueta"
 
-msgid "Order"
-msgstr "Orden"
+msgid "Add new label"
+msgstr "Agregar nueva etiqueta"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:383
+msgid "Inserting New labels must be done on the first language folder."
+msgstr "Para ingresar nuevas etiquetas debe hacerlo en la carpeta del idioma primario."
 
 msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
 msgstr "No puede cambiar los códigos, agregar o borrar entradas a este conjunto de etiquetas porque está siendo utilizado por una encuesta activa."
 
+msgid "Fix Sort"
+msgstr "Corregir Orden"
+
 msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
 msgstr "Algunas encuestas están utilizando este conjunto de etiquetas. Modificar los códigos, agregar o borrar entradas a este conjunto puede producir resultados indeseados."
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:482
+msgid "Failed to Copy already defined labels to added languages"
+msgstr "No se pudieron copiar las etiquetas definidas a los idiomas agregados."
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:498
+msgid "Failed to delete labels for removed languages"
+msgstr "No se pudieron elminar las etiquetas de los idiomas eliminados"
 
 msgid "Update of Label Set failed"
 msgstr "No se pudo actualizar el conjunto de etiquetas"
@@ -2267,23 +2651,127 @@ msgstr "No se pudo actualizar el conjunto de etiquetas"
 msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
 msgstr "No se pudo borrar el conjunto de etiquetas - Hay preguntas que dependen de ellas. Debe borrar estas preguntas primero antes de poder continuar."
 
-msgid "Start ID numbers at:"
-msgstr "Comenzar los números de ID a partir de:"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:585
+msgid "Failed to insert label"
+msgstr "No se pudo insertar la etiqueta"
 
-msgid "Add Survey"
-msgstr "Agregar Encuesta"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:615
+msgid "Failed to update label"
+msgstr "No se pudo actualizar la etiqueta"
 
-msgid "Expires:"
-msgstr "Expira:"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:653
+msgid "Failed to delete label"
+msgstr "No se pudo eliminar la etiqueta"
 
-msgid "Are you sure you want to delete this entry?"
-msgstr "¿Está seguro de que quiere borrar esta entrada?"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/login_check.php:45
+msgid "You have to enter user name and email."
+msgstr "Debe ingrear un nombre de usario y una dirección de correo electrónico."
 
-msgid "Slider"
-msgstr "control deslizador"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/login_check.php:76
+msgid "You have to login first."
+msgstr "Debe ingresar al sistema primero."
 
-msgid "Get statistics from these responses"
-msgstr "Generar estadísticas a partir de estas contestaciones"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/login_check.php:94
+msgid "Forgot Your Password?"
+msgstr "¿Olvidó su clave?"
+
+msgid "if you answered"
+msgstr "si usted respondió"
+
+msgid "or"
+msgstr "o"
+
+msgid "to question"
+msgstr "a la pregunta"
+
+msgid "Only answer this question"
+msgstr "Sólo responda esta pregunta"
+
+msgid "Please choose *only one* of the following:"
+msgstr "Por favor elija SOLO una de los siguientes"
+
+msgid "Please enter a date:"
+msgstr "Por favor, introduzca la fecha:"
+
+msgid "Please number each box in order of preference from 1 to"
+msgstr "Por favor, enumere cada recuadro en orden de preferencia desde 1 a"
+
+msgid "Please choose *all* that apply:"
+msgstr "Por favor, marque TODAS las que correspondan:"
+
+msgid "Please choose *at most* "
+msgstr "Por favor elija al menos una"
+
+msgid "answers:"
+msgstr "Respuestas:"
+
+msgid "Please choose all that apply and provide a comment:"
+msgstr "Por favor, elija todas las que correspondan y escriba un comentario:"
+
+msgid "Please write your answer(s) here:"
+msgstr "Por favor, escriba su(s) respuesta(s) aquí:"
+
+msgid "Please write your answer here:"
+msgstr "Por favor, escriba su respuesta aquí:"
+
+msgid "Please choose the appropriate response for each item:"
+msgstr "Por favor, elija la respuesta apropiada para cada entrada:"
+
+msgid "Submit Your Survey."
+msgstr "Enviar su encuesta."
+
+msgid "Thank you for completing this survey."
+msgstr "Gracias por completar esta encuesta."
+
+msgid "Please fax your completed survey to:"
+msgstr "Por favor, envíe un fax con su encuesta completada a:"
+
+msgid "Add Question"
+msgstr "Agregar Pregunta"
+
+msgid "Required"
+msgstr "Obligatorio"
+
+msgid "Label Set:"
+msgstr "Etiquetas:"
+
+msgid "Mandatory:"
+msgstr "Obligatoria:"
+
+msgid "Select CSV File"
+msgstr "Seleccionar Archivo CSV:"
+
+msgid "Copy Question"
+msgstr "Copiar Pregunta"
+
+msgid "Note: You MUST enter a new question code!"
+msgstr "Nota: DEBE introducir un nuevo código de pregunta."
+
+msgid "Group:"
+msgstr "Grupo:"
+
+msgid "Copy Answers?"
+msgstr "¿Copiar Respuestas?"
+
+msgid "Copy Attributes?"
+msgstr "¿Copiar los atributos?"
+
+msgid "Edit Question"
+msgstr "Editar Pregunta"
+
+msgid "Update Question"
+msgstr "Actualizar Pregunta"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/questionhandling.php:586
+msgid "Current group is using conditional questions"
+msgstr "El grupo actual está utilizando preguntas condicionales"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/questionhandling.php:586
+msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "El reordenamiento de preguntas en este grupo está restringido para asegurar que las preguntas dependientes de sus condiciones no se reordenen una vez que se estableció su dependencia."
+
+msgid "See the conditions marked on the following questions"
+msgstr "Observe las condiciones marcadas en las siguientes preguntas"
 
 msgid "Answered"
 msgstr "Contestado"
@@ -2297,14 +2785,17 @@ msgstr "Identificador"
 msgid "Date Saved"
 msgstr "Fecha guardada"
 
-msgid "Show summary information"
-msgstr "Mostrar información"
+msgid "Are you sure you want to delete this entry?"
+msgstr "¿Está seguro de que quiere borrar esta entrada?"
 
-msgid "Display Responses"
-msgstr "Mostrar Todas las Contestaciones"
+msgid "Record ID"
+msgstr "Identificación de registro"
 
-msgid "Quick Statistics"
-msgstr "Estadísticas Rápidas"
+msgid "Completion Date"
+msgstr "Fecha de finalización"
+
+msgid "Start Language"
+msgstr "Idioma inicial"
 
 msgid "Filter Settings"
 msgstr "Opciones del Filtro"
@@ -2342,9 +2833,8 @@ msgstr "Total de elementos en esta encuesta"
 msgid "Percentage of total"
 msgstr "Porcentaje del total"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:870
-msgid "SQL"
-msgstr "SQL"
+msgid "Browse"
+msgstr "Navegar"
 
 msgid "Field Summary for"
 msgstr "Resumen de Campo para"
@@ -2376,8 +2866,13 @@ msgstr "Tercer cuartal (Q3)"
 msgid "Null values are ignored in calculations"
 msgstr "Los valores nulos son ignorados en los cálculos"
 
-msgid "Q1 and Q3 calculated using <a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>minitab method</a>"
-msgstr "Q1 y Q3 calculados usando <a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>método minitab</a>"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/statistics.php:1171
+msgid "Q1 and Q3 calculated using"
+msgstr "Q1 y Q3 deben ser calculadas utilizando"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/statistics.php:1171
+msgid "minitab method"
+msgstr "método minitab"
 
 msgid "Count"
 msgstr "Cuenta"
@@ -2385,8 +2880,60 @@ msgstr "Cuenta"
 msgid "Percentage"
 msgstr "Porcentaje"
 
-msgid "Browse"
-msgstr "Navegar"
+msgid "Select all"
+msgstr "Seleccionar todos"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/stats.php:257
+msgid "Proceed"
+msgstr "Proceda"
+
+msgid "Question List"
+msgstr "Lista de preguntas"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/stats.php:368
+msgid "Like"
+msgstr "Como"
+
+msgid "Not Equals"
+msgstr "No equivale"
+
+msgid "Filter Conditions"
+msgstr "Filtrar condiciones"
+
+msgid "Numerical"
+msgstr "Respuesta Numérica"
+
+#, fuzzy
+msgid "Huge free text"
+msgstr "Texto libre enorme"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:95
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:211
+msgid "Failed to copy"
+msgstr "No se pudo copiar"
+
+msgid "to new template directory."
+msgstr "a la nueva carpeta de plantillas."
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:101
+msgid "Directory with the name"
+msgstr "Carpeta con el nombre"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:101
+msgid "already exists - choose another name"
+msgstr "ya existe - elija otro nombre"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:103
+msgid "Unable to create directory"
+msgstr "no se puede crear la carpeta"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:103
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:111
+msgid "Maybe you don't have permission."
+msgstr "Quizá no tenga permisos."
+
+msgid "Directory could not be renamed to"
+msgstr "No se puede renombrar la carpeta a"
 
 msgid "Welcome Page"
 msgstr "Página de Bienvenida"
@@ -2412,14 +2959,14 @@ msgstr "Página de Cargar Encuesta"
 msgid "Save Page"
 msgstr "Página de guardar Encuesta"
 
-msgid "Create new template"
-msgstr "Crear nueva plantilla"
-
 msgid "Create new template called:"
 msgstr "Crear nueva plantilla llamada:"
 
 msgid "NewTemplate"
 msgstr "NuevaPlantilla"
+
+msgid "Create new template"
+msgstr "Crear nueva plantilla"
 
 msgid "This template can be modified"
 msgstr "Esta plantilla puede ser modificada"
@@ -2427,20 +2974,24 @@ msgstr "Esta plantilla puede ser modificada"
 msgid "This template cannot be modified"
 msgstr "Esta plantilla no puede ser modificada"
 
-msgid "Rename this template"
-msgstr "Renombrar la plantilla"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:478
+msgid "You can\\'t edit the default template."
+msgstr "No puede eliminar la plantilla por omisión."
 
 msgid "Rename this template to:"
 msgstr "Renombrar esta plantilla a:"
 
+msgid "Rename this template"
+msgstr "Renombrar la plantilla"
+
 msgid "Export Template"
 msgstr "Exportar Plantilla"
 
+msgid "Copy Template"
+msgstr "Copiar plantilla:"
+
 msgid "Make a copy of this template"
 msgstr "Crear una copia de esta plantilla"
-
-msgid "Create a copy of this template called:"
-msgstr "Crear una copia de esta plantilla llamada:"
 
 msgid "copy_of_"
 msgstr "copia_de_"
@@ -2457,8 +3008,18 @@ msgstr "Archivo Estándar:"
 msgid "Now editing:"
 msgstr "Editando Ahora:"
 
+msgid "Save Changes"
+msgstr "Guardar los cambios"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:544
+msgid "Changes cannot be saved to the default template."
+msgstr "No pueden guardarse los cambios en la plantilla por omisión."
+
 msgid "Other Files:"
 msgstr "Otros Archivos:"
+
+msgid "Upload a File"
+msgstr "Subir un archivo"
 
 msgid "Upload"
 msgstr "Enviar fichero"
@@ -2481,6 +3042,12 @@ msgstr "Si inicializa tokens para esta encuesta, esta solo será accesible a usu
 msgid "Do you want to create a tokens table for this survey?"
 msgstr "¿Desea crear una tabla de tokens para esta encuesta?"
 
+msgid "The following old token tables could be restored:"
+msgstr "Las siguientes tablas invocadas deberían ser recuperadas:"
+
+msgid "Restore"
+msgstr "Recuperar"
+
 msgid "Display Tokens"
 msgstr "Mostrar Tokens"
 
@@ -2489,6 +3056,9 @@ msgstr "Agregar un nuevo Token"
 
 msgid "Import Tokens from CSV File"
 msgstr "Importar Tokens desde Archivo CSV"
+
+msgid "Import Tokens from LDAP Query"
+msgstr "Importar Llamadas desde una cosnulta LDAP"
 
 msgid "Export Tokens to CSV file"
 msgstr "Exportar Tokens a un fichero CSV"
@@ -2505,17 +3075,18 @@ msgstr "Generar Tokens"
 msgid "Drop tokens table"
 msgstr "Borrar Tabla de Tokens"
 
-msgid "Total Records in this Token Table:"
-msgstr "Número de Registros en la tabla de Tokens:"
+msgid "Total Records in this Token Table"
+msgstr "Total de Registros en la tabla de Llamadas"
 
-msgid "Total With No Unique Token:"
-msgstr "Total Sin Token único:"
+msgid "Total With No Unique Token"
+msgstr "Total con llamadas no únicas:"
 
-msgid "Total Invitations Sent:"
+#, fuzzy
+msgid "Total Invitations Sent"
 msgstr "Total de Invitaciones Enviadas:"
 
-msgid "Total Surveys Completed:"
-msgstr "Total de Encuestas Completadas:"
+msgid "Total Surveys Completed"
+msgstr "Total de Cuestionarios Completados:"
 
 msgid "All token entries have been deleted."
 msgstr "Se han borrado todos los tokens"
@@ -2556,21 +3127,23 @@ msgstr "Buscar"
 msgid "Sort by: "
 msgstr "Ordenar por: "
 
+msgid "Language"
+msgstr "Idioma"
+
 msgid "Invite sent?"
 msgstr "¿Invitación enviada?"
 
 msgid "Completed?"
 msgstr "¿Completada?"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:497
-msgid "MPID"
-msgstr "MPID"
-
 msgid "Edit Token Entry"
 msgstr "Modificar Token"
 
 msgid "Delete Token Entry"
 msgstr "Borrar Token"
+
+msgid "Do Survey"
+msgstr "Contestar la Encuesta"
 
 msgid "Update Response"
 msgstr "Actualizar Respuesta"
@@ -2584,14 +3157,21 @@ msgstr "Enviar recordatorio (email) a esta entrada"
 msgid "Delete Tokens Table"
 msgstr "Eliminar Tabla de Tokens"
 
-msgid "If you delete this table tokens will no longer be required to access this survey.<br>A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
-msgstr "Si borra esta tabla de tokens, ya no será obligatorio el uso de tokens para acceder a esta encuesta. Se hará un respaldo de esta tabla si procede. Sólo el administrador del sistema tendrá acceso a esta tabla."
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:675
+msgid "If you delete this table tokens will no longer be required to access this survey."
+msgstr "Si elimina la tabla de llamadas no será requerida para ingresar al cuestionario."
+
+msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
+msgstr "Se realizará una copia de respaldo si continúa. El administrador de sistema tendrá acceso a esta tabla."
 
 msgid "Delete Tokens"
 msgstr "Borrar Tokens"
 
-msgid "The tokens table has now been removed and tokens are no longer required to access this survey.<BR> A backup of this table has been made and can be accessed by your system administrator."
-msgstr "La tabla de tokens ha sido borrada y los tokens ya no son obligatorios para acceder a esta encuesta. Una copia de esta tabla ha sido creada y sólo el administrador del sistema podrá acceder a ella."
+msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
+msgstr "La tabla de llamadas ha sido removida y las llamadas no son necesarias para acceder al cuestionario."
+
+msgid "A backup of this table has been made and can be accessed by your system administrator."
+msgstr "Una copia de respaldo de esta tabla ha sido creada y puede ser accedida por el administrador de sistema."
 
 msgid "Email Invitation"
 msgstr "Enviar Invitación (por email)"
@@ -2651,8 +3231,8 @@ msgstr "Crear Tokens"
 msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
 msgstr "Dando clic a 'Sí' generará tokens para todos aquellos que estén en la lista y que no se les haya generado un token. ¿Es esto correcto?"
 
-msgid "TOKENCOUNT} tokens have been created"
-msgstr "se han creado {TOKENCOUNT} tokens"
+msgid "{TOKENCOUNT} tokens have been created"
+msgstr "Se han creado {TOKENCOUNT} llamadas"
 
 msgid "Token has been deleted."
 msgstr "Se ha borrado el token."
@@ -2665,6 +3245,12 @@ msgstr "Agregar o Modificar Token"
 
 msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
 msgstr "Puede dejar en blanco esto, y automáticamente generar tokens utilizando 'Crear Tokens'"
+
+msgid "Update Token"
+msgstr "Llamada Actualizada"
+
+msgid "Add Token"
+msgstr "Agregar Llamada"
 
 msgid "Updated Token"
 msgstr "Token Actualizado"
@@ -2679,8 +3265,16 @@ msgstr "Subir Archivo CSV"
 msgid "Note:"
 msgstr "Nota:"
 
-msgid "File should be a standard CSV (comma delimited) file with no quotes. The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [attribute1], [attribute2]\"."
-msgstr "El archivo debe ser CSV estándar (delimitado por comas) sin comillas. La primera línea debe contener la información de la cabecera (que será eliminada). Los datos deben estar ordenados como «nombre, apellido, correo electrónico, [token], [attribute1], [attribute2]»."
+msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [language code], [attribute1], [attribute2]\"."
+msgstr "El archivo debe ser CSV estándar (delimitado por comas) con comillas (por defecto en OpenOffice y Excel). La primera línea debe contener la información de la cabecera (que será eliminada). Los datos deben estar ordenados como «nombre, apellido, correo electrónico, [llamada], [atributo1], [atributo2]»."
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1279
+msgid "Upload LDAP entries"
+msgstr "Se leyeron los registros LDAP"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1286
+msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
+msgstr "Las consultas basadas en LDAP están definidas por el administrador en el archivo config-ldap.php"
 
 msgid "Upload file not found. Check your permissions and path for the upload directory"
 msgstr "Archivo subido no encontrado. Compruebe sus permisos y trayectoria para saber si existe el directorio de subidas"
@@ -2691,68 +3285,288 @@ msgstr "Importando Archivo CSV"
 msgid "Creating Token Entries"
 msgstr "Creando Tokens"
 
-msgid "TOKENCOUNT} Records Created"
-msgstr "{TOKENCOUNT} tokens creados"
+msgid "Failed"
+msgstr "Falló"
 
-msgid "Creating default htaccess file"
-msgstr "Creando archivo .htaccess por defecto"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1380
+msgid "Records in CSV"
+msgstr "Registros en CSV"
 
-msgid "Couldn't create htaccess file. Check your config.php for $homedir setting, and that you have write permission in the correct directory."
-msgstr "No se pudo crear el archivo .htaccess. Revisar el valor de $homedir en el archivo config.php, y que tenga permisos de escritura."
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1381
+msgid "Records met minumum requirements"
+msgstr "Los registros cumplen los requerimientos mínimos"
 
-msgid "Security Levels are now set up!"
-msgstr "¡Se han establecido los niveles de seguridad!"
+msgid "Records imported"
+msgstr "Total de registros importados:"
 
-msgid "Creating default users"
-msgstr "Creando usuarios por defecto"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1383
+msgid "Duplicate records removed"
+msgstr "Se eliminaron los registros duplicados"
 
-msgid "Updating users table"
-msgstr "Actualizando tabla de usuarios"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1384
+msgid "Records with invalid email address removed"
+msgstr "Se eliminaron los registros con direcciones de correo electrónico no válidas"
 
-msgid "Error occurred creating htpasswd file"
-msgstr "Ocurrió un error al crear el archivo .htpasswd"
+msgid "Uploading LDAP Query"
+msgstr "Subiendo consulta LDAP"
 
-msgid "If you are using a windows server it is recommended that you copy the apache htpasswd.exe file into your admin folder for this function to work properly. This file is usually found in /apache group/apache/bin/"
-msgstr "Si está utilizando un servidor Windows debe copiar el archivo htpasswd.exe de apache al directorio admin para que esta función funcione correctamente. Este archivo se encuentra normalmente en /apache group/apache/bin/"
+msgid "{TOKENCOUNT} Records Created"
+msgstr "{TOKENCOUNT} llamadas creadas"
 
-msgid "Removing security settings"
-msgstr "Quitando opciones de seguridad"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1455
+msgid "Can't bind to the LDAP directory"
+msgstr "No puede enlazarse a la carpeta LDAP"
 
-msgid "Access file, password file and user database deleted"
-msgstr "Archivos de acceso, de contraseñas y base de datos de usuarios borrados"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1461
+msgid "Can't connect to the LDAP directory"
+msgstr "No puede conectarse a la carpeta LDAP"
 
-msgid "Adding User"
-msgstr "Añadiendo Usuario"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1502
+msgid "LDAP is disabled or no LDAP query defined."
+msgstr "LDAP está deshabilitado o no se definió ninguna consulta LDAP."
 
-msgid "Could not add user. Username and/or password were not supplied"
-msgstr "No se pudo añadir el usuario. Faltan el nombre de usuario y/o la contraseña"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1508
+msgid "Select the LDAP query you want to run:"
+msgstr "Seleccione la consulta LDAP que desea ejecutar:"
 
-msgid "Deleting User"
-msgstr "Borrando el Usuario"
+msgid "Forgot Password"
+msgstr "Contraseña Olvidada"
 
-msgid "Could not delete user. Username was not supplied."
-msgstr "No se pudo borrar el usuario. Faltó el Nombre de Usuario."
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:56
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:104
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:135
+msgid "User name and/or email not found!"
+msgstr "¡Nombre de usuario y/o dirección de correo electrónico no encontrados!"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:65
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:194
+msgid "Your data:"
+msgstr "Sus datos:"
+
+msgid "New Password"
+msgstr "Contraseña Nueva"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:79
+msgid "An email with your login data was sent to you."
+msgstr "Se envió un mensaje de correo electrónico con los datos."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:733
+msgid "Email to {NAME} ({EMAIL}) failed."
+msgstr "El envío del mensaje de correo electrónico a {FIRSTNAME} {LASTNAME} ({EMAIL}) falló"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:93
+msgid "Login"
+msgstr "Ingreso"
+
+msgid "Welcome {NAME}"
+msgstr "Bienvenida/o {NAME}"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:121
+msgid "Login successful."
+msgstr "Ingreso exitoso."
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:148
+msgid "Logout successful."
+msgstr "Salida exitosa."
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:164
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:322
+msgid "Email address ist not valid."
+msgstr "La dirección de correo electrónico no es válida"
+
+msgid "Username was not supplied."
+msgstr "No se proveyó un nombre de usuario."
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:193
+msgid "You were signed in on the site"
+msgstr "Ingresó al sitio"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:197
+msgid "Login here"
+msgstr "Ingrese aquí"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:207
+msgid "An email with a generated password was sent to the user."
+msgstr "Un mensaje de correo electrónico con la clave generada fue enviado al usuario."
+
+msgid "Set User Rights"
+msgstr "Estblecer permisos de usuario"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:224
+msgid "Username and/or email address already exists."
+msgstr "Ya existe el Nombre de usuario y/o dirección de correo electrónico.!"
+
+msgid "Admin cannot be deleted!"
+msgstr "El administrador no puede ser eliminado"
 
 msgid "Modifying User"
 msgstr "Modificando el Usuario"
 
-msgid "Could not modify user. Username and/or password were not supplied"
-msgstr "No se pudo modificar el usuario. Faltan nombre de usuario y/o Contraseña"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:322
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:346
+msgid "Could not modify User Data."
+msgstr "No puede modificar los datos del usuario."
 
-msgid "Export a VV survey file"
-msgstr "Exportar un Archivo de encuesta VV"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:338
+msgid "Unchanged"
+msgstr "Sin cambios"
 
-msgid "Export, then de-activate survey"
-msgstr "Exportar, después desactivar la encuesta"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:346
+msgid "Email address already exists."
+msgstr "Ya existe la dirección de correo electrónico."
 
-msgid "Export but leave survey active"
-msgstr "Exportar, pero dejar la encuesta activa"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:352
+msgid "Back"
+msgstr "Atrás"
 
-msgid "If you have chosen to export and de-activate, this will rename your current responses table and it will not be easy to restore it. Are you sure?"
-msgstr "Si ha elegido exportar y desactivar, ésto va a renombrar su tabla actual de respuestas y no será fácil restaurarla. ¿Está seguro?"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:397
+msgid "Update user rights successful."
+msgstr "La actualización de los permisos del usuario fue exitosa."
 
-msgid "Import a VV survey file"
-msgstr "Importar un Archivo de encuesta VV"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:407
+msgid "You are not allowed to change your own rights!"
+msgstr "¡No puede cambiar sus propios permisos!"
+
+msgid "User Groups"
+msgstr "Grupos de usuario"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:69
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:543
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:637
+msgid "Mail to all Members"
+msgstr "Enviar un mensaje de correo electrónico a todos los miembros"
+
+msgid "Edit Current User Group"
+msgstr "Editar el actual grupo de usuarios"
+
+msgid "Delete Current User Group"
+msgstr "Eliminar el actual grupo de usuarios"
+
+msgid "Add New User Group"
+msgstr "Agregar grupo de usuarios"
+
+msgid "Full name"
+msgstr "Nombre completo"
+
+msgid "Configurator"
+msgstr "configurador"
+
+msgid "Create User"
+msgstr "Crear usuario"
+
+msgid "Delete User"
+msgstr "Borrar usuario"
+
+msgid "Move User"
+msgstr "Mover usuario"
+
+msgid "Manage Template"
+msgstr "Administrar plantillas"
+
+msgid "Manage Labels"
+msgstr "Administrar etiquetas"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:309
+msgid "Setting new Parent"
+msgstr "Establecer nuevo Origen"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:310
+msgid "Set Parent successful."
+msgstr "Se estableció un nuevo origen con éxito."
+
+msgid "User Control"
+msgstr "Control de Usuarios"
+
+msgid "Created by"
+msgstr "Creado por"
+
+msgid "Edit User"
+msgstr "Editar usuario"
+
+msgid "Name:"
+msgstr "Nombre:"
+
+msgid "Optional"
+msgstr "Opcional"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:507
+msgid "Edit User Group (Owner: "
+msgstr "Editar grupo de usuarios (Propietario:"
+
+msgid "Update User Group"
+msgstr "Actualizar grupo de usuarios"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:545
+msgid "To:"
+msgstr "Para:"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:547
+msgid "Send me a copy:"
+msgstr "Envíame una copia:"
+
+msgid "Subject:"
+msgstr "Asunto:"
+
+msgid "Message:"
+msgstr "Mensaje:"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:553
+msgid "Send"
+msgstr "Enviar"
+
+msgid "Deleting User Group"
+msgstr "Borrando el grupo de usuario"
+
+msgid "Group Name"
+msgstr "Nombre del grupo"
+
+msgid "Could not delete user group."
+msgstr "No se pudo eliminar el grupo de usuarios."
+
+msgid "Could not delete user group. No group selected."
+msgstr "No se pudo borrar el grupo de usuarios. No se seleccionó el grupo de usuarios."
+
+msgid "Adding User Group"
+msgstr "Agregar grupo de usuarios"
+
+#, fuzzy
+msgid "Description: "
+msgstr "Descripción:"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:617
+msgid "User group successfully added!"
+msgstr "¡Se agregó el grupo de usuarios con éxito!"
+
+msgid "Failed to add Group!"
+msgstr "¡No se pudo agregar el grupo!"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:623
+msgid "Group already exists!"
+msgstr "¡El grupo ya existe!"
+
+msgid "Group name was not supplied!"
+msgstr "¡No se ingresó el nombre del grupo de usuarios!"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:672
+msgid "Mail not sent!"
+msgstr "¡Mensaje de correo electrónico no enviado!"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:690
+msgid "Edit User Group Successfully!"
+msgstr "¡Se modificó el grupo de usuarios con éxito!"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:695
+msgid "Failed to update!"
+msgstr "¡No se pudo actualizar!"
+
+msgid "Edit Group"
+msgstr "Editar grupo"
+
+msgid "Update Group"
+msgstr "Actualizar Grupo"
+
+msgid "Adding User to group"
+msgstr "Agregando usuario al grupo"
 
 msgid "File:"
 msgstr "Archivo:"
@@ -2778,15 +3592,147 @@ msgstr "Ignorar el nuevo elemento."
 msgid "Replace the existing record."
 msgstr "Remplazar el elemento existente."
 
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/vvimport.php:77
+msgid "Cannot import the VVExport file."
+msgstr "No se pudo importar el archivo VVExport."
+
 msgid "Import Failed on Record"
 msgstr "Fallo en la importación en el Elemento"
 
 msgid "because"
 msgstr "por que"
 
-msgid "Important Note:<br />Do NOT refresh this page, as this will import the file again and produce duplicates"
-msgstr "Nota importante:<br />NO refresque esta página, esto haría que se importe nuevamente el archivo y produzca duplicados"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/vvimport.php:230
+msgid "Important Note:"
+msgstr "Lea Atentamente:"
+
+msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
+msgstr "Nota importante:NO refresque esta página, esto haría que se importe nuevamente el archivo y produzca duplicados"
 
 msgid "Total records imported:"
 msgstr "Total de elementos importados:"
+
+msgid "Welcome to PHPSurveyor Setup!"
+msgstr "¡Bienvenido a la configuración de PHPSurveyor!"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/install/index.php:51
+msgid "The database defined in config.php does not exist."
+msgstr "La base de datos definida en el archivo config.php no existe."
+
+msgid "PHPSurveyor can attempt to create this database for you."
+msgstr "PHPSurveyor puede intentar crear la base de datos por usted."
+
+msgid "Your selected database name is:"
+msgstr "El nombre de la base de datos seleccionada es:"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/install/index.php:68
+#, php-format
+msgid "A database named \"%s\" does already exist."
+msgstr "una base de datos con el nombre  \"%s\" ya existe."
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/install/index.php:69
+msgid "Do you want to populate that database now by creating the necessary tables?"
+msgstr "¿Desea poblar la base de datos ahora creando las tablas necesarias?"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:67
+msgid "Bulgarian"
+msgstr "Búlgaro"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:71
+msgid "Chinese (Traditional)"
+msgstr "Chino (Tradicional)"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:75
+msgid "Chinese (Simplified)"
+msgstr "Chino (Simplificado)"
+
+msgid "Croatian"
+msgstr "Croata"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:83
+msgid "Danish"
+msgstr "Danés"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:87
+msgid "Dutch"
+msgstr "Holandés"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:91
+msgid "English"
+msgstr "Inglés"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:95
+msgid "Finnish"
+msgstr "Finlandés"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:100
+msgid "French"
+msgstr "Francés"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:104
+msgid "German"
+msgstr "Alemán"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:108
+msgid "German informal"
+msgstr "Alemán informal"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:112
+msgid "Greek"
+msgstr "Griego"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:116
+msgid "Hebrew"
+msgstr "Hebreo"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:120
+msgid "Hungarian"
+msgstr "Húngaro"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:124
+msgid "Italian"
+msgstr "Italiano"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:128
+msgid "Japanese"
+msgstr "Japonés"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:132
+msgid "Lithuanian"
+msgstr "Lituanés"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:136
+msgid "Norwegian"
+msgstr "Noruego"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:140
+msgid "Portuguese"
+msgstr "Portugues"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:144
+msgid "Portuguese (Brazilian)"
+msgstr "Portugues (Brasil)"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:149
+msgid "Russian"
+msgstr "Ruso"
+
+msgid "Romanian"
+msgstr "Rumano"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:157
+msgid "Slovenian"
+msgstr "Esloveno"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:161
+msgid "Spanish"
+msgstr "Español"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:165
+msgid "Swedish"
+msgstr "Sueco"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:169
+msgid "Vietnamese"
+msgstr "Vietnamita"
 
