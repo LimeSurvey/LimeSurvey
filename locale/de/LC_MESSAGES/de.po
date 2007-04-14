@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-04-13 23:34+0100\n"
+"PO-Revision-Date: 2007-04-14 23:26+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -281,7 +281,7 @@ msgstr "Sie haben die Beantwortung der Fragen in dieser Umfrage abgeschlossen."
 
 # D:\web\xampp\htdocs\phpsurveyor/common.php:1812
 msgid "Click on 'Submit' now to complete the process and save your answers."
-msgstr "Klicken Sie auf nun 'Absenden' um die Umfrage abzuschließen und Ihre Antworten zu speichern."
+msgstr "Klicken Sie nun auf 'Absenden', um die Umfrage abzuschließen und Ihre Antworten zu speichern."
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:1575
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
