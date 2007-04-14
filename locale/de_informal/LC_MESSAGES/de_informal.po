@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-04-14 23:31+0100\n"
+"PO-Revision-Date: 2007-04-14 23:36+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,7 @@ msgid "Default Administration Page"
 msgstr "Haupt-Administrationsseite"
 
 msgid "Create/Edit Users"
-msgstr "Erzeuge/Bearbeite User"
+msgstr "Erzeuge/Bearbeite Benutzer"
 
 # D:\web\xampp\htdocs\phpsurveyor/common.php:218
 # D:\web\xampp\htdocs\phpsurveyor/common.php:219
@@ -1878,7 +1878,7 @@ msgstr "Benutzername existiert bereits."
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2719
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2773
 msgid "No Username selected."
-msgstr "Kein Username gewählt."
+msgstr "Kein Benutzername gewählt."
 
 msgid "Add User Group"
 msgstr "Benutzergruppe hinzufügen"
@@ -2532,7 +2532,7 @@ msgstr "Fehler beim Löschen des Labels"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/login_check.php:45
 msgid "You have to enter user name and email."
-msgstr "Du musst Username und Email angeben."
+msgstr "Du musst Benutzername und Email angeben."
 
 msgid "Check Data"
 msgstr "Daten überprüfen"
@@ -3484,13 +3484,13 @@ msgid "Configurator"
 msgstr "Konfigurator"
 
 msgid "Create User"
-msgstr "User anlegen"
+msgstr "Benutzer anlegen"
 
 msgid "Delete User"
 msgstr "Lösche Benutzer"
 
 msgid "Move User"
-msgstr "User verschieben"
+msgstr "Benutzer verschieben"
 
 msgid "Manage Template"
 msgstr "Vorlagen verwalten"
@@ -3500,11 +3500,11 @@ msgstr "Beschriftungssets verwalten"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1473
 msgid "Setting new Parent"
-msgstr "Übergeordneten User setzen"
+msgstr "Übergeordneten Benutzer setzen"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1474
 msgid "Set Parent successful."
-msgstr "Übergeordneten User erfolgreich gesetzt."
+msgstr "Übergeordneten Benutzer erfolgreich gesetzt."
 
 msgid "User Control"
 msgstr "Benutzer-Administration"

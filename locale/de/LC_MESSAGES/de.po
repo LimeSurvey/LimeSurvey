@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-04-14 23:26+0100\n"
+"PO-Revision-Date: 2007-04-14 23:35+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,7 @@ msgstr "Haupt-Administrationsseite"
 # D:\web\xampp\htdocs\phpsurveyor/common.php:213
 # D:\web\xampp\htdocs\phpsurveyor/common.php:214
 msgid "Create/Edit Users"
-msgstr "Erzeuge/Bearbeite User"
+msgstr "Erzeuge/Bearbeite Benutzer"
 
 # D:\web\xampp\htdocs\phpsurveyor/common.php:213
 # D:\web\xampp\htdocs\phpsurveyor/common.php:214
@@ -1847,7 +1847,7 @@ msgstr "Benutzername existiert bereits."
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2620
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2674
 msgid "No Username selected."
-msgstr "Kein Username gewählt."
+msgstr "Kein Benutzername gewählt."
 
 msgid "Add User Group"
 msgstr "Benutzergruppe hinzufügen"
@@ -2490,7 +2490,7 @@ msgstr "Fehler beim Löschen des Labels"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1235
 msgid "You have to enter user name and email."
-msgstr "Sie müssen Username und Email angeben."
+msgstr "Sie müssen Benutzername und Email angeben."
 
 msgid "Check Data"
 msgstr "Daten überprüfen"
@@ -3420,13 +3420,13 @@ msgstr "Konfigurator"
 # D:\web\xampp\htdocs\phpsurveyor/common.php:213
 # D:\web\xampp\htdocs\phpsurveyor/common.php:214
 msgid "Create User"
-msgstr "User anlegen"
+msgstr "Benutzer anlegen"
 
 msgid "Delete User"
 msgstr "Lösche Benutzer"
 
 msgid "Move User"
-msgstr "User verschieben"
+msgstr "Benutzer verschieben"
 
 msgid "Manage Template"
 msgstr "Vorlagen verwalten"
@@ -3436,10 +3436,10 @@ msgstr "Beschriftungssets verwalten"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1482
 msgid "Setting new Parent"
-msgstr "Übergeordneten User setzen"
+msgstr "Übergeordneten Benutzer setzen"
 
 msgid "Set Parent successful."
-msgstr "Übergeordneten User erfolgreich gesetzt."
+msgstr "Übergeordneten Benutzer erfolgreich gesetzt."
 
 msgid "User Control"
 msgstr "Benutzer-Administration"
