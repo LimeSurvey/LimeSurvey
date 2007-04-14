@@ -455,7 +455,7 @@ if ($surveyid)
 			. "name='DoSurvey' align='left' alt='$icontext' /></a>";
 		
 		} else {
-			$surveysummary .= "<a href=\"#\" accesskey='d' onclick=\"hideTooltip(); document.getElementById('testsurvpopup').style.visibility='visible';\""
+			$surveysummary .= "<a href=\"#\" accesskey='d' onclick=\"hideTooltip(); document.getElementById('printpopup').style.visibility='hidden'; document.getElementById('testsurvpopup').style.visibility='visible';\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'$icontext');return false\">"
 			."<img  src='$imagefiles/do.png' title='' "
@@ -509,7 +509,7 @@ if ($surveyid)
 		
 		} else {
 			
-			$surveysummary .= "<a href=\"#\" onclick=\"hideTooltip(); document.getElementById('printpopup').style.visibility='visible';\""
+			$surveysummary .= "<a href=\"#\" onclick=\"hideTooltip(); document.getElementById('printpopup').style.visibility='visible'; document.getElementById('testsurvpopup').style.visibility='hidden';\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Printable Version of Survey", "js")."');return false\">\n"
 			. "<img src='$imagefiles/print.png' title='' name='ShowPrintableSurvey' align='left' alt='".$clang->gT("Printable Version of Survey")."' />"
@@ -1093,7 +1093,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			. "<img src='$imagefiles/preview.png' title='' alt='' align='left' name='previewquestion' /></a>\n"
 			. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
 			} else {
-				$questionsummary .= "<a href=\"#\" accesskey='d' onclick=\"hideTooltip(); document.getElementById('previewquestion').style.visibility='visible';\""
+				$questionsummary .= "<a href=\"#\" accesskey='d' onclick=\"hideTooltip(); document.getElementById('printpopup').style.visibility='hidden'; document.getElementById('testsurvpopup').style.visibility='hidden'; document.getElementById('previewquestion').style.visibility='visible';\""
 				. "onmouseout=\"hideTooltip()\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("Preview This Question", "js")."');return false\">"
 				. "<img src='$imagefiles/preview.png' title='' alt='' align='left' name='previewquestion' /></a>\n"
