@@ -299,7 +299,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	."<table width='99%' align='center'>\n"
 	."\t<tr>\n"
 	."\t\t<td $singleborderstyle bgcolor='#EEEEEE' align='center'>\n";
-	if (isset($_POST['sql']) && $_POST['sql']) {$browseoutput .= "\t\t\t<input type='submit' value='Close Window' onclick=\"window.close();\" />\n";}
+//	if (isset($_POST['sql']) && $_POST['sql']) {$browseoutput .= "\t\t\t<input type='submit' value='Close Window' onclick=\"window.close();\" />\n";}
 	$browseoutput .= "\t\t</td>\n"
 	."\t</tr>\n"
 	."</table>\n";
