@@ -38,7 +38,6 @@ if (empty($_GET['sid'])) {die ("Cannot run this script directly");}
 
 $surveyid = $_GET['sid'];
 
-require_once(dirname(__FILE__).'/../config.php');
 include_once("login_check.php");
 
 if (!isset($tpldir)) {$tpldir=$publicdir."/templates";}

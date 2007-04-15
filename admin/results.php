@@ -38,6 +38,8 @@ require_once(dirname(__FILE__).'/../config.php');
 
 include_once("login_check.php");
 
+
+// Todo: This is a dead script. Either use it or trash it.
 //OK: Here's how it works so far!
 
 /*include this file in a php script

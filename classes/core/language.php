@@ -1,7 +1,7 @@
 <?php
 /* Wrapper to use phpgettext as a class and omit having an english translation
 USAGE:
-require_once(dirname(__FILE__).'classes/core/language.php');
+require_once($rootdir.'classes/core/language.php');
 $locale = new phpsurveyor_lang('en'); // Char code
 print $locale->getTranslation("Hello World!");
 */

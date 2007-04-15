@@ -34,7 +34,6 @@
 #############################################################
 */
 
-require_once(dirname(__FILE__).'/../common.php');
 include_once("login_check.php");
 require_once(dirname(__FILE__).'/sessioncontrol.php');
 require_once(dirname(__FILE__).'/../qanda.php');

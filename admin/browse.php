@@ -33,7 +33,6 @@
 # Suite 330, Boston, MA  02111-1307, USA.					#
 #############################################################
 */
-require_once(dirname(__FILE__).'/../common.php');
 
 if (!isset($limit)) {$limit=returnglobal('limit');}
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}

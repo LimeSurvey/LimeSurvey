@@ -33,7 +33,6 @@
 # Suite 330, Boston, MA  02111-1307, USA.                   #
 #############################################################
 */
-require_once(dirname(__FILE__).'/../config.php');
 
 include_once("login_check.php");
 $statisticsoutput ='';
@@ -218,8 +217,7 @@ foreach ($filters as $flt)
 		$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield'";
 		if (isset($_POST['summary']) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE))
 		{$statisticsoutput .= " checked='checked'";}
-		$statisticsoutput .= " />&nbsp;"
-		."<img src='$imagefiles/speaker.png' align='bottom' alt=\"".str_replace("\"", "`", $flt[5])."\" onclick=\"alert('".$clang->gT("Question","js").": ".$niceqtext."')\" /></strong>"
+		$statisticsoutput .= " />&nbsp;".showSpeaker($niceqtext)."</strong>"
 		."<br />\n";
 		if ($flt[2] == "N") {$statisticsoutput .= "</font>";}
 		if ($flt[2] != "N") {$statisticsoutput .= "\t\t\t\t<select name='";}
@@ -1570,6 +1568,16 @@ function deleteNotPattern($dir, $matchpattern, $pattern = "")
 	}
 	else return 0;
 }
+
+
+function showSpeaker($hinttext)
+{
+  global $imagefiles;
+  $reshtml= "<img src='$imagefiles/speaker.png' align='bottom' alt='$hinttext' title='$hinttext' "
+           ." onclick=\"alert('".$clang->gT("Question","js").": $hinttext')\" />";
+  return  
+}
+
 
 function countLines($array)
 {

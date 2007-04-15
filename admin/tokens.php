@@ -36,7 +36,6 @@
 
 # TOKENS FILE
 
-require_once(dirname(__FILE__).'/../config.php');
 if ($enableLdap)
 {
 	require_once(dirname(__FILE__).'/../config-ldap.php');

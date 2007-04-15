@@ -50,11 +50,11 @@ if ($debug==1) {
 ## DO NOT EDIT BELOW HERE
 ##################################################################################
 
-require_once (dirname(__FILE__).'/classes/adodb/adodb.inc.php');
-require_once (dirname(__FILE__).'/classes/phpmailer/class.phpmailer.php');
-require_once (dirname(__FILE__).'/classes/php-gettext/gettextinc.php');
-require_once (dirname(__FILE__).'/classes/core/surveytranslator.php');
-require_once (dirname(__FILE__).'/classes/core/sanitize.php');
+require_once ($rootdir.'/classes/adodb/adodb.inc.php');
+require_once ($rootdir.'/classes/phpmailer/class.phpmailer.php');
+require_once ($rootdir.'/classes/php-gettext/gettextinc.php');
+require_once ($rootdir.'/classes/core/surveytranslator.php');
+require_once ($rootdir.'/classes/core/sanitize.php');
 
 $dbprefix=strtolower($dbprefix);
 define("_PHPVERSION", phpversion());
