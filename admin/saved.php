@@ -37,14 +37,16 @@ include_once(dirname(__FILE__).'/../config.php');
 include_once("login_check.php");
 
 $surveyid=returnglobal('sid');
-//$action=returnglobal('action');
+$srid=returnglobal('srid');
 $scid=returnglobal('scid');
+$subaction=returnglobal('subaction');
 
 //Ensure script is not run directly, avoid path disclosure
 if (empty($surveyid)) {die ($clang->gT("Error")." - Cannot run this script directly");}
 
 $thissurvey=getSurveyInfo($surveyid);
 $savedsurveyoutput='';
+$surveytable = db_table_name("survey_".$surveyid);
 
 if ($subaction == "delete" && $surveyid && $scid)
 {
@@ -56,8 +58,7 @@ if ($subaction == "delete" && $surveyid && $scid)
 	{
 		//If we were succesful deleting the saved_control entry,
 		//then delete the rest
-		$query = "DELETE FROM {$dbprefix}saved
-				  WHERE scid=$scid";
+		$query = "DELETE FROM {$surveytable} WHERE id={$srid}";
 		$result = $connect->Execute($query) or die("Couldn't delete");
 
 	}
@@ -76,6 +77,7 @@ $savedsurveyoutput .= "</table>\n";
 $savedsurveyoutput .= "<table><tr><td></td></tr></table>\n"
 ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
 $savedsurveyoutput .= "<tr><td>";
+
 switch ($subaction)
 {
 	case "all":
@@ -90,8 +92,8 @@ $savedsurveyoutput .= "</td></tr></table><br />&nbsp;\n";
 
 function showSavedList($surveyid)
 {
-	global $dbprefix, $connect, $clang;
-	$query = "SELECT scid, identifier, ip, saved_date, email, access_code\n"
+	global $dbprefix, $connect, $clang, $savedsurveyoutput, $scriptname, $surveytable;
+	$query = "SELECT scid, srid, identifier, ip, saved_date, email, access_code\n"
 	."FROM {$dbprefix}saved_control\n"
 	."WHERE sid=$surveyid\n"
 	."ORDER BY saved_date desc";
@@ -115,10 +117,10 @@ function showSavedList($surveyid)
 				<td>".$row['saved_date']."</td>
 				<td><a href='mailto:".$row['email']."'>".$row['email']."</td>
 				<td align='center'>
-				[<a href='$scriptname?action=saved&amp;sid=$surveyid&amp;subaction=delete&amp;scid=".$row['scid']."'"
+				[<a href='$scriptname?action=saved&amp;sid=$surveyid&amp;subaction=delete&amp;scid=".$row['scid']."&amp;srid=".$row['srid']."'"
 			." onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?")."\")'"
 			.">".$clang->gT("Delete")."</a>]
-				[<a href='".$scriptname."?action=dataentry&amp;sid=$surveyid&amp;subaction=editsaved&amp;identifier=".rawurlencode ($row['identifier'])."&amp;scid=".$row['scid']."&amp;accesscode=".$row['access_code']."'>".$clang->gT("Edit")."</a>]
+				[<a href='".$scriptname."?action=dataentry&amp;subaction=edit&amp;id=".$row['srid']."&amp;sid={$surveyid}&amp;surveytable={$surveytable}'>".$clang->gT("Edit")."</a>]
 				</td>
 			   </tr>\n";
 		} // while
