@@ -2378,7 +2378,7 @@ if ($action == "newsurvey")
 {
 	if($_SESSION['USER_RIGHT_CREATE_SURVEY'])
 	{
-		$newsurvey  = "<form name='addnewsurvey' action='$scriptname' method='post' onsubmit=\"return isEmpty(document.getElementById('surveyls_title'), '".("Error: You have to enter a title for this survey.")."');\" >\n"
+		$newsurvey  = "<form name='addnewsurvey' action='$scriptname' method='post' onsubmit=\"return isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."');\" >\n"
         . "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
 		. "\t\t<font class='settingcaption'><font color='white'>".$clang->gT("Create Survey")."</font></font></td></tr>\n"
 		. "\t<tr>\n"

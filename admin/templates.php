@@ -556,7 +556,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	.makeoptions($otherfiles, "name", "name", "")
 	."</select>"
 	."</td></tr><tr><td align='right'>$setfont"
-	."<input type='submit' value='".$clang->gT("Delete")."' onclick=\"javascript:return confirm('".$clang->gT("Are you sure you want to delete this file?",js)."')\"";
+	."<input type='submit' value='".$clang->gT("Delete")."' onclick=\"javascript:return confirm('".$clang->gT("Are you sure you want to delete this file?","js")."')\"";
 	if ($templatename == "default") {
 		$templatesoutput.= " disabled";
 	}
