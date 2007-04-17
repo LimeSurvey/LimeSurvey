@@ -1575,7 +1575,7 @@ function showSpeaker($hinttext)
   global $imagefiles;
   $reshtml= "<img src='$imagefiles/speaker.png' align='bottom' alt='$hinttext' title='$hinttext' "
            ." onclick=\"alert('".$clang->gT("Question","js").": $hinttext')\" />";
-  return  
+  return; 
 }
 
 
