@@ -463,9 +463,11 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	. "\t\t\t<tr>\n"
 	. "\t\t\t\t<td>\n";
 	if (is_writable("$publicdir/templates/$templatename") && ($templatename != "default") ) {
-		$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/trafficgreen.png' alt='".$clang->gT("This template can be modified")."' hspace='0' align='left' />\n";
+		$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/trafficgreen.png' alt='' hspace='0' align='left'" 
+            			  ." onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("This template can be modified", "js")."')\" />\n";
 	} else {
-		$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/trafficred.png' alt='".$clang->gT("This template cannot be modified")."' hspace='0' align='left' />\n";
+		$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/trafficred.png' alt='' hspace='0' align='left'" 
+            			  ." onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("This template cannot be modified", "js")."')\" />\n";
 	}
 	$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left' />\n"
 	."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
@@ -476,7 +478,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
     {
             $templatesoutput.= "\t\t\t\t\t" .
     			 "<img name='EditName' src='$imagefiles/noedit.png' alt='' align='left' title=''" .
-    			 " onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("You can\'t edit the default template.", "js")."')\" ".
+    			 " onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("You can't edit the default template.", "js")."')\" ".
                  " />";
     }
     else 

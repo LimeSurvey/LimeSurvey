@@ -1572,7 +1572,7 @@ function deleteNotPattern($dir, $matchpattern, $pattern = "")
 
 function showSpeaker($hinttext)
 {
-  global $imagefiles;
+  global $imagefiles, $clang;
   $reshtml= "<img src='$imagefiles/speaker.png' align='bottom' alt='$hinttext' title='$hinttext' "
            ." onclick=\"alert('".$clang->gT("Question","js").": $hinttext')\" />";
   return; 
