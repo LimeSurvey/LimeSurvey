@@ -123,13 +123,15 @@ elseif (isset($surveyid) && $surveyid)
 			// strings that "really are" quoted, and those that excel quotes
 			// for us.
 			$value=preg_replace('/^"/','{quote}',$value);
-			// yay!  that nasty sun won't hurt us now!
+			// yay!  that nasty soab won't hurt us now!
 			$sun[]=$value;
 		}
 		$beach=implode($s, $sun);
 		$vvoutput .= $beach;
 		unset($sun);
 		$vvoutput .= "\n";
+		echo $vvoutput;
+		exit;
 	}
 
 	//$vvoutput .= "<pre>$firstline</pre>";
