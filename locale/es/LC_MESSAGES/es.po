@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-04-07 03:33-0300\n"
+"PO-Revision-Date: 2007-04-17 23:55-0300\n"
 "Last-Translator: Esteban Adrián Pérez <dgeaperez@yahoo.com.ar>\n"
 "Language-Team:  <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: gT\n"
 "X-Poedit-Basepath: .\n"
-"X-Poedit-SearchPath-0: C:\\documentos\\Estudio\\activa\\gador\\phpsurvey.dev\n"
+"X-Poedit-SearchPath-0: C:\\documentos\\www\\docs\\activa-cro.com.ar\\public_html\\crf\n"
 
 msgid "Administration"
 msgstr "Administración:"
@@ -508,6 +508,17 @@ msgstr "Continuar"
 
 msgid "Your Assessment"
 msgstr "Sus Evaluaciones"
+
+msgid "Online Manual"
+msgstr "Manual de PHPSurveyor En Línea"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/common.php:2306
+msgid "Support this project - Donate to "
+msgstr "Colabore con el proyecto - Haga una donación para"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/common.php:2309
+msgid "Visit our website!"
+msgstr "Visite nuestro sitio web"
 
 msgid "Save your responses so far"
 msgstr "Guardar las respuestas realizadas hasta ahora"
@@ -1077,8 +1088,8 @@ msgstr "Eliminar esta entrada"
 msgid "Export this Response"
 msgstr "Exportar esta Respuesta"
 
-msgid "Show last..."
-msgstr "Mostrar anterior..."
+msgid "Show previous..."
+msgstr "Mostrar anterior"
 
 msgid "Show next..."
 msgstr "Mostrar siguiente..."
@@ -1096,8 +1107,8 @@ msgstr "Vista de Control de Datos"
 msgid "Show start.."
 msgstr "Mostrar inicio.."
 
-msgid "Show previous..."
-msgstr "Mostrar anterior"
+msgid "Show last..."
+msgstr "Mostrar anterior..."
 
 msgid "Records Displayed:"
 msgstr "Registros Desplegados:"
@@ -1142,44 +1153,6 @@ msgstr "No se ha seleccionado una pregunta como destino para copiar"
 msgid "Only show question {QID} IF"
 msgstr "Sólo mostrar la respuesta {QID} SI"
 
-msgid "and"
-msgstr "y"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/conditions.php:524
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:1507
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1145
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1513
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2035
-msgid "OR"
-msgstr "O"
-
-msgid "Equals"
-msgstr "Equivale"
-
-msgid "Copy Conditions"
-msgstr "Copiar Condiciones"
-
-msgid "Condition"
-msgstr "Condición"
-
-msgid "Question"
-msgstr "Pregunta"
-
-msgid "copy to"
-msgstr "copiar a"
-
-msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
-msgstr "¿Está seguro de que desea copiar estas condiciones a las preguntas que ha seleccionado?"
-
-msgid "Add Condition"
-msgstr "Agregar Condición"
-
-msgid "Answer"
-msgstr "Respuesta"
-
-msgid "Select Condition"
-msgstr "Seleccionar condición"
-
 msgid "Less"
 msgstr "Menor"
 
@@ -1202,6 +1175,42 @@ msgstr "Mayor"
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/conditions.php:711
 msgid "Regular Expresion"
 msgstr "Expresión regular"
+
+msgid "and"
+msgstr "y"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/conditions.php:524
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:1507
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1145
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1513
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2035
+msgid "OR"
+msgstr "O"
+
+msgid "Copy Conditions"
+msgstr "Copiar Condiciones"
+
+msgid "Condition"
+msgstr "Condición"
+
+msgid "Question"
+msgstr "Pregunta"
+
+msgid "copy to"
+msgstr "copiar a"
+
+msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
+msgstr "¿Está seguro de que desea copiar estas condiciones a las preguntas que ha seleccionado?"
+
+msgid "Add Condition"
+msgstr "Agregar Condición"
+
+msgid "Answer"
+msgstr "Respuesta"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/conditions.php:834
+msgid "NOTE: If select a label it will be used '=='"
+msgstr "NOTA: Si elige una etiqueta, se utilizará '=='"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/conditions.php:711
 msgid "Constant Value or Regular Expresion"
@@ -1345,6 +1354,10 @@ msgstr "Entrada de Datos"
 msgid "You have not selected a survey for data-entry."
 msgstr "No ha seleccionado una encuesta para la cual realizar la entrada de datos."
 
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/dataentry.php:249
+msgid "This survey is not anonymous, you must supply a valid token"
+msgstr "Este cuestionario no es anónimo, debe ingresar un código de llamada válido"
+
 msgid "Try again"
 msgstr "Intente otra vez"
 
@@ -1363,15 +1376,13 @@ msgstr "Correo Electrónico:"
 msgid "Your survey responses have been saved succesfully"
 msgstr "Sus respuestas a esta encuesta fueron guardadas con éxito"
 
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/save.php:287
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/dataentry.php:220
+msgid "You, someone using your email address, or the administrator has saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
+msgstr "Usted, o alguien utilizando su dirección de correo, ha guardado un cuestionario en proceso. Los siguentes detalles pueden ser utilizados para regresar al cuestionario y continuar desde donde lo dejó."
+
 msgid "An email has been sent with details about your saved survey"
 msgstr "Un mensaje de correo electrónico fue enviado con los detalles de su cuestionario guardado."
-
-msgid "An error occurred and your survey responses were not saved."
-msgstr "Se ha producido un error, y sus respuestas no fueron guardadas."
-
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/dataentry.php:249
-msgid "This survey is not anonymous, you must supply a valid token"
-msgstr "Este cuestionario no es anónimo, debe ingresar un código de llamada válido"
 
 msgid "Success"
 msgstr "éxito"
@@ -1394,8 +1405,8 @@ msgstr "No puede ser modificado"
 msgid "Update Entry"
 msgstr "Actualizar Entrada"
 
-msgid "Save as a partially completed survey"
-msgstr "Guardar como encuesta parcialmente completada"
+msgid "Save for further completion by survey user"
+msgstr "Gurdar el cuestionario para completarlo posteriormente."
 
 msgid "Record has been updated."
 msgstr "El registro ha sido actualizado."
@@ -1978,8 +1989,8 @@ msgstr "Orden"
 msgid "New Answer"
 msgstr "Nueva respuesta"
 
-msgid "You cannot add answers because they are being used by an active survey."
-msgstr "No puede agregar respuestas porque están siendo utilizadas en un cuestionario activo."
+msgid "You cannot add answers or edit answer codes for this question type because the survey is active."
+msgstr "No puede agregar respuestas o modificarlas para este tipo de preguntas porque están siendo utilizadas en un cuestionario activo."
 
 msgid "Add User"
 msgstr "Agregar Usuario"
@@ -2349,6 +2360,9 @@ msgstr "No se envió ningún fichero"
 msgid "Error on file transfer. You must select a CSV file"
 msgstr "Error en la transferencia del fichero.Debe seleccionar un archivo CSV"
 
+msgid "Error: You have to enter a title for this survey."
+msgstr "Error: Debe ingresar un nombre para el cuestionario."
+
 msgid "Create Survey"
 msgstr "Crear Encuesta"
 
@@ -2514,9 +2528,8 @@ msgstr "El archivo no contiene un formato PHPSurveyor válido."
 msgid "Survey Import Summary"
 msgstr "Resumen de la importación de la encuesta"
 
-#, fuzzy
 msgid "Question Attributes"
-msgstr "Atributos de la pregunta:"
+msgstr "Atributos de la pregunta"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/integritycheck.php:52
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/integritycheck.php:326
@@ -2667,9 +2680,16 @@ msgstr "No se pudo eliminar la etiqueta"
 msgid "You have to enter user name and email."
 msgstr "Debe ingrear un nombre de usario y una dirección de correo electrónico."
 
+msgid "Check Data"
+msgstr "Verificar Datos"
+
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/login_check.php:76
 msgid "You have to login first."
 msgstr "Debe ingresar al sistema primero."
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:93
+msgid "Login"
+msgstr "Ingreso"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/login_check.php:94
 msgid "Forgot Your Password?"
@@ -2894,6 +2914,9 @@ msgstr "Lista de preguntas"
 msgid "Like"
 msgstr "Como"
 
+msgid "Equals"
+msgstr "Equivale"
+
 msgid "Not Equals"
 msgstr "No equivale"
 
@@ -2903,9 +2926,8 @@ msgstr "Filtrar condiciones"
 msgid "Numerical"
 msgstr "Respuesta Numérica"
 
-#, fuzzy
 msgid "Huge free text"
-msgstr "Texto libre enorme"
+msgstr "Texto libre muy largo"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:95
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:211
@@ -2975,8 +2997,8 @@ msgid "This template cannot be modified"
 msgstr "Esta plantilla no puede ser modificada"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:478
-msgid "You can\\'t edit the default template."
-msgstr "No puede eliminar la plantilla por omisión."
+msgid "You can't edit the default template."
+msgstr "No puede modificar la plantilla por omisión."
 
 msgid "Rename this template to:"
 msgstr "Renombrar esta plantilla a:"
@@ -3018,6 +3040,9 @@ msgstr "No pueden guardarse los cambios en la plantilla por omisión."
 msgid "Other Files:"
 msgstr "Otros Archivos:"
 
+msgid "Are you sure you want to delete this file?"
+msgstr "¿Está seguro de que quiere borrar este archivo?"
+
 msgid "Upload a File"
 msgstr "Subir un archivo"
 
@@ -3029,6 +3054,9 @@ msgstr "Vista Previa:"
 
 msgid "You have not selected a survey"
 msgstr "No ha seleccionado una encuesta"
+
+msgid "Token table could not be created."
+msgstr "La tabla de llamadas no pudo ser creada."
 
 msgid "A token table has been created for this survey."
 msgstr "Se ha creado una tabla de tokens para esta encuesta."
@@ -3081,9 +3109,8 @@ msgstr "Total de Registros en la tabla de Llamadas"
 msgid "Total With No Unique Token"
 msgstr "Total con llamadas no únicas:"
 
-#, fuzzy
 msgid "Total Invitations Sent"
-msgstr "Total de Invitaciones Enviadas:"
+msgstr "Total de Invitaciones Enviadas"
 
 msgid "Total Surveys Completed"
 msgstr "Total de Cuestionarios Completados:"
@@ -3321,6 +3348,162 @@ msgstr "No puede enlazarse a la carpeta LDAP"
 msgid "Can't connect to the LDAP directory"
 msgstr "No puede conectarse a la carpeta LDAP"
 
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1499
+msgid "ARMSCII-8 Armenian"
+msgstr "ARMSCII-8 Armenio"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1500
+msgid "US ASCII"
+msgstr "ASCII Norteamericano"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1501
+msgid "Automatic"
+msgstr "Automático"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1502
+msgid "Big5 Traditional Chinese"
+msgstr "Big5 Chino tradicional"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1503
+msgid "Binary pseudo charset"
+msgstr "Juego de caracteres pseudo binario"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1504
+msgid "Windows Central European"
+msgstr "Windows Centro Europeo"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1505
+msgid "Windows Cyrillic"
+msgstr "Windows Cirílico"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1506
+msgid "Windows Arabic"
+msgstr "Windows Árabe"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1507
+msgid "Windows Baltic"
+msgstr "Windows Báltico"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1508
+msgid "DOS West European"
+msgstr "DOS Europa Occidental"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1509
+msgid "DOS Central European"
+msgstr "DOS Europa Central"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:149
+msgid "DOS Russian"
+msgstr "DOS Ruso"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1511
+msgid "SJIS for Windows Japanese"
+msgstr "SJIS para Windows Japonés"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1512
+msgid "DEC West European"
+msgstr "DEC Europa Occidental"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1513
+msgid "UJIS for Windows Japanese"
+msgstr "UJIS para Windows Japonés"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1514
+msgid "EUC-KR Korean"
+msgstr "EUC-KR Coreano"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1515
+msgid "GB2312 Simplified Chinese"
+msgstr "GB2312 Chino Simplificado"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1516
+msgid "GBK Simplified Chinese"
+msgstr "GBK Chino Simplificado"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1517
+msgid "GEOSTD8 Georgian"
+msgstr "GEOSTD8 Georgiano"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1518
+msgid "ISO 8859-7 Greek"
+msgstr "ISO 8859-7 Griego"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1519
+msgid "ISO 8859-8 Hebrew"
+msgstr "ISO 8859-8 Hebreo"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1520
+msgid "HP West European"
+msgstr "HP Europa Occidental"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1521
+msgid "DOS Kamenicky Czech-Slovak"
+msgstr "DOS Checo-Eslovaco Kamenicky"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1522
+msgid "KOI8-R Relcom Russian"
+msgstr "KOI8-R Ruso Relcom"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1523
+msgid "KOI8-U Ukrainian"
+msgstr "KOI8-U Ucraniano"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1524
+msgid "cp1252 West European"
+msgstr "cp1252 Europa Occidental"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1525
+msgid "ISO 8859-2 Central European"
+msgstr "ISO 8859-2 Centro Europeo"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1526
+msgid "ISO 8859-9 Turkish"
+msgstr "ISO 8859-9 Turco"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1527
+msgid "ISO 8859-13 Baltic"
+msgstr "ISO 8859-13 Báltico"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1528
+msgid "Mac Central European"
+msgstr "Mac Europa Central"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1529
+msgid "Mac West European"
+msgstr "Mac Europa Occidental"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:128
+msgid "Shift-JIS Japanese"
+msgstr "Shift-JIS Japonés"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:165
+msgid "7bit Swedish"
+msgstr "7bit Sueco"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1532
+msgid "TIS620 Thai"
+msgstr "TIS620 Tailandés"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1533
+msgid "UCS-2 Unicode"
+msgstr "UCS-2 Unicode"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:128
+msgid "EUC-JP Japanese"
+msgstr "EUC-JP Japonés"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1535
+msgid "UTF-8 Unicode"
+msgstr "UTF-8 Unicode"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1547
+msgid "Choose the CSV file to upload:"
+msgstr "Elija el archivo CSV para enviar:"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1549
+msgid "Character set of the file:"
+msgstr "Juego de caracteres del archivo:"
+
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1502
 msgid "LDAP is disabled or no LDAP query defined."
 msgstr "LDAP está deshabilitado o no se definió ninguna consulta LDAP."
@@ -3354,16 +3537,16 @@ msgstr "Se envió un mensaje de correo electrónico con los datos."
 msgid "Email to {NAME} ({EMAIL}) failed."
 msgstr "El envío del mensaje de correo electrónico a {FIRSTNAME} {LASTNAME} ({EMAIL}) falló"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:93
-msgid "Login"
-msgstr "Ingreso"
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/usercontrol.php:93
+msgid "Logging in..."
+msgstr "Ingresando..."
 
 msgid "Welcome {NAME}"
 msgstr "Bienvenida/o {NAME}"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:121
-msgid "Login successful."
-msgstr "Ingreso exitoso."
+msgid "You logged in successfully."
+msgstr "Ingresó correctamente."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:148
 msgid "Logout successful."
@@ -3529,7 +3712,6 @@ msgstr "No se pudo borrar el grupo de usuarios. No se seleccionó el grupo de us
 msgid "Adding User Group"
 msgstr "Agregar grupo de usuarios"
 
-#, fuzzy
 msgid "Description: "
 msgstr "Descripción:"
 

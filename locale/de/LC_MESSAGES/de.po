@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-04-14 23:35+0100\n"
+"PO-Revision-Date: 2007-04-18 22:44+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -375,6 +375,17 @@ msgstr "Weiter"
 
 msgid "Your Assessment"
 msgstr "Deine Bewertung"
+
+msgid "Online Manual"
+msgstr "Online Bedienungsanleitung"
+
+# D:\web\xampp\htdocs\phpsurveyor/common.php:2306
+msgid "Support this project - Donate to "
+msgstr "Unterstützen Sie diese Projekt - Spenden Sie an"
+
+# D:\web\xampp\htdocs\phpsurveyor/common.php:2309
+msgid "Visit our website!"
+msgstr "Besuchen Sie unsere Webseite!"
 
 msgid "Save your responses so far"
 msgstr "Bisherige Antworten speichern"
@@ -2179,6 +2190,9 @@ msgstr "Keine Datei hochgeladen"
 msgid "Error on file transfer. You must select a CSV file"
 msgstr "Fehler beim Datei-Upload. Sie müssen eine CSV-Datei angeben"
 
+msgid "Error: You have to enter a title for this survey."
+msgstr "Fehler: Sie müssen einen Titel für diese Umfrage angeben."
+
 msgid "Create Survey"
 msgstr "Erstelle Umfrage"
 
@@ -2803,7 +2817,7 @@ msgid "This template cannot be modified"
 msgstr "Diese Vorlage kann nicht bearbeitet werden."
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/templates.php:538
-msgid "You can\\'t edit the default template."
+msgid "You can't edit the default template."
 msgstr "Sie können das Standardtemplate nicht bearbeiten."
 
 msgid "Rename this template to:"
@@ -2836,6 +2850,9 @@ msgstr "Standard-Dateien:"
 msgid "Now editing:"
 msgstr "In Bearbeitung:"
 
+msgid "Other Files:"
+msgstr "Andere Dateien:"
+
 msgid "Save Changes"
 msgstr "Änderungen Speichern"
 
@@ -2843,8 +2860,11 @@ msgstr "Änderungen Speichern"
 msgid "Changes cannot be saved to the default template."
 msgstr "Änderungen am Standardtemplate können nicht gespeichert werden."
 
-msgid "Other Files:"
-msgstr "Andere Dateien:"
+msgid "Are you sure you want to delete this file?"
+msgstr "Sind sie wirklich sicher, dass Sie diese Datei löschen wollen?"
+
+msgid "Files in the default template cannot be deleted."
+msgstr "Dateien der Standard-Vorlage können nicht gelöscht werden."
 
 msgid "Upload a File"
 msgstr "Eine Datei hochladen"
