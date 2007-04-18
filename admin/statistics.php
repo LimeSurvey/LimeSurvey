@@ -231,7 +231,7 @@ foreach ($filters as $flt)
 		case "Q":
 		$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
-		$result = db_execute_assoc($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		$result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 		$counter2=0;
 		while ($row = $result->FetchRow())
 		{
