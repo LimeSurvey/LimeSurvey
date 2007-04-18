@@ -108,7 +108,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	if ($action == "templaterename" && isset($_GET['newname']) && isset($_GET['copydir'])) {
 		$newdirname=$publicdir."/templates/".$_GET['newname'];
 		$olddirname=$publicdir."/templates/".$_GET['copydir'];
-		if (!rename($olddirname, $newdirname)) {
+		if (rename($olddirname, $newdirname)==false) {
 			echo "<script type=\"text/javascript\">\n<!--\nalert(\"".$clang->gT("Directory could not be renamed to","js")." `".$_GET['newname']."`. ".$clang->gT("Maybe you don't have permission.","js")."\");\n//-->\n</script>";
 		} else {
 			$templates[]=array("name"=>$_GET['newname'], "dir"=>$newdirname);
@@ -130,10 +130,8 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	}
 	
 	if ($action == "templatefiledelete") {
-		if ($_POST['otherfile'] != "chart.jpg") {
-			$the_full_file_path = $publicdir."/templates/".$templatename . "/" . $_POST['otherfile']; //This is where the temp file is
-			unlink($the_full_file_path);
-		}
+		$the_full_file_path = $publicdir."/templates/".$templatename . "/" . $_POST['otherfile']; //This is where the temp file is
+		unlink($the_full_file_path);
 	}
 	
 	if ($action == "templatezip") {
@@ -417,7 +415,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	."\t{\n"
 	."\tif (newtemplatename=window.prompt(text, defvalue))\n"
 	."\t\t{\n"
-	."\t\tvar url='admin.php?action=templatecopy&newname='+newtemplatename+'&copydir='+copydirectory;\n"
+	."\t\tvar url='admin.php?action=template'+action+'&newname='+newtemplatename+'&copydir='+copydirectory;\n"
 	."\t\twindow.open(url, '_top');\n"
 	."\t\t}\n"
 	."\t}\n"
@@ -428,28 +426,26 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	. "\t\t\t<table class='menubar'>\n"
 	. "\t\t\t<tr>\n"
 	. "\t\t\t\t<td colspan='2' height='8'>\n"
-	. "\t\t\t\t\t<strong>".$file_version."</strong>\n"
+	. "\t\t\t\t\t<strong>".$clang->gT('Template Editor')."</strong>\n"
 	. "\t\t\t\t</td>\n"
 	. "\t\t\t</tr>\n"
 	. "\t\t\t<tr >\n"
 	. "\t\t\t\t<td>\n"
-	. "\t\t\t\t\t<a href='$scriptname'" .
-			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Default Administration Page", "js")."')\">" .
-			"<img src='$imagefiles/home.png' name='HomeButton' alt='' title='' align='left' /></a>\n"
-	. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left' />\n"
-	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />"
+	. "\t\t\t\t\t<a href='$scriptname'" 
+    . "onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Default Administration Page", "js")."')\">" 
+    . "<img src='$imagefiles/home.png' name='HomeButton' alt='' title='' align='left' /></a>\n"
 	. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='10' border='0' hspace='0' align='left' />\n"
 	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />"
-	."</td><td align='right'>\n"
-	."<img src='$imagefiles/blank.gif' align='right' border='0' hspace='0' width='60' height='10' alt='' />"
-	."<img src='$imagefiles/seperator.gif' align='right' alt='' border='0' hspace='0' />"
-	."<a href='#' onclick=\"javascript: copyprompt('".$clang->gT("Create new template called:")."', '".$clang->gT("NewTemplate")."', 'default', 'copy')\"" .
-			" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Create new template", "js")."')\">" .
-			"<img src='$imagefiles/add.png' alt='' align='right' title='' /></a>"
-	."<font face='verdana' size='2' color='white'><strong>".$clang->gT("Template:")."</strong> </font>"
-	."<select name='templatedir' onchange='javascript: window.open(\"admin.php?action=templates&amp;editfile=$editfile&amp;screenname=".html_escape($screenname)."&amp;templatename=\"+this.value, \"_top\")'>\n"
+	. "</td><td align='right'>"
+	. "<img src='$imagefiles/blank.gif' align='right' alt='' border='0' hspace='0' width='60' height='1' align='right'  />"
+	. "<img src='$imagefiles/seperator.gif' align='right' alt='' border='0' hspace='0' align='right' />"
+	. "<a href='#' onclick=\"javascript: copyprompt('".$clang->gT("Create new template called:")."', '".$clang->gT("NewTemplate")."', 'default', 'copy')\"" 
+    . " onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Create new template", "js")."')\">" 
+    . "<img src='$imagefiles/add.png' alt='' align='right' title='' /></a>\n"
+	."<font style='boxcaption'><strong>".$clang->gT("Template:")."</strong> </font>"
+	."<select class=\"listboxtemplates\" name='templatedir' onchange='javascript: window.open(\"admin.php?action=templates&amp;editfile=$editfile&amp;screenname=".html_escape($screenname)."&amp;templatename=\"+this.value, \"_top\")'>\n"
 	.makeoptions($templates, "name", "name", $templatename)
-	."</select>&nbsp;\n"
+	."</select>\n"
 	."</td></tr></table>\n"
 	."<table><tr><td height='1'></td></tr></table>\n";
 	
@@ -500,9 +496,9 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	."</td><td align='right'>\n"
 	."<img src='$imagefiles/blank.gif' align='right' alt='' border='0' hspace='0' width='60' height='10' />"
 	."<img src='$imagefiles/seperator.gif' align='right' alt='minimise' border='0' hspace='0' />"
-	."<img src='$imagefiles/blank.gif' width='23' align='right' alt='minimise' border='0' hspace='0' />"
-	."<font face='verdana' size='2' color='white'><strong>".$clang->gT("Screen:")."</strong> </font>"
-	. "<select name='screenname' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;editfile=$editfile&amp;screenname=\"+this.value, \"_top\")'>\n"
+	."<img src='$imagefiles/blank.gif' width='35' align='right' alt='minimise' border='0' hspace='0' />"
+	."<font style='boxcaption'><strong>".$clang->gT("Screen:")."</strong> </font>"
+	. "<select class=\"listboxtemplates\" name='screenname' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;editfile=$editfile&amp;screenname=\"+this.value, \"_top\")'>\n"
 	. makeoptions($screens, "name", "name", html_escape($screenname) )
 	. "</select>&nbsp;\n"
 	."</td></tr></table>\n"
@@ -520,22 +516,23 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	
 	$templatesoutput.= "\t\t\t\t<table width='100%' border='0'>\n"
 	."\t\t\t\t\t<tr>\n"
-	."\t\t\t\t\t\t<td align='center' valign='top' width='80%'>"
+	."\t\t\t\t\t\t<td align='center' border='0' valign='top' width='80%'>"
+	. "\t\t\t\t<table width='100%' align='center' class='menubar'><tr><td>"
+	."<strong>".$clang->gT("Standard Files:")."</strong></td>"
+    ."<td align='center'><strong><font style='color: #FFFFFF;'>".$clang->gT("Now editing:");
+	if (trim($editfile)!='') {$templatesoutput.= " <i>$editfile</i>";}
+	$templatesoutput.= "</font></strong></td>"
+    ."<td align='right'><strong><font style='color: #FFFFFF;'>".$clang->gT("Other Files:")."</strong></font></td></tr>\n"
+	."<tr><td><select size='12' name='editfile' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;screenname=".html_escape($screenname)."&amp;editfile=\"+this.value, \"_top\")'>\n"
+	.makeoptions($files, "name", "name", $editfile)
+	."</select>\n"
+	."\t\t\t\t\t\t</td>\n"
+	."\t\t\t\t\t\t<td align='center' valign='top'>\n"
 	. "<form name='editTemplate' method='post' action='admin.php'>\n"
 	. "\t\t\t<input type='hidden' name='templatename' value='$templatename' />\n"
 	. "\t\t\t<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
 	. "\t\t\t<input type='hidden' name='editfile' value='$editfile' />\n"
 	. "\t\t\t<input type='hidden' name='action' value='templatesavechanges' />\n"
-	. "\t\t\t\t<table width='100%' align='center'><tr><td>"
-	."$setfont<strong>".$clang->gT("Standard Files:")."</strong><font size='1'><br />\n"
-	."<select size='12' name='editfile' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;screenname=".html_escape($screenname)."&amp;editfile=\"+this.value, \"_top\")'>\n"
-	.makeoptions($files, "name", "name", $editfile)
-	."</select><br /><br />\n"
-	."\t\t\t\t\t\t</font></font></td>\n"
-	."\t\t\t\t\t\t<td align='center' valign='top'>"
-	."$setfont<strong>".$clang->gT("Now editing:");
-	if (trim($editfile)!='') {$templatesoutput.= " <i>$editfile</i>";}
-	$templatesoutput.= "</strong><font size='1'><br />\n"
 	."<textarea name='changes' id='changes' cols='110' rows='12'>";
 	if ($editfile) {
 		$templatesoutput.= textarea_encode(filetext($editfile));
@@ -544,37 +541,34 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	if (is_writable("$publicdir/templates/$templatename")) {
 		$templatesoutput.= "<input align='right' type='submit' value='".$clang->gT("Save Changes")."'";
 		if ($templatename == "default") {
-			$templatesoutput.= " style='color: #BBBBBB;' disabled alt='".$clang->gT("Changes cannot be saved to the default template.")."'";
+			$templatesoutput.= " style='color: #BBBBBB;' disabled='disabled' alt='".$clang->gT("Changes cannot be saved to the default template.")."'";
 		}
 		$templatesoutput.= " />";
 	}
 	$templatesoutput.= "<br />\n"
-	. "</font></font></td></tr></table></form></td>\n"
-	."\t\t\t\t\t\t<td valign='top' align='right' width='20%'><form action='admin.php' method='post'>"
+	."\t\t\t\t\t\t</form></td><td valign='top' align='right' width='20%'><form action='admin.php' method='post'>"
 	."<table width='90' align='right' border='0' cellpadding='0' cellspacing='0'>\n<tr><td align='right'>"
-	. "$setfont<strong>".$clang->gT("Other Files:")."</strong></font><br />\n"
-	//. "<iframe width='100%' height='140' src=\"templates.html\"></iframe>"
 	. "<select size='10' style='min-width:130px;'name='otherfile' id='otherfile'>\n"
 	.makeoptions($otherfiles, "name", "name", "")
 	."</select>"
-	."</td></tr><tr><td align='right'>$setfont"
+	."</td></tr><tr><td align='right'>"
 	."<input type='submit' value='".$clang->gT("Delete")."' onclick=\"javascript:return confirm('".$clang->gT("Are you sure you want to delete this file?","js")."')\"";
 	if ($templatename == "default") {
-		$templatesoutput.= " disabled";
+			$templatesoutput.= " style='color: #BBBBBB;' disabled='disabled' alt='".$clang->gT("Files in the default template cannot be deleted.")."'";
 	}
-	$templatesoutput.= " /></font>\n"
-	."<input type='hidden' name='editfile' value='$editfile' />\n"
+	$templatesoutput.= " />\n"
 	."<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
 	."<input type='hidden' name='templatename' value='$templatename' />\n"
 	."<input type='hidden' name='action' value='templatefiledelete' />\n"
-	."</td></tr>\n"
-	."</table></form></td></tr><tr><td></td><td align='right' valign='top'>"
+	. "</td></tr></table></form></td>\n"
+	."</tr>\n"
+	."</table></td></tr><tr><td align='right' valign='top'>"
 	."<form enctype='multipart/form-data' name='importsurvey' action='admin.php' method='post'>\n"
 	."<table><tr> <td align='right' valign='top' style='border: solid 1 #000080'>\n"
 	."<strong>".$clang->gT("Upload a File").":</strong></td></tr><tr><td><input name=\"the_file\" type=\"file\" size=\"7\" /><br />"
 	."<input type='submit' value='".$clang->gT("Upload")."'";
 	if ($templatename == "default") {
-		$templatesoutput.= " disabled";
+		$templatesoutput.= " disabled='disabled'";
 	}
 	$templatesoutput.= " />\n"
 	."<input type='hidden' name='editfile' value='$editfile' />\n"
@@ -594,8 +588,8 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	$templatesoutput.= "\t\t\t<table class='menubar'>\n"
 	. "\t\t\t<tr>\n"
 	. "\t\t\t\t<td colspan='2' height='8'>\n"
-	. "\t\t\t\t\t$setfont<font size='1' color='white'><strong>".$clang->gT("Preview:")."</strong>\n"
-	. "\t\t\t\t</font></font></td>\n"
+	. "\t\t\t\t\t<font size='1' color='white'><strong>".$clang->gT("Preview:")."</strong>\n"
+	. "\t\t\t\t</font></td>\n"
 	. "\t\t\t</tr>\n"
 	."\t<tr>\n"
 	."\t\t<td width='90%' align='center' >\n";

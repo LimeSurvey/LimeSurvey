@@ -115,6 +115,15 @@ textarea {
 	font-size: 10px;
 	color: #FFF;
 }
+.listboxtemplates {
+	margin-top: 10px;
+	height: 20px;
+	font-size: 10px;
+	color: #333;
+	background: SILVER;
+	width: 180px;
+}
+
 .listboxsurveys {
 	margin-top: 10px;
 	height: 20px;
