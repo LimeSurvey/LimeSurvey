@@ -1,7 +1,7 @@
 <table align='center' width='100%' cellpadding='25' cellspacing='0' border='1' style='border-collapse: collapse; border-color: #111111'>
-	{CHECKJAVASCRIPT}
 	<tr>
 		<td align='center' bgcolor='#333333'>
+        	{CHECKJAVASCRIPT}
 			<font face='verdana' size='4' color='yellow'><strong>{SURVEYNAME}</strong></font><br />
 			<font size='2' color='#CCCCCC'>{SURVEYDESCRIPTION}</font>
 		</td>

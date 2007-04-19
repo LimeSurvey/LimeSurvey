@@ -75,9 +75,9 @@ body.default
 </head>
 <body class='default'>
 <table width='75%' align='center' border='1' style='border-collapse: collapse; border-color: #111111' bgcolor='white'>
-{CHECKJAVASCRIPT}
 	<tr>
 		<td align='center'>
+            {CHECKJAVASCRIPT}
 			<table width='100%' cellspacing='0'>
 				<tr>
 					<td align='center' bgcolor='#EEEEEE'>

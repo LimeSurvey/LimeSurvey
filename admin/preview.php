@@ -63,14 +63,14 @@ $ia = array(0 => $qid, 1 => "FIELDNAME", 2 => $qrows['title'], 3 => $qrows['ques
 6 => $qrows['mandatory'], 7 => $qrows['other']);
 $answers = retrieveAnswers($ia);
 $thistpl="$publicdir/templates";
-
-echo "\t\t\t\t<div id='question'";
+doHeader();
+//echo "\t\t\t\t<div id='question'";
 $question="<label for='$answers[0][7]'>" . $answers[0][0] . "</label>";
 $answer=$answers[0][1];
 $help=$answers[0][2];
 $questioncode=$answers[0][5];
 echo templatereplace(file_get_contents("$thistpl/preview.pstpl"));
-echo "\t\t\t\t</div>\n";
+echo "</html>\n";
 
 
 exit;

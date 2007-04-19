@@ -2351,7 +2351,7 @@ function do_array_flexible($ia)
 	} else {
 		$answerwidth=20;
 	}
-	$columnswidth=100-$answerwidth;
+	$columnswidth=100-($answerwidth*2);
 
 	$lresult = db_execute_assoc($lquery);
 	if ($lresult->RecordCount() > 0)
@@ -2405,6 +2405,7 @@ function do_array_flexible($ia)
 			$myfname = $ia[1].$ansrow['code'];
 			if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
 			$answertext=answer_replace($ansrow['answer']);
+			$answertextsave=$answertext;
 			/* Check if this item has not been answered: the 'notanswered' variable must be an array,
 			containing a list of unanswered questions, the current question must be in the array,
 			and there must be no answer available for the item in this session. */
@@ -2427,6 +2428,8 @@ function do_array_flexible($ia)
 					$htmltbody2 = "<tbody id='javatbd$myfname' style='display: '><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on' />";
 				}
 			}
+            if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
+
 			$answer .= "\t\t\t\t$htmltbody2<tr class='$trbc'>\n"
 			. "\t\t\t\t\t<td align='right' class='answertext' width='$answerwidth%'>$answertext\n"
 			. "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
@@ -2454,6 +2457,13 @@ function do_array_flexible($ia)
 				$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
 				// --> END NEW FEATURE - SAVE
 			}
+            if (strpos($answertextsave,'|')) 
+            {
+                $answertext=substr($answertextsave,strpos($answertextsave,'|')+1,1000);
+       			$answer .= "\t\t\t\t<td class='answertext' width='$answerwidth%' align='left'>$answertext</td>\n";
+
+            }
+			
 			$answer .= "\t\t\t\t</tr>\n";
 			$inputnames[]=$myfname;
 			//IF a MULTIPLE of flexi-redisplay figure, repeat the headings
