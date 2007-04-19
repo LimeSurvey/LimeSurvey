@@ -657,7 +657,7 @@ if ($subaction == "browse" || $subaction == "search")
 		{
 			$tokenoutput .= "\t\t<td align='center' valign='top'>\n"
 			."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='I' title='"
-			.$clang->gT("Send invitation email to this entry")."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;subaction=email&amp;tid=".$brow['tid']."', '_top')\" />"
+			.$clang->gT("Send invitation email to this entry")."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?action=tokens&amp;sid=$surveyid&amp;subaction=email&amp;tid=".$brow['tid']."', '_top')\" />"
 			."\t\t</td>\n";
 		}
 
