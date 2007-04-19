@@ -93,6 +93,8 @@ function create_mandatorylist($ia)
 			$thismandatory=setman_ranking($ia);
 			break;
 			case "M":
+			$thismandatory=setman_questionandcode($ia);
+			break;
 			case "J":
 			case "P":
 			case "Q":
@@ -159,9 +161,8 @@ function setman_questionandcode($ia)
 {
 	global $dbprefix, $connect;
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
-	$qresult = db_execute_num($qquery);
-	while(list($other) = $qresult->FetchRow())
-	;
+	$qresult = db_execute_assoc($qquery);
+	while ($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
 	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
 	$ansresult = db_execute_assoc($ansquery);
 	while ($ansrow = $ansresult->FetchRow())
