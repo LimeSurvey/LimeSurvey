@@ -3464,5 +3464,19 @@ if (!function_exists('array_combine')) {
    }
 }
 
+if (!function_exists("stripos")) {
+  function stripos($str,$needle,$offset=0)
+  {
+      return strpos(strtolower($str),strtolower($needle),$offset);
+  }
+}
+
+if(!function_exists('str_ireplace')) {
+    function str_ireplace($search,$replace,$subject) 
+    {
+        $search = preg_quote($search, "/");
+        return preg_replace("/".$search."/i", $replace, $subject); 
+    } 
+}
 
 ?>
