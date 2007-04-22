@@ -1744,9 +1744,9 @@ function templatereplace($line)
 	global $assessments, $s_lang;
 	global $errormsg, $clang;
 
-	if (strpos ($line,"</head>"))
+	if (stripos ($line,"</head>"))
 	{
-		$line=str_replace("</head>",
+		$line=str_ireplace("</head>",
 		"<script type=\"text/javascript\"><!-- \n"
 		."var DOM1;\n"
 		."window.onload=function() {\n"
