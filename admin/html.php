@@ -1291,12 +1291,6 @@ if (returnglobal('viewanswer'))
         		.$clang->gT("Order")
         		."\t</font></strong>";
               	
-              	// this is a dirty trick to make an invisible 'Save all' button the default button of the form so everything gets saved on pressing enter
-              	// it might not be accessible save to non CSS-browsers
-                if ($anscount > 0)
-              	{
-              		$vasummary .= "\t<input style='display: none' type='submit' name='method' value='".$clang->gT("Save All")."'  />";
-              	}
         		
         		
                 $vasummary .= "</td>\n"
@@ -1316,17 +1310,24 @@ if (returnglobal('viewanswer'))
 			if (($activated != 'Y' && $first) || ($activated == 'Y' && $first && (($qtype=='O')  || ($qtype=='L') || ($qtype=='!') ))) 
 			{
 				$vasummary .= "\t<input type='text' name='code_{$row['sortorder']}' value=\"{$row['code']}\" maxlength='5' size='5'"
-				."onkeypress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
+				."onkeypress=\"onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
 				." />";
+			}
+			elseif (($activated != 'N' && $first) ) // If survey is activated and its not one of the above question types who allows modfying answers on active survey
+			{
+				$vasummary .= "\t<input type='hidden' name='code_{$row['sortorder']}' value=\"{$row['code']}\" maxlength='5' size='5'"
+				." />{$row['code']}";
+				
 			}
 			else
 			{
 				$vasummary .= "\t{$row['code']}";
+			
 			}
 
 			$vasummary .= "\t</td>\n"
 			."\t<td width='35%'>\n"
-			."\t<input type='text' name='answer_{$row['language']}_{$row['sortorder']}' maxlength='1000' size='80' value=\"{$row['answer']}\" />\n"
+			."\t<input type='text' name='answer_{$row['language']}_{$row['sortorder']}' maxlength='1000' size='80' value=\"{$row['answer']}\" onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;}\" />\n"
 			."\t</td>\n"
 			."\t<td width='25%'>\n";
 			
@@ -1358,7 +1359,7 @@ if (returnglobal('viewanswer'))
 		}
 		if ($anscount > 0)
 		{
-			$vasummary .= "\t<tr><td colspan='4'><center><input type='submit' name='method' value='".$clang->gT("Save All")."'  />"
+			$vasummary .= "\t<tr><td colspan='4'><center><input type='submit' id='saveallbtn_$anslang' name='method' value='".$clang->gT("Save All")."'  />"
 			."</center></td></tr>\n";
 		}
 		$position=sprintf("%05d", $position);
@@ -1369,18 +1370,18 @@ if (returnglobal('viewanswer'))
 			{
 				$vasummary .= "<tr><td><br /></td></tr><tr><td width='25%' align='right'>"
 				."<strong>".$clang->gT("New Answer").":</strong> ";
-				$vasummary .= "\t<input type='text' name='insertcode' value=\"{$row['code']}\"id='addnewanswercode' maxlength='5' size='5'"
-				."onkeypress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
+				$vasummary .= "\t<input type='text' name='insertcode' value=\"{$row['code']}\"id='addnewanswercode' maxlength='5' size='5' "
+				." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('newanswerbtn').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
 				." />";
 
 
             	$first=false;
 				$vasummary .= "\t</td>\n"
 				."\t<td width='35%'>\n"
-				."\t<input type='text' maxlength='1000' name='insertanswer' size='80' />\n"
+				."\t<input type='text' maxlength='1000' name='insertanswer' size='80' onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('newanswerbtn').click(); return false;}\" />\n"
 				."\t</td>\n"
 				."\t<td width='25%'>\n"
-				."\t<input type='submit' name='method' value='".$clang->gT("Add new Answer")."' />\n"
+				."\t<input type='submit' id='newanswerbtn' name='method' value='".$clang->gT("Add new Answer")."' />\n"
 				."\t<input type='hidden' name='action' value='modanswer' />\n"
 				."\t</td>\n"
 				."\t<td>\n"
@@ -1398,7 +1399,7 @@ if (returnglobal('viewanswer'))
 			$vasummary .= "<tr>\n"
 			."\t<td colspan='4' align='center'>\n"
 			."<font color='red' size='1'><i><strong>"
-			.$clang->gT("Warning")."</strong>: ".$clang->gT("You cannot add answers or edit answer codes for this question type because the survey is active.")."</i></strong></font>\n"
+			.$clang->gT("Warning")."</strong>: ".$clang->gT("You cannot add answers or edit answer codes for this question type because the survey is active.")."</i></font>\n"
 			."\t</td>\n"
 			."</tr>\n";
 		}
@@ -1406,8 +1407,9 @@ if (returnglobal('viewanswer'))
 		$vasummary .= "</tbody></table>\n";
 		$vasummary .=  "<input type='hidden' name='sortorderids' value='$sortorderids' />\n";
 		$vasummary .=  "<input type='hidden' name='codeids' value='$codeids' />\n";
-		$vasummary .= "</div></form>";
+		$vasummary .= "</div>";
 	}
+	$vasummary .= "</div></form></td></tr></table>";
 
 
 }

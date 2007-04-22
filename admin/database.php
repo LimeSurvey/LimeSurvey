@@ -579,23 +579,35 @@ if(isset($surveyid))
 				$newsortorder=sprintf("%05d", $result->fields['maxorder']+1);
 				$anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 				$baselang = GetBaseLanguageFromSurveyID($surveyid);
-				// Add new Answer for Base Language Question
-				$query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language) VALUES ('{$_POST['qid']}', ".$connect->qstr($_POST['insertcode']).", ".$connect->qstr($_POST['insertanswer']).", '{$newsortorder}', 'N','$baselang')";
-	       		if (!$result = $connect->Execute($query))
+				$query = "select * from ".db_table_name('answers')." where code=".$connect->qstr($_POST['insertcode'])." and language='$baselang' and qid={$_POST['qid']}";
+                $result = $connect->Execute($query);				
+                if (isset($result) && $result->RecordCount()>0)
+                
 				{
-					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"Error adding answer: You cannot use the same answer code more than once.\")\n //-->\n</script>\n";
 				}
-				foreach ($anslangs as $anslang)
-				{
-					if(!isset($_POST['default'])) $_POST['default'] = "";
-	    				$query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language) VALUES ('{$_POST['qid']}', ".$connect->qstr($_POST['insertcode']).",".$connect->qstr($_POST['insertanswer']).", '{$newsortorder}', 'N','$anslang')";
-	       		    		if (!$result = $connect->Execute($query))
-					{
-						$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
-					}
-				}
+				 else
+				 {
+        
+        
+        				// Add new Answer for Base Language Question
+        				$query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language) VALUES ('{$_POST['qid']}', ".$connect->qstr($_POST['insertcode']).", ".$connect->qstr($_POST['insertanswer']).", '{$newsortorder}', 'N','$baselang')";
+        	       		if (!$result = $connect->Execute($query))
+        				{
+        					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+        				}
+        				foreach ($anslangs as $anslang)
+        				{
+        					if(!isset($_POST['default'])) $_POST['default'] = "";
+        	    				$query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language) VALUES ('{$_POST['qid']}', ".$connect->qstr($_POST['insertcode']).",".$connect->qstr($_POST['insertanswer']).", '{$newsortorder}', 'N','$anslang')";
+        	       		    		if (!$result = $connect->Execute($query))
+        					{
+        						$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+        					}
+        				}
+        		}
 			} else {
-				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Invalid answer code supplied","js")."\")\n //-->\n</script>\n";
+				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Invalid or empty answer code supplied","js")."\")\n //-->\n</script>\n";
 			}
 		break;
 		// Save all answers with one button
