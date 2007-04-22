@@ -455,24 +455,6 @@ else
 				}
 			}
 		}
-		if (isset($useidprefix) && $useidprefix == 1 && !isset($autonumberquery))
-		{
-			if (!isset($idprefix) || $idprefix == 0 || is_string($idprefix))
-			{
-				$idprefix="";
-				$elements=explode(".", $_SERVER['SERVER_ADDR']);
-				foreach ($elements as $element)
-				{
-					$idprefix.=sprintf("%03d", $element);
-				}
-			}
-			$idprefix = "{$idprefix}0000000"; //Setting 7 zeros at the end allows for up to 9,999,999 responses
-			$autonumberquery = "ALTER TABLE {$dbprefix}survey_{$_GET['sid']} AUTO_INCREMENT = ".$idprefix;
-			if (!$result = $connect->Execute($autonumberquery))
-			{
-				$activateoutput .= "There was an error defining the autonumbering to start at $idprefix.<br />";
-			}
-		}
 
 		$activateoutput .= "<br />\n<table bgcolor='#FFFFFF' width='350' align='center' style='border: 1px solid #555555' cellpadding='6' cellspacing='0'>\n";
 		$activateoutput .= "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Activate Survey")." ($surveyid)</strong></font></td></tr>\n";

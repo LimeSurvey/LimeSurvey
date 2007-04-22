@@ -584,7 +584,7 @@ if(isset($surveyid))
                 if (isset($result) && $result->RecordCount()>0)
                 
 				{
-					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"Error adding answer: You cannot use the same answer code more than once.\")\n //-->\n</script>\n";
+					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Error adding answer: You can't use the same answer code more than once.","js")."\")\n //-->\n</script>\n";
 				}
 				 else
 				 {

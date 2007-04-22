@@ -92,12 +92,14 @@ if (isset($_POST['move']) && $_SESSION['step'] != 0 && $_POST['move'] != "movela
 if (isset($_POST['move']) && $_POST['move'] == "movesubmit")
 {
 
-	if ($thissurvey['refurl'] == "Y")                 {
+	if ($thissurvey['refurl'] == "Y")                 
+    {
 		if (!in_array("refurl", $_SESSION['insertarray'])) //Only add this if it doesn't already exist
 		{
 			$_SESSION['insertarray'][] = "refurl";
 		}
-		$_SESSION['refurl'] = $_SESSION['refurl'];                 }
+		//$_SESSION['refurl'] = $_SESSION['refurl'];                 
+    }
 
 
 		//COMMIT CHANGES TO DATABASE
@@ -171,8 +173,13 @@ if (isset($_POST['move']) && $_POST['move'] == "movesubmit")
 			{
 				//Automatically redirect the page to the "url" setting for the survey
 				session_write_close();
-//RL: added token in redirect
-				$redir = $thissurvey['url']."?token=".$mytoken;
+                $redir = $thissurvey['url'];
+                
+                // Add the token to the redirect just in case
+                if (isset($mytoken)) 
+                {
+				$redir .= "?token=".$mytoken;
+				}
 				header("Location: {$redir}");
 			}
 

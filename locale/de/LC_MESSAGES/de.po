@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-04-18 22:44+0100\n"
+"PO-Revision-Date: 2007-04-22 21:46+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1124,12 +1124,16 @@ msgstr "Frage konnte nicht gelöscht werden."
 msgid "Add new Answer"
 msgstr "Neue Antwort hinzufügen"
 
+# D:\web\xampp\htdocs\phpsurveyor/admin/database.php:587
+msgid "Error adding answer: You can't use the same answer code more than once."
+msgstr "Fehler beim Hinzufügen der Antwort: Sie dürfen nicht den gleichen Antwortcode innerhalb einer Frage verwenden."
+
 msgid "Failed to insert answer"
 msgstr "Konnte Antwort nicht hinzufügen."
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/database.php:566
-msgid "Invalid answer code supplied"
-msgstr "Ungültiger Antwortcode angegeben"
+msgid "Invalid or empty answer code supplied"
+msgstr "Ungültiger oder leerer Antwortcode eingegeben"
 
 msgid "Save All"
 msgstr "Alles Speichern"

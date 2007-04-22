@@ -103,7 +103,7 @@ if($actsurrows['delete_survey'])
 		if (in_array("{$dbprefix}survey_$surveyid", $tablelist)) //delete the survey_$surveyid table
 		{			
 			$dsquery = $dict->DropTableSQL("{$dbprefix}survey_$surveyid");	
-			$dict->ExecuteSQLArray($sqlarray);		
+			//$dict->ExecuteSQLArray($sqlarray);		
 			$dsresult = $dict->ExecuteSQLArray($dsquery) or die ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
 		}
 	
