@@ -78,7 +78,8 @@ if (!isset($_SESSION['grouplist'])  && (isset($_POST['move'])) )
 // Set the language of the survey, either from POST, GET parameter of session var
 if (isset($_POST['lang']) && $_POST['lang']!='')  // this one comes from the language question
 {
-    $_POST['lang'] = preg_replace("/[^a-zA-Z0-9_]/", "", $_POST['lang']);
+    $_POST['lang'] = preg_replace("/[^a-zA-Z0-9-]/", "", $_POST['lang']);
+//    echo $_POST['lang'];
 	if ($_POST['lang']) $clang = SetSurveyLanguage( $surveyid, $_POST['lang']);
 	UpdateSessionGroupList();  // to refresh the language strings in the group list session variable
 	UpdateFieldArray();        // to refresh question titles and question text 
@@ -86,7 +87,7 @@ if (isset($_POST['lang']) && $_POST['lang']!='')  // this one comes from the lan
 else 
 if (isset($_GET['lang']))
 {
-	$_GET['lang'] = preg_replace("/[^a-zA-Z0-9_]/", "", $_GET['lang']);
+	$_GET['lang'] = preg_replace("/[^a-zA-Z0-9-]/", "", $_GET['lang']);
 	if ($_GET['lang']) $clang = SetSurveyLanguage( $surveyid, $_GET['lang']);
 } 
 
@@ -1607,6 +1608,10 @@ function UpdateFieldArray()
     	while ( list($key) = each($_SESSION['fieldarray']) )
     	{
       		$questionarray =& $_SESSION['fieldarray'][$key];
+
+           	$query = "SELECT * FROM ".db_table_name('questions')." WHERE qid=".$questionarray[0]." AND language='".$_SESSION['s_lang']."'";
+        	$result = db_execute_assoc($query) or die ("Couldn't get question <br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+        	$row = $result->FetchRow();
    	  		$questionarray[2]=$row['title'];
   	  		$questionarray[3]=$row['question'];
       		unset($questionarray);
@@ -1616,13 +1621,6 @@ function UpdateFieldArray()
 // This seems to only work in PHP 5 because of the referenced (&) array in the foreach construct
 /*    foreach($_SESSION['fieldarray'] as &$questionarray) 
     {
-       	$query = "SELECT * FROM ".db_table_name('questions')." WHERE qid=".$questionarray[0]." AND language='".$_SESSION['s_lang']."'";
-    	$result = db_execute_assoc($query) or die ("Couldn't get question <br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-    	while ($row = $result->FetchRow())
-    	{
-    		$questionarray[2]=$row['title'];
-    		$questionarray[3]=$row['question'];
-    	}
     }
     */
 }

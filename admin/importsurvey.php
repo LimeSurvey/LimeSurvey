@@ -401,10 +401,10 @@ if ($importversion<=100)
          $newlanguage='bg';
          break;
       case "chinese-simplified":
-         $newlanguage='cns';
+         $newlanguage='zh-Hans';
          break;
       case "chinese-traditional":
-         $newlanguage='cnt';
+         $newlanguage='zh-Hant';
          break;
       case "croatian":
          $newlanguage='hr';
@@ -422,13 +422,13 @@ if ($importversion<=100)
          $newlanguage='fr';
          break;
       case "german-informal":
-         $newlanguage='de_informal';
+         $newlanguage='de-informal';
          break;
       case "german":
          $newlanguage='de';
          break;
       case "greek":
-         $newlanguage='gr';
+         $newlanguage='el';
          break;
       case "hungarian":
          $newlanguage='hu';
@@ -437,7 +437,7 @@ if ($importversion<=100)
          $newlanguage='it';
          break;
       case "japanese":
-         $newlanguage='jp';
+         $newlanguage='ja';
          break;
       case "lithuanian":
          $newlanguage='lt';
@@ -455,13 +455,13 @@ if ($importversion<=100)
          $newlanguage='ru';
          break;
       case "slovenian":
-         $newlanguage='si';
+         $newlanguage='sl';
          break;
       case "spanish":
          $newlanguage='es';
          break;
       case "swedish":
-         $newlanguage='se';
+         $newlanguage='sv';
          break;
       }	
 

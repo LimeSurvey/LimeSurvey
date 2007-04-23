@@ -215,41 +215,21 @@ if (isset($_POST['move']) && $_POST['move'] == "movelast" && (!isset($notanswere
 	if ($thissurvey['private'] != "N")
 	{
 		$privacy="";
-//		foreach (file("$thistpl/privacy.pstpl") as $op)
-//		{
-//			$privacy .= templatereplace($op);
-//		}
 			$privacy .= templatereplace(file_get_contents("$thistpl/privacy.pstpl"));
 
 	}
-//	foreach(file("$thistpl/startpage.pstpl") as $op)
-//	{
-//		echo templatereplace($op);
-//	}
 		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
 	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' name='phpsurveyor'>\n";
 
 	echo "\n\n<!-- START THE SURVEY -->\n";
-//	foreach(file("$thistpl/survey.pstpl") as $op)
-//	{
-//		echo "\t\t".templatereplace($op);
-//	}
 		echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 
 	//READ SUBMIT TEMPLATE
-//	foreach(file("$thistpl/submit.pstpl") as $op)
-//	{
-//		echo "\t\t\t".templatereplace($op);
-//	}
 		echo templatereplace(file_get_contents("$thistpl/submit.pstpl"));
 
 	$navigator = surveymover();
 	echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
-//	foreach(file("$thistpl/navigator.pstpl") as $op)
-//	{
-//		echo "\t\t".templatereplace($op);
-//	}
 		echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
 	print <<<END
 	<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep' />
@@ -258,11 +238,7 @@ if (isset($_POST['move']) && $_POST['move'] == "movelast" && (!isset($notanswere
 	</form>
 
 END;
-//	foreach(file("$thistpl/endpage.pstpl") as $op)
-//	{
-//		echo templatereplace($op);
-//	}
-		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 
 	doFooter();
 	exit;
@@ -272,19 +248,11 @@ END;
 if ($surveyexists <1)
 {
 	//SURVEY DOES NOT EXIST. POLITELY EXIT.
-//	foreach(file("$thistpl/startpage.pstpl") as $op)
-//	{
-//		echo templatereplace($op);
-//	}
 		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
 	echo "\t<center><br />\n";
 	echo "\t".$clang->gT("Sorry. There is no matching survey.")."<br />&nbsp;\n";
-//	foreach(file("$thistpl/endpage.pstpl") as $op)
-//	{
-//		echo templatereplace($op);
-//	}
-		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 
 	exit;
 }
@@ -295,28 +263,16 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	$totalquestions = buildsurveysession();
 	sendcacheheaders();
 	doHeader();
-//	foreach(file("$thistpl/startpage.pstpl") as $op)
-//	{
-//		echo templatereplace($op);
-//	}
-		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' name='phpsurveyor'>\n";
 
 	echo "\n\n<!-- START THE SURVEY -->\n";
 
-//	foreach(file("$thistpl/welcome.pstpl") as $op)
-//	{
-//		echo "\t\t\t".templatereplace($op);
-//	}
-		echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"));
+	echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"));
 
 	echo "\n";
 	$navigator = surveymover();
-//	foreach(file("$thistpl/navigator.pstpl") as $op)
-//	{
-//		echo templatereplace($op);
-//	}
-		echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
+	echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
 
 	if ($thissurvey['active'] != "Y")
 	{
@@ -325,11 +281,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
 	echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
 	echo "\n</form>\n";
-//	foreach(file("$thistpl/endpage.pstpl") as $op)
-//	{
-//		echo templatereplace($op);
-//	}
-		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 
 	doFooter();
 	exit;
