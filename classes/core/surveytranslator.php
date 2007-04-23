@@ -68,12 +68,12 @@
 	    $supportedLanguages['bg']['nativedescription'] = '&#x0411;&#x044a;&#x043b;&#x0433;&#x0430;&#x0440;&#x0441;&#x043a;&#x0438;';
 
         // Chinese (Simplified)
-	    $supportedLanguages['cnt']['description'] = $clang->gT('Chinese (Traditional)');
-	    $supportedLanguages['cnt']['nativedescription'] = '&#31616;&#20307;&#20013;&#25991;';
+	    $supportedLanguages['zh-Hant']['description'] = $clang->gT('Chinese (Traditional)');
+	    $supportedLanguages['zh-Hant']['nativedescription'] = '&#31616;&#20307;&#20013;&#25991;';
 
         // Chinese (Traditional)
-	    $supportedLanguages['cns']['description'] = $clang->gT('Chinese (Simplified)');
-	    $supportedLanguages['cns']['nativedescription'] = '&#31616;&#20307;&#20013;&#25991;';
+	    $supportedLanguages['zh-Hans']['description'] = $clang->gT('Chinese (Simplified)');
+	    $supportedLanguages['zh-Hans']['nativedescription'] = '&#31616;&#20307;&#20013;&#25991;';
 
         // Croatian
 	    $supportedLanguages['hr']['description'] = $clang->gT('Croatian');
@@ -105,12 +105,12 @@
 	    $supportedLanguages['de']['nativedescription'] = 'Deutsch (Sie)';
 
         // German informal
-	    $supportedLanguages['de_informal']['description'] = $clang->gT('German informal');
-	    $supportedLanguages['de_informal']['nativedescription'] = 'Deutsch (Du)';
+	    $supportedLanguages['de-informal']['description'] = $clang->gT('German informal');
+	    $supportedLanguages['de-informal']['nativedescription'] = 'Deutsch (Du)';
 
 	    // Greek
-	    $supportedLanguages['gr']['description'] = $clang->gT('Greek');
-	    $supportedLanguages['gr']['nativedescription'] = '&#949;&#955;&#955;&#951;&#957;&#953;&#954;&#940;';
+	    $supportedLanguages['el']['description'] = $clang->gT('Greek');
+	    $supportedLanguages['el']['nativedescription'] = '&#949;&#955;&#955;&#951;&#957;&#953;&#954;&#940;';
 
 	    // Hebrew
 	    $supportedLanguages['he']['description'] = $clang->gT('Hebrew');
@@ -125,8 +125,8 @@
 	    $supportedLanguages['it']['nativedescription'] = 'Italiano';
 
 	    // Japanese
-	    $supportedLanguages['jp']['description'] = $clang->gT('Japanese');
-	    $supportedLanguages['jp']['nativedescription'] = '&#x65e5;&#x672c;&#x8a9e;';
+	    $supportedLanguages['ja']['description'] = $clang->gT('Japanese');
+	    $supportedLanguages['ja']['nativedescription'] = '&#x65e5;&#x672c;&#x8a9e;';
 
 	    // Lithuanian
 	    $supportedLanguages['lt']['description'] = $clang->gT('Lithuanian');
@@ -141,8 +141,8 @@
 	    $supportedLanguages['pt']['nativedescription'] = 'Portugu&#234;s';
 
 	    // Brazilian Portuguese
-	    $supportedLanguages['pt_br']['description'] = $clang->gT('Portuguese (Brazilian)');
-	    $supportedLanguages['pt_br']['nativedescription'] = 'Portugu&#234;s do Brasil';
+	    $supportedLanguages['pt-BR']['description'] = $clang->gT('Portuguese (Brazilian)');
+	    $supportedLanguages['pt-BR']['nativedescription'] = 'Portugu&#234;s do Brasil';
 
 
 	    // Russian
@@ -154,20 +154,20 @@
 	    $supportedLanguages['ro']['nativedescription'] = 'Romanian?';
 
 	    // Slovenian
-	    $supportedLanguages['si']['description'] = $clang->gT('Slovenian');
-	    $supportedLanguages['si']['nativedescription'] = 'Sloven&#353;&#269;ina';
+	    $supportedLanguages['sl']['description'] = $clang->gT('Slovenian');
+	    $supportedLanguages['sl']['nativedescription'] = 'Sloven&#353;&#269;ina';
 
 	    // Spanish
 	    $supportedLanguages['es']['description'] = $clang->gT('Spanish');
 	    $supportedLanguages['es']['nativedescription'] = 'Espa&#241;ol';
 
 	    // Swedish
-	    $supportedLanguages['se']['description'] = $clang->gT('Swedish');
-	    $supportedLanguages['se']['nativedescription'] = 'Svenska';
+	    $supportedLanguages['sv']['description'] = $clang->gT('Swedish');
+	    $supportedLanguages['sv']['nativedescription'] = 'Svenska';
 
 	    // Vietnamese
-	    $supportedLanguages['vn']['description'] = $clang->gT('Vietnamese');
-	    $supportedLanguages['vn']['nativedescription'] = 'Ti&#7871;ng Vi&#7879;t';
+	    $supportedLanguages['vi']['description'] = $clang->gT('Vietnamese');
+	    $supportedLanguages['vi']['nativedescription'] = 'Ti&#7871;ng Vi&#7879;t';
 
 
         Return $supportedLanguages;
