@@ -130,8 +130,8 @@ elseif (isset($surveyid) && $surveyid)
 		$vvoutput .= $beach;
 		unset($sun);
 		$vvoutput .= "\n";
-		echo $vvoutput;
 	}
+	echo $vvoutput;
 	exit;
 
 	//$vvoutput .= "<pre>$firstline</pre>";

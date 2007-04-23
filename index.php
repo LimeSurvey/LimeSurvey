@@ -1017,7 +1017,7 @@ function sendsubmitnotification($sendnotification)
 
 function submitfailed()
 {
-	global $thissurvey;
+	global $thissurvey, $clang;
 	global $thistpl, $subquery, $surveyid, $connect;
 	sendcacheheaders();
 	doHeader();
@@ -1038,7 +1038,7 @@ function submitfailed()
 		. "$subquery\n\n"
 		. $clang->gT("ERROR MESSAGE").":\n"
 		. $connect->ErrorMsg()."\n\n";
-		MailTextMessage($email, _DNSAVEEMAIL5, $thissurvey['adminemail'], $thissurvey['adminemail'], "PHPSurveyor");
+		MailTextMessage($email, $clang->gT("Error saving results"), $thissurvey['adminemail'], $thissurvey['adminemail'], "PHPSurveyor");
 		echo "<!-- EMAIL CONTENTS:\n$email -->\n";
 		//An email has been sent, so we can kill off this session.
 		session_unset();

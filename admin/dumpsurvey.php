@@ -88,11 +88,11 @@ $slsquery = "SELECT * FROM {$dbprefix}surveys_languagesettings WHERE surveyls_su
 $slsdump = BuildCSVFromQuery($slsquery);
 
 //3: Groups Table
-$gquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid";
+$gquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid order by gid";
 $gdump = BuildCSVFromQuery($gquery);
 
 //4: Questions Table
-$qquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid";
+$qquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid order by qid";
 $qdump = BuildCSVFromQuery($qquery);
 
 //5: Answers table
