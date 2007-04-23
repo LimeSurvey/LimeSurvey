@@ -50,7 +50,7 @@ if (!is_dir($thistpl)) {$thistpl=$tpldir."/default";}
 // Set the language of the survey, either from GET parameter of session var
 if (isset($_GET['lang']))
 {
-	$_GET['lang'] = preg_replace("/[^a-zA-Z0-9_]/", "", $_GET['lang']);
+	$_GET['lang'] = preg_replace("/[^a-zA-Z0-9-]/", "", $_GET['lang']);
 	if ($_GET['lang']) $surveyprintlang = $_GET['lang'];
 } else
 {

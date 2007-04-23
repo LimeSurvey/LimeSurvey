@@ -131,8 +131,8 @@ elseif (isset($surveyid) && $surveyid)
 		unset($sun);
 		$vvoutput .= "\n";
 		echo $vvoutput;
-		exit;
 	}
+	exit;
 
 	//$vvoutput .= "<pre>$firstline</pre>";
 	//$vvoutput .= "<pre>$secondline</pre>";
