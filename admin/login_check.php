@@ -64,7 +64,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
 							</table>						
 						</form>";	
 	}
-	else
+	elseif (!isset($loginsummary))
 	{
 		$refererargs=''; // If this is a direct access to admin.php, no args are given
 		// If we are called from a link with action and other args set, get them
@@ -72,7 +72,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
 		{
 			$refererargs = html_escape($_SERVER['QUERY_STRING']);
 		}
-
+        
 		$loginsummary = "<form name='login' id='login' method='post' action='$rooturl/admin/admin.php' ><br /><strong>".$clang->gT("You have to login first.")."</strong><br />	<br />
 							<table>
 								<tr>

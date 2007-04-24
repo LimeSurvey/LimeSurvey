@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-04-24 19:16+0100\n"
+"PO-Revision-Date: 2007-04-24 21:37+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -2447,6 +2447,9 @@ msgstr "Neues Beschriftung-Set hinzufügen"
 msgid "Labelsets"
 msgstr "Beschriftungsvorlage"
 
+msgid "Error: You have to enter a name for this label set."
+msgstr "Fehler: Sie müssen einen Titel für dieses Beschriftungsset angeben."
+
 msgid "Create New Label Set"
 msgstr "Neues Beschriftung-Set"
 
@@ -3038,6 +3041,10 @@ msgstr "Eine Sicherheitskopie dieser Tabelle wurde erstellt. Nur der Systemadmin
 
 msgid "Email Invitation"
 msgstr "Einladung an Probanden versenden"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:746
+msgid "to TokenID No"
+msgstr "an TokenID-Nr:"
 
 msgid "From"
 msgstr "Von"
