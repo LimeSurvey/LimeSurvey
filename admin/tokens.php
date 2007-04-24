@@ -743,7 +743,7 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 		if (isset($_GET['tid']) && $_GET['tid'])
 		{
 			$tokenoutput .= "<tr><td bgcolor='silver' colspan='2'><font size='1'>"
-			."to TokenID No {$_GET['tid']}"
+			.$clang->gT("to TokenID No")." {$_GET['tid']}"
 			."</font></font></td></tr>";
 		}
 		$tokenoutput .= "\t<tr>\n"
