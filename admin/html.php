@@ -138,7 +138,7 @@ if ($action == "listsurveys")
 					    "<td>&nbsp;</td>
 					    <td>&nbsp;</td>";
 
-					    if ($status=="Active")
+					    if ($status==$clang->gT("Active"))
 					    {
 					        $listsurveys .= "<td colspan=\"3\" align='center'>".$responses."</td>";
 					    }else{
