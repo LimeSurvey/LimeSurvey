@@ -1636,7 +1636,7 @@ if($actsurrows['browse_response']){
 							if ($dearow['default_value'] == "Y") {$datatemp .= " selected"; $defexists = "Y";}
 							$datatemp .= ">{$dearow['answer']}</option>\n";
 						}
-						if (!$defexists) {$dataentryoutput .= "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n".$datatemp;}
+						if ($defexists=="") {$dataentryoutput .= "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n".$datatemp;}
 						else {$dataentryoutput .=$datatemp;}
 
 						$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$deqrow['qid']} AND language='{$baselang}'";
@@ -1669,7 +1669,7 @@ if($actsurrows['browse_response']){
 						if ($dearow['default_value'] == "Y") {$datatemp .= " selected"; $defexists = "Y";}
 						$datatemp .= ">{$dearow['answer']}</option>\n";
 					}
-					if (!$defexists) {$dataentryoutput .= "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n".$datatemp;}
+					if ($defexists=="") {$dataentryoutput .= "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n".$datatemp;}
 					else  {$dataentryoutput .= $datatemp;}
 					$dataentryoutput .= "\t\t\t</select>\n"
 					."\t\t\t<br />".$clang->gT("Comment").":<br />\n"
@@ -1900,17 +1900,8 @@ if($actsurrows['browse_response']){
 						}
 					}
 					break;
-					case "J": //FILE CSV MORE
-					$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-					$mearesult = db_execute_assoc($meaquery);
-					while ($mearow = $mearesult->FetchRow())
-					{
-						$dataentryoutput .= "\t\t\t$setfont<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['code']}' value='Y'";
-						if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
-						$dataentryoutput .= " />{$mearow['answer']}<br />\n";
-					}
-					break;
-					case "I": //FILE CSV ONE - LIST drop-down/radio-button list
+					case "I": //Language Switch
+					$defexists='';
 					$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$dearesult = db_execute_assoc($deaquery);
 					$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n";
@@ -1920,7 +1911,7 @@ if($actsurrows['browse_response']){
 						if ($dearow['default_value'] == "Y") {$dataentryoutput .= " selected"; $defexists = "Y";}
 						$dataentryoutput .= ">{$dearow['answer']}</option>\n";
 					}
-					if (!$defexists) {$dataentryoutput .= "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n";}
+					if ($defexists='') {$dataentryoutput .= "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n";}
 					break;
 					case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
 					$dataentryoutput .= "<table border='0'>\n";

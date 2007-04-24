@@ -643,8 +643,9 @@ if ($action == "mailsendusergroup")
 	if($result->RecordCount() > 0)
 	{
 		$from_user = "SELECT email, user FROM ".db_table_name("users")." WHERE uid = " .$_SESSION['loginID'];
-		$from_user_result = mysql_query($from_user);
-		$from_user_row = mysql_fetch_array($from_user_result, MYSQL_BOTH);
+		$from_user_result = db_execute_assoc($from_user);
+		$from_user_row = $grpresult->FetchRow();
+
 		$from = $from_user_row['user'].' <'.$from_user_row['email'].'> ';
 
 		$ugid = $_POST['ugid'];
@@ -661,9 +662,9 @@ if ($action == "mailsendusergroup")
 		$body = str_replace("\n.", "\n..", $body);
 		$body = wordwrap($body, 70);
 
-		if (mail($to, $subject, $body, "From: $from"))
+		if (MailTextMessage( $body, $subject, $to, "From: $from",''))
 		{
-			$usersummary = "<br /><strong>".("Message sent successfully!")."</strong><br />\n"
+			$usersummary = "<br /><strong>".$clang->gT("Message(s) sent successfully!")."</strong><br />\n"
 			. "<br />To: $addressee<br />\n"
 			. "<br /><a href='$scriptname?action=editusergroups&amp;ugid={$ugid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
