@@ -95,7 +95,7 @@ $degresult = db_execute_assoc($degquery);
 // GROUP NAME
 while ($degrow = $degresult->FetchRow())
 {
-	$deqquery = "SELECT * FROM ".db_table_name("questions")." WHERE sid=$surveyid AND gid={$degrow['gid']} AND language='{$surveyprintlang}' ORDER BY question_order";
+	$deqquery = "SELECT * FROM ".db_table_name("questions")." WHERE sid=$surveyid AND gid={$degrow['gid']} AND language='{$surveyprintlang}' AND TYPE<>'I' ORDER BY question_order";
 	$deqresult = db_execute_assoc($deqquery);
 	$deqrows = array(); //Create an empty array in case FetchRow does not return any rows
 	while ($deqrow = $deqresult->FetchRow()) {$deqrows[] = $deqrow;} // Get table output into array
@@ -299,7 +299,7 @@ while ($degrow = $degresult->FetchRow())
 			if ($dcols > 0 && $deacount >= $dcols)
 			{
 				$width=sprintf("%0d", 100/$dcols);
-				$maxrows=ceil(100*($meacount/$dcols)/100); //Always rounds up to nearest whole number
+				$maxrows=ceil(100*($deacount/$dcols)/100); //Always rounds up to nearest whole number
 				$divider="</td>\n <td valign='top' width='$width%' nowrap='nowrap'>";
 				$upto=0;
 				$printablesurveyoutput .="<table class='question'><tr>\n <td valign='top' width='$width%' nowrap='nowrap'>";
@@ -351,7 +351,7 @@ while ($degrow = $degresult->FetchRow())
 			if ($dcols > 0 && $deacount >= $dcols)
 			{
 				$width=sprintf("%0d", 100/$dcols);
-				$maxrows=ceil(100*($meacount/$dcols)/100); //Always rounds up to nearest whole number
+				$maxrows=ceil(100*($deacount/$dcols)/100); //Always rounds up to nearest whole number
 				$divider=" </td>\n <td valign='top' width='$width%' nowrap='nowrap'>";
 				$upto=0;
 				$printablesurveyoutput .="<table class='question'><tr>\n <td valign='top' width='$width%' nowrap='nowrap'>";
@@ -463,24 +463,17 @@ while ($degrow = $degresult->FetchRow())
 				}
 			}
 			break;
-			case "J":  //FILE CSV MORE
-			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose *all* that apply:")."</u><br />\n";
-			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
-			$mearesult = db_execute_assoc($meaquery);
-			while ($mearow = $mearesult->FetchRow())
-			{
-				$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y' />{$mearow['answer']}<br />\n";
-			}
-			break;
-			case "I":  //FILE CSV ONE
+			/*case "I":  //Language Switch  in a printable survey does not make sense
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose *only one* of the following:")."</u><br />\n";
-			$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
-			$dearesult = db_execute_assoc($deaquery);
-			while ($dearow = $mearesult->FetchRow())
-			{
-				$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' />{$dearow['answer']}<br />\n";
+        	$answerlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+        	$answerlangs [] = GetBaseLanguageFromSurveyID($surveyid);
+
+        	foreach ($answerlangs as $ansrow)
+        	{
+				$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='{$ansrow}' />".getLanguageNameFromCode($ansrow, true)."<br />\n";
 			}
-			break;
+			break; 
+            */
 
 			case "P":  //MULTIPLE OPTIONS WITH COMMENTS
 			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
