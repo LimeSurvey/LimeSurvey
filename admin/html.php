@@ -368,13 +368,13 @@ if ($surveyid)
 		. "<strong>".$clang->gT("Survey")."</strong> "
 		. "<font color='silver'>{$s1row['surveyls_title']} (ID:$surveyid)</font></td></tr>\n"
 		. "\t\t\t\t<tr ><td align='right' height='22'>\n";
-		if ($activated == "N" && $sumcount3>0)
+		if ($activated == "N" )
 		{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/inactive.png' "
 			. "title='' alt='".$clang->gT("This survey is not currently active")."' border='0' hspace='0' align='left'"
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("This survey is not currently active", "js")."');return false\" />\n";
-			if($sumrows5['activate_survey'])
+			if($sumrows5['activate_survey'] && $sumcount3>0)
 			{
 				$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=activate&amp;sid=$surveyid', '_top')\""
 				. "onmouseout=\"hideTooltip()\""
@@ -383,7 +383,8 @@ if ($surveyid)
 			}
 			else
 			{
-				$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='14' align='left' border='0' hspace='0' />\n";
+				$surveysummary .= "<img src='$imagefiles/activate_disabled.png' onmouseout=\"hideTooltip()\""
+				. "onmouseover=\"showTooltip(event,'".$clang->gT("Survey cannot be activated. Either you have no permission or there are no questions.", "js")."');return false\" name='ActivateSurvey' title='' alt='".$clang->gT("Survey cannot be activated. Either you have no permission or there are no questions.")."' align='left' /></a>\n" ;
 			}
 		}
 		elseif ($activated == "Y")
@@ -414,13 +415,6 @@ if ($surveyid)
 			{
 				$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='14' align='left' border='0' hspace='0' />\n";
 			}
-		}
-		elseif ($activated == "N")
-		{
-			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/inactive.png' title='".$clang->gT("This survey is not currently active")."' "
-			. "alt='".$clang->gT("This survey is not currently active")."' border='0' hspace='0' align='left' />\n"
-			. "\t\t\t\t\t<img src='$imagefiles/blank.gif' width='14' title='".$clang->gT("Cannot Activate this Survey")."' "
-			. "alt='".$clang->gT("Cannot Activate this Survey")."' border='0' align='left' hspace='0' />\n";
 		}
 
 		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n";
