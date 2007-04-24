@@ -1099,7 +1099,7 @@ if($actsurrows['browse_response']){
 							$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 							$dataentryoutput .= "\t<tr>\n"
 							."\t\t<td align='right' valign='top'>$setfont{$fnames[$i][6]}</font></td>\n";
-							$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$fnames[$i][8]}' order by sortorder, code";
+							$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$fnames[$i][8]}' and language='$language' order by sortorder, code";
 							$fresult = db_execute_assoc($fquery);
 							$dataentryoutput .= "\t\t<td>$setfont\n";
 							while ($frow=$fresult->FetchRow())
@@ -1472,7 +1472,7 @@ if($actsurrows['browse_response']){
 							default:
 								$value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
 								$fquery = "SELECT * FROM ".db_table_name("labels")."\n"
-								. "WHERE lid='{$conrow['lid']}'\n"
+								. "WHERE lid='{$conrow['lid']}'\n and language='$language' "
 								. "AND code='{$conrow['value']}'";
 								$fresult=db_execute_assoc($fquery) or die("$fquery<br />".htmlspecialchars($connect->ErrorMsg()));
 								while($frow=$fresult->FetchRow())
@@ -2046,17 +2046,27 @@ if($actsurrows['browse_response']){
 					break;
 					case "F": //ARRAY (Flexible Labels)
 					case "H":
-						$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+						$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} and language='$language' ORDER BY sortorder, answer";
 						$mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".htmlspecialchars($connect->ErrorMsg()));
 						$dataentryoutput .= "<table>\n";
 						while ($mearow = $mearesult->FetchRow())
 						{
-							$dataentryoutput .= "\t<tr>\n";
-							$dataentryoutput .= "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
+						    if (strpos($mearow['answer'],'|'))
+                            {
+                              $answerleft=substr($mearow['answer'],0,strpos($mearow['answer'],'|'));
+                              $answerright=substr($mearow['answer'],strpos($mearow['answer'],'|')+1);
+                            } 
+                              else 
+                              {
+                                $answerleft=$mearow['answer'];
+                                $answerright='';
+                              }
+                        	$dataentryoutput .= "\t<tr>\n";
+							$dataentryoutput .= "\t\t<td align='right'>{$answerleft}</td>\n";
 							$dataentryoutput .= "\t\t<td>\n";
 							$dataentryoutput .= "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
 							$dataentryoutput .= "\t\t\t\t<option value=''>".$clang->gT("Please choose")."..</option>\n";
-							$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} ORDER BY sortorder, code";
+							$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} and language='$language' ORDER BY sortorder, code";
 							$fresult = db_execute_assoc($fquery);
 							while ($frow = $fresult->FetchRow())
 							{
@@ -2064,6 +2074,7 @@ if($actsurrows['browse_response']){
 							}
 							$dataentryoutput .= "\t\t\t</select>\n";
 							$dataentryoutput .= "\t\t</td>\n";
+							$dataentryoutput .= "\t\t<td align='left'>{$answerright}</td>\n";
 							$dataentryoutput .= "</tr>\n";
 						}
 						$dataentryoutput .= "</table>\n";
