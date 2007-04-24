@@ -666,7 +666,7 @@ if ($subaction == "browse" || $subaction == "search")
 		{
 			$tokenoutput .= "\t\t<td align='center' valign='top'>\n"
 			."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='R' title='"
-			.$clang->gT("Send reminder email to this entry")."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;subaction=remind&amp;tid=$brow[0]', '_top')\" />"
+			.$clang->gT("Send reminder email to this entry")."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=tokens&amp;subaction=remind&amp;tid=".$brow['tid']."', '_top')\" />"
 			."\t\t</td>\n";
 		}
 		else
@@ -830,7 +830,7 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 				else
 				{
 					$tokenoutput .= ReplaceFields($clang->gT("Mail to {FIRSTNAME} {LASTNAME} ({EMAIL}) Failed"), $fieldsarray);
-					$tokenoutput .= "<br /><pre>$headers<br />$message</pre>";
+					$tokenoutput .= "<br /><pre>$modsubject<br />$modmessage</pre>";
 				}
 			}
 			if ($ctcount > $emcount)
@@ -949,7 +949,7 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 		$ctresult = $connect->Execute($ctquery) or die ("Database error!<br />\n" . htmlspecialchars($connect->ErrorMsg()));
 		$ctcount = $ctresult->RecordCount();
 		$ctfieldcount = $ctresult->FieldCount();
-		$emquery = "SELECT firstname, lastname, email, token, tid";
+		$emquery = "SELECT firstname, lastname, email, token, tid, language ";
 		if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
 
 		// TLR change to put date into sent and completed
