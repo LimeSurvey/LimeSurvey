@@ -124,7 +124,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			$result=db_execute_assoc($query);
 			while ($row=$result->FetchRow()) {$lbname=$row['label_name']; $lblid=$row['lid']; $langids=$row['languages'];}
 		}
-		$labelsoutput.= "<form style='margin-bottom:0;' method='post' action='admin.php' onsubmit=\"return isEmpty(document.getElementById('label_name'), '".("Error: You have to enter a name for this label set.'").")\">\n"
+		$labelsoutput.= "<form style='margin-bottom:0;' method='post' action='admin.php' onsubmit=\"return isEmpty(document.getElementById('label_name'), '".$clang->gT("Error: You have to enter a name for this label set.","js")."')\">\n"
 		."<table width='100%' bgcolor='#DDDDDD'>\n"
 		."\t<tr bgcolor='black'>\n"
 		."<td colspan='4' align='center'><font color='white'><strong>\n"
