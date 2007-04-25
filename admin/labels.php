@@ -249,7 +249,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			."\t<a href='admin.php?action=editlabelset&amp;lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Edit label set", "js")."');return false\">" .
 			"<img name='EditLabelsetButton' src='$imagefiles/edit.png' alt='' align='left'  /></a>" 
 			."\t<a href='admin.php?action=deletelabelset&amp;lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Delete label set", "js")."');return false\">"
-			."<img src='$imagefiles/delete.png' border='0' alt='' title='' align='left' onclick=\"return confirm('".$clang->gT("Are you sure?")."')\" /></a>\n"
+			."<img src='$imagefiles/delete.png' border='0' alt='' title='' align='left' onclick=\"return confirm('".$clang->gT("Are you sure?","js")."')\" /></a>\n"
 			."\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
 			."\t<a href='dumplabel.php?lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Label Set", "js")."');return false\">" .
 					"<img src='$imagefiles/exportcsv.png' alt='".$clang->gT("Export Label Set")."' title='' align='left' /></a>" 

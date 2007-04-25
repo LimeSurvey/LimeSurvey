@@ -634,7 +634,7 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 	."\t</tr>\n";
 
 	$conditionsoutput .= "\t<tr><td colspan='3' align='center'>\n"
-	."<input type='submit' value='".$clang->gT("Copy Conditions")."' onclick=\"return confirm('".$clang->gT("Are you sure you want to copy these condition(s) to the questions you have selected?")."')\" />"
+	."<input type='submit' value='".$clang->gT("Copy Conditions")."' onclick=\"return confirm('".$clang->gT("Are you sure you want to copy these condition(s) to the questions you have selected?","js")."')\" />"
 	."\t\t\n";
 
 	$conditionsoutput .= "<input type='hidden' name='subaction' value='copyconditions' />\n"

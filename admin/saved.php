@@ -118,7 +118,7 @@ function showSavedList($surveyid)
 				<td><a href='mailto:".$row['email']."'>".$row['email']."</td>
 				<td align='center'>
 				[<a href='$scriptname?action=saved&amp;sid=$surveyid&amp;subaction=delete&amp;scid=".$row['scid']."&amp;srid=".$row['srid']."'"
-			." onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?")."\")'"
+			." onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")'"
 			.">".$clang->gT("Delete")."</a>]
 				[<a href='".$scriptname."?action=dataentry&amp;subaction=edit&amp;id=".$row['srid']."&amp;sid={$surveyid}&amp;surveytable={$surveytable}'>".$clang->gT("Edit")."</a>]
 				</td>

@@ -863,7 +863,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 		{
 			if (is_null($condarray))
 			{
-				$groupsummary .= "\t\t\t\t\t<a href='$scriptname?action=delgroup&amp;sid=$surveyid&amp;gid=$gid' onclick=\"return confirm('".$clang->gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?")."')\""
+				$groupsummary .= "\t\t\t\t\t<a href='$scriptname?action=delgroup&amp;sid=$surveyid&amp;gid=$gid' onclick=\"return confirm('".$clang->gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js")."')\""
 				. "onmouseout=\"hideTooltip()\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("Delete Current Group", "js")."');return false\">"
 				. "<img src='$imagefiles/delete.png' alt='' name='DeleteWholeGroup' title='' align='left' border='0' hspace='0' /></a>";
@@ -1021,7 +1021,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			if (is_null($condarray))
 			{
 				$questionsummary .= "\t\t\t\t\t<a href='$scriptname?action=delquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'" .
-				"onclick=\"return confirm('".$clang->gT("Deleting this question will also delete any answers it includes. Are you sure you want to continue?")."')\""
+				"onclick=\"return confirm('".$clang->gT("Deleting this question will also delete any answers it includes. Are you sure you want to continue?","js")."')\""
 				. "onmouseout=\"hideTooltip()\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("Delete Current Question", "js")."');return false\">"
 				. "<img src='$imagefiles/delete.png' name='DeleteWholeQuestion' alt= '' title='' "
@@ -1728,7 +1728,7 @@ if($action == "surveysecurity")
 				. "\t\t<td align='center' style='padding-top:10px;'>\n";
 
 				$surveysecurity .= "<form method='post' action='$scriptname?sid={$surveyid}'>"
-				."<input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.")."\")' />"
+				."<input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.","js")."\")' />"
 				."<input type='hidden' name='action' value='delsurveysecurity' />"
 				."<input type='hidden' name='user' value='{$resul2row['users_name']}' />"
 				."<input type='hidden' name='uid' value='{$resul2row['uid']}' />"
@@ -2128,7 +2128,7 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
 		. "<!--\n"
 		. "function fillin(tofield, fromfield)\n"
 		. "\t{\n"
-		. "\t\tif (confirm(\"".$clang->gT("This will replace the existing text. Continue?")."\")) {\n"
+		. "\t\tif (confirm(\"".$clang->gT("This will replace the existing text. Continue?","js")."\")) {\n"
 		. "\t\t\tdocument.getElementById(tofield).value = document.getElementById(fromfield).value\n"
 		. "\t\t}\n"
 		. "\t}\n"

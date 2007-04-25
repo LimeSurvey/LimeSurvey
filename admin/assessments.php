@@ -166,7 +166,7 @@ if($actsurrows['edit_survey_property']){
 				 <input type='hidden' name='id' value='".$assess['id']."' />
 				 </form></td>
 				 <td align='center'><form method='post' action='$scriptname?sid=$surveyid'>
-				 <input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.")."\")' />
+				 <input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.","js")."\")' /
 				 <input type='hidden' name='action' value='assessmentdelete' />
 				 <input type='hidden' name='id' value='".$assess['id']."' />
 				 </form>
