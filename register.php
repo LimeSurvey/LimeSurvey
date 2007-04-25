@@ -33,7 +33,6 @@
 # Suite 330, Boston, MA  02111-1307, USA.					#
 #############################################################
 */
-//THESE WILL BEMOVED INTO THE LANGUAGE FILE ONCE COMPLETED
 require_once(dirname(__FILE__).'/config.php');
 require_once($rootdir.'/classes/core/language.php');
 

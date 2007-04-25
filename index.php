@@ -51,7 +51,7 @@ if (_PHPVERSION >= '4.2.0') {settype($surveyid, "int");} else {settype($surveyid
 if (!$publicdir) {$publicdir=".";}
 $tpldir="$publicdir/templates";
 
-session_start();
+@session_start();
 
 if (!isset($_SESSION['grouplist'])  && (isset($_POST['move'])) )
 // geez ... a session time out! RUN! 
