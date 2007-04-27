@@ -960,7 +960,7 @@ if(isset($surveyid))
 				$usresult = $connect->Execute($usquery) or die("Error deleting obsolete surveysettings<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
 				if ($usresult->RecordCount()==0)
 				{
-					$usquery = "insert into ".db_table_name('surveys_languagesettings')." SET surveyls_survey_id={$_POST['sid']}, surveyls_language='".$langname."'";
+					$usquery = "insert into ".db_table_name('surveys_languagesettings')." SET surveyls_survey_id={$_POST['sid']}, surveyls_language='".$langname."', surveyls_title=''";
 					$usresult = $connect->Execute($usquery) or die("Error deleting obsolete surveysettings<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
 				}
 			}

@@ -127,7 +127,7 @@ $dbexistsbutempty=($database_exists && checkifemptydb());
 
 
 if ($databasetype=='mysql') {
-    if ($debug==1) { @$connect->Execute("SET SESSION SQL_MODE='STRICT_ALL_TABLES, ANSI'"); } 
+    if ($debug==1) { @$connect->Execute("SET SESSION SQL_MODE='STRICT_ALL_TABLES,ANSI'"); } 
     $connect->Execute("SET CHARACTER SET 'utf8'");
 }
 
