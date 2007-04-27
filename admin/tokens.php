@@ -334,7 +334,7 @@ if ($sumrows5['export'])
 {
 	$tokenoutput .= "\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=export', '_top')\" onmouseout=\"hideTooltip()\"" .
 	"onmouseover=\"showTooltip(event,'".$clang->gT("Export Tokens to CSV file", "js")."');return false\">".
-	"<img name='ExportButton' src='$imagefiles/exportcsv.png' align='left'  /></a>\n";
+	"<img name='ExportButton' src='$imagefiles/exportcsv.png' align='left' alt='".$clang->gT("Export Tokens to CSV file")."' /></a>\n";
 }
 if ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey'])
 {
@@ -655,7 +655,7 @@ if ($subaction == "browse" || $subaction == "search")
 		elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] == "N")
 
 		{
-			$tokenoutput .= "\t\t<td align='center' valign='top'>\n"
+			$tokenoutput .= "\t\t<td align='center' valign='middle'>\n"
 			."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='I' title='"
 			.$clang->gT("Send invitation email to this entry")."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?action=tokens&amp;sid=$surveyid&amp;subaction=email&amp;tid=".$brow['tid']."', '_top')\" />"
 			."\t\t</td>\n";
@@ -664,7 +664,7 @@ if ($subaction == "browse" || $subaction == "search")
 		elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] != "N")
 
 		{
-			$tokenoutput .= "\t\t<td align='center' valign='top'>\n"
+			$tokenoutput .= "\t\t<td align='center' valign='middle'>\n"
 			."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='R' title='"
 			.$clang->gT("Send reminder email to this entry")."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=tokens&amp;subaction=remind&amp;tid=".$brow['tid']."', '_top')\" />"
 			."\t\t</td>\n";
