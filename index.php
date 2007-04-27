@@ -896,7 +896,7 @@ function submittokens()
 {
 	global $thissurvey;
 	global $dbprefix, $surveyid, $connect;
-	global $sitename, $thistpl;
+	global $sitename, $thistpl, $clang;
 
 	// Put date into sent and completed
 	
@@ -937,7 +937,7 @@ function submittokens()
 			//Get the default email_confirm from the default admin lang file
 			global $currentadminlang, $homedir, $homeurl;
 			$langdir="$homeurl/lang/$currentadminlang";
-			if (!is_dir($langdir2))
+			if (!is_dir($langdir))
 			{
 				$langdir="$homeurl/lang/english"; //default to english if there is no matching language dir
 			}
