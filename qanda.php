@@ -1216,8 +1216,8 @@ function do_ranking($ia)
 				}
 			}
 		}
-		$ranklist .= "\t\t\t\t\t\t&nbsp;<label for='RANK_{$ia[0]}$i'>"
-		."$i:&nbsp;</label><input class='text' type='text' name='RANK_{$ia[0]}$i' id='RANK_{$ia[0]}$i'";
+		$ranklist .= "\t\t\t\t\t\t\t<tr><td align=right>&nbsp;<label for='RANK_{$ia[0]}$i'>"
+		."$i:&nbsp;</label></td><td><input class='text' type='text' name='RANK_{$ia[0]}$i' id='RANK_{$ia[0]}$i'";
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
 		{
 			$ranklist .= " value='";
@@ -1240,6 +1240,7 @@ function do_ranking($ia)
 		}
 		$ranklist .= " id='cut_{$ia[0]}$i' onclick=\"deletethis_{$ia[0]}(document.phpsurveyor.RANK_{$ia[0]}$i.value, document.phpsurveyor.fvalue_{$ia[0]}$i.value, document.phpsurveyor.RANK_{$ia[0]}$i.name, this.id)\" /><br />\n";
 		$inputnames[]=$myfname;
+		$ranklist .= "</td></tr>\n";
 	}
 
 	$choicelist = "\t\t\t\t\t\t<select size='$anscount' name='CHOICES_{$ia[0]}' ";
@@ -1270,10 +1271,10 @@ function do_ranking($ia)
 	}
 	$choicelist .= "\t\t\t\t\t\t</select>\n";
 
-	$answer .= "\t\t\t<table border='0' cellspacing='5' class='rank'>\n"
+	$answer .= "\t\t\t<table border='0' cellspacing='5' width='500' class='rank'>\n"
 	. "\t\t\t\t<tr>\n"
 	. "\t\t\t\t\t<td colspan='2' class='rank'><font size='1'>\n"
-	. "\t\t\t\t\t\t".$clang->gT("Click on an item in the list on the left, starting with your")."<br />"
+	. "\t\t\t\t\t\t".$clang->gT("Click on an item in the list on the left, starting with your")
 	. "\t\t\t\t\t\t".$clang->gT("highest ranking item, moving through to your lowest ranking item.")
 	. "\t\t\t\t\t</font></td>\n"
 	. "\t\t\t\t</tr>\n"
@@ -1286,20 +1287,23 @@ function do_ranking($ia)
 	{
 		$ranklist = str_replace("<input class='text'", "<input size='60' class='text'", $ranklist);
 		$answer .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"
-		. "\t\t\t\t\t<td align='left' bgcolor='silver' class='rank'>\n"
-		. "\t\t\t\t\t\t<strong>&nbsp;&nbsp;".$clang->gT("Your Ranking").":</strong><br />\n";
+		. "\t\t\t\t\t<td align='left' width='250' class='rank'>\n"
+		. "\t\t\t\t\t\t\t<table border='0' cellspacing='1' cellpadding='0'>\n"
+		. "\t\t\t\t\t\t\t<tr><td></td><td><strong>".$clang->gT("Your Ranking").":</strong></td></tr>\n";
 	}
 	else
 	{
-		$answer .= "\t\t\t\t\t<td align='left' bgcolor='silver' width='200' class='rank'>\n"
-		. "\t\t\t\t\t\t<strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$clang->gT("Your Ranking").":</strong><br />\n";
+		$answer .= "\t\t\t\t\t<td align='left' width='250' class='rank' nowrap>\n"
+		. "\t\t\t\t\t\t\t<table border='0' cellspacing='1' cellpadding='0'>\n"
+		. "\t\t\t\t\t\t\t<tr><td></td><td><strong>".$clang->gT("Your Ranking").":</strong></td></tr>\n";
 	}
 	$answer .= $ranklist
+	. "\t\t\t\t\t\t\t</table>\n"
 	. "\t\t\t\t\t</td>\n"
 	. "\t\t\t\t</tr>\n"
 	. "\t\t\t\t<tr>\n"
 	. "\t\t\t\t\t<td colspan='2' class='rank'><font size='1'>\n"
-	. "\t\t\t\t\t\t".$clang->gT("Click on the scissors next to each item on the right")."<br />"
+	. "\t\t\t\t\t\t".$clang->gT("Click on the scissors next to each item on the right")
 	. "\t\t\t\t\t\t".$clang->gT("to remove the last entry in your ranked list").""
 	. "\t\t\t\t\t</font></td>\n"
 	. "\t\t\t\t</tr>\n"
