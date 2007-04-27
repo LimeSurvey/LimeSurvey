@@ -348,6 +348,17 @@ foreach ($filters as $flt)
 		if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("N", $_POST[$myfield])) {$statisticsoutput .= " selected";}
 		$statisticsoutput .= ">".$clang->gT("No")."</option></select></font>\n";
 		break;
+		case "I": // Language
+		$survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+		$survlangs[] = GetBaseLanguageFromSurveyID($surveyid);
+		foreach ($survlangs  as $availlang)
+		{
+			$statisticsoutput .= "\t\t\t\t\t<option value='".$availlang."'";
+			if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($availlang, $_POST[$myfield])) 
+				{$statisticsoutput .= " selected";}
+			$statisticsoutput .= ">".getLanguageNameFromCode($availlang,false)."</option>\n";
+		}
+		break;
 		// ARRAYS
 		case "A": // ARRAY OF 5 POINT CHOICE QUESTIONS
 		$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
@@ -1259,6 +1270,11 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				case "Y": //Yes\No
 				$alist[]=array("Y", $clang->gT("Yes"));
 				$alist[]=array("N", $clang->gT("No"));
+				break;
+				case "I": //Language
+				// Using previously defined $survlangs array of language codes
+				foreach ($survlangs as $availlang)
+				{$alist[]=array($availlang, getLanguageNameFromCode($availlang,false));}
 				break;
 				case "5": //5 Point
 				for ($i=1; $i<=5; $i++)
