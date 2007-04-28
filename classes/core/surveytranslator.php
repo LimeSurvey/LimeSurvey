@@ -165,6 +165,11 @@
 	    $supportedLanguages['sv']['description'] = $clang->gT('Swedish');
 	    $supportedLanguages['sv']['nativedescription'] = 'Svenska';
 
+	    // Turkish
+	    $supportedLanguages['tr']['description'] = $clang->gT('Turkish');
+	    $supportedLanguages['tr']['nativedescription'] = 'T&#252;rk&#231;e';
+
+
 	    // Vietnamese
 	    $supportedLanguages['vi']['description'] = $clang->gT('Vietnamese');
 	    $supportedLanguages['vi']['nativedescription'] = 'Ti&#7871;ng Vi&#7879;t';
@@ -175,39 +180,34 @@
 /*    // future languages
 
 	    // Afrikaans
- 	    $supportedLanguages['za']['description'] = 'Afrikaans';
+ 	    $supportedLanguages['za']['nativedescription'] = 'Afrikaans';
 
         // Czech
-	    $supportedLanguages['cz']['description'] = '&#x010c;esky';
+	    $supportedLanguages['cz']['nativedescription'] = '&#x010c;esky';
 
 	    // Irish
-	    $supportedLanguages['ie']['description'] = 'Gaeilge';
+	    $supportedLanguages['ie']['nativedescription'] = 'Gaeilge';
 
 	    // Icelandic
-	    $supportedLanguages['is']['description'] = 'Icelandic';
+	    $supportedLanguages['is']['nativedescription'] = 'Icelandic';
 
 	    // Latvian
-	    $supportedLanguages['lv']['description'] = 'Latvie&#353;u';
+	    $supportedLanguages['lv']['nativedescription'] = 'Latvie&#353;u';
 
 	    // Polish
-	    $supportedLanguages['pl']['description'] = 'Polski';
+	    $supportedLanguages['pl']['nativedescription'] = 'Polski';
 
 	    // Serbian
-	    $supportedLanguages['yu']['description'] = 'Srpski';
+	    $supportedLanguages['yu']['nativedescription'] = 'Srpski';
 
 	    // Thai
-	    $supportedLanguages['th']['description'] = 'Thai';
-
-	    // Turkish
-	    $supportedLanguages['tr']['description'] = 'T&#252;rk&#231;e';
+	    $supportedLanguages['th']['nativedescription'] = 'Thai';
 
 	    // Arabic
-	    $supportedLanguages['sa']['description'] = '&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;';
+	    $supportedLanguages['sa']['nativedescription'] = '&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;';
 	    $supportedLanguages['sa']['right-to-left'] = true;
 
-	    // Hebrew
-	    $supportedLanguages['il']['description'] = '&#1506;&#1489;&#1512;&#1497;&#1514;';
-	    $supportedLanguages['il']['right-to-left'] = true;
+	    $supportedLanguages['he']['right-to-left'] = true;
 
      */
 ?>
