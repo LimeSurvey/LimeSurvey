@@ -65,7 +65,7 @@ if($actsurrows['browse_response']){
 		.$clang->gT("The defined surveyor database does not exist")."<br />\n"
 		.$clang->gT("Either your selected database has not yet been created or there is a problem accessing it.")."<br /><br />\n"
 		."<input type='submit' value='"
-		.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\"></font><br />\n"
+		.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /></font><br />\n"
 		."</td></tr></table>\n"
 		."</body>\n";
 		return;
@@ -80,7 +80,7 @@ if($actsurrows['browse_response']){
 		."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
 		.$clang->gT("You have not selected a survey for data-entry.")."<br /><br />\n"
 		."<input type='submit' value='"
-		.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\"><br />\n"
+		.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
 		."</font></td></tr></table>\n";
 		return;
 	}
@@ -132,35 +132,35 @@ if($actsurrows['browse_response']){
 					  <table class='outlinetable' cellspacing='0' align='center'>
 					  <tr>
 					   <td align='right'>".$clang->gT("Identifier:")."</td>
-					   <td><input type='text' name='save_identifier' value='".$_POST['save_identifier']."'></td></tr>
+					   <td><input type='text' name='save_identifier' value='".$_POST['save_identifier']."' /></td></tr>
 					  <tr><td align='right'>".$clang->gT("Password:")."</td>
-					   <td><input type='password' name='save_password' value='".$_POST['save_password']."'></td></tr>
+					   <td><input type='password' name='save_password' value='".$_POST['save_password']."' /></td></tr>
 					  <tr><td align='right'>".$clang->gT("Confirm Password:")."</td>
-					   <td><input type='password' name='save_confirmpassword' value='".$_POST['save_confirmpassword']."'></td></tr>
+					   <td><input type='password' name='save_confirmpassword' value='".$_POST['save_confirmpassword']."' /></td></tr>
 					  <tr><td align='right'>".$clang->gT("Email:")."</td>
-					   <td><input type='text' name='save_email' value='".$_POST['save_email']."'>
+					   <td><input type='text' name='save_email' value='".$_POST['save_email']."' />
 					  <tr><td align='right'>".$clang->gT("Start Language:")."</td>
-					   <td><input type='text' name='save_language' value='".$_POST['save_language']."'>\n";
+					   <td><input type='text' name='save_language' value='".$_POST['save_language']."' />\n";
 					foreach ($_POST as $key=>$val)
 					{
 						if (substr($key, 0, 4) != "save" && $key != "action" && $key != "surveytable" && $key !="sid" && $key != "datestamp" && $key !="ipaddr")
 						{
-							$dataentryoutput .= "<input type='hidden' name='$key' value='$val'>\n";
+							$dataentryoutput .= "<input type='hidden' name='$key' value='$val' />\n";
 						}
 					}
-					$dataentryoutput .= "</td></tr><tr><td></td><td><input type='submit' value='".$clang->gT("submit")."'>
-					 <input type='hidden' name='sid' value='$surveyid'>
-					 <input type='hidden' name='surveytable' value='".$_POST['surveytable']."'>
-					 <input type='hidden' name='subaction' value='".$_POST['subaction']."'>
-					 <input type='hidden' name='language' value='".$_POST['language']."'>
-					 <input type='hidden' name='save' value='on'></td>";
+					$dataentryoutput .= "</td></tr><tr><td></td><td><input type='submit' value='".$clang->gT("submit")."' />
+					 <input type='hidden' name='sid' value='$surveyid' />
+					 <input type='hidden' name='surveytable' value='".$_POST['surveytable']."' />
+					 <input type='hidden' name='subaction' value='".$_POST['subaction']."' />
+					 <input type='hidden' name='language' value='".$_POST['language']."' />
+					 <input type='hidden' name='save' value='on' /></td>";
 					if (isset($_POST['datestamp']))
 					{
-						$dataentryoutput .= "<input type='hidden' name='datestamp' value='".$_POST['datestamp']."'>\n";
+						$dataentryoutput .= "<input type='hidden' name='datestamp' value='".$_POST['datestamp']."' />\n";
 					}
 					if (isset($_POST['ipaddr']))
 					{
-						$dataentryoutput .= "<input type='hidden' name='ipaddr' value='".$_POST['ipaddr']."'>\n";
+						$dataentryoutput .= "<input type='hidden' name='ipaddr' value='".$_POST['ipaddr']."' />\n";
 					}
 					$dataentryoutput .= "</table></form>\n";
 				} elseif (returnglobal('redo')=="yes")
@@ -388,12 +388,19 @@ if($actsurrows['browse_response']){
 
 	elseif ($subaction == "edit" || $subaction == "editsaved")
 	{
-		$dataentryoutput .= "<table >\n"
+		$dataentryoutput .= "<table class='menubar'>\n"
 		."\t<tr ><td colspan='2' height='4'><strong>"
 		.$clang->gT("Browse Responses")."</strong></td></tr>\n";
 		if (isset($surveyheader)) {$dataentryoutput .= $surveyheader;}
 		$dataentryoutput .= $surveyoptions
 		."</table>\n";
+
+
+
+
+
+
+
 
 		//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
 		$fnquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups").", ".db_table_name("surveys")." WHERE
@@ -582,10 +589,10 @@ if($actsurrows['browse_response']){
 					break;
 					case "Q":
 						$dataentryoutput .= "\t\t\t{$fnames[$i][6]}&nbsp;<input type='text' name='{$fnames[$i][0]}' value='"
-						.$idrow[$fnames[$i][0]] . "'>\n";
+						.$idrow[$fnames[$i][0]] . "' />\n";
 						break;
 					case "id":
-						$dataentryoutput .= "\t\t\t{$idrow[$fnames[$i][0]]} <font color='red' size='1'>".$clang->gT("Cannot be modified")."</font>\n";
+						$dataentryoutput .= "\t\t\t&nbsp;{$idrow[$fnames[$i][0]]} <font color='red' size='1'>".$clang->gT("Cannot be modified")."</font>\n";
 						break;
 					case "5": //5 POINT CHOICE radio-buttons
 					for ($x=1; $x<=5; $x++)
@@ -601,13 +608,13 @@ if($actsurrows['browse_response']){
 					case "G": //GENDER drop-down list
 					$dataentryoutput .= "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 					."\t\t\t\t<option value=''";
-					if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected";}
+					if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected='selected'";}
 					$dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n"
 					."\t\t\t\t<option value='F'";
-					if ($idrow[$fnames[$i][0]] == "F") {$dataentryoutput .= " selected";}
+					if ($idrow[$fnames[$i][0]] == "F") {$dataentryoutput .= " selected='selected'";}
 					$dataentryoutput .= ">".$clang->gT("Female")."</option>\n"
 					."\t\t\t\t<option value='M'";
-					if ($idrow[$fnames[$i][0]] == "M") {$dataentryoutput .= " selected";}
+					if ($idrow[$fnames[$i][0]] == "M") {$dataentryoutput .= " selected='selected'";}
 					$dataentryoutput .= ">".$clang->gT("Male")."</option>\n"
 					."\t\t\t</select>\n";
 					break;
@@ -628,13 +635,13 @@ if($actsurrows['browse_response']){
 							//$lresult = $connect->Execute($lquery);
 							$dataentryoutput .= "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 							."\t\t\t\t<option value=''";
-							if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected";}
+							if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected='selected'";}
 							$dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
 
 							while ($llrow = $lresult->FetchRow())
 							{
 								$dataentryoutput .= "\t\t\t\t<option value='{$llrow['code']}'";
-								if ($idrow[$fnames[$i][0]] == $llrow['code']) {$dataentryoutput .= " selected";}
+								if ($idrow[$fnames[$i][0]] == $llrow['code']) {$dataentryoutput .= " selected='selected'";}
 								$dataentryoutput .= ">{$llrow['title']}</option>\n";
 							}
 							$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$fnames[$i][7]} AND ".db_table_name("questions").".language = '{$language}'";
@@ -646,7 +653,7 @@ if($actsurrows['browse_response']){
 							if ($fother =="Y")
 							{
 								$dataentryoutput .= "<option value='-oth-'";
-								if ($idrow[$fnames[$i][0]] == "-oth-"){$dataentryoutput .= " selected";}
+								if ($idrow[$fnames[$i][0]] == "-oth-"){$dataentryoutput .= " selected='selected'";}
 								$dataentryoutput .= ">".$clang->gT("Other")."</option>\n";
 							}
 							$dataentryoutput .= "\t\t\t</select>\n";
@@ -665,13 +672,13 @@ if($actsurrows['browse_response']){
 						$lresult = db_execute_assoc($lquery);
 						$dataentryoutput .= "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 						."\t\t\t\t<option value=''";
-						if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected";}
+						if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected='selected'";}
 						$dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
 
 						while ($llrow = $lresult->FetchRow())
 						{
 							$dataentryoutput .= "\t\t\t\t<option value='{$llrow['code']}'";
-							if ($idrow[$fnames[$i][0]] == $llrow['code']) {$dataentryoutput .= " selected";}
+							if ($idrow[$fnames[$i][0]] == $llrow['code']) {$dataentryoutput .= " selected='selected'";}
 							$dataentryoutput .= ">{$llrow['answer']}</option>\n";
 						}
 						$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$fnames[$i][7]} AND ".db_table_name("questions").".language = '{$language}'";
@@ -683,7 +690,7 @@ if($actsurrows['browse_response']){
 						if ($fother =="Y")
 						{
 							$dataentryoutput .= "<option value='-oth-'";
-							if ($idrow[$fnames[$i][0]] == "-oth-"){$dataentryoutput .= " selected";}
+							if ($idrow[$fnames[$i][0]] == "-oth-"){$dataentryoutput .= " selected='selected'";}
 							$dataentryoutput .= ">".$clang->gT("Other")."</option>\n";
 						}
 						$dataentryoutput .= "\t\t\t</select>\n";
@@ -694,13 +701,13 @@ if($actsurrows['browse_response']){
 					$lresult = db_execute_assoc($lquery);
 					$dataentryoutput .= "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 					."\t\t\t\t<option value=''";
-					if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected";}
+					if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected='selected'";}
 					$dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
 
 					while ($llrow = $lresult->FetchRow())
 					{
 						$dataentryoutput .= "\t\t\t\t<option value='{$llrow['code']}'";
-						if ($idrow[$fnames[$i][0]] == $llrow['code']) {$dataentryoutput .= " selected";}
+						if ($idrow[$fnames[$i][0]] == $llrow['code']) {$dataentryoutput .= " selected='selected'";}
 						$dataentryoutput .= ">{$llrow['answer']}</option>\n";
 					}
 					$i++;
@@ -823,14 +830,14 @@ if($actsurrows['browse_response']){
 							. $thistext
 							. "'";
 						}
-						$ranklist .= " onFocus=\"this.blur()\">\n"
+						$ranklist .= " onFocus=\"this.blur()\"  />\n"
 						. "\t\t\t\t\t\t<input type='hidden' id='d$myfname$j' name='d$myfname$j' value='";
 						if (isset($currentvalues) && $currentvalues[$k])
 						{
 							$ranklist .= $thiscode;
 							$chosen[]=array($thiscode, $thistext);
 						}
-						$ranklist .= "'>\n"
+						$ranklist .= "' />\n"
 						. "\t\t\t\t\t\t<img src='$imagefiles/cut.gif' alt='".$clang->gT("Remove this item")."' title='".$clang->gT("Remove this item")."' ";
 						if ($j != $existing)
 						{
@@ -943,7 +950,7 @@ if($actsurrows['browse_response']){
 
                     $dataentryoutput.= "<select name='{$fnames[$i][0]}'>\n";
 					$dataentryoutput .= "\t\t\t\t<option value=''";
-					if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected";}
+					if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected='selected'";}
 					$dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
 
                     foreach ($slangs as $lang)
@@ -1012,13 +1019,13 @@ if($actsurrows['browse_response']){
 					case "Y": //YES/NO radio-buttons
 					$dataentryoutput .= "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 					."\t\t\t\t<option value=''";
-					if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected";}
+					if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected='selected'";}
 					$dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n"
 					."\t\t\t\t<option value='Y'";
-					if ($idrow[$fnames[$i][0]] == "Y") {$dataentryoutput .= " selected";}
+					if ($idrow[$fnames[$i][0]] == "Y") {$dataentryoutput .= " selected='selected'";}
 					$dataentryoutput .= ">".$clang->gT("Yes")."</option>\n"
 					."\t\t\t\t<option value='N'";
-					if ($idrow[$fnames[$i][0]] == "N") {$dataentryoutput .= " selected";}
+					if ($idrow[$fnames[$i][0]] == "N") {$dataentryoutput .= " selected='selected'";}
 					$dataentryoutput .= ">".$clang->gT("No")."</option>\n"
 					."\t\t\t</select>\n";
 					break;
@@ -1143,7 +1150,7 @@ if($actsurrows['browse_response']){
 						break;
 					default: //This really only applies to tokens for non-private surveys
 					$dataentryoutput .= "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='"
-					.$idrow[$fnames[$i][0]] . "'>\n";
+					.$idrow[$fnames[$i][0]] . "' />\n";
 					break;
 				}
 				$dataentryoutput .= "		</td>
@@ -1160,12 +1167,12 @@ if($actsurrows['browse_response']){
 		{
 			$dataentryoutput .= "	<tr>
 						<td bgcolor='#CCCCCC' align='center'>
-						 <input type='submit' value='".$clang->gT("Update Entry")."'>
-						 <input type='hidden' name='id' value='$id'>
-						 <input type='hidden' name='sid' value='$surveyid'>
-						 <input type='hidden' name='subaction' value='update'>
-						 <input type='hidden' name='language' value='".$_GET['language']."'>
-						 <input type='hidden' name='surveytable' value='".db_table_name("survey_".$surveyid)."'>
+						 <input type='submit' value='".$clang->gT("Update Entry")."' />
+						 <input type='hidden' name='id' value='$id' />
+						 <input type='hidden' name='sid' value='$surveyid' />
+						 <input type='hidden' name='subaction' value='update' />
+						 <input type='hidden' name='language' value='".$_GET['language']."' />
+						 <input type='hidden' name='surveytable' value='".db_table_name("survey_".$surveyid)."' />
 						</td>
 					</tr>\n";
 		}
@@ -1188,7 +1195,7 @@ if($actsurrows['browse_response']){
 				  </script>\n";
 			$dataentryoutput .= "\t<tr>\n";
 			$dataentryoutput .= "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
-			$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='save' id='save' onchange='saveshow(this.id)' onLoad='saveshow(this.id)'><label for='save'>".$clang->gT("Save for further completion by survey user")."</label>\n";
+			$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='save' id='save' onchange='saveshow(this.id)' onLoad='saveshow(this.id)' /><label for='save'>".$clang->gT("Save for further completion by survey user")."</label>\n";
 			$dataentryoutput .= "<div name='saveoptions' id='saveoptions' style='display: none'>\n";
 			$dataentryoutput .= "<table align='center' class='outlinetable' cellspacing='0'>
 				  <tr><td align='right'>".$clang->gT("Identifier:")."</td>
@@ -1197,23 +1204,23 @@ if($actsurrows['browse_response']){
 			{
 				$dataentryoutput .= " value=\"".stripslashes(stripslashes(returnglobal('identifier')))."\"";
 			}
-			$dataentryoutput .= "></td></tr>
+			$dataentryoutput .= " /></td></tr>
 				  </table>\n"
-			."<input type='hidden' name='save_password' value='".returnglobal('accesscode')."'>\n"
-			."<input type='hidden' name='save_confirmpassword' value='".returnglobal('accesscode')."'>\n"
-			."<input type='hidden' name='save_email' value='".$saver['email']."'>\n"
-			."<input type='hidden' name='save_scid' value='".$saver['scid']."'>\n"
-			."<input type='hidden' name='redo' value='yes'>\n";
+			."<input type='hidden' name='save_password' value='".returnglobal('accesscode')."' />\n"
+			."<input type='hidden' name='save_confirmpassword' value='".returnglobal('accesscode')."' />\n"
+			."<input type='hidden' name='save_email' value='".$saver['email']."' />\n"
+			."<input type='hidden' name='save_scid' value='".$saver['scid']."' />\n"
+			."<input type='hidden' name='redo' value='yes' />\n";
 			$dataentryoutput .= "\t\t</td>\n";
 			$dataentryoutput .= "\t</tr>"
 			."</div>\n";
 			$dataentryoutput .= "	<tr>
 					<td bgcolor='#CCCCCC' align='center'>
-					 <input type='submit' value='".$clang->gT("submit")."'>
-					 <input type='hidden' name='sid' value='$surveyid'>
-					 <input type='hidden' name='subaction' value='insert'>
-					 <input type='hidden' name='language' value='".$datalang."'>
-					 <input type='hidden' name='surveytable' value='".db_table_name("survey_".$surveyid)."'>
+					 <input type='submit' value='".$clang->gT("submit")."' />
+					 <input type='hidden' name='sid' value='$surveyid' />
+					 <input type='hidden' name='subaction' value='insert' />
+					 <input type='hidden' name='language' value='".$datalang."' />
+					 <input type='hidden' name='surveytable' value='".db_table_name("survey_".$surveyid)."' />
 					</td>
 				</tr>\n";
 		}
@@ -1391,7 +1398,7 @@ if($actsurrows['browse_response']){
 			."\t\t<td valign='top' width='1%'></td>\n"
 			."\t\t<td valign='top' align='right' width='30%'>$setfont<font color='red'>*</font><strong>".$clang->gT("Token").":</strong></font></td>\n"
 			."\t\t<td valign='top' style='padding-left: 20px'>\n"
-			."\t\t\t<input type='text' name='token'>\n"
+			."\t\t\t<input type='text' name='token' />\n"
 			."\t\t</td>\n"
 			."\t</tr>\n";
 		}
@@ -1402,7 +1409,7 @@ if($actsurrows['browse_response']){
 			."\t\t<td valign='top' align='right' width='30%'>$setfont<strong>"
 			.$clang->gT("Datestamp").":</strong></font></td>\n"
 			."\t\t<td valign='top' style='padding-left: 20px'>\n"
-			."\t\t\t<input type='text' name='datestamp' value='$localtimedate'>\n"
+			."\t\t\t<input type='text' name='datestamp' value='$localtimedate' />\n"
 			."\t\t</td>\n"
 			."\t</tr>\n";
 		}
@@ -1413,7 +1420,7 @@ if($actsurrows['browse_response']){
 			."\t\t<td valign='top' align='right' width='30%'>$setfont<strong>"
 			.$clang->gT("IP-Address").":</strong></font></td>\n"
 			."\t\t<td valign='top' style='padding-left: 20px'>\n"
-			."\t\t\t<input type='text' name='ipaddr' value='NULL'>\n"
+			."\t\t\t<input type='text' name='ipaddr' value='NULL' />\n"
 			."\t\t</td>\n"
 			."\t</tr>\n";
 		}
@@ -1599,7 +1606,7 @@ if($actsurrows['browse_response']){
 					break;
 					case "G": //GENDER drop-down list
 					$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n"
-					."\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n"
+					."\t\t\t\t<option selected='selected' value=''>".$clang->gT("Please choose")."..</option>\n"
 					."\t\t\t\t<option value='F'>".$clang->gT("Female")."</option>\n"
 					."\t\t\t\t<option value='M'>".$clang->gT("Male")."</option>\n"
 					."\t\t\t</select>\n";
@@ -1614,7 +1621,7 @@ if($actsurrows['browse_response']){
 						$dataentryoutput .= "\t\t\t\t<tr><td align='right'>$setfont"
 						.$dearow['answer']
 						."</font></td>\n"
-						."\t\t\t\t\t<td><input type='text' name='$fieldname{$dearow['code']}'></td>\n"
+						."\t\t\t\t\t<td><input type='text' name='$fieldname{$dearow['code']}' /></td>\n"
 						."\t\t\t\t</tr>\n";
 					}
 					$dataentryoutput .= "\t\t\t</table>\n";
@@ -1624,7 +1631,7 @@ if($actsurrows['browse_response']){
 						$deaquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} ORDER BY sortorder, code";
 						$dearesult = db_execute_assoc($deaquery);
 						$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n";
-						$dataentryoutput .= "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n";
+						$dataentryoutput .= "\t\t\t\t<option selected='selected' value=''>".$clang->gT("Please choose")."..</option>\n";
 						while ($dearow = $dearesult->FetchRow())
 						{
 							$dataentryoutput .= "\t\t\t\t<option value='{$dearow['code']}'";
@@ -1659,10 +1666,10 @@ if($actsurrows['browse_response']){
 						while ($dearow = $dearesult->FetchRow())
 						{
 							$datatemp .= "\t\t\t\t<option value='{$dearow['code']}'";
-							if ($dearow['default_value'] == "Y") {$datatemp .= " selected"; $defexists = "Y";}
+							if ($dearow['default_value'] == "Y") {$datatemp .= " selected='selected'"; $defexists = "Y";}
 							$datatemp .= ">{$dearow['answer']}</option>\n";
 						}
-						if ($defexists=="") {$dataentryoutput .= "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n".$datatemp;}
+						if ($defexists=="") {$dataentryoutput .= "\t\t\t\t<option selected='selected' value=''>".$clang->gT("Please choose")."..</option>\n".$datatemp;}
 						else {$dataentryoutput .=$datatemp;}
 
 						$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$deqrow['qid']} AND language='{$baselang}'";
@@ -1692,10 +1699,10 @@ if($actsurrows['browse_response']){
 					while ($dearow = $dearesult->FetchRow())
 					{
 						$datatemp .= "\t\t\t\t<option value='{$dearow['code']}'";
-						if ($dearow['default_value'] == "Y") {$datatemp .= " selected"; $defexists = "Y";}
+						if ($dearow['default_value'] == "Y") {$datatemp .= " selected='selected'"; $defexists = "Y";}
 						$datatemp .= ">{$dearow['answer']}</option>\n";
 					}
-					if ($defexists=="") {$dataentryoutput .= "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n".$datatemp;}
+					if ($defexists=="") {$dataentryoutput .= "\t\t\t\t<option selected='selected' value=''>".$clang->gT("Please choose")."..</option>\n".$datatemp;}
 					else  {$dataentryoutput .= $datatemp;}
 					$dataentryoutput .= "\t\t\t</select>\n"
 					."\t\t\t<br />".$clang->gT("Comment").":<br />\n"
@@ -1810,7 +1817,7 @@ if($actsurrows['browse_response']){
 							$ranklist .= $thistext;
 							$ranklist .= "'";
 						}
-						$ranklist .= " onFocus=\"this.blur()\">\n";
+						$ranklist .= " onFocus=\"this.blur()\"  />\n";
 						$ranklist .= "\t\t\t\t\t\t<input type='hidden' id='d$fieldname$i' name='d$fieldname$i' value='";
 						$chosen[]=""; //create array
 						if (isset($myfname) && $_SESSION[$myfname])
@@ -1818,7 +1825,7 @@ if($actsurrows['browse_response']){
 							$ranklist .= $thiscode;
 							$chosen[]=array($thiscode, $thistext);
 						}
-						$ranklist .= "'></font>\n";
+						$ranklist .= "' /></font>\n";
 						$ranklist .= "\t\t\t\t\t\t<img src='$imagefiles/cut.gif' alt='".$clang->gT("Remove this item")."' title='".$clang->gT("Remove this item")."' ";
 						if (!isset($existing) || $i != $existing)
 						{
@@ -1933,7 +1940,7 @@ if($actsurrows['browse_response']){
 
                     $dataentryoutput.= "<select name='{$fieldname}'>\n";
 					$dataentryoutput .= "\t\t\t\t<option value=''";
-					$dataentryoutput .= " selected";
+					$dataentryoutput .= " selected='selected'";
 					$dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
 
                     foreach ($slangs as $lang)
@@ -1988,7 +1995,7 @@ if($actsurrows['browse_response']){
 					break;
 					case "Y": //YES/NO radio-buttons
 					$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n";
-					$dataentryoutput .= "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n";
+					$dataentryoutput .= "\t\t\t\t<option selected='selected' value=''>".$clang->gT("Please choose")."..</option>\n";
 					$dataentryoutput .= "\t\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n";
 					$dataentryoutput .= "\t\t\t\t<option value='N'>".$clang->gT("No")."</option>\n";
 					$dataentryoutput .= "\t\t\t</select>\n";
@@ -2140,17 +2147,17 @@ if($actsurrows['browse_response']){
 					  </script>\n";
 				$dataentryoutput .= "\t<tr>\n";
 				$dataentryoutput .= "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
-				$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='save' id='save' onchange='saveshow(this.id)' onLoad='saveshow(this.id)'><label for='save'>".$clang->gT("Save for further completion by survey user")."</label>\n";
+				$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='save' id='save' onchange='saveshow(this.id)' onLoad='saveshow(this.id)' /><label for='save'>".$clang->gT("Save for further completion by survey user")."</label>\n";
 				$dataentryoutput .= "<div name='saveoptions' id='saveoptions' style='display: none'>\n";
 				$dataentryoutput .= "<table align='center' class='outlinetable' cellspacing='0'>
 					  <tr><td align='right'>".$clang->gT("Identifier:")."</td>
-					  <td><input type='text' name='save_identifier'></td></tr>
+					  <td><input type='text' name='save_identifier' /></td></tr>
 					  <tr><td align='right'>".$clang->gT("Password:")."</td>
-					  <td><input type='password' name='save_password'></td></tr>
+					  <td><input type='password' name='save_password' /></td></tr>
 					  <tr><td align='right'>".$clang->gT("Confirm Password:")."</td>
-					  <td><input type='password' name='save_confirmpassword'></td></tr>
+					  <td><input type='password' name='save_confirmpassword' /></td></tr>
 					  <tr><td align='right'>".$clang->gT("Email:")."</td>
-					  <td><input type='text' name='save_email'></td></tr>
+					  <td><input type='text' name='save_email' /></td></tr>
 					  <tr><td align='right'>".$clang->gT("Start Language:")."</td>
 					  <td>";
                 $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -2190,7 +2197,7 @@ if($actsurrows['browse_response']){
 			$dataentryoutput .= "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
 			$dataentryoutput .= "\t\t\t<font color='red'><strong>".$clang->gT("Error")."</strong></font><br />\n";
 			$dataentryoutput .= "\t\t\t".$clang->gT("The survey you selected does not exist")."</font><br /><br />\n";
-			$dataentryoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
+			$dataentryoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
 			$dataentryoutput .= "\t\t</td>\n";
 			$dataentryoutput .= "\t</tr>\n";
 			$dataentryoutput .= "</table>";
