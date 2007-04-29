@@ -394,8 +394,8 @@ if($actsurrows['browse_response']){
 		if (isset($surveyheader)) {$dataentryoutput .= $surveyheader;}
 		$dataentryoutput .= $surveyoptions
 		."</table>\n";
-
-
+		
+		if (!isset($_GET['language'])) $_GET['language'] = GetBaseLanguageFromSurveyID($surveyid);
 
 
 
