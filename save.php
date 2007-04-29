@@ -108,6 +108,10 @@ if ((isset($_POST['fieldnames']) && $_POST['fieldnames']) || (isset($_POST['move
 			{
         	   $_SESSION['srid'] = $tempID;
 			}
+			if (isset($_POST['move']) && $_POST['move'] == "movesubmit")
+			{
+				$connect->Execute("DELETE FROM ".db_table_name("saved_control")." where srid=".$_SESSION['srid']);
+			}
 		} 
 	}
 }

@@ -242,7 +242,7 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 	}
 
 	// if security question asnwer is incorrect
-	if (!isset($_POST['loadsecurity']) || $_POST['loadsecurity'] != $_SESSION['secanswer'])
+	if ((!isset($_POST['loadsecurity']) || $_POST['loadsecurity'] != $_SESSION['secanswer']) && !isset($_GET['scid']))
 	{
 		$errormsg .= $clang->gT("The answer to the security question is incorrect")."<br />\n";
 	}
