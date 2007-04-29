@@ -932,21 +932,27 @@ if($actsurrows['browse_response']){
 					$i--;
 					break;
 
-					case "I": //FILE CSV ONE
+					case "I": //Language Switch
 					$lquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnames[$i][7]} AND ".db_table_name("answers").".language = '{$language}' ORDER BY sortorder, answer";
 					$lresult = db_execute_assoc($lquery);
-					$dataentryoutput .= "\t\t\t<select name='{$fnames[$i][0]}'>\n"
-					."\t\t\t\t<option value=''";
+
+
+                    $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+                    $baselang = GetBaseLanguageFromSurveyID($surveyid);
+                    array_unshift($slangs,$baselang);
+
+                    $dataentryoutput.= "<select name='{$fnames[$i][0]}'>\n";
+					$dataentryoutput .= "\t\t\t\t<option value=''";
 					if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected";}
 					$dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
 
-					while ($llrow = $lresult->FetchRow())
-					{
-						$dataentryoutput .= "\t\t\t\t<option value='{$llrow['code']}'";
-						if ($idrow[$fnames[$i][0]] == $llrow['code']) {$dataentryoutput .= " selected";}
-						$dataentryoutput .= ">{$llrow['answer']}</option>\n";
-					}
-					$dataentryoutput .= "\t\t\t</select>\n";
+                    foreach ($slangs as $lang)
+                       	{
+                            $dataentryoutput.="<option value='{$lang}'";
+                       		if ($lang == $idrow[$fnames[$i][0]]) {$dataentryoutput .= " selected='selected'";}
+                            $dataentryoutput.=">".getLanguageNameFromCode($lang,false)."</option>\n";
+                       	}
+                    $dataentryoutput .= "</select>";
 					break;
 
 					case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
@@ -1921,17 +1927,22 @@ if($actsurrows['browse_response']){
 					}
 					break;
 					case "I": //Language Switch
-					$defexists='';
-					$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-					$dearesult = db_execute_assoc($deaquery);
-					$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n";
-					while ($dearow = $dearesult->FetchRow())
-					{
-						$dataentryoutput .= "\t\t\t\t<option value='{$dearow['code']}'";
-						if ($dearow['default_value'] == "Y") {$dataentryoutput .= " selected"; $defexists = "Y";}
-						$dataentryoutput .= ">{$dearow['answer']}</option>\n";
-					}
-					if ($defexists='') {$dataentryoutput .= "\t\t\t\t<option selected value=''>".$clang->gT("Please choose")."..</option>\n";}
+                    $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+                    $baselang = GetBaseLanguageFromSurveyID($surveyid);
+                    array_unshift($slangs,$baselang);
+
+                    $dataentryoutput.= "<select name='{$fieldname}'>\n";
+					$dataentryoutput .= "\t\t\t\t<option value=''";
+					$dataentryoutput .= " selected";
+					$dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
+
+                    foreach ($slangs as $lang)
+                       	{
+                            $dataentryoutput.="<option value='{$lang}'";
+                       		//if ($lang == $idrow[$fnames[$i][0]]) {$dataentryoutput .= " selected='selected'";}
+                            $dataentryoutput.=">".getLanguageNameFromCode($lang,false)."</option>\n";
+                       	}
+                    $dataentryoutput .= "</select>";
 					break;
 					case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
 					$dataentryoutput .= "<table border='0'>\n";
@@ -2145,7 +2156,7 @@ if($actsurrows['browse_response']){
                 $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
                 $baselang = GetBaseLanguageFromSurveyID($surveyid);
                 array_unshift($slangs,$baselang);
-                $dataentryoutput.= "<select name='save_language' onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n";
+                $dataentryoutput.= "<select name='save_language'>\n";
                 foreach ($slangs as $lang)
                    	{
                    		if ($lang == $baselang) $dataentryoutput .= "\t<option value='{$lang}' selected='selected'>".getLanguageNameFromCode($lang,false)."</option>\n";
