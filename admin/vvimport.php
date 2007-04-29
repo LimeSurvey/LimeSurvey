@@ -54,9 +54,9 @@ if ($subaction != "upload")
 		<tr><th colspan=2>".$clang->gT("Import a VV survey file")."</th></tr>
 		<tr><td>".$clang->gT("File:")."</td><td><input type='file' size=50 name='the_file'></td></tr>
 		<tr><td>".$clang->gT("Survey ID:")."</td><td><input type='text' size=10 name='sid' value='$surveyid' readonly></td></tr>
-		<tr><td>".$clang->gT("Exclude record IDs?")."</td><td><input type='checkbox' name='noid' value='noid' checked></td></tr>
+		<tr><td>".$clang->gT("Exclude record IDs?")."</td><td><input type='checkbox' name='noid' value='noid' checked=checked onchange='form.insertmethod.disabled=this.checked;' ></td></tr>
         <!-- this next item should only appear if noid is not checked -->
-		<tr><td>".$clang->gT("When an imported record matches an existing record ID:")."</td><td><select name='insert' >
+		<tr><td>".$clang->gT("When an imported record matches an existing record ID:")."</td><td><select id='insertmethod' name='insert' disabled='disabled'>
         <option value='error' selected='selected'>".$clang->gT("Report an error (and skip the new record).")."</option>
         <option value='renumber'>".$clang->gT("Renumber the new record.")."</option>
         <option value='ignore'>".$clang->gT("Ignore the new record.")."</option>
@@ -196,7 +196,6 @@ else
 			$insert .= "(".implode(", ", $fieldnames).")\n";
 			$insert .= "VALUES\n";
 			$insert .= "('".implode("', '", $fieldvalues)."')\n";
-
 			if (!$result = $connect->Execute($insert))
 			{
 				$idkey = array_search('id',$fieldnames);
@@ -232,6 +231,6 @@ else
 	}
 	$vvoutput .= $clang->gT("Total records imported:")." ".$importcount."<br /><br />";
 	$vvoutput .= "[<a href='admin.php?action=browse&amp;sid=$surveyid'>".$clang->gT("Browse Responses")."</a>]";
-	$vvoutput .= "</td></tr></table>";
+	$vvoutput .= "</td></tr></table><br />&nbsp;";
 }
 ?>

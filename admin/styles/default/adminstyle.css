@@ -103,6 +103,19 @@ input, select {
 	background: #EEEFFF;
 	font: 10px verdana, arial, sans-serif;
 }
+
+input, select {
+	color: #000080;
+	background: #EEEFFF;
+	font: 10px verdana, arial, sans-serif;
+}
+
+input[disabled], textarea[disabled], select[disabled] {
+	color: #999999;
+	background: #EEEEEE;
+	font: 10px verdana, arial, sans-serif;
+}
+
 action {
 	text-align: left;
 }
