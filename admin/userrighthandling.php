@@ -52,7 +52,7 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 	}
 	else
 	{
-		$usergroupsummary .= "</font></td></tr>\n";
+		$usergroupsummary .= "</td></tr>\n";
 	}
 
 
@@ -222,49 +222,49 @@ if ($action == "setuserrights")
 				if($parent['create_survey']) {
 					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"create_survey\" value=\"create_survey\"";
 					if($usr['create_survey']) {
-						$usersummary .= " checked ";
+						$usersummary .= " checked='checked' ";
 					}
 					$usersummary .=" /></td>\n";
 				}
 				if($parent['configurator']) {
 					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"configurator\" value=\"configurator\"";
 					if($usr['configurator']) {
-						$usersummary .= " checked ";
+						$usersummary .= " checked='checked' ";
 					}
 					$usersummary .=" /></td>\n";
 				}
 				if($parent['create_user']) {
 					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"create_user\" value=\"create_user\"";
 					if($usr['create_user']) {
-						$usersummary .= " checked ";
+						$usersummary .= " checked='checked' ";
 					}
 					$usersummary .=" /></td>\n";
 				}
 				if($parent['delete_user']) {
 					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"delete_user\" value=\"delete_user\"";
 					if($usr['delete_user']) {
-						$usersummary .= " checked ";
+						$usersummary .= " checked='checked' ";
 					}
 					$usersummary .=" /></td>\n";
 				}
 				if($parent['move_user']) {
 					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"move_user\" value=\"move_user\"";
 					if($usr['move_user']) {
-						$usersummary .= " checked ";
+						$usersummary .= " checked='checked' ";
 					}
 					$usersummary .=" /></td>\n";
 				}
 				if($parent['manage_template']) {
 					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"manage_template\" value=\"manage_template\"";
 					if($usr['manage_template']) {
-						$usersummary .= " checked ";
+						$usersummary .= " checked='checked' ";
 					}
 					$usersummary .=" /></td>\n";
 				}
 				if($parent['manage_label']) {
 					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"manage_label\" value=\"manage_label\"";
 					if($usr['manage_label']) {
-						$usersummary .= " checked ";
+						$usersummary .= " checked='checked' ";
 					}
 					$usersummary .=" /></td>\n";
 				}
@@ -525,35 +525,22 @@ if ($action == "mailusergroup")
 	$query = "SELECT a.ugid, a.name, a.owner_id, b.uid FROM ".db_table_name('user_groups') ." AS a LEFT JOIN ".db_table_name('user_in_groups') ." AS b ON a.ugid = b.ugid WHERE a.ugid = {$ugid} AND uid = {$_SESSION['loginID']} ORDER BY name";
 	$result = db_execute_assoc($query);
 	$crow = $result->FetchRow();
-	$eguquery = "SELECT * FROM ".db_table_name("user_in_groups")." AS a INNER JOIN ".db_table_name("users")." AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " AND b.uid != {$_SESSION['loginID']} ORDER BY b.users_name";
-	$eguresult = db_execute_assoc($eguquery);
-	$addressee = '';
-	$to = '';
-	while ($egurow = $eguresult->FetchRow())
-	{
-		$to .= $egurow['users_name']. ' <'.$egurow['email'].'>'. ', ' ;
-		$addressee .= $egurow['users_name'].', ';
-	}
 
-	$to = substr("$to", 0, -2);
-	$addressee = substr("$addressee", 0, -2);
 
 	$usersummary = "<form action='$scriptname' name='mailusergroup' method='post'>"
 	. "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
 	. "\t\t<strong><font color='white'>".$clang->gT("Mail to all Members")."</font></strong></td></tr>\n"
 	. "\t<tr>\n"
-	. "\t\t<td align='right' width='20%'><strong>".$clang->gT("To:")."</strong></td>\n"
-	. "\t\t<td><input type='text' size='50' name='to' value=\"{$to}\" /></td></tr>\n"
 	. "\t\t<td align='right' width='20%'><strong>".$clang->gT("Send me a copy:")."</strong></td>\n"
 	. "\t\t<td><input name='copymail' type='checkbox' class='checkboxbtn' value='1' /></td></tr>\n"
+	. "\t<tr>\n"
 	. "\t\t<td align='right' width='20%'><strong>".$clang->gT("Subject:")."</strong></td>\n"
 	. "\t\t<td><input type='text' size='50' name='subject' value='' /></td></tr>\n"
 	. "\t<tr><td align='right'><strong>".$clang->gT("Message:")."</strong></td>\n"
 	. "\t\t<td><textarea cols='50' rows='4' name='body'></textarea></td></tr>\n"
-	. "\t<tr><td colspan='2' align='center'><input type='submit' value='".$clang->gT("Send")."'>\n"
-	. "<input type='reset' value='Reset'><br />"
+	. "\t<tr><td colspan='2' align='center'><input type='submit' value='".$clang->gT("Send")."' />\n"
+	. "<input type='reset' value='Reset' /><br />"
 	. "\t<input type='hidden' name='action' value='mailsendusergroup' />\n"
-	. "\t<input type='hidden' name='addressee' value='$addressee' />\n"
 	. "\t<input type='hidden' name='ugid' value='$ugid' />\n"
 	. "\t</td></tr>\n"
 	. "</table>\n"
@@ -636,23 +623,34 @@ if ($action == "mailsendusergroup")
 {
 	$usersummary = "<br /><strong>".$clang->gT("Mail to all Members")."</strong><br />\n";
 
-	// user musst be in user group
+	// user must be in user group
 	$query = "SELECT uid FROM ".db_table_name('user_in_groups') ." WHERE ugid = {$ugid} AND uid = {$_SESSION['loginID']}";
 	$result = db_execute_assoc($query);
 
 	if($result->RecordCount() > 0)
 	{
-		$from_user = "SELECT email, user FROM ".db_table_name("users")." WHERE uid = " .$_SESSION['loginID'];
-		$from_user_result = db_execute_assoc($from_user);
-		$from_user_row = $grpresult->FetchRow();
 
-		$from = $from_user_row['user'].' <'.$from_user_row['email'].'> ';
+    	$eguquery = "SELECT * FROM ".db_table_name("user_in_groups")." AS a INNER JOIN ".db_table_name("users")." AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " AND b.uid != {$_SESSION['loginID']} ORDER BY b.users_name";
+    	$eguresult = db_execute_assoc($eguquery);
+    	$addressee = '';
+    	$to = '';
+    	while ($egurow = $eguresult->FetchRow())
+    	{
+    		$to .= $egurow['users_name']. ' <'.$egurow['email'].'>'. ', ' ;
+    		$addressee .= $egurow['users_name'].', ';
+    	}
+    	$to = substr("$to", 0, -2);
+    	$addressee = substr("$addressee", 0, -2);
+
+		$from_user = "SELECT email, users_name FROM ".db_table_name("users")." WHERE uid = " .$_SESSION['loginID'];
+		$from_user_result = db_execute_assoc($from_user);
+		$from_user_row = $from_user_result->FetchRow();
+
+		$from = $from_user_row['users_name'].' <'.$from_user_row['email'].'> ';
 
 		$ugid = $_POST['ugid'];
-		$to	= $_POST['to'];
 		$body = $_POST['body'];
 		$subject = $_POST['subject'];
-		$addressee = $_POST['addressee'];
 
 		if(isset($_POST['copymail']) && $_POST['copymail'] == 1)
 		{
@@ -662,7 +660,9 @@ if ($action == "mailsendusergroup")
 		$body = str_replace("\n.", "\n..", $body);
 		$body = wordwrap($body, 70);
 
-		if (MailTextMessage( $body, $subject, $to, "From: $from",''))
+    
+        //echo $body . '-'.$subject .'-'.'<pre>'.htmlspecialchars($to).'</pre>'.'-'.$from;
+		if (MailTextMessage( $body, $subject, $to, $from,''))
 		{
 			$usersummary = "<br /><strong>".$clang->gT("Message(s) sent successfully!")."</strong><br />\n"
 			. "<br />To: $addressee<br />\n"
@@ -713,9 +713,9 @@ if ($action == "editusergroups"  )
 			if(!empty($crow['description']))
 			{
 				$usergroupsummary .= "<table rules='rows' width='100%' border='1' cellpadding='10'>\n"
-				. "\t\t\t\t<tr id='surveydetails20'><td align='justify' colspan='2' height='4'>"
+				. "\t\t\t\t<tr><td align='justify' colspan='2' height='4'>"
 				. "<font size='2' face='verdana' color='black'><strong>".$clang->gT("Description: ")."</strong>"
-				. "<font color='black'>{$crow['description']}</font></td></tr>\n"
+				. "<font color='black'>{$crow['description']}</font></font></td></tr>\n"
 				. "</table>";
 			}
 
@@ -742,7 +742,7 @@ if ($action == "editusergroups"  )
 					$usergroupowner = "\t<tr bgcolor='#999999'>\n"
 					. "\t<td align='center'><strong>{$egurow['users_name']}</strong></td>\n"
 					. "\t<td align='center'><strong>{$egurow['email']}</strong></td>\n"
-					. "\t\t<td align='center'>\n";
+					. "\t\t<td align='center'>&nbsp;</td></tr>\n";
 					continue;
 				}
 				//	output users
@@ -757,7 +757,7 @@ if ($action == "editusergroups"  )
 				// owner and not himself    or    not owner and himself
 				if((isset($row2['ugid']) && $_SESSION['loginID'] != $egurow['uid']) || (!isset($row2['ugid']) && $_SESSION['loginID'] == $egurow['uid']))
 				{
-					$usergroupentries .= "\t\t\t<form method='post' action='$scriptname?action=deleteuserfromgroup&ugid=$ugid'>"
+					$usergroupentries .= "\t\t\t<form method='post' action='$scriptname?action=deleteuserfromgroup&amp;ugid=$ugid'>"
 					." <input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.","js")."\")' />"
 					." <input type='hidden' name='user' value='{$egurow['users_name']}' />"
 					." <input name='uid' type='hidden' value='{$egurow['uid']}' />"
