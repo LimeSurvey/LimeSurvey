@@ -614,11 +614,14 @@ $firstline .= "\n";
 if ($type == "doc")
 {
 	$flarray=explode($separator, $firstline);
-	$fli=1;
+	$fli=0;
 	foreach ($flarray as $fl)
 	{
-		$fieldmap[$fli]['title']=$fl;
-		$fli++;
+		if ($fl != "id")
+		{
+			$fieldmap[$fli]['title']=$fl;
+			$fli++;
+		}
 	}
 }
 elseif ($type == "xls")
@@ -706,7 +709,7 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
         	$colcounter=0;
         	foreach ($drow as $rowfield)
         	{
-        	  $rowfield=str_replace("–","-",$rowfield);
+        	  $rowfield=str_replace("?","-",$rowfield);
               $sheet->write($rowcounter,$colcounter,mb_convert_encoding($rowfield, "UTF-16LE", "UTF-8"));
               $colcounter++;
         	}
@@ -738,7 +741,7 @@ elseif ($answers == "long")
 		{
 			$field=$dresult->FetchField($i);
 			$fieldinfo=$field->name;
-			if ($fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "ipaddr"&& $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && $fieldinfo != "attribute_1" && $fieldinfo != "attribute_2")
+			if ($fieldinfo != "startlanguge" && $fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "ipaddr"&& $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && $fieldinfo != "attribute_1" && $fieldinfo != "attribute_2")
 			{
 				$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
 				$fqid=$fielddata['qid'];
@@ -785,6 +788,9 @@ elseif ($answers == "long")
 						break;
 						case "attribute_2":
 						$ftitle=$clang->gT("Attribute 2").":";
+						break;
+						case "startlanguage":
+						$ftitle=$clang->gT("Language").":";
 						break;
 						default:
 						$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
