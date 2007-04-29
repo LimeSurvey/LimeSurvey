@@ -94,7 +94,7 @@ if($actsurrows['browse_response']){
 	{
 		$thissurvey=getSurveyInfo($surveyid); // To check the private status
 		$errormsg="";
-		$dataentryoutput .= "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		$dataentryoutput .= "<table width='450' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		.$clang->gT("Data Entry")."</strong></font></td></tr>\n"
 		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
@@ -108,6 +108,7 @@ if($actsurrows['browse_response']){
 			if (isset($_POST['save']) && $_POST['save'] == "on")
 			{
 				$saver['identifier']=returnglobal('save_identifier');
+				$saver['language']=returnglobal('save_language');
 				$saver['password']=returnglobal('save_password');
 				$saver['passwordconfirm']=returnglobal('save_confirmpassword');
 				$saver['email']=returnglobal('save_email');
@@ -137,7 +138,9 @@ if($actsurrows['browse_response']){
 					  <tr><td align='right'>".$clang->gT("Confirm Password:")."</td>
 					   <td><input type='password' name='save_confirmpassword' value='".$_POST['save_confirmpassword']."'></td></tr>
 					  <tr><td align='right'>".$clang->gT("Email:")."</td>
-					   <td><input type='text' name='save_email' value='".$_POST['save_email']."'>\n";
+					   <td><input type='text' name='save_email' value='".$_POST['save_email']."'>
+					  <tr><td align='right'>".$clang->gT("Start Language:")."</td>
+					   <td><input type='text' name='save_language' value='".$_POST['save_language']."'>\n";
 					foreach ($_POST as $key=>$val)
 					{
 						if (substr($key, 0, 4) != "save" && $key != "action" && $key != "surveytable" && $key !="sid" && $key != "datestamp" && $key !="ipaddr")
@@ -148,7 +151,7 @@ if($actsurrows['browse_response']){
 					$dataentryoutput .= "</td></tr><tr><td></td><td><input type='submit' value='".$clang->gT("submit")."'>
 					 <input type='hidden' name='sid' value='$surveyid'>
 					 <input type='hidden' name='surveytable' value='".$_POST['surveytable']."'>
-					 <input type='hidden' name='subaction' value='".$_POST['action']."'>
+					 <input type='hidden' name='subaction' value='".$_POST['subaction']."'>
 					 <input type='hidden' name='language' value='".$_POST['language']."'>
 					 <input type='hidden' name='save' value='on'></td>";
 					if (isset($_POST['datestamp']))
@@ -313,6 +316,23 @@ if($actsurrows['browse_response']){
 					$scid = $connect->Insert_ID();
 					
 					$dataentryoutput .= "<font color='green'>".$clang->gT("Your survey responses have been saved succesfully")."</font><br />\n";
+                    
+                    $tkquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
+                    if ($tkresult = $connect->Execute($tkquery)) //If the query fails, assume no tokens table exists
+                    {
+                    $tokendata = array (
+                    "firstname"=> $saver['identifier'],	
+                    "lastname"=> $saver['identifier'], 	
+    				"email"=>$saver['email'],
+                    "token"=>randomkey(10),
+                    "language"=>$saver['language'],
+                    "sent"=>date("Y-m-d H:i"), 	
+                    "completed"=>"N");
+                    $connect->AutoExecute(db_table_name("tokens_".$surveyid), $tokendata,'INSERT');
+					$dataentryoutput .= "<font color='green'>".$clang->gT("A token entry for the saved survey has been created too.")."</font><br />\n";
+
+                    }					
+					
 					if ($saver['email'])
 					{
 						//Send email
@@ -324,8 +344,8 @@ if($actsurrows['browse_response']){
 							$message.=$clang->gT("Name").": ".$saver['identifier']."\n";
 							$message.=$clang->gT("Password").": ".$saver['password']."\n\n";
 							$message.=$clang->gT("Reload your survey by clicking on the following URL:").":\n";
-							//$message.=$homeurl."/".$scriptname."?action=dataentry&sid=$surveyid&subaction=editsaved&identifier=".$saver['identifier']."&accesscode=".$saver['password']."&public=true";
-							$message.=$publicurl."/index.php?sid=$surveyid&loadall=reload&scid=".$scid."&loadname=".urlencode($saver['identifier'])."&loadpass=".urlencode($saver['password']);
+							$message.=$publicurl."/index.php?sid=$surveyid&loadall=reload&scid=".$scid."&lang=".urlencode($saver['language'])."&loadname=".urlencode($saver['identifier'])."&loadpass=".urlencode($saver['password']);
+							if (isset($tokendata['token'])) {$message.="&token=".$tokendata['token'];}
 							$from = $thissurvey['adminemail'];
 
 							if (MailTextMessage($message, $subject, $saver['email'], $from, $sitename))
@@ -1199,7 +1219,7 @@ if($actsurrows['browse_response']){
 
 	elseif ($subaction == "update")
 	{
-		$dataentryoutput .= "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		$dataentryoutput .= "<table width='450' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		.$clang->gT("Data Entry")."</strong></font></td></tr>\n"
 		."\t<tr><td align='center'>\n";
@@ -1302,7 +1322,7 @@ if($actsurrows['browse_response']){
 	elseif ($subaction == "delete")
 	{
 		$thissurvey=getSurveyInfo($surveyid);
-		$dataentryoutput .= "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		$dataentryoutput .= "<table width='450' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		.$clang->gT("Data Entry")."</strong></font></td></tr>\n"
 		."\t<tr  bgcolor='#CCCCCC'><td align='center'>$setfont\n"
@@ -2120,7 +2140,21 @@ if($actsurrows['browse_response']){
 					  <td><input type='password' name='save_confirmpassword'></td></tr>
 					  <tr><td align='right'>".$clang->gT("Email:")."</td>
 					  <td><input type='text' name='save_email'></td></tr>
-					  </table>\n";
+					  <tr><td align='right'>".$clang->gT("Start Language:")."</td>
+					  <td>";
+                $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+                $baselang = GetBaseLanguageFromSurveyID($surveyid);
+                array_unshift($slangs,$baselang);
+                $dataentryoutput.= "<select name='save_language' onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n";
+                foreach ($slangs as $lang)
+                   	{
+                   		if ($lang == $baselang) $dataentryoutput .= "\t<option value='{$lang}' selected='selected'>".getLanguageNameFromCode($lang,false)."</option>\n";
+                   		else {$dataentryoutput.="\t<option value='{$lang}'>".getLanguageNameFromCode($lang,false)."</option>\n";}
+                   	}
+                $dataentryoutput .= "</select>";
+                      
+
+				$dataentryoutput .= "</table>\n";
 				$dataentryoutput .= "\t\t</font></td>\n";
 				$dataentryoutput .= "\t</tr>\n";
 			}
@@ -2188,4 +2222,18 @@ function array_in_array($needle, $haystack)
 	}
 	return false;
 }
+
+function randomkey($length)
+{
+	$pattern = "1234567890";
+	for($i=0;$i<$length;$i++)
+	{
+		if(isset($key))
+		$key .= $pattern{rand(0,9)};
+		else
+		$key = $pattern{rand(0,9)};
+	}
+	return $key;
+}
+
 ?>
