@@ -62,7 +62,7 @@ if ($subaction != "upload")
         <option value='ignore'>".$clang->gT("Ignore the new record.")."</option>
         <option value='replace'>".$clang->gT("Replace the existing record.")."</option>
         </select></td></tr>
-		<tr><td colspan='2' align='center' ><input type='submit' value='".$clang->gT("Upload")."'>
+		<tr><td colspan='2' align='center' ><input type='submit' value='".$clang->gT("Import")."'>
 		<input type='hidden' name='action' value='vvimport' />
 		<input type='hidden' name='subaction' value='upload' />
 		</td></tr>
@@ -95,8 +95,8 @@ else
 	{
 		$vvoutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
 		$vvoutput .= $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
-		//$vvoutput .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
-		$vvoutput .= "</font></td></tr></table>\n";
+		$vvoutput .= "<input type='submit' value='".$clang->gT("Back to Response Import")."' onclick=\"window.open('$scriptname?action=vvimport&sid=$surveyid', '_top')\">\n";
+		$vvoutput .= "</font></td></tr></table><br />&nbsp;\n";
 		return;
 	}
 	// IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
