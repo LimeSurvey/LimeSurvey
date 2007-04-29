@@ -837,7 +837,7 @@ function do_list_radio($ia)
 	if ($ia[6] != "Y" && $shownoanswer == 1)
 	{
 		$rowcounter++;
-		$answer .= "\t\t\t\t\t\t  <input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]NANS' value=' ' ";
+		$answer .= "\t\t\t\t\t\t  <input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]NANS' value='' ";
 		if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == "") && (!isset($defexists) || !$defexists)) || ($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
 		{
 			$answer .= " checked"; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
@@ -949,7 +949,7 @@ function do_list_flexible_radio($ia)
 	if ($ia[6] != "Y" && $shownoanswer == 1)
 	{
 		$rowcounter++;
-		$answer .= "\t\t\t\t\t\t  <input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]NANS' value=' ' ";
+		$answer .= "\t\t\t\t\t\t  <input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]NANS' value='' ";
 		if ((!isset($defexists) || $defexists != "Y") && (!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == ""))
 		{
 			$answer .= " checked"; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
@@ -1924,24 +1924,20 @@ function do_array_5point($ia)
 			$answer .= "\t\t\t\t\t<td><label for='answer$myfname-$i'>"
 			."<input class='radio' type='radio' name='$myfname' id='answer$myfname-$i' value='$i' title='$i'";
 			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $i) {$answer .= " checked";}
-			// --> START NEW FEATURE - SAVE
 			$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
-			// --> END NEW FEATURE - SAVE
 		}
 		$answertext2=answer_replace($ansrow['answer']);
 		if (strpos($answertext2,'|')) {
 		    $answertext2=substr($answertext2,strpos($answertext2,'|')+1);
 			$answer .= "\t\t\t\t\t<td align='left' width='$answerwidth%'>$answertext2</td>\n";
-		} else  {$answer .= "\t\t\t\t\t<td>&nbsp;</td>\n";}
+		} else  {$answer .= "\t\t\t\t\t<td></td>\n";}
 		
 		if ($ia[6] != "Y" && $shownoanswer == 1)
 		{
 			$answer .= "\t\t\t\t\t<td align='center'><label for='answer$myfname-'>"
 			."<input class='radio' type='radio' name='$myfname' id='answer$myfname-' value='' title='".$clang->gT("No answer")."'";
 			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
-			// --> START NEW FEATURE - SAVE
 			$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
-			// --> END NEW FEATURE - SAVE
 		}
 		$answer .= "\t\t\t\t</tr>\n";
 		$fn++;
