@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-04-24 21:37+0100\n"
+"PO-Revision-Date: 2007-04-29 22:43+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1212,8 +1212,14 @@ msgstr "Passwort bestätigen:"
 msgid "Email:"
 msgstr "E-Mail"
 
+msgid "Start Language:"
+msgstr "Start-Sprache"
+
 msgid "Your survey responses have been saved succesfully"
 msgstr "Ihre Antworten auf diese Umfrage sind erfolgreich gespeichert worden."
+
+msgid "A token entry for the saved survey has been created too."
+msgstr "Es wurde außerdem für die zwischengespeicherte Umfrage ein Zugangsschlüssel angelegt."
 
 # D:\xampp\xampp\htdocs\phpsurveyor/save.php:266
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:219
@@ -1544,8 +1550,8 @@ msgstr "Aktive Probanden-Tabellen"
 msgid "De-activated Token Tables"
 msgstr "Deaktivierte Probanden-Tabellen"
 
-msgid "Cannot Activate this Survey"
-msgstr "Diese Umfrage kann nicht aktiviert werden."
+msgid "Survey cannot be activated. Either you have no permission or there are no questions."
+msgstr "Die Umfrage kann nicht aktiviert werden, da Sie entweder keine Berechtigung haben oder keine Fragen vorhanden sind."
 
 msgid "Survey Security Settings"
 msgstr "Sicherheitseinstellungen der aktuellen Umfrage"
@@ -3501,13 +3507,9 @@ msgstr "Bearbeite Benutzergruppe (Eigentümer:"
 msgid "Update User Group"
 msgstr "Benutzergruppe aktualisieren"
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1705
-msgid "To:"
-msgstr "An:"
-
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1707
 msgid "Send me a copy:"
-msgstr "Sende eine Kopie an:"
+msgstr "Sende mir eine Kopie:"
 
 msgid "Subject:"
 msgstr "Betreff:"
@@ -3548,6 +3550,9 @@ msgstr "Gruppe existiert bereits."
 
 msgid "Group name was not supplied!"
 msgstr "Es wurde kein Gruppenname angegeben."
+
+msgid "Message(s) sent successfully!"
+msgstr "Nachricht(en) erfolgreich versandt."
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1828
 msgid "Mail not sent!"
@@ -3592,9 +3597,16 @@ msgstr "Neuen Datensatz ignorieren."
 msgid "Replace the existing record."
 msgstr "Alten Datensatz ersetzen."
 
+msgid "Import"
+msgstr "Importieren"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:83
 msgid "Cannot import the VVExport file."
 msgstr "VVExport-Datei konnte nicht importiert werden."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/vvimport.php:98
+msgid "Back to Response Import"
+msgstr "Zurück zum Antworten-Import"
 
 msgid "Import Failed on Record"
 msgstr "Import fehlgeschlagen für Datensatz"
@@ -3731,6 +3743,10 @@ msgstr "Spanisch"
 # D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:164
 msgid "Swedish"
 msgstr "Schwedisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:169
+msgid "Turkish"
+msgstr "Türkisch"
 
 # D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:168
 msgid "Vietnamese"
