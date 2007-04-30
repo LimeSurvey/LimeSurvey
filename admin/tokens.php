@@ -67,10 +67,9 @@ if ($subaction == "export" && $sumrows5['export']) //EXPORT FEATURE SUBMITTED BY
 	$bresult = db_execute_assoc($bquery) or die ("$bquery<br />".htmlspecialchars($connect->ErrorMsg()));
 	$bfieldcount=$bresult->FieldCount();
 
-	$tokenoutput .= "Tid, Firstname, Lastname, Email, Token , Language, Attribute1, Attribute2, mpid\n";
+	$tokenoutput .= "firstname, lastname, email, token, language code, attribute1, attribute2, tid\n";
 	while ($brow = $bresult->FetchRow())
 	{
-		$tokenoutput .= '"'.trim($brow['tid'])."\",";
 		$tokenoutput .= '"'.trim($brow['firstname'])."\",";
 		$tokenoutput .= '"'.trim($brow['lastname'])."\",";
 		$tokenoutput .= '"'.trim($brow['email'])."\",";
@@ -81,7 +80,7 @@ if ($subaction == "export" && $sumrows5['export']) //EXPORT FEATURE SUBMITTED BY
 			$tokenoutput .= ",";
 			$tokenoutput .= '"'.trim($brow['attribute_1'])."\",";
 			$tokenoutput .= '"'.trim($brow['attribute_2'])."\",";
-			$tokenoutput .= '"'.trim($brow['mpid'])."\"";
+			$tokenoutput .= '"'.trim($brow['tid'])."\"";
 		}
 		$tokenoutput .= "\n";
 	}
@@ -1377,9 +1376,13 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 							if (!isset($line[5])) $line[5] = "";
 							if (!isset($line[6])) $line[6] = "";
 							$iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
-							. "(firstname, lastname, email, token, language, attribute_1, attribute_2";
+							. "(";
+							if (isset($line[7])) $iq .="tid, ";
+							$iq .="firstname, lastname, email, token, language, attribute_1, attribute_2";
 							$iq .=") \n"
-							. "VALUES (".$connect->qstr($line[0]).", ".$connect->qstr($line[1]).", ".$connect->qstr($line[2]).", ".$connect->qstr($line[3]).", ".strtolower($connect->qstr($line[4]))." , ".$connect->qstr($line[5]).", ".$connect->qstr($line[6])."";
+							. "VALUES (";
+							if (isset($line[7])) $iq .= $connect->qstr($line[7]).", ";
+							$iq .= $connect->qstr($line[0]).", ".$connect->qstr($line[1]).", ".$connect->qstr($line[2]).", ".$connect->qstr($line[3]).", ".strtolower($connect->qstr($line[4]))." , ".$connect->qstr($line[5]).", ".$connect->qstr($line[6])."";
 							$iq .= ")";
 							$ir = $connect->Execute($iq) or die ("Couldn't insert line<br />\n$buffer<br />\n".htmlspecialchars($connect->ErrorMsg())."<pre style='text-align: left'>$iq</pre>\n");
 							$xz++;
