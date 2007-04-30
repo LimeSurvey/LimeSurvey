@@ -425,15 +425,15 @@ if($actsurrows['browse_response']){
 
 		if ($private == "N") //show token info if survey not private
 		{
-			$fnames[] = array ("token", "Token ID", "Token", "token", "TID", "", "");
+			$fnames[] = array ("token", $clang->gT("Token ID"), $clang->gT("Token"), "token", "TID", "", "");
 		}
 		if ($datestamp == "Y")
 		{
-			$fnames[] = array ("datestamp", "Date Stamp", "Datestamp", "datestamp", "datestamp", "", "");
+			$fnames[] = array ("datestamp", $clang->gT("Date Stamp"), $clang->gT("Date Stamp"), "datestamp", "datestamp", "", "");
 		}
 		if ($ipaddr == "Y")
 		{
-			$fnames[] = array ("ipaddr", "IP Address", "IP Address", "ipaddr", "ipaddr", "", "");
+			$fnames[] = array ("ipaddr", $clang->gT("IP Address"), $clang->gT("IP Address"), "ipaddr", "ipaddr", "", "");
 		}
 		$fcount=0;
 		foreach ($fnrows as $fnrow)

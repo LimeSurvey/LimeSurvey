@@ -165,7 +165,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 
 	if ($private == "N") //add token to top ofl ist is survey is not private
 	{
-		$fnames[] = array("token", "token", "Token ID");
+		$fnames[] = array("token", "token", $clang->gT("Token ID"));
 	}
 	$fnames[] = array("submitdate", "submitdate", $clang->gT("Date Submitted"));
 	if ($datestamp == "Y") //add datetime to list if survey is datestamped
@@ -352,7 +352,7 @@ elseif ($subaction == "all")
 
 	if ($private == "N") //Add token to list
 	{
-		$fnames[] = array("token", "Token", "Token ID", "0");
+		$fnames[] = array("token", $clang->gT("Token"), $clang->gT("Token ID"), "0");
 	}
 	$fnames[] = array("submitdate", "submitdate", $clang->gT("Date Submitted"), "0");
 	if ($datestamp == "Y") //Add datestamp

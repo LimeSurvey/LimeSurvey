@@ -322,11 +322,11 @@ if ($action == "editusers")
 	. "\t\t\t\t<tr bgcolor='#555555'><td colspan='6' height='4'>"
 	. "<font size='1' face='verdana' color='white'><strong>".$clang->gT("User Control")."</strong></font></td></tr>\n"
 	. "\t<tr>\n"
-	. "\t\t<th>".$clang->gT("Username")."</th>\n"
-	. "\t\t<th>".$clang->gT("Email")."</th>\n"
-	. "\t\t<th>".$clang->gT("Full name")."</th>\n"
-	. "\t\t<th>".$clang->gT("Password")."</th>\n"
-	. "\t\t<th>".$clang->gT("Created by")."</th>\n"
+	. "\t\t<th width='20%'>".$clang->gT("Username")."</th>\n"
+	. "\t\t<th width='20%'>".$clang->gT("Email")."</th>\n"
+	. "\t\t<th width='20%'>".$clang->gT("Full name")."</th>\n"
+	. "\t\t<th width='15%' >".$clang->gT("Password")."</th>\n"
+	. "\t\t<th width='15%'>".$clang->gT("Created by")."</th>\n"
 	. "\t\t<th></th>\n"
 	. "\t</tr>\n";
 
@@ -459,20 +459,20 @@ if ($action == "editusers")
 			."</form>";
 		}
 		$usersummary .= "\t\t</td>\n"
-		. "\t</tr>\n";
+		. "\t</tr></table>\n";
 		$row++;
 	}
 
 	if($_SESSION['USER_RIGHT_CREATE_USER'])
 	{
 		$usersummary .= "\t\t<form action='$scriptname' method='post'>\n"
-		. "\t\t<tr>\n"
-		. "\t\t<td align='center'><input type='text' name='new_user' /></td>\n"
-		. "\t\t<td align='center'><input type='text' name='new_email' /></td>\n"
-		. "\t\t<td align='center'><input type='text' name='new_full_name' /></td>\n"
-		. "\t\t<td align='center'><input type='submit' value='".$clang->gT("Add User")."' />"
+		. "\t\t<table rules='rows' width='100%'><tr>\n"
+		. "\t\t<td align='center' width='20%'><input type='text' name='new_user' /></td>\n"
+		. "\t\t<td align='center' width='20%'><input type='text' name='new_email' /></td>\n"
+		. "\t\t<td align='center' width='20%' ><input type='text' name='new_full_name' /></td><td width='15%'>&nbsp;</td><td width='15%'>&nbsp;</td>\n"
+		. "\t\t<td align='center' width='15%'><input type='submit' value='".$clang->gT("Add User")."' />"
 		. "<input type='hidden' name='action' value='adduser' /></td>\n"
-		. "\t</tr>\n";
+		. "\t</tr></table></form>\n";
 	}
 	
 }

@@ -1274,11 +1274,11 @@ function returnquestiontitlefromfieldcode($fieldcode)
 	// Performance Improvement	: 37%
 	// Optimized By				: swales
 
-	if (!isset($fieldcode)) {return "Preset";}
-	if ($fieldcode == "token") {return "Token";}
-	if ($fieldcode == "datestamp") {return "Date Stamp";}
-	if ($fieldcode == "ipaddr") {return "IP Address";}
-	if ($fieldcode == "refurl") {return "Referring URL";}
+	if (!isset($fieldcode)) {return $clang->gT("Preset");}
+	if ($fieldcode == "token") {return $clang->gT("Token");}
+	if ($fieldcode == "datestamp") {return $clang->gT("Date Stamp");}
+	if ($fieldcode == "ipaddr") {return $clang->gT("IP Address");}
+	if ($fieldcode == "refurl") {return $clang->gT("Referring URL");}
 	global $dbprefix, $surveyid, $connect;
 
 	//Find matching information;
