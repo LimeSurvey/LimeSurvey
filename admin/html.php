@@ -49,7 +49,7 @@ if ($action == "listsurveys")
 				    <td height=\"22\" width='22'>&nbsp</td>
 				    <td height=\"22\"><strong>".$clang->gT("Survey")."</strong></td>
 				    <td><strong>".$clang->gT("Date Created")."</strong></td>
-				    <td><strong>".$clang->gT("Visibility")."</strong></td>
+				    <td><strong>".$clang->gT("Access")."</strong></td>
 				    <td><strong>".$clang->gT("Status")."</strong></td>
 				    <td colspan=\"3\"><strong>".$clang->gT("Action")."</strong></td>
 				    <td colspan=\"3\"><strong>".$clang->gT("Responses")."</strong></td>
@@ -63,9 +63,9 @@ if ($action == "listsurveys")
 			
 			if($rows['private']=="Y")
 			{
-				$visibility=$clang->gT("Private") ;
+				$visibility=$clang->gT("Anonymous") ;
 			}
-			else $visibility =$clang->gT("Public") ;
+			else $visibility =$clang->gT("Not Anonymous") ;
 			if($rows['active']=="Y")
 			{
 				if ($rows['useexpiry']=='Y' && $rows['expires'] < date("Y-m-d"))
