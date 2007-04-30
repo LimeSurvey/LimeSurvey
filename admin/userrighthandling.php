@@ -665,7 +665,7 @@ if ($action == "mailsendusergroup")
 		if (MailTextMessage( $body, $subject, $to, $from,''))
 		{
 			$usersummary = "<br /><strong>".$clang->gT("Message(s) sent successfully!")."</strong><br />\n"
-			. "<br />To: $addressee<br />\n"
+			. "<br />".$clang->gT("To:")." $addressee<br />\n"
 			. "<br /><a href='$scriptname?action=editusergroups&amp;ugid={$ugid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
 		else

@@ -376,11 +376,14 @@ function db_quote($str)
 	return $connect->escape($str);
 }
 
-function db_quoteall($str)  
+function db_quoteall($str,$ispostvar=false)  
 // This functions escapes the string inside and puts quotes around the string according to the used db type
+// IF you are quoting a variable from a POST/GET then set $ispostvar to true so it doesnt get quoted twice.
 {
 	global $connect;
-	return $connect->qstr($str, get_magic_quotes_gpc());
+	if ($ispostvar) { return $connect->qstr($str, get_magic_quotes_gpc());}
+	  else {return $connect->qstr($str);}
+	
 }
 
 function db_table_name($name)

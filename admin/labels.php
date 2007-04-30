@@ -448,8 +448,8 @@ function updateset($lid)
 	// Get added and deleted languagesid arrays
 	$newlanidarray=explode(" ",trim($_POST['languageids']));
 
-	$_POST['languageids'] = db_quoteall($_POST['languageids']);
-	$_POST['label_name'] = db_quoteall($_POST['label_name']);
+	$_POST['languageids'] = db_quoteall($_POST['languageids'],true);
+	$_POST['label_name'] = db_quoteall($_POST['label_name'],true);
 	$oldlangidsarray=array();
 	$query = "SELECT languages FROM ".db_table_name('labelsets')." WHERE lid=".$lid;
 	$result=db_execute_assoc($query);
@@ -538,8 +538,8 @@ function insertlabelset()
 {
 	global $dbprefix, $connect, $clang, $labelsoutput;
 //	$labelsoutput.= $_POST['languageids'];  For debug purposes
-	$_POST['label_name'] = db_quoteall($_POST['label_name']);
-	$_POST['languageids'] = db_quoteall($_POST['languageids']);
+	$_POST['label_name'] = db_quoteall($_POST['label_name'],true);
+	$_POST['languageids'] = db_quoteall($_POST['languageids'],true);
 	$query = "INSERT INTO ".db_table_name('labelsets')." (label_name,languages) VALUES ({$_POST['label_name']},{$_POST['languageids']})";
 	if (!$result = $connect->Execute($query))
 	{
@@ -575,8 +575,8 @@ function modlabelsetanswers($lid)
        		$newsortorder=sprintf("%05d", $result->fields['maxorder']+1);
 
 
-     		$_POST['insertcode'] = db_quoteall($_POST['insertcode']);
-   			$_POST['inserttitle'] = db_quoteall($_POST['inserttitle']);
+     		$_POST['insertcode'] = db_quoteall($_POST['insertcode'],true);
+   			$_POST['inserttitle'] = db_quoteall($_POST['inserttitle'],true);
         	foreach ($lslanguages as $lslanguage)
         	{
     				$query = "INSERT INTO ".db_table_name('labels')." (lid, code, title, sortorder,language) VALUES ($lid, {$_POST['insertcode']}, {$_POST['inserttitle']}, '$newsortorder','$lslanguage')";
@@ -598,13 +598,13 @@ function modlabelsetanswers($lid)
 		// Quote each code_codeid first
 		foreach ($codeids as $codeid)
 		{
-			$_POST['code_'.$codeid] = db_quoteall($_POST['code_'.$codeid]);
+			$_POST['code_'.$codeid] = db_quoteall($_POST['code_'.$codeid],true);
 		}
          	foreach ($sortorderids as $sortorderid)
         	{
         		$langid=substr($sortorderid,0,strrpos($sortorderid,'_')); 
         		$orderid=substr($sortorderid,strrpos($sortorderid,'_')+1,20);
-			    $_POST['title_'.$sortorderid] = db_quoteall($_POST['title_'.$sortorderid]);
+			    $_POST['title_'.$sortorderid] = db_quoteall($_POST['title_'.$sortorderid],true);
                 $query = "UPDATE ".db_table_name('labels')." SET code=".$_POST['code_'.$codeids[$count]].", title={$_POST['title_'.$sortorderid]} WHERE lid=$lid AND sortorder=$orderid AND language='$langid'";
         		if (!$result = $connect->Execute($query)) 
         		// if update didn't work we assume the label does not exist and insert it
