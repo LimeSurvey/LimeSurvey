@@ -934,13 +934,8 @@ function submittokens()
 		}
 		else
 		{
-			//Get the default email_confirm from the default admin lang file
-			global $currentadminlang, $homedir, $homeurl;
-			$langdir="$homeurl/lang/$currentadminlang";
-			if (!is_dir($langdir))
-			{
-				$langdir="$homeurl/lang/english"; //default to english if there is no matching language dir
-			}
+			//Get the default email_confirm from the default language file
+			// Todo: This can't be right
 			$message = $clang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}");
 		}
 

@@ -214,7 +214,7 @@ else
 			if (!$result)
 			{
 				$vvoutput .= "<table align='center' class='outlintable'>
-				      <tr><td>".$clang->gT("Import Failed on Record")." $recordcount ".$clang->gT("because")." [".$connect->ErrorMsg()."]
+				      <tr><td>".$clang->gT("Import Failed on Record")." $recordcount ".$clang->gT("because")." [".utf8_encode($connect->ErrorMsg())."]
 					  </td></tr></table>\n";
 			}
 			else
