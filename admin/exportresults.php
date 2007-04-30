@@ -615,16 +615,19 @@ if ($type == "doc")
 {
 	$flarray=explode($separator, $firstline);
 	$fli=0;
-	foreach ($flarray as $fl)
+	//die(print_r($fieldmap)."\n".print_r($firstline));
+	$y=1;
+	for ($x=0; $x<count($fieldmap); $x++)
 	{
-		if ($fl != "id")
+		if ($fieldmap[$x]['fieldname'] != "datestamp" && $fieldmap[$x]['fieldname'] != "ipaddr" && $fieldmap[$x]['fieldname'] != "refurl")
 		{
-			$fieldmap[$fli]['title']=$fl;
-			$fli++;
+			$fieldmap[$x]['title']=$flarray[$y];
+			$y++;
 		}
 	}
 }
-elseif ($type == "xls")
+else
+if ($type == "xls")
 {
 	//var_dump ($firstline);
     $flarray=explode($separator, $firstline);
@@ -743,6 +746,7 @@ elseif ($answers == "long")
 			$fieldinfo=$field->name;
 			if ($fieldinfo != "startlanguge" && $fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "ipaddr"&& $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && $fieldinfo != "attribute_1" && $fieldinfo != "attribute_2")
 			{
+				//die(print_r($fieldmap));
 				$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
 				$fqid=$fielddata['qid'];
 				$ftype=$fielddata['type'];
@@ -779,6 +783,9 @@ elseif ($answers == "long")
 						break;
 						case "email":
 						$ftitle=$clang->gT("Email").":";
+						break;
+						case "id":
+						$ftitle=$clang->gT("ID").":";
 						break;
 						case "token":
 						$ftitle=$clang->gT("Token").":";
