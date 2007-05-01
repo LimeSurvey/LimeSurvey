@@ -396,6 +396,29 @@ if(isset($surveyid))
                 {
                     fixsortorderQuestions(0,$oldgid);
                     fixsortorderQuestions(0,$_POST['gid']);
+
+// Todo: ON moved questions from one group to another the conditions to and from this question has to be checked and deleted
+/*					$goquery = "SELECT group_order FROM ".db_table_name('groups')." WHERE gid={$_POST['gid']}";
+					$goresult = db_execute_assoc($goquery) or die ("Couldn't get grouporder for this question<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
+			  		$gorow=$goresult->FetchRow();
+			  		$newgrouporder=$gorow['group_order'];
+
+                    // Now check if the conditions of moved question are still valid
+					$condquery = "SELECT * FROM ".db_table_name('conditions')." WHERE qid={$_POST['qid']}";
+					$condresult = db_execute_assoc($condquery) or die ("Couldn't get list of conditions for this question<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
+                    while ($condrow=$condresult->FetchRow()) 
+                    {
+                    $deletecondition=false;
+					$qoquery = "SELECT distinct question_order,group_order FROM ".db_table_name('questions')." as q, ".db_table_name('groups')." as g WHERE q.qid={$_POST['qid']} and q.gid=g.gid";
+					$qoresult = db_execute_assoc($qoquery) or die ("Couldn't get list of conditions for this question<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
+                    $qorow=$condresult->FetchRow();
+                    if ($qorow['group_order']>=$newgrouporder)
+                    {
+                    $deletecondition=true;
+					}
+					  elseif  ($qorow['group_order']==$newgrouporder && )
+					}
+*/                    
                 }
 				if ($keepanswers == "0")
 				{
