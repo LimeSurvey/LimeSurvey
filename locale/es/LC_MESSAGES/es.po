@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-04-17 23:55-0300\n"
+"PO-Revision-Date: 2007-05-01 19:09-0300\n"
 "Last-Translator: Esteban Adrián Pérez <dgeaperez@yahoo.com.ar>\n"
 "Language-Team:  <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -274,6 +274,34 @@ msgstr "Importar un Archivo de encuesta VV"
 
 msgid "Export a VV survey file"
 msgstr "Exportar un Archivo de encuesta VV"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:140
+msgid "Preset"
+msgstr "Preconfigurado"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:57
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:1359
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:403
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:407
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:414
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:415
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:419
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:420
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:475
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1070
+msgid "Token"
+msgstr "Token"
+
+msgid "Date Stamp"
+msgstr "Guardar la fecha"
+
+msgid "IP Address"
+msgstr "Dirección IP"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1773
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1995
+msgid "Referring URL"
+msgstr "URL de referencia"
 
 msgid "Other"
 msgstr "Otro"
@@ -666,24 +694,15 @@ msgstr "EL CODIGO SQL QUE HA FALLADO"
 msgid "ERROR MESSAGE"
 msgstr "MENSAJE DE ERROR"
 
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/index.php:1041
+msgid "Error saving results"
+msgstr "Error al guardar las respuestas"
+
 msgid "Try to submit again"
 msgstr "Intente enviarla otra vez"
 
 msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr "Si se le ha proporcionado un token, por favor de tecléelo en la caja de abajo y pulse en continuar."
-
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:57
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:1359
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:403
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:407
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:414
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:415
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:419
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:420
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:475
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1070
-msgid "Token"
-msgstr "Token"
 
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Esta encuesta todavía no tiene preguntas y no puede ser probada ni completada."
@@ -1062,19 +1081,21 @@ msgstr "Esta encuesta no ha sido activada. No hay resultados que examinar."
 msgid "There is no matching survey."
 msgstr "No se encontró ninguna encuesta."
 
+# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:57
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:1359
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:403
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:407
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:414
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:415
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:419
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:420
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:475
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1070
+msgid "Token ID"
+msgstr "ID de llamada"
+
 msgid "Date Submitted"
 msgstr "Cita enviada"
-
-msgid "Date Stamp"
-msgstr "Guardar la fecha"
-
-msgid "IP Address"
-msgstr "Dirección IP"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1773
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1995
-msgid "Referring URL"
-msgstr "URL de referencia"
 
 msgid "View Response"
 msgstr "Ver Respuesta"
@@ -1209,8 +1230,8 @@ msgid "Answer"
 msgstr "Respuesta"
 
 # C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/conditions.php:834
-msgid "NOTE: If select a label it will be used '=='"
-msgstr "NOTA: Si elige una etiqueta, se utilizará '=='"
+msgid "NOTE: If select a label it will be used Equal or Not Equal for any other method"
+msgstr "NOTA: Si elige una etiqueta, se utilizará Equivale o No Equivale para cualquier otro método "
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/conditions.php:711
 msgid "Constant Value or Regular Expresion"
@@ -1287,14 +1308,18 @@ msgstr "No se pudo borrar la pregunta."
 msgid "Add new Answer"
 msgstr "Agregar una nueva respuesta"
 
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/database.php:587
+msgid "Error adding answer: You can't use the same answer code more than once."
+msgstr "Error al agregar la pregunta: No puede utilizar el mísmo código para dos preguntas."
+
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:580
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:588
 msgid "Failed to insert answer"
 msgstr "No se pudo agregar la respuesta"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:592
-msgid "Invalid answer code supplied"
-msgstr "Se indicó un código de respuesta no válido"
+msgid "Invalid or empty answer code supplied"
+msgstr "Se indicó un codigo de respuesta no válido o se omitió"
 
 msgid "Save All"
 msgstr "Guardar todo"
@@ -1373,8 +1398,14 @@ msgstr "Confirmar Contraseña:"
 msgid "Email:"
 msgstr "Correo Electrónico:"
 
+msgid "Start Language:"
+msgstr "Idioma inicial:"
+
 msgid "Your survey responses have been saved succesfully"
 msgstr "Sus respuestas a esta encuesta fueron guardadas con éxito"
+
+msgid "A token entry for the saved survey has been created too."
+msgstr "Se ha creado también una llamada para el cuestionario guardado."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/save.php:287
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/dataentry.php:220
@@ -1620,6 +1651,13 @@ msgstr "NUEVO REGISTRO"
 msgid "Time Submitted"
 msgstr "Teimpo enviado"
 
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/exportresults.php:788
+msgid "ID"
+msgstr "ID"
+
+msgid "Language"
+msgstr "Idioma"
+
 msgid "N/A"
 msgstr "No disponible"
 
@@ -1629,9 +1667,8 @@ msgstr "Encuesta"
 msgid "Date Created"
 msgstr "Datos Creados"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:52
-msgid "Visibility"
-msgstr "Visibilidad"
+msgid "Access"
+msgstr "Acceso"
 
 msgid "Status"
 msgstr "Estado"
@@ -1642,12 +1679,11 @@ msgstr "Acción"
 msgid "Responses"
 msgstr "Respuestas"
 
-msgid "Private"
-msgstr "Privado"
+msgid "Anonymous"
+msgstr "Anónimo"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:68
-msgid "Public"
-msgstr "Pública"
+msgid "Not Anonymous"
+msgstr "No anónimo"
 
 msgid "Expired"
 msgstr "Expiro"
@@ -1658,23 +1694,12 @@ msgstr "Activo"
 msgid "Inactive"
 msgstr "Inactivo"
 
-msgid "This survey is active but expired."
-msgstr "Este cuestionario está actualmente activa pero ha expirado."
+msgid "Private"
+msgstr "Privado"
 
-msgid "This survey is active but expired"
-msgstr "Este cuestionario está actualmente activa pero ha expirado"
-
-msgid "De-activate this Survey"
-msgstr "Desactivar esta Encuesta"
-
-msgid "This survey is currently active"
-msgstr "Esta encuesta está actualmente activa"
-
-msgid "Activate this Survey"
-msgstr "Activar esta Encuesta"
-
-msgid "This survey is not currently active"
-msgstr "Esta encuesta actualmente NO está activa"
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:68
+msgid "Public"
+msgstr "Pública"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:158
 msgid "No Surveys available - please create one."
@@ -1707,8 +1732,26 @@ msgstr "Tablas de Tokens Activadas"
 msgid "De-activated Token Tables"
 msgstr "Tablas de Tokens Desactivadas"
 
-msgid "Cannot Activate this Survey"
-msgstr "No se puede activar esta Encuesta"
+msgid "This survey is not currently active"
+msgstr "Esta encuesta actualmente NO está activa"
+
+msgid "Activate this Survey"
+msgstr "Activar esta Encuesta"
+
+msgid "Survey cannot be activated. Either you have no permission or there are no questions."
+msgstr "El cuestionario no podrá ser activado por no tener suficientes privilegios para hacerlo o aún no tiene preguntas"
+
+msgid "This survey is active but expired."
+msgstr "Este cuestionario está actualmente activa pero ha expirado."
+
+msgid "This survey is active but expired"
+msgstr "Este cuestionario está actualmente activa pero ha expirado"
+
+msgid "This survey is currently active"
+msgstr "Esta encuesta está actualmente activa"
+
+msgid "De-activate this Survey"
+msgstr "Desactivar esta Encuesta"
 
 msgid "Survey Security Settings"
 msgstr "Modificar Opciones de Seguridad del cuestinario"
@@ -1790,8 +1833,8 @@ msgstr "La Dirección IP será guardada en un fichero de registro"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1773
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1995
-msgid "Referer-URL"
-msgstr "URL Referente"
+msgid "Referer-URL will be saved"
+msgstr "Se registrará el URL Referente"
 
 msgid "It uses cookies for access control."
 msgstr "Utiliza 'cookies' para el control de acceso."
@@ -2606,6 +2649,9 @@ msgstr "Agregar Etiquetas"
 msgid "Labelsets"
 msgstr "Conjuntos de etiquetas"
 
+msgid "Error: You have to enter a name for this label set."
+msgstr "Error: Debe ingresar un nombre para la etiqueta."
+
 msgid "Create New Label Set"
 msgstr "Crear Nuevo Conjunto de Etiquetas"
 
@@ -3030,6 +3076,9 @@ msgstr "Archivo Estándar:"
 msgid "Now editing:"
 msgstr "Editando Ahora:"
 
+msgid "Other Files:"
+msgstr "Otros Archivos:"
+
 msgid "Save Changes"
 msgstr "Guardar los cambios"
 
@@ -3037,11 +3086,11 @@ msgstr "Guardar los cambios"
 msgid "Changes cannot be saved to the default template."
 msgstr "No pueden guardarse los cambios en la plantilla por omisión."
 
-msgid "Other Files:"
-msgstr "Otros Archivos:"
-
 msgid "Are you sure you want to delete this file?"
 msgstr "¿Está seguro de que quiere borrar este archivo?"
+
+msgid "Files in the default template cannot be deleted."
+msgstr "La plantilla por defecto no puede ser eliminada."
 
 msgid "Upload a File"
 msgstr "Subir un archivo"
@@ -3154,9 +3203,6 @@ msgstr "Buscar"
 msgid "Sort by: "
 msgstr "Ordenar por: "
 
-msgid "Language"
-msgstr "Idioma"
-
 msgid "Invite sent?"
 msgstr "¿Invitación enviada?"
 
@@ -3202,6 +3248,10 @@ msgstr "Una copia de respaldo de esta tabla ha sido creada y puede ser accedida 
 
 msgid "Email Invitation"
 msgstr "Enviar Invitación (por email)"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:746
+msgid "to TokenID No"
+msgstr "Para llamada nº"
 
 msgid "From"
 msgstr "De"
@@ -3679,10 +3729,6 @@ msgstr "Editar grupo de usuarios (Propietario:"
 msgid "Update User Group"
 msgstr "Actualizar grupo de usuarios"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:545
-msgid "To:"
-msgstr "Para:"
-
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:547
 msgid "Send me a copy:"
 msgstr "Envíame una copia:"
@@ -3729,6 +3775,14 @@ msgstr "¡El grupo ya existe!"
 msgid "Group name was not supplied!"
 msgstr "¡No se ingresó el nombre del grupo de usuarios!"
 
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:310
+msgid "Message(s) sent successfully!"
+msgstr "¡Se han enviado los mensajes exitosamente!"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:545
+msgid "To:"
+msgstr "Para:"
+
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:672
 msgid "Mail not sent!"
 msgstr "¡Mensaje de correo electrónico no enviado!"
@@ -3774,9 +3828,16 @@ msgstr "Ignorar el nuevo elemento."
 msgid "Replace the existing record."
 msgstr "Remplazar el elemento existente."
 
+msgid "Import"
+msgstr "Importar"
+
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/vvimport.php:77
 msgid "Cannot import the VVExport file."
 msgstr "No se pudo importar el archivo VVExport."
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/vvimport.php:98
+msgid "Back to Response Import"
+msgstr "Volver a la Importación de Respuestas"
 
 msgid "Import Failed on Record"
 msgstr "Fallo en la importación en el Elemento"
@@ -3913,6 +3974,10 @@ msgstr "Español"
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:165
 msgid "Swedish"
 msgstr "Sueco"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/classes/core/surveytranslator.php:169
+msgid "Turkish"
+msgstr "Turco"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:169
 msgid "Vietnamese"
