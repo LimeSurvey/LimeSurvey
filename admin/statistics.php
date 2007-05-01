@@ -35,6 +35,7 @@
 */
 
 include_once("login_check.php");
+require_once('classes/core/class.progressbar.php');
 $statisticsoutput ='';
 if ($usejpgraph == 1 && isset($jpgraphdir)) //JPGRAPH CODING SUBMITTED BY Pieterjan Heyse
 {
@@ -708,12 +709,30 @@ foreach ($fieldmap as $field)
 // DISPLAY RESULTS
 if (isset($_POST['display']) && $_POST['display'])
 {
+	// Create progress bar
+	$prb = new ProgressBar();
+	$prb->pedding = 2;	// Bar Pedding
+	$prb->brd_color = "#404040 #dfdfdf #dfdfdf #404040";	// Bar Border Color
+
+	$prb->setFrame();	// set ProgressBar Frame
+	$prb->frame['left'] = 50;	// Frame position from left
+	$prb->frame['top'] = 	80;	// Frame position from top
+	$prb->addLabel('text','txt1','Please wait ...');	// add Text as Label 'txt1' and value 'Please wait'
+	$prb->addLabel('percent','pct1');	// add Percent as Label 'pct1'
+	$prb->addButton('btn1','Go Back','?action=statistics&sid='.$sid);	// add Button as Label 'btn1' and action '?restart=1'
+
+	$process_status = 35;
+	
+	$prb->show();	// show the ProgressBar
+	
 	$statisticsoutput .= "<script type='text/javascript'>
     <!--
      hide('filtersettings');
     //-->
     </script>\n";
 	// 1: Get list of questions with answers chosen
+	$prb->setLabelValue('txt1','Getting Questions and Answers ...');
+	$prb->moveStep(5);
 	for (reset($_POST); $key=key($_POST); next($_POST)) { $postvars[]=$key;} // creates array of post variable names
 	foreach ($postvars as $pv)
 	{
@@ -820,6 +839,8 @@ if (isset($_POST['display']) && $_POST['display'])
 		}
 	}
 	// 2: Do SQL query
+	$prb->setLabelValue('txt1','Getting Result Count ...');
+	$prb->moveStep(35);
 	$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid");
 	$result = db_execute_num($query) or die ("Couldn't get total<br />$query<br />".$connect->ErrorMsg());
 	while ($row=$result->FetchRow()) {$total=$row[0];}
@@ -912,9 +933,13 @@ if (isset($_POST['display']) && $_POST['display'])
 	$statisticsoutput .= "</table>\n";
 }
 
+$process_status = 40;
+
 //Show Summary results
 if (isset($_POST['summary']) && $_POST['summary'])
 {
+	$prb->setLabelValue('txt1','Generating Summaries ...');
+	$prb->moveStep($process_status);
 	if ($usejpgraph == 1 && isset($jpgraphdir)) //JPGRAPH CODING SUBMITTED BY Pieterjan Heyse
 	{
 		//Delete any old temp image files
@@ -933,6 +958,8 @@ if (isset($_POST['summary']) && $_POST['summary'])
 	//Finished collecting legitqids
 	foreach ($runthrough as $rt)
 	{
+		if ($process_status < 100) $process_status++;
+		$prb->moveStep($process_status);
 		// 1. Get answers for question ##############################################################
 		if (substr($rt, 0, 1) == "M" || substr($rt, 0, 1) == "J") //MULTIPLE OPTION, THEREFORE MULTIPLE FIELDS.
 		{
@@ -1313,7 +1340,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 
 		//foreach ($alist as $al) {$statisticsoutput .= "$al[0] - $al[1]<br />";} //debugging line
 		//foreach ($fvalues as $fv) {$statisticsoutput .= "$fv | ";} //debugging line
-
+		
 		//2. Collect and Display results #######################################################################
 		if (isset($alist) && $alist) //Make sure there really is an answerlist, and if so:
 		{
@@ -1514,6 +1541,13 @@ if (isset($_POST['summary']) && $_POST['summary'])
 		unset ($alist);
 	}
     $statisticsoutput .= "<br />&nbsp\n";
+}
+
+if (isset($prb))
+{
+	$prb->setLabelValue('txt1','Done ...');
+	$prb->moveStep(100);
+	$prb->hide();
 }
 
 function deletePattern($dir, $pattern = "")
