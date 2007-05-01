@@ -497,7 +497,6 @@ if ($importversion<=100)
     unset($surveyrowdata['email_register']);
     unset($surveyrowdata['email_confirm_subj']);
     unset($surveyrowdata['email_confirm']);
-
     // import the survey language-specific settings
     $values=array_values($surveylsrowdata);
     $values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
@@ -509,6 +508,8 @@ if ($importversion<=100)
     }
 
 
+
+if (!isset($surveyrowdata['datecreated']) || $surveyrowdata['datecreated']=='') {$surveyrowdata['datecreated']=date("Y-m-d");}
 
 $values=array_values($surveyrowdata);
 $values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
@@ -758,6 +759,7 @@ if (isset($grouparray) && $grouparray) {
 							}
 						}
                     }
+                    if (!isset($questionrowdata["question_order"]) || $questionrowdata["question_order"]=='') {$questionrowdata["question_order"]=0;} 
 					$other = $questionrowdata["other"]; //Get 'other' field value
                     $newvalues=array_values($questionrowdata);
                     $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
