@@ -837,7 +837,7 @@ function do_list_radio($ia)
 	if ($ia[6] != "Y" && $shownoanswer == 1)
 	{
 		$rowcounter++;
-		$answer .= "\t\t\t\t\t\t  <input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]NANS' value='' ";
+		$answer .= "\t\t\t\t\t\t  <input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]NANS' value=' ' ";
 		if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == "") && (!isset($defexists) || !$defexists)) || ($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
 		{
 			$answer .= " checked"; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
@@ -949,7 +949,7 @@ function do_list_flexible_radio($ia)
 	if ($ia[6] != "Y" && $shownoanswer == 1)
 	{
 		$rowcounter++;
-		$answer .= "\t\t\t\t\t\t  <input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]NANS' value='' ";
+		$answer .= "\t\t\t\t\t\t  <input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]NANS' value=' ' ";
 		if ((!isset($defexists) || $defexists != "Y") && (!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == ""))
 		{
 			$answer .= " checked"; //Check the "no answer" radio button if there is no default, and user hasn't answered this.

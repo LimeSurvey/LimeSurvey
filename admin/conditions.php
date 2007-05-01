@@ -328,7 +328,7 @@ if ($questionscount > 0)
 					}
 					break;
 				}
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "", $clang->gT("No answer"));
+				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], " ", $clang->gT("No answer"));
 			}
 		}
 		elseif ($rows['type'] == "R")
@@ -350,7 +350,7 @@ if ($questionscount > 0)
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, $qck[0], $qck[1]);
 				}
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, "", $clang->gT("No answer"));
+				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, " ", $clang->gT("No answer"));
 			}
 			unset($quicky);
 		}
@@ -362,19 +362,19 @@ if ($questionscount > 0)
 				case "Y":
 				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "Y", $clang->gT("Yes"));
 				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "N", $clang->gT("No"));
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", $clang->gT("No answer"));
+				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
 				break;
 				case "G":
 				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "F", $clang->gT("Female"));
 				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "M", $clang->gT("Male"));
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", $clang->gT("No answer"));
+				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
 				break;
 				case "5":
 				for ($i=1; $i<=5; $i++)
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $i, $i);
 				}
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", $clang->gT("No answer"));
+				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
 				break;
 				case "W":
 				case "Z":
@@ -401,7 +401,7 @@ if ($questionscount > 0)
 				if ($rows['type'] != "M" && $rows['type'] != "P" && $rows['type'] != "J" && $rows['type'] != "I")
 
 				{
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "", $clang->gT("No answer"));
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
 				}
 				break;
 			}
