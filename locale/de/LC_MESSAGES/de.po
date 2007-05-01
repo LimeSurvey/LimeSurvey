@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-04-29 22:43+0100\n"
+"PO-Revision-Date: 2007-05-01 11:43+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -203,6 +203,24 @@ msgstr "VV-Umfrage-Datei importieren"
 msgid "Export a VV survey file"
 msgstr "VV-Umfrage-Datei exportieren"
 
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:139
+msgid "Preset"
+msgstr "Voreinstellung"
+
+msgid "Token"
+msgstr "Schlüsselwort"
+
+msgid "Date Stamp"
+msgstr "Datumsstempel"
+
+msgid "IP Address"
+msgstr "IP-Adresse protokollieren?"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1773
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1995
+msgid "Referring URL"
+msgstr "Referrer-URL"
+
 msgid "Other"
 msgstr "Sonstiges"
 
@@ -381,7 +399,7 @@ msgstr "Online Bedienungsanleitung"
 
 # D:\web\xampp\htdocs\phpsurveyor/common.php:2306
 msgid "Support this project - Donate to "
-msgstr "Unterstützen Sie diese Projekt - Spenden Sie an"
+msgstr "Unterstützen Sie dieses Projekt - Spenden Sie an"
 
 # D:\web\xampp\htdocs\phpsurveyor/common.php:2309
 msgid "Visit our website!"
@@ -533,9 +551,6 @@ msgstr "Versuchen Sie das Abschicken erneut"
 
 msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr "Falls Sie ein Schlüsselwort erhalten haben, geben Sie es bitte in das untenstehende Feld ein und klicken Sie auf 'Weiter'."
-
-msgid "Token"
-msgstr "Schlüsselwort"
 
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Für diese Umfrage wurden noch keine Fragen angelegt. Sie kann weder getestet noch abgeschlossen werden."
@@ -918,19 +933,11 @@ msgstr "Diese Umfrage wurde noch nicht aktiviert. Es gibt keine Antworten, die S
 msgid "There is no matching survey."
 msgstr "Es gibt keine entsprechende Umfrage."
 
+msgid "Token ID"
+msgstr "Zugangsschlüssel ID:"
+
 msgid "Date Submitted"
 msgstr "Datum Abgeschickt"
-
-msgid "Date Stamp"
-msgstr "Datumsstempel"
-
-msgid "IP Address"
-msgstr "IP-Adresse protokollieren?"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1773
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1995
-msgid "Referring URL"
-msgstr "Referrer-URL"
 
 msgid "View Response"
 msgstr "Antwort anzeigen"
@@ -1446,7 +1453,7 @@ msgid "Choose Token Fields"
 msgstr "Wählen Sie die Zugangsschlüssel-Felder."
 
 msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
-msgstr "Ihre Umfragedaten können mit den zugeordneten Token exportiert werden. Wählen Sie zusätzliche Felder, die mit exportiert werden sollen."
+msgstr "Ihre Umfragedaten können mit den zugeordneten Zugangsschlüssel-Daten exportiert werden. Wählen Sie zusätzliche Felder, die mit exportiert werden sollen."
 
 msgid "Email"
 msgstr "E-Mail"
@@ -1464,6 +1471,13 @@ msgstr "NEUER DATENSATZ"
 msgid "Time Submitted"
 msgstr "Abgesendet"
 
+# D:\web\xampp\htdocs\phpsurveyor/admin/exportresults.php:788
+msgid "ID"
+msgstr "ID"
+
+msgid "Language"
+msgstr "Sprache"
+
 msgid "N/A"
 msgstr "Nicht zutreffend"
 
@@ -1473,8 +1487,8 @@ msgstr "Umfrage"
 msgid "Date Created"
 msgstr "Erstelldatum"
 
-msgid "Visibility"
-msgstr "Sichbarkeit"
+msgid "Access"
+msgstr "Zugriff"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:479
 msgid "Status"
@@ -1486,11 +1500,11 @@ msgstr "Aktion"
 msgid "Responses"
 msgstr "Antworten"
 
-msgid "Private"
-msgstr "Privat"
+msgid "Anonymous"
+msgstr "Anonym"
 
-msgid "Public"
-msgstr "Öffentlich"
+msgid "Not Anonymous"
+msgstr "Nicht Anonym"
 
 msgid "Expired"
 msgstr "Abgelaufen"
@@ -2164,7 +2178,9 @@ msgstr ""
 "\n"
 "Sie (oder jemand, der Ihre Email benutzt hat) haben sich für eine Umfrage mit dem Titel {SURVEYNAME} angemeldet.\n"
 "\n"
-"Um an dieser Umfrage teilzunehmen, klicken Sie bitte auf den folgenden Link.nn{SURVEYURL}\n"
+"Um an dieser Umfrage teilzunehmen, klicken Sie bitte auf den folgenden Link.\n"
+"\n"
+"{SURVEYURL}\n"
 "\n"
 "Wenn Sie irgendwelche Fragen zu dieser Umfrage haben oder wenn Sie sich _nicht_ für diese Umfrage angemeldet haben und sie glauben, dass Ihnen diese Email irrtümlicherweise zugeschickt worden ist, kontaktieren Sie bitte {ADMINNAME} unter {ADMINEMAIL}."
 
@@ -2637,7 +2653,7 @@ msgid "Re-ordering questions in this group is restricted to ensure that question
 msgstr "Das Verändern der Reihenfolge in dieser Gruppe ist bestimmten Beschränkungen unterworfen, um sicherzustellen, dass Fragen mit Bedingungen nicht vor Fragen verschoben werden von denen die Bedingung abhängt."
 
 msgid "See the conditions marked on the following questions"
-msgstr "Die Bedingungen auf den folgenden Fragen"
+msgstr "Es gibt Bedingungen auf den folgenden Fragen"
 
 msgid "Answered"
 msgstr "Beantwortet"
@@ -2909,7 +2925,7 @@ msgid "Tokens have not been initialised for this survey."
 msgstr "Die Zugangsschlüssel wurden für diese Umfrage noch nicht initialisiert."
 
 msgid "If you initialise tokens for this survey, the survey will only be accessible to users who have been assigned a token."
-msgstr "Wenn Sie Tokens initialisieren für diese Umfrage, wird die Umfrage nur mehr mit einem gültigen Token ausfüllbar sein."
+msgstr "Wenn Sie die Zugangsschlüssel-Tabelle für diese Umfrage aktivieren, wird die Umfrage nur mit einem gültigen Zugangsschlüssel ausfüllbar sein."
 
 msgid "Do you want to create a tokens table for this survey?"
 msgstr "Möchten Sie eine Probandentabelle mit Zugangsschlüsseln für diese Umfrage erstellen?"
@@ -2999,9 +3015,6 @@ msgstr "Suchen"
 msgid "Sort by: "
 msgstr "Sortieren nach: "
 
-msgid "Language"
-msgstr "Sprache"
-
 msgid "Invite sent?"
 msgstr "Eingeladen?"
 
@@ -3050,7 +3063,7 @@ msgstr "Einladung an Probanden versenden"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/tokens.php:746
 msgid "to TokenID No"
-msgstr "an TokenID-Nr:"
+msgstr "an Zugangsschlüssel-ID:"
 
 msgid "From"
 msgstr "Von"
@@ -3142,7 +3155,7 @@ msgid "Note:"
 msgstr "Anmerkung:"
 
 msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [language code], [attribute1], [attribute2]\"."
-msgstr "Die Datei sollte eine Standard CSV-Datei sein (Komma-getrennt mit doppelten Anführungszeichen). Die erste Zeile sollte die Feldnamen enthalten (diese Zeile wird übersprungen). Die Daten/Felder sollten in folgender Reihenfolge sein: \"vorname, name, email, [token], [attribute1], [attribute2]\"."
+msgstr "Die Datei sollte eine Standard CSV-Datei sein (Komma-getrennt mit doppelten Anführungszeichen). Die erste Zeile sollte die Feldnamen enthalten (diese Zeile wird übersprungen). Die Daten/Felder sollten in folgender Reihenfolge sein: \"vorname, name, email, [zugangsschlüssel], [attribut1], [attribut2]\"."
 
 msgid "Upload LDAP entries"
 msgstr "LDAP Einträge hochladen"
@@ -3553,6 +3566,10 @@ msgstr "Es wurde kein Gruppenname angegeben."
 
 msgid "Message(s) sent successfully!"
 msgstr "Nachricht(en) erfolgreich versandt."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/userrighthandling.php:668
+msgid "To:"
+msgstr "An:"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1828
 msgid "Mail not sent!"

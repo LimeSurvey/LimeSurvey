@@ -151,7 +151,7 @@ if ($action == "listsurveys")
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
-		<td colspan=\"6\">&nbsp;</td>".
+		<td colspan=\"8\">&nbsp;</td>".
 		"</tr>";
 		$listsurveys.="</table><br />" ;
 	}

@@ -437,8 +437,8 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='10' border='0' hspace='0' align='left' />\n"
 	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />"
 	. "</td><td align='right'>"
-	. "<img src='$imagefiles/blank.gif' align='right' alt='' border='0' hspace='0' width='60' height='1' align='right'  />"
-	. "<img src='$imagefiles/seperator.gif' align='right' alt='' border='0' hspace='0' align='right' />"
+	. "<img src='$imagefiles/blank.gif' alt='' border='0' hspace='0' width='60' height='1' align='right'  />"
+	. "<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='right' />"
 	. "<a href='#' onclick=\"javascript: copyprompt('".$clang->gT("Create new template called:")."', '".$clang->gT("NewTemplate")."', 'default', 'copy')\"" 
     . " onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Create new template", "js")."')\">" 
     . "<img src='$imagefiles/add.png' alt='' align='right' title='' /></a>\n"
@@ -516,14 +516,14 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	
 	$templatesoutput.= "\t\t\t\t<table width='100%' border='0'>\n"
 	."\t\t\t\t\t<tr>\n"
-	."\t\t\t\t\t\t<td align='center' border='0' valign='top' width='80%'>"
+	."\t\t\t\t\t\t<td align='center' valign='top' width='80%'>"
 	. "\t\t\t\t<table width='100%' align='center' class='menubar'><tr><td>"
 	."<strong>".$clang->gT("Standard Files:")."</strong></td>"
     ."<td align='center'><strong><font style='color: #FFFFFF;'>".$clang->gT("Now editing:");
 	if (trim($editfile)!='') {$templatesoutput.= " <i>$editfile</i>";}
 	$templatesoutput.= "</font></strong></td>"
-    ."<td align='right'><strong><font style='color: #FFFFFF;'>".$clang->gT("Other Files:")."</strong></font></td></tr>\n"
-	."<tr><td><select size='12' name='editfile' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;screenname=".html_escape($screenname)."&amp;editfile=\"+this.value, \"_top\")'>\n"
+    ."<td align='right' ><strong><font style='color: #FFFFFF;'>".$clang->gT("Other Files:")."</font></strong></td></tr>\n"
+	."<tr><td valign='top'><select size='12' name='editfile' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;screenname=".html_escape($screenname)."&amp;editfile=\"+this.value, \"_top\")'>\n"
 	.makeoptions($files, "name", "name", $editfile)
 	."</select>\n"
 	."\t\t\t\t\t\t</td>\n"
@@ -547,8 +547,8 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	}
 	$templatesoutput.= "<br />\n"
 	."\t\t\t\t\t\t</form></td><td valign='top' align='right' width='20%'><form action='admin.php' method='post'>"
-	."<table width='90' align='right' border='0' cellpadding='0' cellspacing='0'>\n<tr><td align='right'>"
-	. "<select size='10' style='min-width:130px;'name='otherfile' id='otherfile'>\n"
+	."<table width='90' align='right' border='0' cellpadding='0' cellspacing='0'>\n<tr><td></td></tr><tr><td align='right'>"
+	. "<select size='12' style='min-width:130px;'name='otherfile' id='otherfile'>\n"
 	.makeoptions($otherfiles, "name", "name", "")
 	."</select>"
 	."</td></tr><tr><td align='right'>"
