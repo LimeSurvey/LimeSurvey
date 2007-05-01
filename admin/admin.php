@@ -157,6 +157,8 @@ if(isset($_SESSION['loginID']) && $action!='login')
   	include("database.php");
   }
 
+sendcacheheaders();
+
   if ($action=="vvexport")  { include("vvexport.php"); }
   else
   if ($action=="vvimport")  { include("vvimport.php"); }
@@ -298,8 +300,6 @@ if(isset($_SESSION['loginID']) && $action!='login')
                 . getAdminFooter("http://docs.phpsurveyor.org", $clang->gT("PHPSurveyor Online Manual"));
   
   }
-  
-sendcacheheaders();
 
 echo $adminoutput;
 
