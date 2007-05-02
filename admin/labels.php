@@ -466,7 +466,7 @@ function updateset($lid)
 	$result=db_execute_assoc($query);
 	if ($result) { while ($row=$result->FetchRow()) {$oldcodesarray[$row['code']]=$row['sortorder'];} }
 	$sqlvalues='';
-	if (count($oldcodesarray) > 0 )
+	if (isset($oldcodesarray) && count($oldcodesarray) > 0 )
 	{
 		foreach ($addlangidsarray as $addedlangid)
 		{
