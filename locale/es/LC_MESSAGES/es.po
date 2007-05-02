@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-05-01 19:09-0300\n"
+"PO-Revision-Date: 2007-05-02 20:12-0300\n"
 "Last-Translator: Esteban Adrián Pérez <dgeaperez@yahoo.com.ar>\n"
 "Language-Team:  <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -141,7 +141,7 @@ msgid "List (Flexible Labels) (Dropdown)"
 msgstr "Lista (Etiquetas Flexibles) (Lista desplegable)"
 
 msgid "Boilerplate Question"
-msgstr "Pregunta estándar"
+msgstr "Mensaje o Comentario"
 
 msgid "Yes/No"
 msgstr "Sí/No"
@@ -1701,6 +1701,24 @@ msgstr "Privado"
 msgid "Public"
 msgstr "Pública"
 
+msgid "This survey is active but expired."
+msgstr "Este cuestionario está actualmente activa pero ha expirado."
+
+msgid "This survey is active but expired"
+msgstr "Este cuestionario está actualmente activa pero ha expirado"
+
+msgid "De-activate this Survey"
+msgstr "Desactivar esta Encuesta"
+
+msgid "This survey is currently active"
+msgstr "Esta encuesta está actualmente activa"
+
+msgid "Activate this Survey"
+msgstr "Activar esta Encuesta"
+
+msgid "This survey is not currently active"
+msgstr "Esta encuesta actualmente NO está activa"
+
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:158
 msgid "No Surveys available - please create one."
 msgstr "no existen cuestionarios - Por favor cree uno."
@@ -1732,26 +1750,8 @@ msgstr "Tablas de Tokens Activadas"
 msgid "De-activated Token Tables"
 msgstr "Tablas de Tokens Desactivadas"
 
-msgid "This survey is not currently active"
-msgstr "Esta encuesta actualmente NO está activa"
-
-msgid "Activate this Survey"
-msgstr "Activar esta Encuesta"
-
 msgid "Survey cannot be activated. Either you have no permission or there are no questions."
 msgstr "El cuestionario no podrá ser activado por no tener suficientes privilegios para hacerlo o aún no tiene preguntas"
-
-msgid "This survey is active but expired."
-msgstr "Este cuestionario está actualmente activa pero ha expirado."
-
-msgid "This survey is active but expired"
-msgstr "Este cuestionario está actualmente activa pero ha expirado"
-
-msgid "This survey is currently active"
-msgstr "Esta encuesta está actualmente activa"
-
-msgid "De-activate this Survey"
-msgstr "Desactivar esta Encuesta"
 
 msgid "Survey Security Settings"
 msgstr "Modificar Opciones de Seguridad del cuestinario"
@@ -2887,6 +2887,17 @@ msgstr "Ver resumen de todos los campos disponibles"
 msgid "View Stats"
 msgstr "Ver Estadísticas"
 
+msgid "Please wait ..."
+msgstr "Aguarde, por favor..."
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/statistics.php:734
+msgid "Getting Questions and Answers ..."
+msgstr "Recuperando Preguntas y Respuestas..."
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/statistics.php:842
+msgid "Getting Result Count ..."
+msgstr "Recuperando Resultados..."
+
 msgid "Results"
 msgstr "Resultados"
 
@@ -2901,6 +2912,10 @@ msgstr "Porcentaje del total"
 
 msgid "Browse"
 msgstr "Navegar"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/statistics.php:941
+msgid "Generating Summaries ..."
+msgstr "Generando Totales..."
 
 msgid "Field Summary for"
 msgstr "Resumen de Campo para"
@@ -2945,6 +2960,9 @@ msgstr "Cuenta"
 
 msgid "Percentage"
 msgstr "Porcentaje"
+
+msgid "Completed"
+msgstr "Completado"
 
 msgid "Select all"
 msgstr "Seleccionar todos"
