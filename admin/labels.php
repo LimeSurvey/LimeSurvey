@@ -466,12 +466,15 @@ function updateset($lid)
 	$result=db_execute_assoc($query);
 	if ($result) { while ($row=$result->FetchRow()) {$oldcodesarray[$row['code']]=$row['sortorder'];} }
 	$sqlvalues='';
-	foreach ($addlangidsarray as $addedlangid)
+	if (count($oldcodesarray) > 0 )
 	{
-		foreach ($oldcodesarray as $oldcode => $oldsortorder)
+		foreach ($addlangidsarray as $addedlangid)
 		{
-			$sqlvalues .= ", ($lid, '$oldcode', '$oldsortorder', '$addedlangid')";
-		}	
+			foreach ($oldcodesarray as $oldcode => $oldsortorder)
+			{
+				$sqlvalues .= ", ($lid, '$oldcode', '$oldsortorder', '$addedlangid')";
+			}
+		}
 	}	
 	if ($sqlvalues)
 	{
