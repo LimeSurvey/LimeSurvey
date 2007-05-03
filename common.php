@@ -556,6 +556,22 @@ function getMaxgrouporder($surveyid)
 	else return ++$current_max ;
 }
 
+/**
+* getGroupOrder($surveyid,$gid) queries the database for the sortorder of a group.
+*/
+function getGroupOrder($surveyid,$gid)
+{
+	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
+	$grporder_sql = "SELECT group_order FROM ".db_table_name('groups')." WHERE sid =$surveyid AND language='{$s_lang}' AND gid=$gid" ;
+	$grporder_result =db_execute_assoc($grporder_sql) ;
+	$grporder_row = $grporder_result->FetchRow() ;
+	$group_order = $grporder_row['group_order'];
+	if($group_order=="")
+	{
+		return "0" ;
+	}
+	else return $group_order ;
+}
 
 /**
 * getMaxquestionorder($gid) queries the database for the maximum sortorder of a question.
@@ -1136,6 +1152,20 @@ function fixsortorderQuestions($qid,$gid=0) //Function rewrites the sortorder fo
 }
 
 
+function shiftorderQuestions($sid,$gid,$shiftvalue) //Function shifts the sortorder for questions
+{
+	global $dbprefix, $connect, $surveyid;
+	$baselang = GetBaseLanguageFromSurveyID($surveyid);
+	$cdresult = db_execute_assoc("SELECT qid FROM ".db_table_name('questions')." WHERE gid='{$gid}' and language='{$baselang}' ORDER BY question_order, title ASC");
+	$position=$shiftvalue;
+	while ($cdrow=$cdresult->FetchRow())
+	{
+		$cd2query="UPDATE ".db_table_name('questions')." SET question_order='{$position}' WHERE qid='{$cdrow['qid']}' ";
+		$cd2result = $connect->Execute($cd2query) or die ("Couldn't update question_order<br />$cd2query<br />".htmlspecialchars($connect->ErrorMsg()));
+		$position++;
+	}
+}
+
 function fixsortorderGroups() //Function rewrites the sortorder for groups
 {
 	global $dbprefix, $connect, $surveyid;
@@ -1150,6 +1180,29 @@ function fixsortorderGroups() //Function rewrites the sortorder for groups
 	}
 }
 
+function fixmovedquestionConditions($qid,$oldgid,$newgid) //Function rewrites the cfieldname for a question after group change
+{
+	global $dbprefix, $connect, $surveyid;
+
+	$cresult = db_execute_assoc("SELECT cid, cfieldname FROM ".db_table_name('conditions')." WHERE cqid={$qid}");
+	while ($crow=$cresult->FetchRow())
+	{
+
+		$mycid=$crow['cid'];
+		$mycfieldname=$crow['cfieldname'];
+		$cfnregs="";
+
+		if (ereg($surveyid."X".$oldgid."X".$qid."(.*)", $mycfieldname, $cfnregs) > 0) 
+		{
+			$newcfn=$surveyid."X".$newgid."X".$qid.$cfnregs[1];
+			$c2query="UPDATE ".db_table_name('conditions')
+			." SET cfieldname='{$newcfn}' WHERE cid={$mycid}";
+
+			$c2result=$connect->Execute($c2query) 
+			or die ("Couldn't update conditions<br />$c2query<br />".htmlspecialchars($connect->ErrorMsg()));
+		}
+	}
+}
 
 function browsemenubar()
 {
@@ -3452,6 +3505,135 @@ function GetQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",
 	return null;
 }
 
+
+/**
+* checkMovequestionConstraintsForConditions() 
+* @param string $sid - the currently selected survey
+* @param string $qid - qid of the question you want to check possible moves 
+* @param string $newgid - (optionnal) get only constraints when trying to move to this particular GroupId
+*                                     otherwise, get all moves constraints for this question
+*
+* @return array - returns an array describing the conditions
+*                 Array
+*                 (
+*                   ['notAbove'] = null | Array
+*						(
+*						  Array ( gid1, group_order1, qid1, cid1 )
+*						)
+*                   ['notBelow'] = null | Array
+*						(
+*						  Array ( gid2, group_order2, qid2, cid2 )
+*						)
+*                 )
+*
+* This should be read as:
+*    - this question can't be move above group gid1 in position group_order1 because of the condition cid1 on question qid1
+*    - this question can't be move below group gid2 in position group_order2 because of the condition cid2 on question qid2
+*
+*/
+function checkMovequestionConstraintsForConditions($sid,$qid,$newgid="all")
+{
+	global $connect;
+	$resarray=Array();
+	$resarray['notAbove']=null; // defaults to no constraint
+	$resarray['notBelow']=null; // defaults to no constraint
+
+	if ($newgid != "all")
+	{
+		$newgorder=getGroupOrder($sid,$newgid);
+	}
+	else
+	{
+		$neworder=""; // Not used in this case
+	}
+
+	$baselang = GetBaseLanguageFromSurveyID($sid);
+	
+	// First look for 'my dependencies': questions on which I have set conditions
+	$condquery = "SELECT tq.qid as depqid, tq.gid as depgid, tg.group_order as depgorder, "
+		. "tq2.qid as targqid, tq2.gid as targgid, tg2.group_order as targgorder, "
+		. "tc.cid FROM "
+		. db_table_name('conditions')." AS tc, "
+		. db_table_name('questions')." AS tq, "
+		. db_table_name('questions')." AS tq2, "
+		. db_table_name('groups')." AS tg, "
+		. db_table_name('groups')." AS tg2 "
+		. "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
+		. "AND  tq2.qid=tc.cqid AND tg.gid=tq.gid AND tg2.gid=tq2.gid AND tq.qid=$qid ORDER BY tg2.group_order DESC";
+	
+	$condresult=db_execute_assoc($condquery) or die($connect->ErrorMsg());
+
+	if ($condresult->RecordCount() > 0) {
+
+		while ($condrow = $condresult->FetchRow() )
+		{
+			// This Question can go up to the minimum GID on the 1st row
+			$depqid=$condrow['depqid'];
+			$depgid=$condrow['depgid'];
+			$depgorder=$condrow['depgorder'];
+			$targetqid=$condrow['targqid'];
+			$targetgid=$condrow['targgid'];
+			$targetgorder=$condrow['targgorder'];
+			$condid=$condrow['cid'];
+			//echo "This question can't go above to GID=$targetgid/order=$targetgorder because of CID=$condid";
+			if ($newgid != "all")
+			{ // Get only constraints when trying to move to this group
+				if ($newgorder < $targetgorder)
+				{
+					$resarray['notAbove'][]=Array($targetgid,$targetgorder,$depqid,$condid);
+				}
+			}
+			else
+			{ // get all moves constraints
+				$resarray['notAbove'][]=Array($targetgid,$targetgorder,$depqid,$condid);	
+			}
+		}
+	}
+
+	// Secondly look for 'questions dependent on me': questions that have conditions on my answers
+	$condquery = "SELECT tq.qid as depqid, tq.gid as depgid, tg.group_order as depgorder, "
+		. "tq2.qid as targqid, tq2.gid as targgid, tg2.group_order as targgorder, "
+		. "tc.cid FROM "
+		. db_table_name('conditions')." AS tc, "
+		. db_table_name('questions')." AS tq, "
+		. db_table_name('questions')." AS tq2, "
+		. db_table_name('groups')." AS tg, "
+		. db_table_name('groups')." AS tg2 "
+		. "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
+		. "AND  tq2.qid=tc.cqid AND tg.gid=tq.gid AND tg2.gid=tq2.gid AND tq2.qid=$qid ORDER BY tg.group_order";
+	
+	$condresult=db_execute_assoc($condquery) or die($connect->ErrorMsg());
+
+	if ($condresult->RecordCount() > 0) {
+
+		while ($condrow = $condresult->FetchRow())
+		{
+			// This Question can go down to the maximum GID on the 1st row
+			$depqid=$condrow['depqid'];
+			$depgid=$condrow['depgid'];
+			$depgorder=$condrow['depgorder'];
+			$targetqid=$condrow['targqid'];
+			$targetgid=$condrow['targgid'];
+			$targetgorder=$condrow['targgorder'];
+			$condid=$condrow['cid'];
+			//echo "This question can't go below to GID=$depgid/order=$depgorder because of CID=$condid";
+			if ($newgid != "all")
+			{ // Get only constraints when trying to move to this group
+				if ($newgorder > $depgorder)
+				{
+					$resarray['notBelow'][]=Array($depgid,$depgorder,$depqid,$condid);
+				}
+			}
+			else
+			{ // get all moves constraints
+				$resarray['notBelow'][]=Array($depgid,$depgorder,$depqid,$condid);
+			}
+		}
+	}
+	return $resarray;
+}
+
+
 // array_combine function is PHP5 only so we have to provide 
 // our own in case it doesn't exist like in PHP 4
 if (!function_exists('array_combine')) {
@@ -3481,5 +3663,6 @@ if(!function_exists('str_ireplace')) {
         return preg_replace("/".$search."/i", $replace, $subject); 
     } 
 }
+
 
 ?>

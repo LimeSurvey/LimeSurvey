@@ -327,10 +327,10 @@ if(isset($surveyid))
 		$cqquery = "SELECT type, gid FROM ".db_table_name('questions')." WHERE qid={$_POST['qid']}";
 		$cqresult=db_execute_assoc($cqquery) or die ("Couldn't get question type to check for change<br />".htmlspecialchars($cqquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
 		$cqr=$cqresult->FetchRow();
-        $oldtype=$cqr['type'];
+        	$oldtype=$cqr['type'];
 		$oldgid=$cqr['gid'];
 
-    	$keepanswers = "1"; // Generally we try to keep answers if the question type has changed
+    		$keepanswers = "1"; // Generally we try to keep answers if the question type has changed
 		
 		// These are the questions types that have no answers and therefore we delete the answer in that case
 		if (($_POST['type']== "5") || ($_POST['type']== "D") || ($_POST['type']== "G") ||
@@ -366,68 +366,102 @@ if(isset($surveyid))
 			if (isset($_POST['gid']) && $_POST['gid'] != "")
 			{
 				
-				$questlangs = GetAdditionalLanguagesFromSurveyID($_POST['sid']);
-				$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);
-				array_push($questlangs,$baselang);
-				foreach ($questlangs as $qlang)
+				$array_result=checkMovequestionConstraintsForConditions($_POST['sid'],$_POST['qid'], $_POST['gid']);
+				// If there is no blocking conditions that could prevent this move
+				if (is_null($array_result['notAbove']) && is_null($array_result['notBelow']))
 				{
-					if (isset($qlang) && $qlang != "")
-					{ // ToDo: Sanitize the POST variables !
-						$uqquery = "UPDATE ".db_table_name('questions')
-						. "SET type='{$_POST['type']}', title='{$_POST['title']}', "
-						. "question='{$_POST['question_'.$qlang]}', preg='{$_POST['preg']}', help='{$_POST['help_'.$qlang]}', "
-						. "gid='{$_POST['gid']}', other='{$_POST['other']}', "
-						. "mandatory='{$_POST['mandatory']}'";
-        				if ($oldgid!=$_POST['gid'])  {$uqquery .=', question_order=9999 '; } // set it to a very high value so fixsortorder puts it always after the last question in the new group
-						if (isset($_POST['lid']) && trim($_POST['lid'])!="")
+
+					$questlangs = GetAdditionalLanguagesFromSurveyID($_POST['sid']);
+					$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);
+					array_push($questlangs,$baselang);
+					foreach ($questlangs as $qlang)
+					{
+						if (isset($qlang) && $qlang != "")
+						{ // ToDo: Sanitize the POST variables !
+							$uqquery = "UPDATE ".db_table_name('questions')
+							. "SET type='{$_POST['type']}', title='{$_POST['title']}', "
+							. "question='{$_POST['question_'.$qlang]}', preg='{$_POST['preg']}', help='{$_POST['help_'.$qlang]}', "
+							. "gid='{$_POST['gid']}', other='{$_POST['other']}', "
+							. "mandatory='{$_POST['mandatory']}'";
+	        				if ($oldgid!=$_POST['gid'])
 						{
-							$uqquery.=", lid='{$_POST['lid']}' ";
+							if ( getGroupOrder($_POST['sid'],$oldgid) > getGroupOrder($_POST['sid'],$_POST['gid']) )
+							{
+								// Moving question to a 'upper' group
+								// insert question at the end of the destination group
+								// this prevent breaking conditions if the target qid is in the dest group
+								$insertorder = getMaxquestionorder($_POST['gid']) + 1;
+								$uqquery .=', question_order='.$insertorder.' '; 
+							}
+							else
+							{
+								// Moving question to a 'lower' group
+								// insert question at the beginning of the destination group
+								shiftorderQuestions($_POST['sid'],$_POST['gid'],1); // makes 1 spare room for new question at top of dest group
+								$uqquery .=', question_order=0 ';
+							}
 						}
-						$uqquery.= "WHERE sid='{$_POST['sid']}' AND qid='{$_POST['qid']}' AND language='{$qlang}'";
-						$uqresult = $connect->Execute($uqquery) or die ("Error Update Question: ".htmlspecialchars($uqquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
-						if (!$uqresult)
+							if (isset($_POST['lid']) && trim($_POST['lid'])!="")
+							{
+								$uqquery.=", lid='{$_POST['lid']}' ";
+							}
+							$uqquery.= "WHERE sid='{$_POST['sid']}' AND qid='{$_POST['qid']}' AND language='{$qlang}'";
+							$uqresult = $connect->Execute($uqquery) or die ("Error Update Question: ".htmlspecialchars($uqquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
+							if (!$uqresult)
+							{
+								$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+							}
+						}
+					}
+					// if the group has changed then fix the sortorder of old and new group
+					if ($oldgid!=$_POST['gid']) 
+	                		{
+	                    			fixsortorderQuestions(0,$oldgid);
+	                    			fixsortorderQuestions(0,$_POST['gid']);
+
+						// If some questions have conditions set on this question's answers
+						// then change the cfieldname accordingly
+						fixmovedquestionConditions($_POST['qid'], $oldgid, $_POST['gid']);
+	                		}
+					if ($keepanswers == "0")
+					{
+						$query = "DELETE FROM ".db_table_name('answers')." WHERE qid={$_POST['qid']}";
+						$result = $connect->Execute($query) or die("Error: ".htmlspecialchars($connect->ErrorMsg()));
+						if (!$result)
 						{
-							$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+							$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers can't be deleted","js")."\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";
 						}
 					}
 				}
-                // if the group has changed then fix the sortorder of old and new group
-				if ($oldgid!=$_POST['gid']) 
-                {
-                    fixsortorderQuestions(0,$oldgid);
-                    fixsortorderQuestions(0,$_POST['gid']);
-
-// Todo: ON moved questions from one group to another the conditions to and from this question has to be checked and deleted
-/*					$goquery = "SELECT group_order FROM ".db_table_name('groups')." WHERE gid={$_POST['gid']}";
-					$goresult = db_execute_assoc($goquery) or die ("Couldn't get grouporder for this question<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
-			  		$gorow=$goresult->FetchRow();
-			  		$newgrouporder=$gorow['group_order'];
-
-                    // Now check if the conditions of moved question are still valid
-					$condquery = "SELECT * FROM ".db_table_name('conditions')." WHERE qid={$_POST['qid']}";
-					$condresult = db_execute_assoc($condquery) or die ("Couldn't get list of conditions for this question<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
-                    while ($condrow=$condresult->FetchRow()) 
-                    {
-                    $deletecondition=false;
-					$qoquery = "SELECT distinct question_order,group_order FROM ".db_table_name('questions')." as q, ".db_table_name('groups')." as g WHERE q.qid={$_POST['qid']} and q.gid=g.gid";
-					$qoresult = db_execute_assoc($qoquery) or die ("Couldn't get list of conditions for this question<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
-                    $qorow=$condresult->FetchRow();
-                    if ($qorow['group_order']>=$newgrouporder)
-                    {
-                    $deletecondition=true;
-					}
-					  elseif  ($qorow['group_order']==$newgrouporder && )
-					}
-*/                    
-                }
-				if ($keepanswers == "0")
+				else
 				{
-					$query = "DELETE FROM ".db_table_name('answers')." WHERE qid={$_POST['qid']}";
-					$result = $connect->Execute($query) or die("Error: ".htmlspecialchars($connect->ErrorMsg()));
-					if (!$result)
+					// There are conditions constraints: alert the user
+					$errormsg="";
+					if (!is_null($array_result['notAbove']))
 					{
-						$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers can't be deleted","js")."\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";
+						$errormsg.=$clang->gT("This question relies on other question's answers and can't be moved above groupId:","js")
+							. " " . $array_result['notAbove'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notAbove'][0][1]."\\n"
+							. $clang->gT("See conditions:")."\\n";
+						
+						foreach ($array_result['notAbove'] as $notAboveCond)
+						{
+							$errormsg.="- cid:". $notAboveCond[3]."\\n";	
+						}
+						
 					}
+					if (!is_null($array_result['notBelow']))
+					{
+						$errormsg.=$clang->gT("Some questions rely on this question's answers. You can't move this question below groupId:","js")
+							. " " . $array_result['notBelow'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notBelow'][0][1]."\\n"
+							. $clang->gT("See conditions:")."\\n";
+						
+						foreach ($array_result['notBelow'] as $notBelowCond)
+						{
+							$errormsg.="- cid:". $notBelowCond[3]."\\n";	
+						}
+					}
+
+					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
 				}
 			}
 			else
