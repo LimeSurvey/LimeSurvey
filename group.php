@@ -584,9 +584,14 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 
 
 if (isset($java)) {echo $java;}
-echo "\t\t}\n"
+echo "\t\t\tif (navigator.appVersion.indexOf('Safari')>-1 && name !== undefined )\n"
+."\t\t\t{ // Safari eats the onchange so run modfield manually, expect when called at onload time\n"
+."\t\t\t\t//alert('For Safari calling modfield for ' + name);\n"
+."\t\t\t\tmodfield(name);\n"
+."\t\t\t}\n"
+."\t\t}\n"
 ."\t//-->\n"
-."\t</script>\n\n";
+."\t</script>\n\n"; // End checkconditions javascript function
 
 
 echo "\n\n<!-- START THE GROUP -->\n";
@@ -641,11 +646,14 @@ if ($thissurvey['active'] != "Y")
 
 echo "<!-- group2.php -->\n"; //This can go eventually - it's redundent for debugging
 
-if (isset($conditions) && is_array($conditions)) //if conditions exist, create hidden inputs for previously answered questions
+if (isset($conditions) && is_array($conditions) && count($conditions) != 0)
 {
+	//if conditions exist, create hidden inputs for 'previously' answered questions
+	// Note that due to move 'back' possibility, there may be answers from next pages
+	// However we make sure that no answer from this page are inserted here
 	foreach (array_keys($_SESSION) as $SESak)
 	{
-		if (in_array($SESak, $_SESSION['insertarray']))
+		if (in_array($SESak, $_SESSION['insertarray'])  && !in_array($SESak, $inputnames))
 		{
 			echo "<input type='hidden' name='java$SESak' id='java$SESak' value='" . htmlspecialchars($_SESSION[$SESak],ENT_QUOTES). "' />\n";
 		}
