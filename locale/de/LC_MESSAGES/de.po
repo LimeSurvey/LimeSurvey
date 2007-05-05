@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-05-01 11:43+0100\n"
+"PO-Revision-Date: 2007-05-05 12:37+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -13,6 +13,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: gT\n"
 "X-Poedit-SearchPath-0: D:\\web\\xampp\\htdocs\\phpsurveyor\n"
+"X-Poedit-SearchPath-1: D:\\nusphere\\phped\\Projects\\PHPSurveyor\n"
 
 msgid "Administration"
 msgstr "Administration"
@@ -1122,6 +1123,22 @@ msgstr "Frage konnte nicht aktualisiert werden."
 
 msgid "Answers can't be deleted"
 msgstr "Frage konnte nicht gelöscht werden."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/database.php:442
+msgid "This question relies on other question's answers and can't be moved above groupId:"
+msgstr "Diese Frage bezieht sich durch Bedingungen auf die Antworten andere Fragen und kann daher in der Reihenfolge nicht hinter folgende GruppenID verschoben werden:"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/database.php:443
+# D:\web\xampp\htdocs\phpsurveyor/admin/database.php:455
+msgid "in position"
+msgstr "an Position"
+
+msgid "See conditions:"
+msgstr "Siehe Bedingungen:"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/database.php:454
+msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
+msgstr "Einige Fragen beziehen sich auf die Antworten in dieser Frage. Sie können diese Frage nicht vor die folgende GruppenID schieben."
 
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "Frage konnte nicht hinzugefügt werden. Sie müssen einen Code eingeben."
@@ -2703,6 +2720,17 @@ msgstr "Zusammenfassung aller zur Verfügung stehenden Felder anzeigen"
 msgid "View Stats"
 msgstr "Statistik anzeigen"
 
+msgid "Please wait ..."
+msgstr "Bitte warten..."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/statistics.php:734
+msgid "Getting Questions and Answers ..."
+msgstr "Ermittle Fragen und Antworten..."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/statistics.php:842
+msgid "Getting Result Count ..."
+msgstr "Ermittle Anzahl Ergebnisse..."
+
 msgid "Results"
 msgstr "Ergebnisse"
 
@@ -2717,6 +2745,10 @@ msgstr "Anteil in Prozent"
 
 msgid "Browse"
 msgstr "Ansehen"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/statistics.php:941
+msgid "Generating Summaries ..."
+msgstr "Generiere Zusammenfassungen..."
 
 msgid "Field Summary for"
 msgstr "Feld Zusammenfassung für"
@@ -2761,6 +2793,9 @@ msgstr "Anzahl"
 
 msgid "Percentage"
 msgstr "Prozent"
+
+msgid "Completed"
+msgstr "Abgeschlossen"
 
 msgid "Select all"
 msgstr "Alle auswählen"
@@ -3768,4 +3803,11 @@ msgstr "Türkisch"
 # D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:168
 msgid "Vietnamese"
 msgstr "Vietnamesisch"
+
+#, php-format
+msgid "Please contact %s (%s) for further assistance."
+msgstr "BItte kontaktieren Sie %s (%s) für weitere Unterstützung."
+
+msgid "You have not provided a survey identification number."
+msgstr "Sie haben keine Identifikationsnummer für den Fragebogen angegeben."
 

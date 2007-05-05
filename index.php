@@ -67,7 +67,7 @@ if (!isset($_SESSION['grouplist'])  && (isset($_POST['move'])) )
 	echo "\t\t<center><br />\n"
 	."\t\t\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
 	."\t\t\t".$clang->gT("We are sorry but your session has expired.")."<br />".$clang->gT("Either you have been inactive for too long or there were problems with your connection.")."<br />\n"
-	."\t\t\t".$clang->gT("Please contact")." $siteadminname ( $siteadminemail ) ".$clang->gT("for further assistance").".\n"
+        ."\t\t\t".sprintf ($clang->gT("Please contact %s (%s) for further assistance."), $siteadminname,$siteadminemail)."\n"
 	."\t\t</center><br />\n";
 
 	echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
@@ -116,8 +116,8 @@ if (!$surveyid)
 	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
 	echo "\t\t<center><br />\n"
 	."\t\t\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
-	."\t\t\t".$clang->gT("You have not provided a survey identification number")."<br />\n"
-	."\t\t\t".$clang->gT("Please contact")." $siteadminname ( $siteadminemail ) ".$clang->gT("for further assistance")."\n"
+	."\t\t\t".$clang->gT("You have not provided a survey identification number.")."<br />\n"
+	."\t\t\t".sprintf ($clang->gT("Please contact %s (%s) for further assistance."), $siteadminname,$siteadminemail)."\n"
 	."\t\t</center><br />\n";
 
 	echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
@@ -174,9 +174,7 @@ if ($thissurvey['expiry'] < date("Y-m-d") && $thissurvey['useexpiry'] == "Y")
 	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
 	echo "\t\t<center><br />\n"
 	."\t\t\t".$clang->gT("This survey is no longer available.")."<br /><br />\n"
-	."\t\t\t".$clang->gT("Please contact")." <i>{$thissurvey['adminname']}</i> (<i>{$thissurvey['adminemail']}</i>) "
-	.$clang->gT("for further assistance")."<br /><br />\n";
-
+        ."\t\t\t".sprintf ($clang->gT("Please contact %s (%s) for further assistance."), $thissurvey['adminname'],$thissurvey['adminemail'])."\n<br /><br /></center>\n";
 	echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
 	doFooter();
 	exit;
@@ -194,8 +192,7 @@ if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $this
 	echo "\t\t<center><br />\n"
 	."\t\t\t<font color='RED'><strong>".$clang->gT("Error")."</strong></font><br />\n"
 	."\t\t\t".$clang->gT("You have already completed this survey.")."<br /><br />\n"
-	."\t\t\t".$clang->gT("Please contact")." <i>{$thissurvey['adminname']}</i> (<i>{$thissurvey['adminemail']}</i>) "
-	.$clang->gT("for further assistance")."<br /><br />\n";
+        ."\t\t\t".sprintf ($clang->gT("Please contact %s (%s) for further assistance."), $thissurvey['adminname'],$thissurvey['adminemail'])."\n<br /><br /></center>\n";
 
 	echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
 	doFooter();
@@ -297,10 +294,6 @@ if ($tokensexist == 1 && returnglobal('token'))
 		."(<a href='mailto:{$thissurvey['adminemail']}'>"
 		."{$thissurvey['adminemail']}</a>)<br /><br />\n"
 		."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
-//		foreach(file("$thistpl/endpage.pstpl") as $op)
-//		{
-//			echo templatereplace($op);
-//		}
 		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 		exit;
 	}
@@ -574,7 +567,6 @@ function checkgroupfordisplay($gid)
 				if ($cfieldname == $cvalue)
 				{
 					//This condition is met
-					//Bugfix provided by Zoran Avtarovski
 					if (!isset($distinctcqids[$row['cqid']])  || $distinctcqids[$row['cqid']] == 0)
 					{
 						$distinctcqids[$row['cqid']]=1;
@@ -1602,7 +1594,9 @@ function UpdateFieldArray()
     	reset($_SESSION['fieldarray']);
     	while ( list($key) = each($_SESSION['fieldarray']) )
     	{
-      		$questionarray =& $_SESSION['fieldarray'][$key];
+         // This seems to only work in PHP 5 because of the referenced (&) array in the foreach construct
+         //    foreach($_SESSION['fieldarray'] as &$questionarray)
+         	$questionarray =& $_SESSION['fieldarray'][$key];
 
            	$query = "SELECT * FROM ".db_table_name('questions')." WHERE qid=".$questionarray[0]." AND language='".$_SESSION['s_lang']."'";
         	$result = db_execute_assoc($query) or die ("Couldn't get question <br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -1612,12 +1606,6 @@ function UpdateFieldArray()
       		unset($questionarray);
     	}
     }
-
-// This seems to only work in PHP 5 because of the referenced (&) array in the foreach construct
-/*    foreach($_SESSION['fieldarray'] as &$questionarray) 
-    {
-    }
-    */
 }
 
 
