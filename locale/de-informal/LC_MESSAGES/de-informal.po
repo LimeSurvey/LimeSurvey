@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-04-24 21:38+0100\n"
+"PO-Revision-Date: 2007-05-06 15:51+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -206,6 +206,24 @@ msgstr "VV-Umfrage-Datei importieren"
 msgid "Export a VV survey file"
 msgstr "VV-Umfrage-Datei exportieren"
 
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:139
+msgid "Preset"
+msgstr "Voreinstellung"
+
+msgid "Token"
+msgstr "Schlüsselwort"
+
+msgid "Date Stamp"
+msgstr "Datumsstempel"
+
+msgid "IP Address"
+msgstr "IP-Adresse protokollieren?"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1773
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1995
+msgid "Referring URL"
+msgstr "Referrer-URL"
+
 msgid "Other"
 msgstr "Sonstiges"
 
@@ -391,6 +409,17 @@ msgstr "Unterstütze dieses Projekt - Spende an"
 msgid "Visit our website!"
 msgstr "Besuche unsere Webseite!"
 
+# D:\web\xampp\htdocs\phpsurveyor/common.php:2735
+# D:\web\xampp\htdocs\phpsurveyor/common.php:2740
+msgid "Executing"
+msgstr "Ausführen"
+
+msgid "Failed! Reason: "
+msgstr "Fehlgeschlagen! Grund:"
+
+msgid "Success!"
+msgstr "Erfolgreich!"
+
 msgid "Save your responses so far"
 msgstr "Bisherige Antworten speichern"
 
@@ -530,9 +559,6 @@ msgstr "Versuche erneut die Daten abzusenden"
 
 msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr "Falls Du ein Schlüsselwort erhalten hast, gib es bitte in das untenstehende Feld ein und klicke auf 'Weiter'."
-
-msgid "Token"
-msgstr "Schlüsselwort"
 
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Für diese Umfrage wurden noch keine Fragen angelegt. Sie kann weder getestet noch abgeschlossen werden."
@@ -919,19 +945,11 @@ msgstr "Diese Umfrage wurde noch nicht aktiviert. Es gibt keine Antworten, die D
 msgid "There is no matching survey."
 msgstr "Es gibt keine entsprechende Umfrage."
 
+msgid "Token ID"
+msgstr "Zugangsschlüssel ID:"
+
 msgid "Date Submitted"
 msgstr "Datum Abgeschickt"
-
-msgid "Date Stamp"
-msgstr "Datumsstempel"
-
-msgid "IP Address"
-msgstr "IP-Adresse protokollieren?"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1773
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1995
-msgid "Referring URL"
-msgstr "Referrer-URL"
 
 msgid "View Response"
 msgstr "Antwort anzeigen"
@@ -1117,6 +1135,22 @@ msgstr "Frage konnte nicht aktualisiert werden."
 msgid "Answers can't be deleted"
 msgstr "Frage konnte nicht gelöscht werden."
 
+# D:\web\xampp\htdocs\phpsurveyor/admin/database.php:442
+msgid "This question relies on other question's answers and can't be moved above groupId:"
+msgstr "Diese Frage bezieht sich durch Bedingungen auf die Antworten andere Fragen und kann daher in der Reihenfolge nicht hinter folgende GruppenID verschoben werden:"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/database.php:443
+# D:\web\xampp\htdocs\phpsurveyor/admin/database.php:455
+msgid "in position"
+msgstr "an Position"
+
+msgid "See conditions:"
+msgstr "Siehe Bedingungen:"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/database.php:454
+msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
+msgstr "Einige Fragen beziehen sich auf die Antworten in dieser Frage. Du kannst diese Frage nicht vor die folgende GruppenID schieben."
+
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "Frage konnte nicht hinzugefügt werden. Du musst einen Code eingeben."
 
@@ -1232,8 +1266,14 @@ msgstr "Passwort bestätigen:"
 msgid "Email:"
 msgstr "E-Mail"
 
+msgid "Start Language:"
+msgstr "Start-Sprache"
+
 msgid "Your survey responses have been saved succesfully"
 msgstr "Deine Antworten auf diese Umfrage sind erfolgreich gespeichert worden."
+
+msgid "A token entry for the saved survey has been created too."
+msgstr "Es wurde außerdem für die zwischengespeicherte Umfrage ein Zugangsschlüssel angelegt."
 
 # D:\xampp\xampp\htdocs\phpsurveyor/save.php:266
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:219
@@ -1478,6 +1518,13 @@ msgstr "NEUER DATENSATZ"
 msgid "Time Submitted"
 msgstr "Abgesendet"
 
+# D:\web\xampp\htdocs\phpsurveyor/admin/exportresults.php:788
+msgid "ID"
+msgstr "ID"
+
+msgid "Language"
+msgstr "Sprache"
+
 msgid "N/A"
 msgstr "Nicht zutreffend"
 
@@ -1487,9 +1534,8 @@ msgstr "Umfrage"
 msgid "Date Created"
 msgstr "Erstelldatum"
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:51
-msgid "Visibility"
-msgstr "Sichbarkeit"
+msgid "Access"
+msgstr "Zugriff"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:479
 msgid "Status"
@@ -1501,12 +1547,11 @@ msgstr "Aktion"
 msgid "Responses"
 msgstr "Antworten"
 
-msgid "Private"
-msgstr "Privat"
+msgid "Anonymous"
+msgstr "Anonym"
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:62
-msgid "Public"
-msgstr "Öffentlich"
+msgid "Not Anonymous"
+msgstr "Nicht Anonym"
 
 msgid "Expired"
 msgstr "Abgelaufen"
@@ -1566,8 +1611,8 @@ msgstr "Aktive Zugangsschlüssel-Tabellen"
 msgid "De-activated Token Tables"
 msgstr "Deaktivierte Zugangsschlüssel-Tabellen"
 
-msgid "Cannot Activate this Survey"
-msgstr "Diese Umfrage kann nicht aktiviert werden."
+msgid "Survey cannot be activated. Either you have no permission or there are no questions."
+msgstr "Die Umfrage kann nicht aktiviert werden, da Du entweder keine Berechtigung hast oder keine Fragen vorhanden sind."
 
 msgid "Survey Security Settings"
 msgstr "Umfrage-Sicherheitseinstellungen"
@@ -2726,6 +2771,17 @@ msgstr "Zusammenfassung aller zur Verfügung stehenden Felder anzeigen"
 msgid "View Stats"
 msgstr "Statistik anzeigen"
 
+msgid "Please wait ..."
+msgstr "Bitte warten..."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/statistics.php:734
+msgid "Getting Questions and Answers ..."
+msgstr "Ermittle Fragen und Antworten..."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/statistics.php:842
+msgid "Getting Result Count ..."
+msgstr "Ermittle Anzahl Ergebnisse..."
+
 msgid "Results"
 msgstr "Ergebnisse"
 
@@ -2740,6 +2796,10 @@ msgstr "Anteil in Prozent"
 
 msgid "Browse"
 msgstr "Ansehen"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/statistics.php:941
+msgid "Generating Summaries ..."
+msgstr "Generiere Zusammenfassungen..."
 
 msgid "Field Summary for"
 msgstr "Feld Zusammenfassung für"
@@ -2784,6 +2844,9 @@ msgstr "Anzahl"
 
 msgid "Percentage"
 msgstr "Prozent"
+
+msgid "Completed"
+msgstr "Abgeschlossen"
 
 msgid "Select all"
 msgstr "Alle auswählen"
@@ -3037,9 +3100,6 @@ msgstr "Suchen"
 
 msgid "Sort by: "
 msgstr "Sortieren nach: "
-
-msgid "Language"
-msgstr "Sprache"
 
 msgid "Invite sent?"
 msgstr "Eingeladen?"
@@ -3567,10 +3627,6 @@ msgstr "Bearbeite Benutzergruppe (Eigentümer:"
 msgid "Update User Group"
 msgstr "Benutzergruppe aktualisieren"
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1676
-msgid "To:"
-msgstr "An:"
-
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1678
 msgid "Send me a copy:"
 msgstr "Sende eine Kopie an:"
@@ -3617,6 +3673,14 @@ msgstr "Gruppe existiert bereits."
 msgid "Group name was not supplied!"
 msgstr "Es wurde kein Gruppenname angegeben."
 
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1474
+msgid "Message(s) sent successfully!"
+msgstr "Nachricht(en) erfolgreich versandt."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1676
+msgid "To:"
+msgstr "An:"
+
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1800
 msgid "Mail not sent!"
 msgstr "Mail wurde nicht versendet."
@@ -3662,9 +3726,16 @@ msgstr "Neuen Datensatz ignorieren."
 msgid "Replace the existing record."
 msgstr "Alten Datensatz ersetzen."
 
+msgid "Import"
+msgstr "Importieren"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:83
 msgid "Cannot import the VVExport file."
 msgstr "VVExport-Datei konnte nicht importiert werden."
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/vvimport.php:98
+msgid "Back to Response Import"
+msgstr "Zurück zum Antworten-Import"
 
 msgid "Import Failed on Record"
 msgstr "Import fehlgeschlagen für Datensatz"
@@ -3703,6 +3774,9 @@ msgstr "Eine Datenbank namens \"%s\" existiert schon."
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/admin.php:103
 msgid "Do you want to populate that database now by creating the necessary tables?"
 msgstr "Möchten Du in der Datenbank nun die notwendigen Tabellen anlegen?"
+
+msgid "Database has been successfully upgraded to version "
+msgstr "Datenbank wurde erfolgreich aktualisiert auf Version"
 
 # D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:66
 msgid "Bulgarian"
@@ -3801,6 +3875,10 @@ msgstr "Spanisch"
 # D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:164
 msgid "Swedish"
 msgstr "Schwedisch"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:169
+msgid "Turkish"
+msgstr "Türkisch"
 
 # D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:168
 msgid "Vietnamese"

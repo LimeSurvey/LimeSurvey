@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-05-05 12:37+0100\n"
+"PO-Revision-Date: 2007-05-06 15:49+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -405,6 +405,17 @@ msgstr "Unterstützen Sie dieses Projekt - Spenden Sie an"
 # D:\web\xampp\htdocs\phpsurveyor/common.php:2309
 msgid "Visit our website!"
 msgstr "Besuchen Sie unsere Webseite!"
+
+# D:\web\xampp\htdocs\phpsurveyor/common.php:2735
+# D:\web\xampp\htdocs\phpsurveyor/common.php:2740
+msgid "Executing"
+msgstr "Ausführen"
+
+msgid "Failed! Reason: "
+msgstr "Fehlgeschlagen! Grund:"
+
+msgid "Success!"
+msgstr "Erfolgreich!"
 
 msgid "Save your responses so far"
 msgstr "Bisherige Antworten speichern"
@@ -3698,6 +3709,9 @@ msgstr "Eine Datenbank namens \"%s\" existiert schon."
 msgid "Do you want to populate that database now by creating the necessary tables?"
 msgstr "Möchten Sie in der Datenbank nun die notwendigen Tabellen anlegen?"
 
+msgid "Database has been successfully upgraded to version "
+msgstr "Datenbank wurde erfolgreich aktualisiert auf Version"
+
 # D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:66
 msgid "Bulgarian"
 msgstr "Bulgarisch"
@@ -3803,11 +3817,4 @@ msgstr "Türkisch"
 # D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:168
 msgid "Vietnamese"
 msgstr "Vietnamesisch"
-
-#, php-format
-msgid "Please contact %s (%s) for further assistance."
-msgstr "BItte kontaktieren Sie %s (%s) für weitere Unterstützung."
-
-msgid "You have not provided a survey identification number."
-msgstr "Sie haben keine Identifikationsnummer für den Fragebogen angegeben."
 
