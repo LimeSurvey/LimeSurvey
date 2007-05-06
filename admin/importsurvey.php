@@ -66,8 +66,7 @@ $handle = fopen($the_full_file_path, "r");
 while (!feof($handle))
 {
     //To allow for very long survey lines (up to 10k)  
-    //Note that the Length parameter is required for PHP versions < 4.2.0 - do not remove it!
-	$buffer = fgets($handle, 10240); 
+	$buffer = fgets($handle, 10240);
 	$bigarray[] = $buffer;
 }
 fclose($handle);

@@ -1044,10 +1044,6 @@ if ($subaction == "tokenify" && ($sumrows5['edit_survey_property'] || $sumrows5[
 	}
 	else
 	{
-		if (_PHPVERSION < "4.2.0")
-		{
-			srand((double)microtime()*1000000);
-		}
 		$newtokencount = 0;
 		$tkquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." WHERE token IS NULL OR token=''";
 		$tkresult = db_execute_assoc($tkquery) or die ("Mucked up!<br />$tkquery<br />".htmlspecialchars($connect->ErrorMsg()));

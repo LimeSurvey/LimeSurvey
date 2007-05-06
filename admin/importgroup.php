@@ -64,7 +64,6 @@ $importgroup .= $clang->gT("Reading file...")."<br />\n";
 $handle = fopen($the_full_file_path, "r");
 while (!feof($handle))
 {
-	//$buffer = fgets($handle, 1024); //Length parameter is required for PHP versions < 4.2.0
 	$buffer = fgets($handle, 10240); //To allow for very long survey welcomes (up to 10k)
 	$bigarray[] = $buffer;
 }
