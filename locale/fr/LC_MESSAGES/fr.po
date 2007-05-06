@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-04-11 19:46+0100\n"
-"Last-Translator: b00z00\n"
+"PO-Revision-Date: 2007-05-06 15:56+0100\n"
+"Last-Translator: seb <seb>\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -209,6 +209,24 @@ msgstr "Importer un fichier VV"
 msgid "Export a VV survey file"
 msgstr "Exporter vers un fichier VV"
 
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:139
+msgid "Preset"
+msgstr "Réglage"
+
+msgid "Token"
+msgstr "Invitation"
+
+msgid "Date Stamp"
+msgstr "Réponses datées :"
+
+msgid "IP Address"
+msgstr "Adresse IP :"
+
+# E:\www\phpsurveyor/admin/html.php:1785
+# E:\www\phpsurveyor/admin/html.php:2047
+msgid "Referring URL"
+msgstr "URL référente"
+
 msgid "Other"
 msgstr "Autre"
 
@@ -382,6 +400,28 @@ msgstr "Continuer"
 msgid "Your Assessment"
 msgstr "Votre évaluation"
 
+msgid "Online Manual"
+msgstr "Manuel en ligne"
+
+# D:\www\phpsurveyor/common.php:2306
+msgid "Support this project - Donate to "
+msgstr "Encouragez ce projet. Faites un don à"
+
+# D:\www\phpsurveyor/common.php:2309
+msgid "Visit our website!"
+msgstr "Visiter notre site web !"
+
+# D:\www\phpsurveyor/common.php:2735
+# D:\www\phpsurveyor/common.php:2740
+msgid "Executing"
+msgstr "Exécution"
+
+msgid "Failed! Reason: "
+msgstr "Ecvhec ! Raison :"
+
+msgid "Success!"
+msgstr "Succés !"
+
 msgid "Save your responses so far"
 msgstr "Sauvegarder les réponses faites jusqu'ici"
 
@@ -519,14 +559,15 @@ msgstr "CODE SQL QUI A ECHOUE"
 msgid "ERROR MESSAGE"
 msgstr "MESSAGE D'ERREUR"
 
+# D:\www\phpsurveyor/index.php:1041
+msgid "Error saving results"
+msgstr "Erreur de sauvegarde des résultats"
+
 msgid "Try to submit again"
 msgstr "Essayez d'envoyer à nouveau"
 
 msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr "Si vous avez reçu une invitation, saisissez-la dans le champ ci-dessous et cliquez sur Continuer."
-
-msgid "Token"
-msgstr "Invitation"
 
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Ce questionnaire n'a pas encore de question et ne peut être testé ou finalisé."
@@ -919,19 +960,11 @@ msgstr "Ce questionnaire n'a pas été activé. Aucun résultat à parcourir."
 msgid "There is no matching survey."
 msgstr "Il n'y a pas de questionnaire correspondant."
 
+msgid "Token ID"
+msgstr "ID de l'invitation"
+
 msgid "Date Submitted"
 msgstr "Date d'envoi"
-
-msgid "Date Stamp"
-msgstr "Réponses datées :"
-
-msgid "IP Address"
-msgstr "Adresse IP :"
-
-# E:\www\phpsurveyor/admin/html.php:1785
-# E:\www\phpsurveyor/admin/html.php:2047
-msgid "Referring URL"
-msgstr "URL référente"
 
 msgid "View Response"
 msgstr "Voir la réponse"
@@ -1107,6 +1140,22 @@ msgstr "La question ne peut pas être mise à jour"
 msgid "Answers can't be deleted"
 msgstr "Les réponses ne peuvent pas être supprimées"
 
+# D:\www\phpsurveyor/admin/database.php:442
+msgid "This question relies on other question's answers and can't be moved above groupId:"
+msgstr "Cette question repose sur les réponses à d'autres questions et ne peut pas être déplacée au-dessus du groupe d'ID :"
+
+# D:\www\phpsurveyor/admin/database.php:443
+# D:\www\phpsurveyor/admin/database.php:455
+msgid "in position"
+msgstr "en position"
+
+msgid "See conditions:"
+msgstr "Voir les conditions :"
+
+# D:\www\phpsurveyor/admin/database.php:454
+msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
+msgstr "Des questions reposent sur les réponses à cette question. Vous ne pouvez pas déplacer cette question en dessous du groupe d'ID :"
+
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "La question ne peut pas être ajoutée. Vous devez inclure un code dans le champ obligatoire."
 
@@ -1119,6 +1168,10 @@ msgstr "La question ne peut pas être supprimée"
 msgid "Add new Answer"
 msgstr "Ajouter une nouvelle réponse"
 
+# D:\www\phpsurveyor/admin/database.php:587
+msgid "Error adding answer: You can't use the same answer code more than once."
+msgstr "Erreur d'ajout de réponse : vous ne pouvez utiliser le même code de réponse qu'une seule fois."
+
 # E:\www\phpsurveyor/admin/usercontrol.php:153
 # E:\www\phpsurveyor/admin/usercontrol.php:157
 # E:\www\phpsurveyor/admin/usercontrol.php:171
@@ -1126,8 +1179,8 @@ msgid "Failed to insert answer"
 msgstr "Echec de la création de la réponse"
 
 # D:\www\phpsurveyor/admin/database.php:566
-msgid "Invalid answer code supplied"
-msgstr "Mauvais code de réponse fourni"
+msgid "Invalid or empty answer code supplied"
+msgstr "Mauvais ou absence de code de réponse fourni"
 
 msgid "Save All"
 msgstr "Sauver tout"
@@ -1208,8 +1261,14 @@ msgstr "Confirmer le mot de passe :"
 msgid "Email:"
 msgstr "Mail :"
 
+msgid "Start Language:"
+msgstr "Langue de départ :"
+
 msgid "Your survey responses have been saved succesfully"
 msgstr "Vos réponses à ce questionnaire ont été sauvegardées avec succès"
+
+msgid "A token entry for the saved survey has been created too."
+msgstr "Une invitation a aussi été créée pour ce questionnaire sauvegardé."
 
 msgid "You, someone using your email address, or the administrator has saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
 msgstr "Vous, quelqu'un utilisant votre adresse mail ou un administrateur a sauvegardé ses réponses partielles à un questionnaire. Les informations suivantes peuvent être utilisées pour retourner à ce questionnaire et le continuer où vous en étiez."
@@ -1238,7 +1297,6 @@ msgstr "Ne peut pas être modifié"
 msgid "Update Entry"
 msgstr "Mettre à jour la réponse"
 
-#, fuzzy
 msgid "Save for further completion by survey user"
 msgstr "Sauvegarder pour compléter le questionnaire ultérieurement "
 
@@ -1454,6 +1512,13 @@ msgstr "NOUVEL ENREGISTREMENT"
 msgid "Time Submitted"
 msgstr "Heure d'envoi"
 
+# D:\www\phpsurveyor/admin/exportresults.php:788
+msgid "ID"
+msgstr "ID"
+
+msgid "Language"
+msgstr "Langue"
+
 # E:\www\phpsurveyor/admin/export.php:813
 # E:\www\phpsurveyor/admin/export.php:821
 msgid "N/A"
@@ -1465,9 +1530,8 @@ msgstr "Questionnaire"
 msgid "Date Created"
 msgstr "Date de création"
 
-# E:\www\phpsurveyor/admin/html.php:52
-msgid "Visibility"
-msgstr "Visibilité"
+msgid "Access"
+msgstr "Accès"
 
 msgid "Status"
 msgstr "Statut"
@@ -1486,12 +1550,11 @@ msgstr "Action"
 msgid "Responses"
 msgstr "Réponses"
 
-msgid "Private"
-msgstr "Privé"
+msgid "Anonymous"
+msgstr "Anonyme"
 
-# E:\www\phpsurveyor/admin/html.php:63
-msgid "Public"
-msgstr "Public"
+msgid "Not Anonymous"
+msgstr "Non anonyme"
 
 msgid "Expired"
 msgstr "Expiré"
@@ -1551,8 +1614,8 @@ msgstr "Table(s) d'invitation(s) activée(s)"
 msgid "De-activated Token Tables"
 msgstr "Table(s) d'invitation(s) désactivée(s)"
 
-msgid "Cannot Activate this Survey"
-msgstr "Impossible d'activer ce questionnaire"
+msgid "Survey cannot be activated. Either you have no permission or there are no questions."
+msgstr "Le questionnaire ne peut pas être activé. Soit vous n'en avez pas la permission soit il ne comporte pas de question."
 
 msgid "Survey Security Settings"
 msgstr "Paramètres de sécurité du questionnaire"
@@ -1633,8 +1696,8 @@ msgid "IP Addresses will be logged"
 msgstr "Les adresses IP seront enregistrées"
 
 # E:\www\phpsurveyor/admin/html.php:417
-msgid "Referer-URL"
-msgstr "Referer-URL"
+msgid "Referer-URL will be saved"
+msgstr "L'URL de provenance sera enregistrée"
 
 msgid "It uses cookies for access control."
 msgstr "Utilisation des cookies pour le contrôle d'accès."
@@ -1833,8 +1896,8 @@ msgstr "Trier"
 msgid "New Answer"
 msgstr "Nouvelle réponse"
 
-msgid "You cannot add answers because they are being used by an active survey."
-msgstr "Vous ne pouvez pas changer des réponses car elles sont utilisées dans un questionnaire activé."
+msgid "You cannot add answers or edit answer codes for this question type because the survey is active."
+msgstr "Vous ne pouvez pas ajouter ou éditer des codes de réponses pour ce type de question car le questionnaire est activé."
 
 msgid "Add User"
 msgstr "Ajouter un utilisateur"
@@ -2193,6 +2256,9 @@ msgstr "Aucun fichier n'a été envoyé"
 msgid "Error on file transfer. You must select a CSV file"
 msgstr "Erreur lors de l'envoi du fichier. Vous devez choisir un fichier CSV valide."
 
+msgid "Error: You have to enter a title for this survey."
+msgstr "Erreur : vous devez renseigner un titre pour ce questionnaire."
+
 msgid "Create Survey"
 msgstr "Créer un questionnaire"
 
@@ -2433,6 +2499,9 @@ msgstr "Ajouter un nouveau jeu d'étiquettes"
 msgid "Labelsets"
 msgstr "Jeux d'étiquettes"
 
+msgid "Error: You have to enter a name for this label set."
+msgstr "Erreur : vous devez renseigner un nom pour ce jeu d'étiquettes."
+
 msgid "Create New Label Set"
 msgstr "Créer un nouveau jeu d'étiquettes"
 
@@ -2509,9 +2578,18 @@ msgstr "Echec de la suppression de l'étiquette"
 msgid "You have to enter user name and email."
 msgstr "Vous devez entrer un nom d'utilisateur et un mail."
 
+msgid "Check Data"
+msgstr "Vérifier les données"
+
 # E:\www\phpsurveyor/admin/html.php:1048
 msgid "You have to login first."
 msgstr "Vous devez d'abord vous connecter."
+
+# E:\www\phpsurveyor/common.php:213
+# E:\www\phpsurveyor/common.php:215
+# E:\www\phpsurveyor/admin/usercontrol.php:91
+msgid "Login"
+msgstr "Connexion"
 
 # E:\www\phpsurveyor/admin/html.php:1064
 msgid "Forgot Your Password?"
@@ -2664,6 +2742,17 @@ msgstr "Visualiser le résumé de tous les champs disponibles"
 msgid "View Stats"
 msgstr "Visualiser les statistiques"
 
+msgid "Please wait ..."
+msgstr "Veuillez patienter..."
+
+# D:\www\phpsurveyor/admin/statistics.php:734
+msgid "Getting Questions and Answers ..."
+msgstr "Récupération des questions et des réponses..."
+
+# D:\www\phpsurveyor/admin/statistics.php:842
+msgid "Getting Result Count ..."
+msgstr "Récupération des comptages de résultats"
+
 msgid "Results"
 msgstr "Résultats"
 
@@ -2678,6 +2767,10 @@ msgstr "Pourcentage du total "
 
 msgid "Browse"
 msgstr "Parcourir"
+
+# D:\www\phpsurveyor/admin/statistics.php:941
+msgid "Generating Summaries ..."
+msgstr "Génération des résumés..."
 
 msgid "Field Summary for"
 msgstr "Résumé de champs pour"
@@ -2722,6 +2815,9 @@ msgstr "Décompte"
 
 msgid "Percentage"
 msgstr "Pourcentage"
+
+msgid "Completed"
+msgstr "Complété"
 
 msgid "Select all"
 msgstr "Sélectionner tout"
@@ -2816,7 +2912,7 @@ msgid "This template cannot be modified"
 msgstr "Ce modèle ne peut pas être modifié"
 
 # E:\www\phpsurveyor/admin/templates.php:538
-msgid "You can\\'t edit the default template."
+msgid "You can't edit the default template."
 msgstr "Vous ne pouvez pas éditer le modèle par défaut."
 
 msgid "Rename this template to:"
@@ -2849,6 +2945,9 @@ msgstr "Fichiers standards :"
 msgid "Now editing:"
 msgstr "Edition en cours :"
 
+msgid "Other Files:"
+msgstr "Autres fichiers :"
+
 msgid "Save Changes"
 msgstr "Sauvegarder les changements"
 
@@ -2856,8 +2955,11 @@ msgstr "Sauvegarder les changements"
 msgid "Changes cannot be saved to the default template."
 msgstr "Les modifications ne peuvent pas être sauvegardées pour le modèle par défaut."
 
-msgid "Other Files:"
-msgstr "Autres fichiers :"
+msgid "Are you sure you want to delete this file?"
+msgstr "Etes-vous sûr de vouloir supprimer ce fichier ?"
+
+msgid "Files in the default template cannot be deleted."
+msgstr "Les fichiers du modèle par défaut ne peuvent pas être supprimés."
 
 msgid "Upload a File"
 msgstr "Envoyer un fichier"
@@ -2971,9 +3073,6 @@ msgstr "Chercher"
 msgid "Sort by: "
 msgstr "Tri par : "
 
-msgid "Language"
-msgstr "Langue"
-
 msgid "Invite sent?"
 msgstr "Invitation envoyée ?"
 
@@ -3019,6 +3118,10 @@ msgstr " Une sauvegarde de cette table a été effectuée et un administrateur s
 
 msgid "Email Invitation"
 msgstr "Invitation par mail"
+
+# D:\www\phpsurveyor/admin/tokens.php:746
+msgid "to TokenID No"
+msgstr "jusqu'à l'invitation d'ID numéro :"
 
 msgid "From"
 msgstr "De"
@@ -3162,6 +3265,162 @@ msgstr "Ne peut se lier à l'annuaire LDAP"
 msgid "Can't connect to the LDAP directory"
 msgstr "Ne peut se connecter à l'annuaire LDAP"
 
+# D:\www\phpsurveyor/admin/tokens.php:1499
+msgid "ARMSCII-8 Armenian"
+msgstr "Arménien (ARMSCII-8)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1500
+msgid "US ASCII"
+msgstr "US (ASCII)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1501
+msgid "Automatic"
+msgstr "Automatique"
+
+# D:\www\phpsurveyor/admin/tokens.php:1502
+msgid "Big5 Traditional Chinese"
+msgstr "Chinois traditionnel (Big5)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1503
+msgid "Binary pseudo charset"
+msgstr "Pseudo charset binaire"
+
+# D:\www\phpsurveyor/admin/tokens.php:1504
+msgid "Windows Central European"
+msgstr "Europe centrale (Windows-1250)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1505
+msgid "Windows Cyrillic"
+msgstr "Cyrillique (Windows-1251)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1506
+msgid "Windows Arabic"
+msgstr "Arabe (Windows-1256)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1507
+msgid "Windows Baltic"
+msgstr "Balte (Windows-1257)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1508
+msgid "DOS West European"
+msgstr "Europe de l'Ouest (DOS)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1509
+msgid "DOS Central European"
+msgstr "Europe centrale (DOS)"
+
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:148
+msgid "DOS Russian"
+msgstr "Russe (DOS)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1511
+msgid "SJIS for Windows Japanese"
+msgstr "Japonais (SJIS)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1512
+msgid "DEC West European"
+msgstr "Europe de l'Ouest (DEC)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1513
+msgid "UJIS for Windows Japanese"
+msgstr "Japonais (UJIS)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1514
+msgid "EUC-KR Korean"
+msgstr "Coréen (EUC-KR)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1515
+msgid "GB2312 Simplified Chinese"
+msgstr "Chinois simplifié (GB2312)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1516
+msgid "GBK Simplified Chinese"
+msgstr "Chinois simplifié (GBK)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1517
+msgid "GEOSTD8 Georgian"
+msgstr "Géorgien (GEOSTD8)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1518
+msgid "ISO 8859-7 Greek"
+msgstr "Grec (ISO-88597)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1519
+msgid "ISO 8859-8 Hebrew"
+msgstr "Hébreux (ISO-8859-8)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1520
+msgid "HP West European"
+msgstr "Europe de l'Ouest (HP)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1521
+msgid "DOS Kamenicky Czech-Slovak"
+msgstr "Tchèque/Slovaque (DOS Kamenicky)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1522
+msgid "KOI8-R Relcom Russian"
+msgstr "Cyrillique (KOI8-R)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1523
+msgid "KOI8-U Ukrainian"
+msgstr "Ukrainien (KOI8-U)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1524
+msgid "cp1252 West European"
+msgstr "Europe de l'Ouest (cp1252)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1525
+msgid "ISO 8859-2 Central European"
+msgstr "Europe centrale (ISO-8859-2)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1526
+msgid "ISO 8859-9 Turkish"
+msgstr "Turc (ISO-8859-9)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1527
+msgid "ISO 8859-13 Baltic"
+msgstr "Balte (ISO-8859-13)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1528
+msgid "Mac Central European"
+msgstr "Europe centrale (Mac)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1529
+msgid "Mac West European"
+msgstr "Europe de l'Ouest (Mac)"
+
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:127
+msgid "Shift-JIS Japanese"
+msgstr "Japonais (Shift-JIS)"
+
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:164
+msgid "7bit Swedish"
+msgstr "Suédois (7-bit)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1532
+msgid "TIS620 Thai"
+msgstr "Thaï (TIS-620)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1533
+msgid "UCS-2 Unicode"
+msgstr "Unicode (UCS-2)"
+
+# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:127
+msgid "EUC-JP Japanese"
+msgstr "Japonais (EUC-JP)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1535
+msgid "UTF-8 Unicode"
+msgstr "Unicode (UTF-8)"
+
+# D:\www\phpsurveyor/admin/tokens.php:1547
+msgid "Choose the CSV file to upload:"
+msgstr "Choisir le fichier CSV à envoyer :"
+
+# D:\www\phpsurveyor/admin/tokens.php:1549
+msgid "Character set of the file:"
+msgstr "Jeux de caractères du fichier :"
+
 # C:\wamp\www\phpsurveyor/admin/tokens.php:1464
 msgid "LDAP is disabled or no LDAP query defined."
 msgstr "LDAP désactivé ou aucune requête LDAP définie."
@@ -3191,17 +3450,15 @@ msgstr "Un mail avec vos informations de connexion vous a été envoyé."
 msgid "Email to {NAME} ({EMAIL}) failed."
 msgstr "Le mail à {NAME} ({EMAIL}) a échoué."
 
-# E:\www\phpsurveyor/common.php:213
-# E:\www\phpsurveyor/common.php:215
-# E:\www\phpsurveyor/admin/usercontrol.php:91
-msgid "Login"
-msgstr "Connexion"
+# D:\www\phpsurveyor/admin/usercontrol.php:93
+msgid "Logging in..."
+msgstr "Connexion..."
 
 msgid "Welcome {NAME}"
 msgstr "Bienvenue {NAME}"
 
 # E:\www\phpsurveyor/admin/usercontrol.php:120
-msgid "Login successful."
+msgid "You logged in successfully."
 msgstr "Connexion réussie."
 
 # E:\www\phpsurveyor/admin/usercontrol.php:138
@@ -3338,10 +3595,6 @@ msgstr "Editer le groupe de l'utilisateur (Propriétaire :"
 msgid "Update User Group"
 msgstr "Mise à jour du groupe d'utilisateurs"
 
-# E:\www\phpsurveyor/admin/html.php:1683
-msgid "To:"
-msgstr "A :"
-
 # E:\www\phpsurveyor/admin/html.php:1685
 msgid "Send me a copy:"
 msgstr "M'envoyer une copie :"
@@ -3398,6 +3651,14 @@ msgstr "Le nom du groupe existe déjà."
 msgid "Group name was not supplied!"
 msgstr "Le nom du groupe n'était pas rempli !"
 
+# E:\www\phpsurveyor/admin/usercontrol.php:120
+msgid "Message(s) sent successfully!"
+msgstr "Message(s) envoyé(s) avec succès."
+
+# E:\www\phpsurveyor/admin/html.php:1683
+msgid "To:"
+msgstr "A :"
+
 # E:\www\phpsurveyor/admin/html.php:1806
 msgid "Mail not sent!"
 msgstr "Email non envoyé !"
@@ -3443,8 +3704,15 @@ msgstr "Ignorer le nouvel enregistrement."
 msgid "Replace the existing record."
 msgstr "Remplacer l'enregistement existant."
 
+msgid "Import"
+msgstr "Importer"
+
 msgid "Cannot import the VVExport file."
 msgstr "Impossible d'importer le fichier VV."
+
+# D:\www\phpsurveyor/admin/vvimport.php:98
+msgid "Back to Response Import"
+msgstr "Retour à l'importation de réponse"
 
 msgid "Import Failed on Record"
 msgstr "Echec de l'importation sur l'enregistrement"
@@ -3483,6 +3751,9 @@ msgstr "Une base de données intitulée \"%s\" existe déjà."
 # E:\www\phpsurveyor/admin/admin.php:103
 msgid "Do you want to populate that database now by creating the necessary tables?"
 msgstr "Voulez-vous compléter la base de données maintenant en créant les tables nécessaires ?"
+
+msgid "Database has been successfully upgraded to version "
+msgstr "La base de données a été mise à jour avec succés vers la version "
 
 # C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:66
 msgid "Bulgarian"
@@ -3581,6 +3852,10 @@ msgstr "Espagnol"
 # C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:164
 msgid "Swedish"
 msgstr "Suédois"
+
+# D:\www\phpsurveyor/classes/core/surveytranslator.php:169
+msgid "Turkish"
+msgstr "Turc"
 
 # C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:168
 msgid "Vietnamese"
