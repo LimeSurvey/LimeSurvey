@@ -39,6 +39,8 @@ $adminoutput='';  // Alle future output is written into this and then outputted 
 // SET THE LANGUAGE???? -> DEFAULT SET TO EN FOR NOW
 require_once($rootdir.'/classes/core/language.php');
 $clang = new phpsurveyor_lang("en");
+ob_implicit_flush(true);
+sendcacheheaders();
 
 if (!$database_exists)
 {
@@ -73,9 +75,36 @@ if (!$database_exists)
 else
 	{
 	//DB EXISTS, CHECK FOR APPROPRIATE UPGRADES
-	checkforupgrades();
+    $connect->database = $databasename;
+    $connect->Execute("USE DATABASE `$databasename`");
+	$output=checkforupgrades();
+    if (!isset($ouput)) {$adminoutput.='<br />PHPSurveyor Database is up to date. No action needed';}
+      else {$adminoutput.=$output;}
+    $adminoutput.="<br />Please <a href='$homeurl/$scriptname'>log in.</a>";
+
     }
-sendcacheheaders();
-echo $adminoutput;        
+echo $adminoutput;
+
+
+// This functions checks if the databaseversion in the settings table is the same one as required
+function checkforupgrades()
+{
+    global $connect, $databasetype, $dbprefix, $dbversionnumber, $clang;
+    $adminoutput='';
+    include ('upgrade-'.$databasetype.'.php');
+    $tables = $connect->MetaTables();
+
+    $usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='DBVersion'";
+    $usresult = db_execute_assoc($usquery);
+    $usrow = $usresult->FetchRow();
+    if (intval($usrow['stg_value'])<$dbversionnumber)
+    {
+     db_upgrade(intval($usrow['stg_value']));
+     $adminoutput="<br />".$clang->gT("Database has been successfully upgraded to version ".$dbversionnumber);
+    }
+
+    return $adminoutput;
+}
+
     
 ?>

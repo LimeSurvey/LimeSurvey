@@ -42,8 +42,27 @@ $dbversionnumber = 111;
 
 if ($debug==1) {
         error_reporting(E_ALL); //For debug purposes - switch on in config.phh
-        } 
+        }
 @set_time_limit(60); // Maximum execution time - works only if safe_mode is off
+
+
+// Now check for PHP & db version
+// Do not translate this!
+$ver = explode( '.', PHP_VERSION );
+$ver_num = $ver[0] . $ver[1] . $ver[2];
+$dieoutput='';
+if ( $ver_num < 420 )
+{
+    $dieoutput .= 'This script needs PHP 4.2.0 or above! Your version: '.phpversion().'<br />';
+}
+
+if (!function_exists('mb_convert_encoding'))
+{
+    $dieoutput .= "This script needs the PHP Multibyte String Functions library installed: See <a href='http://docs.phpsurveyor.org/tiki-index.php?page=Installation+FAQ'>FAQ</a> and <a href='http://de.php.net/manual/en/ref.mbstring.php'>PHP documentation</a><br />";
+}
+if ($dieoutput!='') die($dieoutput);
+
+
 
 
 ##################################################################################
@@ -109,27 +128,57 @@ switch ($databasetype)
 	break;
 	case "odbc_mssql": $dbport="Driver={SQL Server};Server=$databaselocation;Database=".$databasename;
 	break;
-	default: echo "Unknown database type"; die;
+	default: die("Unknown database type");
 }
-
+// Now try connecting to the database
 if (@$connect->Connect($dbport, $databaseuser, $databasepass, $databasename))
 { $database_exists = TRUE;}
 else {
+ // If that doesnt work try connection without database-name
 	$connect->database = '';
 	if ($databasetype=='odbc_mssql') {$dbport="Driver={SQL Server};Server=$databaselocation;";}
-	$connect->Connect($dbport, $databaseuser, $databasepass);
+	if (!@$connect->Connect($dbport, $databaseuser, $databasepass))
+    {
+       Die("<strong>Can't connect to PHPSurveyor database. Reason:</strong> ".$connect->ErrorMsg());
+    }
 }
 
-# TODO: seems to be defaulting to ADODB_FETCH_NUM. New behaviour - can't see why
+# AdoDB seems to be defaulting to ADODB_FETCH_NUM
 $connect->SetFetchMode(ADODB_FETCH_ASSOC);
 
 $dbexistsbutempty=($database_exists && checkifemptydb());
 
 
+
 if ($databasetype=='mysql') {
-    if ($debug==1) { @$connect->Execute("SET SESSION SQL_MODE='STRICT_ALL_TABLES,ANSI'"); } 
-    $connect->Execute("SET CHARACTER SET 'utf8'");
+    if ($debug==1) { @$connect->Execute("SET SESSION SQL_MODE='STRICT_ALL_TABLES,ANSI'"); }
+    $infoarray=$connect->ServerInfo();
+    if (version_compare ($infoarray['version'],'4.1','<'))
+    {
+      Die ("<br />Error: You need at least MySQL version 4.1 to run PHPSurveyor");
+    }
+    @$connect->Execute("SET CHARACTER SET 'utf8'");
 }
+
+
+// Check if the DB is up to date
+If (!$dbexistsbutempty && $sourcefrom=='admin')
+{
+    $usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='DBVersion'";
+    $usresult = db_execute_assoc($usquery);
+    $usrow = $usresult->FetchRow();
+    if (intval($usrow['stg_value'])<$dbversionnumber)
+    {
+     Die ("<br />The PHPSurveyor database is not up to date. Please run the install script.");
+    }
+
+    if (is_dir($homedir."/install") && $debug!=1)
+    {
+     Die ("<br />Everything is fine - you just forgot to delete or rename your PHPSurveyor installation directory. <br />Please do so since it may be a security risk.");
+    }
+
+}
+
 
 
 //Admin menus and standards
@@ -325,7 +374,7 @@ function &db_execute_num($sql,$inputarr=false)
 {
 	global $connect;
 
-// Todo: Set fetchmode to previous state after changing 
+// Todo: Set fetchmode to previous state after changing
 	//$oldfetchmode=
     $connect->SetFetchMode(ADODB_FETCH_NUM);
 	$dataset=$connect->Execute($sql,$inputarr);
@@ -963,30 +1012,6 @@ function checkifemptydb()
 	if ( in_array($dbprefix.'surveys',$tablelist) ) {Return(false);}
 	else {Return(true);}
 }
-
-
-// This functions checks if the databaseversion in the settings table is the same one as required
-// If no settings table does exists it is a upgrade from <=1.0 (mysql only)
-// Then the old checker script is run prior to the standard upgrade
-function checkforupgrades()
-{
-	global $connect, $databasetype, $dbprefix, $dbversionnumber;
-	include ('admin/install/upgrade-'.$databasetype.'.php');
-	$tables = $connect->MetaTables();
-
-	if ($databasetype=='mysql')
-	{
-			$usquery = 'SELECT stg_value FROM '.db_table_name("settings_global").' where stg_name="DBVersion"';
-			$usresult = db_execute_assoc($usquery);
-			if ($usresult->RecordCount()==0) {mysqlcheckfields();}
-             else
-             {
-             $usrow = $usresult->FetchRow();
-             if (intval($usrow['stg_value'])<$dbversionnumber) {db_upgrade(intval($usrow['stg_value']));}
-             }
-	}
-}
-
 
 function checkfortables()
 {
@@ -2656,7 +2681,7 @@ function getArrayFiltersOutGroup($qid)
  * @return bool Returns true if database was modified successfully.
  */
 function modify_database($sqlfile='', $sqlstring='') {
-	
+
 	global $dbprefix;
 	global $defaultuser;
 	global $defaultpass;
@@ -2665,10 +2690,14 @@ function modify_database($sqlfile='', $sqlstring='') {
 	global $defaultlang;
 	global $codeString;
 	global $rootdir;
+    global $connect;
+    global $clang;
+    global $modifyoutput;
 
 	require_once($rootdir."/admin/classes/core/SHA256.php");
-	
+
 	$success = true;  // Let's be optimistic
+    $modifyoutput='';
 
 	if (!empty($sqlfile)) {
 		if (!is_readable($sqlfile)) {
@@ -2694,17 +2723,23 @@ function modify_database($sqlfile='', $sqlstring='') {
 
 		if ($length and $line[0] <> '#' and substr($line,0,2) <> '--') {
 			if (substr($line, $length-1, 1) == ';') {
-				$line = substr($line, 0, $length-1);   // strip ;
+  				$line = substr($line, 0, $length-1);   // strip ;
 				$command .= $line;
 				$command = str_replace('prefix_', $dbprefix, $command); // Table prefixes
 				$command = str_replace('$defaultuser', $defaultuser, $command); // variables By Moses
 				$command = str_replace('$defaultpass', SHA256::hash($defaultpass), $command); // variables By Moses
-				$command = str_replace('$siteadminname', $siteadminname, $command); 
+				$command = str_replace('$siteadminname', $siteadminname, $command);
 				$command = str_replace('$siteadminemail', $siteadminemail, $command); // variables By Moses
 				$command = str_replace('$defaultlang', $defaultlang, $command); // variables By Moses
-				if (! db_execute_num($command)) { echo $command;
-				$success = false;
+				if (! db_execute_num($command)) {
+                  $modifyoutput .="<br />".$clang->gT("Executing").".....".$command."<font color='#FF0000'>...".$clang->gT("Failed! Reason: ").$connect->ErrorMsg()."</font>";
+				  $success = false;
 				}
+                 else
+                 {
+                    $modifyoutput .="<br />".$clang->gT("Executing").".....".$command."<font color='#00FF00'>...".$clang->gT("Success!")."</font>";
+                 }
+
 				$command = '';
 			} else {
 				$command .= $line;
@@ -2715,6 +2750,14 @@ function modify_database($sqlfile='', $sqlstring='') {
 	return $success;
 
 }
+
+
+
+
+
+
+
+
 
 function strip_tags_full($string) {
 	$string=strip_tags($string);
@@ -2742,9 +2785,9 @@ function strip_tags_full($string) {
 	$string=str_replace('??', '?', $string);
 	$string=str_replace('??', '?', $string);
 	$string=str_replace('?~H', '?', $string);
-	
+
 	$string=str_replace(chr(13), "", $string);
-	
+
 	$string=trim($string);
 	if ($string == '-oth-') $string='';
 
@@ -3041,8 +3084,7 @@ function languageDropdown($surveyid,$selected)
 	return $html;
 }
 
-//RL functions
-function languageDropdownClean($surveyid,$selected) 
+function languageDropdownClean($surveyid,$selected)
 {
 	$slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -3057,7 +3099,7 @@ function languageDropdownClean($surveyid,$selected)
 	return $html;
 }
 
-function GetGroupstoRandomize($surveyid){
+/*function GetGroupstoRandomize($surveyid){
 	global $connect;
 	$query = "SELECT language, groupset FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
 	$result = db_execute_num($query);
@@ -3083,7 +3125,7 @@ function getgrouplistwithoutrandomset($surveyid)
 	if (!$surveyid) {$surveyid=$_POST['sid'];}
 	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
 	$theset = GetGroupstoRandomize($surveyid);
-	
+
 	$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid='{$surveyid}' AND  language='{$s_lang}'  ORDER BY group_order";
 	//
 	$gidresult = db_execute_num($gidquery) or die("Couldn't get group list in common.php<br />$gidquery<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -3095,7 +3137,7 @@ function getgrouplistwithoutrandomset($surveyid)
 		}
 	}
 	return $groupselecter;
-}
+}*/
 
 function include2var($file)
 //This function includes a file but doesn't output it - instead it writes it into the return variable
@@ -3635,7 +3677,7 @@ function checkMovequestionConstraintsForConditions($sid,$qid,$newgid="all")
 
 
 // array_combine function is PHP5 only so we have to provide 
-// our own in case it doesn't exist like in PHP 4
+// our own in case it doesn't exist as in PHP 4
 if (!function_exists('array_combine')) {
    function array_combine($a, $b) {
        $c = array();

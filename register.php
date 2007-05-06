@@ -39,7 +39,7 @@ require_once($rootdir.'/classes/core/language.php');
 $surveyid=returnglobal('sid');
 
 //This next line is for security reasons. It ensures that the $surveyid value is never anything but a number.
-if (_PHPVERSION >= '4.2.0') {settype($surveyid, "int");} else {settype($surveyid, "integer");}
+settype($surveyid, "int");
 
 //Check that there is a SID
 if (!isset($surveyid))
@@ -92,22 +92,10 @@ if (($result->RecordCount()) > 0)
 	exit;
 }
 
-if (_PHPVERSION < "4.2.0")
-{
-	srand((double)microtime()*1000000);
-}
 $insert = "NO";
 while ($insert != "OK")
 {
-	if (isset($THISOS) && $THISOS == "solaris")
-	{
-		$nt1=db_execute_num("SELECT RAND()");
-		while ($row=$nt1->FetchRow()) {$newtoken="R".(int)(sprintf("%09s", $row[0]*100000000));}
-	}
-	else
-	{
-		$newtoken = "R".sprintf("%09s", rand(1, 1000000000));
-	}
+	$newtoken = randomkey(10);
 	$ntquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='$newtoken'";
 	$ntresult = $connect->Execute($ntquery);
 	if (!$ntresult->RecordCount()) {$insert = "OK";}
@@ -201,4 +189,18 @@ function templatereplace1($line)
 	$line=str_replace("{PERCENTCOMPLETE}", "", $line);
 	return $line;
 }
+
+function randomkey($length)
+{
+	$pattern = "1234567890";
+	for($i=0;$i<$length;$i++)
+	{
+		if(isset($key))
+		$key .= $pattern{rand(0,9)};
+		else
+		$key = $pattern{rand(0,9)};
+	}
+	return $key;
+}
+
 ?>
