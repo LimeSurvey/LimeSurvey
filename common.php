@@ -169,7 +169,7 @@ If (!$dbexistsbutempty && $sourcefrom=='admin')
     $usrow = $usresult->FetchRow();
     if (intval($usrow['stg_value'])<$dbversionnumber)
     {
-     Die ("<br />The PHPSurveyor database is not up to date. Please run the install script.");
+     Die ("<br />The PHPSurveyor database is not up to date. Please run the <a href='$homeurl/install/index.php'>install script</a>.");
     }
 
     if (is_dir($homedir."/install") && $debug!=1)
