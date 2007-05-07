@@ -51,7 +51,8 @@ $actsurquery = "SELECT browse_response FROM ".db_table_name("surveys_rights")." 
 $actsurresult = $connect->Execute($actsurquery) or die($connect->ErrorMsg());
 $actsurrows = $actsurresult->FetchRow();
 
-if($actsurrows['browse_response']){
+if($actsurrows['browse_response'])
+{
 
 	$surveyoptions = browsemenubar();
 	if (!$database_exists)
@@ -85,7 +86,7 @@ if($actsurrows['browse_response']){
 		return;
 	}
 
-	if ($subaction == "edit" || $subaction == "" || $subaction == "editsaved")
+	if ($subaction == "edit" || $subaction == "" || $subaction == "editsaved" || $subaction == "insert")
 	{
 		$language = GetBaseLanguageFromSurveyID($surveyid);
 	}
@@ -221,6 +222,7 @@ if($actsurrows['browse_response']){
 					".db_table_name("questions").".language = '{$language}' AND ".db_table_name("answers").".language = '{$language}' AND
 					".db_table_name("questions").".qid={$irow['qid']} 
 					AND ".db_table_name("questions").".sid=$surveyid ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
+					echo "TIBO: $i2query";
 					$i2result = db_execute_assoc($i2query);
 					while ($i2row = $i2result->FetchRow())
 					{
