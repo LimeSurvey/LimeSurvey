@@ -148,7 +148,7 @@ $myfield = "id";
 $myfield2=$myfield."G";
 $myfield3=$myfield."L";
 $myfield4=$myfield."=";
-$statisticsoutput .= "<td align='center'>$setfont<strong>id</strong><br />";
+$statisticsoutput .= "<td align='center'>$setfont<strong>".$clang->gT("id")."</strong><br />";
 $statisticsoutput .= "\t\t\t\t\t<font size='1'>".$clang->gT("Number greater than").":<br />\n"
 ."\t\t\t\t\t<input type='text' name='$myfield2' value='";
 if (isset($_POST[$myfield2])){$statisticsoutput .= $_POST[$myfield2];}
@@ -173,7 +173,7 @@ if (isset($datestamp) && $datestamp == "Y") {
 	$myfield3="$myfield2=";
 	$myfield4="$myfield2<"; $myfield5="$myfield2>";
 	$statisticsoutput .= "<td width='40'></td>";
-	$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>$setfont<strong>datestamp</strong>"
+	$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>$setfont<strong>".$clang->gT("datestamp")."</strong>"
 	."<br />\n"
 	."\t\t\t\t\t<font size='1'>".$clang->gT("Date (YYYY-MM-DD) equals").":<br />\n"
 	."\t\t\t\t\t<input name='$myfield3' type='text' value='";
