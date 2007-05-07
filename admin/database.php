@@ -462,6 +462,7 @@ if(isset($surveyid))
 					}
 
 					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
+					$gid= $oldgid; // group move impossible ==> keep display on oldgid
 				}
 			}
 			else
