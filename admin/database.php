@@ -702,7 +702,7 @@ if(isset($surveyid))
         	{
         		$langid=substr($sortorderid,0,strrpos($sortorderid,'_')); 
         		$orderid=substr($sortorderid,strrpos($sortorderid,'_')+1,20);
-        		if ($_POST['code_'.$codeids[$count]] != "0" && !in_array($_POST['code_'.$codeids[$count]],$dupanswers))
+        		if ($_POST['code_'.$codeids[$count]] != "0" && trim($_POST['code_'.$codeids[$count]]) != "" && !in_array($_POST['code_'.$codeids[$count]],$dupanswers))
         		{
      				$oldcode=false;
         			$query = "SELECT code from ".db_table_name('answers')." WHERE qid=".$connect->qstr($qid)." and sortorder=".$connect->qstr($orderid)." ";
@@ -726,13 +726,13 @@ if(isset($surveyid))
         				$result = $connect->Execute($query);
     				}
         		} else {
-        			if ($_POST['code_'.$codeids[$count]] == "0") $invalidCode = 1;
+        			if ($_POST['code_'.$codeids[$count]] == "0" || trim($_POST['code_'.$codeids[$count]]) == "") $invalidCode = 1;
         			if (in_array($_POST['code_'.$codeids[$count]],$dupanswers)) $duplicateCode = 1;
         		}
     			$count++;
     			if ($count>count($codeids)-1) {$count=0;}
 		    }
-		    if ($invalidCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers with a code of 0 (zero) are not allowed, and will not be saved","js")."\")\n //-->\n</script>\n";
+		    if ($invalidCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved","js")."\")\n //-->\n</script>\n";
 			if ($duplicateCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Duplicate codes found, these entries won't be updated","js")."\")\n //-->\n</script>\n";
 		break;
 
