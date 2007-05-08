@@ -540,7 +540,7 @@ if ($action == "mailusergroup")
 	. "\t<tr><td align='right'><strong>".$clang->gT("Message:")."</strong></td>\n"
 	. "\t\t<td><textarea cols='50' rows='4' name='body'></textarea></td></tr>\n"
 	. "\t<tr><td colspan='2' align='center'><input type='submit' value='".$clang->gT("Send")."' />\n"
-	. "<input type='reset' value='Reset' /><br />"
+	. "<input type='reset' value='".$clang->gT("Reset")."' /><br />"
 	. "\t<input type='hidden' name='action' value='mailsendusergroup' />\n"
 	. "\t<input type='hidden' name='ugid' value='$ugid' />\n"
 	. "\t</td></tr>\n"
