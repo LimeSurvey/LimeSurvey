@@ -1,5 +1,6 @@
 <?php
 
+// make sure you include this file only if the ImageCreate function does exist since it is an optional library
 // Lets get into the session
 session_start();
 

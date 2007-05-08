@@ -2029,9 +2029,12 @@ function templatereplace($line)
 		$saveform .= "'></td></tr>\n"
 		. "<tr><td align='right'>".$clang->gT("Your Email").":</td><td><input type='text' name='saveemail' value='";
 		if (isset($_POST['saveemail'])) {$saveform .= html_escape(auto_unescape($_POST['saveemail']));}
-		$saveform .= "'></td></tr>\n"
-		."<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='center'><img src='verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table></td></tr>\n"
-		. "<tr><td align='right'></td><td></td></tr>\n"
+		$saveform .= "'></td></tr>\n";
+        if (function_exists("ImageCreate"))
+        {
+		    $saveform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='center'><img src='verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table></td></tr>\n";
+        }
+		$saveform .= "<tr><td align='right'></td><td></td></tr>\n"
 		. "<tr><td></td><td><input type='submit' name='savesubmit' value='".$clang->gT("Save Now")."'></td></tr>\n"
 		. "</table>";
 		$line=str_replace("{SAVEFORM}", $saveform, $line);
@@ -2046,9 +2049,14 @@ function templatereplace($line)
 		$loadform .= "'></td></tr>\n"
 		. "<tr><td align='right'>".$clang->gT("Password").":</td><td><input type='password' name='loadpass' value='";
 		if (isset($_POST['loadpass'])) {$loadform .= html_escape(auto_unescape($_POST['loadpass']));}
-		$loadform .= "'></td></tr>\n"
-		. "<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='center'><img src='verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table></td></tr>\n"
-		. "<tr><td align='right'></td><td></td></tr>\n"
+		$loadform .= "'></td></tr>\n";
+        if (function_exists("ImageCreate"))
+        {
+            $loadform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='center'><img src='verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table></td></tr>\n";
+        }
+
+        
+		$loadform .="<tr><td align='right'></td><td></td></tr>\n"
 		. "<tr><td></td><td><input type='submit' value='".$clang->gT("Load Now")."'></td></tr></table>\n";
 		$line=str_replace("{LOADFORM}", $loadform, $line);
 	}
@@ -2086,8 +2094,13 @@ function templatereplace($line)
 		if (!isset($_GET['lang']) && !isset($_POST['lang'])) $reglang = GetBaseLanguageFromSurveyID($surveyid);
 		if (isset($_GET['lang'])) $reglang = $_GET['lang'];
 		if (isset($_POST['lang'])) $reglang = $_POST['lang'];
-		$registerform .= "<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='center'><img src='verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table></td></tr>\n"
-		. "<tr><td align='right'><input type='hidden' name='lang' value='".$reglang."'></td><td></td></tr>\n";
+        
+        if (function_exists("ImageCreate"))
+        {
+            $registerform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='center'><img src='verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table></td></tr>\n";
+        }
+
+		$registerform .= "<tr><td align='right'><input type='hidden' name='lang' value='".$reglang."'></td><td></td></tr>\n";
 		if(isset($thissurvey['attribute1']) && $thissurvey['attribute1'])
 		{
 			$registerform .= "<tr><td align='right'>".$thissurvey['attribute1'].":</td>\n"

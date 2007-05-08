@@ -64,9 +64,12 @@ if (!isset($_POST['lang']) || $_POST['lang'] == "")
 $register_errormsg = "";
 
 // Check the security question's answer
-if (!isset($_POST['loadsecurity']) || $_POST['loadsecurity'] != $_SESSION['secanswer'])
+if (function_exists("ImageCreate"))
 {
-	$register_errormsg .= $clang->gT("The answer to the security question is incorrect")."<br />\n";
+    if (!isset($_POST['loadsecurity']) || $_POST['loadsecurity'] != $_SESSION['secanswer'])
+    {
+	    $register_errormsg .= $clang->gT("The answer to the security question is incorrect")."<br />\n";
+    }
 }
 
 //Check that the email is a valid style address

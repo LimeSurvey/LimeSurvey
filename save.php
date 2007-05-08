@@ -214,10 +214,13 @@ function savedcontrol()
 	if ((isset($_POST['savepass']) && !isset($_POST['savepass2'])) || $_POST['savepass'] != $_POST['savepass2'])
 	{$errormsg.=$clang->gT("Your passwords do not match.")."<br />\n";}
 	// if security question asnwer is incorrect
-	if (!isset($_POST['loadsecurity']) || $_POST['loadsecurity'] != $_SESSION['secanswer'])
-	{
-		$errormsg .= $clang->gT("The answer to the security question is incorrect")."<br />\n";
-	}
+    if (function_exists("ImageCreate"))
+    {
+	    if (!isset($_POST['loadsecurity']) || $_POST['loadsecurity'] != $_SESSION['secanswer'])
+	    {
+		    $errormsg .= $clang->gT("The answer to the security question is incorrect")."<br />\n";
+	    }
+    }
 
 	if ($errormsg)
 	{

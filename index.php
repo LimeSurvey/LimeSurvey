@@ -132,7 +132,7 @@ getreferringurl();
 if (!isset($token)) {$token=trim(returnglobal('token'));}
 
 // If token was submitted from token form
-if (isset($_GET['tokenSEC']) && $_GET['tokenSEC'] == 1)
+if (isset($_GET['tokenSEC']) && $_GET['tokenSEC'] == 1 && function_exists("ImageCreate"))
 {
 	if (!isset($_GET['loadsecurity']) || $_GET['loadsecurity'] != $_SESSION['secanswer'])
 	{
@@ -242,10 +242,13 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 	}
 
 	// if security question asnwer is incorrect
-	if ((!isset($_POST['loadsecurity']) || $_POST['loadsecurity'] != $_SESSION['secanswer']) && !isset($_GET['scid']))
-	{
-		$errormsg .= $clang->gT("The answer to the security question is incorrect")."<br />\n";
-	}
+    if (function_exists("ImageCreate"))
+    {
+	    if ((!isset($_POST['loadsecurity']) || $_POST['loadsecurity'] != $_SESSION['secanswer']) && !isset($_GET['scid']))
+	    {
+		    $errormsg .= $clang->gT("The answer to the security question is incorrect")."<br />\n";
+	    }
+    }
 	
 	// Load session before loading the values from the saved data
 	if (isset($_GET['loadall']))
@@ -1077,30 +1080,28 @@ function buildsurveysession()
 		}
 		else
 		{
-?>
-	<center><br />
-	<?php if (isset($secerror)) echo "<font color='#FF0000'>".$secerror."</font><br />"; ?>
-	<?php echo $clang->gT("This is a controlled survey. You need a valid token to participate.") ?><br /><br />
-	<?php echo $clang->gT("If you have been issued with a token, please enter it in the box below and click continue.") ?><br />&nbsp;
-	<form method='get' action='<?php echo $_SERVER['PHP_SELF'] ?>'>
-	<table align='center'>
-		<tr>
-			<td align='right' valign='middle'>
-			<input type='hidden' name='sid' value='<?php echo $surveyid ?>' id='sid' />
-			<input type='hidden' name='tokenSEC' value='1' id='sid' />
-			<?php echo $clang->gT("Token") ?>:</td><td align='left' valign='middle'><input class='text' type='text' name='token'>
-			</td>
-		</tr>
-		<tr>
-			<td align='center' valign='middle'>
-			<?php echo $clang->gT("Security Question"); ?>:</td><td align='left' valign='middle'><table><tr><td valign='center'><img src='verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table>
-			</td>
-		</tr>
-		<tr><td colspan="2" align="center"><input class='submit' type='submit' value='<?php echo $clang->gT("Continue") ?>' /></td></tr>
-	</table>
-	</form>
-	<br />&nbsp;</center>
-<?php
+          echo " <center><br />";
+	      if (isset($secerror)) echo "<font color='#FF0000'>".$secerror."</font><br />"; 
+	      echo $clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />";
+	      echo $clang->gT("If you have been issued with a token, please enter it in the box below and click continue.")."<br />&nbsp;
+	        <form method='get' action='".$_SERVER['PHP_SELF']."'>
+	        <table align='center'>
+		        <tr>
+			        <td align='right' valign='middle'>
+			        <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
+			        <input type='hidden' name='tokenSEC' value='1' id='sid' />"
+			        .$clang->gT("Token")."</td><td align='left' valign='middle'><input class='text' type='text' name='token'>
+			        </td>
+		        </tr>";
+                if (function_exists("ImageCreate"))
+                { echo "<tr>
+			                <td align='center' valign='middle'>".$clang->gT("Security Question")."</td><td align='left' valign='middle'><table><tr><td valign='center'><img src='verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table>
+			                </td>
+		                </tr>";}
+		        echo "<tr><td colspan='2' align='center'><input class='submit' type='submit' value='".$clang->gT("Continue")."' /></td></tr>
+	        </table>
+	        </form>
+	        <br />&nbsp;</center>";
 		}
 
 		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
