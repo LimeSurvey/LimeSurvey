@@ -1620,7 +1620,7 @@ if($action == "setusergroupsurveysecurity")
 		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='6' bgcolor='black' align='center'>\n"
 		. "\t\t<strong><font color='white'>".$clang->gT("Set Survey Rights")."</td></tr>\n";
 
-		$usersummary .= "\t\t<th align='center'>Edit Survey Property</th>\n"
+		$usersummary .= "\t\t<th align='center'>".$clang->gT("Edit Survey Property")."</th>\n"
 		. "\t\t<th align='center'>".$clang->gT("Define Questions")."</th>\n"
 		. "\t\t<th align='center'>".$clang->gT("Browse Response")."</th>\n"
 		. "\t\t<th align='center'>".$clang->gT("Export")."</th>\n"
