@@ -87,12 +87,13 @@ $repeatheadings     =   "25";             // The number of answers to show befor
 $minrepeatheadings  =   3;                // The minimum number of remaing answers that are required before repeating the headings in array (flexible) questions.
 $defaultlang        =   "en";             // The default language to use - the available languages are the directory names in the /locale dir - for example de = German
 
-$timeadjust         =   0;      // Number of hours to adjust between your webserver local time and your own local time (for datestamping responses)
-$allowexportalldb   =   1;      // 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported
-$allowmandbackwards =   1;      // Allow moving backwards (ie: << prev) through survey if a mandatory question
-                                // has not been answered. 1=Allow, 0=Deny
-$deletenonvalues    =   1;      // By default, PHPSurveyor does not save responses to conditional questions that haven't been answered/shown. To have PHPSurveyor save these responses change this value to 0.
-$shownoanswer       =   1;      // Show "no answer" for non mandatory questions
+$timeadjust         =   0;                // Number of hours to adjust between your webserver local time and your own local time (for datestamping responses)
+$allowexportalldb   =   1;                // 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported
+$allowmandbackwards =   1;                // Allow moving backwards (ie: << prev) through survey if a mandatory question
+                                          // has not been answered. 1=Allow, 0=Deny
+$deletenonvalues    =   1;                // By default, PHPSurveyor does not save responses to conditional questions that haven't been answered/shown. To have PHPSurveyor save these responses change this value to 0.
+$shownoanswer       =   1;                // Show "no answer" for non mandatory questions
+$admintheme         =  "default";         // This setting specifys the directory where the admin finds it theme/css style files, e.g. setting 'default' points to /admin/styles/default
 
 
 

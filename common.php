@@ -169,7 +169,7 @@ If (!$dbexistsbutempty && $sourcefrom=='admin')
     $usrow = $usresult->FetchRow();
     if (intval($usrow['stg_value'])<$dbversionnumber)
     {
-     Die ("<br />The PHPSurveyor database is not up to date. Please run the <a href='$homeurl/install/index.php'>install script</a>.");
+     Die ("<br />The PHPSurveyor database is not up to date. <br />Please run the <a href='$homeurl/install/index.php'>install script</a> to upgrade your database.");
     }
 
     if (is_dir($homedir."/install") && $debug!=1)
@@ -2400,7 +2400,7 @@ function doAdminHeader()
 
 function getAdminHeader($meta=false)
 {
-	global $sitename;
+	global $sitename, $admintheme;
 	if (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='') {$_SESSION['adminlang']='en';}
 	$strAdminHeader="<?xml version=\"1.0\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
 	."<html>\n<head>\n"
@@ -2417,7 +2417,7 @@ function getAdminHeader($meta=false)
 	. "<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"scripts/tabpane/css/tab.webfx.css \" />\n"
-    . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/default/adminstyle.css\" />\n"
+    . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle.css\" />\n"
 	. "<script type=\"text/javascript\" src=\"../scripts/calendar/calendar.js\"></script>\n"
 	. "<script type=\"text/javascript\" src=\"../scripts/calendar/lang/calendar-".$_SESSION['adminlang'].".js\"></script>\n"
 	. "<script type=\"text/javascript\" src=\"../scripts/calendar/calendar-setup.js\"></script>\n"
