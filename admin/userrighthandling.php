@@ -459,9 +459,10 @@ if ($action == "editusers")
 			."</form>";
 		}
 		$usersummary .= "\t\t</td>\n"
-		. "\t</tr></table>\n";
+		. "\t</tr>\n";
 		$row++;
 	}
+    $usersummary .= "</table>";
 
 	if($_SESSION['USER_RIGHT_CREATE_USER'])
 	{
