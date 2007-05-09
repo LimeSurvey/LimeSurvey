@@ -581,7 +581,7 @@ if($actsurrows['browse_response'])
 				."\n";
 				$dataentryoutput .= "\t\t\t<strong>{$fnames[$i][2]}</strong>\n";
 				$dataentryoutput .= "\t\t</font></td>\n"
-				."\t\t<td valign='top'>\n";
+				."\t\t<td valign='top' align='left'>\n";
 				//$dataentryoutput .= "\t\t\t-={$fnames[$i][3]}=-"; //Debugging info
 				switch ($fnames[$i][3])
 				{
@@ -1398,7 +1398,7 @@ if($actsurrows['browse_response'])
 			$dataentryoutput .= "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
 			."\t\t<td valign='top' align='right' width='30%'>$setfont<font color='red'>*</font><strong>".$clang->gT("Token").":</strong></font></td>\n"
-			."\t\t<td valign='top' style='padding-left: 20px'>\n"
+			."\t\t<td valign='top'  align='left' style='padding-left: 20px'>\n"
 			."\t\t\t<input type='text' name='token' />\n"
 			."\t\t</td>\n"
 			."\t</tr>\n";
@@ -1409,7 +1409,7 @@ if($actsurrows['browse_response'])
 			."\t\t<td valign='top' width='1%'></td>\n"
 			."\t\t<td valign='top' align='right' width='30%'>$setfont<strong>"
 			.$clang->gT("Datestamp").":</strong></font></td>\n"
-			."\t\t<td valign='top' style='padding-left: 20px'>\n"
+			."\t\t<td valign='top'  align='left' style='padding-left: 20px'>\n"
 			."\t\t\t<input type='text' name='datestamp' value='$localtimedate' />\n"
 			."\t\t</td>\n"
 			."\t</tr>\n";
@@ -1420,7 +1420,7 @@ if($actsurrows['browse_response'])
 			."\t\t<td valign='top' width='1%'></td>\n"
 			."\t\t<td valign='top' align='right' width='30%'>$setfont<strong>"
 			.$clang->gT("IP-Address").":</strong></font></td>\n"
-			."\t\t<td valign='top' style='padding-left: 20px'>\n"
+			."\t\t<td valign='top'  align='left' style='padding-left: 20px'>\n"
 			."\t\t\t<input type='text' name='ipaddr' value='NULL' />\n"
 			."\t\t</td>\n"
 			."\t</tr>\n";
@@ -1583,7 +1583,7 @@ if($actsurrows['browse_response'])
 					$dataentryoutput .= "$setfont<font color='red'>*</font></font>";
 				}
 				$dataentryoutput .= "<strong>{$deqrow['question']}</strong></td>\n"
-				."\t\t<td valign='top' style='padding-left: 20px'>\n";
+				."\t\t<td valign='top'  align='left' style='padding-left: 20px'>\n";
 				//DIFFERENT TYPES OF DATA FIELD HERE
 				if ($deqrow['help'])
 				{
@@ -1973,7 +1973,7 @@ if($actsurrows['browse_response'])
 					if ($deqrow['other'] == "Y")
 					{
 						$dataentryoutput .= "\t<tr>\n";
-						$dataentryoutput .= "\t\t<td style='padding-left: 22px'>$setfont".$clang->gT("Other").":</font></td>\n";
+						$dataentryoutput .= "\t\t<td  align='left' style='padding-left: 22px'>$setfont".$clang->gT("Other").":</font></td>\n";
 						$dataentryoutput .= "\t\t<td>\n";
 						$dataentryoutput .= "\t\t\t<input type='text' name='$fieldname"."other' size='50'/>\n";
 						$dataentryoutput .= "\t\t</td>\n";

@@ -291,7 +291,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 			$browseoutput .= "\t<tr>\n"
 			."\t\t<td bgcolor='#EFEFEF' valign='top' align='right' width='33%' style='padding-right: 5px'>"
 			."$setfont{$fnames[$i][2]}</font></td>\n"
-			."\t\t<td valign='top' style='padding-left: 5px'>$setfont"
+			."\t\t<td valign='top' align='left' style='padding-left: 5px'>$setfont"
 			.htmlspecialchars(getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]]), ENT_QUOTES)
 			."</font></td>\n"
 			."\t</tr>\n"
