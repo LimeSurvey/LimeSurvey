@@ -25,7 +25,7 @@
 #
 "qid","sid","gid","type","title","question","preg","help","other","mandatory","lid","question_order","language"
 "72","40","15","M","M","Type M - Multiple Options Question","","This is a type M multiple Options questions.","Y","N","0","1","en"
-"68","40","14","L","L","Type L - List Radio qeustion","","","Y","N","0","3","en"
+"68","40","14","L","L","Type L - List Radio question","","","Y","N","0","3","en"
 "69","40","14","5","5","Type 5 - 5 point choice","","Help2","N","N","0","4","en"
 "70","40","14","!","!","Type ! - List Dropdown Question","","","Y","N","0","5","en"
 "71","40","15","P","P","Type P: Multiple Options Question with Comments ","","This is a Multiple Options Question with the ability to comment it.","Y","N","0","0","en"

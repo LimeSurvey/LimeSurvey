@@ -794,7 +794,7 @@ function do_list_radio($ia)
 	{
 		$answer .= "\n\t\t\t\t\t<table class='question'>\n"
 		. "\t\t\t\t\t\t<tr>\n"
-		. "\t\t\t\t\t\t\t<td>\n";
+		. "\t\t\t\t\t\t\t<td align='left'>\n";
 	}
 	$rowcounter=0;
 	while ($ansrow = $ansresult->FetchRow())
@@ -907,7 +907,7 @@ function do_list_flexible_radio($ia)
 	{
 		$answer .= "\n\t\t\t\t\t<table class='question'>\n"
 		. "\t\t\t\t\t\t<tr>\n"
-		. "\t\t\t\t\t\t\t<td>\n";
+		. "\t\t\t\t\t\t\t<td align='left'>\n";
 	}
 	$rowcounter=0;
 	while ($ansrow = $ansresult->FetchRow())
@@ -991,7 +991,7 @@ function do_listwithcomment($ia)
 		. "\t\t\t\t\t<td><u><label for='$ia[1]comment'>".$clang->gT("Please enter your comment here").":</label></u></td>\n"
 		. "\t\t\t\t</tr>\n"
 		. "\t\t\t\t<tr>\n"
-		. "\t\t\t\t\t<td valign='top'>\n";
+		. "\t\t\t\t\t<td valign='top' align='left'>\n";
 
 		while ($ansrow=$ansresult->FetchRow())
 		{
@@ -1582,7 +1582,7 @@ function do_multipleshorttext($ia)
 		. "\t\t\t\t\t\t\t\t<td align='right' class='answertext'>\n"
 		. "\t\t\t\t\t\t\t\t\t<label for='answer$myfname'>{$ansrow['answer']}</label>\n"
 		. "\t\t\t\t\t\t\t\t</td>\n"
-		. "\t\t\t\t\t\t\t\t<td>\n"
+		. "\t\t\t\t\t\t\t\t<td align='left'>\n"
 		. "\t\t\t\t\t\t\t\t\t<input class='text' type='text' size='40' name='$myfname' id='answer$myfname' value='";
 		if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
 
@@ -1789,7 +1789,7 @@ function do_yesno($ia)
 	global $shownoanswer, $clang;
 	$answer = "\t\t\t<table class='question'>\n"
 	. "\t\t\t\t<tr>\n"
-	. "\t\t\t\t\t<td>\n"
+	. "\t\t\t\t\t<td align='left'>\n"
 	. "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]Y' value='Y'";
 	if ($_SESSION[$ia[1]] == "Y") {$answer .= " checked";}
 	// --> START NEW FEATURE - SAVE
@@ -1824,7 +1824,7 @@ function do_gender($ia)
 	global $shownoanswer, $clang;
 	$answer = "\t\t\t<table class='question'>\n"
 	. "\t\t\t\t<tr>\n"
-	. "\t\t\t\t\t<td>\n"
+	. "\t\t\t\t\t<td align='left'>\n"
 	. "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]F' value='F'";
 	if ($_SESSION[$ia[1]] == "F") {$answer .= " checked";}
 	// --> START NEW FEATURE - SAVE
