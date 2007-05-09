@@ -259,10 +259,18 @@ if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
 	$query .= ",\n	       {$dbprefix}survey_$surveyid.*
 	FROM {$dbprefix}survey_$surveyid
 	LEFT JOIN {$dbprefix}tokens_$surveyid ON {$dbprefix}survey_$surveyid.token = {$dbprefix}tokens_$surveyid.token";
+	if ($filterout_incomplete_answers === true)
+	{
+		$query .= " WHERE {$dbprefix}survey_$surveyid.submitdate > '0000-00-00 00:00:00'";
+	}
 } else {
 	//$query = "SELECT {$dbprefix}survey_$surveyid.*
 	$query = "SELECT *
 	FROM {$dbprefix}survey_$surveyid";
+	if ($filterout_incomplete_answers === true)
+	{
+		$query .= " WHERE submitdate > '0000-00-00 00:00:00'";
+	}
 }
 
 

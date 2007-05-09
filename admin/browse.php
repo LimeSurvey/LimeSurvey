@@ -237,6 +237,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	$nfncount = count($fnames)-1;
 	//SHOW INDIVIDUAL RECORD
 	$idquery = "SELECT * FROM $surveytable WHERE ";
+	if ($filterout_incomplete_answers === true) {$idquery .= "submitdate > '0000-00-00 00:00:00' AND ";}
 	if ($id<1) {$id=1;}
 	if (isset($_POST['sql']) && $_POST['sql'])
 	{
@@ -473,6 +474,7 @@ elseif ($subaction == "all")
 
 	//LETS COUNT THE DATA
 	$dtquery = "SELECT count(*) FROM $surveytable";
+	if ($filterout_incomplete_answers === true) {$dtquery .= " WHERE submitdate > '0000-00-00 00:00:00'";}
 	$dtresult=db_execute_num($dtquery);
 	while ($dtrow=$dtresult->FetchRow()) {$dtcount=$dtrow[0];}
 
@@ -481,12 +483,24 @@ elseif ($subaction == "all")
 	//NOW LETS SHOW THE DATA
 	if (isset($_POST['sql']))
 	{
-		if ($_POST['sql'] == "NULL") {$dtquery = "SELECT * FROM $surveytable ORDER BY id";}
-		else {$dtquery = "SELECT * FROM $surveytable WHERE ".stripcslashes($_POST['sql'])." ORDER BY id";}
+		if ($_POST['sql'] == "NULL")
+		{
+			$dtquery = "SELECT * FROM $surveytable ";
+			if ($filterout_incomplete_answers === true) {$dtquery .= " WHERE submitdate > '0000-00-00 00:00:00'";}
+			$dtquery .= " ORDER BY id";
+		}
+		else
+		{
+			$dtquery = "SELECT * FROM $surveytable WHERE ".stripcslashes($_POST['sql'])." ";
+			if ($filterout_incomplete_answers === true) {$dtquery .= " AND submitdate > '0000-00-00 00:00:00'";}
+			$dtquery .= " ORDER BY id";
+		}
 	}
 	else
 	{
-		$dtquery = "SELECT * FROM $surveytable ORDER BY id";
+		$dtquery = "SELECT * FROM $surveytable ";
+		if ($filterout_incomplete_answers === true) {$dtquery .= " WHERE submitdate > '0000-00-00 00:00:00'";}	
+		$dtquery .= " ORDER BY id";
 	}
 	if ($order == "desc") {$dtquery .= " DESC";}
 	
@@ -610,6 +624,7 @@ else
 	. $surveyoptions;
 	$browseoutput .= "</table>\n";
 	$gnquery = "SELECT count(id) FROM $surveytable";
+	if ($filterout_incomplete_answers === true) {$gnquery .= " WHERE submitdate > '0000-00-00 00:00:00'";}
 	$gnresult = db_execute_num($gnquery);
 	while ($gnrow = $gnresult->FetchRow())
 	{

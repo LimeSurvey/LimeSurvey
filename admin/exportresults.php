@@ -395,6 +395,10 @@ if ((isset($_POST['first_name']) && $_POST['first_name']=="on")  || (isset($_POS
 	. " LEFT OUTER JOIN {$dbprefix}tokens_$surveyid"
 	. " ON $surveytable.token = {$dbprefix}tokens_$surveyid.token";
 }
+if ($filterout_incomplete_answers === true)
+{
+	$dquery .= "  WHERE $surveytable.submitdate > '0000-00-00 00:00:00'";
+}
 $dquery .=" ORDER BY id";
 $dresult = db_select_limit_assoc($dquery, 1) or die($clang->gT("Error")." getting results<br />$dquery<br />".htmlspecialchars($connect->ErrorMsg()));
 $fieldcount = $dresult->FieldCount();
@@ -679,15 +683,29 @@ if ((isset($_POST['first_name']) && $_POST['first_name']=="on") || (isset($_POST
 	$dquery	.= " FROM $surveytable "
 	. "LEFT OUTER JOIN {$dbprefix}tokens_$surveyid "
 	. "ON $surveytable.token={$dbprefix}tokens_$surveyid.token ";
+
+	if ($filterout_incomplete_answers === true)
+	{
+		$dquery .= "  WHERE $surveytable.submitdate > '0000-00-00 00:00:00'";
+	}
 }
 else // this applies for exporting everything
 {
 	$dquery = "SELECT $selectfields FROM $surveytable ";
+
+	if ($filterout_incomplete_answers === true)
+	{
+		$dquery .= "  WHERE $surveytable.submitdate > '0000-00-00 00:00:00'";
+	}
 }
 
 if (isset($_POST['sql'])) //this applies if export has been called from the statistics package
 {
-	if ($_POST['sql'] != "NULL") {$dquery .= "WHERE ".stripcslashes($_POST['sql'])." ";}
+	if ($_POST['sql'] != "NULL")
+	{
+		if ($filterout_incomplete_answers === true) {$dquery .= " AND ".stripcslashes($_POST['sql'])." ";}
+		else {$dquery .= "WHERE ".stripcslashes($_POST['sql'])." ";}
+	}
 }
 if (isset($_POST['answerid'])) //this applies if export has been called from single answer view
 {

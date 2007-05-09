@@ -97,6 +97,10 @@ elseif (isset($surveyid) && $surveyid)
 	$vvoutput = $firstline."\n";
 	$vvoutput .= $secondline."\n";
 	$query = "SELECT * FROM $surveytable";
+	if ($filterout_incomplete_answers === true)
+	{
+		$query .= " WHERE submitdate > '0000-00-00 00:00:00'";
+	}
 	$result = db_execute_assoc($query) or die("Error:<br />$query<br />".$connect->ErrorMsg());
 
 	while ($row=$result->FetchRow())

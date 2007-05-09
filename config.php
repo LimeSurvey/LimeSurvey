@@ -142,6 +142,14 @@ $embedded_footerfunc = "";      // e.g. COM_siteFooter for geeklog
 // Enable or Disable Ldap feature
 $enableLdap = false;
 
+// Experimental parameters, only change if you know what you're doing
+//
+// $filterout_incomplete_answers
+//  * default behaviour of phpsv regarding answer records with no submitdate
+//  * can be overwritten by module parameters 
+//         ("Filter-Out incomplete answers" checkbox when implemented)
+$filterout_incomplete_answers = false;
+
 
 //DO NOT CHANGE BELOW HERE --------------------
 

@@ -842,18 +842,21 @@ if (isset($_POST['display']) && $_POST['display'])
 	$prb->setLabelValue('txt1',$clang->gT('Getting Result Count ...'));
 	$prb->moveStep(35);
 	$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid");
+	if ($filterout_incomplete_answers === true) {$query .= " WHERE submitdate > '0000-00-00 00:00:00' ";}
 	$result = db_execute_num($query) or die ("Couldn't get total<br />$query<br />".$connect->ErrorMsg());
 	while ($row=$result->FetchRow()) {$total=$row[0];}
 	if (isset($selects) && $selects)
 	{
-		$query .= " WHERE ";
+		if ($filterout_incomplete_answers === true) {$query .= " AND ";}
+		else {$query .= " WHERE ";}
 		$query .= implode(" AND ", $selects);
 	}
 	elseif (!empty($_POST['sql']) && !isset($_POST['id=']))
 	{
 		$newsql=substr($_POST['sql'], strpos($_POST['sql'], "WHERE")+5, strlen($_POST['sql']));
 		//$query = $_POST['sql'];
-		$query .= " WHERE ".$newsql;
+		if ($filterout_incomplete_answers === true) {$query .= " AND ".$newsql;}
+		else {$query .= " WHERE ".$newsql;}
 	}
 	$result=db_execute_num($query) or die("Couldn't get results<br />$query<br />".$connect->ErrorMsg());
 	while ($row=$result->FetchRow()) {$results=$row[0];}
@@ -1067,6 +1070,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				$query .= ", MIN(`$fieldname`*1) as minimum";
 				$query .= ", MAX(`$fieldname`*1) as maximum";
 				$query .= " FROM ".db_table_name("survey_$surveyid")." WHERE `$fieldname` IS NOT NULL AND `$fieldname` != ' '";
+				if ($filterout_incomplete_answers === true) {$query .= " AND submitdate > '0000-00-00 00:00:00'";}
 				if ($sql != "NULL") {$query .= " AND $sql";}
 				$result=db_execute_assoc($query) or die("Couldn't do maths testing<br />$query<br />".$connect->ErrorMsg());
 				while ($row=$result->FetchRow())
@@ -1082,9 +1086,11 @@ if (isset($_POST['summary']) && $_POST['summary'])
 
 				//CALCULATE QUARTILES
 				$query ="SELECT `$fieldname` FROM ".db_table_name("survey_$surveyid")." WHERE `$fieldname` IS NOT null AND `$fieldname` != ' '";
+				if ($filterout_incomplete_answers === true) {$query .= " AND submitdate > '0000-00-00 00:00:00'";}
 				if ($sql != "NULL") {$query .= " AND $sql";}
 				$result=$connect->Execute($query) or die("Disaster during median calculation<br />$query<br />".$connect->ErrorMsg());
 				$querystarter="SELECT `$fieldname` FROM ".db_table_name("survey_$surveyid")." WHERE `$fieldname` IS NOT null AND `$fieldname` != ' '";
+				if ($filterout_incomplete_answers === true) {$querystarter .= " AND submitdate > '0000-00-00 00:00:00'";}
 				if ($sql != "NULL") {$querystarter .= " AND $sql";}
 				$medcount=$result->RecordCount();
 
@@ -1393,6 +1399,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				{
 					$query = "SELECT count(`$rt`) FROM ".db_table_name("survey_$surveyid")." WHERE `$rt` = '$al[0]'";
 				}
+				if ($filterout_incomplete_answers === true) {$query .= " AND submitdate > '0000-00-00 00:00:00'";}
 				if ($sql != "NULL") {$query .= " AND $sql";}
 				$result=db_execute_num($query) or die ("Couldn't do count of values<br />$query<br />".$connect->ErrorMsg());
 				$statisticsoutput .= "\n<!-- ($sql): $query -->\n\n";
