@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor Swedish language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-05-07 00:20+0100\n"
+"PO-Revision-Date: 2007-05-07 13:15+0100\n"
 "Last-Translator: bpmildh <bjorn@verklighet.nu>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -350,11 +350,11 @@ msgstr "Visa summerad information"
 #: /Volumes/hdny/Arbeten/phpSurveyor/phpsurveyor/common.php:1247
 #: /Volumes/hdny/Arbeten/phpSurveyor/phpsurveyor/admin/saved.php:149
 msgid "Display Responses"
-msgstr "Visa Svar"
+msgstr "Visa svar"
 
 #: /Volumes/hdny/Arbeten/phpSurveyor/phpsurveyor/common.php:1250
 msgid "Display Last 50 Responses"
-msgstr "Visa Sista 50 Svaren"
+msgstr "Visa sista 50 svaren"
 
 #: /Volumes/hdny/Arbeten/phpSurveyor/phpsurveyor/common.php:1252
 #: /Volumes/hdny/Arbeten/phpSurveyor/phpsurveyor/admin/html.php:479
@@ -385,7 +385,7 @@ msgstr "Imporetera svar från en avaktiverad enkät"
 #: /Volumes/hdny/Arbeten/phpSurveyor/phpsurveyor/admin/html.php:607
 #: /Volumes/hdny/Arbeten/phpSurveyor/phpsurveyor/admin/html.php:608
 msgid "View Saved but not submitted Responses"
-msgstr "Titta på sparade men inte skickade Svar"
+msgstr "Titta på sparade men inte skickade svar"
 
 #: /Volumes/hdny/Arbeten/phpSurveyor/phpsurveyor/common.php:1270
 #: /Volumes/hdny/Arbeten/phpSurveyor/phpsurveyor/admin/vvimport.php:54
@@ -1942,7 +1942,7 @@ msgstr "Radera denna inmatning"
 #: /Volumes/hdny/Arbeten/phpSurveyor/phpsurveyor/admin/browse.php:271
 #: /Volumes/hdny/Arbeten/phpSurveyor/phpsurveyor/admin/browse.php:272
 msgid "Export this Response"
-msgstr "Exportera detta Svar"
+msgstr "Exportera detta svar"
 
 #: /Volumes/hdny/Arbeten/phpSurveyor/phpsurveyor/admin/browse.php:276
 #: /Volumes/hdny/Arbeten/phpSurveyor/phpsurveyor/admin/browse.php:277
@@ -2004,7 +2004,7 @@ msgstr "Visa denna post"
 
 #: /Volumes/hdny/Arbeten/phpSurveyor/phpsurveyor/admin/browse.php:617
 msgid "responses for this survey"
-msgstr "svare i enkäten"
+msgstr "svar i enkäten"
 
 #: /Volumes/hdny/Arbeten/phpSurveyor/phpsurveyor/admin/conditions.php:55
 msgid "Condition Designer"
@@ -2426,7 +2426,7 @@ msgstr "Lägg till ytterligare Record"
 #: /Volumes/hdny/Arbeten/phpSurveyor/phpsurveyor/admin/dataentry.php:380
 #: /Volumes/hdny/Arbeten/phpSurveyor/phpsurveyor/admin/saved.php:74
 msgid "Browse Saved Responses"
-msgstr "Bläddra bland sparade Svar"
+msgstr "Bläddra bland sparade svar"
 
 #: /Volumes/hdny/Arbeten/phpSurveyor/phpsurveyor/admin/dataentry.php:567
 msgid "Editing Response"
