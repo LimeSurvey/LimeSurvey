@@ -49,6 +49,17 @@ if ($sumrows5['export'] != "1")
 }
 if (!$subaction == "export")
 {
+	if (incompleteAnsFilterstate() === true)
+	{
+		$selecthide="selected='selected'";
+		$selectshow="";
+	}
+	else
+	{
+		$selecthide="";
+		$selectshow="selected='selected'";
+	}
+
 	$vvoutput = "<br /><form method='post' action='admin.php?action=vvexport&sid=$surveyid'>"
     	."<table align='center' class='outlinetable'>"
         ."<tr><th colspan='2'>".$clang->gT("Export a VV survey file")."</th></tr>"
@@ -56,6 +67,12 @@ if (!$subaction == "export")
         ."<td align='right'>".$clang->gT("Export Survey").":</td>"
         ."<td><input type='text' size='10' value='$surveyid' name='sid' readonly='readonly' /></td>"
         ."</tr>"
+	."<tr>"
+	."<td align='right'>".$clang->gT("Filter incomplete answers")." </td>"
+	."<td><select name='filterinc'>\n"
+	."\t<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
+	."\t<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
+	."</select></td>\n"
         ."<tr>"
         ."<td colspan='2' align='center'>"
         ."<input type='submit' value='".$clang->gT("Export Responses")."' />&nbsp;"
@@ -97,7 +114,7 @@ elseif (isset($surveyid) && $surveyid)
 	$vvoutput = $firstline."\n";
 	$vvoutput .= $secondline."\n";
 	$query = "SELECT * FROM $surveytable";
-	if ($filterout_incomplete_answers === true)
+	if (incompleteAnsFilterstate() === true)
 	{
 		$query .= " WHERE submitdate > '0000-00-00 00:00:00'";
 	}

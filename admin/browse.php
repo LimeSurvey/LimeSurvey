@@ -237,7 +237,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	$nfncount = count($fnames)-1;
 	//SHOW INDIVIDUAL RECORD
 	$idquery = "SELECT * FROM $surveytable WHERE ";
-	if ($filterout_incomplete_answers === true) {$idquery .= "submitdate > '0000-00-00 00:00:00' AND ";}
+	if (incompleteAnsFilterstate() === true) {$idquery .= "submitdate > '0000-00-00 00:00:00' AND ";}
 	if ($id<1) {$id=1;}
 	if (isset($_POST['sql']) && $_POST['sql'])
 	{
@@ -474,7 +474,7 @@ elseif ($subaction == "all")
 
 	//LETS COUNT THE DATA
 	$dtquery = "SELECT count(*) FROM $surveytable";
-	if ($filterout_incomplete_answers === true) {$dtquery .= " WHERE submitdate > '0000-00-00 00:00:00'";}
+	if (incompleteAnsFilterstate() === true) {$dtquery .= " WHERE submitdate > '0000-00-00 00:00:00'";}
 	$dtresult=db_execute_num($dtquery);
 	while ($dtrow=$dtresult->FetchRow()) {$dtcount=$dtrow[0];}
 
@@ -486,20 +486,20 @@ elseif ($subaction == "all")
 		if ($_POST['sql'] == "NULL")
 		{
 			$dtquery = "SELECT * FROM $surveytable ";
-			if ($filterout_incomplete_answers === true) {$dtquery .= " WHERE submitdate > '0000-00-00 00:00:00'";}
+			if (incompleteAnsFilterstate() === true) {$dtquery .= " WHERE submitdate > '0000-00-00 00:00:00'";}
 			$dtquery .= " ORDER BY id";
 		}
 		else
 		{
 			$dtquery = "SELECT * FROM $surveytable WHERE ".stripcslashes($_POST['sql'])." ";
-			if ($filterout_incomplete_answers === true) {$dtquery .= " AND submitdate > '0000-00-00 00:00:00'";}
+			if (incompleteAnsFilterstate() === true) {$dtquery .= " AND submitdate > '0000-00-00 00:00:00'";}
 			$dtquery .= " ORDER BY id";
 		}
 	}
 	else
 	{
 		$dtquery = "SELECT * FROM $surveytable ";
-		if ($filterout_incomplete_answers === true) {$dtquery .= " WHERE submitdate > '0000-00-00 00:00:00'";}	
+		if (incompleteAnsFilterstate() === true) {$dtquery .= " WHERE submitdate > '0000-00-00 00:00:00'";}	
 		$dtquery .= " ORDER BY id";
 	}
 	if ($order == "desc") {$dtquery .= " DESC";}
@@ -550,12 +550,28 @@ elseif ($subaction == "all")
 	} else {
 		$browseoutput .= "\t<tr><td align='left'>\n";
 	}
+
+	if (incompleteAnsFilterstate() === true)
+	{
+		$selecthide="selected='selected'";
+		$selectshow="";
+	}
+	else
+	{
+		$selecthide="";
+		$selectshow="selected='selected'";
+	}
+
 	$browseoutput .=("\t\t</td>\n"
 	."\t\t<td align='left'>\n"
 	."\t\t<form action='$scriptname?action=browse' method='post'><font size='1' face='verdana'>\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />\n"
 	."\t\t\t".$clang->gT("Records Displayed:")."<input type='text' size='4' value='$dtcount2' name='limit' />\n"
 	."\t\t\t".$clang->gT("Starting From:")."<input type='text' size='4' value='$start' name='start' />\n"
+	."\t\t\t".$clang->gT("Filter incomplete answers:")."<select name='filterinc'>\n"
+	."\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
+	."\t\t\t\t<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
+	."\t\t\t</select>\n"
 	."\t\t\t<input type='submit' value='".$clang->gT("Show")."' />\n"
 	."\t\t</font>\n"
 	."\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
@@ -624,7 +640,7 @@ else
 	. $surveyoptions;
 	$browseoutput .= "</table>\n";
 	$gnquery = "SELECT count(id) FROM $surveytable";
-	if ($filterout_incomplete_answers === true) {$gnquery .= " WHERE submitdate > '0000-00-00 00:00:00'";}
+	if (incompleteAnsFilterstate() === true) {$gnquery .= " WHERE submitdate > '0000-00-00 00:00:00'";}
 	$gnresult = db_execute_num($gnquery);
 	while ($gnrow = $gnresult->FetchRow())
 	{

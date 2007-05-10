@@ -129,6 +129,18 @@ if (!$style)
 	.$clang->gT("Export Responses");
 	if (isset($_POST['sql'])) {$exportoutput .= " - ".$clang->gT("Filtered from Statistics Script");}
 	if (returnglobal('id')<>'') {$exportoutput .= " - ".$clang->gT("Single Response");}
+
+	if (incompleteAnsFilterstate() === true)
+	{
+		$selecthide="selected='selected'";
+		$selectshow="";
+	}
+	else
+	{
+		$selecthide="";
+		$selectshow="selected='selected'";
+	}
+
 	$exportoutput .= "</strong> ($afieldcount ".$clang->gT("Columns").")</font></td></tr>\n"
 	."\t<tr><td height='8' bgcolor='silver'><font size='1'><strong>"
 	.$clang->gT("Questions")."</strong></font></font></td></tr>\n"
@@ -142,7 +154,11 @@ if (!$style)
 	.$clang->gT("Full headings")."</label><br />\n"
 	."\t\t\t<input type='radio' class='radiobtn' checked name='style' value='headcodes' id='headcodes'>"
 	."<label for='headcodes'>"
-	.$clang->gT("Question Codes")."</label>\n"
+	.$clang->gT("Question Codes")."</label><br />\n"
+	."\t\t\t&nbsp&nbsp".$clang->gT("Filter incomplete answers")." <select name='filterinc'>\n"
+	."\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
+	."\t\t\t\t<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
+	."\t\t\t</select>\n"
 	."\t\t</font></font></td>\n"
 	."\t</tr>\n"
 	."\t<tr><td height='8' bgcolor='silver'><font size='1'><strong>"
@@ -395,7 +411,7 @@ if ((isset($_POST['first_name']) && $_POST['first_name']=="on")  || (isset($_POS
 	. " LEFT OUTER JOIN {$dbprefix}tokens_$surveyid"
 	. " ON $surveytable.token = {$dbprefix}tokens_$surveyid.token";
 }
-if ($filterout_incomplete_answers === true)
+if (incompleteAnsFilterstate() === true)
 {
 	$dquery .= "  WHERE $surveytable.submitdate > '0000-00-00 00:00:00'";
 }
@@ -684,7 +700,7 @@ if ((isset($_POST['first_name']) && $_POST['first_name']=="on") || (isset($_POST
 	. "LEFT OUTER JOIN {$dbprefix}tokens_$surveyid "
 	. "ON $surveytable.token={$dbprefix}tokens_$surveyid.token ";
 
-	if ($filterout_incomplete_answers === true)
+	if (incompleteAnsFilterstate() === true)
 	{
 		$dquery .= "  WHERE $surveytable.submitdate > '0000-00-00 00:00:00'";
 	}
@@ -693,7 +709,7 @@ else // this applies for exporting everything
 {
 	$dquery = "SELECT $selectfields FROM $surveytable ";
 
-	if ($filterout_incomplete_answers === true)
+	if (incompleteAnsFilterstate() === true)
 	{
 		$dquery .= "  WHERE $surveytable.submitdate > '0000-00-00 00:00:00'";
 	}
@@ -703,7 +719,7 @@ if (isset($_POST['sql'])) //this applies if export has been called from the stat
 {
 	if ($_POST['sql'] != "NULL")
 	{
-		if ($filterout_incomplete_answers === true) {$dquery .= " AND ".stripcslashes($_POST['sql'])." ";}
+		if (incompleteAnsFilterstate() === true) {$dquery .= " AND ".stripcslashes($_POST['sql'])." ";}
 		else {$dquery .= "WHERE ".stripcslashes($_POST['sql'])." ";}
 	}
 }
