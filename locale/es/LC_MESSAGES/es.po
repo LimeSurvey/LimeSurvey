@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-05-03 23:55-0300\n"
+"PO-Revision-Date: 2007-05-09 23:27-0300\n"
 "Last-Translator: Esteban Adrián Pérez <dgeaperez@yahoo.com.ar>\n"
 "Language-Team:  <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: C:/documentos/www/docs/activa-cro.com.ar/public_html/crf\n"
 
 msgid "Administration"
-msgstr "Administración:"
+msgstr "Administración"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:189
 msgid "Logged in as"
@@ -547,6 +547,17 @@ msgstr "Colabore con el proyecto - Haga una donación para"
 msgid "Visit our website!"
 msgstr "Visite nuestro sitio web"
 
+# C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/common.php:2748
+# C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/common.php:2753
+msgid "Executing"
+msgstr "Ejecutando"
+
+msgid "Failed! Reason: "
+msgstr "MOtivo de la Falla:"
+
+msgid "Success!"
+msgstr "Éxito"
+
 msgid "Save your responses so far"
 msgstr "Guardar las respuestas realizadas hasta ahora"
 
@@ -570,6 +581,11 @@ msgstr "Lo sentimos. No hay ningún cuestionario que coincida."
 
 msgid "This survey is not currently active. You will not be able to save your responses."
 msgstr "Este cuestionario no está activo. No podrá guardar sus respuestas."
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:164
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:322
+msgid "Date is not valid!"
+msgstr "¡La fecha no es válida!"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/index.php:68
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/index.php:117
@@ -1167,6 +1183,38 @@ msgstr "No se ha seleccionado una pregunta como destino para copiar"
 msgid "Only show question {QID} IF"
 msgstr "Sólo mostrar la respuesta {QID} SI"
 
+#, fuzzy
+msgid "Less"
+msgstr "Menor"
+
+#, fuzzy
+msgid "Less or Equal"
+msgstr "Menor o Igual"
+
+#, fuzzy
+msgid "Equal"
+msgstr "Igual"
+
+#, fuzzy
+msgid "Not Equal"
+msgstr "Diferente"
+
+# C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/conditions.php:652
+# C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/conditions.php:863
+#, fuzzy
+msgid "Greater or Equal"
+msgstr "Mayor o igual"
+
+#, fuzzy
+msgid "Greater"
+msgstr "Mayor"
+
+# C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/conditions.php:654
+# C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/conditions.php:865
+#, fuzzy
+msgid "Regular Expresion"
+msgstr "Expresión regular"
+
 msgid "and"
 msgstr "y"
 
@@ -1177,9 +1225,6 @@ msgstr "y"
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2035
 msgid "OR"
 msgstr "O"
-
-msgid "Equals"
-msgstr "Equivale"
 
 msgid "Copy Conditions"
 msgstr "Copiar Condiciones"
@@ -1201,6 +1246,15 @@ msgstr "Agregar Condición"
 
 msgid "Answer"
 msgstr "Respuesta"
+
+# C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/conditions.php:855
+msgid "NOTE: If select a label it will be used Equal or Not Equal for any other method"
+msgstr "NOTA: Si elige una etiqueta, se utilizará Equivale o Diferente para cualquier otro método "
+
+# C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/conditions.php:872
+#, fuzzy
+msgid "Constant Value or Regular Expresion"
+msgstr "Constante o Expresión Regular"
 
 msgid "Clear"
 msgstr "Borrar"
@@ -1310,8 +1364,8 @@ msgid "Failed to update answers"
 msgstr "Falló la actualización de respuestas"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:659
-msgid "Answers with a code of 0 (zero) are not allowed, and will not be saved"
-msgstr "Las respuestas con código 0 (cero) no están permitidas y no serán guardadas"
+msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
+msgstr "Las respuestas con código 0 (cero) o en blanco no están permitidas y no serán guardadas"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:660
 msgid "Duplicate codes found, these entries won't be updated"
@@ -2068,6 +2122,9 @@ msgstr "Defina las preguntas"
 
 msgid "Export"
 msgstr "Exportar"
+
+msgid "Edit Survey Property"
+msgstr "Modificar porpiedades del cuestionario"
 
 msgid "Browse Response"
 msgstr "Revisar las respuestas"
@@ -2952,6 +3009,9 @@ msgstr "Lista de preguntas"
 msgid "Like"
 msgstr "Como"
 
+msgid "Equals"
+msgstr "Equivale"
+
 msgid "Not Equals"
 msgstr "No equivale"
 
@@ -3732,6 +3792,10 @@ msgstr "Mensaje:"
 msgid "Send"
 msgstr "Enviar"
 
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:140
+msgid "Reset"
+msgstr "Restaurar"
+
 msgid "Deleting User Group"
 msgstr "Borrando el grupo de usuario"
 
@@ -3865,6 +3929,9 @@ msgstr "una base de datos con el nombre  \"%s\" ya existe."
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/install/index.php:69
 msgid "Do you want to populate that database now by creating the necessary tables?"
 msgstr "¿Desea poblar la base de datos ahora creando las tablas necesarias?"
+
+msgid "Database has been successfully upgraded to version "
+msgstr "La Base de Datos se ha actualizado exitosamente a la versión "
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:67
 msgid "Bulgarian"
