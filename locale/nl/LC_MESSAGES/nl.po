@@ -1,10 +1,10 @@
 msgid ""
-""
-msgstr "Project-Id-Version: PHPSurveyor Dutch Language file\n"
+msgstr ""
+"Project-Id-Version: PHPSurveyor Dutch Language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-04-07 09:55+0200\n"
-"PO-Revision-Date: 2007-03-26 11:51+0100\n"
-"Last-Translator: Johan Geertsma <johan@jgeertsma.com>\n"
+"PO-Revision-Date: 2007-05-09 19:50+0100\n"
+"Last-Translator: hans fraiponts <fraiponts@compostela.be>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -37,7 +37,7 @@ msgstr "Record IDs uitsluiten?"
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:66
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/vvimport.php:59
 msgid "When an imported record matches an existing record ID:"
-msgstr "Als een ge&iuml;mporteerd record gelijk is aan record ID:"
+msgstr "Als een geïmporteerd record gelijk is aan record ID:"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:67
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/vvimport.php:60
@@ -160,11 +160,8 @@ msgstr "Fout"
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/importsurvey.php:55
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/importgroup.php:53
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/importquestion.php:53
-msgid ""
-"An error occurred uploading your file. This may be caused by incorrect "
-"permissions in your admin folder."
-msgstr "Er deed zich een fout voor bij het uploaden van uw bestand. Dit kan komen "
-"door onjuiste toegangsrechten in uw admin map."
+msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder."
+msgstr "Er deed zich een fout voor bij het uploaden van uw bestand. Dit kan komen door onjuiste toegangsrechten in uw admin map."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/vvimport.php:103
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/importlabel.php:64
@@ -217,15 +214,12 @@ msgstr "Belangrijke opmerking:"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:238
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/vvimport.php:230
-msgid ""
-"Do NOT refresh this page, as this will import the file again and produce "
-"duplicates"
-msgstr "Belangrijk: Ververs deze pagina NIET omdat het bestand anders opnieuw zal "
-"worden ingelezen wat tot doublures zal leiden."
+msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
+msgstr "Belangrijk: Ververs deze pagina NIET omdat het bestand anders opnieuw zal worden ingelezen wat tot doublures zal leiden."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/vvimport.php:232
 msgid "Total records imported:"
-msgstr "Totaal aantal ge&iuml;mporteerde records:"
+msgstr "Totaal aantal geïmporteerde records:"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/vvimport.php:233
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/browse.php:78
@@ -339,12 +333,8 @@ msgstr "Bewerk"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/assessments.php:138
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/assessments.php:147
-msgid ""
-"If you create any assessments in this page, for the currently selected "
-"survey, the assessment will be performed at the end of the survey after "
-"submission"
-msgstr "De toets die u voor de vragenlijst op deze pagina aanmaakt zal na het "
-"versturen van de antwoorden worden uitgevoerd"
+msgid "If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission"
+msgstr "De toets die u voor de vragenlijst op deze pagina aanmaakt zal na het versturen van de antwoorden worden uitgevoerd"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/assessments.php:154
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:582
@@ -429,11 +419,8 @@ msgstr "Terug naar Labelbeheer"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/importlabel.php:212
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/importlabel.php:206
-msgid ""
-"There was a duplicate labelset, so this set was not imported. The duplicate "
-"will be used instead."
-msgstr "Deze labelset bestond al, de labelset is dus niet ge&iuml;mporteerd. De "
-"bestaande wordt gebruikt."
+msgid "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead."
+msgstr "Deze labelset bestond al, de labelset is dus niet geïmporteerd. De bestaande wordt gebruikt."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/importlabel.php:214
 msgid "Label Set Import Summary"
@@ -757,13 +744,8 @@ msgid "Help"
 msgstr "Toon help"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/exportresults.php:224
-msgid ""
-"Your survey contains more than 255 columns of responses. Spreadsheet "
-"applications such as Excel are limited to loading no more than 255. Select "
-"the columns you wish to export in the list below."
-msgstr "Uw vragenlijst bevat meer dan 255 kolommen met antwoorden. Bepaalde "
-"spreadsheet programma's, zoals Excel laten slechts toe er 255 te importeren. "
-"Selecteer hieronder de kolommen die u wilt exporteren."
+msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
+msgstr "Uw vragenlijst bevat meer dan 255 kolommen met antwoorden. Bepaalde spreadsheet programma's, zoals Excel laten slechts toe er 255 te importeren. Selecteer hieronder de kolommen die u wilt exporteren."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/exportresults.php:230
 msgid "Choose the columns you wish to export."
@@ -781,11 +763,8 @@ msgid "Choose Token Fields"
 msgstr "Kies toegangscodevelden"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/exportresults.php:281
-msgid ""
-"Your survey can export associated token data with each response. Select any "
-"additional fields you would like to export."
-msgstr "Uw vragenlijst kan de gegevens van de toegangscodes bij elk antwoord "
-"exporteren. Selecteer eventueel de extra velden die u wenst te exporteren."
+msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
+msgstr "Uw vragenlijst kan de gegevens van de toegangscodes bij elk antwoord exporteren. Selecteer eventueel de extra velden die u wenst te exporteren."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/exportresults.php:284
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/exportresults.php:442
@@ -1207,11 +1186,8 @@ msgstr "De ingestelde PHPSurveyor database bestaat niet"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/browse.php:82
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/dataentry.php:66
-msgid ""
-"Either your selected database has not yet been created or there is a problem "
-"accessing it."
-msgstr "Ofwel is uw database nog niet aangemaakt, danwel is het niet mogelijk de "
-"database te benaderen."
+msgid "Either your selected database has not yet been created or there is a problem accessing it."
+msgstr "Ofwel is uw database nog niet aangemaakt, danwel is het niet mogelijk de database te benaderen."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/browse.php:94
 msgid "You have not selected a survey to browse."
@@ -1638,7 +1614,7 @@ msgstr "Wordt groep voor groep getoond."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:690
 msgid "It is presented on one single page."
-msgstr "Wordt op &eacute;&eacute;n pagina getoond."
+msgstr "Wordt op één pagina getoond."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:691
 msgid "Responses will be date stamped"
@@ -1660,8 +1636,7 @@ msgstr "Er worden cookies gebruikt voor toegangsbeheer."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:695
 msgid "If tokens are used, the public may register for this survey"
-msgstr "Als toegangscodes worden gebruikt kan iedereen zich aanmelden voor deze "
-"vragenlijst"
+msgstr "Als toegangscodes worden gebruikt kan iedereen zich aanmelden voor deze vragenlijst"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:488
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:696
@@ -1796,11 +1771,8 @@ msgid "Edit Current Group"
 msgstr "Bewerk huidige groep"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:872
-msgid ""
-"Deleting this group will also delete any questions and answers it contains. "
-"Are you sure you want to continue?"
-msgstr "Het verwijderen van deze groep zal ook de bijbehorende vragen en antwoorden "
-"wissen. Bent u zeker dat u wilt verdergaan?"
+msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
+msgstr "Het verwijderen van deze groep zal ook de bijbehorende vragen en antwoorden wissen. Bent u zeker dat u wilt verdergaan?"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:874
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:881
@@ -1809,11 +1781,8 @@ msgstr "Verwijder huidige groep"
 
 # D:\phpsurveyor/admin/html.php:870
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:879
-msgid ""
-"Impossible to delete this group because there is at least one question "
-"having a condition on its content"
-msgstr "Het is niet mogelijk deze groep te verwijderen, omdat er minstens één "
-"conditionele vraag m.b.t. de inhoud vanaf hangt"
+msgid "Impossible to delete this group because there is at least one question having a condition on its content"
+msgstr "Het is niet mogelijk deze groep te verwijderen, omdat er minstens één conditionele vraag m.b.t. de inhoud vanaf hangt"
 
 # D:\phpsurveyor/admin/html.php:872
 # D:\phpsurveyor/admin/html.php:1032
@@ -1875,11 +1844,8 @@ msgid "Edit Current Question"
 msgstr "Bewerk huidige vraag"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:1030
-msgid ""
-"Deleting this question will also delete any answers it includes. Are you "
-"sure you want to continue?"
-msgstr "Het verwijderen van deze veraag zal ook de bijbehorende antwoorden wissen. "
-"Bent u zeker dat u wil verdergaan?"
+msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
+msgstr "Het verwijderen van deze veraag zal ook de bijbehorende antwoorden wissen. Bent u zeker dat u wil verdergaan?"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:1032
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:1041
@@ -1888,11 +1854,8 @@ msgstr "Verwijder huidige vraag"
 
 # D:\phpsurveyor/admin/html.php:1030
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:1039
-msgid ""
-"Impossible to delete this question because  there is at least one question "
-"having a condition on it"
-msgstr "Het is niet mogelijk deze groep te verwijderen, omdat er minstens één "
-"conditionele vraag vanaf hangt"
+msgid "Impossible to delete this question because  there is at least one question having a condition on it"
+msgstr "Het is niet mogelijk deze groep te verwijderen, omdat er minstens één conditionele vraag vanaf hangt"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:1052
 msgid "Export this Question"
@@ -2135,8 +2098,7 @@ msgstr "Nieuw Antwoord toevoegen"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:1393
 msgid "You cannot add answers because they are being used by an active survey."
-msgstr "U kunt geen antwoorden toevoegen, omdat deze labelset in een actieve "
-"vragenlijst wordt gebruikt."
+msgstr "U kunt geen antwoorden toevoegen, omdat deze labelset in een actieve vragenlijst wordt gebruikt."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:1416
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:1755
@@ -2523,10 +2485,8 @@ msgstr "URL automatisch laden na afronding vragenlijst?"
 
 # D:\phpsurveyor/admin/html.php:2070
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:2083
-msgid ""
-"All questions, answers, etc for removed languages will be lost. Are you sure?"
-msgstr "Alle vragen, antwoorden, etc voor verwijderde talen zullen verloren gaan. "
-"Weet u het zeker?"
+msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
+msgstr "Alle vragen, antwoorden, etc voor verwijderde talen zullen verloren gaan. Weet u het zeker?"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:2083
 msgid "Save and Continue"
@@ -2589,7 +2549,8 @@ msgid ""
 "----------------------------------------------\n"
 "Click here to do the survey:\n"
 "{SURVEYURL}"
-msgstr "Geachte {FIRSTNAME},\n"
+msgstr ""
+"Geachte {FIRSTNAME},\n"
 "\n"
 "U bent uitgenodigd om deel te nemen aan een onderzoek.\n"
 "\n"
@@ -2632,8 +2593,7 @@ msgid ""
 "\n"
 "Recently we invited you to participate in a survey.\n"
 "\n"
-"We note that you have not yet completed the survey, and wish to remind you "
-"that the survey is still available should you wish to take part.\n"
+"We note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n"
 "\n"
 "The survey is titled:\n"
 "\"{SURVEYNAME}\"\n"
@@ -2649,13 +2609,12 @@ msgid ""
 "----------------------------------------------\n"
 "Click here to do the survey:\n"
 "{SURVEYURL}"
-msgstr "Geachte {FIRSTNAME},\n"
+msgstr ""
+"Geachte {FIRSTNAME},\n"
 "\n"
 "Recent bent u uitgenodigd om aan een onderzoek deel te nemeny.\n"
 "\n"
-"We hebben geconstateerd dat u nog niet aan het onderzoek hebt deelgenomen en "
-"willen u er bij deze aan herinneren dat het onderzoek nog loopt en dat u, "
-"als u dat wilt, nog kan deelnemen. \n"
+"We hebben geconstateerd dat u nog niet aan het onderzoek hebt deelgenomen en willen u er bij deze aan herinneren dat het onderzoek nog loopt en dat u, als u dat wilt, nog kan deelnemen. \n"
 "\n"
 "Het onderzoek is getiteld: \n"
 "''{SURVEYNAME}\"\n"
@@ -2697,22 +2656,19 @@ msgstr "Bevestiging E-mail"
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
-"This email is to confirm that you have completed the survey titled "
-"{SURVEYNAME} and your response has been saved. Thank you for participating.\n"
+"This email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n"
 "\n"
-"If you have any further questions about this email, please contact "
-"{ADMINNAME} on {ADMINEMAIL}.\n"
+"If you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n"
 "\n"
 "Sincerely,\n"
 "\n"
 "{ADMINNAME}"
-msgstr "Beste {FIRSTNAME},\n"
+msgstr ""
+"Beste {FIRSTNAME},\n"
 "\n"
-"Dit e-mail bericht bevestigt dat u de vragenlijst  {SURVEYNAME} heeft "
-"ingevuld en dat uw antwoorden zijn opgeslagen. Dank u voor uw deelname.\n"
+"Dit e-mail bericht bevestigt dat u de vragenlijst  {SURVEYNAME} heeft ingevuld en dat uw antwoorden zijn opgeslagen. Dank u voor uw deelname.\n"
 "\n"
-"Als u vragen heeft over deze e-mail, neemt u dan contact op met de beheerder "
-"{ADMINNAME} via {ADMINEMAIL}.\n"
+"Als u vragen heeft over deze e-mail, neemt u dan contact op met de beheerder {ADMINNAME} via {ADMINEMAIL}.\n"
 "\n"
 "Hoogachtend,\n"
 "\n"
@@ -2751,28 +2707,23 @@ msgstr "E-mail openbare aanmelding:"
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
-"You, or someone using your email address, have registered to participate in "
-"an online survey titled {SURVEYNAME}.\n"
+"You, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n"
 "\n"
 "To complete this survey, click on the following URL:\n"
 "\n"
 "{SURVEYURL}\n"
 "\n"
-"If you have any questions about this survey, or if you did not register to "
-"participate and believe this email is in error, please contact {ADMINNAME} "
-"at {ADMINEMAIL}."
-msgstr "Geachte {FIRSTNAME},\n"
+"If you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."
+msgstr ""
+"Geachte {FIRSTNAME},\n"
 "\n"
-"U, of iemand die uw E-mail adres gebruikt, heeft zich aangemeld voor "
-"deelname aan de online vragenlijst getiteld {SURVEYNAME}.\n"
+"U, of iemand die uw E-mail adres gebruikt, heeft zich aangemeld voor deelname aan de online vragenlijst getiteld {SURVEYNAME}.\n"
 "\n"
 "Klik om aan het onderzoek mee te doen op onderstaande link:\n"
 "\n"
 "{SURVEYURL}\n"
 "\n"
-"Als u vragen heeft over de vragenlijst, of als u zich niet heeft aangemeld "
-"voor deelname en meent dat u deze E-mail ten onrechte heeft ontvangen, kunt "
-"u contact opnemen met {ADMINNAME} via {ADMINEMAIL}."
+"Als u vragen heeft over de vragenlijst, of als u zich niet heeft aangemeld voor deelname en meent dat u deze E-mail ten onrechte heeft ontvangen, kunt u contact opnemen met {ADMINNAME} via {ADMINEMAIL}."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:2196
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:2523
@@ -2792,13 +2743,8 @@ msgstr "Huidige vragenlijst bevat vragen met condities buiten deze groep."
 
 # D:\phpsurveyor/admin/html.php:2251
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:2264
-msgid ""
-"Re-ordering groups is restricted to ensure that questions on which "
-"conditions are based aren't reordered after questions having the conditions "
-"set"
-msgstr "Het hergroeperen van groepen is beperkt om ervoor te zorgen dat vragen met "
-"een conditie niet opnieuw worden gegroepeerd nadat er condities zijn "
-"ingesteld."
+msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "Het hergroeperen van groepen is beperkt om ervoor te zorgen dat vragen met een conditie niet opnieuw worden gegroepeerd nadat er condities zijn ingesteld."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:2264
 msgid "The following groups are concerned"
@@ -2816,10 +2762,8 @@ msgstr "zie de gemarkeerde condities op"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1974
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:2349
-msgid ""
-"The uploaded file is bigger than the upload_max_filesize directive in php.ini"
-msgstr "Het bestand dat u wilt uploaden is groter dan de maximaal toegestane "
-"upload_max_filesize parameter in php.ini"
+msgid "The uploaded file is bigger than the upload_max_filesize directive in php.ini"
+msgstr "Het bestand dat u wilt uploaden is groter dan de maximaal toegestane upload_max_filesize parameter in php.ini"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1978
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/html.php:2353
@@ -3257,11 +3201,8 @@ msgstr "Database `%s` is succesvol aangemaakt."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/createdb.php:69
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/install/createdb.php:69
-msgid ""
-"Database Information not provided. This script must be run from admin.php "
-"only."
-msgstr "Database informatie ontbreekt. Dit script kan alleen vanuit admin.php worden "
-"gestart."
+msgid "Database Information not provided. This script must be run from admin.php only."
+msgstr "Database informatie ontbreekt. Dit script kan alleen vanuit admin.php worden gestart."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/createdb.php:93
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/install/createdb.php:93
@@ -3333,11 +3274,8 @@ msgstr "Naam van de labelset"
 
 # D:\phpsurveyor/admin/labels.php:157
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/labels.php:160
-msgid ""
-"You cannot remove this items since you need at least one language in a "
-"labelset."
-msgstr "U kunt deze items niet verwijderen, omdat er minstens één taal in de set "
-"aanwezig dient te zijn."
+msgid "You cannot remove this items since you need at least one language in a labelset."
+msgstr "U kunt deze items niet verwijderen, omdat er minstens één taal in de set aanwezig dient te zijn."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/labels.php:241
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/importgroup.php:591
@@ -3381,15 +3319,11 @@ msgstr "Voeg nieuw label toe"
 # D:\phpsurveyor/admin/labels.php:378
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/labels.php:383
 msgid "Inserting New labels must be done on the first language folder."
-msgstr "Het toevoegen van nieuwe labels dient te worden uitgevoerd in de eerste "
-"talenmap."
+msgstr "Het toevoegen van nieuwe labels dient te worden uitgevoerd in de eerste talenmap."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/labels.php:392
-msgid ""
-"You cannot change codes, add or delete entries in this label set because it "
-"is being used by an active survey."
-msgstr "U kunt de codes niet veranderen, items toevoegen of verwijderen omdat deze "
-"labelset in een actieve vragenlijst wordt gebruikt."
+msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
+msgstr "U kunt de codes niet veranderen, items toevoegen of verwijderen omdat deze labelset in een actieve vragenlijst wordt gebruikt."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/labels.php:417
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/labels.php:658
@@ -3397,13 +3331,8 @@ msgid "Fix Sort"
 msgstr "Herstel sorteervolgorde"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/labels.php:427
-msgid ""
-"Some surveys currently use this label set. Modifying the codes, adding or "
-"deleting entries to this label set may produce undesired results in other "
-"surveys."
-msgstr "Er zijn vragenlijsten actief die deze labelset gebruiken. Codes wijzigen, "
-"toevoegen of verwijderen in deze label set zou ongewenste gevolgen kunnen "
-"hebben."
+msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
+msgstr "Er zijn vragenlijsten actief die deze labelset gebruiken. Codes wijzigen, toevoegen of verwijderen in deze label set zou ongewenste gevolgen kunnen hebben."
 
 # D:\phpsurveyor/admin/labels.php:476
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/labels.php:482
@@ -3421,11 +3350,8 @@ msgid "Update of Label Set failed"
 msgstr "Bijwerken van de labelset mislukt"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/labels.php:522
-msgid ""
-"Couldn't Delete Label Set - There are questions that rely on this. You must "
-"delete these questions first."
-msgstr "De labelset kon niet worden verwijderd - Er zijn vragen die deze set "
-"gebruiken. U moet deze eerst wissen."
+msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
+msgstr "De labelset kon niet worden verwijderd - Er zijn vragen die deze set gebruiken. U moet deze eerst wissen."
 
 # D:\phpsurveyor/admin/labels.php:579
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/labels.php:585
@@ -3455,11 +3381,8 @@ msgid "This question requires a Labelset, but none is set."
 msgstr "Deze vraag vereist een labelset. maar die is nog niet geselecteerd."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:174
-msgid ""
-"This question has a condition set, however the condition is based on a "
-"question that appears after it."
-msgstr "Dit is een voorwaardelijke vraag, maar de voorwaarde hangt af van een latere "
-"vraag."
+msgid "This question has a condition set, however the condition is based on a question that appears after it."
+msgstr "Dit is een voorwaardelijke vraag, maar de voorwaarde hangt af van een latere vraag."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:209
 msgid "Survey does not pass consistency check"
@@ -3471,8 +3394,7 @@ msgstr "De volgende problemen zijn gevonden:"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:221
 msgid "The survey cannot be activated until these problems have been resolved."
-msgstr "De vragenlijst kan niet worden geactiveerd zolang deze problemen niet zijn "
-"opgelost"
+msgstr "De vragenlijst kan niet worden geactiveerd zolang deze problemen niet zijn opgelost"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:234
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deactivate.php:50
@@ -3480,11 +3402,8 @@ msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
 msgstr "LEES DIT ZORGVULDIG ALVORENS VERDER TE GAAN"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:240
-msgid ""
-"You should only activate a survey when you are absolutely certain that your "
-"survey setup is finished and will not need changing."
-msgstr "Activeer een vragenlijst pas als u er absoluut zeker van bent dat de "
-"vragenlijst compleet is en u geen aanpassingen meer zult moeten verrichten."
+msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
+msgstr "Activeer een vragenlijst pas als u er absoluut zeker van bent dat de vragenlijst compleet is en u geen aanpassingen meer zult moeten verrichten."
 
 # D:\phpsurveyor/admin/activate.php:235
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:241
@@ -3521,11 +3440,8 @@ msgstr "Bewerk (wijzig) uw groepsnamen"
 
 # D:\phpsurveyor/admin/activate.php:236
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:242
-msgid ""
-"Add, Remove or Edit pre-defined question answers (except for Multi-answer "
-"questions)"
-msgstr "Toevoegen, Verwijderen of Bewerken van voor-gedefinieerde antwoorden "
-"(behalve voor Meerdere-antwoord vragen)"
+msgid "Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)"
+msgstr "Toevoegen, Verwijderen of Bewerken van voor-gedefinieerde antwoorden (behalve voor Meerdere-antwoord vragen)"
 
 # D:\phpsurveyor/admin/activate.php:236
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:242
@@ -3533,13 +3449,8 @@ msgid "Change survey name or description"
 msgstr "Wijzig vragenlijst naam of omschrijving"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:243
-msgid ""
-"Once data has been entered into this survey, if you want to add or remove "
-"groups or questions, you will need to de-activate this survey, which will "
-"move all data that has already been entered into a separate archived table."
-msgstr "Als u groepen of vragen wilt toevoegen of verwijderen terwijl er reeds "
-"ingevulde vragenlijst zijn zult u de vragenlijst moeten deactiveren waardoor "
-"de reeds ingevoerde gegevens naar een archief worden verplaatst."
+msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
+msgstr "Als u groepen of vragen wilt toevoegen of verwijderen terwijl er reeds ingevulde vragenlijst zijn zult u de vragenlijst moeten deactiveren waardoor de reeds ingevoerde gegevens naar een archief worden verplaatst."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:429
 msgid "Survey could not be actived."
@@ -3551,8 +3462,7 @@ msgstr "De vragenlijst is geactiveerd. De deelnametabel is  aangemaakt."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:485
 msgid "This is not an anonymous survey. A token table must also be created."
-msgstr "Dit is geen anonieme vragenlijst. Er moet ook een toegangscodetabel worden "
-"aangemaakt."
+msgstr "Dit is geen anonieme vragenlijst. Er moet ook een toegangscodetabel worden aangemaakt."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:486
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:491
@@ -3561,10 +3471,8 @@ msgid "Initialise Tokens"
 msgstr "Initialiseren toegangscodes"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:490
-msgid ""
-"This survey allows public registration. A token table must also be created."
-msgstr "Deze vragenlijst vereist openbare aanmelding. Er moet ook een "
-"toegangscodetabel worden aangemaakt."
+msgid "This survey allows public registration. A token table must also be created."
+msgstr "Deze vragenlijst vereist openbare aanmelding. Er moet ook een toegangscodetabel worden aangemaakt."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/activate.php:495
 msgid "This survey is now active, and responses can be recorded."
@@ -3580,37 +3488,20 @@ msgid "You are about to delete this survey"
 msgstr "U staat op het punt deze vragenlijst te verwijderen"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deletesurvey.php:74
-msgid ""
-"This process will delete this survey, and all related groups, questions "
-"answers and conditions."
-msgstr "Deze handeling zal de vragenlijst, inclusief  alle groepen, vragen, "
-"antwoorden en voorwaarden, verwijderen."
+msgid "This process will delete this survey, and all related groups, questions answers and conditions."
+msgstr "Deze handeling zal de vragenlijst, inclusief  alle groepen, vragen, antwoorden en voorwaarden, verwijderen."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deletesurvey.php:75
-msgid ""
-"We recommend that before you delete this survey you export the entire survey "
-"from the main administration screen."
-msgstr "Wij raden u aan de vragenlijst te exporteren vanuit het hoofdmenu voordat u "
-"deze definitief verwijdert."
+msgid "We recommend that before you delete this survey you export the entire survey from the main administration screen."
+msgstr "Wij raden u aan de vragenlijst te exporteren vanuit het hoofdmenu voordat u deze definitief verwijdert."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deletesurvey.php:79
-msgid ""
-"This survey is active and a responses table exists. If you delete this "
-"survey, these responses will be deleted. We recommend that you export the "
-"responses before deleting this survey."
-msgstr "Deze vragenlijst is actief en er bestaat een responstabel. Als u deze "
-"vragenlijst verwijdert, zullen ook de antwoorden  worden verwijderd. Het is "
-"aanbevolen deze eerst te exporteren alvorens deze vragenlijst te verwijderen."
+msgid "This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey."
+msgstr "Deze vragenlijst is actief en er bestaat een responstabel. Als u deze vragenlijst verwijdert, zullen ook de antwoorden  worden verwijderd. Het is aanbevolen deze eerst te exporteren alvorens deze vragenlijst te verwijderen."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deletesurvey.php:84
-msgid ""
-"This survey has an associated tokens table. If you delete this survey this "
-"tokens table will be deleted. We recommend that you export or backup these "
-"tokens before deleting this survey."
-msgstr "Deze vragenlijst heeft een toegangscodetabel. Als u de vragenlijst wist, zal "
-"ook deze tabel worden verwijderd. Het is aan te raden deze tabel te "
-"exporteren of  er een backup van te maken alvorens deze vragenlijst te "
-"verwijderen."
+msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
+msgstr "Deze vragenlijst heeft een toegangscodetabel. Als u de vragenlijst wist, zal ook deze tabel worden verwijderd. Het is aan te raden deze tabel te exporteren of  er een backup van te maken alvorens deze vragenlijst te verwijderen."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deletesurvey.php:150
 msgid "This survey has been deleted."
@@ -3685,13 +3576,8 @@ msgstr "U heeft geen vraag geselecteerd"
 
 # D:\phpsurveyor/admin/conditions.php:88
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/conditions.php:88
-msgid ""
-"Your condition could not be added! It did not include the question and/or "
-"answer upon which the condition was based. Please ensure you have selected a "
-"question and an answer."
-msgstr "Uw voorwaarde kon niet worden toegevoegd! Het bevatte niet de vraag en/of "
-"antwoord waarop de voorwaarde is gebaseerd. Wees er zeker van dat u een "
-"vraag en een antwoord selecteerd."
+msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
+msgstr "Uw voorwaarde kon niet worden toegevoegd! Het bevatte niet de vraag en/of antwoord waarop de voorwaarde is gebaseerd. Wees er zeker van dat u een vraag en een antwoord selecteerd."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/conditions.php:154
 msgid "Did not copy questions"
@@ -3793,11 +3679,8 @@ msgstr "kopieer naar"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/conditions.php:617
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/conditions.php:637
-msgid ""
-"Are you sure you want to copy these condition(s) to the questions you have "
-"selected?"
-msgstr "Weet u zeker dat u deze voorwaarde(n) wilt kopieren naar de geselecteerde "
-"vragen?"
+msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
+msgstr "Weet u zeker dat u deze voorwaarde(n) wilt kopieren naar de geselecteerde vragen?"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/conditions.php:654
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/conditions.php:698
@@ -3890,13 +3773,8 @@ msgstr "Huidige groep gebruikt conditionele vragen"
 
 # D:\phpsurveyor/admin/questionhandling.php:574
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/questionhandling.php:586
-msgid ""
-"Re-ordering questions in this group is restricted to ensure that questions "
-"on which conditions are based aren't reordered after questions having the "
-"conditions set"
-msgstr "Vragen herschikken in deze groep is beperkt mogelijk om ervoor te zorgen dat "
-"vragen gebaseerd op condities niet worden herschikt nadat de condities zijn "
-"ingesteld"
+msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "Vragen herschikken in deze groep is beperkt mogelijk om ervoor te zorgen dat vragen gebaseerd op condities niet worden herschikt nadat de condities zijn ingesteld"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/questionhandling.php:586
 msgid "See the conditions marked on the following questions"
@@ -3974,10 +3852,8 @@ msgstr "Eenvoudige statistieken"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/importoldresponses.php:58
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/importoldresponses.php:64
-msgid ""
-"Import responses from an old (deactivated) survey table into an active survey"
-msgstr "Importeer responses van een oude (gedeactiveerde) vragenlijst in de actieve "
-"vragenlijst"
+msgid "Import responses from an old (deactivated) survey table into an active survey"
+msgstr "Importeer responses van een oude (gedeactiveerde) vragenlijst in de actieve vragenlijst"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/importoldresponses.php:68
 msgid "Target Survey ID"
@@ -4006,11 +3882,8 @@ msgstr "Importeren gedeeltelijk geslaagd."
 
 # D:\phpsurveyor/admin/importgroup.php:566
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/importgroup.php:567
-msgid ""
-"The following languages in this group were not imported since the survey "
-"does not contain such a language: "
-msgstr "De volgende talen in deze groep zijn niet geimporteerd omdat de vragenlijst "
-"deze taal niet bevat:"
+msgid "The following languages in this group were not imported since the survey does not contain such a language: "
+msgstr "De volgende talen in deze groep zijn niet geimporteerd omdat de vragenlijst deze taal niet bevat:"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/importgroup.php:578
 msgid "Group Import Summary"
@@ -4166,13 +4039,11 @@ msgstr "Percentage"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/dbedit.php:411
 msgid "Answer could not be added. There is already an answer with this code"
-msgstr "Antwoord kon niet worden toegevoegd. Er is al een antwoord met deze "
-"antwoordcode"
+msgstr "Antwoord kon niet worden toegevoegd. Er is al een antwoord met deze antwoordcode"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/dbedit.php:565
 msgid "Answer could not be updated. There is already an answer with this code"
-msgstr "Antwoord kon niet worden bijgewerkt. Er is al een antwoord met deze "
-"antwoordcode"
+msgstr "Antwoord kon niet worden bijgewerkt. Er is al een antwoord met deze antwoordcode"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/results.php:209
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/results.php:210
@@ -4183,13 +4054,11 @@ msgstr "Beantwoord"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/importquestion.php:75
 msgid "No SID (Survey) has been provided. Cannot import question."
-msgstr "Er is geen SID (Vragenlijst) opgegeven waardoor de vraag niet kan worden "
-"ge&iuml;mporteerd."
+msgstr "Er is geen SID (Vragenlijst) opgegeven waardoor de vraag niet kan worden geïmporteerd."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/importquestion.php:83
 msgid "No GID (Group) has been provided. Cannot import question"
-msgstr "Er is geen GID (groep) opgegeven waardoor de vraag niet kan worden ge&iuml;"
-"mporteerd."
+msgstr "Er is geen GID (groep) opgegeven waardoor de vraag niet kan worden geïmporteerd."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/importquestion.php:424
 msgid "Question Import Summary"
@@ -4197,10 +4066,10 @@ msgstr "Samenvatting van import vraag"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/database.php:121
 msgid ""
-"Group could not be added.\\n\\nIt is missing the group name for the "
-"following languages"
-msgstr "Groep kon niet worden toegevoegd. De verplichte groepsnaam voor de volgende "
-"taal ontbreekt"
+"Group could not be added.\\n"
+"\\n"
+"It is missing the group name for the following languages"
+msgstr "Groep kon niet worden toegevoegd. De verplichte groepsnaam voor de volgende taal ontbreekt"
 
 # D:\phpsurveyor/admin/database.php:144
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/database.php:143
@@ -4218,8 +4087,7 @@ msgid "Group could not be deleted"
 msgstr "Groep kon niet worden gewist"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/database.php:240
-msgid ""
-"Answer could not be added. You must insert a code in the mandatory field"
+msgid "Answer could not be added. You must insert a code in the mandatory field"
 msgstr "Antwoord kon niet worden toegevoegd. U moet een antwoordcode opgeven"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/database.php:278
@@ -4229,15 +4097,8 @@ msgid "Question could not be created."
 msgstr "Vraag kon niet worden aangemaakt"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/database.php:356
-msgid ""
-"Question could not be updated. There are conditions for other questions that "
-"rely on the answers to this question and changing the type will cause "
-"problems. You must delete these conditions before you can change the type of "
-"this question."
-msgstr "De vraag kon niet worden bijgewerkt. Er zijn voorwaarden voor andere vragen "
-"die afhangen van de antwoorden op deze vraag en het veranderen van het type "
-"zou voor problemen zorgen. U moet de voorwaarden verwijderen voor u het type "
-"van deze vraag kunt veranderen."
+msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
+msgstr "De vraag kon niet worden bijgewerkt. Er zijn voorwaarden voor andere vragen die afhangen van de antwoorden op deze vraag en het veranderen van het type zou voor problemen zorgen. U moet de voorwaarden verwijderen voor u het type van deze vraag kunt veranderen."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/database.php:384
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/database.php:406
@@ -4249,19 +4110,13 @@ msgid "Answers can't be deleted"
 msgstr "Antwoorden kunnen niet worden gewist"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/database.php:416
-msgid ""
-"Question could not be added. You must insert a code in the mandatory field"
+msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "Antwoord kon niet worden toegevoegd. U moet een antwoordcode opgeven"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/database.php:495
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/database.php:536
-msgid ""
-"Question could not be deleted. There are conditions for other questions that "
-"rely on this question. You cannot delete this question until those "
-"conditions are removed"
-msgstr "Vraag kon niet worden gewist. Er zijn voorwaarden voor andere vragen die "
-"afhangen van de antwoorden op deze vraag. U kunt deze vraag pas verwijderen "
-"als deze voorwaarden zijn verwijderd."
+msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
+msgstr "Vraag kon niet worden gewist. Er zijn voorwaarden voor andere vragen die afhangen van de antwoorden op deze vraag. U kunt deze vraag pas verwijderen als deze voorwaarden zijn verwijderd."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/database.php:520
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/database.php:557
@@ -4319,8 +4174,7 @@ msgstr "FOUT verwijderen Vragenlijst id"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/database.php:1012
 msgid "Survey could not be created because it did not have a short title"
-msgstr "De vragenlijst kon niet aangemaakt worden omdat er geen korte titel is "
-"opgegeven"
+msgstr "De vragenlijst kon niet aangemaakt worden omdat er geen korte titel is opgegeven"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/database.php:1073
 msgid "Survey could not be created"
@@ -4337,10 +4191,8 @@ msgstr "De controle van consistente gegevens"
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:301
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/integritycheck.php:52
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/integritycheck.php:326
-msgid ""
-"If errors are showing up you might have to execute this script repeatedly."
-msgstr "Als er fouten optreden kunt u proberen deze opdracht meerdere malen uit te "
-"voeren."
+msgid "If errors are showing up you might have to execute this script repeatedly."
+msgstr "Als er fouten optreden kunt u proberen deze opdracht meerdere malen uit te voeren."
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:89
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/integritycheck.php:89
@@ -4511,12 +4363,8 @@ msgid "Tokens have not been initialised for this survey."
 msgstr "Toegangscodes zijn niet geactiveerd voor deze vragenlijst."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:239
-msgid ""
-"If you initialise tokens for this survey, the survey will only be accessible "
-"to users who have been assigned a token."
-msgstr "Als u de toegangscodes voor deze vragenlijst activeert, zal deze vragenlijst "
-"alleen toegangelijk zijn voor gebruikers die een toegangscode hebben "
-"ontvangen."
+msgid "If you initialise tokens for this survey, the survey will only be accessible to users who have been assigned a token."
+msgstr "Als u de toegangscodes voor deze vragenlijst activeert, zal deze vragenlijst alleen toegangelijk zijn voor gebruikers die een toegangscode hebben ontvangen."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:241
 msgid "Do you want to create a tokens table for this survey?"
@@ -4693,33 +4541,23 @@ msgstr "Verwijder toegangscodetabel"
 
 # D:\phpsurveyor/admin/tokens.php:675
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:675
-msgid ""
-"If you delete this table tokens will no longer be required to access this "
-"survey."
+msgid "If you delete this table tokens will no longer be required to access this survey."
 msgstr "Als u deze tabel verwijderd, zullen toegangscodes niet langer nodig zijn."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:675
-msgid ""
-"A backup of this table will be made if you proceed. Your system "
-"administrator will be able to access this table."
-msgstr " Er wordt een backup van deze tabel gemaakt als u verdergaat. Alleen de "
-"systeembeheerder heeft nog toegang tot deze tabel."
+msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
+msgstr " Er wordt een backup van deze tabel gemaakt als u verdergaat. Alleen de systeembeheerder heeft nog toegang tot deze tabel."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:678
 msgid "Delete Tokens"
 msgstr "Verwijder toegangscodes"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:689
-msgid ""
-"The tokens table has now been removed and tokens are no longer required to "
-"access this survey."
-msgstr "De toegangscodetabel is nu verwijderd en er is geen toegangscode meer nodig "
-"om de vragenlijst in te vullen."
+msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
+msgstr "De toegangscodetabel is nu verwijderd en er is geen toegangscode meer nodig om de vragenlijst in te vullen."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:689
-msgid ""
-"A backup of this table has been made and can be accessed by your system "
-"administrator."
+msgid "A backup of this table has been made and can be accessed by your system administrator."
 msgstr "Er is een backup gemaakt waar alleen de systeembeheerder toegang toe heeft."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:705
@@ -4762,11 +4600,8 @@ msgstr "Versturen van E-mail naar {FIRSTNAME} {LASTNAME} ({EMAIL}) is mislukt"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:824
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:984
-msgid ""
-"There are more emails pending than can be sent in one batch. Continue "
-"sending emails by clicking below."
-msgstr "Er staan meer E-mails in de wachtrij dan in &eacute;&eacute;n keer kunnen "
-"worden verstuurd. Ga verder met het versturen door hieronder te klikken."
+msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
+msgstr "Er staan meer E-mails in de wachtrij dan in éé;n keer kunnen worden verstuurd. Ga verder met het versturen door hieronder te klikken."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:825
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:985
@@ -4774,13 +4609,8 @@ msgid "There are {EMAILCOUNT} emails still to be sent."
 msgstr "Er zijn nog {EMAILCOUNT} E-mails te versturen."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:840
-msgid ""
-"There were no eligible emails to send. This will be because none satisfied "
-"the criteria of - having an email address, not having been sent an "
-"invitation already, having already completed the survey and having a token."
-msgstr "Er waren geen E-mails te versturen. De mogelijke oorzaken hiervan zijn - het "
-"niet hebben van een E-mailadres, uitnodiging reeds verstuurd, de vragenlijst "
-"is al ingevuld of heeft al een toegangscode."
+msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
+msgstr "Er waren geen E-mails te versturen. De mogelijke oorzaken hiervan zijn - het niet hebben van een E-mailadres, uitnodiging reeds verstuurd, de vragenlijst is al ingevuld of heeft al een toegangscode."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:852
 msgid "Email Reminder"
@@ -4803,24 +4633,16 @@ msgid "Reminder Sent To:"
 msgstr "Herinnering verzonden naar:"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:1003
-msgid ""
-"There were no eligible emails to send. This will be because none satisfied "
-"the criteria of - having an email address, having been sent an invitation, "
-"but not having yet completed the survey."
-msgstr "Er waren geen e-mails te versturen. De mogelijke oorzaken hiervan zijn - het "
-"niet hebben van een e-mailadres, herinnering is reeds verstuurd maar de "
-"vragenlijst is nog niet ingevuld.."
+msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
+msgstr "Er waren geen e-mails te versturen. De mogelijke oorzaken hiervan zijn - het niet hebben van een e-mailadres, herinnering is reeds verstuurd maar de vragenlijst is nog niet ingevuld.."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:1015
 msgid "Create Tokens"
 msgstr "Maak toegangscodes"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:1019
-msgid ""
-"Clicking yes will generate tokens for all those in this token list that have "
-"not been issued one. Is this OK?"
-msgstr "Als u bevestigt zullen toegangscodes voor alle deelnemers in de lijst die "
-"geen paswoord hebben automatisch aangemaakt worden. Is dit OK?"
+msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
+msgstr "Als u bevestigt zullen toegangscodes voor alle deelnemers in de lijst die geen paswoord hebben automatisch aangemaakt worden. Is dit OK?"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:1049
 msgid "{TOKENCOUNT} tokens have been created"
@@ -4842,11 +4664,8 @@ msgid "Add or Edit Token"
 msgstr "Toevoegen of bewerken toegangscode"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:1125
-msgid ""
-"You can leave this blank, and automatically generate tokens using 'Create "
-"Tokens'"
-msgstr "U kunt dit leeg laten en automatisch toegangscodes genereren met 'Aanmaken "
-"toegangscodes'"
+msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
+msgstr "U kunt dit leeg laten en automatisch toegangscodes genereren met 'Aanmaken toegangscodes'"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:1181
 msgid "Update Token"
@@ -4876,16 +4695,8 @@ msgid "Note:"
 msgstr "Opmerking:"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:1268
-msgid ""
-"File should be a standard CSV (comma delimited) file with double quotes "
-"around values (default for openoffice and excel). The first line should "
-"contain header information (will be removed). Data should be ordered as "
-"\"firstname, lastname, email, [token], [language code], [attribute1], "
-"[attribute2]\"."
-msgstr "Het bestand moet een standaard CSV (kommagescheiden) bestand zijn zonder "
-"aanhalingstekens. De eerste regel moet de koptekst bevatten (zal niet worden "
-"ge&iuml;mporteerd. De gegevens moeten geordend zijn als 'voornaam, naam, e-"
-"mail, [paswoord], [attribute1], [attribute2]'."
+msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [language code], [attribute1], [attribute2]\"."
+msgstr "Het bestand moet een standaard CSV (kommagescheiden) bestand zijn zonder aanhalingstekens. De eerste regel moet de koptekst bevatten (zal niet worden geïmporteerd. De gegevens moeten geordend zijn als 'voornaam, naam, e-mail, [paswoord],[taalcode], [attribute1], [attribute2]'."
 
 # D:\phpsurveyor/admin/tokens.php:1279
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:1279
@@ -4894,17 +4705,12 @@ msgstr "Uploadn LDAP regels"
 
 # D:\phpsurveyor/admin/tokens.php:1286
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:1286
-msgid ""
-"LDAP queries are defined by the administrator in the config-ldap.php file"
-msgstr "LDAP zoekopdrachten worden ingesteld door de administrator in het bestand: "
-"config-ldap.php"
+msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
+msgstr "LDAP zoekopdrachten worden ingesteld door de administrator in het bestand: config-ldap.php"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:1311
-msgid ""
-"Upload file not found. Check your permissions and path for the upload "
-"directory"
-msgstr "Uploadbestand niet gevonden. Controleer de toegangsrechten en het pad naar "
-"de upload map"
+msgid "Upload file not found. Check your permissions and path for the upload directory"
+msgstr "Uploadbestand niet gevonden. Controleer de toegangsrechten en het pad naar de upload map"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:1316
 msgid "Importing CSV File"
@@ -4930,7 +4736,7 @@ msgstr "Gegevens voldoen aan minumumvereisten"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:1382
 msgid "Records imported"
-msgstr "Totaal aantal ge&iuml;mporteerde records:"
+msgstr "Totaal aantal geïmporteerde records:"
 
 # D:\phpsurveyor/admin/tokens.php:1383
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/tokens.php:1383
@@ -5098,8 +4904,7 @@ msgstr "Een database met de naam \"%s\" bestaat reeds."
 
 # D:\phpsurveyor/admin/install/index.php:69
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/install/index.php:69
-msgid ""
-"Do you want to populate that database now by creating the necessary tables?"
+msgid "Do you want to populate that database now by creating the necessary tables?"
 msgstr "Wilt u die database nu vullen door de noodzakelijke tabellen aan te maken?"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deactivate.php:46
@@ -5108,43 +4913,24 @@ msgid "Deactivate Survey"
 msgstr "Deactiveren vragenlijst"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deactivate.php:55
-msgid ""
-"In an active survey, a table is created to store all the data-entry records."
-msgstr "Voor een actieve vragenlijst wordt een tabel aangemaakt waarin alle gegevens "
-"worden bewaard."
+msgid "In an active survey, a table is created to store all the data-entry records."
+msgstr "Voor een actieve vragenlijst wordt een tabel aangemaakt waarin alle gegevens worden bewaard."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deactivate.php:56
-msgid ""
-"When you de-activate a survey all the data entered in the original table "
-"will be moved elsewhere, and when you activate the survey again, the table "
-"will be empty. You will not be able to access this data using PHPSurveyor "
-"any more."
-msgstr "Wanneer u een vragenlijst deactiveert, worden deze gegevens naar een andere "
-"tabel verplaatst. Na reactivatie wordt de tabel geleegd. U kunt de "
-"antwoorden dan niet langer met PHPSurveyor bekijken."
+msgid "When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using PHPSurveyor any more."
+msgstr "Wanneer u een vragenlijst deactiveert, worden deze gegevens naar een andere tabel verplaatst. Na reactivatie wordt de tabel geleegd. U kunt de antwoorden dan niet langer met PHPSurveyor bekijken."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deactivate.php:57
-msgid ""
-"De-activated survey data can only be accessed by system administrators using "
-"a Database data access tool like phpmyadmin. If your survey uses tokens, "
-"this table will also be renamed and will only be accessible by system "
-"administrators."
-msgstr "Gedeactiveerde vragenlijstgegevens kunnen momenteel alleen door "
-"systeembeheerders met een MySQL tool zoals phpMyAdmin worden bekeken. Als uw "
-"vragenlijst toegangscodes gebruikt, zal ook deze tabel worden hernoemd en is "
-"deze alleen toegankelijk voor systeembeheerders."
+msgid "De-activated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
+msgstr "Gedeactiveerde vragenlijstgegevens kunnen momenteel alleen door systeembeheerders met een MySQL tool zoals phpMyAdmin worden bekeken. Als uw vragenlijst toegangscodes gebruikt, zal ook deze tabel worden hernoemd en is deze alleen toegankelijk voor systeembeheerders."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deactivate.php:58
 msgid "Your responses table will be renamed to:"
 msgstr "Uw repsonstabel wordt hernoemd naar:"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deactivate.php:59
-msgid ""
-"You should export your responses before de-activating. Click \"Cancel\" to "
-"return to the main admin screen without de-activating this survey."
-msgstr "U moet uw responses exporteren voordat u de vragenlijst deactiveert. Klik op "
-"'Annuleer' om naar het hoofdmenu terug te keren zonder deze vragenlijst te "
-"deactiveren"
+msgid "You should export your responses before de-activating. Click \"Cancel\" to return to the main admin screen without de-activating this survey."
+msgstr "U moet uw responses exporteren voordat u de vragenlijst deactiveert. Klik op 'Annuleer' om naar het hoofdmenu terug te keren zonder deze vragenlijst te deactiveren"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deactivate.php:64
 msgid "De-Activate Survey"
@@ -5160,15 +4946,11 @@ msgstr "De responstabel wordt hernoemd naar: "
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deactivate.php:124
 msgid "The responses to this survey are no longer available using PHPSurveyor."
-msgstr "De responses van deze vragenlijst zijn niet langer beschikbaar in "
-"PHPSurveyor."
+msgstr "De responses van deze vragenlijst zijn niet langer beschikbaar in PHPSurveyor."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deactivate.php:125
-msgid ""
-"You should note the name of this table in case you need to access this "
-"information later."
-msgstr "Noteer de naam van deze tabel voor het geval u deze informatie later nog "
-"nodig heeft."
+msgid "You should note the name of this table in case you need to access this information later."
+msgstr "Noteer de naam van deze tabel voor het geval u deze informatie later nog nodig heeft."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/deactivate.php:128
 msgid "The tokens table associated with this survey has been renamed to: "
@@ -5205,11 +4987,8 @@ msgstr "Uw wachtwoord is incorrect."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/dataentry.php:131
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/save.php:230
-msgid ""
-"This name has already been used for this survey. You must use a unique save "
-"name."
-msgstr "Deze naam is reeds gebruikt voor een opgeslagen sessie van deze vragenlijst. "
-"Kies alstublieft een andere."
+msgid "This name has already been used for this survey. You must use a unique save name."
+msgstr "Deze naam is reeds gebruikt voor een opgeslagen sessie van deze vragenlijst. Kies alstublieft een andere."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/dataentry.php:137
 msgid "Try again"
@@ -5258,13 +5037,8 @@ msgstr "Gegevens van de opgeslagen vragenlijst"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/dataentry.php:220
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/save.php:287
-msgid ""
-"You, or someone using your email address, have saved a survey in progress. "
-"The following details can be used to return to this survey and continue "
-"where you left off."
-msgstr "U, of iemand anders die uw e-mail adres gebruikt, heeft de tussenresultaten "
-"van deze vragenlijst opgeslagen. U kunt de volgende gegevens gebruiken om de "
-"vragenlijst te vervolgen."
+msgid "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
+msgstr "U, of iemand anders die uw e-mail adres gebruikt, heeft de tussenresultaten van deze vragenlijst opgeslagen. U kunt de volgende gegevens gebruiken om de vragenlijst te vervolgen."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/dataentry.php:224
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/save.php:291
@@ -5273,13 +5047,11 @@ msgstr "Herlaad de vragenlijst door op de volgende link te klikken:"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/dataentry.php:231
 msgid "An email has been sent with details about your saved survey"
-msgstr "Uw heeft een e-mail ontvangen met gegevens over de door u bewaarde "
-"vragenlijst."
+msgstr "Uw heeft een e-mail ontvangen met gegevens over de door u bewaarde vragenlijst."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/dataentry.php:238
 msgid "An error occurred and your survey responses were not saved."
-msgstr "Er heeft zich een onverwachte fout voorgedaan, uw antwoorden zijn niet "
-"opgeslagen."
+msgstr "Er heeft zich een onverwachte fout voorgedaan, uw antwoorden zijn niet opgeslagen."
 
 # D:\phpsurveyor/admin/dataentry.php:249
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/admin/dataentry.php:249
@@ -5546,26 +5318,12 @@ msgstr "U kunt de gegeven nog niet insturen omdat u nog niets heeft ingevuld."
 
 # D:\phpsurveyor/save.php:456
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/save.php:449
-msgid ""
-"This error can occur if you have already submitted your responses and "
-"pressed 'refresh' on your browser. In this case, your responses have already "
-"been saved."
-msgstr "Deze fout kan voorkomen als u al antwoorden heeft verstuurd en op 'opnieuw' "
-"in uw browser heeft gedrukt. In dit geval zijn uw antwoorden reeds verzonden."
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
+msgstr "Deze fout kan voorkomen als u al antwoorden heeft verstuurd en op 'opnieuw' in uw browser heeft gedrukt. In dit geval zijn uw antwoorden reeds verzonden."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/save.php:449
-msgid ""
-"If you receive this message in the middle of completing a survey, you should "
-"choose '<- BACK' on your browser and then refresh/reload the previous page. "
-"While you will lose answers from the last page all your others will still "
-"exist. This problem can occur if the webserver is suffering from overload or "
-"excessive use. We apologise for this problem."
-msgstr "Als u deze fout krijgt terwijl u de vragenlijst aan het invullen bent, kunt "
-"u  op '<- Terug' klikken  in uw browser en vervolgens het scherm verversen "
-"of herladen. De antwoorden van de laatste pagina gaan daarmee verloren, maar "
-"de andere antwoorden blijven dan in ieder geval behouden. Dit probleem kan "
-"voorkomen als de server tijdelijk te zwaar wordt belast. Onze "
-"verontschuldigingen voor het ongemak."
+msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "Als u deze fout krijgt terwijl u de vragenlijst aan het invullen bent, kunt u  op '<- Terug' klikken  in uw browser en vervolgens het scherm verversen of herladen. De antwoorden van de laatste pagina gaan daarmee verloren, maar de andere antwoorden blijven dan in ieder geval behouden. Dit probleem kan voorkomen als de server tijdelijk te zwaar wordt belast. Onze verontschuldigingen voor het ongemak."
 
 # D:\xampp\xampp\htdocs\phpsurveyor/index.php:69
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:68
@@ -5580,9 +5338,7 @@ msgstr "Tot onze spijt is uw sessie verlopen."
 
 # D:\phpsurveyor/index.php:69
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:69
-msgid ""
-"Either you have been inactive for too long or there were problems with your "
-"connection."
+msgid "Either you have been inactive for too long or there were problems with your connection."
 msgstr "Of u bent te lang inactief geweest of er waren problemen met uw verbinding."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:70
@@ -5629,13 +5385,11 @@ msgstr "Laad onvoltooide vragenlijst"
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:1087
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:1130
 msgid "This is a controlled survey. You need a valid token to participate."
-msgstr "Dit is een gecontrolleerde vragenlijst. U heeft een geldige toegangscode "
-"nodig om deel te nemen."
+msgstr "Dit is een gecontrolleerde vragenlijst. U heeft een geldige toegangscode nodig om deel te nemen."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:294
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:1131
-msgid ""
-"The token you have provided is either not valid, or has already been used."
+msgid "The token you have provided is either not valid, or has already been used."
 msgstr "De code die u hebt ingegeven is ongeldig of ze werd reeds gebruikt."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:295
@@ -5703,11 +5457,8 @@ msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "Door een onverwachte fout zijn uw antwoorden niet bewaard."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:1029
-msgid ""
-"Your responses have not been lost and have been emailed to the survey "
-"administrator and will be entered into our database at a later point."
-msgstr "Uw antwoorden zijn niet verloren. Ze zijn doorgestuurd naar de beheerder van "
-"de vragelijst. Ze zullen op een later tijdstip worden ingevoerd."
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr "Uw antwoorden zijn niet verloren. Ze zijn doorgestuurd naar de beheerder van de vragelijst. Ze zullen op een later tijdstip worden ingevoerd."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:1030
 msgid "An error occurred saving a response to survey id"
@@ -5732,11 +5483,8 @@ msgid "Try to submit again"
 msgstr "Probeer opnieuw in te sturen"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:1088
-msgid ""
-"If you have been issued with a token, please enter it in the box below and "
-"click continue."
-msgstr "Indien u een toegangscode heeft ontvangen, vul deze dan hier in en klik op "
-"'Verder'."
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
+msgstr "Indien u een toegangscode heeft ontvangen, vul deze dan hier in en klik op 'Verder'."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:1100
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/common.php:1947
@@ -5746,11 +5494,8 @@ msgid "Security Question"
 msgstr "Veiligheidsvraag"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:1215
-msgid ""
-"This survey does not yet have any questions and cannot be tested or "
-"completed."
-msgstr "Er zijn nog geen vragen aangemaakt voor deze vragenlijst en er valt dus "
-"niets te testen of in te vullen."
+msgid "This survey does not yet have any questions and cannot be tested or completed."
+msgstr "Er zijn nog geen vragen aangemaakt voor deze vragenlijst en er valt dus niets te testen of in te vullen."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/index.php:1434
 msgid "prev"
@@ -5774,8 +5519,7 @@ msgstr "Sla uw antwoorden tot nu toe op"
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/group.php:119
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/question.php:106
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/survey.php:114
-msgid ""
-"Your survey responses have not been recorded. This survey is not yet active."
+msgid "Your survey responses have not been recorded. This survey is not yet active."
 msgstr "Uw antwoorden zijn niet bewaard. Deze vragenlijst is nog niet aktief."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/group.php:120
@@ -5807,11 +5551,8 @@ msgstr "Sorry. Er is geen vragenlijst met dit nummer."
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/question.php:208
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/question.php:525
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/survey.php:486
-msgid ""
-"This survey is not currently active. You will not be able to save your "
-"responses."
-msgstr "Deze vragenlijst is momenteel niet actief. Uw antwoorden kunnen niet worden "
-"bewaard."
+msgid "This survey is not currently active. You will not be able to save your responses."
+msgstr "Deze vragenlijst is momenteel niet actief. Uw antwoorden kunnen niet worden bewaard."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/register.php:76
 msgid "The email you used is not valid. Please try again."
@@ -5826,13 +5567,10 @@ msgid "Thank you for registering to participate in this survey."
 msgstr "Bedankt voor uw deelname aan deze vragenlijst."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/register.php:157
-msgid ""
-"An email has been sent to the address you provided with access details for "
-"this survey. Please follow the link in that email to proceed."
-msgstr "Bedankt voor uw aanmelding om deel te nemen aan deze vragenlijst.<br ><br >\n"
-"Er is een email met toegangsgegevens voor deze vragenlijst gestuurd naar het "
-"opgegeven adres. Volg de link in deze email om de vragenlijst te beginnen."
-"<br ><br >\n"
+msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
+msgstr ""
+"Bedankt voor uw aanmelding om deel te nemen aan deze vragenlijst.<br ><br >\n"
+"Er is een email met toegangsgegevens voor deze vragenlijst gestuurd naar het opgegeven adres. Volg de link in deze email om de vragenlijst te beginnen.<br ><br >\n"
 "De beheerder van deze vragenlijst {ADMINNAME} ({ADMINEMAIL})"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/register.php:157
@@ -5891,18 +5629,12 @@ msgid "You cannot proceed until you enter some text for one or more questions."
 msgstr "U kunt pas doorgaan nadat u tekst voor 1 of meerdere vragen hebt toegevoegd."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/qanda.php:466
-msgid ""
-"One or more mandatory questions have not been answered. You cannot proceed "
-"until these have been completed"
-msgstr "Eén of meer verplichte vragen zijn niet beantwoord. U kunt niet verdergaan "
-"zonder ze te beantwoorden."
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
+msgstr "Eén of meer verplichte vragen zijn niet beantwoord. U kunt niet verdergaan zonder ze te beantwoorden."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/qanda.php:489
-msgid ""
-"One or more questions have not been answered in a valid manner. You cannot "
-"proceed until these answers are valid"
-msgstr "Eén of meer vragen zijn onjuist beantwoord. U kunt niet verdergaan dit te "
-"herstellen."
+msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
+msgstr "Eén of meer vragen zijn onjuist beantwoord. U kunt niet verdergaan dit te herstellen."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/qanda.php:538
 msgid "Format: YYYY-MM-DD"
@@ -6116,10 +5848,7 @@ msgid "Import answers from a deactivated survey table"
 msgstr "Importeer antwoorden van een gedeactiveerde vragenlijst"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/common.php:1768
-msgid ""
-"Caution: JavaScript execution is disabled in your browser. You may not be "
-"able to answer all questions in this survey. Please, verify your browser "
-"parameters."
+msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr "Waarschuwing: JavaScript is uitgeschakeld in uw browser. Hierdoor kunt u mogelijk niet alle vragen in deze survey beantwoorden. Controleer uw browserinstellingen."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/common.php:1780
@@ -6136,23 +5865,8 @@ msgid "A Note On Privacy"
 msgstr "Een opmerking over uw privacy"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/common.php:1822
-msgid ""
-"The record kept of your survey responses does not contain any identifying "
-"information about you unless a specific question in the survey has asked for "
-"this. If you have responded to a survey that used an identifying token to "
-"allow you to access the survey, you can rest assured that the identifying "
-"token is not kept with your responses. It is managed in a separate database, "
-"and will only be updated to indicate that you have (or haven't) completed "
-"this survey. There is no way of matching identification tokens with survey "
-"responses in this survey."
-msgstr "<strong><i>Privacy statement<i><strong><br >Deze vragenlijst is anoniem.<br /"
-">De bewaarde antwoorden bevatten geen identiteitsgegevens tenzij u deze bij "
-"een bepaalde vraag hebt ingevuld. Indien u via een toegangscode deelneemt "
-"kunnen wij u verzekeren dat deze niet wordt bewaard in combinatie met uw "
-"antwoorden maar wel is opgeslagen in een aparte tabel. De tabel met "
-"toegangscodes wordt gebruikt om na te kijken of een vragenlijst reeds voor "
-"de betreffende toegangscode is ingevuld. Er is geen enkele manier om de "
-"codes te koppelen aan de antwoorden. "
+msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "Privacy statement: Deze vragenlijst is anoniem. De bewaarde antwoorden bevatten geen identiteitsgegevens tenzij u deze bij een bepaalde vraag hebt ingevuld. Indien u via een toegangscode deelneemt kunnen wij u verzekeren dat deze niet wordt bewaard in combinatie met uw antwoorden maar wel is opgeslagen in een aparte tabel. De tabel met toegangscodes wordt gebruikt om na te kijken of een vragenlijst reeds voor de betreffende toegangscode is ingevuld. Er is geen enkele manier om de codes te koppelen aan de antwoorden. "
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/common.php:1831
 msgid "Are you sure you want to clear all your responses?"
@@ -6180,13 +5894,8 @@ msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "Klik op 'Verstuur' om het proces te beeindigen en uw antwoorden op te slaan."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/common.php:1889
-msgid ""
-"If you want to check any of the answers you have made, and/or change them, "
-"you can do that now by clicking on the [<< prev] button and browsing through "
-"your responses."
-msgstr "Als u uw antwoorden nog eens wilt nakijken of wijzigen, kunt u door de "
-"vragenlijst heen en weer bladeren met de [<< -._PREV.-] en [-._NEXT.- >>] "
-"knoppen."
+msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
+msgstr "Als u uw antwoorden nog eens wilt nakijken of wijzigen, kunt u door de vragenlijst heen en weer bladeren met de [<<Vorige] en [Volgende>>] knoppen."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/common.php:1910
 msgid "Answers Cleared"
@@ -6208,24 +5917,16 @@ msgstr "Bewaar de incomplete vragenlijst"
 # D:\phpsurveyor/common.php:1895
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/common.php:1931
 msgid "Enter a name and password for this survey and click save below."
-msgstr "Geef een naam en wachtwoord voor deze vragenlijst en klik hieronder op "
-"opslaan."
+msgstr "Geef een naam en wachtwoord voor deze vragenlijst en klik hieronder op opslaan."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/common.php:1931
-msgid ""
-"Your survey will be saved using that name and password, and can be completed "
-"later by logging in with the same name and password."
-msgstr "Uw vragelijst zal worden opgeslagen door gebruik te maken van die naam en "
-"dat wachtwoord en kan later worden aangevuld door in te loggen met de door u "
-"opgegeven inloggevens."
+msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
+msgstr "Uw vragelijst zal worden opgeslagen door gebruik te maken van die naam en dat wachtwoord en kan later worden aangevuld door in te loggen met de door u opgegeven inloggevens."
 
 # D:\phpsurveyor/common.php:1895
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/common.php:1931
-msgid ""
-"If you give an email address, an email containing the details will be sent "
-"to you."
-msgstr "Als u een email adres opgeeft, wordt er een email met details naar u "
-"verzonden."
+msgid "If you give an email address, an email containing the details will be sent to you."
+msgstr "Als u een email adres opgeeft, wordt er een email met details naar u verzonden."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/common.php:1941
 msgid "Repeat Password"
@@ -6241,8 +5942,7 @@ msgstr "Laad een eerder opgeslagen vragenlijst"
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/common.php:1955
 msgid "You can load a survey that you have previously saved from this screen."
-msgstr "U kunt een vragenlijst die u hier eerder heeft opgeslagen inladen. Vul de "
-"door u bij het bewaren opgegeven 'naam'  en wachtwoord in."
+msgstr "U kunt een vragenlijst die u hier eerder heeft opgeslagen inladen. Vul de door u bij het bewaren opgegeven 'naam'  en wachtwoord in."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/common.php:1955
 msgid "Type in the 'name' you used to save the survey, and the password."
@@ -6266,11 +5966,8 @@ msgid "You may register for this survey if you wish to take part."
 msgstr "U kunt zich registreren voor deze vragenlijst indien u wilt deelnemen."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/common.php:1972
-msgid ""
-"Enter your details below, and an email containing the link to participate in "
-"this survey will be sent immediately."
-msgstr "Vul volgende gegevens in en u zal onmiddellijk een email ontvangen met "
-"daarin een link naar de vragenlijst."
+msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr "Vul volgende gegevens in en u zal onmiddellijk een email ontvangen met daarin een link naar de vragenlijst."
 
 #: /srv/www/virtual/phpsurveyor.org/_demo-unstable/phpsurveyor/common.php:2032
 msgid "Your Assessment"
@@ -6404,22 +6101,3 @@ msgstr "Zweeds"
 msgid "Vietnamese"
 msgstr "Vietnamees"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:861
-#~ msgid "SQL"
-#~ msgstr "SQL"
-
-#~ msgid "Export, then de-activate survey"
-#~ msgstr "Exporteer en deactiveer huidige vragenlijst "
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/vvexport.php:59
-#~ msgid "Export but leave survey active"
-#~ msgstr "Exporteer, maar laat vragenlijst actief"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/vvexport.php:67
-#~ msgid ""
-#~ "If you have chosen to export and de-activate, this will rename your "
-#~ "current responses table and it will not be easy to restore it. Are you "
-#~ "sure?"
-#~ msgstr "Als u kiest voor exporteer en deactiveer dan zal de huidige "
-#~ "antwoordentabel worden hernoemd en zal het niet eenvoudig zijn deze te "
-#~ "reactiveren. Bent u zeker van uw keuze?"
