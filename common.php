@@ -3719,5 +3719,14 @@ if(!function_exists('str_ireplace')) {
     } 
 }
 
+function incompleteAnsFilterstate()
+{
+	global $filterout_incomplete_answers;
+	$letsfilter = returnglobal('filterinc');
+	if ($letsfilter=='hide') {return true;}
+	elseif ($letsfilter=='show') {return false;}
+	elseif ($filterout_incomplete_answers === true) {return true;}
+	else {return false;}
+}
 
 ?>
