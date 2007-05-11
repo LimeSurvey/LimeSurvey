@@ -848,7 +848,8 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 				$message = html_escape($_POST['message']);
 				$tokenoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Continue")."' />\n"
 				."\t\t\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
-				."\t\t\t<input type='hidden' $subaction value=\"email\" />\n"
+				."\t\t\t<input type='hidden' name='subaction' value=\"email\" />\n"
+                ."\t\t\t<input type='hidden' name='action' value=\"tokens\" />\n"
 				."\t\t\t<input type='hidden' name='sid' value=\"{$_POST['sid']}\" />\n"
 				."\t\t\t<input type='hidden' name='from' value=\"{$_POST['from']}\" />\n"
 				."\t\t\t<input type='hidden' name='subject' value=\"{$_POST['subject']}\" />\n"
@@ -1009,7 +1010,8 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 				."\t\t\t<input type='submit' value='".$clang->gT("Continue")."' />\n"
 				."\t\t</td>\n"
 				."\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
-				."\t<input type='hidden' $subaction value=\"remind\" />\n"
+                ."\t<input type='hidden' name='subaction' value=\"email\" />\n"
+                ."\t<input type='hidden' name='action' value=\"tokens\" />\n"
 				."\t<input type='hidden' name='sid' value=\"{$_POST['sid']}\" />\n"
 				."\t<input type='hidden' name='from' value=\"{$_POST['from']}\" />\n"
 				."\t<input type='hidden' name='subject' value=\"{$_POST['subject']}\" />\n";
