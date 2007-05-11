@@ -1556,11 +1556,17 @@ function formldap($error=false)
 
 	if ($error) {$tokenoutput .= $error . "<br /><br />\n";}
 
-	if (! isset($ldap_queries) || ! is_array($ldap_queries) || count($ldap_queries) == 0) {
+	if (!function_exists('ldap_connect'))
+    {
+        $tokenoutput .= '<br />';
+        $tokenoutput .= $clang->gT('Sorry, but the LDAP module is missing in your PHP configuration.');
+        $tokenoutput .= '<br /><br /><br />';
+    }
+    
+    elseif (! isset($ldap_queries) || ! is_array($ldap_queries) || count($ldap_queries) == 0) {
 		$tokenoutput .= '<br />';
 		$tokenoutput .= $clang->gT('LDAP is disabled or no LDAP query defined.');
 		$tokenoutput .= '<br /><br /><br />';
-		$tokenoutput .= '</center>';
 	}
 	else {
 		$tokenoutput .= '<br />';

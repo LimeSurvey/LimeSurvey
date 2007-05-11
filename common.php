@@ -36,7 +36,7 @@
 
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix)) {die("Cannot run this script directly");}
-$versionnumber = "1.48RC";
+$versionnumber = "1.49RC";
 $dbversionnumber = 111;
 
 
@@ -143,7 +143,8 @@ else {
     }
 }
 
-# AdoDB seems to be defaulting to ADODB_FETCH_NUM
+// AdoDB seems to be defaulting to ADODB_FETCH_NUM and we want to be sure that the right default mode is set
+
 $connect->SetFetchMode(ADODB_FETCH_ASSOC);
 
 $dbexistsbutempty=($database_exists && checkifemptydb());

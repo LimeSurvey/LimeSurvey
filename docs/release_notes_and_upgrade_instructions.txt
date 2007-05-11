@@ -18,16 +18,26 @@ http://docs.phpsurveyor.org
 
 
 
-HOW TO UPGRADE from all earlier versions of PHPSurveyor (<1.08)
--------------------------------------------------------
+=== UPGRADING=====
+
+HOW TO UPGRADE from earlier versions of PHPSurveyor (<1.08)
+-------------------------------------------------------------
 We are sorry but you can't upgrade from versions <= 1.0.8. Seriously! 
 The database structure has changed that much it wouldn't be feasible.
-
-Upgrades from 1.45a are done automatically if there are any and you are entering the admin for the first time.
-
 However, you can import old surveys from version 1.0 when you create a new survey in this new version.
-
 Just do a new installation as described on http://docs.phpsurveyor.org.
+
+
+HOW TO UPGRADE from earlier versions from PHPSurveyor 1.45 or later
+--------------------------------------------------------------------
+1. Make backups of your files and database.
+2. Backup your config.php.
+3. Delete all old files 
+4. Upload the new version to the same place
+5. Adjust the settings in config.php to the setting from the backup config.php. Do NOT just copy over the old config.php over the new one.
+6. Run the installer in /admin/install.php to update the database
+7. Done.
+
 
 
 
@@ -35,63 +45,69 @@ Just do a new installation as described on http://docs.phpsurveyor.org.
 Thank you to everyone who helped with this new release!
 
 
-Changes from 1.47b to 1.48RC - Release Date: 2007/04/10
+Changes from 1.48RC to 1.49RC - Release Date: 2007/05/11
 
-Fixed bug #773: [Data Entry (non public)] If Input is done via DataEntry-Screen, no Language-Code is sent to Database (machaven)
-Fixed bug #781: [Statistics] User Interface on Statistics Screen: Some minor errors (machaven)
-Fixed bug #746: [Survey Design] Error: Group Import - Died querying labelset (c_schmitz)
-Fixed bug #784: [Data Entry (non public)] When clicking on Test this survey, get the SQL instead of the actual screen (c_schmitz)
-Fixed bug #783: [Security] When clicking on the Security icon, I get the SQL in the Browser Window (c_schmitz)
-Fixed bug #774: [Survey at Runtime] IE7 problem with calendar frame (c_schmitz)
-Fixed bug #787: [Installation] Installation fails with MySQL 5.0.37 (c_schmitz)
-Fixed bug #763: [Data Entry (non public)] possible to choose label set other language - dont appear (c_schmitz)
-Fixed bug #762: [Data Entry (non public)] building jpgraph statistics very slow (c_schmitz)
-Fixed bug #767: [Statistics] Statistics-Screen: Number of Responses in Huge Free Text are not correctly (c_schmitz)
-Fixed bug #768: [Assessments] Help-Menu is displayed, where it makes no sense (c_schmitz)
+New feature: Check if the necessary requirements are fulfilled on installation and runtime (c_schmitz)
+New Feature: Semantic differential scale Questions are now possible - this feature was kindly sponsored by a donation from tileca (c_schmitz) 
+
+Fixed bug #794: [Survey Design] "Other" as answer in LabelSets (c_schmitz)
+Fixed bug #753: [Import / Export] Import of german tokens from non-UTF8 files fails (c_schmitz)
+Fixed bug #802: [Templates] The Traffic-Light Icon in Template Editor isn´t working (c_schmitz)
+Fixed bug #798: [Survey at Runtime] SQL-Error after clicking on "Restart this Survey" after "Exit and Clear Survey" on an active survey (c_schmitz)
+Fixed bug #806: [Translation] User Control Icon: German Popup is not ideal (c_schmitz)
+Fixed bug #793: [Translation] Translation mistake on German Send-Screen; Missing Exit-Link on the Final-Screen (c_schmitz)
+Fixed bug #814: [Templates] Template Editor: Popup to delete a File isn´t translated (at least to german) (c_schmitz)
+Fixed bug #800: [Survey at Runtime] Some Icons with no Popup in Firefox (c_schmitz)
+Fixed bug #804: [Templates] Some Changes to Template Editor Layout (c_schmitz)
+Fixed bug #818: [Survey Design] Not translated Popup on Create New Survey without Survey Title (c_schmitz)
+Fixed bug #796: [Import / Export] VV-Import isn´t working (c_schmitz)
+Fixed bug #819: [Statistics] SQL-Error on when running Statistic for a Multiple Short Text Question (c_schmitz)
+Fixed bug #816: [Templates] Rename Template doesn´t work (c_schmitz)
 Fixed bug #786: [Survey at Runtime] Special characters in answer-codes leads to not store answers in survey-results table; Truncated answer-codes (c_schmitz)
-Fixed bug #771: [Import / Export] VV-Export: User with little rights see option to export an de-activate survey (machaven)
-Fixed bug #757: [Data Entry (non public)] Error Message on DataEntry-Screen (c_schmitz)
-Fixed bug #756: [Print View] Wrong Size of Language-Selection-Popup for Printable Surveys (machaven)
-Fixed bug #755: [Survey Design] Question copied not showed (c_schmitz)
-Fixed bug #752: [Import / Export] Excel export with german language has charset problems (c_schmitz)
-Fixed bug #758: [Installation] Conditions Screen: Delete-Button "Del" not translated into German "Löschen" (c_schmitz)
-Fixed bug #759: [Data Entry (non public)] Warning on DataEntry-Screen: Warning: array_unique() [function.array-unique] (machaven)
-Fixed bug #754: [Survey Design] Add/Edit Answer to this Question: Save All produces Error Popup (c_schmitz)
-Fixed bug #748: [Translation] German privacy notice typo (c_schmitz)
-Fixed bug #750: [Survey Design] Question conditions (machaven)
-Fixed bug #749: [Survey Design] Creating new answers options with ENTER deletes the first answer (c_schmitz)
-Fixed bug #740: [Import / Export] Import of questions typ array, flexible label (c_schmitz)
-Fixed bug #744: [Survey Design] Layout Problem: (machaven)
-Fixed bug #737: [Translation] Newline typo (c_schmitz)
-Fixed bug #747: [Security] New users disappear (machaven)
-Fixed bug #738: [Survey Design] Problem with javascript deactivate (lemeur)
-Fixed bug #739: [Translation] Regenerate Question Codes: Popup is not translated (c_schmitz)
-Fixed bug #728: [Survey Design] Answers with code 0 can't be changed (machaven)
-Fixed bug #730: [Survey at Runtime] Mandatory Question with Array (Flexible Labels) does not work (c_schmitz)
-Fixed bug #729: [Data Entry (non public)] Data Entry Screen: every submittting status message are displayed (machaven)
-Fixed bug #726: [Assessments] No survey-tables / token table types (machaven)
-Fixed bug #736: [Survey at Runtime] Survey Format "All in One" and Next-Button is displayed (c_schmitz)
-Fixed bug #727: [Statistics] Save edited Answer redirecets to End-URL of the survey (c_schmitz)
-Fixed bug #724: [Security] Not all users are displayed in Create/Edit-Users Overview (machaven)
-Fixed bug #719: [Data Entry (non public)] User-Managment: User with little rights is allowed to delete single entry (machaven)
-Fixed bug #722: [Survey Design] Adding a single forward quote ( ' ) in an answer item generates a \' in the output. (lemeur)
-Fixed bug #714: [Translation] switch language question missing (c_schmitz)
-Fixed bug #715: [Assessments] Notifications: Send email notifications with results codes. (lemeur)
-Fixed bug #723: [Translation] No German Translation at "Set User Rights" (machaven)
-Fixed bug #717: [Data Entry (non public)] Down Arrow Key (c_schmitz)
-Fixed bug #707: [Survey Design] Unconsistent styles on different browsers (lemeur)
-Fixed bug #716: [Security] Cannot Set User Rights (machaven)
-Fixed bug #712: [Survey at Runtime] PHP Fatal error: Only variables can be passed by reference in gettext.php on line 66 (machaven)
-Fixed bug #711: [Statistics] Export single survey record to .CSV fails (lemeur)
-Fixed bug #699: [Survey Design] Change of question type from list to multiple options (with commentary)/matrix/list with commentary/deletes answers (c_schmitz)
-Fixed bug #702: [Survey Design] Field length for answers seems to be limited to 100 characters (c_schmitz)
+Fixed bug #826: [Tokens] Send individual token doesn't work (lemeur)
+Fixed bug #805: [Survey at Runtime] Mandatory Multiple choice questions with OTHER attribute fails when only the other option is written (c_schmitz)
+Fixed bug #807: [Statistics] Statistics-Screen: No Question-Title on Mouseover over the loudspeaker-icon in Firefox (c_schmitz)
+Fixed bug #822: [Survey Design] Wrong default button (c_schmitz)
+Fixed bug #825: [Survey at Runtime] Survey Responses are not saved to database (c_schmitz)
+Fixed bug #830: [Survey at Runtime] Opposite condition problem in the same group (c_schmitz)
+Fixed bug #838: [Survey at Runtime] Question Text are not displayed (c_schmitz)
+Fixed bug #820: [Statistics] Statistics-Screen: Error Message on Prev/Next-Button, if the Response-ID is not available (c_schmitz)
+Fixed bug #840: [Security] User Authentification: Error Message with correct reason if Login fails (c_schmitz)
+Fixed bug #846: [Data Entry (non public)] Semantic Differential Question Type: All Answers are Double in DataEntry (c_schmitz)
+Fixed bug #848: [Tokens] Error Message after sending an individual Invitation E-Mail; Reminder-Email isn´t working (c_schmitz)
+Fixed bug #850: [Survey Design] Greyed out Activate-Button (c_schmitz)
+Fixed bug #843: [Assessments] Broken "Printable Version of a Survey" on SVN (c_schmitz)
+Fixed bug #751: [Survey Design] Additional language in surveys (c_schmitz)
+Fixed bug #845: [Statistics] Language-Selection in Statistics and Filter-Menu not correctly displayed (lemeur)
+Fixed bug #864: [Survey at Runtime] Better UI for double digit number of ranking items (c_schmitz)
+Fixed bug #853: [Installation] Some Errors on sending E-Mails to User Groups with the building-Mass-Email-Feature (c_schmitz)
+Fixed bug #857: [Tokens] Tokens: "R"-Button is not correctly alligned in Firefox (c_schmitz)
+Fixed bug #842: [Import / Export] VV-Import: No back to Menu-Button if VV-Import fails (c_schmitz)
+Fixed bug #859: [Tokens] Users (from DataEntry) can´t complete partially filled out survey, if Tokens are usede (c_schmitz)
+Fixed bug #856: [Data Entry (non public)] Skip Language Question at DataEntry-Screen (c_schmitz)
+Fixed bug #866: [Survey at Runtime] Error Message on Survey, which is run via Token-Control (lemeur)
+Fixed bug #865: [Statistics] Datestamp-Filter in Statistics is missing (c_schmitz)
+Fixed bug #867: [Survey Design] Small Layout Fault in Question Type Array 5 Point choice (c_schmitz)
+Fixed bug #632: [Import / Export] Exporting to MS Word - fields and answers not matched up (c_schmitz)
+Fixed bug #875: [Translation] Some minor Translations are missing (c_schmitz)
+Fixed bug #870: [Survey Design] Error message when returning from HELP screen (c_schmitz)
+Fixed bug #876: [Survey Design] Syntax error when adding a language (c_schmitz)
+Fixed bug #872: [Survey at Runtime] List Survey-Screen: Visibilty (Private <-> Public) is mixed up (c_schmitz)
+Fixed bug #873: [Statistics] SPSS-Export Icon: Old and New Popup on Mouseover (c_schmitz)
+Fixed bug #891: [Translation] "Edit Survey Property" is not translated (at least to german) (c_schmitz)
+Fixed bug #835: [Survey at Runtime] "No answer" condition doesn't work (c_schmitz)
+Fixed bug #890: [Survey at Runtime] A "Don't Know" response in a mandatory question gets an error message. (c_schmitz)
+Fixed bug #893: [Translation] Send Mail to User Group: "Reset"-Button is not translated (c_schmitz)
+Fixed bug #909: [Templates] missing '>' (lemeur)
+Fixed bug #904: [Data Entry (non public)] Column alignment in dataentry view and individual survey edit view (lemeur)
+Fixed bug #901: [Statistics] uncompleted Answers should not be used for statistics (lemeur)
 
 Special thanks to el-matador-69 for its ongoing help in finding and eliminating bugs.
 Thank you to all the translators who are keeping the application and documentation up to date!
 And last but not least to everyone in the PHPSurveyor developer team - without your help this wouldn't have been possible!
 
 
-Changes from 1.00b to 1.47b - Release Date: 2007/03/14
+Changes from 1.00b to 1.48b - Release Date: 2007/04/10
 
 - New feature: Preview questions as they are being edited (machaven)
 - New feature: Survey List with User Details
