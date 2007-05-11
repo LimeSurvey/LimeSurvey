@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-05-06 15:51+0100\n"
+"PO-Revision-Date: 2007-05-11 22:06+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1001,6 +1001,29 @@ msgstr "Angezeigte Datensätze:"
 msgid "Starting From:"
 msgstr "Start von:"
 
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2667
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2673
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2713
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2719
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2773
+# D:\web\xampp\htdocs\phpsurveyor/admin/usercontrol.php:157
+# D:\web\xampp\htdocs\phpsurveyor/admin/usercontrol.php:161
+# D:\web\xampp\htdocs\phpsurveyor/admin/usercontrol.php:216
+msgid "Filter incomplete answers:"
+msgstr "Unvollständige Antworten filtern:"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/browse.php:573
+# D:\web\xampp\htdocs\phpsurveyor/admin/exportresults.php:159
+# D:\web\xampp\htdocs\phpsurveyor/admin/statistics.php:655
+# D:\web\xampp\htdocs\phpsurveyor/admin/vvexport.php:75
+msgid "Enable"
+msgstr "Aktivieren"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:891
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1051
+msgid "Disable"
+msgstr "Deaktivieren"
+
 msgid "Show"
 msgstr "Anzeigen"
 
@@ -1009,6 +1032,13 @@ msgstr "Diesen Datensatz anzeigen"
 
 msgid "responses for this survey"
 msgstr "Antworten für diese Umfrage"
+
+msgid "full responses"
+msgstr "komplette Antworten"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/browse.php:655
+msgid "responses not completly filled out"
+msgstr "unvollständige Antworten"
 
 msgid "Condition Designer"
 msgstr "Bedingungs Designer"
@@ -1190,8 +1220,8 @@ msgid "Failed to update answers"
 msgstr "Konnte Antworten nicht aktualisieren"
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/database.php:659
-msgid "Answers with a code of 0 (zero) are not allowed, and will not be saved"
-msgstr "Antworten mit einem Fragecode von '0' sind nicht erlaubt und werden nicht gespeichert."
+msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
+msgstr "Antworten mit einem Fragecode von '0' oder Leerzeichen sind nicht erlaubt und werden nicht gespeichert."
 
 # D:\web\xampp\htdocs\phpsurveyor/admin/database.php:660
 msgid "Duplicate codes found, these entries won't be updated"
@@ -1455,6 +1485,17 @@ msgstr "Vollständige Beschriftungen"
 
 msgid "Question Codes"
 msgstr "Fragen Codes"
+
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2667
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2673
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2713
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2719
+# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2773
+# D:\web\xampp\htdocs\phpsurveyor/admin/usercontrol.php:157
+# D:\web\xampp\htdocs\phpsurveyor/admin/usercontrol.php:161
+# D:\web\xampp\htdocs\phpsurveyor/admin/usercontrol.php:216
+msgid "Filter incomplete answers"
+msgstr "Unvollständige Antworten filtern"
 
 msgid "Answers"
 msgstr "Antworten"
@@ -1972,6 +2013,9 @@ msgstr "Fragen definieren"
 
 msgid "Export"
 msgstr "Datenexport"
+
+msgid "Edit Survey Property"
+msgstr "Bearbeite Umfrage Einstellung"
 
 msgid "Browse Response"
 msgstr "Antworten anzeigen"
@@ -3640,6 +3684,10 @@ msgstr "Nachricht:"
 # D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1684
 msgid "Send"
 msgstr "Sende"
+
+# D:\web\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:139
+msgid "Reset"
+msgstr "Voreinstellung"
 
 msgid "Deleting User Group"
 msgstr "Lösche Benutzergruppe"
