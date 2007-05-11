@@ -640,15 +640,22 @@ else
 	. $clang->gT("Browse Responses").":</strong> <font color='#EEEEEE'>$surveyname</font></td></tr>\n"
 	. $surveyoptions;
 	$browseoutput .= "</table>\n";
+	$num_total_answers=0;
+	$num_completed_answers=0;
 	$gnquery = "SELECT count(id) FROM $surveytable";
-	if (incompleteAnsFilterstate() === true) {$gnquery .= " WHERE submitdate > '0000-00-00 00:00:00'";}
+	$gnquery2 = "SELECT count(id) FROM $surveytable WHERE submitdate > '0000-00-00 00:00:00'";
 	$gnresult = db_execute_num($gnquery);
-	while ($gnrow = $gnresult->FetchRow())
-	{
-		$browseoutput .= "<table width='100%' border='0'>\n"
-		."\t<tr><td align='center'>$setfont{$gnrow[0]} ".$clang->gT("responses for this survey")."</font></td></tr>\n"
-		."</table>\n";
-	}
+	$gnresult2 = db_execute_num($gnquery2);
+
+	while ($gnrow=$gnresult->FetchRow()) {$num_total_answers=$gnrow[0];}	
+	while ($gnrow2=$gnresult2->FetchRow()) {$num_completed_answers=$gnrow2[0];}	
+	$browseoutput .= "<table width='100%' border='0'>\n"
+	."\t<tr><td align='center'>$num_total_answers ".$clang->gT("responses for this survey")." ("
+	."$num_completed_answers ".$clang->gT("full responses").", "
+	.($num_total_answers-$num_completed_answers)." ".$clang->gT("responses not completly filled out").")"
+	."\t</font></td></tr>\n"
+	."</table>\n";
+
 }
 
 ?>
