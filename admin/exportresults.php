@@ -55,6 +55,7 @@ if (empty($surveyid)) {die ("Cannot run this script directly");}
 include_once("login_check.php");
 include_once($homedir."/classes/pear/Spreadsheet/Excel/Writer.php");
 
+$surveybaselang=GetBaseLanguageFromSurveyID($surveyid);
 $exportoutput="";
 
 if (!$style)
@@ -62,9 +63,9 @@ if (!$style)
     $excesscols[]="id";
 	$thissurvey=getSurveyInfo($surveyid);
 	//FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
-	$query=" SELECT other, {$dbprefix}questions.type, {$dbprefix}questions.gid, {$dbprefix}questions.qid FROM {$dbprefix}questions, {$dbprefix}groups "
-	." where {$dbprefix}questions.gid={$dbprefix}groups.gid and {$dbprefix}groups.sid=$surveyid"
-	." order by {$dbprefix}groups.group_order, {$dbprefix}questions.title";
+	$query=" SELECT other, q.type, q.gid, q.qid FROM {$dbprefix}questions as q, {$dbprefix}groups as g "
+	." where q.gid=g.gid and g.sid=$surveyid and g.language='$surveybaselang' and q.language='$surveybaselang'"
+	." order by group_order, question_order";
 	$result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	while ($rows = $result->FetchRow())
 	{
@@ -508,7 +509,7 @@ for ($i=0; $i<$fieldcount; $i++)
 		$faid=$fielddata['aid'];
 		if ($style == "abrev")
 		{
-			$qq = "SELECT question FROM {$dbprefix}questions WHERE qid=$fqid";
+			$qq = "SELECT question FROM {$dbprefix}questions WHERE qid=$fqid and language='$surveybaselang'";
 			$qr = db_execute_assoc($qq);
 			while ($qrow=$qr->FetchRow())
 			{$qname=$qrow['question'];}
@@ -524,7 +525,7 @@ for ($i=0; $i<$fieldcount; $i++)
 		}
 		else
 		{
-			$qq = "SELECT question, type, other, title FROM {$dbprefix}questions WHERE qid=$fqid order by gid, title"; //get the question
+			$qq = "SELECT question, type, other, title FROM {$dbprefix}questions WHERE qid=$fqid and language='$surveybaselang' order by gid, title"; //get the question
 			$qr = db_execute_assoc($qq) or die ("ERROR:<br />".$qq."<br />".htmlspecialchars($connect->ErrorMsg()));
 			while ($qrow=$qr->FetchRow())
 			{
@@ -792,7 +793,7 @@ elseif ($answers == "long")
 				{
 					$ftitle=$fielddata['title'];
 				}
-				$qq = "SELECT lid, other FROM {$dbprefix}questions WHERE qid=$fqid";
+				$qq = "SELECT lid, other FROM {$dbprefix}questions WHERE qid=$fqid and language='$surveybaselang'";
 				$qr = db_execute_assoc($qq) or die("Error selecting type and lid from questions table.<br />".$qq."<br />".htmlspecialchars($connect->ErrorMsg()));
 				while ($qrow = $qr->FetchRow())
 				{$lid=$qrow['lid']; $fother=$qrow['other'];} // dgk bug fix. $ftype should not be modified here!
