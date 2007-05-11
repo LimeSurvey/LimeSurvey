@@ -53,11 +53,13 @@ if (!$subaction == "export")
 	{
 		$selecthide="selected='selected'";
 		$selectshow="";
+		$filterinclink="hide";
 	}
 	else
 	{
 		$selecthide="";
 		$selectshow="selected='selected'";
+		$filterinclink="show";
 	}
 
 	$vvoutput = "<br /><form method='post' action='admin.php?action=vvexport&sid=$surveyid'>"
@@ -79,7 +81,7 @@ if (!$subaction == "export")
         ."<input type='hidden' name='subaction' value='export' />"
         ."</td>"
         ."</tr>"
-        ."<tr><td colspan='2' align='center'>[<a href='$scriptname?action=browse&amp;sid=$surveyid'>".$clang->gT("Return to Survey Administration")."</a>]</td></tr>"
+        ."<tr><td colspan='2' align='center'>[<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;filterinc=$filterinclink'>".$clang->gT("Return to Survey Administration")."</a>]</td></tr>"
         ."</table>";
 }
 elseif (isset($surveyid) && $surveyid)
