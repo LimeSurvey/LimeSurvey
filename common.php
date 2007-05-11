@@ -1233,6 +1233,7 @@ function browsemenubar()
 {
 	global $surveyid, $scriptname, $imagefiles, $homeurl, $clang, $sumrows5;
 	//BROWSE MENU BAR
+	$filterinclink = (incompleteAnsFilterstate()) ? "hide" : "show";
 	$browsemenubar = "\t<tr>\n"
 	. "\t\t<td>\n"
 	. "\t\t\t<a href='$scriptname?sid=$surveyid' onmouseout=\"hideTooltip()\" " .
@@ -1240,26 +1241,26 @@ function browsemenubar()
 			"<img name='Administration' src='$imagefiles/home.png' title='' alt='' align='left' /></a>\n"
 	. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'  align='left' />\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n"
-	. "\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid' onmouseout=\"hideTooltip()\"" .
+	. "\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;filterinc=$filterinclink' onmouseout=\"hideTooltip()\"" .
 			" onmouseover=\"showTooltip(event,'".$clang->gT("Show summary information", "js")."')\"" .
 			"><img name='SurveySummary' src='$imagefiles/summary.png' title='' alt='' align='left' /></a>\n"
-	. "\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all' onmouseout=\"hideTooltip()\"" .
+	. "\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all&amp;filterinc=$filterinclink' onmouseout=\"hideTooltip()\"" .
 			"onmouseover=\"showTooltip(event,'".$clang->gT("Display Responses", "js")."')\">" .
 			"<img name='ViewAll' src='$imagefiles/document.png' title='' alt='' align='left' /></a>\n"
-	. "\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all&amp;limit=50&amp;order=desc'" .
+	. "\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all&amp;limit=50&amp;order=desc&amp;filterinc=$filterinclink'" .
 			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Display Last 50 Responses", "js")."')\">" .
 			"<img name='ViewLast' src='$imagefiles/viewlast.png' title='' alt='' align='left' /></a>\n"
-	. "\t\t\t<a href='$scriptname?action=dataentry&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Dataentry Screen for Survey", "js")."')\">" .
+	. "\t\t\t<a href='$scriptname?action=dataentry&amp;sid=$surveyid&amp;filterinc=$filterinclink' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Dataentry Screen for Survey", "js")."')\">" .
 	  "<img name='DataEntry' src='$imagefiles/dataentry.png' title='' alt='' align='left' /></a>\n"
-	. "\t\t\t<a href='$scriptname?action=statistics&amp;sid=$surveyid' "
+	. "\t\t\t<a href='$scriptname?action=statistics&amp;sid=$surveyid&amp;filterinc=$filterinclink' "
 	."onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Get statistics from these responses", "js")."')\">"
 	."<img name='Statistics' src='$imagefiles/statistics.png' title='' alt='' align='left' /></a>\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n";
 	if ($sumrows5['export'] == "1")
 	{
-		$browsemenubar .= "\t\t\t<a href='$scriptname?action=exportresults&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Results to Application", "js")."')\"><img name='Export' src='$imagefiles/export.png' "
+		$browsemenubar .= "\t\t\t<a href='$scriptname?action=exportresults&amp;sid=$surveyid&amp;filterinc=$filterinclink' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Results to Application", "js")."')\"><img name='Export' src='$imagefiles/export.png' "
 		. "title='' alt=''align='left' /></a>\n"
-		. "\t\t\t<a href='spss.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export result to a SPSS command file", "js")."')\"><img src='$imagefiles/exportspss.png' align='left' "
+		. "\t\t\t<a href='spss.php?sid=$surveyid&amp;filterinc=$filterinclink' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export result to a SPSS command file", "js")."')\"><img src='$imagefiles/exportspss.png' align='left' "
 		. "title='' border='0' alt='". $clang->gT("Export result to a SPSS command file")."' /></a>\n";
 	}
 	$browsemenubar .= "\t\t\t<a href='$scriptname?action=importoldresponses&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Import answers from a deactivated survey table", "js")."')\" >" .
@@ -1271,7 +1272,7 @@ function browsemenubar()
 	. "<img src='$imagefiles/importvv.png' align='left' title='' border='0' alt='' /></a>\n";
 	if ($sumrows5['export'] == "1")
 	{
-		$browsemenubar .= "\t\t\t<a href='$scriptname?action=vvexport&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export a VV survey file", "js")."')\">" .
+		$browsemenubar .= "\t\t\t<a href='$scriptname?action=vvexport&amp;sid=$surveyid&amp;filterinc=$filterinclink' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export a VV survey file", "js")."')\">" .
 		"<img src='$imagefiles/exportvv.png' align='left' title='' alt='' border='0' /></a>\n";
 	}
 	$browsemenubar .= "\t\t</td>\n"
