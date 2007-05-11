@@ -469,8 +469,8 @@ elseif ($subaction == "all")
 
 	$start=returnglobal('start');
 	$limit=returnglobal('limit');
-	if (!isset($limit)) {$limit = 50;}
-	if (!isset($start)) {$start = 0;}
+	if (!isset($limit) || $limit== '') {$limit = 50;}
+	if (!isset($start) || $start =='') {$start = 0;}
 
 	//LETS COUNT THE DATA
 	$dtquery = "SELECT count(*) FROM $surveytable";
@@ -532,18 +532,19 @@ elseif ($subaction == "all")
 	. $clang->gT("Data View Control").":</strong></td></tr>\n";
 	if (!isset($_POST['sql']))
 	{
+		$filterinclink = (incompleteAnsFilterstate()) ? "hide" : "show";
 		$browseoutput .= "\t<tr><td align='left' width='200'>\n"
-			."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=0&amp;limit=$limit'" .
+			."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=0&amp;limit=$limit&amp;filterinc=$filterinclink' " .
 				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show start..", "js")."');return false\">" .
 						"<img name='DataBegin' align='left' src='$imagefiles/databegin.png' title='' /></a>\n"
-		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit'" .
+		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit&amp;filterinc=$filterinclink' " .
 				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show previous...", "js")."');return false\">" .
 				"<img name='DataBack' align='left'  src='$imagefiles/databack.png' title='' /></a>\n"
 		."\t\t\t<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
-		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit'" .
+		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit&amp;filterinc=$filterinclink' " .
 				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show next...", "js")."');return false\">".
 				"<img name='DataForward' align='left' src='$imagefiles/dataforward.png' title='' /></a>\n"
-		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit'" .
+		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit&amp;filterinc=$filterinclink' " .
 				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show last...", "js")."');return false\">" .
 				"<img name='DataEnd' align='left' src='$imagefiles/dataend.png' title='' /></a>\n"
 		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
@@ -566,9 +567,9 @@ elseif ($subaction == "all")
 	."\t\t<td align='left'>\n"
 	."\t\t<form action='$scriptname?action=browse' method='post'><font size='1' face='verdana'>\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />\n"
-	."\t\t\t".$clang->gT("Records Displayed:")."<input type='text' size='4' value='$dtcount2' name='limit' />\n"
-	."\t\t\t".$clang->gT("Starting From:")."<input type='text' size='4' value='$start' name='start' />\n"
-	."\t\t\t".$clang->gT("Filter incomplete answers:")."<select name='filterinc'>\n"
+	."\t\t\t".$clang->gT("Records Displayed:")."<input type='text' size='4' value='$dtcount2' name='limit' id='limit' />\n"
+	."\t\t\t".$clang->gT("Starting From:")."<input type='text' size='4' value='$start' name='start' id='start' />\n"
+	."\t\t\t".$clang->gT("Filter incomplete answers:")."<select name='filterinc' onchange='javascript:document.getElementById(\"limit\").value=\"\";submit();'>\n"
 	."\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
 	."\t\t\t\t<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
 	."\t\t\t</select>\n"
