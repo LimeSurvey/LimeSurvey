@@ -723,9 +723,10 @@ if (isset($_POST['sql'])) //this applies if export has been called from the stat
 		else {$dquery .= "WHERE ".stripcslashes($_POST['sql'])." ";}
 	}
 }
-if (isset($_POST['answerid'])) //this applies if export has been called from single answer view
+if (isset($_POST['answerid']) && $_POST['answerid'] != "NULL") //this applies if export has been called from single answer view
 {
-	if ($_POST['answerid'] != "NULL") {$dquery .= "WHERE $surveytable.id=".stripcslashes($_POST['answerid'])." ";}
+	if (incompleteAnsFilterstate() === true) {$dquery .= " AND $surveytable.id=".stripcslashes($_POST['answerid'])." ";}
+	else {$dquery .= "WHERE $surveytable.id=".stripcslashes($_POST['answerid'])." ";}
 }
 
 
