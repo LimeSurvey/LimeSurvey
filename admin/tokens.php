@@ -785,7 +785,7 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 		$ctresult = $connect->Execute($ctquery) or die("Database error!<br />\n" . htmlspecialchars($connect->ErrorMsg()));
 		$ctcount = $ctresult->RecordCount();
 		$ctfieldcount = $ctresult->FieldCount();
-		$emquery = "SELECT firstname, lastname, email, token, tid";
+		$emquery = "SELECT firstname, lastname, email, token, tid, language";
 		if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
 
 		$emquery .= " FROM ".db_table_name("tokens_{$_POST['sid']}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != ''";
@@ -810,7 +810,9 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 				$fieldsarray["{FIRSTNAME}"]=$emrow['firstname'];
 				$fieldsarray["{LASTNAME}"]=$emrow['lastname'];
 				$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?sid=$surveyid&token={$emrow['token']}";
+                if (trim($emrow['language'])!='') {$fieldsarray["{SURVEYURL}"]=$fieldsarray["{SURVEYURL}"]."&lang=".trim($emrow['language']);}
 				$fieldsarray["{TOKEN}"]=$emrow['token'];
+                
 				$fieldsarray["{ATTRIBUTE_1}"]=$emrow['attribute_1'];
 				$fieldsarray["{ATTRIBUTE_2}"]=$emrow['attribute_2'];
 				$modsubject=Replacefields($_POST['subject'], $fieldsarray);
@@ -974,6 +976,7 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 				$fieldsarray["{FIRSTNAME}"]=$emrow['firstname'];
 				$fieldsarray["{LASTNAME}"]=$emrow['lastname'];
 				$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?sid=$surveyid&token={$emrow['token']}";
+                if (trim($emrow['language'])!='') {$fieldsarray["{SURVEYURL}"]=$fieldsarray["{SURVEYURL}"]."&lang=".trim($emrow['language']);}
 				$fieldsarray["{TOKEN}"]=$emrow['token'];
 				$fieldsarray["{LANGUAGE}"]=$emrow['language'];
 				$fieldsarray["{ATTRIBUTE_1}"]=$emrow['attribute_1'];
