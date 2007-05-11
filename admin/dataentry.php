@@ -254,7 +254,7 @@ if($actsurrows['browse_response'])
 			$insertqr = substr($insertqr, 0, -3); //Strip off the last comma-space
 
 			//NOW SHOW SCREEN
-			if (isset($_POST['token']) && $_POST['token']) //handle tokens if survey needs them
+			if ($thissurvey['private'] == 'N' && isset($_POST['token']) && $_POST['token']) //handle tokens if survey needs them
 			{
 				$col_name .= ", token\n";
 				$insertqr .= ", '{$_POST['token']}'";
@@ -273,6 +273,11 @@ if($actsurrows['browse_response'])
 			{
 				$col_name .= ", startlanguage\n";
 				$insertqr .= ", '{$_POST['language']}'";
+			}
+			if (isset($_POST['closerecord']) && isset($_POST['closedate']) && $_POST['closedate'] != '') // handle Submidate if required
+			{
+				$col_name .= ", submitdate\n";
+				$insertqr .= ", '{$_POST['closedate']}'";
 			}
 			//		$dataentryoutput .= "\t\t\t<strong>Inserting data</strong><br />\n"
 			//			."SID: $surveyid, ($surveytable)<br /><br />\n";
@@ -297,6 +302,14 @@ if($actsurrows['browse_response'])
 			$dataentryoutput .= "Couldn't delete saved data<br />$dquery<br />".htmlspecialchars($connect->ErrorMsg());
 			}
 			}*/
+			if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') // submittoken
+			{
+				$today = date("Y-m-d");
+				$utquery = "UPDATE {$dbprefix}tokens_$surveyid\n"
+				. "SET completed='$today'\n"
+				. "WHERE token='{$_POST['token']}'";
+				$utresult = $connect->Execute($utquery) or die ("Couldn't update tokens table!<br />\n$utquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
+			}
 			if (isset($_POST['save']) && $_POST['save'] == "on")
 			{
 				$srid = $connect->Insert_ID();
@@ -1185,18 +1198,25 @@ if($actsurrows['browse_response'])
 						{
 						if (document.getElementById(value).checked == true)
 							{
+							document.getElementById(\"closerecord\").checked=false;
+							document.getElementById(\"closerecord\").disabled=true;
 							document.getElementById(\"saveoptions\").style.display=\"\";
 							}
 						else
 							{
 							document.getElementById(\"saveoptions\").style.display=\"none\";
+							document.getElementById(\"closerecord\").disabled=false;
 							}
 						}
 				  //-->
 				  </script>\n";
 			$dataentryoutput .= "\t<tr>\n";
 			$dataentryoutput .= "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
-			$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='save' id='save' onclick='saveshow(this.id)' /><label for='save'>".$clang->gT("Save for further completion by survey user")."</label>\n";
+			$dataentryoutput .= "\t\t<table><tr><td align='left'>\n";
+			$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' /><label for='closerecord'>".$clang->gT("Finalize response submission")."</label></td></tr>\n";
+			$dataentryoutput .="<input type='hidden' name='closedate' value='".date("Y-m-d H:i:s")."' />\n";
+			$dataentryoutput .= "\t\t\t<tr><td align='left'><input type='checkbox' class='checkboxbtn' name='save' id='save' onclick='saveshow(this.id)' /><label for='save'>".$clang->gT("Save for further completion by survey user")."</label>\n";
+			$dataentryoutput .= "\t\t</td></tr></table>\n";
 			$dataentryoutput .= "<div name='saveoptions' id='saveoptions' style='display: none'>\n";
 			$dataentryoutput .= "<table align='center' class='outlinetable' cellspacing='0'>
 				  <tr><td align='right'>".$clang->gT("Identifier:")."</td>
@@ -1233,13 +1253,14 @@ if($actsurrows['browse_response'])
 
 	elseif ($subaction == "update")
 	{
+		$baselang = GetBaseLanguageFromSurveyID($surveyid);
 		$dataentryoutput .= "<table width='450' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		.$clang->gT("Data Entry")."</strong></font></td></tr>\n"
 		."\t<tr><td align='center'>\n";
 		$iquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups")." WHERE
 		".db_table_name("questions").".gid=".db_table_name("groups").".gid  AND
-		".db_table_name("questions").".language = '{$language}' AND  ".db_table_name("groups").".language = '{$language}' AND
+		".db_table_name("questions").".language = '{$baselang}' AND  ".db_table_name("groups").".language = '{$baselang}' AND
 		".db_table_name("questions").".sid=$surveyid 
 		ORDER BY ".db_table_name("groups").".group_order, title";
 		$iresult = db_execute_assoc($iquery);
@@ -2137,18 +2158,25 @@ if($actsurrows['browse_response'])
 							{
 							if (document.getElementById(value).checked == true)
 								{
+								document.getElementById(\"closerecord\").checked=false;
+								document.getElementById(\"closerecord\").disabled=true;
 								document.getElementById(\"saveoptions\").style.display=\"\";
 								}
 							else
 								{
 								document.getElementById(\"saveoptions\").style.display=\"none\";
+								 document.getElementById(\"closerecord\").disabled=false;
 								}
 							}
 					  //-->
 					  </script>\n";
 				$dataentryoutput .= "\t<tr>\n";
 				$dataentryoutput .= "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
-				$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='save' id='save' onclick='saveshow(this.id)' /><label for='save'>".$clang->gT("Save for further completion by survey user")."</label>\n";
+				$dataentryoutput .= "\t\t<table><tr><td align='left'>\n";
+				$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' /><label for='closerecord'>".$clang->gT("Finalize response submission")."</label></td></tr>\n";
+				$dataentryoutput .="<input type='hidden' name='closedate' value='".date("Y-m-d H:i:s")."' />\n";
+				$dataentryoutput .= "\t\t\t<tr><td align='left'><input type='checkbox' class='checkboxbtn' name='save' id='save' onclick='saveshow(this.id)' /><label for='save'>".$clang->gT("Save for further completion by survey user")."</label>\n";
+				$dataentryoutput .= "\t\t</td></tr></table>\n";
 				$dataentryoutput .= "<div name='saveoptions' id='saveoptions' style='display: none'>\n";
 				$dataentryoutput .= "<table align='center' class='outlinetable' cellspacing='0'>
 					  <tr><td align='right'>".$clang->gT("Identifier:")."</td>
