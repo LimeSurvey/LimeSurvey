@@ -1,7 +1,7 @@
 <?php
 /*
 #############################################################
-# >>> PHPSurveyor  										    #
+# >>> LimeSurvey  										    #
 #############################################################
 # > Author:  Jason Cleeland									#
 # > E-mail:  jason@cleeland.org								#
@@ -286,7 +286,7 @@ sendcacheheaders();
   $adminoutput.= "\t\t</td>\n".helpscreen()
               . "\t</tr>\n"
               . "</table>\n"
-              . getAdminFooter("http://docs.phpsurveyor.org", $clang->gT("PHPSurveyor Online Manual"));
+              . getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey Online Manual"));
   }
 }
   else
@@ -297,7 +297,7 @@ sendcacheheaders();
     $adminoutput.= "\t\t</td>\n".helpscreen()
                 . "\t</tr>\n"
                 . "</table>\n"
-                . getAdminFooter("http://docs.phpsurveyor.org", $clang->gT("PHPSurveyor Online Manual"));
+                . getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey Online Manual"));
   
   }
 

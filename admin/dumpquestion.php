@@ -1,7 +1,7 @@
 <?php
 /*
 #############################################################
-# >>> PHPSurveyor  										#
+# >>> LimeSurvey  										#
 #############################################################
 # > Author:  Jason Cleeland									#
 # > E-mail:  jason@cleeland.org								#
@@ -64,10 +64,10 @@ if (!$qid)
 	exit;
 }
 
-$dumphead = "# PHPSurveyor Question Dump\n"
+$dumphead = "# LimeSurvey Question Dump\n"
           . "# DBVersion $dbversionnumber\n"
-          . "# This is a dumped question from the PHPSurveyor Script\n"
-          . "# http://www.phpsurveyor.org/\n"
+          . "# This is a dumped question from the LimeSurvey Script\n"
+          . "# http://www.limesurvey.org/\n"
           . "# Do not change this header!\n";
 
 function BuildOutput($Query)
@@ -126,7 +126,7 @@ $ldump = BuildCSVFromQuery($lquery);
 //5: Question Attributes
 $query = "SELECT {$dbprefix}question_attributes.* FROM {$dbprefix}question_attributes WHERE {$dbprefix}question_attributes.qid=$qid";
 $qadump = BuildCSVFromQuery($query);
-$fn = "phpsurveyor_question_$qid.csv";
+$fn = "limesurvey_question_$qid.csv";
 
 header("Content-Type: application/download");
 header("Content-Disposition: attachment; filename=$fn");

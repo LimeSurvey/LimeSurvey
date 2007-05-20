@@ -1,7 +1,7 @@
 <?php
 /*
 #############################################################
-# >>> PHPSurveyor  										#
+# >>> LimeSurvey  										#
 #############################################################
 # > Author:  Jason Cleeland									#
 # > E-mail:  jason@cleeland.org								#
@@ -44,7 +44,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 	
 	$export="";
 	$export .="#------------------------------------------"."\n";
-	$export .="# PHPSurveyor Database Dump of `$databasename`"."\n";
+	$export .="# LimeSurvey Database Dump of `$databasename`"."\n";
 	if ($allowexportalldb==0) {
 		$export .="# Only prefixed tables with: ". $dbprefix ."\n";
 	}
@@ -64,7 +64,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 		}
 	}
 	
-	$file_name = "PHPSurveyor_{$databasename}_dump_".date("Y-m-d").".sql";
+	$file_name = "LimeSurvey_{$databasename}_dump_".date("Y-m-d").".sql";
 	Header("Content-type: application/octet-stream");
 	Header("Content-Disposition: attachment; filename=$file_name");
 	Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");

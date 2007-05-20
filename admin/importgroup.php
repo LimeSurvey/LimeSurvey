@@ -1,7 +1,7 @@
 <?php
 /*
 #############################################################
-# >>> PHPSurveyor  										#
+# >>> LimeSurvey  										#
 #############################################################
 # > Author:  Jason Cleeland									#
 # > E-mail:  jason@cleeland.org								#
@@ -69,10 +69,10 @@ while (!feof($handle))
 }
 fclose($handle);
 
-if (substr($bigarray[0], 0, 24) != "# PHPSurveyor Group Dump")
+if (substr($bigarray[0], 0, 24) != "# LimeSurvey Group Dump")
 {
 	$importgroup .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-	$importgroup .= $clang->gT("This file is not a PHPSurveyor group file. Import failed.")."<br /><br />\n";
+	$importgroup .= $clang->gT("This file is not a LimeSurvey group file. Import failed.")."<br /><br />\n";
 	$importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
 	$importgroup .= "</td></tr></table>\n";
 	unlink($the_full_file_path);

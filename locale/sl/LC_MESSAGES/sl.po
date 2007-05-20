@@ -1,14 +1,14 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPSurveyor Slovenianlanguage file\n"
+"Project-Id-Version: LimeSurvey Slovenianlanguage file\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2007-05-18 20:40+0100\n"
 "Last-Translator: Gasper Koren <skrat@owca.info>\n"
-"Language-Team: PHPSurveyor <gasper_koren@users.sourceforge.net>\n"
+"Language-Team: LimeSurvey <gasper_koren@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Basepath: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+"X-Poedit-Basepath: D:\\xampp\\xampp\\htdocs\\limesurvey\n"
 "X-Poedit-Country: SLOVENIA\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Language: Slovenian\n"
@@ -1236,8 +1236,8 @@ msgstr "Podrobno obvestilo po elektronski pošti skupaj s kodami odgovorov"
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1043
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/install/index.php:50
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/install/index.php:67
-msgid "PHPSurveyor Setup"
-msgstr "PHPSurveyor nastavitve"
+msgid "LimeSurvey Setup"
+msgstr "LimeSurvey nastavitve"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1048
 msgid "It appears as if some tables or fields are missing from your database."
@@ -1804,8 +1804,8 @@ msgstr "Glavno administratorsko okno"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/importlabel.php:77
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/importquestion.php:89
-msgid "This file is not a PHPSurveyor question file. Import failed."
-msgstr "Ta datoteka ni datoteka z vprašalnikom za PHPSurveyor. Uvoz ni uspel."
+msgid "This file is not a LimeSurvey question file. Import failed."
+msgstr "Ta datoteka ni datoteka z vprašalnikom za LimeSurvey. Uvoz ni uspel."
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/importlabel.php:78
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/importlabel.php:224
@@ -2444,8 +2444,8 @@ msgid "No Surveys available - please create one."
 msgstr "Nobena anketa ni na voljo - prosimo ustvarite anketo."
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:202
-msgid "PHPSurveyor System Summary"
-msgstr "Povzetek sistema PHPSurveyor"
+msgid "LimeSurvey System Summary"
+msgstr "Povzetek sistema LimeSurvey"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:208
 msgid "Database Name"
@@ -3889,8 +3889,8 @@ msgstr "Dodajanje uporabnika v skupino"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/admin.php:289
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/admin.php:300
-msgid "PHPSurveyor Online Manual"
-msgstr "PHPSurveyor Spletni Vodič"
+msgid "LimeSurvey Online Manual"
+msgstr "LimeSurvey Spletni Vodič"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/vvexport.php:69
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dumpsurvey.php:63
@@ -4191,8 +4191,8 @@ msgid "This survey has been deleted."
 msgstr "Anketa je bila izbrisana."
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/importsurvey.php:94
-msgid "This file is not a PHPSurveyor survey file. Import failed."
-msgstr "To ni datoteka programa PHPSurveyor. Uvoz ni uspel."
+msgid "This file is not a LimeSurvey survey file. Import failed."
+msgstr "To ni datoteka programa LimeSurvey. Uvoz ni uspel."
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/importsurvey.php:347
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/importsurvey.php:503
@@ -4202,8 +4202,8 @@ msgid "Import of this survey file failed"
 msgstr "Uvoz datoteke z anketo ni uspel"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/importsurvey.php:348
-msgid "File does not contain PHPSurveyor data in the correct format."
-msgstr "Datoteka ne vsebuje podatkov v pravilnem zapisu za program PHPSurveyor."
+msgid "File does not contain LimeSurvey data in the correct format."
+msgstr "Datoteka ne vsebuje podatkov v pravilnem zapisu za program LimeSurvey."
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/importsurvey.php:1011
 msgid "Survey Import Summary"
@@ -4492,8 +4492,8 @@ msgid "Reading file..."
 msgstr "Berem datoteko..."
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/importgroup.php:75
-msgid "This file is not a PHPSurveyor group file. Import failed."
-msgstr "Ta datoteka ni datoteka skupine programa PHPSurveyor. Uvoz ni uspel."
+msgid "This file is not a LimeSurvey group file. Import failed."
+msgstr "Ta datoteka ni datoteka skupine programa LimeSurvey. Uvoz ni uspel."
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/importgroup.php:565
 msgid "Import partially successful."
@@ -5610,8 +5610,8 @@ msgid "In an active survey, a table is created to store all the data-entry recor
 msgstr "V aktivni anketi se ustvari tabela za shranjevanje odgovorov."
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/deactivate.php:56
-msgid "When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using PHPSurveyor any more."
-msgstr "Ko boste deaktivirali anketo bodo vsi odgovori, ki so bili že zbrani premaknjeni (arhivirani) v drugo tabelo. Če anketo ponovno aktivirate, bo tabela odgovorov prazna. Do sedaj zbrani odgovori ne bodo več dostopni prek PHPSurveyorja. Do njih lahko dostopa le administrator sistema z neposrednim posegom v podatkovno bazo."
+msgid "When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
+msgstr "Ko boste deaktivirali anketo bodo vsi odgovori, ki so bili že zbrani premaknjeni (arhivirani) v drugo tabelo. Če anketo ponovno aktivirate, bo tabela odgovorov prazna. Do sedaj zbrani odgovori ne bodo več dostopni prek LimeSurveyja. Do njih lahko dostopa le administrator sistema z neposrednim posegom v podatkovno bazo."
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/deactivate.php:57
 msgid "De-activated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
@@ -5638,8 +5638,8 @@ msgid "The responses table has been renamed to: "
 msgstr "Tabela odgovorov je bila preimenovana v:"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/deactivate.php:124
-msgid "The responses to this survey are no longer available using PHPSurveyor."
-msgstr "Odgovori za to anketo niso več dostopni prek PHPSurveyorja."
+msgid "The responses to this survey are no longer available using LimeSurvey."
+msgstr "Odgovori za to anketo niso več dostopni prek LimeSurveyja."
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/deactivate.php:125
 msgid "You should note the name of this table in case you need to access this information later."
@@ -5872,16 +5872,16 @@ msgid "You are not allowed to change your own rights!"
 msgstr "Nimate dovoljenja za spreminjanje svojih lastnih pravic!"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/install/index.php:52
-msgid "Welcome to PHPSurveyor Setup!"
-msgstr "Dobrodošli v PHPSurveyor namestitvi!"
+msgid "Welcome to LimeSurvey Setup!"
+msgstr "Dobrodošli v LimeSurvey namestitvi!"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/install/index.php:53
 msgid "The database defined in config.php does not exist."
 msgstr "Podatkovna baza, navedena v config.php ne obstaja."
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/install/index.php:54
-msgid "PHPSurveyor can attempt to create this database for you."
-msgstr "PHPSurveyor lahko poskuša izdelati to podatkovno bazo."
+msgid "LimeSurvey can attempt to create this database for you."
+msgstr "LimeSurvey lahko poskuša izdelati to podatkovno bazo."
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/install/index.php:55
 msgid "Your selected database name is:"

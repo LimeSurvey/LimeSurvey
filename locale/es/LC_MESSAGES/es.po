@@ -160,73 +160,73 @@ msgstr "Notificación básica por correo"
 msgid "Detailed email notification with result codes"
 msgstr "Notificación detallada por correo con los códigos de resultados"
 
-msgid "PHPSurveyor Setup"
-msgstr "Configuración de PHPSurveyor"
+msgid "LimeSurvey Setup"
+msgstr "Configuración de LimeSurvey"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:49
-# D:\xampp\xampp\htdocs\phpsurveyor/common.php:770
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/activate.php:198
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/activate.php:406
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/admin.php:82
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:66
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:79
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:103
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:118
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/createdb.php:51
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/createdb.php:73
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:101
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:56
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:72
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:110
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:111
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:112
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:2132
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbedit.php:474
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbedit.php:508
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/deletesurvey.php:52
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dumpgroup.php:58
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dumplabel.php:58
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dumpquestion.php:58
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dumpsurvey.php:59
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:388
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1855
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1859
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1863
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1869
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2158
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2170
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/importgroup.php:50
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/importgroup.php:74
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/importgroup.php:349
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/importgroup.php:376
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/importlabel.php:50
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/importlabel.php:77
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/importquestion.php:51
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/importquestion.php:94
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/importquestion.php:328
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/importquestion.php:363
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/importsurvey.php:52
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/importsurvey.php:76
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/importsurvey.php:289
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/importsurvey.php:411
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/importsurvey.php:421
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/importsurvey.php:446
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/importsurvey.php:475
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/index-experimental.php:138
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:415
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/saved.php:42
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/templates.php:120
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:84
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:101
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:344
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:364
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:431
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:449
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1227
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/usercontrol.php:50
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/vvexport.php:159
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/vvexport.php:176
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:102
+# D:\xampp\xampp\htdocs\limesurvey/clienttext.php:49
+# D:\xampp\xampp\htdocs\limesurvey/common.php:770
+# D:\xampp\xampp\htdocs\limesurvey/admin/activate.php:198
+# D:\xampp\xampp\htdocs\limesurvey/admin/activate.php:406
+# D:\xampp\xampp\htdocs\limesurvey/admin/admin.php:82
+# D:\xampp\xampp\htdocs\limesurvey/admin/browse.php:66
+# D:\xampp\xampp\htdocs\limesurvey/admin/browse.php:79
+# D:\xampp\xampp\htdocs\limesurvey/admin/browse.php:103
+# D:\xampp\xampp\htdocs\limesurvey/admin/browse.php:118
+# D:\xampp\xampp\htdocs\limesurvey/admin/createdb.php:51
+# D:\xampp\xampp\htdocs\limesurvey/admin/createdb.php:73
+# D:\xampp\xampp\htdocs\limesurvey/admin/database.php:101
+# D:\xampp\xampp\htdocs\limesurvey/admin/dataentry.php:56
+# D:\xampp\xampp\htdocs\limesurvey/admin/dataentry.php:72
+# D:\xampp\xampp\htdocs\limesurvey/admin/dataentry.php:110
+# D:\xampp\xampp\htdocs\limesurvey/admin/dataentry.php:111
+# D:\xampp\xampp\htdocs\limesurvey/admin/dataentry.php:112
+# D:\xampp\xampp\htdocs\limesurvey/admin/dataentry.php:2132
+# D:\xampp\xampp\htdocs\limesurvey/admin/dbedit.php:474
+# D:\xampp\xampp\htdocs\limesurvey/admin/dbedit.php:508
+# D:\xampp\xampp\htdocs\limesurvey/admin/deletesurvey.php:52
+# D:\xampp\xampp\htdocs\limesurvey/admin/dumpgroup.php:58
+# D:\xampp\xampp\htdocs\limesurvey/admin/dumplabel.php:58
+# D:\xampp\xampp\htdocs\limesurvey/admin/dumpquestion.php:58
+# D:\xampp\xampp\htdocs\limesurvey/admin/dumpsurvey.php:59
+# D:\xampp\xampp\htdocs\limesurvey/admin/export.php:388
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1855
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1859
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1863
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1869
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:2158
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:2170
+# D:\xampp\xampp\htdocs\limesurvey/admin/importgroup.php:50
+# D:\xampp\xampp\htdocs\limesurvey/admin/importgroup.php:74
+# D:\xampp\xampp\htdocs\limesurvey/admin/importgroup.php:349
+# D:\xampp\xampp\htdocs\limesurvey/admin/importgroup.php:376
+# D:\xampp\xampp\htdocs\limesurvey/admin/importlabel.php:50
+# D:\xampp\xampp\htdocs\limesurvey/admin/importlabel.php:77
+# D:\xampp\xampp\htdocs\limesurvey/admin/importquestion.php:51
+# D:\xampp\xampp\htdocs\limesurvey/admin/importquestion.php:94
+# D:\xampp\xampp\htdocs\limesurvey/admin/importquestion.php:328
+# D:\xampp\xampp\htdocs\limesurvey/admin/importquestion.php:363
+# D:\xampp\xampp\htdocs\limesurvey/admin/importsurvey.php:52
+# D:\xampp\xampp\htdocs\limesurvey/admin/importsurvey.php:76
+# D:\xampp\xampp\htdocs\limesurvey/admin/importsurvey.php:289
+# D:\xampp\xampp\htdocs\limesurvey/admin/importsurvey.php:411
+# D:\xampp\xampp\htdocs\limesurvey/admin/importsurvey.php:421
+# D:\xampp\xampp\htdocs\limesurvey/admin/importsurvey.php:446
+# D:\xampp\xampp\htdocs\limesurvey/admin/importsurvey.php:475
+# D:\xampp\xampp\htdocs\limesurvey/admin/index-experimental.php:138
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:415
+# D:\xampp\xampp\htdocs\limesurvey/admin/saved.php:42
+# D:\xampp\xampp\htdocs\limesurvey/admin/templates.php:120
+# D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:84
+# D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:101
+# D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:344
+# D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:364
+# D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:431
+# D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:449
+# D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:1227
+# D:\xampp\xampp\htdocs\limesurvey/admin/usercontrol.php:50
+# D:\xampp\xampp\htdocs\limesurvey/admin/vvexport.php:159
+# D:\xampp\xampp\htdocs\limesurvey/admin/vvexport.php:176
+# D:\xampp\xampp\htdocs\limesurvey/admin/vvimport.php:102
 msgid "Error"
 msgstr "Error"
 
@@ -261,7 +261,7 @@ msgstr "Exportar los resultados a"
 msgid "Export result to a SPSS command file"
 msgstr "Exportar los resultados a un archivo de comandos SPSS"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/importoldresponses.php:58
+# D:\xampp\xampp\htdocs\limesurvey/admin/importoldresponses.php:58
 msgid "Import answers from a deactivated survey table"
 msgstr "Importar respuestas de un cuestionario inactivo."
 
@@ -278,16 +278,16 @@ msgstr "Exportar un Archivo de cuestionario VV"
 msgid "Preset"
 msgstr "Preconfigurado"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:57
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:1359
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:403
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:407
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:414
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:415
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:419
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:420
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:475
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1070
+# D:\xampp\xampp\htdocs\limesurvey/clienttext.php:57
+# D:\xampp\xampp\htdocs\limesurvey/admin/dataentry.php:1359
+# D:\xampp\xampp\htdocs\limesurvey/admin/export.php:403
+# D:\xampp\xampp\htdocs\limesurvey/admin/export.php:407
+# D:\xampp\xampp\htdocs\limesurvey/admin/export.php:414
+# D:\xampp\xampp\htdocs\limesurvey/admin/export.php:415
+# D:\xampp\xampp\htdocs\limesurvey/admin/export.php:419
+# D:\xampp\xampp\htdocs\limesurvey/admin/export.php:420
+# D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:475
+# D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:1070
 msgid "Token"
 msgstr "Token"
 
@@ -297,8 +297,8 @@ msgstr "Guardar la fecha"
 msgid "IP Address"
 msgstr "Dirección IP"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1773
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1995
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1773
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1995
 msgid "Referring URL"
 msgstr "URL de referencia"
 
@@ -308,70 +308,70 @@ msgstr "Otro"
 msgid "Yes"
 msgstr "Sí"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/qanda.php:1742
-# D:\xampp\xampp\htdocs\phpsurveyor/qanda.php:1993
-# D:\xampp\xampp\htdocs\phpsurveyor/qanda.php:2025
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/conditions.php:308
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/conditions.php:360
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:1008
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:1072
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:1434
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:1453
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:1959
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:2017
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:820
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:847
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:848
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:860
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:832
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:882
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1106
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1116
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1233
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1245
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1383
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1401
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1608
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1619
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1630
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1658
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1708
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1744
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1768
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1792
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1815
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1828
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1916
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1927
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1938
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1950
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1973
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1987
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1992
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1997
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2015
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2029
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:420
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:596
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:605
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1041
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1085
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1692
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1731
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/printablesurvey.php:154
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/printablesurvey.php:173
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/printablesurvey.php:535
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/printablesurvey.php:587
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/results.php:252
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/results.php:267
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/results.php:354
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/results.php:385
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:365
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:472
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:692
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:1247
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:1290
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:942
+# D:\xampp\xampp\htdocs\limesurvey/qanda.php:1742
+# D:\xampp\xampp\htdocs\limesurvey/qanda.php:1993
+# D:\xampp\xampp\htdocs\limesurvey/qanda.php:2025
+# D:\xampp\xampp\htdocs\limesurvey/admin/conditions.php:308
+# D:\xampp\xampp\htdocs\limesurvey/admin/conditions.php:360
+# D:\xampp\xampp\htdocs\limesurvey/admin/dataentry.php:1008
+# D:\xampp\xampp\htdocs\limesurvey/admin/dataentry.php:1072
+# D:\xampp\xampp\htdocs\limesurvey/admin/dataentry.php:1434
+# D:\xampp\xampp\htdocs\limesurvey/admin/dataentry.php:1453
+# D:\xampp\xampp\htdocs\limesurvey/admin/dataentry.php:1959
+# D:\xampp\xampp\htdocs\limesurvey/admin/dataentry.php:2017
+# D:\xampp\xampp\htdocs\limesurvey/admin/export.php:820
+# D:\xampp\xampp\htdocs\limesurvey/admin/export.php:847
+# D:\xampp\xampp\htdocs\limesurvey/admin/export.php:848
+# D:\xampp\xampp\htdocs\limesurvey/admin/export.php:860
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:832
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:882
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1106
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1116
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1233
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1245
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1383
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1401
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1608
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1619
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1630
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1658
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1708
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1744
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1768
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1792
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1815
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1828
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1916
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1927
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1938
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1950
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1973
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1987
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1992
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1997
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:2015
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:2029
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:420
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:596
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:605
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:1041
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:1085
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:1692
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:1731
+# D:\xampp\xampp\htdocs\limesurvey/admin/printablesurvey.php:154
+# D:\xampp\xampp\htdocs\limesurvey/admin/printablesurvey.php:173
+# D:\xampp\xampp\htdocs\limesurvey/admin/printablesurvey.php:535
+# D:\xampp\xampp\htdocs\limesurvey/admin/printablesurvey.php:587
+# D:\xampp\xampp\htdocs\limesurvey/admin/results.php:252
+# D:\xampp\xampp\htdocs\limesurvey/admin/results.php:267
+# D:\xampp\xampp\htdocs\limesurvey/admin/results.php:354
+# D:\xampp\xampp\htdocs\limesurvey/admin/results.php:385
+# D:\xampp\xampp\htdocs\limesurvey/admin/statistics.php:365
+# D:\xampp\xampp\htdocs\limesurvey/admin/statistics.php:472
+# D:\xampp\xampp\htdocs\limesurvey/admin/statistics.php:692
+# D:\xampp\xampp\htdocs\limesurvey/admin/statistics.php:1247
+# D:\xampp\xampp\htdocs\limesurvey/admin/statistics.php:1290
+# D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:942
 msgid "No"
 msgstr "No"
 
@@ -438,15 +438,15 @@ msgstr "Guardar cuestionario y regresar"
 msgid "Thank You!"
 msgstr "¡Gracias!"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:168
+# D:\xampp\xampp\htdocs\limesurvey/clienttext.php:168
 msgid "You have completed answering the questions in this survey."
 msgstr "Ha respondido a todas las preguntas del cuestionario"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:169
+# D:\xampp\xampp\htdocs\limesurvey/clienttext.php:169
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "Presione \"Enviar\" para completar el proceso y guardar sus respuestas."
 
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:170
+# D:\xampp\xampp\htdocs\limesurvey/clienttext.php:170
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr "Si desea comprobar cualquiera de las respuestas ingresadas y/o cambiar alguna, puede hacerlo ahora con el botón [<< Prev] y revisarlas."
 
@@ -465,15 +465,15 @@ msgstr "Volver al cuestionario"
 msgid "Save Your Unfinished Survey"
 msgstr "Guardar un cuestionario no terminado"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:202
+# D:\xampp\xampp\htdocs\limesurvey/clienttext.php:202
 msgid "Enter a name and password for this survey and click save below."
 msgstr "Elija un nombre y una contraseña para este cuestonario y pulse en \"Guardar\"."
 
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:203
+# D:\xampp\xampp\htdocs\limesurvey/clienttext.php:203
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr "Su cuestionario se guardará con ese nombre y contraseña, y lo podrá completar luego ingresando con el mismo nombre de usuario y contraseña."
 
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:205
+# D:\xampp\xampp\htdocs\limesurvey/clienttext.php:205
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "Si nos da su dirección de correo electrónico, se le enviará un mensaje con los detalles."
 
@@ -513,11 +513,11 @@ msgstr "Recuperar Ahora"
 msgid "You must be registered to complete this survey"
 msgstr "Debe estar registrado para completar este cuestionario"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:153
+# D:\xampp\xampp\htdocs\limesurvey/clienttext.php:153
 msgid "You may register for this survey if you wish to take part."
 msgstr "Puede inscribirse en este cuestionario si desea participar."
 
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:154
+# D:\xampp\xampp\htdocs\limesurvey/clienttext.php:154
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "Introduzca sus datos a continuación, y se le enviará inmediatamente un mensaje de correo electrónico."
 
@@ -537,7 +537,7 @@ msgid "Your Assessment"
 msgstr "Sus Evaluaciones"
 
 msgid "Online Manual"
-msgstr "Manual de PHPSurveyor En Línea"
+msgstr "Manual de LimeSurvey En Línea"
 
 # C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/common.php:2306
 msgid "Support this project - Donate to "
@@ -824,7 +824,7 @@ msgstr "La dirección de correo electrónico no es válida. Por favor, vuelva a 
 msgid "The email you used has already been registered."
 msgstr "La dirección de correo electrónico que usó ya fue registrada previamente."
 
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:162
+# D:\xampp\xampp\htdocs\limesurvey/clienttext.php:162
 msgid "Thank you for registering to participate in this survey."
 msgstr "Gracias por inscribirse para participar en este cuestionario."
 
@@ -1010,8 +1010,8 @@ msgstr "Este cuestionario admite registro público. Es necesario crear la tabla 
 msgid "This survey is now active, and responses can be recorded."
 msgstr "El cuestionario ha sido activado, y ahora las respuestas pueden ser almacenadas."
 
-msgid "PHPSurveyor Online Manual"
-msgstr "Manual de PHPSurveyor"
+msgid "LimeSurvey Online Manual"
+msgstr "Manual de LimeSurvey"
 
 msgid "Help"
 msgstr "Ayuda"
@@ -1040,17 +1040,17 @@ msgstr "Cabecera"
 msgid "Message"
 msgstr "Mensaje"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/assessments.php:99
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:882
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:929
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:942
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:961
+# D:\xampp\xampp\htdocs\limesurvey/admin/assessments.php:99
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:882
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:929
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:942
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:961
 msgid "URL"
 msgstr "URL"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/assessments.php:100
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/assessments.php:119
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:963
+# D:\xampp\xampp\htdocs\limesurvey/admin/assessments.php:100
+# D:\xampp\xampp\htdocs\limesurvey/admin/assessments.php:119
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:963
 msgid "Total"
 msgstr "Total"
 
@@ -1090,16 +1090,16 @@ msgstr "Este cuestionario no ha sido activada. No hay resultados que examinar."
 msgid "There is no matching survey."
 msgstr "No se encontró ningún cuestionario."
 
-# D:\xampp\xampp\htdocs\phpsurveyor/clienttext.php:57
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:1359
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:403
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:407
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:414
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:415
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:419
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:420
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:475
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1070
+# D:\xampp\xampp\htdocs\limesurvey/clienttext.php:57
+# D:\xampp\xampp\htdocs\limesurvey/admin/dataentry.php:1359
+# D:\xampp\xampp\htdocs\limesurvey/admin/export.php:403
+# D:\xampp\xampp\htdocs\limesurvey/admin/export.php:407
+# D:\xampp\xampp\htdocs\limesurvey/admin/export.php:414
+# D:\xampp\xampp\htdocs\limesurvey/admin/export.php:415
+# D:\xampp\xampp\htdocs\limesurvey/admin/export.php:419
+# D:\xampp\xampp\htdocs\limesurvey/admin/export.php:420
+# D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:475
+# D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:1070
 msgid "Token ID"
 msgstr "ID de invitación"
 
@@ -1218,11 +1218,11 @@ msgstr "Expresión regular"
 msgid "and"
 msgstr "y"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/conditions.php:524
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:1507
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1145
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1513
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2035
+# D:\xampp\xampp\htdocs\limesurvey/admin/conditions.php:524
+# D:\xampp\xampp\htdocs\limesurvey/admin/dataentry.php:1507
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1145
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1513
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:2035
 msgid "OR"
 msgstr "O"
 
@@ -1486,8 +1486,8 @@ msgstr "Marca de fecha"
 msgid "IP-Address"
 msgstr "Dirección-IP"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:1423
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:1498
+# D:\xampp\xampp\htdocs\limesurvey/admin/dataentry.php:1423
+# D:\xampp\xampp\htdocs\limesurvey/admin/dataentry.php:1498
 msgid "AND"
 msgstr "Y"
 
@@ -1524,8 +1524,8 @@ msgstr "Desactivar cuestionario"
 msgid "In an active survey, a table is created to store all the data-entry records."
 msgstr "En un cuestionario activo, se crea una tabla para almacenar las respuestas."
 
-msgid "When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using PHPSurveyor any more."
-msgstr "Cuando desactiva un cuestionario todos los datos introducidos se copian en otra tabla, y cuando se vuelve a activar nuevamente, la tabla estará vacía. Ya no tendrá acceso a estos datos por medio de PHPSurveyor."
+msgid "When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
+msgstr "Cuando desactiva un cuestionario todos los datos introducidos se copian en otra tabla, y cuando se vuelve a activar nuevamente, la tabla estará vacía. Ya no tendrá acceso a estos datos por medio de LimeSurvey."
 
 msgid "De-activated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
 msgstr "Los datos de un cuestionario que ha sido desactivado sólo pueden ser vistos por un usuario con acceso a la base de datos. Si su cuestionario utiliza invitacións, esta tabla también será renombrada y sólo será accesible a los administradores del sistema."
@@ -1545,8 +1545,8 @@ msgstr "El cuestionario ha sido desactivado"
 msgid "The responses table has been renamed to: "
 msgstr "La tabla de respuestas ha sido renombrada a: "
 
-msgid "The responses to this survey are no longer available using PHPSurveyor."
-msgstr "Las respuestas a este cuestionario ya no están disponibles para PHPSurveyor."
+msgid "The responses to this survey are no longer available using LimeSurvey."
+msgstr "Las respuestas a este cuestionario ya no están disponibles para LimeSurvey."
 
 msgid "You should note the name of this table in case you need to access this information later."
 msgstr "Anote el nombre de esta tabla en caso que desee acceder a ella posteriormente."
@@ -1635,11 +1635,11 @@ msgstr "Respuestas Completas"
 msgid "Format"
 msgstr "Formato"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:152
+# D:\xampp\xampp\htdocs\limesurvey/admin/export.php:152
 msgid "Microsoft Word"
 msgstr "Microsoft Word"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:155
+# D:\xampp\xampp\htdocs\limesurvey/admin/export.php:155
 msgid "Microsoft Excel"
 msgstr "Microsoft Excel"
 
@@ -1751,8 +1751,8 @@ msgstr "Este cuestionario actualmente NO está activo"
 msgid "No Surveys available - please create one."
 msgstr "no existen cuestionarios - Por favor cree uno."
 
-msgid "PHPSurveyor System Summary"
-msgstr "Resumen de PHPSurveyor"
+msgid "LimeSurvey System Summary"
+msgstr "Resumen de LimeSurvey"
 
 msgid "Database Name"
 msgstr "Nombre de la Base de Datos"
@@ -1859,8 +1859,8 @@ msgstr "Las respuestas tendrán estampado de fecha"
 msgid "IP Addresses will be logged"
 msgstr "La Dirección IP será guardada en un fichero de registro"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1773
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1995
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1773
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1995
 msgid "Referer-URL will be saved"
 msgstr "Se registrará el URL Referente"
 
@@ -2210,8 +2210,8 @@ msgstr "Las respuestas no tendrán registrada la dirección IP."
 msgid "Responses will have the IP address logged"
 msgstr "Las respuestas tendrán registrada la dirección IP."
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1773
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1995
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1773
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1995
 msgid "Save Referring URL?"
 msgstr "¿Guardar la URL de referencia?"
 
@@ -2418,19 +2418,19 @@ msgstr "depende del grupo"
 msgid "see the marked conditions on"
 msgstr "ver las condiciones marcadas en"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1855
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1855
 msgid "The uploaded file is bigger than the upload_max_filesize directive in php.ini"
 msgstr "El archivo enviado es mayor que la directiva upload_max_filesize en php.ini"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1859
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1859
 msgid "The file was only partially uploaded"
 msgstr "El archivo sólo se envió parcialmente"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1863
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1863
 msgid "No file was uploaded"
 msgstr "No se envió ningún fichero"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1869
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1869
 msgid "Error on file transfer. You must select a CSV file"
 msgstr "Error en la transferencia del fichero.Debe seleccionar un archivo CSV"
 
@@ -2468,11 +2468,11 @@ msgstr "Debe enviar un archivo CSV"
 msgid "Upload CSV file"
 msgstr "Enviar archivo CSV"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2158
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:2158
 msgid "It is impossible to upload a file other than CSV type"
 msgstr "Es imposible enviar un archivo que no sea del tipo CSV"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2170
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:2170
 msgid "It is impossible to upload an empty file"
 msgstr "Es imposible enviar un fichero vacío"
 
@@ -2482,7 +2482,7 @@ msgstr "Enviando archivo CSV"
 msgid "Visualization:"
 msgstr "Visualización:"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2178
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:2178
 msgid "Select the field number you would like to use for your answers:"
 msgstr "Seleccione el número del campo que desea utilizar para sus respuestas:"
 
@@ -2498,8 +2498,8 @@ msgstr "Se subió el archivo con éxito."
 msgid "Reading file..."
 msgstr "Leyendo archivo.."
 
-msgid "This file is not a PHPSurveyor group file. Import failed."
-msgstr "El archivo no contiene un formato PHPSurveyor válido."
+msgid "This file is not a LimeSurvey group file. Import failed."
+msgstr "El archivo no contiene un formato LimeSurvey válido."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/importgroup.php:566
 msgid "Import partially successful."
@@ -2533,8 +2533,8 @@ msgstr "Importar Etiquetas"
 msgid "Reading file.."
 msgstr "Leyendo el archivo.."
 
-msgid "This file is not a PHPSurveyor question file. Import failed."
-msgstr "Este archivo no es un archivo de pregunta PHPSurveyor válido. Falló la importación."
+msgid "This file is not a LimeSurvey question file. Import failed."
+msgstr "Este archivo no es un archivo de pregunta LimeSurvey válido. Falló la importación."
 
 msgid "Return to Labels Admin"
 msgstr "Regresar a la Administración de Etiquetas"
@@ -2557,7 +2557,7 @@ msgstr "Se completó la iportación de las etiquetas."
 msgid "Quick Statistics"
 msgstr "Estadísticas Rápidas"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/importoldresponses.php:58
+# D:\xampp\xampp\htdocs\limesurvey/admin/importoldresponses.php:58
 msgid "Import responses from an old (deactivated) survey table into an active survey"
 msgstr "Importar respuestas de un cuestionario antigua (desactivada) a un cuestionario activo"
 
@@ -2590,14 +2590,14 @@ msgstr "Resumen de la Importación de la Pregunta"
 msgid "Import of Survey is completed."
 msgstr "Se completó con éxito la importación del cuestionario "
 
-msgid "This file is not a PHPSurveyor survey file. Import failed."
-msgstr "El formato del archivo no es de PHPSurveyor. La importación falló."
+msgid "This file is not a LimeSurvey survey file. Import failed."
+msgstr "El formato del archivo no es de LimeSurvey. La importación falló."
 
 msgid "Import of this survey file failed"
 msgstr "La importación del cuestionario falló."
 
-msgid "File does not contain PHPSurveyor data in the correct format."
-msgstr "El archivo no contiene un formato PHPSurveyor válido."
+msgid "File does not contain LimeSurvey data in the correct format."
+msgstr "El archivo no contiene un formato LimeSurvey válido."
 
 msgid "Survey Import Summary"
 msgstr "Resumen de la importación del cuestionario "
@@ -3320,7 +3320,7 @@ msgstr "Enviando al TID Núm:"
 msgid "Invitation Sent To:"
 msgstr "Invitación Enviada a:"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:733
+# D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:733
 msgid "Mail to {FIRSTNAME} {LASTNAME} ({EMAIL}) Failed"
 msgstr "El envío de correo a {FIRSTNAME} {LASTNAME} ({EMAIL}) falló"
 
@@ -3387,7 +3387,7 @@ msgstr "Nuevo Token Agregado"
 msgid "Upload CSV File"
 msgstr "Subir Archivo CSV"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1200
+# D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:1200
 msgid "Note:"
 msgstr "Nota:"
 
@@ -3632,7 +3632,7 @@ msgstr "Contraseña Nueva"
 msgid "An email with your login data was sent to you."
 msgstr "Se envió un mensaje de correo electrónico con los datos."
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:733
+# D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:733
 msgid "Email to {NAME} ({EMAIL}) failed."
 msgstr "El envío del mensaje de correo electrónico a {FIRSTNAME} {LASTNAME} ({EMAIL}) falló"
 
@@ -3908,15 +3908,15 @@ msgstr "Nota importante:NO refresque esta página, esto haría que se importe nu
 msgid "Total records imported:"
 msgstr "Total de elementos importados:"
 
-msgid "Welcome to PHPSurveyor Setup!"
-msgstr "¡Bienvenido a la configuración de PHPSurveyor!"
+msgid "Welcome to LimeSurvey Setup!"
+msgstr "¡Bienvenido a la configuración de LimeSurvey!"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/install/index.php:51
 msgid "The database defined in config.php does not exist."
 msgstr "La base de datos definida en el archivo config.php no existe."
 
-msgid "PHPSurveyor can attempt to create this database for you."
-msgstr "PHPSurveyor puede intentar crear la base de datos por usted."
+msgid "LimeSurvey can attempt to create this database for you."
+msgstr "LimeSurvey puede intentar crear la base de datos por usted."
 
 msgid "Your selected database name is:"
 msgstr "El nombre de la base de datos seleccionada es:"

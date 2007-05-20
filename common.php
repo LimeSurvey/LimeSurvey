@@ -1,7 +1,7 @@
 <?php
 /*
 #############################################################
-# >>> PHPSurveyor                                           #
+# >>> LimeSurvey                                           #
 #############################################################
 # > Author:  Jason Cleeland                                 #
 # > E-mail:  jason@cleeland.org                             #
@@ -58,7 +58,7 @@ if ( $ver_num < 420 )
 
 if (!function_exists('mb_convert_encoding'))
 {
-    $dieoutput .= "This script needs the PHP Multibyte String Functions library installed: See <a href='http://docs.phpsurveyor.org/tiki-index.php?page=Installation+FAQ'>FAQ</a> and <a href='http://de.php.net/manual/en/ref.mbstring.php'>PHP documentation</a><br />";
+    $dieoutput .= "This script needs the PHP Multibyte String Functions library installed: See <a href='http://docs.limesurvey.org/tiki-index.php?page=Installation+FAQ'>FAQ</a> and <a href='http://de.php.net/manual/en/ref.mbstring.php'>PHP documentation</a><br />";
 }
 if ($dieoutput!='') die($dieoutput);
 
@@ -95,7 +95,7 @@ if($_SERVER['SERVER_SOFTWARE'] == "Xitami") //Deal with Xitami Issue
 if ((!isset($rootsymlinked)) || $rootsymlinked==0 ) {$scriptlocation=realpath(".");}
 elseif ($rootsymlinked==1) {$scriptlocation = dirname($_SERVER['SCRIPT_FILENAME']);}
 else {
-	echo "ERROR: Cannot locate path - the PHP server does not have a setting for realpath or SCRIPT_FILENAME. Contact our support at phpsurveyor.org for assistance!";
+	echo "ERROR: Cannot locate path - the PHP server does not have a setting for realpath or SCRIPT_FILENAME. Contact our support at limesurvey.org for assistance!";
 	exit;
 }
 
@@ -139,7 +139,7 @@ else {
 	if ($databasetype=='odbc_mssql') {$dbport="Driver={SQL Server};Server=$databaselocation;";}
 	if (!@$connect->Connect($dbport, $databaseuser, $databasepass))
     {
-       Die("<strong>Can't connect to PHPSurveyor database. Reason:</strong> ".$connect->ErrorMsg());
+       Die("<strong>Can't connect to LimeSurvey database. Reason:</strong> ".$connect->ErrorMsg());
     }
 }
 
@@ -156,7 +156,7 @@ if ($databasetype=='mysql') {
     $infoarray=$connect->ServerInfo();
     if (version_compare ($infoarray['version'],'4.1','<'))
     {
-      Die ("<br />Error: You need at least MySQL version 4.1 to run PHPSurveyor");
+      Die ("<br />Error: You need at least MySQL version 4.1 to run LimeSurvey");
     }
     @$connect->Execute("SET CHARACTER SET 'utf8'");
 }
@@ -170,12 +170,12 @@ If (!$dbexistsbutempty && $sourcefrom=='admin')
     $usrow = $usresult->FetchRow();
     if (intval($usrow['stg_value'])<$dbversionnumber)
     {
-     Die ("<br />The PHPSurveyor database is not up to date. <br />Please run the <a href='$homeurl/install/index.php'>install script</a> to upgrade your database.");
+     Die ("<br />The LimeSurvey database is not up to date. <br />Please run the <a href='$homeurl/install/index.php'>install script</a> to upgrade your database.");
     }
 
     if (is_dir($homedir."/install") && $debug!=1)
     {
-     Die ("<br />Everything is fine - you just forgot to delete or rename your PHPSurveyor installation directory. <br />Please do so since it may be a security risk.");
+     Die ("<br />Everything is fine - you just forgot to delete or rename your LimeSurvey installation directory. <br />Please do so since it may be a security risk.");
     }
 
 }
@@ -674,7 +674,7 @@ function getanswers()
 
 
 /**
-* getqtypelist() Returnst list of question types available in PHPSurveyor. Edit this if you are adding a new
+* getqtypelist() Returnst list of question types available in LimeSurvey. Edit this if you are adding a new
 *    question type
 * @global string $publicurl
 * @global string $sourcefrom
@@ -1040,7 +1040,7 @@ function checkfortables()
 		echo "<br />\n"
 		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		.$clang->gT("PHPSurveyor Setup")."</strong></td></tr>\n"
+		.$clang->gT("LimeSurvey Setup")."</strong></td></tr>\n"
 		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
 		."\t\t<font color='red'><strong>"
 		.$clang->gT("Error")."</strong></font><br />\n"
@@ -1893,7 +1893,7 @@ function templatereplace($line)
 	}
 	if (strpos($line, "{NAVIGATOR}") !== false) $line=str_replace("{NAVIGATOR}", $navigator, $line);
 	if (strpos($line, "{SUBMITBUTTON}") !== false) {
-		$submitbutton="<input class='submit' type='submit' value=' ".$clang->gT("submit")." ' name='move2' onclick=\"javascript:document.phpsurveyor.move.value = 'movesubmit';\" />";
+		$submitbutton="<input class='submit' type='submit' value=' ".$clang->gT("submit")." ' name='move2' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" />";
 		$line=str_replace("{SUBMITBUTTON}", $submitbutton, $line);
 	}
 	if (strpos($line, "{COMPLETED}") !== false) $line=str_replace("{COMPLETED}", $completed, $line);
@@ -1946,7 +1946,7 @@ function templatereplace($line)
 			}
 			else
 			{
-				$saveall="<input type='submit' name='saveall' value='".$clang->gT("Save Survey and Return")."' class='saveall' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\" />";  // Show Save So Far button
+				$saveall="<input type='submit' name='saveall' value='".$clang->gT("Save Survey and Return")."' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;\" />";  // Show Save So Far button
 			}
 		}
 		else
@@ -2193,7 +2193,7 @@ function SetSurveyLanguage($surveyid, $language)// SetSurveyLanguage($surveyid)
 			//echo "Language will be set to ".$_SESSION['s_lang']."<br />";
 		}
 		require_once($rootdir.'/classes/core/language.php');
-		$clang = new phpsurveyor_lang($_SESSION['s_lang']);
+		$clang = new limesurvey_lang($_SESSION['s_lang']);
 
 		return $clang;
 }
@@ -2396,13 +2396,13 @@ function getAdminFooter($url, $explanation)
 {
 	global $versionnumber, $setfont, $imagefiles, $clang;
 	$strHTMLFooter = "<div class='footer'>\n"
-	. "\t\t\t<div style='float:left; min-width:107;'><img alt='PHPSurveyor - ".$clang->gT("Online Manual")."' title='PHPSurveyor - ".$clang->gT("Online Manual")."' src='$imagefiles/help.gif' "
+	. "\t\t\t<div style='float:left; min-width:107;'><img alt='LimeSurvey - ".$clang->gT("Online Manual")."' title='LimeSurvey - ".$clang->gT("Online Manual")."' src='$imagefiles/help.gif' "
 	. "onclick=\"window.open('$url')\" onmouseover=\"document.body.style.cursor='pointer'\" "
 	. "onmouseout=\"document.body.style.cursor='auto'\" /></div>\n"
-	. "\t\t\t<div style='float:right;'><img alt='".$clang->gT("Support this project - Donate to ")."PHPSurveyor' title='".$clang->gT("Support this project - Donate to ")."PHPSurveyor!' src='$imagefiles/donate.gif' "
+	. "\t\t\t<div style='float:right;'><img alt='".$clang->gT("Support this project - Donate to ")."LimeSurvey' title='".$clang->gT("Support this project - Donate to ")."LimeSurvey!' src='$imagefiles/donate.gif' "
 	. "onclick=\"window.open('http://sourceforge.net/project/project_donations.php?group_id=74605')\" onmouseover=\"document.body.style.cursor='pointer'\" "
 	. "onmouseout=\"document.body.style.cursor='auto'\" /></div>\n"
-	. "\t\t\t<div class='subtitle'><a class='subtitle' title='".$clang->gT("Visit our website!")."' href='http://www.phpsurveyor.org' target='_blank'>PHPSurveyor</a><br />Version $versionnumber</div>"
+	. "\t\t\t<div class='subtitle'><a class='subtitle' title='".$clang->gT("Visit our website!")."' href='http://www.limesurvey.org' target='_blank'>LimeSurvey</a><br />Version $versionnumber</div>"
 	. "</div></body>\n</html>";
 	return $strHTMLFooter;
 }
@@ -2509,7 +2509,7 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false)
 	$mail->From = $fromemail;
 	$mail->AddAddress($to);
 	$mail->FromName = $fromname;
-	$mail->AddCustomHeader("X-Surveymailer: $sitename:Emailer (PHPSurveyor.sourceforge.net)");
+	$mail->AddCustomHeader("X-Surveymailer: $sitename:Emailer (LimeSurvey.sourceforge.net)");
 	if (get_magic_quotes_gpc() != "0")	{$body = stripcslashes($body);}
 	$textbody = strip_tags($body);
 	$textbody = str_replace("&quot;", '"', $textbody);
@@ -2687,7 +2687,7 @@ function getArrayFiltersOutGroup($qid)
  * a number of SQL statements ENDING WITH SEMICOLONS.  The
  * semicolons MUST be the last character in a line.
  * Lines that are blank or that start with "#" or "--" (postgres) are ignored.
- * Only tested with mysql dump files (mysqldump -p -d phpsurveyor)
+ * Only tested with mysql dump files (mysqldump -p -d limesurvey)
  * Function kindly borrowed by Moodle
  * @uses $dbprefix
  * @param string $sqlfile The path where a file with sql commands can be found on the server.

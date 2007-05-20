@@ -1,7 +1,7 @@
 <?php
 /*
     #############################################################
-    # >>> PHPSurveyor                                           #
+    # >>> LimeSurvey                                           #
     #############################################################
     # > Author:  Jason Cleeland                                 #
     # > E-mail:  jason@cleeland.org                             #
@@ -39,45 +39,45 @@
 $databasetype       =   "mysql";       // ADOdb database driver - either mysql or odbc_mssql
 $databaselocation   =   "localhost";   // Network location of your Database - for odbc_mssql use the mssql servername, not localhost or IP
 $databaseport       =   "default";     // The port of your Database - if you use a standard port leave on default
-$databasename       =   "phpsurveyor"; // The name of the database that we will create
+$databasename       =   "limesurvey"; // The name of the database that we will create
 $databaseuser       =   "root";        // The name of a user with rights to create db (or if db already exists, then rights within that db)
 $databasepass       =   "";            // Password of db user
-$dbprefix           =   "phpsv_";      // A global prefix that can be added to all PHPSurveyor tables. Use this if you are sharing
+$dbprefix           =   "phpsv_";      // A global prefix that can be added to all LimeSurvey tables. Use this if you are sharing
                                        // a database with other applications. Suggested prefix is "phpsv_"
 $databasetabletype  =   "myISAM";	   // Storage engine mysql should use when creating survey results tables and token tables (if mysql is used). If available, InnoDB is recommended. Default is myISAM.
 
 // FILE LOCATIONS
-$rooturl            =   "http://{$_SERVER['SERVER_NAME']}/phpsurveyor"; //The root web url for your phpsurveyor installation. 
+$rooturl            =   "http://{$_SERVER['SERVER_NAME']}/limesurvey"; //The root web url for your limesurvey installation. 
 
-$rootdir            =   dirname(__FILE__); // This is the physical disk location for your phpsurveyor installation. Normally you don't have to touch this setting.
-                                           // If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir="C:\Inetpub\wwwroot\phpsurveyor"!
-                                           // Some IIS installations also require to use forward slashes instead of backslashes, e.g.  $rootDir="C:/Inetpub/wwwroot/phpsurveyor"!
-                                           // If you use OS/2 this must be the complete rootdir with FORWARD slashes e.g.: $rootDir="c:/phpsurveyor";!
+$rootdir            =   dirname(__FILE__); // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this setting.
+                                           // If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir="C:\Inetpub\wwwroot\limesurvey"!
+                                           // Some IIS installations also require to use forward slashes instead of backslashes, e.g.  $rootDir="C:/Inetpub/wwwroot/limesurvey"!
+                                           // If you use OS/2 this must be the complete rootdir with FORWARD slashes e.g.: $rootDir="c:/limesurvey";!
 
-$rootsymlinked      =   0;  // if your root document dir is symlinked PHPSurveyor might have problems to find out the dir
+$rootsymlinked      =   0;  // if your root document dir is symlinked LimeSurvey might have problems to find out the dir
                             // If you notice that labels are not being translated like "_ADMINISTRATION_" instead of "Administration"
                             // then try setting this to 1 .
 
 // === Advanced Setup
 
     //The following url and dir locations do not need to be modified unless you have a non-standard
-    //PHPSurveyor installation. Do not change unless you know what you are doing.
+    //LimeSurvey installation. Do not change unless you know what you are doing.
     $homeurl        =   "$rooturl/admin"; // The website location (url) of the admin scripts
     $publicurl      =   "$rooturl";       // The public website location (url) of the public survey script
     $tempurl        =   "$rooturl/tmp";
     $imagefiles     =   "$rooturl/images"; //Location of button bar files for admin script
     $homedir        =   "$rootdir/admin"; // The physical disk location of the admin scripts
     $publicdir      =   "$rootdir";       // The physical disk location of the public scripts
-    $tempdir        =   "$rootdir/tmp";   // The physical location where PHPSurveyor can store temporary files
+    $tempdir        =   "$rootdir/tmp";   // The physical location where LimeSurvey can store temporary files
                                           // Note: For OS/2 the $tempdir may need to be defined as an actual directory
-                                          // example: "x:/phpsurveyor/tmp". We don't know why.
+                                          // example: "x:/limesurvey/tmp". We don't know why.
 
 // Site Info
-$sitename           =   "PHPSurveyor";    // The official name of the site (appears in the Window title)
+$sitename           =   "LimeSurvey";    // The official name of the site (appears in the Window title)
 $scriptname         =   "admin.php";      // The name of the admin script
 $accesscontrol      =   1;                // Set this to 0 for no access control
-$defaultuser        =   "admin";          // This is the default username when PHPSurveyor is installed
-$defaultpass        =   "password";       // This is the default password for the default user when PHPSurveyor is installed
+$defaultuser        =   "admin";          // This is the default username when LimeSurvey is installed
+$defaultpass        =   "password";       // This is the default password for the default user when LimeSurvey is installed
 
 // Site Settings
 $lwcdropdowns       =   "R";              // SHOW LISTS WITH COMMENT in Public Survey as Radio Buttons (R) or Dropdown List (L)
@@ -91,7 +91,7 @@ $timeadjust         =   0;                // Number of hours to adjust between y
 $allowexportalldb   =   1;                // 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported
 $allowmandbackwards =   1;                // Allow moving backwards (ie: << prev) through survey if a mandatory question
                                           // has not been answered. 1=Allow, 0=Deny
-$deletenonvalues    =   1;                // By default, PHPSurveyor does not save responses to conditional questions that haven't been answered/shown. To have PHPSurveyor save these responses change this value to 0.
+$deletenonvalues    =   1;                // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
 $shownoanswer       =   1;                // Show "no answer" for non mandatory questions
 $admintheme         =  "default";         // This setting specifys the directory where the admin finds it theme/css style files, e.g. setting 'default' points to /admin/styles/default
 
@@ -101,7 +101,7 @@ $debug              =   0;      // Switch this to 1 if you are looking for error
 $sessionlifetime    =   3600;   // How long until a survey session expires in seconds
 
 // Email Settings
-// These settings determine how PHPSurveyor will send emails
+// These settings determine how LimeSurvey will send emails
 
 $siteadminemail     =   "your@email.org"; // The default email address of the site administrator
 $siteadminname      =   "Your Name";      // The name of the site administrator
@@ -122,8 +122,8 @@ $maxemails          =   50;               // The maximum number of emails to sen
 
 // JPGRAPH Settings
 // To use jpgraph you must install and set up jpgraph, available from http://www.aditus.nu/jpgraph/
-// PHPSurveyor has been tested using version 1.13. Documentation for this is available at the
-// jpgraph website. PHPSurveyor cannot assist in the setting up of this system.
+// LimeSurvey has been tested using version 1.13. Documentation for this is available at the
+// jpgraph website. LimeSurvey cannot assist in the setting up of this system.
 // To use JPGraph adjust the next two lines, and adjust the location as suites.
 $usejpgraph         =   0; //Set to 1 to enable
 $jpgraphdir         =   "/var/apache/htdocs/jpgraph"; //The location of the jpgraph class (where jpgraph.php is)

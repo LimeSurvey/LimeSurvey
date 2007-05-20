@@ -1,7 +1,7 @@
 <?php
 /*
 #############################################################
-# >>> PHPSurveyor 	 										#
+# >>> LimeSurvey 	 										#
 #############################################################
 # > Author:  Jason Cleeland									#
 # > E-mail:  jason@cleeland.org								#
@@ -220,7 +220,7 @@ if (isset($_POST['move']) && $_POST['move'] == "movelast" && (!isset($notanswere
 	}
 		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
-	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' name='phpsurveyor'>\n";
+	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey'>\n";
 
 	echo "\n\n<!-- START THE SURVEY -->\n";
 		echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
@@ -264,7 +264,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	sendcacheheaders();
 	doHeader();
 	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' name='phpsurveyor'>\n";
+	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey'>\n";
 
 	echo "\n\n<!-- START THE SURVEY -->\n";
 
@@ -374,7 +374,7 @@ if (isset($vpopup)) {echo $vpopup;}
 
 $hiddenfieldnames=implode("|", $inputnames);
 print <<<END
-<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' name='phpsurveyor'>
+<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey'>
 
 <!-- INPUT NAMES -->
 <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />
@@ -574,7 +574,7 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 				$appendj .= "\t\t\t{\n";
 				$appendj .= "\t\t\t\tdocument.getElementById('$tbody').style.display='none';\n";
 				$appendj .= "\t\t\t\tdocument.getElementById('$dtbody').value='off';\n";
-				$appendj .= "\t\t\t\tradio_unselect(document.forms['phpsurveyor'].elements['$tbodyae']);\n";
+				$appendj .= "\t\t\t\tradio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
 				$appendj .= "\t\t\t}\n";
 			}
 		}

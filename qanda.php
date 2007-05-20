@@ -1,7 +1,7 @@
 <?php
 /*
 #############################################################
-# >>> PHPSurveyor                                           #
+# >>> LimeSurvey                                           #
 #############################################################
 # > Author:  Jason Cleeland                                 #
 # > E-mail:  jason@cleeland.org                             #
@@ -1118,8 +1118,8 @@ function do_ranking($ia)
 	. "\t\t\t<!--\n"
 	. "\t\t\t\tfunction rankthis_{$ia[0]}(\$code, \$value)\n"
 	. "\t\t\t\t\t{\n"
-	. "\t\t\t\t\t\$index=document.phpsurveyor.CHOICES_{$ia[0]}.selectedIndex;\n"
-	. "\t\t\t\t\tdocument.phpsurveyor.CHOICES_{$ia[0]}.selectedIndex=-1;\n"
+	. "\t\t\t\t\t\$index=document.limesurvey.CHOICES_{$ia[0]}.selectedIndex;\n"
+	. "\t\t\t\t\tdocument.limesurvey.CHOICES_{$ia[0]}.selectedIndex=-1;\n"
 	. "\t\t\t\t\tfor (i=1; i<=$anscount; i++)\n"
 	. "\t\t\t\t\t\t{\n"
 	. "\t\t\t\t\t\t\$b=i;\n"
@@ -1238,7 +1238,7 @@ function do_ranking($ia)
 		{
 			$ranklist .= "style='display:none'";
 		}
-		$ranklist .= " id='cut_{$ia[0]}$i' onclick=\"deletethis_{$ia[0]}(document.phpsurveyor.RANK_{$ia[0]}$i.value, document.phpsurveyor.fvalue_{$ia[0]}$i.value, document.phpsurveyor.RANK_{$ia[0]}$i.name, this.id)\" /><br />\n";
+		$ranklist .= " id='cut_{$ia[0]}$i' onclick=\"deletethis_{$ia[0]}(document.limesurvey.RANK_{$ia[0]}$i.value, document.limesurvey.fvalue_{$ia[0]}$i.value, document.limesurvey.RANK_{$ia[0]}$i.name, this.id)\" /><br />\n";
 		$inputnames[]=$myfname;
 		$ranklist .= "</td></tr>\n";
 	}

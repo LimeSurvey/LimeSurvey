@@ -4,7 +4,7 @@
 <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
 <meta name="ProgId" content="FrontPage.Editor.Document">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="content-script-type" content="text/javascript"><title>PHPSurveyor Templates &amp; Style Guide</title>
+<meta http-equiv="content-script-type" content="text/javascript"><title>LimeSurvey Templates &amp; Style Guide</title>
 
 <meta content="Jason Cleeland" name="author"></head>
 
@@ -59,9 +59,9 @@
 <td width="100%">
 <strong><u><font size="4"><span lang="en-au"><a name="Introduction" id="Introduction">Introduction</a></span></font></u></strong>
 <p>
-<font size="2"><span lang="en-au">PHPSurveyor uses a series of template
+<font size="2"><span lang="en-au">LimeSurvey uses a series of template
 files to create its public survey screens. The templating system used
-by PHPSurveyor is relatively basic, but allows fairly comprehensive
+by LimeSurvey is relatively basic, but allows fairly comprehensive
 control over the look and style of your surveys.</span></font>
 </p>
 <p>
@@ -104,11 +104,11 @@ text. The following gives an example of the method:</font></span>
 </center>
 </div>
 <p>
-<span lang="en-au"><font size="2">PHPSurveyor comes with two templates, and we plan to make other templates by other people available.</font></span>
+<span lang="en-au"><font size="2">LimeSurvey comes with two templates, and we plan to make other templates by other people available.</font></span>
 </p>
 <p>
 <span lang="en-au"><font size="2">These instructions may make the
-template files within PHPSurveyor seem overly complex. You will
+template files within LimeSurvey seem overly complex. You will
 probably find it easiest to create new template files by copying an
 existing template to a new directory, and then playing around with the
 files. It should start to make sense fairly quickly after that.<br>
@@ -120,9 +120,9 @@ files. It should start to make sense fairly quickly after that.<br>
 <td width="100%">
 <u><strong><span lang="en-au"><a name="Location of Template Files">Location of Template Files</a></span></strong></u>
 <p>
-<span lang="en-au"><font size="2">PHPSurveyor expects templates to
+<span lang="en-au"><font size="2">LimeSurvey expects templates to
 exist in their own distinct sub-directory within a templates directory
-that is kept in the public directory with the other PHPSurveyor public
+that is kept in the public directory with the other LimeSurvey public
 files.</font></span>
 </p>
 <p>
@@ -154,14 +154,14 @@ tag, and should not contain the "&lt;html&gt;" tag. This 'very
 beginning' of a standard html page is written by the scripts. Please
 ensure that your startpage.pstpl files contains a &lt;body&gt; tag,
 even though many browsers do not require strict adherence to the W3
-HTML stanards, the PHPSurveyor script needs to find a &lt;body&gt; tag,
+HTML stanards, the LimeSurvey script needs to find a &lt;body&gt; tag,
 to run certain javascript elements. It is not expected that many
 'keywords' will be used in the startpage.pstpl file, however you may
 wish to put the {SURVEYNAME} into the title.<br>
 The startpage.pstpl file can contain code that ends in the
 corresponding endpage.pstpl file, so you can start a table in this file
 and close the table in the endpage.pstpl file.<br>
-The startpage.pstpl and endpage.pstpl files wrap around every possible page used by PHPSurveyor.</font></span>
+The startpage.pstpl and endpage.pstpl files wrap around every possible page used by LimeSurvey.</font></span>
 </li>
 <li>
 <span lang="en-au"><font size="2"><strong>survey.pstpl<br></strong>
@@ -725,7 +725,7 @@ css with that.</font>
 <p>
 <font size="2">The <i><strong>chart.jpg</strong></i> file is a simple
 1pixel image file which is used to create the progress bar image in the
-'PERCENTCOMPLETE' table. If it does not exist, PHPSurveyor will use the
+'PERCENTCOMPLETE' table. If it does not exist, LimeSurvey will use the
 default 'maroon' coloured image in the public directory, however if you
 want to create one to match your own colour scheme (which would make
 sense really), then you should save it here. Remember it should be a
@@ -733,17 +733,17 @@ jpeg file, and 1 pixel x 1 pixel, in whichever colour you want.</font>
 </p>
 <p>
 <font size="2">The <span lang="en-au"><i><strong>privacy.pstpl, invitationemail.pstpl, reminderemail.pstpl</strong></i> and</span> <i><strong>confirmationemail.pstpl</strong></i> <span lang="en-au">are
-no longer used by PHPSurveyor and defaults are instead set in the
+no longer used by LimeSurvey and defaults are instead set in the
 applicable language files. The email messages can now be edited on a
 survey by survey basis.</span></font>
 </p>
 </td>
-</tr><tr><td><span style="font-weight: bold;"><a name="specialties"></a><strong><span style="text-decoration: underline;">Specialties for Developers</span></strong></span><br><br><small>Starting with version 0.99 PHPSurveyor has integrated some user-made patches, which will be described here.</small><br><small><br><big><span style="font-weight: bold;">Basic CMS Integration support</span></big></small><br><small>To be able to integrate PHPSurveyor into another CMS use the following options in config.php:<br><br></small><small><big><span style="font-family: monospace;">// Set $embedded to true and specify the header and footer functions if the survey is to be displayed embedded in a CMS</span></big><br><br></small><div style="margin-left: 40px;"><span style="font-family: monospace;">$embedded = false;</span><br><span style="font-family: monospace;">$embedded_inc
+</tr><tr><td><span style="font-weight: bold;"><a name="specialties"></a><strong><span style="text-decoration: underline;">Specialties for Developers</span></strong></span><br><br><small>Starting with version 0.99 LimeSurvey has integrated some user-made patches, which will be described here.</small><br><small><br><big><span style="font-weight: bold;">Basic CMS Integration support</span></big></small><br><small>To be able to integrate LimeSurvey into another CMS use the following options in config.php:<br><br></small><small><big><span style="font-family: monospace;">// Set $embedded to true and specify the header and footer functions if the survey is to be displayed embedded in a CMS</span></big><br><br></small><div style="margin-left: 40px;"><span style="font-family: monospace;">$embedded = false;</span><br><span style="font-family: monospace;">$embedded_inc
 = "";&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp; // path to the header to include if any</span><br><span style="font-family: monospace;">$embedded_headerfunc = "";&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // e.g. COM_siteHeader for geeklog</span><br><span style="font-family: monospace;">$embedded_footerfunc = "";&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // e.g. COM_siteFooter for geeklog</span><big style="font-family: monospace;"><span style="font-weight: bold;"></span></big><br></div><big style="font-family: monospace;"><span style="font-weight: bold;"></span></big><br><small>Set $embedded to true to enable CMS-embedding. By using the $embedded_inc variable you can include own php files.<br>By
 setting $embedded_headerfunc oder $embedded_footerfunc you can call
 functions from your included files that output the according headers or
-footers instead of PHPSurveyors own ones.<br></small><br><br><span style="font-weight: bold;">Support for your own Javascript functions</span><br><small>Some users may need to run Javascript on the survey pages, but calling
+footers instead of LimeSurveys own ones.<br></small><br><br><span style="font-weight: bold;">Support for your own Javascript functions</span><br><small>Some users may need to run Javascript on the survey pages, but calling
 checkconditions() in the BODY element made it&nbsp;impossible to tie in any
 custom code.<br>This call was replaced with a small JS function in the HEAD that sniffs
 for the existence of checkconditions() and template_onload() before

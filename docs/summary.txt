@@ -1,6 +1,6 @@
-PHPSurveyor is a set of PHP scripts aimed at allowing people to develop online Surveys.
+LimeSurvey is a set of PHP scripts aimed at allowing people to develop online Surveys.
 
-Using PHPSurveyor it is possible to:
+Using LimeSurvey it is possible to:
 
 1) Develop surveys (multiple surveys possible);
 2) Create a database for collecting survey data;

@@ -1,13 +1,13 @@
 <?php
 /*
 #############################################################
-# >>> PHPSurveyor       									#
+# >>> LimeSurvey       									#
 #############################################################
 # This set of scripts allows you to develop, publish and	#
 # perform data-entry on surveys.							#
 #############################################################
 #															#
-#	Copyright (C) 2007 by the developers of PHPSurveyor     #
+#	Copyright (C) 2007 by the developers of LimeSurvey     #
 #															#
 # This program is free software; you can redistribute 		#
 # it and/or modify it under the terms of the GNU General 	#
@@ -53,7 +53,7 @@ header("Content-Disposition: ".
 // Get Base Language:
 
 $language = GetBaseLanguageFromSurveyID($surveyid);
-$clang = new phpsurveyor_lang($language);
+$clang = new limesurvey_lang($language);
 
 sendcacheheaders();
 $query = "SELECT DISTINCT qid FROM ".db_table_name("questions")." WHERE sid=$surveyid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER

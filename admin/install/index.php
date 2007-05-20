@@ -1,7 +1,7 @@
 <?php
 /*
 #############################################################
-# >>> PHPSurveyor  										    #
+# >>> LimeSurvey  										    #
 #############################################################
 # > Author:  Jason Cleeland									#
 # > E-mail:  jason@cleeland.org								#
@@ -38,7 +38,7 @@ require_once(dirname(__FILE__).'/../../config.php');  // config.php itself inclu
 $adminoutput='';  // Alle future output is written into this and then outputted at the end of file
 // SET THE LANGUAGE???? -> DEFAULT SET TO EN FOR NOW
 require_once($rootdir.'/classes/core/language.php');
-$clang = new phpsurveyor_lang("en");
+$clang = new limesurvey_lang("en");
 ob_implicit_flush(true);
 sendcacheheaders();
 
@@ -47,11 +47,11 @@ if (!$database_exists)
 	$adminoutput.= "<br />\n"
 	."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 	."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-	.$clang->gT("PHPSurveyor Setup")."</strong></td></tr>\n"
+	.$clang->gT("LimeSurvey Setup")."</strong></td></tr>\n"
 	."\t<tr bgcolor='#CCCCCC'><td align='center'>\n"
-	."<strong>".$clang->gT("Welcome to PHPSurveyor Setup!")."</strong><br /><br />\n"
+	."<strong>".$clang->gT("Welcome to LimeSurvey Setup!")."</strong><br /><br />\n"
 	.$clang->gT("The database defined in config.php does not exist.")."<br />\n"
-	.$clang->gT("PHPSurveyor can attempt to create this database for you.")."<br /><br />\n"
+	.$clang->gT("LimeSurvey can attempt to create this database for you.")."<br /><br />\n"
 	.$clang->gT("Your selected database name is:")."<strong> $databasename</strong><br />\n"
 	."<br /><input type='submit' value='"
 	.$clang->gT("Create Database")."' onclick='location.href=\"createdb.php\"' /></center>\n"
@@ -64,7 +64,7 @@ if (!$database_exists)
 	    $connect->Execute("USE DATABASE `$databasename`");
 		$adminoutput.= "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		.$clang->gT("PHPSurveyor Setup")."</strong></td></tr>\n"
+		.$clang->gT("LimeSurvey Setup")."</strong></td></tr>\n"
 		."\t<tr bgcolor='#CCCCCC'><td align='center'>\n";
 		$adminoutput.= "<br /><strong><font color='green'>\n";
 		$adminoutput.= sprintf($clang->gT('A database named "%s" does already exist.'),$databasename)."</font></strong></font><br /><br />\n";
@@ -78,7 +78,7 @@ else
     $connect->database = $databasename;
     $connect->Execute("USE DATABASE `$databasename`");
 	$output=checkforupgrades();
-    if (!isset($ouput)) {$adminoutput.='<br />PHPSurveyor Database is up to date. No action needed';}
+    if (!isset($ouput)) {$adminoutput.='<br />LimeSurvey Database is up to date. No action needed';}
       else {$adminoutput.=$output;}
     $adminoutput.="<br />Please <a href='$homeurl/$scriptname'>log in.</a>";
 

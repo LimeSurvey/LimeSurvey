@@ -8,7 +8,7 @@
 # Based on "Zip file creation class", uses zLib
 #
 #
-# Modified by Jason Cleeland - removed "subdirectory" capacity for PHPSurveyor use
+# Modified by Jason Cleeland - removed "subdirectory" capacity for LimeSurvey use
 
 class PHPZip
 {

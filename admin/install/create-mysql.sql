@@ -7,7 +7,7 @@
 -- Server version: 5.0.20
 -- PHP Version: 5.1.4
 -- 
--- Database: `phpsurveyor-development`
+-- Database: `limesurvey-development`
 -- 
 
 -- --------------------------------------------------------

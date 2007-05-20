@@ -1,4 +1,4 @@
-Welcome to PHPSurveyor v1.48RC!
+Welcome to LimeSurvey v1.48RC!
 
 Warning:
 THIS IS AN RELEASE CANDIDATE. It should be pretty stable, but it SHOULD NOT be used FOR PRODUCTION!
@@ -14,21 +14,21 @@ This release does have the following requirements:
 HOW TO INSTALL
 ---------------
 If you are doing a complete new installation please refer to the manual at
-http://docs.phpsurveyor.org
+http://docs.limesurvey.org
 
 
 
 === UPGRADING=====
 
-HOW TO UPGRADE from earlier versions of PHPSurveyor (<1.08)
+HOW TO UPGRADE from earlier versions of LimeSurvey (<1.08)
 -------------------------------------------------------------
 We are sorry but you can't upgrade from versions <= 1.0.8. Seriously! 
 The database structure has changed that much it wouldn't be feasible.
 However, you can import old surveys from version 1.0 when you create a new survey in this new version.
-Just do a new installation as described on http://docs.phpsurveyor.org.
+Just do a new installation as described on http://docs.limesurvey.org.
 
 
-HOW TO UPGRADE from earlier versions from PHPSurveyor 1.45 or later
+HOW TO UPGRADE from earlier versions from LimeSurvey 1.45 or later
 --------------------------------------------------------------------
 1. Make backups of your files and database.
 2. Backup your config.php.
@@ -104,7 +104,7 @@ Fixed bug #901: [Statistics] uncompleted Answers should not be used for statisti
 
 Special thanks to el-matador-69 for its ongoing help in finding and eliminating bugs.
 Thank you to all the translators who are keeping the application and documentation up to date!
-And last but not least to everyone in the PHPSurveyor developer team - without your help this wouldn't have been possible!
+And last but not least to everyone in the LimeSurvey developer team - without your help this wouldn't have been possible!
 
 
 Changes from 1.00b to 1.48b - Release Date: 2007/04/10
@@ -133,7 +133,7 @@ Changes from 1.00b to 1.48b - Release Date: 2007/04/10
 - Added answer limiting based on a previous question for array question types (machaven)
 - Added page-by-page saving of the answers (swales)
 - Updated the SPSS-export with lots of changes (machaven)
-- Changed the translation system from language files to gettext system. That will make translations easier to handle and to update. Refer to the translation instructions here: http://www.phpsurveyor.org/index.php?option=com_jd-wiki&Itemid=51&id=how_to_translate_phpsurveyor (c_schmitz))
+- Changed the translation system from language files to gettext system. That will make translations easier to handle and to update. Refer to the translation instructions here: http://www.limesurvey.org/index.php?option=com_jd-wiki&Itemid=51&id=how_to_translate_limesurvey (c_schmitz))
 - Added date picker to date question type and survey properties (c_schmitz)
 - Changed the mailer class to PHPMailer which is alot more reliable and easier to configure. (c_schmitz)
 - Added an overview of all surveys in addition to the existing combobox (nkorfiatis)
@@ -199,7 +199,7 @@ Changes from 0.993 to 0.995
 
 Fixed bug #397: [Translation] Updated swedish lang-file (c_schmitz)
 Fixed bug #398: [Security] shell_exec not only disabled in safe_mode (c_schmitz)
-Fixed bug #400: [Documentation] Requirements for phpsurveyor (c_schmitz)
+Fixed bug #400: [Documentation] Requirements for limesurvey (c_schmitz)
 Fixed bug #348: [Import / Export] Failed to import survey dumps when using MySQL version 5.x (c_schmitz)
 Fixed bug #403: [Import / Export] SPSS export does not work properly in 0.993 (c_schmitz)
 Fixed bug #411: [Survey at Runtime] Patch: Options List (do_list_radio function) (c_schmitz)

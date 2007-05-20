@@ -148,7 +148,7 @@
 
       <li>
         
-        <p style="margin-bottom: 0cm;"><a href="#The PHPSurveyor Template Editor"><font size="1"><font face="Verdana">PHPSurveyor 風格模組編輯器</font></font></a></p>
+        <p style="margin-bottom: 0cm;"><a href="#The LimeSurvey Template Editor"><font size="1"><font face="Verdana">LimeSurvey 風格模組編輯器</font></font></a></p>
 
       </li>
 
@@ -226,20 +226,20 @@
 <p><a name="Installation"></a><font face="Verdana"><font size="4"><u><strong>安裝</strong></u></font></font></p>
 
 <p><font face="Verdana"><font size="2"><strong>1.
-請確定您的網站能運行 PHPSurveyor .</strong><br>
+請確定您的網站能運行 LimeSurvey .</strong><br>
 
 您的網站伺服器需要 PHP 4.1.0 以上版本及 MySQL 數據庫. 而且須預留 2 至 2.5 MB 磁碟空間.</font></font></p>
 
 <p><font size="2"><font face="Verdana"><strong>2.
-下載 the PHPSurveyor 套件<br>
+下載 the LimeSurvey 套件<br>
 
-</strong>到訪 sourceforge 網站下載最新版 PHPSurveyor 套件. <a href="http://sourceforge.net/projects/phpsurveyor/"><span style="text-decoration: none;">http://sourceforge.net/projects/phpsurveyor/</span></a><br>
+</strong>到訪 sourceforge 網站下載最新版 LimeSurvey 套件. <a href="http://sourceforge.net/projects/limesurvey/"><span style="text-decoration: none;">http://sourceforge.net/projects/limesurvey/</span></a><br>
 
 套件約 300kb <span lang="zh-tw">至 400kb </span>的檔案大小.
 下載 zip 壓縮檔，並儲存到您的電腦硬碟內.</font></font></p>
 
 <p><font face="Verdana"><font size="2"><strong>3.
-反壓縮 PHPSurveyor 套件<br>
+反壓縮 LimeSurvey 套件<br>
 
 </strong>使用壓縮程式把 zip 壓縮檔案還原到您的目錄／資料夾. 反壓縮時請保持原來的目錄結構及檔案配置一併進行 (這是大多數壓縮程式的預設處理方法). 反壓縮的套件具備下列結構:</font></font></p>
 
@@ -252,7 +252,7 @@
 
       <td width="25%">
       
-      <p><font face="Verdana"><font size="2">/phpsurveyor*</font></font></p>
+      <p><font face="Verdana"><font size="2">/limesurvey*</font></font></p>
 
       </td>
 
@@ -475,32 +475,32 @@
 <p align="left"><font face="Verdana"><font size="2"><strong>目錄使用權限<br>
 
 </strong><span lang="zh-tw">程序</span>
-<span lang="zh-tw">admin 目錄需要有 '寫入' 權限來輸入外部問卷.  "/phpsurveyor/tmp" 目錄用作上傳檔案，所以要設定
-可讀取/可寫入/可執行全部的狀態. 在 linux 或 unix 它應該 chmod 到 777. 如果您希望使用 PHPSurveyor 來控制
+<span lang="zh-tw">admin 目錄需要有 '寫入' 權限來輸入外部問卷.  "/limesurvey/tmp" 目錄用作上傳檔案，所以要設定
+可讀取/可寫入/可執行全部的狀態. 在 linux 或 unix 它應該 chmod 到 777. 如果您希望使用 LimeSurvey 來控制
 Apache 目錄的安全狀態,  /</span>php<span lang="zh-tw">surveyor/admin
 目錄要設定成可讀取/可寫入/可執行全部的狀態; 在 linux/unix
 chmod 777. 如果您計劃使用其它方法來設定 Apache 目錄的安全設定 (ie: 手動或 使用網絡管理工具) 您可以讓此目錄設定成
 可讀取/可執行狀態 - chmod 755. 其他目錄可以設定成可讀取狀態或在 linux/unix chmod 755.</span>
-您可以把 /phpsurveyor/admin 目錄內的檔案都設定成 755 的使用權限.</font></font></p>
+您可以把 /limesurvey/admin 目錄內的檔案都設定成 755 的使用權限.</font></font></p>
 
 <p align="left"><font face="Verdana"><font size="2"><strong>4.
 收集網站伺服器資料<br>
 
-</strong>您需要符合以下條件才可以安裝 PHPSurveyor.</font></font></p>
+</strong>您需要符合以下條件才可以安裝 LimeSurvey.</font></font></p>
 
 <ul>
 
   <li>
     
-    <p style="margin-bottom: 0cm;" align="left"><font face="Verdana"><font size="2">您要建立 phpsurveyor 的網址(ie:
-'http://my.domain.com/phpsurveyor') </font></font>
+    <p style="margin-bottom: 0cm;" align="left"><font face="Verdana"><font size="2">您要建立 limesurvey 的網址(ie:
+'http://my.domain.com/limesurvey') </font></font>
     </p>
 
   </li>
 
   <li>
     
-    <p style="margin-bottom: 0cm;" align="left"><font face="Verdana"><font size="2">phpsurveyor 在伺服器所在的實質位置 (ie: '/home/usr/htdocs/phpsurveyor') </font></font>
+    <p style="margin-bottom: 0cm;" align="left"><font face="Verdana"><font size="2">limesurvey 在伺服器所在的實質位置 (ie: '/home/usr/htdocs/limesurvey') </font></font>
     </p>
 
   </li>
@@ -536,9 +536,9 @@ chmod 777. 如果您計劃使用其它方法來設定 Apache 目錄的安全設�
 </ul>
 
 <p align="left"><font face="Verdana"><font size="2"><strong>5.
-PHPSurveyor 組態<br>
+LimeSurvey 組態<br>
 
-</strong>使用文字編輯器修改 /phpsurveyor/admin 目錄內的 config.php 檔案. 下列設定要加以調整:</font></font></p>
+</strong>使用文字編輯器修改 /limesurvey/admin 目錄內的 config.php 檔案. 下列設定要加以調整:</font></font></p>
 
 <ul>
 
@@ -561,7 +561,7 @@ PHPSurveyor 組態<br>
   <li>
     
     <p style="margin-bottom: 0cm;" align="left"><font face="Verdana"><font size="2"><strong>$databasename</strong>:
-在 MySQL 數據庫伺服器內使用 PHPSurveyor 的數據庫名稱 . 如果您在 MySQL 伺服器 擁有高度的使用權限, 您可以為PHPSurveyor 建立專用數據庫. 在此情況下，在此設定填上其名稱. 此外，您亦可以使用原有的MySQL 數據庫名稱. </font></font>
+在 MySQL 數據庫伺服器內使用 LimeSurvey 的數據庫名稱 . 如果您在 MySQL 伺服器 擁有高度的使用權限, 您可以為LimeSurvey 建立專用數據庫. 在此情況下，在此設定填上其名稱. 此外，您亦可以使用原有的MySQL 數據庫名稱. </font></font>
     </p>
 
   </li>
@@ -593,7 +593,7 @@ MySQL 密碼</font></font></p>
   <li>
     
     <p style="margin-bottom: 0cm;" align="left"><font face="Verdana" size="2"> <strong>$useidprefix</strong>:
-預設是 0 (zero). 如果定為 1 (one) 問卷的回應結果會採用預設的前綴 id 編號, 由以下字串設定 $idprefix. 您可以使用這方法來為同一份問卷建立多個版本的 PHPSurveyor ， 然後把不同伺服器的問卷結果匯總成單一回應結果的資料表.</font></p>
+預設是 0 (zero). 如果定為 1 (one) 問卷的回應結果會採用預設的前綴 id 編號, 由以下字串設定 $idprefix. 您可以使用這方法來為同一份問卷建立多個版本的 LimeSurvey ， 然後把不同伺服器的問卷結果匯總成單一回應結果的資料表.</font></p>
 
   </li>
 
@@ -609,15 +609,15 @@ MySQL 密碼</font></font></p>
   <li>
     
     <p style="margin-bottom: 0cm;" align="left"><font face="Verdana" size="2"> <strong>$rooturl</strong>:
-執行 phpsurveyor 程序檔的正確 URL 網址<span lang="zh-tw">.</span>
-其實您毋須在此作出設定，因為預設變數已為您作好安排 ( {$_SERVER['SERVER_NAME']} 會自動找出執行檔的所在，萬一不可，您才需要在此設定 URL - 例如︰ "<a href="http://www.mydomain.com/phpsurveyor">http://www.mydomain.com/phpsurveyor</a>".</font></p>
+執行 limesurvey 程序檔的正確 URL 網址<span lang="zh-tw">.</span>
+其實您毋須在此作出設定，因為預設變數已為您作好安排 ( {$_SERVER['SERVER_NAME']} 會自動找出執行檔的所在，萬一不可，您才需要在此設定 URL - 例如︰ "<a href="http://www.mydomain.com/limesurvey">http://www.mydomain.com/limesurvey</a>".</font></p>
 
   </li>
 
   <li>
     
     <p style="margin-bottom: 0cm;" align="left"><span lang="zh-tw"> <font face="Verdana" size="2"><strong>$rootdir</strong>:
-執行 phpsurveyor 程序檔的絕對位置. 其實您毋須在此作出設定，因為預設變數已為您作好安排 ( {$_SERVER['DOCUMENT_ROOT']} 會自動找出執行檔的所在，萬一不可，您才需要在此設定 - 例如︰ "/home/public_html/phpsurveyor".</font></span></p>
+執行 limesurvey 程序檔的絕對位置. 其實您毋須在此作出設定，因為預設變數已為您作好安排 ( {$_SERVER['DOCUMENT_ROOT']} 會自動找出執行檔的所在，萬一不可，您才需要在此設定 - 例如︰ "/home/public_html/limesurvey".</font></span></p>
 
     
     <ul>
@@ -625,15 +625,15 @@ MySQL 密碼</font></font></p>
       <li>
         
         <p style="margin-bottom: 0cm;" align="left"><i><strong><font face="Verdana" size="2"><span lang="zh-tw">
-		以下的位置設定已是 PHPSurveyor 的標準設定，如無必要切勿修改 (ie: 只要您是使用標準的目錄結構) ，除非您為子目錄改了名，才需要在此設定.</span></font></strong></i></p>
+		以下的位置設定已是 LimeSurvey 的標準設定，如無必要切勿修改 (ie: 只要您是使用標準的目錄結構) ，除非您為子目錄改了名，才需要在此設定.</span></font></strong></i></p>
 
       </li>
 
       <li>
         
         <p style="margin-bottom: 0cm;" align="left"><font face="Verdana" size="2"><strong>$homeurl</strong>:
-這裡要設定admin 子目錄的 <span lang="zh-tw"> URL </span>. 這是 /phpsurveyor/admin 資料夾的網址 URL  - 例如︰ "<a href="http://www.mydomain.com/phpsurveyor/html/admin"><span style="text-decoration: none;">http://www.mydomain.com/phpsurveyor/html/admin</span></a>".
-結尾切勿加上斜線. Config.php 的預設設定會自動找尋伺服器名稱內的php 變數設定 - {$_SERVER['SERVER_NAME']}. 一般而言，您只要保留本欄設定，只需改PHPSurveyor 所在目錄的名稱以便相互匹配. </font>
+這裡要設定admin 子目錄的 <span lang="zh-tw"> URL </span>. 這是 /limesurvey/admin 資料夾的網址 URL  - 例如︰ "<a href="http://www.mydomain.com/limesurvey/html/admin"><span style="text-decoration: none;">http://www.mydomain.com/limesurvey/html/admin</span></a>".
+結尾切勿加上斜線. Config.php 的預設設定會自動找尋伺服器名稱內的php 變數設定 - {$_SERVER['SERVER_NAME']}. 一般而言，您只要保留本欄設定，只需改LimeSurvey 所在目錄的名稱以便相互匹配. </font>
         </p>
 
       </li>
@@ -642,7 +642,7 @@ MySQL 密碼</font></font></p>
         
         <p style="margin-bottom: 0cm;" align="left"><font face="Verdana"><font size="2"><strong>$publicurl</strong>:
 這是伺服器'公用主目錄' 指向的 <span lang="zh-tw">URL
-        </span>. 所有公用程序包括 "phpsurveyor" 資料夾(或其他您安放其他程序`的子目錄) 均存放在公用主目錄之下. </font></font>
+        </span>. 所有公用程序包括 "limesurvey" 資料夾(或其他您安放其他程序`的子目錄) 均存放在公用主目錄之下. </font></font>
         </p>
 
       </li>
@@ -650,7 +650,7 @@ MySQL 密碼</font></font></p>
       <li>
         
         <p style="margin-bottom: 0cm;" align="left"><span lang="zh-tw"><font size="2"><font face="Verdana"><strong>$tempurl</strong>:
-這是設定 "/phpsurveyor/tmp" 目錄的 URL 位置 - 或您想把 PHPSurveyoror 存放臨時檔案及上傳檔案的目錄位置. 這目錄必須具有
+這是設定 "/limesurvey/tmp" 目錄的 URL 位置 - 或您想把 LimeSurveyor 存放臨時檔案及上傳檔案的目錄位置. 這目錄必須具有
 讀/寫/執行的權限 (ie: chmod 777)</font></font></span>
         </p>
 
@@ -659,7 +659,7 @@ MySQL 密碼</font></font></p>
       <li>
         
         <p style="margin-bottom: 0cm;" align="left"><span lang="zh-tw"><font size="2"><font face="Verdana"><strong>$imagefiles</strong>:
-預設是指向  /phpsurveyor/admin/images 的 URL 位置 - 圖片會自動存放於此。如果圖片是存放在其他位置，請您在此設定其 URL 正確位置.</font></font></span>
+預設是指向  /limesurvey/admin/images 的 URL 位置 - 圖片會自動存放於此。如果圖片是存放在其他位置，請您在此設定其 URL 正確位置.</font></font></span>
         </p>
 
       </li>
@@ -667,7 +667,7 @@ MySQL 密碼</font></font></p>
       <li>
         
         <p style="margin-bottom: 0cm;" align="left"><font face="Verdana"><font size="2"><strong>$homedir</strong>:
-指向 admin 執行檔的絕對位置 - 例如︰"/home/usr/htdocs/phpsurveyor/admin". 結尾切勿加上斜線. 在 config.php 預設值會採用 php 變數設定自動找尋全部文件的預設根目錄 - {$_SERVER['DOCUMENT_ROOT']}. 在大多數情況下您只需要把 PHPSurveyor 程序檔所在的目錄名稱修改匹配即可。</font></font>
+指向 admin 執行檔的絕對位置 - 例如︰"/home/usr/htdocs/limesurvey/admin". 結尾切勿加上斜線. 在 config.php 預設值會採用 php 變數設定自動找尋全部文件的預設根目錄 - {$_SERVER['DOCUMENT_ROOT']}. 在大多數情況下您只需要把 LimeSurvey 程序檔所在的目錄名稱修改匹配即可。</font></font>
         </p>
 
       </li>
@@ -683,7 +683,7 @@ MySQL 密碼</font></font></p>
       <li>
         
         <p style="margin-bottom: 0cm;" align="left"><font size="2"><font face="Verdana"><span lang="zh-tw"><strong>$tempdir</strong>:
-在此設定 /phpsurveyor/tmp 目錄的絕對位置，讓程序可以讀寫檔案.</span><br>
+在此設定 /limesurvey/tmp 目錄的絕對位置，讓程序可以讀寫檔案.</span><br>
 
 &nbsp;</font></font></p>
 
@@ -716,7 +716,7 @@ PHPsurveyor admin.php 程序檔執行後在網頁上顯示的名稱. (ie: "本�
   <li>
     
     <p style="margin-bottom: 0cm;" align="left"><font face="Verdana"><font size="2"><strong>$accesscontrol</strong>:
-此設定決定 PHPSurveyor 是否要做安全設定.  "1" 的設定值開啟本功能,  "0" 的設定值關閉本功能. 即使關閉本功能設定，您仍可透過伺服器供應商的內建安全密碼去保護執行目錄，只不過安全保護工作不再由 PHPSurveyor 偵測及處理罷了。如果您並非使用 Apache 網站伺服器，只要把本欄設定成 "0" 即可. </font></font>
+此設定決定 LimeSurvey 是否要做安全設定.  "1" 的設定值開啟本功能,  "0" 的設定值關閉本功能. 即使關閉本功能設定，您仍可透過伺服器供應商的內建安全密碼去保護執行目錄，只不過安全保護工作不再由 LimeSurvey 偵測及處理罷了。如果您並非使用 Apache 網站伺服器，只要把本欄設定成 "0" 即可. </font></font>
     </p>
 
   </li>
@@ -724,7 +724,7 @@ PHPsurveyor admin.php 程序檔執行後在網頁上顯示的名稱. (ie: "本�
   <li>
     
     <p style="margin-bottom: 0cm;" align="left"><font face="Verdana"><font size="2"><strong>$defaultuser</strong>:
-如果啟用了本系統的安全設定，在此就是預設的用戶，去通過 PHPSurveyor 建立的安全設定. </font></font>
+如果啟用了本系統的安全設定，在此就是預設的用戶，去通過 LimeSurvey 建立的安全設定. </font></font>
     </p>
 
   </li>
@@ -732,7 +732,7 @@ PHPsurveyor admin.php 程序檔執行後在網頁上顯示的名稱. (ie: "本�
   <li>
     
     <p style="margin-bottom: 0cm;" align="left"><font face="Verdana"><font size="2"><strong>$defaultpass</strong>:
-如果啟用了本系統的安全設定，在此就是預設的密碼，去通過 PHPSurveyor 建立的安全設定. </font></font>
+如果啟用了本系統的安全設定，在此就是預設的密碼，去通過 LimeSurvey 建立的安全設定. </font></font>
     </p>
 
   </li>
@@ -824,8 +824,8 @@ PHPsurveyor admin.php 程序檔執行後在網頁上顯示的名稱. (ie: "本�
   <li>
     
     <p style="margin-bottom: 0cm;" align="left"><font face="Verdana"><font size="2"><strong>$apachedir</strong>:
-本設定告訴 PHPSurveyor 找出 apache 執行檔的位置，但在 Linux/Unix 伺服器，本欄位可以留空(?;)
-PHPSurveyor 會自動查找位置. Windows 伺服器可能需要填寫本欄位. (eg: $apachedir =
+本設定告訴 LimeSurvey 找出 apache 執行檔的位置，但在 Linux/Unix 伺服器，本欄位可以留空(?;)
+LimeSurvey 會自動查找位置. Windows 伺服器可能需要填寫本欄位. (eg: $apachedir =
 ?a href="file:///c:/program">c:/program</a>files/apachegroup/apache/bin?)</font></font></p>
 
   </li>
@@ -833,7 +833,7 @@ PHPSurveyor 會自動查找位置. Windows 伺服器可能需要填寫本欄位.
   <li>
     
     <p style="margin-bottom: 0cm;" align="left"><font face="Verdana"><font size="2"><strong>$mysqldir</strong>:
-本設定告訴 PHPSurveyor mysql 二元碼檔案的位置 (特別是 Mysqldump?. 如果是 Linux/Unix 伺服器，可以不用切定本欄位(?;) PHPSurveyor 會自動查找. 但 Windows 伺服器就需要填寫本欄位. (eg:$mysqldir = :/mysql/bin?)</font></font></p>
+本設定告訴 LimeSurvey mysql 二元碼檔案的位置 (特別是 Mysqldump?. 如果是 Linux/Unix 伺服器，可以不用切定本欄位(?;) LimeSurvey 會自動查找. 但 Windows 伺服器就需要填寫本欄位. (eg:$mysqldir = :/mysql/bin?)</font></font></p>
 
   </li>
 
@@ -849,7 +849,7 @@ PHPSurveyor 會自動查找位置. Windows 伺服器可能需要填寫本欄位.
     
     <p style="margin-bottom: 0cm;" align="left"><font size="2"><font face="Verdana"><strong>$dbprefix</strong>:
 如果您使用另一套獨立的 PHPsurveyor 數據庫，請留空本欄 (ie:&nbsp;
-$dbprefix="";) 如果您想在 PHPSurveyor 及其他數據型軟件作出共享的設定，就需要在本設定加上前綴。我建議的前綴是 
+$dbprefix="";) 如果您想在 LimeSurvey 及其他數據型軟件作出共享的設定，就需要在本設定加上前綴。我建議的前綴是 
 "phpsv_", 但名稱可以悉隨尊便去更改.</font></font>
     </p>
 
@@ -927,14 +927,14 @@ jpgraph 程式的絕對位置. 本設定必須配合 $usejpgraph 是 1 的設定
 <p align="left"><font size="2"><font face="Verdana"><strong>7.
 首次連結 admin 程序<br>
 
-</strong>上傳檔案後，您可以透過網站瀏覽器建立 PHPSurveyor. 打開您的瀏覽器，在網址列鍵入 admin.php 的 url 網址. 如果您是使用phpsurveyor 作為目錄名稱來存放它的所有檔案, 網址大概的形式如下 "<a href="http://your.domain.com/phpsurveyor/admin/admin.php"><span style="text-decoration: none;">http://your.domain.com/phpsurveyor/admin/admin.php</span></a>"<br>
+</strong>上傳檔案後，您可以透過網站瀏覽器建立 LimeSurvey. 打開您的瀏覽器，在網址列鍵入 admin.php 的 url 網址. 如果您是使用limesurvey 作為目錄名稱來存放它的所有檔案, 網址大概的形式如下 "<a href="http://your.domain.com/limesurvey/admin/admin.php"><span style="text-decoration: none;">http://your.domain.com/limesurvey/admin/admin.php</span></a>"<br>
 
 <br>
-當您首次使用 PHPSurveyor, 程序會連結到 config.php 檔案預先設定好的數據庫. 如果相應的資料表結構未建立，PHPSurveyor 會向您提供按鈕去建立所需要的數據庫資料表. 如果您建立資料表遇到問題，您可能需要執行類似 phpmyadmin 之類的數據庫管理程式去執行套件內的 "maketables.sql". 一旦建立此等資料表，您就可以操作 PHPSurveyor 了.</font></font></p>
+當您首次使用 LimeSurvey, 程序會連結到 config.php 檔案預先設定好的數據庫. 如果相應的資料表結構未建立，LimeSurvey 會向您提供按鈕去建立所需要的數據庫資料表. 如果您建立資料表遇到問題，您可能需要執行類似 phpmyadmin 之類的數據庫管理程式去執行套件內的 "maketables.sql". 一旦建立此等資料表，您就可以操作 LimeSurvey 了.</font></font></p>
 
 <p align="left"><font face="Verdana"><font size="2"><strong>8.若果我遇到問題，怎麼辦?<br>
 
-</strong>正如所有電腦程式, 運作過程難免偶有問題,  導致運作失常的原因也很多. 如果您操作上有麻煩, 請透過 sourceforge.net 的PHPSurveyor 支援論壇發表您遇到的技術問題或 PHPSurveyor 執行後出現的錯誤訊息，一定有人協助您解決困難。</font></font></p>
+</strong>正如所有電腦程式, 運作過程難免偶有問題,  導致運作失常的原因也很多. 如果您操作上有麻煩, 請透過 sourceforge.net 的LimeSurvey 支援論壇發表您遇到的技術問題或 LimeSurvey 執行後出現的錯誤訊息，一定有人協助您解決困難。</font></font></p>
 
 <p>&nbsp;</p>
 
@@ -961,7 +961,7 @@ FAQ</strong></font></font></p>
       
       <p lang="zh-tw"><font face="Verdana"><strong>如果我的伺服器是開啟了 "safe_mode" (安全模式)， 怎麼辦?<br>
 
-      </strong><font size="2">如果您的伺服器開啟了 safe_mode (安全模式) (這是需要謹慎處理的安全設定) 您就不能使用 PHPSurveyor 的部份內建功能。這包括建立和管理 Apache 伺服器的安全設定, 以及把 MySQL 的問卷結果輸出的能力。雖然這些功能與 PHPSurveyor 賣點風馬牛不相及 - 但畢竟此等功能對管理者十分便捷. 您可以手動方式建立 Apache 的安全設定，您亦可以使用類似 phpMyAdmin 的數據庫程式去把 MySQL 的問卷結果輸出作進一步處理.</font></font></p>
+      </strong><font size="2">如果您的伺服器開啟了 safe_mode (安全模式) (這是需要謹慎處理的安全設定) 您就不能使用 LimeSurvey 的部份內建功能。這包括建立和管理 Apache 伺服器的安全設定, 以及把 MySQL 的問卷結果輸出的能力。雖然這些功能與 LimeSurvey 賣點風馬牛不相及 - 但畢竟此等功能對管理者十分便捷. 您可以手動方式建立 Apache 的安全設定，您亦可以使用類似 phpMyAdmin 的數據庫程式去把 MySQL 的問卷結果輸出作進一步處理.</font></font></p>
 
       
       <p lang="zh-tw"><font face="Verdana"><strong>如果我無法透過安裝程序建立數據庫，怎麼辦?</strong><br>
@@ -971,7 +971,7 @@ FAQ</strong></font></font></p>
       
       <p><font face="Verdana"><span lang="zh-tw"><strong>我應該設定甚麼權限?</strong><font size="2"><br>
 
-      </font></span><font size="2"> /phpsurveyor/tmp 目錄需要設定 read/write/execute 的使用權限 (chmod 777) - 本目錄專鬥存放所有上傳檔案及暫時建立的檔案. 其他全部目錄及檔案可以設定為 read/execute 的使用權限即可 (chmod 755). <strong>但是</strong>
+      </font></span><font size="2"> /limesurvey/tmp 目錄需要設定 read/write/execute 的使用權限 (chmod 777) - 本目錄專鬥存放所有上傳檔案及暫時建立的檔案. 其他全部目錄及檔案可以設定為 read/execute 的使用權限即可 (chmod 755). <strong>但是</strong>
 如果您想使用內建的 apache 安全工具 (去建立 htpasswd 及 htaccess 檔案)  admin 目錄就需要設定成 read/write/execute (777). admin 目錄裏面的檔案則可以設定成 read/execute (chmod 755).</font></font></p>
 
       </td>
@@ -987,7 +987,7 @@ FAQ</strong></font></font></p>
 <hr>
 <p><a name="Security Issues"></a><font face="Verdana"><font size="4"><u><strong>安全問題</strong></u></font></font></p>
 
-<p><font face="Verdana"><font size="2"><span lang="zh-tw">PHPSurveyor
+<p><font face="Verdana"><font size="2"><span lang="zh-tw">LimeSurvey
 倚賴 Apache 的網站伺服器的 </span>目錄
 <span lang="zh-tw">安全系統. 此外就沒有其他的安全保障了. 本安全設定是足夠應付所需, 但是如果安全考慮是您極度要關注的問題，
 您就需要對網站的  Apache 安全管理有全盤的認知. 本軟件的作者對於此軟件的使用及相關的安全問題，不負任何責任. 換言之，除非您採取恰當的安全措施，您不能把本軟件視為理所當然的絕對安全.</span></font></font></p>
@@ -1004,14 +1004,14 @@ Apache (ie 您使用 Microsoft IIS) 您就需要在 config.php 檔案內把本�
 
   <li>
     
-    <p style="margin-bottom: 0cm;"><span lang="zh-tw"><font size="2"><font face="Verdana">對您的 phpsurveyor 目錄  - chmod 755 (使用 read, execute 權限去存取整個目錄)</font></font></span>
+    <p style="margin-bottom: 0cm;"><span lang="zh-tw"><font size="2"><font face="Verdana">對您的 limesurvey 目錄  - chmod 755 (使用 read, execute 權限去存取整個目錄)</font></font></span>
     </p>
 
   </li>
 
   <li>
     
-    <p style="margin-bottom: 0cm;"><span lang="zh-tw"><font size="2"><font face="Verdana"對於 phpsurveyor 目錄內的檔案 - chmod 755
+    <p style="margin-bottom: 0cm;"><span lang="zh-tw"><font size="2"><font face="Verdana"對於 limesurvey 目錄內的檔案 - chmod 755
 (使用 read, execute 權限去存取全部檔案)</font></font></span>
     </p>
 
@@ -1051,7 +1051,7 @@ Apache (ie 您使用 Microsoft IIS) 您就需要在 config.php 檔案內把本�
 <p lang="zh-tw"><font face="Verdana"><font size="2"><strong>其他安全問題</strong><br>
 
 config.php 檔案包含用戶名稱及密碼去存取您的 MySQL 資料夾. 這存在安全風險,
-特別是您正在使用的登入方式對　MySQL 擁有極高的管理權限. 為了把安全風險降到最低, 您應該使用 PHPSurveyor 程式的安全密碼的管理功能去保護 admin　網管目錄. 此外，為進一步降低風險，您亦可建立另一數據庫來存放問卷資料，使登入時只有存取此　phpsurveyor 數據庫的權限. </font></font>
+特別是您正在使用的登入方式對　MySQL 擁有極高的管理權限. 為了把安全風險降到最低, 您應該使用 LimeSurvey 程式的安全密碼的管理功能去保護 admin　網管目錄. 此外，為進一步降低風險，您亦可建立另一數據庫來存放問卷資料，使登入時只有存取此　limesurvey 數據庫的權限. </font></font>
 </p>
 
 <p style="margin-bottom: 0cm;" lang="zh-tw"><font face="Verdana"><font size="2">保護資料的最好辦法就是把config.php　檔案放在非公開目錄. 對於 apache 用戶而言，這表示要把它放到 htdocs 資料夾的上層檔案. 我雖然未測試這種方式的成效，但這是毋庸置疑的.
@@ -1060,12 +1060,12 @@ config.php 檔案包含用戶名稱及密碼去存取您的 MySQL 資料夾. 這
 files/apache
 group/apache/phpsafe/config.php");</i>`.
 正如我所言, 這未經測試, 如果您嘗試過, 請告訴我成效如何，好嗎?
-(電郵到 jason-at-cleeland.org).  PHPSurveyor 未來的版本可能會簡化　config.php 檔的處理程序.</font></font></p>
+(電郵到 jason-at-cleeland.org).  LimeSurvey 未來的版本可能會簡化　config.php 檔的處理程序.</font></font></p>
 
 <hr>
 <p><a name="Survey Design and Structure"></a><font face="Verdana"><font size="4"><u><strong>問卷設計及結構</strong></u></font></font></p>
 
-<p><font face="Verdana"><font size="2">PHPSurveyor 問卷有三個必要的組成部件. 每份問卷必須有:</font></font></p>
+<p><font face="Verdana"><font size="2">LimeSurvey 問卷有三個必要的組成部件. 每份問卷必須有:</font></font></p>
 
 <ul type="disc">
 
@@ -1129,7 +1129,7 @@ group/apache/phpsafe/config.php");</i>`.
 
 <p><a name="Question Types"></a><font face="Verdana"><font size="2"><strong>題型</strong><br>
 
-PHPSurveyor 不同類型的題目見下表:</font></font></p>
+LimeSurvey 不同類型的題目見下表:</font></font></p>
 
 <ul type="disc">
 
@@ -1529,7 +1529,7 @@ Eg: 您最喜歡的三本書是甚麼?<br>
       <li>
         
         <p style="margin-bottom: 0cm;"><font size="2"><font face="Verdana"><strong>模組風格</strong>:
-在系統選擇已安裝的模組風格. 預設的模組風格是呆板但實用的. 更多有關建立自己風格模組的資訊詳見於 <a href="templates.html">PHPSurveyor 風格模組手冊</a></font></font>
+在系統選擇已安裝的模組風格. 預設的模組風格是呆板但實用的. 更多有關建立自己風格模組的資訊詳見於 <a href="templates.html">LimeSurvey 風格模組手冊</a></font></font>
         </p>
 
       </li>
@@ -1772,7 +1772,7 @@ URL</strong>: 這個 URL 會在完成問卷後網頁自動連結的新網址, �
     <p><a name="Importing a Survey"></a><span lang="zh-tw"><font size="2"><font face="Verdana"><strong>輸入問卷<br>
 
     </strong>如果您在較早前已輸出問卷，您亦可以在 "新增問卷" 的畫面輸入問卷. 您只需要　Click　選瀏覽按鈕選擇
-sql 檔案，然後　click </font><font face="verdana">　選有關按鈕。輸入過程會讀取PHPSurveyor建立的'sql' 檔案，並
+sql 檔案，然後　click </font><font face="verdana">　選有關按鈕。輸入過程會讀取LimeSurvey建立的'sql' 檔案，並
 '乖巧地' (我故意使用這個字眼) 重新為問卷、組別、題目、答案及條件敘述編號，讓彼此可以互相配對。
 詳見 <a href="#%28F%29%20Exporting%20a%20survey">輸出問卷</a> 的章節.</font></font></span></p>
 
@@ -1835,7 +1835,7 @@ history</i>".<br>
 
         <strong>答卷代碼資訊</strong><br>
 
-由 PHPSurveyor  0.98finalRC1 版本開始，您可以從答卷代碼資料表把資訊/文字插入到題目裏，因此它會顯示相關的必要資訊。 在　PHPSurveyor　的工作環境，要做到這一點，問卷必須被設定成非匿名的模式 (ie: 已被跟查), 並需要一個答卷代碼資料表配合工作.<br>
+由 LimeSurvey  0.98finalRC1 版本開始，您可以從答卷代碼資料表把資訊/文字插入到題目裏，因此它會顯示相關的必要資訊。 在　LimeSurvey　的工作環境，要做到這一點，問卷必須被設定成非匿名的模式 (ie: 已被跟查), 並需要一個答卷代碼資料表配合工作.<br>
 
         <br>
 
@@ -1908,7 +1908,7 @@ history</i>".<br>
           <li>
             
             <p lang="zh-tw"><font face="Verdana"><font size="2">請參照題目正確的問卷 ID, 組別 ID 及題目 ID  - 形式: {INSERTANS:SIDXGIDXQID} -
-ie {INSERTANS:1X2X3}. 如何能找出相關的 ID? 容易之極。只要游走於您打算使用的題目，看一看瀏覽器上的網址輸入框. 如果 URL 是 e.g.&nbsp; <span style="font-style: italic;">http://foobar.com/phpsurveyor/admin/admin.php?sid=1&amp;gid=12&amp;qid=8
+ie {INSERTANS:1X2X3}. 如何能找出相關的 ID? 容易之極。只要游走於您打算使用的題目，看一看瀏覽器上的網址輸入框. 如果 URL 是 e.g.&nbsp; <span style="font-style: italic;">http://foobar.com/limesurvey/admin/admin.php?sid=1&amp;gid=12&amp;qid=8
             </span>然後您必須在稍後的題目插入<span style="font-style: italic;">
             </span></font></font><font face="Verdana"><font size="2">{INSERTANS:1X12X8}
 </font></font><font face="Verdana"><font size="2"><span style="font-style: italic;"></span><br>
@@ -2021,7 +2021,7 @@ Perl Regex 表示式必須使用　"/" 作為啟始及結束的符號。您也�
     <p lang="zh-tw"><font face="Verdana" size="2"><strong><u>
     <a name="Question Attributes">題目屬性</a><br>
 
-    </u></strong><i>這是 PHPSurveyor 0.99dev01　版本的新功能<br>
+    </u></strong><i>這是 LimeSurvey 0.99dev01　版本的新功能<br>
 
     </i>Question Attributes are an
 extensible way of adding extra
@@ -2072,7 +2072,7 @@ will not display.<br>
 
         </strong>This attribute applies
 to any question type that has a list
-of possible answers. It causes PHPSurveyor to ignore the existing order
+of possible answers. It causes LimeSurvey to ignore the existing order
 of those answers, and instead it orders the answers randomly. It is
 important to note that this random order will be reordered each time
 the question is displayed, so if someone returns to a question, the
@@ -2417,7 +2417,7 @@ Surveyor</strong></font>
         </tr>
 
         
-        <form action="/phpsurveyor/unstable/admin/conditions.php" name="addconditions" id="addconditions" method="post"></form>
+        <form action="/limesurvey/unstable/admin/conditions.php" name="addconditions" id="addconditions" method="post"></form>
 
         <tr>
 
@@ -2585,8 +2585,8 @@ Surveyor</strong></font>
         <tr>
 
           <td align="center"><font color="white" face="verdana" size="1">
-          <img alt="求助說明 - 使用　PHPSurveyor" src="images/help.gif" onclick="window.open('instructions.html#conditions')" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='auto'" align="right" height="20" width="20"> <img alt="求助說明 - 使用PHPSurveyor" src="images/help.gif" onclick="window.open('instructions.html#conditions')" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='auto'" align="left" height="20" width="20"> <strong><i><a href="http://phpsurveyor.sourceforge.net" target="_blank">
-          <img src="images/phpsurveyor_logo.jpg" alt="PHPSurveyor Logo" border="0" height="15" width="100"></a></i></strong><br>
+          <img alt="求助說明 - 使用　LimeSurvey" src="images/help.gif" onclick="window.open('instructions.html#conditions')" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='auto'" align="right" height="20" width="20"> <img alt="求助說明 - 使用LimeSurvey" src="images/help.gif" onclick="window.open('instructions.html#conditions')" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='auto'" align="left" height="20" width="20"> <strong><i><a href="http://limesurvey.sourceforge.net" target="_blank">
+          <img src="images/limesurvey_logo.jpg" alt="LimeSurvey Logo" border="0" height="15" width="100"></a></i></strong><br>
 
 Ver 0.98final-rc1</font></td>
 
@@ -3101,18 +3101,18 @@ setup, 因為評估只限於送交問卷後在最後一個 "已完成" 頁面才
 <hr>
 <p><a name="Templates"></a><font face="Verdana"><font size="4"><u><strong>風格模組</strong></u></font></font></p>
 
-<p><font face="Verdana"><font size="2">PHPSurveyor 的部份 '公開元件'
+<p><font face="Verdana"><font size="2">LimeSurvey 的部份 '公開元件'
 可以在若干風格模組檔案作出調整.</font></font></p>
 
-<p><font size="2"><font face="Verdana">本章為風格模組提供精簡的解說，但持別是有關新風格模組的修改／建立的細節，詳見 <a href="templates.html">PHPSurveyor
+<p><font size="2"><font face="Verdana">本章為風格模組提供精簡的解說，但持別是有關新風格模組的修改／建立的細節，詳見 <a href="templates.html">LimeSurvey
 風格模組手冊</a>.</font></font></p>
 
-<p><a name="The PHPSurveyor Template Editor"></a><font face="Verdana"><strong><u><font size="4">
-PHPSurveyor 風格模組編輯器</font></u></strong><span lang="zh-tw"><font size="2"><br>
+<p><a name="The LimeSurvey Template Editor"></a><font face="Verdana"><strong><u><font size="4">
+LimeSurvey 風格模組編輯器</font></u></strong><span lang="zh-tw"><font size="2"><br>
 
-PHPSurveyor 風格模組編輯器讓您可以在線上修改風格模組的內容。Click 選 PHPSurveyor 管理工具選單上的"風格模組編輯器"可以開啟風格模組編輯器 (<img src="images/templates.gif" alt="Templates" align="bottom" border="0" height="20" width="20">)</font></span></font></p>
+LimeSurvey 風格模組編輯器讓您可以在線上修改風格模組的內容。Click 選 LimeSurvey 管理工具選單上的"風格模組編輯器"可以開啟風格模組編輯器 (<img src="images/templates.gif" alt="Templates" align="bottom" border="0" height="20" width="20">)</font></span></font></p>
 
-<p lang="zh-tw"><font face="Verdana"><font size="2">主畫面類似 PHPSurveyor 問卷管理畫面，它讓您可以選擇風格模組來作出修改／檢視。 選定風格模組後，您可以從公用問卷中選擇頁面，接著會出現相關的風格檔案列表.</font></font></p>
+<p lang="zh-tw"><font face="Verdana"><font size="2">主畫面類似 LimeSurvey 問卷管理畫面，它讓您可以選擇風格模組來作出修改／檢視。 選定風格模組後，您可以從公用問卷中選擇頁面，接著會出現相關的風格檔案列表.</font></font></p>
 
 <p lang="zh-tw"><font face="Verdana"><font size="2"><strong>風格模組選單</strong></font></font></p>
 
@@ -3276,7 +3276,7 @@ PHPSurveyor 風格模組編輯器讓您可以在線上修改風格模組的內�
 
 <p lang="zh-tw"><font face="Verdana" size="2"> "其他檔案"
 視窗會有列表顯示在風格模組目錄內的其他檔案. 您可以在此上傳圖片檔案或其他所需的檔案建立新的風格模組。注意︰要參照風格模組內的任何檔案，您可以使用, "&lt;img src='{TEMPLATEURL}mypicture.jpg'&gt;" ，而不一定要使用 "&lt;img
-src='/phpsurveyor/templates/yourtemplate/mypicture.jpg'&gt;" .</font></p>
+src='/limesurvey/templates/yourtemplate/mypicture.jpg'&gt;" .</font></p>
 
 <p lang="zh-tw"><font face="Verdana"><font size="2">當您正在修改風格模組頁面時， "式樣"
 會在螢幕底部顯示.</font></font></p>
@@ -3290,7 +3290,7 @@ src='/phpsurveyor/templates/yourtemplate/mypicture.jpg'&gt;" .</font></p>
 /
 欄位字串</strong></font></font></p>
 
-<p style="margin-bottom: 0cm;" lang="zh-tw"><font face="Verdana"><font size="2">以下字串會由 PHPSurveyor 分析過風格模組檔案後替換並向問卷的用戶顯示，這些欄位字串幾乎會出現在所有風格模組檔案，但不包括 '已完成頁面'.</font></font></p>
+<p style="margin-bottom: 0cm;" lang="zh-tw"><font face="Verdana"><font size="2">以下字串會由 LimeSurvey 分析過風格模組檔案後替換並向問卷的用戶顯示，這些欄位字串幾乎會出現在所有風格模組檔案，但不包括 '已完成頁面'.</font></font></p>
 
 <a name="AutoNumber8"></a>
 <center>
@@ -3920,7 +3920,7 @@ id"</font></p>
 <p lang="zh-tw"><a name="Localisation"></a><font face="Verdana"><font size="4"><u><strong>本土化</strong></u></font></font></p>
 
 <p style="font-family: Verdana;"><font size="2"><span lang="zh-tw">公用問卷畫面可以本土化，令到內建的訊息及文字可以透過您熟悉的語言展示出來。 例如︰ "是" 及 "否" 在德文</span>
-<span lang="zh-tw">版本會是以 "ja" 及 "nein" 顯示。因此，PHPSurveyor 提供相當多的語言檔案，然而您亦在 /phpsurveyor/lang
+<span lang="zh-tw">版本會是以 "ja" 及 "nein" 顯示。因此，LimeSurvey 提供相當多的語言檔案，然而您亦在 /limesurvey/lang
 目錄建立自用的語言檔案，或者使用具備 UTF-8 編碼功能的編輯器加以修改，來切合自己的需要。&nbsp;</span></font></p>
 <p style="font-family: Verdana;"><font size="2"><span lang="zh-tw">建立 UTF-8 檔案，有一個小竅門: 要維持 UTF-8 語言檔的向後兼容性，
 UTF-8 檔案不可以包含 BOM (byte order mark). BOMs 是由兩個位元組組成，位於 UTF-8 的檔頭，用來描述正確的編碼. 我們建議使用以下兩個
@@ -3990,7 +3990,7 @@ UTF-8 檔案不可以包含 BOM (byte order mark). BOMs 是由兩個位元組組
 </ul>
 
 <p style="margin-bottom: 0cm;"><font face="Verdana"><font size="2"> click 選 <img src="images/activate.gif" align="bottom" border="0" height="15" width="10">
-問卷按鈕選單的按鈕，就可以啟用問卷。如果本圖標未有顯示, 這表示您的問卷仍未具備可以啟用的狀態. 只要 click 選這個圖標， PHPSurveyor 就會執行快速的全面檢查，以確保問卷可以運作正常.</font></font></p>
+問卷按鈕選單的按鈕，就可以啟用問卷。如果本圖標未有顯示, 這表示您的問卷仍未具備可以啟用的狀態. 只要 click 選這個圖標， LimeSurvey 就會執行快速的全面檢查，以確保問卷可以運作正常.</font></font></p>
 
 <hr>
 <p lang="zh-tw"><a name="Safely Running a Survey"></a><font face="Verdana"><font size="4"><u><strong>安全地執行問卷</strong></u></font></font></p>
@@ -4031,14 +4031,14 @@ UTF-8 檔案不可以包含 BOM (byte order mark). BOMs 是由兩個位元組組
 
   <li>
     
-    <p style="margin-bottom: 0cm;"><font size="2"><font face="Verdana">自從在 release 0.98finalRC1 的版本開始, 您可以替整個 PHPSurveyor 數據庫備份(包括全部問卷、問卷結果、答卷代碼等)，方法是 click 選 </font></font>&nbsp;<font size="2"><font face="verdana">管理按鈕選單的備份圖標。這樣就會輸出成一個 sql 檔案，日後您只要重新輸入這個檔案，就可以還原來的PHPSurveyor 數據庫.</font></font>
+    <p style="margin-bottom: 0cm;"><font size="2"><font face="Verdana">自從在 release 0.98finalRC1 的版本開始, 您可以替整個 LimeSurvey 數據庫備份(包括全部問卷、問卷結果、答卷代碼等)，方法是 click 選 </font></font>&nbsp;<font size="2"><font face="verdana">管理按鈕選單的備份圖標。這樣就會輸出成一個 sql 檔案，日後您只要重新輸入這個檔案，就可以還原來的LimeSurvey 數據庫.</font></font>
     </p>
 
   </li>
 
   <li>
     
-    <p><span lang="zh-tw"><font size="2"><font face="Verdana">如果您使用 phpMyAdmin 之類的設施, 就要定期備份整個 PHPSurveyor 數據庫 (結構和數據)。遇有不幸發生整個數據庫遭毀滅的事件發生，您就可以重建數據庫及輸入備份資料表，這樣 PHPSurveyor 就可以把破損的數據庫恢復原貌。</font></font></span>
+    <p><span lang="zh-tw"><font size="2"><font face="Verdana">如果您使用 phpMyAdmin 之類的設施, 就要定期備份整個 LimeSurvey 數據庫 (結構和數據)。遇有不幸發生整個數據庫遭毀滅的事件發生，您就可以重建數據庫及輸入備份資料表，這樣 LimeSurvey 就可以把破損的數據庫恢復原貌。</font></font></span>
     </p>
 
   </li>
@@ -5162,7 +5162,7 @@ UTF-8 檔案不可以包含 BOM (byte order mark). BOMs 是由兩個位元組組
 <hr>
 <p><a name="DataEntry"></a><font face="Verdana"><font size="4"><u><strong>輸入數據</strong></u></font></font></p>
 
-<p style="margin-bottom: 0cm;"><font face="Verdana"><font size="2">本功能並非針對問卷的受訪者設計. 當初 PHPSurveyor 被開發時, 它是用作傳統紙張式問卷的數據輸入而設計的. 數據輸入螢幕是用作收回問卷作大量數據輸入而設計的，稍後發展到讓鍵盤輸入問卷結果的用途 (使用跳位鍵
+<p style="margin-bottom: 0cm;"><font face="Verdana"><font size="2">本功能並非針對問卷的受訪者設計. 當初 LimeSurvey 被開發時, 它是用作傳統紙張式問卷的數據輸入而設計的. 數據輸入螢幕是用作收回問卷作大量數據輸入而設計的，稍後發展到讓鍵盤輸入問卷結果的用途 (使用跳位鍵
 <span lang="zh-tw">,及鍵盤輸入</span>).</font></font></p>
 
 <hr>
@@ -5260,20 +5260,20 @@ and VVImport ( "VV" 代表垂直確認) 讓您可以把問卷結果的表格輸�
 "輸出結果" 會產生一個可透過 Excel 或類似風格的試算表程式打開空格式分隔的檔案. 試算表的首兩列是欄位標籤. 首列是
 "淺白易明" 的欄位，內容是題目／答案欄位的名稱. 第二列是有關問卷結果的內部 PHP 欄位名稱.</font></p>
 
-<p style="margin-bottom: 0cm;"><font face="Verdana" size="2">如果您想稍後把數據輸入到 PHPSurveyor,  您就不應該修改本試算表的首兩列資料.</font></p>
+<p style="margin-bottom: 0cm;"><font face="Verdana" size="2">如果您想稍後把數據輸入到 LimeSurvey,  您就不應該修改本試算表的首兩列資料.</font></p>
 
 <p style="margin-bottom: 0cm;"><font face="Verdana" size="2"><strong>
 <img src="images/vvimport.gif" height="20" width="20">輸入 VV
 問卷檔案<br>
 
-</strong>只要首兩列資料保持完好, 您就可以把 vv 問卷檔案的數據輸入到已啟用的 PHPSurveyor 問卷內. 如果您輸出數據時已停用問卷，您就需要再用一貫的程序停用問卷，才可用執行本功能.</font></p>
+</strong>只要首兩列資料保持完好, 您就可以把 vv 問卷檔案的數據輸入到已啟用的 LimeSurvey 問卷內. 如果您輸出數據時已停用問卷，您就需要再用一貫的程序停用問卷，才可用執行本功能.</font></p>
 
 <p style="margin-bottom: 0cm;"><font face="Verdana" size="2">然後在瀏覽螢幕, 選擇 "輸入 VV 問卷檔案" 的圖標.</font></p>
 
 <p style="margin-bottom: 0cm;"><font face="Verdana" size="2">
 在 "輸入 VV 問卷檔案" 螢幕，您需要選擇 "vvexport" . 如果您選擇 "不排除紀錄 ID" 紀錄會被輸入及產生新的紀錄 ID. 如果您在方格取消 tick 選, 原來的紀錄 id 亦會一併被輸入.</font></p>
 
-<p style="margin-bottom: 0cm;"><font face="Verdana" size="2">有一系列選擇決定 PHPSurveyor 如何處理雙項或多項的欄位資料. <br>
+<p style="margin-bottom: 0cm;"><font face="Verdana" size="2">有一系列選擇決定 LimeSurvey 如何處理雙項或多項的欄位資料. <br>
 
 &nbsp;</font></p>
 
@@ -5284,7 +5284,7 @@ and VVImport ( "VV" 代表垂直確認) 讓您可以把問卷結果的表格輸�
 
 <p><font face="Verdana"><font size="2"><strong>甚麼是統計功能?<br>
 
-</strong>可以這樣說，當您啟用了一個問卷，在它完成填寫問卷工作後，您打算開始分析它的問卷結果。PHPSurveyor
+</strong>可以這樣說，當您啟用了一個問卷，在它完成填寫問卷工作後，您打算開始分析它的問卷結果。LimeSurvey
 可以把全部結果轉換成您需要的 Excel 試算表 ，或者是 CSV 檔案，又或者是 Microsoft Word 檔案, 這樣您就可以隨心所欲地運用您的問卷數據了。又或者您可以運用統計功能來檢視數據, 享受這些有用數據帶給您的各種效益吧！<br>
 
 <br>

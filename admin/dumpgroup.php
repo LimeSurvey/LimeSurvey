@@ -1,7 +1,7 @@
 <?php
 /*
 #############################################################
-# >>> PHPSurveyor  											#
+# >>> LimeSurvey  											#
 #############################################################
 # > Author:  Jason Cleeland									#
 # > E-mail:  jason@cleeland.org								#
@@ -63,12 +63,12 @@ if (!$gid)
 	exit;
 }
 
-$fn = "phpsurveyor_group_$gid.csv";
+$fn = "limesurvey_group_$gid.csv";
 
-$dumphead = "# PHPSurveyor Group Dump\n"
+$dumphead = "# LimeSurvey Group Dump\n"
         . "# DBVersion $dbversionnumber\n"
-        . "# This is a dumped group from the PHPSurveyor Script\n"
-        . "# http://www.phpsurveyor.org/\n"
+        . "# This is a dumped group from the LimeSurvey Script\n"
+        . "# http://www.limesurvey.org/\n"
         . "# Do not change this header!\n";
 
 

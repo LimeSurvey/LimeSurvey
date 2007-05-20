@@ -1,7 +1,7 @@
 <?php
 /*
 #############################################################
-# >>> PHPSurveyor  										    #
+# >>> LimeSurvey  										    #
 #############################################################
 # > Author:  Jason Cleeland									#
 # > E-mail:  jason@cleeland.org								#
@@ -38,7 +38,7 @@ include_once("login_check.php");
 if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	{
 
-	$file_version="PHPSurveyor Template Editor ".$versionnumber;
+	$file_version="LimeSurvey Template Editor ".$versionnumber;
 	$_SESSION['s_lang']=$_SESSION['adminlang'];
 	if(get_magic_quotes_gpc())
 	{
@@ -223,7 +223,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	$thissurvey['allowsave']="Y";
 	$thissurvey['templatedir']=$templatename;
 	$thissurvey['format']="G";
-	$thissurvey['url']="http://www.phpsurveyor.org/";
+	$thissurvey['url']="http://www.limesurvey.org/";
 	$thissurvey['urldescrip']="A URL Description";
 	$percentcomplete=makegraph(6, 10);
 	$groupname="Group 1: The first lot of questions";

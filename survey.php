@@ -1,7 +1,7 @@
 <?php
 /*
 #############################################################
-# >>> PHPSurveyor	  										#
+# >>> LimeSurvey	  										#
 #############################################################
 # > Author:  Jason Cleeland									#
 # > E-mail:  jason@cleeland.org								#
@@ -187,7 +187,7 @@ if (isset($_POST['move']) && $_POST['move'] == "movelast" && (!isset($notanswere
 	doHeader();
 	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
-	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' name='phpsurveyor'>\n"
+	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey'>\n"
 	."\n\n<!-- START THE SURVEY -->\n";
 	echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 
@@ -300,7 +300,7 @@ doHeader();
 if(isset($popup)) {echo $popup;}
 if(isset($vpopup)) {echo $vpopup;}
 echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='phpsurveyor' name='phpsurveyor'>\n";
+echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey'>\n";
 //PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT
 echo "\n\n<!-- INPUT NAMES -->\n"
 ."\t<input type='hidden' name='fieldnames' id='fieldnames' value='"

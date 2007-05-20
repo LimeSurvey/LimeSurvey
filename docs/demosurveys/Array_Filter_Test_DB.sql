@@ -1,8 +1,8 @@
 #<pre>
 # SURVEYOR SURVEY DUMP
 #
-# This is a dumped survey from the PHPSurveyor Script
-# http://www.phpsurveyor.org/
+# This is a dumped survey from the LimeSurvey Script
+# http://www.limesurvey.org/
 
 # NEW TABLE
 # SURVEYS TABLE

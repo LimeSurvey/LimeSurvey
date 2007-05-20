@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPSurveyor Vietnamese language file\n"
+"Project-Id-Version: LimeSurvey Vietnamese language file\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2006-07-29 01:24+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
@@ -8,11 +8,11 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Basepath: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+"X-Poedit-Basepath: D:\\xampp\\xampp\\htdocs\\limesurvey\n"
 "X-Poedit-Language: Vietnamese\n"
 "X-Poedit-Country: VIET NAM\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-SearchPath-0: D:\\xampp\\xampp\\htdocs\\phpsurveyor\n"
+"X-Poedit-SearchPath-0: D:\\xampp\\xampp\\htdocs\\limesurvey\n"
 
 msgid "Yes"
 msgstr "Có"
@@ -482,8 +482,8 @@ msgstr "Tạo cơ sở dữ liệu"
 msgid "Create Survey"
 msgstr "Tạo mới survey"
 
-msgid "PHPSurveyor Setup"
-msgstr "Cài đặt PHPSurveyor"
+msgid "LimeSurvey Setup"
+msgstr "Cài đặt LimeSurvey"
 
 msgid "Delete Survey"
 msgstr "Xóa kháo sát"
@@ -1223,8 +1223,8 @@ msgstr "Cơ sở dữ liệu surveyor không tồn tại."
 msgid "Either your selected database has not yet been created or there is a problem accessing it."
 msgstr "Cơ sở dữ liệu bạn đã chọn chưa được tạo hoặc có lỗi trong việc truy cập đên nó."
 
-msgid "PHPSurveyor can attempt to create this database for you."
-msgstr "PHPSurveyor có thể tạo cơ sở dữ liệu cho bạn"
+msgid "LimeSurvey can attempt to create this database for you."
+msgstr "LimeSurvey có thể tạo cơ sở dữ liệu cho bạn"
 
 msgid "Your selected database name is:"
 msgstr "Cơ sở dữ liệu được chọn là :"
@@ -1346,7 +1346,7 @@ msgstr "Khảo sát này đang hoạt động, và các phản hồi đang đư�
 msgid "In an active survey, a table is created to store all the data-entry records."
 msgstr "Khi một khảo sát hoạt động, một bàn được tạo ra để lưu tất cả các entry dữ liểu ."
 
-msgid "When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using PHPSurveyor any more."
+msgid "When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
 msgstr "Khi bạn khử kích hoạt một khảo sát,tất cả các dữ liệu của bảng gốc sẽ được dời đi nơi khác va khi bạn kích hoạt lại khảo sát, bảng này sẽ trống rỗng bạn không thể truy cập các dữ liệu này với phpSurveyor nữa."
 
 msgid "De-activated survey data can only be accessed by system administrators using a MySQL data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
@@ -1364,7 +1364,7 @@ msgstr "Khử kích hoạt"
 msgid "The responses table has been renamed to: "
 msgstr "Bảng response (phản hồi) được đổi tên thành : "
 
-msgid "The responses to this survey are no longer available using PHPSurveyor."
+msgid "The responses to this survey are no longer available using LimeSurvey."
 msgstr "Các phản hồi của khảo sát này sẽ không còn giá trị trong phpSurveyors ."
 
 msgid "You should note the name of this table in case you need to access this information later."
@@ -1547,8 +1547,8 @@ msgstr "Tập tin upload thành công."
 msgid "Reading file.."
 msgstr "Đang đọc tập tin.."
 
-msgid "This file is not a PHPSurveyor survey file. Import failed."
-msgstr "Tập ti này không phải là 1 tập tin của PHPSurveyor. Nhập khẩu hỏng."
+msgid "This file is not a LimeSurvey survey file. Import failed."
+msgstr "Tập ti này không phải là 1 tập tin của LimeSurvey. Nhập khẩu hỏng."
 
 msgid "Survey Import Summary"
 msgstr "Tổng kết nhập khẩu khảo sát"
@@ -1559,8 +1559,8 @@ msgstr "Quá trình nhập khẩu khảo sát hoàn tất."
 msgid "Import of this survey file failed"
 msgstr "Quá trình nhập khẩu khảo sát này hỏng"
 
-msgid "File does not contain PHPSurveyor data in the correct format."
-msgstr "Tập tin không chứa dữ liệu PHPSurveyor theo đúng định dạng."
+msgid "File does not contain LimeSurvey data in the correct format."
+msgstr "Tập tin không chứa dữ liệu LimeSurvey theo đúng định dạng."
 
 msgid "Group Import Summary"
 msgstr "Tổng kết nhập khẩu nhóm "
@@ -1571,8 +1571,8 @@ msgstr "Nhập khẩu nhóm hoàn tất."
 msgid "Import of this group file failed"
 msgstr "Nhập khẩu tập tin về nhóm thất bại"
 
-msgid "This file is not a PHPSurveyor group file. Import failed."
-msgstr "Tập tin này không phải là tập tin về nhóm của PHPSurveyor .Nhập khẩu thất bại."
+msgid "This file is not a LimeSurvey group file. Import failed."
+msgstr "Tập tin này không phải là tập tin về nhóm của LimeSurvey .Nhập khẩu thất bại."
 
 msgid "No SID (Survey) has been provided. Cannot import question."
 msgstr "Không cung cấp mã SID(khảo sát) Không thể nhạp khẩu câu hỏi."
@@ -1580,8 +1580,8 @@ msgstr "Không cung cấp mã SID(khảo sát) Không thể nhạp khẩu câu h
 msgid "No GID (Group) has been provided. Cannot import question"
 msgstr "Không cung câp mã GID (nhóm) has Không thể nhập khẩu câu hỏi"
 
-msgid "This file is not a PHPSurveyor question file. Import failed."
-msgstr "Tập tin này không phải là tập tin câu hỏi của PHPSurveyor question file. Nhập khẩu thất bại."
+msgid "This file is not a LimeSurvey question file. Import failed."
+msgstr "Tập tin này không phải là tập tin câu hỏi của LimeSurvey question file. Nhập khẩu thất bại."
 
 msgid "Question Import Summary"
 msgstr "Tooeng kết nhập khẩu câu hỏi"
@@ -1973,8 +1973,8 @@ msgstr "Không cung cấp mã LID . Không thể đỏ hàng loạt (dump) các 
 msgid "Return to Labels Admin"
 msgstr "Trở về trang quản lý nhãn"
 
-msgid "PHPSurveyor System Summary"
-msgstr "PHPSurveyort tóm tắt hệ thống"
+msgid "LimeSurvey System Summary"
+msgstr "LimeSurveyt tóm tắt hệ thống"
 
 msgid "Database Name"
 msgstr "Tên cơ sở dữ liệu"
@@ -2000,8 +2000,8 @@ msgstr "Bảng các thẻ bài đang được kích hoạt"
 msgid "De-activated Token Tables"
 msgstr "Bảng các thẻ bài đã bị khử kích hoạtDe-activated Token Tables"
 
-msgid "Check PHPSurveyor Data Integrity"
-msgstr "Kiểm tra tích hơp dữ liệu Data Integrity của PHPSurveyor "
+msgid "Check LimeSurvey Data Integrity"
+msgstr "Kiểm tra tích hơp dữ liệu Data Integrity của LimeSurvey "
 
 msgid "No email notification"
 msgstr "Không có mail thông báo"

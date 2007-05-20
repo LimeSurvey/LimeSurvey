@@ -1,7 +1,7 @@
 <?php
 /*
 #############################################################
-# >>> PHPSurveyor  										    #
+# >>> LimeSurvey  										    #
 #############################################################
 # > Author:  Jason Cleeland									#
 # > E-mail:  jason@cleeland.org								#
@@ -199,7 +199,7 @@ if ($action == "checksettings" || $action == "changelang")
 	. "cellpadding='1' cellspacing='0' width='600'>\n"
 	. "\t<tr>\n"
 	. "\t\t<td colspan='2' align='center' bgcolor='#BBBBBB'>\n"
-	. "\t\t\t<strong>".$clang->gT("PHPSurveyor System Summary")."</strong>\n"
+	. "\t\t\t<strong>".$clang->gT("LimeSurvey System Summary")."</strong>\n"
 	. "\t\t</td>\n"
 	. "\t</tr>\n";
 	// Database name & default language
@@ -2139,7 +2139,7 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
 		foreach ($grplangs as $grouplang)
 		{
             // this one is created to get the right default texts fo each language
-            $bplang = new phpsurveyor_lang($grouplang);		
+            $bplang = new limesurvey_lang($grouplang);		
     		$esquery = "SELECT * FROM ".db_table_name("surveys_languagesettings")." WHERE surveyls_survey_id=$surveyid and surveyls_language='$grouplang'";
     		$esresult = db_execute_assoc($esquery);
     		$esrow = $esresult->FetchRow();

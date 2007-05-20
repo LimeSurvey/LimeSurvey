@@ -1,7 +1,7 @@
 <?php
 /*
 #############################################################
-# >>> PHPSurveyor  										#
+# >>> LimeSurvey  										#
 #############################################################
 # > Author:  Jason Cleeland									#
 # > E-mail:  jason@cleeland.org								#
@@ -53,7 +53,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	$deactivateoutput .= "\t<tr>";
 	$deactivateoutput .= "\t\t<td>\n";
 	$deactivateoutput .= "\t\t\t".$clang->gT("In an active survey, a table is created to store all the data-entry records.")."\n";
-	$deactivateoutput .= "\t\t\t<p>".$clang->gT("When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using PHPSurveyor any more.")."</p>\n";
+	$deactivateoutput .= "\t\t\t<p>".$clang->gT("When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more.")."</p>\n";
 	$deactivateoutput .= "\t\t\t<p>".$clang->gT("De-activated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators.")."</p>\n";
 	$deactivateoutput .= "\t\t\t<p>".$clang->gT("Your responses table will be renamed to:")." {$dbprefix}old_{$_GET['sid']}_{$date}</p>\n";
 	$deactivateoutput .= "\t\t\t<p>".$clang->gT("You should export your responses before de-activating. Click \"Cancel\" to return to the main admin screen without de-activating this survey.")."</p>\n";
@@ -121,7 +121,7 @@ else
 	$deactivateoutput .= "\t<tr>\n";
 	$deactivateoutput .= "\t\t<td>\n";
 	$deactivateoutput .= "\t\t\t".$clang->gT("The responses table has been renamed to: ")." $newtable.\n";
-	$deactivateoutput .= "\t\t\t".$clang->gT("The responses to this survey are no longer available using PHPSurveyor.")."\n";
+	$deactivateoutput .= "\t\t\t".$clang->gT("The responses to this survey are no longer available using LimeSurvey.")."\n";
 	$deactivateoutput .= "\t\t\t<p>".$clang->gT("You should note the name of this table in case you need to access this information later.")."</p>\n";
 	if (isset($toldtable) && $toldtable)
 	{

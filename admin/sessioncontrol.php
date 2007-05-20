@@ -1,7 +1,7 @@
 <?php
 /*
 #############################################################
-# >>> PHPSurveyor  								    		#
+# >>> LimeSurvey  								    		#
 #############################################################
 # > Author:  Jason Cleeland									#
 # > E-mail:  jason@cleeland.org								#
@@ -38,7 +38,7 @@
 
 if (!isset($dbprefix)) {die ("Cannot run this script directly");}
 
-session_name("PHPSurveyorAdmin");
+session_name("LimeSurveyAdmin");
 if (session_id() == "") session_start();
 //LANGUAGE ISSUES
 if (returnglobal('action') == "changelang" && (!isset($login) || !$login ))	// no update when login (just read from db)
@@ -60,7 +60,7 @@ elseif (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='' )
 
 // Construct the language class, and set the language.
 require_once($rootdir.'/classes/core/language.php');
-$clang = new phpsurveyor_lang($_SESSION['adminlang']);
+$clang = new limesurvey_lang($_SESSION['adminlang']);
 
 // get user rights
 if(isset($_SESSION['loginID'])) {GetSessionUserRights($_SESSION['loginID']);}

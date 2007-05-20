@@ -1,7 +1,7 @@
 <?php
 /*
 #############################################################
-# >>> PHPSurveyor  										    #
+# >>> LimeSurvey  										    #
 #############################################################
 # > Author:  Jason Cleeland									#
 # > E-mail:  jason@cleeland.org								#
@@ -83,10 +83,10 @@ if (!$_POST['gid'])
 	."</td></tr></table>\n";
 	return;
 }
-if (substr($bigarray[0], 0, 27) != "# PHPSurveyor Question Dump")
+if (substr($bigarray[0], 0, 27) != "# LimeSurvey Question Dump")
 {
 	$importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
-	.$clang->gT("This file is not a PHPSurveyor question file. Import failed.")."<br /><br />\n"
+	.$clang->gT("This file is not a LimeSurvey question file. Import failed.")."<br /><br />\n"
 	."</td></tr></table>\n";
 	return;
 }

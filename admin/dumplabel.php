@@ -1,7 +1,7 @@
 <?php
 /*
 #############################################################
-# >>> PHPSurveyor  										#
+# >>> LimeSurvey  										#
 #############################################################
 # > Author:  Jason Cleeland									#
 # > E-mail:  jason@cleeland.org								#
@@ -62,10 +62,10 @@ if (!$lid)
 	exit;
 }
 
-$dumphead = "# PHPSurveyor Label Set Dump\n"
+$dumphead = "# LimeSurvey Label Set Dump\n"
 . "# DBVersion $dbversionnumber\n"
-. "# This is a dumped label set from the PHPSurveyor Script\n"
-. "# http://www.phpsurveyor.org/\n"
+. "# This is a dumped label set from the LimeSurvey Script\n"
+. "# http://www.limesurvey.org/\n"
 . "# Do not change this header!\n";
 
 //1: Questions Table
@@ -76,7 +76,7 @@ $qdump = BuildCSVFromQuery($qquery);
 $aquery = "SELECT lid, code, title, sortorder, language FROM {$dbprefix}labels WHERE lid=$lid";
 $adump = BuildCSVFromQuery($aquery);
 
-$fn = "phpsurveyor_labelset_$lid.csv";
+$fn = "limesurvey_labelset_$lid.csv";
 
 
 header("Content-Type: application/download");

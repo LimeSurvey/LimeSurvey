@@ -1,7 +1,7 @@
 <?php
 /*
 #############################################################
-# >>> PHPSurveyor                                           #
+# >>> LimeSurvey                                           #
 #############################################################
 # > Author:  Jason Cleeland                                 #
 # > E-mail:  jason@cleeland.org                             #
@@ -74,24 +74,24 @@ fclose($handle);
 
 // Now we try to determine the dataformat of the survey file.
  
-if ((substr($bigarray[1], 0, 22) == "# SURVEYOR SURVEY DUMP")&& (substr($bigarray[4], 0, 29) == "# http://www.phpsurveyor.org/"))
+if ((substr($bigarray[1], 0, 22) == "# SURVEYOR SURVEY DUMP")&& (substr($bigarray[4], 0, 29) == "# http://www.limesurvey.org/"))
 {
 	$importversion = 100;  // version 1.0 file
 }
 elseif 
-   ((substr($bigarray[1], 0, 22) == "# SURVEYOR SURVEY DUMP")&& (substr($bigarray[4], 0, 37) == "# http://phpsurveyor.sourceforge.net/"))
+   ((substr($bigarray[1], 0, 22) == "# SURVEYOR SURVEY DUMP")&& (substr($bigarray[4], 0, 37) == "# http://limesurvey.sourceforge.net/"))
 {
 	$importversion = 99;  // Version 0.99 file or older - carries a different URL
 }
 elseif 
-   (substr($bigarray[0], 0, 25) == "# PHPSurveyor Survey Dump")
+   (substr($bigarray[0], 0, 25) == "# LimeSurvey Survey Dump")
     {  // Wow.. this seems to be a >1.0 version file - these files carry the version information to read in line two
       $importversion=substr($bigarray[1], 12, 3);
     }
 else    // unknown file - show error message
   {
     $importsurvey .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-  	$importsurvey .= $clang->gT("This file is not a PHPSurveyor survey file. Import failed.")."<br /><br />\n";
+  	$importsurvey .= $clang->gT("This file is not a LimeSurvey survey file. Import failed.")."<br /><br />\n";
   	$importsurvey .= "</font></td></tr></table>\n";
   	$importsurvey .= "</body>\n</html>\n";
   	unlink($the_full_file_path);
@@ -345,7 +345,7 @@ if (!$surveyid)
 {
 	$importsurvey .= "<br /><strong><font color='red'>".$clang->gT("Error")."</strong></font><br />\n";
 	$importsurvey .= $clang->gT("Import of this survey file failed")."<br />\n";
-	$importsurvey .= $clang->gT("File does not contain PHPSurveyor data in the correct format.")."<br />\n"; //Couldn't find the SID - cannot continue
+	$importsurvey .= $clang->gT("File does not contain LimeSurvey data in the correct format.")."<br />\n"; //Couldn't find the SID - cannot continue
 	$importsurvey .= "</font></td></tr></table>\n";
 	$importsurvey .= "</body>\n</html>\n";
 	unlink($the_full_file_path); //Delete the uploaded file

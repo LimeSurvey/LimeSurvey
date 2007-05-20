@@ -1,7 +1,7 @@
 <?php
 /*
 #############################################################
-# >>> PHPSurveyor  							     			#
+# >>> LimeSurvey  							     			#
 #############################################################
 # > Author:  Jason Cleeland									#
 # > E-mail:  jason@cleeland.org								#
@@ -55,9 +55,9 @@ $thissurvey=getSurveyInfo($surveyid);
 if (!isset($_POST['lang']) || $_POST['lang'] == "")
 {
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
-	$clang = new phpsurveyor_lang($baselang);
+	$clang = new limesurvey_lang($baselang);
 } else {
-	$clang = new phpsurveyor_lang($_POST['lang']);
+	$clang = new limesurvey_lang($_POST['lang']);
 }
 
 

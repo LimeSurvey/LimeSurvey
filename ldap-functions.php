@@ -1,13 +1,13 @@
 <?php
 /*
 #############################################################
-# >>> PHPSurveyor       									#
+# >>> LimeSurvey       									#
 #############################################################
 # This set of scripts allows you to develop, publish and	#
 # perform data-entry on surveys.							#
 #############################################################
 #															#
-#	Copyright (C) 2007 by the developers of PHPSurveyor     #
+#	Copyright (C) 2007 by the developers of LimeSurvey     #
 #															#
 # This program is free software; you can redistribute 		#
 # it and/or modify it under the terms of the GNU General 	#

@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPSurveyor 1.0\n"
+"Project-Id-Version: LimeSurvey 1.0\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2006-12-16 23:32+0200\n"
 "Last-Translator: yoyo <yochayon@hotmail.com>\n"
@@ -25,8 +25,8 @@ msgstr "דף ניהול ראשי"
 msgid "Modify Security Settings"
 msgstr "שנה הגדרות אבטחה"
 
-# D:\web\xampp\htdocs\phpsurveyor/common.php:213
-# D:\web\xampp\htdocs\phpsurveyor/common.php:214
+# D:\web\xampp\htdocs\limesurvey/common.php:213
+# D:\web\xampp\htdocs\limesurvey/common.php:214
 msgid "Create/Edit Groups"
 msgstr "צור/ערוך קבוצות"
 
@@ -150,7 +150,7 @@ msgstr "התראת אימייל בסיסית"
 msgid "Detailed email notification with result codes"
 msgstr "התרעת אימייל עם הודעה מפורטת"
 
-msgid "PHPSurveyor Setup"
+msgid "LimeSurvey Setup"
 msgstr "התקנת תוכנת הסקרים"
 
 msgid "Error"
@@ -183,18 +183,18 @@ msgstr "גרסת הדפסה של הסקר"
 msgid "Get statistics from these responses"
 msgstr "הצד סטטיסטיקה על התגובות האלו"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/common.php:946
+# D:\xampp\xampp\htdocs\limesurvey/common.php:946
 msgid "Export Results to Application"
 msgstr "ייצא תוצאות לאפליקציה אחרת"
 
 msgid "Export result to a SPSS command file"
 msgstr "ייצא תוצאות לקובץ פקודות SPSS"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/importoldresponses.php:58
+# D:\xampp\xampp\htdocs\limesurvey/admin/importoldresponses.php:58
 msgid "Import answers from a deactivated survey table"
 msgstr "ייבא שאלות מטבלה של סקר לא פעיל"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/common.php:953
+# D:\xampp\xampp\htdocs\limesurvey/common.php:953
 msgid "Backup results table as SQL file"
 msgstr "גבה טבלת תוצאות כקובץ SQL"
 
@@ -258,26 +258,26 @@ msgstr "צא ונקה קובץ"
 msgid "There is 1 question in this survey"
 msgstr "ישנה שאלה 1 בסקר הזה"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/common.php:1528
+# D:\xampp\xampp\htdocs\limesurvey/common.php:1528
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "יש  {NUMBEROFQUESTIONS} בסקר הזה"
 
 msgid "submit"
 msgstr "שלח"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/common.php:1558
+# D:\xampp\xampp\htdocs\limesurvey/common.php:1558
 msgid "A Note On Privacy"
 msgstr "הערה לגבי פרטיות"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/common.php:1558
+# D:\xampp\xampp\htdocs\limesurvey/common.php:1558
 msgid "This survey is anonymous.<br />The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr "הסקר הזה הוא אנונימי<br />המידע שנשמר מסקר זה לא מכיל מידע מזהה אלא אם כן שאלה ספציפית בסקר ביקשה מידע שכזה.  אם ענית על סקר שהשתמש במחרוזת מזהה שאיפשרה לך גישה לסקר זה, תוכל להיות סמוך ובטוח שהמחרוזת המזהה לא נשמרת יחד עם תשובותיך.  היא מנוהלת על ידי מאגר מידע נפרד ותעודכן רק על מנת להצביע שאתה סיימת או לא סיימת את מילוי השאלון הנוכחי.  אין כל דרך להתאים בין מחרוזות כאלו לתגובות שמילאת בשאלון"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/common.php:1574
+# D:\xampp\xampp\htdocs\limesurvey/common.php:1574
 msgid "<strong>Thank You<br /><br />You have completed answering the questions in this survey.</strong><br /><br />Click on 'Submit' now to complete the process and save your answers."
 msgstr "<strong>תודה<br /><br />סיימת למלא את השאלות בסקר זה</strong><br /><br />לחץ על שליחה כדי לסיים את התהליך ולשמור את תשובותיך"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/common.php:1575
+# D:\xampp\xampp\htdocs\limesurvey/common.php:1575
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr "אם ברצונך לבדוק מחדש את התשובות שמילאת, ו/או לשנות משהו, תוכל לעשות זאת כעת על ידי לחיצה על מקש  [<< prev]"
 
@@ -311,7 +311,7 @@ msgstr "חזור לסקר"
 msgid "Save Your Unfinished Survey"
 msgstr "שמור סקר זה על אף שלא הסתיים"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/common.php:1624
+# D:\xampp\xampp\htdocs\limesurvey/common.php:1624
 msgid ""
 "Enter a name and password for this survey and click save below.<br />\n"
 "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.<br /><br />\n"
@@ -324,21 +324,21 @@ msgstr ""
 msgid "Saved name"
 msgstr "שם שנשמר"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/common.php:1635
+# D:\xampp\xampp\htdocs\limesurvey/common.php:1635
 msgid "Load Now"
 msgstr "טען כעת"
 
 msgid "Load A Previously Saved Survey"
 msgstr "טען סקר שנשמר"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/common.php:1638
+# D:\xampp\xampp\htdocs\limesurvey/common.php:1638
 msgid "You can load a survey that you have previously saved from this screen.<br />Type in the 'name' you used to save the survey, and the password.<br />"
 msgstr "ברשותך אפשרות לטעון סקר ששמר בעבר ממסך זה <br /> הקלד את השם שבו שמרת את הסקר ואת הסיסמא  <br />"
 
 msgid "You must be registered to complete this survey"
 msgstr "עלייך להרשם כדי לסיים את הסקר"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/common.php:1644
+# D:\xampp\xampp\htdocs\limesurvey/common.php:1644
 msgid ""
 "You may register for this survey if you wish to take part.<br />\n"
 "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
@@ -391,7 +391,7 @@ msgstr "אין סקר מתאים"
 msgid "This survey is not currently active. You will not be able to save your responses."
 msgstr "הסקר הזה אינו פעיל.  לא תוכל לשמור את תשובותיך"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/index.php:71
+# D:\xampp\xampp\htdocs\limesurvey/index.php:71
 msgid "ERROR"
 msgstr "שגיאה"
 
@@ -505,8 +505,8 @@ msgstr "בחר אחד מתוך הבאים"
 msgid "Check any that apply"
 msgstr "סמן את האפשרויות הרצויות"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/qanda.php:366
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/printablesurvey.php:253
+# D:\xampp\xampp\htdocs\limesurvey/qanda.php:366
+# D:\xampp\xampp\htdocs\limesurvey/admin/printablesurvey.php:253
 msgid "*"
 msgstr "*"
 
@@ -525,7 +525,7 @@ msgstr "אנא דרג את הכל"
 msgid "Please check at least one item"
 msgstr "אנא סמן אחד לפחות"
 
-# D:\web\xampp\htdocs\phpsurveyor/qanda.php:454
+# D:\web\xampp\htdocs\limesurvey/qanda.php:454
 msgid "You cannot proceed until you enter some text for one or more questions."
 msgstr "לא ניתן להמשיך עד להקלדת טקסט עבור אחת או יותר מן השאלות הבאות"
 
@@ -583,7 +583,7 @@ msgstr "האימייל שהכנסת אינו תקף.  אנא נסה שנית"
 msgid "The email you used has already been registered."
 msgstr "הכתובת בא השתמשת כבר קיימת במערכת"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/register.php:135
+# D:\xampp\xampp\htdocs\limesurvey/register.php:135
 msgid ""
 "Thank you for registering to participate in this survey.<br /><br />\n"
 "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.<br /><br />\n"
@@ -611,8 +611,8 @@ msgstr "שם זה כבר קיים במערכת.  עלייך לספק שם יחו
 msgid "Saved Survey Details"
 msgstr "פרטי סקר שמורים"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/save.php:266
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:219
+# D:\xampp\xampp\htdocs\limesurvey/save.php:266
+# D:\xampp\xampp\htdocs\limesurvey/admin/dataentry.php:219
 msgid "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
 msgstr "את/ה, או מישהו שמשתמש בכתובת הדואר שלך, שמר סקר במהלך כתיבתו.  הפרטים הבאים יכולים לשמש כדי לחזור לסקר ולהמשיך בנקודה שהפסקת"
 
@@ -742,8 +742,8 @@ msgstr "מאגר הנתונים שהוגדר לא קיים"
 msgid "Either your selected database has not yet been created or there is a problem accessing it."
 msgstr "יתכן שמאגר הנתונים שבחרת לא נוצר עדיין או שיש בעיה בגישה אליו"
 
-msgid "PHPSurveyor can attempt to create this database for you."
-msgstr "PHPSurveyor יכול לנסות ליצור את מאגר הנתונים הזה עבורך"
+msgid "LimeSurvey can attempt to create this database for you."
+msgstr "LimeSurvey יכול לנסות ליצור את מאגר הנתונים הזה עבורך"
 
 msgid "Your selected database name is:"
 msgstr "שם מאגר המידע שלך הוא"
@@ -754,12 +754,12 @@ msgstr "צור מאגר נתונים"
 msgid "Populate Database"
 msgstr "אכלס מאגר בנתונים"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/admin.php:102
+# D:\xampp\xampp\htdocs\limesurvey/admin/admin.php:102
 #, php-format
 msgid "A database named \"%s\" does already exist."
 msgstr "מאגר נתונים בשם \"%s\" לא קיים"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/admin.php:103
+# D:\xampp\xampp\htdocs\limesurvey/admin/admin.php:103
 msgid "Do you want to populate that database now by creating the necessary tables?"
 msgstr "האם ברצונך לאכלס את מאגר הנתונים כעת על ידי יצירת הטבלאות החיוניות?"
 
@@ -784,21 +784,21 @@ msgstr "תחום"
 msgid "Group"
 msgstr "קבוצה"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/assessments.php:99
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:878
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:925
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:938
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:961
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:1066
+# D:\xampp\xampp\htdocs\limesurvey/admin/assessments.php:99
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:878
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:925
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:938
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:961
+# D:\xampp\xampp\htdocs\limesurvey/admin/statistics.php:1066
 msgid "Minimum"
 msgstr "מינימום"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/assessments.php:99
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:879
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:926
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:939
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:961
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:1160
+# D:\xampp\xampp\htdocs\limesurvey/admin/assessments.php:99
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:879
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:926
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:939
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:961
+# D:\xampp\xampp\htdocs\limesurvey/admin/statistics.php:1160
 msgid "Maximum"
 msgstr "מקסימום"
 
@@ -808,11 +808,11 @@ msgstr "כותרת"
 msgid "Message"
 msgstr "הודעה"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/assessments.php:99
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:882
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:929
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:942
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:961
+# D:\xampp\xampp\htdocs\limesurvey/admin/assessments.php:99
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:882
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:929
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:942
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:961
 msgid "URL"
 msgstr "כתובת"
 
@@ -909,11 +909,11 @@ msgstr "הצג רק את שאלה {QID} אם"
 msgid "and"
 msgstr "ו"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/conditions.php:524
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:1507
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1145
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1513
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2035
+# D:\xampp\xampp\htdocs\limesurvey/admin/conditions.php:524
+# D:\xampp\xampp\htdocs\limesurvey/admin/dataentry.php:1507
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1145
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1513
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:2035
 msgid "OR"
 msgstr "או"
 
@@ -966,7 +966,7 @@ msgstr "לא ניתן ליצור מאגר נתונים"
 msgid "Group could not be added. It is missing the group name for the following languages "
 msgstr "לא ניתן להוסיף את הקבוצה שכן אין עבורה שם בשפות הבאות"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:101
+# D:\xampp\xampp\htdocs\limesurvey/admin/database.php:101
 msgid "Error: The database reported the following error:"
 msgstr "שגיאה:  מאגר הנתונים דיווח על השגיאה הבאה:"
 
@@ -1108,8 +1108,8 @@ msgstr "תאריכון"
 msgid "IP-Address"
 msgstr "כתובת IP"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:1423
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:1498
+# D:\xampp\xampp\htdocs\limesurvey/admin/dataentry.php:1423
+# D:\xampp\xampp\htdocs\limesurvey/admin/dataentry.php:1498
 msgid "AND"
 msgstr "וגם"
 
@@ -1179,7 +1179,7 @@ msgstr "בטל סקר"
 msgid "In an active survey, a table is created to store all the data-entry records."
 msgstr "בסקר הפעיל, נוצרה טבלה שתאכסן את כל רשומות המידע"
 
-msgid "When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using PHPSurveyor any more."
+msgid "When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
 msgstr "כאשר את המבטל סקר כל המידע בטבלה המקורית יעובר למקום אחר, כאשר תפעיל את הסקר שוב הטבלה תיהיה ריקה. לא תהיה  עוד גישה לנתונים דרך התוכנה"
 
 # token??
@@ -1198,7 +1198,7 @@ msgstr "בטל"
 msgid "The responses table has been renamed to: "
 msgstr "לטבלאת התשובות ניתן השם החדש:"
 
-msgid "The responses to this survey are no longer available using PHPSurveyor."
+msgid "The responses to this survey are no longer available using LimeSurvey."
 msgstr " התשובות של הסקר זה כבר לא זמינות דרך  PHPSurveryor"
 
 msgid "You should note the name of this table in case you need to access this information later."
@@ -1278,7 +1278,7 @@ msgstr "קוד התשובה"
 msgid "Full Answers"
 msgstr "תשובה מלאה"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:147
+# D:\xampp\xampp\htdocs\limesurvey/admin/export.php:147
 msgid "Format"
 msgstr "תבנית"
 
@@ -1337,7 +1337,7 @@ msgstr "תאריך יצירה"
 msgid "Visibility"
 msgstr "ראות"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:479
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:479
 msgid "Status"
 msgstr "סטטוס"
 
@@ -1359,8 +1359,8 @@ msgstr "לא פעיל"
 msgid "Create Survey"
 msgstr "ייצר סקר"
 
-msgid "PHPSurveyor System Summary"
-msgstr "PHPSurveyor תקציר המערכת"
+msgid "LimeSurvey System Summary"
+msgstr "LimeSurvey תקציר המערכת"
 
 msgid "Database Name"
 msgstr "שם בסיס הנתונים"
@@ -1477,8 +1477,8 @@ msgstr "התשובות יחתמו בתאריכון"
 msgid "IP Addresses will be logged"
 msgstr "כתובות IP יתועדו"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1773
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1995
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1773
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1995
 msgid "Referer-URL"
 msgstr "פנה -URL"
 
@@ -1525,8 +1525,8 @@ msgstr "תבניות:"
 msgid "Base Language:"
 msgstr "שפת בסיס:"
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:618
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:3201
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:618
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:3201
 msgid "Additional Languages"
 msgstr "שפות נוספות:"
 
@@ -1560,9 +1560,9 @@ msgstr "צריך להוסיף שאלות"
 msgid "User Group"
 msgstr "קבוצת המשתמש"
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:707
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1703
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1793
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:707
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:1703
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:1793
 msgid "Mail to all Members"
 msgstr "שלח דוא\"ל לכל המשתתפים"
 
@@ -1635,13 +1635,13 @@ msgstr "הראה פרטים של שאלה זו"
 msgid "Hide Details of this Question"
 msgstr "הסתר פרטים של שאלה זו"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:700
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1058
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1173
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1305
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:670
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:683
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:734
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:700
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1058
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1173
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1305
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:670
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:683
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:734
 msgid "Code:"
 msgstr "קוד:"
 
@@ -1675,16 +1675,16 @@ msgstr "שונות:"
 msgid "Upload completed"
 msgstr "העלאה הסתיימה"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:795
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/labels.php:251
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:224
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1005
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1029
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1037
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1043
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1046
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:1047
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:1446
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:795
+# D:\xampp\xampp\htdocs\limesurvey/admin/labels.php:251
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:224
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:1005
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:1029
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:1037
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:1043
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:1046
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:1047
+# D:\xampp\xampp\htdocs\limesurvey/admin/statistics.php:1446
 msgid "Code"
 msgstr "קוד"
 
@@ -1694,7 +1694,7 @@ msgstr "ברירת מחדל"
 msgid "Move"
 msgstr "העבר"
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1235
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:1235
 msgid "You have to enter user name and email."
 msgstr "צריך להכניס  שם המשתמש ודוא\"ל."
 
@@ -1717,7 +1717,7 @@ msgstr "שם"
 msgid "Set User Rights"
 msgstr "קבע את זכויות המשתמש"
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1482
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:1482
 msgid "Setting new Parent"
 msgstr "קבע הורים חדשים"
 
@@ -1761,11 +1761,11 @@ msgstr "ערוך קבוצה ליוצר"
 msgid "Update User Group"
 msgstr "עדכן קבוצת משתמש"
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1705
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:1705
 msgid "To:"
 msgstr "עבור:"
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1707
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:1707
 msgid "Send me a copy:"
 msgstr "שלח לי עותק:"
 
@@ -1775,7 +1775,7 @@ msgstr "נושא:"
 msgid "Message:"
 msgstr "הודעה:"
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1713
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:1713
 msgid "Send"
 msgstr "שלח"
 
@@ -1803,7 +1803,7 @@ msgstr "קבוצה קיימת כבר"
 msgid "Group name was not supplied!"
 msgstr "לא נתת שם לקבוצה!"
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:1828
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:1828
 msgid "Mail not sent!"
 msgstr "דוא\"ל לא נשלח!"
 
@@ -1882,16 +1882,16 @@ msgstr "נכשל בהוספת המשתמש."
 msgid "Username already exists."
 msgstr "שם המשתמש כבר קיים במערכת."
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2574
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2620
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2674
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:2574
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:2620
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:2674
 msgid "No Username selected."
 msgstr "לא נבחר שם משתמש."
 
 msgid "Set Survey Rights"
 msgstr "קבע את זכויות השאלון"
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2656
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:2656
 msgid "User Group added."
 msgstr "קבוצת משתמש נוספה."
 
@@ -1922,7 +1922,7 @@ msgstr "משתמש"
 msgid "Update survey rights successful."
 msgstr "עידכון זכויות הסקר בוצע בהצלחה."
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:2987
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:2987
 msgid "Failed to update survey rights!"
 msgstr "עידכון זכויות הסקר נכשל!"
 
@@ -1932,11 +1932,11 @@ msgstr "ערוך סקר - שלב 1 מתוך 2"
 msgid "Admin Email:"
 msgstr "דוא\"ל של אחראי מחשבים"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1575
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1890
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:353
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:373
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/navigator.php:498
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1575
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1890
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:353
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:373
+# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:498
 msgid "Format:"
 msgstr "תבנית:"
 
@@ -1977,12 +1977,12 @@ msgstr "תאריכון?"
 msgid "Save IP Address?"
 msgstr "שמור כתובת IP?"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1773
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1995
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1773
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1995
 msgid "Save Referring URL?"
 msgstr "שמור כתובת אינטרנט מפנה?"
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/html.php:3214
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:3214
 msgid "Remove"
 msgstr "הסר"
 
@@ -2145,19 +2145,19 @@ msgstr ""
 msgid "URL Description:"
 msgstr "תאור כתובת אינטרנט:"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1855
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1855
 msgid "The uploaded file is bigger than the upload_max_filesize directive in php.ini"
 msgstr "הקובץ שהועלה גדול מהגודל המקסימלי (upload_max_file)המופיע ב-php.ini"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1859
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1859
 msgid "The file was only partially uploaded"
 msgstr "הקובץ הועלה בחלקו"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1863
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1863
 msgid "No file was uploaded"
 msgstr "הקובץ לא הועלה"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1869
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1869
 msgid "Error on file transfer. You must select a CSV file"
 msgstr "תקלה בהעברת הקובץ. עליך לבחור קובץ CSV."
 
@@ -2176,11 +2176,11 @@ msgstr "עליך להעלות קובץ CSV."
 msgid "Upload CSV file"
 msgstr "העלה קובץ CSV"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2158
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:2158
 msgid "It is impossible to upload a file other than CSV type"
 msgstr "לא ניתן להעלות קובץ שאיננו קובץ CSV"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2170
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:2170
 msgid "It is impossible to upload an empty file"
 msgstr "לא ניתן להעלות קובץ ריק"
 
@@ -2190,7 +2190,7 @@ msgstr "טוען קובץ CSV"
 msgid "Visualization:"
 msgstr "מראה:"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2178
+# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:2178
 msgid "Select the field number you would like to use for your answers:"
 msgstr "בחר את מספר השדה בו ברצונך להשתמש בתשובותיך:"
 
@@ -2203,7 +2203,7 @@ msgstr "טעינת קובץ הצליחה."
 msgid "Reading file.."
 msgstr "קורא קובץ..."
 
-msgid "This file is not a PHPSurveyor group file. Import failed."
+msgid "This file is not a LimeSurvey group file. Import failed."
 msgstr "קובץ זה איננו קובץ קבוצה של PHPSurvey. ייבוא נכשל."
 
 msgid "Group Import Summary"
@@ -2224,13 +2224,13 @@ msgstr "ייבוא קבוצה לא הושלם."
 msgid "Import Label Set"
 msgstr "ייבא קבוצת תוויות"
 
-msgid "This file is not a PHPSurveyor question file. Import failed."
+msgid "This file is not a LimeSurvey question file. Import failed."
 msgstr "קובץ זה איננו קובץ שאלות של PHPSurvey. ייבוא נכשל."
 
 msgid "Return to Labels Admin"
 msgstr "חזרה למנהל התוויות"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/importlabel.php:212
+# D:\xampp\xampp\htdocs\limesurvey/admin/importlabel.php:212
 msgid "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead."
 msgstr "נמצאה קבוצת תוויות כפולה. קבוצה זו לא יובאה, וייעשה שימוש במקור."
 
@@ -2243,7 +2243,7 @@ msgstr "קבוצות תוויות"
 msgid "Import of Survey is completed."
 msgstr "ייבוא סקר הושלם"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/importoldresponses.php:58
+# D:\xampp\xampp\htdocs\limesurvey/admin/importoldresponses.php:58
 msgid "Import responses from an old (deactivated) survey table into an active survey"
 msgstr "ייבוא מטבלת סקר ישנה (ולא פעילה) לתוך סקר פעיל"
 
@@ -2259,13 +2259,13 @@ msgstr "מזהה הסקר לא מוכר למערכת. לא יכול לייבא �
 msgid "No GID (Group) has been provided. Cannot import question"
 msgstr "מזהה הקבוצה לא מוכר למערכת. לא יכול לייבא שאלה"
 
-msgid "This file is not a PHPSurveyor survey file. Import failed."
-msgstr "הקובץ איננו קובת סקר של PHPSurveyor. ייבוא נכשל."
+msgid "This file is not a LimeSurvey survey file. Import failed."
+msgstr "הקובץ איננו קובת סקר של LimeSurvey. ייבוא נכשל."
 
 msgid "Import of this survey file failed"
 msgstr "ייבוא קובץ סקר זה נכשל"
 
-msgid "File does not contain PHPSurveyor data in the correct format."
+msgid "File does not contain LimeSurvey data in the correct format."
 msgstr "הקובץ אינו מכיל מידע סקר של PHPsurveyor בפןרמט הנכון."
 
 msgid "Survey Import Summary"
@@ -2295,7 +2295,7 @@ msgstr "ערוך קבוצת תוויות"
 msgid "Delete label set"
 msgstr "מחק קבוצת תוויות"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/labels.php:231
+# D:\xampp\xampp\htdocs\limesurvey/admin/labels.php:231
 msgid "Are you sure?"
 msgstr "האם אתה בטוח?"
 
@@ -2422,7 +2422,7 @@ msgstr "סה\"כ רשומות בסקר"
 msgid "Percentage of total"
 msgstr "אחוז מהכל"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:870
+# D:\xampp\xampp\htdocs\limesurvey/admin/statistics.php:870
 msgid "SQL"
 msgstr "SQL"
 
@@ -2471,14 +2471,14 @@ msgstr "סייר"
 msgid "Select all"
 msgstr "בחר הכל"
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/stats.php:252
+# D:\web\xampp\htdocs\limesurvey/admin/stats.php:252
 msgid "Proceed"
 msgstr "המשך"
 
 msgid "Question List"
 msgstr "רשימת שאלות"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/stats.php:332
+# D:\xampp\xampp\htdocs\limesurvey/admin/stats.php:332
 msgid "Like"
 msgstr "דומה ל"
 
@@ -2533,7 +2533,7 @@ msgstr "תבנית זו ניתנת לשינוי"
 msgid "This template cannot be modified"
 msgstr "תבנית זו אינה ניתנת לשינוי"
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/templates.php:538
+# D:\web\xampp\htdocs\limesurvey/admin/templates.php:538
 msgid "You can\\'t edit the default template."
 msgstr "לא ניתן לערות את תבנית ברירת המחדל"
 
@@ -2567,7 +2567,7 @@ msgstr "קבצים סטנדרטיים:"
 msgid "Now editing:"
 msgstr "עורך כרגע:"
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/templates.php:604
+# D:\web\xampp\htdocs\limesurvey/admin/templates.php:604
 msgid "Changes cannot be saved to the default template."
 msgstr "שינויים אינם יכולים להשמר בתבנית ברירת המחדל"
 
@@ -2679,7 +2679,7 @@ msgstr "הזמנה נשלחה?"
 msgid "Completed?"
 msgstr "הושלם?"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:497
+# D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:497
 msgid "MPID"
 msgstr "MPID"
 
@@ -2731,7 +2731,7 @@ msgstr "שולח למספר מזהה הרשאה (TID):"
 msgid "Invitation Sent To:"
 msgstr "הזמנה נשלחה ל:"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:733
+# D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:733
 msgid "Mail to {FIRSTNAME} {LASTNAME} ({EMAIL}) Failed"
 msgstr "שליחת אימייל ל{FIRSTNAME} {LASTNAME} ({EMAIL})  נכשלה"
 
@@ -2792,7 +2792,7 @@ msgstr "הרשאה שהתווספה"
 msgid "Upload CSV File"
 msgstr "העלה קובץ CSV"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1200
+# D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:1200
 msgid "Note:"
 msgstr "שים לב:"
 
@@ -2817,7 +2817,7 @@ msgstr "שכחת סיסמה"
 msgid "User name and/or email not found!"
 msgstr "שם משתמש ו/או אימייל לא נמצאו!"
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/usercontrol.php:63
+# D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:63
 msgid "Your data:"
 msgstr "המידע שלך:"
 
@@ -2866,7 +2866,7 @@ msgstr "חסרה סיסמה."
 msgid "Email address already exists."
 msgstr "כתובת אימייל כבר קיימת."
 
-# D:\web\xampp\htdocs\phpsurveyor/admin/usercontrol.php:320
+# D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:320
 msgid "Back"
 msgstr "חזרה"
 
@@ -2909,7 +2909,7 @@ msgstr "התעלם מהרשומה החדשה."
 msgid "Replace the existing record."
 msgstr "החלף את הרשומה הקיימת"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:83
+# D:\xampp\xampp\htdocs\limesurvey/admin/vvimport.php:83
 msgid "Cannot import the VVExport file."
 msgstr "לא יכול לייבא את קובץ ה-WExport"
 
@@ -2934,8 +2934,8 @@ msgstr "בודק"
 msgid "Table Created"
 msgstr "הטבלה נוצרה"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/checkfields.php:223
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/checkfields.php:289
+# D:\xampp\xampp\htdocs\limesurvey/admin/checkfields.php:223
+# D:\xampp\xampp\htdocs\limesurvey/admin/checkfields.php:289
 msgid "OK"
 msgstr "OK"
 

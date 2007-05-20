@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPSurveyor French language file\n"
+"Project-Id-Version: LimeSurvey French language file\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2007-05-06 15:56+0100\n"
 "Last-Translator: seb <seb>\n"
@@ -8,30 +8,30 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Basepath: D:\\www\\phpsurveyor\n"
+"X-Poedit-Basepath: D:\\www\\limesurvey\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-Country: FRANCE\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: gT\n"
-"X-Poedit-SearchPath-0: D:\\www\\phpsurveyor\n"
+"X-Poedit-SearchPath-0: D:\\www\\limesurvey\n"
 
 msgid "Administration"
 msgstr "Administration"
 
-# E:\www\phpsurveyor/common.php:190
+# E:\www\limesurvey/common.php:190
 msgid "Logged in as"
 msgstr "Connecté en tant que "
 
 msgid "Default Administration Page"
 msgstr "Page d'administration générale"
 
-# E:\www\phpsurveyor/common.php:219
-# E:\www\phpsurveyor/common.php:220
+# E:\www\limesurvey/common.php:219
+# E:\www\limesurvey/common.php:220
 msgid "Create/Edit Users"
 msgstr "Créer/Editer des utilisateurs"
 
-# E:\www\phpsurveyor/common.php:219
-# E:\www\phpsurveyor/common.php:220
+# E:\www\limesurvey/common.php:219
+# E:\www\limesurvey/common.php:220
 msgid "Create/Edit Groups"
 msgstr "Créer/Editer des groupes"
 
@@ -56,9 +56,9 @@ msgstr "Editeur de modèles"
 msgid "Show Help"
 msgstr "Aide"
 
-# E:\www\phpsurveyor/common.php:222
-# E:\www\phpsurveyor/common.php:224
-# E:\www\phpsurveyor/admin/usercontrol.php:134
+# E:\www\limesurvey/common.php:222
+# E:\www\limesurvey/common.php:224
+# E:\www\limesurvey/admin/usercontrol.php:134
 msgid "Logout"
 msgstr "Déconnexion"
 
@@ -86,8 +86,8 @@ msgstr "Ligne de 10 boutons radio"
 msgid "Array (Yes/No/Uncertain)"
 msgstr "Ligne (Oui/Non/Indifférent)"
 
-# E:\www\phpsurveyor/common.php:503
-# E:\www\phpsurveyor/admin/navigator.php:1659
+# E:\www\limesurvey/common.php:503
+# E:\www\limesurvey/admin/navigator.php:1659
 msgid "Date"
 msgstr "Date"
 
@@ -160,8 +160,8 @@ msgstr "Notification simple par mail"
 msgid "Detailed email notification with result codes"
 msgstr "Notification par mail avec les codes des réponses"
 
-msgid "PHPSurveyor Setup"
-msgstr "Paramètres de PHPSurveyor"
+msgid "LimeSurvey Setup"
+msgstr "Paramètres de LimeSurvey"
 
 msgid "Error"
 msgstr "Erreur"
@@ -190,7 +190,7 @@ msgstr "Ecran de saisie de données pour le questionnaire"
 msgid "Get statistics from these responses"
 msgstr "Donner les statistiques de ces réponses"
 
-# E:\www\phpsurveyor/common.php:946
+# E:\www\limesurvey/common.php:946
 msgid "Export Results to Application"
 msgstr "Exporter les résultats dans une application"
 
@@ -209,7 +209,7 @@ msgstr "Importer un fichier VV"
 msgid "Export a VV survey file"
 msgstr "Exporter vers un fichier VV"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:139
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:139
 msgid "Preset"
 msgstr "Réglage"
 
@@ -222,8 +222,8 @@ msgstr "Réponses datées :"
 msgid "IP Address"
 msgstr "Adresse IP :"
 
-# E:\www\phpsurveyor/admin/html.php:1785
-# E:\www\phpsurveyor/admin/html.php:2047
+# E:\www\limesurvey/admin/html.php:1785
+# E:\www\limesurvey/admin/html.php:2047
 msgid "Referring URL"
 msgstr "URL référente"
 
@@ -260,28 +260,28 @@ msgstr "Sans changement"
 msgid "Comment"
 msgstr "Commentaire"
 
-# D:\www\phpsurveyor/common.php:1768
+# D:\www\limesurvey/common.php:1768
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr "Attention : l'exécution du Javascript est désactivé dans votre navigateur. Vous risquez de ne pas pouvoir répondre à toutes les questions. Veuillez vérifier les réglages de votre navigateur."
 
 msgid "There is 1 question in this survey"
 msgstr "Il y a 1 question dans ce questionnaire"
 
-# E:\www\phpsurveyor/common.php:1528
+# E:\www\limesurvey/common.php:1528
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "Il y a {NUMBEROFQUESTIONS} questions dans ce questionnaire."
 
 msgid "submit"
 msgstr "Envoyer"
 
-# E:\www\phpsurveyor/common.php:1558
+# E:\www\limesurvey/common.php:1558
 msgid "A Note On Privacy"
 msgstr "Note sur la vie privée"
 
 msgid "This survey is anonymous."
 msgstr "Ce questionnaire est anonyme."
 
-# E:\www\phpsurveyor/common.php:1558
+# E:\www\limesurvey/common.php:1558
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr "L'enregistrement de vos réponses ne contient aucune information d'identification sur vous, à moins qu'une question ne vous ait été posée dans ce sens. Si vous avez répondu à un questionnaire utilisant des invitations, vous pouvez être assuré(e) que le code de l'invitation n'est pas enregistré avec votre réponse. Les invitations sont gérées dans une base de données séparée qui n'est mise à jour que pour indiquer si vous avez ou non utilisé votre invitation pour remplir le questionnaire. Il n'y a aucun moyen de faire le lien entre les invitations et les réponses enregistrées pour ce questionnaire."
 
@@ -303,11 +303,11 @@ msgstr "Merci !"
 msgid "You have completed answering the questions in this survey."
 msgstr "Vous avez répondu à toutes les questions de ce questionnaire."
 
-# D:\www\phpsurveyor/common.php:1812
+# D:\www\limesurvey/common.php:1812
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "Cliquez maintenant sur 'Envoyer' pour terminer la procédure et sauvegarder vos réponses. "
 
-# E:\www\phpsurveyor/common.php:1575
+# E:\www\limesurvey/common.php:1575
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr "Si vous voulez vérifier l'une de vos réponses et/ou la changer, vous pouvez le faire maintenant en cliquant sur le bouton [<<Précédente] pour parcourir vos réponses."
 
@@ -326,15 +326,15 @@ msgstr "Retourner au questionnaire"
 msgid "Save Your Unfinished Survey"
 msgstr "Sauvegarder votre questionnaire non terminé"
 
-# D:\www\phpsurveyor/common.php:1852
+# D:\www\limesurvey/common.php:1852
 msgid "Enter a name and password for this survey and click save below."
 msgstr "Entrez un nom et un mot de passe pour ce questionnaire puis cliquez sur 'Sauvegarder' ci-dessous."
 
-# E:\www\phpsurveyor/common.php:1624
+# E:\www\limesurvey/common.php:1624
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr "Votre questionnaire sera enregistré avec ce nom et ce mot de passe et pourra être complété plus tard en vous connectant avec les mêmes nom et mot de passe."
 
-# D:\www\phpsurveyor/common.php:1852
+# D:\www\limesurvey/common.php:1852
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "Si vous donnez une adresse mail, un message contenant les détails vous sera envoyé."
 
@@ -359,29 +359,29 @@ msgstr "Sauvegarder maintenant"
 msgid "Load A Previously Saved Survey"
 msgstr "Charger un questionnaire précédemment sauvegardé"
 
-# E:\www\phpsurveyor/common.php:1638
+# E:\www\limesurvey/common.php:1638
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr "Vous pouvez, depuis cet écran, charger un questionnaire que vous avez précédemment sauvegardé."
 
-# E:\www\phpsurveyor/common.php:1638
+# E:\www\limesurvey/common.php:1638
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr "Renseignez le nom et le mot de passe que vous avez utilisés lors de la sauvegarde."
 
 msgid "Saved name"
 msgstr "Nom de sauvegarde"
 
-# E:\www\phpsurveyor/common.php:1635
+# E:\www\limesurvey/common.php:1635
 msgid "Load Now"
 msgstr "Charger maintenant"
 
 msgid "You must be registered to complete this survey"
 msgstr "Vous devez être enregistré(e) pour compléter ce questionnaire"
 
-# D:\www\phpsurveyor/common.php:1890
+# D:\www\limesurvey/common.php:1890
 msgid "You may register for this survey if you wish to take part."
 msgstr "Vous devez vous enregistrer si vous souhaitez participer à ce questionnaire."
 
-# E:\www\phpsurveyor/common.php:1644
+# E:\www\limesurvey/common.php:1644
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "Entrez vos informations ci-dessous et un mail contenant un lien pour y participer vous sera envoyé immédiatement."
 
@@ -403,16 +403,16 @@ msgstr "Votre évaluation"
 msgid "Online Manual"
 msgstr "Manuel en ligne"
 
-# D:\www\phpsurveyor/common.php:2306
+# D:\www\limesurvey/common.php:2306
 msgid "Support this project - Donate to "
 msgstr "Encouragez ce projet. Faites un don à"
 
-# D:\www\phpsurveyor/common.php:2309
+# D:\www\limesurvey/common.php:2309
 msgid "Visit our website!"
 msgstr "Visiter notre site web !"
 
-# D:\www\phpsurveyor/common.php:2735
-# D:\www\phpsurveyor/common.php:2740
+# D:\www\limesurvey/common.php:2735
+# D:\www\limesurvey/common.php:2740
 msgid "Executing"
 msgstr "Exécution"
 
@@ -446,15 +446,15 @@ msgstr "Désolé. Il n'y a pas de questionnaire correspondant."
 msgid "This survey is not currently active. You will not be able to save your responses."
 msgstr "Ce questionnaire n'est pas activé. Vous ne pourrez pas sauver vos réponses."
 
-# E:\www\phpsurveyor/index.php:69
+# E:\www\limesurvey/index.php:69
 msgid "ERROR"
 msgstr "ERREUR"
 
-# D:\www\phpsurveyor/index.php:69
+# D:\www\limesurvey/index.php:69
 msgid "We are sorry but your session has expired."
 msgstr "Désolé mais votre session a expiré."
 
-# D:\www\phpsurveyor/index.php:69
+# D:\www\limesurvey/index.php:69
 msgid "Either you have been inactive for too long or there were problems with your connection."
 msgstr "Soit vous avez été inactif depuis trop longtemps, soit il y a eu un problème avec votre connexion."
 
@@ -467,8 +467,8 @@ msgstr "pour plus d'aide"
 msgid "You have not provided a survey identification number"
 msgstr "Vous n'avez pas fourni d'identifiant de questionnaire"
 
-# D:\www\phpsurveyor/index.php:231
-# D:\www\phpsurveyor/save.php:215
+# D:\www\limesurvey/index.php:231
+# D:\www\limesurvey/save.php:215
 msgid "The answer to the security question is incorrect"
 msgstr "La réponse à la question de sécurité est incorrecte"
 
@@ -559,7 +559,7 @@ msgstr "CODE SQL QUI A ECHOUE"
 msgid "ERROR MESSAGE"
 msgstr "MESSAGE D'ERREUR"
 
-# D:\www\phpsurveyor/index.php:1041
+# D:\www\limesurvey/index.php:1041
 msgid "Error saving results"
 msgstr "Erreur de sauvegarde des résultats"
 
@@ -596,8 +596,8 @@ msgstr "réponses"
 msgid "Choose your language"
 msgstr "Choisissez votre langue"
 
-# E:\www\phpsurveyor/qanda.php:366
-# E:\www\phpsurveyor/admin/printablesurvey.php:247
+# E:\www\limesurvey/qanda.php:366
+# E:\www\limesurvey/admin/printablesurvey.php:247
 msgid "*"
 msgstr "*"
 
@@ -616,7 +616,7 @@ msgstr "Veuillez classer tous les éléments SVP"
 msgid "Please check at least one item"
 msgstr "Veuillez choisir au moins un élément SVP"
 
-# E:\www\phpsurveyor/qanda.php:453
+# E:\www\limesurvey/qanda.php:453
 msgid "You cannot proceed until you enter some text for one or more questions."
 msgstr "Vous ne pouvez pas poursuivre tant que vous n'aurez pas entré du texte dans une ou plusieurs questions."
 
@@ -716,14 +716,14 @@ msgstr "Rechargez votre questionnaire en cliquant sur l'URL suivante :"
 msgid "Cannot submit results - there are none to submit."
 msgstr "Impossible d'envoyer les réponses car il n'y en a aucune (vide)."
 
-# D:\www\phpsurveyor/save.php:452
+# D:\www\limesurvey/save.php:452
 msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
 msgstr "Cetet erreur peut survenir si vous avez déjà sauvegardé vos réponses et que vous pressé sur le bouton 'Rafraichir' de votre navigateur. Dans ce cas, vos réponses sont déjà sauvegardées."
 
 msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
 msgstr "Si vous obtenez ce message au milieu du remplissage d'un questionnaire, vous devriez choisir '<-Précédente' dans votre navigateur et rafraîchir la page obtenue. Bien que vous perdiez vos réponses de la dernière page, toutes les autres sont conservées. Ce problème peut se produire si le serveur est surchargé ou énormément utilisé. Nous nous excusons pour ce problème."
 
-# E:\www\phpsurveyor/admin/access_denied.php:43
+# E:\www\limesurvey/admin/access_denied.php:43
 msgid "Access denied!"
 msgstr "Accès refusé !"
 
@@ -754,11 +754,11 @@ msgstr "Vous n'êtes pas autorisé à éditer ce questionnaire !"
 msgid "You are not allowed to edit groups in this survey!"
 msgstr "Vous n'êtes pas autorisé à editer les groupes dans ce questionnaire !"
 
-# E:\www\phpsurveyor/admin/access_denied.php:103
+# E:\www\limesurvey/admin/access_denied.php:103
 msgid "You are not allowed to browse response!"
 msgstr "Vous n'êtes pas autorisé à parcourir les réponses !"
 
-# E:\www\phpsurveyor/admin/access_denied.php:108
+# E:\www\limesurvey/admin/access_denied.php:108
 msgid "You are not allowed to set assessment rules!"
 msgstr "Vous n'êtes pas autorisé à définir des règles d'évaluation !"
 
@@ -768,7 +768,7 @@ msgstr "Vous n'êtes pas autorisé à supprimer ce groupe !"
 msgid "You are not allowed to import a survey!"
 msgstr "Vous n'êtes pas autorisé à importer un questionnaire !"
 
-# E:\www\phpsurveyor/admin/usercontrol.php:250
+# E:\www\limesurvey/admin/usercontrol.php:250
 msgid "You are not allowed to perform this operation!"
 msgstr "Vous n'êtes pas autorisé à effectuer cette opération !"
 
@@ -805,7 +805,7 @@ msgstr "LIRE CECI ATTENTIVEMENT AVANT DE POURSUIVRE"
 msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
 msgstr "Vous devriez activer un questionnaire seulement si vous êtes absolument certain que la configuration de votre questionnaire est terminée et n'aura pas besoin d'être modifiée."
 
-# D:\www\phpsurveyor/admin/activate.php:235
+# D:\www\limesurvey/admin/activate.php:235
 msgid "Once a survey is activated you can no longer:"
 msgstr "Une fois le questionnaire activé, vous ne pourrez plus :"
 
@@ -818,23 +818,23 @@ msgstr "Ajouter ou supprimer des réponses à des questions à réponses multipl
 msgid "Add or delete questions"
 msgstr "Ajouter ou suppprimer des questions"
 
-# D:\www\phpsurveyor/admin/activate.php:236
+# D:\www\limesurvey/admin/activate.php:236
 msgid "However you can still:"
 msgstr "Cependant vous pourrez toujours :"
 
-# D:\www\phpsurveyor/admin/activate.php:236
+# D:\www\limesurvey/admin/activate.php:236
 msgid "Edit (change) your questions code, text or type"
 msgstr "Editez (changez) le code, le texte ou le type de vos questions"
 
-# D:\www\phpsurveyor/admin/activate.php:236
+# D:\www\limesurvey/admin/activate.php:236
 msgid "Edit (change) your group names"
 msgstr "Editez (changez) les noms de vos groupes"
 
-# D:\www\phpsurveyor/admin/activate.php:236
+# D:\www\limesurvey/admin/activate.php:236
 msgid "Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)"
 msgstr "Ajouter, supprimer ou éditer les réponses pré enregistrées de la question (sauf pour les questions à réponses multiples)"
 
-# D:\www\phpsurveyor/admin/activate.php:236
+# D:\www\limesurvey/admin/activate.php:236
 msgid "Change survey name or description"
 msgstr "Changez le nom ou la description du questionnaire"
 
@@ -862,8 +862,8 @@ msgstr "Ce questionnaire permet les enregistrements publics. Une table d'invitat
 msgid "This survey is now active, and responses can be recorded."
 msgstr "Ce questionnaire est maintenant activé, et les réponses peuvent être enregistrées."
 
-msgid "PHPSurveyor Online Manual"
-msgstr "Manuel en ligne de PHPSurveyor"
+msgid "LimeSurvey Online Manual"
+msgstr "Manuel en ligne de LimeSurvey"
 
 msgid "Help"
 msgstr "Aide"
@@ -880,42 +880,42 @@ msgstr "Portée"
 msgid "Group"
 msgstr "Groupe"
 
-# E:\www\phpsurveyor/admin/assessments.php:99
-# E:\www\phpsurveyor/admin/navigator.php:879
-# E:\www\phpsurveyor/admin/navigator.php:926
-# E:\www\phpsurveyor/admin/navigator.php:939
-# E:\www\phpsurveyor/admin/navigator.php:962
-# E:\www\phpsurveyor/admin/statistics.php:1057
+# E:\www\limesurvey/admin/assessments.php:99
+# E:\www\limesurvey/admin/navigator.php:879
+# E:\www\limesurvey/admin/navigator.php:926
+# E:\www\limesurvey/admin/navigator.php:939
+# E:\www\limesurvey/admin/navigator.php:962
+# E:\www\limesurvey/admin/statistics.php:1057
 msgid "Minimum"
 msgstr "Minimum"
 
-# E:\www\phpsurveyor/admin/assessments.php:99
-# E:\www\phpsurveyor/admin/navigator.php:880
-# E:\www\phpsurveyor/admin/navigator.php:927
-# E:\www\phpsurveyor/admin/navigator.php:940
-# E:\www\phpsurveyor/admin/navigator.php:962
-# E:\www\phpsurveyor/admin/statistics.php:1151
+# E:\www\limesurvey/admin/assessments.php:99
+# E:\www\limesurvey/admin/navigator.php:880
+# E:\www\limesurvey/admin/navigator.php:927
+# E:\www\limesurvey/admin/navigator.php:940
+# E:\www\limesurvey/admin/navigator.php:962
+# E:\www\limesurvey/admin/statistics.php:1151
 msgid "Maximum"
 msgstr "Maximum"
 
 msgid "Heading"
 msgstr "Titre"
 
-# E:\www\phpsurveyor/admin/assessments.php:99
-# E:\www\phpsurveyor/admin/navigator.php:882
-# E:\www\phpsurveyor/admin/navigator.php:929
-# E:\www\phpsurveyor/admin/navigator.php:942
-# E:\www\phpsurveyor/admin/navigator.php:962
-# E:\www\phpsurveyor/admin/tokens.php:658
-# E:\www\phpsurveyor/admin/tokens.php:808
+# E:\www\limesurvey/admin/assessments.php:99
+# E:\www\limesurvey/admin/navigator.php:882
+# E:\www\limesurvey/admin/navigator.php:929
+# E:\www\limesurvey/admin/navigator.php:942
+# E:\www\limesurvey/admin/navigator.php:962
+# E:\www\limesurvey/admin/tokens.php:658
+# E:\www\limesurvey/admin/tokens.php:808
 msgid "Message"
 msgstr "Message"
 
-# E:\www\phpsurveyor/admin/assessments.php:99
-# E:\www\phpsurveyor/admin/navigator.php:883
-# E:\www\phpsurveyor/admin/navigator.php:930
-# E:\www\phpsurveyor/admin/navigator.php:943
-# E:\www\phpsurveyor/admin/navigator.php:962
+# E:\www\limesurvey/admin/assessments.php:99
+# E:\www\limesurvey/admin/navigator.php:883
+# E:\www\limesurvey/admin/navigator.php:930
+# E:\www\limesurvey/admin/navigator.php:943
+# E:\www\limesurvey/admin/navigator.php:962
 msgid "URL"
 msgstr "URL"
 
@@ -931,8 +931,8 @@ msgstr "Editer"
 msgid "If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission"
 msgstr "Si vous créez des évaluations sur cette page, pour le questionnaire sélectionné, celles-ci auront lieu à la fin du questionnaire après l'envoi définitif des réponses"
 
-# E:\www\phpsurveyor/admin/assessments.php:145
-# E:\www\phpsurveyor/admin/tokens.php:499
+# E:\www\limesurvey/admin/assessments.php:145
+# E:\www\limesurvey/admin/tokens.php:499
 msgid "Actions"
 msgstr "Actions"
 
@@ -946,7 +946,7 @@ msgid "Browse Responses"
 msgstr "Parcourir les réponses"
 
 msgid "The defined surveyor database does not exist"
-msgstr "La base de données de PHPSurveyor n'existe pas"
+msgstr "La base de données de LimeSurvey n'existe pas"
 
 msgid "Either your selected database has not yet been created or there is a problem accessing it."
 msgstr "Soit votre base de données n'a pas été créée soit il y a un probléme pour y accéder."
@@ -984,7 +984,7 @@ msgstr "Montrer le précédent..."
 msgid "Show next..."
 msgstr "Montrer le suivant..."
 
-# D:\www\phpsurveyor/admin/browse.php:304
+# D:\www\limesurvey/admin/browse.php:304
 msgid "Showing Filtered Results"
 msgstr "Affichage des résultats filtrés"
 
@@ -1027,7 +1027,7 @@ msgstr "Vous ne pouvez pas exécuter directement ce script."
 msgid "You have not selected a Question."
 msgstr "Vous n'avez pas sélectionné de question."
 
-# D:\www\phpsurveyor/admin/conditions.php:81
+# D:\www\limesurvey/admin/conditions.php:81
 msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
 msgstr "Votre condition ne peut pas être ajoutée ! Elle ne comprend pas de question et/ou réponse sur laquelle cette condition est basée. Assurez-vous d'avoir choisi une question et une réponse."
 
@@ -1046,11 +1046,11 @@ msgstr "Montrer la question {QID} seulement SI (IF)"
 msgid "and"
 msgstr "et"
 
-# E:\www\phpsurveyor/admin/conditions.php:518
-# E:\www\phpsurveyor/admin/dataentry.php:1507
-# E:\www\phpsurveyor/admin/html.php:1157
-# E:\www\phpsurveyor/admin/html.php:1525
-# E:\www\phpsurveyor/admin/html.php:2087
+# E:\www\limesurvey/admin/conditions.php:518
+# E:\www\limesurvey/admin/dataentry.php:1507
+# E:\www\limesurvey/admin/html.php:1157
+# E:\www\limesurvey/admin/html.php:1525
+# E:\www\limesurvey/admin/html.php:2087
 msgid "OR"
 msgstr "OU"
 
@@ -1115,7 +1115,7 @@ msgstr ""
 "\\n"
 "Il manque le nom du groupe pour les langues suivantes"
 
-# E:\www\phpsurveyor/admin/database.php:116
+# E:\www\limesurvey/admin/database.php:116
 msgid "Error: The database reported the following error:"
 msgstr "Erreur : la base de données a retourné l'erreur suivante :"
 
@@ -1140,19 +1140,19 @@ msgstr "La question ne peut pas être mise à jour"
 msgid "Answers can't be deleted"
 msgstr "Les réponses ne peuvent pas être supprimées"
 
-# D:\www\phpsurveyor/admin/database.php:442
+# D:\www\limesurvey/admin/database.php:442
 msgid "This question relies on other question's answers and can't be moved above groupId:"
 msgstr "Cette question repose sur les réponses à d'autres questions et ne peut pas être déplacée au-dessus du groupe d'ID :"
 
-# D:\www\phpsurveyor/admin/database.php:443
-# D:\www\phpsurveyor/admin/database.php:455
+# D:\www\limesurvey/admin/database.php:443
+# D:\www\limesurvey/admin/database.php:455
 msgid "in position"
 msgstr "en position"
 
 msgid "See conditions:"
 msgstr "Voir les conditions :"
 
-# D:\www\phpsurveyor/admin/database.php:454
+# D:\www\limesurvey/admin/database.php:454
 msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
 msgstr "Des questions reposent sur les réponses à cette question. Vous ne pouvez pas déplacer cette question en dessous du groupe d'ID :"
 
@@ -1168,32 +1168,32 @@ msgstr "La question ne peut pas être supprimée"
 msgid "Add new Answer"
 msgstr "Ajouter une nouvelle réponse"
 
-# D:\www\phpsurveyor/admin/database.php:587
+# D:\www\limesurvey/admin/database.php:587
 msgid "Error adding answer: You can't use the same answer code more than once."
 msgstr "Erreur d'ajout de réponse : vous ne pouvez utiliser le même code de réponse qu'une seule fois."
 
-# E:\www\phpsurveyor/admin/usercontrol.php:153
-# E:\www\phpsurveyor/admin/usercontrol.php:157
-# E:\www\phpsurveyor/admin/usercontrol.php:171
+# E:\www\limesurvey/admin/usercontrol.php:153
+# E:\www\limesurvey/admin/usercontrol.php:157
+# E:\www\limesurvey/admin/usercontrol.php:171
 msgid "Failed to insert answer"
 msgstr "Echec de la création de la réponse"
 
-# D:\www\phpsurveyor/admin/database.php:566
+# D:\www\limesurvey/admin/database.php:566
 msgid "Invalid or empty answer code supplied"
 msgstr "Mauvais ou absence de code de réponse fourni"
 
 msgid "Save All"
 msgstr "Sauver tout"
 
-# E:\www\phpsurveyor/admin/usercontrol.php:342
+# E:\www\limesurvey/admin/usercontrol.php:342
 msgid "Failed to update answers"
 msgstr "Echec de la mise à jour des réponses"
 
-# D:\www\phpsurveyor/admin/database.php:605
+# D:\www\limesurvey/admin/database.php:605
 msgid "Answers with a code of 0 (zero) are not allowed, and will not be saved"
 msgstr "Les réponses avec 0 (zéro) comme code ne sont pas permises et ne seront pas sauvegardées"
 
-# D:\www\phpsurveyor/admin/database.php:660
+# D:\www\limesurvey/admin/database.php:660
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "Doublons sur le codes trouvés, ces entrées ne seront pas mises à jour."
 
@@ -1206,27 +1206,27 @@ msgstr "Bas"
 msgid "Del"
 msgstr "Supprimer"
 
-# E:\www\phpsurveyor/admin/usercontrol.php:153
-# E:\www\phpsurveyor/admin/usercontrol.php:157
-# E:\www\phpsurveyor/admin/usercontrol.php:171
+# E:\www\limesurvey/admin/usercontrol.php:153
+# E:\www\limesurvey/admin/usercontrol.php:157
+# E:\www\limesurvey/admin/usercontrol.php:171
 msgid "Failed to delete answer"
 msgstr "Echec de la suppression de la réponse"
 
 msgid "Default"
 msgstr "Défaut"
 
-# E:\www\phpsurveyor/admin/usercontrol.php:342
+# E:\www\limesurvey/admin/usercontrol.php:342
 msgid "Failed to make answer not default"
 msgstr "Impossible de NE PAS mettre cette réponse comme celle par défaut."
 
-# E:\www\phpsurveyor/admin/usercontrol.php:342
+# E:\www\limesurvey/admin/usercontrol.php:342
 msgid "Failed to make answer default"
 msgstr "Impossible de mettre cette réponse comme celle par défaut"
 
 msgid "Survey could not be updated"
 msgstr "Le questionnaire ne peut pas être mis à jour"
 
-# D:\www\phpsurveyor/admin/database.php:868
+# D:\www\limesurvey/admin/database.php:868
 msgid "ERROR deleting Survey id"
 msgstr "ERREUR en effaçant le questionnaire avec de ID"
 
@@ -1242,7 +1242,7 @@ msgstr "Entrée de données"
 msgid "You have not selected a survey for data-entry."
 msgstr "Vous n'avez pas sélectionné de questionnaire pour la saisie des données."
 
-# D:\www\phpsurveyor/admin/dataentry.php:257
+# D:\www\limesurvey/admin/dataentry.php:257
 msgid "This survey is not anonymous, you must supply a valid token"
 msgstr "Ce questionnaire n'est pas anonyme, vous devez fournir une invitation valable."
 
@@ -1312,8 +1312,8 @@ msgstr "Date de réponse"
 msgid "IP-Address"
 msgstr "Adresse IP :"
 
-# E:\www\phpsurveyor/admin/dataentry.php:1423
-# E:\www\phpsurveyor/admin/dataentry.php:1498
+# E:\www\limesurvey/admin/dataentry.php:1423
+# E:\www\limesurvey/admin/dataentry.php:1498
 msgid "AND"
 msgstr "ET"
 
@@ -1350,8 +1350,8 @@ msgstr "Désactiver le questionnaire"
 msgid "In an active survey, a table is created to store all the data-entry records."
 msgstr "Dans un questionnaire activé, une table est créée pour stocker toutes les données saisies."
 
-msgid "When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using PHPSurveyor any more."
-msgstr "Lorsque vous désactivez un questionnaire, toutes les données saisies dans la table originale seront déplacées ailleurs, ainsi lorsque vous réactiverez le questionnaire la table sera vide. Vous ne pourrez plus accéder à  ces données avec PHPSurveyor."
+msgid "When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
+msgstr "Lorsque vous désactivez un questionnaire, toutes les données saisies dans la table originale seront déplacées ailleurs, ainsi lorsque vous réactiverez le questionnaire la table sera vide. Vous ne pourrez plus accéder à  ces données avec LimeSurvey."
 
 msgid "De-activated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
 msgstr "Seul un administrateur système peut accéder aux données d'un questionnaire désactivé en utilisant un gestionnaire de bases de données tel que PhpMyAdmin. Si votre questionnaire utilise des invitations, cette table sera également renommée et seul un administrateur système y aura accès."
@@ -1371,8 +1371,8 @@ msgstr "Le questionnaire a été désactivé"
 msgid "The responses table has been renamed to: "
 msgstr "La table réponses a été renommée en : "
 
-msgid "The responses to this survey are no longer available using PHPSurveyor."
-msgstr "Les réponses à ce questionnaire ne sont plus disponibles via PHPSurveyor."
+msgid "The responses to this survey are no longer available using LimeSurvey."
+msgstr "Les réponses à ce questionnaire ne sont plus disponibles via LimeSurvey."
 
 msgid "You should note the name of this table in case you need to access this information later."
 msgstr "Vous devriez noter le nom de cette table dans le cas où vous auriez besoin d'y accéder ultérieurement."
@@ -1461,11 +1461,11 @@ msgstr "Réponses complètes"
 msgid "Format"
 msgstr "Format"
 
-# E:\www\phpsurveyor/admin/export.php:152
+# E:\www\limesurvey/admin/export.php:152
 msgid "Microsoft Word"
 msgstr "Microsoft Word"
 
-# E:\www\phpsurveyor/admin/export.php:155
+# E:\www\limesurvey/admin/export.php:155
 msgid "Microsoft Excel"
 msgstr "Microsoft Excel"
 
@@ -1505,22 +1505,22 @@ msgstr "Attribut_1"
 msgid "Attribute 2"
 msgstr "Attribut_2"
 
-# D:\www\phpsurveyor/admin/exportresults.php:720
+# D:\www\limesurvey/admin/exportresults.php:720
 msgid "NEW RECORD"
 msgstr "NOUVEL ENREGISTREMENT"
 
 msgid "Time Submitted"
 msgstr "Heure d'envoi"
 
-# D:\www\phpsurveyor/admin/exportresults.php:788
+# D:\www\limesurvey/admin/exportresults.php:788
 msgid "ID"
 msgstr "ID"
 
 msgid "Language"
 msgstr "Langue"
 
-# E:\www\phpsurveyor/admin/export.php:813
-# E:\www\phpsurveyor/admin/export.php:821
+# E:\www\limesurvey/admin/export.php:813
+# E:\www\limesurvey/admin/export.php:821
 msgid "N/A"
 msgstr "N/A"
 
@@ -1536,14 +1536,14 @@ msgstr "Accès"
 msgid "Status"
 msgstr "Statut"
 
-# E:\www\phpsurveyor/admin/html.php:808
-# E:\www\phpsurveyor/admin/html.php:1007
-# E:\www\phpsurveyor/admin/labels.php:257
-# E:\www\phpsurveyor/admin/navigator.php:226
-# E:\www\phpsurveyor/admin/navigator.php:931
-# E:\www\phpsurveyor/admin/navigator.php:1030
-# E:\www\phpsurveyor/admin/navigator.php:1131
-# E:\www\phpsurveyor/admin/saved.php:107
+# E:\www\limesurvey/admin/html.php:808
+# E:\www\limesurvey/admin/html.php:1007
+# E:\www\limesurvey/admin/labels.php:257
+# E:\www\limesurvey/admin/navigator.php:226
+# E:\www\limesurvey/admin/navigator.php:931
+# E:\www\limesurvey/admin/navigator.php:1030
+# E:\www\limesurvey/admin/navigator.php:1131
+# E:\www\limesurvey/admin/saved.php:107
 msgid "Action"
 msgstr "Action"
 
@@ -1583,12 +1583,12 @@ msgstr "Activer ce questionnaire"
 msgid "This survey is not currently active"
 msgstr "Ce questionnaire est actuellement désactivé"
 
-# C:\wamp\www\phpsurveyor/admin/html.php:94
+# C:\wamp\www\limesurvey/admin/html.php:94
 msgid "No Surveys available - please create one."
 msgstr "Pas de questionnaire disponible. Veuillez en créer un."
 
-msgid "PHPSurveyor System Summary"
-msgstr "Résumé système PHPSurveyor"
+msgid "LimeSurvey System Summary"
+msgstr "Résumé système LimeSurvey"
 
 msgid "Database Name"
 msgstr "Nom de la base de données"
@@ -1641,9 +1641,9 @@ msgstr "Editer le questionnaire courant"
 msgid "Delete Current Survey"
 msgstr "Supprimer le questionnaire courant"
 
-# C:\wamp\www\phpsurveyor/admin/html.php:498
-# C:\wamp\www\phpsurveyor/admin/html.php:499
-# C:\wamp\www\phpsurveyor/admin/html.php:3524
+# C:\wamp\www\limesurvey/admin/html.php:498
+# C:\wamp\www\limesurvey/admin/html.php:499
+# C:\wamp\www\limesurvey/admin/html.php:3524
 msgid "Change Group Order"
 msgstr "Changer l'ordre des groupes"
 
@@ -1695,7 +1695,7 @@ msgstr "Les réponses seront datées"
 msgid "IP Addresses will be logged"
 msgstr "Les adresses IP seront enregistrées"
 
-# E:\www\phpsurveyor/admin/html.php:417
+# E:\www\limesurvey/admin/html.php:417
 msgid "Referer-URL will be saved"
 msgstr "L'URL de provenance sera enregistrée"
 
@@ -1783,12 +1783,12 @@ msgstr "Supprimer ce groupe supprimera également toutes les questions et répon
 msgid "Delete Current Group"
 msgstr "Supprimer le groupe en cours"
 
-# D:\www\phpsurveyor/admin/html.php:889
+# D:\www\limesurvey/admin/html.php:889
 msgid "Impossible to delete this group because there is at least one question having a condition on its content"
 msgstr "impossible d'effacer ce groupe car il possède une question servant à définir au moins une condition."
 
-# D:\www\phpsurveyor/admin/html.php:891
-# D:\www\phpsurveyor/admin/html.php:1051
+# D:\www\limesurvey/admin/html.php:891
+# D:\www\limesurvey/admin/html.php:1051
 msgid "Disabled"
 msgstr "Désactivé"
 
@@ -1810,7 +1810,7 @@ msgstr "Masquer les détails de ce groupe"
 msgid "Add New Question to Group"
 msgstr "Ajouter une nouvelle question au groupe"
 
-# D:\www\phpsurveyor/admin/html.php:3548
+# D:\www\limesurvey/admin/html.php:3548
 msgid "Questions with conditions to this group"
 msgstr "Questions avec des conditions dans ce groupe."
 
@@ -1823,7 +1823,7 @@ msgstr "Supprimer cette question supprimera également toutes les réponses qu'e
 msgid "Delete Current Question"
 msgstr "Supprimer la question en cours"
 
-# D:\www\phpsurveyor/admin/html.php:1049
+# D:\www\limesurvey/admin/html.php:1049
 msgid "Impossible to delete this question because  there is at least one question having a condition on it"
 msgstr "Impossible de supprimer cette question car des conditions reposent sur celle-ci"
 
@@ -1908,17 +1908,17 @@ msgstr "Utilisateur ajouté."
 msgid "Set Survey Rights"
 msgstr "Définir les droits sur ce questionnaire"
 
-# E:\www\phpsurveyor/admin/usercontrol.php:153
-# E:\www\phpsurveyor/admin/usercontrol.php:157
-# E:\www\phpsurveyor/admin/usercontrol.php:171
+# E:\www\limesurvey/admin/usercontrol.php:153
+# E:\www\limesurvey/admin/usercontrol.php:157
+# E:\www\limesurvey/admin/usercontrol.php:171
 msgid "Failed to add User."
 msgstr "Echec de la création de l'utilisateur"
 
-# E:\www\phpsurveyor/admin/admin.php:102
+# E:\www\limesurvey/admin/admin.php:102
 msgid "Username already exists."
 msgstr "Le nom d'utilisateur existe déjà."
 
-# E:\www\phpsurveyor/admin/html.php:1957
+# E:\www\limesurvey/admin/html.php:1957
 msgid "No Username selected."
 msgstr "Pas de nom d'utilisateur sélectionné"
 
@@ -1928,9 +1928,9 @@ msgstr "Ajouter un groupe d'utilisateurs"
 msgid "User Group added."
 msgstr "Groupe d'utilisateurs ajouté."
 
-# E:\www\phpsurveyor/admin/usercontrol.php:153
-# E:\www\phpsurveyor/admin/usercontrol.php:157
-# E:\www\phpsurveyor/admin/usercontrol.php:171
+# E:\www\limesurvey/admin/usercontrol.php:153
+# E:\www\limesurvey/admin/usercontrol.php:157
+# E:\www\limesurvey/admin/usercontrol.php:171
 msgid "Failed to add User Group."
 msgstr "Echec de la création du groupe d'utilisateurs"
 
@@ -1967,11 +1967,11 @@ msgstr "Utilisateur"
 msgid "Add Group"
 msgstr "Ajouter un groupe"
 
-# E:\www\phpsurveyor/admin/usercontrol.php:342
+# E:\www\limesurvey/admin/usercontrol.php:342
 msgid "Update survey rights successful."
 msgstr "Réussite de la mise à jour des droits sur ce questionnaire."
 
-# E:\www\phpsurveyor/admin/usercontrol.php:342
+# E:\www\limesurvey/admin/usercontrol.php:342
 msgid "Failed to update survey rights!"
 msgstr "Echec de la mise à jour des droits du questionnaire !"
 
@@ -2035,20 +2035,20 @@ msgstr "Les réponses ne contiendront pas l'adresse IP"
 msgid "Responses will have the IP address logged"
 msgstr "Les réponses contiendront l'adresse IP"
 
-# E:\www\phpsurveyor/admin/html.php:1785
-# E:\www\phpsurveyor/admin/html.php:2047
+# E:\www\limesurvey/admin/html.php:1785
+# E:\www\limesurvey/admin/html.php:2047
 msgid "Save Referring URL?"
 msgstr "Sauvegarder l'URL référente ?"
 
-# D:\www\phpsurveyor/admin/html.php:1992
+# D:\www\limesurvey/admin/html.php:1992
 msgid "Responses will not have their referring URL logged."
 msgstr "Les réponses ne contiendront pas l'URL référente"
 
-# D:\www\phpsurveyor/admin/html.php:1993
+# D:\www\limesurvey/admin/html.php:1993
 msgid "Responses will have their referring URL logged."
 msgstr "Les réponses contiendront l'URL référente"
 
-# E:\www\phpsurveyor/admin/html.php:3228
+# E:\www\limesurvey/admin/html.php:3228
 msgid "Remove"
 msgstr "Enlever"
 
@@ -2061,7 +2061,7 @@ msgstr "URL de fin :"
 msgid "Automatically load URL when survey complete?"
 msgstr "Charger automatiquement l'URL quand le questionnaire est terminé ?"
 
-# D:\www\phpsurveyor/admin/html.php:3363
+# D:\www\limesurvey/admin/html.php:3363
 msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
 msgstr "Toutes les questions, réponses,etc...associées aux langues supprimées seront perdues. Etes-vous sûr ?"
 
@@ -2222,11 +2222,11 @@ msgstr "Description de l'URL :"
 msgid "Save"
 msgstr "Sauver"
 
-# D:\www\phpsurveyor/admin/html.php:3548
+# D:\www\limesurvey/admin/html.php:3548
 msgid "Current survey has questions with conditions outside their own group"
 msgstr "Le questionnaire en cours possède des questions avec des conditions en dehors de leur propre groupe."
 
-# D:\www\phpsurveyor/admin/html.php:3548
+# D:\www\limesurvey/admin/html.php:3548
 msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
 msgstr "La réorganisation des groupes est restreinte pour être sûr que les questions sur lesquelles se basent des conditions, ne sont pas réordonnées après la définition des conditions"
 
@@ -2236,23 +2236,23 @@ msgstr "Les groupes suivants sont concernés"
 msgid "depends on group"
 msgstr "dépend du groupe"
 
-# D:\www\phpsurveyor/admin/html.php:3581
+# D:\www\limesurvey/admin/html.php:3581
 msgid "see the marked conditions on"
 msgstr "voir les conditions affectées sur"
 
-# E:\www\phpsurveyor/admin/html.php:1907
+# E:\www\limesurvey/admin/html.php:1907
 msgid "The uploaded file is bigger than the upload_max_filesize directive in php.ini"
 msgstr "Le fichier envoyé est plus gros que la maximum spécifié dans la directive upload_max_filesize du fichier php.ini "
 
-# E:\www\phpsurveyor/admin/html.php:1911
+# E:\www\limesurvey/admin/html.php:1911
 msgid "The file was only partially uploaded"
 msgstr "Le fichier a été partiellement envoyé"
 
-# E:\www\phpsurveyor/admin/html.php:1915
+# E:\www\limesurvey/admin/html.php:1915
 msgid "No file was uploaded"
 msgstr "Aucun fichier n'a été envoyé"
 
-# E:\www\phpsurveyor/admin/html.php:1921
+# E:\www\limesurvey/admin/html.php:1921
 msgid "Error on file transfer. You must select a CSV file"
 msgstr "Erreur lors de l'envoi du fichier. Vous devez choisir un fichier CSV valide."
 
@@ -2265,7 +2265,7 @@ msgstr "Créer un questionnaire"
 msgid "(This field is mandatory.)"
 msgstr "(Ce champ est obligatoire)"
 
-# C:\wamp\www\phpsurveyor/admin/html.php:3738
+# C:\wamp\www\limesurvey/admin/html.php:3738
 msgid "This setting cannot be changed later!"
 msgstr "Ce paramètre ne peut pas être changé après !"
 
@@ -2290,11 +2290,11 @@ msgstr "Vous devez envoyer un fichier CSV"
 msgid "Upload CSV file"
 msgstr "Envoyer le fichier CSV"
 
-# E:\www\phpsurveyor/admin/html.php:2210
+# E:\www\limesurvey/admin/html.php:2210
 msgid "It is impossible to upload a file other than CSV type"
 msgstr "Il est impossible d'envoyer un fichier autre que CSV"
 
-# E:\www\phpsurveyor/admin/html.php:2222
+# E:\www\limesurvey/admin/html.php:2222
 msgid "It is impossible to upload an empty file"
 msgstr "Il est impossible d'envoyer un fichier vide"
 
@@ -2304,7 +2304,7 @@ msgstr "Envoi du fichier CSV"
 msgid "Visualization:"
 msgstr "Visualisation :"
 
-# E:\www\phpsurveyor/admin/html.php:2230
+# E:\www\limesurvey/admin/html.php:2230
 msgid "Select the field number you would like to use for your answers:"
 msgstr "Sélectionnez le numéro du champ que vous voulez utiliser pour vos réponses :"
 
@@ -2320,14 +2320,14 @@ msgstr "Fichier transmis avec succès."
 msgid "Reading file..."
 msgstr "Lecture du fichier..."
 
-msgid "This file is not a PHPSurveyor group file. Import failed."
-msgstr "Ce fichier n'est pas un fichier de groupe PHPSurveyor. L'importation a échoué."
+msgid "This file is not a LimeSurvey group file. Import failed."
+msgstr "Ce fichier n'est pas un fichier de groupe LimeSurvey. L'importation a échoué."
 
-# E:\www\phpsurveyor/admin/usercontrol.php:120
+# E:\www\limesurvey/admin/usercontrol.php:120
 msgid "Import partially successful."
 msgstr "Importation partiellement réussie."
 
-# D:\www\phpsurveyor/admin/importgroup.php:555
+# D:\www\limesurvey/admin/importgroup.php:555
 msgid "The following languages in this group were not imported since the survey does not contain such a language: "
 msgstr "Les langues suivantes de ce groupe n'ont pas été importées car le questionnaire ne contient pas ces langues :"
 
@@ -2355,8 +2355,8 @@ msgstr "Importer le jeu d'étiquettes"
 msgid "Reading file.."
 msgstr "Lecture du fichier.."
 
-msgid "This file is not a PHPSurveyor question file. Import failed."
-msgstr "Ce fichier n'est pas un fichier de question PHPSurveyor. L'importation a échoué."
+msgid "This file is not a LimeSurvey question file. Import failed."
+msgstr "Ce fichier n'est pas un fichier de question LimeSurvey. L'importation a échoué."
 
 msgid "Return to Labels Admin"
 msgstr "Retour à l'administration des jeux d'etiquettes"
@@ -2410,14 +2410,14 @@ msgstr "Résumé de l'importation de question"
 msgid "Import of Survey is completed."
 msgstr "L'importation du questionnaire est terminée."
 
-msgid "This file is not a PHPSurveyor survey file. Import failed."
-msgstr "Ce fichier n'est pas un fichier de questionnaire PHPSurveyor. L'importation a échoué."
+msgid "This file is not a LimeSurvey survey file. Import failed."
+msgstr "Ce fichier n'est pas un fichier de questionnaire LimeSurvey. L'importation a échoué."
 
 msgid "Import of this survey file failed"
 msgstr "L'importation de ce fichier questionnaire a échoué"
 
-msgid "File does not contain PHPSurveyor data in the correct format."
-msgstr "Mauvais format de données dans le fichier de données PHPSurveyor."
+msgid "File does not contain LimeSurvey data in the correct format."
+msgstr "Mauvais format de données dans le fichier de données LimeSurvey."
 
 msgid "Survey Import Summary"
 msgstr "Résumé de l'importation du questionnaire"
@@ -2425,7 +2425,7 @@ msgstr "Résumé de l'importation du questionnaire"
 msgid "Question Attributes"
 msgstr "Attributs de la question"
 
-# D:\www\phpsurveyor/admin/integritycheck.php:52
+# D:\www\limesurvey/admin/integritycheck.php:52
 msgid "Data Consistency Check"
 msgstr "Vérification de la cohérence des données"
 
@@ -2456,7 +2456,7 @@ msgstr "Les réponses suivantes peuvent être effacées"
 msgid "All answers meet consistency standards"
 msgstr "Toutes les réponses sont cohérentes"
 
-# D:\www\phpsurveyor/admin/integritycheck.php:202
+# D:\www\limesurvey/admin/integritycheck.php:202
 msgid "Language specific settings missing"
 msgstr "Les paramètres spécifiques à la langue sont manquants"
 
@@ -2511,7 +2511,7 @@ msgstr "Editer des jeux d'étiquettes"
 msgid "Set Name"
 msgstr "Nom du jeu"
 
-# C:\wamp\www\phpsurveyor/admin/labels.php:154
+# C:\wamp\www\limesurvey/admin/labels.php:154
 msgid "You cannot remove this items since you need at least one language in a labelset."
 msgstr "Vous ne pouvez pas enlever ces éléments car il faut au moins une langue dans un jeu d'étiquettes."
 
@@ -2533,7 +2533,7 @@ msgstr "Nouvelle étiquette"
 msgid "Add new label"
 msgstr "Ajouter une nouvelle étiquette"
 
-# D:\www\phpsurveyor/admin/labels.php:373
+# D:\www\limesurvey/admin/labels.php:373
 msgid "Inserting New labels must be done on the first language folder."
 msgstr "La création de nouvelles étiquettes doit être faite dans le dossier de la première langue."
 
@@ -2546,11 +2546,11 @@ msgstr "Tri"
 msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
 msgstr "Quelques questionnaires utilisent actuellement ce jeu d'étiquettes. Modifier les codes, ajouter ou supprimer des entrées de ce jeu pourrait entrainer des effets indésirables dans d'autres questionnaires."
 
-# D:\www\phpsurveyor/admin/labels.php:467
+# D:\www\limesurvey/admin/labels.php:467
 msgid "Failed to Copy already defined labels to added languages"
 msgstr "Echec de la copie des étiquettes existantes dans les langues supplémentaires"
 
-# D:\www\phpsurveyor/admin/labels.php:483
+# D:\www\limesurvey/admin/labels.php:483
 msgid "Failed to delete labels for removed languages"
 msgstr "Echec de la suppression des étiquettes pour les langues retirées"
 
@@ -2560,45 +2560,45 @@ msgstr "La mise à jour du jeu d'étiquettes a échoué"
 msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
 msgstr "Impossible de supprimer le jeu d'étiquettes - Il y a des questions qui y sont reliées. Vous devez supprimer ces questions en premier."
 
-# E:\www\phpsurveyor/admin/usercontrol.php:153
-# E:\www\phpsurveyor/admin/usercontrol.php:157
-# E:\www\phpsurveyor/admin/usercontrol.php:171
+# E:\www\limesurvey/admin/usercontrol.php:153
+# E:\www\limesurvey/admin/usercontrol.php:157
+# E:\www\limesurvey/admin/usercontrol.php:171
 msgid "Failed to insert label"
 msgstr "Echec de la création de l'étiquette"
 
-# E:\www\phpsurveyor/admin/usercontrol.php:342
+# E:\www\limesurvey/admin/usercontrol.php:342
 msgid "Failed to update label"
 msgstr "Echec de la mise à jour de l'étiquette"
 
-# E:\www\phpsurveyor/admin/usercontrol.php:342
+# E:\www\limesurvey/admin/usercontrol.php:342
 msgid "Failed to delete label"
 msgstr "Echec de la suppression de l'étiquette"
 
-# E:\www\phpsurveyor/admin/html.php:1028
+# E:\www\limesurvey/admin/html.php:1028
 msgid "You have to enter user name and email."
 msgstr "Vous devez entrer un nom d'utilisateur et un mail."
 
 msgid "Check Data"
 msgstr "Vérifier les données"
 
-# E:\www\phpsurveyor/admin/html.php:1048
+# E:\www\limesurvey/admin/html.php:1048
 msgid "You have to login first."
 msgstr "Vous devez d'abord vous connecter."
 
-# E:\www\phpsurveyor/common.php:213
-# E:\www\phpsurveyor/common.php:215
-# E:\www\phpsurveyor/admin/usercontrol.php:91
+# E:\www\limesurvey/common.php:213
+# E:\www\limesurvey/common.php:215
+# E:\www\limesurvey/admin/usercontrol.php:91
 msgid "Login"
 msgstr "Connexion"
 
-# E:\www\phpsurveyor/admin/html.php:1064
+# E:\www\limesurvey/admin/html.php:1064
 msgid "Forgot Your Password?"
 msgstr "Oubli du mot de passe ?"
 
 msgid "if you answered"
 msgstr "si vous avez répondu"
 
-# C:\wamp\www\phpsurveyor/admin/printablesurvey.php:225
+# C:\wamp\www\limesurvey/admin/printablesurvey.php:225
 msgid "or"
 msgstr "ou"
 
@@ -2683,11 +2683,11 @@ msgstr "Editer la question"
 msgid "Update Question"
 msgstr "Mise à jour de la question"
 
-# D:\www\phpsurveyor/admin/html.php:2499
+# D:\www\limesurvey/admin/html.php:2499
 msgid "Current group is using conditional questions"
 msgstr "Le groupe en cours comprend des questions affichées sous condition"
 
-# D:\www\phpsurveyor/admin/html.php:3548
+# D:\www\limesurvey/admin/html.php:3548
 msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
 msgstr "La réorganisation des questions dans ce groupe est restreinte pour être sûr que les questions sur lesquelles se basent des conditions, ne sont pas réordonnées après la définition des conditions"
 
@@ -2745,11 +2745,11 @@ msgstr "Visualiser les statistiques"
 msgid "Please wait ..."
 msgstr "Veuillez patienter..."
 
-# D:\www\phpsurveyor/admin/statistics.php:734
+# D:\www\limesurvey/admin/statistics.php:734
 msgid "Getting Questions and Answers ..."
 msgstr "Récupération des questions et des réponses..."
 
-# D:\www\phpsurveyor/admin/statistics.php:842
+# D:\www\limesurvey/admin/statistics.php:842
 msgid "Getting Result Count ..."
 msgstr "Récupération des comptages de résultats"
 
@@ -2768,7 +2768,7 @@ msgstr "Pourcentage du total "
 msgid "Browse"
 msgstr "Parcourir"
 
-# D:\www\phpsurveyor/admin/statistics.php:941
+# D:\www\limesurvey/admin/statistics.php:941
 msgid "Generating Summaries ..."
 msgstr "Génération des résumés..."
 
@@ -2802,11 +2802,11 @@ msgstr "3ème Quartile (Q3)"
 msgid "Null values are ignored in calculations"
 msgstr "Des valeurs nulles sont ignorées dans les calculs"
 
-# D:\www\phpsurveyor/admin/statistics.php:1173
+# D:\www\limesurvey/admin/statistics.php:1173
 msgid "Q1 and Q3 calculated using"
 msgstr "Q1 et Q3 sont calculés en utilisant"
 
-# D:\www\phpsurveyor/admin/statistics.php:1173
+# D:\www\limesurvey/admin/statistics.php:1173
 msgid "minitab method"
 msgstr "méthode minitab"
 
@@ -2822,14 +2822,14 @@ msgstr "Complété"
 msgid "Select all"
 msgstr "Sélectionner tout"
 
-# E:\www\phpsurveyor/admin/stats.php:245
+# E:\www\limesurvey/admin/stats.php:245
 msgid "Proceed"
 msgstr "Effectuer"
 
 msgid "Question List"
 msgstr "Liste de questions"
 
-# E:\www\phpsurveyor/admin/stats.php:332
+# E:\www\limesurvey/admin/stats.php:332
 msgid "Like"
 msgstr "Comme"
 
@@ -2845,27 +2845,27 @@ msgstr "Numérique"
 msgid "Huge free text"
 msgstr "Zone de texte long"
 
-# E:\www\phpsurveyor/admin/usercontrol.php:342
+# E:\www\limesurvey/admin/usercontrol.php:342
 msgid "Failed to copy"
 msgstr "Echec de la copie"
 
 msgid "to new template directory."
 msgstr "dans le nouveau dossier de modèles."
 
-# D:\www\phpsurveyor/admin/templates.php:101
+# D:\www\limesurvey/admin/templates.php:101
 msgid "Directory with the name"
 msgstr "Le dossier avec le nom"
 
-# D:\www\phpsurveyor/admin/templates.php:101
+# D:\www\limesurvey/admin/templates.php:101
 msgid "already exists - choose another name"
 msgstr "exite déjà. Choisissez un autre nom"
 
-# C:\wamp\www\phpsurveyor/admin/tokens.php:1414
+# C:\wamp\www\limesurvey/admin/tokens.php:1414
 msgid "Unable to create directory"
 msgstr "Impossible de créer le dossier"
 
-# D:\www\phpsurveyor/admin/templates.php:103
-# D:\www\phpsurveyor/admin/templates.php:111
+# D:\www\limesurvey/admin/templates.php:103
+# D:\www\limesurvey/admin/templates.php:111
 msgid "Maybe you don't have permission."
 msgstr "Peut-être n'avez-vous pas la permission."
 
@@ -2911,7 +2911,7 @@ msgstr "Ce modèle peut être modifié"
 msgid "This template cannot be modified"
 msgstr "Ce modèle ne peut pas être modifié"
 
-# E:\www\phpsurveyor/admin/templates.php:538
+# E:\www\limesurvey/admin/templates.php:538
 msgid "You can't edit the default template."
 msgstr "Vous ne pouvez pas éditer le modèle par défaut."
 
@@ -2951,7 +2951,7 @@ msgstr "Autres fichiers :"
 msgid "Save Changes"
 msgstr "Sauvegarder les changements"
 
-# E:\www\phpsurveyor/admin/templates.php:604
+# E:\www\limesurvey/admin/templates.php:604
 msgid "Changes cannot be saved to the default template."
 msgstr "Les modifications ne peuvent pas être sauvegardées pour le modèle par défaut."
 
@@ -2991,7 +2991,7 @@ msgstr "Voulez-vous créer des invitations pour ce questionnaire ?"
 msgid "The following old token tables could be restored:"
 msgstr "Ces anciennes tables d'invitations peuvent être restaurées :"
 
-# E:\www\phpsurveyor/admin/html.php:3228
+# E:\www\limesurvey/admin/html.php:3228
 msgid "Restore"
 msgstr "Restaurer"
 
@@ -3100,7 +3100,7 @@ msgstr "Envoyer un rappel par mail à cette entrée"
 msgid "Delete Tokens Table"
 msgstr "Suppression de la table des invitations"
 
-# D:\www\phpsurveyor/admin/tokens.php:657
+# D:\www\limesurvey/admin/tokens.php:657
 msgid "If you delete this table tokens will no longer be required to access this survey."
 msgstr "Si vous effacez cette table, les invitations ne seront plus nécessaires pour accéder à ce questionnaire."
 
@@ -3119,7 +3119,7 @@ msgstr " Une sauvegarde de cette table a été effectuée et un administrateur s
 msgid "Email Invitation"
 msgstr "Invitation par mail"
 
-# D:\www\phpsurveyor/admin/tokens.php:746
+# D:\www\limesurvey/admin/tokens.php:746
 msgid "to TokenID No"
 msgstr "jusqu'à l'invitation d'ID numéro :"
 
@@ -3207,7 +3207,7 @@ msgstr "Ajouter une nouvelle invitation"
 msgid "Upload CSV File"
 msgstr "Envoyer le fichier CSV"
 
-# E:\www\phpsurveyor/admin/tokens.php:1200
+# E:\www\limesurvey/admin/tokens.php:1200
 msgid "Note:"
 msgstr "Note :"
 
@@ -3217,7 +3217,7 @@ msgstr "Le fichier doit être un fichier CSV standard (délimiteur: virgule) san
 msgid "Upload LDAP entries"
 msgstr "Télécharger une entrée LDAP"
 
-# C:\wamp\www\phpsurveyor/admin/tokens.php:1246
+# C:\wamp\www\limesurvey/admin/tokens.php:1246
 msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
 msgstr "Les requêtes LDAP sont définies par l'administrateur dans le fichier config-ldap.php"
 
@@ -3236,18 +3236,18 @@ msgstr "échoué"
 msgid "Records in CSV"
 msgstr "Enregistrements dans le CSV"
 
-# D:\www\phpsurveyor/admin/tokens.php:1381
+# D:\www\limesurvey/admin/tokens.php:1381
 msgid "Records met minumum requirements"
 msgstr "Les enregistrements remplissent les conditions minimums"
 
 msgid "Records imported"
 msgstr "enregistrement(s) importé(s)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1383
+# D:\www\limesurvey/admin/tokens.php:1383
 msgid "Duplicate records removed"
 msgstr "Enregistrements en double supprimés"
 
-# D:\www\phpsurveyor/admin/tokens.php:1384
+# D:\www\limesurvey/admin/tokens.php:1384
 msgid "Records with invalid email address removed"
 msgstr "Enregistrements avec une adresse mail invalide enlevés"
 
@@ -3257,240 +3257,240 @@ msgstr "Télécharger une requête LDAP"
 msgid "{TOKENCOUNT} Records Created"
 msgstr "{TOKENCOUNT} enregistrements crées"
 
-# C:\wamp\www\phpsurveyor/admin/tokens.php:1414
+# C:\wamp\www\limesurvey/admin/tokens.php:1414
 msgid "Can't bind to the LDAP directory"
 msgstr "Ne peut se lier à l'annuaire LDAP"
 
-# C:\wamp\www\phpsurveyor/admin/tokens.php:1420
+# C:\wamp\www\limesurvey/admin/tokens.php:1420
 msgid "Can't connect to the LDAP directory"
 msgstr "Ne peut se connecter à l'annuaire LDAP"
 
-# D:\www\phpsurveyor/admin/tokens.php:1499
+# D:\www\limesurvey/admin/tokens.php:1499
 msgid "ARMSCII-8 Armenian"
 msgstr "Arménien (ARMSCII-8)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1500
+# D:\www\limesurvey/admin/tokens.php:1500
 msgid "US ASCII"
 msgstr "US (ASCII)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1501
+# D:\www\limesurvey/admin/tokens.php:1501
 msgid "Automatic"
 msgstr "Automatique"
 
-# D:\www\phpsurveyor/admin/tokens.php:1502
+# D:\www\limesurvey/admin/tokens.php:1502
 msgid "Big5 Traditional Chinese"
 msgstr "Chinois traditionnel (Big5)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1503
+# D:\www\limesurvey/admin/tokens.php:1503
 msgid "Binary pseudo charset"
 msgstr "Pseudo charset binaire"
 
-# D:\www\phpsurveyor/admin/tokens.php:1504
+# D:\www\limesurvey/admin/tokens.php:1504
 msgid "Windows Central European"
 msgstr "Europe centrale (Windows-1250)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1505
+# D:\www\limesurvey/admin/tokens.php:1505
 msgid "Windows Cyrillic"
 msgstr "Cyrillique (Windows-1251)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1506
+# D:\www\limesurvey/admin/tokens.php:1506
 msgid "Windows Arabic"
 msgstr "Arabe (Windows-1256)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1507
+# D:\www\limesurvey/admin/tokens.php:1507
 msgid "Windows Baltic"
 msgstr "Balte (Windows-1257)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1508
+# D:\www\limesurvey/admin/tokens.php:1508
 msgid "DOS West European"
 msgstr "Europe de l'Ouest (DOS)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1509
+# D:\www\limesurvey/admin/tokens.php:1509
 msgid "DOS Central European"
 msgstr "Europe centrale (DOS)"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:148
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:148
 msgid "DOS Russian"
 msgstr "Russe (DOS)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1511
+# D:\www\limesurvey/admin/tokens.php:1511
 msgid "SJIS for Windows Japanese"
 msgstr "Japonais (SJIS)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1512
+# D:\www\limesurvey/admin/tokens.php:1512
 msgid "DEC West European"
 msgstr "Europe de l'Ouest (DEC)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1513
+# D:\www\limesurvey/admin/tokens.php:1513
 msgid "UJIS for Windows Japanese"
 msgstr "Japonais (UJIS)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1514
+# D:\www\limesurvey/admin/tokens.php:1514
 msgid "EUC-KR Korean"
 msgstr "Coréen (EUC-KR)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1515
+# D:\www\limesurvey/admin/tokens.php:1515
 msgid "GB2312 Simplified Chinese"
 msgstr "Chinois simplifié (GB2312)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1516
+# D:\www\limesurvey/admin/tokens.php:1516
 msgid "GBK Simplified Chinese"
 msgstr "Chinois simplifié (GBK)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1517
+# D:\www\limesurvey/admin/tokens.php:1517
 msgid "GEOSTD8 Georgian"
 msgstr "Géorgien (GEOSTD8)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1518
+# D:\www\limesurvey/admin/tokens.php:1518
 msgid "ISO 8859-7 Greek"
 msgstr "Grec (ISO-88597)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1519
+# D:\www\limesurvey/admin/tokens.php:1519
 msgid "ISO 8859-8 Hebrew"
 msgstr "Hébreux (ISO-8859-8)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1520
+# D:\www\limesurvey/admin/tokens.php:1520
 msgid "HP West European"
 msgstr "Europe de l'Ouest (HP)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1521
+# D:\www\limesurvey/admin/tokens.php:1521
 msgid "DOS Kamenicky Czech-Slovak"
 msgstr "Tchèque/Slovaque (DOS Kamenicky)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1522
+# D:\www\limesurvey/admin/tokens.php:1522
 msgid "KOI8-R Relcom Russian"
 msgstr "Cyrillique (KOI8-R)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1523
+# D:\www\limesurvey/admin/tokens.php:1523
 msgid "KOI8-U Ukrainian"
 msgstr "Ukrainien (KOI8-U)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1524
+# D:\www\limesurvey/admin/tokens.php:1524
 msgid "cp1252 West European"
 msgstr "Europe de l'Ouest (cp1252)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1525
+# D:\www\limesurvey/admin/tokens.php:1525
 msgid "ISO 8859-2 Central European"
 msgstr "Europe centrale (ISO-8859-2)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1526
+# D:\www\limesurvey/admin/tokens.php:1526
 msgid "ISO 8859-9 Turkish"
 msgstr "Turc (ISO-8859-9)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1527
+# D:\www\limesurvey/admin/tokens.php:1527
 msgid "ISO 8859-13 Baltic"
 msgstr "Balte (ISO-8859-13)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1528
+# D:\www\limesurvey/admin/tokens.php:1528
 msgid "Mac Central European"
 msgstr "Europe centrale (Mac)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1529
+# D:\www\limesurvey/admin/tokens.php:1529
 msgid "Mac West European"
 msgstr "Europe de l'Ouest (Mac)"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:127
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:127
 msgid "Shift-JIS Japanese"
 msgstr "Japonais (Shift-JIS)"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:164
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:164
 msgid "7bit Swedish"
 msgstr "Suédois (7-bit)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1532
+# D:\www\limesurvey/admin/tokens.php:1532
 msgid "TIS620 Thai"
 msgstr "Thaï (TIS-620)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1533
+# D:\www\limesurvey/admin/tokens.php:1533
 msgid "UCS-2 Unicode"
 msgstr "Unicode (UCS-2)"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:127
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:127
 msgid "EUC-JP Japanese"
 msgstr "Japonais (EUC-JP)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1535
+# D:\www\limesurvey/admin/tokens.php:1535
 msgid "UTF-8 Unicode"
 msgstr "Unicode (UTF-8)"
 
-# D:\www\phpsurveyor/admin/tokens.php:1547
+# D:\www\limesurvey/admin/tokens.php:1547
 msgid "Choose the CSV file to upload:"
 msgstr "Choisir le fichier CSV à envoyer :"
 
-# D:\www\phpsurveyor/admin/tokens.php:1549
+# D:\www\limesurvey/admin/tokens.php:1549
 msgid "Character set of the file:"
 msgstr "Jeux de caractères du fichier :"
 
-# C:\wamp\www\phpsurveyor/admin/tokens.php:1464
+# C:\wamp\www\limesurvey/admin/tokens.php:1464
 msgid "LDAP is disabled or no LDAP query defined."
 msgstr "LDAP désactivé ou aucune requête LDAP définie."
 
-# C:\wamp\www\phpsurveyor/admin/tokens.php:1471
+# C:\wamp\www\limesurvey/admin/tokens.php:1471
 msgid "Select the LDAP query you want to run:"
 msgstr "Choisissez la requête LDAP que vous voulez exécuter :"
 
 msgid "Forgot Password"
 msgstr "Oubli du mot de passe"
 
-# E:\www\phpsurveyor/admin/usercontrol.php:54
+# E:\www\limesurvey/admin/usercontrol.php:54
 msgid "User name and/or email not found!"
 msgstr "Nom d'utilisateur et/ou mail non trouvé !"
 
-# E:\www\phpsurveyor/admin/usercontrol.php:63
+# E:\www\limesurvey/admin/usercontrol.php:63
 msgid "Your data:"
 msgstr "Vos informations :"
 
 msgid "New Password"
 msgstr "Nouveau mot de passe"
 
-# E:\www\phpsurveyor/admin/usercontrol.php:75
+# E:\www\limesurvey/admin/usercontrol.php:75
 msgid "An email with your login data was sent to you."
 msgstr "Un mail avec vos informations de connexion vous a été envoyé."
 
 msgid "Email to {NAME} ({EMAIL}) failed."
 msgstr "Le mail à {NAME} ({EMAIL}) a échoué."
 
-# D:\www\phpsurveyor/admin/usercontrol.php:93
+# D:\www\limesurvey/admin/usercontrol.php:93
 msgid "Logging in..."
 msgstr "Connexion..."
 
 msgid "Welcome {NAME}"
 msgstr "Bienvenue {NAME}"
 
-# E:\www\phpsurveyor/admin/usercontrol.php:120
+# E:\www\limesurvey/admin/usercontrol.php:120
 msgid "You logged in successfully."
 msgstr "Connexion réussie."
 
-# E:\www\phpsurveyor/admin/usercontrol.php:138
+# E:\www\limesurvey/admin/usercontrol.php:138
 msgid "Logout successful."
 msgstr "Déconnexion réussie."
 
-# E:\www\phpsurveyor/admin/usercontrol.php:153
-# E:\www\phpsurveyor/admin/usercontrol.php:277
+# E:\www\limesurvey/admin/usercontrol.php:153
+# E:\www\limesurvey/admin/usercontrol.php:277
 msgid "Email address ist not valid."
 msgstr "L'adresse mail n'est pas valide."
 
 msgid "Username was not supplied."
 msgstr "Le nom d'utilisateur n'était pas rempli."
 
-# E:\www\phpsurveyor/admin/usercontrol.php:176
+# E:\www\limesurvey/admin/usercontrol.php:176
 msgid "You were signed in on the site"
 msgstr "Vous avez été enregistré sur le site"
 
-# E:\www\phpsurveyor/common.php:213
-# E:\www\phpsurveyor/common.php:215
-# E:\www\phpsurveyor/admin/usercontrol.php:91
+# E:\www\limesurvey/common.php:213
+# E:\www\limesurvey/common.php:215
+# E:\www\limesurvey/admin/usercontrol.php:91
 msgid "Login here"
 msgstr "Connexion"
 
-# E:\www\phpsurveyor/admin/usercontrol.php:188
+# E:\www\limesurvey/admin/usercontrol.php:188
 msgid "An email with a generated password was sent to the user."
 msgstr "Un mail avec un mot de passe généré a été envoyé à l'utilisateur."
 
 msgid "Set User Rights"
 msgstr "Définition des droits utilisateur"
 
-# E:\www\phpsurveyor/admin/admin.php:102
+# E:\www\limesurvey/admin/admin.php:102
 msgid "Username and/or email address already exists."
 msgstr "le nom d'utlisateur et/ou l'adresse mail existe déjà."
 
@@ -3500,36 +3500,36 @@ msgstr "L'administrateur ne peut pas être effacé !"
 msgid "Modifying User"
 msgstr "Modification de l'utilisateur"
 
-# E:\www\phpsurveyor/admin/usercontrol.php:277
-# E:\www\phpsurveyor/admin/usercontrol.php:282
-# E:\www\phpsurveyor/admin/usercontrol.php:293
+# E:\www\limesurvey/admin/usercontrol.php:277
+# E:\www\limesurvey/admin/usercontrol.php:282
+# E:\www\limesurvey/admin/usercontrol.php:293
 msgid "Could not modify User Data."
 msgstr "Modification impossible des données de l'utilisateur."
 
-# D:\www\phpsurveyor/admin/usercontrol.php:316
+# D:\www\limesurvey/admin/usercontrol.php:316
 msgid "Unchanged"
 msgstr "Inchangé"
 
-# E:\www\phpsurveyor/admin/admin.php:102
+# E:\www\limesurvey/admin/admin.php:102
 msgid "Email address already exists."
 msgstr "L'adresse mail existe déjà."
 
-# E:\www\phpsurveyor/admin/usercontrol.php:304
+# E:\www\limesurvey/admin/usercontrol.php:304
 msgid "Back"
 msgstr "Précédent"
 
-# E:\www\phpsurveyor/admin/usercontrol.php:342
+# E:\www\limesurvey/admin/usercontrol.php:342
 msgid "Update user rights successful."
 msgstr "Réussite de la mise à jour des droits de l'utilisateur."
 
-# E:\www\phpsurveyor/admin/usercontrol.php:250
+# E:\www\limesurvey/admin/usercontrol.php:250
 msgid "You are not allowed to change your own rights!"
 msgstr "Vous n'êtes pas autorisé à changer vos propres droits !"
 
 msgid "User Groups"
 msgstr "Groupes d'utilisateurs"
 
-# E:\www\phpsurveyor/admin/html.php:694
+# E:\www\limesurvey/admin/html.php:694
 msgid "Mail to all Members"
 msgstr "Messages à tous les membres"
 
@@ -3548,8 +3548,8 @@ msgstr "Nom complet"
 msgid "Configurator"
 msgstr "Configurateur"
 
-# E:\www\phpsurveyor/common.php:219
-# E:\www\phpsurveyor/common.php:220
+# E:\www\limesurvey/common.php:219
+# E:\www\limesurvey/common.php:220
 msgid "Create User"
 msgstr "Créer un utilisateur"
 
@@ -3565,11 +3565,11 @@ msgstr "Gérer les modèles"
 msgid "Manage Labels"
 msgstr "Gérer les jeux d'étiquettes"
 
-# E:\www\phpsurveyor/admin/html.php:1460
+# E:\www\limesurvey/admin/html.php:1460
 msgid "Setting new Parent"
 msgstr "Définition d'un nouveau parent"
 
-# E:\www\phpsurveyor/admin/usercontrol.php:120
+# E:\www\limesurvey/admin/usercontrol.php:120
 msgid "Set Parent successful."
 msgstr "Définition du parent réussie."
 
@@ -3588,31 +3588,31 @@ msgstr "Nom :"
 msgid "Optional"
 msgstr "Optionnel"
 
-# E:\www\phpsurveyor/admin/usercontrol.php:342
+# E:\www\limesurvey/admin/usercontrol.php:342
 msgid "Edit User Group (Owner: "
 msgstr "Editer le groupe de l'utilisateur (Propriétaire :"
 
 msgid "Update User Group"
 msgstr "Mise à jour du groupe d'utilisateurs"
 
-# E:\www\phpsurveyor/admin/html.php:1685
+# E:\www\limesurvey/admin/html.php:1685
 msgid "Send me a copy:"
 msgstr "M'envoyer une copie :"
 
 msgid "Subject:"
 msgstr "Objet :"
 
-# E:\www\phpsurveyor/admin/assessments.php:99
-# E:\www\phpsurveyor/admin/navigator.php:882
-# E:\www\phpsurveyor/admin/navigator.php:929
-# E:\www\phpsurveyor/admin/navigator.php:942
-# E:\www\phpsurveyor/admin/navigator.php:962
-# E:\www\phpsurveyor/admin/tokens.php:658
-# E:\www\phpsurveyor/admin/tokens.php:808
+# E:\www\limesurvey/admin/assessments.php:99
+# E:\www\limesurvey/admin/navigator.php:882
+# E:\www\limesurvey/admin/navigator.php:929
+# E:\www\limesurvey/admin/navigator.php:942
+# E:\www\limesurvey/admin/navigator.php:962
+# E:\www\limesurvey/admin/tokens.php:658
+# E:\www\limesurvey/admin/tokens.php:808
 msgid "Message:"
 msgstr "Message :"
 
-# E:\www\phpsurveyor/admin/html.php:1691
+# E:\www\limesurvey/admin/html.php:1691
 msgid "Send"
 msgstr "Envoyer"
 
@@ -3634,40 +3634,40 @@ msgstr "Ajouter un groupe d'utilisateurs"
 msgid "Description: "
 msgstr "Description :"
 
-# E:\www\phpsurveyor/admin/usercontrol.php:342
+# E:\www\limesurvey/admin/usercontrol.php:342
 msgid "User group successfully added!"
 msgstr "Groupe d'utilisateurs ajouté avec succès !"
 
-# E:\www\phpsurveyor/admin/usercontrol.php:153
-# E:\www\phpsurveyor/admin/usercontrol.php:157
-# E:\www\phpsurveyor/admin/usercontrol.php:171
+# E:\www\limesurvey/admin/usercontrol.php:153
+# E:\www\limesurvey/admin/usercontrol.php:157
+# E:\www\limesurvey/admin/usercontrol.php:171
 msgid "Failed to add Group!"
 msgstr "Echec de la création du groupe !"
 
-# E:\www\phpsurveyor/admin/admin.php:102
+# E:\www\limesurvey/admin/admin.php:102
 msgid "Group already exists!"
 msgstr "Le nom du groupe existe déjà."
 
 msgid "Group name was not supplied!"
 msgstr "Le nom du groupe n'était pas rempli !"
 
-# E:\www\phpsurveyor/admin/usercontrol.php:120
+# E:\www\limesurvey/admin/usercontrol.php:120
 msgid "Message(s) sent successfully!"
 msgstr "Message(s) envoyé(s) avec succès."
 
-# E:\www\phpsurveyor/admin/html.php:1683
+# E:\www\limesurvey/admin/html.php:1683
 msgid "To:"
 msgstr "A :"
 
-# E:\www\phpsurveyor/admin/html.php:1806
+# E:\www\limesurvey/admin/html.php:1806
 msgid "Mail not sent!"
 msgstr "Email non envoyé !"
 
-# E:\www\phpsurveyor/admin/usercontrol.php:342
+# E:\www\limesurvey/admin/usercontrol.php:342
 msgid "Edit User Group Successfully!"
 msgstr "Réussite de la mise à jour du groupe d'utilisateurs !"
 
-# E:\www\phpsurveyor/admin/usercontrol.php:342
+# E:\www\limesurvey/admin/usercontrol.php:342
 msgid "Failed to update!"
 msgstr "Echec de la mise à jour  !"
 
@@ -3710,7 +3710,7 @@ msgstr "Importer"
 msgid "Cannot import the VVExport file."
 msgstr "Impossible d'importer le fichier VV."
 
-# D:\www\phpsurveyor/admin/vvimport.php:98
+# D:\www\limesurvey/admin/vvimport.php:98
 msgid "Back to Response Import"
 msgstr "Retour à l'importation de réponse"
 
@@ -3720,7 +3720,7 @@ msgstr "Echec de l'importation sur l'enregistrement"
 msgid "because"
 msgstr "parce que"
 
-# D:\www\phpsurveyor/admin/vvimport.php:235
+# D:\www\limesurvey/admin/vvimport.php:235
 msgid "Important Note:"
 msgstr "Note importante :"
 
@@ -3730,134 +3730,134 @@ msgstr "Ne pas ACTUALISER cette page sous peine d'importer de nouveau le fichier
 msgid "Total records imported:"
 msgstr "Nombre d'enregistrement(s) importé(s) :"
 
-msgid "Welcome to PHPSurveyor Setup!"
-msgstr "Bienvenue dans l'installation de PHPSurveyor"
+msgid "Welcome to LimeSurvey Setup!"
+msgstr "Bienvenue dans l'installation de LimeSurvey"
 
-# C:\wamp\www\phpsurveyor/admin/install/index.php:48
+# C:\wamp\www\limesurvey/admin/install/index.php:48
 msgid "The database defined in config.php does not exist."
 msgstr "La base de données mentionnée dans le fichier config.php n'existe pas."
 
-msgid "PHPSurveyor can attempt to create this database for you."
-msgstr "PHPSurveyor peut tenter de créer la base de données pour vous."
+msgid "LimeSurvey can attempt to create this database for you."
+msgstr "LimeSurvey peut tenter de créer la base de données pour vous."
 
 msgid "Your selected database name is:"
 msgstr "Le nom de votre base de données sera :"
 
-# E:\www\phpsurveyor/admin/admin.php:102
+# E:\www\limesurvey/admin/admin.php:102
 #, php-format
 msgid "A database named \"%s\" does already exist."
 msgstr "Une base de données intitulée \"%s\" existe déjà."
 
-# E:\www\phpsurveyor/admin/admin.php:103
+# E:\www\limesurvey/admin/admin.php:103
 msgid "Do you want to populate that database now by creating the necessary tables?"
 msgstr "Voulez-vous compléter la base de données maintenant en créant les tables nécessaires ?"
 
 msgid "Database has been successfully upgraded to version "
 msgstr "La base de données a été mise à jour avec succés vers la version "
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:66
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:66
 msgid "Bulgarian"
 msgstr "Bulgare"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:70
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:70
 msgid "Chinese (Traditional)"
 msgstr "Chinois (Traditionnel)"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:74
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:74
 msgid "Chinese (Simplified)"
 msgstr "Chinois (Simplifié)"
 
 msgid "Croatian"
 msgstr "Croate"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:82
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:82
 msgid "Danish"
 msgstr "Danois"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:86
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:86
 msgid "Dutch"
 msgstr "Flamand"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:90
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:90
 msgid "English"
 msgstr "Anglais"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:94
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:94
 msgid "Finnish"
 msgstr "Finlandais"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:99
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:99
 msgid "French"
 msgstr "Français"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:103
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:103
 msgid "German"
 msgstr "Allemand"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:107
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:107
 msgid "German informal"
 msgstr "Allemand (tutoiement)"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:111
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:111
 msgid "Greek"
 msgstr "Grec"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:115
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:115
 msgid "Hebrew"
 msgstr "Hébreux"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:119
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:119
 msgid "Hungarian"
 msgstr "Hongrois"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:123
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:123
 msgid "Italian"
 msgstr "Italien"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:127
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:127
 msgid "Japanese"
 msgstr "Japonais"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:131
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:131
 msgid "Lithuanian"
 msgstr "Lithuanien"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:135
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:135
 msgid "Norwegian"
 msgstr "Norvégien"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:139
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:139
 msgid "Portuguese"
 msgstr "Portugais"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:143
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:143
 msgid "Portuguese (Brazilian)"
 msgstr "Portugais (Brésil)"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:148
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:148
 msgid "Russian"
 msgstr "Russe"
 
 msgid "Romanian"
 msgstr "Roumain"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:156
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:156
 msgid "Slovenian"
 msgstr "Slovène"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:160
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:160
 msgid "Spanish"
 msgstr "Espagnol"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:164
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:164
 msgid "Swedish"
 msgstr "Suédois"
 
-# D:\www\phpsurveyor/classes/core/surveytranslator.php:169
+# D:\www\limesurvey/classes/core/surveytranslator.php:169
 msgid "Turkish"
 msgstr "Turc"
 
-# C:\wamp\www\phpsurveyor/classes/core/surveytranslator.php:168
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:168
 msgid "Vietnamese"
 msgstr "Vietnamien"
 

@@ -2,7 +2,7 @@
 /* Wrapper to use phpgettext as a class and omit having an english translation
 USAGE:
 require_once($rootdir.'classes/core/language.php');
-$locale = new phpsurveyor_lang('en'); // Char code
+$locale = new limesurvey_lang('en'); // Char code
 print $locale->getTranslation("Hello World!");
 */
 
@@ -10,11 +10,11 @@ print $locale->getTranslation("Hello World!");
 require_once($rootdir.'/classes/php-gettext/gettext.php');
 require_once($rootdir.'/classes/php-gettext/streams.php');
 
-class phpsurveyor_lang {
+class limesurvey_lang {
 
     var $gettextclass;
     
-    function phpsurveyor_lang($langcode){
+    function limesurvey_lang($langcode){
         if ( $langcode != "en" ) {
         	global $rootdir;
             $streamer = new FileReader($rootdir.'/locale/'.$langcode.'/LC_MESSAGES/'.$langcode.'.mo');

@@ -1,4 +1,4 @@
-PHPSurveyor Template
+LimeSurvey Template
 
 This template was created by Mark F. Rabideau of eirenicon l.l.c. (www.eirenicon.org).
 

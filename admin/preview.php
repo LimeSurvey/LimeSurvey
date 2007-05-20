@@ -1,7 +1,7 @@
 <?php
 /*
 #############################################################
-# >>> PHPSurveyor  										#
+# >>> LimeSurvey  										#
 #############################################################
 # > Author:  Jason Cleeland									#
 # > E-mail:  jason@cleeland.org								#
@@ -53,7 +53,7 @@ if (!isset($_GET['lang']) || $_GET['lang'] == "")
 }
 
 $_SESSION['s_lang'] = $language;
-$clang = new phpsurveyor_lang($language);
+$clang = new limesurvey_lang($language);
 
 $qquery = 'SELECT * FROM '.db_table_name('questions')." WHERE sid='$surveyid' AND qid='$qid' AND language='{$language}'";
 $qresult = db_execute_assoc($qquery);

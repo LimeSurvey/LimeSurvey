@@ -1,7 +1,7 @@
 <?php
 /*
 #############################################################
-# >>> PHPSurveyor  										#
+# >>> LimeSurvey  										#
 #############################################################
 # > Author:  Jason Cleeland									#
 # > E-mail:  jason@cleeland.org								#
@@ -71,10 +71,10 @@ while (!feof($handle))
 	$bigarray[] = $buffer;
 }
 fclose($handle);
-if (substr($bigarray[0], 0, 28) != "# PHPSurveyor Label Set Dump")
+if (substr($bigarray[0], 0, 28) != "# LimeSurvey Label Set Dump")
 {
 	$importlabeloutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-	$importlabeloutput .= $clang->gT("This file is not a PHPSurveyor question file. Import failed.")."<br /><br />\n";
+	$importlabeloutput .= $clang->gT("This file is not a LimeSurvey question file. Import failed.")."<br /><br />\n";
 	$importlabeloutput .= "<input type='submit' value='".$clang->gT("Return to Labels Admin")."' onclick=\"window.open('$scriptname?action=labels', '_top')\">\n";
 	$importlabeloutput .= "</td></tr></table>\n";
 	$importlabeloutput .= "</body>\n</html>\n";

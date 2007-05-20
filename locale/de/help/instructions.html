@@ -150,7 +150,7 @@ Answers</font></font></a></p>
 
       <li>
         
-        <p style="margin-bottom: 0cm;"><a href="#The%20PHPSurveyor%20Template%20Editor"><font size="1"><font face="Verdana">The PHPSurveyor Template Editor</font></font></a></p>
+        <p style="margin-bottom: 0cm;"><a href="#The%20LimeSurvey%20Template%20Editor"><font size="1"><font face="Verdana">The LimeSurvey Template Editor</font></font></a></p>
 
       </li>
 
@@ -230,19 +230,19 @@ Results</font></font></span></strong></a>
 
 <p><font face="Verdana"><font size="2"><strong>1.
 Make sure you can use
-PHPSurveyor on your website.</strong><br>
+LimeSurvey on your website.</strong><br>
 
 You need access to a web server,
 with PHP 4.1.0 or better and access to a MySQL database. You will
 need about 2 to 2.5 Megabytes of disk space for the scripts.</font></font></p>
 
 <p><font size="2"><font face="Verdana"><strong>2.
-Download the PHPSurveyor
+Download the LimeSurvey
 package<br>
 
 </strong>Visit the sourceforge website to
 download the latest
-PHPSurveyor package. <a href="http://sourceforge.net/projects/phpsurveyor/"><span style="text-decoration: none;">http://sourceforge.net/projects/phpsurveyor/</span></a><br>
+LimeSurvey package. <a href="http://sourceforge.net/projects/limesurvey/"><span style="text-decoration: none;">http://sourceforge.net/projects/limesurvey/</span></a><br>
 
 The
 package is around 300kb <span lang="en-AU">to
@@ -250,7 +250,7 @@ package is around 300kb <span lang="en-AU">to
 Download the zip file and save it to your local disk.</font></font></p>
 
 <p><font face="Verdana"><font size="2"><strong>3.
-Unpack the PHPSurveyor
+Unpack the LimeSurvey
 package<br>
 
 </strong>Uncompress the zip file into a
@@ -270,7 +270,7 @@ structure:</font></font></p>
 
       <td width="25%">
       
-      <p><font face="Verdana"><font size="2">/phpsurveyor*</font></font></p>
+      <p><font face="Verdana"><font size="2">/limesurvey*</font></font></p>
 
       </td>
 
@@ -497,9 +497,9 @@ Permissions<br>
 </strong><span lang="en-AU">The script</span>s
 <span lang="en-AU">need
 to have 'write' access to the admin directory in order to import
-surveys. The "/phpsurveyor/tmp" directory is used for
+surveys. The "/limesurvey/tmp" directory is used for
 uploads and should be set to read/write/execute all. In linux or unix
-it should be chmod to 777. If you wish to use PHPSurveyor to iontrol
+it should be chmod to 777. If you wish to use LimeSurvey to iontrol
 Apache Directory Security, the /</span>php<span lang="en-AU">surveyor/admin
 directory should be set to read/write/execute all; in linux/unix
 chmod 777. If you plan to set Apache Directory Security using other
@@ -507,7 +507,7 @@ methods (ie: manually or using a web admin tool) you can leave this
 directory set to read/execute - chmod 755. The other directories can
 be set to read only or in linux/unix chmod 755.</span>
 You may wish
-to set the permissions on each file within the /phpsurveyor/admin
+to set the permissions on each file within the /limesurvey/admin
 directory to 755.</font></font></p>
 
 <p align="left"><font face="Verdana"><font size="2"><strong>4.
@@ -515,7 +515,7 @@ Collect
 information about your server<br>
 
 </strong>You will need to know the
-following things to install PHPSurveyor on your web server correctly.</font></font></p>
+following things to install LimeSurvey on your web server correctly.</font></font></p>
 
 <ul>
 
@@ -523,7 +523,7 @@ following things to install PHPSurveyor on your web server correctly.</font></fo
     
     <p style="margin-bottom: 0cm;" align="left"><font face="Verdana"><font size="2">Your intended website URL where your scripts
 will reside (ie:
-'http://my.domain.com/phpsurveyor') </font></font>
+'http://my.domain.com/limesurvey') </font></font>
     </p>
 
   </li>
@@ -532,7 +532,7 @@ will reside (ie:
     
     <p style="margin-bottom: 0cm;" align="left"><font face="Verdana"><font size="2">The physical disk location on your server
 where your scripts
-will reside (ie: '/home/usr/htdocs/phpsurveyor') </font></font>
+will reside (ie: '/home/usr/htdocs/limesurvey') </font></font>
     </p>
 
   </li>
@@ -576,10 +576,10 @@ the location of the mysql binary files. (ie: 'c:/mysql/bin') </font></font>
 
 <p align="left"><font face="Verdana"><font size="2"><strong>5.
 Configure
-PHPSurveyor<br>
+LimeSurvey<br>
 
 </strong>Edit the config.php file in the
-/phpsurveyor/admin
+/limesurvey/admin
 directory using your preferred text editor. The following settings
 should be adjusted:</font></font></p>
 
@@ -608,9 +608,9 @@ default). </font></font>
     
     <p style="margin-bottom: 0cm;" align="left"><font face="Verdana"><font size="2"><strong>$databasename</strong>:
 The name of the database on your MySQL
-database server that you will be using for PHPSurveyor. If you have
+database server that you will be using for LimeSurvey. If you have
 high level permissions on the MySQL server, you can create a database
-from PHPSurveyor. In this case, put whatever the database will be
+from LimeSurvey. In this case, put whatever the database will be
 called into this setting. Alternatively, you can use the name of a
 previously created MySQL database here. </font></font>
     </p>
@@ -648,7 +648,7 @@ when creating tables - default is "MyISAM"<br>
 Default setting is 0 (zero). If you
 set this to 1 (one) then responses to surveys will use a prefix in
 their unique id number, set by the following string $idprefix. You can
-use this to set up multiple copies of PHPSurveyor using the same
+use this to set up multiple copies of LimeSurvey using the same
 survey, then merge the results from different servers into one single
 responses table at a later date.</font></p>
 
@@ -668,12 +668,12 @@ each survey response on this server.<br>
     
     <p style="margin-bottom: 0cm;" align="left"><font face="Verdana" size="2"> <strong>$rooturl</strong>:
 This should be set to the URL location of
-your phpsurveyor scripts<span lang="en-au">.</span>
+your limesurvey scripts<span lang="en-au">.</span>
 The default setting
 will attempt to do this for you, so often you won't need to change
 anything here (the section {$_SERVER['SERVER_NAME']} tries to do this
 automatically. If it doesn't work, type the server url location in
-manually - for example "<a href="http://www.mydomain.com/phpsurveyor">http://www.mydomain.com/phpsurveyor</a>".</font></p>
+manually - for example "<a href="http://www.mydomain.com/limesurvey">http://www.mydomain.com/limesurvey</a>".</font></p>
 
   </li>
 
@@ -685,7 +685,7 @@ physical disk location of your scripts. The default setting will
 attempt to do this for you, so often you won't need to change anything
 here (the section {$_SERVER['DOCUMENT_ROOT']} tries to do this
 automatically. If it doesn't work, type the disk location in manually -
-for example "/home/public_html/phpsurveyor".</font></span></p>
+for example "/home/public_html/limesurvey".</font></span></p>
 
     
     <ul>
@@ -693,7 +693,7 @@ for example "/home/public_html/phpsurveyor".</font></span></p>
       <li>
         
         <p style="margin-bottom: 0cm;" align="left"><i><strong><font face="Verdana" size="2"><span lang="en-au">The subsequent location
-settings will work without modification for any standard PHPSurveyor
+settings will work without modification for any standard LimeSurvey
 installation (ie: where you use the normal directory structure) so
 don't modify these unless you've renamed directories.</span></font></strong></i></p>
 
@@ -705,13 +705,13 @@ don't modify these unless you've renamed directories.</span></font></strong></i>
 This should be set to the <span lang="en-AU">URL
         </span>location of your
 administration scripts. These are the
-scripts in the /phpsurveyor/admin folder. This should be set to the WEB
-URL location - for example "<a href="http://www.mydomain.com/phpsurveyor/html/admin"><span style="text-decoration: none;">http://www.mydomain.com/phpsurveyor/html/admin</span></a>".
+scripts in the /limesurvey/admin folder. This should be set to the WEB
+URL location - for example "<a href="http://www.mydomain.com/limesurvey/html/admin"><span style="text-decoration: none;">http://www.mydomain.com/limesurvey/html/admin</span></a>".
 Don't add a trailing slash to this entry. The default setting in
 config.php attempts to detect the name of your server automatically
 using a php variable setting - {$_SERVER['SERVER_NAME']}. In most cases
 you can leave this and just modify the remainder of this string to
-match the directory name you have put the PHPSurveyor scripts in. </font>
+match the directory name you have put the LimeSurvey scripts in. </font>
         </p>
 
       </li>
@@ -722,7 +722,7 @@ match the directory name you have put the PHPSurveyor scripts in. </font>
 This should be set to the <span lang="en-AU">URL
         </span>location of your
 'public scripts'. The public
-scripts are those located in the "phpsurveyor" folder (or whatever name
+scripts are those located in the "limesurvey" folder (or whatever name
 you gave to the directory that all the other scripts and directories
 are kept in). </font></font>
         </p>
@@ -733,8 +733,8 @@ are kept in). </font></font>
         
         <p style="margin-bottom: 0cm;" align="left"><span lang="en-AU"><font size="2"><font face="Verdana"><strong>$tempurl</strong>:
 This should be set to
-the URL location of your "/phpsurveyor/tmp" directory - or a directory
-which you would like PHPSurveyor to use to store temporary files,
+the URL location of your "/limesurvey/tmp" directory - or a directory
+which you would like LimeSurvey to use to store temporary files,
 including uploads. This directory must be set to world
 read/write/execute (ie: chmod 777)</font></font></span>
         </p>
@@ -746,7 +746,7 @@ read/write/execute (ie: chmod 777)</font></font></span>
         <p style="margin-bottom: 0cm;" align="left"><span lang="en-AU"><font size="2"><font face="Verdana"><strong>$imagefiles</strong>:
 By default you
 should leave this pointing to the URL location of
-/phpsurveyor/admin/images - where the images are installed initially.
+/limesurvey/admin/images - where the images are installed initially.
 You may, however, prefer to move these images to another location and
 if so point this to the URL directory where they are stored.</font></font></span>
         </p>
@@ -758,12 +758,12 @@ if so point this to the URL directory where they are stored.</font></font></span
         <p style="margin-bottom: 0cm;" align="left"><font face="Verdana"><font size="2"><strong>$homedir</strong>:
 This should be set to the physical disk
 location of your administration scripts - for example
-"/home/usr/htdocs/phpsurveyor/admin". Don't add a trailing slash to
+"/home/usr/htdocs/limesurvey/admin". Don't add a trailing slash to
 this entry. The default setting in config.php attempts to detect the
 default root path of all your documents using the php variable setting
 - {$_SERVER['DOCUMENT_ROOT']}. In most cases you can leave this and
 just modify the remainder of this string to match the directory name
-you have put the PHPSurveyor scripts in. </font></font>
+you have put the LimeSurvey scripts in. </font></font>
         </p>
 
       </li>
@@ -781,7 +781,7 @@ location of your 'public scripts'. </font></font>
         
         <p style="margin-bottom: 0cm;" align="left"><font size="2"><font face="Verdana"><span lang="en-AU"><strong>$tempdir</strong>:
 This should be set
-to the physical disk location of your /phpsurveyor/tmp directory so
+to the physical disk location of your /limesurvey/tmp directory so
 that the script can read and write files.</span><br>
 
 &nbsp;</font></font></p>
@@ -822,10 +822,10 @@ will know you've done this by changing this setting to "index.php".</span></font
     
     <p style="margin-bottom: 0cm;" align="left"><font face="Verdana"><font size="2"><strong>$accesscontrol</strong>:
 This setting determines whether
-PHPSurveyor tries to apply security settings for you. A setting of "1"
+LimeSurvey tries to apply security settings for you. A setting of "1"
 turns this feature on, and "0" turns it off. Having security turned off
 here does not stop you from using your Web Servers built in security
-capacity, but means that PHPSurveyor does not attempt to detect or
+capacity, but means that LimeSurvey does not attempt to detect or
 control any of it. If you are using a non Apache web server you should
 set this to "0". </font></font>
     </p>
@@ -836,7 +836,7 @@ set this to "0". </font></font>
     
     <p style="margin-bottom: 0cm;" align="left"><font face="Verdana"><font size="2"><strong>$defaultuser</strong>:
 When the script has accesscontrol turned
-on this is the default user that is created when PHPSurveyor first sets
+on this is the default user that is created when LimeSurvey first sets
 up your security settings. </font></font>
     </p>
 
@@ -846,7 +846,7 @@ up your security settings. </font></font>
     
     <p style="margin-bottom: 0cm;" align="left"><font face="Verdana"><font size="2"><strong>$defaultpass</strong>:
 When the script has accesscontrol turned
-on this is the default password that is created when PHPSurveyor first
+on this is the default password that is created when LimeSurvey first
 sets up your security settings. </font></font>
     </p>
 
@@ -970,12 +970,12 @@ operating system of your web server. </font></font>
   <li>
     
     <p style="margin-bottom: 0cm;" align="left"><font face="Verdana"><font size="2"><strong>$apachedir</strong>:
-This setting tells PHPSurveyor the
+This setting tells LimeSurvey the
 location of your “htpasswd” executable file. If
 your server
 is Linux/Unix based and you leave this setting blank
 (“”;)
-PHPSurveyor will attempt to find the location automatically. Windows
+LimeSurvey will attempt to find the location automatically. Windows
 servers probably need this filled in to work. (eg: $apachedir =
 “<a href="file:///c:/program">c:/program</a>
 files/apache
@@ -986,11 +986,11 @@ group/apache/bin”;)</font></font></p>
   <li>
     
     <p style="margin-bottom: 0cm;" align="left"><font face="Verdana"><font size="2"><strong>$mysqldir</strong>:
-This setting tells PHPSurveyor the location
+This setting tells LimeSurvey the location
 of the mysql binary files (in particular,
 “mysqldump”). If
 your server is Linux/Unix based and you leave this setting blank
-(“”;) PHPSurveyor will attempt to find the location
+(“”;) LimeSurvey will attempt to find the location
 automatically. Windows servers need this entry filled in. (eg:
 $mysqldir = “c:/mysql/bin”;)</font></font></p>
 
@@ -1014,8 +1014,8 @@ particularly important when surveys timestamp the responses. </font></font>
     
     <p style="margin-bottom: 0cm;" align="left"><font size="2"><font face="Verdana"><strong>$dbprefix</strong>:
 Leave this setting blank (ie:&nbsp;
-$dbprefix="";) if you are using a separate database for PHPSurveyor
-alone. If you want to share a database between PHPSurveyor and other
+$dbprefix="";) if you are using a separate database for LimeSurvey
+alone. If you want to share a database between LimeSurvey and other
 database applications, add a prefix to this setting. My recommended
 prefix is "phpsv_", but really - this is up to you.</font></font>
     </p>
@@ -1131,23 +1131,23 @@ the
 admin script for the first time<br>
 
 </strong>After uploading the files, you
-are ready to set up PHPSurveyor from a web browser. Open your browser
+are ready to set up LimeSurvey from a web browser. Open your browser
 and enter the url of your admin.php script. Assuming you used
-phpsurveyor as the directory name to store the files in, this will be
+limesurvey as the directory name to store the files in, this will be
 something like
-"<a href="http://your.domain.com/phpsurveyor/admin/admin.php"><span style="text-decoration: none;">http://your.domain.com/phpsurveyor/admin/admin.php</span></a>"<br>
+"<a href="http://your.domain.com/limesurvey/admin/admin.php"><span style="text-decoration: none;">http://your.domain.com/limesurvey/admin/admin.php</span></a>"<br>
 
 <br>
 
 The
-first time you use PHPSurveyor, the script will connect to the
+first time you use LimeSurvey, the script will connect to the
 database you set in the config.php file. If the appropriate table
-structure doesn't yet exist, PHPSurveyor will give you a button to
+structure doesn't yet exist, LimeSurvey will give you a button to
 press that will create the necessary tables within this database. If
 you have trouble doing this, you will need to use a database
 administration program or script (like phpmyadmin) and run the sql
 file included in the package called "maketables.sql". Once
-these tables exist, you will be able to PHPSurveyor.</font></font></p>
+these tables exist, you will be able to LimeSurvey.</font></font></p>
 
 <p align="left"><font face="Verdana"><font size="2"><strong>8.
 What if I
@@ -1159,7 +1159,7 @@ of the time things
 will work just like the instructions say, but sometimes they just
 won't. There are too many possible reasons for things not going
 according to plan to describe here. If you have trouble, post your
-problem and any error messages in the PHPSurveyor forums on
+problem and any error messages in the LimeSurvey forums on
 sourceforge.net and more likely than not someone will be able to help
 you.</font></font></p>
 
@@ -1193,10 +1193,10 @@ if my server has
       </strong><font size="2">If your server has safe_mode turned on (a
 sensible security option, if somewhat annoying to those of us who want
 extra functionality) you will not be able to use some of the built-in
-functions of PHPSurveyor. These include the capacity to create and
+functions of LimeSurvey. These include the capacity to create and
 manage your Apache server's security settings, and the ability to do a
 straight dump of survey responses from MySQL. Neither of these
-functions could be considered a major element of PHPSurveyor - they're
+functions could be considered a major element of LimeSurvey - they're
 there to make life a bit simpler. You can setup Apache's security
 settings manually, and you could use a script like phpMyAdmin to dump
 survey responses from MySQL.</font></font></p>
@@ -1222,7 +1222,7 @@ the database one at a time.</font></font></p>
 permissions
 should I set?</strong><font size="2"><br>
 
-      </font></span><font size="2">The /phpsurveyor/tmp directory needs
+      </font></span><font size="2">The /limesurvey/tmp directory needs
 to be given read/write/execute access (chmod 777) - this directory is
 where all uploaded files, and temporary files are created. All other
 directories and files can be set to read/execute only (chmod 755) <strong>exept</strong>
@@ -1245,7 +1245,7 @@ to read/execute only (chmod 755).</font></font></p>
 <p><a name="Security Issues"></a><font face="Verdana"><font size="4"><u><strong>Security
 Issues</strong></u></font></font></p>
 
-<p><font face="Verdana"><font size="2"><span lang="en-AU">PHPSurveyor
+<p><font face="Verdana"><font size="2"><span lang="en-AU">LimeSurvey
 relies on Apache's web server </span>directory
 <span lang="en-AU">security
 system. There is no additional security beyond that. This security is
@@ -1273,7 +1273,7 @@ following file permissions.</font></font></p>
 
   <li>
     
-    <p style="margin-bottom: 0cm;"><span lang="en-AU"><font size="2"><font face="Verdana">For your phpsurveyor directory (or
+    <p style="margin-bottom: 0cm;"><span lang="en-AU"><font size="2"><font face="Verdana">For your limesurvey directory (or
 whatever you call
 it) - chmod 755 (read, execute permission to whole world)</font></font></span>
     </p>
@@ -1282,7 +1282,7 @@ it) - chmod 755 (read, execute permission to whole world)</font></font></span>
 
   <li>
     
-    <p style="margin-bottom: 0cm;"><span lang="en-AU"><font size="2"><font face="Verdana">For files in the phpsurveyor directory
+    <p style="margin-bottom: 0cm;"><span lang="en-AU"><font size="2"><font face="Verdana">For files in the limesurvey directory
 - chmod 755
 (read, execute permissions to whole world)</font></font></span>
     </p>
@@ -1345,11 +1345,11 @@ The config.php file contains a username and password
 for your MySQL folder. This poses certain security issues,
 particularly if you are using a login that has high level
 administrative access to MySQL. As a very minimum, therefore, you
-should use the security features of the PHPSurveyor script to
+should use the security features of the LimeSurvey script to
 password protect the admin web directory. Another thing you could do
 to minimise risk (a little) is to create your database separately and
 set up a specific login to MySQL that only has rights to your
-phpsurveyor database. </font></font>
+limesurvey database. </font></font>
 </p>
 
 <p style="margin-bottom: 0cm;" lang="en-AU"><font face="Verdana"><font size="2">The
@@ -1366,14 +1366,14 @@ files/apache
 group/apache/phpsafe/config.php");</i>`.
 As I said, this is not
 tested, and if you give it a try, could you let me know how it goes?
-(Email to jason-at-cleeland.org). Future versions of PHPSurveyor will
+(Email to jason-at-cleeland.org). Future versions of LimeSurvey will
 consider a simpler way to refer to this file.</font></font></p>
 
 <hr>
 <p><a name="Survey Design and Structure"></a><font face="Verdana"><font size="4"><u><strong>Survey
 Design and Structure</strong></u></font></font></p>
 
-<p><font face="Verdana"><font size="2">A survey in PHPSurveyor has
+<p><font face="Verdana"><font size="2">A survey in LimeSurvey has
 three integral elements. Every survey must have:</font></font></p>
 
 <ul type="disc">
@@ -1467,7 +1467,7 @@ mandatory (ie: must be answered before continuing).</font></font></p>
 <p><a name="Question Types"></a><font face="Verdana"><font size="2"><strong>Question
 Types</strong><br>
 
-The different types of question available in PHPSurveyor
+The different types of question available in LimeSurvey
 are as follows:</font></font></p>
 
 <ul type="disc">
@@ -1977,7 +1977,7 @@ welcome message and submit button all appear on the same page.</font></font></p>
         <p style="margin-bottom: 0cm;"><font size="2"><font face="Verdana"><strong>Template</strong>:
 Choose from the installed templates in
 your system. The default template is rather dull, but functional. More
-information on creating your own templates is available in the <a href="templates.html">PHPSurveyor Templates Guide</a></font></font>
+information on creating your own templates is available in the <a href="templates.html">LimeSurvey Templates Guide</a></font></font>
         </p>
 
       </li>
@@ -2324,7 +2324,7 @@ a Survey<br>
 exported a survey, you can import it
 from the "New Survey" screen. Click on the browse button to choose the
 sql file, and then click on the </font><font face="verdana">button.
-The import process reads a 'sql' file created by PHPSurveyor and
+The import process reads a 'sql' file created by LimeSurvey and
 'intelligently' (I use the term advisedly) renumbers the survey, group,
 question, answer and condition id's so that they all match each other.
 See section on <a href="#%28F%29%20Exporting%20a%20survey">Exporting a
@@ -2435,9 +2435,9 @@ Fields Within Questions</u></strong><br>
 
         <strong>TOKEN INFORMATION</strong><br>
 
-From PHPSurveyor release 0.98finalRC1 you can insert information/text
+From LimeSurvey release 0.98finalRC1 you can insert information/text
 from the tokens table into your question so that it can show context
-related information. For PHPSurveyor to do this, the survey needs to be
+related information. For LimeSurvey to do this, the survey needs to be
 set as NOT Anonymous (ie: tracked), and it needs to have a tokens table.<br>
 
         <br>
@@ -2528,7 +2528,7 @@ refer to the exact Survey ID, Group ID and Question ID for the question
 to which the answer was made - in the form: {INSERTANS:SIDXGIDXQID} -
 ie {INSERTANS:1X2X3}. How to find out the according ID? It's easy. Just
 navigate to the questions whose answer you would like to use and look
-at the adress-bar of your browser. If the URL is e.g.&nbsp; <span style="font-style: italic;">http://foobar.com/phpsurveyor/admin/admin.php?sid=1&amp;gid=12&amp;qid=8
+at the adress-bar of your browser. If the URL is e.g.&nbsp; <span style="font-style: italic;">http://foobar.com/limesurvey/admin/admin.php?sid=1&amp;gid=12&amp;qid=8
             </span>then you have to
 insert<span style="font-style: italic;">
             </span></font></font><font face="Verdana"><font size="2">{INSERTANS:1X12X8}
@@ -2548,7 +2548,7 @@ IMPORTANT</strong></i></font>:
 The capacity to use
 perviously provided answers in questions is currently only considered
 "proof of concept" and so should be used with caution as future
-releases of PHPSurveyor may involve significant changes in the way that
+releases of LimeSurvey may involve significant changes in the way that
 it is used and/or works.<br>
 
 &nbsp;</font></p>
@@ -2677,7 +2677,7 @@ next question.</font></font>
 Attributes</a><br>
 
     </u></strong><i>This
-is a new feature as of PHPSurveyor release
+is a new feature as of LimeSurvey release
 0.99dev01.<br>
 
     </i>Question Attributes are an
@@ -2729,7 +2729,7 @@ will not display.<br>
 
         </strong>This attribute applies
 to any question type that has a list
-of possible answers. It causes PHPSurveyor to ignore the existing order
+of possible answers. It causes LimeSurvey to ignore the existing order
 of those answers, and instead it orders the answers randomly. It is
 important to note that this random order will be reordered each time
 the question is displayed, so if someone returns to a question, the
@@ -3110,7 +3110,7 @@ Condition</strong></font>
         </tr>
 
         
-        <form action="/phpsurveyor/unstable/admin/conditions.php" name="addconditions" id="addconditions" method="post"></form>
+        <form action="/limesurvey/unstable/admin/conditions.php" name="addconditions" id="addconditions" method="post"></form>
 
         <tr>
 
@@ -3308,8 +3308,8 @@ safet.. </option>
         <tr>
 
           <td align="center"><font color="white" face="verdana" size="1">
-          <img alt="Help - Using PHPSurveyor" src="../../../images/help.gif" onclick="window.open('instructions.html#conditions')" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='auto'" align="right" height="20" width="20"> <img alt="Help - Using PHPSurveyor" src="../../../images/help.gif" onclick="window.open('instructions.html#conditions')" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='auto'" align="left" height="20" width="20"> <strong><i><a href="http://phpsurveyor.sourceforge.net" target="_blank">
-          <img src="../../../images/phpsurveyor_logo.jpg" alt="PHPSurveyor Logo" border="0" height="15" width="100"></a></i></strong><br>
+          <img alt="Help - Using LimeSurvey" src="../../../images/help.gif" onclick="window.open('instructions.html#conditions')" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='auto'" align="right" height="20" width="20"> <img alt="Help - Using LimeSurvey" src="../../../images/help.gif" onclick="window.open('instructions.html#conditions')" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='auto'" align="left" height="20" width="20"> <strong><i><a href="http://limesurvey.sourceforge.net" target="_blank">
+          <img src="../../../images/limesurvey_logo.jpg" alt="LimeSurvey Logo" border="0" height="15" width="100"></a></i></strong><br>
 
 Ver 0.98final-rc1</font></td>
 
@@ -3978,25 +3978,25 @@ after submitting a survey.</font></p>
 <p><a name="Templates"></a><font face="Verdana"><font size="4"><u><strong>Templates</strong></u></font></font></p>
 
 <p><font face="Verdana"><font size="2">A number of the 'public'
-elements of PHPSurveyor can be adjusted by a series of templates.</font></font></p>
+elements of LimeSurvey can be adjusted by a series of templates.</font></font></p>
 
 <p><font size="2"><font face="Verdana">This section provides a very
 brief explanation of these templates, however more detailed
 information - especially regarding the editing/creation of new
-templates is available in the <a href="templates.html">PHPSurveyor
+templates is available in the <a href="templates.html">LimeSurvey
 Templates Guide</a>.</font></font></p>
 
-<p><a name="The PHPSurveyor Template Editor"></a><font face="Verdana"><strong><u><font size="4">The
-PHPSurveyor Template Editor</font></u></strong><span lang="en-AU"><font size="2"><br>
+<p><a name="The LimeSurvey Template Editor"></a><font face="Verdana"><strong><u><font size="4">The
+LimeSurvey Template Editor</font></u></strong><span lang="en-AU"><font size="2"><br>
 
 The
-PHPSurveyor Template Editor allows you to edit the contents of your
+LimeSurvey Template Editor allows you to edit the contents of your
 templates online. Start the Template Editor by clicking on the
-"Template Editor" icon in the PHPSurveyor Administration
+"Template Editor" icon in the LimeSurvey Administration
 toolbar (<img src="../../../images/templates.png" alt="Templates" align="bottom" border="0" height="20" width="20">)</font></span></font></p>
 
 <p lang="en-AU"><font face="Verdana"><font size="2">The main screen is
-similar to the PHPSurveyor Survey Administration screen. It allows
+similar to the LimeSurvey Survey Administration screen. It allows
 you to select the template to edit/view. Once this has been selected
 you can then select from one of the different public survey pages.
 You are then presented with a list of the template files that make up
@@ -4192,7 +4192,7 @@ shows a list of all other files in the template directory. You can use
 this side to upload image files or other files needed to create your
 template. Note that to refer to any of these files in your template,
 instead of using - say "&lt;img
-src='/phpsurveyor/templates/yourtemplate/mypicture.jpg'&gt;" you
+src='/limesurvey/templates/yourtemplate/mypicture.jpg'&gt;" you
 can
 use, "&lt;img src='{TEMPLATEURL}mypicture.jpg'&gt;".</font></p>
 
@@ -4213,7 +4213,7 @@ edit it manually.</font></font></p>
 Field Strings</strong></font></font></p>
 
 <p style="margin-bottom: 0cm;" lang="en-AU"><font face="Verdana"><font size="2">The
-following strings will be replaced by PHPSurveyor when parsing the
+following strings will be replaced by LimeSurvey when parsing the
 template file and presenting it to survey users. These field strings
 will almost every template except for the 'Completed Page'.</font></font></p>
 
@@ -4889,8 +4889,8 @@ will appear in your preferred language. For example "yes"
 and "no" in the Deutsch</span>/German
 <span lang="en-AU">version
 would appear as "ja" and "nein". A number of
-language files come with PHPSurveyor, however you can create your own
-by making a copy of an existing file in the /phpsurveyor/lang
+language files come with LimeSurvey, however you can create your own
+by making a copy of an existing file in the /limesurvey/lang
 directory and modifying it with an UTF-8 capable editor to suit.&nbsp;</span></font></p>
 <p style="font-family: Verdana;"><font size="2"><span lang="en-AU">There
 is one trick about UTF-8 files: To maintain backward compatibilty your
@@ -4987,7 +4987,7 @@ can add answers to the basic list type questions.</font></font>
 a survey by clicking on the <img src="../../../images/activate.png" align="bottom" border="0" height="15" width="10">
 button in the survey button bar. If this icon is not shown, then your
 survey is not yet capable of being activated. Once clicking on this
-icon, PHPSurveyor will run a quick consistency check to make sure
+icon, LimeSurvey will run a quick consistency check to make sure
 that your survey will work properly.</font></font></p>
 
 <hr>
@@ -5042,12 +5042,12 @@ to leave it exactly as it is.</font></font></span>
   <li>
     
     <p style="margin-bottom: 0cm;"><font size="2"><font face="Verdana">From
-release 0.98finalRC1, you can backup your entire PHPSurveyor database
+release 0.98finalRC1, you can backup your entire LimeSurvey database
 (with all surveys, responses, tokens etc) by clicking on the </font></font>&nbsp;<font size="2"><font face="verdana">backup icon in the administration
 button
 bar. This will export a sql file that can be imported into an empty
 MySQL database, creating all required tables, and data - effectively
-restoring your entire PHPSurveyor database.</font></font>
+restoring your entire LimeSurvey database.</font></font>
     </p>
 
   </li>
@@ -5056,9 +5056,9 @@ restoring your entire PHPSurveyor database.</font></font>
     
     <p><span lang="en-AU"><font size="2"><font face="Verdana">If you
 have access to phpMyAdmin or a similar facility, try making regular
-backups of the entire PHPSurveyor database (structure and data). If the
+backups of the entire LimeSurvey database (structure and data). If the
 worst happens and the whole database disappears, you could re-create
-the database and import the backed-up tables, and PHPSurveyor will
+the database and import the backed-up tables, and LimeSurvey will
 likely be able to pick up where it left off.</font></font></span>
     </p>
 
@@ -6374,7 +6374,7 @@ with the letter "R".</font></font></blockquote>
 
 <p style="margin-bottom: 0cm;"><font face="Verdana"><font size="2">This
 function is not intended to be available to participants in your
-surveys. When PHPSurveyor was first developed, it was intended as a
+surveys. When LimeSurvey was first developed, it was intended as a
 dataentry system for paper based surveys. The dataentry screen is
 intended to be used when entering returned surveys on a mass basis,
 and subsequently is designed to allow for keyboard based entry (using
@@ -6514,7 +6514,7 @@ for that response.</font></p>
 
 <p style="margin-bottom: 0cm;"><font face="Verdana" size="2">You should
 not modify the first two rows of this spreadsheet if you want to be
-able to "import" the data back into PHPSurveyor at a later point.</font></p>
+able to "import" the data back into LimeSurvey at a later point.</font></p>
 
 <p style="margin-bottom: 0cm;"><font face="Verdana" size="2"><strong>
 <img src="../../../images/importvv.png" height="20" width="20">Importing a VV
@@ -6522,7 +6522,7 @@ survey file<br>
 
 </strong>As long as the first two lines
 are intact, you can then import the
-data in your vv survey file back into an active PHPSurveyor survey. If
+data in your vv survey file back into an active LimeSurvey survey. If
 you deactivated the survey when you exported the data you will need to
 activate the survey in the normal way when doing this.</font></p>
 
@@ -6536,7 +6536,7 @@ be imported and brand new Record ID's will be generated for them. If
 you untick this box, then the original record id's will be imported.</font></p>
 
 <p style="margin-bottom: 0cm;"><font face="Verdana" size="2">There are
-a range of options you can choose that tell PHPSurveyor how to deal
+a range of options you can choose that tell LimeSurvey how to deal
 with double or multiple entries. <br>
 
 &nbsp;</font></p>
@@ -6554,7 +6554,7 @@ feature?<br>
 
 </strong>Lets say you've got a survey
 running, or it's
-finished, and you want to start analysing the results. PHPSurveyor
+finished, and you want to start analysing the results. LimeSurvey
 can dump all the results into an Excel spreadsheet (or CSV file, or
 Microsoft Word file) for you, and you can do whatever takes your
 fancy with the data then. Alternatively you can use the statistics
