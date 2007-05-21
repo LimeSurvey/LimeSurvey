@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-05-09 23:27-0300\n"
+"PO-Revision-Date: 2007-05-21 18:23-0300\n"
 "Last-Translator: Esteban Adrián Pérez <dgeaperez@yahoo.com.ar>\n"
 "Language-Team:  <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1146,6 +1146,22 @@ msgstr "Registros Desplegados:"
 msgid "Starting From:"
 msgstr "Empezando desde:"
 
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:692
+msgid "Filter incomplete answers:"
+msgstr "Filtrar respuestas incompletas:"
+
+# C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/browse.php:573
+# C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/exportresults.php:160
+# C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/statistics.php:655
+# C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/vvexport.php:75
+msgid "Enable"
+msgstr "Habilitar"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:881
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1041
+msgid "Disable"
+msgstr "Deshabilitar"
+
 msgid "Show"
 msgstr "Mostrar"
 
@@ -1154,6 +1170,13 @@ msgstr "Ver Este Registro"
 
 msgid "responses for this survey"
 msgstr "respuestas a este cuestionario"
+
+msgid "full responses"
+msgstr "respuestas completas"
+
+# C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/browse.php:655
+msgid "responses not completly filled out"
+msgstr "respuestas no completadas"
 
 msgid "Condition Designer"
 msgstr "Diseñador de Condiciones"
@@ -1183,37 +1206,30 @@ msgstr "No se ha seleccionado una pregunta como destino para copiar"
 msgid "Only show question {QID} IF"
 msgstr "Sólo mostrar la respuesta {QID} SI"
 
-#, fuzzy
 msgid "Less"
 msgstr "Menor"
 
-#, fuzzy
 msgid "Less or Equal"
 msgstr "Menor o Igual"
 
-#, fuzzy
 msgid "Equal"
 msgstr "Igual"
 
-#, fuzzy
 msgid "Not Equal"
-msgstr "Diferente"
+msgstr "Distinto"
 
 # C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/conditions.php:652
 # C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/conditions.php:863
-#, fuzzy
 msgid "Greater or Equal"
-msgstr "Mayor o igual"
+msgstr "Mayor o Igual"
 
-#, fuzzy
 msgid "Greater"
 msgstr "Mayor"
 
 # C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/conditions.php:654
 # C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/conditions.php:865
-#, fuzzy
 msgid "Regular Expresion"
-msgstr "Expresión regular"
+msgstr "Expresión Regular"
 
 msgid "and"
 msgstr "y"
@@ -1252,9 +1268,8 @@ msgid "NOTE: If select a label it will be used Equal or Not Equal for any other 
 msgstr "NOTA: Si elige una etiqueta, se utilizará Equivale o Diferente para cualquier otro método "
 
 # C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/conditions.php:872
-#, fuzzy
 msgid "Constant Value or Regular Expresion"
-msgstr "Constante o Expresión Regular"
+msgstr "Constante/Expresión Regular"
 
 msgid "Clear"
 msgstr "Borrar"
@@ -1471,6 +1486,11 @@ msgstr "No puede ser modificado"
 msgid "Update Entry"
 msgstr "Actualizar Entrada"
 
+# C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/dataentry.php:1216
+# C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/dataentry.php:2176
+msgid "Finalize response submission"
+msgstr "Terminar envío de respuestas"
+
 msgid "Save for further completion by survey user"
 msgstr "Gurdar el cuestionario para completarlo posteriormente."
 
@@ -1622,6 +1642,10 @@ msgstr "Cabeceras Completas"
 
 msgid "Question Codes"
 msgstr "Códigos de pregunta"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:692
+msgid "Filter incomplete answers"
+msgstr "Filtrar respuestas icompletas"
 
 msgid "Answers"
 msgstr "Respuestas"
@@ -3602,6 +3626,10 @@ msgstr "Elija el archivo CSV para enviar:"
 # C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1549
 msgid "Character set of the file:"
 msgstr "Juego de caracteres del archivo:"
+
+# C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/tokens.php:1567
+msgid "Sorry, but the LDAP module is missing in your PHP configuration."
+msgstr "Disculpe, pero el módulo LDAP no se encuentra en su configuración de PHP"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1502
 msgid "LDAP is disabled or no LDAP query defined."
