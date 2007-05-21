@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-05-06 15:56+0100\n"
+"PO-Revision-Date: 2007-05-21 19:33+0100\n"
 "Last-Translator: seb <seb>\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -1006,6 +1006,24 @@ msgstr "Enregistrements affichés :"
 msgid "Starting From:"
 msgstr "A partir de :"
 
+# E:\www\limesurvey/admin/usercontrol.php:153
+# E:\www\limesurvey/admin/usercontrol.php:157
+# E:\www\limesurvey/admin/usercontrol.php:171
+msgid "Filter incomplete answers:"
+msgstr "Filtrer les réponses incomplètes :"
+
+# D:\www\limesurvey/admin/browse.php:573
+# D:\www\limesurvey/admin/exportresults.php:160
+# D:\www\limesurvey/admin/statistics.php:655
+# D:\www\limesurvey/admin/vvexport.php:75
+msgid "Enable"
+msgstr "Activé"
+
+# D:\www\limesurvey/admin/html.php:891
+# D:\www\limesurvey/admin/html.php:1051
+msgid "Disable"
+msgstr "Désactivé"
+
 msgid "Show"
 msgstr "Afficher"
 
@@ -1014,6 +1032,13 @@ msgstr "Visualiser cet enregistrement"
 
 msgid "responses for this survey"
 msgstr "réponses pour ce questionnaire"
+
+msgid "full responses"
+msgstr "Réponses complètes"
+
+# D:\www\limesurvey/admin/browse.php:655
+msgid "responses not completly filled out"
+msgstr "réponses partiellement complètes"
 
 msgid "Condition Designer"
 msgstr "Concepteur de conditions"
@@ -1190,8 +1215,8 @@ msgid "Failed to update answers"
 msgstr "Echec de la mise à jour des réponses"
 
 # D:\www\limesurvey/admin/database.php:605
-msgid "Answers with a code of 0 (zero) are not allowed, and will not be saved"
-msgstr "Les réponses avec 0 (zéro) comme code ne sont pas permises et ne seront pas sauvegardées"
+msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
+msgstr "Les réponses avec 0 (zéro) comme code ou sans code ne sont pas permises et ne seront pas sauvegardées"
 
 # D:\www\limesurvey/admin/database.php:660
 msgid "Duplicate codes found, these entries won't be updated"
@@ -1296,6 +1321,11 @@ msgstr "Ne peut pas être modifié"
 
 msgid "Update Entry"
 msgstr "Mettre à jour la réponse"
+
+# D:\www\limesurvey/admin/dataentry.php:1216
+# D:\www\limesurvey/admin/dataentry.php:2176
+msgid "Finalize response submission"
+msgstr "Finaliser l'envoi de la réponse"
 
 msgid "Save for further completion by survey user"
 msgstr "Sauvegarder pour compléter le questionnaire ultérieurement "
@@ -1448,6 +1478,12 @@ msgstr "Entêtes complets"
 
 msgid "Question Codes"
 msgstr "Codes des questions"
+
+# E:\www\limesurvey/admin/usercontrol.php:153
+# E:\www\limesurvey/admin/usercontrol.php:157
+# E:\www\limesurvey/admin/usercontrol.php:171
+msgid "Filter incomplete answers"
+msgstr "Filtrer les réponses incomplètes"
 
 msgid "Answers"
 msgstr "Réponses"
@@ -1951,6 +1987,9 @@ msgstr "Définir des questions"
 
 msgid "Export"
 msgstr "Exporter"
+
+msgid "Edit Survey Property"
+msgstr "Editer les propriétés du questionnaire"
 
 msgid "Browse Response"
 msgstr "Parcourir les réponses"
@@ -3421,6 +3460,10 @@ msgstr "Choisir le fichier CSV à envoyer :"
 msgid "Character set of the file:"
 msgstr "Jeux de caractères du fichier :"
 
+# D:\www\limesurvey/admin/tokens.php:1567
+msgid "Sorry, but the LDAP module is missing in your PHP configuration."
+msgstr "Désolé mais le module LDAP est absent dans votre configuration PHP"
+
 # C:\wamp\www\limesurvey/admin/tokens.php:1464
 msgid "LDAP is disabled or no LDAP query defined."
 msgstr "LDAP désactivé ou aucune requête LDAP définie."
@@ -3615,6 +3658,10 @@ msgstr "Message :"
 # E:\www\limesurvey/admin/html.php:1691
 msgid "Send"
 msgstr "Envoyer"
+
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:139
+msgid "Reset"
+msgstr "Réinitialiser"
 
 msgid "Deleting User Group"
 msgstr "Suppession du groupe d'utilisateurs"
