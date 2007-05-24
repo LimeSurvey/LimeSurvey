@@ -1,4 +1,3 @@
-# Copyright (C) YEAR Free Software Foundation, Inc.
 # Permission is granted to freely copy and distribute
 # this file and modified versions, provided that this
 # header is not removed and modified versions are marked
@@ -9,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-05-21 18:23-0300\n"
+"PO-Revision-Date: 2007-05-23 23:01-0300\n"
 "Last-Translator: Esteban Adrián Pérez <dgeaperez@yahoo.com.ar>\n"
 "Language-Team:  <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,12 +16,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: gT\n"
 "X-Poedit-Basepath: .\n"
-"X-Poedit-SearchPath-0: C:/documentos/www/docs/activa-cro.com.ar/public_html/crf\n"
+"X-Poedit-SearchPath-0: C:/documentos/www/limesurvey16\n"
 
 msgid "Administration"
 msgstr "Administración"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:189
+# C:\documentos\www\limesurvey16/common.php:189
 msgid "Logged in as"
 msgstr "Ingresó como"
 
@@ -32,8 +31,8 @@ msgstr "Inicio de Página de Administración"
 msgid "Create/Edit Users"
 msgstr "Crear/editar usuarios"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:212
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:213
+# C:\documentos\www\limesurvey16/common.php:212
+# C:\documentos\www\limesurvey16/common.php:213
 msgid "Create/Edit Groups"
 msgstr "Crear/Editar Grupos"
 
@@ -58,9 +57,9 @@ msgstr "Editor de plantillas"
 msgid "Show Help"
 msgstr "Mostrar Ayuda"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:291
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:293
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:144
+# C:\documentos\www\limesurvey16/common.php:291
+# C:\documentos\www\limesurvey16/common.php:293
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:144
 msgid "Logout"
 msgstr "Cerrar Sesión"
 
@@ -254,7 +253,7 @@ msgstr "Pantalla de Entrada de Datos para el Cuestionario"
 msgid "Get statistics from these responses"
 msgstr "Generar estadísticas a partir de estas contestaciones"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:1178
+# C:\documentos\www\limesurvey16/common.php:1178
 msgid "Export Results to Application"
 msgstr "Exportar los resultados a"
 
@@ -274,7 +273,7 @@ msgstr "Importar un Archivo de cuestionario VV"
 msgid "Export a VV survey file"
 msgstr "Exportar un Archivo de cuestionario VV"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:140
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:140
 msgid "Preset"
 msgstr "Preconfigurado"
 
@@ -399,7 +398,7 @@ msgstr "Iguales"
 msgid "Comment"
 msgstr "Comentario"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:1768
+# C:\documentos\www\limesurvey16/common.php:1768
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr "Aviso: La ejecución de JavaScript está deshabilitada en su navegador. Es posible q no pueda responder todas las preguntas del questionario. Por favor, verifique los parámetros de su navegador."
 
@@ -412,14 +411,14 @@ msgstr "Hay {NUMBEROFQUESTIONS} preguntas en este cuestionario"
 msgid "submit"
 msgstr "enviar"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:1822
+# C:\documentos\www\limesurvey16/common.php:1822
 msgid "A Note On Privacy"
 msgstr "Nota sobre la privacidad"
 
 msgid "This survey is anonymous."
 msgstr "Este cuestionario es anónimo."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:1822
+# C:\documentos\www\limesurvey16/common.php:1822
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr "Los registros que contienen sus respuestas al cuestionario no contienen ninguna identificación suya a menos que una pregunta específicamente así lo haga. Si responde a este cuestionario utilizando una invitación que le da acceso al cuestionario, puede estar seguro que la misma no se asocia a ninguna de sus respuestas. Esto se administra en una base de datos separada, que sólo se actualiza para indicar que ha completado o no el cuestionario. No hay manera de identificar sus respuestas."
 
@@ -582,21 +581,21 @@ msgstr "Lo sentimos. No hay ningún cuestionario que coincida."
 msgid "This survey is not currently active. You will not be able to save your responses."
 msgstr "Este cuestionario no está activo. No podrá guardar sus respuestas."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:164
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:322
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:164
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:322
 msgid "Date is not valid!"
 msgstr "¡La fecha no es válida!"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/index.php:68
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/index.php:117
+# C:\documentos\www\limesurvey16/index.php:68
+# C:\documentos\www\limesurvey16/index.php:117
 msgid "ERROR"
 msgstr "ERROR"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/index.php:69
+# C:\documentos\www\limesurvey16/index.php:69
 msgid "We are sorry but your session has expired."
 msgstr "Lamentablemente su sesión ha expirado."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/index.php:69
+# C:\documentos\www\limesurvey16/index.php:69
 msgid "Either you have been inactive for too long or there were problems with your connection."
 msgstr "O bien ha estado inactivo por mucho tiempo o hubo algún problema con su conexión."
 
@@ -609,10 +608,10 @@ msgstr "si desea más ayuda"
 msgid "You have not provided a survey identification number"
 msgstr "No ha proporcionado el número de identificación del cuestionario "
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/index.php:138
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/index.php:246
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/register.php:70
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/save.php:215
+# C:\documentos\www\limesurvey16/index.php:138
+# C:\documentos\www\limesurvey16/index.php:246
+# C:\documentos\www\limesurvey16/register.php:70
+# C:\documentos\www\limesurvey16/save.php:215
 msgid "The answer to the security question is incorrect"
 msgstr "La respuesta a la pregunta de seguridad es incorrecta."
 
@@ -740,8 +739,8 @@ msgstr "respuestas"
 msgid "Choose your language"
 msgstr "Elija su Idioma"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/qanda.php:375
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/printablesurvey.php:250
+# C:\documentos\www\limesurvey16/qanda.php:375
+# C:\documentos\www\limesurvey16/admin/printablesurvey.php:250
 msgid "*"
 msgstr "*"
 
@@ -760,7 +759,7 @@ msgstr "Por favor clasifique todos los elementos"
 msgid "Please check at least one item"
 msgstr "Por favor seleccione al menos un elemento"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/qanda.php:462
+# C:\documentos\www\limesurvey16/qanda.php:462
 msgid "You cannot proceed until you enter some text for one or more questions."
 msgstr "No puede continuar hasta que no complete una o más preguntas."
 
@@ -852,8 +851,8 @@ msgstr "Este nombre ya ha sido utilizado para este cuestionario. Debe utilizar u
 msgid "Saved Survey Details"
 msgstr "Detalles del cuestionario guardado"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/save.php:287
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/dataentry.php:220
+# C:\documentos\www\limesurvey16/save.php:287
+# C:\documentos\www\limesurvey16/admin/dataentry.php:220
 msgid "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
 msgstr "Usted, o alguien utilizando su dirección de correo, ha guardado un cuestionario en proceso. Los siguentes detalles pueden ser utilizados para reresar al cuestionario y continuar desde donde lo dejó."
 
@@ -863,14 +862,14 @@ msgstr "Recargue su cuestionario haciendo click en la siguiente URL:"
 msgid "Cannot submit results - there are none to submit."
 msgstr "No se pueden enviar los resultados - no hay resultados que enviar."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/save.php:449
+# C:\documentos\www\limesurvey16/save.php:449
 msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
 msgstr "Este error puede ocurrir si ya ha enviado sus respuestas y presionó el botón de \"Recargar\" en su navegador. En este caso, sus respuestas ya habían sido guardadas."
 
 msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
 msgstr "Si recibe este error en el medio del proceso de respuesat de un custionario, debería utilizar el botón '<- Regresar' de su navegador y recién refrescar/recargar la página anterior. Si bien perderá las respuestas de la última pagina se mantendrán las respuestas anteriores. Esta situación puede deberse a que el servidor esté sobrecargado. Nuestras disculpas por el invonveniente."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/access_denied.php:43
+# C:\documentos\www\limesurvey16/admin/access_denied.php:43
 msgid "Access denied!"
 msgstr "Acceso denegado"
 
@@ -901,11 +900,11 @@ msgstr "¡No puede editar el cuestionario!"
 msgid "You are not allowed to edit groups in this survey!"
 msgstr "¡No puede editar los grupos del cuestionario!"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/access_denied.php:103
+# C:\documentos\www\limesurvey16/admin/access_denied.php:103
 msgid "You are not allowed to browse response!"
 msgstr "No está habilitado para ver las respuestas."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/access_denied.php:108
+# C:\documentos\www\limesurvey16/admin/access_denied.php:108
 msgid "You are not allowed to set assessment rules!"
 msgstr "No está habilitado para indicar reglas."
 
@@ -915,7 +914,7 @@ msgstr "¡No puede eliminar este grupo!"
 msgid "You are not allowed to import a survey!"
 msgstr "¡No puede importar un cuestionario!"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/access_denied.php:137
+# C:\documentos\www\limesurvey16/admin/access_denied.php:137
 msgid "You are not allowed to perform this operation!"
 msgstr "No está habilitado para realizar esta operación."
 
@@ -952,11 +951,11 @@ msgstr "LEA CUIDADOSAMENTE ESTO ANTES DE CONTINUAR"
 msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
 msgstr "Debe activar un cuestionario sólo cuando esté absolutamente seguro(a) de que la configuración del mismo es correcta y que no habrá más cambios."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/activate.php:241
+# C:\documentos\www\limesurvey16/admin/activate.php:241
 msgid "Once a survey is activated you can no longer:"
 msgstr "una vez activado el cuestionario no se le permitirá:"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/activate.php:241
+# C:\documentos\www\limesurvey16/admin/activate.php:241
 msgid "Add or delete groups"
 msgstr "Agregar o eliminar grupos"
 
@@ -966,23 +965,23 @@ msgstr "Debe agregar o eliminar respuestas a esta pregunta de respeusta múltipl
 msgid "Add or delete questions"
 msgstr "Agregar o eliminar pregunta"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/activate.php:242
+# C:\documentos\www\limesurvey16/admin/activate.php:242
 msgid "However you can still:"
 msgstr "Sin embargo, aún podrá:"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/activate.php:242
+# C:\documentos\www\limesurvey16/admin/activate.php:242
 msgid "Edit (change) your questions code, text or type"
 msgstr "Editar (cambiar) los códigos de sus preguntas, texto o tipo."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/activate.php:242
+# C:\documentos\www\limesurvey16/admin/activate.php:242
 msgid "Edit (change) your group names"
 msgstr "Editar (cambiar) el nombre de los grupos"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/activate.php:242
+# C:\documentos\www\limesurvey16/admin/activate.php:242
 msgid "Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)"
 msgstr "Agregar, editar o eliminar respuestas predefinidas (excepto las Multi- respuestas)"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/activate.php:242
+# C:\documentos\www\limesurvey16/admin/activate.php:242
 msgid "Change survey name or description"
 msgstr "Cambiar el nombre o descripción del cuestionario"
 
@@ -1124,7 +1123,7 @@ msgstr "Mostrar anterior"
 msgid "Show next..."
 msgstr "Mostrar siguiente..."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/browse.php:320
+# C:\documentos\www\limesurvey16/admin/browse.php:320
 msgid "Showing Filtered Results"
 msgstr "Mostrar los resultados filtrados"
 
@@ -1146,7 +1145,7 @@ msgstr "Registros Desplegados:"
 msgid "Starting From:"
 msgstr "Empezando desde:"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:692
+# C:\documentos\www\limesurvey16/admin/database.php:692
 msgid "Filter incomplete answers:"
 msgstr "Filtrar respuestas incompletas:"
 
@@ -1157,8 +1156,8 @@ msgstr "Filtrar respuestas incompletas:"
 msgid "Enable"
 msgstr "Habilitar"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:881
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1041
+# C:\documentos\www\limesurvey16/admin/html.php:881
+# C:\documentos\www\limesurvey16/admin/html.php:1041
 msgid "Disable"
 msgstr "Deshabilitar"
 
@@ -1190,7 +1189,7 @@ msgstr "No puede ejecutar este guión directamente."
 msgid "You have not selected a Question."
 msgstr "No ha seleccionado una pregunta."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/conditions.php:88
+# C:\documentos\www\limesurvey16/admin/conditions.php:88
 msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
 msgstr "¡No puede agregarse su condición! Esto no incluye la pregunta y/o respuesta sobre las cuales la condición está basada. Por favor, asegúrese de haber seleccionado una pregunta y una respuesta."
 
@@ -1305,7 +1304,7 @@ msgid ""
 "It is missing the group name for the following languages"
 msgstr "No se pudo agregar el grupo. Falta el nombre del grupo para los idiomas:"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:143
+# C:\documentos\www\limesurvey16/admin/database.php:143
 msgid "Error: The database reported the following error:"
 msgstr "Error: La base de datos informó el siguiente error:"
 
@@ -1362,27 +1361,27 @@ msgstr "Agregar una nueva respuesta"
 msgid "Error adding answer: You can't use the same answer code more than once."
 msgstr "Error al agregar la pregunta: No puede utilizar el mísmo código para dos preguntas."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:580
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:588
+# C:\documentos\www\limesurvey16/admin/database.php:580
+# C:\documentos\www\limesurvey16/admin/database.php:588
 msgid "Failed to insert answer"
 msgstr "No se pudo agregar la respuesta"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:592
+# C:\documentos\www\limesurvey16/admin/database.php:592
 msgid "Invalid or empty answer code supplied"
 msgstr "Se indicó un codigo de respuesta no válido o se omitió"
 
 msgid "Save All"
 msgstr "Guardar todo"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:644
+# C:\documentos\www\limesurvey16/admin/database.php:644
 msgid "Failed to update answers"
 msgstr "Falló la actualización de respuestas"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:659
+# C:\documentos\www\limesurvey16/admin/database.php:659
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "Las respuestas con código 0 (cero) o en blanco no están permitidas y no serán guardadas"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:660
+# C:\documentos\www\limesurvey16/admin/database.php:660
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "Se halló una duplicidad en los códigos, estas entradas no serán actualizadas."
 
@@ -1395,25 +1394,25 @@ msgstr "Abajo"
 msgid "Del"
 msgstr "Borrar"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:692
+# C:\documentos\www\limesurvey16/admin/database.php:692
 msgid "Failed to delete answer"
 msgstr "no se pudo eliminar la respuesta"
 
 msgid "Default"
 msgstr "Por defecto"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:707
+# C:\documentos\www\limesurvey16/admin/database.php:707
 msgid "Failed to make answer not default"
 msgstr "No se pudo quitar la respuesta por omisión"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:721
+# C:\documentos\www\limesurvey16/admin/database.php:721
 msgid "Failed to make answer default"
 msgstr "No se pudo establecer la respuesta por omisión"
 
 msgid "Survey could not be updated"
 msgstr "No se pudo actualizar el cuestionario."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:974
+# C:\documentos\www\limesurvey16/admin/database.php:974
 msgid "ERROR deleting Survey id"
 msgstr "ERROR eliminado la identificación del cuestionario"
 
@@ -1429,7 +1428,7 @@ msgstr "Entrada de Datos"
 msgid "You have not selected a survey for data-entry."
 msgstr "No ha seleccionado un cuestionario para realizar la entrada de datos."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/dataentry.php:249
+# C:\documentos\www\limesurvey16/admin/dataentry.php:249
 msgid "This survey is not anonymous, you must supply a valid token"
 msgstr "Este cuestionario no es anónimo, debe ingresar un código de invitación válido"
 
@@ -1457,8 +1456,8 @@ msgstr "Sus respuestas a este cuestionario fueron guardadas con éxito"
 msgid "A token entry for the saved survey has been created too."
 msgstr "Se ha creado también una invitación para el cuestionario guardado."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/save.php:287
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/dataentry.php:220
+# C:\documentos\www\limesurvey16/save.php:287
+# C:\documentos\www\limesurvey16/admin/dataentry.php:220
 msgid "You, someone using your email address, or the administrator has saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
 msgstr "Usted, o alguien utilizando su dirección de correo, ha guardado un cuestionario en proceso. Los siguentes detalles pueden ser utilizados para regresar al cuestionario y continuar desde donde lo dejó."
 
@@ -1643,7 +1642,7 @@ msgstr "Cabeceras Completas"
 msgid "Question Codes"
 msgstr "Códigos de pregunta"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:692
+# C:\documentos\www\limesurvey16/admin/database.php:692
 msgid "Filter incomplete answers"
 msgstr "Filtrar respuestas icompletas"
 
@@ -1703,7 +1702,7 @@ msgstr "Atributo_1"
 msgid "Attribute 2"
 msgstr "Atributo_2"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/exportresults.php:730
+# C:\documentos\www\limesurvey16/admin/exportresults.php:730
 msgid "NEW RECORD"
 msgstr "NUEVO REGISTRO"
 
@@ -1771,7 +1770,7 @@ msgstr "Activar este cuestionario"
 msgid "This survey is not currently active"
 msgstr "Este cuestionario actualmente NO está activo"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:158
+# C:\documentos\www\limesurvey16/admin/html.php:158
 msgid "No Surveys available - please create one."
 msgstr "no existen cuestionarios - Por favor cree uno."
 
@@ -1829,9 +1828,9 @@ msgstr "Modificar cuestionario actual"
 msgid "Delete Current Survey"
 msgstr "Borrar cuestionario actual"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:568
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:569
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2255
+# C:\documentos\www\limesurvey16/admin/html.php:568
+# C:\documentos\www\limesurvey16/admin/html.php:569
+# C:\documentos\www\limesurvey16/admin/html.php:2255
 msgid "Change Group Order"
 msgstr "Cambiar el orden de los grupos"
 
@@ -1972,12 +1971,12 @@ msgstr "Suprimir este grupo también suprimirá cualesquiera preguntas y respues
 msgid "Delete Current Group"
 msgstr "Borrar Grupo Seleccionado"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:879
+# C:\documentos\www\limesurvey16/admin/html.php:879
 msgid "Impossible to delete this group because there is at least one question having a condition on its content"
 msgstr "No se puede eliminar el grupo porque al menos una de sus preguntas está asociada a una condición."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:881
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1041
+# C:\documentos\www\limesurvey16/admin/html.php:881
+# C:\documentos\www\limesurvey16/admin/html.php:1041
 msgid "Disabled"
 msgstr "Deshabilitado"
 
@@ -2011,7 +2010,7 @@ msgstr "Suprimir esta pregunta también suprimirá cualquier respuesta que inclu
 msgid "Delete Current Question"
 msgstr "Borrar Pregunta Seleccionada"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1039
+# C:\documentos\www\limesurvey16/admin/html.php:1039
 msgid "Impossible to delete this question because  there is at least one question having a condition on it"
 msgstr "No se puede elmininar la pregunta porque al menos otra pregunta tiene una condición dependiente de ella"
 
@@ -2096,36 +2095,36 @@ msgstr "Usuario agregado"
 msgid "Set Survey Rights"
 msgstr "Establecer permisos para el cuestionario"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1440
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1446
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1500
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:164
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:168
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:224
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:974
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:980
+# C:\documentos\www\limesurvey16/admin/html.php:1440
+# C:\documentos\www\limesurvey16/admin/html.php:1446
+# C:\documentos\www\limesurvey16/admin/html.php:1500
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:164
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:168
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:224
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:974
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:980
 msgid "Failed to add User."
 msgstr "No se pudo agregar el Usuario."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1440
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:974
+# C:\documentos\www\limesurvey16/admin/html.php:1440
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:974
 msgid "Username already exists."
 msgstr "El usuario ya existe."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1446
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1500
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:980
+# C:\documentos\www\limesurvey16/admin/html.php:1446
+# C:\documentos\www\limesurvey16/admin/html.php:1500
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:980
 msgid "No Username selected."
 msgstr "No se seleccionó ningun usuario."
 
 msgid "Add User Group"
 msgstr "Agregar grupo de usuarios"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1482
+# C:\documentos\www\limesurvey16/admin/html.php:1482
 msgid "User Group added."
 msgstr "Se agrego el Grupo."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1494
+# C:\documentos\www\limesurvey16/admin/html.php:1494
 msgid "Failed to add User Group."
 msgstr "No se pudo agregar el Grupo de Usuarios."
 
@@ -2165,15 +2164,15 @@ msgstr "Usuario"
 msgid "Add Group"
 msgstr "Agregar Grupo"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1812
+# C:\documentos\www\limesurvey16/admin/html.php:1812
 msgid "Update survey rights successful."
 msgstr "Se actualizaron con éxito los permisos del cuestionario."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1816
+# C:\documentos\www\limesurvey16/admin/html.php:1816
 msgid "Failed to update survey rights!"
 msgstr "No se pudieron actualizar los permisos del cuestionario."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1843
+# C:\documentos\www\limesurvey16/admin/html.php:1843
 msgid "Edit Survey - Step 1 of 2"
 msgstr "Editar Cuestionario - Paso 1 de 2"
 
@@ -2239,16 +2238,16 @@ msgstr "Las respuestas tendrán registrada la dirección IP."
 msgid "Save Referring URL?"
 msgstr "¿Guardar la URL de referencia?"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2004
+# C:\documentos\www\limesurvey16/admin/html.php:2004
 msgid "Responses will not have their referring URL logged."
 msgstr "La respuestas no registrarán la URL referente."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2005
+# C:\documentos\www\limesurvey16/admin/html.php:2005
 msgid "Responses will have their referring URL logged."
 msgstr "La respuestas registrarán la URL referente."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2048
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:160
+# C:\documentos\www\limesurvey16/admin/html.php:2048
+# C:\documentos\www\limesurvey16/admin/labels.php:160
 msgid "Remove"
 msgstr "Quitar"
 
@@ -2261,7 +2260,7 @@ msgstr "URL de salida:"
 msgid "Automatically load URL when survey complete?"
 msgstr "¿Cargar la URL automáticamente cuando se haya completado el cuestionario?"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2083
+# C:\documentos\www\limesurvey16/admin/html.php:2083
 msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
 msgstr "Se perderán todas las preguntas, respuestas, etc para los idiomas eliminados. ¿Está seguro?"
 
@@ -2271,7 +2270,7 @@ msgstr "Guardar y continuar"
 msgid "This will replace the existing text. Continue?"
 msgstr "Esto sustituirá al texto actual. ¿Proceder?"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2133
+# C:\documentos\www\limesurvey16/admin/html.php:2133
 msgid "Edit Survey - Step 2 of 2"
 msgstr "Editar Cuestionario - Paso 2 de 2"
 
@@ -2423,22 +2422,22 @@ msgstr "Descripción de la URL:"
 msgid "Save"
 msgstr "Guardar"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2264
+# C:\documentos\www\limesurvey16/admin/html.php:2264
 msgid "Current survey has questions with conditions outside their own group"
 msgstr "El presente cuestionario tiene preguntas con condiciones fuera de su propio grupo."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2264
+# C:\documentos\www\limesurvey16/admin/html.php:2264
 msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
 msgstr "Se restringe el reordenamiento de los grupos para asegurar que las preguntas en las cuales se basan sus condiciones no se reordenen luego de sus dependientes."
 
 msgid "The following groups are concerned"
 msgstr "Los siguientes grupos están involucrados"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2269
+# C:\documentos\www\limesurvey16/admin/html.php:2269
 msgid "depends on group"
 msgstr "depende del grupo"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2269
+# C:\documentos\www\limesurvey16/admin/html.php:2269
 msgid "see the marked conditions on"
 msgstr "ver las condiciones marcadas en"
 
@@ -2467,7 +2466,7 @@ msgstr "Crear Encuesta"
 msgid "(This field is mandatory.)"
 msgstr "(Esta pregunta es obligatoria)"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2510
+# C:\documentos\www\limesurvey16/admin/html.php:2510
 msgid "This setting cannot be changed later!"
 msgstr "¡Este dato no podrá ser cambiado luego!"
 
@@ -2525,11 +2524,11 @@ msgstr "Leyendo archivo.."
 msgid "This file is not a LimeSurvey group file. Import failed."
 msgstr "El archivo no contiene un formato LimeSurvey válido."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/importgroup.php:566
+# C:\documentos\www\limesurvey16/admin/importgroup.php:566
 msgid "Import partially successful."
 msgstr "Importación parcialmente exitosa."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/importgroup.php:567
+# C:\documentos\www\limesurvey16/admin/importgroup.php:567
 msgid "The following languages in this group were not imported since the survey does not contain such a language: "
 msgstr "Los siguientes idiomas en este grupo no se importaron debido a que el cuestionario no los contiene:"
 
@@ -2594,8 +2593,8 @@ msgstr "Tabla origen"
 msgid "Import Responses"
 msgstr "Importar respuestas"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/importoldresponses.php:83
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:252
+# C:\documentos\www\limesurvey16/admin/importoldresponses.php:83
+# C:\documentos\www\limesurvey16/admin/labels.php:252
 msgid "Are you sure?"
 msgstr "¿Está seguro?"
 
@@ -2629,8 +2628,8 @@ msgstr "Resumen de la importación del cuestionario "
 msgid "Question Attributes"
 msgstr "Atributos de la pregunta"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/integritycheck.php:52
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/integritycheck.php:326
+# C:\documentos\www\limesurvey16/admin/integritycheck.php:52
+# C:\documentos\www\limesurvey16/admin/integritycheck.php:326
 msgid "Data Consistency Check"
 msgstr "Verificación de Consistencia de Datos"
 
@@ -2661,7 +2660,7 @@ msgstr "Las siguientes respuestas deberían ser borradas"
 msgid "All answers meet consistency standards"
 msgstr "Todas las respuestas son consistentes"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/integritycheck.php:202
+# C:\documentos\www\limesurvey16/admin/integritycheck.php:202
 msgid "Language specific settings missing"
 msgstr "No se encuentran los datos especificos del idioma"
 
@@ -2716,7 +2715,7 @@ msgstr "Modificar conjunto de etiquetas"
 msgid "Set Name"
 msgstr "Nombre del Conjunto"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:160
+# C:\documentos\www\limesurvey16/admin/labels.php:160
 msgid "You cannot remove this items since you need at least one language in a labelset."
 msgstr "No puede eliminar estos ítems debido a que se necesita al menos un idioma en un juego de etiquetas."
 
@@ -2738,7 +2737,7 @@ msgstr "Nueva Etiqueta"
 msgid "Add new label"
 msgstr "Agregar nueva etiqueta"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:383
+# C:\documentos\www\limesurvey16/admin/labels.php:383
 msgid "Inserting New labels must be done on the first language folder."
 msgstr "Para ingresar nuevas etiquetas debe hacerlo en la carpeta del idioma primario."
 
@@ -2751,11 +2750,11 @@ msgstr "Corregir Orden"
 msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
 msgstr "Algunos cuestionarios están utilizando este conjunto de etiquetas. Modificar los códigos, agregar o borrar entradas a este conjunto puede producir resultados indeseados."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:482
+# C:\documentos\www\limesurvey16/admin/labels.php:482
 msgid "Failed to Copy already defined labels to added languages"
 msgstr "No se pudieron copiar las etiquetas definidas a los idiomas agregados."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:498
+# C:\documentos\www\limesurvey16/admin/labels.php:498
 msgid "Failed to delete labels for removed languages"
 msgstr "No se pudieron elminar las etiquetas de los idiomas eliminados"
 
@@ -2765,34 +2764,34 @@ msgstr "No se pudo actualizar el conjunto de etiquetas"
 msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
 msgstr "No se pudo borrar el conjunto de etiquetas - Hay preguntas que dependen de ellas. Debe borrar estas preguntas primero antes de poder continuar."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:585
+# C:\documentos\www\limesurvey16/admin/labels.php:585
 msgid "Failed to insert label"
 msgstr "No se pudo insertar la etiqueta"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:615
+# C:\documentos\www\limesurvey16/admin/labels.php:615
 msgid "Failed to update label"
 msgstr "No se pudo actualizar la etiqueta"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:653
+# C:\documentos\www\limesurvey16/admin/labels.php:653
 msgid "Failed to delete label"
 msgstr "No se pudo eliminar la etiqueta"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/login_check.php:45
+# C:\documentos\www\limesurvey16/admin/login_check.php:45
 msgid "You have to enter user name and email."
 msgstr "Debe ingrear un nombre de usario y una dirección de correo electrónico."
 
 msgid "Check Data"
 msgstr "Verificar Datos"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/login_check.php:76
+# C:\documentos\www\limesurvey16/admin/login_check.php:76
 msgid "You have to login first."
 msgstr "Debe ingresar al sistema primero."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:93
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:93
 msgid "Login"
 msgstr "Ingreso"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/login_check.php:94
+# C:\documentos\www\limesurvey16/admin/login_check.php:94
 msgid "Forgot Your Password?"
 msgstr "¿Olvidó su clave?"
 
@@ -2883,11 +2882,11 @@ msgstr "Editar Pregunta"
 msgid "Update Question"
 msgstr "Actualizar Pregunta"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/questionhandling.php:586
+# C:\documentos\www\limesurvey16/admin/questionhandling.php:586
 msgid "Current group is using conditional questions"
 msgstr "El grupo actual está utilizando preguntas condicionales"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/questionhandling.php:586
+# C:\documentos\www\limesurvey16/admin/questionhandling.php:586
 msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
 msgstr "El reordenamiento de preguntas en este grupo está restringido para asegurar que las preguntas dependientes de sus condiciones no se reordenen una vez que se estableció su dependencia."
 
@@ -3002,11 +3001,11 @@ msgstr "Tercer cuartal (Q3)"
 msgid "Null values are ignored in calculations"
 msgstr "Los valores nulos son ignorados en los cálculos"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/statistics.php:1171
+# C:\documentos\www\limesurvey16/admin/statistics.php:1171
 msgid "Q1 and Q3 calculated using"
 msgstr "Q1 y Q3 deben ser calculadas utilizando"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/statistics.php:1171
+# C:\documentos\www\limesurvey16/admin/statistics.php:1171
 msgid "minitab method"
 msgstr "método minitab"
 
@@ -3022,14 +3021,14 @@ msgstr "Completado"
 msgid "Select all"
 msgstr "Seleccionar todos"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/stats.php:257
+# C:\documentos\www\limesurvey16/admin/stats.php:257
 msgid "Proceed"
 msgstr "Proceda"
 
 msgid "Question List"
 msgstr "Lista de preguntas"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/stats.php:368
+# C:\documentos\www\limesurvey16/admin/stats.php:368
 msgid "Like"
 msgstr "Como"
 
@@ -3048,28 +3047,28 @@ msgstr "Respuesta Numérica"
 msgid "Huge free text"
 msgstr "Texto libre muy largo"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:95
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:211
+# C:\documentos\www\limesurvey16/admin/templates.php:95
+# C:\documentos\www\limesurvey16/admin/templates.php:211
 msgid "Failed to copy"
 msgstr "No se pudo copiar"
 
 msgid "to new template directory."
 msgstr "a la nueva carpeta de plantillas."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:101
+# C:\documentos\www\limesurvey16/admin/templates.php:101
 msgid "Directory with the name"
 msgstr "Carpeta con el nombre"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:101
+# C:\documentos\www\limesurvey16/admin/templates.php:101
 msgid "already exists - choose another name"
 msgstr "ya existe - elija otro nombre"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:103
+# C:\documentos\www\limesurvey16/admin/templates.php:103
 msgid "Unable to create directory"
 msgstr "no se puede crear la carpeta"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:103
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:111
+# C:\documentos\www\limesurvey16/admin/templates.php:103
+# C:\documentos\www\limesurvey16/admin/templates.php:111
 msgid "Maybe you don't have permission."
 msgstr "Quizá no tenga permisos."
 
@@ -3115,7 +3114,7 @@ msgstr "Esta plantilla puede ser modificada"
 msgid "This template cannot be modified"
 msgstr "Esta plantilla no puede ser modificada"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:478
+# C:\documentos\www\limesurvey16/admin/templates.php:478
 msgid "You can't edit the default template."
 msgstr "No puede modificar la plantilla por omisión."
 
@@ -3155,7 +3154,7 @@ msgstr "Otros Archivos:"
 msgid "Save Changes"
 msgstr "Guardar los cambios"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:544
+# C:\documentos\www\limesurvey16/admin/templates.php:544
 msgid "Changes cannot be saved to the default template."
 msgstr "No pueden guardarse los cambios en la plantilla por omisión."
 
@@ -3303,7 +3302,7 @@ msgstr "Enviar recordatorio (email) a esta entrada"
 msgid "Delete Tokens Table"
 msgstr "Eliminar Tabla de Tokens"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:675
+# C:\documentos\www\limesurvey16/admin/tokens.php:675
 msgid "If you delete this table tokens will no longer be required to access this survey."
 msgstr "Si elimina la tabla de invitacións no será requerida para ingresar al cuestionario."
 
@@ -3418,11 +3417,11 @@ msgstr "Nota:"
 msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [language code], [attribute1], [attribute2]\"."
 msgstr "El archivo debe ser CSV estándar (delimitado por comas) con comillas (por defecto en OpenOffice y Excel). La primera línea debe contener la información de la cabecera (que será eliminada). Los datos deben estar ordenados como «nombre, apellido, correo electrónico, [invitación], [atributo1], [atributo2]»."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1279
+# C:\documentos\www\limesurvey16/admin/tokens.php:1279
 msgid "Upload LDAP entries"
 msgstr "Se leyeron los registros LDAP"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1286
+# C:\documentos\www\limesurvey16/admin/tokens.php:1286
 msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
 msgstr "Las consultas basadas en LDAP están definidas por el administrador en el archivo config-ldap.php"
 
@@ -3438,22 +3437,22 @@ msgstr "Creando Tokens"
 msgid "Failed"
 msgstr "Falló"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1380
+# C:\documentos\www\limesurvey16/admin/tokens.php:1380
 msgid "Records in CSV"
 msgstr "Registros en CSV"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1381
+# C:\documentos\www\limesurvey16/admin/tokens.php:1381
 msgid "Records met minumum requirements"
 msgstr "Los registros cumplen los requerimientos mínimos"
 
 msgid "Records imported"
 msgstr "Total de registros importados:"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1383
+# C:\documentos\www\limesurvey16/admin/tokens.php:1383
 msgid "Duplicate records removed"
 msgstr "Se eliminaron los registros duplicados"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1384
+# C:\documentos\www\limesurvey16/admin/tokens.php:1384
 msgid "Records with invalid email address removed"
 msgstr "Se eliminaron los registros con direcciones de correo electrónico no válidas"
 
@@ -3463,11 +3462,11 @@ msgstr "Subiendo consulta LDAP"
 msgid "{TOKENCOUNT} Records Created"
 msgstr "{TOKENCOUNT} invitacións creadas"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1455
+# C:\documentos\www\limesurvey16/admin/tokens.php:1455
 msgid "Can't bind to the LDAP directory"
 msgstr "No puede enlazarse a la carpeta LDAP"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1461
+# C:\documentos\www\limesurvey16/admin/tokens.php:1461
 msgid "Can't connect to the LDAP directory"
 msgstr "No puede conectarse a la carpeta LDAP"
 
@@ -3515,7 +3514,7 @@ msgstr "DOS Europa Occidental"
 msgid "DOS Central European"
 msgstr "DOS Europa Central"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:149
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:149
 msgid "DOS Russian"
 msgstr "DOS Ruso"
 
@@ -3595,11 +3594,11 @@ msgstr "Mac Europa Central"
 msgid "Mac West European"
 msgstr "Mac Europa Occidental"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:128
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:128
 msgid "Shift-JIS Japanese"
 msgstr "Shift-JIS Japonés"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:165
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:165
 msgid "7bit Swedish"
 msgstr "7bit Sueco"
 
@@ -3611,7 +3610,7 @@ msgstr "TIS620 Tailandés"
 msgid "UCS-2 Unicode"
 msgstr "UCS-2 Unicode"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:128
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:128
 msgid "EUC-JP Japanese"
 msgstr "EUC-JP Japonés"
 
@@ -3631,32 +3630,32 @@ msgstr "Juego de caracteres del archivo:"
 msgid "Sorry, but the LDAP module is missing in your PHP configuration."
 msgstr "Disculpe, pero el módulo LDAP no se encuentra en su configuración de PHP"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1502
+# C:\documentos\www\limesurvey16/admin/tokens.php:1502
 msgid "LDAP is disabled or no LDAP query defined."
 msgstr "LDAP está deshabilitado o no se definió ninguna consulta LDAP."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1508
+# C:\documentos\www\limesurvey16/admin/tokens.php:1508
 msgid "Select the LDAP query you want to run:"
 msgstr "Seleccione la consulta LDAP que desea ejecutar:"
 
 msgid "Forgot Password"
 msgstr "Contraseña Olvidada"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:56
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:104
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:135
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:56
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:104
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:135
 msgid "User name and/or email not found!"
 msgstr "¡Nombre de usuario y/o dirección de correo electrónico no encontrados!"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:65
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:194
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:65
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:194
 msgid "Your data:"
 msgstr "Sus datos:"
 
 msgid "New Password"
 msgstr "Contraseña Nueva"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:79
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:79
 msgid "An email with your login data was sent to you."
 msgstr "Se envió un mensaje de correo electrónico con los datos."
 
@@ -3671,38 +3670,38 @@ msgstr "Ingresando..."
 msgid "Welcome {NAME}"
 msgstr "Bienvenida/o {NAME}"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:121
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:121
 msgid "You logged in successfully."
 msgstr "Ingresó correctamente."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:148
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:148
 msgid "Logout successful."
 msgstr "Salida exitosa."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:164
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:322
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:164
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:322
 msgid "Email address ist not valid."
 msgstr "La dirección de correo electrónico no es válida"
 
 msgid "Username was not supplied."
 msgstr "No se proveyó un nombre de usuario."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:193
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:193
 msgid "You were signed in on the site"
 msgstr "Ingresó al sitio"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:197
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:197
 msgid "Login here"
 msgstr "Ingrese aquí"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:207
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:207
 msgid "An email with a generated password was sent to the user."
 msgstr "Un mensaje de correo electrónico con la clave generada fue enviado al usuario."
 
 msgid "Set User Rights"
 msgstr "Estblecer permisos de usuario"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:224
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:224
 msgid "Username and/or email address already exists."
 msgstr "Ya existe el Nombre de usuario y/o dirección de correo electrónico.!"
 
@@ -3712,37 +3711,37 @@ msgstr "El administrador no puede ser eliminado"
 msgid "Modifying User"
 msgstr "Modificando el Usuario"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:322
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:346
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:322
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:346
 msgid "Could not modify User Data."
 msgstr "No puede modificar los datos del usuario."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:338
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:338
 msgid "Unchanged"
 msgstr "Sin cambios"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:346
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:346
 msgid "Email address already exists."
 msgstr "Ya existe la dirección de correo electrónico."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:352
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:352
 msgid "Back"
 msgstr "Atrás"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:397
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:397
 msgid "Update user rights successful."
 msgstr "La actualización de los permisos del usuario fue exitosa."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:407
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:407
 msgid "You are not allowed to change your own rights!"
 msgstr "¡No puede cambiar sus propios permisos!"
 
 msgid "User Groups"
 msgstr "Grupos de usuario"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:69
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:543
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:637
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:69
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:543
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:637
 msgid "Mail to all Members"
 msgstr "Enviar un mensaje de correo electrónico a todos los miembros"
 
@@ -3776,11 +3775,11 @@ msgstr "Administrar plantillas"
 msgid "Manage Labels"
 msgstr "Administrar etiquetas"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:309
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:309
 msgid "Setting new Parent"
 msgstr "Establecer nuevo Origen"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:310
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:310
 msgid "Set Parent successful."
 msgstr "Se estableció un nuevo origen con éxito."
 
@@ -3799,14 +3798,14 @@ msgstr "Nombre:"
 msgid "Optional"
 msgstr "Opcional"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:507
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:507
 msgid "Edit User Group (Owner: "
 msgstr "Editar grupo de usuarios (Propietario:"
 
 msgid "Update User Group"
 msgstr "Actualizar grupo de usuarios"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:547
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:547
 msgid "Send me a copy:"
 msgstr "Envíame una copia:"
 
@@ -3816,11 +3815,11 @@ msgstr "Asunto:"
 msgid "Message:"
 msgstr "Mensaje:"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:553
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:553
 msgid "Send"
 msgstr "Enviar"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:140
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:140
 msgid "Reset"
 msgstr "Restaurar"
 
@@ -3842,37 +3841,37 @@ msgstr "Agregar grupo de usuarios"
 msgid "Description: "
 msgstr "Descripción:"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:617
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:617
 msgid "User group successfully added!"
 msgstr "¡Se agregó el grupo de usuarios con éxito!"
 
 msgid "Failed to add Group!"
 msgstr "¡No se pudo agregar el grupo!"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:623
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:623
 msgid "Group already exists!"
 msgstr "¡El grupo ya existe!"
 
 msgid "Group name was not supplied!"
 msgstr "¡No se ingresó el nombre del grupo de usuarios!"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:310
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:310
 msgid "Message(s) sent successfully!"
 msgstr "¡Se han enviado los mensajes exitosamente!"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:545
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:545
 msgid "To:"
 msgstr "Para:"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:672
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:672
 msgid "Mail not sent!"
 msgstr "¡Mensaje de correo electrónico no enviado!"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:690
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:690
 msgid "Edit User Group Successfully!"
 msgstr "¡Se modificó el grupo de usuarios con éxito!"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:695
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:695
 msgid "Failed to update!"
 msgstr "¡No se pudo actualizar!"
 
@@ -3912,7 +3911,7 @@ msgstr "Remplazar el elemento existente."
 msgid "Import"
 msgstr "Importar"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/vvimport.php:77
+# C:\documentos\www\limesurvey16/admin/vvimport.php:77
 msgid "Cannot import the VVExport file."
 msgstr "No se pudo importar el archivo VVExport."
 
@@ -3926,7 +3925,7 @@ msgstr "Fallo en la importación en el Elemento"
 msgid "because"
 msgstr "por que"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/vvimport.php:230
+# C:\documentos\www\limesurvey16/admin/vvimport.php:230
 msgid "Important Note:"
 msgstr "Lea Atentamente:"
 
@@ -3939,7 +3938,7 @@ msgstr "Total de elementos importados:"
 msgid "Welcome to LimeSurvey Setup!"
 msgstr "¡Bienvenido a la configuración de LimeSurvey!"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/install/index.php:51
+# C:\documentos\www\limesurvey16/admin/install/index.php:51
 msgid "The database defined in config.php does not exist."
 msgstr "La base de datos definida en el archivo config.php no existe."
 
@@ -3949,113 +3948,113 @@ msgstr "LimeSurvey puede intentar crear la base de datos por usted."
 msgid "Your selected database name is:"
 msgstr "El nombre de la base de datos seleccionada es:"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/install/index.php:68
+# C:\documentos\www\limesurvey16/admin/install/index.php:68
 #, php-format
 msgid "A database named \"%s\" does already exist."
 msgstr "una base de datos con el nombre  \"%s\" ya existe."
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/install/index.php:69
+# C:\documentos\www\limesurvey16/admin/install/index.php:69
 msgid "Do you want to populate that database now by creating the necessary tables?"
 msgstr "¿Desea poblar la base de datos ahora creando las tablas necesarias?"
 
 msgid "Database has been successfully upgraded to version "
 msgstr "La Base de Datos se ha actualizado exitosamente a la versión "
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:67
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:67
 msgid "Bulgarian"
 msgstr "Búlgaro"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:71
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:71
 msgid "Chinese (Traditional)"
 msgstr "Chino (Tradicional)"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:75
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:75
 msgid "Chinese (Simplified)"
 msgstr "Chino (Simplificado)"
 
 msgid "Croatian"
 msgstr "Croata"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:83
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:83
 msgid "Danish"
 msgstr "Danés"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:87
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:87
 msgid "Dutch"
 msgstr "Holandés"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:91
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:91
 msgid "English"
 msgstr "Inglés"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:95
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:95
 msgid "Finnish"
 msgstr "Finlandés"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:100
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:100
 msgid "French"
 msgstr "Francés"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:104
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:104
 msgid "German"
 msgstr "Alemán"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:108
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:108
 msgid "German informal"
 msgstr "Alemán informal"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:112
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:112
 msgid "Greek"
 msgstr "Griego"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:116
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:116
 msgid "Hebrew"
 msgstr "Hebreo"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:120
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:120
 msgid "Hungarian"
 msgstr "Húngaro"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:124
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:124
 msgid "Italian"
 msgstr "Italiano"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:128
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:128
 msgid "Japanese"
 msgstr "Japonés"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:132
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:132
 msgid "Lithuanian"
 msgstr "Lituanés"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:136
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:136
 msgid "Norwegian"
 msgstr "Noruego"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:140
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:140
 msgid "Portuguese"
 msgstr "Portugues"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:144
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:144
 msgid "Portuguese (Brazilian)"
 msgstr "Portugues (Brasil)"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:149
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:149
 msgid "Russian"
 msgstr "Ruso"
 
 msgid "Romanian"
 msgstr "Rumano"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:157
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:157
 msgid "Slovenian"
 msgstr "Esloveno"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:161
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:161
 msgid "Spanish"
 msgstr "Español"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:165
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:165
 msgid "Swedish"
 msgstr "Sueco"
 
@@ -4063,7 +4062,7 @@ msgstr "Sueco"
 msgid "Turkish"
 msgstr "Turco"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:169
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:169
 msgid "Vietnamese"
 msgstr "Vietnamita"
 

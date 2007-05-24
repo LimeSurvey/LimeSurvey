@@ -2659,7 +2659,7 @@ function questionjavascript($type, $qattributes)
 	. "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n"
 	. "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
 	. "\t\t}\n"
-	. "\telse if (QuestionType == 'S' || QuestionType == 'T' || QuestionType == 'U' || QuestionType == 'N' || QuestionType=='')\n"
+	. "\telse if (QuestionType == 'S' || QuestionType == 'T' || QuestionType == 'U' || QuestionType == 'N' || QuestionType == 'D' || QuestionType=='')\n"
 	. "\t\t{\n"
 	. "\t\tdocument.getElementById('Validation').style.display = '';\n"
 	. "\t\tdocument.getElementById('OtherSelection').style.display ='none';\n"

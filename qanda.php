@@ -48,31 +48,48 @@ if (empty($publicdir)) {die ("Cannot run this script directly (qanda.php)");}
 * $ia[6] => mandatory Y || N
 * $ia[7] => conditions ??
 *
+* $conditions element structure
+* $condition[n][0] => question id
+* $condition[n][1] => question with value to evaluate
+* $condition[n][2] => internal field name of element [1]
+* $condition[n][3] => value to be evaluated on answers labeled. *NEW* tittle of questions to evaluate.
+* $condition[n][4] => type of question
+* $condition[n][5] => equal to [2], but concatenated in this time (why the same value 2 times?)
+* $condition[n][6] => method used to evaluate *NEW*
 */
 function retrieveConditionInfo($ia)
 {
 	//This function returns an array containing all related conditions
 	//for a question - the array contains the fields from the conditions table
 	global $dbprefix, $connect;
+
 	if ($ia[7] == "Y")
 	{ //DEVELOP CONDITIONS ARRAY FOR THIS QUESTION
 		$cquery = "SELECT {$dbprefix}conditions.qid, "
-		."{$dbprefix}conditions.cqid, "
-		."{$dbprefix}conditions.cfieldname, "
-		."{$dbprefix}conditions.value, "
-		."{$dbprefix}questions.type, "
-		."{$dbprefix}questions.sid, "
-		."{$dbprefix}questions.gid "
-		."FROM {$dbprefix}conditions, "
-		."{$dbprefix}questions "
-		."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid "
-		."AND {$dbprefix}conditions.qid=$ia[0] "
-		."AND {$dbprefix}questions.language='".$_SESSION['s_lang']."' "
-		."ORDER BY {$dbprefix}conditions.cqid, {$dbprefix}conditions.cfieldname";
+		                ."{$dbprefix}conditions.cqid, "
+		                ."{$dbprefix}conditions.cfieldname, "
+		                ."{$dbprefix}conditions.value, "
+		                ."{$dbprefix}questions.type, "
+		                ."{$dbprefix}questions.sid, "
+                		."{$dbprefix}questions.gid, "
+                		."{$dbprefix}conditions.method "
+		           ."FROM {$dbprefix}conditions, "
+		                ."{$dbprefix}questions "
+		          ."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid "
+		            ."AND {$dbprefix}conditions.qid=$ia[0] "
+		            ."AND {$dbprefix}questions.language='".$_SESSION['s_lang']."' "
+        	   ."ORDER BY {$dbprefix}conditions.cqid, "
+        	            ."{$dbprefix}conditions.cfieldname";
 		$cresult = db_execute_assoc($cquery) or die ("OOPS<br />$cquery<br />".htmlspecialchars($connect->ErrorMsg()));
 		while ($crow = $cresult->FetchRow())
 		{
-			$conditions[] = array ($crow['qid'], $crow['cqid'], $crow['cfieldname'], $crow['value'], $crow['type'], $crow['sid']."X".$crow['gid']."X".$crow['cqid']);
+			$conditions[] = array ($crow['qid'],
+			                       $crow['cqid'],
+			                       $crow['cfieldname'],
+			                       $crow['value'],
+			                       $crow['type'],
+			                       $crow['sid']."X".$crow['gid']."X".$crow['cqid'],
+			                       $crow['method']);
 		}
 		return $conditions;
 	}
@@ -532,7 +549,10 @@ function do_5pointchoice($ia)
 function do_date($ia)
 {
 	global $clang;
-	$answer = "\t\t\t<input class='text' type='text' size=10 name='$ia[1]' id='answer{$ia[1]}' value=\"".$_SESSION[$ia[1]]."\" onchange='modfield(this.name)' /><button type='reset' id='f_trigger_{$ia[1]}'>...</button>\n"
+  $answer = keycontroljs()
+  . "\t\t\t<input class='text' type='text' size='10' name='$ia[1]' "
+  . "id='answer{$ia[1]}' value=\"".$_SESSION[$ia[1]]
+  . "\" maxlength='10' onKeyPress=\"return goodchars(event,'0123456789-')\" onchange='modfield(this.name);checkconditions(this.value, this.name, this.type)' onBlur='ValidDate(this)'/><button type='reset' id='f_trigger_{$ia[1]}'>...</button>\n"
 	. "\t\t\t<table class='question'>\n"
 	. "\t\t\t\t<tr>\n"
 	. "\t\t\t\t\t<td>\n"
@@ -1622,7 +1642,7 @@ function do_numerical($ia)
 	// --> START NEW FEATURE - SAVE
 	$answer = keycontroljs()
 	. "\t\t\t<input class='text' type='text' size='$tiwidth' name='$ia[1]' "
-	. "id='answer{$ia[1]}' value=\"{$_SESSION[$ia[1]]}\" onkeypress=\"return goodchars(event,'0123456789.')\" onchange='modfield(this.name)'"
+	. "id='answer{$ia[1]}' value=\"{$_SESSION[$ia[1]]}\" onkeypress=\"return goodchars(event,'0123456789.')\" onchange='modfield(this.name),checkconditions(this.value, this.name, this.type)'"
 	. "maxlength='$maxsize' /><br />\n"
 	. "\t\t\t<font size='1'><i>".$clang->gT("Only numbers may be entered in this field")."</i></font>\n";
 	// --> END NEW FEATURE - SAVE
@@ -1654,7 +1674,7 @@ function do_shortfreetext($ia)
 	// --> START NEW FEATURE - SAVE
 	$answer = "\t\t\t<input class='text' type='text' size='$tiwidth' name='$ia[1]' id='answer$ia[1]' value=\""
 	.str_replace ("\"", "'", str_replace("\\", "", $_SESSION[$ia[1]]))
-	."\" maxlength='$maxsize' onchange='modfield(this.name)' />\n";
+	."\" maxlength='$maxsize' onchange='modfield(this.name);modfield(this.name),checkconditions(this.value, this.name, this.type)' />\n";
 	// --> END NEW FEATURE - SAVE
 
 	$inputnames[]=$ia[1];

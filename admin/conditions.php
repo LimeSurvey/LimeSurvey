@@ -83,16 +83,32 @@ if (isset($_GET['markcid']))
 //ADD NEW ENTRY IF THIS IS AN ADD
 if (isset($_POST['subaction']) && $_POST['subaction'] == "insertcondition")
 {
-	if (!isset($_POST['canswers']) || !isset($_POST['cquestions']))
+  if ((!isset($_POST['canswers']) &&
+       !isset($_POST['ValOrRegEx'])) ||
+      !isset($_POST['cquestions']))
 	{
 		$conditionsoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.","js")."\")\n //-->\n</script>\n";
 	}
 	else
 	{
+    if (isset($_POST['canswers']))
+    {
 		foreach ($_POST['canswers'] as $ca)
 		{
-			$query = "INSERT INTO {$dbprefix}conditions (qid, cqid, cfieldname, value) VALUES "
-			. "('{$_POST['qid']}', '{$_POST['cqid']}', '{$_POST['cquestions']}', '$ca')";
+// There I must add the indicated field for condition method
+// Original
+//      $query = "INSERT INTO {$dbprefix}conditions (qid, cqid, cfieldname, value) VALUES "
+//      . "('{$_POST['qid']}', '{$_POST['cqid']}', '{$_POST['cquestions']}', '$ca')";
+// Modified
+         $query = "INSERT INTO {$dbprefix}conditions (qid, cqid, cfieldname, method, value) VALUES "
+         . "('{$_POST['qid']}', '{$_POST['cqid']}', '{$_POST['cquestions']}', '{$_POST['method']}', '$ca')";
+         $result = $connect->Execute($query) or die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
+      }
+    }
+    if (isset($_POST['ValOrRegEx']) && $_POST['ValOrRegEx']) //Remmember: '', ' ', 0 are evaluated as FALSE
+    { //here is saved the textarea for constants or regex
+      $query = "INSERT INTO {$dbprefix}conditions (qid, cqid, cfieldname, method, value) VALUES "
+      . "('{$_POST['qid']}', '{$_POST['cqid']}', '{$_POST['cquestions']}', '{$_POST['method']}', '{$_POST['ValOrRegEx']}')";
 			$result = $connect->Execute($query) or die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
 		}
 	}
@@ -175,9 +191,12 @@ unset($canswers);
 if (!isset($qid)) {$qid=returnglobal('qid');}
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
-$query = "SELECT * FROM {$dbprefix}questions, {$dbprefix}groups\n"
-."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid\n"
-."AND qid=$qid AND ".db_table_name('questions').".language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
+$query = "SELECT * "
+         ."FROM {$dbprefix}questions, "
+              ."{$dbprefix}groups "
+        ."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid "
+          ."AND qid=$qid "
+          ."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
 $result = db_execute_assoc($query) or die ("Couldn't get information for question $qid<br />$query<br />".$connect->ErrorMsg());
 while ($rows=$result->FetchRow())
 {
@@ -189,25 +208,31 @@ while ($rows=$result->FetchRow())
 
 //2: Get all other questions that occur before this question that are pre-determined answer types
 
-//TO AVOID NATURAL SORT ORDER ISSUES, FIRST GET ALL QUESTIONS IN NATURAL SORT ORDER, AND FIND OUT WHICH NUMBER IN THAT ORDER THIS QUESTION IS
+//TO AVOID NATURAL SORT ORDER ISSUES,
+//FIRST GET ALL QUESTIONS IN NATURAL SORT ORDER
+//, AND FIND OUT WHICH NUMBER IN THAT ORDER THIS QUESTION IS
 $qquery = "SELECT * "
-        ."FROM {$dbprefix}questions, {$dbprefix}groups "
+        ."FROM {$dbprefix}questions, "
+             ."{$dbprefix}groups "
         ."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid "
         ."AND {$dbprefix}questions.sid=$surveyid "
-        ."AND ".db_table_name('questions').".language='".GetBaseLanguageFromSurveyID($surveyid)."' " 
-        ."AND ".db_table_name('groups').".language='".GetBaseLanguageFromSurveyID($surveyid)."' " ;
+          ."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+          ."AND {$dbprefix}groups.language='".GetBaseLanguageFromSurveyID($surveyid)."' " ;
 
 $qresult = db_execute_assoc($qquery) or die ("$qquery<br />".$connect->ErrorMsg());
 $qrows = $qresult->GetRows();
-usort($qrows, 'CompareGroupThenTitle'); // Perform a case insensitive natural sort on group name then question title of a multidimensional array
+// Perform a case insensitive natural sort on group name then question title (known as "code" in the form) of a multidimensional array
+usort($qrows, 'CompareGroupThenTitle');
 
 $position="before";
-foreach ($qrows as $qrow) //Go through each question until we reach the current one
+//Go through each question until we reach the current one
+foreach ($qrows as $qrow)
 {
 	if ($qrow["qid"] != $qid && $position=="before")
 	{
-		if ($qrow['type'] != "S" && $qrow['type'] != "D" && $qrow['type'] != "T" && $qrow['type'] != "Q")
-		{
+    if ($qrow['type'] != "T" && // $qrow['type'] != "S" &&
+        $qrow['type'] != "Q")   //&& $qrow['type'] != "D"
+    { //remember the questions of this type
 			$questionlist[]=$qrow["qid"];
 		}
 	}
@@ -234,17 +259,40 @@ foreach ($qrows as $qrow) //Go through each question until we reach the current 
 }
 
 $theserows=array();
+//Now, use the questions left appart in the step before, these of type S, T or Q 
+//(originally was D too)
 if (isset($questionlist) && is_array($questionlist))
 {
 	foreach ($questionlist as $ql)
 	{
-		$query = "SELECT {$dbprefix}questions.qid, {$dbprefix}questions.sid, {$dbprefix}questions.gid, {$dbprefix}questions.question, {$dbprefix}questions.type, {$dbprefix}questions.lid, {$dbprefix}questions.title FROM {$dbprefix}questions, {$dbprefix}groups "
-                ."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.qid=$ql AND ".db_table_name('questions').".language='".GetBaseLanguageFromSurveyID($surveyid)."' AND ".db_table_name('groups').".language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
+    $query = "SELECT {$dbprefix}questions.qid, "
+                   ."{$dbprefix}questions.sid, "
+                   ."{$dbprefix}questions.gid, "
+                   ."{$dbprefix}questions.question, "
+                   ."{$dbprefix}questions.type, "
+                   ."{$dbprefix}questions.lid, "
+                   ."{$dbprefix}questions.title "
+              ."FROM {$dbprefix}questions, "
+                   ."{$dbprefix}groups "
+             ."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid "
+               ."AND {$dbprefix}questions.qid=$ql "
+               ."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+               ."AND {$dbprefix}groups.language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
+
         $result=db_execute_assoc($query) or die("Couldn't get question $qid");
+
 		$thiscount=$result->RecordCount();
+
+    // And store ¿again? these questions in this array...
 		while ($myrows=$result->FetchRow())
-		{
-			$theserows[]=array("qid"=>$myrows['qid'], "sid"=>$myrows['sid'], "gid"=>$myrows['gid'], "question"=>$myrows['question'], "type"=>$myrows['type'], "lid"=>$myrows['lid'], "title"=>$myrows['title']);
+    {                   //key => value
+      $theserows[]=array("qid"=>$myrows['qid'],
+                         "sid"=>$myrows['sid'],
+                         "gid"=>$myrows['gid'],
+                         "question"=>$myrows['question'],
+                         "type"=>$myrows['type'],
+                         "lid"=>$myrows['lid'],
+                         "title"=>$myrows['title']);
 		}
 	}
 }
@@ -253,12 +301,32 @@ if (isset($postquestionlist) && is_array($postquestionlist))
 {
 	foreach ($postquestionlist as $pq)
 	{
-		$query = "SELECT {$dbprefix}questions.qid, {$dbprefix}questions.sid, {$dbprefix}questions.gid, {$dbprefix}questions.question, {$dbprefix}questions.type, {$dbprefix}questions.lid, {$dbprefix}questions.title FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.qid=$pq AND ".db_table_name('questions').".language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
+    $query = "SELECT {$dbprefix}questions.qid, "
+                   ."{$dbprefix}questions.sid, "
+                   ."{$dbprefix}questions.gid, "
+                   ."{$dbprefix}questions.question, "
+                   ."{$dbprefix}questions.type, "
+                   ."{$dbprefix}questions.lid, "
+                   ."{$dbprefix}questions.title "
+              ."FROM {$dbprefix}questions, "
+                   ."{$dbprefix}groups "
+             ."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND "
+                   ."{$dbprefix}questions.qid=$pq AND "
+                   ."{$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
+
 		$result = db_execute_assoc($query) or die("Couldn't get postquestions $qid<br />$query<br />".$connect->ErrorMsg());
+
 		$postcount=$result->RecordCount();
+
 		while($myrows=$result->FetchRow())
 		{
-			$postrows[]=array("qid"=>$myrows['qid'], "sid"=>$myrows['sid'], "gid"=>$myrows['gid'], "question"=>$myrows['question'], "type"=>$myrows['type'], "lid"=>$myrows['lid'], "title"=>$myrows['title']);
+      $postrows[]=array("qid"=>$myrows['qid'],
+                        "sid"=>$myrows['sid'],
+                        "gid"=>$myrows['gid'],
+                        "question"=>$myrows['question'],
+                        "type"=>$myrows['type'],
+                        "lid"=>$myrows['lid'],
+                        "title"=>$myrows['title']);
 		} // while
 	}
 	$postquestionscount=count($postrows);
@@ -278,49 +346,74 @@ if (isset($postquestionscount) && $postquestionscount > 0) //Build the select bo
 if ($questionscount > 0)
 {
 	$X="X";
+  // Will detect if the questions are type D to use latter
+
+  $dquestions=array();
+
 	foreach($theserows as $rows)
 	{
-		if (strlen($rows['question']) > 30) {$shortquestion=$rows['title'].": ".substr(strip_tags($rows['question']), 0, 30).".. ";}
-		else {$shortquestion=$rows['title'].": ".strip_tags($rows['question']);}
-		if ($rows['type'] == "A" || $rows['type'] == "B" || $rows['type'] == "C" || $rows['type'] == "E" || $rows['type'] == "F" || $rows['type'] == "H")
-		{
-			$aquery="SELECT * FROM {$dbprefix}answers WHERE qid={$rows['qid']} AND {$dbprefix}answers.language='".GetBaseLanguageFromSurveyID($surveyid)."' ORDER BY sortorder, answer";
+    if (strlen($rows['question']) > 30)
+    {$shortquestion=$rows['title'].": ".substr(strip_tags($rows['question']), 0, 30).".. ";}
+    else
+    {$shortquestion=$rows['title'].": ".strip_tags($rows['question']);}
+
+    if ($rows['type'] == "A" ||
+        $rows['type'] == "B" ||
+        $rows['type'] == "C" ||
+        $rows['type'] == "E" ||
+        $rows['type'] == "F" ||
+        $rows['type'] == "H")
+    {
+      $aquery="SELECT * "
+               ."FROM {$dbprefix}answers "
+              ."WHERE qid={$rows['qid']} "
+                ."AND {$dbprefix}answers.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+           ."ORDER BY sortorder, "
+                    ."answer";
+
 			$aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
+
 			while ($arows = $aresult->FetchRow())
 			{
-				if (strlen($arows['answer']) > 10) {$shortanswer=substr($arows['answer'], 0, 10).".. ";}
-				else {$shortanswer = $arows['answer'];}
+        if (strlen($arows['answer']) > 30)
+           {$shortanswer=substr($arows['answer'], 0, 30).".. ";}
+        else
+           {$shortanswer = $arows['answer'];}
+
 				$shortanswer .= " [{$arows['code']}]";
 				$cquestions[]=array("$shortquestion [$shortanswer]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']);
+
 				switch ($rows['type'])
 				{
-					case "A":
+          case "A": //Array 5 buttons
 					for ($i=1; $i<=5; $i++)
 					{
 						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], $i, $i);
 					}
 					break;
-					case "B":
+          case "B": //Array 10 buttons
 					for ($i=1; $i<=10; $i++)
 					{
 						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], $i, $i);
 					}
 					break;
-					case "C":
+          case "C": //Array Y/N/NA
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "Y", $clang->gT("Yes"));
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "U", $clang->gT("Uncertain"));
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "N", $clang->gT("No"));
 					break;
-					case "E":
+          case "E": //Array >/=/<
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "I", $clang->gT("Increase"));
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "S", $clang->gT("Same"));
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "D", $clang->gT("Decrease"));
 					break;
-					case "F":
-					case "H":
-					$fquery = "SELECT * FROM {$dbprefix}labels "
-					. "WHERE lid={$rows['lid']} AND language='".GetBaseLanguageFromSurveyID($surveyid)."' " 
-					. "ORDER BY sortorder, code ";
+          case "F": //Array Flexible Row
+          case "H": //Array Flexible Column
+              $fquery = "SELECT * "
+                       ."FROM {$dbprefix}labels "
+                       ."WHERE lid={$rows['lid']} "
+                         ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+                       ."ORDER BY sortorder, code ";
 					$fresult = db_execute_assoc($fquery);
 					while ($frow=$fresult->FetchRow())
 					{
@@ -328,13 +421,15 @@ if ($questionscount > 0)
 					}
 					break;
 				}
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], " ", $clang->gT("No answer"));
-			}
-		}
-		elseif ($rows['type'] == "R")
+        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "", $clang->gT("No answer"));
+      } //while
+    } //if A,B,C,E,F,H
+    elseif ($rows['type'] == "R") //Answer Ranking
 		{
-			$aquery="SELECT * FROM {$dbprefix}answers "
-			."WHERE qid={$rows['qid']} AND ".db_table_name('answers').".language='".GetBaseLanguageFromSurveyID($surveyid)."' " 
+      $aquery="SELECT * "
+             ."FROM {$dbprefix}answers "
+             ."WHERE qid={$rows['qid']} "
+             ."AND ".db_table_name('answers').".language='".GetBaseLanguageFromSurveyID($surveyid)."' "
 			."ORDER BY sortorder, answer";
 			$aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to Ranking question<br />$aquery<br />".$connect->ErrorMsg());
 			$acount=$aresult->RecordCount();
@@ -353,31 +448,31 @@ if ($questionscount > 0)
 				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, " ", $clang->gT("No answer"));
 			}
 			unset($quicky);
-		}
+    } // for type R
 		else
 		{
 			$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
 			switch ($rows['type'])
 			{
-				case "Y":
+        case "Y": // Y/N/NA
 				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "Y", $clang->gT("Yes"));
 				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "N", $clang->gT("No"));
 				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
 				break;
-				case "G":
+        case "G": //Gender
 				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "F", $clang->gT("Female"));
 				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "M", $clang->gT("Male"));
 				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
 				break;
-				case "5":
+        case "5": // 5 choice
 				for ($i=1; $i<=5; $i++)
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $i, $i);
 				}
 				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
 				break;
-				case "W":
-				case "Z":
+        case "W": // List
+        case "Z": // List Flexible Radio Button
 				$fquery = "SELECT * FROM {$dbprefix}labels\n"
 				. "WHERE lid={$rows['lid']} AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
 				. "ORDER BY sortorder, code";
@@ -389,25 +484,57 @@ if ($questionscount > 0)
 				}
 				break;
 				default:
-				$aquery="SELECT * FROM {$dbprefix}answers\n"
-				."WHERE qid={$rows['qid']} AND language='".GetBaseLanguageFromSurveyID($surveyid)."' " 
-				."ORDER BY sortorder, answer";
-				$aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to Ranking question<br />$aquery<br />".$connect->ErrorMsg());
+            $aquery="SELECT * "
+                   ."FROM {$dbprefix}answers "
+                   ."WHERE qid={$rows['qid']} "
+                     ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+                   ."ORDER BY sortorder, "
+                            ."answer";
+            // Ranking question? Replacing "Ranking" by "this"
+            $aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to this question<br />$aquery<br />".$connect->ErrorMsg());
+
 				while ($arows=$aresult->FetchRow())
 				{
 					$theanswer = addcslashes($arows['answer'], "'");
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $theanswer);
 				}
-				if ($rows['type'] != "M" && $rows['type'] != "P" && $rows['type'] != "J" && $rows['type'] != "I")
+            if ($rows['type'] == "D")
+            {
+               $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
 
+               // Now, save the questions type D only, then
+               // it don´t need pass by all the array elements...
+               $dquestions[]=$rows;
+
+               // offer previous date questions to compare
+               foreach ($dquestions as $dq)
 				{
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
+                   if ($rows['qid'] != $dq['qid'] &&
+                       $dq['type'] == "D")
+                   {   // Can´t compare with the same question, and only if are D
+                       // The question tittle is enclossed by @ to be identified latter
+                       // and be processed accordingly
+                       $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "@".$dq['title']."@", $dq['title'].": ".$dq['question']);
 				}
-				break;
 			}
 		}
+            elseif ($rows['type'] != "M" &&
+                    $rows['type'] != "P" &&
+                    $rows['type'] != "J" &&
+                    $rows['type'] != "I" )
+            {
+              $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
 	}
-}
+        break;
+        // types X,D,!,0,Q,N,S,T,U,^ just have an option as "No Answer" originally
+        // but now if type is D could have a list of questions D after it.
+      }//switch row type
+    } //else
+  } //foreach theserows
+} //if questionscount > 0
+
+// Now I´ll add a hack to add the questions before as option
+// if they are date type
 
 //JAVASCRIPT TO SHOW MATCHING ANSWERS TO SELECTED QUESTION
 $conditionsoutput .= "<script type='text/javascript'>\n"
@@ -501,13 +628,31 @@ $conditionsoutput .= "\t\t\t<strong>$onlyshow</strong>\n"
 ."\t</tr>\n";
 
 //3: Get other conditions currently set for this question
-$query = "SELECT {$dbprefix}conditions.cid, {$dbprefix}conditions.cqid, {$dbprefix}conditions.cfieldname, {$dbprefix}conditions.value, {$dbprefix}questions.type\n"
-."FROM {$dbprefix}conditions, {$dbprefix}questions\n"
-."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid AND ".db_table_name('questions').".language='".GetBaseLanguageFromSurveyID($surveyid)."' " 
-."AND {$dbprefix}conditions.qid=$qid\n"
-."ORDER BY {$dbprefix}conditions.cfieldname"; 
+$query = "SELECT {$dbprefix}conditions.cid, "
+               ."{$dbprefix}conditions.cqid, "
+               ."{$dbprefix}conditions.cfieldname, "
+               ."{$dbprefix}conditions.method, "
+               ."{$dbprefix}conditions.value, "
+               ."{$dbprefix}questions.type "
+          ."FROM {$dbprefix}conditions, "
+               ."{$dbprefix}questions "
+         ."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid "
+           ."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+           ."AND {$dbprefix}conditions.qid=$qid\n"
+      ."ORDER BY {$dbprefix}conditions.cfieldname";
 $result = db_execute_assoc($query) or die ("Couldn't get other conditions for question $qid<br />$query<br />".$connect->ErrorMsg());
 $conditionscount=$result->RecordCount();
+
+// this array will be used soon,
+// to explain wich conditions is used to evaluate the question
+$method = array( "<"  => $clang->gT("Less"),
+                 "<=" => $clang->gT("Less or Equal"),
+                 "==" => $clang->gT("Equal"),
+                 "!=" => $clang->gT("Not Equal"),
+                 ">=" => $clang->gT("Greater or Equal"),
+                 ">"  => $clang->gT("Greater"),
+                 "RX" => $clang->gT("Regular Expresion")
+                );
 
 if ($conditionscount > 0)
 {
@@ -539,7 +684,10 @@ if ($conditionscount > 0)
 		}
 		$conditionsoutput .= "\t<tr bgcolor='#E1FFE1' style='$markcidstyle'>\n"
 		."\t<td><form style='margin-bottom:0;' name='del{$rows['cid']}' id='del{$rows['cid']}' method='post' action='$scriptname?action=conditions'>\n"
-		."\t\t<table width='100%' style='height: 13px;' cellspacing='0' cellpadding='0'><tr><td valign='middle' align='right' width='50%'><font size='1' face='verdana'>\n";
+    ."\t\t<table width='100%' style='height: 13px;' cellspacing='0' cellpadding='0'>\n"
+    ."\t\t\t<tr>\n"
+    ."\t\t\t\t<td valign='middle' align='right' width='50%'>\n"
+    ."\t\t\t\t\t<font size='1' face='verdana'>\n";
 		//BUILD FIELDNAME?
 		foreach ($cquestions as $cqn)
 		{
@@ -554,12 +702,21 @@ if ($conditionscount > 0)
 				//$conditionsoutput .= "\t\t\t<font color='red'>ERROR: Delete this condition. It is out of order.</font>\n";
 			}
 		}
-		$conditionsoutput .= "\t\t</font></td>\n"
-		."\t\t<td align='center' valign='middle' width='15%'><font size='1'>"
-		.$clang->gT("Equals")."</font></td>"
-		."\t\t\t\t\n"
+
+    $conditionsoutput .= "\t\t\t\t\t</font></td>\n"
+    ."\t\t\t\t\t<td align='center' valign='middle' width='15%'>\n"
+    ."\t\t\t\t\t\t<font size='1'>\n" //    .$clang->gT("Equals")."</font></td>"
+    .$method[$rows['method']]
+    ."\t\t\t\t\t\t</font>\n"
+    ."\t\t\t\t\t</td>\n"
+    ."\n"
 		."\t\t\t\t\t<td align='left' valign='middle' width='30%'>\n"
 		."\t\t\t\t\t\t<font size='1' face='verdana'>\n";
+    // Here will be searched the conditional answer for this question
+    // this conditional part is the labeled one
+    // But there is another kind of condition
+    // the specified in ValOrRegEx and is in $rows['value']
+    $bHasAnswer = false;
 		foreach ($canswers as $can)
 		{
 			//$conditionsoutput .= $rows['cfieldname'] . "- $can[0]<br />";
@@ -567,7 +724,12 @@ if ($conditionscount > 0)
 			if ($can[0] == $rows['cfieldname'] && $can[1] == $rows['value'])
 			{
 				$conditionsoutput .= "\t\t\t\t\t\t$can[2] ($can[1])\n";
-			}
+        $bHasAnswer = true;
+            }
+		}
+    if (!$bHasAnswer)
+    {
+        $conditionsoutput .= "\t\t\t\t\t\t".$rows['value']."\n";
 		}
 		$conditionsoutput .= "\t\t\t\t\t</font></td>\n"
 		."\t\t\t\t\t<td align='right' valign='middle' >\n"
@@ -681,16 +843,35 @@ if (isset($cquestions))
 $conditionsoutput .= "\t\t\t</select>\n"
 ."\t\t</td>\n"
 ."\t\t<td align='center'>\n";
+// Originally was planned to do that:
 //$conditionsoutput .= "\t\t\t<select name='method' id='method' style='font-family:verdana; font-size:10'>\n";
 //$conditionsoutput .= "\t\t\t\t<option value='='>Equals</option>\n";
 //$conditionsoutput .= "\t\t\t\t<option value='!'>Does not equal</option>\n";
 //$conditionsoutput .= "\t\t\t</select>\n";
-$conditionsoutput .= "\t\t\t".$clang->gT("Equals")."\n"
+// ----------------------------------------
+// Perhaps was leaved for this time with
+//$conditionsoutput .= "\t\t\t".$clang->gT("Equals")."\n"
+// Here I go
+$conditionsoutput .= "\t\t\t".$clang->gT("NOTE: If select a label it will be used Equal or Not Equal for any other method")."\n";
+$conditionsoutput .= "\t\t\t<select name='method' id='method' style='font-family:verdana; font-size:10'>\n";
+// This is not really necessary. The note beffore must be self explanatory.
+//$conditionsoutput .= "<option selected='selected'>".$clang->gT("Select Condition")."</option>\n";
+$conditionsoutput .= "<option value='<'>".$clang->gT("Less")."</option>\n";
+$conditionsoutput .= "<option value='<='>".$clang->gT("Less or Equal")."</option>\n";
+$conditionsoutput .= "<option selected='selected' value='=='>".$clang->gT("Equal")."</option>\n";
+$conditionsoutput .= "<option value='!='>".$clang->gT("Not Equal")."</option>\n";
+$conditionsoutput .= "<option value='>='>".$clang->gT("Greater or Equal")."</option>\n";
+$conditionsoutput .= "<option value='>'>".$clang->gT("Greater")."</option>\n";
+$conditionsoutput .= "<option value='RX'>".$clang->gT("Regular Expresion")."</option>\n";
+$conditionsoutput .= "\t\t\t</select>\n"
 ."\t\t</td>\n"
 ."\t\t<td valign='top' align='center'>\n"
 ."\t\t\t<select name='canswers[]' multiple id='canswers' style='font-family:verdana; font-size:10; width:220' size='5'>\n";
 
-$conditionsoutput .= "\t\t\t</select>\n"
+$conditionsoutput .= "\t\t\t</select><br />\n"
+."\t\t".$clang->gT("Constant Value or Regular Expresion")."<br />\n"
+."\t\t<textarea name='ValOrRegEx' cols='50' rows='5'></textarea>\n"
+."\t\t</td>"
 ."\t</tr>\n"
 ."\t<tr>\n"
 ."\t\t<td colspan='3' align='center'>\n"
