@@ -45,7 +45,7 @@ if ($action == "listsurveys")
 	if($result->RecordCount() > 0) {
 		$listsurveys= "<br /><table  align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
 		. "cellpadding='1' cellspacing='0' width='800'>
-				  <tr bgcolor='#BBBBBB'>
+				  <tr bgcolor='#F8F8FF'>
 				    <td height=\"22\" width='22'>&nbsp</td>
 				    <td height=\"22\"><strong>".$clang->gT("Survey")."</strong></td>
 				    <td><strong>".$clang->gT("Date Created")."</strong></td>
@@ -147,7 +147,7 @@ if ($action == "listsurveys")
 					    $listsurveys .= "</tr>" ;
 		}
 
-		$listsurveys.="<tr bgcolor='#BBBBBB'>
+		$listsurveys.="<tr bgcolor='#F8F8FF'>
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
@@ -198,7 +198,7 @@ if ($action == "checksettings" || $action == "changelang")
 	. "<table class='table2columns' align='center' bgcolor='#DDDDDD' style='border: 1px solid #555555' "
 	. "cellpadding='1' cellspacing='0' width='600'>\n"
 	. "\t<tr>\n"
-	. "\t\t<td colspan='2' align='center' bgcolor='#BBBBBB'>\n"
+	. "\t\t<td colspan='2' align='center' bgcolor='#F8F8FF'>\n"
 	. "\t\t\t<strong>".$clang->gT("LimeSurvey System Summary")."</strong>\n"
 	. "\t\t</td>\n"
 	. "\t</tr>\n";
@@ -1271,7 +1271,7 @@ if (returnglobal('viewanswer'))
                 
         $vasummary .= "</h2>\t<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'>\n"
                 ."<thead align='center'>"
-        		."<tr bgcolor='#BBBBBB'>\n"
+        		."<tr bgcolor='#F8F8FF'>\n"
         		."\t<td width='25%' align='right'><strong><font size='1' face='verdana' >\n"
         		.$clang->gT("Code")
         		."\t</font></strong></td>\n"

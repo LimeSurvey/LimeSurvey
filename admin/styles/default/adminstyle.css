@@ -26,10 +26,10 @@ th, a, p, div {
 .maintitle {
    font-size: 14pt;
    font-weight: bold;
-   color: #FFF;
+   color: #228A57;
    text-align: center;
    margin: auto;
-   background: #82AC01;
+   background: #D6D6D6;
    border-top: 2px solid #7FFF00;
    border-bottom: 1px groove #00FA9A;
 }
@@ -49,7 +49,7 @@ table.menubar {
 	background: #EEF6FF;
 }
 .menubar td:first-child {
-	color: #FFF;
+	color: #265522;
 	font-size: 8pt;
 }
 
@@ -136,7 +136,7 @@ textarea {
 	height: 20px;
 	font-size: 10px;
 	color: #333;
-	background: #00B5EE;
+	background: #F8F8FF;
 	width: 180px;
 }
 
@@ -145,7 +145,7 @@ textarea {
 	height: 20px;
 	font-size: 10px;
 	color: #333;
-	background: #00B5EE;
+	background: #F8F8FF;
 	width: 180px;
 }
 .listboxgroups {
@@ -153,7 +153,7 @@ textarea {
 	height: 20px;
 	font-size: 10px;
 	color: #333;
-	background: #00B5EE;
+	background: #F8F8FF;
 	width: 180px;
 }
 .listboxquestions {
@@ -161,7 +161,7 @@ textarea {
 	height: 20px;
 	font-size: 10px;
 	color: #333;
-	background: #00B5EE;
+	background: #F8F8FF;
 	width: 180px;
 }
 .boxcaption {
@@ -209,6 +209,7 @@ span.settingcaption {
 	font-weight: bold;
 	clear: left;
 	margin-bottom: 10px;
+   background-color: #F8F8FF;
 }
 .settingentry {
 	float: left;
@@ -218,12 +219,14 @@ span.settingcaption {
 	text-align: left;
 	clear: right;
 	margin-bottom: 10px;
+   background-color: #F8F8FF;
 }
 .settingrow {
 	width: 620px;
 	float: center;
 	clear: left;
 	margin-bottom: 20px;
+   background-color: #F8F8FF;
 }
 
 #dhtmlgoodies_tooltip {
@@ -315,5 +318,10 @@ span.settingcaption {
 	-moz-border-radius: 6px;
 	background: #FF6;
 	font: 11px arial, verdana, sans-serif;
+}
+
+
+.tab-page{
+   background-color: #F8F8FF;
 }
 
