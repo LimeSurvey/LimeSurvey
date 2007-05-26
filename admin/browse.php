@@ -532,19 +532,18 @@ elseif ($subaction == "all")
 	. $clang->gT("Data View Control").":</strong></td></tr>\n";
 	if (!isset($_POST['sql']))
 	{
-		$filterinclink = (incompleteAnsFilterstate()) ? "hide" : "show";
 		$browseoutput .= "\t<tr><td align='left' width='200'>\n"
-			."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=0&amp;limit=$limit&amp;filterinc=$filterinclink' " .
+			."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=0&amp;limit=$limit' " .
 				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show start..", "js")."');return false\">" .
 						"<img name='DataBegin' align='left' src='$imagefiles/databegin.png' title='' /></a>\n"
-		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit&amp;filterinc=$filterinclink' " .
+		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit' " .
 				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show previous...", "js")."');return false\">" .
 				"<img name='DataBack' align='left'  src='$imagefiles/databack.png' title='' /></a>\n"
 		."\t\t\t<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
-		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit&amp;filterinc=$filterinclink' " .
+		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit' " .
 				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show next...", "js")."');return false\">".
 				"<img name='DataForward' align='left' src='$imagefiles/dataforward.png' title='' /></a>\n"
-		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit&amp;filterinc=$filterinclink' " .
+		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit' " .
 				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show last...", "js")."');return false\">" .
 				"<img name='DataEnd' align='left' src='$imagefiles/dataend.png' title='' /></a>\n"
 		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
