@@ -100,9 +100,28 @@ if($actsurrows['browse_response'])
 		.$clang->gT("Data Entry")."</strong></font></td></tr>\n"
 		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 
+		$lastanswfortoken=''; // check if a previous answer has been submitted or saved
+		$rlanguage='';
+		if (isset($_POST['token']) && $_POST['token'])
+		{ // a token has been given, check if a previous answer wasn't recorded
+			$aquery = "SELECT id,startlanguage FROM $surveytable WHERE token='".$_POST['token']."'";
+			$aresult = db_execute_assoc($aquery);
+			while ($arow = $aresult->FetchRow())
+			{
+				$lastanswfortoken=$arow['id'];
+				$rlanguage=$arow['startlanguage'];
+			}
+		}
+
 		if ($thissurvey['private'] == 'N' && (!isset($_POST['token']) || !$_POST['token']))
 		{// First Check if the survey is private and if a token has been provided
 			$errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("This survey is not anonymous, you must supply a valid token")."</strong>\n";
+		}
+		elseif ($thissurvey['private'] == 'N' && $lastanswfortoken != '')
+		{
+			$errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("There is already a recorded answer for this token, follow the following link to update it").":</strong>\n"
+			. "<a href='$scriptname?action=dataentry&amp;subaction=edit&amp;id=$lastanswfortoken&amp;sid=$surveyid&amp;language=$rlanguage&amp;surveytable=$surveytable'"
+			. "onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Edit this entry", "js")."')\">[id:$lastanswfortoken]</a>";
 		}
 		else
 		{
