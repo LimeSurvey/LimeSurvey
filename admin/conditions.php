@@ -683,11 +683,11 @@ if ($conditionscount > 0)
 			.$clang->gT("OR")."</strong></font>";
 		}
 		$conditionsoutput .= "\t<tr bgcolor='#E1FFE1' style='$markcidstyle'>\n"
-		."\t<td><form style='margin-bottom:0;' name='del{$rows['cid']}' id='del{$rows['cid']}' method='post' action='$scriptname?action=conditions'>\n"
-    ."\t\t<table width='100%' style='height: 13px;' cellspacing='0' cellpadding='0'>\n"
-    ."\t\t\t<tr>\n"
-    ."\t\t\t\t<td valign='middle' align='right' width='50%'>\n"
-    ."\t\t\t\t\t<font size='1' face='verdana'>\n";
+		                  ."\t<td><form style='margin-bottom:0;' name='del{$rows['cid']}' id='del{$rows['cid']}' method='post' action='$scriptname?action=conditions'>\n"
+                          ."\t\t<table width='100%' style='height: 13px;' cellspacing='0' cellpadding='0'>\n"
+                          ."\t\t\t<tr>\n"
+                          ."\t\t\t\t<td valign='middle' align='right' width='50%'>\n"
+                          ."\t\t\t\t\t<font size='1' face='verdana'>\n";
 		//BUILD FIELDNAME?
 		foreach ($cquestions as $cqn)
 		{
@@ -703,50 +703,58 @@ if ($conditionscount > 0)
 			}
 		}
 
-    $conditionsoutput .= "\t\t\t\t\t</font></td>\n"
-    ."\t\t\t\t\t<td align='center' valign='middle' width='15%'>\n"
-    ."\t\t\t\t\t\t<font size='1'>\n" //    .$clang->gT("Equals")."</font></td>"
-    .$method[$rows['method']]
-    ."\t\t\t\t\t\t</font>\n"
-    ."\t\t\t\t\t</td>\n"
-    ."\n"
-		."\t\t\t\t\t<td align='left' valign='middle' width='30%'>\n"
-		."\t\t\t\t\t\t<font size='1' face='verdana'>\n";
-    // Here will be searched the conditional answer for this question
-    // this conditional part is the labeled one
-    // But there is another kind of condition
-    // the specified in ValOrRegEx and is in $rows['value']
-    $bHasAnswer = false;
-		foreach ($canswers as $can)
-		{
-			//$conditionsoutput .= $rows['cfieldname'] . "- $can[0]<br />";
-			//$conditionsoutput .= $can[1];
-			if ($can[0] == $rows['cfieldname'] && $can[1] == $rows['value'])
-			{
-				$conditionsoutput .= "\t\t\t\t\t\t$can[2] ($can[1])\n";
-        $bHasAnswer = true;
+        $conditionsoutput .= "\t\t\t\t\t</font></td>\n"
+                          ."\t\t\t\t\t<td align='center' valign='middle' width='15%'>\n"
+                          ."\t\t\t\t\t\t<font size='1'>\n" //    .$clang->gT("Equals")."</font></td>"
+                          .$method[$rows['method']]
+                          ."\t\t\t\t\t\t</font>\n"
+                          ."\t\t\t\t\t</td>\n"
+                          ."\n"
+		                  ."\t\t\t\t\t<td align='left' valign='middle' width='30%'>\n"
+		                  ."\t\t\t\t\t\t<font size='1' face='verdana'>\n";
+        // Here will be searched the conditional answer for this question
+        // this conditional part is the labeled one
+        // But there is another kind of condition
+        // the specified in ValOrRegEx and is in $rows['value']
+        $bHasAnswer = false;
+	    foreach ($canswers as $can)
+	    {
+	        //$conditionsoutput .= $rows['cfieldname'] . "- $can[0]<br />";
+		    //$conditionsoutput .= $can[1];
+            if ($can[0] == $rows['cfieldname'] && $can[1] == $rows['value'])
+		    {
+                $conditionsoutput .= "\t\t\t\t\t\t$can[2] ($can[1])\n";
+                $bHasAnswer = true;
             }
-		}
-    if (!$bHasAnswer)
-    {
-        $conditionsoutput .= "\t\t\t\t\t\t".$rows['value']."\n";
-		}
-		$conditionsoutput .= "\t\t\t\t\t</font></td>\n"
-		."\t\t\t\t\t<td align='right' valign='middle' >\n"
-		."\t\t\t\t\t\t<input type='submit' value='".$clang->gT("Delete")."' style='font-family: verdana; font-size: 8; height:15' />\n"
-		."\t\t\t\t\t<input type='hidden' name='subaction' value='delete' />\n"
-		."\t\t\t\t\t<input type='hidden' name='cid' value='{$rows['cid']}' />\n"
-		."\t\t\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
-		."\t\t\t\t\t<input type='hidden' name='qid' value='$qid' />\n"
-		."\t\t\t\t\t</td>\n"
-		."\t</table></form>\n"
-		."\t</tr>\n";
+	    }
+        if (!$bHasAnswer)
+        {
+            if ($rows['value'] == ' ' ||
+                $rows['value'] == '')
+            {
+                $conditionsoutput .= "\t\t\t\t\t\t".$clang->gT("No Answer")."\n";
+            } 
+            else
+            {
+                $conditionsoutput .= "\t\t\t\t\t\t".$rows['value']."\n";
+            }
+	    }
+	    $conditionsoutput .= "\t\t\t\t\t</font></td>\n"
+	                      ."\t\t\t\t\t<td align='right' valign='middle' >\n"
+	                      ."\t\t\t\t\t\t<input type='submit' value='".$clang->gT("Delete")."' style='font-family: verdana; font-size: 8; height:15' />\n"
+		                  ."\t\t\t\t\t<input type='hidden' name='subaction' value='delete' />\n"
+		                  ."\t\t\t\t\t<input type='hidden' name='cid' value='{$rows['cid']}' />\n"
+		                  ."\t\t\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
+		                  ."\t\t\t\t\t<input type='hidden' name='qid' value='$qid' />\n"
+		                  ."\t\t\t\t\t</td>\n"
+		                  ."\t</table></form>\n"
+		                  ."\t</tr>\n";
 		$currentfield=$rows['cfieldname'];
 	}
 	$conditionsoutput .= "\t<tr>\n"
-	."\t\t<td height='3'>\n"
-	."\t\t</td>\n"
-	."\t</tr>\n";
+	                  ."\t\t<td height='3'>\n"
+	                  ."\t\t</td>\n"
+	                  ."\t</tr>\n";
 }
 else
 {
