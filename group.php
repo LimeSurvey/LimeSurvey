@@ -578,7 +578,11 @@ END;
             $idname="java$cd[2]$cd[3]";
         }
         elseif ($cd[4] == "D" ||
-                $cd[4] == "S")
+                $cd[4] == "S" ||
+                $cd[4] == "N" ||
+                $cd[4] == "S" ||
+                $cd[4] == "T" ||
+                $cd[4] == "U" )
         {
             $idname="answer$cd[2]";
         }
