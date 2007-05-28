@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-05-21 19:33+0100\n"
+"PO-Revision-Date: 2007-05-28 17:01+0100\n"
 "Last-Translator: seb <seb>\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -1270,6 +1270,10 @@ msgstr "Vous n'avez pas sélectionné de questionnaire pour la saisie des donné
 # D:\www\limesurvey/admin/dataentry.php:257
 msgid "This survey is not anonymous, you must supply a valid token"
 msgstr "Ce questionnaire n'est pas anonyme, vous devez fournir une invitation valable."
+
+# D:\www\limesurvey/admin/dataentry.php:122
+msgid "There is already a recorded answer for this token, follow the following link to update it"
+msgstr "Il y a déjà une réponse enregistrée associée à cette invitation. Suivez ce lien pour la mettre à jour"
 
 msgid "Try again"
 msgstr "Essayez à nouveau"
