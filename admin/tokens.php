@@ -333,7 +333,7 @@ if ($sumrows5['export'])
 {
 	$tokenoutput .= "\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=export', '_top')\" onmouseout=\"hideTooltip()\"" .
 	"onmouseover=\"showTooltip(event,'".$clang->gT("Export Tokens to CSV file", "js")."');return false\">".
-	"<img name='ExportButton' src='$imagefiles/exportcsv.png' align='left' alt='".$clang->gT("Export Tokens to CSV file")."' /></a>\n";
+	"<img name='ExportButton' src='$imagefiles/exportcsv.png' align='left' alt='' /></a>\n";
 }
 if ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey'])
 {
@@ -551,47 +551,47 @@ if ($subaction == "browse" || $subaction == "search")
 	$tokenoutput .= "\t<tr>\n"
 	."\t\t<th align='left' valign='top'>"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=tid&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-	."<img src='$imagefiles/downarrow.png' alt='"
+	."<img src='$imagefiles/downarrow.png' alt='' title='"
 	.$clang->gT("Sort by: ")."ID' border='0' align='left' hspace='0' /></a>"."ID</th>\n"
 	."\t\t<th align='left' valign='top'>"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=firstname&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-	."<img src='$imagefiles/downarrow.png' alt='"
+	."<img src='$imagefiles/downarrow.png' alt='' title='"
 	.$clang->gT("Sort by: ").$clang->gT("First Name")."' border='0' align='left' /></a>".$clang->gT("First Name")."</th>\n"
 	."\t\t<th align='left' valign='top'>"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=lastname&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-	."<img src='$imagefiles/downarrow.png' alt='"
+	."<img src='$imagefiles/downarrow.png' alt='' title='"
 	.$clang->gT("Sort by: ").$clang->gT("Last Name")."' border='0' align='left' /></a>".$clang->gT("Last Name")."</th>\n"
 	."\t\t<th align='left' valign='top'>"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=email&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-	."<img src='$imagefiles/downarrow.png' alt='"
+	."<img src='$imagefiles/downarrow.png' alt='' title='"
 	.$clang->gT("Sort by: ").$clang->gT("Email")."' border='0' align='left' /></a>".$clang->gT("Email")."</th>\n"
 	."\t\t<th align='left' valign='top'>"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=token&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-	."<img src='$imagefiles/downarrow.png' alt='"
+	."<img src='$imagefiles/downarrow.png' alt='' title='"
 	.$clang->gT("Sort by: ").$clang->gT("Token")."' border='0' align='left' /></a>".$clang->gT("Token")."</th>\n"
 
 	."\t\t<th align='left' valign='top'>"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=language&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-	."<img src='$imagefiles/downarrow.png' alt='"
+	."<img src='$imagefiles/downarrow.png' alt='' title='"
 	.$clang->gT("Sort by: ").$clang->gT("Language")."' border='0' align='left' /></a>".$clang->gT("Language")."</th>\n"
 
 	."\t\t<th align='left' valign='top'>"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=sent%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-	."<img src='$imagefiles/downarrow.png' alt='"
+	."<img src='$imagefiles/downarrow.png' alt='' title='"
 	.$clang->gT("Sort by: ").$clang->gT("Invite sent?")."' border='0' align='left' /></a>".$clang->gT("Invite sent?")."</th>\n"
 	."\t\t<th align='left' valign='top'>"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=completed%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-	."<img src='$imagefiles/downarrow.png' alt='"
+	."<img src='$imagefiles/downarrow.png' alt='' title='"
 	.$clang->gT("Sort by: ").$clang->gT("Completed?")."' border='0' align='left' /></a>".$clang->gT("Completed?")."</th>\n";
 	if ($bfieldcount == 10)
 	{
 		$tokenoutput .= "\t\t<th align='left' valign='top'>"
 		."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=attribute_1&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-		."<img src='$imagefiles/downarrow.png' alt='"
+		."<img src='$imagefiles/downarrow.png' alt='' title='"
 		.$clang->gT("Sort by: ").$clang->gT("Attribute 1")."' border='0' align='left' /></a>".$attr1_name."</th>\n"
 		."\t\t<th align='left' valign='top'>"
 		."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=attribute_2&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-		."<img src='$imagefiles/downarrow.png' alt='"
+		."<img src='$imagefiles/downarrow.png' alt='' title='"
 		.$clang->gT("Sort by: ").$clang->gT("Attribute 2")."' border='0' align='left' /></a>".$attr2_name."</th>\n";
 		//."\t\t<th align='left' valign='top'>"
 		//."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=mpid&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"

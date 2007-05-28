@@ -490,11 +490,7 @@ $conditionsoutput .= "\t\t\t\tdocument.getElementById('canswers').options[docume
 $conditionsoutput .= "<table width='100%' align='center' cellspacing='0' cellpadding='0' style='border-style: solid; border-width: 1; border-color: #555555'>\n"
 ."\t<tr bgcolor='#CCFFCC'>\n"
 ."\t\t<td  align='center' >\n";
-$showreplace="$questiontitle<img src='$imagefiles/speaker.png' alt=\""
-. htmlspecialchars($questiontext)
-. "\" onclick=\"alert('"
-. htmlspecialchars(addslashes(strip_tags($questiontext)))
-. "')\" />";
+$showreplace="$questiontitle". showSpeaker($questiontext);
 $onlyshow=str_replace("{QID}", $showreplace, $clang->gT("Only show question {QID} IF"));
 $conditionsoutput .= "\t\t\t<strong>$onlyshow</strong>\n"
 ."\t\t</td>\n"
@@ -716,6 +712,14 @@ $conditionsoutput .= "\t<tr bgcolor='#CDCDCD'><td colspan=3 height='10'></td></t
 ."\t</tr>\n";
 $conditionsoutput .= "\t<tr><td colspan='3'></td></tr>\n"
 ."</table><br />&nbsp;\n";
+
+function showSpeaker($hinttext)
+{
+  global $imagefiles, $clang;
+  $reshtml= "<img src='$imagefiles/speaker.png' align='bottom' alt='$hinttext' title='$hinttext' "
+           ." onclick=\"alert('".$clang->gT("Question","js").": $hinttext')\" />";
+  return $reshtml; 
+}
 
 
 ?>
