@@ -615,7 +615,7 @@ if (isset($qanda) && is_array($qanda))
 		echo "\n\t<!-- NEW QUESTION -->\n";
 		echo "\t\t\t\t<div id='question$qa[4]'";
 		if ($qa[3] != "Y") {echo ">\n";} else {echo " style='display: none'>\n";}
-		$question="<label for='$qa[7]'>" . $qa[0] . "</label>";
+		$question="<label for='answer$qa[7]'>" . $qa[0] . "</label>";
 		$answer=$qa[1];
 		$help=$qa[2];
 		$questioncode=$qa[5];

@@ -1417,11 +1417,11 @@ function surveymover()
 	$surveymover = "";
 	if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] != "A")
 	{
-		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\"movelast\" id=\"movelast\" />";
+		$surveymover = "<input type=\"hidden\" name=\"move\" value=\"movelast\" id=\"movelast\" />";
 	}
 	else
 	{
-		$surveymover = "<INPUT TYPE=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" />";
+		$surveymover = "<input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" />";
 	}
 	
 	

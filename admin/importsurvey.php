@@ -74,17 +74,17 @@ fclose($handle);
 
 // Now we try to determine the dataformat of the survey file.
  
-if ((substr($bigarray[1], 0, 22) == "# SURVEYOR SURVEY DUMP")&& (substr($bigarray[4], 0, 29) == "# http://www.limesurvey.org/"))
+if ((substr($bigarray[1], 0, 22) == "# SURVEYOR SURVEY DUMP")&& (substr($bigarray[4], 0, 29) == "# http://www.phpsurveyor.org/"))
 {
 	$importversion = 100;  // version 1.0 file
 }
 elseif 
-   ((substr($bigarray[1], 0, 22) == "# SURVEYOR SURVEY DUMP")&& (substr($bigarray[4], 0, 37) == "# http://limesurvey.sourceforge.net/"))
+   ((substr($bigarray[1], 0, 22) == "# SURVEYOR SURVEY DUMP")&& (substr($bigarray[4], 0, 37) == "# http://phpsurveyor.sourceforge.net/"))
 {
 	$importversion = 99;  // Version 0.99 file or older - carries a different URL
 }
 elseif 
-   (substr($bigarray[0], 0, 25) == "# LimeSurvey Survey Dump")
+   (substr($bigarray[0], 0, 24) == "# LimeSurvey Survey Dump" || substr($bigarray[0], 0, 25) == "# PHPSurveyor Survey Dump")
     {  // Wow.. this seems to be a >1.0 version file - these files carry the version information to read in line two
       $importversion=substr($bigarray[1], 12, 3);
     }
