@@ -1,0 +1,23 @@
+<head>
+<title>{SURVEYNAME} :: {GROUPNAME}</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type='text/css'>
+body { font-family: arial, verdana, sans-serif; font-size: 14px; line-height: 17px; background-color: #efe5ca; }
+table { border: 0; }
+table.question { border: 1; border-color: #aaaaaa; }
+td { font-family: arial, verdana, sans-serif; font-size: 14px; line-height: 17px; }
+td.tenpoint { font-size: 12px; line-height: 15px; }
+img { border: 0; }
+.b3 { background-color: #603604; }
+.b9 { background-color: #999999; }
+.ba { background-color: #aaaaaa; }
+.bd { background-color: #8fe0dd; }
+.be { background-color: #8fe0dd; }
+.bf { background-color: #ffffff; }
+.array1 { background-color: #eeeeee; }
+.array2 { background-color: #efe5ca; }
+.errormandatory { font-size: 13px; font-weight: bold; color:#ff0000; }
+</style>
+</head>
+<body>
+
