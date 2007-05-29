@@ -957,25 +957,25 @@ function sendsubmitnotification($sendnotification)
 
 	$subject = "$sitename Survey Submitted";
 
-	$message = $clang->gT("Survey Submitted")." - {$thissurvey['name']}\r\n"
-	. $clang->gT("A new response was entered for your survey")."\r\n\r\n";
+	$message = $clang->gT("Survey Submitted")." - {$thissurvey['name']}\n"
+	. $clang->gT("A new response was entered for your survey")."\n\n";
 	if ($thissurvey['allowsave'] == "Y" && isset($_SESSION['scid']))
 	{
-		$message .= $clang->gT("Click the following link to reload the survey:")."\r\n";
-		$message .= "  $publicurl/index.php?sid=$surveyid&loadall=reload&scid=".$_SESSION['scid']."&loadname=".urlencode($_SESSION['holdname'])."&loadpass=".urlencode($_SESSION['holdpass'])."\r\n\r\n";
+		$message .= $clang->gT("Click the following link to reload the survey:")."\n";
+		$message .= "  $publicurl/index.php?sid=$surveyid&loadall=reload&scid=".$_SESSION['scid']."&loadname=".urlencode($_SESSION['holdname'])."&loadpass=".urlencode($_SESSION['holdpass'])."\n\n";
 	}
 
-	$message .= $clang->gT("Click the following link to see the individual response:")."\r\n"
-	. "  $homeurl/admin.php?action=browse&sid=$surveyid&subaction=id&id=".$_SESSION['srid']."\r\n\r\n"
+	$message .= $clang->gT("Click the following link to see the individual response:")."\n"
+	. "  $homeurl/admin.php?action=browse&sid=$surveyid&subaction=id&id=".$_SESSION['srid']."\n\n"
 	// Add link to edit individual responses from notification email
-	. $clang->gT("Click the following link to edit the individual response:")."\r\n"
+	. $clang->gT("Click the following link to edit the individual response:")."\n"
 
-	. "  $homeurl/admin.php?action=dataentry&sid=$surveyid&subaction=edit&surveytable=survey_$surveyid&id=".$_SESSION['srid']."\r\n\r\n"
-	. $clang->gT("View statistics by clicking here:")."\r\n"
-	. "  $homeurl/admin.php?action=statistics&sid=$surveyid\r\n\r\n";
+	. "  $homeurl/admin.php?action=dataentry&sid=$surveyid&subaction=edit&surveytable=survey_$surveyid&id=".$_SESSION['srid']."\n\n"
+	. $clang->gT("View statistics by clicking here:")."\n"
+	. "  $homeurl/admin.php?action=statistics&sid=$surveyid\n\n";
 	if ($sendnotification > 1)
 	{ //Send results as well. Currently just bare-bones - will be extended in later release
-		$message .= "----------------------------\r\n";
+		$message .= "----------------------------\n";
 		foreach ($_SESSION['insertarray'] as $value)
 		{
 			$questiontitle=returnquestiontitlefromfieldcode($value);
@@ -986,16 +986,16 @@ function sendsubmitnotification($sendnotification)
 				$message .= "\r\n";
 				if (isset($_SESSION[$value]))
 				{
-					foreach (explode("\r\n",getextendedanswer($value,$_SESSION[$value])) as $line) $message .= "\t" . $line . "\r\n";
+					foreach (explode("\n",getextendedanswer($value,$_SESSION[$value])) as $line) $message .= "\t" . $line . "\n";
 				}
 			}
 			elseif (isset($_SESSION[$value]))
 			{
 				$message .= getextendedanswer($value, $_SESSION[$value]);
-				$message .= "\r\n";
+				$message .= "\n";
 			}
 		}
-		$message .= "----------------------------\r\n\r\n";
+		$message .= "----------------------------\n\n";
 	}
 	$message.= "LimeSurvey";
 	$from = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';

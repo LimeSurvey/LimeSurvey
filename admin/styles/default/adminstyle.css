@@ -43,19 +43,22 @@ table.menubar {
    border-collapse: collapse;
 }
 .menubar tr:first-child {
-	background: #D2E0F2;
+	background-color: #EEF6FF;
 }
 .menubar tr {
-	background: #EEF6FF;
+	background-color: #EEF6FF;
 }
-.menubar td:first-child {
+.menubar td:first-child {  
 	color: #265522;
 	font-size: 8pt;
 }
 
 
 table.table2columns {
+   background-color: #FFFFFF;
 	width: 100%;
+   text-align: center;
+   border: 1px solid #555555;
 }
 .table2columns td+td {
 	text-align: left;
@@ -80,7 +83,6 @@ ul {
 td {
    font-size: 10pt;
    color: #000;
-   background-color: #A6B3C3;
 }
 .btstyle {
 	font-size: 11px;
@@ -200,6 +202,13 @@ font.settingcaption {
 	text-align: right;
 	font-size: 13px;
 	font-weight: bold;
+}
+.settingcaption {
+	text-align: center;
+	font-size: 13px;
+	font-weight: bold;
+   color: Black;
+   background-color: #D1FFA4;
 }
 span.settingcaption {
 	float: left;
@@ -324,4 +333,6 @@ span.settingcaption {
 .tab-page{
    background-color: #F8F8FF;
 }
+
+
 

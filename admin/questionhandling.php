@@ -40,9 +40,9 @@ if ($action == "addquestion")
 		$newquestionoutput =  "\t<form action='$scriptname' name='addnewquestion1' method='post'>\n"
 		. "<table width='100%' border='0'>\n\n"
 		. "\t<tr>\n"
-		. "\t\t<td colspan='2' bgcolor='black' align='center'>"
-		. "\t\t<strong><font color='white'>".$clang->gT("Add Question")."\n"
-		. "\t\t</font></strong></td>\n"
+		. "\t\t<td colspan='2' class='settingcaption'>"
+		. "\t\t<strong>".$clang->gT("Add Question")."\n"
+		. "\t\t</strong></td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<td align='right'  width='35%'><strong>".$clang->gT("Code:")."</strong></td>\n"
@@ -133,8 +133,8 @@ if ($action == "addquestion")
 		. "\t<form enctype='multipart/form-data' name='importquestion' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
 		. "<table width='100%' border='0' >\n\t"
 		. "<tr><td colspan='2' align='center'><strong>".$clang->gT("OR")."</strong></td></tr>\n"
-		. "<tr><td colspan='2' bgcolor='black' align='center'>\n"
-		. "\t\t<strong><font color='white'>".$clang->gT("Import Question")."</font></strong></td></tr>\n\t<tr>"
+		. "<tr><td colspan='2' class='settingcaption'>\n"
+		. "\t\t<strong>".$clang->gT("Import Question")."</strong></td></tr>\n\t<tr>"
 		. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Select CSV File").":</strong></td>\n"
 		. "\t\t<td align='left'><input name=\"the_file\" type=\"file\" size=\"50\" /></td></tr>\n"
 		. "\t<tr><td colspan='2' align='center'><input type='submit' "
@@ -157,8 +157,8 @@ if ($action == "copyquestion")
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
 	array_unshift($questlangs,$baselang);
 	$qattributes=questionAttributes();
-	$editquestion ="<table width='100%' border='0'>\n\t<tr><td bgcolor='black' align='center'>"
-	. "\t\t<font class='settingcaption'><font color='white'>".$clang->gT("Copy Question")."</font></font></td></tr></table>\n"
+	$editquestion ="<table width='100%' border='0'>\n\t<tr><td class='settingcaption'>"
+	. "\t\t".$clang->gT("Copy Question")."</td></tr></table>\n"
 	. "<form name='frmeditquestion' action='$scriptname' method='post'>\n"
 	. '<div class="tab-pane" id="tab-pane-1">';
 	foreach ($questlangs as $language)
@@ -331,8 +331,8 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	
 	$eqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language='{$baselang}'";
 	$eqresult = db_execute_assoc($eqquery);
-	$editquestion ="<table width='100%' border='0'>\n\t<tr><td bgcolor='black' align='center'>"
-	. "\t\t<font class='settingcaption'><font color='white'>".$clang->gT("Edit Question")."</font></font></td></tr></table>\n"
+	$editquestion ="<table width='100%' border='0'>\n\t<tr><td class='settingcaption'>"
+	. "\t\t".$clang->gT("Edit Question")."</td></tr></table>\n"
 	. "<form name='frmeditquestion' action='$scriptname' method='post'>\n"
 	. '<div class="tab-pane" id="tab-pane-1">';
 	
@@ -574,8 +574,8 @@ if($action == "orderquestions")
     	$oqquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='".$baselang."' order by question_order" ;
     	$oqresult = db_execute_assoc($oqquery);
     	
-        $orderquestions = "<table width='100%' border='0'>\n\t<tr ><td colspan='2' bgcolor='black' align='center'>"
-    		. "\t\t<font class='settingcaption'><font color='white'>".$clang->gT("Change Question Order")."</font></font></td></tr>"
+        $orderquestions = "<table width='100%' border='0'>\n\t<tr ><td colspan='2' class='settingcaption'>"
+    		. "\t\t".$clang->gT("Change Question Order")."</td></tr>"
     //        . "<tr> <td >".("Question Name")."</td><td>".("Action")."</td></tr>"
             . "</table>\n";
 
