@@ -346,7 +346,31 @@ if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
 	//echo "Reset Cookie!";
 }
 
+// for non anonymous surveys, it is possible to load
+// pre-filled answers
+// Let's do this only if 
+//  - a saved answer record hasn't been loaded through the saved feature
+//  - the survey is not anonymous
+//  - the survey is active
+//  - a token information has been provided
+//  - the feature has been explicitely enabled in the config file
+//    to enable define $allow_direct_survey_prefill = true; in config.php
+if (  isset($allow_direct_survey_prefill) &&
+	$allow_direct_survey_prefill===true &&
+	!isset($_SESSION['srid']) && 
+	$thissurvey['private'] == "N" &&
+	$thissurvey['active'] == "Y" && $token !='')
+{
+	// load previous answers if any (dataentry with nosubmit)
+	$srquery="SELECT id FROM {$thissurvey['tablename']}"
+		. " WHERE {$thissurvey['tablename']}.token='".$token."'\n";
 
+	$result = db_execute_assoc($srquery) or die ("Error loading results<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+	while ($srrow = $result->FetchRow() )
+	{
+		$_SESSION['srid'] = $srrow['id'];
+	}
+}
 
 // SAVE POSTED ANSWERS TO DATABASE IF MOVE (NEXT,PREV,LAST, or SUBMIT) or RETURNING FROM SAVE FORM
 if (isset($_POST['move']) || isset($_POST['saveprompt']))
