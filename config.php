@@ -31,7 +31,7 @@
     # Public License along with this program; if not, write to  #
     # the Free Software Foundation, Inc., 59 Temple Place -     #
     # Suite 330, Boston, MA  02111-1307, USA.                   #
-    #############################################################   
+    #############################################################
 */
 
 // === Basic Setup
@@ -39,15 +39,15 @@
 $databasetype       =   "mysql";       // ADOdb database driver - either mysql or odbc_mssql
 $databaselocation   =   "localhost";   // Network location of your Database - for odbc_mssql use the mssql servername, not localhost or IP
 $databaseport       =   "default";     // The port of your Database - if you use a standard port leave on default
-$databasename       =   "limesurvey"; // The name of the database that we will create
+$databasename       =   "limesurvey";  // The name of the database that we will create
 $databaseuser       =   "root";        // The name of a user with rights to create db (or if db already exists, then rights within that db)
 $databasepass       =   "";            // Password of db user
-$dbprefix           =   "phpsv_";      // A global prefix that can be added to all LimeSurvey tables. Use this if you are sharing
+$dbprefix           =   "lime_";       // A global prefix that can be added to all LimeSurvey tables. Use this if you are sharing
                                        // a database with other applications. Suggested prefix is "phpsv_"
 $databasetabletype  =   "myISAM";	   // Storage engine mysql should use when creating survey results tables and token tables (if mysql is used). If available, InnoDB is recommended. Default is myISAM.
 
 // FILE LOCATIONS
-$rooturl            =   "http://{$_SERVER['SERVER_NAME']}/limesurvey"; //The root web url for your limesurvey installation. 
+$rooturl            =   "http://{$_SERVER['SERVER_NAME']}/limesurvey"; //The root web url for your limesurvey installation.
 
 $rootdir            =   dirname(__FILE__); // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this setting.
                                            // If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir="C:\Inetpub\wwwroot\limesurvey"!
@@ -73,7 +73,7 @@ $rootsymlinked      =   0;  // if your root document dir is symlinked LimeSurvey
                                           // example: "x:/limesurvey/tmp". We don't know why.
 
 // Site Info
-$sitename           =   "LimeSurvey";    // The official name of the site (appears in the Window title)
+$sitename           =   "LimeSurvey";     // The official name of the site (appears in the Window title)
 $scriptname         =   "admin.php";      // The name of the admin script
 $accesscontrol      =   1;                // Set this to 0 for no access control
 $defaultuser        =   "admin";          // This is the default username when LimeSurvey is installed
@@ -146,7 +146,7 @@ $enableLdap = false;
 //
 // $filterout_incomplete_answers
 //  * default behaviour of phpsv regarding answer records with no submitdate
-//  * can be overwritten by module parameters 
+//  * can be overwritten by module parameters
 //         ("Filter-Out incomplete answers" checkbox when implemented)
 $filterout_incomplete_answers = false;
 
