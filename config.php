@@ -47,7 +47,7 @@ $dbprefix           =   "lime_";       // A global prefix that can be added to a
 $databasetabletype  =   "myISAM";	   // Storage engine mysql should use when creating survey results tables and token tables (if mysql is used). If available, InnoDB is recommended. Default is myISAM.
 
 // FILE LOCATIONS
-$rooturl            =   "http://localhost/~yan/limesurvey/limesurvey"; //The root web url for your limesurvey installation.
+$rooturl            =   "http://{$_SERVER['SERVER_NAME']}/limesurvey"; //The root web url for your limesurvey installation.
 
 $rootdir            =   dirname(__FILE__); // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this setting.
                                            // If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir="C:\Inetpub\wwwroot\limesurvey"!
@@ -97,7 +97,7 @@ $admintheme         =  "default";         // This setting specifys the directory
 
 
 
-$debug              =   1;      // Switch this to 1 if you are looking for errors
+$debug              =   0;      // Switch this to 1 if you are looking for errors
 $sessionlifetime    =   3600;   // How long until a survey session expires in seconds
 
 // Email Settings
