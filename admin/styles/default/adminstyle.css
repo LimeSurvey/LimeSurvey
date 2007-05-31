@@ -32,8 +32,9 @@ th, a, p, div {
    background: #D6D6D6;
    border-top: 2px solid #7FFF00;
    border-bottom: 1px groove #00FA9A;
-}
-
+   background-image: url(bkgmaintitle.gif);
+   background-repeat: repeat-x;
+   }
 
 table.menubar {
    width: 100%;
@@ -43,14 +44,15 @@ table.menubar {
    border-collapse: collapse;
 }
 .menubar tr:first-child {
-	background-color: #EEF6FF;
+   background-color: #EEF6FF;
 }
 .menubar tr {
 	background-color: #EEF6FF;
 }
 .menubar td:first-child {  
-	color: #265522;
-	font-size: 8pt;
+   color: #265522;
+   font-size: 8pt;
+   border-bottom: 2px solid #D2E0F2;
 }
 
 
@@ -82,7 +84,7 @@ ul {
 }
 td {
    font-size: 10pt;
-   color: #000;
+   color: #1D2D45;
 }
 .btstyle {
 	font-size: 11px;
@@ -202,13 +204,14 @@ font.settingcaption {
 	text-align: right;
 	font-size: 13px;
 	font-weight: bold;
+   color: #1D2D45;
 }
 .settingcaption {
 	text-align: center;
 	font-size: 13px;
 	font-weight: bold;
-   color: Black;
-   background-color: #D1FFA4;
+   background-color: #D2E0F2;
+   color: #1D2D45;
 }
 span.settingcaption {
 	float: left;
@@ -219,6 +222,7 @@ span.settingcaption {
 	clear: left;
 	margin-bottom: 10px;
    background-color: #F8F8FF;
+   color: #1D2D45;
 }
 .settingentry {
 	float: left;
@@ -333,6 +337,7 @@ span.settingcaption {
 .tab-page{
    background-color: #F8F8FF;
 }
+
 
 
 

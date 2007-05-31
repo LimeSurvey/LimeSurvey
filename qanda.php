@@ -530,14 +530,14 @@ function do_5pointchoice($ia)
 	for ($fp=1; $fp<=5; $fp++)
 	{
 		$answer .= "\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]$fp' value='$fp'";
-		if ($_SESSION[$ia[1]] == $fp) {$answer .= " checked";}
+		if ($_SESSION[$ia[1]] == $fp) {$answer .= " checked='checked'";}
 		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='answer$ia[1]$fp' class='answertext'>$fp</label>\n";
 	}
 	
 	if ($ia[6] != "Y"  && $shownoanswer == 1) // Add "No Answer" option if question is not mandatory
 	{
 		$answer .= "\t\t\t<input class='radio' type='radio' name='$ia[1]' id='NoAnswer' value=''";
-		if (!$_SESSION[$ia[1]]) {$answer .= " checked";}
+		if (!$_SESSION[$ia[1]]) {$answer .= " checked='checked'";}
 		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='NoAnswer' class='answertext'>".$clang->gT("No answer")."</label>\n";
 
 	}
@@ -589,9 +589,9 @@ function do_language($ia)
 		$answer .= "\t\t\t\t\t\t<option value='{$ansrow}'";
 		if ($_SESSION[$ia[1]] == $ansrow)
 		{
-			$answer .= " selected";
+			$answer .= " selected='selected'";
 		}
-		elseif ($ansrow['default_value'] == "Y") {$answer .= " selected"; $defexists = "Y";}
+		elseif ($ansrow['default_value'] == "Y") {$answer .= " selected='selected'"; $defexists = "Y";}
 		$answer .= ">".getLanguageNameFromCode($ansrow, true)."</option>\n";
 	}
 	$answer .= "\t\t\t\t\t</select>\n";
@@ -623,9 +623,9 @@ function do_list_dropdown($ia)
 		$answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
 		if ($_SESSION[$ia[1]] == $ansrow['code'])
 		{
-			$answer .= " selected";
+			$answer .= " selected='selected'";
 		}
-		elseif ($ansrow['default_value'] == "Y") {$answer .= " selected"; $defexists = "Y";}
+		elseif ($ansrow['default_value'] == "Y") {$answer .= " selected='selected'"; $defexists = "Y";}
 		$answer .= ">{$ansrow['answer']}</option>\n";
 	}
 	if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) {$answer = "\t\t\t\t\t\t<option value='' selected='selected'>".$clang->gT("Please choose")."..</option>\n".$answer;}
@@ -634,12 +634,14 @@ function do_list_dropdown($ia)
 		$answer .= "\t\t\t\t\t\t<option value='-oth-'";
 		if ($_SESSION[$ia[1]] == "-oth-")
 		{
-			$answer .= " selected";
+			$answer .= " selected='selected'";
 		}
 		$answer .= ">".$clang->gT("Other")."</option>\n";
 	}
 	if ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != "") && (!isset($defexists) || !$defexists) && $ia[6] != "Y" && $shownoanswer == 1) {$answer .= "\t\t\t\t\t\t<option value=' '>".$clang->gT("No answer")."</option>\n";}
 	$answer .= "\t\t\t\t\t</select>\n";
+    $answer .= "\t\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}' />\n";
+  
 	$sselect = "\n\t\t\t\t\t<select name='$ia[1]' id='answer$ia[1]' onchange='checkconditions(this.value, this.name, this.type);modfield(this.name);";
 	if (isset($other) && $other=="Y")
 	{
@@ -719,7 +721,7 @@ function do_list_flexible_dropdown($ia)
 		$answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
 		if ($_SESSION[$ia[1]] == $ansrow['code'])
 		{
-			$answer .= " selected";
+			$answer .= " selected='selected'";
 		}
 		$answer .= ">{$ansrow['title']}</option>\n";
 	}
@@ -729,7 +731,7 @@ function do_list_flexible_dropdown($ia)
 		$answer .= "\t\t\t\t\t\t<option value='-oth-'";
 		if ($_SESSION[$ia[1]] == "-oth-")
 		{
-			$answer .= " selected";
+			$answer .= " selected='selected'";
 		}
 		$answer .= ">".$clang->gT("Other")."</option>\n";
 	}
@@ -823,9 +825,9 @@ function do_list_radio($ia)
 		$answer .= "\t\t\t\t\t\t\t\t<div style='text-indent: -22; margin: 0 0 0 22;'>  <input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='answer$ia[1]{$ansrow['code']}'";
 		if ($_SESSION[$ia[1]] == $ansrow['code'])
 		{
-			$answer .= " checked";
+			$answer .= " checked='checked'";
 		}
-		elseif ($ansrow['default_value'] == "Y") {$answer .= " checked"; $defexists = "Y";}
+		elseif ($ansrow['default_value'] == "Y") {$answer .= " checked='checked'"; $defexists = "Y";}
 		// --> START NEW FEATURE - SAVE
 		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='answer$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br /></div>\n";
 		// --> END NEW FEATURE - SAVE
@@ -839,7 +841,7 @@ function do_list_radio($ia)
 		$answer .= "\t\t\t\t\t\t\t\t  <div style='text-indent: -22; margin: 0 0 0 22;'> <input class='radio' type='radio' value='-oth-' name='$ia[1]' id='SOTH$ia[1]'";
 		if ($_SESSION[$ia[1]] == "-oth-")
 		{
-			$answer .= " checked";
+			$answer .= " checked='checked'";
 		}
 		// --> START NEW FEATURE - SAVE
 		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='SOTH$ia[1]' class='answertext'>".$clang->gT("Other")."</label>\n";
@@ -860,7 +862,7 @@ function do_list_radio($ia)
 		$answer .= "\t\t\t\t\t\t  <input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]NANS' value=' ' ";
 		if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == "") && (!isset($defexists) || !$defexists)) || ($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
 		{
-			$answer .= " checked"; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
+			$answer .= " checked='checked'"; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
 		}
 		// --> START NEW FEATURE - SAVE
 		$answer .=" onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/>"
@@ -936,7 +938,7 @@ function do_list_flexible_radio($ia)
 		$answer .= "\t\t\t\t\t\t\t\t  <input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='answer$ia[1]{$ansrow['code']}'";
 		if ($_SESSION[$ia[1]] == $ansrow['code'])
 		{
-			$answer .= " checked";
+			$answer .= " checked='checked'";
 		}
 		// --> START NEW FEATURE - SAVE
 		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='answer$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['title']}</label><br />\n";
@@ -950,7 +952,7 @@ function do_list_flexible_radio($ia)
 		$answer .= "\t\t\t\t\t\t\t\t  <input class='radio' type='radio' value='-oth-' name='$ia[1]' id='SOTH$ia[1]'";
 		if ($_SESSION[$ia[1]] == "-oth-")
 		{
-			$answer .= " checked";
+			$answer .= " checked='checked'";
 		}
 		// --> START NEW FEATURE - SAVE
 		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='SOTH$ia[1]' class='answertext'>".$clang->gT("Other")."</label>\n";
@@ -972,7 +974,7 @@ function do_list_flexible_radio($ia)
 		$answer .= "\t\t\t\t\t\t  <input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]NANS' value=' ' ";
 		if ((!isset($defexists) || $defexists != "Y") && (!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == ""))
 		{
-			$answer .= " checked"; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
+			$answer .= " checked='checked'"; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
 		}
 		// --> START NEW FEATURE - SAVE
 		$answer .=" onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/>"
@@ -1017,8 +1019,8 @@ function do_listwithcomment($ia)
 		{
 			$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='answer$ia[1]{$ansrow['code']}'";
 			if ($_SESSION[$ia[1]] == $ansrow['code'])
-			{$answer .= " checked";}
-			elseif ($ansrow['default_value'] == "Y") {$answer .= " checked"; $defexists = "Y";}
+			{$answer .= " checked='checked'";}
+			elseif ($ansrow['default_value'] == "Y") {$answer .= " checked='checked'"; $defexists = "Y";}
 			// --> START NEW FEATURE - SAVE
 			$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='answer$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
 			// --> END NEW FEATURE - SAVE
@@ -1031,7 +1033,7 @@ function do_listwithcomment($ia)
 			// --> END NEW FEATURE - SAVE
 			if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == "") && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
 			{
-				$answer .= "checked />";
+				$answer .= "checked='checked' />";
 			}
 			elseif ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != "") && (!isset($defexists) || !$defexists))
 			{
@@ -1074,8 +1076,8 @@ function do_listwithcomment($ia)
 		{
 			$answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
 			if ($_SESSION[$ia[1]] == $ansrow['code'])
-			{$answer .= " selected";}
-			elseif ($ansrow['default_value'] == "Y") {$answer .= " selected"; $defexists = "Y";}
+			{$answer .= " selected='selected'";}
+			elseif ($ansrow['default_value'] == "Y") {$answer .= " selected='selected'"; $defexists = "Y";}
 			$answer .= ">{$ansrow['answer']}</option>\n";
 			if (strlen($ansrow['answer']) > $maxoptionsize)
 			{
@@ -1398,7 +1400,7 @@ function do_multiplechoice($ia)
 		$rowcounter++;
 		$myfname = $ia[1].$ansrow['code'];
 		$answer .= "\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='$ia[1]{$ansrow['code']}' id='answer$ia[1]{$ansrow['code']}' value='Y'";
-		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "Y") {$answer .= " checked";}
+		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "Y") {$answer .= " checked='checked'";}
 		// --> START NEW FEATURE - SAVE
 		$answer .= " onclick='".$callmaxanswscriptcheckbox."checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /><label for='answer$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
 		// --> END NEW FEATURE - SAVE
@@ -1486,7 +1488,7 @@ function do_multiplechoice_withcomments($ia)
 		$answer .= "\t\t\t\t\t\t\t<tr>\n"
 		. "\t\t\t\t\t\t\t\t<td>\n"
 		. "\t\t\t\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='$myfname' id='answer$myfname' value='Y'";
-		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "Y") {$answer .= " checked";}
+		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "Y") {$answer .= " checked='checked'";}
 		// --> START NEW FEATURE - SAVE
 		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' />"
 		. "<label for='answer$myfname' class='answertext'>"
@@ -1811,13 +1813,13 @@ function do_yesno($ia)
 	. "\t\t\t\t<tr>\n"
 	. "\t\t\t\t\t<td align='left'>\n"
 	. "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]Y' value='Y'";
-	if ($_SESSION[$ia[1]] == "Y") {$answer .= " checked";}
+	if ($_SESSION[$ia[1]] == "Y") {$answer .= " checked='checked'";}
 	// --> START NEW FEATURE - SAVE
 	$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='answer$ia[1]Y' class='answertext'>".$clang->gT("Yes")."</label><br />\n"
 	. "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]N' value='N'";
 	// --> END NEW FEATURE - SAVE
 
-	if ($_SESSION[$ia[1]] == "N") {$answer .= " checked";}
+	if ($_SESSION[$ia[1]] == "N") {$answer .= " checked='checked'";}
 	// --> START NEW FEATURE - SAVE
 	$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='answer$ia[1]N' class='answertext'>".$clang->gT("No")."</label><br />\n";
 	// --> END NEW FEATURE - SAVE
@@ -1825,7 +1827,7 @@ function do_yesno($ia)
 	if ($ia[6] != "Y" && $shownoanswer == 1)
 	{
 		$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1] ' value=''";
-		if ($_SESSION[$ia[1]] == "") {$answer .= " checked";}
+		if ($_SESSION[$ia[1]] == "") {$answer .= " checked='checked'";}
 		// --> START NEW FEATURE - SAVE
 		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='answer$ia[1] ' class='answertext'>".$clang->gT("No answer")."</label><br />\n";
 		// --> END NEW FEATURE - SAVE
@@ -1846,14 +1848,14 @@ function do_gender($ia)
 	. "\t\t\t\t<tr>\n"
 	. "\t\t\t\t\t<td align='left'>\n"
 	. "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]F' value='F'";
-	if ($_SESSION[$ia[1]] == "F") {$answer .= " checked";}
+	if ($_SESSION[$ia[1]] == "F") {$answer .= " checked='checked'";}
 	// --> START NEW FEATURE - SAVE
 	$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/>"
 	. "<label for='answer$ia[1]F' class='answertext'>".$clang->gT("Female")."</label><br />\n"
 	. "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]M' value='M'";
 	// --> END NEW FEATURE - SAVE
 
-	if ($_SESSION[$ia[1]] == "M") {$answer .= " checked";}
+	if ($_SESSION[$ia[1]] == "M") {$answer .= " checked='checked'";}
 	// --> START NEW FEATURE - SAVE
 	$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='answer$ia[1]M' class='answertext'>".$clang->gT("Male")."</label><br />\n";
 	// --> END NEW FEATURE - SAVE
@@ -1861,7 +1863,7 @@ function do_gender($ia)
 	if ($ia[6] != "Y" && $shownoanswer == 1)
 	{
 		$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1] ' value=''";
-		if ($_SESSION[$ia[1]] == "") {$answer .= " checked";}
+		if ($_SESSION[$ia[1]] == "") {$answer .= " checked='checked'";}
 		// --> START NEW FEATURE - SAVE
 		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='answer$ia[1] ' class='answertext'>".$clang->gT("No answer")."</label>\n";
 		// --> END NEW FEATURE - SAVE
@@ -1943,7 +1945,7 @@ function do_array_5point($ia)
 		{
 			$answer .= "\t\t\t\t\t<td><label for='answer$myfname-$i'>"
 			."<input class='radio' type='radio' name='$myfname' id='answer$myfname-$i' value='$i' title='$i'";
-			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $i) {$answer .= " checked";}
+			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $i) {$answer .= " checked='checked'";}
 			$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
 		}
 		$answertext2=answer_replace($ansrow['answer']);
@@ -1956,7 +1958,7 @@ function do_array_5point($ia)
 		{
 			$answer .= "\t\t\t\t\t<td align='center'><label for='answer$myfname-'>"
 			."<input class='radio' type='radio' name='$myfname' id='answer$myfname-' value='' title='".$clang->gT("No answer")."'";
-			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
+			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked='checked'";}
 			$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
 		}
 		$answer .= "\t\t\t\t</tr>\n";
@@ -2033,7 +2035,7 @@ function do_array_10point($ia)
 		{
 			$answer .= "\t\t\t\t\t\t<td><label for='answer$myfname-$i'>"
 			."<input class='radio' type='radio' name='$myfname' id='answer$myfname-$i' value='$i' title='$i'";
-			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $i) {$answer .= " checked";}
+			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $i) {$answer .= " checked='checked'";}
 			// --> START NEW FEATURE - SAVE
 			$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
 			// --> END NEW FEATURE - SAVE
@@ -2043,7 +2045,7 @@ function do_array_10point($ia)
 		{
 			$answer .= "\t\t\t\t\t<td align='center'><label for='answer$myfname-'>"
 			."<input class='radio' type='radio' name='$myfname' id='answer$myfname-' value='' title='".$clang->gT("No answer")."'";
-			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
+			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked='checked'";}
 			// --> START NEW FEATURE - SAVE
 			$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
 			// --> END NEW FEATURE - SAVE
@@ -2115,21 +2117,21 @@ function do_array_yesnouncertain($ia)
 		. "\t\t\t\t\t<td align='right'>$answertext</td>\n"
 		. "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-Y'>"
 		."<input class='radio' type='radio' name='$myfname' id='answer$myfname-Y' value='Y' title='".$clang->gT("Yes")."'";
-		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "Y") {$answer .= " checked";}
+		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "Y") {$answer .= " checked='checked'";}
 		// --> START NEW FEATURE - SAVE
 		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n"
 		. "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-U'>"
 		."<input class='radio' type='radio' name='$myfname' id='answer$myfname-U' value='U' title='".$clang->gT("Uncertain")."'";
 		// --> END NEW FEATURE - SAVE
 
-		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "U") {$answer .= " checked";}
+		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "U") {$answer .= " checked='checked'";}
 		// --> START NEW FEATURE - SAVE
 		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n"
 		. "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-N'>"
 		."<input class='radio' type='radio' name='$myfname' id='answer$myfname-N' value='N' title='".$clang->gT("No")."'";
 		// --> END NEW FEATURE - SAVE
 
-		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "N") {$answer .= " checked";}
+		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "N") {$answer .= " checked='checked'";}
 		// --> START NEW FEATURE - SAVE
 		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/></label>\n"
 		. "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
@@ -2141,7 +2143,7 @@ function do_array_yesnouncertain($ia)
 		{
 			$answer .= "\t\t\t\t\t<td align='center'><label for='answer$myfname-'>"
 			."<input class='radio' type='radio' name='$myfname' id='answer$myfname-' value='' title='".$clang->gT("No answer")."'";
-			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
+			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked='checked'";}
 			// --> START NEW FEATURE - SAVE
 			$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
 			// --> END NEW FEATURE - SAVE
@@ -2319,19 +2321,19 @@ function do_array_increasesamedecrease($ia)
 		. "\t\t\t\t\t<td align='right'>$answertext</td>\n"
 		. "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-I'>"
 		."<input class='radio' type='radio' name='$myfname' id='answer$myfname-I' value='I' title='".$clang->gT("Increase")."'";
-		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "I") {$answer .= " checked";}
+		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "I") {$answer .= " checked='checked'";}
 
 		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n"
 		. "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-S'>"
 		."<input class='radio' type='radio' name='$myfname' id='answer$myfname-S' value='S' title='".$clang->gT("Same")."'";
 
-		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "S") {$answer .= " checked";}
+		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "S") {$answer .= " checked='checked'";}
 
 		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n"
 		. "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-D'>"
 		."<input class='radio' type='radio' name='$myfname' id='answer$myfname-D' value='D' title='".$clang->gT("Decrease")."'";
 		// --> END NEW FEATURE - SAVE
-		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "D") {$answer .= " checked";}
+		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "D") {$answer .= " checked='checked'";}
 
 		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label>\n"
 		. "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
@@ -2343,7 +2345,7 @@ function do_array_increasesamedecrease($ia)
 		{
 			$answer .= "\t\t\t\t\t<td align='center'><label for='answer$myfname-'>"
 			."<input class='radio' type='radio' name='$myfname' id='answer$myfname-' value='' title='".$clang->gT("No answer")."'";
-			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
+			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked='checked'";}
 			$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
 		}
 		$answer .= "\t\t\t\t</tr>\n";
@@ -2462,7 +2464,7 @@ function do_array_flexible($ia)
 				$answer .= "\t\t\t\t\t<td align='center' width='$cellwidth%'><label for='answer$myfname-$ld'>";
 				$answer .= "<input class='radio' type='radio' name='$myfname' value='$ld' id='answer$myfname-$ld' title='"
 				. html_escape($labelans[$thiskey])."'";
-				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ld) {$answer .= " checked";}
+				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ld) {$answer .= " checked='checked'";}
 				// --> START NEW FEATURE - SAVE
 				$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
 				// --> END NEW FEATURE - SAVE
@@ -2473,7 +2475,7 @@ function do_array_flexible($ia)
 			{
 				$answer .= "\t\t\t\t\t<td align='center' width='$cellwidth%'><label for='answer$myfname-'>"
 				."<input class='radio' type='radio' name='$myfname' value='' id='answer$myfname-' title='".$clang->gT("No answer")."'";
-				if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked";}
+				if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked='checked'";}
 				// --> START NEW FEATURE - SAVE
 				$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
 				// --> END NEW FEATURE - SAVE
@@ -2570,7 +2572,7 @@ function do_array_flexiblecolumns($ia)
 			. "<label for='answer$myfname-".$ansrow['code']."'>";
 			$answer .= "<input class='radio' type='radio' name='$myfname' value='".$ansrow['code']."' id='answer$myfname-".$ansrow['code']."'"
 			. " title='".html_escape($ansrow['answer'])."'";
-			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ansrow['code']) {$answer .= " checked";}
+			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ansrow['code']) {$answer .= " checked='checked'";}
 			// --> START NEW FEATURE - SAVE
 			$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
 			// --> END NEW FEATURE - SAVE
