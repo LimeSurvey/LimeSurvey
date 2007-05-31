@@ -235,7 +235,7 @@ TYPE = MyISAM CHARACTER SET utf8;
 
 CREATE TABLE `prefix_users` (
   `uid` int(11) NOT NULL auto_increment PRIMARY KEY,
-  `users_name` varchar(20) NOT NULL UNIQUE default '',
+  `users_name` varchar(64) NOT NULL UNIQUE default '',
   `password` BLOB NOT NULL,
   `full_name` varchar(50) NOT NULL,
   `parent_id` int(10) unsigned NOT NULL,

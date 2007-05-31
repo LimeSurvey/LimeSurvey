@@ -236,7 +236,7 @@ GO
 
 CREATE TABLE [prefix_users] (
   [uid] INT NOT NULL IDENTITY (1,1) PRIMARY KEY,
-  [users_name] VARCHAR(20) NOT NULL UNIQUE default '',
+  [users_name] VARCHAR(64) NOT NULL UNIQUE default '',
   [password] TEXT NOT NULL default '', -- BLOB in MySQL
   [full_name] VARCHAR(50) NOT NULL,
   [parent_id] INT NOT NULL,  -- UNSIGNED integer in MySQL

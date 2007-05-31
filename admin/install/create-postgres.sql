@@ -243,7 +243,7 @@ CREATE TABLE surveys (
 --
 
 CREATE TABLE users (
-    "user" character varying(20) DEFAULT ''::character varying NOT NULL,
+    "user" character varying(64) DEFAULT ''::character varying NOT NULL,
     "password" character varying(20) DEFAULT ''::character varying NOT NULL,
     "security" character varying(10) DEFAULT ''::character varying NOT NULL
 );
