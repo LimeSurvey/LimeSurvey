@@ -69,6 +69,12 @@ echo str_pad('Loading... ',4096)."<br />\n";
 
     }
 
+    if ($oldversion < 112) {
+        //The size of the users_name field is now 64 char (20 char before version 112)
+        //PLEASE INSERT HERE THE SQL REQUEST FOR MSSQLI, I CAN'T TEST IT
+        //modify_database("","ALTER TABLE `lime_users` CHANGE `users_name` `users_name` VARCHAR( 64 ) NOT NULL");
+    }
+
 
     return true;
 }
