@@ -20,9 +20,22 @@ body {
 img {
 	border: 0;
 }
-th, a, p, div {
+a:link {
+   font-size: 10pt;
+   color:#819D26;
+   text-decoration: none;
+}
+
+a:hover{
+   font-size: 10pt;
+   color:#819D26;
+   text-decoration: underline;
+}
+
+th, p, div {
 	font-size: 10pt;
 }
+
 .maintitle {
    font-size: 14pt;
    font-weight: bold;
@@ -49,12 +62,11 @@ table.menubar {
 .menubar tr {
 	background-color: #EEF6FF;
 }
-.menubar td:first-child {  
+.menubar td{  
    color: #265522;
    font-size: 8pt;
    border-bottom: 2px solid #D2E0F2;
 }
-
 
 table.table2columns {
    background-color: #FFFFFF;
@@ -337,6 +349,7 @@ span.settingcaption {
 .tab-page{
    background-color: #F8F8FF;
 }
+
 
 
 
