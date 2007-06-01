@@ -64,7 +64,7 @@ if (!isset($_POST['lang']) || $_POST['lang'] == "")
 $register_errormsg = "";
 
 // Check the security question's answer
-if (function_exists("ImageCreate"))
+if (function_exists("ImageCreate") && captcha_enabled('registrationscreen') )
 {
     if (!isset($_POST['loadsecurity']) || $_POST['loadsecurity'] != $_SESSION['secanswer'])
     {

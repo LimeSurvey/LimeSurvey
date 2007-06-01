@@ -132,7 +132,8 @@ getreferringurl();
 if (!isset($token)) {$token=trim(returnglobal('token'));}
 
 // If token was submitted from token form
-if (isset($_GET['tokenSEC']) && $_GET['tokenSEC'] == 1 && function_exists("ImageCreate"))
+// Disabled for the moment (1.50) with function captcha_enabled
+if (isset($_GET['tokenSEC']) && $_GET['tokenSEC'] == 1 && function_exists("ImageCreate") && captcha_enabled('tokenloginscreen'))
 {
 	if (!isset($_GET['loadsecurity']) || $_GET['loadsecurity'] != $_SESSION['secanswer'])
 	{
@@ -241,8 +242,8 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 		$errormsg .= $clang->gT("You did not provide a password")."<br />\n";
 	}
 
-	// if security question asnwer is incorrect
-    if (function_exists("ImageCreate"))
+	// if security question answer is incorrect
+    if (function_exists("ImageCreate") && captcha_enabled('tokenloginscreen'))
     {
 	    if ((!isset($_POST['loadsecurity']) || $_POST['loadsecurity'] != $_SESSION['secanswer']) && !isset($_GET['scid']))
 	    {
@@ -1093,7 +1094,7 @@ function buildsurveysession()
 			        .$clang->gT("Token")."</td><td align='left' valign='middle'><input class='text' type='text' name='token'>
 			        </td>
 		        </tr>";
-                if (function_exists("ImageCreate"))
+                if (function_exists("ImageCreate") && captcha_enabled('tokenloginscreen'))
                 { echo "<tr>
 			                <td align='center' valign='middle'>".$clang->gT("Security Question")."</td><td align='left' valign='middle'><table><tr><td valign='center'><img src='verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table>
 			                </td>
