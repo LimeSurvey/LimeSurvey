@@ -123,6 +123,7 @@ textarea {
 	font-size: 10px;
 	color: #000080;
 	background: #EEEFFF;
+	font-family: verdana, arial, sans-serif;
 }
 .subtitle {
 	font-size: 10px;
@@ -204,14 +205,13 @@ span.settingcaption {
 	float: left;
 	width: 150px;
 	text-align: right;
-	font-size: 13px;
 	font-weight: bold;
 	clear: left;
 	margin-bottom: 10px;
 }
 .settingentry {
 	float: left;
-	width: 450px;
+	width: 600px;
 	padding-left: 5px;
 	font-size: 13px;
 	text-align: left;
@@ -219,7 +219,7 @@ span.settingcaption {
 	margin-bottom: 10px;
 }
 .settingrow {
-	width: 620px;
+	width: 800px;
 	float: center;
 	clear: left;
 	margin-bottom: 20px;
