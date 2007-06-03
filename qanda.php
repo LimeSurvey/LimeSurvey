@@ -717,6 +717,7 @@ function do_list_flexible_dropdown($ia)
 	}
 	if ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != "") && (!isset($defexists) || !$defexists) && $ia[6] != "Y" && $shownoanswer == 1) {$answer .= "\t\t\t\t\t\t<option value=' '>".$clang->gT("No answer")."</option>\n";}
 	$answer .= "\t\t\t\t\t</select>\n";
+    $answer .= "\t\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}' />\n";
 	$sselect = "\n\t\t\t\t\t<select name='$ia[1]' id='answer$ia[1]' onchange='checkconditions(this.value, this.name, this.type);modfield(this.name);";
 	if (isset($other) && $other=="Y")
 	{
