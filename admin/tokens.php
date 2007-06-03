@@ -1010,7 +1010,7 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 				."\t\t\t<input type='submit' value='".$clang->gT("Continue")."' />\n"
 				."\t\t</td>\n"
 				."\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
-                ."\t<input type='hidden' name='subaction' value=\"email\" />\n"
+                ."\t<input type='hidden' name='subaction' value=\"remind\" />\n"
                 ."\t<input type='hidden' name='action' value=\"tokens\" />\n"
 				."\t<input type='hidden' name='sid' value=\"{$_POST['sid']}\" />\n"
 				."\t<input type='hidden' name='from' value=\"{$_POST['from']}\" />\n"
