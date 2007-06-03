@@ -44,10 +44,10 @@ if ($debug==1) {
         error_reporting(E_ALL); //For debug purposes - switch on in config.phh
         }
 @set_time_limit(60); // Maximum execution time - works only if safe_mode is off
-
+@ini_set("memory_limit","16M"); // Set Memory Limit for big surveys 
 
 // Now check for PHP & db version
-// Do not translate this!
+// Do not localize/translate this!
 $ver = explode( '.', PHP_VERSION );
 $ver_num = $ver[0] . $ver[1] . $ver[2];
 $dieoutput='';
