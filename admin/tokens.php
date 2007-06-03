@@ -638,6 +638,7 @@ if ($subaction == "browse" || $subaction == "search")
 			list($id) = $result->FetchRow();
 			if  ($id)
 			{
+                $tokenoutput .= "\t\t<form action='$homeurl/$scriptname?action=dataentry&amp;subaction=edit' method='post' target='_blank'>\n"
 				$tokenoutput .= "\t\t<form action='$homeurl/$scriptname?action=dataentry' method='post' target='_blank'>\n"
 				."\t\t<td align='center' valign='top'>\n"
 				."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='U' title='"

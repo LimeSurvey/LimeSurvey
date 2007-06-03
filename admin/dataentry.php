@@ -660,12 +660,9 @@ if($actsurrows['browse_response'])
 						}
 						else
 						{
-							$lquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$fnames[$i][8]} AND
-						".db_table_name("labels").".language = '{$language}' AND 
-						ORDER BY sortorder, code";
+							$lquery = "SELECT * FROM ".db_table_name("labels")
+                                     ." WHERE lid={$fnames[$i][8]} AND ".db_table_name("labels").".language = '{$language}' ORDER BY sortorder, code";
 							$lresult = db_execute_assoc($lquery);
-							//$lquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnames[$i][7]} ORDER BY sortorder, answer";
-							//$lresult = $connect->Execute($lquery);
 							$dataentryoutput .= "\t\t\t<select name='{$fnames[$i][0]}'>\n"
 							."\t\t\t\t<option value=''";
 							if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected='selected'";}
