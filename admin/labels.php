@@ -573,54 +573,75 @@ function modlabelsetanswers($lid)
 		case $clang->gT("Add new label", "unescaped"):
 		if (isset($_POST['insertcode']) && $_POST['insertcode']!='')
 		{
-   			$query = "select max(sortorder) as maxorder from ".db_table_name('labels')." where lid='$lid'";
-            $result = $connect->Execute($query);
-       		$newsortorder=sprintf("%05d", $result->fields['maxorder']+1);
-
-
-     		$_POST['insertcode'] = db_quoteall($_POST['insertcode'],true);
-   			$_POST['inserttitle'] = db_quoteall($_POST['inserttitle'],true);
-        	foreach ($lslanguages as $lslanguage)
-        	{
-    				$query = "INSERT INTO ".db_table_name('labels')." (lid, code, title, sortorder,language) VALUES ($lid, {$_POST['insertcode']}, {$_POST['inserttitle']}, '$newsortorder','$lslanguage')";
-                	if (!$result = $connect->Execute($query))
-    				{
-    					$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert label", "js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
-    				}
+			// check that the code doesn't exist yet
+   			$query = "SELECT code FROM ".db_table_name('labels')." WHERE lid='$lid' AND code='".$_POST['insertcode']."'";
+			$result = $connect->Execute($query);
+			$codeoccurences=$result->RecordCount();
+			if ($codeoccurences == 0)
+			{
+	   			$query = "select max(sortorder) as maxorder from ".db_table_name('labels')." where lid='$lid'";
+				$result = $connect->Execute($query);
+				$newsortorder=sprintf("%05d", $result->fields['maxorder']+1);
+	
+				$_POST['insertcode'] = db_quoteall($_POST['insertcode'],true);
+	   			$_POST['inserttitle'] = db_quoteall($_POST['inserttitle'],true);
+	  			foreach ($lslanguages as $lslanguage)
+				{
+	    				$query = "INSERT INTO ".db_table_name('labels')." (lid, code, title, sortorder,language) VALUES ($lid, {$_POST['insertcode']}, {$_POST['inserttitle']}, '$newsortorder','$lslanguage')";
+					if (!$result = $connect->Execute($query))
+	    				{
+	    					$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert label", "js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+	    				}
+				}
+			}
+			else
+			{
+	    			$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("This label code is already used in this labelset. Please choose another code or rename the existing one.", "js")."\")\n //-->\n</script>\n";
 			}
 		}
 		break;
 
 		// Save all labels with one button
 		case $clang->gT("Save All", "unescaped"):
-            //Determine autoids by evaluating the hidden field		
-            $sortorderids=explode(' ', trim($_POST['sortorderids']));
-            $codeids=explode(' ', trim($_POST['codeids']));
-            $count=0; 
+		//Determine autoids by evaluating the hidden field		
+		$sortorderids=explode(' ', trim($_POST['sortorderids']));
+		$codeids=explode(' ', trim($_POST['codeids']));
+		$count=0; 
 
 		// Quote each code_codeid first
 		foreach ($codeids as $codeid)
 		{
 			$_POST['code_'.$codeid] = db_quoteall($_POST['code_'.$codeid],true);
+			// Get the code values to check for duplicates
+			$codevalues[] = $_POST['code_'.$codeid];
 		}
-         	foreach ($sortorderids as $sortorderid)
-        	{
-        		$langid=substr($sortorderid,0,strrpos($sortorderid,'_')); 
-        		$orderid=substr($sortorderid,strrpos($sortorderid,'_')+1,20);
-			    $_POST['title_'.$sortorderid] = db_quoteall($_POST['title_'.$sortorderid],true);
-                $query = "UPDATE ".db_table_name('labels')." SET code=".$_POST['code_'.$codeids[$count]].", title={$_POST['title_'.$sortorderid]} WHERE lid=$lid AND sortorder=$orderid AND language='$langid'";
-        		if (!$result = $connect->Execute($query)) 
-        		// if update didn't work we assume the label does not exist and insert it
-        		{
-                    $query = "insert into ".db_table_name('labels')." SET code=".$_POST['code_'.$codeids[$count]].", title={$_POST['title_'.$sortorderid]}, lid=$lid , sortorder=$orderid , language='$langid'";
-            		if (!$result = $connect->Execute($query))
-            		{
-            			$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update label","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
-        			}
-    			}
-    			$count++;
-    			if ($count>count($codeids)-1) {$count=0;}
-		    }
+
+		// Check that there is no code duplicate
+		if (count(array_unique($codevalues)) == count($codevalues))
+		{
+	         	foreach ($sortorderids as $sortorderid)
+	        	{
+	        		$langid=substr($sortorderid,0,strrpos($sortorderid,'_')); 
+	        		$orderid=substr($sortorderid,strrpos($sortorderid,'_')+1,20);
+				    $_POST['title_'.$sortorderid] = db_quoteall($_POST['title_'.$sortorderid],true);
+	                $query = "UPDATE ".db_table_name('labels')." SET code=".$_POST['code_'.$codeids[$count]].", title={$_POST['title_'.$sortorderid]} WHERE lid=$lid AND sortorder=$orderid AND language='$langid'";
+	        		if (!$result = $connect->Execute($query)) 
+	        		// if update didn't work we assume the label does not exist and insert it
+	        		{
+	                    $query = "insert into ".db_table_name('labels')." SET code=".$_POST['code_'.$codeids[$count]].", title={$_POST['title_'.$sortorderid]}, lid=$lid , sortorder=$orderid , language='$langid'";
+	            		if (!$result = $connect->Execute($query))
+	            		{
+	            			$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update label","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+	        			}
+	    			}
+	    			$count++;
+	    			if ($count>count($codeids)-1) {$count=0;}
+			}
+		}
+		else
+		{
+	            $labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Can't update labels because you are using duplicated codes","js")."\")\n //-->\n</script>\n";
+		}
 
 		break;
 
