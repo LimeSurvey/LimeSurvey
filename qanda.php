@@ -2385,7 +2385,7 @@ function do_array_flexible($ia)
 		{
 			$answer .= "\t\t\t\t\t<th class='array1' width='$cellwidth%'><font size='1'>".$clang->gT("No answer")."</font></th>\n";
 		}
-		$answer .= "\t\t\t\t</tr>\n";
+		$answer .= "\t\t\t\t<td></td></tr>\n";
 
 		while ($ansrow = $ansresult->FetchRow())
 		{
@@ -2463,8 +2463,8 @@ function do_array_flexible($ia)
 			}
             if (strpos($answertextsave,'|')) 
             {
-                $answertext=substr($answertextsave,strpos($answertextsave,'|')+1,1000);
-       			$answer .= "\t\t\t\t<td class='answertext' width='$answerwidth%' align='left'>$answertext</td>\n";
+                $answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
+       			$answer .= "\t\t\t\t<td class='answertextright' width='$answerwidth%'>$answertext</td>\n";
 
             }
 			
