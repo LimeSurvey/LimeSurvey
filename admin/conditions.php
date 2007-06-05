@@ -647,7 +647,7 @@ $method = array( "<"  => $clang->gT("Less"),
                  "!=" => $clang->gT("Not Equal"),
                  ">=" => $clang->gT("Greater or Equal"),
                  ">"  => $clang->gT("Greater"),
-                 "RX" => $clang->gT("Regular Expresion")
+                 "RX" => $clang->gT("Regular Expression")
                 );
 
 if ($conditionscount > 0)
@@ -866,14 +866,14 @@ $conditionsoutput .= "<option selected='selected' value='=='>".$clang->gT("Equal
 $conditionsoutput .= "<option value='!='>".$clang->gT("Not Equal")."</option>\n";
 $conditionsoutput .= "<option value='>='>".$clang->gT("Greater or Equal")."</option>\n";
 $conditionsoutput .= "<option value='>'>".$clang->gT("Greater")."</option>\n";
-$conditionsoutput .= "<option value='RX'>".$clang->gT("Regular Expresion")."</option>\n";
+$conditionsoutput .= "<option value='RX'>".$clang->gT("Regular Expression")."</option>\n";
 $conditionsoutput .= "\t\t\t</select>\n"
 ."\t\t</td>\n"
 ."\t\t<td valign='top' align='center'>\n"
 ."\t\t\t<select name='canswers[]' multiple id='canswers' style='font-family:verdana; font-size:10; width:220' size='5'>\n";
 
 $conditionsoutput .= "\t\t\t</select><br />\n"
-."\t\t".$clang->gT("Constant Value or Regular Expresion")."<br />\n"
+."\t\t".$clang->gT("Constant Value or Regular Expression")."<br />\n"
 ."\t\t<textarea name='ValOrRegEx' cols='50' rows='5'></textarea>\n"
 ."\t\t</td>"
 ."\t</tr>\n"

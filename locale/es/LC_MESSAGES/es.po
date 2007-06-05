@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-05-23 23:01-0300\n"
+"PO-Revision-Date: 2007-06-04 22:13-0300\n"
 "Last-Translator: Esteban Adrián Pérez <dgeaperez@yahoo.com.ar>\n"
 "Language-Team:  <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1227,8 +1227,8 @@ msgstr "Mayor"
 
 # C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/conditions.php:654
 # C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/conditions.php:865
-msgid "Regular Expresion"
-msgstr "Expresión Regular"
+msgid "Regular Expression"
+msgstr "Expresión regular"
 
 msgid "and"
 msgstr "y"
@@ -1240,6 +1240,9 @@ msgstr "y"
 # D:\xampp\xampp\htdocs\limesurvey/admin/html.php:2035
 msgid "OR"
 msgstr "O"
+
+msgid "No Answer"
+msgstr "Sin responder"
 
 msgid "Copy Conditions"
 msgstr "Copiar Condiciones"
@@ -1267,8 +1270,8 @@ msgid "NOTE: If select a label it will be used Equal or Not Equal for any other 
 msgstr "NOTA: Si elige una etiqueta, se utilizará Equivale o Diferente para cualquier otro método "
 
 # C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/conditions.php:872
-msgid "Constant Value or Regular Expresion"
-msgstr "Constante/Expresión Regular"
+msgid "Constant Value or Regular Expression"
+msgstr "Constante o Expresión Regular"
 
 msgid "Clear"
 msgstr "Borrar"
@@ -1432,6 +1435,10 @@ msgstr "No ha seleccionado un cuestionario para realizar la entrada de datos."
 msgid "This survey is not anonymous, you must supply a valid token"
 msgstr "Este cuestionario no es anónimo, debe ingresar un código de invitación válido"
 
+# C:/documentos/www/limesurvey16/admin/dataentry.php:122
+msgid "There is already a recorded answer for this token, follow the following link to update it"
+msgstr "Existen respuestas guardadas para esta llamada, siga el siguiente enlace para actualizarla."
+
 msgid "Try again"
 msgstr "Intente otra vez"
 
@@ -1512,9 +1519,6 @@ msgstr "Y"
 
 msgid "to question {QUESTION}, you answered {ANSWER}"
 msgstr "a la pregunta {QUESTION}, contestó {ANSWER}"
-
-msgid "No Answer"
-msgstr "Sin responder"
 
 msgid "Only answer this if the following conditions are met:"
 msgstr "Contestar a esta pregunta sólo bajo las siguientes condiciones:"
