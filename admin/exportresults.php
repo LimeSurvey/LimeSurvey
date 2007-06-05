@@ -360,6 +360,14 @@ switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c
 
 Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 
+// Export Language is set by default to surveybaselang
+// * the explang language code is used in SQL queries
+// * the alang object is used to translate headers and hardcoded answers
+// In the future it might be possible to 'post' the 'export language' from
+// the exportresults form
+$explang = $surveybaselang;
+$elang=new limesurvey_lang($explang);
+
 //STEP 1: First line is column headings
 
 $fieldmap=createFieldMap($surveyid);
@@ -426,62 +434,63 @@ for ($i=0; $i<$fieldcount; $i++)
 	//Iterate through column names and output headings
 	$field=$dresult->FetchField($i);
 	$fieldinfo=$field->name;
-	if ($fieldinfo == "token")
+//	if ($fieldinfo == "token")
+//	{
+//		if ($answers == "short")
+//		{
+//			if ($type == "csv")
+//			{
+//				$firstline.="\"".$elang->gT("Token")."\"$separator";
+//			}
+//			else
+//			{
+//				$firstline .= $elang->gT("Token")."$separator";
+//			}
+//		}
+//		if ($answers == "long")
+//		{
+//			if ($style == "abrev")
+//			{
+//				if ($type == "csv") {$firstline .= "\"".$elang->gT("Token")."\"$separator";}
+//				else {$firstline .= $elang->gT("Token")."$separator";}
+//			}
+//			else
+//			{
+//				if ($type == "csv") {$firstline .= "\"".$elang->gT("Token")."\"$separator";}
+//				else {$firstline .= $elang->gT("Token")."$separator";}
+//			}
+//		}
+//	}
+//	elseif ($fieldinfo == "lastname")
+	if ($fieldinfo == "lastname")
 	{
-		if ($answers == "short")
-		{
-			if ($type == "csv")
-			{
-				$firstline.="\"".$clang->gT("Token")."\"$separator";
-			}
-			else
-			{
-				$firstline .= $clang->gT("Token")."$separator";
-			}
-		}
-		if ($answers == "long")
-		{
-			if ($style == "abrev")
-			{
-				if ($type == "csv") {$firstline .= "\"".$clang->gT("Token")."\"$separator";}
-				else {$firstline .= $clang->gT("Token")."$separator";}
-			}
-			else
-			{
-				if ($type == "csv") {$firstline .= "\"".$clang->gT("Token")."\"$separator";}
-				else {$firstline .= $clang->gT("Token")."$separator";}
-			}
-		}
-	}
-	elseif ($fieldinfo == "lastname")
-	{
-		if ($type == "csv") {$firstline .= "\"".$clang->gT("Last Name")."\"$separator";}
-		else {$firstline .= $clang->gT("Last Name")."$separator";}
+		if ($type == "csv") {$firstline .= "\"".$elang->gT("Last Name")."\"$separator";}
+		else {$firstline .= $elang->gT("Last Name")."$separator";}
 	}
 	elseif ($fieldinfo == "firstname")
 	{
-		if ($type == "csv") {$firstline .= "\"".$clang->gT("First Name")."\"$separator";}
-		else {$firstline .= $clang->gT("First Name")."$separator";}
+		if ($type == "csv") {$firstline .= "\"".$elang->gT("First Name")."\"$separator";}
+		else {$firstline .= $elang->gT("First Name")."$separator";}
 	}
 	elseif ($fieldinfo == "email")
 	{
-		if ($type == "csv") {$firstline .= "\"".$clang->gT("Email Address")."\"$separator";}
-		else {$firstline .= $clang->gT("Email Address")."$separator";}
+		if ($type == "csv") {$firstline .= "\"".$elang->gT("Email Address")."\"$separator";}
+		else {$firstline .= $elang->gT("Email Address")."$separator";}
 	}
 	elseif ($fieldinfo == "token")
 	{
-		if ($type == "csv") {$firstline .= "\"".$clang->gT("Token")."\"$separator";}
-		else {$firstline .= $clang->gT("Token")."$separator";}
+		if ($type == "csv") {$firstline .= "\"".$elang->gT("Token")."\"$separator";}
+		else {$firstline .= $elang->gT("Token")."$separator";}
 	}
 	elseif ($fieldinfo == "attribute_1")
 	{
 		if ($type == "csv") {$firstline .= "\"attr1\"$separator";}
-		else {$firstline .= $clang->gT("Attribute 1")."$separator";}
+		else {$firstline .= $elang->gT("Attribute 1")."$separator";}
 	}
 	elseif ($fieldinfo == "attribute_2")
 	{
 		if ($type == "csv") {$firstline .= "\"attr2\"$separator";}
-		else {$firstline .= $clang->gT("Attribute 2")."$separator";}
+		else {$firstline .= $elang->gT("Attribute 2")."$separator";}
 	}
 	elseif ($fieldinfo == "id")
 	{
@@ -490,13 +499,13 @@ for ($i=0; $i<$fieldcount; $i++)
 	}
 	elseif ($fieldinfo == "datestamp")
 	{
-		if ($type == "csv") {$firstline .= "\"Time Submitted\"$separator";}
-		else {$firstline .= "Time Submitted$separator";}
+		if ($type == "csv") {$firstline .= "\"".$elang->gT("Time Submitted")."\"$separator";}
+		else {$firstline .= $elang->gT("Time Submitted")."$separator";}
 	}
 	elseif ($fieldinfo == "ipaddr")
 	{
-		if ($type == "csv") {$firstline .= "\"".$clang->gT("IP-Address")."\"$separator";}
-		else {$firstline .= $clang->gT("IP-Address")."$separator";}
+		if ($type == "csv") {$firstline .= "\"".$elang->gT("IP-Address")."\"$separator";}
+		else {$firstline .= $elang->gT("IP-Address")."$separator";}
 	}
 	else
 	{
@@ -509,7 +518,7 @@ for ($i=0; $i<$fieldcount; $i++)
 		$faid=$fielddata['aid'];
 		if ($style == "abrev")
 		{
-			$qq = "SELECT question FROM {$dbprefix}questions WHERE qid=$fqid and language='$surveybaselang'";
+			$qq = "SELECT question FROM {$dbprefix}questions WHERE qid=$fqid and language='$explang'";
 			$qr = db_execute_assoc($qq);
 			while ($qrow=$qr->FetchRow())
 			{$qname=$qrow['question'];}
@@ -525,7 +534,7 @@ for ($i=0; $i<$fieldcount; $i++)
 		}
 		else
 		{
-			$qq = "SELECT question, type, other, title FROM {$dbprefix}questions WHERE qid=$fqid and language='$surveybaselang' order by gid, title"; //get the question
+			$qq = "SELECT question, type, other, title FROM {$dbprefix}questions WHERE qid=$fqid AND language='$explang' ORDER BY gid, title"; //get the question
 			$qr = db_execute_assoc($qq) or die ("ERROR:<br />".$qq."<br />".htmlspecialchars($connect->ErrorMsg()));
 			while ($qrow=$qr->FetchRow())
 			{
@@ -535,14 +544,14 @@ for ($i=0; $i<$fieldcount; $i++)
 			switch ($ftype)
 			{
 				case "R": //RANKING TYPE
-				$fquest .= " [".$clang->gT("Ranking")." $faid]";
+				$fquest .= " [".$elang->gT("Ranking")." $faid]";
 				break;
 				case "L":
 				case "!":
 				case "W":
 				case "Z":
 				if ($faid == "other") {
-					$fquest .= " [".$clang->gT("Other")."]";
+					$fquest .= " [".$elang->gT("Other")."]";
 				}
 				break;
 				case "O": //DROPDOWN LIST WITH COMMENT
@@ -554,11 +563,11 @@ for ($i=0; $i<$fieldcount; $i++)
 				case "M": //multioption
 				if ($faid == "other")
 				{
-					$fquest .= " [".$clang->gT("Other")."]";
+					$fquest .= " [".$elang->gT("Other")."]";
 				}
 				else
 				{
-					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$faid'";
+					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$faid' AND language = '$explang'";
 					$lr = db_execute_assoc($lq);
 					while ($lrow = $lr->FetchRow())
 					{
@@ -574,11 +583,11 @@ for ($i=0; $i<$fieldcount; $i++)
 				}
 				if ($faid == "other")
 				{
-					$fquest .= " [".$clang->gT("Other")."]";
+					$fquest .= " [".$elang->gT("Other")."]";
 				}
 				else
 				{
-					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$faid'";
+					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$faid' AND language = '$explang'";
 					$lr = db_execute_assoc($lq);
 					while ($lrow = $lr->FetchRow())
 					{
@@ -600,7 +609,7 @@ for ($i=0; $i<$fieldcount; $i++)
 				}
 				else
 				{
-					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code= '$faid'";
+					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code= '$faid' AND language = '$explang'";
 					$lr = db_execute_assoc($lq);
 					while ($lrow=$lr->FetchRow())
 					{
@@ -681,13 +690,13 @@ if ((isset($_POST['first_name']) && $_POST['first_name']=="on") || (isset($_POST
 	{
 		$dquery .= ", {$dbprefix}tokens_$surveyid.lastname";
 	}
-	if (isset($_POST['token']) && $_POST['token']=="on")
-	{
-		$dquery .= ", {$dbprefix}tokens_$surveyid.token";
-	}
 	if (isset($_POST['email_address']) && $_POST['email_address']=="on")
 	{
 		$dquery .= ", {$dbprefix}tokens_$surveyid.email";
+	}
+	if (isset($_POST['token']) && $_POST['token']=="on")
+	{
+		$dquery .= ", {$dbprefix}tokens_$surveyid.token";
 	}
 	if (isset($_POST['attribute_1']) && $_POST['attribute_1']=="on")
 	{
@@ -762,15 +771,16 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
 elseif ($answers == "long")
 {
 //	echo $dquery;
-    $dresult = db_execute_num($dquery) or die("ERROR: $dquery -".htmlspecialchars($connect->ErrorMsg()));
+	$dresult = db_execute_num($dquery) or die("ERROR: $dquery -".htmlspecialchars($connect->ErrorMsg()));
 	$fieldcount = $dresult->FieldCount();
-    $rowcounter=0;
+	$rowcounter=0;
+
 	while ($drow = $dresult->FetchRow())
 	{
 		$rowcounter++;
 		if ($type == "doc")
 		{
-			$exportoutput .= "\n\n\n".$clang->gT('NEW RECORD')."\n";
+			$exportoutput .= "\n\n\n".$elang->gT('NEW RECORD')."\n";
 		}
 		if (!ini_get('safe_mode'))
 		{
@@ -806,34 +816,34 @@ elseif ($answers == "long")
 					switch($fieldinfo)
 					{
 						case "datestamp":
-						$ftitle=$clang->gT("Time Submitted").":";
+						$ftitle=$elang->gT("Time Submitted").":";
 						break;
 						case "ipaddr":
-						$ftitle=$clang->gT("IP Address").":";
+						$ftitle=$elang->gT("IP Address").":";
 						break;
 						case "firstname":
-						$ftitle=$clang->gT("First Name").":";
+						$ftitle=$elang->gT("First Name").":";
 						break;
 						case "lastname":
-						$ftitle=$clang->gT("Last Name").":";
+						$ftitle=$elang->gT("Last Name").":";
 						break;
 						case "email":
-						$ftitle=$clang->gT("Email").":";
+						$ftitle=$elang->gT("Email").":";
 						break;
 						case "id":
-						$ftitle=$clang->gT("ID").":";
+						$ftitle=$elang->gT("ID").":";
 						break;
 						case "token":
-						$ftitle=$clang->gT("Token").":";
+						$ftitle=$elang->gT("Token").":";
 						break;
 						case "attribute_1":
-						$ftitle=$clang->gT("Attribute 1").":";
+						$ftitle=$elang->gT("Attribute 1").":";
 						break;
 						case "attribute_2":
-						$ftitle=$clang->gT("Attribute 2").":";
+						$ftitle=$elang->gT("Attribute 2").":";
 						break;
 						case "startlanguage":
-						$ftitle=$clang->gT("Language").":";
+						$ftitle=$elang->gT("Language").":";
 						break;
 						default:
 						$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
@@ -854,7 +864,7 @@ elseif ($answers == "long")
 				$exportoutput .= $drow[$i];
 				break;
 				case "R": //RANKING TYPE
-				$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = ?";
+				$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND language='$explang' AND code = ?";
 				$lr = db_execute_assoc($lq, array($drow[$i]));
 				while ($lrow = $lr->FetchRow())
 				{
@@ -871,11 +881,11 @@ elseif ($answers == "long")
 				{
 					if ($drow[$i] == "-oth-")
 					{
-						$exportoutput .= $clang->gT("Other");
+						$exportoutput .= $elang->gT("Other");
 					}
 					else
 					{
-						$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = ?";
+						$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND language='$explang' AND code = ?";
 						$lr = db_execute_assoc($lq, array($drow[$i])) or die($lq."<br />ERROR:<br />".htmlspecialchars($connect->ErrorMsg()));
 						while ($lrow = $lr->FetchRow())
 						{
@@ -895,11 +905,11 @@ elseif ($answers == "long")
 				{
 					if ($drow[$i] == "-oth-")
 					{
-						$exportoutput .= $clang->gT("Other");
+						$exportoutput .= $elang->gT("Other");
 					}
 					else
 					{
-						$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code='$drow[$i]'";
+						$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND language='$explang' AND code='$drow[$i]'";
 						$fresult = db_execute_assoc($fquery) or die("ERROR:".$fquery."\n".$qq."\n".htmlspecialchars($connect->ErrorMsg()));
 						while ($frow = $fresult->FetchRow())
 						{
@@ -909,7 +919,7 @@ elseif ($answers == "long")
 				}
 				break;
 				case "O": //DROPDOWN LIST WITH COMMENT
-				$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid ORDER BY answer";
+				$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND language='$explang' ORDER BY answer";
 				$lr = db_execute_assoc($lq) or die ("Could do it<br />$lq<br />".htmlspecialchars($connect->ErrorMsg()));
 				$found = "";
 				while ($lrow = $lr->FetchRow())
@@ -921,17 +931,17 @@ elseif ($answers == "long")
 				case "Y": //YES\NO
 				switch($drow[$i])
 				{
-					case "Y": $exportoutput .= $clang->gT("Yes"); break;
-					case "N": $exportoutput .= $clang->gT("No"); break;
-					default: $exportoutput .= $clang->gT("N/A"); break;
+					case "Y": $exportoutput .= $elang->gT("Yes"); break;
+					case "N": $exportoutput .= $elang->gT("No"); break;
+					default: $exportoutput .= $elang->gT("N/A"); break;
 				}
 				break;
 				case "G": //GENDER
 				switch($drow[$i])
 				{
-					case "M": $exportoutput .= $clang->gT("Male"); break;
-					case "F": $exportoutput .= $clang->gT("Female"); break;
-					default: $exportoutput .= $clang->gT("N/A"); break;
+					case "M": $exportoutput .= $elang->gT("Male"); break;
+					case "F": $exportoutput .= $elang->gT("Female"); break;
+					default: $exportoutput .= $elang->gT("N/A"); break;
 				}
 				break;
 				case "M": //multioption
@@ -948,9 +958,9 @@ elseif ($answers == "long")
 				{
 					switch($drow[$i])
 					{
-						case "Y": $exportoutput .= $clang->gT("Yes"); break;
-						case "N": $exportoutput .= $clang->gT("No"); break;
-						case "": $exportoutput .= $clang->gT("No"); break;
+						case "Y": $exportoutput .= $elang->gT("Yes"); break;
+						case "N": $exportoutput .= $elang->gT("No"); break;
+						case "": $exportoutput .= $elang->gT("No"); break;
 						default: $exportoutput .= $drow[$i]; break;
 					}
 				}
@@ -959,32 +969,32 @@ elseif ($answers == "long")
 				switch($drow[$i])
 				{
 					case "Y":
-					$exportoutput .= $clang->gT("Yes");
+					$exportoutput .= $elang->gT("Yes");
 					break;
 					case "N":
-					$exportoutput .= $clang->gT("No");
+					$exportoutput .= $elang->gT("No");
 					break;
 					case "U":
-					$exportoutput .= $clang->gT("Uncertain");
+					$exportoutput .= $elang->gT("Uncertain");
 					break;
 				}
 				case "E":
 				switch($drow[$i])
 				{
 					case "I":
-					$exportoutput .= $clang->gT("Increase");
+					$exportoutput .= $elang->gT("Increase");
 					break;
 					case "S":
-					$exportoutput .= $clang->gT("Same");
+					$exportoutput .= $elang->gT("Same");
 					break;
 					case "D":
-					$exportoutput .= $clang->gT("Decrease");
+					$exportoutput .= $elang->gT("Decrease");
 					break;
 				}
 				break;
 				case "F":
 				case "H":
-				$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code='$drow[$i]'";
+				$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND language='$explang' AND code='$drow[$i]'";
 				$fresult = db_execute_assoc($fquery) or die("ERROR:".$fquery."\n".$qq."\n".htmlspecialchars($connect->ErrorMsg()));
 				while ($frow = $fresult->FetchRow())
 				{
