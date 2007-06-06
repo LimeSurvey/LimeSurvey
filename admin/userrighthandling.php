@@ -336,45 +336,50 @@ if ($action == "editusers")
 	unset($userlist[0]);
 
 	//	output users
-	$usersummary .= "\t<tr bgcolor='#999999'>\n"
-	. "\t<td align='center'><strong>{$usrhimself['user']}</strong></td>\n"
-	. "\t<td align='center'><strong>{$usrhimself['email']}</strong></td>\n"
-	. "\t\t<td align='center'><strong>{$usrhimself['full_name']}</strong></td>\n"
-	. "\t\t<td align='center'><strong>********</strong></td>\n";
-	if(isset($usrhimself['parent_id']) && $usrhimself['parent_id']!=0) {
-		$usersummary .= "\t\t<td align='center'>{$userlist[$usrhimself['parent_id']]['user']}</td>\n";
-	}
-	else
-	{
-		$usersummary .= "\t\t<td align='center'><strong>---</strong></td>\n";
-	}
-	$usersummary .= "\t\t<td align='center' style='padding-top:10px;'>\n";
-	
-	if ($_SESSION['loginID'] == "1")
-	{
-		$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
-		."<input type='submit' value='".$clang->gT("Edit User")."' />"
-		."<input type='hidden' name='action' value='modifyuser' />"
-		."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
-		."</form>";
-	}
-	// users are allowed to delete all successor users (but the admin not himself)
-	if ($usrhimself['parent_id'] != 0 && ($_SESSION['USER_RIGHT_DELETE_USER'] == 1 || ($usrhimself['uid'] == $_SESSION['loginID'])))
-	{
-		$usersummary .= "\t\t\t<form method='post' action='$scriptname?action=deluser'>"
-		."<input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.","js")."\")' />"
-		."<input type='hidden' name='action' value='deluser' />"
-		."<input type='hidden' name='user' value='{$usrhimself['user']}' />"
-		."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
-		."</form>";
-	}
-
-	$usersummary .= "\t\t</td>\n"
-	. "\t</tr>\n";
-
-	// empty row
-	if(count($userlist) > 0) $usersummary .= "\t<tr>\n\t<td height=\"20\" colspan=\"6\"></td>\n\t</tr>";
+	// output admin user only if the user logged in has user management rights
+	if ($_SESSION['USER_RIGHT_DELETE_USER']||$_SESSION['USER_RIGHT_CREATE_USER']||$_SESSION['USER_RIGHT_MOVE_USER']){
+		$usersummary .= "\t<tr bgcolor='#999999'>\n"
+		. "\t<td align='center'><strong>{$usrhimself['user']}</strong></td>\n"
+		. "\t<td align='center'><strong>{$usrhimself['email']}</strong></td>\n"
+		. "\t\t<td align='center'><strong>{$usrhimself['full_name']}</strong></td>\n"
+		. "\t\t<td align='center'><strong>********</strong></td>\n";
 		
+		if(isset($usrhimself['parent_id']) && $usrhimself['parent_id']!=0) { 
+			$usersummary .= "\t\t<td align='center'>{$userlist[$usrhimself['parent_id']]['user']}</td>\n";
+		}
+		else
+		{
+			$usersummary .= "\t\t<td align='center'><strong>---</strong></td>\n";
+		}
+		$usersummary .= "\t\t<td align='center' style='padding-top:10px;'>\n";
+		
+		if ($_SESSION['loginID'] == "1")
+		{
+			$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
+			."<input type='submit' value='".$clang->gT("Edit User")."' />"
+			."<input type='hidden' name='action' value='modifyuser' />"
+			."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
+			."</form>";
+		}
+		// users are allowed to delete all successor users (but the admin not himself)
+		if ($usrhimself['parent_id'] != 0 && ($_SESSION['USER_RIGHT_DELETE_USER'] == 1 || ($usrhimself['uid'] == $_SESSION['loginID'])))
+		{
+			$usersummary .= "\t\t\t<form method='post' action='$scriptname?action=deluser'>"
+			."<input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.","js")."\")' />"
+			."<input type='hidden' name='action' value='deluser' />"
+			."<input type='hidden' name='user' value='{$usrhimself['user']}' />"
+			."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
+			."</form>";
+		}
+	
+		$usersummary .= "\t\t</td>\n"
+		. "\t</tr>\n";
+	
+		// empty row
+		if(count($userlist) > 0) $usersummary .= "\t<tr>\n\t<td height=\"20\" colspan=\"6\"></td>\n\t</tr>";
+	}
+
+	
 	// other users
 	$row = 0;
 	$usr_arr = $userlist;
