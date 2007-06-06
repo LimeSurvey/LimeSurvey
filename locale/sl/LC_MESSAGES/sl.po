@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Slovenianlanguage file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-05-18 20:40+0100\n"
+"PO-Revision-Date: 2007-06-06 12:26+0100\n"
 "Last-Translator: Gasper Koren <skrat@owca.info>\n"
 "Language-Team: LimeSurvey <gasper_koren@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -20,23 +20,23 @@ msgid "Please try again."
 msgstr "Prosimo, poskusite znova."
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/save.php:212
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:125
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:144
 msgid "You must supply a name for this saved session."
 msgstr "Za shranjeno anketo morate vpisati ime."
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/save.php:213
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:126
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:145
 msgid "You must supply a password for this saved session."
 msgstr "Za shranjeno anketo morate vpisati geslo."
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/save.php:215
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:127
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:146
 msgid "Your passwords do not match."
 msgstr "Gesli se ne ujemata."
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/save.php:221
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:139
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:249
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:140
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:250
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/register.php:71
 msgid "The answer to the security question is incorrect"
 msgstr "Odgovor na varnostno vprašanje ni pravilen"
@@ -46,7 +46,7 @@ msgid "This name has already been used for this survey. You must use a unique sa
 msgstr "To ime je bilo že uporabljeno za to anketo. Izbrati morate drugo ime."
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/save.php:292
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:355
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:374
 msgid "Saved Survey Details"
 msgstr "Podatki o shranjeni anketi"
 
@@ -55,19 +55,19 @@ msgid "You, or someone using your email address, have saved a survey in progress
 msgstr "Vi ali nekdo drug je z uporabo vašega e-naslova shranil nedokončano anketo. Spodnje podatke lahko uporabite za vrnitev na to anketo in nadaljevanje izpolnjevanja od točke, kjer ste končali."
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/save.php:296
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2023
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2022
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/userrighthandling.php:693
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:358
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:377
 msgid "Name"
 msgstr "Ime"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/save.php:297
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2026
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2052
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2025
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2051
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/userrighthandling.php:152
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/userrighthandling.php:328
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/login_check.php:83
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:359
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:378
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/usercontrol.php:196
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/usercontrol.php:338
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/usercontrol.php:341
@@ -75,20 +75,20 @@ msgid "Password"
 msgstr "Geslo"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/save.php:298
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:360
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:379
 msgid "Reload your survey by clicking on the following URL:"
 msgstr "Ponovno lahko začnete z anketo s klikom na to povezavo:"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/save.php:454
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:195
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2477
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2679
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:196
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2480
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2682
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1046
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/vvimport.php:96
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/importlabel.php:51
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/importlabel.php:76
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/templates.php:123
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:420
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:428
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:79
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:92
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:116
@@ -136,16 +136,17 @@ msgstr "Ponovno lahko začnete z anketo s klikom na to povezavo:"
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:457
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:527
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:545
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1331
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1479
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1485
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1332
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1480
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1486
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:65
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:81
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:105
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:125
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:126
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:127
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2227
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:118
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:122
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:144
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:145
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:146
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2243
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/install/createdb.php:68
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/install/createdb.php:100
 msgid "Error"
@@ -178,15 +179,15 @@ msgstr "Bodisi ste bili predolgo neaktivni ali pa je prišlo do problema z vašo
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:70
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:120
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:177
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:197
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:178
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:198
 msgid "Please contact"
 msgstr "Prosimo, obrnite se na"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:70
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:120
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:178
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:198
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:179
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:199
 msgid "for further assistance"
 msgstr "za nadaljnjo pomoč in vprašanja"
 
@@ -194,69 +195,69 @@ msgstr "za nadaljnjo pomoč in vprašanja"
 msgid "You have not provided a survey identification number"
 msgstr "Niste vnesli identifikacijske številke ankete"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:176
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:177
 msgid "This survey is no longer available."
 msgstr "Ta anketa ni več na voljo."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:196
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:197
 msgid "You have already completed this survey."
 msgstr "To anketo ste že izpolnili."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:236
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:237
 msgid "You did not provide a name"
 msgstr "Niste vpisali imena"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:241
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:242
 msgid "You did not provide a password"
 msgstr "Niste vpisali gesla"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:269
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:273
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1941
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:270
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:274
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1940
 msgid "Load Unfinished Survey"
 msgstr "Naloži nedokončano anketo"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:297
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1085
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1127
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:298
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1086
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1128
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "Ta anketa ni javno dostopna. Za sodelovanje potrebujete dostopno geslo."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:298
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1128
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:299
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1129
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr "Dostopno geslo, ki ste ga vnesli ni veljavno ali pa je bilo že uporabljeno."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:299
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1129
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1213
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:300
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1130
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1214
 msgid "For further information contact"
 msgstr "Za dodatne informacije se obrnite na"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:302
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1132
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1216
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:303
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1133
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1217
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/group.php:152
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/question.php:134
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/survey.php:144
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/register.php:149
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2008
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2007
 msgid "Close this Window"
 msgstr "Zapri okno"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:383
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:384
 msgid "Survey Saved"
 msgstr "Anketa je bila shranjena"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:415
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:416
 msgid "There is no matching saved survey"
 msgstr "Podatki se ne ujemajo z nobeno izmed shranjenih anket"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:490
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:491
 msgid "complete"
 msgstr "zaključeno"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:942
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:943
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:2187
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:2471
 msgid ""
@@ -280,102 +281,96 @@ msgstr ""
 "\n"
 "{ADMINNAME}"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:960
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:961
 msgid "Survey Submitted"
 msgstr "Anketa je bila poslana"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:961
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:962
 msgid "A new response was entered for your survey"
 msgstr "Vaša anketa je dobila nov odgovor"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:964
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:965
 msgid "Click the following link to reload the survey:"
 msgstr "Kliknite na to povezavo za osvežitev ankete:"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:968
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:969
 msgid "Click the following link to see the individual response:"
 msgstr "Podatki o posameznih odgovorih so vam na voljo tukaj:"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:971
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:972
 msgid "Click the following link to edit the individual response:"
 msgstr "Kliknite na to povezavo za urejanje posameznega odgovora:"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:974
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:975
 msgid "View statistics by clicking here:"
 msgstr "Statistike so vam na voljo tukaj:"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1024
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1025
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/group.php:120
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/question.php:105
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/survey.php:113
 msgid "Did Not Save"
 msgstr "Ni bilo shranjeno"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1025
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1026
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "Prišlo je do nepričakovane napake. Vaših odgovorov ni mogoče shraniti."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1028
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1029
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr "Vaši odgovori NISO bili izgubljeni. Poslani so bili administratorju ankete in bodo vključeni v končne rezultate."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1029
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1030
 msgid "An error occurred saving a response to survey id"
 msgstr "Prišlo je do napake pri shranjevanju odgovorov za identifikacijsko številko ankete"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1030
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1031
 msgid "DATA TO BE ENTERED"
 msgstr "PODATKI ZA VNOS"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1035
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1036
 msgid "SQL CODE THAT FAILED"
 msgstr "NAPAKA V SQL STAVKU"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1037
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1038
 msgid "ERROR MESSAGE"
 msgstr "SPOROČILO O NAPAKI"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1039
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1040
 msgid "Error saving results"
 msgstr "Napaka pri shranjevanju rezultatov"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1047
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1048
 msgid "Try to submit again"
 msgstr "Poskusite poslati ponovno"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1086
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1087
 msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr "Če vam je bilo posredovano dostopno geslo, ga vpišite v spodnje polje in kliknite za nadaljevanje."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1093
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1359
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1094
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1358
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:307
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:435
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:439
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:446
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:447
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:451
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:452
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:473
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:474
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:827
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:482
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:483
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:837
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:356
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:571
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1139
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:442
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1421
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1140
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:461
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1437
 msgid "Token"
 msgstr "Dostopno geslo"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1098
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2037
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2057
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2102
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1099
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2036
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2056
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2101
 msgid "Security Question"
 msgstr "Varnostno vprašanje"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1101
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2126
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1102
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2125
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:1446
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:1451
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:1500
@@ -414,8 +409,8 @@ msgstr "Varnostno vprašanje"
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/access_denied.php:146
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:213
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:232
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:849
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1010
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:850
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1011
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/usercontrol.php:57
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/usercontrol.php:80
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/usercontrol.php:86
@@ -429,29 +424,29 @@ msgstr "Varnostno vprašanje"
 msgid "Continue"
 msgstr "Nadaljuj"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1212
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1213
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Ta anketa še nima nobenih vprašanj, zato je ni mogoče testirati ali izpolniti."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1431
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1432
 msgid "prev"
 msgstr "nazaj"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1436
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1441
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1446
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1437
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1442
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1447
 msgid "next"
 msgstr "naprej"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1451
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1452
 msgid "last"
 msgstr "zadnje"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1456
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1896
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:152
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1240
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2210
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/index.php:1457
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1895
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:171
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1256
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2226
 msgid "submit"
 msgstr "pošlji"
 
@@ -583,31 +578,31 @@ msgstr "Na eno ali več vprašanj niste odgovorili z veljavnim odgovorom. Z anke
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:524
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:621
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:716
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:847
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:959
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1020
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1069
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1073
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1810
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1846
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1884
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1938
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1976
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2025
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2064
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2123
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2268
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2325
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2383
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2401
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2455
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2501
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2502
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2665
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2674
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1484
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1492
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:718
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:850
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:962
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1023
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1072
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1076
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1813
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1849
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1887
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1941
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1979
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2028
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2067
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2126
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2271
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2328
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2386
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2404
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2458
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2504
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2505
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2668
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2677
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1483
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1491
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:331
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:353
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:365
@@ -627,7 +622,7 @@ msgstr "Na eno ali več vprašanj niste odgovorili z veljavnim odgovorom. Z anke
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/results.php:283
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/results.php:365
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/results.php:397
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1619
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1635
 msgid "No answer"
 msgstr "Brez odgovora"
 
@@ -641,45 +636,45 @@ msgstr "(npr.: 2003-12-25 za Božič)"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:566
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:611
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:706
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:626
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:653
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:690
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:719
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:968
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1037
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1631
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1656
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1694
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1727
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1966
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2020
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2035
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2056
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2077
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2097
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2128
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:708
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:645
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:669
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:706
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:735
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:984
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1053
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1647
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1672
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1710
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1743
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1982
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2036
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2051
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2072
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2093
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2113
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2144
 msgid "Please choose"
 msgstr "Prosimo, izberite"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:619
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:714
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:825
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:716
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:828
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:936
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:831
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:939
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1399
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1502
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2627
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1468
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1660
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1726
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1736
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:545
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:557
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:577
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:874
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:898
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:942
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1402
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1505
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2630
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1467
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1659
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1725
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1735
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:554
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:566
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:586
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:884
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:908
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:1008
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:1358
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:1386
@@ -691,88 +686,88 @@ msgstr "Prosimo, izberite"
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/printablesurvey.php:383
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/printablesurvey.php:450
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/printablesurvey.php:462
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:671
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:708
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1671
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1677
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1705
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1711
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1937
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:687
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:724
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1687
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1693
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1721
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1727
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1953
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1997
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1969
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2013
 msgid "Other"
 msgstr "Drugo"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:990
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:993
 msgid "Please choose one of the following"
 msgstr "Prosimo, izberite eno izmed naslednjih možnosti"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:991
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:994
 msgid "Please enter your comment here"
 msgstr "Prosimo, vpišite svoj komentar"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1236
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:855
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1851
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1239
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:871
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1867
 msgid "Remove this item"
 msgstr "Odstrani ta element"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1277
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1280
 msgid "Click on an item in the list on the left, starting with your"
 msgstr "Kliknite na element v spisku na levi strani. Pričnite z"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1278
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1281
 msgid "highest ranking item, moving through to your lowest ranking item."
 msgstr "najvišje ocenjenim in nadaljujte do najnižje ocenjenega elementa."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1283
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:877
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1884
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1286
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:893
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1900
 msgid "Your Choices"
 msgstr "Vaše izbire"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1292
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1298
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:882
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1889
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1295
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1301
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:898
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1905
 msgid "Your Ranking"
 msgstr "Vaša razvrstitev"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1306
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1309
 msgid "Click on the scissors next to each item on the right"
 msgstr "Kliknite na škarje poleg vsakega elementa na desni"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1307
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1310
 msgid "to remove the last entry in your ranked list"
 msgstr "če želite izbrisati zadnji vnos v vaši razvrstitvi"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1428
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1431
 msgid "Please choose at most"
 msgstr "Prosimo, izberite največ"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1428
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1431
 msgid "answer(s) for question"
 msgstr "odgovor(i) za vprašanje"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1483
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1509
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1486
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1512
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/printablesurvey.php:395
 msgid "Make a comment on your choice here:"
 msgstr "Pojasnite vašo izbiro:"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1627
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1630
 msgid "Only numbers may be entered in this field"
 msgstr "V to polje lahko vpisujete samo številke"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1796
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2059
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2097
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1476
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1482
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1498
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:924
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:951
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:962
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1799
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2062
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2100
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1475
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1481
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1497
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:934
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:961
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:972
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:1884
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:1895
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:1906
@@ -818,29 +813,29 @@ msgstr "V to polje lahko vpisujete samo številke"
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/results.php:387
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/stats.php:562
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/stats.php:639
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1045
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1046
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/printablesurvey.php:149
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/printablesurvey.php:167
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/printablesurvey.php:528
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/printablesurvey.php:579
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1040
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1101
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1495
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1513
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2021
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2078
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1056
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1117
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1511
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1529
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2037
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2094
 msgid "Yes"
 msgstr "da"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1802
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2061
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2109
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1483
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1499
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:925
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:952
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:953
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:965
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1805
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2064
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2112
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1482
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1498
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:935
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:962
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:963
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:975
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:1887
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:1898
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:1909
@@ -883,23 +878,23 @@ msgstr "da"
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/results.php:389
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/stats.php:572
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/stats.php:644
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1047
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1048
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/printablesurvey.php:150
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/printablesurvey.php:169
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/printablesurvey.php:529
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/printablesurvey.php:581
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1043
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1107
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1496
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1515
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2022
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2080
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1059
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1123
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1512
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1531
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2038
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2096
 msgid "No"
 msgstr "ne"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1832
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1491
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:933
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1835
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1490
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:943
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/spss.php:495
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:368
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:345
@@ -910,15 +905,15 @@ msgstr "ne"
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/stats.php:671
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/printablesurvey.php:157
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/printablesurvey.php:280
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:629
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1503
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1632
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:648
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1519
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1648
 msgid "Female"
 msgstr "ženski"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1838
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1490
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:932
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:1841
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1489
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:942
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/spss.php:496
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:369
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:348
@@ -929,16 +924,16 @@ msgstr "ženski"
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/stats.php:666
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/printablesurvey.php:156
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/printablesurvey.php:281
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:632
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1502
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1633
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:651
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1518
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1649
 msgid "Male"
 msgstr "moški"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2060
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2102
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1500
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:968
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2063
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2105
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1499
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:978
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:311
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:463
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:1285
@@ -947,16 +942,16 @@ msgstr "moški"
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/stats.php:567
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/printablesurvey.php:168
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/printablesurvey.php:580
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1104
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1514
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2079
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1120
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1530
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2095
 msgid "Uncertain"
 msgstr "neodločen"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2263
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2301
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1506
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:975
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2266
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2304
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1505
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:985
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:315
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:495
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:1296
@@ -965,15 +960,15 @@ msgstr "neodločen"
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/stats.php:589
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/printablesurvey.php:175
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/printablesurvey.php:597
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1521
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2098
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1537
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2114
 msgid "Increase"
 msgstr "povečalo"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2264
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2306
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1508
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:978
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2267
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2309
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1507
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:988
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:316
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:498
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:1297
@@ -982,15 +977,15 @@ msgstr "povečalo"
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/stats.php:594
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/printablesurvey.php:177
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/printablesurvey.php:598
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1523
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2099
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1539
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2115
 msgid "Same"
 msgstr "ostalo enako"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2265
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2312
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1507
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:981
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2268
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/qanda.php:2315
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1506
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:991
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:317
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:501
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:1298
@@ -999,8 +994,8 @@ msgstr "ostalo enako"
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/stats.php:599
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/printablesurvey.php:176
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/printablesurvey.php:599
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1522
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2100
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1538
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2116
 msgid "Decrease"
 msgstr "zmanjšalo"
 
@@ -1091,10 +1086,10 @@ msgstr "Ankete"
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:782
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:807
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:850
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:3000
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:3022
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:3047
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:3073
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2999
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:3021
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:3046
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:3072
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:108
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/questionhandling.php:81
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/questionhandling.php:217
@@ -1106,8 +1101,8 @@ msgstr "Prosimo, izberite..."
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:783
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:808
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:851
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:3023
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:3048
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:3022
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:3047
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:659
 msgid "None"
 msgstr "Noben"
@@ -1178,7 +1173,7 @@ msgid "Multiple Short Text"
 msgstr "Več kratkih tekstovnih vnosov"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:708
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:538
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:547
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:1050
 msgid "Ranking"
 msgstr "Razvrščanje"
@@ -1247,34 +1242,34 @@ msgstr "Kaže, da nekatere tabele ali polja v podatkovni bazi manjkajo."
 msgid "Check Database Fields"
 msgstr "Preveri polja v podatkovni bazi"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1241
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1240
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/vvimport.php:69
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/vvimport.php:80
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/assessments.php:87
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/saved.php:142
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/vvexport.php:84
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/vvexport.php:82
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:76
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:311
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:387
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:406
 msgid "Return to Survey Administration"
 msgstr "Nazaj na upravljanje z anketo"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1246
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1245
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/saved.php:147
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:315
 msgid "Show summary information"
 msgstr "Pokaži povzetek"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1249
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1248
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/saved.php:149
 msgid "Display Responses"
 msgstr "Prikaži odgovore"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1252
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1251
 msgid "Display Last 50 Responses"
 msgstr "Prikaži zadnjih 50 odgovorov"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1254
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1253
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:479
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:480
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:489
@@ -1282,255 +1277,255 @@ msgstr "Prikaži zadnjih 50 odgovorov"
 msgid "Dataentry Screen for Survey"
 msgstr "Stran za vnos podatkov za anketo"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1257
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1256
 msgid "Get statistics from these responses"
 msgstr "Izdelaj statistike odgovorov"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1262
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1261
 msgid "Export Results to Application"
 msgstr "Izvoz rezultatov"
 
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1263
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1264
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1265
 msgid "Export result to a SPSS command file"
 msgstr "Izvoz podatkov v SPSS"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1267
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1266
 msgid "Import answers from a deactivated survey table"
 msgstr "Uvozi podatke iz tabele deaktivirane ankete"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1270
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1269
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:607
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:608
 msgid "View Saved but not submitted Responses"
 msgstr "Prikaži odgovore nedokončanih (shranjenih) anket"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1272
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1271
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/vvimport.php:54
 msgid "Import a VV survey file"
 msgstr "Uvozi VV datoteko ankete"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1276
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/vvexport.php:67
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1275
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/vvexport.php:65
 msgid "Export a VV survey file"
 msgstr "Izvozi VV datoteko ankete"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1358
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1357
 msgid "Preset"
 msgstr "Prednastavljeno"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1360
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1359
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:173
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:361
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:446
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:465
 msgid "Date Stamp"
 msgstr "Datum"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1361
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:812
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1360
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:822
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:177
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:365
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/saved.php:106
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:450
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:469
 msgid "IP Address"
 msgstr "IP naslov"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1362
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1361
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:181
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:369
 msgid "Referring URL"
 msgstr "URL prihoda"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1677
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1730
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1676
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1746
 msgid "Comment"
 msgstr "Komentar"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1852
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1851
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr "Pozor: v vašem brskalniku je onemogočeno izvajanje JavaScript-a zaradi česar morda ne boste mogli odgovoriti na vsa vprašanja. Prosimo, preverite nastavitve vašega brskalnika."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1864
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1863
 msgid "There is 1 question in this survey"
 msgstr "V tej anketi je eno vprašanje"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1868
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1867
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "V tej anketi je {NUMBEROFQUESTIONS} vprašanj."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1906
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1905
 msgid "A Note On Privacy"
 msgstr "Obvestilo o zasebnosti"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1906
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1905
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:680
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:1924
 msgid "This survey is anonymous."
 msgstr "Ta anketa je anonimna."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1906
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1905
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr "Vaši odgovori na anketna vprašanja, ki se shranjujejo v bazo odgovorov ne vsebujejo nobenih informacij, prek katerih bi vas bilo mogoče identificirati, razen v primeru ko so le te del odgovora na anketno vprašanje. Če odgovarjate na anketo, ki za dostop uporablja geslo, se podatki o geslu ne hranijo skupaj z odgovori na anketna vprašanja. Identifikacijski podatki se hranijo v posebni bazi in služijo zgolj kot informacija, če ste že (oz. še niste) odgovorili na anketo. Gesel v nobenem primeru ni mogoče povezati z odgovori na anketo."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1915
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1914
 msgid "Are you sure you want to clear all your responses?"
 msgstr "Ali ste prepričani, da želite izbrisati vse vaše odgovore?"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1916
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1915
 msgid "Exit and Clear Survey"
 msgstr "Izhod brez pošiljanja odgovorov"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1949
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1948
 msgid "Save Survey and Return"
 msgstr "Shrani anketo in se vrni"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1967
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1966
 msgid "Thank You!"
 msgstr "Najlepša hvala!"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1967
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1966
 msgid "You have completed answering the questions in this survey."
 msgstr "Z odgovarjanjem na to anketo ste zaključili."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1967
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1966
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "S klikom na gumb 'Pošlji podatke' boste zaključili odgovarjanje na anketo in shranili vaše odgovore."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1973
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1972
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr "Če želite preveriti vaše odgovore ali jih popraviti, lahko to storite s klikanjem na gumb [<<  Nazaj ]."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1994
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1993
 msgid "Answers Cleared"
 msgstr "Odgovori so izbrisani"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1999
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2005
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:1998
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2004
 msgid "Restart this Survey"
 msgstr "Ponovno začni z anketo"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2016
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2015
 msgid "Return To Survey"
 msgstr "Nazaj na anketo"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2018
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2017
 msgid "Save Your Unfinished Survey"
 msgstr "Shrani nedokončano anketo"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2019
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2018
 msgid "Enter a name and password for this survey and click save below."
 msgstr "Vpišite ime in geslo za to anketo in kliknite shrani."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2019
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2018
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr "Vaša anketa bo shranjena s tem imenom in geslom in jo lahko dokončate kasneje, če se prijavite s tem imenom in geslom."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2019
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2018
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "Če ste vpisali tudi e-mail naslov boste prejeli e-mail s potrebnimi podatki."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2029
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2028
 msgid "Repeat Password"
 msgstr "Ponovi geslo"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2032
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2031
 msgid "Your Email"
 msgstr "Vaš elektronski naslov"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2040
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2039
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:1600
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:1653
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/userrighthandling.php:274
 msgid "Save Now"
 msgstr "Shrani"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2045
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2044
 msgid "Load A Previously Saved Survey"
 msgstr "Naloži shranjeno anketo"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2046
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2045
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr "Ponovno lahko naložite vašo shranjeno anketo."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2046
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2045
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr "Vpišite ime in geslo s katerim ste shranili anketo."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2049
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2048
 msgid "Saved name"
 msgstr "Shranjeno ime"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2062
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2061
 msgid "Load Now"
 msgstr "Naloži anketo"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2067
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2066
 msgid "You must be registered to complete this survey"
 msgstr "Če želite odgovoriti na to anketo, morate biti registrirani."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2068
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2067
 msgid "You may register for this survey if you wish to take part."
 msgstr "Če želite sodelovati v tej anketi se lahko registrirate."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2068
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2067
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "Vnesite vaše podatke in poslali vam bomo e-mail s podatki in povezavo za sodelovanje v anketi."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2075
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2074
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:301
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:463
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:464
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:815
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:472
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:473
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:825
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/spss.php:94
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:559
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1121
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1122
 msgid "First Name"
 msgstr "Ime"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2082
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2081
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:303
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:458
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:459
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:818
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:467
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:468
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:828
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/spss.php:97
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:563
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1127
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1128
 msgid "Last Name"
 msgstr "Priimek"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2089
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:468
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:469
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2088
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:477
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:478
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/saved.php:108
 msgid "Email Address"
 msgstr "Elektronski naslov"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2133
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2132
 msgid "Your Assessment"
 msgstr "Vaša ocena"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2399
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2398
 msgid "Online Manual"
 msgstr "Online Navodila"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2402
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2401
 msgid "Support this project - Donate to "
 msgstr "Podprite ta projekt - donirajte"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2405
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2404
 msgid "Visit our website!"
 msgstr "Obiščite našo spletno stran!"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2750
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2755
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2749
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2754
 msgid "Executing"
 msgstr "Izvajam"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2750
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2749
 msgid "Failed! Reason: "
 msgstr "Ni uspelo! Razlog:"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2755
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/common.php:2754
 msgid "Success!"
 msgstr "Uspešno!"
 
@@ -1597,13 +1592,13 @@ msgstr "Nazaj na uvoz odgovorov"
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/importquestion.php:61
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/importquestion.php:422
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:432
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1244
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1270
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1336
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1400
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1474
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:380
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1349
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1245
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1271
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1337
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1401
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1475
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:399
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1365
 msgid "Success"
 msgstr "Uspešno"
 
@@ -1649,13 +1644,13 @@ msgstr "Skupno število uvoženih zapisov"
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:129
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:145
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:315
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:640
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:639
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:1560
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:396
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:407
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1352
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1372
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:415
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:426
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1368
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1388
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1404
 msgid "Browse Responses"
 msgstr "Preglej odgovore"
 
@@ -1697,8 +1692,8 @@ msgid "Heading"
 msgstr "Glava"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/assessments.php:108
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:757
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:910
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:758
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:911
 msgid "Message"
 msgstr "Besedilo"
 
@@ -1743,9 +1738,9 @@ msgstr "Opravila"
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/userrighthandling.php:438
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/userrighthandling.php:762
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/deletesurvey.php:92
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:574
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:570
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/questionhandling.php:524
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1081
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1082
 msgid "Delete"
 msgstr "Izbriši"
 
@@ -1790,11 +1785,11 @@ msgstr "Uvozi seznam odgovorov"
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:145
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:197
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:266
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:711
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:712
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/deactivate.php:79
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:69
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:84
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2229
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2245
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/usercontrol.php:149
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/install/createdb.php:56
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/install/createdb.php:72
@@ -2015,7 +2010,7 @@ msgid "Upload a File"
 msgstr "Naloži datoteko"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/templates.php:569
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1554
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1555
 msgid "Upload"
 msgstr "Naloži"
 
@@ -2028,7 +2023,7 @@ msgid "Export Results"
 msgstr "Izvozi rezultate"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:130
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/vvexport.php:80
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/vvexport.php:78
 msgid "Export Responses"
 msgstr "Izvozi odgovore"
 
@@ -2065,20 +2060,20 @@ msgid "Question Codes"
 msgstr "Kode vprašanj"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:159
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/vvexport.php:73
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/vvexport.php:71
 msgid "Filter incomplete answers"
 msgstr "Filtriraj nepopolne odgovore"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:160
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:573
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/vvexport.php:75
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:572
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/vvexport.php:73
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:655
 msgid "Enable"
 msgstr "Omogoči"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:161
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:574
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/vvexport.php:76
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:573
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/vvexport.php:74
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:656
 msgid "Disable"
 msgstr "Onemogoči"
@@ -2158,22 +2153,22 @@ msgid "Your survey can export associated token data with each response. Select a
 msgstr "Skupaj z odgovori lahko izvozite tudi podatke o dostopnih geslih. Izberite dodatna polja, ki jih želite vključiti v izvoz podatkov."
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:305
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:821
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:831
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/spss.php:100
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/userrighthandling.php:150
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/userrighthandling.php:326
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/userrighthandling.php:729
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/login_check.php:52
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:567
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1133
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1134
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/usercontrol.php:78
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/usercontrol.php:206
 msgid "Email"
 msgstr "Elektronski naslov"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:314
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:479
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:830
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:488
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:840
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:1952
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:2485
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/spss.php:79
@@ -2183,8 +2178,8 @@ msgid "Attribute 1"
 msgstr "Lastnost 1"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:316
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:484
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:833
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:493
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:843
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:1954
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:2486
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/spss.php:80
@@ -2193,33 +2188,35 @@ msgstr "Lastnost 1"
 msgid "Attribute 2"
 msgstr "Lastnost 2"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:498
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:499
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1443
-msgid "IP-Address"
-msgstr "IP naslov"
-
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:773
-msgid "NEW RECORD"
-msgstr "NOV ZAPIS"
-
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:809
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:502
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:503
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:819
 msgid "Time Submitted"
 msgstr "Čas, ko je bila anketa poslana"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:824
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:507
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:508
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1459
+msgid "IP-Address"
+msgstr "IP naslov"
+
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:783
+msgid "NEW RECORD"
+msgstr "NOV ZAPIS"
+
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:834
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:151
 msgid "ID"
 msgstr "ID"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:836
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:846
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:576
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1151
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1152
 msgid "Language"
 msgstr "Jezik"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:926
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:934
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:936
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/exportresults.php:944
 msgid "N/A"
 msgstr "N/A"
 
@@ -2247,7 +2244,7 @@ msgstr "Nobena anketa ne ustreza."
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:168
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:356
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:442
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:461
 msgid "Token ID"
 msgstr "ID gesla:"
 
@@ -2262,6 +2259,7 @@ msgid "View Response"
 msgstr "Preglej odgovore"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:262
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:124
 msgid "Edit this entry"
 msgstr "Uredi ta vnos"
 
@@ -2276,14 +2274,14 @@ msgstr "Izvozi ta vnos"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:277
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:278
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:541
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:540
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:494
 msgid "Show previous..."
 msgstr "Prikaži prejšnje..."
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:281
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:282
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:545
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:544
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:498
 msgid "Show next..."
 msgstr "Prikaži naslednje..."
@@ -2301,51 +2299,51 @@ msgstr "Zapri"
 msgid "Data View Control"
 msgstr "Upravljanje pregleda podatkov"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:538
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:537
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:491
 msgid "Show start.."
 msgstr "Prikaži začetek.."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:548
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:547
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:501
 msgid "Show last..."
 msgstr "Prikaži zadnje..."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:570
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:569
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:515
 msgid "Records Displayed:"
 msgstr "Prikazani zapisi:"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:571
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:570
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:516
 msgid "Starting From:"
 msgstr "Začni z"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:572
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:571
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:654
 msgid "Filter incomplete answers:"
 msgstr "Filtriraj nepopolne odgovore:"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:576
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:575
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:517
 msgid "Show"
 msgstr "Prikaži"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:602
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:390
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1351
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:601
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:409
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1367
 msgid "View This Record"
 msgstr "Preglej ta zapis"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:653
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:652
 msgid "responses for this survey"
 msgstr "odgovori na to anketo"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:654
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:653
 msgid "full responses"
 msgstr "polni odgovori"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:655
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/browse.php:654
 msgid "responses not completly filled out"
 msgstr "odgovori niso izpolnjeni do konca"
 
@@ -2509,7 +2507,7 @@ msgstr "Prosimo, izberite jezik:"
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:1107
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:2593
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/deletesurvey.php:91
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:699
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:700
 msgid "Cancel"
 msgstr "Prekliči"
 
@@ -2792,8 +2790,9 @@ msgid "Questions with conditions to this group"
 msgstr "Vprašanja s pogoji na to skupino"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:999
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:611
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:659
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:607
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:655
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:720
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:1630
 msgid "Question"
 msgstr "Vprašanje"
@@ -2899,18 +2898,18 @@ msgstr "Tip:"
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:1396
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:2268
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:2691
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:383
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:392
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:427
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:394
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:403
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:438
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/activate.php:233
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/deletesurvey.php:72
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/questionhandling.php:586
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:254
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:693
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:843
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:862
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1006
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1026
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:694
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:844
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:863
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1007
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1027
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/deactivate.php:50
 msgid "Warning"
 msgstr "Opozorilo"
@@ -2950,7 +2949,7 @@ msgid "Code"
 msgstr "Koda"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:1279
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:664
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:660
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:1022
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:1037
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:1376
@@ -2971,7 +2970,7 @@ msgstr "Privzeto"
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:1331
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:1335
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:335
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:652
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:684
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/database.php:764
 msgid "Del"
 msgstr "Izbriši"
@@ -2980,7 +2979,7 @@ msgstr "Izbriši"
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:2233
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:2314
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:341
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:628
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:660
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/questionhandling.php:547
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/questionhandling.php:623
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/database.php:740
@@ -2991,7 +2990,7 @@ msgstr "Gor"
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:2245
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:2319
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:346
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:640
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:672
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/questionhandling.php:559
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/questionhandling.php:627
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/database.php:752
@@ -3000,7 +2999,7 @@ msgstr "Dol"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:1356
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:353
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:595
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:616
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/database.php:672
 msgid "Save All"
 msgstr "Shrani vse"
@@ -3344,7 +3343,7 @@ msgstr "Elektronski naslov za povabilo:"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:2167
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:2459
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:730
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:731
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -3400,7 +3399,7 @@ msgstr "Elektronsko sporočilo za opomnik:"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:2177
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:2465
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:880
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:881
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -3502,7 +3501,7 @@ msgid "URL Description:"
 msgstr "Opis povezave:"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:2205
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:569
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:580
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/questionhandling.php:515
 msgid "Save"
 msgstr "Shrani"
@@ -3568,9 +3567,9 @@ msgstr "Oblika datuma"
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/html.php:2540
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/userrighthandling.php:866
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:198
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:538
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:534
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/questionhandling.php:135
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1569
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1585
 msgid "OR"
 msgstr "ALI"
 
@@ -3623,7 +3622,7 @@ msgid "Select the field number you would like to use for your answers:"
 msgstr "Izberite številko polja, ki ga želite uporabiti za odgovore:"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/saved.php:74
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:394
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:413
 msgid "Browse Saved Responses"
 msgstr "Prebrskaj shranjene odgovore"
 
@@ -3892,7 +3891,7 @@ msgstr "Dodajanje uporabnika v skupino"
 msgid "LimeSurvey Online Manual"
 msgstr "LimeSurvey Spletni Vodič"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/vvexport.php:69
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/vvexport.php:67
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dumpsurvey.php:63
 msgid "Export Survey"
 msgstr "Izvoz ankete"
@@ -3980,7 +3979,7 @@ msgid "Label Set"
 msgstr "Seznam odgovorov"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:245
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:714
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:710
 msgid "Close Window"
 msgstr "Zapri okno"
 
@@ -4008,53 +4007,61 @@ msgid "New label"
 msgstr "Nov odgovor"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:366
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:573
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:584
 msgid "Add new label"
 msgstr "Dodaj nov odgovor"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:383
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:394
 msgid "Inserting New labels must be done on the first language folder."
 msgstr "Nove labele morate dodati v mapo prvega jezika."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:392
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:403
 msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
 msgstr "Pri tem seznamu odgovorov ne morete spreminjati kod odgovorov, dodajati ali spreminjati vnosov, ker je seznam uporabljen v anketi, ki je trenutno aktivna."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:417
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:661
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:428
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:693
 msgid "Fix Sort"
 msgstr "Fiksiraj vrstni red"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:427
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:438
 msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
 msgstr "Nekatere ankete trenutno uporabljajo ta seznam odgovorov. Spreminjanje kod odgovorov, dodajanje ali spreminjanje vnosov k temu seznamu odgovorov lahko povzročijo nezaželene rezultate v drugih anketah."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:485
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:496
 msgid "Failed to Copy already defined labels to added languages"
 msgstr "Kopiranje obstoječih label v dodane jezike ni uspelo."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:501
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:512
 msgid "Failed to delete labels for removed languages"
 msgstr "Brisanje label za odstranjene jezike ni uspelo"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:509
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:549
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:520
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:560
 msgid "Update of Label Set failed"
 msgstr "Urejanje seznama odgovorov ni uspelo"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:525
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:536
 msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
 msgstr "Seznama odgovorov ni mogoče izbrisati. Nekatera vprašanja se nanašajo na seznam odgovorov. Če ga res želite izbrisati, morate najprej izbrisati ta vprašanja."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:588
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:604
 msgid "Failed to insert label"
 msgstr "Vstavljanje labele ni uspelo"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:618
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:610
+msgid "This label code is already used in this labelset. Please choose another code or rename the existing one."
+msgstr "Ta koda labele je v tem setu label že uporabljena. Izberite drugo kodo ali preimenujte že obstoječo kodo."
+
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:645
 msgid "Failed to update label"
 msgstr "Posodabljanje labele ni uspelo"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:656
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:654
+msgid "Can't update labels because you are using duplicated codes"
+msgstr "Label ni mogoče posodobiti ker prihaja do podvajanja kod label."
+
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/labels.php:688
 msgid "Failed to delete label"
 msgstr "Brisanje labele ni uspelo"
 
@@ -4276,47 +4283,47 @@ msgstr "Pogoji, ki jih želite prekopirati, niso bili izbrani"
 msgid "No question selected to copy condition to"
 msgstr "Vprašanja, h katerim želite prekopirati pogoje, niso bila izbrana"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:498
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:494
 msgid "Only show question {QID} IF"
 msgstr "Prikaži samo vprašanja {QID} s pogojem"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:531
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:527
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:186
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:327
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/printablesurvey.php:129
 msgid "and"
 msgstr "in"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:559
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:688
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:555
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:684
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/stats.php:369
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/stats.php:375
 msgid "Equals"
 msgstr "je enako"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:606
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:637
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:602
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:633
 msgid "Copy Conditions"
 msgstr "Pogoji za kopiranje"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:611
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:607
 msgid "Condition"
 msgstr "Pogoj"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:624
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:620
 msgid "copy to"
 msgstr "kopiraj v"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:637
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:633
 msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
 msgstr "Ali ste prepričani, da želite skopirati te pogoje k vprašanjem, ki ste jih izbrali?"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:654
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:698
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:650
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:694
 msgid "Add Condition"
 msgstr "Dodaj pogoj"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:697
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/conditions.php:693
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:660
 msgid "Clear"
 msgstr "Izbriši"
@@ -4385,7 +4392,7 @@ msgstr "Uredi vprašanje"
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/questionhandling.php:394
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/questionhandling.php:425
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/questionhandling.php:453
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:609
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:628
 msgid "Cannot be modified"
 msgstr "Spremembe niso možne"
 
@@ -4526,7 +4533,7 @@ msgid "Number Less Than"
 msgstr "Število, manjše kot"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/statistics.php:176
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1432
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1448
 msgid "Datestamp"
 msgstr "Datum"
 
@@ -4942,7 +4949,7 @@ msgid "You have not selected a survey"
 msgstr "Niste izbrali ankete"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:143
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2228
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2244
 msgid "The survey you selected does not exist"
 msgstr "Anketa, ki ste jo izbrali ne obstaja"
 
@@ -4976,13 +4983,13 @@ msgid "Restore"
 msgstr "Obnovi"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:318
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1246
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1272
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1247
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1273
 msgid "Display Tokens"
 msgstr "Prikaži dostopna gesla"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:325
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1273
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1274
 msgid "Add new token entry"
 msgstr "Dodaj nov vnos z dostopnim geslom"
 
@@ -4995,7 +5002,6 @@ msgid "Import Tokens from LDAP Query"
 msgstr "Uvozi gesla s pomočjo LDAP poizvedbe"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:335
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:336
 msgid "Export Tokens to CSV file"
 msgstr "Izvozi dostopna gesla v CSV datoteko"
 
@@ -5094,12 +5100,12 @@ msgid "Sort by: "
 msgstr "Sortiraj po:"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:581
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1162
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1163
 msgid "Invite sent?"
 msgstr "Povabilo poslano?"
 
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:585
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1172
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1173
 msgid "Completed?"
 msgstr "Zaključeno?"
 
@@ -5115,407 +5121,407 @@ msgstr "Izbriši dostopno geslo"
 msgid "Do Survey"
 msgstr "Izvedi anketiranje"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:644
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:645
 msgid "Update Response"
 msgstr "Dopolni odgovore"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:659
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:660
 msgid "Send invitation email to this entry"
 msgstr "Pošlji elektronsko sporočilo z vabilom na ta vnos"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:668
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:669
 msgid "Send reminder email to this entry"
 msgstr "Pošlji elektronsko sporočilo z opomnikom za ta vnos"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:687
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:688
 msgid "Delete Tokens Table"
 msgstr "Izbriši tabelo dostopnih gesel"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:694
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:695
 msgid "If you delete this table tokens will no longer be required to access this survey."
 msgstr "Če boste izbrisali tabelo z gesli bo anketa postala dostopna brez gesel."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:694
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:695
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
 msgstr "Če nadaljujete, bo izdelana varnostna kopija te tabele. Do nje bo lahko dostopal administrator sistema."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:697
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:698
 msgid "Delete Tokens"
 msgstr "Izbriši dostopna gesla"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:708
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:709
 msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
 msgstr "Tabela z dostopnimi gesli je bila odstranjena. Gesla niso več potrebna za sodelovanje v tej anketi."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:708
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:709
 msgid "A backup of this table has been made and can be accessed by your system administrator."
 msgstr "Ustvarjena je bila varnostna kopija te tabele, ki je dostopna administratorju sistema."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:724
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:725
 msgid "Email Invitation"
 msgstr "Povabila prek elektronske pošte"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:745
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:746
 msgid "to TokenID No"
 msgstr "k številki žetona"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:749
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:884
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:943
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:750
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:885
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:944
 msgid "From"
 msgstr "Od"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:753
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:888
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:754
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:889
 msgid "Subject"
 msgstr "Zadeva"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:765
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:766
 msgid "Send Invitations"
 msgstr "Pošlji povabila"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:775
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:776
 msgid "Sending Invitations"
 msgstr "Pošiljanje povabil"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:778
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:904
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:944
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:779
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:905
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:945
 msgid "Sending to TID No:"
 msgstr "Pošiljam k TID št.:"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:829
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:830
 msgid "Invitation Sent To:"
 msgstr "Povabila poslana na:"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:833
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:834
 msgid "Mail to {FIRSTNAME} {LASTNAME} ({EMAIL}) Failed"
 msgstr "Elektronsko sporočilo za {FIRSTNAME} {LASTNAME} ({EMAIL}) ni bilo uspešno poslano"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:845
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1007
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:846
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1008
 msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
 msgstr "Nekaj elektronskih sporočil še čaka na pošiljanje. Nadaljujte pošiljanje s klikom spodaj."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:846
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1008
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:847
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1009
 msgid "There are {EMAILCOUNT} emails still to be sent."
 msgstr "Poslanih bo še {EMAILCOUNT} elektronskih sporočil"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:862
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:863
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
 msgstr "Elektronska sporočila niso bila poslana. Anketiranci namreč nimajo vnesenih elektronskih naslovov, so že bili povabljeni ali pa so že izpolnili anketo in imajo geslo."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:874
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:875
 msgid "Email Reminder"
 msgstr "Opomnik po elektronski pošti"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:896
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:897
 msgid "Start at TID No:"
 msgstr "Začni pri TID št.:"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:927
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:928
 msgid "Send Reminders"
 msgstr "Pošlji opomnik za anketo"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:939
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:940
 msgid "Sending Reminders"
 msgstr "Pošiljam opomnike"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:991
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:992
 msgid "Reminder Sent To:"
 msgstr "Opomniki poslani na:"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1027
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1028
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
 msgstr "Elektronska sporočila niso bila poslana. Vsi anketiranci, ki bi morali dobiti povabilo so že izpolnili anketo ali pa nimajo vnesenih elektronskih naslovov."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1039
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1040
 msgid "Create Tokens"
 msgstr "Ustvari dostopna gesla"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1043
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1044
 msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
 msgstr "S klikom na DA bodo ustvarjena manjkajoča dostopna gesla. V redu?"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1069
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1070
 msgid "{TOKENCOUNT} tokens have been created"
 msgstr "Ustvarjenih je bilo {TOKENCOUNT} dostopnih gesel"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1083
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1084
 msgid "Token has been deleted."
 msgstr "Dostopno geslo je bilo izbrisano."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1084
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1085
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/usercontrol.php:128
 msgid "Reloading Screen. Please wait."
 msgstr "Osvežujem stran. Prosimo, počakajte."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1109
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1221
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1253
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1110
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1222
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1254
 msgid "Add or Edit Token"
 msgstr "Dodaj ali uredi dostopno geslo"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1145
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1146
 msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
 msgstr "Pustite prazno in uporabite avtomatsko ustvarjanje dostopnih gesel z uporabo 'Ustvari dostopna gesla'"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1201
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1202
 msgid "Update Token"
 msgstr "Posodobi geslo"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1206
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1207
 msgid "Add Token"
 msgstr "Dodaj geslo"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1245
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1246
 msgid "Updated Token"
 msgstr "Obnovljeno dostopno geslo"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1271
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1272
 msgid "Added New Token"
 msgstr "Dodano novo dostopno geslo"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1281
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1316
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1282
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1317
 msgid "Upload CSV File"
 msgstr "Naloži datoteko CSV"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1287
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1305
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1288
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1306
 msgid "Note:"
 msgstr "Obvestilo:"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1288
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1289
 msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [language code], [attribute1], [attribute2]\"."
 msgstr "Datoteka mora biti standardna CSV (ločena z vejicami) datoteka z dvojnimi narekovaji pred in za posamezno vrednostjo. Prva vrstica mora vsebovati glavo z informacijami o stolpcih (ki bo kasneje odstranjena). Vrstni red podatkov mora biti naslednji: \"ime, priimek, email, [token], [attribute1], [attribute2]\"."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1299
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1300
 msgid "Upload LDAP entries"
 msgstr "Nalaganje LDAP vnosov"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1306
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1307
 msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
 msgstr "Poizvedbe LDAP definira administrator v konfiguracijski datoteki config-ldap.php"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1331
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1332
 msgid "Upload file not found. Check your permissions and path for the upload directory"
 msgstr "Datoteke za nalaganje ni mogoče najti. Preverite dovoljenja in pot do mape za nalaganje"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1336
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1337
 msgid "Importing CSV File"
 msgstr "Uvažanje datoteke CSV"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1337
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1338
 msgid "Creating Token Entries"
 msgstr "Ustvarjanje vnosov dostopnih gesel"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1402
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1403
 msgid "Failed"
 msgstr "Ni uspelo"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1404
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1405
 msgid "Records in CSV"
 msgstr "Zapisov v CSV"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1405
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1406
 msgid "Records met minumum requirements"
 msgstr "Zapisi ustrezajo minimalnim zahtevam"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1406
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1407
 msgid "Records imported"
 msgstr "Število uvoženih zapisov"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1407
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1408
 msgid "Duplicate records removed"
 msgstr "Podvojeni zapisi odstranjeni"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1408
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1409
 msgid "Records with invalid email address removed"
 msgstr "Zapisi z neveljavnjimi e-mail naslovi so bili odstranjeni"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1417
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1418
 msgid "Uploading LDAP Query"
 msgstr "Nalaganje LDAP poizvedbe"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1475
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1476
 msgid "{TOKENCOUNT} Records Created"
 msgstr "{TOKENCOUNT} zapisov ustvarjenih"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1479
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1480
 msgid "Can't bind to the LDAP directory"
 msgstr "Ne morem se povezati na LDAP direktorij"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1485
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1486
 msgid "Can't connect to the LDAP directory"
 msgstr "Ne morem se povezati na LDAP direktorij"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1503
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1504
 msgid "ARMSCII-8 Armenian"
 msgstr "ARMSCII-8 Armensko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1504
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1505
 msgid "US ASCII"
 msgstr "US ASCII"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1505
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1506
 msgid "Automatic"
 msgstr "Avtomatsko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1506
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1507
 msgid "Big5 Traditional Chinese"
 msgstr "Velikih5 Tradicionalna Kitajščina"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1507
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1508
 msgid "Binary pseudo charset"
 msgstr "Binarni psevdo nabor"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1508
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1509
 msgid "Windows Central European"
 msgstr "Windows Srednjeevropsko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1509
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1510
 msgid "Windows Cyrillic"
 msgstr "Windows Cirilica"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1510
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1511
 msgid "Windows Arabic"
 msgstr "Windows Arabsko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1511
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1512
 msgid "Windows Baltic"
 msgstr "Windows Baltsko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1512
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1513
 msgid "DOS West European"
 msgstr "DOS Zahodnoevropsko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1513
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1514
 msgid "DOS Central European"
 msgstr "DOS Srednjeevropsko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1514
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1515
 msgid "DOS Russian"
 msgstr "DOS Rusko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1515
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1516
 msgid "SJIS for Windows Japanese"
 msgstr "SJIS za Windows Japonsko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1516
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1517
 msgid "DEC West European"
 msgstr "DEC Zahodnoevropsko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1517
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1518
 msgid "UJIS for Windows Japanese"
 msgstr "UJIS za Windows Japonsko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1518
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1519
 msgid "EUC-KR Korean"
 msgstr "EUC-KR Korejsko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1519
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1520
 msgid "GB2312 Simplified Chinese"
 msgstr "GB2312 Poenostavljena Kitajščina"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1520
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1521
 msgid "GBK Simplified Chinese"
 msgstr "GBK Poenostavljena Kitajščina"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1521
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1522
 msgid "GEOSTD8 Georgian"
 msgstr "GEOSTD8 Gruzijsko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1522
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1523
 msgid "ISO 8859-7 Greek"
 msgstr "ISO 8859-7 Grško"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1523
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1524
 msgid "ISO 8859-8 Hebrew"
 msgstr "ISO 8859-8 Hebrejsko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1524
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1525
 msgid "HP West European"
 msgstr "HP Zahodnoevropsko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1525
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1526
 msgid "DOS Kamenicky Czech-Slovak"
 msgstr "DOS Kamenicky Češkoslovaško"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1526
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1527
 msgid "KOI8-R Relcom Russian"
 msgstr "KOI8-R Relcom Rusko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1527
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1528
 msgid "KOI8-U Ukrainian"
 msgstr "KOI8-U Ukrainsko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1528
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1529
 msgid "cp1252 West European"
 msgstr "cp1252 Zahodnoevropsko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1529
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1530
 msgid "ISO 8859-2 Central European"
 msgstr "ISO 8859-2 Srednjeevropsko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1530
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1531
 msgid "ISO 8859-9 Turkish"
 msgstr "ISO 8859-9 Turško"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1531
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1532
 msgid "ISO 8859-13 Baltic"
 msgstr "ISO 8859-13 Baltsko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1532
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1533
 msgid "Mac Central European"
 msgstr "Mac Srednjeevropsko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1533
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1534
 msgid "Mac West European"
 msgstr "Mac Zahodnoevropsko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1534
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1535
 msgid "Shift-JIS Japanese"
 msgstr "Shift-JIS Japonsko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1535
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1536
 msgid "7bit Swedish"
 msgstr "7bit Švedsko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1536
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1537
 msgid "TIS620 Thai"
 msgstr "TIS620 Tajsko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1537
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1538
 msgid "UCS-2 Unicode"
 msgstr "UCS-2 Unicode"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1538
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1539
 msgid "EUC-JP Japanese"
 msgstr "EUC-JP Japonsko"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1539
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1540
 msgid "UTF-8 Unicode"
 msgstr "UTF-8 Unicode"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1551
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1552
 msgid "Choose the CSV file to upload:"
 msgstr "Izberite CSV datoteko:"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1553
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1554
 msgid "Character set of the file:"
 msgstr "Kodni nabor datoteke:"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1567
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1568
 msgid "Sorry, but the LDAP module is missing in your PHP configuration."
 msgstr "LDAP modul ni nastavljen v PHP nastavitvah"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1573
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1574
 msgid "LDAP is disabled or no LDAP query defined."
 msgstr "LDAP je onemogočen oziroma LDAP poizvedba ni določena."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1578
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/tokens.php:1579
 msgid "Select the LDAP query you want to run:"
 msgstr "Izberite LDAP poizvedbo, ki jo želite pognati:"
 
@@ -5652,10 +5658,10 @@ msgstr "Tabela z gesli za to anketo je bila preimenovana v:"
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:63
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:79
 #: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:100
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:579
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1259
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1362
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1407
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:598
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1275
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1378
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1423
 msgid "Data Entry"
 msgstr "Vnos podatkov"
 
@@ -5663,113 +5669,117 @@ msgstr "Vnos podatkov"
 msgid "You have not selected a survey for data-entry."
 msgstr "Niste izbrali ankete za vnos podatkov."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:105
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:118
 msgid "This survey is not anonymous, you must supply a valid token"
 msgstr "Ta anketa ni anonimna! Vnesite veljavno geslo"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:131
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:122
+msgid "There is already a recorded answer for this token, follow the following link to update it"
+msgstr "Za to geslo že obstaja zabeležen odgovor. Če ga želite posodobiti, sledite povezavi"
+
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:150
 msgid "Try again"
 msgstr "Poskusite ponovno"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:135
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1222
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2182
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:154
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1238
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2198
 msgid "Identifier:"
 msgstr "Identifikator:"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:137
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2184
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:156
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2200
 msgid "Password:"
 msgstr "Geslo:"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:139
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2186
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:158
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2202
 msgid "Confirm Password:"
 msgstr "Potrdi geslo:"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:141
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2188
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:160
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2204
 msgid "Email:"
 msgstr "Elektronski naslov:"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:143
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2190
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:162
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2206
 msgid "Start Language:"
 msgstr "Začetni jezik"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:332
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:351
 msgid "Your survey responses have been saved succesfully"
 msgstr "Vaši odgovori so bili uspešno shranjeni"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:346
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:365
 msgid "A token entry for the saved survey has been created too."
 msgstr "Ustvarjena je bila tudi tabela z gesli za shranjeno anketo."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:356
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:375
 msgid "You, someone using your email address, or the administrator has saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
 msgstr "Vi, nekdo drug je z uporabo vašega e-naslova ali administrator je shranil nedokončano anketo. Spodnje podatke lahko uporabite za vrnitev na to anketo in nadaljevanje izpolnjevanja od točke, kjer ste končali."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:368
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:387
 msgid "An email has been sent with details about your saved survey"
 msgstr "Poslano je bilo elektronsko sporočilo s podatki o vaši shranjeni anketi."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:382
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:401
 msgid "The entry was assigned the following record id: "
 msgstr "Vnos je bil dodan za zapis z identifikacijsko številko:"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:386
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:405
 msgid "Add Another Record"
 msgstr "Dodaj še en zapis"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:581
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:600
 msgid "Editing Response"
 msgstr "Urejanje zapisa"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1184
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1200
 msgid "Update Entry"
 msgstr "Posodobi vnos"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1216
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2176
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1232
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2192
 msgid "Finalize response submission"
 msgstr "Zaključi pošiljanje odgovorov"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1218
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2178
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1234
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2194
 msgid "Save for further completion by survey user"
 msgstr "Shranite za kasnejše dokončanje izpolnjevanja s strani anketiranca"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1350
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1366
 msgid "Record has been updated."
 msgstr "Zapis je bil posodobljen."
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1371
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1387
 msgid "Record Deleted"
 msgstr "Zapis izbrisan"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1485
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1560
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1501
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1576
 msgid "AND"
 msgstr "IN"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1577
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1582
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1593
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1598
 msgid "to question {QUESTION}, you answered {ANSWER}"
 msgstr "na vprašanje {QUESTION}, ste odgovorili z {ANSWER}"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1581
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1597
 msgid "No Answer"
 msgstr "Brez odgovora"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1591
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1607
 msgid "Only answer this if the following conditions are met:"
 msgstr "Odgovarjanje mogoče samo, če je zadoščeno naslednjim pogojem:"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1613
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:1629
 msgid "Help about this question"
 msgstr "Pomoč pri tem vprašanju"
 
-#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2218
+#: /home/skrat/work/web/limesurvey/svn/source/limesurvey/admin/dataentry.php:2234
 msgid "This survey is not yet active. Your response cannot be saved"
 msgstr "Ta anketa še ni aktivna. Vaših odgovorov ni mogoče shraniti"
 
