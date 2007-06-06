@@ -72,6 +72,14 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
 		{
 			$refererargs = html_escape($_SERVER['QUERY_STRING']);
 		}
+
+		$hidden_loginlang = '';
+		if (isset($_POST['lang']) && $_POST['lang'])
+		{
+			$hidden_loginlang = "<input type='hidden' name='loginlang' value='".$_POST['lang']."' />";
+		}
+		
+
         
 		$loginsummary = "<form name='login' id='login' method='post' action='$rooturl/admin/admin.php' ><br /><strong>".$clang->gT("You have to login first.")."</strong><br />	<br />
 							<table>
@@ -87,6 +95,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
 									<td>&nbsp;</td>
 									<td align='center'><input type='hidden' name='action' value='login' />
 									<input type='hidden' name='refererargs' value='".$refererargs."' />
+									$hidden_loginlang
 									<input class='action' type='submit' value='".$clang->gT("Login")."' /><br />&nbsp;\n</td>
 								</tr>
 								<tr>

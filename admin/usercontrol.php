@@ -114,7 +114,14 @@ if (!isset($_SESSION['loginID']))
 
 					$_SESSION['loginID'] = intval($fields['uid']);
 					$_SESSION['user'] = $fields['users_name'];
-					$_SESSION['adminlang'] = $fields['lang'];
+					if (isset($_POST['loginlang']) && $_POST['loginlang'])
+					{
+						$_SESSION['adminlang'] = $_POST['loginlang'];
+					}
+					else
+					{
+						$_SESSION['adminlang'] = $fields['lang'];
+					}
 					$login = true;
 
 					$loginsummary .= "<br />" .str_replace("{NAME}", $_SESSION['user'], $clang->gT("Welcome {NAME}")) . "<br />";
