@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.48RC!
+Welcome to LimeSurvey v1.49RC!
 
 Warning:
 THIS IS AN RELEASE CANDIDATE. It should be pretty stable, but it SHOULD NOT be used FOR PRODUCTION!
@@ -7,7 +7,7 @@ IF YOU DO SO, YOU DO IT (as always) AT YOUR OWN RISK!
 This release does have the following requirements:
 
 -MySQL 4.1 or higher
--PHP 4.1 or higher 
+-PHP 4.2 or higher 
 -mbstring library installed. (for localizations)
 
 
@@ -107,7 +107,7 @@ Thank you to all the translators who are keeping the application and documentati
 And last but not least to everyone in the LimeSurvey developer team - without your help this wouldn't have been possible!
 
 
-Changes from 1.00b to 1.48b - Release Date: 2007/04/10
+Changes from 1.00 to 1.48b - Release Date: 2007/04/10
 
 - New feature: Preview questions as they are being edited (machaven)
 - New feature: Survey List with User Details
