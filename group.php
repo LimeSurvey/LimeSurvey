@@ -189,18 +189,9 @@ if (isset($_POST['move']) && $_POST['move'] == "movesubmit")
 			
 		}
 
-//		foreach(file("$thistpl/completed.pstpl") as $op)
-//		{
-//			echo templatereplace($op);
-//		}
-			echo templatereplace(file_get_contents("$thistpl/completed.pstpl"));
-
-		echo "\n<br />\n";
-//		foreach(file("$thistpl/endpage.pstpl") as $op)
-//		{
-//			echo templatereplace($op);
-//		}
-			echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+		echo templatereplace(file_get_contents("$thistpl/completed.pstpl"));
+        echo "\n<br />\n";
+        echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 
 		exit;
 

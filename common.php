@@ -2708,7 +2708,7 @@ function modify_database($sqlfile='', $sqlstring='') {
     global $clang;
     global $modifyoutput;
 
-	require_once($rootdir."/admin/classes/core/SHA256.php");
+	require_once($rootdir."/admin/classes/core/sha256.php");
 
 	$success = true;  // Let's be optimistic
     $modifyoutput='';
