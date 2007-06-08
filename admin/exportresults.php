@@ -180,13 +180,13 @@ if (!$style)
 	."\t\t<td>\n"
 	."\t\t\t$setfont<input type='radio' class='radiobtn' name='type' value='doc' id='worddoc'>"
 	."<font size='1'><label for='worddoc'>"
-	.$clang->gT("Microsoft Word")."</label><br />\n"
+	.$clang->gT("Microsoft Word (Latin charset)")."</label><br />\n"
 	."\t\t\t<input type='radio' class='radiobtn' name='type' value='xls' checked id='exceldoc'>"
 	."<label for='exceldoc'>"
-	.$clang->gT("Microsoft Excel")."</label><br />\n"
+	.$clang->gT("Microsoft Excel (Latin charset)")."</label><br />\n"
 	."\t\t\t<input type='radio' class='radiobtn' name='type' value='csv' id='csvdoc'>"
 	."<label for='csvdoc'>"
-	.$clang->gT("CSV Comma Delimited")."</label>\n"
+	.$clang->gT("CSV File (UTF-8 charset - use this for non-latin languages)")."</label>\n"
 	."\t\t</font></font></td>\n"
 	."\t</tr>\n"
 	."\t<tr><td height='2' bgcolor='silver'></td></tr>\n"
@@ -339,11 +339,9 @@ switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c
 	case "xls":
 
       $workbook = new Spreadsheet_Excel_Writer();
-      $workbook->setVersion(8);
       $workbook->send('results.xls');
       // Creating the first worksheet
       $sheet =& $workbook->addWorksheet('Survey Results');
-      $sheet->setInputEncoding('UTF-16LE');
       $separator="|";
 	break;
 	case "csv":
@@ -667,7 +665,7 @@ if ($type == "xls")
 //    $format->setColor("green");	
 	foreach ($flarray as $fl)
 	{
-      $sheet->write(0,$fli,mb_convert_encoding($fl, "UTF-16LE", "UTF-8"));      
+      $sheet->write(0,$fli,mb_convert_encoding($fl, "ISO-8859-1", "UTF-8"));      
       $fli++;
 	}
 	//print_r($fieldmap);
@@ -758,7 +756,7 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
         	foreach ($drow as $rowfield)
         	{
         	  $rowfield=str_replace("?","-",$rowfield);
-              $sheet->write($rowcounter,$colcounter,mb_convert_encoding($rowfield, "UTF-16LE", "UTF-8"));
+              $sheet->write($rowcounter,$colcounter,mb_convert_encoding($rowfield, "ISO-8859-1", "UTF-8"));
               $colcounter++;
         	}
         }		
@@ -1034,7 +1032,7 @@ elseif ($answers == "long")
         	$fli=0;
         	foreach ($rowarray as $row)
         	{
-              $sheet->write($rowcounter,$fli,mb_convert_encoding($row, "UTF-16LE", "UTF-8"));
+              $sheet->write($rowcounter,$fli,mb_convert_encoding($row, "ISO-8859-1", "UTF-8"));
               $fli++;
         	}
         	$exportoutput='';
