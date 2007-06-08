@@ -383,6 +383,8 @@ if ($questionscount > 0)
 				. "ORDER BY sortorder, code";
 
 				$fresult = db_execute_assoc($fquery);
+
+                if (!isset($arows['code']) {$arows['code']='';}  // for some qeustions types there is no code
 				while ($frow=$fresult->FetchRow())
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], $frow['code'], $frow['title']);
