@@ -39,10 +39,10 @@
 $databasetype       =   "mysql";       // ADOdb database driver - either mysql or odbc_mssql
 $databaselocation   =   "localhost";   // Network location of your Database - for odbc_mssql use the mssql servername, not localhost or IP
 $databaseport       =   "default";     // The port of your Database - if you use a standard port leave on default
-$databasename       =   "limesurvey";  // The name of the database that we will create
+$databasename       =   "phpsurveyor"; // The name of the database that we will create
 $databaseuser       =   "root";        // The name of a user with rights to create db (or if db already exists, then rights within that db)
 $databasepass       =   "";            // Password of db user
-$dbprefix           =   "lime_";       // A global prefix that can be added to all LimeSurvey tables. Use this if you are sharing
+$dbprefix           =   "phpsv_";       // A global prefix that can be added to all LimeSurvey tables. Use this if you are sharing
                                        // a database with other applications. Suggested prefix is "phpsv_"
 $databasetabletype  =   "myISAM";	   // Storage engine mysql should use when creating survey results tables and token tables (if mysql is used). If available, InnoDB is recommended. Default is myISAM.
 
@@ -97,7 +97,7 @@ $admintheme         =  "default";         // This setting specifys the directory
 
 
 
-$debug              =   0;      // Switch this to 1 if you are looking for errors
+$debug              =   1;      // Switch this to 1 if you are looking for errors
 $sessionlifetime    =   3600;   // How long until a survey session expires in seconds
 
 // Email Settings
