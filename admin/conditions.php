@@ -384,7 +384,7 @@ if ($questionscount > 0)
 
 				$fresult = db_execute_assoc($fquery);
 
-                if (!isset($arows['code']) {$arows['code']='';}  // for some qeustions types there is no code
+                if (!isset($arows['code'])) {$arows['code']='';}  // for some questions types there is no code
 				while ($frow=$fresult->FetchRow())
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], $frow['code'], $frow['title']);

@@ -516,11 +516,11 @@ function checkgroupfordisplay($gid)
 			if ($ia[7] == "Y") //This question is conditional
 			{
 				$countConditionalQuestionsInThisGroup++;
-				$checkConditions[]=$ia; //Create an array containing all the conditional questions
+				$QuestionsWithConditions[]=$ia; //Create an array containing all the conditional questions
 			}
 		}
 	}
-	if ($countQuestionsInThisGroup != $countConditionalQuestionsInThisGroup || !isset($checkConditions))
+	if ($countQuestionsInThisGroup != $countConditionalQuestionsInThisGroup || !isset($QuestionsWithConditions))
 	{
 		//One of the questions in this group is NOT conditional, therefore
 		//the group MUST be displayed
@@ -532,7 +532,7 @@ function checkgroupfordisplay($gid)
 		//check every question, to see if the condition for each has been met.
 		//If 1 or more have their conditions met, then the group should
 		//be displayed.
-		foreach ($checkConditions as $cc)
+		foreach ($QuestionsWithConditions as $cc)
 		{
 			$totalands=0;
 			$query = "SELECT * FROM ".db_table_name('conditions')."\n"
@@ -550,6 +550,7 @@ function checkgroupfordisplay($gid)
 					//Find out the "type" of the question this condition uses
 					$thistype=$row2['type'];
 				}
+                
 				if ($gid == $cq_gid)
 				{
 					//Don't do anything - this cq is in the current group
@@ -567,15 +568,12 @@ function checkgroupfordisplay($gid)
 				}
 				else
 				{
-					//For all other questions, the "answer" value will be the answer
-					//code.
-					if (isset($_SESSION[$row['cfieldname']]))
-					{
-						$cfieldname=$_SESSION[$row['cfieldname']];
-						$cvalue=$row['value'];
-					}
+					//For all other questions, the "answer" value will be the answer code.
+					if (isset($_SESSION[$row['cfieldname']])) {$cfieldname=$_SESSION[$row['cfieldname']];} else {$cfieldname=' ';}
+                    $cvalue=$row['value'];
 				}
-				if ($cfieldname == $cvalue)
+                
+				if (trim($cfieldname) == trim($cvalue))
 				{
 					//This condition is met
 					//Bugfix provided by Zoran Avtarovski
