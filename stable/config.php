@@ -111,22 +111,17 @@ $shownoanswer       =   1;      // Show "no answer" for non mandatory questions
 $siteadminemail     =   "your@email.org"; // The default email address of the site administrator
 $siteadminname      =   "Your Name";      // The name of the site administrator
 
-$emailmethod        =   2;                // The following values can be used:
-									      // 1 = SMTP_LOCAL - Localhost
-                                          // 2 = SMTP_CLIENT - MX host name(s)
-                                          // 3 = SMTP_LOCAL_CLIENT - 1'st SMTP_LOCAL, 2'nd if fail try SMTP_CLIENT
-                                          // 4 = SMTP_CLIENT_LOCAL - 1'st SMTP_CLIENT, 2'nd if fail try SMTP_LOCAL
-                                          // 5 = SMTP_RELAY - Relay MX host name(s) or ip address with optional authorisation
-                                          // 6 = SMTP_RELAY_CLIENT, - 1'st SMTP_RELAY, 2'nd if fail try SMTP_CLIENT
-                                          // 7 = SMTP_CLIENT_RELAY - 1'st SMTP_CLIENT, 2'nd if fail try SMTP_RELAY 
+$emailmethod        =   "smtp";           // The following values can be used:
+					  // mail      -  use internal PHP Mailer
+                                          // sendmail  -  use Sendmail Mailer
+                                          // smtp      -  use SMTP relaying
 
 $emailsmtphost      =   "mail.mailhost.net";    // If you use $emailmethod 5-7 you have to set the SMTP relayhost here
 $emailsmtpuser      =   "";               // SMTP authorisation username - only set this if your server requires authorization - if you set it you HAVE to set a password too
 $emailsmtppassword  =   "";               // SMTP authorisation password - empty password is not allowed
 
 $maxemails          =   100;              // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
-$mutemailerrors     =   0;                // If you want to mute annoying error messages from the emailscript set this to 1.
-                                          // This could be the case if your provider set a static sender_adress.
+
                                           
 // JPGRAPH Settings
 // To use jpgraph you must install and set up jpgraph, available from http://www.aditus.nu/jpgraph/
