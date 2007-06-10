@@ -9,13 +9,13 @@
 CREATE TABLE [prefix_answers] (
   [qid] INT NOT NULL default '0',
   [code] VARCHAR(5) NOT NULL default '',
-  [answer] varchar(255) NOT NULL, -- TEXT type in MySQL, can't be used in ORDER BY
+  [answer] varchar(255) NOT NULL,
   [default_value] char(1) NOT NULL default 'N',
   [sortorder] INT NOT NULL,
   [language] VARCHAR(20) default 'en',
   PRIMARY KEY  ([qid],[code],[language])
 ) 
-GO
+;
 
 -- --------------------------------------------------------
 
@@ -35,7 +35,7 @@ CREATE TABLE [prefix_assessments] (
   [link] text NOT NULL,
   PRIMARY KEY  ([id])
 ) 
-GO
+;
 
 -- --------------------------------------------------------
 
@@ -52,7 +52,7 @@ CREATE TABLE [prefix_conditions] (
   [value] VARCHAR(5) NOT NULL default '',
   PRIMARY KEY  ([cid])
 ) 
-GO
+;
 
 -- 
 -- Table structure for table [groups]
@@ -67,7 +67,7 @@ CREATE TABLE [prefix_groups] (
   [language] VARCHAR(20) default 'en',
   PRIMARY KEY  ([gid],[language])
 ) 
-GO
+;
 
 -- --------------------------------------------------------
 
@@ -83,11 +83,11 @@ CREATE TABLE [prefix_labels] (
   [language] VARCHAR(20) default 'en',
   PRIMARY KEY  ([lid],[sortorder],[language]),
 ) 
-GO
+;
 
 CREATE INDEX labels_code_idx 
   ON [prefix_labels] ([code])
-GO
+;
 
 -- --------------------------------------------------------
 
@@ -101,7 +101,7 @@ CREATE TABLE [prefix_labelsets] (
   [languages] VARCHAR(200) default 'en',
   PRIMARY KEY  ([lid])
 ) 
-GO
+;
 
 -- --------------------------------------------------------
 
@@ -116,7 +116,7 @@ CREATE TABLE [prefix_question_attributes] (
   [value] VARCHAR(20) default NULL,
   PRIMARY KEY  ([qaid])
 ) 
-GO
+;
 
 -- --------------------------------------------------------
 
@@ -140,7 +140,7 @@ CREATE TABLE [prefix_questions] (
   [language] VARCHAR(20) default 'en',
   PRIMARY KEY  ([qid],[language])
 ) 
-GO
+;
 
 -- --------------------------------------------------------
 
@@ -159,11 +159,11 @@ CREATE TABLE [prefix_saved_control] (
   [ip] text NOT NULL,
   [saved_thisstep] text NOT NULL,
   [status] char(1) NOT NULL default '',
-  [saved_date] datetime, -- note: in mySQL [save_date] does not allow nullls and uses 0000-00-00 as default
+  [saved_date] datetime, 
   [refurl] text,
   PRIMARY KEY  ([scid])
 ) 
-GO
+;
 
 -- --------------------------------------------------------
 
@@ -201,7 +201,7 @@ CREATE TABLE [prefix_surveys] (
   [datecreated] DATETIME default NULL,
   PRIMARY KEY  ([sid])
 ) 
-GO
+;
 
 -- 
 -- Table structure for table [surveys_languagesettings]
@@ -209,10 +209,10 @@ GO
 
 if EXISTS (select * from dbo.sysobjects where id = object_id(N'[dbo].[prefix_surveys_languagesettings]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
 DROP TABLE [dbo].[prefix_surveys_languagesettings]
-GO
+;
 
 CREATE TABLE [prefix_surveys_languagesettings] (
-  [surveyls_survey_id] INT NOT NULL DEFAULT 0, -- UNSIGNED integer in MySQL
+  [surveyls_survey_id] INT NOT NULL DEFAULT 0, 
   [surveyls_language] VARCHAR(45) NOT NULL DEFAULT 'en',
   [surveyls_title] VARCHAR(200) NOT NULL,
   [surveyls_description] TEXT NULL,
@@ -228,7 +228,7 @@ CREATE TABLE [prefix_surveys_languagesettings] (
   [surveyls_email_confirm] TEXT NULL,
   PRIMARY KEY ([surveyls_survey_id],[surveyls_language])
 )
-GO
+;
 
 -- 
 -- Table structure for table [users]
@@ -237,9 +237,9 @@ GO
 CREATE TABLE [prefix_users] (
   [uid] INT NOT NULL IDENTITY (1,1) PRIMARY KEY,
   [users_name] VARCHAR(64) NOT NULL UNIQUE default '',
-  [password] TEXT NOT NULL default '', -- BLOB in MySQL
+  [password] TEXT NOT NULL default '', 
   [full_name] VARCHAR(50) NOT NULL,
-  [parent_id] INT NOT NULL,  -- UNSIGNED integer in MySQL
+  [parent_id] INT NOT NULL, 
   [lang] VARCHAR(20),
   [email] VARCHAR(50) NOT NULL UNIQUE,
   [create_survey] TINYINT NOT NULL default '0',
@@ -250,15 +250,15 @@ CREATE TABLE [prefix_users] (
   [manage_template] TINYINT NOT NULL default '0',
   [manage_label] TINYINT NOT NULL default '0'
 ) 
-GO
+;
 
 -- 
 -- Table structure for table [surveys_rights]
 -- 
 
 CREATE TABLE [prefix_surveys_rights] (
-	[sid] INT NOT NULL default '0',  -- UNSIGNED integer in MySQL
-	[uid] INT NOT NULL default '0',   -- UNSIGNED integer in MySQL
+	[sid] INT NOT NULL default '0', 
+	[uid] INT NOT NULL default '0', 
 	[edit_survey_property] TINYINT NOT NULL default '0',
 	[define_questions] TINYINT NOT NULL default '0',
 	[browse_response] TINYINT NOT NULL default '0',
@@ -267,29 +267,29 @@ CREATE TABLE [prefix_surveys_rights] (
 	[activate_survey] TINYINT NOT NULL default '0',
 	PRIMARY KEY ([sid], [uid])
 ) 
-GO
+;
 
 -- 
 -- Table structure for table [user_groups]
 -- 
 
 CREATE TABLE [prefix_user_groups] (
-	[ugid] INT NOT NULL IDENTITY (1,1) PRIMARY KEY, -- UNSIGNED integer in MySQL
+	[ugid] INT NOT NULL IDENTITY (1,1) PRIMARY KEY, 
 	[name] VARCHAR(20) NOT NULL UNIQUE,
 	[description] TEXT NOT NULL default '',
-	[owner_id] INT NOT NULL  -- UNSIGNED integer in MySQL
+	[owner_id] INT NOT NULL  
 ) 
-GO
+;
 
 -- 
 -- Table structure for table [user_in_groups]
 -- 
 
 CREATE TABLE [prefix_user_in_groups] (
-	[ugid] INT NOT NULL, -- UNSIGNED integer in MySQL
-	[uid] INT NOT NULL -- UNSIGNED integer in MySQL
+	[ugid] INT NOT NULL, 
+	[uid] INT NOT NULL 
 ) 
-GO
+;
 
 --
 -- Table structure for table [settings_global]
@@ -300,18 +300,18 @@ CREATE TABLE [prefix_settings_global] (
   [stg_value] VARCHAR(255) NOT NULL default '',
   PRIMARY KEY  ([stg_name])
 ) 
-GO
+;
 
 --
 -- Table [settings_global]
 --
 
 INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '112');
-GO
+;
 
 --
 -- Table [users]
 --
 
 INSERT INTO [prefix_users] VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);
-GO
+;

@@ -58,7 +58,8 @@ if (returnglobal('createdbstep2')==$clang->gT("Populate Database"))
    }
     else
     {
-      echo"Error";
+        echo $modifyoutput;      
+        echo"Error";
     }
 
 }
