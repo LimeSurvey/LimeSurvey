@@ -267,7 +267,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		if ($tcount>0 && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
 		{
 			$tokenoutput .= "<table width='350' border='0' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'><tr>\n"
-			."<td bgcolor='#666666'><font color='white' size='1'>Restore Options:\n"
+			."<td bgcolor='#666666'><font color='white' size='1'>".$clang->gT("Restore Options").":\n"
 			."</font></td></tr>\n"
 			."<tr>\n"
 			."<td bgcolor='#DDDDDD' align='center'><form method='post' >\n"
