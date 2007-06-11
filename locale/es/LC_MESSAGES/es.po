@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-05-21 18:23-0300\n"
+"PO-Revision-Date: 2007-06-11 02:38-0300\n"
 "Last-Translator: Esteban Adrián Pérez <dgeaperez@yahoo.com.ar>\n"
 "Language-Team:  <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: gT\n"
 "X-Poedit-Basepath: .\n"
-"X-Poedit-SearchPath-0: C:/documentos/www/docs/activa-cro.com.ar/public_html/crf\n"
+"X-Poedit-SearchPath-0: C:/documentos/www/docs/limesurvey15\n"
 
 msgid "Administration"
 msgstr "Administración"
@@ -581,11 +581,6 @@ msgstr "Lo sentimos. No hay ningún cuestionario que coincida."
 
 msgid "This survey is not currently active. You will not be able to save your responses."
 msgstr "Este cuestionario no está activo. No podrá guardar sus respuestas."
-
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:164
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:322
-msgid "Date is not valid!"
-msgstr "¡La fecha no es válida!"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/index.php:68
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/index.php:117
@@ -1206,31 +1201,6 @@ msgstr "No se ha seleccionado una pregunta como destino para copiar"
 msgid "Only show question {QID} IF"
 msgstr "Sólo mostrar la respuesta {QID} SI"
 
-msgid "Less"
-msgstr "Menor"
-
-msgid "Less or Equal"
-msgstr "Menor o Igual"
-
-msgid "Equal"
-msgstr "Igual"
-
-msgid "Not Equal"
-msgstr "Distinto"
-
-# C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/conditions.php:652
-# C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/conditions.php:863
-msgid "Greater or Equal"
-msgstr "Mayor o Igual"
-
-msgid "Greater"
-msgstr "Mayor"
-
-# C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/conditions.php:654
-# C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/conditions.php:865
-msgid "Regular Expresion"
-msgstr "Expresión Regular"
-
 msgid "and"
 msgstr "y"
 
@@ -1241,6 +1211,9 @@ msgstr "y"
 # D:\xampp\xampp\htdocs\limesurvey/admin/html.php:2035
 msgid "OR"
 msgstr "O"
+
+msgid "Equals"
+msgstr "Equivale"
 
 msgid "Copy Conditions"
 msgstr "Copiar Condiciones"
@@ -1262,14 +1235,6 @@ msgstr "Agregar Condición"
 
 msgid "Answer"
 msgstr "Respuesta"
-
-# C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/conditions.php:855
-msgid "NOTE: If select a label it will be used Equal or Not Equal for any other method"
-msgstr "NOTA: Si elige una etiqueta, se utilizará Equivale o Diferente para cualquier otro método "
-
-# C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/conditions.php:872
-msgid "Constant Value or Regular Expresion"
-msgstr "Constante/Expresión Regular"
 
 msgid "Clear"
 msgstr "Borrar"
@@ -1432,6 +1397,10 @@ msgstr "No ha seleccionado un cuestionario para realizar la entrada de datos."
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/dataentry.php:249
 msgid "This survey is not anonymous, you must supply a valid token"
 msgstr "Este cuestionario no es anónimo, debe ingresar un código de invitación válido"
+
+# C:/documentos/www/docs/limesurvey15/admin/dataentry.php:122
+msgid "There is already a recorded answer for this token, follow the following link to update it"
+msgstr "Ya existen respuestas registradas para esta llamada, siga el siguiente enlace para actualizarlas"
 
 msgid "Try again"
 msgstr "Intente otra vez"
@@ -1660,15 +1629,16 @@ msgid "Format"
 msgstr "Formato"
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/export.php:152
-msgid "Microsoft Word"
-msgstr "Microsoft Word"
+msgid "Microsoft Word (Latin charset)"
+msgstr "Microsoft Word (Juego de caracteres latinos)"
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/export.php:155
-msgid "Microsoft Excel"
-msgstr "Microsoft Excel"
+msgid "Microsoft Excel (Latin charset)"
+msgstr "Microsoft Excel (Juego de caracteres latinos)"
 
-msgid "CSV Comma Delimited"
-msgstr "CSV Delimitado por Comas"
+# C:/documentos/www/docs/limesurvey15/admin/exportresults.php:189
+msgid "CSV File (UTF-8 charset - use this for non-latin languages)"
+msgstr "Archivo CSV (Juego de caracteres UTF-8 - Usar para idiomas no latinos)"
 
 msgid "Export Data"
 msgstr "Exportar los Datos"
@@ -1703,12 +1673,12 @@ msgstr "Atributo_1"
 msgid "Attribute 2"
 msgstr "Atributo_2"
 
+msgid "Time Submitted"
+msgstr "Teimpo enviado"
+
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/exportresults.php:730
 msgid "NEW RECORD"
 msgstr "NUEVO REGISTRO"
-
-msgid "Time Submitted"
-msgstr "Teimpo enviado"
 
 # C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/exportresults.php:788
 msgid "ID"
@@ -2769,9 +2739,17 @@ msgstr "No se pudo borrar el conjunto de etiquetas - Hay preguntas que dependen 
 msgid "Failed to insert label"
 msgstr "No se pudo insertar la etiqueta"
 
+# C:/documentos/www/docs/limesurvey15/admin/labels.php:610
+msgid "This label code is already used in this labelset. Please choose another code or rename the existing one."
+msgstr "El código de etiqueta ya esta en uso para este conuntos. Por favor, elija otro código o renombre el anterior."
+
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:615
 msgid "Failed to update label"
 msgstr "No se pudo actualizar la etiqueta"
+
+# C:/documentos/www/docs/limesurvey15/admin/labels.php:654
+msgid "Can't update labels because you are using duplicated codes"
+msgstr "No pueden actulizarse las etiquetas porque está utilizando códigos duplicados"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:653
 msgid "Failed to delete label"
@@ -3032,9 +3010,6 @@ msgstr "Lista de preguntas"
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/stats.php:368
 msgid "Like"
 msgstr "Como"
-
-msgid "Equals"
-msgstr "Equivale"
 
 msgid "Not Equals"
 msgstr "No equivale"
