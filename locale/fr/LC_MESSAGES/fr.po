@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-05-28 17:01+0100\n"
+"PO-Revision-Date: 2007-06-11 00:15+0100\n"
 "Last-Translator: seb <seb>\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -1502,15 +1502,16 @@ msgid "Format"
 msgstr "Format"
 
 # E:\www\limesurvey/admin/export.php:152
-msgid "Microsoft Word"
-msgstr "Microsoft Word"
+msgid "Microsoft Word (Latin charset)"
+msgstr "Microsoft Word (Jeu de caractères Latin)"
 
 # E:\www\limesurvey/admin/export.php:155
-msgid "Microsoft Excel"
-msgstr "Microsoft Excel"
+msgid "Microsoft Excel (Latin charset)"
+msgstr "Microsoft Excel (Jeu de caractères Latin)"
 
-msgid "CSV Comma Delimited"
-msgstr "CSV-Texte (séparateur : virgule)"
+# D:\www\limesurvey/admin/exportresults.php:189
+msgid "CSV File (UTF-8 charset - use this for non-latin languages)"
+msgstr "Fichier CSV (Jeu de caractère UTF8 - A utiliser pour les langues non latines)"
 
 msgid "Export Data"
 msgstr "Exporter les données"
@@ -1545,12 +1546,12 @@ msgstr "Attribut_1"
 msgid "Attribute 2"
 msgstr "Attribut_2"
 
+msgid "Time Submitted"
+msgstr "Heure d'envoi"
+
 # D:\www\limesurvey/admin/exportresults.php:720
 msgid "NEW RECORD"
 msgstr "NOUVEL ENREGISTREMENT"
-
-msgid "Time Submitted"
-msgstr "Heure d'envoi"
 
 # D:\www\limesurvey/admin/exportresults.php:788
 msgid "ID"
@@ -2609,9 +2610,17 @@ msgstr "Impossible de supprimer le jeu d'étiquettes - Il y a des questions qui 
 msgid "Failed to insert label"
 msgstr "Echec de la création de l'étiquette"
 
+# D:\www\limesurvey/admin/labels.php:610
+msgid "This label code is already used in this labelset. Please choose another code or rename the existing one."
+msgstr "Ce code d'étiquette est déjà utilisé dans ce jeu d'étiquettes. SVP utilisez un autre code ou renommez l'existant."
+
 # E:\www\limesurvey/admin/usercontrol.php:342
 msgid "Failed to update label"
 msgstr "Echec de la mise à jour de l'étiquette"
+
+# D:\www\limesurvey/admin/labels.php:654
+msgid "Can't update labels because you are using duplicated codes"
+msgstr "Ne peut mettre à jour les étiquettes car vous utilisez un code en double"
 
 # E:\www\limesurvey/admin/usercontrol.php:342
 msgid "Failed to delete label"
@@ -3298,7 +3307,7 @@ msgid "Uploading LDAP Query"
 msgstr "Télécharger une requête LDAP"
 
 msgid "{TOKENCOUNT} Records Created"
-msgstr "{TOKENCOUNT} enregistrements crées"
+msgstr "{TOKENCOUNT} enregistrements créés"
 
 # C:\wamp\www\limesurvey/admin/tokens.php:1414
 msgid "Can't bind to the LDAP directory"
