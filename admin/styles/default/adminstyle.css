@@ -2,9 +2,10 @@ body {
 	font-family: verdana, arial, sans-serif;
 	margin: 0;
 	text-align: left;
+   background-color: #5670A1; 
 }
 .boxstyle {
-	border-color: #111;
+	border-color: #99CC00;
 	border-width: 1;
 	border-style: solid;
 }
@@ -12,48 +13,66 @@ body {
 	margin: 0;
 	padding: 5px;
 	text-align: center;
-	color: #fff;
+	color: #99CC00;
 	height: 30px;
-	background: #000;
+	background: #121a28;
 }
 img {
 	border: 0;
 }
-th, a, p, div {
+a:link {
+   font-size: 10pt;
+   color:#819D26;
+   text-decoration: none;
+}
+
+a:hover{
+   font-size: 10pt;
+   color:#819D26;
+   text-decoration: underline;
+}
+
+th, p, div {
 	font-size: 10pt;
 }
-.maintitle {
-	font-size: 14pt;
-	font-weight: bold;
-	color: #FFF;
-	text-align: center;
-	margin: auto;
-	background: black;
-}
 
+.maintitle {
+   font-size: 14pt;
+   font-weight: bold;
+   color: #228A57;
+   text-align: center;
+   margin: auto;
+   background: #D6D6D6;
+   border-top: 2px solid #7FFF00;
+   border-bottom: 1px groove #00FA9A;
+   background-image: url(bkgmaintitle.gif);
+   background-repeat: repeat-x;
+   }
 
 table.menubar {
-	width: 100%;
-	border-color: #555;
-	border-width: 1px;
-	border-style: solid;
-    border-collapse: collapse;
-	
+   width: 100%;
+   border-color: #8195BA;
+   border-width: 1px;
+   border-style: solid;
+   border-collapse: collapse;
 }
 .menubar tr:first-child {
-	background: #555;
+   background-color: #EEF6FF;
 }
 .menubar tr {
-	background: #999;
+	background-color: #EEF6FF;
 }
-.menubar td:first-child {
-	color: #FFF;
-	font-size: 8pt;
+.menubar td{  
+   color: #265522;
+   font-size: 8pt;
+   border-bottom: 2px solid #D2E0F2;
 }
-
 
 table.table2columns {
+   background-color: #FFFFFF;
 	width: 100%;
+   text-align: center;
+   border: 1px solid #555555;
 }
 .table2columns td+td {
 	text-align: left;
@@ -62,22 +81,22 @@ table.table2columns {
 	border: 1px solid #111;
 }
 .outlinetable td {
-	font-size: 10pt;
-	border: 1px solid #CCC;
-	background: #EEE;
+   font-size: 10pt;
+   border: 1px solid #483D8B;
+   background: #869DC1;
 }
 .outlinetable th {
-	font-size: 10pt;
-	color: #FFF;
-	background: #777;
+   font-size: 10pt;
+   color: #FFF;
+   background: #483D8B;
 }
 ul {
 	font-size: 10pt;
 	color: #000;
 }
 td {
-	font-size: 10pt;
-	color: #000;
+   font-size: 10pt;
+   color: #1D2D45;
 }
 .btstyle {
 	font-size: 11px;
@@ -134,7 +153,7 @@ textarea {
 	height: 20px;
 	font-size: 10px;
 	color: #333;
-	background: SILVER;
+	background: #F8F8FF;
 	width: 180px;
 }
 
@@ -143,7 +162,7 @@ textarea {
 	height: 20px;
 	font-size: 10px;
 	color: #333;
-	background: SILVER;
+	background: #F8F8FF;
 	width: 180px;
 }
 .listboxgroups {
@@ -151,7 +170,7 @@ textarea {
 	height: 20px;
 	font-size: 10px;
 	color: #333;
-	background: SILVER;
+	background: #F8F8FF;
 	width: 180px;
 }
 .listboxquestions {
@@ -159,7 +178,7 @@ textarea {
 	height: 20px;
 	font-size: 10px;
 	color: #333;
-	background: SILVER;
+	background: #F8F8FF;
 	width: 180px;
 }
 .boxcaption {
@@ -168,38 +187,44 @@ textarea {
 	vertical-align: middle;
 }
 .saveOrderbtn {
-	border: thin solid #000;
-	text-decoration: none;
-	font-weight: bold;
-	color: #000;
-	margin: 5px;
-	background: #D4D0C8;
+   border: thin solid #00CED1;
+   text-decoration: none;
+   font-weight: bold;
+   color: #B5B0DD;
+   margin: 5px;
+   background: #483D8B;
+   border-top: 1px solid #00BFFF;
+   border-left: 1px solid #00BFFF;
 }
 .settingentryhighlight {
 	color: #000080;
 	font-weight: bold;
 }
 .statusentryhighlight {
-	font-size: 10px;
-	color: #F00;
+   font-size: 10px;
+   color: #00FF82;
 }
 .warningtitle {
-	font-weight: bold;
-	color: #F00;
+   font-weight: bold;
+   color: #FFA07A;
 }
 .successtitle {
-	font-weight: bold;
-	color: #090;
-}
- {
-	font-weight: bold;
-	color: #F00;
+   font-weight: bold;
+   color: #97FF31;
 }
 font.settingcaption {
 	vertical-align: top;
 	text-align: right;
 	font-size: 13px;
 	font-weight: bold;
+   color: #1D2D45;
+}
+.settingcaption {
+	text-align: center;
+	font-size: 13px;
+	font-weight: bold;
+   background-color: #D2E0F2;
+   color: #1D2D45;
 }
 span.settingcaption {
 	float: left;
@@ -208,6 +233,8 @@ span.settingcaption {
 	font-weight: bold;
 	clear: left;
 	margin-bottom: 10px;
+   background-color: #F8F8FF;
+   color: #1D2D45;
 }
 .settingentry {
 	float: left;
@@ -217,12 +244,14 @@ span.settingcaption {
 	text-align: left;
 	clear: right;
 	margin-bottom: 10px;
+   background-color: #F8F8FF;
 }
 .settingrow {
 	width: 800px;
 	float: center;
 	clear: left;
 	margin-bottom: 20px;
+   background-color: #F8F8FF;
 }
 
 #dhtmlgoodies_tooltip {
@@ -315,3 +344,13 @@ span.settingcaption {
 	background: #FF6;
 	font: 11px arial, verdana, sans-serif;
 }
+
+
+.tab-page{
+   background-color: #F8F8FF;
+}
+
+
+
+
+

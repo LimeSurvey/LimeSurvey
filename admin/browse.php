@@ -111,7 +111,7 @@ if ($actcount > 0)
 		if ($actrow['active'] == "N") //SURVEY IS NOT ACTIVE YET
 		{
 			$browseoutput .= "\t<tr><td colspan='2' height='4'><strong>"
-			. $clang->gT("Browse Responses").": <font color='silver'>$surveyname</font></strong></td></tr>\n"
+			. $clang->gT("Browse Responses").": <font color='#778899'>$surveyname</font></strong></td></tr>\n"
 			."\t<tr><td align='center'>\n"
 			."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
 			. $clang->gT("This survey has not been activated. There are no results to browse.")."<br /><br />\n"
@@ -142,7 +142,7 @@ $qulanguage = GetBaseLanguageFromSurveyID($surveyid);
 if ($subaction == "id") // Looking at a SINGLE entry
 {
 	//SHOW HEADER
-	$browseoutput .= "\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Browse Responses").": <font color='silver'>$surveyname</font></strong></td></tr>\n";
+	$browseoutput .= "\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Browse Responses").": <font color='#778899'>$surveyname</font></strong></td></tr>\n";
 	if (!isset($_POST['sql']) || !$_POST['sql']) {$browseoutput .= "$surveyoptions";} // Don't show options if coming from tokens script
 	$browseoutput .= "</table>\n"
 	."<table><tr><td></td></tr></table>\n";

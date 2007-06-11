@@ -843,7 +843,7 @@ if ($action == "addgroup")
 
 		$newgroupoutput = "<tr><td><form action='$scriptname' name='addnewgroupfrom' method='post'>"
                    ."<table width='100%' border='0'><tr>\n"
-                   ."\t<td colspan='2' bgcolor='black' align='center'>\n\t\t<strong><font color='white'>".$clang->gT("Add Group")."</font></strong></td>"
+                   ."\t<td colspan='2' class='settingcaption'>\n\t\t<strong>".$clang->gT("Add Group")."</strong></td>"
                    ."</tr></table>\n";
 
 
@@ -870,8 +870,8 @@ if ($action == "addgroup")
 		. "</form></td></tr>\n"
 		. "<tr><td align='center'><strong>".$clang->gT("OR")."</strong></td></tr>\n"
 		. "<tr><td><form enctype='multipart/form-data' name='importgroup' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
-		. "<table width='100%' border='0'>\n\t<tr><td colspan='3' bgcolor='black' align='center'>\n"
-		. "\t\t<strong><font color='white'>".$clang->gT("Import Group")."</font></strong></td></tr>\n\t<tr>"
+		. "<table width='100%' border='0'>\n\t<tr><td colspan='3' class='settingcaption'>\n"
+		. "\t\t<strong>".$clang->gT("Import Group")."</strong></td></tr>\n\t<tr>"
 		. "\t\n"
 		. "\t\t<td align='right'><strong>".$clang->gT("Select CSV File:")."</strong></td>\n"
 		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\" /></td></tr>\n"
@@ -926,8 +926,8 @@ if ($action == "editgroup")
 		
 		$egquery = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid";
 		$egresult = db_execute_assoc($egquery);
-		$editgroup ="<table width='100%' border='0'>\n\t<tr><td bgcolor='black' align='center'>"
-		. "\t\t<font class='settingcaption'><font color='white'>".$clang->gT("Edit Group")."</font></font></td></tr></table>\n"
+		$editgroup ="<table width='100%' border='0'>\n\t<tr><td class='settingcaption'>"
+		. "\t\t".$clang->gT("Edit Group")."</td></tr></table>\n"
 		. "<form name='editgroup' action='$scriptname' method='post'>\n"
 		. '<div class="tab-pane" id="tab-pane-1">';
 		while ($esrow = $egresult->FetchRow())
