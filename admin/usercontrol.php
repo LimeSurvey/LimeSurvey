@@ -117,10 +117,12 @@ if (!isset($_SESSION['loginID']))
 					if (isset($_POST['loginlang']) && $_POST['loginlang'])
 					{
 						$_SESSION['adminlang'] = $_POST['loginlang'];
+						$clang = new limesurvey_lang($_SESSION['adminlang']);
 					}
 					else
 					{
 						$_SESSION['adminlang'] = $fields['lang'];
+						$clang = new limesurvey_lang($_SESSION['adminlang']);
 					}
 					$login = true;
 
