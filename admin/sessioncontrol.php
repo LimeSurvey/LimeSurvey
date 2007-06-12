@@ -41,7 +41,11 @@ if (!isset($dbprefix)) {die ("Cannot run this script directly");}
 session_name("LimeSurveyAdmin");
 if (session_id() == "") session_start();
 //LANGUAGE ISSUES
-if (returnglobal('action') == "changelang" && (!isset($login) || !$login ))	// no update when login (just read from db)
+// if changelang is called from the login page, then there is no userId 
+//  ==> thus we just change the login form lang: no user profile update
+// if changelang is called from another form (after login) then update user lang
+// when a loginlang is specified at login time, the user profile is updated in usercontrol.php 
+if (returnglobal('action') == "changelang" && (!isset($login) || !$login ))	
 	{
 	$_SESSION['adminlang']=returnglobal('lang');
 	// if user is logged in update language in database

@@ -118,6 +118,10 @@ if (!isset($_SESSION['loginID']))
 					{
 						$_SESSION['adminlang'] = $_POST['loginlang'];
 						$clang = new limesurvey_lang($_SESSION['adminlang']);
+						$uquery = "UPDATE {$dbprefix}users "
+						. "SET lang='{$_SESSION['adminlang']}' "
+						. "WHERE uid={$_SESSION['loginID']}";
+						$uresult = $connect->Execute($uquery);
 					}
 					else
 					{
