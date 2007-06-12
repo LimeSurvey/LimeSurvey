@@ -360,7 +360,11 @@ else
 		$arow['type'] == "H" || $arow['type'] == "P" || $arow['type'] == "^")
 		{
 			//MULTI ENTRY
-			$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid={$_GET['sid']} AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+			$abquery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q"
+                       ." WHERE a.qid=q.qid AND sid={$_GET['sid']} AND q.qid={$arow['qid']} "
+                       ." AND a.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
+                       ." AND q.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
+                       ." ORDER BY a.sortorder, a.answer";
 			$abresult=db_execute_assoc($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 			while ($abrow=$abresult->FetchRow())
 			{
@@ -382,14 +386,17 @@ else
 		}
 		elseif ($arow['type'] == "Q")
 		{
-			$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid={$_GET['sid']} AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+			$abquery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q WHERE a.qid=q.qid AND sid={$_GET['sid']} AND q.qid={$arow['qid']} "
+                                   ." AND a.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
+                                   ." AND q.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
+                                   ." ORDER BY a.sortorder, a.answer";
 			$abresult=db_execute_assoc($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 			while ($abrow = $abresult->FetchRow())
 			{
 				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` C(255),\n";
 			}
 		}
-		elseif ($arow['type'] == "J")
+/*		elseif ($arow['type'] == "J")
 		{
 			$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid={$_GET['sid']} AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
 			$abresult=db_execute_assoc($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
@@ -397,11 +404,15 @@ else
 			{
 				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` C(5),\n";
 			}
-		}
+		}*/
 		elseif ($arow['type'] == "R")
 		{
 			//MULTI ENTRY
-			$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid={$_GET['sid']} AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
+    		$abquery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q"
+                       ." WHERE a.qid=q.qid AND sid={$_GET['sid']} AND q.qid={$arow['qid']} "
+                       ." AND a.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
+                       ." AND q.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
+                       ." ORDER BY a.sortorder, a.answer";
 			$abresult=$connect->Execute($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 			$abcount=$abresult->RecordCount();
 			for ($i=1; $i<=$abcount; $i++)

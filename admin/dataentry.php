@@ -475,7 +475,7 @@ if($actsurrows['browse_response'])
 			$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
 			$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
 			$fquestion = $fnrow['question'];
-			if ($fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || $fnrow['type'] == "E" || $fnrow['type'] == "F" || $fnrow['type'] == "H" || $fnrow['type'] == "P" || $fnrow['type'] == "Q" || $fnrow['type'] == "R" || $fnrow['type'] == "^" || $fnrow['type'] == "J")
+			if ($fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || $fnrow['type'] == "E" || $fnrow['type'] == "F" || $fnrow['type'] == "H" || $fnrow['type'] == "P" || $fnrow['type'] == "Q" || $fnrow['type'] == "^" || $fnrow['type'] == "J")
 			{
 				$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} and language='{$language}' ORDER BY sortorder, answer";
 				$fnrresult = db_execute_assoc($fnrquery);

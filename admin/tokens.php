@@ -617,7 +617,7 @@ if ($subaction == "browse" || $subaction == "search")
 			.$clang->gT("Edit Token Entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=edit&amp;tid=".$brow['tid']."', '_top')\" />"
 			."<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='D' title='"
 			.$clang->gT("Delete Token Entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=delete&amp;tid=".$brow['tid']."&amp;limit=$limit&amp;start=$start&amp;order=$order', '_top')\" />";
-			if (($brow['completed'] == "N" || $brow['completed'] == "") &&$brow['token']) {$tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='S' title='".$clang->gT("Do Survey")."' onclick=\"window.open('$publicurl/index.php?sid=$surveyid&amp;token=".trim($brow['token'])."', '_blank')\" />\n";}
+			if (($brow['completed'] == "N" || $brow['completed'] == "") &&$brow['token']) {$tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='S' title='".$clang->gT("Do Survey")."' onclick=\"window.open('$publicurl/index.php?sid=$surveyid&amp;lang=".$brow['language']."&amp;token=".trim($brow['token'])."', '_blank')\" />\n";}
 			$tokenoutput .= "\n\t\t</td>\n";
 		}
 		if ($brow['completed'] != "N" && $brow['completed']!="" && $surveyprivate == "N")
