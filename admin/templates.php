@@ -519,10 +519,10 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	."\t\t\t\t\t\t<td align='center' valign='top' width='80%'>"
 	. "\t\t\t\t<table width='100%' align='center' class='menubar'><tr><td>"
 	."<strong>".$clang->gT("Standard Files:")."</strong></td>"
-    ."<td align='center'><strong><font style='color: #FFFFFF;'>".$clang->gT("Now editing:");
+    ."<td align='center'><strong>".$clang->gT("Now editing:");
 	if (trim($editfile)!='') {$templatesoutput.= " <i>$editfile</i>";}
-	$templatesoutput.= "</font></strong></td>"
-    ."<td align='right' ><strong><font style='color: #FFFFFF;'>".$clang->gT("Other Files:")."</font></strong></td></tr>\n"
+	$templatesoutput.= "</strong></td>"
+    ."<td align='right' ><strong>".$clang->gT("Other Files:")."</strong></td></tr>\n"
 	."<tr><td valign='top'><select size='12' name='editfile' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;screenname=".html_escape($screenname)."&amp;editfile=\"+this.value, \"_top\")'>\n"
 	.makeoptions($files, "name", "name", $editfile)
 	."</select>\n"
