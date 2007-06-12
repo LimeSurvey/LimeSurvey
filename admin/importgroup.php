@@ -351,6 +351,8 @@ if (isset($grouparray) && $grouparray) {
 		$gres = db_execute_assoc($qmaxgo) or die ("<strong>".$clang->gT("Error")."</strong> Failed to find out maximum group order value<br />\n$qmaxqo<br />\n".$connect->ErrorMsg()."</body>\n</html>");
         $grow=$gres->FetchRow();
 		$grouprowdata["group_order"]= $grow['maxgo']+1; 
+        $grouprowdata=array_map('convertCsvreturn2return', $grouprowdata);
+        
 
         // Everything set - now insert it
         $newvalues=array_values($grouprowdata);
@@ -396,7 +398,8 @@ if (isset($grouparray) && $grouparray) {
                     }
 					$other = $questionrowdata["other"]; //Get 'other' field value
                     $oldlid = $questionrowdata['lid'];
-                     $newvalues=array_values($questionrowdata);
+                    $questionrowdata=array_map('convertCsvreturn2return', $questionrowdata);
+                    $newvalues=array_values($questionrowdata);
                     $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                     $qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
 					$qres = $connect->Execute($qinsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");

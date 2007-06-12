@@ -528,7 +528,6 @@ if ($importversion>=111)
 	// convert back the '\'.'n' cahr from the CSV file to true return char "\n"
 	$surveylsrowdata=array_map('convertCsvreturn2return', $surveylsrowdata);
 	// Convert the \n return char from welcometext to <br />
-	$surveylsrowdata['surveyls_welcometext'] = str_replace("\n", "<br />", $surveylsrowdata['surveyls_welcometext']);
         $surveylsrowdata['surveyls_survey_id']=$newsid;     
         $newvalues=array_values($surveylsrowdata);
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
@@ -701,7 +700,10 @@ if (isset($grouparray) && $grouparray) {
             $grouprowdata['language']=$newlanguage;
             } 
 		$oldgid=$gid; // save it for later
+        $grouprowdata=array_map('convertCsvreturn2return', $grouprowdata);
+        
         $newvalues=array_values($grouprowdata);
+        
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
         $ginsert = "insert INTO {$dbprefix}groups (".implode(',',array_keys($grouprowdata)).") VALUES (".implode(',',$newvalues).")"; 
 		$gres = $connect->Execute($ginsert) or die("<strong>".$clang->gT("Error")."</strong> Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
@@ -726,6 +728,7 @@ if (isset($grouparray) && $grouparray) {
         				$qacfieldcontents=convertToArray($qa, "', '", "('", "')");
                     }
         		$questionrowdata=array_combine($qafieldorders,$qacfieldcontents);
+                $questionrowdata=array_map('convertCsvreturn2return', $questionrowdata);
                 if ($currentqid=='' || ($currentqid!=$questionrowdata['qid'])) {$currentqid=$questionrowdata['qid'];$newquestion=true;}
                   else 
                     if ($currentqid==$questionrowdata['qid']) {$newquestion=false;}    		

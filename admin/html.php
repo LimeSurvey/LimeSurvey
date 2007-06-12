@@ -2154,7 +2154,7 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
 			. "\t</div><div class='settingrow'><span class='settingcaption'>".$clang->gT("Description:")."</span>\n"
 			. "\t\t<span class='settingentry'><textarea cols='80' rows='15' name='description_".$esrow['surveyls_language']."'>{$esrow['surveyls_description']}</textarea></span>\n"
 			. "\t</div><div class='settingrow'><span class='settingcaption'>".$clang->gT("Welcome:")."</span>\n"
-			. "\t\t<span class='settingentry'><textarea cols='80' rows='15' name='welcome_".$esrow['surveyls_language']."'>".str_replace("&lt;br /&gt;", "\n", $esrow['surveyls_welcometext'])."</textarea></span></div>\n";
+			. "\t\t<span class='settingentry'><textarea cols='80' rows='15' name='welcome_".$esrow['surveyls_language']."'>{$esrow['surveyls_welcometext']}</textarea></span></div>\n";
 
 
 			$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Invitation Email Subject:")."</span>\n"

@@ -317,6 +317,7 @@ if (isset($questionarray) && $questionarray) {
             }
 		$other = $questionrowdata["other"]; //Get 'other' field value
 		$oldlid = $questionrowdata["lid"];
+        $questionrowdata=array_map('convertCsvreturn2return', $questionrowdata);
         $newvalues=array_values($questionrowdata);
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
         $qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 

@@ -1065,7 +1065,7 @@ if(isset($surveyid))
 			{
 				$usquery = "UPDATE ".db_table_name('surveys_languagesettings')." \n"
 				. "SET surveyls_title='".$_POST['short_title_'.$langname]."', surveyls_description='".$_POST['description_'.$langname]."',\n"
-				. "surveyls_welcometext='".str_replace("\n", "<br />", $_POST['welcome_'.$langname])."',\n"
+				. "surveyls_welcometext='".$_POST['welcome_'.$langname]."',\n"
 				. "surveyls_urldescription='".$_POST['urldescrip_'.$langname]."', surveyls_email_invite_subj='".$_POST['email_invite_subj_'.$langname]."',\n"
 				. "surveyls_email_invite='".$_POST['email_invite_'.$langname]."', surveyls_email_remind_subj='".$_POST['email_remind_subj_'.$langname]."',\n"
 				. "surveyls_email_remind='".$_POST['email_remind_'.$langname]."', surveyls_email_register_subj='".$_POST['email_register_subj_'.$langname]."',\n"
