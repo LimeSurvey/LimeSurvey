@@ -475,7 +475,7 @@ if($actsurrows['browse_response'])
 			$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
 			$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
 			$fquestion = $fnrow['question'];
-			if ($fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || $fnrow['type'] == "E" || $fnrow['type'] == "F" || $fnrow['type'] == "H" || $fnrow['type'] == "P" || $fnrow['type'] == "Q" || $fnrow['type'] == "^" || $fnrow['type'] == "J")
+			if ($fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || $fnrow['type'] == "E" || $fnrow['type'] == "F" || $fnrow['type'] == "H" || $fnrow['type'] == "P" || $fnrow['type'] == "Q" || $fnrow['type'] == "R" || $fnrow['type'] == "^" || $fnrow['type'] == "J")
 			{
 				$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} and language='{$language}' ORDER BY sortorder, answer";
 				$fnrresult = db_execute_assoc($fnrquery);
@@ -750,7 +750,7 @@ if($actsurrows['browse_response'])
 					$l=$i;
 					$thisqid=$fnames[$l][7];
 					$myfname=substr($fnames[$i][0], 0, -1);
-					while ($fnames[$i][3] == "R")
+					while (isset($fnames[$i][3]) && $fnames[$i][3] == "R")
 					{
 						//Let's get all the existing values into an array
 						if ($idrow[$fnames[$i][0]])
@@ -1289,23 +1289,23 @@ if($actsurrows['browse_response'])
 			{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 				if (isset($_POST[$fieldname])) { $thisvalue=$_POST[$fieldname]; } else {$thisvalue="";}
-				$updateqr .= "`$fieldname` = '" . auto_escape($thisvalue) . "', \n";
+				$updateqr .= db_quote_id($fieldname)." = '" . auto_escape($thisvalue) . "', \n";
 				unset($thisvalue);
 				// handle ! other
 				if ($irow['type'] == "!" && $irow['other'] == "Y")
 				{
 					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
 					if (isset($_POST[$fieldname])) {$thisvalue=$_POST[$fieldname];} else {$thisvalue="";}
-					$updateqr .= "`$fieldname` = '" . auto_escape($thisvalue) . "', \n";
+					$updateqr .= db_quote_id($fieldname)." = '" . auto_escape($thisvalue) . "', \n";
 					unset($thisvalue);
 				}
 			}
 			elseif ($irow['type'] == "O")
 			{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
-				$updateqr .= "`$fieldname` = '" . $_POST[$fieldname] . "', \n";
+				$updateqr .= db_quote_id($fieldname)." = '" . $_POST[$fieldname] . "', \n";
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}comment";
-				$updateqr .= "`$fieldname` = '" . auto_escape($_POST[$fieldname]) . "', \n";
+				$updateqr .= db_quote_id($fieldname)." = '" . auto_escape($_POST[$fieldname]) . "', \n";
 			}
 			elseif ($irow['type'] == "R")
 			{
@@ -1318,7 +1318,7 @@ if($actsurrows['browse_response'])
 				for ($x=1; $x<=$i2count; $x++)
 				{
 					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}$x";
-					$updateqr .= "`$fieldname` = '" . auto_escape($_POST["d$fieldname"]) . "', \n";
+					$updateqr .= db_quote_id($fieldname)." = '" . auto_escape($_POST["d$fieldname"]) . "', \n";
 				}
 			}
 			else
@@ -1333,12 +1333,12 @@ if($actsurrows['browse_response'])
 				{
 					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}";
 					if (isset($_POST[$fieldname])) {$thisvalue=$_POST[$fieldname];} else {$thisvalue="";}
-					$updateqr .= "`$fieldname` = '" . $thisvalue . "', \n";
+					$updateqr .= db_quote_id($fieldname)." = '" . $thisvalue . "', \n";
 					if ($i2row['other'] == "Y") {$otherexists = "Y";}
 					if ($irow['type'] == "P")
 					{
 						$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}comment";
-						$updateqr .= "`$fieldname` = '" . auto_escape($_POST[$fieldname]) . "', \n";
+						$updateqr .= db_quote_id($fieldname)." = '" . auto_escape($_POST[$fieldname]) . "', \n";
 					}
 					unset($thisvalue);
 				}
@@ -1346,7 +1346,7 @@ if($actsurrows['browse_response'])
 				{
 					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
 					if (isset($_POST[$fieldname])) {$thisvalue=$_POST[$fieldname];} else {$thisvalue="";}
-					$updateqr .= "`$fieldname` = '" . auto_escape($thisvalue) . "', \n";
+					$updateqr .= db_quote_id($fieldname)." = '" . auto_escape($thisvalue) . "', \n";
 					unset($thisvalue);
 				}
 			}

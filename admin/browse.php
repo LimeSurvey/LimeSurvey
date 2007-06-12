@@ -642,7 +642,7 @@ else
 	$num_total_answers=0;
 	$num_completed_answers=0;
 	$gnquery = "SELECT count(id) FROM $surveytable";
-	$gnquery2 = "SELECT count(id) FROM $surveytable WHERE submitdate > '0000-00-00 00:00:00'";
+	$gnquery2 = "SELECT count(id) FROM $surveytable WHERE submitdate > '1980-01-01 00:00:00'";
 	$gnresult = db_execute_num($gnquery);
 	$gnresult2 = db_execute_num($gnquery2);
 
