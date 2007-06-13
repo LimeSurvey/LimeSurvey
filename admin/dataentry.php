@@ -58,10 +58,10 @@ if($actsurrows['browse_response'])
 	if (!$database_exists)
 	{
 		//$dataentryoutput .= "</table>\n";
-		$dataentryoutput .= "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		.$clang->gT("Data Entry")."</strong></font></td></tr>\n"
-		."\t<tr  bgcolor='#CCCCCC'><td align='center'>$setfont\n"
+		$dataentryoutput .= "<table width='99%' align='center' class='table2columns' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		."\t<tr'><td colspan='2' height='4' class='settingcaption'><strong>"
+		.$clang->gT("Data Entry")."</strong></td></tr>\n"
+		."\t<tr><td align='center'>$setfont\n"
 		."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
 		.$clang->gT("The defined surveyor database does not exist")."<br />\n"
 		.$clang->gT("Either your selected database has not yet been created or there is a problem accessing it.")."<br /><br />\n"
@@ -75,9 +75,9 @@ if($actsurrows['browse_response'])
 	{
 		//$dataentryoutput .= "</table>\n";
 		$dataentryoutput .= "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		.$clang->gT("Data Entry")."</strong></font></td></tr>\n"
-		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
+		."\t<tr><td colspan='2' height='4' class='settingcaption'><strong>"
+		.$clang->gT("Data Entry")."</strong></td></tr>\n"
+		."\t<tr><td align='center'>$setfont\n"
 		."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
 		.$clang->gT("You have not selected a survey for data-entry.")."<br /><br />\n"
 		."<input type='submit' value='"
@@ -96,9 +96,9 @@ if($actsurrows['browse_response'])
 		$thissurvey=getSurveyInfo($surveyid); // To check the private status
 		$errormsg="";
 		$dataentryoutput .= "<table width='450' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		.$clang->gT("Data Entry")."</strong></font></td></tr>\n"
-		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
+		."\t<tr><td colspan='2' height='4'><strong>"
+		.$clang->gT("Data Entry")."</strong></td></tr>\n"
+		."\t<tr><td align='center'>$setfont\n";
 
 		$lastanswfortoken=''; // check if a previous answer has been submitted or saved
 		$rlanguage='';
@@ -594,11 +594,11 @@ if($actsurrows['browse_response'])
 
 		$dataentryoutput .= "<form method='post' action='$scriptname?action=dataentry' name='editsurvey' id='editsurvey'>\n"
 		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		.$clang->gT("Data Entry")."</strong></font></td></tr>\n"
-		."\t<tr><td style='border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #555555' colspan='2' bgcolor='#999999' align='center'>$setfont<strong>"
-		.$clang->gT("Editing Response")." (ID $id)</strong></font></td></tr>\n"
-		."\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
+		."\t<tr><td colspan='2' height='4'><strong>"
+		.$clang->gT("Data Entry")."</strong></td></tr>\n"
+		."\t<tr><td style='border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #555555' colspan='2' align='center'>$setfont<strong>"
+		.$clang->gT("Editing Response")." (ID $id)</strong></td></tr>\n"
+		."\t<tr><td colspan='2' height='1'></td></tr>\n";
 
 		foreach ($results as $idrow)
 		{
@@ -609,7 +609,7 @@ if($actsurrows['browse_response'])
 				$answer = $idrow[$fnames[$i][0]];
 				$question=$fnames[$i][2];
 				$dataentryoutput .= "\t<tr>\n"
-				."\t\t<td bgcolor='#EEEEEE' valign='top' align='right' width='25%'>$setfont"
+				."\t\t<td valign='top' align='right' width='25%'>$setfont"
 				."\n";
 				$dataentryoutput .= "\t\t\t<strong>{$fnames[$i][2]}</strong>\n";
 				$dataentryoutput .= "\t\t</font></td>\n"
@@ -1186,7 +1186,7 @@ if($actsurrows['browse_response'])
 				$dataentryoutput .= "		</td>
 							</tr>
 							<tr>
-								<td colspan='2' bgcolor='#CCCCCC' height='1'>
+								<td colspan='2' height='1'>
 								</td>
 							</tr>\n";
 			}
@@ -1196,7 +1196,7 @@ if($actsurrows['browse_response'])
 		if ($subaction == "edit")
 		{
 			$dataentryoutput .= "	<tr>
-						<td bgcolor='#CCCCCC' align='center'>
+						<td align='center'>
 						 <input type='submit' value='".$clang->gT("Update Entry")."' />
 						 <input type='hidden' name='id' value='$id' />
 						 <input type='hidden' name='sid' value='$surveyid' />
@@ -1227,7 +1227,7 @@ if($actsurrows['browse_response'])
 				  //-->
 				  </script>\n";
 			$dataentryoutput .= "\t<tr>\n";
-			$dataentryoutput .= "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
+			$dataentryoutput .= "\t\t<td colspan='3' align='center'>$setfont\n";
 			$dataentryoutput .= "\t\t<table><tr><td align='left'>\n";
 			$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' /><label for='closerecord'>".$clang->gT("Finalize response submission")."</label></td></tr>\n";
 			$dataentryoutput .="<input type='hidden' name='closedate' value='".date("Y-m-d H:i:s")."' />\n";
@@ -1252,7 +1252,7 @@ if($actsurrows['browse_response'])
 			$dataentryoutput .= "\t</tr>"
 			."</div>\n";
 			$dataentryoutput .= "	<tr>
-					<td bgcolor='#CCCCCC' align='center'>
+					<td align='center'>
 					 <input type='submit' value='".$clang->gT("submit")."' />
 					 <input type='hidden' name='sid' value='$surveyid' />
 					 <input type='hidden' name='subaction' value='insert' />
@@ -1271,8 +1271,8 @@ if($actsurrows['browse_response'])
 	{
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
 		$dataentryoutput .= "<table width='450' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		.$clang->gT("Data Entry")."</strong></font></td></tr>\n"
+		."\t<tr><td colspan='2' height='4'><strong>"
+		.$clang->gT("Data Entry")."</strong></td></tr>\n"
 		."\t<tr><td align='center'>\n";
 		$iquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups")." WHERE
 		".db_table_name("questions").".gid=".db_table_name("groups").".gid  AND
@@ -1374,12 +1374,12 @@ if($actsurrows['browse_response'])
 	{
 		$thissurvey=getSurveyInfo($surveyid);
 		$dataentryoutput .= "<table width='450' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		.$clang->gT("Data Entry")."</strong></font></td></tr>\n"
-		."\t<tr  bgcolor='#CCCCCC'><td align='center'>$setfont\n"
+		."\t<tr><td colspan='2' height='4'><strong>"
+		.$clang->gT("Data Entry")."</strong></td></tr>\n"
+		."\t<tr><td align='center'>$setfont\n"
 		."\t\t\t<strong>".$thissurvey['name']."</strong><br />\n"
 		."\t\t\t".$thissurvey['description']."\n"
-		."\t\t</font></td>\n"
+		."\t\t</td>\n"
 		."\t</tr>\n";
 		$delquery = "DELETE FROM $surveytable WHERE id=$id";
 		$dataentryoutput .= "\t<tr>\n";
@@ -1400,8 +1400,8 @@ if($actsurrows['browse_response'])
 		$fieldmap=createFieldMap($surveyid);
 		// PRESENT SURVEY DATAENTRY SCREEN
 		$dataentryoutput .= "<table width='99%' align='center' style='margin: 3px 6px; border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		.$clang->gT("Browse Responses")."</strong></font></td></tr>\n"
+		."\t<tr><td colspan='2' height='4'><strong>"
+		.$clang->gT("Browse Responses")."</strong></td></tr>\n"
 		.$surveyoptions
 		."</table>";
 		$slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -1419,14 +1419,14 @@ if($actsurrows['browse_response'])
 
 		$dataentryoutput .= "<form action='$scriptname?action=dataentry' name='addsurvey' method='post' id='addsurvey'>\n"
 		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr bgcolor='#555555'><td colspan='3' height='4'><font size='1' face='verdana' color='white'><strong>"
-		.$clang->gT("Data Entry")."</strong></font></td></tr>\n"
-		."\t<tr bgcolor='#777777'>\n"
+		."\t<tr><td colspan='3' height='4'><strong>"
+		.$clang->gT("Data Entry")."</strong></td></tr>\n"
+		."\t<tr>\n"
 		."\t\t<td align='left'>";
 		if (count(GetAdditionalLanguagesFromSurveyID($surveyid))>0) {$dataentryoutput.=$langlistbox;}
-		$dataentryoutput .= "</td><td colspan='2' align='center'><font color='white'>\n"
+		$dataentryoutput .= "</td><td colspan='2' align='center'>\n"
 		."\t\t\t<strong>".$thissurvey['name']."</strong>\n"
-		."\t\t\t<br />$setfont".$thissurvey['description']."</font></font>\n"
+		."\t\t\t<br />$setfont".$thissurvey['description']."</font>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n";
 
@@ -1473,15 +1473,15 @@ if($actsurrows['browse_response'])
 			$deqquery = "SELECT * FROM ".db_table_name("questions")." WHERE sid=$surveyid AND gid={$degrow['gid']} AND language='{$baselang}'";
 			$deqresult = db_execute_assoc($deqquery);
 			$dataentryoutput .= "\t<tr>\n"
-			."\t\t<td colspan='3' align='center' bgcolor='#AAAAAA'>$setfont<strong>{$degrow['group_name']}</strong></font></td>\n"
+			."\t\t<td colspan='3' align='center'>$setfont<strong>{$degrow['group_name']}</strong></font></td>\n"
 			."\t</tr>\n";
 			$gid = $degrow['gid'];
 
 			//Alternate bgcolor for different groups
 			$bgc="";
-			if ($bgc == "#EEEEEE") {$bgc = "#DDDDDD";}
-			else {$bgc = "#EEEEEE";}
-			if (!$bgc) {$bgc = "#EEEEEE";}
+			if ($bgc == "evenrow") {$bgc = "oddrow";}
+			else {$bgc = "evenrow";}
+			if (!$bgc) {$bgc = "evenrow";}
 
 			$deqrows = array(); //Create an empty array in case FetchRow does not return any rows
 			while ($deqrow = $deqresult->FetchRow()) {$deqrows[] = $deqrow;} //Get table output into array
@@ -1612,7 +1612,7 @@ if($actsurrows['browse_response'])
 
 				$qid = $deqrow['qid'];
 				$fieldname = "$surveyid"."X"."$gid"."X"."$qid";
-				$dataentryoutput .= "\t<tr bgcolor='$bgc'>\n"
+				$dataentryoutput .= "\t<tr class='$bgc'>\n"
 				."\t\t<td valign='top' width='1%'>$setfont<font size='1'>{$deqrow['title']}</font></font></td>\n"
 				."\t\t<td valign='top' align='right' width='30%'>";
 				if ($deqrow['mandatory']=="Y") //question is mandatory
@@ -2187,7 +2187,7 @@ if($actsurrows['browse_response'])
 					  //-->
 					  </script>\n";
 				$dataentryoutput .= "\t<tr>\n";
-				$dataentryoutput .= "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
+				$dataentryoutput .= "\t\t<td colspan='3' align='center'>$setfont\n";
 				$dataentryoutput .= "\t\t<table><tr><td align='left'>\n";
 				$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' /><label for='closerecord'>".$clang->gT("Finalize response submission")."</label></td></tr>\n";
 				$dataentryoutput .="<input type='hidden' name='closedate' value='".date("Y-m-d H:i:s")."' />\n";
@@ -2222,7 +2222,7 @@ if($actsurrows['browse_response'])
 				$dataentryoutput .= "\t</tr>\n";
 			}
 			$dataentryoutput .= "\t<tr>\n";
-			$dataentryoutput .= "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
+			$dataentryoutput .= "\t\t<td colspan='3' align='center'>$setfont\n";
 			$dataentryoutput .= "\t\t\t<input type='submit' value='".$clang->gT("submit")."' />\n";
 			$dataentryoutput .= "\t\t</font></td>\n";
 			$dataentryoutput .= "\t</tr>\n";
@@ -2230,7 +2230,7 @@ if($actsurrows['browse_response'])
 		elseif ($thissurvey['active'] == "N")
 		{
 			$dataentryoutput .= "\t<tr>\n";
-			$dataentryoutput .= "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
+			$dataentryoutput .= "\t\t<td colspan='3' align='center'>$setfont\n";
 			$dataentryoutput .= "\t\t\t<font color='red'><strong>".$clang->gT("This survey is not yet active. Your response cannot be saved")."\n";
 			$dataentryoutput .= "\t\t</strong></font></font></td>\n";
 			$dataentryoutput .= "\t</tr>\n";
@@ -2239,7 +2239,7 @@ if($actsurrows['browse_response'])
 		{
 			$dataentryoutput .= "</form>\n";
 			$dataentryoutput .= "\t<tr>\n";
-			$dataentryoutput .= "\t\t<td colspan='3' align='center' bgcolor='#CCCCCC'>$setfont\n";
+			$dataentryoutput .= "\t\t<td colspan='3' align='center'>$setfont\n";
 			$dataentryoutput .= "\t\t\t<font color='red'><strong>".$clang->gT("Error")."</strong></font><br />\n";
 			$dataentryoutput .= "\t\t\t".$clang->gT("The survey you selected does not exist")."</font><br /><br />\n";
 			$dataentryoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";

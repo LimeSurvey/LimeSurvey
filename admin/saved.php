@@ -69,9 +69,9 @@ if ($subaction == "delete" && $surveyid && $scid)
 }
 
 $savedsurveyoutput .= "<table><tr><td></td></tr></table>\n"
-."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-$savedsurveyoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-. $clang->gT("Browse Saved Responses").":</strong> <font color='#EEEEEE'>".$thissurvey['name']."</font></font></td></tr>\n";
+."<table width='99%' align='center' class='menubar'>\n";
+$savedsurveyoutput .= "\t<tr><td colspan='2' height='4' class='settingcaption'><strong>"
+. $clang->gT("Browse Saved Responses").":</strong> ".$thissurvey['name']."</td></tr>\n";
 $savedsurveyoutput .= savedmenubar();
 $savedsurveyoutput .= "</table>\n";
 $savedsurveyoutput .= "<table><tr><td></td></tr></table>\n"
@@ -136,7 +136,7 @@ function savedmenubar()
 	global $surveyid, $scriptname, $imagefiles, $clang;
 	//BROWSE MENU BAR
 	if (!isset($surveyoptions)) {$surveyoptions="";}
-	$surveyoptions .= "\t<tr bgcolor='#999999'>\n"
+	$surveyoptions .= "\t<tr>\n"
 	. "\t\t<td>\n"
 	. "\t\t\t<a href='$scriptname?sid=$surveyid' onmouseout=\"hideTooltip()\" " .
 			"onmouseover=\"showTooltip(event,'".$clang->gT("Return to Survey Administration", "js")."')\" >" .

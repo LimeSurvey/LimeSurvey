@@ -125,15 +125,15 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			while ($row=$result->FetchRow()) {$lbname=$row['label_name']; $lblid=$row['lid']; $langids=$row['languages'];}
 		}
 		$labelsoutput.= "<form style='margin-bottom:0;' method='post' action='admin.php' onsubmit=\"return isEmpty(document.getElementById('label_name'), '".$clang->gT("Error: You have to enter a name for this label set.","js")."')\">\n"
-		."<table width='100%' bgcolor='#DDDDDD'>\n"
-		."\t<tr bgcolor='black'>\n"
-		."<td colspan='4' align='center'><font color='white'><strong>\n"
+		."<table width='100%' class='table2columns'>\n"
+		."\t<tr>\n"
+		."<td colspan='4' align='center' class='settingcaption'><strong>\n"
 		."<input type='image' src='$imagefiles/close.gif' align='right' "
 		."onclick=\"window.open('admin.php?action=labels&amp;lid=$lid', '_top')\" />\n";
 		if ($action == "newlabelset") {$labelsoutput.= $clang->gT("Create New Label Set"); $langids="en";}
 		else {$labelsoutput.= $clang->gT("Edit Label Set");}
 		$langidsarray=explode(" ",trim($langids)); //Make an array of it
-		$labelsoutput.= "</strong></font></td>\n"
+		$labelsoutput.= "</strong></td>\n"
 		."\t</tr>\n"
 		."\t<tr>\n"
 		."<td align='right' width='25%'>\n"
@@ -193,14 +193,14 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		if ($action == "newlabelset")
 		{
 			$labelsoutput.= "<form enctype='multipart/form-data' name='importlabels' action='admin.php' method='post'>\n"
-			."<table width='100%' bgcolor='#DDDDDD'>\n"
-			."\t<tr><td colspan='2' align='center'>\n"
+			."<table width='100%' class='table2columns'>\n"
+			."\t<tr><td colspan='2'>\n"
 			."<strong>".$clang->gT("OR")."</strong>\n"
 			."\t</td></tr>\n"
 			."\t<tr bgcolor='black'>\n"
-			."<td colspan='2' align='center'><font color='white'><strong>\n"
+			."<td colspan='2' align='center' class='settingcaption'><strong>\n"
 			.$clang->gT("Import Label Set")."\n"
-			."</strong></font></td>\n"
+			."</strong></td>\n"
 			."\t</tr>\n"
 			."\t<tr>\n"
 			."<td align='right'><strong>"
@@ -267,11 +267,11 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		$rwlabelset=$rslabelset->FetchRow();
 		$lslanguages=explode(" ", trim($rwlabelset['languages'])); 
 		
-		$labelsoutput.= "\t<table width='100%' align='center' style='border: solid; border-width: 1px; border-color: #555555' cellspacing='0'>\n"
-		."<tr bgcolor='#555555' >\n"
-		."\t<td colspan='4'><strong><font size='1' face='verdana' color='white'>\n"
+		$labelsoutput.= "\t<table class='menubar'>\n"
+		."<tr>\n"
+		."\t<td colspan='4'><strong>\n"
 		.$clang->gT("Labels")
-		."\t</font></strong></td>\n"
+		."\t</strong></td>\n"
 		."</tr>\n"
         ."\t<tr><td colspan='4'>\n"        ."<form method='post' action='admin.php'>\n"
 	    ."<input type='hidden' name='sortorder' value='{$row['sortorder']}' />\n"
@@ -288,21 +288,21 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     		$labelcount = $result->RecordCount();
             $labelsoutput.= "<div class='tab-page'>"
                 ."<h2 class='tab'>".getLanguageNameFromCode($lslanguage)."</h2>"
-                ."\t<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'>\n"
+                ."\t<table width='100%' class='table2columns'>\n"
                 ."<thead align='center'>"
-        		."<tr bgcolor='#BBBBBB'>\n"
-        		."\t<td width='25%' align='right'><strong><font size='1' face='verdana' >\n"
+        		."<tr>\n"
+        		."\t<td width='25%' align='right' class='settingcaption'><strong>\n"
         		.$clang->gT("Code")
-        		."\t</font></strong></td>\n"
-        		."\t<td width='35%'><strong><font size='1' face='verdana'>\n"
+        		."\t</strong></td>\n"
+        		."\t<td width='35%' class='settingcaption'><strong>\n"
         		.$clang->gT("Title")
-        		."\t</font></strong></td>\n"
-        		."\t<td width='25%'><strong><font size='1' face='verdana'>\n"
+        		."\t</strong></td>\n"
+        		."\t<td width='25%' class='settingcaption'><strong>\n"
         		.$clang->gT("Action")
-        		."\t</font></strong></td>\n"
-        		."\t<td width='15%' align='center'><strong><font size='1' face='verdana'>\n"
+        		."\t</strong></td>\n"
+        		."\t<td width='15%' align='center' class='settingcaption'><strong>\n"
         		.$clang->gT("Order")
-        		."\t</font></strong></td>\n"
+        		."\t</strong></td>\n"
         		."</tr></thead>"
                 ."<tbody align='center'>";
     		while ($row=$result->FetchRow())

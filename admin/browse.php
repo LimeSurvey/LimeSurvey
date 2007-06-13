@@ -250,10 +250,10 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	$next=$id+1;
 	$last=$id-1; 
 	$browseoutput .= "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-	."\t<tr bgcolor='#555555'>\n"
-	."\t\t<td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-	. $clang->gT("View Response").":</strong> $id</font></td></tr>\n"
-	."\t<tr bgcolor='#999999'><td colspan='2'>\n"
+	."\t<tr>\n"
+	."\t\t<td colspan='2' height='4'><strong>"
+	. $clang->gT("View Response").":</strong> $id</td></tr>\n"
+	."\t<tr><td colspan='2'>\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
 	if (isset($rlangauge)) 
@@ -448,22 +448,22 @@ elseif ($subaction == "all")
 	//NOW LETS CREATE A TABLE WITH THOSE HEADINGS
 	if ($fncount < 10) {$cellwidth = "10%";} else {$cellwidth = "100";}
 	$tableheader = "<!-- DATA TABLE -->";
-	if ($fncount < 10) {$tableheader .= "<table width='100%' border='0' cellpadding='0' cellspacing='1' style='border: 1px solid #555555'>\n";}
+	if ($fncount < 10) {$tableheader .= "<table width='100%' border='0' cellpadding='0' cellspacing='1' style='border: 1px solid #555555' class='menu2columns'>\n";}
 	else {$fnwidth = (($fncount-1)*100); $tableheader .= "<table width='$fnwidth' border='0' cellpadding='1' cellspacing='1' style='border: 1px solid #555555'>\n";}
-	$tableheader .= "\t<tr bgcolor='#555555' valign='top'>\n"
-	. "\t\t<td bgcolor='#333333' width='$cellwidth'><font size='1' color='white' face='verdana'><strong>id</strong></font></td>\n";
+	$tableheader .= "\t<tr valign='top'>\n"
+	. "\t\t<td width='$cellwidth'><strong>id</strong></td>\n";
 	foreach ($fnames as $fn)
 	{
-		if (!isset($currentgroup))  {$currentgroup = $fn[3]; $gbc = "#555555";}
+		if (!isset($currentgroup))  {$currentgroup = $fn[3]; $gbc = "oddrow";}
 		if ($currentgroup != $fn[3])
 		{
 			$currentgroup = $fn[3];
-			if ($gbc == "#555555") {$gbc = "#666666";}
-			else {$gbc = "#555555";}
+			if ($gbc == "oddrow") {$gbc = "evenrow";}
+			else {$gbc = "oddrow";}
 		}
-		$tableheader .= "\t\t<td bgcolor='$gbc' width='$cellwidth'><font size='1' color='white' face='verdana'><strong>"
+		$tableheader .= "\t\t<td class='$gbc' width='$cellwidth'><strong>"
 		. "$fn[2]"
-		. "</strong></font></td>\n";
+		. "</strong></td>\n";
 	}
 	$tableheader .= "\t</tr>\n\n";
 
@@ -590,13 +590,13 @@ elseif ($subaction == "all")
 
 	while ($dtrow = $dtresult->FetchRow())
 	{
-		if (!isset($bgcc)) {$bgcc="#EEEEEE";}
+		if (!isset($bgcc)) {$bgcc="evenrow";}
 		else
 		{
-			if ($bgcc == "#EEEEEE") {$bgcc = "#CCCCCC";}
-			else {$bgcc = "#EEEEEE";}
+			if ($bgcc == "evenrow") {$bgcc = "oddrow";}
+			else {$bgcc = "evenrow";}
 		}
-		$browseoutput .= "\t<tr bgcolor='$bgcc' valign='top'>\n"
+		$browseoutput .= "\t<tr class='$bgcc' valign='top'>\n"
 		."\t\t<td align='center'><font face='verdana' size='1'>\n"
 		."\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id={$dtrow['id']}' title='".$clang->gT("View This Record")."'>"
 		."{$dtrow['id']}</a></font></td>\n";

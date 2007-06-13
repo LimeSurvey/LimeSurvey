@@ -1670,8 +1670,8 @@ if($action == "surveysecurity")
 	{
 		$query2 = "SELECT a.uid, b.users_name FROM ".db_table_name('surveys_rights')." AS a INNER JOIN ".db_table_name('users')." AS b ON a.uid = b.uid WHERE a.sid = {$surveyid} AND b.uid != ".$_SESSION['loginID'] ." ORDER BY b.users_name";
 		$result2 = db_execute_assoc($query2);
-		$surveysecurity = "<table width='100%' rules='rows' border='0'>\n\t<tr><td colspan='3' bgcolor='black' align='center'>\n"
-		. "\t\t<strong><font color='white'>".$clang->gT("Survey Security")."</td></tr>\n"
+		$surveysecurity = "<table width='100%' rules='rows' border='0' class='table2columns'>\n\t<tr><td colspan='3' align='center'>\n"
+		. "\t\t<strong>".$clang->gT("Survey Security")."</td></tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<th>".$clang->gT("Username")."</th>\n"
 		. "\t\t<th>".$clang->gT("User Group")."</th>\n"
@@ -1707,7 +1707,7 @@ if($action == "surveysecurity")
 					$group_names_query = implode(", ", $group_names);
 				}
 				if(($row % 2) == 0)
-					$surveysecurity .= "\t<tr  bgcolor='#999999'>\n";
+					$surveysecurity .= "\t<tr>\n";
 				else
 					$surveysecurity .= "\t<tr>\n";
 
@@ -2255,8 +2255,8 @@ if ($action == "ordergroups")
         }
     }
 
-        $ordergroups = "<table width='100%' border='0'>\n\t<tr ><td colspan='2' bgcolor='black' align='center'>"
-		. "\t\t<font class='settingcaption'><font color='white'>".$clang->gT("Change Group Order")."</font></font></td></tr>"
+        $ordergroups = "<table width='100%' border='0'>\n\t<tr ><td colspan='2' class='settingcaption'>"
+		. "\t\t".$clang->gT("Change Group Order")."</td></tr>"
 		. "</table>\n";
 
 	// Get groups dependencies regarding conditions
