@@ -51,8 +51,8 @@ if (empty($surveyid)) {die("No SID provided.");}
 
 
 $conditionsoutput .= "<table width='100%' border='0' bgcolor='#555555' cellspacing='0' cellpadding='0'>\n"
-."\t<tr><td align='center'><font color='white'><strong>"
-.$clang->gT("Condition Designer")."</strong></font></td></tr>\n"
+."\t<tr><td align='center' class='settingcaption'><strong>"
+.$clang->gT("Condition Designer")."</strong></td></tr>\n"
 ."</table>\n";
 
 
@@ -596,16 +596,16 @@ $conditionsoutput .= "\t<tr bgcolor='#555555'><td colspan='3'></td></tr>\n";
 
 if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 0)
 {
-	$conditionsoutput .= "<tr bgcolor='#555555'><td colspan='3'><form action='$scriptname?action=conditions' name='copyconditions' id='copyconditions' method='post'>\n";
+	$conditionsoutput .= "<tr class='table2columns''><td colspan='3'><form action='$scriptname?action=conditions' name='copyconditions' id='copyconditions' method='post'>\n";
 
-	$conditionsoutput .= "\t<table width='100%'><tr bgcolor='#CDCDCD'>\n"
-	."\t\t<td colspan='3' align='center'>\n"
+	$conditionsoutput .= "\t<table width='100%' ><tr>\n"
+	."\t\t<td colspan='3' align='center' class='settingcaption'>\n"
 	."\t\t<strong>"
 	.$clang->gT("Copy Conditions")."</strong>\n"
 	."\t\t</td>\n"
 	."\t</tr>\n";
 
-	$conditionsoutput .= "\t<tr>\n"
+	$conditionsoutput .= "\t<tr bgcolor='#EFEFEF'>\n"
 	."\t\t<th>".$clang->gT("Condition")."</th><th></th><th>".$clang->gT("Question")."</th>\n"
 	."\t</tr>\n";
 
@@ -647,7 +647,7 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 $conditionsoutput .= "</table>\n";
 $conditionsoutput .= "<form action='$scriptname?action=conditions' name='addconditions' id='addconditions' method='post'>\n";
 $conditionsoutput .= "<table width='100%' border='0' >";
-$conditionsoutput .= "\t<tr bgcolor='#CDCDCD'>\n"
+$conditionsoutput .= "\t<tr class='settingcaption'>\n"
 ."\t\t<td colspan='3' align='center'>\n"
 ."\t\t\t<strong>".$clang->gT("Add Condition")."</strong>\n"
 ."\t\t</td>\n"
