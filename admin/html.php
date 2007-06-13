@@ -2569,7 +2569,7 @@ function getPopupHeight()
 {
 	global $clang, $surveyid;
 	
-	$rowheight = 17;
+	$rowheight = 20;
 	$height = 0;
 	$bottomPad = 15;
 	
