@@ -95,10 +95,10 @@ sendcacheheaders();
 $surveyoptions=browsemenubar();
 echo $htmlheader;
 ?>
-<table width='99%' align='center' style='margin: 5px; border: 1px solid #555555' cellpadding='1' cellspacing='0'>
-  <tr bgcolor='#555555'>
+<table class='menubar' width='99%' align='center' style='margin: 5px; border: 1px solid #555555' cellpadding='1' cellspacing='0'>
+  <tr>
    <td colspan='2' height='4'>
-    <font size='1' face='verdana' color='white'><strong><? echo $clang->gT("Quick Statistics") ?></strong></font>
+    <strong><? echo $clang->gT("Quick Statistics") ?></strong>
    </td>
   </tr>
 <? echo $surveyoptions ?>
@@ -200,7 +200,7 @@ if(!isset($_POST['action'])) {
     ?>
 	<table width='99%' align='center' style='border: 1px'>
     <tr>
-    <td colspan='2' style='border: 1px; background-color: #cccccc' align='center'>
+    <td colspan='2' style='border: 1px;' align='center'>
     <form method='post' action='stats.php?sid=<? echo $_GET['sid'] ?>'>
     <input type='hidden' name='action' value='fields'>
     <? presentFilterConditions() ?>
@@ -246,7 +246,7 @@ if(!isset($_POST['action'])) {
     <input type='hidden' name='action' value='display'>
 	<table width='99%' align='center' style='border: 1px'>
 	<tr>
-	<td colspan='2' style='text-align: center; border: 1px; background-color: #cccccc'>
+	<td colspan='2' style='text-align: center; border: 1px;'>
 	<? presentFilterConditions() ?>
 	</td>
 	</tr>

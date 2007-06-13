@@ -83,12 +83,12 @@ table.table2columns {
 .outlinetable td {
    font-size: 10pt;
    border: 1px solid #483D8B;
-   background: #869DC1;
+   background: #EEF6FF;
 }
 .outlinetable th {
    font-size: 10pt;
-   color: #FFF;
-   background: #483D8B;
+   color: #1D2D45;
+   background: #CCE6FF;
 }
 ul {
 	font-size: 10pt;

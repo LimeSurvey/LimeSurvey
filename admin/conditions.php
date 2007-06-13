@@ -51,8 +51,8 @@ if (empty($surveyid)) {die("No SID provided.");}
 
 
 $conditionsoutput .= "<table width='100%' border='0' bgcolor='#555555' cellspacing='0' cellpadding='0'>\n"
-."\t<tr><td align='center' class='settingcaption'><strong>"
-.$clang->gT("Condition Designer")."</strong></td></tr>\n"
+."\t<tr><td align='center'><font color='white'><strong>"
+.$clang->gT("Condition Designer")."</strong></font></td></tr>\n"
 ."</table>\n";
 
 

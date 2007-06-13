@@ -97,7 +97,7 @@ $statisticsoutput .= "\t<script type='text/javascript'>
 
 //$statisticsoutput .= "<table width='99%' align='center' style='margin: 5px; border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 $statisticsoutput .= "<table width='99%' class='menubar' cellpadding='1' cellspacing='0'>\n"
-."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1'><strong>".$clang->gT("Quick Statistics")."</strong></font></td></tr>\n";
+."\t<tr><td colspan='2' height='4'><font size='1'><strong>".$clang->gT("Quick Statistics")."</strong></font></td></tr>\n";
 //Get the menubar
 $statisticsoutput .= browsemenubar();
 $statisticsoutput .= "</table>\n"
@@ -206,7 +206,7 @@ foreach ($filters as $flt)
 			//if we've already drawn a table for a group, and we're changing - close off table
 			$statisticsoutput .= "\n\t\t\t\t</td></tr>\n\t\t\t</table>\n";
 		}
-		$statisticsoutput .= "\t\t<tr><td bgcolor='#CCCCCC' align='center'>\n"
+		$statisticsoutput .= "\t\t<tr><td align='center'>\n"
 		."\t\t<font size='1' face='verdana'><strong>$flt[4]</strong> (".$clang->gT("Group")." $flt[1])</font></td></tr>\n\t\t"
 		."<tr><td align='center'>\n"
 		."\t\t\t<table align='center'><tr>\n";
@@ -646,17 +646,17 @@ else
 
 $statisticsoutput .= "\t\t\t</table>\n"
 ."\t\t</td></tr>\n"
-."\t\t<tr><td bgcolor='#CCCCCC' align='center'>\n"
+."\t\t<tr><td align='center'>\n"
 ."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
 ."\t\t\t\t<tr><td align='center'>$setfont<input type='radio' class='radiobtn' id='viewsummaryall' name='summary' value='$allfield'"
 ." /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label></font></td></tr>\n"
-."\t\t<tr><td bgcolor='#CCCCCC' align='center'>\n"
+."\t\t<tr><td align='center'>\n"
 ."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
 ."\t\t\t\t<tr><td align='center'>$setfont".$clang->gT("Filter incomplete answers:")."<select name='filterinc'>\n"
 ."\t\t\t\t\t<<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
 ."\t\t\t\t\t<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
 ."\t\t\t\t</select></font></td></tr>\n"
-."\t\t<tr><td align='center' bgcolor='#CCCCCC'>\n\t\t\t<br />\n"
+."\t\t<tr><td align='center'>\n\t\t\t<br />\n"
 ."\t\t\t<input type='submit' value='".$clang->gT("View Stats")."' />\n"
 ."\t\t\t<input type='button' value='".$clang->gT("Clear")."' onclick=\"window.open('$scriptname?action=statistics&amp;sid=$surveyid', '_top')\" />\n"
 ."\t\t<br />&nbsp;\n"

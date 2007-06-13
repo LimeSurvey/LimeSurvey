@@ -54,8 +54,8 @@ if (!$subaction == "import")
 	}
 
 	$importoldresponsesoutput = "";
-    $importoldresponsesoutput .= "<table width='99%' align='center' style='margin: 5px; border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-    ."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Quick Statistics")."</strong></font></td></tr>\n";
+    $importoldresponsesoutput .= "<table width='99%' align='center' class='menubar' cellpadding='1' cellspacing='0'>\n"
+    ."\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Quick Statistics")."</strong></td></tr>\n";
     //Get the menubar
     $importoldresponsesoutput .= browsemenubar();
     $importoldresponsesoutput .= "</table>\n";

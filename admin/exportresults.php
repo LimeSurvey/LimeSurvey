@@ -117,7 +117,7 @@ if (!$style)
 
 	$afieldcount = count($excesscols);
     $exportoutput .= "<table width='99%' align='center' style='margin: 5px; border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-    ."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Export Results")."</strong></font></td></tr>\n";
+    ."\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Export Results")."</font></td></tr>\n";
     $exportoutput .= browsemenubar();
     $exportoutput .= "</table>\n";	
 	$exportoutput .= "<br />\n"
@@ -125,8 +125,8 @@ if (!$style)
 	."<table align='center'><tr>"
 	."<td valign='top'>\n"
 	."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-	."\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
-	."<font size='1' face='verdana' color='white'><strong>"
+	."\t<tr><td colspan='2' height='4'>"
+	."<strong>"
 	.$clang->gT("Export Responses");
 	if (isset($_POST['sql'])) {$exportoutput .= " - ".$clang->gT("Filtered from Statistics Script");}
 	if (returnglobal('id')<>'') {$exportoutput .= " - ".$clang->gT("Single Response");}
@@ -142,9 +142,9 @@ if (!$style)
 		$selectshow="selected='selected'";
 	}
 
-	$exportoutput .= "</strong> ($afieldcount ".$clang->gT("Columns").")</font></td></tr>\n"
-	."\t<tr><td height='8' bgcolor='silver'><font size='1'><strong>"
-	.$clang->gT("Questions")."</strong></font></font></td></tr>\n"
+	$exportoutput .= "</strong> ($afieldcount ".$clang->gT("Columns").")</td></tr>\n"
+	."\t<tr><td height='8'><font size='1'><strong>"
+	.$clang->gT("Questions")."</strong></font></td></tr>\n"
 	."\t<tr>\n"
 	."\t\t<td>\n"
 	."\t\t\t$setfont<input type='radio' class='radiobtn' name='style' value='abrev' id='headabbrev'>"
@@ -162,7 +162,7 @@ if (!$style)
 	."\t\t\t</select>\n"
 	."\t\t</font></font></td>\n"
 	."\t</tr>\n"
-	."\t<tr><td height='8' bgcolor='silver'><font size='1'><strong>"
+	."\t<tr><td height='8'><font size='1'><strong>"
 	.$clang->gT("Answers")."</strong></font></font></td></tr>\n"
 	."\t<tr>\n"
 	."\t\t<td>\n"
@@ -172,10 +172,10 @@ if (!$style)
 	."\t\t\t<input type='radio' class='radiobtn' checked name='answers' value='long' id='ansfull'>"
 	."<label for='ansfull'>"
 	.$clang->gT("Full Answers")."</label>\n"
-	."\t\t</font></font></td>\n"
+	."\t\t</font></td>\n"
 	."\t</tr>\n"
-	."\t<tr><td height='8' bgcolor='silver'><font size='1'><strong>"
-	.$clang->gT("Format")."</strong></font></font></td></tr>\n"
+	."\t<tr><td><font size='1'><strong>"
+	.$clang->gT("Format")."</strong></font></td></tr>\n"
 	."\t<tr>\n"
 	."\t\t<td>\n"
 	."\t\t\t$setfont<input type='radio' class='radiobtn' name='type' value='doc' id='worddoc'>"
@@ -191,7 +191,7 @@ if (!$style)
 	."\t</tr>\n"
 	."\t<tr><td height='2' bgcolor='silver'></td></tr>\n"
 	."\t<tr>\n"
-	."\t\t<td align='center' bgcolor='silver'>\n"
+	."\t\t<td align='center'>\n"
 	."\t\t\t<input type='submit' value='"
 	.$clang->gT("Export Data")."'>\n"
 	."\t\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
@@ -227,12 +227,12 @@ if (!$style)
 	$exportoutput .= "<td valign='top'>\n"
 	."<table align='center' width='150' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>"
 	."\t<tr>\n"
-	."\t\t<td height='8' bgcolor='#555555'><font face='verdana' color='white' size='1'><strong>"
+	."\t\t<td height='8'><strong>"
 	.$clang->gT("Column Control")."</strong>\n"
-	."\t\t</font></td>\n"
+	."\t\t</td>\n"
 	."\t</tr>\n"
 	."\t<tr>\n"
-	."\t\t<td bgcolor='silver' height='8'><strong><font size='1'>\n"
+	."\t\t<td height='8'><strong><font size='1'>\n"
 	."\t\t\t".$clang->gT("Choose Columns").":\n"
 	."\t\t</font></strong>";
 	if ($afieldcount > 255)
@@ -283,12 +283,12 @@ if (!$style)
 			$exportoutput .= "<td valign='top'>\n"
 			."<table align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>"
 			."\t<tr>\n"
-			."\t\t<td height='8' bgcolor='#555555'><font face='verdana' color='white' size='1'><strong>"
+			."\t\t<td height='8'><font face='verdana' size='1'><strong>"
 			.$clang->gT("Token Control")."</strong>\n"
 			."\t\t</font></td>\n"
 			."\t</tr>\n"
 			."\t<tr>\n"
-			."\t\t<td bgcolor='silver' height='8'><strong><font size='1'>\n"
+			."\t\t<td height='8'><strong><font size='1'>\n"
 			.$clang->gT("Choose Token Fields").":"
 			."\t\t</font></font></strong></td>\n"
 			."\t</tr>\n"
