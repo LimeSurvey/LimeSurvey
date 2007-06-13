@@ -71,7 +71,7 @@ if (!$style)
 	{
 		if (($rows['type']=='A') || ($rows['type']=='B')||($rows['type']=='C')||($rows['type']=='M')||($rows['type']=='P')||($rows['type']=='Q')||($rows['type']=='E')||($rows['type']=='F')||($rows['type']=='H'))
 		{
-			$detailquery="select code from {$dbprefix}answers where qid=".$rows['qid']." order by sortorder,code";
+			$detailquery="select code from {$dbprefix}answers where qid=".$rows['qid']." and language='$surveybaselang' order by sortorder,code";
 			$detailresult=db_execute_assoc($detailquery) or die("Couldn't find detailfields<br />$detailquery<br />".htmlspecialchars($connect->ErrorMsg()));
 			while ($detailrows = $detailresult->FetchRow())
 			{
@@ -84,7 +84,7 @@ if (!$style)
 		}
 		elseif ($rows['type']=='R')
 		{
-			$detailquery="select code from {$dbprefix}answers where qid=".$rows['qid']." order by sortorder,code";
+			$detailquery="select code from {$dbprefix}answers where qid=".$rows['qid']." and language='$surveybaselang' order by sortorder,code";
 			$detailresult=db_execute_assoc($detailquery) or die("Couldn't find detailfields<br />$detailquery<br />".htmlspecialchars($connect->ErrorMsg()));
 			$i=1;
 			while ($detailrows = $detailresult->FetchRow())
