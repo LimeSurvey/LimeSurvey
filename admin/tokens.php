@@ -1448,24 +1448,35 @@ if ($subaction == "uploadldap" && ($sumrows5['edit_survey_property'] || $sumrows
 			if ($resultnum >= 1) {
 				foreach ($ResArray as $responseGroupId => $responseGroup) {
 					for($j = 0;$j < $responseGroup['count']; $j++) {
-						$mytoken='';
+						// first let's initialize everything to ''
+						$myfirstname='';
+						$mylastname='';
+						$myemail='';
 						$mylanguage='';
+						$mytoken='';
+						$myattr1='';
+						$myattr2='';
+
+						// The first 3 attrs MUST exist in the ldap answer
+						// ==> send PHP notice msg to apache logs otherwise
 						$myfirstname = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['firstname_attr']]);
 						$mylastame = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['lastname_attr']]);
 						$myemail = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['email_attr']]);
-						if ( ! empty($responseGroup[$j][$ldap_queries[$ldapq]['token_attr']]) ) $mytoken = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['token_attr']]);
-						if ( ! empty($responseGroup[$j][$ldap_queries[$ldapq]['attr1']]) ) $myattr1 = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['attr1']]);
-						if ( ! empty($responseGroup[$j][$ldap_queries[$ldapq]['attr2']]) ) $myattr2 = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['attr2']]);
-						if ( ! empty($responseGroup[$j][$ldap_queries[$ldapq]['language']]) ) $mylanguage = ldap_readattr($response[$ldap_queries[$ldapq]['language']]);
+
+						// The following attrs are optionnal
+						if ( isset($responseGroup[$j][$ldap_queries[$ldapq]['token_attr']]) ) $mytoken = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['token_attr']]);
+						if ( isset($responseGroup[$j][$ldap_queries[$ldapq]['attr1']]) ) $myattr1 = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['attr1']]);
+						if ( isset($responseGroup[$j][$ldap_queries[$ldapq]['attr2']]) ) $myattr2 = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['attr2']]);
+						if ( isset($responseGroup[$j][$ldap_queries[$ldapq]['language']]) ) $mylanguage = ldap_readattr($response[$ldap_queries[$ldapq]['language']]);
 
 						$iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
 						. "(firstname, lastname, email, token, language";
-						if (isset($myattr1)) {$iq .= ", attribute_1";}
-						if (isset($myattr2)) {$iq .= ", attribute_2";}
+						if (!empty($myattr1)) {$iq .= ", attribute_1";}
+						if (!empty($myattr2)) {$iq .= ", attribute_2";}
 						$iq .=") \n"
 						. "VALUES ('$myfirstname', '$mylastame', '$myemail', '$mytoken', '$mylanguage'";
-						if (isset($myattr1)) {$iq .= ", '$myattr1'";}
-						if (isset($myattr2)) {$iq .= ", '$myattr2'";}
+						if (!empty($myattr1)) {$iq .= ", '$myattr1'";}
+						if (!empty($myattr2)) {$iq .= ", '$myattr2'";}
 						$iq .= ")";
 						$ir = $connect->Execute($iq) or die ("Couldn't insert line<br />\n$buffer<br />\n".htmlspecialchars($connect->ErrorMsg())."<pre style='text-align: left'>$iq</pre>\n");
 					} // End for each entry
