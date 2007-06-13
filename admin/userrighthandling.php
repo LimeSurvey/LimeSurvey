@@ -318,9 +318,9 @@ if($action == "setnewparents")
 
 if ($action == "editusers")
 {
-	$usersummary = "<table rules='rows' width='100%'>\n"
-	. "\t\t\t\t<tr bgcolor='#555555'><td colspan='6' height='4'>"
-	. "<font size='1' face='verdana' color='white'><strong>".$clang->gT("User Control")."</strong></font></td></tr>\n"
+	$usersummary = "<table rules='rows' width='100%' class='menubar'>\n"
+	. "\t\t\t\t<tr><td colspan='6' height='4'>"
+	. "<font size='1' face='verdana'><strong>".$clang->gT("User Control")."</strong></font></td></tr>\n"
 	. "\t<tr>\n"
 	. "\t\t<th width='20%'>".$clang->gT("Username")."</th>\n"
 	. "\t\t<th width='20%'>".$clang->gT("Email")."</th>\n"
@@ -338,20 +338,20 @@ if ($action == "editusers")
 	//	output users
 	// output admin user only if the user logged in has user management rights
 	if ($_SESSION['USER_RIGHT_DELETE_USER']||$_SESSION['USER_RIGHT_CREATE_USER']||$_SESSION['USER_RIGHT_MOVE_USER']){
-		$usersummary .= "\t<tr bgcolor='#999999'>\n"
-		. "\t<td align='center'><strong>{$usrhimself['user']}</strong></td>\n"
-		. "\t<td align='center'><strong>{$usrhimself['email']}</strong></td>\n"
-		. "\t\t<td align='center'><strong>{$usrhimself['full_name']}</strong></td>\n"
-		. "\t\t<td align='center'><strong>********</strong></td>\n";
+		$usersummary .= "\t<tr class='oddrow'>\n"
+		. "\t<td class='oddrow' align='center'><strong>{$usrhimself['user']}</strong></td>\n"
+		. "\t<td class='oddrow' align='center'><strong>{$usrhimself['email']}</strong></td>\n"
+		. "\t\t<td class='oddrow' align='center'><strong>{$usrhimself['full_name']}</strong></td>\n"
+		. "\t\t<td class='oddrow' align='center'><strong>********</strong></td>\n";
 		
 		if(isset($usrhimself['parent_id']) && $usrhimself['parent_id']!=0) { 
-			$usersummary .= "\t\t<td align='center'>{$userlist[$usrhimself['parent_id']]['user']}</td>\n";
+			$usersummary .= "\t\t<td class='oddrow' align='center'>{$userlist[$usrhimself['parent_id']]['user']}</td>\n";
 		}
 		else
 		{
-			$usersummary .= "\t\t<td align='center'><strong>---</strong></td>\n";
+			$usersummary .= "\t\t<td class='oddrow' align='center'><strong>---</strong></td>\n";
 		}
-		$usersummary .= "\t\t<td align='center' style='padding-top:10px;'>\n";
+		$usersummary .= "\t\t<td class='oddrow' align='center' style='padding-top:10px;'>\n";
 		
 		if ($_SESSION['loginID'] == "1")
 		{
@@ -385,16 +385,21 @@ if ($action == "editusers")
 	$usr_arr = $userlist;
 	for($i=1; $i<=count($usr_arr); $i++)
 	{
+		if (!isset($bgcc)) {$bgcc="evenrow";}
+		else
+		{
+			if ($bgcc == "evenrow") {$bgcc = "oddrow";}
+			else {$bgcc = "evenrow";}
+		}
 		$usr = $usr_arr[$i];
-		if(($row % 2) == 0) $usersummary .= "\t<tr  bgcolor='#999999'>\n";
-		else $usersummary .= "\t<tr>\n";
+		$usersummary .= "\t<tr class='$bgcc'>\n";
 
-		$usersummary .= "\t<td align='center'>{$usr['user']}</td>\n"
-		. "\t<td align='center'><a href='mailto:{$usr['email']}'>{$usr['email']}</a></td>\n"
-		. "\t<td align='center'>{$usr['full_name']}</td>\n";
+		$usersummary .= "\t<td class='$bgcc' align='center'>{$usr['user']}</td>\n"
+		. "\t<td class='$bgcc' align='center'><a href='mailto:{$usr['email']}'>{$usr['email']}</a></td>\n"
+		. "\t<td class='$bgcc' align='center'>{$usr['full_name']}</td>\n";
 
 		// passwords of other users will not be displayed
-		$usersummary .=  "\t\t<td align='center'>******</td>\n";
+		$usersummary .=  "\t\t<td class='$bgcc' align='center'>******</td>\n";
 
 		// Get Parent's User Name
 		$uquery = "SELECT users_name FROM ".db_table_name('users')." WHERE uid=".$usr['parent_id'];
@@ -427,14 +432,14 @@ if ($action == "editusers")
 			//TODO: Find out why parent isn't set
 			if (isset($usr['parent']))
 			{
-				$usersummary .= "\t\t<td align='center'>{$usr['parent']}</td>\n";
+				$usersummary .= "\t\t<td class='$bgcc' align='center'>{$usr['parent']}</td>\n";
 			} else 
 			{
-				$usersummary .= "\t\t<td align='center'>-----</td>\n";
+				$usersummary .= "\t\t<td class='$bgcc' align='center'>-----</td>\n";
 			}
 		//}
 		
-		$usersummary .= "\t\t<td align='center' style='padding-top:10px;'>\n";
+		$usersummary .= "\t\t<td class='$bgcc' align='center' style='padding-top:10px;'>\n";
 		// users are allowed to delete all successor users (but the admin not himself)
 		//  || ($usr['uid'] == $_SESSION['loginID']))
 		if ($_SESSION['loginID'] == "1" || ($_SESSION['USER_RIGHT_DELETE_USER'] == 1  && $usr['parent_id'] == $_SESSION['loginID']))
