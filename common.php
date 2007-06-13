@@ -36,7 +36,7 @@
 
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix)) {die("Cannot run this script directly");}
-$versionnumber = "1.49RC";
+$versionnumber = "1.50";
 $dbversionnumber = 112;
 
 
@@ -1460,7 +1460,7 @@ function getextendedanswer($fieldcode, $value)
 			case "I":
 			case "R":
 			$query = "SELECT code, answer FROM ".db_table_name('answers')." WHERE qid={$fields['qid']} AND code='".$connect->escape($value)."' AND language='".$s_lang."'";
-			$result = db_execute_assoc($query, $fields['qid'], $value) or die ("Couldn't get answer type L - getextendedanswer() in common.php<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+			$result = db_execute_assoc($query) or die ("Couldn't get answer type L - getextendedanswer() in common.php<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 			while($row=$result->FetchRow())
 			{
 				$this_answer=$row['answer'];
