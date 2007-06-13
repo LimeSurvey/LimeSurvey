@@ -490,7 +490,7 @@ $conditionsoutput .= "\t\t\t\tdocument.getElementById('canswers').options[docume
 
 //SHOW FORM TO CREATE IT!
 $conditionsoutput .= "<table width='100%' align='center' cellspacing='0' cellpadding='0' style='border-style: solid; border-width: 1; border-color: #555555'>\n"
-."\t<tr bgcolor='#CCFFCC'>\n"
+."\t<tr bgcolor='#E1FFE1'>\n"
 ."\t\t<td  align='center' >\n";
 $showreplace="$questiontitle". showSpeaker($questiontext);
 $onlyshow=str_replace("{QID}", $showreplace, $clang->gT("Only show question {QID} IF"));
@@ -518,24 +518,24 @@ if ($conditionscount > 0)
 			$markcidstyle="";
 		}
 		else {
-			$markcidstyle="background-color: orange;";
+			$markcidstyle="background-color: #5670A1;";
 		}
 
 		if (isset($currentfield) && $currentfield != $rows['cfieldname'])
 		{
-			$conditionsoutput .= "\t\t\t\t<tr bgcolor='#E1FFE1'>\n"
+			$conditionsoutput .= "\t\t\t\t<tr class='evenrow'>\n"
 			."\t\t\t\t\t<td valign='middle' align='center'>\n"
 			."<font size='1'><strong>"
 			.$clang->gT("and")."</strong></font>";
 		}
 		elseif (isset($currentfield))
 		{
-			$conditionsoutput .= "\t\t\t\t<tr bgcolor='#E1FFE1'>\n"
+			$conditionsoutput .= "\t\t\t\t<tr class='evenrow'>\n"
 			."\t\t\t\t\t<td valign='top' align='center'>\n"
 			."<font size='1'><strong>"
 			.$clang->gT("OR")."</strong></font>";
 		}
-		$conditionsoutput .= "\t<tr bgcolor='#E1FFE1' style='$markcidstyle'>\n"
+		$conditionsoutput .= "\t<tr class='oddrow' style='$markcidstyle'>\n"
 		."\t<td><form style='margin-bottom:0;' name='del{$rows['cid']}' id='del{$rows['cid']}' method='post' action='$scriptname?action=conditions'>\n"
 		."\t\t<table width='100%' style='height: 13px;' cellspacing='0' cellpadding='0'><tr><td valign='middle' align='right' width='50%'><font size='1' face='verdana'>\n";
 		//BUILD FIELDNAME?
