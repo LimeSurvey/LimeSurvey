@@ -562,7 +562,7 @@ function do_language($ia)
 	global $dbprefix, $surveyid, $clang;
 	$answerlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	$answerlangs [] = GetBaseLanguageFromSurveyID($surveyid);
-	$answer = "\n\t\t\t\t\t<select name='$ia[1]' id='$ia[1]' onchange='checkconditions(this.value, this.name, this.type);modfield(this.name);document.getElementById(\"lang\").value=this.value;'>\n";
+	$answer = "\n\t\t\t\t\t<select name='$ia[1]' id='answer$ia[1]' onchange='document.getElementById(\"lang\").value=this.value; checkconditions(this.value, this.name, this.type);modfield(this.name);'>\n";
 	if (!$_SESSION[$ia[1]]) {$answer .= "\t\t\t\t\t\t<option value='' selected='selected'>".$clang->gT("Please choose")."..</option>\n";}
 	foreach ($answerlangs as $ansrow)
 	{
@@ -575,6 +575,8 @@ function do_language($ia)
 		$answer .= ">".getLanguageNameFromCode($ansrow, true)."</option>\n";
 	}
 	$answer .= "\t\t\t\t\t</select>\n";
+    $answer .= "\t\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}' />\n";
+
 	$inputnames[]=$ia[1];
     $answer .= "\n\t\t\t<input type='hidden' name='lang' id='lang' value='' />";
 		
@@ -991,7 +993,7 @@ function do_listwithcomment($ia)
 		$answer .= "\t\t\t<table class='question'>\n"
 		. "\t\t\t\t<tr>\n"
 		. "\t\t\t\t\t<td><u>".$clang->gT("Please choose one of the following").":</u></td>\n"
-		. "\t\t\t\t\t<td><u><label for='$ia[1]comment'>".$clang->gT("Please enter your comment here").":</label></u></td>\n"
+		. "\t\t\t\t\t<td><u><label for='answer$ia[1]comment'>".$clang->gT("Please enter your comment here").":</label></u></td>\n"
 		. "\t\t\t\t</tr>\n"
 		. "\t\t\t\t<tr>\n"
 		. "\t\t\t\t\t<td valign='top' align='left'>\n";
