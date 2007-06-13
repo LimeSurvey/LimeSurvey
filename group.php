@@ -548,7 +548,7 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 		$qfbase = $surveyid."X".$gid."X".$attralist['fid'];
 		if ($attralist['type'] == "M")
 		{
-			$qquery = "SELECT code FROM {$dbprefix}answers WHERE qid='".$attralist['qid']."' AND language=".$_SESSION['s_lang']." order by code;";
+			$qquery = "SELECT code FROM {$dbprefix}answers WHERE qid='".$attralist['qid']."' AND language='".$_SESSION['s_lang']."' order by code;";
 			$qresult = db_execute_assoc($qquery);
 			while ($fansrows = $qresult->FetchRow())
 			{

@@ -2602,7 +2602,6 @@ function getArrayFiltersForGroup($gid)
 				//die(print_r($avalue));
 				if ($avalue['title'] == $val[0])
 				{
-					die("Found");
 					$filter = array('qid' => $qrow['qid'], 'mandatory' => $qrow['mandatory'], 'type' => $avalue['type'], 'fid' => $avalue['qid']);
 					array_push($attrmach,$filter);
 				}
@@ -2635,7 +2634,7 @@ function getArrayFiltersForQuestion($qid)
 			if ($fields[2] == $val['value'])
 			{
 				// we found the target question, now we need to know what the answers where, we know its a multi!
-				$query = "SELECT code FROM ".db_table_name('answers')." where qid='{$fields[0]}' AND language=".$_SESSION['s_lang']." order by sortorder";
+				$query = "SELECT code FROM ".db_table_name('answers')." where qid='{$fields[0]}' AND language='".$_SESSION['s_lang']."' order by sortorder";
 				$qresult = db_execute_assoc($query);
 				$selected = array();
 				while ($code = $qresult->fetchRow())

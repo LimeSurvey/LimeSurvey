@@ -356,10 +356,32 @@ echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"));
 
 echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
 ."\t<script type='text/javascript'>\n"
-."\t<!--\n"
-."\t\tfunction checkconditions(value, name, type)\n"
+."\t<!--\n";
+
+
+// Find out if there are any array_filter questions in this group
+$array_filterqs = getArrayFiltersForGroup($gid);
+// Put in the radio button reset javascript for the array filter unselect
+if (isset($array_filterqs) && is_array($array_filterqs)) {
+	print <<<END
+
+		function radio_unselect(radioObj)
+		{
+			var radioLength = radioObj.length;
+			for(var i = 0; i < radioLength; i++)
+			{
+				radioObj[i].checked = false;
+			}
+		}
+
+
+END;
+}
+
+echo  "\t\tfunction checkconditions(value, name, type)\n"
 ."\t\t\t{\n";
-if (isset($conditions) && is_array($conditions))
+
+if ((isset($conditions) && is_array($conditions)) || (isset($array_filterqs) && is_array($array_filterqs)))
 {
 	if (!isset($endzone)) {$endzone="";}
 	echo "\t\t\tif (type == 'radio' || type == 'select-one')\n"
@@ -433,7 +455,46 @@ if (isset($conditions) && is_array($conditions))
 	}
 	$java .= $endzone;
 }
-echo $java;
+
+
+if (isset($array_filterqs) && is_array($array_filterqs))
+{
+	if (!isset($appendj)) {$appendj="";}
+
+	foreach ($array_filterqs as $attralist)
+	{
+		//die(print_r($attrflist));
+		$qbase = $surveyid."X".$gid."X".$attralist['qid'];
+		$qfbase = $surveyid."X".$gid."X".$attralist['fid'];
+		if ($attralist['type'] == "M")
+		{
+			$qquery = "SELECT code FROM {$dbprefix}answers WHERE qid='".$attralist['qid']."' AND language='".$_SESSION['s_lang']."' order by code;";
+			$qresult = db_execute_assoc($qquery);
+			while ($fansrows = $qresult->FetchRow())
+			{
+				$fquestans = "java".$qfbase.$fansrows['code'];
+				$tbody = "javatbd".$qbase.$fansrows['code'];
+				$dtbody = "tbdisp".$qbase.$fansrows['code'];
+				$tbodyae = $qbase.$fansrows['code'];
+				$appendj .= "\n\t\t\tif ((document.getElementById('$fquestans').value == 'Y'))\n";
+				$appendj .= "\t\t\t{\n";
+				$appendj .= "\t\t\t\tdocument.getElementById('$tbody').style.display='';\n";
+				$appendj .= "\t\t\t\tdocument.getElementById('$dtbody').value='on';\n";
+				$appendj .= "\t\t\t}\n";
+				$appendj .= "\t\t\telse\n";
+				$appendj .= "\t\t\t{\n";
+				$appendj .= "\t\t\t\tdocument.getElementById('$tbody').style.display='none';\n";
+				$appendj .= "\t\t\t\tdocument.getElementById('$dtbody').value='off';\n";
+				$appendj .= "\t\t\t\tradio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
+				$appendj .= "\t\t\t}\n";
+			}
+		}
+	}
+	$java .= $appendj;
+}
+
+
+if (isset($java)) {echo $java;}
 echo "\t\t\t\tif (navigator.appVersion.indexOf('Safari')>-1 && name !== undefined )\n"
 ."\t\t\t\t{ // Safari eats the onchange so run modfield manually, expect when called at onload time\n"
 ."\t\t\t\t\t//alert('For Safari calling modfield for ' + name);\n"

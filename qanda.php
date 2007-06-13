@@ -1902,7 +1902,7 @@ function do_array_5point($ia)
 		}
 		if (!isset($trbc) || $trbc == "array1" || !$trbc) {$trbc = "array2";} else {$trbc = "array1";}
 		$htmltbody2 = "";
-		if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == false)
+		if (($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == false)  || ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "A"))
 		{
 			$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'  />";
 		} else if (($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "S") || ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == true))
