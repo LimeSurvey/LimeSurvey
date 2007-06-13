@@ -1358,6 +1358,17 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 				$line = array_map('db_quote',$line);
 				if (isset($line[0]) && $line[0] != "" & isset($line[1]) && $line[1] != "" && isset($line[2]) && $line[2] != "")
 				{
+					if (is_numeric($line[0])) 
+					{
+						$line[7] = $line[0];
+						$line[0] = $line[1];
+						$line[1] = $line[2];
+						$line[2] = $line[3];
+						$line[3] = $line[4];
+						$line[4] = $line[5];
+						$line[5] = $line[6];
+					}
+					
 					$dupquery = "SELECT firstname, lastname from ".db_table_name("tokens_$surveyid")." where email=".$connect->qstr($line[2])." and firstname = ".$connect->qstr($line[0])." and lastname= ".$connect->qstr($line[1])."";
 					$dupresult = $connect->Execute($dupquery);
 					if ($dupresult->RecordCount() > 0)
