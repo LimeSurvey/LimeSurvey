@@ -169,6 +169,9 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 	$new_user = html_entity_decode($_POST['new_user']);
 	$new_email = html_entity_decode($_POST['new_email']);
 	$new_full_name = html_entity_decode($_POST['new_full_name']);
+    $new_user = $_POST['new_user'];
+    $new_email = $_POST['new_email'];
+    $new_full_name = html_entity_decode($_POST['new_full_name']);
 	$valid_email = true;
 
 	if(!validate_email($new_email))
@@ -184,7 +187,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 	elseif($valid_email)
 	{
 		$new_pass = createPassword();
-		$uquery = "INSERT INTO {$dbprefix}users VALUES (NULL, '$new_user', '".SHA256::hash($new_pass)."', '{$new_full_name}', {$_SESSION['loginID']}, '{$defaultlang}', '{$new_email}',0,0,0,0,0,0,0)";
+		$uquery = "INSERT INTO {$dbprefix}users (users_name, password,full_name,parent_id,lang,email,create_survey,create_user,delete_user,move_user,configurator,manage_template,manage_label) VALUES ('{$new_user}', '".SHA256::hash($new_pass)."', '{$new_full_name}', {$_SESSION['loginID']}, '{$defaultlang}', '{$new_email}',0,0,0,0,0,0,0)";
 		$uresult = $connect->Execute($uquery);
 
 		if($uresult)
