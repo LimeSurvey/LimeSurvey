@@ -1538,9 +1538,9 @@ function getextendedanswer($fieldcode, $value)
 function validate_email($email)
 {
 	// Create the syntactical validation regular expression
-	$regexp = "^([_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-z0-9-]+)*(\.[a-z]{2,4})$";
 	// Validate the syntax
-	return (eregi($regexp, $email));
+    return ( ! preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $email)) ? FALSE : TRUE;  
+    
 }
 
 function crlf_lineendings($text)
