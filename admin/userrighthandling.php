@@ -748,9 +748,16 @@ if ($action == "editusergroups"  )
 			$usergroupentries='';
 			while ($egurow = $eguresult->FetchRow())
 			{
+				if (!isset($bgcc)) {$bgcc="evenrow";}
+				else
+				{
+					if ($bgcc == "evenrow") {$bgcc = "oddrow";}
+					else {$bgcc = "evenrow";}
+				}
+
 				if($egurow['uid'] == $crow['owner_id'])
 				{
-					$usergroupowner = "\t<tr bgcolor='#999999'>\n"
+					$usergroupowner = "\t<tr class='$bgcc'>\n"
 					. "\t<td align='center'><strong>{$egurow['users_name']}</strong></td>\n"
 					. "\t<td align='center'><strong>{$egurow['email']}</strong></td>\n"
 					. "\t\t<td align='center'>&nbsp;</td></tr>\n";
@@ -759,8 +766,9 @@ if ($action == "editusergroups"  )
 				//	output users
 				
 				if($row == 1){ $usergroupentries .= "\t<tr>\n\t<td height=\"20\" colspan=\"6\"></td>\n\t</tr>"; $row++;}
-				if(($row % 2) == 0) $usergroupentries .= "\t<tr  bgcolor='#999999'>\n";
-				else $usergroupentries .= "\t<tr>\n";
+				//if(($row % 2) == 0) $usergroupentries .= "\t<tr  bgcolor='#999999'>\n";
+				//else $usergroupentries .= "\t<tr>\n";
+				$usergroupentries .= "\t<tr class='$bgcc'>\n";
 				$usergroupentries .= "\t<td align='center'>{$egurow['users_name']}</td>\n"
 				. "\t<td align='center'>{$egurow['email']}</td>\n"
 				. "\t\t<td align='center' style='padding-top:10px;'>\n";
