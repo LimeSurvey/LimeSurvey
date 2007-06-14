@@ -116,7 +116,7 @@ if (!$style)
 	if ($thissurvey["ipaddr"]=='Y') {$excesscols[]='ipaddr';}
 
 	$afieldcount = count($excesscols);
-    $exportoutput .= "<table width='99%' align='center' style='margin: 5px; border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+    $exportoutput .= "<table width='99%' align='center' class='menubar' cellpadding='1' cellspacing='0'>\n"
     ."\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Export Results")."</font></td></tr>\n";
     $exportoutput .= browsemenubar();
     $exportoutput .= "</table>\n";	
