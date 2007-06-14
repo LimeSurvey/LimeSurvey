@@ -647,11 +647,11 @@ if ($type == "doc")
 	$y=1;
 	for ($x=0; $x<count($fieldmap); $x++)
 	{
-		if ($fieldmap[$x]['fieldname'] != "datestamp" && $fieldmap[$x]['fieldname'] != "ipaddr" && $fieldmap[$x]['fieldname'] != "refurl")
-		{
-			$fieldmap[$x]['title']=$flarray[$y];
-			$y++;
-		}
+//		if ($fieldmap[$x]['fieldname'] != "datestamp" && $fieldmap[$x]['fieldname'] != "ipaddr" && $fieldmap[$x]['fieldname'] != "refurl")
+//		{
+			$fieldmap[$x]['title']=$flarray[$x];
+//			$y++;
+//		}
 	}
 }
 else
@@ -786,7 +786,8 @@ elseif ($answers == "long")
 		}
 		for ($i=0; $i<$fieldcount; $i++) //For each field, work out the QID
 		{
-			$field=$dresult->FetchField($i);
+			$fqid=0;            // By default fqid is set to zero 
+            $field=$dresult->FetchField($i);
 			$fieldinfo=$field->name;
 			if ($fieldinfo != "startlanguge" && $fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "ipaddr"&& $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && $fieldinfo != "attribute_1" && $fieldinfo != "attribute_2")
 			{
@@ -808,7 +809,7 @@ elseif ($answers == "long")
 			}
 			else
 			{
-				$fsid=""; $fgid=""; $fqid="";
+				$fsid=""; $fgid=""; 
 				if ($type == "doc")
 				{
 					switch($fieldinfo)
@@ -834,6 +835,9 @@ elseif ($answers == "long")
 						case "token":
 						$ftitle=$elang->gT("Token").":";
 						break;
+                        case "tid":
+                        $ftitle=$elang->gT("Token ID").":";
+                        break;
 						case "attribute_1":
 						$ftitle=$elang->gT("Attribute 1").":";
 						break;
@@ -849,10 +853,9 @@ elseif ($answers == "long")
 					} // switch
 				}
 			}
-			if (!$fqid) {$fqid = "0";}
 			if ($fqid == 0)
 			{
-				$ftype = "-";
+				$ftype = "-";  //   This is set if it not a normal answer field, but something like tokenID, First Name etc
 			}
 			if ($type == "csv") {$exportoutput .= "\"";}
 			if ($type == "doc") {$exportoutput .= "\n$ftitle\n\t";}
