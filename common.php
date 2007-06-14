@@ -2856,7 +2856,7 @@ function strip_tags_full($string) {
 // adds Usergroups in Database by Moses
 function addUserGroupInDB($group_name, $group_description) {
 	global $connect;
-	$iquery = "INSERT INTO ".db_table_name('user_groups')." VALUES(NULL, '{$group_name}', '{$group_description}', '{$_SESSION['loginID']}')";
+	$iquery = "INSERT INTO ".db_table_name('user_groups')." (name, description, owner_id) VALUES('{$group_name}', '{$group_description}', '{$_SESSION['loginID']}')";
 	if($connect->Execute($iquery)) {
 		$id = $connect->Insert_Id();
 		if($id > 0) {
