@@ -148,9 +148,9 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	."<table><tr><td></td></tr></table>\n";
 
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-	$fnquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups").", ".db_table_name("surveys")." 
-	WHERE ".db_table_name("questions").".gid=".db_table_name("groups").".gid AND ".db_table_name("groups").".sid=".db_table_name("surveys").".sid 
-	AND ".db_table_name("questions").".sid='$surveyid' AND 
+	$fnquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups").", ".db_table_name("surveys")."
+	WHERE ".db_table_name("questions").".gid=".db_table_name("groups").".gid AND ".db_table_name("groups").".sid=".db_table_name("surveys").".sid
+	AND ".db_table_name("questions").".sid='$surveyid' AND
 	".db_table_name("questions").".language='{$language}' AND ".db_table_name("groups").".language='{$language}' ORDER BY ".db_table_name("groups").".group_order, ".db_table_name("questions").".title";
 	$fnresult = db_execute_assoc($fnquery);
 	$fncount = 0;
@@ -248,7 +248,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	$idresult = db_execute_assoc($idquery) or die ("Couldn't get entry<br />\n$idquery<br />\n".$connect->ErrorMsg());
 	while ($idrow = $idresult->FetchRow()) {$id=$idrow['id']; $rlangauge=$idrow['startlanguage'];}
 	$next=$id+1;
-	$last=$id-1; 
+	$last=$id-1;
 	$browseoutput .= "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 	."\t<tr>\n"
 	."\t\t<td colspan='2' height='4'><strong>"
@@ -256,21 +256,21 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	."\t<tr><td colspan='2'>\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
-	if (isset($rlangauge)) 
+	if (isset($rlangauge))
     {
             $browseoutput .="\t\t\t<a href='$scriptname?action=dataentry&amp;subaction=edit&amp;id=$id&amp;sid=$surveyid&amp;language=$rlangauge&amp;surveytable=$surveytable'" .
 			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Edit this entry", "js")."')\">" .
 			"<img align='left' src='$imagefiles/edit.png' title='' alt='' /></a>\n";
-	}		
+	}
 	if ($sumrows5['delete_survey'])
 	{
 		$browseoutput .=  "\t\t\t<a href='$scriptname?action=dataentry&amp;subaction=delete&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
-			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Delete this entry", "js")."')\">" 
+			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Delete this entry", "js")."')\">"
 		."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='' title='' onclick=\"return confirm('".$clang->gT("Are you sure you want to delete this entry.","js")."')\" /></a>\n";
 	}
 	 $browseoutput .= "\t\t\t<a href='$scriptname?action=exportresults&amp;sid=$surveyid&amp;id=$id'" .
 		"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export this Response", "js")."')\">" .
-		"<img name='Export' src='$imagefiles/exportcsv.png' title='' alt='". $clang->gT("Export this Response")."'align='left' /></a>\n"
+		"<img name='Export' src='$imagefiles/export.png' title='' alt='". $clang->gT("Export this Response")."'align='left' /></a>\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' width='20' height='20' border='0' hspace='0' align='left' alt='' />\n"
 	."\t\t\t<a href='$scriptname?action=browse&amp;subaction=id&amp;id=$last&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
@@ -330,8 +330,8 @@ elseif ($subaction == "all")
 	}
 	$browseoutput .= "</table>\n";
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-	$fnquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups").", 
-	".db_table_name("surveys")." WHERE ".db_table_name("questions").".gid=".db_table_name("groups").".gid AND 
+	$fnquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups").",
+	".db_table_name("surveys")." WHERE ".db_table_name("questions").".gid=".db_table_name("groups").".gid AND
 	".db_table_name("questions").".language='{$language}' AND ".db_table_name("groups").".language='{$language}' AND
 	".db_table_name("groups").".sid=".db_table_name("surveys").".sid AND ".db_table_name("questions").".sid='$surveyid' ORDER BY ".db_table_name("groups").".group_order";
 	$fnresult = db_execute_assoc($fnquery);
@@ -399,11 +399,11 @@ elseif ($subaction == "all")
 		}
 		elseif ($fnrow['type'] == "R")
 		{
-			$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM 
-			".db_table_name("answers").", ".db_table_name("questions")." 
-			WHERE ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND 
+			$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM
+			".db_table_name("answers").", ".db_table_name("questions")."
+			WHERE ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND
 			".db_table_name("answers").".language='{$language}' AND ".db_table_name("questions").".language='{$language}'
-			AND ".db_table_name("questions").".qid={$fnrow['qid']} AND ".db_table_name("questions").".sid=$surveyid 
+			AND ".db_table_name("questions").".qid={$fnrow['qid']} AND ".db_table_name("questions").".sid=$surveyid
 			ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
 			$i2result = $connect->Execute($i2query);
 			$i2count = $i2result->RecordCount();
@@ -416,10 +416,10 @@ elseif ($subaction == "all")
 		}
 		else
 		{
-			$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")." 
-			WHERE ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND 
+			$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")."
+			WHERE ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND
 			".db_table_name("answers").".language='{$language}' AND ".db_table_name("questions").".language='{$language}' AND
-			".db_table_name("questions").".qid={$fnrow['qid']} AND ".db_table_name("questions").".sid=$surveyid 
+			".db_table_name("questions").".qid={$fnrow['qid']} AND ".db_table_name("questions").".sid=$surveyid
 			ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
 			$i2result = db_execute_assoc($i2query);
 			$otherexists = "";
@@ -499,19 +499,19 @@ elseif ($subaction == "all")
 	else
 	{
 		$dtquery = "SELECT * FROM $surveytable ";
-		if (incompleteAnsFilterstate() === true) {$dtquery .= " WHERE submitdate > '0000-00-00 00:00:00'";}	
+		if (incompleteAnsFilterstate() === true) {$dtquery .= " WHERE submitdate > '0000-00-00 00:00:00'";}
 		$dtquery .= " ORDER BY id";
 	}
 	if ($order == "desc") {$dtquery .= " DESC";}
-	
+
 	if (isset($limit))
-	{ 
-		if (!isset($start)) {$start = 0;} 
+	{
+		if (!isset($start)) {$start = 0;}
 		$dtresult = db_select_limit_assoc($dtquery, $limit, $start) or die("Couldn't get surveys<br />$dtquery<br />".$connect->ErrorMsg());
 	}
 	else
 	{
-		$dtresult = db_execute_assoc($dtquery) or die("Couldn't get surveys<br />$dtquery<br />".$connect->ErrorMsg());	 	
+		$dtresult = db_execute_assoc($dtquery) or die("Couldn't get surveys<br />$dtquery<br />".$connect->ErrorMsg());
 	}
 	$dtcount2 = $dtresult->RecordCount();
 	$cells = $fncount+1;
@@ -646,8 +646,8 @@ else
 	$gnresult = db_execute_num($gnquery);
 	$gnresult2 = db_execute_num($gnquery2);
 
-	while ($gnrow=$gnresult->FetchRow()) {$num_total_answers=$gnrow[0];}	
-	while ($gnrow2=$gnresult2->FetchRow()) {$num_completed_answers=$gnrow2[0];}	
+	while ($gnrow=$gnresult->FetchRow()) {$num_total_answers=$gnrow[0];}
+	while ($gnrow2=$gnresult2->FetchRow()) {$num_completed_answers=$gnrow2[0];}
 	$browseoutput .= "<table width='100%' border='0'>\n"
 	."\t<tr><td align='center'>$num_total_answers ".$clang->gT("responses for this survey")." ("
 	."$num_completed_answers ".$clang->gT("full responses").", "
