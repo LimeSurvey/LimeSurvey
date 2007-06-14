@@ -157,6 +157,10 @@
 	    $supportedLanguages['sl']['description'] = $clang->gT('Slovenian');
 	    $supportedLanguages['sl']['nativedescription'] = 'Sloven&#353;&#269;ina';
 
+        // Serbian
+        $supportedLanguages['sr']['description'] = $clang->gT('Serbian');
+        $supportedLanguages['sr']['nativedescription'] = 'Serbian';
+
 	    // Spanish
 	    $supportedLanguages['es']['description'] = $clang->gT('Spanish');
 	    $supportedLanguages['es']['nativedescription'] = 'Espa&#241;ol';

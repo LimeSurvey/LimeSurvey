@@ -148,7 +148,7 @@ $enableLdap = false;
 //  * default behaviour of phpsv regarding answer records with no submitdate
 //  * can be overwritten by module parameters
 //         ("Filter-Out incomplete answers" checkbox when implemented)
-$filterout_incomplete_answers = false;
+$filterout_incomplete_answers = true;
 
 
 //DO NOT CHANGE BELOW HERE --------------------
