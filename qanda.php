@@ -1382,11 +1382,29 @@ function do_multiplechoice($ia)
 	{
 		$rowcounter++;
 		$myfname = $ia[1].$ansrow['code'];
+		$defvaluescript='';
 		$answer .= "\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='$ia[1]{$ansrow['code']}' id='answer$ia[1]{$ansrow['code']}' value='Y'";
-		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "Y") {$answer .= " checked='checked'";}
+		if (isset($_SESSION[$myfname]))
+		{
+			if ($_SESSION[$myfname] == "Y")
+			{
+				$answer .= " checked='checked'";
+			}
+		}
+		elseif ($ansrow['default_value'] == 'Y')
+		{
+			$answer .= " checked='checked'";
+			// Update the modfields tracker so that answer is recorded
+			$defvaluescript = "\t\t\t\t\t\t<script type='text/javascript'>\n"
+				. "\t\t\t\t\t\t<!--\n"
+				. "\t\t\t\t\t\t\tmodfield(\"$ia[1]{$ansrow['code']}\");\n"
+				. "\t\t\t\t\t\t//-->\n"
+				. "\t\t\t\t\t\t</script>\n";	
+		}
 		// --> START NEW FEATURE - SAVE
 		$answer .= " onclick='".$callmaxanswscriptcheckbox."checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /><label for='answer$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
 		// --> END NEW FEATURE - SAVE
+		$answer .= $defvaluescript;
 
 		if ($maxansw > 0) {$maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
 
@@ -1468,16 +1486,33 @@ function do_multiplechoice_withcomments($ia)
 	{
 		$myfname = $ia[1].$ansrow['code'];
 		$myfname2 = $myfname."comment";
+		$defvaluescript='';
 		$answer .= "\t\t\t\t\t\t\t<tr>\n"
 		. "\t\t\t\t\t\t\t\t<td>\n"
 		. "\t\t\t\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='$myfname' id='answer$myfname' value='Y'";
-		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "Y") {$answer .= " checked='checked'";}
+		if (isset($_SESSION[$myfname]))
+		{
+			if ($_SESSION[$myfname] == "Y")
+			{
+				$answer .= " checked='checked'";
+			}
+		}
+		elseif ($ansrow['default_value'] == 'Y')
+		{
+			$answer .= " checked='checked'";
+			// Update the modfields tracker so that answer is recorded
+			$defvaluescript = "\t\t\t\t\t\t\t\t\t<script type='text/javascript'>\n"
+				. "\t\t\t\t\t\t\t\t\t<!--\n"
+				. "\t\t\t\t\t\t\t\t\t\tmodfield(\"$ia[1]{$ansrow['code']}\");\n"
+				. "\t\t\t\t\t\t\t\t\t//-->\n"
+				. "\t\t\t\t\t\t\t\t\t</script>\n";	
+		}
 		// --> START NEW FEATURE - SAVE
 		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' />"
-		. "<label for='answer$myfname' class='answertext'>"
 		// --> END NEW FEATURE - SAVE
-
+		. "<label for='answer$myfname' class='answertext'>"
 		. $ansrow['answer']."</label>\n"
+		. $defvaluescript
 		. "\t\t\t\t\t\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
 		if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
 		$answer .= "' />\n"
