@@ -225,10 +225,6 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 if ($_SESSION['step'] == "0") {$currentquestion=$_SESSION['step'];}
 else {$currentquestion=$_SESSION['step']-1;}
 
-
-
-
-
 $ia=$_SESSION['fieldarray'][$currentquestion];
 
 list($newgroup, $gid, $groupname, $groupdescription, $gl)=checkIfNewGroup($ia);
@@ -325,6 +321,19 @@ if ($questionsSkipped == 0 && $newgroup == "Y" && isset($_POST['move']) && $_POS
 
 list($newgroup, $gid, $groupname, $groupdescription, $gl)=checkIfNewGroup($ia);
 
+//Check if current page is for group description only
+$bIsGroupDescrPage = false;
+if ($newgroup == "Y" && $groupdescription && (isset($_POST['move']) && $_POST['move'] != "moveprev"))
+{
+	// This is a group description page
+	//  - $ia contains next question description, 
+	//    but his question is not displayed, it is only used to know current group
+	//  - in this case answers' inputnames mustn't be added to filednames hidden input
+	$bIsGroupDescrPage = true;
+}
+
+
+
 require_once("qanda.php");
 $mandatorys=array();
 $mandatoryfns=array();
@@ -338,8 +347,9 @@ if ($plus_qanda)
 {
 	$qanda[]=$plus_qanda;
 }
-if ($plus_inputnames)
-{
+if ($plus_inputnames && !$bIsGroupDescrPage)
+{ 
+	// Add answers' inputnames to $inputnames unless this is a group description page
 	$inputnames = addtoarray_single($inputnames, $plus_inputnames);
 }
 
@@ -445,7 +455,7 @@ echo "\t</script>\n\n";
 echo "\n\n<!-- START THE SURVEY -->\n";
 echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 
-if ($newgroup == "Y" && $groupdescription && (isset($_POST['move']) && $_POST['move'] != "moveprev"))
+if ($bIsGroupDescrPage)
 {
 	$presentinggroupdescription = "yes";
 	echo "\n\n<!-- START THE GROUP DESCRIPTION -->\n";
@@ -453,10 +463,10 @@ if ($newgroup == "Y" && $groupdescription && (isset($_POST['move']) && $_POST['m
 	echo templatereplace(file_get_contents("$thistpl/startgroup.pstpl"));
 	echo "\n<br />\n";
 
-	if ($groupdescription)
-	{
+	//if ($groupdescription)
+	//{
 		echo templatereplace(file_get_contents("$thistpl/groupdescription.pstpl"));
-	}
+	//}
 	echo "\n";
 
 	echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n";
