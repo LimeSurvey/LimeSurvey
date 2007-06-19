@@ -1042,9 +1042,4 @@ function convertToArray($stringtoconvert, $seperator, $start, $end)
 	return $resultarray;
 }
 
-function convertCsvreturn2return($string)
-{
-	return str_replace('\n', "\n", $string);
-}
-
 ?>

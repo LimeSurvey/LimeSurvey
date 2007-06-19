@@ -3774,4 +3774,10 @@ function captcha_enabled($screen)
 	return false;
 }
 
+// used for import[survey|questions|groups]
+function convertCsvreturn2return($string)
+{
+        return str_replace('\n', "\n", $string);
+}
+
 ?>
