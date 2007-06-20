@@ -69,7 +69,7 @@ while (!feof($handle))
 }
 fclose($handle);
 
-if (substr($bigarray[0], 0, 23) != "# LimeSurvey Group Dump")
+if (substr($bigarray[0], 0, 23) != "# LimeSurvey Group Dump" || substr($bigarray[0], 0, 24) != "# PHPSurveyor Group Dump")
 {
 	$importgroup .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
 	$importgroup .= $clang->gT("This file is not a LimeSurvey group file. Import failed.")."<br /><br />\n";

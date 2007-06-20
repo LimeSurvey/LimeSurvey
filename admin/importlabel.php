@@ -71,7 +71,7 @@ while (!feof($handle))
 	$bigarray[] = $buffer;
 }
 fclose($handle);
-if (substr($bigarray[0], 0, 28) != "# LimeSurvey Label Set Dump")
+if (substr($bigarray[0], 0, 27) != "# LimeSurvey Label Set Dump" || substr($bigarray[0], 0, 28) != "# PHPSurveyor Label Set Dump")
 {
 	$importlabeloutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
 	$importlabeloutput .= $clang->gT("This file is not a LimeSurvey question file. Import failed.")."<br /><br />\n";
