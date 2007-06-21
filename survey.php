@@ -84,7 +84,7 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit") && (!isset($notans
 		{
 			$_SESSION['insertarray'][] = "refurl";
 		}
-		$_SESSION['refurl'] = $_SESSION['refurl'];
+		//$_SESSION['refurl'] = $_SESSION['refurl'];
 	}
 
 

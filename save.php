@@ -391,7 +391,7 @@ function createinsertquery()
 			$query .= ", '".GetBaseLanguageFromSurveyID($surveyid)."'";
 			if ($thissurvey['refurl'] == "Y")
 			{
-				$query .= ", '".getenv("HTTP_REFERER")."'";
+				$query .= ", '".$_SESSION['refurl']."'";
 			}
 			if ((isset($_POST['move']) && $_POST['move'] == "movesubmit"))
 			{

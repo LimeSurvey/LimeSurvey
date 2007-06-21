@@ -2544,11 +2544,22 @@ function FlattenText($texttoflatten)
 */
 function getreferringurl()
 {
+  global $clang;
+  if (isset($_SESSION['refurl']))
+  {
+    return; // do not overwrite refurl
+  }
+
+  // refurl is not set in session, read it from server variable
   if(isset($_SERVER["HTTP_REFERER"]))
   {
     if(!ereg($_SERVER["SERVER_NAME"], $_SERVER["HTTP_REFERER"]))
     {
       $_SESSION['refurl'] = $_SERVER["HTTP_REFERER"];
+    }
+    else
+    {
+       $_SESSION['refurl'] = $clang->gT("Local Submission");
     }
   }
   else

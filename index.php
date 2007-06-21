@@ -125,9 +125,6 @@ if (!$surveyid)
 	exit;
 }
 
-//Check to see if a refering URL has been captured.
-getreferringurl();
-
 // Get token
 if (!isset($token)) {$token=trim(returnglobal('token'));}
 
@@ -347,7 +344,8 @@ if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
 	//echo "Reset Cookie!";
 }
 
-
+//Check to see if a refering URL has been captured.
+getreferringurl();
 
 // SAVE POSTED ANSWERS TO DATABASE IF MOVE (NEXT,PREV,LAST, or SUBMIT) or RETURNING FROM SAVE FORM
 if (isset($_POST['move']) || isset($_POST['saveprompt']))
