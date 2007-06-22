@@ -1329,7 +1329,7 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 	if (!@move_uploaded_file($the_file, $the_full_file_path))
 	{
 		$errormessage="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("Upload file not found. Check your permissions and path for the upload directory")."</strong>\n";
-		form($errormessage);
+		form_csv_upload($errormessage);
 	}
 	else
 	{
