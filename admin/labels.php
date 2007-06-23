@@ -37,8 +37,15 @@
 // ToDo: Prevent users from creating/savin labels with the same code in the same label set
 include_once("login_check.php");
 
+// Do not stripslashes on POSted fields because labels.php uses db_quoteall($str, $ispostvariable) that checks for magic_quotes_gpc
+// However We need to stripslashes from $_POST['method'] compared to
+// unescaped strings in switch case
+//if (get_magic_quotes_gpc())
+//$_POST  = array_map('stripslashes', $_POST);
 if (get_magic_quotes_gpc())
-$_POST  = array_map('stripslashes', $_POST);
+{
+	$_POST['method']  = stripslashes($_POST['method']);
+}
 
 if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 	{
@@ -584,8 +591,9 @@ function modlabelsetanswers($lid)
 		case $clang->gT("Add new label", "unescaped"):
 		if (isset($_POST['insertcode']) && $_POST['insertcode']!='')
 		{
+			$_POST['insertcode'] = db_quoteall($_POST['insertcode'],true);
 			// check that the code doesn't exist yet
-   			$query = "SELECT code FROM ".db_table_name('labels')." WHERE lid='$lid' AND code='".$_POST['insertcode']."'";
+   			$query = "SELECT code FROM ".db_table_name('labels')." WHERE lid='$lid' AND code=".$_POST['insertcode'];
 			$result = $connect->Execute($query);
 			$codeoccurences=$result->RecordCount();
 			if ($codeoccurences == 0)
@@ -594,7 +602,6 @@ function modlabelsetanswers($lid)
 				$result = $connect->Execute($query);
 				$newsortorder=sprintf("%05d", $result->fields['maxorder']+1);
 	
-				$_POST['insertcode'] = db_quoteall($_POST['insertcode'],true);
 	   			$_POST['inserttitle'] = db_quoteall($_POST['inserttitle'],true);
 	  			foreach ($lslanguages as $lslanguage)
 				{
