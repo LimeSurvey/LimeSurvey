@@ -42,7 +42,7 @@ include_once("login_check.php");
 // unescaped strings in switch case
 //if (get_magic_quotes_gpc())
 //$_POST  = array_map('stripslashes', $_POST);
-if (get_magic_quotes_gpc())
+if (isset($_POST['method']) && get_magic_quotes_gpc())
 {
 	$_POST['method']  = stripslashes($_POST['method']);
 }
