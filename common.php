@@ -2544,7 +2544,7 @@ function FlattenText($texttoflatten)
 */
 function getreferringurl()
 {
-  global $clang;
+  global $clang,$stripQueryFromRefurl;
   if (isset($_SESSION['refurl']))
   {
     return; // do not overwrite refurl
@@ -2555,7 +2555,15 @@ function getreferringurl()
   {
     if(!ereg($_SERVER["SERVER_NAME"], $_SERVER["HTTP_REFERER"]))
     {
-      $_SESSION['refurl'] = $_SERVER["HTTP_REFERER"];
+      if (!isset($stripQueryFromRefurl) || !$stripQueryFromRefurl)
+      {
+           $_SESSION['refurl'] = $_SERVER["HTTP_REFERER"];
+      }
+      else
+      {
+	   $aRefurl = explode("?",$_SERVER["HTTP_REFERER"]);
+           $_SESSION['refurl'] = $aRefurl[0];
+      }
     }
     else
     {
