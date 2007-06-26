@@ -425,6 +425,8 @@ if (isset($canswers))
 	foreach($canswers as $can)
 	{
 		$an=str_replace("'", "`", $can[2]);
+		$an=str_replace("\r", " ", $an);
+		$an=str_replace("\n", " ", $an);
 		$conditionsoutput .= "\t\tFieldnames[$jn]='$can[0]';\n"
 		."\t\tCodes[$jn]='$can[1]';\n"
 		."\t\tAnswers[$jn]='$an';\n";
