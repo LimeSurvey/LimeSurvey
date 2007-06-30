@@ -2422,7 +2422,7 @@ function do_array_flexible($ia)
 		{
 			$answer .= "\t\t\t\t\t<th class='array1' width='$cellwidth%'><font size='1'>".$clang->gT("No answer")."</font></th>\n";
 		}
-		$answer .= "\t\t\t\t<td></td></tr>\n";
+		$answer .= "\t\t\t\t</tr>\n";
 
 		while ($ansrow = $ansresult->FetchRow())
 		{
