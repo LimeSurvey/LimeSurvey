@@ -37,7 +37,7 @@
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix)) {die("Cannot run this script directly");}
 
-$versionnumber = "1.0";
+$versionnumber = "1.01";
 $dbprefix=strtolower($dbprefix);
 define("_PHPVERSION", phpversion());
 if ($mutemailerrors==1) {define('PRINT_ERROR', false);}
@@ -1520,7 +1520,13 @@ function templatereplace($line)
     $submitbutton="<input class='submit' type='submit' value=' "._SUBMIT." ' name='move2' onclick=\"javascript:document.phpsurveyor.move.value = this.value;\">";
     $line=str_replace("{SUBMITBUTTON}", $submitbutton, $line);
     $line=str_replace("{COMPLETED}", $completed, $line);
-    if ($thissurvey['url']!=""){$linkreplace="<a href='{$thissurvey['url']}'>{$thissurvey['urldescrip']}</a>";}
+    if ($thissurvey['url']!="")
+	{
+	    $linkurl=$thissurvey['url'];
+	    if (isset($_POST['token'])) $linkurl=str_replace("{TOKENID}", $_POST['token'], $linkurl);
+
+	    $linkreplace="<a href='{$linkurl}'>{$thissurvey['urldescrip']}</a>";
+	}
 	else {$linkreplace="";}
     $line=str_replace("{URL}", $linkreplace, $line);
     $line=str_replace("{PRIVACY}", $privacy, $line);

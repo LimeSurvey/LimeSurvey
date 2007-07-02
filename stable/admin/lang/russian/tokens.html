@@ -1,344 +1,410 @@
-<body bgcolor="#E5E5E5">
-
-<p><font face="Verdana" style="font-size: 8pt; font-weight: 700">You are currently viewing the
-<u>Token Control</u> section of PHPSurveyor.</font></p>
-
-<p><font face="Verdana" style="font-size: 8pt">From this point you can view and 
-edit the tokens for your survey.</font></p>
-
-<p><font style="font-size: 8pt" face="Verdana"><a href="#What are tokens">What 
-are tokens</a><br>
-<a href="#Display Tokens">Display Tokens</a><br>
-<a href="#Add new token entry">Add New Token Entry</a><br>
-<a href="#Import/Upload CSV File">Import/Upload CSV File</a><br>
-<a href="#Email Invitation">Email Invitation</a></font><br>
-<font style="font-size: 8pt" face="Verdana"><a href="#Send Reminder">Send 
-Reminder</a><br>
-<a href="#Generate Tokens">Generate Tokens</a></font></p>
-
-<p><font style="font-size: 8pt" face="Verdana">The following options are 
-available from the tokens control main menu bar:</font></p>
-
-<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" id="AutoNumber1">
-  <tr>
-    <td valign="top"><font face="Verdana" style="font-size: 8pt">
-<img border="0" src="../../images/home.gif" width="20" height="20"></font></td>
-    <td valign="top"><font face="Verdana" style="font-size: 8pt">
-    <strong>Home</strong> Click here to close the token control window and view the 
-    standard administration screen for your survey.</font></td>
-  </tr>
-  <tr>
-    <td valign="top"><font face="Verdana" style="font-size: 8pt">
-<img border="0" src="../../images/summary.gif" width="20" height="20"></font></td>
-    <td valign="top"><strong><font face="Verdana" style="font-size: 8pt">Summary</font></strong><font face="Verdana" style="font-size: 8pt">: Click 
-    here to view a sumary of entries in your tokens table, and to access some 
-    general database administration features, such as:</font></td>
-  </tr>
-  <tr>
-    <td valign="top">&nbsp;</td>
-    <td valign="top">
-    <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber2">
-      <tr>
-        <td colspan="2"><font face="Verdana" style="font-size: 8pt"><strong>Set all 
-        entries to 'N' invitation sent</strong>: </font></td>
-      </tr>
-      <tr>
-        <td>&nbsp;</td>
-        <td><font face="Verdana" style="font-size: 8pt">Deletes all records of 
-        invitations sent out. Usually done if something goes wrong with your 
-        email of invitations and you want to try it again.</font></td>
-      </tr>
-      <tr>
-        <td colspan="2"><font face="Verdana" style="font-size: 8pt"><strong>Delete 
-        all unique token numbers</strong>: </font></td>
-      </tr>
-      <tr>
-        <td>&nbsp;</td>
-        <td><font face="Verdana" style="font-size: 8pt">Delete all generated 
-        token numbers</font></td>
-      </tr>
-      <tr>
-        <td colspan="2"><font face="Verdana" style="font-size: 8pt"><strong>Delete 
-        all token entries</strong>: </font></td>
-      </tr>
-      <tr>
-        <td>&nbsp;</td>
-        <td><font face="Verdana" style="font-size: 8pt">Clear the tokens table 
-        completely</font></td>
-      </tr>
-      <tr>
-        <td colspan="2"><font face="Verdana" style="font-size: 8pt"><strong>Drop 
-        tokens table</strong>: </font></td>
-      </tr>
-      <tr>
-        <td>&nbsp;</td>
-        <td><font face="Verdana" style="font-size: 8pt">Remove tokens from your 
-        survey. The survey would then be accessible to all.</font></td>
-      </tr>
-    </table>
-    </td>
-  </tr>
-  <tr>
-    <td valign="top"><font face="Verdana" style="font-size: 8pt">
-<img border="0" src="../../images/document.gif" width="20" height="20"></font></td>
-    <td valign="top"><strong><font face="Verdana" style="font-size: 8pt">Display 
-    Tokens</font></strong><font face="Verdana" style="font-size: 8pt">: Click here to 
-    display all token entries</font></td>
-  </tr>
-  <tr>
-    <td valign="top"><font face="Verdana" style="font-size: 8pt">
-<img border="0" src="../../images/add.gif" width="20" height="20"></font></td>
-    <td valign="top"><strong><font face="Verdana" style="font-size: 8pt">Add new 
-    token entry</font></strong><font face="Verdana" style="font-size: 8pt">: Click 
-    here to add a new participant to the tokens table.</font></td>
-  </tr>
-  <tr>
-    <td valign="top"><font face="Verdana" style="font-size: 8pt">
-<img border="0" src="../../images/import.gif" width="20" height="20"></font></td>
-    <td valign="top"><strong><font face="Verdana" style="font-size: 8pt">Import 
-    Tokens File</font></strong><font face="Verdana" style="font-size: 8pt">: Click 
-    here to import a CSV file containing names and email addresses. The CSV file 
-    must be a standard comma delimited file with no quotations. The first row is 
-    interpreted as a header row. Order of data should be: Firstname, Lastname, 
-    Email, [token]. The token field is optional.</font></td>
-  </tr>
-  <tr>
-    <td valign="top"><font face="Verdana" style="font-size: 8pt">
-<img border="0" src="../../images/invite.gif" width="20" height="20"></font></td>
-    <td valign="top"><font face="Verdana" style="font-size: 8pt">
-    <strong>Send email invitation</strong>: Click here to send email invitations to the 
-    participants listed in your tokens table.</font></td>
-  </tr>
-  <tr>
-    <td valign="top"><font face="Verdana" style="font-size: 8pt">
-<img border="0" src="../../images/remind.gif" width="20" height="20"></font></td>
-    <td valign="top"><strong><font face="Verdana" style="font-size: 8pt">Send email 
-    reminder</font></strong><font face="Verdana" style="font-size: 8pt">: Click here 
-    to send email reminders to the participants listed in your tokens table. 
-    Reminders are only sent to participants who have already been sent an 
-    invitation.</font></td>
-  </tr>
-  <tr>
-    <td valign="top"><font face="Verdana" style="font-size: 8pt">
-<img border="0" src="../../images/tokenify.gif" width="20" height="20"></font></td>
-    <td valign="top"><strong><font face="Verdana" style="font-size: 8pt">Generate 
-    Tokens</font></strong><font face="Verdana" style="font-size: 8pt">: Click here to 
-    generate unique random token numbers for your participants. Although you can 
-    manually create token numbers, or import them from a CSV file, it is usually 
-    recommended that you use this feature as it ensures that there are no 
-    duplicate entries.</font></td>
-  </tr>
-  <tr>
-    <td valign="top"><font face="Verdana" style="font-size: 8pt">
-<img border="0" src="../../images/delete.gif" width="20" height="20"></font></td>
-    <td valign="top"><strong><font face="Verdana" style="font-size: 8pt">Drop Tokens 
-    Table</font></strong><font face="Verdana" style="font-size: 8pt">: Click here to 
-    drop the tokens table and remove tokens from your survey. The survey would 
-    then be accessible to all.</font></td>
-  </tr>
-</table>
-
-<p><font style="font-size: 8pt" face="Verdana"><strong><a name="What are tokens">What are &quot;tokens&quot;</a></strong><br>
-Tokens are a system you can use to have a controlled survey. A controlled survey 
-allows you to have a list of 'participants', or people who have been invited to 
-respond to the survey, and then control their access to the survey. Each 
-participant is issued with a unique token number. This token number gives the 
-participant access to the survey.</font></p>
-
-<p><font face="Verdana" style="font-size: 8pt">When tokens are activated for 
-your survey, the only people who can access the public survey are those who have 
-a 'token' that matches an entry in this table. Using the tokens control section 
-of PHPSurveyor you can add, remove and modify these token entries.</font></p>
-
-<p><font face="Verdana" style="font-size: 8pt">The PHPSurveyor tokens system 
-allows you to track who has access to your survey, send out invitations and 
-reminders to those participants, and see if they have responded. If you make 
-your survey non-anonymous (or tracked) you can also match responses to the token 
-entry.</font></p>
-
-<p><font face="Verdana" style="font-size: 8pt"><u><strong><a name="Display Tokens">
-Display Tokens</a></strong></u><br>
-When displaying tokens, you can see all your entries (in lots of 50, or as 
-determined by you). The top section of the display is the <strong><i>Data View 
-Control</i></strong> menu bar. This menu bar gives you the following options:</font></p>
-
-<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" id="AutoNumber1">
-  <tr>
-    <td valign="top"><font face="Verdana" style="font-size: 8pt">
-<img border="0" src="../../images/databegin.gif" width="20" height="20"></font></td>
-    <td valign="top"><strong><font face="Verdana" style="font-size: 8pt">Show start</font></strong><font face="Verdana" style="font-size: 8pt">: 
-    Click here to view entries from the beginning of your list.</font></td>
-  </tr>
-  <tr>
-    <td valign="top"><font face="Verdana" style="font-size: 8pt">
-<img border="0" src="../../images/databack.gif" width="20" height="20"></font></td>
-    <td valign="top"><strong><font face="Verdana" style="font-size: 8pt">Show last</font></strong><font face="Verdana" style="font-size: 8pt">: 
-    Click here to view the previous lot of entries.</font></td>
-  </tr>
-  <tr>
-    <td valign="top"><font face="Verdana" style="font-size: 8pt">
-<img border="0" src="../../images/dataforward.gif" width="20" height="20"></font></td>
-    <td valign="top"><font face="Verdana" style="font-size: 8pt">
-    <strong>Show next</strong>: Click here to view the next lot of entries.</font></td>
-  </tr>
-  <tr>
-    <td valign="top"><font face="Verdana" style="font-size: 8pt">
-<img border="0" src="../../images/dataend.gif" width="20" height="20"></font></td>
-    <td valign="top"><font style="font-size: 8pt" face="Verdana">Show last<font style="font-size: 8pt">: 
-    Click here to view the very last entries in your list.</font></font></td>
-  </tr>
-</table>
-
-<p>
-<font style="font-size: 8pt" face="Verdana">You are also able to set the number 
-of tokens displayed, and the starting point of your records using the &quot;Records 
-Displayed:&quot; and &quot;Starting From:&quot; fields, then clicking on &quot;Show&quot;.</font></p>
-
-<p>
-<font face="Verdana" style="font-size: 8pt"><strong>Sorting Display</strong><br>
-At the top of each column when 
-displaying tokens, is the name of the field and the 'sort' icon (<img src="../../images/DownArrow.gif" width="16" height="16">). 
-Clicking on the sort icon will re-order the display of tokens, sorted 
-alphabetically by that column.</font></p>
-
-<p>
-<font face="Verdana" style="font-size: 8pt"><strong>Actions<br>
-</strong>A set of actions can be performed with each individual token entry. These 
-actions are listed below:</font></p>
-
-<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" id="AutoNumber1">
-  <tr>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=UTF-8">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.1  (Win32)">
+	<META NAME="CREATED" CONTENT="20070211;22163934">
+	<META NAME="CHANGED" CONTENT="20070211;23541171">
+</HEAD>
+<BODY LANG="ru-RU" BGCOLOR="#e5e5e5" DIR="LTR">
+<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt"><B>Вы
+находитесь в секции <U>Управления ключевыми фразами</U> PHPSurveyor.</B></FONT></FONT></P>
+<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt">Отсюда Вы
+можете просматривать и редактировать ключевые фразы для Вашего опроса</FONT></FONT></P>
+<P><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><A HREF="#What are tokens">Что
+такое ключевые фразы</A><BR><A HREF="#Display Tokens">Показ ключевых
+фраз</A><BR><A HREF="#Add new token entry">Добавить новую ключевую
+фразу</A><BR><A HREF="#Import/Upload CSV File">Загрузка/Выгрузка CSV
+файла</A><BR><A HREF="#Email Invitation">Email приглашение</A></FONT></FONT><BR><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><A HREF="#Send Reminder">Отправка
+напоминания</A><BR><A HREF="#Generate Tokens">Генерация ключевых фраз</A></FONT></FONT></P>
+<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt">Следующие
+пункты доступны из панели управления ключевыми фразами:</FONT></FONT></P><A NAME="AutoNumber1"></A>
+<TABLE WIDTH=988 BORDER=0 CELLPADDING=0 CELLSPACING=0>
+	<COL WIDTH=20>
+	<COL WIDTH=5>
+	<COL WIDTH=963>
+	<TR VALIGN=TOP>
+		<TD WIDTH=20>
+			<P><IMG SRC="../../images/home.gif" NAME="Графический объект1" ALIGN=BOTTOM WIDTH=20 HEIGHT=20 BORDER=0></P>
+		</TD>
+		<TD COLSPAN=2 WIDTH=968>
+			<P><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><STRONG>Начало</STRONG>
+			Кликните сюда чтобы закрыть окно управления ключевыми фразами и
+			перейти к стандартному окну администрирования.</FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=20>
+			<P><IMG SRC="../../images/summary.gif" NAME="Графический объект2" ALIGN=BOTTOM WIDTH=20 HEIGHT=20 BORDER=0></P>
+		</TD>
+		<TD COLSPAN=2 WIDTH=968>
+			<P><STRONG><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">Обзор</FONT></FONT></STRONG><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">:
+			Кликните сюда чтобы посмотреть общую информацию по элементам
+			таблицы ключевых фраз и получить доступ к некоторым
+			административным возможностям базы данным, таким как:</FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR>
+		<TD ROWSPAN=9 WIDTH=20 VALIGN=TOP>
+			<P><A NAME="AutoNumber2"></A>&nbsp;</P>
+		</TD>
+		<TD COLSPAN=2 WIDTH=968>
+			<P><STRONG><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">Установить
+			для всех приглашений что они не отправлены:</FONT></FONT></STRONG></P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=5>
+			<P>&nbsp;</P>
+		</TD>
+		<TD WIDTH=963>
+			<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt">Удаляет
+			все записи об отправке приглашений. Обычно используется если
+			что-то не так с отправкой приглашений и Вы хотите отправить их
+			снова.</FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR>
+		<TD COLSPAN=2 WIDTH=968>
+			<P><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><STRONG>Удалить
+			все уникальные номера ключевых фраз</STRONG>: </FONT></FONT>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=5>
+			<P>&nbsp;</P>
+		</TD>
+		<TD WIDTH=963>
+			<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt">Удаляет
+			все сгенерированные ключевые фразы</FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR>
+		<TD COLSPAN=2 WIDTH=968>
+			<P><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><STRONG>Удалить
+			все ключевые фразы</STRONG>: </FONT></FONT>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=5>
+			<P>&nbsp;</P>
+		</TD>
+		<TD WIDTH=963>
+			<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt">Полностью
+			очищает таблицу ключевых фраз</FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR>
+		<TD COLSPAN=2 WIDTH=968>
+			<P><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><STRONG>Удалить
+			таблицу ключевых фраз</STRONG>: </FONT></FONT>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=5>
+			<P>&nbsp;</P>
+		</TD>
+		<TD WIDTH=963>
+			<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt">Удаляет
+			ключевые фразы из опроса. Опрос становится доступен всем.</FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR>
+		<TD COLSPAN=2 WIDTH=968 VALIGN=TOP></TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=20>
+			<P><IMG SRC="../../images/document.gif" NAME="Графический объект3" ALIGN=BOTTOM WIDTH=20 HEIGHT=20 BORDER=0></P>
+		</TD>
+		<TD COLSPAN=2 WIDTH=968>
+			<P><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><STRONG><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">Показать
+			ключевые фразы</FONT></FONT></STRONG>: Кликните сюда чтобы
+			отобразить все ключевые фразы</FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=20>
+			<P><IMG SRC="../../images/add.gif" NAME="Графический объект4" ALIGN=BOTTOM WIDTH=20 HEIGHT=20 BORDER=0></P>
+		</TD>
+		<TD COLSPAN=2 WIDTH=968>
+			<P><STRONG><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">Добавить
+			новую ключевых фразу</FONT></FONT></STRONG><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">:
+			<FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">Кликните
+			сюда чтобы</FONT></FONT> добавить участника в таблицу ключевых
+			фраз.</FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=20>
+			<P><IMG SRC="../../images/import.gif" NAME="Графический объект5" ALIGN=BOTTOM WIDTH=20 HEIGHT=20 BORDER=0></P>
+		</TD>
+		<TD COLSPAN=2 WIDTH=968>
+			<P><STRONG><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">Импорт
+			файла ключевых фраз</FONT></FONT></STRONG><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">:
+			<FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">Кликните
+			сюда чтобы</FONT></FONT> проимпортировать CSV файл, содержащий
+			имена и  email адреса. CSV файл должен быть стандартным, с
+			разделителями-запятыми, без кавычек. Первая строка вопринимается
+			как заголовок. Порядок данных должен быть следующим: Имя, Фамилия,
+			Email, [ключевая фраза]. Поле ключевой фразы является
+			необязательным.</FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=20>
+			<P><IMG SRC="../../images/invite.gif" NAME="Графический объект6" ALIGN=BOTTOM WIDTH=20 HEIGHT=20 BORDER=0></P>
+		</TD>
+		<TD COLSPAN=2 WIDTH=968>
+			<P><STRONG><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">Отправка
+			email приглашений</FONT></FONT></STRONG><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">:
+			<FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">Кликните
+			сюда чтобы</FONT></FONT> отправить email приглашения участникам,
+			указанным в таблице ключевых фраз.</FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=20>
+			<P><IMG SRC="../../images/remind.gif" NAME="Графический объект7" ALIGN=BOTTOM WIDTH=20 HEIGHT=20 BORDER=0></P>
+		</TD>
+		<TD COLSPAN=2 WIDTH=968>
+			<P><STRONG><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">Отправка
+			email напоминаний</FONT></FONT></STRONG><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">:
+			<FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">Кликните
+			сюда чтобы</FONT></FONT> оправить email напоминания <FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">указанным
+			в таблице ключевых фраз</FONT></FONT>. Напоминания отправляются
+			только участникам, которые уже оправлялось приглашение.</FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=20>
+			<P><IMG SRC="../../images/tokenify.gif" NAME="Графический объект8" ALIGN=BOTTOM WIDTH=20 HEIGHT=20 BORDER=0></P>
+		</TD>
+		<TD COLSPAN=2 WIDTH=968>
+			<P><STRONG><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">Сгенерировать
+			ключевых фразы</FONT></FONT></STRONG><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">:
+			<FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">Кликните
+			сюда чтобы</FONT></FONT> сгененрировать уникальные случайные числа
+			&ndash; ключевые фразы для Ваших участников.  Конечно Вы можете
+			задать вручную ключевые фразы или импортировать их в  CSV файле.
+			Рекомендуется использовать эту возможность во избежание появления
+			дублей в ключевых фразах.</FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=20>
+			<P><IMG SRC="../../images/delete.gif" NAME="Графический объект9" ALIGN=BOTTOM WIDTH=20 HEIGHT=20 BORDER=0></P>
+		</TD>
+		<TD COLSPAN=2 WIDTH=968>
+			<P><STRONG><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">Удалить
+			таблицу ключевых  фраз</FONT></FONT></STRONG><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">:
+			<FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">Кликните
+			сюда чтобы</FONT></FONT> удалить таблицу ключевых фраз и отвязать
+			от нее опрос. Опрос станет доступен всем.</FONT></FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><STRONG>Что
+такое  &quot;ключевые фразы&quot;</STRONG><BR>Ключевые фразы &ndash;
+это система которую Вы можете использовать для проведения управляемых
+опросов. Управляемый опрос позволяет Вам иметь список 'участников',
+или людей, которые приглашены участвовать в опросе,  и управлять их
+доступом к опросу. Каждому участнику назначается уникальная ключевая
+фраза (token) - число. Ключевая фраза позволяет участнику получить
+доступ к опросу.</FONT></FONT></P>
+<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt">Когда
+ключевые фразы активированы для Вашего опроса, только те люди могут
+получить доступ к публичному опросу, кто имеет 'ключевую фразу'
+находящуюся серди фраз таблиц. Используя секцию оправления ключевыми
+фразами в PHPSurveyor Вы можете добавлять,удалять и изменять записи
+ключевых фраз.</FONT></FONT></P>
+<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt">Систему
+управления ключевыми фразами в PHPSurveyor позволяет отслеживать тех
+кто имеет доступ к опросу,  отправлять приглашения и напоминания
+участникам и следить за ответами на приглашения . если Вы делаете
+опрос неанонимным (или отслеживаемым), то Вы можете также отслеживать
+и  ответы, привязанные к ключевым фразам.</FONT></FONT></P>
+<P><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><STRONG><U>Показать
+ключевые фразы</U></STRONG><BR>При отображении ключенвых фраз Вы
+видите все записи целиком (в количестве по 50 или как Вы определите).
+В верхней части отображается панель  <STRONG><I>Управления Просмотром
+данных</I></STRONG>. Эта панель меню позволяет сделать следующее:</FONT></FONT></P>
+<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>
+	<TR VALIGN=TOP>
+		<TD>
+			<P><IMG SRC="../../images/databegin.gif" NAME="Графический объект10" ALIGN=BOTTOM WIDTH=20 HEIGHT=20 BORDER=0></P>
+		</TD>
+		<TD>
+			<P><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><STRONG><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">Показать
+			начало</FONT></FONT></STRONG>:  переход к началу списка.</FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD>
+			<P><IMG SRC="../../images/databack.gif" NAME="Графический объект11" ALIGN=BOTTOM WIDTH=20 HEIGHT=20 BORDER=0></P>
+		</TD>
+		<TD>
+			<P><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><STRONG><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">Предыдущее</FONT></FONT></STRONG>:
+			переход к предыдущей порции данных.</FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD>
+			<P><IMG SRC="../../images/dataforward.gif" NAME="Графический объект12" ALIGN=BOTTOM WIDTH=20 HEIGHT=20 BORDER=0></P>
+		</TD>
+		<TD>
+			<P><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><STRONG>Следующее</STRONG>:
+			Переход к следующей порции данных.</FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD>
+			<P><IMG SRC="../../images/dataend.gif" NAME="Графический объект13" ALIGN=BOTTOM WIDTH=20 HEIGHT=20 BORDER=0></P>
+		</TD>
+		<TD>
+			<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt"><B>Показать
+			конец</B>: Преход к последней порции данных.</FONT></FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt">Вы также
+можете установить количество отображаемых ключевых фраз и начальную
+запись для просмотра, используя поля &quot;Отображено записей:&quot;
+и &quot;Начиная с:&quot; и нажав &laquo;Показать&raquo;.</FONT></FONT></P>
+<P><STRONG><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">Сортировать
+вывод</FONT></FONT></STRONG><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><BR>Вверху
+каждой колонке рядом названием поля  находится иконка сортровки (<IMG SRC="../../images/DownArrow.gif" NAME="Графический объект14" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>).
+Клик на ней меняет порядок вывода ключевых фраз. сортировка идет в
+алфавитном порядке</FONT></FONT></P>
+<P><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><STRONG>Действия<BR><SPAN STYLE="font-weight: medium">Набор
+действий, которые могут производиться над записями таблицы ключевых
+фраз</SPAN></STRONG>. Эти действия включают в себя:</FONT></FONT></P>
+<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>
+	<TR VALIGN=TOP>
     <td valign="top"><font face="verdana" size="2">
     <input title="Edit Token Entry" style="FONT-SIZE: 8px; WIDTH: 16px; HEIGHT: 16px; font-face: verdana" type="submit" value="E"></font></td>
-    <td valign="top"><font face="Verdana" style="font-size: 8pt"><strong>Edit Entry</strong>: 
-    Click here to edit this entry.</font></td>
-  </tr>
-  <tr>
+		<TD>
+			<P><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><STRONG>Редактирование
+			записи</STRONG>: редактировать запись.</FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
     <td valign="top"><font face="verdana" size="2">
     <input title="Delete Token Entry" style="FONT-SIZE: 8px; WIDTH: 16px; HEIGHT: 16px; font-face: verdana" type="submit" value="D"></font></td>
-    <td valign="top"><strong><font face="Verdana" style="font-size: 8pt">Delete Entry</font></strong><font face="Verdana" style="font-size: 8pt">: 
-    Click here to delete this entry.</font></td>
-  </tr>
-  <tr>
+		<TD>
+			<P><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><STRONG><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">Удаление
+			записи</FONT></FONT></STRONG>: удалить запись.</FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
     <td valign="top"><font face="verdana" size="2">
     <input title="Do Survey" style="FONT-SIZE: 8px; WIDTH: 16px; HEIGHT: 16px; font-face: verdana" type="submit" value="S"></font></td>
-    <td valign="top"><strong><font face="Verdana" style="font-size: 8pt">Do Survey</font></strong><font face="Verdana" style="font-size: 8pt">: 
-    Click here to do the survey using this token.</font></td>
-  </tr>
-  <tr>
+		<TD>
+			<P><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><STRONG><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">Проведение
+			опроса</FONT></FONT></STRONG>: провести опрос для участника.</FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
     <td valign="top"><font face="verdana" size="2">
     <input title="Send reminder email to this entry" style="FONT-SIZE: 8px; WIDTH: 16px; HEIGHT: 16px; font-face: verdana" type="submit" value="V"></font></td>
-    <td valign="top"><font style="font-size: 8pt" face="Verdana"><strong>View 
-    Response</strong>: 
-    Click here to view the response made by this participant (only available 
-    where applicable).</font></td>
-  </tr>
-  <tr>
+		<TD>
+			<P><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><STRONG>Просмотр
+			результатов опроса</STRONG>: посмотреть ответы участника (только
+			когда доступно).</FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
     <td valign="top"><font face="verdana" size="2">
     <input title="Send reminder email to this entry" style="FONT-SIZE: 8px; WIDTH: 16px; HEIGHT: 16px; font-face: verdana" type="submit" value="I"></font></td>
-    <td valign="top"><font style="font-size: 8pt" face="Verdana"><strong>Invite</strong>: 
-    Click here to send an invitation to this participant only.</font></td>
-  </tr>
-  <tr>
+		<TD>
+			<P><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><STRONG>Пригласить</STRONG>:
+			отправить прглашение только этому участнику</FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
     <td valign="top"><font face="verdana" size="2">
     <input title="Send reminder email to this entry" style="FONT-SIZE: 8px; WIDTH: 16px; HEIGHT: 16px; font-face: verdana" type="submit" value="R"></font></td>
-    <td valign="top"><font face="Verdana" style="font-size: 8pt"><strong>Reminder</strong>: 
-    Click here to send a reminder invitation to this participant only.</font></td>
-  </tr>
-</table>
-
-<p>
-<span style="font-weight: 700; text-decoration: underline">
-<font face="Verdana" style="font-size: 8pt"><a name="Add new token entry">Add 
-new token entry</a></font></span><font face="Verdana" style="font-size: 8pt; font-weight: 700; text-decoration: underline"><br>
-</font>
-<font face="Verdana" style="font-size: 8pt; ">
-With this screen you can create a new token entry, adding an extra participant 
-to the list of people who can access the survey. The fields available are:<br>
-<strong>Firstname</strong>: The participants first name<br>
-<strong>Lastname</strong>: The participants last name<br>
-<strong>Email</strong>: The participants email address<br>
-<strong>Token</strong>: The participants unique token. While you can create your own at 
-this point, it is better to use the &quot;Generate tokens&quot; feature later, and leave 
-this blank.<br>
-<strong>Invite Sent?</strong>: If a &quot;Y&quot; is in this field, the participant will not be sent 
-an invitation email when you choose &quot;Invite&quot;. If anything else is in here, the 
-invitation email will be sent.<br>
-<strong>Completed?</strong>: If a &quot;Y&quot; is in this field, the participant will not be able 
-to use the token. When a participant completes the survey, this field is changed 
-to &quot;Y&quot;.</font></p>
-
-<p>
-<font face="Verdana" style="font-size: 8pt">There are no mandatory fields in the 
-'add new token' screen. You can include as much or as little information as you 
-want. There is no duplicate entry control either, so it is possible to have the 
-same name over and over again.</font></p>
-
-<p><font face="Verdana" style="font-size: 8pt"><u><strong>
-<a name="Import/Upload CSV File">Import/Upload CSV File</a></strong></u><br>
-With this feature you can import a CSV file containing names and email addresses 
-for use in your PHPSurveyor survey. The CSV file must be saved as a comma 
-delimited file, without quotation marks and the very first line is always 
-interpreted as a header row, so if your file doesn't have a header row, the 
-first row will be lost! Your file should look something like this:</font></p>
-
-<div align="center">
-  <center>
-  <table border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="300" id="AutoNumber3" bgcolor="#C0C0C0">
-    <tr>
-      <td width="100%">Firstname, Lastname, Email, Token<br>
-      Jason, Cleeland, jason@cleeland.org, <br>
-      Bob, Jones, bob@cleeland.org,</td>
-    </tr>
-  </table>
-  </center>
-</div>
-
-<p><font face="Verdana" style="font-size: 8pt">Note that the final column 
-(token) is optional. You can import your own token numbers - this may be useful 
-if you want to use another methodology for generating tokens. For example, if 
-you are a membership based organisation you could import your members membership 
-number as their token.</font></p>
-
-<p><u><strong><font face="Verdana" style="font-size: 8pt"><a name="Email Invitation">
-Email Invitation</a></font></strong></u><font face="Verdana" style="font-size: 8pt"><br>
-Use this feature to send invitation emails to all participants in your tokens 
-table. Before sending an email, PHPSurveyor checks each entry to ensure that the 
-following conditions are met:<br>
-a) Email address exists<br>
-b) Token has been generated<br>
-c) An invitation has not already been sent<br>
-d) Participant has not yet completed the survey</font></p>
-
-<p><font style="font-size: 8pt" face="Verdana">Each invitation is personalised, 
-and is merged with information from the tokens table. You are given the option 
-of modifying the subject and text of your email before it is sent out. To use 
-information from the tokens table in the body of your email, use the following 
-'merge' codes:<br>
-{FIRSTNAME}: First name<br>
-{LASTNAME}: Last name<br>
-{SURVEYNAME}: The name of your survey<br>
-{ADMINNAME}: The name of the survey administrator<br>
-{ADMINEMAIL}: The email address of the survey administrator</font></p>
-
-<p><font face="Verdana" style="font-size: 8pt">For example, if your message 
-reads &quot;Dear {FIRSTNAME} {LASTNAME} here is a survey called {SURVEYNAME} for you 
-to try. Love {ADMINNAME}&quot; The recipient will receive an email that looks 
-something like this: &quot;Dear Saddam Hussein here is a survey called What I Did On 
-My Holidays for you to try. Love Jason Cleeland&quot;.</font></p>
-
-<p><font face="Verdana" style="font-size: 8pt"><u><strong><a name="Send Reminder">
-Send Reminder</a></strong></u><br>
-Use this feature to send reminder emails to all participants in your tokens 
-table. Before sending an email, PHPSurveyor checks to ensure that the following 
-conditions are met:<br>
-a) Email address exists<br>
-b) Token has been generated<br>
-c) An invitation has already been sent out<br>
-d) Participant has not yet completed the survey</font></p>
-
-<p><u><a name="Generate Tokens"><strong><font face="Verdana" style="font-size: 8pt">
-Generate Tokens</font></strong></a></u><u><strong><a name="Generate Tokens"><font face="Verdana" style="font-size: 8pt"> </font>
-</a></strong></u><font face="Verdana" style="font-size: 8pt"><br>
-Use this feature to generate unique random token numbers for each entry in the 
-tokens table that does not have a token.</font></p>
+		<TD>
+			<P><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><STRONG>Напомнить</STRONG>:
+			отправить напоминание только этому участнику</FONT></FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><B><U>Добавить
+новую ключевую фразу<BR></U></B><SPAN STYLE="font-weight: medium"><SPAN STYLE="text-decoration: none">Вызывает
+окно для создания новой записи участника опроса</SPAN></SPAN>.  Для
+заполнения доступны следующие поля<BR><STRONG>Имя</STRONG>: имя
+участника<BR><STRONG>Фамилия</STRONG>: фамилия участника<BR><STRONG>Email</STRONG>:
+ email адрес участника<BR><STRONG>Ключевая фраза</STRONG>: Ключевая
+фраза для участника. Лучше оставить пустым и заполнить позже через
+функцию генерации .<BR><B>Приглашение отправлено</B><STRONG>?</STRONG>:
+Если &quot;Y&quot; в этом поле, то участнику приглашение уже
+отправлено и повторно приглашение не будет оправляться. Если поле
+содержит что-нибудь другое, то  приглашение будет
+оправлено.<BR><B>Завершено</B><STRONG>?</STRONG>: Если  &quot;Y&quot;
+стоит в этом поле, то участник не сможет использовать эту ключевую
+фразу еще раз. Поле окончания  опроса это поле меняется на &quot;Y&quot;.</FONT></FONT></P>
+<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt">На экране
+добавления участника  нет обязательных полей. Вы можете заполнять
+только то, что Вам необходимо. Контроль дублирования не предусмотрен
+и можете вводить тоже имя несколько раз.</FONT></FONT></P>
+<P><STRONG><U><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">Загрузка/выгрузка
+CSV файла</FONT></FONT></U></STRONG><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><BR>Эта
+функция позволяет загружать/выгружать CSV файл, содержащий имена и
+адреса потенциальных участников опросов.  CSV файл должен быть
+сохранен в формате с разделителями-запятыми, без кавычек и первой
+строкой- заголовком. Если Ваш файл не содержит строки заголовка, то
+первая строка будет потеряна! Ваш файл должен выглядеть следующим
+образом:</FONT></FONT></P><CENTER>
+	<TABLE WIDTH=300 BORDER=0 CELLPADDING=3 CELLSPACING=0 BGCOLOR="#c0c0c0">
+		<TR>
+			<TD WIDTH=100%>
+				<P>Firstname, Lastname, Email, Token<BR>Jason, Cleeland,
+				jason@cleeland.org, <BR>Bob, Jones, bob@cleeland.org,</P>
+			</TD>
+		</TR>
+	</TABLE>
+</CENTER>
+<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt">Заметьте,
+что последняя колонка &laquo;ключевая фраза&raquo; (token)  является
+необязательной. Вы можете импортировать ключевые фразы, когда это
+полезно и если Вы используете свою методологию для их генерации,
+например, например порядковый членский номер в организации.</FONT></FONT></P>
+<P><STRONG><U><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">Email
+приглашение</FONT></FONT></U></STRONG><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><BR>Use
+this feature to send invitation emails to all participants in your
+tokens table. Before sending an email, PHPSurveyor checks each entry
+to ensure that the following conditions are met:<BR>a) Email address
+exists<BR>b) Token has been generated<BR>c) An invitation has not
+already been sent<BR>d) Participant has not yet completed the survey</FONT></FONT></P>
+<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt">Each
+invitation is personalised, and is merged with information from the
+tokens table. You are given the option of modifying the subject and
+text of your email before it is sent out. To use information from the
+tokens table in the body of your email, use the following 'merge'
+codes:<BR>{FIRSTNAME}: First name<BR>{LASTNAME}: Last
+name<BR>{SURVEYNAME}: The name of your survey<BR>{ADMINNAME}: The
+name of the survey administrator<BR>{ADMINEMAIL}: The email address
+of the survey administrator</FONT></FONT></P>
+<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt">For
+example, if your message reads &quot;Dear {FIRSTNAME} {LASTNAME} here
+is a survey called {SURVEYNAME} for you to try. Love {ADMINNAME}&quot;
+The recipient will receive an email that looks something like this:
+&quot;Dear Saddam Hussein here is a survey called What I Did On My
+Holidays for you to try. Love Jason Cleeland&quot;.</FONT></FONT></P>
+<P><STRONG><U><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">Отправить
+напоминание</FONT></FONT></U></STRONG><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><BR>Use
+this feature to send reminder emails to all participants in your
+tokens table. Before sending an email, PHPSurveyor checks to ensure
+that the following conditions are met:<BR>a) Email address exists<BR>b)
+Token has been generated<BR>c) An invitation has already been sent
+out<BR>d) Participant has not yet completed the survey</FONT></FONT></P>
+<P><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><STRONG><U>Генерировать
+ключевые фразы </U></STRONG><BR>Эта функция позволяет сгенерировать
+уникальные числа в качестве ключевых фраз для всех записей таблицы, у
+которых ключевая фраза еще не заданы.</FONT></FONT></P>
+</BODY>
+</HTML>

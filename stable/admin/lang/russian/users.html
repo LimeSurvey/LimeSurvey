@@ -1,65 +1,88 @@
-<body bgcolor="#E5E5E5">
-
-<p><font face="Verdana" style="font-size: 8pt; font-weight: 700">You are currently viewing the
-<u>User Control</u> section of PHPSurveyor.</font></p>
-
-<p><font face="Verdana" style="font-size: 8pt">From this point you can view and 
-edit the security settings and user access rights for your script.</font></p>
-
-<p><font face="Verdana" style="font-size: 8pt">PHPSurveyor security settings 
-rely on the Apache directory security system. If you are not using the Apache 
-web surver, you cannot use these security settings and you should initialise 
-directory security using your servers standard methods.</font></p>
-
-<p><font face="Verdana"><font style="font-size: 8pt"><u><strong>Initialising Security<br>
-</strong></u>The first time you run security from PHPSurveyor, it will 'initialise' 
-the security settings. When it 'initialises', the script finds the Apache &quot;htpasswd&quot; 
-executable file and creates a 'user' file. It also creates a 'htaccess' file in 
-your admin directory that restricts access to the admin directory to only those 
-users in the htpasswd file. The initial username and password are determined by 
-the 'default' settings in your config.php file. Once you have initialised 
-security succesfully, your browser will ask for this username and password 
-before allowing you to continue using the administration scripts of PHPSurveyor.</font></font></p>
-
-<p><font face="Verdana" style="font-size: 8pt"><u><strong>Adding Users</strong></u><br>
-Once you have initialised security and 'logged in', you will be able to view the 
-existing users on your system, add new users, delete users or modify users. This 
-is fairly straight forward. In the list of users that displays, click on the 
-&quot;edit&quot; button to modify an entry, or the &quot;del&quot; button to delete it. If there is 
-only one entry in the user table you will not be able to delete that.</font></p>
-
-<p>
-<font face="Verdana" style="font-size: 8pt; font-weight: 700; text-decoration: underline">
-Turning Off Security<br>
-</font><font face="Verdana" style="font-size: 8pt">To turn off PHPSurveyors 
-security settings, click on the &quot;Turn Off Security&quot; button. This will delete the 
-htpasswd, htaccess file and all user information from the directories.</font></p>
-
-<p><font face="Verdana" style="font-size: 8pt"><u><strong>Limitations of PHPSurveyor 
-Security</strong></u><br>
-Until a more flexible security system is implemented, it should be remembered 
-that the PHPSurveyor security settings are an 'all-or-nothing' affair. Users 
-either have access to ALL administration functions, or they have none. 
-Eventually a system is planned that allows you to set levels of access. Note 
-especially that the user security feature is accessible to all users, including 
-the PLAIN-TEXT PASSWORDS.</font></p>
-
-<p><font face="Verdana" style="font-size: 8pt"><u><strong>Troubleshooting</strong></u><br>
-If you are having trouble setting up security:</font></p>
-<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" id="AutoNumber1">
-  <tr>
-    <td valign="top"><font style="font-size: 8pt" face="Verdana">1.</font></td>
-    <td><font face="Verdana" style="font-size: 8pt">Make sure you have 
-    read/write permissions in the admin directory. PHPSurveyor needs to be able 
-    to create a .htpasswd and .htaccess file here.</font></td>
-  </tr>
-  <tr>
-    <td valign="top"><font style="font-size: 8pt" face="Verdana">2.</font></td>
-    <td><font face="Verdana" style="font-size: 8pt">Make sure you have access to 
-    the htpasswd executable file. On windows servers in particular, a copy of 
-    this will almost certainly need to be placed in the /phpsurveyor/admin 
-    directory along with the other scripts. On Linux servers, the script will 
-    attempt to find the htpasswd executable using &quot;find&quot;.</font></td>
-  </tr>
-</table>
-&nbsp;<p>&nbsp;</p>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=UTF-8">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.3  (Win32)">
+	<META NAME="CREATED" CONTENT="20041202;22112287">
+	<META NAME="CHANGEDBY" CONTENT="Чернов Г">
+	<META NAME="CHANGED" CONTENT="20041202;22495648">
+</HEAD>
+<BODY LANG="ru-RU" BGCOLOR="#e5e5e5" DIR="LTR">
+<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt"><B>Вы
+находитесь в разделе управления пользователями PHPSurveyor.</B></FONT></FONT></P>
+<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt">Здесь Вы
+можете посмотреть и изменить настройки безопастности и права доступа
+пользователей.</FONT></FONT></P>
+<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt">Настройки
+безопастности PHPSurveyor связаны с системой безопасности каталогов
+Apache. Если Вы используете в качестве Web-сервера не Apache, то Вы
+не сможете использовать эту систему безопастности, и Вы должны
+инициализировать безопасность каталогов с использованием методов
+Вашего сервера.</FONT></FONT></P>
+<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt"><B><U>Инициализация
+Безопастности<BR></U></B>При первом запуске системы безопастности из
+PHPSurveyor будут инициализированы установки безопастности. При
+инициализации PhpSurveyor найдет программу &quot;htpasswd&quot; из
+Apache и создаст пользовательский файл. Так же  будет создан файл
+'htaccess' в каталоге admin для ограничения доступа к
+административным функциям для пользователей, упомянутых в файле
+htpasswd. Начальные имя пользователя и пароль определяются
+настройками 'default' (по умолчанию) в файле config.php. После
+успешной инициализации системы безопасности Ваш броузер будет
+спрашивать имя пользователя и пароль для доступа к административной
+части PHPSurveyor.</FONT></FONT></P>
+<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt"><B><U>Добавление
+пользователей</U></B><BR>После инициализации системы безопасности и в
+входа в административную часть Вы можете просмотрет существующих
+пользователей системы, добавить новых, удалять пользователей или
+изменять их данные. Это делается очень просто. В отображенном списке
+пользователей нажмите кнопку &quot;изменить&quot; для исправления
+данных или  &quot;Удалить&quot; для удаления пользователя.  Если в
+списке представлен только один пользователь, то Вы не сможете его
+удалить.</FONT></FONT></P>
+<P><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><B><U>Выключение
+системы безопасности<BR></U></B>Для выключения системы безопастности
+PHPSurveyor нажмите на кнопку  &quot;Выключить систему
+безопастности&quot;. При этом удалятся файлы htpasswd, htaccess и
+информация о пользователях каталога.</FONT></FONT></P>
+<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt"><B><U>Ограничения
+системы безопасности PHPSurveyor</U></B><BR>До реализации более
+гибкой системы безопасности необходимо помнить, что настройки
+безопасности PHPSurveyor дествуют по принципу 'все-или-ничего'.
+Пользователи либо имеют доступ ко ВСЕМ административным функциям либо
+ни к каким. Система спланирована таким образом, чтобы со временем
+позволит Вам настраивать уровни доступа. Заметьте что все возможности
+системы безопасности, включая пароли в виде плоского текста, доступны
+всем пользователям.</FONT></FONT></P>
+<P><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana"><B><U>Разрешение
+проблем</U></B><BR>Если у Вас проблемы с установкой безопасности:</FONT></FONT></P><A NAME="AutoNumber1"></A>
+<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>
+	<TR>
+		<TD VALIGN=TOP>
+			<P><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Verdana">1.</FONT></FONT></P>
+		</TD>
+		<TD>
+			<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt">Проверьте
+			наличие прав на чтение/запись в каталоге admin. PHPSurveyor
+			требует возможности создания фалов .htpasswd и .htaccess в этом
+			каталоге.</FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR>
+		<TD VALIGN=TOP>
+			<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt">2.</FONT></FONT></P>
+		</TD>
+		<TD>
+			<P><FONT FACE="Verdana"><FONT SIZE=1 STYLE="font-size: 8pt">Проверьте
+			доступность программы htpasswd. В частности для windows сервера,
+			проще всего поместить копию программы в каталог admin. На Linux
+			серверах Phpsurveyorservers будет пытаться искать htpasswd с
+			использованием &quot;find&quot;.</FONT></FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+</BODY>
+</HTML>

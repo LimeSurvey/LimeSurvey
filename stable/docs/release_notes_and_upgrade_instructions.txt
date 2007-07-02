@@ -60,8 +60,27 @@ The upgrade procedure step-by-step:
 Thank you to everyone who helped with this new release!
 
 
-Changes from 0.996 to 1.0
+Changes from 1.0 to 1.01
 
+-Fixed missing scissors icon on ranking questions
+-New Russian language file for admin and updated client language file by Alexei G. Tchernov ( alexei_g_chernov at mail dot ru )
+-New Finnish language file for PHPSurveyor fronted by Markus Översti (markus dot oversti at edu dot haapavesi dot fi)
+-Updated Greek language client file for PHPSurveyor 1.0 by Manolis Stamatogiannakis
+-You can now use an variable named {TOKENID}
+somewhere in your URL in survey settings. It will be replaced with the Token ID.
+
+Like this
+
+END URL: http://www.google.de?test={TOKENID}
+URL Desc: Google is your friend
+
+
+This feature was kindly sponsored by Patrick Lane
+
+
+
+
+Changes from 0.996 to 1.0
 
 -Added SMTP relay and authorization
 -Added Japanese translation kindly provided by Masaru Ryumae

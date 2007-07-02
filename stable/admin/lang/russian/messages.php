@@ -55,7 +55,7 @@ define("_DEACTIVATE", "Деактивировать опросник");
 define("_CHECKFIELDS", "Проверить поля БД");
 define("_CREATEDB", "Создать БД");
 define("_CREATESURVEY", "Создать опрос"); //New for 0.98rc4
-define("_SETUP", "PHPSurveyor Setup");
+define("_SETUP", "Установка PHPSurveyor");
 define("_DELETESURVEY", "Удалить опрос");
 define("_EXPORTQUESTION", "Export вопроса");
 define("_EXPORTSURVEY", "Export опроса");
@@ -66,7 +66,7 @@ define("_IMPORTSURVEY", "Import опроса");
 define("_IMPORTLABEL", "Import набора меток");
 define("_EXPORTRESULTS", "Export результатов");
 define("_BROWSERESPONSES", "Смотреть результаты");
-define("_BROWSESAVED", "Browse Saved Responses");
+define("_BROWSESAVED", "Посмотреть сохраненные ответы");
 define("_STATISTICS", "Быстрая статистика");
 define("_VIEWRESPONSE", "Смотреть ответы");
 define("_VIEWCONTROL", "Управление просмотром данных");
@@ -122,8 +122,8 @@ define("_S_ADDGROUP_BT", "Добавить новую группу в опрос
 define("_S_MINIMISE_BT", "Спрятать детали опроса");
 define("_S_MAXIMISE_BT", "Показать  детали опроса");
 define("_S_CLOSE_BT", "Закрыть опрос");
-define("_S_SAVED_BT", "View Saved but not submitted Responses"); //New in 0.99dev01
-define("_S_ASSESSMENT_BT", "Set assessment rules"); //New in  0.99dev01
+define("_S_SAVED_BT", "Посмотреть сохраненные, но не отправленные ответы"); //New in 0.99dev01
+define("_S_ASSESSMENT_BT", "Установить правила оценки"); //New in  0.99dev01
 //Group bar
 define("_G_EDIT_BT", "Редактировать текущую группу");
 define("_G_EXPORT_BT", "Export текущей группы"); //New in 0.98rc5
@@ -195,33 +195,33 @@ define("_SL_USECOOKIES", "Использовать Cookies?"); //NEW with 098rc3
 define("_SL_NOTIFICATION", "Извещение:"); //New with 098rc5
 define("_SL_ALLOWREGISTER", "Разрешить публичную регистрацию?"); //New with 0.98rc9
 define("_SL_ATTRIBUTENAMES", "Наименования атрибутов фраз:"); //New with 0.98rc9
-define("_SL_EMAILINVITE_SUBJ", "Invitation Email Subject:"); //New with 0.99dev01
+define("_SL_EMAILINVITE_SUBJ", "Тема приглашающего Email:"); //New with 0.99dev01
 define("_SL_EMAILINVITE", "Email приглашение:"); //New with 0.98rc9
-define("_SL_EMAILREMIND_SUBJ", "Email Reminder Subject:"); //New with 0.99dev01
+define("_SL_EMAILREMIND_SUBJ", "Тема напоминающего Email:"); //New with 0.99dev01
 define("_SL_EMAILREMIND", "Email напоминание:"); //New with 0.98rc9
-define("_SL_EMAILREGISTER_SUBJ", "Public registration Email Subject:"); //New with 0.99dev01
+define("_SL_EMAILREGISTER_SUBJ", "Тема Email публичной регистрации:"); //New with 0.99dev01
 define("_SL_EMAILREGISTER", "Email публичной регистрации:"); //New with 0.98rc9
-define("_SL_EMAILCONFIRM_SUBJ", "Confirmation Email Subject"); //New with 0.99dev01
+define("_SL_EMAILCONFIRM_SUBJ", "Тема подтверждающего Email"); //New with 0.99dev01
 define("_SL_EMAILCONFIRM", "Email подтверждения"); //New with 0.98rc9
 define("_SL_REPLACEOK", "Это изменит существующий текст. Продолжить?"); //New with 0.98rc9
-define("_SL_ALLOWSAVE", "Allow Saves?"); //New with 0.99dev01
-define("_SL_AUTONUMBER", "Start ID numbers at:"); //New with 0.99dev01
-define("_SL_AUTORELOAD", "Automatically load URL when survey complete?"); //New with 0.99dev01
-define("_SL_ALLOWPREV", "Show [<< Prev] button"); //New with 0.99dev01
+define("_SL_ALLOWSAVE", "Разрешить сохранение?"); //New with 0.99dev01
+define("_SL_AUTONUMBER", "Начать идентентификационые (ID) номера с:"); //New with 0.99dev01
+define("_SL_AUTORELOAD", "Загружать автоматически URL по окончании опроса?"); //New with 0.99dev01
+define("_SL_ALLOWPREV", "Показывать кнопку [<< Пред] "); //New with 0.99dev01
 define("_SL_USE_DEFAULT","Использовать умолчание");
 define("_SL_UPD_SURVEY","Обновить опрос");
 
 //groups
 define("_GL_TITLE", "Заголовок:");
 define("_GL_DESCRIPTION", "Описание:");
-define("_GL_EDITGROUP","Edit Group for Survey ID"); // New with 0.99dev02
-define("_GL_UPDATEGROUP","Update Group"); // New with 0.99dev02
+define("_GL_EDITGROUP","Редактировать группц для идентификатора опроса"); // New with 0.99dev02
+define("_GL_UPDATEGROUP","Обновить группу"); // New with 0.99dev02
 //questions
-define("_QL_EDITQUESTION", "Edit Question");// New with 0.99dev02
-define("_QL_UPDATEQUESTION", "Update Question");// New with 0.99dev02
+define("_QL_EDITQUESTION", "Редактировать вопрос");// New with 0.99dev02
+define("_QL_UPDATEQUESTION", "Обновить вопрос");// New with 0.99dev02
 define("_QL_CODE", "Код:");
 define("_QL_QUESTION", "Вопрос:");
-define("_QL_VALIDATION", "Validation:"); //New in VALIDATION VERSION
+define("_QL_VALIDATION", "Проверка:"); //New in VALIDATION VERSION
 define("_QL_HELP", "Помощь:");
 define("_QL_TYPE", "Ввод:");
 define("_QL_GROUP", "Группа:");
@@ -229,8 +229,8 @@ define("_QL_MANDATORY", "Обязательность:");
 define("_QL_OTHER", "Другое:");
 define("_QL_LABELSET", "Набор меток:");
 define("_QL_COPYANS", "Копировать ответы?"); //New in 0.98rc3
-define("_QL_QUESTIONATTRIBUTES", "Question Attributes:"); //New in 0.99dev01
-define("_QL_COPYATT", "Copy Attributes?"); //New in 0.99dev01
+define("_QL_QUESTIONATTRIBUTES", "Аттрибуты вопроса:"); //New in 0.99dev01
+define("_QL_COPYATT", "Копировать аттрибуты?"); //New in 0.99dev01
 //answers
 define("_AL_CODE", "Код");
 define("_AL_ANSWER", "Ответ");
@@ -276,7 +276,7 @@ define("_5PT", "5 баллов выбор");
 define("_DATE", "Дата");
 define("_GENDER", "Пол");
 define("_LIST", "Список");
-define("_LIST_DROPDOWN", "List (Dropdown)"); //New with 0.99dev01
+define("_LIST_DROPDOWN", "Список (выпадающий)"); //New with 0.99dev01
 define("_LISTWC", "Список с комментарием");
 define("_MULTO", "Множественный выбор");
 define("_MULTOC", "Множественный выбор с комментарием");
@@ -296,8 +296,8 @@ define("_ARRFLC", "Массив (Гибкие метки) по колонке");
 define("_SINFL", "Единичное (Гибкие метки)"); //(FOR LATER RELEASE)
 define("_EMAIL", "Email адрес"); //FOR LATER RELEASE
 define("_BOILERPLATE", "Горячий (Boilerplate) вопрос"); //New in 0.98rc6
-define("_LISTFL_DROPDOWN", "List (Flexible Labels) (Dropdown)"); //New in 0.99dev01
-define("_LISTFL_RADIO", "List (Flexible Labels) (Radio)"); //New in 0.99dev01
+define("_LISTFL_DROPDOWN", "Список (гибкие метки) (выпадающий)"); //New in 0.99dev01
+define("_LISTFL_RADIO", "Список (гибкие метки) (радио-кнопки)"); //New in 0.99dev01
 define("_SLIDER", "Slider"); //New for slider mod
 
 //GENERAL WORDS AND PHRASES
@@ -327,7 +327,7 @@ define("_DELETE", "Удалить");
 define("_CLOSEWIN", "Закрыть окно");
 define("_TOKEN", "Ключ. фраза");
 define("_DATESTAMP", "Дата и время"); //Referring to the datestamp или time response submitted
-define("_IPADDRESS", "IP Adress"); //Referring to the ip address of the submitter - New with 0.991
+define("_IPADDRESS", "IP адрес"); //Referring to the ip address of the submitter - New with 0.991
 define("_COMMENT", "Комментарий");
 define("_FROM", "От"); //For emails
 define("_SUBJECT", "Тема"); //For emails
@@ -347,7 +347,7 @@ define("_SS_NOQUESTS", "Число вопросов в опросе:"); //NEW fo
 define("_SS_ANONYMOUS", "Этот опрос анонимный."); //NEW for release 0.98rc3
 define("_SS_TRACKED", "Этот опрос НЕ анонимный."); //NEW for release 0.98rc3
 define("_SS_DATESTAMPED", "Ответы имеют дату"); //NEW for release 0.98rc3
-define("_SS_IPADDRESS", "IP Addresses will be logged"); //New with 0.991
+define("_SS_IPADDRESS", "IP адреса записаны в протокол"); //New with 0.991
 define("_SS_COOKIES", "Используются cookie для контроля доступа."); //NEW for release 0.98rc3
 define("_SS_QBYQ", "Форма \"Вопрос за Вопросом\"."); //NEW for release 0.98rc3
 define("_SS_GBYG", "Форма \"Группа за Группой\"."); //NEW for release 0.98rc3
@@ -359,7 +359,7 @@ define("_SS_CANNOTACTIVATE", "Опрос не может быть активир
 define("_SS_ADDGROUPS", "Необходимо добавить группы"); //NEW for release 0.98rc3
 define("_SS_ADDQUESTS", "Необходимо добавить вопросы"); //NEW for release 0.98rc3
 define("_SS_ALLOWREGISTER", "Если ключ. фразы используются, то любой может зарегистрироваться для этого опроса"); //NEW for release 0.98rc9
-define("_SS_ALLOWSAVE", "Participants can save partially finished surveys"); //NEW for release 0.99dev01
+define("_SS_ALLOWSAVE", "Участники могут сохранять частично законченные опросу"); //NEW for release 0.99dev01
 
 //QUESTION STATUS MESSAGES (new in 0.98rc4)
 define("_QS_MANDATORY", "Обязательный вопрос"); //New for release 0.98rc4
@@ -406,10 +406,10 @@ define("_AC_FAIL", "Опрос не прошел проверку на цело�
 define("_AC_PROBS", "Обнаружены след. проблемы:");
 define("_AC_CANNOTACTIVATE", "Опрос не может быть активирован пока эти проблемы не будут решены");
 define("_AC_READCAREFULLY", "ВНИМАТЕЛЬНО ПРОЧИТАЙТЕ ПЕРЕД ПРОДОЛЖЕНИЕМ");
-define("_AC_ACTIVATE_MESSAGE1", "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing.");
-define("_AC_ACTIVATE_MESSAGE2", "Once a survey is activated you can no longer:<ul><li>Добавить или delete groups</li><li>Добавить или remove answers to Multiple Answer questions</li><li>Добавить или delete questions</li></ul>");
-define("_AC_ACTIVATE_MESSAGE3", "Однако Вы все же можете:<ul><li>Редактировать (менять) коды вопросов, текст или тип</li><li>Редактировать (менять) имена групп</li><li>Добавлять, Удалять или Редактировать предопределенные ответы (исключая вопрoсы с многожественными ответами)</li><li>Менять имя опроса или его описание</li></ul>");
-define("_AC_ACTIVATE_MESSAGE4", "Once data has been entered into this survey, if you want to add или remove groups или questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table.");
+define("_AC_ACTIVATE_MESSAGE1", "Вы должны активировать опрос только кода полностью убедитесь, что настройка опроса завершена, и не будет необходимости в изменениях.");
+define("_AC_ACTIVATE_MESSAGE2", "Как только Вы активирует опрос Вы не сможете больше:<ul><li>Добавлять и удалять группы</li><li>Добавлять или удалять ответы на вопросы со множественными ответами</li><li>Добавлять и удалять вопросы</li></ul>");
+define("_AC_ACTIVATE_MESSAGE3", "Однако Вы все же сможете:<ul><li>Редактировать (менять) коды вопросов, текст или тип</li><li>Редактировать (менять) имена групп</li><li>Добавлять, Удалять или Редактировать предопределенные ответы (исключая вопрoсы с многожественными ответами)</li><li>Менять имя опроса или его описание</li></ul>");
+define("_AC_ACTIVATE_MESSAGE4", "Как только будут введены данные по опросу, tyckb Вы захоттиите добавить или удалить группу или вопрос, Вам будет необходимо деактивировать этот опрос. Это приведет к переносу всех введенных данных в отдельную архивную таблицу.");
 define("_AC_ACTIVATE", "Активировать");
 define("_AC_ACTIVATED", "Опрос активирован. Табица результатов успешно создана.");
 define("_AC_NOTACTIVATED", "Опрос не может быть активирован.");
@@ -417,11 +417,11 @@ define("_AC_NOTPRIVATE", "Это неанонимный опрос. Таблиц
 define("_AC_REGISTRATION", "Это опрос позволяет проводить регистрацию. Таблица кл. фраз тоже создана.");
 define("_AC_CREATETOKENS", "Инициализация ключ. фраз");
 define("_AC_SURVEYACTIVE", "Опрос активирован, и ответы могут сохраняться.");
-define("_AC_DEACTIVATE_MESSAGE1", "In an active survey, a table is created to store all the data-entry records.");
-define("_AC_DEACTIVATE_MESSAGE2", "When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using PHPSurveyor any more.");
-define("_AC_DEACTIVATE_MESSAGE3", "De-activated survey data can only be accessed by system administrators using a MySQL data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators.");
-define("_AC_DEACTIVATE_MESSAGE4", "Your responses table will be renamed to:");
-define("_AC_DEACTIVATE_MESSAGE5", "You should export your responses before de-activating. Click \"Cancel\" to return to the main admin screen without de-activating this survey.");
+define("_AC_DEACTIVATE_MESSAGE1", "В активированном запросу создана таблица для хранения введенных данных.");
+define("_AC_DEACTIVATE_MESSAGE2", "Когда Вы деактивирует опрос все данные введенные в оригинальные таблицы будут перемещены. Когда Вы снова активируете опрос, то таблица будет пуста. Вы не сможете получить доступ к этим данным, используя PHPSurveyor.");
+define("_AC_DEACTIVATE_MESSAGE3", "Доступ к данным деативированого опроса сможет осуществить только системны администратор через средства доступа к MySQL типа phpmyadmin. Если Ваш опрос использует кл. фразы, то эта таюлица также буде переименована и будет доступна только системному администратору.");
+define("_AC_DEACTIVATE_MESSAGE4", "Таблица ответов будет переименована в:");
+define("_AC_DEACTIVATE_MESSAGE5", "Вы должны экспортировать ответы до деактивации. Нажмите \"Отмена\" для возврата в главное администативное меню без деактивации опроса.");
 define("_AC_DEACTIVATE", "Деактивировать");
 define("_AC_DEACTIVATED_MESSAGE1", "Таблица ответов переименована в: ");
 define("_AC_DEACTIVATED_MESSAGE2", "Ответы на этот опрос больше не могут использоваться PHPSurveyor.");
@@ -465,7 +465,7 @@ define("_DB_FAIL_SURVEYUPDATE", "Нельзя обновить опрос");
 define("_DB_FAIL_SURVEYDELETE", "Нельзя удалить опрос");
 
 //DELETE SURVEY MESSAGES
-define("_DS_NOSID", "Вы не вбрали опрос для удаления");
+define("_DS_NOSID", "Вы не выбрали опрос для удаления");
 define("_DS_DELMESSAGE1", "Вы удаляете этот опрос");
 define("_DS_DELMESSAGE2", "Это удалит опрос и все связанные группы, ответы на вопросы и условия.");
 define("_DS_DELMESSAGE3", "Мы рекомендуем перед удлением опроса экспортировать его данные.");
@@ -492,8 +492,8 @@ define("_EX_ANS_ABBREV", "Коды вопросов");
 define("_EX_ANS_FULL", "Полные ответы");
 define("_EX_FORM_WORD", "Microsoft Word");
 define("_EX_FORM_EXCEL", "Microsoft Excel");
-define("_EX_FORM_CSV", "CSV Comma Delimited");
-define("_EX_EXPORTDATA", "Export Data");
+define("_EX_FORM_CSV", "CSV разделенные запятыми");
+define("_EX_EXPORTDATA", "Export данных");
 define("_EX_COLCONTROLS", "Управление колонкой"); //New for 0.98rc7
 define("_EX_TOKENCONTROLS", "Управление кл. фразами"); //New for 0.98rc7
 define("_EX_COLSELECT", "Выбор столбцов"); //New for 0.98rc7
@@ -526,7 +526,7 @@ define("_IQ_IMPORTSUMMARY", "Итоги импорта вопроса");
 define("_IQ_SUCCESS", "Импорт вопроса завершен");
 
 //IMPORT LABELSET MESSAGES
-define("_IL_DUPLICATE", "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead.");
+define("_IL_DUPLICATE", "Есть дублирующиеся наборы меток, они не импортированы. Вместо них использованы дубликаты.");
 
 //BROWSE RESPONSES MESSAGES
 define("_BR_NOSID", "Вы не выбрали опрос для просмотра ответов.");
@@ -572,7 +572,7 @@ define("_DE_NOMODIFY", "Нельзя изменить");
 define("_DE_UPDATE", "Обновление данных");
 define("_DE_NOSID", "Вы не выбрали опрос для ввода данных.");
 define("_DE_NOEXIST", "Выбранный опрос не существует");
-define("_DE_NOTACTIVE", "Опрос еще не активен. Выш ответ не может быть сохранен");
+define("_DE_NOTACTIVE", "Опрос еще не активен. Ваш ответ не может быть сохранен");
 define("_DE_INSERT", "Вставка данных");
 define("_DE_RECORD", "Данным назначен след. идентификатор записи: ");
 define("_DE_ADDANOTHER", "Добавить другую запись ");
@@ -586,10 +586,10 @@ define("_DE_CONDITIONHELP1", "Отвечать только если выпол�
 define("_DE_CONDITIONHELP2", "по вопроса {QUESTION}, Вы ответили {ANSWER}"); //This will be a tricky one depending on your languages syntax. {ANSWER} is replaced with ALL ANSWERS, separated by _DE_OR (OR).
 define("_DE_AND", "И");
 define("_DE_OR", "ИЛИ");
-define("_DE_SAVEENTRY", "Save as a partially completed survey"); //New in 0.99dev01
-define("_DE_SAVEID", "Identifier:"); //New in 0.99dev01
-define("_DE_SAVEPW", "Password:"); //New in 0.99dev01
-define("_DE_SAVEPWCONFIRM", "Confirm Password:"); //New in 0.99dev01
+define("_DE_SAVEENTRY", "Сохранить как частично выполненный опрос"); //New in 0.99dev01
+define("_DE_SAVEID", "Идентификатор:"); //New in 0.99dev01
+define("_DE_SAVEPW", "Пароль:"); //New in 0.99dev01
+define("_DE_SAVEPWCONFIRM", "Повтор пароля:"); //New in 0.99dev01
 define("_DE_SAVEEMAIL", "Email:"); //New in 0.99dev01
 
 //TOKEN CONTROL MESSAGES
@@ -620,7 +620,7 @@ define("_TC_EDIT", "Изменение кл. фразы");
 define("_TC_DEL", "Удаление кл. фразы");
 define("_TC_DO", "Провести опрос");
 define("_TC_VIEW", "Смотреть ответы");
-define("_TC_UPDATE", "Update Response"); // New with 0.99 stable
+define("_TC_UPDATE", "Обновить ответ"); // New with 0.99 stable
 define("_TC_INVITET", "Отправить email приглашение для этого элемента");
 define("_TC_REMINDT", "Отправить email напоминание для этого элемента");
 define("_TC_INVITESUBJECT", "Приглашение участнику опроса {SURVEYNAME}"); //Leave {SURVEYNAME} for replacement in scripts
@@ -653,7 +653,7 @@ define("_TC_SENDREMIND", "Отправить наминания");
 define("_TC_INVITESENTTO", "Приглашение оправлено:"); //is followed by token name
 define("_TC_REMINDSENTTO", "Напоминание отправлено:"); //is followed by token name
 define("_TC_UPDATEDB", "Обновление таблицы кл. фраз с новыми полями"); //New for 0.98rc7
-define("_TC_EMAILINVITE_SUBJ", "Invitation to participate in survey"); //New for 0.99dev01
+define("_TC_EMAILINVITE_SUBJ", "Приглашение для участия в опросе"); //New for 0.99dev01
 define("_TC_EMAILINVITE", "Уважаемая/-ый {FIRSTNAME},\n\nВы приглашения для участия в опросе.\n\n"
 						 ."Опрос называется:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
 						 ."Для участия, пожалуйста выберите ссылку внизу.\n\nС уважением,\n\n"
@@ -661,7 +661,7 @@ define("_TC_EMAILINVITE", "Уважаемая/-ый {FIRSTNAME},\n\nВы при�
 						 ."----------------------------------------------\n"
 						 ."Нажмите здесь для участия в опросе:\n"
 						 ."{SURVEYURL}"); //New for 0.98rc9 - default Email Invitation
-define("_TC_EMAILREMIND_SUBJ", "Reminder to participate in survey"); //New for 0.99dev01
+define("_TC_EMAILREMIND_SUBJ", "Напоминание об участии в опросе"); //New for 0.99dev01
 define("_TC_EMAILREMIND", "Уважаемая/-ый {FIRSTNAME},\n\nНекоторое время назад мы пригласили Вас участвовать в опросе.\n\n"
 						 ."Мы заметили, что Вы еще не закончили опрос, и хотели бы напомнить Вам что опрос еще доступен если Вы захотите принять в нем участие.\n\n"
 						 ."Опрос называется:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\n"
@@ -670,16 +670,16 @@ define("_TC_EMAILREMIND", "Уважаемая/-ый {FIRSTNAME},\n\nНекото
 						 ."----------------------------------------------\n"
 						 ."Нажмите здесь для участия в опросе:\n"
 						 ."{SURVEYURL}"); //New for 0.98rc9 - default Email Reminder
-define("_TC_EMAILREGISTER_SUBJ", "Survey Registration Confirmation"); //New for 0.99dev01
+define("_TC_EMAILREGISTER_SUBJ", "Подтверждение регистрации в опросе"); //New for 0.99dev01
 define("_TC_EMAILREGISTER", "Уважаемая/-ый {FIRSTNAME},\n\n"
 						  ."Вы, или кто-то используя Ваш email адрес, зарегистрировался для "
 						  ."в онлайн опросе {SURVEYNAME}.\n\n"
-						  ."Для участия опросе перерйдите по указанному адресу (URL):\n\n"
+						  ."Для участия опросе перейдите по указанному адресу (URL):\n\n"
 						  ."{SURVEYURL}\n\n"
 						  ."Если у Вас есть вопросы по опросу или если Вы "
 						  ."нем регистрировались для опроса и считаете это письмо "
 						  ."ошибочным, пожалуйста, сообщите {ADMINNAME} по адресу {ADMINEMAIL}.");//NEW for 0.98rc9
-define("_TC_EMAILCONFIRM_SUBJ", "Confirmation of completed survey"); //New for 0.99dev01
+define("_TC_EMAILCONFIRM_SUBJ", "Подтвержение выолнениния опроса"); //New for 0.99dev01
 define("_TC_EMAILCONFIRM", "Уважаемая/-ый {FIRSTNAME},\n\nЭт описьмо подтверждает, что Вы закончили опрос {SURVEYNAME} "
 						  ."и Ваши ответы сохранены. Спасибо за участие.\n\n"
 						  ."Если у Вас есть вопросы по данному письму, пожалуйста, свяжитесь с {ADMINNAME} по адресу {ADMINEMAIL}.\n\n"
@@ -731,7 +731,7 @@ define("_CD_NOQID", "Вы не выбрали вопрос."); //New with 098rc9
 define("_CD_DIDNOTCOPYQ", "Вопросы не скопированы"); //New with 098rc9
 define("_CD_NOCONDITIONTOCOPY", "Нет условия для копирования из"); //New with 098rc9
 define("_CD_NOQUESTIONTOCOPYTO", "Нет условия для копирования в"); //New with 098rc9
-define("_CD_COPYTO", "copy to"); //New with 0.991
+define("_CD_COPYTO", "копировать в"); //New with 0.991
 
 //TEMPLATE EDITOR TRANSLATIONS
 define("_TP_CREATENEW", "Создать новый шаблон"); //New with 098rc9
@@ -759,76 +759,76 @@ define("_TP_COMPLETEDPAGE", "Страница завершения"); //New with
 define("_TP_CLEARALLPAGE", "Очистить все страницы"); //New with 098rc9
 define("_TP_REGISTERPAGE", "Страница регистрации"); //New with 098finalRC1
 define("_TP_EXPORT", "Export шаблона"); //New with 098rc10
-define("_TP_LOADPAGE", "Load Page"); //New with 0.99dev01
-define("_TP_SAVEPAGE", "Save Page"); //New with 0.99dev01
+define("_TP_LOADPAGE", "Страница загрузки"); //New with 0.99dev01
+define("_TP_SAVEPAGE", "Страница сохранения"); //New with 0.99dev01
 
 //Saved Surveys
-define("_SV_RESPONSES", "Saved Responses:");
-define("_SV_IDENTIFIER", "Identifier");
-define("_SV_RESPONSECOUNT", "Answered");
-define("_SV_IP", "IP Address");
-define("_SV_DATE", "Date Saved");
-define("_SV_REMIND", "Remind");
-define("_SV_EDIT", "Edit");
+define("_SV_RESPONSES", "Сохраненные ответы:");
+define("_SV_IDENTIFIER", "Идентификатор");
+define("_SV_RESPONSECOUNT", "Отвечено");
+define("_SV_IP", "IP адрес");
+define("_SV_DATE", "Дата сохранения");
+define("_SV_REMIND", "Напоминание");
+define("_SV_EDIT", "Редактирование");
 
 //VVEXPORT/IMPORT
-define("_VV_IMPORTFILE", "Import a VV survey file");
-define("_VV_EXPORTFILE", "Export a VV survey file");
-define("_VV_FILE", "File:");
-define("_VV_SURVEYID", "Survey ID:");
-define("_VV_EXCLUDEID", "Exclude record IDs?");
-define("_VV_INSERT", "When an imported record matches an existing record ID:");
-define("_VV_INSERT_ERROR", "Report an error (and skip the new record).");
-define("_VV_INSERT_RENUMBER", "Renumber the new record.");
-define("_VV_INSERT_IGNORE", "Ignore the new record.");
-define("_VV_INSERT_REPLACE", "Replace the existing record.");
-define("_VV_DONOTREFRESH", "Important Note:<br />Do NOT refresh this page, as this will import the file again and produce duplicates");
-define("_VV_IMPORTNUMBER", "Total records imported:");
-define("_VV_ENTRYFAILED", "Import Failed on Record");
-define("_VV_BECAUSE", "because");
-define("_VV_EXPORTDEACTIVATE", "Export, then de-activate survey");
-define("_VV_EXPORTONLY", "Export but leave survey active");
-define("_VV_RUSURE", "If you have chosen to export and de-activate, this will rename your current responses table and it will not be easy to restore it. Are you sure?");
+define("_VV_IMPORTFILE", "Import VV файл опроса");
+define("_VV_EXPORTFILE", "Export VV файл опроса");
+define("_VV_FILE", "Файл:");
+define("_VV_SURVEYID", "Идент. опроса:");
+define("_VV_EXCLUDEID", "Идентификаторы исключаемых записей?");
+define("_VV_INSERT", "Когда импортируемые записи совпадают по идентификатору с существующими записями:");
+define("_VV_INSERT_ERROR", "Сообщить об ошибке (и пропустить новую запись).");
+define("_VV_INSERT_RENUMBER", "Перенумеровать новую запись.");
+define("_VV_INSERT_IGNORE", "Игнорировать новую запись.");
+define("_VV_INSERT_REPLACE", "Заместить существующую запись.");
+define("_VV_DONOTREFRESH", "Важно:<br />НЕ ОБНОВЛЯЙТЕ эту страницу - это приведет повторному импорту файла и возникновению дублей");
+define("_VV_IMPORTNUMBER", "Всего проимпортировано записей:");
+define("_VV_ENTRYFAILED", "Сбой импорта на записи");
+define("_VV_BECAUSE", "так как");
+define("_VV_EXPORTDEACTIVATE", "Экспортировать и затем деактивировать опрос");
+define("_VV_EXPORTONLY", "Экспортировать и оставить опрос активным");
+define("_VV_RUSURE", "Вы выбрали экспорт с деактивацией опроса, то это вызовет переименование текущей таблици ответов и будет непросто ее восстановить. Вы уверены?");
 
 //ASSESSMENTS
-define("_AS_TITLE", "Assessments");
-define("_AS_DESCRIPTION", "If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission");
-define("_AS_NOSID", "No SID Provided");
-define("_AS_SCOPE", "Scope");
+define("_AS_TITLE", "Оценки");
+define("_AS_DESCRIPTION", "Если Вы создадите любые оценки для этой страницы выбранного сейчас опроса, то оценка будет произведена в конце опроса после отправки результатов");
+define("_AS_NOSID", "Не указан SID (идентификатор опроса)");
+define("_AS_SCOPE", "Область");
 define("_AS_MINIMUM", "Minimum");
 define("_AS_MAXIMUM", "Maximum");
-define("_AS_GID", "Group");
-define("_AS_NAME", "Name/Header");
-define("_AS_HEADING", "Heading");
-define("_AS_MESSAGE", "Message");
+define("_AS_GID", "Группа");
+define("_AS_NAME", "Имя/Заголовок");
+define("_AS_HEADING", "Заглавие");
+define("_AS_MESSAGE", "Сообщение");
 define("_AS_URL", "URL");
-define("_AS_SCOPE_GROUP", "Group");
-define("_AS_SCOPE_TOTAL", "Total");
-define("_AS_ACTIONS", "Actions");
-define("_AS_EDIT", "Edit");
-define("_AS_DELETE", "Delete");
-define("_AS_ADD", "Add");
-define("_AS_UPDATE", "Update");
+define("_AS_SCOPE_GROUP", "Группа");
+define("_AS_SCOPE_TOTAL", "Все");
+define("_AS_ACTIONS", "Действия");
+define("_AS_EDIT", "Изменить");
+define("_AS_DELETE", "Удалить");
+define("_AS_ADD", "Добавить");
+define("_AS_UPDATE", "Обновить");
 
 //Question Number regeneration
-define("_RE_REGENNUMBER", "Regenerate Question Numbers:"); //NEW for release 0.99dev2
-define("_RE_STRAIGHT", "Straight"); //NEW for release 0.99dev2
-define("_RE_BYGROUP", "By Group"); //NEW for release 0.99dev2
+define("_RE_REGENNUMBER", "Перегенерирровать номера вопросов:"); //NEW for release 0.99dev2
+define("_RE_STRAIGHT", "Насквозь"); //NEW for release 0.99dev2
+define("_RE_BYGROUP", "По группе"); //NEW for release 0.99dev2
 
 // Database Consistency Check
-define ("_DC_TITLE", "Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. </font>"); // New with 0.99stable
-define ("_DC_QUESTIONSOK", "All questions meet consistency standards"); // New with 0.99stable
-define ("_DC_ANSWERSOK", "All answers meet consistency standards"); // New with 0.99stable
-define ("_DC_CONDITIONSSOK", "All conditions meet consistency standards"); // New with 0.99stable
-define ("_DC_GROUPSOK", "All groups meet consistency standards"); // New with 0.99stable
-define ("_DC_NOACTIONREQUIRED", "No database action required"); // New with 0.99stable
-define ("_DC_QUESTIONSTODELETE", "The following questions should be deleted"); // New with 0.99stable
-define ("_DC_ANSWERSTODELETE", "The following answers should be deleted"); // New with 0.99stable
-define ("_DC_CONDITIONSTODELETE", "The following conditions should be deleted"); // New with 0.99stable
-define ("_DC_GROUPSTODELETE", "The following groups should be deleted"); // New with 0.99stable
-define ("_DC_ASSESSTODELETE", "The following assessments should be deleted"); // New with 0.99stable
-define ("_DC_QATODELETE", "The following question attributes should be deleted"); // New with 0.99stable
-define ("_DC_QAOK", "All question_attributes meet consistency standards"); // New with 0.99stable
-define ("_DC_ASSESSOK", "All assessments meet consistency standards"); // New with 0.99stable
+define ("_DC_TITLE", "Проверка целостности данных<br /><font size='1'>Если ошибки отображены, то необходимо выполнить фукнцию проверки несколько раз (пока есть ошибки).</font>"); // New with 0.99stable
+define ("_DC_QUESTIONSOK", "Все вопросы удовлетворяют стандартам целостности"); // New with 0.99stable
+define ("_DC_ANSWERSOK", "Все ответы удовлетворяют стандартам целостности"); // New with 0.99stable
+define ("_DC_CONDITIONSSOK", "Все условия удовлетворяют стандартам целостности"); // New with 0.99stable
+define ("_DC_GROUPSOK", "Все группы удовлетворяют стандартам целостности"); // New with 0.99stable
+define ("_DC_NOACTIONREQUIRED", "Нет необходимости в ремонте БД"); // New with 0.99stable
+define ("_DC_QUESTIONSTODELETE", "Следующие вопросы должны быть удалены"); // New with 0.99stable
+define ("_DC_ANSWERSTODELETE", "Следующие ответы должны быть удалены"); // New with 0.99stable
+define ("_DC_CONDITIONSTODELETE", "Следующие условия должны быть удалены"); // New with 0.99stable
+define ("_DC_GROUPSTODELETE", "Следующие группы должны быть удалены"); // New with 0.99stable
+define ("_DC_ASSESSTODELETE", "Следующие оценки должны быть удалены"); // New with 0.99stable
+define ("_DC_QATODELETE", "Следующие атрибуты вопросов должны быть удалены"); // New with 0.99stable
+define ("_DC_QAOK", "Все атрибуты вопросов удовлетворяют стандартам целостности"); // New with 0.99stable
+define ("_DC_ASSESSOK", "Все оценки удовлетворяют стандартам целостности"); // New with 0.99stable
 
 ?>

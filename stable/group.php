@@ -191,6 +191,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 			if (isset($_POST['token']) && $_POST['token'])
 				{
 				submittokens();
+				$tokenid=$_POST['token'];
 				}
 
 			//Send notification to survey administrator //Thanks to Jeff Clement http://jclement.ca
@@ -210,7 +211,7 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 				//Should put an email to administrator here
 				//if the delete doesn't work.
 			}
-
+			
 			session_unset();
 			session_destroy();
 
@@ -220,7 +221,12 @@ if (isset($_POST['move']) && $_POST['move'] == " "._SUBMIT." " && isset($_SESSIO
 				{
 			    //Automatically redirect the page to the "url" setting for the survey
 				session_write_close();
-				header("Location: {$thissurvey['url']}");
+				$redirectURL=$thissurvey['url'];
+				if (isset($tokenid))
+				{
+				  $redirectURL=str_replace('{TOKENID}',$tokenid,$redirectURL);
+				}
+				header("Location: {$redirectURL}");
 			    }
 
 			doHeader();

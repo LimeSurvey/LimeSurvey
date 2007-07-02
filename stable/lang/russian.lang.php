@@ -36,6 +36,7 @@
     # This language file kindly provided by ?                   #
     #                                                           #
     # Updates 2006 by Alexander Shilov - alexsh at cpart dot kz #
+    # Updates 2007 by Alexei Chernov - alexei_g_chernov at mail dot ru #
     #                                                           #
     #############################################################
 */
@@ -81,8 +82,8 @@ define("_MANDATORY_PARTS", "Заполните все части");
 define("_MANDATORY_CHECK", "Отметьте хотя бы одно");
 define("_MANDATORY_RANK", "Отранжируйте элементы");
 define("_MANDATORY_POPUP", "Один или несколько обязательных вопросов не отвечено. Вы не можете продолжать дальше пока не ответите."); //NEW in 0.98rc4
-define("_VALIDATION", "This question must be answered correctly"); //NEW in VALIDATION VERSION
-define("_VALIDATION_POPUP", "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"); //NEW in VALIDATION VERSION
+define("_VALIDATION", "Этот вопрос  должен быть отвечен корректно"); //NEW in VALIDATION VERSION
+define("_VALIDATION_POPUP", "Один или несколько вопросов отвечены некорректно. Вы не сможете продолжавть пока не исправите ответы"); //NEW in VALIDATION VERSION
 define("_DATEFORMAT", "Формат: ГГГГ-MM-ДД");
 define("_DATEFORMATEG", "(напр: 2003-12-25 для Рождества)");
 define("_REMOVEITEM", "Удалить эл-т");
@@ -100,7 +101,7 @@ define("_ANSCLEAR", "Ответы очищены");
 define("_RESTART", "Престартовать опрос");
 define("_CLOSEWIN_PS", "Закрыть окно");
 define("_CONFIRMCLEAR", "Вы действительно хотите удалить все Ваше ответы?");
-define("_CONFIRMSAVE", "Are you sure you want to save your responses?");
+define("_CONFIRMSAVE", "Вы действительно хотите сохранить ответы?");
 define("_EXITCLEAR", "Выйти о очистить опросник");
 //From QUESTION.PHP
 define("_BADSUBMIT1", "Не могу отправить результаты - нечего отправлять.");
@@ -112,7 +113,7 @@ define("_SURVEYREC", "Ваши ответы записаны.");
 define("_SURVEYCPL", "Опрос завершен");
 define("_DIDNOTSAVE", "Не сохранено");
 define("_DIDNOTSAVE2", "Произошла непредвиденная ошибка и Ваши  ответы не могут быть сохранены.");
-define("_DIDNOTSAVE3", "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point.");
+define("_DIDNOTSAVE3", "Выши ответы не будут потеряны. Они будут отправлены по email администратору опроса и будут внесены в нашу БД позже.");
 define("_DNSAVEEMAIL1", "Произошла ошибка при сохранении опроса с идентификатором");
 define("_DNSAVEEMAIL2", "ДАННЫЕ ДЛЯ ВВОДА");
 define("_DNSAVEEMAIL3", "SQL КОД КОТОРЫЙ НЕ ВЫПОЛНЕН");
@@ -137,7 +138,7 @@ define("_CONFIRMATION_MESSAGE1", "Ответы сохранены"); //NEW for 0
 define("_CONFIRMATION_MESSAGE2", "Новый ответ добавлен в опросник"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE3", "Выбарите следующую ссылку для просмота индивидуальный ответов:"); //NEW for 098rc5
 define("_CONFIRMATION_MESSAGE4", "Для просмотра статистики нажмите здесь:"); //NEW for 098rc5
-define("_CONFIRMATION_MESSAGE5", "Click the following link to edit the individual response:"); //NEW for 0.99stable
+define("_CONFIRMATION_MESSAGE5", "Кликните на ссылку для редактирования конкретного ответа:"); //NEW for 0.99stable
 
 define("_PRIVACY_MESSAGE", "<strong><i>Замечания о приватности</i></strong><br />"
 						  ."Этот опрос являкется анонимным.<br />"
@@ -191,10 +192,10 @@ define("_PS_THANKYOU", "Благодарим за участие в опросе
 define("_PS_FAXTO", "Пожалуйста отправьте заполненный опрос по факсу:"); //New for 0.98finaclRC1
 
 define("_PS_CON_ONLYANSWER", "Просто ответьте на вопрос"); //New for 0.98finalRC1
-define("_PS_CON_IFYOU", "есл Вы ответили"); //New for 0.98finalRC1
+define("_PS_CON_IFYOU", "если Вы ответили"); //New for 0.98finalRC1
 define("_PS_CON_JOINER", "и"); //New for 0.98finalRC1
 define("_PS_CON_TOQUESTION", "к вопросу"); //New for 0.98finalRC1
-define("_PS_CON_OR", "or"); //New for 0.98finalRC2
+define("_PS_CON_OR", "или"); //New for 0.98finalRC2
 
 //Save Messages
 define("_SAVE_AND_RETURN", "Сохранить ответы и вернуться позже");
@@ -213,7 +214,7 @@ define("_SAVENOPASS", "Вы должны ввести пароль для сох
 define("_SAVENOMATCH", "Пароль не совпадает, введите еще раз");
 define("_SAVEDUPLICATE", "Такой логин уже используется в настоящий момент. Введите пожалуйста другой уникальный логин.");
 define("_SAVETRYAGAIN", "Попробуйте еще раз.");
-define("_SAVE_EMAILSUBJECT", "Saved Survey Details");
+define("_SAVE_EMAILSUBJECT", "Сохранить детали опроса");
 define("_SAVE_EMAILTEXT", "Вы, или кто-то другой используя Ваш e-mail, сохранил незаконченный опрос."
 						 ."Используя нижепреведенные логин, пароль и ссылку Вы можете вернуться и продолжить опрос "
 						 ."с того места где остановились..");
@@ -236,5 +237,5 @@ define("_LOADNONAME", "Вы не ввели логин");
 define("_LOADNOPASS", "Вы не ввели пароль");
 define("_LOADNOMATCH", "Такого сохраненного опроса не найдено");
 
-define("_ASSESSMENT_HEADING", "Your Assessment");
+define("_ASSESSMENT_HEADING", "Ваша оценка");
 ?>
