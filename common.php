@@ -2879,7 +2879,9 @@ function addUserGroupInDB($group_name, $group_description) {
 	if($connect->Execute($iquery)) {
 		$id = $connect->Insert_Id();
 		if($id > 0) {
-			$iquery = "INSERT INTO ".db_table_name('user_in_groups')." VALUES(LAST_INSERT_ID(), '{$_SESSION['loginID']}')";
+// remplaced cause LAST_INSERT_ID doens't work on MSSQL
+// 			$iquery = "INSERT INTO ".db_table_name('user_in_groups')." VALUES(LAST_INSERT_ID(), '{$_SESSION['loginID']}')";
+ 			$iquery = "INSERT INTO ".db_table_name('user_in_groups')." VALUES($id, '{$_SESSION['loginID']}')";
 			$connect->Execute($iquery ) or die($connect->ErrorMsg());
 		}
 		return $id;
