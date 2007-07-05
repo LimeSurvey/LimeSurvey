@@ -62,6 +62,7 @@ Thank you to everyone who helped with this new release!
 
 Changes from 1.0 to 1.01
 
+-Replaced XPertMailer Email Class by PHPMailer library for much more stable invitation and reminder mailing. This should fix the lost email problem.
 -Fixed missing scissors icon on ranking questions
 -New Russian language file for admin and updated client language file by Alexei G. Tchernov ( alexei_g_chernov at mail dot ru )
 -New Finnish language file for PHPSurveyor fronted by Markus Översti (markus dot oversti at edu dot haapavesi dot fi)
