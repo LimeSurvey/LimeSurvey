@@ -110,9 +110,9 @@ if($actsurrows['edit_survey_property']){
 	$groupselect,
 	"<input type='text' name='minimum' />",
 	"<input type='text' name='maximum' />",
-	"<input type='text' name='name' />",
-	"<textarea name='message'></textarea />",
-	"<input type='text' name='link' />");
+	"<input type='text' name='name' size='80'/>",
+	"<textarea name='message' rows='10' cols='80'></textarea />",
+	"<input type='text' name='link' size='80' />");
 	$actiontitle=$clang->gT("Add");
 	$actionvalue="assessmentadd";
 	$thisid="";

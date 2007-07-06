@@ -39,12 +39,12 @@ th, p, div {
 .maintitle {
    font-size: 14pt;
    font-weight: bold;
-   color: #228A57;
+   color: #328639;
    text-align: center;
    margin: auto;
    background: #D6D6D6;
-   border-top: 2px solid #7FFF00;
-   border-bottom: 1px groove #00FA9A;
+   border-top: 2px solid #C9EF50;
+   border-bottom: 2px solid #6a8b03;
    background-image: url(bkgmaintitle.gif);
    background-repeat: repeat-x;
    }
@@ -70,7 +70,7 @@ table.menubar {
 
 table.table2columns {
    background-color: #FFFFFF;
-	width: 100%;
+   width: 100%;
    text-align: center;
    border: 1px solid #555555;
 }
@@ -119,13 +119,6 @@ td {
 }
 input, select {
 	color: #000080;
-	background: #EEEFFF;
-	font: 10px verdana, arial, sans-serif;
-}
-
-input, select {
-	color: #000080;
-	background: #EEEFFF;
 	font: 10px verdana, arial, sans-serif;
 }
 
@@ -141,7 +134,6 @@ action {
 textarea {
 	font-size: 10px;
 	color: #000080;
-	background: #EEEFFF;
 	font-family: verdana, arial, sans-serif;
 }
 .subtitle {
@@ -151,34 +143,26 @@ textarea {
 .listboxtemplates {
 	margin-top: 10px;
 	height: 20px;
-	font-size: 10px;
 	color: #333;
-	background: #F8F8FF;
 	width: 180px;
 }
 
 .listboxsurveys {
 	margin-top: 10px;
 	height: 20px;
-	font-size: 10px;
 	color: #333;
-	background: #F8F8FF;
 	width: 180px;
 }
 .listboxgroups {
 	margin-top: 10px;
 	height: 20px;
-	font-size: 10px;
 	color: #333;
-	background: #F8F8FF;
 	width: 180px;
 }
 .listboxquestions {
 	margin-top: 10px;
 	height: 20px;
-	font-size: 10px;
 	color: #333;
-	background: #F8F8FF;
 	width: 180px;
 }
 .boxcaption {
@@ -261,7 +245,7 @@ span.settingcaption {
 	z-index: 20000;
 	padding: 2px;
 	-moz-border-radius: 5px;
-	background: #D3F2E4;
+	background: #FDFDF5;
 	font: 0.8em "Verdana", "Lucida Sans Unicode", Arial, sans-serif;
 }
 #dhtmlgoodies_tooltipShadow {
@@ -308,12 +292,12 @@ span.settingcaption {
    -khtml-opacity: 0.95;
    -moz-opacity: 0.95;
    -moz-border-radius: 6px;
-   background: #D3F2E4;
+   background: #FDFDF5;
    font: 11px arial, verdana, sans-serif;
 }
 
 .testsurvpopup	td {
-    background: #D3F2E4;
+    background: #FDFDF5;
 }
 
 .testsurvpopup	td:first-child {
@@ -339,7 +323,7 @@ span.settingcaption {
 	-khtml-opacity: 0.95;
 	-moz-opacity: 0.95;
 	-moz-border-radius: 6px;
-	background: #D3F2E4;
+	background: #FDFDF5;
 	font: 11px arial, verdana, sans-serif;
 }
 
