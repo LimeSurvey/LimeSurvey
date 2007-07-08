@@ -503,4 +503,42 @@ foreach ($fields as $field)
 		}
 	}
 }
+
+function strip_tags_full($string) {
+    $string=strip_tags($string);
+
+    $string=str_replace("'", '?', $string);
+    $string=str_replace('&nbsp;', ' ', $string);
+    $string=str_replace('&agrave;', '?', $string);
+    $string=str_replace('&egrave;', '?', $string);
+    $string=str_replace('&igrave;', '?', $string);
+    $string=str_replace('&ograve;', '?', $string);
+    $string=str_replace('&ugrave;', '?', $string);
+    $string=str_replace('&eacute;', '?', $string);
+    $string=str_replace('&Agrave;', '?', $string);
+    $string=str_replace('&Egrave;', '?', $string);
+    $string=str_replace('&Igrave;', '?', $string);
+    $string=str_replace('&Ograve;', '?', $string);
+    $string=str_replace('&Ugrave;', '?', $string);
+    $string=str_replace('&Eacute;', '?', $string);
+
+    $string=str_replace('??', '?', $string);
+    $string=str_replace('??', '?', $string);
+    $string=str_replace('?| ', '?', $string);
+    $string=str_replace('??', '?', $string);
+    $string=str_replace('??', '?', $string);
+    $string=str_replace('??', '?', $string);
+    $string=str_replace('??', '?', $string);
+    $string=str_replace('?~H', '?', $string);
+
+    $string=str_replace(chr(13), "", $string);
+    $string=str_replace(chr(10), " ", $string);
+
+    $string=trim($string);
+    if ($string == '-oth-') $string='';
+
+    return $string;
+}
+
+
 ?>

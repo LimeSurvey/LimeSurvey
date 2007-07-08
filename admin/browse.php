@@ -237,7 +237,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	$nfncount = count($fnames)-1;
 	//SHOW INDIVIDUAL RECORD
 	$idquery = "SELECT * FROM $surveytable WHERE ";
-	if (incompleteAnsFilterstate() === true) {$idquery .= "submitdate > '0000-00-00 00:00:00' AND ";}
+	if (incompleteAnsFilterstate() === true) {$idquery .= "submitdate > ".$connect->DBDate('1980-01-01'). " AND ";}
 	if ($id<1) {$id=1;}
 	if (isset($_POST['sql']) && $_POST['sql'])
 	{
@@ -474,7 +474,7 @@ elseif ($subaction == "all")
 
 	//LETS COUNT THE DATA
 	$dtquery = "SELECT count(*) FROM $surveytable";
-	if (incompleteAnsFilterstate() === true) {$dtquery .= " WHERE submitdate > '0000-00-00 00:00:00'";}
+	if (incompleteAnsFilterstate() === true) {$dtquery .= " WHERE submitdate > ".$connect->DBDate('1980-01-01');}
 	$dtresult=db_execute_num($dtquery);
 	while ($dtrow=$dtresult->FetchRow()) {$dtcount=$dtrow[0];}
 
@@ -486,20 +486,20 @@ elseif ($subaction == "all")
 		if ($_POST['sql'] == "NULL")
 		{
 			$dtquery = "SELECT * FROM $surveytable ";
-			if (incompleteAnsFilterstate() === true) {$dtquery .= " WHERE submitdate > '0000-00-00 00:00:00'";}
+			if (incompleteAnsFilterstate() === true) {$dtquery .= " WHERE submitdate > ".$connect->DBDate('1980-01-01');}
 			$dtquery .= " ORDER BY id";
 		}
 		else
 		{
 			$dtquery = "SELECT * FROM $surveytable WHERE ".stripcslashes($_POST['sql'])." ";
-			if (incompleteAnsFilterstate() === true) {$dtquery .= " AND submitdate > '0000-00-00 00:00:00'";}
+			if (incompleteAnsFilterstate() === true) {$dtquery .= " AND submitdate > ".$connect->DBDate('1980-01-01');}
 			$dtquery .= " ORDER BY id";
 		}
 	}
 	else
 	{
 		$dtquery = "SELECT * FROM $surveytable ";
-		if (incompleteAnsFilterstate() === true) {$dtquery .= " WHERE submitdate > '0000-00-00 00:00:00'";}
+		if (incompleteAnsFilterstate() === true) {$dtquery .= " WHERE submitdate > ".$connect->DBDate('1980-01-01');}
 		$dtquery .= " ORDER BY id";
 	}
 	if ($order == "desc") {$dtquery .= " DESC";}
