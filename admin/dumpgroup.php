@@ -41,11 +41,13 @@
 // 2. answers
 
 require_once(dirname(__FILE__).'/../config.php');
+if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 $gid = returnglobal('gid');
 $surveyid = returnglobal('sid');
 
 //Ensure script is not run directly, avoid path disclosure
-if (empty($gid)) {die ("Cannot run this script directly");}
+if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
+
 
 //echo $htmlheader;
 if (!$gid)

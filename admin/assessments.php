@@ -34,6 +34,7 @@
 #############################################################
 */
 
+if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($action)) {$action=returnglobal('action');}
 

@@ -33,10 +33,10 @@
 # Suite 330, Boston, MA  02111-1307, USA.					#
 #############################################################
 */
+if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 if (isset($_GET['sid'])) {$surveyid = $_GET['sid'];}
 if (isset($_GET['ok'])) {$ok = $_GET['ok'];}
 
-if (empty($homedir)) {die ("Cannot run this script directly");}
 
 $actsurquery = "SELECT delete_survey FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
 //$actsurresult = $connect->Execute($actsurquery) or die($connect->ErrorMsg());	

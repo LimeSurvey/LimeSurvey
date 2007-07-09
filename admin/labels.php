@@ -33,6 +33,7 @@
 # Suite 330, Boston, MA  02111-1307, USA.                   #
 #############################################################
 */
+if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 
 // ToDo: Prevent users from creating/savin labels with the same code in the same label set
 include_once("login_check.php");

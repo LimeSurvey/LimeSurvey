@@ -34,7 +34,7 @@
 	#############################################################	
 */
 
-if (empty($homedir)) {die("Cannot run this script directly (access_denied)");}
+if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly (access_denied)");}
 if ($accesscontrol <> 1) {exit;}
 
 if (isset($_SESSION['loginID']))

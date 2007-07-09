@@ -41,7 +41,7 @@
 // 2. answers
 
 //Ensure script is not run directly, avoid path disclosure
-if (empty($_GET['lid'])) {die ("Cannot run this script directly");}
+if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 
 $lid=$_GET['lid'];
 

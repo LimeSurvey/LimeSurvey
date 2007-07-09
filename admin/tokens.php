@@ -36,6 +36,8 @@
 
 # TOKENS FILE
 
+if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
+
 if ($enableLdap)
 {
 	require_once(dirname(__FILE__).'/../config-ldap.php');

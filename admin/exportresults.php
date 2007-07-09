@@ -51,9 +51,9 @@ if ($sumrows5['export'] != "1")
 }
 
 //Ensure script is not run directly, avoid path disclosure
-if (empty($surveyid)) {die ("Cannot run this script directly");}
+if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 include_once("login_check.php");
-include_once($homedir."/classes/pear/Spreadsheet/Excel/Writer.php");
+include_once(dirname(__FILE__)."/classes/pear/Spreadsheet/Excel/Writer.php");
 
 $surveybaselang=GetBaseLanguageFromSurveyID($surveyid);
 $exportoutput="";

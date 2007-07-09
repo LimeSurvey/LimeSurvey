@@ -28,6 +28,7 @@
 #############################################################
 */
 
+if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 if (!isset($action)) {$action=returnglobal('action');}
 
 // check data for login

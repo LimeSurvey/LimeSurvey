@@ -34,7 +34,8 @@
 #############################################################
 */
 
-if (empty($homedir)) {die("Cannot run this script directly");}
+if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
+
 if ($accesscontrol <> 1) {return;}
 require_once($homedir."/classes/core/SHA256.php");
 

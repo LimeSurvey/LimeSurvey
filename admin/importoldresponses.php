@@ -35,6 +35,8 @@
 */
 //import responses from an old_ survey table into an active survey
 require_once(dirname(__FILE__).'/../config.php');
+if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
+
 include_once("login_check.php");
 
 if (!isset($oldtable)) {$oldtable=returnglobal('oldtable');}

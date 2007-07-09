@@ -42,7 +42,7 @@ if (!isset($order)) {$order=returnglobal('order');}
 include_once("login_check.php");
 
 //Ensure script is not run directly, avoid path disclosure
-if (empty($surveyid)) {die("No SID provided.");}
+if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 
 //Check if results table exists
 $tablelist = $connect->MetaTables() or die ("Error getting tokens<br />".htmlspecialchars($connect->ErrorMsg()));

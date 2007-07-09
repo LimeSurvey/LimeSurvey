@@ -34,7 +34,7 @@
 #############################################################
 */
 //Ensure script is not run directly, avoid path disclosure
-if (empty($homedir)) {die ("Cannot run this script directly");}
+if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 include_once("login_check.php");
 
 // A FILE TO IMPORT A DUMPED question FILE, AND CREATE A NEW SURVEY

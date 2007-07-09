@@ -1266,7 +1266,7 @@ UpdateSessionGroupList();
 					$_SESSION['insertarray'][] = $fieldname.$abrow['code']."comment";
 				}
 			}
-			if ($alsoother) //Add an extra field for storing "Other" answers
+			if (isset($alsoother) && $alsoother) //Add an extra field for storing "Other" answers
 			{
 				$_SESSION['insertarray'][] = $fieldname."other";
 				if ($arow['type'] == "P")

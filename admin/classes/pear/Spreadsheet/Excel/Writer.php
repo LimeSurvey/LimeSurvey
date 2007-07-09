@@ -31,6 +31,7 @@
 *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 require_once $homedir.'/classes/pear/PEAR.php';
 require_once $homedir.'/classes/pear/Spreadsheet/Excel/Writer/Workbook.php';
 

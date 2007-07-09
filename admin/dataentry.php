@@ -34,6 +34,7 @@
 #############################################################
 */
 require_once(dirname(__FILE__).'/../config.php');
+if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 
 $language = $_SESSION['adminlang'];
 //RL: set language for questions and labels to current admin language for browsing responses

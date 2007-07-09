@@ -42,7 +42,7 @@ $scid=returnglobal('scid');
 $subaction=returnglobal('subaction');
 
 //Ensure script is not run directly, avoid path disclosure
-if (empty($surveyid)) {die ($clang->gT("Error")." - Cannot run this script directly");}
+if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 
 $thissurvey=getSurveyInfo($surveyid);
 $savedsurveyoutput='';
