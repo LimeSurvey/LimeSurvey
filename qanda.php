@@ -2722,6 +2722,23 @@ function retrieve_Answer($code)
 					$return=$clang->gT("No answer");
 				}
 				break;
+				case "G":
+				if($_SESSION[$code])
+				{
+					if ($_SESSION[$code] == "F")
+					{
+						$return=$clang->gT("Female");
+					}
+					elseif ($_SESSION[$code] == "M")
+					{
+						$return=$clang->gT("Male");
+					}
+					else
+					{
+						$return=$clang->gT("No answer");
+					}
+				}
+				break;
 				default:
 				$return=$_SESSION[$code];
 			} // switch
