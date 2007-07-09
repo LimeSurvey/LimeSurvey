@@ -239,6 +239,61 @@ $countquestion_attributes = 0;
 
 $newsid = $_POST["sid"];
 
+
+// first check that imported group, questions and labels support the 
+// current survey's baselang
+$langcode = GetBaseLanguageFromSurveyID($_POST['sid']);
+if (isset($grouparray))
+{
+	$groupfieldnames = convertCSVRowToArray($grouparray[0],',','"');
+	$langfieldnum = array_search("language", $groupfieldnames);
+	$gidfieldnum = array_search("gid", $groupfieldnames);
+	$groupssupportbaselang = bDoesImportarraySupportsLanguage($grouparray,Array($gidfieldnum),$langfieldnum,$langcode,true);
+	if (!$groupssupportbaselang)
+	{
+		$importgroup .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+		$importgroup .= $clang->gT("You can't import a group which doesn't support the current survey's base language.")."<br /><br />\n";
+		$importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
+		$importgroup .= "</td></tr></table>\n";
+		unlink($the_full_file_path);
+		return;
+	}
+}
+
+if (isset($questionarray))
+{
+	$langfieldnum = array_search("language", $questionfieldnames);
+	$qidfieldnum = array_search("qid", $questionfieldnames);
+	$questionssupportbaselang = bDoesImportarraySupportsLanguage($questionarray,Array($qidfieldnum), $langfieldnum,$langcode,false);
+	if (!$questionssupportbaselang)
+	{
+		$importgroup .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+		$importgroup .= $clang->gT("You can't import a question which doesn't support the current survey's base language.")."<br /><br />\n";
+		$importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
+		$importgroup .= "</td></tr></table>\n";
+		unlink($the_full_file_path);
+		return;
+	}
+}
+
+if (isset($labelsetsarray))
+{
+	$labelsetfieldname = convertCSVRowToArray($labelsetsarray[0],',','"');
+	$langfieldnum = array_search("languages", $labelsetfieldname);
+	$lidfilednum =  array_search("lid", $labelsetfieldname);
+	$labelsetssupportbaselang = bDoesImportarraySupportsLanguage($labelsetsarray,Array($lidfilednum),$langfieldnum,$langcode,true);
+	if (!$labelsetssupportbaselang)
+	{
+		$importgroup .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+		$importgroup .= $clang->gT("You can't import label sets which don't support the current survey's base language.")."<br /><br />\n";
+		$importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
+		$importgroup .= "</td></tr></table>\n";
+		unlink($the_full_file_path);
+		return;
+	}
+}
+
+
 //DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEY'RE NEW LID IS FOR THE QUESTIONS
 if (isset($labelsetsarray) && $labelsetsarray) {
 	$csarray=buildLabelsetCSArray();

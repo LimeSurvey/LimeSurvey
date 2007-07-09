@@ -54,6 +54,7 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 	."<input type='submit' value='"
 	.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n"
 	."</td></tr></table>\n";
+	unlink($the_full_file_path);
 	return;
 }
 
@@ -178,7 +179,7 @@ for ($i=0; $i<=$stoppoint+1; $i++)
 }
 $bigarray = array_values($bigarray);
 
-//Qestion_attributes)
+//Question_attributes
 if (!isset($noconditions) || $noconditions != "Y")
 {
 	$stoppoint = count($bigarray);
@@ -200,6 +201,63 @@ if (isset($answerarray))
 if (isset($labelsetsarray)) {$countlabelsets = count($labelsetsarray)-1;}  else {$countlabelsets=0;}
 if (isset($labelsarray)) {$countlabels = count($labelsarray)-1;}  else {$countlabels=0;}
 if (isset($question_attributesarray)) {$countquestion_attributes = count($question_attributesarray)-1;} else {$countquestion_attributes=0;}
+
+
+// Let's check that imported objects support at least the survey's baselang
+$langcode = GetBaseLanguageFromSurveyID($_POST['sid']);
+if ($countquestions > 0)
+{
+	$questionfieldnames = convertCSVRowToArray($questionarray[0],',','"');
+	$langfieldnum = array_search("language", $questionfieldnames);
+	$qidfieldnum = array_search("qid", $questionfieldnames);
+	$questionssupportbaselang = bDoesImportarraySupportsLanguage($questionarray,Array($qidfieldnum), $langfieldnum,$langcode,true);
+	if (!$questionssupportbaselang)
+	{
+		$importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
+		.$clang->gT("You can't import a question which doesn't support the current survey's base language")."<br /><br />\n"
+		."</td></tr></table>\n";
+		unlink($the_full_file_path);
+		return;
+	}
+}
+
+// Let's assume that if the questions do support tye baselang
+// Then the answers do support it as well.
+// ==> So the following section is commented for now
+//if ($countanswers > 0)
+//{
+//	$langfieldnum = array_search("language", $answerfieldnames);
+//	$answercodefilednum1 =  array_search("qid", $answerfieldnames);
+//	$answercodefilednum2 =  array_search("code", $answerfieldnames);
+//	$answercodekeysarr = Array($answercodefilednum1,$answercodefilednum2);
+//	$answerssupportbaselang = bDoesImportarraySupportsLanguage($answerarray,$answercodekeysarr,$langfieldnum,$langcode);
+//	if (!$answerssupportbaselang)
+//	{
+//		$importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
+//		.$clang->gT("You can't import answers which don't support current survey's base language")."<br /><br />\n"
+//		."</td></tr></table>\n";
+//		return;
+//	}
+//	
+//}
+
+if ($countlabelsets > 0)
+{
+	$labelsetfieldname = convertCSVRowToArray($labelsetsarray[0],',','"');
+	$langfieldnum = array_search("languages", $labelsetfieldname);
+	$lidfilednum =  array_search("lid", $labelsetfieldname);
+	$labelsetssupportbaselang = bDoesImportarraySupportsLanguage($labelsetsarray,Array($lidfilednum),$langfieldnum,$langcode,true);
+	if (!$labelsetssupportbaselang)
+	{
+		$importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
+		.$clang->gT("You can't import label sets which don't support the current survey's base language")."<br /><br />\n"
+		."</td></tr></table>\n";
+		unlink($the_full_file_path);
+		return;
+	}
+}
+// I assume that if a labelset supports the survey's baselang,
+// then it's labels do support it as well
 
 // GET SURVEY AND GROUP DETAILS
 $surveyid=$_POST['sid'];

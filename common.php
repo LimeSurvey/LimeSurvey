@@ -3757,4 +3757,67 @@ function convertCsvreturn2return($string)
         return str_replace('\n', "\n", $string);
 }
 
+// Checks that each object from an array of CSV data
+// [question-rows,answer-rows,labelsets-row] 
+// supports iat least a given language
+//
+// param:
+// $csvarray : array with a line of csv data per row
+// $idkeysarray: array of integers giving the csv-row numbers of the object keys
+// $langfieldnum: integer giving the csv-row number of the language(s) filed
+//		==> the language field  can be a single language code or a 
+//		    space separated language code list
+// $langcode: the language code to be tested
+// $hasheader: if we should strip off the first line (if it contains headers)
+//
+function  bDoesImportarraySupportsLanguage($csvarray,$idkeysarray,$langfieldnum,$langcode, $hasheader = false)
+{
+	// An array with one row per object id and langsupport status as value
+	$objlangsupportarray=Array();
+	if ($hasheader === true)
+	{ // stripping first row to skip headers if any
+		array_shift($csvarray);
+	}
+
+	foreach ($csvarray as $csvrow)
+	{
+		$rowcontents = convertCSVRowToArray($csvrow,',','"');		
+		$rowid = "";
+		foreach ($idkeysarray as $idfieldnum)
+		{
+			$rowid .= $rowcontents[$idfieldnum]."-";
+		}
+		$rowlangarray = split (" ", $rowcontents[$langfieldnum]);
+		if (!isset($objlangsupportarray[$rowid]))
+		{
+			if (array_search($langcode,$rowlangarray)!== false)
+			{
+				$objlangsupportarray[$rowid] = "true";
+			}
+			else
+			{
+				$objlangsupportarray[$rowid] = "false";
+			}
+		}
+		else
+		{
+			if ($objlangsupportarray[$rowid] == "false" && 
+				array_search($langcode,$rowlangarray) !== false)
+			{
+				$objlangsupportarray[$rowid] = "true";
+			}
+		}
+	} // end foreach rown
+
+	// If any of the object doesn't support the given language, return false
+	if (array_search("false",$objlangsupportarray) === false)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 ?>
