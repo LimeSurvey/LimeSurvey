@@ -45,6 +45,25 @@ HOW TO UPGRADE from earlier versions from LimeSurvey 1.45 or later
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.49RC2 to 1.49RC3 - Release Date: 2007/07/10
+
+Fixed security issues:
+- Fixed security hole when using sendmail and malformed email adresses 
+- Fixed remote file inclusion security hole if register_globals is activated in php configuration
+
+Fixed bugs:
+- 0001041: [Statistics] Don't display response (c_schmitz)
+- 0001019: [Survey at Runtime] Multiple Short Text doesn't work: Notice: Undefined variable: inputnames (c_schmitz)
+- 0001013: [Survey Design] Quotes " ' " are not possible in label sets (lemeur)
+- 0001003: [Assessments] Can not create groups when using mssql server (c_schmitz)
+- 0001006: [Import / Export] If one's tmp directory is not writable, imports fail without any error only a blank screen. (lemeur)
+- 0001011: [Survey at Runtime] Referrer-URL is not correct, always shows ../limesurvey/index.php (lemeur)
+- 0001001: [Survey at Runtime] Question by question - group description page - previous & next buttons clear already chosen answers (lemeur)
+- 0000974: [Survey Design] Multiple Options: preselected answer don´t work (lemeur)
+- 0001017: [Import / Export] An imported object (question or group) can be orphaned if the survey's baselang is not supported by this object (lemeur)
+- 0001002: [Import / Export] Import of questions and groups isn't working (lemeur)
+- 0001050: [Security] Edit User -- Password field Type set as 'text' (c_schmitz)
+
 
 Changes from 1.49RC to 1.49RC2 - Release Date: 2007/06/14
 

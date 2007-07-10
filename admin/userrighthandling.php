@@ -163,8 +163,8 @@ if ($action == "modifyuser")
 			. "\t<td align='center'>\n\t\t<input type='text' name='email' value=\"{$mrw['email']}\" /></td>\n"
 			. "\t<td align='center'>\n\t\t<input type='text' name='full_name' value=\"{$mrw['full_name']}\" /></td>\n"
 			. "\t\t<input type='hidden' name='user' value=\"{$mrw['users_name']}\" /></td>\n"
-			. "\t\t<input type='hidden' name='uid' value=\"{$mrw['uid']}\" /></td>\n";	// added by Dennis
-			$usersummary .= "\t<td align='center'>\n\t\t<input type='text' name='pass' value=\"\" /></td>\n";
+			. "\t\t<input type='hidden' name='uid' value=\"{$mrw['uid']}\" /></td>\n";	
+			$usersummary .= "\t<td align='center'>\n\t\t<input type='password' name='pass' value=\"\" /></td>\n";
 		}
 		$usersummary .= "\t</tr>\n\t<tr><td colspan='4' align='center'>\n"
 		. "\t\t<input type='submit' value='".$clang->gT("Update")."' />\n"
