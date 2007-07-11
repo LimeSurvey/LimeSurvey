@@ -281,6 +281,7 @@ sendcacheheaders();
   if (!isset($printablesurveyoutput) && $subaction!='export')
   {  
   if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
+  
   $adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput;  // All future output is written into this and then outputted at the end of file
   unset($_SESSION['metaHeader']);    
   $adminoutput.= "\t\t</td>\n".helpscreen()

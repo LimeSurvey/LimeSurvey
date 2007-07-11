@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.49RC!
+Welcome to LimeSurvey v1.49RC3!
 
 Warning:
 THIS IS AN RELEASE CANDIDATE. It should be pretty stable, but it SHOULD NOT be used FOR PRODUCTION!

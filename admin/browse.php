@@ -652,7 +652,7 @@ else
 	."\t<tr><td align='center'>$num_total_answers ".$clang->gT("responses for this survey")." ("
 	."$num_completed_answers ".$clang->gT("full responses").", "
 	.($num_total_answers-$num_completed_answers)." ".$clang->gT("responses not completly filled out").")"
-	."\t</font></td></tr>\n"
+	."\t</td></tr>\n"
 	."</table>\n";
 
 }

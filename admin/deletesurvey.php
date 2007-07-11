@@ -48,12 +48,12 @@ if($actsurrows['delete_survey'])
 	{
 
 	$deletesurveyoutput .= "<br />\n";
-	$deletesurveyoutput .= "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-	$deletesurveyoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Delete Survey")."</strong></font></td></tr>\n";
-	$deletesurveyoutput .= "\t<tr bgcolor='#CCCCCC'><td align='center'>\n";
+	$deletesurveyoutput .= "<table class='alertbox' >\n";
+	$deletesurveyoutput .= "\t<tr ><td colspan='2' height='4'><font size='1'><strong>".$clang->gT("Delete Survey")."</strong></font></td></tr>\n";
 	
 	if (!isset($surveyid) || !$surveyid)
 	{
+    	$deletesurveyoutput .= "\t<tr ><td align='center'>\n";
 		$deletesurveyoutput .= "<br /><font color='red'><strong>".$clang->gT("Error")."</strong></font><br />\n";
 		$deletesurveyoutput .= $clang->gT("You have not selected a survey to delete")."<br /><br />\n";
 		$deletesurveyoutput .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
@@ -66,9 +66,8 @@ if($actsurrows['delete_survey'])
 	{
 		$tablelist = $connect->MetaTables();
 	
-		$deletesurveyoutput .= "<table width='100%' align='center'>\n";
 		$deletesurveyoutput .= "\t<tr>\n";
-		$deletesurveyoutput .= "\t\t<td align='center'>$setfont<br />\n";
+		$deletesurveyoutput .= "\t\t<td align='center'><br />\n";
 		$deletesurveyoutput .= "\t\t\t<font color='red'><strong>".$clang->gT("Warning")."</strong></font><br />\n";
 		$deletesurveyoutput .= "\t\t\t<strong>".$clang->gT("You are about to delete this survey")." ($surveyid)</strong><br /><br />\n";
 		$deletesurveyoutput .= "\t\t\t".$clang->gT("This process will delete this survey, and all related groups, questions answers and conditions.")."<br /><br />\n";
@@ -92,7 +91,7 @@ if($actsurrows['delete_survey'])
 		$deletesurveyoutput .= "\t\t\t<input type='submit'  value='".$clang->gT("Delete")."' onclick=\"window.open('$scriptname?action=deletesurvey&amp;sid=$surveyid&amp;ok=Y','_top')\" />\n";
 		$deletesurveyoutput .= "\t\t</td>\n";
 		$deletesurveyoutput .= "\t</tr>\n";
-		$deletesurveyoutput .= "</table>\n";
+		$deletesurveyoutput .= "\n";
 	}
 	
 	else //delete the survey
@@ -153,7 +152,7 @@ if($actsurrows['delete_survey'])
 		$deletesurveyoutput .= "\t</tr>\n";
 		$deletesurveyoutput .= "</table>\n";
 	}
-	$deletesurveyoutput .= "</td></tr></table><br />&nbsp;\n";
+	$deletesurveyoutput .= "</table><br />&nbsp;\n";
 	
 	}
 else

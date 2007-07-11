@@ -42,10 +42,10 @@ if (empty($homedir)) {die ("Cannot run this script directly");}
 
 
 $importsurvey = "<br /><table width='100%' align='center'><tr><td>\n";
-$importsurvey .= "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-$importsurvey .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+$importsurvey .= "<table class='alertbox'>\n";
+$importsurvey .= "\t<tr ><td colspan='2' height='4'><font size='1' ><strong>"
 .$clang->gT("Import Survey")."</strong></font></td></tr>\n";
-$importsurvey .= "\t<tr bgcolor='#CCCCCC'><td align='center'>\n";
+$importsurvey .= "\t<tr ><td align='center'>\n";
 
 $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 

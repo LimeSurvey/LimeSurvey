@@ -2,7 +2,7 @@ body {
 	font-family: verdana, arial, sans-serif;
 	margin: 0;
 	text-align: left;
-   background-color: #5670A1; 
+    background-color: #5670A1; 
 }
 .boxstyle {
 	border-color: #99CC00;
@@ -21,6 +21,12 @@ img {
 	border: 0;
 }
 a:link {
+   font-size: 10pt;
+   color:#819D26;
+   text-decoration: none;
+}
+
+a:visited {
    font-size: 10pt;
    color:#819D26;
    text-decoration: none;
@@ -48,6 +54,33 @@ th, p, div {
    background-image: url(bkgmaintitle.gif);
    background-repeat: repeat-x;
    }
+
+table.statisticstable
+{
+margin: 2px auto;
+}
+
+.statisticstable tr:first-child    
+{
+   background-color: #D2E0F2;
+}
+
+ 
+.statisticstable tr:nth-child(2)    
+{
+   background-color: #D2E0F2;
+}
+
+.alertbox tr:first-child {
+   background-color: #EEF6FF;
+}
+
+table.alertbox {
+  width: 400px;
+  margin-left:auto; 
+  margin-right:auto;
+  border: 1px solid #555555;
+}
 
 table.menubar {
    width: 100%;
