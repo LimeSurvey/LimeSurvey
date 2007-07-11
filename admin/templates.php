@@ -122,7 +122,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 		$the_full_file_path = $publicdir."/templates/".$templatename . "/" . $_FILES['the_file']['name']; //This is where the temp file is
 		if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path)) {
 			echo "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-			echo $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder.")."<br /><br />\n";
+			echo $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your /admin/temp folder.")."<br /><br />\n";
 			echo "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
 			echo "</td></tr></table>\n";
 			echo "</body>\n</html>\n";
