@@ -34,7 +34,9 @@
 #############################################################
 */
 
-require_once(dirname(__FILE__).'/../config.php');
+//Ensure script is not run directly, avoid path disclosure
+if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
+
 if (!isset($imagefiles)) {$imagefiles="./images";}
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($style)) {$style=returnglobal('style');}
@@ -50,8 +52,6 @@ if ($sumrows5['export'] != "1")
 	exit;
 }
 
-//Ensure script is not run directly, avoid path disclosure
-if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 include_once("login_check.php");
 include_once(dirname(__FILE__)."/classes/pear/Spreadsheet/Excel/Writer.php");
 
@@ -178,13 +178,13 @@ if (!$style)
 	.$clang->gT("Format")."</strong></font></td></tr>\n"
 	."\t<tr>\n"
 	."\t\t<td>\n"
-	."\t\t\t$setfont<input type='radio' class='radiobtn' name='type' value='doc' id='worddoc'>"
+	."\t\t\t$setfont<input type='radio' class='radiobtn' name='type' value='doc' id='worddoc' onclick='document.getElementById(\"ansfull\").checked=true;document.getElementById(\"ansabbrev\").disabled=true;'>"
 	."<font size='1'><label for='worddoc'>"
 	.$clang->gT("Microsoft Word (Latin charset)")."</label><br />\n"
-	."\t\t\t<input type='radio' class='radiobtn' name='type' value='xls' checked id='exceldoc'>"
+	."\t\t\t<input type='radio' class='radiobtn' name='type' value='xls' checked id='exceldoc' onclick='document.getElementById(\"ansabbrev\").disabled=false;'>"
 	."<label for='exceldoc'>"
 	.$clang->gT("Microsoft Excel (Latin charset)")."</label><br />\n"
-	."\t\t\t<input type='radio' class='radiobtn' name='type' value='csv' id='csvdoc'>"
+	."\t\t\t<input type='radio' class='radiobtn' name='type' value='csv' id='csvdoc' onclick='document.getElementById(\"ansabbrev\").disabled=false;'>"
 	."<label for='csvdoc'>"
 	.$clang->gT("CSV File (UTF-8 charset - use this for non-latin languages)")."</label>\n"
 	."\t\t</font></font></td>\n"
