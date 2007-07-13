@@ -17,6 +17,10 @@ img { border: 0; }
 .array1 { background-color: #eeeeee; }
 .array2 { background-color: #efe5ca; }
 .errormandatory { font-size: 13px; font-weight: bold; color:#ff0000; }
+.answertextright
+    {
+	text-align:left;
+    }
 </style>
 </head>
 <body>

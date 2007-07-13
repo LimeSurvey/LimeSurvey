@@ -38,6 +38,10 @@ body{
 	font-size: 9pt;
 	font-family: verdana;
 	}
+.answertextright
+    {
+	text-align:left;
+    }
 .clearall
 	{
 	font-size: 7pt;

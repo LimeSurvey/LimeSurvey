@@ -1907,9 +1907,17 @@ function do_array_5point($ia)
 {
 	global $dbprefix, $shownoanswer, $notanswered, $thissurvey, $clang;
 	
-	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
-	$qresult = db_execute_assoc($qquery);
-	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
+	$ansquery = "SELECT answer FROM {$dbprefix}answers WHERE qid=".$ia[0]." AND answer like '%|%'";
+	$ansresult = db_execute_assoc($ansquery);
+    if ($ansresult->RecordCount()>0) {$right_exists=true;} else {$right_exists=false;} 
+	// $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
+
+	
+	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid='{$ia[0]}'  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+	$ansresult = db_execute_assoc($ansquery);
+	$anscount = $ansresult->RecordCount();
+	$fn = 1;
+
 	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid='{$ia[0]}'  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
 	$ansresult = db_execute_assoc($ansquery);
 	$anscount = $ansresult->RecordCount();
@@ -1927,9 +1935,10 @@ function do_array_5point($ia)
 	{
 		$answer .= "\t\t\t\t\t<td class='array1'>$xc</td>\n";
 	}
+	if ($right_exists) {$answer .= "<td>&nbsp;</td>";} 
 	if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory
 	{
-		$answer .= "\t\t\t\t\t<td class='array1'></td><td class='array1'>".$clang->gT("No answer")."</td>\n";
+		$answer .= "\t\t\t\t\t<td class='array1'>".$clang->gT("No answer")."</td>\n";
 	}
 	$answer .= "\t\t\t\t</tr>\n";
 	while ($ansrow = $ansresult->FetchRow())
@@ -1974,11 +1983,16 @@ function do_array_5point($ia)
 			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $i) {$answer .= " checked='checked'";}
 			$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
 		}
+
 		$answertext2=answer_replace($ansrow['answer']);
-		if (strpos($answertext2,'|')) {
-		    $answertext2=substr($answertext2,strpos($answertext2,'|')+1);
-			$answer .= "\t\t\t\t\t<td align='left' width='$answerwidth%'>$answertext2</td>\n";
-		} else  {$answer .= "\t\t\t\t\t<td></td>\n";}
+		if (strpos($answertext2,'|')) 
+		   {
+			  $answertext2=substr($answertext2,strpos($answertext2,'|')+1);
+			  $answer .= "\t\t\t\t\t<td class='answertextright' width='$answerwidth%'>$answertext2</td>\n";
+           } 
+		elseif 
+		    ($right_exists)  {$answer .= "\t\t\t\t\t<td class='answertextright'>&nbsp</td>\n";}
+
 		
 		if ($ia[6] != "Y" && $shownoanswer == 1)
 		{
@@ -1987,6 +2001,8 @@ function do_array_5point($ia)
 			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked='checked'";}
 			$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
 		}
+		
+    	
 		$answer .= "\t\t\t\t</tr>\n";
 		$fn++;
 		$inputnames[]=$myfname;
@@ -2424,6 +2440,12 @@ function do_array_flexible($ia)
 		$cellwidth=$columnswidth/$numrows;
 
 		$cellwidth=sprintf("%02d", $cellwidth);
+		
+		$ansquery = "SELECT answer FROM {$dbprefix}answers WHERE qid=".$ia[0]." AND answer like '%|%'";
+		$ansresult = db_execute_assoc($ansquery);
+    	if ($ansresult->RecordCount()>0) {$right_exists=true;} else {$right_exists=false;} 
+		// $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
+
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'  ORDER BY sortorder, answer";
 		$ansresult = db_execute_assoc($ansquery);
 		$anscount = $ansresult->RecordCount();
@@ -2435,6 +2457,7 @@ function do_array_flexible($ia)
 		{
 			$answer .= "\t\t\t\t\t<th class='array1' width='$cellwidth%'><font size='1'>".$ld."</font></th>\n";
 		}
+		if ($right_exists) {$answer .= "<td>&nbsp;</td>";} 
 		if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
 		{
 			$answer .= "\t\t\t\t\t<th class='array1' width='$cellwidth%'><font size='1'>".$clang->gT("No answer")."</font></th>\n";
@@ -2506,6 +2529,17 @@ function do_array_flexible($ia)
 
 				$thiskey++;
 			}
+            if (strpos($answertextsave,'|')) 
+            {
+                $answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
+       			$answer .= "\t\t\t\t<td class='answertextright' width='$answerwidth%'>$answertext</td>\n";
+
+            }
+             elseif ($right_exists)
+               {
+       			$answer .= "\t\t\t\t<td class='answertextright'>&nbsp;</td>\n";
+			   }
+
 			if ($ia[6] != "Y" && $shownoanswer == 1)
 			{
 				$answer .= "\t\t\t\t\t<td align='center' width='$cellwidth%'><label for='answer$myfname-'>"
@@ -2515,12 +2549,6 @@ function do_array_flexible($ia)
 				$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
 				// --> END NEW FEATURE - SAVE
 			}
-            if (strpos($answertextsave,'|')) 
-            {
-                $answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
-       			$answer .= "\t\t\t\t<td class='answertextright' width='$answerwidth%'>$answertext</td>\n";
-
-            }
 			
 			$answer .= "\t\t\t\t</tr>\n";
 			$inputnames[]=$myfname;

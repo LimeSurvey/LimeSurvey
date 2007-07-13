@@ -23,9 +23,13 @@ body
 	font-family: verdana;
 	}
 .answertext
-               {
-               color: #0033CC;
-               }
+    {
+    color: #0033CC;
+    }
+.answertextright
+    {
+	text-align:left;
+    }               
 .radio
 	{
 	}

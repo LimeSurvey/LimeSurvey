@@ -6,12 +6,17 @@
 <style type="text/css">
 
 body
-       {
-        color: #444444;
+    {
+    color: #444444;
 	background-color: #B7B7B7;
 	font-family: arial;
 	font-size: 9pt;
-        }
+    }
+
+.answertextright
+    {
+	text-align:left;
+    }
 
 .submit
 	{

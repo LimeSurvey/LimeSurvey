@@ -8,6 +8,10 @@ table.question { border: 1; border-color: #aaaaaa; }
 td { font-family: arial, verdana, sans-serif; font-size: 14px; line-height: 17px; }
 td.tenpoint { font-size: 12px; line-height: 15px; }
 img { border: 0; }
+.answertextright
+    {
+	text-align:left;
+    }
 .b3 { background-color: #333333; }
 .b9 { background-color: #999999; }
 .ba { background-color: #aaaaaa; }

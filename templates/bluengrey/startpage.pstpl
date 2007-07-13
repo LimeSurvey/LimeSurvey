@@ -88,6 +88,10 @@ font{
 	font-family: Verdana;
 	font-size: 10px;
 	}
+.answertextright
+    {
+	text-align:left;
+    }
 .innergraph
 	{
 	background-color: #EFEFEF;

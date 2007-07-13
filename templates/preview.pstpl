@@ -25,6 +25,10 @@ body.default
     font-family: verdana;
     font-size: 11px;
     }
+.answertextright
+    {
+	text-align:left;
+    }    
 .array1
     {
     font-family: verdana;
