@@ -1863,7 +1863,7 @@ function templatereplace($line)
 		$answreplace=substr($line, strpos($line, "{INSERTANS:"), strpos($line, "}", strpos($line, "{INSERTANS:"))-strpos($line, "{INSERTANS:")+1);
 		$answreplace2=substr($answreplace, 11, strpos($answreplace, "}", strpos($answreplace, "{INSERTANS:"))-11);
 		$answreplace3=retrieve_Answer($answreplace2);
-		$line=str_replace($ansreplace, $ansreplace3, $line);
+		$line=str_replace($answreplace, $answreplace3, $line);
 	}
 	if (strpos($line, "{QUESTION}") !== false) $line=str_replace("{QUESTION}", $question, $line);
 	if (strpos($line, "{QUESTION_CODE}") !== false) $line=str_replace("{QUESTION_CODE}", $questioncode, $line);
