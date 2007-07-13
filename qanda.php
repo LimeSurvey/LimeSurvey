@@ -2633,7 +2633,7 @@ function do_array_flexiblecolumns($ia)
 function answer_replace($text) {
 	while (strpos($text, "{INSERTANS:") !== false)
 	{
-		$replace=substr($text, strpos($ld, "{INSERTANS:"), strpos($text, "}", strpos($text, "{INSERTANS:"))-strpos($text, "{INSERTANS:")+1);
+		$replace=substr($text, strpos($text, "{INSERTANS:"), strpos($text, "}", strpos($text, "{INSERTANS:"))-strpos($text, "{INSERTANS:")+1);
 		$replace2=substr($replace, 11, strpos($replace, "}", strpos($replace, "{INSERTANS:"))-11);
 		$replace3=retrieve_Answer($replace2);
 		$text=str_replace($replace, $replace3, $text);
@@ -2641,117 +2641,4 @@ function answer_replace($text) {
 	return $text;
 }
 
-function retrieve_Answer($code)
-{
-	//This function checks to see if there is an answer saved in the survey session
-	//data that matches the $code. If it does, it returns that data.
-	//It is used when building a questions text to allow incorporating the answer
-	//to an earlier question into the text of a later question.
-	//IE: Q1: What is your name? [Jason]
-	//    Q2: Hi [Jason] how are you ?
-	//This function is called from the retriveAnswers function.
-	global $dbprefix, $connect, $clang;
-	//Find question details
-	if (isset($_SESSION[$code]))
-	{
-		$questiondetails=getsidgidqid($code);
-		//die(print_r($questiondetails));
-		//the getsidgidqid function is in common.php and returns
-		//a SurveyID, GroupID, QuestionID and an Answer code
-		//extracted from a "fieldname" - ie: 1X2X3a
-		$query="SELECT type FROM {$dbprefix}questions WHERE qid='".$questiondetails['qid']."'  AND language='".$_SESSION['s_lang']."'";
-		$result=db_execute_assoc($query) or die("Error getting reference question type<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-		while($row=$result->FetchRow())
-		{
-			$type=$row['type'];
-		} // while
-		if ($_SESSION[$code] || $type == "M")
-		{
-			switch($type)
-			{
-				case "L":
-				case "!":
-				case "P":
-				if ($_SESSION[$code]== "-oth-")
-				{
-					$newcode=$code."other";
-					if($_SESSION[$newcode])
-					{
-						$return=$_SESSION[$newcode];
-					}
-					else
-					{
-						$return=$clang->gT("Other");
-					}
-				}
-				else
-				{
-					$query="SELECT * FROM {$dbprefix}answers WHERE qid='".$questiondetails['qid']."' AND code='".$_SESSION[$code]."'  AND language='".$_SESSION['s_lang']."'";
-					$result=db_execute_assoc($query) or die("Error getting answer<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-					while($row=$result->FetchRow())
-					{
-						$return=$row['answer'];
-					} // while
-				}
-				break;
-				case "M":
-				case "P":
-				$query="SELECT * FROM {$dbprefix}answers WHERE qid='".$questiondetails['qid']."' AND language='".$_SESSION['s_lang']."'";
-				$result=db_execute_assoc($query) or die("Error getting answer<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-				while($row=$result->FetchRow())
-				{
-					if (isset($_SESSION[$code.$row['code']]) && $_SESSION[$code.$row['code']] == "Y")
-					{
-						$returns[] = $row['answer'];
-					}
-				}
-				if (isset($_SESSION[$code."other"]) && $_SESSION[$code."other"])
-				{
-					$returns[]=$_SESSION[$code."other"];
-				}
-				if (isset($returns))
-				{
-					$return=implode(", ", $returns);
-					if (strpos($return, ","))
-					{
-						$return=substr_replace($return, " &", strrpos($return, ","), 1);
-					}
-				}
-				else
-				{
-					$return=$clang->gT("No answer");
-				}
-				break;
-				case "G":
-				if($_SESSION[$code])
-				{
-					if ($_SESSION[$code] == "F")
-					{
-						$return=$clang->gT("Female");
-					}
-					elseif ($_SESSION[$code] == "M")
-					{
-						$return=$clang->gT("Male");
-					}
-					else
-					{
-						$return=$clang->gT("No answer");
-					}
-				}
-				break;
-				default:
-				$return=$_SESSION[$code];
-			} // switch
-		}
-		else
-		{
-			$return=$clang->gT("No answer");
-		}
-	}
-	else
-	{
-		$return=$clang->gT("Error") . "($code)";
-	}
-	return $return;
-}
 ?>
