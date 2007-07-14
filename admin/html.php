@@ -872,7 +872,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 			{
 				$groupsummary .= "\t\t\t\t\t<a href='$scriptname?sid=$surveyid&amp;gid=$gid' onclick=\"alert('".$clang->gT("Impossible to delete this group because there is at least one question having a condition on its content","js")."')\" "
 				. "onmouseout=\"hideTooltip()\""
-				. "onmouseover=\"showTooltip(event,'".$clang->gT("Disabled")."-".$clang->gT("Delete Current Group", "js")."');return false\">"
+				. "onmouseover=\"showTooltip(event,'".$clang->gT("Disabled","js")."-".$clang->gT("Delete Current Group", "js")."');return false\">"
 				. "<img src='$imagefiles/delete_disabled.png' alt='' name='DeleteWholeGroup' title='' align='left' border='0' hspace='0' /></a>";
 			}
 		}
@@ -1032,7 +1032,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 				$questionsummary .= "\t\t\t\t\t<a href='$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid'" .
 				"onclick=\"alert('".$clang->gT("Impossible to delete this question because  there is at least one question having a condition on it","js")."')\""
 				. "onmouseout=\"hideTooltip()\""
-				. "onmouseover=\"showTooltip(event,'".$clang->gT("Disabled")."-".$clang->gT("Delete Current Question", "js")."');return false\">"
+				. "onmouseover=\"showTooltip(event,'".$clang->gT("Disabled","js")."-".$clang->gT("Delete Current Question", "js")."');return false\">"
 				. "<img src='$imagefiles/delete_disabled.png' name='DeleteWholeQuestion' alt= '' title='' "
 				."align='left' border='0' hspace='0' /></a>\n";
 			}
@@ -1055,11 +1055,22 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 
 		if($sumrows5['define_questions'])
 		{
-			$questionsummary .= "<a href='$scriptname?action=copyquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'" .
-			"onmouseout=\"hideTooltip()\""
-			. "onmouseover=\"showTooltip(event,'".$clang->gT("Copy Current Question", "js")."');return false\">" .
-			"<img src='$imagefiles/copy.png' title=''alt='' align='left' name='CopyQuestion' /></a>\n"
-			. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
+			if ($activated != "Y")
+			{
+				$questionsummary .= "<a href='$scriptname?action=copyquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'" .
+				"onmouseout=\"hideTooltip()\""
+				. "onmouseover=\"showTooltip(event,'".$clang->gT("Copy Current Question", "js")."');return false\">" .
+				"<img src='$imagefiles/copy.png' title=''alt='' align='left' name='CopyQuestion' /></a>\n"
+				. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
+			}
+			else
+			{
+				$questionsummary .= "<a href='#'" .
+				"onmouseout=\"hideTooltip()\""
+				. "onmouseover=\"showTooltip(event,'".$clang->gT("Disabled","js")."-".$clang->gT("Copy Current Question", "js")."');return false\" onclick=\"alert('".$clang->gT("Copy question is not possible in an Active survey","js")."')\">" .
+				"<img src='$imagefiles/copy_disabled.png' title=''alt='' align='left' name='CopyQuestion' /></a>\n"
+				. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
+			}
 		}
 		else
 		{
