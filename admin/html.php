@@ -2460,8 +2460,22 @@ if ($action == "newsurvey")
 		. getNotificationlist(0)
 		. "\t\t</select></td>\n"
 		. "\t</tr>\n";
-		$newsurvey .= "\t<tr><td align='right'>".$clang->gT("Anonymous?")."</td>\n"
-		. "\t\t<td align='left'><select name='private'>\n"
+		// ANONYMOUS
+		$newsurvey .= "\t<tr><td align='right'>".$clang->gT("Anonymous?")."</td>\n";
+		  // warning message if anonymous + datestamped anwsers
+		$newsurvey .= "\n"
+		. "\t<script type=\"text/javascript\"><!-- \n"
+		. "\tfunction alertPrivacy()\n"
+		. "\t{"
+		. "\t\tif (document.getElementById('private').value == 'Y' && \n"
+		. "\t\t    document.getElementById('datestamp').value == 'Y')\n"
+		. "\t\t{\n"
+		. "\t\t\talert(\"".$clang->gT("Warning").": ".$clang->gT("If you set a survey to anonymous, answers to timestamped and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.","js")."\");\n"
+		. "\t\t}\n"
+		. "\t}"
+		. "\t//--></script>\n";
+
+		$newsurvey .= "\t\t<td align='left'><select id='private' name='private' onChange='alertPrivacy();'>\n"
 		. "\t\t\t<option value='Y' selected='selected'>".$clang->gT("Yes")."</option>\n"
 		. "\t\t\t<option value='N'>".$clang->gT("No")."</option>\n"
 		. "\t\t</select></td>\n\t</tr>\n";
@@ -2498,7 +2512,7 @@ if ($action == "newsurvey")
 		. "\t\t<td align='left'><input type='text' size='25' name='attribute1' />(".$clang->gT("Attribute 1").")<br />"
 		. "<input type='text' size='25' name='attribute2' />(".$clang->gT("Attribute 2").")</td>\n\t</tr>\n";
 		$newsurvey .= "\t<tr><td align='right'>".$clang->gT("Date Stamp?")."</td>\n"
-		. "\t\t<td align='left'><select name='datestamp'>\n"
+		. "\t\t<td align='left'><select id='datestamp' name='datestamp' onChange='alertPrivacy();'>\n"
 		. "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
 		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
 		. "\t\t</select></td>\n\t</tr>\n";
