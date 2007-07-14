@@ -1205,7 +1205,9 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			$questionsummary .= "\t<tr $qshowstyle id='surveydetails37'>"
 			. "<td align='right' valign='top'><strong>"
 			. $clang->gT("Other:")."</strong></td>\n"
-			. "\t<td align='left'>{$qrrow['other']}</td></tr>\n";
+			. "\t<td align='left'>";
+			$questionsummary .= ($qrrow['other'] == "Y") ? ($clang->gT("Yes")) : ($clang->gT("No")) ;
+			$questionsummary .= "</td></tr>\n";
 		}
 		if (!is_null($condarray))
 		{
