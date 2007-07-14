@@ -94,7 +94,7 @@ if($actsurrows['browse_response'])
 
 	if ($subaction == "insert")
 	{
-		$thissurvey=getSurveyInfo($surveyid); // To check the private status
+		$thissurvey=getSurveyInfo($surveyid); 
 		$errormsg="";
 		$dataentryoutput .= "<table width='450' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr><td colspan='2' height='4'><strong>"
@@ -114,11 +114,11 @@ if($actsurrows['browse_response'])
 			}
 		}
 
-		if ($thissurvey['private'] == 'N' && (!isset($_POST['token']) || !$_POST['token']))
-		{// First Check if the survey is private and if a token has been provided
+		if (bHasSurveyGotTokentable($thissurvey) && (!isset($_POST['token']) || !$_POST['token']))
+		{// First Check if the survey uses tokens and if a token has been provided
 			$errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("This survey is not anonymous, you must supply a valid token")."</strong>\n";
 		}
-		elseif ($thissurvey['private'] == 'N' && $lastanswfortoken != '')
+		elseif (bHasSurveyGotTokentable($thissurvey) && $lastanswfortoken != '')
 		{
 			$errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("There is already a recorded answer for this token, follow the following link to update it").":</strong>\n"
 			. "<a href='$scriptname?action=dataentry&amp;subaction=edit&amp;id=$lastanswfortoken&amp;sid=$surveyid&amp;language=$rlanguage&amp;surveytable=$surveytable'"
@@ -274,7 +274,7 @@ if($actsurrows['browse_response'])
 			$insertqr = substr($insertqr, 0, -3); //Strip off the last comma-space
 
 			//NOW SHOW SCREEN
-			if ($thissurvey['private'] == 'N' && isset($_POST['token']) && $_POST['token']) //handle tokens if survey needs them
+			if (bHasSurveyGotTokentable($thissurvey) && isset($_POST['token']) && $_POST['token']) //handle tokens if survey needs them
 			{
 				$col_name .= ", token\n";
 				$insertqr .= ", '{$_POST['token']}'";
@@ -1438,7 +1438,7 @@ if($actsurrows['browse_response'])
 		."\t\t</td>\n"
 		."\t</tr>\n";
 
-		if ($thissurvey['private'] == "N") //Give entry field for token id
+		if (bHasSurveyGotTokentable($thissurvey)) //Give entry field for token id 
 		{
 			$dataentryoutput .= "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
