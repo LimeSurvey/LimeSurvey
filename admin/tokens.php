@@ -90,7 +90,10 @@ if ($subaction == "export" && $sumrows5['export']) //EXPORT FEATURE SUBMITTED BY
 	exit;
 }
 
-if ($subaction == "delete" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey'])) {$_SESSION['metaHeader']="<meta http-equiv=\"refresh\" content=\"1;URL={$scriptname}?action=tokens&amp;subaction=browse&amp;sid={$_GET['sid']}&amp;start=$start&amp;limit=$limit&amp;order=$order\" />";}
+if ($subaction == "delete" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey'])) 
+{
+	$_SESSION['metaHeader']="<meta http-equiv=\"refresh\" content=\"1;URL={$scriptname}?action=tokens&amp;subaction=browse&amp;sid={$_GET['sid']}&amp;start=$start&amp;limit=$limit&amp;order=$order\" />";
+}
 //Show Help
 $tokenoutput .= "<script type='text/javascript'>\n"
 ."<!--\n"
@@ -257,8 +260,17 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		if ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey'])
 		{
 			$tokenoutput .= "\t\t\t".$clang->gT("If you initialise tokens for this survey, the survey will only be accessible to users who have been assigned a token.")
-			."\t\t\t<br /><br />\n"
-			."\t\t\t".$clang->gT("Do you want to create a tokens table for this survey?");
+			."\t\t\t<br /><br />\n";
+
+			$thissurvey=getSurveyInfo($surveyid);
+
+			if ($thissurvey['private'] == 'Y' && $thissurvey['datestamp'] =='Y')
+			{
+				$tokenoutput .= "\t\t\t".$clang->gT("If you set a survey to anonymous, answers to timestamped and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.")
+					."\t\t\t<br /><br />\n";
+			}
+
+			$tokenoutput .= "\t\t\t".$clang->gT("Do you want to create a tokens table for this survey?");
 			$tokenoutput .= "<br /><br />\n";
 			$tokenoutput .= "\t\t\t<input type='submit' value='"
 			.$clang->gT("Initialise Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;createtable=Y', '_top')\" /><br />\n";
@@ -822,7 +834,7 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 
 				if (MailTextMessage($modmessage, $modsubject, $to , $from, $sitename))
 				{
-					// Put date into sent and completed
+					// Put date into sent
 					$today = date("Y-m-d H:i");
 					$udequery = "UPDATE ".db_table_name("tokens_{$_POST['sid']}")."\n"
 					."SET sent='$today' WHERE tid={$emrow['tid']}";
@@ -956,7 +968,7 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 		$emquery = "SELECT firstname, lastname, email, token, tid, language ";
 		if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
 
-		// TLR change to put date into sent and completed
+		// TLR change to put date into sent
 		$emquery .= " FROM ".db_table_name("tokens_{$_POST['sid']}")." WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent<>'' AND token <>'' AND EMAIL <>''";
 
 		if (isset($_POST['last_tid']) && $_POST['last_tid']) {$emquery .= " AND tid > '{$_POST['last_tid']}'";}

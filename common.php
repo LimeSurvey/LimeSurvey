@@ -909,7 +909,9 @@ function getSurveyInfo($surveyid, $languagecode='')
 	while ($row=$result->FetchRow())
 	{
 		$row2 = $result2->FetchRow();
-		$thissurvey=array("name"=>$row2['surveyls_title'],
+		$thissurvey=array(
+		"sid"=>$surveyid,
+		"name"=>$row2['surveyls_title'],
 		"description"=>$row2['surveyls_description'],
 		"welcome"=>$row2['surveyls_welcometext'],
 		"templatedir"=>$row['template'],
@@ -3915,6 +3917,40 @@ function retrieve_Answer($code)
 		$return=$clang->gT("Error") . "($code)";
 	}
 	return $return;
+}
+
+// returns true if thesurvey has a token table defined
+function bHasSurveyGotTokentable($thesurvey)
+{
+	global $connect;
+	$surveyid = $thesurvey['sid'];
+	$tablelist = $connect->MetaTables() or die ("Error getting tokens<br />".htmlspecialchars($connect->ErrorMsg()));
+	foreach ($tablelist as $tbl)
+	{
+		if (db_quote_id($tbl) == db_table_name('tokens_'.$surveyid)) 
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+// Returns false if the survey is anonymous, but answers must be datestamp
+// and a token table exists: in this case the completed field of a token
+// will contain 'Y' instead of the submitted date to ensure privacy
+// Returns true otherwise
+function bIsTokenCompletedDatestamped($thesurvey)
+{
+	if ($thesurvey['private'] == 'Y' &&
+		$thesurvey['datestamp'] =='Y' &&
+		bHasSurveyGotTokentable($thesurvey) )
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }
 
 ?>

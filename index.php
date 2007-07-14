@@ -148,11 +148,14 @@ if (is_array($thissurvey)) {$surveyexists=1;} else {$surveyexists=0;}
 
 
 //SEE IF SURVEY USES TOKENS
-$i = 0; $tokensexist = 0;
-$tablelist = $connect->MetaTables() or die ("Error getting tokens<br />".htmlspecialchars($connect->ErrorMsg()));
-foreach ($tablelist as $tbl)
+$i = 0; //$tokensexist = 0;
+if (bHasSurveyGotTokentable($thissurvey))
 {
-	if (db_quote_id($tbl) == db_table_name('tokens_'.$surveyid)) $tokensexist = 1;
+	$tokensexist = 1;
+}
+else
+{
+	$tokensexist = 0;
 }
 
 
@@ -901,10 +904,17 @@ function submittokens()
 	// Put date into sent and completed
 	
 	$today = date("Y-m-d");
-	$utquery = "UPDATE {$dbprefix}tokens_$surveyid\n"
-	. "SET completed='$today'\n"
+	$utquery = "UPDATE {$dbprefix}tokens_$surveyid\n";
+	if (bIsTokenCompletedDatestamped($thissurvey))
+	{
+		$utquery .= "SET completed='$today'\n";
+	}
+	else
+	{
+		$utquery .= "SET completed='Y'\n";
+	}
+	$utquery .= "WHERE token='{$_POST['token']}'";
 
-	. "WHERE token='{$_POST['token']}'";
 	$utresult = $connect->Execute($utquery) or die ("Couldn't update tokens table!<br />\n$utquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 
 	// TLR change to put date into sent and completed

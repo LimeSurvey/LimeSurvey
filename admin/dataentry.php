@@ -325,9 +325,16 @@ if($actsurrows['browse_response'])
 			if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') // submittoken
 			{
 				$today = date("Y-m-d");
-				$utquery = "UPDATE {$dbprefix}tokens_$surveyid\n"
-				. "SET completed='$today'\n"
-				. "WHERE token='{$_POST['token']}'";
+				$utquery = "UPDATE {$dbprefix}tokens_$surveyid\n";
+				if (bIsTokenCompletedDatestamped($thissurvey))
+				{
+					$utquery .= "SET completed='$today'\n";
+				}
+				else
+				{
+					$utquery .= "SET completed='Y'\n";
+				}
+				$utquery .= "WHERE token='{$_POST['token']}'";
 				$utresult = $connect->Execute($utquery) or die ("Couldn't update tokens table!<br />\n$utquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 			}
 			if (isset($_POST['save']) && $_POST['save'] == "on")

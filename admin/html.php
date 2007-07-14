@@ -1917,6 +1917,19 @@ if ($action == "editsurvey")
 			. "\t</tr>\n";
 			//ANONYMOUS
 			$editsurvey .= "\t<tr><td align='right'>".$clang->gT("Anonymous?")."</td>\n";
+			  // warning message if anonymous + datestamped anwsers
+			$editsurvey .= "\n"
+			. "\t<script type=\"text/javascript\"><!-- \n"
+			. "\tfunction alertPrivacy()\n"
+			. "\t{"
+			. "\t\tif (document.getElementById('private').value == 'Y' && \n"
+			. "\t\t    document.getElementById('datestamp').value == 'Y')\n"
+			. "\t\t{\n"
+			. "\t\t\talert(\"".$clang->gT("Warning").": ".$clang->gT("If you set a survey to anonymous, answers to timestamped and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.","js")."\");\n"
+			. "\t\t}\n"
+			. "\t}"
+			. "\t//--></script>\n";
+
 			if ($esrow['active'] == "Y")
 			{
 				$editsurvey .= "\t\t<td align='left'>\n\t\t\t";
@@ -1928,7 +1941,7 @@ if ($action == "editsurvey")
 			}
 			else
 			{
-				$editsurvey .= "\t\t<td align='left'><select name='private'>\n"
+				$editsurvey .= "\t\t<td align='left'><select id='private' name='private' onChange='alertPrivacy();'>\n"
 				. "\t\t\t<option value='Y'";
 				if ($esrow['private'] == "Y") {$editsurvey .= " selected='selected'";}
 				$editsurvey .= ">".$clang->gT("Yes")."</option>\n"
@@ -1965,7 +1978,7 @@ if ($action == "editsurvey")
 			}
 			else
 			{
-				$editsurvey .= "\t\t<td align='left'><select name='datestamp'>\n"
+				$editsurvey .= "\t\t<td align='left'><select id='datestamp' name='datestamp' onchange='alertPrivacy();'>\n"
 				. "\t\t\t<option value='Y'";
 				if ($esrow['datestamp'] == "Y") {$editsurvey .= " selected='selected'";}
 				$editsurvey .= ">".$clang->gT("Yes")."</option>\n"
