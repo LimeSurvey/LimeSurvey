@@ -2197,7 +2197,7 @@ if($actsurrows['browse_response'])
 				$dataentryoutput .= "\t<tr>\n";
 				$dataentryoutput .= "\t\t<td colspan='3' align='center'>$setfont\n";
 				$dataentryoutput .= "\t\t<table><tr><td align='left'>\n";
-				$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' /><label for='closerecord'>".$clang->gT("Finalize response submission")."</label></td></tr>\n";
+				$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' checked='checked'/><label for='closerecord'>".$clang->gT("Finalize response submission")."</label></td></tr>\n";
 				$dataentryoutput .="<input type='hidden' name='closedate' value='".date("Y-m-d H:i:s")."' />\n";
 				$dataentryoutput .= "\t\t\t<tr><td align='left'><input type='checkbox' class='checkboxbtn' name='save' id='save' onclick='saveshow(this.id)' /><label for='save'>".$clang->gT("Save for further completion by survey user")."</label>\n";
 				$dataentryoutput .= "\t\t</td></tr></table>\n";
