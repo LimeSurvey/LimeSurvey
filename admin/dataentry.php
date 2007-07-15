@@ -282,13 +282,12 @@ if($actsurrows['browse_response'])
 					while ($i2row = $i2result->FetchRow())
 					{
 						$otherexists = "";
+						if ($i2row['other'] == "Y" and ($irow['type']=="!" or $irow['type']=="L" or $irow['type']=="M" or $irow['type']=="P")) {$otherexists = "Y";}
 						$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}";
 						if (isset($_POST[$fieldname]))
 						{
 							$col_name .= "`$fieldname`, \n";
 							$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n";
-							$otherexists = "";
-							if ($i2row['other'] == "Y" and ($irow['type']=="!" or $irow['type']=="L" or $irow['type']=="M" or $irow['type']=="P")) {$otherexists = "Y";}
 							if ($irow['type'] == "P")
 							{
 								$fieldname2 = $fieldname."comment";
