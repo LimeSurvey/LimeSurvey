@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-06-11 00:15+0100\n"
+"PO-Revision-Date: 2007-07-15 14:07+0100\n"
 "Last-Translator: seb <seb>\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgid "Logged in as"
 msgstr "Connecté en tant que "
 
 msgid "Default Administration Page"
-msgstr "Page d'administration générale"
+msgstr "Page d'administration"
 
 # E:\www\limesurvey/common.php:219
 # E:\www\limesurvey/common.php:220
@@ -37,6 +37,9 @@ msgstr "Créer/Editer des groupes"
 
 msgid "Check Settings"
 msgstr "Vérifier les paramètres"
+
+msgid "Settings"
+msgstr "Paramètres"
 
 msgid "Check Data Integrity"
 msgstr "Vérifier la cohérence des données"
@@ -66,7 +69,7 @@ msgid "Create or Import New Survey"
 msgstr "Créer ou importer un nouveau questionnaire"
 
 msgid "Surveys"
-msgstr "Questionnaires"
+msgstr "Questionnaires "
 
 msgid "Please Choose..."
 msgstr "Veuillez sélectionner..."
@@ -173,7 +176,7 @@ msgid "Check Database Fields"
 msgstr "Contrôle des champs de la base de données"
 
 msgid "Return to Survey Administration"
-msgstr "Retourner à l'écran d'administration générale"
+msgstr "Retourner à l'écran d'administration des questionnaires"
 
 msgid "Show summary information"
 msgstr "Afficher un résumé"
@@ -411,6 +414,10 @@ msgstr "Encouragez ce projet. Faites un don à"
 msgid "Visit our website!"
 msgstr "Visiter notre site web !"
 
+# D:\www\limesurvey/common.php:2570
+msgid "Local Submission"
+msgstr "Envoi local"
+
 # D:\www\limesurvey/common.php:2735
 # D:\www\limesurvey/common.php:2740
 msgid "Executing"
@@ -621,7 +628,7 @@ msgid "You cannot proceed until you enter some text for one or more questions."
 msgstr "Vous ne pouvez pas poursuivre tant que vous n'aurez pas entré du texte dans une ou plusieurs questions."
 
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
-msgstr "Vous n'avez pas répondu à une ou plusieurs questions obligatoires. Vous ne pouvez pas enregistrer vos réponses au questionnaire tant que vous n'aurez pas répondu à celles-ci"
+msgstr "Vous n'avez pas répondu à une ou plusieurs questions obligatoires. Vous ne pouvez pas continuer tant que vous n'aurez pas répondu à celles-ci"
 
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
 msgstr "Vous n'avez pas répondu correctement à une ou plusieurs questions. Vous ne pouvez pas continuer tant que ces réponses ne sont pas valides"
@@ -670,6 +677,9 @@ msgstr "réponse(s) pour la question"
 
 msgid "Make a comment on your choice here:"
 msgstr "Faites le commentaire de votre choix ici :"
+
+msgid "Error: This question has no answers."
+msgstr "Erreur : cette question n'a pas de réponse."
 
 msgid "Only numbers may be entered in this field"
 msgstr "Seuls les chiffres sont autorisés pour ce champ"
@@ -1034,7 +1044,7 @@ msgid "responses for this survey"
 msgstr "réponses pour ce questionnaire"
 
 msgid "full responses"
-msgstr "Réponses complètes"
+msgstr "réponses complètes"
 
 # D:\www\limesurvey/admin/browse.php:655
 msgid "responses not completly filled out"
@@ -1063,10 +1073,10 @@ msgid "No condition selected to copy from"
 msgstr "Aucune condition à copier sélectionnée"
 
 msgid "No question selected to copy condition to"
-msgstr "Aucune question sélectionnée pour copier la condition à "
+msgstr "Aucune question sélectionnée pour lui appliquer la ou les conditions. "
 
 msgid "Only show question {QID} IF"
-msgstr "Montrer la question {QID} seulement SI (IF)"
+msgstr "Montrer la question {QID} seulement SI"
 
 msgid "and"
 msgstr "et"
@@ -1080,28 +1090,28 @@ msgid "OR"
 msgstr "OU"
 
 msgid "Equals"
-msgstr "Egales"
+msgstr "égale"
 
 msgid "Copy Conditions"
 msgstr "Copier les conditions"
 
 msgid "Condition"
-msgstr "Condition"
+msgstr "Condition :"
 
 msgid "Question"
 msgstr "Question :"
 
 msgid "copy to"
-msgstr "copier à "
+msgstr "appliquer à "
 
 msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
-msgstr "Etes-vous sûr de vouloir copier cette(ces) condition(s) aux questions sélectionnées?"
+msgstr "Etes-vous sûr de vouloir copier cette(ces) condition(s) aux questions sélectionnées ?"
 
 msgid "Add Condition"
 msgstr "Ajouter une condition"
 
 msgid "Answer"
-msgstr "Réponse"
+msgstr "Réponse :"
 
 msgid "Clear"
 msgstr "Effacer la sélection"
@@ -1185,7 +1195,7 @@ msgid "Question could not be added. You must insert a code in the mandatory fiel
 msgstr "La question ne peut pas être ajoutée. Vous devez inclure un code dans le champ obligatoire."
 
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
-msgstr "La question ne peut pas être supprimée. Il y a des conditions qui se fondent sur cette question.  Vous ne pourrez pas supprimer cette question tant que ces conditions ne sont pas enlevées"
+msgstr "La question ne peut pas être supprimée. Il y a des conditions qui reposent sur cette question.  Vous ne pourrez pas supprimer cette question tant que ces conditions ne sont pas enlevées"
 
 msgid "Question could not be deleted"
 msgstr "La question ne peut pas être supprimée"
@@ -1253,13 +1263,13 @@ msgstr "Le questionnaire ne peut pas être mis à jour"
 
 # D:\www\limesurvey/admin/database.php:868
 msgid "ERROR deleting Survey id"
-msgstr "ERREUR en effaçant le questionnaire avec de ID"
+msgstr "ERREUR en effaçant le questionnaire d'ID"
 
 msgid "Survey could not be created because it did not have a short title"
-msgstr "Le questionnaire ne peut pas être crée parce qu'il n'a pas de titre"
+msgstr "Le questionnaire ne peut pas être créé parce qu'il n'a pas de titre"
 
 msgid "Survey could not be created"
-msgstr "Le questionnaire ne peut pas être crée"
+msgstr "Le questionnaire ne peut pas être créé"
 
 msgid "Data Entry"
 msgstr "Entrée de données"
@@ -1271,9 +1281,19 @@ msgstr "Vous n'avez pas sélectionné de questionnaire pour la saisie des donné
 msgid "This survey is not anonymous, you must supply a valid token"
 msgstr "Ce questionnaire n'est pas anonyme, vous devez fournir une invitation valable."
 
+msgid "The token you have provided is not valid."
+msgstr "L'invitation que vous avez fournie n'est pas valide."
+
 # D:\www\limesurvey/admin/dataentry.php:122
-msgid "There is already a recorded answer for this token, follow the following link to update it"
-msgstr "Il y a déjà une réponse enregistrée associée à cette invitation. Suivez ce lien pour la mettre à jour"
+msgid "There is already a recorded answer for this token"
+msgstr "Il y a déjà une réponse enregistrée associée à cette invitation."
+
+msgid "Follow the following link to update it"
+msgstr " Suivez ce lien pour la mise à jour"
+
+# D:\www\limesurvey/admin/dataentry.php:257
+msgid "This surveys is anonymous, you can't update this answer"
+msgstr "Ce questionnaire est anonyme, vous ne pouvez pas mettre à jour cette réponse."
 
 msgid "Try again"
 msgstr "Essayez à nouveau"
@@ -1713,7 +1733,7 @@ msgid "Add New Group to Survey"
 msgstr "Ajouter un nouveau groupe au questionnaire"
 
 msgid "Groups"
-msgstr "Groupes"
+msgstr "Groupes "
 
 msgid "Title"
 msgstr "Titre"
@@ -1874,6 +1894,10 @@ msgstr "Exporter cette question"
 msgid "Copy Current Question"
 msgstr "Copier la question en cours"
 
+# D:\www\limesurvey/admin/html.php:1070
+msgid "Copy question is not possible in an Active survey"
+msgstr "La copie de question est impossible dans un questionnaire activé."
+
 msgid "Set Conditions for this Question"
 msgstr "Affecter des conditions à cette question"
 
@@ -1923,7 +1947,7 @@ msgid "Other:"
 msgstr "Autre :"
 
 msgid "Other questions having conditions on this question:"
-msgstr "Autres questions dont les conditions dépendent de celle-ci :"
+msgstr "Autres questions dépendantes de celle-ci :"
 
 msgid "Base Language"
 msgstr "Langue de base"
@@ -2051,6 +2075,12 @@ msgstr "Notification de l'administrateur :"
 
 msgid "Anonymous?"
 msgstr "Anonyme :"
+
+# D:\www\limesurvey/admin/html.php:1939
+# D:\www\limesurvey/admin/html.php:2484
+# D:\www\limesurvey/admin/tokens.php:269
+msgid "If you set a survey to anonymous, answers to timestamped and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
+msgstr "Si vous concevez un questionnaire anonyme mais sur invitations et avec des réponses datées, LimeSurvey complétera les invitations utilisées avec un \"Y\" plutôt que la date et l'heure pour renforcer l'anonymat des participants."
 
 msgid "Cannot be changed"
 msgstr "Ne peut pas être modifié"
@@ -2355,8 +2385,8 @@ msgstr "Sélectionnez le numéro du champ que vous voulez utiliser pour vos rép
 msgid "Import Group"
 msgstr "Importer le groupe"
 
-msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder."
-msgstr "Une erreur s'est produite durant la transmission de votre fichier.  Ceci peut être provoqué par des permissions incorrectes dans votre dossier admin."
+msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your /admin/temp folder."
+msgstr "Une erreur s'est produite durant la transmission de votre fichier.  Ceci peut être provoqué par des permissions incorrectes de votre dossier /admin/temp."
 
 msgid "File upload succeeded."
 msgstr "Fichier transmis avec succès."
@@ -2366,6 +2396,18 @@ msgstr "Lecture du fichier..."
 
 msgid "This file is not a LimeSurvey group file. Import failed."
 msgstr "Ce fichier n'est pas un fichier de groupe LimeSurvey. L'importation a échoué."
+
+# D:\www\limesurvey/admin/importgroup.php:255
+msgid "You can't import a group which doesn't support the current survey's base language."
+msgstr "Vous ne pouvez pas importer un groupe qui ne supporte pas la langue de base de ce questionnaire."
+
+# D:\www\limesurvey/admin/importgroup.php:271
+msgid "You can't import a question which doesn't support the current survey's base language."
+msgstr "Vous ne pouvez pas importer une question qui ne supporte pas la langue de base de ce questionnaire."
+
+# D:\www\limesurvey/admin/importgroup.php:288
+msgid "You can't import label sets which don't support the current survey's base language."
+msgstr "Vous ne pouvez pas importer un jeu d'étiquettes qui ne supporte pas la langue de base de ce questionnaire."
 
 # E:\www\limesurvey/admin/usercontrol.php:120
 msgid "Import partially successful."
@@ -2447,6 +2489,14 @@ msgstr "Aucun SID (Questionnaire) n'a été fourni. Impossible d'importer une qu
 
 msgid "No GID (Group) has been provided. Cannot import question"
 msgstr "Aucun GID (Groupe) n'a été fourni. Impossible d'importer une question."
+
+# D:\www\limesurvey/admin/importquestion.php:217
+msgid "You can't import a question which doesn't support the current survey's base language"
+msgstr "Vous ne pouvez pas importer une question qui ne supporte pas la langue de base de ce questionnaire."
+
+# D:\www\limesurvey/admin/importquestion.php:253
+msgid "You can't import label sets which don't support the current survey's base language"
+msgstr "Vous ne pouvez pas importer un jeu d'étiquettes qui ne supporte pas la langue de base de ce questionnaire."
 
 msgid "Question Import Summary"
 msgstr "Résumé de l'importation de question"
@@ -2645,7 +2695,7 @@ msgstr "Connexion"
 
 # E:\www\limesurvey/admin/html.php:1064
 msgid "Forgot Your Password?"
-msgstr "Oubli du mot de passe ?"
+msgstr "Mot de passe oublié ?"
 
 msgid "if you answered"
 msgstr "si vous avez répondu"
@@ -2934,19 +2984,19 @@ msgid "Submit Page"
 msgstr "Page d'envoi"
 
 msgid "Completed Page"
-msgstr "Page complétée"
+msgstr "Page de fin"
 
 msgid "Clear All Page"
-msgstr "Effacer toute la page"
+msgstr "Page de suppression"
 
 msgid "Register Page"
-msgstr "Enregistrer la page"
+msgstr "Page d'enregistrement"
 
 msgid "Load Page"
-msgstr "Charger la page"
+msgstr "Page de chargement"
 
 msgid "Save Page"
-msgstr "Sauvegarder la page"
+msgstr "Page de sauvegarde"
 
 msgid "Create new template called:"
 msgstr "Créer un nouveau modèle nommé :"
@@ -3017,7 +3067,7 @@ msgid "Upload a File"
 msgstr "Envoyer un fichier"
 
 msgid "Upload"
-msgstr "Télécharger (Upload)"
+msgstr "Envoyer"
 
 msgid "Preview:"
 msgstr "Aperçu :"
@@ -3039,6 +3089,9 @@ msgstr "Si vous initialisez des invitations pour ce questionnaire, seuls les uti
 
 msgid "Do you want to create a tokens table for this survey?"
 msgstr "Voulez-vous créer des invitations pour ce questionnaire ?"
+
+msgid "Restore Options"
+msgstr "Restaurer les options"
 
 msgid "The following old token tables could be restored:"
 msgstr "Ces anciennes tables d'invitations peuvent être restaurées :"
@@ -3636,7 +3689,7 @@ msgid "Created by"
 msgstr "Créé par :"
 
 msgid "Edit User"
-msgstr "Editer un utilisateur"
+msgstr "Editer l'utilisateur"
 
 msgid "Name:"
 msgstr "Nom :"
@@ -3791,7 +3844,7 @@ msgid "Total records imported:"
 msgstr "Nombre d'enregistrement(s) importé(s) :"
 
 msgid "Welcome to LimeSurvey Setup!"
-msgstr "Bienvenue dans l'installation de LimeSurvey"
+msgstr "Bienvenue dans l'installation de LimeSurvey !"
 
 # C:\wamp\www\limesurvey/admin/install/index.php:48
 msgid "The database defined in config.php does not exist."
@@ -3904,6 +3957,10 @@ msgstr "Roumain"
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:156
 msgid "Slovenian"
 msgstr "Slovène"
+
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:156
+msgid "Serbian"
+msgstr "Serbe"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:160
 msgid "Spanish"
