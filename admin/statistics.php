@@ -1071,14 +1071,13 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				$nresult = db_execute_num($nquery) or die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
 				while ($nrow=$nresult->FetchRow()) {$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]); $qiqid=$nrow[3]; $qlid=$nrow[4];}
 				$statisticsoutput .= "<br />\n<table align='center' width='95%' border='1'  cellpadding='2' cellspacing='0' >\n"
-				."\t<tr><td colspan='3' align='center'><strong><font color='#'>".$clang->gT("Field Summary for")." $qtitle:</font></font></strong>"
+				."\t<tr><td colspan='2' align='center'><strong>".$clang->gT("Field Summary for")." $qtitle:</strong>"
 				."</td></tr>\n"
-				."\t<tr><td colspan='3' align='center'><strong>$qquestion</font></font></strong></td></tr>\n"
+				."\t<tr><td colspan='2' align='center'><strong>$qquestion</font></font></strong></td></tr>\n"
 				."\t<tr>\n\t\t<td width='50%' align='center' ><strong>"
 				.$clang->gT("Calculation")."</strong></font></font></td>\n"
-				."\t\t<td width='25%' align='center' ><strong>"
+				."\t\t<td width='50%' align='center' ><strong>"
 				.$clang->gT("Result")."</strong></font></font></td>\n"
-				."\t\t<td width='25%' align='center' ></td>\n"
 				."\t</tr>\n";
 				$fieldname=substr($rt, 1, strlen($rt));
 				$query = "SELECT STDDEV(`$fieldname`) as stdev";
@@ -1201,7 +1200,6 @@ if (isset($_POST['summary']) && $_POST['summary'])
 						$statisticsoutput .= "\t<tr>\n"
 						."\t\t<td align='center' >$shw[0]</font></font></td>\n"
 						."\t\t<td align='center' >$shw[1]</font></font></td>\n"
-						."\t\t<td ></td>\n"
 						."\t</tr>\n";
 					}
 					$statisticsoutput .= "\t<tr>\n"
