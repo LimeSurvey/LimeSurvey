@@ -734,48 +734,64 @@ if ($subaction == "kill" && ($sumrows5['edit_survey_property'] || $sumrows5['act
 if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
 {
 	$tokenoutput .= "\t<tr>\n\t\t<td colspan='2' height='4'>"
-	."<font><strong>"
-	.$clang->gT("Email Invitation").":</strong></font></td>\n\t</tr>\n"
+	."<strong>"
+	.$clang->gT("Email Invitation").":</strong></td>\n\t</tr>\n"
 	."\t<tr>\n\t\t<td colspan='2' align='center'>\n";
 	if (!isset($_POST['ok']) || !$_POST['ok'])
 	{
-		//GET SURVEY DETAILS
-		$thissurvey=getSurveyInfo($surveyid);
-		if (!$thissurvey['email_invite']) {$thissurvey['email_invite']=str_replace("\n", "\r\n", $clang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"));}
 
-		$fieldsarray["{ADMINNAME}"]= $thissurvey['adminname'];
-		$fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
-		$fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
-		$fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
+		$tokenoutput .= "<form method='post' action='$scriptname?action=tokens&amp;sid=$surveyid'>";
+		
+		$surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+		$baselang = GetBaseLanguageFromSurveyID($surveyid);
+		array_unshift($surveylangs,$baselang);
+		$tokenoutput .= "<div class='tab-pane' id='tab-pane-1'>";
+        foreach ($surveylangs as $language)
+	    {
+			//GET SURVEY DETAILS
+			$thissurvey=getSurveyInfo($surveyid,$language);
+			if (!$thissurvey['email_invite']) {$thissurvey['email_invite']=str_replace("\n", "\r\n", $clang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"));}
+	
+			$fieldsarray["{ADMINNAME}"]= $thissurvey['adminname'];
+			$fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
+			$fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
+			$fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
+	
+			$subject=Replacefields($thissurvey['email_invite_subj'], $fieldsarray);
+			$textarea=Replacefields($thissurvey['email_invite'], $fieldsarray);
+	    	$tokenoutput .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($language,false);
+	    	if ($language==$baselang) 
+	        {
+	            $tokenoutput .= "(".$clang->gT("Base Language").")";
+	        }    
+	        $tokenoutput .= "</h2><table class='table2columns'>\n"
+			."\n";
 
-		$subject=Replacefields($thissurvey['email_invite_subj'], $fieldsarray);
-		$textarea=Replacefields($thissurvey['email_invite'], $fieldsarray);
-
-		$tokenoutput .= "<form method='post' action='$scriptname?action=tokens&amp;sid=$surveyid'><table class='table2columns' width='100%' align='center' border='0'>\n"
-		."\n";
-		if (isset($_GET['tid']) && $_GET['tid'])
-		{
-			$tokenoutput .= "<tr><td bgcolor='silver' colspan='2'><font size='1'>"
-			.$clang->gT("to TokenID No")." {$_GET['tid']}"
-			."</font></font></td></tr>";
+			$tokenoutput .= "\t<tr>\n"
+			."\t\t<td align='right'><strong>".$clang->gT("From").":</strong></font></td>\n"
+			."\t\t<td><input type='text' size='50' name='from_$language' value=\"{$thissurvey['adminname']} <{$thissurvey['adminemail']}>\" /></td>\n"
+			."\t</tr>\n"
+			."\t<tr>\n"
+			."\t\t<td align='right'><strong>".$clang->gT("Subject").":</strong></font></td>\n"
+			."\t\t<td><input type='text' size='83' name='subject_$language' value=\"$subject\" /></td>\n"
+			."\t</tr>\n"
+			."\t<tr>\n"
+			."\t\t<td align='right' valign='top'><strong>".$clang->gT("Message").":</strong></font></td>\n"
+			."\t\t<td>\n"
+			."\t\t\t<textarea name='message_$language' rows='20' cols='80'>\n"
+			.$textarea
+			."\t\t\t</textarea>\n"
+			."\t\t</td>\n"
+			."\t</tr></table></div>\n";
 		}
-		$tokenoutput .= "\t<tr>\n"
-		."\t\t<td align='right'><strong>".$clang->gT("From").":</strong></font></td>\n"
-		."\t\t<td><input type='text' size='50' name='from' value=\"{$thissurvey['adminname']} <{$thissurvey['adminemail']}>\" /></td>\n"
-		."\t</tr>\n"
-		."\t<tr>\n"
-		."\t\t<td align='right'><strong>".$clang->gT("Subject").":</strong></font></td>\n";
-		$tokenoutput .= "\t\t<td><input type='text' size='50' name='subject' value=\"$subject\" /></td>\n"
-		."\t</tr>\n"
-		."\t<tr>\n"
-		."\t\t<td align='right' valign='top'><strong>".$clang->gT("Message").":</strong></font></td>\n"
-		."\t\t<td>\n"
-		."\t\t\t<textarea name='message' rows='10' cols='80' style='background-color: #EEEFFF; font-family: verdana; font-size: 10; color: #000080'>\n";
-		$tokenoutput .= $textarea;
-		$tokenoutput .= "\t\t\t</textarea>\n"
-		."\t\t</td>\n"
-		."\t</tr>\n"
-		."\t<tr><td></td><td align='left'><input type='submit' value='"
+		$tokenoutput .= "</div><table class='table2columns'>";
+		if (isset($_GET['tid']) && $_GET['tid'])
+			{
+				$tokenoutput .= "<tr><td colspan='2'>"
+				.$clang->gT("to TokenID No")." {$_GET['tid']}"
+				."</td></tr>";
+			}		
+		$tokenoutput .="\t<tr><td>&nbsp;</td><td align='left'><input type='submit' value='"
 		.$clang->gT("Send Invitations")."'>\n"
 		."\t<input type='hidden' name='ok' value='absolutely' />\n"
 		."\t<input type='hidden' name='sid' value='{$_GET['sid']}' />\n"
@@ -787,8 +803,6 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 	else
 	{
 		$tokenoutput .= $clang->gT("Sending Invitations");
-		$_POST['message']=auto_unescape($_POST['message']);
-		$_POST['subject']=auto_unescape($_POST['subject']);
 		if (isset($_POST['tid']) && $_POST['tid']) {$tokenoutput .= " (".$clang->gT("Sending to TID No:")." {$_POST['tid']})";}
 		$tokenoutput .= "<br />\n";
 
@@ -809,28 +823,46 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 		$tokenoutput .= "\n\n<!-- emquery: $emquery -->\n\n";
 		$emresult = db_execute_assoc($emquery) or die ("Couldn't do query.<br />\n$emquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 		$emcount = $emresult->RecordCount();
-		$from = $_POST['from'];
 
 		$tokenoutput .= "<table width='500px' align='center' bgcolor='#EEEEEE'>\n"
 		."\t<tr>\n"
 		."\t\t<td><font size='1'>\n";
+
+		$surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+		$baselanguage = GetBaseLanguageFromSurveyID($surveyid);
+		array_unshift($surveylangs,$baselanguage);
+		
+		foreach ($surveylangs as $language)
+		    {
+			$_POST['message_'.$language]=auto_unescape($_POST['message_'.$language]);
+			$_POST['subject_'.$language]=auto_unescape($_POST['subject_'.$language]);
+			}
+
+		
 		if ($emcount > 0)
 		{
 			while ($emrow = $emresult->FetchRow())
 			{
-				$to = $emrow['email'];
 				unset($fieldsarray);
+				$to = $emrow['email'];
 				$fieldsarray["{EMAIL}"]=$emrow['email'];
 				$fieldsarray["{FIRSTNAME}"]=$emrow['firstname'];
 				$fieldsarray["{LASTNAME}"]=$emrow['lastname'];
-				$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?sid=$surveyid&token={$emrow['token']}";
-                if (trim($emrow['language'])!='') {$fieldsarray["{SURVEYURL}"]=$fieldsarray["{SURVEYURL}"]."&lang=".trim($emrow['language']);}
 				$fieldsarray["{TOKEN}"]=$emrow['token'];
-                
+				$fieldsarray["{LANGUAGE}"]=$emrow['language'];
 				$fieldsarray["{ATTRIBUTE_1}"]=$emrow['attribute_1'];
 				$fieldsarray["{ATTRIBUTE_2}"]=$emrow['attribute_2'];
-				$modsubject=Replacefields($_POST['subject'], $fieldsarray);
-				$modmessage=Replacefields($_POST['message'], $fieldsarray);
+
+				$emrow['language']=trim($emrow['language']);
+				if ($emrow['language']=='') {$emrow['language']=$baselanguage;} //if language is not give use default
+				$found = array_search($emrow['language'], $surveylangs);
+				if ($found==false) {$emrow['language']=$baselanguage;} 
+				
+				$from = $_POST['from_'.$emrow['language']];
+                $fieldsarray["{SURVEYURL}"]="$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language']);
+                
+				$modsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
+				$modmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
 
 				if (MailTextMessage($modmessage, $modsubject, $to , $from, $sitename))
 				{
@@ -839,8 +871,8 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 					$udequery = "UPDATE ".db_table_name("tokens_{$_POST['sid']}")."\n"
 					."SET sent='$today' WHERE tid={$emrow['tid']}";
 					//
-					$uderesult = $connect->Execute($udequery) or die ("Couldn't update tokens<br />$udequery<br />".htmlspecialchars($connect->ErrorMsg()));
-					$tokenoutput .= "[".$clang->gT("Invitation Sent To:")."{$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
+					$uderesult = $connect->Execute($udequery) or die ("Could not update tokens<br />$udequery<br />".htmlspecialchars($connect->ErrorMsg()));
+					$tokenoutput .= "[".$clang->gT("Invitation sent to:")."{$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
 				}
 				else
 				{
@@ -859,16 +891,19 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 				.$clang->gT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below.")."<br /><br />\n";
 				$tokenoutput .= str_replace("{EMAILCOUNT}", "$lefttosend", $clang->gT("There are {EMAILCOUNT} emails still to be sent."));
 				$tokenoutput .= "<br /><br />\n";
-				$message = html_escape($_POST['message']);
 				$tokenoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Continue")."' />\n"
 				."\t\t\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
 				."\t\t\t<input type='hidden' name='subaction' value=\"email\" />\n"
                 ."\t\t\t<input type='hidden' name='action' value=\"tokens\" />\n"
-				."\t\t\t<input type='hidden' name='sid' value=\"{$_POST['sid']}\" />\n"
-				."\t\t\t<input type='hidden' name='from' value=\"{$_POST['from']}\" />\n"
-				."\t\t\t<input type='hidden' name='subject' value=\"{$_POST['subject']}\" />\n"
-				."\t\t\t<input type='hidden' name='message' value=\"$message\" />\n"
-				."\t\t\t</form>\n";
+				."\t\t\t<input type='hidden' name='sid' value=\"{$_POST['sid']}\" />\n";
+		        foreach ($surveylangs as $language)
+				    {
+          			$message = html_escape($_POST['message_'.$language]);
+					$tokenoutput .="\t\t\t<input type='hidden' name='from_$language' value=\"".$_POST['from_'.$language]."\" />\n"
+					."\t\t\t<input type='hidden' name='subject_$language' value=\"".$_POST['subject_'.$language]."\" />\n"
+					."\t\t\t<input type='hidden' name='message_$language' value=\"$message\" />\n";
+					}
+				$tokenoutput .="\t\t\t</form>\n";
 			}
 		}
 		else
@@ -884,30 +919,65 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 
 if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
 {
-	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-	.$clang->gT("Email Reminder").":</strong></font></td></tr>\n"
+	$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
+	.$clang->gT("Email Reminder").":</strong></td></tr>\n"
 	."\t<tr><td colspan='2' align='center'>\n";
 	if (!isset($_POST['ok']) || !$_POST['ok'])
 	{
 		//GET SURVEY DETAILS
-		$thissurvey=getSurveyInfo($surveyid);
-		if (!$thissurvey['email_remind']) {$thissurvey['email_remind']=str_replace("\n", "\r\n", $clang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"));}
-		$tokenoutput .= "<form method='post' action='$scriptname?action=tokens'><table width='100%' align='center' bgcolor='#DDDDDD'>\n"
-		."\t\n"
-		."\t<tr>\n"
-		."\t\t<td align='right' width='150'><strong>".$clang->gT("From").":</strong></font></td>\n"
-		."\t\t<td><input type='text' size='50' name='from' value=\"{$thissurvey['adminname']} <{$thissurvey['adminemail']}>\" /></td>\n"
-		."\t</tr>\n"
-		."\t<tr>\n"
-		."\t\t<td align='right' width='150'><strong>".$clang->gT("Subject").":</strong></font></td>\n";
-		$subject=str_replace("{SURVEYNAME}", $thissurvey['name'], $thissurvey['email_remind_subj']);
-		$tokenoutput .= "\t\t<td><input type='text' size='50' name='subject' value='$subject' /></td>\n"
-		."\t</tr>\n";
+		$tokenoutput .= "<form method='post' action='$scriptname?action=tokens'>";
+		$surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+		$baselang = GetBaseLanguageFromSurveyID($surveyid);
+		array_unshift($surveylangs,$baselang);
+
+		$tokenoutput .= "<div class='tab-pane' id='tab-pane-1'>";
+        foreach ($surveylangs as $language)
+	    {
+			//GET SURVEY DETAILS
+			$thissurvey=getSurveyInfo($surveyid,$language);
+			if (!$thissurvey['email_remind']) {$thissurvey['email_remind']=str_replace("\n", "\r\n", $clang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"));}
+	    	$tokenoutput .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($language,false);
+	    	if ($language==$baselang) 
+	        {
+	            $tokenoutput .= "(".$clang->gT("Base Language").")";
+	        }    
+	        $tokenoutput .= "</h2><table class='table2columns' >\n"
+			."\n"
+			."\t<tr>\n"
+			."\t\t<td align='right' width='150'><strong>".$clang->gT("From").":</strong></td>\n"
+			."\t\t<td><input type='text' size='50' name='from_$language' value=\"{$thissurvey['adminname']} <{$thissurvey['adminemail']}>\" /></td>\n"
+			."\t</tr>\n"
+			."\t<tr>\n"
+			."\t\t<td align='right' width='150'><strong>".$clang->gT("Subject").":</strong></td>\n";
+			$subject=str_replace("{SURVEYNAME}", $thissurvey['name'], $thissurvey['email_remind_subj']);
+			$tokenoutput .= "\t\t<td><input type='text' size='83' name='subject_$language' value='$subject' /></td>\n"
+			."\t</tr>\n";
+	
+			$tokenoutput .= "\t<tr>\n"
+			."\t\t<td align='right' width='150' valign='top'><strong>"
+			.$clang->gT("Message").":</strong></td>\n"
+			."\t\t<td>\n"
+			."\t\t\t<textarea name='message_$language' rows='20' cols='80' >\n";
+	
+			$textarea = $thissurvey['email_remind'];
+			$textarea = str_replace("{ADMINNAME}", $thissurvey['adminname'], $textarea);
+			$textarea = str_replace("{ADMINEMAIL}", $thissurvey['adminemail'], $textarea);
+			$textarea = str_replace("{SURVEYNAME}", $thissurvey['name'], $textarea);
+			$textarea = str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $textarea);
+			$tokenoutput .= $textarea;
+	
+			$tokenoutput .= "\t\t\t</textarea>\n"
+			."\t\t</td>\n"
+			."\t</tr>\n"
+			."</table></div>";
+		}	
+
+        $tokenoutput .= "</div><table class='table2columns'>\n";
 		if (!isset($_GET['tid']) || !$_GET['tid'])
 		{
 			$tokenoutput .= "\t<tr>\n"
 			."\t\t<td align='right' width='150' valign='top'><strong>"
-			.$clang->gT("Start at TID No:")."</strong></font></td>\n"
+			.$clang->gT("Start at Token ID No:")."</strong></td>\n"
 			."\t\t<td><input type='text' size='5' name='last_tid' /></td>\n"
 			."\t</tr>\n";
 		}
@@ -918,26 +988,8 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 			.$clang->gT("Sending to TID No:")."</strong></font></td>\n"
 			."\t\t<td>{$_GET['tid']}</font></td>\n"
 			."\t</tr>\n";
-		}
-		$tokenoutput .= "\t<tr>\n"
-		."\t\t<td align='right' width='150' valign='top'><strong>"
-		.$clang->gT("Message").":</strong></font></td>\n"
-		."\t\t<td>\n"
-		."\t\t\t<textarea name='message' rows='10' cols='80' style='background-color: #EEEFFF; font-family: verdana; font-size: 10; color: #000080'>\n";
-
-		$textarea = $thissurvey['email_remind'];
-		$textarea = str_replace("{ADMINNAME}", $thissurvey['adminname'], $textarea);
-		$textarea = str_replace("{ADMINEMAIL}", $thissurvey['adminemail'], $textarea);
-		$textarea = str_replace("{SURVEYNAME}", $thissurvey['name'], $textarea);
-		$textarea = str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $textarea);
-		$tokenoutput .= $textarea;
-
-		$tokenoutput .= "\t\t\t</textarea>\n"
-		."\t\t</td>\n"
-		."\t</tr>\n"
-		."\t<tr>\n"
-		."\t\t<td></td>\n"
-		."\t\t<td align='left'>\n"
+		}		
+		$tokenoutput .="\t\t<tr><td>&nbsp;</td><td align='left'>\n"
 		."\t\t\t<input type='submit' value='".$clang->gT("Send Reminders")."' />\n"
 		."\t<input type='hidden' name='ok' value='absolutely' />\n"
 		."\t<input type='hidden' name='sid' value='{$_GET['sid']}' />\n"
@@ -951,8 +1003,16 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 	else
 	{
 		$tokenoutput .= $clang->gT("Sending Reminders")."<br />\n";
-		$_POST['message']=auto_unescape($_POST['message']);
-		$_POST['subject']=auto_unescape($_POST['subject']);
+		
+		$surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+		$baselanguage = GetBaseLanguageFromSurveyID($surveyid);
+		array_unshift($surveylangs,$baselanguage);
+		
+		foreach ($surveylangs as $language)
+		    {
+			$_POST['message_'.$language]=auto_unescape($_POST['message_'.$language]);
+			$_POST['subject_'.$language]=auto_unescape($_POST['subject_'.$language]);
+			}
 
 		if (isset($_POST['last_tid']) && $_POST['last_tid']) {$tokenoutput .= " (".$clang->gT("From")." TID: {$_POST['last_tid']})";}
 		if (isset($_POST['tid']) && $_POST['tid']) {$tokenoutput .= " (".$clang->gT("Sending to TID No:")." TID: {$_POST['tid']})";}
@@ -976,33 +1036,40 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 		$emquery .= " ORDER BY tid LIMIT $maxemails";
 		$emresult = db_execute_assoc($emquery) or die ("Couldn't do query.<br />$emquery<br />".htmlspecialchars($connect->ErrorMsg()));
 		$emcount = $emresult->RecordCount();
-		$from = $_POST['from'];
 		$tokenoutput .= "<table width='500' align='center' bgcolor='#EEEEEE'>\n"
 		."\t<tr>\n"
 		."\t\t<td><font size='1'>\n";
+
+
 
 		if ($emcount > 0)
 		{
 			while ($emrow = $emresult->FetchRow())
 			{
+				unset($fieldsarray);
 				$to = $emrow['email'];
-
 				$fieldsarray["{EMAIL}"]=$emrow['email'];
 				$fieldsarray["{FIRSTNAME}"]=$emrow['firstname'];
 				$fieldsarray["{LASTNAME}"]=$emrow['lastname'];
-				$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?sid=$surveyid&token={$emrow['token']}";
-                if (trim($emrow['language'])!='') {$fieldsarray["{SURVEYURL}"]=$fieldsarray["{SURVEYURL}"]."&lang=".trim($emrow['language']);}
 				$fieldsarray["{TOKEN}"]=$emrow['token'];
 				$fieldsarray["{LANGUAGE}"]=$emrow['language'];
 				$fieldsarray["{ATTRIBUTE_1}"]=$emrow['attribute_1'];
 				$fieldsarray["{ATTRIBUTE_2}"]=$emrow['attribute_2'];
 
-				$msgsubject=Replacefields($_POST['subject'], $fieldsarray);
-				$sendmessage=Replacefields($_POST['message'], $fieldsarray);
+				$emrow['language']=trim($emrow['language']);
+				if ($emrow['language']=='') {$emrow['language']=$baselanguage;} //if language is not give use default
+				$found = array_search($emrow['language'], $surveylangs);
+				if ($found==false) {$emrow['language']=$baselanguage;} 
+
+				$from = $_POST['from_'.$emrow['language']];
+                $fieldsarray["{SURVEYURL}"]="$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language']);
+
+				$msgsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
+				$sendmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
 
 				if (MailtextMessage($sendmessage, $msgsubject, $to, $from, $sitename))
 				{
-					$tokenoutput .= "\t\t\t({$emrow['tid']})[".$clang->gT("Reminder Sent To:")." {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
+					$tokenoutput .= "\t\t\t({$emrow['tid']})[".$clang->gT("Reminder sent to:")." {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
 				}
 				else
 				{
@@ -1015,7 +1082,7 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 				$lefttosend = $ctcount-$maxemails;
 				$tokenoutput .= "\t\t</td>\n"
 				."\t</tr>\n"
-				."\t<tr><form method='post' action='$homeurl/tokens.php'>\n"
+				."\t<tr><form method='post'>\n"
 				."\t\t<td align='center'>\n"
 				."\t\t\t<strong>".$clang->gT("Warning")."</strong><br /><br />\n"
 				.$clang->gT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below.")."<br /><br />\n"
@@ -1026,12 +1093,15 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 				."\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
                 ."\t<input type='hidden' name='subaction' value=\"remind\" />\n"
                 ."\t<input type='hidden' name='action' value=\"tokens\" />\n"
-				."\t<input type='hidden' name='sid' value=\"{$_POST['sid']}\" />\n"
-				."\t<input type='hidden' name='from' value=\"{$_POST['from']}\" />\n"
-				."\t<input type='hidden' name='subject' value=\"{$_POST['subject']}\" />\n";
-				$message = html_escape($_POST['message']);
-				$tokenoutput .= "\t<input type='hidden' name='message' value=\"$message\" />\n"
-				."\t<input type='hidden' name='last_tid' value=\"$lasttid\" />\n"
+				."\t<input type='hidden' name='sid' value=\"{$_POST['sid']}\" />\n";
+		        foreach ($surveylangs as $language)
+				    {
+          			$message = html_escape($_POST['message_'.$language]);
+					$tokenoutput .="\t\t\t<input type='hidden' name='from_$language' value=\"".$_POST['from_'.$language]."\" />\n"
+					."\t\t\t<input type='hidden' name='subject_$language' value=\"".$_POST['subject_'.$language]."\" />\n"
+					."\t\t\t<input type='hidden' name='message_$language' value=\"$message\" />\n";
+					}
+				$tokenoutput.="\t<input type='hidden' name='last_tid' value=\"$lasttid\" />\n"
 				."\t</form>\n";
 			}
 		}
