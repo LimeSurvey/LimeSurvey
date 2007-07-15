@@ -2227,32 +2227,34 @@ if($actsurrows['browse_response'])
 
 		if ($thissurvey['active'] == "Y")
 		{
+			// Show Finalize response option
+			$dataentryoutput .= "<script type='text/javascript'>
+				  <!--
+					function saveshow(value)
+						{
+						if (document.getElementById(value).checked == true)
+							{
+							document.getElementById(\"closerecord\").checked=false;
+							document.getElementById(\"closerecord\").disabled=true;
+							document.getElementById(\"saveoptions\").style.display=\"\";
+							}
+						else
+							{
+							document.getElementById(\"saveoptions\").style.display=\"none\";
+							 document.getElementById(\"closerecord\").disabled=false;
+							}
+						}
+				  //-->
+				  </script>\n";
+			$dataentryoutput .= "\t<tr>\n";
+			$dataentryoutput .= "\t\t<td colspan='3' align='center'>$setfont\n";
+			$dataentryoutput .= "\t\t<table><tr><td align='left'>\n";
+			$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' checked='checked'/><label for='closerecord'>".$clang->gT("Finalize response submission")."</label></td></tr>\n";
+			$dataentryoutput .="<input type='hidden' name='closedate' value='".date("Y-m-d H:i:s")."' />\n";
+
 			if ($thissurvey['allowsave'] == "Y")
 			{
 				//Show Save Option
-				$dataentryoutput .= "<script type='text/javascript'>
-					  <!--
-						function saveshow(value)
-							{
-							if (document.getElementById(value).checked == true)
-								{
-								document.getElementById(\"closerecord\").checked=false;
-								document.getElementById(\"closerecord\").disabled=true;
-								document.getElementById(\"saveoptions\").style.display=\"\";
-								}
-							else
-								{
-								document.getElementById(\"saveoptions\").style.display=\"none\";
-								 document.getElementById(\"closerecord\").disabled=false;
-								}
-							}
-					  //-->
-					  </script>\n";
-				$dataentryoutput .= "\t<tr>\n";
-				$dataentryoutput .= "\t\t<td colspan='3' align='center'>$setfont\n";
-				$dataentryoutput .= "\t\t<table><tr><td align='left'>\n";
-				$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' checked='checked'/><label for='closerecord'>".$clang->gT("Finalize response submission")."</label></td></tr>\n";
-				$dataentryoutput .="<input type='hidden' name='closedate' value='".date("Y-m-d H:i:s")."' />\n";
 				$dataentryoutput .= "\t\t\t<tr><td align='left'><input type='checkbox' class='checkboxbtn' name='save' id='save' onclick='saveshow(this.id)' /><label for='save'>".$clang->gT("Save for further completion by survey user")."</label>\n";
 				$dataentryoutput .= "\t\t</td></tr></table>\n";
 				$dataentryoutput .= "<div name='saveoptions' id='saveoptions' style='display: none'>\n";
