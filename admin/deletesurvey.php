@@ -150,7 +150,7 @@ if($actsurrows['delete_survey'])
 		$deletesurveyoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
 		$deletesurveyoutput .= "\t\t</strong></font></td>\n";
 		$deletesurveyoutput .= "\t</tr>\n";
-		$deletesurveyoutput .= "</table>\n";
+
 	}
 	$deletesurveyoutput .= "</table><br />&nbsp;\n";
 	

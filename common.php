@@ -228,7 +228,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
     function showadminmenu()
         {
         global $accesscontrol, $homedir, $scriptname, $surveyid, $setfont, $imagefiles, $clang;
-        $adminmenu  = "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
+        $adminmenu  = "<table class='menubar'>\n"
                     . "\t<tr>\n"
                     . "\t\t<td>\n"
                     . "\t\t\t<table class='menubar'>\n"
