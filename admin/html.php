@@ -992,7 +992,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 	$qct = $qrr->RecordCount();
 	$qrquery = "SELECT * FROM ".db_table_name('questions')." WHERE gid=$gid AND sid=$surveyid AND qid=$qid AND language='".$baselang."'";
 	$qrresult = db_execute_assoc($qrquery) or die($qrquery."<br />".$connect->ErrorMsg());
-	$questionsummary = "<table width='100%' align='center' bgcolor='#EEEEEE' border='0'>\n";
+	$questionsummary = "<table width='100%' align='center' border='0'>\n";
 
 	// Check if other questions in the Survey are dependent upon this question
 	$condarray=GetQuestDepsForConditions($surveyid,"all","all",$qid,"by-targqid","outsidegroup");
@@ -1271,11 +1271,11 @@ if (returnglobal('viewanswer'))
 	// Print Key Control JavaScript
 	$vasummary = keycontroljs();
 
-	$vasummary .= "\t<table width='100%' align='center' border='0' bgcolor='#EEEEEE'>\n"
-	."<tr bgcolor='#555555' >\n"
-	."\t<td colspan='4'><strong><font size='1' face='verdana' color='white'>\n"
-	.$clang->gT("Answers")
-	."\t</font></strong></td>\n"
+	$vasummary .= "\t<table width='100%' >\n"
+	."<tr  >\n"
+	."\t<td colspan='4' class='settingcaption'>\n"
+	.$clang->gT("Edit Answers")
+	."\t</td>\n"
 	."</tr>\n"
 	."\t<tr><td colspan='5'><form name='editanswers' method='post' action='$scriptname'>\n"
 	. "\t<input type='hidden' name='sid' value='$surveyid' />\n"

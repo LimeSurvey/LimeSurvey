@@ -227,8 +227,8 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 		return;
 	}
 
-	$activateoutput .= "<br />\n<table bgcolor='#FFFFFF' width='500' align='center' style='border: 1px solid #555555' cellpadding='6' cellspacing='0'>\n";
-	$activateoutput .= "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Activate Survey")." ($surveyid)</strong></font></td></tr>\n";
+	$activateoutput .= "<br />\n<table class='alertbox'>\n";
+	$activateoutput .= "\t\t\t\t<tr><td height='4'><strong>".$clang->gT("Activate Survey")." ($surveyid)</strong></td></tr>\n";
 	$activateoutput .= "\t<tr>\n";
 	$activateoutput .= "\t\t<td align='center' bgcolor='#ffeeee'>\n";
 	$activateoutput .= "\t\t\t<font color='red'><strong>".$clang->gT("Warning")."</strong><br />\n";
@@ -468,8 +468,8 @@ else
 			}
 		}
 
-		$activateoutput .= "<br />\n<table bgcolor='#FFFFFF' width='350' align='center' style='border: 1px solid #555555' cellpadding='6' cellspacing='0'>\n";
-		$activateoutput .= "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Activate Survey")." ($surveyid)</strong></font></td></tr>\n";
+		$activateoutput .= "<br />\n<table class='alertbox'>\n";
+		$activateoutput .= "\t\t\t\t<tr><td height='4'><strong>".$clang->gT("Activate Survey")." ($surveyid)</td></tr>\n";
 		$activateoutput .= "\t\t\t\t<tr><td align='center'><font color='green'>".$clang->gT("Survey has been activated. Results table has been successfully created.")."<br /><br />\n";
 
 		$acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid={$_GET['sid']}";

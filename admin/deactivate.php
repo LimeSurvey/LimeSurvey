@@ -42,8 +42,8 @@ $date = date('YmdHi'); //'Hi' adds 24hours+minutes to name to allow multiple dea
 $deactivateoutput='';
 if (!isset($_GET['ok']) || !$_GET['ok'])
 {
-	$deactivateoutput .= "<br />\n<table bgcolor='#FFFFFF' width='500' align='center' style='border: 1px solid #555555' cellpadding='6' cellspacing='0'>\n";
-	$deactivateoutput .= "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Deactivate Survey")." ($surveyid)</strong></font></td></tr>\n";
+	$deactivateoutput .= "<br />\n<table class='alertbox'>\n";
+	$deactivateoutput .= "\t\t\t\t<tr ><td height='4'><strong>".$clang->gT("Deactivate Survey")." ($surveyid)</strong></td></tr>\n";
 	$deactivateoutput .= "\t<tr>\n";
 	$deactivateoutput .= "\t\t<td align='center' bgcolor='#FFEEEE'>\n";
 	$deactivateoutput .= "\t\t\t<font color='red'><strong>";
@@ -53,15 +53,15 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	$deactivateoutput .= "\t<tr>";
 	$deactivateoutput .= "\t\t<td>\n";
 	$deactivateoutput .= "\t\t\t".$clang->gT("In an active survey, a table is created to store all the data-entry records.")."\n";
-	$deactivateoutput .= "\t\t\t<p>".$clang->gT("When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more.")."</p>\n";
-	$deactivateoutput .= "\t\t\t<p>".$clang->gT("De-activated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators.")."</p>\n";
+	$deactivateoutput .= "\t\t\t<p>".$clang->gT("When you deactivate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more.")."</p>\n";
+	$deactivateoutput .= "\t\t\t<p>".$clang->gT("Deactivated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators.")."</p>\n";
 	$deactivateoutput .= "\t\t\t<p>".$clang->gT("Your responses table will be renamed to:")." {$dbprefix}old_{$_GET['sid']}_{$date}</p>\n";
-	$deactivateoutput .= "\t\t\t<p>".$clang->gT("You should export your responses before de-activating. Click \"Cancel\" to return to the main admin screen without de-activating this survey.")."</p>\n";
+	$deactivateoutput .= "\t\t\t<p>".$clang->gT("Also you should export your responses before deactivating.")."</p>\n";
 	$deactivateoutput .= "\t\t</td>\n";
 	$deactivateoutput .= "\t</tr>\n";
 	$deactivateoutput .= "\t<tr>\n";
 	$deactivateoutput .= "\t\t<td align='center'>\n";
-	$deactivateoutput .= "\t\t\t<input type='submit' value='".$clang->gT("De-Activate Survey")."' onclick=\"window.open('$scriptname?action=deactivate&amp;ok=Y&amp;sid={$_GET['sid']}', '_top')\">\n";
+	$deactivateoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Deactivate Survey")."' onclick=\"window.open('$scriptname?action=deactivate&amp;ok=Y&amp;sid={$_GET['sid']}', '_top')\">\n";
 	$deactivateoutput .= "\t\t<br />&nbsp;</td>\n";
 	$deactivateoutput .= "\t</tr>\n";
 	$deactivateoutput .= "</table><br />&nbsp;\n";
@@ -115,7 +115,7 @@ else
 	$deactivateoutput .= "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Deactivate Survey")." ($surveyid)</strong></font></td></tr>\n";
 	$deactivateoutput .= "\t<tr>\n";
 	$deactivateoutput .= "\t\t<td align='center'>\n";
-	$deactivateoutput .= "\t\t\t<strong>".$clang->gT("Survey Has Been De-Activated")."\n";
+	$deactivateoutput .= "\t\t\t<strong>".$clang->gT("Survey Has Been Deactivated")."\n";
 	$deactivateoutput .= "\t\t</strong></td>\n";
 	$deactivateoutput .= "\t</tr>\n";
 	$deactivateoutput .= "\t<tr>\n";

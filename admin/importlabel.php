@@ -41,9 +41,9 @@ include_once("login_check.php");
 // A FILE TO IMPORT A DUMPED SURVEY FILE, AND CREATE A NEW SURVEY
 
 $importlabeloutput = "<br />\n";
-$importlabeloutput .= "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-$importlabeloutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Import Label Set")."</strong></td></tr>\n";
-$importlabeloutput .= "\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
+$importlabeloutput .= "<table class='alertbox'>\n";
+$importlabeloutput .= "\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Import Label Set")."</strong></td></tr>\n";
+$importlabeloutput .= "\t<tr><td align='center'>\n";
 
 $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 
@@ -52,8 +52,7 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 	$importlabeloutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
 	$importlabeloutput .= $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your /admin/temp folder.")."<br /><br />\n";
 	$importlabeloutput .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
-	$importlabeloutput .= "</td></tr></table>\n";
-	$importlabeloutput .= "</body>\n</html>\n";
+	$importlabeloutput .= "</td></tr></table><br />&nbsp;\n";
 	return;
 }
 
@@ -225,7 +224,6 @@ $importlabeloutput .= "<strong>".$clang->gT("Import of Label Set is completed.")
 $importlabeloutput .= "<input type='submit' value='".$clang->gT("Return to Labels Admin")."' onclick=\"window.open('$scriptname?action=labels&amp;lid=$newlid', '_top')\">\n";
 
 $importlabeloutput .= "</td></tr></table>\n";
-$importlabeloutput .= "</body>\n</html>";
 unlink($the_full_file_path);
 
 

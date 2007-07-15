@@ -66,8 +66,8 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 	if ($action == "importlabels")
 	{
 		include("importlabel.php");
-        if (isset($importlabeloutput)) {echo $importlabeloutput;}
-        exit;
+        if (isset($importlabeloutput)) {$labelsoutput.= $importlabeloutput;}
+        return;
 	}
 	
 
@@ -155,7 +155,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		."</td>\n"
 		."\t</tr>\n"
 		// Additional languages listbox
-    	. "\t<tr><td align='right'><font class='settingcaption'>".$clang->gT("Languages").":</font></td>\n"
+    	. "\t<tr><td align='right'><strong>".$clang->gT("Languages").":</strong></td>\n"
 		. "<td><select multiple='multiple' style='min-width:250px;' size='5' id='additional_languages' name='additional_languages'>";
 		foreach ($langidsarray as $langid) 
 			{
