@@ -49,7 +49,6 @@ if (!isset($surveyid))
 	exit;
 }
 session_start();
-$thissurvey=getSurveyInfo($surveyid);
 
 // Get passed language from form, so that we dont loose this!
 if (!isset($_POST['lang']) || $_POST['lang'] == "")
@@ -58,8 +57,10 @@ if (!isset($_POST['lang']) || $_POST['lang'] == "")
 	$clang = new limesurvey_lang($baselang);
 } else {
 	$clang = new limesurvey_lang($_POST['lang']);
+	$baselang = $_POST['lang'];
 }
 
+$thissurvey=getSurveyInfo($surveyid,$baselang);
 
 $register_errormsg = "";
 
@@ -119,7 +120,7 @@ $fieldsarray["{ADMINNAME}"]=$thissurvey['adminname'];
 $fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
 $fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
 $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
-$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?sid=$surveyid&token=$newtoken";
+$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?sid=$surveyid&token=$newtoken&lang=".$baselang;
 $fieldsarray["{FIRSTNAME}"]=returnglobal('register_firstname');
 $fieldsarray["{LASTNAME}"]=returnglobal('register_lastname');
 $fieldsarray["{ATTRIBUTE_1}"]=returnglobal('register_attribute1');
