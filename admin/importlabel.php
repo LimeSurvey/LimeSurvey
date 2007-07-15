@@ -78,6 +78,7 @@ if (substr($bigarray[0], 0, 27) != "# LimeSurvey Label Set Dump" || substr($biga
 	$importlabeloutput .= "<input type='submit' value='".$clang->gT("Return to Labels Admin")."' onclick=\"window.open('$scriptname?action=labels', '_top')\">\n";
 	$importlabeloutput .= "</td></tr></table>\n";
 	$importlabeloutput .= "</body>\n</html>\n";
+    unlink($the_full_file_path);
 	return;
 }
 
