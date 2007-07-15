@@ -1482,9 +1482,25 @@ if($actsurrows['browse_response'])
 			."\t\t<td valign='top' width='1%'></td>\n"
 			."\t\t<td valign='top' align='right' width='30%'>$setfont<font color='red'>*</font><strong>".$clang->gT("Token").":</strong></font></td>\n"
 			."\t\t<td valign='top'  align='left' style='padding-left: 20px'>\n"
-			."\t\t\t<input type='text' id='token' name='token' />\n"
+			."\t\t\t<input type='text' id='token' name='token' onkeyup='activateSubmit(this);'/>\n"
 			."\t\t</td>\n"
 			."\t</tr>\n";
+
+			$dataentryoutput .= "\n"
+			. "\t<script type=\"text/javascript\"><!-- \n"
+			. "\tfunction activateSubmit(me)\n"
+			. "\t{"
+			. "\t\tif (me.value != '')"
+			. "\t\t{\n"
+			. "\t\t\tdocument.getElementById('submitdata').disabled = false;\n"
+			. "\t\t}\n"
+			. "\t\telse\n"
+			. "\t\t{\n"
+			. "\t\t\tdocument.getElementById('submitdata').disabled = true;\n"
+			. "\t\t}\n"
+			. "\t}"
+			. "\t//--></script>\n";
+			
 		}
 		if ($thissurvey['datestamp'] == "Y") //Give datestampentry field
 		{
@@ -2269,7 +2285,16 @@ if($actsurrows['browse_response'])
 			}
 			$dataentryoutput .= "\t<tr>\n";
 			$dataentryoutput .= "\t\t<td colspan='3' align='center'>$setfont\n";
-			$dataentryoutput .= "\t\t\t<input type='submit' value='".$clang->gT("submit")."' />\n";
+			$dataentryoutput .= "\t\t\t<input type='submit' id='submitdata' value='".$clang->gT("submit")."'";
+
+			if (bHasSurveyGotTokentable($thissurvey))
+			{
+				$dataentryoutput .= " disabled='disabled'/>\n";
+			}
+			else
+			{
+				$dataentryoutput .= " />\n";
+			}
 			$dataentryoutput .= "\t\t</font></td>\n";
 			$dataentryoutput .= "\t</tr>\n";
 		}
