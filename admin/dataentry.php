@@ -105,25 +105,29 @@ if($actsurrows['browse_response'])
 		$rlanguage='';
 		if (isset($_POST['token']) && $_POST['token'])
 		{ 
-			if ($thissurvey['private'] == "Y")
+			$tokencompleted = "";
+			$tokentable = db_table_name("tokens_".$surveyid);
+			$tcquery = "SELECT completed from $tokentable WHERE token='".$_POST['token']."'";
+			$tcresult = db_execute_assoc($tcquery);
+			$tccount = $tcresult->RecordCount();
+			while ($tcrow = $tcresult->FetchRow())
 			{
-				// for anonymous survey we check that the token isn't completed yet
-				$tokencompleted = "";
-				$tokentable = db_table_name("tokens_".$surveyid);
-				$tcquery = "SELECT completed from $tokentable WHERE token='".$_POST['token']."'";
-				$tcresult = db_execute_assoc($tcquery);
-				while ($tcrow = $tcresult->FetchRow())
-				{
-					$tokencompleted = $tcrow['completed'];
-				}
+				$tokencompleted = $tcrow['completed'];
+			}
+
+			if ($tccount < 1)
+			{ // token doesn't exist in token table
+				$lastanswfortoken='UnknownToken';
+			}
+			elseif ($thissurvey['private'] == "Y")
+			{ // token exist but survey is anonymous, check completed state
 				if ($tokencompleted != "" && $tokencompleted != "N")
-				{
+				{ // token is not completed
 					$lastanswfortoken='PrivacyProtected';
 				}
 			}
 			else
-			{
-				// For non anonymous surveys we can get the response id
+			{ // token is valid, survey not anonymous, try to get last recorded response id
 				$aquery = "SELECT id,startlanguage FROM $surveytable WHERE token='".$_POST['token']."'";
 				$aresult = db_execute_assoc($aquery);
 				while ($arow = $aresult->FetchRow())
@@ -137,6 +141,10 @@ if($actsurrows['browse_response'])
 		if (bHasSurveyGotTokentable($thissurvey) && (!isset($_POST['token']) || !$_POST['token']))
 		{// First Check if the survey uses tokens and if a token has been provided
 			$errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("This survey is not anonymous, you must supply a valid token")."</strong>\n";
+		}
+		elseif (bHasSurveyGotTokentable($thissurvey) && $lastanswfortoken == 'UnknownToken')
+		{
+			$errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("The token you have provided is not valid.")."</strong>\n";
 		}
 		elseif (bHasSurveyGotTokentable($thissurvey) && $lastanswfortoken != '')
 		{
