@@ -192,7 +192,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 			$tokenoutput .= "\t<tr>\n"
 			."\t\t<td align='center'>\n"
 			. "<br />\n<table width='350' align='center' class='menubar' cellpadding='1' cellspacing='0'>\n" .
-			"<tr><td height='4'><font size='1'><strong><center><font color='white'>".$clang->gT("Token table could not be created.")."</font></center></strong></font></td></tr>\n" .
+			"<tr><td height='4'><font size='1'><strong><center>".$clang->gT("Token table could not be created.")."</center></strong></font></td></tr>\n" .
 			"<tr><td>\n" .
 			$clang->gT("Error").": \n<font color='red'>" . $connect->ErrorMsg() . "</font>\n" .
 			"<pre>".implode(" ",$sqlarray)."</pre>\n" .
@@ -697,8 +697,8 @@ if ($subaction == "kill" && ($sumrows5['edit_survey_property'] || $sumrows5['act
 {
 	$date = date('YmdHi');
 	$tokenoutput .= "\t<tr><td colspan='2' height='4' align='center'>"
-	."<font size='1' face='verdana' color='white'><strong>"
-	.$clang->gT("Delete Tokens Table").":</strong></font></td></tr>\n"
+	."<strong>".$clang->gT("Delete Tokens Table").":</strong>"
+	."</td></tr>\n"
 	."\t<tr><td colspan='2' align='center'>\n"
 	."<br />\n";
 	// ToDo: Just delete it if there is no token in the table
@@ -1120,7 +1120,7 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 
 if ($subaction == "tokenify" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
 {
-	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Create Tokens").":</strong></font></td></tr>\n";
+	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><strong>".$clang->gT("Create Tokens").":</strong></td></tr>\n";
 	$tokenoutput .= "\t<tr><td align='center'><br />\n";
 	if (!isset($_GET['ok']) || !$_GET['ok'])
 	{
@@ -1161,7 +1161,7 @@ if ($subaction == "delete" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 {
 	$dlquery = "DELETE FROM ".db_table_name("tokens_$surveyid")." WHERE tid={$_GET['tid']}";
 	$dlresult = $connect->Execute($dlquery) or die ("Couldn't delete record {$_GET['tid']}<br />".htmlspecialchars($connect->ErrorMsg()));
-	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><strong>"
 	.$clang->gT("Delete")."</strong></td></tr>\n"
 	."\t<tr><td align='center'><br />\n"
 	."<br /><strong>".$clang->gT("Token has been deleted.")."</strong><br />\n"
@@ -1189,8 +1189,8 @@ if (($subaction == "edit" || $subaction == "addnew") && ($sumrows5['edit_survey_
 		$edfieldcount = $edresult->FieldCount();
 	}
 
-	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-	.$clang->gT("Add or Edit Token")."</strong></font></td></tr>\n"
+	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><strong>"
+	.$clang->gT("Add or Edit Token")."</strong></td></tr>\n"
 	."\t<tr><td align='center'>\n"
 	."<form method='post' action='$scriptname?action=tokens'>\n"
 	."<table width='100%' bgcolor='#CCCCCC' align='center'>\n"
@@ -1301,7 +1301,7 @@ if (($subaction == "edit" || $subaction == "addnew") && ($sumrows5['edit_survey_
 
 if ($subaction == "updatetoken" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
 {
-	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><strong>"
 	.$clang->gT("Add or Edit Token")."</strong></td></tr>\n"
 	."\t<tr><td align='center'>\n";
 	$data = array();
@@ -1333,7 +1333,7 @@ if ($subaction == "updatetoken" && ($sumrows5['edit_survey_property'] || $sumrow
 
 if ($subaction == "inserttoken" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
 {
-	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><strong>"
 	.$clang->gT("Add or Edit Token")."</strong></td></tr>\n"
 	."\t<tr><td align='center'>\n";
 	$data = array('firstname' => $_POST['firstname'],
@@ -1361,8 +1361,7 @@ if ($subaction == "inserttoken" && ($sumrows5['edit_survey_property'] || $sumrow
 if ($subaction == "import" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
 {
 	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
-	."<font size='1' face='verdana' color='white'><strong>"
-	.$clang->gT("Upload CSV File")."</strong></font></td></tr>\n"
+	."<strong>".$clang->gT("Upload CSV File")."</strong></td></tr>\n"
 	."\t<tr><td align='center'><br>\n";
 	form_csv_upload();
 	$tokenoutput .= "<table width='500' bgcolor='#eeeeee'>\n"
@@ -1379,8 +1378,8 @@ if ($subaction == "import" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 if ($subaction == "importldap" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
 {
 	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'>"
-	."<font size='1' face='verdana' color='white'><strong>"
-	.$clang->gT("Upload LDAP entries")."</strong></font></td></tr>\n"
+	."<strong>"
+	.$clang->gT("Upload LDAP entries")."</strong></td></tr>\n"
 	."\t<tr><td align='center'>\n";
 	formldap();
 	$tokenoutput .= "<table width='500' bgcolor='#eeeeee'>\n"
@@ -1396,7 +1395,7 @@ if ($subaction == "importldap" && ($sumrows5['edit_survey_property'] || $sumrows
 
 if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
 {
-	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><strong>"
 	.$clang->gT("Upload CSV File")."</strong></td></tr>\n"
 	."\t<tr><td align='center'>\n";
 	if (!isset($tempdir))
@@ -1508,7 +1507,7 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 }
 
 if ($subaction == "uploadldap" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey'])) {
-	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><strong>"
 	.$clang->gT("Uploading LDAP Query")."</strong></td></tr>\n"
 	."\t<tr><td align='center'>\n";
 	$ldapq=$_POST['ldapQueries']; // the ldap query id
