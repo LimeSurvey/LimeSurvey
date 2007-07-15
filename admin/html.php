@@ -324,7 +324,7 @@ if ($surveyid)
 		. "\t\t\t}\n"
 		. "\t\telse if (action == \"hideq\")\n"
 		. "\t\t\t{\n"
-		. "\t\t\tfor (i=30; i<=37; i++)\n"
+		. "\t\t\tfor (i=30; i<=39; i++)\n"
 		. "\t\t\t\t{\n"
 		. "\t\t\t\tvar name='surveydetails'+i;\n"
 		. "\t\t\t\tdocument.getElementById(name).style.display='none';\n"
@@ -332,7 +332,7 @@ if ($surveyid)
 		. "\t\t\t}\n"
 		. "\t\telse if (action == \"showq\")\n"
 		. "\t\t\t{\n"
-		. "\t\t\tfor (i=30; i<=37; i++)\n"
+		. "\t\t\tfor (i=30; i<=39; i++)\n"
 		. "\t\t\t\t{\n"
 		. "\t\t\t\tvar name='surveydetails'+i;\n"
 		. "\t\t\t\tdocument.getElementById(name).style.display='';\n"
@@ -1207,6 +1207,15 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			. $clang->gT("Other:")."</strong></td>\n"
 			. "\t<td align='left'>";
 			$questionsummary .= ($qrrow['other'] == "Y") ? ($clang->gT("Yes")) : ($clang->gT("No")) ;
+			$questionsummary .= "</td></tr>\n";
+		}
+		if (isset($qrrow['mandatory']))
+		{
+			$questionsummary .= "\t<tr $qshowstyle id='surveydetails39'>"
+			. "<td align='right' valign='top'><strong>"
+			. $clang->gT("Mandatory:")."</strong></td>\n"
+			. "\t<td align='left'>";
+			$questionsummary .= ($qrrow['mandatory'] == "Y") ? ($clang->gT("Yes")) : ($clang->gT("No")) ;
 			$questionsummary .= "</td></tr>\n";
 		}
 		if (!is_null($condarray))
