@@ -101,8 +101,8 @@ if (!isset($_SESSION['loginID']))
 			$result = $connect->SelectLimit($query, 1) or die ($query."<br />".$connect->ErrorMsg());
 			if ($result->RecordCount() < 1)
 			{
-				// wrong or unknown username and/or email
-				$loginsummary .= "<br />".$clang->gT("User name and/or email not found!")."<br />";
+				// wrong or unknown username 
+				$loginsummary .= "<br />".$clang->gT("Incorrect User name and/or Password!")."<br />";
 				$loginsummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 
 			}
@@ -146,7 +146,7 @@ if (!isset($_SESSION['loginID']))
 				}
 				else
 				{
-					$loginsummary .= "<br />".$clang->gT("User name and/or email not found!")."<br />";
+					$loginsummary .= "<br />".$clang->gT("Incorrect User name and/or Password!")."<br />";
 					$loginsummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 				}
 			}
