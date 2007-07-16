@@ -232,7 +232,7 @@ sendcacheheaders();
   if (isset($surveysummary  )) {$adminoutput.= $surveysummary;}
   if (isset($usergroupsummary)){$adminoutput.= $usergroupsummary;}
   if (isset($usersummary    )) {$adminoutput.= $usersummary;}
-  if (isset($logoutsummary  )) {$adminoutput.= $logoutsummary;}	// added by Dennis
+//  if (isset($logoutsummary  )) {$adminoutput.= $logoutsummary;} // can't reach her (session killed)
   if (isset($groupsummary   )) {$adminoutput.= $groupsummary;}
   if (isset($questionsummary)) {$adminoutput.= $questionsummary;}
   if (isset($vasummary      )) {$adminoutput.= $vasummary;}

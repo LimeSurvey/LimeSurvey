@@ -13,15 +13,24 @@ require_once($rootdir.'/classes/php-gettext/streams.php');
 class limesurvey_lang {
 
     var $gettextclass;
+    var $langcode;
     
     function limesurvey_lang($langcode){
         if ( $langcode != "en" ) {
         	global $rootdir;
             $streamer = new FileReader($rootdir.'/locale/'.$langcode.'/LC_MESSAGES/'.$langcode.'.mo');
             $this->gettextclass = new gettext_reader($streamer);
+            $this->langcode = $langcode;
+
         } else {
             $this->gettextclass = false;
+            $this->langcode = "en";
         }
+    }
+
+    function getlangcode()
+    {
+	return $this->langcode;
     }
    
     function gT($string, $escapemode = 'html')

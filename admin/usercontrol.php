@@ -155,12 +155,12 @@ if (!isset($_SESSION['loginID']))
 }
 elseif ($action == "logout")
 {
-	$logoutsummary = "<br /><strong>".$clang->gT("Logout")."</strong><br />\n";
+//	$logoutsummary = "<br /><strong>".$clang->gT("Logout")."</strong><br />\n";
 
 	killSession();
 
-	$logoutsummary .= $clang->gT("Logout successful.");
-	$logoutsummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Main Admin Screen")."</a><br />&nbsp;\n";
+	$logoutsummary = $clang->gT("Logout successful.");
+//	$logoutsummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Main Admin Screen")."</a><br />&nbsp;\n";
 }
 
 elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])

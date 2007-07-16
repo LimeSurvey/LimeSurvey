@@ -66,7 +66,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
 						</form>";	
 	}
 	elseif (!isset($loginsummary))
-	{
+	{ // could be at login or after logout 
 		$refererargs=''; // If this is a direct access to admin.php, no args are given
 		// If we are called from a link with action and other args set, get them
 		if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'])
@@ -79,10 +79,17 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
 		{
 			$hidden_loginlang = "<input type='hidden' name='loginlang' value='".$_POST['lang']."' />";
 		}
-		
-
         
-		$loginsummary = "<form name='login' id='login' method='post' action='$rooturl/admin/admin.php' ><br /><strong>".$clang->gT("You have to login first.")."</strong><br />	<br />
+		if (!isset($logoutsummary))
+		{
+			$loginsummary = "<form name='login' id='login' method='post' action='$rooturl/admin/admin.php' ><br /><strong>".$clang->gT("You have to login first.")."</strong><br />	<br />";
+		}
+		else
+		{
+			$loginsummary = "<form name='login' id='login' method='post' action='$rooturl/admin/admin.php' ><br /><strong>".$logoutsummary."</strong><br />	<br />";
+		}
+
+		$loginsummary .= "
 							<table>
 								<tr>
 									<td>".$clang->gT("Username")."</td>
@@ -117,6 +124,8 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
 		{
 			$loginsummary .= "\t\t\t\t<option value='$langkey'";
 			if (isset($_SESSION['adminlang']) && $langkey == $_SESSION['adminlang']) {$loginsummary .= " selected='selected'";}
+			// in case it is a logout, session has already been killed
+			if (!isset($_SESSION['adminlang']) && $langkey == $clang->getlangcode() ){$loginsummary .= " selected='selected'";}
 			$loginsummary .= ">".$languagekind['description']." - ".$languagekind['nativedescription']."</option>\n";
 		}
 		$loginsummary .= "\t\t\t</select>\n"
@@ -145,18 +154,4 @@ if (isset($loginsummary)) {
 	$adminoutput.= "</table>\n";
 }
 
-// logout user
-if ($action == "logout" && isset($_SESSION['loginID']))
-{
-	$adminoutput.= "<table width='100%' border='0' cellpadding='0' cellspacing='0'>\n"
-	."\t<tr>\n"
-	."\t\t<td valign='top' align='center' bgcolor='#F8F8FF'>\n";
-	
-	$adminoutput.= $logoutsummary;
-	
-	$adminoutput.= "\t\t</td>\n";
-	$adminoutput.= "\t</tr>\n";
-	$adminoutput.= "</table>\n";
-	
-}
 ?>
