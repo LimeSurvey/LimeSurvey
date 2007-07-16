@@ -128,7 +128,7 @@ if($actsurrows['edit_survey_property']){
 		if ($editdata['scope'] == "T") {$scopeselect .= "selected ";}
 		$scopeselect .= "value='T'>".$clang->gT("Total")."</option><option value='G'";
 		if ($editdata['scope'] == "G") {$scopeselect .= " selected";}
-		$scopeselect .= "'>".$clang->gT("Group")."</option></select>";
+		$scopeselect .= ">".$clang->gT("Group")."</option></select>";
 		$groupselect=str_replace("'".$editdata['gid']."'", "'".$editdata['gid']."' selected", $groupselect);
 		$inputs=array($scopeselect,
 		$groupselect,
@@ -156,9 +156,20 @@ if($actsurrows['edit_survey_property']){
 	$assessmentsoutput.= "</tr>\n";
 	foreach($assessments as $assess) {
 		$assessmentsoutput.= "<tr>\n";
-		foreach($assess as $as) {
-			$assessmentsoutput.= "<td>".stripslashes($as)."</td>\n";
-		}
+		$assessmentsoutput.= "<td>".$assess['id']."</td>\n";
+		$assessmentsoutput.= "<td>".$assess['sid']."</td>\n";
+
+		if ($assess['scope'] == "T") {	$assessmentsoutput.= "<td>".$clang->gT("Total")."</td>\n"; }
+		else {$assessmentsoutput.= "<td>".$clang->gT("Group")."</td>\n"; }
+
+		$assessmentsoutput.= "<td>".$groups[$assess['gid']]['group_name']." (".$assess['gid'].")</td>\n";
+		
+		$assessmentsoutput.= "<td>".$assess['minimum']."</td>\n";
+		$assessmentsoutput.= "<td>".$assess['maximum']."</td>\n";
+		$assessmentsoutput.= "<td>".stripslashes($assess['name'])."</td>\n";
+		$assessmentsoutput.= "<td>".stripslashes($assess['message'])."</td>\n";
+		$assessmentsoutput.= "<td>".stripslashes($assess['link'])."</td>\n";
+		
 		$assessmentsoutput.= "<td>
 			   <table width='100%'>
 				<tr><td align='center'><form method='post' action='$scriptname?sid=$surveyid'>
@@ -224,7 +235,7 @@ function getGroups($surveyid) {
 	$result = db_execute_assoc($query) or die("Error getting groups<br />$query<br />".$connect->ErrorMsg());
 	$output=array();
 	while($row=$result->FetchRow()) {
-		$output[]=$row;
+		$output[$row['gid']]=$row;
 	}
 	return $output;
 }
