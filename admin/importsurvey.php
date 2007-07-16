@@ -64,12 +64,20 @@ elseif
     }
 else    // unknown file - show error message
   {
-    $importsurvey .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-  	$importsurvey .= $clang->gT("This file is not a LimeSurvey survey file. Import failed.")."<br /><br />\n";
-  	$importsurvey .= "</font></td></tr></table>\n";
-  	$importsurvey .= "</body>\n</html>\n";
-  	unlink($the_full_file_path);
-  	return;
+  	if ($importingfrom == "http")
+  	{
+	    $importsurvey .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+	  	$importsurvey .= $clang->gT("This file is not a LimeSurvey survey file. Import failed.")."<br /><br />\n";
+	  	$importsurvey .= "</font></td></tr></table>\n";
+	  	$importsurvey .= "</body>\n</html>\n";
+	  	unlink($the_full_file_path);
+	  	return;
+	  }
+	  else 
+	  {
+	  	echo $clang->gT("This file is not a LimeSurvey survey file. Import failed.")."\n";
+	  	return;
+	  }
   }
 
 
@@ -317,13 +325,21 @@ $surveyid=$surveyrowdata["sid"];
 
 if (!$surveyid)
 {
-	$importsurvey .= "<br /><strong><font color='red'>".$clang->gT("Error")."</strong></font><br />\n";
-	$importsurvey .= $clang->gT("Import of this survey file failed")."<br />\n";
-	$importsurvey .= $clang->gT("File does not contain LimeSurvey data in the correct format.")."<br />\n"; //Couldn't find the SID - cannot continue
-	$importsurvey .= "</font></td></tr></table>\n";
-	$importsurvey .= "</body>\n</html>\n";
-	unlink($the_full_file_path); //Delete the uploaded file
-	return;
+	if ($importingfrom == "http")
+	{
+		$importsurvey .= "<br /><strong><font color='red'>".$clang->gT("Error")."</strong></font><br />\n";
+		$importsurvey .= $clang->gT("Import of this survey file failed")."<br />\n";
+		$importsurvey .= $clang->gT("File does not contain LimeSurvey data in the correct format.")."<br />\n"; //Couldn't find the SID - cannot continue
+		$importsurvey .= "</font></td></tr></table>\n";
+		$importsurvey .= "</body>\n</html>\n";
+		unlink($the_full_file_path); //Delete the uploaded file
+		return;
+	}
+	else 
+	{
+		echo $clang->gT("Import of this survey file failed")."\n".$clang->gT("File does not contain LimeSurvey data in the correct format.")."\n";
+		return;
+	}
 }
 
 // Use the existing surveyid if it does not already exists
@@ -661,6 +677,7 @@ if (isset($grouparray) && $grouparray) {
 		{
 			$importsurvey .= "<br />\n<font color='red'><strong>".$clang->gT("Error")."</strong></font>"
 			."<br />\nA group in the sql file does not come from the same Survey. Import of survey stopped.<br /><br />\n";
+			if ($importingfrom == "http") echo $clang->gT("Error").": A group in the sql file does not come from the same Survey. Import of survey stopped.\n";
 			return;
 		}
 		//remove the old group id
@@ -978,32 +995,54 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 			$result=$connect->Execute($conditioninsert) or die ("Couldn't insert condition<br />$conditioninsert<br />".$connect->ErrorMsg());
 		} else {
 			$importsurvey .= "<font size=1>Condition for $oldqid skipped ($oldcqid does not exist)</font><br />";
+			if ($importingfrom == "http") echo "Condition for $oldqid skipped ($oldcqid does not exist)\n";
 		}
 		unset($newcqid);
 	}
 }
 
-
-$importsurvey .= "<br />\n<strong><font color='green'>".$clang->gT("Success")."</font></strong><br /><br />\n";
-$importsurvey .= "<strong><u>".$clang->gT("Survey Import Summary")."</u></strong><br />\n";
-$importsurvey .= "<ul style=\"text-align:left;\">\n\t<li>".$clang->gT("Surveys").": $countsurveys</li>\n";
-if ($importversion>=111)
-    {
-    $importsurvey .= "\t<li>".$clang->gT("Languages").": $countlanguages</li>\n";
-    }
-$importsurvey .= "\t<li>".$clang->gT("Groups").": $countgroups</li>\n";
-$importsurvey .= "\t<li>".$clang->gT("Questions").": $countquestions</li>\n";
-$importsurvey .= "\t<li>".$clang->gT("Answers").": $countanswers</li>\n";
-$importsurvey .= "\t<li>".$clang->gT("Conditions").": $countconditions</li>\n";
-$importsurvey .= "\t<li>".$clang->gT("Label Sets").": $countlabelsets (".$clang->gT("Labels").": $countlabels)</li>\n";
-$importsurvey .= "\t<li>".$clang->gT("Question Attributes").": $countquestion_attributes</li>\n";
-$importsurvey .= "\t<li>".$clang->gT("Assessments").": $countassessments</li>\n</ul>\n";
-
-$importsurvey .= "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />\n";
-$importsurvey .= "</td></tr></table><br />\n";
-unlink($the_full_file_path);
-unset ($surveyid);  // Crazy but necessary because else the html script will search for user rights
-
+if ($importingfrom == "http")
+{
+	$importsurvey .= "<br />\n<strong><font color='green'>".$clang->gT("Success")."</font></strong><br /><br />\n";
+	$importsurvey .= "<strong><u>".$clang->gT("Survey Import Summary")."</u></strong><br />\n";
+	$importsurvey .= "<ul style=\"text-align:left;\">\n\t<li>".$clang->gT("Surveys").": $countsurveys</li>\n";
+	if ($importversion>=111)
+	    {
+	    $importsurvey .= "\t<li>".$clang->gT("Languages").": $countlanguages</li>\n";
+	    }
+	$importsurvey .= "\t<li>".$clang->gT("Groups").": $countgroups</li>\n";
+	$importsurvey .= "\t<li>".$clang->gT("Questions").": $countquestions</li>\n";
+	$importsurvey .= "\t<li>".$clang->gT("Answers").": $countanswers</li>\n";
+	$importsurvey .= "\t<li>".$clang->gT("Conditions").": $countconditions</li>\n";
+	$importsurvey .= "\t<li>".$clang->gT("Label Sets").": $countlabelsets (".$clang->gT("Labels").": $countlabels)</li>\n";
+	$importsurvey .= "\t<li>".$clang->gT("Question Attributes").": $countquestion_attributes</li>\n";
+	$importsurvey .= "\t<li>".$clang->gT("Assessments").": $countassessments</li>\n</ul>\n";
+	
+	$importsurvey .= "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />\n";
+	$importsurvey .= "</td></tr></table><br />\n";
+	unlink($the_full_file_path);
+	unset ($surveyid);  // Crazy but necessary because else the html script will search for user rights
+}
+else
+{
+	echo "\n".$clang->gT("Success")."\n\n";
+	echo $clang->gT("Survey Import Summary")."\n";
+	echo $clang->gT("Surveys").": $countsurveys\n";
+	if ($importversion>=111)
+	    {
+	    echo $clang->gT("Languages").": $countlanguages\n";
+	    }
+	echo $clang->gT("Groups").": $countgroups\n";
+	echo $clang->gT("Questions").": $countquestions\n";
+	echo $clang->gT("Answers").": $countanswers\n";
+	echo $clang->gT("Conditions").": $countconditions\n";
+	echo $clang->gT("Label Sets").": $countlabelsets (".$clang->gT("Labels").": $countlabels)\n";
+	echo $clang->gT("Question Attributes").": $countquestion_attributes\n";
+	echo $clang->gT("Assessments").": $countassessments\n\n";
+	
+	echo $clang->gT("Import of Survey is completed.")."\n";
+}
+	
 function convertToArray($stringtoconvert, $seperator, $start, $end) 
 // this function is still used to read SQL files from version 1.0 or older
 {

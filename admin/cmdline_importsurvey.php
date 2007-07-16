@@ -36,6 +36,7 @@
 
 if ($argc != 4 || in_array($argv[1], array('--help', '-help', '-h', '-?'))) {
 ?>
+
 This is a command line LimeSurvey Survey importer.
 
   Usage:
@@ -48,22 +49,61 @@ This is a command line LimeSurvey Survey importer.
 	exit;
 } else {
     $the_full_file_path = $argv[1];
+    $username = $argv[2];
+    $userpass = $argv[3];
 }
 
 if (!file_exists($the_full_file_path)) {
-    echo "The file $the_full_file_path does not exist";
+    echo "\nThe file $the_full_file_path does not exist\n";
     exit;
 }
 
+$_SERVER['SERVER_NAME'] = "";				// just to avoid notices
+$_SERVER['SERVER_SOFTWARE'] = "";		// just to avoid notices
 require_once(dirname(__FILE__).'/../config.php');  // config.php itself includes common.php
 
-//TODO: validate user, password and permissions
-$_SESSION['loginID'] = 1;
+
+require_once($homedir."/classes/core/sha256.php"); 
+$adminoutput ="";										// just to avoid notices
+include("database.php");
+$query = "SELECT uid, password, lang FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($username);
+$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+$result = $connect->SelectLimit($query, 1) or die ($query."\n".$connect->ErrorMsg());
+if ($result->RecordCount() < 1)
+{
+	// wrong or unknown username and/or email
+	echo "\n".$clang->gT("User name not found!")."\n";
+	exit;
+}
+else
+{
+	$fields = $result->FetchRow();
+	if (SHA256::hash($userpass) == $fields['password'])
+	{
+		$_SESSION['loginID'] = intval($fields['uid']);
+		$clang = new limesurvey_lang($fields['lang']);
+
+		GetSessionUserRights($_SESSION['loginID']);
+		if (!$_SESSION['USER_RIGHT_CREATE_SURVEY'])
+		{
+			// no permission to create survey!
+			echo "\n".$clang->gT("You are not allowed to import a survey!")."\n";
+			exit;
+		}
+	}
+	else
+	{
+		// password don't match username
+		echo "\n".$clang->gT("User name / password dont match!")."\n";
+		exit;
+	}
+}
+
+echo "\n";
 
 $importsurvey = "";
 
 $importingfrom = "cmdline";	// "http" for the web version and "cmdline" for the command line version
 include("importsurvey.php");
-
 
 ?>
