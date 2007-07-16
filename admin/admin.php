@@ -97,7 +97,7 @@ if ($action == "importsurvey")
 {
 	if($_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		{
-		include("importsurvey.php");
+		include("http_importsurvey.php");
 		}
 	else
 		{
