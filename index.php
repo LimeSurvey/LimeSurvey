@@ -1498,15 +1498,30 @@ function doAssessment($surveyid)
 			$fieldmap=createFieldMap($surveyid, "full");
 			$i=0;
 			$total=0;
+			
+			// I added this condition : if (($field['type'] == "M") and ($_SESSION[$field['fieldname']] == "Y"))
+			// because the internal representation of the answer of multiple Options type questions is Y, not the answer code
+			// for this type of questions I use $field['aid'] insted of $_SESSION[$field['fieldname']]
+			
 			foreach($fieldmap as $field)
 			{
-				if (($field['fieldname'] != "datestamp") and
-				($field['fieldname'] != "ipaddr"))
+				if (($field['fieldname'] != "datestamp") and ($field['fieldname'] != "ipaddr"))
 				{
-					if (isset($_SESSION[$field['fieldname']])) {$fieldmap[$i]['answer']=$_SESSION[$field['fieldname']];}
-					 else {$fieldmap[$i]['answer']=0;}
+					if (isset($_SESSION[$field['fieldname']])) 
+					{
+						if (($field['type'] == "M") and ($_SESSION[$field['fieldname']] == "Y")) 	// for Multiple Options type questions
+						{
+							$fieldmap[$i]['answer']=$field['aid'];
+							$total=$total+$field['aid'];
+						}
+						else     // any other type of question
+						{
+							$fieldmap[$i]['answer']=$_SESSION[$field['fieldname']];
+							$total=$total+$_SESSION[$field['fieldname']];
+						}
+					}
+					else {$fieldmap[$i]['answer']=0;}
 					$groups[]=$field['gid'];
-					if (isset ($_SESSION[$field['fieldname']])) {$total=$total+$_SESSION[$field['fieldname']];}
 					$i++;
 				}
 			}
@@ -1520,7 +1535,13 @@ function doAssessment($surveyid)
 					if ($field['gid'] == $group && isset($field['answer']))
 					{
 						//$grouptotal=$grouptotal+$field['answer'];
-						if (isset ($_SESSION[$field['fieldname']])) {$grouptotal=$grouptotal+$_SESSION[$field['fieldname']];}
+						if (isset ($_SESSION[$field['fieldname']])) 
+						{
+							if (($field['type'] == "M") and ($_SESSION[$field['fieldname']] == "Y")) 	// for Multiple Options type questions
+								$grouptotal=$grouptotal+$field['aid'];
+							else																		// any other type of question
+								$grouptotal=$grouptotal+$_SESSION[$field['fieldname']];
+						}
 					}
 				}
 				$subtotal[$group]=$grouptotal;
@@ -1537,7 +1558,7 @@ function doAssessment($surveyid)
 					{
 						if ($val >= $assessed['min'] && $val <= $assessed['max'])
 						{
-							$assessments .= "\t\t\t<!-- GROUP ASSESSMENT: Score: $val -->
+							$assessments .= "\t\t\t<!-- GROUP ASSESSMENT: Score: $val Min: ".$assessed['min']." Max: ".$assessed['max']."-->
         					    <table align='center'>
 								 <tr>
 								  <th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $val), stripslashes($assessed['name']))."
@@ -1564,7 +1585,7 @@ function doAssessment($surveyid)
 			{
 				if ($total >= $assessed['min'] && $total <= $assessed['max'])
 				{
-					$assessments .= "\t\t\t<!-- TOTAL ASSESSMENT: Score: $total -->
+					$assessments .= "\t\t\t<!-- TOTAL ASSESSMENT: Score: $total Min: ".$assessed['min']." Max: ".$assessed['max']."-->
 						<table align='center'><tr><th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $val), stripslashes($assessed['name']))."
 						 </th></tr>
 						 <tr>
