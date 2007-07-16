@@ -207,7 +207,7 @@ foreach ($filters as $flt)
 			//if we've already drawn a table for a group, and we're changing - close off table
 			$statisticsoutput .= "\n\t\t\t\t</td></tr>\n\t\t\t</table>\n";
 		}
-		$statisticsoutput .= "\t\t<tr><td align='center'>\n"
+		$statisticsoutput .= "\t\t<tr><td align='center' class='settingcaption'>\n"
 		."\t\t<font size='1' face='verdana'><strong>$flt[4]</strong> (".$clang->gT("Group")." $flt[1])</font></td></tr>\n\t\t"
 		."<tr><td align='center'>\n"
 		."\t\t\t<table align='center' class='statisticstable'><tr>\n";
@@ -647,11 +647,11 @@ else
 
 $statisticsoutput .= "\t\t\t</table>\n"
 ."\t\t</td></tr>\n"
-."\t\t<tr><td align='center'>\n"
+."\t\t<tr><td align='center' class='settingcaption'>\n"
 ."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
 ."\t\t\t\t<tr><td align='center'><input type='radio' class='radiobtn' id='viewsummaryall' name='summary' value='$allfield'"
 ." /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label></font></td></tr>\n"
-."\t\t<tr><td align='center'>\n"
+."\t\t<tr><td align='center' class='settingcaption'>\n"
 ."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
 ."\t\t\t\t<tr><td align='center'>".$clang->gT("Filter incomplete answers:")."<select name='filterinc'>\n"
 ."\t\t\t\t\t<<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"

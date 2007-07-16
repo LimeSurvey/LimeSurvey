@@ -60,16 +60,25 @@ table.statisticstable
 margin: 2px auto;
 }
 
-.statisticstable tr:first-child    
-{
-   background-color: #D2E0F2;
+.statisticstable tr:first-child  {
+
 }
 
  
-.statisticstable tr:nth-child(2)    
-{
-   background-color: #D2E0F2;
-}
+
+
+.statisticstable select  {
+   width: 170px;
+   }
+
+.statisticstable textarea  {
+   width: 170px;
+   }
+
+.statisticstable td  {
+   vertical-align:top;    
+   }
+
 
 .alertbox tr:first-child {
    background-color: #EEF6FF;
