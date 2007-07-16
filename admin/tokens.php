@@ -695,7 +695,7 @@ if ($subaction == "browse" || $subaction == "search")
 
 if ($subaction == "kill" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
 {
-	$date = date('YmdHi');
+	$date = date('YmdHis');
 	$tokenoutput .= "\t<tr><td colspan='2' height='4' align='center'>"
 	."<strong>".$clang->gT("Delete Tokens Table").":</strong>"
 	."</td></tr>\n"

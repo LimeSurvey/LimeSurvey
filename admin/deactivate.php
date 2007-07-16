@@ -38,7 +38,7 @@ if (empty($homedir)) {die ("Cannot run this script directly");}
 include_once("login_check.php");
 include_once("database.php");
 
-$date = date('YmdHi'); //'Hi' adds 24hours+minutes to name to allow multiple deactiviations in a day
+$date = date('YmdHis'); //'Hi' adds 24hours+minutes to name to allow multiple deactiviations in a day
 $deactivateoutput='';
 if (!isset($_GET['ok']) || !$_GET['ok'])
 {
@@ -107,7 +107,7 @@ else
 	@$result = $connect->Execute($query); //Note this won't die if it fails - that's deliberate.
 
 	$deactivatequery = db_rename_table($oldtable,$newtable);
-	@$deactivateresult = $connect->Execute($deactivatequery);
+	$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't make backup of the survey table. Please try again. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
 	
 	$deactivatequery = "UPDATE {$dbprefix}surveys SET active='N' WHERE sid=$surveyid";
 	$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
