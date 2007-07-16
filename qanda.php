@@ -698,27 +698,36 @@ function do_list_flexible_dropdown($ia)
 		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
 	}
 	$ansresult = db_execute_assoc($ansquery) or die("Couldn't get answers<br />$ansquery<br />".htmlspecialchars($connect->ErrorMsg()));
-	while ($ansrow = $ansresult->FetchRow())
+
+	if (labelset_exists($lid,$_SESSION['s_lang']))
 	{
-		$answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
-		if ($_SESSION[$ia[1]] == $ansrow['code'])
+		while ($ansrow = $ansresult->FetchRow())
 		{
-			$answer .= " selected='selected'";
+			$answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
+			if ($_SESSION[$ia[1]] == $ansrow['code'])
+			{
+				$answer .= " selected='selected'";
+			}
+			$answer .= ">{$ansrow['title']}</option>\n";
 		}
-		$answer .= ">{$ansrow['title']}</option>\n";
-	}
-	if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) {$answer = "\t\t\t\t\t\t<option value='' selected='selected'>".$clang->gT("Please choose")."..</option>\n".$answer;}
-	if (isset($other) && $other=="Y")
-	{
-		$answer .= "\t\t\t\t\t\t<option value='-oth-'";
-		if ($_SESSION[$ia[1]] == "-oth-")
+		if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) {$answer = "\t\t\t\t\t\t<option value='' selected='selected'>".$clang->gT("Please choose")."..</option>\n".$answer;}
+		if (isset($other) && $other=="Y")
 		{
-			$answer .= " selected='selected'";
+			$answer .= "\t\t\t\t\t\t<option value='-oth-'";
+			if ($_SESSION[$ia[1]] == "-oth-")
+			{
+				$answer .= " selected='selected'";
+			}
+			$answer .= ">".$clang->gT("Other")."</option>\n";
 		}
-		$answer .= ">".$clang->gT("Other")."</option>\n";
+		if ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != "") && (!isset($defexists) || !$defexists) && $ia[6] != "Y" && $shownoanswer == 1) {$answer .= "\t\t\t\t\t\t<option value=' '>".$clang->gT("No answer")."</option>\n";}
+		$answer .= "\t\t\t\t\t</select>\n";
 	}
-	if ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != "") && (!isset($defexists) || !$defexists) && $ia[6] != "Y" && $shownoanswer == 1) {$answer .= "\t\t\t\t\t\t<option value=' '>".$clang->gT("No answer")."</option>\n";}
-	$answer .= "\t\t\t\t\t</select>\n";
+	  else 
+	  {
+	    $answer .= "<option>".$clang->gT('Error: The labelset used for this question is not available in this language.')."</option>";
+	  }	
+	
     $answer .= "\t\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}' />\n";
 	$sselect = "\n\t\t\t\t\t<select name='$ia[1]' id='answer$ia[1]' onchange='checkconditions(this.value, this.name, this.type);modfield(this.name);";
 	if (isset($other) && $other=="Y")
@@ -890,6 +899,7 @@ function do_list_flexible_radio($ia)
 		}
 	}
 	$filter .= "%";
+	
 	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
 		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' AND language='".$_SESSION['s_lang']."' ORDER BY RAND()";
 	} else {
@@ -897,7 +907,10 @@ function do_list_flexible_radio($ia)
 	}
 	$ansresult = db_execute_assoc($ansquery) or die("Couldn't get answers<br />$ansquery<br />".htmlspecialchars($connect->ErrorMsg()));
 	$anscount = $ansresult->RecordCount();
-	if ((isset($other) && $other=="Y") || ($ia[6] != "Y" && $shownoanswer == 1)) {$anscount++;} //Count "
+	
+	
+	
+	if ((isset($other) && $other=="Y") || ($ia[6] != "Y" && $shownoanswer == 1)) {$anscount++;} //Count
 	$divider="";
 	$maxrows=0;
 	if ($dcols >0 && $anscount >= $dcols) //Break into columns
@@ -915,20 +928,29 @@ function do_list_flexible_radio($ia)
 		. "\t\t\t\t\t\t\t<td align='left'>\n";
 	}
 	$rowcounter=0;
-	while ($ansrow = $ansresult->FetchRow())
-	{
-		$rowcounter++;
-		$answer .= "\t\t\t\t\t\t\t\t  <input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='answer$ia[1]{$ansrow['code']}'";
-		if ($_SESSION[$ia[1]] == $ansrow['code'])
-		{
-			$answer .= " checked='checked'";
-		}
-		// --> START NEW FEATURE - SAVE
-		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='answer$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['title']}</label><br />\n";
-		// --> END NEW FEATURE - SAVE
 
-		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
+	if (labelset_exists($lid,$_SESSION['s_lang']))
+	{
+	
+		while ($ansrow = $ansresult->FetchRow())
+		{
+			$rowcounter++;
+			$answer .= "\t\t\t\t\t\t\t\t  <input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='answer$ia[1]{$ansrow['code']}'";
+			if ($_SESSION[$ia[1]] == $ansrow['code'])
+			{
+				$answer .= " checked='checked'";
+			}
+			// --> START NEW FEATURE - SAVE
+			$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='answer$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['title']}</label><br />\n";
+			// --> END NEW FEATURE - SAVE
+	
+			if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
+		}
 	}
+	  else 
+	  {
+	    $answer .= $clang->gT('Error: The labelset used for this question is not available in this language.')."<br />";
+	  }	
 	if (isset($other) && $other=="Y")
 	{
 		$rowcounter++;
@@ -2559,7 +2581,7 @@ function do_array_flexible($ia)
 	}
 	else
 	{
-		$answer = "<font color=red>".$clang->gT("Error").": Flexible Label Not Found.</font>";
+		$answer = "<font color=red>".$clang->gT('Error: The labelset used for this question is not available in this language and/or does not exist.')."</font>";
 		$inputnames="";
 	}
 	return array($answer, $inputnames);
@@ -2575,85 +2597,99 @@ function do_array_flexiblecolumns($ia)
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other']; $lid = $qrow['lid'];}
 	$lquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
 	$lresult = db_execute_assoc($lquery);
-	while ($lrow=$lresult->FetchRow())
+	if ($lresult->RecordCount() > 0)
 	{
-		$labelans[]=$lrow['title'];
-		$labelcode[]=$lrow['code'];
-		$labels[]=array("answer"=>$lrow['title'], "code"=>$lrow['code']);
-	}
-	if ($ia[6] != "Y" && $shownoanswer == 1) {
-		$labelcode[]="";
-		$labelans[]=$clang->gT("No answer");
-		$labels[]=array("answer"=>$clang->gT("No answer"), "code"=>"");
-	}
-	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
-	$ansresult = db_execute_assoc($ansquery);
-	$anscount = $ansresult->RecordCount();
-	$fn=1;
-	$answer = "\t\t\t<table class='question' align='center'>\n"
-	. "\t\t\t\t<tr>\n"
-	. "\t\t\t\t\t<td></td>\n";
-	$cellwidth=$anscount;
-
-	$cellwidth=round(50/$cellwidth);
-	while ($ansrow = $ansresult->FetchRow())
-	{
-		$anscode[]=$ansrow['code'];
-		$answers[]=answer_replace($ansrow['answer']);
-	}
-	foreach ($answers as $ld)
-	{
-		if (!isset($trbc) || $trbc == "array2") {$trbc = "array1";} else {$trbc = "array2";}
-		/* Check if this item has not been answered: the 'notanswered' variable must be an array,
-		containing a list of unanswered questions, the current question must be in the array,
-		and there must be no answer available for the item in this session. */
-		if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "") ) {
-			$ld = "<span class='errormandatory'>{$ld}</span>";
-		}
-		$answer .= "\t\t\t\t\t<td class='$trbc'><span class='answertext'>"
-		. $ld."</span></td>\n";
-	}
-	unset($trbc);
-	$answer .= "\t\t\t\t</tr>\n";
-	$ansrowcount=0;
-	$ansrowtotallength=0;
-	while ($ansrow = $ansresult->FetchRow())
-	{
-		$ansrowcount++;
-		$ansrowtotallength=$ansrowtotallength+strlen($ansrow['answer']);
-	}
-	$percwidth=100 - ($cellwidth*$anscount);
-	foreach($labels as $ansrow)
-	{
-		$answer .= "\t\t\t\t<tr>\n"
-		. "\t\t\t\t\t<td class='arraycaptionleft'>{$ansrow['answer']}</td>\n";
-		foreach ($anscode as $ld)
+		
+		
+		
+		
+		
+		while ($lrow=$lresult->FetchRow())
 		{
-			if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
-			$myfname=$ia[1].$ld;
-			$answer .= "\t\t\t\t\t<td align='center' class='$trbc' width='$cellwidth%'>"
-			. "<label for='answer$myfname-".$ansrow['code']."'>";
-			$answer .= "<input class='radio' type='radio' name='$myfname' value='".$ansrow['code']."' id='answer$myfname-".$ansrow['code']."'"
-			. " title='".html_escape($ansrow['answer'])."'";
-			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ansrow['code']) {$answer .= " checked='checked'";}
-			// --> START NEW FEATURE - SAVE
-			$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
-			// --> END NEW FEATURE - SAVE
-
+			$labelans[]=$lrow['title'];
+			$labelcode[]=$lrow['code'];
+			$labels[]=array("answer"=>$lrow['title'], "code"=>$lrow['code']);
 		}
-	    unset($trbc);
+		if ($ia[6] != "Y" && $shownoanswer == 1) {
+			$labelcode[]="";
+			$labelans[]=$clang->gT("No answer");
+			$labels[]=array("answer"=>$clang->gT("No answer"), "code"=>"");
+		}
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+		$ansresult = db_execute_assoc($ansquery);
+		$anscount = $ansresult->RecordCount();
+		$fn=1;
+		$answer = "\t\t\t<table class='question' align='center'>\n"
+		. "\t\t\t\t<tr>\n"
+		. "\t\t\t\t\t<td></td>\n";
+		$cellwidth=$anscount;
+	
+		$cellwidth=round(50/$cellwidth);
+		while ($ansrow = $ansresult->FetchRow())
+		{
+			$anscode[]=$ansrow['code'];
+			$answers[]=answer_replace($ansrow['answer']);
+		}
+		foreach ($answers as $ld)
+		{
+			if (!isset($trbc) || $trbc == "array2") {$trbc = "array1";} else {$trbc = "array2";}
+			/* Check if this item has not been answered: the 'notanswered' variable must be an array,
+			containing a list of unanswered questions, the current question must be in the array,
+			and there must be no answer available for the item in this session. */
+			if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "") ) {
+				$ld = "<span class='errormandatory'>{$ld}</span>";
+			}
+			$answer .= "\t\t\t\t\t<td class='$trbc'><span class='answertext'>"
+			. $ld."</span></td>\n";
+		}
+		unset($trbc);
 		$answer .= "\t\t\t\t</tr>\n";
-		$fn++;
+		$ansrowcount=0;
+		$ansrowtotallength=0;
+		while ($ansrow = $ansresult->FetchRow())
+		{
+			$ansrowcount++;
+			$ansrowtotallength=$ansrowtotallength+strlen($ansrow['answer']);
+		}
+		$percwidth=100 - ($cellwidth*$anscount);
+		foreach($labels as $ansrow)
+		{
+			$answer .= "\t\t\t\t<tr>\n"
+			. "\t\t\t\t\t<td class='arraycaptionleft'>{$ansrow['answer']}</td>\n";
+			foreach ($anscode as $ld)
+			{
+				if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
+				$myfname=$ia[1].$ld;
+				$answer .= "\t\t\t\t\t<td align='center' class='$trbc' width='$cellwidth%'>"
+				. "<label for='answer$myfname-".$ansrow['code']."'>";
+				$answer .= "<input class='radio' type='radio' name='$myfname' value='".$ansrow['code']."' id='answer$myfname-".$ansrow['code']."'"
+				. " title='".html_escape($ansrow['answer'])."'";
+				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ansrow['code']) {$answer .= " checked='checked'";}
+				// --> START NEW FEATURE - SAVE
+				$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
+				// --> END NEW FEATURE - SAVE
+	
+			}
+		    unset($trbc);
+			$answer .= "\t\t\t\t</tr>\n";
+			$fn++;
+		}
+	
+		$answer .= "\t\t\t</table>\n";
+		foreach($anscode as $ld)
+		{
+			$myfname=$ia[1].$ld;
+			$answer .= "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+			$answer .= "' />\n";
+			$inputnames[]=$myfname;
+		}
+		
 	}
-
-	$answer .= "\t\t\t</table>\n";
-	foreach($anscode as $ld)
+	else
 	{
-		$myfname=$ia[1].$ld;
-		$answer .= "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
-		if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
-		$answer .= "' />\n";
-		$inputnames[]=$myfname;
+		$answer = "<font color=red>".$clang->gT('Error: The labelset used for this question is not available in this language and/or does not exist.')."</font>";
+		$inputnames="";
 	}
 	return array($answer, $inputnames);
 }
@@ -2667,6 +2703,14 @@ function answer_replace($text) {
 		$text=str_replace($replace, $replace3, $text);
 	} //while
 	return $text;
+}
+
+function labelset_exists($labelid,$language) {
+
+	$qulabel = "SELECT * FROM ".db_table_name('labels')." WHERE lid=$labelid AND language='$language'";
+	$tablabel = db_execute_assoc($qulabel) or die("Couldn't check for labelset<br />$ansquery<br />".htmlspecialchars($connect->ErrorMsg()));
+	$recordcount = $tablabel->RecordCount();
+	if ($recordcount>0) {return true;} else {return false;}
 }
 
 ?>

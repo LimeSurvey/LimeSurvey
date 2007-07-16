@@ -115,12 +115,36 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question does not have a question 'type' set."), $chkrow['gid']);
 	}
 
+	
+	
+
 	//CHECK THAT FLEXIBLE LABEL TYPE QUESTIONS HAVE AN "LID" SET
 	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z') AND (lid = 0 OR lid is null)";
 	$chkresult = db_execute_assoc($chkquery) or die ("Couldn't check questions for missing LIDs<br />$chkquery<br />".$connect->ErrorMsg());
 	while($chkrow = $chkresult->FetchRow()){
 		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires a Labelset, but none is set."), $chkrow['gid']);
 	} // while
+	
+	
+	//NOW check that all used labelsets have all necessary languages
+	$chkquery = "SELECT qid, question, gid, lid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z') AND (lid > 0) AND (lid is not null) group by qid, question, gid, lid";
+	$chkresult = db_execute_assoc($chkquery) or die ("Couldn't check questions for missing LID languages<br />$chkquery<br />".$connect->ErrorMsg());
+	$slangs = GetAdditionalLanguagesFromSurveyID($surveyid); 
+	$baselang = GetBaseLanguageFromSurveyID($surveyid);
+	array_unshift($slangs,$baselang);
+	while ($chkrow = $chkresult->FetchRow())
+	{
+	    foreach ($slangs as $surveylanguage)
+			{
+			$chkquery2 = "SELECT lid FROM {$dbprefix}labels WHERE language='$surveylanguage' AND (lid = {$chkrow['lid']}) ";
+			$chkresult2 = db_execute_assoc($chkquery2);
+			if ($chkresult2->RecordCount()==0)
+	            {
+				$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("The labelset used in this question is missing a translation."), '');
+	    		}
+			}  //foreach
+	} //while 
+
 	//CHECK THAT ALL CONDITIONS SET ARE FOR QUESTIONS THAT PRECEED THE QUESTION CONDITION
 	//A: Make an array of all the qids in order of appearance
 	//	$qorderquery="SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$_GET['sid']} ORDER BY {$dbprefix}groups.sortorder, {$dbprefix}questions.title";
