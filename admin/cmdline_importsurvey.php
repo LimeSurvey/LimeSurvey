@@ -34,23 +34,25 @@
     #############################################################   
 */
 
-if ($argc != 4 || in_array($argv[1], array('--help', '-help', '-h', '-?'))) {
+if ($argc < 2 || in_array($argv[1], array('--help', '-help', '-h', '-?'))) {
 ?>
 
 This is a command line LimeSurvey Survey importer.
 
   Usage:
-  php <?php echo $argv[0]; ?> <File to import> <user> <password>
+  php <?php echo $argv[0]; ?> <File to import> [<user> <password>]
 
   <File to import> has to be a LimeSurvey survey dump.
+  <user> and <password> are only required if the control access is active
   With the --help, -help, -h, or -? options, you can get this help.
 
 <?php
 	exit;
 } else {
     $the_full_file_path = $argv[1];
-    $username = $argv[2];
-    $userpass = $argv[3];
+    
+    $username = ($argc>2)? $argv[2] : "";
+    $userpass = ($argc>3)? $argv[3] : "";
 }
 
 if (!file_exists($the_full_file_path)) {
@@ -62,43 +64,48 @@ $_SERVER['SERVER_NAME'] = "";				// just to avoid notices
 $_SERVER['SERVER_SOFTWARE'] = "";		// just to avoid notices
 require_once(dirname(__FILE__).'/../config.php');  // config.php itself includes common.php
 
-
-require_once($homedir."/classes/core/sha256.php"); 
-$adminoutput ="";										// just to avoid notices
-include("database.php");
-$query = "SELECT uid, password, lang FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($username);
-$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-$result = $connect->SelectLimit($query, 1) or die ($query."\n".$connect->ErrorMsg());
-if ($result->RecordCount() < 1)
+if ($accesscontrol <> 1) 	// no access control
 {
-	// wrong or unknown username and/or email
-	echo "\n".$clang->gT("User name not found!")."\n";
-	exit;
+	$_SESSION['loginID'] = 1;
 }
 else
 {
-	$fields = $result->FetchRow();
-	if (SHA256::hash($userpass) == $fields['password'])
+	require_once($homedir."/classes/core/sha256.php"); 
+	$adminoutput ="";										// just to avoid notices
+	include("database.php");
+	$query = "SELECT uid, password, lang FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($username);
+	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+	$result = $connect->SelectLimit($query, 1) or die ($query."\n".$connect->ErrorMsg());
+	if ($result->RecordCount() < 1)
 	{
-		$_SESSION['loginID'] = intval($fields['uid']);
-		$clang = new limesurvey_lang($fields['lang']);
-
-		GetSessionUserRights($_SESSION['loginID']);
-		if (!$_SESSION['USER_RIGHT_CREATE_SURVEY'])
-		{
-			// no permission to create survey!
-			echo "\n".$clang->gT("You are not allowed to import a survey!")."\n";
-			exit;
-		}
+		// wrong or unknown username and/or email
+		echo "\n".$clang->gT("User name invalid!")."\n";
+		exit;
 	}
 	else
 	{
-		// password don't match username
-		echo "\n".$clang->gT("User name / password dont match!")."\n";
-		exit;
+		$fields = $result->FetchRow();
+		if (SHA256::hash($userpass) == $fields['password'])
+		{
+			$_SESSION['loginID'] = intval($fields['uid']);
+			$clang = new limesurvey_lang($fields['lang']);
+	
+			GetSessionUserRights($_SESSION['loginID']);
+			if (!$_SESSION['USER_RIGHT_CREATE_SURVEY'])
+			{
+				// no permission to create survey!
+				echo "\n".$clang->gT("You are not allowed to import a survey!")."\n";
+				exit;
+			}
+		}
+		else
+		{
+			// password don't match username
+			echo "\n".$clang->gT("User name / password dont match!")."\n";
+			exit;
+		}
 	}
 }
-
 echo "\n";
 
 $importsurvey = "";
