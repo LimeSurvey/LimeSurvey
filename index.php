@@ -53,7 +53,10 @@ $tpldir="$publicdir/templates";
 
 @session_start();
 
-$saved_id = $_SESSION['srid'];
+if (isset($_SESSION['srid']))
+{
+	$saved_id = $_SESSION['srid'];
+}
 
 if (!isset($_SESSION['grouplist'])  && (isset($_POST['move'])) )
 // geez ... a session time out! RUN! 

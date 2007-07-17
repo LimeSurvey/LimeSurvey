@@ -125,9 +125,9 @@ if($actsurrows['edit_survey_property']){
 			$editdata=$row;
 		}
 		$scopeselect = "<select name='scope'><option ";
-		if ($editdata['scope'] == "T") {$scopeselect .= "selected ";}
+		if ($editdata['scope'] == "T") {$scopeselect .= "selected='selected' ";}
 		$scopeselect .= "value='T'>".$clang->gT("Total")."</option><option value='G'";
-		if ($editdata['scope'] == "G") {$scopeselect .= " selected";}
+		if ($editdata['scope'] == "G") {$scopeselect .= " selected='selected'";}
 		$scopeselect .= ">".$clang->gT("Group")."</option></select>";
 		$groupselect=str_replace("'".$editdata['gid']."'", "'".$editdata['gid']."' selected", $groupselect);
 		$inputs=array($scopeselect,
