@@ -171,8 +171,10 @@ if (isset($_POST['move']) && $_POST['move'] == "movesubmit")
 			sendcacheheaders();
 			if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['url'])
 			{
-				//Automatically redirect the page to the "url" setting for the survey
 				session_write_close();
+				//Automatically redirect the page to the "url" setting for the survey
+				
+				/* this part doesn't have sense because $mytoken is not declared nor asigned value anywhere
                 $redir = $thissurvey['url'];
                 
                 // Add the token to the redirect just in case
@@ -180,7 +182,14 @@ if (isset($_POST['move']) && $_POST['move'] == "movesubmit")
                 {
 				$redir .= "?token=".$mytoken;
 				}
-				header("Location: {$redir}");
+				header("Location: {$redir}");	*/
+
+				$url = $thissurvey['url'];
+				$url=str_replace("{SAVEDID}",$saved_id, $url);			// to activate the SAVEDID in the END URL
+				$url=str_replace("{TOKEN}",$_POST['token'], $url);			// to activate the SAVEDID in the END URL
+	
+				header("Location: {$url}");
+				
 			}
 
 

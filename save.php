@@ -107,6 +107,7 @@ if ((isset($_POST['fieldnames']) && $_POST['fieldnames']) || (isset($_POST['move
             if (substr($subquery,0,6)=='INSERT')
 			{
         	   $_SESSION['srid'] = $tempID;
+        	   $saved_id = $tempID;
 			}
 			if (isset($_POST['move']) && $_POST['move'] == "movesubmit")
 			{

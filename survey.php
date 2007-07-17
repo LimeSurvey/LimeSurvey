@@ -163,7 +163,12 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit") && (!isset($notans
 		{
 			//Automatically redirect the page to the "url" setting for the survey
 			session_write_close();
-			header("Location: {$thissurvey['url']}");
+			
+			$url = $thissurvey['url'];
+			$url=str_replace("{SAVEDID}",$saved_id, $url);			// to activate the SAVEDID in the END URL
+			$url=str_replace("{TOKEN}",$_POST['token'], $url);			// to activate the SAVEDID in the END URL
+
+			header("Location: {$url}");
 		}
 
 		doHeader();

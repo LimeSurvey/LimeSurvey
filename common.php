@@ -1830,6 +1830,7 @@ function templatereplace($line)
 	global $publicurl, $templatedir, $token;
 	global $assessments, $s_lang;
 	global $errormsg, $clang;
+	global $saved_id;
 
 	if (stripos ($line,"</head>"))
 	{
@@ -1912,6 +1913,8 @@ function templatereplace($line)
 		if ($thissurvey['url']!=""){$linkreplace="<a href='{$thissurvey['url']}'>{$thissurvey['urldescrip']}</a>";}
 		else {$linkreplace="";}
 		$line=str_replace("{URL}", $linkreplace, $line);
+		$line=str_replace("{SAVEDID}",$saved_id, $line);			// to activate the SAVEDID in the END URL
+		$line=str_replace("{TOKEN}",$_POST['token'], $line);			// to activate the SAVEDID in the END URL
 	}
 	if (strpos($line, "{PRIVACY}") !== false) $line=str_replace("{PRIVACY}", $privacy, $line);
 	if (strpos($line, "{PRIVACYMESSAGE}") !== false) $line=str_replace("{PRIVACYMESSAGE}", "<strong><i>".$clang->gT("A Note On Privacy")."</i></strong><br />".$clang->gT("This survey is anonymous.")."<br />".$clang->gT("The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."), $line);
