@@ -1831,6 +1831,7 @@ function templatereplace($line)
 	global $assessments, $s_lang;
 	global $errormsg, $clang;
 	global $saved_id;
+	global $totalBoilerplatequestions;
 
 	if (stripos ($line,"</head>"))
 	{
@@ -1879,7 +1880,7 @@ function templatereplace($line)
 	{
 		if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", $clang->gT("There are {NUMBEROFQUESTIONS} questions in this survey."), $line); //Note this line MUST be before {NUMBEROFQUESTIONS}
 	}
-	if (strpos($line, "{NUMBEROFQUESTIONS}") !== false) $line=str_replace("{NUMBEROFQUESTIONS}", $totalquestions, $line);
+	if (strpos($line, "{NUMBEROFQUESTIONS}") !== false) $line=str_replace("{NUMBEROFQUESTIONS}", $totalquestions - $totalBoilerplatequestions, $line);
 
 	if (strpos($line, "{TOKEN}") !== false) {
 		if (isset($token)) {

@@ -147,6 +147,7 @@ if (isset($_GET['tokenSEC']) && $_GET['tokenSEC'] == 1 && function_exists("Image
 if (isset($_GET['newtest']) && $_GET['newtest'] = "Y") unset($_GET['token']);
 
 //GET BASIC INFORMATION ABOUT THIS SURVEY
+$totalBoilerplatequestions =0;
 $thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);
 
 if (is_array($thissurvey)) {$surveyexists=1;} else {$surveyexists=0;}
@@ -1072,6 +1073,9 @@ function buildsurveysession()
 	global $tokensexist, $thistpl;
 	global $surveyid, $dbprefix, $connect;
 	global $register_errormsg, $clang;
+	global $totalBoilerplatequestions;
+	
+	$totalBoilerplatequestions = 0;
 
 	//This function builds all the required session variables when a survey is first started.
 	//It is called from each various format script (ie: group.php, question.php, survey.php)
@@ -1290,7 +1294,7 @@ UpdateSessionGroupList();
 				}
 			}
 		}
-		elseif ($arow['type'] == "R")
+		elseif ($arow['type'] == "R")	// Ranking
 		{
 
 
@@ -1314,7 +1318,7 @@ UpdateSessionGroupList();
 		}
 
 
-		elseif ($arow['type'] == "Q" || $arow['type'] == "J" )
+		elseif ($arow['type'] == "Q" || $arow['type'] == "J" )	// Multiple Short Text - ???
 		{
 
 // Optimized Query
@@ -1329,13 +1333,13 @@ UpdateSessionGroupList();
 				$_SESSION['insertarray'][] = $fieldname.$abrow['code'];
 			}
 		}
-		elseif ($arow['type'] == "O")
+		elseif ($arow['type'] == "O")	// List With Comment
 		{
 			$_SESSION['insertarray'][] = $fieldname;
 			$fn2 = $fieldname."comment";
 			$_SESSION['insertarray'][] = $fn2;
 		}
-		elseif ($arow['type'] == "L" || $arow['type'] == "!")
+		elseif ($arow['type'] == "L" || $arow['type'] == "!")	// List (Radio) - List (Dropdown)
 		{
 			$_SESSION['insertarray'][] = $fieldname;
 			if ($arow['other'] == "Y") { $_SESSION['insertarray'][] = $fieldname."other";}
@@ -1355,6 +1359,11 @@ UpdateSessionGroupList();
 					$_SESSION[$fieldname] = $abrow['code'];
 				}
 			}
+		}
+		elseif  ($arow['type'] == "X")	// Boilerplate Question
+		{
+			$totalBoilerplatequestions++;
+			$_SESSION['insertarray'][] = $fieldname;
 		}
 		else
 		{
