@@ -134,10 +134,10 @@ if($actsurrows['edit_survey_property']){
 		$groupselect,
 		"<input type='text' name='minimum' value='".$editdata['minimum']."' />",
 		"<input type='text' name='maximum' value='".$editdata['maximum']."' />",
-		"<input type='text' name='name' value='".htmlentities(stripslashes($editdata['name']), ENT_QUOTES)."' />",
-		"<textarea name='message'>".htmlentities(stripslashes($editdata['message']), ENT_QUOTES)."</textarea>",
-		"<input type='text' name='link' value='".$editdata['link']."' />");
-		$actiontitle=$clang->gT("Edit");
+		"<input type='text' name='name' size='80' value='".htmlentities(stripslashes($editdata['name']), ENT_QUOTES)."'/>",
+		"<textarea name='message' rows='10' cols='80'>".htmlentities(stripslashes($editdata['message']), ENT_QUOTES)."</textarea>",
+		"<input type='text' name='link' size='80' value='".$editdata['link']."' />");
+		$actiontitle=$clang->gT("Edit");	
 		$actionvalue="assessmentupdate";
 		$thisid=$editdata['id'];
 	}
@@ -189,7 +189,7 @@ if($actsurrows['edit_survey_property']){
 		$assessmentsoutput.= "</tr>\n";
 	}
 	$assessmentsoutput.= "</table>";
-	$assessmentsoutput.= "<br /><form method='post' action='$scriptname?sid=$surveyid'><table align='center' cellspacing='1'>\n";
+	$assessmentsoutput.= "<br /><form method='post' name='assessmentsform' action='$scriptname?sid=$surveyid'><table align='center' cellspacing='1'>\n";
 	$assessmentsoutput.= "<tr><th colspan='2'>$actiontitle</th></tr>\n";
 	$i=0;
 	
@@ -197,7 +197,8 @@ if($actsurrows['edit_survey_property']){
 		$assessmentsoutput.= "<tr><th>$head</th><td>".$inputs[$i]."</td></tr>\n";
 		$i++;
 	}
-	$assessmentsoutput.= "<tr><th colspan='2' align='center'><input type='submit' value='$actiontitle' />\n";
+	$assessmentsoutput.= "<tr><th colspan='2' align='center'><input type='submit' value='".$clang->gT("Save")."' />\n";
+	if ($action == "assessmentedit") $assessmentsoutput.= "&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' value='".$clang->gT("Cancel")."' onclick=\"document.assessmentsform.action.value='assessments'\" />\n";
 	$assessmentsoutput.= "<input type='hidden' name='sid' value='$surveyid' />\n"
 	."<input type='hidden' name='action' value='$actionvalue' />\n"
 	."<input type='hidden' name='id' value='$thisid' />\n"
