@@ -483,11 +483,11 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	
 
 	$qidattributes=getQuestionAttributes($qid);
-	$editquestion .= "\t\t\t<table>
+	$editquestion .= "\t\t\t<table id='QTattributes'>
 					   <tr>
 					    <td colspan='2' align='center'>
 						  <form action='$scriptname' method='post'><table class='outlinetable' cellspacing='0' width='90%'>
-						  <tr id='QTattributes'>
+						  <tr>
 						    <th colspan='4'>".$clang->gT("Question Attributes:")."</th>
    					      </tr>
 						  <tr><th colspan='4' height='5'></th></tr>

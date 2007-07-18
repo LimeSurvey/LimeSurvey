@@ -1167,8 +1167,11 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		$questionsummary .= "\t<tr><td><table class='table2columns'><tr $qshowstyle id='surveydetails30'><td width='20%' align='right'><strong>"
 		. $clang->gT("Code:")."</strong></td>\n"
 		. "\t<td align='left'>{$qrrow['title']}";
-		if ($qrrow['mandatory'] == "Y") {$questionsummary .= ": (<i>".$clang->gT("Mandatory Question")."</i>)";}
-		else {$questionsummary .= ": (<i>".$clang->gT("Optional Question")."</i>)";}
+		if ($qrrow['type'] != "X")
+		{
+			if ($qrrow['mandatory'] == "Y") {$questionsummary .= ": (<i>".$clang->gT("Mandatory Question")."</i>)";}
+			else {$questionsummary .= ": (<i>".$clang->gT("Optional Question")."</i>)";}
+		}
 		$questionsummary .= "</td></tr>\n"
 		. "\t<tr $qshowstyle id='surveydetails31'><td align='right' valign='top'><strong>"
 		. $clang->gT("Question:")."</strong></td>\n\t<td align='left'>{$qrrow['question']}</td></tr>\n"
@@ -1217,7 +1220,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			$questionsummary .= ($qrrow['other'] == "Y") ? ($clang->gT("Yes")) : ($clang->gT("No")) ;
 			$questionsummary .= "</td></tr>\n";
 		}
-		if (isset($qrrow['mandatory']))
+		if (isset($qrrow['mandatory']) and ($qrrow['type'] != "X"))
 		{
 			$questionsummary .= "\t<tr $qshowstyle id='surveydetails39'>"
 			. "<td align='right' valign='top'><strong>"
@@ -2709,12 +2712,14 @@ function questionjavascript($type, $qattributes)
 	. "\t\tdocument.getElementById('OtherSelection').style.display = '';\n"
 	. "\t\tdocument.getElementById('LabelSets').style.display = 'none';\n"
 	. "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
+	. "\t\tdocument.getElementById('MandatorySelection').style.display='';\n"
 	. "\t\t}\n"
 	. "\telse if (QuestionType == 'F' || QuestionType == 'H' || QuestionType == 'W' || QuestionType == 'Z')\n"
 	. "\t\t{\n"
 	. "\t\tdocument.getElementById('LabelSets').style.display = '';\n"
 	. "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n"
 	. "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
+	. "\t\tdocument.getElementById('MandatorySelection').style.display='';\n"
 	. "\t\t}\n"
 	. "\telse if (QuestionType == 'S' || QuestionType == 'T' || QuestionType == 'U' || QuestionType == 'N' || QuestionType=='')\n"
 	. "\t\t{\n"
@@ -2722,6 +2727,14 @@ function questionjavascript($type, $qattributes)
 	. "\t\tdocument.getElementById('OtherSelection').style.display ='none';\n"
 	. "\t\tdocument.getElementById('ON').checked = true;\n"
 	. "\t\tdocument.getElementById('LabelSets').style.display='none';\n"
+	. "\t\tdocument.getElementById('MandatorySelection').style.display='';\n"
+	. "\t\t}\n"
+	. "\telse if (QuestionType == 'X')\n"
+	. "\t\t{\n"
+	. "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
+	. "\t\tdocument.getElementById('OtherSelection').style.display ='none';\n"
+	. "\t\tdocument.getElementById('LabelSets').style.display='none';\n"
+	. "\t\tdocument.getElementById('MandatorySelection').style.display='none';\n"
 	. "\t\t}\n"
 	. "\telse\n"
 	. "\t\t{\n"
@@ -2729,6 +2742,7 @@ function questionjavascript($type, $qattributes)
 	. "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n"
 	. "\t\tdocument.getElementById('ON').checked = true;\n"
 	. "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
+	. "\t\tdocument.getElementById('MandatorySelection').style.display='';\n"
 	//. "\t\tdocument.addnewquestion.other[1].checked = true;\n"
 	. "\t\t}\n"
 	. "\tbuildQTlist(QuestionType);\n"
