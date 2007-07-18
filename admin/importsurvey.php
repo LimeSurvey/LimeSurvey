@@ -270,7 +270,11 @@ else
 }
 for ($i=0; $i<=$stoppoint+1; $i++)
 {
-	if ($i<$stoppoint-2 || $i==count($bigarray)-1) {$assessmentsarray[] = $bigarray[$i];}
+//	if ($i<$stoppoint-2 || $i==count($bigarray)-1)
+	if ($i<$stoppoint-2)
+	{
+		$assessmentsarray[] = $bigarray[$i];
+	}
 	unset($bigarray[$i]);
 }
 $bigarray = array_values($bigarray);
