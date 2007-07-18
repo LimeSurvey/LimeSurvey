@@ -40,13 +40,13 @@
 // 1. questions
 // 2. answers
 
+require_once(dirname(__FILE__).'/../config.php');
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 
 
 $qid = $_GET['qid'];
 
-require_once(dirname(__FILE__).'/../config.php');
 include_once("login_check.php");
 
 //echo $htmlheader;
