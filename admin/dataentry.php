@@ -140,7 +140,7 @@ if($actsurrows['browse_response'])
 
 		if (bHasSurveyGotTokentable($thissurvey) && (!isset($_POST['token']) || !$_POST['token']))
 		{// First Check if the survey uses tokens and if a token has been provided
-			$errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("This survey is not anonymous, you must supply a valid token")."</strong>\n";
+			$errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("This is a closed-access survey, you must supply a valid token")."</strong>\n";
 		}
 		elseif (bHasSurveyGotTokentable($thissurvey) && $lastanswfortoken == 'UnknownToken')
 		{
@@ -157,7 +157,7 @@ if($actsurrows['browse_response'])
 			}
 			else
 			{
-				$errormsg .= "<br /><br />".$clang->gT("This surveys is anonymous, you can't update this answer").".\n";
+				$errormsg .= "<br /><br />".$clang->gT("This surveys uses anonymous answers, you can't update this response").".\n";
 			}
 		}
 		else
