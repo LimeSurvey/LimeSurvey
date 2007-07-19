@@ -94,6 +94,8 @@ if ($subaction == "delete" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 {
 	$_SESSION['metaHeader']="<meta http-equiv=\"refresh\" content=\"1;URL={$scriptname}?action=tokens&amp;subaction=browse&amp;sid={$_GET['sid']}&amp;start=$start&amp;limit=$limit&amp;order=$order\" />";
 }
+
+
 //Show Help
 $tokenoutput .= "<script type='text/javascript'>\n"
 ."<!--\n"
@@ -763,6 +765,9 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 	
 			$subject=Replacefields($thissurvey['email_invite_subj'], $fieldsarray);
 			$textarea=Replacefields($thissurvey['email_invite'], $fieldsarray);
+
+			$subject=html_escape($subject);
+			$textarea=html_escape($textarea);
 	    	$tokenoutput .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($language,false);
 	    	if ($language==$baselang) 
 	        {
@@ -903,6 +908,7 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 		        foreach ($surveylangs as $language)
 				    {
           			$message = html_escape($_POST['message_'.$language]);
+          			$subject = html_escape($_POST['subject_'.$language]);
 					$tokenoutput .="\t\t\t<input type='hidden' name='from_$language' value=\"".$_POST['from_'.$language]."\" />\n"
 					."\t\t\t<input type='hidden' name='subject_$language' value=\"".$_POST['subject_'.$language]."\" />\n"
 					."\t\t\t<input type='hidden' name='message_$language' value=\"$message\" />\n";
@@ -954,7 +960,7 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 			."\t<tr>\n"
 			."\t\t<td align='right' width='150'><strong>".$clang->gT("Subject").":</strong></td>\n";
 			$subject=str_replace("{SURVEYNAME}", $thissurvey['name'], $thissurvey['email_remind_subj']);
-			$tokenoutput .= "\t\t<td><input type='text' size='83' name='subject_$language' value='$subject' /></td>\n"
+			$tokenoutput .= "\t\t<td><input type='text' size='83' name='subject_$language' value='".html_escape($subject)."' /></td>\n"
 			."\t</tr>\n";
 	
 			$tokenoutput .= "\t<tr>\n"
@@ -1440,7 +1446,7 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 			{
 
 				$line = convertCSVRowToArray($buffer,',','"');
-				// sanitize it befire writing into table
+				// sanitize it before writing into table
 				$line = array_map('db_quote',$line);
 				if (isset($line[0]) && $line[0] != "" & isset($line[1]) && $line[1] != "" && isset($line[2]) && $line[2] != "")
 				{
@@ -1457,7 +1463,8 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 					
 					$dupquery = "SELECT firstname, lastname from ".db_table_name("tokens_$surveyid")." where email=".$connect->qstr($line[2])." and firstname = ".$connect->qstr($line[0])." and lastname= ".$connect->qstr($line[1])."";
 					$dupresult = $connect->Execute($dupquery);
-					if ($dupresult->RecordCount() > 0)
+//					if ( 1 == 2 && $dupresult->RecordCount() > 0)
+					if ( $dupresult->RecordCount() > 0)
 					{
 						$dupfound = $dupresult->FetchRow();
 						$xy++;
