@@ -1463,7 +1463,6 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 					
 					$dupquery = "SELECT firstname, lastname from ".db_table_name("tokens_$surveyid")." where email=".$connect->qstr($line[2])." and firstname = ".$connect->qstr($line[0])." and lastname= ".$connect->qstr($line[1])."";
 					$dupresult = $connect->Execute($dupquery);
-//					if ( 1 == 2 && $dupresult->RecordCount() > 0)
 					if ( $dupresult->RecordCount() > 0)
 					{
 						$dupfound = $dupresult->FetchRow();
