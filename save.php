@@ -301,7 +301,7 @@ function savedcontrol()
 
 				if (returnglobal('token')){$message.="&token=".returnglobal('token');}
 				$from=$thissurvey['adminemail'];
-				if (MailtextMessage($message, $subject, $_POST['saveemail'], $from, $sitename))
+				if (MailTextMessage($message, $subject, $_POST['saveemail'], $from, $sitename))
 				{
 					$emailsent="Y";
 				}

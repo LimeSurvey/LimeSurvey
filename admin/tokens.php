@@ -1067,7 +1067,7 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 				$msgsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
 				$sendmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
 
-				if (MailtextMessage($sendmessage, $msgsubject, $to, $from, $sitename))
+				if (MailTextMessage($sendmessage, $msgsubject, $to, $from, $sitename))
 				{
 					$tokenoutput .= "\t\t\t({$emrow['tid']})[".$clang->gT("Reminder sent to:")." {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
 				}

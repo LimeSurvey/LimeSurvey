@@ -136,7 +136,7 @@ $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
 
 $html=""; //Set variable
 
-if (MailtextMessage($message, $subject, returnglobal('register_email'), $from, $sitename))
+if (MailTextMessage($message, $subject, returnglobal('register_email'), $from, $sitename))
 {
 	// TLR change to put date into sent
 	//	$query = "UPDATE {$dbprefix}tokens_$surveyid\n"
