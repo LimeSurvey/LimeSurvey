@@ -301,7 +301,7 @@ if ($tokensexist == 1 && returnglobal('token'))
 		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 		echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 		echo "\t<center><br />\n"
-		."\t".$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
+		."\t".$clang->gT("This is a closed-access survey. You need a valid token to participate.")."<br /><br />\n"
 		."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."\n"
 		."\t".$clang->gT("For further information contact")." {$thissurvey['adminname']} "
 		."(<a href='mailto:{$thissurvey['adminemail']}'>"

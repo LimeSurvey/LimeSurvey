@@ -213,6 +213,7 @@ $localtimedate=(strftime("%Y-%m-%d %H:%M", mktime(date("H")+$timeadjust)));
 // SITE STYLES
 $setfont = "<font size='2' face='verdana'>";
 
+$singleborderstyle = "style='border: 1px solid #111111'";
 
 /**
      * showadminmenu() function returns html text for the administration button bar
@@ -3928,10 +3929,18 @@ function retrieve_Answer($code)
 }
 
 // returns true if thesurvey has a token table defined
-function bHasSurveyGotTokentable($thesurvey)
+function bHasSurveyGotTokentable($thesurvey, $sid=null)
 {
 	global $connect;
-	$surveyid = $thesurvey['sid'];
+	if (is_array($thesurvey))
+	{
+		$surveyid = $thesurvey['sid'];
+	}
+	elseif (!is_null($sid))
+	{
+		$surveyid = $sid;
+	}
+
 	$tablelist = $connect->MetaTables() or die ("Error getting tokens<br />".htmlspecialchars($connect->ErrorMsg()));
 	foreach ($tablelist as $tbl)
 	{

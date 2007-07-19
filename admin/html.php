@@ -50,6 +50,7 @@ if ($action == "listsurveys")
 				    <td height=\"22\"><strong>".$clang->gT("Survey")."</strong></td>
 				    <td><strong>".$clang->gT("Date Created")."</strong></td>
 				    <td><strong>".$clang->gT("Access")."</strong></td>
+				    <td><strong>".$clang->gT("Answer Privacy")."</strong></td>
 				    <td><strong>".$clang->gT("Status")."</strong></td>
 				    <td colspan=\"3\"><strong>".$clang->gT("Action")."</strong></td>
 				    <td colspan=\"3\"><strong>".$clang->gT("Responses")."</strong></td>
@@ -63,9 +64,20 @@ if ($action == "listsurveys")
 			
 			if($rows['private']=="Y")
 			{
-				$visibility=$clang->gT("Anonymous") ;
+				$privacy=$clang->gT("Anonymous") ;
 			}
-			else $visibility =$clang->gT("Not Anonymous") ;
+			else $privacy =$clang->gT("Not Anonymous") ;
+
+			
+			if (bHasSurveyGotTokentable(null,$rows['sid']))
+			{
+				$visibility = $clang->gT("Closed-access");
+			}
+			else
+			{
+				$visibility = $clang->gT("Open-access");
+			}
+
 			if($rows['active']=="Y")
 			{
 				if ($rows['useexpiry']=='Y' && $rows['expires'] < date("Y-m-d"))
@@ -134,6 +146,7 @@ if ($action == "listsurveys")
 			$listsurveys.="<td><a href='".$scriptname."?sid=".$rows['sid']."'>".$rows['surveyls_title']."</a></td>".
 					    "<td>".$datecreated."</td>".
 					    "<td>".$visibility."</td>" .
+					    "<td>".$privacy."</td>" .
 					    "<td>".$status."</td>".
 					    "<td>&nbsp;</td>
 					    <td>&nbsp;</td>";
@@ -1949,7 +1962,7 @@ if ($action == "editsurvey")
 			. "\t\t</select></td>\n"
 			. "\t</tr>\n";
 			//ANONYMOUS
-			$editsurvey .= "\t<tr><td align='right'>".$clang->gT("Anonymous?")."</td>\n";
+			$editsurvey .= "\t<tr><td align='right'>".$clang->gT("Anonymous answers?")."</td>\n";
 			  // warning message if anonymous + datestamped anwsers
 			$editsurvey .= "\n"
 			. "\t<script type=\"text/javascript\"><!-- \n"
@@ -2494,7 +2507,7 @@ if ($action == "newsurvey")
 		. "\t\t</select></td>\n"
 		. "\t</tr>\n";
 		// ANONYMOUS
-		$newsurvey .= "\t<tr><td align='right'>".$clang->gT("Anonymous?")."</td>\n";
+		$newsurvey .= "\t<tr><td align='right'>".$clang->gT("Anonymous answers?")."</td>\n";
 		  // warning message if anonymous + datestamped anwsers
 		$newsurvey .= "\n"
 		. "\t<script type=\"text/javascript\"><!-- \n"
