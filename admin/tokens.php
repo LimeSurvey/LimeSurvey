@@ -635,30 +635,34 @@ if ($subaction == "browse" || $subaction == "search")
 		}
 		if ($brow['completed'] != "N" && $brow['completed']!="" && $surveyprivate == "N")
 		{
-			$tokenoutput .= "\t\t<form action='$homeurl/$scriptname?action=browse' method='post' target='_blank'>\n"
-			."\t\t<td align='center' valign='top'>\n"
-			."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='V' title='"
-			.$clang->gT("View Response")."' />\n"
-			."\t\t</td>\n"
-			."\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
-			."\t\t<input type='hidden' $subaction value='id' />\n"
-			."\t\t<input type='hidden' name='sql' value=\"token='{$brow['token']}'\" />\n"
-			."\t\t</form>\n";
-
-			// UPDATE button to the tokens display in the MPID Actions column
+			// Get response Id
 			$query="SELECT id FROM ".db_table_name("survey_$surveyid")." WHERE token='".$brow['token']."'";
 			$result=db_execute_num($query) or die ("<br />Could not find token!<br />\n" . htmlspecialchars($connect->ErrorMsg()));
 			list($id) = $result->FetchRow();
+
+
+			// UPDATE button to the tokens display in the MPID Actions column
 			if  ($id)
 			{
-                $tokenoutput .= "\t\t<form action='$homeurl/$scriptname?action=dataentry&amp;subaction=edit' method='post' target='_blank'>\n";
+				$tokenoutput .= "\t\t<form action='$homeurl/$scriptname?action=browse' method='post' target='_blank'>\n"
+				."\t\t<td align='center' valign='top'>\n"
+				."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='V' title='"
+				.$clang->gT("View Response")."' />\n"
+				."\t\t</td>\n"
+				."\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
+				."\t\t<input type='hidden' value='id' name='subaction' />\n"
+				."\t\t<input type='hidden' value='$id' name='id' />\n"
+				."\t\t</form>\n";
+
+
+				$tokenoutput .= "\t\t<form action='$homeurl/$scriptname?action=dataentry&amp;subaction=edit' method='post' target='_blank'>\n";
 				$tokenoutput .= "\t\t<form action='$homeurl/$scriptname?action=dataentry' method='post' target='_blank'>\n"
 				."\t\t<td align='center' valign='top'>\n"
 				."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='U' title='"
 				.$clang->gT("Update Response")."' />\n"
 				."\t\t</td>\n"
 				."\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
-				."\t\t<input type='hidden' $subaction value='edit' />\n"
+//				."\t\t<input type='hidden' $subaction value='edit' />\n"
 				."\t\t<input type='hidden' name='surveytable' value='survey_$surveyid' />\n"
 				."\t\t<input type='hidden' name='id' value='$id' />\n"
 				."\t\t</form>\n";
