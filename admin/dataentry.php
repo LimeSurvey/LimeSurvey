@@ -331,10 +331,18 @@ if($actsurrows['browse_response'])
 				$col_name .= ", startlanguage\n";
 				$insertqr .= ", '{$_POST['language']}'";
 			}
-			if (isset($_POST['closerecord']) && isset($_POST['closedate']) && $_POST['closedate'] != '') // handle Submidate if required
+			if (isset($_POST['closerecord'])) // handle Submidate if required
 			{
-				$col_name .= ", submitdate\n";
-				$insertqr .= ", '{$_POST['closedate']}'";
+				if ($thissurvey['private'] =="Y" && $thissurvey['datestamp'] =="N")
+				{
+					$col_name .= ", submitdate\n";
+					$insertqr .= ", '".date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980))."'";
+				}
+				elseif (isset($_POST['closedate']) && $_POST['closedate'] != '')
+				{
+					$col_name .= ", submitdate\n";
+					$insertqr .= ", '{$_POST['closedate']}'";
+				}
 			}
 			//		$dataentryoutput .= "\t\t\t<strong>Inserting data</strong><br />\n"
 			//			."SID: $surveyid, ($surveytable)<br /><br />\n";
