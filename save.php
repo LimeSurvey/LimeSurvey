@@ -355,6 +355,19 @@ function createinsertquery()
 		}
 
 		// --> START NEW FEATURE - SAVE
+
+		// First compute the submitdate
+		if ($thissurvey['private'] =="Y" && $thissurvey['datestamp'] =="N")
+		{
+			// In case of anonymous answers survey with no datestamp
+			// then the the answer submutdate gets a conventional timestamp
+			// 1st Jan 1980
+			$mysubmitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
+		}
+		else
+		{
+			$mysubmitdate = date("Y-m-d H:i:s");
+		}
 		// CHECK TO SEE IF ROW ALREADY EXISTS
 		if (!isset($_SESSION['srid']))
 		{
@@ -396,7 +409,7 @@ function createinsertquery()
 			}
 			if ((isset($_POST['move']) && $_POST['move'] == "movesubmit"))
 			{
-				$query .= ", '".date("Y-m-d H:i:s")."'";
+				$query .= ", '".$mysubmitdate."'";
 			}
 			$query .=")";
 		}
@@ -416,7 +429,7 @@ function createinsertquery()
 				}
 				if ((isset($_POST['move']) && $_POST['move'] == "movesubmit"))
 				{
-					$query .= "submitdate = '".date("Y-m-d H:i:s")."',";
+					$query .= "submitdate = '".$mysubmitdate."',";
 				}
 				$fields=explode("|", $_POST['modfields']);
 				foreach ($fields as $field)
@@ -432,7 +445,7 @@ function createinsertquery()
 				if ((isset($_POST['move']) && $_POST['move'] == "movesubmit"))
 				{
 					$query = "UPDATE {$thissurvey['tablename']} SET ";
-					$query .= "submitdate = '".date("Y-m-d H:i:s")."' ";
+					$query .= "submitdate = '".$mysubmitdate."' ";
 					$query .= "WHERE id=" . $_SESSION['srid'];
 				}
 			}
