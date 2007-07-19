@@ -43,14 +43,14 @@ $importquestion = "<br /><table width='100%' align='center'><tr><td>\n"
 ."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 ."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 .$clang->gT("Import Question")."</strong></td></tr>\n"
-."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
+."\t<tr bgcolor='#CCCCCC'><td align='center'>\n";
 
 $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 
 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 {
 	$importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
-	.$clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your /admin/temp folder.")."<br /><br />\n"
+	.$clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your /admin/tmp folder folder.")."<br /><br />\n"
 	."<input type='submit' value='"
 	.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n"
 	."</td></tr></table>\n";

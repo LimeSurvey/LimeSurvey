@@ -302,7 +302,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	$browseoutput .= "</table>\n"
 	."<table width='99%' align='center'>\n"
 	."\t<tr>\n"
-	."\t\t<td $singleborderstyle bgcolor='#EEEEEE' align='center'>\n";
+	."\t\t<td bgcolor='#EEEEEE' align='center'>\n";
 //	if (isset($_POST['sql']) && $_POST['sql']) {$browseoutput .= "\t\t\t<input type='submit' value='Close Window' onclick=\"window.close();\" />\n";}
 	$browseoutput .= "\t\t</td>\n"
 	."\t</tr>\n"
@@ -320,7 +320,7 @@ elseif ($subaction == "all")
 	{
 		$browseoutput .= "\n<tr><td><table width='100%' align='center' border='0' bgcolor='#EFEFEF'>\n"
 		."\t<tr>\n"
-		."\t\t<td align='center' $singleborderstyle>$setfont\n"
+		."\t\t<td align='center'>\n"
 		."\t\t\t".$clang->gT("Showing Filtered Results")."<br />\n"
 		."\t\t\t&nbsp;[<a href=\"javascript:window.close()\">".$clang->gT("Close")."</a>]"
 		."\t\t</font></td>\n"

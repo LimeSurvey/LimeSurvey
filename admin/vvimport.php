@@ -94,7 +94,7 @@ else
 	if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 	{
 		$vvoutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-		$vvoutput .= $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your /admin/temp folder.")."<br /><br />\n";
+		$vvoutput .= $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your /admin/tmp folder folder.")."<br /><br />\n";
 		$vvoutput .= "<input type='submit' value='".$clang->gT("Back to Response Import")."' onclick=\"window.open('$scriptname?action=vvimport&sid=$surveyid', '_top')\">\n";
 		$vvoutput .= "</font></td></tr></table><br />&nbsp;\n";
 		return;

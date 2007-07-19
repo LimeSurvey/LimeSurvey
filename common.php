@@ -213,7 +213,6 @@ $localtimedate=(strftime("%Y-%m-%d %H:%M", mktime(date("H")+$timeadjust)));
 // SITE STYLES
 $setfont = "<font size='2' face='verdana'>";
 
-$singleborderstyle = "style='border: 1px solid #111111'";
 
 /**
      * showadminmenu() function returns html text for the administration button bar

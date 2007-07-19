@@ -78,10 +78,10 @@ echo "<input type='image' src='$imagefiles/downarrow.png' align='left' onclick=\
 echo "</td></tr>\n";
 while ($row=$result->FetchRow())
 {
-	echo  "<tr><td valign='top' align='center' >$setfont"
+	echo  "<tr><td valign='top' align='center' >"
 	. "<a href='$scriptname?action=browse&sid=$surveyid&subaction=id&id=".$row['id']."' target='home'>"
 	. $row['id']."</a></td>"
-	. "<td valign='top'>$setfont".$row[$column]."</td></tr>\n";
+	. "<td valign='top'>".$row[$column]."</td></tr>\n";
 }
 echo "</table>\n";
 echo "</body></html>";

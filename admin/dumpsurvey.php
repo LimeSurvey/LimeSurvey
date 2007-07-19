@@ -63,7 +63,7 @@ if (!$surveyid)
 	."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 	.$clang->gT("Export Survey")."</strong></td></tr>\n"
 	."\t<tr><td align='center'>\n"
-	."$setfont<br /><strong><font color='red'>"
+	."<br /><strong><font color='red'>"
 	.$clang->gT("Error")."</font></strong><br />\n"
 	.$clang->gT("No SID has been provided. Cannot dump survey")."<br />\n"
 	."<br /><input type='submit' value='"

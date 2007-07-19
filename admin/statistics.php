@@ -96,7 +96,6 @@ $statisticsoutput .= "\t<script type='text/javascript'>
       //-->
       </script>\n";
 
-//$statisticsoutput .= "<table width='99%' align='center' style='margin: 5px; border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 $statisticsoutput .= "<table width='99%' class='menubar' cellpadding='1' cellspacing='0'>\n"
 ."\t<tr><td colspan='2' height='4'><font size='1'><strong>".$clang->gT("Quick Statistics")."</strong></font></td></tr>\n";
 //Get the menubar
@@ -162,7 +161,7 @@ $statisticsoutput .= "' /><br />\n";
 $statisticsoutput .= "\t\t\t\t\t=<br />
             <input type='text' name='$myfield4' value='";
 if (isset($_POST[$myfield4])) {$statisticsoutput .= $_POST[$myfield4];}
-$statisticsoutput .= "' /><br /></font></font></td>\n";
+$statisticsoutput .= "' /><br /></font></td>\n";
 $allfields[]=$myfield2;
 $allfields[]=$myfield3;
 $allfields[]=$myfield4;
@@ -180,15 +179,13 @@ if (isset($datestamp) && $datestamp == "Y") {
 	."\t\t\t\t\t<font size='1'>".$clang->gT("Date (YYYY-MM-DD) equals").":<br />\n"
 	."\t\t\t\t\t<input name='$myfield3' type='text' value='";
 	if (isset($_POST[$myfield3])) {$statisticsoutput .= $_POST[$myfield3];}
-	$statisticsoutput .= "' ".substr(2, 0, -13) ."; width:80' /><br />\n"
+	$statisticsoutput .= "' /><br />\n"
 	."\t\t\t\t\t&nbsp;&nbsp;".$clang->gT("OR between").":<br />\n"
 	."\t\t\t\t\t<input name='$myfield4' value='";
 	if (isset($_POST[$myfield4])) {$statisticsoutput .= $_POST[$myfield4];}
-	$statisticsoutput .= "' type='text' ".substr(2, 0, -13)
-	."; width:65' /> ".$clang->gT("and")." <input  name='$myfield5' value='";
+	$statisticsoutput .= "' type='text' /> ".$clang->gT("and")." <input  name='$myfield5' value='";
 	if (isset($_POST[$myfield5])) {$statisticsoutput .= $_POST[$myfield5];}
-	$statisticsoutput .= "' type='text' ".substr(2, 0, -13)
-	."; width:65' /></font></font>\n";
+	$statisticsoutput .= "' type='text' /></font></td>\n";
 	$allfields[]=$myfield2;
 	$allfields[]=$myfield3;
 	$allfields[]=$myfield4;
@@ -205,7 +202,7 @@ foreach ($filters as $flt)
 		if ($currentgroup)
 		{
 			//if we've already drawn a table for a group, and we're changing - close off table
-			$statisticsoutput .= "\n\t\t\t\t</td></tr>\n\t\t\t</table>\n";
+			$statisticsoutput .= "\n\t\t\t\t<!-- --></tr>\n\t\t\t</table></td></tr>\n";
 		}
 		$statisticsoutput .= "\t\t<tr><td align='center' class='settingcaption'>\n"
 		."\t\t<font size='1' face='verdana'><strong>$flt[4]</strong> (".$clang->gT("Group")." $flt[1])</font></td></tr>\n\t\t"
@@ -284,7 +281,7 @@ foreach ($filters as $flt)
 		case "S": // Short free text
 		$myfield2="T$myfield";
 		$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>"
-		."<strong>$flt[3]</strong></font>";
+		."<strong>$flt[3]</strong>";
 		$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 		if (isset($_POST['summary']) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE))
 		{$statisticsoutput .= " checked='checked'";}
@@ -329,7 +326,7 @@ foreach ($filters as $flt)
 		."; width:65' /> ".$clang->gT("and")." <input  name='$myfield5' value='";
 		if (isset($_POST[$myfield5])) {$statisticsoutput .= $_POST[$myfield5];}
 		$statisticsoutput .= "' type='text' ".substr(2, 0, -13)
-		."; width:65' /></font></font>\n";
+		."; width:65' /></font>\n";
 		break;
 		case "5": // 5 point choice
 		for ($i=1; $i<=5; $i++)
@@ -430,7 +427,7 @@ foreach ($filters as $flt)
 				if (isset($_POST[$myfield2]) && $_POST[$myfield2] == $i) {$statisticsoutput .= " selected";}
 				$statisticsoutput .= ">$i</option>\n";
 			}
-			$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</font></td>\n";
+			$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
 			$counter2++;
 			$allfields[]=$myfield2;
 		}
@@ -466,7 +463,7 @@ foreach ($filters as $flt)
 			."\t\t\t\t\t<option value='N'";
 			if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("N", $_POST[$myfield2])) {$statisticsoutput .= " selected";}
 			$statisticsoutput .= ">".$clang->gT("No")."</option>\n"
-			."\t\t\t\t</select>\n\t\t\t\t</font></td>\n";
+			."\t\t\t\t</select>\n\t\t\t\t</td>\n";
 			$counter2++;
 			$allfields[]=$myfield2;
 		}
@@ -501,7 +498,7 @@ foreach ($filters as $flt)
 			."\t\t\t\t\t<option value='D'";
 			if (isset($_POST[$myfield]) && is_array($_POST[$myfield2]) && in_array("D", $_POST[$myfield2])) {$statisticsoutput .= " selected";}
 			$statisticsoutput .= ">".$clang->gT("Decrease")."</option>\n"
-			."\t\t\t\t</select>\n\t\t\t\t</font></td>\n";
+			."\t\t\t\t</select>\n\t\t\t\t</td>\n";
 			$counter2++;
 			$allfields[]=$myfield2;
 		}
@@ -537,7 +534,7 @@ foreach ($filters as $flt)
 				if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {$statisticsoutput .= " selected";}
 				$statisticsoutput .= ">{$frow['title']}</option>\n";
 			}
-			$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</font></td>\n";
+			$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
 			$counter2++;
 			$allfields[]=$myfield2;
 		}
@@ -589,6 +586,7 @@ foreach ($filters as $flt)
 		unset($answers);
 		break;
 		case "X": //This is a boilerplate question and it has no business in this script
+                $statisticsoutput .= "\t\t\t\t<td></td>";
 		break;
 		case "W":
 		case "Z":
@@ -610,8 +608,9 @@ foreach ($filters as $flt)
 			if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {$statisticsoutput .= " selected";}
 			$statisticsoutput .= ">$row[1]</option>\n";
 		} // while
-		$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</font></td>\n";
+		$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
 		break;
+        
 		default:
 		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
 		$result = db_execute_num($query) or die("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
@@ -621,15 +620,14 @@ foreach ($filters as $flt)
 			if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {$statisticsoutput .= " selected";}
 			$statisticsoutput .= ">$row[1]</option>\n";
 		}
-		$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</font></td>\n";
-
+		$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
 		break;
 	}
 	$currentgroup=$flt[1];
 	if (!isset($counter)) {$counter=0;}
 	$counter++;
 }
-$statisticsoutput .= "\n\t\t\t\t</td></tr>\n";
+$statisticsoutput .= "\n\t\t\t\t</tr>\n";
 if (isset($allfields))
 {
 	$allfield=implode("|", $allfields);
@@ -656,7 +654,7 @@ $statisticsoutput .= "\t\t\t</table>\n"
 ."\t\t\t\t<tr><td align='center'>".$clang->gT("Filter incomplete answers:")."<select name='filterinc'>\n"
 ."\t\t\t\t\t<<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
 ."\t\t\t\t\t<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
-."\t\t\t\t</select></font></td></tr>\n"
+."\t\t\t\t</select></td></tr>\n"
 ."\t\t<tr><td align='center'>\n\t\t\t<br />\n"
 ."\t\t\t<input type='submit' value='".$clang->gT("View Stats")."' />\n"
 ."\t\t\t<input type='button' value='".$clang->gT("Clear")."' onclick=\"window.open('$scriptname?action=statistics&amp;sid=$surveyid', '_top')\" />\n"
@@ -881,11 +879,11 @@ if (isset($_POST['display']) && $_POST['display'])
 	// 3: Present results including option to view those rows
 	$statisticsoutput .= "<br />\n<table align='center' width='95%' border='1'  "
 	."cellpadding='2' cellspacing='0' >\n"
-	."\t<tr><td colspan='2' align='center'><strong><font color='#'>"
-	.$clang->gT("Results")."</font></font></strong></td></tr>\n"
+	."\t<tr><td colspan='2' align='center'><strong>"
+	.$clang->gT("Results")."</strong></td></tr>\n"
 	."\t<tr><td colspan='2' align='center'>"
 	.""
-	."<strong>".$clang->gT("No of records in this query").": $results </strong></font></font><br />\n\t\t"
+	."<strong>".$clang->gT("No of records in this query").": $results </strong><br />\n\t\t"
 	.$clang->gT("Total records in survey").": $total<br />\n";
 	if ($total)
 	{
@@ -1073,11 +1071,11 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				$statisticsoutput .= "<br />\n<table align='center' width='95%' border='1'  cellpadding='2' cellspacing='0' >\n"
 				."\t<tr><td colspan='2' align='center'><strong>".$clang->gT("Field Summary for")." $qtitle:</strong>"
 				."</td></tr>\n"
-				."\t<tr><td colspan='2' align='center'><strong>$qquestion</font></font></strong></td></tr>\n"
+				."\t<tr><td colspan='2' align='center'><strong>$qquestion</strong></td></tr>\n"
 				."\t<tr>\n\t\t<td width='50%' align='center' ><strong>"
-				.$clang->gT("Calculation")."</strong></font></font></td>\n"
+				.$clang->gT("Calculation")."</strong></td>\n"
 				."\t\t<td width='50%' align='center' ><strong>"
-				.$clang->gT("Result")."</strong></font></font></td>\n"
+				.$clang->gT("Result")."</strong></td>\n"
 				."\t</tr>\n";
 				$fieldname=substr($rt, 1, strlen($rt));
 				$query = "SELECT STDDEV(`$fieldname`) as stdev";
@@ -1198,15 +1196,15 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					foreach ($showem as $shw)
 					{
 						$statisticsoutput .= "\t<tr>\n"
-						."\t\t<td align='center' >$shw[0]</font></font></td>\n"
-						."\t\t<td align='center' >$shw[1]</font></font></td>\n"
+						."\t\t<td align='center' >$shw[0]</td>\n"
+						."\t\t<td align='center' >$shw[1]</td>\n"
 						."\t</tr>\n";
 					}
 					$statisticsoutput .= "\t<tr>\n"
 					."\t\t<td colspan='3' align='center' bgcolor='#EEEEEE'>\n"
 					."\t\t\t<font size='1'>".$clang->gT("Null values are ignored in calculations")."<br />\n"
 					."\t\t\t".$clang->gT("Q1 and Q3 calculated using")." <a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".$clang->gT("minitab method")."</a>"
-					."</font></font>\n"
+					."</font>\n"
 					."\t\t</td>\n"
 					."\t</tr>\n</table>\n";
 					unset($showem);
@@ -1214,7 +1212,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				else
 				{
 					$statisticsoutput .= "\t<tr>\n"
-					."\t\t<td align='center'  colspan='3'>Not enough values for calculation</font></font></td>\n"
+					."\t\t<td align='center'  colspan='3'>Not enough values for calculation</td>\n"
 					."\t</tr>\n</table>\n";
 
 				}
@@ -1366,17 +1364,17 @@ if (isset($_POST['summary']) && $_POST['summary'])
 		if (isset($alist) && $alist) //Make sure there really is an answerlist, and if so:
 		{
 			$statisticsoutput .= "<table width='95%' align='center' border='1'  cellpadding='2' cellspacing='0' class='statisticstable'>\n"
-			."\t<tr><td colspan='3' align='center'><strong><font color='#'>"
-			.$clang->gT("Field Summary for")." $qtitle:</font></font></strong>"
+			."\t<tr><td colspan='3' align='center'><strong>"
+			.$clang->gT("Field Summary for")." $qtitle:</strong>"
 			."</td></tr>\n"
 			."\t<tr><td colspan='3' align='center'><strong>"
-			."$qquestion</font></font></strong></td></tr>\n"
+			."$qquestion</strong></td></tr>\n"
 			."\t<tr>\n\t\t<td width='50%' align='center' >"
-			."<strong>".$clang->gT("Answer")."</strong></font></font></td>\n"
+			."<strong>".$clang->gT("Answer")."</strong></td>\n"
 			."\t\t<td width='25%' align='center' >"
-			."<strong>".$clang->gT("Count")."</strong></font></font></td>\n"
+			."<strong>".$clang->gT("Count")."</strong></td>\n"
 			."\t\t<td width='25%' align='center' >"
-			."<strong>".$clang->gT("Percentage")."</strong></font></font></td>\n"
+			."<strong>".$clang->gT("Percentage")."</strong></td>\n"
 			."\t</tr>\n";
 			foreach ($alist as $al)
 			{
@@ -1441,10 +1439,10 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					{$fname="$al[1] ($al[0])";}
 					$statisticsoutput .= "\t<tr>\n\t\t<td width='50%' align='center' >"
 					."$fname\n"
-					."\t\t</font></font></td>\n"
-					."\t\t<td width='25%' align='center' >$row[0]</font></font>\n";
+					."\t\t</td>\n"
+					."\t\t<td width='25%' align='center' >$row[0]\n";
 					if ($results > 0) {$vp=sprintf("%01.2f", ($row[0]/$results)*100)."%";} else {$vp="N/A";}
-					$statisticsoutput .= "\t\t</td><td width='25%' align='center' >$vp</font></font>"
+					$statisticsoutput .= "\t\t</td><td width='25%' align='center' >$vp"
 					."\t\t</td>\n\t</tr>\n";
 					if ($results > 0)
 					{
