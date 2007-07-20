@@ -127,7 +127,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	
 	
 	//NOW check that all used labelsets have all necessary languages
-	$chkquery = "SELECT qid, question, gid, lid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z') AND (lid > 0) AND (lid is not null) group by qid, question, gid, lid";
+	$chkquery = "SELECT qid, question, gid, lid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z') AND (lid > 0) AND (lid is not null)";
 	$chkresult = db_execute_assoc($chkquery) or die ("Couldn't check questions for missing LID languages<br />$chkquery<br />".$connect->ErrorMsg());
 	$slangs = GetAdditionalLanguagesFromSurveyID($surveyid); 
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
