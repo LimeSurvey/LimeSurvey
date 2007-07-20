@@ -70,19 +70,17 @@ if ($order == "alpha")
 }
 
 $result=db_execute_assoc($query) or die("Error with query: ".$query."<br />".$connect->ErrorMsg());
-echo "<html><body topmargin='0' leftmargin='0' bgcolor='black'>\n";
-echo "<table width='98%' align='center' border='1' bordercolor='#111111' cellspacing='0' bgcolor='white'>\n";
-echo "<tr><td bgcolor='black' valign='top'><input type='image' src='$imagefiles/downarrow.png' align='left' onclick=\"window.open('listcolumn.php?sid=$surveyid&column=$column&order=id', '_top')\"></td>\n";
-echo "<td bgcolor='black' valign='top'><input type='image' align='right' src='$imagefiles/close.gif' onclick='window.close()' />";
-echo "<input type='image' src='$imagefiles/downarrow.png' align='left' onclick=\"window.open('listcolumn.php?sid=$surveyid&column=$column&order=alpha', '_top')\" />";
-echo "</td></tr>\n";
+$listcolumnoutput= "<table width='98%' class='statisticstable' border='1' cellpadding='2' cellspacing='0'>\n";
+$listcolumnoutput.= "<tr><td ><input type='image' src='$imagefiles/downarrow.png' align='left' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&column=$column&order=id', '_top')\"></td>\n";
+$listcolumnoutput.= "<td valign='top'><input type='image' align='right' src='$imagefiles/close.gif' onclick='window.close()' />";
+$listcolumnoutput.= "<input type='image' src='$imagefiles/downarrow.png' align='left' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&column=$column&order=alpha', '_top')\" />";
+$listcolumnoutput.= "</td></tr>\n";
 while ($row=$result->FetchRow())
 {
-	echo  "<tr><td valign='top' align='center' >"
+	$listcolumnoutput.=  "<tr><td valign='top' align='center' >"
 	. "<a href='$scriptname?action=browse&sid=$surveyid&subaction=id&id=".$row['id']."' target='home'>"
 	. $row['id']."</a></td>"
 	. "<td valign='top'>".$row[$column]."</td></tr>\n";
 }
-echo "</table>\n";
-echo "</body></html>";
+$listcolumnoutput.= "</table>\n";
 ?>

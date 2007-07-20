@@ -93,6 +93,7 @@ if ($action == "deactivate")
 		}
 }
 
+
 if ($action == "importsurvey")
 {
 	if($_SESSION['USER_RIGHT_CREATE_SURVEY'])
@@ -139,8 +140,7 @@ if ($action == "importquestion")
 		}*/
 }
 
-
-
+               
 //CHECK THAT SURVEYS MARKED AS ACTIVE ACTUALLY HAVE MATCHING TABLES
 //    checkactivations();
 
@@ -159,6 +159,8 @@ if(isset($_SESSION['loginID']) && $action!='login')
 
 sendcacheheaders();
 
+  if ($action=="listcolumn")  { include("listcolumn.php"); }
+  else
   if ($action=="vvexport")  { include("vvexport.php"); }
   else
   if ($action=="vvimport")  { include("vvimport.php"); }
@@ -220,7 +222,7 @@ sendcacheheaders();
       !isset($assessmentsoutput) && !isset($tokenoutput) && !isset($browseoutput) &&
       !isset($dataentryoutput) && !isset($statisticsoutput)&& !isset($savedsurveyoutput) &&
       !isset($exportoutput) && !isset($importoldresponsesoutput) && !isset($conditionsoutput) &&
-      !isset($vvoutput)) 
+      !isset($vvoutput) && !isset($listcolumnoutput)) 
       {
         $adminoutput.= showadminmenu();
       }
@@ -232,14 +234,13 @@ sendcacheheaders();
   if (isset($surveysummary  )) {$adminoutput.= $surveysummary;}
   if (isset($usergroupsummary)){$adminoutput.= $usergroupsummary;}
   if (isset($usersummary    )) {$adminoutput.= $usersummary;}
-//  if (isset($logoutsummary  )) {$adminoutput.= $logoutsummary;} // can't reach her (session killed)
   if (isset($groupsummary   )) {$adminoutput.= $groupsummary;}
   if (isset($questionsummary)) {$adminoutput.= $questionsummary;}
   if (isset($vasummary      )) {$adminoutput.= $vasummary;}
   if (isset($addsummary     )) {$adminoutput.= $addsummary;}
   if (isset($answersummary  )) {$adminoutput.= $answersummary;}
   if (isset($cssummary      )) {$adminoutput.= $cssummary;}
-
+  if (isset($listcolumnoutput)) {$adminoutput.= $listcolumnoutput;}
 
   
   if (isset($editgroup)) {$adminoutput.= $editgroup;}
