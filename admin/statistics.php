@@ -66,7 +66,7 @@ if ($usejpgraph == 1 && isset($jpgraphdir)) //JPGRAPH CODING SUBMITTED BY Pieter
 }
 
 if (isset($_POST['summary']) && !is_array($_POST['summary'])) {
-	$_POST['summary'] = explode("|", $_POST['summary']);
+	$_POST['summary'] = explode("+", $_POST['summary']);
 }
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
@@ -630,7 +630,7 @@ foreach ($filters as $flt)
 $statisticsoutput .= "\n\t\t\t\t</tr>\n";
 if (isset($allfields))
 {
-	$allfield=implode("|", $allfields);
+	$allfield=implode("+", $allfields);
 }
 if (incompleteAnsFilterstate() === true)
 {
