@@ -452,7 +452,7 @@ function db_select_tables_like($table)
 		case 'mysql'	  : 
 			return "SHOW TABLES LIKE '$table'";
 		case 'odbc_mssql' : 
-			return "SELECT * FROM INFORMATION_SCHEMA.TABLES where TABLE_TYPE='BASE TABLE' and TABLE_NAME LIKE '$table'";
+			return "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES where TABLE_TYPE='BASE TABLE' and TABLE_NAME LIKE '$table'";
 		default: die ("Couldn't create 'select tables like' query for connection type '$connect->databaseType'"); 
 	}	
 }

@@ -50,6 +50,8 @@ if (!isset($limit)) {$limit=returnglobal('limit');}
 if (!isset($start)) {$start=returnglobal('start');}
 if (!isset($searchstring)) {$searchstring=returnglobal('searchstring');}
 include_once("login_check.php");
+include_once("database.php");
+
 $tokenoutput='';
 
 $sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
@@ -227,8 +229,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 	}
 	elseif (returnglobal('restoretable') == "Y" && returnglobal('oldtable') && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
 	{
-		#TODO: make the table rename use datadict
-		$query = "RENAME TABLE ".db_quote_id(returnglobal('oldtable'))." TO ".db_table_name("tokens_$surveyid");
+		$query = db_rename_table(db_quote_id(returnglobal('oldtable')) , db_table_name("tokens_$surveyid"));
 		$result=$connect->Execute($query) or die("Failed Rename!<br />".$query."<br />".htmlspecialchars($connect->ErrorMsg()));
 		$tokenoutput .= "\t<tr>\n"
 		."\t\t<td align='center'>\n"
@@ -722,8 +723,8 @@ if ($subaction == "kill" && ($sumrows5['edit_survey_property'] || $sumrows5['act
 	{
 		$oldtable = "tokens_$surveyid";
 		$newtable = "old_tokens_{$surveyid}_$date";
-		$deactivatequery = "RENAME TABLE ".db_table_name($oldtable)." TO ".db_table_name($newtable);
-		$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />\n".htmlspecialchars($connect->ErrorMsg())."<br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
+		$deactivatequery = db_rename_table( db_table_name($oldtable), db_table_name($newtable));
+		$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />\n".htmlspecialchars($connect->ErrorMsg())." - Query: $deactivatequery <br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
 		$tokenoutput .= "<span style='display: block; text-align: center; width: 70%'>\n"
 		.$clang->gT("The tokens table has now been removed and tokens are no longer required to access this survey.")."<br /> ".$clang->gT("A backup of this table has been made and can be accessed by your system administrator.")."<br />\n"
 		."(\"{$dbprefix}old_tokens_{$_GET['sid']}_$date\")"."<br /><br />\n"
