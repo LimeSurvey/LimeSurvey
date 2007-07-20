@@ -119,6 +119,11 @@ table.table2columns {
 .table2columns td+td {
 	text-align: left;
 }
+
+.table2columns td:first-child {
+    width:250px;
+}
+
 .outlinetable {
 	border: 1px solid #111;
 }
