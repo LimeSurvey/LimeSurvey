@@ -175,7 +175,7 @@ If (!$dbexistsbutempty && $sourcefrom=='admin')
 
     if (is_dir($homedir."/install") && $debug!=1)
     {
-     Die ("<br />Everything is fine - you just forgot to delete or rename your LimeSurvey installation directory. <br />Please do so since it may be a security risk.");
+     Die ("<br />Everything is fine - you just forgot to delete or rename your LimeSurvey installation directory (/install). <br />Please do so since it may be a security risk.");
     }
 
 }
