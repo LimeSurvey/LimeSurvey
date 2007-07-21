@@ -340,7 +340,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
                                      // Todo: handler in case that record is not found  
 
 	$editquestion .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($eqrow['language'],false);
-	if ($eqrow['language']==GetBaseLanguageFromSurveyID($surveyid)) {$editquestion .= '('.$clang->gT("Base Language").')';}
+	$editquestion .= '('.$clang->gT("Base Language").')';
 	$eqrow  = array_map('htmlspecialchars', $eqrow);
 	$editquestion .= '</h2>';
 	$editquestion .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Code:")."</span>\n"
@@ -361,9 +361,8 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	$aqresult = db_execute_assoc($aqquery);
 	while (!$aqresult->EOF) 
 	{
-	    $aqrow = $aqresult->FetchRow();
+    $aqrow = $aqresult->FetchRow();
 		$editquestion .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($aqrow['language'],false);
-		if ($aqrow['language']==GetBaseLanguageFromSurveyID($surveyid)) {$editquestion .= '('.$clang->gT("Base Language").')';}
 		$aqrow  = array_map('htmlspecialchars', $aqrow);
 		$editquestion .= '</h2>';
 		$editquestion .=  "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Question:")."</span>\n"

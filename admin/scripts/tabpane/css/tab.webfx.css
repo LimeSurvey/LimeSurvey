@@ -62,6 +62,7 @@ dark:	rgb(0,66,174);
 
 .dynamic-tab-pane-control .tab-row .tab.selected a {
 	font-weight:	bold;
+	color: #328639;
 }
 
 .dynamic-tab-pane-control .tab-page {
