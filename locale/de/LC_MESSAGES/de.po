@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-07-19 17:50+0100\n"
+"PO-Revision-Date: 2007-07-21 12:27+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -263,6 +263,10 @@ msgstr "Kommentar"
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr "Achtung: Javascript ist in Ihrem Browser deaktiviert. Es kann sein, dass sie daher die Umfrage nicht abschließen werden können. Bitte überprüfen Sie ihre Browser-Einstellungen."
 
+#, fuzzy
+msgid "There are no questions in this survey"
+msgstr "Diese Umfrage enthält {NUMBEROFQUESTIONS} Fragen."
+
 msgid "There is 1 question in this survey"
 msgstr "Diese Umfrage enthält eine Frage."
 
@@ -486,8 +490,8 @@ msgstr "Sie haben keinen Namen angegeben"
 msgid "You did not provide a password"
 msgstr "Sie haben kein Passwort angegeben"
 
-msgid "This is a controlled survey. You need a valid token to participate."
-msgstr "Um an dieser Umfrage teilzunehmen, benötigen Sie ein passenden Zugangsschlüssel."
+msgid "This is a closed-access survey. You need a valid token to participate."
+msgstr "Dies ist eine Umfrage mit geschlossenem Teilnehmerkreis - Sie müssen einen Zugangsschlüssel angeben um teilzunehmen."
 
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr "Das von ihnen angegebene Schlüsselwort ist entweder ungültig oder wurde bereits verwendet."
@@ -567,6 +571,9 @@ msgstr "Fehler beim Speichern der Ergebnisse"
 
 msgid "Try to submit again"
 msgstr "Versuchen Sie das Abschicken erneut"
+
+msgid "This is a controlled survey. You need a valid token to participate."
+msgstr "Um an dieser Umfrage teilzunehmen, benötigen Sie ein passenden Zugangsschlüssel."
 
 msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr "Falls Sie ein Schlüsselwort erhalten haben, geben Sie es bitte in das untenstehende Feld ein und klicken Sie auf 'Weiter'."
@@ -868,17 +875,32 @@ msgstr "Zurück zur Hauptseite"
 msgid "Survey has been activated. Results table has been successfully created."
 msgstr "Die Umfrage wurde aktiviert. Die Ergebnis-Tabelle wurde erfolgreich erstellt."
 
-msgid "This is not an anonymous survey. A token table must also be created."
-msgstr "Dies ist keine anonyme Umfrage, d.h. eine Probanden-Tabelle muss ebenfalls erstellt werden."
+msgid "This survey allows public registration. A token table must also be created."
+msgstr "Diese Umfrage erlaubt öffentliche Registrierungen. Daher muss eine Zugangsschlüssel-Tabelle angelegt werden."
 
 msgid "Initialise Tokens"
 msgstr "Initialisiere Probanden..."
 
-msgid "This survey allows public registration. A token table must also be created."
-msgstr "Diese Umfrage erlaubt öffentliche Registrierungen. Daher muss eine Zugangsschlüssel-Tabelle angelegt werden."
-
 msgid "This survey is now active, and responses can be recorded."
 msgstr "Diese Umfrage ist jetzt aktiv und Antworten können erfasst werden."
+
+# D:\web\xampp\htdocs\limesurvey/admin/activate.php:517
+msgid "Open-access mode"
+msgstr "Offener Teilnehmerkreis"
+
+msgid "No invitation code is needed to complete the survey."
+msgstr "Es wird kein Zugangsschlüssel für die Teilnahme an der Umfrage benötigt."
+
+# D:\web\xampp\htdocs\limesurvey/admin/activate.php:517
+msgid "You can switch to the closed-access mode by initialising a token table with the button below."
+msgstr "Sie können den Teilnehmerkreis dieser Umfrage geschlossen machen, indem sie eine Teilnehmer-Tabelle anlegen."
+
+msgid "Optional"
+msgstr "Optionale Frage"
+
+# D:\web\xampp\htdocs\limesurvey/admin/activate.php:518
+msgid "Switch to closed-access mode"
+msgstr "Zum geschlossenen Modus umschalten"
 
 msgid "LimeSurvey Online Manual"
 msgstr "LimeSurvey Online Bedienungsanleitung"
@@ -950,6 +972,12 @@ msgstr "Löschen"
 
 msgid "Are you sure you want to delete this entry."
 msgstr "Sind Sie sicher, dass Sie diesen Eintrag löschen wollen?"
+
+msgid "Save"
+msgstr "Speichern"
+
+msgid "Cancel"
+msgstr "Abbrechen"
 
 msgid "Browse Responses"
 msgstr "Antworten anzeigen"
@@ -1056,8 +1084,8 @@ msgstr "komplette Antworten"
 msgid "responses not completly filled out"
 msgstr "Antworten nicht komplett ausgefüllt"
 
-msgid "User name not found!"
-msgstr "User Name nicht gefunden!"
+msgid "User name invalid!"
+msgstr "Benutzername ungültig!"
 
 msgid "User name / password dont match!"
 msgstr "Username/Passwort stimmt nicht überein."
@@ -1281,8 +1309,8 @@ msgid "You have not selected a survey for data-entry."
 msgstr "Sie haben keine Umfrage zur Dateneingabe ausgewählt."
 
 # D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:257
-msgid "This survey is not anonymous, you must supply a valid token"
-msgstr "Diese Umfrage ist nicht anonym - Sie müssen einen Zugangsschlüssel angeben"
+msgid "This is a closed-access survey, you must supply a valid token"
+msgstr "Dies ist eine Umfrage mit geschlossenem Teilnehmerkreis - Sie müssen einen Zugangsschlüssel angeben"
 
 msgid "The token you have provided is not valid."
 msgstr "Der von ihnen angegebene Zugangsschlüssel ist ungültig."
@@ -1295,8 +1323,8 @@ msgid "Follow the following link to update it"
 msgstr "Folgen sie dem Link, um eine Änderung vorzunehmen."
 
 # D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:257
-msgid "This surveys is anonymous, you can't update this answer"
-msgstr "Diese Umfrage ist nicht anonym, sie können diese Antwort nicht aktualisieren."
+msgid "This surveys uses anonymous answers, you can't update this response"
+msgstr "Diese Umfrage benutzt anonymisierte Antworten, sie können diese Antwort nicht aktualisieren."
 
 msgid "Try again"
 msgstr "Nochmal versuchen"
@@ -1454,9 +1482,6 @@ msgstr "Diese Umfrage ist aktiv und eine Antworten-Tabelle existiert. Wenn Sie d
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
 msgstr "Diese Umfrage hat eine zugehörige Probanden-Tabelle. Wenn Sie diese Umfrage löschen, wird auch die Probandentabelle gelöscht. Wir empfehlen Ihnen, dass Sie die Probanden exportieren, bevor Sie die Umfrage löschen."
 
-msgid "Cancel"
-msgstr "Abbrechen"
-
 msgid "This survey has been deleted."
 msgstr "Diese Umfrage wurde gelöscht."
 
@@ -1589,6 +1614,10 @@ msgstr "Erstelldatum"
 msgid "Access"
 msgstr "Zugriff"
 
+# D:\xampp\xampp\htdocs\limesurvey/common.php:1558
+msgid "Answer Privacy"
+msgstr "Schutz der Antwortdaten"
+
 # D:\xampp\xampp\htdocs\limesurvey/admin/html.php:479
 msgid "Status"
 msgstr "Status"
@@ -1604,6 +1633,14 @@ msgstr "Anonym"
 
 msgid "Not Anonymous"
 msgstr "Nicht Anonym"
+
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:74
+msgid "Closed-access"
+msgstr "Geschlossener Teilnehmerkreis"
+
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:78
+msgid "Open-access"
+msgstr "Offener Teilnehmerkreis"
 
 msgid "Expired"
 msgstr "Abgelaufen"
@@ -1768,8 +1805,15 @@ msgstr "Normal aufsteigend"
 msgid "By Group"
 msgstr "Nach Gruppen"
 
-msgid "Survey URL:"
-msgstr "URL dieser Umfrage:"
+msgid "Survey URL"
+msgstr "URL dieser Umfrage"
+
+msgid "Survey URL For Language:"
+msgstr "Umfrage URL für Sprache"
+
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:681
+msgid "Flag"
+msgstr "Fahne"
 
 msgid "Description:"
 msgstr "Beschreibung:"
@@ -1800,20 +1844,18 @@ msgstr "Zusätzliche Sprachen"
 msgid "Exit Link"
 msgstr "Abschluss-Link"
 
-msgid "Number of groups in survey"
-msgstr "Anzahl Gruppen in der Umfrage"
+msgid "Number of questions/groups"
+msgstr "Anzahl Fragen/Gruppen"
 
-msgid "Number of questions in survey"
-msgstr "Anzahl Fragen in der Umfrage"
+msgid "Survey currently active"
+msgstr "Umfrage aktiv"
 
-msgid "Survey is not currently active."
-msgstr "Die Umfrage ist momentan nicht aktiv."
-
-msgid "Survey is currently active."
-msgstr "Die Umfrage ist momentan aktiv."
-
-msgid "Survey table name is"
+msgid "Survey table name"
 msgstr "Name der Umfrage-Tabelle"
+
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:766
+msgid "Hints"
+msgstr "Hinweise"
 
 msgid "Survey cannot be activated yet."
 msgstr "Die Umfrage kann noch nicht aktiviert werden."
@@ -2084,8 +2126,8 @@ msgstr "[<< Zurück] Button zeigen"
 msgid "Admin Notification:"
 msgstr "Admin Benachrichtigung:"
 
-msgid "Anonymous?"
-msgstr "Anonym?"
+msgid "Anonymous answers?"
+msgstr "Anonymisierte Antworten"
 
 msgid "If you set a survey to anonymous, answers to timestamped and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
 msgstr "Wenn sie die Umfrage auf \"anonym\" setzen, die Antworten mit einem Zeitstempel versehen und eine Probandentabelle erstellen, wird LimeSurvey die Zugangsschlüssel nicht mit einem Zeitstempel versehen, sondern an Stelle des Datums und der Uhrzeit nur ein \"Y\" setzen, damit für ihre Teilnehmer die Anonymität gewahrt bleibt."
@@ -2301,9 +2343,6 @@ msgstr ""
 msgid "URL Description:"
 msgstr "URL Beschreibung:"
 
-msgid "Save"
-msgstr "Speichern"
-
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:3595
 msgid "Current survey has questions with conditions outside their own group"
 msgstr "Die aktuelle Umfrage besitzt Fragen mit Bedingungen ausserhalb der eigenen Gruppe."
@@ -2391,8 +2430,8 @@ msgstr "Visualisierung:"
 msgid "Select the field number you would like to use for your answers:"
 msgstr "Wählen Sie die Feldnummer aus, die sie für Ihre Antworten nutzen möchten:"
 
-msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your /admin/temp folder."
-msgstr "Beim Hochladen der Datei ist ein Fehler aufgetreten. Grund dafür könnten fehlerhafte Einstellungen der Berechtigungen des admin/temp Ordners sein."
+msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your /admin/tmp folder folder."
+msgstr "Beim Hochladen der Datei ist ein Fehler aufgetreten. Grund dafür könnten fehlerhafte Einstellungen der Berechtigungen des /admin/tmp Ordners sein."
 
 msgid "File upload succeeded."
 msgstr "Datei erfolgreich hochgeladen."
@@ -2772,6 +2811,9 @@ msgstr "Attribute kopieren?"
 
 msgid "Edit Question"
 msgstr "Bearbeite Frage"
+
+msgid "Survey is currently active."
+msgstr "Die Umfrage ist momentan aktiv."
 
 msgid "Update Question"
 msgstr "Frage aktualisieren"
@@ -3670,9 +3712,6 @@ msgstr "Benutzer bearbeiten"
 
 msgid "Name:"
 msgstr "Name:"
-
-msgid "Optional"
-msgstr "Optionale Frage"
 
 msgid "Edit User Group (Owner: "
 msgstr "Bearbeite Benutzergruppe (Eigentümer:"
