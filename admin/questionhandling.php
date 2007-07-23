@@ -34,7 +34,6 @@ if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this scr
 
 if ($action == "addquestion")
 {
-
 	if($sumrows5['define_questions'])
 	{
 		$newquestionoutput =  "\t<form action='$scriptname' name='addnewquestion1' method='post'>\n"

@@ -343,7 +343,7 @@ if ($surveyid)
 			else
 			{
 				$surveysummary .= "<img src='$imagefiles/activate_disabled.png' onmouseout=\"hideTooltip()\""
-				. "onmouseover=\"showTooltip(event,'".$clang->gT("Survey cannot be activated. Either you have no permission or there are no questions.", "js")."');return false\" name='ActivateSurvey' title='' alt='".$clang->gT("Survey cannot be activated. Either you have no permission or there are no questions.")."' align='left' /></a>\n" ;
+				. "onmouseover=\"showTooltip(event,'".$clang->gT("Survey cannot be activated. Either you have no permission or there are no questions.", "js")."');return false\" name='ActivateSurvey' title='' alt='".$clang->gT("Survey cannot be activated. Either you have no permission or there are no questions.")."' align='left' />\n" ;
 			}
 		}
 		elseif ($activated == "Y")
@@ -774,7 +774,7 @@ if ($surveyid)
 			}
 			if ($sumcount3 == 0 && $sumrows5['define_questions'])
 			{
-				$surveysummary .= "\t<font class='statusentryhighlight'>[".$clang->gT("You need to add questions")."]</font>";
+				$surveysummary .= "\t<font class='statusentryhighlight'>[".$clang->gT("You need to add questions")."]</font><br />";
 			}
 		}
 		$surveysummary .=  $surveysummary2

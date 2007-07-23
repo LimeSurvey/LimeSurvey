@@ -854,13 +854,13 @@ if ($action == "addgroup")
 		$grplangs[] = $baselang;
 		$grplangs = array_reverse($grplangs);
 
-		$newgroupoutput = "<tr><td><form action='$scriptname' name='addnewgroupfrom' method='post'>"
-                   ."<table width='100%' border='0'><tr>\n"
+		$newgroupoutput = "<form action='$scriptname' name='addnewgroupfrom' method='post'>"
+                   ."<table width='100%' border='0' class='tab-page'><tr>\n"
                    ."\t<td colspan='2' class='settingcaption'>\n\t\t<strong>".$clang->gT("Add Group")."</strong></td>"
                    ."</tr></table>\n";
 
 
-		$newgroupoutput .="<table width='100%' border='0'>\n\t<tr><td>\n"
+		$newgroupoutput .="<table width='100%' border='0'  class='tab-page'>\n\t<tr><td>\n"
 		. '<div class="tab-pane" id="tab-pane-1">';
 		foreach ($grplangs as $grouplang)
 		{
@@ -879,11 +879,11 @@ if ($action == "addgroup")
         . "\t<input type='hidden' name='action' value='insertnewgroup' />\n"
 		. "\t<input type='hidden' name='sid' value='$surveyid' /></td></tr>"
 		. "\t<tr><td colspan='2' align='center'><input type='submit' value='".$clang->gT("Add Group")."' />\n"
-		. "\t</td></table>\n"
+		. "\t</td></tr></table>\n"
 		. "</form></td></tr>\n"
-		. "<tr><td align='center'><strong>".$clang->gT("OR")."</strong></td></tr>\n"
+		. "<tr><td align='center' class='tab-page'><strong>".$clang->gT("OR")."</strong></td></tr>\n"
 		. "<tr><td><form enctype='multipart/form-data' name='importgroup' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
-		. "<table width='100%' border='0'>\n\t<tr><td colspan='3' class='settingcaption'>\n"
+		. "<table width='100%' border='0' class='tab-page'>\n\t<tr><td colspan='3' class='settingcaption'>\n"
 		. "\t\t<strong>".$clang->gT("Import Group")."</strong></td></tr>\n\t<tr>"
 		. "\t\n"
 		. "\t\t<td align='right'><strong>".$clang->gT("Select CSV File:")."</strong></td>\n"
