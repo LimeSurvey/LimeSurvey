@@ -673,7 +673,7 @@ if ($surveyid)
 		}
 		$surveysummary .= "\t<tr>"
 		. "<td align='right' valign='top'><strong>"
-		. $clang->gT("Survey URL") ."(".getLanguageNameFromCode($s1row['language'],false)."):</strong></td>\n";
+		. $clang->gT("Survey URL") ." (".getLanguageNameFromCode($s1row['language'],false)."):</strong></td>\n";
 		$tmp_url = $GLOBALS['publicurl'] . '/index.php?sid=' . $s1row['sid'];
 		$surveysummary .= "\t\t<td align='left'> <a href='$tmp_url&amp;lang=".$s1row['language']."' target='_blank'>$tmp_url&amp;lang=".$s1row['language']."</a>";
         foreach ($additionnalLanguagesArray as $langname)

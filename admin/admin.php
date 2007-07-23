@@ -159,6 +159,8 @@ if(isset($_SESSION['loginID']) && $action!='login')
 
 sendcacheheaders();
 
+  if ($action=="dumplabel")  { include("dumplabel.php"); }
+  else
   if ($action=="listcolumn")  { include("listcolumn.php"); }
   else
   if ($action=="vvexport")  { include("vvexport.php"); }

@@ -87,5 +87,6 @@ Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header("Pragma: no-cache");                          // HTTP/1.0
 
 echo $dumphead, $qdump, $adump;
+exit;
 
 ?>

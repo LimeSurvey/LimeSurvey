@@ -71,7 +71,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 	}
 	
 
-	$labelsoutput.= "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
+	$labelsoutput.= "<table width='100%' border='0' >\n"
                     . "\t<tr>\n"
                     . "\t\t<td>\n"
                     . "\t\t\t<table class='menubar'>\n"
@@ -259,7 +259,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			."\t<a href='admin.php?action=deletelabelset&amp;lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Delete label set", "js")."');return false\">"
 			."<img src='$imagefiles/delete.png' border='0' alt='' title='' align='left' onclick=\"return confirm('".$clang->gT("Are you sure?","js")."')\" /></a>\n"
 			."\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
-			."\t<a href='dumplabel.php?lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Label Set", "js")."');return false\">" .
+			."\t<a href='admin.php?action=dumplabel&amp;lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Label Set", "js")."');return false\">" .
 					"<img src='$imagefiles/exportcsv.png' alt='".$clang->gT("Export Label Set")."' title='' align='left' /></a>" 
 			."\t</td>\n"
 			."</tr>\n"
@@ -275,7 +275,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		$rwlabelset=$rslabelset->FetchRow();
 		$lslanguages=explode(" ", trim($rwlabelset['languages'])); 
 		
-		$labelsoutput.= "\t<table class='menubar'>\n"
+		$labelsoutput.= "\t<table width='100%'>\n"
 		."<tr>\n"
 		."\t<td colspan='4'><strong>\n"
 		.$clang->gT("Labels")
