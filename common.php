@@ -162,7 +162,7 @@ if ($databasetype=='mysql') {
 }
 
 // Check if the DB is up to date
-If ($dbexistsbutempty) {
+If ($dbexistsbutempty && $sourcefrom=='admin') {
      Die ("<br />The LimeSurvey database does exist but it seems to be empty. Please run the <a href='$homeurl/install/index.php'>install script</a> to create the necessary tables.");
 }
 
