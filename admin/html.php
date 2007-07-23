@@ -52,8 +52,7 @@ if ($action == "listsurveys")
 				    <td><strong>".$clang->gT("Access")."</strong></td>
 				    <td><strong>".$clang->gT("Answer Privacy")."</strong></td>
 				    <td><strong>".$clang->gT("Status")."</strong></td>
-				    <td colspan=\"3\"><strong>".$clang->gT("Action")."</strong></td>
-				    <td colspan=\"3\"><strong>".$clang->gT("Responses")."</strong></td>
+				    <td colspan=\"4\"><strong>".$clang->gT("Responses")."</strong></td>
 				  </tr>" ; 
 
 		while($rows = $result->FetchRow())
@@ -147,13 +146,11 @@ if ($action == "listsurveys")
 					    "<td>".$datecreated."</td>".
 					    "<td>".$visibility."</td>" .
 					    "<td>".$privacy."</td>" .
-					    "<td>".$status."</td>".
-					    "<td>&nbsp;</td>
-					    <td>&nbsp;</td>";
+					    "<td>".$status."</td>";
 
 					    if ($status==$clang->gT("Active"))
 					    {
-					        $listsurveys .= "<td colspan=\"3\" align='center'>".$responses."</td>";
+					        $listsurveys .= "<td align='center'>".$responses."</td>";
 					    }else{
 						$listsurveys .= "<td>&nbsp;</td>";
 					    }
@@ -161,10 +158,7 @@ if ($action == "listsurveys")
 		}
 
 		$listsurveys.="<tr bgcolor='#F8F8FF'>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td colspan=\"8\">&nbsp;</td>".
+		<td colspan=\"7\">&nbsp;</td>".
 		"</tr>";
 		$listsurveys.="</table><br />" ;
 	}
@@ -325,7 +319,7 @@ if ($surveyid)
 		. "\t\t\t<table class='menubar'>\n"
 		. "\t\t\t\t<tr><td align='left'colspan='2' height='4'>"
 		. "<strong>".$clang->gT("Survey")."</strong> "
-		. "<font color='#778899'>{$s1row['surveyls_title']} (ID:$surveyid)</font></td></tr>\n"
+		. "<font class='basic'>{$s1row['surveyls_title']} (ID:$surveyid)</font></td></tr>\n"
 		. "\t\t\t\t<tr ><td align='right' height='22'>\n";
 		if ($activated == "N" )
 		{
@@ -810,7 +804,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 		. "\t\t\t<table class='menubar'>\n"
 		. "\t\t\t\t<tr><td align='left' colspan='2' height='4'>"
 		. "<strong>".$clang->gT("Group")."</strong> "
-		. "<font color='#778899'>{$grow['group_name']} (ID:$gid)</font></td></tr>\n"
+		. "<font class='basic'>{$grow['group_name']} (ID:$gid)</font></td></tr>\n"
 		. "\t\t\t\t<tr>\n"
 		. "\t\t\t\t\t<td>\n"
 		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='55' height='20' border='0' hspace='0' align='left' />\n"
@@ -967,7 +961,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		. "\t\t<td colspan='2'>\n"
 		. "\t\t\t<table class='menubar'>\n"
 		. "\t\t\t\t<tr><td colspan='2' height='4' align='left'><strong>"
-		. $clang->gT("Question")."</strong> <font color='#778899'>{$qrrow['question']} (ID:$qid)</font></td></tr>\n"
+		. $clang->gT("Question")."</strong> <font class='basic'>{$qrrow['question']} (ID:$qid)</font></td></tr>\n"
 		. "\t\t\t\t<tr>\n"
 		. "\t\t\t\t\t<td>\n"
 		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='55' height='20' border='0' hspace='0' align='left' />\n"
