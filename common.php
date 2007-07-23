@@ -161,6 +161,12 @@ if ($databasetype=='mysql') {
     @$connect->Execute("SET CHARACTER SET 'utf8'");
 }
 
+// Check if the DB is up to date
+If ($dbexistsbutempty) {
+     Die ("<br />The LimeSurvey database does exist but it seems to be empty. Please run the <a href='$homeurl/install/index.php'>install script</a> to create the necessary tables.");
+}
+
+
 
 // Check if the DB is up to date
 If (!$dbexistsbutempty && $sourcefrom=='admin')
