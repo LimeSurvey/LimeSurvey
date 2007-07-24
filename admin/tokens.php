@@ -417,7 +417,7 @@ if ($subaction == "deleteall" && ($sumrows5['edit_survey_property'] || $sumrows5
 {
 	$query="DELETE FROM ".db_table_name("tokens_$surveyid");
 	$result=$connect->Execute($query) or die ("Couldn't update sent field<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-	$tokenoutput .= "<tr><td bgcolor='silver' align='center'><strong><font color='green'>".$clang->gT("All token entries have been deleted.")."</font></strong></td></tr>\n";
+	$tokenoutput .= "<tr><td  align='center'><strong><font color='green'>".$clang->gT("All token entries have been deleted.")."</font></strong></td></tr>\n";
 	$subaction="";
 }
 
@@ -425,7 +425,7 @@ if ($subaction == "clearinvites" && ($sumrows5['edit_survey_property'] || $sumro
 {
 	$query="UPDATE ".db_table_name("tokens_$surveyid")." SET sent='N'";
 	$result=$connect->Execute($query) or die ("Couldn't update sent field<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-	$tokenoutput .= "<tr><td bgcolor='silver' align='center'><strong><font color='green'>".$clang->gT("All invite entries have been set to 'Not Invited'.")."</font></strong></td></tr>\n";
+	$tokenoutput .= "<tr><td align='center'><strong><font color='green'>".$clang->gT("All invite entries have been set to 'Not Invited'.")."</font></strong></td></tr>\n";
 	$subaction="";
 }
 
@@ -433,7 +433,7 @@ if ($subaction == "cleartokens" && ($sumrows5['edit_survey_property'] || $sumrow
 {
 	$query="UPDATE ".db_table_name("tokens_$surveyid")." SET token=''";
 	$result=$connect->Execute($query) or die("Couldn't reset the tokens field<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-	$tokenoutput .= "<tr><td align='center' bgcolor='silver'><strong><font color='green'>".$clang->gT("All unique token numbers have been removed.")."</font></strong></td></tr>\n";
+	$tokenoutput .= "<tr><td align='center'><strong><font color='green'>".$clang->gT("All unique token numbers have been removed.")."</font></strong></td></tr>\n";
 	$subaction="";
 }
 
@@ -960,7 +960,15 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 			."\t</tr>\n"
 			."\t<tr>\n"
 			."\t\t<td align='right' width='150'><strong>".$clang->gT("Subject").":</strong></td>\n";
-			$subject=str_replace("{SURVEYNAME}", $thissurvey['name'], $thissurvey['email_remind_subj']);
+
+            $fieldsarray["{ADMINNAME}"]= $thissurvey['adminname'];
+            $fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
+            $fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
+            $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
+    
+            $subject=Replacefields($thissurvey['email_remind_subj'], $fieldsarray);
+            $textarea=Replacefields($thissurvey['email_remind'], $fieldsarray);
+
 			$tokenoutput .= "\t\t<td><input type='text' size='83' name='subject_$language' value='".html_escape($subject)."' /></td>\n"
 			."\t</tr>\n";
 	
@@ -970,11 +978,6 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 			."\t\t<td>\n"
 			."\t\t\t<textarea name='message_$language' rows='20' cols='80' >\n";
 	
-			$textarea = $thissurvey['email_remind'];
-			$textarea = str_replace("{ADMINNAME}", $thissurvey['adminname'], $textarea);
-			$textarea = str_replace("{ADMINEMAIL}", $thissurvey['adminemail'], $textarea);
-			$textarea = str_replace("{SURVEYNAME}", $thissurvey['name'], $textarea);
-			$textarea = str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $textarea);
 			$tokenoutput .= $textarea;
 	
 			$tokenoutput .= "\t\t\t</textarea>\n"
