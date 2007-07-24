@@ -1907,7 +1907,7 @@ if ($action == "editsurvey")
 			. "\t\t</select></td>\n"
 			. "\t</tr>\n";
 			//ANONYMOUS
-			$editsurvey .= "\t<tr><td align='right'>".$clang->gT("Anonymous answers?")."</td>\n";
+			$editsurvey .= "\t<tr><td align='right'>".$clang->gT("Anonymous answers?")."\n";
 			  // warning message if anonymous + datestamped anwsers
 			$editsurvey .= "\n"
 			. "\t<script type=\"text/javascript\"><!-- \n"
@@ -1919,7 +1919,7 @@ if ($action == "editsurvey")
 			. "\t\t\talert(\"".$clang->gT("Warning").": ".$clang->gT("If you set a survey to anonymous, answers to timestamped and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.","js")."\");\n"
 			. "\t\t}\n"
 			. "\t}"
-			. "\t//--></script>\n";
+			. "\t//--></script></td>\n";
 
 			if ($esrow['active'] == "Y")
 			{
@@ -1932,7 +1932,7 @@ if ($action == "editsurvey")
 			}
 			else
 			{
-				$editsurvey .= "\t\t<td align='left'><select id='private' name='private' onChange='alertPrivacy();'>\n"
+				$editsurvey .= "\t\t<td align='left'><select id='private' name='private' onchange='alertPrivacy();'>\n"
 				. "\t\t\t<option value='Y'";
 				if ($esrow['private'] == "Y") {$editsurvey .= " selected='selected'";}
 				$editsurvey .= ">".$clang->gT("Yes")."</option>\n"
@@ -2383,11 +2383,11 @@ if ($action == "newsurvey")
 		. "\t\t".$clang->gT("Create Survey")."</td></tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<td align='right' width='25%'>".$clang->gT("Title").":</td>\n"
-		. "\t\t<td align='left'><input type='text' size='50' id='surveyls_title' name='surveyls_title' /><font size=1> ".$clang->gT("(This field is mandatory.)")."</font></td></tr>\n"
+		. "\t\t<td align='left'><input type='text' size='82' id='surveyls_title' name='surveyls_title' /><font size='1'> ".$clang->gT("(This field is mandatory.)")."</font></td></tr>\n"
 		. "\t<tr><td align='right'>".$clang->gT("Description:")."</td>\n"
-		. "\t\t<td align='left'><textarea cols='50' rows='5' name='description'></textarea></td></tr>\n"
+		. "\t\t<td align='left'><textarea cols='80' rows='10' name='description'></textarea></td></tr>\n"
 		. "\t<tr><td align='right'>".$clang->gT("Welcome:")."</td>\n"
-		. "\t\t<td align='left'><textarea cols='50' rows='5' name='welcome'></textarea></td></tr>\n"
+		. "\t\t<td align='left'><textarea cols='80' rows='10' name='welcome'></textarea></td></tr>\n"
 		. "\t<tr><td align='right'>".$clang->gT("Administrator:")."</td>\n"
 		. "\t\t<td align='left'><input type='text' size='50' name='admin' /></td></tr>\n"
 		. "\t<tr><td align='right'>".$clang->gT("Admin Email:")."</td>\n"
@@ -2452,7 +2452,7 @@ if ($action == "newsurvey")
 		. "\t\t</select></td>\n"
 		. "\t</tr>\n";
 		// ANONYMOUS
-		$newsurvey .= "\t<tr><td align='right'>".$clang->gT("Anonymous answers?")."</td>\n";
+		$newsurvey .= "\t<tr><td align='right'>".$clang->gT("Anonymous answers?")."\n";
 		  // warning message if anonymous + datestamped anwsers
 		$newsurvey .= "\n"
 		. "\t<script type=\"text/javascript\"><!-- \n"
@@ -2464,29 +2464,29 @@ if ($action == "newsurvey")
 		. "\t\t\talert(\"".$clang->gT("Warning").": ".$clang->gT("If you set a survey to anonymous, answers to timestamped and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.","js")."\");\n"
 		. "\t\t}\n"
 		. "\t}"
-		. "\t//--></script>\n";
+		. "\t//--></script></td>\n";
 
-		$newsurvey .= "\t\t<td align='left'><select id='private' name='private' onChange='alertPrivacy();'>\n"
+		$newsurvey .= "\t\t<td align='left'><select id='private' name='private' onchange='alertPrivacy();'>\n"
 		. "\t\t\t<option value='Y' selected='selected'>".$clang->gT("Yes")."</option>\n"
 		. "\t\t\t<option value='N'>".$clang->gT("No")."</option>\n"
 		. "\t\t</select></td>\n\t</tr>\n";
 		$newsurvey .= "\t<tr><td align='right'>".$clang->gT("Invitation Email Subject:")."</td>\n"
-		. "\t\t<td align='left'><input type='text' size='54' name='email_invite_subj' value='".$clang->gT("Invitation to participate in survey")."' />\n"
+		. "\t\t<td align='left'><input type='text' size='82' name='email_invite_subj' value='".$clang->gT("Invitation to participate in survey")."' />\n"
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td align='right'>".$clang->gT("Invitation Email:")."</td>\n"
-		. "\t\t<td align='left'><textarea cols=50 rows=5 name='email_invite'>".$clang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."</textarea>\n"
+		. "\t\t<td align='left'><textarea cols='80' rows='10' name='email_invite'>".$clang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."</textarea>\n"
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td align='right'>".$clang->gT("Email Reminder Subject:")."</td>\n"
-		. "\t\t<td align='left'><input type='text' size='54' name='email_remind_subj' value='".$clang->gT("Reminder to participate in survey")."' />\n"
+		. "\t\t<td align='left'><input type='text' size='82' name='email_remind_subj' value='".$clang->gT("Reminder to participate in survey")."' />\n"
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td align='right'>".$clang->gT("Email Reminder:")."</td>\n"
-		. "\t\t<td align='left'><textarea cols=50 rows=5 name='email_remind'>".$clang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."</textarea>\n"
+		. "\t\t<td align='left'><textarea cols='80' rows='10' name='email_remind'>".$clang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."</textarea>\n"
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td align='right'>".$clang->gT("Confirmation Email Subject")."</td>\n"
-		. "\t\t<td align='left'><input type='text' size='54' name='email_confirm_subj' value='".$clang->gT("Confirmation of completed survey")."' />\n"
+		. "\t\t<td align='left'><input type='text' size='82' name='email_confirm_subj' value='".$clang->gT("Confirmation of completed survey")."' />\n"
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td align='right'>".$clang->gT("Confirmation Email")."</td>\n"
-		. "\t\t<td align='left'><textarea cols=50 rows=5 name='email_confirm'>".$clang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}")."</textarea>\n"
+		. "\t\t<td align='left'><textarea cols='80' rows='10' name='email_confirm'>".$clang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}")."</textarea>\n"
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td align='right'>".$clang->gT("Allow public registration?")."</td>\n"
 		. "\t\t<td align='left'><select name='allowregister'>\n"
@@ -2494,16 +2494,16 @@ if ($action == "newsurvey")
 		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
 		. "\t\t</select></td>\n\t</tr>\n";
 		$newsurvey .= "\t<tr><td align='right'>".$clang->gT("Public registration Email Subject:")."</td>\n"
-		. "\t\t<td align='left'><input type='text' size='54' name='email_register_subj' value='".$clang->gT("Survey Registration Confirmation")."' />\n"
+		. "\t\t<td align='left'><input type='text' size='82' name='email_register_subj' value='".$clang->gT("Survey Registration Confirmation")."' />\n"
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td align='right'>".$clang->gT("Public registration Email:")."</td>\n"
-		. "\t\t<td align='left'><textarea cols=50 rows=5 name='email_register'>".$clang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.")."</textarea>\n"
+		. "\t\t<td align='left'><textarea cols='80' rows='10' name='email_register'>".$clang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.")."</textarea>\n"
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td align='right' valign='top'>".$clang->gT("Token Attribute Names:")."</td>\n"
 		. "\t\t<td align='left'><input type='text' size='25' name='attribute1' />(".$clang->gT("Attribute 1").")<br />"
 		. "<input type='text' size='25' name='attribute2' />(".$clang->gT("Attribute 2").")</td>\n\t</tr>\n";
 		$newsurvey .= "\t<tr><td align='right'>".$clang->gT("Date Stamp?")."</td>\n"
-		. "\t\t<td align='left'><select id='datestamp' name='datestamp' onChange='alertPrivacy();'>\n"
+		. "\t\t<td align='left'><select id='datestamp' name='datestamp' onchange='alertPrivacy();'>\n"
 		. "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
 		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
 		. "\t\t</select></td>\n\t</tr>\n";
@@ -2561,7 +2561,7 @@ if ($action == "newsurvey")
 		. "<tr><td colspan='2' class='settingcaption'>\n"
 		. "\t\t".$clang->gT("Import Survey")."</td></tr>\n\t<tr>"
 		. "\t\t<td align='right'>".$clang->gT("Select CSV/SQL File:")."</td>\n"
-		. "\t\t<td align='left'><input name=\"the_file\" type=\"file\" size=\"35\" /></td></tr>\n"
+		. "\t\t<td align='left'><input name=\"the_file\" type=\"file\" size=\"50\" /></td></tr>\n"
 		. "\t<tr><td colspan='2' align='center'><input type='submit' value='".$clang->gT("Import Survey")."' />\n"
 		. "\t<input type='hidden' name='action' value='importsurvey' /></td>\n"
 		. "\t</tr>\n</table></form>\n";

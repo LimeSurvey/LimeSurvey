@@ -125,4 +125,3 @@ Calendar._TT["TT_DATE_FORMAT"] = "%a, %b %e";
 
 Calendar._TT["WK"] = "wk";
 Calendar._TT["TIME"] = "Time:";
-Calendar._TT["WK"] = "Tje";
