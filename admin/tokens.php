@@ -286,7 +286,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 			."<td class='settingcaption'><font>".$clang->gT("Restore Options").":\n"
 			."</font></td></tr>\n"
 			."<tr>\n"
-			."<td class='evenrow' align='center'><form method='post' >\n"
+			."<td class='evenrow' align='center'><form method='post' action='$scriptname?action=tokens'>\n"
 			.$clang->gT("The following old token tables could be restored:")."<br />\n"
 			."<select size='4' name='oldtable'>\n";
 			foreach($oldlist as $ol)
@@ -897,7 +897,7 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 				."\t</tr>\n"
 				."\t<tr>\n"
 				."\t\t<td align='center'><strong>".$clang->gT("Warning")."</strong><br />\n"
-				."\t\t\t<form method='post'>\n"
+                ."\t\t\t<form method='post' action='$scriptname?action=tokens&amp;sid=$surveyid'>"
 				.$clang->gT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below.")."<br /><br />\n";
 				$tokenoutput .= str_replace("{EMAILCOUNT}", "$lefttosend", $clang->gT("There are {EMAILCOUNT} emails still to be sent."));
 				$tokenoutput .= "<br /><br />\n";
@@ -1096,7 +1096,7 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 				$lefttosend = $ctcount-$maxemails;
 				$tokenoutput .= "\t\t</td>\n"
 				."\t</tr>\n"
-				."\t<tr><form method='post'>\n"
+                ."\t<tr><form method='post' action='$scriptname?action=tokens&amp;sid=$surveyid'>"
 				."\t\t<td align='center'>\n"
 				."\t\t\t<strong>".$clang->gT("Warning")."</strong><br /><br />\n"
 				.$clang->gT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below.")."<br /><br />\n"
