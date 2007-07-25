@@ -66,14 +66,14 @@
 	    // Bulgarian
 	    $supportedLanguages['bg']['description'] = $clang->gT('Bulgarian');
 	    $supportedLanguages['bg']['nativedescription'] = '&#x0411;&#x044a;&#x043b;&#x0433;&#x0430;&#x0440;&#x0441;&#x043a;&#x0438;';
-
+        
         // Chinese (Simplified)
-	    $supportedLanguages['zh-Hant']['description'] = $clang->gT('Chinese (Traditional)');
-	    $supportedLanguages['zh-Hant']['nativedescription'] = '&#31616;&#20307;&#20013;&#25991;';
-
-        // Chinese (Traditional)
 	    $supportedLanguages['zh-Hans']['description'] = $clang->gT('Chinese (Simplified)');
 	    $supportedLanguages['zh-Hans']['nativedescription'] = '&#31616;&#20307;&#20013;&#25991;';
+
+        // Chinese (Traditional - Hong Kong)
+        $supportedLanguages['zh-Hant-HK']['description'] = $clang->gT('Chinese (Traditional - Hong Kong)');
+        $supportedLanguages['zh-Hant-HK']['nativedescription'] = '&#32321;&#39636;&#20013;&#25991;&#35486;&#31995;';
 
         // Croatian
 	    $supportedLanguages['hr']['description'] = $clang->gT('Croatian');
