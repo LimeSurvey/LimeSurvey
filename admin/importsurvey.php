@@ -34,6 +34,7 @@
 #############################################################
 */
 //Ensure script is not run directly, avoid path disclosure
+//importsurvey.php should be called from cmdline_importsurvey.php or http_importsurvey.php, they set the $importingfrom variable
 if (!isset($importingfrom)) {die ("Cannot run this script directly");}
 
 $handle = fopen($the_full_file_path, "r");
@@ -651,6 +652,9 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 	}
 }
 
+$importwarning = "";	// used to save the warnings while processing questions
+$qtypes = getqtypelist("" ,"array");
+
 // DO GROUPS, QUESTIONS FOR GROUPS, THEN ANSWERS FOR QUESTIONS IN A NESTED FORMAT!
 if (isset($grouparray) && $grouparray) {
     $count=0;
@@ -718,15 +722,31 @@ if (isset($grouparray) && $grouparray) {
                     if ($count==0) {$count++; continue;}
                 }
                 else
-                    {
-        				$qafieldorders=convertToArray($qa, "`, `", "(`", "`)");
-        				$qacfieldcontents=convertToArray($qa, "', '", "('", "')");
-                    }
-        		$questionrowdata=array_combine($qafieldorders,$qacfieldcontents);
+                {
+	        				$qafieldorders=convertToArray($qa, "`, `", "(`", "`)");
+	        				$qacfieldcontents=convertToArray($qa, "', '", "('", "')");
+                }
+ 	          		$questionrowdata=array_combine($qafieldorders,$qacfieldcontents);
                 $questionrowdata=array_map('convertCsvreturn2return', $questionrowdata);
                 if ($currentqid=='' || ($currentqid!=$questionrowdata['qid'])) {$currentqid=$questionrowdata['qid'];$newquestion=true;}
                   else 
-                    if ($currentqid==$questionrowdata['qid']) {$newquestion=false;}    		
+                    if ($currentqid==$questionrowdata['qid']) {$newquestion=false;}
+
+								if (!array_key_exists($questionrowdata["type"], $qtypes))
+                {
+                	$questionrowdata["type"] = strtoupper($questionrowdata["type"]);
+                	if (!array_key_exists($questionrowdata["type"], $qtypes))
+                	{
+                		$importwarning .= "<li>" . $clang->gT("Question") . " \"{$questionrowdata["title"]} - {$questionrowdata["question"]}\" " . $clang->gT("was NOT imported, because the question type is not know") . "</li>";
+                		$countquestions--;
+                		continue;
+                	}
+                	else	// the upper case worked well
+                	{
+                		$importwarning .= "<li>" . $clang->gT("Question") . " \"{$questionrowdata["title"]} - {$questionrowdata["question"]}\" " . $clang->gT("was imported, but the type was set to \"" . $qtypes[$questionrowdata["type"]]  . "\", because is the closest one") . "</li>";
+                	}
+                }
+                        		
 
 				$thisgid=$questionrowdata['gid'];
 				if ($thisgid == $gid) {
@@ -1023,6 +1043,7 @@ if ($importingfrom == "http")
 	$importsurvey .= "\t<li>".$clang->gT("Assessments").": $countassessments</li>\n</ul>\n";
 	
 	$importsurvey .= "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />\n";
+	if ($importwarning != "") $importsurvey .= "<br><strong>".$clang->gT("Warnings").":</strong><br><ul style=\"text-align:left;\">" . $importwarning . "</ul><br>\n";
 	$importsurvey .= "</td></tr></table><br />\n";
 	unlink($the_full_file_path);
 	unset ($surveyid);  // Crazy but necessary because else the html script will search for user rights
@@ -1045,6 +1066,8 @@ else
 	echo $clang->gT("Assessments").": $countassessments\n\n";
 	
 	echo $clang->gT("Import of Survey is completed.")."\n";
+	if ($importwarning != "") echo "\n".$clang->gT("Warnings").":\n" . $importwarning . "\n";
+
 }
 	
 function convertToArray($stringtoconvert, $seperator, $start, $end) 
