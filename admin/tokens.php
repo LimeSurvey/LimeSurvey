@@ -829,9 +829,8 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 		$emquery .= " FROM ".db_table_name("tokens_{$_POST['sid']}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != ''";
 
 		if (isset($_POST['tid']) && $_POST['tid']) {$emquery .= " and tid='{$_POST['tid']}'";}
-		$emquery .= " LIMIT $maxemails";
 		$tokenoutput .= "\n\n<!-- emquery: $emquery -->\n\n";
-		$emresult = db_execute_assoc($emquery) or die ("Couldn't do query.<br />\n$emquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
+		$emresult = db_select_limit_assoc($emquery,$maxemails) or die ("Couldn't do query.<br />\n$emquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 		$emcount = $emresult->RecordCount();
 
 		$tokenoutput .= "<table width='500px' align='center' bgcolor='#EEEEEE'>\n"
@@ -1047,8 +1046,8 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 
 		if (isset($_POST['last_tid']) && $_POST['last_tid']) {$emquery .= " AND tid > '{$_POST['last_tid']}'";}
 		if (isset($_POST['tid']) && $_POST['tid']) {$emquery .= " AND tid = '{$_POST['tid']}'";}
-		$emquery .= " ORDER BY tid LIMIT $maxemails";
-		$emresult = db_execute_assoc($emquery) or die ("Couldn't do query.<br />$emquery<br />".htmlspecialchars($connect->ErrorMsg()));
+		$emquery .= " ORDER BY tid ";
+		$emresult = db_select_limit_assoc($emquery, $maxemails) or die ("Couldn't do query.<br />$emquery<br />".htmlspecialchars($connect->ErrorMsg()));
 		$emcount = $emresult->RecordCount();
 		$tokenoutput .= "<table width='500' align='center' bgcolor='#EEEEEE'>\n"
 		."\t<tr>\n"
