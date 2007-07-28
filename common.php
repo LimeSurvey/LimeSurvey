@@ -419,6 +419,7 @@ function &db_select_limit_assoc($sql,$numrows=-1,$offset=-1,$inputarr=false,$die
 }
 
 function db_quote_id($id)
+// This functions quotes fieldnames accordingly 
 {
 	global $connect;
 	$quote = $connect->nameQuote;

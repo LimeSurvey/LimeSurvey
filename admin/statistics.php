@@ -756,7 +756,7 @@ if (isset($_POST['display']) && $_POST['display'])
 			$firstletter=substr($pv,0,1);
 			if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "T" && $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp") //pull out just the fieldnames
 			{
-				$thisquestion = $connect->qstr($pv)." IN (";
+				$thisquestion = db_quote_id($pv)." IN (";
 				foreach ($_POST[$pv] as $condition)
 				{
 					$thisquestion .= "'$condition', ";
@@ -774,7 +774,7 @@ if (isset($_POST['display']) && $_POST['display'])
 				{
 					if (in_array($arow[0], $_POST[$pv])) // only add condition if answer has been chosen
 					{
-						$mselects[]=$connect->qstr(substr($pv, 1, strlen($pv)).$arow[0])." = 'Y'";
+						$mselects[]=db_quote_id(substr($pv, 1, strlen($pv)).$arow[0])." = 'Y'";
 					}
 				}
 				if ($mselects)
@@ -787,47 +787,47 @@ if (isset($_POST['display']) && $_POST['display'])
 			{
 				if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
 				{
-					$selects[]=$connect->qstr(substr($pv, 1, -1))." > '".$_POST[$pv]."'";
+					$selects[]=db_quote_id(substr($pv, 1, -1))." > '".$_POST[$pv]."'";
 				}
 				if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
 				{
-                    $selects[]=$connect->qstr(substr($pv, 1, -1))." < '".$_POST[$pv]."'";
+                    $selects[]=db_quote_id(substr($pv, 1, -1))." < '".$_POST[$pv]."'";
 				}
 			}
 			elseif (substr($pv, 0, 2) == "id")
 			{
 				if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
 				{
-                    $selects[]=$connect->qstr(substr($pv, 0, -1))." > '".$_POST[$pv]."'";
+                    $selects[]=db_quote_id(substr($pv, 0, -1))." > '".$_POST[$pv]."'";
 				}
 				if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
 				{
-                    $selects[]=$connect->qstr(substr($pv, 0, -1))." < '".$_POST[$pv]."'";
+                    $selects[]=db_quote_id(substr($pv, 0, -1))." < '".$_POST[$pv]."'";
 				}
 				if (substr($pv, strlen($pv)-1, 1) == "=" && $_POST[$pv] != "")
 				{
-                    $selects[]=$connect->qstr(substr($pv, 0, -1))." = '".$_POST[$pv]."'";
+                    $selects[]=db_quote_id(substr($pv, 0, -1))." = '".$_POST[$pv]."'";
 				}
 			}
 			elseif ((substr($pv, 0, 1) == "T" || substr($pv, 0, 1) == "Q" ) && $_POST[$pv] != "")
 			{
-                $selects[]=$connect->qstr(substr($pv, 1, strlen($pv)))." like '%".$_POST[$pv]."%'";
+                $selects[]=db_quote_id(substr($pv, 1, strlen($pv)))." like '%".$_POST[$pv]."%'";
 			}
 			elseif (substr($pv, 0, 1) == "D" && $_POST[$pv] != "")
 			{
 				if (substr($pv, -1, 1) == "=")
 				{
-                    $selects[]=$connect->qstr(substr($pv, 1, strlen($pv)-2))." = '".$_POST[$pv]."'";
+                    $selects[]=db_quote_id(substr($pv, 1, strlen($pv)-2))." = '".$_POST[$pv]."'";
 				}
 				else
 				{
 					if (substr($pv, -1, 1) == "<")
 					{
-						$selects[]= $connect->qstr(substr($pv, 1, strlen($pv)-2)) . " > '".$_POST[$pv]."'";
+						$selects[]= db_quote_id(substr($pv, 1, strlen($pv)-2)) . " > '".$_POST[$pv]."'";
 					}
 					if (substr($pv, -1, 1) == ">")
 					{
-                        $selects[]= $connect->qstr(substr($pv, 1, strlen($pv)-2)) . " < '".$_POST[$pv]."'";
+                        $selects[]= db_quote_id(substr($pv, 1, strlen($pv)-2)) . " < '".$_POST[$pv]."'";
 					}
 				}
 			}
@@ -835,17 +835,17 @@ if (isset($_POST['display']) && $_POST['display'])
 			{
 				if (substr($pv, -1, 1) == "=" && !empty($_POST[$pv]))
 				{
-					$selects[] = $connect->qstr('datestamp')." = '".$_POST[$pv]."'";
+					$selects[] = db_quote_id('datestamp')." = '".$_POST[$pv]."'";
 				}
 				else
 				{
 					if (substr($pv, -1, 1) == "<" && !empty($_POST[$pv]))
 					{
-						$selects[]= $connect->qstr('datestamp')." > '".$_POST[$pv]."'";
+						$selects[]= db_quote_id('datestamp')." > '".$_POST[$pv]."'";
 					}
 					if (substr($pv, -1, 1) == ">" && !empty($_POST[$pv]))
 					{
-						$selects[]= $connect->qstr('datestamp')." < '".$_POST[$pv]."'";
+						$selects[]= db_quote_id('datestamp')." < '".$_POST[$pv]."'";
 					}
 				}
 			}
@@ -1078,12 +1078,12 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				.$clang->gT("Result")."</strong></td>\n"
 				."\t</tr>\n";
 				$fieldname=substr($rt, 1, strlen($rt));
-				$query = "SELECT STDDEV(".$connect->qstr($fieldname).") as stdev";
-				$query .= ", SUM(".$connect->qstr($fieldname)."*1) as sum";
-				$query .= ", AVG(".$connect->qstr($fieldname)."*1) as average";
-				$query .= ", MIN(".$connect->qstr($fieldname)."*1) as minimum";
-				$query .= ", MAX(".$connect->qstr($fieldname)."*1) as maximum";
-				$query .= " FROM ".db_table_name("survey_$surveyid")." WHERE ".$connect->qstr($fieldname)." IS NOT NULL AND ".$connect->qstr($fieldname)." != ' '";
+				$query = "SELECT STDDEV(".db_quote_id($fieldname).") as stdev";
+				$query .= ", SUM(".db_quote_id($fieldname)."*1) as sum";
+				$query .= ", AVG(".db_quote_id($fieldname)."*1) as average";
+				$query .= ", MIN(".db_quote_id($fieldname)."*1) as minimum";
+				$query .= ", MAX(".db_quote_id($fieldname)."*1) as maximum";
+				$query .= " FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT NULL AND ".db_quote_id($fieldname)." != ' '";
 				if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate is not null";}
 				if ($sql != "NULL") {$query .= " AND $sql";}
 				$result=db_execute_assoc($query) or die("Couldn't do maths testing<br />$query<br />".$connect->ErrorMsg());
@@ -1099,11 +1099,11 @@ if (isset($_POST['summary']) && $_POST['summary'])
 
 
 				//CALCULATE QUARTILES
-				$query ="SELECT ".$connect->qstr($fieldname)." FROM ".db_table_name("survey_$surveyid")." WHERE ".$connect->qstr($fieldname)." IS NOT null AND ".$connect->qstr($fieldname)." != ' '";
+				$query ="SELECT ".db_quote_id($fieldname)." FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT null AND ".db_quote_id($fieldname)." != ' '";
 				if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate is not null";}
 				if ($sql != "NULL") {$query .= " AND $sql";}
 				$result=$connect->Execute($query) or die("Disaster during median calculation<br />$query<br />".$connect->ErrorMsg());
-				$querystarter="SELECT ".$connect->qstr($fieldname)." FROM ".db_table_name("survey_$surveyid")." WHERE ".$connect->qstr($fieldname)." IS NOT null AND ".$connect->qstr($fieldname)." != ' '";
+				$querystarter="SELECT ".db_quote_id($fieldname)." FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT null AND ".db_quote_id($fieldname)." != ' '";
 				if (incompleteAnsFilterstate() === true) {$querystarter .= " AND submitdate is not null";}                     
 				if ($sql != "NULL") {$querystarter .= " AND $sql";}
 				$medcount=$result->RecordCount();
@@ -1120,7 +1120,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					if ($q1 != $q1b)
 					{
 						//ODD NUMBER
-						$query = $querystarter . " ORDER BY ".$connect->qstr($fieldname)."*1 ";
+						$query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
 						$result=db_select_limit_assoc($query, $q1c, 2) or die("1st Quartile query failed<br />".$connect->ErrorMsg());
 						while ($row=$result->FetchRow())
 						{
@@ -1136,7 +1136,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					{
 						//EVEN NUMBER
 						//TODO: See note above for 'ODD'
-						$query = $querystarter . " ORDER BY ".$connect->qstr($fieldname)."*1 ";
+						$query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
 						$result=db_select_limit_assoc($query,1, $q1c) or die ("1st Quartile query failed<br />".$connect->ErrorMsg());
 						while ($row=$result->FetchRow()) {$showem[]=array("1st Quartile (Q1)", $row[$fieldname]);}
 					}
@@ -1149,7 +1149,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					if ($median != (int)((($medcount+1)/2)-1))
 					{
 						//remainder
-						$query = $querystarter . " ORDER BY ".$connect->qstr($fieldname)."*1 ";
+						$query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
 						$result=db_select_limit_assoc($query,2, $medianc) or die("What a complete mess with the remainder<br />$query<br />".$connect->ErrorMsg());
 						while ($row=$result->FetchRow()) {$total=$total+$row[$fieldname];}
 						$showem[]=array($clang->gT("2nd Quartile (Median)"), $total/2);
@@ -1157,7 +1157,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					else
 					{
 						//EVEN NUMBER
-						$query = $querystarter . " ORDER BY ".$connect->qstr($fieldname)."*1 ";
+						$query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
 						$result=db_select_limit_assoc($query,1, $medianc) or die("What a complete mess<br />$query<br />".$connect->ErrorMsg());
 						while ($row=$result->FetchRow()) {$showem[]=array("Median Value", $row[$fieldname]);}
 					}
@@ -1169,7 +1169,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					$q3diff=$q3-$q3b;
 					if ($q3 != $q3b)
 					{
-						$query = $querystarter . " ORDER BY ".$connect->qstr($fieldname)."*1 ";
+						$query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
 						$result = db_select_limit_assoc($query,2,$q3c) or die("3rd Quartile query failed<br />".$connect->ErrorMsg());
 						$lastnumber='';
 						while ($row=$result->FetchRow())
@@ -1184,7 +1184,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					}
 					else
 					{
-						$query = $querystarter . " ORDER BY ".$connect->qstr($fieldname)."*1";
+						$query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1";
 						$result = db_select_limit_assoc($query,1, $q3c) or die("3rd Quartile even query failed<br />".$connect->ErrorMsg());
 						while ($row=$result->FetchRow()) {$showem[]=array("3rd Quartile (Q3)", $row[$fieldname]);}
 					}
@@ -1379,22 +1379,22 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				{
 					if ($al[1] == $clang->gT("Other"))
 					{
-						$query = "SELECT count(".$connect->qstr($al[2]).") FROM ".db_table_name("survey_$surveyid")." WHERE ".$connect->qstr($al[2])." != ''";
+						$query = "SELECT count(".db_quote_id($al[2]).") FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($al[2])." != ''";
 					}
 					elseif ($qtype == "U" || $qtype == "T" || $qtype == "S" || $qtype == "Q")
 					{
 						if($al[0]=="Answers")
 						{
-							$query = "SELECT count(".$connect->qstr($al[2]).") FROM ".db_table_name("survey_$surveyid")." WHERE ".$connect->qstr($al[2])." != ''";
+							$query = "SELECT count(".db_quote_id($al[2]).") FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($al[2])." != ''";
 						}
 						elseif($al[0]=="NoAnswer")
 						{
-							$query = "SELECT count(".$connect->qstr($al[2]).") FROM ".db_table_name("survey_$surveyid")." WHERE ".$connect->qstr($al[2])." IS NULL OR ".$connect->qstr($al[2])." = ''";
+							$query = "SELECT count(".db_quote_id($al[2]).") FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($al[2])." IS NULL OR ".db_quote_id($al[2])." = ''";
 						}
 					}
 					else
 					{
-						$query = "SELECT count(".$connect->qstr($al[2]).") FROM ".db_table_name("survey_$surveyid")." WHERE ".$connect->qstr($al[2])." =";
+						$query = "SELECT count(".db_quote_id($al[2]).") FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($al[2])." =";
 						if (substr($rt, 0, 1) == "R")
 						{
 							$query .= " '$al[0]'";
@@ -1407,9 +1407,10 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				}
 				else
 				{                           
-					$query = "SELECT count(".$connect->qstr($rt).") FROM ".db_table_name("survey_$surveyid")." WHERE ".$connect->qstr($rt)." = '$al[0]'";
+					$query = "SELECT count(".db_quote_id($rt).") FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($rt)." = '$al[0]'";
 				}
 				if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate is not null";}                     
+				//echo $query;
 				if ($sql != "NULL") {$query .= " AND $sql";}
 				$result=db_execute_num($query) or die ("Couldn't do count of values<br />$query<br />".$connect->ErrorMsg());
 				$statisticsoutput .= "\n<!-- ($sql): $query -->\n\n";
