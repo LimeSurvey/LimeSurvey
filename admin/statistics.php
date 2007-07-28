@@ -436,7 +436,7 @@ foreach ($filters as $flt)
 		break;
 		case "C": // ARRAY OF YES\No\$clang->gT("Uncertain") QUESTIONS
 		$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
-		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0][]' AND language='{$language}' ORDER BY sortorder, answer";
+		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
 		$result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 		$counter2=0;
 		while ($row=$result->FetchRow())
@@ -472,7 +472,7 @@ foreach ($filters as $flt)
 		break;
 		case "E": // ARRAY OF Increase/Same/Decrease QUESTIONS
 		$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
-		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0][]' AND language='{$language}' ORDER BY sortorder, answer";
+		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
 		$result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 		$counter2=0;
 		while ($row=$result->FetchRow())
@@ -508,7 +508,7 @@ foreach ($filters as $flt)
 		case "F": // ARRAY OF Flexible QUESTIONS
 		case "H": // ARRAY OF Flexible Questions (By Column)
 		$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
-		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0][]' AND language='{$language}' ORDER BY sortorder, answer";
+		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
 		$result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 		$counter2=0;
 		while ($row=$result->FetchRow())
