@@ -481,17 +481,17 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	
 
 	$qidattributes=getQuestionAttributes($qid);
-	$editquestion .= "\t\t\t<table id='QTattributes'>
+	$editquestion .= "\t\t\t<table id='QTattributes' width='40%' >
 					   <tr>
 					    <td colspan='2' align='center'>
-						  <form action='$scriptname' method='post'><table class='outlinetable' cellspacing='0' width='90%'>
+						  <form action='$scriptname' method='post'><table class='attributetable'>
 						  <tr>
 						    <th colspan='4'>".$clang->gT("Question Attributes:")."</th>
    					      </tr>
 						  <tr><th colspan='4' height='5'></th></tr>
                           <tr>  			  
 						  <td nowrap='nowrap' width='50%' ><select id='QTlist' name='attribute_name' >
-						  </select></td><td align='center' width='20%'><input type='text' id='QTtext' size='6' name='attribute_value'  /></td>
+						  </select></td><td align='center' width='20%'><input type='text' id='QTtext'  name='attribute_value'  /></td>
 						  <td align='center'><input type='submit' value='".$clang->gT("Add")."' />
 						  <input type='hidden' name='action' value='addattribute' />
 						  <input type='hidden' name='sid' value='$surveyid' />
@@ -502,12 +502,12 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	
 	foreach ($qidattributes as $qa)
 	{
-		$editquestion .= "\t\t\t<table class='outlinetable' width='90%' border='0' cellspacing='0'>"
+		$editquestion .= "\t\t\t<table class='attributetable' width='90%' border='0' cellspacing='0'>"
 		."<tr><td width='85%'>"
 		."<form action='$scriptname' method='post'>"
 		."<table width='100%'><tr><td width='65%'>"
 		.$qa['attribute']."</td>
-					   <td align='center' width='25%'><input type='text' name='attribute_value' size='5' value='"
+					   <td align='center' width='25%'><input type='text' name='attribute_value' value='"
 		.$qa['value']."' /></td>
 					   <td ><input type='submit' value='"
 		.$clang->gT("Save")."' />

@@ -2271,48 +2271,41 @@ function questionAttributes()
 	// name - the display name
 	// types - a string with one character representing each question typ to which the attribute applies
 	// help - a short explanation
+    $qattributes[]=array("name"=>"answer_width",
+    "types"=>"ABCEF",
+    "help"=>"The percentage width of the answer column");
 	$qattributes[]=array("name"=>"display_columns",
 	"types"=>"LMZ",
 	"help"=>"Number of columns to display");
-	$qattributes[]=array("name"=>"maximum_chars",
-	"types"=>"STUN",
-	"help"=>"Maximum Characters Allowed");
-	$qattributes[]=array("name"=>"permission",
-	"types"=>"5DGL!OMPQNRSTUYABCEFHWZ",
-	"help"=>"Flexible attribute for permissions");
-	// --> START ENHANCEMENT - TEXT INPUT WIDTH
-	//    --> START ORIGINAL
-	//    $qattributes[]=array("name"=>"text_input_width",
-	//                         "types"=>"SN",
-	//                         "help"=>"Width of text input box");
-	//    --> END ORIGINAL
-	$qattributes[]=array("name"=>"text_input_width",
-	"types"=>"SNTU",
-	"help"=>"Width of text input box");
-	// --> END ENHANCEMENT - TEXT INPUT WIDTH
+    $qattributes[]=array("name"=>"array_filter",
+    "types"=>"ABCEF",
+    "help"=>"Filter an Array's Answers from a Multiple Options Question");
+    $qattributes[]=array("name"=>"display_rows",
+    "types"=>"TU",
+    "help"=>"How many rows to display");
 	$qattributes[]=array("name"=>"hide_tip",
-	"types"=>"L!OMPWZ",
+	"types"=>"!LMOPWZ",
 	"help"=>"Hide the tip that is normally supplied with question");
-	$qattributes[]=array("name"=>"random_order",
-	"types"=>"L!OMPRQWZ^",
-	"help"=>"Present Answers in random order");
 	$qattributes[]=array("name"=>"code_filter",
-	"types"=>"FGWZ",
+	"types"=>"WZ",
 	"help"=>"Filter the available answers by this value");
-	$qattributes[]=array("name"=>"array_filter",
-	"types"=>"ABFCE",
-	"help"=>"Filter an Array's Answers from a Multiple Options Question");
 	$qattributes[]=array("name"=>"max_answers",
 	"types"=>"M",
 	"help"=>"Limit the number of possible answers");
+    $qattributes[]=array("name"=>"maximum_chars",
+    "types"=>"STUN",
+    "help"=>"Maximum Characters Allowed");
+    $qattributes[]=array("name"=>"random_order",
+    "types"=>"!LMOPQRWZ",
+    "help"=>"Present Answers in random order");
+    $qattributes[]=array("name"=>"text_input_width",
+    "types"=>"NSTU",
+    "help"=>"Width of text input box");
 
-	// --> START ENHANCEMENT - DISPLAY ROWS
-	$qattributes[]=array("name"=>"display_rows",
-	"types"=>"TU",
-	"help"=>"How many rows to display");
-	// --> END ENHANCEMENT - DISPLAY ROWS
-
-	// --> START ENHANCEMENT - SLIDER ATTRIBUTES
+	/* -- > Commented out since not yet used
+    $qattributes[]=array("name"=>"permission",
+    "types"=>"5DGL!OMPQNRSTUYABCEFHWZ",
+    "help"=>"Flexible attribute for permissions");
 	$qattributes[]=array("name"=>"default_value",
 	"types"=>"^",
 	"help"=>"What value to use as the default");
@@ -2322,9 +2315,6 @@ function questionAttributes()
 	$qattributes[]=array("name"=>"maximum_value",
 	"types"=>"^",
 	"help"=>"The highest value on the slider");
-	$qattributes[]=array("name"=>"answer_width",
-	"types"=>"^ABCEF",
-	"help"=>"The percentage width of the answer column");
 	//	$qattributes[]=array("name"=>"left_label",
 	//				"types"=>"^",
 	//				"help"=>"The label to the left of the slider");
@@ -2335,7 +2325,7 @@ function questionAttributes()
 	//				"types"=>"^",
 	//				"help"=>"The ")
 
-	// --> END ENHANCEMENT - SLIDER ATTRIBUTES
+	*/
 
 	//This builds a more useful array (don't modify)
 	foreach($qattributes as $qa)
