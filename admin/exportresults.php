@@ -420,7 +420,7 @@ if ((isset($_POST['first_name']) && $_POST['first_name']=="on")  || (isset($_POS
 }
 if (incompleteAnsFilterstate() === true)
 {
-	$dquery .= "  WHERE $surveytable.submitdate > '0000-00-00 00:00:00'";
+	$dquery .= "  WHERE $surveytable.submitdate is not null'";
 }
 $dquery .=" ORDER BY id";
 $dresult = db_select_limit_assoc($dquery, 1) or die($clang->gT("Error")." getting results<br />$dquery<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -710,7 +710,7 @@ if ((isset($_POST['first_name']) && $_POST['first_name']=="on") || (isset($_POST
 
 	if (incompleteAnsFilterstate() === true)
 	{
-		$dquery .= "  WHERE $surveytable.submitdate > '0000-00-00 00:00:00'";
+    $dquery .= "  WHERE $surveytable.submitdate is not null'";
 	}
 }
 else // this applies for exporting everything
@@ -719,7 +719,7 @@ else // this applies for exporting everything
 
 	if (incompleteAnsFilterstate() === true)
 	{
-		$dquery .= "  WHERE $surveytable.submitdate > '0000-00-00 00:00:00'";
+    $dquery .= "  WHERE $surveytable.submitdate is not null'";
 	}
 }
 

@@ -474,7 +474,7 @@ elseif ($subaction == "all")
 
 	//LETS COUNT THE DATA
 	$dtquery = "SELECT count(*) FROM $surveytable";
-	if (incompleteAnsFilterstate() === true) {$dtquery .= " WHERE submitdate >= ".$connect->DBDate('1980-01-01');}
+	if (incompleteAnsFilterstate() === true) {$dtquery .= " WHERE submitdate is not null ";}
 	$dtresult=db_execute_num($dtquery);
 	while ($dtrow=$dtresult->FetchRow()) {$dtcount=$dtrow[0];}
 
@@ -486,20 +486,20 @@ elseif ($subaction == "all")
 		if ($_POST['sql'] == "NULL")
 		{
 			$dtquery = "SELECT * FROM $surveytable ";
-			if (incompleteAnsFilterstate() === true) {$dtquery .= " WHERE submitdate >= ".$connect->DBDate('1980-01-01');}
+            if (incompleteAnsFilterstate() === true) {$dtquery .= " WHERE submitdate is not null ";}
 			$dtquery .= " ORDER BY id";
 		}
 		else
 		{
 			$dtquery = "SELECT * FROM $surveytable WHERE ".stripcslashes($_POST['sql'])." ";
-			if (incompleteAnsFilterstate() === true) {$dtquery .= " AND submitdate >= ".$connect->DBDate('1980-01-01');}
+            if (incompleteAnsFilterstate() === true) {$dtquery .= " AND submitdate is not null ";}
 			$dtquery .= " ORDER BY id";
 		}
 	}
 	else
 	{
 		$dtquery = "SELECT * FROM $surveytable ";
-		if (incompleteAnsFilterstate() === true) {$dtquery .= " WHERE submitdate >= ".$connect->DBDate('1980-01-01');}
+		if (incompleteAnsFilterstate() === true) {$dtquery .= " WHERE submitdate is not null ";}
 		$dtquery .= " ORDER BY id";
 	}
 	if ($order == "desc") {$dtquery .= " DESC";}
@@ -642,7 +642,7 @@ else
 	$num_total_answers=0;
 	$num_completed_answers=0;
 	$gnquery = "SELECT count(id) FROM $surveytable";
-	$gnquery2 = "SELECT count(id) FROM $surveytable WHERE submitdate >= '1980-01-01 00:00:00'";
+	$gnquery2 = "SELECT count(id) FROM $surveytable WHERE submitdate is not null";
 	$gnresult = db_execute_num($gnquery);
 	$gnresult2 = db_execute_num($gnquery2);
 

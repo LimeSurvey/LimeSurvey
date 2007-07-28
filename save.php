@@ -409,7 +409,7 @@ function createinsertquery()
 			}
 			if ((isset($_POST['move']) && $_POST['move'] == "movesubmit"))
 			{
-				$query .= ", '".$mysubmitdate."'";
+				$query .= ", ".$connect->DBDate($mysubmitdate);
 			}
 			$query .=")";
 		}
@@ -421,15 +421,15 @@ function createinsertquery()
 				$query = "UPDATE {$thissurvey['tablename']} SET ";
 				if ($thissurvey['datestamp'] == "Y")
 				{
-					$query .= "datestamp = '".$_SESSION['datestamp']."',";
+					$query .= " datestamp = '".$_SESSION['datestamp']."',";
 				}
 				if ($thissurvey['ipaddr'] == "Y")
 				{
-					$query .= "ipaddr = '".$_SERVER['REMOTE_ADDR']."',";
+					$query .= " ipaddr = '".$_SERVER['REMOTE_ADDR']."',";
 				}
 				if ((isset($_POST['move']) && $_POST['move'] == "movesubmit"))
 				{
-					$query .= "submitdate = '".$mysubmitdate."',";
+                    $query .= " submitdate = ".$connect->DBDate($mysubmitdate)." ";
 				}
 				$fields=explode("|", $_POST['modfields']);
 				foreach ($fields as $field)
@@ -445,8 +445,8 @@ function createinsertquery()
 				if ((isset($_POST['move']) && $_POST['move'] == "movesubmit"))
 				{
 					$query = "UPDATE {$thissurvey['tablename']} SET ";
-					$query .= "submitdate = '".$mysubmitdate."' ";
-					$query .= "WHERE id=" . $_SESSION['srid'];
+                    $query .= " submitdate = ".$connect->DBDate($mysubmitdate);
+					$query .= " WHERE id=" . $_SESSION['srid'];
 				}
 			}
 		}

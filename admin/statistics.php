@@ -857,7 +857,7 @@ if (isset($_POST['display']) && $_POST['display'])
 	$prb->setLabelValue('txt1',$clang->gT('Getting Result Count ...'));
 	$prb->moveStep(35);
 	$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid");
-	if (incompleteAnsFilterstate() === true) {$query .= " WHERE submitdate > '0000-00-00 00:00:00' ";}
+	if (incompleteAnsFilterstate() === true) {$query .= " WHERE submitdate is not null;}
 	$result = db_execute_num($query) or die ("Couldn't get total<br />$query<br />".$connect->ErrorMsg());
 	while ($row=$result->FetchRow()) {$total=$row[0];}
 	if (isset($selects) && $selects)
@@ -1084,7 +1084,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				$query .= ", MIN(`$fieldname`*1) as minimum";
 				$query .= ", MAX(`$fieldname`*1) as maximum";
 				$query .= " FROM ".db_table_name("survey_$surveyid")." WHERE `$fieldname` IS NOT NULL AND `$fieldname` != ' '";
-				if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate > '0000-00-00 00:00:00'";}
+				if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate is not null";}
 				if ($sql != "NULL") {$query .= " AND $sql";}
 				$result=db_execute_assoc($query) or die("Couldn't do maths testing<br />$query<br />".$connect->ErrorMsg());
 				while ($row=$result->FetchRow())
@@ -1100,11 +1100,11 @@ if (isset($_POST['summary']) && $_POST['summary'])
 
 				//CALCULATE QUARTILES
 				$query ="SELECT `$fieldname` FROM ".db_table_name("survey_$surveyid")." WHERE `$fieldname` IS NOT null AND `$fieldname` != ' '";
-				if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate > '0000-00-00 00:00:00'";}
+				if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate is not null");}
 				if ($sql != "NULL") {$query .= " AND $sql";}
 				$result=$connect->Execute($query) or die("Disaster during median calculation<br />$query<br />".$connect->ErrorMsg());
 				$querystarter="SELECT `$fieldname` FROM ".db_table_name("survey_$surveyid")." WHERE `$fieldname` IS NOT null AND `$fieldname` != ' '";
-				if (incompleteAnsFilterstate() === true) {$querystarter .= " AND submitdate > '0000-00-00 00:00:00'";}
+				if (incompleteAnsFilterstate() === true) {$querystarter .= " AND submitdate is not null");}                     
 				if ($sql != "NULL") {$querystarter .= " AND $sql";}
 				$medcount=$result->RecordCount();
 
@@ -1382,22 +1382,22 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				{
 					if ($al[1] == $clang->gT("Other"))
 					{
-						$query = "SELECT count(`$al[2]`) FROM ".db_table_name("survey_$surveyid")." WHERE `$al[2]` != ''";
+						$query = "SELECT count(".$connect->qstr($al[2]).") FROM ".db_table_name("survey_$surveyid")." WHERE ".$connect->qstr($al[2])." != ''";
 					}
 					elseif ($qtype == "U" || $qtype == "T" || $qtype == "S" || $qtype == "Q")
 					{
 						if($al[0]=="Answers")
 						{
-							$query = "SELECT count(`$al[2]`) FROM ".db_table_name("survey_$surveyid")." WHERE `$al[2]` != ''";
+							$query = "SELECT count(".$connect->qstr($al[2]).") FROM ".db_table_name("survey_$surveyid")." WHERE ".$connect->qstr($al[2])." != ''";
 						}
 						elseif($al[0]=="NoAnswer")
 						{
-							$query = "SELECT count(`$al[2]`) FROM ".db_table_name("survey_$surveyid")." WHERE `$al[2]` IS NULL OR `$al[2]` = ''";
+							$query = "SELECT count(".$connect->qstr($al[2]).") FROM ".db_table_name("survey_$surveyid")." WHERE ".$connect->qstr($al[2])." IS NULL OR ".$connect->qstr($al[2])." = ''";
 						}
 					}
 					else
 					{
-						$query = "SELECT count(`$al[2]`) FROM ".db_table_name("survey_$surveyid")." WHERE `$al[2]` =";
+						$query = "SELECT count(".$connect->qstr($al[2]).") FROM ".db_table_name("survey_$surveyid")." WHERE ".$connect->qstr($al[2])." =";
 						if (substr($rt, 0, 1) == "R")
 						{
 							$query .= " '$al[0]'";
@@ -1412,7 +1412,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				{
 					$query = "SELECT count(`$rt`) FROM ".db_table_name("survey_$surveyid")." WHERE `$rt` = '$al[0]'";
 				}
-				if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate > '0000-00-00 00:00:00'";}
+				if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate is not null");}                     
 				if ($sql != "NULL") {$query .= " AND $sql";}
 				$result=db_execute_num($query) or die ("Couldn't do count of values<br />$query<br />".$connect->ErrorMsg());
 				$statisticsoutput .= "\n<!-- ($sql): $query -->\n\n";
