@@ -3250,7 +3250,7 @@ function CleanLanguagesFromSurvey($sid, $availlangs)
 */
 function FixLanguageConsistency($sid, $availlangs)
 {
-	global $connect;
+	global $connect, $databasetype;
 	
 	if (!empty($availlangs) && $availlangs != " ")
 	{
