@@ -103,9 +103,9 @@ if ((isset($_POST['fieldnames']) && $_POST['fieldnames']) || (isset($_POST['move
 		$subquery = createinsertquery();
 		if ($result=$connect->Execute($subquery))
 		{
-			$tempID=$connect->Insert_ID(); // Find out id immediately if inserted 
             if (substr($subquery,0,6)=='INSERT')
 			{
+               $tempID=$connect->Insert_ID(); // Find out id immediately if inserted 
         	   $_SESSION['srid'] = $tempID;
         	   $saved_id = $tempID;
 			}
@@ -435,7 +435,7 @@ function createinsertquery()
 				foreach ($fields as $field)
 				{
 					if (!isset($_POST[$field])) {$_POST[$field]='';}
-                    $query .= $field." = '".db_quote($_POST[$field])."',";
+                    $query .= db_quote_id($field)." = '".db_quote($_POST[$field])."',";
 				}
 				$query .= "WHERE id=" . $_SESSION['srid'];
 				$query = str_replace(",WHERE", " WHERE", $query);   // remove comma before WHERE clause
