@@ -589,8 +589,8 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	$templatesoutput.= "\t\t\t<table class='menubar'>\n"
 	. "\t\t\t<tr>\n"
 	. "\t\t\t\t<td colspan='2' height='8'>\n"
-	. "\t\t\t\t\t<font size='1' color='white'><strong>".$clang->gT("Preview:")."</strong>\n"
-	. "\t\t\t\t</font></td>\n"
+	. "\t\t\t\t\t<strong>".$clang->gT("Preview:")."</strong>\n"
+	. "\t\t\t\t</td>\n"
 	. "\t\t\t</tr>\n"
 	."\t<tr>\n"
 	."\t\t<td width='90%' align='center' >\n";

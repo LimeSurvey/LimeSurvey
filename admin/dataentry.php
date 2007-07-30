@@ -1452,11 +1452,11 @@ if($actsurrows['browse_response'])
 		//This is the default, presenting a blank dataentry form
 		$fieldmap=createFieldMap($surveyid);
 		// PRESENT SURVEY DATAENTRY SCREEN
-		$dataentryoutput .= "<table width='99%' align='center' style='margin: 3px 6px; border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		$dataentryoutput .= "<table><tr><td></td></tr></table><table class='menubar' >\n"
 		."\t<tr><td colspan='2' height='4'><strong>"
 		.$clang->gT("Browse Responses")."</strong></td></tr>\n"
 		.$surveyoptions
-		."</table>";
+		."</table><table><tr><td></td></tr></table>";
 		$slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
 		array_unshift($slangs,$baselang);
@@ -1470,8 +1470,8 @@ if($actsurrows['browse_response'])
 		//RL: debug: echo "language: ".$language."<br>baselang: ".$baselang."<br>";
 
 
-		$dataentryoutput .= "<form action='$scriptname?action=dataentry' name='addsurvey' method='post' id='addsurvey'>\n"
-		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		$dataentryoutput .= "<table width='100%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+		."<form action='$scriptname?action=dataentry' name='addsurvey' method='post' id='addsurvey'>\n"
 		."\t<tr><td colspan='3' height='4'><strong>"
 		.$clang->gT("Data Entry")."</strong></td></tr>\n"
 		."\t<tr>\n"
