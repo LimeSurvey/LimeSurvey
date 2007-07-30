@@ -3274,8 +3274,10 @@ function FixLanguageConsistency($sid, $availlangs)
 				$gresult = db_execute_assoc($query) or die($connect->ErrorMsg());
 				if ($gresult->RecordCount() < 1)
 				{
+                    if ($databasetype=='odbc_mssql') {$connect->Execute("SET IDENTITY_INSERT ".db_table_name('groups')." ON");}
 					$query = "INSERT INTO ".db_table_name('groups')." (gid,sid,group_name,group_order,description,language) VALUES('{$group['gid']}','{$group['sid']}',".db_quoteall($group['group_name']).",'{$group['group_order']}',".db_quoteall($group['description']).",'{$lang}')";
 					$connect->Execute($query) or die($connect->ErrorMsg());
+                    if ($databasetype=='odbc_mssql') {$connect->Execute("SET IDENTITY_INSERT ".db_table_name('groups')." OFF");}
 				}
 			}
 			reset($langs);
@@ -3296,8 +3298,10 @@ function FixLanguageConsistency($sid, $availlangs)
 				$gresult = db_execute_assoc($query) or die($connect->ErrorMsg());
 				if ($gresult->RecordCount() < 1)
 				{
+                    if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('questions')." ON");}
 					$query = "INSERT INTO ".db_table_name('questions')." (qid,sid,gid,type,title,question,preg,help,other,mandatory,lid,question_order,language) VALUES('{$question['qid']}','{$question['sid']}','{$question['gid']}','{$question['type']}',".db_quoteall($question['title']).",".db_quoteall($question['question']).",".db_quoteall($question['preg']).",".db_quoteall($question['help']).",'{$question['other']}','{$question['mandatory']}','{$question['lid']}','{$question['question_order']}','{$lang}')";
 					$connect->Execute($query) or die(print "$query\n: ".$connect->ErrorMsg());
+                    if ($databasetype=='odbc_mssql') {$connect->Execute("SET IDENTITY_INSERT ".db_table_name('questions')." OFF");}
 				}
 			}
 			reset($langs);
@@ -3321,8 +3325,10 @@ function FixLanguageConsistency($sid, $availlangs)
 					$gresult = db_execute_assoc($query) or die($connect->ErrorMsg());
 					if ($gresult->RecordCount() < 1)
 					{
+                        if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('answers')." ON");}
 						$query = "INSERT INTO ".db_table_name('answers')." (qid,code,answer,default_value,sortorder,language) VALUES('{$answer['qid']}',".db_quoteall($answer['code']).",".db_quoteall($answer['answer']).",".db_quoteall($answer['default_value']).",'{$answer['sortorder']}','{$lang}')";
 						$connect->Execute($query) or die($connect->ErrorMsg());
+                        if ($databasetype=='odbc_mssql') {$connect->Execute("SET IDENTITY_INSERT ".db_table_name('answers')." OFF");}
 					}
 				}
 				reset($langs);
