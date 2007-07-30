@@ -20,7 +20,7 @@
 </head>
 <body style="background-color: rgb(255, 255, 255);">
 <h2>ADOdb Data Dictionary Library for PHP</h2>
-<p>V4.90 8 June 2006 (c) 2000-2006 John Lim (<a
+<p>V4.94 23 Jan 2007 (c) 2000-2007 John Lim (<a
  href="mailto:jlim#natsoft.com.my">jlim#natsoft.com.my</a>).<br>
 AXMLS (c) 2004 ars Cognita, Inc</p>
 <p><font size="1">This software is dual licensed using BSD-Style and
@@ -48,6 +48,25 @@ generic ODBC.
  color="#006600"># We have a portable declarative data dictionary format in ADOdb, similar to SQL.<br>  # Field types use 1 character codes, and fields are separated by commas.<br>  # The following example creates three fields: "col1", "col2" and "col3":</font><br>  $flds = " <br>  <font
  color="#663300"><strong> col1 C(32) NOTNULL DEFAULT 'abc',<br>   col2 I  DEFAULT 0,<br>   col3 N(12.2)</strong></font><br>  ";<br><br>  <font
  color="#006600"># We demonstrate creating tables and indexes</font><br>  $sqlarray = $dict-&gt;<strong>CreateTableSQL</strong>($tabname, $flds, $taboptarray);<br>  $dict-&gt;<strong>ExecuteSQLArray</strong>($sqlarray);<br><br>  $idxflds = 'co11, col2';<br>  $sqlarray = $dict-&gt;<strong>CreateIndexSQL</strong>($idxname, $tabname, $idxflds);<br>  $dict-&gt;<strong>ExecuteSQLArray</strong>($sqlarray);<br></pre>
+<h3>More Complex Table Sample</h3>
+<p>
+The following string will create a table with a primary key event_id and multiple indexes, including one compound index idx_ev1. The ability to define indexes using the INDEX keyword was added in ADOdb 4.94 by Gaetano Giunta.
+<pre>
+$flds = "
+  event_id I(11) NOTNULL AUTOINCREMENT PRIMARY,
+  event_type I(4) NOTNULL  <b>INDEX idx_evt</b>,
+  event_start_date T DEFAULT NULL <b>INDEX id_esd</b>,
+  event_end_date T DEFAULT '0000-00-00 00:00:00' <b>INDEX id_eted</b>,
+  event_parent I(11) UNSIGNED NOTNULL DEFAULT 0 <b>INDEX id_evp</b>,
+  event_owner I(11) DEFAULT 0 <b>INDEX idx_ev1</b>,
+  event_project I(11) DEFAULT 0 <b>INDEX idx_ev1</b>,
+  event_times_recuring I(11) UNSIGNED NOTNULL DEFAULT 0,
+  event_icon C(20) DEFAULT 'obj/event',
+  event_description X
+";
+$sqlarray = $db-><b>CreateTableSQL</b>($tablename, $flds);
+$dict-><b>ExecuteSQLArray</b>($sqlarray);
+</pre>
 <h3>Class Factory</h3>
 <h4>NewDataDictionary($connection, $drivername=false)</h4>
 <p>Creates a new data dictionary object. You pass a database connection object in $connection. The $connection does not have to be actually connected to the database. Some database connection objects are generic (eg. odbtp and odbc). Since 4.53, you can tell ADOdb  the actual database with $drivername. E.g.</p>

@@ -434,7 +434,8 @@ function createinsertquery()
 				$fields=explode("|", $_POST['modfields']);
 				foreach ($fields as $field)
 				{
-					$query .= $field." = '".db_quote($_POST[$field])."',";
+					if (!isset($_POST[$field])) {$_POST[$field]='';}
+                    $query .= $field." = '".db_quote($_POST[$field])."',";
 				}
 				$query .= "WHERE id=" . $_SESSION['srid'];
 				$query = str_replace(",WHERE", " WHERE", $query);   // remove comma before WHERE clause

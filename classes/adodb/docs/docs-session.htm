@@ -19,9 +19,9 @@ font-size: 8pt;
   </style>
 </head>
 <body style="background-color: rgb(255, 255, 255);">
-<h3>ADODB Session Management Manual</h3>
+<h1>ADODB Session 2 Management Manual</h1>
 <p>
-V4.90 8 June 2006 (c) 2000-2006 John Lim (jlim#natsoft.com.my)
+V4.94 23 Jan 2007 (c) 2000-2007 John Lim (jlim#natsoft.com.my)
 </p>
 <p> <font size="1">This software is dual licensed using BSD-Style and
 LGPL. This means you can use it in compiled proprietary and commercial
@@ -29,9 +29,17 @@ products. </font>
 <p>Useful ADOdb links: <a href="http://adodb.sourceforge.net/#download">Download</a>
 &nbsp; <a href="http://adodb.sourceforge.net/#docs">Other Docs</a>
 </p>
-<h3>Introduction</h3>
-<p> We store state information specific to a user or web client in
-session variables. These session variables persist throughout a
+<h2>Introduction</h2>
+<p> This document discusses the newer session handler adodb-session2.php. If
+  you have used the older adodb-session.php, then be forewarned that you will
+  need to alter your session table format. Otherwise everything is <a href="#compat">backward
+  compatible</a>.
+  Here are the <a href="docs-session.old.htm">older
+    docs</a> for
+  adodb-session.php.</p>
+<h2>Why Session Variables in a Database? </h2>
+<p>We store state information specific to a user or web
+    client in session variables. These session variables persist throughout a
 session, as the user moves from page to page. </p>
 <p>To use session variables, call session_start() at the beginning of
 your web page, before your HTTP headers are sent. Then for every
@@ -54,11 +62,49 @@ in a database table that can be shared across multiple servers. </p>
 <p>These records will be garbage collected based on the php.ini [session] timeout settings. 
 You can register a notification function to notify you when the record has expired and 
 is about to be freed by the garbage collector.</p>
-<p><b>Important Upgrade Notice:</b> Since ADOdb 4.05, the session files
-have been moved to its own folder, adodb/session. This is a rewrite
-of the session code by Ross Smith. The old session code is in
-adodb/session/old. </p>
-<h4>ADOdb Session Handler Features</h4>
+<p>An alternative to using a database backed session handler is to use <a href="http://www.danga.com/memcached/">memcached</a>.
+  This is a distributed memory based caching system suitable for storing session
+  information.
+  </p>
+<h2> The Improved Session Handler</h2>
+<p>In ADOdb 4.91, we added a new session handler, in adodb-session2.php.
+It features the following improvements:
+<ul>
+<li>Fully supports server farms using a new database table format. The
+  previous version used the web server time for timestamps, which can cause problems
+  on a system with multiple web servers with possibly inconsistent
+  times. The new version uses the database server time instead for all timestamps.
+<li>The older database table format is obsolete. The database table must be modified
+  to support storage of the database server time mentioned above. Also the field
+  named DATA has been changed to SESSDATA. In some databases, DATA is a reserved
+  word.
+<li>The functions dataFieldName() and syncSeconds() is obsolete.
+</ul>
+
+<p>Usage is 
+
+<pre>
+include_once("adodb/session/adodb-session2.php");
+ADOdb_Session::config($driver, $host, $user, $password, $database,$options=false);
+session_start();
+
+<font
+ color="#004040">#<br># Test session vars, the following should increment on refresh<br>#<br>$_SESSION['AVAR'] += 1;<br>print "&lt;p&gt;\$_SESSION['AVAR']={$_SESSION['AVAR']}&lt;/p&gt;";</font>
+</pre>
+
+<p>When the session is created in session_start( ), the global variable $<b>ADODB_SESS_CONN</b> holds
+the connection object.
+<p>The default name of the table is sessions2. If you want to override it:
+  
+<pre>
+include_once("adodb/session/adodb-session2.php");
+$options['table'] = 'mytablename';
+ADOdb_Session::config($driver, $host, $user, $password, $database,$options);
+session_start();
+</pre>
+
+
+<h3>ADOdb Session Handler Features</h3>
 <ul>
   <li>Ability to define a notification function that is called when a
 session expires. Typically
@@ -67,28 +113,29 @@ used to detect session logout and release global resources. </li>
 only perform an update
 to the session data if there is a data change. </li>
   <li>Support for large amounts of session data with CLOBs (see
-adodb-session-clob.php). Useful
+adodb-session-clob2.php). Useful
 for Oracle. </li>
   <li>Support for encrypted session data, see
-adodb-cryptsession.inc.php. Enabling encryption is simply a matter of
-including adodb-cryptsession.inc.php instead of adodb-session.inc.php. </li>
+adodb-cryptsession2.php. Enabling encryption is simply a matter of
+including adodb-cryptsession2.php instead of adodb-session2.php. </li>
 </ul>
-<h3>Setup</h3>
+<h3>Session Handler Files </h3>
 <p>There are 3 session management files that you can use:
 </p>
-<pre>adodb-session.php        : The default<br>adodb-session-clob.php   : Use this if you are storing DATA in clobs<br>adodb-cryptsession.php   : Use this if you want to store encrypted session data in the database<br><br>
-</pre>
-<p><strong>Examples</strong>
-<p><pre>
- <font
- color="#004040">    include('adodb/adodb.inc.php');<br>    <br><b>    $ADODB_SESSION_DRIVER='mysql';<br>    $ADODB_SESSION_CONNECT='localhost';<br>    $ADODB_SESSION_USER ='scott';<br>    $ADODB_SESSION_PWD ='tiger';<br>    $ADODB_SESSION_DB ='sessiondb';</b><br>    <br>    <b>include('adodb/session/adodb-session.php');</b><br>    session_start();<br>    <br>    #<br>    # Test session vars, the following should increment on refresh<br>    #<br>    $_SESSION['AVAR'] += 1;<br>    print "&lt;p&gt;\$_SESSION['AVAR']={$_SESSION['AVAR']}&lt;/p&gt;";<br></font></pre>
+<pre>adodb-session2.php        : The default<br>adodb-cryptsession2.php   : Use this if you want to store encrypted session data in the database<br>adodb-session-clob2.php   : Use this if you are storing DATA in clobs and you are NOT using oci8 driver</pre>
+<h2><strong>Usage Examples</strong></h2>
+<p>To force non-persistent connections, call <font color="#004040"><b>Persist</b></font>() first before session_start():
+
  
-<p>To force non-persistent connections, call adodb_session_open() first before session_start():
-<p>
- <pre>
- <font color="#004040"><br>    include('adodb/adodb.inc.php');<br>    <br><b>    $ADODB_SESSION_DRIVER='mysql';<br>    $ADODB_SESSION_CONNECT='localhost';<br>    $ADODB_SESSION_USER ='scott';<br>    $ADODB_SESSION_PWD ='tiger';<br>    $ADODB_SESSION_DB ='sessiondb';</b><br>    <br>    <b>include('adodb/session/adodb-session.php');<br>    adodb_sess_open(false,false,false);</b><br>    session_start();<br> </font>
- </pre>
-<p> The 3rd parameter to adodb_sess_open($path, $sessname, $connectMode)  sets the connection method. You can pass in the following:</p>
+<pre>
+ <font color="#004040">
+include_once("adodb/session/adodb-session2.php");
+$driver = 'mysql'; $host = 'localhost'; $user = 'auser'; $pwd = 'secret'; $database = 'sessiondb';
+ADOdb_Session::config($driver, $host, $user, $password, $database,$options=false);<b><br>ADOdb_session::Persist($connectMode=false);</b>
+session_start();<br> </font>
+</pre>
+<p> The parameter to the Persist( ) method sets the connection mode. You can
+  pass the following:</p>
 <table width="50%" border="1">
   <tr>
     <td><b>$connectMode</b></td>
@@ -115,56 +162,56 @@ including adodb-cryptsession.inc.php instead of adodb-session.inc.php. </li>
     <td>Connect( )</td>
   </tr>
 </table>
-<p>To use a encrypted sessions, simply replace the file adodb-session.php:</p>
+<p>To use a encrypted sessions, simply replace the file adodb-session2.php:</p>
  <pre> <font
- color="#004040"><br>    include('adodb/adodb.inc.php');<br>    <br><b>    $ADODB_SESSION_DRIVER='mysql';<br>    $ADODB_SESSION_CONNECT='localhost';<br>    $ADODB_SESSION_USER ='scott';<br>    $ADODB_SESSION_PWD ='tiger';<br>    $ADODB_SESSION_DB ='sessiondb';<br>    <br>    include('adodb/session/adodb-cryptsession.php');</b><br>    session_start();</font><br>
- </pre>
- <p>And the same technique for adodb-session-clob.php:</p>
+ color="#004040"><b><br>include('adodb/session/adodb-cryptsession2.php');</b><br>$driver = 'mysql'; $host = 'localhost'; $user = 'auser'; $pwd = 'secret'; $database = 'sessiondb';
+ADOdb_Session::config($driver, $host, $user, $password, $database,$options=false);<b><br>adodb_sess_open(false,false,$connectMode=false);</b>
+session_start();<br></font></pre>
+ <p>And the same technique for adodb-session-clob2.php:</p>
  <pre>  <font
- color="#004040"><br>    include('adodb/adodb.inc.php');<br>    <br><b>    $ADODB_SESSION_DRIVER='mysql';<br>    $ADODB_SESSION_CONNECT='localhost';<br>    $ADODB_SESSION_USER ='scott';<br>    $ADODB_SESSION_PWD ='tiger';<br>    $ADODB_SESSION_DB ='sessiondb';<br>    <br>    include('adodb/session/adodb-session-clob.php');</b><br>    session_start();</font>
- </pre>
- <p>An alternative way to set persistant or non-persistent connections is to call the following function before session_start() is called.
- <pre>
- 	ADODB_Session::persist('P'); # 'C' for non-persistent connections
- </pre>
- <h4>Installation</h4>
-<p>1. Create this table in your database (MySQL syntax):
-<p><pre> <a
+ color="#004040"><br><b>include('adodb/session/adodb-session2-clob2.php');</b><br>$driver = 'oci8'; $host = 'localhost'; $user = 'auser'; $pwd = 'secret'; $database = 'sessiondb';
+ADOdb_Session::config($driver, $host, $user, $password, $database,$options=false);<b><br>adodb_sess_open(false,false,$connectMode=false);</b>
+session_start();</font></pre>
+ <h2>Installation</h2>
+<p>1. Create this table in your database. Here is the MySQL version:
+<pre> <a
  name="sessiontab"></a> <font color="#004040">
-   create table sessions (
-       SESSKEY char(32) not null,
-       EXPIRY int(11) unsigned not null,
-       EXPIREREF varchar(64),
-	   DATA text not null,
-	   primary key (sesskey)
-	   );</font>
- </pre>
+CREATE TABLE sessions2(
+	  sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
+  	  expiry DATETIME NOT NULL ,
+	  expireref VARCHAR( 250 ) DEFAULT '',
+	  created DATETIME NOT NULL ,
+	  modified DATETIME NOT NULL ,
+	  sessdata LONGTEXT DEFAULT '',
+	  PRIMARY KEY ( sesskey ) ,
+	  INDEX sess2_expiry( expiry ),
+	  INDEX sess2_expireref( expireref )
+)</font></pre>
 
- <p>You may want to rename the 'data' field to 'session_data' as
-	'data' appears to be a reserved word for one or more of the following:
-	<ul>
-	<li>	ANSI SQL
-	<li>	IBM DB2
-	<li>	MS SQL Server
-	<li>	Postgres
-	<li>	SAP
-		</ul>
-<p>
-	If you do, then execute:
-<pre>
-		ADODB_Session::dataFieldName('session_data');
+ <p> For PostgreSQL, use:
+ <pre>CREATE TABLE sessions2(
+ sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
+ expiry TIMESTAMP NOT NULL ,
+ expireref VARCHAR( 250 ) DEFAULT '',
+ created TIMESTAMP NOT NULL ,
+ modified TIMESTAMP NOT NULL ,
+ sessdata TEXT DEFAULT '',
+ PRIMARY KEY ( sesskey )
+ );
 </pre>
- <p> For the adodb-session-clob.php version, create this:
-<p>  <pre>
-    <font
- color="#004040"><br>    create table sessions (<br>       SESSKEY char(32) not null,<br>       EXPIRY int(11) unsigned not null,<br>       EXPIREREF varchar(64),<br>       DATA CLOB,<br>      primary key (sesskey)<br>  );</font>
- </pre>
- <p>2. Then define the following parameters. You can either modify this file, or define them before this file is included:
- <pre>      <font
- color="#004040"><br>    $ADODB_SESSION_DRIVER='database driver, eg. mysql or ibase';<br>    $ADODB_SESSION_CONNECT='server to connect to';<br>    $ADODB_SESSION_USER ='user';<br>    $ADODB_SESSION_PWD ='password';<br>    $ADODB_SESSION_DB ='database';<br>    $ADODB_SESSION_TBL = 'sessions'; # setting this is optional<br>	</font>
- </pre><p>
-     When the session is created, $<b>ADODB_SESS_CONN</b> holds the connection object.<br>    <br>  3. Recommended is PHP 4.0.6 or later. There are documented session bugs in earlier versions of PHP.
-<h3>Notifications</h3>
+ <pre>create INDEX sess2_expiry on sessions2( expiry );
+create INDEX sess2_expireref on sessions2 ( expireref );</pre>
+ <p>Here is the Oracle definition, which uses a CLOB for the SESSDATA field:
+ <pre>
+  <font
+ color="#004040">CREATE TABLE SESSIONS2<br>(<br>   SESSKEY    VARCHAR2(48 BYTE)                  NOT NULL,<br>   EXPIRY     DATE                               NOT NULL,<br>   EXPIREREF  VARCHAR2(200 BYTE),<br>   CREATED    DATE                               NOT NULL,<br>   MODIFIED   DATE                               NOT NULL,<br>   SESSDATA   CLOB,<br>  PRIMARY KEY(SESSKEY)<br>);
+<br>CREATE INDEX SESS2_EXPIRY ON SESSIONS2(EXPIRY);
+CREATE INDEX SESS2_EXPIREREF ON SESSIONS2(EXPIREREF);</font></pre>
+<p> We need to use a CLOB here because for text greater than 4000 bytes long,
+  Oracle requires you to use the CLOB data type. If you are using the oci8 driver,
+  ADOdb will automatically enable CLOB handling. So you can use either adodb-session2.php
+  or adodb-session-clob2.php - in this case it doesn't matter. <br>    
+<h2>Notifications</h2>
 <p>You can receive notification when your session is cleaned up by the session garbage collector or
 when you call session_destroy().
 <p>PHP's session extension will automatically run a special garbage collection function based on
@@ -220,7 +267,7 @@ $ADODB_SESSION_EXPIRE_NOTIFY = array('USERID','NotifyFn');</font>
 record has been created, you will need to modify any session variable
 to force a database record update.
 </p>
-<h4>Neat Notification Tricks</h4>
+<h3>Neat Notification Tricks</h3>
 <p><i>ExpireRef</i> normally holds the user id of the current session.
 </p>
 <p>1. You can then write a session monitor, scanning expireref to see
@@ -234,70 +281,56 @@ site.
 <p>3. You can scan the sessions table to ensure no user
 can be logged in twice. Useful for security reasons.
 </p>
-<h3>Using Oracle CLOBs</h3>
-<p>Suppose you are storing the DATA field in a CLOB:
- <pre><font color="#004040">
-   CREATE TABLE sessions (
-       SESSKEY VARCHAR(32) NOT NULL,
-       EXPIRY NUMBER(16)  NOT NULL,
-       EXPIREREF VARCHAR(64),
-       DATA CLOB,
-      PRIMARY KEY (sesskey)
-  );</font>
- </pre> 
- <p>Then your PHP code could look like this:
-	 <pre>
-	ADODB_SESSION_DRIVER='oci8';
-	$ADODB_SESSION_CONNECT=$tnsname;
-	$ADODB_SESSION_USER ='scott';
-	$ADODB_SESSION_PWD = 'tiger';
-	$ADODB_SESSION_DB ='';
-	
-	$ADODB_SESSION_USE_LOBS = 'clob';
-	$ADODB_SESSION_TBL = 'sessions';
-	
-	$ADODB_SESS_DEBUG=0;
-	
-	include(ADODB_DIR.'/session/adodb-session.php');
-	
-	ADODB_Session::persist('P'); # use 'C' for non-persistent connects
-	
-	session_start();
- </pre>
- <p>Note that you can set persistance using ADODB_Session::persist('P').
- 
-<h3>Compression/Encryption Schemes</h3>
+<h2>Compression/Encryption Schemes</h2>
 Since ADOdb 4.05, thanks to Ross Smith, multiple encryption and
 compression schemes are supported. Currently, supported are:
 <p>
 <pre>  MD5Crypt (crypt.inc.php)<br>  MCrypt<br>  Secure (Horde's emulation of MCrypt, if MCrypt module is not available.)<br>  GZip<br>  BZip2<br></pre>
 <p>These are stackable. E.g.
-<p><pre>ADODB_Session::filter(new ADODB_Compress_Bzip2());<br>ADODB_Session::filter(new ADODB_Encrypt_MD5());<br></pre>
+<pre>ADODB_Session::filter(new ADODB_Compress_Bzip2());<br>ADODB_Session::filter(new ADODB_Encrypt_MD5());<br></pre>
 will compress and then encrypt the record in the database.
-<h3>adodb_session_regenerate_id()</h3>
-<p>Dynamically change the current session id with a newly generated one and update database. Currently only
-works with cookies. Useful to improve security by reducing the risk of session-hijacking.
-See this article on <a href=http://shiflett.org/articles/security-corner-feb2004>Session Fixation</a> for more info 
-on the theory behind this feature. Usage:
-<pre>
-	$ADODB_SESSION_DRIVER='mysql';
-	$ADODB_SESSION_CONNECT='localhost';
-	$ADODB_SESSION_USER ='root';
-	$ADODB_SESSION_PWD ='abc';
-	$ADODB_SESSION_DB ='phplens';
-	
-	include('path/to/adodb/session/adodb-session.php');
+<h2>Session Cookie Regeneration: adodb_session_regenerate_id()</h2>
+<p>Dynamically change the current session id with a newly generated one and update
+  database. Currently only works with cookies. Useful to improve security by
+  reducing the risk of session-hijacking. See this article on <a href=http://shiflett.org/articles/security-corner-feb2004>Session
+  Fixation</a> for more info 
+on the theory behind this feature. Usage:<pre>
+	include('path/to/adodb/session/adodb-session2.php');
 	
 	session_start();
-	# Every 10 page loads, reset cookie for safety.
+	# Approximately every 10 page loads, reset cookie for safety.
 	# This is extremely simplistic example, better 
 	# to regenerate only when the user logs in or changes
 	# user privilege levels.
 	if ((rand()%10) == 0) adodb_session_regenerate_id(); 
 </pre>
 <p>This function calls session_regenerate_id() internally or simulates it if the function does not exist.
+<h2>Vacuum/Optimize Database</h2>
+<p>During session garbage collection, if postgresql is detected,
+  ADOdb can be set to run VACUUM. If mysql is detected, then optimize database
+  could be called.You can turn this on or off using:</p>
+<pre>$turnOn = true; # or false
+ADODB_Session::optimize($turnOn);
+</pre>
+<p>The default  is optimization is disabled.</p>
+<h2><a name=compat></a>Backwards Compatability </h2>
+<p>The older method of connecting to ADOdb using global variables is still supported:</p>
+<pre> $ADODB_SESSION_DRIVER='mysql';
+ $ADODB_SESSION_CONNECT='localhost';
+ $ADODB_SESSION_USER ='root';
+ $ADODB_SESSION_PWD ='abc';
+ $ADODB_SESSION_DB ='phplens';
+ 
+ include('path/to/adodb/session/adodb-<strong>session2</strong>.php'); </pre>
+<p>In the above example, the only things you need to change in your code to upgrade
+  is </p>
+<ul>
+  <li>your session table format to the new one.</li>
+  <li>the include file from adodb-session.php to adodb-session2.php. </li>
+</ul>
 <h2>More Info</h2>
-<p>Also see the <a href="docs-adodb.htm">core ADOdb documentation</a>.
-</p>
+<p>Also see the <a href="docs-adodb.htm">core ADOdb documentation</a>. And if
+  you are interested in the obsolete adodb-session.php, see <a href="docs-session.old.htm">old
+    session documentation</a>. </p>
 </body>
 </html>

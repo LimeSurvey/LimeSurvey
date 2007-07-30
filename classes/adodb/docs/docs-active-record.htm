@@ -14,7 +14,7 @@ font-family: Arial, Helvetica, sans-serif ;
 <title>ADOdb Active Record</title>
 <body>
 <h1>ADOdb Active Record</h1>
-<p> (c) 2000-2006 John Lim (jlim#natsoft.com)</p>
+<p> (c) 2000-2007 John Lim (jlim#natsoft.com)</p>
 <p><font size="1">This software is dual licensed using BSD-Style and LGPL. This 
   means you can use it in compiled proprietary and commercial products.</font></p>
 <p><hr>
@@ -30,7 +30,7 @@ This implementation differs from Zend Framework's implementation in the followin
 <li>ADOdb_Active_Record works when you are connected to multiple databases. Zend's only works when connected to a default database.<p>
 <li>Support for $ADODB_ASSOC_CASE. The field names are upper-cased, lower-cased or left in natural case depending on this setting.<p>
 <li>No field name conversion to camel-caps style, unlike Zend's implementation which will convert field names such as 'first_name' to 'firstName'.<p>
-<li>New ADOConnection::GetActiveRecords() and ADOConnection::GetActiveRecordsClass() functions in adodb.inc.php.<p>
+<li>NewADOConnection::GetActiveRecords() and ADOConnection::GetActiveRecordsClass() functions in adodb.inc.php.<p>
 <li>Caching of table metadata so it is only queried once per table, no matter how many Active Records are created.<p>
 <li>The additional functionality is described <a href=#additional>below</a>. 
 </ul>
@@ -45,9 +45,9 @@ ADOdb_Active_Record maps a database table to a PHP class, and each instance of t
 The first step to using  ADOdb_Active_Record is to set the default connection that an ADOdb_Active_Record objects will use to connect to a database. 
 
 <pre>
-require_once('adodb/adodb-active-record.php');
+require_once('adodb/adodb-active-record.inc.php');
 
-$db = new ADOConnection('mysql://root:pwd@localhost/dbname');
+$db = NewADOConnection('mysql://root:pwd@localhost/dbname');
 ADOdb_Active_Record::SetDatabaseAdapter($db);
 </pre>        
 
@@ -233,7 +233,7 @@ var $_table = 'people';
 }
 
 $person = new Person();
-peopleArray =& $person->Find("name like ? order by age", array('Sm%'));
+$peopleArray =& $person->Find("name like ? order by age", array('Sm%'));
 </pre>
 
 <h3><li>Error Handling and Debugging</h3>
@@ -414,6 +414,10 @@ $activeRecArr = $db->GetActiveRecordsClass($className,$tableName, 'name LIKE ?',
 
 </ol>
 
+<h3><li>ADOConnection::ErrorMsg()</h3>
+<p>Returns last error message.
+<h3><li>ADOConnection::ErrorNo()</h3>
+<p>Returns last error number.
 <h2>Code Sample</h2>
 <p>The following works with PHP4 and PHP5
 <pre>
@@ -497,9 +501,22 @@ echo "&lt;p>Name first (should be John): ",$person->name_first, "&lt;br>Class = 
  <p>PHP5 specific: Change PHP5 implementation of Active Record to use __get() and __set() for better performance.
 
 <h3> Change Log</h3>
+<p>0.07
+<p>$ADODB_ASSOC_CASE=2 did not work properly. Fixed.
+<p>Added === check in ADODB_SetDatabaseAdapter for $db, adodb-active-record.inc.php. Thx Christian Affolter.
+
+<p>0.06
+<p>Added ErrorNo().
+<p>Fixed php 5.2.0 compat issues.
+ 
+<p>0.05
+<p>If inserting a record and the value of a primary key field is null, then we do not insert that field in as
+we assume it is an auto-increment field. Needed by mssql.
+
 <p>0.04 5 June 2006 <br>
 <p>Added support for declaring table name in $_table in class declaration. Thx Bill Dueber for idea.
 <p>Added find($where,$bindarr=false) method to retrieve an array of active record objects.
+
 <p>0.03 <br>
 - Now we only update fields that have changed, using $this->_original.<br>
 - We do not include auto_increment fields in replace(). Thx Travis Cline<br>

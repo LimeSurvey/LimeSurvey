@@ -1,6 +1,6 @@
 <?php
 /* 
-V4.90 8 June 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
+V4.94 23 Jan 2007  (c) 2000-2007 John Lim (jlim#natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. 
@@ -101,14 +101,11 @@ class ADODB_ado extends ADOConnection {
 		
 		if ($argProvider) $dbc->Provider = $argProvider;	
 
-		if ($argProvider) $argHostname = "PROVIDER=$argProvider;DRIVER={SQL Server};SERVER=$argHostname";	
-		
-
 		if ($argDatabasename) $argHostname .= ";DATABASE=$argDatabasename";		
 		if ($argUsername) $argHostname .= ";$u=$argUsername";
 		if ($argPassword)$argHostname .= ";$p=$argPassword";
 		
-		if ($this->debug) ADOConnection::outp( "Host=".$argHostname."<br />\n version=$dbc->version");
+		if ($this->debug) ADOConnection::outp( "Host=".$argHostname."<BR>\n version=$dbc->version");
 		// @ added below for php 4.0.1 and earlier
 		@$dbc->Open((string) $argHostname);
 		
@@ -183,7 +180,7 @@ class ADODB_ado extends ADOConnection {
 				$tt=substr($t->value,0,6);
 				if ($tt!='SYSTEM' && $tt !='ACCESS')
 					$arr[]=$f->value;
-				//print $f->value . ' ' . $t->value.'<br />';
+				//print $f->value . ' ' . $t->value.'<br>';
 				$adors->MoveNext();
 			}
 			$adors->Close();
@@ -383,7 +380,7 @@ class ADORecordSet_ado extends ADORecordSet {
 		$o->ado_type = $t;
 		
 
-		//print "off=$off name=$o->name type=$o->type len=$o->max_length<br />";
+		//print "off=$off name=$o->name type=$o->type len=$o->max_length<br>";
 		return $o;
 	}
 	

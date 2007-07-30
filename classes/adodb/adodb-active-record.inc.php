@@ -1,7 +1,7 @@
 <?php
 /*
 
-@version V4.90 8 June 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
+@version V4.94 23 Jan 2007  (c) 2000-2007 John Lim (jlim#natsoft.com.my). All rights reserved.
   Latest version is available at http://adodb.sourceforge.net
  
   Released under both BSD license and Lesser GPL library license. 
@@ -10,7 +10,7 @@
   
   Active Record implementation. Superset of Zend Framework's.
   
-  Version 0.04
+  Version 0.07
   
   See http://www-128.ibm.com/developerworks/java/library/j-cb03076/?ca=dgr-lnxw01ActiveRecord 
   	for info on Ruby on Rails Active Record implementation
@@ -18,10 +18,11 @@
 
 global $_ADODB_ACTIVE_DBS;
 global $ADODB_ACTIVE_CACHESECS; // set to true to enable caching of metadata such as field info
+global $ACTIVE_RECORD_SAFETY; // set to false to disable safety checks
 
 // array of ADODB_Active_DB's, indexed by ADODB_Active_Record->_dbat
 $_ADODB_ACTIVE_DBS = array();
-
+$ACTIVE_RECORD_SAFETY = true;
 
 class ADODB_Active_DB {
 	var $db; // ADOConnection
@@ -41,7 +42,12 @@ function ADODB_SetDatabaseAdapter(&$db)
 	global $_ADODB_ACTIVE_DBS;
 	
 		foreach($_ADODB_ACTIVE_DBS as $k => $d) {
-			if ($d->db == $db) return $k;
+			if (PHP_VERSION >= 5) {
+				if ($d->db === $db) return $k;
+			} else {
+				if ($d->db->_connectionID === $db->_connectionID && $db->database == $d->db->database) 
+					return $k;
+			}
 		}
 		
 		$obj = new ADODB_Active_DB();
@@ -100,6 +106,12 @@ class ADODB_Active_Record {
 		$this->_table = $table;
 		$this->_tableat = $table; # reserved for setting the assoc value to a non-table name, eg. the sql string in future
 		$this->UpdateActiveTable($pkeyarr);
+	}
+	
+	function __wakeup()
+	{
+  		$class = get_class($this);
+  		new $class;
 	}
 	
 	function _pluralize($table)
@@ -212,12 +224,12 @@ class ADODB_Active_Record {
 			break;
 		default:
 			foreach($cols as $name => $fldobj) {
-				$name = ($name);
+				$name = ($fldobj->name);
 				$this->$name = null;
 				$attr[$name] = $fldobj;
 			}
 			foreach($pkeys as $k => $name) {
-				$keys[$name] = ($name);
+				$keys[$name] = $cols[$name]->name;
 			}
 			break;
 		}
@@ -274,6 +286,15 @@ class ADODB_Active_Record {
 		return $this->_lasterr;
 	}
 	
+	function ErrorNo() 
+	{
+		if ($this->_dbat < 0) return -9999; // no database connection...
+		$db = $this->DB();
+		
+		return (int) $db->ErrorNo();
+	}
+
+
 	// retrieve ADOConnection from _ADODB_Active_DBs
 	function &DB()
 	{
@@ -302,6 +323,8 @@ class ADODB_Active_Record {
 	// set a numeric array (using natural table field ordering) as object properties
 	function Set(&$row)
 	{
+	global $ACTIVE_RECORD_SAFETY;
+	
 		$db =& $this->DB();
 		
 		if (!$row) {
@@ -312,7 +335,7 @@ class ADODB_Active_Record {
 		$this->_saved = true;
 		
 		$table =& $this->TableInfo();
-		if (sizeof($table->flds) != sizeof($row)) {
+		if ($ACTIVE_RECORD_SAFETY && sizeof($table->flds) != sizeof($row)) {
 			$this->Error("Table structure of $this->_table has changed","Load");
 			return false;
 		}
@@ -408,23 +431,29 @@ class ADODB_Active_Record {
 		$db =& $this->DB(); if (!$db) return false;
 		$cnt = 0;
 		$table =& $this->TableInfo();
+		
+		$valarr = array();
+		$names = array();
+		$valstr = array();
 
 		foreach($table->flds as $name=>$fld) {
 			$val = $this->$name;
-			/*
-			if (is_null($val)) {
-				if (isset($fld->not_null) && $fld->not_null) {
-					if (isset($fld->default_value) && strlen($fld->default_value)) continue;
-					else $this->Error("Cannot insert null into $name","Insert");
-				}
-			}*/
-			
-			$valarr[] = $val;
-			$names[] = $name;
-			$valstr[] = $db->Param($cnt);
-			$cnt += 1;
+			if(!is_null($val) || !array_key_exists($name, $table->keys)) {
+				$valarr[] = $val;
+				$names[] = $name;
+				$valstr[] = $db->Param($cnt);
+				$cnt += 1;
+			}
 		}
 		
+		if (empty($names)){
+			foreach($table->flds as $name=>$fld) {
+				$valarr[] = null;
+				$names[] = $name;
+				$valstr[] = $db->Param($cnt);
+				$cnt += 1;
+			}
+		}
 		$sql = 'INSERT INTO '.$this->_table."(".implode(',',$names).') VALUES ('.implode(',',$valstr).')';
 		$ok = $db->Execute($sql,$valarr);
 		
@@ -454,7 +483,9 @@ class ADODB_Active_Record {
 		
 		$where = $this->GenWhere($db,$table);
 		$sql = 'DELETE FROM '.$this->_table.' WHERE '.$where;
-		$db->Execute($sql);
+		$ok = $db->Execute($sql);
+		
+		return $ok ? true : false;
 	}
 	
 	// returns an array of active record objects
@@ -553,7 +584,6 @@ class ADODB_Active_Record {
 				continue;
 			}
 			
-			
 			if (is_null($val)) {
 				if (isset($fld->not_null) && $fld->not_null) {
 					if (isset($fld->default_value) && strlen($fld->default_value)) continue;
@@ -564,7 +594,7 @@ class ADODB_Active_Record {
 				}
 			}
 			
-			if ( $val == $this->_original[$i]) {
+			if (isset($this->_original[$i]) && $val == $this->_original[$i]) {
 				continue;
 			}			
 			$valarr[] = $val;

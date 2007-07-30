@@ -1,6 +1,6 @@
 <?php
 /*
-V4.90 8 June 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.  
+V4.94 23 Jan 2007  (c) 2000-2007 John Lim (jlim#natsoft.com.my). All rights reserved.  
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence.
@@ -47,7 +47,7 @@ class ADODB_ibase extends ADOConnection {
 	var $buffers = 0;
 	var $dialect = 1;
 	var $sysDate = "cast('TODAY' as timestamp)";
-	var $sysTimeStamp = "cast('NOW' as timestamp)";
+	var $sysTimeStamp = "CURRENT_TIMESTAMP"; //"cast('NOW' as timestamp)";
 	var $ansiOuter = true;
 	var $hasAffectedRows = false;
 	var $poorAffectedRows = true;
@@ -556,7 +556,7 @@ class ADODB_ibase extends ADOConnection {
 	
 	// old blobdecode function
 	// still used to auto-decode all blob's
-	function _BlobDecode( $blob ) 
+	function _BlobDecode_old( $blob ) 
 	{
 		$blobid = ibase_blob_open($this->_connectionID, $blob );
 		$realblob = ibase_blob_get( $blobid,$this->maxblobsize); // 2nd param is max size of blob -- Kevin Boillet <kevinboillet@yahoo.fr>
@@ -567,6 +567,32 @@ class ADODB_ibase extends ADOConnection {
 
 		return( $realblob );
 	} 
+	
+	function _BlobDecode( $blob ) 
+    {
+        if  (ADODB_PHPVER >= 0x5000) {
+            $blob_data = ibase_blob_info($this->_connectionID, $blob );
+            $blobid = ibase_blob_open($this->_connectionID, $blob );
+        } else {
+
+            $blob_data = ibase_blob_info( $blob );
+            $blobid = ibase_blob_open( $blob );
+        }
+
+        if( $blob_data[0] > $this->maxblobsize ) {
+
+            $realblob = ibase_blob_get($blobid, $this->maxblobsize);
+
+            while($string = ibase_blob_get($blobid, 8192)){
+                $realblob .= $string; 
+            }
+        } else {
+            $realblob = ibase_blob_get($blobid, $blob_data[0]);
+        }
+
+        ibase_blob_close( $blobid );
+        return( $realblob );
+	}
 	
 	function UpdateBlobFile($table,$column,$path,$where,$blobtype='BLOB') 
 	{ 

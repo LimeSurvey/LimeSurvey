@@ -161,6 +161,12 @@ if ($databasetype=='mysql') {
     @$connect->Execute("SET CHARACTER SET 'utf8'");
 }
 
+// Setting dateformat for mssql driver. It seems if you don't do that the in- and output format could be different
+if ($databasetype=='odbc_mssql') {
+   @$connect->Execute('SET DATEFORMAT ymd;');
+}
+
+
 // Check if the DB is up to date
 If ($dbexistsbutempty && $sourcefrom=='admin') {
      Die ("<br />The LimeSurvey database does exist but it seems to be empty. Please run the <a href='$homeurl/install/index.php'>install script</a> to create the necessary tables.");
@@ -424,6 +430,15 @@ function db_quote_id($id)
 	global $connect;
 	$quote = $connect->nameQuote;
 	return $quote.str_replace($quote,$quote.$quote,$id).$quote;
+}
+
+function db_random()
+{
+    global $connect,$databasetype;
+    if ($databasetype=='odbc_mssql') {$srandom='NEWID()';}
+    else {$srandom=$connect->random();}
+    return $srandom;
+    
 }
 
 function db_quote($str)

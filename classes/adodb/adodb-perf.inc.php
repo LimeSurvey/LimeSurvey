@@ -1,6 +1,6 @@
 <?php
 /* 
-V4.90 8 June 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
+V4.94 23 Jan 2007  (c) 2000-2007 John Lim (jlim#natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. See License.txt. 
@@ -62,16 +62,28 @@ function adodb_microtime()
 }
 
 /* sql code timing */
-function& adodb_log_sql(&$conn,$sql,$inputarr)
+function& adodb_log_sql(&$connx,$sql,$inputarr)
 {
-	
     $perf_table = adodb_perf::table();
-	$conn->fnExecute = false;
+	$connx->fnExecute = false;
 	$t0 = microtime();
-	$rs =& $conn->Execute($sql,$inputarr);
+	$rs =& $connx->Execute($sql,$inputarr);
 	$t1 = microtime();
 
-	if (!empty($conn->_logsql)) {
+	if (!empty($connx->_logsql) && (empty($connx->_logsqlErrors) || !$rs)) {
+	global $ADODB_LOG_CONN;
+	
+		if (!empty($ADODB_LOG_CONN)) {
+			$conn = &$ADODB_LOG_CONN;
+			if ($conn->databaseType != $connx->databaseType)
+				$prefix = '/*dbx='.$connx->databaseType .'*/ ';
+			else
+				$prefix = '';
+		} else {
+			$conn =& $connx;
+			$prefix = '';
+		}
+		
 		$conn->_logsql = false; // disable logsql error simulation
 		$dbT = $conn->databaseType;
 		
@@ -84,8 +96,8 @@ function& adodb_log_sql(&$conn,$sql,$inputarr)
 		$time = $a1 - $a0;
 	
 		if (!$rs) {
-			$errM = $conn->ErrorMsg();
-			$errN = $conn->ErrorNo();
+			$errM = $connx->ErrorMsg();
+			$errN = $connx->ErrorNo();
 			$conn->lastInsID = 0;
 			$tracer = substr('ERROR: '.htmlspecialchars($errM),0,250);
 		} else {
@@ -100,10 +112,10 @@ function& adodb_log_sql(&$conn,$sql,$inputarr)
 			$conn->debug = $dbg;
 		}
 		if (isset($_SERVER['HTTP_HOST'])) {
-			$tracer .= '<br />'.$_SERVER['HTTP_HOST'];
+			$tracer .= '<br>'.$_SERVER['HTTP_HOST'];
 			if (isset($_SERVER['PHP_SELF'])) $tracer .= $_SERVER['PHP_SELF'];
 		} else 
-			if (isset($_SERVER['PHP_SELF'])) $tracer .= '<br />'.$_SERVER['PHP_SELF'];
+			if (isset($_SERVER['PHP_SELF'])) $tracer .= '<br>'.$_SERVER['PHP_SELF'];
 		//$tracer .= (string) adodb_backtrace(false);
 		
 		$tracer = (string) substr($tracer,0,500);
@@ -126,6 +138,7 @@ function& adodb_log_sql(&$conn,$sql,$inputarr)
 		}
 		
 		if (is_array($sql)) $sql = $sql[0];
+		if ($prefix) $sql = $prefix.$sql;
 		$arr = array('b'=>strlen($sql).'.'.crc32($sql),
 					'c'=>substr($sql,0,3900), 'd'=>$params,'e'=>$tracer,'f'=>adodb_round($time,6));
 		//var_dump($arr);
@@ -136,7 +149,7 @@ function& adodb_log_sql(&$conn,$sql,$inputarr)
 		if (empty($d)) $d = date("'Y-m-d H:i:s'");
 		if ($conn->dataProvider == 'oci8' && $dbT != 'oci8po') {
 			$isql = "insert into $perf_table values($d,:b,:c,:d,:e,:f)";
-		} else if ($dbT == 'odbc_mssql' || $dbT == 'informix' || $dbT == 'odbtp') {
+		} else if ($dbT == 'odbc_mssql' || $dbT == 'informix' || strncmp($dbT,'odbtp',4)==0) {
 			$timer = $arr['f'];
 			if ($dbT == 'informix') $sql2 = substr($sql2,0,230);
 
@@ -149,9 +162,9 @@ function& adodb_log_sql(&$conn,$sql,$inputarr)
 			if ($dbT == 'informix') $isql = str_replace(chr(10),' ',$isql);
 			$arr = false;
 		} else {
+			if ($dbT == 'db2') $arr['f'] = (float) $arr['f'];
 			$isql = "insert into $perf_table (created,sql0,sql1,params,tracer,timer) values( $d,?,?,?,?,?)";
 		}
-
 		$ok = $conn->Execute($isql,$arr);
 		$conn->debug = $saved;
 		
@@ -173,14 +186,14 @@ function& adodb_log_sql(&$conn,$sql,$inputarr)
 				timer decimal(16,6))");
 			}
 			if (!$ok) {
-				ADOConnection::outp( "<p><b>LOGSQL Insert Failed</b>: $isql<br />$err2</p>");
+				ADOConnection::outp( "<p><b>LOGSQL Insert Failed</b>: $isql<br>$err2</p>");
 				$conn->_logsql = false;
 			}
 		}
-		$conn->_errorMsg = $errM;
-		$conn->_errorCode = $errN;
+		$connx->_errorMsg = $errM;
+		$connx->_errorCode = $errN;
 	} 
-	$conn->fnExecute = 'adodb_log_sql';
+	$connx->fnExecute = 'adodb_log_sql';
 	return $rs;
 }
 
@@ -334,7 +347,7 @@ Committed_AS:   348732 kB
 		$d_system = $info[2] - $last[2];
 		$d_idle = $info[3] - $last[3];
 		
-		//printf("Delta - User: %f  Nice: %f  System: %f  Idle: %f<br />",$d_user,$d_nice,$d_system,$d_idle);
+		//printf("Delta - User: %f  Nice: %f  System: %f  Idle: %f<br>",$d_user,$d_nice,$d_system,$d_idle);
 
 		if (strncmp(PHP_OS,'WIN',3)==0) {
 			if ($d_idle < 1) $d_idle = 1;
@@ -367,7 +380,7 @@ Committed_AS:   348732 kB
 		if ($arr) {
 			$s .= '<h3>Scripts Affected</h3>';
 			foreach($arr as $k) {
-				$s .= sprintf("%4d",$k[0]).' &nbsp; '.strip_tags($k[1]).'<br />';
+				$s .= sprintf("%4d",$k[0]).' &nbsp; '.strip_tags($k[1]).'<br>';
 			}
 		}
 		
@@ -442,7 +455,7 @@ Committed_AS:   348732 kB
 			
 			if (!$rs) return "<p>$this->helpurl. ".$this->conn->ErrorMsg()."</p>";
 			$s = "<h3>Suspicious SQL</h3>
-<font size=1>The following SQL have high average execution times</font><br />
+<font size=1>The following SQL have high average execution times</font><br>
 <table border=1 bgcolor=white><tr><td><b>Avg Time</b><td><b>Count</b><td><b>SQL</b><td><b>Max</b><td><b>Min</b></tr>\n";
 			$max = $this->maxLength;
 			while (!$rs->EOF) {
@@ -521,7 +534,7 @@ Committed_AS:   348732 kB
 			$ADODB_FETCH_MODE = $save;
 			if (!$rs) return "<p>$this->helpurl. ".$this->conn->ErrorMsg()."</p>";
 			$s = "<h3>Expensive SQL</h3>
-<font size=1>Tuning the following SQL could reduce the server load substantially</font><br />
+<font size=1>Tuning the following SQL could reduce the server load substantially</font><br>
 <table border=1 bgcolor=white><tr><td><b>Load</b><td><b>Count</b><td><b>SQL</b><td><b>Max</b><td><b>Min</b></tr>\n";
 			$max = $this->maxLength;
 			while (!$rs->EOF) {
@@ -709,7 +722,7 @@ Committed_AS:   348732 kB
 			break;
 		case 'viewsql':
 			if (empty($_GET['hidem']))
-				echo "&nbsp; <a href=\"?do=viewsql&clearsql=1\">Clear SQL Log</a><br />";
+				echo "&nbsp; <a href=\"?do=viewsql&clearsql=1\">Clear SQL Log</a><br>";
 			echo($this->SuspiciousSQL($nsql));
 			echo($this->ExpensiveSQL($nsql));
 			echo($this->InvalidSQL($nsql));
@@ -862,7 +875,6 @@ Committed_AS:   348732 kB
 		
 		$table = $this->table();
 		$sql = str_replace('adodb_logsql',$table,$this->createTableSQL);
-		
 		$savelog = $this->conn->LogSQL(false);
 		$ok = $this->conn->Execute($sql);
 		$this->conn->LogSQL($savelog);
@@ -940,7 +952,7 @@ Committed_AS:   348732 kB
 					if (empty($e1)) $e1 = '-1'; // postgresql fix
 					print ' &nbsp; '.$e1.': '.$e2;
 				} else {
-					print "<p>No Recordset returned<br /></p>";
+					print "<p>No Recordset returned<br></p>";
 				}
 			}
 		} // foreach

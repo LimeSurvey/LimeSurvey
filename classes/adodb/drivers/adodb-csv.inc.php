@@ -1,6 +1,6 @@
 <?php
 /*
-V4.90 8 June 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
+V4.94 23 Jan 2007  (c) 2000-2007 John Lim (jlim#natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence.
@@ -89,7 +89,7 @@ class ADODB_csv extends ADOConnection {
 		$err = false;
 		$rs = csv2rs($url,$err,false);
 		
-		if ($this->debug) print "$url<br /><i>$err</i><br />";
+		if ($this->debug) print "$url<br><i>$err</i><br>";
 
 		$at = strpos($err,'::::');
 		if ($at === false) {
@@ -146,7 +146,7 @@ class ADODB_csv extends ADOConnection {
 		
 		
 		$rs = csv2rs($url,$err,false);
-		if ($this->debug) print urldecode($url)."<br /><i>$err</i><br />";
+		if ($this->debug) print urldecode($url)."<br><i>$err</i><br>";
 		$at = strpos($err,'::::');
 		if ($at === false) {		
 			$this->_errorMsg = $err;
