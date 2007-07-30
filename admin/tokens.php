@@ -158,9 +158,9 @@ if (!$chcount)
 // A survey DOES exist
 while ($chrow = $chresult->FetchRow())
 {
-	$tokenoutput .= "\t<tr><td colspan='2' height='4'><font size='1'><strong>"
+	$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
 	.$clang->gT("Token Control").":</strong> "
-	."<font>{$chrow['surveyls_title']}</font></font></td></tr>\n";
+	."{$chrow['surveyls_title']}</td></tr>\n";
 	$surveyprivate = $chrow['private'];
 }
 
@@ -498,8 +498,8 @@ if ($subaction == "browse" || $subaction == "search")
 	if ($end < 0) {$end=0;}
 
 	//ALLOW SELECTION OF NUMBER OF RECORDS SHOWN
-	$tokenoutput .= "\t<tr><td colspan='3' height='4'><font><strong>"
-	.$clang->gT("Data View Control").":</strong></font></td></tr>\n"
+	$tokenoutput .= "\t<tr><td colspan='3' height='4'><strong>"
+	.$clang->gT("Data View Control").":</strong></td></tr>\n"
 	."\t<tr bgcolor='#999999'><td width='230' align='left' valign='middle'>\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='31' height='20' border='0' hspace='0' align='left' />\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
