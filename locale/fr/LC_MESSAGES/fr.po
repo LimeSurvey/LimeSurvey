@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-07-15 14:07+0100\n"
-"Last-Translator: seb <seb>\n"
+"PO-Revision-Date: 2007-07-30 11:38+0100\n"
+"Last-Translator: Sébastien GAUGRY\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -267,6 +267,9 @@ msgstr "Commentaire"
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr "Attention : l'exécution du Javascript est désactivé dans votre navigateur. Vous risquez de ne pas pouvoir répondre à toutes les questions. Veuillez vérifier les réglages de votre navigateur."
 
+msgid "There are no questions in this survey"
+msgstr "Il n'y a pas de question dans ce questionnaire"
+
 msgid "There is 1 question in this survey"
 msgstr "Il y a 1 question dans ce questionnaire"
 
@@ -424,10 +427,10 @@ msgid "Executing"
 msgstr "Exécution"
 
 msgid "Failed! Reason: "
-msgstr "Ecvhec ! Raison :"
+msgstr "Echec ! Raison :"
 
 msgid "Success!"
-msgstr "Succés !"
+msgstr "Succès !"
 
 msgid "Save your responses so far"
 msgstr "Sauvegarder les réponses faites jusqu'ici"
@@ -491,8 +494,8 @@ msgstr "Vous n'avez pas fourni de nom"
 msgid "You did not provide a password"
 msgstr "Vous n'avez pas fourni de mot de passe"
 
-msgid "This is a controlled survey. You need a valid token to participate."
-msgstr "C'est un questionnaire privé. Vous devez avoir une invitation pour y participer."
+msgid "This is a closed-access survey. You need a valid token to participate."
+msgstr "C'est un questionnaire en accès restreint. Vous devez avoir une invitation valable pour y participer."
 
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr "L'invitation que vous avez reçue n'est pas valide, ou a déjà été utilisée."
@@ -573,6 +576,9 @@ msgstr "Erreur de sauvegarde des résultats"
 msgid "Try to submit again"
 msgstr "Essayez d'envoyer à nouveau"
 
+msgid "This is a controlled survey. You need a valid token to participate."
+msgstr "C'est un questionnaire privé. Vous devez avoir une invitation pour y participer."
+
 msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr "Si vous avez reçu une invitation, saisissez-la dans le champ ci-dessous et cliquez sur Continuer."
 
@@ -642,6 +648,11 @@ msgstr "(ex : 2003-12-25 pour Noël)"
 msgid "Please choose"
 msgstr "Veuillez choisir"
 
+# D:\www\limesurvey/qanda.php:728
+# D:\www\limesurvey/qanda.php:952
+msgid "Error: The labelset used for this question is not available in this language."
+msgstr "Erreur : le jeu d'étiquettes utilisée pour cette question n'est pas disponible dans cette langue."
+
 msgid "Please choose one of the following"
 msgstr "Veuillez sélectionner une réponse ci-dessous"
 
@@ -683,6 +694,11 @@ msgstr "Erreur : cette question n'a pas de réponse."
 
 msgid "Only numbers may be entered in this field"
 msgstr "Seuls les chiffres sont autorisés pour ce champ"
+
+# D:\www\limesurvey/qanda.php:2584
+# D:\www\limesurvey/qanda.php:2691
+msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
+msgstr "Erreur : le jeu d'étiquettes utilisée pour cette question n'est pas disponible dans cette langue et/ou n'existe pas."
 
 msgid "The email you used is not valid. Please try again."
 msgstr "L'adresse mail utilisée n'est pas valide. Veuillez réessayer."
@@ -791,6 +807,10 @@ msgstr "Cette question n'a pas de type défini."
 msgid "This question requires a Labelset, but none is set."
 msgstr "Un jeu d'étiquettes est requis pour cette question. Aucun n'est défini."
 
+# D:\www\limesurvey/admin/activate.php:143
+msgid "The labelset used in this question is missing a translation."
+msgstr "Il manque une traduction pour le jeu d'étiquettes utilisée dans cette question."
+
 msgid "This question has a condition set, however the condition is based on a question that appears after it."
 msgstr "Cette question a une condition paramètrée, toutefois la condition est basée sur une question qui apparaît aprés elle."
 
@@ -860,17 +880,32 @@ msgstr "Ecran principal d'administration"
 msgid "Survey has been activated. Results table has been successfully created."
 msgstr "Le questionnaire a été activé. La table des réponses a été créée avec succés."
 
-msgid "This is not an anonymous survey. A token table must also be created."
-msgstr "Ce n'est pas un questionnaire anonyme. Une table d'invitations doit donc être créée."
+msgid "This survey allows public registration. A token table must also be created."
+msgstr "Ce questionnaire permet les enregistrements publics. Une table d'invitations doit aussi être créée."
 
 msgid "Initialise Tokens"
 msgstr "Initialiser les invitations"
 
-msgid "This survey allows public registration. A token table must also be created."
-msgstr "Ce questionnaire permet les enregistrements publics. Une table d'invitations doit aussi être créée."
-
 msgid "This survey is now active, and responses can be recorded."
 msgstr "Ce questionnaire est maintenant activé, et les réponses peuvent être enregistrées."
+
+# D:\www\limesurvey/admin/activate.php:506
+msgid "Open-access mode"
+msgstr "Mode Accès public"
+
+msgid "No invitation code is needed to complete the survey."
+msgstr "Aucune invitation n'est requise pour compléter le questionnaire."
+
+# D:\www\limesurvey/admin/activate.php:506
+msgid "You can switch to the closed-access mode by initialising a token table with the button below."
+msgstr "Vous pouvez basculer ce questionnaire en accès restreint en initialisant une table des invitations grâce au bouton ci-dessous."
+
+msgid "Optional"
+msgstr "Optionnel"
+
+# D:\www\limesurvey/admin/activate.php:507
+msgid "Switch to closed-access mode"
+msgstr "Basculer en mode Accès restreint"
 
 msgid "LimeSurvey Online Manual"
 msgstr "Manuel en ligne de LimeSurvey"
@@ -951,6 +986,12 @@ msgstr "Supprimer"
 
 msgid "Are you sure you want to delete this entry."
 msgstr "Etes-vous sûr de vouloir supprimer cet élément ?"
+
+msgid "Save"
+msgstr "Sauver"
+
+msgid "Cancel"
+msgstr "Annuler"
 
 msgid "Browse Responses"
 msgstr "Parcourir les réponses"
@@ -1049,6 +1090,12 @@ msgstr "réponses complètes"
 # D:\www\limesurvey/admin/browse.php:655
 msgid "responses not completly filled out"
 msgstr "réponses partielles"
+
+msgid "User name invalid!"
+msgstr "Nom d'utilisateur incorrect !"
+
+msgid "User name / password dont match!"
+msgstr "Le nom d'utilisateur et le mot de passe ne correspondent pas !"
 
 msgid "Condition Designer"
 msgstr "Concepteur de conditions"
@@ -1278,8 +1325,8 @@ msgid "You have not selected a survey for data-entry."
 msgstr "Vous n'avez pas sélectionné de questionnaire pour la saisie des données."
 
 # D:\www\limesurvey/admin/dataentry.php:257
-msgid "This survey is not anonymous, you must supply a valid token"
-msgstr "Ce questionnaire n'est pas anonyme, vous devez fournir une invitation valable."
+msgid "This is a closed-access survey, you must supply a valid token"
+msgstr "Ce questionnaire est en accès restreint, vous devez fournir une invitation valable."
 
 msgid "The token you have provided is not valid."
 msgstr "L'invitation que vous avez fournie n'est pas valide."
@@ -1292,8 +1339,8 @@ msgid "Follow the following link to update it"
 msgstr " Suivez ce lien pour la mise à jour"
 
 # D:\www\limesurvey/admin/dataentry.php:257
-msgid "This surveys is anonymous, you can't update this answer"
-msgstr "Ce questionnaire est anonyme, vous ne pouvez pas mettre à jour cette réponse."
+msgid "This surveys uses anonymous answers, you can't update this response"
+msgstr "Ce questionnaire utilise des réponses anonymes, vous ne pouvez pas mettre à jour cette réponse."
 
 msgid "Try again"
 msgstr "Essayez à nouveau"
@@ -1404,22 +1451,20 @@ msgstr "Désactiver le questionnaire"
 msgid "In an active survey, a table is created to store all the data-entry records."
 msgstr "Dans un questionnaire activé, une table est créée pour stocker toutes les données saisies."
 
-msgid "When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
+msgid "When you deactivate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
 msgstr "Lorsque vous désactivez un questionnaire, toutes les données saisies dans la table originale seront déplacées ailleurs, ainsi lorsque vous réactiverez le questionnaire la table sera vide. Vous ne pourrez plus accéder à  ces données avec LimeSurvey."
 
-msgid "De-activated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
+msgid "Deactivated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
 msgstr "Seul un administrateur système peut accéder aux données d'un questionnaire désactivé en utilisant un gestionnaire de bases de données tel que PhpMyAdmin. Si votre questionnaire utilise des invitations, cette table sera également renommée et seul un administrateur système y aura accès."
 
 msgid "Your responses table will be renamed to:"
 msgstr "Votre table de réponses sera renommée en :"
 
-msgid "You should export your responses before de-activating. Click \"Cancel\" to return to the main admin screen without de-activating this survey."
-msgstr "Vous devriez exporter vos réponses avant de désactiver. Cliquez sur \"Annuler\" pour retourner à l'écran principal d'administration sans désactiver ce questionnaire."
+# D:\www\limesurvey/admin/deactivate.php:59
+msgid "Also you should export your responses before deactivating."
+msgstr "AUssi, vous devriez exporter vos réponses avant de désactiver."
 
-msgid "De-Activate Survey"
-msgstr "Désactiver le questionnaire"
-
-msgid "Survey Has Been De-Activated"
+msgid "Survey Has Been Deactivated"
 msgstr "Le questionnaire a été désactivé"
 
 msgid "The responses table has been renamed to: "
@@ -1451,9 +1496,6 @@ msgstr "Ce questionnaire est activé et une table des réponses existe. Si vous 
 
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
 msgstr "Ce questionnaire a une table d'invitations associée. Si vous supprimez ce questionnaire cette table d'invitations sera supprimée. Il est recommandé d'exporter ou de faire une sauvegarde de ces invitations avant de supprimer ce questionnaire."
-
-msgid "Cancel"
-msgstr "Annuler"
 
 msgid "This survey has been deleted."
 msgstr "Ce questionnaire a été supprimé."
@@ -1594,19 +1636,12 @@ msgstr "Date de création"
 msgid "Access"
 msgstr "Accès"
 
+# E:\www\limesurvey/common.php:1558
+msgid "Answer Privacy"
+msgstr "Réponses anonymes"
+
 msgid "Status"
 msgstr "Statut"
-
-# E:\www\limesurvey/admin/html.php:808
-# E:\www\limesurvey/admin/html.php:1007
-# E:\www\limesurvey/admin/labels.php:257
-# E:\www\limesurvey/admin/navigator.php:226
-# E:\www\limesurvey/admin/navigator.php:931
-# E:\www\limesurvey/admin/navigator.php:1030
-# E:\www\limesurvey/admin/navigator.php:1131
-# E:\www\limesurvey/admin/saved.php:107
-msgid "Action"
-msgstr "Action"
 
 msgid "Responses"
 msgstr "Réponses"
@@ -1616,6 +1651,14 @@ msgstr "Anonyme"
 
 msgid "Not Anonymous"
 msgstr "Non anonyme"
+
+# D:\www\limesurvey/admin/html.php:73
+msgid "Closed-access"
+msgstr "Accès restreint"
+
+# D:\www\limesurvey/admin/html.php:77
+msgid "Open-access"
+msgstr "Accès public"
 
 msgid "Expired"
 msgstr "Expiré"
@@ -1781,8 +1824,15 @@ msgstr "Complet"
 msgid "By Group"
 msgstr "Par groupe"
 
-msgid "Survey URL:"
-msgstr "URL du questionnaire :"
+msgid "Survey URL"
+msgstr "URL du questionnaire"
+
+msgid "Survey URL For Language:"
+msgstr "URL du questionnaire pour la langue :"
+
+# D:\www\limesurvey/admin/html.php:675
+msgid "Flag"
+msgstr "Drapeau"
 
 msgid "Description:"
 msgstr "Description :"
@@ -1811,20 +1861,18 @@ msgstr "Autres langues"
 msgid "Exit Link"
 msgstr "Lien de sortie"
 
-msgid "Number of groups in survey"
-msgstr "Nombre de groupe(s) dans le questionnaire"
+msgid "Number of questions/groups"
+msgstr "Nombre de question(s)/groupe(s)"
 
-msgid "Number of questions in survey"
-msgstr "Nombre de question(s) dans le questionnaire"
+msgid "Survey currently active"
+msgstr "Questionnaire actuellement activé"
 
-msgid "Survey is not currently active."
-msgstr "Questionnaire actuellement inactivé."
+msgid "Survey table name"
+msgstr "Nom de la table du questionnaire"
 
-msgid "Survey is currently active."
-msgstr "Questionnaire en cours (activé)."
-
-msgid "Survey table name is"
-msgstr "Le nom de la table du questionnaire est"
+# D:\www\limesurvey/admin/html.php:760
+msgid "Hints"
+msgstr "Conseils"
 
 msgid "Survey cannot be activated yet."
 msgstr "Impossible d'activer le questionnaire maintenant."
@@ -1946,14 +1994,31 @@ msgstr "Vous devez choisir un jeu d'étiquettes pour cette question"
 msgid "Other:"
 msgstr "Autre :"
 
+msgid "Mandatory:"
+msgstr "Obligatoire :"
+
 msgid "Other questions having conditions on this question:"
 msgstr "Autres questions dépendantes de celle-ci :"
+
+msgid "Edit Answers"
+msgstr "Editer les réponses"
 
 msgid "Base Language"
 msgstr "Langue de base"
 
 msgid "Code"
 msgstr "Code :"
+
+# E:\www\limesurvey/admin/html.php:808
+# E:\www\limesurvey/admin/html.php:1007
+# E:\www\limesurvey/admin/labels.php:257
+# E:\www\limesurvey/admin/navigator.php:226
+# E:\www\limesurvey/admin/navigator.php:931
+# E:\www\limesurvey/admin/navigator.php:1030
+# E:\www\limesurvey/admin/navigator.php:1131
+# E:\www\limesurvey/admin/saved.php:107
+msgid "Action"
+msgstr "Action"
 
 msgid "Order"
 msgstr "Trier"
@@ -2073,8 +2138,8 @@ msgstr "Montrer le bouton [Précédent]"
 msgid "Admin Notification:"
 msgstr "Notification de l'administrateur :"
 
-msgid "Anonymous?"
-msgstr "Anonyme :"
+msgid "Anonymous answers?"
+msgstr "Réponses anonymes ?"
 
 # D:\www\limesurvey/admin/html.php:1939
 # D:\www\limesurvey/admin/html.php:2484
@@ -2293,9 +2358,6 @@ msgstr ""
 msgid "URL Description:"
 msgstr "Description de l'URL :"
 
-msgid "Save"
-msgstr "Sauver"
-
 # D:\www\limesurvey/admin/html.php:3548
 msgid "Current survey has questions with conditions outside their own group"
 msgstr "Le questionnaire en cours possède des questions avec des conditions en dehors de leur propre groupe."
@@ -2382,14 +2444,17 @@ msgstr "Visualisation :"
 msgid "Select the field number you would like to use for your answers:"
 msgstr "Sélectionnez le numéro du champ que vous voulez utiliser pour vos réponses :"
 
-msgid "Import Group"
-msgstr "Importer le groupe"
-
-msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your /admin/temp folder."
-msgstr "Une erreur s'est produite durant la transmission de votre fichier.  Ceci peut être provoqué par des permissions incorrectes de votre dossier /admin/temp."
+msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your /admin/tmp folder folder."
+msgstr "Une erreur s'est produite durant la transmission de votre fichier.  Ceci peut être provoqué par des permissions incorrectes de votre dossier /admin/tmp."
 
 msgid "File upload succeeded."
 msgstr "Fichier transmis avec succès."
+
+msgid "Reading file.."
+msgstr "Lecture du fichier.."
+
+msgid "Import Group"
+msgstr "Importer le groupe"
 
 msgid "Reading file..."
 msgstr "Lecture du fichier..."
@@ -2438,11 +2503,8 @@ msgstr "L'importation du groupe est terminée."
 msgid "Import Label Set"
 msgstr "Importer le jeu d'étiquettes"
 
-msgid "Reading file.."
-msgstr "Lecture du fichier.."
-
-msgid "This file is not a LimeSurvey question file. Import failed."
-msgstr "Ce fichier n'est pas un fichier de question LimeSurvey. L'importation a échoué."
+msgid "This file is not a LimeSurvey label set file. Import failed."
+msgstr "Ce fichier n'est pas un fichier de jeu d'étiquettes pour LimeSurvey. L'importation a échoué."
 
 msgid "Return to Labels Admin"
 msgstr "Retour à l'administration des jeux d'etiquettes"
@@ -2490,6 +2552,9 @@ msgstr "Aucun SID (Questionnaire) n'a été fourni. Impossible d'importer une qu
 msgid "No GID (Group) has been provided. Cannot import question"
 msgstr "Aucun GID (Groupe) n'a été fourni. Impossible d'importer une question."
 
+msgid "This file is not a LimeSurvey question file. Import failed."
+msgstr "Ce fichier n'est pas un fichier de question LimeSurvey. L'importation a échoué."
+
 # D:\www\limesurvey/admin/importquestion.php:217
 msgid "You can't import a question which doesn't support the current survey's base language"
 msgstr "Vous ne pouvez pas importer une question qui ne supporte pas la langue de base de ce questionnaire."
@@ -2513,11 +2578,29 @@ msgstr "L'importation de ce fichier questionnaire a échoué"
 msgid "File does not contain LimeSurvey data in the correct format."
 msgstr "Mauvais format de données dans le fichier de données LimeSurvey."
 
+# D:\www\limesurvey/admin/importsurvey.php:740
+msgid "was NOT imported, because the question type is not know"
+msgstr "n'a pas été importée car le type de la question est inconnu"
+
+# D:\www\limesurvey/admin/importsurvey.php:746
+msgid "was imported, but the type was set to \""
+msgstr "a été importée mais le type a été défini à \""
+
+msgid "type"
+msgstr "type"
+
+# D:\www\limesurvey/admin/importsurvey.php:746
+msgid "\", because is the closest one"
+msgstr "\" car c'est le type le plus proche."
+
 msgid "Survey Import Summary"
 msgstr "Résumé de l'importation du questionnaire"
 
 msgid "Question Attributes"
 msgstr "Attributs de la question"
+
+msgid "Warnings"
+msgstr "Avertissements"
 
 # D:\www\limesurvey/admin/integritycheck.php:52
 msgid "Data Consistency Check"
@@ -2758,9 +2841,6 @@ msgstr "Obligatoire"
 msgid "Label Set:"
 msgstr "Jeu d'étiquettes :"
 
-msgid "Mandatory:"
-msgstr "Obligatoire :"
-
 msgid "Select CSV File"
 msgstr "Sélectionner un fichier CSV :"
 
@@ -2781,6 +2861,9 @@ msgstr "Copier les attributs ?"
 
 msgid "Edit Question"
 msgstr "Editer la question"
+
+msgid "Survey is currently active."
+msgstr "Questionnaire en cours (activé)."
 
 msgid "Update Question"
 msgstr "Mise à jour de la question"
@@ -3224,15 +3307,15 @@ msgstr " Une sauvegarde de cette table a été effectuée et un administrateur s
 msgid "Email Invitation"
 msgstr "Invitation par mail"
 
-# D:\www\limesurvey/admin/tokens.php:746
-msgid "to TokenID No"
-msgstr "jusqu'à l'invitation d'ID numéro :"
-
 msgid "From"
 msgstr "De"
 
 msgid "Subject"
 msgstr "Objet"
+
+# D:\www\limesurvey/admin/tokens.php:746
+msgid "to TokenID No"
+msgstr "jusqu'à l'invitation d'ID numéro :"
 
 msgid "Send Invitations"
 msgstr "Envoyer invitations"
@@ -3243,7 +3326,7 @@ msgstr "Envoi invitations"
 msgid "Sending to TID No:"
 msgstr "Envoyé à l'IID (TID) No :"
 
-msgid "Invitation Sent To:"
+msgid "Invitation sent to:"
 msgstr "Invitation envoyée à :"
 
 msgid "Mail to {FIRSTNAME} {LASTNAME} ({EMAIL}) Failed"
@@ -3261,8 +3344,8 @@ msgstr "Il n'y avait aucun mail éligible à envoyer car aucun n'a satisfait les
 msgid "Email Reminder"
 msgstr "Rappel par mail"
 
-msgid "Start at TID No:"
-msgstr "Commencer à l'IID (TID) No :"
+msgid "Start at Token ID No:"
+msgstr "Commencer la numérotation des ID des invitations au n° :"
 
 msgid "Send Reminders"
 msgstr "Envoyer rappels"
@@ -3270,7 +3353,7 @@ msgstr "Envoyer rappels"
 msgid "Sending Reminders"
 msgstr "Envoi rappels"
 
-msgid "Reminder Sent To:"
+msgid "Reminder sent to:"
 msgstr "Rappel envoyé à :"
 
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
@@ -3563,6 +3646,10 @@ msgstr "Le mail à {NAME} ({EMAIL}) a échoué."
 msgid "Logging in..."
 msgstr "Connexion..."
 
+# E:\www\limesurvey/admin/usercontrol.php:54
+msgid "Incorrect User name and/or Password!"
+msgstr "Nom d'utilisateur et/ou mot de passe incorrect !"
+
 msgid "Welcome {NAME}"
 msgstr "Bienvenue {NAME}"
 
@@ -3693,9 +3780,6 @@ msgstr "Editer l'utilisateur"
 
 msgid "Name:"
 msgstr "Nom :"
-
-msgid "Optional"
-msgstr "Optionnel"
 
 # E:\www\limesurvey/admin/usercontrol.php:342
 msgid "Edit User Group (Owner: "
@@ -3872,13 +3956,13 @@ msgstr "La base de données a été mise à jour avec succés vers la version "
 msgid "Bulgarian"
 msgstr "Bulgare"
 
-# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:70
-msgid "Chinese (Traditional)"
-msgstr "Chinois (Traditionnel)"
-
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:74
 msgid "Chinese (Simplified)"
 msgstr "Chinois (Simplifié)"
+
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:70
+msgid "Chinese (Traditional - Hong Kong)"
+msgstr "Chinois (Traditionnel - Hong Kong)"
 
 msgid "Croatian"
 msgstr "Croate"
