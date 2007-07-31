@@ -562,7 +562,7 @@ if (isset($conditions) && is_array($conditions) && count($conditions) != 0)
 
 
 //SOME STUFF FOR MANDATORY QUESTIONS
-if (remove_nulls_from_array($mandatorys))
+if (remove_nulls_from_array($mandatorys) && $newgroup != "Y")
 {
 	$mandatory=implode("|", remove_nulls_from_array($mandatorys));
 	echo "<input type='hidden' name='mandatory' value='$mandatory' id='mandatory' />\n";

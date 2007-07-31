@@ -536,13 +536,21 @@ while ($degrow = $degresult->FetchRow())
 			while ($mearow = $mearesult->FetchRow())
 			{
 				$printablesurveyoutput .="\t\t\t\t<tr>\n";
-				$printablesurveyoutput .="\t\t\t\t\t<td align='left'>{$mearow['answer']}</td>\n";
+                $answertext=$mearow['answer'];
+                if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
+				$printablesurveyoutput .="\t\t\t\t\t<td align='left'>$answertext</td>\n";
 				$printablesurveyoutput .="\t\t\t\t\t<td>";
 				for ($i=1; $i<=5; $i++)
 				{
 					$printablesurveyoutput .="\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='$i' readonly='readonly' />$i&nbsp;\n";
 				}
 				$printablesurveyoutput .="\t\t\t\t\t</td>\n";
+                $answertext=$mearow['answer'];
+                if (strpos($answertext,'|')) 
+                {
+                    $answertext=substr($answertext,strpos($answertext,'|')+1);
+                       $printablesurveyoutput .= "\t\t\t\t<td class='answertextright'>$answertext</td>\n";
+                }
 				$printablesurveyoutput .="\t\t\t\t</tr>\n";
 			}
 			$printablesurveyoutput .="\t\t\t</table>\n";
@@ -623,7 +631,9 @@ while ($degrow = $degresult->FetchRow())
 			while ($mearow = $mearesult->FetchRow())
 			{
 				$printablesurveyoutput .="\t\t\t\t<tr>\n";
-				$printablesurveyoutput .="\t\t\t\t\t<td align='left'>{$mearow['answer']}</td>\n";
+                $answertext=$mearow['answer'];
+                if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
+				$printablesurveyoutput .="\t\t\t\t\t<td align='left'>$answertext</td>\n";
 				//$printablesurveyoutput .="\t\t\t\t\t<td>";
 				for ($i=1; $i<=$fcount; $i++)
 				{
@@ -634,7 +644,12 @@ while ($degrow = $degresult->FetchRow())
 					$printablesurveyoutput .="\t\t\t\t\t\t<input type='checkbox' readonly='readonly' />\n";
 					$printablesurveyoutput .="\t\t\t\t\t</td>\n";
 				}
-				//$printablesurveyoutput .="\t\t\t\t\t</tr></table></td>\n";
+                $answertext=$mearow['answer'];
+                if (strpos($answertext,'|')) 
+                {
+                    $answertext=substr($answertext,strpos($answertext,'|')+1);
+                       $printablesurveyoutput .= "\t\t\t\t<td class='answertextright'>$answertext</td>\n";
+                }
 				$printablesurveyoutput .="\t\t\t\t</tr>\n";
 			}
 			$printablesurveyoutput .="\t\t\t</table>\n";

@@ -463,7 +463,7 @@ else
 //************************FUNCTIONS********************************
 function updateset($lid)
 {
-	global $dbprefix, $connect, $labelsoutput; 
+	global $dbprefix, $connect, $labelsoutput, $databasetype; 
 	// Get added and deleted languagesid arrays
 	$newlanidarray=explode(" ",trim($_POST['languageids']));
 
@@ -484,25 +484,29 @@ function updateset($lid)
 	$query = "SELECT code,sortorder FROM ".db_table_name('labels')." WHERE lid=".$lid." GROUP BY code,sortorder";
 	$result=db_execute_assoc($query);
 	if ($result) { while ($row=$result->FetchRow()) {$oldcodesarray[$row['code']]=$row['sortorder'];} }
-	$sqlvalues='';
 	if (isset($oldcodesarray) && count($oldcodesarray) > 0 )
 	{
 		foreach ($addlangidsarray as $addedlangid)
 		{
 			foreach ($oldcodesarray as $oldcode => $oldsortorder)
 			{
-				$sqlvalues .= ", ($lid, '$oldcode', '$oldsortorder', '$addedlangid')";
+				$sqlvalues[]= " ($lid, '$oldcode', '$oldsortorder', '$addedlangid')";
 			}
 		}
 	}	
 	if ($sqlvalues)
 	{
-		$query = "INSERT INTO ".db_table_name('labels')." (lid,code,sortorder,language) VALUES ".trim($sqlvalues,',');
-		$result=db_execute_assoc($query);
-		if (!$result)
-		{
-			$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to Copy already defined labels to added languages","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
-		}
+        if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('labels')." ON");}
+        foreach ($sqlvalues as $sqlline) 
+        {
+		    $query = "INSERT INTO ".db_table_name('labels')." (lid,code,sortorder,language) VALUES ".($sqlline);
+		    $result=db_execute_assoc($query);
+		    if (!$result)
+		    {
+			    $labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to Copy already defined labels to added languages","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+		    }
+        }
+        if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('labels')." OFF");}
 	}
 
 	// If languages are removed, delete labels for these languages
@@ -562,15 +566,17 @@ function insertlabelset()
 //	$labelsoutput.= $_POST['languageids'];  For debug purposes
 	$_POST['label_name'] = db_quoteall($_POST['label_name'],true);
 	$_POST['languageids'] = db_quoteall($_POST['languageids'],true);
+
 	$query = "INSERT INTO ".db_table_name('labelsets')." (label_name,languages) VALUES ({$_POST['label_name']},{$_POST['languageids']})";
 	if (!$result = $connect->Execute($query))
 	{
-		$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Update of Label Set failed","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+		$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Insert of Label Set failed","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
 	}
 	else
 	{
 		return $connect->Insert_ID();
 	}
+
 }
 
 
@@ -606,11 +612,13 @@ function modlabelsetanswers($lid)
 	   			$_POST['inserttitle'] = db_quoteall($_POST['inserttitle'],true);
 	  			foreach ($lslanguages as $lslanguage)
 				{
-	    				$query = "INSERT INTO ".db_table_name('labels')." (lid, code, title, sortorder,language) VALUES ($lid, {$_POST['insertcode']}, {$_POST['inserttitle']}, '$newsortorder','$lslanguage')";
+                    if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('labels')." ON");}
+    				$query = "INSERT INTO ".db_table_name('labels')." (lid, code, title, sortorder,language) VALUES ($lid, {$_POST['insertcode']}, {$_POST['inserttitle']}, '$newsortorder','$lslanguage')";
 					if (!$result = $connect->Execute($query))
 	    				{
 	    					$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert label", "js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
 	    				}
+                    if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('labels')." OFF");}
 				}
 			}
 			else
