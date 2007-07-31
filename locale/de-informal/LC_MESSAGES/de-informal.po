@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-05-11 22:06+0100\n"
+"PO-Revision-Date: 2007-07-31 21:38+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -35,6 +35,9 @@ msgstr "Erzeuge/Bearbeite Gruppen"
 
 msgid "Check Settings"
 msgstr "Systemübersicht"
+
+msgid "Settings"
+msgstr "Einstellungen"
 
 msgid "Check Data Integrity"
 msgstr "Datenintegrität überprüfen"
@@ -261,6 +264,9 @@ msgstr "Kommentar"
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr "Achtung: Javascript ist in Deinem Browser deaktiviert. Es kann sein, dass Du daher die Umfrage nicht abschließen werden kannst. Bitte überprüfe Deine Browser-Einstellungen."
 
+msgid "There are no questions in this survey"
+msgstr "Diese Umfrage enthält keine Fragen"
+
 msgid "There is 1 question in this survey"
 msgstr "Es gibt nur eine Frage in dieser Umfrage."
 
@@ -409,6 +415,10 @@ msgstr "Unterstütze dieses Projekt - Spende an"
 msgid "Visit our website!"
 msgstr "Besuche unsere Webseite!"
 
+# D:\web\xampp\htdocs\limesurvey/common.php:2600
+msgid "Local Submission"
+msgstr "Lokale Weiterleitung"
+
 # D:\web\xampp\htdocs\limesurvey/common.php:2735
 # D:\web\xampp\htdocs\limesurvey/common.php:2740
 msgid "Executing"
@@ -484,8 +494,8 @@ msgstr "Du hast keinen Namen angegeben"
 msgid "You did not provide a password"
 msgstr "Du hast kein Passwort angegeben"
 
-msgid "This is a controlled survey. You need a valid token to participate."
-msgstr "Um an dieser Umfrage teilzunehmen, benötigst Du einen passenden Zugangsschlüssel."
+msgid "This is a closed-access survey. You need a valid token to participate."
+msgstr "Dies ist eine Umfrage mit geschlossenem Teilnehmerkreis - Du musst einen Zugangsschlüssel angeben um teilzunehmen."
 
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr "Das von Dir angegebene Schlüsselwort ist entweder ungültig oder wurde bereits verwendet."
@@ -557,6 +567,9 @@ msgstr "Fehler beim Speichern der Ergebnisse"
 msgid "Try to submit again"
 msgstr "Versuche erneut die Daten abzusenden"
 
+msgid "This is a controlled survey. You need a valid token to participate."
+msgstr "Um an dieser Umfrage teilzunehmen, benötigst Du einen passenden Zugangsschlüssel."
+
 msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr "Falls Du ein Schlüsselwort erhalten hast, gib es bitte in das untenstehende Feld ein und klicke auf 'Weiter'."
 
@@ -626,6 +639,11 @@ msgstr "(z.B.: 2005-12-24 für Heiligabend)"
 msgid "Please choose"
 msgstr "Bitte wählen"
 
+# D:\web\xampp\htdocs\limesurvey/qanda.php:728
+# D:\web\xampp\htdocs\limesurvey/qanda.php:952
+msgid "Error: The labelset used for this question is not available in this language."
+msgstr "Fehler: Das für diese Frage benutzte Beschriftungsset ist nicht in dieser Übersetzung verfügbar."
+
 msgid "Please choose one of the following"
 msgstr "Bitte wähle  eine Antwort aus"
 
@@ -662,8 +680,16 @@ msgstr "Antwort(en) für die Frage"
 msgid "Make a comment on your choice here:"
 msgstr "Bitte schreibe eine Kommentar zu Deiner Auswahl"
 
+msgid "Error: This question has no answers."
+msgstr "Fehler: Diese Frage hat keine Antworten."
+
 msgid "Only numbers may be entered in this field"
 msgstr "In dieses Feld dürfen nur Ziffern eingetragen werden"
+
+# D:\web\xampp\htdocs\limesurvey/qanda.php:2585
+# D:\web\xampp\htdocs\limesurvey/qanda.php:2692
+msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
+msgstr "Fehler: Das für diese Frage benutzte Beschriftungsset ist nicht in dieser Übersetzung verfügbar oder wurde nicht angegeben."
 
 msgid "The email you used is not valid. Please try again."
 msgstr "Die angegebene Email-Adresse ist ungültig. Bitte versuche es erneut."
@@ -775,6 +801,10 @@ msgstr "Diese Frage hat den Frage-Typ nicht gesetzt."
 msgid "This question requires a Labelset, but none is set."
 msgstr "Diese Frage benötigt ein Beschriftung-Set, aber es wurde keines angegeben."
 
+# D:\web\xampp\htdocs\limesurvey/admin/activate.php:143
+msgid "The labelset used in this question is missing a translation."
+msgstr "Dem in dieser Frage genutzten Beschriftungsset fehlt eine Übersetzung."
+
 msgid "This question has a condition set, however the condition is based on a question that appears after it."
 msgstr "Diese Frage hat eine Bedingung. Die Bedingung basiert jedoch auf einer Frage, die im Ablauf NACH dieser Frage kommt."
 
@@ -844,17 +874,32 @@ msgstr "Zurück zur Hauptseite"
 msgid "Survey has been activated. Results table has been successfully created."
 msgstr "Die Umfrage wurde aktiviert. Die Ergebnis-Tabelle wurde erfolgreich erstellt."
 
-msgid "This is not an anonymous survey. A token table must also be created."
-msgstr "Dies ist keine anonyme Umfrage, d.h. eine Zugangsschlüssel-Tabelle muss ebenfalls erstellt werden."
+msgid "This survey allows public registration. A token table must also be created."
+msgstr "Diese Umfrage erlaubt öffentliche Registrierungen. Daher muss eine Zugangsschlüssel-Tabelle angelegt werden."
 
 msgid "Initialise Tokens"
 msgstr "Initialisiere Zugangsschlüssel..."
 
-msgid "This survey allows public registration. A token table must also be created."
-msgstr "Diese Umfrage erlaubt öffentliche Registrierungen. Daher muss eine Zugangsschlüssel-Tabelle angelegt werden."
-
 msgid "This survey is now active, and responses can be recorded."
 msgstr "Diese Umfrage ist jetzt aktiv und Antworten können erfasst werden."
+
+# D:\web\xampp\htdocs\limesurvey/admin/activate.php:506
+msgid "Open-access mode"
+msgstr "Offener Teilnehmerkreis"
+
+msgid "No invitation code is needed to complete the survey."
+msgstr "Es wird kein Zugangsschlüssel für die Teilnahme an der Umfrage benötigt."
+
+# D:\web\xampp\htdocs\limesurvey/admin/activate.php:506
+msgid "You can switch to the closed-access mode by initialising a token table with the button below."
+msgstr "Du kannst den Teilnehmerkreis dieser Umfrage 'geschlossen halten', indem du eine Teilnehmer-Tabelle anlegst."
+
+msgid "Optional"
+msgstr "Optionale Frage"
+
+# D:\web\xampp\htdocs\limesurvey/admin/activate.php:507
+msgid "Switch to closed-access mode"
+msgstr "Zum geschlossenen Modus umschalten"
 
 msgid "LimeSurvey Online Manual"
 msgstr "LimeSurvey Systemübersicht"
@@ -926,6 +971,12 @@ msgstr "Löschen"
 
 msgid "Are you sure you want to delete this entry."
 msgstr "Bist Du sicher, dass Du diesen Eintrag löschen willst?"
+
+msgid "Save"
+msgstr "Speichern"
+
+msgid "Cancel"
+msgstr "Abbrechen"
 
 msgid "Browse Responses"
 msgstr "Antworten anzeigen"
@@ -1039,6 +1090,12 @@ msgstr "komplette Antworten"
 # D:\web\xampp\htdocs\limesurvey/admin/browse.php:655
 msgid "responses not completly filled out"
 msgstr "unvollständige Antworten"
+
+msgid "User name invalid!"
+msgstr "Benutzername ungültig!"
+
+msgid "User name / password dont match!"
+msgstr "Username/Passwort stimmt nicht überein."
 
 msgid "Condition Designer"
 msgstr "Bedingungs Designer"
@@ -1278,8 +1335,22 @@ msgid "You have not selected a survey for data-entry."
 msgstr "Du hast keine Umfrage zur Dateneingabe ausgewählt."
 
 # D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:257
-msgid "This survey is not anonymous, you must supply a valid token"
-msgstr "Diese Umfrage ist nicht anonym - Du benötigst einen gültigen Zugangsschlüssel"
+msgid "This is a closed-access survey, you must supply a valid token"
+msgstr "Dies ist eine Umfrage mit geschlossenem Teilnehmerkreis - Du musst einen Zugangsschlüssel angeben"
+
+msgid "The token you have provided is not valid."
+msgstr "Der von dir angegebene Zugangsschlüssel ist ungültig."
+
+# D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:151
+msgid "There is already a recorded answer for this token"
+msgstr "Zu diesem Zugangsschlüssel gibt es bereits eine ausgefüllte Umfrage"
+
+msgid "Follow the following link to update it"
+msgstr "Folge dem Link, um eine Änderung vorzunehmen"
+
+# D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:257
+msgid "This surveys uses anonymous answers, you can't update this response"
+msgstr "Diese Umfrage benutzt anonymisierte Antworten - du kannst diese Antwort nicht aktualisieren."
 
 msgid "Try again"
 msgstr "Nochmal versuchen"
@@ -1334,6 +1405,11 @@ msgstr "Kann nicht geändert werden."
 msgid "Update Entry"
 msgstr "Eintrag aktualisieren"
 
+# D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1285
+# D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2259
+msgid "Finalize response submission"
+msgstr "Datensatz als vollständig in der Datenbank ablegen"
+
 msgid "Save for further completion by survey user"
 msgstr "Speichern für weitere Bearbeitung durch Umfrage-Teilnehmer"
 
@@ -1387,22 +1463,20 @@ msgstr "Umfrage deaktivieren"
 msgid "In an active survey, a table is created to store all the data-entry records."
 msgstr "In einer aktiven Umfrage wird eine Tabelle erstellt, welche alle Daten-Eingaben aufnimmt."
 
-msgid "When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
-msgstr "Wenn Du eine Umfrage deaktivierst, werden alle eingegebenen Daten von der Original-Tabelle in eine andere Tabelle verschoben. Wenn Du dann die Umfrage wieder aktivierst, wird die Original-Tabelle und damit die Umfrage leer sein. <B>Es ist dann nicht mehr möglich auf die alte Tabelle mit LimeSurvey zuzugreifen.<B>"
+msgid "When you deactivate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
+msgstr "Wenn Du eine Umfrage deaktivierst, werden alle eingegebenen Daten von der Original-Tabelle in eine andere Tabelle verschoben. Wenn Du dann die Umfrage wieder aktivierst, wird die Original-Tabelle und damit die Umfrage leer sein. Es ist dann nicht mehr möglich auf die alte Tabelle mit LimeSurvey zuzugreifen."
 
-msgid "De-activated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
-msgstr "Deaktivierte Umfrage-Daten können nur durch einen Systemadministrator mit Hilfe einesDatenbank-Tools wie beispielsweise PHPMyAdmin eingesehen werden. Falls Deine Umfrage eine Probandentabelle benutzt, so wird auch diese umbenannt und ist folglich nur mehr einem Systemadministrator zugänglich."
+msgid "Deactivated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
+msgstr "Deaktivierte Umfrage-Daten können nur durch einen Systemadministrator mit Hilfe eines Datenbank-Tools wie beispielsweise PHPMyAdmin eingesehen werden. Falls Ihre Umfrage eine Probandentabelle benutzt, so wird auch diese umbenannt und ist folglich nur mehr einem Systemadministrator zugänglich."
 
 msgid "Your responses table will be renamed to:"
 msgstr "Deine Antworten-Tabelle wird wie folgt umbenannt:"
 
-msgid "You should export your responses before de-activating. Click \"Cancel\" to return to the main admin screen without de-activating this survey."
-msgstr "Du sollten Deine Antworten exportieren, bevor Du die Umfrage deaktivierst. Klicke auf 'Abbrechen', um zur Hauptseite zurückzukehren, ohne diese Umfrage zu deaktivieren."
+# D:\web\xampp\htdocs\limesurvey/admin/deactivate.php:59
+msgid "Also you should export your responses before deactivating."
+msgstr "Zusätzlich solltest Du Deine Antworten vor Deaktivierung exportieren."
 
-msgid "De-Activate Survey"
-msgstr "Umfrage deaktivieren"
-
-msgid "Survey Has Been De-Activated"
+msgid "Survey Has Been Deactivated"
 msgstr "Umfrage wurde deaktiviert"
 
 msgid "The responses table has been renamed to: "
@@ -1434,9 +1508,6 @@ msgstr "Diese Umfrage ist aktiv und eine Antworten-Tabelle existiert. Wenn Du di
 
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
 msgstr "Diese Umfrage hat eine zugehörige Zugangsschlüssel-Tabelle. Wenn Du diese Umfrage löscht, wird auch die Zugangsschlüsseltabelle gelöscht. Wir empfehlen Dir, dass Du die Zugangsschlüssel exportierst, bevor Du die Umfrage löscht."
-
-msgid "Cancel"
-msgstr "Abbrechen"
 
 msgid "This survey has been deleted."
 msgstr "Diese Umfrage wurde gelöscht."
@@ -1510,14 +1581,15 @@ msgstr "Vollständige Antworten"
 msgid "Format"
 msgstr "Format"
 
-msgid "Microsoft Word"
-msgstr ".doc - Microsoft Word"
+msgid "Microsoft Word (Latin charset)"
+msgstr "Microsoft Word (Latin-1 Zeichensatz)"
 
-msgid "Microsoft Excel"
-msgstr ".xls - Microsoft Excel"
+msgid "Microsoft Excel (Latin charset)"
+msgstr "Microsoft Excel (Latin-1 Zeichensatz)"
 
-msgid "CSV Comma Delimited"
-msgstr ".csv - Komma-Separierte Textdatei"
+# D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:189
+msgid "CSV File (UTF-8 charset - use this for non-latin languages)"
+msgstr "CSV-Datei (UTF-8 Zeichensatz - verwenden sie diese für nicht Latin-1 Sprachen)"
 
 msgid "Export Data"
 msgstr "Daten exportieren"
@@ -1552,12 +1624,12 @@ msgstr "Name Attribute 1"
 msgid "Attribute 2"
 msgstr "Name Attribute 2"
 
+msgid "Time Submitted"
+msgstr "Abgesendet"
+
 # D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:730
 msgid "NEW RECORD"
 msgstr "NEUER DATENSATZ"
-
-msgid "Time Submitted"
-msgstr "Abgesendet"
 
 # D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:788
 msgid "ID"
@@ -1578,12 +1650,13 @@ msgstr "Erstelldatum"
 msgid "Access"
 msgstr "Zugriff"
 
+# D:\xampp\xampp\htdocs\limesurvey/common.php:1558
+msgid "Answer Privacy"
+msgstr "Schutz der Antwortdaten"
+
 # D:\xampp\xampp\htdocs\limesurvey/admin/html.php:479
 msgid "Status"
 msgstr "Status"
-
-msgid "Action"
-msgstr "Aktion"
 
 msgid "Responses"
 msgstr "Antworten"
@@ -1593,6 +1666,14 @@ msgstr "Anonym"
 
 msgid "Not Anonymous"
 msgstr "Nicht Anonym"
+
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:73
+msgid "Closed-access"
+msgstr "Geschlossener Teilnehmerkreis"
+
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:77
+msgid "Open-access"
+msgstr "Offener Teilnehmerkreis"
 
 msgid "Expired"
 msgstr "Abgelaufen"
@@ -1759,8 +1840,15 @@ msgstr "Normal aufsteigend"
 msgid "By Group"
 msgstr "Nach Gruppen"
 
-msgid "Survey URL:"
-msgstr "URL dieser Umfrage:"
+msgid "Survey URL"
+msgstr "URL dieser Umfrage"
+
+msgid "Survey URL For Language:"
+msgstr "Umfrage URL für Sprache:"
+
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:675
+msgid "Flag"
+msgstr "Fahne"
 
 msgid "Description:"
 msgstr "Beschreibung:"
@@ -1789,20 +1877,18 @@ msgstr "Zusätzliche Sprachen"
 msgid "Exit Link"
 msgstr "Abschluss-Link:"
 
-msgid "Number of groups in survey"
-msgstr "Anzahl Gruppen in der Umfrage"
+msgid "Number of questions/groups"
+msgstr "Anzahl Fragen/Gruppen"
 
-msgid "Number of questions in survey"
-msgstr "Anzahl Fragen in der Umfrage"
+msgid "Survey currently active"
+msgstr "Umfrage aktiv"
 
-msgid "Survey is not currently active."
-msgstr "Die Umfrage ist momentan nicht aktiv."
-
-msgid "Survey is currently active."
-msgstr "Die Umfrage ist momentan aktiv."
-
-msgid "Survey table name is"
+msgid "Survey table name"
 msgstr "Name der Umfrage-Tabelle"
+
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:760
+msgid "Hints"
+msgstr "Hinweise"
 
 msgid "Survey cannot be activated yet."
 msgstr "Die Umfrage kann noch nicht aktiviert werden."
@@ -1872,6 +1958,10 @@ msgstr "Diese Frage exportieren"
 msgid "Copy Current Question"
 msgstr "Diese Frage kopieren"
 
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:1035
+msgid "Copy question is not possible in an Active survey"
+msgstr "Eine Frage zu kopieren ist bei einer aktiven Umfrage nicht möglich"
+
 msgid "Set Conditions for this Question"
 msgstr "Bedingungen für diese Frage setzten"
 
@@ -1927,8 +2017,14 @@ msgstr "Du musst ein Beschriftung-Set für diese Frage auswählen"
 msgid "Other:"
 msgstr "'Sonstige:' Angabe möglich:"
 
+msgid "Mandatory:"
+msgstr "Pflichtangabe:"
+
 msgid "Other questions having conditions on this question:"
 msgstr "Bedingungen für diese Frage setzten"
+
+msgid "Edit Answers"
+msgstr "Antworten bearbeiten"
 
 msgid "Base Language"
 msgstr "Basis-Sprache"
@@ -1945,6 +2041,9 @@ msgstr "Basis-Sprache"
 # D:\xampp\xampp\htdocs\limesurvey/admin/statistics.php:1446
 msgid "Code"
 msgstr "Code"
+
+msgid "Action"
+msgstr "Aktion"
 
 msgid "Order"
 msgstr "Reihenfolge"
@@ -2075,8 +2174,14 @@ msgstr "[<< Zurück] Button zeigen"
 msgid "Admin Notification:"
 msgstr "Admin Benachrichtigung:"
 
-msgid "Anonymous?"
-msgstr "Anonym?"
+msgid "Anonymous answers?"
+msgstr "Anonymisierte Antworten?"
+
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:1919
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:2464
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:272
+msgid "If you set a survey to anonymous, answers to timestamped and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
+msgstr "Wenn du die Umfrage auf  -Anonyme Antworten- setzt, die Antworten mit einem Zeitstempel versehen und eine Probandentabelle erstellst, wird LimeSurvey die Zugangsschlüssel nicht mit einem Zeitstempel versehen, sondern an Stelle des Datums und der Uhrzeit nur ein 'Y' setzen, damit für ihre Teilnehmer die Anonymität gewahrt bleibt."
 
 msgid "Cannot be changed"
 msgstr "Kann nicht geändert werden"
@@ -2284,9 +2389,6 @@ msgstr ""
 msgid "URL Description:"
 msgstr "URL Beschreibung:"
 
-msgid "Save"
-msgstr "Speichern"
-
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:3636
 msgid "Current survey has questions with conditions outside their own group"
 msgstr "Die aktuelle Umfrage besitzt Fragen mit Bedingungen ausserhalb der eigenen Gruppe."
@@ -2374,20 +2476,35 @@ msgstr "Visualisierung:"
 msgid "Select the field number you would like to use for your answers:"
 msgstr "Wähle die Feldnummer aus, die Du für Deine Antworten nutzen möchtest:"
 
-msgid "Import Group"
-msgstr "Gruppen importieren"
-
-msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder."
-msgstr "Es ist ein Fehler aufgetreten beim Upload Deiner Datei. Grund dafür könnten fehlerhafte Einstellungen der Berechtigungen des /tmp Ordners sein."
+msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your /admin/tmp folder folder."
+msgstr "Beim Hochladen der Datei ist ein Fehler aufgetreten. Grund dafür könnten fehlerhafte Einstellungen der Berechtigungen des /admin/tmp Ordners sein."
 
 msgid "File upload succeeded."
 msgstr "Datei erfolgreich hochgeladen."
+
+msgid "Reading file.."
+msgstr "Lese Datei.."
+
+msgid "Import Group"
+msgstr "Gruppen importieren"
 
 msgid "Reading file..."
 msgstr "Lese Datei..."
 
 msgid "This file is not a LimeSurvey group file. Import failed."
 msgstr "Diese Datei enthält keine LimeSurvey-Daten im richtigen Format."
+
+# D:\web\xampp\htdocs\limesurvey/admin/importgroup.php:255
+msgid "You can't import a group which doesn't support the current survey's base language."
+msgstr "Du kannst keine Gruppe importieren, welche nicht zumindest die Basissprache dieser Umfrage unterstützt."
+
+# D:\web\xampp\htdocs\limesurvey/admin/importgroup.php:271
+msgid "You can't import a question which doesn't support the current survey's base language."
+msgstr "Du kannst keine Frage importieren, welche nicht zumindest die Basissprache dieser Umfrage unterstützt."
+
+# D:\web\xampp\htdocs\limesurvey/admin/importgroup.php:288
+msgid "You can't import label sets which don't support the current survey's base language."
+msgstr "Du kannst kein Beschriftungs-Set importieren, welches nicht zumindest die Basissprache dieser Umfrage unterstützt."
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:1474
 msgid "Import partially successful."
@@ -2418,11 +2535,8 @@ msgstr "Import der Gruppe abgeschlossen."
 msgid "Import Label Set"
 msgstr "Beschriftung-Set importieren"
 
-msgid "Reading file.."
-msgstr "Lese Datei.."
-
-msgid "This file is not a LimeSurvey question file. Import failed."
-msgstr "Diese Datei ist keine LimeSurvey-Umfrage-Datei. Import fehlgeschlagen."
+msgid "This file is not a LimeSurvey label set file. Import failed."
+msgstr "Diese Datei ist keine LimeSurvey-Beschriftungsset-Datei. Import fehlgeschlagen."
 
 msgid "Return to Labels Admin"
 msgstr "Zurück zur Beschriftung-Set Administration"
@@ -2472,6 +2586,17 @@ msgstr "keine SID (Umfrage) angegeben. Kann Frage nicht importieren."
 msgid "No GID (Group) has been provided. Cannot import question"
 msgstr "keine GID (Gruppe) angegeben. Kann Frage nicht importieren."
 
+msgid "This file is not a LimeSurvey question file. Import failed."
+msgstr "Diese Datei ist keine LimeSurvey-Umfrage-Datei. Import fehlgeschlagen."
+
+# D:\web\xampp\htdocs\limesurvey/admin/importquestion.php:217
+msgid "You can't import a question which doesn't support the current survey's base language"
+msgstr "Du kannst keine Frage importieren, welche nicht zumindest die Basissprache dieser Umfrage unterstützt."
+
+# D:\web\xampp\htdocs\limesurvey/admin/importquestion.php:253
+msgid "You can't import label sets which don't support the current survey's base language"
+msgstr "Du kannst kein Beschriftungs-Set importieren, welches nicht zumindest die Basissprache dieser Umfrage unterstützt."
+
 msgid "Question Import Summary"
 msgstr "Fragen-Import übersicht"
 
@@ -2487,11 +2612,29 @@ msgstr "Import dieser Umfrage-Datei fehlgeschlagen."
 msgid "File does not contain LimeSurvey data in the correct format."
 msgstr "Diese Datei enthält keine LimeSurvey-Daten im richtigen Format."
 
+# D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:742
+msgid "was NOT imported, because the question type is not know"
+msgstr "wurde NICHT importiert, da der Fragetyp unbekannt ist."
+
+# D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:748
+msgid "was imported, but the type was set to \""
+msgstr "wurde importiert, aber der Typ wurde konvertiert auf \""
+
+msgid "type"
+msgstr "Typ"
+
+# D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:748
+msgid "\", because is the closest one"
+msgstr "\", da er diesem am ähnlichsten ist"
+
 msgid "Survey Import Summary"
 msgstr "Umfragen-Import übersicht"
 
 msgid "Question Attributes"
 msgstr "Fragen-Attribute:"
+
+msgid "Warnings"
+msgstr "Warnungen"
 
 # D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:52
 # D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:298
@@ -2629,6 +2772,9 @@ msgstr "Aktualisieren des Beschriftung-Set fehlgeschlagen"
 msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
 msgstr "Konnte Beschriftung-Set nicht löschen - Es gibt Fragen, die auf diesem Beschriftung-Set basieren. Du musst zuerst diese Fragen löschen."
 
+msgid "Insert of Label Set failed"
+msgstr "Einfügen des Beschriftung-Set fehlgeschlagen"
+
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2667
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2673
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2713
@@ -2640,9 +2786,17 @@ msgstr "Konnte Beschriftung-Set nicht löschen - Es gibt Fragen, die auf diesem 
 msgid "Failed to insert label"
 msgstr "Konnte Label nicht einfügen"
 
+# D:\web\xampp\htdocs\limesurvey/admin/labels.php:626
+msgid "This label code is already used in this labelset. Please choose another code or rename the existing one."
+msgstr "Dieser Beschriftungscode wird bereits verwendet. Bitte wähle einen anderen oder benenne den bereits vorhanden um."
+
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:1823
 msgid "Failed to update label"
 msgstr "Fehler beim Aktualisieren des Labels"
+
+# D:\web\xampp\htdocs\limesurvey/admin/labels.php:671
+msgid "Can't update labels because you are using duplicated codes"
+msgstr "Aktualisierung nicht möglich: gleiche Beschriftungscodes können nicht mehrfach verwendet werden"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:1823
 msgid "Failed to delete label"
@@ -2729,9 +2883,6 @@ msgstr "Pflichtangabe"
 msgid "Label Set:"
 msgstr "Beschriftung-Set:"
 
-msgid "Mandatory:"
-msgstr "Pflichtangabe:"
-
 msgid "Select CSV File"
 msgstr "CSV-Datei auswählen"
 
@@ -2752,6 +2903,9 @@ msgstr "Attribute kopieren?"
 
 msgid "Edit Question"
 msgstr "Bearbeite Frage"
+
+msgid "Survey is currently active."
+msgstr "Die Umfrage ist momentan aktiv."
 
 msgid "Update Question"
 msgstr "Frage aktualisieren"
@@ -3061,6 +3215,9 @@ msgstr "Wenn Du Zugangschlüssel für diese Umfrage initialisierst, wird die Umf
 msgid "Do you want to create a tokens table for this survey?"
 msgstr "Möchten Du eine Zugangsschlüsseltabelle mit Zugangsschlüsseln für diese Umfrage erstellen?"
 
+msgid "Restore Options"
+msgstr "Wiederherstellungsoptionen"
+
 msgid "The following old token tables could be restored:"
 msgstr "Die folgenden alten Zugangsschlüssel-Tabelle können wiederhergestellt werden:"
 
@@ -3191,15 +3348,15 @@ msgstr "Eine Sicherheitskopie dieser Tabelle wurde erstellt. Nur der Systemadmin
 msgid "Email Invitation"
 msgstr "Einladung an Zugangsschlüssel versenden"
 
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:746
-msgid "to TokenID No"
-msgstr "bis TokenID-Nr"
-
 msgid "From"
 msgstr "Von"
 
 msgid "Subject"
 msgstr "Betreff"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:746
+msgid "to TokenID No"
+msgstr "bis TokenID-Nr"
 
 msgid "Send Invitations"
 msgstr "Sende Einladungen"
@@ -3210,7 +3367,7 @@ msgstr "Sende Einladungen..."
 msgid "Sending to TID No:"
 msgstr "Sende an TID-Nr:"
 
-msgid "Invitation Sent To:"
+msgid "Invitation sent to:"
 msgstr "Einladung versandt an:"
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:733
@@ -3229,8 +3386,8 @@ msgstr "Es wurden keine E-Mails versendet, da kein Proband die folgenden Bedingu
 msgid "Email Reminder"
 msgstr "Erinnerung an Zugangsschlüssel versenden"
 
-msgid "Start at TID No:"
-msgstr "Start mit TID-Nr:"
+msgid "Start at Token ID No:"
+msgstr "Start mit Token ID Nr.:"
 
 msgid "Send Reminders"
 msgstr "Sende Erinnerungen"
@@ -3238,8 +3395,8 @@ msgstr "Sende Erinnerungen"
 msgid "Sending Reminders"
 msgstr "Sende Erinnerungen.."
 
-msgid "Reminder Sent To:"
-msgstr "Erinnerung versandt an:"
+msgid "Reminder sent to:"
+msgstr "Erinnerung gesendet an:"
 
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
 msgstr "Es wurden keine E-Mails versendet, da kein Proband die folgenden Bedingungen erfüllt hat:<UL><LI>E-Mail Adresse vorhanden<LI><LI>Einladung nicht schon versendet<LI><LI>Die Umfrage noch nicht ausgefüllt<LI><LI>Eindeutiger Zugangsschlüssel zugewiesen<LI><UL>."
@@ -3496,6 +3653,10 @@ msgstr "Wählen Sie eine CSV-Datei zum Hochladen aus:"
 msgid "Character set of the file:"
 msgstr "Zeichenkodierung der Datei:"
 
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1685
+msgid "Sorry, but the LDAP module is missing in your PHP configuration."
+msgstr "Leider fehlt in deiner PHP-Konfiguration fehlt das LDAP-Modul."
+
 # D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1464
 msgid "LDAP is disabled or no LDAP query defined."
 msgstr "LDAP is deaktiviert oder keine LDAP Abfrage definiert."
@@ -3531,6 +3692,12 @@ msgstr "Email für {NAME} ({EMAIL}) fehlgeschlagen."
 # D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:93
 msgid "Logging in..."
 msgstr "Anmelden..."
+
+# D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:56
+# D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:104
+# D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:128
+msgid "Incorrect User name and/or Password!"
+msgstr "Benutzername und/oder Passwort falsch!"
 
 msgid "Welcome {NAME}"
 msgstr "Willkommen {NAME}"
@@ -3660,9 +3827,6 @@ msgstr "Benutzer bearbeiten"
 
 msgid "Name:"
 msgstr "Name:"
-
-msgid "Optional"
-msgstr "Optionale Frage"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:1639
 msgid "Edit User Group (Owner: "
@@ -3830,13 +3994,13 @@ msgstr "Datenbank wurde erfolgreich aktualisiert auf Version"
 msgid "Bulgarian"
 msgstr "Bulgarisch"
 
-# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:70
-msgid "Chinese (Traditional)"
-msgstr "Chinesisch (Traditionell)"
-
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:74
 msgid "Chinese (Simplified)"
 msgstr "Chinesisch (Vereinfacht)"
+
+# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:70
+msgid "Chinese (Traditional - Hong Kong)"
+msgstr "Chinesisch (Traditionell - Hong Kong)"
 
 msgid "Croatian"
 msgstr "Kroatisch"
@@ -3915,6 +4079,10 @@ msgstr "Rumänisch"
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:156
 msgid "Slovenian"
 msgstr "Slovenisch"
+
+# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:156
+msgid "Serbian"
+msgstr "Serbisch"
 
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:160
 msgid "Spanish"

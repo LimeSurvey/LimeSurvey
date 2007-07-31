@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-07-21 12:27+0100\n"
+"PO-Revision-Date: 2007-07-31 21:24+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -263,9 +263,8 @@ msgstr "Kommentar"
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr "Achtung: Javascript ist in Ihrem Browser deaktiviert. Es kann sein, dass sie daher die Umfrage nicht abschließen werden können. Bitte überprüfen Sie ihre Browser-Einstellungen."
 
-#, fuzzy
 msgid "There are no questions in this survey"
-msgstr "Diese Umfrage enthält {NUMBEROFQUESTIONS} Fragen."
+msgstr "Diese Umfrage enthält keine Fragen"
 
 msgid "There is 1 question in this survey"
 msgstr "Diese Umfrage enthält eine Frage."
@@ -896,7 +895,7 @@ msgid "You can switch to the closed-access mode by initialising a token table wi
 msgstr "Sie können den Teilnehmerkreis dieser Umfrage geschlossen machen, indem sie eine Teilnehmer-Tabelle anlegen."
 
 msgid "Optional"
-msgstr "Optionale Frage"
+msgstr "Optional"
 
 # D:\web\xampp\htdocs\limesurvey/admin/activate.php:518
 msgid "Switch to closed-access mode"
@@ -1622,9 +1621,6 @@ msgstr "Schutz der Antwortdaten"
 msgid "Status"
 msgstr "Status"
 
-msgid "Action"
-msgstr "Aktion"
-
 msgid "Responses"
 msgstr "Antworten"
 
@@ -2007,6 +2003,9 @@ msgstr "Basis-Sprache"
 # D:\xampp\xampp\htdocs\limesurvey/admin/statistics.php:1446
 msgid "Code"
 msgstr "Code"
+
+msgid "Action"
+msgstr "Aktion"
 
 msgid "Order"
 msgstr "Reihenfolge"
@@ -2485,8 +2484,8 @@ msgstr "Import der Gruppe abgeschlossen."
 msgid "Import Label Set"
 msgstr "Beschriftung-Set importieren"
 
-msgid "This file is not a LimeSurvey question file. Import failed."
-msgstr "Diese Datei ist keine LimeSurvey-Umfrage-Datei. Import fehlgeschlagen."
+msgid "This file is not a LimeSurvey label set file. Import failed."
+msgstr "Diese Datei ist keine LimeSurvey-Beschriftungsset-Datei. Import fehlgeschlagen."
 
 msgid "Return to Labels Admin"
 msgstr "Zurück zur Beschriftung-Set Administration"
@@ -2536,6 +2535,9 @@ msgstr "keine SID (Umfrage) angegeben. Kann Frage nicht importieren."
 msgid "No GID (Group) has been provided. Cannot import question"
 msgstr "keine GID (Gruppe) angegeben. Kann Frage nicht importieren."
 
+msgid "This file is not a LimeSurvey question file. Import failed."
+msgstr "Diese Datei ist keine LimeSurvey-Umfrage-Datei. Import fehlgeschlagen."
+
 msgid "You can't import a question which doesn't support the current survey's base language"
 msgstr "Sie können keine Frage importieren, welche nicht zumindest die Basissprache dieser Umfrage unterstützt."
 
@@ -2557,11 +2559,29 @@ msgstr "Import dieser Umfrage-Datei fehlgeschlagen."
 msgid "File does not contain LimeSurvey data in the correct format."
 msgstr "Diese Datei enthält keine LimeSurvey-Daten im richtigen Format."
 
+# D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:742
+msgid "was NOT imported, because the question type is not know"
+msgstr "wurde NICHT importiert, da der Fragetyp unbekannt ist."
+
+# D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:748
+msgid "was imported, but the type was set to \""
+msgstr "wurde importiert, aber der Typ wurde konvertiert auf \""
+
+msgid "type"
+msgstr "Typ"
+
+# D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:748
+msgid "\", because is the closest one"
+msgstr "\", da er diesem am ähnlichsten ist"
+
 msgid "Survey Import Summary"
 msgstr "Umfragen-Import übersicht"
 
 msgid "Question Attributes"
 msgstr "Fragen-Attribute:"
+
+msgid "Warnings"
+msgstr "Warnungen"
 
 # D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:52
 msgid "Data Consistency Check"
@@ -2697,6 +2717,9 @@ msgstr "Aktualisieren des Beschriftung-Set fehlgeschlagen"
 
 msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
 msgstr "Konnte Beschriftung-Set nicht löschen - Es gibt Fragen, die auf diesem Beschriftung-Set basieren. Sie müssen zuerst diese Fragen löschen."
+
+msgid "Insert of Label Set failed"
+msgstr "Einfügen des Beschriftung-Set fehlgeschlagen"
 
 msgid "Failed to insert label"
 msgstr "Konnte Label nicht einfügen"
@@ -3873,13 +3896,13 @@ msgstr "Datenbank wurde erfolgreich aktualisiert auf Version"
 msgid "Bulgarian"
 msgstr "Bulgarisch"
 
-# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:70
-msgid "Chinese (Traditional)"
-msgstr "Chinesisch (Traditionell)"
-
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:74
 msgid "Chinese (Simplified)"
 msgstr "Chinesisch (Vereinfacht)"
+
+# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:70
+msgid "Chinese (Traditional - Hong Kong)"
+msgstr "Chinesisch (Traditionell - Hong Kong)"
 
 msgid "Croatian"
 msgstr "Kroatisch"
