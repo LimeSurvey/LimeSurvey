@@ -763,12 +763,10 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 			$fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
 			$fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
 			$fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
-	
+
 			$subject=Replacefields($thissurvey['email_invite_subj'], $fieldsarray);
 			$textarea=Replacefields($thissurvey['email_invite'], $fieldsarray);
 
-			$subject=html_escape($subject);
-			$textarea=html_escape($textarea);
 	    	$tokenoutput .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($language,false);
 	    	if ($language==$baselang) 
 	        {
@@ -968,7 +966,7 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
             $subject=Replacefields($thissurvey['email_remind_subj'], $fieldsarray);
             $textarea=Replacefields($thissurvey['email_remind'], $fieldsarray);
 
-			$tokenoutput .= "\t\t<td><input type='text' size='83' name='subject_$language' value='".html_escape($subject)."' /></td>\n"
+			$tokenoutput .= "\t\t<td><input type='text' size='83' name='subject_$language' value='".$subject."' /></td>\n"
 			."\t</tr>\n";
 	
 			$tokenoutput .= "\t<tr>\n"
