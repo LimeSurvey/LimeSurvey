@@ -192,6 +192,18 @@ If (!$dbexistsbutempty && $sourcefrom=='admin')
 
 }
 
+// THIS is to establish a database fields markers (left and right) tu be used in the SQL Sentences
+switch ($databasetype)
+{
+    case "mysql" : $FieldMarkerLeft = "`";
+                   $FieldMarkerRight = "`";
+                   break;
+    case "odbc_mssql" : $FieldMarkerLeft = "[";
+                        $FieldMarkerRight = "]";
+                        break;
+    default: $FieldMarkerLeft = "`";
+             $FieldMarkerRight = "`";
+}
 
 
 //Admin menus and standards
