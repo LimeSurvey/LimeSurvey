@@ -49,7 +49,7 @@ header("Content-Disposition: ".
 (strpos($_SERVER["HTTP_USER_AGENT"],"MSIE 5.5")?""
 :"attachment; ").
 "filename=survey_".$surveyid.".sps");
-											 
+
 // Get Base Language:
 
 $language = GetBaseLanguageFromSurveyID($surveyid);
@@ -321,8 +321,9 @@ for ($i=0; $i < $num_results; $i++) {
 			} else if ($row[$fieldno] == "Y")
 			{
 				echo "'1' ";
-			} else {
-				echo "'2' ";
+			} else
+			{
+			   echo "'2' ";
 			}
 		} else if ($fields[$fieldno]["ftype"] == "P") 
 		{
@@ -333,8 +334,9 @@ for ($i=0; $i < $num_results; $i++) {
 			} else if ($row[$fieldno] == "Y")
 			{
 				echo "'1' ";
-			} else {
-				echo "'2' ";
+			} else
+			{
+			   echo "'2' ";
 			}
 		} else {
 			$strTmp=substr(strip_tags_full($row[$fieldno]), 0, 59);
@@ -453,7 +455,7 @@ foreach ($fields as $field)
 				}
 			}
 		}
-		if ($field['ftype'] == "F")
+		if ($field['ftype'] == "F" || $field['ftype'] == "W" || $field['ftype'] == "Z")
 		{
 			$displayvaluelabel = 0;
 			$query = "SELECT {$dbprefix}questions.lid, {$dbprefix}labels.code, {$dbprefix}labels.title from 
@@ -479,7 +481,7 @@ foreach ($fields as $field)
 				}
 			}
 		}
-		if ($field['ftype'] == "M" && $field['code'] != "other" && $field['size'] > 0)
+		if ($field['ftype'] == "M" && $field['code'] != "other")
 		{
 			echo "VALUE LABELS ".$field["id"]."\n";
 			echo "1 \"".$clang->gT("Yes")."\"\n";
@@ -491,13 +493,13 @@ foreach ($fields as $field)
 			echo "1 \"".$clang->gT("Yes")."\"\n";
 			echo "2 \"".$clang->gT("No")."\".\n";
 		}
-		if ($field['ftype'] == "G" && $field['size'] > 0)
+		if ($field['ftype'] == "G")
 		{
 			echo "VALUE LABELS ".$field["id"]."\n";
 			echo "1 \"".$clang->gT("Female")."\"\n";
 			echo "2 \"".$clang->gT("Male")."\".\n";
 		}
-		if ($field['ftype'] == "Y" && $field['size'] > 0)
+		if ($field['ftype'] == "Y")
 		{
 			echo "VALUE LABELS ".$field["id"]."\n";
 			echo "1 \"".$clang->gT("Yes")."\"\n";
