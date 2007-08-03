@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-07-30 11:38+0100\n"
+"PO-Revision-Date: 2007-08-03 15:51+0100\n"
 "Last-Translator: Sébastien GAUGRY\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -57,7 +57,7 @@ msgid "Template Editor"
 msgstr "Editeur de modèles"
 
 msgid "Show Help"
-msgstr "Aide"
+msgstr "Afficher l'aide"
 
 # E:\www\limesurvey/common.php:222
 # E:\www\limesurvey/common.php:224
@@ -164,7 +164,7 @@ msgid "Detailed email notification with result codes"
 msgstr "Notification par mail avec les codes des réponses"
 
 msgid "LimeSurvey Setup"
-msgstr "Paramètres de LimeSurvey"
+msgstr "Configuration de LimeSurvey"
 
 msgid "Error"
 msgstr "Erreur"
@@ -498,7 +498,7 @@ msgid "This is a closed-access survey. You need a valid token to participate."
 msgstr "C'est un questionnaire en accès restreint. Vous devez avoir une invitation valable pour y participer."
 
 msgid "The token you have provided is either not valid, or has already been used."
-msgstr "L'invitation que vous avez reçue n'est pas valide, ou a déjà été utilisée."
+msgstr "L'invitation que vous avez utilisée n'est pas valide, ou a déjà été utilisée."
 
 msgid "For further information contact"
 msgstr "Pour plus d'informations veuillez contacter"
@@ -507,7 +507,7 @@ msgid "Survey Saved"
 msgstr "Questionnaire sauvegardé"
 
 msgid "There is no matching saved survey"
-msgstr "Pas de questionnaire correspondant enregistré"
+msgstr "Il n'y a pas de questionnaire sauvegardé qui corresponde"
 
 msgid "complete"
 msgstr "Terminé"
@@ -523,7 +523,7 @@ msgid ""
 "\n"
 "{ADMINNAME}"
 msgstr ""
-"{FIRSTNAME},\n"
+"Cher {FIRSTNAME},\n"
 "\n"
 "Ce mail vous confirme que vous avez complété le questionnaire intitulé {SURVEYNAME} et que votre réponse a été enregistrée. Merci pour votre participation.\n"
 "\n"
@@ -577,7 +577,7 @@ msgid "Try to submit again"
 msgstr "Essayez d'envoyer à nouveau"
 
 msgid "This is a controlled survey. You need a valid token to participate."
-msgstr "C'est un questionnaire privé. Vous devez avoir une invitation pour y participer."
+msgstr "C'est un questionnaire en accès restreint. Vous devez avoir une invitation pour y participer."
 
 msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr "Si vous avez reçu une invitation, saisissez-la dans le champ ci-dessous et cliquez sur Continuer."
@@ -740,7 +740,7 @@ msgid "Reload your survey by clicking on the following URL:"
 msgstr "Rechargez votre questionnaire en cliquant sur l'URL suivante :"
 
 msgid "Cannot submit results - there are none to submit."
-msgstr "Impossible d'envoyer les réponses car il n'y en a aucune (vide)."
+msgstr "Impossible d'envoyer les réponses car il n'y en a aucune."
 
 # D:\www\limesurvey/save.php:452
 msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
@@ -824,7 +824,7 @@ msgid "The following problems have been found:"
 msgstr "Le probléme suivant a été rencontré :"
 
 msgid "The survey cannot be activated until these problems have been resolved."
-msgstr "Le questionnaire ne peut pas être activé jusqu'à ce que ces problémes soient résolus."
+msgstr "Le questionnaire ne peut pas être activé tant que ces problémes ne sont pas résolus."
 
 msgid "Warning"
 msgstr "Avertissement"
@@ -1468,7 +1468,7 @@ msgid "Survey Has Been Deactivated"
 msgstr "Le questionnaire a été désactivé"
 
 msgid "The responses table has been renamed to: "
-msgstr "La table réponses a été renommée en : "
+msgstr "La table des réponses a été renommée en : "
 
 msgid "The responses to this survey are no longer available using LimeSurvey."
 msgstr "Les réponses à ce questionnaire ne sont plus disponibles via LimeSurvey."
@@ -1507,16 +1507,16 @@ msgid "Export Label Set"
 msgstr "Exporter le jeu d'étiquettes"
 
 msgid "No LID has been provided. Cannot dump label set."
-msgstr "Aucun JID (LID) fourni. Impossible d'exporter ce jeu d'étiquettes."
+msgstr "Aucun ID de jeu d'étiquettes (LID) fourni. Impossible d'exporter ce jeu d'étiquettes."
 
 msgid "No QID has been provided. Cannot dump question."
-msgstr "Aucun QID n'a été fourni. Impossible d'exporter la question."
+msgstr "Aucun ID de question (QID) fourni. Impossible d'exporter la question."
 
 msgid "Export Survey"
 msgstr "Exporter le questionnaire"
 
 msgid "No SID has been provided. Cannot dump survey"
-msgstr "Aucun QID n'a été fourni. Impossible d'exporter le questionnaire."
+msgstr "Aucun ID de questionnaire (SID) fourni. Impossible d'exporter le questionnaire."
 
 msgid "Export Results"
 msgstr "Exporter les résultats"
@@ -1573,7 +1573,7 @@ msgstr "Microsoft Excel (Jeu de caractères Latin)"
 
 # D:\www\limesurvey/admin/exportresults.php:189
 msgid "CSV File (UTF-8 charset - use this for non-latin languages)"
-msgstr "Fichier CSV (Jeu de caractère UTF8 - A utiliser pour les langues non latines)"
+msgstr "Fichier CSV (Jeu de caractères UTF8 - A utiliser pour les langues non latines)"
 
 msgid "Export Data"
 msgstr "Exporter les données"
@@ -1807,7 +1807,7 @@ msgid "It uses cookies for access control."
 msgstr "Utilisation des cookies pour le contrôle d'accès."
 
 msgid "If tokens are used, the public may register for this survey"
-msgstr "Si les invitations sont utilisées, les destinataires doivent être enregistrés pour remplir ce questionnaire"
+msgstr "Si les invitations sont utilisées, les participants doivent être enregistrés pour remplir ce questionnaire"
 
 msgid "Participants can save partially finished surveys"
 msgstr "Les participants peuvent sauvegarder un remplissage partiel du questionnaire"
@@ -2737,6 +2737,9 @@ msgstr "La mise à jour du jeu d'étiquettes a échoué"
 msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
 msgstr "Impossible de supprimer le jeu d'étiquettes - Il y a des questions qui y sont reliées. Vous devez supprimer ces questions en premier."
 
+msgid "Insert of Label Set failed"
+msgstr "L'ajout du jeu d'étiquettes a échoué"
+
 # E:\www\limesurvey/admin/usercontrol.php:153
 # E:\www\limesurvey/admin/usercontrol.php:157
 # E:\www\limesurvey/admin/usercontrol.php:171
@@ -2902,6 +2905,9 @@ msgstr "Date de réponse"
 
 msgid "Start Language"
 msgstr "Langue de base"
+
+msgid "Not Selected"
+msgstr "Non sélectionné"
 
 msgid "Filter Settings"
 msgstr "Paramètres de filtre"
@@ -3688,7 +3694,7 @@ msgstr "Définition des droits utilisateur"
 
 # E:\www\limesurvey/admin/admin.php:102
 msgid "Username and/or email address already exists."
-msgstr "le nom d'utlisateur et/ou l'adresse mail existe déjà."
+msgstr "le nom d'utilisateur et/ou l'adresse mail existe déjà."
 
 msgid "Admin cannot be deleted!"
 msgstr "L'administrateur ne peut pas être effacé !"
