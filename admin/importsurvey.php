@@ -504,7 +504,7 @@ if ($importversion<=100)
 
 
 if (isset($surveyrowdata['datecreated'])) {$surveyrowdata['datecreated']=$connect->BindTimeStamp($surveyrowdata['datecreated']);}
-if (isset($surveyrowdata['expires']) && $surveyrowdata['expires'])!='') {$surveyrowdata['expires']=$connect->BindTimeStamp($surveyrowdata['expires']);}
+if (isset($surveyrowdata['expires']) && $surveyrowdata['expires'] !='') {$surveyrowdata['expires']=$connect->BindTimeStamp($surveyrowdata['expires']);}
 if (!isset($surveyrowdata['datecreated']) || $surveyrowdata['datecreated']=='') {$surveyrowdata['datecreated']=$connect->BindTimeStamp(date("Y-m-d"));}
 
 $values=array_values($surveyrowdata);
