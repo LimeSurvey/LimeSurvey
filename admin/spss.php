@@ -43,13 +43,13 @@ if ($sumrows5['export'] != "1")
 {
 	exit;
 }
-
+   /*
 header("Content-Type: application/octetstream");
 header("Content-Disposition: ".
 (strpos($_SERVER["HTTP_USER_AGENT"],"MSIE 5.5")?""
 :"attachment; ").
 "filename=survey_".$surveyid.".sps");
-
+											 */
 // Get Base Language:
 
 $language = GetBaseLanguageFromSurveyID($surveyid);
@@ -133,33 +133,35 @@ for ($i=0; $i < $num_results; $i++) {
 	#Determine field type
 	if ($fieldname=="stamp" || $fieldname=="submitdate" || $fieldname=="datestamp"){
 		$fieldtype = "DATETIME20.0";
+	} elseif ($fieldname=="startlanguage") {
+		$fieldtype = "A15";
 	} else {
 		if (isset($fieldname) && $fieldname != "")
 		{
 			# Determine the SPSS Variable Type
 			$val_query="SELECT $fieldname FROM {$dbprefix}survey_$surveyid";
 			$val_result=db_execute_assoc($val_query) or die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());
-			$val_size = 0;
-			$teststring="";
 			while ($val_row = $val_result->FetchRow())
 			{
+				$val_size = 0;
+				$teststring="";
 				if ($val_row[$fieldname] == "Y")
 				{
-					$teststring .= "1";
+					$teststring = "1";
 				}
-				if ($val_row[$fieldname] == "F")
+				elseif ($val_row[$fieldname] == "F")
 				{
-					$teststring .= "1";
+					$teststring = "1";
 				}
-				if ($val_row[$fieldname] == "M")
+				elseif ($val_row[$fieldname] == "M")
 				{
-					$teststring .= "2";
+					$teststring = "2";
 				}
-				if ($val_row[$fieldname] == "N")
+				elseif ($val_row[$fieldname] == "N")
 				{
-					$teststring .= "2";
+					$teststring = "2";
 				}
-				else if ($val_row[$fieldname] != "-oth-")
+				elseif ($val_row[$fieldname] != "-oth-")
 				{
 					$teststring .= $val_row[$fieldname];
 				}
@@ -168,8 +170,9 @@ for ($i=0; $i < $num_results; $i++) {
 			if (is_numeric($teststring))
 			{
 				$fieldtype = "N".$val_size;
-			} elseif ($val_size < 9)
+			} elseif ($val_size < 9 && !is_numeric($teststring))
 			{
+				//die(":".$teststring);
 				$fieldtype = "A8";
 			} elseif ($val_size >= 255)
 			{
