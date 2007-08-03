@@ -192,19 +192,6 @@ If (!$dbexistsbutempty && $sourcefrom=='admin')
 
 }
 
-// THIS is to establish a database fields markers (left and right) tu be used in the SQL Sentences
-switch ($databasetype)
-{
-    case "mysql" : $FieldMarkerLeft = "`";
-                   $FieldMarkerRight = "`";
-                   break;
-    case "odbc_mssql" : $FieldMarkerLeft = "[";
-                        $FieldMarkerRight = "]";
-                        break;
-    default: $FieldMarkerLeft = "`";
-             $FieldMarkerRight = "`";
-}
-
 
 //Admin menus and standards
 //IF THIS IS AN ADMIN SCRIPT, RUN THE SESSIONCONTROL SCRIPT
@@ -440,8 +427,20 @@ function db_quote_id($id)
 // This functions quotes fieldnames accordingly 
 {
 	global $connect;
-	$quote = $connect->nameQuote;
-	return $quote.str_replace($quote,$quote.$quote,$id).$quote;
+    // WE DONT HAVE nor USE other thing that alfanumeric characters in the field names
+//	$quote = $connect->nameQuote;
+//	return $quote.str_replace($quote,$quote.$quote,$id).$quote;
+    switch ($connect->databaseType)
+    {
+        case "mysql" : 
+            return "`".$id."`";
+            break;
+        case "odbc_mssql" : 
+            return "[".$id."]";
+            break;
+        default: 
+            return "`".$id."`";
+    }
 }
 
 function db_random()

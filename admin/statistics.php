@@ -1379,22 +1379,25 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				{
 					if ($al[1] == $clang->gT("Other"))
 					{
-						$query = "SELECT count(".db_quote_id($al[2]).") FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($al[2])." != ''";
+						$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ";
+                        $query .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
 					}
 					elseif ($qtype == "U" || $qtype == "T" || $qtype == "S" || $qtype == "Q")
 					{
 						if($al[0]=="Answers")
 						{
-							$query = "SELECT count(".db_quote_id($al[2]).") FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($al[2])." != ''";
+							$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ";
+                            $query .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
 						}
 						elseif($al[0]=="NoAnswer")
 						{
-							$query = "SELECT count(".db_quote_id($al[2]).") FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($al[2])." IS NULL OR ".db_quote_id($al[2])." = ''";
+							$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($al[2])." IS NULL OR ";
+                            $query .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." = ''" : " (".db_quote_id($al[2])." LIKE '')";
 						}
 					}
 					else
 					{
-						$query = "SELECT count(".db_quote_id($al[2]).") FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($al[2])." =";
+						$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($al[2])." =";
 						if (substr($rt, 0, 1) == "R")
 						{
 							$query .= " '$al[0]'";
@@ -1407,7 +1410,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				}
 				else
 				{                           
-					$query = "SELECT count(".db_quote_id($rt).") FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($rt)." = '$al[0]'";
+					$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($rt)." = '$al[0]'";
 				}
 				if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate is not null";}                     
 				//echo $query;

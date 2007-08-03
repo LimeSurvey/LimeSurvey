@@ -377,7 +377,7 @@ if (isset($_POST['colselect']))
 	$selectfields="";
 	foreach($_POST['colselect'] as $cs)
 	{
-		$selectfields.= "$surveytable.{$FieldMarkerLeft}$cs{$FieldMarkerRight}, ";
+		$selectfields.= "$surveytable.".db_quote_id($cs).", ";
 	}
 	$selectfields = mb_substr($selectfields, 0, strlen($selectfields)-2);
 }

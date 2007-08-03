@@ -245,7 +245,7 @@ if($actsurrows['browse_response'])
 					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 					if (isset($_POST[$fieldname]))
 					{
-						$col_name .= "{$FieldMarkerLeft}$fieldname{$FieldMarkerRight}, \n";
+						$col_name .= db_quote_id($fieldname).", \n";
 						$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n";
 					}
 				}
@@ -253,7 +253,7 @@ if($actsurrows['browse_response'])
 				{
 					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 					$fieldname2 = $fieldname . "comment";
-					$col_name .= "{$FieldMarkerLeft}$fieldname{$FieldMarkerRight}, \n{$FieldMarkerLeft}$fieldname2{$FieldMarkerRight}, \n";
+					$col_name .= db_quote_id($fieldname).", \n".db_quote_id($fieldname2).", \n";
 					$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n'" . auto_escape($_POST[$fieldname2]) . "', \n";
 				}
 				elseif ($irow['type'] == "R")
@@ -267,7 +267,7 @@ if($actsurrows['browse_response'])
 					for ($i=1; $i<=$i2count; $i++)
 					{
 						$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}$i";
-						$col_name .= "{$FieldMarkerLeft}$fieldname{$FieldMarkerRight}, \n";
+						$col_name .= db_quote_id($fieldname).", \n";
 						$insertqr .= "'" . auto_escape($_POST["d$fieldname"]) . "', \n";
 					}
 				}
@@ -286,12 +286,12 @@ if($actsurrows['browse_response'])
 						$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}";
 						if (isset($_POST[$fieldname]))
 						{
-							$col_name .= "{$FieldMarkerLeft}$fieldname{$FieldMarkerRight}, \n";
+							$col_name .= db_quote_id($fieldname).", \n";
 							$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n";
 							if ($irow['type'] == "P")
 							{
 								$fieldname2 = $fieldname."comment";
-								$col_name .= "{$FieldMarkerLeft}$fieldname2{$FieldMarkerRight}, \n";
+								$col_name .= db_quote_id($fieldname2).", \n";
 								$insertqr .= "'" . auto_escape($_POST[$fieldname2]) . "', \n";
 							}
 						}
@@ -299,7 +299,7 @@ if($actsurrows['browse_response'])
 					if (isset($otherexists) && $otherexists == "Y")
 					{
 						$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
-						$col_name .= "{$FieldMarkerLeft}$fieldname{$FieldMarkerRight}, \n";
+						$col_name .= db_quote_id($fieldname).", \n";
 						$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n";
 					}
 				}
