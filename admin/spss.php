@@ -135,6 +135,8 @@ for ($i=0; $i < $num_results; $i++) {
 		$fieldtype = "DATETIME20.0";
 	} elseif ($fieldname=="startlanguage") {
 		$fieldtype = "A15";
+	} elseif ($fieldname=="token") {
+		$fieldtype = "N16";
 	} else {
 		if (isset($fieldname) && $fieldname != "")
 		{
@@ -172,7 +174,6 @@ for ($i=0; $i < $num_results; $i++) {
 				$fieldtype = "N".$val_size;
 			} elseif ($val_size < 9 && !is_numeric($teststring))
 			{
-				//die(":".$teststring);
 				$fieldtype = "A8";
 			} elseif ($val_size >= 255)
 			{
@@ -323,7 +324,7 @@ for ($i=0; $i < $num_results; $i++) {
 				echo "'1' ";
 			} else
 			{
-			   echo "'2' ";
+			   echo "'0' ";
 			}
 		} else if ($fields[$fieldno]["ftype"] == "P") 
 		{
@@ -336,7 +337,7 @@ for ($i=0; $i < $num_results; $i++) {
 				echo "'1' ";
 			} else
 			{
-			   echo "'2' ";
+			   echo "'0' ";
 			}
 		} else {
 			$strTmp=substr(strip_tags_full($row[$fieldno]), 0, 59);
@@ -367,7 +368,9 @@ foreach ($fields as $field){
 		echo "VARIABLE LABELS ".$field["id"]." '".$clang->gT("Completion Date")."'.\n";//minni"<br />";
 	} elseif ($field["name"]=="startlan") {
 		echo "VARIABLE LABELS ".$field["id"]." '".$clang->gT("Start Language")."'.\n";//minni"<br />";
-	}else{       
+	} elseif ($field["name"]=="token") {
+		echo "VARIABLE LABELS ".$field["id"]." '".$clang->gT("Token")."'.\n";
+	}else{
 		#If a split question
 		if ($field["code"] != ""){
 			#Lookup the question
@@ -481,25 +484,25 @@ foreach ($fields as $field)
 				}
 			}
 		}
-		if ($field['ftype'] == "M" && $field['code'] != "other")
+		if ($field['ftype'] == "M" && $field['code'] != "other" && $field['size'] > 0)
 		{
 			echo "VALUE LABELS ".$field["id"]."\n";
 			echo "1 \"".$clang->gT("Yes")."\"\n";
-			echo "2 \"".$clang->gT("No")."\".\n";
+			echo "0 \"".$clang->gT("Not Selected")."\".\n";
 		}
 		if ($field['ftype'] == "P" && $field['code'] != "other" && $field['code'] != "comment" && $field['code'] != "othercomment")
 		{
 			echo "VALUE LABELS ".$field["id"]."\n";
 			echo "1 \"".$clang->gT("Yes")."\"\n";
-			echo "2 \"".$clang->gT("No")."\".\n";
+			echo "0 \"".$clang->gT("Not Selected")."\".\n";
 		}
-		if ($field['ftype'] == "G")
+		if ($field['ftype'] == "G" && $field['size'] > 0)
 		{
 			echo "VALUE LABELS ".$field["id"]."\n";
 			echo "1 \"".$clang->gT("Female")."\"\n";
 			echo "2 \"".$clang->gT("Male")."\".\n";
 		}
-		if ($field['ftype'] == "Y")
+		if ($field['ftype'] == "Y" && $field['size'] > 0)
 		{
 			echo "VALUE LABELS ".$field["id"]."\n";
 			echo "1 \"".$clang->gT("Yes")."\"\n";
