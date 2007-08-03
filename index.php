@@ -395,6 +395,7 @@ function loadanswers()
 {
 	global $dbprefix,$surveyid,$errormsg;
 	global $thissurvey, $clang;
+    global $databasetype;
 
 	if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 	{
@@ -405,8 +406,8 @@ function loadanswers()
 		{
 			$query .= "AND ".db_table_name('saved_control').".scid=".auto_escape($_POST['scid'])."\n";
 		}
-		$query .="AND ".db_table_name('saved_control').".identifier='".auto_escape($_SESSION['holdname'])."'
-				  AND ".db_table_name('saved_control').".access_code='".md5(auto_unescape($_SESSION['holdpass']))."'\n";
+		$query .="AND ".db_table_name('saved_control').".identifier = '".auto_escape($_SESSION['holdname'])."'
+				  AND ".db_table_name('saved_control').".access_code ". (($databasetype == 'mysql')? "=": "like" ) ." '".md5(auto_unescape($_SESSION['holdpass']))."'\n";
 	}
 	elseif (isset($_SESSION['srid']))
 	{
