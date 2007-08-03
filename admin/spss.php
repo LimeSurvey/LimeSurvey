@@ -43,13 +43,13 @@ if ($sumrows5['export'] != "1")
 {
 	exit;
 }
-   /*
+
 header("Content-Type: application/octetstream");
 header("Content-Disposition: ".
 (strpos($_SERVER["HTTP_USER_AGENT"],"MSIE 5.5")?""
 :"attachment; ").
 "filename=survey_".$surveyid.".sps");
-											 */
+											 
 // Get Base Language:
 
 $language = GetBaseLanguageFromSurveyID($surveyid);
@@ -426,7 +426,7 @@ foreach ($fields as $field)
 {
 	if ($field["qid"]!=0)
 	{
-		if ($field['ftype'] != "T" && $field['ftype'] != "S" && $field['ftype'] != "U" && $field['ftype'] != "A" && $field['ftype'] != "B" && $field['ftype'] != "F" && $field['ftype'] != "M" && $field['ftype'] != "P")
+		if ($field['ftype'] != "T" && $field['ftype'] != "S" && $field['ftype'] != "Q" && $field['ftype'] != "U" && $field['ftype'] != "A" && $field['ftype'] != "B" && $field['ftype'] != "F" && $field['ftype'] != "M" && $field['ftype'] != "P")
 		{
 			$query = "SELECT {$dbprefix}answers.code, {$dbprefix}answers.answer, 
 			{$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE 
