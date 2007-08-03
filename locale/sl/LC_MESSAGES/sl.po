@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Slovenianlanguage file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-08-01 13:01+0100\n"
+"PO-Revision-Date: 2007-08-03 14:11+0100\n"
 "Last-Translator: Gasper Koren <skrat@owca.info>\n"
 "Language-Team: LimeSurvey <gasper_koren@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1981,6 +1981,9 @@ msgstr "Datum dokončanja"
 
 msgid "Start Language"
 msgstr "Začetni jezik"
+
+msgid "Not Selected"
+msgstr "Ni izbrano"
 
 msgid "User Groups"
 msgstr "Skupine uporabnikov"
