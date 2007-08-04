@@ -100,6 +100,10 @@
 	    $supportedLanguages['fr']['description'] = $clang->gT('French');
 	    $supportedLanguages['fr']['nativedescription'] = 'Fran&#231;ais';
 
+        // Galician
+        $supportedLanguages['gl']['description'] = $clang->gT('Galician');
+        $supportedLanguages['gl']['nativedescription'] = 'Galego';
+
    	    // German
 	    $supportedLanguages['de']['description'] = $clang->gT('German');
 	    $supportedLanguages['de']['nativedescription'] = 'Deutsch (Sie)';
