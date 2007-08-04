@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-08-03 15:51+0100\n"
-"Last-Translator: Sébastien GAUGRY\n"
+"PO-Revision-Date: 2007-08-04 15:43+0100\n"
+"Last-Translator: seb <seb>\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -3993,6 +3993,10 @@ msgstr "Finlandais"
 msgid "French"
 msgstr "Français"
 
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:123
+msgid "Galician"
+msgstr "Galicien"
+
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:103
 msgid "German"
 msgstr "Allemand"
@@ -4028,6 +4032,10 @@ msgstr "Lithuanien"
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:135
 msgid "Norwegian"
 msgstr "Norvégien"
+
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:90
+msgid "Polish"
+msgstr "Polonais"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:139
 msgid "Portuguese"
