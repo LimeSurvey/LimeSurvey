@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-07-31 21:38+0100\n"
+"PO-Revision-Date: 2007-08-04 17:05+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -2945,6 +2945,9 @@ msgstr "Abgabe-Datum"
 msgid "Start Language"
 msgstr "Start-Sprache"
 
+msgid "Not Selected"
+msgstr "Nicht gewählt"
+
 msgid "Filter Settings"
 msgstr "Filter Einstellungen"
 
@@ -4025,6 +4028,10 @@ msgstr "Finnisch"
 msgid "French"
 msgstr "Französisch"
 
+# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:123
+msgid "Galician"
+msgstr "Galizisch"
+
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:103
 msgid "German"
 msgstr "Deutsch (Sie-Form)"
@@ -4060,6 +4067,10 @@ msgstr "Litauisch"
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:135
 msgid "Norwegian"
 msgstr "Norwegisch"
+
+# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:90
+msgid "Polish"
+msgstr "Polnisch"
 
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:139
 msgid "Portuguese"
