@@ -140,7 +140,11 @@
 	    $supportedLanguages['no']['description'] = $clang->gT('Norwegian');
 	    $supportedLanguages['no']['nativedescription'] = 'Norsk bokm&#229;l';
 
-	    // Portuguese
+        // Polish
+        $supportedLanguages['pl']['description'] = $clang->gT('Polish');
+        $supportedLanguages['pl']['nativedescription'] = 'Polski';
+ 
+ 	    // Portuguese
 	    $supportedLanguages['pt']['description'] = $clang->gT('Portuguese');
 	    $supportedLanguages['pt']['nativedescription'] = 'Portugu&#234;s';
 
@@ -201,9 +205,6 @@
 
 	    // Latvian
 	    $supportedLanguages['lv']['nativedescription'] = 'Latvie&#353;u';
-
-	    // Polish
-	    $supportedLanguages['pl']['nativedescription'] = 'Polski';
 
 	    // Serbian
 	    $supportedLanguages['yu']['nativedescription'] = 'Srpski';
