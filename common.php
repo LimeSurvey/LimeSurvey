@@ -1952,8 +1952,9 @@ function templatereplace($line)
 		if ($thissurvey['url']!=""){$linkreplace="<a href='{$thissurvey['url']}'>{$thissurvey['urldescrip']}</a>";}
 		else {$linkreplace="";}
 		$line=str_replace("{URL}", $linkreplace, $line);
-		$line=str_replace("{SAVEDID}",$saved_id, $line);			// to activate the SAVEDID in the END URL
-		$line=str_replace("{TOKEN}",$_POST['token'], $line);			// to activate the SAVEDID in the END URL
+		$line=str_replace("{SAVEDID}",$saved_id, $line);     // to activate the SAVEDID in the END URL 
+        if (isset($_POST['token'])) {$token=$_POST['token'];} else {$token='';}
+		$line=str_replace("{TOKEN}",$token, $line);			
 	}
 	if (strpos($line, "{PRIVACY}") !== false) $line=str_replace("{PRIVACY}", $privacy, $line);
 	if (strpos($line, "{PRIVACYMESSAGE}") !== false) $line=str_replace("{PRIVACYMESSAGE}", "<strong><i>".$clang->gT("A Note On Privacy")."</i></strong><br />".$clang->gT("This survey is anonymous.")."<br />".$clang->gT("The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."), $line);
@@ -2087,7 +2088,7 @@ function templatereplace($line)
 		$saveform .= "'></td></tr>\n";
         if (function_exists("ImageCreate"))
         {
-		    $saveform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='center'><img src='verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table></td></tr>\n";
+		    $saveform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='middle'><img src='verification.php' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table></td></tr>\n";
         }
 		$saveform .= "<tr><td align='right'></td><td></td></tr>\n"
 		. "<tr><td></td><td><input type='submit' name='savesubmit' value='".$clang->gT("Save Now")."'></td></tr>\n"
@@ -2101,18 +2102,18 @@ function templatereplace($line)
 		//LOAD SURVEY DETAILS
 		$loadform = "<table><tr><td align='right'>".$clang->gT("Saved name").":</td><td><input type='text' name='loadname' value='";
 		if (isset($_POST['loadname'])) {$loadform .= html_escape(auto_unescape($_POST['loadname']));}
-		$loadform .= "'></td></tr>\n"
+		$loadform .= "' /></td></tr>\n"
 		. "<tr><td align='right'>".$clang->gT("Password").":</td><td><input type='password' name='loadpass' value='";
 		if (isset($_POST['loadpass'])) {$loadform .= html_escape(auto_unescape($_POST['loadpass']));}
-		$loadform .= "'></td></tr>\n";
+		$loadform .= "' /></td></tr>\n";
         if (function_exists("ImageCreate"))
         {
-            $loadform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='center'><img src='verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table></td></tr>\n";
+            $loadform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='middle'><img src='verification.php' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' alt=''/></td></tr></table></td></tr>\n";
         }
 
         
 		$loadform .="<tr><td align='right'></td><td></td></tr>\n"
-		. "<tr><td></td><td><input type='submit' value='".$clang->gT("Load Now")."'></td></tr></table>\n";
+		. "<tr><td></td><td><input type='submit' value='".$clang->gT("Load Now")."' /></td></tr></table>\n";
 		$line=str_replace("{LOADFORM}", $loadform, $line);
 	}
 	//REGISTER SURVEY DETAILS
@@ -2152,7 +2153,7 @@ function templatereplace($line)
         
         if (function_exists("ImageCreate") && captcha_enabled('registrationscreen'))
         {
-            $registerform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='center'><img src='verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table></td></tr>\n";
+            $registerform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='middle'><img src='verification.php' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table></td></tr>\n";
         }
 
 		$registerform .= "<tr><td align='right'><input type='hidden' name='lang' value='".$reglang."'></td><td></td></tr>\n";
