@@ -1200,39 +1200,38 @@ if (($subaction == "edit" || $subaction == "addnew") && ($sumrows5['edit_survey_
 		$edfieldcount = $edresult->FieldCount();
 	}
 
-	$tokenoutput .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><strong>"
-	.$clang->gT("Add or Edit Token")."</strong></td></tr>\n"
-	."\t<tr><td align='center'>\n"
+	$tokenoutput .= "\t</table>\n"
 	."<form method='post' action='$scriptname?action=tokens'>\n"
-	."<table width='100%' bgcolor='#CCCCCC' align='center'>\n"
-	."<tr>\n"
+	."<table width='100%' class='form2columns'>\n"
+    ."<tr bgcolor='#555555'><th colspan='2' ><strong>\n"
+    .$clang->gT("Add or Edit Token")."</strong></th></tr><tr>\n"
 	."\t<td align='right' width='20%'><strong>ID:</strong></font></td>\n"
-	."\t<td bgcolor='#EEEEEE'>";
+	."\t<td>";
 	if ($subaction == "edit")
 	{$tokenoutput .=$_GET['tid'];} else {$tokenoutput .="Auto";}
 	$tokenoutput .= "</font></td>\n"
 	."</tr>\n"
 	."<tr>\n"
 	."\t<td align='right' width='20%'><strong>".$clang->gT("First Name").":</strong></font></td>\n"
-	."\t<td bgcolor='#EEEEEE'><input type='text' size='30' name='firstname' value=\"";
+	."\t<td><input type='text' size='30' name='firstname' value=\"";
 	if (isset($firstname)) {$tokenoutput .= $firstname;}
 	$tokenoutput .= "\"></font></td>\n"
 	."</tr>\n"
 	."<tr>\n"
 	."\t<td align='right' width='20%'><strong>".$clang->gT("Last Name").":</strong></font></td>\n"
-	."\t<td bgcolor='#EEEEEE'><input type='text' size='30' name='lastname' value=\"";
+	."\t<td ><input type='text' size='30' name='lastname' value=\"";
 	if (isset($lastname)) {$tokenoutput .= $lastname;}
 	$tokenoutput .= "\"></font></td>\n"
 	."</tr>\n"
 	."<tr>\n"
 	."\t<td align='right' width='20%'><strong>".$clang->gT("Email").":</strong></font></td>\n"
-	."\t<td bgcolor='#EEEEEE'><input type='text' size='50' name='email' value=\"";
+	."\t<td ><input type='text' size='50' name='email' value=\"";
 	if (isset($email)) {$tokenoutput .= $email;}
 	$tokenoutput .= "\"></font></td>\n"
 	."</tr>\n"
 	."<tr>\n"
 	."\t<td align='right' width='20%'><strong>".$clang->gT("Token").":</strong></font></td>\n"
-	."\t<td bgcolor='#EEEEEE'><input type='text' size='15' name='token' value=\"";
+	."\t<td ><input type='text' size='15' name='token' value=\"";
 	if (isset($token)) {$tokenoutput .= $token;}
 	$tokenoutput .= "\">\n";
 	if ($subaction == "addnew")
@@ -1244,7 +1243,7 @@ if (($subaction == "edit" || $subaction == "addnew") && ($sumrows5['edit_survey_
 
 	."<tr>\n"
 	."\t<td align='right' width='20%'><strong>".$clang->gT("Language").":</strong></font></td>\n"
-	."\t<td bgcolor='#EEEEEE'>";
+	."\t<td>";
 	if (isset($language)) {$tokenoutput .= languageDropdownClean($surveyid,$language);}
 	else {
 		$tokenoutput .= languageDropdownClean($surveyid,GetBaseLanguageFromSurveyID($surveyid));
@@ -1258,7 +1257,7 @@ if (($subaction == "edit" || $subaction == "addnew") && ($sumrows5['edit_survey_
 
 	// TLR change to put date into sent and completed
 	//	."\t<td bgcolor='#EEEEEE'><input type='text' size='1' name='sent' value=\"";
-	."\t<td bgcolor='#EEEEEE'><input type='text' size='15' name='sent' value=\"";
+	."\t<td><input type='text' size='15' name='sent' value=\"";
 
 	if (isset($sent)) {$tokenoutput .= $sent;}	else {$tokenoutput .= "N";}
 	$tokenoutput .= "\"></font></td>\n"
@@ -1268,7 +1267,7 @@ if (($subaction == "edit" || $subaction == "addnew") && ($sumrows5['edit_survey_
 
 	// TLR change to put date into sent and completed
 	//	."\t<td bgcolor='#EEEEEE'><input type='text' size='1' name='completed' value=\"";
-	."\t<td bgcolor='#EEEEEE'><input type='text' size='15' name='completed' value=\"";
+	."\t<td><input type='text' size='15' name='completed' value=\"";
 
 	if (isset($completed)) {$tokenoutput .= $completed;} else {$tokenoutput .= "N";}
 	if ($edfieldcount > 7)
@@ -1277,19 +1276,19 @@ if (($subaction == "edit" || $subaction == "addnew") && ($sumrows5['edit_survey_
 		."</tr>\n"
 		."<tr>\n"
 		."\t<td align='right' width='20%'><strong>".$attr1_name.":</strong></font></td>\n"
-		."\t<td bgcolor='#EEEEEE'><input type='text' size='50' name='attribute1' value=\"";
+		."\t<td ><input type='text' size='50' name='attribute1' value=\"";
 		if (isset($attribute_1)) {$tokenoutput .= $attribute_1;}
 		$tokenoutput .= "\"></font></td>\n"
 		."</tr>\n"
 		."<tr>\n"
 		."\t<td align='right' width='20%'><strong>".$attr2_name.":</strong></font></td>\n"
-		."\t<td bgcolor='#EEEEEE'><input type='text' size='50' name='attribute2' value=\"";
+		."\t<td><input type='text' size='50' name='attribute2' value=\"";
 		if (isset($attribute_2)) {$tokenoutput .= $attribute_2;}
 	}
 	$tokenoutput .= "\"></font></td>\n"
 	."</tr>\n"
 	."<tr>\n"
-	."\t<td colspan='2' align='center'>";
+	."\t<td colspan='2' class='centered'>";
 	switch($subaction)
 	{
 		case "edit":
@@ -1305,8 +1304,7 @@ if (($subaction == "edit" || $subaction == "addnew") && ($sumrows5['edit_survey_
 	$tokenoutput .= "\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
 	."\t</td>\n"
 	."</tr>\n\n"
-	."</table></form>\n"
-	."</td></tr></table>\n";
+	."</table></form>\n";
 }
 
 

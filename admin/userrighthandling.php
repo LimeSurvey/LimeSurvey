@@ -45,10 +45,10 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 	. "\t\t<td colspan='2'>\n"
 	. "\t\t\t<table class='menubar'>\n"
 	. "\t\t\t\t<tr><td colspan='2' height='4' align='left'>"
-	. "<strong>".$clang->gT("User Groups")."</strong> ";
+	. "<strong>".$clang->gT("User Group")."</strong> ";
 	if($ugid)
 	{
-		$usergroupsummary .= "<font color='silver'>{$grow['name']}</font></td></tr>\n";
+		$usergroupsummary .= "{$grow['name']}</td></tr>\n";
 	}
 	else
 	{
@@ -110,7 +110,7 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 		"<img src='$imagefiles/add.png' title='' alt='' " .
 		"align='right' name='AddNewUserGroup' onclick=\"window.open('', '_top')\" /></a>\n";
 	}
-	$usergroupsummary .= "\t\t\t\t\t<font class=\"boxcaption\">".$clang->gT("User Groups").":</font>&nbsp;<select class=\"listboxgroups\" name='ugid' "
+	$usergroupsummary .= "\t\t\t\t\t<font class=\"boxcaption\">".$clang->gT("User Groups").":</font>&nbsp;<select name='ugid' "
 	. "onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n"
 	. getusergrouplist()
 	. "\t\t\t\t\t</select>\n"
@@ -492,14 +492,14 @@ if ($action == "addusergroup")
 {
 	if ($_SESSION['loginID'] == 1)
 	{
-		$usersummary = "<form action='$scriptname'  method='post'><table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
-		. "\t\t<strong><font color='white'>".$clang->gT("Add User Group")."</font></strong></td></tr>\n"
+		$usersummary = "<form action='$scriptname'  method='post'><table width='100%' border='0' class='form2columns'>\n\t<tr><th colspan='2'>\n"
+		. "\t\t<strong>".$clang->gT("Add User Group")."</strong></th></tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right'><strong>".$clang->gT("Name:")."</strong></td>\n"
+		. "\t\t<td><strong>".$clang->gT("Name:")."</strong></td>\n"
 		. "\t\t<td><input type='text' size='50' name='group_name' /><font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></td></tr>\n"
-		. "\t<tr><td align='right'><strong>".$clang->gT("Description:")."</strong>(".$clang->gT("Optional").")</td>\n"
+		. "\t<tr><td><strong>".$clang->gT("Description:")."</strong></td>\n"
 		. "\t\t<td><textarea cols='50' rows='4' name='group_description'></textarea></td></tr>\n"
-		. "\t<tr><td colspan='2' align='center'><input type='submit' value='".$clang->gT("Add Group")."' />\n"
+		. "\t<tr><td colspan='2' class='centered'><input type='submit' value='".$clang->gT("Add Group")."' />\n"
 		. "\t<input type='hidden' name='action' value='usergroupindb' />\n"
 		. "\t</td></table>\n"
 		. "</form>\n";
@@ -514,14 +514,14 @@ if ($action == "editusergroup")
 		$result = db_select_limit_assoc($query, 1);
 		$esrow = $result->FetchRow();
 		$usersummary = "<form action='$scriptname' name='editusergroup' method='post'>"
-		. "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
-		. "\t\t<strong><font color='white'>".$clang->gT("Edit User Group (Owner: ").$_SESSION['user'].")</font></strong></td></tr>\n"
+		. "<table width='100%' border='0' class='form2columns'>\n\t<tr><th colspan='2'>\n"
+		. "\t\t<strong>".$clang->gT("Edit User Group (Owner: ").$_SESSION['user'].")</strong></th></tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right' width='20%'><strong>".$clang->gT("Name:")."</strong></td>\n"
+		. "\t\t<td><strong>".$clang->gT("Name:")."</strong></td>\n"
 		. "\t\t<td><input type='text' size='50' name='name' value=\"{$esrow['name']}\" /></td></tr>\n"
-		. "\t<tr><td align='right'><strong>".$clang->gT("Description:")."</strong>(optional)</td>\n"
+		. "\t<tr><td><strong>".$clang->gT("Description:")."</strong></td>\n"
 		. "\t\t<td><textarea cols='50' rows='4' name='description'>{$esrow['description']}</textarea></td></tr>\n"
-		. "\t<tr><td colspan='2' align='center'><input type='submit' value='".$clang->gT("Update User Group")."' />\n"
+		. "\t<tr><td colspan='2' class='centered'><input type='submit' value='".$clang->gT("Update User Group")."' />\n"
 		. "\t<input type='hidden' name='action' value='editusergroupindb' />\n"
 		. "\t<input type='hidden' name='owner_id' value='".$_SESSION['loginID']."' />\n"
 		. "\t<input type='hidden' name='ugid' value='$ugid' />\n"
@@ -539,17 +539,17 @@ if ($action == "mailusergroup")
 
 
 	$usersummary = "<form action='$scriptname' name='mailusergroup' method='post'>"
-	. "<table width='100%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'>\n"
-	. "\t\t<strong><font color='white'>".$clang->gT("Mail to all Members")."</font></strong></td></tr>\n"
+	. "<table width='100%' border='0' class='form2columns'>\n\t<tr><th colspan='2'>\n"
+	. "\t\t<strong>".$clang->gT("Mail to all Members")."</strong></th></tr>\n"
 	. "\t<tr>\n"
-	. "\t\t<td align='right' width='20%'><strong>".$clang->gT("Send me a copy:")."</strong></td>\n"
+	. "\t\t<td><strong>".$clang->gT("Send me a copy:")."</strong></td>\n"
 	. "\t\t<td><input name='copymail' type='checkbox' class='checkboxbtn' value='1' /></td></tr>\n"
 	. "\t<tr>\n"
-	. "\t\t<td align='right' width='20%'><strong>".$clang->gT("Subject:")."</strong></td>\n"
+	. "\t\t<td><strong>".$clang->gT("Subject:")."</strong></td>\n"
 	. "\t\t<td><input type='text' size='50' name='subject' value='' /></td></tr>\n"
-	. "\t<tr><td align='right'><strong>".$clang->gT("Message:")."</strong></td>\n"
+	. "\t<tr><td><strong>".$clang->gT("Message:")."</strong></td>\n"
 	. "\t\t<td><textarea cols='50' rows='4' name='body'></textarea></td></tr>\n"
-	. "\t<tr><td colspan='2' align='center'><input type='submit' value='".$clang->gT("Send")."' />\n"
+	. "\t<tr><td colspan='2' class='centered'><input type='submit' value='".$clang->gT("Send")."' />\n"
 	. "<input type='reset' value='".$clang->gT("Reset")."' /><br />"
 	. "\t<input type='hidden' name='action' value='mailsendusergroup' />\n"
 	. "\t<input type='hidden' name='ugid' value='$ugid' />\n"
@@ -795,7 +795,7 @@ if ($action == "editusergroups"  )
 				$usergroupsummary .= "\t\t<form action='$scriptname?ugid={$ugid}' method='post'>\n"
 				. "\t\t<tr><td></td>\n"
 				. "\t\t\t<td align='right'>"
-				. "\t\t\t\t<select name='uid' class=\"listboxgroups\">\n"
+				. "\t\t\t\t<select name='uid'>\n"
 				. getgroupuserlist()
 				. "\t\t\t\t</select></td>\n"
 				. "\t\t\t\t<td align='center'><input type='submit' value='".$clang->gT("Add User")."' />\n"
@@ -864,14 +864,14 @@ if ($action == "addgroup")
 		. '<div class="tab-pane" id="tab-pane-1">';
 		foreach ($grplangs as $grouplang)
 		{
-			$newgroupoutput .= '<div class="tab-page"> <h2 class="tab">'.GetLanguageNameFromCode($grouplang);
+			$newgroupoutput .= '<div class="tab-page"> <h2 class="tab">'.GetLanguageNameFromCode($grouplang,false);
 			if ($grouplang==$baselang) {$newgroupoutput .= '('.$clang->gT("Base Language").')';}
 			$newgroupoutput .= "</h2>"
-            . "<table width='100%' border='0'>"
+            . "<table width='100%' border='0' class='form2columns'>"
     		. "\t\t<tr><td align='right'><strong>".$clang->gT("Title").":</strong></td>\n"
-    		. "\t\t<td><input type='text' size='50' name='group_name_$grouplang' /><font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></td></tr>\n"
-    		. "\t<tr><td align='right'><strong>".$clang->gT("Description:")."</strong>(".$clang->gT("Optional").")</td>\n"
-    		. "\t\t<td><textarea cols='50' rows='4' name='description_$grouplang'></textarea></td></tr>\n"
+    		. "\t\t<td><input type='text' size='80' name='group_name_$grouplang' /><font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></td></tr>\n"
+    		. "\t<tr><td align='right'><strong>".$clang->gT("Description:")."</strong></td>\n"
+    		. "\t\t<td><textarea cols='80' rows='8' name='description_$grouplang'></textarea></td></tr>\n"
     		. "</table></div>";
         }
 
@@ -883,12 +883,12 @@ if ($action == "addgroup")
 		. "</form></td></tr>\n"
 		. "<tr><td align='center' class='tab-page'><strong>".$clang->gT("OR")."</strong></td></tr>\n"
 		. "<tr><td><form enctype='multipart/form-data' name='importgroup' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
-		. "<table width='100%' border='0' class='tab-page'>\n\t<tr><td colspan='3' class='settingcaption'>\n"
-		. "\t\t<strong>".$clang->gT("Import Group")."</strong></td></tr>\n\t<tr>"
+		. "<table width='100%' border='0' class='form2columns'>\n\t<tr><th colspan='3'>\n"
+		. "\t\t<strong>".$clang->gT("Import Group")."</strong></th></tr>\n\t<tr>"
 		. "\t\n"
-		. "\t\t<td align='right'><strong>".$clang->gT("Select CSV File:")."</strong></td>\n"
+		. "\t\t<td><strong>".$clang->gT("Select CSV File:")."</strong></td>\n"
 		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\" /></td></tr>\n"
-		. "\t<tr><td colspan='2' align='center'><input type='submit' value='".$clang->gT("Import Group")."' />\n"
+		. "\t<tr><td colspan='2'class='centered'><input type='submit' value='".$clang->gT("Import Group")."' />\n"
 		. "\t<input type='hidden' name='action' value='importgroup' />\n"
 		. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
 		. "\t</td></tr>\n</table></form>\n";

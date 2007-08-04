@@ -75,7 +75,7 @@ if($actsurrows['edit_survey_property']){
 		$result=$connect->Execute($query);
 	}
 	
-    $assessmentsoutput=  "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
+    $assessmentsoutput=  "<table width='100%' border='0' >\n"
         . "\t<tr>\n"
         . "\t\t<td>\n"
         . "\t\t\t<table class='menubar'>\n"
@@ -112,7 +112,7 @@ if($actsurrows['edit_survey_property']){
 	"<input type='text' name='minimum' />",
 	"<input type='text' name='maximum' />",
 	"<input type='text' name='name' size='80'/>",
-	"<textarea name='message' rows='10' cols='80'></textarea />",
+	"<textarea name='message' rows='10' cols='80'></textarea >",
 	"<input type='text' name='link' size='80' />");
 	$actiontitle=$clang->gT("Add");
 	$actionvalue="assessmentadd";
@@ -145,10 +145,8 @@ if($actsurrows['edit_survey_property']){
 	//PRESENT THE PAGE
 	
 	$assessmentsoutput.= "<br /><table align='center' class='outlinetable' cellspacing='0' width='90%'>
-		<tr><th>".$clang->gT("If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission")."</th></tr>
-		<tr><td>";
-	$assessmentsoutput.= "<table cellspacing='1' align='center' width='90%'>
-		<tr><th>ID</th><th>SID</th>\n";
+		<tr><th colspan='12'>".$clang->gT("If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission")."</th></tr>"
+		."<tr><th>ID</th><th>SID</th>\n";
 	foreach ($headings as $head) {
 		$assessmentsoutput.= "<th>$head</th>\n";
 	}
@@ -189,12 +187,12 @@ if($actsurrows['edit_survey_property']){
 		$assessmentsoutput.= "</tr>\n";
 	}
 	$assessmentsoutput.= "</table>";
-	$assessmentsoutput.= "<br /><form method='post' name='assessmentsform' action='$scriptname?sid=$surveyid'><table align='center' cellspacing='1'>\n";
+	$assessmentsoutput.= "<br /><form method='post' name='assessmentsform' action='$scriptname?sid=$surveyid'><table align='center' cellspacing='0' border='0' class='form2columns'>\n";
 	$assessmentsoutput.= "<tr><th colspan='2'>$actiontitle</th></tr>\n";
 	$i=0;
 	
 	foreach ($headings as $head) {
-		$assessmentsoutput.= "<tr><th>$head</th><td>".$inputs[$i]."</td></tr>\n";
+		$assessmentsoutput.= "<tr><td>$head</td><td>".$inputs[$i]."</td></tr>\n";
 		$i++;
 	}
 	$assessmentsoutput.= "<tr><th colspan='2' align='center'><input type='submit' value='".$clang->gT("Save")."' />\n";
@@ -202,8 +200,8 @@ if($actsurrows['edit_survey_property']){
 	$assessmentsoutput.= "<input type='hidden' name='sid' value='$surveyid' />\n"
 	."<input type='hidden' name='action' value='$actionvalue' />\n"
 	."<input type='hidden' name='id' value='$thisid' />\n"
-	."</th></tr>\n"
-	."</table></form></table><br /></table>\n";
+	."</th></tr>\n"                                            
+	."</table></form></td></tr></table>\n";
 	}
 else
 	{

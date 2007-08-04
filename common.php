@@ -363,8 +363,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 						"<img src='$imagefiles/add.png' align='right' name='AddSurvey' title='' alt='". $clang->gT("Create or Import New Survey")."' /></a>\n";
 	             }
 			$adminmenu .= "\t\t\t\t\t<font class=\"boxcaption\">".$clang->gT("Surveys").":</font>"
-	                    . "\t\t\t\t\t<select class=\"listboxsurveys\""
-	                    . "onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
+	                    . "\t\t\t\t\t<select onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
 	                    . getsurveylist()
 	                    . "\t\t\t\t\t</select>\n"
 	                    . "\t\t\t\t</td>\n";

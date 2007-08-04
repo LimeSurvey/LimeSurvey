@@ -156,8 +156,8 @@ if ($action == "copyquestion")
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
 	array_unshift($questlangs,$baselang);
 	$qattributes=questionAttributes();
-	$editquestion ="<table width='100%' border='0'>\n\t<tr><td class='settingcaption'>"
-	. "\t\t".$clang->gT("Copy Question")."</td></tr></table>\n"
+	$editquestion ="<table width='100%' border='0' class='form2columns'>\n\t<tr><th>"
+	. "\t\t".$clang->gT("Copy Question")."</th></tr></table>\n"
 	. "<form name='frmeditquestion' action='$scriptname' method='post'>\n"
 	. '<div class="tab-pane" id="tab-pane-1">';
 	foreach ($questlangs as $language)
@@ -170,10 +170,8 @@ if ($action == "copyquestion")
     	if ($eqrow['language']==GetBaseLanguageFromSurveyID($surveyid)) 
         {
             $editquestion .= "(".$clang->gT("Base Language").")</h2>"
-            . "\t<div class='settingrow'><span >".$clang->gT("Note: You MUST enter a new question code!")            
-        	. "\t</span></div>\n"
         	. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Code:")."</span>\n"
-        	. "\t\t<span class='settingentry'><input type='text' size='50' name='title' value='' />\n"
+        	. "\t\t<span class='settingentry'><input type='text' size='50' name='title' value='' /> ".$clang->gT("Note: You MUST enter a new question code!")."\n"
         	. "\t</span></div>\n";
         }
     	else {
@@ -185,12 +183,12 @@ if ($action == "copyquestion")
 		. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Help:")."</span>\n"
 		. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='help_{$eqrow['language']}'>{$eqrow['help']}</textarea>\n"
 		. "\t</span></div>\n"
-		. "\t<div class='settingrow'><span class='settingcaption'>&nbsp;</span>\n"
-		. "\t\t<span class='settingentry'>&nbsp;\n"
-		. "\t</span></div>\n";
+        . "\t<div class='settingrow'><span class='settingcaption'></span>\n"
+        . "\t\t<span class='settingentry'>\n"
+        . "\t</span></div>\n";
 		$editquestion .= '</div>';
     }
-    $editquestion .= "\t<table><tr>\n"
+    $editquestion .= "\t<table class='form2columns'><tr>\n"
 	. "\t\t<td align='right'><strong>".$clang->gT("Type:")."</strong></td>\n"
 	. "\t\t<td><select name='type' onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
 	. getqtypelist($eqrow['type'])
@@ -205,7 +203,7 @@ if ($action == "copyquestion")
 	. "\t</tr>\n";
 
 	$editquestion .= "\t<tr id='LabelSets' style='display: none'>\n"
-	. "\t\t<td align='right'><strong>".$clang->gT("Label Set:")."</strong></td>\n"
+	. "\t\t<td><strong>".$clang->gT("Label Set:")."</strong></td>\n"
 	. "\t\t<td>\n"
 	. "\t\t<select name='lid' >\n";
 	$labelsets=getlabelsets(GetBaseLanguageFromSurveyID($surveyid));
@@ -226,14 +224,14 @@ if ($action == "copyquestion")
 		. "\t\t</td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td align='right'><strong>".$clang->gT("Group:")."</strong></td>\n"
+		. "\t\t<td ><strong>".$clang->gT("Group:")."</strong></td>\n"
 		. "\t\t<td><select name='gid'>\n"
 		. getgrouplist3($eqrow['gid'])
 		. "\t\t\t</select></td>\n"
 		. "\t</tr>\n";
 
 		$editquestion .= "\t<tr id='OtherSelection' style='display: none'>\n"
-		. "\t\t<td align='right'><strong>".$clang->gT("Other:")."</strong></td>\n";
+		. "\t\t<td><strong>".$clang->gT("Other:")."</strong></td>\n";
 
 		$editquestion .= "\t\t<td>\n"
 		. "\t\t\t".$clang->gT("Yes")." <input type='radio' class='radiobtn' name='other' value='Y'";
@@ -246,7 +244,7 @@ if ($action == "copyquestion")
 		. "\t</tr>\n";
 
 		$editquestion .= "\t<tr id='MandatorySelection'>\n"
-		. "\t\t<td align='right'><strong>".$clang->gT("Mandatory:")."</strong></td>\n"
+		. "\t\t<td><strong>".$clang->gT("Mandatory:")."</strong></td>\n"
 		. "\t\t<td>\n"
 		. "\t\t\t".$clang->gT("Yes")." <input type='radio' class='radiobtn' name='mandatory' value='Y'";
 		if ($eqrow['mandatory'] == "Y") {$editquestion .= " checked='checked'";}
@@ -265,7 +263,7 @@ if ($action == "copyquestion")
 		{
 			$editquestion .= "\t<tr>\n"
 			. "\t\t<input type='hidden' name='copyanswers' value='Y'>\n"
-			. "\t\t<td colspan='2' align='center'><input type='submit' value='".$clang->gT("Copy Question")."' />\n"
+			. "\t\t<td colspan='2' class='centered'><input type='submit' value='".$clang->gT("Copy Question")."' />\n"
 			. "\t\t<input type='hidden' name='action' value='copynewquestion' />\n"
 			. "\t\t<input type='hidden' name='sid' value='$sid' />\n"
 			. "\t\t<input type='hidden' name='oldqid' value='$qid' />\n"
@@ -281,12 +279,12 @@ if ($action == "copyquestion")
 			. "</td>\n"
 			. "\t</tr>\n"
 			. "\t<tr>\n"
-			. "\t\t<td align='right'><strong>".$clang->gT("Copy Attributes?")."</strong></td>\n"
+			. "\t\t<td ><strong>".$clang->gT("Copy Attributes?")."</strong></td>\n"
 			. "\t\t<td><input type='checkbox' class='checkboxbtn' checked name='copyattributes' value='Y' />"
 			. "</td>\n"
 			. "\t</tr>\n"
 			. "\t<tr>\n"
-			. "\t\t<td colspan='2' align='center'><input type='submit' value='".$clang->gT("Copy Question")."' />\n"
+			. "\t\t<td colspan='2'  class='centered'><input type='submit' value='".$clang->gT("Copy Question")."' />\n"
 			. "\t\t<input type='hidden' name='action' value='copynewquestion' />\n"
 			. "\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
 			. "\t\t<input type='hidden' name='oldqid' value='$qid' />\n"

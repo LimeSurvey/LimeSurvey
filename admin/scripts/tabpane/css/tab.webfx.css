@@ -81,7 +81,7 @@ dark:	rgb(0,66,174);
 .dynamic-tab-pane-control .tab-row {
 	z-index:		1;
 	white-space:	nowrap;
-	background:		#EEEEEE;
+/*	background:		#EEEEEE; */
 	height:			1.85em;
 	width:			100%;
 }

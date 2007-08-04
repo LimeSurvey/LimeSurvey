@@ -98,17 +98,21 @@ table.menubar {
    border-width: 1px;
    border-style: solid;
    border-collapse: collapse;
+   background-color: #EEF6FF;
 }
 .menubar tr:first-child {
    background-color: #EEF6FF;
 }
-.menubar tr {
-	background-color: #EEF6FF;
-}
+
 .menubar td{  
    color: #265522;
    font-size: 8pt;
    border-bottom: 2px solid #D2E0F2;
+}
+
+.menubar select{
+    color: #333;
+    width: 180px;
 }
 
 table.attributetable
@@ -124,6 +128,7 @@ table.attributetable
    background-color: #d2e0f2;
 }
 
+
 table.table2columns {
    background-color: #FFFFFF;
    width: 100%;
@@ -138,6 +143,37 @@ table.table2columns {
     width:250px;
 }
 
+table.form2columns {
+   width: 100%;
+   text-align: center;
+   border:none;
+   background-color: #f8f8ff;
+}
+table.form2columns td+td {
+    text-align: left;
+}
+
+table.form2columns td:first-child {
+    width:30%;
+    text-align: right;
+}
+
+table.form2columns th {
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+    background-color: #D2E0F2;
+    color: #1D2D45;
+}
+
+table.form2columns td.centered{
+    text-align: center;
+}
+
+
+
+
+      
 .outlinetable {
 	border: 1px solid #111;
 }
@@ -208,28 +244,12 @@ textarea {
 	width: 180px;
 }
 
-.listboxsurveys {
-	margin-top: 10px;
-	height: 20px;
-	color: #333;
-	width: 180px;
-}
-.listboxgroups {
-	margin-top: 10px;
-	height: 20px;
-	color: #333;
-	width: 180px;
-}
-.listboxquestions {
-	margin-top: 10px;
-	height: 20px;
-	color: #333;
-	width: 180px;
-}
+
 .boxcaption {
 	font-size: 12px;
 	font-weight: bold;
-	vertical-align: middle;
+    line-height:40px;
+    
 }
 .saveOrderbtn {
    border: thin solid #00CED1;
@@ -271,6 +291,8 @@ font.settingcaption {
    background-color: #D2E0F2;
    color: #1D2D45;
 }
+
+
 span.settingcaption {
 	float: left;
 	width: 150px;
@@ -393,14 +415,9 @@ span.settingcaption {
    background-color: #F8F8FF;
 }
 
-
-
-
-
-
 .evenrow{
-   background-color: #EEEFFF;
+   background-color: #EEF6FF;
 }
 .oddrow{
-   background-color: #DBE2FF;
+   background-color: #EBF2FA;
 }

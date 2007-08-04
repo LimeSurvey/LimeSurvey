@@ -99,8 +99,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 	."onmouseover=\"showTooltip(event,'".$clang->gT("Add New Label Set", "js")."');return false\">"
 	."<img src='$imagefiles/add.png' align='right' name='AddLabel' title='' alt='". $clang->gT("Add new label set")."' /></a>\n"	 
 	."\t<font class='boxcaption'>".$clang->gT("Labelsets").": </font>"
-	."\t<select class='listboxsurveys' "
-	."onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
+	."\t<select onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
 	$labelsets=getlabelsets();
 	if (count($labelsets)>0)
 	{
@@ -133,9 +132,9 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			while ($row=$result->FetchRow()) {$lbname=$row['label_name']; $lblid=$row['lid']; $langids=$row['languages'];}
 		}
 		$labelsoutput.= "<form style='margin-bottom:0;' method='post' action='admin.php' onsubmit=\"return isEmpty(document.getElementById('label_name'), '".$clang->gT("Error: You have to enter a name for this label set.","js")."')\">\n"
-		."<table width='100%' class='table2columns'>\n"
+		."<table width='100%' class='form2columns'>\n"
 		."\t<tr>\n"
-		."<td colspan='4' align='center' class='settingcaption'><strong>\n"
+		."<th colspan='4'><strong>\n"
 		."<input type='image' src='$imagefiles/close.gif' align='right' "
 		."onclick=\"window.open('admin.php?action=labels&amp;lid=$lid', '_top')\" />\n";
 		if ($action == "newlabelset") {$labelsoutput.= $clang->gT("Create New Label Set"); $langids="en";}
@@ -144,9 +143,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		$labelsoutput.= "</strong></td>\n"
 		."\t</tr>\n"
 		."\t<tr>\n"
-		."<td align='right' width='25%'>\n"
-		."\t<strong>".$clang->gT("Set Name").":</strong>"
-		."</td>\n"
+		."<td><strong>".$clang->gT("Set Name").":</strong></td>\n"
 		."<td>\n"
 		."\t<input type='hidden' name='languageids' id='languageids' value='$langids' />"
 		."\t<input type='text' id='label_name' name='label_name' value='";
@@ -155,7 +152,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		."</td>\n"
 		."\t</tr>\n"
 		// Additional languages listbox
-    	. "\t<tr><td align='right'><strong>".$clang->gT("Languages").":</strong></td>\n"
+    	. "\t<tr><td><strong>".$clang->gT("Languages").":</strong></td>\n"
 		. "<td><select multiple='multiple' style='min-width:250px;' size='5' id='additional_languages' name='additional_languages'>";
 		foreach ($langidsarray as $langid) 
 			{
@@ -200,15 +197,13 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		$labelsoutput.= "</table></form>\n";
 		if ($action == "newlabelset")
 		{
-			$labelsoutput.= "<form enctype='multipart/form-data' name='importlabels' action='admin.php' method='post'>\n"
-			."<table width='100%' class='table2columns'>\n"
-			."\t<tr><td colspan='2'>\n"
-			."<strong>".$clang->gT("OR")."</strong>\n"
-			."\t</td></tr>\n"
-			."\t<tr bgcolor='black'>\n"
-			."<td colspan='2' align='center' class='settingcaption'><strong>\n"
+            $labelsoutput.= "<center><strong>".$clang->gT("OR")."</strong></center>\n"
+			."<form enctype='multipart/form-data' name='importlabels' action='admin.php' method='post'>\n"
+			."<table width='100%' class='form2columns'>\n"
+			."\t<tr>\n"
+			."<th colspan='2' align='center' class='settingcaption'><strong>\n"
 			.$clang->gT("Import Label Set")."\n"
-			."</strong></td>\n"
+			."</strong></th>\n"
 			."\t</tr>\n"
 			."\t<tr>\n"
 			."<td align='right'><strong>"
