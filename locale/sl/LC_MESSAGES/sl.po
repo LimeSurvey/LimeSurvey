@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Slovenianlanguage file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-08-05 11:49+0100\n"
+"PO-Revision-Date: 2007-08-05 22:34+0100\n"
 "Last-Translator: Gasper Koren <skrat@owca.info>\n"
 "Language-Team: LimeSurvey <gasper_koren@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -689,6 +689,9 @@ msgstr "Podprite ta projekt - donirajte"
 
 msgid "Visit our website!"
 msgstr "Obiščite našo spletno stran!"
+
+msgid "Version"
+msgstr "Različica"
 
 msgid "Local Submission"
 msgstr "Lokalno posredovanje"
@@ -3135,6 +3138,9 @@ msgstr "Osvežujem stran. Prosimo, počakajte."
 msgid "Add or Edit Token"
 msgstr "Dodaj ali uredi dostopno geslo"
 
+msgid "Auto"
+msgstr "Avtomatsko"
+
 msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
 msgstr "Pustite prazno in uporabite avtomatsko ustvarjanje dostopnih gesel z uporabo 'Ustvari dostopna gesla'"
 
@@ -3506,6 +3512,12 @@ msgstr "Pomoč pri tem vprašanju"
 
 msgid "This survey is not yet active. Your response cannot be saved"
 msgstr "Ta anketa še ni aktivna. Vaših odgovorov ni mogoče shraniti"
+
+msgid "Export database"
+msgstr "Izvozi bazo podatkov"
+
+msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
+msgstr "Izvoz baze podatkov je na voljo samo za podatkovno bazo MySQL. Za druge podatkovne baze uporabite drugo orodje za izvoz baze podatkov."
 
 msgid "Forgot Password"
 msgstr "Pozabljeno geslo"
