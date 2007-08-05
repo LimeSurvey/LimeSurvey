@@ -144,16 +144,19 @@ if($actsurrows['edit_survey_property']){
 	//$assessmentsoutput.= "<pre>"; print_r($edits); $assessmentsoutput.= "</pre>";
 	//PRESENT THE PAGE
 	
-	$assessmentsoutput.= "<br /><table align='center' class='outlinetable' cellspacing='0' width='90%'>
-		<tr><th colspan='12'>".$clang->gT("If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission")."</th></tr>"
+	$assessmentsoutput.= "<br /><table align='center'  width='90%'>
+		<tr><td colspan='12'>".$clang->gT("If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission")."</th></tr>"
 		."<tr><th>ID</th><th>SID</th>\n";
 	foreach ($headings as $head) {
 		$assessmentsoutput.= "<th>$head</th>\n";
 	}
 	$assessmentsoutput.= "<th>".$clang->gT("Actions")."</th>";
 	$assessmentsoutput.= "</tr>\n";
+    $flipflop=true;
 	foreach($assessments as $assess) {
-		$assessmentsoutput.= "<tr>\n";
+        $flipflop=!$flipflop;
+		if ($flipflop==true){$assessmentsoutput.= "<tr class='oddrow'>\n";}
+          else {$assessmentsoutput.= "<tr class='evenrow'>\n";} 
 		$assessmentsoutput.= "<td>".$assess['id']."</td>\n";
 		$assessmentsoutput.= "<td>".$assess['sid']."</td>\n";
 

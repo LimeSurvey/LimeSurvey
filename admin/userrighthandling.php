@@ -143,8 +143,8 @@ if ($action == "modifyuser")
 	
 	if($_SESSION['loginID'] == 1 || $_SESSION['loginID'] == $_POST['uid'] || $parent['create_user'] == 1)
 	{
-		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='4' bgcolor='black' align='center'>\n"
-		. "\t\t<strong><font color='white'>".$clang->gT("Modifying User")."</td></tr>\n"
+		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='4' class='header'>\n"
+		. "\t\t<strong>".$clang->gT("Modifying User")."</td></tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<th>".$clang->gT("Username")."</th>\n"
 		. "\t\t<th>".$clang->gT("Email")."</th>\n"
@@ -318,14 +318,15 @@ if($action == "setnewparents")
 
 if ($action == "editusers")
 {
-	$usersummary = "<table rules='rows' width='100%' class='menubar'>\n"
-	. "\t\t\t\t<tr><td colspan='6' height='4'>"
-	. "<font size='1' face='verdana'><strong>".$clang->gT("User Control")."</strong></font></td></tr>\n"
+	$usersummary = "<table width='100%' border='0'>\n"
+	. "\t\t\t\t<tr><td colspan='6' class='header'>"
+	. $clang->gT("User Control")
+    ."</td></tr>\n"
 	. "\t<tr>\n"
 	. "\t\t<th width='20%'>".$clang->gT("Username")."</th>\n"
 	. "\t\t<th width='20%'>".$clang->gT("Email")."</th>\n"
 	. "\t\t<th width='20%'>".$clang->gT("Full name")."</th>\n"
-	. "\t\t<th width='15%' >".$clang->gT("Password")."</th>\n"
+	. "\t\t<th width='15%'>".$clang->gT("Password")."</th>\n"
 	. "\t\t<th width='15%'>".$clang->gT("Created by")."</th>\n"
 	. "\t\t<th></th>\n"
 	. "\t</tr>\n";
@@ -351,7 +352,7 @@ if ($action == "editusers")
 		{
 			$usersummary .= "\t\t<td class='oddrow' align='center'><strong>---</strong></td>\n";
 		}
-		$usersummary .= "\t\t<td class='oddrow' align='center' style='padding-top:10px;'>\n";
+		$usersummary .= "\t\t<td class='oddrow' align='center' style='padding:3px;'>\n";
 		
 		if ($_SESSION['loginID'] == "1")
 		{
@@ -439,7 +440,7 @@ if ($action == "editusers")
 			}
 		//}
 		
-		$usersummary .= "\t\t<td class='$bgcc' align='center' style='padding-top:10px;'>\n";
+		$usersummary .= "\t\t<td class='$bgcc' align='center' style='padding:3px;'>\n";
 		// users are allowed to delete all successor users (but the admin not himself)
 		//  || ($usr['uid'] == $_SESSION['loginID']))
 		if ($_SESSION['loginID'] == "1" || ($_SESSION['USER_RIGHT_DELETE_USER'] == 1  && $usr['parent_id'] == $_SESSION['loginID']))
@@ -472,12 +473,14 @@ if ($action == "editusers")
 		. "\t</tr>\n";
 		$row++;
 	}
-    $usersummary .= "</table>";
+    $usersummary .= "</table><br />";
 
 	if($_SESSION['USER_RIGHT_CREATE_USER'])
 	{
 		$usersummary .= "\t\t<form action='$scriptname' method='post'>\n"
-		. "\t\t<table rules='rows' width='100%'><tr>\n"
+		. "\t\t<table width='100%' borders='0'><tr>\n"
+        . "\t\t<th colspan='6'>".$clang->gT("Add User")."</th>\n"
+        . "\t\t</tr><tr>\n"
 		. "\t\t<td align='center' width='20%'><input type='text' name='new_user' /></td>\n"
 		. "\t\t<td align='center' width='20%'><input type='text' name='new_email' /></td>\n"
 		. "\t\t<td align='center' width='20%' ><input type='text' name='new_full_name' /></td><td width='15%'>&nbsp;</td><td width='15%'>&nbsp;</td>\n"
@@ -492,7 +495,7 @@ if ($action == "addusergroup")
 {
 	if ($_SESSION['loginID'] == 1)
 	{
-		$usersummary = "<form action='$scriptname'  method='post'><table width='100%' border='0' class='form2columns'>\n\t<tr><th colspan='2'>\n"
+		$usersummary = "<form action='$scriptname'  method='post'><table width='100%' border='0'>\n\t<tr><th colspan='2'>\n"
 		. "\t\t<strong>".$clang->gT("Add User Group")."</strong></th></tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<td><strong>".$clang->gT("Name:")."</strong></td>\n"
@@ -723,21 +726,21 @@ if ($action == "editusergroups"  )
 
 			if(!empty($crow['description']))
 			{
-				$usergroupsummary .= "<table rules='rows' width='100%' border='1' cellpadding='10'>\n"
+				$usergroupsummary .= "<table width='100%' border='0'>\n"
 				. "\t\t\t\t<tr><td align='justify' colspan='2' height='4'>"
-				. "<font size='2' face='verdana' color='black'><strong>".$clang->gT("Description: ")."</strong>"
-				. "<font color='black'>{$crow['description']}</font></font></td></tr>\n"
+				. "<font size='2' ><strong>".$clang->gT("Description: ")."</strong>"
+				. "{$crow['description']}</font></td></tr>\n"
 				. "</table>";
 			}
 
 
 			$eguquery = "SELECT * FROM ".db_table_name("user_in_groups")." AS a INNER JOIN ".db_table_name("users")." AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " ORDER BY b.users_name";
 			$eguresult = db_execute_assoc($eguquery);
-			$usergroupsummary .= "<table rules='rows' width='100%' border='1'>\n"
+			$usergroupsummary .= "<table  width='100%' border='0'>\n"
 			. "\t<tr>\n"
 			. "\t\t<th>".$clang->gT("Username")."</th>\n"
 			. "\t\t<th>".$clang->gT("Email")."</th>\n"
-			. "\t\t<th>".$clang->gT("Action")."</th>\n"
+			. "\t\t<th width='25%'>".$clang->gT("Action")."</th>\n"
 			. "\t</tr>\n";
 
 			$query2 = "SELECT ugid FROM ".db_table_name('user_groups')." WHERE ugid = ".$ugid." AND owner_id = ".$_SESSION['loginID'];
@@ -794,11 +797,11 @@ if ($action == "editusergroups"  )
 			{
 				$usergroupsummary .= "\t\t<form action='$scriptname?ugid={$ugid}' method='post'>\n"
 				. "\t\t<tr><td></td>\n"
-				. "\t\t\t<td align='right'>"
-				. "\t\t\t\t<select name='uid'>\n"
+				. "\t\t\t<td></td>"
+				. "\t\t\t\t<td align='center'><select name='uid'>\n"
 				. getgroupuserlist()
-				. "\t\t\t\t</select></td>\n"
-				. "\t\t\t\t<td align='center'><input type='submit' value='".$clang->gT("Add User")."' />\n"
+				. "\t\t\t\t</select>\n"
+				. "\t\t\t\t<input type='submit' value='".$clang->gT("Add User")."' />\n"
 				. "\t\t\t\t<input type='hidden' name='action' value='addusertogroup' /></td></form>\n"
 				. "\t\t\t</td>\n"
 				. "\t\t</tr>\n"

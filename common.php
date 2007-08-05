@@ -308,7 +308,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 		if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 			{
 			$adminmenu  .= "<a href=\"#\""
-						. "onclick=\"window.open('dumpdb.php?action=dumpdb', '_top')\""
+						. "onclick=\"window.open('$scriptname?action=dumpdb', '_top')\""
 						. "onmouseout=\"hideTooltip()\""
 						. "onmouseover=\"showTooltip(event,'".$clang->gT("Backup Entire Database", "js")."');return false\">"
 						."<img src='$imagefiles/backup.png' name='ExportDB' title='' alt='". $clang->gT("Backup Entire Database")."($surveyid)' align='left' />"
@@ -2445,7 +2445,7 @@ function getAdminFooter($url, $explanation)
 	. "\t\t\t<div style='float:right;'><img alt='".$clang->gT("Support this project - Donate to ")."LimeSurvey' title='".$clang->gT("Support this project - Donate to ")."LimeSurvey!' src='$imagefiles/donate.png' "
 	. "onclick=\"window.open('http://sourceforge.net/project/project_donations.php?group_id=74605')\" onmouseover=\"document.body.style.cursor='pointer'\" "
 	. "onmouseout=\"document.body.style.cursor='auto'\" /></div>\n"
-	. "\t\t\t<div class='subtitle'><a class='subtitle' title='".$clang->gT("Visit our website!")."' href='http://www.limesurvey.org' target='_blank'>LimeSurvey</a><br />Version $versionnumber</div>"
+	. "\t\t\t<div class='subtitle'><a class='subtitle' title='".$clang->gT("Visit our website!")."' href='http://www.limesurvey.org' target='_blank'>LimeSurvey</a><br />".$clang->gT('Version')." $versionnumber</div>"
 	. "</div></body>\n</html>";
 	return $strHTMLFooter;
 }

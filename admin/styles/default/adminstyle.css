@@ -4,9 +4,19 @@ body {
 	text-align: left;
     background-color: #5670A1; 
 }
+form{
+    padding:0px;
+    margin:0px;
+}
+
+ul{
+    text-align: left;
+}
+
+
 .boxstyle {
 	border-color: #99CC00;
-	border-width: 1;
+	border-width: 1px;
 	border-style: solid;
 }
 .footer {
@@ -20,6 +30,25 @@ body {
 img {
 	border: 0;
 }
+
+th {
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+    background-color: #D2E0F2;
+    color: #1D2D45;
+}
+
+
+.header {
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+    background-color: #D2E0F2;
+    color: #1D2D45;
+}
+
+
 a:link {
    font-size: 10pt;
    color:#819D26;
@@ -90,6 +119,7 @@ table.alertbox {
   margin-left:auto; 
   margin-right:auto;
   border: 1px solid #555555;
+  text-align: left;  
 }
 
 table.menubar {
@@ -100,9 +130,13 @@ table.menubar {
    border-collapse: collapse;
    background-color: #EEF6FF;
 }
+
 .menubar tr:first-child {
    background-color: #EEF6FF;
+   text-align: left;
 }
+
+
 
 .menubar td{  
    color: #265522;
@@ -166,11 +200,11 @@ table.form2columns th {
     color: #1D2D45;
 }
 
+
+
 table.form2columns td.centered{
     text-align: center;
 }
-
-
 
 
       
@@ -199,12 +233,12 @@ td {
 	font-size: 11px;
 }
 .standardbtn {
-	height: 20;
+	height: 20px;
 	color: #000;
 	font-size: 11px;
 }
 .disabledbtn {
-	height: 20;
+	height: 20px;
 	color: #999;
 	font-size: 11px;
 }
@@ -311,14 +345,13 @@ span.settingcaption {
 	text-align: left;
 	clear: right;
 	margin-bottom: 10px;
-   background-color: #F8F8FF;
+    background-color: #F8F8FF;
 }
 .settingrow {
 	width: 800px;
-	float: center;
 	clear: left;
 	margin-bottom: 20px;
-   background-color: #F8F8FF;
+    background-color: #F8F8FF;
 }
 
 #dhtmlgoodies_tooltip {

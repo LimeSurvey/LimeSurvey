@@ -272,7 +272,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		
 		$labelsoutput.= "\t<table width='100%'>\n"
 		."<tr>\n"
-		."\t<td colspan='4'><strong>\n"
+		."\t<td colspan='4' class='header'><strong>\n"
 		.$clang->gT("Labels")
 		."\t</strong></td>\n"
 		."</tr>\n"
@@ -291,7 +291,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     		$labelcount = $result->RecordCount();
             $labelsoutput.= "<div class='tab-page'>"
                 ."<h2 class='tab'>".getLanguageNameFromCode($lslanguage)."</h2>"
-                ."\t<table width='100%' class='table2columns'>\n"
+                ."\t<table width='100%' class='form2columns'>\n"
                 ."<thead align='center'>"
         		."<tr>\n"
         		."\t<td width='25%' align='right' class='settingcaption'><strong>\n"
@@ -401,14 +401,14 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     		else
     		{
     			$labelsoutput .= "<tr>\n"
-    			."\t<td colspan='4' align='center'>\n"
+    			."\t<td colspan='4'><center>\n"
     			."<font color='red' size='1'><i><strong>"
-    			.$clang->gT("Warning")."</strong>: ".$clang->gT("You cannot change codes, add or delete entries in this label set because it is being used by an active survey.")."</i></strong></font><br />\n";
+    			.$clang->gT("Warning")."</strong>: ".$clang->gT("You cannot change codes, add or delete entries in this label set because it is being used by an active survey.")."</i></font><br />\n";
     			if ($totaluse > 0)
     			{
     				foreach ($qidarray as $qd) {$labelsoutput.= "[<a href='".$qd['url']."'>".$qd['title']."</a>] ";}
     			}
-    			$labelsoutput .= "\t</td>\n"
+    			$labelsoutput .= "\t</center></td>\n"
     			."</tr>\n";
     		}
         $first=false;

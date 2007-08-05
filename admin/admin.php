@@ -159,6 +159,8 @@ if(isset($_SESSION['loginID']) && $action!='login')
 
 sendcacheheaders();
 
+  if ($action=="dumpdb")  { include("dumpdb.php"); }
+  else
   if ($action=="dumplabel")  { include("dumplabel.php"); }
   else
   if ($action=="listcolumn")  { include("listcolumn.php"); }
@@ -277,8 +279,8 @@ sendcacheheaders();
   if (isset($conditionsoutput)) {$adminoutput.= $conditionsoutput;} 	
   if (isset($deletesurveyoutput)) {$adminoutput.= $deletesurveyoutput;} 	
   if (isset($vvoutput)) {$adminoutput.= $vvoutput;} 	
-  
-
+  if (isset($dumpdboutput)) {$adminoutput.= $dumpdboutput;}     
+                                                                        
   
   
   if (!isset($printablesurveyoutput) && $subaction!='export')

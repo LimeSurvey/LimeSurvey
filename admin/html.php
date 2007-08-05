@@ -43,17 +43,17 @@ if ($action == "listsurveys")
 	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
 
 	if($result->RecordCount() > 0) {
-        $listsurveys= "<br /><table class='table2columns' "
-		. "cellpadding='1' cellspacing='0' width='800'>
+        $listsurveys= "<br /><table cellpadding='1' width='800'>
 				  <tr>
-				    <td height=\"22\" width='22'>&nbsp</td>
-				    <td height=\"22\"><strong>".$clang->gT("Survey")."</strong></td>
-				    <td><strong>".$clang->gT("Date Created")."</strong></td>
-				    <td><strong>".$clang->gT("Access")."</strong></td>
-				    <td><strong>".$clang->gT("Answer Privacy")."</strong></td>
-				    <td><strong>".$clang->gT("Status")."</strong></td>
-				    <td colspan=\"4\"><strong>".$clang->gT("Responses")."</strong></td>
-				  </tr>" ; 
+				    <th height=\"22\" width='22'>&nbsp</th>
+				    <th height=\"22\"><strong>".$clang->gT("Survey")."</strong></th>
+				    <th><strong>".$clang->gT("Date Created")."</strong></th>
+				    <th><strong>".$clang->gT("Access")."</strong></th>
+				    <th><strong>".$clang->gT("Answer Privacy")."</strong></th>
+				    <th><strong>".$clang->gT("Status")."</strong></th>
+				    <th><strong>".$clang->gT("Responses")."</strong></th>
+				  </tr>";
+        $gbc = "evenrow"; 
 
 		while($rows = $result->FetchRow())
 		{
@@ -98,7 +98,9 @@ if ($action == "listsurveys")
 
 			$datecreated=$rows['datecreated'] ;
 
-			$listsurveys.="<tr>";
+            if ($gbc == "oddrow") {$gbc = "evenrow";}
+            else {$gbc = "oddrow";}
+			$listsurveys.="<tr class='$gbc'>";
 
 			if ($rows['active']=="Y")
 			{
@@ -157,7 +159,7 @@ if ($action == "listsurveys")
 					    $listsurveys .= "</tr>" ;
 		}
 
-		$listsurveys.="<tr bgcolor='#F8F8FF'>
+		$listsurveys.="<tr class='header'>
 		<td colspan=\"7\">&nbsp;</td>".
 		"</tr>";
 		$listsurveys.="</table><br />" ;
@@ -1543,8 +1545,8 @@ if($action == "setsurveysecurity")
 		{
 			$resul2row = $result2->FetchRow();
 
-			$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='6' bgcolor='black' align='center'>\n"
-			. "\t\t<strong><font color='white'>".$clang->gT("Set Survey Rights")."</td></tr>\n";
+			$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='6' class='header'>\n"
+			. "\t\t".$clang->gT("Set Survey Rights")."</td></tr>\n";
 
 			$usersummary .= "\t\t<th align='center'>".$clang->gT("Edit Survey Properties")."</th>\n"
 			. "\t\t<th align='center'>".$clang->gT("Define Questions")."</th>\n"
@@ -1552,7 +1554,7 @@ if($action == "setsurveysecurity")
 			. "\t\t<th align='center'>".$clang->gT("Export")."</th>\n"
 			. "\t\t<th align='center'>".$clang->gT("Delete Survey")."</th>\n"
 			. "\t\t<th align='center'>".$clang->gT("Activate Survey")."</th>\n"
-			. "\t\t<th></th>\n\t</tr>\n"
+			. "\t\t</tr>\n"
 			. "<form action='$scriptname?sid={$surveyid}' method='post'>\n";
 
 			//content
@@ -1608,8 +1610,8 @@ if($action == "setusergroupsurveysecurity")
 	$result = db_execute_assoc($query);
 	if($result->RecordCount() > 0)
 	{
-		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='6' bgcolor='black' align='center'>\n"
-		. "\t\t<strong><font color='white'>".$clang->gT("Set Survey Rights")."</td></tr>\n";
+		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='6' class='header'>\n"
+		. "\t\t".$clang->gT("Set Survey Rights")."</td></tr>\n";
 
 		$usersummary .= "\t\t<th align='center'>".$clang->gT("Edit Survey Property")."</th>\n"
 		. "\t\t<th align='center'>".$clang->gT("Define Questions")."</th>\n"
@@ -1617,7 +1619,7 @@ if($action == "setusergroupsurveysecurity")
 		. "\t\t<th align='center'>".$clang->gT("Export")."</th>\n"
 		. "\t\t<th align='center'>".$clang->gT("Delete Survey")."</th>\n"
 		. "\t\t<th align='center'>".$clang->gT("Activate Survey")."</th>\n"
-		. "\t\t<th></th>\n\t</tr>\n"
+		. "\t\t</tr>\n"
 		. "<form action='$scriptname?sid={$surveyid}' method='post'>\n";
 
 		//content
