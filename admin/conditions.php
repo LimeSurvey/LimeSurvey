@@ -1,38 +1,16 @@
 <?php
 /*
-#############################################################
-# >>> LimeSurvey  										    #
-#############################################################
-# > Author:  Jason Cleeland									#
-# > E-mail:  jason@cleeland.org								#
-# > Mail:    Box 99, Trades Hall, 54 Victoria St,			#
-# >          CARLTON SOUTH 3053, AUSTRALIA					#
-# > Date: 	 19 April 2003								    #
-#															#
-# This set of scripts allows you to develop, publish and	#
-# perform data-entry on surveys.							#
-#############################################################
-#															#
-#	Copyright (C) 2003  Jason Cleeland						#
-#															#
-# This program is free software; you can redistribute 		#
-# it and/or modify it under the terms of the GNU General 	#
-# Public License Version 2 as published by the Free         #
-# Software Foundation.										#
-#															#
-#															#
-# This program is distributed in the hope that it will be 	#
-# useful, but WITHOUT ANY WARRANTY; without even the 		#
-# implied warranty of MERCHANTABILITY or FITNESS FOR A 		#
-# PARTICULAR PURPOSE.  See the GNU General Public License 	#
-# for more details.											#
-#															#
-# You should have received a copy of the GNU General 		#
-# Public License along with this program; if not, write to 	#
-# the Free Software Foundation, Inc., 59 Temple Place - 	#
-# Suite 330, Boston, MA  02111-1307, USA.					#
-#############################################################
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
 */
+
 
 require_once(dirname(__FILE__).'/../config.php');
 include_once("login_check.php");
