@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-08-04 15:43+0100\n"
+"PO-Revision-Date: 2007-08-05 20:58+0100\n"
 "Last-Translator: seb <seb>\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -416,6 +416,9 @@ msgstr "Encouragez ce projet. Faites un don à"
 # D:\www\limesurvey/common.php:2309
 msgid "Visit our website!"
 msgstr "Visiter notre site web !"
+
+msgid "Version"
+msgstr "Version"
 
 # D:\www\limesurvey/common.php:2570
 msgid "Local Submission"
@@ -1499,6 +1502,13 @@ msgstr "Ce questionnaire a une table d'invitations associée. Si vous supprimez 
 
 msgid "This survey has been deleted."
 msgstr "Ce questionnaire a été supprimé."
+
+msgid "Export database"
+msgstr "Exporter lea base de données"
+
+# D:\www\limesurvey/admin/dumpdb.php:81
+msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
+msgstr "L'export de la base données n'est disponible que pour MySQL. Pour les autres types de bases de données, utilisez leurs propres outils pour créer un dump."
 
 msgid "Export Question"
 msgstr "Exporter la question"
@@ -3383,6 +3393,10 @@ msgstr "Actualisation de l'écran. Veuillez patienter."
 msgid "Add or Edit Token"
 msgstr "Ajouter ou éditer une invitation"
 
+# D:\www\limesurvey/admin/tokens.php:1501
+msgid "Auto"
+msgstr "Auto"
+
 msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
 msgstr "Vous pouvez laisser cela à blanc et générer automatiquement des invitations avec `Générer les codes d'invitations`"
 
@@ -3728,9 +3742,6 @@ msgstr "Réussite de la mise à jour des droits de l'utilisateur."
 msgid "You are not allowed to change your own rights!"
 msgstr "Vous n'êtes pas autorisé à changer vos propres droits !"
 
-msgid "User Groups"
-msgstr "Groupes d'utilisateurs"
-
 # E:\www\limesurvey/admin/html.php:694
 msgid "Mail to all Members"
 msgstr "Messages à tous les membres"
@@ -3743,6 +3754,9 @@ msgstr "Supprimer ce groupe d'utilisateurs"
 
 msgid "Add New User Group"
 msgstr "Ajouter un nouveau groupe d'utilisateurs"
+
+msgid "User Groups"
+msgstr "Groupes d'utilisateurs"
 
 msgid "Full name"
 msgstr "Nom complet"
