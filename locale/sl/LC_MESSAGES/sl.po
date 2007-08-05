@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Slovenianlanguage file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-08-03 14:11+0100\n"
+"PO-Revision-Date: 2007-08-05 11:49+0100\n"
 "Last-Translator: Gasper Koren <skrat@owca.info>\n"
 "Language-Team: LimeSurvey <gasper_koren@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1985,9 +1985,6 @@ msgstr "Začetni jezik"
 msgid "Not Selected"
 msgstr "Ni izbrano"
 
-msgid "User Groups"
-msgstr "Skupine uporabnikov"
-
 msgid "Mail to all Members"
 msgstr "Elektronsko obvestilo vsem uporabnikom"
 
@@ -1999,6 +1996,9 @@ msgstr "Izbriši trenutno skupino uporabnikov"
 
 msgid "Add New User Group"
 msgstr "Dodaj skupino uporabnikov"
+
+msgid "User Groups"
+msgstr "Skupine uporabnikov"
 
 msgid "Modifying User"
 msgstr "Spreminjanje uporabnika"
@@ -2050,9 +2050,6 @@ msgstr "Ime:"
 
 msgid "Required"
 msgstr "Zahtevano"
-
-msgid "Optional"
-msgstr "Opcijsko"
 
 msgid "Edit User Group (Owner: "
 msgstr "Uredi skupino uporabnikov (Lastnik:"
@@ -2339,6 +2336,9 @@ msgstr "Za dokončanje ankete povabilo s kodo ni potrebno."
 
 msgid "You can switch to the closed-access mode by initialising a token table with the button below."
 msgstr "Če ustvarite tabelo z gesli s klikom na spodnji gumb lahko preklopite v anketo z omejenim dostopom."
+
+msgid "Optional"
+msgstr "Opcijsko"
 
 msgid "Switch to closed-access mode"
 msgstr "Prestavi na omejen dostop"
@@ -3628,6 +3628,9 @@ msgstr "Finsko"
 msgid "French"
 msgstr "Francosko"
 
+msgid "Galician"
+msgstr "Galicijsko"
+
 msgid "German"
 msgstr "Nemško"
 
@@ -3654,6 +3657,9 @@ msgstr "Litovsko"
 
 msgid "Norwegian"
 msgstr "Norveško"
+
+msgid "Polish"
+msgstr "Poljsko"
 
 msgid "Portuguese"
 msgstr "Portugalsko"
