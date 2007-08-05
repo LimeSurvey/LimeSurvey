@@ -389,7 +389,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   		}
   		else
   		{
-  			$editquestion .= "\t\t<td align='left'>{}[{$eqrow['type']}] - ".$clang->gT("Cannot be modified")." - ".$clang->gT("Survey is currently active.")."\n"
+  			$editquestion .= "\t\t<td align='left'>[{$eqrow['type']}] - ".$clang->gT("Cannot be modified")." - ".$clang->gT("Survey is currently active.")."\n"
   			. "\t\t\t<input type='hidden' name='type' id='question_type' value='{$eqrow['type']}' />\n"
   			. "\t\t</td>\n";
   		}

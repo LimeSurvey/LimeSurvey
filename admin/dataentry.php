@@ -1472,7 +1472,7 @@ if($actsurrows['browse_response'])
 
 		$dataentryoutput .= "<table width='100%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."<form action='$scriptname?action=dataentry' name='addsurvey' method='post' id='addsurvey'>\n"
-		."\t<tr><td colspan='3' height='4'><strong>"
+		."\t<tr><td colspan='3' height='4' class='header'><strong>"
 		.$clang->gT("Data Entry")."</strong></td></tr>\n"
 		."\t<tr>\n"
 		."\t\t<td align='left'>";
@@ -1673,8 +1673,9 @@ if($actsurrows['browse_response'])
 
 				if ($explanation)
 				{
-					$explanation = "<font color='maroon' size='1'>[".$clang->gT("Only answer this if the following conditions are met:")."]<br />$explanation\n";
-					$dataentryoutput .= "<tr bgcolor='$bgc'><td colspan='3'>$setfont$explanation</font></td></tr>\n";
+                    if ($bgc == "evenrow") {$bgc = "oddrow";} else {$bgc = "evenrow";} //Do no alternate on explanation row
+					$explanation = "<font size='1'>[".$clang->gT("Only answer this if the following conditions are met:")."]<br />$explanation\n";
+					$dataentryoutput .= "<tr bgcolor='#FFEEEE'><td colspan='3' align='left'>$setfont$explanation</font></td></tr>\n";
 				}
 
 				//END OF GETTING CONDITIONS
