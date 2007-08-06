@@ -1,4 +1,4 @@
-<table align='center' width='100%' cellpadding='25' cellspacing='0' border='1' style='border-collapse: collapse; border-color: #111111'>
+<table align='center' width='100%' cellpadding='25' cellspacing='0' border='0' style='border-color: #111111'>
 	<tr>
 		<td align='center' bgcolor='#eef6ff'>
         	{CHECKJAVASCRIPT}

@@ -121,6 +121,13 @@ $embedded_footerfunc = "";      // e.g. COM_siteFooter for geeklog
 $enableLdap = false;
 
 // Experimental parameters, only change if you know what you're doing
+//
+// $filterout_incomplete_answers
+//  * default behaviour of LimeS regarding answer records with no submitdate
+//  * can be overwritten by module parameters
+//         ("Filter-Out incomplete answers" checkbox when implemented)
+$filterout_incomplete_answers = true;
+//
 // $stripQueryFromRefurl (default is false)
 //  * default behaviour is to record the full referer url when requested
 //  * set to true in order to remove the parameter part of the referrer url
