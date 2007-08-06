@@ -260,8 +260,7 @@ sendcacheheaders();
   if (isset($dumpdboutput)) {$adminoutput.= $dumpdboutput;}     
                                                                         
   
-  
-  if (!isset($printablesurveyoutput) && $subaction!='export')
+  if (!isset($printablesurveyoutput) && ($subaction!='export'))
   {  
   if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
   
@@ -272,6 +271,7 @@ sendcacheheaders();
               . "</table>\n"
               . getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey Online Manual"));
   }
+  
 }
   else
   { //not logged in
@@ -285,7 +285,9 @@ sendcacheheaders();
   
   }
 
-echo $adminoutput;
+if ($action!='showphpinfo') {echo $adminoutput;}
+else {phpinfo();}
+
 
   function helpscreenscript()
   // returns the script part for online help to be included outside a table
