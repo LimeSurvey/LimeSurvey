@@ -9,7 +9,7 @@ a:link, a:visited
     }
 body.default
     {
-    background-color: #5670A1;
+    background-color: #FFFFFF;
     font-size: 11px;
     line-height: 150%;
     font-family: Arial,Helvetica,sans-serif;
