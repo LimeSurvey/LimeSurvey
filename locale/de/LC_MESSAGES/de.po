@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-08-04 17:04+0100\n"
+"PO-Revision-Date: 2007-08-05 22:44+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -412,6 +412,9 @@ msgstr "Unterstützen Sie dieses Projekt - Spenden Sie an "
 # D:\web\xampp\htdocs\limesurvey/common.php:2309
 msgid "Visit our website!"
 msgstr "Besuchen Sie unsere Webseite!"
+
+msgid "Version"
+msgstr "Version"
 
 msgid "Local Submission"
 msgstr "Lokale Weiterleitung"
@@ -1483,6 +1486,13 @@ msgstr "Diese Umfrage hat eine zugehörige Probanden-Tabelle. Wenn Sie diese Umf
 
 msgid "This survey has been deleted."
 msgstr "Diese Umfrage wurde gelöscht."
+
+msgid "Export database"
+msgstr "Datenbank exportieren"
+
+# D:\web\xampp\htdocs\limesurvey/admin/dumpdb.php:59
+msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
+msgstr "Der Datenbank-Export ist nur für MySQL-Datenbanken. Für anderen Datenbank-Typen nutzen Sie bitte das entsprechende Backup-Tool des Herstellers um einen Datenbank-Dump zu erzeugen."
 
 msgid "Export Question"
 msgstr "Fragen exportieren"
@@ -3353,6 +3363,10 @@ msgstr "Seite wird neu geladen. Bitte warten."
 msgid "Add or Edit Token"
 msgstr "Proband hinzufügen oder bearbeiten"
 
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1502
+msgid "Auto"
+msgstr "Auto"
+
 msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
 msgstr "Sie können dieses Feld leer lassen und automatisch eindeutige Zugangsschlüssel generieren lassen mit 'Generiere eindeutige Zugangsschlüssel'"
 
@@ -3679,9 +3693,6 @@ msgstr "Benutzerrechte erfolgreich geändert."
 msgid "You are not allowed to change your own rights!"
 msgstr "Sie sind nicht berechtigt Ihre eigenen Rechte zu ändern!"
 
-msgid "User Groups"
-msgstr "Benutzergruppen"
-
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:707
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:1703
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:1793
@@ -3696,6 +3707,9 @@ msgstr "Diese Benutzergruppe löschen"
 
 msgid "Add New User Group"
 msgstr "Neue Benutzergruppe hinzufügen"
+
+msgid "User Groups"
+msgstr "Benutzergruppen"
 
 msgid "Full name"
 msgstr "Vor- und Nachname"
