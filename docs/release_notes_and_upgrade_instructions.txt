@@ -1,14 +1,19 @@
-Welcome to LimeSurvey v1.49RC3!
+Welcome to LimeSurvey v1.50!
 
-Warning:
-THIS IS AN RELEASE CANDIDATE. It should be pretty stable, but it SHOULD NOT be used FOR PRODUCTION!
-IF YOU DO SO, YOU DO IT (as always) AT YOUR OWN RISK!
+Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
+including, but not limited to, the implied warranties of merchantability and fitness for a particular 
+purpose. The entire risk as to the quality and performance of the program is with you. 
+Should the program prove defective, you assume the cost of all necessary servicing, repair or correction. 
+In no event will any copyright holder be liable to you for damages, including any general, special, 
+incidental or consequential damages arising out of the use or inability to use the program 
+(including but not limited to loss of data or data being rendered inaccurate or losses sustained 
+by you or third parties or a failure of the program to operate with any other programs).
+
 
 This release does have the following requirements:
 
--MySQL 4.1 or higher
--PHP 4.2 or higher 
--mbstring library installed. (for localizations)
+-MySQL 4.1 or higher 	OR   Microsoft SQL Server 2000 or higher
+-PHP 4.2 or higher with mbstring library installed. (for localizations)
 
 
 HOW TO INSTALL
@@ -20,7 +25,7 @@ http://docs.limesurvey.org
 
 === UPGRADING=====
 
-HOW TO UPGRADE from earlier versions of LimeSurvey (<1.08)
+HOW TO UPGRADE from earlier versions of LimeSurvey (<=1.08)
 -------------------------------------------------------------
 We are sorry but you can't upgrade from versions <= 1.0.8. Seriously! 
 The database structure has changed that much it wouldn't be feasible.
@@ -45,128 +50,66 @@ HOW TO UPGRADE from earlier versions from LimeSurvey 1.45 or later
 Thank you to everyone who helped with this new release!
 
 
-Changes from 1.49RC2 to 1.49RC3 - Release Date: 2007/07/10
+Changes from 1.01 to 1.50 - Release Date: 2007/08/06
 
-Fixed security issues:
-- Fixed security hole when using sendmail and malformed email adresses 
-- Fixed remote file inclusion security hole if register_globals is activated in php configuration
+New General Features
 
-Fixed bugs:
-- 0001041: [Statistics] Don't display response (c_schmitz)
-- 0001019: [Survey at Runtime] Multiple Short Text doesn't work: Notice: Undefined variable: inputnames (c_schmitz)
-- 0001013: [Survey Design] Quotes " ' " are not possible in label sets (lemeur)
-- 0001003: [Assessments] Can not create groups when using mssql server (c_schmitz)
-- 0001006: [Import / Export] If one's tmp directory is not writable, imports fail without any error only a blank screen. (lemeur)
-- 0001011: [Survey at Runtime] Referrer-URL is not correct, always shows ../limesurvey/index.php (lemeur)
-- 0001001: [Survey at Runtime] Question by question - group description page - previous & next buttons clear already chosen answers (lemeur)
-- 0000974: [Survey Design] Multiple Options: preselected answer don´t work (lemeur)
-- 0001017: [Import / Export] An imported object (question or group) can be orphaned if the survey's baselang is not supported by this object (lemeur)
-- 0001002: [Import / Export] Import of questions and groups isn't working (lemeur)
-- 0001050: [Security] Edit User -- Password field Type set as 'text' (c_schmitz)
-
-
-Changes from 1.49RC to 1.49RC2 - Release Date: 2007/06/14
-
-- Serbian Language file by Ivan Recevic
-
-Fixed bugs
-- 0000939: [Installation] Increase the size of the username field (yan)
-- 0000941: [Survey at Runtime] dropdown list and ranking javascripts report object not found (c_schmitz)
-- 0000911: [Tokens] crash sendig reminders (c_schmitz)
-- 0000954: [Survey at Runtime] Memory Exhauste on admin.php 285 (c_schmitz)
-- 0000931: [Assessments] answers changed in sending the invitations and again in sending the reminders (c_schmitz)
-- 0000952: [Data Entry (non public)] update button does not work in token display + invalid sql script reading labels in dataentry.php (c_schmitz)
-- 0000928: [Survey Design] Label set allow duplicated codes (lemeur)
-- 0000919: [Survey at Runtime] table design of Semantic differential scale Question type (c_schmitz)
-- 0000927: [Survey Design] Label set focus by default the "Delete" button (lemeur)
-- 0000958: [Statistics] In export results: swaped email and token columns (lemeur)
-- 0000959: [Statistics] Multilingual answer export concatenates all translated strings (lemeur)
-- 0000933: [Survey at Runtime] Online demo switches languages (lemeur)
-- 0000963: [Assessments] sha256.php capitalization issue (c_schmitz)
-- 0000964: [Survey Design] Variable "arows" not defined in conditions.php (c_schmitz)
-- 0000894: [Import / Export] export large exceldump fails (c_schmitz)
-- 0000835: [Survey at Runtime] "No answer" condition doesn't work (c_schmitz)
-- 0000975: [Translation] Tokens: "Restore Options:" is not translated (c_schmitz)
-- 0000966: [Installation] Failed at Installation on Windows2003 with ODBC configuration (c_schmitz)
-- 0000976: [Survey Design] When logging-in after having selected a language, shouldn't this language be set as default for the user ? (lemeur)
-- 0000981: [Templates] Template Editor: Some Headline aren´t readable with the new v1.50 color scheme (dgeaperez)
-- 0000977: [Survey Design] Missing file for new default admin style ! (dgeaperez)
-- 0000968: [Import / Export] newline-characters are doubled (El-Matador-69)
-- 0000978: [Survey at Runtime] Language Switch - doesn't assign chosen language (c_schmitz)
-- 0000972: [Survey at Runtime] Edit saved survey: Warning: Notice: Undefined variable: fnrrow (c_schmitz)
-- 0000979: [Survey Design] Language-Selection Popup needs adjustment to new v1.50 color scheme (dgeaperez)
-- 0000988: [Import / Export] Import Tokens using LDAP Query - $myattr1 & $myattr2 are not initialised prior to ! empty condition statements in tokens.php (lemeur)
-- 0000987: [Security] Plus-addressed emails are not allowed for user email field (c_schmitz)
-- 0000921: [Statistics] Admin Notifications.. detailed with codes only sends codes. (c_schmitz)
-- 0000985: [Import / Export] Export to CSV is corrupted for a multilingual survey with a ranking question type (c_schmitz)
-- 0000992: [Import / Export] Browse Single Survey Response: False Export Icon is displayed (El-Matador-69)
-- 0000984: [Security] Can not create usres/groups (c_schmitz)
-- 0000990: [Import / Export] Exporting to MS Word - fields and answers not matched up (c_schmitz)
-- 0000993: [Survey at Runtime] 'previous' button actually advances - Group by Group (c_schmitz)
-- 0000971: [Installation] Fatal Error sha256
-- 0000920: [Survey Design] Conditions based on list (dropdown) don't work (c_schmitz)
-- 0000900: [Survey Design] Conditions-Screen: Popup with Question Title on Mouseover for Firefox over the Loudspeaker-Icon (c_schmitz)
-- 0000906: [Import / Export] Bad Email Format for Multiple Options at the Admin Notifications (c_schmitz)
+    * New design and new name
+    * Multi-lingual surveys - do the same survey in multiple languages at the same time
+    * Command line importer to import surveys (leochaton)
+    * Usage of {SAVED_ID} and {TOKEN} in the end URL to interact with other applications (leochaton)
+    * Separate installation directory that has to be removed on installation end
+    * Import Tokens using LDAP Query (lemeur)
+    * Check if the necessary requirements are fulfilled on installation and runtime (c_schmitz)
+    * Semantic differential scale questions - sponsored by a donation from tileca (c_schmitz)
+    * Preview question function (machaven)
+    * SPSS export re-worked (machaven)
+    * Reworked the token import to being more stable (machaven)
+    * Reworked the Excel export to be OpenOffice.org compatible
+    * Setting to config.php to manage the maximum session time & proper error message when taking a survey and the session is timing out for any reason (c_schmitz)
+    * Captcha feature to prevent automatic registering (machaven)
+    * Support for Microsoft SQL Server database (ferrisoxide)
+    * Moved the manual to online site (c_schmitz)
+    * New question attribute to limit the maximum number of answers in Multiple Options questions (attribute max_answers) (lemeur)
+    * New user authentication system with user right/roles & groups (moses)
+    * Re-ordering for groups and questions by up-down buttons instead of sorting by question/group name (c_schmitz/nkorfiatis)
+    * Some interfaces for editing answers where changed so you can save changes to all answers for all languages on one click. (machaven/c_schmitz)
+    * Added a new question type to change the survey language (c_schmitz)
+    * Completely overhauled interface icons. The basic style has been kindly created by Mitchell Butler.
+    * Added answer limiting based on a previous question for array question types (machaven)
+    * Added page-by-page saving of the answers (swales)
+    * Changed the translation system from language files to gettext system. That will make translations easier to handle and to update. Refer to the translation instructions here: How to translate LimeSurvey (c_schmitz)
+    * Graphical date picker to date question type and survey properties (c_schmitz)
+    * Overview of all surveys in addition to the existing combobox (nkorfiatis)
+    * Save the referring URL in survey results. Sposnored by Lawrence Weathers (docweathers) Coder: Richard Kavanagh (www.benbun.co.uk)
+    * Added feature to show custom attribute names in token interface
+    * Added random survey number generation to make guesses on the surveyid harder
+    * Moved admin interface styles to style sheets
+    * Fixed image links and included PNGFix in admin interface for crappy old IE6 browsers (nkorfiatis)
+    * Bubble hints on icons for FF (nkorfiatis)
+    * DB Versioning for easier updates to the DB in the future (c_schmitz))
+    * Removed experimental interface 
 
 
+New Languages
 
-Special thanks to el-matador-69 for its ongoing help in finding and eliminating bugs.
-Thank you to all the translators who are keeping the application and documentation up to date!
-And last but not least to everyone in the LimeSurvey developer team - without your help this wouldn't have been possible!
+    * Brazilian Portuguese by Anderson La‚cio Galindo Trindade
+    * Chinese Traditional (Area Hong Kong) by Mark Yeung
+    * Finnish by Matti Lassila
+    * Galician translation by Carlos Neira Cortizas
+    * Japanese translation by Hiroki Yoshino
+    * Polish by Maciej Zawado
+    * Serbian by Ivan Recevic
+    * Spanish by Carlos Juan Martín Pérez
+    * Vietnamese by Vinh Ngo 
 
 
-Changes from 1.00 to 1.48b - Release Date: 2007/05/11
+New Templates
 
-- New feature: Check if the necessary requirements are fulfilled on installation and runtime (c_schmitz)
-- New Feature: Semantic differential scale Questions are now possible - this feature was kindly sponsored by a donation from tileca (c_schmitz) 
-- New feature: Preview questions as they are being edited (machaven)
-- New feature: Survey List with User Details
-- Fixed Export button target in statistics (lemeur)
-- SPSS export updated (machaven)
-- Reworked the token import to being more stable (machaven)
-- Reworked the Excel export to be OpenOffice.org compatible
-- MySQL now correctly handles utf-8 chars (Please re-install to fix this) (machaven & c_schmitz)
-- Added a setting to config.php to manage the maximum session time (c_schmitz)
-- Added a proper error message when taking a survey and the session is timing out for any reason (c_schmitz)
-- Added captcha feature to prevent automatic registering (machaven)
-- Import tokens from LDAP queries (tlemeur)
-- Added support for Microsoft SQL Server database (ferrisoxide)
-- Improved multi-db support (ferrisoxide)
-- Moved the english docs to online site (c_schmitz)
-- Added a new question attribute to limit the maximum number of answers in Multiple Options questions (attribute max_answers) (tlemeur)
-- Added a new user athentication system with user right/roles & groups (moses)
-- Added the capability to execute a survey in various languages at the same time (machaven/c_schmitz/uvtronald)
-- Re-ordering for groups and questions by up-down buttons instead of sorting by question/group name (c_schmitz/nkorfiatis)
-- Some interfaces for editing answers where changed so you can save changes to all answers for all languages on one click. (machaven/c_schmitz)
-- Added a new question type to change the survey language (c_schmitz)
-- Completely overhauled interface icons. The style has been kindly created by Mitchell Butler. Small additions by c_schmitz.
-- Added answer limiting based on a previous question for array question types (machaven)
-- Added page-by-page saving of the answers (swales)
-- Updated the SPSS-export with lots of changes (machaven)
-- Changed the translation system from language files to gettext system. That will make translations easier to handle and to update. Refer to the translation instructions here: http://www.limesurvey.org/index.php?option=com_jd-wiki&Itemid=51&id=how_to_translate_limesurvey (c_schmitz))
-- Added date picker to date question type and survey properties (c_schmitz)
-- Changed the mailer class to PHPMailer which is alot more reliable and easier to configure. (c_schmitz)
-- Added an overview of all surveys in addition to the existing combobox (nkorfiatis)
-- Re-designed the .htaccess password creation so it does not rely on command execution (machaven)
-- Added ADODB universal database support - onyl mysql for now is supported. Work for odbc_mssql and postgres has begun. (Frediano Ziglio (Freddy77), c_schmitz)
-- Added Feature to save the referring URL. Kind Donator: Lawrence Weathers (docweathers) Coder: Richard Kavanagh (www.benbun.co.uk)
-- Added feature to show custom attribute names in token interface
-- Added random survey number generation to make guesses on the surveyid harder
-- Moved some of the admin interface styles to style sheets
-- Fixed image links and included PNGFix in admin interface for crappy old IE6 browsers (nkorfiatis)
-- Added bubble hints to new icons (nkorfiatis)
-- Changed upgrade feature and added DB Versioning for easier updates to the DB in the future (c_schmitz))
-- Added Vietnamese language file originally by Vinh Ngo
-- Updated Traditional Chinese translation by Mark Yeung
-- Updated Danish translation from Carsten Hoilund (carsten.hoilund@gm...) and  nkorfiatis
-- Updated Italian lnagugae file by Mario Marani
-- Updated French language file by Sebastian Gaugry and Pascal Bastien
-- Updated Slovenian translation by Gasper Koren
-- Updated Greek translation by nkorfiatis
-- Added Brazilian Portuguese language file by Anderson La‚cio Galindo Trindade
-- Added Finnish translation kindly provided by Matti Lassila
-- Removed experimental interface. there will be a new interface later in time.. just not this one.
-- Fixed numerous small bugs and added the same amount at other places.
+    * New default template
+    * New clear_logo template 
+
+
 
 
 
