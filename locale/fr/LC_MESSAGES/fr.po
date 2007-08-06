@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-08-05 21:59+0100\n"
+"PO-Revision-Date: 2007-08-06 20:32+0100\n"
 "Last-Translator: seb <seb>\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -1727,6 +1727,10 @@ msgstr "Table(s) d'invitation(s) activée(s)"
 
 msgid "De-activated Token Tables"
 msgstr "Table(s) d'invitation(s) désactivée(s)"
+
+# D:\www\limesurvey/admin/html.php:270
+msgid "Show PHPInfo"
+msgstr "Afficher PHPinfo"
 
 msgid "Survey cannot be activated. Either you have no permission or there are no questions."
 msgstr "Le questionnaire ne peut pas être activé. Soit vous n'en avez pas la permission soit il ne comporte pas de question."
