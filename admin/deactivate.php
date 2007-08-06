@@ -57,6 +57,10 @@ else
 		$tdeactivateresult = $connect->Execute($tdeactivatequery) or die ("Couldn't deactivate tokens table because:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
 	}
 
+    // IF there are any records in the saved_control table related to this survey, they have to be deleted
+    $query = "DELETE FROM {$dbprefix}saved_control WHERE sid={$_GET['sid']}";
+    $result = $connect->Execute($query);
+    
 	$oldtable="{$dbprefix}survey_{$_GET['sid']}";
 	$newtable="{$dbprefix}old_survey_{$_GET['sid']}_{$date}";
 
