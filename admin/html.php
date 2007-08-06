@@ -265,7 +265,7 @@ if ($action == "checksettings" || $action == "changelang")
 	. "</table></form>\n"
 	. "<table><tr><td height='1'></td></tr></table>\n";
     
-    if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1) 
+    if ($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1) 
     {
     $cssummary .= "<table><tr><td><form action='$scriptname' method='post'><input type='hidden' name='action' value='showphpinfo' /><input type='submit' value='Show PHPInfo'></form></td></tr></table>";
     }

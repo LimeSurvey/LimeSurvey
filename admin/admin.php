@@ -285,8 +285,8 @@ sendcacheheaders();
   
   }
 
-if ($action!='showphpinfo') {echo $adminoutput;}
-else {phpinfo();}
+if (($action=='showphpinfo') && ($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)) {phpinfo();}
+else {echo $adminoutput;}
 
 
   function helpscreenscript()
