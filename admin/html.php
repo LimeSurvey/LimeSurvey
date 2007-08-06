@@ -267,7 +267,7 @@ if ($action == "checksettings" || $action == "changelang")
     
     if ($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1) 
     {
-    $cssummary .= "<table><tr><td><form action='$scriptname' method='post'><input type='hidden' name='action' value='showphpinfo' /><input type='submit' value='Show PHPInfo'></form></td></tr></table>";
+    $cssummary .= "<table><tr><td><form action='$scriptname' method='post'><input type='hidden' name='action' value='showphpinfo' /><input type='submit' value='".$clang->gT("Show PHPInfo")."'></form></td></tr></table>";
     }
 }
 
