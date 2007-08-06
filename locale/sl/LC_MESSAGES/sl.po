@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Slovenianlanguage file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-08-05 22:34+0100\n"
+"PO-Revision-Date: 2007-08-06 21:24+0100\n"
 "Last-Translator: Gasper Koren <skrat@owca.info>\n"
 "Language-Team: LimeSurvey <gasper_koren@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1247,6 +1247,9 @@ msgstr "Aktiviraj tabelo z dostopnimi gesli"
 
 msgid "De-activated Token Tables"
 msgstr "Deaktivirane tabele z dostopnimi gesli"
+
+msgid "Show PHPInfo"
+msgstr "Prikaž PHPInfo"
 
 msgid "Survey cannot be activated. Either you have no permission or there are no questions."
 msgstr "Ankete ni mogoče aktivirati. Nimate pravic ali pa v anketi še ni nobenega vprašanja."
