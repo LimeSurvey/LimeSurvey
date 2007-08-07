@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PHPSurveyor Portuguese language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-06-11 16:13-0000\n"
-"Last-Translator: Mário Oliveira <mario.oliveira@madeiratecnopolo.pt>\n"
+"PO-Revision-Date: 2007-08-07 11:52-0000\n"
+"Last-Translator: Clemente Aguiar <caguiar @ madeiratecnopolo.pt>\n"
 "Language-Team: PHPSurveyor <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -35,6 +35,9 @@ msgstr "Criar/Editar Grupos"
 
 msgid "Check Settings"
 msgstr "Verificar Definições"
+
+msgid "Settings"
+msgstr "Definições"
 
 msgid "Check Data Integrity"
 msgstr "Verificar Integridade dos Dados"
@@ -156,8 +159,8 @@ msgstr "Notificação básica de e-mail"
 msgid "Detailed email notification with result codes"
 msgstr "Notificação de e-mail detalhada com códigos do resultado"
 
-msgid "PHPSurveyor Setup"
-msgstr "Configuração do PHPSurveyor"
+msgid "LimeSurvey Setup"
+msgstr "Configuração do LimeSurvey"
 
 msgid "Error"
 msgstr "Erro"
@@ -208,6 +211,24 @@ msgstr "Importação de um inquérito VV"
 msgid "Export a VV survey file"
 msgstr "Exportar Inquérito"
 
+# D:\xampp\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:140
+msgid "Preset"
+msgstr "Definição prévia"
+
+msgid "Token"
+msgstr "Código"
+
+msgid "Date Stamp"
+msgstr "Data de referência"
+
+msgid "IP Address"
+msgstr "IP Adress"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1833
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2107
+msgid "Referring URL"
+msgstr "URL de referência"
+
 msgid "Other"
 msgstr "Outro"
 
@@ -244,6 +265,9 @@ msgstr "Comentário"
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:1768
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr "Atenção: A execução de JavaScript não é permitida pelo seu 'browser'. Poderá não conseguir responder a todas as perguntas deste inquérito. Por favor, verifique os parâmetros seu 'browser'"
+
+msgid "There are no questions in this survey"
+msgstr "Não há perguntas neste inquérito"
 
 msgid "There is 1 question in this survey"
 msgstr "Há 1 pergunta neste inquérito"
@@ -388,6 +412,35 @@ msgstr "Continuar"
 msgid "Your Assessment"
 msgstr "A sua avaliação"
 
+msgid "Online Manual"
+msgstr "Manual Online"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/common.php:2434
+msgid "Support this project - Donate to "
+msgstr "Apoie este projecto - faça um donativo a"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/common.php:2437
+msgid "Visit our website!"
+msgstr "Visite o nosso website!"
+
+msgid "Version"
+msgstr "Versão"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/common.php:2600
+msgid "Local Submission"
+msgstr "Submissão local"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/common.php:2800
+# D:\xampp\xampp\htdocs\phpsurveyor/common.php:2805
+msgid "Executing"
+msgstr "A executar"
+
+msgid "Failed! Reason: "
+msgstr "Erro! Motivo:"
+
+msgid "Success!"
+msgstr "Êxito!"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/group.php:57
 # D:\xampp\xampp\htdocs\phpsurveyor/question.php:58
 msgid "Save your responses so far"
@@ -456,8 +509,8 @@ msgstr "Não indicou um nome"
 msgid "You did not provide a password"
 msgstr "Não indicou uma palavra-passe"
 
-msgid "This is a controlled survey. You need a valid token to participate."
-msgstr "Este inquérito é controlado. Necessita de um código válido para participar."
+msgid "This is a closed-access survey. You need a valid token to participate."
+msgstr "Este inquérito é de acesso restrito. Necessita de um código válido para participar."
 
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr "O código que indicou não é válido, ou já foi usado."
@@ -534,14 +587,18 @@ msgstr "CÓDIGO SQL QUE FALHOU"
 msgid "ERROR MESSAGE"
 msgstr "MENSAGEM DE ERRO"
 
+# D:\xampp\xampp\htdocs\phpsurveyor/index.php:1052
+msgid "Error saving results"
+msgstr "Erro ao gravar os resultados"
+
 msgid "Try to submit again"
 msgstr "Tente enviar novamente"
 
+msgid "This is a controlled survey. You need a valid token to participate."
+msgstr "Este inquérito é controlado. Necessita de um código válido para participar."
+
 msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr "Se lhe foi atribuído um código, por favor digite-o na caixa abaixo e clique em continuar."
-
-msgid "Token"
-msgstr "Código"
 
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Este Inquérito ainda não tem perguntas e não pode ser testado nem preenchido."
@@ -609,6 +666,11 @@ msgstr "(p.ex: 2005-12-25 para Dia de Natal)"
 msgid "Please choose"
 msgstr "Escolha uma opção"
 
+# D:\xampp\xampp\htdocs\phpsurveyor/qanda.php:728
+# D:\xampp\xampp\htdocs\phpsurveyor/qanda.php:952
+msgid "Error: The labelset used for this question is not available in this language."
+msgstr "Erro: o conjunto de etiquetas usado para esta pergunta não está disponível neste idioma."
+
 msgid "Please choose one of the following"
 msgstr "Escolha uma das seguintes opções"
 
@@ -645,8 +707,16 @@ msgstr "resposta(s) a esta pergunta"
 msgid "Make a comment on your choice here:"
 msgstr "Escreva o seu comentário à escolha feita"
 
+msgid "Error: This question has no answers."
+msgstr "Erro: Esta pergunta não tem respostas."
+
 msgid "Only numbers may be entered in this field"
 msgstr "Neste campo só se aceitam números"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/qanda.php:2585
+# D:\xampp\xampp\htdocs\phpsurveyor/qanda.php:2692
+msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
+msgstr "Erro: o conjunto de etiquetas usado para esta pergunta não está disponível neste idioma e/ou não existe."
 
 # D:\xampp\xampp\htdocs\phpsurveyor/register.php:58
 msgid "The email you used is not valid. Please try again."
@@ -773,6 +843,10 @@ msgstr "Esta pergunta ainda não tem designado o 'tipo' de pergunta."
 msgid "This question requires a Labelset, but none is set."
 msgstr "Esta questão requer uma etiqueta, porém nenhuma foi designada."
 
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/activate.php:143
+msgid "The labelset used in this question is missing a translation."
+msgstr "O conjunto de etiquetas usado nesta pergunta não está traduzido."
+
 msgid "This question has a condition set, however the condition is based on a question that appears after it."
 msgstr "Esta pergunta está associada a uma condição, porém esta condição está baseada numa pergunta que aparece depois dela.."
 
@@ -843,20 +917,35 @@ msgstr "Administração Principal"
 msgid "Survey has been activated. Results table has been successfully created."
 msgstr "O inquérito foi activado. A tabela de resultados foi criada com êxito."
 
-msgid "This is not an anonymous survey. A token table must also be created."
-msgstr "Este inquérito não é anónimo. Deve criar-se uma tabela de códigos."
+msgid "This survey allows public registration. A token table must also be created."
+msgstr "Este inquérito permite registo público. É também obrigatória a criação de um código de acesso. "
 
 msgid "Initialise Tokens"
 msgstr "Inicializar Códigos"
 
-msgid "This survey allows public registration. A token table must also be created."
-msgstr "Este inquérito permite registo público. É também obrigatória a criação de um código de acesso. "
-
 msgid "This survey is now active, and responses can be recorded."
 msgstr "O inquérito foi activado e agora as respostas podem ser armazenadas."
 
-msgid "PHPSurveyor Online Manual"
-msgstr "Manual Online do PHPSurveyor"
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/activate.php:506
+msgid "Open-access mode"
+msgstr "Modo de acesso aberto"
+
+msgid "No invitation code is needed to complete the survey."
+msgstr "Não é necessário código de convite para completar este inquérito."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/activate.php:506
+msgid "You can switch to the closed-access mode by initialising a token table with the button below."
+msgstr "Pode mudar para o modo de acesso fechado, inicializando uma tabela de códigos, premindo o botão abaixo. "
+
+msgid "Optional"
+msgstr "Opcional"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/activate.php:507
+msgid "Switch to closed-access mode"
+msgstr "Mudar para modo de acesso fechado"
+
+msgid "LimeSurvey Online Manual"
+msgstr "Manual Online do LimeSurvey"
 
 msgid "Help"
 msgstr "Ajuda"
@@ -917,6 +1006,12 @@ msgstr "Eliminar"
 msgid "Are you sure you want to delete this entry."
 msgstr "Tem a certeza de que pretende apagar esta entrada?"
 
+msgid "Save"
+msgstr "Guardar"
+
+msgid "Cancel"
+msgstr "Cancelar"
+
 msgid "Browse Responses"
 msgstr "Visualizar as respostas"
 
@@ -935,19 +1030,11 @@ msgstr "Este inquérito não foi ativado. Não há resultados para visualizar."
 msgid "There is no matching survey."
 msgstr "Não foi encontrado nenhum inquérito."
 
+msgid "Token ID"
+msgstr "Id do Código"
+
 msgid "Date Submitted"
 msgstr "Data de submissão"
-
-msgid "Date Stamp"
-msgstr "Data de referência"
-
-msgid "IP Address"
-msgstr "IP Adress"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1833
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2107
-msgid "Referring URL"
-msgstr "URL de referência"
 
 msgid "View Response"
 msgstr "Ver resposta"
@@ -991,6 +1078,22 @@ msgstr "Registros exibidos:"
 msgid "Starting From:"
 msgstr "Começando desde:"
 
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:692
+msgid "Filter incomplete answers:"
+msgstr "Filtrar respostas incompletas:"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:572
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/exportresults.php:160
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:655
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/vvexport.php:73
+msgid "Enable"
+msgstr "Permitir"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:881
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1041
+msgid "Disable"
+msgstr "Desactivar"
+
 msgid "Show"
 msgstr "Mostrar"
 
@@ -999,6 +1102,21 @@ msgstr "Ver Este Registo"
 
 msgid "responses for this survey"
 msgstr "respostas a este inquérito"
+
+msgid "full responses"
+msgstr "eespostas completas"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/browse.php:654
+msgid "responses not completly filled out"
+msgstr "respostas não totalmente preenchidas"
+
+msgid "User name invalid!"
+msgstr "Nome de Utilizador inválido!"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/save.php:208
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:112
+msgid "User name / password dont match!"
+msgstr "Nome de Utilizador / Palavra-passe não coincidem!"
 
 msgid "Condition Designer"
 msgstr "Conceptor de Condições"
@@ -1131,6 +1249,22 @@ msgstr "Não foi possível actualizar a pergunta"
 msgid "Answers can't be deleted"
 msgstr "Não foi possível apagar a resposta"
 
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:444
+msgid "This question relies on other question's answers and can't be moved above groupId:"
+msgstr "Esta pergunta baseia-se em respostas a outras, e não pode ser movida acima do IDgrupo:"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:445
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:457
+msgid "in position"
+msgstr "em posição"
+
+msgid "See conditions:"
+msgstr "Ver condições:"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:456
+msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
+msgstr "Algumas perguntas baseiam-se em respostas a esta. Não pode mover esta pergunta abaixo do IDgrupo:"
+
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "Não foi possível adicionar a pergunta. Deve inserir um  código no campo obrigatório"
 
@@ -1143,14 +1277,18 @@ msgstr "Não foi possível apagar a pergunta."
 msgid "Add new Answer"
 msgstr "Adicionar uma Resposta"
 
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:649
+msgid "Error adding answer: You can't use the same answer code more than once."
+msgstr "Erro ao acrescentar a resposta: Não pode usar o mesmo código de resposta mais de uma vez."
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:580
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:588
 msgid "Failed to insert answer"
 msgstr "Falha na inserção da resposta"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:592
-msgid "Invalid answer code supplied"
-msgstr "Código de resposta fornecido inválido"
+msgid "Invalid or empty answer code supplied"
+msgstr "Código de resposta fornecido inválido ou vazio"
 
 msgid "Save All"
 msgstr "Guardar Tudo"
@@ -1160,8 +1298,8 @@ msgid "Failed to update answers"
 msgstr "Falha na actualização de respostas"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:659
-msgid "Answers with a code of 0 (zero) are not allowed, and will not be saved"
-msgstr "Não são permitidas e não serão guardadas respostas com código 0 (zero)"
+msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
+msgstr "Não são permitidas e não serão guardadas respostas com código 0 (zero) ou em branco"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:660
 msgid "Duplicate codes found, these entries won't be updated"
@@ -1211,8 +1349,22 @@ msgid "You have not selected a survey for data-entry."
 msgstr "Não selecionou um inquérito para o qual realizar a entrada de dados."
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:104
-msgid "This survey is not anonymous, you must supply a valid token"
-msgstr "Este inquérito não é anónimo, deve indicar um código válido"
+msgid "This is a closed-access survey, you must supply a valid token"
+msgstr "Este inquérito é de acesso restrito, deve indicar um código válido"
+
+msgid "The token you have provided is not valid."
+msgstr "O código que indicou não é válido."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:151
+msgid "There is already a recorded answer for this token"
+msgstr "Já há uma resposta gravada para este código"
+
+msgid "Follow the following link to update it"
+msgstr "Siga o link abaixo para o actualizar"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:104
+msgid "This surveys uses anonymous answers, you can't update this response"
+msgstr "Este inquérito utiliza respostas anónimas, portanto não pode actualizar esta resposta"
 
 msgid "Try again"
 msgstr "Tente  novamente"
@@ -1232,8 +1384,14 @@ msgstr "Confirme a Palavra-passe: "
 msgid "Email:"
 msgstr "E-mail:"
 
+msgid "Start Language:"
+msgstr "Idioma inicial:"
+
 msgid "Your survey responses have been saved succesfully"
 msgstr "As suas respostas foram guardadas"
+
+msgid "A token entry for the saved survey has been created too."
+msgstr "Também foi criada uma entrada de códigos para o inquérito guardado."
 
 # D:\xampp\xampp\htdocs\phpsurveyor/save.php:279
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:219
@@ -1264,6 +1422,11 @@ msgstr "Não pode ser modificado"
 
 msgid "Update Entry"
 msgstr "Actualizar Entrada"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:1285
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dataentry.php:2259
+msgid "Finalize response submission"
+msgstr "Finalizar a submissão da resposta"
 
 msgid "Save for further completion by survey user"
 msgstr "Guardar para ser posteriormente completado pelo utilizador do inquérito"
@@ -1303,63 +1466,6 @@ msgstr "Este inquérito não foi activado. As suas respostas não serão guardad
 msgid "The survey you selected does not exist"
 msgstr "O inquérito que seleccionou não existe"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:52
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:301
-msgid "Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. </font>"
-msgstr "Verificar consistência da informação<br /><font size='1'> Se os erros persistirem deve executar este script repetidamente </font>"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:89
-msgid "The following conditions should be deleted"
-msgstr "As seguintes condições devem ser apagadas"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:97
-msgid "All conditions meet consistency standards"
-msgstr "Todas as condições cumprem os standards de consistência"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:113
-msgid "The following question attributes should be deleted"
-msgstr "A próxima questão dos atributos deve ser apagada"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:119
-msgid "All question_attributes meet consistency standards"
-msgstr "Todas as Questões_Atributos cumprem os standards de consistência"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:149
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:159
-msgid "The following assessments should be deleted"
-msgstr "As seguintes avaliações devem ser apagadas"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:155
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:165
-msgid "All assessments meet consistency standards"
-msgstr "Todas as avaliações cumprem os standards de consistência"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:184
-msgid "The following answers should be deleted"
-msgstr "As próximas respostas devem ser apagadas"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:190
-msgid "All answers meet consistency standards"
-msgstr "Todas as respostas cumprem os standards de consistência"
-
-msgid "The following questions should be deleted"
-msgstr "As seguintes questões devem ser apagadas"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:219
-msgid "All questions meet consistency standards"
-msgstr "Todas as questões cumprem os standards de consistência"
-
-msgid "The following groups should be deleted"
-msgstr "O seguinte grupo deve ser apagado"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:240
-msgid "All groups meet consistency standards"
-msgstr "Todos os grupos cumprem os standards de consistência"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:244
-msgid "No database action required"
-msgstr "Não é requerida uma acção da Base de Dados"
-
 msgid "Answer could not be added. There is already an answer with this code"
 msgstr "Não foi possível adicionar a resposta. Já existe uma resposta com este código."
 
@@ -1375,29 +1481,27 @@ msgstr "Desativar Inquérito"
 msgid "In an active survey, a table is created to store all the data-entry records."
 msgstr "Num inquérito ativo, é criada uma tabela para armazenar as respostas."
 
-msgid "When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using PHPSurveyor any more."
-msgstr "Ao desactivar um inquérito, TODOS DADOS que foram introduzidos na tabela original serão movidos para outra tabela. Quando voltar a activar o inquérito, a tabela estará vazia. O acesso aos dados através do PHPSurveyor será perdido."
+msgid "When you deactivate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
+msgstr "Ao desactivar um inquérito, todos os dados que foram introduzidos na tabela original serão movidos para outra tabela. Quando voltar a activar o inquérito, a tabela estará vazia. O acesso aos dados através do LimeSurvey será perdido."
 
-msgid "De-activated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
-msgstr "Os dados de um inquérito que não foi desactivado, só podem ser acedidos por administradores do sistema com uma ferramenta de acesso às bases de dados como por ex. phpmyadmin. Caso esse inquérito utilize códigos, esta tabela também será renomeada e somente estará acessível aos administradores do sistema."
+msgid "Deactivated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
+msgstr "Os dados de um inquérito desactivado, só podem ser acedidos por administradores do sistema com uma ferramenta de acesso às bases de dados como por ex. phpmyadmin. Caso esse inquérito utilize códigos, esta tabela também será renomeada e somente estará acessível aos administradores do sistema."
 
 msgid "Your responses table will be renamed to:"
 msgstr "A tabela de respostas será renomeada para:"
 
-msgid "You should export your responses before de-activating. Click \"Cancel\" to return to the main admin screen without de-activating this survey."
-msgstr "Exporte as respostas antes de desactivar. Clique em  \"Cancelar\" para voltar ao ecrã principal de administração sem desactivar este inquérito."
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/deactivate.php:59
+msgid "Also you should export your responses before deactivating."
+msgstr "Também deve exportar as suas respostas antes de desactivar."
 
-msgid "De-Activate Survey"
-msgstr "Desativar o Inquérito"
-
-msgid "Survey Has Been De-Activated"
-msgstr "O Inquérito foi desactivado."
+msgid "Survey Has Been Deactivated"
+msgstr "O Inquérito foi desactivado"
 
 msgid "The responses table has been renamed to: "
 msgstr "A tabela de respostas foi renomeada para: "
 
-msgid "The responses to this survey are no longer available using PHPSurveyor."
-msgstr "As respostas ao inquérito já não estão disponíveis no PHPSurveyor."
+msgid "The responses to this survey are no longer available using LimeSurvey."
+msgstr "As respostas a este inquérito já não estão disponíveis utilizando o LimeSurvey."
 
 msgid "You should note the name of this table in case you need to access this information later."
 msgstr "Anote o nome desta tabela, caso deseje aceder posteriormente."
@@ -1423,11 +1527,15 @@ msgstr "Este inquérito está activo e existe uma tabela de respostas. Caso excl
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
 msgstr "Este inquéritotem associada uma tabela de códigos. Se o apagar, esta tabela de códigos será apagada. Recomenda-se a sua exportação ou 'backup' antes de apagar este inquérito."
 
-msgid "Cancel"
-msgstr "Cancelar"
-
 msgid "This survey has been deleted."
 msgstr "O inquérito foi eliminado."
+
+msgid "Export database"
+msgstr "Exportar base de dados"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dumpdb.php:59
+msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
+msgstr "A exportação de bases de dados só está disponivel para bases de dados MySQL. Para outros tipos por favor use o mecanismo adequado de forma a criar um \"dump\" da base de dados."
 
 msgid "Export Question"
 msgstr "Exportar Pergunta"
@@ -1447,6 +1555,9 @@ msgstr "Exportar Inquérito"
 msgid "No SID has been provided. Cannot dump survey"
 msgstr "Não foi indicado um SID. Não foi possível exportar o inquérito"
 
+msgid "Export Results"
+msgstr "Exportar os Resultados"
+
 msgid "Export Responses"
 msgstr "Exportar respostas"
 
@@ -1455,6 +1566,9 @@ msgstr "Filtrado do Script de Estatísticas"
 
 msgid "Single Response"
 msgstr "Resposta única"
+
+msgid "Columns"
+msgstr "Colunas"
 
 msgid "Questions"
 msgstr "Perguntas"
@@ -1467,6 +1581,10 @@ msgstr "Cabeçalho Completo"
 
 msgid "Question Codes"
 msgstr "Códigos das questões"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:692
+msgid "Filter incomplete answers"
+msgstr "Filtrar respostas incompletas"
 
 msgid "Answers"
 msgstr "Respostas"
@@ -1481,15 +1599,16 @@ msgid "Format"
 msgstr "Formato"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:152
-msgid "Microsoft Word"
-msgstr "Microsoft Word"
+msgid "Microsoft Word (Latin charset)"
+msgstr "Microsoft Word (conjunto de caracteres Latino)"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:155
-msgid "Microsoft Excel"
-msgstr "Microsoft Excel"
+msgid "Microsoft Excel (Latin charset)"
+msgstr "Microsoft Excel (conjunto de caracteres Latino)"
 
-msgid "CSV Comma Delimited"
-msgstr "CSV Delimitado por Vírgulas"
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/exportresults.php:189
+msgid "CSV File (UTF-8 charset - use this for non-latin languages)"
+msgstr "Ficheiro CSV (conjunto de caracteres UTF-8 - use-o para idiomas não latinos)"
 
 msgid "Export Data"
 msgstr "Exportar Dados"
@@ -1497,8 +1616,8 @@ msgstr "Exportar Dados"
 msgid "Column Control"
 msgstr "Controle da Coluna"
 
-msgid "Choose columns"
-msgstr "Seleccione colunas"
+msgid "Choose Columns"
+msgstr "Seleccione Colunas"
 
 msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
 msgstr "O seu inquérito contém mais do que 255 colunas de respostas. Aplicações de folha de cálculo como Excel carregamr um máximo 255. Seleccione as colunas que deseja exportar na lista abaixo."
@@ -1524,26 +1643,25 @@ msgstr "Atributo_1"
 msgid "Attribute 2"
 msgstr "Atributo_2"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:816
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:824
-msgid "N/A"
-msgstr "N/A"
-
-msgid "Export Results"
-msgstr "Exportar os Resultados"
-
-msgid "Columns"
-msgstr "Colunas"
-
-msgid "Choose Columns"
-msgstr "Seleccione Colunas"
+msgid "Time Submitted"
+msgstr "Hora de Submissão"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/exportresults.php:731
 msgid "NEW RECORD"
 msgstr "NOVO REGISTO"
 
-msgid "Time Submitted"
-msgstr "Hora de Submissão"
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/exportresults.php:833
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:152
+msgid "ID"
+msgstr "ID"
+
+msgid "Language"
+msgstr "Idioma"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:816
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/export.php:824
+msgid "N/A"
+msgstr "N/A"
 
 msgid "Survey"
 msgstr "Inquérito"
@@ -1551,26 +1669,33 @@ msgstr "Inquérito"
 msgid "Date Created"
 msgstr "Data de Criação"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:52
-msgid "Visibility"
-msgstr "Visibilidade"
+msgid "Access"
+msgstr "Acesso"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/common.php:1659
+msgid "Answer Privacy"
+msgstr "Privacidade de resposta"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:544
 msgid "Status"
 msgstr "Estado"
 
-msgid "Action"
-msgstr "Acção"
-
 msgid "Responses"
 msgstr "Respostas"
 
-msgid "Private"
-msgstr "Privado"
+msgid "Anonymous"
+msgstr "Anónimo"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:68
-msgid "Public"
-msgstr "Público"
+msgid "Not Anonymous"
+msgstr "Não Anónimo"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:73
+msgid "Closed-access"
+msgstr "Acesso fechado"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:77
+msgid "Open-access"
+msgstr "Acesso aberto"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1884
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2125
@@ -1605,8 +1730,8 @@ msgstr "Este inquérito não está activo"
 msgid "No Surveys available - please create one."
 msgstr "Não há inquéritos disponíveis - por favor, crie um"
 
-msgid "PHPSurveyor System Summary"
-msgstr "Resumo do PHPSurveyor"
+msgid "LimeSurvey System Summary"
+msgstr "Resumo do Sistema do LimeSurvey"
 
 msgid "Database Name"
 msgstr "Nome da Base de Dados"
@@ -1632,8 +1757,12 @@ msgstr "Tabelas de Códigos Activos"
 msgid "De-activated Token Tables"
 msgstr "Tabelas de Códigos Desactivadas"
 
-msgid "Cannot Activate this Survey"
-msgstr "Não é possível activar este inquérito"
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:270
+msgid "Show PHPInfo"
+msgstr "Mostrar PHPInfo"
+
+msgid "Survey cannot be activated. Either you have no permission or there are no questions."
+msgstr "O Inquérito não pode ser activado. Ou não tem autorização, ou não há perguntas. "
 
 msgid "Survey Security Settings"
 msgstr "Opções de Segurança do Inquérito"
@@ -1717,8 +1846,8 @@ msgid "IP Addresses will be logged"
 msgstr "Endereço de IP vai ser conectado"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:473
-msgid "Referer-URL"
-msgstr "URL de referência"
+msgid "Referer-URL will be saved"
+msgstr "URL de referência será guardado"
 
 msgid "It uses cookies for access control."
 msgstr "Utiliza 'cookies' para o controle de acesso."
@@ -1744,8 +1873,15 @@ msgstr "Normal:"
 msgid "By Group"
 msgstr "Por Grupo"
 
-msgid "Survey URL:"
-msgstr "URL do Inquérito:"
+msgid "Survey URL"
+msgstr "URL do Inquérito"
+
+msgid "Survey URL For Language:"
+msgstr "URL do Inquérito para o Idioma:"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:675
+msgid "Flag"
+msgstr "Marcador"
 
 msgid "Description:"
 msgstr "Descrição:"
@@ -1774,20 +1910,18 @@ msgstr "Idiomas Adicionais"
 msgid "Exit Link"
 msgstr "Sair do Link"
 
-msgid "Number of groups in survey"
-msgstr "Número de grupos no inquérito"
+msgid "Number of questions/groups"
+msgstr "Número de perguntas/grupos"
 
-msgid "Number of questions in survey"
-msgstr "Número de perguntas do inquérito:"
+msgid "Survey currently active"
+msgstr "Inquérito presentemente activo"
 
-msgid "Survey is not currently active."
-msgstr "O inquérito NÃO está activo."
+msgid "Survey table name"
+msgstr "Nome da tabela do inquérito"
 
-msgid "Survey is currently active."
-msgstr "O inquérito está activo."
-
-msgid "Survey table name is"
-msgstr "O nome da tabela do Inquérito é:"
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:760
+msgid "Hints"
+msgstr "Dicas"
 
 msgid "Survey cannot be activated yet."
 msgstr "O inquérito ainda não pode ser ativado."
@@ -1856,6 +1990,10 @@ msgstr "Exportar questão"
 msgid "Copy Current Question"
 msgstr "Copiar pergunta seleccionada"
 
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1035
+msgid "Copy question is not possible in an Active survey"
+msgstr "Não é possível copiar a pergunta num inquérito Activo"
+
 msgid "Set Conditions for this Question"
 msgstr "Estabelecer condições para esta questão"
 
@@ -1904,8 +2042,14 @@ msgstr "É necessário selecionar um conjunto de etiquetas para esta pergunta"
 msgid "Other:"
 msgstr "Outro:"
 
+msgid "Mandatory:"
+msgstr "Obrigatória:"
+
 msgid "Other questions having conditions on this question:"
 msgstr "Outras perguntas com condições para esta pergunta"
+
+msgid "Edit Answers"
+msgstr "Editar Respostas"
 
 msgid "Base Language"
 msgstr "Idioma base"
@@ -1913,14 +2057,17 @@ msgstr "Idioma base"
 msgid "Code"
 msgstr "Código"
 
+msgid "Action"
+msgstr "Acção"
+
 msgid "Order"
 msgstr "Ordem"
 
 msgid "New Answer"
 msgstr "Nova resposta"
 
-msgid "You cannot add answers because they are being used by an active survey."
-msgstr "Não pode adicionar respostas porque estão a ser utilizadas num inquérito activo"
+msgid "You cannot add answers or edit answer codes for this question type because the survey is active."
+msgstr "Não pode adicionar respostas ou editar códigos para este tipo de pergunta porque o inquérito está activo."
 
 msgid "Add User"
 msgstr "Adicionar Utilizador"
@@ -1983,6 +2130,9 @@ msgstr "Definir Perguntas"
 msgid "Export"
 msgstr "Exportar"
 
+msgid "Edit Survey Property"
+msgstr "Editar Propriedades do Inquérito"
+
 msgid "Browse Response"
 msgstr "Visualizar a Resposta"
 
@@ -2040,8 +2190,14 @@ msgstr "Mostrar o botão [<< Prev] ?"
 msgid "Admin Notification:"
 msgstr "Notificação de Admin:"
 
-msgid "Anonymous?"
-msgstr "Anónimo?"
+msgid "Anonymous answers?"
+msgstr "Respostas anónimas?"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1919
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2464
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:272
+msgid "If you set a survey to anonymous, answers to timestamped and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
+msgstr "Se definir um inquéerito como anónimo, as respostas com data aposta e criar uma tabela de códigos, o \"LimeSurvey\" marcará os seus códigos completados somente com um 'Y' em vez de data/hora, para assegurar o anonimato dos seus participantes."
 
 msgid "Cannot be changed"
 msgstr "Não pode ser alterado"
@@ -2271,9 +2427,6 @@ msgstr ""
 msgid "URL Description:"
 msgstr "Descrição do URL:"
 
-msgid "Save"
-msgstr "Guardar"
-
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2264
 msgid "Current survey has questions with conditions outside their own group"
 msgstr "O inquérito em curso tem perguntas com condições fora do seu grupo próprio"
@@ -2308,6 +2461,9 @@ msgstr "Nenhum ficheiro carregado"
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1981
 msgid "Error on file transfer. You must select a CSV file"
 msgstr "Erro na transferência de ficheiros. Deve seleccionar um ficheiro CSV"
+
+msgid "Error: You have to enter a title for this survey."
+msgstr "Erro: Tem de introduzir um título para este inquérito"
 
 msgid "Create Survey"
 msgstr "Criar Inquérito"
@@ -2359,20 +2515,35 @@ msgstr "Visualização: "
 msgid "Select the field number you would like to use for your answers:"
 msgstr "Sellecione o número do campo que pretende utilizar para as suas respostas: "
 
-msgid "Import Group"
-msgstr "Importar grupo"
-
-msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder."
-msgstr "Ocorreu um erro ao carregar o arquivo. Pode ser sido causado porque o diretório de administração tem permissões incorrectas."
+msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your /admin/tmp folder folder."
+msgstr "Ocorreu um erro ao carregar o arquivo. Pode ser sido causado porque as autorizações na sua pasta /admin/tmp estão incorrectas."
 
 msgid "File upload succeeded."
 msgstr "Carregou o arquivo com êxito."
 
+msgid "Reading file.."
+msgstr "Lendo o arquivo.."
+
+msgid "Import Group"
+msgstr "Importar grupo"
+
 msgid "Reading file..."
 msgstr "Lendo o arquivo.."
 
-msgid "This file is not a PHPSurveyor group file. Import failed."
-msgstr "O arquivo não contém um formato PHPSurveyor válido."
+msgid "This file is not a LimeSurvey group file. Import failed."
+msgstr "Este ficheiro não é de um grupo LimeSurvey. A importação falhou."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/importgroup.php:255
+msgid "You can't import a group which doesn't support the current survey's base language."
+msgstr "Não pode importar um grupo que não suporte o idioma-base deste inquérito."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/importgroup.php:271
+msgid "You can't import a question which doesn't support the current survey's base language."
+msgstr "Não pode importar uma pergunta que não se enquadre no actual idioma-base do inquérito"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/importgroup.php:288
+msgid "You can't import label sets which don't support the current survey's base language."
+msgstr "Não pode importar conjuntos de etiquetas que não se enquadrem no actual idioma-base do inquérito"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/importgroup.php:566
 msgid "Import partially successful."
@@ -2403,11 +2574,8 @@ msgstr "Completada a importação do grupo."
 msgid "Import Label Set"
 msgstr "Importar etiquetas"
 
-msgid "Reading file.."
-msgstr "Lendo o arquivo.."
-
-msgid "This file is not a PHPSurveyor question file. Import failed."
-msgstr "Este arquivo não é um arquivo de pergunta PHPSurveyor válido. Falhou a importação."
+msgid "This file is not a LimeSurvey label set file. Import failed."
+msgstr "Este ficheiro não é de um conjunto de etiquetas LimeSurvey. A importação falhou."
 
 msgid "Return to Labels Admin"
 msgstr "Voltar para a Administração de Etiquetas"
@@ -2457,26 +2625,55 @@ msgstr "Não foi indicado um SID (Inquérito). Não foi possível importar a per
 msgid "No GID (Group) has been provided. Cannot import question"
 msgstr "Não foi indicado um GID (Grupo). Não foi possível importar a pergunta"
 
+msgid "This file is not a LimeSurvey question file. Import failed."
+msgstr "Este ficheiro não é de perguntas LimeSurvey. A importação falhou."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/importquestion.php:217
+msgid "You can't import a question which doesn't support the current survey's base language"
+msgstr "Não pode importar uma pergunta que não se enquadre no actual idioma-base do inquérito"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/importquestion.php:253
+msgid "You can't import label sets which don't support the current survey's base language"
+msgstr "Não pode importar conjuntos de etiuquetas que não se enquadrem no actual idioma-base do inquérito"
+
 msgid "Question Import Summary"
 msgstr "Resumo da Importação da Pergunta"
 
 msgid "Import of Survey is completed."
 msgstr "A importação do inquérito foi realizada com êxito."
 
-msgid "This file is not a PHPSurveyor survey file. Import failed."
-msgstr "O formato do arquivo não é do PHPSurveyor. A importação falhou."
+msgid "This file is not a LimeSurvey survey file. Import failed."
+msgstr "O formato do ficheiro não é do LimeSurvey. A importação falhou."
 
 msgid "Import of this survey file failed"
 msgstr "A importação do inquérito falhou."
 
-msgid "File does not contain PHPSurveyor data in the correct format."
-msgstr "O arquivo não contém um formato PHPSurveyor válido."
+msgid "File does not contain LimeSurvey data in the correct format."
+msgstr "O ficheiro não contém um formato de dados LimeSurvey correcto."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/importsurvey.php:742
+msgid "was NOT imported, because the question type is not know"
+msgstr "NÃO foi importada, porque o tipo de pergunta é desconhecido"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/importsurvey.php:748
+msgid "was imported, but the type was set to \""
+msgstr "foi importada, mas o tipo foi considerado \""
+
+msgid "type"
+msgstr "tipo"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/importsurvey.php:748
+msgid "\", because is the closest one"
+msgstr "\", porque é o mais próximo"
 
 msgid "Survey Import Summary"
 msgstr "Resumo da Importação do inquérito"
 
 msgid "Question Attributes"
 msgstr "Atributos da Pergunta"
+
+msgid "Warnings"
+msgstr "Avisos"
 
 msgid "Data Consistency Check"
 msgstr "Verificação da Consistência dos Dados"
@@ -2485,6 +2682,40 @@ msgstr "Verificação da Consistência dos Dados"
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:301
 msgid "If errors are showing up you might have to execute this script repeatedly."
 msgstr "Se houver erros poderá ter de executar este 'script' mais de uma vez."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:89
+msgid "The following conditions should be deleted"
+msgstr "As seguintes condições devem ser apagadas"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:97
+msgid "All conditions meet consistency standards"
+msgstr "Todas as condições cumprem os standards de consistência"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:113
+msgid "The following question attributes should be deleted"
+msgstr "A próxima questão dos atributos deve ser apagada"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:119
+msgid "All question_attributes meet consistency standards"
+msgstr "Todas as Questões_Atributos cumprem os standards de consistência"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:149
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:159
+msgid "The following assessments should be deleted"
+msgstr "As seguintes avaliações devem ser apagadas"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:155
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:165
+msgid "All assessments meet consistency standards"
+msgstr "Todas as avaliações cumprem os standards de consistência"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:184
+msgid "The following answers should be deleted"
+msgstr "As próximas respostas devem ser apagadas"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:190
+msgid "All answers meet consistency standards"
+msgstr "Todas as respostas cumprem os standards de consistência"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/integritycheck.php:202
 msgid "Language specific settings missing"
@@ -2497,6 +2728,24 @@ msgstr "Os próximos inquéritos devem ser apagados"
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:219
 msgid "All survey settings meet consistency standards"
 msgstr "Todas as definições de inquérito devem obedecer a padrões de consistência"
+
+msgid "The following questions should be deleted"
+msgstr "As seguintes questões devem ser apagadas"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:219
+msgid "All questions meet consistency standards"
+msgstr "Todas as questões cumprem os standards de consistência"
+
+msgid "The following groups should be deleted"
+msgstr "O seguinte grupo deve ser apagado"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:240
+msgid "All groups meet consistency standards"
+msgstr "Todos os grupos cumprem os standards de consistência"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:244
+msgid "No database action required"
+msgstr "Não é requerida uma acção da Base de Dados"
 
 msgid "Deleting Groups"
 msgstr "Apagando Grupos"
@@ -2515,6 +2764,10 @@ msgstr "Adicionar etiquetas"
 
 msgid "Labelsets"
 msgstr "Conjuntos de Etiquetas"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/login_check.php:45
+msgid "Error: You have to enter a name for this label set."
+msgstr "Erro: Deve introduzir um nome para este conjunto de etiquetas."
 
 msgid "Create New Label Set"
 msgstr "Criar Novo Conjunto de Etiquetas"
@@ -2574,13 +2827,24 @@ msgstr "Não foi possível actualizar o conjunto de etiquetas"
 msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
 msgstr "Não foi possível apagar o conjunto de etiquetas - Existem perguntas que dependem delas. Deve apagar estas perguntas antes de prosseguir."
 
+msgid "Insert of Label Set failed"
+msgstr "Falha na inserção de Conjunto de Etiquetas"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/labels.php:585
 msgid "Failed to insert label"
 msgstr "Erro ao inserir legenda"
 
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/labels.php:626
+msgid "This label code is already used in this labelset. Please choose another code or rename the existing one."
+msgstr "Este código de etiquetas já está a ser usado neste conjunto de etiquetas. Por favor, escolha outro código ou altere o nome do existente."
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/labels.php:615
 msgid "Failed to update label"
 msgstr "Erro ao actualizar a legenda"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/labels.php:671
+msgid "Can't update labels because you are using duplicated codes"
+msgstr "Não é possível actualizar as etiquetas porque está a usar códigos duplicados"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/labels.php:653
 msgid "Failed to delete label"
@@ -2590,9 +2854,16 @@ msgstr "Erro ao apagar a legenda"
 msgid "You have to enter user name and email."
 msgstr "Deve introduzir nome de utilizador e email."
 
+msgid "Check Data"
+msgstr "Verifique ois Dados"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/login_check.php:76
 msgid "You have to login first."
 msgstr "Tem de fazer primeiro ´login´"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/usercontrol.php:93
+msgid "Login"
+msgstr "Login"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/login_check.php:94
 msgid "Forgot Your Password?"
@@ -2669,9 +2940,6 @@ msgstr "Obrigatória"
 msgid "Label Set:"
 msgstr "Etiquetas:"
 
-msgid "Mandatory:"
-msgstr "Obrigatória:"
-
 msgid "Select CSV File"
 msgstr "Selecionarficheiro CSV::"
 
@@ -2692,6 +2960,9 @@ msgstr "Copiar Atributos?"
 
 msgid "Edit Question"
 msgstr "Modificar pergunta"
+
+msgid "Survey is currently active."
+msgstr "O inquérito está activo."
 
 msgid "Update Question"
 msgstr "Actualizar pergunta"
@@ -2732,6 +3003,9 @@ msgstr "Data de finalização"
 msgid "Start Language"
 msgstr "Idioma inicial"
 
+msgid "Not Selected"
+msgstr "Não Seleccionado"
+
 msgid "Filter Settings"
 msgstr "Opções do Filtro"
 
@@ -2756,6 +3030,17 @@ msgstr "Resumo de todos campos disponíveis"
 msgid "View Stats"
 msgstr "Ver Estatística"
 
+msgid "Please wait ..."
+msgstr "Por favor, aguarde ..."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:749
+msgid "Getting Questions and Answers ..."
+msgstr "A obter Perguntas e Respostas"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:857
+msgid "Getting Result Count ..."
+msgstr "A obter a Contagem de Resultados"
+
 msgid "Results"
 msgstr "Resultados"
 
@@ -2770,6 +3055,10 @@ msgstr "Percentagem do total"
 
 msgid "Browse"
 msgstr "Navegador"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/statistics.php:959
+msgid "Generating Summaries ..."
+msgstr "A gerar Resumos ..."
 
 msgid "Field Summary for"
 msgstr "Campo Resumido para"
@@ -2814,6 +3103,9 @@ msgstr "Contagem"
 
 msgid "Percentage"
 msgstr "Percentagem"
+
+msgid "Completed"
+msgstr "Completo"
 
 msgid "Select all"
 msgstr "Selecionar tudo:"
@@ -2921,7 +3213,7 @@ msgid "This template cannot be modified"
 msgstr "Este modelo não pode ser modificado"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/templates.php:478
-msgid "You can\\'t edit the default template."
+msgid "You can't edit the default template."
 msgstr "Não pode editar o modelo por defeito."
 
 msgid "Rename this template to:"
@@ -2958,6 +3250,9 @@ msgstr "Ficheiros standard:"
 msgid "Now editing:"
 msgstr "Em edição:"
 
+msgid "Other Files:"
+msgstr "Outros Ficheiros:"
+
 msgid "Save Changes"
 msgstr "Guardar Alterações"
 
@@ -2965,8 +3260,11 @@ msgstr "Guardar Alterações"
 msgid "Changes cannot be saved to the default template."
 msgstr "Não podem ser gravadas alterações ao ´template´por defeito."
 
-msgid "Other Files:"
-msgstr "Outros Ficheiros:"
+msgid "Are you sure you want to delete this file?"
+msgstr "Tem a certeza de que quer apagar este ficheiro?"
+
+msgid "Files in the default template cannot be deleted."
+msgstr "Ficheiros do modelo por defeito não podem ser apagados."
 
 msgid "Upload a File"
 msgstr "Carregar um Ficheiro"
@@ -2997,6 +3295,9 @@ msgstr "Se forem inicializados códigos para este inquérito, este somente estar
 
 msgid "Do you want to create a tokens table for this survey?"
 msgstr "Deseja criar uma tabela de códigos para este inquérito?"
+
+msgid "Restore Options"
+msgstr "Opções de Restauro"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/dbchecker.php:89
 msgid "The following old token tables could be restored:"
@@ -3083,9 +3384,6 @@ msgstr "Buscar"
 msgid "Sort by: "
 msgstr "Ordenar por: "
 
-msgid "Language"
-msgstr "Idioma"
-
 msgid "Invite sent?"
 msgstr "Convite enviado?"
 
@@ -3138,6 +3436,10 @@ msgstr "De:"
 msgid "Subject"
 msgstr "Assunto:"
 
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:799
+msgid "to TokenID No"
+msgstr "para No IDCódigo"
+
 msgid "Send Invitations"
 msgstr "Enviar e-mail"
 
@@ -3147,8 +3449,8 @@ msgstr "A reenviar e-mail"
 msgid "Sending to TID No:"
 msgstr "Enviando ao TID "
 
-msgid "Invitation Sent To:"
-msgstr "E-mail Enviado a:"
+msgid "Invitation sent to:"
+msgstr "Convite enviado a:"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:775
 msgid "Mail to {FIRSTNAME} {LASTNAME} ({EMAIL}) Failed"
@@ -3166,8 +3468,8 @@ msgstr "Não houve e-mails válidos para enviar, porque enhum satisfez os crité
 msgid "Email Reminder"
 msgstr "Reenviar e-mail (E-mail)"
 
-msgid "Start at TID No:"
-msgstr "Iniciar no TID "
+msgid "Start at Token ID No:"
+msgstr "Iniciar no ID de Código No:"
 
 msgid "Send Reminders"
 msgstr "Enviar Lembretes"
@@ -3175,8 +3477,8 @@ msgstr "Enviar Lembretes"
 msgid "Sending Reminders"
 msgstr "A enviar Lembretes"
 
-msgid "Reminder Sent To:"
-msgstr "Lembrete Enviado a:"
+msgid "Reminder sent to:"
+msgstr "Lembrete enviado a:"
 
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
 msgstr "Não houve e-mails válidos para enviar. Nenhum satisfez os critérios - destinatário e envio de convite mas não tendo preenchido o inquérito. "
@@ -3198,6 +3500,10 @@ msgstr "Carregando.... Favor esperar."
 
 msgid "Add or Edit Token"
 msgstr "Adiccionar ou Editar Código"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1621
+msgid "Auto"
+msgstr "Automático"
 
 msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
 msgstr "Pode deixar este campo em branco e gerar automaticamente códigos seleccionando 'Criar Códigos' "
@@ -3277,6 +3583,166 @@ msgstr "Impossível relacionar com o directório LDAP"
 msgid "Can't connect to the LDAP directory"
 msgstr "Impossível ligar ao directório LDAP"
 
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1619
+msgid "ARMSCII-8 Armenian"
+msgstr "ARMSCII-8 Arménio"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1620
+msgid "US ASCII"
+msgstr "ASCII EUA"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1621
+msgid "Automatic"
+msgstr "Automático"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1622
+msgid "Big5 Traditional Chinese"
+msgstr "Big5 Chinês Tradicional"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1623
+msgid "Binary pseudo charset"
+msgstr "Conjunto de caracteres pseudo binários"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1624
+msgid "Windows Central European"
+msgstr "Windows Centro-europeu"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1625
+msgid "Windows Cyrillic"
+msgstr "Windows Cirílico"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1626
+msgid "Windows Arabic"
+msgstr "Windows Árabe"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1627
+msgid "Windows Baltic"
+msgstr "Windows Báltico"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1628
+msgid "DOS West European"
+msgstr "DOS Oeste-europeu"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1629
+msgid "DOS Central European"
+msgstr "DOS Centro-europeu"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:149
+msgid "DOS Russian"
+msgstr "DOS Russo"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1631
+msgid "SJIS for Windows Japanese"
+msgstr "SJIS para Windows Japonês"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1632
+msgid "DEC West European"
+msgstr "DEC Oeste-europeu"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1633
+msgid "UJIS for Windows Japanese"
+msgstr "UJIS para Windows Japonês"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1634
+msgid "EUC-KR Korean"
+msgstr "EUC-KR Coreano"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1635
+msgid "GB2312 Simplified Chinese"
+msgstr "GB2313 Chinês Simplificado"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1636
+msgid "GBK Simplified Chinese"
+msgstr "GBK Chinês Simplificado"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1637
+msgid "GEOSTD8 Georgian"
+msgstr "GEOSTD8 Georgiano"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1638
+msgid "ISO 8859-7 Greek"
+msgstr "ISO 8859-7 Grego"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1639
+msgid "ISO 8859-8 Hebrew"
+msgstr "ISO 8859-8 Hebreu"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1640
+msgid "HP West European"
+msgstr "HP Oeste-europeu"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1641
+msgid "DOS Kamenicky Czech-Slovak"
+msgstr "DOS Kamenicky Checo-Eslovaco"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1642
+msgid "KOI8-R Relcom Russian"
+msgstr "KOI8-R Relcom Russo"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1643
+msgid "KOI8-U Ukrainian"
+msgstr "KOI8-U Ucraniano"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1644
+msgid "cp1252 West European"
+msgstr "cp1252 Oeste-europeu"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1645
+msgid "ISO 8859-2 Central European"
+msgstr "ISO 8859-2 Centro-europeu"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1646
+msgid "ISO 8859-9 Turkish"
+msgstr "ISO 8859-9 Turco"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1647
+msgid "ISO 8859-13 Baltic"
+msgstr "ISO 8859-13 Báltico"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1648
+msgid "Mac Central European"
+msgstr "Mac Centro-europeu"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1649
+msgid "Mac West European"
+msgstr "Mac Oeste-europeu"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:128
+msgid "Shift-JIS Japanese"
+msgstr "Shift-JIS Japonês"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:165
+msgid "7bit Swedish"
+msgstr "Sueco 7bits"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1652
+msgid "TIS620 Thai"
+msgstr "TIS620 Tailandês"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1653
+msgid "UCS-2 Unicode"
+msgstr "UCS-2 Unicódigo"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:128
+msgid "EUC-JP Japanese"
+msgstr "Japonês EUC-JP"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1655
+msgid "UTF-8 Unicode"
+msgstr "UTO-8 Unicódigo"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1667
+msgid "Choose the CSV file to upload:"
+msgstr "Seleccione o ficheiro CSV para fazer 'upload':"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1669
+msgid "Character set of the file:"
+msgstr "Código de caracteres do ficheiro:"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1683
+msgid "Sorry, but the LDAP module is missing in your PHP configuration."
+msgstr "Infelizmente, o módulo LDAP não existe na sua configuração de PHP."
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1524
 msgid "LDAP is disabled or no LDAP query defined."
 msgstr "O LDAP está desactivado ou não há pergunta LDAP definida."
@@ -3310,15 +3776,21 @@ msgstr "Foi-lhe enviado um email com os seus dados de ´login´"
 msgid "Email to {NAME} ({EMAIL}) failed."
 msgstr "E-mail para {NAME} ({EMAIL}) falhou"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/usercontrol.php:93
-msgid "Login"
-msgstr "Login"
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/usercontrol.php:94
+msgid "Logging in..."
+msgstr "A fazer o 'login'..."
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/usercontrol.php:56
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/usercontrol.php:104
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/usercontrol.php:135
+msgid "Incorrect User name and/or Password!"
+msgstr "Nome de utilizador e/ou palavra-passe incorrectos!"
 
 msgid "Welcome {NAME}"
 msgstr "Bem-vindo(a) {NAME}"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/usercontrol.php:121
-msgid "Login successful."
+msgid "You logged in successfully."
 msgstr "Login bem sucedido."
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/usercontrol.php:148
@@ -3384,9 +3856,6 @@ msgstr "Actualização de direitos de utilizador bem sucedida."
 msgid "You are not allowed to change your own rights!"
 msgstr "Não pode modificar os seus próprios direitos!"
 
-msgid "User Groups"
-msgstr "Grupos de Utilizadores"
-
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/userrighthandling.php:69
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/userrighthandling.php:543
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/userrighthandling.php:637
@@ -3401,6 +3870,9 @@ msgstr "Eliminar Grupo de Utilizadores actual"
 
 msgid "Add New User Group"
 msgstr "Adicionar novo Grupo de Utilizadores"
+
+msgid "User Groups"
+msgstr "Grupos de Utilizadores"
 
 msgid "Full name"
 msgstr "Nome Completo"
@@ -3443,19 +3915,12 @@ msgstr "Editar Utilizador"
 msgid "Name:"
 msgstr "Nome:"
 
-msgid "Optional"
-msgstr "Opcional"
-
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/userrighthandling.php:507
 msgid "Edit User Group (Owner: "
 msgstr "Editar Grupo de Utilizadores (Proprietário:"
 
 msgid "Update User Group"
 msgstr "Actualizar Grupo de Utilizadores"
-
-# D:\xampp\xampp\htdocs\phpsurveyor/admin/userrighthandling.php:545
-msgid "To:"
-msgstr "Para:"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/userrighthandling.php:547
 msgid "Send me a copy:"
@@ -3470,6 +3935,9 @@ msgstr "Mensagem:"
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/userrighthandling.php:553
 msgid "Send"
 msgstr "Enviar"
+
+msgid "Reset"
+msgstr "Reinício"
 
 msgid "Deleting User Group"
 msgstr "Apagando Grupo de Utilizadores"
@@ -3502,6 +3970,14 @@ msgstr "Grupo já existe!"
 
 msgid "Group name was not supplied!"
 msgstr "Nome do grupo não indicado!"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/userrighthandling.php:310
+msgid "Message(s) sent successfully!"
+msgstr "Mensagem(s) enviadas com êxito!"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/userrighthandling.php:545
+msgid "To:"
+msgstr "Para:"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/userrighthandling.php:672
 msgid "Mail not sent!"
@@ -3554,9 +4030,16 @@ msgstr "Ignorar o novo registo. "
 msgid "Replace the existing record."
 msgstr "Substituir o registo existente. "
 
+msgid "Import"
+msgstr "Importar"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:83
 msgid "Cannot import the VVExport file."
 msgstr "Não é possível importar o ficheiro VVExport"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:98
+msgid "Back to Response Import"
+msgstr "Regressando à Importação de Resposta"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:225
 msgid "Import Failed on Record"
@@ -3576,15 +4059,15 @@ msgstr "NÃO refrescar esta página, dado que isso importaria novamente o fichei
 msgid "Total records imported:"
 msgstr "Total de registo importados"
 
-msgid "Welcome to PHPSurveyor Setup!"
-msgstr "Benvindo(a) à Configuração do PHPSurveyor!"
+msgid "Welcome to LimeSurvey Setup!"
+msgstr "Benvindo(a) à Configuração do LimeSurvey!"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/install/index.php:51
 msgid "The database defined in config.php does not exist."
 msgstr "A base de dados definida em config.pho não existe."
 
-msgid "PHPSurveyor can attempt to create this database for you."
-msgstr "PHPSurveyor pode tentar criar a base de dados."
+msgid "LimeSurvey can attempt to create this database for you."
+msgstr "O LimeSurvey pode tentar criar esta base de dados para si."
 
 msgid "Your selected database name is:"
 msgstr "O nome da base de dados selecionada é:"
@@ -3598,17 +4081,20 @@ msgstr "Uma base de dados chamada \"%s\" já existe."
 msgid "Do you want to populate that database now by creating the necessary tables?"
 msgstr "Quer introduzir novos dados à Base da Dados introduzindo as tabelas necessárias?"
 
+msgid "Database has been successfully upgraded to version "
+msgstr "A Base de Dados foi actualizada com êxito para a versão"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:67
 msgid "Bulgarian"
 msgstr "Búlgaro"
 
-# D:\xampp\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:71
-msgid "Chinese (Traditional)"
-msgstr "Chinês (Tradicional)"
-
 # D:\xampp\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:75
 msgid "Chinese (Simplified)"
 msgstr "Chinês (Simplificado)"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:71
+msgid "Chinese (Traditional - Hong Kong)"
+msgstr "Chinês (Tradicional - Hong-Kong)"
 
 msgid "Croatian"
 msgstr "Croata"
@@ -3632,6 +4118,10 @@ msgstr "Finlandês"
 # D:\xampp\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:100
 msgid "French"
 msgstr "Francês"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:124
+msgid "Galician"
+msgstr "Galego"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:104
 msgid "German"
@@ -3669,6 +4159,10 @@ msgstr "Lituano"
 msgid "Norwegian"
 msgstr "Norueguês"
 
+# D:\xampp\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:91
+msgid "Polish"
+msgstr "Polaco"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:140
 msgid "Portuguese"
 msgstr "Português"
@@ -3688,6 +4182,10 @@ msgstr "Romeno"
 msgid "Slovenian"
 msgstr "Esloveno"
 
+# D:\xampp\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:157
+msgid "Serbian"
+msgstr "Sérvio"
+
 # D:\xampp\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:161
 msgid "Spanish"
 msgstr "Espanhol"
@@ -3695,6 +4193,10 @@ msgstr "Espanhol"
 # D:\xampp\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:165
 msgid "Swedish"
 msgstr "Sueco"
+
+# D:\xampp\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:173
+msgid "Turkish"
+msgstr "Turco"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/classes/core/surveytranslator.php:169
 msgid "Vietnamese"
