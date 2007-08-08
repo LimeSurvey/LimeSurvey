@@ -53,7 +53,7 @@ $rootsymlinked      =   0;  // if your root document dir is symlinked LimeSurvey
 // Site Info
 $sitename           =   "LimeSurvey";     // The official name of the site (appears in the Window title)
 $scriptname         =   "admin.php";      // The name of the admin script
-$accesscontrol      =   1;                // Set this to 0 for no access control
+
 $defaultuser        =   "admin";          // This is the default username when LimeSurvey is installed
 $defaultpass        =   "password";       // This is the default password for the default user when LimeSurvey is installed
 

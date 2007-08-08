@@ -17,6 +17,10 @@ if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this scr
 $versionnumber = "1.50";
 $dbversionnumber = 112;
 
+// THIS VARIABLE IS PUT HERE TO AVOID THE USERS DISABLE THE ACCESS CONTROL AND NOT TO HAVE TO CHANGE THE CODE
+$accesscontrol      =   1;                // Set this to 0 for no access control
+
+
 
 if ($debug==1) {
         error_reporting(E_ALL); //For debug purposes - switch on in config.phh
