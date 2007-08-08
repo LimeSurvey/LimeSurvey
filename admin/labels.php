@@ -556,7 +556,7 @@ function insertlabelset()
 
 function modlabelsetanswers($lid)
 {
-	global $dbprefix, $connect, $clang, $labelsoutput;
+	global $dbprefix, $connect, $clang, $labelsoutput, $databasetype;
 	
 	$qulabelset = "SELECT * FROM ".db_table_name('labelsets')." WHERE lid='$lid'";
 	$rslabelset = db_execute_assoc($qulabelset) or die($connect->ErrorMsg());
