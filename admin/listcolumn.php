@@ -35,23 +35,29 @@ if (!$column)
 	exit;
 }
 
-$query = "SELECT id, $column FROM {$dbprefix}survey_$surveyid WHERE $column != ''";
+if ($connect->databaseType == 'odbc_mssql')
+    { $query = "SELECT id, ".db_quote_id($column)." FROM {$dbprefix}survey_$surveyid WHERE (".db_quote_id($column)." NOT LIKE '')"; }
+else
+    { $query = "SELECT id, ".db_quote_id($column)." FROM {$dbprefix}survey_$surveyid WHERE (".db_quote_id($column)." != '')"; }
 
 if ($sql && $sql != "NULL")
 {
 	$query .= " AND ".auto_unescape(urldecode($sql));
 }
 
+if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate is not null";}
+
 if ($order == "alpha")
 {
-	$query .= " ORDER BY $column";
+	$query .= " ORDER BY ".db_quote_id($column);
 }
 
 $result=db_execute_assoc($query) or die("Error with query: ".$query."<br />".$connect->ErrorMsg());
 $listcolumnoutput= "<table width='98%' class='statisticstable' border='1' cellpadding='2' cellspacing='0'>\n";
-$listcolumnoutput.= "<tr><td ><input type='image' src='$imagefiles/downarrow.png' align='left' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&column=$column&order=id', '_top')\"></td>\n";
+$listcolumnoutput.= "<tr><td><input type='image' src='$imagefiles/downarrow.png' align='center' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&column=$column&order=id', '_top')\"></td>\n";
 $listcolumnoutput.= "<td valign='top'><input type='image' align='right' src='$imagefiles/close.gif' onclick='window.close()' />";
-$listcolumnoutput.= "<input type='image' src='$imagefiles/downarrow.png' align='left' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&column=$column&order=alpha', '_top')\" />";
+if ($connect->databaseType != 'odbc_mssql')
+    { $listcolumnoutput.= "<input type='image' src='$imagefiles/downarrow.png' align='left' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&column=$column&order=alpha', '_top')\" />"; }
 $listcolumnoutput.= "</td></tr>\n";
 while ($row=$result->FetchRow())
 {

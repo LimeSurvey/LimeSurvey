@@ -1056,13 +1056,20 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				.$clang->gT("Result")."</strong></td>\n"
 				."\t</tr>\n";
 				$fieldname=substr($rt, 1, strlen($rt));
-				$query = "SELECT STDDEV(".db_quote_id($fieldname).") as stdev";
+                if ($connect->databaseType == 'odbc_mssql')
+                    { $query = "SELECT STDEVP(".db_quote_id($fieldname)."*1) as stdev"; }
+                else
+                    { $query = "SELECT STDDEV(".db_quote_id($fieldname).") as stdev"; }
 				$query .= ", SUM(".db_quote_id($fieldname)."*1) as sum";
 				$query .= ", AVG(".db_quote_id($fieldname)."*1) as average";
 				$query .= ", MIN(".db_quote_id($fieldname)."*1) as minimum";
 				$query .= ", MAX(".db_quote_id($fieldname)."*1) as maximum";
-				$query .= " FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT NULL AND ".db_quote_id($fieldname)." != ' '";
-				if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate is not null";}
+                if ($connect->databaseType == 'odbc_mssql')
+                    { $query .= " FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT NULL AND (".db_quote_id($fieldname)." NOT LIKE ' ')"; }
+                else
+                    { $query .= " FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT NULL AND (".db_quote_id($fieldname)." != ' ')"; }
+				
+                if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate is not null";}
 				if ($sql != "NULL") {$query .= " AND $sql";}
 				$result=db_execute_assoc($query) or die("Couldn't do maths testing<br />$query<br />".$connect->ErrorMsg());
 				while ($row=$result->FetchRow())
