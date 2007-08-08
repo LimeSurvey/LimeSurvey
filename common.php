@@ -428,7 +428,7 @@ function db_random()
 {
     global $connect,$databasetype;
     if ($databasetype=='odbc_mssql') {$srandom='NEWID()';}
-    else {$srandom=$connect->random();}
+    else {$srandom=$connect->random;}
     return $srandom;
     
 }
