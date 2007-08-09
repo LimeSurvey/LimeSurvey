@@ -467,7 +467,7 @@ function updateset($lid)
 			}
 		}
 	}	
-	if ($sqlvalues)
+	if (isset($sqlvalues))
 	{
         if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('labels')." ON");}
         foreach ($sqlvalues as $sqlline) 
