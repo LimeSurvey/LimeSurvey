@@ -1606,6 +1606,17 @@ function do_multipleshorttext($ia)
 {
 	global $dbprefix, $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
+    if (arraySearchByKey("numbers_only", $qidattributes, "attribute", 1)) {
+        $numbersonly = "onkeypress=\"return goodchars(event,'0123456789.')\"";
+    } else {
+        $numbersonly = "";
+    }
+    if ($maxchars=arraySearchByKey("maximum_chars", $qidattributes, "attribute", 1))
+    {
+        $maxsize=$maxchars['value'];
+    } else {
+        $maxsize=255;
+    }
 	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	} else {
@@ -1615,7 +1626,8 @@ function do_multipleshorttext($ia)
 	$anscount = $ansresult->RecordCount()*2;
 	//$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
 	$fn = 1;
-	$answer = "\t\t\t\t\t\t<table class='question'>\n";
+    $answer = keycontroljs();
+	$answer .= "\t\t\t\t\t\t<table class='question'>\n";
 	if ($anscount==0) 
 	   {
 		  $inputnames=array();
@@ -1635,7 +1647,7 @@ function do_multipleshorttext($ia)
 			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
 	
 			// --> START NEW FEATURE - SAVE
-			$answer .= "' onchange='modfield(this.name)'/>\n"
+			$answer .= "' onchange='modfield(this.name)' $numbersonly maxlength='$maxsize'/>\n"
 			. "\t\t\t\t\t\t\t\t</td>\n"
 			. "\t\t\t\t\t\t\t</tr>\n";
 			// --> END NEW FEATURE - SAVE

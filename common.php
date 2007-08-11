@@ -2302,7 +2302,7 @@ function questionAttributes()
 	"types"=>"M",
 	"help"=>"Limit the number of possible answers");
     $qattributes[]=array("name"=>"maximum_chars",
-    "types"=>"STUN",
+    "types"=>"STUNQ",
     "help"=>"Maximum Characters Allowed");
     $qattributes[]=array("name"=>"random_order",
     "types"=>"!LMOPQRWZ",
@@ -2310,6 +2310,9 @@ function questionAttributes()
     $qattributes[]=array("name"=>"text_input_width",
     "types"=>"NSTU",
     "help"=>"Width of text input box");
+    $qattributes[]=array("name"=>"numbers_only",
+    "types"=>"Q",
+    "help"=>"Allow only numerical input");
 
 	/* -- > Commented out since not yet used
     $qattributes[]=array("name"=>"permission",
