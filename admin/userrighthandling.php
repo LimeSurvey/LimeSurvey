@@ -854,7 +854,7 @@ if ($action == "addgroup")
 			$newgroupoutput .= "</h2>"
             . "<table width='100%' border='0' class='form2columns'>"
     		. "\t\t<tr><td align='right'><strong>".$clang->gT("Title").":</strong></td>\n"
-    		. "\t\t<td><input type='text' size='80' name='group_name_$grouplang' /><font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></td></tr>\n"
+    		. "\t\t<td><input type='text' size='80' maxlength='100' name='group_name_$grouplang' /><font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></td></tr>\n"
     		. "\t<tr><td align='right'><strong>".$clang->gT("Description:")."</strong></td>\n"
     		. "\t\t<td><textarea cols='80' rows='8' name='description_$grouplang'></textarea></td></tr>\n"
     		. "</table></div>";

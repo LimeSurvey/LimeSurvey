@@ -16,7 +16,28 @@ if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this scr
 include_once("login_check.php");
 if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	{
-
+	
+	//Standard Template Files
+	//Only these files may be edited or saved
+	$files[]=array("name"=>"startpage.pstpl");
+	$files[]=array("name"=>"survey.pstpl");
+	$files[]=array("name"=>"welcome.pstpl");
+	$files[]=array("name"=>"startgroup.pstpl");
+	$files[]=array("name"=>"groupdescription.pstpl");
+	$files[]=array("name"=>"question.pstpl");
+	$files[]=array("name"=>"submit.pstpl");
+	$files[]=array("name"=>"privacy.pstpl");
+	$files[]=array("name"=>"completed.pstpl");
+	$files[]=array("name"=>"endgroup.pstpl");
+	$files[]=array("name"=>"navigator.pstpl");
+	$files[]=array("name"=>"endpage.pstpl");
+	$files[]=array("name"=>"clearall.pstpl");
+	$files[]=array("name"=>"register.pstpl");
+	$files[]=array("name"=>"load.pstpl");
+	$files[]=array("name"=>"save.pstpl");
+	$files[]=array("name"=>"assessment.pstpl");
+	
+	
 	$file_version="LimeSurvey Template Editor ".$versionnumber;
 	$_SESSION['s_lang']=$_SESSION['adminlang'];
 	if(get_magic_quotes_gpc())
@@ -31,6 +52,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	if (!isset($screenname)) {$screenname=returnglobal('screenname');}
 	if (!isset($action)) {$action=returnglobal('action');}
 	
+	
 	if ($action != "newtemplate" && !$templatename) {$templatename = "default";}
 	$template_a=gettemplatelist();
 	foreach ($template_a as $tp) {
@@ -42,8 +64,10 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	//Save Changes if necessary
 	if ($action=="templatesavechanges" && $_POST['changes']) {
 		$_POST['changes']=str_replace("\r\n", "\n", $_POST['changes']);
-		if ($_POST['editfile']) {
-			$savefilename=$publicdir."/templates/".$_POST['templatename']."/".$_POST['editfile'];
+		if ($editfile) {
+            // Check if someone tries to submit a file other than one of the allowed filenames
+            if (multiarray_search($files,'name',$editfile)==false) {die('Invalid template filename');}  // Die you sneaky bastard!
+			$savefilename=$publicdir."/templates/".$_POST['templatename']."/".$editfile;
 			if (is_writable($savefilename)) {
 				if (!$handle = fopen($savefilename, 'w')) {
 					echo "Could not open file ($savefilename)";
@@ -136,25 +160,7 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 		}
 	}
 
-	//Standard Template Files
-	$files[]=array("name"=>"startpage.pstpl");
-	$files[]=array("name"=>"survey.pstpl");
-	$files[]=array("name"=>"welcome.pstpl");
-	$files[]=array("name"=>"startgroup.pstpl");
-	$files[]=array("name"=>"groupdescription.pstpl");
-	$files[]=array("name"=>"question.pstpl");
-	$files[]=array("name"=>"submit.pstpl");
-	$files[]=array("name"=>"privacy.pstpl");
-	$files[]=array("name"=>"completed.pstpl");
-	$files[]=array("name"=>"endgroup.pstpl");
-	$files[]=array("name"=>"navigator.pstpl");
-	$files[]=array("name"=>"endpage.pstpl");
-	$files[]=array("name"=>"clearall.pstpl");
-	$files[]=array("name"=>"register.pstpl");
-	$files[]=array("name"=>"load.pstpl");
-	$files[]=array("name"=>"save.pstpl");
-	$files[]=array("name"=>"assessment.pstpl");
-	
+
 	$normalfiles=array("DUMMYENTRY", ".", "..");
 	foreach ($files as $fl) {
 		$normalfiles[]=$fl["name"];
@@ -745,6 +751,16 @@ function makeoptions($array, $value, $text, $selectedvalue) {
 		$return .= ">".$ar[$text]."</option>\n";
 	}
 	return $return;
+}
+
+function multiarray_search($arrayVet, $campo, $valor){
+    while(isset($arrayVet[key($arrayVet)])){
+        if($arrayVet[key($arrayVet)][$campo] == $valor){
+            return key($arrayVet);
+        }
+        next($arrayVet);
+    }
+    return false;
 }
 
 

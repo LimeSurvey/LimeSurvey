@@ -1973,6 +1973,7 @@ function templatereplace($line)
 			//die(returnglobal('token'));
 			if (!isset($_SESSION['step']) || !$_SESSION['step'])  //First page, show LOAD
 			{
+				if (!isset($thissurvey['active'])) {$thissurvey['active']='N';}
 				$saveall = "<input type='submit' name='loadall' value='".$clang->gT("Load Unfinished Survey")."' class='saveall' ". (($thissurvey['active'] != "Y")? "disabled":"") ."/>";
 			}
 			elseif (isset($_SESSION['scid']) && (isset($_POST['move']) && $_POST['move'] == "movelast"))  //Already saved and on Submit Page, dont show Save So Far button

@@ -28,7 +28,7 @@ if ($action == "addquestion")
 		. "\t</tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<td align='right'  width='35%'><strong>".$clang->gT("Code:")."</strong></td>\n"
-		. "\t\t<td align='left'><input type='text' size='20' name='title' />"
+		. "\t\t<td align='left'><input type='text' maxlength='20' size='20' name='title' />"
 		. "<font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></td></tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Question:")."</strong></td>\n"
@@ -154,7 +154,7 @@ if ($action == "copyquestion")
         {
             $editquestion .= "(".$clang->gT("Base Language").")</h2>"
         	. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Code:")."</span>\n"
-        	. "\t\t<span class='settingentry'><input type='text' size='50' name='title' value='' /> ".$clang->gT("Note: You MUST enter a new question code!")."\n"
+        	. "\t\t<span class='settingentry'><input type='text' size='20' maxlength='20' name='title' value='' /> ".$clang->gT("Note: You MUST enter a new question code!")."\n"
         	. "\t</span></div>\n";
         }
     	else {
@@ -326,7 +326,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	$eqrow  = array_map('htmlspecialchars', $eqrow);
 	$editquestion .= '</h2>';
 	$editquestion .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Code:")."</span>\n"
-	. "\t\t<span class='settingentry'><input type='text' size='50' name='title' value=\"{$eqrow['title']}\" />\n"
+	. "\t\t<span class='settingentry'><input type='text' size='20' maxlength='20'  name='title' value=\"{$eqrow['title']}\" />\n"
 	. "\t</span></div>\n";
 	$editquestion .=  "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Question:")."</span>\n"
 	. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='question_{$eqrow['language']}'>{$eqrow['question']}</textarea>\n"
