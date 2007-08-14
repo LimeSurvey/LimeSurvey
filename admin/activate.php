@@ -419,7 +419,7 @@ else
 	$createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a coma
 	$tabname = "{$dbprefix}survey_{$_GET['sid']}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
 
-	$taboptarray = array('mysql' => 'TYPE='.$databasetabletype);
+	$taboptarray = array('mysql' => 'TYPE='.$databasetabletype.'  CHARACTER SET utf8');
 	$dict = NewDataDictionary($connect);
 	$sqlarray = $dict->CreateTableSQL($tabname, $createsurvey, $taboptarray);
 
