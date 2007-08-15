@@ -1376,8 +1376,8 @@ if (isset($_POST['summary']) && $_POST['summary'])
 						}
 						elseif($al[0]=="NoAnswer")
 						{
-							$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($al[2])." IS NULL OR ";
-                            $query .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." = ''" : " (".db_quote_id($al[2])." LIKE '')";
+							$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE (".db_quote_id($al[2])." IS NULL OR ";
+                            $query .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." = '')" : " (".db_quote_id($al[2])." LIKE ''))";
 						}
 					}
 					else
@@ -1398,10 +1398,9 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($rt)." = '$al[0]'";
 				}
 				if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate is not null";}                     
-				//echo $query;
 				if ($sql != "NULL") {$query .= " AND $sql";}
 				$result=db_execute_num($query) or die ("Couldn't do count of values<br />$query<br />".$connect->ErrorMsg());
-				$statisticsoutput .= "\n<!-- ($sql): $query -->\n\n";
+				// $statisticsoutput .= "\n<!-- ($sql): $query -->\n\n";
 				while ($row=$result->FetchRow())
 				{
 					if ($al[0] == "")
@@ -1410,7 +1409,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					{$fname="$al[1] <input type='submit' value='".$clang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]&amp;sql=".urlencode($sql)."', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";}
 					elseif ($qtype == "S" || $qtype == "U" || $qtype == "T" || $qtype == "Q")
 					{
-						if ($al[0] == "Answer")
+						if ($al[0] == "Answers")
 						{
 							$fname= "$al[1] <input type='submit' value='"
 							. $clang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]&amp;sql="
