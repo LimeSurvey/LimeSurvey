@@ -123,5 +123,5 @@ Calendar._TT["TIME_PART"] = "(Shift-)Klick oder Festhalten und Ziehen um den Wer
 Calendar._TT["DEF_DATE_FORMAT"] = "%d.%m.%Y";
 Calendar._TT["TT_DATE_FORMAT"] = "%a, %b %e";
 
-Calendar._TT["WK"] = "wk";
+Calendar._TT["WK"] = "kw";
 Calendar._TT["TIME"] = "Zeit:";
