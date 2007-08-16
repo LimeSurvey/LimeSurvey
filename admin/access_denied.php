@@ -74,9 +74,7 @@ if (isset($_SESSION['loginID']))
 		$accesssummary .= "<p>".$clang->gT("You are not allowed to edit groups in this survey!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
-	
-	
-	elseif($action == "browse_response")
+	elseif(returnglobal('action') == "browse_response" || returnglobal('action') == "listcolumn")
 		{		
 		$accesssummary .= "<p>".$clang->gT("You are not allowed to browse response!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
@@ -86,8 +84,6 @@ if (isset($_SESSION['loginID']))
 		$accesssummary .= "<p>".$clang->gT("You are not allowed to set assessment rules!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
-
-
 	elseif($action == "delusergroup")
 		{		
 		$accesssummary .= "<p>".$clang->gT("You are not allowed to delete this group!")."</p>";
