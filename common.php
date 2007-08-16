@@ -160,7 +160,11 @@ If ($dbexistsbutempty && $sourcefrom=='admin') {
 If (!$dbexistsbutempty && $sourcefrom=='admin')
 {
     $usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='DBVersion'";
-    $usresult = db_execute_assoc($usquery);
+    $usresult = db_execute_assoc($usquery,'',true);
+    if (!$usresult)
+    {
+     Die ("<br />The configured LimeSurvey database seems to exist but the LimeSurvey tables weren't found. <br />Please run the <a href='$homeurl/install/index.php'>install script</a> to install the necessary LimeSurvey tables.");
+	}
     $usrow = $usresult->FetchRow();
     if (intval($usrow['stg_value'])<$dbversionnumber)
     {
@@ -383,13 +387,14 @@ function &db_select_limit_num($sql,$numrows=-1,$offset=-1,$inputarr=false)
 	return $dataset;
 }
 
-function &db_execute_assoc($sql,$inputarr=false)
+function &db_execute_assoc($sql,$inputarr=false,$silent=false)
 {
 	global $connect;
 // Todo: Set fetchmode to previous state after changing 
 //	$oldfetchmode=
     $connect->SetFetchMode(ADODB_FETCH_ASSOC);
-	$dataset=$connect->Execute($sql,$inputarr) or die($sql);
+	$dataset=$connect->Execute($sql,$inputarr);
+	if (!$silent) {die($sql);}
 //	$connect->SetFetchMode($oldfetchmode);
 	return $dataset;
 }
