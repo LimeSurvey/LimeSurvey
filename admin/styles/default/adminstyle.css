@@ -454,3 +454,15 @@ span.settingcaption {
 .oddrow{
    background-color: #EBF2FA;
 }
+
+.choicelist{
+	width:200px;
+	font-size: 10pt;
+	
+}
+
+.ranklist{
+	width:200px;
+	margin-top:3px;
+
+}

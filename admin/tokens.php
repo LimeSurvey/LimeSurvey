@@ -156,7 +156,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		. "token C(10) ,\n "
 		. "language C(25) ,\n "
 		. "sent C(17) DEFAULT 'N',\n "
-		. "completed C(15) DEFAULT 'N',\n "
+		. "completed C(17) DEFAULT 'N',\n "
 		. "attribute_1 C(100) ,\n"
 		. "attribute_2 C(100) ,\n"
 		. "mpid I ";

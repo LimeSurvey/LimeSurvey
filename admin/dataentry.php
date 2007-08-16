@@ -40,7 +40,7 @@ if($actsurrows['browse_response'])
 		$dataentryoutput .= "<table width='99%' align='center' class='table2columns' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr'><td colspan='2' height='4' class='settingcaption'><strong>"
 		.$clang->gT("Data Entry")."</strong></td></tr>\n"
-		."\t<tr><td align='center'>$setfont\n"
+		."\t<tr><td align='center'>\n"
 		."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
 		.$clang->gT("The defined surveyor database does not exist")."<br />\n"
 		.$clang->gT("Either your selected database has not yet been created or there is a problem accessing it.")."<br /><br />\n"
@@ -56,7 +56,7 @@ if($actsurrows['browse_response'])
 		$dataentryoutput .= "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr><td colspan='2' height='4' class='settingcaption'><strong>"
 		.$clang->gT("Data Entry")."</strong></td></tr>\n"
-		."\t<tr><td align='center'>$setfont\n"
+		."\t<tr><td align='center'>\n"
 		."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
 		.$clang->gT("You have not selected a survey for data-entry.")."<br /><br />\n"
 		."<input type='submit' value='"
@@ -77,7 +77,7 @@ if($actsurrows['browse_response'])
 		$dataentryoutput .= "<table width='450' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr><td colspan='2' height='4'><strong>"
 		.$clang->gT("Data Entry")."</strong></td></tr>\n"
-		."\t<tr><td align='center'>$setfont\n";
+		."\t<tr><td align='center'>\n";
 
 		$lastanswfortoken=''; // check if a previous answer has been submitted or saved
 		$rlanguage='';
@@ -627,7 +627,7 @@ if($actsurrows['browse_response'])
 		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr><td colspan='2' height='4'><strong>"
 		.$clang->gT("Data Entry")."</strong></td></tr>\n"
-		."\t<tr><td style='border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #555555' colspan='2' align='center'>$setfont<strong>"
+		."\t<tr><td style='border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #555555' colspan='2' align='center'><strong>"
 		.$clang->gT("Editing Response")." (ID $id)</strong></td></tr>\n"
 		."\t<tr><td colspan='2' height='1'></td></tr>\n";
 
@@ -640,7 +640,7 @@ if($actsurrows['browse_response'])
 				$answer = $idrow[$fnames[$i][0]];
 				$question=$fnames[$i][2];
 				$dataentryoutput .= "\t<tr>\n"
-				."\t\t<td valign='top' align='right' width='25%'>$setfont"
+				."\t\t<td valign='top' align='right' width='25%'>"
 				."\n";
 				$dataentryoutput .= "\t\t\t<strong>{$fnames[$i][2]}</strong>\n";
 				$dataentryoutput .= "\t\t</font></td>\n"
@@ -686,7 +686,7 @@ if($actsurrows['browse_response'])
 					case "Z":
 						if (substr($fnames[$i][0], -5) == "other")
 						{
-							$dataentryoutput .= "\t\t\t$setfont<input type='text' name='{$fnames[$i][0]}' value='"
+							$dataentryoutput .= "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='"
 							.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' /></font>\n";
 						}
 						else
@@ -724,7 +724,7 @@ if($actsurrows['browse_response'])
 					case "!": //List (Radio)
 					if (substr($fnames[$i][0], -5) == "other")
 					{
-						$dataentryoutput .= "\t\t\t$setfont<input type='text' name='{$fnames[$i][0]}' value='"
+						$dataentryoutput .= "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='"
 						.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' /></font>\n";
 					}
 					else
@@ -884,12 +884,10 @@ if($actsurrows['browse_response'])
 								}
 							}
 						}
-						$ranklist .= "\t\t\t\t\t\t&nbsp;<font color='#000080'>$j:&nbsp;<input style='width:150; color: #222222; font-size: 10; background-color: silver' id='RANK_$thisqid$j'";
+						$ranklist .= "\t\t\t\t\t\t$j:&nbsp;<input class='ranklist' id='RANK_$thisqid$j'";
 						if (isset($currentvalues) && $currentvalues[$k])
 						{
-							$ranklist .= " value='"
-							. $thistext
-							. "'";
+							$ranklist .= " value='".$thistext."'";
 						}
 						$ranklist .= " onFocus=\"this.blur()\"  />\n"
 						. "\t\t\t\t\t\t<input type='hidden' id='d$myfname$j' name='d$myfname$j' value='";
@@ -908,7 +906,7 @@ if($actsurrows['browse_response'])
 					}
 
 					if (!isset($choicelist)) {$choicelist="";}
-					$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES_$thisqid' onclick=\"rankthis_$thisqid(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080; width: 150'>\n";
+					$choicelist .= "\t\t\t\t\t\t<select class='choicelist' size='$anscount' name='CHOICES' id='CHOICES_$thisqid' onclick=\"rankthis_$thisqid(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" >\n";
 					foreach ($answers as $ans)
 					{
 						if (!in_array($ans, $chosen))
@@ -919,13 +917,13 @@ if($actsurrows['browse_response'])
 					$choicelist .= "\t\t\t\t\t\t</select>\n";
 					$dataentryoutput .= "\t\t\t<table align='left' border='0' cellspacing='5'>\n"
 					."\t\t\t\t<tr>\n"
-					."\t\t\t\t\t<td align='left' valign='top' width='200' style='border: solid 1 #111111' bgcolor='silver'>\n"
-					."\t\t\t\t\t\t$setfont<strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+					."\t\t\t\t\t<td align='left' valign='top' width='200'>\n"
+					."\t\t\t\t\t\t<strong>"
 					.$clang->gT("Your Choices").":</strong><br />\n"
-					."&nbsp;&nbsp;&nbsp;&nbsp;".$choicelist
+					.$choicelist
 					."\t\t\t\t\t</font></td>\n"
-					."\t\t\t\t\t<td align='left' bgcolor='silver' width='200' style='border: solid 1 #111111'>\n"
-					."\t\t\t\t\t\t$setfont<strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+					."\t\t\t\t\t<td align='left'>\n"
+					."\t\t\t\t\t\t<strong>"
 					.$clang->gT("Your Ranking").":</strong></font><br />\n"
 					.$ranklist
 					."\t\t\t\t\t</td>\n"
@@ -958,12 +956,12 @@ if($actsurrows['browse_response'])
 						//$dataentryoutput .= substr($fnames[$i][0], strlen($fnames[$i][0])-5, 5)."<br />\n";
 						if (substr($fnames[$i][0], -5) == "other")
 						{
-							$dataentryoutput .= "\t\t\t$setfont<input type='text' name='{$fnames[$i][0]}' value='"
+							$dataentryoutput .= "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='"
 							.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' /></font>\n";
 						}
 						else
 						{
-							$dataentryoutput .= "\t\t\t$setfont<input type='checkbox' class='checkboxbtn' name='{$fnames[$i][0]}' value='Y'";
+							$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='{$fnames[$i][0]}' value='Y'";
 							if ($idrow[$fnames[$i][0]] == "Y") {$dataentryoutput .= " checked";}
 							$dataentryoutput .= " />{$fnames[$i][6]}</font><br />\n";
 						}
@@ -984,7 +982,7 @@ if($actsurrows['browse_response'])
 					while ($fnames[$i][3] == "U" && $question != "" && $question == $fnames[$i][2])
 					{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
-						$dataentryoutput .= "\t\t\t$setfont<input type='checkbox' class='checkboxbtn' name='{$fnames[$i][0]}' value='Y'";
+						$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='{$fnames[$i][0]}' value='Y'";
 						if ($idrow[$fnames[$i][0]] == "Y") {$dataentryoutput .= " checked";}
 						$dataentryoutput .= " />{$fnames[$i][6]}<br />\n";
 						if ($i<$nfncount)
@@ -1030,7 +1028,7 @@ if($actsurrows['browse_response'])
 						$thefieldname=$fnames[$i][0];
 						if (substr($thefieldname, -7) == "comment")
 						{
-							$dataentryoutput .= "\t\t<td>$setfont<input type='text' name='{$fnames[$i][0]}' size='50' value='"
+							$dataentryoutput .= "\t\t<td><input type='text' name='{$fnames[$i][0]}' size='50' value='"
 							.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' /></font></td>\n"
 							."\t</tr>\n";
 						}
@@ -1051,7 +1049,7 @@ if($actsurrows['browse_response'])
 						else
 						{
 							$dataentryoutput .= "\t<tr>\n"
-							."\t\t<td>$setfont<input type='checkbox' class='checkboxbtn' name=\"{$fnames[$i][0]}\" value='Y'";
+							."\t\t<td><input type='checkbox' class='checkboxbtn' name=\"{$fnames[$i][0]}\" value='Y'";
 							if ($idrow[$fnames[$i][0]] == "Y") {$dataentryoutput .= " checked";}
 							$dataentryoutput .= " />{$fnames[$i][6]}</font></td>\n";
 						}
@@ -1097,8 +1095,8 @@ if($actsurrows['browse_response'])
 					{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 						$dataentryoutput .= "\t<tr>\n"
-						."\t\t<td align='right'>$setfont{$fnames[$i][6]}</font></td>\n"
-						."\t\t<td>$setfont\n";
+						."\t\t<td align='right'>{$fnames[$i][6]}</font></td>\n"
+						."\t\t<td>\n";
 						for ($j=1; $j<=5; $j++)
 						{
 							$dataentryoutput .= "\t\t\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='$j'";
@@ -1119,8 +1117,8 @@ if($actsurrows['browse_response'])
 					{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 						$dataentryoutput .= "\t<tr>\n"
-						."\t\t<td align='right'>$setfont{$fnames[$i][6]}</font></td>\n"
-						."\t\t<td>$setfont\n";
+						."\t\t<td align='right'>{$fnames[$i][6]}</font></td>\n"
+						."\t\t<td>\n";
 						for ($j=1; $j<=10; $j++)
 						{
 							$dataentryoutput .= "\t\t\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='$j'";
@@ -1141,8 +1139,8 @@ if($actsurrows['browse_response'])
 					{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 						$dataentryoutput .= "\t<tr>\n"
-						."\t\t<td align='right'>$setfont{$fnames[$i][6]}</font></td>\n"
-						."\t\t<td>$setfont\n"
+						."\t\t<td align='right'>{$fnames[$i][6]}</font></td>\n"
+						."\t\t<td>\n"
 						."\t\t\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='Y'";
 						if ($idrow[$fnames[$i][0]] == "Y") {$dataentryoutput .= " checked";}
 						$dataentryoutput .= " />".$clang->gT("Yes")."&nbsp;\n"
@@ -1166,8 +1164,8 @@ if($actsurrows['browse_response'])
 					{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 						$dataentryoutput .= "\t<tr>\n"
-						."\t\t<td align='right'>$setfont{$fnames[$i][6]}</font></td>\n"
-						."\t\t<td>$setfont\n"
+						."\t\t<td align='right'>{$fnames[$i][6]}</font></td>\n"
+						."\t\t<td>\n"
 						."\t\t\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='I'";
 						if ($idrow[$fnames[$i][0]] == "I") {$dataentryoutput .= " checked";}
 						$dataentryoutput .= " />Increase&nbsp;\n"
@@ -1192,10 +1190,10 @@ if($actsurrows['browse_response'])
 						{
 							$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 							$dataentryoutput .= "\t<tr>\n"
-							."\t\t<td align='right' valign='top'>$setfont{$fnames[$i][6]}</font></td>\n";
+							."\t\t<td align='right' valign='top'>{$fnames[$i][6]}</font></td>\n";
 							$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$fnames[$i][8]}' and language='$language' order by sortorder, code";
 							$fresult = db_execute_assoc($fquery);
-							$dataentryoutput .= "\t\t<td>$setfont\n";
+							$dataentryoutput .= "\t\t<td>\n";
 							while ($frow=$fresult->FetchRow())
 							{
 								$dataentryoutput .= "\t\t\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='{$frow['code']}'";
@@ -1258,7 +1256,7 @@ if($actsurrows['browse_response'])
 				  //-->
 				  </script>\n";
 			$dataentryoutput .= "\t<tr>\n";
-			$dataentryoutput .= "\t\t<td colspan='3' align='center'>$setfont\n";
+			$dataentryoutput .= "\t\t<td colspan='3' align='center'>\n";
 			$dataentryoutput .= "\t\t<table><tr><td align='left'>\n";
 			$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' /><label for='closerecord'>".$clang->gT("Finalize response submission")."</label></td></tr>\n";
 			$dataentryoutput .="<input type='hidden' name='closedate' value='".date("Y-m-d H:i:s")."' />\n";
@@ -1407,7 +1405,7 @@ if($actsurrows['browse_response'])
 		$dataentryoutput .= "<table width='450' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr><td colspan='2' height='4'><strong>"
 		.$clang->gT("Data Entry")."</strong></td></tr>\n"
-		."\t<tr><td align='center'>$setfont\n"
+		."\t<tr><td align='center'>\n"
 		."\t\t\t<strong>".$thissurvey['name']."</strong><br />\n"
 		."\t\t\t".$thissurvey['description']."\n"
 		."\t\t</td>\n"
@@ -1415,7 +1413,7 @@ if($actsurrows['browse_response'])
 		$delquery = "DELETE FROM $surveytable WHERE id=$id";
 		$dataentryoutput .= "\t<tr>\n";
 		$delresult = $connect->Execute($delquery) or die ("Couldn't delete record $id<br />\n".htmlspecialchars($connect->ErrorMsg()));
-		$dataentryoutput .= "\t\t<td align='center'><br />$setfont<strong>".$clang->gT("Record Deleted")." (ID: $id)</strong><br /><br />\n"
+		$dataentryoutput .= "\t\t<td align='center'><br /><strong>".$clang->gT("Record Deleted")." (ID: $id)</strong><br /><br />\n"
 		."\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all'>".$clang->gT("Browse Responses")."</a></font>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
@@ -1457,7 +1455,7 @@ if($actsurrows['browse_response'])
 		if (count(GetAdditionalLanguagesFromSurveyID($surveyid))>0) {$dataentryoutput.=$langlistbox;}
 		$dataentryoutput .= "</td><td colspan='2' align='center'>\n"
 		."\t\t\t<strong>".$thissurvey['name']."</strong>\n"
-		."\t\t\t<br />$setfont".$thissurvey['description']."</font>\n"
+		."\t\t\t<br />".$thissurvey['description']."</font>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n";
 
@@ -1465,7 +1463,7 @@ if($actsurrows['browse_response'])
 		{
 			$dataentryoutput .= "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
-			."\t\t<td valign='top' align='right' width='30%'>$setfont<font color='red'>*</font><strong>".$clang->gT("Token").":</strong></font></td>\n"
+			."\t\t<td valign='top' align='right' width='30%'><font color='red'>*</font><strong>".$clang->gT("Token").":</strong></font></td>\n"
 			."\t\t<td valign='top'  align='left' style='padding-left: 20px'>\n"
 			."\t\t\t<input type='text' id='token' name='token' onkeyup='activateSubmit(this);'/>\n"
 			."\t\t</td>\n"
@@ -1491,7 +1489,7 @@ if($actsurrows['browse_response'])
 		{
 			$dataentryoutput .= "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
-			."\t\t<td valign='top' align='right' width='30%'>$setfont<strong>"
+			."\t\t<td valign='top' align='right' width='30%'><strong>"
 			.$clang->gT("Datestamp").":</strong></font></td>\n"
 			."\t\t<td valign='top'  align='left' style='padding-left: 20px'>\n"
 			."\t\t\t<input type='text' name='datestamp' value='$localtimedate' />\n"
@@ -1502,7 +1500,7 @@ if($actsurrows['browse_response'])
 		{
 			$dataentryoutput .= "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
-			."\t\t<td valign='top' align='right' width='30%'>$setfont<strong>"
+			."\t\t<td valign='top' align='right' width='30%'><strong>"
 			.$clang->gT("IP-Address").":</strong></font></td>\n"
 			."\t\t<td valign='top'  align='left' style='padding-left: 20px'>\n"
 			."\t\t\t<input type='text' name='ipaddr' value='NULL' />\n"
@@ -1520,7 +1518,7 @@ if($actsurrows['browse_response'])
 			$deqquery = "SELECT * FROM ".db_table_name("questions")." WHERE sid=$surveyid AND gid={$degrow['gid']} AND language='{$baselang}'";
 			$deqresult = db_execute_assoc($deqquery);
 			$dataentryoutput .= "\t<tr>\n"
-			."\t\t<td colspan='3' align='center'>$setfont<strong>{$degrow['group_name']}</strong></font></td>\n"
+			."\t\t<td colspan='3' align='center'><strong>{$degrow['group_name']}</strong></font></td>\n"
 			."\t</tr>\n";
 			$gid = $degrow['gid'];
 
@@ -1653,7 +1651,7 @@ if($actsurrows['browse_response'])
 				{
                     if ($bgc == "evenrow") {$bgc = "oddrow";} else {$bgc = "evenrow";} //Do no alternate on explanation row
 					$explanation = "<font size='1'>[".$clang->gT("Only answer this if the following conditions are met:")."]<br />$explanation\n";
-					$dataentryoutput .= "<tr bgcolor='#FFEEEE'><td colspan='3' align='left'>$setfont$explanation</font></td></tr>\n";
+					$dataentryoutput .= "<tr bgcolor='#FFEEEE'><td colspan='3' align='left'>$explanation</font></td></tr>\n";
 				}
 
 				//END OF GETTING CONDITIONS
@@ -1661,11 +1659,11 @@ if($actsurrows['browse_response'])
 				$qid = $deqrow['qid'];
 				$fieldname = "$surveyid"."X"."$gid"."X"."$qid";
 				$dataentryoutput .= "\t<tr class='$bgc'>\n"
-				."\t\t<td valign='top' width='1%'>$setfont<font size='1'>{$deqrow['title']}</font></font></td>\n"
+				."\t\t<td valign='top' width='1%'><font size='1'>{$deqrow['title']}</font></font></td>\n"
 				."\t\t<td valign='top' align='right' width='30%'>";
 				if ($deqrow['mandatory']=="Y") //question is mandatory
 				{
-					$dataentryoutput .= "$setfont<font color='red'>*</font></font>";
+					$dataentryoutput .= "<font color='red'>*</font></font>";
 				}
 				$dataentryoutput .= "<strong>{$deqrow['question']}</strong></td>\n"
 				."\t\t<td valign='top'  align='left' style='padding-left: 20px'>\n";
@@ -1704,7 +1702,7 @@ if($actsurrows['browse_response'])
 					$dataentryoutput .= "\t\t\t<table>\n";
 					while ($dearow = $dearesult->FetchRow())
 					{
-						$dataentryoutput .= "\t\t\t\t<tr><td align='right'>$setfont"
+						$dataentryoutput .= "\t\t\t\t<tr><td align='right'>"
 						.$dearow['answer']
 						."</font></td>\n"
 						."\t\t\t\t\t<td><input type='text' name='$fieldname{$dearow['code']}' /></td>\n"
@@ -1737,7 +1735,7 @@ if($actsurrows['browse_response'])
 						$dataentryoutput .= "\t\t\t</select>\n";
 						if ($fother == "Y")
 						{
-							$dataentryoutput .= "\t\t\t$setfont"
+							$dataentryoutput .= "\t\t\t"
 							.$clang->gT("Other").":</font>"
 							."<input type='text' name='{$fieldname}other' value='' />\n";
 						}
@@ -1771,7 +1769,7 @@ if($actsurrows['browse_response'])
 						$dataentryoutput .= "\t\t\t</select>\n";
 						if ($fother == "Y")
 						{
-							$dataentryoutput .= "\t\t\t$setfont"
+							$dataentryoutput .= "\t\t\t"
 							.$clang->gT("Other").":</font>"
 							."<input type='text' name='{$fieldname}other' value='' />\n";
 						}
@@ -1896,7 +1894,7 @@ if($actsurrows['browse_response'])
 							}
 						}
 						if (!isset($ranklist)) {$ranklist="";}
-						$ranklist .= "\t\t\t\t\t\t&nbsp;<font color='#000080'>$i:&nbsp;<input type='text' style='width:150; color: #222222; font-size: 10; background-color: silver' name='RANK$i' id='RANK_$thisqid$i'";
+						$ranklist .= "\t\t\t\t\t\t&nbsp;<font color='#000080'>$i:&nbsp;<input class='ranklist' type='text' name='RANK$i' id='RANK_$thisqid$i'";
 						if (isset($myfname) && $_SESSION[$myfname])
 						{
 							$ranklist .= " value='";
@@ -1921,7 +1919,7 @@ if($actsurrows['browse_response'])
 						$ranklist .= " id='cut_$thisqid$i' onclick=\"deletethis_$thisqid(document.addsurvey.RANK_$thisqid$i.value, document.addsurvey.d$fieldname$i.value, document.addsurvey.RANK_$thisqid$i.id, this.id)\"><br />\n\n";
 					}
 					if (!isset($choicelist)) {$choicelist="";}
-					$choicelist .= "\t\t\t\t\t\t<select size='$anscount' name='CHOICES' id='CHOICES_$thisqid' onclick=\"rankthis_$thisqid(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" style='background-color: #EEEFFF; font-family: verdana; font-size: 12; color: #000080; width: 150'>\n";
+					$choicelist .= "\t\t\t\t\t\t<select size='$anscount' class='choicelist' name='CHOICES' id='CHOICES_$thisqid' onclick=\"rankthis_$thisqid(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" >\n";
 					foreach ($answers as $ans)
 					{
 						if (_PHPVERSION < "4.2.0")
@@ -1943,13 +1941,13 @@ if($actsurrows['browse_response'])
 
 					$dataentryoutput .= "\t\t\t<table align='left' border='0' cellspacing='5'>\n"
 					."\t\t\t\t<tr>\n"
-					."\t\t\t\t\t<td align='left' valign='top' width='200' style='border: solid 1 #111111' bgcolor='silver'>\n"
-					."\t\t\t\t\t\t$setfont<strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+					."\t\t\t\t\t<td align='left' valign='top' width='200'>\n"
+					."\t\t\t\t\t\t<strong>"
 					.$clang->gT("Your Choices").":</strong></font><br />\n"
-					."&nbsp;&nbsp;&nbsp;&nbsp;".$choicelist
+					.$choicelist
 					."\t\t\t\t\t</td>\n"
-					."\t\t\t\t\t<td align='left' bgcolor='silver' width='200' style='border: solid 1 #111111'>\n"
-					."\t\t\t\t\t\t$setfont<strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+					."\t\t\t\t\t<td align='left'>\n"
+					."\t\t\t\t\t\t<strong>"
 					.$clang->gT("Your Ranking").":</strong><br />\n"
 					.$ranklist
 					."\t\t\t\t\t</font></td>\n"
@@ -1991,7 +1989,7 @@ if($actsurrows['browse_response'])
 								$dataentryoutput .= $divider;
 								$upto=0;
 							}
-							$dataentryoutput .= "\t\t\t$setfont<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['code']}' id='answer$fieldname{$mearow['code']}' value='Y'";
+							$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['code']}' id='answer$fieldname{$mearow['code']}' value='Y'";
 							if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
 							$dataentryoutput .= " /><label for='$fieldname{$mearow['code']}'>{$mearow['answer']}</label></font><br />\n";
 							$upto++;
@@ -2008,7 +2006,7 @@ if($actsurrows['browse_response'])
 					{
 						while ($mearow = $mearesult->FetchRow())
 						{
-							$dataentryoutput .= "\t\t\t$setfont<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['code']}' id='answer$fieldname{$mearow['code']}' value='Y'";
+							$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['code']}' id='answer$fieldname{$mearow['code']}' value='Y'";
 							if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
 							$dataentryoutput .= " /><label for='$fieldname{$mearow['code']}'>{$mearow['answer']}</label></font><br />\n";
 						}
@@ -2045,7 +2043,7 @@ if($actsurrows['browse_response'])
 					{
 						$dataentryoutput .= "\t<tr>\n";
 						$dataentryoutput .= "\t\t<td>\n";
-						$dataentryoutput .= "\t\t\t$setfont<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['code']}' value='Y'";
+						$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['code']}' value='Y'";
 						if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
 						$dataentryoutput .= " />{$mearow['answer']}\n";
 						$dataentryoutput .= "\t\t</font></td>\n";
@@ -2058,7 +2056,7 @@ if($actsurrows['browse_response'])
 					if ($deqrow['other'] == "Y")
 					{
 						$dataentryoutput .= "\t<tr>\n";
-						$dataentryoutput .= "\t\t<td  align='left' style='padding-left: 22px'>$setfont".$clang->gT("Other").":</font></td>\n";
+						$dataentryoutput .= "\t\t<td  align='left' style='padding-left: 22px'>".$clang->gT("Other").":</font></td>\n";
 						$dataentryoutput .= "\t\t<td>\n";
 						$dataentryoutput .= "\t\t\t<input type='text' name='$fieldname"."other' size='50'/>\n";
 						$dataentryoutput .= "\t\t</td>\n";
@@ -2093,8 +2091,8 @@ if($actsurrows['browse_response'])
 					while ($mearow = $mearesult->FetchRow())
 					{
 						$dataentryoutput .= "\t<tr>\n";
-						$dataentryoutput .= "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
-						$dataentryoutput .= "\t\t<td>$setfont\n";
+						$dataentryoutput .= "\t\t<td align='right'>{$mearow['answer']}</font></td>\n";
+						$dataentryoutput .= "\t\t<td>\n";
 						$dataentryoutput .= "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
 						$dataentryoutput .= "\t\t\t\t<option value=''>".$clang->gT("Please choose")."..</option>\n";
 						for ($i=1; $i<=5; $i++)
@@ -2114,7 +2112,7 @@ if($actsurrows['browse_response'])
 					while ($mearow = $mearesult->FetchRow())
 					{
 						$dataentryoutput .= "\t<tr>\n";
-						$dataentryoutput .= "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
+						$dataentryoutput .= "\t\t<td align='right'>{$mearow['answer']}</font></td>\n";
 						$dataentryoutput .= "\t\t<td>\n";
 						$dataentryoutput .= "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
 						$dataentryoutput .= "\t\t\t\t<option value=''>".$clang->gT("Please choose")."..</option>\n";
@@ -2135,7 +2133,7 @@ if($actsurrows['browse_response'])
 					while ($mearow = $mearesult->FetchRow())
 					{
 						$dataentryoutput .= "\t<tr>\n";
-						$dataentryoutput .= "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
+						$dataentryoutput .= "\t\t<td align='right'>{$mearow['answer']}</font></td>\n";
 						$dataentryoutput .= "\t\t<td>\n";
 						$dataentryoutput .= "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
 						$dataentryoutput .= "\t\t\t\t<option value=''>".$clang->gT("Please choose")."..</option>\n";
@@ -2155,7 +2153,7 @@ if($actsurrows['browse_response'])
 					while ($mearow = $mearesult->FetchRow())
 					{
 						$dataentryoutput .= "\t<tr>\n";
-						$dataentryoutput .= "\t\t<td align='right'>$setfont{$mearow['answer']}</font></td>\n";
+						$dataentryoutput .= "\t\t<td align='right'>{$mearow['answer']}</font></td>\n";
 						$dataentryoutput .= "\t\t<td>\n";
 						$dataentryoutput .= "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
 						$dataentryoutput .= "\t\t\t\t<option value=''>".$clang->gT("Please choose")."..</option>\n";
@@ -2233,7 +2231,7 @@ if($actsurrows['browse_response'])
 				  //-->
 				  </script>\n";
 			$dataentryoutput .= "\t<tr>\n";
-			$dataentryoutput .= "\t\t<td colspan='3' align='center'>$setfont\n";
+			$dataentryoutput .= "\t\t<td colspan='3' align='center'>\n";
 			$dataentryoutput .= "\t\t<table><tr><td align='left'>\n";
 			$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' checked='checked'/><label for='closerecord'>".$clang->gT("Finalize response submission")."</label></td></tr>\n";
 			$dataentryoutput .="<input type='hidden' name='closedate' value='".date("Y-m-d H:i:s")."' />\n";
@@ -2272,7 +2270,7 @@ if($actsurrows['browse_response'])
 				$dataentryoutput .= "\t</tr>\n";
 			}
 			$dataentryoutput .= "\t<tr>\n";
-			$dataentryoutput .= "\t\t<td colspan='3' align='center'>$setfont\n";
+			$dataentryoutput .= "\t\t<td colspan='3' align='center'>\n";
 			$dataentryoutput .= "\t\t\t<input type='submit' id='submitdata' value='".$clang->gT("submit")."'";
 
 			if (bHasSurveyGotTokentable($thissurvey))
@@ -2289,7 +2287,7 @@ if($actsurrows['browse_response'])
 		elseif ($thissurvey['active'] == "N")
 		{
 			$dataentryoutput .= "\t<tr>\n";
-			$dataentryoutput .= "\t\t<td colspan='3' align='center'>$setfont\n";
+			$dataentryoutput .= "\t\t<td colspan='3' align='center'>\n";
 			$dataentryoutput .= "\t\t\t<font color='red'><strong>".$clang->gT("This survey is not yet active. Your response cannot be saved")."\n";
 			$dataentryoutput .= "\t\t</strong></font></font></td>\n";
 			$dataentryoutput .= "\t</tr>\n";
@@ -2298,7 +2296,7 @@ if($actsurrows['browse_response'])
 		{
 			$dataentryoutput .= "</form>\n";
 			$dataentryoutput .= "\t<tr>\n";
-			$dataentryoutput .= "\t\t<td colspan='3' align='center'>$setfont\n";
+			$dataentryoutput .= "\t\t<td colspan='3' align='center'>\n";
 			$dataentryoutput .= "\t\t\t<font color='red'><strong>".$clang->gT("Error")."</strong></font><br />\n";
 			$dataentryoutput .= "\t\t\t".$clang->gT("The survey you selected does not exist")."</font><br /><br />\n";
 			$dataentryoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";

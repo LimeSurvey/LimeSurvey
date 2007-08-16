@@ -37,6 +37,9 @@ if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 	$files[]=array("name"=>"save.pstpl");
 	$files[]=array("name"=>"assessment.pstpl");
 	
+	// Set this so common.php doesn't throw notices about undefined variables
+	$thissurvey['active']='N';
+
 	
 	$file_version="LimeSurvey Template Editor ".$versionnumber;
 	$_SESSION['s_lang']=$_SESSION['adminlang'];
