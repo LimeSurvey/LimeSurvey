@@ -387,7 +387,11 @@ function createinsertquery()
 			}
 			if ((isset($_POST['move']) && $_POST['move'] == "movesubmit"))
 			{
-				$query .= ", ".$connect->DBDate($mysubmitdate);
+                // is if a ALL-IN-ONE survey, we don't set the submit date before the data is validated
+                 if ($thissurvey['format'] != "A")
+				    $query .= ", ".$connect->DBDate($mysubmitdate);
+                 else
+                    $query .= ", NULL";
 			}
 			$query .=")";
 		}
@@ -405,9 +409,10 @@ function createinsertquery()
 				{
 					$query .= " ipaddr = '".$_SERVER['REMOTE_ADDR']."',";
 				}
-				if ((isset($_POST['move']) && $_POST['move'] == "movesubmit"))
+                // is if a ALL-IN-ONE survey, we don't set the submit date before the data is validated
+				if ((isset($_POST['move']) && $_POST['move'] == "movesubmit") && ($thissurvey['format'] != "A"))       
 				{
-                    $query .= " submitdate = ".$connect->DBDate($mysubmitdate)." ";
+                    $query .= " submitdate = ".$connect->DBDate($mysubmitdate).", ";
 				}
 				$fields=explode("|", $_POST['modfields']);
 				foreach ($fields as $field)

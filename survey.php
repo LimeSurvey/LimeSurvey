@@ -113,6 +113,11 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit") && (!isset($notans
 			$content .= templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
 		}
 
+        // this three lines are to set the submitdate
+        unset($_POST['modfields']);
+        $subquery = createinsertquery();
+        $connect->Execute($subquery);
+
 		//Create text for use in later print section
 		$completed = "<br /><strong><font size='2'><font color='green'>"
 		. $clang->gT("Thank you")."</strong></font><br /><br />\n\n"
