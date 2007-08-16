@@ -163,12 +163,12 @@ If (!$dbexistsbutempty && $sourcefrom=='admin')
     $usresult = db_execute_assoc($usquery,'',true);
     if (!$usresult)
     {
-     Die ("<br />The configured LimeSurvey database seems to exist but the LimeSurvey tables weren't found. <br />Please run the <a href='$homeurl/install/index.php'>install script</a> to install the necessary LimeSurvey tables.");
+     Die ("<br />The configured LimeSurvey database does not seem to exist and the LimeSurvey tables weren't found. <br />Please check the <a href='http://docs.limesurvey.org'>online manual</a> for installation instructions.<br />If you already edited config.php please run the <a href='$homeurl/install/index.php'>installation script</a>.");
 	}
     $usrow = $usresult->FetchRow();
     if (intval($usrow['stg_value'])<$dbversionnumber)
     {
-     Die ("<br />The LimeSurvey database is not up to date. <br />Please run the <a href='$homeurl/install/index.php'>install script</a> to upgrade your database.");
+     Die ("<br />The LimeSurvey database is not up to date. <br />Please run the <a href='$homeurl/install/index.php'>installation script</a> to upgrade your database.");
     }
 
     if (is_dir($homedir."/install") && $debug!=1)
@@ -394,7 +394,7 @@ function &db_execute_assoc($sql,$inputarr=false,$silent=false)
 //	$oldfetchmode=
     $connect->SetFetchMode(ADODB_FETCH_ASSOC);
 	$dataset=$connect->Execute($sql,$inputarr);
-	if (!$silent) {die($sql);}
+	if (!$silent && !$dataset) {die($sql);}
 //	$connect->SetFetchMode($oldfetchmode);
 	return $dataset;
 }
