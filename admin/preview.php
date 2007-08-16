@@ -12,15 +12,13 @@
 */
 
 
+//Ensure script is not run directly, avoid path disclosure
 include_once("login_check.php");
 require_once(dirname(__FILE__).'/sessioncontrol.php');
 require_once(dirname(__FILE__).'/../qanda.php');
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($qid)) {$qid=returnglobal('qid');}
-
-//Ensure script is not run directly, avoid path disclosure
-if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 if (empty($surveyid)) {die("No SID provided.");}
 if (empty($qid)) {die("No QID provided.");}
 

@@ -13,11 +13,10 @@
 
 
 
-if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
-if (!isset($noid)) {$noid=returnglobal('noid');}
-if (!isset($insertstyle)) {$insertstyle=returnglobal('insert');}
 
 include_once("login_check.php");
+if (!isset($noid)) {$noid=returnglobal('noid');}
+if (!isset($insertstyle)) {$insertstyle=returnglobal('insert');}
 
 if ($subaction != "upload")
 {

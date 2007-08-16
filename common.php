@@ -394,7 +394,7 @@ function &db_execute_assoc($sql,$inputarr=false,$silent=false)
 //	$oldfetchmode=
     $connect->SetFetchMode(ADODB_FETCH_ASSOC);
 	$dataset=$connect->Execute($sql,$inputarr);
-	if (!$silent && !$dataset) {die($sql);}
+	if (!$silent && !$dataset)  {die($connect->ErrorMsg().':'.$sql);}      
 //	$connect->SetFetchMode($oldfetchmode);
 	return $dataset;
 }
@@ -405,7 +405,7 @@ function &db_select_limit_assoc($sql,$numrows=-1,$offset=-1,$inputarr=false,$die
 
 	$connect->SetFetchMode(ADODB_FETCH_ASSOC);
 	$dataset=$connect->SelectLimit($sql,$numrows,$offset,$inputarr=false);
-    if (!$dataset && $dieonerror) {die($sql);}
+    if (!$dataset && $dieonerror) {die($connect->ErrorMsg().':'.$sql);}
 	return $dataset;
 }
 

@@ -11,67 +11,59 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-require_once(dirname(__FILE__).'/../config.php');
-if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
-
-
 include_once("login_check.php");
 
 sendcacheheaders();
 
-$actsurquery = "SELECT browse_response FROM ".db_table_name("surveys_rights")." WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
-$actsurresult = $connect->Execute($actsurquery) or die($connect->ErrorMsg());
-$actsurrows = $actsurresult->FetchRow();
-if($actsurrows['browse_response'])
+
+if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
+if (!isset($column)) {$column=returnglobal('column');}
+if (!isset($order)) {$order=returnglobal('order');}
+if (!isset($sql)) {$sql=returnglobal('sql');}
+
+if (!$surveyid)
 {
-	if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
-	if (!isset($column)) {$column=returnglobal('column');}
-	if (!isset($order)) {$order=returnglobal('order');}
-	if (!isset($sql)) {$sql=returnglobal('sql');}
-	
-	if (!$surveyid)
-	{
-		//NOSID
-		exit;
-	}
-	if (!$column)
-	{
-		//NOCOLUMN
-		exit;
-	}
-	
-	if ($connect->databaseType == 'odbc_mssql')
-	    { $query = "SELECT id, ".db_quote_id($column)." FROM {$dbprefix}survey_$surveyid WHERE (".db_quote_id($column)." NOT LIKE '')"; }
-	else
-	    { $query = "SELECT id, ".db_quote_id($column)." FROM {$dbprefix}survey_$surveyid WHERE (".db_quote_id($column)." != '')"; }
-	
-	if ($sql && $sql != "NULL")
-	{
-		$query .= " AND ".auto_unescape(urldecode($sql));
-	}
-	
-	if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate is not null";}
-	
-	if ($order == "alpha")
-	{
-		$query .= " ORDER BY ".db_quote_id($column);
-	}
-	
-	$result=db_execute_assoc($query) or die("Error with query: ".$query."<br />".$connect->ErrorMsg());
-	$listcolumnoutput= "<table width='98%' class='statisticstable' border='1' cellpadding='2' cellspacing='0'>\n";
-	$listcolumnoutput.= "<tr><td><input type='image' src='$imagefiles/downarrow.png' align='center' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&column=$column&order=id', '_top')\"></td>\n";
-	$listcolumnoutput.= "<td valign='top'><input type='image' align='right' src='$imagefiles/close.gif' onclick='window.close()' />";
-	if ($connect->databaseType != 'odbc_mssql')
-	    { $listcolumnoutput.= "<input type='image' src='$imagefiles/downarrow.png' align='left' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&column=$column&order=alpha', '_top')\" />"; }
-	$listcolumnoutput.= "</td></tr>\n";
-	while ($row=$result->FetchRow())
-	{
-		$listcolumnoutput.=  "<tr><td valign='top' align='center' >"
-		. "<a href='$scriptname?action=browse&sid=$surveyid&subaction=id&id=".$row['id']."' target='home'>"
-		. $row['id']."</a></td>"
-		. "<td valign='top'>".$row[$column]."</td></tr>\n";
-	}
-	$listcolumnoutput.= "</table>\n";
+	//NOSID
+	exit;
 }
+if (!$column)
+{
+	//NOCOLUMN
+	exit;
+}
+
+if ($connect->databaseType == 'odbc_mssql')
+	{ $query = "SELECT id, ".db_quote_id($column)." FROM {$dbprefix}survey_$surveyid WHERE (".db_quote_id($column)." NOT LIKE '')"; }
+else
+	{ $query = "SELECT id, ".db_quote_id($column)." FROM {$dbprefix}survey_$surveyid WHERE (".db_quote_id($column)." != '')"; }
+
+if ($sql && $sql != "NULL")
+{
+	$query .= " AND ".auto_unescape(urldecode($sql));
+}
+
+if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate is not null";}
+
+if ($order == "alpha")
+{
+	$query .= " ORDER BY ".db_quote_id($column);
+}
+
+$result=db_execute_assoc($query) or die("Error with query: ".$query."<br />".$connect->ErrorMsg());
+$listcolumnoutput= "<table width='98%' class='statisticstable' border='1' cellpadding='2' cellspacing='0'>\n";
+$listcolumnoutput.= "<tr><td><input type='image' src='$imagefiles/downarrow.png' align='center' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&column=$column&order=id', '_top')\"></td>\n";
+$listcolumnoutput.= "<td valign='top'><input type='image' align='right' src='$imagefiles/close.gif' onclick='window.close()' />";
+if ($connect->databaseType != 'odbc_mssql')
+	{ $listcolumnoutput.= "<input type='image' src='$imagefiles/downarrow.png' align='left' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&column=$column&order=alpha', '_top')\" />"; }
+$listcolumnoutput.= "</td></tr>\n";
+while ($row=$result->FetchRow())
+{
+	$listcolumnoutput.=  "<tr><td valign='top' align='center' >"
+	. "<a href='$scriptname?action=browse&sid=$surveyid&subaction=id&id=".$row['id']."' target='home'>"
+	. $row['id']."</a></td>"
+	. "<td valign='top'>".$row[$column]."</td></tr>\n";
+}
+$listcolumnoutput.= "</table>\n";
+
 	
 ?>

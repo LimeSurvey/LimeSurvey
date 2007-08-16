@@ -37,121 +37,121 @@ if ($action != "showprintablesurvey")
   ."\t\t<td valign='top' align='center' bgcolor='#F8F8FF'>\n";
 } else {$adminoutput='';}
 include_once("login_check.php");
-  
 
-if ($action == "activate")
-{
-	$surquery = "SELECT activate_survey FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
-	$surresult = $connect->Execute($surquery) or die($connect->ErrorMsg());		
-	$surrows = $surresult->FetchRow();
-
-	if($surrows['activate_survey'])
-		{
-		include("activate.php");
-		}
-	else
-		{
-		include("access_denied.php");		
-		}	
-}
-	
-if ($action == "deactivate")
-{
-	$surquery = "SELECT activate_survey FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
-	$surresult = $connect->Execute($surquery) or die($connect->ErrorMsg());		
-	$surrows = $surresult->FetchRow();
-
-	if($surrows['activate_survey'])
-		{
-		include("deactivate.php");
-		}
-	else
-		{
-		include("access_denied.php");		
-		}
-}
-
-
-if ($action == "importsurvey")
-{
-	if($_SESSION['USER_RIGHT_CREATE_SURVEY'])
-		{
-		include("http_importsurvey.php");
-		}
-	else
-		{
-		include("access_denied.php");		
-		}
-}
-
-
-
-if ($action == "importgroup")
-{
-	/*$surquery = "SELECT define_questions FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
-	$surresult = $connect->Execute($surquery) or die($connect->ErrorMsg());		
-	$surrows = $surresult->FetchRow();
-
-	if($surrows['define_questions'])
-		{*/
-		include("importgroup.php");
-		/*}
-	else
-		{
-		include("access_denied.php");		
-		}*/
-	
-}
-if ($action == "importquestion")
-{
-	/*$surquery = "SELECT define_questions FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
-	$surresult = $connect->Execute($surquery) or die($connect->ErrorMsg());		
-	$surrows = $surresult->FetchRow();
-
-	if($surrows['define_questions'])
-		{*/
-		include("importquestion.php");
-		/*}
-	else
-		{
-		include("access_denied.php");		
-		}*/
-}
-
-               
-//CHECK THAT SURVEYS MARKED AS ACTIVE ACTUALLY HAVE MATCHING TABLES
-//    checkactivations();
 
 if(isset($_SESSION['loginID']) && $action!='login')
 {
   //VARIOUS DATABASE OPTIONS/ACTIONS PERFORMED HERE
-  if ($action == "delsurvey"         || $action == "delgroup"       || $action == "delgroupall" ||
-      $action == "delquestion"       || $action =="delquestionall"  || $action == "insertnewsurvey" ||
-      $action == "copynewquestion"   || $action == "insertnewgroup" || $action == "insertCSV" ||
-      $action == "insertnewquestion" || $action == "updatesurvey"   || $action == "updatesurvey2" || $action=="updategroup" ||
+  if ($action == "delsurvey"         || $action == "delgroup"       || $action == "delgroupall"       ||
+      $action == "delquestion"       || $action == "delquestionall" || $action == "insertnewsurvey"   ||
+      $action == "copynewquestion"   || $action == "insertnewgroup" || $action == "insertCSV"         ||
+      $action == "insertnewquestion" || $action == "updatesurvey"   || $action == "updatesurvey2"     || 
+      $action == "updategroup"       || $action == "deactivate"     ||
       $action == "updatequestion"    || $action == "modanswer"      || $action == "renumberquestions" ||
       $action == "delattribute"      || $action == "addattribute"   || $action == "editattribute")
   {
-  	include("database.php");
+      include("database.php");
   }
 
 sendcacheheaders();
 
-  if ($action=="dumpdb")  { include("dumpdb.php"); }
-  else
-  if ($action=="dumplabel")  { include("dumplabel.php"); }
-  else
-  if ($action=="listcolumn")  { include("listcolumn.php"); }
-  else
-  if ($action=="vvexport")  { include("vvexport.php"); }
-  else
-  if ($action=="vvimport")  { include("vvimport.php"); }
-  else
-  if ($action=="previewquestion")  { include("preview.php"); }
-  else
-  if ($action=="deletesurvey")  { include("deletesurvey.php"); }
-  else
-  if ($action=="conditions")  { include("conditions.php"); }
+/* Check user right actions for validity  
+   Currently existing user rights:
+    `configurator`
+    `create_survey`
+    `create_user`
+    `delete_user`
+    `manage_label`
+    `manage_template`
+    `move_user`
+*/
+    
+if ($action == "importsurvey") 
+  { 
+      if ($_SESSION['USER_RIGHT_CREATE_SURVEY']==1)	{include("http_importsurvey.php");}
+	    else { include("access_denied.php");}
+  }      
+elseif ($action == "dumpdb") 
+  { 
+      if ($_SESSION['USER_RIGHT_CONFIGURATOR']==1)  {include("dumpdb.php");}
+        else { include("access_denied.php");}
+  }      
+elseif ($action == "dumplabel") 
+  { 
+      if ($_SESSION['USER_RIGHT_MANAGE_TEMPLATE']==1)  {include("dumplabel.php");}
+        else { include("access_denied.php");}
+  }      
+
+
+
+
+/* Check survey right actions for validity  
+   Currently existing survey rights:
+    `edit_survey_property`
+    `define_questions`
+    `browse_response`
+    `export`
+    `delete_survey`
+    `activate_survey`
+*/ 
+
+if ($surveyid)
+{
+$surquery = "SELECT * FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
+$surresult = db_execute_assoc($surquery);   
+$surrows = $surresult->FetchRow();
+}
+
+if ($action == "activate")
+    {
+    if($surrows['activate_survey'])    {include("activate.php");}
+        else { include("access_denied.php");}    
+    }
+elseif ($action == "conditions")
+    {
+    if($surrows['define_questions'])    {include("conditions.php");}
+        else { include("access_denied.php");}    
+    }    
+elseif ($action == "deactivate")
+    {
+    if($surrows['activate_survey'])    {include("deactivate.php");}
+        else { include("access_denied.php");}    
+    }
+elseif ($action == "deletesurvey")
+    {
+    if($surrows['delete_survey'])    {include("deletesurvey.php");}
+        else { include("access_denied.php");}    
+    }    
+elseif ($action == "importgroup")
+    {
+    if($surrows['define_questions'])    {include("importgroup.php");}
+        else { include("access_denied.php");}    
+    }
+elseif ($action == "importquestion")
+    {
+    if($surrows['define_questions'])    {include("importquestion.php");}
+        else { include("access_denied.php");}    
+    }    
+elseif ($action == "listcolumn")
+    {
+    if($surrows['browse_response'])    {include("listcolumn.php");}
+        else { include("access_denied.php");}    
+    }    
+elseif ($action == "previewquestion")
+    {
+    if($surrows['define_questions'])    {include("preview.php");}
+        else { include("access_denied.php");}    
+    }    
+elseif ($action == "vvexport")
+    {
+    if($surrows['browse_response'])    {include("vvexport.php");}
+        else { include("access_denied.php");}    
+    }    
+elseif ($action == "vvimport")
+    {
+    if($surrows['browse_response'])    {include("vvimport.php");}
+        else { include("access_denied.php");}    
+    }    
   else
   if ($action=="importoldresponses")  { include("importoldresponses.php"); }
   else
@@ -212,7 +212,7 @@ sendcacheheaders();
   
   if (isset($databaseoutput))  {$adminoutput.= $databaseoutput;} 	
   if (isset($templatesoutput)) {$adminoutput.= $templatesoutput;}
-  if (isset($accesssummary  )) {$adminoutput.= $accesssummary;}	// added by Dennis
+  if (isset($accesssummary  )) {$adminoutput.= $accesssummary;}	
   if (isset($surveysummary  )) {$adminoutput.= $surveysummary;}
   if (isset($usergroupsummary)){$adminoutput.= $usergroupsummary;}
   if (isset($usersummary    )) {$adminoutput.= $usersummary;}

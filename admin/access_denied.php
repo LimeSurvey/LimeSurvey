@@ -26,27 +26,38 @@ if (isset($_SESSION['loginID']))
 		} 
 	else
 	*/
-	if(returnglobal('action') == "newsurvey")
+    $action=returnglobal('action');
+	if($action == "dumpdb")
 		{		
-		$accesssummary .= "<p>".$clang->gT("You are not allowed to create new surveys!")."</p>";
+		$accesssummary .= "<p>".$clang->gT("You are not allowed dump the database!")."</p>";
 		$accesssummary .= "<a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}	
-	elseif(returnglobal('action') == "delsurvey" || $action == "delsurvey")
+    elseif($action == "dumplabel")
+        {        
+        $accesssummary .= "<p>".$clang->gT("You are not allowed export a label set!")."</p>";
+        $accesssummary .= "<a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+        }    
+    elseif($action == "newsurvey")
+        {        
+        $accesssummary .= "<p>".$clang->gT("You are not allowed to create new surveys!")."</p>";
+        $accesssummary .= "<a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+        }    
+	elseif($action == "deletesurvey")
 		{		
 		$accesssummary .= "<p>".$clang->gT("You are not allowed to delete this survey!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
-	elseif(returnglobal('action') == "addquestion")
+	elseif($action == "addquestion")
 		{		
 		$accesssummary .= "<p>".$clang->gT("You are not allowed to add new questions for this survey!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
-	elseif(returnglobal('action') == "activate")
+	elseif($action == "activate")
 		{		
 		$accesssummary .= "<p>".$clang->gT("You are not allowed to activate this survey!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
-	elseif(returnglobal('action') == "deactivate")
+	elseif($action == "deactivate")
 		{		
 		$accesssummary .= "<p>".$clang->gT("You are not allowed to deactivate this survey!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
@@ -54,29 +65,29 @@ if (isset($_SESSION['loginID']))
 	
 	
 	
-	elseif(returnglobal('action') == "addgroup")
+	elseif($action == "addgroup")
 		{		
 		$accesssummary .= "<p>".$clang->gT("You are not allowed to add a group to this survey!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
-	elseif(returnglobal('action') == "ordergroups")
+	elseif($action == "ordergroups")
 		{		
 		$accesssummary .= "<p>".$clang->gT("You are not allowed to order groups in this survey!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
-	elseif(returnglobal('action') == "editsurvey")
+	elseif($action == "editsurvey")
 		{		
 		$accesssummary .= "<p>".$clang->gT("You are not allowed to edit this survey!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
-	elseif(returnglobal('action') == "editgroup")
+	elseif($action == "editgroup")
 		{		
 		$accesssummary .= "<p>".$clang->gT("You are not allowed to edit groups in this survey!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
-	elseif(returnglobal('action') == "browse_response" || returnglobal('action') == "listcolumn")
+	elseif($action == "browse_response" || $action == "listcolumn" || $action == "vvexport" || $action == "vvimport")
 		{		
-		$accesssummary .= "<p>".$clang->gT("You are not allowed to browse response!")."</p>";
+		$accesssummary .= "<p>".$clang->gT("You are not allowed to browse responses!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
 	elseif($action == "assessment")
@@ -95,12 +106,12 @@ if (isset($_SESSION['loginID']))
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}	
 
-	/*elseif(returnglobal('action') == "importgroup")
+	/*elseif($action == "importgroup")
 		{		
 		$accesssummary .= "<p>".$clang->gT("You are not allowed to import a group!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
-	elseif(returnglobal('action') == "importquestion")
+	elseif($action == "importquestion")
 		{		
 		$accesssummary .= "<p>".$clang->gT("You are not allowed to to import a question!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";

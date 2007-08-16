@@ -11,7 +11,6 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-require_once(dirname(__FILE__).'/../config.php');
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 
 $language = $_SESSION['adminlang'];
@@ -2327,7 +2326,7 @@ if($actsurrows['browse_response'])
 }
 else
 {
-	$subaction = "browse_response";
+	$action = "browse_response";
 	include("access_denied.php");
 	include("admin.php");
 }

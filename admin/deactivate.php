@@ -11,10 +11,7 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-//Ensure script is not run directly, avoid path disclosure
-if (empty($homedir)) {die ("Cannot run this script directly");}
-include_once("login_check.php");
-include_once("database.php");
+include_once("login_check.php");  //Login Check dies also if the script is started directly
 
 $date = date('YmdHis'); //'Hi' adds 24hours+minutes to name to allow multiple deactiviations in a day
 $deactivateoutput='';
