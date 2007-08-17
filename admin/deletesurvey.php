@@ -52,7 +52,7 @@ if (!isset($ok) || !$ok)
 		$deletesurveyoutput .= "\t\t\t".$clang->gT("This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey.")."<br /><br />\n";
 	}
 
-	$deletesurveyoutput .= "\t\t</font></td>\n";
+	$deletesurveyoutput .= "\t\t</td>\n";
 	$deletesurveyoutput .= "\t</tr>\n";
 	$deletesurveyoutput .= "\t<tr>\n";
 	$deletesurveyoutput .= "\t\t<td align='center'><br />\n";
@@ -112,13 +112,13 @@ else //delete the survey
 	$srres = $connect->Execute($srdel);
 
 
-	$deletesurveyoutput .= "<table width='100%' align='center'>\n";
 	$deletesurveyoutput .= "\t<tr>\n";
-	$deletesurveyoutput .= "\t\t<td align='center'>$setfont<br />\n";
+	$deletesurveyoutput .= "\t\t<td align='center'><br />\n";
 	$deletesurveyoutput .= "\t\t\t<strong>".$clang->gT("This survey has been deleted.")."<br /><br />\n";
-	$deletesurveyoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
-	$deletesurveyoutput .= "\t\t</strong></font></td>\n";
+	$deletesurveyoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
+	$deletesurveyoutput .= "\t\t</strong></td>\n";
 	$deletesurveyoutput .= "\t</tr>\n";
+    $surveyid=false;
 
 }
 $deletesurveyoutput .= "</table><br />&nbsp;\n";

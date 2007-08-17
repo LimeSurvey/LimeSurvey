@@ -15,16 +15,6 @@ include_once("login_check.php");
 error_reporting(E_ALL ^ E_NOTICE); // No Notices!
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
-if (empty($surveyid)) {die("Cannot run this script directly");}
-
-$sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
-$sumresult5 = db_execute_assoc($sumquery5);
-$sumrows5 = $sumresult5->FetchRow();
-
-if ($sumrows5['export'] != "1")
-{
-	exit;
-}
 
 header("Content-Type: application/octetstream");
 header("Content-Disposition: ".
@@ -492,7 +482,7 @@ foreach ($fields as $field)
 		}
 	}
 }
-
+exit;
 function strip_tags_full($string) {
     $string=strip_tags($string);
 

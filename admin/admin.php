@@ -205,6 +205,11 @@ elseif ($action == "exportresults")
     if($surrows['export'])    {include("exportresults.php");}
         else { include("access_denied.php");}    
     }    
+elseif ($action == "exportspss")
+    {
+    if($surrows['export'])    {include("spss.php");}
+        else { include("access_denied.php");}    
+    }    
 elseif ($action == "statistics")
     {
     if($surrows['browse_response'])    {include("statistics.php");}
@@ -238,7 +243,8 @@ elseif ($action=="assessments" || $action=="assessmentdelete" || $action=="asses
 
     
  if (!isset($assessmentsoutput) && !isset($statisticsoutput) && !isset($browseoutput) && !isset($savedsurveyoutput) &&             
-     !isset($dataentryoutput) && !isset($conditionsoutput) && !isset($importoldresponsesoutput) && !isset($vvoutput) && !isset($tokenoutput) &&     
+     !isset($dataentryoutput) && !isset($conditionsoutput) && !isset($importoldresponsesoutput) && 
+     !isset($vvoutput) && !isset($tokenoutput) && !isset($exportoutput) &&    
      (isset($surveyid) || $action=="listurveys" || $action=="changelang" ||  $action=="checksettings" ||       //Still to check
       $action=="editsurvey" || $action=="updatesurvey" || $action=="ordergroups"  ||
       $action=="uploadf" || $action=="newsurvey" || $action=="listsurveys" ||   
