@@ -25,8 +25,7 @@
 // 8. Question Attributes
 // 9. Assessments
 
-require_once(dirname(__FILE__).'/../config.php');
-if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
+include_once("login_check.php");
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 

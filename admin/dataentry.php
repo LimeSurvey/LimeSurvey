@@ -11,8 +11,7 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
-
+include_once("login_check.php");
 $language = $_SESSION['adminlang'];
 //RL: set language for questions and labels to current admin language for browsing responses
 

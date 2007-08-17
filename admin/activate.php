@@ -15,10 +15,6 @@
 //Ensure script is not run directly, avoid path disclosure
 include_once("login_check.php");  //Login Check dies also if the script is started directly
 
-
-
-
-
 $activateoutput='';
 if (!isset($_GET['ok']) || !$_GET['ok'])
 {

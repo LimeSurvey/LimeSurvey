@@ -12,8 +12,6 @@
 */
 
 //Ensure script is not run directly, avoid path disclosure
-if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
-
 include_once("login_check.php");
 
 // A FILE TO IMPORT A DUMPED SURVEY FILE, AND CREATE A NEW SURVEY

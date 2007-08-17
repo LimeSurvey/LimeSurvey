@@ -12,7 +12,7 @@
 */
 
 
-require_once(dirname(__FILE__).'/../config.php');
+include_once("login_check.php");  //Login Check dies also if the script is started directly
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 
 

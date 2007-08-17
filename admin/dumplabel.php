@@ -19,13 +19,8 @@
 // 2. answers
 
 //Ensure script is not run directly, avoid path disclosure
-if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
-
-$lid=$_GET['lid'];
-
-require_once(dirname(__FILE__).'/../config.php');
 include_once("login_check.php");
-
+$lid=$_GET['lid'];
 if (!$lid)
 {
 	echo "<br />\n";

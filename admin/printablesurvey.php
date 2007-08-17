@@ -12,12 +12,9 @@
 */
 
 //Ensure script is not run directly, avoid path disclosure
-if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
-
-$surveyid = $_GET['sid'];
-
 include_once("login_check.php");
 
+$surveyid = $_GET['sid'];
 if (!isset($tpldir)) {$tpldir=$publicdir."/templates";}
 if (!isset($templatedir) || !$templatedir) {$thistpl=$tpldir."/default";} else {$thistpl=$tpldir."/$templatedir";}
 if (!is_dir($thistpl)) {$thistpl=$tpldir."/default";}

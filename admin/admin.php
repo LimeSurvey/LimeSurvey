@@ -81,10 +81,28 @@ elseif ($action == "dumplabel")
       if ($_SESSION['USER_RIGHT_MANAGE_TEMPLATE']==1)  {include("dumplabel.php");}
         else { include("access_denied.php");}
   }      
+elseif ($action == "checkintegrity") 
+  { 
+      if ($_SESSION['USER_RIGHT_CONFIGURATOR']==1)  {include("integritycheck.php");}
+        else { include("access_denied.php");}
+  }      
+elseif ($action=="labels" || $action=="newlabelset" || $action=="insertlabelset" ||
+        $action=="deletelabelset" || $action=="editlabelset" || $action=="modlabelsetanswers" || 
+        $action=="updateset" || $action=="importlabels")
+  { 
+      if ($_SESSION['USER_RIGHT_MANAGE_LABEL']==1)  {include("labels.php");}
+        else { include("access_denied.php");}
+  }      
+elseif ($action=="templates" || $action=="templatecopy" || $action=="templatesavechanges" || 
+        $action=="templaterename" || $action=="templateupload" || $action=="templatefiledelete" || 
+        $action=="templatezip")
+  { 
+      if ($_SESSION['USER_RIGHT_MANAGE_TEMPLATE']==1)  {include("templates.php");}
+        else { include("access_denied.php");}
+  }      
 
-
-
-
+  
+  
 /* Check survey right actions for validity  
    Currently existing survey rights:
     `edit_survey_property`
@@ -141,7 +159,12 @@ elseif ($action == "previewquestion")
     {
     if($surrows['define_questions'])    {include("preview.php");}
         else { include("access_denied.php");}    
-    }    
+    }
+elseif ($action=="addgroup" || $action=="editgroup")        
+    {
+    if($surrows['define_questions'])    {include("grouphandling.php");}
+        else { include("access_denied.php");}    
+    }
 elseif ($action == "vvexport")
     {
     if($surrows['browse_response'])    {include("vvexport.php");}
@@ -152,51 +175,70 @@ elseif ($action == "vvimport")
     if($surrows['browse_response'])    {include("vvimport.php");}
         else { include("access_denied.php");}    
     }    
-  else
-  if ($action=="importoldresponses")  { include("importoldresponses.php"); }
-  else
-  if ($action=="saved")  { include("saved.php"); }
-  else
-  if ($action=="exportresults")  { include("exportresults.php"); }
-  else  
-  if ($action=="statistics")  {	include("statistics.php"); }
-  else  
-  if ($action=="dataentry")  { include("dataentry.php"); }
-  else  
-  if ($action=="browse")  {	include("browse.php"); }
-  else  
-  if ($action=="tokens")  {	include("tokens.php"); }
-  else  
-  if ($action=="showprintablesurvey")  { include("printablesurvey.php"); }
-  else  
-  if ($action=="checkintegrity")  {	include("integritycheck.php"); }
-  else
-  if ($action=="labels" || $action=="newlabelset" || $action=="insertlabelset" ||
-      $action=="deletelabelset" || $action=="editlabelset" || $action=="modlabelsetanswers" || 
-      $action=="updateset" || $action=="importlabels") { include("labels.php");}
-  else    
-  if ($action=="templates" || $action=="templatecopy" || $action=="templatesavechanges" || 
-      $action=="templaterename" || $action=="templateupload" || $action=="templatefiledelete" || 
-      $action=="templatezip")  { include("templates.php"); }
-  else    
-  if ($action=="assessments"   || $action=="assessmentdelete" || $action=="assessmentedit" ||
-      $action=="assessmentadd" || $action=="assessmentupdate")  {	include("assessments.php"); }
-  else    
-  if (isset($surveyid) || $action=="listurveys" || $action=="changelang" ||  $action=="checksettings" ||
+elseif ($action == "importoldresponses")
+    {
+    if($surrows['browse_response'])    {include("importoldresponses.php");}
+        else { include("access_denied.php");}    
+    }    
+elseif ($action == "saved")
+    {
+    if($surrows['browse_response'])    {include("saved.php");}
+        else { include("access_denied.php");}    
+    }    
+elseif ($action == "exportresults")
+    {
+    if($surrows['export'])    {include("exportresults.php");}
+        else { include("access_denied.php");}    
+    }    
+elseif ($action == "statistics")
+    {
+    if($surrows['browse_response'])    {include("statistics.php");}
+        else { include("access_denied.php");}    
+    }    
+elseif ($action == "dataentry")
+    {
+    if($surrows['browse_response'])    {include("dataentry.php");}
+        else { include("access_denied.php");}    
+    }    
+elseif ($action == "browse")
+    {
+    if($surrows['browse_response'])    {include("browse.php");}               
+        else { include("access_denied.php");}    
+    }    
+elseif ($action == "tokens")
+    {
+    if($surrows['activate_survey'])    {include("tokens.php");}               
+        else { include("access_denied.php");}    
+    }    
+elseif ($action=="showprintablesurvey")  
+    { 
+        include("printablesurvey.php"); //No special right needed to show the printable survey
+    } 
+elseif ($action=="assessments" || $action=="assessmentdelete" || $action=="assessmentedit" || $action=="assessmentadd" || $action=="assessmentupdate")
+    {
+    if($surrows['define_questions'])    {include("assessments.php");}
+        else { include("access_denied.php");}    
+    }    
+elseif ($action=="addquestion" || $action=="copyquestion" || $action=="editquestion" || 
+        $action=="orderquestions" || $action=="editattribute" || $action=="delattribute" || 
+        $action=="addattribute" )
+    {
+    if($surrows['define_questions'])    {include("questionhandling.php");}
+        else { include(".php");}    
+    }    
+
+    
+ if (isset($surveyid) || $action=="listurveys" || $action=="changelang" ||  $action=="checksettings" ||       //Still to check
       $action=="editsurvey" || $action=="updatesurvey" || $action=="ordergroups"  ||
       $action=="uploadf" || $action=="newsurvey" || $action=="listsurveys" || 
        $action=="surveyrights" ) include("html.php");
       
- if ($action=="addquestion" || $action=="copyquestion" || $action=="editquestion"  || 
-     $action=="orderquestions" || $action=="editattribute" || $action=="delattribute" || 
-     $action=="addattribute" ) include ("questionhandling.php");
-
- if ($action=="adduser" || $action=="deluser" || $action=="moduser" || 
+ if ($action=="adduser" || $action=="deluser" || $action=="moduser" ||                                        //Still to check 
      $action=="userrights" || $action=="modifyuser" || $action=="editusers" || 
      $action=="addusergroup" || $action=="editusergroup" || $action=="mailusergroup" ||
      $action=="delusergroup" || $action=="usergroupindb" || $action=="mailsendusergroup" || 
      $action=="editusergroupindb" || $action=="editusergroups" || $action=="deleteuserfromgroup" ||
-     $action=="addgroup" || $action=="editgroup" || $action=="addusertogroup" || $action=="setuserrights") include ("userrighthandling.php");
+     $action=="addusertogroup" || $action=="setuserrights") include ("userrighthandling.php");
 
   
   // For some output we dont want to have the standard admin menu bar

@@ -11,10 +11,8 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-error_reporting(E_ALL ^ E_NOTICE); // No Notices!
-
-require_once(dirname(__FILE__).'/../config.php');
 include_once("login_check.php");
+error_reporting(E_ALL ^ E_NOTICE); // No Notices!
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (empty($surveyid)) {die("Cannot run this script directly");}

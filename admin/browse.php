@@ -11,13 +11,12 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
+include_once("login_check.php");  //Login Check dies also if the script is started directly
 
 if (!isset($limit)) {$limit=returnglobal('limit');}
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($id)) {$id=returnglobal('id');}
 if (!isset($order)) {$order=returnglobal('order');}
-
-include_once("login_check.php");
 
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}

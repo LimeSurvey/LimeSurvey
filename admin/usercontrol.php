@@ -11,9 +11,7 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-
-if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
-
+include_once("login_check.php");  //Login Check dies also if the script is started directly
 if ($accesscontrol <> 1) {return;}
 require_once($homedir."/classes/core/sha256.php");
 

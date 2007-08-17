@@ -12,8 +12,6 @@
 */
 
 
-require_once(dirname(__FILE__).'/../config.php');
-
 include_once("login_check.php");
 
 

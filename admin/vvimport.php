@@ -11,9 +11,6 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-
-
-
 include_once("login_check.php");
 if (!isset($noid)) {$noid=returnglobal('noid');}
 if (!isset($insertstyle)) {$insertstyle=returnglobal('insert');}

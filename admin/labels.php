@@ -11,10 +11,9 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
+include_once("login_check.php");  //Login Check dies also if the script is started directly
 
 // ToDo: Prevent users from creating/savin labels with the same code in the same label set
-include_once("login_check.php");
 
 // Do not stripslashes on POSted fields because labels.php uses db_quoteall($str, $ispostvariable) that checks for magic_quotes_gpc
 // However We need to stripslashes from $_POST['method'] compared to

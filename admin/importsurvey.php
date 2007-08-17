@@ -13,7 +13,7 @@
 
 //Ensure script is not run directly, avoid path disclosure
 //importsurvey.php should be called from cmdline_importsurvey.php or http_importsurvey.php, they set the $importingfrom variable
-if (!isset($importingfrom)) {die ("Cannot run this script directly");}
+if (!isset($importingfrom) || isset($_REQUEST['importingfrom'])) {die("Cannot run this script directly");}
 
 $handle = fopen($the_full_file_path, "r");
 while (!feof($handle))

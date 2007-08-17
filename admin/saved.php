@@ -11,7 +11,6 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-include_once(dirname(__FILE__).'/../config.php');
 include_once("login_check.php");
 
 $surveyid=returnglobal('sid');

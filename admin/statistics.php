@@ -11,8 +11,6 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-
-if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 include_once("login_check.php");
 require_once('classes/core/class.progressbar.php');
 $statisticsoutput ='';

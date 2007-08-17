@@ -12,11 +12,10 @@
 */
 
 
-if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
+include_once("login_check.php");
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($action)) {$action=returnglobal('action');}
 
-include_once("login_check.php");
 
 $actsurquery = "SELECT edit_survey_property FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
 $actsurresult = $connect->Execute($actsurquery) or die($connect->ErrorMsg());		
