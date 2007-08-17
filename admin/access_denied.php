@@ -19,15 +19,9 @@ if (isset($_SESSION['loginID']))
 	{
 	
 	$accesssummary = "<br /><strong>".$clang->gT("Access denied!")."</strong><br />\n";
-	/*if(returnglobal('action') == "edituser")
-		{
-		$accesssummary .= $clang->gT("You are not allowed to change User Data!");
-		$accesssummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
-		} 
-	else
-	*/
+
     $action=returnglobal('action');
-	if($action == "dumpdb")
+	if  (  $action == "dumpdb"  )
 		{		
 		$accesssummary .= "<p>".$clang->gT("You are not allowed dump the database!")."</p>";
 		$accesssummary .= "<a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
@@ -37,6 +31,11 @@ if (isset($_SESSION['loginID']))
         $accesssummary .= "<p>".$clang->gT("You are not allowed export a label set!")."</p>";
         $accesssummary .= "<a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
         }    
+	elseif($action == "edituser")
+		{
+		$accesssummary .= $clang->gT("You are not allowed to change user data!");
+		$accesssummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+		} 
     elseif($action == "newsurvey")
         {        
         $accesssummary .= "<p>".$clang->gT("You are not allowed to create new surveys!")."</p>";
@@ -62,9 +61,6 @@ if (isset($_SESSION['loginID']))
 		$accesssummary .= "<p>".$clang->gT("You are not allowed to deactivate this survey!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
-	
-	
-	
 	elseif($action == "addgroup")
 		{		
 		$accesssummary .= "<p>".$clang->gT("You are not allowed to add a group to this survey!")."</p>";
@@ -106,7 +102,7 @@ if (isset($_SESSION['loginID']))
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}	
 
-	/*elseif($action == "importgroup")
+	elseif($action == "importgroup")
 		{		
 		$accesssummary .= "<p>".$clang->gT("You are not allowed to import a group!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
@@ -115,8 +111,7 @@ if (isset($_SESSION['loginID']))
 		{		
 		$accesssummary .= "<p>".$clang->gT("You are not allowed to to import a question!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
-		}*/
-		
+		}
 	else
 		{
 		$accesssummary .= "<br />".$clang->gT("You are not allowed to perform this operation!")."<br />\n";		
