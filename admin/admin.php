@@ -237,10 +237,11 @@ elseif ($action=="assessments" || $action=="assessmentdelete" || $action=="asses
 
 
     
- if (!isset($assessmentsoutput) && !isset($conditionsoutput) &&
+ if (!isset($assessmentsoutput) && !isset($statisticsoutput) && !isset($browseoutput) && !isset($savedsurveyoutput) &&             
+     !isset($dataentryoutput) && !isset($conditionsoutput) && !isset($importoldresponsesoutput) && !isset($vvoutput) && !isset($tokenoutput) &&     
      (isset($surveyid) || $action=="listurveys" || $action=="changelang" ||  $action=="checksettings" ||       //Still to check
       $action=="editsurvey" || $action=="updatesurvey" || $action=="ordergroups"  ||
-      $action=="uploadf" || $action=="newsurvey" || $action=="listsurveys" || 
+      $action=="uploadf" || $action=="newsurvey" || $action=="listsurveys" ||   
       $action=="surveyrights") ) include("html.php");
 
  if ($action=="addquestion" || $action=="copyquestion" || $action=="editquestion" || 
@@ -269,7 +270,7 @@ elseif ($action=="assessments" || $action=="assessmentdelete" || $action=="asses
         $adminoutput.= showadminmenu();
       }
     
-  
+                                                                        
   if (isset($databaseoutput))  {$adminoutput.= $databaseoutput;} 	
   if (isset($templatesoutput)) {$adminoutput.= $templatesoutput;}
   if (isset($accesssummary  )) {$adminoutput.= $accesssummary;}	
