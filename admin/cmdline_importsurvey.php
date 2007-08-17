@@ -42,28 +42,22 @@ $_SERVER['SERVER_NAME'] = "";				// just to avoid notices
 $_SERVER['SERVER_SOFTWARE'] = "";		// just to avoid notices
 require_once(dirname(__FILE__).'/../config.php');  // config.php itself includes common.php
 
-if ($accesscontrol <> 1) 	// no access control
-{
-	$_SESSION['loginID'] = 1;
-}
-else
-{
-	require_once($homedir."/classes/core/sha256.php"); 
-	$adminoutput ="";										// just to avoid notices
-	include("database.php");
-	$query = "SELECT uid, password, lang FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($username);
-	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-	$result = $connect->SelectLimit($query, 1) or die ($query."\n".$connect->ErrorMsg());
-	if ($result->RecordCount() < 1)
-	{
-		// wrong or unknown username and/or email
-		echo "\n".$clang->gT("User name invalid!")."\n";
-		exit;
+require_once($homedir."/classes/core/sha256.php"); 
+$adminoutput ="";										// just to avoid notices
+include("database.php");
+$query = "SELECT uid, password, lang FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($username);
+$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+$result = $connect->SelectLimit($query, 1) or die ($query."\n".$connect->ErrorMsg());
+if ($result->RecordCount() < 1)
+   {
+	// wrong or unknown username and/or email
+	echo "\n".$clang->gT("User name invalid!")."\n";
+	exit;
 	}
-	else
+else
 	{
-		$fields = $result->FetchRow();
-		if (SHA256::hash($userpass) == $fields['password'])
+	$fields = $result->FetchRow();
+	if (SHA256::hash($userpass) == $fields['password'])
 		{
 			$_SESSION['loginID'] = intval($fields['uid']);
 			$clang = new limesurvey_lang($fields['lang']);
@@ -83,7 +77,7 @@ else
 			exit;
 		}
 	}
-}
+
 echo "\n";
 
 $importsurvey = "";

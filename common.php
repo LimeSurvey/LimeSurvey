@@ -17,8 +17,6 @@ if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this scr
 $versionnumber = "1.50";
 $dbversionnumber = 112;
 
-// THIS VARIABLE IS PUT HERE TO AVOID THE USERS DISABLE THE ACCESS CONTROL AND NOT TO HAVE TO CHANGE THE CODE
-$accesscontrol      =   1;                // Set this to 0 for no access control
 
 
 
@@ -214,7 +212,6 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 
 /**
      * showadminmenu() function returns html text for the administration button bar
-     * @global string $accesscontrol
      * @global string $homedir
      * @global string $scriptname
      * @global string $surveyid
@@ -224,7 +221,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
      */
     function showadminmenu()
         {
-        global $accesscontrol, $homedir, $scriptname, $surveyid, $setfont, $imagefiles, $clang;
+        global $homedir, $scriptname, $surveyid, $setfont, $imagefiles, $clang;
         $adminmenu  = "<table class='menubar'>\n"
                     . "\t<tr>\n"
                     . "\t\t<td>\n"
