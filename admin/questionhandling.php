@@ -17,120 +17,113 @@ include_once("login_check.php");
 
 if ($action == "addquestion")
 {
-	if($sumrows5['define_questions'])
+	$newquestionoutput =  "\t<form action='$scriptname' name='addnewquestion1' method='post'>\n"
+	. "<table width='100%' border='0'>\n\n"
+	. "\t<tr>\n"
+	. "\t\t<td colspan='2' class='settingcaption'>"
+	. "\t\t<strong>".$clang->gT("Add Question")."\n"
+	. "\t\t</strong></td>\n"
+	. "\t</tr>\n"
+	. "\t<tr>\n"
+	. "\t\t<td align='right'  width='35%'><strong>".$clang->gT("Code:")."</strong></td>\n"
+	. "\t\t<td align='left'><input type='text' maxlength='20' size='20' name='title' />"
+	. "<font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></td></tr>\n"
+	. "\t<tr>\n"
+	. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Question:")."</strong></td>\n"
+	. "\t\t<td align='left'><textarea cols='50' rows='3' name='question'></textarea></td>\n"
+	. "\t</tr>\n"
+	. "\t<tr>\n"
+	. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Help:")."</strong></td>\n"
+	. "\t\t<td align='left'><textarea cols='50' rows='3' name='help'></textarea></td>\n"
+	. "\t</tr>\n"
+	. "\t<tr>\n"
+	. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Type:")."</strong></td>\n"
+	. "\t\t<td align='left'><select name='type' id='question_type' "
+	. "onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
+	. "$qtypeselect"
+	. "\t\t</select></td>\n"
+	. "\t</tr>\n";
+
+	$newquestionoutput .= "\t<tr id='Validation'>\n"
+	. "\t\t<td align='right'><strong>".$clang->gT("Validation:")."</strong></td>\n"
+	. "\t\t<td align='left'>\n"
+	. "\t\t<input type='text' name='preg' size='50' />\n"
+	. "\t\t</td>\n"
+	. "\t</tr>\n";
+
+	$newquestionoutput .= "\t<tr id='LabelSets' style='display: none'>\n"
+	. "\t\t<td align='right'><strong>".$clang->gT("Label Set:")."</strong></td>\n"
+	. "\t\t<td align='left'>\n"
+	. "\t\t<select name='lid' >\n";
+	$labelsets=getlabelsets(GetBaseLanguageFromSurveyID($surveyid));
+	if (count($labelsets)>0)
 	{
-		$newquestionoutput =  "\t<form action='$scriptname' name='addnewquestion1' method='post'>\n"
-		. "<table width='100%' border='0'>\n\n"
-		. "\t<tr>\n"
-		. "\t\t<td colspan='2' class='settingcaption'>"
-		. "\t\t<strong>".$clang->gT("Add Question")."\n"
-		. "\t\t</strong></td>\n"
-		. "\t</tr>\n"
-		. "\t<tr>\n"
-		. "\t\t<td align='right'  width='35%'><strong>".$clang->gT("Code:")."</strong></td>\n"
-		. "\t\t<td align='left'><input type='text' maxlength='20' size='20' name='title' />"
-		. "<font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></td></tr>\n"
-		. "\t<tr>\n"
-		. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Question:")."</strong></td>\n"
-		. "\t\t<td align='left'><textarea cols='50' rows='3' name='question'></textarea></td>\n"
-		. "\t</tr>\n"
-		. "\t<tr>\n"
-		. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Help:")."</strong></td>\n"
-		. "\t\t<td align='left'><textarea cols='50' rows='3' name='help'></textarea></td>\n"
-		. "\t</tr>\n"
-		. "\t<tr>\n"
-		. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Type:")."</strong></td>\n"
-		. "\t\t<td align='left'><select name='type' id='question_type' "
-		. "onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
-		. "$qtypeselect"
-		. "\t\t</select></td>\n"
-		. "\t</tr>\n";
-
-		$newquestionoutput .= "\t<tr id='Validation'>\n"
-		. "\t\t<td align='right'><strong>".$clang->gT("Validation:")."</strong></td>\n"
-		. "\t\t<td align='left'>\n"
-		. "\t\t<input type='text' name='preg' size='50' />\n"
-		. "\t\t</td>\n"
-		. "\t</tr>\n";
-
-		$newquestionoutput .= "\t<tr id='LabelSets' style='display: none'>\n"
-		. "\t\t<td align='right'><strong>".$clang->gT("Label Set:")."</strong></td>\n"
-		. "\t\t<td align='left'>\n"
-		. "\t\t<select name='lid' >\n";
-		$labelsets=getlabelsets(GetBaseLanguageFromSurveyID($surveyid));
-		if (count($labelsets)>0)
+		$newquestionoutput .= "\t\t\t<option value=''>".$clang->gT("Please Choose...")."</option>\n";
+		foreach ($labelsets as $lb)
 		{
-			$newquestionoutput .= "\t\t\t<option value=''>".$clang->gT("Please Choose...")."</option>\n";
-			foreach ($labelsets as $lb)
-			{
-				$newquestionoutput .= "\t\t\t<option value='{$lb[0]}'>{$lb[1]}</option>\n";
-			}
+			$newquestionoutput .= "\t\t\t<option value='{$lb[0]}'>{$lb[1]}</option>\n";
 		}
-		$newquestionoutput .= "\t\t</select>\n"
-		. "\t\t</td>\n"
-		. "\t</tr>\n";
-
-		$newquestionoutput .= "\t<tr id='OtherSelection' style='display: none'>\n"
-		. "\t\t<td align='right'><strong>".$clang->gT("Other:")."</strong></td>\n"
-		. "\t\t<td align='left'>\n"
-		. "\t\t\t<label for='OY'>".$clang->gT("Yes")."</label>"
-		. "<input id='OY' type='radio' class='radiobtn' name='other' value='Y' />&nbsp;&nbsp;\n"
-		. "\t\t\t<label for='ON'>".$clang->gT("No")."</label>"
-		. "<input id='ON' type='radio' class='radiobtn' name='other' value='N' checked='checked' />\n"
-		. "\t\t</td>\n"
-		. "\t</tr>\n";
-
-		$newquestionoutput .= "\t<tr id='MandatorySelection'>\n"
-		. "\t\t<td align='right'><strong>".$clang->gT("Mandatory:")."</strong></td>\n"
-		. "\t\t<td align='left'>\n"
-		. "\t\t\t<label for='MY'>".$clang->gT("Yes")."</label>"
-		. "<input id='MY' type='radio' class='radiobtn' name='mandatory' value='Y' />&nbsp;&nbsp;\n"
-		. "\t\t\t<label for='MN'>".$clang->gT("No")."</label>"
-		. "<input id='MN' type='radio' class='radiobtn' name='mandatory' value='N' checked='checked' />\n"
-		. "\t\t</td>\n"
-		. "\t</tr>\n";
-
-		//Question attributes
-		$qattributes=questionAttributes();
-
-		$newquestionoutput .= "\t<tr id='QTattributes'>
-							<td align='right'><strong>".$clang->gT("Question Attributes:")."</strong></td>
-							<td align='left'><select id='QTlist' name='attribute_name' >
-							</select>
-							<input type='text' id='QTtext' name='attribute_value'  /></td></tr>\n";
-		$newquestionoutput .= "\t<tr>\n"
-		. "\t\t<td colspan='2' align='center'>";
-
-		if (isset($eqrow)) {$newquestionoutput .= questionjavascript($eqrow['type'], $qattributes);}
-		else {$newquestionoutput .= questionjavascript('', $qattributes);}
-
-		$newquestionoutput .= "<input type='submit' value='"
-		. $clang->gT("Add Question")."' />\n"
-		. "\t\n"
-		. "\t<input type='hidden' name='action' value='insertnewquestion' />\n"
-		. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
-		. "\t<input type='hidden' name='gid' value='$gid' />\n"
-		. "</td></tr></table>\n"
-		. "\t</form>\n"
-		. "\t<form enctype='multipart/form-data' name='importquestion' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
-		. "<table width='100%' border='0' >\n\t"
-		. "<tr><td colspan='2' align='center'><strong>".$clang->gT("OR")."</strong></td></tr>\n"
-		. "<tr><td colspan='2' class='settingcaption'>\n"
-		. "\t\t<strong>".$clang->gT("Import Question")."</strong></td></tr>\n\t<tr>"
-		. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Select CSV File").":</strong></td>\n"
-		. "\t\t<td align='left'><input name=\"the_file\" type=\"file\" size=\"50\" /></td></tr>\n"
-		. "\t<tr><td colspan='2' align='center'><input type='submit' "
-		. "value='".$clang->gT("Import Question")."' />\n"
-		. "\t<input type='hidden' name='action' value='importquestion' />\n"
-		. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
-		. "\t<input type='hidden' name='gid' value='$gid' />\n"
-		. "\t</td></tr></table></form>\n\n";
-
 	}
-	else
-	{
-		include("access_denied.php");
-	}
+	$newquestionoutput .= "\t\t</select>\n"
+	. "\t\t</td>\n"
+	. "\t</tr>\n";
+
+	$newquestionoutput .= "\t<tr id='OtherSelection' style='display: none'>\n"
+	. "\t\t<td align='right'><strong>".$clang->gT("Other:")."</strong></td>\n"
+	. "\t\t<td align='left'>\n"
+	. "\t\t\t<label for='OY'>".$clang->gT("Yes")."</label>"
+	. "<input id='OY' type='radio' class='radiobtn' name='other' value='Y' />&nbsp;&nbsp;\n"
+	. "\t\t\t<label for='ON'>".$clang->gT("No")."</label>"
+	. "<input id='ON' type='radio' class='radiobtn' name='other' value='N' checked='checked' />\n"
+	. "\t\t</td>\n"
+	. "\t</tr>\n";
+
+	$newquestionoutput .= "\t<tr id='MandatorySelection'>\n"
+	. "\t\t<td align='right'><strong>".$clang->gT("Mandatory:")."</strong></td>\n"
+	. "\t\t<td align='left'>\n"
+	. "\t\t\t<label for='MY'>".$clang->gT("Yes")."</label>"
+	. "<input id='MY' type='radio' class='radiobtn' name='mandatory' value='Y' />&nbsp;&nbsp;\n"
+	. "\t\t\t<label for='MN'>".$clang->gT("No")."</label>"
+	. "<input id='MN' type='radio' class='radiobtn' name='mandatory' value='N' checked='checked' />\n"
+	. "\t\t</td>\n"
+	. "\t</tr>\n";
+
+	//Question attributes
+	$qattributes=questionAttributes();
+
+	$newquestionoutput .= "\t<tr id='QTattributes'>
+						<td align='right'><strong>".$clang->gT("Question Attributes:")."</strong></td>
+						<td align='left'><select id='QTlist' name='attribute_name' >
+						</select>
+						<input type='text' id='QTtext' name='attribute_value'  /></td></tr>\n";
+	$newquestionoutput .= "\t<tr>\n"
+	. "\t\t<td colspan='2' align='center'>";
+
+	if (isset($eqrow)) {$newquestionoutput .= questionjavascript($eqrow['type'], $qattributes);}
+	else {$newquestionoutput .= questionjavascript('', $qattributes);}
+
+	$newquestionoutput .= "<input type='submit' value='"
+	. $clang->gT("Add Question")."' />\n"
+	. "\t\n"
+	. "\t<input type='hidden' name='action' value='insertnewquestion' />\n"
+	. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
+	. "\t<input type='hidden' name='gid' value='$gid' />\n"
+	. "</td></tr></table>\n"
+	. "\t</form>\n"
+	. "\t<form enctype='multipart/form-data' name='importquestion' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
+	. "<table width='100%' border='0' >\n\t"
+	. "<tr><td colspan='2' align='center'><strong>".$clang->gT("OR")."</strong></td></tr>\n"
+	. "<tr><td colspan='2' class='settingcaption'>\n"
+	. "\t\t<strong>".$clang->gT("Import Question")."</strong></td></tr>\n\t<tr>"
+	. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Select CSV File").":</strong></td>\n"
+	. "\t\t<td align='left'><input name=\"the_file\" type=\"file\" size=\"50\" /></td></tr>\n"
+	. "\t<tr><td colspan='2' align='center'><input type='submit' "
+	. "value='".$clang->gT("Import Question")."' />\n"
+	. "\t<input type='hidden' name='action' value='importquestion' />\n"
+	. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
+	. "\t<input type='hidden' name='gid' value='$gid' />\n"
+	. "\t</td></tr></table></form>\n\n";
+
 }
 
 if ($action == "copyquestion")
@@ -518,109 +511,185 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 //Constructing the interface here...
 if($action == "orderquestions")
 {
-    if($sumrows5['edit_survey_property'])
-	{
-    	if (isset($_POST['questionordermethod']))
-    	{
-    	   switch($_POST['questionordermethod'])
-    	   {
-            // Pressing the Up button
-    		case $clang->gT("Up", "unescaped"):
-    		$newsortorder=$_POST['sortorder']-1;
-    		$oldsortorder=$_POST['sortorder'];
-    		$cdquery = "UPDATE ".db_table_name('questions')." SET question_order=-1 WHERE gid=$gid AND question_order=$newsortorder";
-    		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
-    		$cdquery = "UPDATE ".db_table_name('questions')." SET question_order=$newsortorder WHERE gid=$gid AND question_order=$oldsortorder";
-    		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
-    		$cdquery = "UPDATE ".db_table_name('questions')." SET question_order='$oldsortorder' WHERE gid=$gid AND question_order=-1";
-    		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
-    		break;
-    
-            // Pressing the Down button
-    		case $clang->gT("Dn", "unescaped"):
-    		$newsortorder=$_POST['sortorder']+1;
-    		$oldsortorder=$_POST['sortorder'];
-    		$cdquery = "UPDATE ".db_table_name('questions')." SET question_order=-1 WHERE gid=$gid AND question_order=$newsortorder";
-    		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
-    		$cdquery = "UPDATE ".db_table_name('questions')." SET question_order='$newsortorder' WHERE gid=$gid AND question_order=$oldsortorder";
-    		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
-    		$cdquery = "UPDATE ".db_table_name('questions')." SET question_order=$oldsortorder WHERE gid=$gid AND question_order=-1";
-    		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
-    		break;
-         }
-      }
-    
-    	//Get the questions for this group
-    	$baselang = GetBaseLanguageFromSurveyID($surveyid);
-    	$oqquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='".$baselang."' order by question_order" ;
-    	$oqresult = db_execute_assoc($oqquery);
-    	
-        $orderquestions = "<table width='100%' border='0'>\n\t<tr ><td colspan='2' class='settingcaption'>"
-    		. "\t\t".$clang->gT("Change Question Order")."</td></tr>"
-    //        . "<tr> <td >".("Question Name")."</td><td>".("Action")."</td></tr>"
-            . "</table>\n";
+    if (isset($_POST['questionordermethod']))
+    {
+       switch($_POST['questionordermethod'])
+       {
+        // Pressing the Up button
+    	case $clang->gT("Up", "unescaped"):
+    	$newsortorder=$_POST['sortorder']-1;
+    	$oldsortorder=$_POST['sortorder'];
+    	$cdquery = "UPDATE ".db_table_name('questions')." SET question_order=-1 WHERE gid=$gid AND question_order=$newsortorder";
+    	$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    	$cdquery = "UPDATE ".db_table_name('questions')." SET question_order=$newsortorder WHERE gid=$gid AND question_order=$oldsortorder";
+    	$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    	$cdquery = "UPDATE ".db_table_name('questions')." SET question_order='$oldsortorder' WHERE gid=$gid AND question_order=-1";
+    	$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    	break;
 
-	// Get the condition dependecy array for all questions in this array and group
-	$questdepsarray = GetQuestDepsForConditions($surveyid,$gid);
-	if (!is_null($questdepsarray))
+        // Pressing the Down button
+    	case $clang->gT("Dn", "unescaped"):
+    	$newsortorder=$_POST['sortorder']+1;
+    	$oldsortorder=$_POST['sortorder'];
+    	$cdquery = "UPDATE ".db_table_name('questions')." SET question_order=-1 WHERE gid=$gid AND question_order=$newsortorder";
+    	$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    	$cdquery = "UPDATE ".db_table_name('questions')." SET question_order='$newsortorder' WHERE gid=$gid AND question_order=$oldsortorder";
+    	$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    	$cdquery = "UPDATE ".db_table_name('questions')." SET question_order=$oldsortorder WHERE gid=$gid AND question_order=-1";
+    	$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    	break;
+     }
+  }
+
+    //Get the questions for this group
+    $baselang = GetBaseLanguageFromSurveyID($surveyid);
+    $oqquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='".$baselang."' order by question_order" ;
+    $oqresult = db_execute_assoc($oqquery);
+    
+    $orderquestions = "<table width='100%' border='0'>\n\t<tr ><td colspan='2' class='settingcaption'>"
+    	. "\t\t".$clang->gT("Change Question Order")."</td></tr>"
+//        . "<tr> <td >".("Question Name")."</td><td>".("Action")."</td></tr>"
+        . "</table>\n";
+
+// Get the condition dependecy array for all questions in this array and group
+$questdepsarray = GetQuestDepsForConditions($surveyid,$gid);
+if (!is_null($questdepsarray))
+{
+	$orderquestions .= "<li class='movableNode'><strong><font color='orange'>".$clang->gT("Warning").":</font> ".$clang->gT("Current group is using conditional questions")."</strong><br /><br /><i>".$clang->gT("Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set")."</i></strong><br /><br/>".$clang->gT("See the conditions marked on the following questions").":<ul>\n";
+	foreach ($questdepsarray as $depqid => $depquestrow)
 	{
-		$orderquestions .= "<li class='movableNode'><strong><font color='orange'>".$clang->gT("Warning").":</font> ".$clang->gT("Current group is using conditional questions")."</strong><br /><br /><i>".$clang->gT("Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set")."</i></strong><br /><br/>".$clang->gT("See the conditions marked on the following questions").":<ul>\n";
-		foreach ($questdepsarray as $depqid => $depquestrow)
+		foreach ($depquestrow as $targqid => $targcid)
 		{
-			foreach ($depquestrow as $targqid => $targcid)
-			{
-				$listcid=implode("-",$targcid);
-				$orderquestions .= "<li><a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$gid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\"> [QID: ".$depqid."] </a> ";
-			}
-			$orderquestions .= "</li>\n";
+			$listcid=implode("-",$targcid);
+			$orderquestions .= "<li><a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$gid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\"> [QID: ".$depqid."] </a> ";
 		}
-		$orderquestions .= "</ul></li>";
+		$orderquestions .= "</li>\n";
+	}
+	$orderquestions .= "</ul></li>";
+}
+
+    $orderquestions	.= "<form method='post'>";	
+
+    $questioncount = $oqresult->RecordCount();        
+$oqarray = $oqresult->GetArray();
+for($i=0; $i < $questioncount ; $i++)
+{
+	$downdisabled = "";
+	$updisabled = "";
+	if ( !is_null($questdepsarray) && $i < $questioncount-1 &&
+	  array_key_exists($oqarray[$i+1]['qid'],$questdepsarray) &&
+	  array_key_exists($oqarray[$i]['qid'],$questdepsarray[$oqarray[$i+1]['qid']]) )
+	{
+		$downdisabled = "disabled=\"true\" class=\"disabledbtn\"";
+	}
+	if ( !is_null($questdepsarray) && $i !=0  &&
+	  array_key_exists($oqarray[$i]['qid'],$questdepsarray) &&
+	  array_key_exists($oqarray[$i-1]['qid'],$questdepsarray[$oqarray[$i]['qid']]) )
+	{
+		$updisabled = "disabled=\"true\" class=\"disabledbtn\"";
 	}
 
-    	$orderquestions	.= "<form method='post'>";	
-    
-       	$questioncount = $oqresult->RecordCount();        
-	$oqarray = $oqresult->GetArray();
-	for($i=0; $i < $questioncount ; $i++)
+	$orderquestions.="<li class='movableNode'>\n" ;
+	$orderquestions.= "\t<input style='float:right;";
+	if ($i == 0) {$orderquestions.="visibility:hidden;";}
+	$orderquestions.="' type='submit' name='questionordermethod' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$oqarray[$i]['question_order']}'\" ".$updisabled."/>\n";
+	if ($i < $questioncount-1)
 	{
-		$downdisabled = "";
-		$updisabled = "";
-		if ( !is_null($questdepsarray) && $i < $questioncount-1 &&
-		  array_key_exists($oqarray[$i+1]['qid'],$questdepsarray) &&
-		  array_key_exists($oqarray[$i]['qid'],$questdepsarray[$oqarray[$i+1]['qid']]) )
-		{
-			$downdisabled = "disabled=\"true\" class=\"disabledbtn\"";
-		}
-		if ( !is_null($questdepsarray) && $i !=0  &&
-		  array_key_exists($oqarray[$i]['qid'],$questdepsarray) &&
-		  array_key_exists($oqarray[$i-1]['qid'],$questdepsarray[$oqarray[$i]['qid']]) )
-		{
-			$updisabled = "disabled=\"true\" class=\"disabledbtn\"";
-		}
-
-		$orderquestions.="<li class='movableNode'>\n" ;
-		$orderquestions.= "\t<input style='float:right;";
-		if ($i == 0) {$orderquestions.="visibility:hidden;";}
-		$orderquestions.="' type='submit' name='questionordermethod' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$oqarray[$i]['question_order']}'\" ".$updisabled."/>\n";
-		if ($i < $questioncount-1)
-		{
-			// Fill the sortorder hiddenfield so we now what fi        eld is moved down
-			$orderquestions.= "\t<input type='submit' style='float:right;' name='questionordermethod' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$oqarray[$i]['question_order']}'\" ".$downdisabled."/>\n";
-		}
-		$orderquestions.=$oqarray[$i]['title'].": ".$oqarray[$i]['question']."</li>\n" ;
+		// Fill the sortorder hiddenfield so we now what fi        eld is moved down
+		$orderquestions.= "\t<input type='submit' style='float:right;' name='questionordermethod' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$oqarray[$i]['question_order']}'\" ".$downdisabled."/>\n";
 	}
+	$orderquestions.=$oqarray[$i]['title'].": ".$oqarray[$i]['question']."</li>\n" ;
+}
 
-  		$orderquestions.="</ul>\n"
-  		. "\t<input type='hidden' name='sortorder' />"
-  		. "\t<input type='hidden' name='action' value='orderquestions' />" 
-          . "</form>" ;
-  		$orderquestions .="<br />" ;
-      	}
-  	
-	else
-	{
-		include("access_denied.php");
-	}
+  	$orderquestions.="</ul>\n"
+  	. "\t<input type='hidden' name='sortorder' />"
+  	. "\t<input type='hidden' name='action' value='orderquestions' />" 
+      . "</form>" ;
+  	$orderquestions .="<br />" ;
+
 }	
+
+function questionjavascript($type, $qattributes)
+{
+    $newquestionoutput = "<script type='text/javascript'>\n"
+    ."if (navigator.userAgent.indexOf(\"Gecko\") != -1)\n"
+    ."window.addEventListener(\"load\", init_gecko_select_hack, false);\n";    
+    $jc=0;
+    $newquestionoutput .= "\t\t\tvar qtypes = new Array();\n";
+    $newquestionoutput .= "\t\t\tvar qnames = new Array();\n\n";
+    foreach ($qattributes as $key=>$val)
+    {
+        foreach ($val as $vl)
+        {
+            $newquestionoutput .= "\t\t\tqtypes[$jc]='".$key."';\n";
+            $newquestionoutput .= "\t\t\tqnames[$jc]='".$vl['name']."';\n";
+            $jc++;
+        }
+    }
+    $newquestionoutput .= "\t\t\t function buildQTlist(type)
+                {
+                document.getElementById('QTattributes').style.display='none';
+                for (var i=document.getElementById('QTlist').options.length-1; i>=0; i--)
+                    {
+                    document.getElementById('QTlist').options[i] = null;
+                    }
+                for (var i=0;i<qtypes.length;i++)
+                    {
+                    if (qtypes[i] == type)
+                        {
+                        document.getElementById('QTattributes').style.display='';
+                        document.getElementById('QTlist').options[document.getElementById('QTlist').options.length] = new Option(qnames[i], qnames[i]);
+                        }
+                    }
+                }";
+    $newquestionoutput .="\nfunction OtherSelection(QuestionType)\n"
+    . "\t{\n"
+    . "if (QuestionType == '') {QuestionType=document.getElementById('question_type').value;}\n"
+    . "\tif (QuestionType == 'M' || QuestionType == 'P' || QuestionType == 'L' || QuestionType == '!')\n"
+    . "\t\t{\n"
+    . "\t\tdocument.getElementById('OtherSelection').style.display = '';\n"
+    . "\t\tdocument.getElementById('LabelSets').style.display = 'none';\n"
+    . "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
+    . "\t\tdocument.getElementById('MandatorySelection').style.display='';\n"
+    . "\t\t}\n"
+    . "\telse if (QuestionType == 'F' || QuestionType == 'H' || QuestionType == 'W' || QuestionType == 'Z')\n"
+    . "\t\t{\n"
+    . "\t\tdocument.getElementById('LabelSets').style.display = '';\n"
+    . "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n"
+    . "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
+    . "\t\tdocument.getElementById('MandatorySelection').style.display='';\n"
+    . "\t\t}\n"
+    . "\telse if (QuestionType == 'S' || QuestionType == 'T' || QuestionType == 'U' || QuestionType == 'N' || QuestionType=='')\n"
+    . "\t\t{\n"
+    . "\t\tdocument.getElementById('Validation').style.display = '';\n"
+    . "\t\tdocument.getElementById('OtherSelection').style.display ='none';\n"
+    . "\t\tdocument.getElementById('ON').checked = true;\n"
+    . "\t\tdocument.getElementById('LabelSets').style.display='none';\n"
+    . "\t\tdocument.getElementById('MandatorySelection').style.display='';\n"
+    . "\t\t}\n"
+    . "\telse if (QuestionType == 'X')\n"
+    . "\t\t{\n"
+    . "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
+    . "\t\tdocument.getElementById('OtherSelection').style.display ='none';\n"
+    . "\t\tdocument.getElementById('LabelSets').style.display='none';\n"
+    . "\t\tdocument.getElementById('MandatorySelection').style.display='none';\n"
+    . "\t\t}\n"
+    . "\telse\n"
+    . "\t\t{\n"
+    . "\t\tdocument.getElementById('LabelSets').style.display = 'none';\n"
+    . "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n"
+    . "\t\tdocument.getElementById('ON').checked = true;\n"
+    . "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
+    . "\t\tdocument.getElementById('MandatorySelection').style.display='';\n"
+    //. "\t\tdocument.addnewquestion.other[1].checked = true;\n"
+    . "\t\t}\n"
+    . "\tbuildQTlist(QuestionType);\n"
+    . "\t}\n"
+    . "\tOtherSelection('$type');\n"
+    . "</script>\n";
+
+    return $newquestionoutput;
+}
+
 
 ?>

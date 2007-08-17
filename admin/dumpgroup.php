@@ -88,5 +88,5 @@ $query = "SELECT {$dbprefix}question_attributes.* FROM {$dbprefix}question_attri
 $qadump = BuildCSVFromQuery($query);
 // HTTP/1.0
 echo $dumphead, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump, $qadump;
-
+exit;
 ?>

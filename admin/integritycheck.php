@@ -19,7 +19,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
     // STRAY QUESTIONS, ANSWERS, CONDITIONS OR GROUPS AND DELETES THEM
     $ok=returnglobal('ok');
     
-    $integritycheck='';
+    $integritycheck=''; 
     if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
     {
         $integritycheck .= "<table><tr><td height='1'></td></tr></table>\n"
@@ -389,6 +389,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
                           ."</td></tr></table><br />\n";
     }
 
+    $surveyid=false;    
     }
 else
     {

@@ -130,6 +130,21 @@ elseif ($action == "conditions")
     if($surrows['define_questions'])    {include("conditions.php");}
         else { include("access_denied.php");}    
     }    
+elseif ($action == "dumpsurvey")
+    {
+    if($surrows['export'])    {include("dumpsurvey.php");}
+        else { include("access_denied.php");}    
+    }    
+elseif ($action == "dumpquestion")
+    {
+    if($surrows['export'])    {include("dumpquestion.php");}
+        else { include("access_denied.php");}    
+    }    
+elseif ($action == "dumpgroup")
+    {
+    if($surrows['export'])    {include("dumpgroup.php");}
+        else { include("access_denied.php");}    
+    }    
 elseif ($action == "deactivate")
     {
     if($surrows['activate_survey'])    {include("deactivate.php");}
@@ -219,19 +234,22 @@ elseif ($action=="assessments" || $action=="assessmentdelete" || $action=="asses
     if($surrows['define_questions'])    {include("assessments.php");}
         else { include("access_denied.php");}    
     }    
-elseif ($action=="addquestion" || $action=="copyquestion" || $action=="editquestion" || 
-        $action=="orderquestions" || $action=="editattribute" || $action=="delattribute" || 
-        $action=="addattribute" )
-    {
-    if($surrows['define_questions'])    {include("questionhandling.php");}
-        else { include(".php");}    
-    }    
+
 
     
- if (isset($surveyid) || $action=="listurveys" || $action=="changelang" ||  $action=="checksettings" ||       //Still to check
+ if (!isset($assessmentsoutput) && !isset($conditionsoutput) &&
+     (isset($surveyid) || $action=="listurveys" || $action=="changelang" ||  $action=="checksettings" ||       //Still to check
       $action=="editsurvey" || $action=="updatesurvey" || $action=="ordergroups"  ||
       $action=="uploadf" || $action=="newsurvey" || $action=="listsurveys" || 
-       $action=="surveyrights" ) include("html.php");
+      $action=="surveyrights") ) include("html.php");
+
+ if ($action=="addquestion" || $action=="copyquestion" || $action=="editquestion" || 
+     $action=="orderquestions" || $action=="editattribute" || $action=="delattribute" || 
+     $action=="addattribute" )
+    {if($surrows['define_questions'])    {include("questionhandling.php");}
+        else { include("access_denied.php");}    
+    }    
+
       
  if ($action=="adduser" || $action=="deluser" || $action=="moduser" ||                                        //Still to check 
      $action=="userrights" || $action=="modifyuser" || $action=="editusers" || 

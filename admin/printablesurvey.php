@@ -14,11 +14,25 @@
 //Ensure script is not run directly, avoid path disclosure
 include_once("login_check.php");
 
-$surveyid = $_GET['sid'];
-if (!isset($tpldir)) {$tpldir=$publicdir."/templates";}
-if (!isset($templatedir) || !$templatedir) {$thistpl=$tpldir."/default";} else {$thistpl=$tpldir."/$templatedir";}
-if (!is_dir($thistpl)) {$thistpl=$tpldir."/default";}
+$printablesurveyoutput="<?xml version=\"1.0\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
+."<html>\n<head>\n"
+. "<!--[if lt IE 7]>\n"
+. "<script defer type=\"text/javascript\" src=\"scripts/pngfix.js\"></script>\n"
+. "<![endif]-->\n"
+. "<title>$sitename</title>\n"
+. "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n"
+. "<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
+. "<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>\n"
+. "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />\n"
+. "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"scripts/tabpane/css/tab.webfx.css \" />\n"
+//. "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle.css\" />\n"
+. "<script type=\"text/javascript\" src=\"../scripts/calendar/calendar.js\"></script>\n"
+. "<script type=\"text/javascript\" src=\"../scripts/calendar/lang/calendar-".$_SESSION['adminlang'].".js\"></script>\n"
+. "<script type=\"text/javascript\" src=\"../scripts/calendar/calendar-setup.js\"></script>\n"
+. "<script type=\"text/javascript\" src=\"scripts/validation.js\"></script>"
+. "</head>\n<body>\n";
 
+$surveyid = $_GET['sid'];
 
 // PRESENT SURVEY DATAENTRY SCREEN
 
@@ -50,7 +64,7 @@ if (!isset($surveyfaxto) || !$surveyfaxto and isset($surveyfaxnumber))
 	$surveyfaxto=$surveyfaxnumber; //Use system fax number if none is set in survey.
 }
 
-$printablesurveyoutput ="<table width='100%' cellspacing='0'>\n";
+$printablesurveyoutput .="<table width='100%' cellspacing='0'>\n";
 $printablesurveyoutput .="\t<tr>\n";
 $printablesurveyoutput .="\t\t<td colspan='3' align='center'>\n";
 $printablesurveyoutput .="\t\t\t<table border='1' style='border-collapse: collapse; border-color: #111111; width: 100%'>\n";
@@ -669,7 +683,7 @@ while ($degrow = $degresult->FetchRow())
 		}
 		$printablesurveyoutput .="\t\t</td>\n";
 		$printablesurveyoutput .="\t</tr>\n";
-		$printablesurveyoutput .="\t<tr><td height='3' colspan='3'><hr noshade size='1'></td></tr>\n";
+		$printablesurveyoutput .="\t<tr><td height='3' colspan='3'><hr noshade='noshade' size='1' /></td></tr>\n";
 	}
 }
 $printablesurveyoutput .="\t<tr>\n";
@@ -691,5 +705,6 @@ $printablesurveyoutput .="\t\t</td>\n";
 $printablesurveyoutput .="\t</tr>\n";
 $printablesurveyoutput .="</table>\n";
 $printablesurveyoutput .="</body>\n</html>";
-
+echo $printablesurveyoutput ;
+exit;
 ?>

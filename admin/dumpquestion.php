@@ -20,10 +20,6 @@
 
 include_once("login_check.php");
 
-//Ensure script is not run directly, avoid path disclosure
-if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
-
-
 $qid = $_GET['qid'];
 
 include_once("login_check.php");
@@ -116,5 +112,5 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header("Pragma: no-cache");                          // HTTP/1.0
 echo $dumphead, $qdump, $adump, $lsdump, $ldump, $qadump;
-
+exit;
 ?>
