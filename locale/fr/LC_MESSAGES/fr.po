@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-08-06 20:32+0100\n"
+"PO-Revision-Date: 2007-08-18 20:29+0100\n"
 "Last-Translator: seb <seb>\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -14,6 +14,10 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: gT\n"
 "X-Poedit-SearchPath-0: D:\\www\\limesurvey\n"
+
+# D:\www\limesurvey/common.php:226
+msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
+msgstr "Attention : Vous utilisez toujours le mot de passe par défaut ('password'). SVP changez votre mot de passe et connectez-vous à nouveau."
 
 msgid "Administration"
 msgstr "Administration"
@@ -411,7 +415,7 @@ msgstr "Manuel en ligne"
 
 # D:\www\limesurvey/common.php:2306
 msgid "Support this project - Donate to "
-msgstr "Encouragez ce projet. Faites un don à"
+msgstr "Encouragez ce projet. Faites un don à "
 
 # D:\www\limesurvey/common.php:2309
 msgid "Visit our website!"
@@ -756,6 +760,16 @@ msgstr "Si vous obtenez ce message au milieu du remplissage d'un questionnaire, 
 msgid "Access denied!"
 msgstr "Accès refusé !"
 
+msgid "You are not allowed dump the database!"
+msgstr "Vous n'êtes pas autorisé à sauvegarder la base de données !"
+
+msgid "You are not allowed export a label set!"
+msgstr "Vous n'êtes pas autorisé à exporter un jeu d'étquettes !"
+
+# E:\www\limesurvey/admin/usercontrol.php:250
+msgid "You are not allowed to change user data!"
+msgstr "Vous n'êtes pas autorisé à changer les données des utilisateurs !"
+
 msgid "You are not allowed to create new surveys!"
 msgstr "Vous n'êtes pas autorisé à créer de nouveaux questionnaires !"
 
@@ -784,7 +798,7 @@ msgid "You are not allowed to edit groups in this survey!"
 msgstr "Vous n'êtes pas autorisé à editer les groupes dans ce questionnaire !"
 
 # E:\www\limesurvey/admin/access_denied.php:103
-msgid "You are not allowed to browse response!"
+msgid "You are not allowed to browse responses!"
 msgstr "Vous n'êtes pas autorisé à parcourir les réponses !"
 
 # E:\www\limesurvey/admin/access_denied.php:108
@@ -796,6 +810,12 @@ msgstr "Vous n'êtes pas autorisé à supprimer ce groupe !"
 
 msgid "You are not allowed to import a survey!"
 msgstr "Vous n'êtes pas autorisé à importer un questionnaire !"
+
+msgid "You are not allowed to import a group!"
+msgstr "Vous n'êtes pas autorisé à importer un groupe !"
+
+msgid "You are not allowed to to import a question!"
+msgstr "Vous n'êtes pas autorisé à importer une question !"
 
 # E:\www\limesurvey/admin/usercontrol.php:250
 msgid "You are not allowed to perform this operation!"
@@ -1168,28 +1188,6 @@ msgstr "Effacer la sélection"
 
 msgid "Close Window"
 msgstr "Fermer la fenêtre"
-
-msgid "Create Database"
-msgstr "Créer la base de données"
-
-msgid "Populate Database"
-msgstr "Peupler la base de données"
-
-#, php-format
-msgid "Database `%s` has been successfully populated."
-msgstr "Base de données `%s` peuplée avec succès."
-
-msgid "Database Information not provided. This script must be run from admin.php only."
-msgstr "Les informations de la base de données ne sont pas fournies. Ce script doit être exécuté à partir d'admin.php seulement."
-
-msgid "Database has been created."
-msgstr "Base de données créée."
-
-msgid "Please click below to populate the database"
-msgstr "Veuillez cliquer ci-dessous pour peupler la base de données"
-
-msgid "Could not create database"
-msgstr "Impossible de créer la base de données"
 
 msgid ""
 "Group could not be added.\\n"
@@ -1637,6 +1635,36 @@ msgstr "Langue"
 msgid "N/A"
 msgstr "N/A"
 
+msgid "Add Group"
+msgstr "Ajouter un groupe"
+
+msgid "Base Language"
+msgstr "Langue de base"
+
+msgid "Title"
+msgstr "Titre"
+
+msgid "Required"
+msgstr "Obligatoire"
+
+msgid "Description:"
+msgstr "Description :"
+
+msgid "Please select a file to import!"
+msgstr "SVP sélectionnez un fichier à importer !"
+
+msgid "Import Group"
+msgstr "Importer le groupe"
+
+msgid "Select CSV File:"
+msgstr "Sélectionner un fichier CSV :"
+
+msgid "Edit Group"
+msgstr "Editer un groupe"
+
+msgid "Update Group"
+msgstr "Mise à jour du groupe"
+
 msgid "Survey"
 msgstr "Questionnaire"
 
@@ -1792,9 +1820,6 @@ msgstr "Ajouter un nouveau groupe au questionnaire"
 msgid "Groups"
 msgstr "Groupes "
 
-msgid "Title"
-msgstr "Titre"
-
 msgid "This survey is NOT anonymous."
 msgstr "Ce questionnaire n'EST PAS anonyme."
 
@@ -1847,9 +1872,6 @@ msgstr "URL du questionnaire pour la langue :"
 # D:\www\limesurvey/admin/html.php:675
 msgid "Flag"
 msgstr "Drapeau"
-
-msgid "Description:"
-msgstr "Description :"
 
 msgid "Welcome:"
 msgstr "Message de bienvenue :"
@@ -2017,9 +2039,6 @@ msgstr "Autres questions dépendantes de celle-ci :"
 msgid "Edit Answers"
 msgstr "Editer les réponses"
 
-msgid "Base Language"
-msgstr "Langue de base"
-
 msgid "Code"
 msgstr "Code :"
 
@@ -2110,9 +2129,6 @@ msgstr "Groupes d'utilisateurs"
 
 msgid "User"
 msgstr "Utilisateur"
-
-msgid "Add Group"
-msgstr "Ajouter un groupe"
 
 # E:\www\limesurvey/admin/usercontrol.php:342
 msgid "Update survey rights successful."
@@ -2422,9 +2438,6 @@ msgstr "Ce paramètre ne peut pas être changé après !"
 msgid "Date Format"
 msgstr "Format date"
 
-msgid "Please select a file to import!"
-msgstr "SVP sélectionnez un fichier à importer !"
-
 msgid "Import Survey"
 msgstr "Importer le questionnaire"
 
@@ -2458,17 +2471,15 @@ msgstr "Visualisation :"
 msgid "Select the field number you would like to use for your answers:"
 msgstr "Sélectionnez le numéro du champ que vous voulez utiliser pour vos réponses :"
 
-msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your /admin/tmp folder folder."
-msgstr "Une erreur s'est produite durant la transmission de votre fichier.  Ceci peut être provoqué par des permissions incorrectes de votre dossier /admin/tmp."
+#, php-format
+msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
+msgstr "Une erreur s'est produite durant la transmission de votre fichier.  Ceci peut être provoqué par des permissions incorrectes de votre dossier %s ."
 
 msgid "File upload succeeded."
 msgstr "Fichier transmis avec succès."
 
 msgid "Reading file.."
 msgstr "Lecture du fichier.."
-
-msgid "Import Group"
-msgstr "Importer le groupe"
 
 msgid "Reading file..."
 msgstr "Lecture du fichier..."
@@ -2709,9 +2720,6 @@ msgstr "Vous ne pouvez pas enlever ces éléments car il faut au moins une langu
 msgid "Update"
 msgstr "Mise à jour"
 
-msgid "Select CSV File:"
-msgstr "Sélectionner un fichier CSV :"
-
 msgid "Edit label set"
 msgstr "Editer le jeu d'étiquettes"
 
@@ -2852,9 +2860,6 @@ msgstr "SVP faxez ce questionnaire rempli à :"
 msgid "Add Question"
 msgstr "Ajouter une question"
 
-msgid "Required"
-msgstr "Obligatoire"
-
 msgid "Label Set:"
 msgstr "Jeu d'étiquettes :"
 
@@ -2949,6 +2954,10 @@ msgstr "Visualiser les statistiques"
 
 msgid "Please wait ..."
 msgstr "Veuillez patienter..."
+
+# E:\www\limesurvey/admin/usercontrol.php:304
+msgid "Go Back"
+msgstr "Retour"
 
 # D:\www\limesurvey/admin/statistics.php:734
 msgid "Getting Questions and Answers ..."
@@ -3076,6 +3085,13 @@ msgstr "Peut-être n'avez-vous pas la permission."
 
 msgid "Directory could not be renamed to"
 msgstr "Le dossier ne peut pas être renommé en"
+
+# D:\www\limesurvey/admin/templates.php:143
+# D:\www\limesurvey/admin/templates.php:155
+# D:\www\limesurvey/admin/templates.php:442
+# D:\www\limesurvey/admin/templates.php:451
+msgid "This file type is not allowed to be uploaded."
+msgstr "Ce type de fichier ne peut être envoyé."
 
 msgid "Welcome Page"
 msgstr "Page d'accueil"
@@ -3892,12 +3908,6 @@ msgstr "Réussite de la mise à jour du groupe d'utilisateurs !"
 msgid "Failed to update!"
 msgstr "Echec de la mise à jour  !"
 
-msgid "Edit Group"
-msgstr "Editer un groupe"
-
-msgid "Update Group"
-msgstr "Mise à jour du groupe"
-
 msgid "Adding User to group"
 msgstr "Ajouter un utilisateur au groupe"
 
@@ -3950,6 +3960,28 @@ msgstr "Ne pas ACTUALISER cette page sous peine d'importer de nouveau le fichier
 
 msgid "Total records imported:"
 msgstr "Nombre d'enregistrement(s) importé(s) :"
+
+msgid "Create Database"
+msgstr "Créer la base de données"
+
+msgid "Populate Database"
+msgstr "Peupler la base de données"
+
+#, php-format
+msgid "Database `%s` has been successfully populated."
+msgstr "Base de données `%s` peuplée avec succès."
+
+msgid "Database Information not provided. This script must be run from admin.php only."
+msgstr "Les informations de la base de données ne sont pas fournies. Ce script doit être exécuté à partir d'admin.php seulement."
+
+msgid "Database has been created."
+msgstr "Base de données créée."
+
+msgid "Please click below to populate the database"
+msgstr "Veuillez cliquer ci-dessous pour peupler la base de données"
+
+msgid "Could not create database"
+msgstr "Impossible de créer la base de données"
 
 msgid "Welcome to LimeSurvey Setup!"
 msgstr "Bienvenue dans l'installation de LimeSurvey !"
