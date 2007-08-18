@@ -244,7 +244,7 @@ elseif ($action=="assessments" || $action=="assessmentdelete" || $action=="asses
     
  if (!isset($assessmentsoutput) && !isset($statisticsoutput) && !isset($browseoutput) && !isset($savedsurveyoutput) &&             
      !isset($dataentryoutput) && !isset($conditionsoutput) && !isset($importoldresponsesoutput) && 
-     !isset($vvoutput) && !isset($tokenoutput) && !isset($exportoutput) &&    
+     !isset($vvoutput) && !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&    
      (isset($surveyid) || $action=="listurveys" || $action=="changelang" ||  $action=="checksettings" ||       //Still to check
       $action=="editsurvey" || $action=="updatesurvey" || $action=="ordergroups"  ||
       $action=="uploadf" || $action=="newsurvey" || $action=="listsurveys" ||   

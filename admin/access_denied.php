@@ -115,14 +115,14 @@ if (isset($_SESSION['loginID']))
 		{
 		$accesssummary .= "<br />".$clang->gT("You are not allowed to perform this operation!")."<br />\n";		
 		if(!empty($sid))
-			$accesssummary .= "<br /><br /><a href='$scriptname?sid=$sid&amp;action=surveysecurity'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+			$accesssummary .= "<br /><br /><a href='$scriptname?sid=$sid>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		elseif(!empty($ugid))
 		//elseif(isset($_GET['ugid']))
 			{
 			$accesssummary .= "<br /><br /><a href='$scriptname?action=editusergroups&ugid={$ugid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 					}
 		else 
-			$accesssummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+			$accesssummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
 		
 	}
