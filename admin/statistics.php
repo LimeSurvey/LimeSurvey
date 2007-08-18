@@ -711,7 +711,7 @@ if (isset($_POST['display']) && $_POST['display'])
 	$prb->frame['top'] = 	80;	// Frame position from top
 	$prb->addLabel('text','txt1',$clang->gT("Please wait ..."));	// add Text as Label 'txt1' and value 'Please wait'
 	$prb->addLabel('percent','pct1');	// add Percent as Label 'pct1'
-	$prb->addButton('btn1','Go Back','?action=statistics&amp;sid='.$surveyid);	// add Button as Label 'btn1' and action '?restart=1'
+	$prb->addButton('btn1',$clang->gT('Go Back'),'?action=statistics&amp;sid='.$surveyid);	// add Button as Label 'btn1' and action '?restart=1'
 
 	$process_status = 35;
 	$prb->show();	// show the ProgressBar
