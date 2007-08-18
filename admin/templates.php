@@ -118,17 +118,46 @@ if ($action == "templaterename" && isset($_GET['newname']) && isset($_GET['copyd
 	}
 }
 
-if ($action == "templateupload") {
-	//Uploads the file into the appropriate directory
-	$the_full_file_path = $publicdir."/templates/".$templatename . "/" . $_FILES['the_file']['name']; //This is where the temp file is
-	if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path)) {
-		echo "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-		echo $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your /admin/tmp folder folder.")."<br /><br />\n";
-		echo "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
-		echo "</td></tr></table>\n";
-		echo "</body>\n</html>\n";
-		exit;
-	}
+if ($action == "templateupload") 
+  {
+      $the_full_file_path = $publicdir."/templates/".$templatename . "/" . $_FILES['the_file']['name']; //This is where the temp file is
+      if ($extfile = strrchr($_FILES['the_file']['name'], '.'))
+      {
+         if  (!(stripos(','.$allowedtemplateuploads.',',','. substr($extfile,1).',') === false))
+         {
+              //Uploads the file into the appropriate directory
+              if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path)) {
+                  echo "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+                  echo $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your /admin/tmp folder folder.")."<br /><br />\n";
+                  echo "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
+                  echo "</td></tr></table>\n";
+                  echo "</body>\n</html>\n";
+                  exit;
+              }
+         }
+          else
+          {
+              // if we came here is because the file extention is not allowed
+              @unlink($_FILES['the_file']['tmp_name']);
+              echo "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+              echo $clang->gT("This file type is not allowed to be uploaded.")."<br /><br />\n";
+              echo "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
+              echo "</td></tr></table>\n";
+              echo "</body>\n</html>\n";
+              exit;
+          }
+      }
+      else
+      {
+          // if we came here is because the file extention is not allowed
+          @unlink($_FILES['the_file']['tmp_name']);
+          echo "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+          echo $clang->gT("This file type is not allowed to be uploaded.")."<br /><br />\n";
+          echo "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
+          echo "</td></tr></table>\n";
+          echo "</body>\n</html>\n";
+          exit;
+      }
 }
 
 if ($action == "templatefiledelete") {
@@ -404,6 +433,34 @@ $templatesoutput= "<script type='text/javascript'>\n"
 ."\t\t}\n"
 ."\t}\n"
 ."//-->\n</script>\n";
+$templatesoutput= "<script type='text/javascript'>\n"
+."<!--\n"
+."function checkuploadfiletype(filename)\n"
+."\t{\n"
+."\tvar allowedtypes=',$allowedtemplateuploads,';\n"
+."\tvar lastdotpos=-1;\n"
+."\tvar ext='';\n"
+."\tif ((lastdotpos=filename.lastIndexOf('.')) < 0)\n"
+."\t\t{\n"
+."\t\talert('".$clang->gT('This file type is not allowed to be uploaded')."');\n"
+."\t\treturn false;\n"
+."\t\t}\n"
+."\telse\n"
+."\t\t{\n"
+."\t\text = ',' + filename.substr(lastdotpos+1) + ',';\n"
+."\t\text = ext.toLowerCase();\n"
+."\t\tif (allowedtypes.indexOf(ext) < 0)\n"
+."\t\t\t{\n"
+."\t\t\talert('".$clang->gT('This file type is not allowed to be uploaded')."');\n"
+."\t\t\treturn false;\n"
+."\t\t\t}\n"
+."\t\telse\n"
+."\t\t\t{\n"
+."\t\t\treturn true;\n"
+."\t\t\t}\n"
+."\t\t}\n"
+."\t}\n"
+."//-->\n</script>\n";
 $templatesoutput.= "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
 . "\t<tr>\n"
 . "\t\t<td>\n"
@@ -547,9 +604,9 @@ $templatesoutput.= " />\n"
 . "</td></tr></table></form></td>\n"
 ."</tr>\n"
 ."</table></td></tr><tr><td align='right' valign='top'>"
-."<form enctype='multipart/form-data' name='importsurvey' action='admin.php' method='post'>\n"
+."<form enctype='multipart/form-data' name='importsurvey' action='admin.php' method='post' onsubmit='return checkuploadfiletype(this.the_file.value);'>\n"
 ."<table><tr> <td align='right' valign='top' style='border: solid 1 #000080'>\n"
-."<strong>".$clang->gT("Upload a File").":</strong></td></tr><tr><td><input name=\"the_file\" type=\"file\" size=\"7\" /><br />"
+."<strong>".$clang->gT("Upload a File").":</strong></td></tr><tr><td><input name=\"the_file\" type=\"file\" size=\"30\" /><br />"
 ."<input type='submit' value='".$clang->gT("Upload")."'";
 if ($templatename == "default") {
 	$templatesoutput.= " disabled='disabled'";
