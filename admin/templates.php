@@ -128,7 +128,7 @@ if ($action == "templateupload")
               //Uploads the file into the appropriate directory
               if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path)) {
                   echo "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-                  echo $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your /admin/tmp folder folder.")."<br /><br />\n";
+                  echo sprintf ($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$tempdir)."<br /><br />\n";
                   echo "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
                   echo "</td></tr></table>\n";
                   echo "</body>\n</html>\n";
