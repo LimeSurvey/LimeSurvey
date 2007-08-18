@@ -106,6 +106,7 @@ class gettext_reader {
    */
   function gettext_reader($Reader, $enable_cache = true) {
     // If there isn't a StreamReader, turn on short circuit mode.
+  global $translationmode;  
     if (! $Reader || isset($Reader->error) ) {
       $this->short_circuit = true;
       return;
@@ -114,10 +115,18 @@ class gettext_reader {
     // Caching can be turned off
     $this->enable_cache = $enable_cache;
 
-    // $MAGIC1 = (int)0x950412de; //bug in PHP 5
+
+if ($translationmode==1)
+  { $MAGIC1 = (int) 0x950412de;
+    $MAGIC2 = (int) 0xde120495;
+  }
+  else 
+  {
     $MAGIC1 = (int) - 1794895138;
-    // $MAGIC2 = (int)0xde120495; //bug
     $MAGIC2 = (int) - 569244523;
+  }  
+    
+ 
 
     $this->STREAM = $Reader;
     $magic = $this->readint();

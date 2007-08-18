@@ -87,7 +87,7 @@ if (!isset($_SESSION['loginID']))
 				if (SHA256::hash($_POST['password']) == $fields['password'])
 				{
 					// Anmeldung ERFOLGREICH
-
+                    if (strtolower($_POST['password'])=='password') {$_SESSION['pw_notify']=true;} else  {$_SESSION['pw_notify']=false;} // Check if the user has changed his default password
 					$_SESSION['loginID'] = intval($fields['uid']);
 					$_SESSION['user'] = $fields['users_name'];
 					if (isset($_POST['loginlang']) && $_POST['loginlang'])

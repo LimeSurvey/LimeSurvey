@@ -76,7 +76,11 @@ $admintheme         =  "default";         // This setting specifys the directory
 $allowedtemplateuploads = "gif,jpg,png";   // File types allowed to be uploaded in the templates section.
 
 
-$debug              =   0;      // Switch this to 1 if you are looking for errors
+$debug              =   0;      // Switch this to 1 if you are looking for errors. If you still get no errors after enabling this
+                                // then please check your error-logs - either in your hosting provider admin panel or in some /logs dir.
+$translationmode    =   0;      // If interface translations are not working this might be because of a bug in your PHP version. 
+                                // Set this to '1' to activate a workaround for this bug
+                                
 $sessionlifetime    =   3600;   // How long until a survey session expires in seconds
 
 // Email Settings

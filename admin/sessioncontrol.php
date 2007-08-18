@@ -17,7 +17,7 @@
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 
 session_name("LimeSurveyAdmin");
-if (session_id() == "") session_start();
+if (session_id() == "") @session_start();
 //LANGUAGE ISSUES
 // if changelang is called from the login page, then there is no userId 
 //  ==> thus we just change the login form lang: no user profile update

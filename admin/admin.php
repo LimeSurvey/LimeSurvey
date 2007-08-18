@@ -14,7 +14,7 @@
 
 require_once(dirname(__FILE__).'/../config.php');  // config.php itself includes common.php
 
-@ini_set('session.gc_maxlifetime', '10800');  //Some hosters do not allow that 
+@ini_set('session.gc_maxlifetime', $sessionlifetime);
 
 if (!isset($adminlang)) {$adminlang=returnglobal('adminlang');} // Admin language
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}         //SurveyID

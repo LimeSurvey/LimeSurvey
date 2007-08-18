@@ -14,7 +14,7 @@
 
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
-$versionnumber = "1.50";
+$versionnumber = "1.52";
 $dbversionnumber = 112;
 
 
@@ -221,9 +221,10 @@ $singleborderstyle = "style='border: 1px solid #111111'";
      */
     function showadminmenu()
         {
-        global $homedir, $scriptname, $surveyid, $setfont, $imagefiles, $clang;
-        $adminmenu  = "<table class='menubar'>\n"
-                    . "\t<tr>\n"
+        global $homedir, $scriptname, $surveyid, $setfont, $imagefiles, $clang, $debug;
+        $adminmenu  = "<table class='menubar'>\n";
+        if  ($_SESSION['pw_notify'] && $debug==0)  {$adminmenu .="<tr><td align='center'><font color='red'>".$clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")."</font></td></tr>";}
+        $adminmenu  .="\t<tr>\n"
                     . "\t\t<td>\n"
                     . "\t\t\t<table class='menubar'>\n"
                     . "\t\t\t<tr>\n"
