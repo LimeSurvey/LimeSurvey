@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-08-05 22:44+0100\n"
+"PO-Revision-Date: 2007-08-18 09:56+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -753,6 +753,15 @@ msgstr "Wenn Sie diese Nachricht während einer Umfrage erhalten, sollten Sie de
 msgid "Access denied!"
 msgstr "Zugriff verweigert!"
 
+msgid "You are not allowed dump the database!"
+msgstr "Sie sind nicht berechtigt, die Dtaenbank zu exportieren!"
+
+msgid "You are not allowed export a label set!"
+msgstr "Sie sind nicht berechtigt, Beschriftungssets zu exportieren!"
+
+msgid "You are not allowed to change user data!"
+msgstr "Sie sind nicht berechtigt, Benutzer zu bearbeiten!"
+
 msgid "You are not allowed to create new surveys!"
 msgstr "Sie sind nicht berechtigt neue Umfragen zu erstellen!"
 
@@ -780,8 +789,8 @@ msgstr "Sie sind nicht berechtigt diese Umfrage zu bearbeiten!"
 msgid "You are not allowed to edit groups in this survey!"
 msgstr "Sie sind nicht berechtigt Gruppen dieser Umfrage zu bearbeiten!"
 
-msgid "You are not allowed to browse response!"
-msgstr "Sie sind nicht berechtigt sich Ergebnisse anzuschauen."
+msgid "You are not allowed to browse responses!"
+msgstr "Sie sind nicht berechtigt, sich Ergebnisse anzuschauen."
 
 msgid "You are not allowed to set assessment rules!"
 msgstr "Sie sind nicht berechtigt Bewertungsrichtlinien zu setzen."
@@ -791,6 +800,12 @@ msgstr "Sie sind nicht berechtigt diese Gruppe zu löschen!"
 
 msgid "You are not allowed to import a survey!"
 msgstr "Sie sind nicht berechtigt eine Umfrage zu importieren!"
+
+msgid "You are not allowed to import a group!"
+msgstr "Sie sind nicht berechtigt eine Gruppe zu importieren!"
+
+msgid "You are not allowed to to import a question!"
+msgstr "Sie sind nicht berechtigt eine Frage zu importieren!"
 
 msgid "You are not allowed to perform this operation!"
 msgstr "Sie sind nicht berechtigt diese Operation durchzuführen!"
@@ -1160,28 +1175,6 @@ msgstr "Löschen"
 
 msgid "Close Window"
 msgstr "Fenster schließen"
-
-msgid "Create Database"
-msgstr "Erstelle Datenbank"
-
-msgid "Populate Database"
-msgstr "Tabellen erstellen"
-
-#, php-format
-msgid "Database `%s` has been successfully populated."
-msgstr "Die Tabellen in der Datenbank `%s` wurden erfolgreich erstellt."
-
-msgid "Database Information not provided. This script must be run from admin.php only."
-msgstr "Datenbank Information nicht angegeben. Dieses Skript muss von admin.php aufgerufen werden."
-
-msgid "Database has been created."
-msgstr "Datenbank wurde erstellt."
-
-msgid "Please click below to populate the database"
-msgstr "Bitte klicken Sie auf 'Tabellen erstellen' um fortzufahren."
-
-msgid "Could not create database"
-msgstr "Konnte Datenbank nicht erstellen"
 
 msgid ""
 "Group could not be added.\\n"
@@ -1614,6 +1607,36 @@ msgstr "Sprache"
 msgid "N/A"
 msgstr "Nicht zutreffend"
 
+msgid "Add Group"
+msgstr "Gruppe hinzufügen"
+
+msgid "Base Language"
+msgstr "Basis-Sprache"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Required"
+msgstr "Pflichtangabe"
+
+msgid "Description:"
+msgstr "Beschreibung:"
+
+msgid "Please select a file to import!"
+msgstr "Bitte wählen Sie eine Datei zum Importieren aus!"
+
+msgid "Import Group"
+msgstr "Gruppen importieren"
+
+msgid "Select CSV File:"
+msgstr "CSV-Datei auswählen:"
+
+msgid "Edit Group"
+msgstr "Gruppe bearbeiten"
+
+msgid "Update Group"
+msgstr "Gruppe aktualisieren"
+
 msgid "Survey"
 msgstr "Umfrage"
 
@@ -1706,6 +1729,10 @@ msgstr "Aktive Probanden-Tabellen"
 msgid "De-activated Token Tables"
 msgstr "Deaktivierte Probanden-Tabellen"
 
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:271
+msgid "Show PHPInfo"
+msgstr "PHPInfo anzeigen"
+
 msgid "Survey cannot be activated. Either you have no permission or there are no questions."
 msgstr "Die Umfrage kann nicht aktiviert werden, da Sie entweder keine Berechtigung haben oder keine Fragen vorhanden sind."
 
@@ -1764,9 +1791,6 @@ msgstr "Neue Gruppe hinzufügen"
 msgid "Groups"
 msgstr "Gruppen"
 
-msgid "Title"
-msgstr "Titel"
-
 msgid "This survey is NOT anonymous."
 msgstr "Diese Umfrage ist nicht anonym."
 
@@ -1820,9 +1844,6 @@ msgstr "Umfrage URL für Sprache"
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:681
 msgid "Flag"
 msgstr "Fahne"
-
-msgid "Description:"
-msgstr "Beschreibung:"
 
 msgid "Welcome:"
 msgstr "Willkommenstext:"
@@ -1998,9 +2019,6 @@ msgstr "Fragen mit Bedingungen, die auf dieser Frage basieren:"
 msgid "Edit Answers"
 msgstr "Antworten bearbeiten"
 
-msgid "Base Language"
-msgstr "Basis-Sprache"
-
 # D:\xampp\xampp\htdocs\limesurvey/admin/html.php:795
 # D:\xampp\xampp\htdocs\limesurvey/admin/labels.php:251
 # D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:224
@@ -2089,9 +2107,6 @@ msgstr "Benutzergruppe"
 
 msgid "User"
 msgstr "Benutzer"
-
-msgid "Add Group"
-msgstr "Gruppe hinzufügen"
 
 msgid "Update survey rights successful."
 msgstr "Benutzerrechte erfolgreich aktualisiert."
@@ -2403,9 +2418,6 @@ msgstr "Die Einstellung kann später nicht geändert werden."
 msgid "Date Format"
 msgstr "Datumsformat"
 
-msgid "Please select a file to import!"
-msgstr "Bitte wählen Sie eine Datei zum Importieren aus!"
-
 msgid "Import Survey"
 msgstr "Umfrage importieren"
 
@@ -2447,9 +2459,6 @@ msgstr "Datei erfolgreich hochgeladen."
 
 msgid "Reading file.."
 msgstr "Lese Datei.."
-
-msgid "Import Group"
-msgstr "Gruppen importieren"
 
 msgid "Reading file..."
 msgstr "Lese Datei..."
@@ -2686,9 +2695,6 @@ msgstr "Sie können diese Sprache nicht entfernen, da sie mindestens eine Sprach
 msgid "Update"
 msgstr "aktualisieren"
 
-msgid "Select CSV File:"
-msgstr "CSV-Datei auswählen:"
-
 msgid "Edit label set"
 msgstr "Beschriftung-Set bearbeiten"
 
@@ -2818,9 +2824,6 @@ msgstr "Bitte faxen Sie den ausgefüllten Fragebogen an"
 msgid "Add Question"
 msgstr "Frage hinzufügen"
 
-msgid "Required"
-msgstr "Pflichtangabe"
-
 msgid "Label Set:"
 msgstr "Beschriftung-Set:"
 
@@ -2915,6 +2918,10 @@ msgstr "Statistik anzeigen"
 
 msgid "Please wait ..."
 msgstr "Bitte warten..."
+
+# D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:320
+msgid "Go Back"
+msgstr "Zurück"
 
 # D:\web\xampp\htdocs\limesurvey/admin/statistics.php:734
 msgid "Getting Questions and Answers ..."
@@ -3041,6 +3048,11 @@ msgstr "Evenuell haben Sie keine Rechte."
 
 msgid "Directory could not be renamed to"
 msgstr "Verzeichnis konnte nicht umbenannt werden nach"
+
+# D:\web\xampp\htdocs\limesurvey/admin/templates.php:143
+# D:\web\xampp\htdocs\limesurvey/admin/templates.php:155
+msgid "This file type is not allowed to be uploaded."
+msgstr "Dieser Dateityp darf nicht hochgeladen werden."
 
 msgid "Welcome Page"
 msgstr "Startseite"
@@ -3824,12 +3836,6 @@ msgstr "Benutzergruppe erfolgreich geändert."
 msgid "Failed to update!"
 msgstr "Fehler beim Aktualisieren der Daten!"
 
-msgid "Edit Group"
-msgstr "Gruppe bearbeiten"
-
-msgid "Update Group"
-msgstr "Gruppe aktualisieren"
-
 msgid "Adding User to group"
 msgstr "Füge Benutzer zu Gruppe hinzu"
 
@@ -3883,6 +3889,28 @@ msgstr "Diese Seite bitte NICHT aktualisieren, da ansonsten die Datei nochmal im
 
 msgid "Total records imported:"
 msgstr "Anzahl Datensätze importiert:"
+
+msgid "Create Database"
+msgstr "Erstelle Datenbank"
+
+msgid "Populate Database"
+msgstr "Tabellen erstellen"
+
+#, php-format
+msgid "Database `%s` has been successfully populated."
+msgstr "Die Tabellen in der Datenbank `%s` wurden erfolgreich erstellt."
+
+msgid "Database Information not provided. This script must be run from admin.php only."
+msgstr "Datenbank Information nicht angegeben. Dieses Skript muss von admin.php aufgerufen werden."
+
+msgid "Database has been created."
+msgstr "Datenbank wurde erstellt."
+
+msgid "Please click below to populate the database"
+msgstr "Bitte klicken Sie auf 'Tabellen erstellen' um fortzufahren."
+
+msgid "Could not create database"
+msgstr "Konnte Datenbank nicht erstellen"
 
 msgid "Welcome to LimeSurvey Setup!"
 msgstr "Willkommen zur LimeSurvey Installation!"

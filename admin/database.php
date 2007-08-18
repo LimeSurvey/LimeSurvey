@@ -145,7 +145,6 @@ if(isset($surveyid))
 				$ugresult = $connect->Execute($ugquery);
 				if ($ugresult)
 				{
-					//$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"Your Group ($group_name) has been updated!\")\n //-->\n< /script>\n";
 					$groupsummary = getgrouplist($_POST['gid']);
 				}
 				else
