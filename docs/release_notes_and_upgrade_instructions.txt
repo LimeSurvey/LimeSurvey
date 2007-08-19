@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.50!
+Welcome to LimeSurvey v1.52!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -39,8 +39,9 @@ HOW TO UPGRADE from earlier versions from LimeSurvey 1.45 or later
 2. Backup your config.php.
 3. Delete all old files 
 4. Upload the new version to the same place
-5. Adjust the settings in config.php to the setting from the backup config.php. Do NOT just copy over the old config.php over the new one.
-6. Run the installer in /admin/install.php to update the database
+5. Adjust the settings in config.php to the setting from the backup config.php. 
+   --Do NOT just copy over the old config.php over the new one.--
+6. Run the installer in /admin/install.php to update the database.
 7. Done.
 
 
@@ -48,6 +49,39 @@ HOW TO UPGRADE from earlier versions from LimeSurvey 1.45 or later
 
 
 Thank you to everyone who helped with this new release!
+
+
+
+
+Changes from 1.50 to 1.52 - Release Date: 2007/08/19
+
+Features
+
+-Added a file extension check for the template editor (leochaton)
+-Added numercical input and max_chars within multiple short text (thanks to skrat) (leochaton)
+-Lots of security fixes regarding internal security - upgrade is highly recommended. (c_schmitz)
+-Hint is now shown if database exist (c_schmitz)
+-Added a warning message when the user did not change the 'password' Password (c_schmitz)
+-Updated and now complete SPanish Translation by Luis M. Martínez
+-Updated and now complete Polish Translation by Damian Kubiak
+
+
+Fixes:
+-The style of the "Ranking Question" is now adjusted to the new color scheme at DataEntry (c_schmitz)
+-Fixed notices in template editor at "Question Page", "Submit Page" and "Clear all page" (c_schmitz)
+-Fixed completed Date Field in token table being Too Short (c_schmitz)
+-Fixed Empty data on repeated submission in all-in-one mode (leochaton)	
+-Fixed problem with mandatory questions in all-in-one mode (leochaton)	
+-Fixed "Load unfinished survey" and "Save survey and return" buttons active even when the survey is not active (leochaton)	
+-Fixed question marks being shown instead if Cyrillic/chinese/greek/... characters when installing LImeSurvey into a non-UTF8 database (c_schmitz)
+-Fixed $accesscontrol isn´t working correctly - removed this obsolete setting (leochaton, c_schmitz)	
+-Fixed error clicking Browse button to view text box responses (leochaton)
+-Fixed Locale nl point to wrong images-directory (el-matador-69)
+-Fixed The saved control records were not deleted when the survey was deactivated. (leochaton)
+-Fixed statistics for free text questions (leochaton, c_schmitz)
+-Fixed a bug in the randomize function for answers (c_schmitz)
+-Numerous small fixes
+
 
 
 Changes from 1.01 to 1.50 - Release Date: 2007/08/06
