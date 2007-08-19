@@ -13,6 +13,7 @@
 
 
 require_once(dirname(__FILE__).'/../config.php');  // config.php itself includes common.php
+ini_set("memory_limit","10M"); //Guys: one survey touched ceil...   on line 285
 
 @ini_set('session.gc_maxlifetime', $sessionlifetime);
 

@@ -2618,6 +2618,73 @@ function replacenewline ($texttoreplace)
 	return $new_str;
 }
 
+function questionjavascript($type, $qattributes)
+{
+	$newquestionoutput = "<script type='text/javascript'>\n"
+    ."if (navigator.userAgent.indexOf(\"Gecko\") != -1)\n"
+	."window.addEventListener(\"load\", init_gecko_select_hack, false);\n";	
+	$jc=0;
+	$newquestionoutput .= "\t\t\tvar qtypes = new Array();\n";
+	$newquestionoutput .= "\t\t\tvar qnames = new Array();\n\n";
+	foreach ($qattributes as $key=>$val)
+	{
+		foreach ($val as $vl)
+		{
+			$newquestionoutput .= "\t\t\tqtypes[$jc]='".$key."';\n";
+			$newquestionoutput .= "\t\t\tqnames[$jc]='".$vl['name']."';\n";
+			$jc++;
+		}
+	}
+	$newquestionoutput .= "\t\t\t function buildQTlist(type)
+				{
+				document.getElementById('QTattributes').style.display='none';
+				for (var i=document.getElementById('QTlist').options.length-1; i>=0; i--)
+					{
+					document.getElementById('QTlist').options[i] = null;
+					}
+				for (var i=0;i<qtypes.length;i++)
+					{
+					if (qtypes[i] == type)
+						{
+						document.getElementById('QTattributes').style.display='';
+						document.getElementById('QTlist').options[document.getElementById('QTlist').options.length] = new Option(qnames[i], qnames[i]);
+						}
+					}
+				}";
+	$newquestionoutput .="\nfunction OtherSelection(QuestionType)\n"
+	. "\t{\n"
+	. "if (QuestionType == '') {QuestionType=document.getElementById('question_type').value;}\n"
+	. "\tif (QuestionType == 'M' || QuestionType == 'P' || QuestionType == 'L' || QuestionType == '!')\n"
+	. "\t\t{\n"
+	. "\t\tdocument.getElementById('OtherSelection').style.display = '';\n"
+	. "\t\tdocument.getElementById('LabelSets').style.display = 'none';\n"
+	. "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
+	. "\t\t}\n"
+	. "\telse if (QuestionType == 'F' || QuestionType == 'H' || QuestionType == 'W' || QuestionType == 'Z')\n"
+	. "\t\t{\n"
+	. "\t\tdocument.getElementById('LabelSets').style.display = '';\n"
+	. "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n"
+	. "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
+	. "\t\t}\n"
+	. "\telse if (QuestionType == 'S' || QuestionType == 'T' || QuestionType == 'U' || QuestionType == 'N' || QuestionType == 'D' || QuestionType=='')\n"
+	. "\t\t{\n"
+	. "\t\tdocument.getElementById('Validation').style.display = '';\n"
+	. "\t\tdocument.getElementById('OtherSelection').style.display ='none';\n"
+	. "\t\tdocument.getElementById('ON').checked = true;\n"
+	. "\t\tdocument.getElementById('LabelSets').style.display='none';\n"
+	. "\t\t}\n"
+	. "\telse\n"
+	. "\t\t{\n"
+	. "\t\tdocument.getElementById('LabelSets').style.display = 'none';\n"
+	. "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n"
+	. "\t\tdocument.getElementById('ON').checked = true;\n"
+	. "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
+	//. "\t\tdocument.addnewquestion.other[1].checked = true;\n"
+	. "\t\t}\n"
+	. "\tbuildQTlist(QuestionType);\n"
+	. "\t}\n"
+	. "\tOtherSelection('$type');\n"
+	. "</script>\n";
 
 
 function upload()

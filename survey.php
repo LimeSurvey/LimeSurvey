@@ -326,15 +326,47 @@ echo "\t\t\t\t\t}\n";
 echo "\t\t\t\t}\n";
 echo "\t\t\t}\n";
 echo "\n";
-echo "\t\tfunction inArray(needle, haystack)\n";
-echo "\t\t\t{\n";
-echo "\t\t\t\tfor (h in haystack) {\n";
-echo "\t\t\t\t\tif (haystack[h] == needle) {\n";
-echo "\t\t\t\t\t\treturn true;\n";
-echo "\t\t\t\t\t}\n";
-echo "\t\t\t\t}\n";
-echo "\t\t\treturn false;\n";
-echo "\t\t\t} \n";
+echo "  function inArray(needle, haystack)\n";
+echo "   {\n";
+echo "    for (h in haystack) {\n";
+echo "     if (haystack[h] == needle) {\n";
+echo "      return true;\n";
+echo "     }\n";
+echo "    }\n";
+echo "   return false;\n";
+echo "   } \n";
+echo "    function ValidDate(oObject)\n";
+echo "    {// --- Regular expression used to check if date is in correct format\n";
+echo "     var str_regexp = /[1-9][0-9]{3}-(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1])/;\n";
+echo "     var pattern = new RegExp(str_regexp);\n";
+echo "     if ((oObject.value.match(pattern)!=null))\n";
+echo "     {var date_array = oObject.value.split('-');\n";
+echo "      var day = date_array[2];\n";
+echo "      var month = date_array[1];\n";
+echo "      var year = date_array[0];\n";
+echo "      str_regexp = /1|3|5|7|8|10|12/;\n";
+echo "      pattern = new RegExp(str_regexp);\n";
+echo "      if ( day <= 31 && (month.match(pattern)!=null))\n";
+echo "      { return true;\n";
+echo "      }\n";
+echo "      str_regexp = /4|6|9|11/;\n";
+echo "      pattern = new RegExp(str_regexp);\n";
+echo "      if ( day <= 30 && (month.match(pattern)!=null))\n";
+echo "      { return true;\n";
+echo "      }\n";
+echo "      if (day == 29 && month == 2 && (year % 4 == 0))\n";
+echo "      { return true;\n";
+echo "      }\n";
+echo "      if (day <= 28 && month == 2)\n";
+echo "      { return true;\n";
+echo "      }        \n";
+echo "     }\n";
+echo "     window.alert('".$clang->gT("Date is not valid!")."');\n";
+echo "     oObject.focus();\n";
+echo "     oObject.select();\n";
+echo "     return false;\n";
+echo "    }\n";
+echo "  }\n";
 echo "\t//-->\n";
 echo "\t</script>\n\n";
 // <-- END NEW FEATURE - SAVE
@@ -394,26 +426,59 @@ if ((isset($conditions) && is_array($conditions)) || (isset($array_filterqs) && 
 			$java .= $endzone;
 			$endzone = "";
 			$cqcount=1;
-			$java .= "\n\t\t\tif ((";
+      $java .= "\n   if ((";
+    }
+
+    if (!isset($oldcq) || !$oldcq)
+    {
+        $oldcq = $cd[2];
 		}
-		if (!isset($oldcq) || !$oldcq) {$oldcq = $cd[2];}
-		if ($cd[4] == "L") //Just in case the dropdown threshold is being applied, check number of answers here
+
+    //Just in case the dropdown threshold is being applied, check number of answers here
+    if ($cd[4] == "L")
 		{
 			$cccquery="SELECT code FROM {$dbprefix}answers WHERE qid={$cd[1]}";
 			$cccresult=$connect->Execute($cccquery);
 			$cccount=$cccresult->RecordCount();
 		}
-		if ($cd[4] == "R") 	{$idname="fvalue_".$cd[1].substr($cd[2], strlen($cd[2])-1,1);}
-		elseif ($cd[4] == "5" || $cd[4] == "A" || $cd[4] == "B" || $cd[4] == "C" || $cd[4] == "E" || $cd[4] == "F" || $cd[4] == "G" || $cd[4] == "Y" || ($cd[4] == "L" && $cccount <= $dropdownthreshold))
-		{$idname="java$cd[2]";}
+    if ($cd[4] == "R")
+    {
+       $idname="fvalue_".$cd[1].substr($cd[2], strlen($cd[2])-1,1);
+    }
+    elseif ($cd[4] == "5" ||
+            $cd[4] == "A" ||
+            $cd[4] == "B" ||
+            $cd[4] == "C" ||
+            $cd[4] == "E" ||
+            $cd[4] == "F" ||
+            $cd[4] == "G" ||
+            $cd[4] == "Y" ||
+            ($cd[4] == "L" &&
+             $cccount <= $dropdownthreshold))
+    {
+        $idname="java$cd[2]";
+    }
 		elseif ($cd[4] == "M" || $cd[4] == "P")
-		{$idname="java$cd[2]$cd[3]";}
-		else				{$idname="java".$cd[2];}
-		if ($cqcount > 1 && $oldcq ==$cd[2]) {$java .= " || ";}
-		elseif ($cqcount >1 && $oldcq != $cd[2]) {$java .= ") && (";}
-		if ($cd[3] == ' ')
-		{
-            $java .= "!document.getElementById('$idname') || document.getElementById('$idname').value == ' '";
+	{
+        $idname="java$cd[2]$cd[3]";
+    }
+    else
+    {
+        $idname="java".$cd[2];
+    }
+
+    if ($cqcount > 1 && $oldcq ==$cd[2])
+    {
+        $java .= " || ";
+    }
+    elseif ($cqcount >1 && $oldcq != $cd[2])
+    {
+        $java .= ") && (";
+    }
+
+    if ($cd[3] == '')
+    {
+      $java .= "document.getElementById('$idname').value == ' ' || !document.getElementById('$idname').value";
         }
 		elseif($cd[4] == "M" || $cd[4] == "P")
 		{
@@ -421,20 +486,31 @@ if ((isset($conditions) && is_array($conditions)) || (isset($array_filterqs) && 
 		}
 		else
 		{
+      // NEW
+      // If the value is enclossed by @
+      // the value of this question must be evaluated instead.
+      if (ereg('^@[^@]+@', $cd[3]))
+      {
+        $java .= "document.getElementById('$idname').value $cd[6] document.getElementById('$cd[2]').value";
+	  }
+	  else
+	  {
 			$java .= "document.getElementById('$idname').value == '$cd[3]'";
 		}
+    }
+
 		if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq))//Close if statement
 		{
 			$endzone = "))\n"
-			. "\t\t\t\t{\n"
-			. "\t\t\t\tdocument.getElementById('question$cd[0]').style.display='';\n"
-			. "\t\t\t\tdocument.getElementById('display$cd[0]').value='on';\n"
-			. "\t\t\t\t}\n"
-			. "\t\t\telse\n"
-			. "\t\t\t\t{\n"
-			. "\t\t\t\tdocument.getElementById('question$cd[0]').style.display='none';\n"
-			. "\t\t\t\tdocument.getElementById('display$cd[0]').value='';\n"
-			. "\t\t\t\t}\n";
+      . "    {\n"
+      . "    document.getElementById('question$cd[0]').style.display='';\n"
+      . "    document.getElementById('display$cd[0]').value='on';\n"
+      . "    }\n"
+      . "   else\n"
+      . "    {\n"
+      . "    document.getElementById('question$cd[0]').style.display='none';\n"
+      . "    document.getElementById('display$cd[0]').value='';\n"
+      . "    }\n";
 			$cqcount++;
 		}
 		$oldq = $cd[0]; //Update oldq for next loop
