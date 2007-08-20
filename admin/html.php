@@ -2685,7 +2685,8 @@ function questionjavascript($type, $qattributes)
 	. "\t}\n"
 	. "\tOtherSelection('$type');\n"
 	. "</script>\n";
-
+    
+}
 
 function upload()
 {
