@@ -912,7 +912,7 @@ function getSurveyInfo($surveyid, $languagecode='')
 // if $languagecode is not set then the base language from the survey is used
 // 
 {
-	global $dbprefix, $siteadminname, $siteadminemail, $connect;
+	global $dbprefix, $siteadminname, $siteadminemail, $connect, $languagechanger;
 	$thissurvey=false;
 	// if no language code is set then get the base language one
     if (!isset($languagecode) || $languagecode=='')
@@ -969,6 +969,7 @@ function getSurveyInfo($surveyid, $languagecode='')
 		if (!$thissurvey['adminemail']) {$thissurvey['adminemail']=$siteadminemail;}
 		if (!$thissurvey['urldescrip']) {$thissurvey['urldescrip']=$thissurvey['url'];}
 	}
+    $languagechanger =makelanguagechanger();
 	return $thissurvey;
 }
 
@@ -1849,6 +1850,7 @@ function templatereplace($line)
 	global $errormsg, $clang;
 	global $saved_id;
 	global $totalBoilerplatequestions;
+    global $languagechanger;    
 
 	if (stripos ($line,"</head>"))
 	{
@@ -1876,6 +1878,7 @@ function templatereplace($line)
 	if (strpos($line, "{SURVEYNAME}") !== false) $line=str_replace("{SURVEYNAME}", $thissurvey['name'], $line);
 	if (strpos($line, "{SURVEYDESCRIPTION}") !== false) $line=str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $line);
 	if (strpos($line, "{WELCOME}") !== false) $line=str_replace("{WELCOME}", $thissurvey['welcome'], $line);
+    if (strpos($line, "{LANGUAGECHANGER}") !== false) $line=str_replace("{LANGUAGECHANGER}", $languagechanger, $line);  
 	if (strpos($line, "{PERCENTCOMPLETE}") !== false) $line=str_replace("{PERCENTCOMPLETE}", $percentcomplete, $line);
 	if (strpos($line, "{GROUPNAME}") !== false) $line=str_replace("{GROUPNAME}", $groupname, $line);
 	if (strpos($line, "{GROUPDESCRIPTION}") !== false) $line=str_replace("{GROUPDESCRIPTION}", $groupdescription, $line);

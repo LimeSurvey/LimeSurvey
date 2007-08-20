@@ -377,6 +377,7 @@ foreach ($_SESSION['fieldarray'] as $ia)
 
 
 $percentcomplete = makegraph($_SESSION['step'], $_SESSION['totalsteps']);
+$languagechanger = makelanguagechanger();
 
 //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
 sendcacheheaders();

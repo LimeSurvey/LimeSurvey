@@ -72,6 +72,8 @@ if (isset($_GET['lang']))
 {
 	$_GET['lang'] = preg_replace("/[^a-zA-Z0-9-]/", "", $_GET['lang']);
 	if ($_GET['lang']) $clang = SetSurveyLanguage( $surveyid, $_GET['lang']);
+	UpdateSessionGroupList();  // to refresh the language strings in the group list session variable
+	UpdateFieldArray();        // to refresh question titles and question text 
 } 
 
 if (isset($_SESSION['s_lang']))
@@ -506,6 +508,52 @@ function makegraph($thisstep, $total)
 	. "</td></tr>\n</table>\n";
 	return $graph;
 }
+
+
+function makelanguagechanger()
+{
+  if (!isset($surveyid)) 
+  {	
+    $surveyid=returnglobal('sid');
+  }
+  $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+  if (!empty($slangs))
+  {
+    if (isset($_SESSION['s_lang']) && $_SESSION['s_lang'] != '')
+    { 
+      $lang = $_SESSION['s_lang'];
+    }
+    else if(isset($_POST['lang']) && $_POST['lang']!='')
+    { 
+      $lang = $_POST['lang'];
+    }
+    else if (isset($_GET['lang']) && $_GET['lang'] != '')
+    {
+      $lang = $_GET['lang'];
+    }
+    else
+      $lang = GetBaseLanguageFromSurveyID($surveyid);
+      
+    $htmlcode ="<select name=\"select\" onChange=\"javascript:window.location=this.value\">\n";
+    $htmlcode .= "<option value=\"index.php?sid=". $surveyid ."&lang=". $lang ."\">".getLanguageNameFromCode($lang,false)."</option>\n";
+    
+    foreach ($slangs as $otherlang)
+    {
+        if($otherlang != $lang)
+        $htmlcode .= "\t<option value=\"index.php?sid=". $surveyid ."&lang=". $otherlang ."\" >".getLanguageNameFromCode($otherlang,false)."</option>\n";
+    }
+    if($lang != GetBaseLanguageFromSurveyID($surveyid))
+    {
+      $htmlcode .= "<option value=\"index.php?sid=".$surveyid."&lang=".GetBaseLanguageFromSurveyID($surveyid)."\">".getLanguageNameFromCode(GetBaseLanguageFromSurveyID($surveyid),false)."</option>\n";  
+    }
+    
+    $htmlcode .= "</select>\n";
+//    . "</form>";
+        
+    return $htmlcode;
+  }
+}
+
 
 function checkgroupfordisplay($gid)
 {
@@ -1091,6 +1139,7 @@ function buildsurveysession()
 		//NO TOKEN PRESENTED. EXPLAIN PROBLEM AND PRESENT FORM
 
 		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+        echo makedropdownlist();
 		echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 		if (isset($thissurvey) && $thissurvey['allowregister'] == "Y")
 		{

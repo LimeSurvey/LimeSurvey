@@ -5,12 +5,14 @@
 		<tr>
 			<td>
 
-<table align='center' width='100%' cellpadding='25' cellspacing='0'>
+<table width='100%' cellpadding='2'>
 	<tr>
-		<td width="100%" valign="bottom"><img src="{TEMPLATEURL}logo.gif" height="72" width="211" alt="Logo" /></td>
-		<td nowrap valign="bottom"><strong>{SURVEYNAME}</strong></td>
+		<td valign="center" align="left"><img src="{TEMPLATEURL}logo.gif" alt="Logo Image"/></td>
+                <td valign="bottom" align="center" width="100%"><table width="100%">
+                <tr><td  align="center"><strong>{SURVEYNAME}</strong></td></tr>
+                <tr><td  align="center">{LANGUAGECHANGER}</td></tr>
+               </table></td>
+               <td valign="bottom" align="right" height="100%" width="100%"></td>
 	</tr>
-	<tr>
-		<td colspan="2" align="center"><table width='80%'><tr><td>{WELCOME}<br /> <br /></td></tr></table></td>
-	</tr>
+<tr><td colspan="2" align="center"><table width='80%'><tr><td>{WELCOME}<br /> <br /></td></tr></table></td></tr>
 </table>
