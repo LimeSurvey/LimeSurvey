@@ -113,7 +113,7 @@ elseif ($action=="templates" || $action=="templatecopy" || $action=="templatesav
     `activate_survey`
 */ 
 
-if ($surveyid)
+if (isset($surveyid) && $surveyid)
 {
 $surquery = "SELECT * FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
 $surresult = db_execute_assoc($surquery);   
