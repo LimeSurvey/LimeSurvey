@@ -111,8 +111,8 @@ if($actsurrows['edit_survey_property']){
 		$groupselect,
 		"<input type='text' name='minimum' value='".$editdata['minimum']."' />",
 		"<input type='text' name='maximum' value='".$editdata['maximum']."' />",
-		"<input type='text' name='name' size='80' value='".htmlentities(stripslashes($editdata['name']), ENT_QUOTES)."'/>",
-		"<textarea name='message' rows='10' cols='80'>".htmlentities(stripslashes($editdata['message']), ENT_QUOTES)."</textarea>",
+		"<input type='text' name='name' size='80' value='".htmlentities(stripslashes($editdata['name']), ENT_QUOTES,'UTF-8')."'/>",
+		"<textarea name='message' rows='10' cols='80'>".htmlentities(stripslashes($editdata['message']), ENT_QUOTES,'UTF-8')."</textarea>",
 		"<input type='text' name='link' size='80' value='".$editdata['link']."' />");
 		$actiontitle=$clang->gT("Edit");	
 		$actionvalue="assessmentupdate";
