@@ -31,6 +31,7 @@ $files[]=array("name"=>"clearall.pstpl");
 $files[]=array("name"=>"register.pstpl");
 $files[]=array("name"=>"load.pstpl");
 $files[]=array("name"=>"save.pstpl");
+$files[]=array("name"=>"startpage.pstpl");
 $files[]=array("name"=>"assessment.pstpl");
 
 // Set this so common.php doesn't throw notices about undefined variables
