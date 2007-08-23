@@ -13,7 +13,6 @@
 
 
 require_once(dirname(__FILE__).'/../config.php');  // config.php itself includes common.php
-ini_set("memory_limit","10M"); //Guys: one survey touched ceil...   on line 285
 
 @ini_set('session.gc_maxlifetime', $sessionlifetime);
 
@@ -114,7 +113,7 @@ elseif ($action=="templates" || $action=="templatecopy" || $action=="templatesav
     `activate_survey`
 */ 
 
-if ($surveyid)
+if (isset($surveyid) && $surveyid)
 {
 $surquery = "SELECT * FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
 $surresult = db_execute_assoc($surquery);   

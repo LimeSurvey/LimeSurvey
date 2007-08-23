@@ -376,7 +376,7 @@ if ($importversion<=100)
          $newlanguage='zh-Hans';
          break;
       case "chinese-traditional":
-         $newlanguage='zh-Hant';
+         $newlanguage='zh-Hant-HK';
          break;
       case "croatian":
          $newlanguage='hr';
@@ -483,7 +483,7 @@ if ($importversion<=100)
 
 if (isset($surveyrowdata['datecreated'])) {$surveyrowdata['datecreated']=$connect->BindTimeStamp($surveyrowdata['datecreated']);}
 if (isset($surveyrowdata['expires']) && $surveyrowdata['expires'] !='') {$surveyrowdata['expires']=$connect->BindTimeStamp($surveyrowdata['expires']);}
-if (!isset($surveyrowdata['datecreated']) || $surveyrowdata['datecreated']=='') {$surveyrowdata['datecreated']=$connect->BindTimeStamp(date("Y-m-d"));}
+if (!isset($surveyrowdata['datecreated']) || $surveyrowdata['datecreated']=='' || $surveyrowdata['datecreated']=='null') {$surveyrowdata['datecreated']=$connect->BindTimeStamp(date("Y-m-d"));}
 
 $values=array_values($surveyrowdata);
 $values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
@@ -1047,6 +1047,7 @@ else
 	
 	echo $clang->gT("Import of Survey is completed.")."\n";
 	if ($importwarning != "") echo "\n".$clang->gT("Warnings").":\n" . $importwarning . "\n";
+	$surveyid=$newsid;
 
 }
 	
