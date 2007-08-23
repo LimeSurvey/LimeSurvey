@@ -944,7 +944,6 @@ if (isset($_POST['summary']) && $_POST['summary'])
 	//START Chop up fieldname and find matching questions
 	$lq = "SELECT DISTINCT qid FROM ".db_table_name("questions")." WHERE sid=$surveyid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
 	$lr = db_execute_assoc($lq);
-	$legitqs[] = "DUMMY ENTRY";
 	while ($lw = $lr->FetchRow())
 	{
 		$legitqids[] = $lw['qid']; //this creates an array of question id's'
@@ -1000,7 +999,10 @@ if (isset($_POST['summary']) && $_POST['summary'])
 		elseif (substr($rt, 0, 1) == "Q") //Multiple short text
 		{
 			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
-			$nquery = "SELECT title, type, question, other FROM ".db_table_name("questions")." WHERE qid='".substr($qqid, 0, strlen($qqid)-1)."' AND language='{$language}'";
+            $tmpqid=substr($qqid, 0, strlen($qqid)-1);
+            while (!in_array ($tmpqid,$legitqids)) $tmpqid=substr($tmpqid, 0, strlen($tmpqid)-1); 
+            $qidlength=strlen($tmpqid);
+			$nquery = "SELECT title, type, question, other FROM ".db_table_name("questions")." WHERE qid='".substr($qqid, 0, $qidlength)."' AND language='{$language}'";
 			$nresult = db_execute_num($nquery) or die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
 			$count = substr($qqid, strlen($qqid)-1);
 			while ($nrow=$nresult->FetchRow())
