@@ -1301,10 +1301,11 @@ UpdateSessionGroupList();
 		{
 
 // Optimized Query
-			$abquery = "SELECT ".db_table_name('answers').".code\n"
-			. " FROM ".db_table_name('answers')."\n"
-			. " WHERE ".db_table_name('answers').".qid={$arow['qid']}\n"
-			. " ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+            $abquery = "SELECT ".db_table_name('answers').".code\n"
+            . " FROM ".db_table_name('answers')." \n"
+            . " WHERE qid={$arow['qid']}\n"
+            . " AND language='".$_SESSION['s_lang']."' \n"
+            . " ORDER BY sortorder, answer";
 
 			$abresult = db_execute_assoc($abquery);
 			while ($abrow = $abresult->FetchRow())
