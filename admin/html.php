@@ -2617,7 +2617,7 @@ function replacenewline ($texttoreplace)
 
 	return $new_str;
 }
-
+/*
 function questionjavascript($type, $qattributes)
 {
 	$newquestionoutput = "<script type='text/javascript'>\n"
@@ -2686,7 +2686,7 @@ function questionjavascript($type, $qattributes)
 	. "\tOtherSelection('$type');\n"
 	. "</script>\n";
     
-}
+}      */
 
 function upload()
 {
