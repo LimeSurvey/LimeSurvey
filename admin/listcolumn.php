@@ -51,15 +51,15 @@ if ($order == "alpha")
 
 $result=db_execute_assoc($query) or die("Error with query: ".$query."<br />".$connect->ErrorMsg());
 $listcolumnoutput= "<table width='98%' class='statisticstable' border='1' cellpadding='2' cellspacing='0'>\n";
-$listcolumnoutput.= "<tr><td><input type='image' src='$imagefiles/downarrow.png' align='center' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&column=$column&order=id', '_top')\"></td>\n";
+$listcolumnoutput.= "<tr><td><input type='image' src='$imagefiles/downarrow.png' align='middle' onclick=\"window.open('admin.php?action=listcolumn&amp;sid=$surveyid&amp;column=$column&amp;order=id', '_top')\" /></td>\n";
 $listcolumnoutput.= "<td valign='top'><input type='image' align='right' src='$imagefiles/close.gif' onclick='window.close()' />";
 if ($connect->databaseType != 'odbc_mssql')
-	{ $listcolumnoutput.= "<input type='image' src='$imagefiles/downarrow.png' align='left' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&column=$column&order=alpha', '_top')\" />"; }
+	{ $listcolumnoutput.= "<input type='image' src='$imagefiles/downarrow.png' align='left' onclick=\"window.open('admin.php?action=listcolumn&amp;sid=$surveyid&amp;column=$column&amp;order=alpha', '_top')\" />"; }
 $listcolumnoutput.= "</td></tr>\n";
 while ($row=$result->FetchRow())
 {
 	$listcolumnoutput.=  "<tr><td valign='top' align='center' >"
-	. "<a href='$scriptname?action=browse&sid=$surveyid&subaction=id&id=".$row['id']."' target='home'>"
+	. "<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=".$row['id']."' target='home'>"
 	. $row['id']."</a></td>"
 	. "<td valign='top'>".$row[$column]."</td></tr>\n";
 }
