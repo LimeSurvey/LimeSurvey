@@ -56,6 +56,10 @@
         global $clang;
         unset($supportedLanguages);
 
+	    // Basque
+	    $supportedLanguages['eu']['description'] = $clang->gT('Basque');
+	    $supportedLanguages['eu']['nativedescription'] = 'Euskara';
+
 	    // Bulgarian
 	    $supportedLanguages['bg']['description'] = $clang->gT('Bulgarian');
 	    $supportedLanguages['bg']['nativedescription'] = '&#x0411;&#x044a;&#x043b;&#x0433;&#x0430;&#x0440;&#x0441;&#x043a;&#x0438;';
