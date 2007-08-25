@@ -31,7 +31,6 @@ $files[]=array("name"=>"clearall.pstpl");
 $files[]=array("name"=>"register.pstpl");
 $files[]=array("name"=>"load.pstpl");
 $files[]=array("name"=>"save.pstpl");
-$files[]=array("name"=>"startpage.pstpl");
 $files[]=array("name"=>"assessment.pstpl");
 
 // Set this so common.php doesn't throw notices about undefined variables
@@ -66,7 +65,7 @@ if ($action=="templatesavechanges" && $_POST['changes']) {
 	$_POST['changes']=str_replace("\r\n", "\n", $_POST['changes']);
 	if ($editfile) {
         // Check if someone tries to submit a file other than one of the allowed filenames
-        if (multiarray_search($files,'name',$editfile)==false) {die('Invalid template filename');}  // Die you sneaky bastard!
+        if (multiarray_search($files,'name',$editfile)===false) {die('Invalid template filename');}  // Die you sneaky bastard!
 		$savefilename=$publicdir."/templates/".$_POST['templatename']."/".$editfile;
 		if (is_writable($savefilename)) {
 			if (!$handle = fopen($savefilename, 'w')) {
