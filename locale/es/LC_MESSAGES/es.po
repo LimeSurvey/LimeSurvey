@@ -23,17 +23,32 @@ msgstr ""
 "X-Poedit-SearchPath-0: C:/documentos/www/docs/limesurvey15\n"
 "X-Generator: KBabel 1.11.4\n"
 
+msgid "If you set a survey to anonymous, answers to timestamped and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
+msgstr "Si usted hace que una encuesta sea anónima, las respuestas con fecha marcada y crea una tabla de encuestados/as, LimeSurvey marcará las respuestas completadas con una 'Y' en vez de con la fecha y hora para asegurar el anonimato de sus participantes."
+
+msgid "Go Back"
+msgstr "Volver"
+
+msgid "Answer Privacy"
+msgstr "Privacidad"
+
+msgid "Closed-access"
+msgstr "Restringido"
+
+msgid "Open-access"
+msgstr "Libre"
+
 msgid "Open-access mode"
-msgstr "Encuesta en modo abierto"
+msgstr "Encuesta de acceso libre"
 
 msgid "No invitation code is needed to complete the survey."
 msgstr "no es necesaria una contraseña para poder contestar el cuestionario."
 
 msgid "You can switch to the closed-access mode by initialising a token table with the button below."
-msgstr "Usted puede hacer que la encuesta esté en modo cerrado (es decir, sólo para personas que posean la contraseña oportuna) inicializando una tabla de invitaciones al pulsar el siguiente botón."
+msgstr "Usted puede hacer que la encuesta sea de acceso restringido (es decir, sólo para personas que posean la contraseña oportuna) inicializando una tabla de encuestados/as al pulsar el siguiente botón."
 
 msgid "Switch to closed-access mode"
-msgstr "Cambiar a encuesta cerrada"
+msgstr "Cambiar a encuesta de acceso restringido"
 
 msgid "Not enough values for calculation"
 msgstr "No hay suficientes valores para realizar el cálculo"
@@ -90,7 +105,7 @@ msgid "Logout"
 msgstr "Cerrar Sesión"
 
 msgid "Create or Import New Survey"
-msgstr "Crear o Importar una Nuevo Cuestionario"
+msgstr "Crear o Importar una Nueva Encuesta"
 
 msgid "Surveys"
 msgstr "Encuestas"
@@ -446,7 +461,7 @@ msgstr "Este cuestionario es anónimo."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:1822
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
-msgstr "Los registros que contienen sus respuestas al cuestionario no contienen ninguna identificación suya a menos que una pregunta específicamente así lo haga. Si responde a este cuestionario utilizando una invitación que le da acceso al cuestionario, puede estar seguro que la misma no se asocia a ninguna de sus respuestas. Esto se administra en una base de datos separada, que sólo se actualiza para indicar que ha completado o no el cuestionario. No hay manera de identificar sus respuestas."
+msgstr "Los registros que contienen sus respuestas al cuestionario no contienen ninguna identificación suya a menos que una pregunta específicamente así lo haga. Si responde a este cuestionario utilizando una contraseña que le da acceso al cuestionario, puede estar seguro que la misma no se asocia a ninguna de sus respuestas. Ésto se administra en una tabla de datos separada, que sólo se actualiza para indicar que ha completado o no el cuestionario, pero sin establecer vínculo alguno con la tabla donde se almacenan sus respuestas, por lo que no hay manera de asociar una respuesta con la persona que la hizo."
 
 msgid "Are you sure you want to clear all your responses?"
 msgstr "¿Está seguro de eliminar todas sus respuestas?"
@@ -473,7 +488,7 @@ msgstr "Presione \"Enviar\" para completar el proceso y guardar sus respuestas."
 
 # D:\xampp\xampp\htdocs\limesurvey/clienttext.php:170
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
-msgstr "Si desea comprobar cualquiera de las respuestas ingresadas y/o cambiar alguna, puede hacerlo ahora con el botón [<< Prev] y revisarlas."
+msgstr "Si desea comprobar cualquiera de las respuestas ingresadas y/o cambiar alguna, puede hacerlo ahora con el botón [<< anterior] y revisarlas."
 
 msgid "Answers Cleared"
 msgstr "Respuestas borradas"
@@ -740,7 +755,7 @@ msgid "prev"
 msgstr "anterior"
 
 msgid "next"
-msgstr "sig."
+msgstr "siguiente"
 
 msgid "last"
 msgstr "último"
@@ -952,7 +967,7 @@ msgid "This question has a condition set, however the condition is based on a qu
 msgstr "Esta pregunta tiene asignada una condición, pero esta condición está basada en una pregunta que aparece después de ella."
 
 msgid "Activate Survey"
-msgstr "Activar cuestionario"
+msgstr "Activar Encuesta"
 
 msgid "Survey does not pass consistency check"
 msgstr "El cuestionario no pasó la revisión de consistencia"
@@ -1019,13 +1034,13 @@ msgid "Survey has been activated. Results table has been successfully created."
 msgstr "El cuestionario ha sido activado. La tabla de resultados ha sido creada con éxito."
 
 msgid "This is not an anonymous survey. A token table must also be created."
-msgstr "Este no es un cuestionario anónimo. Se debe crear una tabla de invitaciones."
+msgstr "Este no es un cuestionario anónimo. Se debe crear una tabla de encuestados/as."
 
 msgid "Initialise Tokens"
-msgstr "Inicializar las invitaciones"
+msgstr "Inicializar los encuestados/as"
 
 msgid "This survey allows public registration. A token table must also be created."
-msgstr "Este cuestionario admite registro público. Es necesario crear la tabla de invitaciones igualmente."
+msgstr "Este cuestionario admite registro público. Es necesario crear la tabla de encuestados/as igualmente."
 
 msgid "This survey is now active, and responses can be recorded."
 msgstr "El cuestionario ha sido activado, y ahora las respuestas pueden ser almacenadas."
@@ -1121,7 +1136,7 @@ msgstr "No se encontró ningún cuestionario."
 # D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:475
 # D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:1070
 msgid "Token ID"
-msgstr "ID de invitación"
+msgstr "ID de Encuestado/a"
 
 msgid "Date Submitted"
 msgstr "Fecha de envío"
@@ -1421,7 +1436,7 @@ msgstr "No ha seleccionado un cuestionario para realizar la entrada de datos."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/dataentry.php:249
 msgid "This survey is not anonymous, you must supply a valid token"
-msgstr "Este cuestionario no es anónimo, debe ingresar un código de invitación válido"
+msgstr "Este cuestionario no es anónimo, debe ingresar una contraseña válida"
 
 # C:/documentos/www/docs/limesurvey15/admin/dataentry.php:122
 msgid "There is already a recorded answer for this token, follow the following link to update it"
@@ -1449,7 +1464,7 @@ msgid "Your survey responses have been saved succesfully"
 msgstr "Sus respuestas a este cuestionario fueron guardadas con éxito"
 
 msgid "A token entry for the saved survey has been created too."
-msgstr "Se ha creado también una invitación para el cuestionario guardado."
+msgstr "Se ha creado también un/a encuestado/a para el cuestionario guardado."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/save.php:287
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/dataentry.php:220
@@ -1542,7 +1557,7 @@ msgid "When you deactivate a survey all the data entered in the original table w
 msgstr "Cuando desactiva un cuestionario todos los datos introducidos se copian en otra tabla, y cuando se vuelve a activar nuevamente, la tabla estará vacía. Ya no tendrá acceso a estos datos por medio de LimeSurvey."
 
 msgid "Deactivated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
-msgstr "Los datos de un cuestionario que ha sido desactivado sólo pueden ser vistos por un usuario con acceso a la base de datos. Si su cuestionario utiliza invitaciones, esta tabla también será renombrada y sólo será accesible a los administradores del sistema."
+msgstr "Los datos de un cuestionario que ha sido desactivado sólo pueden ser vistos por un usuario con acceso a la base de datos. Si su cuestionario utiliza tabla de encuestados/as, esta tabla también será renombrada y sólo será accesible a los administradores del sistema."
 
 msgid "Your responses table will be renamed to:"
 msgstr "La tabla de contestaciones será renombrada a:"
@@ -1566,7 +1581,7 @@ msgid "You should note the name of this table in case you need to access this in
 msgstr "Anote el nombre de esta tabla en caso que desee acceder a ella posteriormente."
 
 msgid "The tokens table associated with this survey has been renamed to: "
-msgstr "La tabla de invitaciones asociada al cuestionario ahora es: "
+msgstr "La tabla de encuestados/as asociada al cuestionario ahora es: "
 
 msgid "Delete Survey"
 msgstr "Eliminar cuestionario"
@@ -1584,7 +1599,7 @@ msgid "This survey is active and a responses table exists. If you delete this su
 msgstr "Este cuestionario está activo y ya tiene respuestas. Si lo borra, tambien borrará las respuestas. Recomendamos que las exporte antes de borrar la encuesta."
 
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
-msgstr "Esta encuesta está activa y existe una tabla de invitaciones. Si la borra, también eliminará las invitaciones. Recomendamos que las exporte antes de borrar la encuesta."
+msgstr "Esta encuesta está activa y existe una tabla de encuestados/as. Si la borra, también eliminará los/as encuestados/as. Recomendamos que los exporte antes de borrar la encuesta."
 
 msgid "Cancel"
 msgstr "Cancelar"
@@ -1644,6 +1659,9 @@ msgstr "Filtrar respuestas incompletas"
 msgid "Answers"
 msgstr "Respuestas"
 
+msgid "Edit Answers"
+msgstr "Editar Respuestas"
+
 msgid "Answer Codes"
 msgstr "Códigos de las Respuestas"
 
@@ -1681,13 +1699,13 @@ msgid "Choose the columns you wish to export."
 msgstr "Elija las columnas que desea exportar. Deje todo sin seleccionar para exportar todas las columnas."
 
 msgid "Token Control"
-msgstr "Control de Invitaciones"
+msgstr "Control de Encuestados/as"
 
 msgid "Choose Token Fields"
-msgstr "Elija los campos de las invitaciones"
+msgstr "Elija los campos de los/as encuestados/as"
 
 msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
-msgstr "Puede exportar datos de la invitación asociados a cada pregunta. Seleccione los campos adicionales que desea exportar."
+msgstr "Puede exportar datos de el/la encuestado/a asociados a cada pregunta. Seleccione los campos adicionales que desea exportar."
 
 msgid "Email"
 msgstr "Correo electrónico"
@@ -1795,10 +1813,10 @@ msgid "De-activated Surveys"
 msgstr "Encuestas Desactivadas"
 
 msgid "Active Token Tables"
-msgstr "Tablas de invitaciones Activadas"
+msgstr "Tablas de encuestados/as Activadas"
 
 msgid "De-activated Token Tables"
-msgstr "Tablas de invitaciones Desactivadas"
+msgstr "Tablas de encuestados/as Desactivadas"
 
 msgid "Survey cannot be activated. Either you have no permission or there are no questions."
 msgstr "La encuesta no podrá ser activada por no tener suficientes privilegios para hacerlo o aún no tiene preguntas"
@@ -1840,10 +1858,10 @@ msgid "Set Assessment Rules"
 msgstr "Fijar reglas de evaluación"
 
 msgid "Browse Responses For This Survey"
-msgstr "Examinar las Respuestas de este cuestionario"
+msgstr "Examinar las Respuestas de esta encuesta"
 
 msgid "Activate/Edit Tokens for this Survey"
-msgstr "Activar/Modificar las invitaciones de este cuestionario"
+msgstr "Activar/Modificar los/as encuestados/as de esta encuesta"
 
 msgid "Close this Survey"
 msgstr "Cerrar este cuestionario"
@@ -1890,7 +1908,7 @@ msgid "It uses cookies for access control."
 msgstr "Utiliza 'cookies' para el control de acceso."
 
 msgid "If tokens are used, the public may register for this survey"
-msgstr "Si utiliza invitaciones, el público puede darse de alta en este cuestionario"
+msgstr "Si utiliza tabla de encuestados/as, el público puede darse de alta en este cuestionario"
 
 msgid "Participants can save partially finished surveys"
 msgstr "Los participantes pueden guardar cuestionarios parcialmente completados"
@@ -1955,8 +1973,8 @@ msgstr "La encuesta NO está activa."
 msgid "Survey is currently active."
 msgstr "La encuesta está activa."
 
-msgid "Survey table name is"
-msgstr "El nombre de la tabla de la encuesta es:"
+msgid "Survey table name"
+msgstr "Tabla de la encuesta"
 
 msgid "Survey cannot be activated yet."
 msgstr "La encuesta no puede ser activada aún."
@@ -2179,7 +2197,7 @@ msgstr "No se pudieron actualizar los permisos del cuestionario."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1843
 msgid "Edit Survey - Step 1 of 2"
-msgstr "Editar Cuestionario - Paso 1 de 2"
+msgstr "Editar Encuesta - Paso 1 de 2"
 
 msgid "Admin Email:"
 msgstr "Correo electrónico del administrador:"
@@ -2218,7 +2236,7 @@ msgid "Allow public registration?"
 msgstr "¿Permitir inscripción pública?"
 
 msgid "Token Attribute Names:"
-msgstr "Nombres de los atributos de las invitaciones:"
+msgstr "Nombres de los atributos de los/as encuestados/as:"
 
 msgid "Date Stamp?"
 msgstr "¿Marcar la fecha?"
@@ -2277,7 +2295,7 @@ msgstr "Esto sustituirá al texto actual. ¿Proceder?"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2133
 msgid "Edit Survey - Step 2 of 2"
-msgstr "Editar Cuestionario - Paso 2 de 2"
+msgstr "Editar Encuesta - Paso 2 de 2"
 
 msgid "Invitation Email Subject:"
 msgstr "Asunto del correo de invitación:"
@@ -2722,7 +2740,7 @@ msgid "Update"
 msgstr "Actualizar"
 
 msgid "Select CSV File:"
-msgstr "Seleccionar Archivo CSV:"
+msgstr "Seleccionar Archivo CSV"
 
 msgid "Edit label set"
 msgstr "Modificar Etiquetas"
@@ -2866,7 +2884,7 @@ msgid "Mandatory:"
 msgstr "Obligatoria:"
 
 msgid "Select CSV File"
-msgstr "Seleccionar Archivo CSV:"
+msgstr "Seleccionar Archivo CSV"
 
 msgid "Copy Question"
 msgstr "Copiar Pregunta"
@@ -3104,7 +3122,7 @@ msgid "Save Page"
 msgstr "Página de guardar Encuesta"
 
 msgid "Create new template called:"
-msgstr "Crear nueva plantilla invitación:"
+msgstr "Crear una nueva plantilla llamada:"
 
 msgid "NewTemplate"
 msgstr "NuevaPlantilla"
@@ -3181,19 +3199,19 @@ msgid "You have not selected a survey"
 msgstr "No ha seleccionado un cuestionario"
 
 msgid "Token table could not be created."
-msgstr "La tabla de invitaciones no pudo ser creada."
+msgstr "La tabla de encuestados/as no pudo ser creada."
 
 msgid "A token table has been created for this survey."
-msgstr "Se ha creado una tabla de invitaciones para este cuestionario."
+msgstr "Se ha creado una tabla de encuestados/as para este cuestionario."
 
 msgid "Tokens have not been initialised for this survey."
-msgstr "No se han inicializado invitaciones para este cuestionario."
+msgstr "No se ha inicializado una tabla de encuestados/as para este cuestionario."
 
 msgid "If you initialise tokens for this survey, the survey will only be accessible to users who have been assigned a token."
-msgstr "Si inicializa invitaciones para este cuestionario, este sólo será accesible a usuarios que tengan asignada una invitación."
+msgstr "Si inicializa una tabla de encuestados/as para esta encuesta, ésta sólo será accesible a usuarios que tengan asignada una contraseña."
 
 msgid "Do you want to create a tokens table for this survey?"
-msgstr "¿Desea crear una tabla de invitaciones para este cuestionario?"
+msgstr "¿Desea crear una tabla de encuestados/as para esta encuesta?"
 
 msgid "The following old token tables could be restored:"
 msgstr "Las siguientes tablas invocadas deberían ser recuperadas:"
@@ -3201,20 +3219,23 @@ msgstr "Las siguientes tablas invocadas deberían ser recuperadas:"
 msgid "Restore"
 msgstr "Recuperar"
 
+msgid "Restore Options"
+msgstr "Opciones de Recuperación"
+
 msgid "Display Tokens"
-msgstr "Mostrar invitaciones"
+msgstr "Mostrar encuestados/as"
 
 msgid "Add new token entry"
-msgstr "Agregar una nueva invitación"
+msgstr "Agregar un/a nuevo/a encuestado/a"
 
 msgid "Import Tokens from CSV File"
-msgstr "Importar invitaciones desde Archivo CSV"
+msgstr "Importar encuestados/as desde Archivo CSV"
 
 msgid "Import Tokens from LDAP Query"
-msgstr "Importar invitaciones desde una consulta LDAP"
+msgstr "Importar encuestados/as desde una consulta LDAP"
 
 msgid "Export Tokens to CSV file"
-msgstr "Exportar invitaciones a un fichero CSV"
+msgstr "Exportar encuestados/as a un fichero CSV"
 
 msgid "Send email invitation"
 msgstr "Enviar Invitación (por email)"
@@ -3226,10 +3247,10 @@ msgid "Generate Tokens"
 msgstr "Generar contraseñas"
 
 msgid "Drop tokens table"
-msgstr "Borrar Tabla de Invitaciones"
+msgstr "Borrar Tabla de Encuestados/as"
 
 msgid "Total Records in this Token Table"
-msgstr "Total de Registros en la tabla de invitaciones"
+msgstr "Total de Registros en la tabla de encuestados/as"
 
 msgid "Total With No Unique Token"
 msgstr "Total con contraseña generada"
@@ -3241,7 +3262,7 @@ msgid "Total Surveys Completed"
 msgstr "Total de encuestas Completadas"
 
 msgid "All token entries have been deleted."
-msgstr "Se han borrado todos los tokens"
+msgstr "Se han borrado todos/as los/as encuestados/as"
 
 msgid "All invite entries have been set to 'Not Invited'."
 msgstr "Todas las entradas con invitación enviada han sido puestas a No enviada"
@@ -3250,13 +3271,13 @@ msgid "All unique token numbers have been removed."
 msgstr "Todas las contraseñas han sido borradas."
 
 msgid "Token Database Administration Options"
-msgstr "Opciones de la Base de Datos de Invitaciones"
+msgstr "Opciones de la Base de Datos de Encuestados/as"
 
 msgid "Are you really sure you want to reset all invitation records to NO?"
-msgstr "¿Está seguro(a) de reiniciar en todas las invitaciones el status de envío de invitaciones?"
+msgstr "¿Está seguro(a) de reiniciar en todos/as los/as encuestados/as el status de envío de invitaciones?"
 
 msgid "Set all entries to 'No invitation sent'."
-msgstr "Reiniciar en todas las invitaciones el status de 'Invitación enviada' a NO"
+msgstr "Reiniciar en todos/as los/as encuestados/as el status de 'Invitación enviada' a NO"
 
 msgid "Are you sure you want to delete all unique token numbers?"
 msgstr "¿Está seguro(a) de querer borrar todas las contraseñas?"
@@ -3265,13 +3286,13 @@ msgid "Delete all unique token numbers"
 msgstr "Borrar todas las contraseñas"
 
 msgid "Are you really sure you want to delete ALL token entries?"
-msgstr "¿Está seguro(a) de querer borrar TODAS las invitaciones?"
+msgstr "¿Está seguro(a) de querer borrar TODOS/AS los/as encuestados/as?"
 
 msgid "Delete all token entries"
-msgstr "Borrar todas las invitaciones"
+msgstr "Borrar todos/as los/as encuestados/as"
 
 msgid "Update tokens table with new fields"
-msgstr "Actualizar la tabla de invitaciones con los nuevos campos"
+msgstr "Actualizar la tabla de encuestados/as con los nuevos campos"
 
 msgid "Search"
 msgstr "Buscar"
@@ -3286,10 +3307,10 @@ msgid "Completed?"
 msgstr "¿Completada?"
 
 msgid "Edit Token Entry"
-msgstr "Modificar invitación"
+msgstr "Modificar encuestado/a"
 
 msgid "Delete Token Entry"
-msgstr "Borrar invitación"
+msgstr "Borrar encuestado/a"
 
 msgid "Do Survey"
 msgstr "Contestar la Encuesta"
@@ -3298,26 +3319,26 @@ msgid "Update Response"
 msgstr "Actualizar Respuesta"
 
 msgid "Send invitation email to this entry"
-msgstr "Enviar invitación (email) a esta entrada"
+msgstr "Enviar invitación (email) a este/a encuestado/a"
 
 msgid "Send reminder email to this entry"
 msgstr "Enviar recordatorio (email) a esta entrada"
 
 msgid "Delete Tokens Table"
-msgstr "Eliminar Tabla de Invitaciones"
+msgstr "Eliminar Tabla de Encuestados/as"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:675
 msgid "If you delete this table tokens will no longer be required to access this survey."
-msgstr "Si elimina la tabla de invitaciones no será requerida para ingresar al cuestionario."
+msgstr "Si elimina la tabla de encuestados/as, ya no será requerida contraseña para realizar la encuesta."
 
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
 msgstr "Se realizará una copia de respaldo si continúa. El administrador de sistema tendrá acceso a esta tabla."
 
 msgid "Delete Tokens"
-msgstr "Borrar invitaciones"
+msgstr "Borrar encuestados/as"
 
 msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
-msgstr "La tabla de invitaciones ha sido eliminada y las invitaciones no son necesarias para acceder al cuestionario."
+msgstr "La tabla de encuestados/as ha sido eliminada y ya no es necesaria contraeña para acceder a la encuesta."
 
 msgid "A backup of this table has been made and can be accessed by your system administrator."
 msgstr "Una copia de respaldo de esta tabla ha sido creada y puede ser accedida por el administrador de sistema."
@@ -3327,7 +3348,7 @@ msgstr "Enviar Invitación (por email)"
 
 # C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:746
 msgid "to TokenID No"
-msgstr "Para invitación nº"
+msgstr "Para encuestado/a nº"
 
 msgid "From"
 msgstr "De"
@@ -3344,8 +3365,8 @@ msgstr "Enviando Invitaciones"
 msgid "Sending to TID No:"
 msgstr "Enviando al TID Núm:"
 
-msgid "Invitation Sent To:"
-msgstr "Invitación Enviada a:"
+msgid "Invitation sent to:"
+msgstr "Invitación enviada a: "
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:733
 msgid "Mail to {FIRSTNAME} {LASTNAME} ({EMAIL}) Failed"
@@ -3358,7 +3379,7 @@ msgid "There are {EMAILCOUNT} emails still to be sent."
 msgstr "Hay {EMAILCOUNT} correos que no han sido enviados."
 
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
-msgstr "No hay direcciones de candidatos elegibles para enviar. Esto fue causado porque los criterios no se satisfacieron - tener direcciones de correo electrónico, no haber enviado inivitaciones anteriormente, haber completado el cuestionario y tener asignado una invitación."
+msgstr "No hay direcciones de candidatos elegibles para enviar. Esto fue causado porque no había encuestados/as que tuvieran direcciones de correo electrónico, tenían contraseña generada, no habían completado la encuesta y aún no habían recibido invitación."
 
 msgid "Email Reminder"
 msgstr "Enviar Recordatorio (por email)"
@@ -3376,40 +3397,40 @@ msgid "Reminder Sent To:"
 msgstr "Recordatorio Enviado a:"
 
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
-msgstr "No hay direcciones de candidatos elegibles para enviar. Esto fue causado porque los criterios no se satisfacieron - tener una dirección de correo electrónico, haber enviado una invitación, pero no haber completado el cuestionario aún."
+msgstr "No hay direcciones de candidatos elegibles para enviar. Esto fue causado porque los criterios no se satisfacieron:  tener una dirección de correo electrónico, haber recibido una invitación y no haber completado el cuestionario aún."
 
 msgid "Create Tokens"
-msgstr "Crear Invitaciones"
+msgstr "Generar contraseñas"
 
 msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
-msgstr "Dando clic a 'Sí' generará invitaciones para todos aquellos que estén en la lista y que no se les haya generado una previamente. ¿Es esto correcto?"
+msgstr "Dando clic a 'Sí' generará contraseñas para todos aquellos encuestados/as que estén en la lista y que no se les haya generado una previamente. ¿Es esto correcto?"
 
 msgid "{TOKENCOUNT} tokens have been created"
-msgstr "Se han creado {TOKENCOUNT} invitaciones"
+msgstr "Se han generado {TOKENCOUNT} contraseñas"
 
 msgid "Token has been deleted."
-msgstr "Se ha borrado la invitación."
+msgstr "Se ha borrado el/la encuestado/a."
 
 msgid "Reloading Screen. Please wait."
 msgstr "Recargando la pantalla. Por favor espere."
 
 msgid "Add or Edit Token"
-msgstr "Agregar o Modificar Invitación"
+msgstr "Agregar o Modificar Encuestado/a"
 
 msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
 msgstr "Puede dejarla en blanco y generarla posteriormente de forma automática utilizando 'Generar contraseñas'"
 
 msgid "Update Token"
-msgstr "Invitación Actualizada"
+msgstr "Encuestado/a Actualizado/a"
 
 msgid "Add Token"
-msgstr "Agregar invitación"
+msgstr "Agregar encuestado/a"
 
 msgid "Updated Token"
-msgstr "Invitació actualizada"
+msgstr "Encuestado/a actualizado/a"
 
 msgid "Added New Token"
-msgstr "Se agregó una nueva invitación"
+msgstr "Se agregó un/a nuevo/a encuestado/a"
 
 msgid "Upload CSV File"
 msgstr "Subir Archivo CSV"
@@ -3436,7 +3457,7 @@ msgid "Importing CSV File"
 msgstr "Importando Archivo CSV"
 
 msgid "Creating Token Entries"
-msgstr "Creando Invitaciones"
+msgstr "Creando encuestados/as"
 
 msgid "Failed"
 msgstr "Falló"
@@ -3464,7 +3485,7 @@ msgid "Uploading LDAP Query"
 msgstr "Subiendo consulta LDAP"
 
 msgid "{TOKENCOUNT} Records Created"
-msgstr "{TOKENCOUNT} invitaciones creadas"
+msgstr "{TOKENCOUNT} contraseñas creadas"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1455
 msgid "Can't bind to the LDAP directory"
