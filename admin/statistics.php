@@ -16,15 +16,15 @@ require_once('classes/core/class.progressbar.php');
 $statisticsoutput ='';
 if ($usejpgraph == 1 && isset($jpgraphdir)) //JPGRAPH CODING SUBMITTED BY Pieterjan Heyse
 {
+  if (isset($jpgraphfontdir) && $jpgraphfontdir!="")
+  {
+  DEFINE("TTF_DIR",$jpgraphfontdir); // url of fonts files
+  }
 	require_once ("$jpgraphdir/jpgraph.php");
 	require_once ("$jpgraphdir/jpgraph_pie.php");
 	require_once ("$jpgraphdir/jpgraph_pie3d.php");
 	require_once ("$jpgraphdir/jpgraph_bar.php");
 
-    if (isset($jpgraphfontdir) && $jpgraphfontdir!="")
-    {
-    DEFINE("TTF_DIR",$jpgraphfontdir); // url of fonts files
-    }
 
 	//$currentuser is created as prefix for jpgraph files
 	if (isset($_SERVER['REDIRECT_REMOTE_USER']))
