@@ -366,7 +366,7 @@ echo "     oObject.focus();\n";
 echo "     oObject.select();\n";
 echo "     return false;\n";
 echo "    }\n";
-echo "  }\n";
+//echo "  }\n";
 echo "\t//-->\n";
 echo "\t</script>\n\n";
 // <-- END NEW FEATURE - SAVE

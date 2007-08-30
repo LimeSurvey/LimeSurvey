@@ -1350,11 +1350,14 @@ function sendcacheheaders()
 	if ( $embedded ) return;
     if (!headers_sent())
     {
-	    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-	    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");  // always modified
-	    header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
-	    header("Cache-Control: post-check=0, pre-check=0", false);
-	    header("Pragma: no-cache");
+//	    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
+        header("Expires: Mon, 26 Jul 2027 05:00:00 GMT");   
+//	    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");  // always modified
+//	    header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
+        header("Cache-Control: store, ache");  // HTTP/1.1
+//	    header("Cache-Control: post-check=0, pre-check=0", false);
+//	    header("Pragma: no-cache");
+        header("Pragma: cache");
 	    header('Content-Type: text/html; charset=utf-8');
     }   
 }
@@ -2400,6 +2403,7 @@ function getHeader()
 	{
 		return  "<?xml version=\"1.0\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
         		. "<html><head>\n"
+                . "<script type=\"text/javascript\">history.forward();</script>\n"
         		. "<link type=\"text/css\" rel=\"StyleSheet\" href=\"".$rooturl."/scripts/slider/swing.css\" />\n"
         		. "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"".$rooturl."/scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />"
         		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/slider/range.js\"></script>\n"

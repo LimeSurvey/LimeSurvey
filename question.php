@@ -462,7 +462,7 @@ echo "\t\t\t\t\toObject.focus();\n";
 echo "\t\t\t\t\toObject.select();\n";
 echo "\t\t\t\t\treturn false;\n";
 echo "\t\t\t\t}\n";
-echo "\t\t}\n";
+//echo "\t\t}\n";
 echo "\t//-->\n";
 echo "\t</script>\n\n";
 // <-- END NEW FEATURE - SAVE
