@@ -1,0 +1,272 @@
+<style type="text/css">
+
+/* ------------------------ */
+/* --- Original Styles  --- */
+/* ------------------------ */
+.answertextright {
+	text-align:left;
+}
+
+.array1 {
+	background-color: #abc;
+	text-align: center;
+}
+.array2 {
+	background-color: #EFEFEF;
+	text-align: center;
+}
+
+.asterisk {
+    color: #FF0000;
+    font-size: 9pt;
+    font-family: verdana;
+}
+
+.checkbox {
+}
+
+.clearall {
+	font-family: arial;
+	margin: 0 0 10px 0;
+}
+.clearall A:link {
+	color: #222222;
+}
+.clearall A:visited {
+	text-decoration: none;
+	color: #666666;
+}
+.clearall A:active {
+	text-decoration: none;
+	color: #EEEEEE;
+}
+.clearall A:hover {
+	text-decoration: none;
+	color: #222222;
+}
+
+.graph {
+	border: solid;
+	border-width: 2px;
+	border-color: #777777;
+	background-color: #fff;
+}
+.innergraph {
+	background-color: EFEFEF;
+	color: #777777;
+	font-family: arial;
+	font-size: 8pt;
+}
+
+.submit	{
+	background-color: #ace;
+	font-size: 9pt;
+	font-family: arial;
+	border:3px double#ddd;
+	cursor:pointer;
+}
+
+.radio {
+}
+
+.rank, .rank td {
+	font-size:10px;
+	background-color: #f5f9f9;
+}
+
+.select {
+	background-color: #EFEFEF;
+	color: #555555;
+	font-family: arial;
+	font-size: 9pt;
+}
+
+.textarea {
+	color: #666666;
+	font-size: 12px;
+	font-family: arial;
+	width:99%;
+}
+
+.warningjs {
+	font-size:12px;
+	font-weight:bold;
+	color:RED;
+}
+
+/* ------------------------ */
+/* --- My contributions --- */
+/* ------------------------ */
+.survey-assessment, survey-completed {
+	text-align:center;
+	width:75%;
+	border: 1px solid #111111;
+}
+.survey-cleared {
+	margin: 0 auto 0 auto;
+	text-align:center;
+}
+.survey-description {
+}
+.survey-groupdescription {
+	background:#eee;
+	font-weight:normal;
+	border-bottom: 1px solid #ddd;
+	color:#000;
+	margin: 0 0 10px 0;
+	padding: 0 0 2px 3px;
+}
+.survey-groupname {
+	background:#eee;
+	font-weight:bold;
+	color:#000099;
+	font-size:16px;
+	margin: 10px 0 0 0;
+	padding: 2px 0 0 3px;
+	border-top: 1px solid #ddd;
+}
+.survey-load {
+}
+.survey-main {
+	font-size:13px;
+	background: #F9F9F9;
+	border:4px double #999;
+	padding: 5px;
+}
+.survey-navigator {
+	margin: 0 0 10px 0;
+}
+.survey-privacy {
+}
+.survey-survey {
+}
+.survey-survey-description {
+	margin: 5px 0 10px 0;
+}
+.survey-survey-percent {
+	width:160px;
+	margin:0 auto;
+	text-align:center;
+}
+
+/* --------------------------------------------------- */
+/* --- styles for question and answer section/text --- */
+/* --------------------------------------------------- */
+.question {
+	background-color: #f5f9f9;
+	color: #777777;
+}
+.question td {
+	font-size: 10px;
+}
+
+.text {
+	color: #777777;
+	font-size: 12px;
+	font-family: arial;
+}
+.answertext {
+	font-family: arial;
+	color: #000;
+	font-size:12px;
+	font-weight:normal;
+}
+.survey-question {
+	margin: 0 0 0 5px;
+	padding: 0 0 0 3px; 
+	border: 1px solid #ddd; 
+	background-color: #f5f9f9;
+}
+.survey-question-answer {
+	display:inline;
+	font-weight:normal;
+}
+.survey-question-answer button {
+}
+.survey-question-answer input {
+}
+.survey-question-help {
+	margin: 2px 0px 0 2px;
+	line-height:24px;
+}
+.survey-question-help img {
+	padding: 0 10px 0 0;
+}
+.survey-question-space {
+	height:5px;
+}
+.survey-question-text {
+	display:inline;
+	font-weight:bold;
+}
+/* --------------------------------------------------- */
+
+.survey-welcome {
+	border-top: 1px solid #ddd; 	border-bottom: 1px solid #ddd; 
+	background-color: #f5f9f9;
+	padding:5px;
+}
+.numquestions {
+	font-size:11px;
+	color:green;
+}
+
+table, tr, td, th {
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  align: center;
+}
+
+table {
+  width:100%;
+}
+
+.grayboxheader {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  color: #000;
+  text-align: center;
+}
+
+.grayboxfont {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  color: #424142;
+}
+
+.question {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: #262C4C;
+}
+
+.percentage {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 10px;
+  font-weight: normal;
+  color: #000000;
+}
+
+.error {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  text-align: center;
+  color: #CB0404;
+}
+
+</style>
+</head>
+<body>
+
+<table align="center" cellpadding="0" cellspacing="0">
+  <tr class="grayboxheader">
+    <td width="14"><img src="/survey/templates/BPB/box_left.gif" border="0" width="14"></td>
+    <td background="/survey/templates/BPB/box_bg.gif">{SURVEYNAME}</td>
+    <td width="14"><img src="/survey/templates/BPB/box_right.gif" border="0" width="14"></td>
+  </tr>
+</table>
+
+<div class="survey-main">
