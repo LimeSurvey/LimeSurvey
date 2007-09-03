@@ -665,7 +665,7 @@ if (isset($grouparray) && $grouparray) {
 		{
 			$importsurvey .= "<br />\n<font color='red'><strong>".$clang->gT("Error")."</strong></font>"
 			."<br />\nA group in the sql file does not come from the same Survey. Import of survey stopped.<br /><br />\n";
-			if ($importingfrom == "http") echo $clang->gT("Error").": A group in the sql file does not come from the same Survey. Import of survey stopped.\n";
+			if ($importingfrom != "http") echo $clang->gT("Error").": A group in the sql file does not come from the same Survey. Import of survey stopped.\n";
 			return;
 		}
 		//remove the old group id
@@ -999,7 +999,7 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 			$result=$connect->Execute($conditioninsert) or die ("Couldn't insert condition<br />$conditioninsert<br />".$connect->ErrorMsg());
 		} else {
 			$importsurvey .= "<font size=1>Condition for $oldqid skipped ($oldcqid does not exist)</font><br />";
-			if ($importingfrom == "http") echo "Condition for $oldqid skipped ($oldcqid does not exist)\n";
+			if ($importingfrom != "http") echo "Condition for $oldqid skipped ($oldcqid does not exist)\n";
 		}
 		unset($newcqid);
 	}
