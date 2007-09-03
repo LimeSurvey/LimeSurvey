@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-08-25 08:00+0200\n"
-"PO-Revision-Date: 2007-08-26 10:32+0100\n"
-"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
+"PO-Revision-Date: 2007-09-02 19:29+0100\n"
+"Last-Translator: Juan Ezeiza <jezeiza@axular.ikastola.net>\n"
 "Language-Team: BaiDfeiz <info@axular.ikastola.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -148,9 +148,9 @@ msgstr "VVExport fitxategia ezin da inportatu"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/vvimport.php:70
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importlabel.php:28
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importlabel.php:52
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:131
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:143
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:155
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:130
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:142
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:154
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:404
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:56
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:69
@@ -225,12 +225,13 @@ msgstr "Errorea"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/vvimport.php:71
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importlabel.php:29
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:132
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:131
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importgroup.php:29
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/http_importsurvey.php:31
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:30
+#, php-format
 msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
-msgstr "Fitxategia igotzean akats bat egon da. Baliteke kudeaketa-direktorioaren baimenak desegokiak izatea."
+msgstr "Fitxategia igotzean akats bat egon da. Baliteke zure %s direktorioaren baimenak desegokiak izatea."
 
 # C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/vvimport.php:98
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/vvimport.php:72
@@ -399,7 +400,7 @@ msgid "Actions"
 msgstr "Ekintzak"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/assessments.php:159
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:594
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:593
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1708
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/saved.php:99
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:351
@@ -446,9 +447,9 @@ msgid "Import Label Set"
 msgstr "Etiketa-multzoa inportatu"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importlabel.php:30
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:133
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:145
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:157
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:132
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:144
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:156
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:59
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:72
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:96
@@ -529,209 +530,209 @@ msgstr "Etiketa-multzoaren inportazioa burutu da."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:95
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:211
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:99
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:224
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:98
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:223
 msgid "Failed to copy"
 msgstr "Ezin izan da kopiatu"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:99
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:224
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:98
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:223
 msgid "to new template directory."
 msgstr "txantiloi-direktorio berrira."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:101
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:105
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:104
 msgid "Directory with the name"
 msgstr "Izeneko direktorioa"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:101
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:105
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:104
 msgid "already exists - choose another name"
 msgstr "honez gero badago - beste izen bat aukeratu, mesedez"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:103
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:107
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:106
 msgid "Unable to create directory"
 msgstr "Direktorioa ezin da sortu"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:103
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:111
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:107
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:115
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:106
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:114
 msgid "Maybe you don't have permission."
 msgstr "Baliteke baimenik ez izatea."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:115
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:114
 msgid "Directory could not be renamed to"
 msgstr "Direktorioari ezin izan zaio izena honela aldatu: "
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:144
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:156
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:443
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:452
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:143
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:155
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:442
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:451
 msgid "This file type is not allowed to be uploaded."
 msgstr "Fitxategi mota hau ezin da igo."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:198
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:197
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:229
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:230
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:231
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:246
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:288
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:245
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:287
 msgid "Welcome Page"
 msgstr "Ongietorria"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:199
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:259
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:198
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:258
 msgid "Question Page"
 msgstr "Galdera-orria"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:200
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:232
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:376
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:199
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:231
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:375
 msgid "Submit Page"
 msgstr "Bidalketa-orria"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:201
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:384
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:200
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:383
 msgid "Completed Page"
 msgstr "Buruturiko inkestaren orria"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:202
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:357
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:201
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:356
 msgid "Clear All Page"
 msgstr "Inkesta ezabatzeko orria"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:203
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:296
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:202
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:295
 msgid "Register Page"
 msgstr "Erregistro-orria"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:204
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:338
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:203
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:337
 msgid "Load Page"
 msgstr "Inkesta kargatzeko orria"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:205
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:319
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:204
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:318
 msgid "Save Page"
 msgstr "Inkesta gordetzeko orria"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:468
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:467
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:323
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:324
 msgid "Template Editor"
 msgstr "Txantiloi-editorea"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:474
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:473
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:242
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:243
 msgid "Default Administration Page"
 msgstr "Kudeaketa Orri Lehenetsia"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:481
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:480
 msgid "Create new template called:"
 msgstr "Gonbidapen-txantiloi berria sortu:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:481
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:480
 msgid "NewTemplate"
 msgstr "Txantiloi berria"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:482
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:481
 msgid "Create new template"
 msgstr "Txantiloi berria sortu"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:484
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:495
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:483
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:494
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:693
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1845
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2390
 msgid "Template:"
 msgstr "Txantiloia:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:502
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:501
 msgid "This template can be modified"
 msgstr "Txantiloi hau alda daiteke"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:505
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:504
 msgid "This template cannot be modified"
 msgstr "Txantiloi hau ezin da aldatu"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:478
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:516
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:515
 msgid "You can't edit the default template."
 msgstr "Lehenetsitako txantiloia ezin duzu aldatu."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:521
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:520
 msgid "Rename this template to:"
 msgstr "Txantiloi hau honela berrizendatu:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:523
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:522
 msgid "Rename this template"
 msgstr "Txantiloia berrizendatu"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:528
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:527
 msgid "Export Template"
 msgstr "Txantiloia esportatu"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:532
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:531
 msgid "Copy Template"
 msgstr "Txantiloia kopiatu"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:533
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:532
 msgid "Make a copy of this template"
 msgstr "Txantiloi honen kopia sortu"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:533
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:532
 msgid "copy_of_"
 msgstr "honen_kopia"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:539
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:538
 msgid "Screen:"
 msgstr "Pantaila:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:550
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:549
 msgid "File Control:"
 msgstr "Fitxategiaren kontrola:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:560
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:559
 msgid "Standard Files:"
 msgstr "Fitxategi estandarrak:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:561
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:560
 msgid "Now editing:"
 msgstr "Orain editatzen:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:564
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:563
 msgid "Other Files:"
 msgstr "Beste fitxategiak:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:581
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:580
 msgid "Save Changes"
 msgstr "Aldaketak gorde"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:544
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:583
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:582
 msgid "Changes cannot be saved to the default template."
 msgstr "Lehenetsitako txantiloian ezin dira aldaketak gorde."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:594
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:593
 msgid "Are you sure you want to delete this file?"
 msgstr "Fitxategi hau ezabatu nahi duzula ziur al zaude?"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:596
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:595
 msgid "Files in the default template cannot be deleted."
 msgstr "Lehenetsitako txantiloiaren fitxategiak ezin dira ezabatu."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:607
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:606
 msgid "Upload a File"
 msgstr "Fitxategia igo"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:608
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:607
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1646
 msgid "Upload"
 msgstr "Igo"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:630
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:629
 msgid "Preview:"
 msgstr "Aurrebista:"
 
@@ -6476,7 +6477,7 @@ msgstr "Zure erantzun guztiak ezabatu nahi dituzula ziur al zaude?"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1954
 msgid "Exit and Clear Survey"
-msgstr "Inkestatik irtean eta berrabiarazi"
+msgstr "Inkestatik irten eta berrabiarazi"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1987
 msgid "Save Survey and Return"
@@ -6499,11 +6500,11 @@ msgstr "\"Bidali\" sakatu prozesua osatu eta zure erantzunak gordetzeko."
 # D:\xampp\xampp\htdocs\limesurvey/clienttext.php:170
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2011
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
-msgstr "Zure erantzunen bat aztertu edo/eta aldatu nahi baduzu, orain egin dezakezun [<< Aurrekoa] botoiaren bidez."
+msgstr "Zure erantzunen bat aztertu edo/eta aldatu nahi baduzu, orain egin dezakezu [<< Aurrekoa] botoiaren bidez."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2032
 msgid "Answers Cleared"
-msgstr "Erantzun ezabatuak"
+msgstr "Erantzunak ezabatu dira."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2037
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2043
@@ -6767,27 +6768,4 @@ msgstr "Turkoa"
 #: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:183
 msgid "Vietnamese"
 msgstr "Vietnamera"
-
-#~ msgid "Less"
-#~ msgstr "Txikiagoa"
-#~ msgid "Less or Equal"
-#~ msgstr "Berdina edo txikiagoa"
-#~ msgid "Equal"
-#~ msgstr "Berdina"
-#~ msgid "Not Equal"
-#~ msgstr "Ezberdina"
-#~ msgid "Greater or Equal"
-#~ msgstr "Handiagoa edo berdintsua"
-#~ msgid "Greater"
-#~ msgstr "Handiagoa"
-#~ msgid "Regular Expression"
-#~ msgstr "Adierazpen erregularra"
-#~ msgid ""
-#~ "NOTE: If select a label it will be used Equal or Not Equal for any other "
-#~ "method"
-#~ msgstr ""
-#~ "OHARRA: Etiketa aukeratuz gero, beste edozein metodorako Berdin edo Ez "
-#~ "Berdin erabiliko da."
-#~ msgid "Constant Value or Regular Expression"
-#~ msgstr "Adierazpen erregularraren Balio Iraunkorra"
 
