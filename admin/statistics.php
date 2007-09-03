@@ -1334,7 +1334,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				}
 				if (($qtype == "L" || $qtype == "!") && $qother == "Y")
 				{
-					$alist[]=array("-oth-", $clang->gT("Other"));
+					$alist[]=array($clang->gT("Other"),$clang->gT("Other"),$myfield.'Other');
 				}
 			}
 		}
@@ -1406,14 +1406,14 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					if ($al[0] == "")
 					{$fname=$clang->gT("No answer");}
 					elseif ($al[0] == $clang->gT("Other") || $al[0] == "Answers")
-					{$fname="$al[1] <input type='submit' value='".$clang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]&amp;sql=".urlencode($sql)."', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";}
+					{$fname="$al[1] <input type='submit' value='".$clang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]&amp;sql=".urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";}
 					elseif ($qtype == "S" || $qtype == "U" || $qtype == "T" || $qtype == "Q")
 					{
 						if ($al[0] == "Answers")
 						{
 							$fname= "$al[1] <input type='submit' value='"
 							. $clang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]&amp;sql="
-							. urlencode($sql)."', 'results', 'width=300, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
+							. urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
 						}
 						elseif ($al[0] == "NoAnswer")
 						{
