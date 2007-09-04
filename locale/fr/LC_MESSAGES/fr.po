@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-08-18 20:29+0100\n"
+"PO-Revision-Date: 2007-09-04 20:17+0100\n"
 "Last-Translator: seb <seb>\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -462,6 +462,11 @@ msgstr "Désolé. Il n'y a pas de questionnaire correspondant."
 
 msgid "This survey is not currently active. You will not be able to save your responses."
 msgstr "Ce questionnaire n'est pas activé. Vous ne pourrez pas sauver vos réponses."
+
+# E:\www\limesurvey/admin/usercontrol.php:153
+# E:\www\limesurvey/admin/usercontrol.php:277
+msgid "Date is not valid!"
+msgstr "La date n'est pas valide."
 
 # E:\www\limesurvey/index.php:69
 msgid "ERROR"
@@ -1148,6 +1153,33 @@ msgstr "Aucune question sélectionnée pour lui appliquer la ou les conditions.�
 msgid "Only show question {QID} IF"
 msgstr "Montrer la question {QID} seulement SI"
 
+msgid "Less"
+msgstr "Inférieur"
+
+msgid "Less or Equal"
+msgstr "Inférieur ou égal"
+
+msgid "Equal"
+msgstr "égal"
+
+msgid "Not Equal"
+msgstr "Différent"
+
+# D:\www\limesurvey/admin/conditions.php:628
+# D:\www\limesurvey/admin/conditions.php:847
+msgid "Greater or Equal"
+msgstr "Supérieur ou égal"
+
+# E:\www\limesurvey/common.php:219
+# E:\www\limesurvey/common.php:220
+msgid "Greater"
+msgstr "Supérieur"
+
+# D:\www\limesurvey/admin/conditions.php:630
+# D:\www\limesurvey/admin/conditions.php:849
+msgid "Regular Expression"
+msgstr "Expression régulière"
+
 msgid "and"
 msgstr "et"
 
@@ -1159,8 +1191,8 @@ msgstr "et"
 msgid "OR"
 msgstr "OU"
 
-msgid "Equals"
-msgstr "égale"
+msgid "No Answer"
+msgstr "Pas de réponse"
 
 msgid "Copy Conditions"
 msgstr "Copier les conditions"
@@ -1182,6 +1214,14 @@ msgstr "Ajouter une condition"
 
 msgid "Answer"
 msgstr "Réponse :"
+
+# D:\www\limesurvey/admin/conditions.php:839
+msgid "NOTE: If select a label it will be used Equal or Not Equal for any other method"
+msgstr "NOTE : si vous choisissez une étiquette, vous ne pourrez tester que si la réponse est  égale ou pas."
+
+# D:\www\limesurvey/admin/conditions.php:856
+msgid "Constant Value or Regular Expression"
+msgstr "Valeur constante ou expression régulière"
 
 msgid "Clear"
 msgstr "Effacer la sélection"
@@ -1422,9 +1462,6 @@ msgstr "ET"
 msgid "to question {QUESTION}, you answered {ANSWER}"
 msgstr "à la question {QUESTION}, vous avez répondu {ANSWER}"
 
-msgid "No Answer"
-msgstr "Pas de réponse"
-
 msgid "Only answer this if the following conditions are met:"
 msgstr "Répondre seulement à cette question si les conditions suivantes sont réunies :"
 
@@ -1463,7 +1500,7 @@ msgstr "Votre table de réponses sera renommée en :"
 
 # D:\www\limesurvey/admin/deactivate.php:59
 msgid "Also you should export your responses before deactivating."
-msgstr "AUssi, vous devriez exporter vos réponses avant de désactiver."
+msgstr "Aussi, vous devriez exporter vos réponses avant de désactiver."
 
 msgid "Survey Has Been Deactivated"
 msgstr "Le questionnaire a été désactivé"
@@ -2857,6 +2894,9 @@ msgstr "Merci d'avoir complété ce questionnaire."
 msgid "Please fax your completed survey to:"
 msgstr "SVP faxez ce questionnaire rempli à :"
 
+msgid "Please submit by"
+msgstr "Veuillez répondre avant le"
+
 msgid "Add Question"
 msgstr "Ajouter une question"
 
@@ -3046,6 +3086,9 @@ msgstr "Liste de questions"
 # E:\www\limesurvey/admin/stats.php:332
 msgid "Like"
 msgstr "Comme"
+
+msgid "Equals"
+msgstr "égale"
 
 msgid "Not Equals"
 msgstr "Non égal"
@@ -3440,7 +3483,7 @@ msgid "Note:"
 msgstr "Note :"
 
 msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [language code], [attribute1], [attribute2]\"."
-msgstr "Le fichier doit être un fichier CSV standard (délimiteur: virgule) sans guillements. La première ligne doit contenir des informations d'entête (elle sera enlevée). Les données devront être dans cet ordre : \"Prénom, Nom, Mail, [Invitation], [Attribut_1], [Attribut_2]\"."
+msgstr "Le fichier doit être un fichier CSV standard (délimiteur: virgule) sans guillements. La première ligne doit contenir des informations d'entête (elle sera enlevée). Les données devront être dans cet ordre : \"Prénom, Nom, Mail, [Invitation], [code de la langue], [Attribut_1], [Attribut_2]\"."
 
 msgid "Upload LDAP entries"
 msgstr "Télécharger une entrée LDAP"
@@ -4007,6 +4050,10 @@ msgstr "Voulez-vous compléter la base de données maintenant en créant les tab
 
 msgid "Database has been successfully upgraded to version "
 msgstr "La base de données a été mise à jour avec succés vers la version "
+
+# D:\www\limesurvey/classes/core/surveytranslator.php:60
+msgid "Basque"
+msgstr "Basque"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:66
 msgid "Bulgarian"
