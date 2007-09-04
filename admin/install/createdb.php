@@ -28,7 +28,7 @@ echo "\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 // In Step2 fill the database with data
 if (returnglobal('createdbstep2')==$clang->gT("Populate Database"))
 {
-   if ($databasetype='mysql') {@$connect->Execute("ALTER DATABASE `$dbname` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;");} //Set the collation also for manually created DBs
+   if ($databasetype=='mysql') {@$connect->Execute("ALTER DATABASE `$dbname` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;");} //Set the collation also for manually created DBs
    if (modify_database(dirname(__FILE__).'/create-'.$databasetype.'.sql'))
    {
    echo sprintf($clang->gT("Database `%s` has been successfully populated."),$dbname)."</font></strong></font><br /><br />\n";
