@@ -1902,7 +1902,7 @@ if ($action == "editsurvey")
 			. "\t\tif (document.getElementById('private').value == 'Y' && \n"
 			. "\t\t    document.getElementById('datestamp').value == 'Y')\n"
 			. "\t\t{\n"
-			. "\t\t\talert(\"".$clang->gT("Warning").": ".$clang->gT("If you set a survey to anonymous, answers to timestamped and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.","js")."\");\n"
+			. "\t\t\talert('".$clang->gT("Warning").": ".$clang->gT("If you set a survey to anonymous, answers to timestamped and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.","js")."');\n"
 			. "\t\t}\n"
 			. "\t}"
 			. "\t//--></script></td>\n";
@@ -2447,7 +2447,7 @@ if ($action == "newsurvey")
 		. "\t\tif (document.getElementById('private').value == 'Y' && \n"
 		. "\t\t    document.getElementById('datestamp').value == 'Y')\n"
 		. "\t\t{\n"
-		. "\t\t\talert(\"".$clang->gT("Warning").": ".$clang->gT("If you set a survey to anonymous, answers to timestamped and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.","js")."\");\n"
+		. "\t\t\talert('".$clang->gT("Warning").": ".$clang->gT("If you set a survey to anonymous, answers to timestamped and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.","js")."');\n"
 		. "\t\t}\n"
 		. "\t}"
 		. "\t//--></script></td>\n";
