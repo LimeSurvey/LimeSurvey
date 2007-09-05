@@ -1501,7 +1501,7 @@ msgid "Finalize response submission"
 msgstr "Terminar envío de respuestas"
 
 msgid "Save for further completion by survey user"
-msgstr "Gurdar el cuestionario para completarlo posteriormente."
+msgstr "Guardar el cuestionario para completarlo posteriormente."
 
 msgid "Record has been updated."
 msgstr "El registro ha sido actualizado."
@@ -1584,19 +1584,19 @@ msgid "The tokens table associated with this survey has been renamed to: "
 msgstr "La tabla de encuestados/as asociada al cuestionario ahora es: "
 
 msgid "Delete Survey"
-msgstr "Eliminar cuestionario"
+msgstr "Eliminar Encuesta"
 
 msgid "You are about to delete this survey"
-msgstr "Está a punto de borrar este cuestionario."
+msgstr "Está a punto de borrar esta encuesta."
 
 msgid "This process will delete this survey, and all related groups, questions answers and conditions."
-msgstr "Este proceso borrará el cuestionario, junto con todos los grupos, preguntas, respuestas y condiciones relacionadas."
+msgstr "Este proceso borrará la encuesta, junto con todos los grupos, preguntas, respuestas y condiciones relacionadas."
 
 msgid "We recommend that before you delete this survey you export the entire survey from the main administration screen."
-msgstr "Se recomienda que antes de borrar la encuesta la exporte completamente desde la página de administración."
+msgstr "Se recomienda que, antes de borrar la encuesta, la exporte completamente desde la página de administración."
 
 msgid "This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey."
-msgstr "Este cuestionario está activo y ya tiene respuestas. Si lo borra, tambien borrará las respuestas. Recomendamos que las exporte antes de borrar la encuesta."
+msgstr "Esta encuesta está activa y ya tiene respuestas. Si la borra, tambien borrará dichas respuestas. Recomendamos que las exporte antes de borrar la encuesta."
 
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
 msgstr "Esta encuesta está activa y existe una tabla de encuestados/as. Si la borra, también eliminará los/as encuestados/as. Recomendamos que los exporte antes de borrar la encuesta."
@@ -2589,7 +2589,7 @@ msgid "Label Sets"
 msgstr "Juego de Etiquetas"
 
 msgid "Languages"
-msgstr "Idiomas:"
+msgstr "Idiomas"
 
 msgid "Import of Label Set is completed."
 msgstr "Se completó la iportación de las etiquetas."
@@ -3110,7 +3110,7 @@ msgid "Completed Page"
 msgstr "Página de Encuesta Completada"
 
 msgid "Clear All Page"
-msgstr "Página de Borrar Encuesta"
+msgstr "Página de Borrar respuestas"
 
 msgid "Register Page"
 msgstr "Página de Registro"
@@ -3119,7 +3119,7 @@ msgid "Load Page"
 msgstr "Página de Cargar Encuesta"
 
 msgid "Save Page"
-msgstr "Página de guardar Encuesta"
+msgstr "Página de Guardar Encuesta"
 
 msgid "Create new template called:"
 msgstr "Crear una nueva plantilla llamada:"
@@ -3150,7 +3150,7 @@ msgid "Export Template"
 msgstr "Exportar Plantilla"
 
 msgid "Copy Template"
-msgstr "Copiar plantilla:"
+msgstr "Copiar plantilla"
 
 msgid "Make a copy of this template"
 msgstr "Crear una copia de esta plantilla"
@@ -3393,8 +3393,8 @@ msgstr "Enviar Recordatorios"
 msgid "Sending Reminders"
 msgstr "Enviando Recordatorios"
 
-msgid "Reminder Sent To:"
-msgstr "Recordatorio Enviado a:"
+msgid "Reminder sent to:"
+msgstr "Recordatorio enviado a:"
 
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
 msgstr "No hay direcciones de candidatos elegibles para enviar. Esto fue causado porque los criterios no se satisfacieron:  tener una dirección de correo electrónico, haber recibido una invitación y no haber completado el cuestionario aún."
