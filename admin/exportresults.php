@@ -317,6 +317,10 @@ switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c
 	case "xls":
 
       $workbook = new Spreadsheet_Excel_Writer();
+      // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
+      if (!empty($tempdir)) {
+        $workbook->setTempDir($tempdir);
+      }
       $workbook->send('results.xls');
       // Creating the first worksheet
       $sheet =& $workbook->addWorksheet('Survey Results');
