@@ -138,7 +138,17 @@ $filterout_incomplete_answers = true;
 //  * set to true in order to remove the parameter part of the referrer url
 //  $stripQueryFromRefurl = false;
 
+// $enablehtmleditorpopup
+//  * enables htmleditor popup
+$enablehtmleditorpopup = true;
+
 //DO NOT CHANGE BELOW HERE --------------------
+
+if (isset($enablehtmleditorpopup) && $enablehtmleditorpopup === true)
+{
+         require_once(dirname(__FILE__).'/htmleditor-functions.php');
+}
+
 
 require_once(dirname(__FILE__).'/common.php');
 ?>
