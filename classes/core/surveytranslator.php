@@ -178,6 +178,10 @@
 	    $supportedLanguages['tr']['description'] = $clang->gT('Turkish');
 	    $supportedLanguages['tr']['nativedescription'] = 'T&#252;rk&#231;e';
 
+	    // Thai
+	    $supportedLanguages['tr']['description'] = $clang->gT('Thai');
+	    $supportedLanguages['tr']['nativedescription'] = '&#3616;&#3634;&#3625;&#3634;&#3652;&#3607;&#3618;';
+
 
 	    // Vietnamese
 	    $supportedLanguages['vi']['description'] = $clang->gT('Vietnamese');
@@ -205,9 +209,6 @@
 
 	    // Serbian
 	    $supportedLanguages['yu']['nativedescription'] = 'Srpski';
-
-	    // Thai
-	    $supportedLanguages['th']['nativedescription'] = 'Thai';
 
 	    // Arabic
 	    $supportedLanguages['sa']['nativedescription'] = '&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;';
