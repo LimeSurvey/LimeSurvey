@@ -1499,7 +1499,7 @@ function doAssessment($surveyid)
 			
 			foreach($fieldmap as $field)
 			{
-				if (($field['fieldname'] != "datestamp") and ($field['fieldname'] != "ipaddr"))
+				if (($field['fieldname'] != "datestamp") and ($field['fieldname'] != "ipaddr") and ($field['fieldname'] != "token"))
 				{
 					if (isset($_SESSION[$field['fieldname']])) 
 					{
