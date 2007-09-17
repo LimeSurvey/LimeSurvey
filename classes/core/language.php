@@ -29,16 +29,15 @@ class limesurvey_lang {
     var $langcode;
     
     function limesurvey_lang($langcode){
-        if ( $langcode != "en" ) {
+//        if ( $langcode != "en" ) {      // This IF was removed to allow having an English to English Translation
         	global $rootdir;
             $streamer = new FileReader($rootdir.'/locale/'.$langcode.'/LC_MESSAGES/'.$langcode.'.mo');
             $this->gettextclass = new gettext_reader($streamer);
             $this->langcode = $langcode;
-
-        } else {
-            $this->gettextclass = false;
-            $this->langcode = "en";
-        }
+//        } else {
+//            $this->gettextclass = false;
+//            $this->langcode = "en";
+//        }
     }
 
     function getlangcode()
