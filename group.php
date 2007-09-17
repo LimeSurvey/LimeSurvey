@@ -164,7 +164,8 @@ if (isset($_POST['move']) && $_POST['move'] == "movesubmit")
 
 				$url = $thissurvey['url'];
 				$url=str_replace("{SAVEDID}",$saved_id, $url);			// to activate the SAVEDID in the END URL
-				$url=str_replace("{TOKEN}",$_POST['token'], $url);			// to activate the SAVEDID in the END URL
+				$url=str_replace("{TOKEN}",$_POST['token'], $url);			// to activate the TOKEN in the END URL
+                $url=str_replace("{SID}", $surveyid, $url);       // to activate the SID in the RND URL
 	
 				header("Location: {$url}");
 				
