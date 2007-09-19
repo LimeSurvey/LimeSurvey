@@ -188,15 +188,17 @@
 	    $supportedLanguages['vi']['nativedescription'] = 'Ti&#7871;ng Vi&#7879;t';
 
 
+        // Czech
+	    $supportedLanguages['cz']['description'] = $clang->gT('Czech');
+	    $supportedLanguages['cz']['nativedescription'] = '&#x010c;esky';
+
+
         Return $supportedLanguages;
     }
 /*    // future languages
 
 	    // Afrikaans
  	    $supportedLanguages['za']['nativedescription'] = 'Afrikaans';
-
-        // Czech
-	    $supportedLanguages['cz']['nativedescription'] = '&#x010c;esky';
 
 	    // Irish
 	    $supportedLanguages['ie']['nativedescription'] = 'Gaeilge';
