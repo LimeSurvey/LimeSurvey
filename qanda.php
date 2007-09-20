@@ -2676,6 +2676,10 @@ function do_array_flexiblecolumns($ia)
 				$answer .= "<input class='radio' type='radio' name='$myfname' value='".$ansrow['code']."' id='answer$myfname-".$ansrow['code']."'"
 				. " title='".html_escape($ansrow['answer'])."'";
 				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ansrow['code']) {$answer .= " checked='checked'";}
+				elseif (!isset($_SESSION[$myfname]) && $ansrow['code'] == "")
+				{
+					$answer .= " checked='checked'";
+				}
 				// --> START NEW FEATURE - SAVE
 				$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
 				// --> END NEW FEATURE - SAVE
