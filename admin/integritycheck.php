@@ -130,7 +130,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         }
         else
         {
-            $integritycheck .= "<strong>".$clang->gT("All assessments meet consistency standards")."</strong><br />\n";
+            $integritycheck .= "<strong>".$clang->gT("All Survey (Total) assessments meet consistency standards")."</strong><br />\n";
         }
         if (isset($asgdelete) && $asgdelete)
         {
@@ -140,7 +140,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         }
         else
         {
-            $integritycheck .= "<strong>".$clang->gT("All assessments meet consistency standards")."</strong><br />\n";
+            $integritycheck .= "<strong>".$clang->gT("All Group assessments meet consistency standards")."</strong><br />\n";
         }
     
         // Check answers
