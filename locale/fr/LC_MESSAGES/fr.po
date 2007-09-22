@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-09-04 20:17+0100\n"
+"PO-Revision-Date: 2007-09-22 13:53+0100\n"
 "Last-Translator: seb <seb>\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -467,6 +467,19 @@ msgstr "Ce questionnaire n'est pas activé. Vous ne pourrez pas sauver vos répo
 # E:\www\limesurvey/admin/usercontrol.php:277
 msgid "Date is not valid!"
 msgstr "La date n'est pas valide."
+
+msgid "HTML Editor"
+msgstr "Editeur HTML"
+
+msgid "Close Editor"
+msgstr "Fermer l'éditeur"
+
+msgid "Editing"
+msgstr "Edition"
+
+# D:\www\limesurvey/htmleditor-popup.php:121
+msgid "Do you want to save your changes ?"
+msgstr "Voulez-vous sauvegarder vos changements ?"
 
 # E:\www\limesurvey/index.php:69
 msgid "ERROR"
@@ -2671,11 +2684,30 @@ msgstr "Vérification de la cohérence des données"
 msgid "If errors are showing up you might have to execute this script repeatedly."
 msgstr "Si des erreurs apparaissent, il faudra relancer ce script plusieurs fois."
 
+# D:\www\limesurvey/admin/integritycheck.php:51
+msgid "No matching Cqid"
+msgstr "Pas de cqid correspondant"
+
+# D:\www\limesurvey/admin/integritycheck.php:58
+msgid "No matching CFIELDNAME Group!"
+msgstr "PAs de groupe CFIELDNAME correspondant !"
+
+# D:\www\limesurvey/admin/integritycheck.php:62
+msgid "No \"CFIELDNAME\" field set!"
+msgstr "Pas de champ \"CFIELDNAME\" défini !"
+
 msgid "The following conditions should be deleted"
 msgstr "Les conditions suivantes peuvent être effacées"
 
+msgid "because"
+msgstr "parce que"
+
 msgid "All conditions meet consistency standards"
 msgstr "Toutes les conditions sont cohérentes"
+
+# D:\www\limesurvey/admin/integritycheck.php:87
+msgid "No matching qid"
+msgstr "Pas de qid correpondant"
 
 msgid "The following question attributes should be deleted"
 msgstr "Les attributs de question qui suivent peuvent être effacés"
@@ -2683,11 +2715,23 @@ msgstr "Les attributs de question qui suivent peuvent être effacés"
 msgid "All question_attributes meet consistency standards"
 msgstr "Les attributs des questions sont cohérents"
 
+msgid "No matching survey"
+msgstr "Pas de questionnaire correspondant"
+
+msgid "No matching group"
+msgstr "Pas de groupe correspondant"
+
 msgid "The following assessments should be deleted"
 msgstr "Les évaluations suivantes peuvent être effacées"
 
-msgid "All assessments meet consistency standards"
-msgstr "Toutes les évaluations sont cohérentes"
+msgid "All Survey (Total) assessments meet consistency standards"
+msgstr "Toutes les évaluations de tous les questionnaires sont cohérentes"
+
+msgid "All Group assessments meet consistency standards"
+msgstr "Toutes les évaluations des groupes sont cohérentes"
+
+msgid "No matching question"
+msgstr "Pas de question correspondante"
 
 msgid "The following answers should be deleted"
 msgstr "Les réponses suivantes peuvent être effacées"
@@ -2705,6 +2749,12 @@ msgstr "Les questionnaires suivants peuvent être effacés"
 msgid "All survey settings meet consistency standards"
 msgstr "Tous les réglages de ce questionnaire sont cohérents"
 
+msgid "No matching Group"
+msgstr "Pas de groupe correspondant"
+
+msgid "No matching Survey!"
+msgstr "Pas de questionnaire correspondant !"
+
 msgid "The following questions should be deleted"
 msgstr "Les questions suivantes peuvent être effacées"
 
@@ -2720,11 +2770,58 @@ msgstr "Tous les groupes sont cohérents"
 msgid "No database action required"
 msgstr "Pas d'action à faire sur la base de données"
 
+# D:\www\limesurvey/admin/integritycheck.php:247
+msgid "Should we proceed with the delete?"
+msgstr "Souhaitez vous lancer la suppression ?"
+
+# D:\www\limesurvey/admin/integritycheck.php:290
+msgid "Yes - Delete Them!"
+msgstr "Oui - Effacez-les !"
+
+msgid "Deleting Surveys"
+msgstr "Suppression des questionnaires"
+
+msgid "Deleting Survey ID"
+msgstr "Suppression des ID de questionnaire"
+
+msgid "Deleting Assessments"
+msgstr "Suppression des évaluations"
+
+msgid "Deleting ID"
+msgstr "Suppression des ID"
+
+msgid "Deleting Question_Attributes"
+msgstr "Suppression des attributs de la question"
+
+msgid "Deleting Conditions"
+msgstr "Suppression des conditions"
+
+msgid "Deleting cid"
+msgstr "Suppession du cid"
+
+msgid "Deleting Answers"
+msgstr "Suppression des réponses"
+
+msgid "Deleting answer with qid"
+msgstr "Suppression de la réponse de qid"
+
+msgid "Deleting Questions"
+msgstr "Suppression des questions"
+
+msgid "Deleting qid"
+msgstr "Suppession du qid"
+
 msgid "Deleting Groups"
 msgstr "Suppession des groupes"
 
 msgid "Deleting group id"
 msgstr "Suppession du groupe d'ID"
+
+msgid "Check database again?"
+msgstr "Vérifier une nouvelle fois la base de données ?"
+
+msgid "Check Again"
+msgstr "Vérifier une nouvelle fois"
 
 msgid "Label Sets Administration"
 msgstr "Administration des jeux d'étiquettes"
@@ -3991,9 +4088,6 @@ msgstr "Retour à l'importation de réponse"
 msgid "Import Failed on Record"
 msgstr "Echec de l'importation sur l'enregistrement"
 
-msgid "because"
-msgstr "parce que"
-
 # D:\www\limesurvey/admin/vvimport.php:235
 msgid "Important Note:"
 msgstr "Note importante :"
@@ -4041,8 +4135,8 @@ msgstr "Le nom de votre base de données sera :"
 
 # E:\www\limesurvey/admin/admin.php:102
 #, php-format
-msgid "A database named \"%s\" does already exist."
-msgstr "Une base de données intitulée \"%s\" existe déjà."
+msgid "A database named \"%s\" already exists."
+msgstr "Une base de données nommée \"%s\" existe déjà."
 
 # E:\www\limesurvey/admin/admin.php:103
 msgid "Do you want to populate that database now by creating the necessary tables?"
@@ -4172,4 +4266,8 @@ msgstr "Turc"
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:168
 msgid "Vietnamese"
 msgstr "Vietnamien"
+
+# D:\www\limesurvey/classes/core/surveytranslator.php:188
+msgid "Czech"
+msgstr "Tchèque"
 
