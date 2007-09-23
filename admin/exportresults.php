@@ -777,7 +777,7 @@ elseif ($answers == "long")
 			$fqid=0;            // By default fqid is set to zero 
             $field=$dresult->FetchField($i);
 			$fieldinfo=$field->name;
-			if ($fieldinfo != "startlanguge" && $fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "ipaddr"  && $fieldinfo != "refurl"&& $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && $fieldinfo != "attribute_1" && $fieldinfo != "attribute_2")
+			if ($fieldinfo != "startlanguge" && $fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "ipaddr"  && $fieldinfo != "refurl" && $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && $fieldinfo != "attribute_1" && $fieldinfo != "attribute_2")
 			{
 				//die(print_r($fieldmap));
 				$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
@@ -809,7 +809,7 @@ elseif ($answers == "long")
 						$ftitle=$elang->gT("IP Address").":";
 						break;
                         case "refurl":
-                        $ftitle=$elang->gT("Refering URL").":";
+                        $ftitle=$elang->gT("Referring URL").":";
                         break;
 						case "firstname":
 						$ftitle=$elang->gT("First Name").":";
