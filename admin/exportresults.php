@@ -92,6 +92,7 @@ if (!$style)
 
 	if ($thissurvey["datestamp"]=='Y') {$excesscols[]='datestamp';}
 	if ($thissurvey["ipaddr"]=='Y') {$excesscols[]='ipaddr';}
+    if ($thissurvey["refurl"]=='Y') {$excesscols[]='refurl';}
 
 	$afieldcount = count($excesscols);
     $exportoutput .= "<table width='99%' align='center' class='menubar' cellpadding='1' cellspacing='0'>\n"
@@ -487,6 +488,11 @@ for ($i=0; $i<$fieldcount; $i++)
 		if ($type == "csv") {$firstline .= "\"".$elang->gT("IP-Address")."\"$separator";}
 		else {$firstline .= $elang->gT("IP-Address")."$separator";}
 	}
+    elseif ($fieldinfo == "refurl")
+    {
+        if ($type == "csv") {$firstline .= "\"".$elang->gT("Referring URL")."\"$separator";}
+        else {$firstline .= $elang->gT("Referring URL")."$separator";}
+    }
 	else
 	{
 		//Data fields!
@@ -771,7 +777,7 @@ elseif ($answers == "long")
 			$fqid=0;            // By default fqid is set to zero 
             $field=$dresult->FetchField($i);
 			$fieldinfo=$field->name;
-			if ($fieldinfo != "startlanguge" && $fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "ipaddr"&& $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && $fieldinfo != "attribute_1" && $fieldinfo != "attribute_2")
+			if ($fieldinfo != "startlanguge" && $fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "ipaddr"  && $fieldinfo != "refurl"&& $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && $fieldinfo != "attribute_1" && $fieldinfo != "attribute_2")
 			{
 				//die(print_r($fieldmap));
 				$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
@@ -802,6 +808,9 @@ elseif ($answers == "long")
 						case "ipaddr":
 						$ftitle=$elang->gT("IP Address").":";
 						break;
+                        case "refurl":
+                        $ftitle=$elang->gT("Refering URL").":";
+                        break;
 						case "firstname":
 						$ftitle=$elang->gT("First Name").":";
 						break;
