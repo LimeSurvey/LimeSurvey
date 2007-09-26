@@ -493,9 +493,9 @@ END;
 		else				{$idname="java".$cd[2];}
 		if ($cqcount > 1 && $oldcq ==$cd[2]) {$java .= " || ";}
 		elseif ($cqcount >1 && $oldcq != $cd[2]) {$java .= ") && (";}
-		if ($cd[3] == ' ')
+		if ($cd[3] == ' ' || $cd[3] == '')
 		{
-			$java .= "!document.getElementById('$idname') || document.getElementById('$idname').value == ' '";
+			$java .= "!document.getElementById('$idname') || document.getElementById('$idname').value == ' ' || document.getElementById('$idname').value == '' ";
 		}
 		elseif ($cd[4] == "M" || $cd[4] == "P")
 		{
