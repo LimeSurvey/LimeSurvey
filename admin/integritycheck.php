@@ -48,25 +48,25 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             $qquery = "SELECT qid FROM {$dbprefix}questions WHERE qid='{$row['cqid']}'";
             $qresult=$connect->Execute($qquery) or die ("Couldn't check questions table for qids<br />$qquery<br />".$connect->ErrorMsg());
             $qcount=$qresult->RecordCount();
-            if (!$qcount) {$cdelete[]=array("cid"=>$row['cid'], "reason"=>"No matching Cqid");}
+            if (!$qcount) {$cdelete[]=array("cid"=>$row['cid'], "reason"=>$clang->gT("No matching Cqid"));}
             if ($row['cfieldname']) //Only do this if there actually is a "cfieldname"
             {
                 list ($surveyid, $gid, $rest) = explode("X", $row['cfieldname']);
                 $qquery = "SELECT gid FROM {$dbprefix}groups WHERE gid=$gid";
                 $qresult = $connect->Execute($qquery) or die ("Couldn't check conditional group matches<br />$qquery<br />".$connect->ErrorMsg());
                 $qcount=$qresult->RecordCount();
-                if ($qcount < 1) {$cdelete[]=array("cid"=>$row['cid'], "reason"=>"No matching CFIELDNAME Group! ($gid) ({$row['cfieldname']})");}
+                if ($qcount < 1) {$cdelete[]=array("cid"=>$row['cid'], "reason"=>$clang->gT("No matching CFIELDNAME Group!")." ($gid) ({$row['cfieldname']})");}
             }
             elseif (!$row['cfieldname'])
             {
-                $cdelete[]=array("cid"=>$row['cid'], "reason"=>"No \"CFIELDNAME\" field set! ({$row['cfieldname']})");
+                $cdelete[]=array("cid"=>$row['cid'], "reason"=>$clang->gT("No \"CFIELDNAME\" field set!")." ({$row['cfieldname']})");
             }
         }
         if (isset($cdelete) && $cdelete)
         {
             $integritycheck .= "<strong>".$clang->gT("The following conditions should be deleted").":</strong><br /><font size='1'>\n";
             foreach ($cdelete as $cd) {
-                $integritycheck .= "CID: {$cd['cid']} because {$cd['reason']}<br />\n";
+                $integritycheck .= "CID: {$cd['cid']} ".$clang->gT("because")." {$cd['reason']}<br />\n";
             }
             $integritycheck .= "</font><br />\n";
         }
@@ -84,12 +84,12 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             $aresult = $connect->Execute($aquery) or die($connect->ErrorMsg());
             $qacount = $aresult->RecordCount();
             if (!$qacount) {
-                $qadelete[]=array("qaid"=>$row['qaid'], "attribute"=>$row['attribute'], "reason"=>"No matching qid");
+                $qadelete[]=array("qaid"=>$row['qaid'], "attribute"=>$row['attribute'], "reason"=>$clang->gT("No matching qid"));
             }
         } // while
         if (isset($qadelete) && $qadelete) {
             $integritycheck .= "<strong>".$clang->gT("The following question attributes should be deleted").":</strong><br /><font size='1'>\n";
-            foreach ($qadelete as $qad) {$integritycheck .= "QAID `{$qad['qaid']}` ATTRIBUTE `{$qad['attribute']}` because `{$qad['reason']}`<br />\n";}
+            foreach ($qadelete as $qad) {$integritycheck .= "QAID `{$qad['qaid']}` ATTRIBUTE `{$qad['attribute']}` ".$clang->gT("because")." `{$qad['reason']}`<br />\n";}
             $integritycheck .= "</font><br />\n";
         }
         else
@@ -106,7 +106,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             $aresult = db_execute_assoc($aquery) or die("Oh dear - died in assessments surveys:".$aquery ."<br />".$connect->ErrorMsg());
             $acount = $aresult->RecordCount();
             if (!$acount) {
-                $assdelete[]=array("id"=>$row['id'], "assessment"=>$row['name'], "reason"=>"No matching survey");
+                $assdelete[]=array("id"=>$row['id'], "assessment"=>$row['name'], "reason"=>$clang->gT("No matching survey"));
             }
         } // while
     
@@ -118,14 +118,14 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             $aresult = $connect->Execute($aquery) or die("Oh dear - died:".$aquery ."<br />".$connect->ErrorMsg());
             $acount = $aresult->RecordCount();
             if (!$acount) {
-                $asgdelete[]=array("id"=>$row['id'], "assessment"=>$row['name'], "reason"=>"No matching group");
+                $asgdelete[]=array("id"=>$row['id'], "assessment"=>$row['name'], "reason"=>$clang->gT("No matching group"));
             }
         }
     
         if (isset($assdelete) && $assdelete)
         {
             $integritycheck .= "<strong>".$clang->gT("The following assessments should be deleted").":</strong><br /><font size='1'>\n";
-            foreach ($assdelete as $ass) {$integritycheck .= "ID `{$ass['id']}` ASSESSMENT `{$ass['assessment']}` because `{$ass['reason']}`<br />\n";}
+            foreach ($assdelete as $ass) {$integritycheck .= "ID `{$ass['id']}` ASSESSMENT `{$ass['assessment']}` ".$clang->gT("because")." `{$ass['reason']}`<br />\n";}
             $integritycheck .= "</font><br />\n";
         }
         else
@@ -135,7 +135,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         if (isset($asgdelete) && $asgdelete)
         {
             $integritycheck .= "<strong>".$clang->gT("The following assessments should be deleted").":</strong><br /><font size='1'>\n";
-            foreach ($asgdelete as $asg) {$integritycheck .= "ID `{$asg['id']}` ASSESSMENT `{$asg['assessment']}` because `{$asg['reason']}`<br />\n";}
+            foreach ($asgdelete as $asg) {$integritycheck .= "ID `{$asg['id']}` ASSESSMENT `{$asg['assessment']}` ".$clang->gT("because")." `{$asg['reason']}`<br />\n";}
             $integritycheck .= "</font><br />\n";
         }
         else
@@ -153,14 +153,14 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             $qresult=$connect->Execute($qquery) or die ("Couldn't check questions table for qids from answers<br />$qquery<br />".$connect->ErrorMsg());
             $qcount=$qresult->RecordCount();
             if (!$qcount) {
-                $adelete[]=array("qid"=>$row['qid'], "code"=>$row['code'], "reason"=>"No matching question");
+                $adelete[]=array("qid"=>$row['qid'], "code"=>$row['code'], "reason"=>$clang->gT("No matching question"));
             }
             //$integritycheck .= "<br />\n";
         }
         if (isset($adelete) && $adelete)
         {
             $integritycheck .= "<strong>".$clang->gT("The following answers should be deleted").":</strong><br /><font size='1'>\n";
-            foreach ($adelete as $ad) {$integritycheck .= "QID `{$ad['qid']}` CODE `{$ad['code']}` because `{$ad['reason']}`<br />\n";}
+            foreach ($adelete as $ad) {$integritycheck .= "QID `{$ad['qid']}` CODE `{$ad['code']}` ".$clang->gT("because")." `{$ad['reason']}`<br />\n";}
             $integritycheck .= "</font><br />\n";
         }
         else
@@ -183,7 +183,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         if (isset($sdelete) && $sdelete)
         {
             $integritycheck .= "<strong>".$clang->gT("The following surveys should be deleted").":</strong><br /><font size='1'>\n";
-            foreach ($sdelete as $sd) {$integritycheck .= "SID `{$sd['sid']}` because `{$sd['reason']}`<br />\n";}
+            foreach ($sdelete as $sd) {$integritycheck .= "SID `{$sd['sid']}` ".$clang->gT("because")." `{$sd['reason']}`<br />\n";}
             $integritycheck .= "</font><br />\n";
         }
         else
@@ -200,19 +200,19 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             $qquery="SELECT * FROM {$dbprefix}groups WHERE gid={$row['gid']}";
             $qresult=$connect->Execute($qquery) or die ("Couldn't check groups table for gids from questions<br />$qquery<br />".$connect->ErrorMsg());
             $qcount=$qresult->RecordCount();
-            if (!$qcount) {$qdelete[]=array("qid"=>$row['qid'], "reason"=>"No matching Group ({$row['gid']})");}
+            if (!$qcount) {$qdelete[]=array("qid"=>$row['qid'], "reason"=>$clang->gT("No matching Group")." ({$row['gid']})");}
             //Make sure survey exists
             $qquery="SELECT * FROM {$dbprefix}surveys WHERE sid={$row['sid']}";
             $qresult=$connect->Execute($qquery) or die ("Couldn't check surveys table for sids from questions<br />$qquery<br />".$connect->ErrorMsg());
             $qcount=$qresult->RecordCount();
             if (!$qcount) {
-                if (!isset($qdelete) || !in_array($row['qid'], $qdelete)) {$qdelete[]=array("qid"=>$row['qid'], "reason"=>"No matching Survey! ({$row['sid']})");}
+                if (!isset($qdelete) || !in_array($row['qid'], $qdelete)) {$qdelete[]=array("qid"=>$row['qid'], "reason"=>$clang->gT("No matching Survey!")." ({$row['sid']})");}
             }
         }
         if (isset($qdelete) && $qdelete)
         {
             $integritycheck .= "<strong>".$clang->gT("The following questions should be deleted").":</strong><br /><font size='1'>\n";
-            foreach ($qdelete as $qd) {$integritycheck .= "QID `{$qd['qid']}` because `{$qd['reason']}`<br />\n";}
+            foreach ($qdelete as $qd) {$integritycheck .= "QID `{$qd['qid']}` ".$clang->gT("because")." `{$qd['reason']}`<br />\n";}
             $integritycheck .= "</font><br />\n";
         }
         else
@@ -244,7 +244,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         if (!isset($cdelete) && !isset($adelete) && !isset($qdelete) && !isset($gdelete) && !isset($asgdelete) && !isset($sdelete) && !isset($assdelete) && !isset($qadelete)) {
             $integritycheck .= "<br />".$clang->gT("No database action required");
         } else {
-            $integritycheck .= "<br />Should we proceed with the delete?<br />\n";
+            $integritycheck .= "<br />".$clang->gT("Should we proceed with the delete?")."<br />\n";
             $integritycheck .= "<form action='{$_SERVER['PHP_SELF']}?action=checkintegrity' method='POST'>\n";
             if (isset($cdelete)) {
                 foreach ($cdelete as $cd) {
@@ -287,7 +287,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
                 }
             }
             $integritycheck .= "<input type='hidden' name='ok' value='Y'>\n"
-                              ."<input type='submit' value='Yes - Delete Them!'>\n"
+                              ."<input type='submit' value='".$clang->gT("Yes - Delete Them!")."'>\n"
                               ."</form>\n";
         }
         $integritycheck .= "<br /><br />\n"
@@ -315,32 +315,32 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         $sdelete=returnglobal('sdelete');
     
         if (isset($sdelete)) {
-            $integritycheck .= "Deleting Surveys:<br /><fontsize='1'>\n";
+            $integritycheck .= $clang->gT("Deleting Surveys").":<br /><fontsize='1'>\n";
             foreach ($sdelete as $ass) {
-                $integritycheck .= "Deleting Survey ID:".$ass."<br />\n";
+                $integritycheck .= $clang->gT("Deleting Survey ID").":".$ass."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}surveys WHERE sid=$ass";
                 $result = $connect->Execute($sql) or die ("Couldn't delete ($sql)<br />".$connect->ErrorMsg());
             }
         }    
     
         if (isset($assdelete)) {
-            $integritycheck .= "Deleting Assessments:<br /><fontsize='1'>\n";
+            $integritycheck .= $clang->gT( "Deleting Assessments").":<br /><fontsize='1'>\n";
             foreach ($assdelete as $ass) {
-                $integritycheck .= "Deleting ID:".$ass."<br />\n";
+                $integritycheck .= $clang->gT("Deleting ID").":".$ass."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}assessments WHERE id=$ass";
                 $result = $connect->Execute($sql) or die ("Couldn't delete ($sql)<br />".$connect->ErrorMsg());
             }
         }
         if (isset($asgdelete)) {
-            $integritycheck .= "Deleting Assessments:<br /><fontsize='1'>\n";
+            $integritycheck .= $clang->gT("Deleting Assessments").":<br /><fontsize='1'>\n";
             foreach ($asgdelete as $asg) {
-                $integritycheck .= "Deleting ID:".$asg."<br />\n";
+                $integritycheck .= $clang->gT("Deleting ID").":".$asg."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}assessments WHERE id=$asg";
                 $result = $connect->Execute($sql) or die ("Couldn't delete ($sql)<br />".$connect->ErrorMsg());
             }
         }
         if (isset($qadelete)) {
-            $integritycheck .= "Deleting Question_Attributes:<br /><fontsize='1'>\n";
+            $integritycheck .= $clang->gT("Deleting Question_Attributes").":<br /><fontsize='1'>\n";
             foreach ($qadelete as $qad) {
                 $integritycheck .= "Deleting QAID:".$qad."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}question_attributes WHERE qaid=$qad";
@@ -348,28 +348,28 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             }
         }
         if (isset($cdelete)) {
-            $integritycheck .= "Deleting Conditions:<br /><font size='1'>\n";
+            $integritycheck .= $clang->gT("Deleting Conditions").":<br /><font size='1'>\n";
             foreach ($cdelete as $cd) {
-                $integritycheck .= "Deleting cid:".$cd."<br />\n";
+                $integritycheck .= $clang->gT("Deleting cid").":".$cd."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}conditions WHERE cid=$cd";
                 $result=$connect->Execute($sql) or die ("Couldn't Delete ($sql)<br />".$connect->ErrorMsg());
             }
             $integritycheck .= "</font><br />\n";
         }
         if (isset($adelete)) {
-            $integritycheck .= "Deleting Answers:<br /><font size='1'>\n";
+            $integritycheck .= $clang->gT("Deleting Answers").":<br /><font size='1'>\n";
             foreach ($adelete as $ad) {
                 list($ad1, $ad2)=explode("|", $ad);
-                $integritycheck .= "Deleting answer with qid:".$ad1." and code: ".$ad2."<br />\n";
+                $integritycheck .= $clang->gT("Deleting answer with qid").":".$ad1." and code: ".$ad2."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}answers WHERE qid=$ad1 AND code='$ad2'";
                 $result=$connect->Execute($sql) or die ("Couldn't Delete ($sql)<br />".$connect->ErrorMsg());
             }
             $integritycheck .= "</font><br />\n";
         }
         if (isset($qdelete)) {
-            $integritycheck .= "Deleting Questions:<br /><font size='1'>\n";
+            $integritycheck .= $clang->gT("Deleting Questions").":<br /><font size='1'>\n";
             foreach ($qdelete as $qd) {
-                $integritycheck .= "Deleting qid:".$qd."<br />\n";
+                $integritycheck .= $clang->gT("Deleting qid").":".$qd."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}questions WHERE qid=$qd";
                 $result=$connect->Execute($sql) or die ("Couldn't Delete ($sql)<br />".$connect->ErrorMsg());
             }
@@ -384,8 +384,8 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             }
             $integritycheck .= "</font><br />\n";
         }
-        $integritycheck .= "Check database again?<br />\n"
-                          ."<a href='{$_SERVER['PHP_SELF']}?action=checkintegrity'>Check Again</a><br />\n"
+        $integritycheck .= $clang->gT("Check database again?")."<br />\n"
+                          ."<a href='{$_SERVER['PHP_SELF']}?action=checkintegrity'>".$clang->gT("Check Again")."</a><br />\n"
                           ."</td></tr></table><br />\n";
     }
 
