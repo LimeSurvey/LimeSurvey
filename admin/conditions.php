@@ -460,6 +460,7 @@ if ($questionscount > 0)
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], $frow['code'], $frow['title']);
 				}
+				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
 				break;
 				default:
             $aquery="SELECT * "
