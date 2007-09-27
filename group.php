@@ -630,7 +630,9 @@ END;
         // then a space or a false are interpreted as no answer
         // as we let choose if the questions is answered or not
         // and doesn´t care the answer, so we wait for a == or !=
-        if ($cd[3] == '')
+	// TempFix by lemeur ==> add a check on cd[3]=' ' as well because
+	// condition editor seems not updated yet
+        if ($cd[3] == '' || $cd[3] == ' ')
         {
             if ($cd[6] == '==')
             {

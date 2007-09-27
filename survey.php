@@ -477,7 +477,7 @@ if ((isset($conditions) && is_array($conditions)) || (isset($array_filterqs) && 
         $java .= ") && (";
     }
 
-    if ($cd[3] == '')
+    if ($cd[3] == '' || $cd[3] == ' ')
     {
       $java .= "document.getElementById('$idname').value == ' ' || !document.getElementById('$idname').value";
         }
