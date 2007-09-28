@@ -1440,7 +1440,7 @@ function do_multiplechoice($ia)
 	{
 		$rowcounter++;
 		$myfname = $ia[1]."other";
-		$answer .= "\t\t\t\t\t\t<label for='answer$myfname'>".$clang->gT("Other").":</label> <input class='text' type='text' name='$myfname' id='answer$myfname'";
+		$answer .= "\t\t\t\t\t\t<label for='answer$myfname' class='answertext'>".$clang->gT("Other").":</label> <input class='text' type='text' name='$myfname' id='answer$myfname'";
 		if (isset($_SESSION[$myfname])) {$answer .= " value='".htmlspecialchars($_SESSION[$myfname],ENT_QUOTES)."'";}
 		// --> START NEW FEATURE - SAVE
 		$answer .= " onchange='modfield(this.name)' ".$callmaxanswscriptother."/>\n"
@@ -1560,7 +1560,7 @@ function do_multiplechoice_withcomments($ia)
 		$anscount = $anscount + 2;
 		$answer .= "\t\t\t\t\t\t\t<tr>\n"
 		. "\t\t\t\t\t\t\t\t<td class='answertext'>\n"
-		. "\t\t\t\t\t\t\t\t\t<label for='answer$myfname'>".$clang->gT("Other").":</label><input class='text' type='text' name='$myfname' id='answer$myfname' title='".$clang->gT("Other")."' size='10'";
+		. "\t\t\t\t\t\t\t\t\t<label for='answer$myfname' class='answertext'>".$clang->gT("Other").":</label><input class='text' type='text' name='$myfname' id='answer$myfname' title='".$clang->gT("Other")."' size='10'";
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname]) {$answer .= " value='".htmlspecialchars($_SESSION[$myfname],ENT_QUOTES)."'";}
 		$fn++;
 		// --> START NEW FEATURE - SAVE
