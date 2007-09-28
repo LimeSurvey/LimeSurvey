@@ -2005,7 +2005,7 @@ function do_array_5point($ia)
 			}
 		}
 		$answer .= "\t\t\t\t$htmltbody2<tr class='$trbc'>\n"
-		. "\t\t\t\t\t<td align='right' width='$answerwidth%'>$answertext\n"
+		. "\t\t\t\t\t<td align='right' class='answertext' width='$answerwidth%'>$answertext\n"
 		. "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
 		if (isset($_SESSION[$myfname])){$answer .= $_SESSION[$myfname];}
 		$answer .= "' /></td>\n";
@@ -2101,7 +2101,7 @@ function do_array_10point($ia)
 			}
 		}
 		$answer .= "\t\t\t\t$htmltbody2<tr class='$trbc'>\n"
-		. "\t\t\t\t\t<td align='right'>$answertext\n"
+		. "\t\t\t\t\t<td align='right' class='answertext'>$answertext\n"
 		. "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
 		if (isset($_SESSION[$myfname])){$answer .= $_SESSION[$myfname];}
 		$answer .= "' /></td>\n";
@@ -2197,7 +2197,7 @@ function do_array_yesnouncertain($ia)
 				}
 			}
 			$answer .= "\t\t\t\t$htmltbody2<tr class='$trbc'>\n"
-			. "\t\t\t\t\t<td align='right'>$answertext</td>\n"
+			. "\t\t\t\t\t<td align='right' class='answertext'>$answertext</td>\n"
 			. "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-Y'>"
 			."<input class='radio' type='radio' name='$myfname' id='answer$myfname-Y' value='Y' title='".$clang->gT("Yes")."'";
 			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "Y") {$answer .= " checked='checked'";}
@@ -2240,7 +2240,8 @@ function do_array_yesnouncertain($ia)
 	return array($answer, $inputnames);
 }
 
-function do_slider($ia) {
+function do_slider($ia)
+{
 	global $shownoanswer;
 	global $dbprefix;
 
@@ -2402,7 +2403,7 @@ function do_array_increasesamedecrease($ia)
 			}
 		}
 		$answer .= "\t\t\t\t$htmltbody2<tr class='$trbc'>\n"
-		. "\t\t\t\t\t<td align='right'>$answertext</td>\n"
+		. "\t\t\t\t\t<td align='right' class='answertext'>$answertext</td>\n"
 		. "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-I'>"
 		."<input class='radio' type='radio' name='$myfname' id='answer$myfname-I' value='I' title='".$clang->gT("Increase")."'";
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "I") {$answer .= " checked='checked'";}
