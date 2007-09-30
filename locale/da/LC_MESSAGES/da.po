@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-07-29 23:38+0100\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2007-09-30 14:10+0100\n"
+"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -12,11 +12,20 @@ msgstr ""
 "X-Poedit-Language: danish\n"
 "X-Poedit-Country: danish\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: gT\n"
 "X-Poedit-SearchPath-0: C:\\eclipse\\workspace\\limesurvey-sourceforge\n"
+"X-Poedit-SearchPath-1: D:\\web\\xampp\\htdocs\\stable_plus\n"
 
-#, fuzzy
+# D:\web\xampp\htdocs\stable_plus/common.php:226
+msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
+msgstr ""
+
 msgid "Administration"
-msgstr "Bekræftelse"
+msgstr "Administration"
+
+# D:\web\xampp\htdocs\stable_plus/common.php:235
+msgid "Logged in as"
+msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:203
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:206
@@ -24,55 +33,71 @@ msgstr "Bekræftelse"
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/templates.php:501
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/templates.php:502
 msgid "Default Administration Page"
+msgstr "Administrations forsiden"
+
+# D:\web\xampp\htdocs\stable_plus/common.php:252
+# D:\web\xampp\htdocs\stable_plus/common.php:254
+msgid "Create/Edit Users"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/common.php:215
-# C:\eclipse\workspace\limesurvey-sourceforge/common.php:218
-msgid "Activate Security"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/common.php:224
-# C:\eclipse\workspace\limesurvey-sourceforge/common.php:227
-msgid "Modify Security Settings"
+# D:\web\xampp\htdocs\stable_plus/common.php:258
+# D:\web\xampp\htdocs\stable_plus/common.php:259
+msgid "Create/Edit Groups"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:236
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:239
 msgid "Check Settings"
-msgstr ""
+msgstr "Undersøg indstillinger"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:236
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:239
+#, fuzzy
+msgid "Settings"
+msgstr "Undersøg indstillinger"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:244
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:246
-msgid "Check Database"
-msgstr ""
-
 #, fuzzy
-msgid "Delete Entire Survey"
-msgstr "Nulstil og start forfra"
+msgid "Check Data Integrity"
+msgstr "Undersøg databasen"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:289
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:122
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/importsurvey.php:640
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1342
+#, fuzzy
+msgid "List Surveys"
+msgstr "Spørgeskemaer"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:260
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:263
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1852
 msgid "Backup Entire Database"
-msgstr ""
+msgstr "Lav komplet backup af databasen"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:266
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:268
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:730
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1854
 msgid "Edit/Add Label Sets"
-msgstr ""
+msgstr "Ret/Tilføj etiketter"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:273
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:276
 msgid "Template Editor"
-msgstr ""
+msgstr "Skabelon redigering"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:280
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:282
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:95
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:236
 msgid "Show Help"
+msgstr "Vis hjælp"
+
+# D:\web\xampp\htdocs\stable_plus/common.php:337
+# D:\web\xampp\htdocs\stable_plus/common.php:339
+msgid "Logout"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:286
@@ -80,212 +105,494 @@ msgstr ""
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:482
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1856
 msgid "Create or Import New Survey"
-msgstr ""
+msgstr "Opret eller importer spørgeskema"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:289
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:122
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importsurvey.php:640
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1342
 msgid "Surveys"
-msgstr ""
+msgstr "Spørgeskemaer"
 
-#, fuzzy
 msgid "Please Choose..."
-msgstr "Vælg venligst"
+msgstr "Vælg venligst..."
 
-#, fuzzy
 msgid "None"
-msgstr "Nej"
+msgstr "Ingen"
 
-#, fuzzy
 msgid "5 Point Choice"
-msgstr "Dine valg"
+msgstr "5 point vurdering"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:478
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1673
+msgid "Array (5 Point Choice)"
+msgstr "Valgmuligheder (5 point vurdering)"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:479
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1674
+msgid "Array (10 Point Choice)"
+msgstr "Valgmuligheder (10 point vurdering)"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:480
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1675
+msgid "Array (Yes/No/Uncertain)"
+msgstr "Valgmuligheder (Ja/Nej/Ved ikke)"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:463
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1659
 msgid "Date"
-msgstr ""
+msgstr "Dato"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:481
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1676
+msgid "Array (Increase, Same, Decrease)"
+msgstr "Valgmuligheder (Mere/Samme/Mindre)"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:482
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1677
+msgid "Array (Flexible Labels)"
+msgstr "Valgmuligheder (Fleksible etiketter)"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:465
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1660
 msgid "Gender"
-msgstr ""
+msgstr "Køn"
 
-# C:\eclipse\workspace\limesurvey-sourceforge/common.php:466
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1661
-msgid "List (Dropdown)"
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:483
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1678
+msgid "Array (Flexible Labels) by Column"
+msgstr "Valgmuligheder (Fleksible etiketter) med kolonner"
+
+# D:\web\xampp\htdocs\stable_plus/common.php:718
+msgid "Language Switch"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:467
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1662
 msgid "List (Radio)"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/common.php:468
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1663
-msgid "List With Comment"
-msgstr ""
+msgstr "Liste (Knap)"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:469
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1664
 msgid "Multiple Options"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/common.php:470
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1665
-msgid "Multiple Options With Comments"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/common.php:471
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1666
-msgid "Multiple Short Text"
-msgstr ""
+msgstr "Flere svarmuligheder"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:472
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1667
 msgid "Numerical Input"
-msgstr ""
+msgstr "Numerisk input"
 
-#, fuzzy
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:468
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1663
+msgid "List With Comment"
+msgstr "Liste med kommentar mulighed"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:470
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1665
+msgid "Multiple Options With Comments"
+msgstr "Flere svarmuligheder med kommentarer"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:471
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1666
+msgid "Multiple Short Text"
+msgstr "Flere kort tekst muligheder"
+
 msgid "Ranking"
-msgstr "Din vurdering"
+msgstr "Vurdering"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:474
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1669
 msgid "Short free text"
-msgstr ""
+msgstr "Kort fri tekst"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:475
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1670
 msgid "Long free text"
-msgstr ""
+msgstr "Lang fri tekst"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:476
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1671
 msgid "Huge Free Text"
-msgstr ""
+msgstr "Enorm fri tekst"
 
-#, fuzzy
-msgid "Yes/No"
-msgstr "Ja"
-
-# C:\eclipse\workspace\limesurvey-sourceforge/common.php:478
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1673
-msgid "Array (5 Point Choice)"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/common.php:479
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1674
-msgid "Array (10 Point Choice)"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/common.php:480
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1675
-msgid "Array (Yes/No/Uncertain)"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/common.php:481
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1676
-msgid "Array (Increase, Same, Decrease)"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/common.php:482
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1677
-msgid "Array (Flexible Labels)"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/common.php:483
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1678
-msgid "Array (Flexible Labels) by Column"
-msgstr ""
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:489
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1680
+msgid "List (Flexible Labels) (Dropdown)"
+msgstr "Liste (Fleksible etiketter) (Dropdown)"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:488
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1679
 msgid "Boilerplate Question"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/common.php:489
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1680
-msgid "List (Flexible Labels) (Dropdown)"
-msgstr ""
+msgid "Yes/No"
+msgstr "Ja/Nej"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:490
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1681
 msgid "List (Flexible Labels) (Radio)"
-msgstr ""
+msgstr "Liste (Fleksible etiketter) (Knap)"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:466
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1661
+msgid "List (Dropdown)"
+msgstr "Liste (dropdown)"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:514
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:421
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1700
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1796
 msgid "No email notification"
-msgstr ""
+msgstr "Ingen e-mail påmindelse"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:515
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:424
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1702
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1797
 msgid "Basic email notification"
-msgstr ""
+msgstr "Basis e-mail påmindelse"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:516
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:427
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1704
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1798
 msgid "Detailed email notification with result codes"
-msgstr ""
+msgstr "Detajleret e-mail påmindelse med spørgeskema koder"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:767
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/admin.php:79
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/index-experimental.php:135
 msgid "LimeSurvey Setup"
-msgstr ""
+msgstr "LimeSurvery installation"
 
 msgid "Error"
 msgstr "Fejl"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:772
 msgid "It appears as if some tables or fields are missing from your database."
-msgstr ""
+msgstr "Det ser ud til at nogle tabeller eller felter mangler i din database"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:774
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/checkfields.php:182
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1850
 msgid "Check Database Fields"
+msgstr "Undersøg databasefelter"
+
+msgid "Return to Survey Administration"
+msgstr "Tilbage til Spørgeskema administration"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/saved.php:144
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:242
+msgid "Show summary information"
 msgstr ""
 
-msgid "prev"
-msgstr "forrige"
+msgid "Display Responses"
+msgstr "Vis besvarelser"
 
-msgid "next"
-msgstr "næste"
+#, fuzzy
+msgid "Display Last 50 Responses"
+msgstr "Vis besvarelser"
 
-msgid "last"
-msgstr "afslut"
+msgid "Dataentry Screen for Survey"
+msgstr "Indtast besvarelse"
 
-msgid "Save your responses so far"
-msgstr "Gem dine foreløbige svar"
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1902
+msgid "Get statistics from these responses"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/common.php:1280
+msgid "Export Results to Application"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/common.php:1282
+# D:\web\xampp\htdocs\stable_plus/common.php:1283
+msgid "Export result to a SPSS command file"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/common.php:1285
+msgid "Import answers from a deactivated survey table"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:336
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:339
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1905
+msgid "View Saved but not submitted Responses"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/vvimport.php:61
+msgid "Import a VV survey file"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/vvexport.php:47
+msgid "Export a VV survey file"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/common.php:1379
+msgid "Preset"
+msgstr ""
+
+msgid "Token"
+msgstr "Nøgle"
+
+#, fuzzy
+msgid "Date Stamp"
+msgstr "Gemt den"
+
+msgid "IP Address"
+msgstr "IP adresse"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1779
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:2042
+msgid "Referring URL"
+msgstr ""
+
+msgid "Other"
+msgstr "Andet"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nej"
+
+msgid "No answer"
+msgstr "Intet svar"
+
+msgid "Male"
+msgstr "Mand"
+
+msgid "Female"
+msgstr "Kvinde"
+
+msgid "Uncertain"
+msgstr "Ved ikke"
+
+msgid "Increase"
+msgstr "Hæv"
+
+msgid "Decrease"
+msgstr "Sænk"
+
+msgid "Same"
+msgstr "Samme"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/dataentry.php:1663
+msgid "Comment"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/common.php:1875
+msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
+msgstr ""
+
+#, fuzzy
+msgid "There are no questions in this survey"
+msgstr "Antal spørgsmål i dette spørgeskema:"
+
+#, fuzzy
+msgid "There is 1 question in this survey"
+msgstr "Antal spørgsmål i dette spørgeskema:"
+
+# D:\web\xampp\htdocs\stable_plus/common.php:1903
+msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
+msgstr ""
 
 msgid "submit"
 msgstr "Indsend"
+
+# D:\web\xampp\htdocs\stable_plus/common.php:1945
+msgid "A Note On Privacy"
+msgstr ""
+
+msgid "This survey is anonymous."
+msgstr "Dette spørgeskema besvares anonymt"
+
+# D:\web\xampp\htdocs\stable_plus/common.php:1945
+msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr ""
+
+#, fuzzy
+msgid "Are you sure you want to clear all your responses?"
+msgstr "Er du sikker på at du vil slette alle unikke nøgler id'er?"
+
+#, fuzzy
+msgid "Exit and Clear Survey"
+msgstr "Rediger spørgeskema"
+
+#, fuzzy
+msgid "Load Unfinished Survey"
+msgstr "Hent en uafsluttet undersøgelse"
+
+#, fuzzy
+msgid "Save Survey and Return"
+msgstr "Detaljerne om dit gemte spørgeskema"
+
+#, fuzzy
+msgid "Thank You!"
+msgstr "Tak"
+
+#, fuzzy
+msgid "You have completed answering the questions in this survey."
+msgstr "Du har allerede gennemført denne undersøgelse."
+
+# D:\web\xampp\htdocs\stable_plus/common.php:2006
+msgid "Click on 'Submit' now to complete the process and save your answers."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/common.php:2012
+msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
+msgstr ""
+
+#, fuzzy
+msgid "Answers Cleared"
+msgstr "Besvaret"
+
+#, fuzzy
+msgid "Restart this Survey"
+msgstr "Aktiver dette spørgeskema"
+
+msgid "Close this Window"
+msgstr "Luk dette vindue"
+
+#, fuzzy
+msgid "Return To Survey"
+msgstr "Slet spørgeskema"
+
+#, fuzzy
+msgid "Save Your Unfinished Survey"
+msgstr "Hent en uafsluttet undersøgelse"
+
+# D:\web\xampp\htdocs\stable_plus/common.php:2058
+msgid "Enter a name and password for this survey and click save below."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/common.php:2058
+msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/common.php:2058
+msgid "If you give an email address, an email containing the details will be sent to you."
+msgstr ""
+
+msgid "Name"
+msgstr "Navn"
+
+msgid "Password"
+msgstr "Kodeord"
+
+#, fuzzy
+msgid "Repeat Password"
+msgstr "Kodeord"
+
+#, fuzzy
+msgid "Your Email"
+msgstr "E-mail"
+
+#, fuzzy
+msgid "Security Question"
+msgstr "Ret spørgsmål"
+
+#, fuzzy
+msgid "Save Now"
+msgstr "Gem"
+
+# D:\web\xampp\htdocs\stable_plus/common.php:2084
+msgid "Load A Previously Saved Survey"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/common.php:2085
+msgid "You can load a survey that you have previously saved from this screen."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/common.php:2085
+msgid "Type in the 'name' you used to save the survey, and the password."
+msgstr ""
+
+#, fuzzy
+msgid "Saved name"
+msgstr "Gem siden"
+
+# D:\web\xampp\htdocs\stable_plus/common.php:2101
+msgid "Load Now"
+msgstr ""
+
+#, fuzzy
+msgid "You must be registered to complete this survey"
+msgstr "Du har allerede gennemført denne undersøgelse."
+
+# D:\web\xampp\htdocs\stable_plus/common.php:2107
+msgid "You may register for this survey if you wish to take part."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/common.php:2107
+msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr ""
+
+msgid "First Name"
+msgstr "Fornavn"
+
+msgid "Last Name"
+msgstr "Efternavn"
+
+msgid "Email Address"
+msgstr "E-mail-adresse"
+
+msgid "Continue"
+msgstr "Fortsæt"
+
+#, fuzzy
+msgid "Your Assessment"
+msgstr "Vurderinger"
+
+# D:\web\xampp\htdocs\stable_plus/common.php:2431
+msgid "Online Manual"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/common.php:2434
+msgid "Support this project - Donate to "
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/common.php:2437
+msgid "Visit our website!"
+msgstr ""
+
+#, fuzzy
+msgid "Version"
+msgstr "Spørgsmål"
+
+# D:\web\xampp\htdocs\stable_plus/common.php:2600
+msgid "Local Submission"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/common.php:2800
+# D:\web\xampp\htdocs\stable_plus/common.php:2805
+msgid "Executing"
+msgstr ""
+
+#, fuzzy
+msgid "Failed! Reason: "
+msgstr "Gemte svar"
+
+# D:\web\xampp\htdocs\stable_plus/common.php:2805
+msgid "Success!"
+msgstr ""
+
+msgid "Save your responses so far"
+msgstr "Gem dine foreløbige svar"
 
 msgid "Did Not Save"
 msgstr "Kunne ikke gemme"
 
 msgid "Your survey responses have not been recorded. This survey is not yet active."
-msgstr "Dine besvarelser er ikke gemt - undersøgelsen er endnu ikke sat i gang."
+msgstr "Dine besvarelser er ikke gemt - spørgeskemaet er endnu ikke aktiveret."
 
 msgid "Clear Responses"
-msgstr "Nulstil svar"
+msgstr "Slet svar"
 
 msgid "Thank you"
 msgstr "Tak"
 
 msgid "Your survey responses have been recorded."
 msgstr "Dine svar er blevet gemt."
-
-msgid "Close this Window"
-msgstr "Luk dette vindue"
 
 msgid "Sorry. There is no matching survey."
 msgstr "Beklager, men kunne ikke finde undersøgelses-nøgle der matcher det valgte."
@@ -295,16 +602,31 @@ msgstr "Denne undersøgelse er ikke aktiv og du kan derfor ikke deltage."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/index.php:69
 msgid "ERROR"
+msgstr "FEJL"
+
+# D:\web\xampp\htdocs\stable_plus/index.php:52
+msgid "We are sorry but your session has expired."
 msgstr ""
 
-msgid "You have not provided a survey identification number"
-msgstr "Der mangler at blive angivet en undersøgelses-nøgle"
+# D:\web\xampp\htdocs\stable_plus/index.php:52
+msgid "Either you have been inactive for too long or there were problems with your connection."
+msgstr ""
 
 msgid "Please contact"
 msgstr "Kontakt venligst"
 
 msgid "for further assistance"
 msgstr "for videre assistance"
+
+msgid "You have not provided a survey identification number"
+msgstr "Der mangler at blive angivet en undersøgelses-nøgle"
+
+# D:\web\xampp\htdocs\stable_plus/index.php:120
+# D:\web\xampp\htdocs\stable_plus/index.php:234
+# D:\web\xampp\htdocs\stable_plus/register.php:49
+# D:\web\xampp\htdocs\stable_plus/save.php:200
+msgid "The answer to the security question is incorrect"
+msgstr ""
 
 msgid "This survey is no longer available."
 msgstr "Denne undersøgelse er ikke længere aktiv og du kan derfor ikke deltage."
@@ -318,10 +640,8 @@ msgstr "Du angav ikke et navn"
 msgid "You did not provide a password"
 msgstr "Du angav ikke et kodeord"
 
-msgid "Load unfinished survey"
-msgstr "Hent en uafsluttet undersøgelse"
-
-msgid "This is a controlled survey. You need a valid token to participate."
+#, fuzzy
+msgid "This is a closed-access survey. You need a valid token to participate."
 msgstr "Dette er en lukket undersøgelse og kræver at du har en undersøgelses-nøgle for at deltage."
 
 msgid "The token you have provided is either not valid, or has already been used."
@@ -330,18 +650,15 @@ msgstr "Den undersøgelses-nøgle, du har angivet, er ugyldig, eller er allerede
 msgid "For further information contact"
 msgstr "For yderligere information kontakt"
 
+#, fuzzy
+msgid "Survey Saved"
+msgstr "Undersøgelsen er gemt"
+
 msgid "There is no matching saved survey"
 msgstr "Kunne ikke finde en undersøgelse med det angivne navn"
 
 msgid "complete"
 msgstr "gennemført"
-
-msgid "Cannot submit results - there are none to submit."
-msgstr "Kan ikke gemme besvarelsen - der er ikke noget at gemme."
-
-#, fuzzy
-msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br /><br />If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
-msgstr "Denne fejl er opstået fordi du allerede har gemt dine svar og har trykket på 'Opdater' i din browser. Dine besvarelser er allerede gemt.<br ><br >Hvis du har fået denne fejlmeddelse midt i en spørgeskema-undersøgelse bør du trykke på '<- Tilbage'-knappen i din browser efterfulgt af 'Opdater'. Dermed vil dit forrige svar gå tabt, men alle andre tidligere svar er gemt. Vi beklager de gener dette måtte medføre."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/index.php:1014
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1704
@@ -365,6 +682,10 @@ msgstr "Undersøgelsen er gemt"
 msgid "A new response was entered for your survey"
 msgstr "Et nyt svar er gemt i undersøgelsen"
 
+#, fuzzy
+msgid "Click the following link to reload the survey:"
+msgstr "Klik på nedenstående link for at redigere de individuelle svar:"
+
 msgid "Click the following link to see the individual response:"
 msgstr "Klik på nedenstående link for at se de individuelle svar:"
 
@@ -380,9 +701,8 @@ msgstr "Der skete en uventet fejl og din besvarelse kunne ikke gemmes."
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr "Din besvarelse er ikke gået tabt, men er sendt til administratoren af undersøgelsen, som så senere tilføjer disse."
 
-#, fuzzy
 msgid "An error occurred saving a response to survey id"
-msgstr "Der skete en fejl, og dine svar blev ikke gemt."
+msgstr "Der skete en fejl da besvarelsen skulle gemmes."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/index.php:1096
 msgid "DATA TO BE ENTERED"
@@ -396,26 +716,50 @@ msgstr ""
 msgid "ERROR MESSAGE"
 msgstr ""
 
+# D:\web\xampp\htdocs\stable_plus/index.php:1031
+msgid "Error saving results"
+msgstr ""
+
 msgid "Try to submit again"
 msgstr "Prøv igen"
+
+msgid "This is a controlled survey. You need a valid token to participate."
+msgstr "Dette er en lukket undersøgelse og kræver at du har en undersøgelses-nøgle for at deltage."
 
 msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr "Hvis du har en undersøgelses-nøgle så indtast den herunder."
 
-msgid "Token"
-msgstr "Nøgle"
-
-msgid "Continue"
-msgstr "Fortsæt"
-
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Denne undersøgelse har endnu ingen spørgsmål og kan derfor ikke besvares."
+
+msgid "prev"
+msgstr "forrige"
+
+msgid "next"
+msgstr "næste"
+
+msgid "last"
+msgstr "sidste"
 
 msgid "Choose only one of the following"
 msgstr "Vælg kun en af nedenstående"
 
 msgid "Check any that apply"
 msgstr "Vælg alle du er enig i"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:244
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:246
+#, fuzzy
+msgid "Check at most"
+msgstr "Undersøg databasen"
+
+#, fuzzy
+msgid "answers"
+msgstr "Besvarelser"
+
+# D:\web\xampp\htdocs\stable_plus/qanda.php:283
+msgid "Choose your language"
+msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/qanda.php:366
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/printablesurvey.php:253
@@ -429,7 +773,7 @@ msgid "This question is mandatory"
 msgstr "Dette spørgsmål er obligatorisk"
 
 msgid "Please complete all parts"
-msgstr "Udfyld venligst alle dele"
+msgstr "Udfyld venligst alle felter"
 
 msgid "Please rank all items"
 msgstr "Afgiv venligst en score i alle felter"
@@ -437,14 +781,15 @@ msgstr "Afgiv venligst en score i alle felter"
 msgid "Please check at least one item"
 msgstr "Afkryds som minimum en mulighed"
 
+# D:\web\xampp\htdocs\stable_plus/qanda.php:441
+msgid "You cannot proceed until you enter some text for one or more questions."
+msgstr ""
+
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
 msgstr "En eller flere felter som skal udfyldes er ikke udfyldt - der kan ikke fortsættes før disse er udfyldt"
 
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
 msgstr "Et eller flere spørgsmål er ikke blevet besvaret korrekt. Du kan ikke fortsætte, før disse svar er gyldige"
-
-msgid "No answer"
-msgstr "Intet svar"
 
 msgid "Format: YYYY-MM-DD"
 msgstr "Datoformat: ÅÅÅÅ-MM-DD"
@@ -455,8 +800,10 @@ msgstr "(f.eks. 2003-12-24, hvis der skal angives juledag)"
 msgid "Please choose"
 msgstr "Vælg venligst"
 
-msgid "Other"
-msgstr "Andet"
+# D:\web\xampp\htdocs\stable_plus/qanda.php:706
+# D:\web\xampp\htdocs\stable_plus/qanda.php:930
+msgid "Error: The labelset used for this question is not available in this language."
+msgstr ""
 
 msgid "Please choose one of the following"
 msgstr "Vælg en af følgende"
@@ -485,35 +832,28 @@ msgstr "Klik på saksen til højre for at fjerne"
 msgid "to remove the last entry in your ranked list"
 msgstr "det nederste emne på din vurderingsliste"
 
+#, fuzzy
+msgid "Please choose at most"
+msgstr "Vælg venligst"
+
+#, fuzzy
+msgid "answer(s) for question"
+msgstr "Svar kun på dette spørgsmål"
+
 msgid "Make a comment on your choice here:"
 msgstr "Tilføj en kommentar til dit svar her:"
+
+#, fuzzy
+msgid "Error: This question has no answers."
+msgstr "Dette spørgsmål er obligatorisk"
 
 msgid "Only numbers may be entered in this field"
 msgstr "Dette felt kan kun indeholde talnumeriske tegn"
 
-msgid "Yes"
-msgstr "Ja"
-
-msgid "No"
-msgstr "Nej"
-
-msgid "Female"
-msgstr "Kvinde"
-
-msgid "Male"
-msgstr "Mand"
-
-msgid "Uncertain"
-msgstr "Ved ikke"
-
-msgid "Increase"
-msgstr "Hæv"
-
-msgid "Same"
-msgstr "Samme"
-
-msgid "Decrease"
-msgstr "Sænk"
+# D:\web\xampp\htdocs\stable_plus/qanda.php:2575
+# D:\web\xampp\htdocs\stable_plus/qanda.php:2686
+msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
+msgstr ""
 
 msgid "The email you used is not valid. Please try again."
 msgstr "Den angivne e-mail-adresse er ugyldig."
@@ -522,11 +862,19 @@ msgid "The email you used has already been registered."
 msgstr "Den angivne e-mail-adresse er allerede registeret."
 
 #, fuzzy
-msgid ""
-"Thank you for registering to participate in this survey.<br /><br />\n"
-"An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.<br /><br />\n"
-"Survey Administrator {ADMINNAME} ({ADMINEMAIL})"
-msgstr "Tak fordi du vælger at deltage i undersøgelsen.<br ><br >nEn e-mail er sendt til den angivne e-mail-adresse, hvori der findesinformationer om hvordan du deltager i undersøgelsen. Benyt henvisningen i e-mailen for at deltage.<br ><br >nVenlig hilsen <br > {ADMINNAME} ({ADMINEMAIL})"
+msgid "Thank you for registering to participate in this survey."
+msgstr "Tak for din besvarelse."
+
+#, fuzzy
+msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
+msgstr ""
+"Tak fordi du vælger at deltage i denne undersøgelse.<br /><br />\n"
+"En e-mail er sendt til den angivne e-mail-adresse, hvori der findes informationer om hvordan du deltager i undersøgelsen. Benyt henvisningen i e-mailen for at deltage.<br /><br />\n"
+"Venlig hilsen <br /> {ADMINNAME} ({ADMINEMAIL})"
+
+#, fuzzy
+msgid "Survey Administrator"
+msgstr "Tilbage til Spørgeskema administration"
 
 msgid "Please try again."
 msgstr "Prøv venligst igen."
@@ -541,33 +889,121 @@ msgid "Your passwords do not match."
 msgstr "Dine kodeord er ikke ens."
 
 msgid "This name has already been used for this survey. You must use a unique save name."
-msgstr "Dette navn er allerede i brug til denne undersøgelse. Vælg et andet."
+msgstr "Dette navn er allerede i brug til dette spørgeskema. Du skal angive et unikt navn."
 
 msgid "Saved Survey Details"
-msgstr "Detaljerne om din gemte undersøgelse"
+msgstr "Detaljerne om dit gemte spørgeskema"
 
 msgid "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
-msgstr "Du, eller en der benytter din e-mail-adresse, har gemt en midlertidig besvarelse. De følgende oplysninger kan benyttes til at vende tilbage til undersøgelsen, og genoptage besvarelsen."
-
-msgid "Name"
-msgstr "Navn"
-
-msgid "Password"
-msgstr "Kodeord"
+msgstr "Du, eller en der benytter din e-mail-adresse, har gemt en midlertidig besvarelse. De følgende oplysninger kan benyttes til at vende tilbage til spørgeskemaet, og genoptage besvarelsen."
 
 msgid "Reload your survey by clicking on the following URL:"
 msgstr "Genindlæs din besvarelse ved at klikke på følgende henvisning"
+
+msgid "Cannot submit results - there are none to submit."
+msgstr "Kan ikke gemme besvarelsen - der er ikke noget at gemme."
+
+# D:\web\xampp\htdocs\stable_plus/save.php:454
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
+msgstr ""
+
+#, fuzzy
+msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "Denne fejl er opstået fordi du allerede har gemt dine svar og har trykket på 'Opdater' i din browser. Dine besvarelser er allerede gemt.<br /><br />Hvis du har fået denne fejlmeddelse midt i en spørgeskema-undersøgelse bør du trykke på '<- Tilbage'-knappen i din browser efterfulgt af 'Opdater'. Dermed vil dit forrige svar gå tabt, men alle andre tidligere svar er gemt. Vi beklager de gener dette måtte medføre."
+
+# D:\web\xampp\htdocs\stable_plus/admin/access_denied.php:20
+msgid "Access denied!"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/access_denied.php:25
+msgid "You are not allowed dump the database!"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/access_denied.php:30
+msgid "You are not allowed export a label set!"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/access_denied.php:35
+msgid "You are not allowed to change user data!"
+msgstr ""
+
+#, fuzzy
+msgid "You are not allowed to create new surveys!"
+msgstr "Du har ikke valgt et spørgeskema"
+
+#, fuzzy
+msgid "You are not allowed to delete this survey!"
+msgstr "Du er ved at slette dette spørgeskema"
+
+#, fuzzy
+msgid "You are not allowed to add new questions for this survey!"
+msgstr "Du er ved at slette dette spørgeskema"
+
+#, fuzzy
+msgid "You are not allowed to activate this survey!"
+msgstr "Du er ved at slette dette spørgeskema"
+
+#, fuzzy
+msgid "You are not allowed to deactivate this survey!"
+msgstr "Du er ved at slette dette spørgeskema"
+
+#, fuzzy
+msgid "You are not allowed to add a group to this survey!"
+msgstr "Du er ved at slette dette spørgeskema"
+
+#, fuzzy
+msgid "You are not allowed to order groups in this survey!"
+msgstr "Du er ved at slette dette spørgeskema"
+
+#, fuzzy
+msgid "You are not allowed to edit this survey!"
+msgstr "Du er ved at slette dette spørgeskema"
+
+#, fuzzy
+msgid "You are not allowed to edit groups in this survey!"
+msgstr "Du er ved at slette dette spørgeskema"
+
+# D:\web\xampp\htdocs\stable_plus/admin/access_denied.php:85
+msgid "You are not allowed to browse responses!"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/access_denied.php:90
+msgid "You are not allowed to set assessment rules!"
+msgstr ""
+
+#, fuzzy
+msgid "You are not allowed to delete this group!"
+msgstr "Du er ved at slette dette spørgeskema"
+
+#, fuzzy
+msgid "You are not allowed to import a survey!"
+msgstr "Du har ikke valgt et spørgeskema"
+
+# D:\web\xampp\htdocs\stable_plus/admin/access_denied.php:106
+msgid "You are not allowed to import a group!"
+msgstr ""
+
+#, fuzzy
+msgid "You are not allowed to to import a question!"
+msgstr "Du skal besvare dette spørgsmål"
+
+# D:\web\xampp\htdocs\stable_plus/admin/access_denied.php:116
+msgid "You are not allowed to perform this operation!"
+msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:100
 msgid "This question is a multiple answer type question but has no answers."
 msgstr ""
 
-#, fuzzy
 msgid "This question does not have a question 'type' set."
-msgstr "Denne undersøgelse har endnu ingen spørgsmål og kan derfor ikke besvares."
+msgstr "Der er ikke angivet nogen spørgsmålstype på dette spørgsmål."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:116
 msgid "This question requires a Labelset, but none is set."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/activate.php:117
+msgid "The labelset used in this question is missing a translation."
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:169
@@ -591,6 +1027,80 @@ msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:211
 msgid "The survey cannot be activated until these problems have been resolved."
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:227
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/deactivate.php:48
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/deletesurvey.php:67
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:738
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:747
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:976
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1009
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:2184
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:343
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:361
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:218
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:221
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:184
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:594
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:743
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:761
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:902
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:921
+msgid "Warning"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:228
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/deactivate.php:48
+msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:234
+msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/activate.php:240
+msgid "Once a survey is activated you can no longer:"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/activate.php:240
+msgid "Add or delete groups"
+msgstr ""
+
+#, fuzzy
+msgid "Add or remove answers to Multiple Answer questions"
+msgstr "Du skal besvare dette spørgsmål"
+
+#, fuzzy
+msgid "Add or delete questions"
+msgstr "Tilføj spørgsmål"
+
+# D:\web\xampp\htdocs\stable_plus/admin/activate.php:241
+msgid "However you can still:"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/activate.php:241
+msgid "Edit (change) your questions code, text or type"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/activate.php:241
+msgid "Edit (change) your group names"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/activate.php:241
+msgid "Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/activate.php:241
+msgid "Change survey name or description"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:237
+msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:404
+msgid "Survey could not be actived."
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:216
@@ -639,69 +1149,12 @@ msgstr ""
 msgid "Main Admin Screen"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:227
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/deactivate.php:48
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/deletesurvey.php:67
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:738
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:747
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:976
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1009
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:2184
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:343
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:361
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:218
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:221
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:184
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:594
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:743
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:761
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:902
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:921
-msgid "Warning"
+# D:\web\xampp\htdocs\stable_plus/admin/activate.php:460
+msgid "Survey has been activated. Results table has been successfully created."
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:228
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/deactivate.php:48
-msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:234
-msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:235
-msgid "Once a survey is activated you can no longer:<ul><li>Add or delete groups</li><li>Add or remove answers to Multiple Answer questions</li><li>Add or delete questions</li></ul>"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:236
-msgid "However you can still:<ul><li>Edit (change) your questions code, text or type</li><li>Edit (change) your group names</li><li>Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)</li><li>Change survey name or description</li></ul>"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:237
-msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:242
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/deactivate.php:62
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/deletesurvey.php:86
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:600
-msgid "Cancel"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:243
-msgid "Activate"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:404
-msgid "Survey could not be actived."
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:453
-msgid "Survey has been activated. Results table has been succesfully created."
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:460
-msgid "This is not an anonymous survey. A token table must also be created."
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:465
+msgid "This survey allows public registration. A token table must also be created."
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:461
@@ -710,43 +1163,35 @@ msgstr ""
 msgid "Initialise Tokens"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:465
-msgid "This survey allows public registration. A token table must also be created."
+msgid "This survey is now active, and responses can be recorded."
+msgstr "Denne undersøgelse er nu aktiv og besvarelser kan gemmes."
+
+# D:\web\xampp\htdocs\stable_plus/admin/activate.php:480
+msgid "Open-access mode"
 msgstr ""
 
 #, fuzzy
-msgid "This survey is now active, and responses can be recorded."
-msgstr "Dine svar er blevet gemt."
+msgid "No invitation code is needed to complete the survey."
+msgstr "Bekræftelses af gennemført spørgeskema"
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/admin.php:83
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/browse.php:67
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/dataentry.php:57
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/index-experimental.php:139
-msgid "The defined surveyor database does not exist"
+# D:\web\xampp\htdocs\stable_plus/admin/activate.php:480
+msgid "You can switch to the closed-access mode by initialising a token table with the button below."
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/admin.php:84
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/browse.php:68
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/dataentry.php:58
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/index-experimental.php:140
-msgid "Either your selected database has not yet been created or there is a problem accessing it."
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1512
+msgid "Optional"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/admin.php:85
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/index-experimental.php:141
-msgid "LimeSurvey can attempt to create this database for you."
+# D:\web\xampp\htdocs\stable_plus/admin/activate.php:481
+msgid "Switch to closed-access mode"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/admin.php:86
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/index-experimental.php:142
-msgid "Your selected database name is:"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/admin.php:88
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/createdb.php:46
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/index-experimental.php:144
-msgid "Create Database"
-msgstr ""
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:767
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/admin.php:79
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/index-experimental.php:135
+#, fuzzy
+msgid "LimeSurvey Online Manual"
+msgstr "LimeSurvery installation"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/admin.php:205
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/export.php:214
@@ -758,55 +1203,15 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/assessments.php:41
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/assessments.php:107
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/assessments.php:108
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:448
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:483
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:890
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1436
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:158
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:322
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:445
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:249
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:322
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:900
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:901
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:986
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1088
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1165
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:1124
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:1165
-msgid "Add"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/assessments.php:52
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/assessments.php:131
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:961
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:159
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:445
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:615
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:711
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:1120
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:1135
-msgid "Update"
-msgstr ""
-
-#, fuzzy
 msgid "Assessments"
-msgstr "Din evaluering"
-
-#, fuzzy
-msgid "Return to Survey Administration"
-msgstr "Tilbage til undersøgelsen"
+msgstr "Vurderinger"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/assessments.php:87
 msgid "No SID Provided"
 msgstr ""
 
-#, fuzzy
 msgid "Scope"
-msgstr "gennemført"
+msgstr "Scope"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/assessments.php:99
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/assessments.php:100
@@ -871,6 +1276,28 @@ msgstr ""
 msgid "Total"
 msgstr ""
 
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/assessments.php:41
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/assessments.php:107
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/assessments.php:108
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:448
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:483
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:890
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1436
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:158
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:322
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:445
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:249
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:322
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:900
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:901
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:986
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1088
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1165
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:1124
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:1165
+msgid "Add"
+msgstr ""
+
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/assessments.php:130
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/assessments.php:155
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1022
@@ -901,29 +1328,55 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#, fuzzy
 msgid "Are you sure you want to delete this entry."
-msgstr "Er du sikker på at du vil gemme dine svar?"
+msgstr "Er du sikker på at du vil slette denne."
 
-#, fuzzy
+msgid "Save"
+msgstr "Gem"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:242
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/deactivate.php:62
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/deletesurvey.php:86
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:600
+msgid "Cancel"
+msgstr ""
+
 msgid "Browse Responses"
-msgstr "Nulstil svar"
+msgstr "Gennemse besvarelser"
 
-#, fuzzy
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/admin.php:83
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/browse.php:67
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/dataentry.php:57
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/index-experimental.php:139
+msgid "The defined surveyor database does not exist"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/admin.php:84
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/browse.php:68
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/dataentry.php:58
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/index-experimental.php:140
+msgid "Either your selected database has not yet been created or there is a problem accessing it."
+msgstr ""
+
 msgid "You have not selected a survey to browse."
-msgstr "Der mangler at blive angivet en undersøgelses-nøgle"
+msgstr "Du har ikke valgt en hvilket spørgeskema du vil gennemse."
 
-#, fuzzy
 msgid "This survey has not been activated. There are no results to browse."
-msgstr "Denne undersøgelse er ikke aktiv og du kan derfor ikke deltage."
+msgstr "Dette spørgskema er ikke aktiveret. Derfor kan du ikke gennemse."
 
-#, fuzzy
 msgid "There is no matching survey."
-msgstr "Beklager, men kunne ikke finde undersøgelses-nøgle der matcher det valgte."
+msgstr "Der er ingen matchende besvarelse."
 
 #, fuzzy
+msgid "Token ID"
+msgstr "Nøgle"
+
+#, fuzzy
+msgid "Date Submitted"
+msgstr "Undersøgelsen er gemt"
+
 msgid "View Response"
-msgstr "Nulstil svar"
+msgstr "Vis besvarelse"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/browse.php:238
 msgid "Edit this entry"
@@ -938,18 +1391,24 @@ msgstr ""
 msgid "Export this Response"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/browse.php:248
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/browse.php:478
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/browse.php:483
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:400
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:405
-msgid "Show last..."
+# D:\web\xampp\htdocs\stable_plus/admin/browse.php:254
+# D:\web\xampp\htdocs\stable_plus/admin/browse.php:517
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:488
+msgid "Show previous..."
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/browse.php:251
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/browse.php:481
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:403
 msgid "Show next..."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/browse.php:301
+msgid "Showing Filtered Results"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/browse.php:302
+msgid "Close"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/browse.php:469
@@ -962,6 +1421,14 @@ msgstr ""
 msgid "Show start.."
 msgstr ""
 
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/browse.php:248
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/browse.php:478
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/browse.php:483
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:400
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:405
+msgid "Show last..."
+msgstr ""
+
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/browse.php:490
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:420
 msgid "Records Displayed:"
@@ -972,44 +1439,61 @@ msgstr ""
 msgid "Starting From:"
 msgstr ""
 
+# D:\web\xampp\htdocs\stable_plus/admin/browse.php:548
+# D:\web\xampp\htdocs\stable_plus/admin/statistics.php:630
+msgid "Filter incomplete answers:"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/browse.php:549
+# D:\web\xampp\htdocs\stable_plus/admin/exportresults.php:139
+# D:\web\xampp\htdocs\stable_plus/admin/statistics.php:631
+# D:\web\xampp\htdocs\stable_plus/admin/vvexport.php:49
+msgid "Enable"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/browse.php:550
+# D:\web\xampp\htdocs\stable_plus/admin/exportresults.php:140
+# D:\web\xampp\htdocs\stable_plus/admin/statistics.php:632
+# D:\web\xampp\htdocs\stable_plus/admin/vvexport.php:50
+msgid "Disable"
+msgstr ""
+
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/browse.php:492
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:422
 msgid "Show"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/checkfields.php:185
-msgid "Checking to ensure all tables exist"
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/dataentry.php:374
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/dataentry.php:1300
+msgid "View This Record"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/checkfields.php:197
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/checkfields.php:254
-msgid "Checking"
+#, fuzzy
+msgid "responses for this survey"
+msgstr "Gennemse besvarelser for dette spørgeskema"
+
+#, fuzzy
+msgid "full responses"
+msgstr "Slet svar"
+
+# D:\web\xampp\htdocs\stable_plus/admin/browse.php:631
+msgid "responses not completly filled out"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/checkfields.php:220
-msgid "Table Created"
+# D:\web\xampp\htdocs\stable_plus/admin/cmdline_importsurvey.php:54
+msgid "User name invalid!"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/checkfields.php:224
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/checkfields.php:290
-msgid "OK"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/checkfields.php:231
-msgid "Checking to ensure all fields exist"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/checkfields.php:279
-msgid "Field Created"
-msgstr ""
+#, fuzzy
+msgid "User name / password dont match!"
+msgstr "Dine kodeord er ikke ens."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/conditions.php:61
 msgid "Condition Designer"
 msgstr ""
 
-#, fuzzy
 msgid "You have not selected a Survey."
-msgstr "Du har allerede gennemført denne undersøgelse."
+msgstr "Du har ikke valgt et spørgeskema."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/conditions.php:68
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/conditions.php:76
@@ -1020,9 +1504,12 @@ msgstr ""
 msgid "You have not selected a Question."
 msgstr ""
 
-#, fuzzy
+# D:\web\xampp\htdocs\stable_plus/admin/conditions.php:64
+msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
+msgstr ""
+
 msgid "Did not copy questions"
-msgstr "til spørgsmål"
+msgstr "Kopiering af spørgsmål fejlede"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/conditions.php:156
 msgid "No condition selected to copy from"
@@ -1032,9 +1519,8 @@ msgstr ""
 msgid "No question selected to copy condition to"
 msgstr ""
 
-#, fuzzy
 msgid "Only show question {QID} IF"
-msgstr "Svar kun på dette spørgsmål"
+msgstr "Vis kun spørgsmål {QID} HVIS"
 
 msgid "and"
 msgstr "og"
@@ -1057,13 +1543,11 @@ msgstr ""
 msgid "Copy Conditions"
 msgstr ""
 
-#, fuzzy
 msgid "Condition"
-msgstr "Bekræftelse"
+msgstr "Betingelse"
 
-#, fuzzy
 msgid "Question"
-msgstr "til spørgsmål"
+msgstr "Spørgsmål"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/conditions.php:610
 msgid "copy to"
@@ -1073,45 +1557,29 @@ msgstr ""
 msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
 msgstr ""
 
-#, fuzzy
 msgid "Add Condition"
-msgstr "Bekræftelse"
+msgstr "Tilføj betingelse"
 
-#, fuzzy
 msgid "Answer"
-msgstr "Intet svar"
+msgstr "Svar"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/conditions.php:683
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:656
 msgid "Clear"
 msgstr ""
 
-#, fuzzy
 msgid "Close Window"
-msgstr "Luk dette vindue"
+msgstr "Luk vindue"
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/createdb.php:52
-msgid "Database Information not provided. This script must be run from admin.php only."
+# D:\web\xampp\htdocs\stable_plus/admin/database.php:98
+msgid ""
+"Group could not be added.\\n"
+"\\n"
+"It is missing the group name for the following languages"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/createdb.php:67
-msgid "Database has been created."
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/createdb.php:68
-msgid "Please click below to populate the database"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/createdb.php:69
-msgid "Populate Database"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/createdb.php:74
-msgid "Could not create database"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:82
-msgid "Group could not be added. It is missing the mandatory group name"
+# D:\web\xampp\htdocs\stable_plus/admin/database.php:121
+msgid "Error: The database reported the following error:"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:123
@@ -1143,9 +1611,29 @@ msgstr ""
 msgid "Question could not be updated"
 msgstr ""
 
-#, fuzzy
 msgid "Answers can't be deleted"
-msgstr "Undersøgelse nulstillet"
+msgstr "Besvarelser kan ikke slettes"
+
+# D:\web\xampp\htdocs\stable_plus/admin/database.php:420
+msgid "This question relies on other question's answers and can't be moved above groupId:"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/database.php:421
+# D:\web\xampp\htdocs\stable_plus/admin/database.php:433
+msgid "in position"
+msgstr ""
+
+#, fuzzy
+msgid "See conditions:"
+msgstr "Betingelse"
+
+# D:\web\xampp\htdocs\stable_plus/admin/database.php:432
+msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/database.php:458
+msgid "Question could not be added. You must insert a code in the mandatory field"
+msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:384
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:421
@@ -1157,56 +1645,38 @@ msgstr ""
 msgid "Question could not be deleted"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:460
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:916
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:351
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:492
-msgid "Fix Sort"
+# D:\web\xampp\htdocs\stable_plus/admin/database.php:610
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1355
+msgid "Add new Answer"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:463
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:908
-msgid "Sort Alpha"
+# D:\web\xampp\htdocs\stable_plus/admin/database.php:625
+msgid "Error adding answer: You can't use the same answer code more than once."
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:486
-msgid "Answer could not be added. You must include both a Code and an Answer"
+# D:\web\xampp\htdocs\stable_plus/admin/database.php:635
+# D:\web\xampp\htdocs\stable_plus/admin/database.php:643
+msgid "Failed to insert answer"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:495
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbedit.php:420
-msgid "Answer could not be added. There is already an answer with this code"
+# D:\web\xampp\htdocs\stable_plus/admin/database.php:648
+msgid "Invalid or empty answer code supplied"
 msgstr ""
 
 #, fuzzy
-msgid "Save"
-msgstr "Samme"
+msgid "Save All"
+msgstr "Gem"
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:507
-msgid "Answer could not be updated. You must include both a Code and an Answer"
+# D:\web\xampp\htdocs\stable_plus/admin/database.php:700
+msgid "Failed to update answers"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:524
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbedit.php:573
-msgid "Answer could not be updated. There is already an answer with this code"
+# D:\web\xampp\htdocs\stable_plus/admin/database.php:715
+msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:530
-msgid "Answer could not be updated. You have changed the answer code, but there are conditions to other questions which are dependant upon the old answer code to this question. You must delete these conditions before you can change the code to this answer."
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:540
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:850
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:287
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:485
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:235
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1044
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1148
-msgid "Del"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:548
-msgid "Answer could not be deleted. There are conditions for other questions that rely on this answer. You cannot delete this answer until those conditions are removed"
+# D:\web\xampp\htdocs\stable_plus/admin/database.php:716
+msgid "Duplicate codes found, these entries won't be updated"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:557
@@ -1227,17 +1697,49 @@ msgstr ""
 msgid "Dn"
 msgstr ""
 
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:540
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:850
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:287
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:485
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:235
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1044
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1148
+msgid "Del"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/database.php:748
+msgid "Failed to delete answer"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:802
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1008
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1030
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1041
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1042
+msgid "Default"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/database.php:763
+msgid "Failed to make answer not default"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/database.php:777
+msgid "Failed to make answer default"
+msgstr ""
+
+msgid "Survey could not be updated"
+msgstr "Kunne ikke opdatere spørgeskemaet"
+
+# D:\web\xampp\htdocs\stable_plus/admin/database.php:1031
+msgid "ERROR deleting Survey id"
+msgstr ""
+
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:617
 msgid "Survey could not be created because it did not have a short title"
 msgstr ""
 
-#, fuzzy
 msgid "Survey could not be created"
-msgstr "Undersøgelsen er gennemført"
-
-#, fuzzy
-msgid "Survey could not be updated"
-msgstr "Undersøgelsen er gennemført"
+msgstr "Kunne ikke oprette spørgeskemaet"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/dataentry.php:54
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/dataentry.php:70
@@ -1249,9 +1751,32 @@ msgstr "Undersøgelsen er gennemført"
 msgid "Data Entry"
 msgstr ""
 
-#, fuzzy
 msgid "You have not selected a survey for data-entry."
-msgstr "Der mangler at blive angivet en undersøgelses-nøgle"
+msgstr "Intet spørgeskema angivet til indtastning"
+
+#, fuzzy
+msgid "This is a closed-access survey, you must supply a valid token"
+msgstr "Dette er en lukket undersøgelse og kræver at du har en undersøgelses-nøgle for at deltage."
+
+#, fuzzy
+msgid "The token you have provided is not valid."
+msgstr "Den undersøgelses-nøgle, du har angivet, er ugyldig, eller er allerede brugt."
+
+# D:\web\xampp\htdocs\stable_plus/admin/dataentry.php:127
+msgid "There is already a recorded answer for this token"
+msgstr ""
+
+#, fuzzy
+msgid "Follow the following link to update it"
+msgstr "Klik på nedenstående link for at redigere de individuelle svar:"
+
+# D:\web\xampp\htdocs\stable_plus/admin/dataentry.php:136
+msgid "This surveys uses anonymous answers, you can't update this response"
+msgstr ""
+
+#, fuzzy
+msgid "Try again"
+msgstr "Prøv igen"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/dataentry.php:133
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/dataentry.php:1179
@@ -1259,27 +1784,33 @@ msgstr "Der mangler at blive angivet en undersøgelses-nøgle"
 msgid "Identifier:"
 msgstr ""
 
-#, fuzzy
 msgid "Password:"
-msgstr "Kodeord"
+msgstr "Kodeord:"
 
-#, fuzzy
 msgid "Confirm Password:"
-msgstr "Kodeord"
+msgstr "Bekræft kodeord:"
 
-#, fuzzy
 msgid "Email:"
-msgstr "Din e-mail-adresse"
+msgstr "E-mail:"
+
+# D:\web\xampp\htdocs\stable_plus/admin/dataentry.php:175
+# D:\web\xampp\htdocs\stable_plus/admin/dataentry.php:2252
+msgid "Start Language:"
+msgstr ""
 
 msgid "Your survey responses have been saved succesfully"
 msgstr "Dine svar er blevet gemt."
 
 #, fuzzy
-msgid "An email has been sent with details about your saved survey"
-msgstr "En e-mail er blevet sendt med detaljerne omkring din gemte undersøgelse."
+msgid "A token entry for the saved survey has been created too."
+msgstr "Der er oprettet en nøgle tabel til dette spørgeskema"
 
-msgid "An error occurred and your survey responses were not saved."
-msgstr "Der skete en fejl, og dine svar blev ikke gemt."
+#, fuzzy
+msgid "You, someone using your email address, or the administrator has saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
+msgstr "Du, eller en der benytter din e-mail-adresse, har gemt en midlertidig besvarelse. De følgende oplysninger kan benyttes til at vende tilbage til spørgeskemaet, og genoptage besvarelsen."
+
+msgid "An email has been sent with details about your saved survey"
+msgstr "En e-mail er blevet sendt med detaljerne omkring dit gemte spørgeskema."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/dataentry.php:358
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/dataentry.php:1298
@@ -1308,14 +1839,8 @@ msgstr ""
 msgid "Add Another Record"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/dataentry.php:374
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/dataentry.php:1300
-msgid "View This Record"
-msgstr ""
-
-#, fuzzy
 msgid "Browse Saved Responses"
-msgstr "Nulstil svar"
+msgstr "Gennemse gemte besvarelser"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/dataentry.php:554
 msgid "Editing Response"
@@ -1332,9 +1857,14 @@ msgstr ""
 msgid "Update Entry"
 msgstr ""
 
+# D:\web\xampp\htdocs\stable_plus/admin/dataentry.php:1259
+# D:\web\xampp\htdocs\stable_plus/admin/dataentry.php:2234
+msgid "Finalize response submission"
+msgstr ""
+
 #, fuzzy
-msgid "Save as a partially completed survey"
-msgstr "Du har allerede gennemført denne undersøgelse."
+msgid "Save for further completion by survey user"
+msgstr "Tak for din besvarelse."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/dataentry.php:1299
 msgid "Record has been updated."
@@ -1348,9 +1878,8 @@ msgstr ""
 msgid "Datestamp"
 msgstr ""
 
-#, fuzzy
 msgid "IP-Address"
-msgstr "E-mail-adresse"
+msgstr "IP adresse"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/dataentry.php:1423
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/dataentry.php:1498
@@ -1362,125 +1891,70 @@ msgstr ""
 msgid "to question {QUESTION}, you answered {ANSWER}"
 msgstr ""
 
+#, fuzzy
+msgid "No Answer"
+msgstr "Intet svar"
+
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/dataentry.php:1528
 msgid "Only answer this if the following conditions are met:"
 msgstr ""
 
-#, fuzzy
 msgid "Help about this question"
-msgstr "Svar kun på dette spørgsmål"
+msgstr "Hjælp til dette spørgsmål"
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/dataentry.php:1663
-msgid "Comment"
-msgstr ""
-
-#, fuzzy
 msgid "This survey is not yet active. Your response cannot be saved"
-msgstr "Denne undersøgelse har endnu ingen spørgsmål og kan derfor ikke besvares."
+msgstr "Dette spørgeskema er ikke aktiveret, derfor kan dine besvarelser ikke gemmes."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/dataentry.php:2133
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:101
 msgid "The survey you selected does not exist"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:52
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:301
-msgid "Data Consistency Check<br /><font size='1'>If errors are showing up you might have to execute this script repeatedly. </font>"
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:495
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbedit.php:420
+msgid "Answer could not be added. There is already an answer with this code"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:89
-msgid "The following conditions should be deleted"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:97
-msgid "All conditions meet consistency standards"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:113
-msgid "The following question attributes should be deleted"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:119
-msgid "All question_attributes meet consistency standards"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:149
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:159
-msgid "The following assessments should be deleted"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:155
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:165
-msgid "All assessments meet consistency standards"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:184
-msgid "The following answers should be deleted"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:190
-msgid "All answers meet consistency standards"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:213
-msgid "The following questions should be deleted"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:219
-msgid "All questions meet consistency standards"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:234
-msgid "The following groups should be deleted"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:240
-msgid "All groups meet consistency standards"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:244
-msgid "No database action required"
-msgstr ""
-
-#, fuzzy
 msgid "You have not selected a survey to delete"
-msgstr "Der mangler at blive angivet en undersøgelses-nøgle"
+msgstr "Du har ikke angivet hvilket spørgeskema du ønsker at slette"
 
-#, fuzzy
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:524
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbedit.php:573
+msgid "Answer could not be updated. There is already an answer with this code"
+msgstr ""
+
 msgid "Deactivate Survey"
-msgstr "Nulstil og start forfra"
+msgstr "Deaktiver undersøgelse"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/deactivate.php:53
 msgid "In an active survey, a table is created to store all the data-entry records."
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/deactivate.php:54
-msgid "When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
+# D:\web\xampp\htdocs\stable_plus/admin/deactivate.php:31
+msgid "When you deactivate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/deactivate.php:55
-msgid "De-activated survey data can only be accessed by system administrators using a MySQL data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
+# D:\web\xampp\htdocs\stable_plus/admin/deactivate.php:32
+msgid "Deactivated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
+msgstr ""
+
+msgid "Your responses table will be renamed to:"
+msgstr "Tabellen med dine besvarelser vil blive omdøbt til:"
+
+# D:\web\xampp\htdocs\stable_plus/admin/deactivate.php:34
+msgid "Also you should export your responses before deactivating."
 msgstr ""
 
 #, fuzzy
-msgid "Your responses table will be renamed to:"
-msgstr "Dine svar er blevet gemt."
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/deactivate.php:57
-msgid "You should export your responses before de-activating. Click \"Cancel\" to return to the main admin screen without de-activating this survey."
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/deactivate.php:63
-msgid "De-Activate"
-msgstr ""
+msgid "Survey Has Been Deactivated"
+msgstr "Spørgeskemaet er blevet slettet"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/deactivate.php:116
 msgid "The responses table has been renamed to: "
 msgstr ""
 
-#, fuzzy
 msgid "The responses to this survey are no longer available using LimeSurvey."
-msgstr "Denne undersøgelse er ikke længere aktiv og du kan derfor ikke deltage."
+msgstr "Besvarelserne til dette spørgeskema er ikke længere tilgængelige via LimeSurvey."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/deactivate.php:118
 msgid "You should note the name of this table in case you need to access this information later."
@@ -1490,13 +1964,11 @@ msgstr ""
 msgid "The tokens table associated with this survey has been renamed to: "
 msgstr ""
 
-#, fuzzy
 msgid "Delete Survey"
-msgstr "Tilbage til undersøgelsen"
+msgstr "Slet spørgeskema"
 
-#, fuzzy
 msgid "You are about to delete this survey"
-msgstr "Du har allerede gennemført denne undersøgelse."
+msgstr "Du er ved at slette dette spørgeskema"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/deletesurvey.php:69
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:419
@@ -1517,13 +1989,19 @@ msgstr ""
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
 msgstr ""
 
-#, fuzzy
 msgid "This survey has been deleted."
-msgstr "Denne undersøgelse er ikke længere aktiv og du kan derfor ikke deltage."
+msgstr "Spørgeskemaet er blevet slettet"
 
 #, fuzzy
+msgid "Export database"
+msgstr "Eksporter dette spørgeskema"
+
+# D:\web\xampp\htdocs\stable_plus/admin/dumpdb.php:54
+msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
+msgstr ""
+
 msgid "Export Question"
-msgstr "til spørgsmål"
+msgstr "Eksporter spørgsmål"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/dumplabel.php:56
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:232
@@ -1549,20 +2027,25 @@ msgid "No SID has been provided. Cannot dump survey"
 msgstr ""
 
 #, fuzzy
+msgid "Export Results"
+msgstr "Eksporter besvarelser"
+
 msgid "Export Responses"
-msgstr "Nulstil svar"
+msgstr "Eksporter besvarelser"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/export.php:116
 msgid "Filtered from Statistics Script"
 msgstr ""
 
-#, fuzzy
 msgid "Single Response"
-msgstr "Nulstil svar"
+msgstr "Enkelt svar"
 
 #, fuzzy
+msgid "Columns"
+msgstr "Antal"
+
 msgid "Questions"
-msgstr "til spørgsmål"
+msgstr "Spørgsmål"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/export.php:125
 msgid "Abbreviated headings"
@@ -1576,13 +2059,16 @@ msgstr ""
 msgid "Question Codes"
 msgstr ""
 
-#, fuzzy
-msgid "Answers"
-msgstr "Undersøgelse nulstillet"
+# D:\web\xampp\htdocs\stable_plus/admin/exportresults.php:138
+# D:\web\xampp\htdocs\stable_plus/admin/vvexport.php:47
+msgid "Filter incomplete answers"
+msgstr ""
 
-#, fuzzy
+msgid "Answers"
+msgstr "Besvarelser"
+
 msgid "Answer Codes"
-msgstr "Undersøgelse nulstillet"
+msgstr "Besvarelse koder"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/export.php:143
 msgid "Full Answers"
@@ -1592,16 +2078,16 @@ msgstr ""
 msgid "Format"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/export.php:152
-msgid "Microsoft Word"
+# D:\web\xampp\htdocs\stable_plus/admin/exportresults.php:162
+msgid "Microsoft Word (Latin charset)"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/export.php:155
-msgid "Microsoft Excel"
+# D:\web\xampp\htdocs\stable_plus/admin/exportresults.php:165
+msgid "Microsoft Excel (Latin charset)"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/export.php:158
-msgid "CSV Comma Delimited"
+# D:\web\xampp\htdocs\stable_plus/admin/exportresults.php:168
+msgid "CSV File (UTF-8 charset - use this for non-latin languages)"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/export.php:165
@@ -1612,8 +2098,8 @@ msgstr ""
 msgid "Column Control"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/export.php:207
-msgid "Choose columns"
+# D:\web\xampp\htdocs\stable_plus/admin/exportresults.php:215
+msgid "Choose Columns"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/export.php:215
@@ -1639,15 +2125,8 @@ msgstr ""
 msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
 msgstr ""
 
-msgid "First Name"
-msgstr "Fornavn"
-
-msgid "Last Name"
-msgstr "Efternavn"
-
-#, fuzzy
 msgid "Email"
-msgstr "Din e-mail-adresse"
+msgstr "E-mail"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/export.php:286
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/export.php:442
@@ -1673,21 +2152,178 @@ msgstr ""
 msgid "Attribute 2"
 msgstr ""
 
-msgid "Email Address"
-msgstr "E-mail-adresse"
+#, fuzzy
+msgid "Time Submitted"
+msgstr "Undersøgelsen er gemt"
+
+# D:\web\xampp\htdocs\stable_plus/admin/exportresults.php:769
+msgid "NEW RECORD"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/exportresults.php:824
+# D:\web\xampp\htdocs\stable_plus/admin/statistics.php:128
+msgid "ID"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/exportresults.php:839
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:570
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1223
+msgid "Language"
+msgstr ""
+
+msgid "N/A"
+msgstr "Ikke tilgængelig"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1508
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1514
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:621
+msgid "Add Group"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/grouphandling.php:36
+# D:\web\xampp\htdocs\stable_plus/admin/grouphandling.php:108
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1247
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:2137
+# D:\web\xampp\htdocs\stable_plus/admin/questionhandling.php:148
+# D:\web\xampp\htdocs\stable_plus/admin/questionhandling.php:318
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:751
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:928
+msgid "Base Language"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:254
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:225
+msgid "Title"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1066
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1511
+msgid "Required"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:445
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:618
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1512
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1545
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1571
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1927
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:346
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:373
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:487
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:566
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:625
+msgid "Description:"
+msgstr ""
 
 #, fuzzy
-msgid "N/A"
-msgstr "Ved ikke"
+msgid "Please select a file to import!"
+msgstr "Afkryds som minimum en mulighed"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1522
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1526
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/importgroup.php:43
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1870
+msgid "Import Group"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/grouphandling.php:57
+# D:\web\xampp\htdocs\stable_plus/admin/labels.php:187
+msgid "Select CSV File:"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/grouphandling.php:102
+msgid "Edit Group"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1547
+msgid "Update Group"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:241
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:392
+msgid "Survey"
+msgstr ""
+
+#, fuzzy
+msgid "Date Created"
+msgstr "Gemt den"
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:29
+msgid "Access"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:30
+msgid "Answer Privacy"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:31
+msgid "Status"
+msgstr ""
+
+#, fuzzy
+msgid "Responses"
+msgstr "Slet svar"
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:44
+msgid "Anonymous"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:46
+msgid "Not Anonymous"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:51
+msgid "Closed-access"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:55
+msgid "Open-access"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:62
+msgid "Expired"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:64
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:131
+msgid "Active"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:75
+msgid "Inactive"
+msgstr ""
+
+#, fuzzy
+msgid "This survey is active but expired."
+msgstr "Dette spørgeskema er aktivt"
+
+#, fuzzy
+msgid "This survey is active but expired"
+msgstr "Dette spørgeskema er aktivt"
+
+msgid "De-activate this Survey"
+msgstr "Deaktiver dette spørgeskema"
+
+msgid "This survey is currently active"
+msgstr "Dette spørgeskema er aktivt"
+
+msgid "Activate this Survey"
+msgstr "Aktiver dette spørgeskema"
+
+msgid "This survey is not currently active"
+msgstr "Dette spørgeskema er ikke aktivt"
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:145
+msgid "No Surveys available - please create one."
+msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:81
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1311
 msgid "LimeSurvey System Summary"
 msgstr ""
 
-#, fuzzy
 msgid "Database Name"
-msgstr "Efternavn"
+msgstr "Database navn"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:93
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1321
@@ -1724,43 +2360,35 @@ msgstr ""
 msgid "De-activated Token Tables"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:160
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1851
-msgid "Check LimeSurvey Data Integrity"
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:271
+msgid "Show PHPInfo"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:241
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:392
-msgid "Survey"
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:325
+msgid "Survey cannot be activated. Either you have no permission or there are no questions."
 msgstr ""
 
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:224
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:227
 #, fuzzy
-msgid "This survey is not currently active"
-msgstr "Denne undersøgelse er ikke længere aktiv og du kan derfor ikke deltage."
+msgid "Survey Security Settings"
+msgstr "Skift sikkerheds indstillinger"
 
 #, fuzzy
-msgid "Activate this Survey"
-msgstr "Nulstil og start forfra"
+msgid "Test This Survey"
+msgstr "Luk spørgeskemaet"
 
 #, fuzzy
-msgid "This survey is currently active"
-msgstr "Denne undersøgelse er ikke længere aktiv og du kan derfor ikke deltage."
+msgid "Execute This Survey"
+msgstr "Eksporter dette spørgeskema"
 
 #, fuzzy
-msgid "De-activate this Survey"
-msgstr "Nulstil og start forfra"
+msgid "Please select a language:"
+msgstr "Indtast venligst en dato:"
 
 #, fuzzy
-msgid "Cannot Activate this Survey"
-msgstr "Nulstil og start forfra"
-
-#, fuzzy
-msgid "Do Survey"
-msgstr "Tilbage til undersøgelsen"
-
-#, fuzzy
-msgid "Dataentry Screen for Survey"
-msgstr "Tilbage til undersøgelsen"
+msgid "This survey is not active, data entry is not allowed"
+msgstr "Denne undersøgelse er nu aktiv og besvarelser kan gemmes."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:287
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:290
@@ -1769,36 +2397,28 @@ msgstr "Tilbage til undersøgelsen"
 msgid "Printable Version of Survey"
 msgstr ""
 
-#, fuzzy
 msgid "Edit Current Survey"
-msgstr "Nulstil og forlad undersøgelsen"
+msgstr "Rediger spørgeskema"
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:297
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:300
-msgid "Order the groups in that Survey"
-msgstr ""
-
-#, fuzzy
 msgid "Delete Current Survey"
-msgstr "Tilbage til undersøgelsen"
+msgstr "Slet spørgeskema"
 
-#, fuzzy
-msgid "Export this Survey"
-msgstr "Nulstil og start forfra"
-
-#, fuzzy
-msgid "Set Assessment Rules"
-msgstr "Din evaluering"
-
-#, fuzzy
-msgid "Browse Responses for this Survey"
-msgstr "Nulstil og start forfra"
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:336
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:339
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1905
-msgid "View Saved but not submitted Responses"
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:500
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:501
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:2249
+msgid "Change Group Order"
 msgstr ""
+
+#, fuzzy
+msgid "Export Current Survey"
+msgstr "Rediger spørgeskema"
+
+msgid "Set Assessment Rules"
+msgstr "Sette vurdering regler"
+
+#, fuzzy
+msgid "Browse Responses For This Survey"
+msgstr "Gennemse besvarelser for dette spørgeskema"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:343
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:346
@@ -1806,17 +2426,14 @@ msgstr ""
 msgid "Activate/Edit Tokens for this Survey"
 msgstr ""
 
-#, fuzzy
 msgid "Close this Survey"
-msgstr "Nulstil og start forfra"
+msgstr "Luk spørgeskemaet"
 
-#, fuzzy
 msgid "Show Details of this Survey"
-msgstr "Nulstil og start forfra"
+msgstr "Vis detajler for spørgeskemaet"
 
-#, fuzzy
 msgid "Hide Details of this Survey"
-msgstr "Nulstil og start forfra"
+msgstr "Skjul detajler for spørgeskemaet"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:374
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:377
@@ -1830,25 +2447,6 @@ msgstr ""
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importsurvey.php:641
 msgid "Groups"
 msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:402
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:614
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1510
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1543
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1569
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1925
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:344
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:373
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:392
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:486
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:565
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:624
-msgid "Title:"
-msgstr ""
-
-#, fuzzy
-msgid "This survey is anonymous."
-msgstr "Denne undersøgelse er ikke længere aktiv og du kan derfor ikke deltage."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:408
 msgid "This survey is NOT anonymous."
@@ -1874,8 +2472,8 @@ msgstr ""
 msgid "IP Addresses will be logged"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:414
-msgid "Referer-URL"
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:626
+msgid "Referer-URL will be saved"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:415
@@ -1890,9 +2488,13 @@ msgstr ""
 msgid "Participants can save partially finished surveys"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:430
-msgid "Regenerate Question Numbers:"
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:645
+msgid "Regenerate Question Codes:"
 msgstr ""
+
+#, fuzzy
+msgid "Are you sure you want regenerate the question codes?"
+msgstr "Er du sikker på at du vil slette alle unikke nøgler id'er?"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:433
 msgid "Straight"
@@ -1902,24 +2504,20 @@ msgstr ""
 msgid "By Group"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:440
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:345
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:373
-msgid "Survey URL:"
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:289
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:122
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/importsurvey.php:640
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1342
+#, fuzzy
+msgid "Survey URL"
+msgstr "Spørgeskemaer"
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:661
+msgid "Survey URL For Language:"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:445
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:618
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1512
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1545
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1571
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1927
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:346
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:373
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:487
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:566
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:625
-msgid "Description:"
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:661
+msgid "Flag"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:450
@@ -1969,44 +2567,35 @@ msgstr ""
 msgid "Template:"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:474
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1802
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:2047
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:353
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:374
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:498
-msgid "Language:"
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:697
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:2018
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:2509
+msgid "Base Language:"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:479
-msgid "Exit Link:"
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:706
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:2023
+msgid "Additional Languages"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:485
-msgid "Status:"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:487
-msgid "Number of groups in survey:"
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:722
+msgid "Exit Link"
 msgstr ""
 
 #, fuzzy
-msgid "Number of questions in survey:"
-msgstr "Der er ét spørgsmål i denne undersøgelse."
+msgid "Number of questions/groups"
+msgstr "Antal spørgsmål i dette spørgeskema:"
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:491
-msgid "Survey is not currently active."
-msgstr ""
+#, fuzzy
+msgid "Survey currently active"
+msgstr "Dette spørgeskema er aktivt"
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:495
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1334
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1370
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1396
-msgid "Survey is currently active."
-msgstr ""
+#, fuzzy
+msgid "Survey table name"
+msgstr "Undersøgelsen er gemt"
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:496
-msgid "Survey table name is:"
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:746
+msgid "Hints"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:500
@@ -2017,9 +2606,8 @@ msgstr ""
 msgid "You need to add groups"
 msgstr ""
 
-#, fuzzy
 msgid "You need to add questions"
-msgstr "til spørgsmål"
+msgstr "Du skal tilføje spørgsmål"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:538
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:542
@@ -2028,21 +2616,30 @@ msgstr "til spørgsmål"
 msgid "Edit Current Group"
 msgstr ""
 
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:548
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:604
+msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
+msgstr ""
+
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:547
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:550
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1912
 msgid "Delete Current Group"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:548
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:604
-msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:824
+msgid "Impossible to delete this group because there is at least one question having a condition on its content"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:557
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:561
-msgid "Reorder the questions of this group"
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:826
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:986
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1021
+msgid "Disabled"
 msgstr ""
+
+#, fuzzy
+msgid "Change Question Order"
+msgstr "Opdater spørgsmål"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:563
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:567
@@ -2050,9 +2647,8 @@ msgstr ""
 msgid "Export Current Group"
 msgstr ""
 
-#, fuzzy
 msgid "Close this Group"
-msgstr "Luk dette vindue"
+msgstr "Luk denn gruppe"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:582
 msgid "Show Details of this Group"
@@ -2069,11 +2665,20 @@ msgstr ""
 msgid "Add New Question to Group"
 msgstr ""
 
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:913
+msgid "Questions with conditions to this group"
+msgstr ""
+
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:648
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:651
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:710
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1920
 msgid "Edit Current Question"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:657
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:595
+msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:655
@@ -2082,20 +2687,22 @@ msgstr ""
 msgid "Delete Current Question"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:657
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:595
-msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:984
+msgid "Impossible to delete this question because  there is at least one question having a condition on it"
 msgstr ""
 
-#, fuzzy
 msgid "Export this Question"
-msgstr "Svar kun på dette spørgsmål"
+msgstr "Eksporter dette spørgsmål"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:669
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:672
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:716
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1925
 msgid "Copy Current Question"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1021
+msgid "Copy question is not possible in an Active survey"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:675
@@ -2105,12 +2712,14 @@ msgid "Set Conditions for this Question"
 msgstr ""
 
 #, fuzzy
-msgid "Edit/Add Answers for this Question"
-msgstr "Svar kun på dette spørgsmål"
+msgid "Preview This Question"
+msgstr "Luk dette spørgsmål"
 
-#, fuzzy
+msgid "Edit/Add Answers for this Question"
+msgstr "Ret/Tilføj svarmuligheder til dette spørgsmål"
+
 msgid "Close this Question"
-msgstr "Svar kun på dette spørgsmål"
+msgstr "Luk dette spørgsmål"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:694
 msgid "Show Details of this Question"
@@ -2130,17 +2739,14 @@ msgstr ""
 msgid "Code:"
 msgstr ""
 
-#, fuzzy
 msgid "Mandatory Question"
-msgstr "til spørgsmål"
+msgstr "Obligatorisk besvarelse"
 
-#, fuzzy
 msgid "Optional Question"
-msgstr "til spørgsmål"
+msgstr "Valgfri besvarelse"
 
-#, fuzzy
 msgid "Question:"
-msgstr "til spørgsmål"
+msgstr "Spørgsmål:"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:714
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1072
@@ -2168,21 +2774,30 @@ msgstr ""
 msgid "Type:"
 msgstr ""
 
-#, fuzzy
 msgid "You need to add answers to this question"
-msgstr "Svar kun på dette spørgsmål"
+msgstr "Du skal besvare dette spørgsmål"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:747
 msgid "You need to choose a Label Set for this question"
 msgstr ""
 
-#, fuzzy
 msgid "Other:"
-msgstr "Andet"
+msgstr "Andet:"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1118
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1246
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1402
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:739
+msgid "Mandatory:"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1179
+msgid "Other questions having conditions on this question:"
+msgstr ""
 
 #, fuzzy
-msgid "Upload completed"
-msgstr "gennemført"
+msgid "Edit Answers"
+msgstr "Besvarelser"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:801
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:251
@@ -2198,14 +2813,6 @@ msgid "Code"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:802
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1008
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1030
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1041
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1042
-msgid "Default"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:802
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1001
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:257
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:226
@@ -2216,20 +2823,70 @@ msgstr ""
 msgid "Action"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:803
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1030
-msgid "Move"
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:260
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:227
+msgid "Order"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:973
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:996
-msgid "User Control"
+#, fuzzy
+msgid "New Answer"
+msgstr "Svar"
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1373
+msgid "You cannot add answers or edit answer codes for this question type because the survey is active."
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:977
-msgid ""
-"You have not yet initialised security settings for your survey system and subsequently there are no restrictions on access.</p>\n"
-"If you click on the 'initialise security' button below, standard APACHE security settings will be added to the administration directory of this script. You will then need to use the default access username and password to access the administration and data entry scripts."
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1039
+msgid "Add User"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1410
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:851
+msgid "User added."
+msgstr ""
+
+#, fuzzy
+msgid "Set Survey Rights"
+msgstr "Detaljerne om dit gemte spørgeskema"
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1421
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1427
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1481
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:156
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:160
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:216
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:856
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:862
+msgid "Failed to add User."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1421
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:856
+msgid "Username already exists."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1427
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1481
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:862
+msgid "No Username selected."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1440
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1751
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:481
+msgid "Add User Group"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1463
+msgid "User Group added."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1475
+msgid "Failed to add User Group."
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/usercontrol.php:134
+msgid "Deleting User"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:978
@@ -2238,138 +2895,56 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:979
-msgid "It is highly recommended that once your security system has been initialised you change this default password."
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1508
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:279
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:816
+msgid "Could not delete user. User was not supplied."
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:984
-msgid "Initialise Security"
+#, fuzzy
+msgid "Edit Survey Properties"
+msgstr "Detaljerne om dit gemte spørgeskema"
+
+#, fuzzy
+msgid "Define Questions"
+msgstr "Spørgsmål"
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1538
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1603
+# D:\web\xampp\htdocs\stable_plus/admin/statistics.php:884
+msgid "Export"
 msgstr ""
+
+#, fuzzy
+msgid "Edit Survey Property"
+msgstr "Rediger spørgeskema"
+
+#, fuzzy
+msgid "Browse Response"
+msgstr "Gennemse besvarelser"
+
+#, fuzzy
+msgid "Survey Security"
+msgstr "Undersøgelsen er gemt"
+
+#, fuzzy
+msgid "User Group"
+msgstr "Luk denn gruppe"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:998
 msgid "User"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1000
-msgid "Security"
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1793
+msgid "Update survey rights successful."
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1009
-msgid "No users exist in your table. We recommend you 'turn off' security. You can then 'turn it on' again."
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1797
+msgid "Failed to update survey rights!"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1039
-msgid "Add User"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1047
-msgid "Turn Off Security"
-msgstr ""
-
-#, fuzzy
-msgid "Add Question"
-msgstr "til spørgsmål"
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1066
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1511
-msgid "Required"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1091
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1205
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1347
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:740
-msgid "Label Set:"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1118
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1246
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1402
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:739
-msgid "Mandatory:"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1131
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1430
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/importgroup.php:518
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/importquestion.php:445
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/importsurvey.php:646
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1121
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1934
-msgid "Question Attributes:"
-msgstr ""
-
-#, fuzzy
-msgid "Import Question"
-msgstr "til spørgsmål"
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1154
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1524
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:2087
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:183
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:432
-msgid "Select SQL File:"
-msgstr ""
-
-#, fuzzy
-msgid "Copy Question"
-msgstr "til spørgsmål"
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1175
-msgid "Note: You MUST enter a new question code"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1226
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1376
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:744
-msgid "Group:"
-msgstr ""
-
-#, fuzzy
-msgid "Copy Answers?"
-msgstr "Intet svar"
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1280
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:749
-msgid "Copy Attributes?"
-msgstr ""
-
-#, fuzzy
-msgid "Edit Question"
-msgstr "til spørgsmål"
-
-#, fuzzy
-msgid "Update Question"
-msgstr "til spørgsmål"
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1489
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1871
-msgid "Save Order"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1508
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1514
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:621
-msgid "Add Group"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1512
-msgid "Optional"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1522
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1526
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/importgroup.php:43
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1870
-msgid "Import Group"
-msgstr ""
-
-#, fuzzy
-msgid "Edit Group for Survey ID"
-msgstr "Indsend dit besvarelse:"
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1547
-msgid "Update Group"
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1824
+msgid "Edit Survey - Step 1 of 2"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1577
@@ -2386,9 +2961,8 @@ msgstr ""
 msgid "Format:"
 msgstr ""
 
-#, fuzzy
 msgid "Question by Question"
-msgstr "til spørgsmål"
+msgstr "Spørgsmål efter spørgsmål"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1588
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1940
@@ -2427,19 +3001,120 @@ msgid "Show [<< Prev] button"
 msgstr ""
 
 #, fuzzy
-msgid "Notification:"
-msgstr "Bekræftelse"
+msgid "Admin Notification:"
+msgstr "Påmindelse"
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1646
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1994
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:357
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:374
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:502
-msgid "Anonymous?"
+#, fuzzy
+msgid "Anonymous answers?"
+msgstr "Kopier besvarelser?"
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1905
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:2450
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:250
+msgid "If you set a survey to anonymous, answers to timestamped and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
 msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1915
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1952
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1976
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:2000
+msgid "Cannot be changed"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1707
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:2017
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:505
+msgid "Allow public registration?"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1726
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:2028
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:368
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:376
+msgid "Token Attribute Names:"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1731
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:2031
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:358
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:374
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:503
+msgid "Date Stamp?"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1950
+msgid "Responses will not be date stamped."
+msgstr ""
+
+#, fuzzy
+msgid "Responses will be date stamped."
+msgstr "Tabellen med dine besvarelser vil blive omdøbt til:"
+
+#, fuzzy
+msgid "Save IP Address?"
+msgstr "IP adresse"
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1974
+msgid "Responses will not have the IP address logged."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1975
+msgid "Responses will have the IP address logged"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1993
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:2503
+msgid "Save Referring URL?"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1998
+msgid "Responses will not have their referring URL logged."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:1999
+msgid "Responses will have their referring URL logged."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:2042
+# D:\web\xampp\htdocs\stable_plus/admin/labels.php:142
+msgid "Remove"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:2057
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:2522
+msgid "Expires?"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1838
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:2065
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:351
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:374
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:494
+msgid "End URL:"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1842
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:2073
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:352
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:374
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:496
+msgid "Automatically load URL when survey complete?"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:2077
+msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
+msgstr ""
+
+#, fuzzy
+msgid "Save and Continue"
+msgstr "Fortsæt"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1672
 msgid "This will replace the existing text. Continue?"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:2127
+msgid "Edit Survey - Step 2 of 2"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1677
@@ -2549,23 +3224,14 @@ msgid ""
 "{SURVEYURL}"
 msgstr ""
 
-#, fuzzy
 msgid "Confirmation Email Subject"
-msgstr "Bekræftelse"
+msgstr "Bekræftelses e-mail emne"
 
-#, fuzzy
 msgid "Confirmation of completed survey"
-msgstr "Fax venligst den udfyldte besvarelse til:"
+msgstr "Bekræftelses af gennemført spørgeskema"
 
-#, fuzzy
 msgid "Confirmation Email"
-msgstr "Bekræftelse"
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1707
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:2017
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:505
-msgid "Allow public registration?"
-msgstr ""
+msgstr "Bekræftelses e-mail"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1716
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:2022
@@ -2575,9 +3241,8 @@ msgstr ""
 msgid "Public registration Email Subject:"
 msgstr ""
 
-#, fuzzy
 msgid "Survey Registration Confirmation"
-msgstr "{SURVEYNAME} Registreringsbekræftelse"
+msgstr "Registering af spørgeskemaet gennemført"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1721
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:2025
@@ -2602,54 +3267,30 @@ msgid ""
 "If you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1726
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:2028
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:368
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:376
-msgid "Token Attribute Names:"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1731
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:2031
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:358
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:374
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:503
-msgid "Date Stamp?"
-msgstr ""
-
-#, fuzzy
-msgid "IP Address"
-msgstr "E-mail-adresse"
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1779
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:2042
-msgid "Referring URL"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1838
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:2065
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:351
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:374
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:494
-msgid "End URL:"
-msgstr ""
-
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1840
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:2069
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:495
 msgid "URL Description:"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1842
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:2073
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:352
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:374
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:496
-msgid "Automatically load URL when survey complete?"
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:2258
+msgid "Current survey has questions with conditions outside their own group"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1852
-msgid "Update survey"
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:2258
+msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:2258
+msgid "The following groups are concerned"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:2263
+msgid "depends on group"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:2263
+msgid "see the marked conditions on"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1902
@@ -2669,12 +3310,30 @@ msgid "Error on file transfer. You must select a CSV file"
 msgstr ""
 
 #, fuzzy
+msgid "Error: You have to enter a title for this survey."
+msgstr "Der er oprettet en nøgle tabel til dette spørgeskema"
+
 msgid "Create Survey"
-msgstr "Nulstil og start forfra"
+msgstr "Opret spørgeskema"
 
 #, fuzzy
+msgid "(This field is mandatory.)"
+msgstr "Dette spørgsmål er obligatorisk"
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:2520
+msgid "This setting cannot be changed later!"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:2528
+msgid "Date Format"
+msgstr ""
+
 msgid "Import Survey"
-msgstr "Indsend dit besvarelse:"
+msgstr "Import spørgeskema"
+
+# D:\web\xampp\htdocs\stable_plus/admin/html.php:2551
+msgid "Select CSV/SQL File:"
+msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:2184
 msgid "You need to upload the file"
@@ -2708,13 +3367,14 @@ msgstr ""
 msgid "Select the field number you would like to use for your answers:"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/importgroup.php:51
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/importlabel.php:51
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/importquestion.php:52
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/importsurvey.php:53
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/templates.php:120
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/vvimport.php:103
-msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder."
+# D:\web\xampp\htdocs\stable_plus/admin/http_importsurvey.php:31
+# D:\web\xampp\htdocs\stable_plus/admin/importgroup.php:29
+# D:\web\xampp\htdocs\stable_plus/admin/importlabel.php:29
+# D:\web\xampp\htdocs\stable_plus/admin/importquestion.php:30
+# D:\web\xampp\htdocs\stable_plus/admin/templates.php:131
+# D:\web\xampp\htdocs\stable_plus/admin/vvimport.php:71
+#, php-format
+msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importgroup.php:61
@@ -2733,17 +3393,40 @@ msgstr ""
 msgid "Reading file.."
 msgstr ""
 
+# D:\web\xampp\htdocs\stable_plus/admin/importgroup.php:39
+msgid "Reading file..."
+msgstr ""
+
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importgroup.php:75
 msgid "This file is not a LimeSurvey group file. Import failed."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/importgroup.php:231
+msgid "You can't import a group which doesn't support the current survey's base language."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/importgroup.php:247
+msgid "You can't import a question which doesn't support the current survey's base language."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/importgroup.php:264
+msgid "You can't import label sets which don't support the current survey's base language."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/importgroup.php:599
+msgid "Import partially successful."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/importgroup.php:600
+msgid "The following languages in this group were not imported since the survey does not contain such a language: "
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importgroup.php:500
 msgid "Group Import Summary"
 msgstr ""
 
-#, fuzzy
 msgid "Conditions"
-msgstr "Bekræftelse"
+msgstr "Betingelse"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importgroup.php:513
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importsurvey.php:645
@@ -2758,9 +3441,19 @@ msgstr ""
 msgid "Labels"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/importgroup.php:521
-msgid "Import of Group is completed."
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1131
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1430
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/importgroup.php:518
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/importquestion.php:445
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/importsurvey.php:646
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1121
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1934
+msgid "Question Attributes:"
 msgstr ""
+
+#, fuzzy
+msgid "Import of group is completed."
+msgstr "Import af spørgeskema er gennemført."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importlabel.php:43
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:178
@@ -2768,9 +3461,8 @@ msgstr ""
 msgid "Import Label Set"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/importlabel.php:78
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/importquestion.php:95
-msgid "This file is not a LimeSurvey question file. Import failed."
+# D:\web\xampp\htdocs\stable_plus/admin/importlabel.php:53
+msgid "This file is not a LimeSurvey label set file. Import failed."
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importlabel.php:79
@@ -2782,32 +3474,54 @@ msgstr ""
 msgid "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead."
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/importlabel.php:217
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/importquestion.php:433
-msgid "Question Import Summary"
+# D:\web\xampp\htdocs\stable_plus/admin/importlabel.php:190
+msgid "Label Set Import Summary"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/importlabel.php:218
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/importquestion.php:440
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:102
-msgid "Labelsets"
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:266
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:268
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:730
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1854
+#, fuzzy
+msgid "Label Sets"
+msgstr "Ret/Tilføj etiketter"
+
+# D:\web\xampp\htdocs\stable_plus/admin/importlabel.php:193
+# D:\web\xampp\htdocs\stable_plus/admin/importsurvey.php:1015
+# D:\web\xampp\htdocs\stable_plus/admin/importsurvey.php:1038
+# D:\web\xampp\htdocs\stable_plus/admin/labels.php:132
+msgid "Languages"
 msgstr ""
 
 #, fuzzy
-msgid "Import of Survey is completed."
-msgstr "Undersøgelsen er gennemført"
+msgid "Import of Label Set is completed."
+msgstr "Import af spørgeskema er gennemført."
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:96
+msgid "Quick Statistics"
+msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importoldresponses.php:58
 msgid "Import responses from an old (deactivated) survey table into an active survey"
 msgstr ""
 
-#, fuzzy
 msgid "Target Survey ID"
-msgstr "Detaljerne om din gemte undersøgelse"
+msgstr "Destionations spørgeskema ID"
 
-#, fuzzy
+# D:\web\xampp\htdocs\stable_plus/admin/importoldresponses.php:50
+msgid "Source table"
+msgstr ""
+
 msgid "Import Responses"
-msgstr "Nulstil svar"
+msgstr "Importer besvarelser"
+
+# D:\web\xampp\htdocs\stable_plus/admin/importoldresponses.php:60
+# D:\web\xampp\htdocs\stable_plus/admin/labels.php:232
+msgid "Are you sure?"
+msgstr ""
+
+msgid "Import Question"
+msgstr "Import spørgsmål"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importquestion.php:76
 msgid "No SID (Survey) has been provided. Cannot import question."
@@ -2816,6 +3530,27 @@ msgstr ""
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importquestion.php:85
 msgid "No GID (Group) has been provided. Cannot import question"
 msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/importlabel.php:78
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/importquestion.php:95
+msgid "This file is not a LimeSurvey question file. Import failed."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/importquestion.php:194
+msgid "You can't import a question which doesn't support the current survey's base language"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/importquestion.php:230
+msgid "You can't import label sets which don't support the current survey's base language"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/importlabel.php:217
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/importquestion.php:433
+msgid "Question Import Summary"
+msgstr ""
+
+msgid "Import of Survey is completed."
+msgstr "Import af spørgeskema er gennemført."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importsurvey.php:77
 msgid "This file is not a LimeSurvey survey file. Import failed."
@@ -2830,18 +3565,251 @@ msgstr ""
 msgid "File does not contain LimeSurvey data in the correct format."
 msgstr ""
 
+# D:\web\xampp\htdocs\stable_plus/admin/importsurvey.php:720
+msgid "was NOT imported, because the question type is not know"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/importsurvey.php:726
+msgid "was imported, but the type was set to \""
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/importsurvey.php:726
+msgid "type"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/importsurvey.php:726
+msgid "\", because is the closest one"
+msgstr ""
+
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importsurvey.php:639
 msgid "Survey Import Summary"
 msgstr ""
+
+#, fuzzy
+msgid "Question Attributes"
+msgstr "Spørgsmål efter spørgsmål"
+
+#, fuzzy
+msgid "Warnings"
+msgstr "Vurdering"
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:30
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:304
+msgid "Data Consistency Check"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:30
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:304
+msgid "If errors are showing up you might have to execute this script repeatedly."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:51
+msgid "No matching Cqid"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:58
+msgid "No matching CFIELDNAME Group!"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:62
+msgid "No \"CFIELDNAME\" field set!"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:89
+msgid "The following conditions should be deleted"
+msgstr ""
+
+msgid "because"
+msgstr "fordi"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:97
+msgid "All conditions meet consistency standards"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:87
+msgid "No matching qid"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:113
+msgid "The following question attributes should be deleted"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:119
+msgid "All question_attributes meet consistency standards"
+msgstr ""
+
+#, fuzzy
+msgid "No matching survey"
+msgstr "Der er ingen matchende besvarelse."
+
+#, fuzzy
+msgid "No matching group"
+msgstr "Luk denn gruppe"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:149
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:159
+msgid "The following assessments should be deleted"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:133
+msgid "All Survey (Total) assessments meet consistency standards"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:143
+msgid "All Group assessments meet consistency standards"
+msgstr ""
+
+#, fuzzy
+msgid "No matching question"
+msgstr "Luk dette spørgsmål"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:184
+msgid "The following answers should be deleted"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:190
+msgid "All answers meet consistency standards"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:180
+msgid "Language specific settings missing"
+msgstr ""
+
+#, fuzzy
+msgid "The following surveys should be deleted"
+msgstr "Spørgeskemaet er blevet slettet"
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:191
+msgid "All survey settings meet consistency standards"
+msgstr ""
+
+#, fuzzy
+msgid "No matching Group"
+msgstr "Luk denn gruppe"
+
+#, fuzzy
+msgid "No matching Survey!"
+msgstr "Der er ingen matchende besvarelse."
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:213
+msgid "The following questions should be deleted"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:219
+msgid "All questions meet consistency standards"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:234
+msgid "The following groups should be deleted"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:240
+msgid "All groups meet consistency standards"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:244
+msgid "No database action required"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:247
+msgid "Should we proceed with the delete?"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:290
+msgid "Yes - Delete Them!"
+msgstr ""
+
+#, fuzzy
+msgid "Deleting Surveys"
+msgstr "Slet spørgeskema"
+
+#, fuzzy
+msgid "Deleting Survey ID"
+msgstr "Slet spørgeskema"
+
+#, fuzzy
+msgid "Deleting Assessments"
+msgstr "Vurderinger"
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:329
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:337
+msgid "Deleting ID"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:343
+msgid "Deleting Question_Attributes"
+msgstr ""
+
+#, fuzzy
+msgid "Deleting Conditions"
+msgstr "Betingelse"
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:353
+msgid "Deleting cid"
+msgstr ""
+
+#, fuzzy
+msgid "Deleting Answers"
+msgstr "Besvarelser"
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:363
+msgid "Deleting answer with qid"
+msgstr ""
+
+#, fuzzy
+msgid "Deleting Questions"
+msgstr "Luk dette spørgsmål"
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:372
+msgid "Deleting qid"
+msgstr ""
+
+#, fuzzy
+msgid "Deleting Groups"
+msgstr "Luk denn gruppe"
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:381
+msgid "Deleting group id"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:244
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:246
+#, fuzzy
+msgid "Check database again?"
+msgstr "Undersøg databasen"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:236
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:239
+#, fuzzy
+msgid "Check Again"
+msgstr "Undersøg indstillinger"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:82
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:192
 msgid "Label Sets Administration"
 msgstr ""
 
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:266
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:268
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:730
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1854
+#, fuzzy
+msgid "Add New Label Set"
+msgstr "Ret/Tilføj etiketter"
+
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:100
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:308
 msgid "Add new label set"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/importlabel.php:218
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/importquestion.php:440
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:102
+msgid "Labelsets"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/labels.php:111
+msgid "Error: You have to enter a name for this label set."
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:140
@@ -2853,9 +3821,24 @@ msgstr ""
 msgid "Edit Label Set"
 msgstr ""
 
-#, fuzzy
 msgid "Set Name"
-msgstr "Efternavn"
+msgstr "Sæt navn"
+
+# D:\web\xampp\htdocs\stable_plus/admin/labels.php:142
+msgid "You cannot remove this items since you need at least one language in a labelset."
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/assessments.php:52
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/assessments.php:131
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:961
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:159
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:445
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:615
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:711
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:1120
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:1135
+msgid "Update"
+msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:226
 msgid "Edit label set"
@@ -2867,14 +3850,17 @@ msgstr ""
 msgid "Delete label set"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:254
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:225
-msgid "Title"
+# D:\web\xampp\htdocs\stable_plus/admin/labels.php:340
+msgid "New label"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:260
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:227
-msgid "Order"
+# D:\web\xampp\htdocs\stable_plus/admin/labels.php:346
+# D:\web\xampp\htdocs\stable_plus/admin/labels.php:570
+msgid "Add new label"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/labels.php:374
+msgid "Inserting New labels must be done on the first language folder."
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:343
@@ -2882,9 +3868,24 @@ msgstr ""
 msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
 msgstr ""
 
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:460
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:916
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:351
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:492
+msgid "Fix Sort"
+msgstr ""
+
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:361
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:221
 msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/labels.php:478
+msgid "Failed to Copy already defined labels to added languages"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/labels.php:496
+msgid "Failed to delete labels for removed languages"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:389
@@ -2896,34 +3897,58 @@ msgstr ""
 msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:370
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:376
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:517
-msgid "Start ID numbers at:"
+# D:\web\xampp\htdocs\stable_plus/admin/labels.php:545
+msgid "Insert of Label Set failed"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:483
-msgid "Add Survey"
+# D:\web\xampp\htdocs\stable_plus/admin/labels.php:591
+msgid "Failed to insert label"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:492
-msgid "Expires:"
+# D:\web\xampp\htdocs\stable_plus/admin/labels.php:598
+msgid "This label code is already used in this labelset. Please choose another code or rename the existing one."
 msgstr ""
 
+# D:\web\xampp\htdocs\stable_plus/admin/labels.php:634
+msgid "Failed to update label"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/labels.php:643
+msgid "Can't update labels because you are using duplicated codes"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/labels.php:677
+msgid "Failed to delete label"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/login_check.php:30
+msgid "You have to enter user name and email."
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:244
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:246
 #, fuzzy
-msgid "Are you sure you want to delete this entry?"
-msgstr "Er du sikker på at du vil gemme dine svar?"
+msgid "Check Data"
+msgstr "Undersøg databasen"
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1682
-msgid "Slider"
+# D:\web\xampp\htdocs\stable_plus/admin/login_check.php:69
+msgid "You have to login first."
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1902
-msgid "Get statistics from these responses"
+# D:\web\xampp\htdocs\stable_plus/admin/login_check.php:91
+msgid "Login"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/login_check.php:95
+msgid "Forgot Your Password?"
 msgstr ""
 
 msgid "if you answered"
 msgstr "hvis du svarede"
+
+# D:\web\xampp\htdocs\stable_plus/admin/printablesurvey.php:213
+msgid "or"
+msgstr ""
 
 msgid "to question"
 msgstr "til spørgsmål"
@@ -2932,8 +3957,8 @@ msgid "Only answer this question"
 msgstr "Svar kun på dette spørgsmål"
 
 #, fuzzy
-msgid "Please choose <strong>only one</strong> of the following:"
-msgstr "Vælg venligst <strong>kun een<strong> af de følgende:"
+msgid "Please choose *only one* of the following:"
+msgstr "Vælg en af følgende"
 
 msgid "Please enter a date:"
 msgstr "Indtast venligst en dato:"
@@ -2942,8 +3967,16 @@ msgid "Please number each box in order of preference from 1 to"
 msgstr "Nummerer venligst hver boks i foretrukne rækkefølge fra 1 til"
 
 #, fuzzy
-msgid "Please choose <strong>all</strong> that apply:"
-msgstr "Vælg venligst alle de muligheder der passer:"
+msgid "Please choose *all* that apply:"
+msgstr "Vælg <strong>alle</strong> der passer:"
+
+#, fuzzy
+msgid "Please choose *at most* "
+msgstr "Vælg venligst"
+
+#, fuzzy
+msgid "answers:"
+msgstr "Besvarelser"
 
 msgid "Please choose all that apply and provide a comment:"
 msgstr "Vælg venligst alle de muligheder der passer, og tilføj en kommentar:"
@@ -2966,33 +3999,101 @@ msgstr "Tak for din besvarelse."
 msgid "Please fax your completed survey to:"
 msgstr "Fax venligst den udfyldte besvarelse til:"
 
-#, fuzzy
-msgid "Answered"
-msgstr "Undersøgelse nulstillet"
+# D:\web\xampp\htdocs\stable_plus/admin/printablesurvey.php:698
+msgid "Please submit by"
+msgstr ""
 
-#, fuzzy
+msgid "Add Question"
+msgstr "Tilføj spørgsmål"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1091
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1205
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1347
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:740
+msgid "Label Set:"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/questionhandling.php:118
+msgid "Select CSV File"
+msgstr ""
+
+msgid "Copy Question"
+msgstr "Kopier spørgsmål"
+
+# D:\web\xampp\htdocs\stable_plus/admin/questionhandling.php:150
+msgid "Note: You MUST enter a new question code!"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1226
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1376
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:744
+msgid "Group:"
+msgstr ""
+
+msgid "Copy Answers?"
+msgstr "Kopier besvarelser?"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1280
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:749
+msgid "Copy Attributes?"
+msgstr ""
+
+msgid "Edit Question"
+msgstr "Ret spørgsmål"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:495
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1334
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1370
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1396
+msgid "Survey is currently active."
+msgstr ""
+
+msgid "Update Question"
+msgstr "Opdater spørgsmål"
+
+# D:\web\xampp\htdocs\stable_plus/admin/questionhandling.php:558
+msgid "Current group is using conditional questions"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/questionhandling.php:558
+msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/questionhandling.php:558
+msgid "See the conditions marked on the following questions"
+msgstr ""
+
+msgid "Answered"
+msgstr "Besvaret"
+
 msgid "Saved Responses:"
-msgstr "Nulstil svar"
+msgstr "Gemte svar"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/saved.php:103
 msgid "Identifier"
 msgstr ""
 
-#, fuzzy
 msgid "Date Saved"
-msgstr "Kunne ikke gemme"
+msgstr "Gemt den"
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/saved.php:144
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:242
-msgid "Show summary information"
+msgid "Are you sure you want to delete this entry?"
+msgstr "Er du sikker på du vil slette denne?"
+
+# D:\web\xampp\htdocs\stable_plus/admin/spss.php:338
+msgid "Record ID"
 msgstr ""
 
 #, fuzzy
-msgid "Display Responses"
-msgstr "Nulstil svar"
+msgid "Completion Date"
+msgstr "Afslutnings side"
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:96
-msgid "Quick Statistics"
+# D:\web\xampp\htdocs\stable_plus/admin/spss.php:342
+msgid "Start Language"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/spss.php:463
+# D:\web\xampp\htdocs\stable_plus/admin/spss.php:469
+msgid "Not Selected"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:103
@@ -3009,9 +4110,8 @@ msgstr ""
 msgid "Number Less Than"
 msgstr ""
 
-#, fuzzy
 msgid "Date (YYYY-MM-DD) equals"
-msgstr "Datoformat: ÅÅÅÅ-MM-DD"
+msgstr "Dato (ÅÅÅÅ-MM-DD) er lig med"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:178
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:332
@@ -3032,6 +4132,22 @@ msgstr ""
 msgid "View Stats"
 msgstr ""
 
+#, fuzzy
+msgid "Please wait ..."
+msgstr "Vælg venligst..."
+
+# D:\web\xampp\htdocs\stable_plus/admin/statistics.php:714
+msgid "Go Back"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/statistics.php:725
+msgid "Getting Questions and Answers ..."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/statistics.php:833
+msgid "Getting Result Count ..."
+msgstr ""
+
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:858
 msgid "Results"
 msgstr ""
@@ -3048,8 +4164,13 @@ msgstr ""
 msgid "Percentage of total"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:870
-msgid "SQL"
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:1384
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:1390
+msgid "Browse"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/statistics.php:935
+msgid "Generating Summaries ..."
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:1043
@@ -3093,21 +4214,98 @@ msgstr ""
 msgid "Null values are ignored in calculations"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:1172
-msgid "Q1 and Q3 calculated using <a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>minitab method</a>"
+# D:\web\xampp\htdocs\stable_plus/admin/statistics.php:1188
+msgid "Q1 and Q3 calculated using"
 msgstr ""
 
-#, fuzzy
+# D:\web\xampp\htdocs\stable_plus/admin/statistics.php:1188
+msgid "minitab method"
+msgstr ""
+
 msgid "Count"
-msgstr "Fortsæt"
+msgstr "Antal"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:1338
 msgid "Percentage"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:1384
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:1390
-msgid "Browse"
+#, fuzzy
+msgid "Completed"
+msgstr "Færdig?"
+
+# D:\web\xampp\htdocs\stable_plus/admin/stats.php:236
+msgid "Select all"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/stats.php:237
+msgid "Proceed"
+msgstr ""
+
+#, fuzzy
+msgid "Question List"
+msgstr "Spørgsmål"
+
+# D:\web\xampp\htdocs\stable_plus/admin/stats.php:348
+msgid "Like"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/stats.php:356
+msgid "Not Equals"
+msgstr ""
+
+#, fuzzy
+msgid "Filter Conditions"
+msgstr "Betingelse"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:472
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1667
+#, fuzzy
+msgid "Numerical"
+msgstr "Numerisk input"
+
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:476
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1671
+#, fuzzy
+msgid "Huge free text"
+msgstr "Enorm fri tekst"
+
+# D:\web\xampp\htdocs\stable_plus/admin/templates.php:98
+# D:\web\xampp\htdocs\stable_plus/admin/templates.php:223
+msgid "Failed to copy"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:273
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:276
+#, fuzzy
+msgid "to new template directory."
+msgstr "Skabelon redigering"
+
+# D:\web\xampp\htdocs\stable_plus/admin/templates.php:104
+msgid "Directory with the name"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/templates.php:104
+msgid "already exists - choose another name"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/templates.php:106
+msgid "Unable to create directory"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/templates.php:106
+# D:\web\xampp\htdocs\stable_plus/admin/templates.php:114
+msgid "Maybe you don't have permission."
+msgstr ""
+
+#, fuzzy
+msgid "Directory could not be renamed to"
+msgstr "Kunne ikke oprette spørgeskemaet"
+
+# D:\web\xampp\htdocs\stable_plus/admin/templates.php:143
+# D:\web\xampp\htdocs\stable_plus/admin/templates.php:155
+# D:\web\xampp\htdocs\stable_plus/admin/templates.php:442
+# D:\web\xampp\htdocs\stable_plus/admin/templates.php:451
+msgid "This file type is not allowed to be uploaded."
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/templates.php:214
@@ -3129,9 +4327,8 @@ msgstr ""
 msgid "Submit Page"
 msgstr ""
 
-#, fuzzy
 msgid "Completed Page"
-msgstr "gennemført"
+msgstr "Afslutnings side"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/templates.php:218
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/templates.php:400
@@ -3148,13 +4345,8 @@ msgstr ""
 msgid "Load Page"
 msgstr ""
 
-#, fuzzy
 msgid "Save Page"
-msgstr "Gemte navn"
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/templates.php:510
-msgid "Create new template"
-msgstr ""
+msgstr "Gem siden"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/templates.php:511
 msgid "Create new template called:"
@@ -3162,6 +4354,10 @@ msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/templates.php:511
 msgid "NewTemplate"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/templates.php:510
+msgid "Create new template"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/templates.php:529
@@ -3172,24 +4368,26 @@ msgstr ""
 msgid "This template cannot be modified"
 msgstr ""
 
-#, fuzzy
-msgid "Rename this template"
-msgstr "Fjern denne mulighed"
+# D:\web\xampp\htdocs\stable_plus/admin/templates.php:515
+msgid "You can't edit the default template."
+msgstr ""
 
-#, fuzzy
 msgid "Rename this template to:"
-msgstr "Fjern denne mulighed"
+msgstr "Omdøb skabelonen til:"
+
+msgid "Rename this template"
+msgstr "Omdøb denne skabelon:"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/templates.php:542
 msgid "Export Template"
 msgstr ""
 
+#, fuzzy
+msgid "Copy Template"
+msgstr "Færdig?"
+
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/templates.php:545
 msgid "Make a copy of this template"
-msgstr ""
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/templates.php:546
-msgid "Create a copy of this template called:"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/templates.php:546
@@ -3216,6 +4414,26 @@ msgstr ""
 msgid "Other Files:"
 msgstr ""
 
+#, fuzzy
+msgid "Save Changes"
+msgstr "Gem siden"
+
+# D:\web\xampp\htdocs\stable_plus/admin/templates.php:582
+msgid "Changes cannot be saved to the default template."
+msgstr ""
+
+#, fuzzy
+msgid "Are you sure you want to delete this file?"
+msgstr "Er du sikker på du vil slette denne?"
+
+# D:\web\xampp\htdocs\stable_plus/admin/templates.php:595
+msgid "Files in the default template cannot be deleted."
+msgstr ""
+
+#, fuzzy
+msgid "Upload a File"
+msgstr "Upload gennemført"
+
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/templates.php:622
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/vvimport.php:72
 msgid "Upload"
@@ -3225,13 +4443,15 @@ msgstr ""
 msgid "Preview:"
 msgstr ""
 
-#, fuzzy
 msgid "You have not selected a survey"
-msgstr "Du har allerede gennemført denne undersøgelse."
+msgstr "Du har ikke valgt et spørgeskema"
 
 #, fuzzy
+msgid "Token table could not be created."
+msgstr "Kunne ikke oprette spørgeskemaet"
+
 msgid "A token table has been created for this survey."
-msgstr "Du har allerede gennemført denne undersøgelse."
+msgstr "Der er oprettet en nøgle tabel til dette spørgeskema"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:185
 msgid "Tokens have not been initialised for this survey."
@@ -3243,6 +4463,20 @@ msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:188
 msgid "Do you want to create a tokens table for this survey?"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:469
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1664
+#, fuzzy
+msgid "Restore Options"
+msgstr "Flere svarmuligheder"
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:268
+msgid "The following old token tables could be restored:"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:275
+msgid "Restore"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:244
@@ -3258,6 +4492,10 @@ msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:250
 msgid "Import Tokens from CSV File"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:324
+msgid "Import Tokens from LDAP Query"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:252
@@ -3281,21 +4519,21 @@ msgstr ""
 msgid "Drop tokens table"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:277
-msgid "Total Records in this Token Table:"
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:360
+msgid "Total Records in this Token Table"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:281
-msgid "Total With No Unique Token:"
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:367
+msgid "Total With No Unique Token"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:287
-msgid "Total Invitations Sent:"
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:374
+msgid "Total Invitations Sent"
 msgstr ""
 
 #, fuzzy
-msgid "Total Surveys Completed:"
-msgstr "Undersøgelsen er gennemført"
+msgid "Total Surveys Completed"
+msgstr "Antal spørgeskemaer der er gennemført:"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:311
 msgid "All token entries have been deleted."
@@ -3313,25 +4551,22 @@ msgstr ""
 msgid "Token Database Administration Options"
 msgstr ""
 
-#, fuzzy
 msgid "Are you really sure you want to reset all invitation records to NO?"
-msgstr "Er du sikker på at du vil nulstille alle dine spørgsmål?"
+msgstr "Er du sikker på du ønsker at nulstille invitiations markeringerne?"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:358
 msgid "Set all entries to 'No invitation sent'."
 msgstr ""
 
-#, fuzzy
 msgid "Are you sure you want to delete all unique token numbers?"
-msgstr "Er du sikker på at du vil nulstille alle dine spørgsmål?"
+msgstr "Er du sikker på at du vil slette alle unikke nøgler id'er?"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:360
 msgid "Delete all unique token numbers"
 msgstr ""
 
-#, fuzzy
 msgid "Are you really sure you want to delete ALL token entries?"
-msgstr "Er du sikker på at du vil nulstille alle dine spørgsmål?"
+msgstr "Er du sikker på at du vil slette ALLE nøgler?"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:362
 msgid "Delete all token entries"
@@ -3363,13 +4598,8 @@ msgstr ""
 msgid "Invite sent?"
 msgstr ""
 
-#, fuzzy
 msgid "Completed?"
-msgstr "gennemført"
-
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:497
-msgid "MPID"
-msgstr ""
+msgstr "Færdig?"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:513
 msgid "Edit Token Entry"
@@ -3379,9 +4609,11 @@ msgstr ""
 msgid "Delete Token Entry"
 msgstr ""
 
-#, fuzzy
+msgid "Do Survey"
+msgstr "Besvar spørgeskema"
+
 msgid "Update Response"
-msgstr "Nulstil svar"
+msgstr "Opdater besvarelser"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:558
 msgid "Send invitation email to this entry"
@@ -3395,16 +4627,23 @@ msgstr ""
 msgid "Delete Tokens Table"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:595
-msgid "If you delete this table tokens will no longer be required to access this survey.<br>A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:693
+msgid "If you delete this table tokens will no longer be required to access this survey."
 msgstr ""
 
-#, fuzzy
-msgid "Delete Tokens"
-msgstr "Nøgler"
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:693
+msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
+msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:609
-msgid "The tokens table has now been removed and tokens are no longer required to access this survey.<BR> A backup of this table has been made and can be accessed by your system administrator."
+msgid "Delete Tokens"
+msgstr "Slet nøgler"
+
+#, fuzzy
+msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
+msgstr "Der er oprettet en nøgle tabel til dette spørgeskema"
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:707
+msgid "A backup of this table has been made and can be accessed by your system administrator."
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:625
@@ -3422,6 +4661,10 @@ msgstr ""
 msgid "Subject"
 msgstr ""
 
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:777
+msgid "to TokenID No"
+msgstr ""
+
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:666
 msgid "Send Invitations"
 msgstr ""
@@ -3436,8 +4679,8 @@ msgstr ""
 msgid "Sending to TID No:"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:729
-msgid "Invitation Sent To:"
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:860
+msgid "Invitation sent to:"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:733
@@ -3462,8 +4705,8 @@ msgstr ""
 msgid "Email Reminder"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:794
-msgid "Start at TID No:"
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:969
+msgid "Start at Token ID No:"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:825
@@ -3474,24 +4717,23 @@ msgstr ""
 msgid "Sending Reminders"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:887
-msgid "Reminder Sent To:"
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1061
+msgid "Reminder sent to:"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:922
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
 msgstr ""
 
-#, fuzzy
 msgid "Create Tokens"
-msgstr "Nøgler"
+msgstr "Opret nøgler"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:938
 msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:976
-msgid "TOKENCOUNT} tokens have been created"
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1142
+msgid "{TOKENCOUNT} tokens have been created"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:1018
@@ -3508,9 +4750,21 @@ msgstr ""
 msgid "Add or Edit Token"
 msgstr ""
 
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1189
+msgid "Auto"
+msgstr ""
+
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:1076
 msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
 msgstr ""
+
+#, fuzzy
+msgid "Update Token"
+msgstr "Opret nøgler"
+
+#, fuzzy
+msgid "Add Token"
+msgstr "Nøgle"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:1160
 msgid "Updated Token"
@@ -3529,8 +4783,16 @@ msgstr ""
 msgid "Note:"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:1201
-msgid "File should be a standard CSV (comma delimited) file with no quotes. The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [attribute1], [attribute2]\"."
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1358
+msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [language code], [attribute1], [attribute2]\"."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1369
+msgid "Upload LDAP entries"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1376
+msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:1227
@@ -3545,88 +4807,495 @@ msgstr ""
 msgid "Creating Token Entries"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:1290
-msgid "TOKENCOUNT} Records Created"
+#, fuzzy
+msgid "Failed"
+msgstr "Kvinde"
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1485
+msgid "Records in CSV"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/usercontrol.php:47
-msgid "Creating default htaccess file"
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1486
+msgid "Records met minumum requirements"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/usercontrol.php:50
-msgid "Couldn't create htaccess file. Check your config.php for $homedir setting, and that you have write permission in the correct directory."
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1487
+msgid "Records imported"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/usercontrol.php:54
-msgid "Security Levels are now set up!"
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1488
+msgid "Duplicate records removed"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/usercontrol.php:58
-msgid "Creating default users"
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1489
+msgid "Records with invalid email address removed"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/usercontrol.php:77
-msgid "Updating users table"
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1498
+msgid "Uploading LDAP Query"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/usercontrol.php:84
-msgid "Error occurred creating htpasswd file"
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1567
+msgid "{TOKENCOUNT} Records Created"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/usercontrol.php:84
-msgid "If you are using a windows server it is recommended that you copy the apache htpasswd.exe file into your admin folder for this function to work properly. This file is usually found in /apache group/apache/bin/"
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1571
+msgid "Can't bind to the LDAP directory"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/usercontrol.php:92
-msgid "Removing security settings"
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1577
+msgid "Can't connect to the LDAP directory"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/usercontrol.php:99
-msgid "Access file, password file and user database deleted"
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1595
+msgid "ARMSCII-8 Armenian"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/usercontrol.php:105
-msgid "Adding User"
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1596
+msgid "US ASCII"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/usercontrol.php:127
-msgid "Could not add user. Username and/or password were not supplied"
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1597
+msgid "Automatic"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/usercontrol.php:134
-msgid "Deleting User"
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1598
+msgid "Big5 Traditional Chinese"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/usercontrol.php:165
-msgid "Could not delete user. Username was not supplied."
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1599
+msgid "Binary pseudo charset"
 msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1600
+msgid "Windows Central European"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1601
+msgid "Windows Cyrillic"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1602
+msgid "Windows Arabic"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1603
+msgid "Windows Baltic"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1604
+msgid "DOS West European"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1605
+msgid "DOS Central European"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1606
+msgid "DOS Russian"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1607
+msgid "SJIS for Windows Japanese"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1608
+msgid "DEC West European"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1609
+msgid "UJIS for Windows Japanese"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1610
+msgid "EUC-KR Korean"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1611
+msgid "GB2312 Simplified Chinese"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1612
+msgid "GBK Simplified Chinese"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1613
+msgid "GEOSTD8 Georgian"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1614
+msgid "ISO 8859-7 Greek"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1615
+msgid "ISO 8859-8 Hebrew"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1616
+msgid "HP West European"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1617
+msgid "DOS Kamenicky Czech-Slovak"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1618
+msgid "KOI8-R Relcom Russian"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1619
+msgid "KOI8-U Ukrainian"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1620
+msgid "cp1252 West European"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1621
+msgid "ISO 8859-2 Central European"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1622
+msgid "ISO 8859-9 Turkish"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1623
+msgid "ISO 8859-13 Baltic"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1624
+msgid "Mac Central European"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1625
+msgid "Mac West European"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1626
+msgid "Shift-JIS Japanese"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1627
+msgid "7bit Swedish"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1628
+msgid "TIS620 Thai"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1629
+msgid "UCS-2 Unicode"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1630
+msgid "EUC-JP Japanese"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1631
+msgid "UTF-8 Unicode"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1643
+msgid "Choose the CSV file to upload:"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1645
+msgid "Character set of the file:"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1659
+msgid "Sorry, but the LDAP module is missing in your PHP configuration."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1665
+msgid "LDAP is disabled or no LDAP query defined."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1670
+msgid "Select the LDAP query you want to run:"
+msgstr ""
+
+#, fuzzy
+msgid "Forgot Password"
+msgstr "Kodeord"
+
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:32
+msgid "User name and/or email not found!"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:41
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:186
+msgid "Your data:"
+msgstr ""
+
+#, fuzzy
+msgid "New Password"
+msgstr "Kodeord"
+
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:55
+msgid "An email with your login data was sent to you."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:60
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:204
+msgid "Email to {NAME} ({EMAIL}) failed."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:69
+msgid "Logging in..."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:80
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:124
+msgid "Incorrect User name and/or Password!"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:109
+msgid "Welcome {NAME}"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:110
+msgid "You logged in successfully."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:137
+msgid "Logout successful."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:156
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:314
+msgid "Email address ist not valid."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:161
+msgid "Username was not supplied."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:185
+msgid "You were signed in on the site"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:189
+msgid "Login here"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:199
+msgid "An email with a generated password was sent to the user."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:209
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:362
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:167
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:440
+msgid "Set User Rights"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:216
+msgid "Username and/or email address already exists."
+msgstr ""
+
+#, fuzzy
+msgid "Admin cannot be deleted!"
+msgstr "Besvarelser kan ikke slettes"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/usercontrol.php:172
 msgid "Modifying User"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/usercontrol.php:196
-msgid "Could not modify user. Username and/or password were not supplied"
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:314
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:338
+msgid "Could not modify User Data."
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/vvexport.php:47
-msgid "Export a VV survey file"
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:330
+msgid "Unchanged"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/vvexport.php:58
-msgid "Export, then de-activate survey"
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:338
+msgid "Email address already exists."
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/vvexport.php:59
-msgid "Export but leave survey active"
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:344
+msgid "Back"
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/vvexport.php:67
-msgid "If you have chosen to export and de-activate, this will rename your current responses table and it will not be easy to restore it. Are you sure?"
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:389
+msgid "Update user rights successful."
 msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/vvimport.php:61
-msgid "Import a VV survey file"
+# D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:399
+msgid "You are not allowed to change your own rights!"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:51
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:528
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:620
+msgid "Mail to all Members"
+msgstr ""
+
+#, fuzzy
+msgid "Edit Current User Group"
+msgstr "Rediger spørgeskema"
+
+#, fuzzy
+msgid "Delete Current User Group"
+msgstr "Slet spørgeskema"
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:91
+msgid "Add New User Group"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:95
+msgid "User Groups"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:133
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:310
+msgid "Full name"
+msgstr ""
+
+#, fuzzy
+msgid "Configurator"
+msgstr "Bekræft kodeord:"
+
+#, fuzzy
+msgid "Create User"
+msgstr "Opret spørgeskema"
+
+#, fuzzy
+msgid "Delete User"
+msgstr "Slet spørgeskema"
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:191
+msgid "Move User"
+msgstr ""
+
+#, fuzzy
+msgid "Manage Template"
+msgstr "Omdøb denne skabelon:"
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:197
+msgid "Manage Labels"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:291
+msgid "Setting new Parent"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:292
+msgid "Set Parent successful."
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:973
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:996
+msgid "User Control"
+msgstr ""
+
+#, fuzzy
+msgid "Created by"
+msgstr "Opret spørgeskema"
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:342
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:449
+msgid "Edit User"
+msgstr ""
+
+#, fuzzy
+msgid "Name:"
+msgstr "Navn"
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:503
+msgid "Edit User Group (Owner: "
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:509
+msgid "Update User Group"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:530
+msgid "Send me a copy:"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:533
+msgid "Subject:"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:535
+msgid "Message:"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:537
+msgid "Send"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:538
+msgid "Reset"
+msgstr ""
+
+#, fuzzy
+msgid "Deleting User Group"
+msgstr "Luk denn gruppe"
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:563
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:593
+msgid "Group Name"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:567
+msgid "Could not delete user group."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:577
+msgid "Could not delete user group. No group selected."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:584
+msgid "Adding User Group"
+msgstr ""
+
+#, fuzzy
+msgid "Description: "
+msgstr "Spørgsmål:"
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:600
+msgid "User group successfully added!"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:605
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:612
+msgid "Failed to add Group!"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:606
+msgid "Group already exists!"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:613
+msgid "Group name was not supplied!"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:663
+msgid "Message(s) sent successfully!"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:664
+msgid "To:"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:669
+msgid "Mail not sent!"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:687
+msgid "Edit User Group Successfully!"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:692
+msgid "Failed to update!"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:838
+msgid "Adding User to group"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/vvimport.php:62
@@ -3661,19 +5330,228 @@ msgstr ""
 msgid "Replace the existing record."
 msgstr ""
 
+#, fuzzy
+msgid "Import"
+msgstr "Import spørgeskema"
+
+# D:\web\xampp\htdocs\stable_plus/admin/vvimport.php:52
+msgid "Cannot import the VVExport file."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/vvimport.php:72
+msgid "Back to Response Import"
+msgstr ""
+
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/vvimport.php:225
 msgid "Import Failed on Record"
 msgstr ""
 
-#, fuzzy
-msgid "because"
-msgstr "Sænk"
+# D:\web\xampp\htdocs\stable_plus/admin/vvimport.php:204
+msgid "Important Note:"
+msgstr ""
 
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/vvimport.php:238
-msgid "Important Note:<br />Do NOT refresh this page, as this will import the file again and produce duplicates"
+# D:\web\xampp\htdocs\stable_plus/admin/vvimport.php:204
+msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
 msgstr ""
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/vvimport.php:240
 msgid "Total records imported:"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/admin.php:88
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/createdb.php:46
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/index-experimental.php:144
+msgid "Create Database"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/createdb.php:69
+msgid "Populate Database"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/install/createdb.php:34
+#, php-format
+msgid "Database `%s` has been successfully populated."
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/createdb.php:52
+msgid "Database Information not provided. This script must be run from admin.php only."
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/createdb.php:67
+msgid "Database has been created."
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/createdb.php:68
+msgid "Please click below to populate the database"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/createdb.php:74
+msgid "Could not create database"
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/common.php:767
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/admin.php:79
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/index-experimental.php:135
+#, fuzzy
+msgid "Welcome to LimeSurvey Setup!"
+msgstr "LimeSurvery installation"
+
+# D:\web\xampp\htdocs\stable_plus/admin/install/index.php:31
+msgid "The database defined in config.php does not exist."
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/admin.php:85
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/index-experimental.php:141
+msgid "LimeSurvey can attempt to create this database for you."
+msgstr ""
+
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/admin.php:86
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/index-experimental.php:142
+msgid "Your selected database name is:"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/install/index.php:48
+#, php-format
+msgid "A database named \"%s\" already exists."
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/install/index.php:49
+msgid "Do you want to populate that database now by creating the necessary tables?"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/install/index.php:81
+msgid "Database has been successfully upgraded to version "
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:60
+msgid "Basque"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:64
+msgid "Bulgarian"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:68
+msgid "Chinese (Simplified)"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:72
+msgid "Chinese (Traditional - Hong Kong)"
+msgstr ""
+
+#, fuzzy
+msgid "Croatian"
+msgstr "Fortsæt"
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:80
+msgid "Danish"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:84
+msgid "Dutch"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:88
+msgid "English"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:92
+msgid "Finnish"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:97
+msgid "French"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:101
+msgid "Galician"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:105
+msgid "German"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:109
+msgid "German informal"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:113
+msgid "Greek"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:117
+msgid "Hebrew"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:121
+msgid "Hungarian"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:125
+msgid "Italian"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:129
+msgid "Japanese"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:133
+msgid "Lithuanian"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:137
+msgid "Norwegian"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:141
+msgid "Polish"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:145
+msgid "Portuguese"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:149
+msgid "Portuguese (Brazilian)"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:154
+msgid "Russian"
+msgstr ""
+
+#, fuzzy
+msgid "Romanian"
+msgstr "Vurdering"
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:162
+msgid "Slovenian"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:166
+msgid "Serbian"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:170
+msgid "Spanish"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:174
+msgid "Swedish"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:178
+msgid "Turkish"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:182
+msgid "Thai"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:187
+msgid "Vietnamese"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:192
+msgid "Czech"
 msgstr ""
 
