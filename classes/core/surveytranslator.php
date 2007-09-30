@@ -80,7 +80,11 @@
 	    $supportedLanguages['hr']['description'] = $clang->gT('Croatian');
 	    $supportedLanguages['hr']['nativedescription'] = 'Croatian';
 
-	    // Danish
+        // Czech
+        $supportedLanguages['cs']['description'] = $clang->gT('Czech');
+        $supportedLanguages['cs']['nativedescription'] = '&#x010c;esky';
+        
+        // Danish
 	    $supportedLanguages['da']['description'] = $clang->gT('Danish');
 	    $supportedLanguages['da']['nativedescription'] = 'Dansk';
 
@@ -190,12 +194,6 @@
 	    // Vietnamese
 	    $supportedLanguages['vi']['description'] = $clang->gT('Vietnamese');
 	    $supportedLanguages['vi']['nativedescription'] = 'Ti&#7871;ng Vi&#7879;t';
-
-
-        // Czech
-	    $supportedLanguages['cz']['description'] = $clang->gT('Czech');
-	    $supportedLanguages['cz']['nativedescription'] = '&#x010c;esky';
-
 
         Return $supportedLanguages;
     }
