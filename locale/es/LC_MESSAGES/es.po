@@ -11,9 +11,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-09-26 08:38-0500\n"
-"Last-Translator: Gustavo San Roman <gsanr@yahoo.com>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-09-25 08:00+0200\n"
+"PO-Revision-Date: 2007-09-30 14:25+0100\n"
+"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team:  <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,42 +23,10 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Generator: KBabel 1.11.4\n"
 "X-Poedit-SearchPath-0: C:/documentos/www/docs/limesurvey15\n"
+"X-Poedit-SearchPath-1: D:\\web\\xampp\\htdocs\\stable_plus\n"
 
-msgid "If you set a survey to anonymous, answers to timestamped and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
-msgstr "Si usted hace que una encuesta sea anónima, las respuestas con fecha marcada y crea una tabla de encuestados/as, LimeSurvey marcará las respuestas completadas con una 'Y' en vez de con la fecha y hora para asegurar el anonimato de sus participantes."
-
-msgid "Go Back"
-msgstr "Volver"
-
-msgid "Answer Privacy"
-msgstr "Privacidad"
-
-msgid "Closed-access"
-msgstr "Restringido"
-
-msgid "Open-access"
-msgstr "Libre"
-
-msgid "Open-access mode"
-msgstr "Encuesta de acceso libre"
-
-msgid "No invitation code is needed to complete the survey."
-msgstr "no es necesaria una contraseña para poder contestar el cuestionario."
-
-msgid "You can switch to the closed-access mode by initialising a token table with the button below."
-msgstr "Usted puede hacer que la encuesta sea de acceso restringido (es decir, sólo para personas que posean la contraseña oportuna) inicializando una tabla de encuestados/as al pulsar el siguiente botón."
-
-msgid "Switch to closed-access mode"
-msgstr "Cambiar a encuesta de acceso restringido"
-
-msgid "Not enough values for calculation"
-msgstr "No hay suficientes valores para realizar el cálculo"
-
-msgid "There are no questions in this survey"
-msgstr "Aún no hay preguntas definidas en este cuestionario"
-
-msgid "Incorrect User name and/or Password!"
-msgstr "Nombre de usuario y/o contraseña incorrectos"
+msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
+msgstr "Advertencia: Todavía está usando la clave por defecto ('password'). Por favor cambie su clave y reconectese. "
 
 msgid "Administration"
 msgstr "Administración"
@@ -78,6 +47,10 @@ msgid "Create/Edit Groups"
 msgstr "Crear/Editar Grupos"
 
 msgid "Check Settings"
+msgstr "Revisar Opciones del Sistema"
+
+#, fuzzy
+msgid "Settings"
 msgstr "Revisar Opciones del Sistema"
 
 msgid "Check Data Integrity"
@@ -443,6 +416,9 @@ msgstr "Comentario"
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr "Aviso: La ejecución de JavaScript está deshabilitada en su navegador. Es posible q no pueda responder todas las preguntas del questionario. Por favor, verifique los parámetros de su navegador."
 
+msgid "There are no questions in this survey"
+msgstr "Aún no hay preguntas definidas en este cuestionario"
+
 msgid "There is 1 question in this survey"
 msgstr "Hay una pregunta en este cuestionario."
 
@@ -587,6 +563,13 @@ msgstr "Colabore con el proyecto - Haga una donación para"
 msgid "Visit our website!"
 msgstr "Visite nuestro sitio web"
 
+#, fuzzy
+msgid "Version"
+msgstr "Pregunta"
+
+msgid "Local Submission"
+msgstr ""
+
 # C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/common.php:2748
 # C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/common.php:2753
 msgid "Executing"
@@ -663,7 +646,8 @@ msgstr "No ingresó el Nombre"
 msgid "You did not provide a password"
 msgstr "No ingresó la contraseña"
 
-msgid "This is a controlled survey. You need a valid token to participate."
+#, fuzzy
+msgid "This is a closed-access survey. You need a valid token to participate."
 msgstr "Este cuestionario tiene control de acceso. Necesita una contraseña válida para participar."
 
 msgid "The token you have provided is either not valid, or has already been used."
@@ -747,6 +731,9 @@ msgstr "Error al guardar las respuestas"
 msgid "Try to submit again"
 msgstr "Intente enviarla otra vez"
 
+msgid "This is a controlled survey. You need a valid token to participate."
+msgstr "Este cuestionario tiene control de acceso. Necesita una contraseña válida para participar."
+
 msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr "Si se le ha proporcionado una contraseña, por favor introdúzcala en el cuadro de texto y pulse en continuar."
 
@@ -816,6 +803,9 @@ msgstr "(p.ej.: 2003-12-25 para Navidad)"
 msgid "Please choose"
 msgstr "Escoja, por favor"
 
+msgid "Error: The labelset used for this question is not available in this language."
+msgstr "Error: El conjunto de etiquetas usado en esta pregunta no existe en este idioma"
+
 msgid "Please choose one of the following"
 msgstr "Por favor elija una de los siguientes"
 
@@ -852,8 +842,15 @@ msgstr "respuesta(s) para la pregunta"
 msgid "Make a comment on your choice here:"
 msgstr "Comente su opción aquí:"
 
+#, fuzzy
+msgid "Error: This question has no answers."
+msgstr "Esta pregunta es de respuesta obligatoria"
+
 msgid "Only numbers may be entered in this field"
 msgstr "Sólo se aceptan números en este campo"
+
+msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
+msgstr "Error: El conjunto de etiquetas usado en esta pregunta no existe en este idioma y/o no existe en general."
 
 msgid "The email you used is not valid. Please try again."
 msgstr "La dirección de correo electrónico no es válida. Por favor, vuelva a intentarlo."
@@ -911,6 +908,18 @@ msgstr "Si recibe este error en el medio del proceso de respuesat de un custiona
 msgid "Access denied!"
 msgstr "Acceso denegado"
 
+#, fuzzy
+msgid "You are not allowed dump the database!"
+msgstr "¡No puede importar un cuestionario!"
+
+msgid "You are not allowed export a label set!"
+msgstr "¡No puede exportar un conjunto de etiquetas!"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:407
+#, fuzzy
+msgid "You are not allowed to change user data!"
+msgstr "¡No puede cambiar sus propios permisos!"
+
 msgid "You are not allowed to create new surveys!"
 msgstr "¡No puede crear un nuevo cuestionario!"
 
@@ -939,7 +948,8 @@ msgid "You are not allowed to edit groups in this survey!"
 msgstr "¡No puede editar los grupos del cuestionario!"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/access_denied.php:103
-msgid "You are not allowed to browse response!"
+#, fuzzy
+msgid "You are not allowed to browse responses!"
 msgstr "No está habilitado para ver las respuestas."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/access_denied.php:108
@@ -950,6 +960,14 @@ msgid "You are not allowed to delete this group!"
 msgstr "¡No puede eliminar este grupo!"
 
 msgid "You are not allowed to import a survey!"
+msgstr "¡No puede importar un cuestionario!"
+
+#, fuzzy
+msgid "You are not allowed to import a group!"
+msgstr "¡No puede importar un cuestionario!"
+
+#, fuzzy
+msgid "You are not allowed to to import a question!"
 msgstr "¡No puede importar un cuestionario!"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/access_denied.php:137
@@ -964,6 +982,9 @@ msgstr "Esta pregunta aún no tiene asignado el 'tipo' de pregunta."
 
 msgid "This question requires a Labelset, but none is set."
 msgstr "Esta pregunta requiere de un conjunto de etiquetas, pero ninguno está listo."
+
+msgid "The labelset used in this question is missing a translation."
+msgstr "Falta la traducción del conjunto de etiquetas."
 
 msgid "This question has a condition set, however the condition is based on a question that appears after it."
 msgstr "Esta pregunta tiene asignada una condición, pero esta condición está basada en una pregunta que aparece después de ella."
@@ -1035,17 +1056,29 @@ msgstr "Pantalla de Administración Principal"
 msgid "Survey has been activated. Results table has been successfully created."
 msgstr "El cuestionario ha sido activado. La tabla de resultados ha sido creada con éxito."
 
-msgid "This is not an anonymous survey. A token table must also be created."
-msgstr "Este no es un cuestionario anónimo. Se debe crear una tabla de encuestados/as."
+msgid "This survey allows public registration. A token table must also be created."
+msgstr "Este cuestionario admite registro público. Es necesario crear la tabla de encuestados/as igualmente."
 
 msgid "Initialise Tokens"
 msgstr "Inicializar los encuestados/as"
 
-msgid "This survey allows public registration. A token table must also be created."
-msgstr "Este cuestionario admite registro público. Es necesario crear la tabla de encuestados/as igualmente."
-
 msgid "This survey is now active, and responses can be recorded."
 msgstr "El cuestionario ha sido activado, y ahora las respuestas pueden ser almacenadas."
+
+msgid "Open-access mode"
+msgstr "Encuesta de acceso libre"
+
+msgid "No invitation code is needed to complete the survey."
+msgstr "no es necesaria una contraseña para poder contestar el cuestionario."
+
+msgid "You can switch to the closed-access mode by initialising a token table with the button below."
+msgstr "Usted puede hacer que la encuesta sea de acceso restringido (es decir, sólo para personas que posean la contraseña oportuna) inicializando una tabla de encuestados/as al pulsar el siguiente botón."
+
+msgid "Optional"
+msgstr "Opcional"
+
+msgid "Switch to closed-access mode"
+msgstr "Cambiar a encuesta de acceso restringido"
 
 msgid "LimeSurvey Online Manual"
 msgstr "Manual de LimeSurvey"
@@ -1108,6 +1141,12 @@ msgstr "Borrar"
 
 msgid "Are you sure you want to delete this entry."
 msgstr "¿Está seguro de que quiere borrar esta entrada?"
+
+msgid "Save"
+msgstr "Guardar"
+
+msgid "Cancel"
+msgstr "Cancelar"
 
 msgid "Browse Responses"
 msgstr "Examinar las respuestas"
@@ -1215,6 +1254,14 @@ msgstr "respuestas completas"
 msgid "responses not completly filled out"
 msgstr "respuestas no completadas"
 
+#, fuzzy
+msgid "User name invalid!"
+msgstr "Nombre de usuario"
+
+#, fuzzy
+msgid "User name / password dont match!"
+msgstr "Sus contraseñas no concuerdan."
+
 msgid "Condition Designer"
 msgstr "Diseñador de Condiciones"
 
@@ -1283,28 +1330,6 @@ msgstr "Borrar"
 
 msgid "Close Window"
 msgstr "Cerrar Ventana"
-
-msgid "Create Database"
-msgstr "Crear Base de Datos"
-
-msgid "Populate Database"
-msgstr "Rellenar Base de Datos"
-
-#, php-format
-msgid "Database `%s` has been successfully populated."
-msgstr "La Base de Datos `%s` ha sido creada."
-
-msgid "Database Information not provided. This script must be run from admin.php only."
-msgstr "La información para acceder a la base de datos no se ha dado. Este guión debe ser ejecutado desde el admin.php solamente."
-
-msgid "Database has been created."
-msgstr "La Base de Datos ha sido creada."
-
-msgid "Please click below to populate the database"
-msgstr "Haga clic para rellenar la base de datos"
-
-msgid "Could not create database"
-msgstr "No se pudo crear la base de datos"
 
 msgid ""
 "Group could not be added.\\n"
@@ -1437,12 +1462,26 @@ msgid "You have not selected a survey for data-entry."
 msgstr "No ha seleccionado un cuestionario para realizar la entrada de datos."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/dataentry.php:249
-msgid "This survey is not anonymous, you must supply a valid token"
+#, fuzzy
+msgid "This is a closed-access survey, you must supply a valid token"
 msgstr "Este cuestionario no es anónimo, debe ingresar una contraseña válida"
 
+#, fuzzy
+msgid "The token you have provided is not valid."
+msgstr "La contraseña que se le ha proporcionado no es válida o ya fue usada."
+
 # C:/documentos/www/docs/limesurvey15/admin/dataentry.php:122
-msgid "There is already a recorded answer for this token, follow the following link to update it"
+#, fuzzy
+msgid "There is already a recorded answer for this token"
 msgstr "Ya existen respuestas registradas para esta llamada, siga el siguiente enlace para actualizarlas"
+
+#, fuzzy
+msgid "Follow the following link to update it"
+msgstr "Pulse en el siguiente enlace para recuperar el cuestionario:"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/dataentry.php:249
+msgid "This surveys uses anonymous answers, you can't update this response"
+msgstr "Este cuestionario es anónimo, no puede modificar esta respuesta."
 
 msgid "Try again"
 msgstr "Intente otra vez"
@@ -1567,9 +1606,6 @@ msgstr "La tabla de contestaciones será renombrada a:"
 msgid "Also you should export your responses before deactivating."
 msgstr "Sugerimos que exporte las respuestas antes de desactivar el cuestionario."
 
-msgid "De-Activate Survey"
-msgstr "Desactivar cuestionario"
-
 msgid "Survey Has Been Deactivated"
 msgstr "El cuestionario ha sido desactivado"
 
@@ -1603,11 +1639,14 @@ msgstr "Esta encuesta está activa y ya tiene respuestas. Si la borra, tambien b
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
 msgstr "Esta encuesta está activa y existe una tabla de encuestados/as. Si la borra, también eliminará los/as encuestados/as. Recomendamos que los exporte antes de borrar la encuesta."
 
-msgid "Cancel"
-msgstr "Cancelar"
-
 msgid "This survey has been deleted."
 msgstr "Se ha borrado la encuesta."
+
+msgid "Export database"
+msgstr "Exportar base de datos"
+
+msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
+msgstr "La exportación de bases de datos solamente funciona con bases de datos del tipo MySQL. Por favor, use el mecanismo backup creando bases de datos dump para otros tipos de bases de datos ."
 
 msgid "Export Question"
 msgstr "Exportar Pregunta"
@@ -1660,9 +1699,6 @@ msgstr "Filtrar respuestas incompletas"
 
 msgid "Answers"
 msgstr "Respuestas"
-
-msgid "Edit Answers"
-msgstr "Editar Respuestas"
 
 msgid "Answer Codes"
 msgstr "Códigos de las Respuestas"
@@ -1735,6 +1771,36 @@ msgstr "Idioma"
 msgid "N/A"
 msgstr "No disponible"
 
+msgid "Add Group"
+msgstr "Agregar Grupo"
+
+msgid "Base Language"
+msgstr "Idioma por omisión"
+
+msgid "Title"
+msgstr "Título"
+
+msgid "Required"
+msgstr "Obligatorio"
+
+msgid "Description:"
+msgstr "Descripción:"
+
+msgid "Please select a file to import!"
+msgstr "¡Por favor seleccione un archivo para importar!"
+
+msgid "Import Group"
+msgstr "Importar grupo"
+
+msgid "Select CSV File:"
+msgstr "Seleccionar Archivo CSV"
+
+msgid "Edit Group"
+msgstr "Editar grupo"
+
+msgid "Update Group"
+msgstr "Actualizar Grupo"
+
 msgid "Survey"
 msgstr "Encuesta"
 
@@ -1744,11 +1810,11 @@ msgstr "Datos Creados"
 msgid "Access"
 msgstr "Acceso"
 
+msgid "Answer Privacy"
+msgstr "Privacidad"
+
 msgid "Status"
 msgstr "Estado"
-
-msgid "Action"
-msgstr "Acción"
 
 msgid "Responses"
 msgstr "Respuestas"
@@ -1758,6 +1824,12 @@ msgstr "Anónimo"
 
 msgid "Not Anonymous"
 msgstr "No anónimo"
+
+msgid "Closed-access"
+msgstr "Restringido"
+
+msgid "Open-access"
+msgstr "Libre"
 
 msgid "Expired"
 msgstr "Expiro"
@@ -1779,9 +1851,6 @@ msgstr "Desactivar esta encuesta"
 
 msgid "This survey is currently active"
 msgstr "Esta encuesta está actualmente activa"
-
-msgid "Survey currently active"
-msgstr "Encuesta activa"
 
 msgid "Activate this Survey"
 msgstr "Activar esta encuesta"
@@ -1819,6 +1888,9 @@ msgstr "Tablas de encuestados/as Activadas"
 
 msgid "De-activated Token Tables"
 msgstr "Tablas de encuestados/as Desactivadas"
+
+msgid "Show PHPInfo"
+msgstr "Mostrar PHPInfo"
 
 msgid "Survey cannot be activated. Either you have no permission or there are no questions."
 msgstr "La encuesta no podrá ser activada por no tener suficientes privilegios para hacerlo o aún no tiene preguntas"
@@ -1880,9 +1952,6 @@ msgstr "Agregar nuevo grupo al cuestionario"
 msgid "Groups"
 msgstr "Grupos"
 
-msgid "Title"
-msgstr "Título"
-
 msgid "This survey is NOT anonymous."
 msgstr "Este cuestionario NO es anónimo."
 
@@ -1930,8 +1999,12 @@ msgstr "Por Grupo"
 msgid "Survey URL"
 msgstr "URL de la encuesta"
 
-msgid "Description:"
-msgstr "Descripción:"
+#, fuzzy
+msgid "Survey URL For Language:"
+msgstr "Idioma inicial:"
+
+msgid "Flag"
+msgstr ""
 
 msgid "Welcome:"
 msgstr "Bienvenida:"
@@ -1957,26 +2030,17 @@ msgstr "Idiomas adicionales"
 msgid "Exit Link"
 msgstr "Enlace de salida"
 
-msgid "Number of groups in survey"
-msgstr "Número de grupos en el cuestionario"
-
-msgid "Number of questions in survey"
-msgstr "Número de preguntas en el cuestionario"
-
 msgid "Number of questions/groups"
 msgstr "Número de preguntas/grupos en el cuestionario"
 
-msgid "Hints"
-msgstr "Detalles"
-
-msgid "Survey is not currently active."
-msgstr "La encuesta NO está activa."
-
-msgid "Survey is currently active."
-msgstr "La encuesta está activa."
+msgid "Survey currently active"
+msgstr "Encuesta activa"
 
 msgid "Survey table name"
 msgstr "Tabla de la encuesta"
+
+msgid "Hints"
+msgstr "Detalles"
 
 msgid "Survey cannot be activated yet."
 msgstr "La encuesta no puede ser activada aún."
@@ -2045,6 +2109,9 @@ msgstr "Exportar esta Pregunta"
 msgid "Copy Current Question"
 msgstr "Copiar Pregunta Seleccionada"
 
+msgid "Copy question is not possible in an Active survey"
+msgstr "No se puede copiar preguntas en una encuesta activa."
+
 msgid "Set Conditions for this Question"
 msgstr "Establecer Condiciones para esta Pregunta"
 
@@ -2093,14 +2160,20 @@ msgstr "Debe seleccionar un conjunto de etiquetas para esta pregunta"
 msgid "Other:"
 msgstr "Otro:"
 
+msgid "Mandatory:"
+msgstr "Obligatoria:"
+
 msgid "Other questions having conditions on this question:"
 msgstr "Otras preguntas que tienen condiciones dependientes:"
 
-msgid "Base Language"
-msgstr "Idioma por omisión"
+msgid "Edit Answers"
+msgstr "Editar Respuestas"
 
 msgid "Code"
 msgstr "Código"
+
+msgid "Action"
+msgstr "Acción"
 
 msgid "Order"
 msgstr "Orden"
@@ -2186,9 +2259,6 @@ msgstr "grupo de usuarios"
 msgid "User"
 msgstr "Usuario"
 
-msgid "Add Group"
-msgstr "Agregar Grupo"
-
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1812
 msgid "Update survey rights successful."
 msgstr "Se actualizaron con éxito los permisos del cuestionario."
@@ -2230,6 +2300,9 @@ msgstr "Notificación del administrador:"
 
 msgid "Anonymous answers?"
 msgstr "¿Preservar el anonimato de respuesta?"
+
+msgid "If you set a survey to anonymous, answers to timestamped and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
+msgstr "Si usted hace que una encuesta sea anónima, las respuestas con fecha marcada y crea una tabla de encuestados/as, LimeSurvey marcará las respuestas completadas con una 'Y' en vez de con la fecha y hora para asegurar el anonimato de sus participantes."
 
 msgid "Cannot be changed"
 msgstr "No se puede modificar"
@@ -2440,9 +2513,6 @@ msgstr ""
 msgid "URL Description:"
 msgstr "Descripción de la URL:"
 
-msgid "Save"
-msgstr "Guardar"
-
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2264
 msgid "Current survey has questions with conditions outside their own group"
 msgstr "El presente cuestionario tiene preguntas con condiciones fuera de su propio grupo."
@@ -2494,9 +2564,6 @@ msgstr "¡Este dato no podrá ser cambiado luego!"
 msgid "Date Format"
 msgstr "Formato de la fecha"
 
-msgid "Please select a file to import!"
-msgstr "¡Por favor seleccione un archivo para importar!"
-
 msgid "Import Survey"
 msgstr "Importar Encuesta"
 
@@ -2530,20 +2597,30 @@ msgstr "Visualización:"
 msgid "Select the field number you would like to use for your answers:"
 msgstr "Seleccione el número del campo que desea utilizar para sus respuestas:"
 
-msgid "Import Group"
-msgstr "Importar grupo"
-
-msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder."
+#, fuzzy, php-format
+msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
 msgstr "Ha ocurrido un error al subir el archivo. Puede ser causado porque el directorio de administración tenga permisos incorrectos."
 
 msgid "File upload succeeded."
 msgstr "Se subió el archivo con éxito."
+
+msgid "Reading file.."
+msgstr "Leyendo el archivo.."
 
 msgid "Reading file..."
 msgstr "Leyendo archivo.."
 
 msgid "This file is not a LimeSurvey group file. Import failed."
 msgstr "El archivo no contiene un formato LimeSurvey válido."
+
+msgid "You can't import a group which doesn't support the current survey's base language."
+msgstr "No se puede importar un grupo que no incluya el idioma de base."
+
+msgid "You can't import a question which doesn't support the current survey's base language."
+msgstr "No se puede importar una pregunta que no incluya el idioma de base."
+
+msgid "You can't import label sets which don't support the current survey's base language."
+msgstr "No se puede importar conjuntos de etiquetas que no incluyan el idioma de base."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/importgroup.php:566
 msgid "Import partially successful."
@@ -2574,10 +2651,8 @@ msgstr "Se completó la importación del grupo."
 msgid "Import Label Set"
 msgstr "Importar Etiquetas"
 
-msgid "Reading file.."
-msgstr "Leyendo el archivo.."
-
-msgid "This file is not a LimeSurvey question file. Import failed."
+#, fuzzy
+msgid "This file is not a LimeSurvey label set file. Import failed."
 msgstr "Este archivo no es un archivo de pregunta LimeSurvey válido. Falló la importación."
 
 msgid "Return to Labels Admin"
@@ -2628,6 +2703,15 @@ msgstr "No se indicó un SID (Encuesta). No se pudo importar la pregunta."
 msgid "No GID (Group) has been provided. Cannot import question"
 msgstr "No se indicó un GID (Grupo). No se pudo importar la pregunta"
 
+msgid "This file is not a LimeSurvey question file. Import failed."
+msgstr "Este archivo no es un archivo de pregunta LimeSurvey válido. Falló la importación."
+
+msgid "You can't import a question which doesn't support the current survey's base language"
+msgstr "No se puede importar una pregunta que no incluya el idioma de base."
+
+msgid "You can't import label sets which don't support the current survey's base language"
+msgstr "No se puede importar un conjunto de etiquetas que no incluya el idioma de base."
+
 msgid "Question Import Summary"
 msgstr "Resumen de la Importación de la Pregunta"
 
@@ -2643,11 +2727,28 @@ msgstr "La importación del cuestionario falló."
 msgid "File does not contain LimeSurvey data in the correct format."
 msgstr "El archivo no contiene un formato LimeSurvey válido."
 
+msgid "was NOT imported, because the question type is not know"
+msgstr "no ha sido importado debido a que no se conoce el tipo de pregunta."
+
+msgid "was imported, but the type was set to \""
+msgstr "ha sido importado, pero el tipo se estableció como\""
+
+#, fuzzy
+msgid "type"
+msgstr "Tipo:"
+
+msgid "\", because is the closest one"
+msgstr ""
+
 msgid "Survey Import Summary"
 msgstr "Resumen de la importación del cuestionario "
 
 msgid "Question Attributes"
 msgstr "Atributos de la pregunta"
+
+#, fuzzy
+msgid "Warnings"
+msgstr "Advertencia"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/integritycheck.php:52
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/integritycheck.php:326
@@ -2657,11 +2758,30 @@ msgstr "Verificación de Consistencia de Datos"
 msgid "If errors are showing up you might have to execute this script repeatedly."
 msgstr "Si aparecen errores, deberá ejecutar este proceso repetidas veces."
 
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:51
+msgid "No matching Cqid"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:58
+msgid "No matching CFIELDNAME Group!"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:62
+msgid "No \"CFIELDNAME\" field set!"
+msgstr ""
+
 msgid "The following conditions should be deleted"
 msgstr "Las siguientes condiciones deberían ser borradas"
 
+msgid "because"
+msgstr "por que"
+
 msgid "All conditions meet consistency standards"
 msgstr "Todas las condiciones son consistentes"
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:87
+msgid "No matching qid"
+msgstr ""
 
 msgid "The following question attributes should be deleted"
 msgstr "Los siguientes atributos de preguntas deberían ser borrados"
@@ -2669,11 +2789,28 @@ msgstr "Los siguientes atributos de preguntas deberían ser borrados"
 msgid "All question_attributes meet consistency standards"
 msgstr "Todos los atributos de preguntas son consistentes"
 
+#, fuzzy
+msgid "No matching survey"
+msgstr "No se encontró ningún cuestionario."
+
+#, fuzzy
+msgid "No matching group"
+msgstr "Cerrar este Grupo"
+
 msgid "The following assessments should be deleted"
 msgstr "Las siguientes evaluaciones deberían ser borradas"
 
-msgid "All assessments meet consistency standards"
+#, fuzzy
+msgid "All Survey (Total) assessments meet consistency standards"
 msgstr "Todas las evaluaciones son consistentes"
+
+#, fuzzy
+msgid "All Group assessments meet consistency standards"
+msgstr "Todas las evaluaciones son consistentes"
+
+#, fuzzy
+msgid "No matching question"
+msgstr "Cerrar esta Pregunta"
 
 msgid "The following answers should be deleted"
 msgstr "Las siguientes respuestas deberían ser borradas"
@@ -2691,6 +2828,14 @@ msgstr "Los siguientes cuestionarios deberían ser eliminados"
 msgid "All survey settings meet consistency standards"
 msgstr "Los parámetros del cuestionario satisfacen las consistencias estándar"
 
+#, fuzzy
+msgid "No matching Group"
+msgstr "Cerrar este Grupo"
+
+#, fuzzy
+msgid "No matching Survey!"
+msgstr "No se encontró ningún cuestionario."
+
 msgid "The following questions should be deleted"
 msgstr "Las siguientes preguntas deberían ser borradas"
 
@@ -2706,11 +2851,71 @@ msgstr "Todos los grupos son consistentes"
 msgid "No database action required"
 msgstr "No se requiere acción de la base de datos"
 
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:247
+msgid "Should we proceed with the delete?"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:290
+msgid "Yes - Delete Them!"
+msgstr ""
+
+#, fuzzy
+msgid "Deleting Surveys"
+msgstr "Eliminar Encuesta"
+
+#, fuzzy
+msgid "Deleting Survey ID"
+msgstr "Eliminar Encuesta"
+
+#, fuzzy
+msgid "Deleting Assessments"
+msgstr "Evaluaciones"
+
+#, fuzzy
+msgid "Deleting ID"
+msgstr "Borrando el Usuario"
+
+#, fuzzy
+msgid "Deleting Question_Attributes"
+msgstr "Atributos de la pregunta"
+
+#, fuzzy
+msgid "Deleting Conditions"
+msgstr "Filtrar condiciones"
+
+#, fuzzy
+msgid "Deleting cid"
+msgstr "Borrando la identificación del grupo"
+
+#, fuzzy
+msgid "Deleting Answers"
+msgstr "Borrando el Usuario"
+
+#, fuzzy
+msgid "Deleting answer with qid"
+msgstr "Borrando el Usuario"
+
+#, fuzzy
+msgid "Deleting Questions"
+msgstr "Defina las preguntas"
+
+#, fuzzy
+msgid "Deleting qid"
+msgstr "Borrando la identificación del grupo"
+
 msgid "Deleting Groups"
 msgstr "Borrando grupos"
 
 msgid "Deleting group id"
 msgstr "Borrando la identificación del grupo"
+
+#, fuzzy
+msgid "Check database again?"
+msgstr "Revisar Campos de la Base de Datos"
+
+#, fuzzy
+msgid "Check Again"
+msgstr "Verificar Datos"
 
 msgid "Label Sets Administration"
 msgstr "Administración de Etiquetas"
@@ -2738,13 +2943,10 @@ msgstr "Nombre del Conjunto"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:160
 msgid "You cannot remove this items since you need at least one language in a labelset."
-msgstr "No puede eliminar estos ítems debido a que se necesita al menos un idioma en un juego de etiquetas."
+msgstr "No puede eliminar estos ítems debido a que se necesita al menos un idioma en un conjunto de etiquetas."
 
 msgid "Update"
 msgstr "Actualizar"
-
-msgid "Select CSV File:"
-msgstr "Seleccionar Archivo CSV"
 
 msgid "Edit label set"
 msgstr "Modificar Etiquetas"
@@ -2785,13 +2987,17 @@ msgstr "No se pudo actualizar el conjunto de etiquetas"
 msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
 msgstr "No se pudo borrar el conjunto de etiquetas - Hay preguntas que dependen de ellas. Debe borrar estas preguntas primero antes de poder continuar."
 
+#, fuzzy
+msgid "Insert of Label Set failed"
+msgstr "No se pudo actualizar el conjunto de etiquetas"
+
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:585
 msgid "Failed to insert label"
 msgstr "No se pudo insertar la etiqueta"
 
 # C:/documentos/www/docs/limesurvey15/admin/labels.php:610
 msgid "This label code is already used in this labelset. Please choose another code or rename the existing one."
-msgstr "El código de etiqueta ya esta en uso para este conuntos. Por favor, elija otro código o renombre el anterior."
+msgstr "El código de etiqueta ya esta en uso para este conjuntos. Por favor, elija otro código o renombre el anterior."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:615
 msgid "Failed to update label"
@@ -2875,17 +3081,15 @@ msgstr "Gracias por completar este cuestionario."
 msgid "Please fax your completed survey to:"
 msgstr "Por favor, envíe un fax con su cuestionario completado a:"
 
+#, fuzzy
+msgid "Please submit by"
+msgstr "Aguarde, por favor..."
+
 msgid "Add Question"
 msgstr "Agregar Pregunta"
 
-msgid "Required"
-msgstr "Obligatorio"
-
 msgid "Label Set:"
 msgstr "Etiquetas:"
-
-msgid "Mandatory:"
-msgstr "Obligatoria:"
 
 msgid "Select CSV File"
 msgstr "Seleccionar Archivo CSV"
@@ -2907,6 +3111,9 @@ msgstr "¿Copiar los atributos?"
 
 msgid "Edit Question"
 msgstr "Editar Pregunta"
+
+msgid "Survey is currently active."
+msgstr "La encuesta está activa."
 
 msgid "Update Question"
 msgstr "Actualizar Pregunta"
@@ -2946,6 +3153,10 @@ msgstr "Fecha de finalización"
 msgid "Start Language"
 msgstr "Idioma inicial"
 
+#, fuzzy
+msgid "Not Selected"
+msgstr "Registro Borrado"
+
 msgid "Filter Settings"
 msgstr "Opciones del Filtro"
 
@@ -2972,6 +3183,9 @@ msgstr "Ver Estadísticas"
 
 msgid "Please wait ..."
 msgstr "Aguarde, por favor..."
+
+msgid "Go Back"
+msgstr "Volver"
 
 # C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/statistics.php:734
 msgid "Getting Questions and Answers ..."
@@ -3101,6 +3315,9 @@ msgstr "Quizá no tenga permisos."
 msgid "Directory could not be renamed to"
 msgstr "No se puede renombrar la carpeta a"
 
+msgid "This file type is not allowed to be uploaded."
+msgstr "No se permite cargar este tipo de archivo."
+
 msgid "Welcome Page"
 msgstr "Página de Bienvenida"
 
@@ -3217,14 +3434,14 @@ msgstr "Si inicializa una tabla de encuestados/as para esta encuesta, ésta sól
 msgid "Do you want to create a tokens table for this survey?"
 msgstr "¿Desea crear una tabla de encuestados/as para esta encuesta?"
 
+msgid "Restore Options"
+msgstr "Opciones de Recuperación"
+
 msgid "The following old token tables could be restored:"
 msgstr "Las siguientes tablas invocadas deberían ser recuperadas:"
 
 msgid "Restore"
 msgstr "Recuperar"
-
-msgid "Restore Options"
-msgstr "Opciones de Recuperación"
 
 msgid "Display Tokens"
 msgstr "Mostrar encuestados/as"
@@ -3350,15 +3567,15 @@ msgstr "Una copia de respaldo de esta tabla ha sido creada y puede ser accedida 
 msgid "Email Invitation"
 msgstr "Enviar Invitación (por email)"
 
-# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:746
-msgid "to TokenID No"
-msgstr "Para encuestado/a nº"
-
 msgid "From"
 msgstr "De"
 
 msgid "Subject"
 msgstr "Asunto"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:746
+msgid "to TokenID No"
+msgstr "Para encuestado/a nº"
 
 msgid "Send Invitations"
 msgstr "Enviar Invitaciones"
@@ -3388,7 +3605,8 @@ msgstr "No hay direcciones de candidatos elegibles para enviar. Esto fue causado
 msgid "Email Reminder"
 msgstr "Enviar Recordatorio (por email)"
 
-msgid "Start at TID No:"
+#, fuzzy
+msgid "Start at Token ID No:"
 msgstr "Iniciar en el TID Núm:"
 
 msgid "Send Reminders"
@@ -3420,6 +3638,11 @@ msgstr "Recargando la pantalla. Por favor espere."
 
 msgid "Add or Edit Token"
 msgstr "Agregar o Modificar Encuestado/a"
+
+# C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1501
+#, fuzzy
+msgid "Auto"
+msgstr "Automático"
 
 msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
 msgstr "Puede dejarla en blanco y generarla posteriormente de forma automática utilizando 'Generar contraseñas'"
@@ -3696,6 +3919,9 @@ msgstr "El envío del mensaje de correo electrónico a {FIRSTNAME} {LASTNAME} ({
 msgid "Logging in..."
 msgstr "Ingresando..."
 
+msgid "Incorrect User name and/or Password!"
+msgstr "Nombre de usuario y/o contraseña incorrectos"
+
 msgid "Welcome {NAME}"
 msgstr "Bienvenida/o {NAME}"
 
@@ -3765,9 +3991,6 @@ msgstr "La actualización de los permisos del usuario fue exitosa."
 msgid "You are not allowed to change your own rights!"
 msgstr "¡No puede cambiar sus propios permisos!"
 
-msgid "User Groups"
-msgstr "Grupos de usuario"
-
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:69
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:543
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:637
@@ -3782,6 +4005,9 @@ msgstr "Eliminar el actual grupo de usuarios"
 
 msgid "Add New User Group"
 msgstr "Agregar grupo de usuarios"
+
+msgid "User Groups"
+msgstr "Grupos de usuario"
 
 msgid "Full name"
 msgstr "Nombre completo"
@@ -3823,9 +4049,6 @@ msgstr "Editar usuario"
 
 msgid "Name:"
 msgstr "Nombre:"
-
-msgid "Optional"
-msgstr "Opcional"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:507
 msgid "Edit User Group (Owner: "
@@ -3904,12 +4127,6 @@ msgstr "¡Se modificó el grupo de usuarios con éxito!"
 msgid "Failed to update!"
 msgstr "¡No se pudo actualizar!"
 
-msgid "Edit Group"
-msgstr "Editar grupo"
-
-msgid "Update Group"
-msgstr "Actualizar Grupo"
-
 msgid "Adding User to group"
 msgstr "Agregando usuario al grupo"
 
@@ -3951,9 +4168,6 @@ msgstr "Volver a la Importación de Respuestas"
 msgid "Import Failed on Record"
 msgstr "Fallo en la importación en el Elemento"
 
-msgid "because"
-msgstr "por que"
-
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/vvimport.php:230
 msgid "Important Note:"
 msgstr "Lea Atentamente:"
@@ -3963,6 +4177,28 @@ msgstr "Nota importante:NO refresque esta página, esto haría que se importe nu
 
 msgid "Total records imported:"
 msgstr "Total de elementos importados:"
+
+msgid "Create Database"
+msgstr "Crear Base de Datos"
+
+msgid "Populate Database"
+msgstr "Rellenar Base de Datos"
+
+#, php-format
+msgid "Database `%s` has been successfully populated."
+msgstr "La Base de Datos `%s` ha sido creada."
+
+msgid "Database Information not provided. This script must be run from admin.php only."
+msgstr "La información para acceder a la base de datos no se ha dado. Este guión debe ser ejecutado desde el admin.php solamente."
+
+msgid "Database has been created."
+msgstr "La Base de Datos ha sido creada."
+
+msgid "Please click below to populate the database"
+msgstr "Haga clic para rellenar la base de datos"
+
+msgid "Could not create database"
+msgstr "No se pudo crear la base de datos"
 
 msgid "Welcome to LimeSurvey Setup!"
 msgstr "¡Bienvenido a la configuración de LimeSurvey!"
@@ -3978,8 +4214,8 @@ msgid "Your selected database name is:"
 msgstr "El nombre de la base de datos seleccionada es:"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/install/index.php:68
-#, php-format
-msgid "A database named \"%s\" does already exist."
+#, fuzzy, php-format
+msgid "A database named \"%s\" already exists."
 msgstr "una base de datos con el nombre  \"%s\" ya existe."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/install/index.php:69
@@ -3989,17 +4225,21 @@ msgstr "¿Desea poblar la base de datos ahora creando las tablas necesarias?"
 msgid "Database has been successfully upgraded to version "
 msgstr "La Base de Datos se ha actualizado exitosamente a la versión "
 
+msgid "Basque"
+msgstr "Vasco"
+
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:67
 msgid "Bulgarian"
 msgstr "Búlgaro"
 
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:71
-msgid "Chinese (Traditional)"
-msgstr "Chino (Tradicional)"
-
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:75
 msgid "Chinese (Simplified)"
 msgstr "Chino (Simplificado)"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:71
+#, fuzzy
+msgid "Chinese (Traditional - Hong Kong)"
+msgstr "Chino (Tradicional)"
 
 msgid "Croatian"
 msgstr "Croata"
@@ -4023,6 +4263,11 @@ msgstr "Finlandés"
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:100
 msgid "French"
 msgstr "Francés"
+
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:124
+#, fuzzy
+msgid "Galician"
+msgstr "Italiano"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:104
 msgid "German"
@@ -4060,6 +4305,11 @@ msgstr "Lituanés"
 msgid "Norwegian"
 msgstr "Noruego"
 
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:91
+#, fuzzy
+msgid "Polish"
+msgstr "Inglés"
+
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:140
 msgid "Portuguese"
 msgstr "Portugues"
@@ -4079,6 +4329,11 @@ msgstr "Rumano"
 msgid "Slovenian"
 msgstr "Esloveno"
 
+# C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:157
+#, fuzzy
+msgid "Serbian"
+msgstr "Esloveno"
+
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:161
 msgid "Spanish"
 msgstr "Español"
@@ -4091,7 +4346,13 @@ msgstr "Sueco"
 msgid "Turkish"
 msgstr "Turco"
 
+msgid "Thai"
+msgstr "Tailandés"
+
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:169
 msgid "Vietnamese"
 msgstr "Vietnamita"
+
+msgid "Czech"
+msgstr "Checo"
 
