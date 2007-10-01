@@ -278,7 +278,7 @@ function savedcontrol()
 				$message.=$publicurl."/index.php?sid=$surveyid&loadall=reload&scid=".$scid."&loadname=".urlencode($_POST['savename'])."&loadpass=".urlencode($_POST['savepass']);
 
 				if (returnglobal('token')){$message.="&token=".returnglobal('token');}
-				$from=$thissurvey['adminemail'];
+				$from="{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
 				if (MailTextMessage($message, $subject, $_POST['saveemail'], $from, $sitename))
 				{
 					$emailsent="Y";
