@@ -184,10 +184,12 @@ $bigarray = array_values($bigarray);
 //LAST LOT (now question_attributes)
 if (!isset($noconditions) || $noconditions != "Y")
 {
+	// stoppoint is the last line number
+	// this is an empty line after the QA CSV lines
 	$stoppoint = count($bigarray)-1;
 	for ($i=0; $i<=$stoppoint+1; $i++)
 	{
-		if ($i<$stoppoint-1) {$question_attributesarray[] = $bigarray[$i];}
+		if ($i<=$stoppoint-1) {$question_attributesarray[] = $bigarray[$i];}
 		unset($bigarray[$i]);
 	}
 }
