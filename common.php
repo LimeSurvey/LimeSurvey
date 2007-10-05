@@ -2431,7 +2431,7 @@ function getAdminFooter($url, $explanation)
 {
 	global $versionnumber, $setfont, $imagefiles, $clang;
 	$strHTMLFooter = "<div class='footer'>\n"
-	. "\t\t\t<div style='float:left; min-width:107;'><img alt='LimeSurvey - ".$clang->gT("Online Manual")."' title='LimeSurvey - ".$clang->gT("Online Manual")."' src='$imagefiles/help.gif' "
+	. "\t\t\t<div style='float:left;'><img alt='LimeSurvey - ".$clang->gT("Online Manual")."' title='LimeSurvey - ".$clang->gT("Online Manual")."' src='$imagefiles/help.gif' "
 	. "onclick=\"window.open('$url')\" onmouseover=\"document.body.style.cursor='pointer'\" "
 	. "onmouseout=\"document.body.style.cursor='auto'\" /></div>\n"
 	. "\t\t\t<div style='float:right;'><img alt='".$clang->gT("Support this project - Donate to ")."LimeSurvey' title='".$clang->gT("Support this project - Donate to ")."LimeSurvey!' src='$imagefiles/donate.png' "
