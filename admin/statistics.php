@@ -1334,7 +1334,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				}
 				if (($qtype == "L" || $qtype == "!") && $qother == "Y")
 				{
-					$alist[]=array($clang->gT("Other"),$clang->gT("Other"),$myfield.'Other');
+					$alist[]=array($clang->gT("Other"),$clang->gT("Other"),$fielddata['fieldname'].'other');
 				}
 			}
 		}
