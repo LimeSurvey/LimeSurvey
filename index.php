@@ -959,7 +959,7 @@ function submittokens()
 
 	// Put date into sent and completed
 	
-	$today = date("Y-m-d");
+	$today = date_shift($date, "Y-m-d", $timeadjust);     
 	$utquery = "UPDATE {$dbprefix}tokens_$surveyid\n";
 	if (bIsTokenCompletedDatestamped($thissurvey))
 	{
