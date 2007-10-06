@@ -221,7 +221,8 @@ function savedcontrol()
 		//INSERT BLANK RECORD INTO "survey_x" if one doesn't already exist
 		if (!isset($_SESSION['srid']))
 		{
-			$sdata = array("datestamp"=>date("Y-m-d H:i:s"),
+            $today = date_shift($date, "Y-m-d H:i:s", $timeadjust);     
+			$sdata = array("datestamp"=>$today,
 			"ipaddr"=>$_SERVER['REMOTE_ADDR'],
 			"startlanguage"=>GetBaseLanguageFromSurveyID($surveyid),
 			"refurl"=>getenv("HTTP_REFERER"));
@@ -237,6 +238,7 @@ function savedcontrol()
 			}
 		}
 		//CREATE ENTRY INTO "saved_control"
+        $today = date_shift($date, "Y-m-d H:i:s", $timeadjust);      
 		$scdata = array("sid"=>$surveyid,
 		"srid"=>$_SESSION['srid'],
 		"identifier"=>$_POST['savename'],
@@ -246,7 +248,7 @@ function savedcontrol()
 		"refurl"=>getenv("HTTP_REFERER"),
 		"saved_thisstep"=>$_POST['thisstep'],
 		"status"=>"S",
-		"saved_date"=>date("Y-m-d H:i:s"));
+		"saved_date"=>$today);
 
 
 		if ($connect->AutoExecute("{$dbprefix}saved_control", $scdata,'INSERT'))
@@ -329,7 +331,8 @@ function createinsertquery()
 
 		if ($thissurvey['datestamp'] == "Y")
 		{
-			$_SESSION['datestamp']=date("Y-m-d H:i:s");
+			$_SESSION['datestamp']=date_shift($date, "Y-m-d H:i:s", $timeadjust);      
+            
 		}
 
 		// --> START NEW FEATURE - SAVE
@@ -344,7 +347,7 @@ function createinsertquery()
 		}
 		else
 		{
-			$mysubmitdate = date("Y-m-d H:i:s");
+			$mysubmitdate = date_shift($date, "Y-m-d H:i:s", $timeadjust);      
 		}
 		// CHECK TO SEE IF ROW ALREADY EXISTS
 		if (!isset($_SESSION['srid']))

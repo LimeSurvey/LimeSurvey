@@ -203,7 +203,7 @@ if ($sourcefrom == "admin")
 }
 
 //SET LOCAL TIME
-$localtimedate=(strftime("%Y-%m-%d %H:%M", mktime(date("H")+$timeadjust)));
+if (substr($timeadjust,1,1)!='-' && substr($timeadjust,1,1)!='+') {$timeadjust='+'.$timeadjust.' hours';}
 
 // SITE STYLES
 $setfont = "<font size='2' face='verdana'>";
@@ -3987,5 +3987,20 @@ function bIsTokenCompletedDatestamped($thesurvey)
 		return true;
 	}
 }
+
+function date_shift($date, $dformat, $shift)
+/* example usage
+
+$date = "2006-12-31 21:00";
+$shift "+6 hours"; // could be days, weeks... see function strtotime() for usage
+
+echo sql_date_shift($date, "Y-m-d H:i:s", $shift);
+
+// will output: 2007-01-01 03:00:00
+*/
+{
+return date($dformat, strtotime($shift, strtotime($date)));
+}
+
 
 ?>
