@@ -546,10 +546,10 @@ function checkgroupfordisplay($gid)
 					// For multiple choice type questions, the "answer" value will be "Y"
 					// if selected, the fieldname will have the answer code appended.
 					$fieldname=$row['cfieldname'].$row['value'];
+                    $cvalue="Y";
 					if (isset($_SESSION[$fieldname]))
 					{
 						$cfieldname=$_SESSION[$fieldname];
-						$cvalue="Y";
 					}
 				}
 				else
