@@ -45,8 +45,8 @@ body
 	color: #333333;
 	font-size: 9pt;
 	font-family: verdana;
-                width: 400;
-                height: 100;
+                width: 400px;
+                height: 100px;
 	}
 .clearall
 	{
@@ -83,7 +83,7 @@ body
 .graph
 	{
 	border: solid;
-	border-width: 1;
+	border-width: 1px;
 	border-color: #0A47FF;
 	background-color: #E5F9FF;
 	}

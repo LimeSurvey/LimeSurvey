@@ -394,13 +394,13 @@ else {echo $adminoutput;}
   	."\t\t\t\t\t</font></td>\n"
   	."\t\t\t\t</tr>\n"
   	."\t\t\t\t<tr>\n"
-  	."\t\t\t\t\t<td align='center' bgcolor='#AAAAAA' style='border-style: solid; border-width: 1; border-color: #555555'>\n"
+  	."\t\t\t\t\t<td align='center' bgcolor='#AAAAAA' style='border-style: solid; border-width: 1px; border-color: #555555'>\n"
   	."\t\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' hspace='0' border='0' align='left' />\n"
   	."\t\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' name='CloseHelp' align='right' onclick=\"showhelp('hide')\" />\n"
   	."\t\t\t\t\t</td>\n"
   	."\t\t\t\t</tr>\n"
   	."\t\t\t\t<tr>\n"
-  	."\t\t\t\t\t<td bgcolor='silver' height='100%' style='border-style: solid; border-width: 1; border-color: #333333'>\n";
+  	."\t\t\t\t\t<td bgcolor='silver' height='100%' style='border-style: solid; border-width: 1px; border-color: #333333'>\n";
   	//determine which help document to show
   	if (!$surveyid && $action != "editusers")
   	{

@@ -792,7 +792,7 @@ function do_list_radio($ia)
 	while ($ansrow = $ansresult->FetchRow())
 	{
 		$rowcounter++;
-		$answer .= "\t\t\t\t\t\t\t\t<div style='text-indent: -22; margin: 0 0 0 22;'>  <input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='answer$ia[1]{$ansrow['code']}'";
+		$answer .= "\t\t\t\t\t\t\t\t<div style='text-indent: -22px; margin: 0px 0px 0px 22px;'>  <input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='answer$ia[1]{$ansrow['code']}'";
 		if ($_SESSION[$ia[1]] == $ansrow['code'])
 		{
 			$answer .= " checked='checked'";
@@ -808,7 +808,7 @@ function do_list_radio($ia)
 	if (isset($other) && $other=="Y")
 	{
 		$rowcounter++;
-		$answer .= "\t\t\t\t\t\t\t\t  <div style='text-indent: -22; margin: 0 0 0 22;'> <input class='radio' type='radio' value='-oth-' name='$ia[1]' id='SOTH$ia[1]'";
+		$answer .= "\t\t\t\t\t\t\t\t  <div style='text-indent: -22px; margin: 0px 0px 0px 22px;'> <input class='radio' type='radio' value='-oth-' name='$ia[1]' id='SOTH$ia[1]'";
 		if ($_SESSION[$ia[1]] == "-oth-")
 		{
 			$answer .= " checked='checked'";
