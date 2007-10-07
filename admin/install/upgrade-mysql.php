@@ -111,8 +111,8 @@ if (!$result) {
    
 while ( $tables = $result->FetchRow() ) {
 // Loop through all tables in this database
-   $table = $tables['name'];
-   $tablecollation=$tables['collation'];
+   $table = $tables['Name'];
+   $tablecollation=$tables['Collation'];
    if (strpos($table,'old_')===false)
    {
 	   if ($tablecollation!='utf8_unicode_ci')
