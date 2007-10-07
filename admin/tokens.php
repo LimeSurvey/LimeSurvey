@@ -852,7 +852,7 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 				if (MailTextMessage($modmessage, $modsubject, $to , $from, $sitename))
 				{
 					// Put date into sent
-					$today = date_shift(date("Y-m-d H:i"), "Y-m-d H:i", $timeadjust);
+					$today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
 					$udequery = "UPDATE ".db_table_name("tokens_{$_POST['sid']}")."\n"
 					."SET sent='$today' WHERE tid={$emrow['tid']}";
 					//

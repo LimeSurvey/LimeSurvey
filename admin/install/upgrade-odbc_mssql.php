@@ -87,7 +87,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
     }
     if ($oldversion < 113) {
 	//No action needed
-        modify_database("","update `prefix_settings_global` set `stg_value`='112' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+        modify_database("","update `prefix_settings_global` set `stg_value`='113' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
 
 
