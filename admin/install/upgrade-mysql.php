@@ -122,22 +122,25 @@ while ( $tables = $result->FetchRow() ) {
 	   }            
 	  
 	   # Now loop through all the fields within this table
-	   $result2 = db_execute_assoc("SHOW FULL COLUMNS FROM ".$table." WHERE COLLATION <> 'utf8_unicode_ci'");
+	   $result2 = db_execute_assoc("SHOW FULL COLUMNS FROM ".$table);
 	   while ( $column = $result2->FetchRow())
 	   {
-	      $field_name = $column['Field'];
-	      $field_type = $column['Type'];
-	     
-	      # Change text based fields
-	      $skipped_field_types = array('char', 'text', 'enum', 'set');
-	     
-	      foreach ( $skipped_field_types as $type )
-	      {        
-	         if ( strpos($field_type, $type) !== false )
-	         {
-	            modify_database("","ALTER TABLE $table CHANGE `$field_name` `$field_name` $field_type CHARACTER SET utf8 COLLATE utf8_unicode_ci");
-	            echo $modifyoutput; flush();            
-	         }
+	   if ($column['Collation']!= 'utf8_unicode_ci' )
+		   {
+		      $field_name = $column['Field'];
+		      $field_type = $column['Type'];
+		     
+		      # Change text based fields
+		      $skipped_field_types = array('char', 'text', 'enum', 'set');
+		     
+		      foreach ( $skipped_field_types as $type )
+		      {        
+		         if ( strpos($field_type, $type) !== false )
+		         {
+		            modify_database("","ALTER TABLE $table CHANGE `$field_name` `$field_name` $field_type CHARACTER SET utf8 COLLATE utf8_unicode_ci");
+		            echo $modifyoutput; flush();            
+		         }
+		      }
 	      }
 	   }
    }
