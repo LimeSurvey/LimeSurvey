@@ -89,6 +89,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
 
     if ($oldversion < 113) {
         //Fixes the collation for the complete DB, tables and columns
+        echo "<strong>Attention:</strong>The following upgrades will update your MySQL Database collations. This may take some time.<br />If for any reason you should get a timeout just re-run the upgrade procedure. The updating will continue where it left off.<br /><br />"; flush();   
         fix_mysql_collation(); 
         modify_database("","ALTER DATABASE `$databasename` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
         modify_database("","update `prefix_settings_global` set `stg_value`='113' where stg_name='DBVersion'"); echo $modifyoutput; flush();
@@ -102,23 +103,26 @@ echo str_pad('Loading... ',4096)."<br />\n";
 function fix_mysql_collation()
 {
 global $connect, $modifyoutput;
-$sql = 'SHOW TABLES';
-$result = db_execute_num($sql);
+$sql = 'SHOW TABLE STATUS';
+$result = db_execute_assoc($sql);
 if (!$result) {
        $modifyoutput .= 'SHOW TABLE - SQL Error';
     }
    
 while ( $tables = $result->FetchRow() ) {
 // Loop through all tables in this database
-   $table = $tables[0];
+   $table = $tables['name'];
+   $tablecollation=$tables['collation'];
    if (strpos($table,'old_')===false)
    {
+	   if ($tablecollation!='utf8_unicode_ci')
+	   {
 	   modify_database("","ALTER TABLE $table COLLATE utf8_unicode_ci");
-	   echo $modifyoutput; flush();            
+	   echo $modifyoutput; flush();
+	   }            
 	  
 	   # Now loop through all the fields within this table
-	   $result2 = db_execute_assoc("SHOW COLUMNS FROM ".$table);
-	   
+	   $result2 = db_execute_assoc("SHOW FULL COLUMNS FROM ".$table." WHERE COLLATION <> 'utf8_unicode_ci'");
 	   while ( $column = $result2->FetchRow())
 	   {
 	      $field_name = $column['Field'];
