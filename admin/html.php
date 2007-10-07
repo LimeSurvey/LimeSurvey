@@ -57,7 +57,7 @@ if ($action == "listsurveys")
 
 			if($rows['active']=="Y")
 			{
-				if ($rows['useexpiry']=='Y' && $rows['expires'] < date_shift($date, "Y-m-d", $timeadjust))
+				if ($rows['useexpiry']=='Y' && $rows['expires'] < date_shift(date("Y-m-d H:i"), "Y-m-d", $timeadjust))
 				{
 					$status=$clang->gT("Expired") ;
 				} else {
@@ -82,7 +82,7 @@ if ($action == "listsurveys")
 
 			if ($rows['active']=="Y")
 			{
-				if ($rows['useexpiry']=='Y' && $rows['expires'] < date_shift($date, "Y-m-d", $timeadjust))
+				if ($rows['useexpiry']=='Y' && $rows['expires'] < date_shift(date("Y-m-d H:i"), "Y-m-d", $timeadjust))
 				{
 					$listsurveys .= "<td><img src='$imagefiles/expired.png' title='' "
 					. "alt='".$clang->gT("This survey is active but expired.")."' align='left' width='20'"
@@ -327,7 +327,7 @@ if ($surveyid)
 		}
 		elseif ($activated == "Y")
 		{
-			if (($s1row['useexpiry']=='Y') && ($s1row['expires'] < date_shift($date, "Y-m-d", $timeadjust)))
+			if (($s1row['useexpiry']=='Y') && ($s1row['expires'] < date_shift(date("Y-m-d H:i"), "Y-m-d", $timeadjust)))
 			{
 				$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/expired.png' title='' "
 				. "alt='".$clang->gT("This survey is active but expired.")."' align='left'"
@@ -2524,7 +2524,7 @@ if ($action == "newsurvey")
 		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option></select></td></tr>\n"
 		. "<tr><td>".$clang->gT("Expiry Date:")."</td>\n"
 		. "\t\t<td align='left'><input type='text' id='f_date_b' size='12' name='expires' value='"
-		. date_shift($date, "Y-m-d", $timeadjust)."' /><button type='reset' id='f_trigger_b'>...</button>"
+		. date_shift(date("Y-m-d H:i"), "Y-m-d", $timeadjust)."' /><button type='reset' id='f_trigger_b'>...</button>"
 		. "<font size='1'> ".$clang->gT("Date Format").": YYYY-MM-DD</font></td></tr>\n"
 		. "\t<tr><td>".$clang->gT("End URL:")."</td>\n"
 		. "\t\t<td align='left'><input type='text' size='50' name='url' value='http://";

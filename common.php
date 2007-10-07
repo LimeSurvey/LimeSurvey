@@ -204,7 +204,7 @@ if ($sourcefrom == "admin")
 
 //SET LOCAL TIME
 if (substr($timeadjust,1,1)!='-' && substr($timeadjust,1,1)!='+') {$timeadjust='+'.$timeadjust.' hours';}
-
+$date=
 // SITE STYLES
 $setfont = "<font size='2' face='verdana'>";
 
