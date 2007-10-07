@@ -85,6 +85,10 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","ALTER TABLE `prefix_users` ALTER COLUMN `users_name` VARCHAR( 64 ) NOT NULL"); echo $modifyoutput; flush();
         modify_database("","update `prefix_settings_global` set `stg_value`='112' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
+    if ($oldversion < 113) {
+	//No action needed
+        modify_database("","update `prefix_settings_global` set `stg_value`='112' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+    }
 
 
     return true;

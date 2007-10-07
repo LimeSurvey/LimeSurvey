@@ -301,7 +301,7 @@ function createinsertquery()
 	// Performance Improvement	: 31%
 	// Optimized By				: swales
 
-	global $thissurvey;
+	global $thissurvey,$timeadjust;
 	global $deletenonvalues, $thistpl;
 	global $surveyid, $connect, $clang;
 	$fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
