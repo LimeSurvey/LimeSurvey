@@ -483,7 +483,7 @@ if ($importversion<=100)
 
 if (isset($surveyrowdata['datecreated'])) {$surveyrowdata['datecreated']=$connect->BindTimeStamp($surveyrowdata['datecreated']);}
 if (isset($surveyrowdata['expires']) && $surveyrowdata['expires'] !='') {$surveyrowdata['expires']=$connect->BindTimeStamp($surveyrowdata['expires']);}
-if (!isset($surveyrowdata['datecreated']) || $surveyrowdata['datecreated']=='' || $surveyrowdata['datecreated']=='null') {$surveyrowdata['datecreated']=$connect->BindTimeStamp(date_shift($date, "Y-m-d", $timeadjust));}
+if (!isset($surveyrowdata['datecreated']) || $surveyrowdata['datecreated']=='' || $surveyrowdata['datecreated']=='null') {$surveyrowdata['datecreated']=$connect->BindTimeStamp(date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust));}
 
 $values=array_values($surveyrowdata);
 $values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly

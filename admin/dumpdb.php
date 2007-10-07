@@ -39,7 +39,7 @@ if ($database_exists && $databasetype=='mysql') {
 		}
 	}
 	
-	$file_name = "LimeSurvey_{$databasename}_dump_".date_shift($date, "Y-m-d", $timeadjust).".sql";
+	$file_name = "LimeSurvey_{$databasename}_dump_".date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust).".sql";
 	Header("Content-type: application/octet-stream");
 	Header("Content-Disposition: attachment; filename=$file_name");
 	Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");

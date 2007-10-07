@@ -345,7 +345,7 @@ if($actsurrows['browse_response'])
 			}*/
 			if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') // submittoken
 			{
-				$today = date_shift($date, "Y-m-d", $timeadjust);      
+				$today = date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust);      
 				$utquery = "UPDATE {$dbprefix}tokens_$surveyid\n";
 				if (bIsTokenCompletedDatestamped($thissurvey))
 				{
@@ -371,7 +371,7 @@ if($actsurrows['browse_response'])
 				"refurl"=>getenv("HTTP_REFERER"),
 				'saved_thisstep' => 0,
 				"status"=>"S",
-				"saved_date"=>date_shift($date, "Y-m-d H:i:s", $timeadjust));
+				"saved_date"=>date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust));
 
 				if ($connect->AutoExecute("{$dbprefix}saved_control", $scdata,'INSERT'))
 				{
@@ -388,7 +388,7 @@ if($actsurrows['browse_response'])
     				"email"=>$saver['email'],
                     "token"=>randomkey(10),
                     "language"=>$saver['language'],
-                    "sent"=>date_shift($date, "Y-m-d H:i", $timeadjust), 	
+                    "sent"=>date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust), 	
                     "completed"=>"N");
                     $connect->AutoExecute(db_table_name("tokens_".$surveyid), $tokendata,'INSERT');
 					$dataentryoutput .= "<font color='green'>".$clang->gT("A token entry for the saved survey has been created too.")."</font><br />\n";
@@ -615,7 +615,7 @@ if($actsurrows['browse_response'])
 				}
 			}
 			$results1['id']="";
-			$results1['datestamp']=date_shift($date, "Y-m-d H:i:s", $timeadjust);      
+			$results1['datestamp']=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);      
 			$results1['ipaddr']=$saver['ip'];
 			$results[]=$results1;
 		}
@@ -1257,7 +1257,7 @@ if($actsurrows['browse_response'])
 			$dataentryoutput .= "\t\t<td colspan='3' align='center'>\n";
 			$dataentryoutput .= "\t\t<table><tr><td align='left'>\n";
 			$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' /><label for='closerecord'>".$clang->gT("Finalize response submission")."</label></td></tr>\n";
-			$dataentryoutput .="<input type='hidden' name='closedate' value='".date_shift($date, "Y-m-d H:i:s", $timeadjust)."' />\n";
+			$dataentryoutput .="<input type='hidden' name='closedate' value='".date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)."' />\n";
 			$dataentryoutput .= "\t\t\t<tr><td align='left'><input type='checkbox' class='checkboxbtn' name='save' id='save' onclick='saveshow(this.id)' /><label for='save'>".$clang->gT("Save for further completion by survey user")."</label>\n";
 			$dataentryoutput .= "\t\t</td></tr></table>\n";
 			$dataentryoutput .= "<div name='saveoptions' id='saveoptions' style='display: none'>\n";
@@ -1485,7 +1485,7 @@ if($actsurrows['browse_response'])
 		}
 		if ($thissurvey['datestamp'] == "Y") //Give datestampentry field
 		{
-            $localtimedate=date_shift($date, "Y-m-d H:i", $timeadjust);        
+            $localtimedate=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);        
 			$dataentryoutput .= "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
 			."\t\t<td valign='top' align='right' width='30%'><strong>"
@@ -2233,7 +2233,7 @@ if($actsurrows['browse_response'])
 			$dataentryoutput .= "\t\t<td colspan='3' align='center'>\n";
 			$dataentryoutput .= "\t\t<table><tr><td align='left'>\n";
 			$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' checked='checked'/><label for='closerecord'>".$clang->gT("Finalize response submission")."</label></td></tr>\n";
-			$dataentryoutput .="<input type='hidden' name='closedate' value='".date_shift($date, "Y-m-d H:i:s", $timeadjust)."' />\n";
+			$dataentryoutput .="<input type='hidden' name='closedate' value='".date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)."' />\n";
 
 			if ($thissurvey['allowsave'] == "Y")
 			{

@@ -18,7 +18,7 @@
 function db_upgrade($oldversion) {
 /// This function does anything necessary to upgrade 
 /// older versions to match current functionality
-global $modifyoutput;
+global $modifyoutput, $databasename;
 echo str_pad('Loading... ',4096)."<br />\n";
     if ($oldversion < 111) {
       // Language upgrades from version 110 to 111 since the language names did change
@@ -87,7 +87,58 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","update `prefix_settings_global` set `stg_value`='112' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
 
+    if ($oldversion < 113) {
+        //Fixes the collation for the complete DB, tables and columns
+        fix_mysql_collation(); 
+        modify_database("","ALTER DATABASE `$databasename` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
+        modify_database("","update `prefix_settings_global` set `stg_value`='113' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+    }
+
+
     return true;
 }
+
+
+function fix_mysql_collation()
+{
+global $connect, $modifyoutput;
+$sql = 'SHOW TABLES';
+$result = db_execute_num($sql);
+if (!$result) {
+       $modifyoutput .= 'SHOW TABLE - SQL Error';
+    }
+   
+while ( $tables = $result->FetchRow() ) {
+// Loop through all tables in this database
+   $table = $tables[0];
+   if (strpos($table,'old_')===false)
+   {
+	   modify_database("","ALTER TABLE $table COLLATE utf8_unicode_ci");
+	   echo $modifyoutput; flush();            
+	  
+	   # Now loop through all the fields within this table
+	   $result2 = db_execute_assoc("SHOW COLUMNS FROM ".$table);
+	   
+	   while ( $column = $result2->FetchRow())
+	   {
+	      $field_name = $column['Field'];
+	      $field_type = $column['Type'];
+	     
+	      # Change text based fields
+	      $skipped_field_types = array('char', 'text', 'enum', 'set');
+	     
+	      foreach ( $skipped_field_types as $type )
+	      {        
+	         if ( strpos($field_type, $type) !== false )
+	         {
+	            modify_database("","ALTER TABLE $table CHANGE `$field_name` `$field_name` $field_type CHARACTER SET utf8 COLLATE utf8_unicode_ci");
+	            echo $modifyoutput; flush();            
+	         }
+	      }
+	   }
+   }
+}
+}
+
 
 ?>

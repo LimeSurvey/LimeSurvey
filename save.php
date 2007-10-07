@@ -221,7 +221,7 @@ function savedcontrol()
 		//INSERT BLANK RECORD INTO "survey_x" if one doesn't already exist
 		if (!isset($_SESSION['srid']))
 		{
-            $today = date_shift($date, "Y-m-d H:i:s", $timeadjust);     
+            $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);     
 			$sdata = array("datestamp"=>$today,
 			"ipaddr"=>$_SERVER['REMOTE_ADDR'],
 			"startlanguage"=>GetBaseLanguageFromSurveyID($surveyid),
@@ -238,7 +238,7 @@ function savedcontrol()
 			}
 		}
 		//CREATE ENTRY INTO "saved_control"
-        $today = date_shift($date, "Y-m-d H:i:s", $timeadjust);      
+        $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);      
 		$scdata = array("sid"=>$surveyid,
 		"srid"=>$_SESSION['srid'],
 		"identifier"=>$_POST['savename'],
@@ -301,7 +301,7 @@ function createinsertquery()
 	// Performance Improvement	: 31%
 	// Optimized By				: swales
 
-	global $thissurvey;
+	global $thissurvey, $timeadjust;
 	global $deletenonvalues, $thistpl;
 	global $surveyid, $connect, $clang;
 	$fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
@@ -331,7 +331,7 @@ function createinsertquery()
 
 		if ($thissurvey['datestamp'] == "Y")
 		{
-			$_SESSION['datestamp']=date_shift($date, "Y-m-d H:i:s", $timeadjust);      
+			$_SESSION['datestamp']=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);      
             
 		}
 
@@ -347,7 +347,7 @@ function createinsertquery()
 		}
 		else
 		{
-			$mysubmitdate = date_shift($date, "Y-m-d H:i:s", $timeadjust);      
+			$mysubmitdate = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);      
 		}
 		// CHECK TO SEE IF ROW ALREADY EXISTS
 		if (!isset($_SESSION['srid']))
