@@ -111,7 +111,10 @@ if (!$surveyid)
 }
 
 // Get token
-if (!isset($token)) {$token=trim(returnglobal('token'));}
+if (!isset($token))
+{
+	$token=trim(returnglobal('token'));
+}
 
 // If token was submitted from token form
 // Disabled for the moment (1.50) with function captcha_enabled
@@ -266,11 +269,12 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == $clang->gT("Load Unfinished
 //Check if TOKEN is used for EVERY PAGE
 //This function fixes a bug where users able to submit two surveys/votes
 //by checking that the token has not been used at each page displayed.
-if ($tokensexist == 1 && returnglobal('token'))
+//if ($tokensexist == 1 && returnglobal('token'))
+if ($tokensexist == 1 && $token)
 {
 	//check if token actually does exist
 
-	$tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".trim(returnglobal('token'))."' AND (completed = 'N' or completed='')";
+	$tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' AND (completed = 'N' or completed='')";
 	$tkresult = db_execute_num($tkquery);
 	list($tkexist) = $tkresult->FetchRow();
 	if (!$tkexist)
