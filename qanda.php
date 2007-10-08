@@ -497,9 +497,19 @@ function do_5pointchoice($ia)
 	
 	if ($ia[6] != "Y"  && $shownoanswer == 1) // Add "No Answer" option if question is not mandatory
 	{
+		$defaultvaluescript = "";
 		$answer .= "\t\t\t<input class='radio' type='radio' name='$ia[1]' id='NoAnswer' value=''";
-		if (!$_SESSION[$ia[1]]) {$answer .= " checked='checked'";}
+		if (!$_SESSION[$ia[1]])
+		{
+			$answer .= " checked='checked'";
+			$defaultvaluescript .= "\t\t\t<script type='text/javascript'>\n"
+				. "\t\t\t<!--\n"
+				. "\t\t\t\tmodfield(\"$ia[1]\");\n"
+				. "\t\t\t//-->\n"
+				. "\t\t\t</script>\n";
+		}
 		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='NoAnswer' class='answertext'>".$clang->gT("No answer")."</label>\n";
+		$answer .= $defaultvaluescript;
 
 	}
 	$answer .= "\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}' />\n";
@@ -568,6 +578,7 @@ function do_list_dropdown($ia)
 	global $shownoanswer, $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
 	$answer="";
+	$defaultvaluescript = "";
 	if (isset($defexists)) {unset ($defexists);}
 	$query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
 	$result = db_execute_assoc($query);
@@ -588,7 +599,15 @@ function do_list_dropdown($ia)
 		elseif ($ansrow['default_value'] == "Y") {$answer .= " selected='selected'"; $defexists = "Y";}
 		$answer .= ">{$ansrow['answer']}</option>\n";
 	}
-	if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) {$answer = "\t\t\t\t\t\t<option value='' selected='selected'>".$clang->gT("Please choose")."..</option>\n".$answer;}
+	if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists))
+	{
+		$answer = "\t\t\t\t\t\t<option value='' selected='selected'>".$clang->gT("Please choose")."..</option>\n".$answer;
+		 $defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
+			. "\t\t\t\t\t\t<!--\n"
+			. "\t\t\t\t\t\t\tmodfield(\"$ia[1]\");\n"
+			. "\t\t\t\t\t\t//-->\n"
+			. "\t\t\t\t\t\t</script>\n";
+	}
 	if (isset($other) && $other=="Y")
 	{
 		$answer .= "\t\t\t\t\t\t<option value='-oth-'";
@@ -600,6 +619,7 @@ function do_list_dropdown($ia)
 	}
 	if ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != "") && (!isset($defexists) || !$defexists) && $ia[6] != "Y" && $shownoanswer == 1) {$answer .= "\t\t\t\t\t\t<option value=' '>".$clang->gT("No answer")."</option>\n";}
 	$answer .= "\t\t\t\t\t</select>\n";
+	$answer .= $defaultvaluescript;
     $answer .= "\t\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}' />\n";
   
 	$sselect = "\n\t\t\t\t\t<select name='$ia[1]' id='answer$ia[1]' onchange='checkconditions(this.value, this.name, this.type);modfield(this.name);";
@@ -657,6 +677,7 @@ function do_list_flexible_dropdown($ia)
 	global $shownoanswer, $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
 	$answer="";
+	$defaultvaluescript = "";
 	$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);
 	while($row = $qresult->FetchRow()) {$other = $row['other']; $lid=$row['lid'];}
@@ -688,7 +709,15 @@ function do_list_flexible_dropdown($ia)
 			}
 			$answer .= ">{$ansrow['title']}</option>\n";
 		}
-		if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists)) {$answer = "\t\t\t\t\t\t<option value='' selected='selected'>".$clang->gT("Please choose")."..</option>\n".$answer;}
+		if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists))
+		{
+			$answer = "\t\t\t\t\t\t<option value='' selected='selected'>".$clang->gT("Please choose")."..</option>\n".$answer;
+			$defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
+				. "\t\t\t\t\t\t<!--\n"
+				. "\t\t\t\t\t\t\tmodfield(\"$ia[1]\");\n"
+				. "\t\t\t\t\t\t//-->\n"
+				. "\t\t\t\t\t\t</script>\n";
+		}
 		if (isset($other) && $other=="Y")
 		{
 			$answer .= "\t\t\t\t\t\t<option value='-oth-'";
@@ -700,6 +729,7 @@ function do_list_flexible_dropdown($ia)
 		}
 		if ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != "") && (!isset($defexists) || !$defexists) && $ia[6] != "Y" && $shownoanswer == 1) {$answer .= "\t\t\t\t\t\t<option value=' '>".$clang->gT("No answer")."</option>\n";}
 		$answer .= "\t\t\t\t\t</select>\n";
+		$answer .= $defaultvaluescript;
 	}
 	  else 
 	  {
@@ -751,6 +781,7 @@ function do_list_radio($ia)
 	global $dbprefix, $dropdownthreshold, $lwcdropdowns, $connect, $clang;
 	global $shownoanswer;
 	$answer="";
+	$defaultvaluescript = "";
 	$qidattributes=getQuestionAttributes($ia[0]);
 	if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
 	{
@@ -833,10 +864,16 @@ function do_list_radio($ia)
 		if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == "") && (!isset($defexists) || !$defexists)) || ($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
 		{
 			$answer .= " checked='checked'"; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
+			$defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
+				. "\t\t\t\t\t\t<!--\n"
+				. "\t\t\t\t\t\t\tmodfield(\"$ia[1]\");\n"
+				. "\t\t\t\t\t\t//-->\n"
+				. "\t\t\t\t\t\t</script>\n";
 		}
 		// --> START NEW FEATURE - SAVE
 		$answer .=" onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/>"
 		. "<label for='answer$ia[1]NANS' class='answertext'>".$clang->gT("No answer")."</label>\n";
+		$answer .= $defaultvaluescript;
 		// --> END NEW FEATURE - SAVE
 
 		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
@@ -854,6 +891,7 @@ function do_list_flexible_radio($ia)
 	global $dbprefix, $dropdownthreshold, $lwcdropdowns, $connect;
 	global $shownoanswer, $clang;
 	$answer="";
+	$defaultvaluescript = "";
 	$qidattributes=getQuestionAttributes($ia[0]);
 	if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
 	{
@@ -958,10 +996,16 @@ function do_list_flexible_radio($ia)
 		if ((!isset($defexists) || $defexists != "Y") && (!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == "" || $_SESSION[$ia[1]] == " "))
 		{
 			$answer .= " checked='checked'"; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
+			$defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
+				. "\t\t\t\t\t\t<!--\n"
+				. "\t\t\t\t\t\t\tmodfield(\"$ia[1]\");\n"
+				. "\t\t\t\t\t\t//-->\n"
+				. "\t\t\t\t\t\t</script>\n";
 		}
 		// --> START NEW FEATURE - SAVE
 		$answer .=" onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/>"
 		. "<label for='answer$ia[1]NANS' class='answertext'>".$clang->gT("No answer")."</label>\n";
+		$answer .= $defaultvaluescript;
 		// --> END NEW FEATURE - SAVE
 
 		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
@@ -979,6 +1023,7 @@ function do_listwithcomment($ia)
 	global $maxoptionsize, $dbprefix, $dropdownthreshold, $lwcdropdowns;
 	global $shownoanswer, $clang;
 	$answer="";
+	$defaultvaluescript = "";
 	$qidattributes=getQuestionAttributes($ia[0]);
 	if (!isset($maxoptionsize)) {$maxoptionsize=35;}
 	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
@@ -1017,12 +1062,18 @@ function do_listwithcomment($ia)
 			if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == "") && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
 			{
 				$answer .= "checked='checked' />";
+				$defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
+					. "\t\t\t\t\t\t<!--\n"
+					. "\t\t\t\t\t\t\tmodfield(\"$ia[1]\");\n"
+					. "\t\t\t\t\t\t//-->\n"
+					. "\t\t\t\t\t\t</script>\n";
 			}
 			elseif ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != "") && (!isset($defexists) || !$defexists))
 			{
 				$answer .= " />";
 			}
 			$answer .= "<label for='answer$ia[1] ' class='answertext'>".$clang->gT("No answer")."</label>\n";
+			 $answer .= $defaultvaluescript;
 		}
 		$answer .= "\t\t\t\t\t</td>\n";
 		$fname2 = $ia[1]."comment";
@@ -1072,6 +1123,11 @@ function do_listwithcomment($ia)
 			if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == "") && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
 			{
 				$answer .= "\t\t\t\t\t\t<option value=' ' selected='selected'>".$clang->gT("No answer")."</option>\n";
+				$defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
+				. "\t\t\t\t\t\t<!--\n"
+				. "\t\t\t\t\t\t\tmodfield(\"$ia[1]\");\n"
+				. "\t\t\t\t\t\t//-->\n"
+				. "\t\t\t\t\t\t</script>\n";
 			}
 			elseif ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != "") && (!isset($defexists) || !$defexists))
 			{
@@ -1079,6 +1135,7 @@ function do_listwithcomment($ia)
 			}
 		}
 		$answer .= "\t\t\t\t\t</select>\n"
+		. $defaultvaluescript
 		. "\t\t\t\t\t</td>\n"
 		. "\t\t\t\t</tr>\n"
 		. "\t\t\t\t<tr>\n";
@@ -1848,6 +1905,7 @@ function do_hugefreetext($ia)
 function do_yesno($ia)
 {
 	global $shownoanswer, $clang;
+	$defaultvaluescript = "";
 	$answer = "\t\t\t<table class='question'>\n"
 	. "\t\t\t\t<tr>\n"
 	. "\t\t\t\t\t<td align='left'>\n"
@@ -1866,10 +1924,19 @@ function do_yesno($ia)
 	if ($ia[6] != "Y" && $shownoanswer == 1)
 	{
 		$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1] ' value=''";
-		if ($_SESSION[$ia[1]] == "") {$answer .= " checked='checked'";}
+		if ($_SESSION[$ia[1]] == "")
+		{
+			$answer .= " checked='checked'";
+			$defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
+				. "\t\t\t\t\t\t<!--\n"
+				. "\t\t\t\t\t\t\tmodfield(\"$ia[1]\");\n"
+				. "\t\t\t\t\t\t//-->\n"
+				. "\t\t\t\t\t\t</script>\n";
+		}
 		// --> START NEW FEATURE - SAVE
 		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='answer$ia[1] ' class='answertext'>".$clang->gT("No answer")."</label><br />\n";
 		// --> END NEW FEATURE - SAVE
+		$answer .= $defaultvaluescript;
 
 	}
 	$answer .= "\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}' />\n"
@@ -1883,6 +1950,7 @@ function do_yesno($ia)
 function do_gender($ia)
 {
 	global $shownoanswer, $clang;
+	$defaultvaluescript = "";
 	$answer = "\t\t\t<table class='question'>\n"
 	. "\t\t\t\t<tr>\n"
 	. "\t\t\t\t\t<td align='left'>\n"
@@ -1902,10 +1970,19 @@ function do_gender($ia)
 	if ($ia[6] != "Y" && $shownoanswer == 1)
 	{
 		$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1] ' value=''";
-		if ($_SESSION[$ia[1]] == "") {$answer .= " checked='checked'";}
+		if ($_SESSION[$ia[1]] == "")
+		{
+			$answer .= " checked='checked'";
+			$defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
+				. "\t\t\t\t\t\t<!--\n"
+				. "\t\t\t\t\t\t\tmodfield(\"$ia[1]\");\n"
+				. "\t\t\t\t\t\t//-->\n"
+				. "\t\t\t\t\t\t</script>\n";
+		}
 		// --> START NEW FEATURE - SAVE
 		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='answer$ia[1] ' class='answertext'>".$clang->gT("No answer")."</label>\n";
 		// --> END NEW FEATURE - SAVE
+		$answer .= $defaultvaluescript;
 
 	}
 	$answer .= "\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}' />\n"
@@ -1919,6 +1996,7 @@ function do_gender($ia)
 function do_array_5point($ia)
 {
 	global $dbprefix, $shownoanswer, $notanswered, $thissurvey, $clang;
+	$defaultvaluescrip = "";
 	
 	$ansquery = "SELECT answer FROM {$dbprefix}answers WHERE qid=".$ia[0]." AND answer like '%|%'";
 	$ansresult = db_execute_assoc($ansquery);
@@ -2011,8 +2089,17 @@ function do_array_5point($ia)
 		{
 			$answer .= "\t\t\t\t\t<td align='center'><label for='answer$myfname-'>"
 			."<input class='radio' type='radio' name='$myfname' id='answer$myfname-' value='' title='".$clang->gT("No answer")."'";
-			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked='checked'";}
+			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "")
+			{
+				$answer .= " checked='checked'";
+				$defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
+					. "\t\t\t\t\t\t<!--\n"
+					. "\t\t\t\t\t\t\tmodfield(\"$myfname\");\n"
+					. "\t\t\t\t\t\t//-->\n"
+					. "\t\t\t\t\t\t</script>\n";
+			}
 			$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
+			$answer .= $defaultvaluescript;
 		}
 		
     	
@@ -2028,6 +2115,7 @@ function do_array_5point($ia)
 function do_array_10point($ia)
 {
 	global $dbprefix, $shownoanswer, $notanswered, $thissurvey, $clang;
+	$defaultvaluescript = "";
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]."  AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
@@ -2100,10 +2188,19 @@ function do_array_10point($ia)
 		{
 			$answer .= "\t\t\t\t\t<td align='center'><label for='answer$myfname-'>"
 			."<input class='radio' type='radio' name='$myfname' id='answer$myfname-' value='' title='".$clang->gT("No answer")."'";
-			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked='checked'";}
+			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "")
+			{
+				$answer .= " checked='checked'";
+				$defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
+					. "\t\t\t\t\t\t<!--\n"
+					. "\t\t\t\t\t\t\tmodfield(\"$myfname\");\n"
+					. "\t\t\t\t\t\t//-->\n"
+					. "\t\t\t\t\t\t</script>\n";
+			}
 			// --> START NEW FEATURE - SAVE
 			$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
 			// --> END NEW FEATURE - SAVE
+			$answer .= $defaultvaluescript;
 
 		}
 		$answer .= "\t\t\t\t</tr>\n";
@@ -2117,6 +2214,7 @@ function do_array_10point($ia)
 function do_array_yesnouncertain($ia)
 {
 	global $dbprefix, $shownoanswer, $notanswered, $thissurvey, $clang;
+	$defaultvaluescript = "";
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
@@ -2206,10 +2304,19 @@ function do_array_yesnouncertain($ia)
 			{
 				$answer .= "\t\t\t\t\t<td align='center'><label for='answer$myfname-'>"
 				."<input class='radio' type='radio' name='$myfname' id='answer$myfname-' value='' title='".$clang->gT("No answer")."'";
-				if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked='checked'";}
+				if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "")
+				{
+					$answer .= " checked='checked'";
+					$defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
+						. "\t\t\t\t\t\t<!--\n"
+						. "\t\t\t\t\t\t\tmodfield(\"$myfname\");\n"
+						. "\t\t\t\t\t\t//-->\n"
+						. "\t\t\t\t\t\t</script>\n";
+				}
 				// --> START NEW FEATURE - SAVE
 				$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
 				// --> END NEW FEATURE - SAVE
+				$answer .= $defaultvaluescript;
 			}
 			$answer .= "\t\t\t\t</tr>\n";
 			$inputnames[]=$myfname;
@@ -2331,6 +2438,7 @@ function do_array_increasesamedecrease($ia)
 	global $dbprefix, $thissurvey, $clang;
 	global $shownoanswer;
 	global $notanswered;
+	$defaultvaluescript = "";
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
@@ -2410,8 +2518,17 @@ function do_array_increasesamedecrease($ia)
 		{
 			$answer .= "\t\t\t\t\t<td align='center'><label for='answer$myfname-'>"
 			."<input class='radio' type='radio' name='$myfname' id='answer$myfname-' value='' title='".$clang->gT("No answer")."'";
-			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked='checked'";}
+			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "")
+			{
+				$answer .= " checked='checked'";
+				$defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
+					. "\t\t\t\t\t\t<!--\n"
+					. "\t\t\t\t\t\t\tmodfield(\"$myfname\");\n"
+					. "\t\t\t\t\t\t//-->\n"
+					. "\t\t\t\t\t\t</script>\n";
+			}
 			$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
+			$answer .= $defaultvaluescript;
 		}
 		$answer .= "\t\t\t\t</tr>\n";
 		$inputnames[]=$myfname;
@@ -2428,6 +2545,7 @@ function do_array_flexible($ia)
 	global $repeatheadings;
 	global $notanswered;
 	global $minrepeatheadings;
+	$defaultvaluescript = "";
 	$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other']; $lid = $qrow['lid'];}
@@ -2558,10 +2676,19 @@ function do_array_flexible($ia)
 			{
 				$answer .= "\t\t\t\t\t<td align='center' width='$cellwidth%'><label for='answer$myfname-'>"
 				."<input class='radio' type='radio' name='$myfname' value='' id='answer$myfname-' title='".$clang->gT("No answer")."'";
-				if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked='checked'";}
+				if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "")
+				{
+					$answer .= " checked='checked'";
+					$defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
+						. "\t\t\t\t\t\t<!--\n"
+						. "\t\t\t\t\t\t\tmodfield(\"$myfname\");\n"
+						. "\t\t\t\t\t\t//-->\n"
+						. "\t\t\t\t\t\t</script>\n";
+				}
 				// --> START NEW FEATURE - SAVE
 				$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
 				// --> END NEW FEATURE - SAVE
+				$answer .= $defaultvaluescript;
 			}
 			
 			$answer .= "\t\t\t\t</tr>\n";
@@ -2584,6 +2711,7 @@ function do_array_flexiblecolumns($ia)
 	global $dbprefix;
 	global $shownoanswer;
 	global $notanswered, $clang;
+	$defaultvaluescript = "";
 	$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other']; $lid = $qrow['lid'];}
@@ -2591,11 +2719,6 @@ function do_array_flexiblecolumns($ia)
 	$lresult = db_execute_assoc($lquery);
 	if ($lresult->RecordCount() > 0)
 	{
-		
-		
-		
-		
-		
 		while ($lrow=$lresult->FetchRow())
 		{
 			$labelans[]=$lrow['title'];
@@ -2660,11 +2783,19 @@ function do_array_flexiblecolumns($ia)
 				elseif (!isset($_SESSION[$myfname]) && $ansrow['code'] == "")
 				{
 					$answer .= " checked='checked'";
+					// Humm.. (by lemeur), not sure this section can be reached
+					// because I think $_SESSION[$myfname] is always set (by save.php ??) !
+					// should remove the !isset part I think !!
+					$defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
+						. "\t\t\t\t\t\t<!--\n"
+						. "\t\t\t\t\t\t\tmodfield(\"$myfname\");\n"
+						. "\t\t\t\t\t\t//-->\n"
+						. "\t\t\t\t\t\t</script>\n";
 				}
 				// --> START NEW FEATURE - SAVE
 				$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
 				// --> END NEW FEATURE - SAVE
-	
+				$answer .= $defaultvaluescript;
 			}
 		    unset($trbc);
 			$answer .= "\t\t\t\t</tr>\n";
