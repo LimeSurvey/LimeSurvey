@@ -475,7 +475,7 @@ function loadanswers()
 function getTokenData($surveyid, $token)
 {
 	global $dbprefix, $connect;
-	$query = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='$token'";
+	$query = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."'";
 	$result = db_execute_assoc($query) or die("Couldn't get token info in getTokenData()<br />".$query."<br />".htmlspecialchars($connect->ErrorMsg()));
 	while($row=$result->FetchRow())
 	{
@@ -973,12 +973,12 @@ function submittokens()
 	{
 		$utquery .= "SET completed='Y'\n";
 	}
-	$utquery .= "WHERE token='{$_POST['token']}'";
+	$utquery .= "WHERE token='".db_quote($_POST['token'])."'";
 
 	$utresult = $connect->Execute($utquery) or die ("Couldn't update tokens table!<br />\n$utquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 
 	// TLR change to put date into sent and completed
-	$cnfquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." WHERE token='{$_POST['token']}' AND completed!='N' AND completed!=''";
+	$cnfquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." WHERE token='".db_quote($_POST['token'])."' AND completed!='N' AND completed!=''";
   
 	$cnfresult = db_execute_assoc($cnfquery);
 	while ($cnfrow = $cnfresult->FetchRow())
@@ -1182,7 +1182,7 @@ function buildsurveysession()
 	elseif ($tokensexist == 1 && returnglobal('token'))
 	{
 		//check if token actually does exist
-		$tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".trim(returnglobal('token'))."' AND (completed = 'N' or completed='')";
+		$tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(returnglobal('token')))."' AND (completed = 'N' or completed='')";
 		$tkresult = db_execute_num($tkquery);
 		list($tkexist) = $tkresult->FetchRow();
 		if (!$tkexist)
@@ -1218,7 +1218,7 @@ function buildsurveysession()
 
 	if (isset($_GET['token'])){
 	//get language from token (if one exists)
-		$tkquery2 = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".trim(returnglobal('token'))."' AND (completed = 'N' or completed='')";
+		$tkquery2 = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(returnglobal('token')))."' AND (completed = 'N' or completed='')";
 		//echo $tkquery2;
 		$result = db_execute_assoc($tkquery2) or die ("Couldn't get tokens<br />$tkquery<br />".htmlspecialchars($connect->ErrorMsg()));
 		while ($rw = $result->FetchRow())
