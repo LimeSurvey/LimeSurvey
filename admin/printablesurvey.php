@@ -46,6 +46,9 @@ if (isset($_GET['lang']))
 	$surveyprintlang=GetbaseLanguageFromSurveyid($surveyid);
 }
 
+// Setting the selected language for printout
+$clang = new limesurvey_lang($surveyprintlang);
+
 $desquery = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid) WHERE sid=$surveyid and surveyls_language=".$connect->qstr($surveyprintlang); //Getting data for this survey
 
 $desresult = db_execute_assoc($desquery);
