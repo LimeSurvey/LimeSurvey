@@ -248,8 +248,9 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($_POST[
 
 			if($isallowed)
 			{
-				// Wenn ein Benutzer gel??scht wird, werden die von ihm erstellten Benutzer dem Benutzer
-				// zugeordnet, von dem er selbst erstellt wurde
+				// We are about to kill an uid with potential childs
+				// Let's re-assign them their grand-father as their
+				// new parentid
 				$squery = "SELECT parent_id FROM {$dbprefix}users WHERE uid={$_POST['uid']}";
 				$sresult = $connect->Execute($squery);
 				$fields = $sresult->FetchRow($sresult);
@@ -262,6 +263,10 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($_POST[
 
 				//DELETE USER FROM TABLE
 				$dquery="DELETE FROM {$dbprefix}users WHERE uid={$_POST['uid']}";	//	added by Dennis
+				$dresult=$connect->Execute($dquery);
+
+				// Delete user rights
+				$dquery="DELETE FROM {$dbprefix}surveys_rights WHERE uid={$_POST['uid']}";
 				$dresult=$connect->Execute($dquery);
 
 				if($_POST['uid'] == $_SESSION['loginID']) killSession();	// user deleted himself
