@@ -1559,7 +1559,10 @@ function validate_email($email)
 {
 	// Create the syntactical validation regular expression
 	// Validate the syntax
-    return ( ! preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $email)) ? FALSE : TRUE;  
+
+	// see http://data.iana.org/TLD/tlds-alpha-by-domain.txt
+	$maxrootdomainlength = 6;
+    return ( ! preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,".$maxrootdomainlength."}$/ix", $email)) ? FALSE : TRUE;  
     
 }
 
