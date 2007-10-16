@@ -1448,7 +1448,7 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 					else
 					{
 						$line[2] = trim($line[2]);
-						if (!eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$", $line[2]))
+						if (!validate_email($line[2]))
 						{
 							$xe++;
 						} else
