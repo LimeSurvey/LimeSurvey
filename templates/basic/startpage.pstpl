@@ -29,7 +29,9 @@ img { border: 0; }
     font-family: verdana;
     }
 .questionhelp 
-   { background-color: #17479E; font-size: 10px; font-style: italic; 
+   { 
+      font-size: 10px; 
+	  font-style: italic; 
    }
 </style>
 </head>
