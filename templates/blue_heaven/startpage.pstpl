@@ -97,6 +97,11 @@ body
 	font-family: verdana;
 	font-size: 10pt;
 	}
+.questionhelp 
+   { background-color: #17479E; 
+     font-size: 10px; 
+	 font-style: italic; 
+   }	
 .errormandatory 
 	{
 	font-size:12px;
