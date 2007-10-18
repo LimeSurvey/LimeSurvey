@@ -56,6 +56,10 @@
         global $clang;
         unset($supportedLanguages);
 
+	    // Albanian
+	    $supportedLanguages['sq']['description'] = $clang->gT('Albanian');
+	    $supportedLanguages['sq']['nativedescription'] = 'Shqipe';
+
 	    // Basque
 	    $supportedLanguages['eu']['description'] = $clang->gT('Basque');
 	    $supportedLanguages['eu']['nativedescription'] = 'Euskara';
@@ -72,11 +76,19 @@
         $supportedLanguages['zh-Hant-HK']['description'] = $clang->gT('Chinese (Traditional - Hong Kong)');
         $supportedLanguages['zh-Hant-HK']['nativedescription'] = '&#32321;&#39636;&#20013;&#25991;&#35486;&#31995;';
 
+        // Chinese (Traditional - Taiwan)
+        $supportedLanguages['zh-Hant-TW']['description'] = $clang->gT('Chinese (Traditional - Hong Kong)');
+        $supportedLanguages['zh-Hant-TW']['nativedescription'] = 'Chinese (Traditional - Taiwan)';
+
         // Croatian
 	    $supportedLanguages['hr']['description'] = $clang->gT('Croatian');
 	    $supportedLanguages['hr']['nativedescription'] = 'Croatian';
 
-	    // Danish
+        // Czech
+        $supportedLanguages['cs']['description'] = $clang->gT('Czech');
+        $supportedLanguages['cs']['nativedescription'] = '&#x010c;esky';
+        
+        // Danish
 	    $supportedLanguages['da']['description'] = $clang->gT('Danish');
 	    $supportedLanguages['da']['nativedescription'] = 'Dansk';
 
@@ -178,16 +190,14 @@
 	    $supportedLanguages['tr']['description'] = $clang->gT('Turkish');
 	    $supportedLanguages['tr']['nativedescription'] = 'T&#252;rk&#231;e';
 
+	    // Thai
+	    $supportedLanguages['tr']['description'] = $clang->gT('Thai');
+	    $supportedLanguages['tr']['nativedescription'] = '&#3616;&#3634;&#3625;&#3634;&#3652;&#3607;&#3618;';
+
 
 	    // Vietnamese
 	    $supportedLanguages['vi']['description'] = $clang->gT('Vietnamese');
 	    $supportedLanguages['vi']['nativedescription'] = 'Ti&#7871;ng Vi&#7879;t';
-
-
-        // Czech
-	    $supportedLanguages['cz']['description'] = $clang->gT('Czech');
-	    $supportedLanguages['cz']['nativedescription'] = '&#x010c;esky';
-
 
         Return $supportedLanguages;
     }
@@ -207,9 +217,6 @@
 
 	    // Serbian
 	    $supportedLanguages['yu']['nativedescription'] = 'Srpski';
-
-	    // Thai
-	    $supportedLanguages['th']['nativedescription'] = 'Thai';
 
 	    // Arabic
 	    $supportedLanguages['sa']['nativedescription'] = '&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;';
