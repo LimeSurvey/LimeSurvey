@@ -91,6 +91,11 @@ body{
 	font-family: verdana;
 	font-size: 10px;
 	}
+.questionhelp 
+   {  
+     font-size: 10px; 
+	 font-style: italic; 
+   }	
 .errormandatory 
 	{
 	font-size:12px;
