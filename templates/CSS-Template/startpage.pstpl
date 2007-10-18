@@ -159,7 +159,11 @@
 .question td {
 	font-size: 10px;
 }
-
+.questionhelp 
+   { 
+      font-size: 10px; 
+	  font-style: italic; 
+   }
 .text {
 	color: #777777;
 	font-size: 12px;
