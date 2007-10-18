@@ -120,6 +120,11 @@ font{
 	font-family: Verdana;
 	font-size: 12pt;
 	}
+.questionhelp 
+   { 
+     font-size: 10px; 
+	 font-style: italic; 
+   }	
 .asterisk
     {
     color: #FF0000;
