@@ -98,7 +98,7 @@ body
 	font-size: 10pt;
 	}
 .questionhelp 
-   { background-color: #17479E; 
+   {  
      font-size: 10px; 
 	 font-style: italic; 
    }	
