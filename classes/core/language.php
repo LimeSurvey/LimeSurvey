@@ -19,6 +19,7 @@ $locale = new limesurvey_lang('en'); // Char code
 print $locale->getTranslation("Hello World!");
 */
 
+if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die("Cannot run this script directly");}
 
 require_once($rootdir.'/classes/php-gettext/gettext.php');
 require_once($rootdir.'/classes/php-gettext/streams.php');
@@ -29,7 +30,7 @@ class limesurvey_lang {
     var $langcode;
     
     function limesurvey_lang($langcode){
-//        if ( $langcode != "en" ) {       // This IF was removed to allow having an English to English Translation
+//        if ( $langcode != "en" ) {      // This IF was removed to allow having an English to English Translation
         	global $rootdir;
             $streamer = new FileReader($rootdir.'/locale/'.$langcode.'/LC_MESSAGES/'.$langcode.'.mo');
             $this->gettextclass = new gettext_reader($streamer);
