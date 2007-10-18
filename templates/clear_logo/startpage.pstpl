@@ -21,6 +21,11 @@ img { border: 0; }
     {
 	text-align:left;
     }
+.questionhelp 
+   { 
+      font-size: 10px; 
+	  font-style: italic; 
+   }	
 </style>
 </head>
 <body>
