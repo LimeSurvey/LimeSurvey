@@ -120,6 +120,11 @@ body
 	background-color: #E1E1E1;
 	color: #777777;
 	}
+.questionhelp 
+   { 
+      font-size: 10px; 
+	  font-style: italic; 
+   }	
 .warningjs
         {
         font-size:12px;
