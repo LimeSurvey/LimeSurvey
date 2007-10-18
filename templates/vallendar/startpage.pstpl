@@ -91,6 +91,11 @@ body{
 	font-family: verdana;
 	font-size: 10pt;
 	}
+.questionhelp 
+   { 
+      font-size: 10px; 
+	  font-style: italic; 
+   }	
 .warningjs
         {
         font-size:12px;
