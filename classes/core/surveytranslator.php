@@ -56,6 +56,10 @@
         global $clang;
         unset($supportedLanguages);
 
+	    // Albanian
+	    $supportedLanguages['sq']['description'] = $clang->gT('Albanian');
+	    $supportedLanguages['sq']['nativedescription'] = 'Shqipe';
+
 	    // Basque
 	    $supportedLanguages['eu']['description'] = $clang->gT('Basque');
 	    $supportedLanguages['eu']['nativedescription'] = 'Euskara';
