@@ -306,7 +306,7 @@ CREATE TABLE [prefix_settings_global] (
 -- Table [settings_global]
 --
 
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '112');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '113');
 ;
 
 --
