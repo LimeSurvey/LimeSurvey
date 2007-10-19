@@ -91,7 +91,7 @@ if ((isset($_POST['fieldnames']) && $_POST['fieldnames']) || (isset($_POST['move
 			{
 				$connect->Execute("DELETE FROM ".db_table_name("saved_control")." where srid=".$_SESSION['srid']);
 			}
-		} 
+		} else {echo submitfailed();}
 	}
 }
 
@@ -301,11 +301,10 @@ function createinsertquery()
 	// Performance Improvement	: 31%
 	// Optimized By				: swales
 
-	global $thissurvey, $timeadjust;
+	global $thissurvey,$timeadjust;
 	global $deletenonvalues, $thistpl;
 	global $surveyid, $connect, $clang;
 	$fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
-
 	if (isset($_SESSION['insertarray']) && is_array($_SESSION['insertarray']))
 	{
 		$inserts=array_unique($_SESSION['insertarray']);
@@ -369,7 +368,7 @@ function createinsertquery()
 			{
 				$query .= ",".db_quote_id('refurl'); 
 			}
-			if ((isset($_POST['move']) && $_POST['move'] == "movesubmit"))
+			if ((isset($_POST['move']) && $_POST['move'] == "movesubmit") && ($thissurvey['format'] != "A"))
 			{
 				$query .= ",".db_quote_id('submitdate'); 
 			}
@@ -388,13 +387,10 @@ function createinsertquery()
 			{
 				$query .= ", '".$_SESSION['refurl']."'";
 			}
-			if ((isset($_POST['move']) && $_POST['move'] == "movesubmit"))
+			if ((isset($_POST['move']) && $_POST['move'] == "movesubmit") && ($thissurvey['format'] != "A"))
 			{
                 // is if a ALL-IN-ONE survey, we don't set the submit date before the data is validated
-                 if ($thissurvey['format'] != "A")
-				    $query .= ", ".$connect->DBDate($mysubmitdate);
-                 else
-                    $query .= ", NULL";
+				$query .= ", ".$connect->DBDate($mysubmitdate);
 			}
 			$query .=")";
 		}

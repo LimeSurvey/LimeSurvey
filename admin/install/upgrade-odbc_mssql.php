@@ -35,13 +35,13 @@ echo str_pad('Loading... ',4096)."<br />\n";
 
         foreach  ($oldnewlanguages as $oldlang=>$newlang)
         {
-            modify_database("","update `prefix_answers` set `language`='$newlang' where language='$oldlang'");  echo $modifyoutput;      flush();
-            modify_database("","update `prefix_questions` set `language`='$newlang' where language='$oldlang'");echo $modifyoutput;flush();
-            modify_database("","update `prefix_groups` set `language`='$newlang' where language='$oldlang'");echo $modifyoutput;flush();
-            modify_database("","update `prefix_labels` set `language`='$newlang' where language='$oldlang'");echo $modifyoutput;flush();
-            modify_database("","update `prefix_surveys` set `language`='$newlang' where language='$oldlang'");echo $modifyoutput;flush();
-            modify_database("","update `prefix_surveys_languagesettings` set `surveyls_language`='$newlang' where surveyls_language='$oldlang'");echo $modifyoutput;flush();
-            modify_database("","update `prefix_users` set `lang`='$newlang' where lang='$oldlang'");echo $modifyoutput;flush();
+            modify_database("","update [prefix_answers] set [language`='$newlang' where language='$oldlang'");  echo $modifyoutput;      flush();
+            modify_database("","update [prefix_questions] set [language`='$newlang' where language='$oldlang'");echo $modifyoutput;flush();
+            modify_database("","update [prefix_groups] set [language`='$newlang' where language='$oldlang'");echo $modifyoutput;flush();
+            modify_database("","update [prefix_labels] set [language`='$newlang' where language='$oldlang'");echo $modifyoutput;flush();
+            modify_database("","update [prefix_surveys] set [language`='$newlang' where language='$oldlang'");echo $modifyoutput;flush();
+            modify_database("","update [prefix_surveys_languagesettings] set [surveyls_language`='$newlang' where surveyls_language='$oldlang'");echo $modifyoutput;flush();
+            modify_database("","update [prefix_users] set [lang`='$newlang' where lang='$oldlang'");echo $modifyoutput;flush();
         }
 
 
@@ -58,7 +58,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
            $toreplace=str_replace('si','sl',$toreplace);
            $toreplace=str_replace('se','sv',$toreplace);
            $toreplace=str_replace('vn','vi',$toreplace);
-           modify_database("","update  `prefix_labelsets` set `languages`='$toreplace' where lid=".$datarow['lid']);echo $modifyoutput;flush();
+           modify_database("","update [prefix_labelsets] set [languages`='$toreplace' where lid=".$datarow['lid']);echo $modifyoutput;flush();
         }
 
 
@@ -74,20 +74,20 @@ echo str_pad('Loading... ',4096)."<br />\n";
            $toreplace=str_replace('si','sl',$toreplace);
            $toreplace=str_replace('se','sv',$toreplace);
            $toreplace=str_replace('vn','vi',$toreplace);
-           modify_database("","update  `prefix_surveys` set `additional_languages`='$toreplace' where sid=".$datarow['sid']);echo $modifyoutput;flush();
+           modify_database("","update [prefix_surveys] set [additional_languages`='$toreplace' where sid=".$datarow['sid']);echo $modifyoutput;flush();
         }
-        modify_database("","update `prefix_settings_global` set `stg_value`='111' where stg_name='DBVersion'"); echo $modifyoutput;
+        modify_database("","update [prefix_settings_global] set [stg_value`='111' where stg_name='DBVersion'"); echo $modifyoutput;
 
     }
 
     if ($oldversion < 112) {
         //The size of the users_name field is now 64 char (20 char before version 112)
-        modify_database("","ALTER TABLE `prefix_users` ALTER COLUMN `users_name` VARCHAR( 64 ) NOT NULL"); echo $modifyoutput; flush();
-        modify_database("","update `prefix_settings_global` set `stg_value`='112' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE [prefix_users] ALTER COLUMN [users_name] VARCHAR( 64 ) NOT NULL"); echo $modifyoutput; flush();
+        modify_database("","update [prefix_settings_global] set [stg_value`='112' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     if ($oldversion < 113) {
 	//No action needed
-        modify_database("","update `prefix_settings_global` set `stg_value`='113' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+        modify_database("","update [prefix_settings_global] set [stg_value`='113' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
 
 
