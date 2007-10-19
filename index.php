@@ -622,10 +622,7 @@ function checkgroupfordisplay($gid)
 					// if selected, the fieldname will have the answer code appended.
 					$fieldname=$row['cfieldname'].$row['value'];
                     $cvalue="Y";
-					if (isset($_SESSION[$fieldname]))
-					{
-						$cfieldname=$_SESSION[$fieldname];
-					}
+                    if (isset($_SESSION[$fieldname])) { $cfieldname=$_SESSION[$fieldname]; } else { $cfieldname=""; }
 				}
 				else
 				{
