@@ -890,7 +890,7 @@ function remove_nulls_from_array($array)
 
 function submittokens()
 {
-	global $thissurvey;
+	global $thissurvey, $timeadjust;
 	global $dbprefix, $surveyid, $connect;
 	global $sitename, $thistpl, $clang;
 
