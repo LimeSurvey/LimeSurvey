@@ -133,12 +133,19 @@ if (isset($_GET['newtest']) && $_GET['newtest'] = "Y") unset($_GET['token']);
 $totalBoilerplatequestions =0;
 $thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);
 
-if (is_array($thissurvey)) {$surveyexists=1;} else {$surveyexists=0;}
+if (is_array($thissurvey))
+{
+	$surveyexists=1;
+} 
+else 
+{
+	$surveyexists=0;
+}
 
 
 //SEE IF SURVEY USES TOKENS
 $i = 0; //$tokensexist = 0;
-if (bHasSurveyGotTokentable($thissurvey))
+if ($surveyexists == 1 && bHasSurveyGotTokentable($thissurvey))
 {
 	$tokensexist = 1;
 }
