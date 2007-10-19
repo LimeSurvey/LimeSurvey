@@ -16,7 +16,17 @@
 
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 
-session_name("LimeSurveyAdmin");
+// Read the session name from the settings table
+$usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";
+$usresult = db_execute_assoc($usquery,'',true);
+if ($usresult)
+{
+	$usrow = $usresult->FetchRow();
+	@session_name($usrow['stg_value']);
+}
+ else {session_name("LimeSurveyAdmin");}
+ 
+ 
 if (session_id() == "") @session_start();
 //LANGUAGE ISSUES
 // if changelang is called from the login page, then there is no userId 

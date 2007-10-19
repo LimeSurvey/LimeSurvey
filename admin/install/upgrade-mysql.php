@@ -94,8 +94,11 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","ALTER DATABASE `$databasename` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
         modify_database("","update `prefix_settings_global` set `stg_value`='113' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
-
-
+    if ($oldversion < 114) {
+        //Fixes the collation for the complete DB, tables and columns
+        modify_database("",'INSERT INTO `prefix_settings_global` VALUES (\'SessionName\', \'$sessionname\');');
+        modify_database("","update `prefix_settings_global` set `stg_value`='114' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+    }
     return true;
 }
 

@@ -306,12 +306,12 @@ CREATE TABLE [prefix_settings_global] (
 -- Table [settings_global]
 --
 
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '113');
-;
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '114');
+INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 
 --
 -- Table [users]
 --
 
 INSERT INTO [prefix_users] VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);
-;
+
