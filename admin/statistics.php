@@ -1358,6 +1358,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 			."\t\t<td width='25%' align='center' >"
 			."<strong>".$clang->gT("Percentage")."</strong></td>\n"
 			."\t</tr>\n";
+            $TotalCompleted = 0;    // this will count the asnwers considered completed
 			foreach ($alist as $al)
 			{
 				if (isset($al[2]) && $al[2]) //picks out alist that come from the multiple list above
@@ -1403,6 +1404,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				// $statisticsoutput .= "\n<!-- ($sql): $query -->\n\n";
 				while ($row=$result->FetchRow())
 				{
+                    $TotalCompleted += $row[0];
 					if ($al[0] == "")
 					{$fname=$clang->gT("No answer");}
 					elseif ($al[0] == $clang->gT("Other") || $al[0] == "Answers")
@@ -1442,6 +1444,29 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					$lbl[] = wordwrap($label, 20, "\n");
 				}
 			}
+            if (incompleteAnsFilterstate() === false)
+            {
+                $TotalIncomplete = $results - $TotalCompleted;
+                $fname=$clang->gT("Non completed");
+                $statisticsoutput .= "\t<tr>\n\t\t<td width='50%' align='center' >"
+                ."$fname\n"
+                ."\t\t</td>\n"
+                ."\t\t<td width='25%' align='center' >$TotalIncomplete\n";
+                if ($results > 0) {$vp=sprintf("%01.2f", ($TotalIncomplete/$results)*100)."%";} else {$vp="N/A";}
+                $statisticsoutput .= "\t\t</td><td width='25%' align='center' >$vp"
+                ."\t\t</td>\n\t</tr>\n";
+                if ($results > 0)
+                {
+                    $gdata[] = ($TotalIncomplete/$results)*100;
+                } else
+                {
+                    $gdata[] = 0;
+                }
+                $grawdata[]=$TotalIncomplete;
+                $label=strip_tags($fname);
+                $justcode[]=$fname;
+                $lbl[] = wordwrap($label, 20, "\n");
+            }
 
 			if ($usejpgraph == 1 && array_sum($gdata)>0) //JPGRAPH CODING ORIGINALLY SUBMITTED BY Pieterjan Heyse
 			{
@@ -1494,8 +1519,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					$graph->legend->SetFont(constant($jpgraphfont), FS_NORMAL, $fontsize);
 					$graph->legend->SetPos(0.015, $legendtop, 'right', 'top');
 					$graph->legend->SetFillColor("white");
-    				$graph->SetAntiAliasing();
-
+//    				$graph->SetAntiAliasing();
 				}
 				$graph->title->SetColor("#EEEEEE");
 				$graph->SetMarginColor("#FFFFFF");
@@ -1515,6 +1539,19 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					$p1->value->SetFont(constant($jpgraphfont),FS_BOLD,8);
 					$p1->value->SetColor("#FFFFFF");
 				} else { //Pie Chart
+                    // this block is to remove the items with value == 0
+                    $i = 0;
+                    while (isset ($gdata[$i]))
+                    {
+                        if ($gdata[$i] == 0)
+                        {
+                           array_splice ($gdata, $i, 1);
+                           array_splice ($lbl, $i, 1);
+                        }
+                        else
+                        {$i++;}
+                    }
+                
 					$p1 = new PiePlot3d($gdata);
 					//                        $statisticsoutput .= "<pre>";print_r($lbl);$statisticsoutput .= "</pre>";
 					//                        $statisticsoutput .= "<pre>";print_r($gdata);$statisticsoutput .= "</pre>";
