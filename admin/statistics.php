@@ -628,9 +628,10 @@ $statisticsoutput .= "\t\t\t</table>\n"
 ."\t\t<tr><td align='center' class='settingcaption'>\n"
 ."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
 ."\t\t\t\t<tr><td align='center'>".$clang->gT("Filter incomplete answers:")."<select name='filterinc'>\n"
-."\t\t\t\t\t<<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
+."\t\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
 ."\t\t\t\t\t<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
 ."\t\t\t\t</select></td></tr>\n"
+."\t\t\t\t<tr><td align='center'><input type='checkbox' id='noncompleted' name='noncompleted'/><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses (only works when Filter incomplete answers is Disable)")."</label></font></td></tr>\n"
 ."\t\t<tr><td align='center'>\n\t\t\t<br />\n"
 ."\t\t\t<input type='submit' value='".$clang->gT("View Stats")."' />\n"
 ."\t\t\t<input type='button' value='".$clang->gT("Clear")."' onclick=\"window.open('$scriptname?action=statistics&amp;sid=$surveyid', '_top')\" />\n"
@@ -1402,70 +1403,91 @@ if (isset($_POST['summary']) && $_POST['summary'])
 				if ($sql != "NULL") {$query .= " AND $sql";}
 				$result=db_execute_num($query) or die ("Couldn't do count of values<br />$query<br />".$connect->ErrorMsg());
 				// $statisticsoutput .= "\n<!-- ($sql): $query -->\n\n";
-				while ($row=$result->FetchRow())
-				{
+                while ($row=$result->FetchRow())                   // this just extracts the data, after we present
+                {
                     $TotalCompleted += $row[0];
-					if ($al[0] == "")
-					{$fname=$clang->gT("No answer");}
-					elseif ($al[0] == $clang->gT("Other") || $al[0] == "Answers")
-					{$fname="$al[1] <input type='submit' value='".$clang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]&amp;sql=".urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";}
-					elseif ($qtype == "S" || $qtype == "U" || $qtype == "T" || $qtype == "Q")
-					{
-						if ($al[0] == "Answers")
-						{
-							$fname= "$al[1] <input type='submit' value='"
-							. $clang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]&amp;sql="
-							. urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
-						}
-						elseif ($al[0] == "NoAnswer")
-						{
-							$fname= "$al[1]";
-						}
-					}
-					else
-					{$fname="$al[1] ($al[0])";}
-					$statisticsoutput .= "\t<tr>\n\t\t<td width='50%' align='center' >"
-					."$fname\n"
-					."\t\t</td>\n"
-					."\t\t<td width='25%' align='center' >$row[0]\n";
-					if ($results > 0) {$vp=sprintf("%01.2f", ($row[0]/$results)*100)."%";} else {$vp="N/A";}
-					$statisticsoutput .= "\t\t</td><td width='25%' align='center' >$vp"
-					."\t\t</td>\n\t</tr>\n";
-					if ($results > 0)
-					{
-						$gdata[] = ($row[0]/$results)*100;
-					} else
-					{
-						$gdata[] = 0;
-					}
-					$grawdata[]=$row[0];
-					$label=strip_tags($fname);
-					$justcode[]=$al[0];
-					$lbl[] = wordwrap($label, 20, "\n");
-				}
-			}
-            if (incompleteAnsFilterstate() === false)
-            {
-                $TotalIncomplete = $results - $TotalCompleted;
-                $fname=$clang->gT("Non completed");
-                $statisticsoutput .= "\t<tr>\n\t\t<td width='50%' align='center' >"
-                ."$fname\n"
-                ."\t\t</td>\n"
-                ."\t\t<td width='25%' align='center' >$TotalIncomplete\n";
-                if ($results > 0) {$vp=sprintf("%01.2f", ($TotalIncomplete/$results)*100)."%";} else {$vp="N/A";}
-                $statisticsoutput .= "\t\t</td><td width='25%' align='center' >$vp"
-                ."\t\t</td>\n\t</tr>\n";
-                if ($results > 0)
-                {
-                    $gdata[] = ($TotalIncomplete/$results)*100;
-                } else
-                {
-                    $gdata[] = 0;
+                    if ($al[0] == "")
+                    {$fname=$clang->gT("No answer");}
+                    elseif ($al[0] == $clang->gT("Other") || $al[0] == "Answers")
+                    {$fname="$al[1] <input type='submit' value='".$clang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]&amp;sql=".urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";}
+                    elseif ($qtype == "S" || $qtype == "U" || $qtype == "T" || $qtype == "Q")
+                    {
+                        if ($al[0] == "Answers")
+                        {
+                            $fname= "$al[1] <input type='submit' value='"
+                            . $clang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]&amp;sql="
+                            . urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
+                        }
+                        elseif ($al[0] == "NoAnswer")
+                        {
+                            $fname= "$al[1]";
+                        }
+                    }
+                    else
+                    {$fname="$al[1] ($al[0])";}
+                    if ($results > 0)
+                    {
+                        $gdata[] = ($row[0]/$results)*100;
+                    } else
+                    {
+                        $gdata[] = "N/A";
+                    }
+                    $grawdata[]=$row[0];
+                    $label[]=$fname;
+                    $justcode[]=$al[0];
+                    $lbl[] = wordwrap(strip_tags($fname), 20, "\n");
                 }
-                $grawdata[]=$TotalIncomplete;
-                $label=strip_tags($fname);
-                $justcode[]=$fname;
-                $lbl[] = wordwrap($label, 20, "\n");
+			}
+
+            if ((incompleteAnsFilterstate() === false) and ($qtype != "M") and ($qtype != "P"))
+            {
+                if (isset($_POST["noncompleted"]) and ($_POST["noncompleted"] == "on"))
+                {
+                    $i=0;
+                    while (isset($gdata[$i]))
+                    {
+                        if ($gdata[$i] != "N/A") { $gdata[$i] = ($grawdata[$i]/$TotalCompleted)*100; }
+                        $i++;
+                    }
+                }
+                else
+                {
+                    $TotalIncomplete = $results - $TotalCompleted;
+                    $fname=$clang->gT("Non completed");
+                    if ($results > 0)
+                    {
+                        $gdata[] = ($TotalIncomplete/$results)*100;
+                    } else
+                    {
+                        $gdata[] = "N/A";
+                    }
+                    $grawdata[]=$TotalIncomplete;
+                    $label[]= $fname;
+                    $justcode[]=$fname;
+                    $lbl[] = wordwrap(strip_tags($fname), 20, "\n");
+                }
+            }
+            $i=0;
+            while (isset($gdata[$i]))
+            {
+                $statisticsoutput .= "\t<tr>\n\t\t<td width='50%' align='center' >" . $label[$i] ."\n"
+                ."\t\t</td>\n"
+                ."\t\t<td width='25%' align='center' >" . $grawdata[$i] . "\n";
+                
+                if ($results > 0) {$vp=sprintf("%01.2f", ($row[0]/$results)*100)."%";} else {$vp="N/A";}
+                
+                $statisticsoutput .= "\t\t</td><td width='25%' align='center' >";
+                if ($gdata[$i] == "N/A") 
+                {
+                    $statisticsoutput .= $gdata[$i];
+                    $gdata[$i] = 0;
+                }
+                else
+                    $statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
+                
+                $statisticsoutput .= "\t\t</td>\n\t</tr>\n";
+                
+                $i++;
             }
 
 			if ($usejpgraph == 1 && array_sum($gdata)>0) //JPGRAPH CODING ORIGINALLY SUBMITTED BY Pieterjan Heyse
@@ -1519,7 +1541,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 					$graph->legend->SetFont(constant($jpgraphfont), FS_NORMAL, $fontsize);
 					$graph->legend->SetPos(0.015, $legendtop, 'right', 'top');
 					$graph->legend->SetFillColor("white");
-    				$graph->SetAntiAliasing();
+//    				$graph->SetAntiAliasing();
 				}
 				$graph->title->SetColor("#EEEEEE");
 				$graph->SetMarginColor("#FFFFFF");
@@ -1578,6 +1600,7 @@ if (isset($_POST['summary']) && $_POST['summary'])
 		}
 		unset($gdata);
 		unset($grawdata);
+        unset($label);
 		unset($lbl);
 		unset($justcode);
 		unset ($alist);
