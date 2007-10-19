@@ -191,8 +191,8 @@
 	    $supportedLanguages['tr']['nativedescription'] = 'T&#252;rk&#231;e';
 
 	    // Thai
-	    $supportedLanguages['tr']['description'] = $clang->gT('Thai');
-	    $supportedLanguages['tr']['nativedescription'] = '&#3616;&#3634;&#3625;&#3634;&#3652;&#3607;&#3618;';
+	    $supportedLanguages['th']['description'] = $clang->gT('Thai');
+	    $supportedLanguages['th']['nativedescription'] = '&#3616;&#3634;&#3625;&#3634;&#3652;&#3607;&#3618;';
 
 
 	    // Vietnamese
