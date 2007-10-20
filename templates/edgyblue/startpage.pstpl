@@ -126,6 +126,10 @@ body{
     font-size: 9pt;
     font-family: verdana;
     }
+.progressbar img
+{
+  height:12px;
+}
 </style>
 </head>
 <body bgcolor='#FF9933' link='#0000FF' vlink='#800080' alink='#FF0000'>

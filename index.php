@@ -485,7 +485,7 @@ function makegraph($thisstep, $total)
 	$graph .= "<td width='100' align='left'>\n"
 	. "<table cellspacing='0' cellpadding='0' border='0' width='100%'>\n"
 	. "<tr><td class='progressbar'>\n"
-	. "<img src='$shchart' height='12' width='$size' align='left' alt='$size% ".$clang->gT("complete")."' />\n"
+	. "<img src='$shchart' width='$size' align='left' alt='$size% ".$clang->gT("complete")."' />\n"
 	. "</td></tr>\n"
 	. "</table>\n"
 	. "</td>\n"

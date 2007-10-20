@@ -21,6 +21,10 @@ img { border: 0; }
     {
 	text-align:left;
     }
+.progressbar img
+{
+  height:12px;
+}
 </style>
 </head>
 <body>

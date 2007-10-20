@@ -2401,7 +2401,7 @@ function getHeader()
 	{
 		return  "<?xml version=\"1.0\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
         		. "<html><head>\n"
-        		. "<link type=\"text/css\" rel=\"StyleSheet\" href=\"".$rooturl."/scripts/slider/swing.css\" />\n"
+//        		. "<link type=\"text/css\" rel=\"StyleSheet\" href=\"".$rooturl."/scripts/slider/swing.css\" />\n"
         		. "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"".$rooturl."/scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />"
         		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/slider/range.js\"></script>\n"
         		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/slider/timer.js\"></script>\n"
