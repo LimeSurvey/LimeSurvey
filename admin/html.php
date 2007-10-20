@@ -1820,7 +1820,7 @@ if ($action == "editsurvey")
 		{
 			$esrow = array_map('htmlspecialchars', $esrow);
 			$editsurvey = include2var('./scripts/addremove.js');
-			$editsurvey .= "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0' class='table2columns'>\n\t<tr><td colspan='4' class='settingcaption'>"
+			$editsurvey .= "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0'>\n\t<tr><td colspan='4' class='settingcaption'>"
 			. "\t\t".$clang->gT("Edit Survey - Step 1 of 2")."</td></tr>\n"
 			. "\t<tr><td align='right'>".$clang->gT("Administrator:")."</td>\n"
 			. "\t\t<td align='left'><input type='text' size='50' name='admin' value=\"{$esrow['admin']}\" /></td></tr>\n"
