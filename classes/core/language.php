@@ -19,7 +19,7 @@ $locale = new limesurvey_lang('en'); // Char code
 print $locale->getTranslation("Hello World!");
 */
 
-if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die("Cannot run this script directly");}
+if (!isset($rootdir) || isset($_REQUEST['rootdir'])) {die("Cannot run this script directly");}
 
 require_once($rootdir.'/classes/php-gettext/gettext.php');
 require_once($rootdir.'/classes/php-gettext/streams.php');
