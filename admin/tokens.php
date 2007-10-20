@@ -152,7 +152,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		"tid int I NOTNULL AUTO PRIMARY,\n "
 		. "firstname C(40) ,\n "
 		. "lastname C(40) ,\n "
-		. "email C(100) ,\n "
+		. "email C(320) ,\n "
 		. "token C(10) ,\n "
 		. "language C(25) ,\n "
 		. "sent C(17) DEFAULT 'N',\n "
@@ -1203,7 +1203,7 @@ if (($subaction == "edit" || $subaction == "addnew") && ($sumrows5['edit_survey_
 	."</tr>\n"
 	."<tr>\n"
 	."\t<td align='right' width='20%'><strong>".$clang->gT("Email").":</strong></font></td>\n"
-	."\t<td ><input type='text' size='50' name='email' value=\"";
+	."\t<td ><input type='text' maxsize='320' size='50' name='email' value=\"";
 	if (isset($email)) {$tokenoutput .= $email;}
 	$tokenoutput .= "\"></font></td>\n"
 	."</tr>\n"
