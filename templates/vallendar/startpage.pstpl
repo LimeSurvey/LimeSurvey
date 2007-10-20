@@ -108,6 +108,10 @@ body{
     font-size: 9pt;
     font-family: verdana;
     }
+.progressbar img
+{
+  height:12px;
+}
 </style>
 </head>
 <body bgcolor='#C0C0C0'>

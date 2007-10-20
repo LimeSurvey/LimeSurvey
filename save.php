@@ -79,19 +79,22 @@ if ((isset($_POST['fieldnames']) && $_POST['fieldnames']) || (isset($_POST['move
 	{
 		// SAVE DATA TO SURVEY_X RECORD
 		$subquery = createinsertquery();
-		if ($result=$connect->Execute($subquery))
+		if ($subquery)
 		{
-            if (substr($subquery,0,6)=='INSERT')
+			if ($result=$connect->Execute($subquery))
 			{
-               $tempID=$connect->Insert_ID(); // Find out id immediately if inserted 
-        	   $_SESSION['srid'] = $tempID;
-        	   $saved_id = $tempID;
-			}
-			if (isset($_POST['move']) && $_POST['move'] == "movesubmit")
-			{
-				$connect->Execute("DELETE FROM ".db_table_name("saved_control")." where srid=".$_SESSION['srid']);
-			}
-		} else {echo submitfailed();}
+	            if (substr($subquery,0,6)=='INSERT')
+				{
+	               $tempID=$connect->Insert_ID(); // Find out id immediately if inserted 
+	        	   $_SESSION['srid'] = $tempID;
+	        	   $saved_id = $tempID;
+				}
+				if (isset($_POST['move']) && $_POST['move'] == "movesubmit")
+				{
+					$connect->Execute("DELETE FROM ".db_table_name("saved_control")." where srid=".$_SESSION['srid']);
+				}
+			} else {echo submitfailed();}
+		}
 	}
 }
 

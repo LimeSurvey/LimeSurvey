@@ -25,7 +25,11 @@ img { border: 0; }
    { 
       font-size: 10px; 
 	  font-style: italic; 
-   }	
+   }
+.progressbar img
+{
+  height:12px;
+}
 </style>
 </head>
 <body>

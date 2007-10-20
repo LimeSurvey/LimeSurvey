@@ -510,7 +510,7 @@ function makegraph($thisstep, $total)
 	$graph .= "<td width='100' align='left'>\n"
 	. "<table cellspacing='0' cellpadding='0' border='0' width='100%'>\n"
 	. "<tr><td class='progressbar'>\n"
-	. "<img src='$shchart' height='12' width='$size' align='left' alt='$size% ".$clang->gT("complete")."' />\n"
+	. "<img src='$shchart' width='$size' align='left' alt='$size% ".$clang->gT("complete")."' />\n"
 	. "</td></tr>\n"
 	. "</table>\n"
 	. "</td>\n"
@@ -628,8 +628,8 @@ function checkgroupfordisplay($gid)
 					// For multiple choice type questions, the "answer" value will be "Y"
 					// if selected, the fieldname will have the answer code appended.
 					$fieldname=$row['cfieldname'].$row['value'];
-                    $cvalue="Y";
-                    if (isset($_SESSION[$fieldname])) { $cfieldname=$_SESSION[$fieldname]; } else { $cfieldname=""; }
+                    $cvalue="Y";     
+					if (isset($_SESSION[$fieldname])) { $cfieldname=$_SESSION[$fieldname]; } else { $cfieldname=""; }
 				}
 				else
 				{
@@ -1381,11 +1381,11 @@ UpdateSessionGroupList();
 		{
 
 // Optimized Query
-			$abquery = "SELECT ".db_table_name('answers').".code\n"
-			. " FROM ".db_table_name('answers')." \n"
-			. " WHERE qid={$arow['qid']}\n"
+            $abquery = "SELECT ".db_table_name('answers').".code\n"
+            . " FROM ".db_table_name('answers')." \n"
+            . " WHERE qid={$arow['qid']}\n"
             . " AND language='".$_SESSION['s_lang']."' \n"
-     		. " ORDER BY sortorder, answer";
+            . " ORDER BY sortorder, answer";
 
 			$abresult = db_execute_assoc($abquery);
 			while ($abrow = $abresult->FetchRow())

@@ -29,10 +29,14 @@ img { border: 0; }
     font-family: verdana;
     }
 .questionhelp 
-   { 
+{
       font-size: 10px; 
 	  font-style: italic; 
-   }
+}
+.progressbar img
+{
+  height:12px;
+}
 </style>
 </head>
 <body>

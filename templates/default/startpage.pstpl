@@ -83,6 +83,10 @@ body.default
     font-size: 9pt;
     font-family: verdana;
     }
+.progressbar img
+{
+  height:12px;
+}
 </style>
 </head>
 <body class='default'>

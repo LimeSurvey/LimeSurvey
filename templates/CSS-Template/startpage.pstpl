@@ -93,6 +93,10 @@
 	font-weight:bold;
 	color:RED;
 }
+.progressbar img
+{
+  height:12px;
+}
 
 /* ------------------------ */
 /* --- My contributions --- */
