@@ -89,6 +89,18 @@ echo str_pad('Loading... ',4096)."<br />\n";
 	//No action needed
         modify_database("","update [prefix_settings_global] set [stg_value`='113' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
+    if ($oldversion < 114) {
+	//No action needed
+        modify_database("","ALTER TABLE [prefix_saved_control] ALTER COLUMN [email] VARCHAR(320) NOT NULL"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE [prefix_surveys] ALTER COLUMN [adminemail] VARCHAR(320) NOT NULL"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE [prefix_users] ALTER COLUMN [email] VARCHAR(320) NOT NULL"); echo $modifyoutput; flush();
+
+        modify_database("",'INSERT INTO [prefix_settings_global] VALUES (\'SessionName\', \'$sessionname\');');
+
+
+
+        modify_database("","update [prefix_settings_global] set [stg_value]='114' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+    }
 
 
     return true;
