@@ -1980,7 +1980,7 @@ function templatereplace($line)
 			//die(returnglobal('token'));
 			if (!isset($_SESSION['step']) || !$_SESSION['step'])  //First page, show LOAD
 			{
-				$saveall = "<input type='submit' name='loadall' value='".$clang->gT("Load Unfinished Survey")."' class='saveall' ". (($thissurvey['active'] != "Y")? "disabled":"") ."/>";
+				$saveall = "<input type='submit' name='loadall' value='".$clang->gT("Load Unfinished Survey")."' class='saveall' ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") ."/>";
 			}
 			elseif (isset($_SESSION['scid']) && (isset($_POST['move']) && $_POST['move'] == "movelast"))  //Already saved and on Submit Page, dont show Save So Far button
 			{
@@ -1988,7 +1988,7 @@ function templatereplace($line)
 			}
 			else
 			{
-				$saveall="<input type='submit' name='saveall' value='".$clang->gT("Save Survey and Return")."' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;\" ". (($thissurvey['active'] != "Y")? "disabled":"") ."/>";  // Show Save So Far button
+				$saveall="<input type='submit' name='saveall' value='".$clang->gT("Save Survey and Return")."' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;\" ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") ."/>";  // Show Save So Far button
 			}
 		}
 		else
