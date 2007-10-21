@@ -204,8 +204,9 @@ if ($surveyexists <1)
 	//SURVEY DOES NOT EXIST. POLITELY EXIT.
 	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 	echo "\t<center><br />\n"
-	."\t".$clang->gT("Sorry. There is no matching survey.")."<br />&nbsp;\n";
+	."\t".$clang->gT("Sorry. There is no matching survey.")."<br /></center>&nbsp;\n";
 	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+	doFooter();
 	exit;
 }
 
