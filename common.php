@@ -48,7 +48,7 @@ if ($dieoutput!='') die($dieoutput);
 ##################################################################################
 ## DO NOT EDIT BELOW HERE
 ##################################################################################
-
+if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
 require_once ($rootdir.'/classes/adodb/adodb.inc.php');
 require_once ($rootdir.'/classes/phpmailer/class.phpmailer.php');
 require_once ($rootdir.'/classes/php-gettext/gettextinc.php');

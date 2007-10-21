@@ -12,6 +12,7 @@
 */
 
 //Ensure script is not run directly, avoid path disclosure
+if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 require_once(dirname(__FILE__).'/../../config.php');
 require_once($rootdir.'/classes/core/language.php');
 $clang = new limesurvey_lang("en");

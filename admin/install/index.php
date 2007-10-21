@@ -12,6 +12,7 @@
 */
 
 
+if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 require_once(dirname(__FILE__).'/../../config.php');  // config.php itself includes common.php
 $adminoutput='';  // Alle future output is written into this and then outputted at the end of file
 // SET THE LANGUAGE???? -> DEFAULT SET TO EN FOR NOW

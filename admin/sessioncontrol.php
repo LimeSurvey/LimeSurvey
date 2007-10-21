@@ -14,7 +14,7 @@
 //SESSIONCONTROL.PHP FILE MANAGES ADMIN SESSIONS. 
 //Ensure script is not run directly, avoid path disclosure
 
-if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
+if (!isset($homedir) || isset($_REQUEST['homedir'])) {die("Cannot run this script directly");}
 
 // Read the session name from the settings table
 $usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";

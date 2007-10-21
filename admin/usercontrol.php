@@ -12,6 +12,7 @@
 */
 
 include_once("login_check.php");  //Login Check dies also if the script is started directly
+if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 require_once($homedir."/classes/core/sha256.php");
 
 if (!isset($_SESSION['loginID']))
