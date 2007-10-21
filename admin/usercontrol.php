@@ -11,6 +11,7 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
+if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 include_once("login_check.php");  //Login Check dies also if the script is started directly
 require_once($homedir."/classes/core/sha256.php");
 

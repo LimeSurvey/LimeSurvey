@@ -39,6 +39,7 @@ if (isset($_SESSION['srid']))
 if (!isset($_SESSION['grouplist'])  && (isset($_POST['move'])) )
 // geez ... a session time out! RUN! 
 {
+    if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
     require_once($rootdir.'/classes/core/language.php');
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
 	$clang = new limesurvey_lang($baselang);
@@ -85,6 +86,7 @@ if (isset($_SESSION['s_lang']))
 }
 
 
+if (isset($_REQUEST['embedded_inc'])) {die('You cannot start this script directly');}
 if ( $embedded_inc != '' )
 require_once( $embedded_inc );
 

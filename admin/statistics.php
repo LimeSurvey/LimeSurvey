@@ -11,6 +11,7 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
+if (isset($_REQUEST['jpgraphdir'])) {die('You cannot start this script directly');}
 include_once("login_check.php");
 require_once('classes/core/class.progressbar.php');
 $statisticsoutput ='';

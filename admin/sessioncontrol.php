@@ -51,6 +51,7 @@ elseif (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='' )
 //SetInterfaceLanguage($_SESSION['adminlang']);
 
 // Construct the language class, and set the language.
+if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
 require_once($rootdir.'/classes/core/language.php');
 $clang = new limesurvey_lang($_SESSION['adminlang']);
 
