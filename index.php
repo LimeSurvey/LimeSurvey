@@ -84,6 +84,7 @@ if (isset($_SESSION['s_lang']))
 }
 
 
+if (isset($_REQUEST['embedded_inc'])) {die('You cannot start this script directly');}
 if ( $embedded_inc != '' )
 require_once( $embedded_inc );
 
