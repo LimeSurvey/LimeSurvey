@@ -163,8 +163,8 @@ if ($action == "setuserrights")
 {
 	if($_SESSION['loginID'] != $_POST['uid'])
 	{
-		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='8' bgcolor='black' align='center'>\n"
-		. "\t\t<strong><font color='white'>".$clang->gT("Set User Rights").": ".$_POST['user']."</td></tr>\n";
+		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='8' class='header' align='center'>\n"
+		. "\t\t".$clang->gT("Set User Rights").": ".$_POST['user']."</td></tr>\n";
 
 		$userlist = getuserlist();
 		foreach ($userlist as $usr)
