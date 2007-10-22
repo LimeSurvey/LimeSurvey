@@ -240,7 +240,7 @@ CREATE TABLE `prefix_users` (
   `full_name` varchar(50) NOT NULL,
   `parent_id` int(10) unsigned NOT NULL,
   `lang` varchar(20),
-  `email` varchar(320) NOT NULL UNIQUE,
+  `email` varchar(320),
   `create_survey` tinyint(1) NOT NULL default '0',
   `create_user` tinyint(1) NOT NULL default '0',
   `delete_user` tinyint(1) NOT NULL default '0',
