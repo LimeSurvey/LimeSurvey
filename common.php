@@ -2523,6 +2523,9 @@ function ReplaceFields ($text,$fieldsarray)
 
 function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false)
 {
+// This function mails a text $body to the recipient $to. YOu can use more than one 
+// recipient when using a comma separated string with recipients.
+
 	global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword;
 
 
@@ -2545,7 +2548,20 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false)
 	{$mail->SMTPAuth = true;}
 	}
 	$mail->From = $fromemail;
-	$mail->AddAddress($to);
+    $toemails = explode(",", $to);
+    foreach ($toemails as $singletoemail)
+    {
+        if (strpos($singletoemail, '<') )
+        {
+	       $toemail=substr($singletoemail,strpos($singletoemail,'<')+1,strpos($singletoemail,'>')-1-strpos($singletoemail,'<'));
+           $toname=trim(substr($singletoemail,0, strpos($singletoemail,'<')-1));
+           $mail->AddAddress($toemail,$toname);
+        }
+        else
+        {
+            $mail->AddAddress($singletoemail);
+        }
+    }	
 	$mail->FromName = $fromname;
 	$mail->AddCustomHeader("X-Surveymailer: $sitename:Emailer (LimeSurvey.sourceforge.net)");
 	if (get_magic_quotes_gpc() != "0")	{$body = stripcslashes($body);}
