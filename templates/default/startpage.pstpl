@@ -87,6 +87,10 @@ body.default
 {
   height:12px;
 }
+.innergraph table
+{
+border:1px solid #000;
+}
 </style>
 </head>
 <body class='default'>
