@@ -78,7 +78,7 @@ $aquery = "SELECT {$dbprefix}answers.* FROM {$dbprefix}answers, {$dbprefix}quest
 $adump = BuildCSVFromQuery($aquery);
 
 //6: Conditions table
-$cquery = "SELECT {$dbprefix}conditions.* FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$surveyid";
+$cquery = "SELECT DISTINCT {$dbprefix}conditions.* FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$surveyid";
 $cdump = BuildCSVFromQuery($cquery);
 
 //7: Label Sets
@@ -90,7 +90,7 @@ $lquery = "SELECT DISTINCT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbpr
 $ldump = BuildCSVFromQuery($lquery);
 
 //9: Question Attributes
-$query = "SELECT {$dbprefix}question_attributes.* FROM {$dbprefix}question_attributes, {$dbprefix}questions WHERE {$dbprefix}question_attributes.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$surveyid";
+$query = "SELECT DISTINCT {$dbprefix}question_attributes.* FROM {$dbprefix}question_attributes, {$dbprefix}questions WHERE {$dbprefix}question_attributes.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$surveyid";
 $qadump = BuildCSVFromQuery($query);
 
 //10: Assessments;
