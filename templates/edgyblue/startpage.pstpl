@@ -135,6 +135,10 @@ body{
 {
   height:12px;
 }
+.innergraph table
+{
+border:1px solid #000;
+}
 </style>
 </head>
 <body bgcolor='#FF9933' link='#0000FF' vlink='#800080' alink='#FF0000'>
