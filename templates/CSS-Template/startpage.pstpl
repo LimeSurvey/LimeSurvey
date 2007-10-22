@@ -93,7 +93,7 @@
 	font-weight:bold;
 	color:RED;
 }
-.progressbar img
+.innergraph img
 {
   height:12px;
 }

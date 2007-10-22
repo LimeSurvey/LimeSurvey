@@ -112,7 +112,7 @@ body{
       font-size: 10px; 
 	  font-style: italic; 
    }
-.progressbar img
+.innergraph img
 {
   height:12px;
 }	
