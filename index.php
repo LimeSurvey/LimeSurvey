@@ -486,7 +486,7 @@ function makegraph($thisstep, $total)
 	$size=intval(($thisstep-1)/$total*100);
 	$graph .= "<td width='100' align='left'>\n"
 	. "<table cellspacing='0' cellpadding='0' border='0' width='100%'>\n"
-	. "<tr><td class='progressbar'>\n"
+	. "<tr><td>\n"
 	. "<img src='$shchart' width='$size' align='left' alt='$size% ".$clang->gT("complete")."' />\n"
 	. "</td></tr>\n"
 	. "</table>\n"

@@ -28,7 +28,7 @@ img { border: 0; }
     font-size: 9pt;
     font-family: verdana;
     }
-.progressbar img
+.innergraph img
 {
   height:12px;
 }
