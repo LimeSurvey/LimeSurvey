@@ -740,7 +740,7 @@ if ($surveyid)
 		if ($activated == "Y")
 		{
                 $surveysummary .= "\t<tr><td align='right' valign='top'><strong>"
-                . $clang->gT("Survey table name").":</strong></td><td>survey_$surveyid</td></tr>\n";
+                . $clang->gT("Survey table name").":</strong></td><td>".$dbprefix."survey_$surveyid</td></tr>\n";
 		}
         $surveysummary .= "\t<tr><td align='right' valign='top'><strong>"
                 . $clang->gT("Hints").":</strong></td><td>\n";
