@@ -592,7 +592,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 
 		//CHECK FOR DUPLICATE LABELSETS
 		$thisset="";
-		$query2 = "SELECT code, title, sortorder
+		$query2 = "SELECT code, title, sortorder, language
                    FROM {$dbprefix}labels
                    WHERE lid=".$newlid."
                    ORDER BY sortorder, code";
