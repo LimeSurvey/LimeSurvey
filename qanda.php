@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /*
 * LimeSurvey
 * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
@@ -228,40 +228,40 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 		$values=do_list_flexible_radio($ia);
 		if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
 		{
-			$qtitle .= "<br />\n<strong><i><font size='1'>"
-			. $clang->gT("Choose only one of the following")."</font></i></strong>";
+			$qtitle .= "<br />\n<font class = \"questionhelp\">"
+			. $clang->gT("Choose only one of the following")."</font>";
 		}
 		break;
 		case "L": //LIST drop-down/radio-button list
 		$values=do_list_radio($ia);
 		if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
 		{
-			$qtitle .= "<br />\n<strong><i><font size='1'>"
-			. $clang->gT("Choose only one of the following")."</font></i></strong>";
+			$qtitle .= "<br />\n<font class = \"questionhelp\">"
+			. $clang->gT("Choose only one of the following")."</font>";
 		}
 		break;
 		case "W": //List - dropdown
 		$values=do_list_flexible_dropdown($ia);
 		if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
 		{
-			$qtitle .= "<br />\n<strong><i><font size='1'>"
-			. $clang->gT("Choose only one of the following")."</font></i></strong>";
+			$qtitle .= "<br />\n<font class = \"questionhelp\">"
+			. $clang->gT("Choose only one of the following")."</font>";
 		}
 		break;
 		case "!": //List - dropdown
 		$values=do_list_dropdown($ia);
 		if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
 		{
-			$qtitle .= "<br />\n<strong><i><font size='1'>"
-			. $clang->gT("Choose only one of the following")."</font></i></strong>";
+			$qtitle .= "<br />\n<font class = \"questionhelp\">"
+			. $clang->gT("Choose only one of the following")."</font>";
 		}
 		break;
 		case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
 		$values=do_listwithcomment($ia);
 		if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
 		{
-			$qtitle .= "<br />\n<strong><i><font size='1'>"
-			. $clang->gT("Choose only one of the following")."</font></i></strong>";
+			$qtitle .= "<br />\n<font class = \"questionhelp\">"
+			. $clang->gT("Choose only one of the following")."</font>";
 		}
 		break;
 		case "R": //RANKING STYLE
@@ -273,13 +273,13 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 		{
 			if (!$maxansw=arraySearchByKey("max_answers", $qidattributes, "attribute", 1))
 			{
-				$qtitle .= "<br />\n<strong><i><font size='1'>"
-				. $clang->gT("Check any that apply")."</font></i></strong>";
+				$qtitle .= "<br />\n<font class = \"questionhelp\">"
+				. $clang->gT("Check any that apply")."</font>";
 			}
 			else
 			{
-				$qtitle .= "<br />\n<strong><i><font size='1'>"
-				. $clang->gT("Check at most")." ".$maxansw['value']." ".$clang->gT("answers")."</font></i></strong>";
+				$qtitle .= "<br />\n<font class = \"questionhelp\">"
+				. $clang->gT("Check at most")." ".$maxansw['value']." ".$clang->gT("answers")."</font>";
 			}
 		}
 		break;
@@ -287,8 +287,8 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 		$values=do_multiplechoice_CSV($ia);
 		if (count($values[1]) > 1)
 		{
-			$qtitle .= "<br />\n</b><i><font size='1'>"
-			. $clang->gT("Check any that apply")."</font></i><b>";
+			$qtitle .= "<br />\n<font class = \"questionhelp\">"
+			. $clang->gT("Check any that apply")."</font>";
 		}
 		break;
 
@@ -296,16 +296,16 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 		$values=do_language($ia);
 		if (count($values[1]) > 1)
 		{
-			$qtitle .= "<br />\n</b><i><font size='1'>"
-			. $clang->gT("Choose your language")."</font></i><b>";
+			$qtitle .= "<br />\n<font class = \"questionhelp\">"
+			. $clang->gT("Choose your language")."</font>";
 		}
 		break;
 		case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
 		$values=do_multiplechoice_withcomments($ia);
 		if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
 		{
-			$qtitle .= "<br />\n<strong><i><font size='1'>"
-			. $clang->gT("Check any that apply")."</font></i></strong>";
+			$qtitle .= "<br />\n<font class = \"questionhelp\">"
+			. $clang->gT("Check any that apply")."</font>";
 		}
 		break;
 		case "Q": //MULTIPLE SHORT TEXT
@@ -399,7 +399,7 @@ function validation_message($ia)
 			$helpresult=db_execute_assoc($helpselect) or die("$helpselect<br />".htmlspecialchars($connect->ErrorMsg()));
 			while ($helprow=$helpresult->FetchRow())
 			{
-				$help=" <i>(".$helprow['help'].")</i>";
+				$help=" <font class = \"questionhelp\">(".$helprow['help'].")</font>";
 			}
 			$qtitle .= "<strong><br /><span class='errormandatory'>".$clang->gT("This question must be answered correctly")." $help</span></strong><br />\n";
 		}
