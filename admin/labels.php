@@ -277,10 +277,10 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
         		."\t<td width='35%' class='settingcaption'><strong>\n"
         		.$clang->gT("Title")
         		."\t</strong></td>\n"
-        		."\t<td width='25%' class='settingcaption'><strong>\n"
+        		."\t<td width='15%' class='settingcaption'><strong>\n"
         		.$clang->gT("Action")
         		."\t</strong></td>\n"
-        		."\t<td width='15%' align='center' class='settingcaption'><strong>\n"
+        		."\t<td width='25%' align='center' class='settingcaption'><strong>\n"
         		.$clang->gT("Order")
         		."\t</strong></td>\n"
         		."</tr></thead>"
@@ -289,7 +289,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     		{
                 $sortorderids=$sortorderids.' '.$row['language'].'_'.$row['sortorder'];
     			if ($first) {$codeids=$codeids.' '.$row['sortorder'];}                 
-    			$labelsoutput.= "<tr><td width='25%' align='right'>\n";
+    			$labelsoutput.= "<tr><td align='right'>\n";
 
     			if ($activeuse > 0)
     			{
@@ -306,10 +306,10 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     			}
     			
     			$labelsoutput.= "\t</td>\n"
-    			."\t<td width='35%'>\n"
+    			."\t<td>\n"
     			."\t<input type='text' name='title_{$row['language']}_{$row['sortorder']}' maxlength='100' size='80' value=\"".html_escape($row['title'])."\" onkeypress=\"return catchenter(event,'saveallbtn');\"/>\n"
     			."\t</td>\n"
-    			."\t<td width='25%'>\n";
+    			."\t<td>\n";
     			if ($activeuse == 0)
     			{
     				$labelsoutput.= "\t<input type='submit' name='method' value='".$clang->gT("Del")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
@@ -336,13 +336,13 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 
     		$position=sprintf("%05d", $position);
     		if ($activeuse == 0 && $first)
-    		{   $labelsoutput.= "<tr><td><br /></td></tr><tr><td width='25%' align='right'>"
+    		{   $labelsoutput.= "<tr><td><br /></td></tr><tr><td align='right'>"
   			    ."<strong>".$clang->gT("New label").":</strong> <input type='text' maxlength='5' name='insertcode' size='10' id='addnewlabelcode' onkeypress=\"return catchenter(event,'addnewlabelbtn');\" />\n"
     			."\t</td>\n"
-    			."\t<td width='35%'>\n"
+    			."\t<td>\n"
     			."\t<input type='text' maxlength='100' name='inserttitle' size='80' onkeypress=\"return catchenter(event,'addnewlabelbtn');\"/>\n"
     			."\t</td>\n"
-    			."\t<td width='25%'>\n"
+    			."\t<td>\n"
     			."\t<input type='submit' name='method' value='".$clang->gT("Add new label")."' id='addnewlabelbtn' />\n"
     			."\t</td>\n"
     			."\t<td>\n"
