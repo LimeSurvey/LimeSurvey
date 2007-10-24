@@ -115,7 +115,7 @@ elseif ($action=="templates" || $action=="templatecopy" || $action=="templatesav
 
 if (isset($surveyid) && $surveyid)
 {
-$surquery = "SELECT * FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
+$surquery = "SELECT * FROM {$dbprefix}surveys_rights WHERE sid=".db_quote($surveyid)." AND uid = ".db_quote($_SESSION['loginID']); //Getting rights for this survey
 $surresult = db_execute_assoc($surquery);   
 $surrows = $surresult->FetchRow();
 }
