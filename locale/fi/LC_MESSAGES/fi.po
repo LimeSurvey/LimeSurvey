@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Finnish language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-10-11 08:00+0200\n"
-"PO-Revision-Date: 2007-10-24 09:18+0200\n"
+"PO-Revision-Date: 2007-10-24 12:13+0200\n"
 "Last-Translator: Jani Peltola <info@finedata.fi>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -2495,7 +2495,7 @@ msgstr "Käytä oletusta"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2155
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2462
 msgid "Invitation Email:"
-msgstr "Kutsusäköposti:"
+msgstr "Kutsusähköposti:"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2157
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2463
@@ -2669,7 +2669,7 @@ msgstr ""
 "\n"
 "Sinä, tai joku käyttäen sähköpostiosoitettasi on rekisteröitynyt osallistumaan? kyselyssä {SURVEYNAME}.\n"
 "\n"
-"Tehdäksesi tämä kysely, paina seuraavaa linkkiä:\n"
+"Tehdäksesi tämän kyselyn, paina seuraavaa linkkiä:\n"
 "\n"
 "{SURVEYURL}\n"
 "\n"
@@ -2724,7 +2724,7 @@ msgstr "Virhe: Anna kyselylle nimi."
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2542
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:179
 msgid "Create Survey"
-msgstr "Luo Kusely"
+msgstr "Luo Kysely"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2372
 msgid "(This field is mandatory.)"
