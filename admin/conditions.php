@@ -351,10 +351,10 @@ if ($questionscount > 0)
 
 			while ($arows = $aresult->FetchRow())
 			{
-        if (strlen($arows['answer']) > 30)
-           {$shortanswer=substr($arows['answer'], 0, 30).".. ";}
+        if (strlen(strip_tags($arows['answer'])) > 30)
+           {$shortanswer=substr(strip_tags($arows['answer']), 0, 30).".. ";}
         else
-           {$shortanswer = $arows['answer'];}
+           {$shortanswer = strip_tags($arows['answer']);}
 
 				$shortanswer .= " [{$arows['code']}]";
 				$cquestions[]=array("$shortquestion [$shortanswer]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']);
@@ -531,6 +531,7 @@ if (isset($canswers))
 		$an=str_replace("'", "`", $can[2]);
 		$an=str_replace("\r", " ", $an);
 		$an=str_replace("\n", " ", $an);
+		$an=strip_tags($an);
 		$conditionsoutput .= "\t\tFieldnames[$jn]='$can[0]';\n"
 		."\t\tCodes[$jn]='$can[1]';\n"
 		."\t\tAnswers[$jn]='$an';\n";
