@@ -264,8 +264,8 @@ if ($questionscount > 0)
 			$aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
 			while ($arows = $aresult->FetchRow())
 			{
-				if (strlen($arows['answer']) > 10) {$shortanswer=substr($arows['answer'], 0, 10).".. ";}
-				else {$shortanswer = $arows['answer'];}
+				if (strlen(strip_tags($arows['answer'])) > 10) {$shortanswer=substr(strip_tags($arows['answer']), 0, 10).".. ";}
+				else {$shortanswer = strip_tags($arows['answer']);}
 				$shortanswer .= " [{$arows['code']}]";
 				$cquestions[]=array("$shortquestion [$shortanswer]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']);
 				switch ($rows['type'])
@@ -404,6 +404,7 @@ if (isset($canswers))
 		$an=str_replace("'", "`", $can[2]);
 		$an=str_replace("\r", " ", $an);
 		$an=str_replace("\n", " ", $an);
+		$an=strip_tags($an);
 		$conditionsoutput .= "\t\tFieldnames[$jn]='$can[0]';\n"
 		."\t\tCodes[$jn]='$can[1]';\n"
 		."\t\tAnswers[$jn]='$an';\n";
