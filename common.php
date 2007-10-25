@@ -1302,44 +1302,16 @@ function browsemenubar()
 
 function returnglobal($stringname)
 {
-	if (_PHPVERSION < "4.1.0")
+
+	if (isset($_REQUEST[$stringname]))
 	{
-		if (isset($HTTP_GET_VARS[$stringname]))
+		if ($stringname == "sid" || $stringname == "gid" || $stringname == "qid" || $stringname == "tid")
 		{
-			if ($stringname == "sid" || $stringname == "gid" || $stringname == "qid")
-			{
-				return intval($HTTP_GET_VARS[$stringname]);
-			}
-			return $HTTP_GET_VARS[$stringname];
+			return intval($_REQUEST[$stringname]);
 		}
-		elseif (isset($HTTP_POST_VARS[$stringname]))
-		{
-			if ($stringname == "sid" || $stringname == "gid" || $stringname == "qid")
-			{
-				return intval($HTTP_POST_VARS[$stringname]);
-			}
-			return $HTTP_POST_VARS[$stringname];
-		}
+		return $_REQUEST[$stringname];
 	}
-	else
-	{
-		if (isset($_GET[$stringname]))
-		{
-			if ($stringname == "sid" || $stringname == "gid" || $stringname == "qid")
-			{
-				return intval($_GET[$stringname]);
-			}
-			return $_GET[$stringname];
-		}
-		elseif (isset($_POST[$stringname]))
-		{
-			if ($stringname == "sid" || $stringname == "gid" || $stringname == "qid")
-			{
-				return intval($_POST[$stringname]);
-			}
-			return $_POST[$stringname];
-		}
-	}
+
 }
 
 
