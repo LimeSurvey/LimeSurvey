@@ -159,7 +159,7 @@ CREATE TABLE `prefix_saved_control` (
   `ip` text NOT NULL,
   `saved_thisstep` text NOT NULL,
   `status` char(1) NOT NULL default '',
-  `saved_date` datetime NOT NULL default '0000-00-00 00:00:00',
+  `saved_date` datetime NOT NULL,
   `refurl` text,
   PRIMARY KEY  (`scid`)
 ) TYPE=MyISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;

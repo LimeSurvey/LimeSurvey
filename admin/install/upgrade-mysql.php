@@ -137,7 +137,8 @@ while ( $tables = $result->FetchRow() ) {
 		   {
 		      $field_name = $column['Field'];
 		      $field_type = $column['Type'];
-		     
+		      $field_default = $column['Default'];
+		      if ($field_default!='NULL') {$field_default="'".$field_default."'";}
 		      # Change text based fields
 		      $skipped_field_types = array('char', 'text', 'enum', 'set');
 		     
@@ -145,7 +146,9 @@ while ( $tables = $result->FetchRow() ) {
 		      {        
 		         if ( strpos($field_type, $type) !== false )
 		         {
-		            modify_database("","ALTER TABLE $table CHANGE `$field_name` `$field_name` $field_type CHARACTER SET utf8 COLLATE utf8_unicode_ci");
+					$modstatement="ALTER TABLE $table CHANGE `$field_name` `$field_name` $field_type CHARACTER SET utf8 COLLATE utf8_unicode_ci";
+					if ($type!='text') {$modstatement.=" DEFAULT $field_default";}
+					modify_database("",$modstatement);
 		            echo $modifyoutput; flush();            
 		         }
 		      }

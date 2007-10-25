@@ -48,6 +48,7 @@
 //           functions specified in flags. flags can be bitwise
 //           combination of PARANOID, SQL, SYSTEM, HTML, INT, FLOAT, LDAP,
 //           UTF8
+// sanitize_email($email) -- input any string, all non-email chars will be removed
 //
 //
 ///////////////////////////////////////
@@ -56,11 +57,12 @@
 //               in sanitize_sql_string() function, created rudimentary testing pages
 // 20031221 gz - added nice_addslashes and changed sanitize_sql_string to use it
 // 20070213 lemeur - marked sanitize_sql_string as obsolete, should use db_quote instead
+// 20071025 c_schmitz - added sanitize_email
 //
 /////////////////////////////////////////
 
 define("PARANOID", 1);
-define("SQL", 2);
+//define("SQL", 2);
 define("SYSTEM", 4);
 define("HTML", 8);
 define("INT", 16);
@@ -106,6 +108,10 @@ function sanitize_paranoid_string($string, $min='', $max='')
 	return $string;
 }
 
+function sanitize_email($email) {
+    return preg_replace('/[^a-zA-Z0-9;+_.@-]/i', '', $email); 
+}
+
 // sanitize a string in prep for passing a single argument to system() (or similar)
 function sanitize_system_string($string, $min='', $max='')
 {
@@ -123,7 +129,7 @@ function sanitize_system_string($string, $min='', $max='')
 
 // sanitize a string for SQL input (simple slash out quotes and slashes)
 // OBSOLETE: should use db_quote from common.php instead since it is DB independent
-function sanitize_sql_string($string, $min='', $max='')
+/*function sanitize_sql_string($string, $min='', $max='')
 {
 	$string = nice_addslashes($string); //gz
 	$pattern = "/;/"; // jp
@@ -132,7 +138,7 @@ function sanitize_sql_string($string, $min='', $max='')
 	if((($min != '') && ($len < $min)) || (($max != '') && ($len > $max)))
 	return FALSE;
 	return preg_replace($pattern, $replacement, $string);
-}
+}*/
 
 // sanitize a string for SQL input (simple slash out quotes and slashes)
 function sanitize_sql_db_tablename($string)
@@ -183,7 +189,7 @@ function sanitize_html_string($string)
 // make int int!
 function sanitize_int($integer, $min='', $max='')
 {
-	$int = intval($integer);
+	$int = ereg_replace("[^0-9]", "", $integer);
 	if((($min != '') && ($int < $min)) || (($max != '') && ($int > $max)))
 	return FALSE;
 	return $int;
@@ -206,7 +212,6 @@ function sanitize($input, $flags, $min='', $max='')
 	if($flags & INT) $input = sanitize_int($input, $min, $max);
 	if($flags & FLOAT) $input = sanitize_float($input, $min, $max);
 	if($flags & HTML) $input = sanitize_html_string($input, $min, $max);
-	if($flags & SQL) $input = sanitize_sql_string($input, $min, $max);
 	if($flags & LDAP) $input = sanitize_ldap_string($input, $min, $max);
 	if($flags & SYSTEM) $input = sanitize_system_string($input, $min, $max);
 	return $input;
@@ -240,12 +245,6 @@ function check_html_string($input, $min='', $max='')
 	return TRUE;
 }
 
-function check_sql_string($input, $min='', $max='')
-{
-	if($input != sanitize_sql_string($input, $min, $max))
-	return FALSE;
-	return TRUE;
-}
 
 function check_ldap_string($input, $min='', $max='')
 {
@@ -270,12 +269,16 @@ function check($input, $flags, $min='', $max='')
 	if($flags & INT) $input = sanitize_int($input, $min, $max);
 	if($flags & FLOAT) $input = sanitize_float($input, $min, $max);
 	if($flags & HTML) $input = sanitize_html_string($input, $min, $max);
-	if($flags & SQL) $input = sanitize_sql_string($input, $min, $max);
 	if($flags & LDAP) $input = sanitize_ldap_string($input, $min, $max);
 	if($flags & SYSTEM) $input = sanitize_system_string($input, $min, $max, TRUE);
 	if($input != $oldput)
 	return FALSE;
 	return TRUE;
 }
+
+function sanitize_languagecode($codetosanitize) {
+    return preg_replace('/[^a-z0-9-]/i', '', $codetosanitize); 
+}
+
 
 ?>

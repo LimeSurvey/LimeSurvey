@@ -20,15 +20,65 @@ if ($enableLdap)
 {
 	require_once(dirname(__FILE__).'/../config-ldap.php');
 }
-//if (!isset($action)) {$action=returnglobal('action');}
-//if (!isset($subaction)) {$subaction=returnglobal('subaction');}
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($order)) {$order=returnglobal('order');}
 if (!isset($limit)) {$limit=returnglobal('limit');}
 if (!isset($start)) {$start=returnglobal('start');}
 if (!isset($searchstring)) {$searchstring=returnglobal('searchstring');}
+if (!isset($tokenid)) {$tokenid=returnglobal('tid');}
+if (!isset($starttokenid)) {$starttokenid=sanitize_int(returnglobal('last_tid'));}
+
 include_once("login_check.php");
 include_once("database.php");
+
+
+if ($subaction == "import" || $subaction == "upload" )  // THis array only needs to be defined for these two functions
+{
+$encodingsarray = array("armscii8"=>$clang->gT("ARMSCII-8 Armenian")
+		               ,"ascii"=>$clang->gT("US ASCII")
+		               ,"auto"=>$clang->gT("Automatic")
+		               ,"big5"=>$clang->gT("Big5 Traditional Chinese")
+		               ,"binary"=>$clang->gT("Binary pseudo charset")
+		               ,"cp1250"=>$clang->gT("Windows Central European")
+		               ,"cp1251"=>$clang->gT("Windows Cyrillic")
+		               ,"cp1256"=>$clang->gT("Windows Arabic")
+		               ,"cp1257"=>$clang->gT("Windows Baltic")
+		               ,"cp850"=>$clang->gT("DOS West European")
+		               ,"cp852"=>$clang->gT("DOS Central European")
+		               ,"cp866"=>$clang->gT("DOS Russian")
+		               ,"cp932"=>$clang->gT("SJIS for Windows Japanese")
+		               ,"dec8"=>$clang->gT("DEC West European")
+		               ,"eucjpms"=>$clang->gT("UJIS for Windows Japanese")
+		               ,"euckr"=>$clang->gT("EUC-KR Korean")
+		               ,"gb2312"=>$clang->gT("GB2312 Simplified Chinese")
+		               ,"gbk"=>$clang->gT("GBK Simplified Chinese")
+		               ,"geostd8"=>$clang->gT("GEOSTD8 Georgian")
+		               ,"greek"=>$clang->gT("ISO 8859-7 Greek")
+		               ,"hebrew"=>$clang->gT("ISO 8859-8 Hebrew")
+		               ,"hp8"=>$clang->gT("HP West European")
+		               ,"keybcs2"=>$clang->gT("DOS Kamenicky Czech-Slovak")
+		               ,"koi8r"=>$clang->gT("KOI8-R Relcom Russian")
+		               ,"koi8u"=>$clang->gT("KOI8-U Ukrainian")
+		               ,"latin1"=>$clang->gT("cp1252 West European")
+		               ,"latin2"=>$clang->gT("ISO 8859-2 Central European")
+		               ,"latin5"=>$clang->gT("ISO 8859-9 Turkish")
+		               ,"latin7"=>$clang->gT("ISO 8859-13 Baltic")
+		               ,"macce"=>$clang->gT("Mac Central European")
+		               ,"macroman"=>$clang->gT("Mac West European")
+		               ,"sjis"=>$clang->gT("Shift-JIS Japanese")
+		               ,"swe7"=>$clang->gT("7bit Swedish")
+		               ,"tis620"=>$clang->gT("TIS620 Thai")
+		               ,"ucs2"=>$clang->gT("UCS-2 Unicode")
+		               ,"ujis"=>$clang->gT("EUC-JP Japanese")
+		               ,"utf8"=>$clang->gT("UTF-8 Unicode"));
+   if (isset($_POST['csvcharset']) && $_POST['csvcharset'])  //sanitize charset - if encoding is not found sanitize to 'auto'
+   {
+   $uploadcharset=$_POST['csvcharset'];
+   if (!array_key_exists($uploadcharset,$encodingsarray)) {$uploadcharset='auto';} 
+   }
+   					   
+}
+
 
 $tokenoutput='';
 
@@ -771,10 +821,10 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 			."\t</tr></table></div>\n";
 		}
 		$tokenoutput .= "</div><table class='table2columns'>";
-		if (isset($_GET['tid']) && $_GET['tid'])
+		if (isset($tokenid))
 			{
 				$tokenoutput .= "<tr><td colspan='2'>"
-				.$clang->gT("to TokenID No")." {$_GET['tid']}"
+				.$clang->gT("to TokenID No")." ".$tokenid
 				."</td></tr>";
 			}		
 		$tokenoutput .="\t<tr><td>&nbsp;</td><td align='left'><input type='submit' value='"
@@ -782,19 +832,19 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 		."\t<input type='hidden' name='ok' value='absolutely' />\n"
 		."\t<input type='hidden' name='sid' value='{$_GET['sid']}' />\n"
 		."\t<input type='hidden' name='subaction' value='email' /></td></tr>\n";
-		if (isset($_GET['tid']) && $_GET['tid']) {$tokenoutput .= "\t<input type='hidden' name='tid' value='{$_GET['tid']}' />";}
+		if (isset($tokenid)) {$tokenoutput .= "\t<input type='hidden' name='tid' value='$tokenid' />";}
 		$tokenoutput .= "\n"
 		."</table></form>\n";
 	}
 	else
 	{
 		$tokenoutput .= $clang->gT("Sending Invitations");
-		if (isset($_POST['tid']) && $_POST['tid']) {$tokenoutput .= " (".$clang->gT("Sending to TID No:")." {$_POST['tid']})";}
+		if (isset($tokenid)) {$tokenoutput .= " (".$clang->gT("Sending to TID No:")." {$tokenid})";}
 		$tokenoutput .= "<br />\n";
 
-		$ctquery = "SELECT * FROM ".db_table_name("tokens_{$_POST['sid']}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != ''";
+		$ctquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != ''";
 
-		if (isset($_POST['tid']) && $_POST['tid']) {$ctquery .= " and tid='{$_POST['tid']}'";}
+		if (isset($tokenid)) {$ctquery .= " and tid='{$tokenid}'";}
 		$tokenoutput .= "<!-- ctquery: $ctquery -->\n";
 		$ctresult = $connect->Execute($ctquery) or die("Database error!<br />\n" . htmlspecialchars($connect->ErrorMsg()));
 		$ctcount = $ctresult->RecordCount();
@@ -802,9 +852,9 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 		$emquery = "SELECT firstname, lastname, email, token, tid, language";
 		if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
 
-		$emquery .= " FROM ".db_table_name("tokens_{$_POST['sid']}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != ''";
+		$emquery .= " FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != ''";
 
-		if (isset($_POST['tid']) && $_POST['tid']) {$emquery .= " and tid='{$_POST['tid']}'";}
+		if (isset($tokenid)) {$emquery .= " and tid='{$tokenid}'";}
 		$tokenoutput .= "\n\n<!-- emquery: $emquery -->\n\n";
 		$emresult = db_select_limit_assoc($emquery,$maxemails) or die ("Couldn't do query.<br />\n$emquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 		$emcount = $emresult->RecordCount();
@@ -853,7 +903,7 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 				{
 					// Put date into sent
 					$today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
-					$udequery = "UPDATE ".db_table_name("tokens_{$_POST['sid']}")."\n"
+					$udequery = "UPDATE ".db_table_name("tokens_{$surveyid}")."\n"
 					."SET sent='$today' WHERE tid={$emrow['tid']}";
 					//
 					$uderesult = $connect->Execute($udequery) or die ("Could not update tokens<br />$udequery<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -880,7 +930,7 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 				."\t\t\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
 				."\t\t\t<input type='hidden' name='subaction' value=\"email\" />\n"
                 ."\t\t\t<input type='hidden' name='action' value=\"tokens\" />\n"
-				."\t\t\t<input type='hidden' name='sid' value=\"{$_POST['sid']}\" />\n";
+				."\t\t\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n";
 		        foreach ($surveylangs as $language)
 				    {
           			$message = html_escape($_POST['message_'.$language]);
@@ -962,7 +1012,7 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 		}	
 
         $tokenoutput .= "</div><table class='table2columns'>\n";
-		if (!isset($_GET['tid']) || !$_GET['tid'])
+		if (isset($tokenid))
 		{
 			$tokenoutput .= "\t<tr>\n"
 			."\t\t<td align='right' width='150' valign='top'><strong>"
@@ -975,7 +1025,7 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 			$tokenoutput .= "\t<tr>\n"
 			."\t\t<td align='right' width='150' valign='top'><strong>"
 			.$clang->gT("Sending to TID No:")."</strong></font></td>\n"
-			."\t\t<td>{$_GET['tid']}</font></td>\n"
+			."\t\t<td>{$tokenid}</font></td>\n"
 			."\t</tr>\n";
 		}		
 		$tokenoutput .="\t\t<tr><td>&nbsp;</td><td align='left'>\n"
@@ -985,7 +1035,7 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 		."\t<input type='hidden' name='subaction' value='remind' />\n"
 		."\t\t</td>\n"
 		."\t</tr>\n";
-		if (isset($_GET['tid']) && $_GET['tid']) {$tokenoutput .= "\t<input type='hidden' name='tid' value='{$_GET['tid']}' />\n";}
+		if (isset($tokenid)) {$tokenoutput .= "\t<input type='hidden' name='tid' value='{$tokenid}' />\n";}
 		$tokenoutput .= "\t</table>\n"
 		."</form>\n";
 	}
@@ -1003,13 +1053,13 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 			$_POST['subject_'.$language]=auto_unescape($_POST['subject_'.$language]);
 			}
 
-		if (isset($_POST['last_tid']) && $_POST['last_tid']) {$tokenoutput .= " (".$clang->gT("From")." TID: {$_POST['last_tid']})";}
-		if (isset($_POST['tid']) && $_POST['tid']) {$tokenoutput .= " (".$clang->gT("Sending to TID No:")." TID: {$_POST['tid']})";}
+		if (isset($starttokenid)) {$tokenoutput .= " (".$clang->gT("From")." TID: {$starttokenid})";}
+		if (isset($tokenid)) {$tokenoutput .= " (".$clang->gT("Sending to TID No:")." TID: {$tokenid})";}
 
-		$ctquery = "SELECT * FROM ".db_table_name("tokens_{$_POST['sid']}")." WHERE (completed ='N' or completed ='') AND sent<>'' AND sent<>'N' AND token <>'' AND email <> ''";
+		$ctquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed ='N' or completed ='') AND sent<>'' AND sent<>'N' AND token <>'' AND email <> ''";
 
-		if (isset($_POST['last_tid']) && $_POST['last_tid']) {$ctquery .= " AND tid > '{$_POST['last_tid']}'";}
-		if (isset($_POST['tid']) && $_POST['tid']) {$ctquery .= " AND tid = '{$_POST['tid']}'";}
+		if (isset($starttokenid)) {$ctquery .= " AND tid > '{$starttokenid}'";}
+		if (isset($tokenid) && $tokenid) {$ctquery .= " AND tid = '{$tokenid}'";}
 		$tokenoutput .= "<!-- ctquery: $ctquery -->\n";
 		$ctresult = $connect->Execute($ctquery) or die ("Database error!<br />\n" . htmlspecialchars($connect->ErrorMsg()));
 		$ctcount = $ctresult->RecordCount();
@@ -1018,10 +1068,10 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 		if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
 
 		// TLR change to put date into sent
-		$emquery .= " FROM ".db_table_name("tokens_{$_POST['sid']}")." WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent<>'' AND token <>'' AND EMAIL <>''";
+		$emquery .= " FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent<>'' AND token <>'' AND EMAIL <>''";
 
-		if (isset($_POST['last_tid']) && $_POST['last_tid']) {$emquery .= " AND tid > '{$_POST['last_tid']}'";}
-		if (isset($_POST['tid']) && $_POST['tid']) {$emquery .= " AND tid = '{$_POST['tid']}'";}
+		if (isset($starttokenid)) {$emquery .= " AND tid > '{$starttokenid}'";}
+		if (isset($tokenid) && $tokenid) {$emquery .= " AND tid = '{$tokenid}'";}
 		$emquery .= " ORDER BY tid ";
 		$emresult = db_select_limit_assoc($emquery, $maxemails) or die ("Couldn't do query.<br />$emquery<br />".htmlspecialchars($connect->ErrorMsg()));
 		$emcount = $emresult->RecordCount();
@@ -1082,7 +1132,7 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 				."\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
                 ."\t<input type='hidden' name='subaction' value=\"remind\" />\n"
                 ."\t<input type='hidden' name='action' value=\"tokens\" />\n"
-				."\t<input type='hidden' name='sid' value=\"{$_POST['sid']}\" />\n";
+				."\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n";
 		        foreach ($surveylangs as $language)
 				    {
           			$message = html_escape($_POST['message_'.$language]);
@@ -1148,8 +1198,8 @@ if ($subaction == "tokenify" && ($sumrows5['edit_survey_property'] || $sumrows5[
 
 if ($subaction == "delete" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
 {
-	$dlquery = "DELETE FROM ".db_table_name("tokens_$surveyid")." WHERE tid={$_GET['tid']}";
-	$dlresult = $connect->Execute($dlquery) or die ("Couldn't delete record {$_GET['tid']}<br />".htmlspecialchars($connect->ErrorMsg()));
+	$dlquery = "DELETE FROM ".db_table_name("tokens_$surveyid")." WHERE tid={$tokenid}";
+	$dlresult = $connect->Execute($dlquery) or die ("Couldn't delete record {$tokenid}<br />".htmlspecialchars($connect->ErrorMsg()));
 	$tokenoutput .= "\t<tr ><td colspan='2' height='4'><strong>"
 	.$clang->gT("Delete")."</strong></td></tr>\n"
 	."\t<tr><td align='center'><br />\n"
@@ -1162,7 +1212,7 @@ if (($subaction == "edit" || $subaction == "addnew") && ($sumrows5['edit_survey_
 {
 	if ($subaction == "edit")
 	{
-		$edquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." WHERE tid={$_GET['tid']}";
+		$edquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." WHERE tid={$tokenid}";
 		$edresult = db_execute_assoc($edquery);
 		$edfieldcount = $edresult->FieldCount();
 		while($edrow = $edresult->FetchRow())
@@ -1186,7 +1236,7 @@ if (($subaction == "edit" || $subaction == "addnew") && ($sumrows5['edit_survey_
 	."\t<td align='right' width='20%'><strong>ID:</strong></font></td>\n"
 	."\t<td>";
 	if ($subaction == "edit")
-	{$tokenoutput .=$_GET['tid'];} else {$tokenoutput .=$clang->gT("Auto");}
+	{$tokenoutput .=$tokenid;} else {$tokenoutput .=$clang->gT("Auto");}
 	$tokenoutput .= "</font></td>\n"
 	."</tr>\n"
 	."<tr>\n"
@@ -1272,7 +1322,7 @@ if (($subaction == "edit" || $subaction == "addnew") && ($sumrows5['edit_survey_
 		case "edit":
 			$tokenoutput .= "\t\t<input type='submit' value='".$clang->gT("Update Token")."'>\n"
 			."\t\t<input type='hidden' name='subaction' value='updatetoken'>\n"
-			."\t\t<input type='hidden' name='tid' value='{$_GET['tid']}'>\n";
+			."\t\t<input type='hidden' name='tid' value='{$tokenid}'>\n";
 			break;
 		case "addnew":
 			$tokenoutput .= "\t\t<input type='submit' value='".$clang->gT("Add Token")."'>\n"
@@ -1294,9 +1344,9 @@ if ($subaction == "updatetoken" && ($sumrows5['edit_survey_property'] || $sumrow
 	$data = array();
 	$data[] = $_POST['firstname'];
 	$data[] = $_POST['lastname'];
-	$data[] = $_POST['email'];
-	$data[] = $_POST['token'];
-	$data[] = $_POST['language'];
+	$data[] = sanitize_email($_POST['email']);
+	$data[] = sanitize_paranoid_string($_POST['token']);
+	$data[] = sanitize_languagecode($_POST['language']);
 	$data[] = $_POST['sent'];
 	$data[] = $_POST['completed'];
 	$udquery = "UPDATE ".db_table_name("tokens_$surveyid")." SET firstname=?, "
@@ -1309,9 +1359,9 @@ if ($subaction == "updatetoken" && ($sumrows5['edit_survey_property'] || $sumrow
 		$udquery .= ", attribute_1=?, attribute_2=?";
 	}
 
-	$udquery .= " WHERE tid={$_POST['tid']}";
+	$udquery .= " WHERE tid={$tokenid}";
 
-	$udresult = $connect->Execute($udquery, $data) or die ("Update record {$_POST['tid']} failed:<br />\n$udquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
+	$udresult = $connect->Execute($udquery, $data) or die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 	$tokenoutput .= "<br /><font color='green'><strong>".$clang->gT("Success")."</strong></font><br />\n"
 	."<br />".$clang->gT("Updated Token")."<br /><br />\n"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse'>".$clang->gT("Display Tokens")."</a><br /><br />\n"
@@ -1325,9 +1375,9 @@ if ($subaction == "inserttoken" && ($sumrows5['edit_survey_property'] || $sumrow
 	."\t<tr><td align='center'>\n";
 	$data = array('firstname' => $_POST['firstname'],
 	'lastname' => $_POST['lastname'],
-	'email' => $_POST['email'],
-	'token' => $_POST['token'],
-	'language' => $_POST['language'],
+	'email' => sanitize_email($_POST['email']),
+	'token' => sanitize_paranoid_string($_POST['token']),
+	'language' => sanitize_languagecode($_POST['language']),
 	'sent' => $_POST['sent'],
 	'completed' => $_POST['completed']);
 	if (isset($_POST['attribute1']))
@@ -1413,7 +1463,7 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 		if (!isset($tokenlistarray)) {$tokenoutput .= "Failed to open the uploaded file!\n";}
 		foreach ($tokenlistarray as $buffer)
 		{
-            $buffer=@mb_convert_encoding($buffer,"UTF-8",$_POST['csvcharset']);
+            $buffer=@mb_convert_encoding($buffer,"UTF-8",$uploadcharset);
 			$firstname = ""; $lastname = ""; $email = ""; $token = ""; $language=""; $attribute1=""; $attribute2=""; //Clear out values from the last path, in case the next line is missing a value
 			if ($xx==0)
 			{
@@ -1460,11 +1510,11 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 							$iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
 							. "(";
 							if (isset($line[7])) $iq .="tid, ";
-							$iq .="firstname, lastname, email, token, language, attribute_1, attribute_2";
+							$iq .="firstname, lastname, email, token, language, attribute_1, attribute_2, sent, completed";
 							$iq .=") \n"
 							. "VALUES (";
 							if (isset($line[7])) $iq .= $connect->qstr($line[7]).", ";
-							$iq .= $connect->qstr($line[0]).", ".$connect->qstr($line[1]).", ".$connect->qstr($line[2]).", ".$connect->qstr($line[3]).", ".strtolower($connect->qstr($line[4]))." , ".$connect->qstr($line[5]).", ".$connect->qstr($line[6])."";
+							$iq .= $connect->qstr($line[0]).", ".$connect->qstr($line[1]).", ".$connect->qstr($line[2]).", ".$connect->qstr($line[3]).", ".strtolower($connect->qstr($line[4]))." , ".$connect->qstr($line[5]).", ".$connect->qstr($line[6]).", ".$connect->qstr('N').", ".$connect->qstr('N');
 							$iq .= ")";
 							$ir = $connect->Execute($iq) or die ("Couldn't insert line<br />\n$buffer<br />\n".htmlspecialchars($connect->ErrorMsg())."<pre style='text-align: left'>$iq</pre>\n");
 							$xz++;
@@ -1588,47 +1638,9 @@ $tokenoutput .= "\t\t<table><tr><td></td></tr></table>\n"
 
 function form_csv_upload($error=false)
 {
-	global $surveyid, $tokenoutput,$scriptname, $clang;
+	global $surveyid, $tokenoutput,$scriptname, $clang, $encodingsarray;
 
 	if ($error) {$tokenoutput .= $error . "<br /><br />\n";}
-
-   $encodingsarray = array("armscii8"=>$clang->gT("ARMSCII-8 Armenian")
-               ,"ascii"=>$clang->gT("US ASCII")
-               ,"auto"=>$clang->gT("Automatic")
-               ,"big5"=>$clang->gT("Big5 Traditional Chinese")
-               ,"binary"=>$clang->gT("Binary pseudo charset")
-               ,"cp1250"=>$clang->gT("Windows Central European")
-               ,"cp1251"=>$clang->gT("Windows Cyrillic")
-               ,"cp1256"=>$clang->gT("Windows Arabic")
-               ,"cp1257"=>$clang->gT("Windows Baltic")
-               ,"cp850"=>$clang->gT("DOS West European")
-               ,"cp852"=>$clang->gT("DOS Central European")
-               ,"cp866"=>$clang->gT("DOS Russian")
-               ,"cp932"=>$clang->gT("SJIS for Windows Japanese")
-               ,"dec8"=>$clang->gT("DEC West European")
-               ,"eucjpms"=>$clang->gT("UJIS for Windows Japanese")
-               ,"euckr"=>$clang->gT("EUC-KR Korean")
-               ,"gb2312"=>$clang->gT("GB2312 Simplified Chinese")
-               ,"gbk"=>$clang->gT("GBK Simplified Chinese")
-               ,"geostd8"=>$clang->gT("GEOSTD8 Georgian")
-               ,"greek"=>$clang->gT("ISO 8859-7 Greek")
-               ,"hebrew"=>$clang->gT("ISO 8859-8 Hebrew")
-               ,"hp8"=>$clang->gT("HP West European")
-               ,"keybcs2"=>$clang->gT("DOS Kamenicky Czech-Slovak")
-               ,"koi8r"=>$clang->gT("KOI8-R Relcom Russian")
-               ,"koi8u"=>$clang->gT("KOI8-U Ukrainian")
-               ,"latin1"=>$clang->gT("cp1252 West European")
-               ,"latin2"=>$clang->gT("ISO 8859-2 Central European")
-               ,"latin5"=>$clang->gT("ISO 8859-9 Turkish")
-               ,"latin7"=>$clang->gT("ISO 8859-13 Baltic")
-               ,"macce"=>$clang->gT("Mac Central European")
-               ,"macroman"=>$clang->gT("Mac West European")
-               ,"sjis"=>$clang->gT("Shift-JIS Japanese")
-               ,"swe7"=>$clang->gT("7bit Swedish")
-               ,"tis620"=>$clang->gT("TIS620 Thai")
-               ,"ucs2"=>$clang->gT("UCS-2 Unicode")
-               ,"ujis"=>$clang->gT("EUC-JP Japanese")
-               ,"utf8"=>$clang->gT("UTF-8 Unicode")); 
     asort($encodingsarray);               
     $charsetsout='';
     foreach  ($encodingsarray as $charset=>$title)
