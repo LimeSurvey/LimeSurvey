@@ -24,7 +24,8 @@ if (!isset($_SESSION['loginID']))
 		if (isset($_POST['user']) && isset($_POST['email']))
 		{
 			include("database.php");
-			$query = "SELECT users_name, password, uid FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($_POST['user'])." AND email=".$connect->qstr($_POST['email']);
+			$emailaddr = sanitize_email($_POST['email']);
+			$query = "SELECT users_name, password, uid FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($_POST['user'])." AND email=".$connect->qstr($emailaddr);
 			$result = db_select_limit_assoc($query, 1) or die ($query."<br />".$connect->ErrorMsg());
 
 			if ($result->RecordCount() < 1)
@@ -44,7 +45,7 @@ if (!isset($_SESSION['loginID']))
 				$body .= $clang->gT("New Password") . ": " . $new_pass . "<br />\n";
 
 				$subject = 'User Data';
-				$to = $_POST['email'];
+				$to = $emailaddr;
 				$from = $siteadminemail;
 				$sitename = $siteadminname;
 
@@ -52,14 +53,14 @@ if (!isset($_SESSION['loginID']))
 				{
 					$query = "UPDATE ".db_table_name('users')." SET password='".SHA256::hash($new_pass)."' WHERE uid={$fields['uid']}";
 					$connect->Execute($query);
-					$loginsummary .= "<br />".$clang->gT("Username").": {$fields['users_name']}<br />".$clang->gT("Email").": {$_POST['email']}<br />";
+					$loginsummary .= "<br />".$clang->gT("Username").": {$fields['users_name']}<br />".$clang->gT("Email").": {$emailaddr}<br />";
 					$loginsummary .= "<br />".$clang->gT("An email with your login data was sent to you.");
 					$loginsummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 				}
 				else
 				{
 					$tmp = str_replace("{NAME}", "<strong>".$fields['users_name']."</strong>", $clang->gT("Email to {NAME} ({EMAIL}) failed."));
-					$loginsummary .= "<br />".str_replace("{EMAIL}", $_POST['email'], $tmp) . "<br />";
+					$loginsummary .= "<br />".str_replace("{EMAIL}", $emailaddr, $tmp) . "<br />";
 					$loginsummary .= "<br /><br /><a href='$scriptname?action=forgotpassword'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 				}
 			}
@@ -88,12 +89,20 @@ if (!isset($_SESSION['loginID']))
 				if (SHA256::hash($_POST['password']) == $fields['password'])
 				{
 					// Anmeldung ERFOLGREICH
-                    if (strtolower($_POST['password'])=='password') {$_SESSION['pw_notify']=true;} else  {$_SESSION['pw_notify']=false;} // Check if the user has changed his default password
+					if (strtolower($_POST['password'])=='password')
+					{
+						$_SESSION['pw_notify']=true;
+					}
+					else
+					{
+						$_SESSION['pw_notify']=false;
+					} // Check if the user has changed his default password
+
 					$_SESSION['loginID'] = intval($fields['uid']);
 					$_SESSION['user'] = $fields['users_name'];
 					if (isset($_POST['loginlang']) && $_POST['loginlang'])
 					{
-						$_SESSION['adminlang'] = $_POST['loginlang'];
+						$_SESSION['adminlang'] = sanitize_languagecode($_POST['loginlang']);
 						$clang = new limesurvey_lang($_SESSION['adminlang']);
 						$uquery = "UPDATE {$dbprefix}users "
 						. "SET lang='{$_SESSION['adminlang']}' "
@@ -146,15 +155,15 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 	$new_user = html_entity_decode($_POST['new_user']);
 	$new_email = html_entity_decode($_POST['new_email']);
 	$new_full_name = html_entity_decode($_POST['new_full_name']);
-    $new_user = $_POST['new_user'];
-    $new_email = $_POST['new_email'];
-    $new_full_name = html_entity_decode($_POST['new_full_name']);
+	$new_user = $_POST['new_user']; // TODO: check if html decode should be used here
+	$new_email = $_POST['new_email']; // TODO: check if html decode should be used here
+	$new_full_name = html_entity_decode($_POST['new_full_name']);
 	$valid_email = true;
 
 	if(!validate_email($new_email))
 	{
 		$valid_email = false;
-		$addsummary .= "<br /><strong>".$clang->gT("Failed to add User.")."</strong><br />\n" . " " . $clang->gT("Email address ist not valid.")."<br />\n";
+		$addsummary .= "<br /><strong>".$clang->gT("Failed to add User.")."</strong><br />\n" . " " . $clang->gT("Email address is not valid.")."<br />\n";
 	}
 	if(empty($new_user))
 	{
@@ -164,7 +173,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 	elseif($valid_email)
 	{
 		$new_pass = createPassword();
-		$uquery = "INSERT INTO {$dbprefix}users (users_name, password,full_name,parent_id,lang,email,create_survey,create_user,delete_user,move_user,configurator,manage_template,manage_label) VALUES ('{$new_user}', '".SHA256::hash($new_pass)."', '{$new_full_name}', {$_SESSION['loginID']}, '{$defaultlang}', '{$new_email}',0,0,0,0,0,0,0)";
+		$uquery = "INSERT INTO {$dbprefix}users (users_name, password,full_name,parent_id,lang,email,create_survey,create_user,delete_user,move_user,configurator,manage_template,manage_label) VALUES ('".db_quote($new_user)."', '".SHA256::hash($new_pass)."', '".db_quote($new_full_name)."', {$_SESSION['loginID']}, '{$defaultlang}', '".db_quote($new_email)."',0,0,0,0,0,0,0)";
 		$uresult = $connect->Execute($uquery);
 
 		if($uresult)
@@ -252,22 +261,22 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($_POST[
 				// We are about to kill an uid with potential childs
 				// Let's re-assign them their grand-father as their
 				// new parentid
-				$squery = "SELECT parent_id FROM {$dbprefix}users WHERE uid={$_POST['uid']}";
+				$squery = "SELECT parent_id FROM {$dbprefix}users WHERE uid=".db_quote($_POST['uid']);
 				$sresult = $connect->Execute($squery);
 				$fields = $sresult->FetchRow($sresult);
 
 				if (isset($fields[0]))
 				{
-					$uquery = "UPDATE ".db_table_name('users')." SET parent_id={$fields[0]} WHERE parent_id={$_POST['uid']}";	//		added by Dennis
+					$uquery = "UPDATE ".db_table_name('users')." SET parent_id={$fields[0]} WHERE parent_id=".db_quote($_POST['uid']);	//		added by Dennis
 					$uresult = $connect->Execute($uquery);
 				}
 
 				//DELETE USER FROM TABLE
-				$dquery="DELETE FROM {$dbprefix}users WHERE uid={$_POST['uid']}";	//	added by Dennis
+				$dquery="DELETE FROM {$dbprefix}users WHERE uid=".db_quote($_POST['uid']);	//	added by Dennis
 				$dresult=$connect->Execute($dquery);
 
 				// Delete user rights
-				$dquery="DELETE FROM {$dbprefix}surveys_rights WHERE uid={$_POST['uid']}";
+				$dquery="DELETE FROM {$dbprefix}surveys_rights WHERE uid=".db_quote($_POST['uid']);
 				$dresult=$connect->Execute($dquery);
 
 				if($_POST['uid'] == $_SESSION['loginID']) killSession();	// user deleted himself
@@ -324,9 +333,9 @@ elseif ($action == "moduser")
 			$failed = false;
 			if(empty($pass))
 			{
-				$uquery = "UPDATE ".db_table_name('users')." SET email='{$email}', full_name='{$full_name}' WHERE uid={$_POST['uid']}";
+				$uquery = "UPDATE ".db_table_name('users')." SET email='".db_quote($email)."', full_name='".db_quote($full_name)."' WHERE uid=".db_quote($_POST['uid']);
 			} else {
-				$uquery = "UPDATE ".db_table_name('users')." SET email='{$email}', full_name='{$full_name}', password='".SHA256::hash($pass)."' WHERE uid={$_POST['uid']}";
+				$uquery = "UPDATE ".db_table_name('users')." SET email='".db_quote($email)."', full_name='".db_quote($full_name)."', password='".SHA256::hash($pass)."' WHERE uid=".db_quote($_POST['uid']);
 			}
 			
 			$uresult = $connect->Execute($uquery);
