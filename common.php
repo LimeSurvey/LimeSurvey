@@ -1302,7 +1302,6 @@ function browsemenubar()
 
 function returnglobal($stringname)
 {
-
 	if (isset($_REQUEST[$stringname]))
 	{
 		if ($stringname == "sid" || $stringname == "gid" || $stringname == "qid" || $stringname == "tid")
@@ -2188,27 +2187,32 @@ function GetAdditionalLanguagesFromSurveyID($surveyid)
 function SetSurveyLanguage($surveyid, $language)// SetSurveyLanguage($surveyid)
 {
 
-		global $rootdir;
-		// see if language actually is present in survey
-		$query = "SELECT language, additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
-		$result = db_execute_assoc($query);
-		while ($result && ($row=$result->FetchRow())) {
-			$additional_languages = $row['additional_languages'];
-			$default_language = $row['language'];
-		}
-
-		//echo "Language: ".$language."<br>Default language: ".$default_language."<br>Available languages: ".$additional_languages."<br />";
-		if ((isset($additional_languages) && strpos($additional_languages, $language) === false) or (isset($default_language) && $default_language == $language) or !isset($language)) {
-			// Language not supported, or default language for survey, fall back to survey's default language
-			$_SESSION['s_lang'] = $default_language;
-			//echo "Language not supported, resorting to ".$_SESSION['s_lang']."<br />";
-		} else {
-			$_SESSION['s_lang'] = $language;
-			//echo "Language will be set to ".$_SESSION['s_lang']."<br />";
-		}
+		global $rootdir, $defaultlang;
 		require_once($rootdir.'/classes/core/language.php');
+		if (isset($surveyid) && $surveyid>0)
+		{
+	 		// see if language actually is present in survey
+			$query = "SELECT language, additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
+			$result = db_execute_assoc($query);
+			while ($result && ($row=$result->FetchRow())) {
+				$additional_languages = $row['additional_languages'];
+				$default_language = $row['language'];
+			}
+	
+			//echo "Language: ".$language."<br>Default language: ".$default_language."<br>Available languages: ".$additional_languages."<br />";
+			if ((isset($additional_languages) && strpos($additional_languages, $language) === false) or (isset($default_language) && $default_language == $language) or !isset($language)) {
+				// Language not supported, or default language for survey, fall back to survey's default language
+				$_SESSION['s_lang'] = $default_language;
+				//echo "Language not supported, resorting to ".$_SESSION['s_lang']."<br />";
+			} else {
+				$_SESSION['s_lang'] = $language;
+				//echo "Language will be set to ".$_SESSION['s_lang']."<br />";
+			}
 		$clang = new limesurvey_lang($_SESSION['s_lang']);
-
+		}
+		else {
+			 $clang = new limesurvey_lang($defaultlang);
+			 }
 		return $clang;
 }
 
@@ -2814,6 +2818,7 @@ function modify_database($sqlfile='', $sqlstring='') {
 function addUserGroupInDB($group_name, $group_description) {
 	global $connect;
 	$iquery = "INSERT INTO ".db_table_name('user_groups')." (name, description, owner_id) VALUES('{$group_name}', '{$group_description}', '{$_SESSION['loginID']}')";
+echo $iquery;
 	if($connect->Execute($iquery)) {
 		$id = $connect->Insert_Id();
 		if($id > 0) {
