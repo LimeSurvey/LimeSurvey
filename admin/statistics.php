@@ -43,8 +43,10 @@ if ($usejpgraph == 1 && isset($jpgraphdir)) //JPGRAPH CODING SUBMITTED BY Pieter
 	}
 }
 
-if (isset($_POST['summary']) && !is_array($_POST['summary'])) {
-	$_POST['summary'] = explode("+", $_POST['summary']);
+// This gets all the 'to be shown questions' from the POST and puts these into an array 
+$summary=returnglobal('summary');
+if (isset($summary)) {
+	$summary = explode("+", $summary);
 }
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
@@ -199,7 +201,7 @@ foreach ($filters as $flt)
 		if ($flt[2] == "M" || $flt[2] == "P" || $flt[2] == "R" || $flt[2] == "J") {$myfield = "M$myfield";}
 		if ($flt[2] == "N") {$myfield = "N$myfield";}
 		$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield'";
-		if (isset($_POST['summary']) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE))
+		if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
 		{$statisticsoutput .= " checked='checked'";}
 		$statisticsoutput .= " />&nbsp;".showSpeaker($niceqtext)."</strong>"
 		."<br />\n";
@@ -223,7 +225,7 @@ foreach ($filters as $flt)
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 			$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'><strong>$flt[3]-".$row[0]."</strong></font>";
 			$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
-			if (isset($_POST['summary']) && (array_search("Q{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $_POST['summary']) !== FALSE))
+			if (isset($summary) && (array_search("Q{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $summary) !== FALSE))
 			{$statisticsoutput .= " checked='checked'";}
 			$statisticsoutput .= " />&nbsp;&nbsp;";
 		    $statisticsoutput .= showSpeaker(FlattenText($row[1]))
@@ -245,7 +247,7 @@ foreach ($filters as $flt)
 		$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>"
 		."<strong>$flt[3]</strong></font>";
 		$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
-		if (isset($_POST['summary']) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE))
+		if (isset($summary) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
 		{$statisticsoutput .= " checked='checked'";}
 		$statisticsoutput .= " />&nbsp;"
 		."&nbsp;".showSpeaker($niceqtext)
@@ -261,7 +263,7 @@ foreach ($filters as $flt)
 		$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>"
 		."<strong>$flt[3]</strong>";
 		$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
-		if (isset($_POST['summary']) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE))
+		if (isset($summary) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
 		{$statisticsoutput .= " checked='checked'";}
 		$statisticsoutput .= " />&nbsp;"
 		."&nbsp;".showSpeaker($niceqtext)
@@ -359,7 +361,7 @@ foreach ($filters as $flt)
 
 			$statisticsoutput .= "\t\t\t\t<td align='center'><b>$flt[3] ($row[0])</b>"
 			."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
-			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {$statisticsoutput .= " checked='checked'";}
+			if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
 			$statisticsoutput .= " />&nbsp;"
 			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
 			."<br />\n"
@@ -393,7 +395,7 @@ foreach ($filters as $flt)
 
 			$statisticsoutput .= "\t\t\t\t<td align='center'><b>$flt[3] ($row[0])</b>"; //heading
 			$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
-			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {$statisticsoutput .= " checked='checked'";}
+			if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
 			$statisticsoutput .= " />&nbsp;"
 			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
 			."<br />\n"
@@ -426,7 +428,7 @@ foreach ($filters as $flt)
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 			$statisticsoutput .= "\t\t\t\t<td align='center'><b>$flt[3] ($row[0])</b>"
 			."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
-			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE)
+			if (isset($summary) && array_search($myfield2, $summary)!== FALSE)
 			{$statisticsoutput .= " checked='checked'";}
 			$statisticsoutput .= " />&nbsp;"
 			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
@@ -462,7 +464,7 @@ foreach ($filters as $flt)
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 			$statisticsoutput .= "\t\t\t\t<td align='center'><b>$flt[3] ($row[0])</b>"
 			."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
-			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {$statisticsoutput .= " checked='checked'";}
+			if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
 			$statisticsoutput .= " />&nbsp;"
 			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
 			."<br />\n"
@@ -498,7 +500,7 @@ foreach ($filters as $flt)
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 			$statisticsoutput .= "\t\t\t\t<td align='center'><b>$flt[3] ($row[0])</b>"
 			."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
-			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary'])!== FALSE) {$statisticsoutput .= " checked='checked'";}
+			if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
 			$statisticsoutput .= " />&nbsp;"
 			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
 			."<br />\n";
@@ -539,7 +541,7 @@ foreach ($filters as $flt)
 			$statisticsoutput .= " -->\n"
 			."\t\t\t\t<td align='center'><b>$flt[3] ($i)</b>"
 			."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
-			if (isset($_POST['summary']) && array_search($myfield2, $_POST['summary']) !== FALSE) {$statisticsoutput .= " checked='checked'";}
+			if (isset($summary) && array_search($myfield2, $summary) !== FALSE) {$statisticsoutput .= " checked='checked'";}
 			$statisticsoutput .= " />&nbsp;"
 			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
 			."<br />\n"
@@ -571,7 +573,7 @@ foreach ($filters as $flt)
 		$statisticsoutput .= "\t\t\t\t<td align='center'>"
 		."<strong>$flt[3]&nbsp;"; //Heading (Question No)
 		$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield'";
-		if (isset($_POST['summary']) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $_POST['summary']) !== FALSE))
+		if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
 		{$statisticsoutput .= " checked='checked'";}
 		$statisticsoutput .= " />&nbsp;"
 		.showSpeaker($niceqtext)."</strong>"
@@ -887,9 +889,9 @@ if (isset($_POST['display']) && $_POST['display'])
 		."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
 		."\t\t\t<input type='hidden' name='sql' value=\"$sql\" />\n";
 		//Add the fieldnames
-		if (isset($_POST['summary']) && $_POST['summary'])
+		if (isset($summary) && $summary)
 		{
-			foreach($_POST['summary'] as $viewfields)
+			foreach($summary as $viewfields)
 			{
 				switch(substr($viewfields, 0, 1))
 				{
@@ -932,7 +934,7 @@ if (isset($_POST['display']) && $_POST['display'])
 $process_status = 40;
 
 //Show Summary results
-if (isset($_POST['summary']) && $_POST['summary'])
+if (isset($summary) && $summary)
 {
 	$prb->setLabelValue('txt1',$clang->gT('Generating Summaries ...'));
 	$prb->moveStep($process_status);
@@ -941,7 +943,8 @@ if (isset($_POST['summary']) && $_POST['summary'])
 		//Delete any old temp image files
 		deletePattern($tempdir, "STATS_".date("d")."X".$currentuser."X".$surveyid."X"."*.png");
 	}
-	$runthrough=returnglobal('summary');
+
+	$runthrough=$summary;
 
 	//START Chop up fieldname and find matching questions
 	$lq = "SELECT DISTINCT qid FROM ".db_table_name("questions")." WHERE sid=$surveyid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
