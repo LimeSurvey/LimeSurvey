@@ -55,7 +55,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
                 $qquery = "SELECT gid FROM {$dbprefix}groups WHERE gid=$gid";
                 $qresult = $connect->Execute($qquery) or die ("Couldn't check conditional group matches<br />$qquery<br />".$connect->ErrorMsg());
                 $qcount=$qresult->RecordCount();
-                if ($qcount < 1) {$cdelete[]=array("cid"=>$row['cid'], "reason"=>$clang->gT("No matching CFIELDNAME Group!")." ($gid) ({$row['cfieldname']})");}
+                if ($qcount < 1) {$cdelete[]=array("cid"=>$row['cid'], "reason"=>$clang->gT("No matching CFIELDNAME group")." ($gid) ({$row['cfieldname']})");}
             }
             elseif (!$row['cfieldname'])
             {
@@ -200,13 +200,13 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             $qquery="SELECT * FROM {$dbprefix}groups WHERE gid={$row['gid']}";
             $qresult=$connect->Execute($qquery) or die ("Couldn't check groups table for gids from questions<br />$qquery<br />".$connect->ErrorMsg());
             $qcount=$qresult->RecordCount();
-            if (!$qcount) {$qdelete[]=array("qid"=>$row['qid'], "reason"=>$clang->gT("No matching Group")." ({$row['gid']})");}
+            if (!$qcount) {$qdelete[]=array("qid"=>$row['qid'], "reason"=>$clang->gT("No matching group")." ({$row['gid']})");}
             //Make sure survey exists
             $qquery="SELECT * FROM {$dbprefix}surveys WHERE sid={$row['sid']}";
             $qresult=$connect->Execute($qquery) or die ("Couldn't check surveys table for sids from questions<br />$qquery<br />".$connect->ErrorMsg());
             $qcount=$qresult->RecordCount();
             if (!$qcount) {
-                if (!isset($qdelete) || !in_array($row['qid'], $qdelete)) {$qdelete[]=array("qid"=>$row['qid'], "reason"=>$clang->gT("No matching Survey!")." ({$row['sid']})");}
+                if (!isset($qdelete) || !in_array($row['qid'], $qdelete)) {$qdelete[]=array("qid"=>$row['qid'], "reason"=>$clang->gT("No matching survey")." ({$row['sid']})");}
             }
         }
         if (isset($qdelete) && $qdelete)

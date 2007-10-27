@@ -21,9 +21,7 @@ require_once(dirname(__FILE__).'/config.php');
 @ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
 
 
-if (!isset($surveyid)) {	$surveyid=returnglobal('sid');}
-//This next line is for security reasons. It ensures that the $surveyid value is never anything but a number.
-$surveyid=sanitize_int($surveyid);
+if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
 //DEFAULT SETTINGS FOR TEMPLATES
 if (!$publicdir) {$publicdir=".";}
@@ -63,7 +61,6 @@ if (!isset($_SESSION['grouplist'])  && (isset($_POST['move'])) )
 if (isset($_POST['lang']) && $_POST['lang']!='')  // this one comes from the language question
 {
     $_POST['lang'] = preg_replace("/[^a-zA-Z0-9-]/", "", $_POST['lang']);
-//    echo $_POST['lang'];
 	if ($_POST['lang']) $clang = SetSurveyLanguage( $surveyid, $_POST['lang']);
 	UpdateSessionGroupList();  // to refresh the language strings in the group list session variable
 	UpdateFieldArray();        // to refresh question titles and question text 
@@ -78,7 +75,7 @@ if (isset($_GET['lang']))
 if (isset($_SESSION['s_lang']))
 {
 	$clang = SetSurveyLanguage( $surveyid, $_SESSION['s_lang']);
-} else {
+} elseif (isset($surveyid)) {
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
 	$clang = SetSurveyLanguage( $surveyid, $baselang);
 }
