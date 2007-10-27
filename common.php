@@ -2187,30 +2187,36 @@ function GetAdditionalLanguagesFromSurveyID($surveyid)
 
 
 //For multilanguage surveys
+// If null or 0 is given for $surveyid then the default language from config.php is returned
 function SetSurveyLanguage($surveyid, $language)// SetSurveyLanguage($surveyid)
 {
 
-		global $rootdir;
-		// see if language actually is present in survey
-		$query = "SELECT language, additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
-		$result = db_execute_assoc($query);
-		while ($result && ($row=$result->FetchRow())) {
-			$additional_languages = $row['additional_languages'];
-			$default_language = $row['language'];
-		}
-
-		//echo "Language: ".$language."<br>Default language: ".$default_language."<br>Available languages: ".$additional_languages."<br />";
-		if ((isset($additional_languages) && strpos($additional_languages, $language) === false) or (isset($default_language) && $default_language == $language) or !isset($language)) {
-			// Language not supported, or default language for survey, fall back to survey's default language
-			$_SESSION['s_lang'] = $default_language;
-			//echo "Language not supported, resorting to ".$_SESSION['s_lang']."<br />";
-		} else {
-			$_SESSION['s_lang'] = $language;
-			//echo "Language will be set to ".$_SESSION['s_lang']."<br />";
-		}
+		global $rootdir, $defaultlang;
 		require_once($rootdir.'/classes/core/language.php');
+		if (isset($surveyid) && $surveyid>0)
+		{
+	 		// see if language actually is present in survey
+			$query = "SELECT language, additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
+			$result = db_execute_assoc($query);
+			while ($result && ($row=$result->FetchRow())) {
+				$additional_languages = $row['additional_languages'];
+				$default_language = $row['language'];
+			}
+	
+			//echo "Language: ".$language."<br>Default language: ".$default_language."<br>Available languages: ".$additional_languages."<br />";
+			if ((isset($additional_languages) && strpos($additional_languages, $language) === false) or (isset($default_language) && $default_language == $language) or !isset($language)) {
+				// Language not supported, or default language for survey, fall back to survey's default language
+				$_SESSION['s_lang'] = $default_language;
+				//echo "Language not supported, resorting to ".$_SESSION['s_lang']."<br />";
+			} else {
+				$_SESSION['s_lang'] = $language;
+				//echo "Language will be set to ".$_SESSION['s_lang']."<br />";
+			}
 		$clang = new limesurvey_lang($_SESSION['s_lang']);
-
+		}
+		else {
+			 $clang = new limesurvey_lang($defaultlang);
+			 }
 		return $clang;
 }
 
