@@ -183,7 +183,7 @@
 	    $supportedLanguages['es']['nativedescription'] = 'Espa&#241;ol';
 
 	    // Spanish (Mexico)
-	    $supportedLanguages['es-MX']['description'] = $clang->gT('Spanish');
+	    $supportedLanguages['es-MX']['description'] = $clang->gT('Spanish (Mexico)');
 	    $supportedLanguages['es-MX']['nativedescription'] = 'Espa&#241;ol Mejicano';
 
 	    // Swedish
