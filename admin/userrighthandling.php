@@ -13,6 +13,8 @@
 
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
+if (isset($_POST['uid'])) {$postuserid=sanitize_int($_POST['uid']);}
+if (isset($_POST['ugid'])) {$postusergroupid=sanitize_int($_POST['ugid']);}
 
 if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "addusergroup" || $action=="usergroupindb" || $action == "editusergroup" || $action == "mailusergroup")
 {
@@ -114,7 +116,7 @@ if ($action == "modifyuser")
 	$userlist = getuserlist();
 	foreach ($userlist as $usr)
 	{
-		if ($usr['uid'] == $_POST['uid'])
+		if ($usr['uid'] == $postuserid)
 		{
 				$squery = "SELECT create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label FROM {$dbprefix}users WHERE uid={$usr['parent_id']}";	//		added by Dennis
 				$sresult = $connect->Execute($squery);
@@ -123,7 +125,7 @@ if ($action == "modifyuser")
 		}
 	}
 	
-	if($_SESSION['loginID'] == 1 || $_SESSION['loginID'] == $_POST['uid'] || $parent['create_user'] == 1)
+	if($_SESSION['loginID'] == 1 || $_SESSION['loginID'] == $postuserid || $parent['create_user'] == 1)
 	{
 		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='4' class='header'>\n"
 		. "\t\t<strong>".$clang->gT("Modifying User")."</td></tr>\n"
@@ -133,7 +135,7 @@ if ($action == "modifyuser")
 		. "\t\t<th>".$clang->gT("Full name")."</th>\n"
 		. "\t\t<th>".$clang->gT("Password")."</th>\n"
 		. "\t</tr>\n";
-		$muq = "SELECT a.users_name, a.full_name, a.email, a.uid, b.users_name AS parent FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$_POST['uid']}'";	//	added by Dennis
+		$muq = "SELECT a.users_name, a.full_name, a.email, a.uid, b.users_name AS parent FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$postuserid}'";	//	added by Dennis
 		//echo($muq);
 
 		$mur = db_select_limit_assoc($muq, 1);
@@ -161,15 +163,15 @@ if ($action == "modifyuser")
 
 if ($action == "setuserrights")
 {
-	if($_SESSION['loginID'] != $_POST['uid'])
+	if($_SESSION['loginID'] != $postuserid)
 	{
 		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='8' class='header' align='center'>\n"
-		. "\t\t".$clang->gT("Set User Rights").": ".$_POST['user']."</td></tr>\n";
+		. "\t\t".$clang->gT("Set User Rights").": ".sanitize_system_string($_POST['user'])."</td></tr>\n";
 
 		$userlist = getuserlist();
 		foreach ($userlist as $usr)
 		{
-			if ($usr['uid'] == $_POST['uid'])
+			if ($usr['uid'] == $postuserid)
 			{
 				$squery = "SELECT create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label FROM {$dbprefix}users WHERE uid={$usr['parent_id']}";	//		added by Dennis
 				$sresult = $connect->Execute($squery);
@@ -255,7 +257,7 @@ if ($action == "setuserrights")
 				."\t\n\t<tr><td colspan='8' align='center'>"
 				."<input type='submit' value='".$clang->gT("Save Now")."' />"
 				."<input type='hidden' name='action' value='userrights' />"
-				."<input type='hidden' name='uid' value='{$_POST['uid']}' /></td></tr>"
+				."<input type='hidden' name='uid' value='{$postuserid}' /></td></tr>"
 				."</form>"
 				. "</table>\n";
 				continue;
@@ -268,12 +270,14 @@ if ($action == "setuserrights")
 	}
 }	// if
 
+/*  Commented since it is not used and not safe
+
 if($action == "setnewparents")
 {
 	// muss noch eingeschraenkt werden ...
 	if($_SESSION['USER_RIGHT_MOVE_USER'])
 	{
-		$uid = $_POST['uid'];
+		$uid = $postuserid;
 		$newparentid = $_POST['parent'];
 		$oldparent = -1;
 		$query = "SELECT parent_id FROM ".db_table_name('users')." WHERE uid = ".$uid;
@@ -296,7 +300,7 @@ if($action == "setnewparents")
 	{
 		include("access_denied.php");
 	}
-}
+}*/
 
 if ($action == "editusers")
 {
@@ -475,7 +479,7 @@ if ($action == "editusers")
 
 if ($action == "addusergroup")
 {
-	if ($_SESSION['loginID'] == 1)
+	if ($_SESSION['loginID'] == 1)  // fron now only admins may do that
 	{
 		$usersummary = "<form action='$scriptname'  method='post'><table width='100%' border='0'>\n\t<tr><th colspan='2'>\n"
 		. "\t\t<strong>".$clang->gT("Add User Group")."</strong></th></tr>\n"
@@ -580,11 +584,11 @@ if ($action == "delusergroup")
 	}
 }
 
-if ($action == "usergroupindb") {
+if ($action == "usergroupindb" && $_SESSION['loginID'] == 1) {
 	$usersummary = "<br /><strong>".$clang->gT("Adding User Group")."...</strong><br />\n";
 
-	$group_name = $_POST['group_name'];
-	$group_description = $_POST['group_description'];
+	$group_name = sanitize_system_string($_POST['group_name']);
+	$group_description = sanitize_system_string($_POST['group_description']);
 	if(isset($group_name) && strlen($group_name) > 0)
 	{
 		$ugid = addUserGroupInDB($group_name, $group_description);
@@ -615,7 +619,7 @@ if ($action == "usergroupindb") {
 	}
 }
 
-if ($action == "mailsendusergroup")
+if ($action == "mailsendusergroup" && $_SESSION['loginID'] == 1)
 {
 	$usersummary = "<br /><strong>".$clang->gT("Mail to all Members")."</strong><br />\n";
 
@@ -644,7 +648,7 @@ if ($action == "mailsendusergroup")
 
 		$from = $from_user_row['users_name'].' <'.$from_user_row['email'].'> ';
 
-		$ugid = $_POST['ugid'];
+		$ugid = $postusergroupid;
 		$body = $_POST['body'];
 		$subject = $_POST['subject'];
 
@@ -676,11 +680,11 @@ if ($action == "mailsendusergroup")
 	}
 }
 
-if ($action == "editusergroupindb"){
+if ($action == "editusergroupindb" && $_SESSION['loginID'] == 1){
 
-	$ugid = $_POST['ugid'];
-	$name = $_POST['name'];
-	$description = $_POST['description'];
+	$ugid = $postusergroupid;
+	$name = sanitize_system_string($_POST['name']);
+	$description = sanitize_system_string($_POST['description']);
 
 	if(updateusergroup($name, $description, $ugid))
 	{
@@ -693,7 +697,7 @@ if ($action == "editusergroupindb"){
 	. "<br /><a href='$scriptname?action=editusergroups'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 }
 
-if ($action == "editusergroups"  )
+if ($action == "editusergroups"  && $_SESSION['loginID'] == 1)
 {
 	if(isset($_GET['ugid']))
 	{
@@ -797,9 +801,9 @@ if ($action == "editusergroups"  )
 	}
 }
 
-if($action == "deleteuserfromgroup") {
-	$ugid = $_POST['ugid'];
-	$uid = $_POST['uid'];
+if($action == "deleteuserfromgroup" && $_SESSION['loginID'] == 1) {
+	$ugid = $postusergroupid;
+	$uid = $postuserid;
 	$usersummary = "<br /><strong>".$clang->gT("Delete User")."</strong><br />\n";
 
 	$query = "SELECT ugid, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$ugid." AND ((owner_id = ".$_SESSION['loginID']." AND owner_id != ".$uid.") OR (owner_id != ".$_SESSION['loginID']." AND $uid = ".$_SESSION['loginID']."))";
@@ -809,7 +813,7 @@ if($action == "deleteuserfromgroup") {
 		$remquery = "DELETE FROM ".db_table_name('user_in_groups')." WHERE ugid = {$ugid} AND uid = {$uid}";
 		if($connect->Execute($remquery))
 		{
-			$usersummary .= "<br />".$clang->gT("Username").": {$_POST['user']}<br />\n";
+			$usersummary .= "<br />".$clang->gT("Username").": ".sanitize_system_string($_POST['user'])."<br />\n";
 		}
 		else
 		{
@@ -820,7 +824,7 @@ if($action == "deleteuserfromgroup") {
 	{
 		include("access_denied.php");
 	}
-	if($_SESSION['loginID'] != $_POST['uid'])
+	if($_SESSION['loginID'] != $postuserid)
 	{
 		$usersummary .= "<br /><a href='$scriptname?action=editusergroups&amp;ugid=$ugid'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 	}
@@ -833,17 +837,17 @@ if($action == "deleteuserfromgroup") {
 
 
 
-if($action == "addusertogroup")
+if($action == "addusertogroup" && $_SESSION['loginID'] == 1)
 {
 	$addsummary = "<br /><strong>".$clang->gT("Adding User to group")."...</strong><br />\n";
 
-	$query = "SELECT ugid, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$_POST['uid'];
+	$query = "SELECT ugid, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$postuserid;
 	$result = db_execute_assoc($query);
 	if($result->RecordCount() > 0)
 	{
-		if($_POST['uid'] > 0)
+		if($postuserid > 0)
 		{
-			$isrquery = "INSERT INTO {$dbprefix}user_in_groups VALUES(".$_GET['ugid'].",". $_POST['uid'].")";
+			$isrquery = "INSERT INTO {$dbprefix}user_in_groups VALUES(".$_GET['ugid'].",". $postuserid.")";
 			$isrresult = $connect->Execute($isrquery);
 
 			if($isrresult)
@@ -867,4 +871,14 @@ if($action == "addusertogroup")
 	{
 		include("access_denied.php");
 	}
+}
+
+
+function updateusergroup($name, $description, $ugid)
+{
+    global $dbprefix, $scriptname, $connect;
+
+    $uquery = "UPDATE ".db_table_name('user_groups')." SET name = '$name', description = '$description' WHERE ugid =$ugid";
+    // TODO
+    return $connect->Execute($uquery) or die($connect->ErrorMsg()) ;
 }

@@ -3041,15 +3041,6 @@ function getusergrouplist()
     return $selecter;
     }
 
-function updateusergroup($name, $description, $ugid)
-{
-	global $dbprefix, $scriptname, $connect;
-
-	$uquery = "UPDATE ".db_table_name('user_groups')." SET name = '$name', description = '$description' WHERE ugid =$ugid";
-	// TODO
-	return $connect->Execute($uquery) or die($connect->ErrorMsg()) ;
-}
-
 function languageDropdown($surveyid,$selected)
 {
 	$slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
