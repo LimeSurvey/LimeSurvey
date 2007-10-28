@@ -2022,18 +2022,19 @@ function templatereplace($line)
 		}
 	}
 	if (strpos($line, "{CLOSEWINDOW}") !== false) $line=str_replace("{CLOSEWINDOW}", "<a href='javascript:%20self.close()'>".$clang->gT("Close this Window")."</a>", $line);
-
-	$savereturn = "<a href='index.php?sid=$surveyid";
-	if (returnglobal('token'))
-	{
-		$savereturn.= "&amp;token=".returnglobal('token');
-	}
-	
-	$savereturn .= "'>".$clang->gT("Return To Survey")."</a>";
 	if (strpos($line, "{SAVEERROR}") !== false) $line=str_replace("{SAVEERROR}", $errormsg, $line);
 	if (strpos($line, "{SAVEHEADING}") !== false) $line=str_replace("{SAVEHEADING}", $clang->gT("Save Your Unfinished Survey"), $line);
 	if (strpos($line, "{SAVEMESSAGE}") !== false) $line=str_replace("{SAVEMESSAGE}", $clang->gT("Enter a name and password for this survey and click save below.")."<br />\n".$clang->gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.")."<br /><br />\n".$clang->gT("If you give an email address, an email containing the details will be sent to you."), $line);
-	if (strpos($line, "{RETURNTOSURVEY}") !== false) $line=str_replace("{RETURNTOSURVEY}", $savereturn, $line);
+	if (strpos($line, "{RETURNTOSURVEY}") !== false) 
+	{
+		$savereturn = "<a href='index.php?sid=$surveyid";
+		if (returnglobal('token'))
+		{
+			$savereturn.= "&amp;token=".returnglobal('token');
+		}
+ 		$savereturn .= "'>".$clang->gT("Return To Survey")."</a>";
+		$line=str_replace("{RETURNTOSURVEY}", $savereturn, $line);
+	}	
 	if (strpos($line, "{SAVEFORM}") !== false) {
 		//SAVE SURVEY DETAILS
 		$saveform = "<table><tr><td align='right'>".$clang->gT("Name").":</td><td><input type='text' name='savename' value='";
@@ -3042,14 +3043,6 @@ function getusergrouplist()
     return $selecter;
     }
 
-function updateusergroup($name, $description, $ugid)
-{
-	global $dbprefix, $scriptname, $connect;
-
-	$uquery = "UPDATE ".db_table_name('user_groups')." SET name = '$name', description = '$description' WHERE ugid =$ugid";
-	// TODO
-	return $connect->Execute($uquery) or die($connect->ErrorMsg()) ;
-}
 
 function languageDropdown($surveyid,$selected)
 {
