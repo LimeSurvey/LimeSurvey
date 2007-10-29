@@ -45,7 +45,7 @@ if ($usejpgraph == 1 && isset($jpgraphdir)) //JPGRAPH CODING SUBMITTED BY Pieter
 
 // This gets all the 'to be shown questions' from the POST and puts these into an array 
 $summary=returnglobal('summary');
-if (isset($summary)) {
+if (isset($summary) && !is_array($summary)) {
 	$summary = explode("+", $summary);
 }
 
