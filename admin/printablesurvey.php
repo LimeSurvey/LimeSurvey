@@ -695,7 +695,11 @@ $printablesurveyoutput .="\t\t\t<table width='100%' border='1' style='border-col
 $printablesurveyoutput .="\t\t\t\t<tr>\n";
 $printablesurveyoutput .="\t\t\t\t\t<td align='center'>\n";
 $printablesurveyoutput .="\t\t\t\t\t\t<strong>".$clang->gT("Submit Your Survey.")."</strong><br />\n";
-$printablesurveyoutput .="\t\t\t\t\t\t".$clang->gT("Thank you for completing this survey.")." ".$clang->gT("Please fax your completed survey to:")." $surveyfaxto";
+$printablesurveyoutput .="\t\t\t\t\t\t".$clang->gT("Thank you for completing this survey.");
+if (!empty($surveyfaxto))
+{
+    $printablesurveyoutput .= $clang->gT("Please fax your completed survey to:")." $surveyfaxto";
+}
 if ($surveyuseexpiry=="Y")
 {
 	$printablesurveyoutput .=$clang->gT("Please submit by")." $surveyexpirydate";
