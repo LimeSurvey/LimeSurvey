@@ -1592,6 +1592,7 @@ if ($subaction == "uploadldap" && ($sumrows5['edit_survey_property'] || $sumrows
 						$myfirstname = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['firstname_attr']]);
 						$mylastame = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['lastname_attr']]);
 						$myemail = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['email_attr']]);
+						$myemail= sanitize_email($myemail);
 
 						// The following attrs are optionnal
 						if ( isset($responseGroup[$j][$ldap_queries[$ldapq]['token_attr']]) ) $mytoken = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['token_attr']]);
