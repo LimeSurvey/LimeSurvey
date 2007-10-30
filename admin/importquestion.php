@@ -329,8 +329,13 @@ if (isset($questionarray) && $questionarray) {
 		$oldqid = $questionrowdata['qid'];
 		$oldsid = $questionrowdata['sid'];
 		$oldgid = $questionrowdata['gid'];
-    	// Remove qid field
-		unset($questionrowdata['qid']);
+
+        // Remove qid field if there is no newqid; and set it to newqid if it's set
+        if (!isset($newqid))
+            unset($questionrowdata['qid']);
+        else
+            $questionrowdata['qid'] = $newqid;
+
 		$questionrowdata["sid"] = $newsid;
 		$questionrowdata["gid"] = $newgid;
 
@@ -357,7 +362,11 @@ if (isset($questionarray) && $questionarray) {
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
         $qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
 		$qres = $connect->Execute($qinsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
-		$newqid=$connect->Insert_ID();
+
+        // set the newqid only if is not set
+        if (!isset($newqid))
+            $newqid=$connect->Insert_ID();
+
 		$newrank=0;
 		//NOW DO NESTED ANSWERS FOR THIS QID
     	if (isset($answerarray) && $answerarray) {
