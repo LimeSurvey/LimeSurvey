@@ -299,7 +299,8 @@ else
 		if ($arow['type'] != "M" && $arow['type'] != "A" && $arow['type'] != "B" &&
 		$arow['type'] != "C" && $arow['type'] != "E" && $arow['type'] != "F" &&
 		$arow['type'] != "H" && $arow['type'] != "P" && $arow['type'] != "R" &&
-		$arow['type'] != "Q" && $arow['type'] != "^" && $arow['type'] != "J")
+		$arow['type'] != "Q" && $arow['type'] != "^" && $arow['type'] != "J" &&
+		$arow['type'] != "K")
 		{
 			$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}`";
 			switch($arow['type'])
@@ -384,6 +385,19 @@ else
 				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` C(255),\n";
 			}
 		}
+		
+		elseif ($arow['type'] == "K") //Multiple Numeric - replica of multiple short text, except numbers only
+		{
+			$abquery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q WHERE a.qid=q.qid AND sid={$_GET['sid']} AND q.qid={$arow['qid']} "
+                                   ." AND a.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
+                                   ." AND q.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
+                                   ." ORDER BY a.sortorder, a.answer";
+			$abresult=db_execute_assoc($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
+			while ($abrow = $abresult->FetchRow())
+			{
+				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` C(20),\n";
+			}
+		} //End if ($arow['type'] == "K")
 /*		elseif ($arow['type'] == "J")
 		{
 			$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid={$_GET['sid']} AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
@@ -411,7 +425,7 @@ else
 
 	}
 
-	// If last question is of type MCABCEFHP^QJR let's get rid of the ending coma in createsurvey
+	// If last question is of type MCABCEFHP^QKJR let's get rid of the ending coma in createsurvey
 	$createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a coma
 	$tabname = "{$dbprefix}survey_{$_GET['sid']}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
 

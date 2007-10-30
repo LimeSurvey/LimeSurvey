@@ -11,12 +11,10 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 $versionnumber = "1.60";
 $dbversionnumber = 114;
-
 
 
 
@@ -691,7 +689,7 @@ function getanswers()
 
 
 /**
-* getqtypelist() Returnst list of question types available in LimeSurvey. Edit this if you are adding a new
+* getqtypelist() Returns list of question types available in LimeSurvey. Edit this if you are adding a new
 *    question type
 * @global string $publicurl
 * @global string $sourcefrom
@@ -722,6 +720,7 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 		"O"=>$clang->gT("List With Comment"),
 		"P"=>$clang->gT("Multiple Options With Comments"),
 		"Q"=>$clang->gT("Multiple Short Text"),
+		"K"=>$clang->gT("Multiple Numerical Input"),
 		"R"=>$clang->gT("Ranking"),
 		"S"=>$clang->gT("Short free text"),
 		"T"=>$clang->gT("Long free text"),
@@ -969,7 +968,7 @@ function getSurveyInfo($surveyid, $languagecode='')
 		if (!$thissurvey['adminemail']) {$thissurvey['adminemail']=$siteadminemail;}
 		if (!$thissurvey['urldescrip']) {$thissurvey['urldescrip']=$thissurvey['url'];}
 	}
-    $languagechanger =makelanguagechanger();
+    $languagechanger = makelanguagechanger();
 	return $thissurvey;
 }
 
@@ -1627,7 +1626,8 @@ function createFieldMap($surveyid, $style="null") {
 		if ($arow['type'] != "M" && $arow['type'] != "A" && $arow['type'] != "B" &&
 		$arow['type'] !="C" && $arow['type'] != "E" && $arow['type'] != "F" &&
 		$arow['type'] != "H" && $arow['type'] !="P" && $arow['type'] != "R" &&
-		$arow['type'] != "Q" && $arow['type'] != "J" && $arow['type'] != "^")
+		$arow['type'] != "Q" && $arow['type'] != "J" && $arow['type'] != "K" && 
+		$arow['type'] != "^")
 		{
 			$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}", "type"=>"{$arow['type']}", "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"");
 			if ($style == "full")
@@ -1736,7 +1736,7 @@ function createFieldMap($surveyid, $style="null") {
 				}
 			}
 		}
-		elseif ($arow['type'] == "Q")
+		elseif ($arow['type'] == "Q" || $arow['type'] == "K")
 		{
 			$abquery = "SELECT ".db_table_name('answers').".*, ".db_table_name('questions').".other FROM "
 			.db_table_name('answers').", ".db_table_name('questions')." WHERE sid=$surveyid AND "
@@ -2290,10 +2290,10 @@ function questionAttributes()
 	"types"=>"M",
 	"help"=>"Limit the number of possible answers");
     $qattributes[]=array("name"=>"maximum_chars",
-    "types"=>"STUNQ",
+    "types"=>"STUNQK",
     "help"=>"Maximum Characters Allowed");
     $qattributes[]=array("name"=>"random_order",
-    "types"=>"!LMOPQRWZ",
+    "types"=>"!LMOPQKRWZ",
     "help"=>"Present Answers in random order");
     $qattributes[]=array("name"=>"text_input_width",
     "types"=>"NSTU",
@@ -2301,7 +2301,15 @@ function questionAttributes()
     $qattributes[]=array("name"=>"numbers_only",
     "types"=>"Q",
     "help"=>"Allow only numerical input");
-
+	$qattributes[]=array("name"=>"max_num_value",
+	"types"=>"K",
+	"help"=>"Maximum numeric value of multiple numeric input");
+	$qattributes[]=array("name"=>"equals_num_value",
+	"types"=>"K",
+	"help"=>"Multiple numeric inputs must equal this value");
+	$qattributes[]=array("name"=>"min_num_value",
+	"types"=>"K",
+	"help"=>"Multiple numeric inputs must be greater than this value");
 	/* -- > Commented out since not yet used
     $qattributes[]=array("name"=>"permission",
     "types"=>"5DGL!OMPQNRSTUYABCEFHWZ",

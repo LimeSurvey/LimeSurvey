@@ -216,7 +216,10 @@ if($actsurrows['browse_response'])
 			$insertqr="";
 			while ($irow = $iresult->FetchRow())
 			{
-				if ($irow['type'] != "M" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "H" && $irow['type'] != "P" && $irow['type'] != "O" && $irow['type'] != "R" && $irow['type'] != "Q" && $irow['type'] != "J")
+				if ($irow['type'] != "M" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && 
+				    $irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "H" && $irow['type'] != "P" && 
+					$irow['type'] != "O" && $irow['type'] != "R" && $irow['type'] != "Q" && $irow['type'] != "J" &&
+					$irow['type'] != "K")
 				{
 					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 					if (isset($_POST[$fieldname]))
@@ -504,7 +507,9 @@ if($actsurrows['browse_response'])
 			$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
 			$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
 			$fquestion = $fnrow['question'];
-			if ($fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || $fnrow['type'] == "E" || $fnrow['type'] == "F" || $fnrow['type'] == "H" || $fnrow['type'] == "P" || $fnrow['type'] == "Q" || $fnrow['type'] == "^" || $fnrow['type'] == "J")
+			if ($fnrow['type'] == "M" || $fnrow['type'] == "A" || $fnrow['type'] == "B" || $fnrow['type'] == "C" || 
+			    $fnrow['type'] == "E" || $fnrow['type'] == "F" || $fnrow['type'] == "H" || $fnrow['type'] == "P" || 
+				$fnrow['type'] == "Q" || $fnrow['type'] == "^" || $fnrow['type'] == "J" || $fnrow['type'] == "K")
 			{
 				$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} and language='{$language}' ORDER BY sortorder, answer";
 				$fnrresult = db_execute_assoc($fnrquery);
@@ -650,6 +655,7 @@ if($actsurrows['browse_response'])
 					$dataentryoutput .= "";
 					break;
 					case "Q":
+					case "K":
 						$dataentryoutput .= "\t\t\t{$fnames[$i][6]}&nbsp;<input type='text' name='{$fnames[$i][0]}' value='"
 						.$idrow[$fnames[$i][0]] . "' />\n";
 						break;
@@ -1312,7 +1318,10 @@ if($actsurrows['browse_response'])
 
 		while ($irow = $iresult->FetchRow())
 		{
-			if ($irow['type'] != "Q" && $irow['type'] != "M" && $irow['type'] != "P" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "H" && $irow['type'] != "O" && $irow['type'] != "R" && $irow['type'] != "^" && $irow['type'] != "J")
+			if ($irow['type'] != "Q" && $irow['type'] != "M" && $irow['type'] != "P" && $irow['type'] != "A" && 
+			    $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "F" && 
+				$irow['type'] != "H" && $irow['type'] != "O" && $irow['type'] != "R" && $irow['type'] != "^" && 
+				$irow['type'] != "J" && $irow['type'] != "K")
 			{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 				if (isset($_POST[$fieldname])) { $thisvalue=$_POST[$fieldname]; } else {$thisvalue="";}
@@ -1696,6 +1705,7 @@ if($actsurrows['browse_response'])
 					break;
 					case "Q": //MULTIPLE SHORT TEXT
 					case "^": //Slider
+					case "K":
 					$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
 					$dearesult = db_execute_assoc($deaquery);
 					$dataentryoutput .= "\t\t\t<table>\n";

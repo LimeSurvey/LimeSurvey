@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿﻿﻿﻿<?php
 /*
 * LimeSurvey
 * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
@@ -93,6 +93,7 @@ function create_mandatorylist($ia)
 			case "J":
 			case "P":
 			case "Q":
+			case "K":
 			case "A":
 			case "B":
 			case "C":
@@ -311,6 +312,9 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 		case "Q": //MULTIPLE SHORT TEXT
 		$values=do_multipleshorttext($ia);
 		break;
+		case "K": //MULTIPLE NUMERICAL QUESTION
+		$values=do_multiplenumeric($ia);
+		break;
 		case "N": //NUMERICAL QUESTION TYPE
 		$values=do_numerical($ia);
 		break;
@@ -425,6 +429,7 @@ function mandatory_message($ia)
 				case "B":
 				case "C":
 				case "Q":
+				case "K":
 				case "F":
 				case "J":
 				case "H":
@@ -1734,6 +1739,165 @@ function do_multipleshorttext($ia)
 		}
 	}
 	$answer .= "\t\t\t\t\t\t</table>\n";
+	return array($answer, $inputnames);
+}
+
+function do_multiplenumeric($ia)
+{
+	global $dbprefix, $clang;
+	$qidattributes=getQuestionAttributes($ia[0]);
+	//Must turn on the "numbers only javascript"
+	$numbersonly = "onkeypress=\"return goodchars(event,'0123456789.')\"";
+    if ($maxchars=arraySearchByKey("maximum_chars", $qidattributes, "attribute", 1))
+    {
+        $maxsize=$maxchars['value'];
+    } else {
+        $maxsize=255;
+    }
+    if ($equalvalue=arraySearchByKey("equals_num_value", $qidattributes, "attribute", 1))
+    {
+	    $equals_num_value=$equalvalue['value'];
+	    $numbersonly .= " onBlur=\"calculateValue".$ia[1]."(3)\"";
+	    $calculateValue=3;
+	} else {
+	    $equals_num_value=0;
+	}
+    if ($minvalue=arraySearchByKey("min_num_value", $qidattributes, "attribute", 1))
+    {
+	    $min_num_value=$minvalue['value'];
+	    $numbersonly .= " onBlur=\"calculateValue".$ia[1]."(2)\"";
+	    $calculateValue=2;
+	} else {
+	    $min_num_value=0;
+	}
+    if ($maxvalue=arraySearchByKey("max_num_value", $qidattributes, "attribute", 1))
+    {
+	    $max_num_value = $maxvalue['value'];
+        $numbersonly .= " onBlur=\"calculateValue".$ia[1]."(1)\""; 
+	    $calculateValue=1;
+	} else {
+	    $max_num_value = 0;
+	}
+	if ($maxchars=arraySearchByKey("text_input_width", $qidattributes, "attribute", 1))
+	{
+		$tiwidth=$maxchars['value'];
+	}
+	else
+	{
+		$tiwidth=10;
+	}
+	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+	} else {
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+	}
+	$ansresult = db_execute_assoc($ansquery);
+	$anscount = $ansresult->RecordCount()*2;
+	//$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
+	$fn = 1;
+    $answer = keycontroljs();
+	$answer .= "\t\t\t\t\t\t<table class='question'>\n";
+	if ($anscount==0) 
+	   {
+		  $inputnames=array();
+		  $answer.="<tr><td class='answertext'>".$clang->gT("Error: This question has no answers.")."</td></tr>\n";
+	   }
+    else 
+    {
+	 	while ($ansrow = $ansresult->FetchRow())
+		{
+			$myfname = $ia[1].$ansrow['code'];
+			$answer .= "\t\t\t\t\t\t\taaa<tr>\n"
+			. "\t\t\t\t\t\t\t\t<td align='right' class='answertext'>\n"
+			. "\t\t\t\t\t\t\t\t\t<label for='answer$myfname'>{$ansrow['answer']}</label>\n"
+			. "\t\t\t\t\t\t\t\t</td>\n"
+			. "\t\t\t\t\t\t\t\t<td align='left'>\n"
+			. "\t\t\t\t\t\t\t\t\t<input class='text' type='text' size='$tiwidth' name='$myfname' id='answer$myfname' value='";
+			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+	
+			// --> START NEW FEATURE - SAVE
+			$answer .= "' onchange='modfield(this.name)' $numbersonly maxlength='$maxsize'/>\n"
+			. "\t\t\t\t\t\t\t\t</td>\n"
+			. "\t\t\t\t\t\t\t</tr>\n";
+			// --> END NEW FEATURE - SAVE
+	
+			$fn++;
+			$inputnames[]=$myfname;
+		}
+		$answer .= "<br />\t\t\t<font size='1'><i>".$clang->gT("Only numbers may be entered in these fields")."</i></font>\n";
+
+        if ($maxvalue)
+            {
+			$answer .= "<br />\t\t\t<font size='1'><i>".$clang->gT("Total of all entries must not exceed ").$max_num_value."</i></font></n>";
+			}
+
+        if ($equalvalue)
+            {
+			$answer .= "<br />\t\t\t<font size='1'><i>".$clang->gT("Total of all entries must equal ").$equals_num_value."</i></font></n>";
+			}
+        if ($minvalue)
+            {
+			$answer .= "<br />\t\t\t<font size='1'><i>".$clang->gT("Total of all entries must be at least ").$min_num_value."</i></font></n>";
+			}
+	}
+	$answer .= "\t\t\t\t\t\t</table>\n";
+	
+	if ($maxvalue || $equalvalue || $minvalue) 
+    { //Do value validation
+	    $answer .= "<input type='hidden' name='qattribute_answer[]' value='".$ia[1]."'>\n";
+		$answer .= "<input type='hidden' name='qattribute_answer".$ia[1]."'>\n";
+
+	    $answer .= "<script type='text/javascript'>\n";
+	    $answer .= "    function calculateValue".$ia[1]."(method) {\n";
+	    //Make all empty fields 0 (or else calculation won't work
+	    foreach ($inputnames as $inputname)
+	    {
+		    $answer .= "       if(document.limesurvey.answer".$inputname.".value == '') { document.limesurvey.answer".$inputname.".value = 0; }\n";
+            $javainputnames[]="eval(document.limesurvey.answer".$inputname.".value)"; 
+		}
+	    $answer .= "       bob = eval('document.limesurvey.qattribute_answer".$ia[1]."');\n";
+	    $answer .= "       totalvalue=";
+	    $answer .= implode(" + ", $javainputnames);
+	    $answer .= ";\n";
+	    $answer .= "       switch(method)\n";
+	    $answer .= "       {\n";
+	    $answer .= "       case 1:\n";
+	    $answer .= "          if (totalvalue > $max_num_value)\n";
+	    $answer .= "             {\n";
+	    $answer .= "             bob.value = '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$max_num_value."';\n";
+		$answer .= "             }\n";
+		$answer .= "             else\n";
+		$answer .= "             {\n";
+		$answer .= "             bob.value = '';\n";
+		$answer .= "             }\n";
+		$answer .= "          break;\n";
+		$answer .= "       case 2:\n";
+	    $answer .= "          if (totalvalue < $min_num_value)\n";
+	    $answer .= "             {\n";
+	    $answer .= "             bob.value = '".$clang->gT("Answer is invalid. The total of all entries should add up to at least ").$min_num_value."';\n";
+		$answer .= "             }\n";
+		$answer .= "             else\n";
+		$answer .= "             {\n";
+		$answer .= "             bob.value = '';\n";
+		$answer .= "             }\n";
+		$answer .= "          break;\n";
+		$answer .= "       case 3:\n";
+	    $answer .= "          if (totalvalue == $equals_num_value)\n";
+	    $answer .= "             {\n";
+		$answer .= "             bob.value = '';\n";
+		$answer .= "             }\n";
+		$answer .= "             else\n";
+		$answer .= "             {\n";
+	    $answer .= "             bob.value = '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$equals_num_value."';\n";
+		$answer .= "             }\n";
+		$answer .= "             break;\n";
+		$answer .= "          }\n";
+	    $answer .= "    }\n";
+		$answer .= "    calculateValue".$ia[1]."($calculateValue);\n";
+		$answer .= "</script>\n";
+	    
+	}
+	
 	return array($answer, $inputnames);
 }
 

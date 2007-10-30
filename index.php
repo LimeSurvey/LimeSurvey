@@ -916,6 +916,23 @@ function checkpregs($backok=null)
 				}
 			}
 		}
+        //The following section checks for question attribute validation, looking for values in a particular field
+		if (isset($_POST['qattribute_answer']))
+		{
+		foreach ($_POST['qattribute_answer'] as $maxvalueanswer)
+		    {
+		        //$maxvalue_answername="maxvalue_answer".$maxvalueanswer;
+		        if (!empty($_POST['qattribute_answer'.$maxvalueanswer]))
+		            {
+        			if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep'];}
+        			if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep'];}
+        			if (isset($_POST['move']) && $_POST['move'] == "movelast") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == "movenext";}
+					$notvalidated[]=$maxvalueanswer;
+        			return $notvalidated;
+					}
+			}
+		}
+
 		if (isset($notvalidated) && is_array($notvalidated))
 		{
 			if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep'];}
@@ -1379,7 +1396,7 @@ UpdateSessionGroupList();
 		}
 
 
-		elseif ($arow['type'] == "Q" || $arow['type'] == "J" )	// Multiple Short Text - ???
+		elseif ($arow['type'] == "Q" || $arow['type'] == "J" || $arow['type'] == "K")	// Multiple Short Text - ???
 		{
 
 // Optimized Query

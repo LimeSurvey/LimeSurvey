@@ -194,7 +194,10 @@ foreach ($filters as $flt)
 	$myfield = "{$surveyid}X{$flt[1]}X{$flt[0]}";
 	$niceqtext = FlattenText($flt[5]);
 	//headings
-	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && $flt[2] != "F" && $flt[2] != "H" && $flt[2] != "T" && $flt[2] != "U" && $flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q" && $flt[2] != "X" && $flt[2] != "W" && $flt[2] != "Z") //Have to make an exception for these types!
+	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && 
+	    $flt[2] != "F" && $flt[2] != "H" && $flt[2] != "T" && $flt[2] != "U" && 
+		$flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q" && 
+		$flt[2] != "X" && $flt[2] != "W" && $flt[2] != "Z" && $flt[2] != "K") //Have to make an exception for these types!
 	{
 		$statisticsoutput .= "\t\t\t\t<td align='center'>"
 		."<strong>$flt[3]&nbsp;"; //Heading (Question No)
@@ -212,9 +215,43 @@ foreach ($filters as $flt)
 		$allfields[]=$myfield;
 	}
 	$statisticsoutput .= "\t\t\t\t\t<!-- QUESTION TYPE = $flt[2] -->\n";
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	//This section presents the filter list, in various different ways depending on the question type
+	/////////////////////////////////////////////////////////////////////////////////////////////////
 	switch ($flt[2])
 	{
-		case "Q":
+		case "K": // Multiple Numerical
+		$statisticsoutput .= "\t\t\t\t\t</tr>\n\t\t\t\t\t<tr>\n";
+		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language = '{$language}' ORDER BY sortorder, answer";
+		$result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		$counter2=0;
+		while ($row=$result->FetchRow())
+		{
+		    $myfield1="K".$myfield.$row[0];
+		    $myfield2="K{$myfield}".$row[0]."G";
+		    $myfield3="K{$myfield}".$row[0]."L";
+			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
+			$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'><strong>$flt[3]-".$row[0]."</strong></font>";
+			$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield1'";
+			if (isset($_POST['summary']) && (array_search("K{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $_POST['summary']) !== FALSE))
+			{$statisticsoutput .= " checked='checked'";}
+			$statisticsoutput .= " />&nbsp;&nbsp;";
+		    $statisticsoutput .= showSpeaker(FlattenText($row[1]))."<br />\n";
+		    $statisticsoutput .= "\t\t\t\t\t<font size='1'>".$clang->gT("Number greater than").":</font><br />\n"
+		    ."\t\t\t\t\t<input type='text' name='$myfield2' value='";
+		    if (isset($_POST[$myfield2])){$statisticsoutput .= $_POST[$myfield2];}
+		    $statisticsoutput .= "' /><br />\n"
+		    ."\t\t\t\t\t".$clang->gT("Number Less Than").":<br />\n"
+		    ."\t\t\t\t\t<input type='text' name='$myfield3' value='";
+		    if (isset($_POST[$myfield3])) {$statisticsoutput .= $_POST[$myfield3];}
+		    $statisticsoutput .= "' /><br />\n";
+			$counter2++;
+			$allfields[]=$myfield1;
+		    $allfields[]=$myfield2;
+		    $allfields[]=$myfield3;
+		}
+		break;
+		case "Q": // Multiple Short Text
 		$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
 		$result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
@@ -661,6 +698,7 @@ foreach ($fieldmap as $field)
 		case "T":
 		case "U":
 		case "N":
+		case "K":
 		//text type - don't do anything
 		break;
 		case "G":
@@ -735,7 +773,9 @@ if (isset($_POST['display']) && $_POST['display'])
 		if (in_array($pv, $allfields)) //Only do this if there is actually a value for the $pv
 		{
 			$firstletter=substr($pv,0,1);
-			if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "T" && $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp") //pull out just the fieldnames
+			if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "T" && 
+			    $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" &&
+				$pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp") //pull out just the fieldnames
 			{
 				$thisquestion = db_quote_id($pv)." IN (";
 				foreach ($_POST[$pv] as $condition)
@@ -764,7 +804,7 @@ if (isset($_POST['display']) && $_POST['display'])
 					$selects[]="($thismulti)";
 				}
 			}
-			elseif (substr($pv, 0, 1) == "N")
+			elseif (substr($pv, 0, 1) == "N" || substr($pv, 0, 1) == "K")
 			{
 				if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
 				{
@@ -1008,6 +1048,7 @@ if (isset($summary) && $summary)
             $tmpqid=substr($qqid, 0, strlen($qqid)-1);
             while (!in_array ($tmpqid,$legitqids)) $tmpqid=substr($tmpqid, 0, strlen($tmpqid)-1); 
             $qidlength=strlen($tmpqid);
+            $qaid=substr($qqid, $qidlength, strlen($qqid)-$qidlength);
 			$nquery = "SELECT title, type, question, other FROM ".db_table_name("questions")." WHERE qid='".substr($qqid, 0, $qidlength)."' AND language='{$language}'";
 			$nresult = db_execute_num($nquery) or die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
 			$count = substr($qqid, strlen($qqid)-1);
@@ -1016,6 +1057,13 @@ if (isset($summary) && $summary)
 				$qtitle=$nrow[0].'-'.$count; $qtype=$nrow[1];
 				$qquestion=strip_tags($nrow[2]);
 			}
+		    $qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qqid' AND code='$qaid' AND language='{$language}' ORDER BY sortorder, answer";
+		    $qresult=db_execute_num($qquery) or die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".$connect->ErrorMsg());
+		    while ($qrow=$qresult->FetchRow())
+	    	{
+		    	$atext=$qrow[1];
+		    }
+		    $qtitle .= " [$atext]";
 			$mfield=substr($rt, 1, strlen($rt));
 			$alist[]=array("Answers", $clang->gT("Answer"), $mfield);
 			$alist[]=array("NoAnswer", $clang->gT("No answer"), $mfield);
@@ -1040,18 +1088,51 @@ if (isset($summary) && $summary)
 				$alist[]=array("$row[0]", "$row[1]", $mfield);
 			}
 		}
-		elseif (substr($rt, 0, 1) == "N") //NUMERICAL TYPE
+		elseif (substr($rt, 0, 1) == "N" || substr($rt, 0, 1) == "K") //NUMERICAL TYPE
 		{
 			if (substr($rt, -1) == "G" || substr($rt, -1) == "L" || substr($rt, -1) == "=")
 			{
-				//DO NUSSINK
+				//DO NOTHING
 			}
 			else
 			{
-				list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
-				$nquery = "SELECT title, type, question, qid, lid FROM ".db_table_name("questions")." WHERE qid='$qqid' AND language='{$language}'";
-				$nresult = db_execute_num($nquery) or die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
-				while ($nrow=$nresult->FetchRow()) {$qtitle=$nrow[0]; $qtype=$nrow[1]; $qquestion=strip_tags($nrow[2]); $qiqid=$nrow[3]; $qlid=$nrow[4];}
+		        list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
+
+			    if(substr($rt, 0, 1) == "K")
+			    { // This is a multiple numerical question so we need to strip of the answer id to find the question title
+                    $tmpqid=substr($qqid, 0, strlen($qqid)-1);
+                    while (!in_array ($tmpqid,$legitqids)) $tmpqid=substr($tmpqid, 0, strlen($tmpqid)-1); 
+                    $qidlength=strlen($tmpqid);
+                    $qaid=substr($qqid, $qidlength, strlen($qqid)-$qidlength);
+			        $nquery = "SELECT title, type, question, qid, lid 
+							   FROM ".db_table_name("questions")." 
+							   WHERE qid='".substr($qqid, 0, $qidlength)."' 
+							   AND language='{$language}'";
+			        $nresult = db_execute_num($nquery) or die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
+				} else {
+				    $nquery = "SELECT title, type, question, qid, lid FROM ".db_table_name("questions")." WHERE qid='$qqid' AND language='{$language}'";
+				    $nresult = db_execute_num($nquery) or die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
+				}
+				while ($nrow=$nresult->FetchRow()) 
+				{
+				    $qtitle=$nrow[0]; 
+					$qtype=$nrow[1]; 
+					$qquestion=strip_tags($nrow[2]); 
+					$qiqid=$nrow[3]; 
+					$qlid=$nrow[4];
+				}
+				//Get answer texts for multiple numerical
+				if(substr($rt, 0, 1) == "K")
+				{
+				    $qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qaid' AND language='{$language}' ORDER BY sortorder, answer";
+				    $qresult=db_execute_num($qquery) or die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".$connect->ErrorMsg());
+				    while ($qrow=$qresult->FetchRow())
+			    	{
+				    	$atext=$qrow[1];
+				    }
+				    $qtitle .= " [$atext]";
+				}
+				
 				$statisticsoutput .= "<br />\n<table align='center' width='95%' border='1'  cellpadding='2' cellspacing='0' >\n"
 				."\t<tr><td colspan='2' align='center'><strong>".$clang->gT("Field Summary for")." $qtitle:</strong>"
 				."</td></tr>\n"

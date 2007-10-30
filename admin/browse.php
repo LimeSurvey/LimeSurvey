@@ -166,7 +166,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 		$fnrow['type'] == "A" || $fnrow['type'] == "B" ||
 		$fnrow['type'] == "C" || $fnrow['type'] == "E" ||
 		$fnrow['type'] == "F" || $fnrow['type'] == "H" ||
-		$fnrow['type'] == "J" ||
+		$fnrow['type'] == "J" || $fnrow['type'] == "K" ||
 		$fnrow['type'] == "P" || $fnrow['type'] == "^")
 		{
 			$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} AND	language='{$language}' ORDER BY sortorder, answer";
@@ -350,7 +350,7 @@ elseif ($subaction == "all")
 		if ($fnrow['type'] != "Q" && $fnrow['type'] != "M" && $fnrow['type'] != "A" &&
 		$fnrow['type'] != "B" && $fnrow['type'] != "C" && $fnrow['type'] != "E" &&
 		$fnrow['type'] != "F" && $fnrow['type'] != "H" && $fnrow['type'] != "P" &&
-		$fnrow['type'] != "J" &&
+		$fnrow['type'] != "J" && $fnrow['type'] != "K" && 
 		$fnrow['type'] != "O" && $fnrow['type'] != "R" && $fnrow['type'] != "^")
 		{
 			$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
