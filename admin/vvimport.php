@@ -81,7 +81,7 @@ else
 	$handle = fopen($the_full_file_path, "r");
 	while (!feof($handle))
 	{
-		$buffer = fgets($handle, 20480); //To allow for very long lines (up to 10k)
+		$buffer = fgets($handle); //To allow for very long lines 
 		$bigarray[] = $buffer;
 	}
 	fclose($handle);
