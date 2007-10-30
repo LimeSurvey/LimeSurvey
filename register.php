@@ -119,7 +119,7 @@ if (MailTextMessage($message, $subject, returnglobal('register_email'), $from, $
 	// TLR change to put date into sent
 	//	$query = "UPDATE {$dbprefix}tokens_$surveyid\n"
 	//			."SET sent='Y' WHERE tid=$tid";
-	$today = date("Y-m-d Hi");
+	$today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
 	$query = "UPDATE {$dbprefix}tokens_$surveyid\n"
 	."SET sent='$today' WHERE tid=$tid";
 	$result=$connect->Execute($query) or die ("$query<br />".htmlspecialchars($connect->ErrorMsg()));
