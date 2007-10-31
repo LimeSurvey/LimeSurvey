@@ -49,6 +49,8 @@
 //           combination of PARANOID, SQL, SYSTEM, HTML, INT, FLOAT, LDAP,
 //           UTF8
 // sanitize_email($email) -- input any string, all non-email chars will be removed
+// sanitize_user($string) -- total length check (and more ??)
+// sanitize_userfullname($string) -- total length check (and more ??)
 //
 //
 ///////////////////////////////////////
@@ -58,6 +60,7 @@
 // 20031221 gz - added nice_addslashes and changed sanitize_sql_string to use it
 // 20070213 lemeur - marked sanitize_sql_string as obsolete, should use db_quote instead
 // 20071025 c_schmitz - added sanitize_email
+// 20071032 lemeur - added sanitize_user and sanitize_userfullname
 //
 /////////////////////////////////////////
 
@@ -193,6 +196,26 @@ function sanitize_int($integer, $min='', $max='')
 	if((($min != '') && ($int < $min)) || (($max != '') && ($int > $max)))
 	return FALSE;
 	return $int;
+}
+
+// sanitize a username
+// TODO: define the exact format of the username
+// allow for instance 0-9a-zA-Z@_-.
+function sanitize_user($string)
+{
+	$username_length=64;
+	$string=substr($string,0,$username_length);
+	return $string;
+}
+
+// sanitize a username
+// TODO: define the exact format of the username
+// allow for instance 0-9a-zA-Z@_-.
+function sanitize_userfullname($string)
+{
+	$username_length=50;
+	$string=substr($string,0,$username_length);
+	return $string;
 }
 
 // make float float!
