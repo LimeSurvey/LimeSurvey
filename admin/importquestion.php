@@ -35,6 +35,24 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 	return;
 }
 
+// validate that we have a SID and GID
+if (!$_POST['sid'])
+{
+    $importquestion .= $clang->gT("No SID (Survey) has been provided. Cannot import question.")."<br /><br />\n"
+    ."<input type='submit' value='"
+    .$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n"
+    ."</td></tr></table>\n";
+    unlink($the_full_file_path);
+    return;
+}
+if (!$_POST['gid'])
+{
+    $importquestion .= $clang->gT("No GID (Group) has been provided. Cannot import question")."<br /><br />\n"
+    ."</td></tr></table>\n";
+    unlink($the_full_file_path);
+    return;
+}
+
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 $importquestion .= "<strong><font color='green'>".$clang->gT("Success")."</font></strong><br />\n"
 .$clang->gT("File upload succeeded.")."<br /><br />\n"
@@ -47,28 +65,49 @@ while (!feof($handle))
 }
 fclose($handle);
 
-if (!$_POST['sid'])
+// Now we try to determine the dataformat of the survey file.
+if ((substr($bigarray[1], 0, 24) == "# SURVEYOR QUESTION DUMP")&& (substr($bigarray[4], 0, 29) == "# http://www.phpsurveyor.org/"))
 {
-	$importquestion .= $clang->gT("No SID (Survey) has been provided. Cannot import question.")."<br /><br />\n"
-	."<input type='submit' value='"
-	.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n"
-	."</td></tr></table>\n";
-	return;
+    $importversion = 100;  // version 1.0 file
 }
-if (!$_POST['gid'])
+elseif 
+   ((substr($bigarray[1], 0, 24) == "# SURVEYOR QUESTION DUMP")&& (substr($bigarray[4], 0, 37) == "# http://phpsurveyor.sourceforge.net/"))
 {
-	$importquestion .= $clang->gT("No GID (Group) has been provided. Cannot import question")."<br /><br />\n"
-	."</td></tr></table>\n";
-	return;
+    $importversion = 99;  // Version 0.99 file or older - carries a different URL
 }
-if (substr($bigarray[0], 0, 26) != "# LimeSurvey Question Dump" && substr($bigarray[0], 0, 27) != "# PHPSurveyor Question Dump")
-{
-	$importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
-	.$clang->gT("This file is not a LimeSurvey question file. Import failed.")."<br /><br />\n"
-	."</td></tr></table>\n";
-	return;
-}
+elseif 
+   (substr($bigarray[0], 0, 26) == "# LimeSurvey Question Dump" || substr($bigarray[0], 0, 27) == "# PHPSurveyor Question Dump")
+    {  // Wow.. this seems to be a >1.0 version file - these files carry the version information to read in line two
+      $importversion=substr($bigarray[1], 12, 3);
+    }
+else    // unknown file - show error message
+  {
+      if ($importingfrom == "http")
+      {
+          $importsurvey .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+          $importsurvey .= $clang->gT("This file is not a LimeSurvey question file. Import failed.")."<br /><br />\n";
+          $importsurvey .= "</font></td></tr></table>\n";
+          $importsurvey .= "</body>\n</html>\n";
+          unlink($the_full_file_path);
+          return;
+      }
+      else 
+      {
+          echo $clang->gT("This file is not a LimeSurvey question file. Import failed.")."\n";
+          unlink($the_full_file_path);
+          return;
+      }
+  }
 
+if ($importversion != $dbversionnumber)
+{
+    $importsurvey .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+    $importsurvey .= $clang->gT("Sorry, importing questions is limited to the same version. Import failed.")."<br /><br />\n";
+    $importsurvey .= "</font></td></tr></table>\n";
+    $importsurvey .= "</body>\n</html>\n";
+    unlink($the_full_file_path);
+    return;
+}
 
 for ($i=0; $i<9; $i++) //skipping the first lines that are not needed
 {
@@ -242,80 +281,89 @@ $gid=$_POST['gid'];
 $newsid=$surveyid;
 $newgid=$gid;
 
-//DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEY'RE NEW LID IS FOR THE QUESTIONS
+//DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEIR NEW LID IS FOR THE QUESTIONS
 if (isset($labelsetsarray) && $labelsetsarray) {
-	$csarray=buildLabelsetCSArray();
-    $fieldorders  =convertCSVRowToArray($labelsetsarray[0],',','"');
-	foreach ($labelsetsarray as $lsa) {
+    $csarray=buildLabelsetCSArray();   // build checksums over all existing labelsets
+    $count=0;
+    foreach ($labelsetsarray as $lsa) {
+        $fieldorders  =convertCSVRowToArray($labelsetsarray[0],',','"');
         $fieldcontents=convertCSVRowToArray($lsa,',','"');
+        if ($count==0) {$count++; continue;}
+
         $labelsetrowdata=array_combine($fieldorders,$fieldcontents);
-		$oldcid=$labelsetrowdata["cid"];
-		$oldqid=$labelsetrowdata["qid"];
-		$oldlid=$labelsetrowdata["lid"];
-		unset($labelsetrowdata["lid"]);
+        
+        // Save old labelid
+        $oldlid=$labelsetrowdata['lid'];
+        // set the new language
+        unset($labelsetrowdata['lid']);
         $newvalues=array_values($labelsetrowdata);
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
         $lsainsert = "insert INTO {$dbprefix}labelsets (".implode(',',array_keys($labelsetrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
-		$lsiresult=$connect->Execute($lsainsert);
+        $lsiresult=$connect->Execute($lsainsert);
+        
+        // Get the new insert id for the labels inside this labelset
         $newlid=$connect->Insert_ID();
 
-		if ($labelsarray) {
-            $lfieldorders  =convertCSVRowToArray($labelsarray[0],',','"');
-			foreach ($labelsarray as $la) {
-				//GET ORDER OF FIELDS
+        if ($labelsarray) {
+            $count=0;
+            foreach ($labelsarray as $la) {
+                $lfieldorders  =convertCSVRowToArray($labelsarray[0],',','"');
                 $lfieldcontents=convertCSVRowToArray($la,',','"');
-         		$labelrowdata=array_combine($lfieldorders,$lfieldcontents);
-				$labellid=$labelrowdata['lid'];
-				if ($labellid == $oldlid) {
-					$labelrowdata['lid']=$newlid;
+                if ($count==0) {$count++; continue;}
+
+                // Combine into one array with keys and values since its easier to handle
+                 $labelrowdata=array_combine($lfieldorders,$lfieldcontents);
+                $labellid=$labelrowdata['lid'];
+                if ($labellid == $oldlid) {
+                    $labelrowdata['lid']=$newlid;
                     $newvalues=array_values($labelrowdata);
                     $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                     $lainsert = "insert INTO {$dbprefix}labels (".implode(',',array_keys($labelrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
-					$liresult=$connect->Execute($lainsert);
-				}
-			}
-		}
+                    $liresult=$connect->Execute($lainsert);
+                }
+            }
+        }
 
-		//CHECK FOR DUPLICATE LABELSETS
-		$thisset="";
-		$query2 = "SELECT code, title, sortorder
-				   FROM {$dbprefix}labels
-				   WHERE lid=".$newlid."
-				   ORDER BY sortorder, code";
-		$result2 = db_execute_num($query2) or die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
-		while($row2=$result2->FetchRow())
-		{
-			$thisset .= implode('.',$row2);
-		} // while
-		$newcs=dechex(crc32($thisset)*1);
-		if (isset($csarray))
-		{
-			foreach($csarray as $key=>$val)
-			{
-				if ($val == $newcs)
-				{
-					$lsmatch=$key;
-				}
-			}
-		}
-		if (isset($lsmatch))
-		{
-			//There is a matching labelset. So, we will delete this one and refer
-			//to the matched one.
-			$query = "DELETE FROM {$dbprefix}labels WHERE lid=$newlid";
-			$result=$connect->Execute($query) or die("Couldn't delete labels<br />$query<br />".$connect->ErrorMsg());
-			$query = "DELETE FROM {$dbprefix}labelsets WHERE lid=$newlid";
-			$result=$connect->Execute($query) or die("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
-			$newlid=$lsmatch;
-		}
-		else
-		{
-			//There isn't a matching labelset, add this checksum to the $csarray array
-			$csarray[$newlid]=$newcs;
-		}
-		//END CHECK FOR DUPLICATES
-		$labelreplacements[]=array($oldlid, $newlid);
-	}
+        //CHECK FOR DUPLICATE LABELSETS
+        $thisset="";
+        $query2 = "SELECT code, title, sortorder, language
+                   FROM {$dbprefix}labels
+                   WHERE lid=".$newlid."
+                   ORDER BY sortorder, code";
+        $result2 = db_execute_num($query2) or die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
+        while($row2=$result2->FetchRow())
+        {
+            $thisset .= implode('.', $row2);
+        } // while
+        $newcs=dechex(crc32($thisset)*1);
+        if (isset($csarray))
+        {
+            foreach($csarray as $key=>$val)
+            {
+                if ($val == $newcs)
+                {
+                    $lsmatch=$key;
+                }
+            }
+        }
+        if (isset($lsmatch))
+        {
+            //There is a matching labelset. So, we will delete this one and refer
+            //to the matched one.
+            $query = "DELETE FROM {$dbprefix}labels WHERE lid=$newlid";
+            $result=$connect->Execute($query) or die("Couldn't delete labels<br />$query<br />".$connect->ErrorMsg());
+            $query = "DELETE FROM {$dbprefix}labelsets WHERE lid=$newlid";
+            $result=$connect->Execute($query) or die("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
+            $newlid=$lsmatch;
+        }
+        else
+        {
+            //There isn't a matching labelset, add this checksum to the $csarray array
+            $csarray[$newlid]=$newcs;
+        }
+        //END CHECK FOR DUPLICATES
+        $labelreplacements[]=array($oldlid, $newlid);
+    }
 }
 
 // QUESTIONS, THEN ANSWERS FOR QUESTIONS IN A NESTED FORMAT!
@@ -330,12 +378,12 @@ if (isset($questionarray) && $questionarray) {
 		$oldsid = $questionrowdata['sid'];
 		$oldgid = $questionrowdata['gid'];
 
-        // Remove qid field if there is no newqid; and set it to newqid if it's set
+    	// Remove qid field if there is no newqid; and set it to newqid if it's set
         if (!isset($newqid))
-            unset($questionrowdata['qid']);
+		    unset($questionrowdata['qid']);
         else
             $questionrowdata['qid'] = $newqid;
-
+            
 		$questionrowdata["sid"] = $newsid;
 		$questionrowdata["gid"] = $newgid;
 
@@ -365,102 +413,45 @@ if (isset($questionarray) && $questionarray) {
 
         // set the newqid only if is not set
         if (!isset($newqid))
-            $newqid=$connect->Insert_ID();
+		    $newqid=$connect->Insert_ID();
 
-		$newrank=0;
-		//NOW DO NESTED ANSWERS FOR THIS QID
-    	if (isset($answerarray) && $answerarray) {
-    		foreach ($answerarray as $aa) {
-                $answerfieldcontents=convertCSVRowToArray($aa,',','"');
-                $answerrowdata=array_combine($answerfieldnames,$answerfieldcontents);
-    			$code=$answerrowdata["code"];
-    			$thisqid=$answerrowdata["qid"];
-				$answerrowdata["qid"]=$newqid;
-                        $newvalues=array_values($answerrowdata);
-                        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-                        $ainsert = "insert INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-				$ares = $connect->Execute($ainsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
-				
-				if ($type == "M" || $type == "P") {
-					$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid,
-					"newcfieldname"=>$newsid."X".$newgid."X".$newqid,
-					"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code,
-					"newfieldname"=>$newsid."X".$newgid."X".$newqid.$code);
-					if ($type == "P") {
-						$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid."comment",
-						"newcfieldname"=>$newsid."X".$newgid."X".$newqid.$code."comment",
-						"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code."comment",
-						"newfieldname"=>$newsid."X".$newgid."X".$newqid.$code."comment");
-					}
-				}
-				elseif ($type == "A" || $type == "B" || $type == "C" || $type == "F" || $type == "H") {
-					$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code,
-					"newcfieldname"=>$newsid."X".$newgid."X".$newqid.$code,
-					"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code,
-					"newfieldname"=>$newsid."X".$newgid."X".$newqid.$code);
-				}
-				elseif ($type == "R") {
-					$newrank++;
-				}
-    		}
-    		if (($type == "A" || $type == "B" || $type == "C" || $type == "M" || $type == "P" || $type == "L") && ($other == "Y")) {
-    			$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid."other",
-    			"newcfieldname"=>$newsid."X".$newgid."X".$newqid."other",
-    			"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid."other",
-    			"newfieldname"=>$newsid."X".$newgid."X".$newqid."other");
-    			if ($type == "P") {
-    				$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid."othercomment",
-    				"newcfieldname"=>$newsid."X".$newgid."X".$newqid."othercomment",
-    				"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid."othercomment",
-    				"newfieldname"=>$newsid."X".$newgid."X".$newqid."othercomment");
-    			}
-    		}
-    		if ($type == "R" && $newrank >0) {
-    			for ($i=1; $i<=$newrank; $i++) {
-    				$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$i,
-    				"newcfieldname"=>$newsid."X".$newgid."X".$newqid.$i,
-    				"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$i,
-    				"newfieldname"=>$newsid."X".$newgid."X".$newqid.$i);
-    			}
-    		}
-    		if ($type != "A" && $type != "B" && $type != "C" && $type != "R" && $type != "M" && $type != "P") {
-    			$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid,
-    			"newcfieldname"=>$newsid."X".$newgid."X".$newqid,
-    			"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid,
-    			"newfieldname"=>$newsid."X".$newgid."X".$newqid);
-    			if ($type == "O") {
-    				$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid."comment",
-    				"newcfieldname"=>$newsid."X".$newgid."X".$newqid."comment",
-    				"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid."comment",
-    				"newfieldname"=>$newsid."X".$newgid."X".$newqid."comment");
-    			}
-    		}
-    	} else {
-    		$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid,
-    		"newcfieldname"=>$newsid."X".$newgid."X".$newqid,
-    		"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid,
-    		"newfieldname"=>$newsid."X".$newgid."X".$newqid);
-    	}
     }
+
+    //NOW DO ANSWERS FOR THIS QID - Is called just once and only if there was a question
+    if (isset($answerarray) && $answerarray) {
+        foreach ($answerarray as $aa) {
+            $answerfieldcontents=convertCSVRowToArray($aa,',','"');
+            $answerrowdata=array_combine($answerfieldnames,$answerfieldcontents);
+            $code=$answerrowdata["code"];
+            $thisqid=$answerrowdata["qid"];
+            $answerrowdata["qid"]=$newqid;
+                    $newvalues=array_values($answerrowdata);
+                    $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+                    $ainsert = "insert INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
+            $ares = $connect->Execute($ainsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+        }
+    }
+
+    // Finally the question attributes - Is called just once and only if there was a question  
+    if (isset($question_attributesarray) && $question_attributesarray) {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUES
+        $fieldorders  =convertCSVRowToArray($question_attributesarray[0],',','"');
+        unset($question_attributesarray[0]);
+        foreach ($question_attributesarray as $qar) {
+            $fieldcontents=convertCSVRowToArray($qar,',','"');
+            $qarowdata=array_combine($fieldorders,$fieldcontents);
+            $qarowdata["qid"]=$newqid;
+            unset($qarowdata["qaid"]);
+
+            $newvalues=array_values($qarowdata);
+            $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+            $qainsert = "insert INTO {$dbprefix}question_attributes (".implode(',',array_keys($qarowdata)).") VALUES (".implode(',',$newvalues).")"; 
+            $result=$connect->Execute($qainsert) or die ("Couldn't insert question_attribute<br />$qainsert<br />".$connect->ErrorMsg());
+        }
+    }
+
 }
 
 
-// Finally the question attributes
-if (isset($question_attributesarray) && $question_attributesarray) {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUES
-    $fieldorders  =convertCSVRowToArray($question_attributesarray[0],',','"');
-    unset($question_attributesarray[0]);
-	foreach ($question_attributesarray as $qar) {
-        $fieldcontents=convertCSVRowToArray($qar,',','"');
-        $qarowdata=array_combine($fieldorders,$fieldcontents);
-		$qarowdata["qid"]=$newqid;
-		unset($qarowdata["qaid"]);
-
-        $newvalues=array_values($qarowdata);
-        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-        $qainsert = "insert INTO {$dbprefix}question_attributes (".implode(',',array_keys($qarowdata)).") VALUES (".implode(',',$newvalues).")"; 
-		$result=$connect->Execute($qainsert) or die ("Couldn't insert question_attribute<br />$qainsert<br />".$connect->ErrorMsg());
-	}
-}
 
 
 
