@@ -218,6 +218,13 @@ function sanitize_userfullname($string)
 	return $string;
 }
 
+function sanitize_labelname($string)
+{
+	$username_length=100;
+	$string=substr($string,0,$username_length);
+	return $string;
+}
+
 // make float float!
 function sanitize_float($float, $min='', $max='')
 {
@@ -303,5 +310,10 @@ function sanitize_languagecode($codetosanitize) {
     return preg_replace('/[^a-z0-9-]/i', '', $codetosanitize); 
 }
 
+function sanitize_languagecodeS($codestringtosanitize) {
+	$codearray=explode(" ",trim($codestringtosanitize));
+	$codearray=array_map("sanitize_languagecode",$codearray);
+	return implode(" ",$codearray);
+}
 
 ?>

@@ -1305,9 +1305,15 @@ function returnglobal($stringname)
 
 	if (isset($_REQUEST[$stringname]))
 		{
-		if ($stringname == "sid" || $stringname == "gid" || $stringname == "qid" || $stringname == "tid")
-			{
+		if ($stringname == "sid" || $stringname == "gid" || 
+			$stringname == "qid" || $stringname == "tid" ||
+			$stringname == "lid")
+		{
 			return intval($_REQUEST[$stringname]);
+		}
+		elseif ($stringname == "ugid")
+		{
+			return sanitize_int($_REQUEST[$stringname]);
 		}
 		return $_REQUEST[$stringname];
 	}
