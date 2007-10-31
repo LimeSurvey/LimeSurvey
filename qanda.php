@@ -877,7 +877,7 @@ function do_list_radio($ia)
 		$thisfieldname=$ia[1]."other";
 		if (isset($_SESSION[$thisfieldname])) { $answer .= "value='".htmlspecialchars($_SESSION[$thisfieldname],ENT_QUOTES)."' ";}
 		// --> START NEW FEATURE - SAVE
-		$answer .= "onclick=\"javascript:document.getElementById('SOTH$ia[1]').checked=true; checkconditions(document.getElementById('SOTH$ia[1]').value, document.getElementById('SOTH$ia[1]').name, document.getElementById('SOTH$ia[1]').type)\" onchange='modfield(this.name)' /></label><br /></div>\n";
+		$answer .= "onclick=\"javascript:document.getElementById('SOTH$ia[1]').checked=true; checkconditions(document.getElementById('SOTH$ia[1]').value, document.getElementById('SOTH$ia[1]').name, document.getElementById('SOTH$ia[1]').type); modfield(document.getElementById('SOTH$ia[1]').name)\" onchange='modfield(this.name);'  /></label><br /></div>\n";
 		// --> END NEW FEATURE - SAVE
 		$inputnames[]=$thisfieldname;
 		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
