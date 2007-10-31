@@ -11,6 +11,10 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
+$length_data = "255"; // Set the max text length of Text Data
+$length_varlabel = "255"; // Set the max text length of Variable Labels
+$length_vallabel = "255"; // Set the max text length of Value Labels
+
 include_once("login_check.php");
 error_reporting(E_ALL ^ E_NOTICE); // No Notices!
 
@@ -160,9 +164,10 @@ for ($i=0; $i < $num_results; $i++) {
 				}
 				if ($val_size < strlen($val_row[$fieldname])) $val_size = strlen($val_row[$fieldname]);
 			}
+			
 			$teststring = strip_tags_full($teststring);
 			$teststring = mb_ereg_replace(" ", '', $teststring);
-			print '"'.$teststring.'"';
+
 			if (is_numeric($teststring))
 			{
 				$fieldtype = "N".$val_size;
@@ -172,9 +177,9 @@ for ($i=0; $i < $num_results; $i++) {
 			} elseif ($val_size < 9 && !is_numeric($teststring))
 			{
 				$fieldtype = "A8";
-			} elseif ($val_size >= 255)
+			} elseif ($val_size >= $length_data)
 			{
-				$fieldtype = "A255";
+				$fieldtype = "A".$length_data;
 			}else
 			{
 				$fieldtype = "A".$val_size;
@@ -344,7 +349,7 @@ for ($i=0; $i < $num_results; $i++) {
 		{
 			if ($fields[$fieldno]["code"] == "other")
 			{
-				$strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, 255);
+				$strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
 				echo "'$strTmp' ";
 			} else if ($row[$fieldno] == "Y")
 			{
@@ -357,7 +362,7 @@ for ($i=0; $i < $num_results; $i++) {
 		{
 			if ($fields[$fieldno]["code"] == "other" || $fields[$fieldno]["code"] == "comment" || $fields[$fieldno]["code"] == "othercomment")
 			{
-				$strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, 255);
+				$strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
 				echo "'$strTmp' ";
 			} else if ($row[$fieldno] == "Y")
 			{
@@ -367,7 +372,7 @@ for ($i=0; $i < $num_results; $i++) {
 			   echo "'0' ";
 			}
 		} else {
-			$strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, 255);
+			$strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
 			//if ($strTmp=='') $strTmp='.';
 			if (mb_ereg_replace(" ", '', $strTmp) == ""){
 				echo "'0'";
@@ -393,7 +398,7 @@ foreach ($fields as $field){
 	$field["id"]=="email" OR
 	$field["id"]=="attr1" OR
 	$field["id"]=="attr2"){
-		echo "VARIABLE LABELS ".$field["id"]." '".mb_substr(strip_tags_full($field["name"]), 0, 255)."'.\n";//minni"<br />";
+		echo "VARIABLE LABELS ".$field["id"]." '".mb_substr(strip_tags_full($field["name"]), 0, $length_varlabel)."'.\n";//minni"<br />";
 	} elseif ($field["name"]=="id") {
 		echo "VARIABLE LABELS ".$field["id"]." '".$clang->gT("Record ID")."'.\n";//minni"<br />";
 	} elseif ($field["name"]=="submitda") {
@@ -432,16 +437,16 @@ foreach ($fields as $field){
 				# Build array that has to be returned
 				for ($i=0; $i < $num_results; $i++) {
 					$row = $result->FetchRow();
-					echo "VARIABLE LABELS ".$field["id"]." '".mb_substr(strip_tags_full($question_title), 0, 255)." - ".mb_substr(strip_tags_full($row["answer"]), 0, 59)."'.\n";//minni"<br />";
+					echo "VARIABLE LABELS ".$field["id"]." '".mb_substr(strip_tags_full($question_title), 0, $length_varlabel)." - ".mb_substr(strip_tags_full($row["answer"]), 0, $length_varlabel)."'.\n";//minni"<br />";
 				}
 			}
 			if (mb_substr($field['sql_name'], -5)=='other') {
 				echo "VARIABLE LABELS ".$field["id"]." '".
-				mb_substr(strip_tags_full($question_text), 0, 247)." - OTHER'.\n";
+				mb_substr(strip_tags_full($question_text), 0, $length_varlabel-8)." - OTHER'.\n";
 			}
 			if (mb_substr($field['sql_name'], -7)=='comment') {
 				echo "VARIABLE LABELS ".$field["id"]." '".
-				mb_substr(strip_tags_full($question_text), 0, 245)." - COMMENT'.\n";
+				mb_substr(strip_tags_full($question_text), 0, $length_varlabel-10)." - COMMENT'.\n";
 			}
 		}else{
 			$test=explode ("X", $field["name"]);
@@ -451,7 +456,7 @@ foreach ($fields as $field){
 			$result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());
 			$row = $result->FetchRow();
 			echo "VARIABLE LABELS ".$field["id"]." '".
-			mb_substr(strip_tags_full($row["question"]), 0, 255)."'.\n";
+			mb_substr(strip_tags_full($row["question"]), 0, $length_varlabel)."'.\n";
 		}
 	}
 }
@@ -482,10 +487,10 @@ foreach ($fields as $field)
 					if ($displayvaluelabel == 0) echo "VALUE LABELS ".$field["id"]."\n";
 					if ($displayvaluelabel == 0) $displayvaluelabel = 1;
 					if ($i == ($num_results-1))
-					{ //mb_substr($fieldname, 0, 8)
-						echo $row["code"]." \"".strip_tags_full(mb_substr($row["answer"],0,255))."\".\n"; // put .
+					{
+						echo $row["code"]." \"".strip_tags_full(mb_substr($row["answer"],0,$length_vallabel))."\".\n"; // put .
 					} else {
-						echo $row["code"]." \"".strip_tags_full(mb_substr($row["answer"],0,255))."\"\n";
+						echo $row["code"]." \"".strip_tags_full(mb_substr($row["answer"],0,$length_vallabel))."\"\n";
 					}
 				}
 			}
@@ -508,9 +513,9 @@ foreach ($fields as $field)
 					if ($displayvaluelabel == 0) $displayvaluelabel = 1;
 					if ($i == ($num_results-1))
 					{
-						echo $row["code"]." \"".strip_tags_full(mb_substr($row["title"],0,255))."\".\n"; // put . at end
+						echo $row["code"]." \"".strip_tags_full(mb_substr($row["title"],0,$length_vallabel))."\".\n"; // put . at end
 					} else {
-						echo $row["code"]." \"".strip_tags_full(mb_substr($row["title"],0,255))."\"\n";
+						echo $row["code"]." \"".strip_tags_full(mb_substr($row["title"],0,$length_vallabel))."\"\n";
 
 					}
 				}
