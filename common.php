@@ -15,6 +15,7 @@
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 $versionnumber = "1.52+";
+$buildnumber="";
 $dbversionnumber = 114;
 
 
@@ -2413,7 +2414,17 @@ function doAdminFooter()
 
 function getAdminFooter($url, $explanation)
 {
-	global $versionnumber, $setfont, $imagefiles, $clang;
+	global $versionnumber, $buildnumber, $setfont, $imagefiles, $clang;
+
+	if ($buildnumber != "")
+	{
+		$buildtext="($buildnumber)";
+	}
+	else
+	{
+		$buildtext="";
+	}
+
 	$strHTMLFooter = "<div class='footer'>\n"
 	. "\t\t\t<div style='float:left;'><img alt='LimeSurvey - ".$clang->gT("Online Manual")."' title='LimeSurvey - ".$clang->gT("Online Manual")."' src='$imagefiles/help.gif' "
 	. "onclick=\"window.open('$url')\" onmouseover=\"document.body.style.cursor='pointer'\" "
@@ -2421,7 +2432,7 @@ function getAdminFooter($url, $explanation)
 	. "\t\t\t<div style='float:right;'><img alt='".$clang->gT("Support this project - Donate to ")."LimeSurvey' title='".$clang->gT("Support this project - Donate to ")."LimeSurvey!' src='$imagefiles/donate.png' "
 	. "onclick=\"window.open('http://sourceforge.net/project/project_donations.php?group_id=74605')\" onmouseover=\"document.body.style.cursor='pointer'\" "
 	. "onmouseout=\"document.body.style.cursor='auto'\" /></div>\n"
-	. "\t\t\t<div class='subtitle'><a class='subtitle' title='".$clang->gT("Visit our website!")."' href='http://www.limesurvey.org' target='_blank'>LimeSurvey</a><br />".$clang->gT('Version')." $versionnumber</div>"
+	. "\t\t\t<div class='subtitle'><a class='subtitle' title='".$clang->gT("Visit our website!")."' href='http://www.limesurvey.org' target='_blank'>LimeSurvey</a><br />".$clang->gT('Version')." $versionnumber $buildtext</div>"
 	. "</div></body>\n</html>";
 	return $strHTMLFooter;
 }
