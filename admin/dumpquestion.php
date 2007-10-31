@@ -88,7 +88,7 @@ $qquery = "SELECT * FROM {$dbprefix}questions WHERE qid=$qid";
 $qdump = BuildCSVFromQuery($qquery);
 
 //2: Answers table
-$aquery = "SELECT {$dbprefix}answers.* FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.qid=$qid";
+$aquery = "SELECT {$dbprefix}answers.* FROM {$dbprefix}answers WHERE {$dbprefix}answers.qid = $qid";
 $adump = BuildCSVFromQuery($aquery);
 
 //3: Labelsets Table
