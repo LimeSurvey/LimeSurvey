@@ -144,9 +144,11 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	{
 		$fnames[] = array("token", "token", $clang->gT("Token ID"));
 	}
-	$fnames[] = array("submitdate", "submitdate", $clang->gT("Date Submitted"));
 	if ($datestamp == "Y") //add datetime to list if survey is datestamped
 	{
+		// submitdate for not-datestamped surveys is always 1980/01/01
+		// so only display it when datestamped
+		$fnames[] = array("submitdate", "submitdate", $clang->gT("Date Submitted"));
 		$fnames[] = array("datestamp", "datestamp", $clang->gT("Date Stamp"));
 	}
 	if ($ipaddr == "Y") //add ipaddr to list if survey should save submitters IP address
@@ -332,9 +334,11 @@ elseif ($subaction == "all")
 	{
 		$fnames[] = array("token", $clang->gT("Token"), $clang->gT("Token ID"), "0");
 	}
-	$fnames[] = array("submitdate", "submitdate", $clang->gT("Date Submitted"), "0");
 	if ($datestamp == "Y") //Add datestamp
 	{
+		// submitdate for not-datestamped surveys is always 1980/01/01
+		// so only display it when datestamped
+		$fnames[] = array("submitdate", "submitdate", $clang->gT("Date Submitted"), "0");
 		$fnames[] = array("datestamp", "Datestamp", $clang->gT("Date Stamp"), "0");
 	}
 	if ($ipaddr == "Y") // Add IP Address
@@ -428,7 +432,7 @@ elseif ($subaction == "all")
 	if ($fncount < 10) {$tableheader .= "<table width='100%' border='0' cellpadding='0' cellspacing='1' style='border: 1px solid #555555' class='menu2columns'>\n";}
 	else {$fnwidth = (($fncount-1)*100); $tableheader .= "<table width='$fnwidth' border='0' cellpadding='1' cellspacing='1' style='border: 1px solid #555555'>\n";}
 	$tableheader .= "\t<tr valign='top'>\n"
-	. "\t\t<td width='$cellwidth'><strong>id</strong></td>\n";
+	. "\t\t<td  class='evenrow' width='$cellwidth'><strong>id</strong></td>\n";
 	foreach ($fnames as $fn)
 	{
 		if (!isset($currentgroup))  {$currentgroup = $fn[3]; $gbc = "oddrow";}
