@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿<?php
+﻿﻿﻿﻿﻿﻿<?php
 /*
 * LimeSurvey
 * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
@@ -2180,29 +2180,29 @@ function do_gender($ia)
 function do_array_5point($ia)
 {
 	global $dbprefix, $shownoanswer, $notanswered, $thissurvey, $clang;
-	$defaultvaluescrip = "";
+	$defaultvaluescript = "";
 	
 	$ansquery = "SELECT answer FROM {$dbprefix}answers WHERE qid=".$ia[0]." AND answer like '%|%'";
 	$ansresult = db_execute_assoc($ansquery);
     if ($ansresult->RecordCount()>0) {$right_exists=true;} else {$right_exists=false;} 
 	// $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
 
-	
-	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid='{$ia[0]}'  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
-	$ansresult = db_execute_assoc($ansquery);
-	$anscount = $ansresult->RecordCount();
-	$fn = 1;
-
-	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid='{$ia[0]}'  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
-	$ansresult = db_execute_assoc($ansquery);
-	$anscount = $ansresult->RecordCount();
-	$fn = 1;
 	$qidattributes=getQuestionAttributes($ia[0]);
 	if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1)) {
 		$answerwidth=$answerwidth['value'];
 	} else {
 		$answerwidth=20;
 	}
+
+	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+	} else {
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+	}
+	$ansresult = db_execute_assoc($ansquery);
+	$anscount = $ansresult->RecordCount();
+
+	$fn = 1;
 	$answer = "\t\t\t<table class='question'>\n"
 	. "\t\t\t\t<tr>\n"
 	. "\t\t\t\t\t<td width='$answerwidth%'></td>\n";
@@ -2303,16 +2303,23 @@ function do_array_10point($ia)
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]."  AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
-	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
-	$ansresult = db_execute_assoc($ansquery);
-	$anscount = $ansresult->RecordCount();
-	$fn = 1;
+
 	$qidattributes=getQuestionAttributes($ia[0]);
 	if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1)) {
 		$answerwidth=$answerwidth['value'];
 	} else {
 		$answerwidth=20;
 	}
+
+	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+	} else {
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+	}
+	$ansresult = db_execute_assoc($ansquery);
+	$anscount = $ansresult->RecordCount();
+
+	$fn = 1;
 	$answer = "\t\t\t<table class='question'>\n"
 	. "\t\t\t\t<tr>\n"
 	. "\t\t\t\t\t<td width='$answerwidth%'></td>\n";
@@ -2402,16 +2409,20 @@ function do_array_yesnouncertain($ia)
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
-	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
-	$ansresult = db_execute_assoc($ansquery);
-	$anscount = $ansresult->RecordCount();
-	$fn = 1;
 	$qidattributes=getQuestionAttributes($ia[0]);
 	if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1)) {
 		$answerwidth=$answerwidth['value'];
 	} else {
 		$answerwidth=20;
 	}
+    if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
+	    $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+	} else {
+	    $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+	}
+	$ansresult = db_execute_assoc($ansquery);
+	$anscount = $ansresult->RecordCount();
+	$fn = 1;
 	$answer = "\t\t\t<table class='question'>\n"
 	. "\t\t\t\t<tr>\n"
 	. "\t\t\t\t\t<td width='$answerwidth%'></td>\n"
@@ -2625,17 +2636,22 @@ function do_array_increasesamedecrease($ia)
 	$defaultvaluescript = "";
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);
-	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
-	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
-	$ansresult = db_execute_assoc($ansquery);
-	$anscount = $ansresult->RecordCount();
-	$fn = 1;
 	$qidattributes=getQuestionAttributes($ia[0]);
 	if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1)) {
 		$answerwidth=$answerwidth['value'];
 	} else {
 		$answerwidth=20;
 	}
+	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
+    if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
+        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+	} else {
+	    $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+	}
+	$ansresult = db_execute_assoc($ansquery);
+	$anscount = $ansresult->RecordCount();
+
+	$fn = 1;
 	$answer = "\t\t\t<table class='question'>\n"
 	. "\t\t\t\t<tr>\n"
 	. "\t\t\t\t\t<td width='$answerwidth%'></td>\n"
@@ -2761,8 +2777,11 @@ function do_array_flexible($ia)
 		$ansresult = db_execute_assoc($ansquery);
     	if ($ansresult->RecordCount()>0) {$right_exists=true;} else {$right_exists=false;} 
 		// $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
-
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'  ORDER BY sortorder, answer";
+        if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
+		    $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+	    } else {
+		    $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+	    }
 		$ansresult = db_execute_assoc($ansquery);
 		$anscount = $ansresult->RecordCount();
 		$fn=1;
@@ -2896,6 +2915,7 @@ function do_array_flexiblecolumns($ia)
 	global $shownoanswer;
 	global $notanswered, $clang;
 	$defaultvaluescript = "";
+	$qidattributes=getQuestionAttributes($ia[0]);
 	$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other']; $lid = $qrow['lid'];}
@@ -2914,7 +2934,11 @@ function do_array_flexiblecolumns($ia)
 			$labelans[]=$clang->gT("No answer");
 			$labels[]=array("answer"=>$clang->gT("No answer"), "code"=>"");
 		}
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+        if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
+		    $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+	    } else {
+		    $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+	    }
 		$ansresult = db_execute_assoc($ansquery);
 		$anscount = $ansresult->RecordCount();
 		$fn=1;

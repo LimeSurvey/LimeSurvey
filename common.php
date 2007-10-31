@@ -2293,7 +2293,7 @@ function questionAttributes()
     "types"=>"STUNQK",
     "help"=>"Maximum Characters Allowed");
     $qattributes[]=array("name"=>"random_order",
-    "types"=>"!LMOPQKRWZ",
+    "types"=>"!LMOPQKRWZFHABCE",
     "help"=>"Present Answers in random order");
     $qattributes[]=array("name"=>"text_input_width",
     "types"=>"NSTU",
