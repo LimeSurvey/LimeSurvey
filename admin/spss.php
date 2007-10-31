@@ -16,11 +16,14 @@ error_reporting(E_ALL ^ E_NOTICE); // No Notices!
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
-header("Content-Type: application/octetstream");
-header("Content-Disposition: ".
-(strpos($_SERVER["HTTP_USER_AGENT"],"MSIE 5.5")?""
-:"attachment; ").
-"filename=survey_".$surveyid.".sps");
+mb_http_output("UTF-8");
+
+header("Content-Type: application/download; charset=utf-8");
+header("Content-Disposition: attachment; filename=survey_".$surveyid.".sps");
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+header("Pragma: no-cache");
 
 // Get Base Language:
 
@@ -135,15 +138,37 @@ for ($i=0; $i < $num_results; $i++) {
 				{
 					$teststring .= "2";
 				}
-				elseif ($val_row[$fieldname] != "-oth-")
+				elseif ($val_row[$fieldname] == "I")
+				{
+					$teststring .= "1";
+				}
+				elseif ($val_row[$fieldname] == "S")
+				{
+					$teststring .= "2";
+				}
+				elseif ($val_row[$fieldname] == "D")
+				{
+					$teststring .= "3";
+				}
+				elseif ($val_row[$fieldname] == "U")
+				{
+					$teststring .= "3";
+				}
+				else
 				{
 					$teststring .= $val_row[$fieldname];
 				}
 				if ($val_size < strlen($val_row[$fieldname])) $val_size = strlen($val_row[$fieldname]);
 			}
+			$teststring = strip_tags_full($teststring);
+			$teststring = mb_ereg_replace(" ", '', $teststring);
+			print '"'.$teststring.'"';
 			if (is_numeric($teststring))
 			{
 				$fieldtype = "N".$val_size;
+			} elseif ($teststring == "")
+			{
+				$fieldtype = "N1";
 			} elseif ($val_size < 9 && !is_numeric($teststring))
 			{
 				$fieldtype = "A8";
@@ -169,7 +194,7 @@ for ($i=0; $i < $num_results; $i++) {
 		$fgid=$fielddata['gid'];
 		$code=$fielddata['aid'];
 	}
-	$tempArray=array($fieldno++ =>array("id"=>"d".$fieldno,"name"=>substr($fieldname, 0, 8),"qid"=>$qid, "code"=>$code, "type"=>"$fieldtype", "ftype"=>"$ftype","sql_name"=>$row["Field"],"size"=>$val_size));
+	$tempArray=array($fieldno++ =>array("id"=>"d".$fieldno,"name"=>mb_substr($fieldname, 0, 8),"qid"=>$qid, "code"=>$code, "type"=>"$fieldtype", "ftype"=>"$ftype","sql_name"=>$row["Field"],"size"=>$val_size));
 	$fields = $fields + $tempArray;
 }
 
@@ -264,7 +289,13 @@ for ($i=0; $i < $num_results; $i++) {
 		if ($fields[$fieldno]["type"]=="DATETIME20.0"){
 			#convert mysql  datestamp (yyyy-mm-dd hh:mm:ss) to SPSS datetime (dd-mmm-yyyy hh:mm:ss) format
 			list( $year, $month, $day, $hour, $minute, $second ) = split( '([^0-9])', $row[$fieldno] );
-			echo "'".date("d-m-Y H:i:s", mktime( $hour, $minute, $second, $month, $day, $year ) )."' ";
+			if ($year != "" && (int)$year >= 1970) 
+			{
+				echo "'".date("d-m-Y H:i:s", mktime( $hour, $minute, $second, $month, $day, $year ) )."' ";
+			} else 
+			{
+				echo "''";
+			}
 		} else if ($fields[$fieldno]["ftype"] == "Y") 
 		{
 			if ($row[$fieldno] == "Y")
@@ -285,11 +316,35 @@ for ($i=0; $i < $num_results; $i++) {
 			} else {
 				echo "'0' ";
 			}
+		} else if ($fields[$fieldno]["ftype"] == "C") 
+		{
+			if ($row[$fieldno] == "Y")
+			{
+				echo "'1' ";
+			} else if ($row[$fieldno] == "N"){
+				echo "'2' ";
+			} else if ($row[$fieldno] == "U"){
+				echo "'3' ";
+			} else {
+				echo "'0' ";
+			}
+		} else if ($fields[$fieldno]["ftype"] == "E") 
+		{
+			if ($row[$fieldno] == "I")
+			{
+				echo "'1' ";
+			} else if ($row[$fieldno] == "S"){
+				echo "'2' ";
+			} else if ($row[$fieldno] == "D"){
+				echo "'3' ";
+			} else {
+				echo "'0' ";
+			}
 		} else if ($fields[$fieldno]["ftype"] == "M") 
 		{
 			if ($fields[$fieldno]["code"] == "other")
 			{
-				$strTmp=substr(strip_tags_full($row[$fieldno]), 0, 59);
+				$strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, 255);
 				echo "'$strTmp' ";
 			} else if ($row[$fieldno] == "Y")
 			{
@@ -302,7 +357,7 @@ for ($i=0; $i < $num_results; $i++) {
 		{
 			if ($fields[$fieldno]["code"] == "other" || $fields[$fieldno]["code"] == "comment" || $fields[$fieldno]["code"] == "othercomment")
 			{
-				$strTmp=substr(strip_tags_full($row[$fieldno]), 0, 59);
+				$strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, 255);
 				echo "'$strTmp' ";
 			} else if ($row[$fieldno] == "Y")
 			{
@@ -312,9 +367,14 @@ for ($i=0; $i < $num_results; $i++) {
 			   echo "'0' ";
 			}
 		} else {
-			$strTmp=substr(strip_tags_full($row[$fieldno]), 0, 59);
+			$strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, 255);
 			//if ($strTmp=='') $strTmp='.';
-			echo "'$strTmp' ";
+			if (mb_ereg_replace(" ", '', $strTmp) == ""){
+				echo "'0'";
+			}
+			else {
+				echo "'$strTmp' ";
+			}
 		}
 		$fieldno++;
 		if ($fieldno % 20 == 0) echo "\n";
@@ -333,7 +393,7 @@ foreach ($fields as $field){
 	$field["id"]=="email" OR
 	$field["id"]=="attr1" OR
 	$field["id"]=="attr2"){
-		echo "VARIABLE LABELS ".$field["id"]." '".substr(strip_tags_full($field["name"]), 0, 59)."'.\n";//minni"<br />";
+		echo "VARIABLE LABELS ".$field["id"]." '".mb_substr(strip_tags_full($field["name"]), 0, 255)."'.\n";//minni"<br />";
 	} elseif ($field["name"]=="id") {
 		echo "VARIABLE LABELS ".$field["id"]." '".$clang->gT("Record ID")."'.\n";//minni"<br />";
 	} elseif ($field["name"]=="submitda") {
@@ -372,16 +432,16 @@ foreach ($fields as $field){
 				# Build array that has to be returned
 				for ($i=0; $i < $num_results; $i++) {
 					$row = $result->FetchRow();
-					echo "VARIABLE LABELS ".$field["id"]." '".substr(strip_tags_full($question_title), 0, 59)." - ".substr(strip_tags_full($row["answer"]), 0, 59)."'.\n";//minni"<br />";
+					echo "VARIABLE LABELS ".$field["id"]." '".mb_substr(strip_tags_full($question_title), 0, 255)." - ".mb_substr(strip_tags_full($row["answer"]), 0, 59)."'.\n";//minni"<br />";
 				}
 			}
-			if (substr($field['sql_name'], -5)=='other') {
+			if (mb_substr($field['sql_name'], -5)=='other') {
 				echo "VARIABLE LABELS ".$field["id"]." '".
-				substr(strip_tags_full($question_text), 0, 59)." - OTHER'.\n";
+				mb_substr(strip_tags_full($question_text), 0, 247)." - OTHER'.\n";
 			}
-			if (substr($field['sql_name'], -7)=='comment') {
+			if (mb_substr($field['sql_name'], -7)=='comment') {
 				echo "VARIABLE LABELS ".$field["id"]." '".
-				substr(strip_tags_full($question_text), 0, 59)." - COMMENT'.\n";
+				mb_substr(strip_tags_full($question_text), 0, 245)." - COMMENT'.\n";
 			}
 		}else{
 			$test=explode ("X", $field["name"]);
@@ -391,7 +451,7 @@ foreach ($fields as $field){
 			$result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());
 			$row = $result->FetchRow();
 			echo "VARIABLE LABELS ".$field["id"]." '".
-			substr(strip_tags_full($row["question"]), 0, 59)."'.\n";
+			mb_substr(strip_tags_full($row["question"]), 0, 255)."'.\n";
 		}
 	}
 }
@@ -403,7 +463,7 @@ foreach ($fields as $field)
 {
 	if ($field["qid"]!=0)
 	{
-		if ($field['ftype'] != "T" && $field['ftype'] != "S" && $field['ftype'] != "Q" && $field['ftype'] != "U" && $field['ftype'] != "A" && $field['ftype'] != "B" && $field['ftype'] != "F" && $field['ftype'] != "M" && $field['ftype'] != "P")
+		if ($field['ftype'] != "T" && $field['ftype'] != "S" && $field['ftype'] != "Q" && $field['ftype'] != "U" && $field['ftype'] != "A" && $field['ftype'] != "B" && $field['ftype'] != "F" && $field['ftype'] != "M" && $field['ftype'] != "P" && $field['ftype'] != "C" && $field['ftype'] != "E")
 		{
 			$query = "SELECT {$dbprefix}answers.code, {$dbprefix}answers.answer, 
 			{$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE 
@@ -422,10 +482,10 @@ foreach ($fields as $field)
 					if ($displayvaluelabel == 0) echo "VALUE LABELS ".$field["id"]."\n";
 					if ($displayvaluelabel == 0) $displayvaluelabel = 1;
 					if ($i == ($num_results-1))
-					{ //substr($fieldname, 0, 8)
-						echo $row["code"]." \"".strip_tags_full(substr($row["answer"],0,59))."\".\n"; // put .
+					{ //mb_substr($fieldname, 0, 8)
+						echo $row["code"]." \"".strip_tags_full(mb_substr($row["answer"],0,255))."\".\n"; // put .
 					} else {
-						echo $row["code"]." \"".strip_tags_full(substr($row["answer"],0,59))."\"\n";
+						echo $row["code"]." \"".strip_tags_full(mb_substr($row["answer"],0,255))."\"\n";
 					}
 				}
 			}
@@ -448,9 +508,9 @@ foreach ($fields as $field)
 					if ($displayvaluelabel == 0) $displayvaluelabel = 1;
 					if ($i == ($num_results-1))
 					{
-						echo $row["code"]." \"".strip_tags_full(substr($row["title"],0,59))."\".\n"; // put . at end
+						echo $row["code"]." \"".strip_tags_full(mb_substr($row["title"],0,255))."\".\n"; // put . at end
 					} else {
-						echo $row["code"]." \"".strip_tags_full(substr($row["title"],0,59))."\"\n";
+						echo $row["code"]." \"".strip_tags_full(mb_substr($row["title"],0,255))."\"\n";
 
 					}
 				}
@@ -480,44 +540,35 @@ foreach ($fields as $field)
 			echo "1 \"".$clang->gT("Yes")."\"\n";
 			echo "2 \"".$clang->gT("No")."\".\n";
 		}
+		if ($field['ftype'] == "C" && $field['size'] > 0)
+		{
+			echo "VALUE LABELS ".$field["id"]."\n";
+			echo "1 \"".$clang->gT("Yes")."\"\n";
+			echo "2 \"".$clang->gT("No")."\".\n";
+			echo "3 \"".$clang->gT("Uncertain")."\".\n";
+		}
+		if ($field['ftype'] == "E" && $field['size'] > 0)
+		{
+			echo "VALUE LABELS ".$field["id"]."\n";
+			echo "1 \"".$clang->gT("Increase")."\"\n";
+			echo "2 \"".$clang->gT("Same")."\".\n";
+			echo "3 \"".$clang->gT("Decrease")."\".\n";
+		}
 	}
 }
-exit;
+
 function strip_tags_full($string) {
-    $string=strip_tags($string);
-
-    $string=str_replace("'", '?', $string);
-    $string=str_replace('&nbsp;', ' ', $string);
-    $string=str_replace('&agrave;', '?', $string);
-    $string=str_replace('&egrave;', '?', $string);
-    $string=str_replace('&igrave;', '?', $string);
-    $string=str_replace('&ograve;', '?', $string);
-    $string=str_replace('&ugrave;', '?', $string);
-    $string=str_replace('&eacute;', '?', $string);
-    $string=str_replace('&Agrave;', '?', $string);
-    $string=str_replace('&Egrave;', '?', $string);
-    $string=str_replace('&Igrave;', '?', $string);
-    $string=str_replace('&Ograve;', '?', $string);
-    $string=str_replace('&Ugrave;', '?', $string);
-    $string=str_replace('&Eacute;', '?', $string);
-
-    $string=str_replace('??', '?', $string);
-    $string=str_replace('??', '?', $string);
-    $string=str_replace('?| ', '?', $string);
-    $string=str_replace('??', '?', $string);
-    $string=str_replace('??', '?', $string);
-    $string=str_replace('??', '?', $string);
-    $string=str_replace('??', '?', $string);
-    $string=str_replace('?~H', '?', $string);
-
-    $string=str_replace(chr(13), "", $string);
-    $string=str_replace(chr(10), " ", $string);
-
-    $string=trim($string);
-    if ($string == '-oth-') $string='';
+    mb_regex_encoding('utf-8');
+    $pattern = array('&nbsp;', '&agrave;', '&nbsp;', '&agrave;', '&egrave;', '&igrave;', '&ograve;', '&ugrave;', '&eacute;',
+    				 '&Agrave;', '&Egrave;', '&Igrave;', '&Ograve;', '&Ugrave;', '&Eacute;', '\r', '\n', '-oth-');
+    for ($i=0; $i<sizeof($pattern); $i++) {
+        $string = mb_ereg_replace($pattern[$i], '', $string);
+    }
+    
+    $string = mb_ereg_replace("'", "\'", $string);
 
     return $string;
 }
 
-
+exit;
 ?>
