@@ -15,17 +15,28 @@ if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 include_once("login_check.php");  //Login Check dies also if the script is started directly
 require_once($homedir."/classes/core/sha256.php");
 
+if (isset($_POST['user'])) {$postuser=sanitize_user($_POST['user']);}
+if (isset($_POST['email'])) {$postemail=sanitize_email($_POST['email']);}
+if (isset($_POST['loginlang'])) {$postloginlang=sanitize_languagecode($_POST['loginlang']);}
+if (isset($_POST['new_user'])) {$postnew_user=sanitize_user($_POST['new_user']);}
+if (isset($_POST['new_email'])) {$postnew_email=sanitize_email($_POST['new_email']);}
+if (isset($_POST['new_full_name'])) {$postnew_full_name=sanitize_userfullname($_POST['new_full_name']);}
+if (isset($_POST['uid'])) {$postuid=sanitize_int($_POST['uid']);}
+if (isset($_POST['full_name'])) {$postfull_name=sanitize_userfullname($_POST['full_name']);}
+
+
+
 if (!isset($_SESSION['loginID']))
 {
 	if($action == "forgotpass")
 	{
 		$loginsummary = "<br /><strong>".$clang->gT("Forgot Password")."</strong><br />\n";
 
-		if (isset($_POST['user']) && isset($_POST['email']))
+		if (isset($postuser) && isset($postemail))
 		{
 			include("database.php");
-			$emailaddr = sanitize_email($_POST['email']);
-			$query = "SELECT users_name, password, uid FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($_POST['user'])." AND email=".$connect->qstr($emailaddr);
+			$emailaddr = $postemail;
+			$query = "SELECT users_name, password, uid FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser)." AND email=".$connect->qstr($emailaddr);
 			$result = db_select_limit_assoc($query, 1) or die ($query."<br />".$connect->ErrorMsg());
 
 			if ($result->RecordCount() < 1)
@@ -70,10 +81,10 @@ if (!isset($_SESSION['loginID']))
 	{
 		$loginsummary = "<br /><strong>".$clang->gT("Logging in...")."</strong><br />\n";
 
-		if (isset($_POST['user']) && isset($_POST['password']))
+		if (isset($postuser) && isset($_POST['password']))
 		{
 			include("database.php");
-			$query = "SELECT uid, users_name, password, parent_id, email, lang FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($_POST['user']);
+			$query = "SELECT uid, users_name, password, parent_id, email, lang FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser);
 			$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 			$result = $connect->SelectLimit($query, 1) or die ($query."<br />".$connect->ErrorMsg());
 			if ($result->RecordCount() < 1)
@@ -100,9 +111,9 @@ if (!isset($_SESSION['loginID']))
 
 					$_SESSION['loginID'] = intval($fields['uid']);
 					$_SESSION['user'] = $fields['users_name'];
-					if (isset($_POST['loginlang']) && $_POST['loginlang'])
+					if (isset($postloginlang) && $postloginlang)
 					{
-						$_SESSION['adminlang'] = sanitize_languagecode($_POST['loginlang']);
+						$_SESSION['adminlang'] = $postloginlang;
 						$clang = new limesurvey_lang($_SESSION['adminlang']);
 						$uquery = "UPDATE {$dbprefix}users "
 						. "SET lang='{$_SESSION['adminlang']}' "
@@ -152,12 +163,12 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 {
 	$addsummary = "<br /><strong>".$clang->gT("Add User")."</strong><br />\n";
 
-	$new_user = html_entity_decode($_POST['new_user']);
-	$new_email = html_entity_decode($_POST['new_email']);
-	$new_full_name = html_entity_decode($_POST['new_full_name']);
-	$new_user = $_POST['new_user']; // TODO: check if html decode should be used here
-	$new_email = $_POST['new_email']; // TODO: check if html decode should be used here
-	$new_full_name = html_entity_decode($_POST['new_full_name']);
+	$new_user = html_entity_decode($postnew_user);
+	$new_email = html_entity_decode($postnew_email);
+	$new_full_name = html_entity_decode($postnew_full_name);
+	$new_user = $postnew_user; // TODO: check if html decode should be used here
+	$new_email = $postnew_email; // TODO: check if html decode should be used here
+	$new_full_name = html_entity_decode($postnew_full_name);
 	$valid_email = true;
 
 	if(!validate_email($new_email))
@@ -229,7 +240,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 	$addsummary .= "<br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 }
 
-elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($_POST['uid'] == $_SESSION['loginID'])))
+elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($postuid == $_SESSION['loginID'])))
 {
 	$addsummary = "<br /><strong>".$clang->gT("Deleting User")."</strong><br />\n";
 
@@ -237,19 +248,19 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($_POST[
 	$adminresult = db_select_limit_assoc($adminquery, 1);
 	$row=$adminresult->FetchRow();
 
-	if($row['uid'] == $_POST['uid'])	// it's the superadmin !!!
+	if($row['uid'] == $postuid)	// it's the superadmin !!!
 	{
 		$addsummary .= "<br />".$clang->gT("Admin cannot be deleted!")."<br />\n";
 	}
 	else
 	{
-		if (isset($_POST['uid']))
+		if (isset($postuid))
 		{
 			// is the user allowed to delete?
 			$userlist = getuserlist();
 			foreach ($userlist as $usr)
 			{
-				if ($usr['uid'] == $_POST['uid'])
+				if ($usr['uid'] == $postuid)
 				{
 					$isallowed = true;
 					continue;
@@ -261,27 +272,27 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($_POST[
 				// We are about to kill an uid with potential childs
 				// Let's re-assign them their grand-father as their
 				// new parentid
-				$squery = "SELECT parent_id FROM {$dbprefix}users WHERE uid=".db_quote($_POST['uid']);
+				$squery = "SELECT parent_id FROM {$dbprefix}users WHERE uid=".db_quote($postuid);
 				$sresult = $connect->Execute($squery);
 				$fields = $sresult->FetchRow($sresult);
 
 				if (isset($fields[0]))
 				{
-					$uquery = "UPDATE ".db_table_name('users')." SET parent_id={$fields[0]} WHERE parent_id=".db_quote($_POST['uid']);	//		added by Dennis
+					$uquery = "UPDATE ".db_table_name('users')." SET parent_id={$fields[0]} WHERE parent_id=".db_quote($postuid);	//		added by Dennis
 					$uresult = $connect->Execute($uquery);
 				}
 
 				//DELETE USER FROM TABLE
-				$dquery="DELETE FROM {$dbprefix}users WHERE uid=".db_quote($_POST['uid']);	//	added by Dennis
+				$dquery="DELETE FROM {$dbprefix}users WHERE uid=".db_quote($postuid);	//	added by Dennis
 				$dresult=$connect->Execute($dquery);
 
 				// Delete user rights
-				$dquery="DELETE FROM {$dbprefix}surveys_rights WHERE uid=".db_quote($_POST['uid']);
+				$dquery="DELETE FROM {$dbprefix}surveys_rights WHERE uid=".db_quote($postuid);
 				$dresult=$connect->Execute($dquery);
 
-				if($_POST['uid'] == $_SESSION['loginID']) killSession();	// user deleted himself
+				if($postuid == $_SESSION['loginID']) killSession();	// user deleted himself
 
-				$addsummary .= "<br />".$clang->gT("Username").": {$_POST['user']}<br />\n";
+				$addsummary .= "<br />".$clang->gT("Username").": {$postuser}<br />\n";
 			}
 			else
 			{
@@ -305,7 +316,7 @@ elseif ($action == "moduser")
 	$userlist = getuserlist();
 	foreach ($userlist as $usr)
 	{
-		if ($usr['uid'] == $_POST['uid'])
+		if ($usr['uid'] == $postuid)
 		{
 				$squery = "SELECT create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label FROM {$dbprefix}users WHERE uid={$usr['parent_id']}";	//		added by Dennis
 				$sresult = $connect->Execute($squery);
@@ -314,12 +325,12 @@ elseif ($action == "moduser")
 		}
 	}
 	
-	if($_POST['uid'] == $_SESSION['loginID'] || $_SESSION['loginID'] == 1 || $parent['create_user'] == 1)
+	if($postuid == $_SESSION['loginID'] || $_SESSION['loginID'] == 1 || $parent['create_user'] == 1)
 	{
-		$users_name = html_entity_decode($_POST['user']);
-		$email = html_entity_decode($_POST['email']);
+		$users_name = html_entity_decode($postuser);
+		$email = html_entity_decode($postemail);
 		$pass = html_entity_decode($_POST['pass']);
-		$full_name = html_entity_decode($_POST['full_name']);
+		$full_name = html_entity_decode($postfull_name);
 		$valid_email = true;
 
 		if(!validate_email($email))
@@ -333,9 +344,9 @@ elseif ($action == "moduser")
 			$failed = false;
 			if(empty($pass))
 			{
-				$uquery = "UPDATE ".db_table_name('users')." SET email='".db_quote($email)."', full_name='".db_quote($full_name)."' WHERE uid=".db_quote($_POST['uid']);
+				$uquery = "UPDATE ".db_table_name('users')." SET email='".db_quote($email)."', full_name='".db_quote($full_name)."' WHERE uid=".db_quote($postuid);
 			} else {
-				$uquery = "UPDATE ".db_table_name('users')." SET email='".db_quote($email)."', full_name='".db_quote($full_name)."', password='".SHA256::hash($pass)."' WHERE uid=".db_quote($_POST['uid']);
+				$uquery = "UPDATE ".db_table_name('users')." SET email='".db_quote($email)."', full_name='".db_quote($full_name)."', password='".SHA256::hash($pass)."' WHERE uid=".db_quote($postuid);
 			}
 			
 			$uresult = $connect->Execute($uquery);
@@ -358,7 +369,7 @@ elseif ($action == "moduser")
 			$addsummary .= "<br /><br /><form method='post' action='$scriptname'>"
 			."<input type='submit' value='".$clang->gT("Back")."'>"
 			."<input type='hidden' name='action' value='modifyuser'>"
-			."<input type='hidden' name='uid' value='{$_POST['uid']}'>"
+			."<input type='hidden' name='uid' value='{$postuid}'>"
 			."</form>";
 		}
 		else
@@ -376,12 +387,12 @@ elseif ($action == "userrights")
 {
 	$addsummary = "<br /><strong>".$clang->gT("Set User Rights")."</strong><br />\n";
 
-	if($_POST['uid'] != $_SESSION['loginID'])
+	if($postuid != $_SESSION['loginID'])
 	{
 		$userlist = getuserlist();
 		foreach ($userlist as $usr)
 		{
-			if ($usr['uid'] == $_POST['uid'])
+			if ($usr['uid'] == $postuid)
 			{
 				$isallowed = true;
 				continue;
@@ -400,7 +411,7 @@ elseif ($action == "userrights")
 			if(isset($_POST['manage_template']))$rights['manage_template']=1;	else $rights['manage_template']=0;
 			if(isset($_POST['manage_label']))$rights['manage_label']=1;			else $rights['manage_label']=0;
 
-			setuserrights($_POST['uid'], $rights);
+			setuserrights($postuid, $rights);
 			$addsummary .= "<br />".$clang->gT("Update user rights successful.")."<br />\n";
 			$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
