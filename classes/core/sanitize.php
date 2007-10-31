@@ -104,11 +104,14 @@ function my_utf8_decode($string)
 // paranoid sanitization -- only let the alphanumeric set through
 function sanitize_paranoid_string($string, $min='', $max='')
 {
-	$string = preg_replace("/[^_a-zA-Z0-9]/", "", $string);
+   if (isset($string))
+   {
+   	$string = preg_replace("/[^_.a-zA-Z0-9]/", "", $string);
 	$len = strlen($string);
 	if((($min != '') && ($len < $min)) || (($max != '') && ($len > $max)))
 	return FALSE;
 	return $string;
+   }
 }
 
 function sanitize_email($email) {
@@ -118,6 +121,8 @@ function sanitize_email($email) {
 // sanitize a string in prep for passing a single argument to system() (or similar)
 function sanitize_system_string($string, $min='', $max='')
 {
+   if (isset($string))
+   {
 	$pattern = '/(;|\||`|>|<|&|^|"|'."\n|\r|'".'|{|}|[|]|\)|\()/i'; // no piping, passing possible environment variables ($),
 	// seperate commands, nested execution, file redirection,
 	// background processing, special commands (backspace, etc.), quotes
@@ -125,9 +130,9 @@ function sanitize_system_string($string, $min='', $max='')
 	$string = preg_replace($pattern, '', $string);
 	$string = '"'.preg_replace('/\$/', '\\\$', $string).'"'; //make sure this is only interpretted as ONE argument
 	$len = strlen($string);
-	if((($min != '') && ($len < $min)) || (($max != '') && ($len > $max)))
-	return FALSE;
+	if((($min != '') && ($len < $min)) || (($max != '') && ($len > $max)))	return FALSE;
 	return $string;
+   }
 }
 
 // sanitize a string for SQL input (simple slash out quotes and slashes)
