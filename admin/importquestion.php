@@ -45,12 +45,21 @@ if (!$_POST['sid'])
     unlink($the_full_file_path);
     return;
 }
+else
+{
+	$postsid=sanitize_int($_POST['sid']);
+}
+
 if (!$_POST['gid'])
 {
     $importquestion .= $clang->gT("No GID (Group) has been provided. Cannot import question")."<br /><br />\n"
     ."</td></tr></table>\n";
     unlink($the_full_file_path);
     return;
+}
+else
+{
+	$postgid=sanitize_int($_POST['gid']);
 }
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
@@ -220,7 +229,7 @@ if (isset($question_attributesarray)) {$countquestion_attributes = count($questi
 
 
 // Let's check that imported objects support at least the survey's baselang
-$langcode = GetBaseLanguageFromSurveyID($_POST['sid']);
+$langcode = GetBaseLanguageFromSurveyID($postsid);
 if ($countquestions > 0)
 {
 	$questionfieldnames = convertCSVRowToArray($questionarray[0],',','"');
@@ -276,8 +285,8 @@ if ($countlabelsets > 0)
 // then it's labels do support it as well
 
 // GET SURVEY AND GROUP DETAILS
-$surveyid=$_POST['sid'];
-$gid=$_POST['gid'];
+$surveyid=$postsid;
+$gid=$postgid;
 $newsid=$surveyid;
 $newgid=$gid;
 
@@ -298,7 +307,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
         unset($labelsetrowdata['lid']);
         $newvalues=array_values($labelsetrowdata);
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-        $lsainsert = "insert INTO {$dbprefix}labelsets (".implode(',',array_keys($labelsetrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
+        $lsainsert = "INSERT INTO {$dbprefix}labelsets (".implode(',',array_keys($labelsetrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
         $lsiresult=$connect->Execute($lsainsert);
         
         // Get the new insert id for the labels inside this labelset
@@ -318,7 +327,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
                     $labelrowdata['lid']=$newlid;
                     $newvalues=array_values($labelrowdata);
                     $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-                    $lainsert = "insert INTO {$dbprefix}labels (".implode(',',array_keys($labelrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
+                    $lainsert = "INSERT INTO {$dbprefix}labels (".implode(',',array_keys($labelrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
                     $liresult=$connect->Execute($lainsert);
                 }
             }
@@ -387,7 +396,7 @@ if (isset($questionarray) && $questionarray) {
 		$questionrowdata["sid"] = $newsid;
 		$questionrowdata["gid"] = $newgid;
 
-        $qmaxqo = "select max(question_order) as maxqo from ".db_table_name('questions')." where sid=$newsid and gid=$newgid";
+        $qmaxqo = "SELECT MAX(question_order) AS maxqo FROM ".db_table_name('questions')." WHERE sid=$newsid AND gid=$newgid";
 		$qres = db_execute_assoc($qmaxqo) or die ("<strong>".$clang->gT("Error")."</strong> Failed to find out maximum question order value<br />\n$qmaxqo<br />\n".$connect->ErrorMsg()."</body>\n</html>");
         $qrow=$qres->FetchRow();
 		$questionrowdata["question_order"]= $qrow['maxqo']+1; // echo $questionrowdata["question_order"];
@@ -408,7 +417,7 @@ if (isset($questionarray) && $questionarray) {
         $questionrowdata=array_map('convertCsvreturn2return', $questionrowdata);
         $newvalues=array_values($questionrowdata);
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-        $qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
+        $qinsert = "INSERT INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
 		$qres = $connect->Execute($qinsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
 
         // set the newqid only if is not set
@@ -427,7 +436,7 @@ if (isset($questionarray) && $questionarray) {
             $answerrowdata["qid"]=$newqid;
                     $newvalues=array_values($answerrowdata);
                     $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-                    $ainsert = "insert INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
+                    $ainsert = "INSERT INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
             $ares = $connect->Execute($ainsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
         }
     }
@@ -444,7 +453,7 @@ if (isset($questionarray) && $questionarray) {
 
             $newvalues=array_values($qarowdata);
             $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-            $qainsert = "insert INTO {$dbprefix}question_attributes (".implode(',',array_keys($qarowdata)).") VALUES (".implode(',',$newvalues).")"; 
+            $qainsert = "INSERT INTO {$dbprefix}question_attributes (".implode(',',array_keys($qarowdata)).") VALUES (".implode(',',$newvalues).")"; 
             $result=$connect->Execute($qainsert) or die ("Couldn't insert question_attribute<br />$qainsert<br />".$connect->ErrorMsg());
         }
     }
