@@ -437,10 +437,21 @@ function updateset($lid)
 {
 	global $dbprefix, $connect, $labelsoutput, $databasetype; 
 	// Get added and deleted languagesid arrays
-	$newlanidarray=explode(" ",trim($_POST['languageids']));
 
-	$_POST['languageids'] = db_quoteall($_POST['languageids'],true);
-	$_POST['label_name'] = db_quoteall($_POST['label_name'],true);
+	if (isset($_POST['languageids']))
+	{
+		$postlanguageids=sanitize_languagecodeS($_POST['languageids']);
+	}
+
+	if (isset($_POST['label_name']))
+	{
+		$postlabel_name=sanitize_labelname($_POST['label_name']);
+	}
+
+	$newlanidarray=explode(" ",trim($postlanguageids));
+
+	$postlanguageids = db_quoteall($postlanguageids,true);
+	$postlabel_name = db_quoteall($postlabel_name,true);
 	$oldlangidsarray=array();
 	$query = "SELECT languages FROM ".db_table_name('labelsets')." WHERE lid=".$lid;
 	$result=db_execute_assoc($query);
@@ -498,7 +509,7 @@ function updateset($lid)
 	}
 
 	// Update the labelset itself
-	$query = "UPDATE ".db_table_name('labelsets')." SET label_name={$_POST['label_name']}, languages={$_POST['languageids']} WHERE lid=$lid";
+	$query = "UPDATE ".db_table_name('labelsets')." SET label_name={$postlabel_name}, languages={$postlanguageids} WHERE lid=$lid";
 	if (!$result = $connect->Execute($query))
 	{
 		$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Update of Label Set failed","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
@@ -536,10 +547,21 @@ function insertlabelset()
 {
 	global $dbprefix, $connect, $clang, $labelsoutput;
 //	$labelsoutput.= $_POST['languageids'];  For debug purposes
-	$_POST['label_name'] = db_quoteall($_POST['label_name'],true);
-	$_POST['languageids'] = db_quoteall($_POST['languageids'],true);
 
-	$query = "INSERT INTO ".db_table_name('labelsets')." (label_name,languages) VALUES ({$_POST['label_name']},{$_POST['languageids']})";
+	if (isset($_POST['languageids']))
+	{
+		$postlanguageids=sanitize_languagecodeS($_POST['languageids']);
+	}
+
+	if (isset($_POST['label_name']))
+	{
+		$postlabel_name=sanitize_labelname($_POST['label_name']);
+	}
+
+	$postlabel_name = db_quoteall($postlabel_name,true);
+	$postlanguageids = db_quoteall($postlanguageids,true);
+
+	$query = "INSERT INTO ".db_table_name('labelsets')." (label_name,languages) VALUES ({$postlabel_name},{$postlanguageids})";
 	if (!$result = $connect->Execute($query))
 	{
 		$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Insert of Label Set failed","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
