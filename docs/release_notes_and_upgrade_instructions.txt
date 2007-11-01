@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.52!
+Welcome to LimeSurvey v1.53!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -49,6 +49,72 @@ HOW TO UPGRADE from earlier versions from LimeSurvey 1.45 or later
 
 
 Thank you to everyone who helped with this new release!
+
+
+Changes from 1.52 to 1.53 - Release Date: 2007/10/01
+
+New languages:
+Czech translation by Alice Cechová and Michal Sládek.
+Mexican Spanish Dialect by Francisco Bricio (http://www.gestionautomotriz.com)
+Basque translation kindly provided by Juan Ezeiza (http://www.axular.net)
+Albanian translation by Maroš Kollár (maros -at- zsi -dot- at)
+Thai translation by Worawutha Nichaowna
+Taiwanese Chinese Traditional translation by Finjon Kiang (kiange -at- gmail -dot- com)
+
+Updated languages:
+Updated Italian translation by Mario Marani
+Updated Chinese Traditional (Hong Kong) translation by Mark Yeung
+Updated French translation by Seb (b00z00)
+Updated Hungarian translation by Daniel Fuleki (daniel - dot - fuleki   -at - gmail d o t com)
+Updated Finnish translation kindly provided by Jani Peltola <j_peltol -at- hotmail-.-com>
+Updated Danish translation by Stefan Grandholm (stefangranholm at gmail dot com)
+Updated Portuguese Brazilian translation by Josè Luciano Calazans Junior (luciano dot calazans at gmail dot com)
+Updated Russian translation by Vladimir Kolundin (kolundin at gmail dot com)
+Updated Spanish translation by Jochen Kempf (jochenkempf at gmail dot com)
+Updates Danish translation by Mikkel Skovgaard Sørensen (mss at stofa dot dk)
+
+
+
+Bug Fixes:
+[Security] Lots and lots of security fixes to raise internal security
+[Survey at Runtime] -oth value not saved in conditional radio list question (lemeur)
+[Tokens] A typo in register.php (lemeur)
+[Tokens] email adress format not checked with inserttoken, updatetoken and uploadldap features (lemeur)
+[Import / Export] Temporary directory not set for Excel exports, possibly yielding open_basedir restriction problems (c_schmitz) 
+[Statistics] "Browse"-Button for "Other" isn´t available at displaying statistic results for "List (Radio)" (c_schmitz)
+[Survey at Runtime] limitmaxansw Javascript error (lemeur)
+[Survey Design] All assessments meet consistency standards (leochaton)
+[Translation] Missing translations in integritycheck.php (lemeur) 
+[Survey Design] Condition with "No answer" as criterion not applied correctly in radio#and dropdown lists (lemeur)
+[Templates] {ANSWER} CSS style (lemeur)
+[Survey Design] Yes/No/Uncertain array missing attributes (lemeur)
+[Import / Export] Last question attribute in group import is not imported (lemeur)
+[Import / Export] Error when uploading saved survey (leochaton)
+[Survey at Runtime] Add missing units of measure to style declarations (lemeur)
+[Import / Export] config-ldap.php advice erroneous for active directory (lemeur)
+[Statistics] Error when generating statistics #Couldn't do count of values... (c_schmitz)
+[Tokens] Unable to import .info emails (lemeur)
+[Survey Design] Turkish language is not seen in the drop-down menu (c_schmitz)
+[Installation] running upgrade fails on mssql (c_schmitz)
+[Survey at Runtime] Survey answers are not entered in database anymore apparently, mails still sent (c_schmitz)
+[Security] Login can cross over multiple instances. (c_schmitz)
+[Security] email size is too short (c_schmitz)
+[Survey Design] Sending email to group in admin screens failing (c_schmitz)
+[Installation] installation of mysql fails (c_schmitz)
+[Import / Export] Import token csv #unable to send invitation (c_schmitz)
+[Data Entry (non public)] Conditions don't work with html tags (c_schmitz)
+[Survey at Runtime] Warning on accessing invalid survey (lemeur)
+[Survey at Runtime] Minor Display Error in IE7 in "Edit Current Survey"-Menu (c_schmitz)
+[Security] Removing user does not remove user rights (lemeur)
+[Installation] Timeout in access to admin tool (leochaton)
+[Import / Export] Antworten exportieren: Fehler beim Export von Zugangsschlüssel-Feldern (c_schmitz)
+[Security] http://www.milw0rm.com/exploits/4544 [^] (c_schmitz)
+[Installation] 1.52 fails to install on RedHat/Apache server (c_schmitz)
+[Assessments] Editing assessments (c_schmitz)
+[Import / Export] Warning on Importing a survey (c_schmitz)
+[Survey at Runtime] Admin notifications are not working correctly for some Text Question Types (c_schmitz)
+[Templates] Can´t save startpage.pstpl in Template Editor (c_schmitz)
+[Print View] Phrase "by" using an Expiry-Date for a survey is not translated at Printable Survey (c_schmitz) #geschlossen.
 
 
 
