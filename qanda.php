@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿<?php
+﻿﻿﻿﻿﻿﻿﻿<?php
 /*
 * LimeSurvey
 * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
@@ -2134,6 +2134,17 @@ function do_yesno($ia)
 function do_gender($ia)
 {
 	global $shownoanswer, $clang;
+	
+	$qidattributes=getQuestionAttributes($ia[0]);
+	if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
+	{
+		$dcols=$displaycols['value'];
+	}
+	else
+	{
+		$dcols=0;
+	}
+	
 	$defaultvaluescript = "";
 	$answer = "\t\t\t<table class='question'>\n"
 	. "\t\t\t\t<tr>\n"
@@ -2142,17 +2153,31 @@ function do_gender($ia)
 	if ($_SESSION[$ia[1]] == "F") {$answer .= " checked='checked'";}
 	// --> START NEW FEATURE - SAVE
 	$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/>"
-	. "<label for='answer$ia[1]F' class='answertext'>".$clang->gT("Female")."</label><br />\n"
-	. "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]M' value='M'";
+	. "<label for='answer$ia[1]F' class='answertext'>".$clang->gT("Female")."</label>\n";
+	if ($dcols > 1 ) //Break into columns - don't need any detailed calculations becauase there's only ever 2 possible columns
+	{
+	    $answer .= "\n</td><td>\n";
+    } else {
+	    $answer .= "<br />\n";
+	}	
+	$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]M' value='M'";
 	// --> END NEW FEATURE - SAVE
 
 	if ($_SESSION[$ia[1]] == "M") {$answer .= " checked='checked'";}
 	// --> START NEW FEATURE - SAVE
-	$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='answer$ia[1]M' class='answertext'>".$clang->gT("Male")."</label><br />\n";
+	$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='answer$ia[1]M' class='answertext'>".$clang->gT("Male")."</label>\n";
 	// --> END NEW FEATURE - SAVE
 
 	if ($ia[6] != "Y" && $shownoanswer == 1)
 	{
+        if ($dcols > 2)
+        {
+		  $answer .= "\n</td><td>\n";
+		} elseif ($dcols > 1) {
+		  $answer .= "\n</td></tr><tr><td colspan='2' align='center'>\n";
+		} else {
+		  $answer .= "<br />";
+		}
 		$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1] ' value=''";
 		if ($_SESSION[$ia[1]] == "")
 		{

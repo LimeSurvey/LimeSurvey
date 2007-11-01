@@ -2278,7 +2278,7 @@ function questionAttributes()
     "types"=>"ABCEF",
     "help"=>"The percentage width of the answer column");
 	$qattributes[]=array("name"=>"display_columns",
-	"types"=>"LMZ",
+	"types"=>"LMZG",
 	"help"=>"Number of columns to display");
     $qattributes[]=array("name"=>"array_filter",
     "types"=>"ABCEF",
