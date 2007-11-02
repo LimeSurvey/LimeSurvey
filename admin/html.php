@@ -9,6 +9,8 @@
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
+* 
+* $Id$
 */
 
 //Ensure script is not run directly, avoid path disclosure
@@ -1197,7 +1199,31 @@ if (returnglobal('viewanswer'))
 	// Get languages select on survey.
 	$anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
-	array_unshift($anslangs,$baselang);
+
+    // check that there are answers for every language supported by the survey
+    foreach ($anslangs as $language)
+    {
+        $qquery = "SELECT count(*) as num_ans  FROM ".db_table_name('answers')." WHERE qid=$qid AND language='".$language."'";
+        $qresult = db_execute_assoc($qquery);
+        $qrow = $qresult->FetchRow();
+        if ($qrow["num_ans"] == 0)   // means that no record for the language exists in the answers table
+        {
+            $qquery = "INSERT INTO ".db_table_name('answers')." (SELECT `qid`,`code`,`answer`,`default_value`,`sortorder`, '".$language."' FROM ".db_table_name('answers')." WHERE qid=$qid AND language='".$baselang."')";
+            $connect->Execute($qquery);
+        }
+    }
+
+    array_unshift($anslangs,$baselang);      // makes an array with ALL the languages supported by the survey -> $anslangs
+    
+    //delete the answers in languages not supported by the survey
+    $qquery = "SELECT DISTINCT language FROM ".db_table_name('answers')." WHERE (qid = $qid) AND (language NOT IN ('".implode("','",$anslangs)."'))";
+    $qresult = db_execute_assoc($qquery);
+    while ($qrow = $qresult->FetchRow())
+    {
+        $qquery = "DELETE FROM ".db_table_name('answers')." WHERE (qid = $qid) AND (language = '".$qrow["language"]."')";
+        $connect->Execute($qquery);
+    }
+    
 	
 	// Check sort order for answers
 	$qquery = "SELECT type FROM ".db_table_name('questions')." WHERE qid=$qid AND language='".$baselang."'";
