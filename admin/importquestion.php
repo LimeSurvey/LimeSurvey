@@ -9,6 +9,8 @@
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
+*
+* $Id$
 */
 
 //Ensure script is not run directly, avoid path disclosure
@@ -227,9 +229,13 @@ if (isset($labelsetsarray)) {$countlabelsets = count($labelsetsarray)-1;}  else 
 if (isset($labelsarray)) {$countlabels = count($labelsarray)-1;}  else {$countlabels=0;}
 if (isset($question_attributesarray)) {$countquestion_attributes = count($question_attributesarray)-1;} else {$countquestion_attributes=0;}
 
+$languagesSupported = array();  // this array will keep all the languages supported for the survey
 
 // Let's check that imported objects support at least the survey's baselang
 $langcode = GetBaseLanguageFromSurveyID($postsid);
+
+$languagesSupported[$langcode] = 1;     // adds the base language to the list of supported languages
+
 if ($countquestions > 0)
 {
 	$questionfieldnames = convertCSVRowToArray($questionarray[0],',','"');
@@ -244,6 +250,11 @@ if ($countquestions > 0)
 		unlink($the_full_file_path);
 		return;
 	}
+}
+
+foreach (GetAdditionalLanguagesFromSurveyID($postsid) as $language)
+{
+    $languagesSupported[$language] = 1;
 }
 
 // Let's assume that if the questions do support tye baselang
@@ -375,6 +386,8 @@ if (isset($labelsetsarray) && $labelsetsarray) {
     }
 }
 
+
+
 // QUESTIONS, THEN ANSWERS FOR QUESTIONS IN A NESTED FORMAT!
 if (isset($questionarray) && $questionarray) {
     $qafieldorders=convertCSVRowToArray($questionarray[0],',','"');
@@ -383,47 +396,49 @@ if (isset($questionarray) && $questionarray) {
         $qacfieldcontents=convertCSVRowToArray($qa,',','"');
 		$newfieldcontents=$qacfieldcontents;
     	$questionrowdata=array_combine($qafieldorders,$qacfieldcontents);
-		$oldqid = $questionrowdata['qid'];
-		$oldsid = $questionrowdata['sid'];
-		$oldgid = $questionrowdata['gid'];
+        if (isset($languagesSupported[$questionrowdata["language"]]))
+        {
+		    $oldqid = $questionrowdata['qid'];
+		    $oldsid = $questionrowdata['sid'];
+		    $oldgid = $questionrowdata['gid'];
 
-    	// Remove qid field if there is no newqid; and set it to newqid if it's set
-        if (!isset($newqid))
-		    unset($questionrowdata['qid']);
-        else
-            $questionrowdata['qid'] = $newqid;
-            
-		$questionrowdata["sid"] = $newsid;
-		$questionrowdata["gid"] = $newgid;
+    	    // Remove qid field if there is no newqid; and set it to newqid if it's set
+            if (!isset($newqid))
+		        unset($questionrowdata['qid']);
+            else
+                $questionrowdata['qid'] = $newqid;
+                
+		    $questionrowdata["sid"] = $newsid;
+		    $questionrowdata["gid"] = $newgid;
 
-        $qmaxqo = "SELECT MAX(question_order) AS maxqo FROM ".db_table_name('questions')." WHERE sid=$newsid AND gid=$newgid";
-		$qres = db_execute_assoc($qmaxqo) or die ("<strong>".$clang->gT("Error")."</strong> Failed to find out maximum question order value<br />\n$qmaxqo<br />\n".$connect->ErrorMsg()."</body>\n</html>");
-        $qrow=$qres->FetchRow();
-		$questionrowdata["question_order"]= $qrow['maxqo']+1; // echo $questionrowdata["question_order"];
-        // Now we will fix up the label id 
-		$type = $questionrowdata["type"]; //Get the type
-		if ($type == "F" || $type == "H" || $type == "W" || $type == "Z") 
-            {//IF this is a flexible label array, update the lid entry
-			if (isset($labelreplacements)) {
-				foreach ($labelreplacements as $lrp) {
-					if ($lrp[0] == $questionrowdata["lid"]) {
-						$questionrowdata["lid"]=$lrp[1];
-					   }
-				    }
-			     }
-            }
-		$other = $questionrowdata["other"]; //Get 'other' field value
-		$oldlid = $questionrowdata["lid"];
-        $questionrowdata=array_map('convertCsvreturn2return', $questionrowdata);
-        $newvalues=array_values($questionrowdata);
-        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-        $qinsert = "INSERT INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-		$qres = $connect->Execute($qinsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+            $qmaxqo = "SELECT MAX(question_order) AS maxqo FROM ".db_table_name('questions')." WHERE sid=$newsid AND gid=$newgid";
+		    $qres = db_execute_assoc($qmaxqo) or die ("<strong>".$clang->gT("Error")."</strong> Failed to find out maximum question order value<br />\n$qmaxqo<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+            $qrow=$qres->FetchRow();
+		    $questionrowdata["question_order"]= $qrow['maxqo']+1; // echo $questionrowdata["question_order"];
+            // Now we will fix up the label id 
+		    $type = $questionrowdata["type"]; //Get the type
+		    if ($type == "F" || $type == "H" || $type == "W" || $type == "Z") 
+                {//IF this is a flexible label array, update the lid entry
+			    if (isset($labelreplacements)) {
+				    foreach ($labelreplacements as $lrp) {
+					    if ($lrp[0] == $questionrowdata["lid"]) {
+						    $questionrowdata["lid"]=$lrp[1];
+					       }
+				        }
+			         }
+                }
+		    $other = $questionrowdata["other"]; //Get 'other' field value
+		    $oldlid = $questionrowdata["lid"];
+            $questionrowdata=array_map('convertCsvreturn2return', $questionrowdata);
+            $newvalues=array_values($questionrowdata);
+            $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+            $qinsert = "INSERT INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
+		    $qres = $connect->Execute($qinsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
 
-        // set the newqid only if is not set
-        if (!isset($newqid))
-		    $newqid=$connect->Insert_ID();
-
+            // set the newqid only if is not set
+            if (!isset($newqid))
+		        $newqid=$connect->Insert_ID();
+        }
     }
 
     //NOW DO ANSWERS FOR THIS QID - Is called just once and only if there was a question
@@ -431,13 +446,16 @@ if (isset($questionarray) && $questionarray) {
         foreach ($answerarray as $aa) {
             $answerfieldcontents=convertCSVRowToArray($aa,',','"');
             $answerrowdata=array_combine($answerfieldnames,$answerfieldcontents);
-            $code=$answerrowdata["code"];
-            $thisqid=$answerrowdata["qid"];
-            $answerrowdata["qid"]=$newqid;
-                    $newvalues=array_values($answerrowdata);
-                    $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-                    $ainsert = "INSERT INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-            $ares = $connect->Execute($ainsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+            if (isset($languagesSupported[$answerrowdata["language"]]))
+            {
+                $code=$answerrowdata["code"];
+                $thisqid=$answerrowdata["qid"];
+                $answerrowdata["qid"]=$newqid;
+                        $newvalues=array_values($answerrowdata);
+                        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+                        $ainsert = "INSERT INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
+                $ares = $connect->Execute($ainsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+            }
         }
     }
 
@@ -461,9 +479,6 @@ if (isset($questionarray) && $questionarray) {
 }
 
 
-
-
-
 $importquestion .= "<strong><font color='green'>".$clang->gT("Success")."</font></strong><br /><br />\n"
 ."<strong><u>".$clang->gT("Question Import Summary")."</u></strong><br />\n"
 ."\t<li>".$clang->gT("Questions").": ";
@@ -481,7 +496,7 @@ $importquestion .= "\t<li>".$clang->gT("Question Attributes:");
 if (isset($countquestion_attributes)) {$importquestion .= $countquestion_attributes;}
 $importquestion .= "</li></ul><br />\n";
 
-$importquestion .= "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />&nbsp;\n"
+$importquestion .= "<strong>".$clang->gT("Question import is complete.")."</strong><br />&nbsp;\n"
 ."</td></tr></table><br/>\n";
 
 
