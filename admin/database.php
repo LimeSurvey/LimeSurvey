@@ -9,6 +9,8 @@
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
+* 
+* $Id$
 */
 
 //Ensure script is not run directly, avoid path disclosure
@@ -188,10 +190,12 @@ if(isset($surveyid))
 				if ($dresult=$connect->Execute($dquery)) {$total++;}
 				$dquery = "DELETE FROM ".db_table_name('answers')." WHERE qid={$row['qid']}";
 				if ($dresult=$connect->Execute($dquery)) {$total++;}
+                $dquery = "DELETE FROM ".db_table_name('question_attributes')." WHERE qid={$row['qid']}";
+                if ($dresult=$connect->Execute($dquery)) {$total++;}
 				$dquery = "DELETE FROM ".db_table_name('questions')." WHERE qid={$row['qid']}";
 				if ($dresult=$connect->Execute($dquery)) {$total++;}
 			}
-			if ($total != $qtodel*3)
+			if ($total != $qtodel*4)
 			{
 				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be deleted","js")."\")\n //-->\n</script>\n";
 			}
