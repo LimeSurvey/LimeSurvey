@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿<?php
+﻿﻿﻿﻿﻿﻿﻿﻿<?php
 /*
 * LimeSurvey
 * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
@@ -1759,26 +1759,30 @@ function do_multiplenumeric($ia)
     if ($equalvalue=arraySearchByKey("equals_num_value", $qidattributes, "attribute", 1))
     {
 	    $equals_num_value=$equalvalue['value'];
-	    $numbersonly .= " onBlur=\"calculateValue".$ia[1]."(3)\"";
+	    $numbersonlyonblur[]="calculateValue".$ia[1]."(3)";
 	    $calculateValue=3;
 	} else {
-	    $equals_num_value=0;
+	    $equals_num_value[]=0;
 	}
     if ($minvalue=arraySearchByKey("min_num_value", $qidattributes, "attribute", 1))
     {
 	    $min_num_value=$minvalue['value'];
-	    $numbersonly .= " onBlur=\"calculateValue".$ia[1]."(2)\"";
-	    $calculateValue=2;
+	    $numbersonlyonblur[]="calculateValue".$ia[1]."(2)";
+	    $calculateValue[]=2;
 	} else {
 	    $min_num_value=0;
 	}
     if ($maxvalue=arraySearchByKey("max_num_value", $qidattributes, "attribute", 1))
     {
 	    $max_num_value = $maxvalue['value'];
-        $numbersonly .= " onBlur=\"calculateValue".$ia[1]."(1)\""; 
-	    $calculateValue=1;
+        $numbersonlyonblur[]="calculateValue".$ia[1]."(1)"; 
+	    $calculateValue[]=1;
 	} else {
 	    $max_num_value = 0;
+	}
+	if(!empty($numbersonlyonblur))
+	{
+	    $numbersonly .= " onblur=\"".implode(";", $numbersonlyonblur)."\"";
 	}
 	if ($maxchars=arraySearchByKey("text_input_width", $qidattributes, "attribute", 1))
 	{
@@ -1866,36 +1870,48 @@ function do_multiplenumeric($ia)
 	    $answer .= "       case 1:\n";
 	    $answer .= "          if (totalvalue > $max_num_value)\n";
 	    $answer .= "             {\n";
-	    $answer .= "             bob.value = '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$max_num_value."';\n";
+	    $answer .= "               bob.value = '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$max_num_value."';\n";
 		$answer .= "             }\n";
 		$answer .= "             else\n";
 		$answer .= "             {\n";
-		$answer .= "             bob.value = '';\n";
+		$answer .= "               if (bob.value == '' || bob.value == '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$max_num_value."')\n";
+		$answer .= "               {\n";
+		$answer .= "                 bob.value = '';\n";
+		$answer .= "               }\n";
 		$answer .= "             }\n";
 		$answer .= "          break;\n";
 		$answer .= "       case 2:\n";
 	    $answer .= "          if (totalvalue < $min_num_value)\n";
 	    $answer .= "             {\n";
-	    $answer .= "             bob.value = '".$clang->gT("Answer is invalid. The total of all entries should add up to at least ").$min_num_value."';\n";
+	    $answer .= "               bob.value = '".$clang->gT("Answer is invalid. The total of all entries should add up to at least ").$min_num_value."';\n";
 		$answer .= "             }\n";
 		$answer .= "             else\n";
 		$answer .= "             {\n";
-		$answer .= "             bob.value = '';\n";
+		$answer .= "               if (bob.value == '' || bob.value == '".$clang->gT("Answer is invalid. The total of all entries should add up to at least ").$min_num_value."')\n";
+		$answer .= "               {\n";
+		$answer .= "                 bob.value = '';\n";
+		$answer .= "               }\n";
 		$answer .= "             }\n";
 		$answer .= "          break;\n";
 		$answer .= "       case 3:\n";
 	    $answer .= "          if (totalvalue == $equals_num_value)\n";
-	    $answer .= "             {\n";
-		$answer .= "             bob.value = '';\n";
+		$answer .= "             {\n";
+		$answer .= "               if (bob.value == '' || bob.value == '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$equals_num_value."')\n";
+		$answer .= "               {\n";
+		$answer .= "                 bob.value = '';\n";
+		$answer .= "               }\n";
 		$answer .= "             }\n";
 		$answer .= "             else\n";
 		$answer .= "             {\n";
 	    $answer .= "             bob.value = '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$equals_num_value."';\n";
 		$answer .= "             }\n";
 		$answer .= "             break;\n";
-		$answer .= "          }\n";
-	    $answer .= "    }\n";
-		$answer .= "    calculateValue".$ia[1]."($calculateValue);\n";
+		$answer .= "       }\n";
+		$answer .= "    }\n";
+	    foreach($calculateValue as $cValue) 
+		{
+		    $answer .= "    calculateValue".$ia[1]."($cValue);\n";
+		}
 		$answer .= "</script>\n";
 	    
 	}
