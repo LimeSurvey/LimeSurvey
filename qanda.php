@@ -1846,16 +1846,25 @@ function do_multiplenumeric($ia)
 
         if ($maxvalue)
             {
-			$answer .= "<br />\t\t\t<font size='1'><i>".$clang->gT("Total of all entries must not exceed ").$max_num_value."</i></font></n>";
+			$answer .= "\t\t\t<div id='max_num_value'><font size='1'><i>".$clang->gT("Total of all entries must not exceed ").$max_num_value."</i></font></div>\n";
 			}
-
         if ($equalvalue)
             {
-			$answer .= "<br />\t\t\t<font size='1'><i>".$clang->gT("Total of all entries must equal ").$equals_num_value."</i></font></n>";
+			$answer .= "\t\t\t<div id='equals_num_value'><font size='1'><i>".$clang->gT("Total of all entries must equal ").$equals_num_value."</i></font></div>\n";
 			}
         if ($minvalue)
             {
-			$answer .= "<br />\t\t\t<font size='1'><i>".$clang->gT("Total of all entries must be at least ").$min_num_value."</i></font></n>";
+			$answer .= "\t\t\t<div id='min_num_value'><font size='1'><i>".$clang->gT("Total of all entries must be at least ").$min_num_value."</i></font></div>\n";
+			}
+		if ($maxvalue || $equalvalue || $minvalue)
+		    {
+	    	$answer .= "\t\t\t\t\t\t<table class='question' style='border: 1px solid #111111'>\n";
+			$answer .= "<tr><td align='right' class='answertext'>".$clang->gT("Total: ")."</td><td>$prefix<input type='text' id='totalvalue' disabled style='border: 0px' size='$tiwidth'>$suffix</td></tr>\n";
+    		if ($equalvalue)
+    		    {
+    			$answer .= "<tr><td align='right' class='answertext'>".$clang->gT("Remaining: ")."</td><td>$prefix<input type='text' id='remainingvalue' disabled style='border: 0px' size='$tiwidth'>$suffix</td></tr>\n";
+    			}
+			$answer .= "</table>\n";
 			}
 	}
 	$answer .= "\t\t\t\t\t\t</table>\n";
@@ -1871,51 +1880,66 @@ function do_multiplenumeric($ia)
 	    foreach ($inputnames as $inputname)
 	    {
 		    $answer .= "       if(document.limesurvey.answer".$inputname.".value == '') { document.limesurvey.answer".$inputname.".value = 0; }\n";
-            $javainputnames[]="eval(document.limesurvey.answer".$inputname.".value)"; 
+            $javainputnames[]="parseFloat(document.limesurvey.answer".$inputname.".value)"; 
 		}
 	    $answer .= "       bob = eval('document.limesurvey.qattribute_answer".$ia[1]."');\n";
 	    $answer .= "       totalvalue=";
 	    $answer .= implode(" + ", $javainputnames);
 	    $answer .= ";\n";
+	    $answer .= "       document.getElementById('totalvalue').value=totalvalue;\n";
 	    $answer .= "       switch(method)\n";
 	    $answer .= "       {\n";
 	    $answer .= "       case 1:\n";
 	    $answer .= "          if (totalvalue > $max_num_value)\n";
 	    $answer .= "             {\n";
 	    $answer .= "               bob.value = '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$max_num_value."';\n";
+	    $answer .= "               document.getElementById('totalvalue').style.color='red';\n";
+	    $answer .= "               document.getElementById('max_num_value').style.color='red';\n";
 		$answer .= "             }\n";
 		$answer .= "             else\n";
 		$answer .= "             {\n";
 		$answer .= "               if (bob.value == '' || bob.value == '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$max_num_value."')\n";
 		$answer .= "               {\n";
 		$answer .= "                 bob.value = '';\n";
+	    $answer .= "                 document.getElementById('totalvalue').style.color='black';\n";
 		$answer .= "               }\n";
+	    $answer .= "               document.getElementById('max_num_value').style.color='black';\n";
 		$answer .= "             }\n";
 		$answer .= "          break;\n";
 		$answer .= "       case 2:\n";
 	    $answer .= "          if (totalvalue < $min_num_value)\n";
 	    $answer .= "             {\n";
 	    $answer .= "               bob.value = '".$clang->gT("Answer is invalid. The total of all entries should add up to at least ").$min_num_value."';\n";
+	    $answer .= "               document.getElementById('totalvalue').style.color='red';\n";
+	    $answer .= "               document.getElementById('min_num_value').style.color='red';\n";
 		$answer .= "             }\n";
 		$answer .= "             else\n";
 		$answer .= "             {\n";
 		$answer .= "               if (bob.value == '' || bob.value == '".$clang->gT("Answer is invalid. The total of all entries should add up to at least ").$min_num_value."')\n";
 		$answer .= "               {\n";
 		$answer .= "                 bob.value = '';\n";
+	    $answer .= "                 document.getElementById('totalvalue').style.color='black';\n";
 		$answer .= "               }\n";
+	    $answer .= "               document.getElementById('min_num_value').style.color='black';\n";
 		$answer .= "             }\n";
 		$answer .= "          break;\n";
 		$answer .= "       case 3:\n";
+		$answer .= "          remainingvalue= $equals_num_value - totalvalue;\n";
+		$answer .= "          document.getElementById('remainingvalue').value=remainingvalue;\n";
 	    $answer .= "          if (totalvalue == $equals_num_value)\n";
 		$answer .= "             {\n";
 		$answer .= "               if (bob.value == '' || bob.value == '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$equals_num_value."')\n";
 		$answer .= "               {\n";
 		$answer .= "                 bob.value = '';\n";
+	    $answer .= "                 document.getElementById('totalvalue').style.color='black';\n";
+	    $answer .= "                 document.getElementById('equals_num_value').style.color='black';\n";
 		$answer .= "               }\n";
 		$answer .= "             }\n";
 		$answer .= "             else\n";
 		$answer .= "             {\n";
 	    $answer .= "             bob.value = '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$equals_num_value."';\n";
+	    $answer .= "             document.getElementById('totalvalue').style.color='red';\n";
+	    $answer .= "             document.getElementById('equals_num_value').style.color='red';\n";
 		$answer .= "             }\n";
 		$answer .= "             break;\n";
 		$answer .= "       }\n";
