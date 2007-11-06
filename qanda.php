@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿<?php
+﻿﻿﻿﻿﻿﻿﻿﻿﻿<?php
 /*
 * LimeSurvey
 * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
@@ -1780,6 +1780,18 @@ function do_multiplenumeric($ia)
 	} else {
 	    $max_num_value = 0;
 	}
+	if ($prefix=arraySearchByKey("prefix", $qidattributes, "attribute", 1))
+	{
+	    $prefix = $prefix['value'];
+	} else {
+	    $prefix = "";
+	}
+	if ($suffix=arraySearchByKey("suffix", $qidattributes, "attribute", 1))
+	{
+	    $suffix = $suffix['value'];
+	} else {
+	    $suffix = "";
+	}
 	if(!empty($numbersonlyonblur))
 	{
 	    $numbersonly .= " onblur=\"".implode(";", $numbersonlyonblur)."\"";
@@ -1818,11 +1830,11 @@ function do_multiplenumeric($ia)
 			. "\t\t\t\t\t\t\t\t\t<label for='answer$myfname'>{$ansrow['answer']}</label>\n"
 			. "\t\t\t\t\t\t\t\t</td>\n"
 			. "\t\t\t\t\t\t\t\t<td align='left'>\n"
-			. "\t\t\t\t\t\t\t\t\t<input class='text' type='text' size='$tiwidth' name='$myfname' id='answer$myfname' value='";
+			. "\t\t\t\t\t\t\t\t\t$prefix<input class='text' type='text' size='$tiwidth' name='$myfname' id='answer$myfname' value='";
 			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
 	
 			// --> START NEW FEATURE - SAVE
-			$answer .= "' onchange='modfield(this.name)' $numbersonly maxlength='$maxsize'/>\n"
+			$answer .= "' onchange='modfield(this.name)' $numbersonly maxlength='$maxsize'/>$suffix\n"
 			. "\t\t\t\t\t\t\t\t</td>\n"
 			. "\t\t\t\t\t\t\t</tr>\n";
 			// --> END NEW FEATURE - SAVE

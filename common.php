@@ -2318,6 +2318,12 @@ function questionAttributes()
 	$qattributes[]=array("name"=>"min_num_value",
 	"types"=>"K",
 	"help"=>"Multiple numeric inputs must be greater than this value");
+	$qattributes[]=array("name"=>"prefix",
+	"types"=>"K",
+	"help"=>"Add a prefix to the answer field");
+	$qattributes[]=array("name"=>"suffix",
+	"types"=>"K",
+	"help"=>"Add a suffix to the answer field");
 	/* -- > Commented out since not yet used
     $qattributes[]=array("name"=>"permission",
     "types"=>"5DGL!OMPQNRSTUYABCEFHWZ",
