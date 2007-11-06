@@ -1,5 +1,7 @@
 <?php
 /*
+* $Id$
+*
 * Copyright (c) 2002,2003 Free Software Foundation
 * developed under the custody of the
 * Open Web Application Security Project
