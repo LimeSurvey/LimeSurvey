@@ -1760,7 +1760,7 @@ function do_multiplenumeric($ia)
     {
 	    $equals_num_value=$equalvalue['value'];
 	    $numbersonlyonblur[]="calculateValue".$ia[1]."(3)";
-	    $calculateValue=3;
+	    $calculateValue[]=3;
 	} else {
 	    $equals_num_value[]=0;
 	}
@@ -1858,13 +1858,13 @@ function do_multiplenumeric($ia)
 			}
 		if ($maxvalue || $equalvalue || $minvalue)
 		    {
-	    	$answer .= "\t\t\t\t\t\t<table class='question' style='border: 1px solid #111111'>\n";
+	    	$answer .= "\t\t\t\t\t\t<tr><td colspan='2'><table class='question' style='border: 1px solid #111111'>\n";
 			$answer .= "<tr><td align='right' class='answertext'>".$clang->gT("Total: ")."</td><td>$prefix<input type='text' id='totalvalue' disabled style='border: 0px' size='$tiwidth'>$suffix</td></tr>\n";
     		if ($equalvalue)
     		    {
     			$answer .= "<tr><td align='right' class='answertext'>".$clang->gT("Remaining: ")."</td><td>$prefix<input type='text' id='remainingvalue' disabled style='border: 0px' size='$tiwidth'>$suffix</td></tr>\n";
     			}
-			$answer .= "</table>\n";
+			$answer .= "</table></td></tr>\n";
 			}
 	}
 	$answer .= "\t\t\t\t\t\t</table>\n";
@@ -1880,13 +1880,13 @@ function do_multiplenumeric($ia)
 	    foreach ($inputnames as $inputname)
 	    {
 		    $answer .= "       if(document.limesurvey.answer".$inputname.".value == '') { document.limesurvey.answer".$inputname.".value = 0; }\n";
-            $javainputnames[]="parseFloat(document.limesurvey.answer".$inputname.".value)"; 
+            $javainputnames[]="parseInt(parseFloat(document.limesurvey.answer".$inputname.".value)*1000)"; 
 		}
 	    $answer .= "       bob = eval('document.limesurvey.qattribute_answer".$ia[1]."');\n";
-	    $answer .= "       totalvalue=";
+	    $answer .= "       totalvalue=(";
 	    $answer .= implode(" + ", $javainputnames);
-	    $answer .= ";\n";
-	    $answer .= "       document.getElementById('totalvalue').value=totalvalue;\n";
+	    $answer .= ")/1000;\n";
+	    $answer .= "       document.getElementById('totalvalue').value=parseFloat(totalvalue);\n";
 	    $answer .= "       switch(method)\n";
 	    $answer .= "       {\n";
 	    $answer .= "       case 1:\n";
@@ -1924,7 +1924,7 @@ function do_multiplenumeric($ia)
 		$answer .= "             }\n";
 		$answer .= "          break;\n";
 		$answer .= "       case 3:\n";
-		$answer .= "          remainingvalue= $equals_num_value - totalvalue;\n";
+		$answer .= "          remainingvalue = (parseInt(parseFloat($equals_num_value)*1000) - parseInt(parseFloat(totalvalue)*1000))/1000;\n";
 		$answer .= "          document.getElementById('remainingvalue').value=remainingvalue;\n";
 	    $answer .= "          if (totalvalue == $equals_num_value)\n";
 		$answer .= "             {\n";
