@@ -144,6 +144,9 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	{
 		$fnames[] = array("token", "token", $clang->gT("Token ID"));
 	}
+
+	$fnames[] = array("completed", "Completed", $clang->gT("Completed"), "0");
+
 	if ($datestamp == "Y") //add datetime to list if survey is datestamped
 	{
 		// submitdate for not-datestamped surveys is always 1980/01/01
@@ -215,7 +218,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 
 	$nfncount = count($fnames)-1;
 	//SHOW INDIVIDUAL RECORD
-	$idquery = "SELECT * FROM $surveytable WHERE ";
+	$idquery = "SELECT *, CASE WHEN submitdate IS NULL THEN 'N' ELSE 'Y' END as completed FROM $surveytable WHERE ";
 	if (incompleteAnsFilterstate() === true) {$idquery .= "submitdate >= ".$connect->DBDate('1980-01-01'). " AND ";}
 	if ($id<1) {$id=1;}
 	if (isset($_POST['sql']) && $_POST['sql'])
@@ -334,6 +337,9 @@ elseif ($subaction == "all")
 	{
 		$fnames[] = array("token", $clang->gT("Token"), $clang->gT("Token ID"), "0");
 	}
+
+	$fnames[] = array("completed", "Completed", $clang->gT("Completed"), "0");
+
 	if ($datestamp == "Y") //Add datestamp
 	{
 		// submitdate for not-datestamped surveys is always 1980/01/01
@@ -466,20 +472,20 @@ elseif ($subaction == "all")
 	{
 		if ($_POST['sql'] == "NULL")
 		{
-			$dtquery = "SELECT * FROM $surveytable ";
+			$dtquery = "SELECT *, CASE WHEN submitdate IS NULL THEN 'N' ELSE 'Y' END as completed FROM $surveytable ";
             if (incompleteAnsFilterstate() === true) {$dtquery .= " WHERE submitdate is not null ";}
 			$dtquery .= " ORDER BY id";
 		}
 		else
 		{
-			$dtquery = "SELECT * FROM $surveytable WHERE ".stripcslashes($_POST['sql'])." ";
+			$dtquery = "SELECT *, CASE WHEN submitdate IS NULL THEN 'N' ELSE 'Y' END as completed FROM $surveytable WHERE ".stripcslashes($_POST['sql'])." ";
             if (incompleteAnsFilterstate() === true) {$dtquery .= " AND submitdate is not null ";}
 			$dtquery .= " ORDER BY id";
 		}
 	}
 	else
 	{
-		$dtquery = "SELECT * FROM $surveytable ";
+		$dtquery = "SELECT *, CASE WHEN submitdate IS NULL THEN 'N' ELSE 'Y' END as completed FROM $surveytable ";
 		if (incompleteAnsFilterstate() === true) {$dtquery .= " WHERE submitdate is not null ";}
 		$dtquery .= " ORDER BY id";
 	}
