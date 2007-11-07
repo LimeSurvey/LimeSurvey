@@ -92,7 +92,12 @@ if (!$style)
 
 	}
 
-	if ($thissurvey["datestamp"]=='Y') {$excesscols[]='datestamp';}
+	$excesscols[]='completed';
+
+	if ($thissurvey["datestamp"]=='Y')
+	{
+		$excesscols[]='datestamp';
+	}
 	if ($thissurvey["ipaddr"]=='Y') {$excesscols[]='ipaddr';}
     if ($thissurvey["refurl"]=='Y') {$excesscols[]='refurl';}
 
@@ -362,13 +367,20 @@ if (isset($_POST['colselect']))
 	$selectfields="";
 	foreach($_POST['colselect'] as $cs)
 	{
-		$selectfields.= "$surveytable.".db_quote_id($cs).", ";
+		if ($cs != 'completed')
+		{
+			$selectfields.= "$surveytable.".db_quote_id($cs).", ";
+		}
+		else
+		{
+			$selectfields.= "CASE WHEN $surveytable.submitdate IS NULL THEN 'N' ELSE 'Y' END AS completed, ";
+		}
 	}
 	$selectfields = mb_substr($selectfields, 0, strlen($selectfields)-2);
 }
 else
 {
-	$selectfields="$surveytable.*";
+	$selectfields="$surveytable.*, CASE WHEN $surveytable.submitdate IS NULL THEN 'N' ELSE 'Y' END AS completed";
 }
 
 $dquery = "SELECT $selectfields";
@@ -484,6 +496,11 @@ for ($i=0; $i<$fieldcount; $i++)
 	{
 		if ($type == "csv") {$firstline .= "\"".$elang->gT("Time Submitted")."\"$separator";}
 		else {$firstline .= $elang->gT("Time Submitted")."$separator";}
+	}
+	elseif ($fieldinfo == "completed")
+	{
+		if ($type == "csv") {$firstline .= "\"".$elang->gT("Completed")."\"$separator";}
+		else {$firstline .= $elang->gT("Completed")."$separator";}
 	}
 	elseif ($fieldinfo == "ipaddr")
 	{
@@ -779,7 +796,7 @@ elseif ($answers == "long")
 			$fqid=0;            // By default fqid is set to zero 
             $field=$dresult->FetchField($i);
 			$fieldinfo=$field->name;
-            if ($fieldinfo != "startlanguge" && $fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "ipaddr"  && $fieldinfo != "refurl" && $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && $fieldinfo != "attribute_1" && $fieldinfo != "attribute_2")
+            if ($fieldinfo != "startlanguge" && $fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "ipaddr"  && $fieldinfo != "refurl" && $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && $fieldinfo != "attribute_1" && $fieldinfo != "attribute_2" && $fieldinfo != "completed")
 			{
 				//die(print_r($fieldmap));
 				$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
