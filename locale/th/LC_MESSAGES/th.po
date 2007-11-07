@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-05-20 14:28+0200\n"
-"PO-Revision-Date: 2007-09-12 15:32+0700\n"
+"PO-Revision-Date: 2007-11-07 13:34+0700\n"
 "Last-Translator: Mr.Worawutha Nilchaowna <khao_lek@yahoo.com>\n"
 "Language-Team: LimeSurvey Team <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -67,7 +67,7 @@ msgstr "นำเข้า"
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:387
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:1241
 msgid "Return to Survey Administration"
-msgstr ""
+msgstr "กลับหน้าผู้บริหารระบบ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/vvimport.php:78
 msgid "Cannot import the VVExport file."
@@ -334,7 +334,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:202
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:210
 msgid "Import Label Set"
-msgstr ""
+msgstr "นำเข้าชุดป้ายชื่อ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importlabel.php:53
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/templates.php:125
@@ -371,7 +371,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:2229
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/usercontrol.php:149
 msgid "Main Admin Screen"
-msgstr ""
+msgstr "หน้าผู้บริหารระบบหลัก"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importlabel.php:77
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importquestion.php:89
@@ -395,20 +395,20 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importsurvey.php:1021
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importquestion.php:430
 msgid "Label Sets"
-msgstr ""
+msgstr "ชุดป้ายชื่อ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importlabel.php:215
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:273
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importsurvey.php:1021
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importgroup.php:592
 msgid "Labels"
-msgstr ""
+msgstr "ป้ายชื่อ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importlabel.php:216
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:150
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importsurvey.php:1015
 msgid "Languages"
-msgstr ""
+msgstr "ภาษา"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importlabel.php:223
 msgid "Import of Label Set is completed."
@@ -493,13 +493,13 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:328
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:329
 msgid "Template Editor"
-msgstr ""
+msgstr "แก้ไขตัวแบบ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/templates.php:435
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:247
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:248
 msgid "Default Administration Page"
-msgstr ""
+msgstr "หนัาหลักผู้บริหารระบบ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/templates.php:442
 msgid "Create new template called:"
@@ -507,11 +507,11 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/templates.php:442
 msgid "NewTemplate"
-msgstr ""
+msgstr "ตัวแบบใหม่"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/templates.php:443
 msgid "Create new template"
-msgstr ""
+msgstr "สร้างตัวแบบใหม่"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/templates.php:445
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/templates.php:456
@@ -519,7 +519,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:1868
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:2400
 msgid "Template:"
-msgstr ""
+msgstr "ตัวแบบ :"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/templates.php:463
 msgid "This template can be modified"
@@ -531,7 +531,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/templates.php:477
 msgid "You can't edit the default template."
-msgstr ""
+msgstr "คุณไม่สามารถแก้ไขตัวแบบอัตโนมัติได้"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/templates.php:482
 msgid "Rename this template to:"
@@ -543,7 +543,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/templates.php:489
 msgid "Export Template"
-msgstr ""
+msgstr "ส่งออกตัวแบบ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/templates.php:493
 msgid "Copy Template"
@@ -559,7 +559,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/templates.php:500
 msgid "Screen:"
-msgstr ""
+msgstr "หน้าจอ:"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/templates.php:511
 msgid "File Control:"
@@ -567,19 +567,19 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/templates.php:521
 msgid "Standard Files:"
-msgstr ""
+msgstr "ไฟล์มาตราฐาน"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/templates.php:522
 msgid "Now editing:"
-msgstr ""
+msgstr "การแก้ไขปัจจุบัน"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/templates.php:525
 msgid "Other Files:"
-msgstr ""
+msgstr "ไฟล์อื่นๆ :"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/templates.php:542
 msgid "Save Changes"
-msgstr ""
+msgstr "บันทึกการแปลี่ยนแปลง"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/templates.php:544
 msgid "Changes cannot be saved to the default template."
@@ -595,16 +595,16 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/templates.php:568
 msgid "Upload a File"
-msgstr ""
+msgstr "นำเข้าไฟล์"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/templates.php:569
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1554
 msgid "Upload"
-msgstr ""
+msgstr "นำเข้า"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/templates.php:591
 msgid "Preview:"
-msgstr ""
+msgstr "ตัวอย่าง:"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/exportresults.php:120
 msgid "Export Results"
@@ -749,7 +749,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1121
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:2075
 msgid "First Name"
-msgstr ""
+msgstr "ชื่อ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/exportresults.php:303
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/exportresults.php:458
@@ -760,7 +760,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1127
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:2082
 msgid "Last Name"
-msgstr ""
+msgstr "นามสกุล"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/exportresults.php:305
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/exportresults.php:821
@@ -823,7 +823,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/saved.php:108
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:2089
 msgid "Email Address"
-msgstr ""
+msgstr "ที่อยู่ E-Mail"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/exportresults.php:498
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/exportresults.php:499
@@ -1390,7 +1390,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:208
 msgid "Database Name"
-msgstr ""
+msgstr "ชื่อฐานข้อมูล"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:215
 msgid "Default Language"
@@ -1399,17 +1399,17 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:223
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/login_check.php:103
 msgid "Current Language"
-msgstr ""
+msgstr "ภาษาปัจจุบันที่ใช้"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:239
 msgid "Users"
-msgstr ""
+msgstr "ผู้ใช้"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:246
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importsurvey.php:1012
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:354
 msgid "Surveys"
-msgstr ""
+msgstr "แบบสอบถาม"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:253
 msgid "Active Surveys"
@@ -1449,7 +1449,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:1102
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:2577
 msgid "Please select a language:"
-msgstr ""
+msgstr "กรุณาเลือกภาษา"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:468
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:524
@@ -1655,7 +1655,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:855
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:937
 msgid "Description:"
-msgstr ""
+msgstr "รายละเอียด :"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:727
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:2156
@@ -1911,7 +1911,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1026
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/deactivate.php:50
 msgid "Warning"
-msgstr ""
+msgstr "ข้อควรระวัง"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:1181
 msgid "You need to add answers to this question"
@@ -2022,7 +2022,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:783
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/usercontrol.php:154
 msgid "Add User"
-msgstr ""
+msgstr "เพิ่มผู้ใช้งาน"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:1433
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:971
@@ -2107,7 +2107,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/index.php:1101
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:2126
 msgid "Continue"
-msgstr ""
+msgstr "ดำเนินการต่อ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:1450
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:1504
@@ -2118,15 +2118,15 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:1463
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:486
 msgid "Add User Group"
-msgstr ""
+msgstr "เพิ่มกลุ่มผู้ใช้"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:1486
 msgid "User Group added."
-msgstr ""
+msgstr "เพิ่มกลุ่มผู้ใช้แล้ว"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:1498
 msgid "Failed to add User Group."
-msgstr ""
+msgstr "ไม่สามารถเพิ่มกลุ่มผู้ใช้ได้"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:1516
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/usercontrol.php:232
@@ -2149,7 +2149,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/usercontrol.php:338
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/usercontrol.php:341
 msgid "Username"
-msgstr ""
+msgstr "ชื่อเข้าระบบ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:1531
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:813
@@ -2193,7 +2193,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:274
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:2040
 msgid "Save Now"
-msgstr ""
+msgstr "บันทึก"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:1623
 msgid "Edit Survey Property"
@@ -2581,7 +2581,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:2536
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:197
 msgid "Create Survey"
-msgstr ""
+msgstr "สร้างแบบสอบถาม"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:2382
 msgid "(This field is mandatory.)"
@@ -2602,7 +2602,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/questionhandling.php:135
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:1569
 msgid "OR"
-msgstr ""
+msgstr "หรือ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:2541
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:867
@@ -2709,7 +2709,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:48
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:113
 msgid "User Groups"
-msgstr ""
+msgstr "กลุ่มผู้ใช้"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:69
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:533
@@ -2732,12 +2732,12 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:147
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/usercontrol.php:296
 msgid "Modifying User"
-msgstr ""
+msgstr "แก้ไขผู้ใช้งาน"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:151
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:327
 msgid "Full name"
-msgstr ""
+msgstr "ชื่อ-นามสกุล"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:152
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:328
@@ -2750,44 +2750,44 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:2026
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:2052
 msgid "Password"
-msgstr ""
+msgstr "รหัสเข้าระบบ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:170
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:178
 msgid "Update"
-msgstr ""
+msgstr "ปรับปรุง"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:185
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:447
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/usercontrol.php:217
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/usercontrol.php:370
 msgid "Set User Rights"
-msgstr ""
+msgstr "กำหนดสิทธิ์การใช้งาน"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:200
 msgid "Configurator"
-msgstr ""
+msgstr "การตั้งค่า"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:203
 msgid "Create User"
-msgstr ""
+msgstr "สร้างผู้ใช้"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:206
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:800
 msgid "Delete User"
-msgstr ""
+msgstr "ลบผู้ใช้"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:209
 msgid "Move User"
-msgstr ""
+msgstr "ย้ายผู้ใช้"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:212
 msgid "Manage Template"
-msgstr ""
+msgstr "จัดการตัวแบบ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:215
 msgid "Manage Labels"
-msgstr ""
+msgstr "จัดการป้ายชื่อ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:309
 msgid "Setting new Parent"
@@ -2799,16 +2799,16 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:323
 msgid "User Control"
-msgstr ""
+msgstr "จัดการผู้ใช้งาน"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:329
 msgid "Created by"
-msgstr ""
+msgstr "สร้างโดย"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:356
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:456
 msgid "Edit User"
-msgstr ""
+msgstr "แก้ไขผู้ใช้"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:488
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:510
@@ -2819,7 +2819,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:854
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/questionhandling.php:50
 msgid "Required"
-msgstr ""
+msgstr "จำเป็น"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:490
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:855
@@ -2828,11 +2828,11 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:508
 msgid "Edit User Group (Owner: "
-msgstr ""
+msgstr "แก้ไขกลุ่มผู้ใช้ (เจ้าของ :"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:514
 msgid "Update User Group"
-msgstr ""
+msgstr "ปรับปรุง กลุ่มผู้ใช้"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:535
 msgid "Send me a copy:"
@@ -2861,7 +2861,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:568
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:598
 msgid "Group Name"
-msgstr ""
+msgstr "ชื่อกลุ่ม"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:572
 msgid "Could not delete user group."
@@ -2873,7 +2873,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:589
 msgid "Adding User Group"
-msgstr ""
+msgstr "กำลังเพิ่มกลุ่มผู้ใช้"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:602
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:694
@@ -2883,7 +2883,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:605
 msgid "User group successfully added!"
-msgstr ""
+msgstr "เพิ่มกลุ่มผู้ใช้เรียบร้อยแล้ว"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:610
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:617
@@ -2912,7 +2912,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:692
 msgid "Edit User Group Successfully!"
-msgstr ""
+msgstr "แก้ไขกลุ่มผู้ใช้เรียบร้อยแล้ว"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:693
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:358
@@ -2934,7 +2934,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:871
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:207
 msgid "Select CSV File:"
-msgstr ""
+msgstr "เลือกไฟล์ csv :"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:925
 msgid "Edit Group"
@@ -3006,7 +3006,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:73
 msgid "Label Sets Administration"
-msgstr ""
+msgstr "จัดการชุดป้ายชื่อ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:84
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:86
@@ -3014,19 +3014,19 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:337
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:339
 msgid "Show Help"
-msgstr ""
+msgstr "ช่วยเหลือ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:91
 msgid "Add New Label Set"
-msgstr ""
+msgstr "เพิ่มชุดป้ายชื่อ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:92
 msgid "Add new label set"
-msgstr ""
+msgstr "เพิ่มชุดป้ายชื่อ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:93
 msgid "Labelsets"
-msgstr ""
+msgstr "ชุดป้ายชื่อ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:108
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/questionhandling.php:81
@@ -3043,7 +3043,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:3047
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:3073
 msgid "Please Choose..."
-msgstr ""
+msgstr "กรุณาเลือก"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:127
 msgid "Error: You have to enter a name for this label set."
@@ -3051,7 +3051,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:133
 msgid "Create New Label Set"
-msgstr ""
+msgstr "สร้างชุดป้ายชื่อใหม่"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:134
 msgid "Edit Label Set"
@@ -3059,7 +3059,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:140
 msgid "Set Name"
-msgstr ""
+msgstr "ชื่อของชุด"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:160
 msgid "You cannot remove this items since you need at least one language in a labelset."
@@ -3324,7 +3324,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/login_check.php:76
 msgid "You have to login first."
-msgstr ""
+msgstr "กรุณาเข้าระบบ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/login_check.php:90
 msgid "Login"
@@ -3332,7 +3332,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/login_check.php:94
 msgid "Forgot Your Password?"
-msgstr ""
+msgstr "ลืมรหัสผ่าน"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/conditions.php:55
 msgid "Condition Designer"
@@ -3548,7 +3548,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/access_denied.php:43
 msgid "Access denied!"
-msgstr ""
+msgstr "ไม่มีสิทธิในการเข้าถึง !"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/access_denied.php:53
 msgid "You are not allowed to create new surveys!"
@@ -4639,7 +4639,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1536
 msgid "TIS620 Thai"
-msgstr ""
+msgstr "ไทย TIS620"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1537
 msgid "UCS-2 Unicode"
@@ -5151,7 +5151,7 @@ msgstr "กลับ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/usercontrol.php:397
 msgid "Update user rights successful."
-msgstr ""
+msgstr "ปรับปรุงสิทธิ์ผู้ใช้เรียบร้อยแล้ว"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/usercontrol.php:407
 msgid "You are not allowed to change your own rights!"
@@ -5159,7 +5159,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/save.php:170
 msgid "Please try again."
-msgstr ""
+msgstr "กรุณาลองอีกครั้ง"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/save.php:221
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/index.php:139
@@ -5213,7 +5213,7 @@ msgstr "กรุณาติดต่อ"
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/index.php:178
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/index.php:198
 msgid "for further assistance"
-msgstr ""
+msgstr "สำหรับความช่วยเหลือ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/index.php:119
 msgid "You have not provided a survey identification number"
@@ -5544,7 +5544,7 @@ msgstr "ผู้บริหารระบบ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:240
 msgid "Logged in as"
-msgstr ""
+msgstr "เข้าระบบประเภท"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:257
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:259
@@ -5569,12 +5569,12 @@ msgstr "ตรวจสอบความถูกต้องของข้อ
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:291
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:293
 msgid "List Surveys"
-msgstr ""
+msgstr "รายการแบบสอบถาม"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:302
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:303
 msgid "Backup Entire Database"
-msgstr ""
+msgstr "สำรองข้อมูลในฐานข้อมูล"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:351
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:352
