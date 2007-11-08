@@ -479,7 +479,7 @@ if ($action == "editusers")
 
 if ($action == "addusergroup")
 {
-	if ($_SESSION['loginID'] == 1)  // fron now only admins may do that
+	if ($_SESSION['loginID'] == 1)  // from now only admins may do that
 	{
 		$usersummary = "<form action='$scriptname'  method='post'><table width='100%' border='0'>\n\t<tr><th colspan='2'>\n"
 		. "\t\t<strong>".$clang->gT("Add User Group")."</strong></th></tr>\n"
@@ -587,18 +587,20 @@ if ($action == "delusergroup")
 if ($action == "usergroupindb" && $_SESSION['loginID'] == 1) {
 	$usersummary = "<br /><strong>".$clang->gT("Adding User Group")."...</strong><br />\n";
 
-	$group_name = sanitize_system_string($_POST['group_name']);
-	$group_description = sanitize_system_string($_POST['group_description']);
-	if(isset($group_name) && strlen($group_name) > 0)
+	$db_group_name = db_quote($_POST['group_name']);
+	$db_group_description = db_quote($_POST['group_description']);
+	$html_group_name = html_escape($_POST['group_name']);
+	$html_group_description = html_escape($_POST['group_description']);
+	if(isset($db_group_name) && strlen($db_group_name) > 0)
 	{
-		$ugid = addUserGroupInDB($group_name, $group_description);
+		$ugid = addUserGroupInDB($db_group_name, $db_group_description);
 		if($ugid > 0)
 		{
-			$usersummary .= "<br />".$clang->gT("Group Name").": {$group_name}<br />\n";
+			$usersummary .= "<br />".$clang->gT("Group Name").": ".$html_group_name."<br />\n";
 
-			if(isset($group_description) && strlen($group_description) > 0)
+			if(isset($db_group_description) && strlen($db_group_description) > 0)
 			{
-				$usersummary .= $clang->gT("Description: ").$group_description."<br />\n";
+				$usersummary .= $clang->gT("Description: ").$html_group_description."<br />\n";
 			}
 
          	$usersummary .= "<br /><strong>".$clang->gT("User group successfully added!")."</strong><br />\n";
@@ -683,14 +685,16 @@ if ($action == "mailsendusergroup" && $_SESSION['loginID'] == 1)
 if ($action == "editusergroupindb" && $_SESSION['loginID'] == 1){
 
 	$ugid = $postusergroupid;
-	$name = sanitize_system_string($_POST['name']);
-	$description = sanitize_system_string($_POST['description']);
+	$db_name = db_quote($_POST['name']);
+	$db_description = db_quote($_POST['description']);
+	$html_name = html_escape($_POST['name']);
+	$html_description = html_escape($_POST['description']);
 
-	if(updateusergroup($name, $description, $ugid))
+	if(updateusergroup($db_name, $db_description, $ugid))
 	{
 		$usersummary = "<br /><strong>".$clang->gT("Edit User Group Successfully!")."</strong><br />\n";
-		$usersummary .= "<br />".$clang->gT("Name").": {$name}<br />\n";
-		$usersummary .= $clang->gT("Description: ").$description."<br />\n";
+		$usersummary .= "<br />".$clang->gT("Name").": {$html_name}<br />\n";
+		$usersummary .= $clang->gT("Description: ").$html_description."<br />\n";
 		$usersummary .= "<br /><a href='$scriptname?action=editusergroups&amp;ugid={$ugid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 	}
 	else $usersummary .= "<br /><strong>".$clang->gT("Failed to update!")."</strong><br />\n"
