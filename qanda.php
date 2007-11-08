@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿<?php
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<?php
 /*
 * LimeSurvey
 * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
@@ -544,30 +544,103 @@ function do_5pointchoice($ia)
 function do_date($ia)
 {
 	global $clang;
-  $answer = keycontroljs()
-  . "\t\t\t<input class='text' type='text' size='10' name='$ia[1]' "
-  . "id='answer{$ia[1]}' value=\"".$_SESSION[$ia[1]]
-  . "\" maxlength='10' onKeyPress=\"return goodchars(event,'0123456789-')\" onchange='modfield(this.name);checkconditions(this.value, this.name, this.type)' onBlur='ValidDate(this)'/><button type='reset' id='f_trigger_{$ia[1]}'>...</button>\n"
-	. "\t\t\t<table class='question'>\n"
-	. "\t\t\t\t<tr>\n"
-	. "\t\t\t\t\t<td>\n"
-	. "\t\t\t\t\t\t<font size='1'>".$clang->gT("Format: YYYY-MM-DD")."<br />\n"
-	. "\t\t\t\t\t\t".$clang->gT("(eg: 2003-12-25 for Christmas day)")."\n"
-	. "\t\t\t\t\t</font></td>\n"
-	. "\t\t\t\t</tr>\n"
-	. "\t\t\t</table>\n";
-	// Here we do setup the date javascript
-	$answer .= "<script type=\"text/javascript\">\n"
-	. "Calendar.setup({\n"
-	. "inputField     :    \"answer{$ia[1]}\",\n"    // id of the input field
-	. "ifFormat       :    \"%Y-%m-%d\",\n"   // format of the input field
-	. "showsTime      :    false,\n"                    // will display a time selector
-	. "button         :    \"f_trigger_{$ia[1]}\",\n"         // trigger for the calendar (button ID)
-	. "singleClick    :    true,\n"                   // double-click mode
-	. "step           :    1\n"                        // show all years in drop-down boxes (instead of every other year as default)
-	. "});\n"
-	. "</script>\n";
+	$qidattributes=getQuestionAttributes($ia[0]);
+	if (arraySearchByKey("dropdown_dates", $qidattributes, "attribute", 1)) {
+	   if (!empty($_SESSION[$ia[1]]))
+	   {
+	     list($currentyear, $currentmonth, $currentdate) = explode("-", $_SESSION[$ia[1]]);
+	   } else {
+	    $currentdate=""; 
+		$currentmonth=""; 
+		$currentyear="";
+	   }
+       $answer = keycontroljs();
+       $answer .= "\t\t\t<select id='day{$ia[1]}' onChange='dateUpdater(\"{$ia[1]}\");'>\n";
+       $answer .= "\t\t\t\t<option value=''>".$clang->gT("Date")."</option>\n";
+       for ($i=1; $i<=31; $i++) {
+	      $answer .= "\t\t\t\t<option";
+		  if ($i == $currentdate) {$answer .= " selected";}
+		  $answer .= ">".sprintf("%02d", $i)."</option>\n";
+	   }
+	   $answer .= "\t\t\t</select>\n";
+       $answer .= "\t\t\t<select id='month{$ia[1]}' onChange='dateUpdater(\"{$ia[1]}\");'>\n";
+       $answer .= "\t\t\t\t<option value=''>".$clang->gT("Month")."</option>\n";
+       $montharray=array($clang->gT("Jan"), 
+	                $clang->gT("Feb"), 
+					$clang->gT("Mar"), 
+					$clang->gT("Apr"), 
+					$clang->gT("May"),
+					$clang->gT("Jun"),
+					$clang->gT("Jul"),
+					$clang->gT("Aug"),
+					$clang->gT("Sep"),
+					$clang->gT("Oct"),
+					$clang->gT("Nov"),
+					$clang->gT("Dec")); 
+       for ($i=1; $i<=12; $i++) {
+	      $answer .= "\t\t\t\t<option";
+		  if ($i == $currentmonth) {$answer .= " selected";}
+		  $answer .= " value='".sprintf("%02d", $i)."'>".$montharray[$i-1]."</option>\n";
+	   }
+	   $answer .= "\t\t\t</select>\n";
+       $answer .= "\t\t\t<select id='year{$ia[1]}' onChange='dateUpdater(\"{$ia[1]}\");'>\n";
+       $answer .= "\t\t\t\t<option value=''>".$clang->gT("Year")."</option>\n";
+       
+       for ($i=date("Y"); $i>=(date("Y")-115); $i--) {
+	      $answer .= "\t\t\t\t<option";
+	      if ($i == $currentyear) {$answer .= " selected";}
+		  $answer .= ">$i</option>\n";
+	   }
+	   $answer .= "\t\t\t</select>\n";
+       $answer .= "\t\t\t<input class='text' type='text' size='10' name='$ia[1]' style='display: none' "
+        . "id='answer{$ia[1]}' value=\"".$_SESSION[$ia[1]]
+        . "\" maxlength='10' onchange='checkconditions(this.value, this.name, this.type)'/>\n"
+      	. "\t\t\t<table class='question'>\n"
+      	. "\t\t\t\t<tr>\n"
+      	. "\t\t\t\t\t<td>\n"
+      	. "\t\t\t\t\t</font></td>\n"
+      	. "\t\t\t\t</tr>\n"
+      	. "\t\t\t</table>\n";
+	   $answer .= "<script type=\"text/javascript\">\n"
+	            . "function dateUpdater(val) {\n"
+	            . "  label='answer'+val;\n"
+	            . "  yearlabel='year'+val;\n"
+	            . "  monthlabel='month'+val;\n"
+	            . "  daylabel='day'+val;\n"
+	            . "  document.getElementById(label).value=document.getElementById(yearlabel).value+'-'+document.getElementById(monthlabel).value+'-'+document.getElementById(daylabel).value;\n"
+                . "  modfield(val);\n"
+                . "  ValidDate(document.getElementById(label));\n"
+	            . "}\n"
+	            . "dateUpdater(\"{$ia[1]}\");\n"
+	            . "</script>\n";
+
+	} else {
+       $answer = keycontroljs()
+        . "\t\t\t<input class='text' type='text' size='10' name='$ia[1]' "
+        . "id='answer{$ia[1]}' value=\"".$_SESSION[$ia[1]]
+        . "\" maxlength='10' onKeyPress=\"return goodchars(event,'0123456789-')\" onchange='modfield(this.name);checkconditions(this.value, this.name, this.type)' onBlur='ValidDate(this)'/><button type='reset' id='f_trigger_{$ia[1]}'>...</button>\n"
+      	. "\t\t\t<table class='question'>\n"
+      	. "\t\t\t\t<tr>\n"
+      	. "\t\t\t\t\t<td>\n"
+      	. "\t\t\t\t\t\t<font size='1'>".$clang->gT("Format: YYYY-MM-DD")."<br />\n"
+      	. "\t\t\t\t\t\t".$clang->gT("(eg: 2003-12-25 for Christmas day)")."\n"
+      	. "\t\t\t\t\t</font></td>\n"
+      	. "\t\t\t\t</tr>\n"
+      	. "\t\t\t</table>\n";
+      	// Here we do setup the date javascript
+      	$answer .= "<script type=\"text/javascript\">\n"
+     	. "Calendar.setup({\n"
+      	. "inputField     :    \"answer{$ia[1]}\",\n"    // id of the input field
+      	. "ifFormat       :    \"%Y-%m-%d\",\n"   // format of the input field
+      	. "showsTime      :    false,\n"                    // will display a time selector
+      	. "button         :    \"f_trigger_{$ia[1]}\",\n"         // trigger for the calendar (button ID)
+      	. "singleClick    :    true,\n"                   // double-click mode
+      	. "step           :    1\n"                        // show all years in drop-down boxes (instead of every other year as default)
+      	. "});\n"
+      	. "</script>\n";
+	}
 	$inputnames[]=$ia[1];
+
 	return array($answer, $inputnames);
 }
 

@@ -2324,6 +2324,9 @@ function questionAttributes()
 	$qattributes[]=array("name"=>"suffix",
 	"types"=>"K",
 	"help"=>"Add a suffix to the answer field");
+	$qattributes[]=array("name"=>"dropdown_dates",
+	"types"=>"D",
+	"help"=>"Use dropdown dates layout instead of calendar popup");
 	/* -- > Commented out since not yet used
     $qattributes[]=array("name"=>"permission",
     "types"=>"5DGL!OMPQNRSTUYABCEFHWZ",
