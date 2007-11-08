@@ -71,7 +71,14 @@ if (!isset($otherfile)) {$templatedir = sanitize_paranoid_string(returnglobal('o
 if (!isset($newname)) {$templatedir = sanitize_paranoid_string(returnglobal('newname'));}
 if (!isset($copydir)) {$templatedir = sanitize_paranoid_string(returnglobal('copydir'));}
 
-if (isset ($_POST['changes'])) {$changedtext=$_POST['changes'];}
+if (isset ($_POST['changes'])) {
+	    $changedtext=$_POST['changes'];
+	    if(get_magic_quotes_gpc())
+	    {
+	       $changedtext = str_replace("\'", stripslashes("'"), $changedtext);
+	       $changedtext = str_replace('\"', stripslashes('"'), $changedtext);
+	    }
+	}
 
 
 
