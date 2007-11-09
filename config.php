@@ -78,7 +78,7 @@ $admintheme         =  "default";         // This setting specifys the directory
 $allowedtemplateuploads = "gif,jpg,png";   // File types allowed to be uploaded in the templates section.
 
 
-$debug              =   2;      // Set this to 1 if you are looking for errors. If you still get no errors after enabling this
+$debug              =   0;      // Set this to 1 if you are looking for errors. If you still get no errors after enabling this
                                 // then please check your error-logs - either in your hosting provider admin panel or in some /logs dir.
                                 // LimeSurvey developers set this to 2.   
 $translationmode    =   0;      // If interface translations are not working this might be because of a bug in your PHP version. 
