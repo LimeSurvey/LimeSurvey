@@ -10,9 +10,11 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
+* $Id$
+*
 
 
-Wrapper to use phpgettext as a class and omit having an english translation
+Wrapper to use phpgettext as a class
 USAGE:
 require_once($rootdir.'classes/core/language.php');
 $locale = new limesurvey_lang('en'); // Char code
