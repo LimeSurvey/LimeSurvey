@@ -970,7 +970,7 @@ function getSurveyInfo($surveyid, $languagecode='')
 		if (!$thissurvey['adminemail']) {$thissurvey['adminemail']=$siteadminemail;}
 		if (!$thissurvey['urldescrip']) {$thissurvey['urldescrip']=$thissurvey['url'];}
 	}
-    $languagechanger = makelanguagechanger();
+    if (function_exists('makelanguagechanger')) $languagechanger = makelanguagechanger();
 	return $thissurvey;
 }
 
