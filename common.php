@@ -2794,6 +2794,7 @@ function modify_database($sqlfile='', $sqlstring='') {
     global $connect;
     global $clang;
     global $modifyoutput;
+    global $databasetabletype;
 
 	require_once($rootdir."/admin/classes/core/sha256.php");
 
@@ -2833,6 +2834,7 @@ function modify_database($sqlfile='', $sqlstring='') {
 				$command = str_replace('$siteadminemail', $siteadminemail, $command); // variables By Moses
 				$command = str_replace('$defaultlang', $defaultlang, $command); // variables By Moses
 				$command = str_replace('$sessionname', 'ls'.getRandomID().getRandomID().getRandomID().getRandomID(), $command); // variables By Moses
+				$command = str_replace('$databasetabletype', $databasetabletype, $command);
 
 				if (! db_execute_num($command)) {
                   $modifyoutput .="<br />".$clang->gT("Executing").".....".$command."<font color='#FF0000'>...".$clang->gT("Failed! Reason: ").$connect->ErrorMsg()."</font>";
