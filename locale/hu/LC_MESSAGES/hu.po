@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Hungay Language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-28 08:00+0100\n"
-"PO-Revision-Date: 2007-10-28 22:07+0100\n"
-"Last-Translator: Füleki Dániel <fulekidaniel@gmail.com>\n"
+"POT-Creation-Date: 2007-11-09 08:00+0100\n"
+"PO-Revision-Date: 2007-11-09 17:13+0100\n"
+"Last-Translator: Koloszár László <rektorur@freemail.hu>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -16,7 +16,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: F:\\Install\\Limesurvey\n"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/vvimport.php:28
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1290
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1291
 msgid "Import a VV survey file"
 msgstr "VW felmérés-file importálása"
 
@@ -64,7 +64,7 @@ msgstr "Import"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:61
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:355
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:435
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1259
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1260
 msgid "Return to Survey Administration"
 msgstr "Visszatérés a felmérés-adminisztráció menübe"
 
@@ -75,10 +75,10 @@ msgstr "VVExport file importálása sikertelen"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/vvimport.php:70
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importlabel.php:28
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importlabel.php:52
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:130
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:142
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:154
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:409
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:160
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:172
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:184
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:421
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:56
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:69
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:93
@@ -114,12 +114,13 @@ msgstr "VVExport file importálása sikertelen"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dbedit.php:442
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dbedit.php:476
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:29
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:66
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:193
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:229
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:338
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:359
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:373
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:96
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:113
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:241
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:277
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:400
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:421
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:440
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dumpsurvey.php:44
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dumplabel.php:30
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:161
@@ -130,8 +131,8 @@ msgstr "VVExport file importálása sikertelen"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:571
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:589
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1451
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1621
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1627
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1622
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1628
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/install/createdb.php:49
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/install/createdb.php:81
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:42
@@ -145,14 +146,14 @@ msgstr "VVExport file importálása sikertelen"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:2299
 #: /srv/www/virtual/limesurvey.org/stableSVN/save.php:454
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:189
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1065
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3944
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1066
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3952
 msgid "Error"
 msgstr "Hiba"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/vvimport.php:71
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importlabel.php:29
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:131
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:161
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importgroup.php:29
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/http_importsurvey.php:31
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:30
@@ -172,14 +173,14 @@ msgstr "Vissza a Válaszimportálás menübe"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importgroup.php:37
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importgroup.php:611
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/http_importsurvey.php:38
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:39
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:458
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:66
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:467
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:476
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1365
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1391
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1456
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1531
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1616
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1617
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:428
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:1392
 msgid "Success"
@@ -189,14 +190,14 @@ msgstr "Sikerrel járt"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importlabel.php:41
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importgroup.php:38
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/http_importsurvey.php:39
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:40
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:67
 msgid "File upload succeeded."
 msgstr "File feltöltés sikeres"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/vvimport.php:80
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importlabel.php:42
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/http_importsurvey.php:40
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:41
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:68
 msgid "Reading file.."
 msgstr "File olvasása..."
 
@@ -233,8 +234,8 @@ msgstr "Összesen ennyi rekord importálva:"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:91
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:106
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:122
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:292
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:616
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:297
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:626
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1537
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:444
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:455
@@ -324,12 +325,12 @@ msgid "Actions"
 msgstr "Akciók"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/assessments.php:159
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:593
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:615
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1708
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/saved.php:99
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:351
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:431
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:765
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:355
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:435
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:773
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/deletesurvey.php:60
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/conditions.php:552
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/questionhandling.php:498
@@ -338,18 +339,18 @@ msgid "Delete"
 msgstr "Törlés"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/assessments.php:159
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:246
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:251
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1708
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:71
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:351
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:431
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:765
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:73
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:355
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:435
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:773
 msgid "Are you sure you want to delete this entry."
 msgstr "Biztosan törölni akarja ezt a bejegyzést?"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/assessments.php:178
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2195
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:566
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:588
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/questionhandling.php:489
 msgid "Save"
 msgstr "Mentés"
@@ -371,9 +372,9 @@ msgid "Import Label Set"
 msgstr "Címkekészlet importálása"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importlabel.php:30
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:132
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:144
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:156
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:162
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:174
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:186
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:59
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:72
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:96
@@ -390,7 +391,7 @@ msgstr "Címkekészlet importálása"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importgroup.php:250
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importgroup.php:267
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:32
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:54
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:43
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dumpsurvey.php:47
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dumplabel.php:31
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:163
@@ -429,7 +430,7 @@ msgstr "Címkekészlet importálás utáni összegzés"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importlabel.php:191
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importsurvey.php:1021
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importsurvey.php:1044
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:466
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:475
 msgid "Label Sets"
 msgstr "Címkekészletek"
 
@@ -452,452 +453,460 @@ msgstr "Nyelvek"
 msgid "Import of Label Set is completed."
 msgstr "Címkekészlet-importálás befejeződött"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:98
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:223
-msgid "Failed to copy"
-msgstr "Másolás sikertelen."
-
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:98
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:223
-msgid "to new template directory."
-msgstr "az új sablon alkönyvtárba"
-
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:104
-msgid "Directory with the name"
-msgstr "Alkönyvtár ezzel a névvel"
-
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:104
-msgid "already exists - choose another name"
-msgstr "már létezik, kérem válasszon másik nevet"
-
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:106
-msgid "Unable to create directory"
-msgstr "Alkönyvtár létrehozása sikertelen"
-
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:106
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:114
-msgid "Maybe you don't have permission."
-msgstr "Talán nincs jogosultsága"
-
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:114
-msgid "Directory could not be renamed to"
-msgstr "Alkönyvtárat nem sikerült átnevezni"
-
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:143
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:155
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:442
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:451
-msgid "This file type is not allowed to be uploaded."
-msgstr "Ennek a file-típusnak az importálása nem engedényezett"
-
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:197
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:229
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:230
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:245
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:287
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:39
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:251
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:252
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:267
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:309
 msgid "Welcome Page"
 msgstr "Üdvözlés oldal"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:198
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:258
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:40
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:280
 msgid "Question Page"
 msgstr "Kérdés oldal"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:199
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:231
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:375
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:41
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:253
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:397
 msgid "Submit Page"
 msgstr "Elküldés oldal"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:200
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:383
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:42
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:405
 msgid "Completed Page"
 msgstr "Kitöltött lap"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:201
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:356
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:43
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:378
 msgid "Clear All Page"
 msgstr "Mindent töröl oldal"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:202
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:295
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:44
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:317
 msgid "Register Page"
 msgstr "Regisztrációs oldal"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:203
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:337
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:45
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:359
 msgid "Load Page"
 msgstr "Töltés oldal"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:204
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:318
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:46
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:340
 msgid "Save Page"
 msgstr "Mentés oldal"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:467
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:323
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:324
-msgid "Template Editor"
-msgstr "Sablonszerketsztő"
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:128
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:245
+msgid "Failed to copy"
+msgstr "Másolás sikertelen."
 
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:128
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:245
+msgid "to new template directory."
+msgstr "az új sablon alkönyvtárba"
+
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:134
+msgid "Directory with the name"
+msgstr "Alkönyvtár ezzel a névvel"
+
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:134
+msgid "already exists - choose another name"
+msgstr "már létezik, kérem válasszon másik nevet"
+
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:136
+msgid "Unable to create directory"
+msgstr "Alkönyvtár létrehozása sikertelen"
+
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:136
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:144
+msgid "Maybe you don't have permission."
+msgstr "Talán nincs jogosultsága"
+
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:144
+msgid "Directory could not be renamed to"
+msgstr "Alkönyvtárat nem sikerült átnevezni"
+
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:173
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:185
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:464
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:473
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:242
+msgid "This file type is not allowed to be uploaded."
+msgstr "Ennek a file-típusnak az importálása nem engedényezett"
+
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:489
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:324
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:325
+msgid "Template Editor"
+msgstr "Sablonszerkesztő"
+
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:495
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:243
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:244
 msgid "Default Administration Page"
 msgstr "Alapértelmezett adminisztrációs oldal"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:480
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:502
 msgid "Create new template called:"
 msgstr "Új sablon létrehozása ezzel a névvel:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:480
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:502
 msgid "NewTemplate"
 msgstr "Új sablon"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:481
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:503
 msgid "Create new template"
 msgstr "Új sablon létrehozása"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:483
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:494
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:505
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:516
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:693
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1845
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2390
 msgid "Template:"
 msgstr "Sablon:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:501
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:523
 msgid "This template can be modified"
 msgstr "Ezt a sablont lehet módosítani"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:504
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:526
 msgid "This template cannot be modified"
 msgstr "Ezt a sablont nem lehet módosítani"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:515
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:537
 msgid "You can't edit the default template."
 msgstr "Az alapértelmezett sablont nem lehet módosítani."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:520
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:542
 msgid "Rename this template to:"
 msgstr "Sablon átnevezése erre:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:522
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:544
 msgid "Rename this template"
 msgstr "Sablon átnevezése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:527
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:549
 msgid "Export Template"
 msgstr "Sablon exportálása"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:531
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:553
 msgid "Copy Template"
 msgstr "Sablon másolása"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:532
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:554
 msgid "Make a copy of this template"
 msgstr "Sablonról másolat készítés"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:532
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:554
 msgid "copy_of_"
 msgstr "masolata_ennek_"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:538
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:560
 msgid "Screen:"
 msgstr "Képernyő:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:549
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:571
 msgid "File Control:"
 msgstr "File hozzáférés:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:559
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:581
 msgid "Standard Files:"
 msgstr "Standard fileok:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:560
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:582
 msgid "Now editing:"
 msgstr "Épp ezt szerkesztem:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:563
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:585
 msgid "Other Files:"
 msgstr "Más fileok"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:580
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:602
 msgid "Save Changes"
 msgstr "Változások mentése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:582
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:604
 msgid "Changes cannot be saved to the default template."
 msgstr "Az alapértelmezett sablonba nem lehet módosításokat menteni."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:593
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:615
 msgid "Are you sure you want to delete this file?"
 msgstr "Biztosan törölni akarja a file-t?"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:595
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:617
 msgid "Files in the default template cannot be deleted."
 msgstr "Az alapértelmezett sablonból nem lehet a fájlokat törölni."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:606
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:628
 msgid "Upload a File"
 msgstr "File feltöltése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:607
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1658
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:629
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1659
 msgid "Upload"
 msgstr "Feltöltés"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:629
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:651
 msgid "Preview:"
 msgstr "Előnézet:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:99
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:104
 msgid "Export Results"
 msgstr "Eredmények exportálása"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:109
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:114
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/vvexport.php:54
 msgid "Export Responses"
 msgstr "Válaszok exportálása"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:110
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:115
 msgid "Filtered from Statistics Script"
 msgstr "Statisztikai szkriptből szűrve"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:111
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:116
 msgid "Single Response"
 msgstr "Egyszerű válasz"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:124
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:129
 msgid "Columns"
 msgstr "Oszlopok"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:126
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:131
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:890
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importsurvey.php:1018
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importsurvey.php:1041
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importgroup.php:617
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:460
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:469
 msgid "Questions"
 msgstr "Kérdések"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:131
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:136
 msgid "Abbreviated headings"
 msgstr "Címsor rövidítések"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:134
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:139
 msgid "Full headings"
 msgstr "Teljes címsor"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:137
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:142
 msgid "Question Codes"
 msgstr "Kérdés kódok"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:138
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:143
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/vvexport.php:47
 msgid "Filter incomplete answers"
 msgstr "Hiányos válaszok kiszűrése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:139
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:549
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:144
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:559
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/vvexport.php:49
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:635
 msgid "Enable"
 msgstr "Engedélyez"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:140
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:550
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:145
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:560
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/vvexport.php:50
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:636
 msgid "Disable"
 msgstr "Letilt"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:145
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:150
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importsurvey.php:1019
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importsurvey.php:1042
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importgroup.php:620
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:463
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:472
 msgid "Answers"
 msgstr "Válaszok"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:150
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:155
 msgid "Answer Codes"
 msgstr "Válasz kódok"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:153
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:158
 msgid "Full Answers"
 msgstr "Komplett válaszok"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:157
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:162
 msgid "Format"
 msgstr "Formátum"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:162
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:167
 msgid "Microsoft Word (Latin charset)"
 msgstr "Microsoft Word (Latin karakterkészlet)"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:165
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:170
 msgid "Microsoft Excel (Latin charset)"
 msgstr "Microsoft Excel (Latin karakterkészlet)"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:168
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:173
 msgid "CSV File (UTF-8 charset - use this for non-latin languages)"
 msgstr "CSV File (UTF-8 karakterkészlet - használja ezt nem-latin nyelvekhez)"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:175
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:180
 msgid "Export Data"
 msgstr "Adatok exportálása"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:210
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:215
 msgid "Column Control"
 msgstr "Oszlop ellenőrzés"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:215
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:220
 msgid "Choose Columns"
 msgstr "Válasszon oszlopot"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:219
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:225
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:276
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:224
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:230
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:281
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/admin.php:393
 msgid "Help"
 msgstr "Súgó"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:220
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:225
 msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
 msgstr "A kérdőív több mint 255 oszlopnyi választ tartalmaz. A táblázatkezelő-rendszerek, mint pl. az Excel 2003 nem képesek 255-nél több oszlop beolvasására. (Az Excel 2007 már igen!) Kérem válassza ki az exportálni kívánt oszlopokat a listából alant."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:226
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:231
 msgid "Choose the columns you wish to export."
 msgstr "Kérem válassza ki az exportálni kívánt oszlopokat"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:266
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:271
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:159
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:177
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:190
 msgid "Token Control"
 msgstr "Zsetonbeállítás"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:271
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:276
 msgid "Choose Token Fields"
 msgstr "Válasszon zsetonmezőket"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:277
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:282
 msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
 msgstr "A kérdőív képes a válaszokhoz hozzárendelt zseton-adatok exportálására. Kérem válasszon ki ezen felül mezőket az exportáláshoz."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:280
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:453
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:454
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:815
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:66
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:285
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:465
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:466
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:832
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:73
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:603
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1243
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2090
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2097
 msgid "First Name"
 msgstr "Keresztnév"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:282
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:448
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:449
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:818
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:69
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:287
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:460
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:461
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:835
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:76
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:607
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1249
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2097
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2104
 msgid "Last Name"
 msgstr "Vezetéknév"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:284
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:821
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:72
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:132
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:309
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:724
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:289
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:838
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:79
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:134
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:313
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:732
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/login_check.php:37
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:611
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1255
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:56
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:208
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:67
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:219
 msgid "Email"
 msgstr "E-mail"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:286
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:463
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:464
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:827
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:333
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:344
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:291
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:475
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:476
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:844
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:338
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:409
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:615
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1261
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:490
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:1464
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:1095
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1351
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1358
 msgid "Token"
 msgstr "Kód"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:293
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:469
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:833
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:298
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:481
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:850
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1942
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2489
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:51
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:58
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:345
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:635
 msgid "Attribute 1"
 msgstr "Tulajdonság 1"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:295
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:474
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:836
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:300
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:486
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:853
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1944
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2490
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:52
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:59
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:346
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:639
 msgid "Attribute 2"
 msgstr "Tulajdonság 2"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:458
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:459
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:470
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:471
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/saved.php:85
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2104
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2111
 msgid "Email Address"
 msgstr "E-mail cím"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:483
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:484
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:806
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:495
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:496
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:823
 msgid "Time Submitted"
 msgstr "Kitöltött kérdőív érkezett:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:488
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:489
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:500
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:501
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:148
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:341
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:1595
+msgid "Completed"
+msgstr "Kész"
+
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:505
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:506
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:1503
 msgid "IP-Address"
 msgstr "IP-cím"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:493
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:494
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:812
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:158
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:346
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1354
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:510
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:511
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:829
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:163
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:356
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1361
 msgid "Referring URL"
 msgstr "A válaszokban nem lesznek benne IP-címek"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:533
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:550
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:1032
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:725
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:726
 msgid "Ranking"
 msgstr "Az ön rangsora"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:540
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:552
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:572
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:876
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:900
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:557
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:569
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:589
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:893
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:917
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:987
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:1342
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:1371
@@ -926,48 +935,48 @@ msgstr "Az ön rangsora"
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:982
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:1480
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:1600
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1460
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1655
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1721
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1731
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3858
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1467
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1662
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1728
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1738
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3866
 msgid "Other"
 msgstr "Más"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:769
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:786
 msgid "NEW RECORD"
 msgstr "ÚJ REKORD"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:809
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:154
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:342
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:826
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:159
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:352
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/saved.php:83
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:498
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1353
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1360
 msgid "IP Address"
 msgstr "IP-cím"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:824
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:841
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:132
 msgid "ID"
 msgstr "ID"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:830
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:847
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:145
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:333
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:338
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:490
 msgid "Token ID"
 msgstr "Token ID"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:839
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:856
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:620
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1273
 msgid "Language"
 msgstr "Nyelv"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:926
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:953
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:964
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:943
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:970
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:981
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:736
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1163
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1172
@@ -991,9 +1000,10 @@ msgstr "Nyelv"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2505
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2523
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2539
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:462
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:468
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:480
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:527
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:533
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:545
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:551
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/conditions.php:286
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/conditions.php:339
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/questionhandling.php:74
@@ -1030,17 +1040,17 @@ msgstr "Nyelv"
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:1915
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:2234
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:2280
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1468
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1474
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1490
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3921
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1475
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1481
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1497
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3929
 msgid "Yes"
 msgstr "Igen"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:927
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:954
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:955
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:967
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:944
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:971
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:972
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:984
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:732
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1163
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1172
@@ -1064,7 +1074,8 @@ msgstr "Igen"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2506
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2524
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2540
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:481
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:546
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:552
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/conditions.php:288
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/conditions.php:340
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/questionhandling.php:76
@@ -1098,19 +1109,19 @@ msgstr "Igen"
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:1921
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:2236
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:2292
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1475
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1491
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3925
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1482
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1498
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3933
 msgid "No"
 msgstr "Nem"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:928
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:936
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:945
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:953
 msgid "N/A"
 msgstr "N/A"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:934
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:475
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:951
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:540
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/conditions.php:345
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:327
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:668
@@ -1124,13 +1135,13 @@ msgstr "N/A"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:1562
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:1694
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:1967
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1482
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3908
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1489
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3916
 msgid "Male"
 msgstr "Férfi"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:935
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:474
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:952
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:539
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/conditions.php:344
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:324
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:667
@@ -1144,12 +1155,13 @@ msgstr "Férfi"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:1563
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:1693
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:1961
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1483
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3904
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1490
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3912
 msgid "Female"
 msgstr "Nő"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:970
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:987
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:553
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/conditions.php:287
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:442
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:1269
@@ -1163,11 +1175,12 @@ msgstr "Nő"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:2140
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:2235
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:2285
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1492
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1499
 msgid "Uncertain"
 msgstr "Nem tudom"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:977
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:994
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:558
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/conditions.php:291
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:474
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:1280
@@ -1180,11 +1193,12 @@ msgstr "Nem tudom"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:2159
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:2458
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:2496
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1498
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1505
 msgid "Increase"
 msgstr "Növel"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:980
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:997
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:559
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/conditions.php:292
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:477
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:1281
@@ -1197,11 +1211,12 @@ msgstr "Növel"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:2160
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:2459
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:2501
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1500
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1507
 msgid "Same"
 msgstr "Ugyanaz"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:983
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:1000
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:560
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/conditions.php:293
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:480
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:1282
@@ -1214,7 +1229,7 @@ msgstr "Ugyanaz"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:2161
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:2460
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:2507
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1499
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1506
 msgid "Decrease"
 msgstr "Csökkent"
 
@@ -1240,107 +1255,107 @@ msgstr "Ez a kérdőív egyelőre nem aktív, ezért a válaszokat nem lehet meg
 msgid "There is no matching survey."
 msgstr "Nincs ilyen kérdőív."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:147
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:335
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:154
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:347
 msgid "Date Submitted"
 msgstr "Kitöltött kérdőív érkezett"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:150
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:338
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:155
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:348
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:494
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1352
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1359
 msgid "Date Stamp"
 msgstr "Dátumbélyegző"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:232
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:237
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:681
 msgid "View Response"
 msgstr "Válaszok megtekintése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:239
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:244
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:132
 msgid "Edit this entry"
 msgstr "Bejegyzés szerkesztése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:245
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:250
 msgid "Delete this entry"
 msgstr "Bejegyzés törlése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:249
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:250
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:254
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:255
 msgid "Export this Response"
 msgstr "Válasz exportálása"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:254
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:517
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:259
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:527
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:538
 msgid "Show previous..."
 msgstr "Mutasd az előzőt..."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:258
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:521
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:263
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:531
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:542
 msgid "Show next..."
 msgstr "Mutasd a következőt..."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:301
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:306
 msgid "Showing Filtered Results"
 msgstr "Leszűrt eredmények mutatása"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:302
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:307
 msgid "Close"
 msgstr "Bezár"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:509
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:519
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:530
 msgid "Data View Control"
 msgstr "Adatmegtekintés vezérlése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:514
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:524
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:535
 msgid "Show start.."
 msgstr "Mutasd a kezdést..."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:524
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:534
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:545
 msgid "Show last..."
 msgstr "Mutasd az utolsó..."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:546
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:556
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:559
 msgid "Records Displayed:"
 msgstr "Bemutatott rekordok:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:547
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:557
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:560
 msgid "Starting From:"
 msgstr "Innen indul:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:548
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:558
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:634
 msgid "Filter incomplete answers:"
 msgstr "Hiányos válaszok kiszűrése:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:552
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:562
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:561
 msgid "Show"
 msgstr "Mutat"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:578
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:588
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:438
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:1394
 msgid "View This Record"
 msgstr "Rekord megtekintése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:629
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:639
 msgid "responses for this survey"
 msgstr "kérdőív válaszai"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:630
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:640
 msgid "full responses"
 msgstr "teljes válaszok"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:631
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:641
 msgid "responses not completly filled out"
 msgstr "Válaszok nem készen kitöltve"
 
@@ -1464,7 +1479,7 @@ msgstr "Felhasználók"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:233
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importsurvey.php:1012
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importsurvey.php:1035
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:349
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:350
 msgid "Surveys"
 msgstr "Kérdőívek"
 
@@ -1516,7 +1531,7 @@ msgstr "Kérem válasszon nyelvet:"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:418
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:427
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:428
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1272
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1273
 msgid "Dataentry Screen for Survey"
 msgstr "A kérdőív adatbeviteli képernyője"
 
@@ -1563,7 +1578,7 @@ msgstr "Kérdőív válaszainak megtekintése"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:545
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:546
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1288
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1289
 msgid "View Saved but not submitted Responses"
 msgstr "Kérdőív elmentett, de nem elküldött válaszainak megtekintése"
 
@@ -1597,12 +1612,12 @@ msgid "Groups"
 msgstr "Csoportok"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:597
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:530
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:800
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:825
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:868
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2989
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3014
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:531
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:801
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:826
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:869
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3006
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3031
 msgid "None"
 msgstr "Nincs"
 
@@ -1619,7 +1634,7 @@ msgstr "Cím"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:619
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1914
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1919
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1926
 msgid "This survey is anonymous."
 msgstr "Ez a kérdőív névtelen"
 
@@ -1665,17 +1680,17 @@ msgid "Participants can save partially finished surveys"
 msgstr "Résztvevők elmenthetik a részlegesen befejezett kérdőíveket"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:633
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:759
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:760
 msgid "No email notification"
 msgstr "Nincs e-mail-értesítés"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:636
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:760
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:761
 msgid "Basic email notification"
 msgstr "Alapszintű e-mail-értesítés"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:639
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:761
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:762
 msgid "Detailed email notification with result codes"
 msgstr "Részletes email-értesítés válaszkódokkal"
 
@@ -1712,8 +1727,8 @@ msgstr "Zászló"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:906
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2144
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2373
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:485
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:507
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:489
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:511
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/grouphandling.php:41
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/grouphandling.php:114
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/grouphandling.php:129
@@ -1952,8 +1967,8 @@ msgid "Type:"
 msgstr "Típus:"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1138
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:310
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:311
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:312
 msgid "Edit/Add Label Sets"
 msgstr "Címkekészletek hozzáadása/szerkesztése"
 
@@ -2037,7 +2052,7 @@ msgstr "Válasz"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1259
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1655
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/saved.php:86
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:725
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:733
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:281
 msgid "Action"
 msgstr "Tevékenység"
@@ -2056,7 +2071,7 @@ msgstr "Alapértelmezett"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1308
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1312
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:315
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:673
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:695
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/database.php:744
 msgid "Del"
 msgstr "Töröl"
@@ -2065,7 +2080,7 @@ msgstr "Töröl"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2223
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2304
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:321
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:649
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:671
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/questionhandling.php:519
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/questionhandling.php:595
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/database.php:720
@@ -2076,7 +2091,7 @@ msgstr "Fel"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2235
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2309
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:326
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:661
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:683
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/questionhandling.php:531
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/questionhandling.php:599
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/database.php:732
@@ -2085,7 +2100,7 @@ msgstr "Le"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1333
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:333
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:604
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:626
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/database.php:652
 msgid "Save All"
 msgstr "Mind mentése"
@@ -2105,15 +2120,15 @@ msgstr "Nem adhat/szerkeszthet válasz kódokat ennél a kérdésnél, mert a k�
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1397
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1736
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:464
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:469
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:786
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:153
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:468
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:473
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:794
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:164
 msgid "Add User"
 msgstr "Felhasználó hozzáadása"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1410
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:851
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:859
 msgid "User added."
 msgstr "Felhasználó hozzáadva."
 
@@ -2129,16 +2144,16 @@ msgstr "Kérdőív-jogosultságok beállítása"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1421
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1427
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1481
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:856
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:862
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:166
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:170
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:226
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:864
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:870
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:177
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:181
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:237
 msgid "Failed to add User."
 msgstr "Felhasználó hozzáadása sikertelen."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1421
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:856
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:864
 msgid "Username already exists."
 msgstr "Felhasználónév már létezik."
 
@@ -2149,19 +2164,18 @@ msgstr "Felhasználónév már létezik."
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1515
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1799
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2714
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:293
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:579
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:601
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:583
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:607
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:614
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:665
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:670
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:690
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:693
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:825
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:829
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:858
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:863
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:613
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:620
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:671
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:676
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:698
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:701
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:833
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:837
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:866
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:871
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/access_denied.php:26
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/access_denied.php:31
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/access_denied.php:36
@@ -2187,30 +2201,30 @@ msgstr "Felhasználónév már létezik."
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:267
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:929
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1130
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:35
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:58
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:64
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:83
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:135
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:229
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:297
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:366
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:405
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:415
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:46
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:69
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:75
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:94
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:146
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:240
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:308
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:377
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:416
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:426
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:1103
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2141
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2148
 msgid "Continue"
 msgstr "Folytatás"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1427
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1481
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:862
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:870
 msgid "No Username selected."
 msgstr "Nincs kijelölve felhasználónév."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1440
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1751
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:481
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:485
 msgid "Add User Group"
 msgstr "Felhasználó-csoport hozzáadása"
 
@@ -2223,31 +2237,31 @@ msgid "Failed to add User Group."
 msgstr "Felhasználó-csoport hozzáadása sikertelen"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1493
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:234
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:245
 msgid "Deleting User"
 msgstr "Felhasználó törlése"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1504
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1653
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:131
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:308
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:723
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:812
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:133
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:312
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:731
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:820
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/login_check.php:33
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/login_check.php:79
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:44
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:56
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:197
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:55
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:67
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:208
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:284
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:345
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:348
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:219
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:295
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:356
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:359
 msgid "Username"
 msgstr "Felhasználói név"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1508
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:816
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:294
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:824
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:305
 msgid "Could not delete user. User was not supplied."
 msgstr "Felhasználó törlése sikertelen. Felhasználó nem volt megadva"
 
@@ -2284,8 +2298,8 @@ msgstr "Kérdőív aktiválása"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1577
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1630
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:256
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2055
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:258
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2062
 msgid "Save Now"
 msgstr "Mentés most"
 
@@ -2302,7 +2316,7 @@ msgid "Survey Security"
 msgstr "Kérdőív-biztonság"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1654
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:30
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:32
 msgid "User Group"
 msgstr "Felhasználói csoport"
 
@@ -2723,13 +2737,13 @@ msgstr "Hiba: Nem adott meg címet ehhez a kérdőívhez"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2369
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2542
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:179
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:181
 msgid "Create Survey"
 msgstr "Kérdőívkészítés"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2372
 msgid "(This field is mandatory.)"
-msgstr "(Erre a kérdésre kötelező válszolni)"
+msgstr "(Erre a kérdésre kötelező válaszolni)"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2520
 msgid "This setting cannot be changed later!"
@@ -2820,12 +2834,12 @@ msgstr "Biztosan törölni akarja ezt a bejegyzést?"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/saved.php:124
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:359
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1264
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1265
 msgid "Show summary information"
 msgstr "Összegzés megjelenítése"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/saved.php:126
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1267
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1268
 msgid "Display Responses"
 msgstr "Válaszok megtekintése"
 
@@ -2838,243 +2852,235 @@ msgstr "Kérdés exportálása"
 msgid "No QID has been provided. Cannot dump question."
 msgstr "Nincs megadva QID (kérdés azonosító). Kérdés nem dumpolható."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:338
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:403
 msgid "Record ID"
 msgstr "Rekord ID"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:340
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:405
 msgid "Completion Date"
 msgstr "Elkészítés dátuma"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:342
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:407
 msgid "Start Language"
 msgstr "Alapnyelv"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:463
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:469
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:528
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/spss.php:534
 msgid "Not Selected"
 msgstr "Nincs kiválasztva"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:51
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:528
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:620
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:53
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:532
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:626
 msgid "Mail to all Members"
 msgstr "E-mail küldése minden tagnak"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:61
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:63
 msgid "Edit Current User Group"
 msgstr "Jelenlegi felhasználói csoport szerkesztése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:73
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:75
 msgid "Delete Current User Group"
 msgstr "Jelenlegi felhasználói csoport törlése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:91
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:93
 msgid "Add New User Group"
 msgstr "Új csoport hozzáadása"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:95
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:97
 msgid "User Groups"
 msgstr "Felhasználói csoportok"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:129
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:303
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:131
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:314
 msgid "Modifying User"
 msgstr "Felhasználó módosítása"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:133
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:310
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:135
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:314
 msgid "Full name"
 msgstr "Teljes név"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:134
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:311
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:136
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:315
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/login_check.php:83
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:407
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:198
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:345
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:348
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:209
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:356
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:359
 #: /srv/www/virtual/limesurvey.org/stableSVN/save.php:281
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2041
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2067
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2048
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2074
 msgid "Password"
 msgstr "Jelszó"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:152
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:154
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:160
 msgid "Update"
 msgstr "Frissítés"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:167
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:440
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:219
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:377
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:169
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:444
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:230
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:388
 msgid "Set User Rights"
 msgstr "Felhasználói jogok beállítása"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:182
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:184
 msgid "Configurator"
 msgstr "Beállítás"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:185
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:187
 msgid "Create User"
 msgstr "Felhasználó létrehozása"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:188
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:803
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:190
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:811
 msgid "Delete User"
 msgstr "Felhasználó törlése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:191
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:193
 msgid "Move User"
 msgstr "Felhasználó átköltöztetése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:194
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:196
 msgid "Manage Template"
 msgstr "Sablonbeállítások"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:197
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:199
 msgid "Manage Labels"
 msgstr "Címkebeállítások"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:291
-msgid "Setting new Parent"
-msgstr "Új szülő megadása"
-
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:292
-msgid "Set Parent successful."
-msgstr "Új szülő megadása sikeres volt."
-
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:305
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:309
 msgid "User Control"
 msgstr "Felhasználó kezelés"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:312
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:316
 msgid "Created by"
 msgstr "Létrehozta: "
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:342
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:449
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:346
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:453
 msgid "Edit User"
 msgstr "Felhasználó szerkesztése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:483
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:505
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:487
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:509
 msgid "Name:"
 msgstr "Név:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:484
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:488
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/grouphandling.php:40
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/questionhandling.php:30
 msgid "Required"
 msgstr "Szükséges"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:487
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:491
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/grouphandling.php:27
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/grouphandling.php:49
 msgid "Add Group"
 msgstr "Csoport hozzáadása"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:503
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:507
 msgid "Edit User Group (Owner: "
 msgstr "Felhasználó-csoport szerkesztése (tulajdonos:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:509
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:513
 msgid "Update User Group"
 msgstr "Felhasználó-csoport frissítése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:530
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:534
 msgid "Send me a copy:"
 msgstr "Másolat küldése nekem:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:533
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:537
 msgid "Subject:"
 msgstr "Tárgy:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:535
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:539
 msgid "Message:"
 msgstr "Üzenet:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:537
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:541
 msgid "Send"
 msgstr "Küldés"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:538
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:542
 msgid "Reset"
 msgstr "Törlés"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:550
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:554
 msgid "Deleting User Group"
 msgstr "Felhasználói csoport törlése folyamatban"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:563
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:593
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:567
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:599
 msgid "Group Name"
 msgstr "Csoport neve"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:567
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:571
 msgid "Could not delete user group."
 msgstr "Felhasználói csoport törlése sikertelen"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:577
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:581
 msgid "Could not delete user group. No group selected."
 msgstr "Felhasználói csoport törlése sikertelen, nincs csoport kiválasztva"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:584
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:588
 msgid "Adding User Group"
 msgstr "Felhasználói csoport hozzáadása folyamadban"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:597
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:689
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:713
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:603
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:697
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:721
 msgid "Description: "
 msgstr "Leírás: "
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:600
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:606
 msgid "User group successfully added!"
 msgstr "Felhasználói csoport hozzáadva!"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:605
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:612
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:611
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:618
 msgid "Failed to add Group!"
 msgstr "A csoport hozzáadása sikertelen!"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:606
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:612
 msgid "Group already exists!"
 msgstr "A csoport már létezik!"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:613
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:619
 msgid "Group name was not supplied!"
 msgstr "A csoport neve nem lett megadva!"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:663
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:669
 msgid "Message(s) sent successfully!"
 msgstr "Üzenet(ek) sikeresen elküldve!"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:664
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:670
 msgid "To:"
 msgstr "Címzett:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:669
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:675
 msgid "Mail not sent!"
 msgstr "Az e-mail nem lett elküldve!"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:687
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:695
 msgid "Edit User Group Successfully!"
 msgstr "Felhasználói csoport szerkesztése sikeres!"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:688
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:696
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:406
 #: /srv/www/virtual/limesurvey.org/stableSVN/save.php:280
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2038
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2045
 msgid "Name"
 msgstr "Név"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:692
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:700
 msgid "Failed to update!"
 msgstr "Frissítés sikertelen!"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:838
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:846
 msgid "Adding User to group"
 msgstr "Felhasználó hozzáadása a csoporthoz"
 
@@ -3084,7 +3090,7 @@ msgid "LimeSurvey Online Manual"
 msgstr "LimeSurvey online felhasználói kézikönyv"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/vvexport.php:41
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1294
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1295
 msgid "Export a VV survey file"
 msgstr "Egy VV kérdőív file exportálása"
 
@@ -3100,8 +3106,8 @@ msgstr "Címkekészlet-adminisztráció"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:69
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:71
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:352
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:332
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:334
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:333
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:335
 msgid "Show Help"
 msgstr "Segítség megjelenítése"
 
@@ -3121,16 +3127,16 @@ msgstr "Címkekészletek"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/questionhandling.php:61
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/questionhandling.php:190
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/questionhandling.php:386
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:529
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:576
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:688
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:799
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:824
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:867
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2966
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2988
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3013
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3039
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:530
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:577
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:689
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:800
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:825
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:868
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2983
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3005
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3030
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3056
 msgid "Please Choose..."
 msgstr "Kérem, válasszon..."
 
@@ -3193,7 +3199,7 @@ msgid "New label"
 msgstr "Új címke"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:346
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:570
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:592
 msgid "Add new label"
 msgstr "Új címke hozzáadása"
 
@@ -3206,7 +3212,7 @@ msgid "You cannot change codes, add or delete entries in this label set because 
 msgstr "Ebben a címekekészletben nem lehet kódokat változtatni, hozzáadni/törölni bejegyzéseket, mert jelenleg egy aktív kérdőív használja."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:408
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:682
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:704
 msgid "Fix Sort"
 msgstr "Sorrend javítása"
 
@@ -3214,43 +3220,43 @@ msgstr "Sorrend javítása"
 msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
 msgstr "Egy vagy több kérdőív használja ezt a címkekészletet. A kód módosítása, bejegyzések törlése vagy hozzáadása nem várt eredményekkel járhat a kérdőívekben."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:478
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:489
 msgid "Failed to Copy already defined labels to added languages"
 msgstr "Hozzáadott nyelvekhez nem sikerült a már definiált címkéket hozzáadni"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:496
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:507
 msgid "Failed to delete labels for removed languages"
 msgstr "Eltávolított nyelvekhez tartozó címkék törlése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:504
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:515
 msgid "Update of Label Set failed"
 msgstr "Címkekészlet frissítése sikertelen"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:520
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:531
 msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
 msgstr "Nem lehetett a címekészletet kitörölni - kérdések hivatkoznak rá: először a hivatkozó kérdéseket kell törölni"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:545
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:567
 msgid "Insert of Label Set failed"
 msgstr "Címkekészlet importálása sikertelen"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:591
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:613
 msgid "Failed to insert label"
 msgstr "Címke beillesztése sikertelen"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:598
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:620
 msgid "This label code is already used in this labelset. Please choose another code or rename the existing one."
 msgstr "Ebben a címkekészletben már létezik ez a címkekód. Kérem válasszon másikat vagy nevezze át a meglévőt."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:634
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:656
 msgid "Failed to update label"
 msgstr "Címke frissítése sikertelen"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:643
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:665
 msgid "Can't update labels because you are using duplicated codes"
 msgstr "Nem sikerült frissíteni a címkéket, mert Ön duplikált kódokat használ"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:677
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:699
 msgid "Failed to delete label"
 msgstr "Címke törlése sikertelen"
 
@@ -3339,7 +3345,7 @@ msgstr "A kérdéscsoport nevét átírhatja"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/activate.php:241
 msgid "Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)"
-msgstr "Hozzáadhat, kitörölhet és szerkeszthet előregyártott kérdéseket (kivéve a multiple choice típusúakat"
+msgstr "Hozzáadhat, kitörölhet és szerkeszthet előregyártott kérdéseket (kivéve a multiple choice típusúakat)"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/activate.php:241
 msgid "Change survey name or description"
@@ -3471,7 +3477,7 @@ msgstr "Kérdés attribútumok"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importsurvey.php:1025
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importsurvey.php:1048
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:475
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:484
 msgid "Import of Survey is completed."
 msgstr "Kérdőív importálása befejeződött"
 
@@ -3577,12 +3583,12 @@ msgstr "Nincs feltétel kiválasztva a másolás helyére"
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:2678
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:2730
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:2731
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1476
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1484
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3896
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3912
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3929
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3939
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1483
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1491
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3904
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3920
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3937
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:3947
 msgid "No answer"
 msgstr "Nincs válasz"
 
@@ -3645,7 +3651,7 @@ msgstr "Címkekészlet:"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/questionhandling.php:95
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/questionhandling.php:465
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importgroup.php:631
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:471
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:480
 msgid "Question Attributes:"
 msgstr "Kérdés attribútumok:"
 
@@ -3986,7 +3992,7 @@ msgstr "Az első és 3. kvartilis számítása ezzel az eljárással:"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:1193
 msgid "minitab method"
-msgstr "Minitab"
+msgstr "Minitab eljárás"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:1362
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:1506
@@ -4000,10 +4006,6 @@ msgstr "Százalék"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:1455
 msgid "Non completed"
 msgstr "Nem teljes"
-
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:1595
-msgid "Completed"
-msgstr "Kész"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dbedit.php:388
 msgid "Answer could not be added. There is already an answer with this code"
@@ -4020,27 +4022,32 @@ msgstr "A választ nem lehetett frissíteni. Van már válaszalternatíva ezzel 
 msgid "Answered"
 msgstr "Megválaszolt"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:52
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:41
 msgid "No SID (Survey) has been provided. Cannot import question."
 msgstr "Nincs SID (kérdőív ID) megadva. Nem lehet a kérdést importálni."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:60
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:55
 msgid "No GID (Group) has been provided. Cannot import question"
 msgstr "Nincs GID (kérdéscsoport ID) megadva. Nem lehet a kérdést importálni."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:67
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:97
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:105
 msgid "This file is not a LimeSurvey question file. Import failed."
 msgstr "Ez a fájl nem LimeSurvey kérdésfájl, az importálás sikertelen."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:194
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:114
+msgid "Sorry, importing questions is limited to the same version. Import failed."
+msgstr "A kérdések importálása csak azonos verzióból lehetséges. Az importálás sikertelen."
+
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:242
 msgid "You can't import a question which doesn't support the current survey's base language"
 msgstr "Nem inportálhat olyan kérdést, amelyik nem támogatja a kurrens kérdőív alapnyelvét"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:230
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:278
 msgid "You can't import label sets which don't support the current survey's base language"
 msgstr "Nem importálhat olyan kérdést, amelyik nem támogatja a kurrens kérdőív alapnyelvét"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:459
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:468
 msgid "Question Import Summary"
 msgstr "Kérdésimportálási összesítő"
 
@@ -4393,12 +4400,12 @@ msgstr "Szűrőfeltételek"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/stats.php:485
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/stats.php:682
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:726
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:727
 msgid "Short free text"
 msgstr "Rövid szöveg"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/stats.php:661
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:713
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:714
 msgid "Date"
 msgstr "Dátum"
 
@@ -4407,7 +4414,7 @@ msgid "Numerical"
 msgstr "Számérték"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/stats.php:693
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:727
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:728
 msgid "Long free text"
 msgstr "Hosszú szöveg"
 
@@ -4778,7 +4785,7 @@ msgstr "Zsetonok törlése"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:757
 msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
-msgstr ""
+msgstr "A zseton tábla eltávolítva, a kérdőív eléréséhez nem szükségesek ezentúl zsetonok."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:757
 msgid "A backup of this table has been made and can be accessed by your system administrator."
@@ -4880,7 +4887,7 @@ msgid "Token has been deleted."
 msgstr "A zsetont töröltük"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1207
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:127
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:138
 msgid "Reloading Screen. Please wait."
 msgstr "A képernyő újratöltése"
 
@@ -4970,41 +4977,41 @@ msgstr "Duplikált rekordok törölve"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1539
 msgid "Records with invalid email address removed"
-msgstr ""
+msgstr "Az érvénytelen e-mail címek sorai eltávolítva"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1548
 msgid "Uploading LDAP Query"
-msgstr "LDAP lekérdezéss feltöltése"
+msgstr "LDAP lekérdezés feltöltése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1617
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1618
 msgid "{TOKENCOUNT} Records Created"
-msgstr ""
+msgstr "{TOKENCOUNT} rekordok elkészítve"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1621
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1622
 msgid "Can't bind to the LDAP directory"
 msgstr ""
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1627
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1628
 msgid "Can't connect to the LDAP directory"
 msgstr ""
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1655
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1656
 msgid "Choose the CSV file to upload:"
 msgstr "Válassza ki a CSV file-t feltöltéshez:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1657
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1658
 msgid "Character set of the file:"
 msgstr "File karakterkészlete:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1671
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1672
 msgid "Sorry, but the LDAP module is missing in your PHP configuration."
 msgstr "Sajnálom, de a PHP-konfigurációból hiányzik az LDAP modul."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1677
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1678
 msgid "LDAP is disabled or no LDAP query defined."
 msgstr "LDAP letiltva vagy nincs megadva LDAP lekérdezés"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1682
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1683
 msgid "Select the LDAP query you want to run:"
 msgstr "Kérem válasszon LDAP lekérdezést:"
 
@@ -5096,11 +5103,11 @@ msgstr "Kérdőív elküldése"
 msgid "Thank you for completing this survey."
 msgstr "Köszönjük hogy kitöltötte a kérdőívet."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/printablesurvey.php:698
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/printablesurvey.php:701
 msgid "Please fax your completed survey to:"
 msgstr "Kérem erre a számra faxolja el a kérdőívet:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/printablesurvey.php:701
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/printablesurvey.php:705
 msgid "Please submit by"
 msgstr "Kérem, adja be e szerint..."
 
@@ -5139,7 +5146,7 @@ msgstr "Adatbázis létrehozása sikertelen"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/install/index.php:29
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/install/index.php:46
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1062
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1063
 msgid "LimeSurvey Setup"
 msgstr "LimeSurvey Setup"
 
@@ -5180,15 +5187,15 @@ msgstr "A kérdőív deaktiválása"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/deactivate.php:30
 msgid "In an active survey, a table is created to store all the data-entry records."
-msgstr ""
+msgstr "Az aktivált kérdőívhez egy tábla készül a kitöltött kérdőívek adatainak tárolásához."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/deactivate.php:31
 msgid "When you deactivate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
-msgstr ""
+msgstr "Ha deaktiválja a kérdőívet, adatai az eredeti táblából egy másik táblába kerülnek, így a kérdőív újbóli aktiválásakor a tábla üres lesz. Ezeket az adatokat a Limesurvey-en keresztül már nem érheti el."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/deactivate.php:32
 msgid "Deactivated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
-msgstr ""
+msgstr "A deaktivált kérdőív adatai már csak a rendszergazda által lesznek elérhetőek a pl. phpmyadmin program segítségével. Ha a kérdőíve használ zsetonokat, e tábla szintén átnevezésre kerül, és szintúgy a rendszergazda által lesz csak elérhető."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/deactivate.php:33
 msgid "Your responses table will be renamed to:"
@@ -5196,7 +5203,7 @@ msgstr "A válaszokat tartalmazó táblázat átnevezése erre:"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/deactivate.php:34
 msgid "Also you should export your responses before deactivating."
-msgstr ""
+msgstr "Ezért javasoljuk, hogy a deaktiválás előtt exportálja adatait."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/deactivate.php:97
 msgid "Survey Has Been Deactivated"
@@ -5212,11 +5219,11 @@ msgstr "Ennek a kérdőívnek a válaszai már nem elérhetőek LimeSurvey alatt
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/deactivate.php:104
 msgid "You should note the name of this table in case you need to access this information later."
-msgstr ""
+msgstr "Jegyezze meg a tábla nevét, hogy a későbbiekben elérhesse a kívánt információkat."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/deactivate.php:107
 msgid "The tokens table associated with this survey has been renamed to: "
-msgstr ""
+msgstr "A kérdőívvel összekapcsolt zseton tábla erre a névre lesz átnevezve:"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:40
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:56
@@ -5242,7 +5249,7 @@ msgstr "A megadott zseton érvénytelen."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:127
 msgid "There is already a recorded answer for this token"
-msgstr ""
+msgstr "Ezzel a zsetonnal már töltöttek ki kérdőívet"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:130
 msgid "Follow the following link to update it"
@@ -5301,7 +5308,7 @@ msgstr "Kezdeti nyelv:"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:1283
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:2273
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:1464
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1905
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1912
 msgid "submit"
 msgstr "Elküldöm"
 
@@ -5430,7 +5437,7 @@ msgid "Help about this question"
 msgstr "Segítség erről a kérdésről"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:1791
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1672
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1679
 msgid "Comment"
 msgstr "Megjegyzés"
 
@@ -5446,107 +5453,107 @@ msgstr "Adatbázis exportálása"
 msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
 msgstr ""
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:22
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:33
 msgid "Forgot Password"
 msgstr "Elfelejtettem a jelszót"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:34
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:45
 msgid "User name and/or email not found!"
 msgstr "Felhasználónév és/vagy e-mail cím ismeretlen!"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:43
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:196
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:54
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:207
 msgid "Your data:"
 msgstr "Az adatai:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:45
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:56
 msgid "New Password"
 msgstr "Új jelszó"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:57
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:68
 msgid "An email with your login data was sent to you."
 msgstr "A bejelentkezési adataival elküldtünk egy e-mailt"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:62
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:214
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:73
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:225
 msgid "Email to {NAME} ({EMAIL}) failed."
 msgstr "E-mail küldése {NAME} ({EMAIL}) számára sikertelen."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:71
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:82
 msgid "Logging in..."
 msgstr "Belépés..."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:82
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:134
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:93
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:145
 msgid "Incorrect User name and/or Password!"
 msgstr "Hibás felhasználónév és/vagy jelszó!"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:119
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:130
 msgid "Welcome {NAME}"
 msgstr "Üdvözlet, {NAME}!"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:120
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:131
 msgid "You logged in successfully."
 msgstr "Sikeresen belépett."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:147
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:158
 msgid "Logout successful."
 msgstr "Kilépés sikeres"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:166
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:177
 msgid "Email address is not valid."
 msgstr "Az e-mail cím érvénytelen"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:171
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:182
 msgid "Username was not supplied."
 msgstr "Nem adott meg felhasználónevet."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:195
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:206
 msgid "You were signed in on the site"
 msgstr "Bejelentkezett a site-ra"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:199
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:210
 msgid "Login here"
 msgstr "Itt jelentkezzen be"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:209
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:220
 msgid "An email with a generated password was sent to the user."
 msgstr "Egy e-mailt küldtünk egy generált jelszóval a felhasználónak."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:226
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:237
 msgid "Username and/or email address already exists."
 msgstr "Felhasználónév és/vagy e-mail cím már foglalt."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:242
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:253
 msgid "Admin cannot be deleted!"
 msgstr "Az admint nem lehet kitörölni!"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:329
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:353
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:340
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:364
 msgid "Could not modify User Data."
 msgstr "Nem lehetett a felhasználó adatokat módosítani."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:329
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:340
 msgid "Email address ist not valid."
 msgstr "Az e-mail cím érvénytelen."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:345
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:356
 msgid "Unchanged"
 msgstr "Változatlan"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:353
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:364
 msgid "Email address already exists."
 msgstr "Az e-mail cím már létezik."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:359
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:370
 msgid "Back"
 msgstr "Vissza"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:404
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:415
 msgid "Update user rights successful."
 msgstr "Felhasználói jogosultságok frissítése sikerült."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:414
+#: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:425
 msgid "You are not allowed to change your own rights!"
 msgstr "Nem változtathatja meg a saját jogosultságait!"
 
@@ -5567,7 +5574,7 @@ msgstr "Ezt az elmentési azonosítónevet valaki már felhasználta, adjon meg 
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/save.php:278
 msgid "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
-msgstr ""
+msgstr "Ön, vagy valaki az Ön e-mail címét használva, elmentett egy félkész kérdőívet. A kérdőív folytatását az alábbiak szerint teheti meg."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/save.php:455
 msgid "Cannot submit results - there are none to submit."
@@ -5630,7 +5637,7 @@ msgstr "Nem adott meg jelszót"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:263
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:267
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1954
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1961
 msgid "Load Unfinished Survey"
 msgstr "A félkész kérdőív betöltése"
 
@@ -5656,7 +5663,7 @@ msgstr "További információ:"
 #: /srv/www/virtual/limesurvey.org/stableSVN/question.php:112
 #: /srv/www/virtual/limesurvey.org/stableSVN/survey.php:126
 #: /srv/www/virtual/limesurvey.org/stableSVN/register.php:128
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2021
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2028
 msgid "Close this Window"
 msgstr "Ablak bezárása"
 
@@ -5721,7 +5728,7 @@ msgstr "Beírandó adatok:"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:1034
 msgid "SQL CODE THAT FAILED"
-msgstr ""
+msgstr "Hibás SQL kód"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:1036
 msgid "ERROR MESSAGE"
@@ -5745,9 +5752,9 @@ msgid "If you have been issued with a token, please enter it in the box below an
 msgstr "Ha kapott ilyen kódot, írja be az alábbi mezőbe, majd kattintson a 'Tovább' gombra."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:1100
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2052
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2072
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2117
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2059
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2079
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2124
 msgid "Security Question"
 msgstr "Biztonsági kérdés"
 
@@ -5864,7 +5871,7 @@ msgstr "Kérem helyesen töltse ki a választ"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:404
 msgid "This question is mandatory"
-msgstr "Erre a kérdésre kötelező válszolni"
+msgstr "Erre a kérdésre kötelező válaszolni"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:414
 msgid "Please complete all parts"
@@ -5876,7 +5883,7 @@ msgstr "Rangsorolja az összeset"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:421
 msgid "Please check at least one item"
-msgstr "Jelöljön be legalább egy válszt"
+msgstr "Jelöljön be legalább egy választ"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:441
 msgid "You cannot proceed until you enter some text for one or more questions."
@@ -5884,7 +5891,7 @@ msgstr "Nem léphet tovább, amíg egy vagy több kérdéshez nem ír választ."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:445
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
-msgstr "Legalább egy kötelezően kitöltendő kérdésre nem válszolt. Addig nem léphet tovább, amíg ezeket nem tölti ki!"
+msgstr "Legalább egy kötelezően kitöltendő kérdésre nem válaszolt. Addig nem léphet tovább, amíg ezeket nem tölti ki!"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:468
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
@@ -5896,12 +5903,12 @@ msgstr "Dátum formátum: éééé-HH-NN"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:528
 msgid "(eg: 2003-12-25 for Christmas day)"
-msgstr "(pl: karácsony napja: 2003-12-25)"
+msgstr "(pl: Karácsony napja: 2003-12-25)"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:736
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:968
 msgid "Error: The labelset used for this question is not available in this language."
-msgstr ""
+msgstr "Hiba: A kérdéshez használt cimkekészlet nem elérhető ezen a nyelven."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:1040
 msgid "Please choose one of the following"
@@ -5947,340 +5954,339 @@ msgstr "Ebbe a mezőbe csak számokat írhat"
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:2703
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:2818
 msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
-msgstr ""
+msgstr "Hiba: A kérdéshez használt cimkekészlet nem létezik és/vagy nem elérhető ezen a nyelven."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:226
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:227
 msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
 msgstr "Vigyázat: még mindig az alapértelmezett jelszót használja ('password'). Kérem, változtassa meg, majd lépjen be újra!"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:232
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:233
 msgid "Administration"
 msgstr "Adminisztráció"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:235
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:236
 msgid "Logged in as"
 msgstr "Belépve mint"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:252
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:254
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:253
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:255
 msgid "Create/Edit Users"
 msgstr "Felhasználók Létrehozása/Szerkesztése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:258
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:259
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:260
 msgid "Create/Edit Groups"
 msgstr "Kérdéscsoportok Létrehozása/Szerkesztése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:265
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:266
 msgid "Check Settings"
 msgstr "Beállítások ellenőrzése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:267
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:268
 msgid "Settings"
 msgstr "Beállítások"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:275
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:276
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:277
 msgid "Check Data Integrity"
 msgstr "Adatintegritás ellenőrzése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:286
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:288
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:287
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:289
 msgid "List Surveys"
 msgstr "Kérdőívek felsorolása"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:297
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:298
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:299
 msgid "Backup Entire Database"
 msgstr "Teljes adatbázis biztonsági mentése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:337
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:339
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:338
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:340
 msgid "Logout"
 msgstr "Kilépés"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:346
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:347
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:348
 msgid "Create or Import New Survey"
 msgstr "Új kérdőív készítése vagy importálása"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:709
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:710
 msgid "5 Point Choice"
 msgstr "5 alternatívás lehetőség"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:710
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:711
 msgid "Array (5 Point Choice)"
 msgstr "Mátrix (5 alternatívás lehetőséggel)"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:711
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:712
 msgid "Array (10 Point Choice)"
 msgstr "Mátrix (5 alternatívás lehetőséggel)"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:712
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:713
 msgid "Array (Yes/No/Uncertain)"
 msgstr "Mátrix (Igen/Nem/Nem tudom)"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:714
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:715
 msgid "Array (Increase, Same, Decrease)"
 msgstr "Mátrix (Növekedik/Változatlan/Csökken)"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:715
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:716
 msgid "Array (Flexible Labels)"
 msgstr "Mátrix (átírható címkékkel)"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:716
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:717
 msgid "Gender"
 msgstr "Nemre irányuló kérdés"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:717
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:718
 msgid "Array (Flexible Labels) by Column"
 msgstr "Mátrix (átírható címkékkel), oszlopfolytonosan"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:718
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:719
 msgid "Language Switch"
 msgstr "Nyelvválasztó kapcsoló"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:719
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:720
 msgid "List (Radio)"
 msgstr "Csak egy válasz lehetséges"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:720
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:721
 msgid "Multiple Options"
 msgstr "Több válasz lehetséges"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:721
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:722
 msgid "Numerical Input"
 msgstr "Számjegyes nyílt válasz"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:722
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:723
 msgid "List With Comment"
 msgstr "Felsorolás megjegyzéssel"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:723
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:724
 msgid "Multiple Options With Comments"
 msgstr "Több válasz megjegyzéssel"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:724
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:725
 msgid "Multiple Short Text"
 msgstr "Többszörös nyílt kérdés"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:728
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:729
 msgid "Huge Free Text"
 msgstr "Óriási nyílt kérdés"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:729
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:730
 msgid "List (Flexible Labels) (Dropdown)"
 msgstr "Átírható címkéjű legördülő lista"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:730
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:731
 msgid "Boilerplate Question"
 msgstr "Beépített szöveg (nem kérdés)"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:731
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:732
 msgid "Yes/No"
 msgstr "Eldöntendő kérdés"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:732
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:733
 msgid "List (Flexible Labels) (Radio)"
 msgstr "Átírható címkéjű \"csak egy válasz lehet\""
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:733
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:734
 msgid "List (Dropdown)"
 msgstr "Legördülő lista"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1067
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1068
 msgid "It appears as if some tables or fields are missing from your database."
 msgstr "Néhány tábla vagy mező hiányzik az adatbázisból"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1069
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1070
 msgid "Check Database Fields"
 msgstr "Ellenőrizze az adatbázis mezőit!"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1270
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1271
 msgid "Display Last 50 Responses"
 msgstr "A legutóbbi 50 válasz kijelzése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1275
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1276
 msgid "Get statistics from these responses"
 msgstr "Statisztika készítése ezekből a válaszokból"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1280
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1281
 msgid "Export Results to Application"
 msgstr "Eredmények exportja külső alkalmazásba"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1282
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1283
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1284
 msgid "Export result to a SPSS command file"
 msgstr "Export SPSS syntaxfájlba"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1285
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1286
 msgid "Import answers from a deactivated survey table"
 msgstr "Deaktivált kérdőív választáblájának importálása"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1350
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1357
 msgid "Preset"
 msgstr "Előzetes beállítás"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1849
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1856
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr "Vigyázat: a JavaScriptet kikapcsolták a böngészőjében! Nem biztos, hogy minden "
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1869
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1876
 msgid "There are no questions in this survey"
 msgstr "Nincs kérdés ebben a kérdőívben"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1873
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1880
 msgid "There is 1 question in this survey"
 msgstr "1 kérdés van ebben a felmérésben"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1877
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1884
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "{NUMBEROFQUESTIONS} darab kérdés van ebben a kérdőívben"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1919
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1926
 msgid "A Note On Privacy"
 msgstr "Adatvédelmi megjegyzés"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1919
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1926
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr "Az Ön válaszairól nem készül az Ön azonosítására alkalmas feljegyzés, kivéve, ha a kérdőív egyes kérdései direkt rá nem kérdeznek ilyen adatokra. Ha egy olyan kérdőívet töltött ki, amelyikhez egyedi zsetonnal fért hozzá, bizonyos lehet abban, hogy az azonosító zseton nem kerül mentésre a válaszai kapcsán. Ezek a zsetonok egy külön adatbázisban vannak, és csak azt jelzik, hogy Ön kitöltötte-e a kérdőívet, vagy sem. Nincs mód arra, hogy a zsetonok alapján Önt beazonosíthassák."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1928
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1935
 msgid "Are you sure you want to clear all your responses?"
 msgstr "Biztosan törölni akarja a válaszait?"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1929
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1936
 msgid "Exit and Clear Survey"
 msgstr "Kilépés és a kérdőív törlése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1962
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1969
 msgid "Save Survey and Return"
 msgstr "Visszatérés és a kérdőív mentése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1980
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1987
 msgid "Thank You!"
 msgstr "Köszönjük!"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1980
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1987
 msgid "You have completed answering the questions in this survey."
 msgstr "Befejezte a kérdőív kitöltését"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1980
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1987
 msgid "Click on 'Submit' now to complete the process and save your answers."
-msgstr "Kattintson a 'Leadás' gombra, hogy elmentse a válaszokat, és befejezze a munkát"
+msgstr "Kattintson az 'Elküldöm' gombra, hogy rendszerünk elmenthesse válaszait, és befejezze a munkát."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1986
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1993
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr "Ha meg akarja nézni a korábbi válaszait, vagy meg akarja őket változtatni, megteheti a [<< Vissza] gomb megnyomásával és a válaszok tallózásával."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2007
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2014
 msgid "Answers Cleared"
 msgstr "A válaszok törölve"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2012
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2018
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2019
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2025
 msgid "Restart this Survey"
 msgstr "A kérdőív újrakezdése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2024
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2031
 msgid "Save Your Unfinished Survey"
 msgstr "A befejezetlen kérdőív mentése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2025
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2032
 msgid "Enter a name and password for this survey and click save below."
 msgstr "Írjon be egy nevet és egy jelszót ehhez a kérdőívhez alább."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2025
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2032
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr "Az elmentett kérdőívét ezzel a jelszóval és névvel érheti el később, miután beírta őket. "
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2025
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2032
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "Ha megad egy e-mail címet, megküldjük a későbbi hozzáféréshez szükséges adatokat."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2033
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2040
 msgid "Return To Survey"
 msgstr "Visszatérés a kérdőívhez"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2044
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2051
 msgid "Repeat Password"
 msgstr "Jelszó újra"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2047
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2054
 msgid "Your Email"
 msgstr "Az Ön E-Mail címe"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2060
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2067
 msgid "Load A Previously Saved Survey"
 msgstr "Egy korábban mentett kérdőív betöltése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2061
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2068
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr "Be tud tölteni egy kérdőívet, amelyet erről a képernyőről mentett le."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2061
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2068
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr "Írja be a 'nevet', amit a kérdőív lementésekor megadott, majd a jelszót."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2064
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2071
 msgid "Saved name"
 msgstr "Elmentett név"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2077
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2084
 msgid "Load Now"
 msgstr "Betöltés most"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2082
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2089
 msgid "You must be registered to complete this survey"
 msgstr "A kérdőív kitöltéséhez regisztráció szükséges"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2083
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2090
 msgid "You may register for this survey if you wish to take part."
 msgstr "Regisztrálhat erre a felmérésre, ha részt szeretne venni."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2083
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2090
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "Írja be az adatait, és azonnal kap egy e-mailt azzal a linkkel, amellyel be tud lépni."
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2148
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2155
 msgid "Your Assessment"
 msgstr "Az ön kiértékelése"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2412
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2429
 msgid "Online Manual"
 msgstr "Online használati utasítás"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2415
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2432
 msgid "Support this project - Donate to "
 msgstr "Támogassa a Projektet, kérem adakozzon"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2418
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2435
 msgid "Visit our website!"
 msgstr "Látogassa meg a honlapunkat!"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2418
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2435
 msgid "Version"
 msgstr "Verzió"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2597
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2614
 msgid "Local Submission"
 msgstr "Helyi leadás"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2799
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2804
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2816
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2821
 msgid "Executing"
 msgstr "Végrehajtás"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2799
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2816
 msgid "Failed! Reason: "
 msgstr "Sikertelen! Ok:"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2804
+#: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2821
 msgid "Success!"
 msgstr "Siker!"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:60
-#, fuzzy
 msgid "Albanian"
 msgstr "Albán"
 
@@ -6289,139 +6295,150 @@ msgid "Basque"
 msgstr "Baszk"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:68
+msgid "Bosnian"
+msgstr "Bosnyák"
+
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:72
 msgid "Bulgarian"
 msgstr "Bolgár"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:72
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:76
 msgid "Chinese (Simplified)"
 msgstr "Kínai (egyszerűsített)"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:76
 #: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:80
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:84
 msgid "Chinese (Traditional - Hong Kong)"
 msgstr "Kínai (eredeti - Hong-Kong)"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:84
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:88
 msgid "Croatian"
 msgstr "Horvát"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:88
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:92
 msgid "Czech"
 msgstr "Cseh"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:92
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:96
 msgid "Danish"
 msgstr "Dán"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:96
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:100
 msgid "Dutch"
 msgstr "Holland"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:100
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:104
 msgid "English"
 msgstr "Angol"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:104
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:108
 msgid "Finnish"
 msgstr "Finn"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:109
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:113
 msgid "French"
 msgstr "Francia"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:113
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:117
 msgid "Galician"
 msgstr "Gall"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:117
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:121
 msgid "German"
 msgstr "Német"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:121
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:125
 msgid "German informal"
 msgstr "Nénet nem hivatalos"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:125
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:129
 msgid "Greek"
 msgstr "Görög"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:129
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:133
 msgid "Hebrew"
 msgstr "Héber"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:133
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:137
 msgid "Hungarian"
 msgstr "Magyar"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:137
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:141
 msgid "Italian"
 msgstr "Olasz"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:141
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:145
 msgid "Japanese"
 msgstr "Japán"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:145
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:149
 msgid "Lithuanian"
 msgstr "Litván"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:149
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:153
+msgid "Macedonian"
+msgstr "Macedón"
+
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:157
 msgid "Norwegian"
 msgstr "Norvég"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:153
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:161
 msgid "Polish"
 msgstr "Lengyel"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:157
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:165
 msgid "Portuguese"
 msgstr "Portugál"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:161
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:169
 msgid "Portuguese (Brazilian)"
 msgstr "Portugál (Brazil)"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:166
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:174
 msgid "Russian"
 msgstr "Orosz"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:170
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:178
 msgid "Romanian"
 msgstr "Román"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:174
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:182
 msgid "Slovenian"
 msgstr "Szlovén"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:178
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:186
 msgid "Serbian"
 msgstr "Szerb"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:182
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:190
 msgid "Spanish"
 msgstr "Spanyol"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:186
-#, fuzzy
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:194
 msgid "Spanish (Mexico)"
 msgstr "Spanyol (mexikói)"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:190
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:198
 msgid "Swedish"
 msgstr "Svéd"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:194
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:202
 msgid "Turkish"
 msgstr "Török"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:198
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:206
 msgid "Thai"
 msgstr "Thai"
 
-#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:203
+#: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:211
 msgid "Vietnamese"
 msgstr "Vietnámi"
 
+#~ msgid "Setting new Parent"
+#~ msgstr "Új szülő megadása"
+#~ msgid "Set Parent successful."
+#~ msgstr "Új szülő megadása sikeres volt."
 #~ msgid "Less"
 #~ msgstr "Kevesebb"
 #~ msgid "Less or Equal"
