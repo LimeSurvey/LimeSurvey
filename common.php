@@ -20,7 +20,7 @@ $dbversionnumber = 114;
 
 
 
-if ($debug==1) {
+if ($debug>0) {
         error_reporting(E_ALL); //For debug purposes - switch on in config.phh
         }
 @set_time_limit(60); // Maximum execution time - works only if safe_mode is off
@@ -132,7 +132,7 @@ $dbexistsbutempty=($database_exists && checkifemptydb());
 
 
 if ($databasetype=='mysql') {
-    if ($debug==1) { @$connect->Execute("SET SESSION SQL_MODE='STRICT_ALL_TABLES,ANSI'"); }
+    if ($debug>1) { @$connect->Execute("SET SESSION SQL_MODE='STRICT_ALL_TABLES,ANSI'"); } //for development - use mysql in the strictest mode  
     $infoarray=$connect->ServerInfo();
     if (version_compare ($infoarray['version'],'4.1','<'))
     {
@@ -169,7 +169,7 @@ If (!$dbexistsbutempty && $sourcefrom=='admin')
      Die ("<br />The LimeSurvey database is not up to date. <br />Please run the <a href='$homeurl/install/index.php'>installation script</a> to upgrade your database.");
     }
 
-    if (is_dir($homedir."/install") && $debug!=1)
+    if (is_dir($homedir."/install") && $debug<2)
     {
      Die ("<br />Everything is fine - you just forgot to delete or rename your LimeSurvey installation directory (/admin/install). <br />Please do so since it may be a security risk.");
     }
@@ -223,7 +223,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
         {
         global $homedir, $scriptname, $surveyid, $setfont, $imagefiles, $clang, $debug;
         $adminmenu  = "<table class='menubar'>\n";
-        if  ($_SESSION['pw_notify'] && $debug==0)  {$adminmenu .="<tr><td align='center'><font color='red'>".$clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")."</font></td></tr>";}
+        if  ($_SESSION['pw_notify'] && $debug<2)  {$adminmenu .="<tr><td align='center'><font color='red'>".$clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")."</font></td></tr>";}
         $adminmenu  .="\t<tr>\n"
                     . "\t\t<td>\n"
                     . "\t\t\t<table class='menubar'>\n"
