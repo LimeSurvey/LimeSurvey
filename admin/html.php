@@ -2400,16 +2400,21 @@ if ($action == "newsurvey")
 {
 	if($_SESSION['USER_RIGHT_CREATE_SURVEY'])
 	{
-		$newsurvey  = "<form name='addnewsurvey' action='$scriptname' method='post' onsubmit=\"return isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."');\" >\n"
+		$newsurvey = getEditorPopupScript();
+		$newsurvey  .= "<form name='addnewsurvey' action='$scriptname' method='post' onsubmit=\"return isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."');\" >\n"
         . "<table width='100%' border='0' class='form2columns'>\n\t<thead><tr><th colspan='2'>\n"
 		. "\t\t".$clang->gT("Create Survey")."</th></tr></thead>\n"
 		. "\t<tr>\n"
 		. "\t\t<td width='25%'>".$clang->gT("Title").":</td>\n"
 		. "\t\t<td><input type='text' size='82' maxlength='200' id='surveyls_title' name='surveyls_title' /><font size='1'> ".$clang->gT("(This field is mandatory.)")."</font></td></tr>\n"
 		. "\t<tr><td>".$clang->gT("Description:")."</td>\n"
-		. "\t\t<td><textarea cols='80' rows='10' name='description'></textarea></td></tr>\n"
+		. "\t\t<td><textarea cols='80' rows='10' name='description'></textarea>"
+		. getHtmlControls("textarea","description", "[".$clang->gT("Description:", "js")."]")
+		. "</td></tr>\n"
 		. "\t<tr><td>".$clang->gT("Welcome:")."</td>\n"
-		. "\t\t<td><textarea cols='80' rows='10' name='welcome'></textarea></td></tr>\n"
+		. "\t\t<td><textarea cols='80' rows='10' name='welcome'></textarea>"
+		. getHtmlControls("textarea","welcome", "[".$clang->gT(     "Welcome:", "js")."]")
+		. "</td></tr>\n"
 		. "\t<tr><td>".$clang->gT("Administrator:")."</td>\n"
 		. "\t\t<td><input type='text' size='50' name='admin' /></td></tr>\n"
 		. "\t<tr><td>".$clang->gT("Admin Email:")."</td>\n"
@@ -2497,18 +2502,21 @@ if ($action == "newsurvey")
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td>".$clang->gT("Invitation Email:")."</td>\n"
 		. "\t\t<td><textarea cols='80' rows='10' name='email_invite'>".$clang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."</textarea>\n"
+		. getHtmlControls("textarea","email_invite", "[".$clang->gT("Invitation Email:", "js")."]")
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td>".$clang->gT("Email Reminder Subject:")."</td>\n"
 		. "\t\t<td align='left'><input type='text' size='82'  maxlength='255' name='email_remind_subj' value='".$clang->gT("Reminder to participate in survey")."' />\n"
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td>".$clang->gT("Email Reminder:")."</td>\n"
 		. "\t\t<td align='left'><textarea cols='80' rows='10' name='email_remind'>".$clang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."</textarea>\n"
+		. getHtmlControls("textarea","email_remind", "[".$clang->gT("Email Reminder:", "js")."]")
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td>".$clang->gT("Confirmation Email Subject")."</td>\n"
 		. "\t\t<td align='left'><input type='text' size='82' maxlength='255' name='email_confirm_subj' value='".$clang->gT("Confirmation of completed survey")."' />\n"
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td>".$clang->gT("Confirmation Email")."</td>\n"
 		. "\t\t<td align='left'><textarea cols='80' rows='10' name='email_confirm'>".$clang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}")."</textarea>\n"
+		. getHtmlControls("textarea","email_confirm", "[".$clang->gT("Confirmation Email", "js")."]")
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td>".$clang->gT("Allow public registration?")."</td>\n"
 		. "\t\t<td align='left'><select name='allowregister'>\n"
@@ -2520,6 +2528,7 @@ if ($action == "newsurvey")
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td>".$clang->gT("Public registration Email:")."</td>\n"
 		. "\t\t<td align='left'><textarea cols='80' rows='10' name='email_register'>".$clang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.")."</textarea>\n"
+		. getHtmlControls("textarea","email_register", "[".$clang->gT("Public registration Email:", "js")."]")
 		. "\t</td></tr>\n";
 		$newsurvey .= "\t<tr><td valign='top'>".$clang->gT("Token Attribute Names:")."</td>\n"
 		. "\t\t<td align='left'><input type='text' size='25' name='attribute1' />(".$clang->gT("Attribute 1").")<br />"
