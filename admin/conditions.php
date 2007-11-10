@@ -209,7 +209,8 @@ foreach ($qrows as $qrow)
 	if ($qrow["qid"] != $qid && $position=="before")
 	{
     if ($qrow['type'] != "T" && // $qrow['type'] != "S" &&
-        $qrow['type'] != "Q")   //&& $qrow['type'] != "D"
+        $qrow['type'] != "Q" &&
+		$qrow['type'] != "K")   //&& $qrow['type'] != "D"
     { //remember the questions of this type
 			$questionlist[]=$qrow["qid"];
 		}
@@ -638,6 +639,7 @@ if ($conditionscount > 0)
 {
 	while ($rows=$result->FetchRow())
 	{
+		if($rows['method'] == "") {$rows['method'] = "==";} //Fill in the empty method from previous versions
 		if (is_null(array_search($rows['cid'], $markcidarray)) || // PHP4
 			array_search($rows['cid'], $markcidarray) === FALSE) // PHP5
 			// === required cause key 0 would otherwise be interpreted as FALSE
