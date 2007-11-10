@@ -259,6 +259,16 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 	else
 	{
 		//matches have not been found in ALL distinct cqids. The question WILL NOT be displayed
+		//If we're skipping this question, but a value exists for the question, we should delete that value
+		//if $deletenonvalues is turned on, and to avoid bug #888
+		//print_r($ia);
+		if(!empty($_SESSION[$ia[1]]))
+		{
+		    if($deletenonvalues == 1) 
+			{
+			    unset($_SESSION[$ia[1]]);
+			}
+		}
 		$questionsSkipped++;
 		if (returnglobal('move') == "movenext")
 		{

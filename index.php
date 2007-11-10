@@ -503,7 +503,7 @@ function checkgroupfordisplay($gid)
 	//If none of the questions in the group are set to display, then
 	//the function will return false, to indicate that the whole group
 	//should not display at all.
-	global $dbprefix, $connect;
+	global $dbprefix, $connect, $deletenonvalues;
 	$countQuestionsInThisGroup=0;
 	$countConditionalQuestionsInThisGroup=0;
 	foreach ($_SESSION['fieldarray'] as $ia) //Run through all the questions
@@ -536,9 +536,10 @@ function checkgroupfordisplay($gid)
 			$query = "SELECT * FROM ".db_table_name('conditions')."\n"
 			."WHERE qid=$cc[0] ORDER BY cqid";
 			$result = db_execute_assoc($query) or die("Couldn't check conditions<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+
+			//Iterate through each condition for this question and check if it is met.
 			while($row=$result->FetchRow())
 			{
-				//Iterate through each condition for this question and check if it is met.
 				$query2= "SELECT type, gid FROM ".db_table_name('questions')."\n"
 				." WHERE qid={$row['cqid']} AND language='".$_SESSION['s_lang']."'";
 				$result2=db_execute_assoc($query2) or die ("Coudn't get type from questions<br />$ccquery<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -603,6 +604,23 @@ function checkgroupfordisplay($gid)
 		}
 		//Since we made it this far, there mustn't have been any conditions met.
 		//Therefore the group should not be displayed.
+		//Before we go on, if the option is selected (and it should be)
+		//we will check to see if there are any saved answers in this group being skipped.
+		//In order to avoid bug #888, and to comply with the $deletenonvalues config.php setting
+		//these should be deleted
+		//This fix only corrects the problem in group.php
+		foreach($_SESSION['fieldarray'] as $question) //Iterate through all questions
+		{
+		    if($question[5] == $gid)
+		    {
+		        if($deletenonvalues == 1)
+		            {
+		                if(!empty($_SESSION[$question[1]])) {
+						    unset($_SESSION[$question[1]]); //Since this group isn't displaying, cause the conditions aren't met, then we are deleting this response to avoid future problems
+						}
+					}
+		    } //end of if($question[5] == $gid)
+		} //end of foreach($_SESSION['fieldarray'] as $question)
 		return false;
 	}
 }
