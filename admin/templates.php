@@ -432,6 +432,7 @@ if (is_array($files)) {
 }
 //Get list of 'otherfiles'
 $dirloc=$publicdir."/templates/".$templatename;
+$otherfiles=array();
 if ($handle = opendir($dirloc)) {
 	while(false !== ($file = readdir($handle))) {
 		if (!array_search($file, $normalfiles)) {
