@@ -34,6 +34,7 @@ $files[]=array("name"=>"register.pstpl");
 $files[]=array("name"=>"load.pstpl");
 $files[]=array("name"=>"save.pstpl");
 $files[]=array("name"=>"assessment.pstpl");
+$files[]=array("name"=>"printanswers.pstpl");
 
 //Standard Screens
 //Only these may be viewed
@@ -46,6 +47,7 @@ $screens[]=array("name"=>$clang->gT("Clear All Page"));
 $screens[]=array("name"=>$clang->gT("Register Page"));
 $screens[]=array("name"=>$clang->gT("Load Page"));
 $screens[]=array("name"=>$clang->gT("Save Page"));
+$screens[]=array("name"=>$clang->gT("Print Answers Page"));
 
 
 // Set this so common.php doesn't throw notices about undefined variables
@@ -55,10 +57,6 @@ $thissurvey['active']='N';
 $file_version="LimeSurvey Template Editor ".$versionnumber;
 $_SESSION['s_lang']=$_SESSION['adminlang'];
 
-if(get_magic_quotes_gpc())
-{
-    $_REQUEST = array_map("stripslashes", $_REQUEST);
-}
 
 if (!isset($templatename)) {$templatename = sanitize_paranoid_string(returnglobal('templatename'));}
 if (!isset($templatedir)) {$templatedir = sanitize_paranoid_string(returnglobal('templatedir'));}
@@ -235,6 +233,7 @@ $Clearall=array("startpage.pstpl", "clearall.pstpl", "endpage.pstpl");
 $Register=array("startpage.pstpl", "survey.pstpl", "register.pstpl", "endpage.pstpl");
 $Save=array("startpage.pstpl", "save.pstpl", "endpage.pstpl");
 $Load=array("startpage.pstpl", "load.pstpl", "endpage.pstpl");
+$printtemplate=array("startpage.pstpl", "printanswers.pstpl", "endpage.pstpl");
 
 //CHECK ALL FILES EXIST, AND IF NOT - COPY IT FROM DEFAULT DIRECTORY
 foreach ($files as $file) {
@@ -275,7 +274,31 @@ $privacy="";
 $surveyid="1295";
 $token=1234567;
 $assessments="<table align='center'><tr><th>Assessment Heading</th></tr><tr><td align='center'>Assessment details<br />Note that assessments will only show if assessment rules have been set. Otherwise, this assessment table will not appear</td></tr></table>";
+$printoutput="<span class='printouttitle'><strong>".$clang->gT("Survey Name (ID)")."</strong> testt (46962)</span><br />
+<table class='printouttable' >
+<tr><th>".$clang->gT("Question")."</th><th>".$clang->gT("Your Answer")."</th></tr>
+    <tr>
+        <td>id</td>
+        <td>12</td>
+    </tr>
+    <tr>
+        <td>Date Submitted</td>
 
+        <td>1980-01-01 00:00:00</td>
+    </tr>
+    <tr>
+        <td>This is a sample question text. The user was asked to enter a date.</td>
+        <td>2007-11-06</td>
+    </tr>
+    <tr>
+        <td>This is another sample question text - asking for number. </td>
+        <td>666</td>
+    </tr>
+    <tr>
+        <td>This is one last sample question text - asking for some free text. </td>
+        <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</td>
+    </tr>
+</table>";
 $addbr=false;
 switch($screenname) {
 	case $clang->gT("Question Page", "unescaped"):
@@ -411,6 +434,27 @@ switch($screenname) {
 		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/$qs"));
 	}
 	break;
+
+
+    case $clang->gT("Print Answers Page", "unescaped"):
+    unset($files);
+    foreach ($printtemplate as $qs) {
+        $files[]=array("name"=>$qs);
+    }
+    foreach(file("$publicdir/templates/$templatename/startpage.pstpl") as $op)
+    {
+        $myoutput[]=templatereplace($op);
+    }
+    foreach(file("$publicdir/templates/$templatename/printanswers.pstpl") as $op)
+    {
+        $myoutput[]=templatereplace($op);
+    }
+    foreach(file("$publicdir/templates/$templatename/endpage.pstpl") as $op)
+    {
+        $myoutput[]=templatereplace($op);
+    }
+    $myoutput[]= "\n";
+    break;
 }
 $myoutput[]="</html>";
 
@@ -531,7 +575,7 @@ $templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'
 ."\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='10' border='0' hspace='0' align='left' />\n"
 ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
 
-if ($templatename == "default") 
+if ($templatename == "default" && $debug<2) 
 {
         $templatesoutput.= "\t\t\t\t\t" .
     		 "<img name='EditName' src='$imagefiles/noedit.png' alt='' align='left' title=''" .
@@ -601,8 +645,8 @@ if ($editfile) {
 $templatesoutput.= "</textarea><br />\n";
 if (is_writable("$publicdir/templates/$templatename")) {
 	$templatesoutput.= "<input align='right' type='submit' value='".$clang->gT("Save Changes")."'";
-	if ($templatename == "default") {
-		$templatesoutput.= " style='color: #BBBBBB;' disabled='disabled' alt='".$clang->gT("Changes cannot be saved to the default template.")."'";
+	if ($templatename == "default" && $debug<2) {
+		$templatesoutput.= " disabled='disabled' alt='".$clang->gT("Changes cannot be saved to the default template.")."'";
 	}
 	$templatesoutput.= " />";
 }

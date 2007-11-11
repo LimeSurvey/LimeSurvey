@@ -98,10 +98,12 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","ALTER TABLE [prefix_users] ALTER COLUMN [email] VARCHAR(320) NOT NULL"); echo $modifyoutput; flush();
 
         modify_database("",'INSERT INTO [prefix_settings_global] VALUES (\'SessionName\', \'$sessionname\');');
-
-
-
         modify_database("","update [prefix_settings_global] set [stg_value]='114' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+    }
+    if ($oldversion < 115) {
+	//No action needed
+        modify_database("","ALTER TABLE [prefix_surveys] ADD COLUMN [printanswers] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
+        modify_database("","update [prefix_settings_global] set [stg_value`='115' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
 
 

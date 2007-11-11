@@ -195,6 +195,7 @@ CREATE TABLE [prefix_surveys] (
   [autonumber_start] bigINT default '0',
   [autoredirect] char(1) default 'N',
   [allowprev] char(1) default 'Y',
+  [printanswers] char(1) default 'N',
   [ipaddr] char(1) default 'N',
   [useexpiry] char(1) NOT NULL default 'N',
   [refurl] char(1) default 'N',

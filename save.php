@@ -77,7 +77,7 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 //SAVE if on page with questions or on submit page
 if ((isset($_POST['fieldnames']) && $_POST['fieldnames']) || (isset($_POST['move']) && $_POST['move'] == "movesubmit"))
 {
-	if ($thissurvey['active'] == "Y") 	// Only save if active
+	if ($thissurvey['active'] == "Y" && !isset($_SESSION['finished'])) 	// Only save if active and the survey wasn't already submittedt completely
 	{
 		// SAVE DATA TO SURVEY_X RECORD
 		$subquery = createinsertquery();

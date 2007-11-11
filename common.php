@@ -16,7 +16,7 @@
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 $versionnumber = "1.60";
-$dbversionnumber = 114;
+$dbversionnumber = 115;
 
 
 
@@ -920,56 +920,36 @@ function getSurveyInfo($surveyid, $languagecode='')
 	{
 	   $languagecode=GetBaseLanguageFromSurveyID($surveyid);;
     }
-	$query="SELECT * FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
-	$result=db_execute_assoc($query) or die ("Couldn't access surveys<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-	$query2="SELECT * FROM ".db_table_name('surveys_languagesettings')." WHERE surveyls_survey_id=$surveyid and surveyls_language='$languagecode'";
-	$result2=db_execute_assoc($query2) or die ("Couldn't access surveys<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+	$query="SELECT * FROM ".db_table_name('surveys').",".db_table_name('surveys_languagesettings')." WHERE sid=$surveyid and surveyls_survey_id=$surveyid and surveyls_language='$languagecode'";
+    $result=db_execute_assoc($query) or die ("Couldn't access survey settings<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	while ($row=$result->FetchRow())
 	{
-		$row2 = $result2->FetchRow();
-		$thissurvey=array(
-		"sid"=>$surveyid,
-		"name"=>$row2['surveyls_title'],
-		"description"=>$row2['surveyls_description'],
-		"welcome"=>$row2['surveyls_welcometext'],
-		"templatedir"=>$row['template'],
-		"adminname"=>$row['admin'],
-		"adminemail"=>$row['adminemail'],
-		"active"=>$row['active'],
-		"useexpiry"=>$row['useexpiry'],
-		"expiry"=>$row['expires'],
-		"private"=>$row['private'],
-		"faxto"=>$row['faxto'],
-		"template"=>$row['template'],
-		"tablename"=>$dbprefix."survey_".$row['sid'],
-		"url"=>$row['url'],
-		"urldescrip"=>$row2['surveyls_urldescription'],
-		"format"=>$row['format'],
-		"language"=>$row['language'],
-		"datestamp"=>$row['datestamp'],
-		"ipaddr"=>$row['ipaddr'],
-		"refurl"=>$row['refurl'],
-		"usecookie"=>$row['usecookie'],
-		"sendnotification"=>$row['notification'],
-		"allowregister"=>$row['allowregister'],
-		"attribute1"=>$row['attribute1'],
-		"attribute2"=>$row['attribute2'],
-		"email_invite_subj"=>$row2['surveyls_email_invite_subj'],
-		"email_invite"=>$row2['surveyls_email_invite'],
-		"email_remind_subj"=>$row2['surveyls_email_remind_subj'],
-		"email_remind"=>$row2['surveyls_email_remind'],
-		"email_confirm_subj"=>$row2['surveyls_email_confirm_subj'],
-		"email_confirm"=>$row2['surveyls_email_confirm'],
-		"email_register_subj"=>$row2['surveyls_email_register_subj'],
-		"email_register"=>$row2['surveyls_email_register'],
-		"allowsave"=>$row['allowsave'],
-		"autonumber_start"=>$row['autonumber_start'],
-		"autoredirect"=>$row['autoredirect'],
-		"allowprev"=>$row['allowprev']);
-		if (!$thissurvey['adminname']) {$thissurvey['adminname']=$siteadminname;}
-		if (!$thissurvey['adminemail']) {$thissurvey['adminemail']=$siteadminemail;}
-		if (!$thissurvey['urldescrip']) {$thissurvey['urldescrip']=$thissurvey['url'];}
-	}
+        $thissurvey=$row;
+        // now create some stupid array translations
+        // Newly added surveysettings don't have to be added specifically - these will be available by field name automatically
+        $thissurvey["name"]=$thissurvey['surveyls_title'];
+        $thissurvey["description"]=$thissurvey['surveyls_description'];
+        $thissurvey["welcome"]=$thissurvey['surveyls_welcometext'];
+        $thissurvey["templatedir"]=$thissurvey['template'];
+        $thissurvey["adminname"]=$thissurvey['admin'];
+        $thissurvey["tablename"]=$dbprefix."survey_".$thissurvey['sid'];
+        $thissurvey["urldescrip"]=$thissurvey['surveyls_urldescription'];
+        $thissurvey["sendnotification"]=$thissurvey['notification'];
+        $thissurvey["expiry"]=$thissurvey['expires'];
+        $thissurvey["email_invite_subj"]=$thissurvey['surveyls_email_invite_subj'];
+        $thissurvey["email_invite"]=$thissurvey['surveyls_email_invite'];
+        $thissurvey["email_remind_subj"]=$thissurvey['surveyls_email_remind_subj'];
+        $thissurvey["email_remind"]=$thissurvey['surveyls_email_remind'];
+        $thissurvey["email_confirm_subj"]=$thissurvey['surveyls_email_confirm_subj'];
+        $thissurvey["email_confirm"]=$thissurvey['surveyls_email_confirm'];
+        $thissurvey["email_register_subj"]=$thissurvey['surveyls_email_register_subj'];
+        $thissurvey["email_register"]=$thissurvey['surveyls_email_register'];
+		if (!isset($thissurvey['adminname'])) {$thissurvey['adminname']=$siteadminname;}
+		if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail']=$siteadminemail;}
+		if (!isset($thissurvey['urldescrip'])) {$thissurvey['urldescrip']=$thissurvey['url'];}
+	}              
+    
+    //not sure this should be here... ToDo: Find a better place
     if (function_exists('makelanguagechanger')) $languagechanger = makelanguagechanger();
 	return $thissurvey;
 }
@@ -1833,6 +1813,7 @@ function templatereplace($line)
 	global $saved_id;
 	global $totalBoilerplatequestions;
     global $languagechanger;    
+    global $printoutput;
 
 	if (stripos ($line,"</head>"))
 	{
@@ -1857,6 +1838,7 @@ function templatereplace($line)
 	}
 
 	if (strpos($line, "{CHECKJAVASCRIPT}") !== false) $line=str_replace("{CHECKJAVASCRIPT}", "<noscript><span class='warningjs'>".$clang->gT("Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters.")."</span></noscript>", $line);
+    if (strpos($line, "{ANSWERTABLE}") !== false) $line=str_replace("{ANSWERTABLE}", $printoutput, $line);
 	if (strpos($line, "{SURVEYNAME}") !== false) $line=str_replace("{SURVEYNAME}", $thissurvey['name'], $line);
 	if (strpos($line, "{SURVEYDESCRIPTION}") !== false) $line=str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $line);
 	if (strpos($line, "{WELCOME}") !== false) $line=str_replace("{WELCOME}", $thissurvey['welcome'], $line);

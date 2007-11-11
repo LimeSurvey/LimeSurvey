@@ -29,6 +29,11 @@ if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = 
 if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step']=$_POST['thisstep']+1;}
 if (isset($_POST['move']) && $_POST['move'] == "movelast") {$_SESSION['step'] = $_POST['thisstep']+1;}
 
+// This prevents the user from going back to the question pages and keeps him on the final page
+// That way his session can be kept so he can still print his answers until he closes the browser
+if (isset($_SESSION['finished'])) {$_POST['move']="movesubmit"; }
+
+
 // If on SUBMIT page and select SAVE SO FAR it will return to SUBMIT page
 if ($_SESSION['step'] > $_SESSION['totalsteps'] && $_POST['move'] != "movesubmit")
 {
@@ -143,9 +148,6 @@ if (isset($_POST['move']) && $_POST['move'] == "movesubmit")
 			sendsubmitnotification($thissurvey['sendnotification']);
 		}
 
-		session_unset();
-		session_destroy();
-
 			$content='';
 
 			$content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
@@ -166,6 +168,17 @@ if (isset($_POST['move']) && $_POST['move'] == "movesubmit")
 			. "<a href='javascript:window.close()'>"
 			.$clang->gT("Close this Window")."</a></font><br /><br />\n";
 
+         // Link to Print Answer Preview  **********
+         if ($thissurvey['printanswers']=='Y')
+         {
+            $completed .= "<br /><br />"
+            ."<a class='printlink' href='printanswers.php'  target='_blank'>"
+            .$clang->gT("Click here to print your answers.")
+            ."</a><br />\n";
+         }
+        //*****************************************
+
+
 			//Update the token if needed and send a confirmation email
 			if (isset($_POST['token']) && $_POST['token'])
 			{
@@ -178,15 +191,12 @@ if (isset($_POST['move']) && $_POST['move'] == "movesubmit")
 				sendsubmitnotification($thissurvey['sendnotification']);
 			}
 
-			
-			session_unset();
-			session_destroy();
-
+            $_SESSION['finished']=true; 
+            $_SESSION['sid']=$surveyid;
 
 			sendcacheheaders();
 			if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['url'])
 			{
-				session_write_close();
 				//Automatically redirect the page to the "url" setting for the survey
 				
 				/* this part doesn't have sense because $mytoken is not declared nor asigned value anywhere

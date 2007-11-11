@@ -976,6 +976,7 @@ if(isset($surveyid))
 		. "usecookie='{$_POST['usecookie']}', notification='{$_POST['notification']}',\n"
 		. "allowregister='{$_POST['allowregister']}', attribute1='{$_POST['attribute1']}',\n"
 		. "attribute2='{$_POST['attribute2']}', allowsave='{$_POST['allowsave']}',\n"
+        . "printanswers='{$_POST['printanswers']}',\n"
 		. "autoredirect='{$_POST['autoredirect']}', allowprev='{$_POST['allowprev']}'\n"
 		. "WHERE sid={$_POST['sid']}";
 		
@@ -1112,7 +1113,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		. "(sid, owner_id, admin, active, useexpiry, expires, "
 		. "adminemail, private, faxto, format, template, url, "
 		. "language, datestamp, ipaddr, refurl, usecookie, notification, allowregister, attribute1, attribute2, "
-		. "allowsave, autoredirect, allowprev,datecreated)\n"
+		. "allowsave, autoredirect, allowprev, printanswers, datecreated)\n"
 		. "VALUES ($surveyid, {$_SESSION['loginID']},\n"
 		. "'{$_POST['admin']}', 'N', \n"
 		. "'{$_POST['useexpiry']}',{$_POST['expires']}, '{$_POST['adminemail']}', '{$_POST['private']}',\n"
@@ -1120,7 +1121,8 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		. "'{$_POST['language']}', '{$_POST['datestamp']}', '{$_POST['ipaddr']}', '{$_POST['refurl']}',\n"
 		. "'{$_POST['usecookie']}', '{$_POST['notification']}', '{$_POST['allowregister']}',\n"
 		. "'{$_POST['attribute1']}', '{$_POST['attribute2']}', \n"
-		. "'{$_POST['allowsave']}', '{$_POST['autoredirect']}', '{$_POST['allowprev']}','".date("Y-m-d")."')";
+		. "'{$_POST['allowsave']}', '{$_POST['autoredirect']}', \n"
+        . "'{$_POST['allowprev']}', '{$_POST['printanswers']}', '".date("Y-m-d")."')";
 		$isresult = $connect->Execute($isquery);
 		// insert base language into surveys_language_settings
 		$isquery = "INSERT INTO ".db_table_name('surveys_languagesettings')

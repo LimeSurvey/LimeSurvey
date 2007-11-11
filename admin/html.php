@@ -1912,6 +1912,18 @@ if ($action == "editsurvey")
 			$editsurvey .= ">".$clang->gT("No")."</option>\n"
 			. "\t\t</select></td>\n"
 			. "\t</tr>\n";
+            //Result printing
+            $editsurvey .= "\t<tr><td align='right'>".$clang->gT("Participiants may print answers?")."</td>\n"
+            . "\t\t<td><select name='printanswers'>\n"
+            . "\t\t\t<option value='Y'";
+            if (!isset($esrow['printanswers']) || !$esrow['printanswers'] || $esrow['printanswers'] == "Y") {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+            . "\t\t<option value='N'";
+            if (isset($esrow['printanswers']) && $esrow['printanswers'] == "N") {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("No")."</option>\n"
+            . "\t\t</select></td>\n"
+            . "\t\t</select></td>\n"
+            . "\t</tr>\n";
 			//NOTIFICATION
 			$editsurvey .= "\t<tr><td align='right'>".$clang->gT("Admin Notification:")."</td>\n"
 			. "\t\t<td align='left'><select name='notification'>\n"
@@ -2433,8 +2445,7 @@ if ($action == "newsurvey")
 		foreach (gettemplatelist() as $tname)
 		{
 			$newsurvey .= "\t\t\t<option value='$tname'";
-			if (isset($esrow) && $esrow['template'] && $tname == $esrow['template']) {$newsurvey .= " selected='selected'";}
-			elseif ((!isset($esrow) || !$esrow['template']) && $tname == "default") {$newsurvey .= " selected='selected'";}
+			if ($tname == "default") {$newsurvey .= " selected='selected'";}
 			$newsurvey .= ">$tname</option>\n";
 		}
 		$newsurvey .= "\t\t</select></td>\n"
@@ -2445,8 +2456,7 @@ if ($action == "newsurvey")
 		. "\t\t\t<option value='Y'";
 		if (isset($esrow) && $esrow['usecookie'] == "Y") {$newsurvey .= " selected='selected'";}
 		$newsurvey .= ">".$clang->gT("Yes")."</option>\n"
-		. "\t\t\t<option value='N'";
-		if (isset($esrow) && $esrow['usecookie'] != "Y" || !isset($esrow)) {$newsurvey .= " selected='selected'";}
+		. "\t\t\t<option value='N' selected='selected'";
 		$newsurvey .= ">".$clang->gT("No")."</option>\n"
 		. "\t\t</select></td>\n"
 		. "\t</tr>\n";
@@ -2464,14 +2474,17 @@ if ($action == "newsurvey")
 		//ALLOW PREV
 		$newsurvey .= "\t<tr><td>".$clang->gT("Show [<< Prev] button")."</td>\n"
 		. "\t\t<td><select name='allowprev'>\n"
-		. "\t\t\t<option value='Y'";
-		if (!isset($esrow['allowprev']) || !$esrow['allowprev'] || $esrow['allowprev'] == "Y") {$newsurvey .= " selected='selected'";}
-		$newsurvey .= ">".$clang->gT("Yes")."</option>\n"
-		. "\t\t<option value='N'";
-		if (isset($esrow['allowprev']) && $esrow['allowprev'] == "N") {$newsurvey .= " selected='selected'";}
-		$newsurvey .= ">".$clang->gT("No")."</option>\n"
+		. "\t\t\t<option value='Y' selected='selected'>".$clang->gT("Yes")."</option>\n"
+		. "\t\t\t<option value='N'>".$clang->gT("No")."</option>\n"
 		. "\t\t</select></td>\n"
 		. "\t</tr>\n";
+        //Result printing
+        $newsurvey .= "\t<tr><td>".$clang->gT("Participiants may print answers?")."</td>\n"
+        . "\t\t<td><select name='printanswers'>\n"
+        . "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
+        . "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
+        . "\t\t</select></td>\n"
+        . "\t</tr>\n";
 		//NOTIFICATIONS
 		$newsurvey .= "\t<tr><td>".$clang->gT("Admin Notification:")."</td>\n"
 		. "\t\t<td><select name='notification'>\n"

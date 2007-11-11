@@ -122,6 +122,37 @@ body{
 {
 border:1px solid #000;
 }
+
+.printouttable
+{
+  width:100%;
+}
+
+.printouttable td
+{
+border-style:solid;
+border-color:#ffffff ;
+border-bottom-color:#ddddff ;
+border-width:1px;
+}
+
+
+.printouttable td:first-child
+{
+  background-color:#ddddff;
+  font-weight:bold;
+  text-align:right;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.printouttitle
+{
+  padding-right: 5px;
+  padding-left: 5px;
+  font-size: 18px;
+}
+
 </style>
 </head>
 <body bgcolor='#000000'>

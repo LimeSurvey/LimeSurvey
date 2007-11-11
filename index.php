@@ -302,10 +302,6 @@ if ($tokensexist == 1 && $token)
 		."(<a href='mailto:{$thissurvey['adminemail']}'>"
 		."{$thissurvey['adminemail']}</a>)<br /><br />\n"
 		."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
-//		foreach(file("$thistpl/endpage.pstpl") as $op)
-//		{
-//			echo templatereplace($op);
-//		}
 		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 		exit;
 	}
