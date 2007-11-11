@@ -41,7 +41,7 @@ HOW TO UPGRADE from earlier versions from LimeSurvey 1.45 or later
 4. Upload the new version to the same place
 5. Adjust the settings in config.php to the setting from the backup config.php. 
    --Do NOT just copy over the old config.php over the new one.--
-6. Run the installer in /admin/install.php to update the database.
+6. Run the installer in /admin/install/install.php to update the database.
 7. Done.
 
 
