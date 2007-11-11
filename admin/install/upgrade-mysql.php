@@ -120,7 +120,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
 
 function fix_mysql_collation()
 {
-global $connect, $modifyoutput;
+global $connect, $modifyoutput, $dbprefix;
 $sql = 'SHOW TABLE STATUS';
 $result = db_execute_assoc($sql);
 if (!$result) {
@@ -131,7 +131,7 @@ while ( $tables = $result->FetchRow() ) {
 // Loop through all tables in this database
    $table = $tables['Name'];
    $tablecollation=$tables['Collation'];
-   if (strpos($table,'old_')===false)
+   if (strpos($table,'old_')===false  && ($dbprefix==''  || ($dbprefix!='' && strpos($table,$dbprefix)!==false)))
    {
 	   if ($tablecollation!='utf8_unicode_ci')
 	   {
