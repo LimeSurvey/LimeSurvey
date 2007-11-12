@@ -556,7 +556,7 @@ function do_date($ia)
 	   }
        $answer = keycontroljs();
        $answer .= "\t\t\t<select id='day{$ia[1]}' onChange='dateUpdater(\"{$ia[1]}\");'>\n";
-       $answer .= "\t\t\t\t<option value=''>".$clang->gT("Date")."</option>\n";
+       $answer .= "\t\t\t\t<option value=''>".$clang->gT("Day")."</option>\n";
        for ($i=1; $i<=31; $i++) {
 	      $answer .= "\t\t\t\t<option";
 		  if ($i == $currentdate) {$answer .= " selected";}
@@ -601,15 +601,23 @@ function do_date($ia)
       	. "\t\t\t\t\t</font></td>\n"
       	. "\t\t\t\t</tr>\n"
       	. "\t\t\t</table>\n";
+	   $answer .= "<input type='hidden' name='qattribute_answer[]' value='".$ia[1]."'>\n";
+	   $answer .= "<input type='hidden' name='qattribute_answer".$ia[1]."'>\n";
 	   $answer .= "<script type=\"text/javascript\">\n"
 	            . "function dateUpdater(val) {\n"
 	            . "  label='answer'+val;\n"
 	            . "  yearlabel='year'+val;\n"
 	            . "  monthlabel='month'+val;\n"
 	            . "  daylabel='day'+val;\n"
+	            . "  bob = eval('document.limesurvey.qattribute_answer".$ia[1]."');\n"
 	            . "  document.getElementById(label).value=document.getElementById(yearlabel).value+'-'+document.getElementById(monthlabel).value+'-'+document.getElementById(daylabel).value;\n"
                 . "  modfield(val);\n"
-                . "  ValidDate(document.getElementById(label));\n"
+                . "  if(document.getElementById(yearlabel).value != '' && document.getElementById(monthlabel).value != '' && document.getElementById(daylabel).value != '')\n"
+                . "  {\n"
+                . "    ValidDate(document.getElementById(label));\n"
+                . "  } else {\n"
+                . "    bob.value='".$clang->gT("Please complete all parts of the date")."';\n"
+                . "  }\n"
 	            . "}\n"
 	            . "dateUpdater(\"{$ia[1]}\");\n"
 	            . "</script>\n";
