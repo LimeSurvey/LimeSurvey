@@ -42,7 +42,8 @@ if (!file_exists($the_full_file_path)) {
 
 $_SERVER['SERVER_NAME'] = "";				// just to avoid notices
 $_SERVER['SERVER_SOFTWARE'] = "";		// just to avoid notices
-require_once(dirname(__FILE__).'/../config.php');  // config.php itself includes common.php
+require_once(dirname(__FILE__).'/../config.php'); 
+require_once(dirname(__FILE__).'/../common.php');
 
 if (isset($_REQUEST['homedir'])) {die('');}
 require_once($homedir."/classes/core/sha256.php"); 

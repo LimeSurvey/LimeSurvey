@@ -15,6 +15,8 @@
 
 
 require_once(dirname(__FILE__).'/config.php');
+require_once(dirname(__FILE__).'/common.php');
+
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 //This next line is for security reasons. It ensures that the $surveyid value is never anything but a number.
 $surveyid=sanitize_int($surveyid);

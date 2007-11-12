@@ -19,6 +19,7 @@
 // Optimized By				: swales
 
 require_once(dirname(__FILE__).'/config.php');
+require_once(dirname(__FILE__).'/common.php');
 @ini_set('session.gc_maxlifetime', $sessionlifetime);
 @ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
 

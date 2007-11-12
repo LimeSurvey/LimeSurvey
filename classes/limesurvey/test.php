@@ -14,6 +14,7 @@ include_once(dirname(__FILE__).'/libattributes.php');
 include_once(dirname(__FILE__).'/attribute.php');
 require_once(dirname(__FILE__).'/../adodb/adodb.inc.php');
 require_once(dirname(__FILE__).'/../../config.php');
+require_once(dirname(__FILE__).'/../../common.php');
 
 $connect=&ADONewConnection($databasetype);
 $database_exists = FALSE;

@@ -16,6 +16,7 @@
 
 if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
 require_once(dirname(__FILE__).'/../../config.php');  // config.php itself includes common.php
+require_once(dirname(__FILE__).'/../../common.php');
 $adminoutput='';  // Alle future output is written into this and then outputted at the end of file
 // SET THE LANGUAGE???? -> DEFAULT SET TO EN FOR NOW
 require_once($rootdir.'/classes/core/language.php');

@@ -14,7 +14,8 @@
 */
 
 
-require_once(dirname(__FILE__).'/../config.php');  // config.php itself includes common.php
+require_once(dirname(__FILE__).'/../config.php');  
+require_once(dirname(__FILE__).'/../common.php');
 
 @ini_set('session.gc_maxlifetime', $sessionlifetime);
 
