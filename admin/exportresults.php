@@ -49,7 +49,7 @@ if (!$style)
 	$result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	while ($rows = $result->FetchRow())
 	{
-		if (($rows['type']=='A') || ($rows['type']=='B')||($rows['type']=='C')||($rows['type']=='M')||($rows['type']=='P')||($rows['type']=='Q')||($rows['type']=='E')||($rows['type']=='F')||($rows['type']=='H'))
+		if (($rows['type']=='A') || ($rows['type']=='B')||($rows['type']=='C')||($rows['type']=='M')||($rows['type']=='P')||($rows['type']=='Q')||($rows['type'] == "K") ||($rows['type']=='E')||($rows['type']=='F')||($rows['type']=='H'))
 		{
 			$detailquery="select code from {$dbprefix}answers where qid=".$rows['qid']." and language='$surveybaselang' order by sortorder,code";
 			$detailresult=db_execute_assoc($detailquery) or die("Couldn't find detailfields<br />$detailquery<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -607,6 +607,7 @@ for ($i=0; $i<$fieldcount; $i++)
 				case "E":
 				case "F":
 				case "H":
+				case "K":
 				case "Q":
 				case "^":
 				if ($answers == "short") {
