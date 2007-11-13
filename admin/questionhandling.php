@@ -19,7 +19,8 @@ include_once("login_check.php");
 
 if ($action == "addquestion")
 {
-	$newquestionoutput =  "\t<form action='$scriptname' name='addnewquestion1' method='post'>\n"
+	$newquestionoutput = getEditorPopupScript();
+	$newquestionoutput .=  "\t<form action='$scriptname' name='addnewquestion1' method='post'>\n"
 	. "<table width='100%' border='0'>\n\n"
 	. "\t<tr>\n"
 	. "\t\t<td colspan='2' class='settingcaption'>"
@@ -32,11 +33,15 @@ if ($action == "addquestion")
 	. "<font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></td></tr>\n"
 	. "\t<tr>\n"
 	. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Question:")."</strong></td>\n"
-	. "\t\t<td align='left'><textarea cols='50' rows='3' name='question'></textarea></td>\n"
+	. "\t\t<td align='left'><textarea cols='50' rows='3' name='question'></textarea>"
+	. getHtmlControls("textarea","question", "[".$clang->gT("Question:", "js")."]")
+	."</td>\n"
 	. "\t</tr>\n"
 	. "\t<tr>\n"
 	. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Help:")."</strong></td>\n"
-	. "\t\t<td align='left'><textarea cols='50' rows='3' name='help'></textarea></td>\n"
+	. "\t\t<td align='left'><textarea cols='50' rows='3' name='help'></textarea>"
+	. getHtmlControls("textarea","help", "[".$clang->gT("Help:", "js")."]")
+	."</td>\n"
 	. "\t</tr>\n"
 	. "\t<tr>\n"
 	. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Type:")."</strong></td>\n"
@@ -308,7 +313,8 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	
 	$eqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language='{$baselang}'";
 	$eqresult = db_execute_assoc($eqquery);
-	$editquestion ="<table width='100%' border='0'>\n\t<tr><td class='settingcaption'>"
+	$editquestion = getEditorPopupScript();
+	$editquestion .= "<table width='100%' border='0'>\n\t<tr><td class='settingcaption'>"
 	. "\t\t".$clang->gT("Edit Question")."</td></tr></table>\n"
 	. "<form name='frmeditquestion' action='$scriptname' method='post'>\n"
 	. '<div class="tab-pane" id="tab-pane-1">';
@@ -325,9 +331,11 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	. "\t</span></div>\n";
 	$editquestion .=  "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Question:")."</span>\n"
 	. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='question_{$eqrow['language']}'>{$eqrow['question']}</textarea>\n"
+	. getHtmlControls("textarea","question_".$eqrow['language'], "[".$clang->gT("Question:", "js")."](".$eqrow['language'].")")
 	. "\t</span></div>\n"
 	. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Help:")."</span>\n"
 	. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='help_{$eqrow['language']}'>{$eqrow['help']}</textarea>\n"
+	. getHtmlControls("textarea","help_".$eqrow['language'], "[".$clang->gT("Help:", "js")."](".$eqrow['language'].")")
 	. "\t</span></div>\n"
 	. "\t<div class='settingrow'><span class='settingcaption'>&nbsp;</span>\n"
 	. "\t\t<span class='settingentry'>&nbsp;\n"
