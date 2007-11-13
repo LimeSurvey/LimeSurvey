@@ -235,7 +235,7 @@ foreach ($filters as $flt)
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 			$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'><strong>$flt[3]-".$row[0]."</strong></font>";
 			$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield1'";
-			if (isset($_POST['summary']) && (array_search("K{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $_POST['summary']) !== FALSE))
+			if (isset($summary) && (array_search("K{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $summary) !== FALSE))
 			{$statisticsoutput .= " checked='checked'";}
 			$statisticsoutput .= " />&nbsp;&nbsp;";
 		    $statisticsoutput .= showSpeaker(FlattenText($row[1]))."<br />\n";
@@ -940,6 +940,7 @@ if (isset($_POST['display']) && $_POST['display'])
 				{
 					case "N":
 					case "T":
+					case "K":
 					$field = substr($viewfields, 1, strlen($viewfields)-1);
 					$statisticsoutput .= "\t\t\t<input type='hidden' name='summary[]' value='$field' />\n";
 					break;
@@ -1182,7 +1183,9 @@ if (isset($summary) && $summary)
 				if ($sql != "NULL") {$querystarter .= " AND $sql";}
 				$medcount=$result->RecordCount();
 
-				if ($medcount>1)   // Calculating makes only sens with more than one result
+				array_unshift($showem, array($clang->gT("Count"), $medcount));
+
+				if ($medcount>1)   // Calculating only makes sense with more than one result
 				{
 					//1ST QUARTILE (Q1)
 					$q1=(1/4)*($medcount+1);
@@ -1285,7 +1288,7 @@ if (isset($summary) && $summary)
 					$statisticsoutput .= "\t<tr>\n"
 					."\t\t<td align='center'  colspan='3'>Not enough values for calculation</td>\n"
 					."\t</tr>\n</table>\n";
-
+					unset($showem);
 				}
 			}
 		}
