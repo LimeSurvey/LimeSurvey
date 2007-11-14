@@ -549,8 +549,38 @@ if($action == "orderquestions")
     	$cdquery = "UPDATE ".db_table_name('questions')." SET question_order=$oldsortorder WHERE gid=$gid AND question_order=-1";
     	$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
     	break;
+        }
      }
-  }
+     if (!empty($_POST['questionmovefrom']) && !empty($_POST['questionmoveto']))
+     {
+        $newpos=$_POST['questionmoveto'];
+        $oldpos=$_POST['questionmovefrom'];
+	    if($newpos > $oldpos)
+	    {
+		  //Move the question we're changing out of the way
+		  $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=-1 WHERE gid=$gid AND question_order=$oldpos";
+    	  $cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+	      //Move all question_orders that are less than the newpos down one
+	      $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=question_order-1 WHERE gid=$gid AND question_order > 0 AND question_order <= $newpos";
+    	  $cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    	  //Renumber the question we're changing
+		  $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=$newpos WHERE gid=$gid AND question_order=-1";
+    	  $cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		}
+	    if(($newpos+1) < $oldpos)
+	    {
+	      //echo "Newpos $newpos, Oldpos $oldpos";
+		  //Move the question we're changing out of the way
+		  $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=-1 WHERE gid=$gid AND question_order=$oldpos";
+    	  $cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+	      //Move all question_orders that are less than the newpos down one
+	      $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=question_order+1 WHERE gid=$gid AND question_order > ".$newpos." AND question_order <= $oldpos";
+    	  $cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    	  //Renumber the question we're changing
+		  $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=".($newpos+1)." WHERE gid=$gid AND question_order=-1";
+    	  $cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		}
+	 }
 
     //Get the questions for this group
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -583,16 +613,19 @@ if (!is_null($questdepsarray))
 
     $questioncount = $oqresult->RecordCount();        
 $oqarray = $oqresult->GetArray();
+$minioqarray=$oqarray;
 for($i=0; $i < $questioncount ; $i++)
 {
 	$downdisabled = "";
 	$updisabled = "";
+	//Check if question is relied on as a condition dependency by the next question, and if so, don't allow moving down
 	if ( !is_null($questdepsarray) && $i < $questioncount-1 &&
 	  array_key_exists($oqarray[$i+1]['qid'],$questdepsarray) &&
 	  array_key_exists($oqarray[$i]['qid'],$questdepsarray[$oqarray[$i+1]['qid']]) )
 	{
 		$downdisabled = "disabled=\"true\" class=\"disabledbtn\"";
 	}
+	//Check if question has a condition dependency on the preceding question, and if so, don't allow moving up
 	if ( !is_null($questdepsarray) && $i !=0  &&
 	  array_key_exists($oqarray[$i]['qid'],$questdepsarray) &&
 	  array_key_exists($oqarray[$i-1]['qid'],$questdepsarray[$oqarray[$i]['qid']]) )
@@ -600,19 +633,72 @@ for($i=0; $i < $questioncount ; $i++)
 		$updisabled = "disabled=\"true\" class=\"disabledbtn\"";
 	}
 
+	//Move to location 
 	$orderquestions.="<li class='movableNode'>\n" ;
+	$orderquestions.="\t<select style='float:right; margin-left: 5px;";
+	$orderquestions.="' name='questionmovetomethod$i' onChange=\"this.form.questionmovefrom.value='".$oqarray[$i]['question_order']."';this.form.questionmoveto.value=this.value;submit()\"/>\n";
+	$orderquestions.="<option value=''>".$clang->gT("Place after..")."</option>\n";
+    //Find out if there are any dependencies
+	$max_start_order=0;
+    if ( !is_null($questdepsarray) && $i!=0 &&
+	     array_key_exists($oqarray[$i]['qid'], $questdepsarray)) //This should find out if there are any dependencies
+	     {
+	       foreach($questdepsarray[$oqarray[$i]['qid']] as $key=>$val) {
+		     //qet the question_order value for each of the dependencies
+		     foreach($minioqarray as $mo) {
+			   if($mo['qid'] == $key && $mo['question_order'] > $max_start_order)
+			   {
+			     $max_start_order = $mo['question_order'];
+			   }
+			 }
+		   }
+	     }
+	//Find out if any questions use this as a dependency
+	$max_end_order=$questioncount+1;
+	if ( !is_null($questdepsarray) && $i!=0 )
+	{
+	    //There doesn't seem to be any choice but to go through the questdepsarray one at a time
+	    foreach($questdepsarray as $qdarray)
+	    {
+	        if (array_key_exists($oqarray[$i]['qid'], $qdarray))
+	        {
+			    //get the question order value of this other question that uses this as a dependency
+			    foreach($minioqarray as $mo)
+			    {
+				    if($mo['qid'] == $oqarray[$i]['qid'] && $mo['question_order'] < $max_end_order)
+				        {
+						    $max_end_order = $mo['question_order'];
+						}
+				}
+			}
+	    }
+	}
+	$minipos=1;
+	foreach($minioqarray as $mo)
+	{
+	   if($minipos >= $max_start_order && $minipos <= $max_end_order)
+	   {
+	       $orderquestions.="<option value='".$mo['question_order']."'>".$mo['title']."</option>\n";
+	   }
+	   $minipos++;
+	}
+	$orderquestions.="</select>\n";
+	
 	$orderquestions.= "\t<input style='float:right;";
 	if ($i == 0) {$orderquestions.="visibility:hidden;";}
 	$orderquestions.="' type='submit' name='questionordermethod' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$oqarray[$i]['question_order']}'\" ".$updisabled."/>\n";
 	if ($i < $questioncount-1)
 	{
-		// Fill the sortorder hiddenfield so we now what fi        eld is moved down
+		// Fill the sortorder hiddenfield so we know what field is moved down
 		$orderquestions.= "\t<input type='submit' style='float:right;' name='questionordermethod' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$oqarray[$i]['question_order']}'\" ".$downdisabled."/>\n";
 	}
-	$orderquestions.=$oqarray[$i]['title'].": ".$oqarray[$i]['question']."</li>\n" ;
+	$orderquestions.=$oqarray[$i]['title'].": ".$oqarray[$i]['question'];
+	$orderquestions.= "</li>\n" ;
 }
 
   	$orderquestions.="</ul>\n"
+	. "<input type='hidden' name='questionmovefrom' />\n"
+	. "<input type='hidden' name='questionmoveto' />\n"
   	. "\t<input type='hidden' name='sortorder' />"
   	. "\t<input type='hidden' name='action' value='orderquestions' />" 
       . "</form>" ;
