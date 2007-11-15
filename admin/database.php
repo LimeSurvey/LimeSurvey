@@ -225,9 +225,18 @@ if(isset($surveyid))
 			$_POST  = array_map('db_quote', $_POST);
 			if (!isset($_POST['lid']) || $_POST['lid'] == '') {$_POST['lid']="0";}
 			$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);	
+			if(!empty($_POST['questionposition']) || $_POST['questionposition'] == 0)
+			{
+			    $question_order=($_POST['questionposition']+1);
+			    //Need to renumber all questions on or after this
+	           $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=question_order+1 WHERE gid=".$_POST['gid']." AND question_order >= ".$question_order;
+    	       $cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+			} else {
+			    $question_order=(getMaxquestionorder($_POST['gid'])+1);
+			}
 			$query = "INSERT INTO ".db_table_name('questions')." (sid, gid, type, title, question, preg, help, other, mandatory, lid, question_order, language)"
 			." VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
-			." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',".(getMaxquestionorder($_POST['gid'])+1).",'{$baselang}')";
+			." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',$question_order,'{$baselang}')";
 			$result = $connect->Execute($query);
 			// Get the last inserted questionid for other languages
 			$qid=$connect->Insert_ID();
