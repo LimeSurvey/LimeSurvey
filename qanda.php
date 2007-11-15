@@ -558,7 +558,7 @@ function do_date($ia)
        $answer .= "\t\t\t<select id='day{$ia[1]}' onChange='dateUpdater(\"{$ia[1]}\");'>\n";
        $answer .= "\t\t\t\t<option value=''>".$clang->gT("Day")."</option>\n";
        for ($i=1; $i<=31; $i++) {
-	      $answer .= "\t\t\t\t<option";
+	      $answer .= "\t\t\t\t<option value='".sprintf("%02d", $i)."'";
 		  if ($i == $currentdate) {$answer .= " selected";}
 		  $answer .= ">".sprintf("%02d", $i)."</option>\n";
 	   }
@@ -587,7 +587,7 @@ function do_date($ia)
        $answer .= "\t\t\t\t<option value=''>".$clang->gT("Year")."</option>\n";
        
        for ($i=date("Y"); $i>=(date("Y")-115); $i--) {
-	      $answer .= "\t\t\t\t<option";
+	      $answer .= "\t\t\t\t<option value='$i'";
 	      if ($i == $currentyear) {$answer .= " selected";}
 		  $answer .= ">$i</option>\n";
 	   }
