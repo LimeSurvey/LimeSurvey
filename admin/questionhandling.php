@@ -610,6 +610,10 @@ if($action == "orderquestions")
 //        . "<tr> <td >".("Question Name")."</td><td>".("Action")."</td></tr>"
         . "</table>\n";
 
+$questioncount = $oqresult->RecordCount();        
+$oqarray = $oqresult->GetArray();
+$minioqarray=$oqarray;
+
 // Get the condition dependecy array for all questions in this array and group
 $questdepsarray = GetQuestDepsForConditions($surveyid,$gid);
 if (!is_null($questdepsarray))
@@ -620,7 +624,9 @@ if (!is_null($questdepsarray))
 		foreach ($depquestrow as $targqid => $targcid)
 		{
 			$listcid=implode("-",$targcid);
-			$orderquestions .= "<li><a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$gid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\"> [QID: ".$depqid."] </a> ";
+			$question=arraySearchByKey($depqid, $oqarray, "qid", 1);
+
+			$orderquestions .= "<li><a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$gid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\">".$question['title'].": ".$question['question']. " [QID: ".$depqid."] </a> ";
 		}
 		$orderquestions .= "</li>\n";
 	}
@@ -629,9 +635,6 @@ if (!is_null($questdepsarray))
 
     $orderquestions	.= "<form method='post'>";	
 
-    $questioncount = $oqresult->RecordCount();        
-$oqarray = $oqresult->GetArray();
-$minioqarray=$oqarray;
 for($i=0; $i < $questioncount ; $i++)
 {
 	$downdisabled = "";
@@ -694,7 +697,7 @@ for($i=0; $i < $questioncount ; $i++)
 	$minipos=1;
 	foreach($minioqarray as $mo)
 	{
-	   if($minipos >= $max_start_order && $minipos <= $max_end_order)
+	   if($minipos > $max_start_order && $minipos <= $max_end_order)
 	   {
 	       $orderquestions.="<option value='".$mo['question_order']."'>".$mo['title']."</option>\n";
 	   }
