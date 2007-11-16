@@ -102,9 +102,13 @@
 	    $supportedLanguages['nl']['description'] = $clang->gT('Dutch');
 	    $supportedLanguages['nl']['nativedescription'] = 'Nederlands';
 
-	    /* English */
+	    // English
 	    $supportedLanguages['en']['description'] = $clang->gT('English');
 	    $supportedLanguages['en']['nativedescription'] = 'English';
+
+        // Estonian
+        $supportedLanguages['et']['description'] = $clang->gT('Estonian');
+        $supportedLanguages['et']['nativedescription'] = 'Eestlane';
 
 	    // Finnish
 	    $supportedLanguages['fi']['description'] = $clang->gT('Finnish');
