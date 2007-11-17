@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-10-27 16:52+0100\n"
+"PO-Revision-Date: 2007-11-17 13:06+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -324,9 +324,6 @@ msgstr "Diese Umfrage neu starten"
 msgid "Close this Window"
 msgstr "Fenster schließen"
 
-msgid "Return To Survey"
-msgstr "Zur Umfrage zurückkehren"
-
 msgid "Save Your Unfinished Survey"
 msgstr "Umfrage zwischenspeichern"
 
@@ -341,6 +338,9 @@ msgstr "Ihre Umfrage  wird dann unter diesem Namen und Passwort gespeichert und 
 # D:\web\xampp\htdocs\limesurvey/common.php:1852
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "Wenn Sie eine Emailadresse angeben, wird Ihnen eine Email mit weitere Einzelheiten zugesandt."
+
+msgid "Return To Survey"
+msgstr "Zur Umfrage zurückkehren"
 
 msgid "Name"
 msgstr "Name"
@@ -1018,6 +1018,9 @@ msgstr "Es gibt keine entsprechende Umfrage."
 
 msgid "Token ID"
 msgstr "Zugangsschlüssel ID:"
+
+msgid "Completed"
+msgstr "Abgeschlossen"
 
 msgid "Date Submitted"
 msgstr "Datum Abgeschickt"
@@ -2560,6 +2563,10 @@ msgstr "keine GID (Gruppe) angegeben. Kann Frage nicht importieren."
 msgid "This file is not a LimeSurvey question file. Import failed."
 msgstr "Diese Datei ist keine LimeSurvey-Umfrage-Datei. Import fehlgeschlagen."
 
+# D:\web\xampp\htdocs\stable_plus/admin/importquestion.php:116
+msgid "Sorry, importing questions is limited to the same version. Import failed."
+msgstr "Sie können leider nur Fragen der gleichen LimeSurvey Version importieren. Import fehlgeschlagen."
+
 msgid "You can't import a question which doesn't support the current survey's base language"
 msgstr "Sie können keine Frage importieren, welche nicht zumindest die Basissprache dieser Umfrage unterstützt."
 
@@ -3081,9 +3088,6 @@ msgstr "Prozent"
 msgid "Non completed"
 msgstr "Nicht beendet"
 
-msgid "Completed"
-msgstr "Abgeschlossen"
-
 msgid "Select all"
 msgstr "Alle auswählen"
 
@@ -3109,6 +3113,30 @@ msgstr "Zahleneingabe"
 
 msgid "Huge free text"
 msgstr "Ausführlicher Freitext"
+
+msgid "Welcome Page"
+msgstr "Startseite"
+
+msgid "Question Page"
+msgstr "Fragen-Seite"
+
+msgid "Submit Page"
+msgstr "Senden-Seite"
+
+msgid "Completed Page"
+msgstr "Abschluss-Seite"
+
+msgid "Clear All Page"
+msgstr "Erneut-Seite"
+
+msgid "Register Page"
+msgstr "Registrierungs-Seite"
+
+msgid "Load Page"
+msgstr "Seite laden"
+
+msgid "Save Page"
+msgstr "Seite speichern"
 
 msgid "Failed to copy"
 msgstr "Fehler beim Kopieren"
@@ -3140,30 +3168,6 @@ msgstr "Verzeichnis konnte nicht umbenannt werden nach"
 # D:\web\xampp\htdocs\limesurvey/admin/templates.php:155
 msgid "This file type is not allowed to be uploaded."
 msgstr "Dieser Dateityp darf nicht hochgeladen werden."
-
-msgid "Welcome Page"
-msgstr "Startseite"
-
-msgid "Question Page"
-msgstr "Fragen-Seite"
-
-msgid "Submit Page"
-msgstr "Senden-Seite"
-
-msgid "Completed Page"
-msgstr "Abschluss-Seite"
-
-msgid "Clear All Page"
-msgstr "Erneut-Seite"
-
-msgid "Register Page"
-msgstr "Registrierungs-Seite"
-
-msgid "Load Page"
-msgstr "Seite laden"
-
-msgid "Save Page"
-msgstr "Seite speichern"
 
 msgid "Create new template called:"
 msgstr "Name der neuen Vorlage:"
@@ -4024,6 +4028,9 @@ msgstr "Albanisch"
 msgid "Basque"
 msgstr "Baskisch"
 
+msgid "Bosnian"
+msgstr "Bosnisch"
+
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:66
 msgid "Bulgarian"
 msgstr "Bulgarisch"
@@ -4054,6 +4061,9 @@ msgstr "Niederländisch"
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:90
 msgid "English"
 msgstr "Englisch"
+
+msgid "Estonian"
+msgstr "Estnisch"
 
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:94
 msgid "Finnish"
@@ -4099,6 +4109,10 @@ msgstr "Japanisch"
 msgid "Lithuanian"
 msgstr "Litauisch"
 
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:159
+msgid "Macedonian"
+msgstr "Mazedonisch"
+
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:135
 msgid "Norwegian"
 msgstr "Norwegisch"
@@ -4133,6 +4147,10 @@ msgstr "Serbisch"
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:160
 msgid "Spanish"
 msgstr "Spanisch"
+
+# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:160
+msgid "Spanish (Mexico)"
+msgstr "Spanisch (Mexiko)"
 
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:164
 msgid "Swedish"
