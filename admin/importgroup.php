@@ -443,7 +443,7 @@ if (isset($grouparray) && $grouparray) {
 					$newrank=0;
 					$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
 					//NOW DO NESTED ANSWERS FOR THIS QID
-					if ($answerarray) {
+					if (isset($answerarray) && $answerarray) {
 						foreach ($answerarray as $aa) {
                             $aacfieldcontents=convertCSVRowToArray($aa,',','"');
                     		$answerrowdata=array_combine($answerfieldnames,$aacfieldcontents);
@@ -632,7 +632,7 @@ if (isset($countlabels)) {$importgroup .= $countlabels;}
 $importgroup .= ")</li>\n";
 $importgroup .= "\t<li>".$clang->gT("Question Attributes:");
 $importgroup .= " $countquestion_attributes";
-$importgroup .= ")</li>\n</ul>\n";
+$importgroup .= "</li>\n</ul>\n";
 $importgroup .= "<strong>".$clang->gT("Import of group is completed.")."</strong><br />&nbsp;\n"
 ."</td></tr></table><br />&nbsp;\n";
 

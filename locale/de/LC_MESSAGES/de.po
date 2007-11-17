@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-11-17 13:06+0100\n"
+"PO-Revision-Date: 2007-11-17 15:05+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -2470,7 +2470,7 @@ msgid "Reading file..."
 msgstr "Lese Datei..."
 
 msgid "This file is not a LimeSurvey group file. Import failed."
-msgstr "Diese Datei enthält keine LimeSurvey-Daten im richtigen Format."
+msgstr "Dies ist keine LimeSurvey Gruppen-Datei. Import fehlgeschlagen."
 
 msgid "You can't import a group which doesn't support the current survey's base language."
 msgstr "Sie können keine Gruppe importieren, welche nicht zumindest die Basissprache dieser Umfrage unterstützt."
@@ -2486,7 +2486,7 @@ msgstr "Import teilweise erfolgreich."
 
 # D:\web\xampp\htdocs\limesurvey/admin/importgroup.php:555
 msgid "The following languages in this group were not imported since the survey does not contain such a language: "
-msgstr "Die folgenden Sprachen in der Grupper wurden nicht importiert, da die Umfrage eine solche Sprache nicht enthält:"
+msgstr "Die folgenden Sprachen in der Gruppe wurden nicht importiert, da die Umfrage die entsprechene Sprache nicht nutzt:"
 
 msgid "Group Import Summary"
 msgstr "Gruppen-Import übersicht"
@@ -2510,7 +2510,7 @@ msgid "Import Label Set"
 msgstr "Beschriftung-Set importieren"
 
 msgid "This file is not a LimeSurvey label set file. Import failed."
-msgstr "Diese Datei ist keine LimeSurvey-Beschriftungsset-Datei. Import fehlgeschlagen."
+msgstr "Dies ist keine LimeSurvey-Beschriftungsset-Datei. Import fehlgeschlagen."
 
 msgid "Return to Labels Admin"
 msgstr "Zurück zur Beschriftung-Set Administration"
@@ -2561,7 +2561,7 @@ msgid "No GID (Group) has been provided. Cannot import question"
 msgstr "keine GID (Gruppe) angegeben. Kann Frage nicht importieren."
 
 msgid "This file is not a LimeSurvey question file. Import failed."
-msgstr "Diese Datei ist keine LimeSurvey-Umfrage-Datei. Import fehlgeschlagen."
+msgstr "Dies ist keine LimeSurvey Fragen-Datei. Import fehlgeschlagen."
 
 # D:\web\xampp\htdocs\stable_plus/admin/importquestion.php:116
 msgid "Sorry, importing questions is limited to the same version. Import failed."
@@ -2580,7 +2580,7 @@ msgid "Import of Survey is completed."
 msgstr "Import der Umfrage abgeschlossen."
 
 msgid "This file is not a LimeSurvey survey file. Import failed."
-msgstr "Diese Datei ist keine LimeSurvey-Umfrage-Datei. Import fehlgeschlagen."
+msgstr "Dies ist keine LimeSurvey-Umfrage-Datei. Import fehlgeschlagen."
 
 msgid "Import of this survey file failed"
 msgstr "Import dieser Umfrage-Datei fehlgeschlagen."
