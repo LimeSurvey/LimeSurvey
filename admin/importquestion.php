@@ -95,16 +95,16 @@ else    // unknown file - show error message
   {
       if ($importingfrom == "http")
       {
-          $importsurvey .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-          $importsurvey .= $clang->gT("This file is not a LimeSurvey question file. Import failed.")."<br /><br />\n";
-          $importsurvey .= "</font></td></tr></table>\n";
-          $importsurvey .= "</body>\n</html>\n";
+          $importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+          $importquestion .= $clang->gT("This file is not a LimeSurvey question file. Import failed.")."<br /><br />\n";
+          $importquestion .= "</font></td></tr></table>\n";
+          $importquestion .= "</body>\n</html>\n";
           unlink($the_full_file_path);
           return;
       }
       else 
       {
-          echo $clang->gT("This file is not a LimeSurvey question file. Import failed.")."\n";
+          $importquestion.= $clang->gT("This file is not a LimeSurvey question file. Import failed.")."\n";
           unlink($the_full_file_path);
           return;
       }
@@ -112,10 +112,10 @@ else    // unknown file - show error message
 
 if ($importversion != $dbversionnumber)
 {
-    $importsurvey .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-    $importsurvey .= $clang->gT("Sorry, importing questions is limited to the same version. Import failed.")."<br /><br />\n";
-    $importsurvey .= "</font></td></tr></table>\n";
-    $importsurvey .= "</body>\n</html>\n";
+    $importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+    $importquestion .= $clang->gT("Sorry, importing questions is limited to the same version. Import failed.")."<br /><br />\n";
+    $importquestion .= "</font></td></tr></table>\n";
+    $importquestion .= "</body>\n</html>\n";
     unlink($the_full_file_path);
     return;
 }
@@ -224,7 +224,8 @@ if (isset($answerarray))
         $answerfieldnames=convertCSVRowToArray($answerarray[0],',','"');
         unset($answerarray[0]);
         $countanswers = count($answerarray);
-    }  else {$countanswers=0;}
+    }  
+	  else {$countanswers=0;}
 if (isset($labelsetsarray)) {$countlabelsets = count($labelsetsarray)-1;}  else {$countlabelsets=0;}
 if (isset($labelsarray)) {$countlabels = count($labelsarray)-1;}  else {$countlabels=0;}
 if (isset($question_attributesarray)) {$countquestion_attributes = count($question_attributesarray)-1;} else {$countquestion_attributes=0;}

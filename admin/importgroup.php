@@ -443,7 +443,7 @@ if (isset($grouparray) && $grouparray) {
 					$newrank=0;
 					$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
 					//NOW DO NESTED ANSWERS FOR THIS QID
-					if ($answerarray) {
+					if (isset($answerarray) && $answerarray) {
 						foreach ($answerarray as $aa) {
                             $aacfieldcontents=convertCSVRowToArray($aa,',','"');
                     		$answerrowdata=array_combine($answerfieldnames,$aacfieldcontents);
