@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Hungay Language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-11-09 08:00+0100\n"
-"PO-Revision-Date: 2007-11-09 17:13+0100\n"
+"PO-Revision-Date: 2007-11-10 17:33+0100\n"
 "Last-Translator: Koloszár László <rektorur@freemail.hu>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -2533,20 +2533,20 @@ msgid ""
 "Click here to do the survey:\n"
 "{SURVEYURL}"
 msgstr ""
-"Tisztelt {FIRSTNAME},{LASTNAME}\n"
+"Tisztelt {LASTNAME} {FIRSTNAME},\n"
 "\n"
-"Önt meghívtuk egy kérdőív kitöltésére.\n"
+"Ezúton szeretnénk meghívni Önt egy kérdőív kitöltésére.\n"
 "\n"
 "A kérdőív címe:\n"
 "\"{SURVEYNAME}\"\n"
 "\n"
-"\"{SURVEYDESCRIPTION}\"\n"
+"{SURVEYDESCRIPTION}\n"
 "\n"
 "A kitöltéshez kattintson az alábbi linkre.\n"
 "\n"
 "Üdvözlettel,\n"
 "\n"
-"{ADMINNAME} ({ADMINEMAIL})\n"
+"{ADMINNAME}, ({ADMINEMAIL})\n"
 "\n"
 "----------------------------------------------\n"
 "Kattintson ide a kitöltéshez:\n"
@@ -2555,7 +2555,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2160
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2465
 msgid "Email Reminder Subject:"
-msgstr "E-mail-emlékeztető tárgya:"
+msgstr "Emlékeztető e-mail tárgya:"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2162
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2466
@@ -2565,7 +2565,7 @@ msgstr "Emlékeztető a felmérésben való részvételre"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2165
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2468
 msgid "Email Reminder:"
-msgstr "E-mail emlékeztető:"
+msgstr "Emlékeztető  e-mail:"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2167
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2469
@@ -2592,7 +2592,7 @@ msgid ""
 "Click here to do the survey:\n"
 "{SURVEYURL}"
 msgstr ""
-"Tisztelt {FIRSTNAME},{LASTNAME}\n"
+"Tisztelt {LASTNAME} {FIRSTNAME},\n"
 "\n"
 "Nemrég Önt meghívtuk egy kérdőív kitöltésére.\n"
 "\n"
@@ -2601,13 +2601,13 @@ msgstr ""
 "A kérdőív neve:\n"
 "\"{SURVEYNAME}\"\n"
 "\n"
-"\"{SURVEYDESCRIPTION}\"\n"
+"{SURVEYDESCRIPTION}\n"
 "\n"
 "A kitöltéshez kattintson az alábbi linkre.\n"
 "\n"
 "Üdvözlettel,\n"
 "\n"
-"{ADMINNAME} ({ADMINEMAIL})\n"
+"{ADMINNAME}, ({ADMINEMAIL})\n"
 "\n"
 "----------------------------------------------\n"
 "Kattintson ide a kitöltéshez:\n"
@@ -2616,12 +2616,12 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2170
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2471
 msgid "Confirmation Email Subject"
-msgstr "E-Mail tárgy megerősítése"
+msgstr "Megerősítő e-mail tárgya "
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2172
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2472
 msgid "Confirmation of completed survey"
-msgstr "A kitöltött kérdőív megerősítése"
+msgstr "A kérdőív-kitöltés megerősítése"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2175
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2474
@@ -2644,9 +2644,9 @@ msgid ""
 msgstr ""
 "Tisztelt {LASTNAME} {FIRSTNAME},\n"
 "\n"
-"Ez az e-mail visszaigazolás arról, hogy Ön kitöltötte a \" {SURVEYNAME} \" nevű kérdőívet, továbbá arról, hogy a válaszait elmentettük. Köszönjük a részvételt!\n"
+"Ez az e-mail visszaigazolás arról, hogy Ön kitöltötte a \"{SURVEYNAME}\" nevű kérdőívet, továbbá arról, hogy a válaszait elmentettük. Köszönjük a részvételt!\n"
 "\n"
-"Amennyiben további kérdései lennének, kérem lépjen kapcsolatba velem: {ADMINNAME} , {ADMINEMAIL}.\n"
+"Amennyiben további kérdései lennének, kérem lépjen kapcsolatba velem: {ADMINNAME}, {ADMINEMAIL}.\n"
 "\n"
 "Üdvözlettel,\n"
 "\n"
@@ -2684,11 +2684,11 @@ msgstr ""
 "\n"
 "Ön, vagy valaki más erről az e-mail címről regisztrált a következő kérdőív kitöltésében történő résztvételre: {SURVEYNAME}.\n"
 "\n"
-"To complete this survey, click on the following URL:\n"
+"A kérdőív kitöltéséhez kattintson az alábbi linkre:\n"
 "\n"
 "{SURVEYURL}\n"
 "\n"
-"Amennyiben kérdései lennének a kérdőívvel kapcsolatban, vagy nem Ön regisztrált, és úgy gondolja valami hiba folytán kapta ezt a levelet, kérem lépjen kapcsolatba velem:{ADMINNAME} , {ADMINEMAIL}."
+"Amennyiben kérdései lennének a kérdőívvel kapcsolatban, vagy nem Ön regisztrált, és úgy gondolja valami hiba folytán kapta ezt a levelet, kérem lépjen kapcsolatba velem:{ADMINNAME}, {ADMINEMAIL}."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2190
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2533
@@ -3353,7 +3353,7 @@ msgstr "Megváltoztathatja a kérdőív nevét és leírását"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/activate.php:242
 msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
-msgstr "Amikor már adatokat rögzítettek a kérdőívbe, amennyiben kérdéseket vagy kérdéscsoportokat akar hozzáadni, deaktiválnia kell ezt a kérdőívet, de ekkorminden addig rögzített adat egy külön adattáblába költözik"
+msgstr "Amikor már adatokat rögzítettek a kérdőívbe, amennyiben kérdéseket vagy kérdéscsoportokat akar hozzáadni, deaktiválnia kell ezt a kérdőívet, de ekkor minden addig rögzített adat egy külön adattáblába költözik"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/activate.php:428
 msgid "Survey could not be actived."
@@ -4637,7 +4637,7 @@ msgstr "Zsetonok importálása LDAP lekérdezésből"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:379
 msgid "Export Tokens to CSV file"
-msgstr "Zsetonok exportálása CSV fájlból"
+msgstr "Zsetonok exportálása CSV fájlba"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:385
 msgid "Send email invitation"
@@ -4702,7 +4702,7 @@ msgstr "Biztosan törölni akarja az egyedi zseton-számokat?"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:497
 msgid "Delete all unique token numbers"
-msgstr "Minden egyedi zsetonszámot törlése"
+msgstr "Minden egyedi zsetonszám törlése"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:499
 msgid "Are you really sure you want to delete ALL token entries?"
@@ -4765,7 +4765,7 @@ msgstr "Meghívó e-mail küldése ennek az elemnek"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:717
 msgid "Send reminder email to this entry"
-msgstr "Meghívó e-mail küldése ennek az elemnek"
+msgstr "Emlékeztető e-mail küldése ennek az elemnek"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:735
 msgid "Delete Tokens Table"
@@ -4835,7 +4835,7 @@ msgstr "A levélküldés {LASTNAME} {FIRSTNAME} ({EMAIL}) számára sikertelen"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:926
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1127
 msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
-msgstr ""
+msgstr "Több e-mail elküldése van folyamatban, mint amennyi egy menetben elküldhető. A levelek kiküldésének folytatásához, kattintson a lentebb található gombra."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:927
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1128
@@ -4844,7 +4844,7 @@ msgstr "Még {EMAILCOUNT} e-mailt kell elküldeni."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:947
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
-msgstr ""
+msgstr "Az e-mailek elküldése nem történt meg. Nem volt a kritériumnak megfelelő elem - megadott e-mail cím, korábban még ki nem küldött meghívó, még ki nem töltött kérdőív, létező token."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:959
 msgid "Email Reminder"
@@ -4868,7 +4868,7 @@ msgstr "Emlékeztető elküldve neki:"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1150
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
-msgstr ""
+msgstr "Az e-mailek elküldése nem történt meg. Nem volt a kritériumnak megfelelő elem - megadott e-mail cím, korábban kiküldött meghívó, de még nem kitöltött kérdőív."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1162
 msgid "Create Tokens"
@@ -4876,7 +4876,7 @@ msgstr "Zsetonok készítése"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1166
 msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
-msgstr ""
+msgstr "Ha az 'Igen' gombra kattint, a rendszer zsetont generál azon elemekhez, amelyek jelenleg nem rendelkeznek zsetonnal. Rendben?"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1192
 msgid "{TOKENCOUNT} tokens have been created"
@@ -4903,7 +4903,7 @@ msgstr "Automatikus"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1267
 msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
-msgstr ""
+msgstr "Ezt a mezőt üresen hagyhatja, és automatikusan generálhat zsetonokat az adatfelvétel után a 'zsetonok készítése' gombbal"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1323
 msgid "Update Token"
@@ -4933,7 +4933,7 @@ msgstr "Fontos megjegyzés:"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1408
 msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [language code], [attribute1], [attribute2]\"."
-msgstr ""
+msgstr "A fájlnak standard, vesszővel elválasztott CSV fájlnak kell lennie, az adatoknak idézőjelek között kell lennie (alapértelmezett az OpenOffice-ban, és az Excelben). Az első sor tartalmazhat fejlécet, ez a sor a feltöltés után el lesz távolítva. Az adatok sorrendje: \"keresztnév, vezetéknév, e-mail, [zseton], [nyelv kódja], [zseton tulajdonság1], [zseton tulajdonság2]\"."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1419
 msgid "Upload LDAP entries"
@@ -5195,7 +5195,7 @@ msgstr "Ha deaktiválja a kérdőívet, adatai az eredeti táblából egy másik
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/deactivate.php:32
 msgid "Deactivated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
-msgstr "A deaktivált kérdőív adatai már csak a rendszergazda által lesznek elérhetőek a pl. phpmyadmin program segítségével. Ha a kérdőíve használ zsetonokat, e tábla szintén átnevezésre kerül, és szintúgy a rendszergazda által lesz csak elérhető."
+msgstr "A deaktivált kérdőív adatai már csak a rendszergazda által lesznek elérhetőek pl. a phpmyadmin program segítségével. Ha a kérdőíve használ zsetonokat, e tábla szintén átnevezésre kerül, és szintúgy a rendszergazda által lesz csak elérhető."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/deactivate.php:33
 msgid "Your responses table will be renamed to:"
@@ -5976,7 +5976,7 @@ msgstr "Felhasználók Létrehozása/Szerkesztése"
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:259
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:260
 msgid "Create/Edit Groups"
-msgstr "Kérdéscsoportok Létrehozása/Szerkesztése"
+msgstr "Felhasználói csoportok létrehozása/szerkesztése"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:266
 msgid "Check Settings"
