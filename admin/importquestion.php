@@ -93,21 +93,12 @@ elseif
     }
 else    // unknown file - show error message
   {
-      if (isset($importingfrom) && $importingfrom == "http")
-      {
-          $importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-          $importquestion .= $clang->gT("This file is not a LimeSurvey question file. Import failed.")."<br /><br />\n";
-          $importquestion .= "</font></td></tr></table>\n";
-          $importquestion .= "</body>\n</html>\n";
-          unlink($the_full_file_path);
-          return;
-      }
-      else 
-      {
-          $importquestion.= $clang->gT("This file is not a LimeSurvey question file. Import failed.")."\n";
-          unlink($the_full_file_path);
-          return;
-      }
+      $importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+      $importquestion .= $clang->gT("This file is not a LimeSurvey question file. Import failed.")."<br /><br />\n";
+      $importquestion .= "</font></td></tr></table>\n";
+      $importquestion .= "</body>\n</html>\n";
+      unlink($the_full_file_path);
+      return;
   }
 
 if ($importversion != $dbversionnumber)
