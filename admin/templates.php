@@ -39,15 +39,15 @@ $files[]=array("name"=>"printanswers.pstpl");
 //Standard Screens
 //Only these may be viewed
 
-$screens[]=array("name"=>$clang->gT("Welcome Page"));
-$screens[]=array("name"=>$clang->gT("Question Page"));
-$screens[]=array("name"=>$clang->gT("Submit Page"));
-$screens[]=array("name"=>$clang->gT("Completed Page"));
-$screens[]=array("name"=>$clang->gT("Clear All Page"));
-$screens[]=array("name"=>$clang->gT("Register Page"));
-$screens[]=array("name"=>$clang->gT("Load Page"));
-$screens[]=array("name"=>$clang->gT("Save Page"));
-$screens[]=array("name"=>$clang->gT("Print Answers Page"));
+$screens[]=array("name"=>$clang->gT("Welcome Page", "unescaped"));
+$screens[]=array("name"=>$clang->gT("Question Page", "unescaped"));
+$screens[]=array("name"=>$clang->gT("Submit Page", "unescaped"));
+$screens[]=array("name"=>$clang->gT("Completed Page", "unescaped"));
+$screens[]=array("name"=>$clang->gT("Clear All Page", "unescaped"));
+$screens[]=array("name"=>$clang->gT("Register Page", "unescaped"));
+$screens[]=array("name"=>$clang->gT("Load Page", "unescaped"));
+$screens[]=array("name"=>$clang->gT("Save Page", "unescaped"));
+$screens[]=array("name"=>$clang->gT("Print Answers Page", "unescaped"));
 
 
 // Set this so common.php doesn't throw notices about undefined variables
