@@ -69,9 +69,9 @@ if (!isset($screenname)) {$screenname=returnglobal('screenname');}
 if ( isset($screenname) && (multiarray_search($screens,'name',$screenname)===false)) {die('Invalid screen name');}  // Die you sneaky bastard!
 
 if (!isset($action)) {$action=sanitize_paranoid_string(returnglobal('action'));}
-if (!isset($otherfile)) {$templatedir = sanitize_paranoid_string(returnglobal('otherfile'));}
-if (!isset($newname)) {$templatedir = sanitize_paranoid_string(returnglobal('newname'));}
-if (!isset($copydir)) {$templatedir = sanitize_paranoid_string(returnglobal('copydir'));}
+if (!isset($otherfile)) {$otherfile = sanitize_paranoid_string(returnglobal('otherfile'));}
+if (!isset($newname)) {$newname = sanitize_paranoid_string(returnglobal('newname'));}
+if (!isset($copydir)) {$copydir = sanitize_paranoid_string(returnglobal('copydir'));}
 
 if (isset ($_POST['changes'])) {
 	    $changedtext=$_POST['changes'];
