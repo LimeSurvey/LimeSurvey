@@ -327,7 +327,6 @@ switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c
       $workbook = new Spreadsheet_Excel_Writer();
 	  $workbook->setVersion(8); 
 	  // Inform the module that our data will arrive as UTF-8.
-	  $workbook->setBIFF8InputEncoding('utf-8');      
 	  // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
       if (!empty($tempdir)) {
         $workbook->setTempDir($tempdir);
@@ -335,6 +334,7 @@ switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c
       $workbook->send('results.xls');
       // Creating the first worksheet
       $sheet =& $workbook->addWorksheet('Survey Results');
+	  $sheet->setInputEncoding('utf-8');      
       $separator="|";
 	break;
 	case "csv":
