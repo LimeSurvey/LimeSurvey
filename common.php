@@ -104,9 +104,12 @@ $database_exists = FALSE;
 switch ($databasetype)
 {
 	case "mysql"     :if ($databaseport!="default") {$dbport="$databaselocation:$databaseport";}
-	else {$dbport=$databaselocation;}
+		 			 	 else {$dbport=$databaselocation;}
 	break;
 	case "odbc_mssql": $dbport="Driver={SQL Server};Server=$databaselocation;Database=".$databasename;
+	break;
+	case "postgres": if ($databaseport!="default") {$dbport="$databaselocation:$databaseport";}
+		 			 	 else {$dbport=$databaselocation;}
 	break;
 	default: die("Unknown database type");
 }
@@ -410,17 +413,21 @@ function &db_select_limit_assoc($sql,$numrows=-1,$offset=-1,$inputarr=false,$die
 function db_quote_id($id)
 // This functions quotes fieldnames accordingly 
 {
-	global $connect;
+	global $databasetype;
     // WE DONT HAVE nor USE other thing that alfanumeric characters in the field names
 //	$quote = $connect->nameQuote;
 //	return $quote.str_replace($quote,$quote.$quote,$id).$quote;
-    switch ($connect->databaseType)
+
+    switch ($databasetype)
     {
         case "mysql" : 
             return "`".$id."`";
             break;
         case "odbc_mssql" : 
             return "[".$id."]";
+            break;
+        case "postgres": 
+            return "\"".$id."\"";
             break;
         default: 
             return "`".$id."`";

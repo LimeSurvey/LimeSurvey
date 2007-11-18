@@ -16,7 +16,7 @@
 
 // === Basic Setup
 
-$databasetype       =   "mysql";       // ADOdb database driver - either mysql or odbc_mssql
+$databasetype       =   "mysql";       // ADOdb database driver - valid values are mysql, odbc_mssql or postgres
 $databaselocation   =   "localhost";   // Network location of your Database - for odbc_mssql use the mssql servername, not localhost or IP
 $databaseport       =   "default";     // The port of your Database - if you use a standard port leave on default
 $databasename       =   "limesurvey";  // The name of the database that we will create

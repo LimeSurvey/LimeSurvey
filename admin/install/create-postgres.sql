@@ -2,17 +2,27 @@
 -- PostgreSQL database dump
 --
 
+-- Started on 2007-11-18 18:48:15
+
 SET client_encoding = 'UTF8';
+SET standard_conforming_strings = off;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
+SET escape_string_warning = off;
 
 --
--- TOC entry 1633 (class 0 OID 0)
+-- TOC entry 1763 (class 0 OID 0)
 -- Dependencies: 4
 -- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: postgres
 --
 
 COMMENT ON SCHEMA public IS 'Standard public schema';
+
+
+--
+-- TOC entry 295 (class 2612 OID 16386)
+-- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: postgres
+--
 
 
 SET search_path = public, pg_catalog;
@@ -22,49 +32,77 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- TOC entry 1205 (class 1259 OID 16405)
--- Dependencies: 1545 1546 1547 1548 4
--- Name: answers; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 1300 (class 1259 OID 16405)
+-- Dependencies: 1655 1656 1657 1658 4
+-- Name: lime_answers; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
-CREATE TABLE answers (
+CREATE TABLE lime_answers (
     qid integer DEFAULT 0 NOT NULL,
     code character varying(5) DEFAULT ''::character varying NOT NULL,
-    answer text DEFAULT ''::text NOT NULL,
+    answer text NOT NULL,
     default_value character(1) DEFAULT 'N'::bpchar NOT NULL,
-    sortorder character varying(5)
+    sortorder integer NOT NULL,
+    "language" character varying(20) DEFAULT 'en'::character varying NOT NULL
 );
 
 
+ALTER TABLE public.lime_answers OWNER TO postgres;
 
 --
--- TOC entry 1207 (class 1259 OID 16418)
--- Dependencies: 1550 1551 1552 1553 1554 1555 1556 1557 4
--- Name: assessments; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 1302 (class 1259 OID 16418)
+-- Dependencies: 1660 1661 1662 1663 1664 4
+-- Name: lime_assessments; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
-CREATE TABLE assessments (
-    id serial NOT NULL,
+CREATE TABLE lime_assessments (
+    id integer NOT NULL,
     sid integer DEFAULT 0 NOT NULL,
     scope character varying(5) DEFAULT ''::character varying NOT NULL,
     gid integer DEFAULT 0 NOT NULL,
-    name text DEFAULT ''::text NOT NULL,
+    name text NOT NULL,
     minimum character varying(50) DEFAULT ''::character varying NOT NULL,
     maximum character varying(50) DEFAULT ''::character varying NOT NULL,
-    message text DEFAULT ''::text NOT NULL,
-    link text DEFAULT ''::text NOT NULL
+    message text NOT NULL,
+    link text NOT NULL
 );
 
 
+ALTER TABLE public.lime_assessments OWNER TO postgres;
 
 --
--- TOC entry 1209 (class 1259 OID 16436)
--- Dependencies: 1559 1560 1561 1562 1563 4
--- Name: conditions; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 1301 (class 1259 OID 16416)
+-- Dependencies: 1302 4
+-- Name: lime_assessments_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE conditions (
-    cid serial NOT NULL,
+CREATE SEQUENCE lime_assessments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.lime_assessments_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 1765 (class 0 OID 0)
+-- Dependencies: 1301
+-- Name: lime_assessments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE lime_assessments_id_seq OWNED BY lime_assessments.id;
+
+
+--
+-- TOC entry 1304 (class 1259 OID 16433)
+-- Dependencies: 1666 1667 1668 1669 1670 4
+-- Name: lime_conditions; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE lime_conditions (
+    cid integer NOT NULL,
     qid integer DEFAULT 0 NOT NULL,
     cqid integer DEFAULT 0 NOT NULL,
     cfieldname character varying(50) DEFAULT ''::character varying NOT NULL,
@@ -73,159 +111,315 @@ CREATE TABLE conditions (
 );
 
 
+ALTER TABLE public.lime_conditions OWNER TO postgres;
 
 --
--- TOC entry 1211 (class 1259 OID 16448)
--- Dependencies: 1565 1566 4
--- Name: groups; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 1303 (class 1259 OID 16431)
+-- Dependencies: 1304 4
+-- Name: lime_conditions_cid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE groups (
-    gid serial NOT NULL,
+CREATE SEQUENCE lime_conditions_cid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.lime_conditions_cid_seq OWNER TO postgres;
+
+--
+-- TOC entry 1766 (class 0 OID 0)
+-- Dependencies: 1303
+-- Name: lime_conditions_cid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE lime_conditions_cid_seq OWNED BY lime_conditions.cid;
+
+
+--
+-- TOC entry 1306 (class 1259 OID 16445)
+-- Dependencies: 1672 1673 1674 1675 4
+-- Name: lime_groups; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE lime_groups (
+    gid integer NOT NULL,
     sid integer DEFAULT 0 NOT NULL,
     group_name character varying(100) DEFAULT ''::character varying NOT NULL,
-    group_order character varying(45),
+    group_order integer DEFAULT 0 NOT NULL,
     description text,
-    sortorder character varying(5)
+    "language" character varying(20) DEFAULT 'en'::character varying NOT NULL
 );
 
 
+ALTER TABLE public.lime_groups OWNER TO postgres;
+
 --
--- TOC entry 1212 (class 1259 OID 16458)
--- Dependencies: 1567 1568 1569 4
--- Name: labels; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 1305 (class 1259 OID 16443)
+-- Dependencies: 1306 4
+-- Name: lime_groups_gid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE labels (
+CREATE SEQUENCE lime_groups_gid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.lime_groups_gid_seq OWNER TO postgres;
+
+--
+-- TOC entry 1767 (class 0 OID 0)
+-- Dependencies: 1305
+-- Name: lime_groups_gid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE lime_groups_gid_seq OWNED BY lime_groups.gid;
+
+
+--
+-- TOC entry 1307 (class 1259 OID 16457)
+-- Dependencies: 1676 1677 1678 1679 4
+-- Name: lime_labels; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE lime_labels (
     lid integer DEFAULT 0 NOT NULL,
     code character varying(5) DEFAULT ''::character varying NOT NULL,
     title character varying(100) DEFAULT ''::character varying NOT NULL,
-    sortorder character varying(5)
+    sortorder integer NOT NULL,
+    "language" character varying(20) DEFAULT 'en'::character varying NOT NULL
 );
 
 
+ALTER TABLE public.lime_labels OWNER TO postgres;
 
 --
--- TOC entry 1214 (class 1259 OID 16467)
--- Dependencies: 1571 4
--- Name: labelsets; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 1309 (class 1259 OID 16468)
+-- Dependencies: 1681 1682 4
+-- Name: lime_labelsets; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
-CREATE TABLE labelsets (
-    lid serial NOT NULL,
-    label_name character varying(100) DEFAULT ''::character varying NOT NULL
+CREATE TABLE lime_labelsets (
+    lid integer NOT NULL,
+    label_name character varying(100) DEFAULT ''::character varying NOT NULL,
+    languages character varying(200) DEFAULT 'en'::character varying
 );
 
 
+ALTER TABLE public.lime_labelsets OWNER TO postgres;
+
 --
--- TOC entry 1216 (class 1259 OID 16475)
--- Dependencies: 1573 4
--- Name: question_attributes; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 1308 (class 1259 OID 16466)
+-- Dependencies: 1309 4
+-- Name: lime_labelsets_lid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE question_attributes (
-    qaid serial NOT NULL,
+CREATE SEQUENCE lime_labelsets_lid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.lime_labelsets_lid_seq OWNER TO postgres;
+
+--
+-- TOC entry 1768 (class 0 OID 0)
+-- Dependencies: 1308
+-- Name: lime_labelsets_lid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE lime_labelsets_lid_seq OWNED BY lime_labelsets.lid;
+
+
+--
+-- TOC entry 1313 (class 1259 OID 16494)
+-- Dependencies: 1692 4
+-- Name: lime_question_attributes; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE lime_question_attributes (
+    qaid integer NOT NULL,
     qid integer DEFAULT 0 NOT NULL,
     attribute character varying(50),
     value character varying(20)
 );
 
 
+ALTER TABLE public.lime_question_attributes OWNER TO postgres;
 
 --
--- TOC entry 1218 (class 1259 OID 16483)
--- Dependencies: 1575 1576 1577 1578 1579 1580 1581 4
--- Name: questions; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 1312 (class 1259 OID 16492)
+-- Dependencies: 1313 4
+-- Name: lime_question_attributes_qaid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE questions (
-    qid serial NOT NULL,
+CREATE SEQUENCE lime_question_attributes_qaid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.lime_question_attributes_qaid_seq OWNER TO postgres;
+
+--
+-- TOC entry 1769 (class 0 OID 0)
+-- Dependencies: 1312
+-- Name: lime_question_attributes_qaid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE lime_question_attributes_qaid_seq OWNED BY lime_question_attributes.qaid;
+
+
+--
+-- TOC entry 1311 (class 1259 OID 16477)
+-- Dependencies: 1684 1685 1686 1687 1688 1689 1690 4
+-- Name: lime_questions; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE lime_questions (
+    qid integer NOT NULL,
     sid integer DEFAULT 0 NOT NULL,
     gid integer DEFAULT 0 NOT NULL,
     "type" character(1) DEFAULT 'T'::bpchar NOT NULL,
     title character varying(20) DEFAULT ''::character varying NOT NULL,
-    question text DEFAULT ''::text NOT NULL,
+    question text NOT NULL,
     preg text,
     help text,
     other character(1) DEFAULT 'N'::bpchar NOT NULL,
     mandatory character(1),
-    lid integer DEFAULT 0 NOT NULL
+    lid integer DEFAULT 0 NOT NULL,
+    question_order integer NOT NULL,
+    "language" character varying(20) DEFAULT 'en'::character varying NOT NULL
 );
 
 
+ALTER TABLE public.lime_questions OWNER TO postgres;
 
 --
--- TOC entry 1220 (class 1259 OID 16500)
--- Dependencies: 1583 1584 1585 1586 1587 1588 1589 4
--- Name: saved_control; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 1310 (class 1259 OID 16475)
+-- Dependencies: 1311 4
+-- Name: lime_questions_qid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE saved_control (
-    scid serial NOT NULL,
+CREATE SEQUENCE lime_questions_qid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.lime_questions_qid_seq OWNER TO postgres;
+
+--
+-- TOC entry 1770 (class 0 OID 0)
+-- Dependencies: 1310
+-- Name: lime_questions_qid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE lime_questions_qid_seq OWNED BY lime_questions.qid;
+
+
+--
+-- TOC entry 1315 (class 1259 OID 16502)
+-- Dependencies: 1694 1695 1696 4
+-- Name: lime_saved_control; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE lime_saved_control (
+    scid integer NOT NULL,
     sid integer DEFAULT 0 NOT NULL,
     srid integer DEFAULT 0 NOT NULL,
-    identifier text DEFAULT ''::text NOT NULL,
-    access_code text DEFAULT ''::text NOT NULL,
-    email character varying(200),
-    ip text DEFAULT ''::text NOT NULL,
-    saved_thisstep text DEFAULT ''::text NOT NULL,
+    identifier text,
+    access_code text NOT NULL,
+    email character varying(320) NOT NULL,
+    ip text NOT NULL,
+    saved_thisstep text NOT NULL,
     status character(1) DEFAULT ''::bpchar NOT NULL,
     saved_date timestamp without time zone NOT NULL,
     refurl text
 );
 
 
+ALTER TABLE public.lime_saved_control OWNER TO postgres;
+
 --
--- TOC entry 1221 (class 1259 OID 16515)
--- Dependencies: 1590 1591 4
--- Name: settings_global; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 1314 (class 1259 OID 16500)
+-- Dependencies: 1315 4
+-- Name: lime_saved_control_scid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE settings_global (
+CREATE SEQUENCE lime_saved_control_scid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.lime_saved_control_scid_seq OWNER TO postgres;
+
+--
+-- TOC entry 1771 (class 0 OID 0)
+-- Dependencies: 1314
+-- Name: lime_saved_control_scid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE lime_saved_control_scid_seq OWNED BY lime_saved_control.scid;
+
+
+--
+-- TOC entry 1316 (class 1259 OID 16513)
+-- Dependencies: 1697 1698 4
+-- Name: lime_settings_global; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE lime_settings_global (
     stg_name character varying(50) DEFAULT ''::character varying NOT NULL,
     stg_value character varying(255) DEFAULT ''::character varying NOT NULL
 );
 
 
+ALTER TABLE public.lime_settings_global OWNER TO postgres;
 
 --
--- TOC entry 1222 (class 1259 OID 16521)
--- Dependencies: 1592 1593 1594 1595 1596 1597 1598 1599 1600 1601 1602 1603 1604 1605 1606 4
--- Name: surveys; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 1317 (class 1259 OID 16519)
+-- Dependencies: 1699 1700 1701 1702 1703 1704 1705 1706 1707 1708 1709 1710 1711 1712 4
+-- Name: lime_surveys; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
-CREATE TABLE surveys (
-    sid integer DEFAULT 0 NOT NULL,
-    short_title character varying(200) DEFAULT ''::character varying NOT NULL,
-    description text,
+CREATE TABLE lime_surveys (
+    sid integer NOT NULL,
+    owner_id integer NOT NULL,
     "admin" character varying(50),
     active character(1) DEFAULT 'N'::bpchar NOT NULL,
-    welcome text,
     expires date,
-    adminemail character varying(100),
+    adminemail character varying(320) NOT NULL,
     private character(1),
     faxto character varying(20),
     format character(1),
     "template" character varying(100) DEFAULT 'default'::character varying,
     url character varying(255),
-    urldescrip character varying(255),
     "language" character varying(50),
+    additional_languages character varying(255),
     datestamp character(1) DEFAULT 'N'::bpchar,
     usecookie character(1) DEFAULT 'N'::bpchar,
     notification character(1) DEFAULT '0'::bpchar,
     allowregister character(1) DEFAULT 'N'::bpchar,
     attribute1 character varying(255),
     attribute2 character varying(255),
-    email_invite_subj character varying(255),
-    email_invite text,
-    email_remind_subj character varying(255),
-    email_remind text,
-    email_register_subj character varying(255),
-    email_register text,
-    email_confirm_subj character varying(255),
-    email_confirm text,
     allowsave character(1) DEFAULT 'Y'::bpchar,
-    autonumber_start bigint DEFAULT 0,
+    printanswers character(1) DEFAULT 'N'::bpchar,
+    autonumber_start integer DEFAULT 0,
     autoredirect character(1) DEFAULT 'N'::bpchar,
     allowprev character(1) DEFAULT 'Y'::bpchar,
     ipaddr character(1) DEFAULT 'N'::bpchar,
@@ -235,131 +429,393 @@ CREATE TABLE surveys (
 );
 
 
+ALTER TABLE public.lime_surveys OWNER TO postgres;
 
 --
--- TOC entry 1223 (class 1259 OID 16543)
--- Dependencies: 1607 1608 1609 4
--- Name: users; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 1318 (class 1259 OID 16540)
+-- Dependencies: 1713 1714 4
+-- Name: lime_surveys_languagesettings; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
-CREATE TABLE users (
-    "user" character varying(64) DEFAULT ''::character varying NOT NULL,
-    "password" character varying(20) DEFAULT ''::character varying NOT NULL,
-    "security" character varying(10) DEFAULT ''::character varying NOT NULL
+CREATE TABLE lime_surveys_languagesettings (
+    surveyls_survey_id integer DEFAULT 0 NOT NULL,
+    surveyls_language character varying(45) DEFAULT 'en'::character varying NOT NULL,
+    surveyls_title character varying(200) NOT NULL,
+    surveyls_description text,
+    surveyls_welcometext text,
+    surveyls_urldescription character varying(255),
+    surveyls_email_invite_subj character varying(255),
+    surveyls_email_invite text,
+    surveyls_email_remind_subj character varying(255),
+    surveyls_email_remind text,
+    surveyls_email_register_subj character varying(255),
+    surveyls_email_register text,
+    surveyls_email_confirm_subj character varying(255),
+    surveyls_email_confirm text
 );
 
 
+ALTER TABLE public.lime_surveys_languagesettings OWNER TO postgres;
+
+--
+-- TOC entry 1319 (class 1259 OID 16549)
+-- Dependencies: 1715 1716 1717 1718 1719 1720 1721 1722 4
+-- Name: lime_surveys_rights; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE lime_surveys_rights (
+    sid integer DEFAULT 0 NOT NULL,
+    uid integer DEFAULT 0 NOT NULL,
+    edit_survey_property integer DEFAULT 0 NOT NULL,
+    define_questions integer DEFAULT 0 NOT NULL,
+    browse_response integer DEFAULT 0 NOT NULL,
+    export integer DEFAULT 0 NOT NULL,
+    delete_survey integer DEFAULT 0 NOT NULL,
+    activate_survey integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.lime_surveys_rights OWNER TO postgres;
+
+--
+-- TOC entry 1323 (class 1259 OID 16579)
+-- Dependencies: 4
+-- Name: lime_user_groups; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE lime_user_groups (
+    ugid integer NOT NULL,
+    name character varying(20) NOT NULL,
+    description text NOT NULL,
+    owner_id integer NOT NULL
+);
+
+
+ALTER TABLE public.lime_user_groups OWNER TO postgres;
+
+--
+-- TOC entry 1322 (class 1259 OID 16577)
+-- Dependencies: 1323 4
+-- Name: lime_user_groups_ugid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE lime_user_groups_ugid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.lime_user_groups_ugid_seq OWNER TO postgres;
+
+--
+-- TOC entry 1772 (class 0 OID 0)
+-- Dependencies: 1322
+-- Name: lime_user_groups_ugid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE lime_user_groups_ugid_seq OWNED BY lime_user_groups.ugid;
 
 
 --
--- TOC entry 1611 (class 2606 OID 16415)
--- Dependencies: 1205 1205 1205
--- Name: answers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 1324 (class 1259 OID 16585)
+-- Dependencies: 4
+-- Name: lime_user_in_groups; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
-ALTER TABLE ONLY answers
-    ADD CONSTRAINT answers_pkey PRIMARY KEY (qid, code);
+CREATE TABLE lime_user_in_groups (
+    ugid integer NOT NULL,
+    uid integer NOT NULL
+);
 
 
---
--- TOC entry 1613 (class 2606 OID 16433)
--- Dependencies: 1207 1207
--- Name: assessments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY assessments
-    ADD CONSTRAINT assessments_pkey PRIMARY KEY (id);
-
+ALTER TABLE public.lime_user_in_groups OWNER TO postgres;
 
 --
--- TOC entry 1615 (class 2606 OID 16445)
--- Dependencies: 1209 1209
--- Name: conditions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 1321 (class 1259 OID 16563)
+-- Dependencies: 1724 1725 1726 1727 1728 1729 1730 1731 4
+-- Name: lime_users; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
-ALTER TABLE ONLY conditions
-    ADD CONSTRAINT conditions_pkey PRIMARY KEY (cid);
+CREATE TABLE lime_users (
+    uid integer NOT NULL,
+    users_name character varying(64) DEFAULT ''::character varying NOT NULL,
+    "password" bytea NOT NULL,
+    full_name character varying(50) NOT NULL,
+    parent_id integer NOT NULL,
+    lang character varying(20),
+    email character varying(320) NOT NULL,
+    create_survey integer DEFAULT 0 NOT NULL,
+    create_user integer DEFAULT 0 NOT NULL,
+    delete_user integer DEFAULT 0 NOT NULL,
+    move_user integer DEFAULT 0 NOT NULL,
+    configurator integer DEFAULT 0 NOT NULL,
+    manage_template integer DEFAULT 0 NOT NULL,
+    manage_label integer DEFAULT 0 NOT NULL
+);
 
 
---
--- TOC entry 1617 (class 2606 OID 16457)
--- Dependencies: 1211 1211
--- Name: groups_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY groups
-    ADD CONSTRAINT groups_pkey PRIMARY KEY (gid);
-
-
---
--- TOC entry 1619 (class 2606 OID 16464)
--- Dependencies: 1212 1212 1212
--- Name: labels_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY labels
-    ADD CONSTRAINT labels_pkey PRIMARY KEY (lid, code);
-
+ALTER TABLE public.lime_users OWNER TO postgres;
 
 --
--- TOC entry 1621 (class 2606 OID 16472)
--- Dependencies: 1214 1214
--- Name: labelsets_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 1320 (class 1259 OID 16561)
+-- Dependencies: 4 1321
+-- Name: lime_users_uid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY labelsets
-    ADD CONSTRAINT labelsets_pkey PRIMARY KEY (lid);
+CREATE SEQUENCE lime_users_uid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
 
+
+ALTER TABLE public.lime_users_uid_seq OWNER TO postgres;
 
 --
--- TOC entry 1623 (class 2606 OID 16480)
--- Dependencies: 1216 1216
--- Name: question_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 1773 (class 0 OID 0)
+-- Dependencies: 1320
+-- Name: lime_users_uid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY question_attributes
-    ADD CONSTRAINT question_attributes_pkey PRIMARY KEY (qaid);
+ALTER SEQUENCE lime_users_uid_seq OWNED BY lime_users.uid;
 
 
 --
--- TOC entry 1625 (class 2606 OID 16497)
--- Dependencies: 1218 1218
--- Name: questions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 1659 (class 2604 OID 16420)
+-- Dependencies: 1302 1301 1302
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY questions
-    ADD CONSTRAINT questions_pkey PRIMARY KEY (qid);
-
-
---
--- TOC entry 1627 (class 2606 OID 16514)
--- Dependencies: 1220 1220
--- Name: saved_control_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY saved_control
-    ADD CONSTRAINT saved_control_pkey PRIMARY KEY (scid);
+ALTER TABLE lime_assessments ALTER COLUMN id SET DEFAULT nextval('lime_assessments_id_seq'::regclass);
 
 
 --
--- TOC entry 1629 (class 2606 OID 16520)
--- Dependencies: 1221 1221
--- Name: settings_global_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 1665 (class 2604 OID 16435)
+-- Dependencies: 1304 1303 1304
+-- Name: cid; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY settings_global
-    ADD CONSTRAINT settings_global_pkey PRIMARY KEY (stg_name);
+ALTER TABLE lime_conditions ALTER COLUMN cid SET DEFAULT nextval('lime_conditions_cid_seq'::regclass);
 
 
 --
--- TOC entry 1631 (class 2606 OID 16542)
--- Dependencies: 1222 1222
--- Name: surveys_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- TOC entry 1671 (class 2604 OID 16447)
+-- Dependencies: 1306 1305 1306
+-- Name: gid; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY surveys
-    ADD CONSTRAINT surveys_pkey PRIMARY KEY (sid);
+ALTER TABLE lime_groups ALTER COLUMN gid SET DEFAULT nextval('lime_groups_gid_seq'::regclass);
 
 
+--
+-- TOC entry 1680 (class 2604 OID 16470)
+-- Dependencies: 1309 1308 1309
+-- Name: lid; Type: DEFAULT; Schema: public; Owner: postgres
+--
 
+ALTER TABLE lime_labelsets ALTER COLUMN lid SET DEFAULT nextval('lime_labelsets_lid_seq'::regclass);
+
+
+--
+-- TOC entry 1691 (class 2604 OID 16496)
+-- Dependencies: 1313 1312 1313
+-- Name: qaid; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE lime_question_attributes ALTER COLUMN qaid SET DEFAULT nextval('lime_question_attributes_qaid_seq'::regclass);
+
+
+--
+-- TOC entry 1683 (class 2604 OID 16479)
+-- Dependencies: 1310 1311 1311
+-- Name: qid; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE lime_questions ALTER COLUMN qid SET DEFAULT nextval('lime_questions_qid_seq'::regclass);
+
+
+--
+-- TOC entry 1693 (class 2604 OID 16504)
+-- Dependencies: 1314 1315 1315
+-- Name: scid; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE lime_saved_control ALTER COLUMN scid SET DEFAULT nextval('lime_saved_control_scid_seq'::regclass);
+
+
+--
+-- TOC entry 1732 (class 2604 OID 16581)
+-- Dependencies: 1323 1322 1323
+-- Name: ugid; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE lime_user_groups ALTER COLUMN ugid SET DEFAULT nextval('lime_user_groups_ugid_seq'::regclass);
+
+
+--
+-- TOC entry 1723 (class 2604 OID 16565)
+-- Dependencies: 1320 1321 1321
+-- Name: uid; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE lime_users ALTER COLUMN uid SET DEFAULT nextval('lime_users_uid_seq'::regclass);
+
+
+--
+-- TOC entry 1734 (class 2606 OID 16415)
+-- Dependencies: 1300 1300 1300 1300
+-- Name: lime_answers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY lime_answers
+    ADD CONSTRAINT lime_answers_pkey PRIMARY KEY (qid, code, "language");
+
+
+--
+-- TOC entry 1736 (class 2606 OID 16430)
+-- Dependencies: 1302 1302
+-- Name: lime_assessments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY lime_assessments
+    ADD CONSTRAINT lime_assessments_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1738 (class 2606 OID 16442)
+-- Dependencies: 1304 1304
+-- Name: lime_conditions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY lime_conditions
+    ADD CONSTRAINT lime_conditions_pkey PRIMARY KEY (cid);
+
+
+--
+-- TOC entry 1740 (class 2606 OID 16456)
+-- Dependencies: 1306 1306 1306
+-- Name: lime_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY lime_groups
+    ADD CONSTRAINT lime_groups_pkey PRIMARY KEY (gid, "language");
+
+
+--
+-- TOC entry 1743 (class 2606 OID 16464)
+-- Dependencies: 1307 1307 1307 1307
+-- Name: lime_labels_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY lime_labels
+    ADD CONSTRAINT lime_labels_pkey PRIMARY KEY (lid, sortorder, "language");
+
+
+--
+-- TOC entry 1745 (class 2606 OID 16474)
+-- Dependencies: 1309 1309
+-- Name: lime_labelsets_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY lime_labelsets
+    ADD CONSTRAINT lime_labelsets_pkey PRIMARY KEY (lid);
+
+
+--
+-- TOC entry 1749 (class 2606 OID 16499)
+-- Dependencies: 1313 1313
+-- Name: lime_question_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY lime_question_attributes
+    ADD CONSTRAINT lime_question_attributes_pkey PRIMARY KEY (qaid);
+
+
+--
+-- TOC entry 1747 (class 2606 OID 16491)
+-- Dependencies: 1311 1311 1311
+-- Name: lime_questions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY lime_questions
+    ADD CONSTRAINT lime_questions_pkey PRIMARY KEY (qid, "language");
+
+
+--
+-- TOC entry 1751 (class 2606 OID 16512)
+-- Dependencies: 1315 1315
+-- Name: lime_saved_control_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY lime_saved_control
+    ADD CONSTRAINT lime_saved_control_pkey PRIMARY KEY (scid);
+
+
+--
+-- TOC entry 1753 (class 2606 OID 16518)
+-- Dependencies: 1316 1316
+-- Name: lime_settings_global_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY lime_settings_global
+    ADD CONSTRAINT lime_settings_global_pkey PRIMARY KEY (stg_name);
+
+
+--
+-- TOC entry 1757 (class 2606 OID 16548)
+-- Dependencies: 1318 1318 1318
+-- Name: lime_surveys_languagesettings_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY lime_surveys_languagesettings
+    ADD CONSTRAINT lime_surveys_languagesettings_pkey PRIMARY KEY (surveyls_survey_id, surveyls_language);
+
+
+--
+-- TOC entry 1755 (class 2606 OID 16539)
+-- Dependencies: 1317 1317
+-- Name: lime_surveys_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY lime_surveys
+    ADD CONSTRAINT lime_surveys_pkey PRIMARY KEY (sid);
+
+
+--
+-- TOC entry 1759 (class 2606 OID 16560)
+-- Dependencies: 1319 1319 1319
+-- Name: lime_surveys_rights_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY lime_surveys_rights
+    ADD CONSTRAINT lime_surveys_rights_pkey PRIMARY KEY (sid, uid);
+
+
+--
+-- TOC entry 1741 (class 1259 OID 16465)
+-- Dependencies: 1307
+-- Name: lime_labels_ixcode_idx; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX lime_labels_ixcode_idx ON lime_labels USING btree (code);
+
+--
+-- Table `settings_global`
+--
+
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '115');
+INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
+
+--
+-- Table `users`
+--
+
+INSERT INTO prefix_users(
+            users_name, "password", full_name, parent_id, lang, email, 
+            create_survey, create_user, delete_user, move_user, configurator, 
+            manage_template, manage_label)
+            VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);
 
