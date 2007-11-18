@@ -152,6 +152,4 @@ if (isset($enablehtmleditorpopup) && $enablehtmleditorpopup === true)
          require_once(dirname(__FILE__).'/htmleditor-functions.php');
 }
 
-
-require_once(dirname(__FILE__).'/common.php');
 ?>
