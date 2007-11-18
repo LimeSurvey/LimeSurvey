@@ -78,16 +78,17 @@ $cquery = "SELECT DISTINCT {$dbprefix}conditions.* FROM {$dbprefix}conditions, {
 $cdump = BuildCSVFromQuery($cquery);
 
 //4: Labelsets Table
-$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.lid, label_name, {$dbprefix}labelsets.languages FROM {$dbprefix}labelsets, {$dbprefix}questions WHERE ({$dbprefix}labelsets.lid={$dbprefix}questions.lid) AND (type in ('F', 'H', 'W', 'Z')) AND (gid=$gid)";
+$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.* FROM {$dbprefix}labelsets, {$dbprefix}questions WHERE ({$dbprefix}labelsets.lid={$dbprefix}questions.lid) AND (type in ('F', 'H', 'Z', 'W')) AND (gid=$gid)";
 $lsdump = BuildCSVFromQuery($lsquery);
 
 //5: Labels Table
-$lquery = "SELECT DISTINCT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder FROM {$dbprefix}labels, {$dbprefix}questions WHERE ({$dbprefix}labels.lid={$dbprefix}questions.lid) AND (type in ('F', 'H', 'W', 'Z')) AND (gid=$gid)";
+$lquery = "SELECT DISTINCT {$dbprefix}labels.* FROM {$dbprefix}labels, {$dbprefix}questions WHERE ({$dbprefix}labels.lid={$dbprefix}questions.lid) AND (type in ('F', 'H', 'Z', 'W')) AND (gid=$gid)";
 $ldump = BuildCSVFromQuery($lquery);
 
 //8: Question Attributes
 $query = "SELECT DISTINCT {$dbprefix}question_attributes.* FROM {$dbprefix}question_attributes, {$dbprefix}questions WHERE ({$dbprefix}question_attributes.qid={$dbprefix}questions.qid) AND ({$dbprefix}questions.gid=$gid)";
 $qadump = BuildCSVFromQuery($query);
+
 // HTTP/1.0
 echo $dumphead, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump, $qadump;
 exit;
