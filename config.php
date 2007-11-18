@@ -27,7 +27,9 @@ $dbprefix           =   "lime_";       // A global prefix that can be added to a
 $databasetabletype  =   "myISAM";	   // Storage engine mysql should use when creating survey results tables and token tables (if mysql is used). If available, InnoDB is recommended. Default is myISAM.
 
 // FILE LOCATIONS
-$rooturl            =   "http://{$_SERVER['SERVER_NAME']}/limesurvey"; //The root web url for your limesurvey installation.
+$rooturl            =   "http://localhost/limesurvey"; //The root web url for your limesurvey installation.
+
+//$rooturl            =   "http://localhost:81/file:/D:/web/xampp/htdocs/limesurvey"; //The root web url for your limesurvey installation.
 
 $rootdir            =   dirname(__FILE__); // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this setting.
                                            // If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir="C:\Inetpub\wwwroot\limesurvey"!
@@ -78,7 +80,7 @@ $admintheme         =  "default";         // This setting specifys the directory
 $allowedtemplateuploads = "gif,jpg,png";   // File types allowed to be uploaded in the templates section.
 
 
-$debug              =   0;      // Set this to 1 if you are looking for errors. If you still get no errors after enabling this
+$debug              =   2;      // Set this to 1 if you are looking for errors. If you still get no errors after enabling this
                                 // then please check your error-logs - either in your hosting provider admin panel or in some /logs dir.
                                 // LimeSurvey developers set this to 2.   
 $translationmode    =   0;      // If interface translations are not working this might be because of a bug in your PHP version. 
@@ -152,6 +154,4 @@ if (isset($enablehtmleditorpopup) && $enablehtmleditorpopup === true)
          require_once(dirname(__FILE__).'/htmleditor-functions.php');
 }
 
-
-require_once(dirname(__FILE__).'/common.php');
 ?>
