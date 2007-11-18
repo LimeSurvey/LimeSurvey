@@ -169,10 +169,10 @@ if (!$style)
 	.$clang->gT("Microsoft Word (Latin charset)")."</label><br />\n"
 	."\t\t\t<input type='radio' class='radiobtn' name='type' value='xls' checked id='exceldoc' onclick='document.getElementById(\"ansabbrev\").disabled=false;'>"
 	."<label for='exceldoc'>"
-	.$clang->gT("Microsoft Excel (Latin charset)")."</label><br />\n"
+	.$clang->gT("Microsoft Excel (All charsets)")."</label><br />\n"
 	."\t\t\t<input type='radio' class='radiobtn' name='type' value='csv' id='csvdoc' onclick='document.getElementById(\"ansabbrev\").disabled=false;'>"
 	."<label for='csvdoc'>"
-	.$clang->gT("CSV File (UTF-8 charset - use this for non-latin languages)")."</label>\n"
+	.$clang->gT("CSV File (All charsets)")."</label>\n"
 	."\t\t</font></font></td>\n"
 	."\t</tr>\n"
 	."\t<tr><td height='2' bgcolor='silver'></td></tr>\n"
@@ -325,7 +325,10 @@ switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c
 	case "xls":
 
       $workbook = new Spreadsheet_Excel_Writer();
-      // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
+	  $workbook->setVersion(8); 
+	  // Inform the module that our data will arrive as UTF-8.
+	  $workbook->setBIFF8InputEncoding('utf-8');      
+	  // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
       if (!empty($tempdir)) {
         $workbook->setTempDir($tempdir);
       }
@@ -1046,7 +1049,7 @@ elseif ($answers == "long")
         	$fli=0;
         	foreach ($rowarray as $row)
         	{
-              $sheet->write($rowcounter,$fli,mb_convert_encoding($row, "ISO-8859-1", "UTF-8"));
+              $sheet->write($rowcounter,$fli,$row);
               $fli++;
         	}
         	$exportoutput='';
