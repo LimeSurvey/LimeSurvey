@@ -2552,6 +2552,7 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false)
 
 	$mail = new PHPMailer;
 	$mail->CharSet = "UTF-8";
+	if (isset($emailsmtpssl) && $emailsmtpssl==1) {$mail->Protocol = "ssl";}
 
 	$fromname='';
 	$fromemail=$from;

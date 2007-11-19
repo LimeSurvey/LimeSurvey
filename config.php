@@ -103,6 +103,7 @@ $emailsmtphost      =   "localhost";      // Sets the SMTP host. All hosts must 
 
 $emailsmtpuser      =   "";               // SMTP authorisation username - only set this if your server requires authorization - if you set it you HAVE to set a password too
 $emailsmtppassword  =   "";               // SMTP authorisation password - empty password is not allowed
+$emailsmtpssl       =   0;                // Set this to 1 to use SSL for SMTP connection 
 
 $maxemails          =   50;               // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
 

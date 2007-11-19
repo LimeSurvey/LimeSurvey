@@ -49,6 +49,8 @@ class SMTP
     var $helo_rply;      # the reply the server sent to us for HELO
     /**#@-*/
 
+	var $Protocol = '';  # added from: http://sourceforge.net/forum/message.php?msg_id=3835114
+
     /**
      * Initialize the class so that the data is in a known state.
      * @access public
@@ -96,6 +98,8 @@ class SMTP
         if(empty($port)) {
             $port = $this->SMTP_PORT;
         }
+
+		if($this->Protocol) $host = $this->Protocol."://".$host; 
 
         #connect to the smtp server
         $this->smtp_conn = fsockopen($host,    # the host of the server
@@ -1021,7 +1025,7 @@ class SMTP
      */
     function get_lines() {
         $data = "";
-        while($str = fgets($this->smtp_conn,515)) {
+        while($str = @fgets($this->smtp_conn,515)) {
             if($this->do_debug >= 4) {
                 echo "SMTP -> get_lines(): \$data was \"$data\"" .
                          $this->CRLF;

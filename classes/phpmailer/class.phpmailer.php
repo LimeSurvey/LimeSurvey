@@ -161,6 +161,8 @@ class PHPMailer
      */
     var $Port        = 25;
 
+	var $Protocol = ''; 	//http://sourceforge.net/forum/message.php?msg_id=3835114
+
     /**
      *  Sets the SMTP HELO of the message (Default is $Hostname).
      *  @var string
@@ -525,6 +527,8 @@ class PHPMailer
      */
     function SmtpConnect() {
         if($this->smtp == NULL) { $this->smtp = new SMTP(); }
+
+		$this->smtp->Protocol = $this->Protocol; 
 
         $this->smtp->do_debug = $this->SMTPDebug;
         $hosts = explode(";", $this->Host);
