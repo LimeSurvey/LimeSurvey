@@ -138,6 +138,11 @@ elseif ($action == "dumpsurvey")
     if($surrows['export'])    {include("dumpsurvey.php");}
         else { include("access_denied.php");}    
     }    
+elseif ($action == "exportquexml")
+    {
+    if($surrows['export'])    {include("exportquexml.php");}
+        else { include("access_denied.php");}    
+    }    
 elseif ($action == "dumpquestion")
     {
     if($surrows['export'])    {include("dumpquestion.php");}

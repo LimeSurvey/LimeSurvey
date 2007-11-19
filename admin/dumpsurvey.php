@@ -31,8 +31,6 @@ include_once("login_check.php");
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
-include_once("login_check.php");
-
 
 if (!$surveyid)
 {

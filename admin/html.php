@@ -513,6 +513,10 @@ if ($surveyid)
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Export Current Survey", "js")."');return false\">" .
 			"<img src='$imagefiles/exportcsv.png' title='' alt='". $clang->gT("Export Current Survey")."' align='left' name='ExportSurvey' /></a>" ;
+			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=exportquexml&amp;sid=$surveyid', '_top')\""
+			. "onmouseout=\"hideTooltip()\""
+			. "onmouseover=\"showTooltip(event,'".$clang->gT("Export Survey To queXML File", "js")."');return false\">" .
+			"<img src='$imagefiles/exportquexml.png' title='' alt='". $clang->gT("Export Survey To queXML File")."' align='left' name='ExportQueXML' /></a>" ;
 		}
 		else
 		{
