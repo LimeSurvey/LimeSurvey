@@ -1371,6 +1371,65 @@ UpdateSessionGroupList();
 				}
 			}
 		}
+		elseif ($arow['type'] == "1")	// Multi Scale
+		{
+
+// Optimized Query
+			$abquery = "SELECT ".db_table_name('answers').".code, ".db_table_name('questions').".other\n"
+			. " FROM ".db_table_name('answers')."\n"
+			. " INNER JOIN ".db_table_name('questions')."\n"
+			. " ON ".db_table_name('answers').".qid=".db_table_name('questions').".qid\n"
+			. " WHERE ".db_table_name('questions').".sid=$surveyid\n"
+			. " AND ".db_table_name('questions').".qid={$arow['qid']}\n"
+			. " AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' \n"
+			. " AND ".db_table_name('answers').".language='".$_SESSION['s_lang']."' \n"
+			. " ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+			$abresult = db_execute_assoc($abquery);
+			while ($abrow = $abresult->FetchRow())
+			{
+				$abmultiscalequery = "SELECT a.*, q.other FROM ".db_table_name('questions')." as q, ".db_table_name('labels')." as l, ".db_table_name('answers')." as a"
+					     ." WHERE a.qid=q.qid AND sid=$surveyid AND q.qid={$arow['qid']} "
+	                     ." AND l.lid=q.lid AND sid=$surveyid AND q.qid={$arow['qid']} AND l.title = '' "
+                         ." AND l.language='".$_SESSION['s_lang']. "' "
+                         ." AND a.language='".$_SESSION['s_lang']. "' "
+                         ." AND q.language='".$_SESSION['s_lang']. "' ";
+				$abmultiscaleresult=db_execute_assoc($abmultiscalequery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
+				$abmultiscalecount=$abmultiscaleresult->RecordCount();
+				if ($abmultiscalecount>0)
+				{
+					for ($j=0; $j<=$abmultiscalecount; $j++)
+					{
+						$_SESSION['insertarray'][] = $fieldname.$abrow['code']."#$j";
+						$alsoother = "";
+						
+						if ($abrow['other'] == "Y") {$alsoother = "Y";}
+						if ($arow['type'] == "P")
+						{
+							$_SESSION['insertarray'][] = $fieldname.$abrow['code']."comment";
+						}
+					}
+				}
+				else
+				{
+					$_SESSION['insertarray'][] = $fieldname.$abrow['code'];
+					$alsoother = "";
+					if ($abrow['other'] == "Y") {$alsoother = "Y";}
+					if ($arow['type'] == "P")
+					{
+						$_SESSION['insertarray'][] = $fieldname.$abrow['code']."comment";
+					}
+ 				}
+			}
+			if (isset($alsoother) && $alsoother) //Add an extra field for storing "Other" answers
+			{
+				$_SESSION['insertarray'][] = $fieldname."other";
+				if ($arow['type'] == "P")
+				{
+					$_SESSION['insertarray'][] = $fieldname."othercomment";
+				}
+			}
+		}
+
 		elseif ($arow['type'] == "R")	// Ranking
 		{
 
