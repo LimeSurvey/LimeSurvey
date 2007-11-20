@@ -225,6 +225,7 @@ function makeSummaryFromRawData($results, $surveyid=null, $gid=null, $qid=null) 
 			break;
 			case "W":
 			case "Z":
+			case "1":
 			$answers=getLabelSet($thisquestion['lid']);
 			$answers[]=array("code"=>"", "answer"=>$clang->gT("No answer"));
 			break;
@@ -279,7 +280,7 @@ function makeSummaryFromRawData($results, $surveyid=null, $gid=null, $qid=null) 
 	}
 
 	//Fix the output for multiple
-	if ($thisquestion['type'] == "M" || $thisquestion['type'] == "P" || $thisquestion['type'] == "^") {
+	if ($thisquestion['type'] == "M" || $thisquestion['type'] == "P" || $thisquestion['type'] == "^"  || $thisquestion['type'] == "1") {
 		if (isset($newarray)) {unset($newarray);}
 		$newarray[$thisquestion['sid']."X".$thisquestion['gid']."X".$thisquestion['qid']]['question']=$thisquestion['question'];
 		foreach ($summary as $sum) {
@@ -324,6 +325,7 @@ function giveMeRawDataFromFieldNames($surveyid, $gid, $qid, $fieldlimiters=array
 			case "A":
 			case "F":
 			case "H":
+			case "1":
 			$answers = getAnswersSingle($surveyid, $gid, $qid);
 			break;
 			case "W":
@@ -408,6 +410,7 @@ function giveMeRawDataFromFieldNames($surveyid, $gid, $qid, $fieldlimiters=array
 			case "M":
 			case "P":
 			case "Q":
+			case "1":
 			$i=0;
 			foreach($results as $result) {
 				foreach($result as $key=>$val) {
@@ -516,8 +519,11 @@ function getLabelSet($lid) {
 			  ORDER BY sortorder, title";
 	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
 	while($row = $result->FetchRow()) {
-		$answer[]=array("code"=>$row['code'],
-		"answer"=>$row['title']);
+		if ()$row['title'] <> '')
+		{
+			$answer[]=array("code"=>$row['code'],
+			"answer"=>$row['title']);
+		}
 	} // while
 	return $answer;
 }
