@@ -2212,6 +2212,40 @@ if($actsurrows['browse_response'])
 						}
 						$dataentryoutput .= "</table>\n";
 						break;
+ 					case "1":
+						$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} and language='$language' ORDER BY sortorder, answer";
+						$mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".htmlspecialchars($connect->ErrorMsg()));
+						$dataentryoutput .= "<table>\n";
+						while ($mearow = $mearesult->FetchRow())
+						{
+						    if (strpos($mearow['answer'],'|'))
+                            {
+                              $answerleft=substr($mearow['answer'],0,strpos($mearow['answer'],'|'));
+                              $answerright=substr($mearow['answer'],strpos($mearow['answer'],'|')+1);
+                            } 
+                              else 
+                              {
+                                $answerleft=$mearow['answer'];
+                                $answerright='';
+                              }
+                        	$dataentryoutput .= "\t<tr>\n";
+							$dataentryoutput .= "\t\t<td align='right'>{$answerleft}</td>\n";
+							$dataentryoutput .= "\t\t<td>\n";
+							$dataentryoutput .= "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
+							$dataentryoutput .= "\t\t\t\t<option value=''>".$clang->gT("Please choose")."..</option>\n";
+							$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} and language='$language' ORDER BY sortorder, code";
+							$fresult = db_execute_assoc($fquery);
+							while ($frow = $fresult->FetchRow())
+							{
+								$dataentryoutput .= "\t\t\t\t<option value='{$frow['code']}'>".$frow['title']."</option>\n";
+							}
+							$dataentryoutput .= "\t\t\t</select>\n";
+							$dataentryoutput .= "\t\t</td>\n";
+							$dataentryoutput .= "\t\t<td align='left'>{$answerright}</td>\n";
+							$dataentryoutput .= "</tr>\n";
+						}
+						$dataentryoutput .= "</table>\n";
+						break;
 				}
 				//$dataentryoutput .= " [$surveyid"."X"."$gid"."X"."$qid]";
 				$dataentryoutput .= "\t\t</td>\n";
