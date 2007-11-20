@@ -102,6 +102,7 @@ function create_mandatorylist($ia)
 			case "E":
 			case "F":
 			case "H":
+			case "1":
 			$thismandatory=setman_questionandcode($ia);
 			break;
 			case "X":
@@ -356,6 +357,10 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 		case "^": //SLIDER CONTROL
 		$values=do_slider($ia);
 		break;
+		case "1": //Array (Flexible Labels) dual scale
+		$values=do_array_flexible_dual($ia);
+		break;
+		
 	} //End Switch
 
 	if (isset($values)) //Break apart $values array returned from switch
@@ -3191,6 +3196,196 @@ function do_array_flexiblecolumns($ia)
 	}
 	return array($answer, $inputnames);
 }
+
+function do_array_flexible_dual($ia)
+{
+	global $dbprefix, $connect, $thissurvey, $clang;
+	global $shownoanswer;
+	global $repeatheadings;
+	global $notanswered;
+	global $minrepeatheadings;
+	$inputnames=array();
+	$defaultvaluescript = "";
+	$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
+	$qresult = db_execute_assoc($qquery);
+	while($qrow = $qresult->FetchRow()) {$other = $qrow['other']; $lid = $qrow['lid'];}
+	$lquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
+
+	$qidattributes=getQuestionAttributes($ia[0]);
+	if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1)) {
+		$answerwidth=$answerwidth['value'];
+	} else {
+		$answerwidth=20;
+	}
+	$columnswidth=100-($answerwidth*2);
+
+	$lresult = db_execute_assoc($lquery);
+	if ($lresult->RecordCount() > 0)
+	{
+		while ($lrow=$lresult->FetchRow())
+		{
+			$labelans[]=$lrow['title'];
+			$labelcode[]=$lrow['code'];
+		}
+		$numrows=count($labelans);
+		if ($ia[6] != "Y" && $shownoanswer == 1) {$numrows++;}
+		$cellwidth=$columnswidth/$numrows;
+
+		$cellwidth=sprintf("%02d", $cellwidth);
+		
+		$ansquery = "SELECT answer FROM {$dbprefix}answers WHERE qid=".$ia[0]." AND answer like '%|%'";
+		$ansresult = db_execute_assoc($ansquery);
+    	if ($ansresult->RecordCount()>0) {$right_exists=true;} else {$right_exists=false;} 
+		// $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
+        if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
+		    $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+	    } else {
+		    $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+	    }
+		$ansresult = db_execute_assoc($ansquery);
+		$anscount = $ansresult->RecordCount();
+		$fn=1;
+		$answer = "\t\t\t<table class='question'>\n"
+		. "\t\t\t\t<tr>\n"
+		. "\t\t\t\t\t<td width='$answerwidth%'></td>\n";
+		foreach ($labelans as $ld)
+		{
+			$answer .= "\t\t\t\t\t<th class='array1' width='$cellwidth%'><font size='1'>".$ld."</font></th>\n";
+		}
+		if ($right_exists) {$answer .= "<td>&nbsp;</td>";} 
+		if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
+		{
+			$answer .= "\t\t\t\t\t<th class='array1' width='$cellwidth%'><font size='1'>".$clang->gT("No answer")."</font></th>\n";
+		}
+		$answer .= "\t\t\t\t</tr>\n";
+
+		while ($ansrow = $ansresult->FetchRow())
+		{
+			if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
+			{
+				if ( ($anscount - $fn + 1) >= $minrepeatheadings )
+				{
+					$answer .= "\t\t\t\t<tr>\n"
+					. "\t\t\t\t\t<td></td>\n";
+					foreach ($labelans as $ld)
+					{
+						$answer .= "\t\t\t\t\t<td  class='array1'><font size='1'>".$ld."</font></td>\n";
+					}
+					if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
+					{
+						$answer .= "\t\t\t\t\t<td class='array1'><font size='1'>".$clang->gT("No answer")."</font></td>\n";
+					}
+					$answer .= "\t\t\t\t</tr>\n";
+				}
+			}
+
+			if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
+			$answertext=answer_replace($ansrow['answer']);
+			$answertextsave=$answertext;
+			/* Check if this item has not been answered: the 'notanswered' variable must be an array,
+			containing a list of unanswered questions, the current question must be in the array,
+			and there must be no answer available for the item in this session. */
+			if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "") ) {
+				$answertext = "<span class='errormandatory'>{$answertext}</span>";
+			}
+			$htmltbody2 = "";
+			if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == false)
+			{
+				$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' />";
+			} else if (($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "S") || ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == true))
+			{
+				$selected = getArrayFiltersForQuestion($ia[0]);
+				if (!in_array($ansrow['code'],$selected))
+				{
+					$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' />";
+					$_SESSION[$myfname] = "";
+				} else
+				{
+					$htmltbody2 = "<tbody id='javatbd$myfname' style='display: '><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on' />";
+				}
+			}
+            if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
+            
+			$dualgroup=0; //Sc: Check!
+			$myfname = $ia[1].$ansrow['code']."#".$dualgroup;
+			array_push($inputnames,$myfname);
+			$answer .= "\t\t\t\t$htmltbody2<tr class='$trbc'>\n"
+			. "\t\t\t\t\t<td align='right' class='answertext' width='$answerwidth%'>$answertext\n"
+			. "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+			$answer .= "' /></td>\n";
+			$thiskey=0;
+			
+			foreach ($labelcode as $ld)
+			{
+				$answer .= "\t\t\t\t\t<td align='center' width='$cellwidth%'>";
+				if ($labelans[$thiskey]<>'')
+				{
+					$answer .= "<label for='answer$myfname-$ld'>";
+					$answer .= "<input class='radio' type='radio' name='$myfname' value='$ld' id='answer$myfname-$ld' title='"
+					. html_escape($labelans[$thiskey])."'";
+					if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ld) {$answer .= " checked='checked'";}
+					// --> START NEW FEATURE - SAVE
+					$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label>";
+					// --> END NEW FEATURE - SAVE
+				}
+				else 
+				{
+					$dualgroup++;
+					$myfname = $ia[1].$ansrow['code']."#".$dualgroup; // new multi-scale-answer
+					array_push($inputnames,$myfname);
+					$answer .= "<input type='hidden' name='java$myfname' id='java$myfname' value='";
+					if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+					$answer .= "' />";
+				}
+				$answer .= "</td>\n";
+				$thiskey++;
+			}
+            if (strpos($answertextsave,'|')) 
+            {
+                $answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
+       			$answer .= "\t\t\t\t<td class='answertextright' width='$answerwidth%'>$answertext</td>\n";
+
+            }
+             elseif ($right_exists)
+               {
+       			$answer .= "\t\t\t\t<td class='answertextright'>&nbsp;</td>\n";
+			   }
+
+			if ($ia[6] != "Y" && $shownoanswer == 1)
+			{
+				$answer .= "\t\t\t\t\t<td align='center' width='$cellwidth%'><label for='answer$myfname-'>"
+				."<input class='radio' type='radio' name='$myfname' value='' id='answer$myfname-' title='".$clang->gT("No answer")."'";
+				if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "")
+				{
+					$answer .= " checked='checked'";
+					$defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
+						. "\t\t\t\t\t\t<!--\n"
+						. "\t\t\t\t\t\t\tmodfield(\"$myfname\");\n"
+						. "\t\t\t\t\t\t//-->\n"
+						. "\t\t\t\t\t\t</script>\n";
+				}
+				// --> START NEW FEATURE - SAVE
+				$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
+				// --> END NEW FEATURE - SAVE
+				$answer .= $defaultvaluescript;
+			}
+			
+			$answer .= "\t\t\t\t</tr>\n";
+			// $inputnames[]=$myfname;
+			//IF a MULTIPLE of flexi-redisplay figure, repeat the headings
+			$fn++;
+		}
+		$answer .= "\t\t\t</table>\n";
+	}
+	else
+	{
+		$answer = "<font color=red>".$clang->gT('Error: The labelset used for this question is not available in this language and/or does not exist.')."</font>";
+		$inputnames="";
+	}
+	return array($answer, $inputnames);
+}
+
 
 function answer_replace($text) {
 	while (strpos($text, "{INSERTANS:") !== false)
