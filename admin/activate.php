@@ -68,9 +68,11 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	//  # "R" -> RANKING
 	//  # "U" -> FILE CSV MORE
 	//  # "I" -> FILE CSV ONE
+	//  # "1" -> MULTI SCALE
+	
 
 
-	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('L', 'O', 'M', 'P', 'A', 'B', 'C', 'E', 'F', 'R', 'J', '!', '^')";
+	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('L', 'O', 'M', 'P', 'A', 'B', 'C', 'E', 'F', 'R', 'J', '!', '^', '1')";
 	$chkresult = db_execute_assoc($chkquery) or die ("Couldn't get list of questions<br />$chkquery<br />".$connect->ErrorMsg());
 	while ($chkrow = $chkresult->FetchRow())
 	{
@@ -95,7 +97,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	
 
 	//CHECK THAT FLEXIBLE LABEL TYPE QUESTIONS HAVE AN "LID" SET
-	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z') AND (lid = 0 OR lid is null)";
+	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z', '1') AND (lid = 0 OR lid is null)";
 	$chkresult = db_execute_assoc($chkquery) or die ("Couldn't check questions for missing LIDs<br />$chkquery<br />".$connect->ErrorMsg());
 	while($chkrow = $chkresult->FetchRow()){
 		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires a Labelset, but none is set."), $chkrow['gid']);
@@ -103,7 +105,7 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	
 	
 	//NOW check that all used labelsets have all necessary languages
-	$chkquery = "SELECT qid, question, gid, lid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z') AND (lid > 0) AND (lid is not null)";
+	$chkquery = "SELECT qid, question, gid, lid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z', '1') AND (lid > 0) AND (lid is not null)";
 	$chkresult = db_execute_assoc($chkquery) or die ("Couldn't check questions for missing LID languages<br />$chkquery<br />".$connect->ErrorMsg());
 	$slangs = GetAdditionalLanguagesFromSurveyID($surveyid); 
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -302,7 +304,7 @@ else
 		$arow['type'] != "C" && $arow['type'] != "E" && $arow['type'] != "F" &&
 		$arow['type'] != "H" && $arow['type'] != "P" && $arow['type'] != "R" &&
 		$arow['type'] != "Q" && $arow['type'] != "^" && $arow['type'] != "J" &&
-		$arow['type'] != "K")
+		$arow['type'] != "K" && $arow['type'] != "1")
 		{
 			$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}`";
 			switch($arow['type'])
@@ -366,7 +368,7 @@ else
 					$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}comment` X,\n";
 				}
 			}
-			if ((isset($alsoother) && $alsoother=="Y") && ($arow['type']=="M" || $arow['type']=="P"))
+			if ((isset($alsoother) && $alsoother=="Y") && ($arow['type']=="M" || $arow['type']=="P"  || $arow['type']=="1")) //Sc: check!
 			{
 				$createsurvey .= " `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other` C(255),\n";
 				if ($arow['type']=="P")
@@ -424,9 +426,39 @@ else
 				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}$i` C(5),\n";
 			}
 		}
+		elseif ($arow['type'] == "1") 
+		{
+			$abquery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q"
+                       ." WHERE a.qid=q.qid AND sid={$_GET['sid']} AND q.qid={$arow['qid']} "
+                       ." AND a.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
+                       ." AND q.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
+                       ." ORDER BY a.sortorder, a.answer";
+			$abresult=db_execute_assoc($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
+			$abcount=$abresult->RecordCount();
+			while ($abrow = $abresult->FetchRow())
+			{
+mydebug("abquery: $abquery");
+mydebug("1 $abrow[1] $abrow[2]" + $abrow['code']);
+				$abmultiscalequery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q, {$dbprefix}labels as l"
+					     ." WHERE a.qid=q.qid AND sid={$_GET['sid']} AND q.qid={$arow['qid']} "
+	                     ." AND l.lid=q.lid AND sid={$_GET['sid']} AND q.qid={$arow['qid']} AND l.title = '' "
+                         ." AND l.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
+                         ." AND q.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' ";
+mydebug( "abmultiscalequery: $abmultiscalequery");					                         
+				$abmultiscaleresult=$connect->Execute($abmultiscalequery) or die ("Couldn't get perform answers query<br />$abmultiscalequery<br />".$connect->ErrorMsg());
+				$abmultiscaleresultcount =$abmultiscaleresult->RecordCount();
+mydebug("2 {abrow['code']}: {$abrow['code']}");
 
+$abmultiscaleresultcount = 1;
+				for ($j=0; $j<=$abmultiscaleresultcount; $j++)
+				{
+					$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}#$j` C(5),\n";
+mydebug( "createsurvey: $createsurvey");					
+				} 
+			}
+		}
 	}
-
+			
 	// If last question is of type MCABCEFHP^QKJR let's get rid of the ending coma in createsurvey
 	$createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a coma
 	$tabname = "{$dbprefix}survey_{$_GET['sid']}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
