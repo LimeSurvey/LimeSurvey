@@ -469,6 +469,7 @@ if ((isset($conditions) && is_array($conditions)) || (isset($array_filterqs) && 
             $cd[4] == "F" ||
             $cd[4] == "G" ||
             $cd[4] == "Y" ||
+            $cd[4] == "1" ||
             ($cd[4] == "L" &&
              $cccount <= $dropdownthreshold))
     {
