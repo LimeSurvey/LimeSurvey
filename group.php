@@ -606,6 +606,7 @@ END;
                 $cd[4] == "H" ||
                 $cd[4] == "G" ||
                 $cd[4] == "Y" ||
+                $cd[4] == "1" ||
                ($cd[4] == "L" && $cccount <= $dropdownthreshold))
         {
             $idname="java$cd[2]";
