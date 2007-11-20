@@ -29,7 +29,7 @@ if ($action == "addquestion")
 	. "\t</tr>\n"
 	. "\t<tr>\n"
 	. "\t\t<td align='right'  width='35%'><strong>".$clang->gT("Code:")."</strong></td>\n"
-	. "\t\t<td align='left'><input type='text' maxlength='20' size='20' name='title' />"
+	. "\t\t<td align='left'><input type='text' maxlength='20' size='20' name='title' id='title' />"
 	. "<font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></td></tr>\n"
 	. "\t<tr>\n"
 	. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Question:")."</strong></td>\n"
@@ -147,7 +147,12 @@ if ($action == "addquestion")
 	. "\t<input type='hidden' name='action' value='importquestion' />\n"
 	. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
 	. "\t<input type='hidden' name='gid' value='$gid' />\n"
-	. "\t</td></tr></table></form>\n\n";
+	. "\t</td></tr></table></form>\n\n"
+	."<script type='text/javascript'>\n"
+	."<!--\n"
+	."document.getElementById('title').focus();\n"
+	."//-->\n"
+	."</script>\n";
 
 }
 
