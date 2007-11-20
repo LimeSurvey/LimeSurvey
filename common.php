@@ -738,7 +738,8 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 		"X"=>$clang->gT("Boilerplate Question"),
 		"Y"=>$clang->gT("Yes/No"),
 		"Z"=>$clang->gT("List (Flexible Labels) (Radio)"),
-		"!"=>$clang->gT("List (Dropdown)")
+		"!"=>$clang->gT("List (Dropdown)"),
+		"1"=>$clang->gT("Array (Flexible Labels) multi scale")
 		//            "^"=>$clang->gT("Slider"),
 		);
         asort($qtypes);
@@ -1499,6 +1500,7 @@ function getextendedanswer($fieldcode, $value)
 			case "H":
 			case "W":
 			case "Z":
+			case "1":
 			$query = "SELECT title FROM ".db_table_name('labels')." WHERE lid=$this_lid AND code='$value' AND language='".$s_lang."'";
 			$result = db_execute_assoc($query) or die ("Couldn't get answer type F/H - getextendedanswer() in common.php");
 			while($row=$result->FetchRow())
@@ -1622,7 +1624,7 @@ function createFieldMap($surveyid, $style="null") {
 		$arow['type'] !="C" && $arow['type'] != "E" && $arow['type'] != "F" &&
 		$arow['type'] != "H" && $arow['type'] !="P" && $arow['type'] != "R" &&
 		$arow['type'] != "Q" && $arow['type'] != "J" && $arow['type'] != "K" && 
-		$arow['type'] != "^")
+		$arow['type'] != "^" && $arow['type'] != "1")
 		{
 			$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}", "type"=>"{$arow['type']}", "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"");
 			if ($style == "full")
@@ -1752,6 +1754,55 @@ function createFieldMap($surveyid, $style="null") {
 				$counter++;
 			}
 		}
+		elseif ($arow['type'] == "1")
+		{
+			$abquery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q"
+                       ." WHERE a.qid=q.qid AND sid=$surveyid AND q.qid={$arow['qid']} "
+                       ." AND a.language='".$s_lang. "' "
+                       ." AND q.language='".$s_lang. "' "
+                       ." ORDER BY a.sortorder, a.answer";
+			$abresult=$connect->Execute($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
+			$abcount=$abresult->RecordCount();
+			while ($abrow=$abresult->FetchRow())
+			{
+				$abmultiscalequery = "SELECT a.*, q.other FROM {$dbprefix}questions as q, {$dbprefix}labels as l, {$dbprefix}answers as a"
+					     ." WHERE a.qid=q.qid AND sid=$surveyid AND q.qid={$arow['qid']} "
+	                     ." AND l.lid=q.lid AND sid=$surveyid AND q.qid={$arow['qid']} AND l.title = '' "
+                         ." AND l.language='".$s_lang. "' "
+                         ." AND a.language='".$s_lang. "' "
+                         ." AND q.language='".$s_lang. "' ";
+				$abmultiscaleresult=db_execute_assoc($abmultiscalequery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
+				$abmultiscalecount=$abmultiscaleresult->RecordCount();
+				if ($abmultiscalecount>0)
+				{
+					for ($j=0; $j<=$abmultiscalecount; $j++)
+					{
+     					$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}#$j", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code']);
+     					if ($style == "full")
+						{
+							$fieldmap[$counter]['title']=$arow['title'];
+							$fieldmap[$counter]['question']=$arow['question']."[".$abrow['answer']."]";
+							$fieldmap[$counter]['group_name']=$arow['group_name'];
+						}
+     					
+     					$counter++;	
+					} 
+				}
+				else
+				{
+					$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$arow['code']}", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code']);
+					if ($style == "full")
+					{
+						$fieldmap[$counter]['title']=$arow['title'];
+						$fieldmap[$counter]['question']=$arow['question']."[".$abrow['answer']."]";
+						$fieldmap[$counter]['group_name']=$arow['group_name'];
+					}
+					
+				};
+				$counter++;				
+			}
+		}
+		
 		elseif ($arow['type'] == "R")
 		{
 			//MULTI ENTRY
@@ -4042,5 +4093,18 @@ echo sql_date_shift($date, "Y-m-d H:i:s", $shift);
 return date($dformat, strtotime($shift, strtotime($date)));
 }
 
+function mydebug($strOutput)
+{
+  $datei = fopen("d:\debug.txt","a+");
+  fwrite($datei, "$strOutput \n");
+  fclose($datei);
+}
+function mydebug_var($strOutput)
+{
+  $datei = fopen("d:\debug.txt","a+");
+  fwrite($datei, var_export($strOutput, TRUE));
+  fwrite($datei, "\n");
+  fclose($datei);
+}
 
 ?>
