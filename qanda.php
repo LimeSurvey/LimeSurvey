@@ -1507,6 +1507,20 @@ function do_multiplechoice($ia)
 	$callmaxanswscriptcheckbox = "";
 	$callmaxanswscriptother = "";
 	$maxanswscript = "";
+	if ($excludeothers=arraySearchByKey("exclude_all_others", $qidattributes, "attribute", 1))
+	{
+	    $excludeallothers=$excludeothers['value'];
+	    $excludeallotherscript = "
+		<script type='text/javascript'>
+		<!--
+		function excludeAllOthers(value)
+		{\n";
+		$excludeallotherscripton="";
+		$excludeallotherscriptoff="";
+	} else {
+	    $excludeallothers="";
+	}
+	
 	if ($maxanswattr=arraySearchByKey("max_answers", $qidattributes, "attribute", 1))
 	{
 		$maxansw=$maxanswattr['value'];
@@ -1576,7 +1590,15 @@ function do_multiplechoice($ia)
 				. "\t\t\t\t\t\t</script>\n";	
 		}
 		// --> START NEW FEATURE - SAVE
-		$answer .= " onclick='".$callmaxanswscriptcheckbox."checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /><label for='answer$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
+		$answer .= " onclick='";
+		if($ansrow['code'] == $excludeallothers) 
+		{
+		  $answer .= "excludeAllOthers(this.id);";
+		} elseif ($excludeallothers != "") {
+		  $excludeallotherscripton .= "document.getElementById('answer$ia[1]{$ansrow['code']}').checked='';\ndocument.getElementById('answer$ia[1]{$ansrow['code']}').disabled='true';\n";
+		  $excludeallotherscriptoff.= "document.getElementById('answer$ia[1]{$ansrow['code']}').disabled='';\n";
+		}
+		$answer .= $callmaxanswscriptcheckbox."checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /><label for='answer$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
 		// --> END NEW FEATURE - SAVE
 		$answer .= $defvaluescript;
 
@@ -1631,6 +1653,22 @@ function do_multiplechoice($ia)
 			. "\t\t\t//-->\n"
 			. "\t\t\t</script>\n";
 		$answer = $maxanswscript . $answer;
+	}
+	if ($excludeallothers != "")
+	{
+	    $excludeallotherscript .= "
+		if (document.getElementById(value).checked)
+	      {
+	      $excludeallotherscripton
+	      }
+	    else
+	      {
+	      $excludeallotherscriptoff
+	      }
+        }
+		//-->
+		</script>";
+	    $answer = $excludeallotherscript . $answer;
 	}
 	return array($answer, $inputnames);
 }
@@ -1914,7 +1952,7 @@ function do_multiplenumeric($ia)
 	 	while ($ansrow = $ansresult->FetchRow())
 		{
 			$myfname = $ia[1].$ansrow['code'];
-			$answer .= "\t\t\t\t\t\t\taaa<tr>\n"
+			$answer .= "\t\t\t\t\t\t\t<tr>\n"
 			. "\t\t\t\t\t\t\t\t<td align='right' class='answertext'>\n"
 			. "\t\t\t\t\t\t\t\t\t<label for='answer$myfname'>{$ansrow['answer']}</label>\n"
 			. "\t\t\t\t\t\t\t\t</td>\n"

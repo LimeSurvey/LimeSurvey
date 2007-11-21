@@ -2385,6 +2385,9 @@ function questionAttributes()
 	$qattributes[]=array("name"=>"dropdown_dates",
 	"types"=>"D",
 	"help"=>"Use dropdown dates layout instead of calendar popup");
+	$qattributes[]=array("name"=>"exclude_all_others",
+	"types"=>"M",
+	"help"=>"Excludes all other options if this is selected");
 	/* -- > Commented out since not yet used
     $qattributes[]=array("name"=>"permission",
     "types"=>"5DGL!OMPQNRSTUYABCEFHWZ",
