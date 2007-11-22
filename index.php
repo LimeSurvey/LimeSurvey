@@ -108,15 +108,22 @@ if (!$surveyid)
 			  AND surveyls_language=a.language 
 			  AND a.active='Y'
 			  AND a.public='Y'
+			  AND ((a.expires >= '".date("Y-m-d")."'
+			  AND a.useexpiry = 'Y') OR
+			  (a.useexpiry = 'N'))
 			  ORDER BY surveyls_title";
-			  
 	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+	$list=array();
 	if($result->RecordCount() > 0) 
 	{
 		while($rows = $result->FetchRow())
 		{
 		$list[]="<li class='surveytitle'><a href='index.php?sid=".$rows['sid']."'>".$rows['surveyls_title']."</a></li>\n";
 	    }
+	}
+	if(count($list) < 1)
+	{
+	    $list[]="<li class='surveytitle'>".$clang->gT("No available surveys")."</li>";
 	}
 	$surveylist=array(
 	                  "nosid"=>$clang->gT("You have not provided a survey identification number"),
