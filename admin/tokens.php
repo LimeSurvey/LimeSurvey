@@ -297,9 +297,9 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 
 			$thissurvey=getSurveyInfo($surveyid);
 
-			if ($thissurvey['private'] == 'Y' && $thissurvey['datestamp'] =='Y')
+			if ($thissurvey['private'] == 'Y')
 			{
-				$tokenoutput .= "\t\t\t".$clang->gT("If you set a survey to anonymous, answers to timestamped and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.")
+				$tokenoutput .= "\t\t\t".$clang->gT("If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.")
 					."\t\t\t<br /><br />\n";
 			}
 

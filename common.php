@@ -3987,7 +3987,6 @@ function bHasSurveyGotTokentable($thesurvey, $sid=null)
 function bIsTokenCompletedDatestamped($thesurvey)
 {
 	if ($thesurvey['private'] == 'Y' &&
-		$thesurvey['datestamp'] =='Y' &&
 		bHasSurveyGotTokentable($thesurvey) )
 	{
 		return false;
