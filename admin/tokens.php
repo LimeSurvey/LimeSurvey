@@ -88,6 +88,12 @@ $sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surv
 $sumresult5 = db_execute_assoc($sumquery5);
 $sumrows5 = $sumresult5->FetchRow();
 
+if ($subaction == "settings" && $sumrows5['export'])  //ToDO: Which right?
+{
+
+}
+
+
 if ($subaction == "export" && $sumrows5['export']) //EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
 {
 
@@ -357,24 +363,26 @@ $tokenoutput .= "\t<tr>\n"
 ."onmouseover=\"showTooltip(event,'".$clang->gT("Return to Survey Administration", "js")."');return false\">" .
 "<img name='HomeButton' src='$imagefiles/home.png' align='left'  alt=''  /></a>\n"
 ."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left' />\n"
+."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show summary information", "js")."');return false\" >" 
 ."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
-."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show summary information", "js")."');return false\" >" .
-"<img name='SummaryButton' src='$imagefiles/summary.png' title='' align='left'  alt=''  /></a>\n"
+."<img name='SummaryButton' src='$imagefiles/summary.png' title='' align='left'  alt=''  /></a>\n"
+."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
 ."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse', '_top')\" onmouseout=\"hideTooltip()\""
-."onmouseover=\"showTooltip(event,'".$clang->gT("Display Tokens", "js")."');return false\">" .
-"<img name='ViewAllButton' src='$imagefiles/document.png' title='' align='left'  alt=''  /></a>\n"
-."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' border='0' hspace='0' align='left' />\n"
-."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
+."onmouseover=\"showTooltip(event,'".$clang->gT("Display Tokens", "js")."');return false\">" 
+."<img name='ViewAllButton' src='$imagefiles/document.png' title='' align='left'  alt=''  /></a>\n";
+
 if ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey'])
 {
 	$tokenoutput .= "\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnew', '_top')\" onmouseout=\"hideTooltip()\"" .
 	"onmouseover=\"showTooltip(event,'".$clang->gT("Add new token entry", "js")."');return false\">" .
 	"<img name='AddNewButton' src='$imagefiles/add.png' title='' align='left'  alt=''  /></a>\n"
+	."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
 	."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=import', '_top')\" onmouseout=\"hideTooltip()\" ".
 	"onmouseover=\"showTooltip(event,'".$clang->gT("Import Tokens from CSV File", "js")."');return false\"> <img name='ImportButton' src='$imagefiles/importcsv.png' title='' align='left' alt='' /></a>"
 	."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=importldap', '_top')\" onmouseout=\"hideTooltip()\" ".
 	"onmouseover=\"showTooltip(event,'".$clang->gT("Import Tokens from LDAP Query", "js")."');return false\"> <img name='ImportLdapButton' src='$imagefiles/importldap.png' title=''  alt=''  align='left' /></a>";
 }
+
 if ($sumrows5['export'])
 {
 	$tokenoutput .= "\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=export', '_top')\" onmouseout=\"hideTooltip()\"" .
@@ -384,6 +392,8 @@ if ($sumrows5['export'])
 if ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey'])
 {
 	$tokenoutput .= "\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
+	."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=emailsettings', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Edit Email Templates", "js")."');return false\">" .
+	"<img name='EmailSettingsButton' src='$imagefiles/emailsettings.png' title='' align='left'  alt='' /></a>\n"
 	."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=email', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Send email invitation", "js")."');return false\">" .
 	"<img name='InviteButton' src='$imagefiles/invite.png' title='' align='left'  alt='' /></a>\n"
 	."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=remind', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Send email reminder", "js")."');return false\">" .
@@ -512,6 +522,12 @@ if (!$subaction && ($sumrows5['edit_survey_property'] || $sumrows5['activate_sur
 	."\t</tr>\n"
 	."</table>\n";
 }
+
+if ($subaction == "settings" && $sumrows5['export'])  //ToDO: Which right?
+{
+
+}
+
 
 if ($subaction == "browse" || $subaction == "search")
 {
