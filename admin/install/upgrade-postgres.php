@@ -19,10 +19,12 @@
 
 function db_upgrade($oldversion) {
 
-    if ($oldversion < 115) {
-	//No action needed
+    if ($oldversion < 116) {
+	//Adds new public field
+	
 	//Needs to modify "surveys" table to add 'public', char(1), default 'N'
-    }
+    
+	}
 
 
     return true;
