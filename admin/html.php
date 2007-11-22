@@ -1926,6 +1926,16 @@ if ($action == "editsurvey")
             if (isset($esrow['printanswers']) && $esrow['printanswers'] == "N") {$editsurvey .= " selected='selected'";}
             $editsurvey .= ">".$clang->gT("No")."</option>\n"
             . "\t\t</select></td>\n"
+            . "\t</tr>\n";
+            //Public Surveys
+            $editsurvey .= "\t<tr><td align='right'>".$clang->gT("List survey publicly:")."</td>\n"
+            . "\t\t<td><select name='public'>\n"
+            . "\t\t\t<option value='Y'";
+            if (!isset($esrow['public']) || !$esrow['public'] || $esrow['public'] == "Y") {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+            . "\t\t<option value='N'";
+            if (isset($esrow['public']) && $esrow['public'] == "N") {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("No")."</option>\n"
             . "\t\t</select></td>\n"
             . "\t</tr>\n";
 			//NOTIFICATION
@@ -2485,6 +2495,13 @@ if ($action == "newsurvey")
         //Result printing
         $newsurvey .= "\t<tr><td>".$clang->gT("Participiants may print answers?")."</td>\n"
         . "\t\t<td><select name='printanswers'>\n"
+        . "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
+        . "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
+        . "\t\t</select></td>\n"
+        . "\t</tr>\n";
+        //Public Surveys
+        $newsurvey .= "\t<tr><td>".$clang->gT("List survey publicly:")."</td>\n"
+        . "\t\t<td><select name='public'>\n"
         . "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
         . "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
         . "\t\t</select></td>\n"

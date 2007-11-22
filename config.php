@@ -75,6 +75,8 @@ $deletenonvalues    =   1;                // By default, LimeSurvey does not sav
 $shownoanswer       =   1;                // Show "no answer" for non mandatory questions
 $admintheme         =  "default";         // This setting specifys the directory where the admin finds it theme/css style files, e.g. setting 'default' points to /admin/styles/default
 
+$defaulttemplate    =  "default";         // This setting specifys the default theme used for the "public list" of surveys
+
 $allowedtemplateuploads = "gif,jpg,png";   // File types allowed to be uploaded in the templates section.
 
 

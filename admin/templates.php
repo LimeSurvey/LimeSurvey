@@ -35,10 +35,12 @@ $files[]=array("name"=>"load.pstpl");
 $files[]=array("name"=>"save.pstpl");
 $files[]=array("name"=>"assessment.pstpl");
 $files[]=array("name"=>"printanswers.pstpl");
+$files[]=array("name"=>"surveylist.pstpl");
 
 //Standard Screens
 //Only these may be viewed
 
+$screens[]=array("name"=>$clang->gT("Survey List Page", "unescaped"));
 $screens[]=array("name"=>$clang->gT("Welcome Page", "unescaped"));
 $screens[]=array("name"=>$clang->gT("Question Page", "unescaped"));
 $screens[]=array("name"=>$clang->gT("Submit Page", "unescaped"));
@@ -225,6 +227,7 @@ foreach ($files as $fl) {
 
 
 //Page Display Instructions
+$SurveyList=array("startpage.pstpl", "surveylist.pstpl", "endpage.pstpl");
 $Welcome=array("startpage.pstpl", "welcome.pstpl", "navigator.pstpl", "endpage.pstpl");
 $Question=array("startpage.pstpl", "survey.pstpl", "startgroup.pstpl", "groupdescription.pstpl", "question.pstpl", "endgroup.pstpl", "navigator.pstpl", "endpage.pstpl");
 $Submit=array("startpage.pstpl", "survey.pstpl", "submit.pstpl", "privacy.pstpl", "navigator.pstpl", "endpage.pstpl");
@@ -301,6 +304,25 @@ $printoutput="<span class='printouttitle'><strong>".$clang->gT("Survey Name (ID)
 </table>";
 $addbr=false;
 switch($screenname) {
+    case $clang->gT("Survey List Page", "unescaped"):
+	unset($files);
+	$list[]="<li class='surveytitle'><a href='#'>Survey Number 1</a></li>\n";
+	$list[]="<li class='surveytitle'><a href='#'>Survey Number 2</a></li>\n";
+
+	$surveylist=array(
+	                  "nosid"=>$clang->gT("You have not provided a survey identification number"),
+	                  "contact"=>$clang->gT("Please contact")." $siteadminname ( $siteadminemail ) ".$clang->gT("for further assistance"),
+                      "listheading"=>$clang->gT("The Following Surveys Are Available"),
+					  "list"=>implode("\n",$list),
+					  );
+
+	$myoutput[]="";
+	foreach ($SurveyList as $qs) {
+		$files[]=array("name"=>$qs);
+		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/$qs"));
+	}
+    break;
+
 	case $clang->gT("Question Page", "unescaped"):
 	unset($files);
 	foreach ($Question as $qs) {

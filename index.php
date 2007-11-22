@@ -98,19 +98,41 @@ require_once( $embedded_inc );
 //CHECK FOR REQUIRED INFORMATION (sid)
 if (!$surveyid)
 {
+    if(!isset($defaulttemplate)) {$defaulttemplate="default";}
+	//Find out if there are any publicly available surveys
+	$query = "SELECT a.sid, b.surveyls_title 
+	          FROM ".db_table_name('surveys')." AS a 
+			  INNER JOIN ".db_table_name('surveys_languagesettings')." AS b 
+			  ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language ) 
+			  WHERE surveyls_survey_id=a.sid 
+			  AND surveyls_language=a.language 
+			  AND a.active='Y'
+			  AND a.public='Y'
+			  ORDER BY surveyls_title";
+			  
+	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+	if($result->RecordCount() > 0) 
+	{
+		while($rows = $result->FetchRow())
+		{
+		$list[]="<li class='surveytitle'><a href='index.php?sid=".$rows['sid']."'>".$rows['surveyls_title']."</a></li>\n";
+	    }
+	}
+	$surveylist=array(
+	                  "nosid"=>$clang->gT("You have not provided a survey identification number"),
+	                  "contact"=>$clang->gT("Please contact")." $siteadminname ( $siteadminemail ) ".$clang->gT("for further assistance"),
+                      "listheading"=>$clang->gT("The Following Surveys Are Available"),
+					  "list"=>implode("\n",$list),
+					  );
 
 	//A nice exit
 	sendcacheheaders();
 	doHeader();
-
-	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
-	echo "\t\t<center><br />\n"
-	."\t\t\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
-	."\t\t\t".$clang->gT("You have not provided a survey identification number")."<br />\n"
-	."\t\t\t".$clang->gT("Please contact")." $siteadminname ( $siteadminemail ) ".$clang->gT("for further assistance")."\n"
-	."\t\t</center><br />\n";
-
-	echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
+	echo templatereplace(file_get_contents("$tpldir/$defaulttemplate/startpage.pstpl"));
+	
+	echo templatereplace(file_get_contents("$tpldir/$defaulttemplate/surveylist.pstpl"));
+	
+	echo templatereplace(file_get_contents("$tpldir/$defaulttemplate/endpage.pstpl"));
 	doFooter();
 	exit;
 }
@@ -1165,7 +1187,7 @@ function buildsurveysession()
 		//NO TOKEN PRESENTED. EXPLAIN PROBLEM AND PRESENT FORM
 
 		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-        echo makedropdownlist();
+        //echo makedropdownlist();
 		echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 		if (isset($thissurvey) && $thissurvey['allowregister'] == "Y")
 		{
