@@ -307,7 +307,7 @@ CREATE TABLE [prefix_settings_global] (
 --
 
 INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '114');
-INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
+INSERT INTO [prefix_settings_global] VALUES ('SessionName', '$sessionname');
 
 --
 -- Table [users]
