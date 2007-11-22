@@ -115,6 +115,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
     if ($oldversion < 116) {
     //Adds new "public" field
         modify_database("","ALTER TABLE `prefix_surveys` ADD `public` CHAR(1) default 'N' AFTER `datecreated`"); echo $modifyoutput; flush();
+        modify_database("","update `prefix_settings_global` set `stg_value`='116' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     return true;
 }
