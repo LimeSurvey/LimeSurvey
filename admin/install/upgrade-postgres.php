@@ -20,10 +20,13 @@
 function db_upgrade($oldversion) {
 
     if ($oldversion < 116) {
-	//Adds new public field
-	
-	//Needs to modify "surveys" table to add 'public', char(1), default 'N'
-    
+	//Adds new public field (Provided by Kadejo)
+    modify_database("","ALTER TABLE \"prefix_surveys\" ADD  \"public\" CHAR(1) DEFAULT 'N'"); 
+	echo $modifyoutput; 
+	flush(); 
+	modify_database("","UPDATE \"prefix_settings_global\" SET \"stg_value\"='116' WHERE \"stg_name\"='DBVersion'"); 
+	echo $modifyoutput; 
+	flush();
 	}
 
 
