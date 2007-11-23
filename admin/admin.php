@@ -133,14 +133,14 @@ elseif ($action == "conditions")
     if($surrows['define_questions'])    {include("conditions.php");}
         else { include("access_denied.php");}    
     }    
-elseif ($action == "dumpsurvey")
+elseif ($action == "exportstructurecsv")
     {
-    if($surrows['export'])    {include("dumpsurvey.php");}
+    if($surrows['export'])    {include("export_structure_csv.php");}
         else { include("access_denied.php");}    
     }    
-elseif ($action == "exportquexml")
+elseif ($action == "exportstructurequexml")
     {
-    if($surrows['export'])    {include("exportquexml.php");}
+    if($surrows['export'])    {include("export_structure_quexml.php");}
         else { include("access_denied.php");}    
     }    
 elseif ($action == "dumpquestion")
@@ -309,6 +309,7 @@ elseif ($action=="assessments" || $action=="assessmentdelete" || $action=="asses
   if (isset($ordergroups)){$adminoutput.= $ordergroups;}
   if (isset($orderquestions)) {$adminoutput.= $orderquestions;}
   if (isset($surveysecurity)) {$adminoutput.= $surveysecurity;}
+  if (isset($exportstructure)) {$adminoutput.= $exportstructure;}
   if (isset($newsurvey)) {$adminoutput.= $newsurvey;}
   if (isset($newgroupoutput)) {$adminoutput.= $newgroupoutput;}
   if (isset($newquestionoutput)) {$adminoutput.= $newquestionoutput;}

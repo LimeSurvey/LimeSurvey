@@ -509,14 +509,10 @@ if ($surveyid)
 
 		if ($sumrows5['export'])
 		{
-			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=dumpsurvey&amp;sid=$surveyid', '_top')\""
+			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=exportstructure&amp;sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
-			. "onmouseover=\"showTooltip(event,'".$clang->gT("Export Current Survey", "js")."');return false\">" .
-			"<img src='$imagefiles/exportcsv.png' title='' alt='". $clang->gT("Export Current Survey")."' align='left' name='ExportSurvey' /></a>" ;
-			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=exportquexml&amp;sid=$surveyid', '_top')\""
-			. "onmouseout=\"hideTooltip()\""
-			. "onmouseover=\"showTooltip(event,'".$clang->gT("Export Survey To queXML File", "js")."');return false\">" .
-			"<img src='$imagefiles/exportquexml.png' title='' alt='". $clang->gT("Export Survey To queXML File")."' align='left' name='ExportQueXML' /></a>" ;
+			. "onmouseover=\"showTooltip(event,'".$clang->gT("Export Survey Structure", "js")."');return false\">" .
+			"<img src='$imagefiles/export.png' title='' alt='". $clang->gT("Export Current Survey")."' align='left' name='ExportSurvey' /></a>" ;
 		}
 		else
 		{
@@ -614,7 +610,8 @@ if ($surveyid)
                  || $action=="surveyrights" || $action=="addsurveysecurity" || $action=="addusergroupsurveysecurity" 
                  || $action=="setsurveysecurity" ||  $action=="setusergroupsurveysecurity" || $action=="delsurveysecurity" 
                  || $action=="editsurvey" || $action=="addgroup" || $action=="importgroup"
-                 || $action=="ordergroups" || $action=="updatesurvey" || $action=="deletesurvey") {$showstyle="style='display: none'";}
+                 || $action=="ordergroups" || $action=="updatesurvey" || $action=="deletesurvey"
+                 || $action=="exportstructure" ) {$showstyle="style='display: none'";}
 		if (!isset($showstyle)) {$showstyle="";}
         $additionnalLanguagesArray = GetAdditionalLanguagesFromSurveyID($surveyid);
 		$surveysummary .= "\t<tr id='surveydetails' $showstyle><td><table class='table2columns'><tr><td align='right' valign='top' width='15%'>"
@@ -1668,6 +1665,38 @@ if($action == "setusergroupsurveysecurity")
 		include("access_denied.php");
 	}
 }
+
+// This is the action to export the structure of a complete survey
+if($action == "exportstructure")
+{
+    if($sumrows5['export'])
+    {
+    $exportstructure = "<form name='exportstructure' action='$scriptname' method='post'>\n" 
+    ."<table width='100%' border='0' >\n\t<tr><td class='settingcaption'>"
+    .$clang->gT("Export Survey Structure")."\n</td></tr>\n"
+    ."\t<tr>\n"
+    ."\t\t<td style='text-align:left; padding-left:40%;padding-right:30%;'>\n"
+    ."\t\t\t<br /><input type='radio' class='radiobtn' name='type' value='structurecsv' checked='checked' id='surveycsv' onclick=\"this.form.action.value='exportstructurecsv'\";/>"
+    ."<label for='surveycsv'>"
+    .$clang->gT("LimeSurvey Survey File (*.csv)")."</label><br />\n"
+    ."\t\t\t<input type='radio' class='radiobtn' name='type' value='structurequeXML'  id='queXML' onclick=\"this.form.action.value='exportstructurequexml'\";/>"
+    ."<label for='queXML'>"
+    .$clang->gT("queXML Survey XML Format (*.xml)")."</label>\n"
+    ."\t\t<br />&nbsp;</td>\n"
+    ."\t</tr>\n"
+    ."\t<tr><td height='2' bgcolor='silver'></td></tr>\n"
+    ."\t<tr>\n"
+    ."\t\t<td align='center'>\n"
+    ."\t\t\t<input type='submit' value='"
+    .$clang->gT("Export To File")."' />\n"
+    ."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
+    ."\t\t\t<input type='hidden' name='action' value='exportstructurecsv' />\n"
+    ."\t\t</td>\n"
+    ."\t</tr>\n"
+    ."\t</table><br /></from>\n";
+    }
+}
+
 
 if($action == "surveysecurity")
 {
