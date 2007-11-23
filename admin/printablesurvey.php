@@ -171,6 +171,7 @@ while ($degrow = $degresult->FetchRow())
 						case "S": $conditions[]=$clang->gT("Same"); break;
 					}
 					case "F":
+					case "1":
 					case "H":
 					case "W":
 					case "L":
@@ -605,6 +606,7 @@ while ($degrow = $degresult->FetchRow())
 			$printablesurveyoutput .="\t\t\t</table>\n";
 			break;
 			case "F": //ARRAY (Flexible Labels)
+			case "1": //ARRAY (Flexible Labels) multi scale
 			//$headstyle="style='border-left-style: solid; border-left-width: 1px; border-left-color: #AAAAAA'";
 			$headstyle="style='padding-left: 20px; padding-right: 7px'";
 			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
