@@ -1134,7 +1134,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		$qtypes = getqtypelist("", "array"); //qtypes = array(type code=>type description)
 		$questionsummary .= "\t<tr><td align='right' valign='top'><strong>"
 		.$clang->gT("Type:")."</strong></td>\n\t<td align='left'>{$qtypes[$qrrow['type']]}";
-		if (($qrrow['type'] == "F" ||$qrrow['type'] == "H") && $sumrows5['define_questions'])
+		if (($qrrow['type'] == "F" ||$qrrow['type'] == "H" ||$qrrow['type'] == "1")&& $sumrows5['define_questions'])
 		{
 			$questionsummary .= " (LID: {$qrrow['lid']}) "
 			. "<input align='top' type='image' src='$imagefiles/labelssmall.png' title='"
@@ -1142,7 +1142,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			. "onclick=\"window.open('$scriptname?action=labels&amp;lid={$qrrow['lid']}', '_blank')\" />\n";
 		}
 		$questionsummary .="</td></tr>\n";
-		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "!" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type'] == "K" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R" || $qrrow['type'] == "F" ||$qrrow['type'] == "H"))
+		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "!" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type'] == "K" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R" || $qrrow['type'] == "F"  || $qrrow['type'] == "1" ||$qrrow['type'] == "H"))
 		{
 			$questionsummary .= "\t\t<tr ><td></td><td align='left'>"
 			. "<font face='verdana' size='1' color='green'>"
@@ -1151,7 +1151,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			. $clang->gT("Edit/Add Answers for this Question")."' name='EditThisQuestionAnswers'"
 			. "onclick=\"window.open('".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;viewanswer=Y', '_top')\" /></font></td></tr>\n";
 		}
-		if (!$qrrow['lid'] && ($qrrow['type'] == "F" ||$qrrow['type'] == "H"))
+		if (!$qrrow['lid'] && ($qrrow['type'] == "F" || $qrrow['type'] == "1" || $qrrow['type'] == "H"))
 		{
 			$questionsummary .= "\t\t<tr ><td></td>"
 			. "<td align='left'><font face='verdana' size='1' color='green'>"
@@ -1340,7 +1340,7 @@ if (returnglobal('viewanswer'))
 			}
 
 			// Don't show Default Button for array question types
-			if ($qtype != "A" && $qtype != "B" && $qtype != "C" && $qtype != "E" && $qtype != "F" && $qtype != "H" && $qtype != "R" && $qtype != "Q") $vasummary .= "\t<input type='submit' name='method' value='".$clang->gT("Default")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+			if ($qtype != "A" && $qtype != "B" && $qtype != "C" && $qtype != "E" && $qtype != "F" && $qtype != "H" && $qtype != "R" && $qtype != "Q" && $qtype != "1") $vasummary .= "\t<input type='submit' name='method' value='".$clang->gT("Default")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
 			$vasummary .= "\t</td>\n"
 			."\t<td>\n";
 			if ($position > 0)
