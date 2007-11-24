@@ -437,23 +437,18 @@ else
 			$abcount=$abresult->RecordCount();
 			while ($abrow = $abresult->FetchRow())
 			{
-mydebug("abquery: $abquery");
-mydebug("1 $abrow[1] $abrow[2]" + $abrow['code']);
 				$abmultiscalequery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q, {$dbprefix}labels as l"
 					     ." WHERE a.qid=q.qid AND sid={$_GET['sid']} AND q.qid={$arow['qid']} "
 	                     ." AND l.lid=q.lid AND sid={$_GET['sid']} AND q.qid={$arow['qid']} AND l.title = '' "
                          ." AND l.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
                          ." AND q.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' ";
-mydebug( "abmultiscalequery: $abmultiscalequery");					                         
 				$abmultiscaleresult=$connect->Execute($abmultiscalequery) or die ("Couldn't get perform answers query<br />$abmultiscalequery<br />".$connect->ErrorMsg());
 				$abmultiscaleresultcount =$abmultiscaleresult->RecordCount();
-mydebug("2 {abrow['code']}: {$abrow['code']}");
 
-$abmultiscaleresultcount = 1;
+				$abmultiscaleresultcount = 1;
 				for ($j=0; $j<=$abmultiscaleresultcount; $j++)
 				{
 					$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}#$j` C(5),\n";
-mydebug( "createsurvey: $createsurvey");					
 				} 
 			}
 		}
