@@ -4118,4 +4118,9 @@ function mydebug_var($strOutput)
   fclose($datei);
 }
 
+if (isset($htmleditormode) && $htmleditormode != "none")
+{
+	require_once(dirname(__FILE__).'/htmleditor-functions.php');
+}
+
 ?>

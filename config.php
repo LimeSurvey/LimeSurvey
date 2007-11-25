@@ -150,9 +150,4 @@ $enablehtmleditorpopup = true;
 
 //DO NOT CHANGE BELOW HERE --------------------
 
-if (isset($enablehtmleditorpopup) && $enablehtmleditorpopup === true)
-{
-         require_once(dirname(__FILE__).'/htmleditor-functions.php');
-}
-
 ?>
