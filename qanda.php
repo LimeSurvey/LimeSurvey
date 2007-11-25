@@ -1830,7 +1830,7 @@ function do_longfreetext($ia)
 
 	// --> START NEW FEATURE - SAVE
 	$answer .= "<textarea class='textarea' name='{$ia[1]}' id='answer{$ia[1]}' "
-	."rows='{$drows}' cols='{$tiwidth}' onkeyup=\"textLimit('".$ia[1]."', $maxsize)\" onchange='modfield(this.name)'>";
+	."rows='{$drows}' cols='{$tiwidth}' onkeyup=\"textLimit('answer".$ia[1]."', $maxsize)\" onchange='modfield(this.name)'>";
 	// --> END NEW FEATURE - SAVE
 
 	// <-- END ENHANCEMENT - TEXT INPUT WIDTH
@@ -1891,7 +1891,7 @@ function do_hugefreetext($ia)
 
 	// --> START NEW FEATURE - SAVE
 	$answer .= "<textarea class='display' name='{$ia[1]}' id='answer$ia[1]' "
-	."rows='{$drows}' cols='{$tiwidth}' onkeyup=\"textLimit('".$ia[1]."', $maxsize)\" onchange='modfield(this.name)'>";
+	."rows='{$drows}' cols='{$tiwidth}' onkeyup=\"textLimit('answer".$ia[1]."', $maxsize)\" onchange='modfield(this.name)'>";
 	// --> END NEW FEATURE - SAVE
 
 	// <-- END ENHANCEMENT - TEXT INPUT WIDTH
