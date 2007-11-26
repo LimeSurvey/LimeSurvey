@@ -124,7 +124,10 @@ if (!$surveyid)
 	{
 		while($rows = $result->FetchRow())
 		{
-		$list[]="<li class='surveytitle'><a href='index.php?sid=".$rows['sid']."'>".$rows['surveyls_title']."</a></li>\n";
+		$link = "<li class='surveytitle'><a href='index.php?sid=".$rows['sid'];
+		if(isset($_GET['lang'])) {$link .= "&amp;lang=".$_GET['lang'];}
+		$link .= "' >".$rows['surveyls_title']."</a></li>\n";
+		$list[]=$link;
 	    }
 	}
 	if(count($list) < 1)
@@ -598,7 +601,7 @@ function makelanguagechanger()
 //    . "</form>";
         
     return $htmlcode;
-  } else {
+  } elseif (!isset($surveyid)) {
     global $defaultlang, $baselang;
     $htmlcode = "<select name=\"select\" onChange=\"javascript:window.location=this.value\">\n";
     $htmlcode .= "<option value=\"index.php?lang=". $defaultlang ."\">".getLanguageNameFromCode($defaultlang,false)."</option>\n";
