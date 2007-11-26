@@ -718,7 +718,7 @@ for($i=0; $i < $questioncount ; $i++)
 		// Fill the sortorder hiddenfield so we know what field is moved down
 		$orderquestions.= "\t<input type='submit' style='float:right;' name='questionordermethod' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$oqarray[$i]['question_order']}'\" ".$downdisabled."/>\n";
 	}
-	$orderquestions.= "<a href='admin.php?sid=$surveyid&amp;gid=$gid&amp;qid={$oqarray[$i]['qid']}' title='".$clang->gT("Edit Question")."'>".$oqarray[$i]['title']."</a>: ".$oqarray[$i]['question'];
+	$orderquestions.= "<a href='admin.php?sid=$surveyid&amp;gid=$gid&amp;qid={$oqarray[$i]['qid']}' title='".$clang->gT("View Question")."'>".$oqarray[$i]['title']."</a>: ".$oqarray[$i]['question'];
 	$orderquestions.= "</li>\n" ;
 }
 
