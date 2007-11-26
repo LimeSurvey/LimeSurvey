@@ -72,7 +72,7 @@ if (isset($_POST['lang']) && $_POST['lang']!='')  // this one comes from the lan
 	UpdateFieldArray();        // to refresh question titles and question text 
 } 
 else 
-if (isset($_GET['lang']))
+if (isset($_GET['lang']) && $surveyid)
 {
 	$_GET['lang'] = preg_replace("/[^a-zA-Z0-9-]/", "", $_GET['lang']);
 	if ($_GET['lang']) $clang = SetSurveyLanguage( $surveyid, $_GET['lang']);
@@ -98,8 +98,14 @@ require_once( $embedded_inc );
 //CHECK FOR REQUIRED INFORMATION (sid)
 if (!$surveyid)
 {
+    if(isset($_GET['lang']))
+    {
+      $baselang = $_GET['lang'];
+    }
+	$clang = new limesurvey_lang($baselang);
     if(!isset($defaulttemplate)) {$defaulttemplate="default";}
-	//Find out if there are any publicly available surveys
+    $languagechanger = makelanguagechanger();
+    //Find out if there are any publicly available surveys
 	$query = "SELECT a.sid, b.surveyls_title 
 	          FROM ".db_table_name('surveys')." AS a 
 			  INNER JOIN ".db_table_name('surveys_languagesettings')." AS b 
@@ -591,6 +597,18 @@ function makelanguagechanger()
     $htmlcode .= "</select>\n";
 //    . "</form>";
         
+    return $htmlcode;
+  } else {
+    global $defaultlang, $baselang;
+    $htmlcode = "<select name=\"select\" onChange=\"javascript:window.location=this.value\">\n";
+    $htmlcode .= "<option value=\"index.php?lang=". $defaultlang ."\">".getLanguageNameFromCode($defaultlang,false)."</option>\n";
+    foreach(getlanguagedata() as $key=>$val)
+    {
+	    $htmlcode .= "\t<option value=\"index.php?lang=".$key."\" ";
+		if($key == $baselang) {$htmlcode .= " selected";}
+		$htmlcode .= ">".getLanguageNameFromCode($key,false)."</option>\n";
+	}
+	$htmlcode .= "</select>\n";
     return $htmlcode;
   }
 }
