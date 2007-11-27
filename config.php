@@ -144,9 +144,9 @@ $filterout_incomplete_answers = true;
 //  * set to true in order to remove the parameter part of the referrer url
 //  $stripQueryFromRefurl = false;
 
-// $enablehtmleditorpopup
-//  * enables htmleditor popup
-$enablehtmleditorpopup = true;
+// $enablehtmleditor
+//  * enables htmleditor
+$enablehtmleditor = true;
 
 //DO NOT CHANGE BELOW HERE --------------------
 
