@@ -805,6 +805,7 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 }
 
 $conditionsoutput .= "</table>\n";
+$qcount=isset($cquestions) ? count($cquestions) : 0;
 $conditionsoutput .= "<form action='$scriptname?action=conditions' name='addconditions' id='addconditions' method='post'>\n";
 $conditionsoutput .= "<table width='100%' align='center' cellspacing='0' cellpadding='0' style='border-style: solid; border-width: 1; border-color: #555555'>\n";
 $conditionsoutput .= "\t<tr class='settingcaption'>\n"
@@ -825,7 +826,7 @@ $conditionsoutput .= "\t<tr class='settingcaption'>\n"
 ."\t<tr>\n"
 ."\t\t<td valign='top' align='center'>\n"
 ."\t\t\t<div style='overflow-x:scroll; width:100%; overflow: -moz-scrollbars-horizontal; overflow-y:scroll; height: 100px;'>\n"
-."\t\t\t<select onclick=\"getAnswers(this.options[this.selectedIndex].value)\" name='cquestions' id='cquestions' style='font-family:verdana; background-color: #FFFFFF; font-size:10; border: 0px;' size='".(count($cquestions)+1)."'>\n";
+."\t\t\t<select onclick=\"getAnswers(this.options[this.selectedIndex].value)\" name='cquestions' id='cquestions' style='font-family:verdana; background-color: #FFFFFF; font-size:10; border: 0px;' size='".($qcount+1)."'>\n";
 if (isset($cquestions))
 {
 	foreach ($cquestions as $cqn)
