@@ -331,10 +331,7 @@ if ($questionscount > 0)
 
 	foreach($theserows as $rows)
 	{
-    if (strlen($rows['question']) > 30)
-    {$shortquestion=$rows['title'].": ".substr(strip_tags($rows['question']), 0, 30).".. ";}
-    else
-    {$shortquestion=$rows['title'].": ".strip_tags($rows['question']);}
+	    $shortquestion=$rows['title'].": ".strip_tags($rows['question']);
 
     if ($rows['type'] == "A" ||
         $rows['type'] == "B" ||
@@ -354,10 +351,7 @@ if ($questionscount > 0)
 
 			while ($arows = $aresult->FetchRow())
 			{
-        if (strlen(strip_tags($arows['answer'])) > 30)
-           {$shortanswer=substr(strip_tags($arows['answer']), 0, 30).".. ";}
-        else
-           {$shortanswer = strip_tags($arows['answer']);}
+                $shortanswer = strip_tags($arows['answer']);
 
 				$shortanswer .= " [{$arows['code']}]";
 				$cquestions[]=array("$shortquestion [$shortanswer]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']);
@@ -595,13 +589,23 @@ $conditionsoutput .= "\t\t\tfor (var i=0;i<Keys.length;i++)\n"
 $conditionsoutput .= "\t\t\t\tdocument.getElementById('canswers').options[document.getElementById('canswers').options.length] = new Option(Answers[Keys[i]], Codes[Keys[i]]);\n"
 ."\t\t\t\t}\n"
 ."\t\t}\n"
+."function evaluateLabels(val)\n"
+."{\n"
+."\tif(val == '>' || val == '>=' || val == '<' || val== '<=' || val == 'RX')\n"
+."\t{\n"
+."\t\tdocument.getElementById('acanswers').style.display='none';\n"
+."\t}\n"
+."\telse {\n"
+."\t\tdocument.getElementById('acanswers').style.display='';\n"
+."\t}\n"
+."}\n"
 ."//-->\n"
 ."</script>\n";
 
 //SHOW FORM TO CREATE IT!
 $conditionsoutput .= "<table width='100%' align='center' cellspacing='0' cellpadding='0' style='border-style: solid; border-width: 1; border-color: #555555'>\n"
 ."\t<tr bgcolor='#E1FFE1'>\n"
-."\t\t<td  align='center' >\n";
+."\t\t<td align='center' >\n";
 $showreplace="$questiontitle". showSpeaker($questiontext);
 $onlyshow=str_replace("{QID}", $showreplace, $clang->gT("Only show question {QID} IF"));
 $conditionsoutput .= "\t\t\t<strong>$onlyshow</strong>\n"
@@ -626,12 +630,12 @@ $conditionscount=$result->RecordCount();
 
 // this array will be used soon,
 // to explain wich conditions is used to evaluate the question
-$method = array( "<"  => $clang->gT("Less"),
-                 "<=" => $clang->gT("Less or Equal"),
-                 "==" => $clang->gT("Equal"),
-                 "!=" => $clang->gT("Not Equal"),
-                 ">=" => $clang->gT("Greater or Equal"),
-                 ">"  => $clang->gT("Greater"),
+$method = array( "<"  => $clang->gT("Less than"),
+                 "<=" => $clang->gT("Less than or Equal to"),
+                 "==" => $clang->gT("Equals"),
+                 "!=" => $clang->gT("Not Equal to"),
+                 ">=" => $clang->gT("Greater than or Equal to"),
+                 ">"  => $clang->gT("Greater than"),
                  "RX" => $clang->gT("Regular Expression")
                 );
 
@@ -668,7 +672,7 @@ if ($conditionscount > 0)
 		                  ."\t<td><form style='margin-bottom:0;' name='del{$rows['cid']}' id='del{$rows['cid']}' method='post' action='$scriptname?action=conditions'>\n"
                           ."\t\t<table width='100%' style='height: 13px;' cellspacing='0' cellpadding='0'>\n"
                           ."\t\t\t<tr>\n"
-                          ."\t\t\t\t<td valign='middle' align='right' width='50%'>\n"
+                          ."\t\t\t\t<td valign='middle' align='right' width='40%'>\n"
                           ."\t\t\t\t\t<font size='1' face='verdana'>\n";
 		//BUILD FIELDNAME?
 		foreach ($cquestions as $cqn)
@@ -686,7 +690,7 @@ if ($conditionscount > 0)
 		}
 
         $conditionsoutput .= "\t\t\t\t\t</font></td>\n"
-                          ."\t\t\t\t\t<td align='center' valign='middle' width='15%'>\n"
+                          ."\t\t\t\t\t<td align='center' valign='middle' width='20%'>\n"
                           ."\t\t\t\t\t\t<font size='1'>\n" //    .$clang->gT("Equals")."</font></td>"
                           .$method[$rows['method']]
                           ."\t\t\t\t\t\t</font>\n"
@@ -722,7 +726,7 @@ if ($conditionscount > 0)
             }
 	    }
 	    $conditionsoutput .= "\t\t\t\t\t</font></td>\n"
-	                      ."\t\t\t\t\t<td align='right' valign='middle' >\n"
+	                      ."\t\t\t\t\t<td align='right' valign='middle' width='10%'>\n"
 	                      ."\t\t\t\t\t\t<input type='submit' value='".$clang->gT("Delete")."' style='font-family: verdana; font-size: 8; height:15' />\n"
 		                  ."\t\t\t\t\t<input type='hidden' name='subaction' value='delete' />\n"
 		                  ."\t\t\t\t\t<input type='hidden' name='cid' value='{$rows['cid']}' />\n"
@@ -752,7 +756,7 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 {
 	$conditionsoutput .= "<tr class='table2columns''><td colspan='3'><form action='$scriptname?action=conditions' name='copyconditions' id='copyconditions' method='post'>\n";
 
-	$conditionsoutput .= "\t<table width='100%' ><tr>\n"
+	$conditionsoutput .= "\t<table width='100%' cellpadding='0' cellspacing='0'><tr>\n"
 	."\t\t<td colspan='3' align='center' class='settingcaption'>\n"
 	."\t\t<strong>"
 	.$clang->gT("Copy Conditions")."</strong>\n"
@@ -760,28 +764,30 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 	."\t</tr>\n";
 
 	$conditionsoutput .= "\t<tr bgcolor='#EFEFEF'>\n"
-	."\t\t<th>".$clang->gT("Condition")."</th><th></th><th>".$clang->gT("Question")."</th>\n"
+	."\t\t<th width='40%'>".$clang->gT("Condition")."</th><th width='200'></th><th width='40%'>".$clang->gT("Question")."</th>\n"
 	."\t</tr>\n";
 
 	$conditionsoutput .= "\t<tr>\n"
 	."\t\t<td align='center'>\n"
-	."\t\t<select name='copyconditionsfrom[]' multiple style='font-family:verdana; font-size:10; width:220; background-color: #E1FFE1' size='4' >\n";
+	."\t\t<div style='overflow-x:scroll; width:100%; overflow: -moz-scrollbars-horizontal; overflow-y:scroll; height: 100px;'>\n"
+	."\t\t<select name='copyconditionsfrom[]' multiple style='font-family:verdana; font-size:10; background-color: #E1FFE1; border: 0px' size='".count($conditionsList)."' >\n";
 	foreach ($conditionsList as $cl)
 	{
 		$conditionsoutput .= "<option value='".$cl['cid']."'>".$cl['text']."</option>\n";
 	}
-	$conditionsoutput .= "\t\t</select>\n"
+	$conditionsoutput .= "\t\t</select>\n\t\t</div>"
 	."\t\t</td>\n"
-	."\t\t<td align='center'>\n"
+	."\t\t<td align='center' style='text-align: center' width='200'>\n"
 	."\t\t".$clang->gT("copy to")."\n"
 	."\t\t</td>\n"
 	."\t\t<td align='center'>\n"
-	."\t\t<select name='copyconditionsto[]' multiple style='font-family:verdana; font-size:10; width:220' size='4'>\n";
+    ."\t\t\t<div style='overflow-x:scroll; width:100%; overflow: -moz-scrollbars-horizontal; overflow-y:scroll; height: 100px; text-align: right'>\n"
+	."\t\t<select name='copyconditionsto[]' multiple style='font-family:verdana; font-size:10; border: 0px' size='".count($pquestions)."'>\n";
 	foreach ($pquestions as $pq)
 	{
 		$conditionsoutput .= "<option value='{$pq['fieldname']}'>".$pq['text']."</option>\n";
 	}
-	$conditionsoutput .= "\t\t</select>\n";
+	$conditionsoutput .= "\t\t</select>\n\t\t</div>";
 	$conditionsoutput .= "\t\t</td>\n"
 	."\t</tr>\n";
 
@@ -800,7 +806,7 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 
 $conditionsoutput .= "</table>\n";
 $conditionsoutput .= "<form action='$scriptname?action=conditions' name='addconditions' id='addconditions' method='post'>\n";
-$conditionsoutput .= "<table width='100%' border='0' >";
+$conditionsoutput .= "<table width='100%' align='center' cellspacing='0' cellpadding='0' style='border-style: solid; border-width: 1; border-color: #555555'>\n";
 $conditionsoutput .= "\t<tr class='settingcaption'>\n"
 ."\t\t<td colspan='3' align='center'>\n"
 ."\t\t\t<strong>".$clang->gT("Add Condition")."</strong>\n"
@@ -818,7 +824,8 @@ $conditionsoutput .= "\t<tr class='settingcaption'>\n"
 ."\t</tr>\n"
 ."\t<tr>\n"
 ."\t\t<td valign='top' align='center'>\n"
-."\t\t\t<select onclick=\"getAnswers(this.options[this.selectedIndex].value)\" name='cquestions' id='cquestions' style='font-family:verdana; font-size:10; width:220' size='5'>\n";
+."\t\t\t<div style='overflow-x:scroll; width:100%; overflow: -moz-scrollbars-horizontal; overflow-y:scroll; height: 100px;'>\n"
+."\t\t\t<select onclick=\"getAnswers(this.options[this.selectedIndex].value)\" name='cquestions' id='cquestions' style='font-family:verdana; background-color: #FFFFFF; font-size:10; border: 0px;' size='".(count($cquestions)+1)."'>\n";
 if (isset($cquestions))
 {
 	foreach ($cquestions as $cqn)
@@ -830,9 +837,9 @@ if (isset($cquestions))
 		$conditionsoutput .= ">$cqn[0]</option>\n";
 	}
 }
-$conditionsoutput .= "\t\t\t</select>\n"
+$conditionsoutput .= "\t\t\t</select>\n\t\t\t</div>\n"
 ."\t\t</td>\n"
-."\t\t<td align='center'>\n";
+."\t\t<td align='center' valign='top'>\n";
 // Originally was planned to do that:
 //$conditionsoutput .= "\t\t\t<select name='method' id='method' style='font-family:verdana; font-size:10'>\n";
 //$conditionsoutput .= "\t\t\t\t<option value='='>Equals</option>\n";
@@ -842,25 +849,26 @@ $conditionsoutput .= "\t\t\t</select>\n"
 // Perhaps was leaved for this time with
 //$conditionsoutput .= "\t\t\t".$clang->gT("Equals")."\n"
 // Here I go
-$conditionsoutput .= "\t\t\t".$clang->gT("NOTE: If select a label it will be used Equal or Not Equal for any other method")."\n";
-$conditionsoutput .= "\t\t\t<select name='method' id='method' style='font-family:verdana; font-size:10'>\n";
+$conditionsoutput .= "\t\t\t<br /><select name='method' id='method' style='font-family:verdana; font-size:10' onChange='evaluateLabels(this.value)'>\n";
 // This is not really necessary. The note beffore must be self explanatory.
 //$conditionsoutput .= "<option selected='selected'>".$clang->gT("Select Condition")."</option>\n";
-$conditionsoutput .= "<option value='<'>".$clang->gT("Less")."</option>\n";
-$conditionsoutput .= "<option value='<='>".$clang->gT("Less or Equal")."</option>\n";
-$conditionsoutput .= "<option selected='selected' value='=='>".$clang->gT("Equal")."</option>\n";
-$conditionsoutput .= "<option value='!='>".$clang->gT("Not Equal")."</option>\n";
-$conditionsoutput .= "<option value='>='>".$clang->gT("Greater or Equal")."</option>\n";
-$conditionsoutput .= "<option value='>'>".$clang->gT("Greater")."</option>\n";
+$conditionsoutput .= "<option value='<'>".$clang->gT("Less than")."</option>\n";
+$conditionsoutput .= "<option value='<='>".$clang->gT("Less than or Equal to")."</option>\n";
+$conditionsoutput .= "<option selected='selected' value='=='>".$clang->gT("Equals")."</option>\n";
+$conditionsoutput .= "<option value='!='>".$clang->gT("Not Equal to")."</option>\n";
+$conditionsoutput .= "<option value='>='>".$clang->gT("Greater than or Equal to")."</option>\n";
+$conditionsoutput .= "<option value='>'>".$clang->gT("Greater than")."</option>\n";
 $conditionsoutput .= "<option value='RX'>".$clang->gT("Regular Expression")."</option>\n";
-$conditionsoutput .= "\t\t\t</select>\n"
-."\t\t</td>\n"
+$conditionsoutput .= "\t\t\t</select>\n";
+$conditionsoutput .= "\t\t\t<small><br />".$clang->gT("NOTE: If you use a pre-defined answer as your condition, only the equals or not-equal-to conditions apply.")."</small>\n";
+$conditionsoutput .= "\t\t</td>\n"
 ."\t\t<td valign='top' align='center'>\n"
-."\t\t\t<select name='canswers[]' multiple id='canswers' style='font-family:verdana; font-size:10; width:220' size='5'>\n";
+."\t\t\t<div style='overflow-x:scroll; width:100%; overflow: -moz-scrollbars-horizontal; overflow-y:scroll; height: 100px; text-align: right' id='acanswers'>\n"
+."\t\t\t<select name='canswers[]' multiple id='canswers' style='font-family:verdana; font-size:10; border: 0px;' size='6'>\n";
 
-$conditionsoutput .= "\t\t\t</select><br />\n"
+$conditionsoutput .= "\t\t\t</select>\n\t\t\t</div>\n"
 ."\t\t".$clang->gT("Constant Value or Regular Expression")."<br />\n"
-."\t\t<textarea name='ValOrRegEx' cols='50' rows='5'></textarea>\n"
+."\t\t<textarea name='ValOrRegEx' cols='40' rows='5'></textarea>\n"
 ."\t\t</td>"
 ."\t</tr>\n"
 ."\t<tr>\n"
