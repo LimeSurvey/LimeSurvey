@@ -595,7 +595,7 @@ if ($subaction == "browse" || $subaction == "search")
 		. "OR lastname LIKE '%$searchstring%' "
 		. "OR email LIKE '%$searchstring%' "
 		. "OR token LIKE '%$searchstring%'";
-		if ($bfieldcount == 9)
+		if ($bfieldcount == 10)
 		{
 			$bquery .= " OR attribute_1 like '%$searchstring%' "
 			. "OR attribute_2 like '%$searchstring%'";
