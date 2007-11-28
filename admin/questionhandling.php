@@ -681,21 +681,21 @@ for($i=0; $i < $questioncount ; $i++)
 	     }
 	//Find out if any questions use this as a dependency
 	$max_end_order=$questioncount+1;
-	if ( !is_null($questdepsarray) && $i!=0 )
+	if ( !is_null($questdepsarray))
 	{
 	    //There doesn't seem to be any choice but to go through the questdepsarray one at a time
+	    //to find which question has a dependence on this one
 	    foreach($questdepsarray as $qdarray)
 	    {
 	        if (array_key_exists($oqarray[$i]['qid'], $qdarray))
 	        {
-			    //get the question order value of this other question that uses this as a dependency
-			    foreach($minioqarray as $mo)
-			    {
-				    if($mo['qid'] == $oqarray[$i]['qid'] && $mo['question_order'] < $max_end_order)
-				        {
-						    $max_end_order = $mo['question_order'];
-						}
-				}
+	            $cqidquery = "SELECT question_order 
+				          FROM ".db_table_name('conditions').", ".db_table_name('questions')." 
+						  WHERE ".db_table_name('conditions').".qid=".db_table_name('questions').".qid
+						  AND cid=".$qdarray[$oqarray[$i]['qid']][0];
+                $cqidresult = db_execute_assoc($cqidquery);
+	            $cqidrow = $cqidresult->FetchRow();
+	            $max_end_order=$cqidrow['question_order'];
 			}
 	    }
 	}
