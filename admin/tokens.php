@@ -685,7 +685,7 @@ if ($subaction == "browse" || $subaction == "search")
 		if ($brow['completed'] != "N" && $brow['completed']!="" && $surveyprivate == "N")
 		{
 			// Get response Id
-			$query="SELECT id FROM ".db_table_name("survey_$surveyid")." WHERE token='".$brow['token']."'";
+			$query="SELECT id FROM ".db_table_name("survey_$surveyid")." WHERE token='".$brow['token']."' ORDER BY id desc";
 			$result=db_execute_num($query) or die ("<br />Could not find token!<br />\n" . htmlspecialchars($connect->ErrorMsg()));
 			list($id) = $result->FetchRow();
 
