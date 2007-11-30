@@ -900,8 +900,8 @@ $conditionsoutput .= "\t<tr><td colspan='3'></td></tr>\n"
 function showSpeaker($hinttext)
 {
   global $imagefiles, $clang;
-  $reshtml= "<img src='$imagefiles/speaker.png' align='bottom' alt='$hinttext' title='$hinttext' "
-           ." onclick=\"alert('".$clang->gT("Question","js").": $hinttext')\" />";
+  $reshtml= "<img src='$imagefiles/speaker.png' align='bottom' alt=\"$hinttext\" title=\"$hinttext\" "
+           ." onclick=\"alert('".$clang->gT("Question","js").": ".javascript_escape($hinttext)."')\" />";
   return $reshtml; 
 }
 
