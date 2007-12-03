@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-11-17 13:13+0100\n"
+"PO-Revision-Date: 2007-12-03 22:01+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -685,7 +685,7 @@ msgid "answer(s) for question"
 msgstr "Antwort(en) für die Frage"
 
 msgid "Make a comment on your choice here:"
-msgstr "Bitte schreibe eine Kommentar zu Deiner Auswahl"
+msgstr "Bitte schreibe einen Kommentar zu Deiner Auswahl"
 
 msgid "Error: This question has no answers."
 msgstr "Fehler: Diese Frage hat keine Antworten."
@@ -2214,7 +2214,7 @@ msgstr "Anonymisierte Antworten?"
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2464
 # D:\web\xampp\htdocs\limesurvey/admin/tokens.php:272
 msgid "If you set a survey to anonymous, answers to timestamped and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
-msgstr "Wenn du die Umfrage auf  -Anonyme Antworten- setzt, die Antworten mit einem Zeitstempel versehen und eine Probandentabelle erstellst, wird LimeSurvey die Zugangsschlüssel nicht mit einem Zeitstempel versehen, sondern an Stelle des Datums und der Uhrzeit nur ein 'Y' setzen, damit für ihre Teilnehmer die Anonymität gewahrt bleibt."
+msgstr "Wenn du die Umfrage auf  -Anonyme Antworten- setzt, die Antworten mit einem Zeitstempel versiehst und eine Probandentabelle erstellst, wird LimeSurvey die Zugangsschlüssel nicht mit einem Zeitstempel versehen, sondern an Stelle des Datums und der Uhrzeit nur ein 'Y' setzen, damit für die Teilnehmer die Anonymität gewahrt bleibt."
 
 msgid "Cannot be changed"
 msgstr "Kann nicht geändert werden"
