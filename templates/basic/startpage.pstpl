@@ -37,6 +37,8 @@ img { border: 0; }
 {
   height:12px;
 }
+table.question tr.array1:hover {background-color: #A7A9D1; }
+table.question tr.array2:hover {background-color: #A7A9D1; }
 </style>
 </head>
 <body>
