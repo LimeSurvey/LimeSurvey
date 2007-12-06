@@ -72,12 +72,12 @@ function getHtmlControls($fieldtype,$fieldname,$fieldtext)
 
 	if ($fieldtype == 'oneline')
 	{
-		$imgopts = 'width=20 height=20';
+		$imgopts = "width='20' height='20'";
 	}
 
 
 	$htmlcode .= ""
-	. "<a href =\"javascript:start_popup_editor('".$fieldname."','".$fieldtext."')\" id='".$fieldname."_ctrl'><img id='".$fieldname."_popupctrlena' name='".$fieldname."_popupctrlena' border=0 src='".$imagefiles."/edithtmlpopup.png'><img id='".$fieldname."_popupctrldis' name='".$fieldname."_popupctrldis' border=0 src='".$imagefiles."/edithtmlpopup_disabled.png' style='display: none'></a>";
+	. "<a href =\"javascript:start_popup_editor('".$fieldname."','".$fieldtext."')\" id='".$fieldname."_ctrl'><img alt='' id='".$fieldname."_popupctrlena' name='".$fieldname."_popupctrlena' border='0' src='".$imagefiles."/edithtmlpopup.png' /><img alt='' id='".$fieldname."_popupctrldis' name='".$fieldname."_popupctrldis' border='0' src='".$imagefiles."/edithtmlpopup_disabled.png' style='display: none' /></a>";
 
 	return $htmlcode;
 }

@@ -1078,11 +1078,7 @@ if(isset($surveyid))
 				$usquery = "UPDATE ".db_table_name('surveys_languagesettings')." \n"
 				. "SET surveyls_title='".$_POST['short_title_'.$langname]."', surveyls_description='".$_POST['description_'.$langname]."',\n"
 				. "surveyls_welcometext='".$_POST['welcome_'.$langname]."',\n"
-				. "surveyls_urldescription='".$_POST['urldescrip_'.$langname]."', surveyls_email_invite_subj='".$_POST['email_invite_subj_'.$langname]."',\n"
-				. "surveyls_email_invite='".$_POST['email_invite_'.$langname]."', surveyls_email_remind_subj='".$_POST['email_remind_subj_'.$langname]."',\n"
-				. "surveyls_email_remind='".$_POST['email_remind_'.$langname]."', surveyls_email_register_subj='".$_POST['email_register_subj_'.$langname]."',\n"
-				. "surveyls_email_register='".$_POST['email_register_'.$langname]."', surveyls_email_confirm_subj='".$_POST['email_confirm_subj_'.$langname]."',\n"
-				. "surveyls_email_confirm='".$_POST['email_confirm_'.$langname]."'\n"
+				. "surveyls_urldescription='".$_POST['urldescrip_'.$langname]."'\n"
 				. "WHERE surveyls_survey_id=".$_POST['sid']." and surveyls_language='".$langname."'";
 				$usresult = $connect->Execute($usquery) or die("Error updating<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
 			}
@@ -1090,6 +1086,8 @@ if(isset($surveyid))
 	}
 
 }
+
+
 
 
 elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])

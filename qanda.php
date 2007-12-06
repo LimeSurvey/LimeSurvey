@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<?php
+﻿﻿﻿﻿﻿﻿﻿﻿﻿<?php
 /*
 * LimeSurvey
 * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
@@ -233,7 +233,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 		if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
 		{
 			$qtitle .= "<br />\n<font class = \"questionhelp\">"
-			. $clang->gT("Choose only one of the following")."</font>";
+			. $clang->gT("Choose one of the following answers")."</font>";
 		}
 		break;
 		case "L": //LIST drop-down/radio-button list
@@ -241,7 +241,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 		if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
 		{
 			$qtitle .= "<br />\n<font class = \"questionhelp\">"
-			. $clang->gT("Choose only one of the following")."</font>";
+			. $clang->gT("Choose one of the following answers")."</font>";
 		}
 		break;
 		case "W": //List - dropdown
@@ -249,7 +249,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 		if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
 		{
 			$qtitle .= "<br />\n<font class = \"questionhelp\">"
-			. $clang->gT("Choose only one of the following")."</font>";
+			. $clang->gT("Choose one of the following answers")."</font>";
 		}
 		break;
 		case "!": //List - dropdown
@@ -257,7 +257,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 		if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
 		{
 			$qtitle .= "<br />\n<font class = \"questionhelp\">"
-			. $clang->gT("Choose only one of the following")."</font>";
+			. $clang->gT("Choose one of the following answers")."</font>";
 		}
 		break;
 		case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
@@ -265,7 +265,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 		if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
 		{
 			$qtitle .= "<br />\n<font class = \"questionhelp\">"
-			. $clang->gT("Choose only one of the following")."</font>";
+			. $clang->gT("Choose one of the following answers")."</font>";
 		}
 		break;
 		case "R": //RANKING STYLE

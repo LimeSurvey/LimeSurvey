@@ -265,9 +265,9 @@ $singleborderstyle = "style='border: 1px solid #111111'";
         //"\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='34'  align='left'>\n".
 						$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=checksettings', '_top')\""
 					    . "onmouseout=\"hideTooltip()\""
-                      	. "onmouseover=\"showTooltip(event,'".$clang->gT("Check Settings", "js")."');return false\">"
+                      	. "onmouseover=\"showTooltip(event,'".$clang->gT("Show System Summary", "js")."');return false\">"
 						. "\t\t\t\t\t<img src='$imagefiles/summary.png' name='CheckSettings' title='"
-						. "' alt='". $clang->gT("Settings")."' align='left' /></a>"
+						. "' alt='". $clang->gT("Show System Summary")."' align='left' /></a>"
 						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n";
 
 		// check data cosistency
