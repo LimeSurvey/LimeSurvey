@@ -277,6 +277,7 @@ else
 		if ($prow['datestamp'] == "Y")
 		{
 			$createsurvey .= " datestamp T NOTNULL,\n";
+			$createsurvey .= " startdate T NOTNULL,\n";
 		}
 		if ($prow['ipaddr'] == "Y")
 		{

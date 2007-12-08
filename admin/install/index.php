@@ -87,6 +87,6 @@ function checkforupgrades()
 
     return $adminoutput;
 }
-
+               
     
 ?>

@@ -87,30 +87,44 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","ALTER TABLE [prefix_users] ALTER COLUMN [users_name] VARCHAR( 64 ) NOT NULL"); echo $modifyoutput; flush();
         modify_database("","update [prefix_settings_global] set [stg_value`='112' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
+    
     if ($oldversion < 113) {
 	//No action needed
         modify_database("","update [prefix_settings_global] set [stg_value`='113' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
+    
     if ($oldversion < 114) {
-	//No action needed
         modify_database("","ALTER TABLE [prefix_saved_control] ALTER COLUMN [email] VARCHAR(320) NOT NULL"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] ALTER COLUMN [adminemail] VARCHAR(320) NOT NULL"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_users] ALTER COLUMN [email] VARCHAR(320) NOT NULL"); echo $modifyoutput; flush();
-
-        modify_database("",'INSERT INTO [prefix_settings_global] VALUES (\'SessionName\', \'$sessionname\');');
+        modify_database("",'INSERT INTO [prefix_settings_global] VALUES (\'SessionName\', \'$sessionname\');');echo $modifyoutput; flush();
         modify_database("","update [prefix_settings_global] set [stg_value]='114' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
-    if ($oldversion < 115) {
-	//No action needed
-        modify_database("","ALTER TABLE [prefix_surveys] ADD  [printanswers] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
-        modify_database("","update [prefix_settings_global] set [stg_value]='115' where stg_name='DBVersion'"); echo $modifyoutput; flush();
-    }
-    if ($oldversion < 116) {
+    
+    if ($oldversion < 117) {
     //Adds new "public" field
+        modify_database("","ALTER TABLE [prefix_surveys] ADD  [printanswers] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] ADD  [public] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
+        upgrade_survey_tables117();
         modify_database("","update [prefix_settings_global] set [stg_value]='116' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
+    
     return true;
+}
+
+function upgrade_survey_tables117()
+{
+    global $modifyoutput;
+    $surveyidquery = "SELECT sid FROM ".db_table_name('surveys')." WHERE active='Y' and datestamp='Y'";
+    $surveyidresult = db_execute_num($surveyidquery);
+    if (!$surveyidresult) {return "Database Error";}
+    else
+        {
+        while ( $sv = $surveyidresult->FetchRow() )
+            {
+            modify_database("","ALTER TABLE ".db_table_name('survey_'.$sv[0])." ADD [startdate] datetime NOT NULL"); echo $modifyoutput; flush();
+            }
+        }
 }
 
 ?>

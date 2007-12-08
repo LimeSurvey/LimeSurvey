@@ -371,6 +371,7 @@ function createinsertquery()
 			if ($thissurvey['datestamp'] == "Y")
 			{
 				$query .= ",".db_quote_id('datestamp');
+				$query .= ",".db_quote_id('startdate');
 			}
 			if ($thissurvey['ipaddr'] == "Y")
 			{
@@ -389,6 +390,7 @@ function createinsertquery()
 			$query .="VALUES (".implode(", ", $values);
 			if ($thissurvey['datestamp'] == "Y")
 			{
+				$query .= ", '".$_SESSION['datestamp']."'";
 				$query .= ", '".$_SESSION['datestamp']."'";
 			}
 			if ($thissurvey['ipaddr'] == "Y")

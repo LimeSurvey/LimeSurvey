@@ -153,8 +153,9 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	{
 		// submitdate for not-datestamped surveys is always 1980/01/01
 		// so only display it when datestamped
+		$fnames[] = array("startdate", "startdate", $clang->gT("Date Started"));
+		$fnames[] = array("datestamp", "datestamp", $clang->gT("Date Last Action"));
 		$fnames[] = array("submitdate", "submitdate", $clang->gT("Date Submitted"));
-		$fnames[] = array("datestamp", "datestamp", $clang->gT("Date Stamp"));
 	}
 	if ($ipaddr == "Y") //add ipaddr to list if survey should save submitters IP address
 	{
@@ -346,8 +347,11 @@ elseif ($subaction == "all")
 	{
 		// submitdate for not-datestamped surveys is always 1980/01/01
 		// so only display it when datestamped
+		$fnames[] = array("startdate", "startdate", $clang->gT("Date Started"), "0");
+		$fnames[] = array("datestamp", "Datestamp", $clang->gT("Date Last Action"), "0");
 		$fnames[] = array("submitdate", "submitdate", $clang->gT("Date Submitted"), "0");
-		$fnames[] = array("datestamp", "Datestamp", $clang->gT("Date Stamp"), "0");
+
+		
 	}
 	if ($ipaddr == "Y") // Add IP Address
 	{

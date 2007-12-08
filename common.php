@@ -15,8 +15,8 @@
 
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
-$versionnumber = "1.60";
-$dbversionnumber = 116;
+$versionnumber = "1.60b";
+$dbversionnumber = 117;
 
 
 
@@ -72,13 +72,7 @@ if($_SERVER['SERVER_SOFTWARE'] == "Xitami") //Deal with Xitami Issue
 * are loaded.
 */
 
-if ((!isset($rootsymlinked)) || $rootsymlinked==0 ) {$scriptlocation=realpath(".");}
-elseif ($rootsymlinked==1) {$scriptlocation = dirname($_SERVER['SCRIPT_FILENAME']);}
-else {
-	echo "ERROR: Cannot locate path - the PHP server does not have a setting for realpath or SCRIPT_FILENAME. Contact our support at limesurvey.org for assistance!";
-	exit;
-}
-
+$scriptlocation=realpath(".");
 $slashlesspath=str_replace(array("\\", "/"), "", $scriptlocation);
 $slashlesshome=str_replace(array("\\", "/"), "", $homedir);
 
