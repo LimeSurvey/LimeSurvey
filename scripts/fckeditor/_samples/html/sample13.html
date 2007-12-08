@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+ * FCKeditor - The text editor for Internet - http://www.fckeditor.net
+ * Copyright (C) 2003-2007 Frederico Caldeira Knabben
+ *
+ * == BEGIN LICENSE ==
+ *
+ * Licensed under the terms of any of the following licenses at your
+ * choice:
+ *
+ *  - GNU General Public License Version 2 or later (the "GPL")
+ *    http://www.gnu.org/licenses/gpl.html
+ *
+ *  - GNU Lesser General Public License Version 2.1 or later (the "LGPL")
+ *    http://www.gnu.org/licenses/lgpl.html
+ *
+ *  - Mozilla Public License Version 1.1 or later (the "MPL")
+ *    http://www.mozilla.org/MPL/MPL-1.1.html
+ *
+ * == END LICENSE ==
+ *
+ * Sample page.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>FCKeditor - Sample</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="robots" content="noindex, nofollow" />
+	<link href="../sample.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="../../fckeditor.js"></script>
+	<script type="text/javascript">
+
+function Toggle()
+{
+	// Try to get the FCKeditor instance, if available.
+	var oEditor ;
+	if ( typeof( FCKeditorAPI ) != 'undefined' )
+		oEditor = FCKeditorAPI.GetInstance( 'DataFCKeditor' ) ;
+
+	// Get the _Textarea and _FCKeditor DIVs.
+	var eTextareaDiv	= document.getElementById( 'Textarea' ) ;
+	var eFCKeditorDiv	= document.getElementById( 'FCKeditor' ) ;
+
+	// If the _Textarea DIV is visible, switch to FCKeditor.
+	if ( eTextareaDiv.style.display != 'none' )
+	{
+		// If it is the first time, create the editor.
+		if ( !oEditor )
+		{
+			CreateEditor() ;
+		}
+		else
+		{
+			// Set the current text in the textarea to the editor.
+			oEditor.SetData( document.getElementById('DataTextarea').value ) ;
+		}
+
+		// Switch the DIVs display.
+		eTextareaDiv.style.display = 'none' ;
+		eFCKeditorDiv.style.display = '' ;
+
+		// This is a hack for Gecko 1.0.x ... it stops editing when the editor is hidden.
+		if ( oEditor && !document.all )
+		{
+			if ( oEditor.EditMode == FCK_EDITMODE_WYSIWYG )
+				oEditor.MakeEditable() ;
+		}
+	}
+	else
+	{
+		// Set the textarea value to the editor value.
+		document.getElementById('DataTextarea').value = oEditor.GetXHTML() ;
+
+		// Switch the DIVs display.
+		eTextareaDiv.style.display = '' ;
+		eFCKeditorDiv.style.display = 'none' ;
+	}
+}
+
+function CreateEditor()
+{
+	// Copy the value of the current textarea, to the textarea that will be used by the editor.
+	document.getElementById('DataFCKeditor').value = document.getElementById('DataTextarea').value ;
+
+	// Automatically calculates the editor base path based on the _samples directory.
+	// This is usefull only for these samples. A real application should use something like this:
+	// oFCKeditor.BasePath = '/fckeditor/' ;	// '/fckeditor/' is the default value.
+	var sBasePath = document.location.pathname.substring(0,document.location.pathname.lastIndexOf('_samples')) ;
+
+	// Create an instance of FCKeditor (using the target textarea as the name).
+	var oFCKeditor = new FCKeditor( 'DataFCKeditor' ) ;
+	oFCKeditor.BasePath = sBasePath ;
+	oFCKeditor.Width = '100%' ;
+	oFCKeditor.Height = '350' ;
+	oFCKeditor.ReplaceTextarea() ;
+}
+
+// The FCKeditor_OnComplete function is a special function called everytime an
+// editor instance is completely loaded and available for API interactions.
+function FCKeditor_OnComplete( editorInstance )
+{
+	// Enable the switch button. It is disabled at startup, waiting the editor to be loaded.
+	document.getElementById('BtnSwitchTextarea').disabled = false ;
+}
+
+function PrepareSave()
+{
+	// If the textarea isn't visible update the content from the editor.
+	if ( document.getElementById( 'Textarea' ).style.display == 'none' )
+	{
+		var oEditor = FCKeditorAPI.GetInstance( 'DataFCKeditor' ) ;
+		document.getElementById( 'DataTextarea' ).value = oEditor.GetXHTML() ;
+	}
+}
+
+	</script>
+</head>
+<body>
+	<h1>
+		FCKeditor - JavaScript - Sample 13
+	</h1>
+	<div>
+		This sample starts with a normal textarea and provides the ability to switch back
+		and forth between the textarea and FCKeditor. It uses the JavaScript API to do the
+		operations so it will work even if the internal implementation changes.
+	</div>
+	<hr />
+	<form action="sampleposteddata.asp" method="post" target="_blank" onsubmit="PrepareSave();">
+		<div id="Textarea">
+			<input type="button" value="Switch to FCKeditor" onclick="Toggle()" />
+			<br />
+			<br />
+			<textarea id="DataTextarea" name="Data" cols="80" rows="20" style="width: 95%">This is some &lt;strong&gt;sample text&lt;/strong&gt;. You are using &lt;a href="http://www.fckeditor.net/"&gt;FCKeditor&lt;/a&gt;.</textarea>
+		</div>
+		<div id="FCKeditor" style="display: none">
+			<!-- Note that the following button is disabled at startup.
+				It will be enabled once the editor is completely loaded. -->
+			<input id="BtnSwitchTextarea" type="button" disabled="disabled" value="Switch to Textarea" onclick="Toggle()" />
+			<br />
+			<br />
+			<!-- Note that the following textarea doesn't have a "name", so it will not be posted. -->
+			<textarea id="DataFCKeditor" cols="80" rows="20"></textarea>
+		</div>
+		<br />
+		<input type="submit" value="Submit" />
+	</form>
+</body>
+</html>

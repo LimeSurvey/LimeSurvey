@@ -1,0 +1,91 @@
+<%
+ * FCKeditor - The text editor for Internet - http://www.fckeditor.net
+ * Copyright (C) 2003-2007 Frederico Caldeira Knabben
+ *
+ * == BEGIN LICENSE ==
+ *
+ * Licensed under the terms of any of the following licenses at your
+ * choice:
+ *
+ *  - GNU General Public License Version 2 or later (the "GPL")
+ *    http://www.gnu.org/licenses/gpl.html
+ *
+ *  - GNU Lesser General Public License Version 2.1 or later (the "LGPL")
+ *    http://www.gnu.org/licenses/lgpl.html
+ *
+ *  - Mozilla Public License Version 1.1 or later (the "MPL")
+ *    http://www.mozilla.org/MPL/MPL-1.1.html
+ *
+ * == END LICENSE ==
+ *
+ * This page is a basic Sample for FCKeditor integration in the AFP script language (www.afpages.de)
+ *
+%>
+
+<html>
+	<head>
+		<title>FCKeditor - AFP Sample 3</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="robots" content="noindex, nofollow">
+		<link href="../sample.css" rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript">
+			function FCKeditor_OnComplete( editorInstance )
+			{
+				var oCombo = document.getElementById( 'cmbToolbars' ) ;
+				oCombo.value = editorInstance.ToolbarSet.Name ;
+				oCombo.style.visibility = '' ;
+			}
+
+			function ChangeToolbar( toolbarName )
+			{
+				window.location.href = window.location.pathname + "?Toolbar=" + toolbarName ;
+			}
+		</script>
+		</head>
+	<body>
+		<h1>FCKeditor - AFP - Sample 3</h1>
+		This sample shows how to change the editor toolbar.
+		<hr>
+		<table cellpadding="0" cellspacing="0" border="0">
+			<tr>
+				<td>
+					Select the toolbar to load:&nbsp;
+				</td>
+				<td>
+					<select id="cmbToolbars" onchange="ChangeToolbar(this.value);" style="VISIBILITY: hidden">
+						<option value="Default" selected>Default</option>
+						<option value="Basic">Basic</option>
+					</select>
+				</td>
+			</tr>
+		</table>
+		<br>
+		<form action="sampleposteddata.afp" method="post" target="_blank">
+<%
+
+			sBasePath="../../../fckeditor/"						&& Change this to your local path
+
+			oFCKeditor = CREATEOBJECT("FCKeditor")
+			oFCKeditor.fckeditor("FCKeditor1")
+
+			lcToolbar=request.querystring("Toolbar")			&& Request Parameter
+			lcToolbar=oFCKeditor.StripAttacks(lcToolbar)		&& Remove special escape characters
+			IF !EMPTY(lcToolbar)
+				oFCKeditor.ToolbarSet=lcToolbar
+			ENDIF
+
+			lcText=[<p>This is some <strong>sample text</strong>. You are using ]
+			lcText=lcText+[<a href='http://www.fckeditor.net/'>FCKeditor</a>.]
+
+			oFCKeditor.BasePath	= sBasePath
+			oFCKeditor.cValue	= lcText
+
+			? oFCKeditor.Create()
+
+%>
+			<br>
+			<input type="submit" value="Submit">
+		</form>
+	</body>
+</html>
