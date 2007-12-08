@@ -69,6 +69,7 @@ function getHtmlControls($fieldtype,$fieldname,$fieldtext)
 
 	$htmlcode = '';
 	$imgopts = '';
+	$toolbarname = 'LimeSurveyToolbarfull';
 
 	if ($fieldtype == 'oneline')
 	{
@@ -87,6 +88,7 @@ function getHtmlControls($fieldtype,$fieldname,$fieldtext)
 	. "var oFCKeditor = new FCKeditor('$fieldname');"
 	. "oFCKeditor.BasePath     = '".$rooturl."/scripts/fckeditor/';"
 	. "oFCKeditor.Config[\"CustomConfigurationsPath\"] = \"".$rooturl."/scripts/fckeditor/limesurvey-config.js\";"
+	. "oFCKeditor.ToolbarSet = '".$toolbarname."';"
 	. "oFCKeditor.ReplaceTextarea() ;"
 	. '</script>';
 	
