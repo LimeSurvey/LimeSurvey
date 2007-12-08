@@ -65,7 +65,7 @@ function getEditorPopupScript()
 
 function getHtmlControls($fieldtype,$fieldname,$fieldtext)
 {
-	global $clang, $imagefiles;
+	global $clang, $imagefiles, $rooturl;
 
 	$htmlcode = '';
 	$imgopts = '';
@@ -76,8 +76,21 @@ function getHtmlControls($fieldtype,$fieldname,$fieldtext)
 	}
 
 
+// Old integration method with icon and popup
+//	$htmlcode .= ""
+//	. "<a href =\"javascript:start_popup_editor('".$fieldname."','".$fieldtext."')\" id='".$fieldname."_ctrl'><img alt='' id='".$fieldname."_popupctrlena' name='".$fieldname."_popupctrlena' border='0' src='".$imagefiles."/edithtmlpopup.png' /><img alt='' id='".$fieldname."_popupctrldis' name='".$fieldname."_popupctrldis' border='0' src='".$imagefiles."/edithtmlpopup_disabled.png' style='display: none' /></a>";
+
 	$htmlcode .= ""
-	. "<a href =\"javascript:start_popup_editor('".$fieldname."','".$fieldtext."')\" id='".$fieldname."_ctrl'><img alt='' id='".$fieldname."_popupctrlena' name='".$fieldname."_popupctrlena' border='0' src='".$imagefiles."/edithtmlpopup.png' /><img alt='' id='".$fieldname."_popupctrldis' name='".$fieldname."_popupctrldis' border='0' src='".$imagefiles."/edithtmlpopup_disabled.png' style='display: none' /></a>";
+// Lets include this in admin.php
+//	. '<script type="text/javascript" src="'.$rooturl.'/scripts/fckeditor/fckeditor.js"></script>'
+	. '<script type="text/javascript"> '
+	. "var oFCKeditor = new FCKeditor('$fieldname');"
+	. "oFCKeditor.BasePath     = '".$rooturl."/scripts/fckeditor/';"
+	. "oFCKeditor.Config[\"CustomConfigurationsPath\"] = \"".$rooturl."/scripts/fckeditor/limesurvey-config.js\";"
+	. "oFCKeditor.ReplaceTextarea() ;"
+	. '</script>';
+	
+
 
 	return $htmlcode;
 }

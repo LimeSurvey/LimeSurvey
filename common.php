@@ -2531,13 +2531,14 @@ function doAdminHeader()
 
 function getAdminHeader($meta=false)
 {
-	global $sitename, $admintheme;
+	global $sitename, $admintheme, $rooturl;
 	if (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='') {$_SESSION['adminlang']='en';}
 	$strAdminHeader="<?xml version=\"1.0\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
 	."<html>\n<head>\n"
 	. "<!--[if lt IE 7]>\n"
 	. "<script defer type=\"text/javascript\" src=\"scripts/pngfix.js\"></script>\n"
 	. "<![endif]-->\n"
+	. "<script type='text/javascript' src='$rooturl/scripts/fckeditor/fckeditor.js'></script>\n"
 	. "<title>$sitename</title>\n";
 	if ($meta)
         {
