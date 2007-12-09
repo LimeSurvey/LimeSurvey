@@ -19,11 +19,12 @@
 
 function db_upgrade($oldversion) {
 
-    if ($oldversion < 117) {
+    if ($oldversion < 118) {
 	//Adds new public field (Provided by Kadejo)
     modify_database("","ALTER TABLE \"prefix_surveys\" ADD  \"public\" CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush(); 
     upgrade_survey_tables117();
-	modify_database("","UPDATE \"prefix_settings_global\" SET \"stg_value\"='116' WHERE \"stg_name\"='DBVersion'");	echo $modifyoutput;	flush();
+	upgrade_survey_tables118()
+	modify_database("","UPDATE \"prefix_settings_global\" SET \"stg_value\"='118' WHERE \"stg_name\"='DBVersion'");	echo $modifyoutput;	flush();
 	}
 
 
@@ -43,6 +44,16 @@ function upgrade_survey_tables117()
             modify_database("","ALTER TABLE ".db_table_name('survey_'.$sv[0])." ADD \"startdate\" datetime NOT NULL"); echo $modifyoutput; flush();
             }
         }
+}
+
+function upgrade_survey_tables118()
+{
+  	global $connect,$modifyoutput,$dbprefix;
+  	$tokentables=$connect->MetaTables('TABLES',false,$dbprefix."tokens%");
+    foreach ($tokentables as $sv)
+            {
+            modify_database("","ALTER TABLE ".$sv." ALTER \"token\" VARCHAR(15)"); echo $modifyoutput; flush();
+            }
 }
 
 ?>

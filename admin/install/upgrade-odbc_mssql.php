@@ -101,16 +101,19 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","update [prefix_settings_global] set [stg_value]='114' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     
-    if ($oldversion < 117) {
+    if ($oldversion < 118) {
     //Adds new "public" field
         modify_database("","ALTER TABLE [prefix_surveys] ADD  [printanswers] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] ADD  [public] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
         upgrade_survey_tables117();
-        modify_database("","update [prefix_settings_global] set [stg_value]='116' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+        upgrade_survey_tables118();
+        modify_database("","update [prefix_settings_global] set [stg_value]='118' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     
     return true;
 }
+
+
 
 function upgrade_survey_tables117()
 {
@@ -126,5 +129,17 @@ function upgrade_survey_tables117()
             }
         }
 }
+
+
+function upgrade_survey_tables118()
+{
+  	global $connect,$modifyoutput,$dbprefix;
+  	$tokentables=$connect->MetaTables('TABLES',false,$dbprefix."tokens%");
+    foreach ($tokentables as $sv)
+            {
+            modify_database("","ALTER TABLE ".$sv." ALTER COLUMN [token] VARCHAR(15)"); echo $modifyoutput; flush();
+            }
+}
+
 
 ?>

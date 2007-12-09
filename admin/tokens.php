@@ -206,7 +206,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		. "firstname C(40) ,\n "
 		. "lastname C(40) ,\n "
 		. "email C(320) ,\n "
-		. "token C(10) ,\n "
+		. "token C(15) ,\n "
 		. "language C(25) ,\n "
 		. "sent C(17) DEFAULT 'N',\n "
 		. "completed C(17) DEFAULT 'N',\n "
@@ -1313,7 +1313,7 @@ if ($subaction == "tokenify" && ($sumrows5['edit_survey_property'] || $sumrows5[
 			$insert = "NO";
 			while ($insert != "OK")
 			{
-				$newtoken = randomkey(10);
+				$newtoken = randomkey(15);
 				$ntquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." WHERE token='$newtoken'";
 				$ntresult = $connect->Execute($ntquery);
 				if (!$ntresult->RecordCount()) {$insert = "OK";}
