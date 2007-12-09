@@ -313,13 +313,13 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$homeurl/admin.php?sid=$surveyid', '_top')\" /><br /><br />\n";
 		if ($tcount>0 && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
 		{
-			$tokenoutput .= "<table width='350' border='0' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'><tr>\n"
+			$tokenoutput .= "<table width='400' border='0' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'><tr>\n"
 			."<td class='settingcaption'><font>".$clang->gT("Restore Options").":\n"
 			."</font></td></tr>\n"
 			."<tr>\n"
 			."<td class='evenrow' align='center'><form method='post' action='$scriptname?action=tokens'>\n"
 			.$clang->gT("The following old token tables could be restored:")."<br />\n"
-			."<select size='4' name='oldtable'>\n";
+			."<select size='4' name='oldtable' style='width:250px;'>\n";
 			foreach($oldlist as $ol)
 			{
 				$tokenoutput .= "<option>".$ol."</option>\n";
