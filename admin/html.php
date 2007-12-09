@@ -1134,29 +1134,44 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		$qtypes = getqtypelist("", "array"); //qtypes = array(type code=>type description)
 		$questionsummary .= "\t<tr><td align='right' valign='top'><strong>"
 		.$clang->gT("Type:")."</strong></td>\n\t<td align='left'>{$qtypes[$qrrow['type']]}";
-		if (($qrrow['type'] == "F" ||$qrrow['type'] == "H" ||$qrrow['type'] == "1")&& $sumrows5['define_questions'])
-		{
-			$questionsummary .= " (LID: {$qrrow['lid']}) "
-			. "<input align='top' type='image' src='$imagefiles/labelssmall.png' title='"
-			. $clang->gT("Edit/Add Label Sets")."' name='EditThisLabelSet' "
-			. "onclick=\"window.open('$scriptname?action=labels&amp;lid={$qrrow['lid']}', '_blank')\" />\n";
-		}
 		$questionsummary .="</td></tr>\n";
 		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "!" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type'] == "K" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R" || $qrrow['type'] == "F"  || $qrrow['type'] == "1" ||$qrrow['type'] == "H"))
 		{
 			$questionsummary .= "\t\t<tr ><td></td><td align='left'>"
-			. "<font face='verdana' size='1' color='green'>"
+			. "<font face='verdana' size='1' color='red'>"
 			. $clang->gT("Warning").": ". $clang->gT("You need to add answers to this question")." "
-			. "<input type='image' src='$imagefiles/answers.png' title='"
+			. "<input align='top' type='image' src='$imagefiles/answerssmall.png' title='"
 			. $clang->gT("Edit/Add Answers for this Question")."' name='EditThisQuestionAnswers'"
 			. "onclick=\"window.open('".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;viewanswer=Y', '_top')\" /></font></td></tr>\n";
 		}
-		if (!$qrrow['lid'] && ($qrrow['type'] == "F" || $qrrow['type'] == "1" || $qrrow['type'] == "H"))
+		
+		// For Labelset Questions show the label set and warn if there is no label set configured
+		if (($qrrow['type'] == "1" || $qrrow['type'] == "F" ||  $qrrow['type'] == "H" || $qrrow['type'] == "W" ||  $qrrow['type'] == "Z"))
 		{
-			$questionsummary .= "\t\t<tr ><td></td>"
-			. "<td align='left'><font face='verdana' size='1' color='green'>"
-			. $clang->gT("Warning").": ".$clang->gT("You need to choose a Label Set for this question")."</font></td></tr>\n";
+			$questionsummary .= "\t\t<tr ><td align='right'><strong>". $clang->gT("Label Set").":</strong></td>";
+			if (!$qrrow['lid'])
+			{
+				$questionsummary .=  "<td align='left'><font face='verdana' size='1' color='red'>"
+								 . $clang->gT("Warning")." - ".$clang->gT("You need to choose a label set for this question!")."</font>\n";
+			}
+			else 
+			// If label set ID is configured show the labelset name and ID
+			{
+
+			    $labelsetname=$connect->GetOne("SELECT label_name FROM ".db_table_name('labelsets')." WHERE lid = ".$qrrow['lid']);
+			 	$questionsummary .= "<td align='left'>".$labelsetname." (LID: {$qrrow['lid']}) ";
+			}
+			// If the user has the right to edit the label sets show the icon for the label set administration
+			if ($sumrows5['define_questions'])
+			{
+			$questionsummary .= "<input align='top' type='image' src='$imagefiles/labelssmall.png' title='"
+			. $clang->gT("Edit/Add Label Sets")."' name='EditThisLabelSet' "
+			. "onclick=\"window.open('$scriptname?action=labels&amp;lid={$qrrow['lid']}', '_blank')\" />\n";
+			}
+			$questionsummary .= "</td></tr>";
 		}
+			  
+		
 		if ($qrrow['type'] == "M" or $qrrow['type'] == "P")
 		{
 			$questionsummary .= "\t<tr>"
