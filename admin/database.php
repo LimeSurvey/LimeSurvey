@@ -987,7 +987,7 @@ if(isset($surveyid))
 		. "attribute2='{$_POST['attribute2']}', allowsave='{$_POST['allowsave']}',\n"
         . "printanswers='{$_POST['printanswers']}',\n"
 		. "autoredirect='{$_POST['autoredirect']}', allowprev='{$_POST['allowprev']}',\n"
-		. "public='{$_POST['public']}'\n"
+		. "listpublic='{$_POST['public']}'\n"
 		. "WHERE sid={$_POST['sid']}";
 		
 		$usresult = $connect->Execute($usquery) or die("Error updating<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
@@ -1121,7 +1121,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		. "(sid, owner_id, admin, active, useexpiry, expires, "
 		. "adminemail, private, faxto, format, template, url, "
 		. "language, datestamp, ipaddr, refurl, usecookie, notification, allowregister, attribute1, attribute2, "
-		. "allowsave, autoredirect, allowprev, printanswers, datecreated, public)\n"
+		. "allowsave, autoredirect, allowprev, printanswers, datecreated, listpublic)\n"
 		. "VALUES ($surveyid, {$_SESSION['loginID']},\n"
 		. "'{$_POST['admin']}', 'N', \n"
 		. "'{$_POST['useexpiry']}',{$_POST['expires']}, '{$_POST['adminemail']}', '{$_POST['private']}',\n"

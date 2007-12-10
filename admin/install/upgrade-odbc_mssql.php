@@ -104,7 +104,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
     if ($oldversion < 118) {
     //Adds new "public" field
         modify_database("","ALTER TABLE [prefix_surveys] ADD  [printanswers] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
-        modify_database("","ALTER TABLE [prefix_surveys] ADD  [public] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE [prefix_surveys] ADD  [listpublic] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
         upgrade_survey_tables117();
         upgrade_survey_tables118();
         modify_database("","update [prefix_settings_global] set [stg_value]='118' where stg_name='DBVersion'"); echo $modifyoutput; flush();

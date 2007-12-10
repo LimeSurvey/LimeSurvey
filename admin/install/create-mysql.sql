@@ -199,7 +199,7 @@ CREATE TABLE `prefix_surveys` (
   `useexpiry` char(1) NOT NULL default 'N',
   `refurl` char(1) default 'N',
   `datecreated` date default NULL,
-  `public` char(1) default 'N',
+  `listpublic` char(1) default 'N',
   PRIMARY KEY  (`sid`)
 ) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 

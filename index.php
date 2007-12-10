@@ -107,7 +107,7 @@ if (!$surveyid)
 			  WHERE surveyls_survey_id=a.sid 
 			  AND surveyls_language=a.language 
 			  AND a.active='Y'
-			  AND a.public='Y'
+			  AND a.listpublic='Y'
 			  AND ((a.expires >= '".date("Y-m-d")."'
 			  AND a.useexpiry = 'Y') OR
 			  (a.useexpiry = 'N'))

@@ -1975,10 +1975,10 @@ if ($action == "editsurvey")
             $editsurvey .= "\t<tr><td align='right'>".$clang->gT("List survey publicly:")."</td>\n"
             . "\t\t<td><select name='public'>\n"
             . "\t\t\t<option value='Y'";
-            if (!isset($esrow['public']) || !$esrow['public'] || $esrow['public'] == "Y") {$editsurvey .= " selected='selected'";}
+            if (!isset($esrow['listpublic']) || !$esrow['listpublic'] || $esrow['listpublic'] == "Y") {$editsurvey .= " selected='selected'";}
             $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
             . "\t\t<option value='N'";
-            if (isset($esrow['public']) && $esrow['public'] == "N") {$editsurvey .= " selected='selected'";}
+            if (isset($esrow['listpublic']) && $esrow['listpublic'] == "N") {$editsurvey .= " selected='selected'";}
             $editsurvey .= ">".$clang->gT("No")."</option>\n"
             . "\t\t</select></td>\n"
             . "\t</tr>\n";

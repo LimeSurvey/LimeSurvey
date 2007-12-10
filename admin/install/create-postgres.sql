@@ -426,7 +426,7 @@ CREATE TABLE lime_surveys (
     useexpiry character(1) DEFAULT 'N'::bpchar NOT NULL,
     refurl character(1) DEFAULT 'N'::bpchar,
     datecreated date,
-    "public" character(1) DEFAULT 'N'::bpchar
+    listpublic character(1) DEFAULT 'N'::bpchar
 );
 
 
@@ -807,7 +807,7 @@ CREATE INDEX lime_labels_ixcode_idx ON lime_labels USING btree (code);
 -- Table `settings_global`
 --
 
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '115');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '118');
 INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 
 --
