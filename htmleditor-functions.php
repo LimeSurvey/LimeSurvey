@@ -69,7 +69,7 @@ function getHtmlControls($fieldtype,$fieldname,$fieldtext)
 
 	$htmlcode = '';
 	$imgopts = '';
-	$toolbarname = 'LimeSurveyToolbarfull';
+	$toolbarname = 'Basic';
 
 	if ($fieldtype == 'oneline')
 	{
