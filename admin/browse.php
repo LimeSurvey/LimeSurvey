@@ -451,7 +451,7 @@ elseif ($subaction == "all")
 			else {$gbc = "oddrow";}
 		}
 		$tableheader .= "\t\t<td class='$gbc' width='$cellwidth'><strong>"
-		. "$fn[2]"
+		. strip_tags("$fn[2]")      
 		. "</strong></td>\n";
 	}
 	$tableheader .= "\t</tr>\n\n";

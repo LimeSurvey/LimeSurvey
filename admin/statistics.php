@@ -1526,7 +1526,7 @@ if (isset($summary) && $summary)
 					$graph->legend->SetFont(constant($jpgraphfont), FS_NORMAL, $fontsize);
 					$graph->legend->SetPos(0.015, $legendtop, 'right', 'top');
 					$graph->legend->SetFillColor("white");
-    				$graph->SetAntiAliasing();
+//    				$graph->SetAntiAliasing();
 				}
 				$graph->title->SetColor("#EEEEEE");
 				$graph->SetMarginColor("#FFFFFF");
