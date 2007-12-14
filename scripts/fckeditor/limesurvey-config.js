@@ -52,8 +52,9 @@ FCKConfig.PluginsPath = FCKConfig.BasePath + 'plugins/' ;
 FCKConfig.AutoGrowMax = 400 ;
 
 FCKConfig.Plugins.Add( 'placeholder' ,'en,fr') ;
-FCKConfig.Plugins.Add( 'FitWinAndNewToolbar' ,'en') ;
-FCKConfig.FitWinAndNewToolbarList = ['Basic', 'LimeSurveyToolbarfull'];
+FCKConfig.Plugins.Add( 'LimeFitWin' ,'en') ;
+FCKConfig.LimeFitWinList = ['Basic', 'LimeSurveyToolbarfull'];
+FCKConfig.Plugins.Add( 'LimeReplacementFields' ,'en') ;
 
 // FCKConfig.ProtectedSource.Add( /<%[\s\S]*?%>/g ) ;	// ASP style server side code <%...%>
 // FCKConfig.ProtectedSource.Add( /<\?[\s\S]*?\?>/g ) ;	// PHP style server side code
@@ -116,7 +117,7 @@ FCKConfig.ToolbarSets["Default"] = [
 ] ;
 
 FCKConfig.ToolbarSets["Basic"] = [
-	['Bold','Italic','-','OrderedList','UnorderedList','-','Link','Unlink','-','About','FitWinAndNewToolbar']
+	['Bold','Italic','-','OrderedList','UnorderedList','-','Link','Unlink','-','About','LimeFitWin','LimeReplacementFields']
 ] ;
 
 FCKConfig.ToolbarSets["LimeSurveyToolbarfull"] = [
@@ -132,9 +133,23 @@ FCKConfig.ToolbarSets["LimeSurveyToolbarfull"] = [
 	['Image','Flash','Table','Rule','Smiley','SpecialChar','PageBreak'],
 	'/',
 	['Style','FontFormat','FontName','FontSize'],
-	['TextColor','BGColor','About', 'FitWinAndNewToolbar']
+	['TextColor','BGColor','About', 'LimeFitWin','LimeReplacementFields']
 ] ;
 
+FCKConfig.ToolbarSets["LimeSurveyToolbarfullPopup"] = [
+	['Source','Templates'],
+	['Cut','Copy','Paste','PasteText','PasteWord'],
+	['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+	'/',
+	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
+	['OrderedList','UnorderedList','-','Outdent','Indent'],
+	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
+	['Link','Unlink','Anchor'],
+	['Image','Flash','Table','Rule','Smiley','SpecialChar','PageBreak'],
+	'/',
+	['Style','FontFormat','FontName','FontSize'],
+	['TextColor','BGColor','About','FitWindow']
+] ;
 
 FCKConfig.EnterMode = 'p' ;			// p | div | br
 FCKConfig.ShiftEnterMode = 'br' ;	// p | div | br

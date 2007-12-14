@@ -144,9 +144,14 @@ $filterout_incomplete_answers = true;
 //  * set to true in order to remove the parameter part of the referrer url
 //  $stripQueryFromRefurl = false;
 
-// $enablehtmleditor
-//  * enables htmleditor
-$enablehtmleditor = true;
+// $htmleditormode
+//  * enables htmleditor and sets its mode: none, inline, popup
+//  * inline: inline replacement of fields by an HTML editor: 
+//     --> slow but convenient and user friendly
+//  * popup: adds an icon that runs a popup with and html editor 
+//     --> faster, but html code is displayed on the form
+//  * none: no html editor
+$enablehtmleditor = 'inline';
 
 //DO NOT CHANGE BELOW HERE --------------------
 

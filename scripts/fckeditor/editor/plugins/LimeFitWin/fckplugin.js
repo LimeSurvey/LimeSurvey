@@ -26,7 +26,7 @@
  */
 
 // Create a command object
-function FCKCommand_FitWinAndNewToolbar() {
+function FCKCommand_LimeFitWin() {
     // This is it!
     this.SourceView = true;
     this.IsMaximized=false;
@@ -34,14 +34,14 @@ function FCKCommand_FitWinAndNewToolbar() {
 
 	if (!this.IsMaximized)
 	{
-		FCKURLParams.Toolbar = FCK.Config.FitWinAndNewToolbarList[1];
+		FCKURLParams.Toolbar = FCK.Config.LimeFitWinList[1];
 		this.IsMaximized=true;
 		FCK.ToolbarSet.Load(FCKURLParams.Toolbar);
 		FCK.Commands.GetCommand('FitWindow').Execute();
 	}
 	else
 	{
-		FCKURLParams.Toolbar = FCK.Config.FitWinAndNewToolbarList[0];
+		FCKURLParams.Toolbar = FCK.Config.LimeFitWinList[0];
 		this.IsMaximized=false;
 		FCK.ToolbarSet.Load(FCKURLParams.Toolbar);
 		FCK.Commands.GetCommand('FitWindow').Execute();
@@ -59,12 +59,12 @@ function FCKCommand_FitWinAndNewToolbar() {
 
 // Register the related command.
 // RegisterCommand takes the following arguments: CommandName, DialogCommand
-FCKCommands.RegisterCommand( 'FitWinAndNewToolbar', new FCKCommand_FitWinAndNewToolbar() ) ;
+FCKCommands.RegisterCommand( 'LimeFitWin', new FCKCommand_LimeFitWin() ) ;
 
 // Create the toolbar button.
 // FCKToolbarButton takes the following arguments: CommandName, Button Caption
-var oFitWinAndNewToolbarItem = new FCKToolbarButton( 'FitWinAndNewToolbar', FCKLang.FitWinAndNewToolbarBtn ) ;
-oFitWinAndNewToolbarItem.IconPath = FCKPlugins.Items['FitWinAndNewToolbar'].Path + 'FitWinAndNewToolbar.gif' ;
-FCKToolbarItems.RegisterItem( 'FitWinAndNewToolbar', oFitWinAndNewToolbarItem ) ;
+var oLimeFitWinItem = new FCKToolbarButton( 'LimeFitWin', FCKLang.LimeFitWinBtn ) ;
+oLimeFitWinItem.IconPath = FCKPlugins.Items['LimeFitWin'].Path + 'LimeFitWin.gif' ;
+FCKToolbarItems.RegisterItem( 'LimeFitWin', oLimeFitWinItem ) ;
 
 //End code

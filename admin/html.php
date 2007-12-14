@@ -2208,7 +2208,7 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
 		array_unshift($grplangs,$baselang);
 
-		$editsurvey = getEditorPopupScript();
+		$editsurvey = PrepareEditorScript();
 		
 	
 		$editsurvey .="<script type='text/javascript'>\n"
@@ -2240,11 +2240,11 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
 			. "\t\t<span class='settingentry'><input type='text' size='80' name='short_title_".$esrow['surveyls_language']."' value=\"{$esrow['surveyls_title']}\" /></span>\n"
 			. "\t</div><div class='settingrow'><span class='settingcaption'>".$clang->gT("Description:")."</span>\n"
 			. "\t\t<span class='settingentry'><textarea cols='80' rows='15' name='description_".$esrow['surveyls_language']."'>{$esrow['surveyls_description']}</textarea>\n"
-			. getHtmlControls("textarea","description_".$esrow['surveyls_language'], "[".$clang->gT("Description:", "js")."](".$esrow['surveyls_language'].")")
+			. getEditor("textarea","description_".$esrow['surveyls_language'], "[".$clang->gT("Description:", "js")."](".$esrow['surveyls_language'].")")
 			. "</span>\n"
 			. "\t</div><div class='settingrow'><span class='settingcaption'>".$clang->gT("Welcome:")."</span>\n"
 			. "\t\t<span class='settingentry'><textarea cols='80' rows='15' name='welcome_".$esrow['surveyls_language']."'>{$esrow['surveyls_welcometext']}</textarea>\n"
-			. getHtmlControls("textarea","welcome_".$esrow['surveyls_language'], "[".$clang->gT("Welcome:", "js")."](".$esrow['surveyls_language'].")")
+			. getEditor("textarea","welcome_".$esrow['surveyls_language'], "[".$clang->gT("Welcome:", "js")."](".$esrow['surveyls_language'].")")
 			. "</span></div>\n"
 			. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("URL Description:")."</span>\n"
 			. "\t\t<span class='settingentry'><input type='text' size='80' name='urldescrip_".$esrow['surveyls_language']."' value=\"{$esrow['surveyls_urldescription']}\" />\n"
@@ -2423,7 +2423,7 @@ if ($action == "newsurvey")
 {
 	if($_SESSION['USER_RIGHT_CREATE_SURVEY'])
 	{
-		$newsurvey = getEditorPopupScript();
+		$newsurvey = PrepareEditorScript();
 		$newsurvey  .= "<form name='addnewsurvey' action='$scriptname' method='post' onsubmit=\"return isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."');\" >\n"
         . "<table width='100%' border='0' class='form2columns'>\n\t<thead><tr><th colspan='2'>\n"
 		. "\t\t".$clang->gT("Create Survey")."</th></tr></thead>\n"
@@ -2432,11 +2432,11 @@ if ($action == "newsurvey")
 		. "\t\t<td><input type='text' size='82' maxlength='200' id='surveyls_title' name='surveyls_title' /><font size='1'> ".$clang->gT("(This field is mandatory.)")."</font></td></tr>\n"
 		. "\t<tr><td>".$clang->gT("Description:")."</td>\n"
 		. "\t\t<td><textarea cols='80' rows='10' name='description'></textarea>"
-		. getHtmlControls("textarea","description", "[".$clang->gT("Description:", "js")."]")
+		. getEditor("textarea","description", "[".$clang->gT("Description:", "js")."]")
 		. "</td></tr>\n"
 		. "\t<tr><td>".$clang->gT("Welcome:")."</td>\n"
 		. "\t\t<td><textarea cols='80' rows='10' name='welcome'></textarea>"
-		. getHtmlControls("textarea","welcome", "[".$clang->gT(     "Welcome:", "js")."]")
+		. getEditor("textarea","welcome", "[".$clang->gT(     "Welcome:", "js")."]")
 		. "</td></tr>\n"
 		. "\t<tr><td>".$clang->gT("Administrator:")."</td>\n"
 		. "\t\t<td><input type='text' size='50' name='admin' /></td></tr>\n"

@@ -2538,7 +2538,7 @@ function getAdminHeader($meta=false)
 	. "<!--[if lt IE 7]>\n"
 	. "<script defer type=\"text/javascript\" src=\"scripts/pngfix.js\"></script>\n"
 	. "<![endif]-->\n"
-	. "<script type='text/javascript' src='$rooturl/scripts/fckeditor/fckeditor.js'></script>\n"
+//	. "<script type='text/javascript' src='$rooturl/scripts/fckeditor/fckeditor.js'></script>\n"
 	. "<title>$sitename</title>\n";
 	if ($meta)
         {

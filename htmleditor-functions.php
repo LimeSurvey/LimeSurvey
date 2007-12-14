@@ -15,7 +15,7 @@
 
 //include_once("login_check.php");
 
-function getEditorPopupScript()
+function PrepareEditorPopupScript()
 {
 	global $clang,$imagefiles,$rooturl;
 
@@ -63,7 +63,63 @@ function getEditorPopupScript()
 	return $script;
 }
 
-function getHtmlControls($fieldtype,$fieldname,$fieldtext)
+function PrepareEditorInlineScript()
+{
+	$script = "<script type='text/javascript'>\n"
+	. "<!--\n"
+	."function FCKeditor_OnComplete( editorInstance )\n"
+	. "{\n"
+	. "\teditorInstance.Events.AttachEvent( 'OnBlur'	, FCKeditor_OnBlur ) ;\n"
+	. "\teditorInstance.Events.AttachEvent( 'OnFocus', FCKeditor_OnFocus ) ;\n"
+	."}\n"
+	. "function FCKeditor_OnBlur( editorInstance )\n"
+	. "{\n"
+	. "\teditorInstance.ToolbarSet.Collapse() ;\n"
+	. "}\n"
+	. "function FCKeditor_OnFocus( editorInstance )\n"
+	. "{\n"
+	."\teditorInstance.ToolbarSet.Expand() ;\n"
+	."}\n"
+	. "--></script>\n";
+	return $script;
+}
+
+function PrepareEditorScript()
+{
+	global $htmleditormode;
+	if ($htmleditormode == 'popup')
+	{
+		return PrepareEditorPopupScript();
+	}
+	elseif ($htmleditormode == 'inline')
+	{
+		return PrepareEditorInlineScript();
+	}
+	else
+	{
+		return '';
+	}
+}
+
+function getEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null)
+{
+	global $htmleditormode;
+
+	if ($htmleditormode == 'popup')
+	{
+		return getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID,$gID,$qID);
+	}
+	elseif ($htmleditormode == 'inline')
+	{
+		return getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID,$gID,$qID);
+	}
+	else
+	{
+		return '';
+	}
+}
+
+function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null)
 {
 	global $clang, $imagefiles, $rooturl;
 
@@ -77,22 +133,40 @@ function getHtmlControls($fieldtype,$fieldname,$fieldtext)
 	}
 
 
-// Old integration method with icon and popup
-//	$htmlcode .= ""
-//	. "<a href =\"javascript:start_popup_editor('".$fieldname."','".$fieldtext."')\" id='".$fieldname."_ctrl'><img alt='' id='".$fieldname."_popupctrlena' name='".$fieldname."_popupctrlena' border='0' src='".$imagefiles."/edithtmlpopup.png' /><img alt='' id='".$fieldname."_popupctrldis' name='".$fieldname."_popupctrldis' border='0' src='".$imagefiles."/edithtmlpopup_disabled.png' style='display: none' /></a>";
+	$htmlcode .= ""
+	. "<a href =\"javascript:start_popup_editor('".$fieldname."','".$fieldtext."')\" id='".$fieldname."_ctrl'><img alt='' id='".$fieldname."_popupctrlena' name='".$fieldname."_popupctrlena' border='0' src='".$imagefiles."/edithtmlpopup.png' /><img alt='' id='".$fieldname."_popupctrldis' name='".$fieldname."_popupctrldis' border='0' src='".$imagefiles."/edithtmlpopup_disabled.png' style='display: none' /></a>";
+
+	return $htmlcode;
+}
+
+function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null)
+{
+	global $clang, $imagefiles, $rooturl;
+
+	$htmlcode = '';
+	$imgopts = '';
+	$toolbarname = 'Basic';
+
+	if ($fieldtype == 'oneline')
+	{
+		$imgopts = "width='20' height='20'";
+	}
+
+
 
 	$htmlcode .= ""
-// Lets include this in admin.php
-//	. '<script type="text/javascript" src="'.$rooturl.'/scripts/fckeditor/fckeditor.js"></script>'
+	. '<script type="text/javascript" src="'.$rooturl.'/scripts/fckeditor/fckeditor.js"></script>'
 	. '<script type="text/javascript"> '
 	. "var oFCKeditor = new FCKeditor('$fieldname');"
 	. "oFCKeditor.BasePath     = '".$rooturl."/scripts/fckeditor/';"
 	. "oFCKeditor.Config[\"CustomConfigurationsPath\"] = \"".$rooturl."/scripts/fckeditor/limesurvey-config.js\";"
+	. "oFCKeditor.Config[\"LimeReplacementFieldsSID\"] = \"".$surveyID."\";"
+	. "oFCKeditor.Config[\"LimeReplacementFieldsGID\"] = \"".$gID."\";"
+	. "oFCKeditor.Config[\"LimeReplacementFieldsQID\"] = \"".$qID."\";"
+//	. "oFCKeditor.Config[ 'ToolbarLocation' ] = 'Out:xToolbar-".$fieldname."' ;"
 	. "oFCKeditor.ToolbarSet = '".$toolbarname."';"
 	. "oFCKeditor.ReplaceTextarea() ;"
 	. '</script>';
-	
-
 
 	return $htmlcode;
 }

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * FCKeditor - The text editor for Internet - http://www.fckeditor.net
  * Copyright (C) 2003-2007 Frederico Caldeira Knabben
  *
@@ -18,10 +18,10 @@
  *
  * == END LICENSE ==
  *
- * File Name: en.js
- *     SwitchToolbar Russian language file.
- *
- * File Authors:
- *         Anton Suprun (kpobococ at gmail dot com)
+ * Placholder Italian language file.
  */
-FCKLang.SwitchtoolbarBtn = 'Змінити панель';
+FCKLang.PlaceholderBtn			= 'Aggiungi/Modifica Placeholder' ;
+FCKLang.PlaceholderDlgTitle		= 'Proprietà del Placeholder' ;
+FCKLang.PlaceholderDlgName		= 'Nome del Placeholder' ;
+FCKLang.PlaceholderErrNoName	= 'Digitare il nome del placeholder' ;
+FCKLang.PlaceholderErrNameInUse	= 'Il nome inserito è già in uso' ;

@@ -19,7 +19,8 @@ include_once("login_check.php");
 
 if ($action == "addquestion")
 {
-	$newquestionoutput = getEditorPopupScript();
+	if (!isset($gid)) {$gid=returnglobal('gid');}
+	$newquestionoutput = PrepareEditorScript();
 	$newquestionoutput .=  "\t<form action='$scriptname' name='addnewquestion1' method='post'>\n"
 	. "<table width='100%' border='0'>\n\n"
 	. "\t<tr>\n"
@@ -33,14 +34,14 @@ if ($action == "addquestion")
 	. "<font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></td></tr>\n"
 	. "\t<tr>\n"
 	. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Question:")."</strong></td>\n"
-	. "\t\t<td align='left'><textarea cols='50' rows='3' name='question'></textarea>"
-	. getHtmlControls("textarea","question", "[".$clang->gT("Question:", "js")."]")
+	. "\t\t<td align='left'><div id='xToolbar-question'></div><textarea cols='50' rows='3' name='question'></textarea>"
+	. getEditor("textarea","question", "[".$clang->gT("Question:", "js")."]",$surveyid,$gid)
 	."</td>\n"
 	. "\t</tr>\n"
 	. "\t<tr>\n"
 	. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Help:")."</strong></td>\n"
-	. "\t\t<td align='left'><textarea cols='50' rows='3' name='help'></textarea>"
-	. getHtmlControls("textarea","help", "[".$clang->gT("Help:", "js")."]")
+	. "\t\t<td align='left'><div id='xToolbar-help'><textarea cols='50' rows='3' name='help'></textarea>"
+	. getEditor("textarea","help", "[".$clang->gT("Help:", "js")."]",$surveyid,$gid)
 	."</td>\n"
 	. "\t</tr>\n"
 	. "\t<tr>\n"
@@ -336,7 +337,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	
 	$eqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language='{$baselang}'";
 	$eqresult = db_execute_assoc($eqquery);
-	$editquestion = getEditorPopupScript();
+	$editquestion = PrepareEditorScript();
 	$editquestion .= "<table width='100%' border='0'>\n\t<tr><td class='settingcaption'>"
 	. "\t\t".$clang->gT("Edit Question")."</td></tr></table>\n"
 	. "<form name='frmeditquestion' action='$scriptname' method='post'>\n"
@@ -354,11 +355,11 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	. "\t</span></div>\n";
 	$editquestion .=  "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Question:")."</span>\n"
 	. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='question_{$eqrow['language']}'>{$eqrow['question']}</textarea>\n"
-	. getHtmlControls("textarea","question_".$eqrow['language'], "[".$clang->gT("Question:", "js")."](".$eqrow['language'].")")
+	. getEditor("textarea","question_".$eqrow['language'], "[".$clang->gT("Question:", "js")."](".$eqrow['language'].")",$surveyid,$gid,$qid)
 	. "\t</span></div>\n"
 	. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Help:")."</span>\n"
 	. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='help_{$eqrow['language']}'>{$eqrow['help']}</textarea>\n"
-	. getHtmlControls("textarea","help_".$eqrow['language'], "[".$clang->gT("Help:", "js")."](".$eqrow['language'].")")
+	. getEditor("textarea","help_".$eqrow['language'], "[".$clang->gT("Help:", "js")."](".$eqrow['language'].")",$surveyid,$gid,$qid)
 	. "\t</span></div>\n"
 	. "\t<div class='settingrow'><span class='settingcaption'>&nbsp;</span>\n"
 	. "\t\t<span class='settingentry'>&nbsp;\n"

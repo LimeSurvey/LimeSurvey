@@ -24,7 +24,7 @@ if ($action == "addgroup")
     $grplangs[] = $baselang;
     $grplangs = array_reverse($grplangs);
 
-    $newgroupoutput = getEditorPopupScript();
+    $newgroupoutput = PrepareEditorScript();
     $newgroupoutput .= "<form action='$scriptname' name='addnewgroupfrom' method='post'>"
                ."<table width='100%' border='0' class='tab-page'><tr>\n"
                ."\t<td colspan='2' class='settingcaption'>\n\t\t<strong>".$clang->gT("Add Group")."</strong></td>"
@@ -43,7 +43,7 @@ if ($action == "addgroup")
         . "\t\t<td><input type='text' size='80' maxlength='100' name='group_name_$grouplang' id='group_name_$grouplang' /><font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></td></tr>\n"
         . "\t<tr><td align='right'><strong>".$clang->gT("Description:")."</strong></td>\n"
         . "\t\t<td><textarea cols='80' rows='8' name='description_$grouplang'></textarea>"
-	. getHtmlControls("textarea","description_".$grouplang, "[".$clang->gT("Description:", "js")."](".$grouplang.")")
+	. getEditor("textarea","description_".$grouplang, "[".$clang->gT("Description:", "js")."](".$grouplang.")",$surveyid)
 	."</td></tr>\n"
         . "</table></div>";
     }
@@ -108,7 +108,7 @@ if ($action == "editgroup")
     
     $egquery = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid AND language='$baselang'";
     $egresult = db_execute_assoc($egquery);
-    $editgroup = getEditorPopupScript();
+    $editgroup = PrepareEditorScript();
     $editgroup .= "<table width='100%' border='0'>\n\t<tr><td class='settingcaption'>"
     . "\t\t".$clang->gT("Edit Group")."</td></tr></table>\n"
     . "<form name='editgroup' action='$scriptname' method='post'>\n"
@@ -124,7 +124,7 @@ if ($action == "editgroup")
     . "\t</span></div>\n"
     . "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Description:")."</span>\n"
     . "\t\t<span class='settingentry'><textarea cols='70' rows='8' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
-    . getHtmlControls("textarea","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")")
+    . getEditor("textarea","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid)
     . "\t</span></div><div class='settingrow'></div></div>"; // THis empty div class is needed for forcing the tabpage border under the button
 
 

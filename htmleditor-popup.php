@@ -69,7 +69,7 @@ else {
 	}
 	else
 	{
-		$toolbarname='LimeSurveyToolbarfull';
+		$toolbarname='LimeSurveyToolbarfullPopup';
 	}
 
 	$output = '
@@ -102,6 +102,8 @@ else {
 	oFCKeditor.Width	= '98%';
 	oFCKeditor.Value      = window.opener.document.getElementsByName(\"".$fieldname."\")[0].value;
 	oFCKeditor.Config[\"CustomConfigurationsPath\"] = \"".$rooturl."/scripts/fckeditor/limesurvey-config.js\";
+	oFCKeditor.Config[\"ToolbarStartExpanded\"] = true;
+	oFCKeditor.Config[\"ToolbarCanCollapse\"] = false;
 	oFCKeditor.ToolbarSet = '".$toolbarname."';
 	oFCKeditor.Create();
 
