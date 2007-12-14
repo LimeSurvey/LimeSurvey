@@ -29,7 +29,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
                               'cns'=>'cn-Hans',
                               'cnt'=>'cn-Hant',
                               'pt_br'=>'pt-BR',
-                              'gr'=>'el',4
+                              'gr'=>'el',
                               'jp'=>'ja',
                               'si'=>'sl',
                               'se'=>'sv',
