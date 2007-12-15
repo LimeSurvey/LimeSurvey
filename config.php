@@ -151,7 +151,7 @@ $filterout_incomplete_answers = true;
 //  * popup: adds an icon that runs a popup with and html editor 
 //     --> faster, but html code is displayed on the form
 //  * none: no html editor
-$enablehtmleditor = 'inline';
+$htmleditormode = 'inline';
 
 //DO NOT CHANGE BELOW HERE --------------------
 
