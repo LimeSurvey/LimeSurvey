@@ -29,8 +29,9 @@ FCKCommands.RegisterCommand( 'LimeReplacementFields',
 		'../../../../../admin/fck_LimeReplacementFields.php?sid=' +
 		FCK.Config.LimeReplacementFieldsSID +
 		'&gid=' + FCK.Config.LimeReplacementFieldsGID +
-		'&qid=' + FCK.Config.LimeReplacementFieldsQID, 
-	500, 140 ) ) ;
+		'&qid=' + FCK.Config.LimeReplacementFieldsQID +
+		'&fieldtype=' + FCK.Config.LimeReplacementFieldsType, 
+	500, 300 ) ) ;
 
 // Create the "Plaholder" toolbar button.
 var oLimeReplacementFieldsItem = new FCKToolbarButton( 'LimeReplacementFields', FCKLang.LimeReplacementFieldsBtn ) ;
@@ -112,7 +113,8 @@ if ( FCKBrowserInfo.IsIE )
 		if ( FCK.EditMode != FCK_EDITMODE_WYSIWYG )
 			return ;
 
-		var aPlaholders = FCK.EditorDocument.body.innerText.match( /\[\[[^\[\]]+\]\]/g ) ;
+		//var aPlaholders = FCK.EditorDocument.body.innerText.match( /\[\[[^\[\]]+\]\]/g ) ;
+		var aPlaholders = FCK.EditorDocument.body.innerText.match( /\{[^\{\}]+\}/g ) ;
 		if ( !aPlaholders )
 			return ;
 
@@ -122,7 +124,7 @@ if ( FCKBrowserInfo.IsIE )
 		{
 			if ( oRange.findText( aPlaholders[i] ) )
 			{
-				var sName = aPlaholders[i].match( /\[\[\s*([^\]]*?)\s*\]\]/ )[1] ;
+				var sName = aPlaholders[i].match( /\{\s*([^\}]*?)\s*\}/ )[1] ;
 				oRange.pasteHTML( '<span style="color: #000000; background-color: #ffff00" contenteditable="false" _fckLimeReplacementFields="' + sName + '">' + aPlaholders[i] + '</span>' ) ;
 			}
 		}
@@ -146,15 +148,15 @@ else
 
 		for ( var n = 0 ; n < aNodes.length ; n++ )
 		{
-			var aPieces = aNodes[n].nodeValue.split( /(\[\[[^\[\]]+\]\])/g ) ;
+			var aPieces = aNodes[n].nodeValue.split( /(\{[^\{\}]+\})/g ) ;
 
 			for ( var i = 0 ; i < aPieces.length ; i++ )
 			{
 				if ( aPieces[i].length > 0 )
 				{
-					if ( aPieces[i].indexOf( '[[' ) == 0 )
+					if ( aPieces[i].indexOf( '{' ) == 0 )
 					{
-						var sName = aPieces[i].match( /\[\[\s*([^\]]*?)\s*\]\]/ )[1] ;
+						var sName = aPieces[i].match( /\{\s*([^\}]*?)\s*\}/ )[1] ;
 
 						var oSpan = FCK.EditorDocument.createElement( 'span' ) ;
 						FCKLimeReplacementFieldss.SetupSpan( oSpan, sName ) ;
@@ -174,7 +176,7 @@ else
 
 	FCKLimeReplacementFieldss._AcceptNode = function( node )
 	{
-		if ( /\[\[[^\[\]]+\]\]/.test( node.nodeValue ) )
+		if ( /\{[^\{\}]+\}/.test( node.nodeValue ) )
 			return NodeFilter.FILTER_ACCEPT ;
 		else
 			return NodeFilter.FILTER_SKIP ;
@@ -187,7 +189,7 @@ FCK.Events.AttachEvent( 'OnAfterSetHTML', FCKLimeReplacementFieldss.Redraw ) ;
 FCKXHtml.TagProcessors['span'] = function( node, htmlNode )
 {
 	if ( htmlNode._fckLimeReplacementFields )
-		node = FCKXHtml.XML.createTextNode( '[[' + htmlNode._fckLimeReplacementFields + ']]' ) ;
+		node = FCKXHtml.XML.createTextNode( '{' + htmlNode._fckLimeReplacementFields + '}' ) ;
 	else
 		FCKXHtml._AppendChildNodes( node, htmlNode, false ) ;
 

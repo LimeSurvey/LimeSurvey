@@ -63,6 +63,12 @@ else {
 	$fieldtext=$_GET['fieldtext'];
 	$controlidena=$_GET['fieldname'].'_popupctrlena';
 	$controliddis=$_GET['fieldname'].'_popupctrldis';
+
+	$sid=sanitize_int($_GET['sid']);
+	$gid=sanitize_int($_GET['gid']);
+	$qid=sanitize_int($_GET['qid']);
+	$fieldtype=preg_replace("/[^_.a-zA-Z0-9-]/", "",$_GET['fieldtype']);
+
 	if (isset($_GET['toolbarname']))
 	{
 		$toolbarname=$_GET['toolbarname'];
@@ -105,6 +111,10 @@ else {
 	oFCKeditor.Config[\"ToolbarStartExpanded\"] = true;
 	oFCKeditor.Config[\"ToolbarCanCollapse\"] = false;
 	oFCKeditor.ToolbarSet = '".$toolbarname."';
+	oFCKeditor.Config[\"LimeReplacementFieldsSID\"] = \"".$sid."\";
+	oFCKeditor.Config[\"LimeReplacementFieldsGID\"] = \"".$gid."\";
+	oFCKeditor.Config[\"LimeReplacementFieldsQID\"] = \"".$qid."\";
+	oFCKeditor.Config[\"LimeReplacementFieldsType\"] = \"".$fieldtype."\";
 	oFCKeditor.Create();
 
 	function FCKeditor_OnComplete( editorInstance )

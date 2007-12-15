@@ -242,7 +242,7 @@ $limereplacementoutput=""
 	. "</script>\n";
 
 
-$limereplacementoutput .= "\t\t\t<select onclick=\"getAnswers(this.options[this.selectedIndex].value)\" name='cquestions' id='cquestions' style='font-family:verdana; background-color: #FFFFFF; font-size:10; border: 0px;' size='15'>\n";
+$limereplacementoutput .= "\t\t\t<select name='cquestions' id='cquestions' style='font-family:verdana; background-color: #FFFFFF; font-size:10; border: 0px;' size='15'>\n";
 if (isset($cquestions))
 {
 	foreach ($cquestions as $cqn)

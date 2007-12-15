@@ -36,7 +36,7 @@ function PrepareEditorPopupScript()
 	. "\treturn null;\n"
 	. "\t}\t\n"
 	. "\n"
-	. "function start_popup_editor(fieldname, fieldtext)\n"	
+	. "function start_popup_editor(fieldname, fieldtext, sid, gid, qid, fieldtype)\n"	
 	. "\t{\t\n"
 //	. "\t\tcontrolid = fieldname + '_popupctrl';\n"
 	. "\t\tcontrolidena = fieldname + '_popupctrlena';\n"
@@ -50,7 +50,7 @@ function PrepareEditorPopupScript()
 //	. "\t\t\tdocument.getElementById(controlid).src='".$imagefiles."/edithtmlpopup_disabled.png';\n"
 	. "\t\t\tdocument.getElementById(controlidena).style.display='none';\n"
 	. "\t\t\tdocument.getElementById(controliddis).style.display='';\n"
-	. "\t\t\tpopup = window.open('".$rooturl."/htmleditor-popup.php?fieldname='+fieldname+'&fieldtext='+fieldtext+'&lang=+".$clang->getlangcode()."','', 'location=no, menubar=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=600, height=400');\n"
+	. "\t\t\tpopup = window.open('".$rooturl."/htmleditor-popup.php?fieldname='+fieldname+'&fieldtext='+fieldtext+'&fieldtype='+fieldtype+'&sid='+sid+'&gid='+gid+'&qid='+qid+'&lang=".$clang->getlangcode()."','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=600, height=400');\n"
 	. "\t\t\teditorwindowsHash[fieldname] = popup;\n"
 	. "\t\t}\n"
 	. "\t\telse\n"
@@ -65,7 +65,10 @@ function PrepareEditorPopupScript()
 
 function PrepareEditorInlineScript()
 {
-	$script = "<script type='text/javascript'>\n"
+	global $rooturl;
+	$script = ""
+	. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/fckeditor/fckeditor.js\"></script>\n"
+	. "<script type='text/javascript'>\n"
 	. "<!--\n"
 	."function FCKeditor_OnComplete( editorInstance )\n"
 	. "{\n"
@@ -127,14 +130,13 @@ function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=nu
 	$imgopts = '';
 	$toolbarname = 'Basic';
 
-	if ($fieldtype == 'oneline')
+	if ($fieldtype == 'answer' || $fieldtype == 'label')
 	{
 		$imgopts = "width='20' height='20'";
 	}
 
-
 	$htmlcode .= ""
-	. "<a href =\"javascript:start_popup_editor('".$fieldname."','".$fieldtext."')\" id='".$fieldname."_ctrl'><img alt='' id='".$fieldname."_popupctrlena' name='".$fieldname."_popupctrlena' border='0' src='".$imagefiles."/edithtmlpopup.png' /><img alt='' id='".$fieldname."_popupctrldis' name='".$fieldname."_popupctrldis' border='0' src='".$imagefiles."/edithtmlpopup_disabled.png' style='display: none' /></a>";
+	. "<a href =\"javascript:start_popup_editor('".$fieldname."','".$fieldtext."','".$surveyID."','".$gID."','".$qID."','".$fieldtype."')\" id='".$fieldname."_ctrl'><img alt='' id='".$fieldname."_popupctrlena' name='".$fieldname."_popupctrlena' border='0' src='".$imagefiles."/edithtmlpopup.png'  $imgopts /><img alt='' id='".$fieldname."_popupctrldis' name='".$fieldname."_popupctrldis' border='0' src='".$imagefiles."/edithtmlpopup_disabled.png' style='display: none'  $imgopts /></a>";
 
 	return $htmlcode;
 }
@@ -147,25 +149,31 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
 	$imgopts = '';
 	$toolbarname = 'Basic';
 
-	if ($fieldtype == 'oneline')
+	if ($fieldtype == 'answer' || $fieldtype == 'label')
 	{
-		$imgopts = "width='20' height='20'";
+		$toolbarname = 'LimeSurveyToolbarfull';
 	}
 
-
-
 	$htmlcode .= ""
-	. '<script type="text/javascript" src="'.$rooturl.'/scripts/fckeditor/fckeditor.js"></script>'
-	. '<script type="text/javascript"> '
-	. "var oFCKeditor = new FCKeditor('$fieldname');"
-	. "oFCKeditor.BasePath     = '".$rooturl."/scripts/fckeditor/';"
-	. "oFCKeditor.Config[\"CustomConfigurationsPath\"] = \"".$rooturl."/scripts/fckeditor/limesurvey-config.js\";"
-	. "oFCKeditor.Config[\"LimeReplacementFieldsSID\"] = \"".$surveyID."\";"
-	. "oFCKeditor.Config[\"LimeReplacementFieldsGID\"] = \"".$gID."\";"
-	. "oFCKeditor.Config[\"LimeReplacementFieldsQID\"] = \"".$qID."\";"
-//	. "oFCKeditor.Config[ 'ToolbarLocation' ] = 'Out:xToolbar-".$fieldname."' ;"
-	. "oFCKeditor.ToolbarSet = '".$toolbarname."';"
-	. "oFCKeditor.ReplaceTextarea() ;"
+	. "<script type=\"text/javascript\">\n"
+	. "var oFCKeditor = new FCKeditor('$fieldname');\n"
+	. "oFCKeditor.BasePath     = '".$rooturl."/scripts/fckeditor/';\n"
+	. "oFCKeditor.Config[\"CustomConfigurationsPath\"] = \"".$rooturl."/scripts/fckeditor/limesurvey-config.js\";\n"
+	. "oFCKeditor.Config[\"LimeReplacementFieldsType\"] = \"".$fieldtype."\";\n"
+	. "oFCKeditor.Config[\"LimeReplacementFieldsSID\"] = \"".$surveyID."\";\n"
+	. "oFCKeditor.Config[\"LimeReplacementFieldsGID\"] = \"".$gID."\";\n"
+	. "oFCKeditor.Config[\"LimeReplacementFieldsQID\"] = \"".$qID."\";\n"
+	. "oFCKeditor.Config[\"LimeReplacementFieldsType\"] = \"".$fieldtype."\";\n";
+
+	if ($fieldtype == 'answer' || $fieldtype == 'label')
+	{
+		 $htmlcode .= ""
+		. "oFCKeditor.Config[ 'ToolbarLocation' ] = 'Out:xToolbar' ;\n";
+	}
+
+	 $htmlcode .= ""
+	. "oFCKeditor.ToolbarSet = '".$toolbarname."';\n"
+	. "oFCKeditor.ReplaceTextarea() ;\n"
 	. '</script>';
 
 	return $htmlcode;
