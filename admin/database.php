@@ -44,6 +44,7 @@ function get_max_question_order($gid)
 	global $connect ;
 	global $dbprefix ;
 	$query="SELECT MAX(question_order) as maxorder FROM {$dbprefix}questions where gid=".$gid ;
+	echo $query;
 	$result = db_execute_assoc($query);
 	$gv = $result->FetchRow();
 	return $gv['maxorder'];
@@ -225,14 +226,15 @@ if(isset($surveyid))
 			$_POST  = array_map('db_quote', $_POST);
 			if (!isset($_POST['lid']) || $_POST['lid'] == '') {$_POST['lid']="0";}
 			$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);	
-			if(!empty($_POST['questionposition']) || $_POST['questionposition'] == 0)
+			if(!empty($_POST['questionposition']) || $_POST['questionposition'] == '0')
 			{
-			    $question_order=($_POST['questionposition']+1);
+			   $question_order=($_POST['questionposition']+1);
 			    //Need to renumber all questions on or after this
 	           $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=question_order+1 WHERE gid=".$_POST['gid']." AND question_order >= ".$question_order;
     	       $cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
 			} else {
-			    $question_order=(getMaxquestionorder($_POST['gid'])+1);
+			    $question_order=(getMaxquestionorder($_POST['gid']));
+			    $question_order++;
 			}
 			$query = "INSERT INTO ".db_table_name('questions')." (sid, gid, type, title, question, preg, help, other, mandatory, lid, question_order, language)"
 			." VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
