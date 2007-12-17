@@ -641,7 +641,7 @@ if (!is_null($questdepsarray))
 
     $orderquestions	.= "<form method='post'>";	
 
-for($i=0; $i < $questioncount ; $i++)
+for($i=0; $i < $questioncount ; $i++) //Assumes that all question orders start with 0
 {
 	$downdisabled = "";
 	$updisabled = "";
@@ -673,9 +673,9 @@ for($i=0; $i < $questioncount ; $i++)
 	       foreach($questdepsarray[$oqarray[$i]['qid']] as $key=>$val) {
 		     //qet the question_order value for each of the dependencies
 		     foreach($minioqarray as $mo) {
-			   if($mo['qid'] == $key && $mo['question_order'] > $max_start_order)
+			   if($mo['qid'] == $key && $mo['question_order'] > $max_start_order) //If there is a matching condition, and the question order for that condition is higher than the on already set:
 			   {
-			     $max_start_order = $mo['question_order'];
+			     $max_start_order = $mo['question_order']; //Set the maximum question condition to this
 			   }
 			 }
 		   }
@@ -700,10 +700,10 @@ for($i=0; $i < $questioncount ; $i++)
 			}
 	    }
 	}
-	$minipos=1;
+	$minipos=$minioqarray[0]['question_order']; //Start at the very first question_order
 	foreach($minioqarray as $mo)
 	{
-	   if($minipos > $max_start_order && $minipos <= $max_end_order)
+	   if($minipos >= $max_start_order && $minipos < $max_end_order)
 	   {
 	       $orderquestions.="<option value='".$mo['question_order']."'>".$mo['title']."</option>\n";
 	   }
