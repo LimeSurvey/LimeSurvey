@@ -36,7 +36,7 @@ function PrepareEditorPopupScript()
 	. "\treturn null;\n"
 	. "\t}\t\n"
 	. "\n"
-	. "function start_popup_editor(fieldname, fieldtext, sid, gid, qid, fieldtype)\n"	
+	. "function start_popup_editor(fieldname, fieldtext, sid, gid, qid, fieldtype, action)\n"	
 	. "\t{\t\n"
 //	. "\t\tcontrolid = fieldname + '_popupctrl';\n"
 	. "\t\tcontrolidena = fieldname + '_popupctrlena';\n"
@@ -50,7 +50,7 @@ function PrepareEditorPopupScript()
 //	. "\t\t\tdocument.getElementById(controlid).src='".$imagefiles."/edithtmlpopup_disabled.png';\n"
 	. "\t\t\tdocument.getElementById(controlidena).style.display='none';\n"
 	. "\t\t\tdocument.getElementById(controliddis).style.display='';\n"
-	. "\t\t\tpopup = window.open('".$rooturl."/htmleditor-popup.php?fieldname='+fieldname+'&fieldtext='+fieldtext+'&fieldtype='+fieldtype+'&sid='+sid+'&gid='+gid+'&qid='+qid+'&lang=".$clang->getlangcode()."','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=600, height=400');\n"
+	. "\t\t\tpopup = window.open('".$rooturl."/htmleditor-popup.php?fieldname='+fieldname+'&fieldtext='+fieldtext+'&fieldtype='+fieldtype+'&action='+action+'&sid='+sid+'&gid='+gid+'&qid='+qid+'&lang=".$clang->getlangcode()."','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=600, height=400');\n"
 	. "\t\t\teditorwindowsHash[fieldname] = popup;\n"
 	. "\t\t}\n"
 	. "\t\telse\n"
@@ -104,17 +104,17 @@ function PrepareEditorScript()
 	}
 }
 
-function getEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null)
+function getEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
 {
 	global $htmleditormode;
 
 	if ($htmleditormode == 'popup')
 	{
-		return getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID,$gID,$qID);
+		return getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID,$gID,$qID,$action);
 	}
 	elseif ($htmleditormode == 'inline')
 	{
-		return getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID,$gID,$qID);
+		return getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID,$gID,$qID,$action);
 	}
 	else
 	{
@@ -122,7 +122,7 @@ function getEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$q
 	}
 }
 
-function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null)
+function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
 {
 	global $clang, $imagefiles, $rooturl;
 
@@ -136,12 +136,12 @@ function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=nu
 	}
 
 	$htmlcode .= ""
-	. "<a href =\"javascript:start_popup_editor('".$fieldname."','".$fieldtext."','".$surveyID."','".$gID."','".$qID."','".$fieldtype."')\" id='".$fieldname."_ctrl'><img alt='' id='".$fieldname."_popupctrlena' name='".$fieldname."_popupctrlena' border='0' src='".$imagefiles."/edithtmlpopup.png'  $imgopts /><img alt='' id='".$fieldname."_popupctrldis' name='".$fieldname."_popupctrldis' border='0' src='".$imagefiles."/edithtmlpopup_disabled.png' style='display: none'  $imgopts /></a>";
+	. "<a href =\"javascript:start_popup_editor('".$fieldname."','".$fieldtext."','".$surveyID."','".$gID."','".$qID."','".$fieldtype."','".$action."')\" id='".$fieldname."_ctrl'><img alt='' id='".$fieldname."_popupctrlena' name='".$fieldname."_popupctrlena' border='0' src='".$imagefiles."/edithtmlpopup.png'  $imgopts /><img alt='' id='".$fieldname."_popupctrldis' name='".$fieldname."_popupctrldis' border='0' src='".$imagefiles."/edithtmlpopup_disabled.png' style='display: none'  $imgopts /></a>";
 
 	return $htmlcode;
 }
 
-function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null)
+function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
 {
 	global $clang, $imagefiles, $rooturl;
 
@@ -163,7 +163,8 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
 	. "oFCKeditor.Config[\"LimeReplacementFieldsSID\"] = \"".$surveyID."\";\n"
 	. "oFCKeditor.Config[\"LimeReplacementFieldsGID\"] = \"".$gID."\";\n"
 	. "oFCKeditor.Config[\"LimeReplacementFieldsQID\"] = \"".$qID."\";\n"
-	. "oFCKeditor.Config[\"LimeReplacementFieldsType\"] = \"".$fieldtype."\";\n";
+	. "oFCKeditor.Config[\"LimeReplacementFieldsType\"] = \"".$fieldtype."\";\n"
+	. "oFCKeditor.Config[\"LimeReplacementFieldsAction\"] = \"".$action."\";\n";
 
 	if ($fieldtype == 'answer' || $fieldtype == 'label')
 	{

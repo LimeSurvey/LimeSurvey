@@ -2240,11 +2240,11 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
 			. "\t\t<span class='settingentry'><input type='text' size='80' name='short_title_".$esrow['surveyls_language']."' value=\"{$esrow['surveyls_title']}\" /></span>\n"
 			. "\t</div><div class='settingrow'><span class='settingcaption'>".$clang->gT("Description:")."</span>\n"
 			. "\t\t<span class='settingentry'><textarea cols='80' rows='15' name='description_".$esrow['surveyls_language']."'>{$esrow['surveyls_description']}</textarea>\n"
-			. getEditor("survey-desc","description_".$esrow['surveyls_language'], "[".$clang->gT("Description:", "js")."](".$esrow['surveyls_language'].")")
+			. getEditor("survey-desc","description_".$esrow['surveyls_language'], "[".$clang->gT("Description:", "js")."](".$esrow['surveyls_language'].")",'','','',$action)
 			. "</span>\n"
 			. "\t</div><div class='settingrow'><span class='settingcaption'>".$clang->gT("Welcome:")."</span>\n"
 			. "\t\t<span class='settingentry'><textarea cols='80' rows='15' name='welcome_".$esrow['surveyls_language']."'>{$esrow['surveyls_welcometext']}</textarea>\n"
-			. getEditor("survey-welc","welcome_".$esrow['surveyls_language'], "[".$clang->gT("Welcome:", "js")."](".$esrow['surveyls_language'].")")
+			. getEditor("survey-welc","welcome_".$esrow['surveyls_language'], "[".$clang->gT("Welcome:", "js")."](".$esrow['surveyls_language'].")",'','','',$action)
 			. "</span></div>\n"
 			. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("URL Description:")."</span>\n"
 			. "\t\t<span class='settingentry'><input type='text' size='80' name='urldescrip_".$esrow['surveyls_language']."' value=\"{$esrow['surveyls_urldescription']}\" />\n"
@@ -2432,11 +2432,11 @@ if ($action == "newsurvey")
 		. "\t\t<td><input type='text' size='82' maxlength='200' id='surveyls_title' name='surveyls_title' /><font size='1'> ".$clang->gT("(This field is mandatory.)")."</font></td></tr>\n"
 		. "\t<tr><td>".$clang->gT("Description:")."</td>\n"
 		. "\t\t<td><textarea cols='80' rows='10' name='description'></textarea>"
-		. getEditor("survey-desc","description", "[".$clang->gT("Description:", "js")."]")
+		. getEditor("survey-desc","description", "[".$clang->gT("Description:", "js")."]",'','','',$action)
 		. "</td></tr>\n"
 		. "\t<tr><td>".$clang->gT("Welcome:")."</td>\n"
 		. "\t\t<td><textarea cols='80' rows='10' name='welcome'></textarea>"
-		. getEditor("survey-welc","welcome", "[".$clang->gT(     "Welcome:", "js")."]")
+		. getEditor("survey-welc","welcome", "[".$clang->gT("Welcome:", "js")."]",'','','',$action)
 		. "</td></tr>\n"
 		. "\t<tr><td>".$clang->gT("Administrator:")."</td>\n"
 		. "\t\t<td><input type='text' size='50' name='admin' /></td></tr>\n"

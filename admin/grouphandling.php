@@ -43,7 +43,7 @@ if ($action == "addgroup")
         . "\t\t<td><input type='text' size='80' maxlength='100' name='group_name_$grouplang' id='group_name_$grouplang' /><font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></td></tr>\n"
         . "\t<tr><td align='right'><strong>".$clang->gT("Description:")."</strong></td>\n"
         . "\t\t<td><textarea cols='80' rows='8' name='description_$grouplang'></textarea>"
-	. getEditor("group-desc","description_".$grouplang, "[".$clang->gT("Description:", "js")."](".$grouplang.")",$surveyid)
+	. getEditor("group-desc","description_".$grouplang, "[".$clang->gT("Description:", "js")."](".$grouplang.")",$surveyid,'','',$action)
 	."</td></tr>\n"
         . "</table></div>";
     }
@@ -124,7 +124,7 @@ if ($action == "editgroup")
     . "\t</span></div>\n"
     . "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Description:")."</span>\n"
     . "\t\t<span class='settingentry'><textarea cols='70' rows='8' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
-    . getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid)
+    . getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid,'',$action)
     . "\t</span></div><div class='settingrow'></div></div>"; // THis empty div class is needed for forcing the tabpage border under the button
 
 

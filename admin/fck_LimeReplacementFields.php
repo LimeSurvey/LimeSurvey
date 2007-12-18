@@ -23,6 +23,7 @@ $surveyid=returnglobal('sid');
 if (!isset($gid)) {$gid=returnglobal('gid');}
 if (!isset($qid)) {$qid=returnglobal('qid');}
 $fieldtype=preg_replace("/[^_.a-zA-Z0-9-]/", "",$_GET['fieldtype']);
+$action=preg_replace("/[^_.a-zA-Z0-9-]/", "",$_GET['action']);
 
 
 $replFields=Array();

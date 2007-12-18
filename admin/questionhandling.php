@@ -35,13 +35,13 @@ if ($action == "addquestion")
 	. "\t<tr>\n"
 	. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Question:")."</strong></td>\n"
 	. "\t\t<td align='left'><textarea cols='50' rows='3' name='question'></textarea>"
-	. getEditor("question-text","question", "[".$clang->gT("Question:", "js")."]",$surveyid,$gid)
+	. getEditor("question-text","question", "[".$clang->gT("Question:", "js")."]",$surveyid,$gid,'',$action)
 	."</td>\n"
 	. "\t</tr>\n"
 	. "\t<tr>\n"
 	. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Help:")."</strong></td>\n"
 	. "\t\t<td align='left'><textarea cols='50' rows='3' name='help'></textarea>"
-	. getEditor("question-help","help", "[".$clang->gT("Help:", "js")."]",$surveyid,$gid)
+	. getEditor("question-help","help", "[".$clang->gT("Help:", "js")."]",$surveyid,$gid,'',$action)
 	."</td>\n"
 	. "\t</tr>\n"
 	. "\t<tr>\n"
@@ -355,11 +355,11 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	. "\t</span></div>\n";
 	$editquestion .=  "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Question:")."</span>\n"
 	. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='question_{$eqrow['language']}'>{$eqrow['question']}</textarea>\n"
-	. getEditor("question-text","question_".$eqrow['language'], "[".$clang->gT("Question:", "js")."](".$eqrow['language'].")",$surveyid,$gid,$qid)
+	. getEditor("question-text","question_".$eqrow['language'], "[".$clang->gT("Question:", "js")."](".$eqrow['language'].")",$surveyid,$gid,$qid,$action)
 	. "\t</span></div>\n"
 	. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Help:")."</span>\n"
 	. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='help_{$eqrow['language']}'>{$eqrow['help']}</textarea>\n"
-	. getEditor("question-help","help_".$eqrow['language'], "[".$clang->gT("Help:", "js")."](".$eqrow['language'].")",$surveyid,$gid,$qid)
+	. getEditor("question-help","help_".$eqrow['language'], "[".$clang->gT("Help:", "js")."](".$eqrow['language'].")",$surveyid,$gid,$qid,$action)
 	. "\t</span></div>\n"
 	. "\t<div class='settingrow'><span class='settingcaption'>&nbsp;</span>\n"
 	. "\t\t<span class='settingentry'>&nbsp;\n"

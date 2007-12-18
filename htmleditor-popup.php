@@ -68,6 +68,7 @@ else {
 	$gid=sanitize_int($_GET['gid']);
 	$qid=sanitize_int($_GET['qid']);
 	$fieldtype=preg_replace("/[^_.a-zA-Z0-9-]/", "",$_GET['fieldtype']);
+	$action=preg_replace("/[^_.a-zA-Z0-9-]/", "",$_GET['action']);
 
 	if (isset($_GET['toolbarname']))
 	{
@@ -115,6 +116,7 @@ else {
 	oFCKeditor.Config[\"LimeReplacementFieldsGID\"] = \"".$gid."\";
 	oFCKeditor.Config[\"LimeReplacementFieldsQID\"] = \"".$qid."\";
 	oFCKeditor.Config[\"LimeReplacementFieldsType\"] = \"".$fieldtype."\";
+	oFCKeditor.Config[\"LimeReplacementFieldsAction\"] = \"".$action."\";
 	oFCKeditor.Create();
 
 	function FCKeditor_OnComplete( editorInstance )
