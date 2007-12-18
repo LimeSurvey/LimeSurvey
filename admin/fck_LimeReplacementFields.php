@@ -108,7 +108,6 @@ if ($isInstertansEnabled===true)
 			."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
 			."ORDER BY question_order DESC";
 		$qresult = db_select_limit_assoc($qquery,1) or die("Can't read last valid qid".$connect->ErrorMsg());
-		echo "TIBO=$qquery\n";
 		while ($qrow=$qresult->FetchRow())
 		{
 			$qid=$qrow['qid'];
@@ -300,7 +299,7 @@ else
 
 if (count($replFields) > 0)
 {
-	$limereplacementoutput .= "\t\t\t\t<option value='StdFieldMenu' disabled='disabled'>".$clang->gT("Standard Fields")."</option>\n";
+	$limereplacementoutput .= "\t\t\t\t<optgroup label='".$clang->gT("Standard Fields")."'>\n";
 
 	foreach ($replFields as $stdfield)
 	{
@@ -310,19 +309,21 @@ if (count($replFields) > 0)
 		}
 		$limereplacementoutput .= ">".$stdfield[1]."</option>\n";
 	}
+	$limereplacementoutput .= "\t\t\t\t</optgroup>\n";
 }
 
 if (isset($cquestions))
 {
-	$limereplacementoutput .= "\t\t\t\t<option value='StdAnswMenu' disabled='disabled'>".$clang->gT("Previous Answers Fields")."</option>\n";
+	$limereplacementoutput .= "\t\t\t\t<optgroup label='".$clang->gT("Previous Answers Fields")."'>\n";
 	foreach ($cquestions as $cqn)
 	{
-		$limereplacementoutput .= "\t\t\t\t<option value='$cqn[3]'";
+		$limereplacementoutput .= "\t\t\t\t<option value='INSERTANS:$cqn[3]'";
 		if (isset($_GET['cquestions']) && $cqn[3] == $_GET['cquestions']) {
 			$limereplacementoutput .= " selected";
 		}
 		$limereplacementoutput .= ">$cqn[0]</option>\n";
 	}
+	$limereplacementoutput .= "\t\t\t\t</optgroup>\n";
 }
 
 
