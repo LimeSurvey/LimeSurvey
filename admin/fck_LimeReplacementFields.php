@@ -86,9 +86,9 @@ if ($isInstertansEnabled===true)
 	
 	$newgroupquestion=false;
 	
-	if (empty($gid))
+	if ($action == 'addgroup')
 	{ // this is a new group creation
-	  // take the previous group ID and set a flag
+	  // take the last group ID and set a flag
 		$gquery="SELECT group_name,gid FROM {$dbprefix}groups WHERE sid=$surveyid "
 			."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
 			."ORDER BY group_order DESC";
@@ -100,8 +100,24 @@ if ($isInstertansEnabled===true)
 			$newgroupquestion=true;
 		}
 	}
+
+	if ($action == 'editgroup')
+	{ // this is a new group edition
+	  // take the previous group ID and set a flag
+		$gquery="SELECT b.group_name,b.gid FROM {$dbprefix}groups as a, {$dbprefix}groups as b WHERE a.gid=$gid AND a.group_order > b.group_order AND a.sid=$surveyid AND b.sid=$surveyid "
+			."AND a.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+			."AND b.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+			."ORDER BY b.group_order DESC";
+		$gresult = db_select_limit_assoc($gquery,1) or die("Can't read last valid gid".$connect->ErrorMsg());
+		while ($grow=$gresult->FetchRow())
+		{
+			$gid=$grow['gid'];
+			//echo "TIBO: extrapoling EDIT group=$gid //".$grow['group_name']."\n";
+			$newgroupquestion=true;
+		}
+	}
 	
-	if (empty($qid))
+	if ($action =='addquestion' || $action =='addgroup' || $action =='editgroup')
 	{ // this is a new question or a new group
 	  // take the previous question Id and set a flag
 	  // TODO: if we are editting a group ==> no qid
@@ -116,6 +132,11 @@ if ($isInstertansEnabled===true)
 			$newgroupquestion=true;
 		}
 	}
+
+
+	
+
+
 	if (empty($gid)) {die("No GID provided.");}
 	
 	
@@ -304,7 +325,7 @@ if (count($replFields) > 0)
 
 	foreach ($replFields as $stdfield)
 	{
-		$limereplacementoutput .= "\t\t\t\t<option value='".$stdfield[0].">'";
+		$limereplacementoutput .= "\t\t\t\t<option value='".$stdfield[0]."'";
 		if (isset($_GET['cquestions']) && $cqn[3] == $_GET['cquestions']) {
 			$limereplacementoutput .= " selected";
 		}
