@@ -12,7 +12,6 @@
 * 
 * $Id: conditions.php 3736 2007-11-30 16:13:55Z lemeur $
 */
-
 require_once(dirname(__FILE__).'/../config.php');
 require_once(dirname(__FILE__).'/../common.php');
 
@@ -25,6 +24,7 @@ if (!isset($qid)) {$qid=returnglobal('qid');}
 $fieldtype=preg_replace("/[^_.a-zA-Z0-9-]/", "",$_GET['fieldtype']);
 $action=preg_replace("/[^_.a-zA-Z0-9-]/", "",$_GET['action']);
 
+$InsertansUnsupportedtypes=Array('TEST-A','TEST-B','TEST-C','TEST-D');
 
 $replFields=Array();
 $isInstertansEnabled=false;
@@ -81,71 +81,7 @@ switch ($fieldtype)
 
 if ($isInstertansEnabled===true)
 {
-	//Ensure script is not run directly, avoid path disclosure
 	if (empty($surveyid)) {die("No SID provided.");}
-	
-	$newgroupquestion=false;
-	
-	if ($action == 'addgroup')
-	{ // this is a new group creation
-	  // take the last group ID and set a flag
-		$gquery="SELECT group_name,gid FROM {$dbprefix}groups WHERE sid=$surveyid "
-			."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-			."ORDER BY group_order DESC";
-		$gresult = db_select_limit_assoc($gquery,1) or die("Can't read last valid gid".$connect->ErrorMsg());
-		while ($grow=$gresult->FetchRow())
-		{
-			$gid=$grow['gid'];
-			//echo "TIBO: extrapoling group=$gid //".$grow['group_name']."\n";
-			$newgroupquestion=true;
-		}
-	}
-
-	if ($action == 'editgroup')
-	{ // this is a new group edition
-	  // take the previous group ID and set a flag
-		$gquery="SELECT b.group_name,b.gid FROM {$dbprefix}groups as a, {$dbprefix}groups as b WHERE a.gid=$gid AND a.group_order > b.group_order AND a.sid=$surveyid AND b.sid=$surveyid "
-			."AND a.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-			."AND b.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-			."ORDER BY b.group_order DESC";
-		$gresult = db_select_limit_assoc($gquery,1) or die("Can't read last valid gid".$connect->ErrorMsg());
-		while ($grow=$gresult->FetchRow())
-		{
-			$gid=$grow['gid'];
-			//echo "TIBO: extrapoling EDIT group=$gid //".$grow['group_name']."\n";
-			$newgroupquestion=true;
-		}
-	}
-	
-	if ($action =='addquestion' || $action =='addgroup' || $action =='editgroup')
-	{ // this is a new question or a new group
-	  // take the previous question Id and set a flag
-	  // TODO: if we are editting a group ==> no qid
-		$qquery="SELECT title,qid FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid " 
-			."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-			."ORDER BY question_order DESC";
-		$qresult = db_select_limit_assoc($qquery,1) or die("Can't read last valid qid".$connect->ErrorMsg());
-		while ($qrow=$qresult->FetchRow())
-		{
-			$qid=$qrow['qid'];
-			//echo "TIBO: extrapoling ques=$qid //".$qrow['title']."\n";
-			$newgroupquestion=true;
-		}
-	}
-
-
-	
-
-
-	if (empty($gid)) {die("No GID provided.");}
-	
-	
-	
-	if (empty($qid)) {die("No QID provided.");}
-	
-	// *******************************************************************
-	// ** ADD FORM
-	// *******************************************************************
 	
 	//2: Get all other questions that occur before this question that are pre-determined answer types
 	
@@ -165,35 +101,74 @@ if ($isInstertansEnabled===true)
 	// Perform a case insensitive natural sort on group name then question title (known as "code" in the form) of a multidimensional array
 	usort($qrows, 'CompareGroupThenTitle');
 	
+
+
+	$prevquestion=null;
 	//Go through each question until we reach the current one
+	//error_log(print_r($qrows,true));
 	foreach ($qrows as $qrow)
 	{
-		if ($qrow["qid"] != $qid)
+		$AddQuestion=True;
+		switch ($action)
 		{
-			if ($qrow['type'] != "TIBO-T" && // $qrow['type'] != "S" &&
-				$qrow['type'] != "TIBO-Q" &&
-				$qrow['type'] != "TIBO-K")   //&& $qrow['type'] != "D"
-			{ //remember the questions of this type
-				$questionlist[]=$qrow["qid"];
-			}
+			case 'addgroup':
+				$AddQuestion=True;
+			break;
+
+			case 'editgroup':
+				if (empty($gid)) {die("No GID provided.");}
+
+				if ($qrow['gid'] == $gid)
+				{
+					error_log(print_r($qrow,true));
+					$AddQuestion=False;
+				}
+			break;
+
+			case 'addquestion':
+				if (empty($gid)) {die("No GID provided.");}
+
+				if ( !is_null($prevquestion) &&
+					$prevquestion['gid'] == $gid &&
+					$qrow['gid'] != $gid)
+				{
+					$AddQuestion=False;
+				}
+			break;
+
+			case 'editquestion':
+				if (empty($gid)) {die("No GID provided.");}
+				if (empty($qid)) {die("No QID provided.");}
+
+				if ($qrow['gid'] == $gid &&
+					$qrow['qid'] == $qid)
+				{
+					$AddQuestion=False;
+				}
+			break;
 		}
-		elseif ($qrow["qid"] == $qid)
+
+		if ( $AddQuestion===True)
 		{
-			if ($newgroupquestion === true )
-			{
-				$questionlist[]=$qrow["qid"];
-				break;
-			}
-			else
-			{
-				break;
-			}
+			$questionlist[]=$qrow["qid"];
+			$prevquestion=$qrow;
+		}
+		else
+		{
+			break;
 		}
 	}
 	
+//		if ($qrow["qid"] != $qid)
+//		{
+//			if (!in_array($qrow['type'],$InsertansUnsupportedtypes)
+//			{ //remember the questions of this type
+//				$questionlist[]=$qrow["qid"];
+//			}
+//		}
+
 	$theserows=array();
-	//Now, use the questions left appart in the step before, these of type S, T or Q 
-	//(originally was D too)
+
 	if (isset($questionlist) && is_array($questionlist))
 	{
 		foreach ($questionlist as $ql)
@@ -310,7 +285,7 @@ if ($isInstertansEnabled===true)
 
 if (count($replFields) > 0 || isset($cquestions) )
 {
-	$limereplacementoutput .= "\t\t\t<select name='cquestions' id='cquestions' style='font-family:verdana; background-color: #FFFFFF; font-size:10; border: 0px;' size='15'>\n";
+	$limereplacementoutput .= "\t\t\t<select name='cquestions' id='cquestions' style='font-family:verdana; background-color: #FFFFFF; font-size:10; border: 0px;width:99%;' size='15'>\n";
 }
 else
 {
@@ -339,11 +314,17 @@ if (isset($cquestions))
 	$limereplacementoutput .= "\t\t\t\t<optgroup label='".$clang->gT("Previous Answers Fields")."'>\n";
 	foreach ($cquestions as $cqn)
 	{
+		$isDisabled=false;
+		if (!in_array($cqn[2],$InsertansUnsupportedtypes))
+		{
+			 $isDisabled=true;
+		}
+
 		$limereplacementoutput .= "\t\t\t\t<option value='INSERTANS:$cqn[3]'";
 		if (isset($_GET['cquestions']) && $cqn[3] == $_GET['cquestions']) {
 			$limereplacementoutput .= " selected";
 		}
-		$limereplacementoutput .= ">$cqn[0]</option>\n";
+		$limereplacementoutput .= " $isDisabled >$cqn[0]</option>\n";
 	}
 	$limereplacementoutput .= "\t\t\t\t</optgroup>\n";
 }
