@@ -18,6 +18,12 @@ require_once(dirname(__FILE__).'/../common.php');
 @ini_set('session.gc_maxlifetime', $sessionlifetime);
 
 include_once("login_check.php");
+
+if(!isset($_SESSION['loginID']))
+{
+	die ("Unauthenticated Access Forbiden");
+}
+
 $surveyid=returnglobal('sid');
 if (!isset($gid)) {$gid=returnglobal('gid');}
 if (!isset($qid)) {$qid=returnglobal('qid');}
