@@ -147,7 +147,8 @@ FCKFitWindow.prototype.Execute = function()
 		this.IsMaximized = false ;
 	}
 
-	FCKToolbarItems.GetItem('FitWindow').RefreshState() ;
+	// Following line commented for LimeSurvey integration
+	// FCKToolbarItems.GetItem('FitWindow').RefreshState() ;
 
 	// It seams that Firefox restarts the editing area when making this changes.
 	// On FF 1.0.x, the area is not anymore editable. On FF 1.5+, the special

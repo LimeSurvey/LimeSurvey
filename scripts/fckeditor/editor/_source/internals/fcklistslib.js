@@ -52,7 +52,7 @@ var FCKListsLib =
 	StyleBlockElements : { address:1,div:1,h1:1,h2:1,h3:1,h4:1,h5:1,h6:1,p:1,pre:1 },
 
 	// Object elements for the Styles System.
-	StyleObjectElements : { img:1,hr:1,li:1,table:1,tr:1,td:1,embed:1,object:1,ol:1,ul:1 },
+	StyleObjectElements : { img:1,hr:1,li:1,table:1,tr:1,td:1,embed:1,object:1,ol:1,ul:1,span:1 },
 	
 	// Elements used to separate block contents.
 	BlockBoundaries : { p:1,div:1,h1:1,h2:1,h3:1,h4:1,h5:1,h6:1,hr:1,address:1,pre:1,ol:1,ul:1,li:1,dt:1,de:1,table:1,thead:1,tbody:1,tfoot:1,tr:1,th:1,td:1,caption:1,col:1,colgroup:1,blockquote:1,body:1 },

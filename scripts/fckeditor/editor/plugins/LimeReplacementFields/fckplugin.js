@@ -47,7 +47,7 @@ var FCKLimeReplacementFieldss = new Object() ;
 // Add a new LimeReplacementFields at the actual selection.
 FCKLimeReplacementFieldss.Add = function( name )
 {
-	var oSpan = FCK.InsertElement( 'span' ) ;
+	var oSpan = FCK.InsertElement( 'SPAN' ) ;
 	this.SetupSpan( oSpan, name ) ;
 }
 
@@ -125,7 +125,8 @@ if ( FCKBrowserInfo.IsIE )
 		{
 			if ( oRange.findText( aPlaholders[i] ) )
 			{
-				var sName = aPlaholders[i].match( /\{\s*([^\}]*?)\s*\}/ )[1] ;
+				//var sName = aPlaholders[i].match( /\{\s*([^\}]*?)\s*\}/ )[1] ;
+				var sName = aPlaholders[i].match( /\{([^\}]+)\}/ )[1] ;
 				oRange.pasteHTML( '<span style="color: #000000; background-color: #ffff00" contenteditable="false" _fckLimeReplacementFields="' + sName + '">' + aPlaholders[i] + '</span>' ) ;
 			}
 		}
@@ -157,7 +158,8 @@ else
 				{
 					if ( aPieces[i].indexOf( '{' ) == 0 )
 					{
-						var sName = aPieces[i].match( /\{\s*([^\}]*?)\s*\}/ )[1] ;
+//						var sName = aPieces[i].match( /\{\s*([^\}]*?)\s*\}/ )[1] ;
+						var sName = aPieces[i].match( /\{([^\}]*)\}/ )[1] ;
 
 						var oSpan = FCK.EditorDocument.createElement( 'span' ) ;
 						FCKLimeReplacementFieldss.SetupSpan( oSpan, sName ) ;
