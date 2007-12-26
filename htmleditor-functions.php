@@ -169,34 +169,34 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
 		 $fieldtype == 'addlabel')
 	{
 		$toolbarname = 'LimeSurveyToolbarfull';
-		$toolbaroption="oFCKeditor.Config[\"ToolbarLocation\"]=\"Out:xToolbar\";\n"
-		. "oFCKeditor.Config[\"ToolbarStartExpanded\"]=true;\n"
-		. "oFCKeditor.Config[\"ToolbarCanCollapse\"]=false;\n"
-		. "oFCKeditor.Height = \"50\"\n";
+		$toolbaroption="oFCKeditor_$fieldname.Config[\"ToolbarLocation\"]=\"Out:xToolbar\";\n"
+		. "oFCKeditor_$fieldname.Config[\"ToolbarStartExpanded\"]=true;\n"
+		. "oFCKeditor_$fieldname.Config[\"ToolbarCanCollapse\"]=false;\n"
+		. "oFCKeditor_$fieldname.Height = \"50\"\n";
 	}
 
 	$htmlcode .= ""
 	. "<script type=\"text/javascript\">\n"
-	. "var oFCKeditor = new FCKeditor('$fieldname');\n"
-	. "oFCKeditor.BasePath     = '".$rooturl."/scripts/fckeditor/';\n"
-	. "oFCKeditor.Config[\"CustomConfigurationsPath\"] = \"".$rooturl."/scripts/fckeditor/limesurvey-config.js\";\n"
-	. "oFCKeditor.Config[\"LimeReplacementFieldsType\"] = \"".$fieldtype."\";\n"
-	. "oFCKeditor.Config[\"LimeReplacementFieldsSID\"] = \"".$surveyID."\";\n"
-	. "oFCKeditor.Config[\"LimeReplacementFieldsGID\"] = \"".$gID."\";\n"
-	. "oFCKeditor.Config[\"LimeReplacementFieldsQID\"] = \"".$qID."\";\n"
-	. "oFCKeditor.Config[\"LimeReplacementFieldsType\"] = \"".$fieldtype."\";\n"
-	. "oFCKeditor.Config[\"LimeReplacementFieldsAction\"] = \"".$action."\";\n"
+	. "var oFCKeditor_$fieldname = new FCKeditor('$fieldname');\n"
+	. "oFCKeditor_$fieldname.BasePath     = '".$rooturl."/scripts/fckeditor/';\n"
+	. "oFCKeditor_$fieldname.Config[\"CustomConfigurationsPath\"] = \"".$rooturl."/scripts/fckeditor/limesurvey-config.js\";\n"
+	. "oFCKeditor_$fieldname.Config[\"LimeReplacementFieldsType\"] = \"".$fieldtype."\";\n"
+	. "oFCKeditor_$fieldname.Config[\"LimeReplacementFieldsSID\"] = \"".$surveyID."\";\n"
+	. "oFCKeditor_$fieldname.Config[\"LimeReplacementFieldsGID\"] = \"".$gID."\";\n"
+	. "oFCKeditor_$fieldname.Config[\"LimeReplacementFieldsQID\"] = \"".$qID."\";\n"
+	. "oFCKeditor_$fieldname.Config[\"LimeReplacementFieldsType\"] = \"".$fieldtype."\";\n"
+	. "oFCKeditor_$fieldname.Config[\"LimeReplacementFieldsAction\"] = \"".$action."\";\n"
 	. $toolbaroption; 
 
 	if ($fieldtype == 'answer' || $fieldtype == 'label')
 	{
 		 $htmlcode .= ""
-		. "oFCKeditor.Config[ 'ToolbarLocation' ] = 'Out:xToolbar' ;\n";
+		. "oFCKeditor_$fieldname.Config[ 'ToolbarLocation' ] = 'Out:xToolbar' ;\n";
 	}
 
 	 $htmlcode .= ""
-	. "oFCKeditor.ToolbarSet = '".$toolbarname."';\n"
-	. "oFCKeditor.ReplaceTextarea() ;\n"
+	. "oFCKeditor_$fieldname.ToolbarSet = '".$toolbarname."';\n"
+	. "oFCKeditor_$fieldname.ReplaceTextarea() ;\n"
 	. '</script>';
 
 	return $htmlcode;
