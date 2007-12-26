@@ -66,8 +66,9 @@ function PrepareEditorPopupScript()
 function PrepareEditorInlineScript()
 {
 	global $rooturl;
-	$script = ""
-	. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/fckeditor/fckeditor.js\"></script>\n"
+	$script ="<script type=\"text/javascript\" src=\"".$rooturl."/scripts/fckeditor/fckeditor.js\"></script>\n";
+/*** Commented because of inconsistencies
+	$script .= ""
 	. "<script type='text/javascript'>\n"
 	. "<!--\n"
 	."function FCKeditor_OnComplete( editorInstance )\n"
@@ -84,6 +85,7 @@ function PrepareEditorInlineScript()
 	."\teditorInstance.ToolbarSet.Expand() ;\n"
 	."}\n"
 	. "--></script>\n";
+***/
 	return $script;
 }
 
@@ -130,13 +132,16 @@ function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=nu
 	$imgopts = '';
 	$toolbarname = 'Basic';
 
-	if ($fieldtype == 'answer' || $fieldtype == 'label')
+	if ($fieldtype == 'editanswer' || 
+		$fieldtype == 'addanswer' ||
+		$fieldtype == 'editlabel' ||
+		 $fieldtype == 'addlabel')
 	{
-		$imgopts = "width='20' height='20'";
+		$imgopts = "width='14px' height='14px'";
 	}
 
 	$htmlcode .= ""
-	. "<a href =\"javascript:start_popup_editor('".$fieldname."','".$fieldtext."','".$surveyID."','".$gID."','".$qID."','".$fieldtype."','".$action."')\" id='".$fieldname."_ctrl'><img alt='' id='".$fieldname."_popupctrlena' name='".$fieldname."_popupctrlena' border='0' src='".$imagefiles."/edithtmlpopup.png'  $imgopts /><img alt='' id='".$fieldname."_popupctrldis' name='".$fieldname."_popupctrldis' border='0' src='".$imagefiles."/edithtmlpopup_disabled.png' style='display: none'  $imgopts /></a>";
+	. "<a href =\"javascript:start_popup_editor('".$fieldname."','".$fieldtext."','".$surveyID."','".$gID."','".$qID."','".$fieldtype."','".$action."')\" id='".$fieldname."_ctrl'><img alt='' id='".$fieldname."_popupctrlena' name='".$fieldname."_popupctrlena' border='0' src='".$imagefiles."/edithtmlpopup.png'  $imgopts /><img alt='' id='".$fieldname."_popupctrldis' name='".$fieldname."_popupctrldis' border='0' src='".$imagefiles."/edithtmlpopup_disabled.png' style='display: none'  $imgopts align='top'/></a>";
 
 	return $htmlcode;
 }
@@ -148,10 +153,18 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
 	$htmlcode = '';
 	$imgopts = '';
 	$toolbarname = 'Basic';
+	$toolbaroption="";
 
-	if ($fieldtype == 'answer' || $fieldtype == 'label')
+	if ($fieldtype == 'editanswer' || 
+		$fieldtype == 'addanswer' ||
+		$fieldtype == 'editlabel' ||
+		 $fieldtype == 'addlabel')
 	{
 		$toolbarname = 'LimeSurveyToolbarfull';
+		$toolbaroption="oFCKeditor.Config[\"ToolbarLocation\"]=\"Out:xToolbar\";\n"
+		. "oFCKeditor.Config[\"ToolbarStartExpanded\"]=true;\n"
+		. "oFCKeditor.Config[\"ToolbarCanCollapse\"]=false;\n"
+		. "oFCKeditor.Height = \"50\"\n";
 	}
 
 	$htmlcode .= ""
@@ -164,7 +177,8 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
 	. "oFCKeditor.Config[\"LimeReplacementFieldsGID\"] = \"".$gID."\";\n"
 	. "oFCKeditor.Config[\"LimeReplacementFieldsQID\"] = \"".$qID."\";\n"
 	. "oFCKeditor.Config[\"LimeReplacementFieldsType\"] = \"".$fieldtype."\";\n"
-	. "oFCKeditor.Config[\"LimeReplacementFieldsAction\"] = \"".$action."\";\n";
+	. "oFCKeditor.Config[\"LimeReplacementFieldsAction\"] = \"".$action."\";\n"
+	. $toolbaroption; 
 
 	if ($fieldtype == 'answer' || $fieldtype == 'label')
 	{

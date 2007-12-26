@@ -128,8 +128,25 @@ else {
 
 	function html_transfert()
 	{
-		var oEditor = FCKeditorAPI.GetInstance('MyTextarea');
-		window.opener.document.getElementsByName('".$fieldname."')[0].value = oEditor.GetXHTML();
+		var oEditor = FCKeditorAPI.GetInstance('MyTextarea');\n";
+
+if ($fieldtype == 'editanswer' ||
+	$fieldtype == 'addanswer' ||
+	$fieldtype == 'editlabel' ||
+	$fieldtype == 'addlabel')
+{
+	$output .= "\t\tvar editedtext = oEditor.GetXHTML().replace(new RegExp( \"\\n\", \"g\" ),'');\n";
+	$output .= "\t\tvar editedtext = oEditor.GetXHTML().replace(new RegExp( \"\\r\", \"g\" ),'');\n";
+}
+else
+{
+	$output .= "\t\tvar editedtext = oEditor.GetXHTML();\n";
+}
+
+
+
+	$output .=	"
+		window.opener.document.getElementsByName('".$fieldname."')[0].value = editedtext;
 	}
 
 	function close_editor()
