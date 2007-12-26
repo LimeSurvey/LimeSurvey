@@ -137,7 +137,7 @@ FCKConfig.ToolbarSets["LimeSurveyToolbarfull"] = [
 ] ;
 
 FCKConfig.ToolbarSets["LimeSurveyToolbarfullPopup"] = [
-	['Source','Templates'],
+	['Save','Source','Templates'],
 	['Cut','Copy','Paste','PasteText','PasteWord'],
 	['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
 	'/',

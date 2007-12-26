@@ -89,10 +89,14 @@ function PrepareEditorInlineScript()
 	return $script;
 }
 
-function PrepareEditorScript()
+function PrepareEditorScript($fieldtype=null)
 {
 	global $htmleditormode;
-	if ($htmleditormode == 'popup')
+	if ($htmleditormode == 'popup' ||
+		$fieldtype == 'editanswer' ||
+		$fieldtype == 'addanswer' ||
+		$fieldtype == 'editlabel' ||
+		$fieldtype == 'addlabel')
 	{
 		return PrepareEditorPopupScript();
 	}
@@ -110,7 +114,11 @@ function getEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$q
 {
 	global $htmleditormode;
 
-	if ($htmleditormode == 'popup')
+	if ($htmleditormode == 'popup' ||
+		$fieldtype == 'editanswer' ||
+		$fieldtype == 'addanswer' ||
+		$fieldtype == 'editlabel' ||
+		$fieldtype == 'addlabel')
 	{
 		return getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID,$gID,$qID,$action);
 	}

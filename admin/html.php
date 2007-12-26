@@ -1259,6 +1259,7 @@ if (returnglobal('viewanswer'))
 
 	// Print Key Control JavaScript
 	$vasummary = keycontroljs();
+	$vasummary .= PrepareEditorScript("editanswer");
 
 	$vasummary .= "\t<table width='100%' >\n"
 	."<tr  >\n"
@@ -1278,6 +1279,8 @@ if (returnglobal('viewanswer'))
 	$sortorderids=''; 
 	$codeids='';
 
+	$vasummary .= "\t<div id='xToolbar'></div>\n";
+
 	foreach ($anslangs as $anslang)
 	{
 		$position=0;
@@ -1291,16 +1294,16 @@ if (returnglobal('viewanswer'))
         $vasummary .= "</h2>\t<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'>\n"
                 ."<thead align='center'>"
         		."<tr bgcolor='#F8F8FF'>\n"
-        		."\t<td width='25%' align='right'><strong><font size='1' face='verdana' >\n"
+        		."\t<td width='20%' align='right'><strong><font size='1' face='verdana' >\n"
         		.$clang->gT("Code")
         		."\t</font></strong></td>\n"
-        		."\t<td width='35%'><strong><font size='1' face='verdana'>\n"
+        		."\t<td width='50%'><strong><font size='1' face='verdana'>\n"
         		.$clang->gT("Answer")
         		."\t</font></strong></td>\n"
-        		."\t<td width='25%'><strong><font size='1' face='verdana'>\n"
+        		."\t<td width='20%'><strong><font size='1' face='verdana'>\n"
         		.$clang->gT("Action")
         		."\t</font></strong></td>\n"
-        		."\t<td width='15%' align='center'><strong><font size='1' face='verdana'>\n"
+        		."\t<td width='10%' align='center'><strong><font size='1' face='verdana'>\n"
         		.$clang->gT("Order")
         		."\t</font></strong>";
               	
@@ -1317,7 +1320,7 @@ if (returnglobal('viewanswer'))
 			$sortorderids=$sortorderids.' '.$row['language'].'_'.$row['sortorder'];
 			if ($first) {$codeids=$codeids.' '.$row['sortorder'];}
 			
-			$vasummary .= "<tr><td width='25%' align='right'>\n";
+			$vasummary .= "<tr><td width='20%' align='right'>\n";
 			if ($row['default_value'] == 'Y') $vasummary .= "<font color='#FF0000'>".$clang->gT("Default")."</font>";
 
 			if (($activated != 'Y' && $first) || ($activated == 'Y' && $first && (($qtype=='O')  || ($qtype=='L') || ($qtype=='!') ))) 
@@ -1339,10 +1342,11 @@ if (returnglobal('viewanswer'))
 			}
 
 			$vasummary .= "\t</td>\n"
-			."\t<td width='35%'>\n"
+			."\t<td width='50%'>\n"
 			."\t<input type='text' name='answer_{$row['language']}_{$row['sortorder']}' maxlength='1000' size='80' value=\"{$row['answer']}\" onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;}\" />\n"
+			. getEditor("editanswer","answer_".$row['language']."_".$row['sortorder'], "[".$clang->gT("Answer:", "js")."](".$row['language'].")",'','','',$action)
 			."\t</td>\n"
-			."\t<td width='25%'>\n";
+			."\t<td width='20%'>\n";
 			
 			// Deactivate delete button for active surveys
 			if ($activated != 'Y' || ($activated == 'Y' && (($qtype=='O' ) || ($qtype=='L' ) ||($qtype=='!' ))))
@@ -1381,7 +1385,7 @@ if (returnglobal('viewanswer'))
 			
             if ($first==true)
 			{
-				$vasummary .= "<tr><td><br /></td></tr><tr><td width='25%' align='right'>"
+				$vasummary .= "<tr><td><br /></td></tr><tr><td width='20%' align='right'>"
 				."<strong>".$clang->gT("New Answer").":</strong> ";
 				$vasummary .= "\t<input type='text' name='insertcode' value=\"{$row['code']}\"id='addnewanswercode' maxlength='5' size='5' "
 				." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('newanswerbtn').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
@@ -1390,10 +1394,11 @@ if (returnglobal('viewanswer'))
 
             	$first=false;
 				$vasummary .= "\t</td>\n"
-				."\t<td width='35%'>\n"
+				."\t<td width='50%'>\n"
 				."\t<input type='text' maxlength='1000' name='insertanswer' size='80' onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('newanswerbtn').click(); return false;}\" />\n"
+				. getEditor("addanswer","insertanswer", "[".$clang->gT("Answer:", "js")."]",'','','',$action)
 				."\t</td>\n"
-				."\t<td width='25%'>\n"
+				."\t<td width='20%'>\n"
 				."\t<input type='submit' id='newanswerbtn' name='method' value='".$clang->gT("Add new Answer")."' />\n"
 				."\t<input type='hidden' name='action' value='modanswer' />\n"
 				."\t</td>\n"
