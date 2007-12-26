@@ -249,6 +249,8 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		$rwlabelset=$rslabelset->FetchRow();
 		$lslanguages=explode(" ", trim($rwlabelset['languages'])); 
 		
+		$labelsoutput.= PrepareEditorScript("editlabel");
+
 		$labelsoutput.= "\t<table width='100%'>\n"
 		."<tr>\n"
 		."\t<td colspan='4' class='header'><strong>\n"
@@ -276,13 +278,16 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
         		."\t<td width='25%' align='right' class='settingcaption'><strong>\n"
         		.$clang->gT("Code")
         		."\t</strong></td>\n"
-        		."\t<td width='35%' class='settingcaption'><strong>\n"
+//        		."\t<td width='35%' class='settingcaption'><strong>\n"
+        		."\t<td class='settingcaption'><strong>\n"
         		.$clang->gT("Title")
         		."\t</strong></td>\n"
-        		."\t<td width='15%' class='settingcaption'><strong>\n"
+//        		."\t<td width='15%' class='settingcaption'><strong>\n"
+        		."\t<td class='settingcaption'><strong>\n"
         		.$clang->gT("Action")
         		."\t</strong></td>\n"
-        		."\t<td width='25%' align='center' class='settingcaption'><strong>\n"
+//        		."\t<td width='25%' align='center' class='settingcaption'><strong>\n"
+        		."\t<td align='center' class='settingcaption'><strong>\n"
         		.$clang->gT("Order")
         		."\t</strong></td>\n"
         		."</tr></thead>"
@@ -310,6 +315,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     			$labelsoutput.= "\t</td>\n"
     			."\t<td>\n"
     			."\t<input type='text' name='title_{$row['language']}_{$row['sortorder']}' maxlength='100' size='80' value=\"".html_escape($row['title'])."\" onkeypress=\"return catchenter(event,'saveallbtn');\"/>\n"
+			. getEditor("editlabel", "title_{$row['language']}_{$row['sortorder']}", "[".$clang->gT("Label:", "js")."](".$row['language'].")",'','','',$action)
     			."\t</td>\n"
     			."\t<td>\n";
     			if ($activeuse == 0)
@@ -343,6 +349,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     			."\t</td>\n"
     			."\t<td>\n"
     			."\t<input type='text' maxlength='100' name='inserttitle' size='80' onkeypress=\"return catchenter(event,'addnewlabelbtn');\"/>\n"
+			. getEditor("addlabel", "inserttitle", "[".$clang->gT("Label:", "js")."](".$lslanguage.")",'','','',$action)
     			."\t</td>\n"
     			."\t<td>\n"
     			."\t<input type='submit' name='method' value='".$clang->gT("Add new label")."' id='addnewlabelbtn' />\n"
