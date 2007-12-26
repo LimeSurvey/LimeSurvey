@@ -140,6 +140,7 @@ if ($action == "editgroup")
         . "\t</span></div>\n"
         . "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Description:")."</span>\n"
         . "\t\t<span class='settingentry'><textarea cols='70' rows='8' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
+    	. getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid,'',$action)
         . "\t</span></div><div class='settingrow'></div></div>"; // THis empty div class is needed for forcing the tabpage border under the button
     }
     $editgroup .= '</div>';

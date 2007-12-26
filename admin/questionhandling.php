@@ -376,9 +376,11 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		$editquestion .= '</h2>';
 		$editquestion .=  "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Question:")."</span>\n"
 		. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='question_{$aqrow['language']}'>{$aqrow['question']}</textarea>\n"
+		. getEditor("question-text","question_".$aqrow['language'], "[".$clang->gT("Question:", "js")."](".$aqrow['language'].")",$surveyid,$gid,$qid,$action)
 		. "\t</span></div>\n"
 		. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Help:")."</span>\n"
 		. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='help_{$aqrow['language']}'>{$aqrow['help']}</textarea>\n"
+		. getEditor("question-help","help_".$aqrow['language'], "[".$clang->gT("Help:", "js")."](".$aqrow['language'].")",$surveyid,$gid,$qid,$action)
 		. "\t</span></div>\n"
 		. "\t<div class='settingrow'><span class='settingcaption'>&nbsp;</span>\n"
 		. "\t\t<span class='settingentry'>&nbsp;\n"
