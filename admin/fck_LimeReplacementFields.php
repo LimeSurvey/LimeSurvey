@@ -12,10 +12,6 @@
 * 
 * $Id: conditions.php 3736 2007-11-30 16:13:55Z lemeur $
 */
-require_once(dirname(__FILE__).'/../config.php');
-require_once(dirname(__FILE__).'/../common.php');
-
-@ini_set('session.gc_maxlifetime', $sessionlifetime);
 
 include_once("login_check.php");
 
