@@ -137,7 +137,6 @@ if ($isInstertansEnabled===true)
 
 				if ($qrow['gid'] == $gid)
 				{
-					error_log(print_r($qrow,true));
 					$AddQuestion=False;
 				}
 			break;

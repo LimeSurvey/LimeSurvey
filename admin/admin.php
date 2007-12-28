@@ -16,6 +16,7 @@
 
 require_once(dirname(__FILE__).'/../config.php');  
 require_once(dirname(__FILE__).'/../common.php');
+require_once('htmleditor-functions.php');
 
 @ini_set('session.gc_maxlifetime', $sessionlifetime);
 
@@ -28,6 +29,7 @@ if (!isset($lid)) {$lid=returnglobal('lid');}                   //LabelID
 if (!isset($code)) {$code=returnglobal('code');}                // ??
 if (!isset($action)) {$action=returnglobal('action');}          //Desired action
 if (!isset($subaction)) {$subaction=returnglobal('subaction');} //Desired subaction
+if (!isset($editedaction)) {$editedaction=returnglobal('editedaction');} // for html editor integration
 if (!isset($ok)) {$ok=returnglobal('ok');}                      // ??
 if (!isset($fp)) {$fp=returnglobal('filev');}                   //??
 if (!isset($elem)) {$elem=returnglobal('elem');}                //??
@@ -249,7 +251,8 @@ elseif ($action=="assessments" || $action=="assessmentdelete" || $action=="asses
     }    
 elseif ($action == "replacementfields")
     {
-    if($surrows['define_questions'])    {include("fck_LimeReplacementFields.php");exit;}
+    if ($editedaction != 'editlabel' && $editedaction != 'addlabel' && $surrows['define_questions'])    {include("fck_LimeReplacementFields.php");exit;}
+	elseif ( ($editedaction == 'editlabel' || $editedaction == 'addlabel') && $_SESSION['USER_RIGHT_MANAGE_LABEL']==1) {include("fck_LimeReplacementFields.php");exit;}
         else { include("access_denied.php");}    
     }    
 

@@ -17,7 +17,7 @@
 
 function PrepareEditorPopupScript()
 {
-	global $clang,$imagefiles,$rooturl;
+	global $clang,$imagefiles,$homeurl;
 
 	$script = "<script type='text/javascript'>\n"
 	. "<!--\n"
@@ -50,7 +50,7 @@ function PrepareEditorPopupScript()
 //	. "\t\t\tdocument.getElementById(controlid).src='".$imagefiles."/edithtmlpopup_disabled.png';\n"
 	. "\t\t\tdocument.getElementById(controlidena).style.display='none';\n"
 	. "\t\t\tdocument.getElementById(controliddis).style.display='';\n"
-	. "\t\t\tpopup = window.open('".$rooturl."/htmleditor-popup.php?fieldname='+fieldname+'&fieldtext='+fieldtext+'&fieldtype='+fieldtype+'&action='+action+'&sid='+sid+'&gid='+gid+'&qid='+qid+'&lang=".$clang->getlangcode()."','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=600, height=400');\n"
+	. "\t\t\tpopup = window.open('".$homeurl."/htmleditor-popup.php?fieldname='+fieldname+'&fieldtext='+fieldtext+'&fieldtype='+fieldtype+'&action='+action+'&sid='+sid+'&gid='+gid+'&qid='+qid+'&lang=".$clang->getlangcode()."','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=600, height=400');\n"
 	. "\t\t\teditorwindowsHash[fieldname] = popup;\n"
 	. "\t\t}\n"
 	. "\t\telse\n"
@@ -65,8 +65,8 @@ function PrepareEditorPopupScript()
 
 function PrepareEditorInlineScript()
 {
-	global $rooturl;
-	$script ="<script type=\"text/javascript\" src=\"".$rooturl."/scripts/fckeditor/fckeditor.js\"></script>\n";
+	global $homeurl;
+	$script ="<script type=\"text/javascript\" src=\"".$homeurl."/scripts/fckeditor/fckeditor.js\"></script>\n";
 /*** Commented because of inconsistencies
 	$script .= ""
 	. "<script type='text/javascript'>\n"
@@ -134,7 +134,7 @@ function getEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$q
 
 function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
 {
-	global $clang, $imagefiles, $rooturl;
+	global $clang, $imagefiles, $homeurl;
 
 	$htmlcode = '';
 	$imgopts = '';
@@ -156,7 +156,7 @@ function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=nu
 
 function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
 {
-	global $clang, $imagefiles, $rooturl;
+	global $clang, $imagefiles, $homeurl;
 
 	$htmlcode = '';
 	$imgopts = '';
@@ -178,8 +178,8 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
 	$htmlcode .= ""
 	. "<script type=\"text/javascript\">\n"
 	. "var oFCKeditor_$fieldname = new FCKeditor('$fieldname');\n"
-	. "oFCKeditor_$fieldname.BasePath     = '".$rooturl."/scripts/fckeditor/';\n"
-	. "oFCKeditor_$fieldname.Config[\"CustomConfigurationsPath\"] = \"".$rooturl."/scripts/fckeditor/limesurvey-config.js\";\n"
+	. "oFCKeditor_$fieldname.BasePath     = '".$homeurl."/scripts/fckeditor/';\n"
+	. "oFCKeditor_$fieldname.Config[\"CustomConfigurationsPath\"] = \"".$homeurl."/scripts/fckeditor/limesurvey-config.js\";\n"
 	. "oFCKeditor_$fieldname.Config[\"LimeReplacementFieldsType\"] = \"".$fieldtype."\";\n"
 	. "oFCKeditor_$fieldname.Config[\"LimeReplacementFieldsSID\"] = \"".$surveyID."\";\n"
 	. "oFCKeditor_$fieldname.Config[\"LimeReplacementFieldsGID\"] = \"".$gID."\";\n"

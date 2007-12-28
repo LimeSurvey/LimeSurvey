@@ -26,7 +26,7 @@ FCKCommands.RegisterCommand( 'LimeReplacementFields',
 	new FCKDialogCommand( 'LimeReplacementFields', 
 	FCKLang.LimeReplacementFieldsDlgTitle, 
 	FCKPlugins.Items['LimeReplacementFields'].Path + 
-		'../../../../../admin/admin.php?sid=' +
+		'../../../../../admin.php?sid=' +
 		FCK.Config.LimeReplacementFieldsSID +
 		'&gid=' + FCK.Config.LimeReplacementFieldsGID +
 		'&qid=' + FCK.Config.LimeReplacementFieldsQID +

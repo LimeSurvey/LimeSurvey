@@ -4121,6 +4121,4 @@ function mydebug_var($strOutput)
   fclose($datei);
 }
 
-require_once(dirname(__FILE__).'/htmleditor-functions.php');
-
 ?>

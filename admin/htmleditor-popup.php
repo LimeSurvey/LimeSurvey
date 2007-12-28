@@ -17,10 +17,10 @@
 //include_once("login_check.php");
 
 // config.php itself includes common.php
-if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
-require_once(dirname(__FILE__).'/config.php');
-require_once(dirname(__FILE__).'/common.php');
-require_once($rootdir.'/classes/core/language.php');
+//if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
+require_once(dirname(__FILE__).'/../config.php');
+require_once(dirname(__FILE__).'/../classes/core/language.php');
+
 
 if (!isset($_GET['lang']))
 {
@@ -86,7 +86,7 @@ else {
 		<title>'.$clang->gT("Editing").' '.$fieldtext.'</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="robots" content="noindex, nofollow" />
-		<script type="text/javascript" src="'.$rooturl.'/scripts/fckeditor/fckeditor.js"></script>
+		<script type="text/javascript" src="'.$homeurl.'/scripts/fckeditor/fckeditor.js"></script>
 	</head>';
 
 
@@ -104,11 +104,11 @@ else {
 	var saveChanges = false;
 
 	var oFCKeditor = new FCKeditor( 'MyTextarea' );
-	oFCKeditor.BasePath	= '".$rooturl."/scripts/fckeditor/';
+	oFCKeditor.BasePath	= '".$homeurl."/scripts/fckeditor/';
 	oFCKeditor.Height	= '350';
 	oFCKeditor.Width	= '98%';
 	oFCKeditor.Value      = window.opener.document.getElementsByName(\"".$fieldname."\")[0].value;
-	oFCKeditor.Config[\"CustomConfigurationsPath\"] = \"".$rooturl."/scripts/fckeditor/limesurvey-config.js\";
+	oFCKeditor.Config[\"CustomConfigurationsPath\"] = \"".$homeurl."/scripts/fckeditor/limesurvey-config.js\";
 	oFCKeditor.Config[\"ToolbarStartExpanded\"] = true;
 	oFCKeditor.Config[\"ToolbarCanCollapse\"] = false;
 	oFCKeditor.ToolbarSet = '".$toolbarname."';
