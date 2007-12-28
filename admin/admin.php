@@ -129,7 +129,7 @@ if ($action == "activate")
         else { include("access_denied.php");}    
     }
 elseif ($action == "conditions")
-    {
+{
     if($surrows['define_questions'])    {include("conditions.php");}
         else { include("access_denied.php");}    
     }    
@@ -245,6 +245,11 @@ elseif ($action=="showprintablesurvey")
 elseif ($action=="assessments" || $action=="assessmentdelete" || $action=="assessmentedit" || $action=="assessmentadd" || $action=="assessmentupdate")
     {
     if($surrows['define_questions'])    {include("assessments.php");}
+        else { include("access_denied.php");}    
+    }    
+elseif ($action == "replacementfields")
+    {
+    if($surrows['define_questions'])    {include("fck_LimeReplacementFields.php");exit;}
         else { include("access_denied.php");}    
     }    
 

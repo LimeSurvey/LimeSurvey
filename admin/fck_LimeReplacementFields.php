@@ -28,7 +28,7 @@ $surveyid=returnglobal('sid');
 if (!isset($gid)) {$gid=returnglobal('gid');}
 if (!isset($qid)) {$qid=returnglobal('qid');}
 $fieldtype=preg_replace("/[^_.a-zA-Z0-9-]/", "",$_GET['fieldtype']);
-$action=preg_replace("/[^_.a-zA-Z0-9-]/", "",$_GET['action']);
+$action=preg_replace("/[^_.a-zA-Z0-9-]/", "",$_GET['editedaction']);
 
 $InsertansUnsupportedtypes=Array('TEST-A','TEST-B','TEST-C','TEST-D');
 
@@ -166,6 +166,9 @@ if ($isInstertansEnabled===true)
 				{
 					$AddQuestion=False;
 				}
+			break;
+			default:
+				die("No Action provided.");
 			break;
 		}
 
@@ -322,9 +325,6 @@ if (count($replFields) > 0)
 	foreach ($replFields as $stdfield)
 	{
 		$limereplacementoutput .= "\t\t\t\t<option value='".$stdfield[0]."'";
-		if (isset($_GET['cquestions']) && $cqn[3] == $_GET['cquestions']) {
-			$limereplacementoutput .= " selected";
-		}
 		$limereplacementoutput .= ">".$stdfield[1]."</option>\n";
 	}
 	$limereplacementoutput .= "\t\t\t\t</optgroup>\n";
@@ -342,9 +342,6 @@ if (isset($cquestions))
 		}
 
 		$limereplacementoutput .= "\t\t\t\t<option value='INSERTANS:$cqn[3]'";
-		if (isset($_GET['cquestions']) && $cqn[3] == $_GET['cquestions']) {
-			$limereplacementoutput .= " selected";
-		}
 		$limereplacementoutput .= " $isDisabled >$cqn[0]</option>\n";
 	}
 	$limereplacementoutput .= "\t\t\t\t</optgroup>\n";
