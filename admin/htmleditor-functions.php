@@ -156,7 +156,7 @@ function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=nu
 
 function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
 {
-	global $clang, $imagefiles, $homeurl;
+	global $clang, $imagefiles, $homeurl, $rooturl;
 
 	$htmlcode = '';
 	$imgopts = '';
@@ -186,6 +186,7 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
 	. "oFCKeditor_$fieldname.Config[\"LimeReplacementFieldsQID\"] = \"".$qID."\";\n"
 	. "oFCKeditor_$fieldname.Config[\"LimeReplacementFieldsType\"] = \"".$fieldtype."\";\n"
 	. "oFCKeditor_$fieldname.Config[\"LimeReplacementFieldsAction\"] = \"".$action."\";\n"
+	. "oFCKeditor_$fieldname.Config[\"SmileyPath\"] = \"".$rooturl."/upload/images/smiley/msn/\";\n"
 	. $toolbaroption; 
 
 	if ($fieldtype == 'answer' || $fieldtype == 'label')

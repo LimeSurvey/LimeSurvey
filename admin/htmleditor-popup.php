@@ -117,6 +117,7 @@ else {
 	oFCKeditor.Config[\"LimeReplacementFieldsQID\"] = \"".$qid."\";
 	oFCKeditor.Config[\"LimeReplacementFieldsType\"] = \"".$fieldtype."\";
 	oFCKeditor.Config[\"LimeReplacementFieldsAction\"] = \"".$action."\";
+	oFCKeditor.Config[\"SmileyPath\"] = \"".$rooturl."/upload/images/smiley/msn/\";
 	oFCKeditor.Create();
 
 	function FCKeditor_OnComplete( editorInstance )
