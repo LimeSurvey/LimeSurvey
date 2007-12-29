@@ -80,6 +80,8 @@ switch ($fieldtype)
 		$replFields[]=array('SURVEYDESCRIPTION',$clang->gT("Description of the survey"));
 		$replFields[]=array('ATTRIBUTE_1',$clang->gT("Attribute_1 from token"));
 		$replFields[]=array('ATTRIBUTE_2',$clang->gT("Attribute_2 from token"));
+		$replFields[]=array('ADMINNAME',$clang->gT("Name of the survey administrator"));
+		$replFields[]=array('ADMINEMAIL',$clang->gT("Email address of the survey administrator"));
 		$replFields[]=array('SURVEYURL',$clang->gT("URL of the survey"));
 	break;
 

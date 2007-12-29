@@ -4121,4 +4121,13 @@ function mydebug_var($strOutput)
   fclose($datei);
 }
 
+// getEmailFormat: returns email format for the survey
+// returns 'text' or 'html'
+function getEmailFormat($surveyid)
+{
+	// Carsten: I let you add the required field and query
+	return 'html';
+	//return 'text';
+}
+
 ?>

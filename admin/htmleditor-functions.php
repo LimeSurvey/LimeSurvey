@@ -114,6 +114,15 @@ function getEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$q
 {
 	global $htmleditormode;
 
+	if ( ($fieldtype == 'email-inv' ||
+		$fieldtype == 'email-reg' ||
+		$fieldtype == 'email-conf' ||
+		$fieldtype == 'email-rem' ) &&
+	      getEmailFormat($surveyid) != 'html')
+	{
+		return '';
+	}
+
 	if ($htmleditormode == 'popup' ||
 		$fieldtype == 'editanswer' ||
 		$fieldtype == 'addanswer' ||
@@ -162,6 +171,7 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
 	$imgopts = '';
 	$toolbarname = 'Basic';
 	$toolbaroption="";
+	$htmlformatoption="";
 
 	if ($fieldtype == 'editanswer' || 
 		$fieldtype == 'addanswer' ||
@@ -173,6 +183,14 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
 		. "oFCKeditor_$fieldname.Config[\"ToolbarStartExpanded\"]=true;\n"
 		. "oFCKeditor_$fieldname.Config[\"ToolbarCanCollapse\"]=false;\n"
 		. "oFCKeditor_$fieldname.Height = \"50\"\n";
+	}
+
+	if ( $fieldtype == 'email-inv' ||
+		$fieldtype == 'email-reg' ||
+		$fieldtype == 'email-conf' ||
+		$fieldtype == 'email-rem' ) 
+	{
+		$htmlformatoption = "oFCKeditor_$fieldname.Config[\"FullPage\"]=true;\n";
 	}
 
 	$htmlcode .= ""
@@ -187,6 +205,7 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
 	. "oFCKeditor_$fieldname.Config[\"LimeReplacementFieldsType\"] = \"".$fieldtype."\";\n"
 	. "oFCKeditor_$fieldname.Config[\"LimeReplacementFieldsAction\"] = \"".$action."\";\n"
 	. "oFCKeditor_$fieldname.Config[\"SmileyPath\"] = \"".$rooturl."/upload/images/smiley/msn/\";\n"
+	. $htmlformatoption
 	. $toolbaroption; 
 
 	if ($fieldtype == 'answer' || $fieldtype == 'label')

@@ -70,13 +70,15 @@ else {
 	$fieldtype=preg_replace("/[^_.a-zA-Z0-9-]/", "",$_GET['fieldtype']);
 	$action=preg_replace("/[^_.a-zA-Z0-9-]/", "",$_GET['action']);
 
-	if (isset($_GET['toolbarname']))
+	$toolbarname='LimeSurveyToolbarfullPopup';
+	$htmlformatoption='';
+
+	if ( $fieldtype == 'email-inv' ||
+		$fieldtype == 'email-reg' ||
+		$fieldtype == 'email-conf' ||
+		$fieldtype == 'email-rem' ) 
 	{
-		$toolbarname=$_GET['toolbarname'];
-	}
-	else
-	{
-		$toolbarname='LimeSurveyToolbarfullPopup';
+		$htmlformatoption = "oFCKeditor.Config[\"FullPage\"]=true;";
 	}
 
 	$output = '
@@ -118,6 +120,7 @@ else {
 	oFCKeditor.Config[\"LimeReplacementFieldsType\"] = \"".$fieldtype."\";
 	oFCKeditor.Config[\"LimeReplacementFieldsAction\"] = \"".$action."\";
 	oFCKeditor.Config[\"SmileyPath\"] = \"".$rooturl."/upload/images/smiley/msn/\";
+	$htmlformatoption
 	oFCKeditor.Create();
 
 	function FCKeditor_OnComplete( editorInstance )
