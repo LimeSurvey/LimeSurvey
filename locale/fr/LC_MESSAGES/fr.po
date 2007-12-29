@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-11-22 20:06+0100\n"
+"PO-Revision-Date: 2007-12-24 12:12+0100\n"
 "Last-Translator: seb <seb>\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -2047,7 +2047,7 @@ msgstr "OU"
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/stats.php:350
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/stats.php:356
 msgid "Equals"
-msgstr "égale"
+msgstr "Égal"
 
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/conditions.php:586
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/conditions.php:617
@@ -5291,7 +5291,7 @@ msgstr "Comme"
 
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/stats.php:357
 msgid "Not Equals"
-msgstr "Non égal"
+msgstr "Différent de"
 
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/stats.php:413
 msgid "Filter Conditions"
