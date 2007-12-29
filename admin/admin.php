@@ -251,8 +251,8 @@ elseif ($action=="assessments" || $action=="assessmentdelete" || $action=="asses
     }    
 elseif ($action == "replacementfields")
     {
-    if ($editedaction != 'editlabel' && $editedaction != 'addlabel' && $surrows['define_questions'])    {include("fck_LimeReplacementFields.php");exit;}
-	elseif ( ($editedaction == 'editlabel' || $editedaction == 'addlabel') && $_SESSION['USER_RIGHT_MANAGE_LABEL']==1) {include("fck_LimeReplacementFields.php");exit;}
+    if ($editedaction != 'labels' && $surrows['define_questions'])    {include("fck_LimeReplacementFields.php");exit;}
+	elseif ( $editedaction == 'labels' && $_SESSION['USER_RIGHT_MANAGE_LABEL']==1) {include("fck_LimeReplacementFields.php");exit;}
         else { include("access_denied.php");}    
     }    
 
