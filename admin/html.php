@@ -1211,7 +1211,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 
 if (returnglobal('viewanswer'))
 {
-	
+	$_SESSION['FileManagerContext']="edit:answer:$surveyid";	
 	// Get languages select on survey.
 	$anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
