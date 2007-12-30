@@ -24,20 +24,96 @@
 
 global $Config ;
 
+
+// read LimeSurvey config files and standard library
+require_once(dirname(__FILE__).'/../../../../../../../config.php');
+require_once(dirname(__FILE__).'/../../../../../../../common.php');
+
+$query = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";
+$usresult = db_execute_assoc($usquery,'',true);
+if ($usresult)
+{
+	$usrow = $usresult->FetchRow();
+	@session_name($usrow['stg_value']);
+}
+else
+{
+	session_name("LimeSurveyAdmin");
+}
+
+if (session_id() == "") @session_start();
+
+
 // SECURITY: You must explicitly enable this "connector". (Set it to "true").
 // WARNING: don't just set "$Config['Enabled'] = true ;", you must be sure that only 
 //		authenticated users can access this file or use some kind of session checking.
 $Config['Enabled'] = false ;
 
 
+
+
+if (isset($_SESSION['loginID']) && isset($_SESSION['FileManagerContext']))
+{
+	// disable upload at survey creation time
+	// because we don't know the sid yet
+	if (preg_match('/^(create|edit):(question|group)/',$_SESSION['FileManagerContext']) != 0 ||
+		preg_match('/^edit:survey/',$_SESSION['FileManagerContext']) != 0)
+	{
+		$contextarray=split(':',$_SESSION['FileManagerContext'],3);
+		$surveyid=$contextarray[2];
+
+		// now check if the user has survey design rights
+		$surquery = "SELECT * FROM {$dbprefix}surveys_rights WHERE sid=".db_quote($surveyid)." AND uid = ".db_quote($_SESSION['loginID']); //Getting rights for this survey
+		$surresult = db_execute_assoc($surquery);
+		$surrows = $surresult->FetchRow();
+
+		if($surrows['define_questions'])
+		{
+			$Config['Enabled'] = true ;
+			$Config['UserFilesPath'] = "$rooturl/upload/$surveyid/" ;
+			$Config['UserFilesAbsolutePath'] = "$rootdir/upload/$surveyid/" ;
+
+		}
+
+	}
+	elseif (preg_match('/^edit:label/',$_SESSION['FileManagerContext']) != 0)
+	{
+		// check if the user has label management right
+		if ($_SESSION['USER_RIGHT_MANAGE_LABEL']==1)
+		{
+			$Config['Enabled'] = true ;
+			$Config['UserFilesPath'] = "$rooturl/upload/labels/" ;
+			$Config['UserFilesAbsolutePath'] = "$rootdir/upload/labels/" ;
+		}
+	}
+	else
+	{
+		// send a notice message
+		//SendError(1, $clang->gT("Upload of files is not enabled in this mode"));
+//		echo "<script type=\"text/javascript\">\n"
+//		. "<!--\n"
+//		. "alert('".$clang->gT("Upload of files is not enabled in this mode")."');\n"
+//		. "-->\n"
+//		. "</script>\n";
+//
+//		echo $clang->gT("Upload of files is not enabled in this mode");
+	
+		// I can't find a way to notify the user here :-(
+	}
+}
+
+
+
+
+
 // Path to user files relative to the document root.
-$Config['UserFilesPath'] = '/userfiles/' ;
+//$Config['UserFilesPath'] = '/userfiles/' ;
 
 // Fill the following value it you prefer to specify the absolute path for the
 // user files directory. Useful if you are using a virtual directory, symbolic
 // link or alias. Examples: 'C:\\MySite\\userfiles\\' or '/root/mysite/userfiles/'.
 // Attention: The above 'UserFilesPath' must point to the same directory.
-$Config['UserFilesAbsolutePath'] = '' ;
+//$Config['UserFilesAbsolutePath'] = '' ;
 
 // Due to security issues with Apache modules, it is recommended to leave the
 // following setting enabled.

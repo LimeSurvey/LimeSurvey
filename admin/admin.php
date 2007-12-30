@@ -20,6 +20,9 @@ require_once('htmleditor-functions.php');
 
 @ini_set('session.gc_maxlifetime', $sessionlifetime);
 
+// Reset FileManagerContext
+$_SESSION['FileManagerContext']='';
+
 if (!isset($adminlang)) {$adminlang=returnglobal('adminlang');} // Admin language
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}         //SurveyID
 if (!isset($ugid)) {$ugid=returnglobal('ugid');}                //Usergroup-ID
@@ -95,7 +98,7 @@ elseif ($action=="labels" || $action=="newlabelset" || $action=="insertlabelset"
         $action=="deletelabelset" || $action=="editlabelset" || $action=="modlabelsetanswers" || 
         $action=="updateset" || $action=="importlabels")
   { 
-      if ($_SESSION['USER_RIGHT_MANAGE_LABEL']==1)  {include("labels.php");}
+      if ($_SESSION['USER_RIGHT_MANAGE_LABEL']==1)  {$_SESSION['FileManagerContext']='edit:label';include("labels.php");}
         else { include("access_denied.php");}
   }      
 elseif ($action=="templates" || $action=="templatecopy" || $action=="templatesavechanges" || 
@@ -187,7 +190,7 @@ elseif ($action == "previewquestion")
     }
 elseif ($action=="addgroup" || $action=="editgroup")        
     {
-    if($surrows['define_questions'])    {include("grouphandling.php");}
+    if($surrows['define_questions'])    {$_SESSION['FileManagerContext']="edit:group:$surveyid";include("grouphandling.php");}
         else { include("access_denied.php");}    
     }
 elseif ($action == "vvexport")
@@ -269,7 +272,7 @@ elseif ($action == "replacementfields")
  if ($action=="addquestion" || $action=="copyquestion" || $action=="editquestion" || 
      $action=="orderquestions" || $action=="editattribute" || $action=="delattribute" || 
      $action=="addattribute" )
-    {if($surrows['define_questions'])    {include("questionhandling.php");}
+    {if($surrows['define_questions'])    {$_SESSION['FileManagerContext']="edit:question:$surveyid";include("questionhandling.php");}
         else { include("access_denied.php");}    
     }    
 
