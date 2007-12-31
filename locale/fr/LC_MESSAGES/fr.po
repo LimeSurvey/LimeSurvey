@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-12-29 15:24+0100\n"
+"PO-Revision-Date: 2007-12-31 11:04+0100\n"
 "Last-Translator: seb <seb>\n"
 "Language-Team: Sébastien GAUGRY\n"
 "MIME-Version: 1.0\n"
@@ -6485,7 +6485,7 @@ msgstr "Choisir les colonnes"
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/exportresults.php:226
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/exportresults.php:232
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/exportresults.php:283
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/admin.php:410
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/admin.php:413
 msgid "Help"
 msgstr "Aide"
 
@@ -6954,8 +6954,8 @@ msgstr "Ne pas ACTUALISER cette page sous peine d'importer de nouveau le fichier
 msgid "Total records imported:"
 msgstr "Nombre d'enregistrement(s) importé(s) :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/admin.php:356
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/admin.php:368
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/admin.php:359
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/admin.php:371
 msgid "LimeSurvey Online Manual"
 msgstr "Manuel en ligne de LimeSurvey"
 
