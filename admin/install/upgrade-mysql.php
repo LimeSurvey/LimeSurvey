@@ -20,7 +20,7 @@
 function db_upgrade($oldversion) {
 /// This function does anything necessary to upgrade 
 /// older versions to match current functionality
-global $modifyoutput, $databasename;
+global $modifyoutput, $databasename, $databasetabletype;
 echo str_pad('Loading... ',4096)."<br />\n";
     if ($oldversion < 111) {
       // Language upgrades from version 110 to 111 since the language names did change
