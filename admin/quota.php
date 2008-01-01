@@ -157,6 +157,31 @@ function getQuotaAnswers($qid,$surveyid,$quota_id)
 		}
 	}
 
+	if ($qtype['type'] == 'I')
+	{
+		
+		$slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+		array_unshift($slangs,$baselang);
+		
+		$query = "SELECT * FROM ".db_table_name('quota_members')." WHERE sid='{$surveyid}' and qid='{$qid}' and quota_id='{$quota_id}'";
+		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+
+		while(list($key,$value) = each($slangs))
+		{
+			$tmparrayans = array('Title' => $qtype['title'], 'Display' => getLanguageNameFromCode($value,false), $value);
+			$answerlist[$value]	= $tmparrayans;
+		}
+		
+		if ($result->RecordCount() > 0)
+		{
+			while ($quotalist = $result->FetchRow())
+			{
+				$answerlist[$quotalist['code']]['rowexists'] = '1';
+			}
+
+		}
+	}
+	
 	if (!isset($answerlist))
 	{
 		return array();
@@ -169,10 +194,10 @@ function getQuotaAnswers($qid,$surveyid,$quota_id)
 
 if($sumrows5['edit_survey_property'])
 {
-	if (isset($_POST['quotamax'])) {$_POST['quotamax']=sanitize_int($_POST['quotamax']);}
-	if (!isset($action)) {$action=returnglobal('action');}
-	if (!isset($subaction)) {$subaction=returnglobal('subaction');}
-
+	if (isset($_POST['quotamax'])) $_POST['quotamax']=sanitize_int($_POST['quotamax']);
+	if (!isset($action)) $action=returnglobal('action');
+	if (!isset($subaction)) $subaction=returnglobal('subaction');
+	if (!isset($quotasoutput)) $quotasoutput = "";
 	if($subaction == "insertquota")
 	{
 		$_POST  = array_map('db_quote', $_POST);
@@ -349,8 +374,8 @@ if($sumrows5['edit_survey_property'])
 	{
 		if ($subaction == "new_answer_two") $_GET['quota_id'] = $_POST['quota_id'];
 
-		$allowed_types = "type ='G' or type ='M' or type ='Y' or type ='A' or type ='B'";
-		$query = "SELECT qid, title, question FROM ".db_table_name('questions')." where $allowed_types";
+		$allowed_types = "(type ='G' or type ='M' or type ='Y' or type ='A' or type ='B' or type ='I')";
+		$query = "SELECT qid, title, question FROM ".db_table_name('questions')." where $allowed_types and language='{$baselang}'";
 		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
 		if ($result->RecordCount() == 0)
 		{
