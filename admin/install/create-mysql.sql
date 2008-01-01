@@ -12,6 +12,31 @@
 
 -- --------------------------------------------------------
 
+CREATE TABLE `prefix_quota` (
+  `id` int(11) NOT NULL auto_increment,
+  `sid` int(11) default NULL,
+  `name` varchar(255) collate utf8_unicode_ci default NULL,
+  `qlimit` int(8) default NULL,
+  `action` int(2) default NULL,
+  `active` int(1) NOT NULL default '1',
+  PRIMARY KEY  (`id`)
+)  TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+
+
+
+CREATE TABLE `prefix_quota_members` (
+  `id` int(11) NOT NULL auto_increment,
+  `sid` int(11) default NULL,
+  `qid` int(11) default NULL,
+  `quota_id` int(11) default NULL,
+  `code` varchar(5) collate utf8_unicode_ci default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `sid` (`sid`,`qid`,`quota_id`,`code`)
+)   TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
 -- 
 -- Table structure for table `answers`
 -- 

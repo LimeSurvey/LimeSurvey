@@ -2,6 +2,32 @@
 
 -- --------------------------------------------------------
 
+CREATE TABLE [prefix_quota] (
+  [id] int NOT NULL IDENTITY (1,1),
+  [sid] int ,
+  [name] varchar(255),
+  [qlimit] int ,
+  [action] int ,
+  [active] int NOT NULL default '1',
+  PRIMARY KEY  ([id])
+);
+
+
+
+
+
+CREATE TABLE [prefix_quota_members] (
+  [id] int NOT NULL IDENTITY (1,1),
+  [sid] int ,
+  [qid] int ,
+  [quota_id] int ,
+  [code] varchar(5) ,
+  PRIMARY KEY  ([id])
+);
+
+
+
+
 -- 
 -- Table structure for table [answers]
 -- 

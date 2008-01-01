@@ -105,13 +105,32 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","update `prefix_settings_global` set `stg_value`='114' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     
-    if ($oldversion < 118) {
+    if ($oldversion < 119) {
     //Adds new "public" field
         modify_database("","ALTER TABLE `prefix_surveys` ADD `printanswers` CHAR(1) default 'N' AFTER allowsave"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE `prefix_surveys` ADD `listpublic` CHAR(1) default 'N' AFTER `datecreated`"); echo $modifyoutput; flush();
         upgrade_survey_tables117();
         upgrade_survey_tables118();
-        modify_database("","update `prefix_settings_global` set `stg_value`='118' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+	// 119
+        modify_database("","CREATE TABLE `prefix_quota` (
+ 				            `id` int(11) NOT NULL auto_increment,
+  							`sid` int(11) default NULL,
+  							`name` varchar(255) collate utf8_unicode_ci default NULL,
+  							`qlimit` int(8) default NULL,
+  							`action` int(2) default NULL,
+  							`active` int(1) NOT NULL default '1',
+  							PRIMARY KEY  (`id`)
+							)  TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
+        modify_database("","CREATE TABLE `prefix_quota_members` (
+   		 				   `id` int(11) NOT NULL auto_increment,
+						   `sid` int(11) default NULL,
+  						   `qid` int(11) default NULL,
+  						   `quota_id` int(11) default NULL,
+  						   `code` varchar(5) collate utf8_unicode_ci default NULL,
+  						   PRIMARY KEY  (`id`),
+  						   UNIQUE KEY `sid` (`sid`,`qid`,`quota_id`,`code`)
+						   )   TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
+        modify_database("","update `prefix_settings_global` set `stg_value`='119' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     return true;
 }
