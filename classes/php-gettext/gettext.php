@@ -125,12 +125,14 @@ if ($translationmode==1)
     $MAGIC1 = (int) - 1794895138;
     $MAGIC2 = (int) - 569244523;
   }  
+
+$MAGIC3 = (int) 2500072158; // <- 64 BIT FIX: ADD THIS LINE!    
     
  
 
     $this->STREAM = $Reader;
     $magic = $this->readint();
-    if ($magic == $MAGIC1) {
+    if ($magic == $MAGIC1 || $magic == $MAGIC3) { // <- 64 BIT FIX:
       $this->BYTEORDER = 0;
     } elseif ($magic == $MAGIC2) {
       $this->BYTEORDER = 1;
