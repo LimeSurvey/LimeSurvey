@@ -79,6 +79,25 @@ function getQuotaAnswers($qid,$surveyid,$quota_id)
 
 		}
 	}
+	
+	if ($qtype['type'] == 'Y')
+	{
+		$query = "SELECT * FROM ".db_table_name('quota_members')." WHERE sid='{$surveyid}' and qid='{$qid}' and quota_id='{$quota_id}'";
+
+		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+
+		$answerlist = array('Y' => array('Title' => $qtype['title'], 'Display' => $clang->gT("Yes"), 'code' => 'Y'),
+		'N' => array('Title' => $qtype['title'],'Display' => $clang->gT("No"), 'code' => 'N'));
+
+		if ($result->RecordCount() > 0)
+		{
+			while ($quotalist = $result->FetchRow())
+			{
+				$answerlist[$quotalist['code']]['rowexists'] = '1';
+			}
+
+		}
+	}
 
 	if (!isset($answerlist))
 	{
@@ -272,7 +291,7 @@ if($sumrows5['edit_survey_property'])
 	{
 		if ($subaction == "new_answer_two") $_GET['quota_id'] = $_POST['quota_id'];
 
-		$allowed_types = "type ='G' or type ='M'";
+		$allowed_types = "type ='G' or type ='M' or type ='Y'";
 		$query = "SELECT qid, title, question FROM ".db_table_name('questions')." where $allowed_types";
 		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
 		if ($result->RecordCount() == 0)
