@@ -27,6 +27,43 @@ if (isset($_POST['method']) && get_magic_quotes_gpc())
 	$_POST['method']  = stripslashes($_POST['method']);
 }
 
+function getQuotaAnswers($qid,$surveyid,$quota_id)
+{
+	global $clang;
+	$baselang = GetBaseLanguageFromSurveyID($surveyid);
+	$query = "SELECT type, title FROM ".db_table_name('questions')." WHERE qid='{$qid}' AND language='{$baselang}'";
+	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+	$qtype = $result->FetchRow();
+
+	if ($qtype['type'] == 'G')
+	{
+		$query = "SELECT * FROM ".db_table_name('quota_members')." WHERE sid='{$surveyid}' and qid='{$qid}' and quota_id='{$quota_id}'";
+
+		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+
+		$answerlist = array('M' => array('Title' => $qtype['title'], 'Display' => $clang->gT("Male"), 'code' => 'M'),
+		'F' => array('Title' => $qtype['title'],'Display' => $clang->gT("Female"), 'code' => 'F'));
+
+		if ($result->RecordCount() > 0)
+		{
+			while ($quotalist = $result->FetchRow())
+			{
+				$answerlist[$quotalist['code']]['rowexists'] = '1';
+			}
+
+		}
+	}
+
+	if (!isset($answerlist))
+	{
+		return array();
+	}
+	else
+	{
+		return $answerlist;
+	}
+}
+
 if($sumrows5['edit_survey_property'])
 {
 	if (isset($_POST['quotamax'])) {$_POST['quotamax']=sanitize_int($_POST['quotamax']);}
@@ -41,7 +78,7 @@ if($sumrows5['edit_survey_property'])
 		$viewquota = "1";
 
 	}
-	
+
 	if($subaction == "insertquotaanswer")
 	{
 		$_POST  = array_map('db_quote', $_POST);
@@ -50,7 +87,7 @@ if($sumrows5['edit_survey_property'])
 		$viewquota = "1";
 
 	}
-	
+
 	if($subaction == "quota_delans")
 	{
 		$_POST  = array_map('db_quote', $_POST);
@@ -59,20 +96,20 @@ if($sumrows5['edit_survey_property'])
 		$viewquota = "1";
 
 	}
-	
-	
+
+
 	if($subaction == "quota_delquota")
 	{
 		$_POST  = array_map('db_quote', $_POST);
 		$query = "DELETE FROM ".db_table_name('quota')." WHERE id='{$_POST['quota_id']}'";
 		$connect->Execute($query) or die($connect->ErrorMsg());
-		
+
 		$query = "DELETE FROM ".db_table_name('quota_members')." WHERE quota_id='{$_POST['quota_id']}'";
 		$connect->Execute($query) or die($connect->ErrorMsg());
 		$viewquota = "1";
 
 	}
-	
+
 	if (($action == "quotas" && !isset($subaction)) || isset($viewquota))
 	{
 
@@ -101,24 +138,24 @@ if($sumrows5['edit_survey_property'])
 
 			while ($quotalisting = $result->FetchRow())
 			{
-				$quotasoutput .='<tr> 
+				$quotasoutput .='<tr>
             		<td align="center">'.$quotalisting['name'].'</td>
             		<td align="center">';
-            		if ($quotalisting['active'] == 1)
-            		{
-            			$quotasoutput .= '<font color="#48B150">'.$clang->gT("Active").'</font>';
-            		} else {
-            			$quotasoutput .= '<font color="#B73838">'.$clang->gT("Not Active").'</font>';
-            		}
-            		$quotasoutput .='</td>
+				if ($quotalisting['active'] == 1)
+				{
+					$quotasoutput .= '<font color="#48B150">'.$clang->gT("Active").'</font>';
+				} else {
+					$quotasoutput .= '<font color="#B73838">'.$clang->gT("Not Active").'</font>';
+				}
+				$quotasoutput .='</td>
             		<td align="center">';
-            		if ($quotalisting['action'] == 1)
-            		{
-            			$quotasoutput .= $clang->gT("Terminate Survey");
-            		} elseif ($quotalisting['action'] == 2) {
-            			$quotasoutput .= $clang->gT("Terminate Survey With Warning");
-            		}
-            		$quotasoutput .='</td>
+				if ($quotalisting['action'] == 1)
+				{
+					$quotasoutput .= $clang->gT("Terminate Survey");
+				} elseif ($quotalisting['action'] == 2) {
+					$quotasoutput .= $clang->gT("Terminate Survey With Warning");
+				}
+				$quotasoutput .='</td>
             		<td align="center">'.$quotalisting['qlimit'].'</td>
             		<td align="center">N/A</td>
             		<td align="center" style="padding: 3px;">
@@ -144,16 +181,16 @@ if($sumrows5['edit_survey_property'])
             				<input type="hidden" name="quota_id" value="'.$quotalisting['id'].'" />
             				<input type="hidden" name="subaction" value="new_answer" /></form></td>
           		</tr>';
-            		
-            	$query = "SELECT id,code,qid FROM ".db_table_name('quota_members')." where quota_id='".$quotalisting['id']."'";
-            	$result2 = db_execute_assoc($query) or die($connect->ErrorMsg());
-			
+
+				$query = "SELECT id,code,qid FROM ".db_table_name('quota_members')." where quota_id='".$quotalisting['id']."'";
+				$result2 = db_execute_assoc($query) or die($connect->ErrorMsg());
+
 				if ($result2->RecordCount() > 0)
 				{
 					while ($quota_questions = $result2->FetchRow())
 					{
 						$question_answers = getQuotaAnswers($quota_questions['qid'],$surveyid,$quotalisting['id']);
-						$quotasoutput .='<tr class="evenrow"> 
+						$quotasoutput .='<tr class="evenrow">
             			<td align="center">&nbsp;</td>
             			<td align="center">'.$question_answers[$quota_questions['code']]['Title'].'</td>
             			<td align="center">'.$question_answers[$quota_questions['code']]['Display'].'</td>
@@ -172,12 +209,12 @@ if($sumrows5['edit_survey_property'])
           				</tr>';
 					}
 				}
-            		
+
 			}
-			
-			
-			
-			
+
+
+
+
 		} else
 		{
 			$quotasoutput .='<tr>
@@ -204,12 +241,12 @@ if($sumrows5['edit_survey_property'])
 							</table>';
 	}
 
-	
+
 	if($subaction == "new_answer" || ($subaction == "new_answer_two" && !isset($_POST['quota_qid'])))
 	{
 		if ($subaction == "new_answer_two") $_GET['quota_id'] = $_POST['quota_id'];
-		
-		$allowed_types = "type ='G' or type ='M'";				
+
+		$allowed_types = "type ='G' or type ='M'";
 		$query = "SELECT qid, title, question FROM ".db_table_name('questions')." where $allowed_types";
 		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
 		if ($result->RecordCount() == 0)
@@ -224,7 +261,7 @@ if($sumrows5['edit_survey_property'])
           								</tr>
         								</tbody>
       								</table>';
-		} else 
+		} else
 		{
 			$quotasoutput .='<form action="'.$scriptname.'" method="post">
 							<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
@@ -244,13 +281,13 @@ if($sumrows5['edit_survey_property'])
             								<td align="left">
             								<select name="quota_qid" size="15">';
 
-		while ($questionlisting = $result->FetchRow())
-		{
-			$quotasoutput .='<option value="'.$questionlisting['qid'].'">'.$questionlisting['title'].': '.strip_tags(substr($questionlisting['question'],0,40)).'</option>';
-		}
-		
-		
-        $quotasoutput .='					</select>
+			while ($questionlisting = $result->FetchRow())
+			{
+				$quotasoutput .='<option value="'.$questionlisting['qid'].'">'.$questionlisting['title'].': '.strip_tags(substr($questionlisting['question'],0,40)).'</option>';
+			}
+
+
+			$quotasoutput .='					</select>
              								</td>
           								</tr>
           								<tr align="left" class="evenrow"> 
@@ -273,21 +310,21 @@ if($sumrows5['edit_survey_property'])
 						</table>';
 		}
 	}
-	
+
 	if($subaction == "new_answer_two" && isset($_POST['quota_qid']))
 	{
 		$_POST  = array_map('db_quote', $_POST);
-		
+
 		$question_answers = getQuotaAnswers($_POST['quota_qid'],$surveyid,$_POST['quota_id']);
 		$x=0;
-		
+
 		foreach ($question_answers as $qacheck)
 		{
 			if (isset($qacheck['rowexists'])) $x++;
 		}
-		
+
 		reset($question_answers);
-		
+
 		if (count($question_answers) == $x)
 		{
 			$quotasoutput .='<table width="100%" border="0">
@@ -300,7 +337,7 @@ if($sumrows5['edit_survey_property'])
           								</tr>
         								</tbody>
       								</table>';
-		} else 
+		} else
 		{
 			$quotasoutput .='<form action="'.$scriptname.'" method="post">
 							 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
@@ -320,13 +357,13 @@ if($sumrows5['edit_survey_property'])
             								<td align="left">
             								<select name="quota_anscode" size="15">';
 
-		while (list($key,$value) = each($question_answers))
-		{
-			if (!isset($value['rowexists'])) $quotasoutput .='<option value="'.$key.'">'.strip_tags(substr($value['Display'],0,40)).'</option>';
-		}
-		
-		
-        $quotasoutput .='					</select>
+			while (list($key,$value) = each($question_answers))
+			{
+				if (!isset($value['rowexists'])) $quotasoutput .='<option value="'.$key.'">'.strip_tags(substr($value['Display'],0,40)).'</option>';
+			}
+
+
+			$quotasoutput .='					</select>
              								</td>
           								</tr>
           								<tr align="left" class="evenrow"> 
@@ -350,7 +387,7 @@ if($sumrows5['edit_survey_property'])
 						</table>';
 		}
 	}
-	
+
 	if ($subaction == "new_quota")
 	{
 		$quotasoutput .='<form action="'.$scriptname.'" method="post">
@@ -399,43 +436,6 @@ if($sumrows5['edit_survey_property'])
   					</tr>
 				</table>';
 	}
-
-function getQuotaAnswers($qid,$surveyid,$quota_id)
-{
-	global $clang;
-	$baselang = GetBaseLanguageFromSurveyID($surveyid);
-	$query = "SELECT type, title FROM ".db_table_name('questions')." WHERE qid='{$qid}' AND language='{$baselang}'";
-	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
-	$qtype = $result->FetchRow();
-
-	if ($qtype['type'] == 'G')
-	{
-		$query = "SELECT * FROM ".db_table_name('quota_members')." WHERE sid='{$surveyid}' and qid='{$qid}' and quota_id='{$quota_id}'";
-
-		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
-
-		$answerlist = array('M' => array('Title' => $qtype['title'], 'Display' => $clang->gT("Male"), 'code' => 'M'),
-		'F' => array('Title' => $qtype['title'],'Display' => $clang->gT("Female"), 'code' => 'F'));
-
-		if ($result->RecordCount() > 0)
-		{
-			while ($quotalist = $result->FetchRow())
-			{
-				$answerlist[$quotalist['code']]['rowexists'] = '1';
-			}
-
-		}
-	}
-
-	if (!isset($answerlist))
-	{
-		return array();
-	}
-	else
-	{
-		return $answerlist;
-	}
 }
-
 
 ?>
