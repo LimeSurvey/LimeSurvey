@@ -53,6 +53,32 @@ function getQuotaAnswers($qid,$surveyid,$quota_id)
 
 		}
 	}
+	
+	if ($qtype['type'] == 'M')
+	{
+		$query = "SELECT * FROM ".db_table_name('quota_members')." WHERE sid='{$surveyid}' and qid='{$qid}' and quota_id='{$quota_id}'";
+		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+
+		$query = "SELECT code,answer FROM ".db_table_name('answers')." WHERE qid='{$qid}'";
+		$ansresult = db_execute_assoc($query) or die($connect->ErrorMsg());
+		
+		$answerlist = array();
+		
+		while ($dbanslist = $ansresult->FetchRow())
+		{
+			$tmparrayans = array('Title' => $qtype['title'], 'Display' => substr($dbanslist['answer'],0,40), 'code' => $dbanslist['code']);
+			$answerlist[$dbanslist['code']]	= $tmparrayans;
+		}
+
+		if ($result->RecordCount() > 0)
+		{
+			while ($quotalist = $result->FetchRow())
+			{
+				$answerlist[$quotalist['code']]['rowexists'] = '1';
+			}
+
+		}
+	}
 
 	if (!isset($answerlist))
 	{
