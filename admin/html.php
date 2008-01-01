@@ -531,6 +531,19 @@ if ($surveyid)
 		{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
+		
+		if ($sumrows5['edit_survey_property'])
+		{
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n"
+			. "<a href=\"#\" onclick=\"window.open('$scriptname?action=quotas&amp;sid=$surveyid', '_top')\""
+			. "onmouseout=\"hideTooltip()\""
+			. "onmouseover=\"showTooltip(event,'".$clang->gT("Set Survey Quotas", "js")."');return false\">" .
+			"<img src='$imagefiles/quota.png' title='' alt='". $clang->gT("Set Survey Quotas")."' align='left' name='SurveyAssessment' /></a>\n" ;
+		}
+		else
+		{
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
+		}
 
 		if ($activated == "Y" && $sumrows5['browse_response'])
 		{
@@ -611,7 +624,7 @@ if ($surveyid)
                  || $action=="setsurveysecurity" ||  $action=="setusergroupsurveysecurity" || $action=="delsurveysecurity" 
                  || $action=="editsurvey" || $action=="addgroup" || $action=="importgroup"
                  || $action=="ordergroups" || $action=="updatesurvey" || $action=="deletesurvey"
-                 || $action=="exportstructure" ) {$showstyle="style='display: none'";}
+                 || $action=="exportstructure" || $action=="quotas" ) {$showstyle="style='display: none'";}
 		if (!isset($showstyle)) {$showstyle="";}
         $additionnalLanguagesArray = GetAdditionalLanguagesFromSurveyID($surveyid);
 		$surveysummary .= "\t<tr id='surveydetails' $showstyle><td><table class='table2columns'><tr><td align='right' valign='top' width='15%'>"
@@ -1431,9 +1444,6 @@ if (returnglobal('viewanswer'))
 
 
 }
-
-
-
 
 // *************************************************
 // Survey Rights Start	****************************
@@ -2271,6 +2281,10 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
 
 }
 
+if($action == "quotas")
+{
+	include("quota.php");
+}
 
 // Show the screen to order groups
 

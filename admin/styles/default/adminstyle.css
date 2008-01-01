@@ -48,6 +48,15 @@ th {
     color: #1D2D45;
 }
 
+.headertwo {
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+    background-color: #D2E0F2;
+    color: #1D2D45;
+}
+
+
 
 a:link {
    font-size: 10pt;

@@ -267,7 +267,7 @@ elseif ($action == "replacementfields")
      (isset($surveyid) || $action=="listurveys" || $action=="changelang" ||  $action=="checksettings" ||       //Still to check
       $action=="editsurvey" || $action=="updatesurvey" || $action=="ordergroups"  ||
       $action=="uploadf" || $action=="newsurvey" || $action=="listsurveys" ||   
-      $action=="surveyrights") ) include("html.php");
+      $action=="surveyrights" || $action=="quotas") ) include("html.php");
 
  if ($action=="addquestion" || $action=="copyquestion" || $action=="editquestion" || 
      $action=="orderquestions" || $action=="editattribute" || $action=="delattribute" || 
@@ -314,6 +314,7 @@ elseif ($action == "replacementfields")
   if (isset($editgroup)) {$adminoutput.= $editgroup;}
   if (isset($editquestion)) {$adminoutput.= $editquestion;}
   if (isset($editsurvey)) {$adminoutput.= $editsurvey;}
+  if (isset($quotasoutput)) {$adminoutput.= $quotasoutput;}
   if (isset($labelsoutput)) {$adminoutput.= $labelsoutput;}
   if (isset($listsurveys)) {$adminoutput.= $listsurveys; }
   if (isset($integritycheck)) {$adminoutput.= $integritycheck;}
