@@ -102,7 +102,6 @@ echo str_pad('Loading... ',4096)."<br />\n";
     }
     
     if ($oldversion < 118) {
-    //Adds new "public" field
         modify_database("","ALTER TABLE [prefix_surveys] ADD  [printanswers] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] ADD  [listpublic] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
         upgrade_survey_tables117();
