@@ -84,6 +84,8 @@ if ($issurveyactive===false)
 		}
 		@session_start(); // Loads Admin Session
 
+		$previewright=false;
+		$savesessionvars=Array();
 		if (isset($_SESSION['loginID']))
 		{
 			$rightquery="SELECT * FROM {$dbprefix}surveys_rights WHERE sid=".db_quote($surveyid)." AND uid = ".db_quote($_SESSION['loginID']);
@@ -94,13 +96,11 @@ if ($issurveyactive===false)
 			if ($rightresult->RecordCount() > 0)
 			{
 				$previewright=true;
+				$savesessionvars["USER_RIGHT_PREVIEW"]=$surveyid;
+				$savesessionvars["loginID"]=$_SESSION['loginID'];
+				$savesessionvars["user"]=$_SESSION['user'];
 			}
 		}
-
-		$savesessionvars=Array();
-		$savesessionvars["USER_RIGHT_PREVIEW"]=$surveyid;
-		$savesessionvars["loginID"]=$_SESSION['loginID'];
-		$savesessionvars["user"]=$_SESSION['user'];
 
 		// change session name and id 
 		// then delete this new session
@@ -117,7 +117,7 @@ if ($issurveyactive===false)
 		// needed after clearall
 		if (session_regenerate_id() === false) { die("Error Regenerating Sesion Id");}
 
-		if ( $previewright==true)
+		if ( $previewright === true)
 		{
 			foreach ($savesessionvars as $sesskey => $sessval)
 			{
@@ -126,7 +126,7 @@ if ($issurveyactive===false)
 		}
 	}
 
-	if ($_SESSION['USER_RIGHT_PREVIEW'] != $surveyid)
+	if ( $previewright === false)
 	{
 		// print an error message
 		if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
