@@ -6,8 +6,13 @@
 		</td>
 	</tr>
 	<tr>
-		<td align='center' bgcolor='#999999'>
-			{PERCENTCOMPLETE}
+    <td align='center' bgcolor='#999999'>
+      {PERCENTCOMPLETE}
 		</td>
 	</tr>
+	<tr>
+    <td  align="center">
+      {LANGUAGECHANGER}
+    </td>
+  </tr>
 </table>

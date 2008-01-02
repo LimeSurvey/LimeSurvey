@@ -6,5 +6,10 @@
 
         </td>
     </tr>
+    <tr>
+      <td  align="center">
+        {LANGUAGECHANGER}
+      </td>
+    </tr>
     
 </table>

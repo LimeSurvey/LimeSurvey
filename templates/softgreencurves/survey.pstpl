@@ -33,6 +33,11 @@
 						{PERCENTCOMPLETE}
 					</td>
 				</tr>
+				<tr>
+          <td  align="center">
+            {LANGUAGECHANGER}
+          </td>
+        </tr>
 			</table>
 		</td>
 		<td width='25'  style='background-image:url({TEMPLATEURL}smallgrid2.gif)'>

@@ -11,6 +11,6 @@
                <tr><td  align="center">{PERCENTCOMPLETE}</td></tr>
                <tr><td  align="center">{LANGUAGECHANGER}</td></tr>
                </table></td>
-               <td valign="bottom" align="right" height="100%" width="100%"></td>
+    <td valign="bottom" align="right" height="100%" width="100%"></td>
 	</tr>
 </table>

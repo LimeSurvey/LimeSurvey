@@ -8,8 +8,13 @@
 	  </td>
 	</tr>
 	<tr>
-		<td height="30" align='center' valign="middle">
-			{PERCENTCOMPLETE}
-		</td>
-	</tr>
+    <td height="30" align='center' valign="middle">
+      {PERCENTCOMPLETE}
+    </td>
+  </tr>
+	<tr>
+    <td  align="center">
+      {LANGUAGECHANGER}
+    </td>
+  </tr>
 </table>

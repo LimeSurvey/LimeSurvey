@@ -6,8 +6,13 @@
 		</font></td>
 	</tr>
 	<tr>
-		<td align='center' bgcolor='#E1E1E1'>
-			{PERCENTCOMPLETE}
-		</td>
-	</tr>
+    <td align='center' bgcolor='#E1E1E1'>
+      {PERCENTCOMPLETE}
+    </td>
+  </tr>
+	<tr>
+    <td  align="center">
+      {LANGUAGECHANGER}
+    </td>
+  </tr>
 </table>
