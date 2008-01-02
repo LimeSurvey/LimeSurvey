@@ -29,7 +29,7 @@ global $Config ;
 require_once(dirname(__FILE__).'/../../../../../../../config.php');
 require_once(dirname(__FILE__).'/../../../../../../../common.php');
 
-$query = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";
+$usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";
 $usresult = db_execute_assoc($usquery,'',true);
 if ($usresult)
 {
