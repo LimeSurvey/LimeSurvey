@@ -26,7 +26,129 @@ $surveyid=sanitize_int($surveyid);
 if (!$publicdir) {$publicdir=".";}
 $tpldir="$publicdir/templates";
 
+
 @session_start();
+
+
+// First check if survey is active
+// if not:  copy some vars from the admin session 
+// to a new user session
+
+$issurveyactive=false;
+$actquery="SELECT * FROM ".db_table_name('surveys')." WHERE sid=$surveyid and active='Y'";
+$actresult=db_execute_assoc($actquery) or die ("Couldn't access survey settings<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+if ($actresult->RecordCount() > 0)
+{
+	$issurveyactive=true;
+}
+
+if ($issurveyactive===false)
+{
+	// admin session and permission have not already been imported
+	// for this particular survey
+	if ( !isset($_SESSION['USER_RIGHT_PREVIEW']) ||
+		$_SESSION['USER_RIGHT_PREVIEW'] != $surveyid)
+	{
+		// Store initial session name
+		$initial_session_name=session_name();
+
+		// One way (not implemented here) would be to start the
+		// user session from a duplicate of the admin session
+		// - destroy the new session
+		// - load admin session (with correct session name)
+		// - close admin session
+		// - change used session name to default
+		// - open new session (takes admin session id)
+		// - regenerate brand new session id for this session
+
+		// The solution implemented here is to copy some
+		// fields from the admin session to the new session
+		// - first destroy the new (empty) user session
+		// - then open admin session
+		// - record interresting values from the admin session
+		// - duplicate admin session under another name and Id
+		// - destroy the duplicated admin session
+		// - start a brand new user session
+		// - copy interresting values in this user session
+		session_destroy();
+		$usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";
+		$usresult = db_execute_assoc($usquery,'',true);
+		if ($usresult)
+		{
+			$usrow = $usresult->FetchRow();
+			@session_name($usrow['stg_value']);
+		}
+		else
+		{
+			session_name("LimeSurveyAdmin");
+		}
+		@session_start(); // Loads Admin Session
+
+		if (isset($_SESSION['loginID']))
+		{
+			$rightquery="SELECT * FROM {$dbprefix}surveys_rights WHERE sid=".db_quote($surveyid)." AND uid = ".db_quote($_SESSION['loginID']);
+			$rightresult = db_execute_assoc($rightquery);
+
+			// Currently it is enough to be listed in the survey
+			// user operator list to get preview access
+			if ($rightresult->RecordCount() > 0)
+			{
+				$previewright=true;
+			}
+		}
+
+		$savesessionvars=Array();
+		$savesessionvars["USER_RIGHT_PREVIEW"]=$surveyid;
+		$savesessionvars["loginID"]=$_SESSION['loginID'];
+		$savesessionvars["user"]=$_SESSION['user'];
+
+		// change session name and id 
+		// then delete this new session
+		// ==> the original admin session remains valid
+		// ==> it is possible to start a new session
+		session_name($initial_session_name);
+		if (session_regenerate_id() === false) { die("Error Regenerating Sesion Id");}
+		session_destroy();
+
+		// start new session
+		@session_start();
+		// regenerate id so that the header geenrated by previous
+		// regenerate_id is overwritten
+		// needed after clearall
+		if (session_regenerate_id() === false) { die("Error Regenerating Sesion Id");}
+
+		if ( $previewright==true)
+		{
+			foreach ($savesessionvars as $sesskey => $sessval)
+			{
+				$_SESSION[$sesskey]=$sessval;
+			}
+		}
+	}
+
+	if ($_SESSION['USER_RIGHT_PREVIEW'] != $surveyid)
+	{
+		// print an error message
+		if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
+		require_once($rootdir.'/classes/core/language.php');
+		$baselang = GetBaseLanguageFromSurveyID($surveyid);
+		$clang = new limesurvey_lang($baselang);
+		//A nice exit
+		sendcacheheaders();
+		doHeader();
+	
+		echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
+		echo "\t\t<center><br />\n"
+		."\t\t\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
+		."\t\t\t".$clang->gT("We are sorry but you don't have permissions to do this.")."<br /><br />\n"
+		."\t\t\t".$clang->gT("Please contact")." $siteadminname ( $siteadminemail ) ".$clang->gT("for further assistance").".\n"
+		."\t\t</center><br />\n";
+	
+		echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
+		doFooter();
+		exit;
+	}
+}
 
 if (isset($_SESSION['srid']))
 {
@@ -243,8 +365,19 @@ if (!isset($oldsid)) {$_SESSION['oldsid'] = $surveyid;}
 
 if (isset($oldsid) && $oldsid && $oldsid != $surveyid)
 {
+	$savesessionvars=Array();
+	if (isset($_SESSION['USER_RIGHT_PREVIEW']))
+	{
+		$savesessionvars["USER_RIGHT_PREVIEW"]=$surveyid;
+		$savesessionvars["loginID"]=$_SESSION['loginID'];
+		$savesessionvars["user"]=$_SESSION['user'];
+	}
 	session_unset();
 	$_SESSION['oldsid']=$surveyid;
+	foreach ($savesessionvars as $sesskey => $sessval)
+	{
+		$_SESSION[$sesskey]=$sessval;
+	}
 }
 
 
@@ -345,6 +478,7 @@ if (isset($_GET['move']) && $_GET['move'] == "clearall")
 	$s_lang = $_SESSION['s_lang'];
 	session_unset();
 	session_destroy();
+	setcookie(session_name(),"EXPIRED",time()-120);
 	sendcacheheaders();
 	if (isset($_GET['redirect'])) {
 		session_write_close();
@@ -371,7 +505,19 @@ if (isset($_GET['move']) && $_GET['move'] == "clearall")
 
 if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
 {
+	$savesessionvars=Array();
+	if (isset($_SESSION['USER_RIGHT_PREVIEW']))
+	{
+		$savesessionvars["USER_RIGHT_PREVIEW"]=$surveyid;
+		$savesessionvars["loginID"]=$_SESSION['loginID'];
+		$savesessionvars["user"]=$_SESSION['user'];
+	}
 	session_unset();
+	$_SESSION['oldsid']=$surveyid;
+	foreach ($savesessionvars as $sesskey => $sessval)
+	{
+		$_SESSION[$sesskey]=$sessval;
+	}
 	//DELETE COOKIE (allow to use multiple times)
 	setcookie("$cookiename", "INCOMPLETE", time()-120);
 	//echo "Reset Cookie!";
