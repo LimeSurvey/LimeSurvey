@@ -2026,20 +2026,23 @@ function getQuotaInformation($surveyid)
 					if ($qtype['type'] == "I" || $qtype['type'] == "G" || $qtype['type'] == "Y")
 					{
 						$fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid']);
+						$value = $quota_entry['code'];
 					}
 					
 					if($qtype['type'] == "M")
 					{
 						$fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid'].$quota_entry['code']);
+						$value = "Y";
 					}
 					
 					if($qtype['type'] == "A" || $qtype['type'] == "B")
 					{
 						$temp = explode('-',$quota_entry['code']);
 						$fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid'].$temp[0]);
+						$value = $temp[1];
 					}
 					
-					array_push($quota_info[$x]['members'],array('Title' => $qtype['title'],'type' => $qtype['type'],'code' => $quota_entry['code'],'qid' => $quota_entry['qid'],'fieldnames' => $fieldnames));
+					array_push($quota_info[$x]['members'],array('Title' => $qtype['title'],'type' => $qtype['type'],'code' => $quota_entry['code'],'value' => $value,'qid' => $quota_entry['qid'],'fieldnames' => $fieldnames));
 				}
 			}
 			$x++;
@@ -2059,7 +2062,6 @@ function getQuotaInformation($surveyid)
 function check_quota($checkaction,$surveyid)
 {
 	global $_POST, $_SESSION;
-	$postedfieldnames=explode("|", $_POST['fieldnames']);
 	$quota_info = getQuotaInformation($surveyid);
 	$x=0;
 
@@ -2078,31 +2080,36 @@ function check_quota($checkaction,$surveyid)
 				foreach($quota['members'] as $member)
 				{
 					$fields_query = array();
-					$select_query.= " (";
+					$select_query = " (";
 					foreach($member['fieldnames'] as $fieldname)
-					{
-						$fields_query[] = "$fieldname = '{$member['code']}'";
+					{			
 						$fields_list[] = $fieldname;
+						$fields_query[] = "$fieldname = '{$member['value']}'";
+						//dfadfasdf ------ Split query into per type to fix code issue
 						// Check which quota fields and codes match in session, for later use.
 						// Incase of multiple fields for an answer - only needs to match once.
-						if ($_SESSION[$fieldname] == $member['code']) $quota_info[$x]['members'][$y]['insession'] = "true";
+						if (isset($_SESSION[$fieldname]) && $_SESSION[$fieldname] == $member['value'])
+						{
+							$quota_info[$x]['members'][$y]['insession'] = "true";
+						}
 					}
 					$select_query.= implode(' OR ',$fields_query)." )";
 					$querycond[] = $select_query;
-					$select_query = "";
 					unset($fields_query);
 					$y++;
 				}
 
 				// Lets only continue if any of the quota fields is in the posted page
-
-				$posted_fields = explode("|",$_POST['fieldnames']);
 				$matched_fields = false;
-				foreach ($fields_list as $checkfield)
+				if (isset($_POST['fieldnames'])) 
 				{
-					if (in_array($checkfield,$posted_fields))
+					$posted_fields = explode("|",$_POST['fieldnames']);
+					foreach ($fields_list as $checkfield)
 					{
-						$matched_fields = true;
+						if (in_array($checkfield,$posted_fields))
+						{
+							$matched_fields = true;
+						}
 					}
 				}
 
@@ -2147,7 +2154,7 @@ function check_quota($checkaction,$surveyid)
 		}
 
 	}
-	
+
 	// Now we have all the information we need about the quotas and their status.
 	// Lets see what we should do now
 	
