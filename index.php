@@ -2062,6 +2062,7 @@ function getQuotaInformation($surveyid)
 function check_quota($checkaction,$surveyid)
 {
 	global $_POST, $_SESSION;
+	$global_matched = false;
 	$quota_info = getQuotaInformation($surveyid);
 	$x=0;
 
@@ -2108,6 +2109,7 @@ function check_quota($checkaction,$surveyid)
 						if (in_array($checkfield,$posted_fields))
 						{
 							$matched_fields = true;
+							$global_matched=true;
 						}
 					}
 				}
@@ -2130,7 +2132,7 @@ function check_quota($checkaction,$surveyid)
 						$counted_matches = 0;
 						foreach($quota_info[$x]['members'] as $member)
 						{
-							if ($member['insession'] == "true") $counted_matches++;
+							if (isset($member['insession']) && $member['insession'] == "true") $counted_matches++;
 						}
 						if($counted_matches == count($quota['members']))
 						{
@@ -2153,15 +2155,17 @@ function check_quota($checkaction,$surveyid)
 			$x++;
 		}
 
+	} else 
+	{
+		return false;
 	}
-
+	
 	// Now we have all the information we need about the quotas and their status.
 	// Lets see what we should do now
-
 	if ($checkaction == 'return')
 	{
 		return $quota_info;
-	} else if ($checkaction == 'enforce')
+	} else if ($global_matched == true && $checkaction == 'enforce')
 	{
 		// Need to add quota action enforcement here.
 		reset($quota_info);
@@ -2169,7 +2173,7 @@ function check_quota($checkaction,$surveyid)
 		$found = false;
 		foreach($quota_info as $quota)
 		{
-			if ($quota['status'] == "matched")
+			if (isset($quota['status']) && $quota['status'] == "matched")
 			{
 				$tempmsg .= "Quota named '{$quota['Name']}' is full.\n<br />\n";
 				$found = true;
