@@ -15,18 +15,6 @@
 
 include_once("login_check.php");  //Login Check dies also if the script is started directly
 
-// ToDo: Prevent users from creating/savin labels with the same code in the same label set
-
-// Do not stripslashes on POSted fields because labels.php uses db_quoteall($str, $ispostvariable) that checks for magic_quotes_gpc
-// However We need to stripslashes from $_POST['method'] compared to
-// unescaped strings in switch case
-//if (get_magic_quotes_gpc())
-//$_POST  = array_map('stripslashes', $_POST);
-if (isset($_POST['method']) && get_magic_quotes_gpc())
-{
-	$_POST['method']  = stripslashes($_POST['method']);
-}
-
 function getQuotaAnswers($qid,$surveyid,$quota_id)
 {
 	global $clang;
