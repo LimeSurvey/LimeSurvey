@@ -2085,7 +2085,6 @@ function check_quota($checkaction,$surveyid)
 					{			
 						$fields_list[] = $fieldname;
 						$fields_query[] = "$fieldname = '{$member['value']}'";
-						//dfadfasdf ------ Split query into per type to fix code issue
 						// Check which quota fields and codes match in session, for later use.
 						// Incase of multiple fields for an answer - only needs to match once.
 						if (isset($_SESSION[$fieldname]) && $_SESSION[$fieldname] == $member['value'])
@@ -2119,6 +2118,7 @@ function check_quota($checkaction,$surveyid)
 				{
 					// Check the status of the quota, is it full or not
 					$querysel = "SELECT id FROM ".db_table_name('survey_'.$surveyid)." WHERE ".implode(' AND ',$querycond)." "." AND submitdate !=''";
+					unset($querycond);
 					$result = db_execute_assoc($querysel) or die($connect->ErrorMsg());
 					$quota_check = $result->FetchRow();
 
@@ -2157,7 +2157,7 @@ function check_quota($checkaction,$surveyid)
 
 	// Now we have all the information we need about the quotas and their status.
 	// Lets see what we should do now
-	
+
 	if ($checkaction == 'return')
 	{
 		return $quota_info;
