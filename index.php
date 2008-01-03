@@ -1991,5 +1991,190 @@ function UpdateFieldArray()
     */
 }
 
+/**
+* getQuotaInformation() returns quota information for the current survey
+* @param string $surveyid - Survey identification number
+* @return array - nested array, Quotas->Members->Fields
+*/
+function getQuotaInformation($surveyid)
+{
+	$baselang = GetBaseLanguageFromSurveyID($surveyid);
+	$query = "SELECT * FROM ".db_table_name('quota')." WHERE sid='{$surveyid}'";
+	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+	$quota_info = array();
+	$x=0;
+	
+	// Check all quotas for the current survey
+	if ($result->RecordCount() > 0)
+	{
+		while ($survey_quotas = $result->FetchRow())
+		{
+			array_push($quota_info,array('Name' => $survey_quotas['name'],'Limit' => $survey_quotas['qlimit'],'Action' => $survey_quotas['action']));
+			$query = "SELECT * FROM ".db_table_name('quota_members')." WHERE quota_id='{$survey_quotas['id']}'";
+			$result_qe = db_execute_assoc($query) or die($connect->ErrorMsg());
+			$quota_info[$x]['members'] = array();
+			if ($result_qe->RecordCount() > 0)
+			{
+				while ($quota_entry = $result_qe->FetchRow())
+				{
+					$query = "SELECT type, title,gid FROM ".db_table_name('questions')." WHERE qid='{$quota_entry['qid']}' AND language='{$baselang}'";
+					$result_quest = db_execute_assoc($query) or die($connect->ErrorMsg());
+					$qtype = $result_quest->FetchRow();
+					
+					$fieldnames = "0";
+					
+					if ($qtype['type'] == "I" || $qtype['type'] == "G" || $qtype['type'] == "Y")
+					{
+						$fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid']);
+					}
+					
+					if($qtype['type'] == "M")
+					{
+						$fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid'].$quota_entry['code']);
+					}
+					
+					if($qtype['type'] == "A" || $qtype['type'] == "B")
+					{
+						$temp = explode('-',$quota_entry['code']);
+						$fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid'].$temp[0]);
+					}
+					
+					array_push($quota_info[$x]['members'],array('Title' => $qtype['title'],'type' => $qtype['type'],'code' => $quota_entry['code'],'qid' => $quota_entry['qid'],'fieldnames' => $fieldnames));
+				}
+			}
+			$x++;
+		}
+	}
+	return $quota_info;
+}
+
+/**
+* check_quota() returns quota information for the current survey
+* @param string $checkaction - action the function must take after completing:
+* 								enforce: Enforce the quota action
+* 								return: Return the updated quota array from getQuotaAnswers()
+* @param string $surveyid - Survey identification number
+* @return array - nested array, Quotas->Members->Fields, includes quota status and which members matched in session.
+*/
+function check_quota($checkaction,$surveyid)
+{
+	global $_POST, $_SESSION;
+	$postedfieldnames=explode("|", $_POST['fieldnames']);
+	$quota_info = getQuotaInformation($surveyid);
+	$x=0;
+
+	if(count($quota_info) > 0) // Quota's have to exist
+	{
+		// Check each quota on saved data to see if it is full
+		$querycond = array();
+		foreach ($quota_info as $quota)
+		{
+			if (count($quota['members']) > 0) // Quota can't be empty
+			{
+				$fields_list = array(); // Keep a list of fields for easy reference
+				$y=0;
+				// We need to make the conditions for the select statement here
+				// I'm supporting more than one field for a question/answer, not sure if this is necessary.
+				foreach($quota['members'] as $member)
+				{
+					$fields_query = array();
+					$select_query.= " (";
+					foreach($member['fieldnames'] as $fieldname)
+					{
+						$fields_query[] = "$fieldname = '{$member['code']}'";
+						$fields_list[] = $fieldname;
+						// Check which quota fields and codes match in session, for later use.
+						// Incase of multiple fields for an answer - only needs to match once.
+						if ($_SESSION[$fieldname] == $member['code']) $quota_info[$x]['members'][$y]['insession'] = "true";
+					}
+					$select_query.= implode(' OR ',$fields_query)." )";
+					$querycond[] = $select_query;
+					$select_query = "";
+					unset($fields_query);
+					$y++;
+				}
+
+				// Lets only continue if any of the quota fields is in the posted page
+
+				$posted_fields = explode("|",$_POST['fieldnames']);
+				$matched_fields = false;
+				foreach ($fields_list as $checkfield)
+				{
+					if (in_array($checkfield,$posted_fields))
+					{
+						$matched_fields = true;
+					}
+				}
+
+				// A field was submitted that is part of the quota
+				
+				if ($matched_fields == true)
+				{
+					// Check the status of the quota, is it full or not
+					$querysel = "SELECT id FROM ".db_table_name('survey_'.$surveyid)." WHERE ".implode(' AND ',$querycond)." "." AND submitdate !=''";
+					$result = db_execute_assoc($querysel) or die($connect->ErrorMsg());
+					$quota_check = $result->FetchRow();
+
+					if ($result->RecordCount() >= $quota['Limit']) // Quota is full!! 
+					{
+						// Now we have to check if the quota matches in the current session
+						// This will let us know if this person is going to exceed the quota
+						
+						$counted_matches = 0;
+						foreach($quota_info[$x]['members'] as $member)
+						{
+							if ($member['insession'] == "true") $counted_matches++;
+						}
+						if($counted_matches == count($quota['members']))
+						{
+							// They are going to exceed the quota if data is submitted
+							$quota_info[$x]['status']="matched";
+							
+						} else 
+						{
+							$quota_info[$x]['status']="notmatched";
+						}
+
+					} else
+					{
+						// Quota is no in danger of being exceeded.
+						$quota_info[$x]['status']="notmatched";
+					}
+				}
+
+			}
+			$x++;
+		}
+
+	}
+	
+	// Now we have all the information we need about the quotas and their status.
+	// Lets see what we should do now
+	
+	if ($checkaction == 'return')
+	{
+		return $quota_info;
+	} else if ($checkaction == 'enforce')
+	{
+		// Need to add quota action enforcement here.
+		reset($quota_info);
+		$tempmsg ="";
+		$found = false;
+		foreach($quota_info as $quota)
+		{
+			if ($quota['status'] == "matched")
+			{
+				$tempmsg .= "Quota named '{$quota['Name']}' is full.\n<br />\n";
+				$found = true;
+			}
+		}
+		if ($found == true) die($tempmsg);
+			
+	} else {
+		// Unknown value
+		return false;
+	}
+	
+}
 
 ?>
