@@ -16,6 +16,7 @@
 include_once("login_check.php");
 if (!isset($noid)) {$noid=returnglobal('noid');}
 if (!isset($insertstyle)) {$insertstyle=returnglobal('insert');}
+if (!isset($finalized)) {$finalized=returnglobal('finalized');}
 
 if ($subaction != "upload")
 {
@@ -38,6 +39,7 @@ if ($subaction != "upload")
         <option value='ignore'>".$clang->gT("Ignore the new record.")."</option>
         <option value='replace'>".$clang->gT("Replace the existing record.")."</option>
         </select></td></tr>
+		<tr><td>".$clang->gT("Import as not finalized answers?")."</td><td><input type='checkbox' name='finalized' value='notfinalized' ></td></tr>
 		<tr><td colspan='2' align='center' ><input type='submit' value='".$clang->gT("Import")."'>
 		<input type='hidden' name='action' value='vvimport' />
 		<input type='hidden' name='subaction' value='upload' />
@@ -103,6 +105,7 @@ else
 
 	$realfieldnames = array_values($connect->MetaColumnNames($surveytable, true));
 	if ($noid == "noid") {unset($realfieldnames[0]);}
+	if ($finalized == "notfinalized") {unset($realfieldnames[1]);}
 	unset($bigarray[1]); //delete the second line
 
 	//	$vvoutput .= "<tr><td valign='top'><strong>Import Fields:<pre>"; print_r($fieldnames); $vvoutput .= "</pre></td>";
@@ -117,6 +120,11 @@ else
 			$donotimport[]=$key;
 			unset($fieldnames[$key]);
 		}
+	}
+	if ($finalized == "notfinalized")
+	{
+		$donotimport[]=1;
+		unset($fieldnames[1]);
 	}
 	$importcount=0;
 	$recordcount=0;

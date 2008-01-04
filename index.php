@@ -531,9 +531,9 @@ getreferringurl();
 //  - the survey is active
 //  - a token information has been provided
 //  - the feature has been explicitely enabled in the config file
-//    to enable define $allow_direct_survey_prefill = true; in config.php
-if (  isset($allow_direct_survey_prefill) &&
-	$allow_direct_survey_prefill===true &&
+//    to enable define $enable_tokenresponse_persitence = true; in config.php
+if (  isset($enable_tokenresponse_persitence) &&
+	$enable_tokenresponse_persitence===true &&
 	!isset($_SESSION['srid']) && 
 	$thissurvey['private'] == "N" &&
 	$thissurvey['active'] == "Y" && $token !='')
