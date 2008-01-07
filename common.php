@@ -1387,34 +1387,63 @@ function returnquestiontitlefromfieldcode($fieldcode)
 }
 
 
-function getsidgidqid($fieldcode)
+function getsidgidqidaidtype($fieldcode)
 {
+	// use simple parsing to get {sid}, {gid}
+	// and what may be {qid} or {qid}{aid} combination
 	list($fsid, $fgid, $fqid) = split("X", $fieldcode);
-	//$legitqs=getLegitQids($fsid);
+	$fsid=sanitize_int($fsid);
+	$fgid=sanitize_int($fgid);
 	if (!$fqid) {$fqid=0;}
-	/*$oldfqid=$fqid;
-	while (!in_array($fqid, $legitqs))
+
+	// try a true parsing of fieldcode (can separate qid from aid)
+	// but fails for type M and type P multiple choice
+	// questions because the SESSION fieldcode is combined
+	// and we want here to pass only the sidXgidXqid for type M and P
+	$fields=arraySearchByKey($fieldcode, createFieldMap($fsid), "fieldname", 1);
+
+	if (count($fields) != 0)
 	{
-		$fqid=substr($fqid, 0, strlen($fqid)-1);
-	}
-	if (strlen($fqid) < strlen($oldfqid))
-	{
-		$faid=substr($oldfqid, strlen($fqid), strlen($oldfqid)-strlen($fqid));
-		$oldfqid="";
+		$aRef['sid']=sanitize_int($fields['sid']);
+		$aRef['gid']=sanitize_int($fields['gid']);
+		$aRef['qid']=sanitize_int($fields['qid']);
+		$aRef['aid']=$fields['aid'];
+		$aRef['type']=$fields['type'];
 	}
 	else
 	{
-		$faid="";
-	}*/
-	//return array("sid"=>$fsid, "gid"=>$fgid, "qid"=>$fqid, "aid"=>$faid);
-	return array("sid"=>$fsid, "gid"=>$fgid, "qid"=>$fqid);
+		// either the fielcode doesn't match a question
+		// or it is a type M or P question
+		$aRef['sid']=$fsid;
+		$aRef['gid']=$fgid;
+		$aRef['qid']=sanitize_int($fqid);
+
+		$s_lang = GetBaseLanguageFromSurveyID($fsid);
+		$query = "SELECT type FROM ".db_table_name('questions')." WHERE qid=".$fqid." AND language='".$s_lang."'";
+		$result = db_execute_assoc($query) or die ("Couldn't get question type - getsidgidqidaidtype() in common.php<br />".htmlspecialchars($connect->ErrorMsg()));
+		if ( $result->RecordCount() == 0 )
+		{ // question doesn't exist
+			return Array();
+		}
+		else
+		{	// certainly is type M or P
+			while($row=$result->FetchRow())
+			{
+				$aRef['type']=$row['type'];
+			}		
+		}
+
+	}
+
+	//return array("sid"=>$fsid, "gid"=>$fgid, "qid"=>$fqid);
+	return $aRef;
 }
 
 /*
 *
 *
 */
-function getextendedanswer($fieldcode, $value)
+function getextendedanswer($fieldcode, $value, $format='')
 {
 	// Performance optimized	: Nov 13, 2006
 	// Performance Improvement	: 36%
@@ -1516,7 +1545,14 @@ function getextendedanswer($fieldcode, $value)
 	}
 	if (isset($this_answer))
 	{
-		return $this_answer." [$value]";
+		if ($format != 'INSERTANS')
+		{
+			return $this_answer." [$value]";
+		}
+		else
+		{
+			return $this_answer;
+		}
 	}
 	else
 	{
@@ -3934,122 +3970,56 @@ function retrieve_Answer($code)
 	//Find question details
 	if (isset($_SESSION[$code]))
 	{
-		$questiondetails=getsidgidqid($code);
+		$questiondetails=getsidgidqidaidtype($code);
 		//die(print_r($questiondetails));
-		//the getsidgidqid function is in common.php and returns
+		//the getsidgidqidaidtype function is in common.php and returns
 		//a SurveyID, GroupID, QuestionID and an Answer code
 		//extracted from a "fieldname" - ie: 1X2X3a
-		$query="SELECT type FROM {$dbprefix}questions WHERE qid='".$questiondetails['qid']."'  AND language='".$_SESSION['s_lang']."'";
-		$result=db_execute_assoc($query) or die("Error getting reference question type<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-		while($row=$result->FetchRow())
+		// also returns question type
+
+		if ($questiondetails['type'] == "M" ||
+			$questiondetails['type'] == "P")
 		{
-			$type=$row['type'];
-		} // while
-		if ($_SESSION[$code] || $type == "M")
-		{
-			switch($type)
+			$query="SELECT * FROM {$dbprefix}answers WHERE qid='".$questiondetails['qid']."' AND language='".$_SESSION['s_lang']."'";
+			$result=db_execute_assoc($query) or die("Error getting answer<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+			while($row=$result->FetchRow())
 			{
-				case "L":
-				case "!":
-				case "P":
-				if ($_SESSION[$code]== "-oth-")
+				if (isset($_SESSION[$code.$row['code']]) && $_SESSION[$code.$row['code']] == "Y")
 				{
-					$newcode=$code."other";
-					if($_SESSION[$newcode])
-					{
-						$return=$_SESSION[$newcode];
-					}
-					else
-					{
-						$return=$clang->gT("Other");
-					}
+					$returns[] = $row['answer'];
 				}
-				else
+			}
+			if (isset($_SESSION[$code."other"]) && $_SESSION[$code."other"])
+			{
+				$returns[]=$_SESSION[$code."other"];
+			}
+			if (isset($returns))
+			{
+				$return=implode(", ", $returns);
+				if (strpos($return, ","))
 				{
-					$query="SELECT * FROM {$dbprefix}answers WHERE qid='".$questiondetails['qid']."' AND code='".$_SESSION[$code]."'  AND language='".$_SESSION['s_lang']."'";
-					$result=db_execute_assoc($query) or die("Error getting answer<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-					while($row=$result->FetchRow())
-					{
-						$return=$row['answer'];
-					} // while
+					$return=substr_replace($return, " &", strrpos($return, ","), 1);
 				}
-				break;
-				case "M":
-				case "P":
-				$query="SELECT * FROM {$dbprefix}answers WHERE qid='".$questiondetails['qid']."' AND language='".$_SESSION['s_lang']."'";
-				$result=db_execute_assoc($query) or die("Error getting answer<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-				while($row=$result->FetchRow())
-				{
-					if (isset($_SESSION[$code.$row['code']]) && $_SESSION[$code.$row['code']] == "Y")
-					{
-						$returns[] = $row['answer'];
-					}
-				}
-				if (isset($_SESSION[$code."other"]) && $_SESSION[$code."other"])
-				{
-					$returns[]=$_SESSION[$code."other"];
-				}
-				if (isset($returns))
-				{
-					$return=implode(", ", $returns);
-					if (strpos($return, ","))
-					{
-						$return=substr_replace($return, " &", strrpos($return, ","), 1);
-					}
-				}
-				else
-				{
-					$return=$clang->gT("No answer");
-				}
-				break;
-				case "G":
-				if($_SESSION[$code])
-				{
-					if ($_SESSION[$code] == "F")
-					{
-						$return=$clang->gT("Female");
-					}
-					elseif ($_SESSION[$code] == "M")
-					{
-						$return=$clang->gT("Male");
-					}
-					else
-					{
-						$return=$clang->gT("No answer");
-					}
-				}
-				break;
-				case "Y":
-				if($_SESSION[$code])
-				{
-					if ($_SESSION[$code] == "Y")
-					{
-						$return=$clang->gT("Yes");
-					}
-					elseif ($_SESSION[$code] == "N")
-					{
-						$return=$clang->gT("No");
-					}
-					else
-					{
-						$return=$clang->gT("No answer");
-					}
-				}
-				break;
-				default:
-				$return=$_SESSION[$code];
-			} // switch
+			}
+			else
+			{
+				$return=$clang->gT("No answer");
+			}
+		}
+		elseif (!$_SESSION[$code])
+		{
+			$return=$clang->gT("No answer");
 		}
 		else
 		{
-			$return=$clang->gT("No answer");
+			$return=getextendedanswer($code, $_SESSION[$code], 'INSERTANS');
 		}
 	}
 	else
 	{
 		$return=$clang->gT("Error") . "($code)";
 	}
-	return $return;
+	return html_escape($return);
 }
 
 // returns true if thesurvey has a token table defined
