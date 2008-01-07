@@ -1365,7 +1365,7 @@ if (($subaction == "edit" || $subaction == "addnew") && ($sumrows5['edit_survey_
 	."<form method='post' action='$scriptname?action=tokens'>\n"
 	."<table width='100%' class='form2columns'>\n"
     ."<tr><th colspan='2' ><strong>\n"
-    .$clang->gT("Add or Edit Token")."</strong></th></tr><tr>\n"
+    .$clang->gT("Add or Edit Token Entry")."</strong></th></tr><tr>\n"
 	."\t<td align='right' width='20%'><strong>ID:</strong></font></td>\n"
 	."\t<td>";
 	if ($subaction == "edit")
@@ -1472,44 +1472,58 @@ if (($subaction == "edit" || $subaction == "addnew") && ($sumrows5['edit_survey_
 if ($subaction == "updatetoken" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
 {
 	$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
-	.$clang->gT("Add or Edit Token")."</strong></td></tr>\n"
+	.$clang->gT("Add or Edit Token Entry")."</strong></td></tr>\n"
 	."\t<tr><td align='center'>\n";
 	$data = array();
 	$data[] = $_POST['firstname'];
 	$data[] = $_POST['lastname'];
 	$data[] = sanitize_email($_POST['email']);
-	$data[] = sanitize_paranoid_string($_POST['token']);
+	$santitizedtoken=sanitize_paranoid_string($_POST['token']);
+	$data[] = $santitizedtoken;
 	$data[] = sanitize_languagecode($_POST['language']);
 	$data[] = $_POST['sent'];
 	$data[] = $_POST['completed'];
-	$udquery = "UPDATE ".db_table_name("tokens_$surveyid")." SET firstname=?, "
-	. "lastname=?, email=?, "
-	. "token=?, language=?, sent=?, completed=?";
-	if (isset($_POST['attribute1']))
+
+	$udresult = $connect->Execute("Select * from ".db_table_name("tokens_$surveyid")." where tid<>{$tokenid} and token<>'' and token='{$santitizedtoken}'") or die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
+	if ($udresult->RecordCount()==0)
 	{
-		$data[] = $_POST['attribute1'];
-		$data[] = $_POST['attribute2'];
-		$udquery .= ", attribute_1=?, attribute_2=?";
+		$udquery = "UPDATE ".db_table_name("tokens_$surveyid")." SET firstname=?, "
+		. "lastname=?, email=?, "
+		. "token=?, language=?, sent=?, completed=?";
+		if (isset($_POST['attribute1']))
+		{
+			$data[] = $_POST['attribute1'];
+			$data[] = $_POST['attribute2'];
+			$udquery .= ", attribute_1=?, attribute_2=?";
+		}
+		$udquery .= " WHERE tid={$tokenid}";
+		$udresult = $connect->Execute($udquery, $data) or die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
+		$tokenoutput .=  "<br /><font color='green'><strong>".$clang->gT("Success")."</strong></font><br />\n"
+						."<br />".$clang->gT("Updated Token")."<br /><br />\n"
+						."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse'>".$clang->gT("Display Tokens")."</a><br /><br />\n"
+						."\t</td></tr></table>\n";
 	}
-
-	$udquery .= " WHERE tid={$tokenid}";
-
-	$udresult = $connect->Execute($udquery, $data) or die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
-	$tokenoutput .= "<br /><font color='green'><strong>".$clang->gT("Success")."</strong></font><br />\n"
-	."<br />".$clang->gT("Updated Token")."<br /><br />\n"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse'>".$clang->gT("Display Tokens")."</a><br /><br />\n"
-	."\t</td></tr></table>\n";
+	  else 
+	  {
+		$tokenoutput .=  "<br /><font color='red'><strong>".$clang->gT("Failed")."</strong></font><br />\n"
+						."<br />".$clang->gT("There is already an entry with that exact token in the table. The same token cannot be used in multiple entries.")."<br /><br />\n"
+						."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=edit&amp;tid={$tokenid}'>".$clang->gT("Show this token entry")."</a><br /><br />\n"
+						."\t</td></tr></table>\n";
+	  
+	  }
+		
 }
 
 if ($subaction == "inserttoken" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
 {
+	$santitizedtoken=sanitize_paranoid_string($_POST['token']);
 	$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
-	.$clang->gT("Add or Edit Token")."</strong></td></tr>\n"
+	.$clang->gT("Add or Edit Token Entry")."</strong></td></tr>\n"
 	."\t<tr><td align='center'>\n";
 	$data = array('firstname' => $_POST['firstname'],
 	'lastname' => $_POST['lastname'],
 	'email' => sanitize_email($_POST['email']),
-	'token' => sanitize_paranoid_string($_POST['token']),
+	'token' => $santitizedtoken,
 	'language' => sanitize_languagecode($_POST['language']),
 	'sent' => $_POST['sent'],
 	'completed' => $_POST['completed']);
@@ -1520,13 +1534,27 @@ if ($subaction == "inserttoken" && ($sumrows5['edit_survey_property'] || $sumrow
 	}
 	$tblInsert=db_table_name('tokens_'.$surveyid);
 
-	$inresult = $connect->AutoExecute($tblInsert, $data, 'INSERT') or die ("Add new record failed:<br />\n$inquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
-	$tokenoutput .= "<br /><font color='green'><strong>".$clang->gT("Success")."</strong></font><br />\n"
-	."<br />".$clang->gT("Added New Token")."<br /><br />\n"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse'>".$clang->gT("Display Tokens")."</a><br />\n"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnew'>".$clang->gT("Add new token entry")."</a><br /><br />\n"
-	."\t</td></tr></table>\n";
-}
+
+	$udresult = $connect->Execute("Select * from ".db_table_name("tokens_$surveyid")." where  token<>'' and token='{$santitizedtoken}'");
+	if ($udresult->RecordCount()==0)
+	{
+		$inresult = $connect->AutoExecute($tblInsert, $data, 'INSERT') or die ("Add new record failed:<br />\n$inquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
+		$tokenoutput .= "<br /><font color='green'><strong>".$clang->gT("Success")."</strong></font><br />\n"
+		."<br />".$clang->gT("Added New Token")."<br /><br />\n"
+		."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse'>".$clang->gT("Display Tokens")."</a><br />\n"
+		."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnew'>".$clang->gT("Add new token entry")."</a><br /><br />\n"
+		."\t</td></tr></table>\n";
+	}
+	  else 
+	  {
+		$tokenoutput .=  "<br /><font color='red'><strong>".$clang->gT("Failed")."</strong></font><br />\n"
+						."<br />".$clang->gT("There is already an entry with that exact token in the table. The same token cannot be used in multiple entries.")."<br /><br />\n"
+						."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse'>".$clang->gT("Display Tokens")."</a><br />\n"
+						."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnew'>".$clang->gT("Add new token entry")."</a><br /><br />\n"
+						."\t</td></tr></table>\n";
+	  
+	  }
+}			
 
 if ($subaction == "import" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
 {
