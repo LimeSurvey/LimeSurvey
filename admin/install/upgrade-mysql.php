@@ -105,7 +105,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","update `prefix_settings_global` set `stg_value`='114' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     
-    if ($oldversion < 119) {
+    if ($oldversion < 120) {
     //Adds new "public" field
         modify_database("","ALTER TABLE `prefix_surveys` ADD `printanswers` CHAR(1) default 'N' AFTER allowsave"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE `prefix_surveys` ADD `listpublic` CHAR(1) default 'N' AFTER `datecreated`"); echo $modifyoutput; flush();
@@ -120,7 +120,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
   							`action` int(2) default NULL,
   							`active` int(1) NOT NULL default '1',
   							PRIMARY KEY  (`id`)
-							)  TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
+							)  TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
         modify_database("","CREATE TABLE `prefix_quota_members` (
    		 				   `id` int(11) NOT NULL auto_increment,
 						   `sid` int(11) default NULL,
@@ -129,8 +129,36 @@ echo str_pad('Loading... ',4096)."<br />\n";
   						   `code` varchar(5) collate utf8_unicode_ci default NULL,
   						   PRIMARY KEY  (`id`),
   						   UNIQUE KEY `sid` (`sid`,`qid`,`quota_id`,`code`)
-						   )   TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
-        modify_database("","update `prefix_settings_global` set `stg_value`='119' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+						   )   TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
+
+       // Rename Norwegian language code from NO to NB
+       $oldnewlanguages=array('no'=>'nb');
+        foreach  ($oldnewlanguages as $oldlang=>$newlang)
+        {
+            modify_database("","update `prefix_answers` set `language`='$newlang' where language='$oldlang'");echo $modifyoutput;flush();
+            modify_database("","update `prefix_questions` set `language`='$newlang' where language='$oldlang'");echo $modifyoutput;flush();
+            modify_database("","update `prefix_groups` set `language`='$newlang' where language='$oldlang'");echo $modifyoutput;flush();
+            modify_database("","update `prefix_labels` set `language`='$newlang' where language='$oldlang'");echo $modifyoutput;flush();
+            modify_database("","update `prefix_surveys` set `language`='$newlang' where language='$oldlang'");echo $modifyoutput;flush();
+            modify_database("","update `prefix_surveys_languagesettings` set `surveyls_language`='$newlang' where surveyls_language='$oldlang'");echo $modifyoutput;flush();
+            modify_database("","update `prefix_users` set `lang`='$newlang' where lang='$oldlang'");echo $modifyoutput;flush();
+        }
+
+        $resultdata=db_execute_assoc("select * from ".db_table_name("labelsets"));
+        while ($datarow = $resultdata->FetchRow()){
+           $toreplace=$datarow['languages'];
+           $toreplace2=str_replace('no','nb',$toreplace);
+           if ($toreplace2!=$toreplace) {modify_database("","update  `prefix_labelsets` set `languages`='$toreplace' where lid=".$datarow['lid']);echo $modifyoutput;flush();}
+        }
+
+        $resultdata=db_execute_assoc("select * from ".db_table_name("surveys"));                 
+        while ($datarow = $resultdata->FetchRow()){
+           $toreplace=$datarow['additional_languages'];
+           $toreplace2=str_replace('no','nb',$toreplace);
+           if ($toreplace2!=$toreplace) {modify_database("","update `prefix_surveys` set `additional_languages`='$toreplace' where sid=".$datarow['sid']);echo $modifyoutput;flush();}
+        }
+
+        modify_database("","update `prefix_settings_global` set `stg_value`='120' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     return true;
 }

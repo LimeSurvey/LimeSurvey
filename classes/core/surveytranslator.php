@@ -147,9 +147,9 @@
 	    $supportedLanguages['lt']['description'] = $clang->gT('Lithuanian');
 	    $supportedLanguages['lt']['nativedescription'] = 'Lietuvi&#371;';
 	    
-	    // Norwegian
-	    $supportedLanguages['no']['description'] = $clang->gT('Norwegian');
-	    $supportedLanguages['no']['nativedescription'] = 'Norsk bokm&#229;l';
+	    // Norwegian Bokmål
+	    $supportedLanguages['nb']['description'] = $clang->gT('Norwegian (Bokmål)');
+	    $supportedLanguages['nb']['nativedescription'] = 'Norsk bokm&#229;l';
 
         // Polish
         $supportedLanguages['pl']['description'] = $clang->gT('Polish');
