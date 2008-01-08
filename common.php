@@ -4101,4 +4101,19 @@ function getEmailFormat($surveyid)
 	//return 'text';
 }
 
+// Check if user has manage rights for a template
+function hasTemplateManageRights($userid, $templatefolder) {
+      global $connect;
+      global $dbprefix;
+      $query = "SELECT `use` FROM {$dbprefix}templates_rights WHERE `uid`=".$userid." AND `folder` LIKE '".$templatefolder."'";
+
+      $result = db_execute_assoc($query) or die($connect->ErrorMsg());
+
+      if ($result->RecordCount() == 0)	return false;
+
+      $row = $result->FetchRow();
+
+      return $row["use"];
+}
+
 ?>
