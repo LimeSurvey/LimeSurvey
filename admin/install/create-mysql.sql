@@ -225,6 +225,9 @@ CREATE TABLE `prefix_surveys` (
   `refurl` char(1) default 'N',
   `datecreated` date default NULL,
   `listpublic` char(1) default 'N',
+  `htmlemail` char(1) default 'N',
+  `tokenanswerspersistence` char(1) default 'N',
+  `usecaptcha` char(1) default 'N',
   PRIMARY KEY  (`sid`)
 ) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -275,6 +278,7 @@ CREATE TABLE `prefix_users` (
   `configurator` tinyint(1) NOT NULL default '0',
   `manage_template` tinyint(1) NOT NULL default '0',
   `manage_label` tinyint(1) NOT NULL default '0'
+  `htmleditormode` char(7) default 'default',
 ) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 CREATE TABLE `prefix_surveys_rights` (
@@ -314,7 +318,7 @@ CREATE TABLE `prefix_settings_global` (
 -- Table `settings_global`
 --
 
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '114');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '121');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 
 --

@@ -270,7 +270,10 @@ CREATE TABLE prefix_surveys (
     useexpiry character(1) DEFAULT 'N'::bpchar NOT NULL,
     refurl character(1) DEFAULT 'N'::bpchar,
     datecreated date,
-    listpublic character(1) DEFAULT 'N'::bpchar
+    listpublic character(1) DEFAULT 'N'::bpchar,
+    htmlemail character(1) DEFAULT 'N'::bpchar,
+    tokenanswerspersistence character(1) DEFAULT 'N'::bpchar,
+    usecaptcha character(1) DEFAULT 'N'::bpchar
 );
 
 
@@ -359,7 +362,8 @@ CREATE TABLE prefix_users (
     move_user integer DEFAULT 0 NOT NULL,
     configurator integer DEFAULT 0 NOT NULL,
     manage_template integer DEFAULT 0 NOT NULL,
-    manage_label integer DEFAULT 0 NOT NULL
+    manage_label integer DEFAULT 0 NOT NULL,
+    htmleditormode character(7) DEFAULT 'default'::bpchar
 );
 
 
@@ -505,7 +509,7 @@ CREATE INDEX prefix_labels_ixcode_idx ON prefix_labels USING btree (code);
 -- Table `settings_global`
 --
 
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '118');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '121');
 INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 
 --

@@ -19,12 +19,17 @@
 
 function db_upgrade($oldversion) {
 
-    if ($oldversion < 118) {
+    if ($oldversion < 121) {
 	//Adds new public field (Provided by Kadejo)
     modify_database("","ALTER TABLE \"prefix_surveys\" ADD  \"public\" CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush(); 
     upgrade_survey_tables117();
 	upgrade_survey_tables118()
-	modify_database("","UPDATE \"prefix_settings_global\" SET \"stg_value\"='118' WHERE \"stg_name\"='DBVersion'");	echo $modifyoutput;	flush();
+	tokenanswerspersistence, and captcha-for-token-form
+    modify_database("","ALTER TABLE \"prefix_surveys\" ADD  \"htmlemail\" CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush(); 
+    modify_database("","ALTER TABLE \"prefix_surveys\" ADD  \"tokenanswerspersistence\" CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush(); 
+    modify_database("","ALTER TABLE \"prefix_surveys\" ADD  \"usecaptcha\" CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush(); 
+    modify_database("","ALTER TABLE \"prefix_users\" ADD  \"htmleditormode\" CHAR(7) DEFAULT 'default'"); echo $modifyoutput; flush(); 
+	modify_database("","UPDATE \"prefix_settings_global\" SET \"stg_value\"='121' WHERE \"stg_name\"='DBVersion'");	echo $modifyoutput;	flush();
 	}
 
 

@@ -227,10 +227,12 @@ CREATE TABLE [prefix_surveys] (
   [refurl] char(1) default 'N',
   [datecreated] DATETIME default NULL,
   [listpublic] char(1) default 'N',
+  [htmlemail] char(1) default 'N',
+  [tokenanswerspersistence] char(1) default 'N',
+  [usecaptcha] char(1) default 'N',
   PRIMARY KEY  ([sid])
 ) 
 ;
-
 -- 
 -- Table structure for table [surveys_languagesettings]
 -- 
@@ -276,7 +278,8 @@ CREATE TABLE [prefix_users] (
   [move_user] TINYINT NOT NULL default '0',
   [configurator] TINYINT NOT NULL default '0',
   [manage_template] TINYINT NOT NULL default '0',
-  [manage_label] TINYINT NOT NULL default '0'
+  [manage_label] TINYINT NOT NULL default '0',
+  [htmleditormode] char(7) default 'default'
 ) 
 ;
 
@@ -334,7 +337,7 @@ CREATE TABLE [prefix_settings_global] (
 -- Table [settings_global]
 --
 
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '114');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '121');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 
 --
