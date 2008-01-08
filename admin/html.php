@@ -1935,10 +1935,15 @@ if ($action == "editsurvey")
 			. "\t\t<td align='left'><select name='template'>\n";
 			foreach (gettemplatelist() as $tname)
 			{
-				$editsurvey .= "\t\t\t<option value='$tname'";
-				if ($esrow['template'] && htmlspecialchars($tname) == $esrow['template']) {$editsurvey .= " selected='selected'";}
-				elseif (!$esrow['template'] && $tname == "default") {$editsurvey .= " selected='selected'";}
-				$editsurvey .= ">$tname</option>\n";
+				
+				 if ($_SESSION["loginID"] == 1 || $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1 || hasTemplateManageRights($_SESSION["loginID"], $tname) == 1 )
+				 {
+                	$editsurvey .= "\t\t\t<option value='$tname'";
+                    if ($esrow['template'] && htmlspecialchars($tname) == $esrow['template']) {$editsurvey .= " selected='selected'";}
+                    elseif (!$esrow['template'] && $tname == "default") {$editsurvey .= " selected='selected'";}
+                    $editsurvey .= ">$tname</option>\n";
+                }
+
 			}
 			$editsurvey .= "\t\t</select></td>\n"
 			. "\t</tr>\n";
@@ -2474,9 +2479,14 @@ if ($action == "newsurvey")
 		. "\t\t<td><select name='template'>\n";
 		foreach (gettemplatelist() as $tname)
 		{
-			$newsurvey .= "\t\t\t<option value='$tname'";
-			if ($tname == "default") {$newsurvey .= " selected='selected'";}
-			$newsurvey .= ">$tname</option>\n";
+			
+			if ($_SESSION["loginID"] == 1 || $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1 || hasTemplateManageRights($_SESSION["loginID"], $tname) == 1 )  {
+				$newsurvey .= "\t\t\t<option value='$tname'";
+				if (isset($esrow) && $esrow['template'] && $tname == $esrow['template']) {$newsurvey .= " selected='selected'";}
+				elseif ((!isset($esrow) || !$esrow['template']) && $tname == "default") {$newsurvey .= " selected='selected'";}
+				$newsurvey .= ">$tname</option>\n";
+			}
+			
 		}
 		$newsurvey .= "\t\t</select></td>\n"
 		. "\t</tr>\n";

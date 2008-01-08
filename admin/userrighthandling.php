@@ -108,10 +108,64 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 }
 
 
-if ($action == "adduser" || $action=="deluser" || $action == "moduser" || $action == "userrights")
+if ($action == "adduser" || $action=="deluser" || $action == "moduser" || $action == "userrights"  || $action == "usertemplates")
 {
 	include("usercontrol.php");
 }
+
+if ($action == "setusertemplates")
+{
+//    if($_SESSION['loginID'] != $_POST['uid'])
+//    {
+              refreshtemplates();
+              $usersummary = "<table width='50%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'><form method='post' action='$scriptname'>\n"
+              . "\t\t<strong><font color='white'>".$clang->gT("Set templates that this user may access").": ".$_POST['user']."</td></tr>\n";
+
+              $userlist = getuserlist();
+              foreach ($userlist as $usr)
+              {
+                      if ($usr['uid'] == $_POST['uid'])
+                      {
+                              $templaterights = array();
+                              $squery = "SELECT `folder`, `use` FROM {$dbprefix}templates_rights WHERE uid={$usr['uid']}";
+                              $sresult = mysql_query($squery);
+                              while ($srow = mysql_fetch_assoc($sresult)) {
+                                      $templaterights[$srow["folder"]] = array("use"=>$srow["use"], "creator"=>$srow["creator"]);
+                              }
+
+                              $usersummary .= "\t\t\t<tr><th>".$clang->gT("Template Name")."</th><th>".$clang->gT("Allowed")."</th></tr>\n"
+                                      ."\t<tr><form method='post' action='$scriptname'></tr>"
+                                      ."<form action='$scriptname' method='post'>\n";
+
+                              $tquery = "SELECT * FROM ".$dbprefix."templates";
+                              $tresult = mysql_query($tquery);
+                              while ($trow = mysql_fetch_assoc($tresult)) {
+                                      $usersummary .= "\t\t\t<tr><td>{$trow["folder"]}</td>";
+
+                                      $usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"{$trow["folder"]}_use\" value=\"{$trow["folder"]}_use\"";
+                                      if($templaterights[$trow["folder"]]["use"] == 1) {
+                                              $usersummary .= " checked='checked' ";
+                                      }
+                                      $usersummary .=" /></td>\n\t\t</tr>\n";
+                              }
+
+                              $usersummary .= "\t\t\t<tr><form method='post' action='$scriptname'></tr>"      // added by Dennis
+                              ."\t\n\t<tr><td colspan='3' align='center'>"
+                              ."<input type='submit' value='".$clang->gT("Save Settings")."' />"
+                              ."<input type='hidden' name='action' value='usertemplates' />"
+                              ."<input type='hidden' name='uid' value='".$_POST['uid']."' /></td></tr>"
+                              ."</form>"
+                              . "</table>\n";
+                              continue;
+                     }       // if
+              }       // foreach
+/*    }       // if
+      else
+      {
+              include("access_denied.php");
+      }*/
+}     // if 
+
 
 if ($action == "modifyuser")
 {
@@ -445,6 +499,15 @@ if ($action == "editusers")
 			$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
 			."<input type='submit' value='".$clang->gT("Set User Rights")."' />"
 			."<input type='hidden' name='action' value='setuserrights' />"
+			."<input type='hidden' name='user' value='{$usr['user']}' />"
+			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
+			."</form>";
+		}
+		if ($_SESSION['loginID'] == "1" || $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
+		{
+			$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
+			."<input type='submit' value='".$clang->gT("Set Template Rights")."' />"
+			."<input type='hidden' name='action' value='setusertemplates' />"
 			."<input type='hidden' name='user' value='{$usr['user']}' />"
 			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
 			."</form>";
@@ -889,4 +952,22 @@ function updateusergroup($name, $description, $ugid)
     $uquery = "UPDATE ".db_table_name('user_groups')." SET name = '$name', description = '$description' WHERE ugid =$ugid";
     // TODO
     return $connect->Execute($uquery) or die($connect->ErrorMsg()) ;
+}
+
+function refreshtemplates() {
+	global $connect ;
+	global $dbprefix ;
+	
+	$template_a = gettemplatelist();
+	foreach ($template_a as $tp) {
+		// check for each folder if there is already an entry in the database
+		// if not create it with current user as creator (user with rights "create user" can assign template rights)
+		$query = "SELECT * FROM ".$dbprefix."templates WHERE folder LIKE '".$tp."'";
+		$result = mysql_query($query);
+		if (mysql_num_rows($result) == 0) {
+			$query2 = "INSERT INTO ".$dbprefix."templates SET folder='".$tp."', creator=".$_SESSION['loginID'] ;
+			$result2 = mysql_query($query2);
+		}
+	}
+	return true;
 }

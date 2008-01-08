@@ -429,4 +429,55 @@ elseif ($action == "userrights")
 	}
 }
 
+elseif ($action == "usertemplates")
+{
+      $addsummary = "<br /><strong>".$clang->gT("Set Template Rights")."</strong><br />\n";
+
+      if($_POST['uid'] != $_SESSION['loginID'])
+      {
+              $userlist = getuserlist();
+              foreach ($userlist as $usr)
+              {
+                      if ($usr['uid'] == $_POST['uid'])
+                      {
+                              $isallowed = true;
+                              continue;
+                      }
+              }
+
+              if($isallowed)
+              {
+                      $templaterights = array();
+                      $tquery = "SELECT * FROM ".$dbprefix."templates";
+                      $tresult = mysql_query($tquery);
+                      while ($trow = mysql_fetch_assoc($tresult)) {
+                              if (isset($_POST[$trow["folder"]."_use"]))
+                                      $templaterights[$trow["folder"]] = 1;
+                              else
+                                      $templaterights[$trow["folder"]] = 0;
+                      }
+                      echo "<!-- \n";
+                      foreach ($templaterights as $key => $value) {
+                              $uquery = "INSERT INTO {$dbprefix}templates_rights SET `uid`=".$_POST['uid'].", `folder`='".$key."', `use`=".$value." ON DUPLICATE KEY UPDATE `use`=".$value;
+                              echo $uquery."\n";
+                              $uresult = mysql_query($uquery);
+                      }
+                      echo "--> \n";
+                      $addsummary .= "<br />".$clang->gT("Update usertemplates successful.")."<br />\n";
+                      $addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+
+              }
+              else
+              {
+                      include("access_denied.php");
+              }
+      }
+      else
+      {
+              $addsummary .= "<br />".$clang->gT("You are not allowed to change your own rights!")."<br />\n";
+              $addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+      }
+}
+
+
 ?>

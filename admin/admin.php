@@ -103,7 +103,7 @@ elseif ($action=="labels" || $action=="newlabelset" || $action=="insertlabelset"
   }      
 elseif ($action=="templates" || $action=="templatecopy" || $action=="templatesavechanges" || 
         $action=="templaterename" || $action=="templateupload" || $action=="templatefiledelete" || 
-        $action=="templatezip")
+        $action=="templatezip"  || $action=="templaterefresh")
   { 
       if ($_SESSION['USER_RIGHT_MANAGE_TEMPLATE']==1)  {include("templates.php");}
         else { include("access_denied.php");}
@@ -277,7 +277,7 @@ elseif ($action == "replacementfields")
     }    
 
       
- if ($action=="adduser" || $action=="deluser" || $action=="moduser" ||                                        //Still to check 
+ if ($action=="adduser" || $action=="deluser" || $action=="moduser" || $action=="setusertemplates" || $action=="usertemplates" ||                                        //Still to check 
      $action=="userrights" || $action=="modifyuser" || $action=="editusers" || 
      $action=="addusergroup" || $action=="editusergroup" || $action=="mailusergroup" ||
      $action=="delusergroup" || $action=="usergroupindb" || $action=="mailsendusergroup" || 
