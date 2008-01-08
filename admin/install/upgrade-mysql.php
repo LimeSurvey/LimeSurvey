@@ -162,7 +162,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","ALTER TABLE `prefix_surveys` ADD `htmlemail` CHAR(1) default 'N'"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE `prefix_surveys` ADD `tokenanswerspersistence` CHAR(1) default 'N'"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE `prefix_surveys` ADD `usecaptcha` CHAR(1) default 'N'"); echo $modifyoutput; flush();
-        modify_database("","ALTER TABLE `prefix_users` ADD `htmleditormode` CHAR(7) default 'N'"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_users` ADD `htmleditormode` CHAR(7) default 'default'"); echo $modifyoutput; flush();
         modify_database("","update `prefix_settings_global` set `stg_value`='121' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     return true;
