@@ -52,6 +52,21 @@ elseif (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='' )
 // OLD LANGUAGE SETTING
 //SetInterfaceLanguage($_SESSION['adminlang']);
 
+// if changehtmleditormode is called then update user htmleditormode
+if (returnglobal('action') == "changehtmleditormode" )	
+	{
+	$_SESSION['htmleditormode']=returnglobal('htmleditormode');
+	if(isset($_SESSION['loginID']))
+		{
+		$uquery = "UPDATE {$dbprefix}users SET htmleditormode='{$_SESSION['htmleditormode']}' WHERE uid={$_SESSION['loginID']}";	//		added by Dennis
+		$uresult = $connect->Execute($uquery);
+		}
+	}
+elseif (!isset($_SESSION['htmleditormode']) || $_SESSION['htmleditormode']=='' )
+	{
+	$_SESSION['htmleditormode']=$defaulthtmleditormode;
+	}
+
 // Construct the language class, and set the language.
 if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
 require_once($rootdir.'/classes/core/language.php');

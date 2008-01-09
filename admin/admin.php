@@ -264,7 +264,7 @@ elseif ($action == "replacementfields")
  if (!isset($assessmentsoutput) && !isset($statisticsoutput) && !isset($browseoutput) && !isset($savedsurveyoutput) && !isset( $listcolumnoutput  ) &&         
      !isset($dataentryoutput) && !isset($conditionsoutput) && !isset($importoldresponsesoutput) && 
      !isset($vvoutput) && !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&    
-     (isset($surveyid) || $action=="listurveys" || $action=="changelang" ||  $action=="checksettings" ||       //Still to check
+     (isset($surveyid) || $action=="listurveys" || $action=="changelang" ||  $action=="changehtmleditormode" || $action=="checksettings" ||       //Still to check
       $action=="editsurvey" || $action=="updatesurvey" || $action=="ordergroups"  ||
       $action=="uploadf" || $action=="newsurvey" || $action=="listsurveys" ||   
       $action=="surveyrights" || $action=="quotas") ) include("html.php");

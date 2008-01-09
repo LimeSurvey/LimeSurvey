@@ -147,7 +147,7 @@ if ($action == "listsurveys")
 	else $listsurveys="<br /><strong> ".$clang->gT("No Surveys available - please create one.")." </strong><br /><br />" ;
 }
 
-if ($action == "checksettings" || $action == "changelang")
+if ($action == "checksettings" || $action == "changelang" || $action=="changehtmleditormode")
 {
 	//GET NUMBER OF SURVEYS
 	$query = "SELECT sid FROM ".db_table_name('surveys');
@@ -159,6 +159,29 @@ if ($action == "checksettings" || $action == "changelang")
 	$query = "SELECT users_name FROM ".db_table_name('users');
 	$result = $connect->Execute($query);
 	$usercount = $result->RecordCount();
+
+	// prepare data for the htmleditormode preference
+	$htmleditormode='default';
+	$edmod1='';
+	$edmod2='';
+	$edmod3='';
+	$edmod4='';
+	switch ($_SESSION['htmleditormode'])
+	{
+		case 'none':
+			$edmod2="selected='selected'";
+		break;
+		case 'inline':
+			$edmod3="selected='selected'";
+		break;
+		case 'popup':
+			$edmod4="selected='selected'";
+		break;
+		default:
+			$edmod1="selected='selected'";
+		break;
+	}
+
 	$tablelist = $connect->MetaTables();
 	foreach ($tablelist as $table)
 	{
@@ -220,6 +243,21 @@ if ($action == "checksettings" || $action == "changelang")
 	}
 	$cssummary .= "\t\t\t</select>\n"
 	. "\t\t\t<input type='hidden' name='action' value='changelang' />\n"
+	. "\t\t</td>\n"
+	. "\t</tr>\n";
+	// Current htmleditormode
+	$cssummary .=  "\t<tr>\n"
+	. "\t\t<td align='right' >\n"
+	. "\t\t\t<strong>".$clang->gT("Preferred HTML editor mode").":</strong>\n"
+	. "\t\t</td><td>\n"
+	. "\t\t\t<select name='htmleditormode' onchange='form.submit()'>\n"
+	. "\t\t\t\t<option value='default' $edmod1>".$clang->gT("Default HTML editor")."</option>\n"
+	. "\t\t\t\t<option value='none' $edmod2>".$clang->gT("No HTML editor")."</option>\n"
+	. "\t\t\t\t<option value='inline' $edmod3>".$clang->gT("Inline HTML editor")."</option>\n"
+	. "\t\t\t\t<option value='popup' $edmod4>".$clang->gT("Popup HTML editor")."</option>\n";
+	$cssummary .= "\t\t\t</select>\n"
+	. "\t\t\t<input type='hidden' name='action' value='changehtmleditormode' />\n"
+	. ""
 	. "\t\t</td>\n"
 	. "\t</tr>\n";
 	// Other infos

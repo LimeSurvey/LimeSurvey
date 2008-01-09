@@ -91,7 +91,19 @@ function PrepareEditorInlineScript()
 
 function PrepareEditorScript($fieldtype=null)
 {
-	global $htmleditormode;
+	global $defaulthtmleditormode;
+
+	if (!isset($_SESSION['htmleditormode']) ||
+		($_SESSION['htmleditormode'] != 'inline' &&
+		$_SESSION['htmleditormode'] != 'popup') )
+	{
+		$htmleditormode = $defaulthtmleditormode;
+	}
+	else
+	{
+		$htmleditormode = $_SESSION['htmleditormode'];
+	}
+
 	if ($htmleditormode == 'popup' ||
 		$fieldtype == 'editanswer' ||
 		$fieldtype == 'addanswer' ||
@@ -112,7 +124,19 @@ function PrepareEditorScript($fieldtype=null)
 
 function getEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
 {
-	global $htmleditormode;
+	global $defaulthtmleditormode;
+
+
+	if (!isset($_SESSION['htmleditormode']) ||
+		($_SESSION['htmleditormode'] != 'inline' &&
+		$_SESSION['htmleditormode'] != 'popup') )
+	{
+		$htmleditormode = $defaulthtmleditormode;
+	}
+	else
+	{
+		$htmleditormode = $_SESSION['htmleditormode'];
+	}
 
 	if ( ($fieldtype == 'email-inv' ||
 		$fieldtype == 'email-reg' ||

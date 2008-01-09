@@ -146,14 +146,15 @@ $filterout_incomplete_answers = true;
 //  * set to true in order to remove the parameter part of the referrer url
 //  $stripQueryFromRefurl = false;
 
-// $htmleditormode
-//  * enables htmleditor and sets its mode: none, inline, popup
+// $defaulthtmleditormode
+//  * sets the default mode for htmleditor: none, inline, popup
+//    users without specific preference inherit this setup
 //  * inline: inline replacement of fields by an HTML editor: 
 //     --> slow but convenient and user friendly
 //  * popup: adds an icon that runs a popup with and html editor 
 //     --> faster, but html code is displayed on the form
 //  * none: no html editor
-$htmleditormode = 'inline';
+$defaulthtmleditormode = 'inline';
 
 // $enable_tokenresponse_persitence
 // Only relevant for a survey using tokens, and not enforcing answer privacy
