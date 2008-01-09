@@ -128,8 +128,8 @@ if ($action == "setusertemplates")
                       {
                               $templaterights = array();
                               $squery = "SELECT `folder`, `use` FROM {$dbprefix}templates_rights WHERE uid={$usr['uid']}";
-                              $sresult = mysql_query($squery);
-                              while ($srow = mysql_fetch_assoc($sresult)) {
+                              $sresult = db_execute_assoc($squery) or die($connect->ErrorMsg());
+                              while ($srow = $sresult->FetchRow()) {
                                       $templaterights[$srow["folder"]] = array("use"=>$srow["use"], "creator"=>$srow["creator"]);
                               }
 
@@ -138,8 +138,8 @@ if ($action == "setusertemplates")
                                       ."<form action='$scriptname' method='post'>\n";
 
                               $tquery = "SELECT * FROM ".$dbprefix."templates";
-                              $tresult = mysql_query($tquery);
-                              while ($trow = mysql_fetch_assoc($tresult)) {
+                              $tresult = db_execute_assoc($tquery) or die($connect->ErrorMsg());
+                              while ($trow = $tresult->FetchRow()) {
                                       $usersummary .= "\t\t\t<tr><td>{$trow["folder"]}</td>";
 
                                       $usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"{$trow["folder"]}_use\" value=\"{$trow["folder"]}_use\"";
@@ -963,10 +963,11 @@ function refreshtemplates() {
 		// check for each folder if there is already an entry in the database
 		// if not create it with current user as creator (user with rights "create user" can assign template rights)
 		$query = "SELECT * FROM ".$dbprefix."templates WHERE folder LIKE '".$tp."'";
-		$result = mysql_query($query);
-		if (mysql_num_rows($result) == 0) {
+		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+		
+		if ($result->RecordCount() == 0) {
 			$query2 = "INSERT INTO ".$dbprefix."templates SET folder='".$tp."', creator=".$_SESSION['loginID'] ;
-			$result2 = mysql_query($query2);
+			$connect->Execute($query2);
 		}
 	}
 	return true;
