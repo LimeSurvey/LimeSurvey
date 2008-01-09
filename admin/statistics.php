@@ -1583,6 +1583,8 @@ if (isset($summary) && $summary)
 
 			if ($usejpgraph == 1 && array_sum($gdata)>0) //JPGRAPH CODING ORIGINALLY SUBMITTED BY Pieterjan Heyse
 			{
+				$graph = "";
+				$p1 = "";
 				//                  $statisticsoutput .= "<pre>";
 				//                  $statisticsoutput .= "GDATA:\n";
 				//                  print_r($gdata);
@@ -1632,7 +1634,8 @@ if (isset($summary) && $summary)
 					$graph->legend->SetFont(constant($jpgraphfont), FS_NORMAL, $fontsize);
 					$graph->legend->SetPos(0.015, $legendtop, 'right', 'top');
 					$graph->legend->SetFillColor("white");
-    				$graph->SetAntiAliasing();
+    				global $jpgrath_AntiAliasing;
+					if ($jpgrath_AntiAliasing == 1) $graph->SetAntiAliasing();
 				}
 				$graph->title->SetColor("#EEEEEE");
 				$graph->SetMarginColor("#FFFFFF");
