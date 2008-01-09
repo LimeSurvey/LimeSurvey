@@ -1431,7 +1431,18 @@ if($actsurrows['browse_response'])
 	}
 	else
 	{
-		if (!isset($_GET['language'])) {$_GET['language']=GetBaseLanguageFromSurveyID($surveyid);}
+		$slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+		$baselang = GetBaseLanguageFromSurveyID($surveyid);
+		array_unshift($slangs,$sbaselang);
+		
+		if(!isset($_GET['language']) || !in_array($_GET['language'],$slangs))
+		{
+			$language = $baselang;
+		} else {
+			$blang = new limesurvey_lang($_GET['language']);
+			$language = $_GET['language'];
+		}
+		
 		$langlistbox = languageDropdown($surveyid,$_GET['language']);
 		$thissurvey=getSurveyInfo($surveyid);
 		//This is the default, presenting a blank dataentry form
@@ -1442,18 +1453,6 @@ if($actsurrows['browse_response'])
 		.$clang->gT("Browse Responses")."</strong></td></tr>\n"
 		.$surveyoptions
 		."</table><table><tr><td></td></tr></table>";
-		$slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-		$baselang = GetBaseLanguageFromSurveyID($surveyid);
-		array_unshift($slangs,$baselang);
-
-		if(!isset($_GET['language']) || !in_array($_GET['language'],$slangs))
-		{
-			$baselang = GetBaseLanguageFromSurveyID($surveyid);
-		} else {
-			$baselang = $_GET['language'];
-		}
-		//RL: debug: echo "language: ".$language."<br>baselang: ".$baselang."<br>";
-
 
 		$dataentryoutput .= "<table width='100%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."<form action='$scriptname?action=dataentry' name='addsurvey' method='post' id='addsurvey'>\n"
@@ -1472,7 +1471,7 @@ if($actsurrows['browse_response'])
 		{
 			$dataentryoutput .= "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
-			."\t\t<td valign='top' align='right' width='30%'><font color='red'>*</font><strong>".$clang->gT("Token").":</strong></font></td>\n"
+			."\t\t<td valign='top' align='right' width='30%'><font color='red'>*</font><strong>".$blang->gT("Token").":</strong></font></td>\n"
 			."\t\t<td valign='top'  align='left' style='padding-left: 20px'>\n"
 			."\t\t\t<input type='text' id='token' name='token' onkeyup='activateSubmit(this);'/>\n"
 			."\t\t</td>\n"
@@ -1500,7 +1499,7 @@ if($actsurrows['browse_response'])
 			$dataentryoutput .= "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
 			."\t\t<td valign='top' align='right' width='30%'><strong>"
-			.$clang->gT("Datestamp").":</strong></font></td>\n"
+			.$blang->gT("Datestamp").":</strong></font></td>\n"
 			."\t\t<td valign='top'  align='left' style='padding-left: 20px'>\n"
 			."\t\t\t<input type='text' name='datestamp' value='$localtimedate' />\n"
 			."\t\t</td>\n"
@@ -1511,7 +1510,7 @@ if($actsurrows['browse_response'])
 			$dataentryoutput .= "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
 			."\t\t<td valign='top' align='right' width='30%'><strong>"
-			.$clang->gT("IP-Address").":</strong></font></td>\n"
+			.$blang->gT("IP-Address").":</strong></font></td>\n"
 			."\t\t<td valign='top'  align='left' style='padding-left: 20px'>\n"
 			."\t\t\t<input type='text' name='ipaddr' value='NULL' />\n"
 			."\t\t</td>\n"
@@ -1520,12 +1519,12 @@ if($actsurrows['browse_response'])
 
 
 		// SURVEY NAME AND DESCRIPTION TO GO HERE
-		$degquery = "SELECT * FROM ".db_table_name("groups")." WHERE sid=$surveyid AND language='{$baselang}' ORDER BY ".db_table_name("groups").".group_order";
+		$degquery = "SELECT * FROM ".db_table_name("groups")." WHERE sid=$surveyid AND language='{$language}' ORDER BY ".db_table_name("groups").".group_order";
 		$degresult = db_execute_assoc($degquery);
 		// GROUP NAME
 		while ($degrow = $degresult->FetchRow())
 		{
-			$deqquery = "SELECT * FROM ".db_table_name("questions")." WHERE sid=$surveyid AND gid={$degrow['gid']} AND language='{$baselang}'";
+			$deqquery = "SELECT * FROM ".db_table_name("questions")." WHERE sid=$surveyid AND gid={$degrow['gid']} AND language='{$language}'";
 			$deqresult = db_execute_assoc($deqquery);
 			$dataentryoutput .= "\t<tr>\n"
 			."\t\t<td colspan='3' align='center'><strong>{$degrow['group_name']}</strong></font></td>\n"
@@ -1553,7 +1552,7 @@ if($actsurrows['browse_response'])
 				$distinctresult=db_execute_assoc($distinctquery);
 				while ($distinctrow=$distinctresult->FetchRow())
 				{
-					if ($x > 0) {$explanation .= " <i>".$clang->gT("AND")."</i><br />";}
+					if ($x > 0) {$explanation .= " <i>".$blang->gT("AND")."</i><br />";}
 					$conquery="SELECT cid, cqid, cfieldname, ".db_table_name("questions").".title, ".db_table_name("questions").".lid, ".db_table_name("questions").".question, value, ".db_table_name("questions").".type FROM ".db_table_name("conditions").", ".db_table_name("questions")." WHERE ".db_table_name("conditions").".cqid=".db_table_name("questions").".qid AND ".db_table_name("conditions").".cqid={$distinctrow['cqid']} AND ".db_table_name("conditions").".qid={$deqrow['qid']}";
 					$conresult=db_execute_assoc($conquery);
 					while ($conrow=$conresult->FetchRow())
@@ -1563,15 +1562,15 @@ if($actsurrows['browse_response'])
 							case "Y":
 								switch ($conrow['value'])
 								{
-									case "Y": $conditions[]=$clang->gT("Yes"); break;
-									case "N": $conditions[]=$clang->gT("No"); break;
+									case "Y": $conditions[]=$blang->gT("Yes"); break;
+									case "N": $conditions[]=$blang->gT("No"); break;
 								}
 								break;
 							case "G":
 								switch($conrow['value'])
 								{
-									case "M": $conditions[]=$clang->gT("Male"); break;
-									case "F": $conditions[]=$clang->gT("Female"); break;
+									case "M": $conditions[]=$blang->gT("Male"); break;
+									case "F": $conditions[]=$blang->gT("Female"); break;
 								} // switch
 								break;
 							case "A":
@@ -1581,17 +1580,17 @@ if($actsurrows['browse_response'])
 							case "C":
 								switch($conrow['value'])
 								{
-									case "Y": $conditions[]=$clang->gT("Yes"); break;
-									case "U": $conditions[]=$clang->gT("Uncertain"); break;
-									case "N": $conditions[]=$clang->gT("No"); break;
+									case "Y": $conditions[]=$blang->gT("Yes"); break;
+									case "U": $conditions[]=$blang->gT("Uncertain"); break;
+									case "N": $conditions[]=$blang->gT("No"); break;
 								} // switch
 								break;
 							case "E":
 								switch($conrow['value'])
 								{
-									case "I": $conditions[]=$clang->gT("Increase"); break;
-									case "D": $conditions[]=$clang->gT("Decrease"); break;
-									case "S": $conditions[]=$clang->gT("Same"); break;
+									case "I": $conditions[]=$blang->gT("Increase"); break;
+									case "D": $conditions[]=$blang->gT("Decrease"); break;
+									case "S": $conditions[]=$blang->gT("Same"); break;
 								}
 							case "F":
 							case "H":
@@ -1618,7 +1617,7 @@ if($actsurrows['browse_response'])
 							case "F":
 							case "H":
 								$thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
-								$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion[0]['aid']}' AND language='{$baselang}'";
+								$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion[0]['aid']}' AND language='{$language}'";
 								$ansresult=db_execute_assoc($ansquery);
 								$i=0;
 								while ($ansrow=$ansresult->FetchRow())
@@ -1628,16 +1627,16 @@ if($actsurrows['browse_response'])
 										$conditions[sizeof($conditions)-1]="(".$ansrow['answer'].") : ".end($conditions);
 									}
 								}
-								$operator=$clang->gT("AND");	// this is a dirty, DIRTY fix but it works since only array questions seem to be ORd
+								$operator=$blang->gT("AND");	// this is a dirty, DIRTY fix but it works since only array questions seem to be ORd
 								break;
 							default:
-								$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$baselang}'";
+								$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$language}'";
 								$ansresult=db_execute_assoc($ansquery);
 								while ($ansrow=$ansresult->FetchRow())
 								{
 									$conditions[]=$ansrow['answer'];
 								}
-								$operator=$clang->gT("OR");
+								$operator=$blang->gT("OR");
 								if (isset($conditions)) $conditions = array_unique($conditions);
 								break;
 						}
@@ -1645,12 +1644,12 @@ if($actsurrows['browse_response'])
 					if (isset($conditions) && count($conditions) > 1)
 					{
 						$conanswers = "'".implode("' ".$operator." '", $conditions)."'";
-						$explanation .= " -" . str_replace("{ANSWER}", $conanswers, $clang->gT("to question {QUESTION}, you answered {ANSWER}"));
+						$explanation .= " -" . str_replace("{ANSWER}", $conanswers, $blang->gT("to question {QUESTION}, you answered {ANSWER}"));
 					}
 					else
 					{
-						if(empty($conditions[0])) $conditions[0] = $clang->gT("No Answer");
-						$explanation .= " -" . str_replace("{ANSWER}", "'{$conditions[0]}'", $clang->gT("to question {QUESTION}, you answered {ANSWER}"));
+						if(empty($conditions[0])) $conditions[0] = $blang->gT("No Answer");
+						$explanation .= " -" . str_replace("{ANSWER}", "'{$conditions[0]}'", $blang->gT("to question {QUESTION}, you answered {ANSWER}"));
 					}
 					unset($conditions);
 					$explanation = str_replace("{QUESTION}", "'{$distinctrow['title']}$answer_section'", $explanation);
@@ -1660,7 +1659,7 @@ if($actsurrows['browse_response'])
 				if ($explanation)
 				{
                     if ($bgc == "evenrow") {$bgc = "oddrow";} else {$bgc = "evenrow";} //Do no alternate on explanation row
-					$explanation = "<font size='1'>[".$clang->gT("Only answer this if the following conditions are met:")."]<br />$explanation\n";
+					$explanation = "<font size='1'>[".$blang->gT("Only answer this if the following conditions are met:")."]<br />$explanation\n";
 					$dataentryoutput .= "<tr bgcolor='#FFEEEE'><td colspan='3' align='left'>$explanation</font></td></tr>\n";
 				}
 
@@ -1682,13 +1681,13 @@ if($actsurrows['browse_response'])
 				{
 					$hh = addcslashes($deqrow['help'], "\0..\37'\""); //Escape ASCII decimal 0-32 plus single and double quotes to make JavaScript happy.
 					$hh = htmlspecialchars($hh, ENT_QUOTES); //Change & " ' < > to HTML entities to make HTML happy.
-					$dataentryoutput .= "\t\t\t<img src='$imagefiles/help.gif' alt='".$clang->gT("Help about this question")."' align='right' onclick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\" />\n";
+					$dataentryoutput .= "\t\t\t<img src='$imagefiles/help.gif' alt='".$blang->gT("Help about this question")."' align='right' onclick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\" />\n";
 				}
 				switch($deqrow['type'])
 				{
 					case "5": //5 POINT CHOICE radio-buttons
 					$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n"
-					."\t\t\t\t<option value=''>".$clang->gT("No answer")."</option>\n";
+					."\t\t\t\t<option value=''>".$blang->gT("No answer")."</option>\n";
 					for ($x=1; $x<=5; $x++)
 					{
 						$dataentryoutput .= "\t\t\t\t<option value='$x'>$x</option>\n";
@@ -1700,15 +1699,15 @@ if($actsurrows['browse_response'])
 					break;
 					case "G": //GENDER drop-down list
 					$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n"
-					."\t\t\t\t<option selected='selected' value=''>".$clang->gT("Please choose")."..</option>\n"
-					."\t\t\t\t<option value='F'>".$clang->gT("Female")."</option>\n"
-					."\t\t\t\t<option value='M'>".$clang->gT("Male")."</option>\n"
+					."\t\t\t\t<option selected='selected' value=''>".$blang->gT("Please choose")."..</option>\n"
+					."\t\t\t\t<option value='F'>".$blang->gT("Female")."</option>\n"
+					."\t\t\t\t<option value='M'>".$blang->gT("Male")."</option>\n"
 					."\t\t\t</select>\n";
 					break;
 					case "Q": //MULTIPLE SHORT TEXT
 					case "^": //Slider
 					case "K":
-					$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
 					$dearesult = db_execute_assoc($deaquery);
 					$dataentryoutput .= "\t\t\t<table>\n";
 					while ($dearow = $dearesult->FetchRow())
@@ -1726,14 +1725,14 @@ if($actsurrows['browse_response'])
 						$deaquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} ORDER BY sortorder, code";
 						$dearesult = db_execute_assoc($deaquery);
 						$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n";
-						$dataentryoutput .= "\t\t\t\t<option selected='selected' value=''>".$clang->gT("Please choose")."..</option>\n";
+						$dataentryoutput .= "\t\t\t\t<option selected='selected' value=''>".$blang->gT("Please choose")."..</option>\n";
 						while ($dearow = $dearesult->FetchRow())
 						{
 							$dataentryoutput .= "\t\t\t\t<option value='{$dearow['code']}'";
 							$dataentryoutput .= ">{$dearow['title']}</option>\n";
 						}
 
-						$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$deqrow['qid']} AND language='{$baselang}'";
+						$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$deqrow['qid']} AND language='{$language}'";
 						$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
 						while($orow = $oresult->FetchRow())
 						{
@@ -1741,20 +1740,20 @@ if($actsurrows['browse_response'])
 						}
 						if ($fother == "Y")
 						{
-							$dataentryoutput .= "<option value='-oth-'>".$clang->gT("Other")."</option>\n";
+							$dataentryoutput .= "<option value='-oth-'>".$blang->gT("Other")."</option>\n";
 						}
 						$dataentryoutput .= "\t\t\t</select>\n";
 						if ($fother == "Y")
 						{
 							$dataentryoutput .= "\t\t\t"
-							.$clang->gT("Other").":</font>"
+							.$blang->gT("Other").":</font>"
 							."<input type='text' name='{$fieldname}other' value='' />\n";
 						}
 						break;
 					case "L": //LIST drop-down/radio-button list
 					case "!":
 						$defexists="";
-						$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY sortorder, answer";
+						$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
 						$dearesult = db_execute_assoc($deaquery);
 						$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n";
 						$datatemp='';
@@ -1764,10 +1763,10 @@ if($actsurrows['browse_response'])
 							if ($dearow['default_value'] == "Y") {$datatemp .= " selected='selected'"; $defexists = "Y";}
 							$datatemp .= ">{$dearow['answer']}</option>\n";
 						}
-						if ($defexists=="") {$dataentryoutput .= "\t\t\t\t<option selected='selected' value=''>".$clang->gT("Please choose")."..</option>\n".$datatemp;}
+						if ($defexists=="") {$dataentryoutput .= "\t\t\t\t<option selected='selected' value=''>".$blang->gT("Please choose")."..</option>\n".$datatemp;}
 						else {$dataentryoutput .=$datatemp;}
 
-						$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$deqrow['qid']} AND language='{$baselang}'";
+						$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$deqrow['qid']} AND language='{$language}'";
 						$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
 						while($orow = $oresult->FetchRow())
 						{
@@ -1775,19 +1774,19 @@ if($actsurrows['browse_response'])
 						}
 						if ($fother == "Y")
 						{
-							$dataentryoutput .= "<option value='-oth-'>".$clang->gT("Other")."</option>\n";
+							$dataentryoutput .= "<option value='-oth-'>".$blang->gT("Other")."</option>\n";
 						}
 						$dataentryoutput .= "\t\t\t</select>\n";
 						if ($fother == "Y")
 						{
 							$dataentryoutput .= "\t\t\t"
-							.$clang->gT("Other").":</font>"
+							.$blang->gT("Other").":</font>"
 							."<input type='text' name='{$fieldname}other' value='' />\n";
 						}
 						break;
 					case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
 					$defexists="";
-					$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY sortorder, answer";
+					$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
 					$dearesult = db_execute_assoc($deaquery);
 					$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n";
 					$datatemp='';
@@ -1797,16 +1796,16 @@ if($actsurrows['browse_response'])
 						if ($dearow['default_value'] == "Y") {$datatemp .= " selected='selected'"; $defexists = "Y";}
 						$datatemp .= ">{$dearow['answer']}</option>\n";
 					}
-					if ($defexists=="") {$dataentryoutput .= "\t\t\t\t<option selected='selected' value=''>".$clang->gT("Please choose")."..</option>\n".$datatemp;}
+					if ($defexists=="") {$dataentryoutput .= "\t\t\t\t<option selected='selected' value=''>".$blang->gT("Please choose")."..</option>\n".$datatemp;}
 					else  {$dataentryoutput .= $datatemp;}
 					$dataentryoutput .= "\t\t\t</select>\n"
-					."\t\t\t<br />".$clang->gT("Comment").":<br />\n"
+					."\t\t\t<br />".$blang->gT("Comment").":<br />\n"
 					."\t\t\t<textarea cols='40' rows='5' name='$fieldname"
 					."comment'></textarea>\n";
 					break;
 					case "R": //RANKING TYPE QUESTION
 					$thisqid=$deqrow['qid'];
-					$ansquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid=$thisqid AND language='{$baselang}' ORDER BY sortorder, answer";
+					$ansquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid=$thisqid AND language='{$language}' ORDER BY sortorder, answer";
 					$ansresult = db_execute_assoc($ansquery);
 					$anscount = $ansresult->RecordCount();
 					$dataentryoutput .= "\t\t\t<script type='text/javascript'>\n"
@@ -1921,7 +1920,7 @@ if($actsurrows['browse_response'])
 							$chosen[]=array($thiscode, $thistext);
 						}
 						$ranklist .= "' /></font>\n";
-						$ranklist .= "\t\t\t\t\t\t<img src='$imagefiles/cut.gif' alt='".$clang->gT("Remove this item")."' title='".$clang->gT("Remove this item")."' ";
+						$ranklist .= "\t\t\t\t\t\t<img src='$imagefiles/cut.gif' alt='".$blang->gT("Remove this item")."' title='".$blang->gT("Remove this item")."' ";
 						if (!isset($existing) || $i != $existing)
 						{
 							$ranklist .= "style='display:none'";
@@ -1954,12 +1953,12 @@ if($actsurrows['browse_response'])
 					."\t\t\t\t<tr>\n"
 					."\t\t\t\t\t<td align='left' valign='top' width='200'>\n"
 					."\t\t\t\t\t\t<strong>"
-					.$clang->gT("Your Choices").":</strong></font><br />\n"
+					.$blang->gT("Your Choices").":</strong></font><br />\n"
 					.$choicelist
 					."\t\t\t\t\t</td>\n"
 					."\t\t\t\t\t<td align='left'>\n"
 					."\t\t\t\t\t\t<strong>"
-					.$clang->gT("Your Ranking").":</strong><br />\n"
+					.$blang->gT("Your Ranking").":</strong><br />\n"
 					.$ranklist
 					."\t\t\t\t\t</font></td>\n"
 					."\t\t\t\t</tr>\n"
@@ -1982,7 +1981,7 @@ if($actsurrows['browse_response'])
 					{
 						$dcols=0;
 					}
-					$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY sortorder, answer";
+					$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
 					$mearesult = db_execute_assoc($meaquery);
 					$meacount = $mearesult->RecordCount();
 					if ($deqrow['other'] == "Y") {$meacount++;}
@@ -2007,7 +2006,7 @@ if($actsurrows['browse_response'])
 						}
 						if ($deqrow['other'] == "Y")
 						{
-							$dataentryoutput .= "\t\t\t".$clang->gT("Other")." <input type='text' name='$fieldname";
+							$dataentryoutput .= "\t\t\t".$blang->gT("Other")." <input type='text' name='$fieldname";
 							$dataentryoutput .= "other' />\n";
 						}
 						$dataentryoutput .= "</td></tr></table>\n";
@@ -2023,20 +2022,20 @@ if($actsurrows['browse_response'])
 						}
 						if ($deqrow['other'] == "Y")
 						{
-							$dataentryoutput .= "\t\t\t".$clang->gT("Other")." <input type='text' name='$fieldname";
+							$dataentryoutput .= "\t\t\t".$blang->gT("Other")." <input type='text' name='$fieldname";
 							$dataentryoutput .= "other' />\n";
 						}
 					}
 					break;
 					case "I": //Language Switch
                     $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-                    $baselang = GetBaseLanguageFromSurveyID($surveyid);
-                    array_unshift($slangs,$baselang);
+                    $sbaselang = GetBaseLanguageFromSurveyID($surveyid);
+                    array_unshift($slangs,$sbaselang);
 
                     $dataentryoutput.= "<select name='{$fieldname}'>\n";
 					$dataentryoutput .= "\t\t\t\t<option value=''";
 					$dataentryoutput .= " selected='selected'";
-					$dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
+					$dataentryoutput .= ">".$blang->gT("Please choose")."..</option>\n";
 
                     foreach ($slangs as $lang)
                        	{
@@ -2067,7 +2066,7 @@ if($actsurrows['browse_response'])
 					if ($deqrow['other'] == "Y")
 					{
 						$dataentryoutput .= "\t<tr>\n";
-						$dataentryoutput .= "\t\t<td  align='left' style='padding-left: 22px'>".$clang->gT("Other").":</font></td>\n";
+						$dataentryoutput .= "\t\t<td  align='left' style='padding-left: 22px'>".$blang->gT("Other").":</font></td>\n";
 						$dataentryoutput .= "\t\t<td>\n";
 						$dataentryoutput .= "\t\t\t<input type='text' name='$fieldname"."other' size='50'/>\n";
 						$dataentryoutput .= "\t\t</td>\n";
@@ -2090,13 +2089,13 @@ if($actsurrows['browse_response'])
 					break;
 					case "Y": //YES/NO radio-buttons
 					$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n";
-					$dataentryoutput .= "\t\t\t\t<option selected='selected' value=''>".$clang->gT("Please choose")."..</option>\n";
-					$dataentryoutput .= "\t\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n";
-					$dataentryoutput .= "\t\t\t\t<option value='N'>".$clang->gT("No")."</option>\n";
+					$dataentryoutput .= "\t\t\t\t<option selected='selected' value=''>".$blang->gT("Please choose")."..</option>\n";
+					$dataentryoutput .= "\t\t\t\t<option value='Y'>".$blang->gT("Yes")."</option>\n";
+					$dataentryoutput .= "\t\t\t\t<option value='N'>".$blang->gT("No")."</option>\n";
 					$dataentryoutput .= "\t\t\t</select>\n";
 					break;
 					case "A": //ARRAY (5 POINT CHOICE) radio-buttons
-					$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
 					$mearesult = db_execute_assoc($meaquery);
 					$dataentryoutput .= "<table>\n";
 					while ($mearow = $mearesult->FetchRow())
@@ -2105,7 +2104,7 @@ if($actsurrows['browse_response'])
 						$dataentryoutput .= "\t\t<td align='right'>{$mearow['answer']}</font></td>\n";
 						$dataentryoutput .= "\t\t<td>\n";
 						$dataentryoutput .= "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
-						$dataentryoutput .= "\t\t\t\t<option value=''>".$clang->gT("Please choose")."..</option>\n";
+						$dataentryoutput .= "\t\t\t\t<option value=''>".$blang->gT("Please choose")."..</option>\n";
 						for ($i=1; $i<=5; $i++)
 						{
 							$dataentryoutput .= "\t\t\t\t<option value='$i'>$i</option>\n";
@@ -2117,7 +2116,7 @@ if($actsurrows['browse_response'])
 					$dataentryoutput .= "</table>\n";
 					break;
 					case "B": //ARRAY (10 POINT CHOICE) radio-buttons
-					$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
+					$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
 					$mearesult = db_execute_assoc($meaquery);
 					$dataentryoutput .= "<table>\n";
 					while ($mearow = $mearesult->FetchRow())
@@ -2126,7 +2125,7 @@ if($actsurrows['browse_response'])
 						$dataentryoutput .= "\t\t<td align='right'>{$mearow['answer']}</font></td>\n";
 						$dataentryoutput .= "\t\t<td>\n";
 						$dataentryoutput .= "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
-						$dataentryoutput .= "\t\t\t\t<option value=''>".$clang->gT("Please choose")."..</option>\n";
+						$dataentryoutput .= "\t\t\t\t<option value=''>".$blang->gT("Please choose")."..</option>\n";
 						for ($i=1; $i<=10; $i++)
 						{
 							$dataentryoutput .= "\t\t\t\t<option value='$i'>$i</option>\n";
@@ -2147,10 +2146,10 @@ if($actsurrows['browse_response'])
 						$dataentryoutput .= "\t\t<td align='right'>{$mearow['answer']}</font></td>\n";
 						$dataentryoutput .= "\t\t<td>\n";
 						$dataentryoutput .= "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
-						$dataentryoutput .= "\t\t\t\t<option value=''>".$clang->gT("Please choose")."..</option>\n";
-						$dataentryoutput .= "\t\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n";
-						$dataentryoutput .= "\t\t\t\t<option value='U'>".$clang->gT("Uncertain")."</option>\n";
-						$dataentryoutput .= "\t\t\t\t<option value='N'>".$clang->gT("No")."</option>\n";
+						$dataentryoutput .= "\t\t\t\t<option value=''>".$blang->gT("Please choose")."..</option>\n";
+						$dataentryoutput .= "\t\t\t\t<option value='Y'>".$blang->gT("Yes")."</option>\n";
+						$dataentryoutput .= "\t\t\t\t<option value='U'>".$blang->gT("Uncertain")."</option>\n";
+						$dataentryoutput .= "\t\t\t\t<option value='N'>".$blang->gT("No")."</option>\n";
 						$dataentryoutput .= "\t\t\t</select>\n";
 						$dataentryoutput .= "\t\t</td>\n";
 						$dataentryoutput .= "</tr>\n";
@@ -2167,10 +2166,10 @@ if($actsurrows['browse_response'])
 						$dataentryoutput .= "\t\t<td align='right'>{$mearow['answer']}</font></td>\n";
 						$dataentryoutput .= "\t\t<td>\n";
 						$dataentryoutput .= "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
-						$dataentryoutput .= "\t\t\t\t<option value=''>".$clang->gT("Please choose")."..</option>\n";
-						$dataentryoutput .= "\t\t\t\t<option value='I'>".$clang->gT("Increase")."</option>\n";
-						$dataentryoutput .= "\t\t\t\t<option value='S'>".$clang->gT("Same")."</option>\n";
-						$dataentryoutput .= "\t\t\t\t<option value='D'>".$clang->gT("Decrease")."</option>\n";
+						$dataentryoutput .= "\t\t\t\t<option value=''>".$blang->gT("Please choose")."..</option>\n";
+						$dataentryoutput .= "\t\t\t\t<option value='I'>".$blang->gT("Increase")."</option>\n";
+						$dataentryoutput .= "\t\t\t\t<option value='S'>".$blang->gT("Same")."</option>\n";
+						$dataentryoutput .= "\t\t\t\t<option value='D'>".$blang->gT("Decrease")."</option>\n";
 						$dataentryoutput .= "\t\t\t</select>\n";
 						$dataentryoutput .= "\t\t</td>\n";
 						$dataentryoutput .= "</tr>\n";
@@ -2198,7 +2197,7 @@ if($actsurrows['browse_response'])
 							$dataentryoutput .= "\t\t<td align='right'>{$answerleft}</td>\n";
 							$dataentryoutput .= "\t\t<td>\n";
 							$dataentryoutput .= "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
-							$dataentryoutput .= "\t\t\t\t<option value=''>".$clang->gT("Please choose")."..</option>\n";
+							$dataentryoutput .= "\t\t\t\t<option value=''>".$blang->gT("Please choose")."..</option>\n";
 							$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} and language='$language' ORDER BY sortorder, code";
 							$fresult = db_execute_assoc($fquery);
 							while ($frow = $fresult->FetchRow())
@@ -2232,7 +2231,7 @@ if($actsurrows['browse_response'])
 							$dataentryoutput .= "\t\t<td align='right'>{$answerleft}</td>\n";
 							$dataentryoutput .= "\t\t<td>\n";
 							$dataentryoutput .= "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
-							$dataentryoutput .= "\t\t\t\t<option value=''>".$clang->gT("Please choose")."..</option>\n";
+							$dataentryoutput .= "\t\t\t\t<option value=''>".$blang->gT("Please choose")."..</option>\n";
 							$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} and language='$language' ORDER BY sortorder, code";
 							$fresult = db_execute_assoc($fquery);
 							while ($frow = $fresult->FetchRow())
@@ -2299,8 +2298,8 @@ if($actsurrows['browse_response'])
 					  <tr><td align='right'>".$clang->gT("Start Language:")."</td>
 					  <td>";
                 $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-                $baselang = GetBaseLanguageFromSurveyID($surveyid);
-                array_unshift($slangs,$baselang);
+                $sbaselang = GetBaseLanguageFromSurveyID($surveyid);
+                array_unshift($slangs,$sbaselang);
                 $dataentryoutput.= "<select name='save_language'>\n";
                 foreach ($slangs as $lang)
                    	{
