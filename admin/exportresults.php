@@ -660,7 +660,7 @@ if ($type == "doc")
 	{
 //		if ($fieldmap[$x]['fieldname'] != "datestamp" && $fieldmap[$x]['fieldname'] != "ipaddr" && $fieldmap[$x]['fieldname'] != "refurl")
 //		{
-			$fieldmap[$x]['title']=$flarray[$x];
+			if (isset($flarray[$x])) $fieldmap[$x]['title']=$flarray[$x];
 //			$y++;
 //		}
 	}

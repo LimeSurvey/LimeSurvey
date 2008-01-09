@@ -105,11 +105,20 @@ if(isset($surveyid))
 		{
 			$_POST  = array_map('db_quote', $_POST);
             $first=true;
+	   		require_once("../classes/inputfilter/class.inputfilter_clean.php");
+		    $myFilter = new InputFilter('','',1,1,1); // $myFilter->process();
+         
     		foreach ($grplangs as $grouplang)
 	       	{
-		      	if ($first)
+		     	//Clean XSS
+		     	if ($filterxsshtml)
+		     	{
+		 		$_POST['group_name_'.$grouplang]=$myFilter->process($_POST['group_name_'.$grouplang]);
+		     	$_POST['description_'.$grouplang]=$myFilter->process($_POST['description_'.$grouplang]);
+		     	}
+			  	if ($first)
                   {
-                    $query = "INSERT INTO ".db_table_name('groups')." (sid, group_name, description,group_order,language) VALUES ('{$_POST['sid']}', '{$_POST['group_name_'.$grouplang]}', '{$_POST['description_'.$grouplang]}',".getMaxgrouporder($_POST['sid']).",'{$grouplang}')";
+      			    $query = "INSERT INTO ".db_table_name('groups')." (sid, group_name, description,group_order,language) VALUES ('{$_POST['sid']}', '{$_POST['group_name_'.$grouplang]}', '{$_POST['description_'.$grouplang]}',".getMaxgrouporder($_POST['sid']).",'{$grouplang}')";
                     $result = $connect->Execute($query);
                     $groupid=$connect->Insert_Id();
                     $first=false;
@@ -140,10 +149,17 @@ if(isset($surveyid))
 		$grplangs = GetAdditionalLanguagesFromSurveyID($_POST['sid']);
 		$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);
 		array_push($grplangs,$baselang);
+		require_once("../classes/inputfilter/class.inputfilter_clean.php");
+	    $myFilter = new InputFilter('','',1,1,1);
 		foreach ($grplangs as $grplang)
 		{
 			if (isset($grplang) && $grplang != "")
 			{
+		     	if ($filterxsshtml)
+		     	{
+			    $_POST['group_name_'.$grplang]=$myFilter->process($_POST['group_name_'.$grplang]);
+			    $_POST['description_'.$grplang]=$myFilter->process($_POST['description_'.$grplang]);
+			    }
 				$ugquery = "UPDATE ".db_table_name('groups')." SET group_name='{$_POST['group_name_'.$grplang]}', description='{$_POST['description_'.$grplang]}' WHERE sid={$_POST['sid']} AND gid={$_POST['gid']} AND language='{$grplang}'";
 				$ugresult = $connect->Execute($ugquery);
 				if ($ugresult)
@@ -236,6 +252,14 @@ if(isset($surveyid))
 			    $question_order=(getMaxquestionorder($_POST['gid']));
 			    $question_order++;
 			}
+	     	if ($filterxsshtml)
+	     	{
+	   			require_once("../classes/inputfilter/class.inputfilter_clean.php");
+			    $myFilter = new InputFilter('','',1,1,1); // $myFilter->process();
+				$_POST['title']=$myFilter->process($_POST['title']);
+				$_POST['question']=$myFilter->process($_POST['question']);
+				$_POST['help']=$myFilter->process($_POST['help']);
+			}	
 			$query = "INSERT INTO ".db_table_name('questions')." (sid, gid, type, title, question, preg, help, other, mandatory, lid, question_order, language)"
 			." VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
 			." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',$question_order,'{$baselang}')";
@@ -367,8 +391,19 @@ if(isset($surveyid))
 					$questlangs = GetAdditionalLanguagesFromSurveyID($_POST['sid']);
 					$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);
 					array_push($questlangs,$baselang);
+			     	if ($filterxsshtml)
+	    		 	{
+						require_once("../classes/inputfilter/class.inputfilter_clean.php");
+				    	$myFilter = new InputFilter('','',1,1,1); // $myFilter->process();
+						$_POST['title']=$myFilter->process($_POST['title']);
+					}
 					foreach ($questlangs as $qlang)
 					{
+				     	if ($filterxsshtml)
+	     				{
+							$_POST['question_'.$qlang]=$myFilter->process($_POST['question_'.$qlang]);
+							$_POST['help_'.$qlang]=$myFilter->process($_POST['help_'.$qlang]);
+						}
 						if (isset($qlang) && $qlang != "")
 						{ // ToDo: Sanitize the POST variables !
 							$uqquery = "UPDATE ".db_table_name('questions')
@@ -482,6 +517,15 @@ if(isset($surveyid))
 			//Get maximum order from the question group
 			$max=get_max_question_order($_POST['gid'])+1 ;
             // Insert the base language of the question
+	     	if ($filterxsshtml)
+	     	{
+		   		require_once("../classes/inputfilter/class.inputfilter_clean.php");
+			    $myFilter = new InputFilter('','',1,1,1); // $myFilter->process();
+				// Prevent XSS attacks
+				$_POST['title']=$myFilter->process($_POST['title']);
+				$_POST['question_'.$baselang]=$myFilter->process($_POST['question_'.$baselang]);
+				$_POST['help_'.$baselang]=$myFilter->process($_POST['help_'.$baselang]);
+			}
 			$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, help, other, mandatory, lid, question_order, language) 
                       VALUES ({$_POST['sid']}, {$_POST['gid']}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$baselang]."', '".$_POST['help_'.$baselang]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',$max,".db_quoteall($baselang).")";
 			$result = $connect->Execute($query) or die($connect->ErrorMsg());
@@ -494,11 +538,16 @@ if(isset($surveyid))
             
             foreach ($questlangs as $qlanguage)
             { 
-            if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('questions')." ON");}
-			$query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, lid, question_order, language) 
-                      VALUES ($newqid,{$_POST['sid']}, {$_POST['gid']}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$qlanguage]."', '".$_POST['help_'.$qlanguage]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',$max,".db_quoteall($qlanguage).")";
-			$result = $connect->Execute($query) or die($connect->ErrorMsg());
-            if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('questions')." OFF");}
+		     	if ($filterxsshtml)
+		     	{
+					$_POST['question_'.$qlanguage]=$myFilter->process($_POST['question_'.$qlanguage]);
+					$_POST['help_'.$qlanguage]=$myFilter->process($_POST['help_'.$qlanguage]);
+				}
+   		        if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('questions')." ON");}
+				$query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, lid, question_order, language) 
+   	                      VALUES ($newqid,{$_POST['sid']}, {$_POST['gid']}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$qlanguage]."', '".$_POST['help_'.$qlanguage]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',$max,".db_quoteall($qlanguage).")";
+				$result = $connect->Execute($query) or die($connect->ErrorMsg());
+   	    	    if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('questions')." OFF");}
 			}
 			if (!$result)
 			{
@@ -513,6 +562,12 @@ if(isset($surveyid))
 				$r1 = db_execute_assoc($q1);
 				while ($qr1 = $r1->FetchRow())
 				{
+		     		if ($filterxsshtml)
+			     	{
+				   		require_once("../classes/inputfilter/class.inputfilter_clean.php");
+					    $myFilter = new InputFilter('','',1,1,1); 
+					    $qr1['answer']=$myFilter->process($qr1['answer']);
+					}				    
 					$qr1 = array_map('db_quote', $qr1);
 					$i1 = "INSERT INTO {$dbprefix}answers (qid, code, answer, default_value, sortorder, language) "
 					. "VALUES ('$newqid', '{$qr1['code']}', "
@@ -633,16 +688,22 @@ if(isset($surveyid))
 				$anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 				$baselang = GetBaseLanguageFromSurveyID($surveyid);
 				$query = "select * from ".db_table_name('answers')." where code=".$connect->qstr($_POST['insertcode'])." and language='$baselang' and qid={$_POST['qid']}";
-                $result = $connect->Execute($query);				
+                $result = $connect->Execute($query);
+								
                 if (isset($result) && $result->RecordCount()>0)
-                
 				{
 					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Error adding answer: You can't use the same answer code more than once.","js")."\")\n //-->\n</script>\n";
 				}
 				 else
 				 {
         
-        
+	        
+		    		if ($filterxsshtml)
+	    	 		{
+				   		require_once("../classes/inputfilter/class.inputfilter_clean.php");
+					    $myFilter = new InputFilter('','',1,1,1); 
+					    $_POST['insertanswer']=$myFilter->process($_POST['insertanswer']);
+					}
         				// Add new Answer for Base Language Question
         				$query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language) VALUES ('{$_POST['qid']}', ".$connect->qstr($_POST['insertcode']).", ".$connect->qstr($_POST['insertanswer']).", '{$newsortorder}', 'N','$baselang')";
         	       		if (!$result = $connect->Execute($query))
@@ -652,8 +713,8 @@ if(isset($surveyid))
         				foreach ($anslangs as $anslang)
         				{
         					if(!isset($_POST['default'])) $_POST['default'] = "";
-        	    				$query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language) VALUES ('{$_POST['qid']}', ".$connect->qstr($_POST['insertcode']).",".$connect->qstr($_POST['insertanswer']).", '{$newsortorder}', 'N','$anslang')";
-        	       		    		if (!$result = $connect->Execute($query))
+    	    				$query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language) VALUES ('{$_POST['qid']}', ".$connect->qstr($_POST['insertcode']).",".$connect->qstr($_POST['insertanswer']).", '{$newsortorder}', 'N','$anslang')";
+        	       		    if (!$result = $connect->Execute($query))
         					{
         						$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
         					}
@@ -693,6 +754,8 @@ if(isset($surveyid))
 				}
 			}
 
+			require_once("../classes/inputfilter/class.inputfilter_clean.php");
+		    $myFilter = new InputFilter('','',1,1,1); // $myFilter->process();
          	foreach ($sortorderids as $sortorderid)
         	{
         		$langid=substr($sortorderid,0,strrpos($sortorderid,'_')); 
@@ -706,6 +769,11 @@ if(isset($surveyid))
 					{
 						$tmpcode = $result->FetchRow();
 						$oldcode=$tmpcode['code'];
+					}
+					//Sanitize input, strip XSS
+	     			if ($filterxsshtml)
+	     			{
+						$_POST['answer_'.$sortorderid]=$myFilter->process($_POST['answer_'.$sortorderid]);
 					}
         			$_POST['code_'.$codeids[$count]]=sanitize_paranoid_string($_POST['code_'.$codeids[$count]]);
         			$query = "UPDATE ".db_table_name('answers')." SET code=".$connect->qstr($_POST['code_'.$codeids[$count]]).
@@ -793,169 +861,6 @@ if(isset($surveyid))
 				}
 			}
 		break;
-		}
-		/*
-		
-		if ((!isset($_POST['olddefault']) || ($_POST['olddefault'] != $_POST['default']) && $_POST['default'] == "Y") || ($_POST['default'] == "Y" && $_POST['ansaction'] == $clang->gT("Add"))) //TURN ALL OTHER DEFAULT SETTINGS TO NO
-		{
-			$query = "UPDATE {$dbprefix}answers SET default_value = 'N' WHERE qid={$_POST['qid']}";
-			$result=$connect->Execute($query) or die("Error occurred updating default_value settings");
-		}
-		if (isset($_POST['code'])) $_POST['code'] = db_quote($_POST['code']);
-		if (isset($_POST['oldcode'])) {$_POST['oldcode'] = db_quote($_POST['oldcode']);}
-		if (isset($_POST['answer'])) $_POST['answer'] = db_quote($_POST['answer']);
-		if (isset($_POST['oldanswer'])) {$_POST['oldanswer'] = db_quote($_POST['oldanswer']);}
-		if (isset($_POST['default_value'])) {$_POST['oldanswer'] = db_quote($_POST['default_value']);}
-		switch ($_POST['ansaction'])
-		{
-			case $clang->gT("Fix Sort", "unescaped"):
-			fixsortorderAnswers($_POST['qid']);
-			break;
-			case $clang->gT("Sort Alpha", "unescaped"):
-			$uaquery = "SELECT * FROM {$dbprefix}answers WHERE qid='{$_POST['qid']}' ORDER BY answer";
-			$uaresult = db_execute_assoc($uaquery) or die("Cannot get answers<br />".htmlspecialchars($uaquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
-			while($uarow=$uaresult->FetchRow())
-			{
-				$orderedanswers[]=array("qid"=>$uarow['qid'],
-				"code"=>$uarow['code'],
-				"answer"=>$uarow['answer'],
-				"default_value"=>$uarow['default_value'],
-				"sortorder"=>$uarow['sortorder']);
-			} // while
-			$i=0;
-			foreach ($orderedanswers as $oa)
-			{
-				$position=sprintf("%05d", $i);
-				$upquery = "UPDATE {$dbprefix}answers SET sortorder='$position' WHERE qid='{$oa['qid']}' AND code='{$oa['code']}'";
-				$upresult = $connect->Execute($upquery);
-				$i++;
-			} // foreach
-			break;
-			case $clang->gT("Add", "unescaped"):
-			if ((trim($_POST['code'])=='') || (trim($_POST['answer'])==''))
-			{
-				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be added. You must include both a Code and an Answer","js")."\")\n //-->\n</script>\n";
-			}
-			else
-			{
-				$uaquery = "SELECT * FROM {$dbprefix}answers WHERE code = '{$_POST['code']}' AND qid={$_POST['qid']}";
-				$uaresult = $connect->Execute($uaquery) or die ("Cannot check for duplicate codes<br />".htmlspecialchars($uaquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
-				$matchcount = $uaresult->RecordCount();
-				if ($matchcount) //another answer exists with the same code
-				{
-					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be added. There is already an answer with this code","js")."\")\n //-->\n</script>\n";
-				}
-				else
-				{
-					$cdquery = "INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, default_value) VALUES ('{$_POST['qid']}', '{$_POST['code']}', '{$_POST['answer']}', '{$_POST['sortorder']}', '{$_POST['default']}')";
-					$cdresult = $connect->Execute($cdquery) or die ("Couldn't add answer<br />".htmlspecialchars($cdquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
-				}
-			}
-			break;
-			case $clang->gT("Save", "unescaped"):
-			if ((trim($_POST['code'])=='') || (trim($_POST['answer'])==''))
-			{
-				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be updated. You must include both a Code and an Answer","js")."\")\n //-->\n</script>\n";
-			}
-			else
-			{
-				if ($_POST['code'] != $_POST['oldcode']) //code is being changed. Check against other codes and conditions
-				{
-					$uaquery = "SELECT * FROM {$dbprefix}answers WHERE code = '{$_POST['code']}' AND qid={$_POST['qid']}";
-					$uaresult = $connect->Execute($uaquery) or die ("Cannot check for duplicate codes<br />".htmlspecialchars($uaquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
-					$matchcount = $uaresult->RecordCount();
-					$ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_POST['qid']} AND value='{$_POST['oldcode']}'";
-					$ccresult = db_execute_assoc($ccquery) or die ("Couldn't get list of cqids for this answer<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
-					$cccount=$ccresult->RecordCount();
-					while ($ccr=$ccresult->FetchRow()) {$qidarray[]=$ccr['qid'];}
-					if (isset($qidarray)) {$qidlist=implode(", ", $qidarray);}
-				}
-				if (isset($matchcount) && $matchcount) //another answer exists with the same code
-				{
-					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be updated. There is already an answer with this code","js")."\")\n //-->\n</script>\n";
-				}
-				else
-				{
-					if (isset($cccount) && $cccount) // there are conditions dependent upon this answer to this question
-					{
-						$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be updated. You have changed the answer code, but there are conditions to other questions which are dependant upon the old answer code to this question. You must delete these conditions before you can change the code to this answer.","js")." ($qidlist)\")\n //-->\n</script>\n";
-					}
-					else
-					{
-						$cdquery = "UPDATE {$dbprefix}answers SET qid='{$_POST['qid']}', code='{$_POST['code']}', answer='{$_POST['answer']}', sortorder='{$_POST['sortorder']}', default_value='{$_POST['default']}' WHERE code='{$_POST['oldcode']}' AND qid='{$_POST['qid']}'";
-						$cdresult = $connect->Execute($cdquery) or die ("Couldn't update answer<br />".htmlspecialchars($cdquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
-					}
-				}
-			}
-			break;
-			case $clang->gT("Del", "unescaped"):
-			$ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_POST['qid']} AND value='{$_POST['oldcode']}'";
-			$ccresult = db_execute_assoc($ccquery) or die ("Couldn't get list of cqids for this answer<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
-			$cccount=$ccresult->RecordCount();
-			while ($ccr=$ccresult->FetchRow()) {$qidarray[]=$ccr['qid'];}
-			if (isset($qidarray) && $qidarray) {$qidlist=implode(", ", $qidarray);}
-			if ($cccount)
-			{
-				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answer could not be deleted. There are conditions for other questions that rely on this answer. You cannot delete this answer until those conditions are removed","js")." ($qidlist)\")\n //-->\n</script>\n";
-			}
-			else
-			{
-				$cdquery = "DELETE FROM {$dbprefix}answers WHERE code='{$_POST['oldcode']}' AND answer='{$_POST['oldanswer']}' AND qid='{$_POST['qid']}'";
-				$cdresult = $connect->Execute($cdquery) or die ("Couldn't update answer<br />".htmlspecialchars($cdquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
-			}
-			fixsortorderAnswers($qid);
-			break;
-			case $clang->gT("Up", "unescaped"):
-			$newsortorder=sprintf("%05d", $_POST['sortorder']-1);
-			$replacesortorder=$newsortorder;
-			$newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
-			$cdquery = "UPDATE {$dbprefix}answers SET sortorder='PEND' WHERE qid=$qid AND sortorder='$newsortorder'";
-			$cdresult=$connect->Execute($cdquery) or die(htmlspecialchars($connect->ErrorMsg()));
-			$cdquery = "UPDATE {$dbprefix}answers SET sortorder='$newsortorder' WHERE qid=$qid AND sortorder='$newreplacesortorder'";
-			$cdresult=$connect->Execute($cdquery) or die(htmlspecialchars($connect->ErrorMsg()));
-			$cdquery = "UPDATE {$dbprefix}answers SET sortorder='$newreplacesortorder' WHERE qid=$qid AND sortorder='PEND'";
-			$cdresult=$connect->Execute($cdquery) or die(htmlspecialchars($connect->ErrorMsg()));
-			break;
-			case $clang->gT("Dn", "unescaped"):
-			$newsortorder=sprintf("%05d", $_POST['sortorder']+1);
-			$replacesortorder=$newsortorder;
-			$newreplacesortorder=sprintf("%05d", $_POST['sortorder']);
-			$newreplace2=sprintf("%05d", $_POST['sortorder']);
-			$cdquery = "UPDATE {$dbprefix}answers SET sortorder='PEND' WHERE qid=$qid AND sortorder='$newsortorder'";
-			$cdresult=$connect->Execute($cdquery) or die(htmlspecialchars($connect->ErrorMsg()));
-			$cdquery = "UPDATE {$dbprefix}answers SET sortorder='$newsortorder' WHERE qid=$qid AND sortorder='{$_POST['sortorder']}'";
-			$cdresult=$connect->Execute($cdquery) or die(htmlspecialchars($connect->ErrorMsg()));
-			$cdquery = "UPDATE {$dbprefix}answers SET sortorder='$newreplacesortorder' WHERE qid=$qid AND sortorder='PEND'";
-			$cdresult=$connect->Execute($cdquery) or die(htmlspecialchars($connect->ErrorMsg()));
-			break;
-			default:
-			break;
-		}*/
-	}
-
-	elseif ($action == "insertCSV" && $actsurrows['define_questions'])
-	{
-		if (get_magic_quotes_gpc() == "0")
-		{
-			$_POST['svettore'] = addcslashes($_POST['svettore'], "'");
-		}
-		$vettore = explode ("^", $svettore );
-		$band = 0;
-		$indice = $_POST['numcol'] - 1;
-		foreach ($vettore as $k => $v)
-		{
-			$vettoreriga = explode ($elem, $v);
-			if ($band == 1)
-			{
-				$valore = $vettoreriga[$indice];
-				$valore = trim($valore);
-				if (!is_null($valore))
-				{
-					$cdquery = "INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, default_value) VALUES ('{$_POST['qid']}', '$k', '$valore', '00000', 'N')";
-					$cdresult = $cdresult = $connect->Execute($cdquery) or die(htmlspecialchars($connect->ErrorMsg()));
-				}
-			}
-			$band = 1;
 		}
 	}
 
@@ -1073,10 +978,21 @@ if(isset($surveyid))
 		$_POST  = array_map('db_quote', $_POST);
 		$languagelist = GetAdditionalLanguagesFromSurveyID($surveyid);
 		$languagelist[]=GetBaseLanguageFromSurveyID($surveyid);
+		require_once("../classes/inputfilter/class.inputfilter_clean.php");
+	    $myFilter = new InputFilter('','',1,1,1); // $myFilter->process();
+		
 		foreach ($languagelist as $langname)
 		{
 			if ($langname)
 			{
+			    // Clean XSS attacks
+    	     	if ($filterxsshtml)
+		    	{
+				    $_POST['short_title_'.$langname]=$myFilter->process($_POST['short_title_'.$langname]);
+				    $_POST['description_'.$langname]=$myFilter->process($_POST['description_'.$langname]);
+				    $_POST['welcome_'.$langname]=$myFilter->process($_POST['welcome_'.$langname]);
+				    $_POST['urldescrip_'.$langname]=$myFilter->process($_POST['urldescrip_'.$langname]);
+			  	}
 				$usquery = "UPDATE ".db_table_name('surveys_languagesettings')." \n"
 				. "SET surveyls_title='".$_POST['short_title_'.$langname]."', surveyls_description='".$_POST['description_'.$langname]."',\n"
 				. "surveyls_welcometext='".$_POST['welcome_'.$langname]."',\n"
@@ -1135,7 +1051,18 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
         . "'{$_POST['allowprev']}', '{$_POST['printanswers']}', \n'"
 		. date("Y-m-d")."', '{$_POST['public']}')";
 		$isresult = $connect->Execute($isquery);
+
 		// insert base language into surveys_language_settings
+     	if ($filterxsshtml)
+     	{
+	   		require_once("../classes/inputfilter/class.inputfilter_clean.php");
+		    $myFilter = new InputFilter('','',1,1,1); 	
+
+	    	$_POST['surveyls_title']=$myFilter->process($_POST['surveyls_title']);
+		    $_POST['description']=$myFilter->process($_POST['description']);
+		    $_POST['welcome']=$myFilter->process($_POST['welcome']);
+		    $_POST['urldescrip']=$myFilter->process($_POST['urldescrip']);	
+		}
 		$isquery = "INSERT INTO ".db_table_name('surveys_languagesettings')
 		. "(surveyls_survey_id, surveyls_language, surveyls_title, surveyls_description, surveyls_welcometext, surveyls_urldescription)\n"
 		. "VALUES ($surveyid, '{$_POST['language']}', '{$_POST['surveyls_title']}', '{$_POST['description']}',\n"
@@ -1146,7 +1073,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		$isresult = $connect->Execute($isquery);
 
 		// Insert into survey_rights
-		$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($surveyid,". $_SESSION['loginID'].",1,1,1,1,1,1)"; //ADDED by Moses inserts survey rights for owner
+		$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($surveyid,". $_SESSION['loginID'].",1,1,1,1,1,1)"; //inserts survey rights for owner
 		$isrresult = $connect->Execute($isrquery) or die ($isrquery."<br />".$connect->ErrorMsg()); //ADDED by Moses
 		if ($isresult)
 		{

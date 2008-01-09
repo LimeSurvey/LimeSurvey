@@ -192,6 +192,16 @@ $useWebserverAuth = false;
 // used by the webserver, then you could map your true loginame to admin with
 // $userArrayMap = Array ('mylogin' => 'admin');
 
+
+//$filterxsshtml
+// Enables filtering of suspicious html tags in survey, group, questions
+// and answer texts in the administration interface
+// Only set this to false if you absolutely trust the users 
+// you created for the administration of  LimeSurvey and if you want to 
+// allow these users to be able to use Javascript etc. . 
+$filterxsshtml = true;
+
+
 //DO NOT CHANGE BELOW HERE --------------------
 
 ?>
