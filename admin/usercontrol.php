@@ -262,7 +262,12 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 			$body = $clang->gT("You were signed in on the site")." ".$sitename."<br />\n";
 			$body .= $clang->gT("Your data:")."<br />\n";
 			$body .= $clang->gT("Username") . ": " . $new_user . "<br />\n";
-			$body .= $clang->gT("Password") . ": " . $new_pass . "<br />\n";
+			if ($useWebserverAuth === false)
+			{ // authent is not delegated to web server
+				// send password otherwise do not
+				$body .= $clang->gT("Password") . ": " . $new_pass . "<br />\n";
+			}
+
 			$body .= "<a href='" . $homeurl . "/admin.php'>".$clang->gT("Login here")."</a><br />\n";
 
 			$subject = 'Registration';
