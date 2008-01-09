@@ -52,17 +52,17 @@ Calendar._FD = 0;
 // full month names
 Calendar._MN = new Array
 ("Janvier",
- "F vrier",
+ "Février",
  "Mars",
  "Avril",
  "Mai",
  "Juin",
  "Juillet",
- "Ao t",
+ "Août",
  "Septembre",
  "Octobre",
  "Novembre",
- "D cembre");
+ "Décembre");
 
 // short month names
 Calendar._SMN = new Array
