@@ -215,6 +215,7 @@ if (isset($answerarray))
 $countconditions = 0;
 $countlabelsets = 0;
 $countlabels = 0;
+$countanswers = 0;
 $countquestion_attributes = 0;
 
 $newsid = $_POST["sid"];
@@ -278,24 +279,34 @@ if (isset($labelsetsarray))
 if (isset($labelsetsarray) && $labelsetsarray) {
 	$csarray=buildLabelsetCSArray();
     $fieldorders=convertCSVRowToArray($labelsetsarray[0],',','"');
+    $labelrowdata = array();
     unset($labelsetsarray[0]);
 	foreach ($labelsetsarray as $lsa) {
         $fieldcontents=convertCSVRowToArray($lsa,',','"');
         $labelsetrowdata=array_combine($fieldorders,$fieldcontents);
-		$oldcid=$labelsetrowdata["cid"];
-		$oldqid=$labelsetrowdata["qid"];
-		$oldlid=$labelsetrowdata["lid"];
-		unset($labelsetrowdata["lid"]);
+		if (isset($labelsetrowdata)) 
+		{
+			if (isset($labelsetrowdata["cid"])) $oldcid=$labelsetrowdata["cid"];
+			if (isset($labelsetrowdata["qid"])) $oldqid=$labelsetrowdata["qid"];
+			if (isset($labelsetrowdata["lid"])) $oldlid=$labelsetrowdata["lid"];
+			if (isset($labelsetrowdata["lid"])) unset($labelsetrowdata["lid"]);
+		} else 
+		{
+			$oldcid = "";
+			$oldqid = "";
+			$oldlid = "";
+		}
+
         $newvalues=array_values($labelsetrowdata);
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
         $lsainsert = "insert INTO {$dbprefix}labelsets (".implode(',',array_keys($labelsetrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
 		$lsiresult=$connect->Execute($lsainsert);
 		$newlid=$connect->Insert_ID();
         $countlabelsets++; 
-         
+        if(!isset($labelsarray[0])) die(print_r($labelsarray));
 		if ($labelsarray) {
             $lfieldorders=convertCSVRowToArray($labelsarray[0],',','"');
-            unset($labelsarray[0]);
+            //unset($labelsarray[0]);
 			foreach ($labelsarray as $la) {
 				//GET ORDER OF FIELDS
                 $lfieldcontents=convertCSVRowToArray($la,',','"');
@@ -307,6 +318,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
                     $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                     $lainsert = "insert INTO {$dbprefix}labels (".implode(',',array_keys($labelrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
 					$liresult=$connect->Execute($lainsert);
+					$countlabels++;
 				}
 			}
 		}
