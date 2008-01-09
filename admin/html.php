@@ -1948,7 +1948,50 @@ if ($action == "editsurvey")
 			$esrow = array_map('htmlspecialchars', $esrow);
 			$editsurvey = include2var('./scripts/addremove.js');
 			$editsurvey .= "<form name='addnewsurvey' action='$scriptname' method='post'>\n<table width='100%' border='0'>\n\t<tr><td colspan='4' class='settingcaption'>"
-			. "\t\t".$clang->gT("Edit Survey - Step 1 of 2")."</td></tr>\n"
+			. "\t\t".$clang->gT("Edit Survey - Step 1 of 2")."</td></tr>\n";
+
+			// Base Language
+			$editsurvey .= "\t</tr><tr><td align='right'>".$clang->gT("Base Language:")."</td>\n"
+			. "\t\t<td align='left'>\n".GetLanguageNameFromCode($esrow['language'])
+			. "\t\t</td>\t</tr>\n"
+
+			// Additional languages listbox
+			. "\t<tr><td align='right'>".$clang->gT("Additional Languages").":</td>\n"
+			. "\t\t<td align='left'><select multiple='multiple' style='min-width:250px;'  size='5' id='additional_languages' name='additional_languages'>";
+			$jsX=0;
+			$jsRemLang ="<script type=\"text/javascript\">\nvar mylangs = new Array() \n";
+
+			foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
+			{
+				if ($langname && $langname!=$esrow['language']) // base languag must not be shown here
+				{
+					$jsRemLang .="mylangs[$jsX] = \"$langname\"\n";
+					$editsurvey .= "\t\t\t<option id='".$langname."' value='".$langname."'";
+					$editsurvey .= ">".getLanguageNameFromCode($langname)."</option>\n";
+					$jsX++;
+				}
+			}
+			$jsRemLang .= "</script>\n";
+			$editsurvey .= $jsRemLang;
+			//  Add/Remove Buttons
+			$editsurvey .= "</select></td>"
+			. "<td align='left'><input type=\"button\" value=\"<< ".$clang->gT("Add")."\" onclick=\"DoAdd()\" id=\"AddBtn\" /><br /> <input type=\"button\" value=\"".$clang->gT("Remove")." >>\" onclick=\"DoRemove(0,'')\" id=\"RemoveBtn\"  /></td>\n"
+
+			// Available languages listbox
+			. "\t\t<td align='left'><select size='5' id='available_languages' name='available_languages'>";
+			$tempLang=GetAdditionalLanguagesFromSurveyID($surveyid);
+			foreach (getLanguageData() as  $langkey2=>$langname)
+			{
+				if ($langkey2!=$esrow['language'] && in_array($langkey2,$tempLang)==false)  // base languag must not be shown here
+				{
+					$editsurvey .= "\t\t\t<option id='".$langkey2."' value='".$langkey2."'";
+					$editsurvey .= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
+				}
+			}
+			$editsurvey .= "</select></td>"
+			. " </tr>\n";
+
+			$editsurvey .= ""
 			. "\t<tr><td align='right'>".$clang->gT("Administrator:")."</td>\n"
 			. "\t\t<td align='left'><input type='text' size='50' name='admin' value=\"{$esrow['admin']}\" /></td></tr>\n"
 			. "\t<tr><td align='right'>".$clang->gT("Admin Email:")."</td>\n"
@@ -1985,17 +2028,6 @@ if ($action == "editsurvey")
 			}
 			$editsurvey .= "\t\t</select></td>\n"
 			. "\t</tr>\n";
-			//COOKIES
-			$editsurvey .= "\t<tr><td align='right'>".$clang->gT("Use Cookies?")."</td>\n"
-			. "\t\t<td align='left'><select name='usecookie'>\n"
-			. "\t\t\t<option value='Y'";
-			if ($esrow['usecookie'] == "Y") {$editsurvey .= " selected='selected'";}
-			$editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-			. "\t\t\t<option value='N'";
-			if ($esrow['usecookie'] != "Y") {$editsurvey .= " selected='selected'";}
-			$editsurvey .= ">".$clang->gT("No")."</option>\n"
-			. "\t\t</select></td>\n"
-			. "\t</tr>\n";
 			//ALLOW SAVES
 			$editsurvey .= "\t<tr><td align='right'>".$clang->gT("Allow Saves?")."</td>\n"
 			. "\t\t<td align='left'><select name='allowsave'>\n"
@@ -2029,6 +2061,7 @@ if ($action == "editsurvey")
             $editsurvey .= ">".$clang->gT("No")."</option>\n"
             . "\t\t</select></td>\n"
             . "\t</tr>\n";
+
             //Public Surveys
             $editsurvey .= "\t<tr><td align='right'>".$clang->gT("List survey publicly:")."</td>\n"
             . "\t\t<td><select name='public'>\n"
@@ -2040,12 +2073,71 @@ if ($action == "editsurvey")
             $editsurvey .= ">".$clang->gT("No")."</option>\n"
             . "\t\t</select></td>\n"
             . "\t</tr>\n";
+
+
+			// End URL block
+			$editsurvey .= ""
+			. "\t<tr><td align='right'>".$clang->gT("End URL:")."</td>\n"
+			. "\t\t<td align='left'><input type='text' size='50' name='url' value=\"{$esrow['url']}\" /></td></tr>\n"
+			. "\t<tr><td align='right'>".$clang->gT("Automatically load URL when survey complete?")."</td>\n"
+			. "\t\t<td align='left'><select name='autoredirect'>";
+			$editsurvey .= "\t\t\t<option value='Y'";
+			if (isset($esrow['autoredirect']) && $esrow['autoredirect'] == "Y") {$editsurvey .= " selected='selected'";}
+			$editsurvey .= ">".$clang->gT("Yes")."</option>\n";
+			$editsurvey .= "\t\t\t<option value='N'";
+			if (!isset($esrow['autoredirect']) || $esrow['autoredirect'] != "Y") {$editsurvey .= " selected='selected'";}
+			$editsurvey .= ">".$clang->gT("No")."</option>\n"
+			. "</select></td></tr>";
+
+			// Expiration
+			$editsurvey .= ""
+			. "\t<tr><td align='right'>".$clang->gT("Expires?")."</td>\n"
+			. "\t\t\t<td align='left'><select name='useexpiry'><option value='Y'";
+			if (isset($esrow['useexpiry']) && $esrow['useexpiry'] == "Y") {$editsurvey .= " selected='selected'";}
+			$editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+			. "\t\t\t<option value='N'";
+			if (!isset($esrow['useexpiry']) || $esrow['useexpiry'] != "Y") {$editsurvey .= " selected='selected'";}
+			$editsurvey .= ">".$clang->gT("No")."</option></select></td></tr><tr><td align='right'>".$clang->gT("Expiry Date:")."</td>\n"
+			. "\t\t<td align='left'><input type='text' id='f_date_b' size='12' name='expires' value=\"{$esrow['expires']}\" /><button type='reset' id='f_trigger_b'>...</button></td></tr>\n";
+
+			//COOKIES
+			$editsurvey .= "\t<tr><td align='right'>".$clang->gT("Use Cookies?")."</td>\n"
+			. "\t\t<td align='left'><select name='usecookie'>\n"
+			. "\t\t\t<option value='Y'";
+			if ($esrow['usecookie'] == "Y") {$editsurvey .= " selected='selected'";}
+			$editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+			. "\t\t\t<option value='N'";
+			if ($esrow['usecookie'] != "Y") {$editsurvey .= " selected='selected'";}
+			$editsurvey .= ">".$clang->gT("No")."</option>\n"
+			. "\t\t</select></td>\n"
+			. "\t</tr>\n";
+
+			// Auto registration
+			$editsurvey .= "\t<tr><td align='right'>".$clang->gT("Allow public registration?")."</td>\n"
+			. "\t\t<td align='left'><select name='allowregister'>\n"
+			. "\t\t\t<option value='Y'";
+			if ($esrow['allowregister'] == "Y") {$editsurvey .= " selected='selected'";}
+			$editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+			. "\t\t\t<option value='N'";
+			if ($esrow['allowregister'] != "Y") {$editsurvey .= " selected='selected'";}
+			$editsurvey .= ">".$clang->gT("No")."</option>\n"
+			. "\t\t</select></td>\n\t</tr>\n";
+
+			// token
+			$editsurvey .= "\t<tr><td align='right' valign='top'>".$clang->gT("Token Attribute Names:")."</td>\n"
+			. "\t\t<td align='left'><input type='text' size='25' name='attribute1'"
+			. " value=\"{$esrow['attribute1']}\" />(".$clang->gT("Attribute 1").")<br />"
+			. "<input type='text' size='25' name='attribute2'"
+			. " value=\"{$esrow['attribute2']}\" />(".$clang->gT("Attribute 2").")</td>\n\t</tr>\n";
+
 			//NOTIFICATION
 			$editsurvey .= "\t<tr><td align='right'>".$clang->gT("Admin Notification:")."</td>\n"
 			. "\t\t<td align='left'><select name='notification'>\n"
 			. getNotificationlist($esrow['notification'])
 			. "\t\t</select></td>\n"
 			. "\t</tr>\n";
+
+
 			//ANONYMOUS
 			$editsurvey .= "\t<tr><td align='right'>".$clang->gT("Anonymous answers?")."\n";
 			  // warning message if anonymous + datestamped anwsers
@@ -2081,22 +2173,9 @@ if ($action == "editsurvey")
 				. "</select>\n\t\t</td>\n";
 			}
 			$editsurvey .= "</tr>\n";
-			$editsurvey .= "\t<tr><td align='right'>".$clang->gT("Allow public registration?")."</td>\n"
-			. "\t\t<td align='left'><select name='allowregister'>\n"
-			. "\t\t\t<option value='Y'";
-			if ($esrow['allowregister'] == "Y") {$editsurvey .= " selected='selected'";}
-			$editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-			. "\t\t\t<option value='N'";
-			if ($esrow['allowregister'] != "Y") {$editsurvey .= " selected='selected'";}
-			$editsurvey .= ">".$clang->gT("No")."</option>\n"
-			. "\t\t</select></td>\n\t</tr>\n";
-			$editsurvey .= "\t<tr><td align='right' valign='top'>".$clang->gT("Token Attribute Names:")."</td>\n"
-			. "\t\t<td align='left'><input type='text' size='25' name='attribute1'"
-			. " value=\"{$esrow['attribute1']}\" />(".$clang->gT("Attribute 1").")<br />"
-			. "<input type='text' size='25' name='attribute2'"
-			. " value=\"{$esrow['attribute2']}\" />(".$clang->gT("Attribute 2").")</td>\n\t</tr>\n";
-			$editsurvey .= "\t<tr><td align='right'>".$clang->gT("Date Stamp?")."</td>\n";
 
+			// date stamp
+			$editsurvey .= "\t<tr><td align='right'>".$clang->gT("Date Stamp?")."</td>\n";
 			if ($esrow['active'] == "Y")
 			{
 				$editsurvey .= "\t\t<td align='left'>\n\t\t\t";
@@ -2142,6 +2221,7 @@ if ($action == "editsurvey")
 				. "</select>\n\t\t</td>\n";
 			}
 
+
 			// begin REF URL Block
 			$editsurvey .= "\t</tr><tr><td align='right'>".$clang->gT("Save Referring URL?")."</td>\n";
 
@@ -2166,66 +2246,6 @@ if ($action == "editsurvey")
 				. "</select>\n\t\t</td>\n";
 			}
 			// BENBUN - END REF URL Block
-
-			// Base Language
-			$editsurvey .= "\t</tr><tr><td align='right'>".$clang->gT("Base Language:")."</td>\n"
-			. "\t\t<td align='left'>\n".GetLanguageNameFromCode($esrow['language'])
-			. "\t\t</td>\t</tr>\n"
-
-			// Additional languages listbox
-			. "\t<tr><td align='right'>".$clang->gT("Additional Languages").":</td>\n"
-			. "\t\t<td align='left'><select multiple='multiple' style='min-width:250px;'  size='5' id='additional_languages' name='additional_languages'>";
-			$jsX=0;
-			$jsRemLang ="<script type=\"text/javascript\">\nvar mylangs = new Array() \n";
-
-			foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
-			{
-				if ($langname && $langname!=$esrow['language']) // base languag must not be shown here
-				{
-					$jsRemLang .="mylangs[$jsX] = \"$langname\"\n";
-					$editsurvey .= "\t\t\t<option id='".$langname."' value='".$langname."'";
-					$editsurvey .= ">".getLanguageNameFromCode($langname)."</option>\n";
-					$jsX++;
-				}
-			}
-			$jsRemLang .= "</script>\n";
-			$editsurvey .= $jsRemLang;
-			//  Add/Remove Buttons
-			$editsurvey .= "</select></td>"
-			. "<td align='left'><input type=\"button\" value=\"<< ".$clang->gT("Add")."\" onclick=\"DoAdd()\" id=\"AddBtn\" /><br /> <input type=\"button\" value=\"".$clang->gT("Remove")." >>\" onclick=\"DoRemove(0,'')\" id=\"RemoveBtn\"  /></td>\n"
-
-			// Available languages listbox
-			. "\t\t<td align='left'><select size='5' id='available_languages' name='available_languages'>";
-			$tempLang=GetAdditionalLanguagesFromSurveyID($surveyid);
-			foreach (getLanguageData() as  $langkey2=>$langname)
-			{
-				if ($langkey2!=$esrow['language'] && in_array($langkey2,$tempLang)==false)  // base languag must not be shown here
-				{
-					$editsurvey .= "\t\t\t<option id='".$langkey2."' value='".$langkey2."'";
-					$editsurvey .= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
-				}
-			}
-			$editsurvey .= "</select></td>"
-			. " </tr>\n"
-			. "\t<tr><td align='right'>".$clang->gT("Expires?")."</td>\n"
-			. "\t\t\t<td align='left'><select name='useexpiry'><option value='Y'";
-			if (isset($esrow['useexpiry']) && $esrow['useexpiry'] == "Y") {$editsurvey .= " selected='selected'";}
-			$editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-			. "\t\t\t<option value='N'";
-			if (!isset($esrow['useexpiry']) || $esrow['useexpiry'] != "Y") {$editsurvey .= " selected='selected'";}
-			$editsurvey .= ">".$clang->gT("No")."</option></select></td></tr><tr><td align='right'>".$clang->gT("Expiry Date:")."</td>\n"
-			. "\t\t<td align='left'><input type='text' id='f_date_b' size='12' name='expires' value=\"{$esrow['expires']}\" /><button type='reset' id='f_trigger_b'>...</button></td></tr>\n"
-			. "\t<tr><td align='right'>".$clang->gT("End URL:")."</td>\n"
-			. "\t\t<td align='left'><input type='text' size='50' name='url' value=\"{$esrow['url']}\" /></td></tr>\n"
-			. "\t<tr><td align='right'>".$clang->gT("Automatically load URL when survey complete?")."</td>\n"
-			. "\t\t<td align='left'><select name='autoredirect'>";
-			$editsurvey .= "\t\t\t<option value='Y'";
-			if (isset($esrow['autoredirect']) && $esrow['autoredirect'] == "Y") {$editsurvey .= " selected='selected'";}
-			$editsurvey .= ">".$clang->gT("Yes")."</option>\n";
-			$editsurvey .= "\t\t\t<option value='N'";
-			if (!isset($esrow['autoredirect']) || $esrow['autoredirect'] != "Y") {$editsurvey .= " selected='selected'";}
-			$editsurvey .= ">".$clang->gT("No")."</option>\n"
-			. "</select></td></tr>";
 
 			$editsurvey .= "\t<tr><td colspan='4' align='center'><input type='submit' onclick='return UpdateLanguageIDs(mylangs,\"".$clang->gT("All questions, answers, etc for removed languages will be lost. Are you sure?")."\");' class='standardbtn' value='".$clang->gT("Save and Continue")." >>' />\n"
 			. "\t<input type='hidden' name='action' value='updatesurvey' />\n"
@@ -2487,7 +2507,24 @@ if ($action == "newsurvey")
 	{
 		$newsurvey = PrepareEditorScript();
 		$newsurvey  .= "<form name='addnewsurvey' action='$scriptname' method='post' onsubmit=\"return isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."');\" >\n"
-        . "<table width='100%' border='0' class='form2columns'>\n\t<thead><tr><th colspan='2'>\n"
+        . "<table width='100%' border='0' class='form2columns'>\n\t<thead><tr><th colspan='2'>\n";
+
+		//Survey Language
+		$newsurvey .= "\t<tr><td>".$clang->gT("Base Language:")."</td>\n"
+		. "\t\t<td><select name='language'>\n";
+
+
+		foreach (getLanguageData() as  $langkey2=>$langname)
+		{
+			$newsurvey .= "\t\t\t<option value='".$langkey2."'";
+			if ($defaultlang == $langkey2) {$newsurvey .= " selected='selected'";}
+			$newsurvey .= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
+		}
+
+		$newsurvey .= "\t\t</select><font size='1'> ".$clang->gT("This setting cannot be changed later!")."</font></td>\n"
+		. "\t</tr>\n";
+
+		$newsurvey .= ""
 		. "\t\t".$clang->gT("Create Survey")."</th></tr></thead>\n"
 		. "\t<tr>\n"
 		. "\t\t<td width='25%'>".$clang->gT("Title").":</td>\n"
@@ -2528,16 +2565,7 @@ if ($action == "newsurvey")
 		}
 		$newsurvey .= "\t\t</select></td>\n"
 		. "\t</tr>\n";
-		//COOKIES
-		$newsurvey .= "\t<tr><td>".$clang->gT("Use Cookies?")."</td>\n"
-		. "\t\t<td><select name='usecookie'>\n"
-		. "\t\t\t<option value='Y'";
-		if (isset($esrow) && $esrow['usecookie'] == "Y") {$newsurvey .= " selected='selected'";}
-		$newsurvey .= ">".$clang->gT("Yes")."</option>\n"
-		. "\t\t\t<option value='N' selected='selected'";
-		$newsurvey .= ">".$clang->gT("No")."</option>\n"
-		. "\t\t</select></td>\n"
-		. "\t</tr>\n";
+
 		//ALLOW SAVES
 		$newsurvey .= "\t<tr><td>".$clang->gT("Allow Saves?")."</td>\n"
 		. "\t\t<td><select name='allowsave'>\n"
@@ -2556,6 +2584,7 @@ if ($action == "newsurvey")
 		. "\t\t\t<option value='N'>".$clang->gT("No")."</option>\n"
 		. "\t\t</select></td>\n"
 		. "\t</tr>\n";
+
         //Result printing
         $newsurvey .= "\t<tr><td>".$clang->gT("Participiants may print answers?")."</td>\n"
         . "\t\t<td><select name='printanswers'>\n"
@@ -2563,6 +2592,7 @@ if ($action == "newsurvey")
         . "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
         . "\t\t</select></td>\n"
         . "\t</tr>\n";
+
         //Public Surveys
         $newsurvey .= "\t<tr><td>".$clang->gT("List survey publicly:")."</td>\n"
         . "\t\t<td><select name='public'>\n"
@@ -2570,76 +2600,10 @@ if ($action == "newsurvey")
         . "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
         . "\t\t</select></td>\n"
         . "\t</tr>\n";
-		//NOTIFICATIONS
-		$newsurvey .= "\t<tr><td>".$clang->gT("Admin Notification:")."</td>\n"
-		. "\t\t<td><select name='notification'>\n"
-		. getNotificationlist(0)
-		. "\t\t</select></td>\n"
-		. "\t</tr>\n";
-		// ANONYMOUS
-		$newsurvey .= "\t<tr><td>".$clang->gT("Anonymous answers?")."\n";
-		  // warning message if anonymous + datestamped anwsers
-		$newsurvey .= "\n"
-		. "\t<script type=\"text/javascript\"><!-- \n"
-		. "\tfunction alertPrivacy()\n"
-		. "\t{"
-		. "\t\tif (document.getElementById('private').value == 'Y')\n"
-		. "\t\t{\n"
-		. "\t\t\talert('".$clang->gT("Warning").": ".$clang->gT("If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.","js")."');\n"
-		. "\t\t}\n"
-		. "\t}"
-		. "\t//--></script></td>\n";
-
-		$newsurvey .= "\t\t<td><select id='private' name='private' onchange='alertPrivacy();'>\n"
-		. "\t\t\t<option value='Y' selected='selected'>".$clang->gT("Yes")."</option>\n"
-		. "\t\t\t<option value='N'>".$clang->gT("No")."</option>\n"
-		. "\t\t</select></td>\n\t</tr>\n";
-        $newsurvey .= "\t<tr><td>".$clang->gT("Allow public registration?")."</td>\n"
-        . "\t\t<td align='left'><select name='allowregister'>\n"
-        . "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
-        . "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
-        . "\t\t</select></td>\n\t</tr>\n";
-		$newsurvey .= "\t<tr><td valign='top'>".$clang->gT("Token Attribute Names:")."</td>\n"
-		. "\t\t<td align='left'><input type='text' size='25' name='attribute1' />(".$clang->gT("Attribute 1").")<br />"
-		. "<input type='text' size='25' name='attribute2' />(".$clang->gT("Attribute 2").")</td>\n\t</tr>\n";
-		$newsurvey .= "\t<tr><td>".$clang->gT("Date Stamp?")."</td>\n"
-		. "\t\t<td><select id='datestamp' name='datestamp' onchange='alertPrivacy();'>\n"
-		. "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
-		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
-		. "\t\t</select></td>\n\t</tr>\n";
-		// IP Address
-		$newsurvey .= "\t<tr><td>".$clang->gT("Save IP Address?")."</td>\n"
-		. "\t\t<td><select name='ipaddr'>\n"                                
-        . "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
-		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
-		. "\t\t</select></td>\n\t</tr>\n";
-		// Referring URL
-		$newsurvey .= "\t<tr><td>".$clang->gT("Save Referring URL?")."</td>\n"
-		. "\t\t<td><select name='refurl'>\n"                                
-        . "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
-		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
-		. "\t\t</select></td>\n\t</tr>\n";
-		//Survey Language
-		$newsurvey .= "\t<tr><td>".$clang->gT("Base Language:")."</td>\n"
-		. "\t\t<td><select name='language'>\n";
 
 
-		foreach (getLanguageData() as  $langkey2=>$langname)
-		{
-			$newsurvey .= "\t\t\t<option value='".$langkey2."'";
-			if ($defaultlang == $langkey2) {$newsurvey .= " selected='selected'";}
-			$newsurvey .= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
-		}
-
-		$newsurvey .= "\t\t</select><font size='1'> ".$clang->gT("This setting cannot be changed later!")."</font></td>\n"
-		. "\t</tr>\n";
-		$newsurvey .= "\t<tr><td>".$clang->gT("Expires?")."</td>\n"
-		. "\t\t\t<td align='left'><select name='useexpiry'><option value='Y'>".$clang->gT("Yes")."</option>\n"
-		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option></select></td></tr>\n"
-		. "<tr><td>".$clang->gT("Expiry Date:")."</td>\n"
-		. "\t\t<td align='left'><input type='text' id='f_date_b' size='12' name='expires' value='"
-		. date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust)."' /><button type='reset' id='f_trigger_b'>...</button>"
-		. "<font size='1'> ".$clang->gT("Date Format").": YYYY-MM-DD</font></td></tr>\n"
+		// End URL
+		$newsurvey .= ""
 		. "\t<tr><td>".$clang->gT("End URL:")."</td>\n"
 		. "\t\t<td align='left'><input type='text' size='50' name='url' value='http://";
 		if (isset($esrow)) {$newsurvey .= $esrow['url'];}
@@ -2652,11 +2616,95 @@ if ($action == "newsurvey")
 		. "\t\t<td align='left'><select name='autoredirect'>\n"
 		. "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
 		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
-		. "</select></td></tr>"
+		. "</select></td></tr>";
+
+		// Expiration
+		$newsurvey .= "\t<tr><td>".$clang->gT("Expires?")."</td>\n"
+		. "\t\t\t<td align='left'><select name='useexpiry'><option value='Y'>".$clang->gT("Yes")."</option>\n"
+		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option></select></td></tr>\n"
+		. "<tr><td>".$clang->gT("Expiry Date:")."</td>\n"
+		. "\t\t<td align='left'><input type='text' id='f_date_b' size='12' name='expires' value='"
+		. date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust)."' /><button type='reset' id='f_trigger_b'>...</button>"
+		. "<font size='1'> ".$clang->gT("Date Format").": YYYY-MM-DD</font></td></tr>\n";
+
+		//COOKIES
+		$newsurvey .= "\t<tr><td>".$clang->gT("Use Cookies?")."</td>\n"
+		. "\t\t<td><select name='usecookie'>\n"
+		. "\t\t\t<option value='Y'";
+		if (isset($esrow) && $esrow['usecookie'] == "Y") {$newsurvey .= " selected='selected'";}
+		$newsurvey .= ">".$clang->gT("Yes")."</option>\n"
+		. "\t\t\t<option value='N' selected='selected'";
+		$newsurvey .= ">".$clang->gT("No")."</option>\n"
+		. "\t\t</select></td>\n"
+		. "\t</tr>\n";
+
+	// Public regitration
+        $newsurvey .= "\t<tr><td>".$clang->gT("Allow public registration?")."</td>\n"
+        . "\t\t<td align='left'><select name='allowregister'>\n"
+        . "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
+        . "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
+        . "\t\t</select></td>\n\t</tr>\n";
+
+		// Token attributes names
+		$newsurvey .= "\t<tr><td valign='top'>".$clang->gT("Token Attribute Names:")."</td>\n"
+		. "\t\t<td align='left'><input type='text' size='25' name='attribute1' />(".$clang->gT("Attribute 1").")<br />"
+		. "<input type='text' size='25' name='attribute2' />(".$clang->gT("Attribute 2").")</td>\n\t</tr>\n";
+
+		//NOTIFICATIONS
+		$newsurvey .= "\t<tr><td>".$clang->gT("Admin Notification:")."</td>\n"
+		. "\t\t<td><select name='notification'>\n"
+		. getNotificationlist(0)
+		. "\t\t</select></td>\n"
+		. "\t</tr>\n";
+
+
+		// ANONYMOUS
+		$newsurvey .= "\t<tr><td>".$clang->gT("Anonymous answers?")."\n";
+		// warning message if anonymous + datestamped anwsers
+		$newsurvey .= "\n"
+		. "\t<script type=\"text/javascript\"><!-- \n"
+		. "\tfunction alertPrivacy()\n"
+		. "\t{"
+		. "\t\tif (document.getElementById('private').value == 'Y')\n"
+		. "\t\t{\n"
+		. "\t\t\talert('".$clang->gT("Warning").": ".$clang->gT("If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.","js")."');\n"
+		. "\t\t}\n"
+		. "\t}"
+		. "\t//--></script></td>\n";
+		$newsurvey .= "\t\t<td><select id='private' name='private' onchange='alertPrivacy();'>\n"
+		. "\t\t\t<option value='Y' selected='selected'>".$clang->gT("Yes")."</option>\n"
+		. "\t\t\t<option value='N'>".$clang->gT("No")."</option>\n"
+		. "\t\t</select></td>\n\t</tr>\n";
+
+		// Datestamp
+		$newsurvey .= "\t<tr><td>".$clang->gT("Date Stamp?")."</td>\n"
+		. "\t\t<td><select id='datestamp' name='datestamp' onchange='alertPrivacy();'>\n"
+		. "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
+		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
+		. "\t\t</select></td>\n\t</tr>\n";
+
+		// IP Address
+		$newsurvey .= "\t<tr><td>".$clang->gT("Save IP Address?")."</td>\n"
+		. "\t\t<td><select name='ipaddr'>\n"                                
+        . "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
+		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
+		. "\t\t</select></td>\n\t</tr>\n";
+
+		// Referring URL
+		$newsurvey .= "\t<tr><td>".$clang->gT("Save Referring URL?")."</td>\n"
+		. "\t\t<td><select name='refurl'>\n"                                
+        . "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
+		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
+		. "\t\t</select></td>\n\t</tr>\n";
+
+		// End of page
+		$newsurvey .= ""
 		. "\t<tr><td colspan='2' class='centered'><input type='submit' value='".$clang->gT("Create Survey")."' />\n"
 		. "\t<input type='hidden' name='action' value='insertnewsurvey' /></td>\n"
 		. "\t</tr>\n"
 		. "</table></form>\n";
+
+		// Import Survey
 		$newsurvey .= "<center>".$clang->gT("OR")."</center>\n";
 		$newsurvey .= "<form enctype='multipart/form-data' name='importsurvey' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
 		. "<table width='100%' border='0' class='form2columns'>\n"
