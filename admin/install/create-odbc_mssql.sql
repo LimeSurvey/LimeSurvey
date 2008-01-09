@@ -330,14 +330,27 @@ CREATE TABLE [prefix_settings_global] (
   [stg_name] VARCHAR(50) NOT NULL default '',
   [stg_value] VARCHAR(255) NOT NULL default '',
   PRIMARY KEY  ([stg_name])
-) 
-;
+);
+
+
+CREATE TABLE [prefix_templates_rights] (
+						  [uid] int(11) NOT NULL,
+						  [folder] varchar(255) NOT NULL,
+						  [use] int(1) NOT NULL,
+						  PRIMARY KEY  ([uid],[folder])
+						  );
+						  
+CREATE TABLE [prefix_templates] (
+						  [folder] varchar(255) NOT NULL,
+						  [creator] int(11) NOT NULL,
+						  PRIMARY KEY  ([folder])
+						  );
 
 --
 -- Table [settings_global]
 --
 
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '121');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '122');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 
 --

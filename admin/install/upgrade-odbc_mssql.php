@@ -101,7 +101,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","update [prefix_settings_global] set [stg_value]='114' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     
-    if ($oldversion < 121) {
+    if ($oldversion < 122) {
         modify_database("","ALTER TABLE [prefix_surveys] ADD  [printanswers] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] ADD  [listpublic] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
         upgrade_survey_tables117();
@@ -156,8 +156,19 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","ALTER TABLE [prefix_surveys] ADD [usecaptcha] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] ADD [tokenanswerspersistence] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_users] ADD [htmleditormode] CHAR(7) DEFAULT 'default'"); echo $modifyoutput; flush();
+        modify_database("","CREATE TABLE [prefix_templates_rights] (
+						  [uid] int(11) NOT NULL,
+						  [folder] varchar(255) NOT NULL,
+						  [use] int(1) NOT NULL,
+						  PRIMARY KEY  ([uid],[folder])
+						  );");echo $modifyoutput; flush();
+        modify_database("","CREATE TABLE [prefix_templates] (
+						  [folder] varchar(255) NOT NULL,
+						  [creator] int(11) NOT NULL,
+						  PRIMARY KEY  ([folder])
+						  );");echo $modifyoutput; flush();        
 	
-        modify_database("","update [prefix_settings_global] set [stg_value]='121' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+        modify_database("","update [prefix_settings_global] set [stg_value]='122' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     
     return true;

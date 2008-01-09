@@ -367,6 +367,25 @@ CREATE TABLE prefix_users (
 );
 
 
+CREATE TABLE prefix_templates_rights (
+  "uid" integer NOT NULL,
+  "folder" varying(255) NOT NULL,
+  "use" integer NOT NULL
+);
+
+ALTER TABLE ONLY prefix_templates_rights
+    ADD CONSTRAINT prefix_templates_rights_pkey PRIMARY KEY ("uid","folder");
+
+
+CREATE TABLE prefix_templates (
+  "folder" varying(255) NOT NULL,
+  "creator" integer NOT NULL
+);
+
+ALTER TABLE ONLY prefix_templates
+    ADD CONSTRAINT prefix_templates_pkey PRIMARY KEY ("folder");
+
+
 --
 -- TOC entry 1734 (class 2606 OID 16415)
 -- Dependencies: 1300 1300 1300 1300
@@ -509,7 +528,7 @@ CREATE INDEX prefix_labels_ixcode_idx ON prefix_labels USING btree (code);
 -- Table `settings_global`
 --
 
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '121');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '122');
 INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 
 --

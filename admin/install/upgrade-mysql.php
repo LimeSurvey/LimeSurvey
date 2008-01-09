@@ -105,7 +105,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","update `prefix_settings_global` set `stg_value`='114' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     
-    if ($oldversion < 121) {
+    if ($oldversion < 122) {
     //Adds new "public" field
         modify_database("","ALTER TABLE `prefix_surveys` ADD `printanswers` CHAR(1) default 'N' AFTER allowsave"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE `prefix_surveys` ADD `listpublic` CHAR(1) default 'N' AFTER `datecreated`"); echo $modifyoutput; flush();
@@ -163,7 +163,20 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","ALTER TABLE `prefix_surveys` ADD `tokenanswerspersistence` CHAR(1) default 'N'"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE `prefix_surveys` ADD `usecaptcha` CHAR(1) default 'N'"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE `prefix_users` ADD `htmleditormode` CHAR(7) default 'default'"); echo $modifyoutput; flush();
-        modify_database("","update `prefix_settings_global` set `stg_value`='121' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+        //122
+        modify_database("","CREATE TABLE `prefix_templates_rights` (
+						   `uid` int(11) NOT NULL,
+						   `folder` varchar(255) NOT NULL,
+						   `use` int(1) NOT NULL,
+						   PRIMARY KEY  (`uid`,`folder`)
+						   ) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
+        modify_database("","CREATE TABLE `prefix_templates` (
+						   `folder` varchar(255) NOT NULL,
+						   `creator` int(11) NOT NULL,
+						   PRIMARY KEY  (`folder`)
+						   ) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
+
+        modify_database("","update `prefix_settings_global` set `stg_value`='122' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     return true;
 }

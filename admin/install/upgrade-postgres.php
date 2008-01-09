@@ -19,46 +19,13 @@
 
 function db_upgrade($oldversion) {
 
-    if ($oldversion < 121) {
-	//Adds new public field (Provided by Kadejo)
-    modify_database("","ALTER TABLE \"prefix_surveys\" ADD  \"public\" CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush(); 
-    upgrade_survey_tables117();
-	upgrade_survey_tables118()
-	tokenanswerspersistence, and captcha-for-token-form
-    modify_database("","ALTER TABLE \"prefix_surveys\" ADD  \"htmlemail\" CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush(); 
-    modify_database("","ALTER TABLE \"prefix_surveys\" ADD  \"tokenanswerspersistence\" CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush(); 
-    modify_database("","ALTER TABLE \"prefix_surveys\" ADD  \"usecaptcha\" CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush(); 
-    modify_database("","ALTER TABLE \"prefix_users\" ADD  \"htmleditormode\" CHAR(7) DEFAULT 'default'"); echo $modifyoutput; flush(); 
-	modify_database("","UPDATE \"prefix_settings_global\" SET \"stg_value\"='121' WHERE \"stg_name\"='DBVersion'");	echo $modifyoutput;	flush();
+    if ($oldversion < 122) {
 	}
 
 
     return true;
 }
 
-function upgrade_survey_tables117()
-{
-    global $modifyoutput;
-    $surveyidquery = "SELECT sid FROM ".db_table_name('surveys')." WHERE active='Y' and datestamp='Y'";
-    $surveyidresult = db_execute_num($surveyidquery);
-    if (!$surveyidresult) {return "Database Error";}
-    else
-        {
-        while ( $sv = $surveyidresult->FetchRow() )
-            {
-            modify_database("","ALTER TABLE ".db_table_name('survey_'.$sv[0])." ADD \"startdate\" datetime NOT NULL"); echo $modifyoutput; flush();
-            }
-        }
-}
 
-function upgrade_survey_tables118()
-{
-  	global $connect,$modifyoutput,$dbprefix;
-  	$tokentables=$connect->MetaTables('TABLES',false,$dbprefix."tokens%");
-    foreach ($tokentables as $sv)
-            {
-            modify_database("","ALTER TABLE ".$sv." ALTER \"token\" VARCHAR(15)"); echo $modifyoutput; flush();
-            }
-}
 
 ?>
