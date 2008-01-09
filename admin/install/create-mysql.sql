@@ -82,7 +82,7 @@ CREATE TABLE `prefix_conditions` (
   `cqid` int(11) NOT NULL default '0',
   `cfieldname` varchar(50) NOT NULL default '',
   `method` char(2) NOT NULL default '',
-  `value` varchar(5) NOT NULL default '',
+  `value` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`cid`)
 ) TYPE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -110,7 +110,7 @@ CREATE TABLE `prefix_groups` (
 CREATE TABLE `prefix_labels` (
   `lid` int(11) NOT NULL default '0',
   `code` varchar(5) NOT NULL default '',
-  `title` varchar(100) NOT NULL default '',
+  `title` text,
   `sortorder` int(11) NOT NULL,
   `language` varchar(20) default 'en',
   PRIMARY KEY  (`lid`,`sortorder`,`language`),
@@ -334,7 +334,7 @@ CREATE TABLE `prefix_templates` (
 -- Table `settings_global`
 --
 
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '122');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '123');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 
 --

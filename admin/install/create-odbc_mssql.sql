@@ -75,7 +75,7 @@ CREATE TABLE [prefix_conditions] (
   [cqid] INT NOT NULL default '0',
   [cfieldname] VARCHAR(50) NOT NULL default '',
   [method] char(2) NOT NULL default '',
-  [value] VARCHAR(5) NOT NULL default '',
+  [value] VARCHAR(255) NOT NULL default '',
   PRIMARY KEY  ([cid])
 ) 
 ;
@@ -104,7 +104,7 @@ CREATE TABLE [prefix_groups] (
 CREATE TABLE [prefix_labels] (
   [lid] INT NOT NULL default '0',
   [code] VARCHAR(5) NOT NULL default '',
-  [title] VARCHAR(100) NOT NULL default '',
+  [title] text,
   [sortorder] INT NOT NULL,
   [language] VARCHAR(20) default 'en',
   PRIMARY KEY  ([lid],[sortorder],[language]),
@@ -350,7 +350,7 @@ CREATE TABLE [prefix_templates] (
 -- Table [settings_global]
 --
 
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '122');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '123');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 
 --

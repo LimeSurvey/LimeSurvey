@@ -104,7 +104,7 @@ CREATE TABLE prefix_conditions (
     cqid integer DEFAULT 0 NOT NULL,
     cfieldname character varying(50) DEFAULT ''::character varying NOT NULL,
     method character(2) DEFAULT ''::bpchar NOT NULL,
-    value character varying(5) DEFAULT ''::character varying NOT NULL
+    value character varying(255) DEFAULT ''::character varying NOT NULL
 );
 
 
@@ -137,7 +137,7 @@ CREATE TABLE prefix_groups (
 CREATE TABLE prefix_labels (
     lid integer DEFAULT 0 NOT NULL,
     code character varying(5) DEFAULT ''::character varying NOT NULL,
-    title character varying(100) DEFAULT ''::character varying NOT NULL,
+    title text,
     sortorder integer NOT NULL,
     "language" character varying(20) DEFAULT 'en'::character varying NOT NULL
 );
@@ -528,7 +528,7 @@ CREATE INDEX prefix_labels_ixcode_idx ON prefix_labels USING btree (code);
 -- Table `settings_global`
 --
 
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '122');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '123');
 INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 
 --

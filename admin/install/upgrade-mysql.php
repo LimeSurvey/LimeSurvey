@@ -105,7 +105,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","update `prefix_settings_global` set `stg_value`='114' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     
-    if ($oldversion < 122) {
+    if ($oldversion < 123) {
     //Adds new "public" field
         modify_database("","ALTER TABLE `prefix_surveys` ADD `printanswers` CHAR(1) default 'N' AFTER allowsave"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE `prefix_surveys` ADD `listpublic` CHAR(1) default 'N' AFTER `datecreated`"); echo $modifyoutput; flush();
@@ -175,8 +175,12 @@ echo str_pad('Loading... ',4096)."<br />\n";
 						   `creator` int(11) NOT NULL,
 						   PRIMARY KEY  (`folder`)
 						   ) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
+					   
+        //123
+        modify_database("","ALTER TABLE `prefix_conditions` CHANGE `value` `value` VARCHAR(255) NOT NULL default ''"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_labels` CHANGE `title` `title` text"); echo $modifyoutput; flush();
 
-        modify_database("","update `prefix_settings_global` set `stg_value`='122' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+		modify_database("","update `prefix_settings_global` set `stg_value`='123' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     return true;
 }

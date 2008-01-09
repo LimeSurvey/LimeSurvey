@@ -385,7 +385,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		. "\t<div class='settingrow'><span class='settingcaption'>&nbsp;</span>\n"
 		. "\t\t<span class='settingentry'>&nbsp;\n"
 		. "\t</span></div>\n";
-		$editquestion .= '</div>';
+		$editquestion .= '</div><br />';
 	}
 	
 		
