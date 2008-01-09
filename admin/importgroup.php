@@ -231,6 +231,7 @@ $countconditions = 0;
 $countlabelsets=0;
 $countlabels=0;
 $countquestion_attributes = 0;
+$countanswers = 0;
 
 
 // first check that imported group, questions and labels support the 
@@ -320,8 +321,6 @@ if (isset($labelsetsarray) && $labelsetsarray) {
                 $lfieldcontents=convertCSVRowToArray($la,',','"');
                 if ($count==0) {$count++; continue;}
                 
-                $countlabels++;
-
                 // Combine into one array with keys and values since its easier to handle
                  $labelrowdata=array_combine($lfieldorders,$lfieldcontents);
                 $labellid=$labelrowdata['lid'];
@@ -331,6 +330,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
                     $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                     $lainsert = "INSERT INTO {$dbprefix}labels (".implode(',',array_keys($labelrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
                     $liresult=$connect->Execute($lainsert);
+                    $countlabels++;
                 }
             }
         }
