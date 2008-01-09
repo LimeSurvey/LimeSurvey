@@ -150,6 +150,60 @@ if (!isset($_SESSION['loginID']))
 			}
 		}
 	}
+	elseif($useWebserverAuth === true && !isset($_SERVER['PHP_AUTH_USER']))	// LimeSurvey expects webserver auth  but it has not been achieved
+	{
+		$loginsummary .= "<br />".$clang->gT("LimeSurvey is setup to use the webserver authentication, but it seems you have not already been authenticated")."<br />";
+		$loginsummary .= "<br /><br />".$clang->gT("Please contact your system administrator")."<br />&nbsp;\n";
+	}
+	elseif($useWebserverAuth === true && isset($_SERVER['PHP_AUTH_USER']))	// normal login through webserver authentication
+	{
+		$loginsummary = "<br /><strong>".$clang->gT("Logging in...")."</strong><br />\n";
+		// getting user name, optionnally mapped
+		if (isset($userArrayMap) && is_array($userArrayMap) &&
+			isset($userArrayMap[$_SERVER['PHP_AUTH_USER']]))
+		{
+			$mappeduser=$userArrayMap[$_SERVER['PHP_AUTH_USER']];
+		}
+		else
+		{
+			$mappeduser=$_SERVER['PHP_AUTH_USER'];
+		}
+
+		include("database.php");
+		$query = "SELECT uid, users_name, password, parent_id, email, lang FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($mappeduser);
+		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+		$result = $connect->SelectLimit($query, 1) or die ($query."<br />".$connect->ErrorMsg());
+		if ($result->RecordCount() < 1)
+		{
+			// wrong or unknown username 
+			$loginsummary .= "<br />".$clang->gT("Incorrect User name and/or Password!")."<br />";
+			$loginsummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+
+		}
+		else
+		{ // user exists and was authenticated by webserver
+			$fields = $result->FetchRow();
+
+			$_SESSION['loginID'] = intval($fields['uid']);
+			$_SESSION['user'] = $fields['users_name'];
+			$_SESSION['adminlang'] = $fields['lang'];
+			$clang = new limesurvey_lang($_SESSION['adminlang']);
+			$login = true;
+
+			$loginsummary .= "<br />" .str_replace("{NAME}", $_SESSION['user'], $clang->gT("Welcome {NAME}")) . "<br />";
+			$loginsummary .= $clang->gT("You logged in successfully.");
+
+			if (isset($_POST['refererargs']) && $_POST['refererargs'] &&
+				strpos($_POST['refererargs'], "action=logout") === FALSE)
+			{
+				$_SESSION['metaHeader']="<meta http-equiv=\"refresh\""
+				. " content=\"1;URL={$scriptname}?".$_POST['refererargs']."\" />";
+				$loginsummary .= "<br /><font size='1'><i>".$clang->gT("Reloading Screen. Please wait.")."</i></font>\n";
+			}
+			$loginsummary .= "<br /><br />\n";
+			GetSessionUserRights($_SESSION['loginID']);
+		}
+	}
 }
 elseif ($action == "logout")
 {

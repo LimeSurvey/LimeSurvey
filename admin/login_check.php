@@ -18,7 +18,10 @@ if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this scr
 if (!isset($action)) {$action=returnglobal('action');}
 
 // check data for login
-if(isset($_POST['user']) && isset($_POST['password']) || ($action == "forgotpass") || ($action == "login") || ($action == "logout"))	// added by Dennis
+if( isset($_POST['user']) && isset($_POST['password']) || 
+	($action == "forgotpass") || ($action == "login") || 
+	($action == "logout") || 
+	($useWebserverAuth === true ) )	// added by Dennis
 {
 	include("usercontrol.php");
 }

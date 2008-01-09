@@ -171,6 +171,25 @@ $htmleditormode = 'inline';
 // be able to read the private data. So it is disable by default for now.
 $enable_tokenresponse_persitence = false;
 
+// $useWebserverAuth
+// Enable delegation of authentication to the webserver.
+// If you set this parameter to true and set your webserver to authenticate
+// users accessing the /admin subdirectory, then the username returned by
+// the webserver will be trusted by LimeSurvey and used for authentication
+// unless a username mapping is used see $userArrayMap below
+//
+// The user still needs to be defined in the limesurvey database in order to
+// login and get his permissions
+$useWebserverAuth = false;
+
+// $userArrayMap
+// Enable username mapping
+// This parameter is an array mapping username from the webserver to username
+// defined in LimeSurvey
+// Can be usefull if you have no way to add an 'admin' user to the database
+// used by the webserver, then you could map your true loginame to admin with
+// $userArrayMap = Array ('mylogin' => 'admin');
+
 //DO NOT CHANGE BELOW HERE --------------------
 
 ?>
