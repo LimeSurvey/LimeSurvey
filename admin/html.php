@@ -251,7 +251,7 @@ if ($action == "checksettings" || $action == "changelang" || $action=="changehtm
 	. "\t\t\t<strong>".$clang->gT("Preferred HTML editor mode").":</strong>\n"
 	. "\t\t</td><td>\n"
 	. "\t\t\t<select name='htmleditormode' onchange='form.submit()'>\n"
-	. "\t\t\t\t<option value='default' $edmod1>".$clang->gT("Default HTML editor")."</option>\n"
+	. "\t\t\t\t<option value='default' $edmod1>".$clang->gT("Default HTML editor mode")."</option>\n"
 	. "\t\t\t\t<option value='none' $edmod2>".$clang->gT("No HTML editor")."</option>\n"
 	. "\t\t\t\t<option value='inline' $edmod3>".$clang->gT("Inline HTML editor")."</option>\n"
 	. "\t\t\t\t<option value='popup' $edmod4>".$clang->gT("Popup HTML editor")."</option>\n";
