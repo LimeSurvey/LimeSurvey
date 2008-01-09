@@ -1438,6 +1438,7 @@ if($actsurrows['browse_response'])
 		if(!isset($_GET['language']) || !in_array($_GET['language'],$slangs))
 		{
 			$language = $baselang;
+			$blang = $clang;
 		} else {
 			$blang = new limesurvey_lang($_GET['language']);
 			$language = $_GET['language'];
