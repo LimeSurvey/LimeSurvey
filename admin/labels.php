@@ -611,8 +611,13 @@ function modlabelsetanswers($lid)
 	   			$query = "select max(sortorder) as maxorder from ".db_table_name('labels')." where lid='$lid'";
 				$result = $connect->Execute($query);
 				$newsortorder=sprintf("%05d", $result->fields['maxorder']+1);
-	
-	   			$_POST['inserttitle'] = db_quoteall($_POST['inserttitle'],true);
+		     	if ($filterxsshtml)
+		     	{	   			
+					require_once("../classes/inputfilter/class.inputfilter_clean.php");
+			    	$myFilter = new InputFilter('','',1,1,1); // $myFilter->process();
+      				$_POST['inserttitle']=$myFilter->process($_POST['inserttitle']);
+	   			}
+   				$_POST['inserttitle'] = db_quoteall($_POST['inserttitle'],true);
 	  			foreach ($lslanguages as $lslanguage)
 				{
                     if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('labels')." ON");}
@@ -649,16 +654,30 @@ function modlabelsetanswers($lid)
 		// Check that there is no code duplicate
 		if (count(array_unique($codevalues)) == count($codevalues))
 		{
+		     	if ($filterxsshtml)
+		     	{	   			
+					require_once("../classes/inputfilter/class.inputfilter_clean.php");
+			    	$myFilter = new InputFilter('','',1,1,1); // $myFilter->process();
+	   			}
+
 	         	foreach ($sortorderids as $sortorderid)
 	        	{
 	        		$langid=substr($sortorderid,0,strrpos($sortorderid,'_')); 
 	        		$orderid=substr($sortorderid,strrpos($sortorderid,'_')+1,20);
+			     	if ($filterxsshtml)
+			     	{	   			
+	      				$_POST['title_'.$sortorderid]=$myFilter->process($_POST['title_'.$sortorderid]);
+		   			}
 				    $_POST['title_'.$sortorderid] = db_quoteall($_POST['title_'.$sortorderid],true);
 	                $query = "UPDATE ".db_table_name('labels')." SET code=".$_POST['code_'.$codeids[$count]].", title={$_POST['title_'.$sortorderid]} WHERE lid=$lid AND sortorder=$orderid AND language='$langid'";
+
 	        		if (!$result = $connect->Execute($query)) 
 	        		// if update didn't work we assume the label does not exist and insert it
 	        		{
-//	                    $query = "insert into ".db_table_name('labels')." SET code=".$_POST['code_'.$codeids[$count]].", title={$_POST['title_'.$sortorderid]}, lid=$lid , sortorder=$orderid , language='$langid'";
+				     	if ($filterxsshtml)
+				     	{	   			
+		      				$_POST['title_'.$sortorderid]=$myFilter->process($_POST['title_'.$sortorderid]);
+			   			}
 	                    $query = "insert into ".db_table_name('labels')." (code,title,lid,sortorder,language) VALUES (".$_POST['code_'.$codeids[$count]].", {$_POST['title_'.$sortorderid]}, $lid , $orderid , '$langid')";
 	            		if (!$result = $connect->Execute($query))
 	            		{
