@@ -1477,7 +1477,7 @@ UpdateSessionGroupList();
 		$_SESSION['totalsteps']=1;
 		break;
 		case "G":
-		$_SESSION['totalsteps']=count($_SESSION['grouplist']);
+		if (isset($_SESSION['grouplist'])) {$_SESSION['totalsteps']=count($_SESSION['grouplist']);}
 		break;
 		case "S":
 		$_SESSION['totalsteps']=$totalquestions;
