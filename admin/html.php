@@ -670,7 +670,7 @@ if ($surveyid)
 		. "\t<td align='left' class='settingentryhighlight'><strong>{$s1row['surveyls_title']} "
 		. "(ID {$s1row['sid']})</strong></td></tr>\n";
 		$surveysummary2 = "";
-		if ($s1row['private'] != "N") {$surveysummary2 .= $clang->gT("This survey is anonymous.")."<br />\n";}
+		if ($s1row['private'] != "N") {$surveysummary2 .= $clang->gT("Answers to this survey are anonymized.")."<br />\n";}
 		else {$surveysummary2 .= $clang->gT("This survey is NOT anonymous.")."<br />\n";}
 		if ($s1row['format'] == "S") {$surveysummary2 .= $clang->gT("It is presented question by question.")."<br />\n";}
 		elseif ($s1row['format'] == "G") {$surveysummary2 .= $clang->gT("It is presented group by group.")."<br />\n";}
@@ -996,6 +996,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 
 	while ($qrrow = $qrresult->FetchRow())
 	{
+        $qrrow = array_map('strip_tags', $qrrow);
 		$qrrow = array_map('htmlspecialchars', $qrrow);
 		$questionsummary .= "\t<tr>\n"
 		. "\t\t<td colspan='2'>\n"
@@ -1171,10 +1172,10 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		}
 		$questionsummary .= "</td></tr>\n"
 		. "\t<tr><td align='right' valign='top'><strong>"
-		. $clang->gT("Question:")."</strong></td>\n\t<td align='left'>{$qrrow['question']}</td></tr>\n"
+		. $clang->gT("Question:")."</strong></td>\n\t<td align='left'>test".strip_tags($qrrow['question'])."</td></tr>\n"
 		. "\t<tr><td align='right' valign='top'><strong>"
 		. $clang->gT("Help:")."</strong></td>\n\t<td align='left'>";
-		if (trim($qrrow['help'])!=''){$questionsummary .= "{$qrrow['help']}";}
+		if (trim($qrrow['help'])!=''){$questionsummary .= strip_tags($qrrow['help']);}
 		$questionsummary .= "</td></tr>\n";
 		if ($qrrow['preg'])
 		{
@@ -2235,7 +2236,7 @@ if ($action == "editsurvey")
 			{
 				$editsurvey .= "\t\t<span class='settingentry'>\n\t\t\t";
 				if ($esrow['private'] == "N") {$editsurvey .= " ".$clang->gT("This survey is NOT anonymous.");}
-				else {$editsurvey .= $clang->gT("This survey is anonymous.");}
+				else {$editsurvey .= $clang->gT("Answers to this survey are anonymized.");}
 				$editsurvey .= "<font size='1' color='red'>&nbsp;(".$clang->gT("Cannot be changed").")\n"
 				. "\t\t</font>\n";
 				$editsurvey .= "<input type='hidden' name='private' value=\"{$esrow['private']}\" /></span>\n";

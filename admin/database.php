@@ -347,7 +347,18 @@ if(isset($surveyid))
         	$oldtype=$cqr['type'];
 		$oldgid=$cqr['gid'];
 
-    		$keepanswers = "1"; // Generally we try to keep answers if the question type has changed
+        // Remove invalid question attributes on saving
+        $qattributes=questionAttributes();
+        $validAttributes=$qattributes[$_POST['type']];
+        $attsql="delete from ".db_table_name('question_attributes')." where qid='{$_POST['qid']}' and ";
+        foreach ($validAttributes as  $validAttribute)
+        {
+         $attsql.='attribute<>'.db_quoteall($validAttribute['name'])." and ";
+        }
+        $attsql.='1=1';
+        db_execute_assoc($attsql) or die ("Couldn't delete obsolete question attributes<br />".htmlspecialchars($attsql)."<br />".htmlspecialchars($connect->ErrorMsg()));
+        
+   		$keepanswers = "1"; // Generally we try to keep answers if the question type has changed
 		
 		// These are the questions types that have no answers and therefore we delete the answer in that case
 		if (($_POST['type']== "5") || ($_POST['type']== "D") || ($_POST['type']== "G") ||
@@ -364,6 +375,9 @@ if(isset($surveyid))
 			$_POST['other']='N';
 		}
 
+        
+        
+        
 		if ($oldtype != $_POST['type'])
 		{
 			//Make sure there are no conditions based on this question, since we are changing the type
