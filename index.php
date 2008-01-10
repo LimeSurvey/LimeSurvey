@@ -34,15 +34,19 @@ $tpldir="$publicdir/templates";
 // if not:  copy some vars from the admin session 
 // to a new user session
 
-$issurveyactive=false;
-$actquery="SELECT * FROM ".db_table_name('surveys')." WHERE sid=$surveyid and active='Y'";
-$actresult=db_execute_assoc($actquery) or die ("Couldn't access survey settings<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-if ($actresult->RecordCount() > 0)
+if ($surveyid)
 {
-	$issurveyactive=true;
+	$issurveyactive=false;
+	$actquery="SELECT * FROM ".db_table_name('surveys')." WHERE sid=$surveyid and active='Y'";
+	$actresult=db_execute_assoc($actquery) or die ("Couldn't access survey settings<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+	if ($actresult->RecordCount() > 0)
+	{
+		$issurveyactive=true;
+	}
 }
 
-if ($issurveyactive===false)
+
+if ($surveyid && $issurveyactive===false)
 {
 	// admin session and permission have not already been imported
 	// for this particular survey
