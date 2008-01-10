@@ -958,6 +958,9 @@ function getSurveyInfo($surveyid, $languagecode='')
 		if (!isset($thissurvey['adminname'])) {$thissurvey['adminname']=$siteadminname;}
 		if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail']=$siteadminemail;}
 		if (!isset($thissurvey['urldescrip'])) {$thissurvey['urldescrip']=$thissurvey['url'];}
+        $thissurvey["tokenanswerspersistence"]=$thissurvey['tokenanswerspersistence'];
+        $thissurvey["usecaptcha"]=$thissurvey['usecaptcha'];
+        $thissurvey["htmlemail"]=$thissurvey['htmlemail'];
 	}              
     
     //not sure this should be here... ToDo: Find a better place

@@ -156,23 +156,6 @@ $filterout_incomplete_answers = true;
 //  * none: no html editor
 $defaulthtmleditormode = 'inline';
 
-// $enable_tokenresponse_persitence
-// Only relevant for a survey using tokens, and not enforcing answer privacy
-//
-// With this option set, a participant who has begun answering the survey
-// but fails to submit its answers (for instance because the browser crashed)
-// will see his previous responses when he'll try to answer again.
-// * This will prevent the response table from recording 2 entries (one
-//   completed and one not finilized) for this token.
-// * This also permits to preload answers for each participant (for instance
-//   if you want the same survey to be answered by the same person at different
-//   moment in time, but also want the participant to see his previous answers).
-//
-// Note however that this could raise privacy concerns because if a record 
-// contains private data, then anyone guessing the token code will 
-// be able to read the private data. So it is disable by default for now.
-$enable_tokenresponse_persitence = false;
-
 // $useWebserverAuth
 // Enable delegation of authentication to the webserver.
 // If you set this parameter to true and set your webserver to authenticate

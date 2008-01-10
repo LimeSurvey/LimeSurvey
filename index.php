@@ -530,10 +530,8 @@ getreferringurl();
 //  - the survey is not anonymous
 //  - the survey is active
 //  - a token information has been provided
-//  - the feature has been explicitely enabled in the config file
-//    to enable define $enable_tokenresponse_persitence = true; in config.php
-if (  isset($enable_tokenresponse_persitence) &&
-	$enable_tokenresponse_persitence===true &&
+//  - the survey is setup to allow token-response-persistence
+if (    $thissurvey['tokenanswerspersistence'] == 'Y' &&
 	!isset($_SESSION['srid']) && 
 	$thissurvey['private'] == "N" &&
 	$thissurvey['active'] == "Y" && $token !='')
