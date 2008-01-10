@@ -755,12 +755,12 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 }
 
 if (isset($java)) {echo $java;}
-echo "\t\t\tif (navigator.appVersion.indexOf('Safari')>-1 && name !== undefined )\n"
-."\t\t\t{ // Safari eats the onchange so run modfield manually, except when called at onload time\n"
-."\t\t\t\t//alert('For Safari calling modfield for ' + name);\n"
-."\t\t\t\tmodfield(name);\n"
-."\t\t\t}\n"
+echo "\n\tif (navigator.userAgent.indexOf('Safari')>-1 && name !== undefined )\n"
+."\t\t{ // Safari eats the onchange so run modfield manually, except when called at onload time\n"
+."\t\t\t//alert('For Safari (Useragent: '+navigator.userAgent+' calling modfield for ' + name);\n"
+."\t\t\tmodfield(name);\n"
 ."\t\t}\n"
+."\t}\n"
 ."\t//-->\n"
 ."\t</script>\n\n"; // End checkconditions javascript function
 

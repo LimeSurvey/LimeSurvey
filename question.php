@@ -508,7 +508,7 @@ if ($bIsGroupDescrPage)
 	echo "\t<!--\n";
 	echo "\t\tfunction checkconditions(value, name, type)\n";
 	echo "\t\t\t{\n";
-	echo "\t\t\t\tif (navigator.appVersion.indexOf('Safari')>-1 && name !== undefined )\n";
+	echo "\t\t\t\tif (navigator.userAgent.indexOf('Safari')>-1 && name !== undefined )\n";
 	echo "\t\t\t\t{ // Safari eats the onchange so run modfield manually exepect at onload time\n";
 	echo "\t\t\t\t\t//alert('For Safari calling modfield for ' + name);\n";
 	echo "\t\t\t\t\tmodfield(name);\n";
