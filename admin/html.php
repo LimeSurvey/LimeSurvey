@@ -2161,6 +2161,26 @@ if ($action == "editsurvey")
 			$editsurvey .= ">".$clang->gT("No")."</option>\n"
 			. "\t\t</select></span>\n\t</div>\n";
 
+	// Use Captcha 
+        $editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Use CAPTCHA for").":</span>\n"
+        . "\t\t<span class='settingentry'><select name='usecaptcha'>\n"
+        . "\t\t\t<option value='N'";
+	if ($esrow['usecaptcha'] == "N") {$editsurvey .= " selected='selected'";}
+	$editsurvey .= ">".$clang->gT("Never")."</option>\n"
+        . "\t\t\t<option value='R'";
+	if ($esrow['usecaptcha'] == "R") {$editsurvey .= " selected='selected'";}
+
+	$editsurvey .= ">".$clang->gT("Public registration only")."</option>\n"
+        . "\t\t\t<option value='T'";
+	if ($esrow['usecaptcha'] == "T") {$editsurvey .= " selected='selected'";}
+
+	$editsurvey .= ">".$clang->gT("Token survey access only")."</option>\n"
+        . "\t\t\t<option value='A'";
+	if ($esrow['usecaptcha'] == "A") {$editsurvey .= " selected='selected'";}
+
+	$editsurvey .= ">".$clang->gT("Both Public registration and Token survey access")."</option>\n"
+        . "\t\t</select></span>\n\t</div>\n";
+
 			// token
 			$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Token Attribute Names:")."</span>\n"
 			. "\t\t<span class='settingentry'><input type='text' size='25' name='attribute1'"
@@ -2168,6 +2188,17 @@ if ($action == "editsurvey")
 			. "<input type='text' size='25' name='attribute2'"
 			. " value=\"{$esrow['attribute2']}\" />(".$clang->gT("Attribute 2").")</span>\n\t</div>\n";
 
+	// Email format
+        $editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Use HTML format for token emails?")."</span>\n"
+        . "\t\t<span class='settingentry'><select name='htmlemail'>\n"
+        . "\t\t\t<option value='Y'";
+	if ($esrow['htmlemail'] == "Y") {$editsurvey .= " selected='selected'";}
+	$editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+        . "\t\t\t<option value='N'";
+	if ($esrow['htmlemail'] == "N") {$editsurvey .= " selected='selected'";}
+
+	$editsurvey .= ">".$clang->gT("No")."</option>\n"
+        . "\t\t</select></span>\n\t</div>\n";
 
 		// End Publication and access control TAB
 		// Create Survey Button TIBO
@@ -2298,6 +2329,16 @@ if ($action == "editsurvey")
 			$editsurvey .= "\t</div>\n";
 			// BENBUN - END REF URL Block
 
+		// Token answers persistence
+		$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Enable Token-based answers persistence?")."</span>\n"
+		. "\t\t<span class='settingentry'><select name='tokenanswerspersistence'>\n" 
+        . "\t\t\t<option value='Y'";
+		if ($esrow['tokenanswerspersistence'] == "Y") {$editsurvey .= " selected='selected'";}
+		$editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+		. "\t\t\t<option value='N'";
+		if ($esrow['tokenanswerspersistence'] == "N") {$editsurvey .= " selected='selected'";}
+		$editsurvey .= ">".$clang->gT("No")."</option>\n"
+		. "\t\t</select></span>\n\t</div>\n";
 
 			// End Notification and Data management TAB
 			// Create Survey Button
@@ -2737,10 +2778,26 @@ if ($action == "newsurvey")
         . "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
         . "\t\t</select></span>\n\t</div>\n";
 
+	// Use Captcha 
+        $newsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Use CAPTCHA for").":</span>\n"
+        . "\t\t<span class='settingentry'><select name='usecaptcha'>\n"
+        . "\t\t\t<option value='N'>".$clang->gT("Never")."</option>\n"
+        . "\t\t\t<option value='R' selected='selected'>".$clang->gT("Public registration only")."</option>\n"
+        . "\t\t\t<option value='T'>".$clang->gT("Token survey access only")."</option>\n"
+        . "\t\t\t<option value='A'>".$clang->gT("Both Public registration and Token survey access")."</option>\n"
+        . "\t\t</select></span>\n\t</div>\n";
+
 		// Token attributes names
 		$newsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Token Attribute Names:")."</span>\n"
 		. "\t\t<span class='settingentry'><input type='text' size='25' name='attribute1' />(".$clang->gT("Attribute 1").")<br />"
 		. "<input type='text' size='25' name='attribute2' />(".$clang->gT("Attribute 2").")</span>\n\t</div>\n";
+
+	// Email format
+        $newsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Use HTML format for token emails?")."</span>\n"
+        . "\t\t<span class='settingentry'><select name='htmlemail'>\n"
+        . "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
+        . "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
+        . "\t\t</select></span>\n\t</div>\n";
 
 		// End Publication and access control TAB
 		// Create Survey Button TIBO
@@ -2793,6 +2850,13 @@ if ($action == "newsurvey")
 		// Referring URL
 		$newsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Save Referring URL?")."</span>\n"
 		. "\t\t<span class='settingentry'><select name='refurl'>\n"                                
+        . "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
+		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
+		. "\t\t</select></span>\n\t</div>\n";
+
+		// Token answers persistence
+		$newsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Enable Token-based answers persistence?")."</span>\n"
+		. "\t\t<span class='settingentry'><select name='tokenanswerspersistence'>\n" 
         . "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
 		. "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
 		. "\t\t</select></span>\n\t</div>\n";

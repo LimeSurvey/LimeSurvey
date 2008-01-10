@@ -894,7 +894,8 @@ if(isset($surveyid))
 		. "attribute2='{$_POST['attribute2']}', allowsave='{$_POST['allowsave']}',\n"
         . "printanswers='{$_POST['printanswers']}',\n"
 		. "autoredirect='{$_POST['autoredirect']}', allowprev='{$_POST['allowprev']}',\n"
-		. "listpublic='{$_POST['public']}'\n"
+		. "listpublic='{$_POST['public']}', htmlemail='{$_POST['htmlemail']}',\n"
+		. "tokenanswerspersistence='{$_POST['tokenanswerspersistence']}', usecaptcha='{$_POST['usecaptcha']}'\n"
 		. "WHERE sid={$_POST['sid']}";
 		
 		$usresult = $connect->Execute($usquery) or die("Error updating<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
@@ -1039,7 +1040,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		. "(sid, owner_id, admin, active, useexpiry, expires, "
 		. "adminemail, private, faxto, format, template, url, "
 		. "language, datestamp, ipaddr, refurl, usecookie, notification, allowregister, attribute1, attribute2, "
-		. "allowsave, autoredirect, allowprev, printanswers, datecreated, listpublic)\n"
+		. "allowsave, autoredirect, allowprev, printanswers, datecreated, listpublic,htmlemail,tokenanswerspersistence,usecaptcha)\n"
 		. "VALUES ($surveyid, {$_SESSION['loginID']},\n"
 		. "'{$_POST['admin']}', 'N', \n"
 		. "'{$_POST['useexpiry']}',{$_POST['expires']}, '{$_POST['adminemail']}', '{$_POST['private']}',\n"
@@ -1049,7 +1050,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		. "'{$_POST['attribute1']}', '{$_POST['attribute2']}', \n"
 		. "'{$_POST['allowsave']}', '{$_POST['autoredirect']}', \n"
         . "'{$_POST['allowprev']}', '{$_POST['printanswers']}', \n'"
-		. date("Y-m-d")."', '{$_POST['public']}')";
+		. date("Y-m-d")."', '{$_POST['public']}', '{$_POST['htmlemail']}', '{$_POST['tokenanswerspersistence']}', '{$_POST['usecaptcha']}')";
 		$isresult = $connect->Execute($isquery);
 
 		// insert base language into surveys_language_settings
