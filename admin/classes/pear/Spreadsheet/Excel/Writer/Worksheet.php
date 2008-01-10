@@ -1545,7 +1545,7 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
         }
         elseif ($this->_input_encoding != '')
         {
-            $str = iconv($this->_input_encoding, 'UTF-16LE', $str);
+            $str = @iconv($this->_input_encoding, 'UTF-16LE', $str);
             $strlen = function_exists('mb_strlen') ? mb_strlen($str, 'UTF-16LE') : (strlen($str) / 2);
             $encoding  = 0x1;
         }
