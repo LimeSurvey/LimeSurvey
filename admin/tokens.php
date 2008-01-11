@@ -1031,8 +1031,16 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
                 
 				$modsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
 				$modmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
+				if (getEmailFormat($surveyid) == 'html')
+				{
+					$ishtml=true;
+				}
+				else
+				{
+					$ishtml=true;
+				}
 
-				if (MailTextMessage($modmessage, $modsubject, $to , $from, $sitename))
+				if (MailTextMessage($modmessage, $modsubject, $to , $from, $sitename, $ishtml))
 				{
 					// Put date into sent
 					$today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
@@ -1239,7 +1247,16 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 				$msgsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
 				$sendmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
 
-				if (MailTextMessage($sendmessage, $msgsubject, $to, $from, $sitename))
+				if (getEmailFormat($surveyid) == 'html')
+				{
+					$ishtml=true;
+				}
+				else
+				{
+					$ishtml=true;
+				}
+
+				if (MailTextMessage($sendmessage, $msgsubject, $to, $from, $sitename,$ishtml))
 				{
 					$tokenoutput .= "\t\t\t({$emrow['tid']})[".$clang->gT("Reminder sent to:")." {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
 				}

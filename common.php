@@ -2676,6 +2676,7 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false)
 	{$mail->SMTPAuth = true;}
 	}
 	$mail->From = $fromemail;
+	$mail->Sender = $fromemail; // Sets Return-Path for error notifications
     $toemails = explode(",", $to);
     foreach ($toemails as $singletoemail)
     {
