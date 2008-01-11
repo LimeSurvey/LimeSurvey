@@ -1172,7 +1172,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		}
 		$questionsummary .= "</td></tr>\n"
 		. "\t<tr><td align='right' valign='top'><strong>"
-		. $clang->gT("Question:")."</strong></td>\n\t<td align='left'>test".strip_tags($qrrow['question'])."</td></tr>\n"
+		. $clang->gT("Question:")."</strong></td>\n\t<td align='left'>".strip_tags($qrrow['question'])."</td></tr>\n"
 		. "\t<tr><td align='right' valign='top'><strong>"
 		. $clang->gT("Help:")."</strong></td>\n\t<td align='left'>";
 		if (trim($qrrow['help'])!=''){$questionsummary .= strip_tags($qrrow['help']);}
