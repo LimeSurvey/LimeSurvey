@@ -279,19 +279,6 @@ if (!isset($token))
 	$token=trim(returnglobal('token'));
 }
 
-// If token was submitted from token form
-// Disabled for the moment (1.50) with function captcha_enabled
-if (isset($_GET['tokenSEC']) && $_GET['tokenSEC'] == 1 && function_exists("ImageCreate") && captcha_enabled('tokenloginscreen'))
-{
-	if (!isset($_GET['loadsecurity']) || $_GET['loadsecurity'] != $_SESSION['secanswer'])
-	{
-		$secerror = $clang->gT("The answer to the security question is incorrect")."<br />\n";
-		$_GET['token'] = "";
-	}
-}
-
-if (isset($_GET['newtest']) && $_GET['newtest'] = "Y") unset($_GET['token']);
-
 //GET BASIC INFORMATION ABOUT THIS SURVEY
 $totalBoilerplatequestions =0;
 $thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);
@@ -304,6 +291,20 @@ else
 {
 	$surveyexists=0;
 }
+
+// If token was submitted from token form
+// Disabled for the moment (1.50) with function captcha_enabled
+//if (isset($_GET['tokenSEC']) && $_GET['tokenSEC'] == 1 && function_exists("ImageCreate") && captcha_enabled('tokenloginscreen',$thissurvey['usecaptcha']))
+//{
+//	if (!isset($_GET['loadsecurity']) || $_GET['loadsecurity'] != $_SESSION['secanswer'])
+//	{
+//		$secerror = $clang->gT("The answer to the security question is incorrect")."<br />\n";
+//		$_GET['token'] = "";
+//	}
+//}
+
+if (isset($_GET['newtest']) && $_GET['newtest'] = "Y") unset($_GET['token']);
+
 
 
 //SEE IF SURVEY USES TOKENS
@@ -413,7 +414,7 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 	}
 
 	// if security question answer is incorrect
-    if (function_exists("ImageCreate") && captcha_enabled('tokenloginscreen'))
+    if (function_exists("ImageCreate") && captcha_enabled('loadallscreen'))
     {
 	    if ((!isset($_POST['loadsecurity']) || $_POST['loadsecurity'] != $_SESSION['secanswer']) && !isset($_GET['scid']))
 	    {
@@ -450,8 +451,11 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == $clang->gT("Load Unfinished
 //Check if TOKEN is used for EVERY PAGE
 //This function fixes a bug where users able to submit two surveys/votes
 //by checking that the token has not been used at each page displayed.
-//if ($tokensexist == 1 && returnglobal('token'))
-if ($tokensexist == 1 && $token)
+// bypass only this check at first page (Step=0) because
+// this check is done in buildsurveysession and error message
+// could be more interresting there (takes into accound captcha if used)
+if ($tokensexist == 1 && $token &&
+	isset($_SESSION['step']) && $_SESSION['step']>0)
 {
 	//check if token actually does exist
 
@@ -1349,12 +1353,17 @@ function buildsurveysession()
 	//It is called from each various format script (ie: group.php, question.php, survey.php)
 	//if the survey has just begun. This funcion also returns the variable $totalquestions.
 
+
+
 	//BEFORE BUILDING A NEW SESSION FOR THIS SURVEY, LET'S CHECK TO MAKE SURE THE SURVEY SHOULD PROCEED!
+
+	// TOKEN REQUIRED BUT NO TOKEN PROVIDED
 	if ($tokensexist == 1 && !returnglobal('token'))
 	{
+		// DISPLAY REGISTER-PAGE if needed
+		// DISPLAY CAPTCHA if needed
 		sendcacheheaders();
 		doHeader();
-		//NO TOKEN PRESENTED. EXPLAIN PROBLEM AND PRESENT FORM
 
 		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
         //echo makedropdownlist();
@@ -1378,7 +1387,7 @@ function buildsurveysession()
 			        .$clang->gT("Token")."</td><td align='left' valign='middle'><input class='text' type='text' name='token'>
 			        </td>
 		        </tr>";
-                if (function_exists("ImageCreate") && captcha_enabled('tokenloginscreen'))
+                if (function_exists("ImageCreate") && captcha_enabled('tokenloginscreen', $thissurvey['usecaptcha']))
                 { echo "<tr>
 			                <td align='center' valign='middle'>".$clang->gT("Security Question")."</td><td align='left' valign='middle'><table><tr><td valign='center'><img src='verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table>
 			                </td>
@@ -1392,9 +1401,12 @@ function buildsurveysession()
 		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 		exit;
 	}
-	//Tokens are required, and a token has been provided.
-	elseif ($tokensexist == 1 && returnglobal('token'))
+	// TOKENS REQUIRED, A TOKEN PROVIDED
+	// SURVEY WITH NO NEED TO USE CAPTCHA
+	elseif ($tokensexist == 1 && returnglobal('token') &&
+		!captcha_enabled('tokenloginscreen',$thissurvey['usecaptcha']))
 	{
+
 		//check if token actually does exist
 		$tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(returnglobal('token')))."' AND (completed = 'N' or completed='')";
 		$tkresult = db_execute_num($tkquery);
@@ -1416,6 +1428,112 @@ function buildsurveysession()
 			."{$thissurvey['adminemail']}</a>)<br /><br />\n"
 			."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
 
+			echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+			exit;
+		}
+	}
+	// TOKENS REQUIRED, A TOKEN PROVIDED
+	// SURVEY CAPTCHA REQUIRED
+	elseif ($tokensexist == 1 && returnglobal('token') &&
+		captcha_enabled('tokenloginscreen',$thissurvey['usecaptcha']))
+	{
+
+		// IF CAPTCHA ANSWER IS CORRECT
+		if (isset($_GET['loadsecurity']) && $_GET['loadsecurity'] == $_SESSION['secanswer'])
+		{
+			//check if token actually does exist
+			$tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(returnglobal('token')))."' AND (completed = 'N' or completed='')";
+			$tkresult = db_execute_num($tkquery);
+			list($tkexist) = $tkresult->FetchRow();
+			if (!$tkexist)
+			{
+				sendcacheheaders();
+				doHeader();
+				//TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
+	
+				echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+	
+				echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
+				echo "\t<center><br />\n"
+				."\t".$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
+				."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."\n"
+				."\t".$clang->gT("For further information contact")." {$thissurvey['adminname']} "
+				."(<a href='mailto:{$thissurvey['adminemail']}'>"
+				."{$thissurvey['adminemail']}</a>)<br /><br />\n"
+				."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
+	
+				echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+				exit;
+			}
+		}
+		// IF CAPTCHA ANSWER IS NOT CORRECT
+		else
+		{
+			$gettoken = returnglobal('token');
+			sendcacheheaders();
+			doHeader();
+			// No or bad answer to required security question
+	
+			echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+	        //echo makedropdownlist();
+			echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
+			// If token wasn't provided and public registration
+			// is enabled then show registration form
+			if ( !isset($gettoken) && isset($thissurvey) && $thissurvey['allowregister'] == "Y")
+			{
+				echo templatereplace(file_get_contents("$thistpl/register.pstpl"));
+			}
+			else
+			{ // only show CAPTCHA
+	          echo " <center><br />";
+
+			if (isset($_GET['loadsecurity']))
+			{ // was a bad answer
+				echo "<font color='#FF0000'>".$clang->gT("The answer to the security question is incorrect")."</font><br />"; 
+			}
+
+		      echo $clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />";
+			// IF TOKEN HAS BEEN GIVEN THEN AUTOFILL IT
+			// AND HIDE ENTRY FIELD
+			if (!isset($gettoken))
+			{
+			      echo $clang->gT("If you have been issued with a token, please enter it in the box below and click continue.")."<br />&nbsp;
+			        <form method='get' action='".$_SERVER['PHP_SELF']."'>
+			        <table align='center'>
+				        <tr>
+					        <td align='right' valign='middle'>
+					        <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
+					        <input type='hidden' name='tokenSEC' value='1' id='sid' />";
+
+			echo	        $clang->gT("Token")."</td><td align='left' valign='middle'><input class='text' type='text' name='token'>";
+			}
+			else
+			{
+			      echo $clang->gT("Please confirm the token by answering the following security question below and click continue.")."<br />&nbsp;
+			        <form method='get' action='".$_SERVER['PHP_SELF']."'>
+			        <table align='center'>
+				        <tr>
+					        <td align='right' valign='middle'>
+					        <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
+					        <input type='hidden' name='tokenSEC' value='1' id='sid' />";
+
+			echo	        $clang->gT("Token").":</td><td align='left' valign='middle'>&nbsp;$gettoken<input type='hidden' name='token' value='$gettoken'>";
+			}
+
+			echo "			
+				        </td>
+			        </tr>";
+	                if (function_exists("ImageCreate") && captcha_enabled('tokenloginscreen', $thissurvey['usecaptcha']))
+	                { echo "<tr>
+				                <td align='center' valign='middle'>".$clang->gT("Security Question")."</td><td align='left' valign='middle'><table><tr><td valign='center'><img src='verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table>
+				                </td>
+			                </tr>";}
+			        echo "<tr><td colspan='2' align='center'><input class='submit' type='submit' value='".$clang->gT("Continue")."' /></td></tr>
+		        </table>
+		        </form>
+		        <br />&nbsp;</center>";
+			}
+	
 			echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 			exit;
 		}

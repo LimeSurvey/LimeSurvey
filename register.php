@@ -47,7 +47,7 @@ $thissurvey=getSurveyInfo($surveyid,$baselang);
 $register_errormsg = "";
 
 // Check the security question's answer
-if (function_exists("ImageCreate") && captcha_enabled('registrationscreen') )
+if (function_exists("ImageCreate") && captcha_enabled('registrationscreen',$thissurvey['usecaptcha']) )
 {
     if (!isset($_POST['loadsecurity']) || $_POST['loadsecurity'] != $_SESSION['secanswer'])
     {

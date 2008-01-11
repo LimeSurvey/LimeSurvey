@@ -2231,7 +2231,7 @@ function templatereplace($line)
 		if (isset($_GET['lang'])) $reglang = $_GET['lang'];
 		if (isset($_POST['lang'])) $reglang = $_POST['lang'];
         
-        if (function_exists("ImageCreate") && captcha_enabled('registrationscreen'))
+        if (function_exists("ImageCreate") && captcha_enabled('registrationscreen',$thissurvey['usecaptcha']))
         {
             $registerform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='middle'><img src='verification.php' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table></td></tr>\n";
         }
@@ -3873,16 +3873,38 @@ function incompleteAnsFilterstate()
 *
 * @return boolean - returns true if captcha must be enabled
 **/
-function captcha_enabled($screen)
+function captcha_enabled($screen, $captchamode='')
 {
 	switch($screen)
 	{
 	case 'registrationscreen':
-		return true;
+		if ($captchamode == 'R' ||
+			$captchamode == 'A')
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 		break;
 	case 'tokenloginscreen':
-		return false;
+		if ($captchamode == 'T' ||
+			$captchamode == 'A')
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 		break;
+	case 'loadallscreen':
+		return true;
+	break;
+	case 'savescreen':
+		return true;
+	break;
 	default:
 		return true;
 		break;
