@@ -83,7 +83,7 @@ if (($result->RecordCount()) > 0)
 $insert = "NO";
 while ($insert != "OK")
 {
-	$newtoken = randomkey(10);
+	$newtoken = randomkey(15);
 	$ntquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='$newtoken'";
 	$ntresult = $connect->Execute($ntquery);
 	if (!$ntresult->RecordCount()) {$insert = "OK";}
@@ -180,13 +180,14 @@ function templatereplace1($line)
 
 function randomkey($length)
 {
-	$pattern = "1234567890";
+	$pattern = "1234567890abcdefghijklmnpqrstuvwxyz";
+	$patternlength = strlen($pattern)-1; 
 	for($i=0;$i<$length;$i++)
 	{
 		if(isset($key))
-		$key .= $pattern{rand(0,9)};
+		$key .= $pattern{rand(0,$patternlength)};
 		else
-		$key = $pattern{rand(0,9)};
+		$key = $pattern{rand(0,$patternlength)};
 	}
 	return $key;
 }
