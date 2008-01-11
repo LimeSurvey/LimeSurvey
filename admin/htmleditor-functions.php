@@ -142,7 +142,7 @@ function getEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$q
 		$fieldtype == 'email-reg' ||
 		$fieldtype == 'email-conf' ||
 		$fieldtype == 'email-rem' ) &&
-	      getEmailFormat($surveyid) != 'html')
+	      getEmailFormat($surveyID) != 'html')
 	{
 		return '';
 	}

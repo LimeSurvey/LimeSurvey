@@ -4121,9 +4121,32 @@ function mydebug_var($strOutput)
 // returns 'text' or 'html'
 function getEmailFormat($surveyid)
 {
-	// Carsten: I let you add the required field and query
-	return 'html';
-	//return 'text';
+	global $connect;
+	global $dbprefix;
+
+	if (!isset($surveyid) || is_null($surveyid))
+	{
+		return 'ERROR';
+	}
+	else
+	{
+		$query = "SELECT `htmlemail` FROM {$dbprefix}surveys WHERE `sid`=".$surveyid;
+		
+		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+		
+		if ($result->RecordCount() == 0)	return 'ERROR';
+		
+		$row = $result->FetchRow();
+	
+		if ($row['htmlemail'] == 'Y')
+		{
+			return 'html';
+		}
+		else
+		{
+			return 'text';
+		}	
+	}
 }
 
 // Check if user has manage rights for a template
