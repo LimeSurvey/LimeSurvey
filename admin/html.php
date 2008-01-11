@@ -2165,21 +2165,36 @@ if ($action == "editsurvey")
 	// Use Captcha 
         $editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Use CAPTCHA for").":</span>\n"
         . "\t\t<span class='settingentry'><select name='usecaptcha'>\n"
-        . "\t\t\t<option value='N'";
-	if ($esrow['usecaptcha'] == "N") {$editsurvey .= " selected='selected'";}
-	$editsurvey .= ">".$clang->gT("Never")."</option>\n"
-        . "\t\t\t<option value='R'";
-	if ($esrow['usecaptcha'] == "R") {$editsurvey .= " selected='selected'";}
-
-	$editsurvey .= ">".$clang->gT("Public registration only")."</option>\n"
-        . "\t\t\t<option value='T'";
-	if ($esrow['usecaptcha'] == "T") {$editsurvey .= " selected='selected'";}
-
-	$editsurvey .= ">".$clang->gT("Token survey access only")."</option>\n"
         . "\t\t\t<option value='A'";
 	if ($esrow['usecaptcha'] == "A") {$editsurvey .= " selected='selected'";}
+	$editsurvey .= ">".$clang->gT("Survey Access / Registration / Save&Load")."</option>\n"
+        . "\t\t\t<option value='B'";
+	if ($esrow['usecaptcha'] == "B") {$editsurvey .= " selected='selected'";}
 
-	$editsurvey .= ">".$clang->gT("Both Public registration and Token survey access")."</option>\n"
+	$editsurvey .= ">".$clang->gT("Survey Access / Registration / ---------")."</option>\n"
+        . "\t\t\t<option value='C'";
+	if ($esrow['usecaptcha'] == "C") {$editsurvey .= " selected='selected'";}
+
+	$editsurvey .= ">".$clang->gT("Survey Access / ------------ / Save&Load")."</option>\n"
+        . "\t\t\t<option value='D'";
+	if ($esrow['usecaptcha'] == "D") {$editsurvey .= " selected='selected'";}
+
+	$editsurvey .= ">".$clang->gT("------------- / Registration / Save&Load")."</option>\n"
+	. "\t\t\t<option value='X'";
+
+	if ($esrow['usecaptcha'] == "X") {$editsurvey .= " selected='selected'";}
+
+	$editsurvey .= ">".$clang->gT("Survey Access / ------------ / ---------")."</option>\n"
+	. "\t\t\t<option value='R'";
+	if ($esrow['usecaptcha'] == "R") {$editsurvey .= " selected='selected'";}
+	$editsurvey .= ">".$clang->gT("------------- / Registration / ---------")."</option>\n"
+	. "\t\t\t<option value='S'";
+	if ($esrow['usecaptcha'] == "S") {$editsurvey .= " selected='selected'";}
+	$editsurvey .= ">".$clang->gT("------------- / ------------ / Save&Load")."</option>\n"
+	. "\t\t\t<option value='N'";
+	if ($esrow['usecaptcha'] == "N") {$editsurvey .= " selected='selected'";}
+	$editsurvey .= ">".$clang->gT("------------- / ------------ / ---------")."</option>\n"
+
         . "\t\t</select></span>\n\t</div>\n";
 
 			// token
@@ -2782,10 +2797,14 @@ if ($action == "newsurvey")
 	// Use Captcha 
         $newsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Use CAPTCHA for").":</span>\n"
         . "\t\t<span class='settingentry'><select name='usecaptcha'>\n"
-        . "\t\t\t<option value='N'>".$clang->gT("Never")."</option>\n"
-        . "\t\t\t<option value='R' selected='selected'>".$clang->gT("Public registration only")."</option>\n"
-        . "\t\t\t<option value='T'>".$clang->gT("Token survey access only")."</option>\n"
-        . "\t\t\t<option value='A'>".$clang->gT("Both Public registration and Token survey access")."</option>\n"
+        . "\t\t\t<option value='A'>".$clang->gT("Survey Access / Registration / Save&Load")."</option>\n"
+        . "\t\t\t<option value='B'>".$clang->gT("Survey Access / Registration / ---------")."</option>\n"
+        . "\t\t\t<option value='C'>".$clang->gT("Survey Access / ------------ / Save&Load")."</option>\n"
+        . "\t\t\t<option value='D' selected='selected'>".$clang->gT("------------- / Registration / Save&Load")."</option>\n"
+        . "\t\t\t<option value='X'>".$clang->gT("Survey Access / ------------ / ---------")."</option>\n"
+        . "\t\t\t<option value='R'>".$clang->gT("------------- / Registration / ---------")."</option>\n"
+        . "\t\t\t<option value='S'>".$clang->gT("------------- / ------------ / Save&Load")."</option>\n"
+        . "\t\t\t<option value='N'>".$clang->gT("------------- / ------------ / ---------")."</option>\n"
         . "\t\t</select></span>\n\t</div>\n";
 
 		// Token attributes names

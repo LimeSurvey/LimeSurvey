@@ -2166,7 +2166,7 @@ function templatereplace($line)
 		. "<tr><td align='right'>".$clang->gT("Your Email").":</td><td><input type='text' name='saveemail' value='";
 		if (isset($_POST['saveemail'])) {$saveform .= html_escape(auto_unescape($_POST['saveemail']));}
 		$saveform .= "'></td></tr>\n";
-        if (function_exists("ImageCreate"))
+        if (function_exists("ImageCreate") && captcha_enabled('saveandloadscreen',$thissurvey['usecaptcha']))
         {
 		    $saveform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='middle'><img src='verification.php' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table></td></tr>\n";
         }
@@ -2186,7 +2186,7 @@ function templatereplace($line)
 		. "<tr><td align='right'>".$clang->gT("Password").":</td><td><input type='password' name='loadpass' value='";
 		if (isset($_POST['loadpass'])) {$loadform .= html_escape(auto_unescape($_POST['loadpass']));}
 		$loadform .= "' /></td></tr>\n";
-        if (function_exists("ImageCreate"))
+        if (function_exists("ImageCreate") && captcha_enabled('saveandloadscreen',$thissurvey['usecaptcha']))
         {
             $loadform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='middle'><img src='verification.php' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' alt=''/></td></tr></table></td></tr>\n";
         }
@@ -3869,7 +3869,7 @@ function incompleteAnsFilterstate()
 }
 
 /**
-* captcha_enabled($screen) 
+* captcha_enabled($screen, $usecaptchamode) 
 * @param string $screen - the screen name for which to test captcha activation
 *
 * @return boolean - returns true if captcha must be enabled
@@ -3879,8 +3879,10 @@ function captcha_enabled($screen, $captchamode='')
 	switch($screen)
 	{
 	case 'registrationscreen':
-		if ($captchamode == 'R' ||
-			$captchamode == 'A')
+		if ($captchamode == 'A' ||
+			$captchamode == 'B' ||
+			$captchamode == 'D' ||
+			$captchamode == 'R')
 		{
 			return true;
 		}
@@ -3890,8 +3892,10 @@ function captcha_enabled($screen, $captchamode='')
 		}
 		break;
 	case 'tokenloginscreen':
-		if ($captchamode == 'T' ||
-			$captchamode == 'A')
+		if ($captchamode == 'A' ||
+			$captchamode == 'B' ||
+			$captchamode == 'C' ||
+			$captchamode == 'X')
 		{
 			return true;
 		}
@@ -3900,17 +3904,24 @@ function captcha_enabled($screen, $captchamode='')
 			return false;
 		}
 		break;
-	case 'loadallscreen':
-		return true;
-	break;
-	case 'savescreen':
+	case 'saveandloadscreen':
+		if ($captchamode == 'A' ||
+			$captchamode == 'C' ||
+			$captchamode == 'D' ||
+			$captchamode == 'S')
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 		return true;
 	break;
 	default:
 		return true;
 		break;
 	}
-	return false;
 }
 
 // used for import[survey|questions|groups]

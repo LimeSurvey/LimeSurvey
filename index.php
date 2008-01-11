@@ -418,7 +418,7 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 	}
 
 	// if security question answer is incorrect
-    if (function_exists("ImageCreate") && captcha_enabled('loadallscreen'))
+    if (function_exists("ImageCreate") && captcha_enabled('saveandloadscreen',$thissurvey['usecaptcha']))
     {
 	    if ( (!isset($_POST['loadsecurity']) || 
 			!isset($_SESSION['secanswer']) || 
