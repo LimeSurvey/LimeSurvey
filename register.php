@@ -49,7 +49,9 @@ $register_errormsg = "";
 // Check the security question's answer
 if (function_exists("ImageCreate") && captcha_enabled('registrationscreen',$thissurvey['usecaptcha']) )
 {
-    if (!isset($_POST['loadsecurity']) || $_POST['loadsecurity'] != $_SESSION['secanswer'])
+    if (!isset($_POST['loadsecurity']) || 
+		!isset($_SESSION['secanswer']) ||
+		$_POST['loadsecurity'] != $_SESSION['secanswer'])
     {
 	    $register_errormsg .= $clang->gT("The answer to the security question is incorrect")."<br />\n";
     }

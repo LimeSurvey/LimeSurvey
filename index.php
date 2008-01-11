@@ -416,7 +416,10 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 	// if security question answer is incorrect
     if (function_exists("ImageCreate") && captcha_enabled('loadallscreen'))
     {
-	    if ((!isset($_POST['loadsecurity']) || $_POST['loadsecurity'] != $_SESSION['secanswer']) && !isset($_GET['scid']))
+	    if ( (!isset($_POST['loadsecurity']) || 
+			!isset($_SESSION['secanswer']) || 
+			$_POST['loadsecurity'] != $_SESSION['secanswer']) &&
+		 !isset($_GET['scid']))
 	    {
 		    $errormsg .= $clang->gT("The answer to the security question is incorrect")."<br />\n";
 	    }
@@ -1439,7 +1442,9 @@ function buildsurveysession()
 	{
 
 		// IF CAPTCHA ANSWER IS CORRECT
-		if (isset($_GET['loadsecurity']) && $_GET['loadsecurity'] == $_SESSION['secanswer'])
+		if (isset($_GET['loadsecurity']) && 
+			isset($_SESSION['secanswer']) && 
+			$_GET['loadsecurity'] == $_SESSION['secanswer'])
 		{
 			//check if token actually does exist
 			$tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(returnglobal('token')))."' AND (completed = 'N' or completed='')";
@@ -1509,7 +1514,7 @@ function buildsurveysession()
 			}
 			else
 			{
-			      echo $clang->gT("Please confirm the token by answering the following security question below and click continue.")."<br />&nbsp;
+			      echo $clang->gT("Please confirm the token by answering the security question below and click continue.")."<br />&nbsp;
 			        <form method='get' action='".$_SERVER['PHP_SELF']."'>
 			        <table align='center'>
 				        <tr>
