@@ -129,6 +129,10 @@ if ($surveyid && $issurveyactive===false)
 			}
 		}
 	}
+	else
+	{ // already authorized
+		$previewright = true;
+	}
 
 	if ( $previewright === false)
 	{
