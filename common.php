@@ -3891,7 +3891,7 @@ function captcha_enabled($screen, $captchamode='')
 			return false;
 		}
 		break;
-	case 'tokenloginscreen':
+	case 'surveyaccessscreen':
 		if ($captchamode == 'A' ||
 			$captchamode == 'B' ||
 			$captchamode == 'C' ||

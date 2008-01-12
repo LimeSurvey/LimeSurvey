@@ -298,7 +298,7 @@ else
 
 // If token was submitted from token form
 // Disabled for the moment (1.50) with function captcha_enabled
-//if (isset($_GET['tokenSEC']) && $_GET['tokenSEC'] == 1 && function_exists("ImageCreate") && captcha_enabled('tokenloginscreen',$thissurvey['usecaptcha']))
+//if (isset($_GET['tokenSEC']) && $_GET['tokenSEC'] == 1 && function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen',$thissurvey['usecaptcha']))
 //{
 //	if (!isset($_GET['loadsecurity']) || $_GET['loadsecurity'] != $_SESSION['secanswer'])
 //	{
@@ -1361,6 +1361,54 @@ function buildsurveysession()
 	//if the survey has just begun. This funcion also returns the variable $totalquestions.
 
 
+	// NO TOKEN REQUIRED BUT CAPTCHA ENABLED FOR SURVEY ACCESS
+	if ($tokensexist == 0 &&
+		captcha_enabled('surveyaccessscreen',$thissurvey['usecaptcha']))
+	{
+
+		// IF CAPTCHA ANSWER IS NOT CORRECT OR NOT SET
+		if (!isset($_GET['loadsecurity']) || 
+			!isset($_SESSION['secanswer']) || 
+			$_GET['loadsecurity'] != $_SESSION['secanswer'])
+		{
+			sendcacheheaders();
+			doHeader();
+			// No or bad answer to required security question
+	
+			echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+	        //echo makedropdownlist();
+			echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
+
+			if (isset($_GET['loadsecurity']))
+			{ // was a bad answer
+				echo "<font color='#FF0000'>".$clang->gT("The answer to the security question is incorrect")."</font><br />"; 
+			}
+
+		      echo "<tr><td>".$clang->gT("Please confirm access to survey by answering the security question below and click continue.")."<br />&nbsp;
+			        <form method='get' action='".$_SERVER['PHP_SELF']."'>
+			        <table align='center'>
+				        <tr>
+					        <td align='right' valign='middle'>
+					        <input type='hidden' name='sid' value='".$surveyid."' id='sid' />";
+
+
+			echo "			
+				        </td>
+			        </tr>";
+	                if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
+	                { echo "<tr>
+				                <td align='center' valign='middle'>".$clang->gT("Security Question")."</td><td align='left' valign='middle'><table><tr><td valign='center'><img src='verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table>
+				                </td>
+			                </tr>";}
+			        echo "<tr><td colspan='2' align='center'><input class='submit' type='submit' value='".$clang->gT("Continue")."' /></td></tr>
+		        </table>
+		        </form>
+		        <br />&nbsp;</center>";
+	
+			echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+			exit;
+		}
+	}
 
 	//BEFORE BUILDING A NEW SESSION FOR THIS SURVEY, LET'S CHECK TO MAKE SURE THE SURVEY SHOULD PROCEED!
 
@@ -1394,7 +1442,7 @@ function buildsurveysession()
 			        .$clang->gT("Token")."</td><td align='left' valign='middle'><input class='text' type='text' name='token'>
 			        </td>
 		        </tr>";
-                if (function_exists("ImageCreate") && captcha_enabled('tokenloginscreen', $thissurvey['usecaptcha']))
+                if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
                 { echo "<tr>
 			                <td align='center' valign='middle'>".$clang->gT("Security Question")."</td><td align='left' valign='middle'><table><tr><td valign='center'><img src='verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table>
 			                </td>
@@ -1411,7 +1459,7 @@ function buildsurveysession()
 	// TOKENS REQUIRED, A TOKEN PROVIDED
 	// SURVEY WITH NO NEED TO USE CAPTCHA
 	elseif ($tokensexist == 1 && returnglobal('token') &&
-		!captcha_enabled('tokenloginscreen',$thissurvey['usecaptcha']))
+		!captcha_enabled('surveyaccessscreen',$thissurvey['usecaptcha']))
 	{
 
 		//check if token actually does exist
@@ -1442,7 +1490,7 @@ function buildsurveysession()
 	// TOKENS REQUIRED, A TOKEN PROVIDED
 	// SURVEY CAPTCHA REQUIRED
 	elseif ($tokensexist == 1 && returnglobal('token') &&
-		captcha_enabled('tokenloginscreen',$thissurvey['usecaptcha']))
+		captcha_enabled('surveyaccessscreen',$thissurvey['usecaptcha']))
 	{
 
 		// IF CAPTCHA ANSWER IS CORRECT
@@ -1532,7 +1580,7 @@ function buildsurveysession()
 			echo "			
 				        </td>
 			        </tr>";
-	                if (function_exists("ImageCreate") && captcha_enabled('tokenloginscreen', $thissurvey['usecaptcha']))
+	                if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
 	                { echo "<tr>
 				                <td align='center' valign='middle'>".$clang->gT("Security Question")."</td><td align='left' valign='middle'><table><tr><td valign='center'><img src='verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table>
 				                </td>
