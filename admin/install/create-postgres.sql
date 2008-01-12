@@ -239,7 +239,9 @@ CREATE TABLE prefix_surveys (
     listpublic character(1) DEFAULT 'N'::bpchar,
     htmlemail character(1) DEFAULT 'N'::bpchar,
     tokenanswerspersistence character(1) DEFAULT 'N'::bpchar,
-    usecaptcha character(1) DEFAULT 'N'::bpchar
+    usecaptcha character(1) DEFAULT 'N'::bpchar,
+    "bounce_email" character varying(320) NOT NULL
+    
 );
 
 
@@ -486,7 +488,7 @@ CREATE INDEX prefix_labels_ixcode_idx ON prefix_labels USING btree (code);
 -- Table `settings_global`
 --
 
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '123');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '124');
 INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 
 --

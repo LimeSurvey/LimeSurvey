@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-08-18 09:56+0100\n"
+"PO-Revision-Date: 2008-01-12 16:56+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -219,7 +219,7 @@ msgid "Date Stamp"
 msgstr "Datumsstempel"
 
 msgid "IP Address"
-msgstr "IP-Adresse protokollieren?"
+msgstr "IP-Adresse"
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1773
 # D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1995

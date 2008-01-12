@@ -101,7 +101,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","update [prefix_settings_global] set [stg_value]='114' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     
-    if ($oldversion < 123) {
+    if ($oldversion < 124) {
         modify_database("","ALTER TABLE [prefix_surveys] ADD  [printanswers] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] ADD  [listpublic] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
         upgrade_survey_tables117();
@@ -170,8 +170,10 @@ echo str_pad('Loading... ',4096)."<br />\n";
 	    //123
         modify_database("","ALTER TABLE [prefix_surveys] ALTER COLUMN [value] VARCHAR(255) NOT NULL DEFAULT ''"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_labels] ALTER COLUMN [title] text'"); echo $modifyoutput; flush();
+        //124
+        modify_database("","ALTER TABLE [prefix_surveys] ADD [bounce_email] VARCHAR(320)"); echo $modifyoutput; flush();
 
-        modify_database("","update [prefix_settings_global] set [stg_value]='123' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+        modify_database("","update [prefix_settings_global] set [stg_value]='124' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     
     return true;
