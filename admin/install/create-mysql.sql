@@ -10,31 +10,6 @@
 -- Database: `limesurvey-development`
 -- 
 
--- --------------------------------------------------------
-
-CREATE TABLE `prefix_quota` (
-  `id` int(11) NOT NULL auto_increment,
-  `sid` int(11) default NULL,
-  `name` varchar(255) collate utf8_unicode_ci default NULL,
-  `qlimit` int(8) default NULL,
-  `action` int(2) default NULL,
-  `active` int(1) NOT NULL default '1',
-  PRIMARY KEY  (`id`)
-)  TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-
-
-
-
-CREATE TABLE `prefix_quota_members` (
-  `id` int(11) NOT NULL auto_increment,
-  `sid` int(11) default NULL,
-  `qid` int(11) default NULL,
-  `quota_id` int(11) default NULL,
-  `code` varchar(5) collate utf8_unicode_ci default NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `sid` (`sid`,`qid`,`quota_id`,`code`)
-)   TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 -- 
@@ -146,6 +121,32 @@ CREATE TABLE `prefix_question_attributes` (
 
 -- --------------------------------------------------------
 
+
+CREATE TABLE `prefix_quota` (
+  `id` int(11) NOT NULL auto_increment,
+  `sid` int(11) default NULL,
+  `name` varchar(255) collate utf8_unicode_ci default NULL,
+  `qlimit` int(8) default NULL,
+  `action` int(2) default NULL,
+  `active` int(1) NOT NULL default '1',
+  PRIMARY KEY  (`id`)
+)  TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+
+
+
+CREATE TABLE `prefix_quota_members` (
+  `id` int(11) NOT NULL auto_increment,
+  `sid` int(11) default NULL,
+  `qid` int(11) default NULL,
+  `quota_id` int(11) default NULL,
+  `code` varchar(5) collate utf8_unicode_ci default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `sid` (`sid`,`qid`,`quota_id`,`code`)
+)   TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
 -- 
 -- Table structure for table `questions`
 -- 
@@ -189,7 +190,18 @@ CREATE TABLE `prefix_saved_control` (
   PRIMARY KEY  (`scid`)
 ) TYPE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
+
 -- --------------------------------------------------------
+--
+-- Table structure for table `settings_global`
+--
+
+CREATE TABLE `prefix_settings_global` (
+  `stg_name` varchar(50) NOT NULL default '',
+  `stg_value` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`stg_name`)
+) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
 
 -- 
 -- Table structure for table `surveys`
@@ -258,6 +270,37 @@ CREATE TABLE `prefix_surveys_languagesettings` (
 TYPE = $databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
+-- 
+-- Table structure for table `surveys_rights`
+-- 
+
+CREATE TABLE `prefix_surveys_rights` (
+	`sid` int(10) unsigned NOT NULL default '0',
+	`uid` int(10) unsigned NOT NULL default '0',
+	`edit_survey_property` tinyint(1) NOT NULL default '0',
+	`define_questions` tinyint(1) NOT NULL default '0',
+	`browse_response` tinyint(1) NOT NULL default '0',
+	`export` tinyint(1) NOT NULL default '0',
+	`delete_survey` tinyint(1) NOT NULL default '0',
+	`activate_survey` tinyint(1) NOT NULL default '0',
+	PRIMARY KEY (sid, uid)
+) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+
+CREATE TABLE `prefix_user_groups` (
+	`ugid` int(10) unsigned NOT NULL auto_increment PRIMARY KEY,
+	`name` varchar(20) NOT NULL UNIQUE,
+	`description` TEXT NOT NULL,
+	`owner_id` int(10) unsigned NOT NULL
+) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+
+CREATE TABLE `prefix_user_in_groups` (
+	`ugid` int(10) unsigned NOT NULL,
+	`uid` int(10) unsigned NOT NULL
+) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- 
 -- Table structure for table `users`
@@ -281,38 +324,7 @@ CREATE TABLE `prefix_users` (
   `htmleditormode` char(7) default 'default',
 ) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-CREATE TABLE `prefix_surveys_rights` (
-	`sid` int(10) unsigned NOT NULL default '0',
-	`uid` int(10) unsigned NOT NULL default '0',
-	`edit_survey_property` tinyint(1) NOT NULL default '0',
-	`define_questions` tinyint(1) NOT NULL default '0',
-	`browse_response` tinyint(1) NOT NULL default '0',
-	`export` tinyint(1) NOT NULL default '0',
-	`delete_survey` tinyint(1) NOT NULL default '0',
-	`activate_survey` tinyint(1) NOT NULL default '0',
-	PRIMARY KEY (sid, uid)
-) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-CREATE TABLE `prefix_user_groups` (
-	`ugid` int(10) unsigned NOT NULL auto_increment PRIMARY KEY,
-	`name` varchar(20) NOT NULL UNIQUE,
-	`description` TEXT NOT NULL,
-	`owner_id` int(10) unsigned NOT NULL
-) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-CREATE TABLE `prefix_user_in_groups` (
-	`ugid` int(10) unsigned NOT NULL,
-	`uid` int(10) unsigned NOT NULL
-) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
---
--- Table structure for table `settings_global`
---
-
-CREATE TABLE `prefix_settings_global` (
-  `stg_name` varchar(50) NOT NULL default '',
-  `stg_value` varchar(255) NOT NULL default '',
-  PRIMARY KEY  (`stg_name`)
-) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 CREATE TABLE `prefix_templates_rights` (

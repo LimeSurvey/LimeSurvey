@@ -5,30 +5,10 @@
 -- Started on 2007-11-18 18:48:15
 
 SET client_encoding = 'UTF8';
-SET standard_conforming_strings = off;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
-SET escape_string_warning = off;
-
---
--- TOC entry 1763 (class 0 OID 0)
--- Dependencies: 4
--- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: postgres
---
-
-COMMENT ON SCHEMA public IS 'Standard public schema';
-
-
---
--- TOC entry 295 (class 2612 OID 16386)
--- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: postgres
---
-
-
 SET search_path = public, pg_catalog;
-
 SET default_tablespace = '';
-
 SET default_with_oids = false;
 
 --
@@ -36,7 +16,6 @@ SET default_with_oids = false;
 -- Dependencies: 1655 1656 1657 1658 4
 -- Name: prefix_answers; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
-
 CREATE TABLE prefix_answers (
     qid integer DEFAULT 0 NOT NULL,
     code character varying(5) DEFAULT ''::character varying NOT NULL,
@@ -47,7 +26,6 @@ CREATE TABLE prefix_answers (
 );
 
 
-
 --
 -- TOC entry 1302 (class 1259 OID 16418)
 -- Dependencies: 1660 1661 1662 1663 1664 4
@@ -55,7 +33,7 @@ CREATE TABLE prefix_answers (
 --
 
 CREATE TABLE prefix_assessments (
-    id integer NOT NULL,
+    id serial,
     sid integer DEFAULT 0 NOT NULL,
     scope character varying(5) DEFAULT ''::character varying NOT NULL,
     gid integer DEFAULT 0 NOT NULL,
@@ -65,31 +43,6 @@ CREATE TABLE prefix_assessments (
     message text NOT NULL,
     link text NOT NULL
 );
-
-
-
---
--- TOC entry 1301 (class 1259 OID 16416)
--- Dependencies: 1302 4
--- Name: prefix_assessments_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE prefix_assessments_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
-
---
--- TOC entry 1765 (class 0 OID 0)
--- Dependencies: 1301
--- Name: prefix_assessments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE prefix_assessments_id_seq OWNED BY prefix_assessments.id;
 
 
 --
@@ -107,9 +60,6 @@ CREATE TABLE prefix_conditions (
     value character varying(255) DEFAULT ''::character varying NOT NULL
 );
 
-
-
-
 --
 -- TOC entry 1306 (class 1259 OID 16445)
 -- Dependencies: 1672 1673 1674 1675 4
@@ -124,8 +74,6 @@ CREATE TABLE prefix_groups (
     description text,
     "language" character varying(20) DEFAULT 'en'::character varying NOT NULL
 );
-
-
 
 
 --
@@ -157,7 +105,6 @@ CREATE TABLE prefix_labelsets (
 );
 
 
-
 --
 -- TOC entry 1313 (class 1259 OID 16494)
 -- Dependencies: 1692 4
@@ -171,15 +118,39 @@ CREATE TABLE prefix_question_attributes (
     value character varying(20)
 );
 
+-- 
+-- Table structure for table `quota`
+-- 
+
+CREATE TABLE prefix_quota (
+  id serial NOT NULL,
+  sid integer,
+  name varying(255),
+  qlimit integer,
+  "action" integer,
+  "active" integer NOT NULL default '1'
+);
+
+ALTER TABLE ONLY prefix_quota
+    ADD CONSTRAINT prefix_quota_pkey PRIMARY KEY (id);
 
 
+
+CREATE TABLE prefix_quota_members (
+  id serial,
+  sid integer,
+  qid integer,
+  quota_id integer,
+  code varying(5)
+);
+
+ALTER TABLE ONLY prefix_quota_members
+    ADD CONSTRAINT prefix_quota_members_pkey PRIMARY KEY (id);
+CREATE INDEX prefix_quota_members_ixcode_idx ON prefix_quota_members USING btree (sid,qid,quota_id,code);
 
 --
--- TOC entry 1311 (class 1259 OID 16477)
--- Dependencies: 1684 1685 1686 1687 1688 1689 1690 4
 -- Name: prefix_questions; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
-
 CREATE TABLE prefix_questions (
     qid serial NOT NULL,
     sid integer DEFAULT 0 NOT NULL,
@@ -195,7 +166,6 @@ CREATE TABLE prefix_questions (
     question_order integer NOT NULL,
     "language" character varying(20) DEFAULT 'en'::character varying NOT NULL
 );
-
 
 
 
@@ -221,9 +191,7 @@ CREATE TABLE prefix_saved_control (
 
 
 
-
 --
--- TOC entry 1316 (class 1259 OID 16513)
 -- Dependencies: 1697 1698 4
 -- Name: prefix_settings_global; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -236,8 +204,6 @@ CREATE TABLE prefix_settings_global (
 
 
 --
--- TOC entry 1317 (class 1259 OID 16519)
--- Dependencies: 1699 1700 1701 1702 1703 1704 1705 1706 1707 1708 1709 1710 1711 1712 4
 -- Name: prefix_surveys; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -275,6 +241,8 @@ CREATE TABLE prefix_surveys (
     tokenanswerspersistence character(1) DEFAULT 'N'::bpchar,
     usecaptcha character(1) DEFAULT 'N'::bpchar
 );
+
+
 
 
 -- Dependencies: 1713 1714 4
@@ -318,12 +286,7 @@ CREATE TABLE prefix_surveys_rights (
 );
 
 
-
---
--- TOC entry 1323 (class 1259 OID 16579)
--- Dependencies: 4
 -- Name: prefix_user_groups; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
 
 CREATE TABLE prefix_user_groups (
     ugid serial NOT NULL,
@@ -334,17 +297,12 @@ CREATE TABLE prefix_user_groups (
 
 
 
-
 CREATE TABLE prefix_user_in_groups (
     ugid integer NOT NULL,
     uid integer NOT NULL
 );
 
-
-
 --
--- TOC entry 1321 (class 1259 OID 16563)
--- Dependencies: 1724 1725 1726 1727 1728 1729 1730 1731 4
 -- Name: prefix_users; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
