@@ -82,7 +82,7 @@ $encodingsarray = array("armscii8"=>$clang->gT("ARMSCII-8 Armenian")
 }
 
 
-$tokenoutput = PrepareEditorScript();
+$tokenoutput = "";
 
 $sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
 $sumresult5 = db_execute_assoc($sumquery5);
@@ -102,12 +102,13 @@ if ($subaction == "export" && $sumrows5['export']) //EXPORT FEATURE SUBMITTED BY
 	$bresult = db_execute_assoc($bquery) or die ("$bquery<br />".htmlspecialchars($connect->ErrorMsg()));
 	$bfieldcount=$bresult->FieldCount();
 
-	$tokenoutput .= "firstname, lastname, email, token, language code, attribute1, attribute2, tid\n";
+	$tokenoutput .= "firstname, lastname, email, emailstatus, token, language code, attribute1, attribute2, tid\n";
 	while ($brow = $bresult->FetchRow())
 	{
 		$tokenoutput .= '"'.trim($brow['firstname'])."\",";
 		$tokenoutput .= '"'.trim($brow['lastname'])."\",";
 		$tokenoutput .= '"'.trim($brow['email'])."\",";
+		$tokenoutput .= '"'.trim($brow['emailstatus'])."\",";
 		$tokenoutput .= '"'.trim($brow['token'])."\",";
 		$tokenoutput .= '"'.trim($brow['language'])."\"";
 		if($bfieldcount > 8)
@@ -206,6 +207,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		. "firstname C(40) ,\n "
 		. "lastname C(40) ,\n "
 		. "email C(320) ,\n "
+		. "emailstatus C(300) DEFAULT 'OK',\n "
 		. "token C(36) ,\n "
 		. "language C(25) ,\n "
 		. "sent C(17) DEFAULT 'N',\n "
@@ -455,13 +457,14 @@ $tokenoutput .= "<table width='99%' class='menubar' cellpadding='1' cellspacing=
 
 
 
-if ($subaction == "emailsettings")  //ToDO: Which right?
+if ($subaction == "emailsettings") 
 {
 
     	$grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
 		array_unshift($grplangs,$baselang);
-
+		
+		$tokenoutput .= PrepareEditorScript();
 		$tokenoutput .="<tr><td align='center'><script type='text/javascript'>\n"
 		. "<!--\n"
 		. "function fillin(tofield, fromfield)\n"
@@ -709,6 +712,7 @@ if ($subaction == "browse" || $subaction == "search")
 		$bquery .= " WHERE firstname LIKE '%$searchstring%' "
 		. "OR lastname LIKE '%$searchstring%' "
 		. "OR email LIKE '%$searchstring%' "
+		. "OR emailstatus LIKE '%$searchstring%' "
 		. "OR token LIKE '%$searchstring%'";
 		if ($bfieldcount == 10)
 		{
@@ -738,10 +742,17 @@ if ($subaction == "browse" || $subaction == "search")
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=lastname&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imagefiles/downarrow.png' alt='' title='"
 	.$clang->gT("Sort by: ").$clang->gT("Last Name")."' border='0' align='left' /></a>".$clang->gT("Last Name")."</th>\n"
+
 	."\t\t<th align='left' valign='top' class='settingcaption'>"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=email&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imagefiles/downarrow.png' alt='' title='"
 	.$clang->gT("Sort by: ").$clang->gT("Email")."' border='0' align='left' /></a>".$clang->gT("Email")."</th>\n"
+
+	."\t\t<th align='left' valign='top' class='settingcaption'>"
+	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=emailstatus&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
+	."<img src='$imagefiles/downarrow.png' alt='' title='"
+	.$clang->gT("Sort by: ").$clang->gT("Email Status")."' border='0' align='left' /></a>".$clang->gT("Email Status")."</th>\n"
+
 	."\t\t<th align='left' valign='top' class='settingcaption'>"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=token&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imagefiles/downarrow.png' alt='' title='"
@@ -780,12 +791,20 @@ if ($subaction == "browse" || $subaction == "search")
 
 	while ($brow = $bresult->FetchRow())
 	{
+		error_log(print_r($brow,true));
 		$brow['token'] = trim($brow['token']);
 		if ($bgc == "evenrow") {$bgc = "oddrow";} else {$bgc = "evenrow";}
 		$tokenoutput .= "\t<tr class='$bgc'>\n";
 		foreach ($brow as $a=>$b)
 		{
-			$tokenoutput .= "\t\t<td class='$bgc'>$brow[$a]</td>\n";
+			if ($a =='email' && $brow['emailstatus'] != 'OK')
+			{
+				$tokenoutput .= "\t\t<td class='$bgc'><span class='invalidemail'>$brow[$a]</span></td>\n";
+			}
+			else
+			{
+				$tokenoutput .= "\t\t<td class='$bgc'>$brow[$a]</td>\n";
+			}
 		}
 		if ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey'])
 		{
@@ -901,6 +920,7 @@ if ($subaction == "kill" && ($sumrows5['edit_survey_property'] || $sumrows5['act
 
 if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
 {
+	$tokenoutput .= PrepareEditorScript();
 	$tokenoutput .= "\t<tr>\n\t\t<td colspan='2' height='4'>"
 	."<strong>"
 	.$clang->gT("Email Invitation").":</strong></td>\n\t</tr>\n"
@@ -947,9 +967,10 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 			."\t<tr>\n"
 			."\t\t<td align='right' valign='top'><strong>".$clang->gT("Message").":</strong></font></td>\n"
 			."\t\t<td>\n"
-			."\t\t\t<textarea name='message_$language' rows='20' cols='80'>\n"
+			."\t\t\t<textarea name='message_$language' id='message_$language' rows='20' cols='80'>\n"
 			.$textarea
 			."\t\t\t</textarea>\n"
+			. getEditor("email-inv","message_$language","[".$clang->gT("Invitation Email:", "js")."](".$grouplang.")",$surveyid,'','',$action)
 			."\t\t</td>\n"
 			."\t</tr></table></div>\n";
 		}
@@ -957,10 +978,16 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 		if (isset($tokenid))
 			{
 				$tokenoutput .= "<tr><td colspan='2'>"
-				.$clang->gT("to TokenID No")." ".$tokenid
+				.$clang->gT("Sending to Token ID").":&nbsp;".$tokenid
 				."</td></tr>";
 			}		
-		$tokenoutput .="\t<tr><td>&nbsp;</td><td align='left'><input type='submit' value='"
+		$tokenoutput .="\t<tr><td>&nbsp;</td>\n"
+		."\t<td align='left'>".$clang->gT("Bypass token with failing email addresses").":&nbsp;<select name='bypassbademails'>\n"
+		. "\t\t<option value='Y'>".$clang->gT("Yes")."</option>"
+		. "\t\t<option value='N'>".$clang->gT("No")."</option>"
+		. "\t</select><br/>\n"
+		. "\t\n"
+		. "\t<input type='submit' value='"
 		.$clang->gT("Send Invitations")."'>\n"
 		."\t<input type='hidden' name='ok' value='absolutely' />\n"
 		."\t<input type='hidden' name='sid' value='{$_GET['sid']}' />\n"
@@ -972,20 +999,30 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 	else
 	{
 		$tokenoutput .= $clang->gT("Sending Invitations");
-		if (isset($tokenid)) {$tokenoutput .= " (".$clang->gT("Sending to TID No:")." {$tokenid})";}
+		if (isset($tokenid)) {$tokenoutput .= " (".$clang->gT("Sending to Token ID").":&nbsp;{$tokenid})";}
 		$tokenoutput .= "<br />\n";
 
-		$ctquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != ''";
+		if (isset($_POST['bypassbademails']) && $_POST['bypassbademails'] == 'Y')
+		{
+			$SQLemailstatuscondition = " AND emailstatus = 'OK'";
+		}
+		else
+		{
+			$SQLemailstatuscondition = "";
+		}
 
-		if (isset($tokenid)) {$ctquery .= " and tid='{$tokenid}'";}
+		$ctquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' $SQLemailstatuscondition";
+
+		if (isset($tokenid)) {$ctquery .= " AND tid='{$tokenid}'";}
 		$tokenoutput .= "<!-- ctquery: $ctquery -->\n";
 		$ctresult = $connect->Execute($ctquery) or die("Database error!<br />\n" . htmlspecialchars($connect->ErrorMsg()));
 		$ctcount = $ctresult->RecordCount();
 		$ctfieldcount = $ctresult->FieldCount();
+
 		$emquery = "SELECT firstname, lastname, email, token, tid, language";
 		if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
 
-		$emquery .= " FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != ''";
+		$emquery .= " FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' $SQLemailstatuscondition";
 
 		if (isset($tokenid)) {$emquery .= " and tid='{$tokenid}'";}
 		$tokenoutput .= "\n\n<!-- emquery: $emquery -->\n\n";
@@ -1096,6 +1133,7 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 
 if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
 {
+	$tokenoutput .= PrepareEditorScript();
 	$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
 	.$clang->gT("Email Reminder").":</strong></td></tr>\n"
 	."\t<tr><td colspan='2' align='center'>\n";
@@ -1142,11 +1180,12 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 			."\t\t<td align='right' width='150' valign='top'><strong>"
 			.$clang->gT("Message").":</strong></td>\n"
 			."\t\t<td>\n"
-			."\t\t\t<textarea name='message_$language' rows='20' cols='80' >\n";
+			."\t\t\t<textarea name='message_$language' id='message_$language' rows='20' cols='80' >\n";
 	
 			$tokenoutput .= $textarea;
 	
 			$tokenoutput .= "\t\t\t</textarea>\n"
+			. getEditor("email-rem","message_$language","[".$clang->gT("Reminder Email:", "js")."](".$grouplang.")",$surveyid,'','',$action)
 			."\t\t</td>\n"
 			."\t</tr>\n"
 			."</table></div>";
@@ -1165,11 +1204,16 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 		{
 			$tokenoutput .= "\t<tr>\n"
 			."\t\t<td align='right' width='150' valign='top'><strong>"
-			.$clang->gT("Sending to TID No:")."</strong></font></td>\n"
+			.$clang->gT("Sending to Token ID").":&nbsp;</strong></font></td>\n"
 			."\t\t<td>{$tokenid}</font></td>\n"
 			."\t</tr>\n";
 		}		
 		$tokenoutput .="\t\t<tr><td>&nbsp;</td><td align='left'>\n"
+		.$clang->gT("Bypass token with failing email addresses").":&nbsp;\n"
+		."\t\t\t<select name='bypassbademails'>\n"
+		."\t\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
+		."\t\t\t\t<option value='N'>".$clang->gT("No")."</option>\n"
+		."\t\t\t</select><br/>\n"
 		."\t\t\t<input type='submit' value='".$clang->gT("Send Reminders")."' />\n"
 		."\t<input type='hidden' name='ok' value='absolutely' />\n"
 		."\t<input type='hidden' name='sid' value='{$_GET['sid']}' />\n"
@@ -1194,10 +1238,19 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 			$_POST['subject_'.$language]=auto_unescape($_POST['subject_'.$language]);
 			}
 
-		if (isset($starttokenid)) {$tokenoutput .= " (".$clang->gT("From")." TID: {$starttokenid})";}
-		if (isset($tokenid)) {$tokenoutput .= " (".$clang->gT("Sending to TID No:")." TID: {$tokenid})";}
+		if (isset($starttokenid)) {$tokenoutput .= " (".$clang->gT("From Token ID").":&nbsp;{$starttokenid})";}
+		if (isset($tokenid)) {$tokenoutput .= " (".$clang->gT("Sending to Token ID").":&nbsp;{$tokenid})";}
 
-		$ctquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed ='N' or completed ='') AND sent<>'' AND sent<>'N' AND token <>'' AND email <> ''";
+		if (isset($_POST['bypassbademails']) && $_POST['bypassbademails'] == 'Y')
+		{
+			$SQLemailstatuscondition = " AND emailstatus = 'OK'";
+		}
+		else
+		{
+			$SQLemailstatuscondition = "";
+		}
+
+		$ctquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed ='N' or completed ='') AND sent<>'' AND sent<>'N' AND token <>'' AND email <> '' $SQLemailstatuscondition";
 
 		if (isset($starttokenid)) {$ctquery .= " AND tid > '{$starttokenid}'";}
 		if (isset($tokenid) && $tokenid) {$ctquery .= " AND tid = '{$tokenid}'";}
@@ -1209,7 +1262,7 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 		if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
 
 		// TLR change to put date into sent
-		$emquery .= " FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent<>'' AND token <>'' AND EMAIL <>''";
+		$emquery .= " FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent<>'' AND token <>'' AND EMAIL <>'' $SQLemailstatuscondition";
 
 		if (isset($starttokenid)) {$emquery .= " AND tid > '{$starttokenid}'";}
 		if (isset($tokenid) && $tokenid) {$emquery .= " AND tid = '{$tokenid}'";}
@@ -1408,6 +1461,20 @@ if (($subaction == "edit" || $subaction == "addnew") && ($sumrows5['edit_survey_
 	$tokenoutput .= "\"></font></td>\n"
 	."</tr>\n"
 	."<tr>\n"
+	."<tr>\n"
+	."\t<td align='right' width='20%'><strong>".$clang->gT("Email Status").":</strong></font></td>\n"
+	."\t<td ><input type='text' maxsize='320' size='50' name='emailstatus' value=\"";
+	if (isset($emailstatus))
+	{
+		$tokenoutput .= $emailstatus;
+	}
+	else
+	{
+		$tokenoutput .= "OK";
+	}
+	$tokenoutput .= "\"></font></td>\n"
+	."</tr>\n"
+	."<tr>\n"
 	."\t<td align='right' width='20%'><strong>".$clang->gT("Token").":</strong></font></td>\n"
 	."\t<td ><input type='text' size='15' name='token' value=\"";
 	if (isset($token)) {$tokenoutput .= $token;}
@@ -1495,6 +1562,7 @@ if ($subaction == "updatetoken" && ($sumrows5['edit_survey_property'] || $sumrow
 	$data[] = $_POST['firstname'];
 	$data[] = $_POST['lastname'];
 	$data[] = sanitize_email($_POST['email']);
+	$data[] = $_POST['emailstatus'];
 	$santitizedtoken=sanitize_paranoid_string($_POST['token']);
 	$data[] = $santitizedtoken;
 	$data[] = sanitize_languagecode($_POST['language']);
@@ -1504,8 +1572,9 @@ if ($subaction == "updatetoken" && ($sumrows5['edit_survey_property'] || $sumrow
 	$udresult = $connect->Execute("Select * from ".db_table_name("tokens_$surveyid")." where tid<>{$tokenid} and token<>'' and token='{$santitizedtoken}'") or die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 	if ($udresult->RecordCount()==0)
 	{
+		// Using adodb Execute with blinding method so auto-dbquote is done
 		$udquery = "UPDATE ".db_table_name("tokens_$surveyid")." SET firstname=?, "
-		. "lastname=?, email=?, "
+		. "lastname=?, email=?, emailstatus=?, "
 		. "token=?, language=?, sent=?, completed=?";
 		if (isset($_POST['attribute1']))
 		{
@@ -1540,6 +1609,7 @@ if ($subaction == "inserttoken" && ($sumrows5['edit_survey_property'] || $sumrow
 	$data = array('firstname' => $_POST['firstname'],
 	'lastname' => $_POST['lastname'],
 	'email' => sanitize_email($_POST['email']),
+	'emailstatus' => $_POST['emailstatus'],
 	'token' => $santitizedtoken,
 	'language' => sanitize_languagecode($_POST['language']),
 	'sent' => $_POST['sent'],
@@ -1555,6 +1625,7 @@ if ($subaction == "inserttoken" && ($sumrows5['edit_survey_property'] || $sumrow
 	$udresult = $connect->Execute("Select * from ".db_table_name("tokens_$surveyid")." where  token<>'' and token='{$santitizedtoken}'");
 	if ($udresult->RecordCount()==0)
 	{
+		// AutoExecute
 		$inresult = $connect->AutoExecute($tblInsert, $data, 'INSERT') or die ("Add new record failed:<br />\n$inquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 		$tokenoutput .= "<br /><font color='green'><strong>".$clang->gT("Success")."</strong></font><br />\n"
 		."<br />".$clang->gT("Added New Token")."<br /><br />\n"
@@ -1583,7 +1654,7 @@ if ($subaction == "import" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 	."\t<tr>\n"
 	."\t\t<td align='center'>\n"
 	."\t\t\t<font size='1'><strong>".$clang->gT("Note:")."</strong><br />\n"
-	."\t\t\t".$clang->gT("File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [language code], [attribute1], [attribute2]\".")."\n"
+	."\t\t\t".$clang->gT("File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [emailstatus], [token], [language code], [attribute1], [attribute2]\".")."\n"
 	."\t\t</font></td>\n"
 	."\t</tr>\n"
 	."</table><br />\n"  
@@ -1642,7 +1713,7 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 		foreach ($tokenlistarray as $buffer)
 		{
             $buffer=@mb_convert_encoding($buffer,"UTF-8",$uploadcharset);
-			$firstname = ""; $lastname = ""; $email = ""; $token = ""; $language=""; $attribute1=""; $attribute2=""; //Clear out values from the last path, in case the next line is missing a value
+			$firstname = ""; $lastname = ""; $email = ""; $emailstatus="OK"; $token = ""; $language=""; $attribute1=""; $attribute2=""; //Clear out values from the last path, in case the next line is missing a value
 			if ($xx==0)
 			{
 				//THIS IS THE FIRST LINE. IT IS THE HEADINGS. IGNORE IT
@@ -1655,15 +1726,18 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 				$line = array_map('db_quote',$line);
 				if (isset($line[0]) && $line[0] != "" & isset($line[1]) && $line[1] != "" && isset($line[2]) && $line[2] != "")
 				{
+					// If old export file with first col as TID
+					// with no attribute
 					if (is_numeric($line[0])) 
 					{
-						$line[7] = $line[0];
+						$line[8] = $line[0];
 						$line[0] = $line[1];
 						$line[1] = $line[2];
 						$line[2] = $line[3];
-						$line[3] = $line[4];
-						$line[4] = $line[5];
-						$line[5] = $line[6];
+						$line[3] = "OK";
+						$line[4] = $line[4];
+						$line[5] = $line[5];
+						$line[6] = $line[6];
 					}
 					
 					$dupquery = "SELECT firstname, lastname from ".db_table_name("tokens_$surveyid")." where email=".$connect->qstr($line[2])." and firstname = ".$connect->qstr($line[0])." and lastname= ".$connect->qstr($line[1])."";
@@ -1681,18 +1755,19 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 							$xe++;
 						} else
 						{
-							if (!isset($line[3])) $line[3] = "";
-							if (!isset($line[4]) || $line[4] == "") $line[4] = GetBaseLanguageFromSurveyID($surveyid);
-							if (!isset($line[5])) $line[5] = "";
+							if (!isset($line[3]) || $line[3]=='') $line[3] = "OK";
+							if (!isset($line[4]) || $line[4] == "") $line[4] = "";
+							if (!isset($line[5]) || $line[5] == "") $line[4] = GetBaseLanguageFromSurveyID($surveyid);
 							if (!isset($line[6])) $line[6] = "";
+							if (!isset($line[7])) $line[7] = "";
 							$iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
 							. "(";
-							if (isset($line[7])) $iq .="tid, ";
-							$iq .="firstname, lastname, email, token, language, attribute_1, attribute_2, sent, completed";
+							if (isset($line[8])) $iq .="tid, ";
+							$iq .="firstname, lastname, email, emailstatus, token, language, attribute_1, attribute_2, sent, completed";
 							$iq .=") \n"
 							. "VALUES (";
-							if (isset($line[7])) $iq .= $connect->qstr($line[7]).", ";
-							$iq .= $connect->qstr($line[0]).", ".$connect->qstr($line[1]).", ".$connect->qstr($line[2]).", ".$connect->qstr($line[3]).", ".strtolower($connect->qstr($line[4]))." , ".$connect->qstr($line[5]).", ".$connect->qstr($line[6]).", ".$connect->qstr('N').", ".$connect->qstr('N');
+							if (isset($line[8])) $iq .= $connect->qstr($line[7]).", ";
+							$iq .= $connect->qstr($line[0]).", ".$connect->qstr($line[1]).", ".$connect->qstr($line[2]).", ".$connect->qstr($line[3]).", ".strtolower($connect->qstr($line[4]))." , ".$connect->qstr($line[5]).", ".$connect->qstr($line[6]).", ".$connect->qstr($line[7]).", ".$connect->qstr('N').", ".$connect->qstr('N');
 							$iq .= ")";
 							$ir = $connect->Execute($iq) or die ("Couldn't insert line<br />\n$buffer<br />\n".htmlspecialchars($connect->ErrorMsg())."<pre style='text-align: left'>$iq</pre>\n");
 							$xz++;
@@ -1779,11 +1854,11 @@ if ($subaction == "uploadldap" && ($sumrows5['edit_survey_property'] || $sumrows
 						if ( isset($responseGroup[$j][$ldap_queries[$ldapq]['language']]) ) $mylanguage = ldap_readattr($response[$ldap_queries[$ldapq]['language']]);
 
 						$iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
-						. "(firstname, lastname, email, token, language";
+						. "(firstname, lastname, email, emailstatus, token, language";
 						if (!empty($myattr1)) {$iq .= ", attribute_1";}
 						if (!empty($myattr2)) {$iq .= ", attribute_2";}
 						$iq .=") \n"
-						. "VALUES ('$myfirstname', '$mylastame', '$myemail', '$mytoken', '$mylanguage'";
+						. "VALUES ('$myfirstname', '$mylastame', '$myemail', 'OK', '$mytoken', '$mylanguage'";
 						if (!empty($myattr1)) {$iq .= ", '$myattr1'";}
 						if (!empty($myattr2)) {$iq .= ", '$myattr2'";}
 						$iq .= ")";

@@ -477,3 +477,8 @@ span.settingcaption {
 	margin-top:3px;
 
 }
+
+span.invalidemail {
+	font-weight: bold;
+   	color: red;
+}
