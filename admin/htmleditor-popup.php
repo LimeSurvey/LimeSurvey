@@ -19,8 +19,7 @@
 // config.php itself includes common.php
 //if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
 require_once(dirname(__FILE__).'/../config.php');
-require_once(dirname(__FILE__).'/../classes/core/language.php');
-
+require_once(dirname(__FILE__).'/../common.php');
 
 if (!isset($_GET['lang']))
 {
