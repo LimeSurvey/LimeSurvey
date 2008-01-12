@@ -1444,7 +1444,8 @@ if (returnglobal('viewanswer'))
 			{
 				$vasummary .= "<tr><td><br /></td></tr><tr><td width='20%' align='right'>"
 				."<strong>".$clang->gT("New Answer").":</strong> ";
-				$vasummary .= "\t<input type='text' name='insertcode' value=\"{$row['code']}\"id='addnewanswercode' maxlength='5' size='5' "
+                if (!isset($_SESSION['nextanswercode'])) $_SESSION['nextanswercode']='';
+				$vasummary .= "\t<input type='text' name='insertcode' value=\"{$_SESSION['nextanswercode']}\"id='addnewanswercode' maxlength='5' size='5' "
 				." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('newanswerbtn').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
 				." />";
 

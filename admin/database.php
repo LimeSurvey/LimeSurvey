@@ -724,6 +724,14 @@ if(isset($surveyid))
         				{
         					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
         				}
+
+        				// Last code was successfully inserted - found out the next incrementing code and remember it
+						$_SESSION['nextanswercode']=getNextCode($_POST['insertcode']);
+                        //Now check if this new code doesn't exist. For now then there is no code inserted.
+                        $query = "select * from ".db_table_name('answers')." where code=".$connect->qstr($_SESSION['nextanswercode'])." and language='$baselang' and qid={$_POST['qid']}";
+                        $result = $connect->Execute($query);
+                        if ($result->RecordCount()>0) unset($_SESSION['nextanswercode']);
+                        
         				foreach ($anslangs as $anslang)
         				{
         					if(!isset($_POST['default'])) $_POST['default'] = "";

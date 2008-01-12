@@ -4198,4 +4198,29 @@ function hasTemplateManageRights($userid, $templatefolder) {
       return $row["use"];
 }
 
+// This function creates an incrementing answer code based on the previous source-code
+function getNextCode($sourcecode)
+{
+   $i=1; 
+   $found=true;
+   while ($i<strlen($sourcecode) && $found)   
+   {
+     $found=(is_numeric(substr($sourcecode,-$i)));
+     if ($found) $foundnumber=substr($sourcecode,-$i);
+     $i++;
+   }
+   $i--;
+   if ($i==1) 
+    {
+        return($sourcecode);
+    }
+    else 
+    {
+       $foundnumber++; 
+       $result=substr($sourcecode,0,strlen($sourcecode)-$i).$foundnumber;
+       return($result);
+    }
+    
+}
+
 ?>
