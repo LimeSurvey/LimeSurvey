@@ -2015,6 +2015,8 @@ if ($action == "editsurvey")
 			. "\t\t<span class='settingentry'><input type='text' size='50' name='admin' value=\"{$esrow['admin']}\" /></span></div>\n"
 			. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Admin Email:")."</span>\n"
 			. "\t\t<span class='settingentry'><input type='text' size='50' name='adminemail' value=\"{$esrow['adminemail']}\" /></span></div>\n"
+			. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Bounce Email:")."</span>\n"
+			. "\t\t<span class='settingentry'><input type='text' size='50' name='bounce_email' value=\"{$esrow['bounce_email']}\" /></span></div>\n"
 			. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Fax To:")."</span>\n"
 			. "\t\t<span class='settingentry'><input type='text' size='50' name='faxto' value=\"{$esrow['faxto']}\" /></span></div>\n";
 
@@ -2674,7 +2676,9 @@ if ($action == "newsurvey")
 		. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Administrator:")."</span>\n"
 		. "\t\t<span class='settingentry'><input type='text' size='50' name='admin' /></span></div>\n"
 		. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Admin Email:")."</span>\n"
-		. "\t\t<span class='settingentry'><input type='text' size='50' name='adminemail' /></span></div>\n";
+		. "\t\t<span class='settingentry'><input type='text' size='50' name='adminemail' /></span></div>\n"
+		. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Bounce Email:")."</span>\n"
+		. "\t\t<span class='settingentry'><input type='text' size='50' name='bounce_email' /></span></div>\n";
 		$newsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Fax To:")."</span>\n"
 		. "\t\t<span class='settingentry'><input type='text' size='50' name='faxto' /></span></div>\n";
 
