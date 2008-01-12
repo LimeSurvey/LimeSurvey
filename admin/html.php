@@ -1313,13 +1313,17 @@ if (returnglobal('viewanswer'))
 	$vasummary = keycontroljs();
 	$vasummary .= PrepareEditorScript("editanswer");
 
-	$vasummary .= "\t<table width='100%' >\n"
+     $query = "SELECT * FROM ".db_table_name('answers')." WHERE qid='{$qid}' AND language='".GetBaseLanguageFromSurveyID($surveyid)."'";
+     $result = db_execute_assoc($query) or die($connect->ErrorMsg());
+     $anscount = $result->RecordCount();	
+     
+     $vasummary .= "\t<table width='100%' >\n"
 	."<tr  >\n"
 	."\t<td colspan='4' class='settingcaption'>\n"
 	.$clang->gT("Edit Answers")
 	."\t</td>\n"
 	."</tr>\n"
-	."\t<tr><td colspan='5'><form name='editanswers' method='post' action='$scriptname'>\n"
+	."\t<tr><td colspan='5'><form name='editanswers' method='post' action='$scriptname'onsubmit=\"return codeCheck('code_',$anscount,'".$clang->gT("Error: You are trying to use duplicate answer codes.",'js')."');\""
 	. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
 	. "\t<input type='hidden' name='gid' value='$gid' />\n"
 	. "\t<input type='hidden' name='qid' value='$qid' />\n"
@@ -1377,7 +1381,7 @@ if (returnglobal('viewanswer'))
 
 			if (($activated != 'Y' && $first) || ($activated == 'Y' && $first && (($qtype=='O')  || ($qtype=='L') || ($qtype=='!') ))) 
 			{
-				$vasummary .= "\t<input type='text' name='code_{$row['sortorder']}' value=\"{$row['code']}\" maxlength='5' size='5'"
+				$vasummary .= "\t<input type='text' id='code_{$row['sortorder']}' name='code_{$row['sortorder']}' value=\"{$row['code']}\" maxlength='5' size='5'"
 				."onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
 				." />";
 			}
@@ -1428,7 +1432,8 @@ if (returnglobal('viewanswer'))
 		}
 		if ($anscount > 0)
 		{
-			$vasummary .= "\t<tr><td colspan='4'><center><input type='submit' id='saveallbtn_$anslang' name='method' value='".$clang->gT("Save All")."'  />"
+			$vasummary .= "\t<tr><td colspan='4'><center>"
+   			."<input type='submit' id='saveallbtn_$anslang' name='method' value='".$clang->gT("Save All")."' />\n"
 			."</center></td></tr>\n";
 		}
 		$position=sprintf("%05d", $position);

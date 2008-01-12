@@ -770,6 +770,11 @@ if(isset($surveyid))
 
 			require_once("../classes/inputfilter/class.inputfilter_clean.php");
 		    $myFilter = new InputFilter('','',1,1,1); // $myFilter->process();
+
+			//First delete all answers 
+  			$query = "delete from ".db_table_name('answers')." where qid=".$connect->qstr($qid);
+            $result = $connect->Execute($query);
+   			
          	foreach ($sortorderids as $sortorderid)
         	{
         		$langid=substr($sortorderid,0,strrpos($sortorderid,'_')); 
@@ -790,8 +795,13 @@ if(isset($surveyid))
 						$_POST['answer_'.$sortorderid]=$myFilter->process($_POST['answer_'.$sortorderid]);
 					}
         			$_POST['code_'.$codeids[$count]]=sanitize_paranoid_string($_POST['code_'.$codeids[$count]]);
-        			$query = "UPDATE ".db_table_name('answers')." SET code=".$connect->qstr($_POST['code_'.$codeids[$count]]).
-                         	 ",	answer=".$connect->qstr($_POST['answer_'.$sortorderid])." WHERE qid=".$connect->qstr($qid)." and sortorder=".$connect->qstr($orderid)." and language=".$connect->qstr($langid)."";
+					// Now we insert the answers
+        			$query = "INSERT INTO ".db_table_name('answers')." (code,answer,qid,sortorder,language) 
+					          VALUES (".$connect->qstr($_POST['code_'.$codeids[$count]]).",	".
+							            $connect->qstr($_POST['answer_'.$sortorderid]).", ".
+										$connect->qstr($qid).", ".
+										$connect->qstr($orderid).", ".
+										$connect->qstr($langid).")";
                     if (!$result = $connect->Execute($query))
         			{
         				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update answers","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";

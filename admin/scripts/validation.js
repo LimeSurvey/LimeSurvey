@@ -28,6 +28,37 @@ function isEmpty(elem, helperMsg)
 	return true;
 }
 
+function codeCheck(prefix, elementcount, helperMsg)
+{
+ var i, j;
+ var X = new Array();
+
+ for (i=0; i<elementcount; i++) {
+   j = document.getElementById(prefix+i);
+   X[i]=j.value;
+ }   
+ if (arrHasDupes(X))
+ {
+ 		alert(helperMsg);
+	    return false;
+
+ }
+ return true;
+
+}
+
+
+function arrHasDupes( A ) {                          // finds any duplicate array elements using the fewest possible comparison
+	var i, j, n;
+	n=A.length;
+                                                     // to ensure the fewest possible comparisons
+	for (i=0; i<n; i++) {                        // outer loop uses each item i at 0 through n
+		for (j=i+1; j<n; j++) {              // inner loop only compares items j at i+1 to n
+			if (A[i]==A[j]) return true;
+	}	}
+	return false;
+}
+
 
 // (c) 2006 Simon Wunderlin, License: GPL, hacks want to be free ;)
 // This fix forces Firefox to fire the onchange event if someone changes select box with cursor keys 

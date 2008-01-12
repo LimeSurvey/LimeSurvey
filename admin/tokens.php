@@ -206,7 +206,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		. "firstname C(40) ,\n "
 		. "lastname C(40) ,\n "
 		. "email C(320) ,\n "
-		. "token C(15) ,\n "
+		. "token C(36) ,\n "
 		. "language C(25) ,\n "
 		. "sent C(17) DEFAULT 'N',\n "
 		. "completed C(17) DEFAULT 'N',\n "
