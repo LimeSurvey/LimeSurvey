@@ -22,8 +22,9 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 {
 	if($ugid)
 	{
-		$grpquery = "SELECT * FROM ".db_table_name('user_groups')." WHERE ugid = $ugid";
+		$grpquery = "SELECT gp.* FROM ".db_table_name('user_groups')." AS gp, ".db_table_name('user_in_groups')." AS gu WHERE gp.ugid=gu.ugid AND gp.ugid = $ugid AND gu.uid=".$_SESSION['loginID'];
 		$grpresult = db_execute_assoc($grpquery);
+		$grpresultcount = $grpresult->RecordCount();
 		$grow = array_map('htmlspecialchars', $grpresult->FetchRow());
 	}
 	$usergroupsummary = "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
@@ -32,7 +33,7 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 	. "\t\t\t<table class='menubar'>\n"
 	. "\t\t\t\t<tr><td colspan='2' height='4' align='left'>"
 	. "<strong>".$clang->gT("User Group")."</strong> ";
-	if($ugid)
+	if($ugid && $grpresultcount > 0)
 	{
 		$usergroupsummary .= "{$grow['name']}</td></tr>\n";
 	}
@@ -48,7 +49,7 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 	$usergroupsummary .=  "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='55' height='20' border='0' hspace='0' align='left' />\n"
 	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
 
-	if($ugid)
+	if($ugid && $grpresultcount > 0)
 	{
 		$usergroupsummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=mailusergroup&amp;ugid=$ugid', '_top')\""
 		. "onmouseout=\"hideTooltip()\""
@@ -58,7 +59,8 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 	$usergroupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='135' height='20' border='0' hspace='0' align='left' />\n"
 	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
 
-	if($ugid && $_SESSION['loginID'] == $grow['owner_id'])
+	if($ugid && $grpresultcount > 0 &&
+		$_SESSION['loginID'] == $grow['owner_id'])
 	{
 		$usergroupsummary .=  "<a href=\"#\" onclick=\"window.open('$scriptname?action=editusergroup&amp;ugid=$ugid','_top')\""
 		. "onmouseout=\"hideTooltip()\""
@@ -70,7 +72,8 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 		$usergroupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='45' height='20' border='0' hspace='0' align='left' />\n";
 	}
 
-	if($ugid && $_SESSION['loginID'] == $grow['owner_id'])
+	if($ugid && $grpresultcount > 0 &&
+		$_SESSION['loginID'] == $grow['owner_id'])
 	{
 		$usergroupsummary .= "\t\t\t\t\t<a href='$scriptname?action=delusergroup&amp;ugid=$ugid' onclick=\"return confirm('".$clang->gT("Are you sure you want to delete this entry.","js")."')\""
 		. "onmouseout=\"hideTooltip()\""
@@ -169,20 +172,39 @@ if ($action == "setusertemplates")
 
 if ($action == "modifyuser")
 {
-	$userlist = getuserlist();
-	foreach ($userlist as $usr)
-	{
-		if ($usr['uid'] == $postuserid)
-		{
-				$squery = "SELECT create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label FROM {$dbprefix}users WHERE uid={$usr['parent_id']}";	//		added by Dennis
-				$sresult = $connect->Execute($squery);
-				$parent = $sresult->FetchRow();
-				break;
-		}
-	}
-	
-	if($_SESSION['loginID'] == 1 || $_SESSION['loginID'] == $postuserid || $parent['create_user'] == 1)
-	{
+// THIS DOESN'T MAKE SENS
+// BECAUSE parent of a user is always granted  for user create !!
+//	$userlist = getuserlist();
+//	foreach ($userlist as $usr)
+//	{
+//		if ($usr['uid'] == $postuserid)
+//		{
+//				$squery = "SELECT create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label FROM {$dbprefix}users WHERE uid={$usr['parent_id']}";	//		added by Dennis
+//				$sresult = $connect->Execute($squery);
+//				$parent = $sresult->FetchRow();
+//				break;
+//		}
+//	}
+
+if (isset($postuserid) && $postuserid)
+{
+	$squery = "SELECT uid FROM {$dbprefix}users WHERE uid=$postuserid AND parent_id=".$_SESSION['loginID'];	//		added by Dennis
+	$sresult = $connect->Execute($squery);
+	$sresultcount = $sresult->RecordCount();
+}
+else
+{
+		include("access_denied.php");
+}
+
+// RELIABLY CHECK MY RIGHTS
+if ($_SESSION['loginID'] == 1 || $_SESSION['loginID'] == $postuserid ||
+	( $_SESSION['USER_RIGHT_CREATE_USER'] &&
+		$sresultcount > 0	
+	) )
+{	
+//	error_log("TIBO ".print_r($_SESSION,true));
+//	if($_SESSION['loginID'] == 1 || $_SESSION['loginID'] == $postuserid || $parent['create_user'] == 1)
 		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='4' class='header'>\n"
 		. "\t\t<strong>".$clang->gT("Modifying User")."</td></tr>\n"
 		. "\t<tr>\n"
@@ -219,11 +241,35 @@ if ($action == "modifyuser")
 
 if ($action == "setuserrights")
 {
-	if($_SESSION['loginID'] != $postuserid)
+	if (isset($postuserid) && $postuserid)
+	{
+		$squery = "SELECT uid FROM {$dbprefix}users WHERE uid=$postuserid AND parent_id=".$_SESSION['loginID'];	//		added by Dennis
+		$sresult = $connect->Execute($squery);
+		$sresultcount = $sresult->RecordCount();
+	}
+	else
+	{
+			include("access_denied.php");
+	}
+	
+	// RELIABLY CHECK MY RIGHTS
+	if ($_SESSION['loginID'] == 1 ||
+		( $_SESSION['USER_RIGHT_CREATE_USER'] &&
+			$sresultcount >  0 &&
+			$_SESSION['loginID'] != $postuserid	
+		) )
+//	if($_SESSION['loginID'] != $postuserid)
 	{
 		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='8' class='header' align='center'>\n"
 		. "\t\t".$clang->gT("Set User Rights").": ".sanitize_system_string($_POST['user'])."</td></tr>\n";
 
+		// HERE WE SEARCH FOR USER RIGHTS YOU CAN SET
+		// YOU CAN ONLY SET AT MOST THE RIGHTS OF THE PARENT
+		// USING $_SECCION['RIGHT... WOULD BE EASIER
+		// BUT IF ADMIN IS EDITING HE MAY BE ABLE TO
+		// GIVE MORe RIGHT TO A CHILD THAN TO THE FATHER
+		// NOT SURE THIS IS A REAL ISSUE
+		// I LET THIS AS IS FOR NOW
 		$userlist = getuserlist();
 		foreach ($userlist as $usr)
 		{
@@ -358,6 +404,27 @@ if($action == "setnewparents")
 	}
 }*/
 
+if($action == "setasadminchild")
+{
+	// Set user as child of ADMIN FOR 
+	// MORE RIGHT MANAGEMENT POSSIBILITIES
+	// DON'T TOUCH user CHILDS, they remain his childs
+
+	if($_SESSION['loginID']==1)
+	{
+		$uid = $postuserid;
+		$query = "UPDATE ".db_table_name('users')." SET parent_id =1 WHERE uid = ".$uid;
+		$connect->Execute($query) or die($connect->ErrorMsg()." ".$query);
+		$usersummary = "<br /><strong>".$clang->gT("Setting as Administrator Child")."</strong><br />"
+		. "<br />".$clang->gT("Set Parent successful.")."<br />"
+		. "<br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+	}
+	else
+	{
+		include("access_denied.php");
+	}
+}
+
 if ($action == "editusers")
 {
 	$usersummary = "<table width='100%' border='0'>\n"
@@ -473,7 +540,8 @@ if ($action == "editusers")
 			
 			
 			//TODO: Find out why parent isn't set
-			if (isset($usr['parent']))
+			// ==> because it is parent_id ;-)
+			if (isset($usr['parent_id']))
 			{
 				$usersummary .= "\t\t<td class='$bgcc' align='center'>{$usr['parent']}</td>\n";
 			} else 
@@ -499,6 +567,15 @@ if ($action == "editusers")
 			$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
 			."<input type='submit' value='".$clang->gT("Set User Rights")."' />"
 			."<input type='hidden' name='action' value='setuserrights' />"
+			."<input type='hidden' name='user' value='{$usr['user']}' />"
+			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
+			."</form>";
+		}
+		if ($_SESSION['loginID'] == "1" && $usr['parent_id'] !=1 )
+		{
+			$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
+			."<input type='submit' value='".$clang->gT("Set as Admin Child")."' />"
+			."<input type='hidden' name='action' value='setasadminchild' />"
 			."<input type='hidden' name='user' value='{$usr['user']}' />"
 			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
 			."</form>";
@@ -649,53 +726,64 @@ if ($action == "delusergroup")
 	}
 }
 
-if ($action == "usergroupindb" && $_SESSION['loginID'] == 1) {
-	$usersummary = "<br /><strong>".$clang->gT("Adding User Group")."...</strong><br />\n";
-
-	$db_group_name = db_quote($_POST['group_name']);
-	$db_group_description = db_quote($_POST['group_description']);
-	$html_group_name = html_escape($_POST['group_name']);
-	$html_group_description = html_escape($_POST['group_description']);
-
-	if(isset($db_group_name) && strlen($db_group_name) > 0)
+if ($action == "usergroupindb")
+{
+	if ($_SESSION['loginID'] == 1)
 	{
-		$ugid = addUserGroupInDB($db_group_name, $db_group_description);
-		if($ugid > 0)
+		$usersummary = "<br /><strong>".$clang->gT("Adding User Group")."...</strong><br />\n";
+	
+		$db_group_name = db_quote($_POST['group_name']);
+		$db_group_description = db_quote($_POST['group_description']);
+		$html_group_name = html_escape($_POST['group_name']);
+		$html_group_description = html_escape($_POST['group_description']);
+	
+		if(isset($db_group_name) && strlen($db_group_name) > 0)
 		{
-			$usersummary .= "<br />".$clang->gT("Group Name").": ".$html_group_name."<br />\n";
-
-			if(isset($db_group_description) && strlen($db_group_description) > 0)
+			$ugid = addUserGroupInDB($db_group_name, $db_group_description);
+			if($ugid > 0)
 			{
-				$usersummary .= $clang->gT("Description: ").$html_group_description."<br />\n";
+				$usersummary .= "<br />".$clang->gT("Group Name").": ".$html_group_name."<br />\n";
+	
+				if(isset($db_group_description) && strlen($db_group_description) > 0)
+				{
+					$usersummary .= $clang->gT("Description: ").$html_group_description."<br />\n";
+				}
+	
+	         	$usersummary .= "<br /><strong>".$clang->gT("User group successfully added!")."</strong><br />\n";
+				$usersummary .= "<br /><a href='$scriptname?action=editusergroups&amp;ugid={$ugid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 			}
-
-         	$usersummary .= "<br /><strong>".$clang->gT("User group successfully added!")."</strong><br />\n";
-			$usersummary .= "<br /><a href='$scriptname?action=editusergroups&amp;ugid={$ugid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+			else
+			{
+				$usersummary .= "<br /><strong>".$clang->gT("Failed to add Group!")."</strong><br />\n"
+				. $clang->gT("Group already exists!")."<br />\n"
+				. "<br /><a href='$scriptname?action=editusergroups'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+			}
 		}
 		else
 		{
 			$usersummary .= "<br /><strong>".$clang->gT("Failed to add Group!")."</strong><br />\n"
-			. $clang->gT("Group already exists!")."<br />\n"
-			. "<br /><a href='$scriptname?action=editusergroups'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+			. $clang->gT("Group name was not supplied!")."<br />\n"
+			. "<br /><a href='$scriptname?action=addusergroup'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
 	}
 	else
 	{
-		$usersummary .= "<br /><strong>".$clang->gT("Failed to add Group!")."</strong><br />\n"
-		. $clang->gT("Group name was not supplied!")."<br />\n"
-		. "<br /><a href='$scriptname?action=addusergroup'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+		include("access_denied.php");
 	}
+	
 }
 
-if ($action == "mailsendusergroup" && $_SESSION['loginID'] == 1)
+if ($action == "mailsendusergroup")
 {
 	$usersummary = "<br /><strong>".$clang->gT("Mail to all Members")."</strong><br />\n";
 
 	// user must be in user group
+	// or superadmin
 	$query = "SELECT uid FROM ".db_table_name('user_in_groups') ." WHERE ugid = {$ugid} AND uid = {$_SESSION['loginID']}";
 	$result = db_execute_assoc($query);
 
-	if($result->RecordCount() > 0)
+	if($result->RecordCount() > 0 ||
+		$_SESSION['loginID'] == 1)
 	{
 
     	$eguquery = "SELECT * FROM ".db_table_name("user_in_groups")." AS a INNER JOIN ".db_table_name("users")." AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " AND b.uid != {$_SESSION['loginID']} ORDER BY b.users_name";
@@ -748,194 +836,231 @@ if ($action == "mailsendusergroup" && $_SESSION['loginID'] == 1)
 	}
 }
 
-if ($action == "editusergroupindb" && $_SESSION['loginID'] == 1){
-
-	$ugid = $postusergroupid;
-
-	$db_name = db_quote($_POST['name']);
-	$db_description = db_quote($_POST['description']);
-	$html_name = html_escape($_POST['name']);
-	$html_description = html_escape($_POST['description']);
-
-	if(updateusergroup($db_name, $db_description, $ugid))
-	{
-		$usersummary = "<br /><strong>".$clang->gT("Edit User Group Successfully!")."</strong><br />\n";
-		$usersummary .= "<br />".$clang->gT("Name").": {$html_name}<br />\n";
-		$usersummary .= $clang->gT("Description: ").$html_description."<br />\n";
-		$usersummary .= "<br /><a href='$scriptname?action=editusergroups&amp;ugid={$ugid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
-	}
-	else $usersummary .= "<br /><strong>".$clang->gT("Failed to update!")."</strong><br />\n"
-	. "<br /><a href='$scriptname?action=editusergroups'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
-}
-
-if ($action == "editusergroups"  && $_SESSION['loginID'] == 1)
+if ($action == "editusergroupindb")
 {
-	if(isset($_GET['ugid']))
+
+	if ($_SESSION['loginID'] == 1)
 	{
-		$ugid = $_GET['ugid'];
-
-		$query = "SELECT a.ugid, a.name, a.owner_id, a.description, b.uid FROM ".db_table_name('user_groups') ." AS a LEFT JOIN ".db_table_name('user_in_groups') ." AS b ON a.ugid = b.ugid WHERE a.ugid = {$ugid} AND uid = {$_SESSION['loginID']} ORDER BY name";
-		$result = db_execute_assoc($query);
-		$crow = $result->FetchRow();
-
-		if($result->RecordCount() > 0)
+		$ugid = $postusergroupid;
+	
+		$db_name = db_quote($_POST['name']);
+		$db_description = db_quote($_POST['description']);
+		$html_name = html_escape($_POST['name']);
+		$html_description = html_escape($_POST['description']);
+	
+		if(updateusergroup($db_name, $db_description, $ugid))
 		{
-
-			if(!empty($crow['description']))
-			{
-				$usergroupsummary .= "<table width='100%' border='0'>\n"
-				. "\t\t\t\t<tr><td align='justify' colspan='2' height='4'>"
-				. "<font size='2' ><strong>".$clang->gT("Description: ")."</strong>"
-				. "{$crow['description']}</font></td></tr>\n"
-				. "</table>";
-			}
-
-
-			$eguquery = "SELECT * FROM ".db_table_name("user_in_groups")." AS a INNER JOIN ".db_table_name("users")." AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " ORDER BY b.users_name";
-			$eguresult = db_execute_assoc($eguquery);
-			$usergroupsummary .= "<table  width='100%' border='0'>\n"
-			. "\t<tr>\n"
-			. "\t\t<th>".$clang->gT("Username")."</th>\n"
-			. "\t\t<th>".$clang->gT("Email")."</th>\n"
-			. "\t\t<th width='25%'>".$clang->gT("Action")."</th>\n"
-			. "\t</tr>\n";
-
-			$query2 = "SELECT ugid FROM ".db_table_name('user_groups')." WHERE ugid = ".$ugid." AND owner_id = ".$_SESSION['loginID'];
-			$result2 = db_select_limit_assoc($query2, 1);
-			$row2 = $result2->FetchRow();
-
-			$row = 1;
-			$usergroupentries='';
-			while ($egurow = $eguresult->FetchRow())
-			{
-				if (!isset($bgcc)) {$bgcc="evenrow";}
-				else
-				{
-					if ($bgcc == "evenrow") {$bgcc = "oddrow";}
-					else {$bgcc = "evenrow";}
-				}
-
-				if($egurow['uid'] == $crow['owner_id'])
-				{
-					$usergroupowner = "\t<tr class='$bgcc'>\n"
-					. "\t<td align='center'><strong>{$egurow['users_name']}</strong></td>\n"
-					. "\t<td align='center'><strong>{$egurow['email']}</strong></td>\n"
-					. "\t\t<td align='center'>&nbsp;</td></tr>\n";
-					continue;
-				}
-				//	output users
-				
-				if($row == 1){ $usergroupentries .= "\t<tr>\n\t<td height=\"20\" colspan=\"6\"></td>\n\t</tr>"; $row++;}
-				//if(($row % 2) == 0) $usergroupentries .= "\t<tr  bgcolor='#999999'>\n";
-				//else $usergroupentries .= "\t<tr>\n";
-				$usergroupentries .= "\t<tr class='$bgcc'>\n";
-				$usergroupentries .= "\t<td align='center'>{$egurow['users_name']}</td>\n"
-				. "\t<td align='center'>{$egurow['email']}</td>\n"
-				. "\t\t<td align='center' style='padding-top:10px;'>\n";
-
-				// owner and not himself    or    not owner and himself
-				if((isset($row2['ugid']) && $_SESSION['loginID'] != $egurow['uid']) || (!isset($row2['ugid']) && $_SESSION['loginID'] == $egurow['uid']))
-				{
-					$usergroupentries .= "\t\t\t<form method='post' action='$scriptname?action=deleteuserfromgroup&amp;ugid=$ugid'>"
-					." <input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.","js")."\")' />"
-					." <input type='hidden' name='user' value='{$egurow['users_name']}' />"
-					." <input name='uid' type='hidden' value='{$egurow['uid']}' />"
-					." <input name='ugid' type='hidden' value='{$ugid}' />";
-				}
-				$usergroupentries .= "</form>"
-				. "\t\t</td>\n"
-				. "\t</tr>\n";
-				$row++;
-			}
-			$usergroupsummary .= $usergroupowner;
-            if (isset($usergroupentries)) {$usergroupsummary .= $usergroupentries;};
-
-			if(isset($row2['ugid']))
-			{
-				$usergroupsummary .= "\t\t<form action='$scriptname?ugid={$ugid}' method='post'>\n"
-				. "\t\t<tr><td></td>\n"
-				. "\t\t\t<td></td>"
-				. "\t\t\t\t<td align='center'><select name='uid'>\n"
-				. getgroupuserlist()
-				. "\t\t\t\t</select>\n"
-				. "\t\t\t\t<input type='submit' value='".$clang->gT("Add User")."' />\n"
-				. "\t\t\t\t<input type='hidden' name='action' value='addusertogroup' /></td></form>\n"
-				. "\t\t\t</td>\n"
-				. "\t\t</tr>\n"
-				. "\t</form>\n";
-			}
+			$usersummary = "<br /><strong>".$clang->gT("Edit User Group Successfully!")."</strong><br />\n";
+			$usersummary .= "<br />".$clang->gT("Name").": {$html_name}<br />\n";
+			$usersummary .= $clang->gT("Description: ").$html_description."<br />\n";
+			$usersummary .= "<br /><a href='$scriptname?action=editusergroups&amp;ugid={$ugid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
-		else
-		{
-			include("access_denied.php");
-		}
+		else $usersummary .= "<br /><strong>".$clang->gT("Failed to update!")."</strong><br />\n"
+		. "<br /><a href='$scriptname?action=editusergroups'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+	}
+	else
+	{
+		include("access_denied.php");
 	}
 }
 
-if($action == "deleteuserfromgroup" && $_SESSION['loginID'] == 1) {
-	$ugid = $postusergroupid;
-	$uid = $postuserid;
-	$usersummary = "<br /><strong>".$clang->gT("Delete User")."</strong><br />\n";
-
-	$query = "SELECT ugid, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$ugid." AND ((owner_id = ".$_SESSION['loginID']." AND owner_id != ".$uid.") OR (owner_id != ".$_SESSION['loginID']." AND $uid = ".$_SESSION['loginID']."))";
-	$result = db_execute_assoc($query);
-	if($result->RecordCount() > 0)
+if ($action == "editusergroups" )
+{
+	// REMOVING CONDITION ON loginID == 1
+	// editusergroups is only to display groups
+	// a user is in
+	//if ( $_SESSION['loginID'] == 1)
+	if ( isset($_SESSION['loginID']))
 	{
-		$remquery = "DELETE FROM ".db_table_name('user_in_groups')." WHERE ugid = {$ugid} AND uid = {$uid}";
-		if($connect->Execute($remquery))
+		if(isset($_GET['ugid']))
 		{
-			$usersummary .= "<br />".$clang->gT("Username").": ".sanitize_system_string($_POST['user'])."<br />\n";
-		}
-		else
-		{
-			$usersummary .= "<br />".$clang->gT("Could not delete user. User was not supplied.")."<br />\n";
+			$ugid = $_GET['ugid'];
+	
+			$query = "SELECT a.ugid, a.name, a.owner_id, a.description, b.uid FROM ".db_table_name('user_groups') ." AS a LEFT JOIN ".db_table_name('user_in_groups') ." AS b ON a.ugid = b.ugid WHERE a.ugid = {$ugid} AND uid = {$_SESSION['loginID']} ORDER BY name";
+			$result = db_execute_assoc($query);
+			$crow = $result->FetchRow();
+	
+			if($result->RecordCount() > 0)
+			{
+	
+				if(!empty($crow['description']))
+				{
+					$usergroupsummary .= "<table width='100%' border='0'>\n"
+					. "\t\t\t\t<tr><td align='justify' colspan='2' height='4'>"
+					. "<font size='2' ><strong>".$clang->gT("Description: ")."</strong>"
+					. "{$crow['description']}</font></td></tr>\n"
+					. "</table>";
+				}
+	
+	
+				$eguquery = "SELECT * FROM ".db_table_name("user_in_groups")." AS a INNER JOIN ".db_table_name("users")." AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " ORDER BY b.users_name";
+				$eguresult = db_execute_assoc($eguquery);
+				$usergroupsummary .= "<table  width='100%' border='0'>\n"
+				. "\t<tr>\n"
+				. "\t\t<th>".$clang->gT("Username")."</th>\n"
+				. "\t\t<th>".$clang->gT("Email")."</th>\n"
+				. "\t\t<th width='25%'>".$clang->gT("Action")."</th>\n"
+				. "\t</tr>\n";
+	
+				$query2 = "SELECT ugid FROM ".db_table_name('user_groups')." WHERE ugid = ".$ugid." AND owner_id = ".$_SESSION['loginID'];
+				$result2 = db_select_limit_assoc($query2, 1);
+				$row2 = $result2->FetchRow();
+	
+				$row = 1;
+				$usergroupentries='';
+				while ($egurow = $eguresult->FetchRow())
+				{
+					if (!isset($bgcc)) {$bgcc="evenrow";}
+					else
+					{
+						if ($bgcc == "evenrow") {$bgcc = "oddrow";}
+						else {$bgcc = "evenrow";}
+					}
+	
+					if($egurow['uid'] == $crow['owner_id'])
+					{
+						$usergroupowner = "\t<tr class='$bgcc'>\n"
+						. "\t<td align='center'><strong>{$egurow['users_name']}</strong></td>\n"
+						. "\t<td align='center'><strong>{$egurow['email']}</strong></td>\n"
+						. "\t\t<td align='center'>&nbsp;</td></tr>\n";
+						continue;
+					}
+					//	output users
+					
+					if($row == 1){ $usergroupentries .= "\t<tr>\n\t<td height=\"20\" colspan=\"6\"></td>\n\t</tr>"; $row++;}
+					//if(($row % 2) == 0) $usergroupentries .= "\t<tr  bgcolor='#999999'>\n";
+					//else $usergroupentries .= "\t<tr>\n";
+					$usergroupentries .= "\t<tr class='$bgcc'>\n";
+					$usergroupentries .= "\t<td align='center'>{$egurow['users_name']}</td>\n"
+					. "\t<td align='center'>{$egurow['email']}</td>\n"
+					. "\t\t<td align='center' style='padding-top:10px;'>\n";
+	
+					// owner and not himself    or    not owner and himself
+//					if((isset($row2['ugid']) && $_SESSION['loginID'] != $egurow['uid']) || (!isset($row2['ugid']) && $_SESSION['loginID'] == $egurow['uid']))
+					// Currently only admin can do this
+					// So hide button unless admin
+					if($_SESSION['loginID'] == 1)
+					{
+						$usergroupentries .= "\t\t\t<form method='post' action='$scriptname?action=deleteuserfromgroup&amp;ugid=$ugid'>"
+						." <input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.","js")."\")' />"
+						." <input type='hidden' name='user' value='{$egurow['users_name']}' />"
+						." <input name='uid' type='hidden' value='{$egurow['uid']}' />"
+						." <input name='ugid' type='hidden' value='{$ugid}' />";
+					}
+					$usergroupentries .= "</form>"
+					. "\t\t</td>\n"
+					. "\t</tr>\n";
+					$row++;
+				}
+				$usergroupsummary .= $usergroupowner;
+	            if (isset($usergroupentries)) {$usergroupsummary .= $usergroupentries;};
+	
+				if(isset($row2['ugid']))
+				{
+					$usergroupsummary .= "\t\t<form action='$scriptname?ugid={$ugid}' method='post'>\n"
+					. "\t\t<tr><td></td>\n"
+					. "\t\t\t<td></td>"
+					. "\t\t\t\t<td align='center'><select name='uid'>\n"
+					. getgroupuserlist()
+					. "\t\t\t\t</select>\n"
+					. "\t\t\t\t<input type='submit' value='".$clang->gT("Add User")."' />\n"
+					. "\t\t\t\t<input type='hidden' name='action' value='addusertogroup' /></td></form>\n"
+					. "\t\t\t</td>\n"
+					. "\t\t</tr>\n"
+					. "\t</form>\n";
+				}
+			}
+			else
+			{
+				include("access_denied.php");
+			}
 		}
 	}
 	else
 	{
 		include("access_denied.php");
 	}
-	if($_SESSION['loginID'] != $postuserid)
+}
+
+if($action == "deleteuserfromgroup")
+{
+	if ($_SESSION['loginID'] == 1)
 	{
-		$usersummary .= "<br /><a href='$scriptname?action=editusergroups&amp;ugid=$ugid'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+		$ugid = $postusergroupid;
+		$uid = $postuserid;
+		$usersummary = "<br /><strong>".$clang->gT("Delete User")."</strong><br />\n";
+	
+		$query = "SELECT ugid, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$ugid." AND ((owner_id = ".$_SESSION['loginID']." AND owner_id != ".$uid.") OR (owner_id != ".$_SESSION['loginID']." AND $uid = ".$_SESSION['loginID']."))";
+		$result = db_execute_assoc($query);
+		if($result->RecordCount() > 0)
+		{
+			$remquery = "DELETE FROM ".db_table_name('user_in_groups')." WHERE ugid = {$ugid} AND uid = {$uid}";
+			if($connect->Execute($remquery))
+			{
+				$usersummary .= "<br />".$clang->gT("Username").": ".sanitize_system_string($_POST['user'])."<br />\n";
+			}
+			else
+			{
+				$usersummary .= "<br />".$clang->gT("Could not delete user. User was not supplied.")."<br />\n";
+			}
+		}
+		else
+		{
+			include("access_denied.php");
+		}
+		if($_SESSION['loginID'] != $postuserid)
+		{
+			$usersummary .= "<br /><a href='$scriptname?action=editusergroups&amp;ugid=$ugid'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+		}
+		else
+		{
+			$usersummary .= "<br /><a href='$scriptname?action=editusergroups'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+		}
 	}
 	else
 	{
-		$usersummary .= "<br /><a href='$scriptname?action=editusergroups'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+		include("access_denied.php");
 	}
 }
 
 
 
 
-if($action == "addusertogroup" && $_SESSION['loginID'] == 1)
-{
-	$addsummary = "<br /><strong>".$clang->gT("Adding User to group")."...</strong><br />\n";
-
-	$query = "SELECT ugid, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$postuserid;
-	$result = db_execute_assoc($query);
-	if($result->RecordCount() > 0)
+if($action == "addusertogroup")
+{ 
+	if ($_SESSION['loginID'] == 1)
 	{
-		if($postuserid > 0)
+		$addsummary = "<br /><strong>".$clang->gT("Adding User to group")."...</strong><br />\n";
+	
+		$query = "SELECT ugid, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$postuserid;
+		$result = db_execute_assoc($query);
+		if($result->RecordCount() > 0)
 		{
-			$isrquery = "INSERT INTO {$dbprefix}user_in_groups VALUES(".$_GET['ugid'].",". $postuserid.")";
-			$isrresult = $connect->Execute($isrquery);
-
-			if($isrresult)
+			if($postuserid > 0)
 			{
-				$addsummary .= "<br />".$clang->gT("User added.")."<br />\n";
+				$isrquery = "INSERT INTO {$dbprefix}user_in_groups VALUES(".$_GET['ugid'].",". $postuserid.")";
+				$isrresult = $connect->Execute($isrquery);
+	
+				if($isrresult)
+				{
+					$addsummary .= "<br />".$clang->gT("User added.")."<br />\n";
+				}
+				else  // ToDo: for this to happen the keys on the table must still be set accordingly
+				{
+					// Username already exists.
+					$addsummary .= "<br /><strong>".$clang->gT("Failed to add User.")."</strong><br />\n" . " " . $clang->gT("Username already exists.")."<br />\n";
+				}
+				$addsummary .= "<br /><a href='$scriptname?action=editusergroups&amp;ugid=".$_GET['ugid']."'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 			}
-			else  // ToDo: for this to happen the keys on the table must still be set accordingly
+			else
 			{
-				// Username already exists.
-				$addsummary .= "<br /><strong>".$clang->gT("Failed to add User.")."</strong><br />\n" . " " . $clang->gT("Username already exists.")."<br />\n";
+				$addsummary .= "<br /><strong>".$clang->gT("Failed to add User.")."</strong><br />\n" . " " . $clang->gT("No Username selected.")."<br />\n";
+				$addsummary .= "<br /><a href='$scriptname?action=editusergroups&amp;ugid=".$_GET['ugid']."'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 			}
-			$addsummary .= "<br /><a href='$scriptname?action=editusergroups&amp;ugid=".$_GET['ugid']."'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
 		else
 		{
-			$addsummary .= "<br /><strong>".$clang->gT("Failed to add User.")."</strong><br />\n" . " " . $clang->gT("No Username selected.")."<br />\n";
-			$addsummary .= "<br /><a href='$scriptname?action=editusergroups&amp;ugid=".$_GET['ugid']."'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+			include("access_denied.php");
 		}
 	}
 	else

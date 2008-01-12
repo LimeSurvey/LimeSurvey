@@ -886,7 +886,29 @@ function getgrouplistlang($gid, $language)
 function getuserlist()
 {
 	global $dbprefix, $connect;
-	$uquery = "SELECT * FROM ".db_table_name('users')." ORDER BY uid";
+	global $usercontrolSameGroupPolicy;
+
+
+	if ($_SESSION['loginID'] !=1 && isset($usercontrolSameGroupPolicy) &&
+		$usercontrolSameGroupPolicy === true)
+	{
+		if (isset($_SESSION['loginID']))
+		{
+			$myuid=$_SESSION['loginID'];
+			// List users from same group as me + all my childs
+			$uquery = "SELECT u.* FROM ".db_table_name('users')." AS u, ".db_table_name('user_in_groups')." AS ga ,".db_table_name('user_in_groups')." AS gb WHERE ga.ugid=gb.ugid AND ( (gb.uid=$myuid AND u.uid=ga.uid) OR (u.parent_id=$myuid) ) GROUP BY u.uid";
+		}
+		else
+		{
+			return Array(); // Or DIE maybe
+		}
+
+	}
+	else
+	{
+		$uquery = "SELECT * FROM ".db_table_name('users')." ORDER BY uid";
+	}
+
 	$uresult = db_execute_assoc($uquery);
 	$userlist = array();
 	while ($srow = $uresult->FetchRow())

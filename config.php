@@ -185,6 +185,12 @@ $useWebserverAuth = false;
 $filterxsshtml = true;
 
 
+// $usercontrolSameGroupPolicy
+// If this option is set to true, then limesurvey operators will only 'see'
+// users that belong to at least one of their groups
+// Otherwise they can see all operators defines in LimeSurvey
+$usercontrolSameGroupPolicy = true;
+
 //DO NOT CHANGE BELOW HERE --------------------
 
 ?>

@@ -282,7 +282,7 @@ elseif ($action == "replacementfields")
      $action=="addusergroup" || $action=="editusergroup" || $action=="mailusergroup" ||
      $action=="delusergroup" || $action=="usergroupindb" || $action=="mailsendusergroup" || 
      $action=="editusergroupindb" || $action=="editusergroups" || $action=="deleteuserfromgroup" ||
-     $action=="addusertogroup" || $action=="setuserrights") include ("userrighthandling.php");
+     $action=="addusertogroup" || $action=="setuserrights" || $action=="setasadminchild") include ("userrighthandling.php");
 
   
   // For some output we dont want to have the standard admin menu bar
