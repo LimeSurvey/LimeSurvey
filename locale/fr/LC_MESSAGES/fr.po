@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey French language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-12-31 11:08+0100\n"
+"PO-Revision-Date: 2008-01-12 15:33+0100\n"
 "Last-Translator: seb <seb>\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -129,13 +129,13 @@ msgstr "Ce questionnaire n'est plus disponible."
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/vvimport.php:72
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:30
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:52
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:234
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:250
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:267
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:386
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:396
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:440
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:458
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:235
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:251
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:268
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:398
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:408
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:452
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:470
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/install/createdb.php:51
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/install/createdb.php:83
 msgid "Error"
@@ -1837,9 +1837,9 @@ msgstr "Une erreur s'est produite durant la transmission de votre fichier.  Ceci
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/templates.php:188
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:32
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:54
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:236
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:252
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:269
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:237
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:253
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:270
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/install/createdb.php:38
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/install/createdb.php:55
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/install/createdb.php:87
@@ -1863,7 +1863,7 @@ msgstr "Écran principal d'administration"
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importsurvey.php:1035
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/vvimport.php:80
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:39
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:613
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:625
 msgid "Success"
 msgstr "Succès"
 
@@ -1910,7 +1910,7 @@ msgstr "Jeu d'étiquettes"
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/labels.php:255
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importsurvey.php:1023
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importsurvey.php:1046
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:630
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:642
 msgid "Labels"
 msgstr "Étiquettes"
 
@@ -3307,7 +3307,7 @@ msgid "Update"
 msgstr "Mise à jour"
 
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/labels.php:223
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:628
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:640
 msgid "Label Set"
 msgstr "Jeu d'étiquettes"
 
@@ -4186,7 +4186,7 @@ msgstr "Ajouter un nouveau groupe au questionnaire"
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/html.php:1747
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importsurvey.php:1019
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importsurvey.php:1042
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:616
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:628
 msgid "Groups"
 msgstr "Groupes "
 
@@ -4395,7 +4395,7 @@ msgstr "Ajouter une nouvelle question au groupe"
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importsurvey.php:1020
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importsurvey.php:1043
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/exportresults.php:133
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:619
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:631
 msgid "Questions"
 msgstr "Questions"
 
@@ -5387,14 +5387,14 @@ msgstr "Résumé de l'importation de question"
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importsurvey.php:1021
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importsurvey.php:1044
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/exportresults.php:152
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:622
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:634
 msgid "Answers"
 msgstr "Réponses"
 
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importquestion.php:473
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/questionhandling.php:97
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/questionhandling.php:472
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:633
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:645
 msgid "Question Attributes:"
 msgstr "Attributs de la question"
 
@@ -5636,7 +5636,7 @@ msgstr "Résumé de l'importation du questionnaire"
 
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importsurvey.php:1022
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importsurvey.php:1045
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:625
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:637
 msgid "Conditions"
 msgstr "Conditions"
 
@@ -6538,35 +6538,35 @@ msgid "This file is not a LimeSurvey group file. Import failed."
 msgstr "Ce fichier n'est pas un fichier de groupe LimeSurvey. L'importation a échoué."
 
 # D:\www\limesurvey/admin/importgroup.php:255
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:235
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:236
 msgid "You can't import a group which doesn't support the current survey's base language."
 msgstr "Vous ne pouvez pas importer un groupe qui ne supporte pas la langue de base de ce questionnaire."
 
 # D:\www\limesurvey/admin/importgroup.php:271
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:251
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:252
 msgid "You can't import a question which doesn't support the current survey's base language."
 msgstr "Vous ne pouvez pas importer une question qui ne supporte pas la langue de base de ce questionnaire."
 
 # D:\www\limesurvey/admin/importgroup.php:288
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:268
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:269
 msgid "You can't import label sets which don't support the current survey's base language."
 msgstr "Vous ne pouvez pas importer un jeu d'étiquettes qui ne supporte pas la langue de base de ce questionnaire."
 
 # E:\www\limesurvey/admin/usercontrol.php:120
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:603
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:615
 msgid "Import partially successful."
 msgstr "Importation partiellement réussie."
 
 # D:\www\limesurvey/admin/importgroup.php:555
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:604
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:616
 msgid "The following languages in this group were not imported since the survey does not contain such a language: "
 msgstr "Les langues suivantes de ce groupe n'ont pas été importées car le questionnaire ne contient pas ces langues :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:615
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:627
 msgid "Group Import Summary"
 msgstr "Résumé de l'importation de groupe"
 
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:636
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/admin/importgroup.php:648
 msgid "Import of group is completed."
 msgstr "L'importation du groupe est terminée."
 
@@ -6652,168 +6652,173 @@ msgstr "Bosniaque"
 msgid "Bulgarian"
 msgstr "Bulgare"
 
-# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:74
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:123
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:78
+msgid "Catalan"
+msgstr "Catalan"
+
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:74
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:82
 msgid "Chinese (Simplified)"
 msgstr "Chinois (Simplifié)"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:70
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:82
 #: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:86
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:90
 msgid "Chinese (Traditional - Hong Kong)"
 msgstr "Chinois (Traditionnel - Hong Kong)"
 
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:90
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:94
 msgid "Croatian"
 msgstr "Croate"
 
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:94
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:98
 msgid "Czech"
 msgstr "Tchèque"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:82
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:98
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:102
 msgid "Danish"
 msgstr "Danois"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:86
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:102
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:106
 msgid "Dutch"
 msgstr "Flamand"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:90
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:106
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:110
 msgid "English"
 msgstr "Anglais"
 
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:110
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:114
 msgid "Estonian"
 msgstr "Estonien"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:94
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:114
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:118
 msgid "Finnish"
 msgstr "Finlandais"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:99
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:119
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:123
 msgid "French"
 msgstr "Français"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:123
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:123
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:127
 msgid "Galician"
 msgstr "Galicien"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:103
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:127
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:131
 msgid "German"
 msgstr "Allemand"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:107
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:131
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:135
 msgid "German informal"
 msgstr "Allemand (tutoiement)"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:111
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:135
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:139
 msgid "Greek"
 msgstr "Grec"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:115
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:139
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:143
 msgid "Hebrew"
 msgstr "Hébreux"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:119
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:143
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:147
 msgid "Hungarian"
 msgstr "Hongrois"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:123
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:147
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:151
 msgid "Italian"
 msgstr "Italien"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:127
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:151
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:155
 msgid "Japanese"
 msgstr "Japonais"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:131
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:155
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:159
 msgid "Lithuanian"
 msgstr "Lituanien"
 
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:159
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:163
 msgid "Macedonian"
 msgstr "Macédonien"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:135
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:163
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:167
 msgid "Norwegian"
 msgstr "Norvégien"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:90
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:167
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:171
 msgid "Polish"
 msgstr "Polonais"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:139
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:171
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:175
 msgid "Portuguese"
 msgstr "Portugais"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:143
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:175
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:179
 msgid "Portuguese (Brazilian)"
 msgstr "Portugais (Brésil)"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:148
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:180
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:184
 msgid "Russian"
 msgstr "Russe"
 
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:184
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:188
 msgid "Romanian"
 msgstr "Roumain"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:156
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:188
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:192
 msgid "Slovenian"
 msgstr "Slovène"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:156
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:192
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:196
 msgid "Serbian"
 msgstr "Serbe"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:160
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:196
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:200
 msgid "Spanish"
 msgstr "Espagnol"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:160
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:200
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:204
 msgid "Spanish (Mexico)"
 msgstr "Espagnol (Mexique)"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:164
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:204
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:208
 msgid "Swedish"
 msgstr "Suédois"
 
 # D:\www\limesurvey/classes/core/surveytranslator.php:169
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:208
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:212
 msgid "Turkish"
 msgstr "Turc"
 
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:212
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:216
 msgid "Thai"
 msgstr "Thaïlandais"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:168
-#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:217
+#: /home/b00z00/__WEB/limesurvey_dev/stable_plus/classes/core/surveytranslator.php:221
 msgid "Vietnamese"
 msgstr "Vietnamien"
 
