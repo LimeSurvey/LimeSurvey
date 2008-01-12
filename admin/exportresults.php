@@ -40,8 +40,16 @@ $exportoutput="";
 
 if (!$style)
 {
+    // Get info about the survey
+    $thissurvey=getSurveyInfo($surveyid);
+
+    // First add the standard fields 
     $excesscols[]="id";
-	$thissurvey=getSurveyInfo($surveyid);
+    $excesscols[]='completed';
+    if ($thissurvey["datestamp"]=='Y') {$excesscols[]='datestamp';}
+    if ($thissurvey["ipaddr"]=='Y') {$excesscols[]='ipaddr';}
+    if ($thissurvey["refurl"]=='Y') {$excesscols[]='refurl';}    
+    
 	//FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
 	$query=" SELECT other, q.type, q.gid, q.qid FROM {$dbprefix}questions as q, {$dbprefix}groups as g "
 	." where q.gid=g.gid and g.sid=$surveyid and g.language='$surveybaselang' and q.language='$surveybaselang'"
@@ -92,14 +100,7 @@ if (!$style)
 
 	}
 
-	$excesscols[]='completed';
 
-	if ($thissurvey["datestamp"]=='Y')
-	{
-		$excesscols[]='datestamp';
-	}
-	if ($thissurvey["ipaddr"]=='Y') {$excesscols[]='ipaddr';}
-    if ($thissurvey["refurl"]=='Y') {$excesscols[]='refurl';}
 
 	$afieldcount = count($excesscols);
     $exportoutput .= "<table width='99%' align='center' class='menubar' cellpadding='1' cellspacing='0'>\n"
@@ -653,17 +654,7 @@ $firstline .= "\n";
 if ($type == "doc")
 {
 	$flarray=explode($separator, $firstline);
-	$fli=0;
-	//die(print_r($fieldmap)."\n".print_r($firstline));
-	$y=1;
-	for ($x=0; $x<count($fieldmap); $x++)
-	{
-//		if ($fieldmap[$x]['fieldname'] != "datestamp" && $fieldmap[$x]['fieldname'] != "ipaddr" && $fieldmap[$x]['fieldname'] != "refurl")
-//		{
-			if (isset($flarray[$x])) $fieldmap[$x]['title']=$flarray[$x];
-//			$y++;
-//		}
-	}
+
 }
 else
 if ($type == "xls")
@@ -671,12 +662,9 @@ if ($type == "xls")
 	//var_dump ($firstline);
     $flarray=explode($separator, $firstline);
 	$fli=0;
-//    $format = $xls->addFormat();
-//    $format->setBold();
-//    $format->setColor("green");	
 	foreach ($flarray as $fl)
 	{
-      $sheet->write(0,$fli,mb_convert_encoding($fl, "ISO-8859-1", "UTF-8"));      
+      $sheet->write(0,$fli,$fl);      
       $fli++;
 	}
 	//print_r($fieldmap);
@@ -811,7 +799,7 @@ elseif ($answers == "long")
 				$faid=$fielddata['aid'];
 				if ($type == "doc")
 				{
-					$ftitle=$fielddata['title'];
+                    $ftitle=$flarray[$i];
 				}
 				$qq = "SELECT lid, other FROM {$dbprefix}questions WHERE qid=$fqid and language='$surveybaselang'";
 				$qr = db_execute_assoc($qq) or die("Error selecting type and lid from questions table.<br />".$qq."<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -831,6 +819,9 @@ elseif ($answers == "long")
 						case "ipaddr":
 						$ftitle=$elang->gT("IP Address").":";
 						break;
+                        case "completed":
+                        $ftitle=$elang->gT("Completed").":";
+                        break;
                         case "refurl":
                         $ftitle=$elang->gT("Referring URL").":";
                         break;
@@ -863,7 +854,7 @@ elseif ($answers == "long")
 						break;
 						default:
 						$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
-						if (isset($fielddata['title'])) {$ftitle=$fielddata['title'].":";} else {$ftitle='';}
+						if (isset($fielddata['title']) && !isset($ftitle)) {$ftitle=$fielddata['title'].":";} 
 					} // switch
 				}
 			}
