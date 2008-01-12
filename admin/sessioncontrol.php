@@ -93,6 +93,34 @@ function GetSessionUserRights($loginID)
 		$_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] = $fields['manage_template'];
 		$_SESSION['USER_RIGHT_MANAGE_LABEL'] = $fields['manage_label'];
 		}
+
+	// SuperAdmins
+	// * original superadmin with uid=1 unless manually changed and defined
+	//   in config.php
+	// * or any user having USER_RIGHT_MOVE_USER right
+
+	// Let's check if I am the Initial SuperAdmin
+	$adminquery = "SELECT uid FROM {$dbprefix}users WHERE parent_id=0";
+	$adminresult = db_select_limit_assoc($adminquery, 1);
+	$row=$adminresult->FetchRow();
+	if($row['uid'] == $_SESSION['loginID'])
+	{
+		$initialSuperadmin=true;
+	}
+	else
+	{
+		$initialSuperadmin=false;
+	}
+
+	if ( $initialSuperadmin === true || 
+		$_SESSION['USER_RIGHT_MOVE_USER'] == 1)
+	{
+		$_SESSION['USER_RIGHT_SUPERADMIN'] = 1;
+	}
+	else
+	{
+		$_SESSION['USER_RIGHT_SUPERADMIN'] = 0;
+	}
 }
 
 

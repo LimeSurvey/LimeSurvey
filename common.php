@@ -888,8 +888,7 @@ function getuserlist()
 	global $dbprefix, $connect;
 	global $usercontrolSameGroupPolicy;
 
-
-	if ($_SESSION['loginID'] !=1 && isset($usercontrolSameGroupPolicy) &&
+	if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1 && isset($usercontrolSameGroupPolicy) &&
 		$usercontrolSameGroupPolicy === true)
 	{
 		if (isset($_SESSION['loginID']))

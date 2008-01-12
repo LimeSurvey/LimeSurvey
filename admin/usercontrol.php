@@ -301,23 +301,24 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 	$addsummary .= "<br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 }
 
-elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($postuid == $_SESSION['loginID'])))
+elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_DELETE_USER'] || ($postuid == $_SESSION['loginID'])))
 {
 	$addsummary = "<br /><strong>".$clang->gT("Deleting User")."</strong><br />\n";
 
+	// CAN'T DELETE ORIGINAL SUPERADMIN
+	// Initial SuperAdmin has parent_id == 0
 	$adminquery = "SELECT uid FROM {$dbprefix}users WHERE parent_id=0";
 	$adminresult = db_select_limit_assoc($adminquery, 1);
 	$row=$adminresult->FetchRow();
 
-	if($row['uid'] == $postuid)	// it's the superadmin !!!
+	if($row['uid'] == $postuid)	// it's the original superadmin !!!
 	{
-		$addsummary .= "<br />".$clang->gT("Admin cannot be deleted!")."<br />\n";
+		$addsummary .= "<br />".$clang->gT("Initial Superadmin cannot be deleted!")."<br />\n";
 	}
 	else
 	{
 		if (isset($postuid))
 		{
-			// TIBO
 			// is the user allowed to delete?
 //			$userlist = getuserlist();
 //			foreach ($userlist as $usr)
@@ -328,11 +329,16 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_DELETE_USER'] || ($postui
 //					continue;
 //				}
 //			}
-			$squery = "SELECT uid FROM {$dbprefix}users WHERE uid=$postuserid AND parent_id=".$_SESSION['loginID'];
-			$sresult = $connect->Execute($squery);
-			$sresultcount = $sresult->RecordCount();
+
+			$sresultcount = 0;// 1 if I am parent of $postuserid
+			if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1)
+			{
+				$squery = "SELECT uid FROM {$dbprefix}users WHERE uid=$postuserid AND parent_id=".$_SESSION['loginID'];
+				$sresult = $connect->Execute($squery);
+				$sresultcount = $sresult->RecordCount();
+			}
 	
-			if($_SESSION['loginID'] == 1 || $sresultcount > 0)
+			if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sresultcount > 0)
 				{
 				// We are about to kill an uid with potential childs
 				// Let's re-assign them their grand-father as their
@@ -396,7 +402,7 @@ elseif ($action == "moduser")
 	//}
 //	if($postuid == $_SESSION['loginID'] || $_SESSION['loginID'] == 1 || $parent['create_user'] == 1)
 
-	if($_SESSION['loginID'] == 1 || $postuid == $_SESSION['loginID'] ||
+	if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $postuid == $_SESSION['loginID'] ||
 		($sresultcount > 0 && $_SESSION['USER_RIGHT_CREATE_USER'])
 	  )
 	{
@@ -480,8 +486,8 @@ elseif ($action == "userrights")
 		$sresult = $connect->Execute($squery);
 		$sresultcount = $sresult->RecordCount();
 
-		if($_SESSION['loginID'] == 1 || $sresultcount > 0)
-		{
+		if($_SESSION['USER_RIGHT_SUPERADMIN'] != 1 && $sresultcount > 0)
+		{ // Not Admin, just a user with childs
 			$rights = array();
 
 			// Forbids Allowing more privileges than I have
@@ -489,9 +495,51 @@ elseif ($action == "userrights")
 			if(isset($_POST['configurator']) && $_SESSION['USER_RIGHT_CONFIGURATOR'])$rights['configurator']=1;			else $rights['configurator']=0;
 			if(isset($_POST['create_user']) && $_SESSION['USER_RIGHT_CREATE_USER'])$rights['create_user']=1;			else $rights['create_user']=0;
 			if(isset($_POST['delete_user']) && $_SESSION['USER_RIGHT_DELETE_USER'])$rights['delete_user']=1;			else $rights['delete_user']=0;
-			if(isset($_POST['move_user']) && $_SESSION['USER_RIGHT_MOVE_USER'])$rights['move_user']=1;			else $rights['move_user']=0;
+
+			$rights['move_user']=0; // ONLY Initial Superadmin can give this right
 			if(isset($_POST['manage_template']) && $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'])$rights['manage_template']=1;	else $rights['manage_template']=0;
 			if(isset($_POST['manage_label']) && $_SESSION['USER_RIGHT_MANAGE_LABEL'])$rights['manage_label']=1;			else $rights['manage_label']=0;
+
+			setuserrights($postuid, $rights);
+			$addsummary .= "<br />".$clang->gT("Update user rights successful.")."<br />\n";
+			$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+		}
+		elseif ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+		{
+			$rights = array();
+
+			if(isset($_POST['create_survey']))$rights['create_survey']=1;		else $rights['create_survey']=0;
+			if(isset($_POST['configurator']))$rights['configurator']=1;			else $rights['configurator']=0;
+			if(isset($_POST['create_user']))$rights['create_user']=1;			else $rights['create_user']=0;
+			if(isset($_POST['delete_user']))$rights['delete_user']=1;			else $rights['delete_user']=0;
+
+			// Only Initial Superadmin can give this right
+			if(isset($_POST['move_user']))
+			{
+				// Am I original Superadmin ?
+				
+				// Initial SuperAdmin has parent_id == 0
+				$adminquery = "SELECT uid FROM {$dbprefix}users WHERE parent_id=0";
+				$adminresult = db_select_limit_assoc($adminquery, 1);
+				$row=$adminresult->FetchRow();
+			
+				if($row['uid'] == $_SESSION['loginID'])	// it's the original superadmin !!!
+				{
+					$rights['move_user']=1;
+					echo "TIBO";
+				}
+				else 
+				{
+					$rights['move_user']=0;
+				}
+			}
+			else
+			{
+					$rights['move_user']=0;
+			}
+
+			if(isset($_POST['manage_template']))$rights['manage_template']=1;	else $rights['manage_template']=0;
+			if(isset($_POST['manage_label']))$rights['manage_label']=1;			else $rights['manage_label']=0;
 
 			setuserrights($postuid, $rights);
 			$addsummary .= "<br />".$clang->gT("Update user rights successful.")."<br />\n";
@@ -513,27 +561,9 @@ elseif ($action == "usertemplates")
 {
       $addsummary = "<br /><strong>".$clang->gT("Set Template Rights")."</strong><br />\n";
 
-      if($_POST['uid'] != $_SESSION['loginID'])
+	// ONLY SUPERADMINS CAN SET THESE RIGHTS
+      if( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
       {
-		// DON'T DO THAT CAUS getuserlist returns
-		// ALL USERS
-		// (or all users from same groups depeding on policy)
-		// IT DOESN'T ONLY SHOWS CHILDS !!!
-		//$userlist = getuserlist();
-		//foreach ($userlist as $usr)
-		//{
-		//	if ($usr['uid'] == $postuid)
-		//	{
-		//		$isallowed = true;
-		//		continue;
-		//	}
-		//}
-		$squery = "SELECT uid FROM {$dbprefix}users WHERE uid=$postuserid AND parent_id=".$_SESSION['loginID'];
-		$sresult = $connect->Execute($squery);
-		$sresultcount = $sresult->RecordCount();
-
-		if($_SESSION['loginID'] == 1 || $sresultcount > 0)
-              {
                       $templaterights = array();
                       $tquery = "SELECT * FROM ".$dbprefix."templates";
                       $tresult = mysql_query($tquery);
@@ -558,12 +588,6 @@ elseif ($action == "usertemplates")
               {
                       include("access_denied.php");
               }
-      }
-      else
-      {
-              $addsummary .= "<br />".$clang->gT("You are not allowed to change your own rights!")."<br />\n";
-              $addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
-      }
 }
 
 

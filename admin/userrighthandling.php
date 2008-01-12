@@ -91,7 +91,7 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 	. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' align='right' border='0' width='82' height='20' />\n"
 	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='right' border='0' hspace='0' />\n";
 	
-	if ($_SESSION['loginID'] == 1)
+	if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$usergroupsummary .= "<a href='$scriptname?action=addusergroup'"
 		."onmouseout=\"hideTooltip()\""
@@ -198,7 +198,7 @@ else
 }
 
 // RELIABLY CHECK MY RIGHTS
-if ($_SESSION['loginID'] == 1 || $_SESSION['loginID'] == $postuserid ||
+if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['loginID'] == $postuserid ||
 	( $_SESSION['USER_RIGHT_CREATE_USER'] &&
 		$sresultcount > 0	
 	) )
@@ -253,7 +253,7 @@ if ($action == "setuserrights")
 	}
 	
 	// RELIABLY CHECK MY RIGHTS
-	if ($_SESSION['loginID'] == 1 ||
+	if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 ||
 		( $_SESSION['USER_RIGHT_CREATE_USER'] &&
 			$sresultcount >  0 &&
 			$_SESSION['loginID'] != $postuserid	
@@ -263,11 +263,15 @@ if ($action == "setuserrights")
 		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='8' class='header' align='center'>\n"
 		. "\t\t".$clang->gT("Set User Rights").": ".sanitize_system_string($_POST['user'])."</td></tr>\n";
 
-		// HERE WE SEARCH FOR USER RIGHTS YOU CAN SET
+		// HERE WE LIST FOR USER RIGHTS YOU CAN SET
+		// TO THE USER
 		// YOU CAN ONLY SET AT MOST THE RIGHTS OF THE PARENT
-		// USING $_SECCION['RIGHT... WOULD BE EASIER
-		// BUT IF ADMIN IS EDITING HE MAY BE ABLE TO
-		// GIVE MORe RIGHT TO A CHILD THAN TO THE FATHER
+		//
+		// using $_SECTION['RIGHT... would be easieR
+		// Super admin may be able to too much rights
+		// to a user not beeing its own child
+		// and resulting in the user having more rights than
+		// its own child
 		// NOT SURE THIS IS A REAL ISSUE
 		// I LET THIS AS IS FOR NOW
 		$userlist = getuserlist();
@@ -279,6 +283,16 @@ if ($action == "setuserrights")
 				$sresult = $connect->Execute($squery);
 				$parent = $sresult->FetchRow();
 
+				// Initial SuperAdmin has parent_id == 0
+				$adminquery = "SELECT uid FROM {$dbprefix}users WHERE parent_id=0";
+				$adminresult = db_select_limit_assoc($adminquery, 1);
+				$row=$adminresult->FetchRow();
+			
+				// Only Initial SuperAdmin can give SuperAdmin rights
+				if($row['uid'] == $_SESSION['loginID'])	
+				{ // RENAMED AS SUPERADMIN
+					$usersummary .= "\t\t<th align='center'>".$clang->gT("SuperAdministrator")."</th>\n";
+				}
 				if($parent['create_survey']) {
 					$usersummary .= "\t\t<th align='center'>".$clang->gT("Create Survey")."</th>\n";
 				}
@@ -291,9 +305,6 @@ if ($action == "setuserrights")
 				if($parent['delete_user']) {
 					$usersummary .= "\t\t<th align='center'>".$clang->gT("Delete User")."</th>\n";
 				}
-				if($parent['move_user']) {
-					$usersummary .= "\t\t<th align='center'>".$clang->gT("Move User")."</th>\n";
-				}
 				if($parent['manage_template']) {
 					$usersummary .= "\t\t<th align='center'>".$clang->gT("Manage Template")."</th>\n";
 				}
@@ -305,50 +316,53 @@ if ($action == "setuserrights")
 				."\t<tr><form method='post' action='$scriptname'></tr>"
 				."<form action='$scriptname' method='post'>\n";
 				//content
+
+				// Only Initial SuperAdmmin can give SuperAdmin right
+				if($row['uid'] == $_SESSION['loginID']) {
+					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"move_user\" id=\"move_user\" value=\"move_user\"";
+					if($usr['move_user']) {
+						$usersummary .= " checked='checked' ";
+					}
+					$usersummary .= "onclick=\"if (this.checked == true) {document.getElementById('create_survey').checked=true;document.getElementById('configurator').checked=true;document.getElementById('create_user').checked=true;document.getElementById('delete_user').checked=true;document.getElementById('manage_template').checked=true;document.getElementById('manage_label').checked=true;}\"";
+					$usersummary .=" /></td>\n";
+				}
 				if($parent['create_survey']) {
-					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"create_survey\" value=\"create_survey\"";
+					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"create_survey\" id=\"create_survey\" value=\"create_survey\"";
 					if($usr['create_survey']) {
 						$usersummary .= " checked='checked' ";
 					}
 					$usersummary .=" /></td>\n";
 				}
 				if($parent['configurator']) {
-					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"configurator\" value=\"configurator\"";
+					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"configurator\" id=\"configurator\" value=\"configurator\"";
 					if($usr['configurator']) {
 						$usersummary .= " checked='checked' ";
 					}
 					$usersummary .=" /></td>\n";
 				}
 				if($parent['create_user']) {
-					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"create_user\" value=\"create_user\"";
+					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"create_user\" id=\"create_user\" value=\"create_user\"";
 					if($usr['create_user']) {
 						$usersummary .= " checked='checked' ";
 					}
 					$usersummary .=" /></td>\n";
 				}
 				if($parent['delete_user']) {
-					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"delete_user\" value=\"delete_user\"";
+					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"delete_user\" id=\"delete_user\" value=\"delete_user\"";
 					if($usr['delete_user']) {
 						$usersummary .= " checked='checked' ";
 					}
 					$usersummary .=" /></td>\n";
 				}
-				if($parent['move_user']) {
-					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"move_user\" value=\"move_user\"";
-					if($usr['move_user']) {
-						$usersummary .= " checked='checked' ";
-					}
-					$usersummary .=" /></td>\n";
-				}
 				if($parent['manage_template']) {
-					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"manage_template\" value=\"manage_template\"";
+					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"manage_template\" id=\"manage_template\" value=\"manage_template\"";
 					if($usr['manage_template']) {
 						$usersummary .= " checked='checked' ";
 					}
 					$usersummary .=" /></td>\n";
 				}
 				if($parent['manage_label']) {
-					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"manage_label\" value=\"manage_label\"";
+					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"manage_label\" id=\"manage_label\" value=\"manage_label\"";
 					if($usr['manage_label']) {
 						$usersummary .= " checked='checked' ";
 					}
@@ -410,7 +424,7 @@ if($action == "setasadminchild")
 	// MORE RIGHT MANAGEMENT POSSIBILITIES
 	// DON'T TOUCH user CHILDS, they remain his childs
 
-	if($_SESSION['loginID']==1)
+	if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$uid = $postuserid;
 		$query = "UPDATE ".db_table_name('users')." SET parent_id =1 WHERE uid = ".$uid;
@@ -448,6 +462,8 @@ if ($action == "editusers")
 	//	output users
 	// output admin user only if the user logged in has user management rights
 	if ($_SESSION['USER_RIGHT_DELETE_USER']||$_SESSION['USER_RIGHT_CREATE_USER']||$_SESSION['USER_RIGHT_MOVE_USER']){
+
+
 		$usersummary .= "\t<tr class='oddrow'>\n"
 		. "\t<td class='oddrow' align='center'><strong>{$usrhimself['user']}</strong></td>\n"
 		. "\t<td class='oddrow' align='center'><strong>{$usrhimself['email']}</strong></td>\n"
@@ -455,7 +471,7 @@ if ($action == "editusers")
 		. "\t\t<td class='oddrow' align='center'><strong>********</strong></td>\n";
 		
 		if(isset($usrhimself['parent_id']) && $usrhimself['parent_id']!=0) { 
-			$usersummary .= "\t\t<td class='oddrow' align='center'>{$userlist[$usrhimself['parent_id']]['user']}</td>\n";
+			$usersummary .= "\t\t<td class='oddrow' align='center'>{$usrhimself['parent_name']}</td>\n";
 		}
 		else
 		{
@@ -463,7 +479,7 @@ if ($action == "editusers")
 		}
 		$usersummary .= "\t\t<td class='oddrow' align='center' style='padding:3px;'>\n";
 		
-		if ($_SESSION['loginID'] == "1")
+		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 		{
 			$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
 			."<input type='submit' value='".$clang->gT("Edit User")."' />"
@@ -471,7 +487,8 @@ if ($action == "editusers")
 			."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
 			."</form>";
 		}
-		// users are allowed to delete all successor users (but the admin not himself)
+		// Standard users and SuperAdmins are allowed to delete all successor users (but the admin not himself)
+		// 
 		if ($usrhimself['parent_id'] != 0 && ($_SESSION['USER_RIGHT_DELETE_USER'] == 1 || ($usrhimself['uid'] == $_SESSION['loginID'])))
 		{
 			$usersummary .= "\t\t\t<form method='post' action='$scriptname?action=deluser'>"
@@ -553,7 +570,7 @@ if ($action == "editusers")
 		$usersummary .= "\t\t<td class='$bgcc' align='center' style='padding:3px;'>\n";
 		// users are allowed to delete all successor users (but the admin not himself)
 		//  || ($usr['uid'] == $_SESSION['loginID']))
-		if ($_SESSION['loginID'] == "1" || ($_SESSION['USER_RIGHT_DELETE_USER'] == 1  && $usr['parent_id'] == $_SESSION['loginID']))
+		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || ($_SESSION['USER_RIGHT_DELETE_USER'] == 1  && $usr['parent_id'] == $_SESSION['loginID']))
 		{
 			$usersummary .= "\t\t\t<form method='post' action='$scriptname?action=deluser'>"
 			."<input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.","js")."\")' />"
@@ -562,7 +579,10 @@ if ($action == "editusers")
 			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
 			."</form>";
 		}
-		if ($_SESSION['loginID'] == "1" || ($_SESSION['USER_RIGHT_CREATE_USER'] == 1 && ($usr['parent_id'] == $_SESSION['loginID'])))
+		if ( ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 &&
+			$usr['uid'] != $_SESSION['loginID'] ) || 
+		     ($_SESSION['USER_RIGHT_CREATE_USER'] == 1 && 
+			$usr['parent_id'] == $_SESSION['loginID']) )
 		{
 			$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
 			."<input type='submit' value='".$clang->gT("Set User Rights")."' />"
@@ -574,13 +594,13 @@ if ($action == "editusers")
 		if ($_SESSION['loginID'] == "1" && $usr['parent_id'] !=1 )
 		{
 			$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
-			."<input type='submit' value='".$clang->gT("Set as Admin Child")."' />"
+			."<input type='submit' value='".$clang->gT("Take Ownership")."' />"
 			."<input type='hidden' name='action' value='setasadminchild' />"
 			."<input type='hidden' name='user' value='{$usr['user']}' />"
 			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
 			."</form>";
 		}
-		if ($_SESSION['loginID'] == "1" || $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
+		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 		{
 			$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
 			."<input type='submit' value='".$clang->gT("Set Template Rights")."' />"
@@ -589,7 +609,7 @@ if ($action == "editusers")
 			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
 			."</form>";
 		}
-		if ($_SESSION['loginID'] == "1" || $usr['uid'] == $_SESSION['loginID'] || ($_SESSION['USER_RIGHT_CREATE_USER'] == 1 && $usr['parent_id'] == $_SESSION['loginID']))
+		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $usr['uid'] == $_SESSION['loginID'] || ($_SESSION['USER_RIGHT_CREATE_USER'] == 1 && $usr['parent_id'] == $_SESSION['loginID']))
 		{
 			$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
 			."<input type='submit' value='".$clang->gT("Edit User")."' />"
@@ -603,7 +623,7 @@ if ($action == "editusers")
 	}
     $usersummary .= "</table><br />";
 
-	if($_SESSION['USER_RIGHT_CREATE_USER'])
+	if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_CREATE_USER'])
 	{
 		$usersummary .= "\t\t<form action='$scriptname' method='post'>\n"
 		. "\t\t<table width='100%' borders='0'><tr>\n"
@@ -621,7 +641,7 @@ if ($action == "editusers")
 
 if ($action == "addusergroup")
 {
-	if ($_SESSION['loginID'] == 1)  // for now only admins may do that
+	if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)  // for now only admins may do that
 	{
 		$usersummary = "<form action='$scriptname'  method='post'><table width='100%' border='0'>\n\t<tr><th colspan='2'>\n"
 		. "\t\t<strong>".$clang->gT("Add User Group")."</strong></th></tr>\n"
@@ -639,7 +659,7 @@ if ($action == "addusergroup")
 
 if ($action == "editusergroup")
 {
-	if ($_SESSION['loginID'] == 1)
+	if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$query = "SELECT * FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND owner_id = ".$_SESSION['loginID'];
 		$result = db_select_limit_assoc($query, 1);
@@ -691,7 +711,7 @@ if ($action == "mailusergroup")
 
 if ($action == "delusergroup")
 {
-		if ($_SESSION['loginID'] == 1)
+		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 	$usersummary = "<br /><strong>".$clang->gT("Deleting User Group")."</strong><br />\n";
 
@@ -728,7 +748,7 @@ if ($action == "delusergroup")
 
 if ($action == "usergroupindb")
 {
-	if ($_SESSION['loginID'] == 1)
+	if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$usersummary = "<br /><strong>".$clang->gT("Adding User Group")."...</strong><br />\n";
 	
@@ -783,7 +803,7 @@ if ($action == "mailsendusergroup")
 	$result = db_execute_assoc($query);
 
 	if($result->RecordCount() > 0 ||
-		$_SESSION['loginID'] == 1)
+		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 
     	$eguquery = "SELECT * FROM ".db_table_name("user_in_groups")." AS a INNER JOIN ".db_table_name("users")." AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " AND b.uid != {$_SESSION['loginID']} ORDER BY b.users_name";
@@ -839,7 +859,7 @@ if ($action == "mailsendusergroup")
 if ($action == "editusergroupindb")
 {
 
-	if ($_SESSION['loginID'] == 1)
+	if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$ugid = $postusergroupid;
 	
@@ -869,7 +889,7 @@ if ($action == "editusergroups" )
 	// REMOVING CONDITION ON loginID == 1
 	// editusergroups is only to display groups
 	// a user is in
-	//if ( $_SESSION['loginID'] == 1)
+	//if ( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	if ( isset($_SESSION['loginID']))
 	{
 		if(isset($_GET['ugid']))
@@ -939,7 +959,7 @@ if ($action == "editusergroups" )
 //					if((isset($row2['ugid']) && $_SESSION['loginID'] != $egurow['uid']) || (!isset($row2['ugid']) && $_SESSION['loginID'] == $egurow['uid']))
 					// Currently only admin can do this
 					// So hide button unless admin
-					if($_SESSION['loginID'] == 1)
+					if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 					{
 						$usergroupentries .= "\t\t\t<form method='post' action='$scriptname?action=deleteuserfromgroup&amp;ugid=$ugid'>"
 						." <input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.","js")."\")' />"
@@ -984,7 +1004,7 @@ if ($action == "editusergroups" )
 
 if($action == "deleteuserfromgroup")
 {
-	if ($_SESSION['loginID'] == 1)
+	if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$ugid = $postusergroupid;
 		$uid = $postuserid;
@@ -1028,7 +1048,7 @@ if($action == "deleteuserfromgroup")
 
 if($action == "addusertogroup")
 { 
-	if ($_SESSION['loginID'] == 1)
+	if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$addsummary = "<br /><strong>".$clang->gT("Adding User to group")."...</strong><br />\n";
 	
