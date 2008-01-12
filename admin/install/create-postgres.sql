@@ -125,7 +125,7 @@ CREATE TABLE prefix_question_attributes (
 CREATE TABLE prefix_quota (
   id serial NOT NULL,
   sid integer,
-  name varying(255),
+  name character varying(255),
   qlimit integer,
   "action" integer,
   "active" integer NOT NULL default '1'
@@ -141,7 +141,7 @@ CREATE TABLE prefix_quota_members (
   sid integer,
   qid integer,
   quota_id integer,
-  code varying(5)
+  code character varying(5)
 );
 
 ALTER TABLE ONLY prefix_quota_members
@@ -329,7 +329,7 @@ CREATE TABLE prefix_users (
 
 CREATE TABLE prefix_templates_rights (
   "uid" integer NOT NULL,
-  "folder" varying(255) NOT NULL,
+  "folder" character varying(255) NOT NULL,
   "use" integer NOT NULL
 );
 
@@ -338,7 +338,7 @@ ALTER TABLE ONLY prefix_templates_rights
 
 
 CREATE TABLE prefix_templates (
-  "folder" varying(255) NOT NULL,
+  "folder" character varying(255) NOT NULL,
   "creator" integer NOT NULL
 );
 

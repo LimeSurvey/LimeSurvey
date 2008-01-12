@@ -4202,21 +4202,24 @@ function getNextCode($sourcecode)
 {
    $i=1; 
    $found=true;
-   while ($i<strlen($sourcecode) && $found)   
+   $foundnumber=-1;
+   while ($i<=strlen($sourcecode) && $found)   
    {
-     $found=(is_numeric(substr($sourcecode,-$i)));
-     if ($found) $foundnumber=substr($sourcecode,-$i);
-     $i++;
+     $found=is_numeric(substr($sourcecode,-$i));
+     if ($found) 
+        {
+        $foundnumber=substr($sourcecode,-$i);
+        $i++;
+        }
    }
-   $i--;
-   if ($i==1) 
+   if ($foundnumber==-1) 
     {
         return($sourcecode);
     }
     else 
     {
        $foundnumber++; 
-       $result=substr($sourcecode,0,strlen($sourcecode)-$i).$foundnumber;
+       $result=substr($sourcecode,0,strlen($sourcecode)-$i+1).$foundnumber;
        return($result);
     }
     
