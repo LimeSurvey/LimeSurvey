@@ -330,7 +330,7 @@ $conmandatoryfns=array();
 $conditions=array();
 $inputnames=array();
 
-// Latter is needed an array to get the tittle of the question and
+// Latter is needed an array to get the title of the question and
 // its id for the form, with this will be more easy locate the
 // key for to construct the javascript code
 
@@ -576,7 +576,8 @@ END;
     */
 	foreach ($conditions as $cd)
 	{
-		if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq)) //New if statement
+		if ($cd[6]=='') $cd[6]='==';
+        if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq)) //New if statement
 		{
 			$java .= $endzone;
 			$endzone = "";
@@ -595,7 +596,7 @@ END;
 		}
         if ($cd[4] == "R")
         {
-            $idname="fvalue_".$cd[1].substr($cd[2], strlen($cd[2])-1,1);
+            $idname="java$cd[2]";  
         }
         elseif ($cd[4] == "5" ||
                 $cd[4] == "A" ||
