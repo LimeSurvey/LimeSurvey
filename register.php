@@ -91,7 +91,7 @@ while ($insert != "OK")
 
 //Insert new entry into tokens db
 $query = "INSERT INTO {$dbprefix}tokens_$surveyid\n"
-. "(`firstname`, `lastname`, `email`, `token`, `attribute_1`, `attribute_2`)\n"
+. "(firstname, lastname, email, token, attribute_1, attribute_2)\n"
 . "VALUES (?, ?, ?, ?, ?, ?)";
 $result = $connect->Execute($query, array(returnglobal('register_firstname'), returnglobal('register_lastname'),
 returnglobal('register_email'), $newtoken,
@@ -175,6 +175,7 @@ function templatereplace1($line)
 	$line=str_replace("{SID}", $surveyid, $line);
 	$line=str_replace("{TEMPLATEURL}", $templateurl, $line);
 	$line=str_replace("{PERCENTCOMPLETE}", "", $line);
+	$line=str_replace("{LANGUAGECHANGER}", "", $line);
 	return $line;
 }
 
