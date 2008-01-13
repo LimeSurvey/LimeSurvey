@@ -100,20 +100,25 @@ if ($action == "addquestion")
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
     $oqquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='".$baselang."' order by question_order" ;
     $oqresult = db_execute_assoc($oqquery);
-    $newquestionoutput .= "\t<tr id='questionposition'>\n"
-    . "\t\t<td align='right'><strong>".$clang->gT("Position:")."</strong></td>\n"
-    . "\t\t<td align='left'>\n"
-    . "\t\t\t<select name='questionposition'>\n"
-    . "\t\t\t\t<option value=''>".$clang->gT("At end")."</option>\n"
-    . "\t\t\t\t<option value='-1'>".$clang->gT("At beginning")."</option>\n";
-    foreach($oqresult as $oq)
+    if ($oqresult->RecordCount())
     {
-	    $newquestionoutput .= "<option value='".$oq['question_order']."'>".$clang->gT("After").": ".$oq['title']."</option>\n";
-	}
-    $newquestionoutput .= "\t\t\t</select>\n"
-    . "\t\t</td>\n"
-    . "\t</tr>\n";
-
+        $newquestionoutput .= "\t<tr id='questionposition'>\n"
+        . "\t\t<td align='right'><strong>".$clang->gT("Position:")."</strong></td>\n"
+        . "\t\t<td align='left'>\n"
+        . "\t\t\t<select name='questionposition'>\n"
+        . "\t\t\t\t<option value=''>".$clang->gT("At end")."</option>\n"
+        . "\t\t\t\t<option value='-1'>".$clang->gT("At beginning")."</option>\n";
+        while ($oq = $oqresult->FetchRow())
+        {
+	        $newquestionoutput .= "<option value='".$oq['question_order']."'>".$clang->gT("After").": ".$oq['title']."</option>\n";
+        }
+        $newquestionoutput .= "\t\t\t</select>\n"
+        . "\t\t</td>\n"
+        . "\t</tr>\n";
+    } 
+    else      
+    
+    {$newquestionoutput .= "<tr><td><input type='hidden' name='questionposition' value='' /></tr></td>";}
 	//Question attributes
 	$qattributes=questionAttributes();
 
