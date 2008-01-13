@@ -291,7 +291,7 @@ if ($action == "setuserrights")
 				// Only Initial SuperAdmin can give SuperAdmin rights
 				if($row['uid'] == $_SESSION['loginID'])	
 				{ // RENAMED AS SUPERADMIN
-					$usersummary .= "\t\t<th align='center'>".$clang->gT("SuperAdministrator")."</th>\n";
+					$usersummary .= "\t\t<th align='center' class='admincell'>".$clang->gT("SuperAdministrator")."</th>\n";
 				}
 				if($parent['create_survey']) {
 					$usersummary .= "\t\t<th align='center'>".$clang->gT("Create Survey")."</th>\n";

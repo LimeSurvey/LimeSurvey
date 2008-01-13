@@ -482,3 +482,7 @@ span.invalidemail {
 	font-weight: bold;
    	color: red;
 }
+
+th.admincell {
+	background-color: #F8BDB5;
+}
