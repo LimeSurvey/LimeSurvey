@@ -242,7 +242,7 @@ if ($action == "checksettings" || $action == "changelang" || $action=="changehtm
 		$cssummary .= ">".$languagekind['description']." - ".$languagekind['nativedescription']."</option>\n";
 	}
 	$cssummary .= "\t\t\t</select>\n"
-	. "\t\t\t<input type='hidden' name='action' value='changelang' />\n"
+	. "\t\t\t<input type='hidden' id='action' name='action' value='changelang' />\n"
 	. "\t\t</td>\n"
 	. "\t</tr>\n";
 	// Current htmleditormode
@@ -250,13 +250,12 @@ if ($action == "checksettings" || $action == "changelang" || $action=="changehtm
 	. "\t\t<td align='right' >\n"
 	. "\t\t\t<strong>".$clang->gT("Preferred HTML editor mode").":</strong>\n"
 	. "\t\t</td><td>\n"
-	. "\t\t\t<select name='htmleditormode' onchange='form.submit()'>\n"
+	. "\t\t\t<select name='htmleditormode' onchange='document.getElementById(\"action\").value=\"changehtmleditormode\";form.submit();'>\n"
 	. "\t\t\t\t<option value='default' $edmod1>".$clang->gT("Default HTML editor mode")."</option>\n"
 	. "\t\t\t\t<option value='none' $edmod2>".$clang->gT("No HTML editor")."</option>\n"
 	. "\t\t\t\t<option value='inline' $edmod3>".$clang->gT("Inline HTML editor")."</option>\n"
 	. "\t\t\t\t<option value='popup' $edmod4>".$clang->gT("Popup HTML editor")."</option>\n";
 	$cssummary .= "\t\t\t</select>\n"
-	. "\t\t\t<input type='hidden' name='action' value='changehtmleditormode' />\n"
 	. ""
 	. "\t\t</td>\n"
 	. "\t</tr>\n";
