@@ -970,7 +970,7 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 			."\t\t\t<textarea name='message_$language' id='message_$language' rows='20' cols='80'>\n"
 			.$textarea
 			."\t\t\t</textarea>\n"
-			. getEditor("email-inv","message_$language","[".$clang->gT("Invitation Email:", "js")."](".$grouplang.")",$surveyid,'','',$action)
+			. getEditor("email-inv","message_$language","[".$clang->gT("Invitation Email:", "js")."](".$language.")",$surveyid,'','',$action)
 			."\t\t</td>\n"
 			."\t</tr></table></div>\n";
 		}
@@ -1185,7 +1185,7 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 			$tokenoutput .= $textarea;
 	
 			$tokenoutput .= "\t\t\t</textarea>\n"
-			. getEditor("email-rem","message_$language","[".$clang->gT("Reminder Email:", "js")."](".$grouplang.")",$surveyid,'','',$action)
+			. getEditor("email-rem","message_$language","[".$clang->gT("Reminder Email:", "js")."](".$language.")",$surveyid,'','',$action)
 			."\t\t</td>\n"
 			."\t</tr>\n"
 			."</table></div>";
