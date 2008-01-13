@@ -1074,7 +1074,7 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 				}
 				else
 				{
-					$ishtml=true;
+					$ishtml=false;
 				}
 
 				if (MailTextMessage($modmessage, $modsubject, $to , $from, $sitename, $ishtml))
@@ -1306,7 +1306,7 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 				}
 				else
 				{
-					$ishtml=true;
+					$ishtml=false;
 				}
 
 				if (MailTextMessage($sendmessage, $msgsubject, $to, $from, $sitename,$ishtml))
