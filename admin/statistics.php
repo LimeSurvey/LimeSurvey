@@ -135,15 +135,15 @@ $statisticsoutput .= "<td align='center'><strong>".$clang->gT("ID")."</strong><b
 $statisticsoutput .= "\t\t\t\t\t<font size='1'>".$clang->gT("Number greater than").":<br />\n"
 ."\t\t\t\t\t<input type='text' name='$myfield2' value='";
 if (isset($_POST[$myfield2])){$statisticsoutput .= $_POST[$myfield2];}
-$statisticsoutput .= "' /><br />\n"
+$statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789')\" /><br />\n"
 ."\t\t\t\t\t".$clang->gT("Number Less Than").":<br />\n"
 ."\t\t\t\t\t<input type='text' name='$myfield3' value='";
 if (isset($_POST[$myfield3])) {$statisticsoutput .= $_POST[$myfield3];}
-$statisticsoutput .= "' /><br />\n";
+$statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789')\" /><br />\n";
 $statisticsoutput .= "\t\t\t\t\t=<br />
             <input type='text' name='$myfield4' value='";
 if (isset($_POST[$myfield4])) {$statisticsoutput .= $_POST[$myfield4];}
-$statisticsoutput .= "' /><br /></font></td>\n";
+$statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789')\" /><br /></font></td>\n";
 $allfields[]=$myfield2;
 $allfields[]=$myfield3;
 $allfields[]=$myfield4;
@@ -242,11 +242,11 @@ foreach ($filters as $flt)
 		    $statisticsoutput .= "\t\t\t\t\t<font size='1'>".$clang->gT("Number greater than").":</font><br />\n"
 		    ."\t\t\t\t\t<input type='text' name='$myfield2' value='";
 		    if (isset($_POST[$myfield2])){$statisticsoutput .= $_POST[$myfield2];}
-		    $statisticsoutput .= "' /><br />\n"
+		    $statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n"
 		    ."\t\t\t\t\t".$clang->gT("Number Less Than").":<br />\n"
 		    ."\t\t\t\t\t<input type='text' name='$myfield3' value='";
 		    if (isset($_POST[$myfield3])) {$statisticsoutput .= $_POST[$myfield3];}
-		    $statisticsoutput .= "' /><br />\n";
+		    $statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n";
 			$counter2++;
 			$allfields[]=$myfield1;
 		    $allfields[]=$myfield2;
@@ -319,11 +319,11 @@ foreach ($filters as $flt)
 		$statisticsoutput .= "\t\t\t\t\t<font size='1'>".$clang->gT("Number greater than").":</font><br />\n"
 		."\t\t\t\t\t<input type='text' name='$myfield2' value='";
 		if (isset($_POST[$myfield2])){$statisticsoutput .= $_POST[$myfield2];}
-		$statisticsoutput .= "' /><br />\n"
+		$statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n"
 		."\t\t\t\t\t".$clang->gT("Number Less Than").":<br />\n"
 		."\t\t\t\t\t<input type='text' name='$myfield3' value='";
 		if (isset($_POST[$myfield3])) {$statisticsoutput .= $_POST[$myfield3];}
-		$statisticsoutput .= "' /><br />\n";
+		$statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n";
 		$allfields[]=$myfield2;
 		$allfields[]=$myfield3;
 		break;
@@ -810,11 +810,11 @@ if (isset($_POST['display']) && $_POST['display'])
 			{
 				if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
 				{
-					$selects[]=db_quote_id(substr($pv, 1, -1))." > '".$_POST[$pv]."'";
+					$selects[]=db_quote_id(substr($pv, 1, -1))." > ".sanitize_int($_POST[$pv]);
 				}
 				if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
 				{
-                    $selects[]=db_quote_id(substr($pv, 1, -1))." < '".$_POST[$pv]."'";
+                    $selects[]=db_quote_id(substr($pv, 1, -1))." < ".sanitize_int($_POST[$pv]);
 				}
 			}
 			elseif (substr($pv, 0, 2) == "id")

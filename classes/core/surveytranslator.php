@@ -148,7 +148,7 @@
 	    $supportedLanguages['lt']['nativedescription'] = 'Lietuvi&#371;';
 	    
 	    // Norwegian Bokmål
-	    $supportedLanguages['nb']['description'] = $clang->gT('Norwegian (Bokmål)');
+	    $supportedLanguages['nb']['description'] = $clang->gT('Norwegian (Bokmal)');
 	    $supportedLanguages['nb']['nativedescription'] = 'Norsk bokm&#229;l';
 
         // Polish
@@ -201,9 +201,23 @@
 	    $supportedLanguages['vi']['description'] = $clang->gT('Vietnamese');
 	    $supportedLanguages['vi']['nativedescription'] = 'Ti&#7871;ng Vi&#7879;t';
 
+        uasort($supportedLanguages,"user_sort");
+        
         Return $supportedLanguages;
     }
-/*    // future languages
+
+   function user_sort($a, $b) {
+   // smarts is all-important, so sort it first
+   if($a['description'] >$b['description']) {
+     return 1;
+   }
+   else {
+        return -1;
+        }
+   }
+    
+    
+    /*    // future languages
 
 	    // Afrikaans
  	    $supportedLanguages['za']['nativedescription'] = 'Afrikaans';

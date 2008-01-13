@@ -1310,8 +1310,7 @@ if (returnglobal('viewanswer'))
 	}
 
 	// Print Key Control JavaScript
-	$vasummary = keycontroljs();
-	$vasummary .= PrepareEditorScript("editanswer");
+	$vasummary = PrepareEditorScript("editanswer");
 
      $query = "SELECT * FROM ".db_table_name('answers')." WHERE qid='{$qid}' AND language='".GetBaseLanguageFromSurveyID($surveyid)."'";
      $result = db_execute_assoc($query) or die($connect->ErrorMsg());
