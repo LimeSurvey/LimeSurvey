@@ -1077,7 +1077,7 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 					$ishtml=false;
 				}
 
-				if (MailTextMessage($modmessage, $modsubject, $to , $from, $sitename, $ishtml))
+				if (MailTextMessage($modmessage, $modsubject, $to , $from, $sitename, $ishtml, getBounceEmail($surveyid)))
 				{
 					// Put date into sent
 					$today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
@@ -1309,7 +1309,7 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 					$ishtml=false;
 				}
 
-				if (MailTextMessage($sendmessage, $msgsubject, $to, $from, $sitename,$ishtml))
+				if (MailTextMessage($sendmessage, $msgsubject, $to, $from, $sitename,$ishtml,getBounceEmail($surveyid)))
 				{
 					$tokenoutput .= "\t\t\t({$emrow['tid']})[".$clang->gT("Reminder sent to:")." {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
 				}

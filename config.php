@@ -93,6 +93,7 @@ $sessionlifetime    =   3600;   // How long until a survey session expires in se
 // These settings determine how LimeSurvey will send emails
 
 $siteadminemail     =   "your@email.org"; // The default email address of the site administrator
+$siteadminbounce     =   "your@email.org"; // The default email address used for error notification of sent messages for the site administrator (Return-Path)
 $siteadminname      =   "Your Name";      // The name of the site administrator
 
 $emailmethod        =   "mail";           // The following values can be used:

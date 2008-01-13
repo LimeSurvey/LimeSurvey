@@ -2669,13 +2669,21 @@ function ReplaceFields ($text,$fieldsarray)
 	return $text;
 }
 
-function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false)
+function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null)
 {
 // This function mails a text $body to the recipient $to. YOu can use more than one 
 // recipient when using a comma separated string with recipients.
 
 	global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword;
 
+	if (is_null($bouncemail) )
+	{
+		$sender=$from;
+	}
+	else
+	{
+		$sender=$bouncemail;
+	}
 
 	$mail = new PHPMailer;
 	$mail->CharSet = "UTF-8";
@@ -2688,6 +2696,15 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false)
 		$fromemail=substr($from,strpos($from,'<')+1,strpos($from,'>')-1-strpos($from,'<'));
 		$fromname=trim(substr($from,0, strpos($from,'<')-1));
 	}
+
+	$sendername='';
+	$senderemail=$sender;
+	if (strpos($sender,'<'))
+	{
+		$senderemail=substr($sender,strpos($sender,'<')+1,strpos($sender,'>')-1-strpos($sender,'<'));
+		$sendername=trim(substr($sender,0, strpos($sender,'<')-1));
+	}
+
 	$mail->Mailer = $emailmethod;
 	if ($emailmethod=="smtp")
 	{ $mail->Host = $emailsmtphost;
@@ -2697,7 +2714,7 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false)
 	{$mail->SMTPAuth = true;}
 	}
 	$mail->From = $fromemail;
-	$mail->Sender = $fromemail; // Sets Return-Path for error notifications
+	$mail->Sender = $senderemail; // Sets Return-Path for error notifications
     $toemails = explode(",", $to);
     foreach ($toemails as $singletoemail)
     {
@@ -4148,6 +4165,37 @@ function mydebug_var($strOutput)
   fwrite($datei, var_export($strOutput, TRUE));
   fwrite($datei, "\n");
   fclose($datei);
+}
+
+// getBounceEmail: returns email used to receive error notifications
+function getBounceEmail($surveyid)
+{
+	global $connect;
+	global $dbprefix;
+
+	if (!isset($surveyid) || is_null($surveyid))
+	{
+		return null;
+	}
+	else
+	{
+		$query = "SELECT `bounce_email` FROM {$dbprefix}surveys WHERE `sid`=".$surveyid;
+		
+		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+		
+		if ($result->RecordCount() == 0)	return 'ERROR';
+		
+		$row = $result->FetchRow();
+	
+		if ($row['bounce_email'] == '')
+		{
+			return null; // will be converted to from in MailText
+		}
+		else
+		{
+			return $row['bounce_email'];
+		}	
+	}
 }
 
 // getEmailFormat: returns email format for the survey
