@@ -71,7 +71,7 @@ sendcacheheaders();
     `delete_user`
     `manage_label`
     `manage_template`
-    `move_user`
+    `superadmin`
 */
     
 if ($action == "importsurvey") 

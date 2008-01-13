@@ -318,7 +318,7 @@ CREATE TABLE `prefix_users` (
   `create_survey` tinyint(1) NOT NULL default '0',
   `create_user` tinyint(1) NOT NULL default '0',
   `delete_user` tinyint(1) NOT NULL default '0',
-  `move_user` tinyint(1) NOT NULL default '0',
+  `superadmin` tinyint(1) NOT NULL default '0',
   `configurator` tinyint(1) NOT NULL default '0',
   `manage_template` tinyint(1) NOT NULL default '0',
   `manage_label` tinyint(1) NOT NULL default '0'
@@ -347,7 +347,7 @@ CREATE TABLE `prefix_templates` (
 -- Table `settings_global`
 --
 
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '124');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '125');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 
 --

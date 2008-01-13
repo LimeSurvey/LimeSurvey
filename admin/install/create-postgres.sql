@@ -319,7 +319,7 @@ CREATE TABLE prefix_users (
     create_survey integer DEFAULT 0 NOT NULL,
     create_user integer DEFAULT 0 NOT NULL,
     delete_user integer DEFAULT 0 NOT NULL,
-    move_user integer DEFAULT 0 NOT NULL,
+    superadmin integer DEFAULT 0 NOT NULL,
     configurator integer DEFAULT 0 NOT NULL,
     manage_template integer DEFAULT 0 NOT NULL,
     manage_label integer DEFAULT 0 NOT NULL,
@@ -488,7 +488,7 @@ CREATE INDEX prefix_labels_ixcode_idx ON prefix_labels USING btree (code);
 -- Table `settings_global`
 --
 
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '124');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '125');
 INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 
 --
@@ -497,7 +497,7 @@ INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 
 INSERT INTO prefix_users(
             users_name, "password", full_name, parent_id, lang, email, 
-            create_survey, create_user, delete_user, move_user, configurator, 
+            create_survey, create_user, delete_user, superadmin, configurator, 
             manage_template, manage_label)
             VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);
 

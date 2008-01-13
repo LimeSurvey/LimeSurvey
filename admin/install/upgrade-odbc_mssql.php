@@ -101,7 +101,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","update [prefix_settings_global] set [stg_value]='114' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     
-    if ($oldversion < 124) {
+    if ($oldversion < 125) {
         modify_database("","ALTER TABLE [prefix_surveys] ADD  [printanswers] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] ADD  [listpublic] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
         upgrade_survey_tables117();
@@ -172,8 +172,12 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","ALTER TABLE [prefix_labels] ALTER COLUMN [title] text'"); echo $modifyoutput; flush();
         //124
         modify_database("","ALTER TABLE [prefix_surveys] ADD [bounce_email] VARCHAR(320)"); echo $modifyoutput; flush();
-
-        modify_database("","update [prefix_settings_global] set [stg_value]='124' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+        //125
+        upgrade_token_tables125();
+        modify_database("","EXEC sp_rename 'prefix_users.move_user','superadmin'"); echo $modifyoutput; flush();
+        modify_database("","UPDATE [prefix_users] SET [superadmin]=1 where ([create_survey]=1 AND [create_user]=1 AND [delete_user]=1 AND [configurator]=1)"); echo $modifyoutput; flush();
+        
+        modify_database("","update [prefix_settings_global] set [stg_value]='125' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     
     return true;
@@ -203,9 +207,19 @@ function upgrade_survey_tables118()
   	$tokentables=$connect->MetaTables('TABLES',false,$dbprefix."tokens%");
     foreach ($tokentables as $sv)
             {
-            modify_database("","ALTER TABLE ".$sv." ALTER COLUMN [token] VARCHAR(15)"); echo $modifyoutput; flush();
+            modify_database("","ALTER TABLE ".$sv." ALTER COLUMN [token] VARCHAR(36)"); echo $modifyoutput; flush();
             }
 }
 
+
+function upgrade_token_tables125()
+{
+  	global $connect,$modifyoutput,$dbprefix;
+  	$tokentables=$connect->MetaTables('TABLES',false,$dbprefix."tokens%");
+    foreach ($tokentables as $sv)
+            {
+            modify_database("","ALTER TABLE ".$sv." ADD COLUMN [emailstatus ] VARCHAR(300)"); echo $modifyoutput; flush();
+            }
+}
 
 ?>

@@ -81,7 +81,7 @@ function GetSessionUserRights($loginID)
 {
 	global $dbprefix,$connect; 
 	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-    $squery = "SELECT create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label FROM {$dbprefix}users WHERE uid=$loginID";	//		added by Dennis
+    $squery = "SELECT create_survey, configurator, create_user, delete_user, superadmin, manage_template, manage_label FROM {$dbprefix}users WHERE uid=$loginID";	//		added by Dennis
 	$sresult = $connect->Execute($squery);
 	if(@$fields = $sresult->FetchRow())
 		{
@@ -89,7 +89,7 @@ function GetSessionUserRights($loginID)
 		$_SESSION['USER_RIGHT_CONFIGURATOR'] = $fields['configurator'];
 		$_SESSION['USER_RIGHT_CREATE_USER'] = $fields['create_user'];
 		$_SESSION['USER_RIGHT_DELETE_USER'] = $fields['delete_user'];
-		$_SESSION['USER_RIGHT_MOVE_USER'] = $fields['move_user'];
+		$_SESSION['USER_RIGHT_SUPERADMIN'] = $fields['superadmin'];
 		$_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] = $fields['manage_template'];
 		$_SESSION['USER_RIGHT_MANAGE_LABEL'] = $fields['manage_label'];
 		}
@@ -97,7 +97,7 @@ function GetSessionUserRights($loginID)
 	// SuperAdmins
 	// * original superadmin with uid=1 unless manually changed and defined
 	//   in config.php
-	// * or any user having USER_RIGHT_MOVE_USER right
+	// * or any user having USER_RIGHT_SUPERADMIN right
 
 	// Let's check if I am the Initial SuperAdmin
 	$adminquery = "SELECT uid FROM {$dbprefix}users WHERE parent_id=0";
@@ -113,7 +113,7 @@ function GetSessionUserRights($loginID)
 	}
 
 	if ( $initialSuperadmin === true || 
-		$_SESSION['USER_RIGHT_MOVE_USER'] == 1)
+		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$_SESSION['USER_RIGHT_SUPERADMIN'] = 1;
 	}

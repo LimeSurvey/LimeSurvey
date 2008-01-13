@@ -179,7 +179,7 @@ if ($action == "modifyuser")
 //	{
 //		if ($usr['uid'] == $postuserid)
 //		{
-//				$squery = "SELECT create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label FROM {$dbprefix}users WHERE uid={$usr['parent_id']}";	//		added by Dennis
+//				$squery = "SELECT create_survey, configurator, create_user, delete_user, superadmin, manage_template, manage_label FROM {$dbprefix}users WHERE uid={$usr['parent_id']}";	//		added by Dennis
 //				$sresult = $connect->Execute($squery);
 //				$parent = $sresult->FetchRow();
 //				break;
@@ -279,7 +279,7 @@ if ($action == "setuserrights")
 		{
 			if ($usr['uid'] == $postuserid)
 			{
-				$squery = "SELECT create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label FROM {$dbprefix}users WHERE uid={$usr['parent_id']}";	//		added by Dennis
+				$squery = "SELECT create_survey, configurator, create_user, delete_user, superadmin, manage_template, manage_label FROM {$dbprefix}users WHERE uid={$usr['parent_id']}";	//		added by Dennis
 				$sresult = $connect->Execute($squery);
 				$parent = $sresult->FetchRow();
 
@@ -319,8 +319,8 @@ if ($action == "setuserrights")
 
 				// Only Initial SuperAdmmin can give SuperAdmin right
 				if($row['uid'] == $_SESSION['loginID']) {
-					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"move_user\" id=\"move_user\" value=\"move_user\"";
-					if($usr['move_user']) {
+					$usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"superadmin\" id=\"superadmin\" value=\"superadmin\"";
+					if($usr['superadmin']) {
 						$usersummary .= " checked='checked' ";
 					}
 					$usersummary .= "onclick=\"if (this.checked == true) {document.getElementById('create_survey').checked=true;document.getElementById('configurator').checked=true;document.getElementById('create_user').checked=true;document.getElementById('delete_user').checked=true;document.getElementById('manage_template').checked=true;document.getElementById('manage_label').checked=true;}\"";
@@ -391,7 +391,7 @@ if ($action == "setuserrights")
 if($action == "setnewparents")
 {
 	// muss noch eingeschraenkt werden ...
-	if($_SESSION['USER_RIGHT_MOVE_USER'])
+	if($_SESSION['USER_RIGHT_SUPERADMIN'])
 	{
 		$uid = $postuserid;
 		$newparentid = $_POST['parent'];
@@ -401,10 +401,10 @@ if($action == "setnewparents")
 		if($srow = $result->FetchRow()) {
 			$oldparent = $srow['parent_id'];
 		}
-		$query = "SELECT create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label FROM ".db_table_name('users')." WHERE uid = ".$newparentid;
+		$query = "SELECT create_survey, configurator, create_user, delete_user, superadmin, manage_template, manage_label FROM ".db_table_name('users')." WHERE uid = ".$newparentid;
 		$result = $connect->Execute($query) or die($connect->ErrorMsg());
 		$srow = $result->FetchRow();
-		$query = "UPDATE ".db_table_name('users')." SET parent_id = ".$newparentid.", create_survey = IF({$srow['create_survey']} = 1, create_survey, {$srow['create_survey']}), configurator = IF({$srow['configurator']} = 1, configurator, {$srow['configurator']}), create_user = IF({$srow['create_user']} = 1, create_user, {$srow['create_user']}), delete_user = IF({$srow['delete_user']} = 1, delete_user, {$srow['delete_user']}), move_user = IF({$srow['move_user']} = 1, move_user, {$srow['move_user']}), manage_template = IF({$srow['manage_template']} = 1, manage_template, {$srow['manage_template']}), manage_label = IF({$srow['manage_label']} = 1, manage_label, {$srow['manage_label']}) WHERE uid = ".$uid;
+		$query = "UPDATE ".db_table_name('users')." SET parent_id = ".$newparentid.", create_survey = IF({$srow['create_survey']} = 1, create_survey, {$srow['create_survey']}), configurator = IF({$srow['configurator']} = 1, configurator, {$srow['configurator']}), create_user = IF({$srow['create_user']} = 1, create_user, {$srow['create_user']}), delete_user = IF({$srow['delete_user']} = 1, delete_user, {$srow['delete_user']}), superadmin = IF({$srow['superadmin']} = 1, superadmin, {$srow['superadmin']}), manage_template = IF({$srow['manage_template']} = 1, manage_template, {$srow['manage_template']}), manage_label = IF({$srow['manage_label']} = 1, manage_label, {$srow['manage_label']}) WHERE uid = ".$uid;
 		$connect->Execute($query) or die($connect->ErrorMsg()." ".$query);
 		$query = "UPDATE ".db_table_name('users')." SET parent_id = ".$oldparent." WHERE parent_id = ".$uid;
 		$connect->Execute($query) or die($connect->ErrorMsg()." ".$query);
@@ -461,7 +461,7 @@ if ($action == "editusers")
 
 	//	output users
 	// output admin user only if the user logged in has user management rights
-	if ($_SESSION['USER_RIGHT_DELETE_USER']||$_SESSION['USER_RIGHT_CREATE_USER']||$_SESSION['USER_RIGHT_MOVE_USER']){
+	if ($_SESSION['USER_RIGHT_DELETE_USER']||$_SESSION['USER_RIGHT_CREATE_USER']||$_SESSION['USER_RIGHT_SUPERADMIN']){
 
 
 		$usersummary .= "\t<tr class='oddrow'>\n"
@@ -535,7 +535,7 @@ if ($action == "editusers")
 		$srow = $uresult->FetchRow();
 		$usr['parent'] = $srow['users_name'];
 		/*
-		if($_SESSION['USER_RIGHT_MOVE_USER'])
+		if($_SESSION['USER_RIGHT_SUPERADMIN'])
 		{
 			$usersummary .= "\t\t<td align='center'>"
 			."<form name='parentsform{$usr['uid']}'action='$scriptname?action=setnewparents' method='post'>"

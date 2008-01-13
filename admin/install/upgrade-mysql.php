@@ -105,7 +105,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","update `prefix_settings_global` set `stg_value`='114' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     
-    if ($oldversion < 124) {
+    if ($oldversion < 125) {
     //Adds new "public" field
         modify_database("","ALTER TABLE `prefix_surveys` ADD `printanswers` CHAR(1) default 'N' AFTER allowsave"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE `prefix_surveys` ADD `listpublic` CHAR(1) default 'N' AFTER `datecreated`"); echo $modifyoutput; flush();
@@ -181,9 +181,13 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","ALTER TABLE `prefix_labels` CHANGE `title` `title` text"); echo $modifyoutput; flush();
 		//124
         modify_database("","ALTER TABLE `prefix_surveys` ADD `bounce_email` varCHAR(320)"); echo $modifyoutput; flush();
+        //125
+        upgrade_token_tables125();
+        modify_database("","ALTER TABLE `prefix_users` ADD `superadmin` tinyint(1) NOT NULL default '0'"); echo $modifyoutput; flush();
+        modify_database("","UPDATE `prefix_users` SET `superadmin`=1 where (create_survey=1 AND create_user=1 AND move_user=1 AND delete_user=1 AND configurator=1)"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_users` DROP COLUMN `move_user`"); echo $modifyoutput; flush();
 		
-		
-		modify_database("","update `prefix_settings_global` set `stg_value`='124' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+		modify_database("","update `prefix_settings_global` set `stg_value`='125' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     return true;
 }
@@ -221,7 +225,20 @@ function upgrade_survey_tables118()
         }
 }
 
-
+function upgrade_token_tables125()
+{
+    global $modifyoutput,$dbprefix;
+    $surveyidquery = "SHOW TABLES LIKE '".$dbprefix."tokens%'";
+    $surveyidresult = db_execute_num($surveyidquery);
+    if (!$surveyidresult) {return "Database Error";}
+    else
+        {
+        while ( $sv = $surveyidresult->FetchRow() )
+            {
+            modify_database("","ALTER TABLE ".$sv[0]." ADD `emailstatus` VARCHAR(300)"); echo $modifyoutput; flush();
+            }
+        }
+}
 
 
 function fix_mysql_collation()

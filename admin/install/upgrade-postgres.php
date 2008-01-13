@@ -19,7 +19,7 @@
 
 function db_upgrade($oldversion) {
 
-    if ($oldversion < 124) {
+    if ($oldversion < 125) {
 	}
 
 

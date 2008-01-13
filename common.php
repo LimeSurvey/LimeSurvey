@@ -16,7 +16,7 @@
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 $versionnumber = "1.70b";
-$dbversionnumber = 124;
+$dbversionnumber = 125;
 
 
 
@@ -912,7 +912,7 @@ function getuserlist()
 	$userlist = array();
 	while ($srow = $uresult->FetchRow())
 	{
-		$userlist[] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id'], "create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "move_user"=>$srow['move_user'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);			//added by Dennis modified by Moses
+		$userlist[] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id'], "create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "superadmin"=>$srow['superadmin'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);			//added by Dennis modified by Moses
 
 	}
 	return $userlist;
@@ -3046,7 +3046,7 @@ function setuserrights($uid, $rights)
 	$updates = "create_survey=".$rights['create_survey']
 	. ", create_user=".$rights['create_user']
 	. ", delete_user=".$rights['delete_user']
-	. ", move_user=".$rights['move_user']
+	. ", superadmin=".$rights['superadmin']
 	. ", configurator=".$rights['configurator']
 	. ", manage_template=".$rights['manage_template']
 	. ", manage_label=".$rights['manage_label'];
@@ -3069,8 +3069,8 @@ function setuserrights($uid, $rights)
 			$updatesArray[] = "create_user=".$rights['create_user'];
 		if(!$rights['delete_user'])
 			$updatesArray[] = "delete_user=".$rights['delete_user'];
-		if(!$rights['move_user'])
-			$updatesArray[] = "move_user=".$rights['move_user'];
+		if(!$rights['superadmin'])
+			$updatesArray[] = "superadmin=".$rights['superadmin'];
 		if(!$rights['configurator'])
 			$updatesArray[] = "configurator=".$rights['configurator'];
 		if(!$rights['manage_template'])

@@ -240,7 +240,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 	elseif($valid_email)
 	{
 		$new_pass = createPassword();
-		$uquery = "INSERT INTO {$dbprefix}users (users_name, password,full_name,parent_id,lang,email,create_survey,create_user,delete_user,move_user,configurator,manage_template,manage_label) VALUES ('".db_quote($new_user)."', '".SHA256::hash($new_pass)."', '".db_quote($new_full_name)."', {$_SESSION['loginID']}, '{$defaultlang}', '".db_quote($new_email)."',0,0,0,0,0,0,0)";
+		$uquery = "INSERT INTO {$dbprefix}users (users_name, password,full_name,parent_id,lang,email,create_survey,create_user,delete_user,superadmin,configurator,manage_template,manage_label) VALUES ('".db_quote($new_user)."', '".SHA256::hash($new_pass)."', '".db_quote($new_full_name)."', {$_SESSION['loginID']}, '{$defaultlang}', '".db_quote($new_email)."',0,0,0,0,0,0,0)";
 		$uresult = $connect->Execute($uquery);
 
 		if($uresult)
@@ -248,14 +248,14 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 			$newqid = $connect->Insert_ID();
 
 			// add new user to userlist
-			$squery = "SELECT uid, users_name, password, parent_id, email, create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label FROM ".db_table_name('users')." WHERE uid='{$newqid}'";			//added by Dennis
+			$squery = "SELECT uid, users_name, password, parent_id, email, create_survey, configurator, create_user, delete_user, superadmin, manage_template, manage_label FROM ".db_table_name('users')." WHERE uid='{$newqid}'";			//added by Dennis
 			$sresult = db_execute_assoc($squery);
 			$srow = $sresult->FetchRow();
 			$userlist = getuserlist();
 			array_push($userlist, array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'],
 			"password"=>$srow["password"], "parent_id"=>$srow['parent_id'], // "level"=>$level,
 			"create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'],
-			"delete_user"=>$srow['delete_user'], "move_user"=>$srow['move_user'], "manage_template"=>$srow['manage_template'],
+			"delete_user"=>$srow['delete_user'], "superadmin"=>$srow['superadmin'], "manage_template"=>$srow['manage_template'],
 			"manage_label"=>$srow['manage_label']));
 
 			// send Mail
@@ -394,7 +394,7 @@ elseif ($action == "moduser")
 	//{
 	//	if ($usr['uid'] == $postuid)
 	//	{
-	//			$squery = "SELECT create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label FROM {$dbprefix}users WHERE uid={$usr['parent_id']}";	//		added by Dennis
+	//			$squery = "SELECT create_survey, configurator, create_user, delete_user, superadmin, manage_template, manage_label FROM {$dbprefix}users WHERE uid={$usr['parent_id']}";	//		added by Dennis
 	//			$sresult = $connect->Execute($squery);
 	//			$parent = $sresult->FetchRow();
 	//			break;
@@ -496,7 +496,7 @@ elseif ($action == "userrights")
 			if(isset($_POST['create_user']) && $_SESSION['USER_RIGHT_CREATE_USER'])$rights['create_user']=1;			else $rights['create_user']=0;
 			if(isset($_POST['delete_user']) && $_SESSION['USER_RIGHT_DELETE_USER'])$rights['delete_user']=1;			else $rights['delete_user']=0;
 
-			$rights['move_user']=0; // ONLY Initial Superadmin can give this right
+			$rights['superadmin']=0; // ONLY Initial Superadmin can give this right
 			if(isset($_POST['manage_template']) && $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'])$rights['manage_template']=1;	else $rights['manage_template']=0;
 			if(isset($_POST['manage_label']) && $_SESSION['USER_RIGHT_MANAGE_LABEL'])$rights['manage_label']=1;			else $rights['manage_label']=0;
 
@@ -514,7 +514,7 @@ elseif ($action == "userrights")
 			if(isset($_POST['delete_user']))$rights['delete_user']=1;			else $rights['delete_user']=0;
 
 			// Only Initial Superadmin can give this right
-			if(isset($_POST['move_user']))
+			if(isset($_POST['superadmin']))
 			{
 				// Am I original Superadmin ?
 				
@@ -525,17 +525,16 @@ elseif ($action == "userrights")
 			
 				if($row['uid'] == $_SESSION['loginID'])	// it's the original superadmin !!!
 				{
-					$rights['move_user']=1;
-					echo "TIBO";
+					$rights['superadmin']=1;
 				}
 				else 
 				{
-					$rights['move_user']=0;
+					$rights['superadmin']=0;
 				}
 			}
 			else
 			{
-					$rights['move_user']=0;
+					$rights['superadmin']=0;
 			}
 
 			if(isset($_POST['manage_template']))$rights['manage_template']=1;	else $rights['manage_template']=0;
