@@ -21,7 +21,7 @@ if ($action == "addquestion")
 {
 	if (!isset($gid)) {$gid=returnglobal('gid');}
 	$newquestionoutput = PrepareEditorScript();
-	$newquestionoutput .=  "\t<form action='$scriptname' name='addnewquestion1' method='post'>\n"
+	$newquestionoutput .=  "\t<form action='$scriptname' name='addnewquestion1' method='post'onsubmit=\"return isEmpty(document.getElementById('title'), '".$clang->gT("Error: You have to enter a code for this question.","js")."')\">\n" 
 	. "<table width='100%' border='0'>\n\n"
 	. "\t<tr>\n"
 	. "\t\t<td colspan='2' class='settingcaption'>"
