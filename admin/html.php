@@ -599,7 +599,7 @@ if ($surveyid)
 				. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n";
 			}
 		}
-		if ($activated == "Y" && ($sumrows5['browse_response'] || $sumrows5['export'] || $sumrows5['activate_survey']))
+		if ($activated == "Y" && ($sumrows5['export'] || $sumrows5['activate_survey']))
 		{
 						$surveysummary .="<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
@@ -837,6 +837,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 	$groupsummary = "<table width='100%' align='center' bgcolor='#FFFFFF' border='0'>\n";
 	while ($grow = $grpresult->FetchRow())
 	{
+        $grow = array_map('strip_tags', $grow);
 		$grow = array_map('htmlspecialchars', $grow);
 		$groupsummary .= "\t<tr>\n"
 		. "\t\t<td colspan='2'>\n"
