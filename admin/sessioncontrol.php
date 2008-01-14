@@ -55,16 +55,21 @@ elseif (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='' )
 // if changehtmleditormode is called then update user htmleditormode
 if (returnglobal('action') == "changehtmleditormode" )	
 	{
+	error_log("TIBO1: sessioncontrol action = ".returnglobal('action'));
 	$_SESSION['htmleditormode']=returnglobal('htmleditormode');
 	if(isset($_SESSION['loginID']))
 		{
+		error_log("TIBO2: loginID set = ".$_SESSION['loginID']);
 		$uquery = "UPDATE {$dbprefix}users SET htmleditormode='{$_SESSION['htmleditormode']}' WHERE uid={$_SESSION['loginID']}";	//		added by Dennis
-		$uresult = $connect->Execute($uquery);
+		error_log("TIBO3: UPDATE SQL mode = ".$uquery);
+		$uresult = $connect->Execute($uquery) or die("Can't update htmleditor setting");
 		}
 	}
 elseif (!isset($_SESSION['htmleditormode']) || $_SESSION['htmleditormode']=='' )
 	{
+	error_log("TIBO4: SESSION htmleditormode not set or empty = ");
 	$_SESSION['htmleditormode']=$defaulthtmleditormode;
+	error_log("TIBO4: SESSION htmleditormode set to default = ".$_SESSION['htmleditormode']);
 	}
 
 // Construct the language class, and set the language.
