@@ -369,6 +369,14 @@ if(isset($surveyid))
 			$keepanswers = "0";
 		}
 
+		// These are the questions types that use labelsets and 
+		// therefore we set the label set of all other question types to 0
+		if (($_POST['type']!= "F") && ($_POST['type']!= "H") && ($_POST['type']!= "W") &&
+		    ($_POST['type']!= "Z") && ($_POST['type']!= "1"))
+		{
+			$_POST['lid']=0;
+		}
+
 		// These are the questions types that have the other option therefore we set everything else to 'No Other'
 		if (($_POST['type']!= "L") && ($_POST['type']!= "!") && ($_POST['type']!= "P") && ($_POST['type']!="M"))
 		{
