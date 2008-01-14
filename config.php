@@ -16,36 +16,28 @@
 
 // === Basic Setup
 
-/*$databasetype       =   "odbc_mssql";       // ADOdb database driver - valid values are mysql, odbc_mssql or postgres
-$databaselocation   =   "NOBODYS\SQLEXPRESS";   // Network location of your Database - for odbc_mssql use the mssql servername, not localhost or IP
-$databaseport       =   "default";     // The port of your Database - if you use a standard port leave on default
-$databasename       =   "limesurvey";  // The name of the database that we will create
-$databaseuser       =   "sa";        // The name of a user with rights to create db (or if db already exists, then rights within that db)
-$databasepass       =   "alster";            // Password of db user
-*/
-
 $databasetype       =   "mysql";       // ADOdb database driver - valid values are mysql, odbc_mssql or postgres
 $databaselocation   =   "localhost";   // Network location of your Database - for odbc_mssql use the mssql servername, not localhost or IP
 $databaseport       =   "default";     // The port of your Database - if you use a standard port leave on default
 $databasename       =   "limesurvey";  // The name of the database that we will create
 $databaseuser       =   "root";        // The name of a user with rights to create db (or if db already exists, then rights within that db)
 $databasepass       =   "";            // Password of db user
-
-
 $dbprefix           =   "lime_";       // A global prefix that can be added to all LimeSurvey tables. Use this if you are sharing
                                        // a database with other applications. Suggested prefix is "lime_"
 $databasetabletype  =   "myISAM";	   // Storage engine mysql should use when creating survey results tables and token tables (if mysql is used). If available, InnoDB is recommended. Default is myISAM.
 
 // FILE LOCATIONS
 $rooturl            =   "http://{$_SERVER['SERVER_NAME']}/limesurvey"; //The root web url for your limesurvey installation.
-//$rooturl            =   "http://localhost:81/file:/D:/web/xampp/htdocs/limesurvey";
-
 $relativeurl        =   "/limesurvey"; // the url relative to you DocumentRoot where is installed LimeSurvey. Usually same as $rooturl without http://{$_SERVER['SERVER_NAME']}. Used by Fcked Filemanager
 
 $rootdir            =   dirname(__FILE__); // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this setting.
                                            // If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir="C:\Inetpub\wwwroot\limesurvey"!
                                            // Some IIS installations also require to use forward slashes instead of backslashes, e.g.  $rootDir="C:/Inetpub/wwwroot/limesurvey"!
                                            // If you use OS/2 this must be the complete rootdir with FORWARD slashes e.g.: $rootDir="c:/limesurvey";!
+
+$rootsymlinked      =   0;  // if your root document dir is symlinked LimeSurvey might have problems to find out the dir
+                            // If you notice that labels are not being translated like "_ADMINISTRATION_" instead of "Administration"
+                            // then try setting this to 1 .
 
 // === Advanced Setup
 
@@ -89,7 +81,7 @@ $defaulttemplate    =  "default";         // This setting specifys the default t
 $allowedtemplateuploads = "gif,jpg,png";   // File types allowed to be uploaded in the templates section.
 
 
-$debug              =   2;      // Set this to 1 if you are looking for errors. If you still get no errors after enabling this
+$debug              =   0;      // Set this to 1 if you are looking for errors. If you still get no errors after enabling this
                                 // then please check your error-logs - either in your hosting provider admin panel or in some /logs dir.
                                 // LimeSurvey developers set this to 2.   
 $memorylimit       =  "16M";    // This sets how much memory LimeSurvey can access. 16M is the minimum (M=mb) recommended.
@@ -184,6 +176,7 @@ $useWebserverAuth = false;
 // Can be usefull if you have no way to add an 'admin' user to the database
 // used by the webserver, then you could map your true loginame to admin with
 // $userArrayMap = Array ('mylogin' => 'admin');
+
 
 //$filterxsshtml
 // Enables filtering of suspicious html tags in survey, group, questions

@@ -118,7 +118,7 @@ if ($surveyid && $issurveyactive===false)
 		// ==> it is possible to start a new session
 		session_name($initial_session_name);
 		if (session_regenerate_id() === false) { die("Error Regenerating Sesion Id");}
-		session_destroy();
+		@session_destroy();
 
 		// start new session
 		@session_start();
@@ -198,7 +198,7 @@ if (isset($_POST['lang']) && $_POST['lang']!='')  // this one comes from the lan
     $_POST['lang'] = preg_replace("/[^a-zA-Z0-9-]/", "", $_POST['lang']);
 //    echo $_POST['lang'];
 	if ($_POST['lang']) $clang = SetSurveyLanguage( $surveyid, $_POST['lang']);
-	UpdateSessionGroupList();  // to refresh the language strings in the group list session variable
+	UpdateSessionGroupList($_POST['lang']);  // to refresh the language strings in the group list session variable
 	UpdateFieldArray();        // to refresh question titles and question text 
 } 
 else 
@@ -206,7 +206,7 @@ if (isset($_GET['lang']) && $surveyid)
 {
 	$_GET['lang'] = preg_replace("/[^a-zA-Z0-9-]/", "", $_GET['lang']);
 	if ($_GET['lang']) $clang = SetSurveyLanguage( $surveyid, $_GET['lang']);
-	UpdateSessionGroupList();  // to refresh the language strings in the group list session variable
+	UpdateSessionGroupList($_GET['lang']);  // to refresh the language strings in the group list session variable
 	UpdateFieldArray();        // to refresh question titles and question text 
 } 
 
@@ -1630,7 +1630,7 @@ function buildsurveysession()
 	}
 
 
-UpdateSessionGroupList();
+UpdateSessionGroupList($_SESSION['s_lang']);
 
 
 
@@ -2130,13 +2130,13 @@ function doAssessment($surveyid)
 	}
 }
 
-function UpdateSessionGroupList()
+function UpdateSessionGroupList($language)
 //1. SESSION VARIABLE: grouplist
 //A list of groups in this survey, ordered by group name.
 {
    global $surveyid;
     unset ($_SESSION['grouplist']);
-	$query = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='".$_SESSION['s_lang']."' ORDER BY ".db_table_name('groups').".group_order";
+	$query = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='".$language."' ORDER BY ".db_table_name('groups').".group_order";
 	$result = db_execute_assoc($query) or die ("Couldn't get group list<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	while ($row = $result->FetchRow())
 	{
