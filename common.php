@@ -511,11 +511,12 @@ function getsurveylist()
     $surveyidquery = "SELECT a.sid, a.owner_id, surveyls_title, surveyls_description, a.admin, a.active, surveyls_welcometext, a.useexpiry, a.expires, "
 					. "a.adminemail, a.private, a.faxto, a.format, a.template, a.url, "
 					. "a.language, a.datestamp, a.ipaddr, a.refurl, a.usecookie, a.notification, a.allowregister, a.attribute1, a.attribute2, "
-					. "a.allowsave, a.autoredirect, a.allowprev, a.datecreated FROM ".db_table_name('surveys')." AS a INNER JOIN ".db_table_name('surveys_rights')." AS b ON a.sid = b.sid "
+					. "a.allowsave, a.autoredirect, a.allowprev, a.datecreated FROM ".db_table_name('surveys')." AS a "
 					. "INNER JOIN ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=a.sid and surveyls_language=a.language) ";
 
 	if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1)
 	{
+		$surveyidquery .= " INNER JOIN ".db_table_name('surveys_rights')." AS b ON a.sid = b.sid ";
 		$surveyidquery .= "WHERE b.uid =".$_SESSION['loginID'];
 	}
 

@@ -168,6 +168,11 @@ elseif ($action == "deletesurvey")
     if($surrows['delete_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("deletesurvey.php");}
         else { include("access_denied.php");}    
     }    
+elseif ($action == "resetsurveylogic")
+    {
+    if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("resetsurveylogic.php");}
+        else { include("access_denied.php");}    
+    }    
 elseif ($action == "importgroup")
     {
     if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("importgroup.php");}
@@ -402,6 +407,7 @@ elseif ($action == "replacementfields")
   if (isset($importoldresponsesoutput)) {$adminoutput.= $importoldresponsesoutput;} 	
   if (isset($conditionsoutput)) {$adminoutput.= $conditionsoutput;} 	
   if (isset($deletesurveyoutput)) {$adminoutput.= $deletesurveyoutput;} 	
+  if (isset($resetsurveylogicoutput)) {$adminoutput.= $resetsurveylogicoutput;} 	
   if (isset($vvoutput)) {$adminoutput.= $vvoutput;} 	
   if (isset($dumpdboutput)) {$adminoutput.= $dumpdboutput;}     
                                                                         

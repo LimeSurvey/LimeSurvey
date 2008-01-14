@@ -324,6 +324,9 @@ if ($surveyid)
 		$sumquery3 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND language='".$baselang."'"; //Getting a count of questions for this survey
 		$sumresult3 = $connect->Execute($sumquery3);
 		$sumcount3 = $sumresult3->RecordCount();
+		$sumquery6 = "SELECT * FROM ".db_table_name('conditions')." as c, ".db_table_name('questions')."as q WHERE c.qid = q.qid AND q.sid=$surveyid"; //Getting a count of conditions for this survey
+		$sumresult6 = $connect->Execute($sumquery6) or die("Can't coun't conditions");
+		$sumcount6 = $sumresult6->RecordCount();
 		$sumquery2 = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='".$baselang."'"; //Getting a count of groups for this survey
 		$sumresult2 = $connect->Execute($sumquery2);
 		$sumcount2 = $sumresult2->RecordCount();
@@ -532,6 +535,18 @@ if ($surveyid)
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
 
+		if ( $sumcount6 > 0 &&($_SESSION['USER_RIGHT_SUPERADMIN'] == 1  || $sumrows5['define_questions']))
+		{
+			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=resetsurveylogic&amp;sid=$surveyid', '_top')\""
+			. "onmouseout=\"hideTooltip()\""
+			. "onmouseover=\"showTooltip(event,'".$clang->gT("Reset Survey Logic", "js")."');return false\">\n" .
+			"<img src='$imagefiles/resetsurveylogic.png' title='' align='left' name='ResetSurveyLogic' alt='Reset Survey Logic'  /></a>" ;
+		}
+		else
+		{
+			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
+		}
+
 		if($activated!="Y" && getGroupSum($surveyid,$s1row['language'])>1 && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions']))
 		{
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=ordergroups&amp;sid=$surveyid', '_top')\""
@@ -660,7 +675,7 @@ if ($surveyid)
                  || $action=="surveyrights" || $action=="addsurveysecurity" || $action=="addusergroupsurveysecurity" 
                  || $action=="setsurveysecurity" ||  $action=="setusergroupsurveysecurity" || $action=="delsurveysecurity" 
                  || $action=="editsurvey" || $action=="addgroup" || $action=="importgroup"
-                 || $action=="ordergroups" || $action=="updatesurvey" || $action=="deletesurvey"
+                 || $action=="ordergroups" || $action=="updatesurvey" || $action=="deletesurvey" || $action=="resetsurveylogic"
                  || $action=="exportstructure" || $action=="quotas" ) {$showstyle="style='display: none'";}
 		if (!isset($showstyle)) {$showstyle="";}
         $additionnalLanguagesArray = GetAdditionalLanguagesFromSurveyID($surveyid);
