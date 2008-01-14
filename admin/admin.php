@@ -130,117 +130,117 @@ $surrows = $surresult->FetchRow();
 
 if ($action == "activate")
     {
-    if($surrows['activate_survey'])    {include("activate.php");}
+    if($surrows['activate_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("activate.php");}
         else { include("access_denied.php");}    
     }
 elseif ($action == "conditions")
 {
-    if($surrows['define_questions'])    {include("conditions.php");}
+    if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("conditions.php");}
         else { include("access_denied.php");}    
     }    
 elseif ($action == "exportstructurecsv")
     {
-    if($surrows['export'])    {include("export_structure_csv.php");}
+    if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("export_structure_csv.php");}
         else { include("access_denied.php");}    
     }    
 elseif ($action == "exportstructurequexml")
     {
-    if($surrows['export'])    {include("export_structure_quexml.php");}
+    if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("export_structure_quexml.php");}
         else { include("access_denied.php");}    
     }    
 elseif ($action == "dumpquestion")
     {
-    if($surrows['export'])    {include("dumpquestion.php");}
+    if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("dumpquestion.php");}
         else { include("access_denied.php");}    
     }    
 elseif ($action == "dumpgroup")
     {
-    if($surrows['export'])    {include("dumpgroup.php");}
+    if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("dumpgroup.php");}
         else { include("access_denied.php");}    
     }    
 elseif ($action == "deactivate")
     {
-    if($surrows['activate_survey'])    {include("deactivate.php");}
+    if($surrows['activate_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("deactivate.php");}
         else { include("access_denied.php");}    
     }
 elseif ($action == "deletesurvey")
     {
-    if($surrows['delete_survey'])    {include("deletesurvey.php");}
+    if($surrows['delete_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("deletesurvey.php");}
         else { include("access_denied.php");}    
     }    
 elseif ($action == "importgroup")
     {
-    if($surrows['define_questions'])    {include("importgroup.php");}
+    if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("importgroup.php");}
         else { include("access_denied.php");}    
     }
 elseif ($action == "importquestion")
     {
-    if($surrows['define_questions'])    {include("importquestion.php");}
+    if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("importquestion.php");}
         else { include("access_denied.php");}    
     }    
 elseif ($action == "listcolumn")
     {
-    if($surrows['browse_response'])    {include("listcolumn.php");}
+    if($surrows['browse_response'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("listcolumn.php");}
         else { include("access_denied.php");}    
     }    
 elseif ($action == "previewquestion")
     {
-    if($surrows['define_questions'])    {include("preview.php");}
+    if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("preview.php");}
         else { include("access_denied.php");}    
     }
 elseif ($action=="addgroup" || $action=="editgroup")        
     {
-    if($surrows['define_questions'])    {$_SESSION['FileManagerContext']="edit:group:$surveyid";include("grouphandling.php");}
+    if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {$_SESSION['FileManagerContext']="edit:group:$surveyid";include("grouphandling.php");}
         else { include("access_denied.php");}    
     }
 elseif ($action == "vvexport")
     {
-    if($surrows['browse_response'])    {include("vvexport.php");}
+    if($surrows['browse_response'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("vvexport.php");}
         else { include("access_denied.php");}    
     }    
 elseif ($action == "vvimport")
     {
-    if($surrows['browse_response'])    {include("vvimport.php");}
+    if($surrows['browse_response'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("vvimport.php");}
         else { include("access_denied.php");}    
     }    
 elseif ($action == "importoldresponses")
     {
-    if($surrows['browse_response'])    {include("importoldresponses.php");}
+    if($surrows['browse_response'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("importoldresponses.php");}
         else { include("access_denied.php");}    
     }    
 elseif ($action == "saved")
     {
-    if($surrows['browse_response'])    {include("saved.php");}
+    if($surrows['browse_response'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("saved.php");}
         else { include("access_denied.php");}    
     }    
 elseif ($action == "exportresults")
     {
-    if($surrows['export'])    {include("exportresults.php");}
+    if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("exportresults.php");}
         else { include("access_denied.php");}    
     }    
 elseif ($action == "exportspss")
     {
-    if($surrows['export'])    {include("spss.php");}
+    if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("spss.php");}
         else { include("access_denied.php");}    
     }    
 elseif ($action == "statistics")
     {
-    if($surrows['browse_response'])    {include("statistics.php");}
+    if($surrows['browse_response'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("statistics.php");}
         else { include("access_denied.php");}    
     }    
 elseif ($action == "dataentry")
     {
-    if($surrows['browse_response'])    {include("dataentry.php");}
+    if($surrows['browse_response'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("dataentry.php");}
         else { include("access_denied.php");}    
     }    
 elseif ($action == "browse")
     {
-    if($surrows['browse_response'])    {include("browse.php");}               
+    if($surrows['browse_response'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("browse.php");}               
         else { include("access_denied.php");}    
     }    
 elseif ($action == "tokens")
     {
-    if($surrows['activate_survey'])    {include("tokens.php");}               
+    if($surrows['activate_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("tokens.php");}               
         else { include("access_denied.php");}    
     }    
 elseif ($action=="showprintablesurvey")  
@@ -249,14 +249,72 @@ elseif ($action=="showprintablesurvey")
     } 
 elseif ($action=="assessments" || $action=="assessmentdelete" || $action=="assessmentedit" || $action=="assessmentadd" || $action=="assessmentupdate")
     {
-    if($surrows['define_questions'])    {include("assessments.php");}
+    if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("assessments.php");}
         else { include("access_denied.php");}    
     }    
 elseif ($action == "replacementfields")
     {
-    if ($editedaction != 'labels' && $surrows['define_questions'])    {include("fck_LimeReplacementFields.php");exit;}
-	elseif ( $editedaction == 'labels' && $_SESSION['USER_RIGHT_MANAGE_LABEL']==1) {include("fck_LimeReplacementFields.php");exit;}
-        else { include("access_denied.php");}    
+//    if ($editedaction != 'labels' && $surrows['define_questions'])    {include("fck_LimeReplacementFields.php");exit;}
+//	elseif ( $editedaction == 'labels' && $_SESSION['USER_RIGHT_MANAGE_LABEL']==1) {include("fck_LimeReplacementFields.php");exit;}
+ //       else { include("access_denied.php");}    
+	switch ($editedaction)
+	{
+		case 'labels':
+			if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL']==1)
+			{
+				include("fck_LimeReplacementFields.php");exit;
+			}
+			else
+			{
+				include("access_denied.php");
+			}
+		break;
+		case 'newsurvey':
+			if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_CREATE_SURVEY'] == 1)
+			{
+				include("fck_LimeReplacementFields.php");exit;
+			}
+			else
+			{
+				include("access_denied.php");
+			}
+		break;	
+		case 'updatesurvey':
+			if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $surrows['edit_survey_property'])
+			{
+				include("fck_LimeReplacementFields.php");exit;
+			}
+			else
+			{
+				include("access_denied.php");
+			}
+		break;
+		case 'tokens': // email
+			if ( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $surrows['activate_survey'])
+			{
+				include("fck_LimeReplacementFields.php");exit;
+			}
+			else
+			{
+				include("access_denied.php");
+			}
+		case 'editquestion':
+		case 'editgroup':
+		case 'addquestion':
+		case 'addgroup':
+		case 'editanswer':
+			if ( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $surrows['define_questions'])
+			{
+				include("fck_LimeReplacementFields.php");exit;
+			}
+			else
+			{
+				include("access_denied.php");
+			}
+		break;
+		default:
+		break;
+	}
     }    
 
 
@@ -272,7 +330,7 @@ elseif ($action == "replacementfields")
  if ($action=="addquestion" || $action=="copyquestion" || $action=="editquestion" || 
      $action=="orderquestions" || $action=="editattribute" || $action=="delattribute" || 
      $action=="addattribute" )
-    {if($surrows['define_questions'])    {$_SESSION['FileManagerContext']="edit:question:$surveyid";include("questionhandling.php");}
+    {if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {$_SESSION['FileManagerContext']="edit:question:$surveyid";include("questionhandling.php");}
         else { include("access_denied.php");}    
     }    
 

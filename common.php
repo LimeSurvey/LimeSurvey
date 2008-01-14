@@ -512,8 +512,15 @@ function getsurveylist()
 					. "a.adminemail, a.private, a.faxto, a.format, a.template, a.url, "
 					. "a.language, a.datestamp, a.ipaddr, a.refurl, a.usecookie, a.notification, a.allowregister, a.attribute1, a.attribute2, "
 					. "a.allowsave, a.autoredirect, a.allowprev, a.datecreated FROM ".db_table_name('surveys')." AS a INNER JOIN ".db_table_name('surveys_rights')." AS b ON a.sid = b.sid "
-					. "INNER JOIN ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=a.sid and surveyls_language=a.language) "
-					. "WHERE b.uid =".$_SESSION['loginID']." order by active DESC, surveyls_title";//CHANGED by Moses only with rights
+					. "INNER JOIN ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=a.sid and surveyls_language=a.language) ";
+
+	if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1)
+	{
+		$surveyidquery .= "WHERE b.uid =".$_SESSION['loginID'];
+	}
+
+	$surveyidquery .= " order by active DESC, surveyls_title";
+
     $surveyidresult = db_execute_num($surveyidquery);
     if (!$surveyidresult) {return "Database Error";}
     $surveyselecter = "";

@@ -58,14 +58,14 @@ if(isset($surveyid))
 	$actsurresult = db_execute_assoc($actsurquery);
 	$actsurrows = $actsurresult->FetchRow();
 
-	if ($action == "delattribute" && $actsurrows['define_questions'])
+	if ($action == "delattribute" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
 		settype($_POST['qaid'], "integer");
 		$query = "DELETE FROM ".db_table_name('question_attributes')."
 				  WHERE qaid={$_POST['qaid']} AND qid={$_POST['qid']}";
 		$result=$connect->Execute($query) or die("Couldn't delete attribute<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
 	}
-	elseif ($action == "addattribute" && $actsurrows['define_questions'])
+	elseif ($action == "addattribute" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
 		if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
 		{
@@ -76,7 +76,7 @@ if(isset($surveyid))
 			$result = $connect->Execute($query) or die("Error<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
 		}
 	}
-	elseif ($action == "editattribute" && $actsurrows['define_questions'])
+	elseif ($action == "editattribute" && ( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
 		if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
 		{
@@ -86,7 +86,7 @@ if(isset($surveyid))
 			$result = $connect->Execute($query) or die("Error<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
 		}
 	}
-	elseif ($action == "insertnewgroup" && $actsurrows['define_questions'])
+	elseif ($action == "insertnewgroup" && ( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
   		$grplangs = GetAdditionalLanguagesFromSurveyID($_POST['sid']);
   		$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);
@@ -143,7 +143,7 @@ if(isset($surveyid))
 		}
 	}
 
-	elseif ($action == "updategroup" && $actsurrows['define_questions'])
+	elseif ($action == "updategroup" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
 		$_POST  = array_map('db_quote', $_POST);
 		$grplangs = GetAdditionalLanguagesFromSurveyID($_POST['sid']);
@@ -175,7 +175,7 @@ if(isset($surveyid))
 
 	}
 
-	elseif ($action == "delgroupnone" && $actsurrows['define_questions'])
+	elseif ($action == "delgroupnone" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
 		if (!isset($gid)) $gid=returnglobal('gid');
 		$query = "DELETE FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid";
@@ -193,7 +193,7 @@ if(isset($surveyid))
 		}
 	}
 
-	elseif ($action == "delgroup" && $actsurrows['define_questions'])
+	elseif ($action == "delgroup" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
 		if (!isset($gid)) $gid=returnglobal('gid');
 		$query = "SELECT qid FROM ".db_table_name('groups').", ".db_table_name('questions')." WHERE ".db_table_name('groups').".gid=".db_table_name('questions').".gid AND ".db_table_name('groups').".gid=$gid";
@@ -231,7 +231,7 @@ if(isset($surveyid))
 		}
 	}
 
-	elseif ($action == "insertnewquestion" && $actsurrows['define_questions'])
+	elseif ($action == "insertnewquestion" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
 		if (strlen($_POST['title']) < 1)
 		{
@@ -305,7 +305,7 @@ if(isset($surveyid))
 			}
 		}
 	}
-	elseif ($action == "renumberquestions" && $actsurrows['define_questions'])
+	elseif ($action == "renumberquestions" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
 		//Automatically renumbers the "question codes" so that they follow
 		//a methodical numbering method
@@ -339,7 +339,7 @@ if(isset($surveyid))
 		}
 	}
 
-	elseif ($action == "updatequestion" && $actsurrows['define_questions'])
+	elseif ($action == "updatequestion" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
 		$cqquery = "SELECT type, gid FROM ".db_table_name('questions')." WHERE qid={$_POST['qid']}";
 		$cqresult=db_execute_assoc($cqquery) or die ("Couldn't get question type to check for change<br />".htmlspecialchars($cqquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -514,7 +514,7 @@ if(isset($surveyid))
 		}
 	}
 
-	elseif ($action == "copynewquestion" && $actsurrows['define_questions'])
+	elseif ($action == "copynewquestion" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
 
 		if (!$_POST['title'])
@@ -609,7 +609,7 @@ if(isset($surveyid))
 			}
 		}
 	}
-	elseif ($action == "delquestion" && $actsurrows['define_questions'])
+	elseif ($action == "delquestion" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
 		if (!isset($qid)) {$qid=returnglobal('qid');}
 		//check if any other questions have conditions which rely on this question. Don't delete if there are.
@@ -650,7 +650,7 @@ if(isset($surveyid))
 		}
 	}
 
-	elseif ($action == "delquestionall" && $actsurrows['define_questions'])
+	elseif ($action == "delquestionall" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
 		if (!isset($qid)) {$qid=returnglobal('qid');}
 		//check if any other questions have conditions which rely on this question. Don't delete if there are.
@@ -686,7 +686,7 @@ if(isset($surveyid))
 		}
 	}
 
-	elseif ($action == "modanswer" && $actsurrows['define_questions'])
+	elseif ($action == "modanswer" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
 		switch($_POST['method'])
 		{
@@ -896,7 +896,7 @@ if(isset($surveyid))
 		}
 	}
 
-	elseif ($action == "updatesurvey" && $actsurrows['edit_survey_property'])
+	elseif ($action == "updatesurvey" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property']))
 	{
 		if ($_POST['url'] == "http://") {$_POST['url']="";}
 		$_POST  = array_map('db_quote', $_POST);
@@ -989,7 +989,7 @@ if(isset($surveyid))
 		}
 	}
 
-	elseif ($action == "delsurvey" && $actsurrows['delete_survey']) //can only happen if there are no groups, no questions, no answers etc.
+	elseif ($action == "delsurvey" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['delete_survey'])) //can only happen if there are no groups, no questions, no answers etc.
 	{
 		$query = "DELETE FROM {$dbprefix}surveys WHERE sid=$surveyid";
 		$result = $connect->Execute($query);
@@ -1007,7 +1007,7 @@ if(isset($surveyid))
 
 
 	// Save the 2nd page from the survey-properties
-	elseif ($action == "updatesurvey2" && $actsurrows['edit_survey_property'])
+	elseif ($action == "updatesurvey2" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property']))
 	{
 		$_POST  = array_map('db_quote', $_POST);
 		$languagelist = GetAdditionalLanguagesFromSurveyID($surveyid);

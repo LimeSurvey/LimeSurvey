@@ -315,7 +315,7 @@ if ($surveyid)
 {
 	$query = "SELECT * FROM ".db_table_name('surveys_rights')." WHERE  sid = {$surveyid} AND uid = ".$_SESSION['loginID'];
 	$result = $connect->SelectLimit($query, 1);
-	if($result->RecordCount() > 0)
+	if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $result->RecordCount() > 0)
 	{
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
 		$sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
@@ -351,7 +351,7 @@ if ($surveyid)
 			. "title='' alt='".$clang->gT("This survey is not currently active")."' border='0' hspace='0' align='left'"
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("This survey is not currently active", "js")."');return false\" />\n";
-			if($sumrows5['activate_survey'] && $sumcount3>0)
+			if(($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['activate_survey']) && $sumcount3>0)
 			{
 				$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=activate&amp;sid=$surveyid', '_top')\""
 				. "onmouseout=\"hideTooltip()\""
@@ -380,7 +380,7 @@ if ($surveyid)
 				. "onmouseout=\"hideTooltip()\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("This survey is currently active", "js")."');return false\" />\n";
 			}
-			if($sumrows5['activate_survey'])
+			if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['activate_survey'])
 			{
 				$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=deactivate&amp;sid=$surveyid', '_top')\""
 				. "onmouseout=\"hideTooltip()\""
@@ -449,7 +449,7 @@ if ($surveyid)
 
 		}
 
-		if($activated == "Y" && $sumrows5['browse_response'])
+		if($activated == "Y" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['browse_response']))
 		{
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/".$scriptname."?action=dataentry&amp;sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
@@ -457,7 +457,7 @@ if ($surveyid)
 			. "<img src='$imagefiles/dataentry.png' title='' align='left' alt='".$clang->gT("Dataentry Screen for Survey")."'"
 			. "name='DoDataentry' /></a>\n";
 		} 
-		else if (!$sumrows5['browse_response'])
+		else if (!$sumrows5['browse_response'] && $_SESSION['USER_RIGHT_SUPERADMIN'] !=1)
 		{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		} else {
@@ -507,7 +507,7 @@ if ($surveyid)
 			
 		}
 
-		if($sumrows5['edit_survey_property'])
+		if($_SESSION['USER_RIGHT_SUPERADMIN'] ==1 || $sumrows5['edit_survey_property'])
 		{
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=editsurvey&amp;sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
@@ -520,7 +520,7 @@ if ($surveyid)
 		}
 
 
-		if ($sumrows5['delete_survey'])
+		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1  || $sumrows5['delete_survey'])
 		{
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=deletesurvey&amp;sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
@@ -532,7 +532,7 @@ if ($surveyid)
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
 
-		if($activated!="Y" && getGroupSum($surveyid,$s1row['language'])>1 && $sumrows5['define_questions'])
+		if($activated!="Y" && getGroupSum($surveyid,$s1row['language'])>1 && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions']))
 		{
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=ordergroups&amp;sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
@@ -544,7 +544,7 @@ if ($surveyid)
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
 
-		if ($sumrows5['export'])
+		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'])
 		{
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=exportstructure&amp;sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
@@ -556,7 +556,7 @@ if ($surveyid)
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
 
-		if ($sumrows5['edit_survey_property'])
+		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['edit_survey_property'])
 		{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n"
 			. "<a href=\"#\" onclick=\"window.open('$scriptname?action=assessments&amp;sid=$surveyid', '_top')\""
@@ -569,7 +569,7 @@ if ($surveyid)
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
 		
-		if ($sumrows5['edit_survey_property'])
+		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['edit_survey_property'])
 		{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n"
 			. "<a href=\"#\" onclick=\"window.open('$scriptname?action=quotas&amp;sid=$surveyid', '_top')\""
@@ -582,7 +582,7 @@ if ($surveyid)
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
 
-		if ($activated == "Y" && $sumrows5['browse_response'])
+		if ($activated == "Y" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['browse_response']))
 		{
 			$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n"
 			. "<a href=\"#\" onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid', '_top')\""
@@ -599,7 +599,7 @@ if ($surveyid)
 				. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n";
 			}
 		}
-		if ($activated == "Y" && ($sumrows5['export'] || $sumrows5['activate_survey']))
+		if ($activated == "Y" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'] || $sumrows5['activate_survey']))
 		{
 						$surveysummary .="<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
@@ -629,7 +629,7 @@ if ($surveyid)
 		{
 			$surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' align='right' border='0' hspace='0' />\n";
 		}
-		elseif($sumrows5['define_questions'])
+		elseif($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
 		{
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=addgroup&amp;sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
@@ -693,7 +693,7 @@ if ($surveyid)
 			break;
 		}
 
-		if($sumrows5['edit_survey_property'])
+		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['edit_survey_property'])
 		{
 			$surveysummary2 .= $clang->gT("Regenerate Question Codes:")
 			. " [<a href='$scriptname?action=renumberquestions&amp;sid=$surveyid&amp;style=straight' "
@@ -801,11 +801,11 @@ if ($surveyid)
         if ($activated == "N" && $sumcount3 == 0)
         {
 			$surveysummary .= $clang->gT("Survey cannot be activated yet.")."<br />\n";
-			if ($sumcount2 == 0 && $sumrows5['define_questions'])
+			if ($sumcount2 == 0 && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions']))
 			{
 				$surveysummary .= "\t<font class='statusentryhighlight'>[".$clang->gT("You need to add groups")."]</font><br />";
 			}
-			if ($sumcount3 == 0 && $sumrows5['define_questions'])
+			if ($sumcount3 == 0 && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 ||$sumrows5['define_questions']))
 			{
 				$surveysummary .= "\t<font class='statusentryhighlight'>[".$clang->gT("You need to add questions")."]</font><br />";
 			}
@@ -852,7 +852,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='160' height='20' border='0' hspace='0' align='left' />\n"
 		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
 
-		if($sumrows5['define_questions'])
+		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
 		{
 			$groupsummary .=  "<a href=\"#\" onclick=\"window.open('$scriptname?action=editgroup&amp;sid=$surveyid&amp;gid=$gid','_top')\""
 			. "onmouseout=\"hideTooltip()\""
@@ -864,7 +864,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
 
-		if ((($sumcount4 == 0 && $activated != "Y") || $activated != "Y") && $sumrows5['define_questions'])
+		if ((($sumcount4 == 0 && $activated != "Y") || $activated != "Y") &&($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions']))
 		{
 			if (is_null($condarray))
 			{
@@ -885,7 +885,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 		{
 			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
-		if(($activated!="Y" && getQuestionSum($surveyid, $gid)>1) && $sumrows5['define_questions'])
+		if(($activated!="Y" && getQuestionSum($surveyid, $gid)>1) && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions']))
 		{
 			$groupsummary .= "<a href='$scriptname?action=orderquestions&amp;sid=$surveyid&amp;gid=$gid' onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Change Question Order", "js")."');return false\">"
@@ -895,7 +895,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 		{
 			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
-		if($sumrows5['export'])
+		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'])
 		{
 
 			$groupsummary .="<a href='$scriptname?action=dumpgroup&amp;sid=$surveyid&amp;gid=$gid' onmouseout=\"hideTooltip()\""
@@ -933,7 +933,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 		{
 			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' border='0' hspace='0' align='right' />\n";
 		}
-		elseif($sumrows5['define_questions'])
+		elseif($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
 		{
 			$groupsummary .= "<a href='$scriptname?action=addquestion&amp;sid=$surveyid&amp;gid=$gid'"
 			."onmouseout=\"hideTooltip()\""
@@ -1010,7 +1010,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='160' height='20' border='0' hspace='0' align='left' />\n"
 		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
 
-		if($sumrows5['define_questions'])
+		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
 		{
 			$questionsummary .= "<a href='$scriptname?action=editquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'" .
 			"onmouseout=\"hideTooltip()\""
@@ -1022,7 +1022,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
 
-		if ((($qct == 0 && $activated != "Y") || $activated != "Y") && $sumrows5['define_questions'])
+		if ((($qct == 0 && $activated != "Y") || $activated != "Y") && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions']))
 		{
 			if (is_null($condarray))
 			{
@@ -1046,7 +1046,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		else {$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";}
 		$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 
-		if($sumrows5['export'])
+		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'])
 		{
 			$questionsummary .= "<a href='$scriptname?action=dumpquestion&amp;sid=$surveyid&amp;qid=$qid' onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Export this Question", "js")."');return false\">" .
@@ -1059,7 +1059,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		}
 		$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
 
-		if($sumrows5['define_questions'])
+		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
 		{
 			if ($activated != "Y")
 			{
@@ -1082,7 +1082,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		{
 			$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
-		if($sumrows5['define_questions'])
+		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
 		{
 			$questionsummary .= "<a href='#' onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=475, width=650, scrollbars=yes, resizable=yes, left=50, top=50')\""
 			. "onmouseout=\"hideTooltip()\""
@@ -1094,7 +1094,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		{
 			$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
-		if($sumrows5['define_questions'])
+		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
 		{
 			if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
 			{
@@ -1130,7 +1130,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		{
 			$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
 		}
-		if($sumrows5['define_questions'])
+		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
 		{
 			if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "!" || $qrrow['type'] == "!" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type']=="A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "F" || $qrrow['type'] == "H" || $qrrow['type'] == "P" || $qrrow['type'] == "R" || $qrrow['type'] == "K" || $qrrow['type'] == "1")
 			{
@@ -1214,7 +1214,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			 	$questionsummary .= "<td align='left'>".$labelsetname." (LID: {$qrrow['lid']}) ";
 			}
 			// If the user has the right to edit the label sets show the icon for the label set administration
-			if ($sumrows5['define_questions'])
+			if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
 			{
 			$questionsummary .= "<input align='top' type='image' src='$imagefiles/labelssmall.png' title='"
 			. $clang->gT("Edit/Add Label Sets")."' name='EditThisLabelSet' "
@@ -1399,7 +1399,7 @@ if (returnglobal('viewanswer'))
 			$vasummary .= "\t</td>\n"
 			."\t<td width='50%'>\n"
 			."\t<input type='text' name='answer_{$row['language']}_{$row['sortorder']}' maxlength='1000' size='80' value=\"{$row['answer']}\" onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;}\" />\n"
-			. getEditor("editanswer","answer_".$row['language']."_".$row['sortorder'], "[".$clang->gT("Answer:", "js")."](".$row['language'].")",'','','',$action)
+			. getEditor("editanswer","answer_".$row['language']."_".$row['sortorder'], "[".$clang->gT("Answer:", "js")."](".$row['language'].")",'','','','editanswer')
 			."\t</td>\n"
 			."\t<td width='20%'>\n";
 			
@@ -1744,7 +1744,7 @@ if($action == "setusergroupsurveysecurity")
 // This is the action to export the structure of a complete survey
 if($action == "exportstructure")
 {
-    if($sumrows5['export'])
+    if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'])
     {
     $exportstructure = "<form name='exportstructure' action='$scriptname' method='post'>\n" 
     ."<table width='100%' border='0' >\n\t<tr><td class='settingcaption'>"
@@ -1946,7 +1946,7 @@ elseif ($action == "surveyrights")
 // Editing the survey
 if ($action == "editsurvey")
 {
-	if($sumrows5['edit_survey_property'])
+	if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['edit_survey_property'])
 	{
 		$esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
 		$esresult = db_execute_assoc($esquery);
@@ -2406,7 +2406,7 @@ if ($action == "editsurvey")
 
 if ($action == "updatesurvey")  // Edit survey step 2  - editing language dependent settings
 {
-	if($sumrows5['edit_survey_property'])
+	if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['edit_survey_property'])
 	{
 	
     	$grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -2480,7 +2480,7 @@ if($action == "quotas")
 
 if ($action == "ordergroups")
 {
-	if($sumrows5['edit_survey_property'])
+	if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['edit_survey_property'])
 	{
 	// Check if one of the up/down buttons have been clicked
 	if (isset($_POST['groupordermethod']))

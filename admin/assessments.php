@@ -23,7 +23,7 @@ $actsurquery = "SELECT edit_survey_property FROM {$dbprefix}surveys_rights WHERE
 $actsurresult = $connect->Execute($actsurquery) or die($connect->ErrorMsg());		
 $actsurrows = $actsurresult->FetchRow();
 
-if($actsurrows['edit_survey_property']){
+if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property']){
 
 	if ($action == "assessmentadd") {
 		$inserttable=$dbprefix."assessments";

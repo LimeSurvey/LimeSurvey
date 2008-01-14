@@ -545,7 +545,7 @@ if ($subaction == "emailsettings")
 }
 
 	// Save the updated email settings
-if ($subaction == "updateemailsettings" && $actsurrows['edit_survey_property'])
+if ($subaction == "updateemailsettings" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['activate_survey']))
 	{
 		$_POST  = array_map('db_quote', $_POST);
 		$languagelist = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -791,7 +791,6 @@ if ($subaction == "browse" || $subaction == "search")
 
 	while ($brow = $bresult->FetchRow())
 	{
-		error_log(print_r($brow,true));
 		$brow['token'] = trim($brow['token']);
 		if ($bgc == "evenrow") {$bgc = "oddrow";} else {$bgc = "evenrow";}
 		$tokenoutput .= "\t<tr class='$bgc'>\n";

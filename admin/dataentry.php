@@ -30,7 +30,7 @@ $actsurquery = "SELECT browse_response FROM ".db_table_name("surveys_rights")." 
 $actsurresult = $connect->Execute($actsurquery) or die($connect->ErrorMsg());
 $actsurrows = $actsurresult->FetchRow();
 
-if($actsurrows['browse_response'])
+if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 {
 
 	$surveyoptions = browsemenubar();
