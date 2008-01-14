@@ -1311,7 +1311,7 @@ function sendsubmitnotification($sendnotification)
 	}
 }
 
-function submitfailed()
+function submitfailed($errormsg)
 {
 	global $thissurvey, $clang;
 	global $thistpl, $subquery, $surveyid, $connect;
@@ -1333,7 +1333,7 @@ function submitfailed()
 		$email .= "\n".$clang->gT("SQL CODE THAT FAILED").":\n"
 		. "$subquery\n\n"
 		. $clang->gT("ERROR MESSAGE").":\n"
-		. $connect->ErrorMsg()."\n\n";
+		. $errormsg."\n\n";
 		MailTextMessage($email, $clang->gT("Error saving results"), $thissurvey['adminemail'], $thissurvey['adminemail'], "LimeSurvey");
 		echo "<!-- EMAIL CONTENTS:\n$email -->\n";
 		//An email has been sent, so we can kill off this session.

@@ -95,7 +95,7 @@ if ((isset($_POST['fieldnames']) && $_POST['fieldnames']) || (isset($_POST['move
 				{
 					$connect->Execute("DELETE FROM ".db_table_name("saved_control")." where srid=".$_SESSION['srid']);
 				}
-			} else {echo submitfailed();}
+			} else {echo submitfailed($connect->ErrorMsg());}
 		}
 	}
 }
