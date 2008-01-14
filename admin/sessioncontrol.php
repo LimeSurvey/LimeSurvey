@@ -112,14 +112,14 @@ function GetSessionUserRights($loginID)
 		$initialSuperadmin=false;
 	}
 
-	if ( $initialSuperadmin === true || 
-		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+	if ( $initialSuperadmin === true)
 	{
 		$_SESSION['USER_RIGHT_SUPERADMIN'] = 1;
+		$_SESSION['USER_RIGHT_INITIALSUPERADMIN'] = 1;
 	}
 	else
 	{
-		$_SESSION['USER_RIGHT_SUPERADMIN'] = 0;
+		$_SESSION['USER_RIGHT_INITIALSUPERADMIN'] = 0;
 	}
 }
 
