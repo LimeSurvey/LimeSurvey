@@ -716,7 +716,7 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 	if ($sourcefrom == "admin")
 	{
 		$qtypes = array(
-		"1"=>$clang->gT("Array (Flexible Labels) Multi Scale"),
+		//"1"=>$clang->gT("Array (Flexible Labels) Multi Scale"),
 		"5"=>$clang->gT("5 Point Choice"),
 		"A"=>$clang->gT("Array (5 Point Choice)"),
 		"B"=>$clang->gT("Array (10 Point Choice)"),
