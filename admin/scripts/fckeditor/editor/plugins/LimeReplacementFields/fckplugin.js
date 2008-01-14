@@ -37,7 +37,7 @@ FCKCommands.RegisterCommand( 'LimeReplacementFields',
 
 // Create the "Plaholder" toolbar button.
 var oLimeReplacementFieldsItem = new FCKToolbarButton( 'LimeReplacementFields', FCKLang.LimeReplacementFieldsBtn ) ;
-oLimeReplacementFieldsItem.IconPath = FCKPlugins.Items['LimeReplacementFields'].Path + 'LimeReplacementFields.gif' ;
+oLimeReplacementFieldsItem.IconPath = FCKPlugins.Items['LimeReplacementFields'].Path + 'LimeReplacementFields.png' ;
 
 FCKToolbarItems.RegisterItem( 'LimeReplacementFields', oLimeReplacementFieldsItem ) ;
 

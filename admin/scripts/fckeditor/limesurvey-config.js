@@ -116,8 +116,11 @@ FCKConfig.ToolbarSets["Default"] = [
 	['FitWindow','ShowBlocks','-','About']		// No comma for the last row.
 ] ;
 
+//FCKConfig.ToolbarSets["Basic"] = [
+//	['Bold','Italic','-','OrderedList','UnorderedList','-','Link','Unlink','-','About','LimeFitWin','LimeReplacementFields']
+//] ;
 FCKConfig.ToolbarSets["Basic"] = [
-	['Bold','Italic','-','OrderedList','UnorderedList','-','Link','Unlink','-','About','LimeFitWin','LimeReplacementFields']
+	['Undo','Redo','-','Cut','Copy','Paste','-','Bold','Italic','Underline','-','OrderedList','UnorderedList','-','Outdent','Indent','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyFull','-','Link','Unlink','Image','Table','-','LimeReplacementFields','LimeFitWin']
 ] ;
 
 FCKConfig.ToolbarSets["LimeSurveyToolbarfull"] = [

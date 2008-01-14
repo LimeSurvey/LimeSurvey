@@ -64,7 +64,7 @@ FCKCommands.RegisterCommand( 'LimeFitWin', new FCKCommand_LimeFitWin() ) ;
 // Create the toolbar button.
 // FCKToolbarButton takes the following arguments: CommandName, Button Caption
 var oLimeFitWinItem = new FCKToolbarButton( 'LimeFitWin', FCKLang.LimeFitWinBtn ) ;
-oLimeFitWinItem.IconPath = FCKPlugins.Items['LimeFitWin'].Path + 'LimeFitWin.gif' ;
+oLimeFitWinItem.IconPath = FCKPlugins.Items['LimeFitWin'].Path + 'LimeFitWin.png' ;
 FCKToolbarItems.RegisterItem( 'LimeFitWin', oLimeFitWinItem ) ;
 
 //End code

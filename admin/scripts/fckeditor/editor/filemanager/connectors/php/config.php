@@ -67,11 +67,12 @@ if (isset($_SESSION['loginID']) && isset($_SESSION['FileManagerContext']))
 		$surresult = db_execute_assoc($surquery);
 		$surrows = $surresult->FetchRow();
 
-		if($surrows['define_questions'])
+		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 ||$surrows['define_questions'])
 		{
 			$Config['Enabled'] = true ;
-			$Config['UserFilesPath'] = "$rooturl/upload/$surveyid/" ;
-			$Config['UserFilesAbsolutePath'] = "$rootdir/upload/$surveyid/" ;
+			$Config['UserFilesPath'] = "$relativeurl/upload/$surveyid/" ;
+			//$Config['UserFilesPath'] = "$rooturl/upload/$surveyid/" ;
+			//$Config['UserFilesAbsolutePath'] = "$rootdir/upload/$surveyid/" ;
 
 		}
 
