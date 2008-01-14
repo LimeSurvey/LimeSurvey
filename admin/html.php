@@ -397,7 +397,7 @@ if ($surveyid)
 		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n";
 		// survey rights
 
-		if($s1row['owner_id'] == $_SESSION['loginID'])
+		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $s1row['owner_id'] == $_SESSION['loginID'])
 		{
 			$surveysummary .= "\t\t\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=surveysecurity&amp;sid=$surveyid', '_top')\"" .
 			"onmouseout=\"hideTooltip()\""
