@@ -74,7 +74,13 @@ if ($surveyid && $issurveyactive===false)
 		// - destroy the duplicated admin session
 		// - start a brand new user session
 		// - copy interresting values in this user session
-		session_destroy();
+
+		@session_destroy();	// make it silent because for
+					// some strange reasons it fails sometimes
+					// which is not a problem
+					// but if it throughs an error then future
+					// session functions won't work because
+					// headers are already sent.
 		$usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";
 		$usresult = db_execute_assoc($usquery,'',true);
 		if ($usresult)
