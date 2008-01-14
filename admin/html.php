@@ -307,7 +307,7 @@ if ($action == "checksettings" || $action == "changelang" || $action=="changehtm
     
     if ($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1) 
     {
-    $cssummary .= "<table><tr><td><form action='$scriptname' method='post'><input type='hidden' name='action' value='showphpinfo' /><input type='submit' value='".$clang->gT("Show PHPInfo")."'></form></td></tr></table>";
+    $cssummary .= "<table><tr><td><form action='$scriptname' method='post'><input type='hidden' name='action' value='showphpinfo' /><input type='submit' value='".$clang->gT("Show PHPInfo")."' /></form></td></tr></table>";
     }
 }
 
@@ -599,7 +599,7 @@ if ($surveyid)
 			. "<a href=\"#\" onclick=\"window.open('$scriptname?action=quotas&amp;sid=$surveyid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Set Survey Quotas", "js")."');return false\">" .
-			"<img src='$imagefiles/quota.png' title='' alt='". $clang->gT("Set Survey Quotas")."' align='left' name='SurveyAssessment' /></a>\n" ;
+			"<img src='$imagefiles/quota.png' title='' alt='". $clang->gT("Set Survey Quotas")."' align='left' name='SurveyQuotas' /></a>\n" ;
 		}
 		else
 		{
@@ -999,6 +999,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 					$groupsummary .= " <a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\">[QID: ".$depqid."]</a>"; 
 				}
 			}
+			$groupsummary .= "\t</td></tr>";
 		}
 	}
 	$groupsummary .= "\n</table></td></tr></table>\n";
@@ -2450,7 +2451,8 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
 		. "\t}\n"
 		. "--></script>\n"
         . "<table width='100%' border='0'>\n\t<tr><td class='settingcaption'>"
-		. "\t\t".$clang->gT("Edit Survey - Step 2 of 2")."</td></tr></table>\n"
+		. "\t\t".$clang->gT("Edit Survey - Step 2 of 2")."</td></tr></table>\n";
+		$editsurvey .= "<form name='addnewsurvey' action='$scriptname' method='post'>\n"
 		. '<div class="tab-pane" id="tab-pane-1">';
 		foreach ($grplangs as $grouplang)
 		{
@@ -2463,8 +2465,6 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
 			if ($esrow['surveyls_language']==GetBaseLanguageFromSurveyID($surveyid)) {$editsurvey .= '('.$clang->gT("Base Language").')';}
 			$editsurvey .= '</h2>';
 			$esrow = array_map('htmlspecialchars', $esrow);
-			$editsurvey .= "<form name='addnewsurvey' action='$scriptname' method='post'>\n";
-
 			$editsurvey .= "\t\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Title").":</span>\n"
 			. "\t\t<span class='settingentry'><input type='text' size='80' name='short_title_".$esrow['surveyls_language']."' value=\"{$esrow['surveyls_title']}\" /></span>\n"
 			. "\t</div><div class='settingrow'><span class='settingcaption'>".$clang->gT("Description:")."</span>\n"
