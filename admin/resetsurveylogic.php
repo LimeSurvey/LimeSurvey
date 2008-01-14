@@ -1,0 +1,76 @@
+<?php
+/*
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+* 
+* $Id: resetsurveylogic.php 3571 2007-11-02 20:43:25Z leochaton $
+*/
+
+//Ensure script is not run directly, avoid path disclosure
+include_once("login_check.php");
+if (isset($_GET['sid'])) {$surveyid = $_GET['sid'];}
+if (isset($_GET['ok'])) {$ok = $_GET['ok'];}
+
+$resetsurveylogicoutput = "<br />\n";
+$resetsurveylogicoutput .= "<table class='alertbox' >\n";
+$resetsurveylogicoutput .= "\t<tr ><td colspan='2' height='4'><font size='1'><strong>".$clang->gT("Reset Survey Logic")."</strong></font></td></tr>\n";
+
+if (!isset($surveyid) || !$surveyid)
+{
+    $resetsurveylogicoutput .= "\t<tr ><td align='center'>\n";
+	$resetsurveylogicoutput .= "<br /><font color='red'><strong>".$clang->gT("Error")."</strong></font><br />\n";
+	$resetsurveylogicoutput .= $clang->gT("You have not selected a survey to delete")."<br /><br />\n";
+	$resetsurveylogicoutput .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
+	$resetsurveylogicoutput .= "</td></tr></table>\n";
+	$resetsurveylogicoutput .= "</body>\n</html>";
+	return;
+}
+
+if (!isset($ok) || !$ok)
+{
+	$tablelist = $connect->MetaTables();
+
+	$resetsurveylogicoutput .= "\t<tr>\n";
+	$resetsurveylogicoutput .= "\t\t<td align='center'><br />\n";
+	$resetsurveylogicoutput .= "\t\t\t<font color='red'><strong>".$clang->gT("Warning")."</strong></font><br />\n";
+	$resetsurveylogicoutput .= "\t\t\t<strong>".$clang->gT("You are about to delete all conditions on this survey's questions")." ($surveyid)</strong><br /><br />\n";
+	$resetsurveylogicoutput .= "\t\t\t".$clang->gT("We recommend that before you proceed, you export the entire survey from the main administration screen.")."\n";
+
+	$resetsurveylogicoutput .= "\t\t</td>\n";
+	$resetsurveylogicoutput .= "\t</tr>\n";
+	$resetsurveylogicoutput .= "\t<tr>\n";
+	$resetsurveylogicoutput .= "\t\t<td align='center'><br />\n";
+	$resetsurveylogicoutput .= "\t\t\t<input type='submit'  value='".$clang->gT("Cancel")."' onclick=\"window.open('admin.php?sid=$surveyid', '_top')\" /><br />\n";
+	$resetsurveylogicoutput .= "\t\t\t<input type='submit'  value='".$clang->gT("Delete")."' onclick=\"window.open('$scriptname?action=resetsurveylogic&amp;sid=$surveyid&amp;ok=Y','_top')\" />\n";
+	$resetsurveylogicoutput .= "\t\t</td>\n";
+	$resetsurveylogicoutput .= "\t</tr>\n";
+	$resetsurveylogicoutput .= "\n";
+}
+
+else //delete conditions in the survey
+{
+	$tablelist = $connect->MetaTables();
+	$dict = NewDataDictionary($connect);
+
+	$resetlogicquery = "DELETE c.* FROM {$dbprefix}conditions as c, {$dbprefix}questions as q WHERE c.qid=q.qid AND q.sid=$surveyid";
+	$resetlogicresult = $connect->Execute($resetlogicquery) or die ("Couldn't delete conditions<br />$resetlogicquery<br />".$connect->ErrorMsg());
+
+	$resetsurveylogicoutput .= "\t<tr>\n";
+	$resetsurveylogicoutput .= "\t\t<td align='center'><br />\n";
+	$resetsurveylogicoutput .= "\t\t\t<strong>".$clang->gT("All conditions in this survey have been deleted.")."<br /><br />\n";
+	$resetsurveylogicoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
+	$resetsurveylogicoutput .= "\t\t</strong></td>\n";
+	$resetsurveylogicoutput .= "\t</tr>\n";
+	$surveyid=false;
+
+}
+$resetsurveylogicoutput .= "</table><br />&nbsp;\n";
+
+?>
