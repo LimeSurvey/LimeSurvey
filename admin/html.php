@@ -545,7 +545,7 @@ if ($surveyid)
 			}
 			else
 			{
-				$surveysummary .= "<a href=\"#\" onclick=\"alert('".$clang->gT("No conditions set on this survey", "js")."');\" "
+				$surveysummary .= "<a href=\"#\" onclick=\"alert('".$clang->gT("This survey's questions don't use conditions", "js")."');\" "
 				. "onmouseout=\"hideTooltip()\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("Reset Survey Logic", "js")."-".$clang->gT("Disabled", "js")."');return false\">\n" .
 				"<img src='$imagefiles/resetsurveylogic_disabled.png' title='' align='left' name='ResetSurveyLogic' alt='Reset Survey Logic'  /></a>" ;

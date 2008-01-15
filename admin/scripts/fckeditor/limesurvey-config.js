@@ -175,7 +175,7 @@ FCKConfig.Keystrokes = [
 	[ CTRL + 73 /*I*/, 'Italic' ],
 	[ CTRL + 85 /*U*/, 'Underline' ],
 	[ CTRL + SHIFT + 83 /*S*/, 'Save' ],
-	[ CTRL + ALT + 13 /*ENTER*/, 'FitWindow' ],
+	[ CTRL + ALT + 13 /*ENTER*/, 'LimeFitWin' ],
 	[ CTRL + 9 /*TAB*/, 'Source' ]
 ] ;
 

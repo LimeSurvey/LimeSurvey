@@ -79,12 +79,14 @@ if (isset($_SESSION['loginID']) && isset($_SESSION['FileManagerContext']))
 	}
 	elseif (preg_match('/^edit:label/',$_SESSION['FileManagerContext']) != 0)
 	{
-		// check if the user has label management right
-		if ($_SESSION['USER_RIGHT_MANAGE_LABEL']==1)
+		$contextarray=split(':',$_SESSION['FileManagerContext'],3);
+		$labelid=$contextarray[2];
+		// check if the user has label management right and labelid defined
+		if ($_SESSION['USER_RIGHT_MANAGE_LABEL']==1 && isset($labelid) && $labelid != '')
 		{
 			$Config['Enabled'] = true ;
-			$Config['UserFilesPath'] = "$rooturl/upload/labels/" ;
-			$Config['UserFilesAbsolutePath'] = "$rootdir/upload/labels/" ;
+			$Config['UserFilesPath'] = "$relativeurl/upload/labels/$labelid/" ;
+			//$Config['UserFilesAbsolutePath'] = "$rootdir/upload/labels/" ;
 		}
 	}
 	else
