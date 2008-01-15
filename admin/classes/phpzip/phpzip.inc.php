@@ -214,6 +214,26 @@ class PHPZip
             "\x00\x00";                             // .zip file comment length
     } // end of the 'file()' method
 
+function extract($dir, $zipfilename){
+          if (function_exists("zip_open")) {
+               //$dir  = eregi_replace("(\..*$)", "", $zipfilename);
+
+              $this->createDir($dir);
+              $zip  = zip_open($zipfilename);
+              if ($zip) {
+                 while ($zip_entry = zip_read($zip)) {
+                     if (zip_entry_open($zip, $zip_entry, "r")) {
+                         $buf = zip_entry_read($zip_entry, zip_entry_filesize($zip_entry));
+                         if (eregi("(\/)", zip_entry_name($zip_entry))) $this->createDir($dir."/".eregi_replace("\/.*$", "", zip_entry_name($zip_entry))); 
+                         $this->createFile($dir."/".zip_entry_name($zip_entry), $buf);
+                         zip_entry_close($zip_entry);
+                     }
+                 }
+                 zip_close($zip);
+              }
+          } 
+      }
+
 
 } // end of the 'PHPZip' class
 ?>

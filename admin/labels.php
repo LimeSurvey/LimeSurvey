@@ -356,6 +356,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
     			."\t<input type='submit' name='method' value='".$clang->gT("Add new label")."' id='addnewlabelbtn' />\n"
     			."\t</td>\n"
     			."\t<td>\n"
+			."<input type='button' onclick=\"document.getElementById('formfixorder').submit();\" value=\"".$clang->gT('Fix Order')."\">\n"
                 ."<script type='text/javascript'>\n"
     			."<!--\n"
     			."document.getElementById('addnewlabelcode').focus();\n"
@@ -403,33 +404,39 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 
 	    $labelsoutput.=("</div>");
         }	
+	// Let's close the form for First Languages TABs
+	$labelsoutput.= "<input type='hidden' name='sortorderids' value='$sortorderids' />\n";
+	$labelsoutput.= "<input type='hidden' name='codeids' value='$codeids' />\n";
+	
+    	$labelsoutput.= "</form>"; // End First TABs form
 
 	// TAB for resources management
 	$labelsoutput.= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Uploaded Resources Management")."</h2>\n"
+		. "\t<form enctype='multipart/form-data' name='importlabelresources' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
 		. "\t<table width='100%' class='form2columns'>\n"
 		. "\t<tbody align='center'>"
-		. "\t\t<td></td><td>\n"
-		. "\t\t<input type='button' onclick='window.open(\"$homeurl/scripts/fckeditor/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php?\", \"_blank\")'/ value=\"".$clang->gT("Browse Uploaded Ressources")."\"><br /><br />"
-		. "\t\t<input type='button' onclick='window.open(\"$scriptname?action=exportlabelresources&amp;lid={$lid}\", \"_blank\")'/ value=\"".$clang->gT("Export Zip archive of uploaded ressources")."\">"
-		. "\t\t</td><td></td>\n"
-		. "\t</tbody></table>\n";
+		. "\t\t<tr><td></td><td>\n"
+		. "\t\t<input type='button' onclick='window.open(\"$homeurl/scripts/fckeditor/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php?\", \"_blank\")'/ value=\"".$clang->gT("Browse Uploaded Ressources")."\"></td><td><td></tr>\n"
+		. "\t\t<tr><td></td><td><input type='button' onclick='window.open(\"$scriptname?action=exportlabelresources&amp;lid={$lid}\", \"_blank\")'/ value=\"".$clang->gT("Export Zip archive of uploaded ressources")."\"></td><td><td></tr>\n"
+		. "\t\t<tr></tr>&nbsp;<tr><td>".$clang->gT("Select ZIP File:")."</td>\n"
+		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"50\" /></td><td></td></tr>\n"
+		. "\t\t<tr><td></td><td><input type='submit' value='".$clang->gT("Import Resources ZIP Archive")."' /></td><td></td>\n"
+		. "\t\t</tr>\n"
+		. "\t</tbody></table></form>\n";
 
 	// End TAB Uploaded Resources Management
 	$labelsoutput.= "</div>";		
 
+	$labelsoutput.= "</div>"; // End Tab pane
 
-	$labelsoutput.= "<input type='hidden' name='sortorderids' value='$sortorderids' />\n";
-	$labelsoutput.= "<input type='hidden' name='codeids' value='$codeids' />\n";
-	$labelsoutput.= "</div>"
 	
-    	."</form>";
-	
-	// Here starts the Fix Sort order form
+	// Here starts the hidden Fix Sort order form
     $labelsoutput.= "</td></tr><tr><td colspan='4'>"
-        ."<form style='margin-bottom:0;' action='admin.php?action=labels' method='post'>"
+        ."<form id='formfixorder' style='margin-bottom:0;' action='admin.php?action=labels' method='post'>"
 		."<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'><tbody align='center'>\n"
 		."\t<tr><td width='80%'></td>"
-		."<td></td><td><input type='submit' name='method' value='"
+//		."<td></td><td><input type='submit' name='method' value='"
+		."<td></td><td><input type='hidden' name='method' value='"
 		.$clang->gT("Fix Sort")."' /></td>\n"
 		."</tr></tbody></table>"
 		."\t<input type='hidden' name='lid' value='$lid' />\n"
