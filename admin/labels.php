@@ -408,7 +408,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 		. "\t<table width='100%' class='form2columns'>\n"
 		. "\t<tbody align='center'>"
 		. "\t\t<td></td><td>\n"
-		. "\t\t<input type='button' onclick='window.open(\"$homeurl/scripts/fckeditor/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php?\", \"_top\")'/ value=\"".$clang->gT("Browse Uploaded Ressources")."\"><br />"
+		. "\t\t<input type='button' onclick='window.open(\"$homeurl/scripts/fckeditor/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php?\", \"_blank\")'/ value=\"".$clang->gT("Browse Uploaded Ressources")."\"><br /><br />"
 		. "\t\t<input type='button' onclick='window.open(\"$scriptname?action=exportlabelresources&amp;lid={$lid}\", \"_blank\")'/ value=\"".$clang->gT("Export Zip archive of uploaded ressources")."\">"
 		. "\t\t</td><td></td>\n"
 		. "\t</tbody></table>\n";

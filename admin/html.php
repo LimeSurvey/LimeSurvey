@@ -2397,7 +2397,7 @@ if ($action == "editsurvey")
 
 		// TAB Uploaded Resources Management
 		$editsurvey .= "\t<div class='tab-page'> <h2 class='tab'>".$clang->gT("Uploaded Resources Management")."</h2>\n"
-			. "<input type='button' onclick='window.open(\"$homeurl/scripts/fckeditor/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php\", \"_blank\")'/ value=\"".$clang->gT("Browse Uploaded Ressources")."\"><br />"
+			. "<input type='button' onclick='window.open(\"$homeurl/scripts/fckeditor/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php\", \"_blank\")'/ value=\"".$clang->gT("Browse Uploaded Ressources")."\"><br /><br />"
 			. "<input type='button' onclick='window.open(\"$scriptname?action=exportsurvresources&amp;sid={$surveyid}\", \"_blank\")'/ value=\"".$clang->gT("Export Zip archive of uploaded ressources")."\">";
 
 		// End TAB Uploaded Resources Management
