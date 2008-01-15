@@ -417,7 +417,7 @@ if ($importversion<=100)
          $newlanguage='lt';
          break;
       case "norwegian":
-         $newlanguage='no';
+         $newlanguage='nb';
          break;
       case "portuguese":
          $newlanguage='pt';
@@ -484,7 +484,8 @@ if ($importversion<=100)
 
 
 if (isset($surveyrowdata['datecreated'])) {$surveyrowdata['datecreated']=$connect->BindTimeStamp($surveyrowdata['datecreated']);}
-if (isset($surveyrowdata['expires']) && $surveyrowdata['expires'] !='') {$surveyrowdata['expires']=$connect->BindTimeStamp($surveyrowdata['expires']);}
+unset($surveyrowdata['expires']);
+$surveyrowdata['bounce_email']=$surveyrowdata['adminemail'];
 if (!isset($surveyrowdata['datecreated']) || $surveyrowdata['datecreated']=='' || $surveyrowdata['datecreated']=='null') {$surveyrowdata['datecreated']=$connect->BindTimeStamp(date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust));}
 
 $values=array_values($surveyrowdata);

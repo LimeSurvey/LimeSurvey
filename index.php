@@ -183,7 +183,7 @@ if (!isset($_SESSION['grouplist'])  && (isset($_POST['move'])) )
 	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
 	echo "\t\t<center><br />\n"
 	."\t\t\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
-	."\t\t\t".$clang->gT("We are sorry but your session has expired.")."<br />".$clang->gT("Either you have been inactive for too long or there were problems with your connection.")."<br />\n"
+	."\t\t\t".$clang->gT("We are sorry but your session has expired.")."<br />".$clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
 	."\t\t\t".$clang->gT("Please contact")." $siteadminname ( $siteadminemail ) ".$clang->gT("for further assistance").".\n"
 	."\t\t</center><br />\n";
 
@@ -972,7 +972,6 @@ function checkmandatorys($backok=null)
 						//This section gets used if it is a multiple choice type question
 						if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep'];}
 						if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep'];}
-						if (isset($_POST['move']) && $_POST['move'] == "movelast") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == "movenext";}
 						$notanswered[]=substr($multiname, 5, strlen($multiname));
 						$$multiname=0;
 						$$multiname2=0;
@@ -993,7 +992,6 @@ function checkmandatorys($backok=null)
 				//One of the mandatory questions hasn't been asnwered
 				if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep'];}
 				if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == "movelast") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == "movenext";}
 				$notanswered[]=$mfns[$mi];
 			}
 			else
@@ -1011,7 +1009,6 @@ function checkmandatorys($backok=null)
 				//The number of questions not answered is equal to the number of questions
 				if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep'];}
 				if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == "movelast") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == "movenext";}
 				$notanswered[]=substr($multiname, 5, strlen($multiname));
 				$$multiname="";
 				$$multiname2="";
@@ -1040,7 +1037,6 @@ function checkconditionalmandatorys($backok=null)
 						//The number of questions not answered is equal to the number of questions
 						if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep'];}
 						if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep'];}
-						if (isset($_POST['move']) && $_POST['move'] == "movelast") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == "movenext";}
 						$notanswered[]=substr($multiname, 5, strlen($multiname));
 						$$multiname=0;
 						$$multiname2=0;
@@ -1062,7 +1058,6 @@ function checkconditionalmandatorys($backok=null)
 			{
 				if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep'];}
 				if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == "movelast") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == "movenext";}
 				$notanswered[]=$cmfns[$mi];
 			}
 			elseif (isset($_POST[$dccm]) && $_POST[$dccm] == "on")
@@ -1080,7 +1075,6 @@ function checkconditionalmandatorys($backok=null)
 				//The number of questions not answered is equal to the number of questions
 				if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep'];}
 				if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == "movelast") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == "movenext";}
 				$notanswered[]=substr($multiname, 5, strlen($multiname));
 			}
 		}
@@ -1134,7 +1128,6 @@ function checkpregs($backok=null)
 		            {
         			if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep'];}
         			if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep'];}
-        			if (isset($_POST['move']) && $_POST['move'] == "movelast") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == "movenext";}
 					$notvalidated[]=$maxvalueanswer;
         			return $notvalidated;
 					}
@@ -1145,7 +1138,6 @@ function checkpregs($backok=null)
 		{
 			if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep'];}
 			if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep'];}
-			if (isset($_POST['move']) && $_POST['move'] == "movelast") {$_SESSION['step'] = $_POST['thisstep']; $_POST['move'] == "movenext";}
 			return $notvalidated;
 		}
 	}
@@ -1959,7 +1951,7 @@ function surveymover()
 	$surveymover = "";
 	if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] != "A")
 	{
-		$surveymover = "<input type=\"hidden\" name=\"move\" value=\"movelast\" id=\"movelast\" />";
+		$surveymover = "<input type=\"hidden\" name=\"move\" value=\"movesubmit\" id=\"movesubmit\" />";
 	}
 	else
 	{
@@ -1988,16 +1980,12 @@ function surveymover()
 		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
 		. $clang->gT("next")." >> ' name='move2' />\n";
 	}
-	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] != "A")
+	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription)
 	{
-		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' accesskey='l' onclick=\"javascript:document.limesurvey.move.value = 'movelast';\" value=' "
-		. $clang->gT("last")." ' name='move2' />\n";
-	}
-	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] == "A")
-	{
-		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" value=' "
+		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' accesskey='l' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" value=' "
 		. $clang->gT("submit")." ' name='move2' />\n";
 	}
+
 //	$surveymover .= "<input type='hidden' name='PHPSESSID' value='".session_id()."' id='PHPSESSID' />\n";
 	return $surveymover;
 }

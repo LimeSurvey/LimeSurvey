@@ -17,25 +17,24 @@
 include_once("login_check.php");
 //Standard Template Files
 //Only these files may be edited or saved
+$files[]=array("name"=>"assessment.pstpl");
+$files[]=array("name"=>"clearall.pstpl");
+$files[]=array("name"=>"completed.pstpl");
+$files[]=array("name"=>"endgroup.pstpl");
+$files[]=array("name"=>"endpage.pstpl");
+$files[]=array("name"=>"groupdescription.pstpl");
+$files[]=array("name"=>"load.pstpl");
+$files[]=array("name"=>"navigator.pstpl");
+$files[]=array("name"=>"printanswers.pstpl");
+$files[]=array("name"=>"privacy.pstpl");
+$files[]=array("name"=>"question.pstpl");
+$files[]=array("name"=>"register.pstpl");
+$files[]=array("name"=>"save.pstpl");
+$files[]=array("name"=>"surveylist.pstpl");
+$files[]=array("name"=>"startgroup.pstpl");
 $files[]=array("name"=>"startpage.pstpl");
 $files[]=array("name"=>"survey.pstpl");
 $files[]=array("name"=>"welcome.pstpl");
-$files[]=array("name"=>"startgroup.pstpl");
-$files[]=array("name"=>"groupdescription.pstpl");
-$files[]=array("name"=>"question.pstpl");
-$files[]=array("name"=>"submit.pstpl");
-$files[]=array("name"=>"privacy.pstpl");
-$files[]=array("name"=>"completed.pstpl");
-$files[]=array("name"=>"endgroup.pstpl");
-$files[]=array("name"=>"navigator.pstpl");
-$files[]=array("name"=>"endpage.pstpl");
-$files[]=array("name"=>"clearall.pstpl");
-$files[]=array("name"=>"register.pstpl");
-$files[]=array("name"=>"load.pstpl");
-$files[]=array("name"=>"save.pstpl");
-$files[]=array("name"=>"assessment.pstpl");
-$files[]=array("name"=>"printanswers.pstpl");
-$files[]=array("name"=>"surveylist.pstpl");
 
 //Standard Screens
 //Only these may be viewed
@@ -43,7 +42,6 @@ $files[]=array("name"=>"surveylist.pstpl");
 $screens[]=array("name"=>$clang->gT("Survey List Page", "unescaped"));
 $screens[]=array("name"=>$clang->gT("Welcome Page", "unescaped"));
 $screens[]=array("name"=>$clang->gT("Question Page", "unescaped"));
-$screens[]=array("name"=>$clang->gT("Submit Page", "unescaped"));
 $screens[]=array("name"=>$clang->gT("Completed Page", "unescaped"));
 $screens[]=array("name"=>$clang->gT("Clear All Page", "unescaped"));
 $screens[]=array("name"=>$clang->gT("Register Page", "unescaped"));
@@ -228,9 +226,8 @@ foreach ($files as $fl) {
 
 //Page Display Instructions
 $SurveyList=array("startpage.pstpl", "surveylist.pstpl", "endpage.pstpl");
-$Welcome=array("startpage.pstpl", "welcome.pstpl", "navigator.pstpl", "endpage.pstpl");
+$Welcome=array("startpage.pstpl", "welcome.pstpl", "privacy.pstpl", "navigator.pstpl", "endpage.pstpl");
 $Question=array("startpage.pstpl", "survey.pstpl", "startgroup.pstpl", "groupdescription.pstpl", "question.pstpl", "endgroup.pstpl", "navigator.pstpl", "endpage.pstpl");
-$Submit=array("startpage.pstpl", "survey.pstpl", "submit.pstpl", "privacy.pstpl", "navigator.pstpl", "endpage.pstpl");
 $Completed=array("startpage.pstpl", "assessment.pstpl", "completed.pstpl", "endpage.pstpl");
 $Clearall=array("startpage.pstpl", "clearall.pstpl", "endpage.pstpl");
 $Register=array("startpage.pstpl", "survey.pstpl", "register.pstpl", "endpage.pstpl");
@@ -253,7 +250,6 @@ foreach ($files as $file) {
 
 if (!$screenname) {$screenname=$clang->gT("Welcome Page", "unescaped");}
 if ($screenname != $clang->gT("Welcome Page")) {$_SESSION['step']=1;} else {unset($_SESSION['step']);} //This helps handle the load/save buttons
-if ($screenname == $clang->gT("Submit Page")) {$_POST['move'] = "movelast";}
 //FAKE DATA FOR TEMPLATES
 $thissurvey['name']="Template Sample";
 $thissurvey['description']="This is a sample survey description. It could be quite long.<br /><br />But this one isn't.";
@@ -439,14 +435,6 @@ switch($screenname) {
 		$myoutput[]=templatereplace($op);
 	}
 	$myoutput[]= "\n";
-	break;
-	case $clang->gT("Submit Page", "unescaped"):
-	unset($files);
-	$myoutput[]="";
-	foreach ($Submit as $qs) {
-		$files[]=array("name"=>$qs);
-		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/$qs"));
-	}
 	break;
 	case $clang->gT("Completed Page", "unescaped"):
 	unset($files);

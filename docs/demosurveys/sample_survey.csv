@@ -8,7 +8,7 @@
 # SURVEYS TABLE
 #
 "sid","owner_id","admin","active","expires","adminemail","private","faxto","format","template","url","language","additional_languages","datestamp","usecookie","notification","allowregister","attribute1","attribute2","allowsave","autonumber_start","autoredirect","allowprev","ipaddr","useexpiry","refurl","datecreated"
-"40","1","Administratorname","N","0000-00-00","admin@localhost","Y","000-00000000","G","default","","en","","Y","N","0","N","","","Y","0","N","Y","N","N","N",""
+"40","1","Administratorname","N",null,"admin@localhost","Y","000-00000000","G","default","","en","","Y","N","0","N","","","Y","0","N","Y","N","N","N",""
 
 #
 # GROUPS TABLE
