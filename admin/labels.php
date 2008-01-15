@@ -39,7 +39,7 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 	$labelsoutput= include2var('./scripts/addremove.js');
 	
 	//DO DATABASE UPDATESTUFF 
-	if ($action == "updateset") {updateset($lid);updateset($lid1);}
+	if ($action == "updateset") {updateset($lid);}
 	if ($action == "insertlabelset") {$lid=insertlabelset();}
 	if ($action == "modlabelsetanswers") {modlabelsetanswers($lid);}
 	if ($action == "deletelabelset") {if (deletelabelset($lid)) {$lid=0;}}
@@ -602,7 +602,7 @@ function insertlabelset()
 
 function modlabelsetanswers($lid)
 {
-	global $dbprefix, $connect, $clang, $labelsoutput, $databasetype;
+	global $dbprefix, $connect, $clang, $labelsoutput, $databasetype, $filterxsshtml;
 	
 	$qulabelset = "SELECT * FROM ".db_table_name('labelsets')." WHERE lid='$lid'";
 	$rslabelset = db_execute_assoc($qulabelset) or die($connect->ErrorMsg());
