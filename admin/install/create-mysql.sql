@@ -321,8 +321,8 @@ CREATE TABLE `prefix_users` (
   `superadmin` tinyint(1) NOT NULL default '0',
   `configurator` tinyint(1) NOT NULL default '0',
   `manage_template` tinyint(1) NOT NULL default '0',
-  `manage_label` tinyint(1) NOT NULL default '0'
-  `htmleditormode` char(7) default 'default',
+  `manage_label` tinyint(1) NOT NULL default '0',
+  `htmleditormode` varchar(7) default 'default'
 ) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
@@ -353,5 +353,5 @@ INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 --
 -- Table `users`
 --
-INSERT INTO `prefix_users` VALUES (NULL, '$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);
+INSERT INTO `prefix_users` VALUES (NULL, '$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1,'default');
 
