@@ -353,7 +353,7 @@ CREATE TABLE [prefix_templates] (
 --
 
 INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '126');
-INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
+INSERT INTO [prefix_settings_global] VALUES ('SessionName', '$sessionname');
 
 --
 -- Table [users]
