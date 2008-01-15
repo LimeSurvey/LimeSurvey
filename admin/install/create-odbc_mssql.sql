@@ -162,6 +162,7 @@ CREATE TABLE [prefix_questions] (
   [other] char(1) NOT NULL default 'N',
   [mandatory] char(1) default NULL,
   [lid] INT NOT NULL default '0',
+  [lid1] INT NOT NULL default '0',
   [question_order] INT NOT NULL,
   [language] VARCHAR(20) default 'en',
   PRIMARY KEY  ([qid],[language])
@@ -335,15 +336,15 @@ CREATE TABLE [prefix_settings_global] (
 
 
 CREATE TABLE [prefix_templates_rights] (
-						  [uid] int(11) NOT NULL,
+						  [uid] int NOT NULL,
 						  [folder] varchar(255) NOT NULL,
-						  [use] int(1) NOT NULL,
+						  [use] int NOT NULL,
 						  PRIMARY KEY  ([uid],[folder])
 						  );
 						  
 CREATE TABLE [prefix_templates] (
 						  [folder] varchar(255) NOT NULL,
-						  [creator] int(11) NOT NULL,
+						  [creator] int NOT NULL,
 						  PRIMARY KEY  ([folder])
 						  );
 
@@ -351,12 +352,12 @@ CREATE TABLE [prefix_templates] (
 -- Table [settings_global]
 --
 
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '125');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '126');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 
 --
 -- Table [users]
 --
 
-INSERT INTO [prefix_users] VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);
+INSERT INTO [prefix_users] VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1,'default');
 

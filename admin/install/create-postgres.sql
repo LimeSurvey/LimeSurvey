@@ -163,6 +163,7 @@ CREATE TABLE prefix_questions (
     other character(1) DEFAULT 'N'::bpchar NOT NULL,
     mandatory character(1),
     lid integer DEFAULT 0 NOT NULL,
+    lid1 integer DEFAULT 0 NOT NULL,
     question_order integer NOT NULL,
     "language" character varying(20) DEFAULT 'en'::character varying NOT NULL
 );
@@ -488,7 +489,7 @@ CREATE INDEX prefix_labels_ixcode_idx ON prefix_labels USING btree (code);
 -- Table `settings_global`
 --
 
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '125');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '126');
 INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 
 --
@@ -499,5 +500,5 @@ INSERT INTO prefix_users(
             users_name, "password", full_name, parent_id, lang, email, 
             create_survey, create_user, delete_user, superadmin, configurator, 
             manage_template, manage_label)
-            VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);
+            VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail',1,1,1,1,1,1,1,'default');
 

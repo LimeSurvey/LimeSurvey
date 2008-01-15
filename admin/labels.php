@@ -35,10 +35,11 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 
 	if (!isset($action)) {$action=returnglobal('action');}
 	if (!isset($lid)) {$lid=returnglobal('lid');}
+	if (!isset($lid1)) {$lid1=returnglobal('lid1');}
 	$labelsoutput= include2var('./scripts/addremove.js');
 	
 	//DO DATABASE UPDATESTUFF 
-	if ($action == "updateset") {updateset($lid);}
+	if ($action == "updateset") {updateset($lid);updateset($lid1);}
 	if ($action == "insertlabelset") {$lid=insertlabelset();}
 	if ($action == "modlabelsetanswers") {modlabelsetanswers($lid);}
 	if ($action == "deletelabelset") {if (deletelabelset($lid)) {$lid=0;}}
@@ -455,8 +456,8 @@ else
 	include("access_denied.php");
 	include("admin.php");	
 	}
-	
-//************************FUNCTIONS********************************
+
+//************************FUNCTIONS********************************	
 function updateset($lid)
 {
 	global $dbprefix, $connect, $labelsoutput, $databasetype; 

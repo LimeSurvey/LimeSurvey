@@ -16,7 +16,7 @@
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 $versionnumber = "1.70b";
-$dbversionnumber = 125;
+$dbversionnumber = 126;
 
 
 
@@ -724,7 +724,7 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 	if ($sourcefrom == "admin")
 	{
 		$qtypes = array(
-		//"1"=>$clang->gT("Array (Flexible Labels) Multi Scale"),
+		"1"=>$clang->gT("Array (Flexible Labels) Multi Scale"),
 		"5"=>$clang->gT("5 Point Choice"),
 		"A"=>$clang->gT("Array (5 Point Choice)"),
 		"B"=>$clang->gT("Array (10 Point Choice)"),
@@ -1494,12 +1494,13 @@ function getextendedanswer($fieldcode, $value, $format='')
 	{
 		$fields=arraySearchByKey($fieldcode, createFieldMap($surveyid), "fieldname", 1);
 		//Find out the question type
-		$query = "SELECT type, lid FROM ".db_table_name('questions')." WHERE qid={$fields['qid']} AND language='".$s_lang."'";
+		$query = "SELECT type, lid, lid1 FROM ".db_table_name('questions')." WHERE qid={$fields['qid']} AND language='".$s_lang."'";
 		$result = db_execute_assoc($query) or die ("Couldn't get question type - getextendedanswer() in common.php<br />".htmlspecialchars($connect->ErrorMsg()));
 		while($row=$result->FetchRow())
 		{
 			$this_type=$row['type'];
 			$this_lid=$row['lid'];
+			$this_lid1=$row['lid1'];
 		} // while
 		switch($this_type)
 		{
@@ -1565,7 +1566,7 @@ function getextendedanswer($fieldcode, $value, $format='')
 			case "W":
 			case "Z":
 			case "1":
-			$query = "SELECT title FROM ".db_table_name('labels')." WHERE lid=$this_lid AND code='$value' AND language='".$s_lang."'";
+			$query = "SELECT title FROM ".db_table_name('labels')." WHERE ((lid=$this_lid) OR (lid=$this_lid1)) AND code='$value' AND language='".$s_lang."'";
 			$result = db_execute_assoc($query) or die ("Couldn't get answer type F/H - getextendedanswer() in common.php");
 			while($row=$result->FetchRow())
 			{
@@ -1836,19 +1837,19 @@ function createFieldMap($surveyid, $style="null") {
 			$abcount=$abresult->RecordCount();
 			while ($abrow=$abresult->FetchRow())
 			{
-				$abmultiscalequery = "SELECT a.*, q.other FROM {$dbprefix}questions as q, {$dbprefix}labels as l, {$dbprefix}answers as a"
+				$abmultiscalequery = "SELECT l.* FROM {$dbprefix}questions as q, {$dbprefix}labels as l, {$dbprefix}answers as a"
 					     ." WHERE a.qid=q.qid AND sid=$surveyid AND q.qid={$arow['qid']} "
-	                     ." AND l.lid=q.lid AND sid=$surveyid AND q.qid={$arow['qid']} AND l.title = '' "
+	                     ." AND l.lid=q.lid AND sid=$surveyid AND q.qid={$arow['qid']}"
                          ." AND l.language='".$s_lang. "' "
                          ." AND a.language='".$s_lang. "' "
                          ." AND q.language='".$s_lang. "' ";
+                        
 				$abmultiscaleresult=db_execute_assoc($abmultiscalequery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 				$abmultiscalecount=$abmultiscaleresult->RecordCount();
-				if ($abmultiscalecount>0)
-				{
-					for ($j=0; $j<=$abmultiscalecount; $j++)
+				//if ($abmultiscalecount>0)
+				if ($abmultiscaleresultrow=$abmultiscaleresult->FetchRow())
 					{
-     					$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}#$j", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code']);
+ 					$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}#0", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code'], "lid"=>$abmultiscaleresultrow["lid"]);
      					if ($style == "full")
 						{
 							$fieldmap[$counter]['title']=$arow['title'];
@@ -1857,11 +1858,21 @@ function createFieldMap($surveyid, $style="null") {
 						}
      					
      					$counter++;	
+	
 					} 
-				}
-				else
+				// multi-scale
+				$abmultiscalequery = "SELECT l.* FROM {$dbprefix}questions as q, {$dbprefix}labels as l, {$dbprefix}answers as a"
+					     ." WHERE a.qid=q.qid AND sid=$surveyid AND q.qid={$arow['qid']} "
+	                     ." AND l.lid=q.lid1 AND sid=$surveyid AND q.qid={$arow['qid']}"
+                       ." AND l.language='".$s_lang. "' "
+                       ." AND a.language='".$s_lang. "' "
+                       ." AND q.language='".$s_lang. "' ";
+                       
+				$abmultiscaleresult=db_execute_assoc($abmultiscalequery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
+				$abmultiscalecount=$abmultiscaleresult->RecordCount();
+				if ($abmultiscaleresultrow=$abmultiscaleresult->FetchRow())
 				{
-					$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$arow['code']}", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code']);
+ 					$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}#1", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code'], "lid"=>$abmultiscaleresultrow["lid"]);
 					if ($style == "full")
 					{
 						$fieldmap[$counter]['title']=$arow['title'];
@@ -1869,9 +1880,9 @@ function createFieldMap($surveyid, $style="null") {
 						$fieldmap[$counter]['group_name']=$arow['group_name'];
 					}
 					
-				};
 				$counter++;				
 			}
+		}
 		}
 		
 		elseif ($arow['type'] == "R")

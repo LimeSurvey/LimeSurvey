@@ -73,7 +73,6 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 		if (!isset($_POST[$pf])) {$_SESSION[$pf] = "";}
 	}
 }
-
 //SAVE if on page with questions or on submit page
 if ((isset($_POST['fieldnames']) && $_POST['fieldnames']) || (isset($_POST['move']) && $_POST['move'] == "movesubmit"))
 {
@@ -311,10 +310,13 @@ function createinsertquery()
 	global $thissurvey,$timeadjust;
 	global $deletenonvalues, $thistpl;
 	global $surveyid, $connect, $clang;
+
 	$fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
+	
 	if (isset($_SESSION['insertarray']) && is_array($_SESSION['insertarray']))
 	{
 		$inserts=array_unique($_SESSION['insertarray']);
+	
 		foreach ($inserts as $value)
 		{
 			//Work out if the field actually exists in this survey
@@ -337,6 +339,7 @@ function createinsertquery()
                         }
 			}
 		}
+
 		if (!isset($colnames) || !is_array($colnames)) //If something went horribly wrong - ie: none of the insertarray fields exist for this survey, crash out
 		{
 			echo submitfailed();
@@ -363,6 +366,7 @@ function createinsertquery()
 		{
 			$mysubmitdate = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);      
 		}
+	
 		// CHECK TO SEE IF ROW ALREADY EXISTS
 		if (!isset($_SESSION['srid']))
 		{
@@ -454,7 +458,6 @@ function createinsertquery()
 		//DEBUG START
 		//echo $query;
 		//DEBUG END
-		
 		return $query;
 	}
 	else

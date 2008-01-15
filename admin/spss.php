@@ -122,7 +122,7 @@ for ($i=0; $i < $num_results; $i++) {
 		if (isset($fieldname) && $fieldname != "")
 		{
 			# Determine the SPSS Variable Type
-			$val_query="SELECT $fieldname FROM {$dbprefix}survey_$surveyid";
+			$val_query="SELECT `$fieldname` FROM {$dbprefix}survey_$surveyid";
 			$val_result=db_execute_assoc($val_query) or die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());
 			$val_size = 0;
 			$teststring="";

@@ -51,9 +51,10 @@ if (!$style)
     if ($thissurvey["refurl"]=='Y') {$excesscols[]='refurl';}    
     
 	//FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
-	$query=" SELECT other, q.type, q.gid, q.qid FROM {$dbprefix}questions as q, {$dbprefix}groups as g "
+	$query=" SELECT other, q.type, q.gid, q.qid, q.lid, q.lid1 FROM {$dbprefix}questions as q, {$dbprefix}groups as g "
 	." where q.gid=g.gid and g.sid=$surveyid and g.language='$surveybaselang' and q.language='$surveybaselang'"
 	." order by group_order, question_order";
+
 	$result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
 	while ($rows = $result->FetchRow())
 	{
@@ -78,6 +79,18 @@ if (!$style)
 			while ($detailrows = $detailresult->FetchRow())
 			{
 				$excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid'].$i;
+				$i++;
+			}
+		}
+		elseif ($rows['type']=='1')
+		{
+			// $detailquery="select code from {$dbprefix}answers where qid=".$rows['qid']." and language='$surveybaselang' order by sortorder,code";
+			$detailquery="select a.code, l.lid from lime_answers as a, lime_labels as l where qid=".$rows['qid']." AND ((l.lid =".$rows['lid'].") or (l.lid =".$rows['lid1'].")) and a.language='$surveybaselang' group by l.lid";
+			$detailresult=db_execute_assoc($detailquery) or die("Couldn't find detailfields<br />$detailquery<br />".htmlspecialchars($connect->ErrorMsg()));
+			$i=0;
+			while ($detailrows = $detailresult->FetchRow())
+			{
+				$excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid'].$rows['code'].$detailrows['code']."#".$i;
 				$i++;
 			}
 		}
@@ -363,7 +376,6 @@ $elang=new limesurvey_lang($explang);
 //STEP 1: First line is column headings
 
 $fieldmap=createFieldMap($surveyid);
-
 //Get the fieldnames from the survey table for column headings
 $surveytable = "{$dbprefix}survey_$surveyid";
 if (isset($_POST['colselect']))
@@ -424,6 +436,7 @@ if (incompleteAnsFilterstate() === true)
 	$dquery .= "  WHERE $surveytable.submitdate is not null ";
 }
 $dquery .=" ORDER BY id";
+
 $dresult = db_select_limit_assoc($dquery, 1) or die($clang->gT("Error")." getting results<br />$dquery<br />".htmlspecialchars($connect->ErrorMsg()));
 $fieldcount = $dresult->FieldCount();
 $firstline="";
@@ -525,6 +538,7 @@ for ($i=0; $i<$fieldcount; $i++)
 		$fsid=$fielddata['sid'];
 		$fgid=$fielddata['gid'];
 		$faid=$fielddata['aid'];
+		$flid=$fielddata['lid'];
 		if ($style == "abrev")
 		{
 			$qq = "SELECT question FROM {$dbprefix}questions WHERE qid=$fqid and language='$explang'";
@@ -627,6 +641,26 @@ for ($i=0; $i<$fieldcount; $i++)
 					}
 				}
 				break;
+				case "1": // multi scale				
+				/*
+				$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code= '$faid' AND language = '$explang'";
+				$lr = db_execute_assoc($lq);
+				while ($lrow=$lr->FetchRow())
+				{
+					$fquest .= " [".$lrow['answer']."]";
+				}
+				*/
+				$lq = "select a.*, l.* from lime_answers as a, lime_labels as l where qid=$fqid AND l.lid =$flid AND a.language='$surveybaselang' group by l.lid";
+				$lr = db_execute_assoc($lq);
+				$j=0;	
+				while ($lrow=$lr->FetchRow())
+				{
+					$fquest .= " [".$lrow['answer']."]";
+					$j++;
+				}
+				
+				break;
+				
 			}
 			$fquest = strip_tags($fquest);
 			$fquest = str_replace("\n", " ", $fquest);
@@ -642,7 +676,6 @@ for ($i=0; $i<$fieldcount; $i++)
 		}
 	}
 }
-
 if ($type == "csv") { $firstline = mb_substr(trim($firstline),0,strlen($firstline)-1);}
 else
 {
@@ -706,7 +739,6 @@ if ((isset($_POST['first_name']) && $_POST['first_name']=="on") || (isset($_POST
 	$dquery	.= " FROM $surveytable "
 	. "LEFT OUTER JOIN {$dbprefix}tokens_$surveyid "
 	. "ON $surveytable.token={$dbprefix}tokens_$surveyid.token ";
-
 	if (incompleteAnsFilterstate() === true)
 	{
     $dquery .= "  WHERE $surveytable.submitdate is not null ";
@@ -797,6 +829,7 @@ elseif ($answers == "long")
 				$fsid=$fielddata['sid'];
 				$fgid=$fielddata['gid'];
 				$faid=$fielddata['aid'];
+				$flid=$fielddata['lid'];
 				if ($type == "doc")
 				{
                     $ftitle=$flarray[$i];
@@ -876,6 +909,15 @@ elseif ($answers == "long")
 				{
 					$exportoutput .= $lrow['answer'];
 				}
+				break;
+				case "1":
+					//$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND language='$explang' AND code = ?";
+					$lq = "select a.*, l.*, l.code as lcode from lime_answers as a, lime_labels as l where qid=$fqid AND l.lid =$flid AND a.language='$explang' AND l.code = ? group by l.lid";
+					$lr = db_execute_assoc($lq, array($drow[$i])) or die($lq."<br />ERROR:<br />".htmlspecialchars($connect->ErrorMsg()));
+					while ($lrow = $lr->FetchRow())
+					{
+						$exportoutput .= $lrow['lcode'];
+					}
 				break;
 				case "L": //DROPDOWN LIST
 				case "!":

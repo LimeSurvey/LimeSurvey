@@ -116,7 +116,6 @@ else //SURVEY MATCHING $surveyid DOESN'T EXIST
 }
 
 //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
-
 $qulanguage = GetBaseLanguageFromSurveyID($surveyid);
 if ($subaction == "id") // Looking at a SINGLE entry
 {
@@ -125,7 +124,6 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	if (!isset($_POST['sql']) || !$_POST['sql']) {$browseoutput .= "$surveyoptions";} // Don't show options if coming from tokens script
 	$browseoutput .= "</table>\n"
 	."<table><tr><td></td></tr></table>\n";
-
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
 	$fnquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups").", ".db_table_name("surveys")."
 	WHERE ".db_table_name("questions").".gid=".db_table_name("groups").".gid AND ".db_table_name("groups").".sid=".db_table_name("surveys").".sid
@@ -141,7 +139,6 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	usort($fnrows, 'CompareGroupThenTitle');
 
 	$fnames[] = array("id", "id", "id");
-
 	if ($private == "N") //add token to top ofl ist is survey is not private
 	{
 		$fnames[] = array("token", "token", $clang->gT("Token ID"));
@@ -209,6 +206,36 @@ if ($subaction == "id") // Looking at a SINGLE entry
 			$longtitle = "{$fnrow['question']}<br />[Comment]";
 			$fnames[] = array("$field2", "$ftitle2", "$longtitle");
 		}
+		elseif ($fnrow['type'] == "1")	// multi scale	
+		{
+			$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")."
+			WHERE ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND
+			".db_table_name("answers").".language='{$language}' AND ".db_table_name("questions").".language='{$language}' AND
+			".db_table_name("questions").".qid={$fnrow['qid']} AND ".db_table_name("questions").".sid=$surveyid
+			ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
+			$i2result = db_execute_assoc($i2query);
+			$otherexists = "";
+			while ($i2row = $i2result->FetchRow())
+			{
+				// first scale
+				$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}{$i2row['code']}#0";
+				$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}Opt{$i2row['code']}";
+				if ($i2row['other'] == "Y") {$otherexists = "Y";}
+				$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}<br />\n[{$i2row['answer']}]<br>[".$clang->gT("1. scale")."]", "{$fnrow['gid']}");
+				// second scale
+				$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}{$i2row['code']}#1";
+				$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}Opt{$i2row['code']}";
+				if ($i2row['other'] == "Y") {$otherexists = "Y";}
+				$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}<br />\n[{$i2row['answer']}]<br>[".$clang->gT("2. scale")."]", "{$fnrow['gid']}");
+			}
+			if ($otherexists == "Y")
+			{
+				$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}"."other";
+				$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}OptOther";
+				$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}<br />\n[Other]", "{$fnrow['gid']}");
+			}
+		}
+		
 		else
 		{
 			$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}");
@@ -218,7 +245,6 @@ if ($subaction == "id") // Looking at a SINGLE entry
 			}
 		}
 	}
-
 	$nfncount = count($fnames)-1;
 	//SHOW INDIVIDUAL RECORD
 	$idquery = "SELECT *, CASE WHEN submitdate IS NULL THEN 'N' ELSE 'Y' END as completed FROM $surveytable WHERE ";
@@ -321,7 +347,6 @@ elseif ($subaction == "all")
 	".db_table_name("groups").".sid=".db_table_name("surveys").".sid AND ".db_table_name("questions").".sid='$surveyid' ORDER BY ".db_table_name("groups").".group_order";
 	$fnresult = db_execute_assoc($fnquery);
 	$fncount = 0;
-
 	$fnrows = array(); //Create an empty array in case FetchRow does not return any rows
 	while ($fnrow = $fnresult->FetchRow())
 	{
@@ -366,7 +391,7 @@ elseif ($subaction == "all")
 		if ($fnrow['type'] != "Q" && $fnrow['type'] != "M" && $fnrow['type'] != "A" &&
 		$fnrow['type'] != "B" && $fnrow['type'] != "C" && $fnrow['type'] != "E" &&
 		$fnrow['type'] != "F" && $fnrow['type'] != "H" && $fnrow['type'] != "P" &&
-		$fnrow['type'] != "J" && $fnrow['type'] != "K" && 
+		$fnrow['type'] != "J" && $fnrow['type'] != "K" && $fnrow['type'] != "1" &&  
 		$fnrow['type'] != "O" && $fnrow['type'] != "R" && $fnrow['type'] != "^")
 		{
 			$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
@@ -389,6 +414,39 @@ elseif ($subaction == "all")
 			$ftitle .= "[comment]";
 			$fquestion .= " (comment)";
 			$fnames[] = array("$field", "$ftitle", "$fquestion", "{$fnrow['gid']}");
+		}
+		elseif ($fnrow['type'] == "1")	// multi scale	
+		{
+			$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")."
+			WHERE ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND
+			".db_table_name("answers").".language='{$language}' AND ".db_table_name("questions").".language='{$language}' AND
+			".db_table_name("questions").".qid={$fnrow['qid']} AND ".db_table_name("questions").".sid=$surveyid
+			ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
+			$i2result = db_execute_assoc($i2query);
+			$otherexists = "";
+			while ($i2row = $i2result->FetchRow())
+			{
+				// first scale
+				$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}{$i2row['code']}#0";
+				$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}Opt{$i2row['code']}";
+				if ($i2row['other'] == "Y") {$otherexists = "Y";}
+				$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}<br />\n[{$i2row['answer']}]<br>[".$clang->gT("1. scale")."]", "{$fnrow['gid']}");
+				// second scale
+				$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}{$i2row['code']}#1";
+				$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}Opt{$i2row['code']}";
+				if ($i2row['other'] == "Y") {$otherexists = "Y";}
+				$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}<br />\n[{$i2row['answer']}]<br>[".$clang->gT("2. scale")."]", "{$fnrow['gid']}");
+			}
+			if ($otherexists == "Y")
+			{
+				$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}"."other";
+				$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}OptOther";
+				$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}<br />\n[Other]", "{$fnrow['gid']}");
+				if ($fnrow['type'] == "P")
+				{
+					$fnames[] = array("$field"."comment", "$ftitle"."Comment", "{$fnrow['question']}<br />\n[Other]<br />\n[Comment]", "{$fnrow['gid']}");
+				}
+			}
 		}
 		elseif ($fnrow['type'] == "R")
 		{
@@ -442,7 +500,7 @@ elseif ($subaction == "all")
 	if ($fncount < 10) {$cellwidth = "10%";} else {$cellwidth = "100";}
 	$tableheader = "<!-- DATA TABLE -->";
 	if ($fncount < 10) {$tableheader .= "<table width='100%' border='0' cellpadding='0' cellspacing='1' style='border: 1px solid #555555' class='menu2columns'>\n";}
-	else {$fnwidth = (($fncount-1)*100); $tableheader .= "<table width='$fnwidth' border='0' cellpadding='1' cellspacing='1' style='border: 1px solid #555555'>\n";}
+	else {$fnwidth = (($fncount-1)*180); $tableheader .= "<table width='$fnwidth' border='0' cellpadding='1' cellspacing='1' style='border: 1px solid #555555'>\n";}
 	$tableheader .= "\t<tr valign='top'>\n"
 	. "\t\t<td  class='evenrow' width='$cellwidth'><strong>id</strong></td>\n";
 	foreach ($fnames as $fn)

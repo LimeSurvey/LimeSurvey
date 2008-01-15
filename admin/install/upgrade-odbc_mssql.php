@@ -101,7 +101,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","update [prefix_settings_global] set [stg_value]='114' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     
-    if ($oldversion < 125) {
+    if ($oldversion < 126) {
         modify_database("","ALTER TABLE [prefix_surveys] ADD  [printanswers] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] ADD  [listpublic] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
         upgrade_survey_tables117();
@@ -176,8 +176,10 @@ echo str_pad('Loading... ',4096)."<br />\n";
         upgrade_token_tables125();
         modify_database("","EXEC sp_rename 'prefix_users.move_user','superadmin'"); echo $modifyoutput; flush();
         modify_database("","UPDATE [prefix_users] SET [superadmin]=1 where ([create_survey]=1 AND [create_user]=1 AND [delete_user]=1 AND [configurator]=1)"); echo $modifyoutput; flush();
+        //126
+        modify_database("","ALTER TABLE [prefix_questions] ADD [lid1] int NOT NULL DEFAULT '0'"); echo $modifyoutput; flush();
         
-        modify_database("","update [prefix_settings_global] set [stg_value]='125' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+        modify_database("","update [prefix_settings_global] set [stg_value]='126' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     
     return true;

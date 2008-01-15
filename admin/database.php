@@ -241,6 +241,7 @@ if(isset($surveyid))
 		{
 			$_POST  = array_map('db_quote', $_POST);
 			if (!isset($_POST['lid']) || $_POST['lid'] == '') {$_POST['lid']="0";}
+			if (!isset($_POST['lid1']) || $_POST['lid1'] == '') {$_POST['lid1']="0";}
 			$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);	
 			if(!empty($_POST['questionposition']) || $_POST['questionposition'] == '0')
 			{
@@ -252,6 +253,7 @@ if(isset($surveyid))
 			    $question_order=(getMaxquestionorder($_POST['gid']));
 			    $question_order++;
 			}
+
 	     	if ($filterxsshtml)
 	     	{
 	   			require_once("../classes/inputfilter/class.inputfilter_clean.php");
@@ -260,9 +262,9 @@ if(isset($surveyid))
 				$_POST['question']=$myFilter->process($_POST['question']);
 				$_POST['help']=$myFilter->process($_POST['help']);
 			}	
-			$query = "INSERT INTO ".db_table_name('questions')." (sid, gid, type, title, question, preg, help, other, mandatory, lid, question_order, language)"
+			$query = "INSERT INTO ".db_table_name('questions')." (sid, gid, type, title, question, preg, help, other, mandatory, lid,  lid1, question_order, language)"
 			." VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
-			." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',$question_order,'{$baselang}')";
+			." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}',$question_order,'{$baselang}')";
 			$result = $connect->Execute($query);
 			// Get the last inserted questionid for other languages
 			$qid=$connect->Insert_ID();
@@ -275,9 +277,9 @@ if(isset($surveyid))
 				{
 					if ($alang != "")
 					{	
-						$query = "INSERT INTO ".db_table_name('questions')." (qid, sid, gid, type, title, question, preg, help, other, mandatory, lid, question_order, language)"
+						$query = "INSERT INTO ".db_table_name('questions')." (qid, sid, gid, type, title, question, preg, help, other, mandatory, lid, lid1, question_order, language)"
 						." VALUES ('$qid','{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
-						." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',".getMaxquestionorder($_POST['gid']).",'{$alang}')";
+						." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}',".getMaxquestionorder($_POST['gid']).",'{$alang}')";
                         if ($connect->databaseType == 'odbc_mssql') $query = "SET IDENTITY_INSERT ".db_table_name('questions')." ON; " . $query . "SET IDENTITY_INSERT ".db_table_name('questions')." OFF;";
 						$result2 = $connect->Execute($query);
 						if (!$result2)
@@ -455,6 +457,11 @@ if(isset($surveyid))
 							{
 								$uqquery.=", lid='{$_POST['lid']}' ";
 							}
+							if (isset($_POST['lid1']) && trim($_POST['lid1'])!="")
+							{
+								$uqquery.=", lid1='{$_POST['lid1']}' ";
+							}
+
 							$uqquery.= "WHERE sid='{$_POST['sid']}' AND qid='{$_POST['qid']}' AND language='{$qlang}'";
 							$uqresult = $connect->Execute($uqquery) or die ("Error Update Question: ".htmlspecialchars($uqquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
 							if (!$uqresult)
@@ -536,6 +543,7 @@ if(isset($surveyid))
     		$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);
     		
 			if (!isset($_POST['lid']) || $_POST['lid']=='') {$_POST['lid']=0;}
+			if (!isset($_POST['lid1']) || $_POST['lid1']=='') {$_POST['lid1']=0;}			
 			//Get maximum order from the question group
 			$max=get_max_question_order($_POST['gid'])+1 ;
             // Insert the base language of the question
@@ -565,11 +573,11 @@ if(isset($surveyid))
 					$_POST['question_'.$qlanguage]=$myFilter->process($_POST['question_'.$qlanguage]);
 					$_POST['help_'.$qlanguage]=$myFilter->process($_POST['help_'.$qlanguage]);
 				}
-   		        if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('questions')." ON");}
-				$query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, lid, question_order, language) 
-   	                      VALUES ($newqid,{$_POST['sid']}, {$_POST['gid']}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$qlanguage]."', '".$_POST['help_'.$qlanguage]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',$max,".db_quoteall($qlanguage).")";
-				$result = $connect->Execute($query) or die($connect->ErrorMsg());
-   	    	    if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('questions')." OFF");}
+            if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('questions')." ON");}
+			$query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, lid, question_order, language) 
+                      VALUES ($newqid,{$_POST['sid']}, {$_POST['gid']}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$qlanguage]."', '".$_POST['help_'.$qlanguage]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}', $max,".db_quoteall($qlanguage).")";
+			$result = $connect->Execute($query) or die($connect->ErrorMsg());
+            if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('questions')." OFF");}
 			}
 			if (!$result)
 			{

@@ -103,6 +103,13 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires a Labelset, but none is set."), $chkrow['gid']);
 	} // while
 	
+	//CHECK THAT FLEXIBLE LABEL TYPE QUESTIONS HAVE AN "LID1" SET FOR MULTI SCALE
+	$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z', '1') AND (lid1 = 0 OR lid1 is null)";
+	$chkresult = db_execute_assoc($chkquery) or die ("Couldn't check questions for missing LIDs<br />$chkquery<br />".$connect->ErrorMsg());
+	while($chkrow = $chkresult->FetchRow()){
+		$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires a second Labelset, but none is set."), $chkrow['gid']);
+	} // while
+	
 	
 	//NOW check that all used labelsets have all necessary languages
 	$chkquery = "SELECT qid, question, gid, lid FROM {$dbprefix}questions WHERE sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z', '1') AND (lid > 0) AND (lid is not null)";
@@ -445,7 +452,6 @@ else
                          ." AND q.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' ";
 				$abmultiscaleresult=$connect->Execute($abmultiscalequery) or die ("Couldn't get perform answers query<br />$abmultiscalequery<br />".$connect->ErrorMsg());
 				$abmultiscaleresultcount =$abmultiscaleresult->RecordCount();
-
 				$abmultiscaleresultcount = 1;
 				for ($j=0; $j<=$abmultiscaleresultcount; $j++)
 				{

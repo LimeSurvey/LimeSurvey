@@ -96,6 +96,7 @@ else
 	unset($bigarray[0]); //delete the first line
 
 	$fieldnames=explode("\t", trim($bigarray[1]));
+	
 	$fieldcount=count($fieldnames)-1;
 	while (trim($fieldnames[$fieldcount]) == "") // get rid of blank entries
 	{
@@ -170,6 +171,7 @@ else
 			// make this safe for mysql (*after* we undo first excel's
 			// and then our escaping).
 			$fieldvalues=array_map('db_quote',$fieldvalues);
+			$fieldnames=array_map('db_quote',$fieldnames);
 			// okay, now we should be good to go.
 			if ($insertstyle=="ignore" && !$noid)
 			$insert = "INSERT IGNORE";
@@ -177,7 +179,7 @@ else
 			$insert = "REPLACE";
 			else $insert = "INSERT";
 			$insert .= " INTO $surveytable\n";
-			$insert .= "(".implode(", ", $fieldnames).")\n";
+			$insert .= "(`".implode("`, `", $fieldnames)."`)\n";
 			$insert .= "VALUES\n";
 			$insert .= "('".implode("', '", $fieldvalues)."')\n";
 			if (!$result = $connect->Execute($insert))

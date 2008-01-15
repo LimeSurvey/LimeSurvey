@@ -163,6 +163,7 @@ CREATE TABLE `prefix_questions` (
   `other` char(1) NOT NULL default 'N',
   `mandatory` char(1) default NULL,
   `lid` int(11) NOT NULL default '0',
+  `lid1` int(11) NOT NULL default '0',
   `question_order` int(11) NOT NULL,
   `language` varchar(20) default 'en',
   PRIMARY KEY  (`qid`,`language`)
@@ -347,7 +348,7 @@ CREATE TABLE `prefix_templates` (
 -- Table `settings_global`
 --
 
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '125');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '126');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 
 --

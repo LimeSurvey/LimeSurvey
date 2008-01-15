@@ -606,7 +606,6 @@ while ($degrow = $degresult->FetchRow())
 			$printablesurveyoutput .="\t\t\t</table>\n";
 			break;
 			case "F": //ARRAY (Flexible Labels)
-			case "1": //ARRAY (Flexible Labels) multi scale
 			//$headstyle="style='border-left-style: solid; border-left-width: 1px; border-left-color: #AAAAAA'";
 			$headstyle="style='padding-left: 20px; padding-right: 7px'";
 			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
@@ -640,6 +639,74 @@ while ($degrow = $degresult->FetchRow())
 					$printablesurveyoutput .="\t\t\t\t\t\t<input type='checkbox' readonly='readonly' />\n";
 					$printablesurveyoutput .="\t\t\t\t\t</td>\n";
 				}
+                $answertext=$mearow['answer'];
+                if (strpos($answertext,'|')) 
+                {
+                    $answertext=substr($answertext,strpos($answertext,'|')+1);
+                       $printablesurveyoutput .= "\t\t\t\t<td class='answertextright'>$answertext</td>\n";
+                }
+				$printablesurveyoutput .="\t\t\t\t</tr>\n";
+			}
+			$printablesurveyoutput .="\t\t\t</table>\n";
+			break;
+			case "1": //ARRAY (Flexible Labels) multi scale
+			//$headstyle="style='border-left-style: solid; border-left-width: 1px; border-left-color: #AAAAAA'";
+			$headstyle="style='padding-left: 20px; padding-right: 7px'";
+			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
+			$mearesult = db_execute_assoc($meaquery);
+			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose the appropriate response for each item:")."</u><br />\n";
+			$printablesurveyoutput .="\t\t\t<table align='left' cellspacing='0'><tr><td></td>\n";
+			$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$deqrow['lid']}'  AND language='{$surveyprintlang}' ORDER BY sortorder, code";
+			$fresult = db_execute_assoc($fquery);
+			$fcount = $fresult->RecordCount();
+			$fwidth = "120";
+			$i=0;
+			while ($frow = $fresult->FetchRow())
+			{
+				$printablesurveyoutput .="\t\t\t\t\t\t<td align='center' valign='bottom' $headstyle><font size='1'>{$frow['title']}</font></td>\n";
+				$i++;
+			}
+			// second scale
+			$printablesurveyoutput .="\t\t\t\t\t\t<td align='center' valign='bottom' $headstyle><font size='1'></font></td>\n";
+			$fquery1 = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$deqrow['lid1']}'  AND language='{$surveyprintlang}' ORDER BY sortorder, code";
+			$fresult1 = db_execute_assoc($fquery1);
+			$fcount1 = $fresult1->RecordCount();
+			$fwidth = "120";
+			$i=0;
+			while ($frow1 = $fresult1->FetchRow())
+			{
+				$printablesurveyoutput .="\t\t\t\t\t\t<td align='center' valign='bottom' $headstyle><font size='1'>{$frow1['title']}</font></td>\n";
+				$i++;
+			}
+
+			$printablesurveyoutput .="\t\t\t\t\t\t</tr>\n";
+			while ($mearow = $mearesult->FetchRow())
+			{
+				$printablesurveyoutput .="\t\t\t\t<tr>\n";
+                $answertext=$mearow['answer'];
+                if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
+				$printablesurveyoutput .="\t\t\t\t\t<td align='left'>$answertext</td>\n";
+				//$printablesurveyoutput .="\t\t\t\t\t<td>";
+				for ($i=1; $i<=$fcount; $i++)
+				{
+
+					$printablesurveyoutput .="\t\t\t\t\t<td align='center'";
+					if ($i > 1) {$printablesurveyoutput .=" $headstyle";}
+					$printablesurveyoutput .=">\n";
+					$printablesurveyoutput .="\t\t\t\t\t\t<input type='checkbox' readonly='readonly' />\n";
+					$printablesurveyoutput .="\t\t\t\t\t</td>\n";
+				}
+				$printablesurveyoutput .="\t\t\t\t\t\t<td align='center' valign='bottom' $headstyle><font size='1'></font></td>\n";				
+				for ($i=1; $i<=$fcount1; $i++)
+				{
+
+					$printablesurveyoutput .="\t\t\t\t\t<td align='center'";
+					if ($i > 1) {$printablesurveyoutput .=" $headstyle";}
+					$printablesurveyoutput .=">\n";
+					$printablesurveyoutput .="\t\t\t\t\t\t<input type='checkbox' readonly='readonly' />\n";
+					$printablesurveyoutput .="\t\t\t\t\t</td>\n";
+				}
+				
                 $answertext=$mearow['answer'];
                 if (strpos($answertext,'|')) 
                 {

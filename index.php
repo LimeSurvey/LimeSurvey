@@ -962,7 +962,7 @@ function checkmandatorys($backok=null)
 		$mi=0;
 		foreach ($chkmands as $cm)
 		{
-			if (!isset($multiname) || $multiname != "MULTI$mfns[$mi]")  //no multiple type mandatory set, or does not match this question (set later on for first time)
+			if (!isset($multiname) || (isset($multiname) && $multiname != "MULTI$mfns[$mi]"))  //no multiple type mandatory set, or does not match this question (set later on for first time)
 			{
 				if ((isset($multiname) && $multiname) && (isset($_POST[$multiname]) && $_POST[$multiname])) //This isn't the first time (multiname exists, and is a posted variable)
 				{
@@ -1760,19 +1760,18 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 			$abresult = db_execute_assoc($abquery);
 			while ($abrow = $abresult->FetchRow())
 			{
-				$abmultiscalequery = "SELECT a.*, q.other FROM ".db_table_name('questions')." as q, ".db_table_name('labels')." as l, ".db_table_name('answers')." as a"
+				$abmultiscalequery = "SELECT l.* FROM ".db_table_name('questions')." as q, ".db_table_name('labels')." as l, ".db_table_name('answers')." as a"
 					     ." WHERE a.qid=q.qid AND sid=$surveyid AND q.qid={$arow['qid']} "
-	                     ." AND l.lid=q.lid AND sid=$surveyid AND q.qid={$arow['qid']} AND l.title = '' "
+	                     ." AND l.lid=q.lid AND sid=$surveyid AND q.qid={$arow['qid']}"
                          ." AND l.language='".$_SESSION['s_lang']. "' "
                          ." AND a.language='".$_SESSION['s_lang']. "' "
                          ." AND q.language='".$_SESSION['s_lang']. "' ";
+                        
 				$abmultiscaleresult=db_execute_assoc($abmultiscalequery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 				$abmultiscalecount=$abmultiscaleresult->RecordCount();
 				if ($abmultiscalecount>0)
 				{
-					for ($j=0; $j<=$abmultiscalecount; $j++)
-					{
-						$_SESSION['insertarray'][] = $fieldname.$abrow['code']."#$j";
+						$_SESSION['insertarray'][] = $fieldname.$abrow['code']."#0";
 						$alsoother = "";
 						
 						if ($abrow['other'] == "Y") {$alsoother = "Y";}
@@ -1780,18 +1779,30 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 						{
 							$_SESSION['insertarray'][] = $fieldname.$abrow['code']."comment";
 						}
-					}
+
 				}
-				else
+				// multi scale
+				$abmultiscalequery = "SELECT l.* FROM ".db_table_name('questions')." as q, ".db_table_name('labels')." as l, ".db_table_name('answers')." as a"
+					     ." WHERE a.qid=q.qid AND sid=$surveyid AND q.qid={$arow['qid']} "
+	                     ." AND l.lid=q.lid1 AND sid=$surveyid AND q.qid={$arow['qid']}"
+                         ." AND l.language='".$_SESSION['s_lang']. "' "
+                         ." AND a.language='".$_SESSION['s_lang']. "' "
+                         ." AND q.language='".$_SESSION['s_lang']. "' ";
+                       
+				$abmultiscaleresult=db_execute_assoc($abmultiscalequery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
+				$abmultiscalecount=$abmultiscaleresult->RecordCount();
+				if ($abmultiscalecount>0)
 				{
-					$_SESSION['insertarray'][] = $fieldname.$abrow['code'];
-					$alsoother = "";
-					if ($abrow['other'] == "Y") {$alsoother = "Y";}
-					if ($arow['type'] == "P")
-					{
-						$_SESSION['insertarray'][] = $fieldname.$abrow['code']."comment";
-					}
- 				}
+						$_SESSION['insertarray'][] = $fieldname.$abrow['code']."#1";
+						$alsoother = "";
+						
+						if ($abrow['other'] == "Y") {$alsoother = "Y";}
+						if ($arow['type'] == "P")
+						{
+							$_SESSION['insertarray'][] = $fieldname.$abrow['code']."comment";
+						}
+				}
+		
 			}
 			if (isset($alsoother) && $alsoother) //Add an extra field for storing "Other" answers
 			{

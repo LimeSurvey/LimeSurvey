@@ -64,6 +64,7 @@ if ($action == "addquestion")
 	. "\t\t<td align='left'>\n"
 	. "\t\t<select name='lid' >\n";
 	$labelsets=getlabelsets(GetBaseLanguageFromSurveyID($surveyid));
+	
 	if (count($labelsets)>0)
 	{
 		$newquestionoutput .= "\t\t\t<option value=''>".$clang->gT("Please Choose...")."</option>\n";
@@ -72,6 +73,23 @@ if ($action == "addquestion")
 			$newquestionoutput .= "\t\t\t<option value='{$lb[0]}'>{$lb[1]}</option>\n";
 		}
 	}
+	$newquestionoutput .= "\t\t</select>\n";
+	$newquestionoutput .= "\t<tr id='LabelSets1' style='display: none'>\n"
+	. "\t\t<td align='right'><strong>".$clang->gT("Second Label Set:")."</strong></td>\n"
+	. "\t\t<td align='left'>\n"
+	. "\t\t<select name='lid1' >\n";
+	$labelsets1=getlabelsets(GetBaseLanguageFromSurveyID($surveyid));
+
+	if (count($labelsets1)>0)
+	{
+		$newquestionoutput .= "\t\t\t<option value=''>".$clang->gT("Please Choose...")."</option>\n";
+		foreach ($labelsets as $lb)
+		{
+			$newquestionoutput .= "\t\t\t<option value='{$lb[0]}'>{$lb[1]}</option>\n";
+		}
+	}
+	
+
 	$newquestionoutput .= "\t\t</select>\n"
 	. "\t\t</td>\n"
 	. "\t</tr>\n";
@@ -232,6 +250,26 @@ if ($action == "copyquestion")
 				$editquestion .= ">{$lb[1]}</option>\n";
 			}
 		}
+	$newquestionoutput .= "\t\t</select>\n";		
+	$editquestion .= "\t<tr id='LabelSets1' style='display: none'>\n"
+	. "\t\t<td><strong>".$clang->gT("Second Label Set:")."</strong></td>\n"
+	. "\t\t<td>\n"
+	. "\t\t<select name='lid1' >\n";
+	$labelsets1=getlabelsets(GetBaseLanguageFromSurveyID($surveyid));
+		if (count($labelsets1)>0)
+		{
+			if (!$eqrow['lid1'])
+			{
+				$editquestion .= "\t\t\t<option value=''>".$clang->gT("Please Choose...")."</option>\n";
+			}
+			foreach ($labelsets1 as $lb)
+			{
+				$editquestion .= "\t\t\t<option value='{$lb[0]}'";
+				if ($eqrow['lid1'] == $lb[0]) {$editquestion .= " selected";}
+				$editquestion .= ">{$lb[1]}</option>\n";
+			}
+		}
+	
 		$editquestion .= "\t\t</select>\n"
 		. "\t\t</td>\n"
 		. "\t</tr>\n"
@@ -323,7 +361,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 			} else {
 				$questlangs[$esrow['language']] = 99;
 			}
-			if ($esrow['language'] == $baselang) $basesettings = array('lid' => $esrow['lid'],'question_order' => $esrow['question_order'],'other' => $esrow['other'],'mandatory' => $esrow['mandatory'],'type' => $esrow['type'],'title' => $esrow['title'],'preg' => $esrow['preg'],'question' => $esrow['question'],'help' => $esrow['help']);
+			if ($esrow['language'] == $baselang) $basesettings = array('lid' => $esrow['lid'], 'lid1' => $esrow['lid1'],'question_order' => $esrow['question_order'],'other' => $esrow['other'],'mandatory' => $esrow['mandatory'],'type' => $esrow['type'],'title' => $esrow['title'],'preg' => $esrow['preg'],'question' => $esrow['question'],'help' => $esrow['help']);
 
 		}
 	
@@ -332,9 +370,9 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 			if ($value != 99)
 			{
                 if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('questions')." ON");}
-				$egquery = "INSERT INTO ".db_table_name('questions')." (qid, sid, gid, type, title, question, preg, help, other, mandatory, lid, question_order, language)"
+				$egquery = "INSERT INTO ".db_table_name('questions')." (qid, sid, gid, type, title, question, preg, help, other, mandatory, lid, lid1, question_order, language)"
 				." VALUES ('{$qid}','{$surveyid}', '{$gid}', '{$basesettings['type']}', '{$basesettings['title']}',"
-				." '{$basesettings['question']}', '{$basesettings['preg']}', '{$basesettings['help']}', '{$basesettings['other']}', '{$basesettings['mandatory']}', '{$basesettings['lid']}','{$basesettings['question_order']}','{$key}')";
+				." '{$basesettings['question']}', '{$basesettings['preg']}', '{$basesettings['help']}', '{$basesettings['other']}', '{$basesettings['mandatory']}', '{$basesettings['lid']}', '{$basesettings['lid1']}', '{$basesettings['question_order']}','{$key}')";
 				$egresult = $connect->Execute($egquery);
                 if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('questions')." OFF");}
 			}
@@ -415,7 +453,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   		$editquestion  .="\t</tr><tr id='LabelSets' style='display: none'>\n"
   		. "\t\t<td align='right'><strong>".$clang->gT("Label Set:")."</strong></td>\n"
   		. "\t\t<td align='left'>\n";
-  		
+
 		$qattributes=questionAttributes();
   		if ($activated != "Y")
   		{
@@ -435,11 +473,35 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   				}
   			}
   			$editquestion .= "\t\t</select>\n";
+
+	  		$editquestion  .="\t</tr><tr id='LabelSets1' style='display: none'>\n"
+  			. "\t\t<td align='right'><strong>".$clang->gT("Second Label Set:")."</strong></td>\n"
+  			. "\t\t<td align='left'>\n";
+
+  			$editquestion .= "\t\t<select name='lid1' >\n";
+  			$labelsets1=getlabelsets(GetBaseLanguageFromSurveyID($surveyid));
+  			if (count($labelsets1)>0)
+  			{
+  				if (!$eqrow['lid1'])
+  				{
+  					$editquestion .= "\t\t\t<option value=''>".$clang->gT("Please Choose...")."</option>\n";
+  				}
+  				foreach ($labelsets1 as $lb)
+  				{
+  					$editquestion .= "\t\t\t<option value='{$lb[0]}'";
+  					if ($eqrow['lid1'] == $lb[0]) {$editquestion .= " selected='selected'";}
+  					$editquestion .= ">{$lb[1]}</option>\n";
+  				}
+  			}
+
+  			$editquestion .= "\t\t</select>\n";
   		}
   		else
   		{
-  			$editquestion .= "[{$eqrow['lid']}] - ".$clang->gT("Cannot be modified")." - ".$clang->gT("Survey is currently active.")."\n"
- 			. "\t\t\t<input type='hidden' name='lid' value=\"{$eqrow['lid']}\" />\n";
+  			$editquestion .= "[{$eqrow['lid']}] - ".$clang->gT("Cannot be modified")." - ".$clang->gT("Survey is currently active.")."\n";
+  			$editquestion .= "[{$eqrow['lid1']}] - ".$clang->gT("Cannot be modified")." - ".$clang->gT("Survey is currently active.")."\n"  			
+ 			. "\t\t\t<input type='hidden' name='lid' value=\"{$eqrow['lid']}\" />\n"
+ 			. "<input type='hidden' name='lid1' value=\"{$eqrow['lid1']}\" />\n";
   		}
   		
   		$editquestion .= "\t\t</td>\n"
@@ -780,12 +842,22 @@ function questionjavascript($type, $qattributes)
     . "\t\t{\n"
     . "\t\tdocument.getElementById('OtherSelection').style.display = '';\n"
     . "\t\tdocument.getElementById('LabelSets').style.display = 'none';\n"
+    . "\t\tdocument.getElementById('LabelSets1').style.display = 'none';\n"    
     . "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
     . "\t\tdocument.getElementById('MandatorySelection').style.display='';\n"
     . "\t\t}\n"
-    . "\telse if (QuestionType == 'F' || QuestionType == 'H' || QuestionType == 'W' || QuestionType == 'Z'  || QuestionType == '1')\n"
+    . "\telse if (QuestionType == 'F' || QuestionType == 'H' || QuestionType == 'W' || QuestionType == 'Z')\n"
     . "\t\t{\n"
     . "\t\tdocument.getElementById('LabelSets').style.display = '';\n"
+    . "\t\tdocument.getElementById('LabelSets1').style.display = 'none';\n"
+    . "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n"
+    . "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
+    . "\t\tdocument.getElementById('MandatorySelection').style.display='';\n"
+    . "\t\t}\n"
+    . "\telse if (QuestionType == '1')\n"
+    . "\t\t{\n"
+    . "\t\tdocument.getElementById('LabelSets').style.display = '';\n"
+    . "\t\tdocument.getElementById('LabelSets1').style.display = '';\n"
     . "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n"
     . "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
     . "\t\tdocument.getElementById('MandatorySelection').style.display='';\n"
@@ -808,6 +880,7 @@ function questionjavascript($type, $qattributes)
     . "\telse\n"
     . "\t\t{\n"
     . "\t\tdocument.getElementById('LabelSets').style.display = 'none';\n"
+    . "\t\tdocument.getElementById('LabelSets1').style.display = 'none';\n"    
     . "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n"
     . "\t\tdocument.getElementById('ON').checked = true;\n"
     . "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
