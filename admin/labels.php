@@ -402,6 +402,21 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 
 	    $labelsoutput.=("</div>");
         }	
+
+	// TAB for resources management
+	$labelsoutput.= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Uploaded Resources Management")."</h2>\n"
+		. "\t<table width='100%' class='form2columns'>\n"
+		. "\t<tbody align='center'>"
+		. "\t\t<td></td><td>\n"
+		. "\t\t<input type='button' onclick='window.open(\"$homeurl/scripts/fckeditor/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php?\", \"_top\")'/ value=\"".$clang->gT("Browse Uploaded Ressources")."\"><br />"
+		. "\t\t<input type='button' onclick='window.open(\"$scriptname?action=exportlabelresources&amp;lid={$lid}\", \"_blank\")'/ value=\"".$clang->gT("Export Zip archive of uploaded ressources")."\">"
+		. "\t\t</td><td></td>\n"
+		. "\t</tbody></table>\n";
+
+	// End TAB Uploaded Resources Management
+	$labelsoutput.= "</div>";		
+
+
 	$labelsoutput.= "<input type='hidden' name='sortorderids' value='$sortorderids' />\n";
 	$labelsoutput.= "<input type='hidden' name='codeids' value='$codeids' />\n";
 	$labelsoutput.= "</div>"

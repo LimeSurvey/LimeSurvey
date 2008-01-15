@@ -57,6 +57,7 @@ class PHPZip
 
 	function GetFileList($dir)
 	{
+		$file=Array();
 		if (file_exists($dir))
 		{
 			$args = func_get_args();

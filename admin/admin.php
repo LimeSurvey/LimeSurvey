@@ -89,6 +89,11 @@ elseif ($action == "dumplabel")
       if ($_SESSION['USER_RIGHT_MANAGE_TEMPLATE']==1)  {include("dumplabel.php");}
         else { include("access_denied.php");}
   }      
+elseif ($action == "exportlabelresources") 
+  { 
+      if ($_SESSION['USER_RIGHT_MANAGE_TEMPLATE']==1)  {include("export_resources_zip.php");}
+        else { include("access_denied.php");}
+  }      
 elseif ($action == "checkintegrity") 
   { 
       if ($_SESSION['USER_RIGHT_CONFIGURATOR']==1)  {include("integritycheck.php");}
@@ -146,6 +151,11 @@ elseif ($action == "exportstructurecsv")
 elseif ($action == "exportstructurequexml")
     {
     if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("export_structure_quexml.php");}
+        else { include("access_denied.php");}    
+    }    
+elseif ($action == "exportsurvresources")
+    {
+    if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("export_resources_zip.php");}
         else { include("access_denied.php");}    
     }    
 elseif ($action == "dumpquestion")
@@ -330,7 +340,14 @@ elseif ($action == "replacementfields")
      (isset($surveyid) || $action=="listurveys" || $action=="changelang" ||  $action=="changehtmleditormode" || $action=="checksettings" ||       //Still to check
       $action=="editsurvey" || $action=="updatesurvey" || $action=="ordergroups"  ||
       $action=="uploadf" || $action=="newsurvey" || $action=="listsurveys" ||   
-      $action=="surveyrights" || $action=="quotas") ) include("html.php");
+      $action=="surveyrights" || $action=="quotas") )
+{
+	if ($action=="editsurvey")
+	{
+		 $_SESSION['FileManagerContext']="edit:survey:$surveyid";
+	}
+	include("html.php");
+}
 
  if ($action=="addquestion" || $action=="copyquestion" || $action=="editquestion" || 
      $action=="orderquestions" || $action=="editattribute" || $action=="delattribute" || 
