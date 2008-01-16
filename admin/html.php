@@ -2988,6 +2988,8 @@ if ($action == "newsurvey")
 //		. "\t\t".$clang->gT("Import Survey")."</th></tr>\n"
 		. "\t<tr>\t\t<td>".$clang->gT("Select CSV/SQL File:")."</td>\n"
 		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"50\" /></td></tr>\n"
+		. "\t\t<tr>\t\t<td><label>".$clang->gT("Convert Resources links and INSERTANS fields ?")."</td>\n"
+		. "\t\t<td><input name=\"translinksfields\" type=\"checkbox\" /></label></td></tr>\n"
 		. "\t<tr><td colspan='2' class='centered'><input type='submit' value='".$clang->gT("Import Survey")."' />\n"
 		. "\t<input type='hidden' name='action' value='importsurvey' /></td>\n"
 		. "\t</tr>\n"

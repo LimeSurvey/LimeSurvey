@@ -471,6 +471,20 @@ if ($importversion<=100)
     unset($surveyrowdata['email_register']);
     unset($surveyrowdata['email_confirm_subj']);
     unset($surveyrowdata['email_confirm']);
+
+
+    // translate internal links
+    $surveylsrowdata['surveyls_title']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_title']);
+    $surveylsrowdata['surveyls_description']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_description']);
+    $surveylsrowdata['surveyls_welcometext']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_welcometext']);
+    $surveylsrowdata['surveyls_urldescription']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_urldescription']);
+    $surveylsrowdata['surveyls_email_invite']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_email_invite']);
+    $surveylsrowdata['surveyls_email_remind']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_email_remind']);
+    $surveylsrowdata['surveyls_email_register']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_email_register']);
+    $surveylsrowdata['surveyls_email_confirm']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_email_confirm']);
+    
+    
+
     // import the survey language-specific settings
     $values=array_values($surveylsrowdata);
     $values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
@@ -506,6 +520,17 @@ if ($importversion>=111)
 	// convert back the '\'.'n' cahr from the CSV file to true return char "\n"
 	$surveylsrowdata=array_map('convertCsvreturn2return', $surveylsrowdata);
 	// Convert the \n return char from welcometext to <br />
+
+    // translate internal links
+    $surveylsrowdata['surveyls_title']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_title']);
+    $surveylsrowdata['surveyls_description']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_description']);
+    $surveylsrowdata['surveyls_welcometext']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_welcometext']);
+    $surveylsrowdata['surveyls_urldescription']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_urldescription']);
+    $surveylsrowdata['surveyls_email_invite']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_email_invite']);
+    $surveylsrowdata['surveyls_email_remind']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_email_remind']);
+    $surveylsrowdata['surveyls_email_register']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_email_register']);
+    $surveylsrowdata['surveyls_email_confirm']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_email_confirm']);
+
         $surveylsrowdata['surveyls_survey_id']=$newsid;     
         $newvalues=array_values($surveylsrowdata);
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
@@ -585,10 +610,15 @@ if (isset($labelsetsarray) && $labelsetsarray) {
                 } 				
 				if ($labellid == $oldlid) {
 					$labelrowdata['lid']=$newlid;
+
+    		// translate internal links
+		    $labelrowdata['title']=translink('label', $oldlid, $newlid, $labelrowdata['title']);
+
                     $newvalues=array_values($labelrowdata);
                     $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                     $lainsert = "insert INTO {$dbprefix}labels (".implode(',',array_keys($labelrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
 					$liresult=$connect->Execute($lainsert);
+
 				}
 			}
 		}
@@ -683,6 +713,10 @@ if (isset($grouparray) && $grouparray) {
             } 
 		$oldgid=$gid; // save it for later
         $grouprowdata=array_map('convertCsvreturn2return', $grouprowdata);
+
+    		// translate internal links
+		    $grouprowdata['group_name']=translink('survey', $surveyid, $newsid, $grouprowdata['group_name']);
+		    $grouprowdata['description']=translink('survey', $surveyid, $newsid, $grouprowdata['description']);
         
         $newvalues=array_values($grouprowdata);
         
@@ -711,6 +745,7 @@ if (isset($grouparray) && $grouparray) {
                 }
  	          		$questionrowdata=array_combine($qafieldorders,$qacfieldcontents);
                 $questionrowdata=array_map('convertCsvreturn2return', $questionrowdata);
+
                 if ($currentqid=='' || ($currentqid!=$questionrowdata['qid'])) {$currentqid=$questionrowdata['qid'];$newquestion=true;}
                   else 
                     if ($currentqid==$questionrowdata['qid']) {$newquestion=false;}
@@ -761,11 +796,20 @@ if (isset($grouparray) && $grouparray) {
                     }
                     if (!isset($questionrowdata["question_order"]) || $questionrowdata["question_order"]=='') {$questionrowdata["question_order"]=0;} 
 					$other = $questionrowdata["other"]; //Get 'other' field value
+
+    		// translate internal links
+		    $questionrowdata['title']=translink('survey', $surveyid, $newsid, $questionrowdata['title']);
+		    $questionrowdata['question']=translink('survey', $surveyid, $newsid, $questionrowdata['question']);
+		    $questionrowdata['help']=translink('survey', $surveyid, $newsid, $questionrowdata['help']);
+
                     $newvalues=array_values($questionrowdata);
                     $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                     $qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
 					$qres = $connect->Execute($qinsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
-		            if ($newquestion) {$newqid=$connect->Insert_ID();}
+		            if ($newquestion)
+				{
+				 	$newqid=$connect->Insert_ID();
+				}
 					
 					$newrank=0;
 					$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
@@ -796,6 +840,10 @@ if (isset($grouparray) && $grouparray) {
                                     {
                                     $answerrowdata['language']=$newlanguage;
                                     } 
+    				
+			// translate internal links
+		    		$answerrowdata['answer']=translink('survey', $surveyid, $newsid, $answerrowdata['answer']);
+
                                 $newvalues=array_values($answerrowdata);
                                 $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                                 $ainsert = "insert INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
@@ -1007,6 +1055,12 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 		unset($newcqid);
 	}
 }
+
+// TIBO Translate INSERTANS codes
+transInsertAns($oldsid,$newsid,$fieldnames);
+
+
+
 
 if ($importingfrom == "http")
 {

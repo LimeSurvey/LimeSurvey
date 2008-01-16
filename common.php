@@ -4294,4 +4294,68 @@ function getNextCode($sourcecode)
     
 }
 
+// translink
+function translink($type, $oldid,$newid,$text)
+{
+	if (!isset($_POST['translinksfields']))
+	{
+		return $text;
+	}
+
+		if ($type == 'survey')
+		{
+			$pattern = "upload/surveys/$oldid/";
+			$replace = "upload/surveys/$newid/";
+			return ereg_replace($pattern, $replace, $text);
+		}
+		elseif ($type == 'label')
+		{
+			$pattern = "upload/labels/$oldid/";
+			$replace = "upload/labels/$newid/";
+			return ereg_replace($pattern, $replace, $text);
+		}
+		else
+		{
+			return $text;
+		}
+}
+
+function transInsertAns($newsid,$oldsid,$fieldnames)
+{ 
+	global $connect, $dbprefix;
+
+	if (!isset($_POST['translinksfields']))
+	{
+		return;
+	}
+
+	 $sql = "SELECT qid, language, question, help from {$dbprefix}questions WHERE sid=".$newsid." AND question LIKE '%{INSERTANS:".$newsid."X%' OR help LIKE '%{INSERTANS:".$newsid."X%'";
+	$res = db_execute_assoc($sql) or die("Can't read question table in transInsertAns ".html_escape($connect->ErrorMsg()));
+
+	while ($qentry = $res->FetchRow())
+	{
+		$question = $qentry['question'];
+		$help = $qentry['help'];
+		$qid = $qentry['qid'];
+		$language = $qentry['language'];
+
+		foreach ($fieldnames as $fnrow)
+		{
+			$pattern = "\{INSERTANS:".$fnrow['oldfieldname']."\}";
+			$replacement = "\{INSERTANS:".$fnrow['newfieldname']."\}";
+			$question=ereg_replace($pattern, $replacement, $question);
+			$help=ereg_replace($pattern, $replacement, $help);
+		}
+
+		if (strcmp($question,$qentry['question']) !=0 ||
+			strcmp($help,$qentry['help']) !=0)
+		{
+			// Update Field
+			$sqlupdate = "UPDATE {$dbprefix}questions SET question='".$question."', help='".$help."' WHERE qid=$qid AND language='$language'";
+			$updateres=$connect->Execute($sqlupdate) or die ("Couldn't update INSERTANS in question<br />$sqlupdate<br />".$connect->ErrorMsg());
+		} // Enf if modified
+	} // end while qentry
+}
+		
+
 ?>
