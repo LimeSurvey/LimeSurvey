@@ -1109,7 +1109,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		}
 		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
 		{
-			$questionsummary .= "<a href='#' onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=475, width=650, scrollbars=yes, resizable=yes, left=50, top=50')\""
+			$questionsummary .= "<a href='#' onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=500, width=800, scrollbars=yes, resizable=yes, left=50, top=50')\""
 			. "onmouseout=\"hideTooltip()\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Set Conditions for this Question", "js")."');return false\">"
 			. "<img src='$imagefiles/conditions.png' title='' alt='' align='left' name='SetQuestionConditions' /></a>\n"

@@ -28,6 +28,8 @@ function db_rename_table($oldtable, $newtable)
 {
 	global $connect;
 	switch ($connect->databaseType) {
+	
+	    case 'postgres7'  : return "ALTER TABLE $oldtable RENAME TO $newtable";
 		case 'mysql'	  : return "RENAME TABLE $oldtable TO $newtable";
 		case 'odbc_mssql' : return "EXEC sp_rename $oldtable, $newtable";
 		default: die ("Couldn't create 'rename table' query for connection type '$connect->databaseType'"); 

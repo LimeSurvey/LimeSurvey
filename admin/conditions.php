@@ -769,25 +769,23 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 
 	$conditionsoutput .= "\t<tr>\n"
 	."\t\t<td align='center'>\n"
-	."\t\t<div style='overflow-x:scroll; width:100%; overflow: -moz-scrollbars-horizontal; overflow-y:scroll; height: 100px;'>\n"
-	."\t\t<select name='copyconditionsfrom[]' multiple style='font-family:verdana; font-size:10; background-color: #E1FFE1; border: 0px' size='".count($conditionsList)."' >\n";
+	."\t\t<select name='copyconditionsfrom[]' multiple style='font-family:verdana; font-size:10; width:220; background-color: #E1FFE1' size='4' >\n";
 	foreach ($conditionsList as $cl)
 	{
 		$conditionsoutput .= "<option value='".$cl['cid']."'>".$cl['text']."</option>\n";
 	}
-	$conditionsoutput .= "\t\t</select>\n\t\t</div>"
+	$conditionsoutput .= "\t\t</select>\n"
 	."\t\t</td>\n"
 	."\t\t<td align='center' style='text-align: center' width='200'>\n"
 	."\t\t".$clang->gT("copy to")."\n"
 	."\t\t</td>\n"
 	."\t\t<td align='center'>\n"
-    ."\t\t\t<div style='overflow-x:scroll; width:100%; overflow: -moz-scrollbars-horizontal; overflow-y:scroll; height: 100px; text-align: right'>\n"
-	."\t\t<select name='copyconditionsto[]' multiple style='font-family:verdana; font-size:10; border: 0px' size='".count($pquestions)."'>\n";
+	."\t\t<select name='copyconditionsto[]' multiple style='font-family:verdana; font-size:10; width:220' size='4'>\n";
 	foreach ($pquestions as $pq)
 	{
 		$conditionsoutput .= "<option value='{$pq['fieldname']}'>".$pq['text']."</option>\n";
 	}
-	$conditionsoutput .= "\t\t</select>\n\t\t</div>";
+	$conditionsoutput .= "\t\t</select>\n";
 	$conditionsoutput .= "\t\t</td>\n"
 	."\t</tr>\n";
 
@@ -825,20 +823,19 @@ $conditionsoutput .= "\t<tr class='settingcaption'>\n"
 ."\t</tr>\n"
 ."\t<tr>\n"
 ."\t\t<td valign='top' align='center'>\n"
-."\t\t\t<div style='overflow-x:scroll; width:100%; overflow: -moz-scrollbars-horizontal; overflow-y:scroll; height: 100px;'>\n"
-."\t\t\t<select onclick=\"getAnswers(this.options[this.selectedIndex].value)\" name='cquestions' id='cquestions' style='font-family:verdana; background-color: #FFFFFF; font-size:10; border: 0px;' size='".($qcount+1)."'>\n";
+."\t\t\t<select onclick=\"getAnswers(this.options[this.selectedIndex].value)\" name='cquestions' id='cquestions' style='width:250px;font-family:verdana; font-size:10;' size='".($qcount+1)."'>\n";
 if (isset($cquestions))
 {
 	foreach ($cquestions as $cqn)
 	{
-		$conditionsoutput .= "\t\t\t\t<option value='$cqn[3]'";
+		$conditionsoutput .= "\t\t\t\t<option value='$cqn[3]' title='$cqn[0]'";
 		if (isset($_POST['cquestions']) && $cqn[3] == $_POST['cquestions']) {
 			$conditionsoutput .= " selected";
 		}
 		$conditionsoutput .= ">$cqn[0]</option>\n";
 	}
 }
-$conditionsoutput .= "\t\t\t</select>\n\t\t\t</div>\n"
+$conditionsoutput .= "\t\t\t</select>\n"
 ."\t\t</td>\n"
 ."\t\t<td align='center' valign='top'>\n";
 // Originally was planned to do that:
@@ -864,10 +861,9 @@ $conditionsoutput .= "\t\t\t</select>\n";
 $conditionsoutput .= "\t\t\t<small><br />".$clang->gT("NOTE: If you use a pre-defined answer as your condition, only the equals or not-equal-to conditions apply.")."</small>\n";
 $conditionsoutput .= "\t\t</td>\n"
 ."\t\t<td valign='top' align='center'>\n"
-."\t\t\t<div style='overflow-x:scroll; width:100%; overflow: -moz-scrollbars-horizontal; overflow-y:scroll; height: 100px; text-align: right' id='acanswers'>\n"
-."\t\t\t<select name='canswers[]' multiple id='canswers' style='font-family:verdana; font-size:10; border: 0px;' size='6'>\n";
+."\t\t\t<select name='canswers[]' multiple id='canswers' style='font-family:verdana; font-size:10; min-width:250px;' size='6'>\n";
 
-$conditionsoutput .= "\t\t\t</select>\n\t\t\t</div>\n"
+$conditionsoutput .= "\t\t\t</select>\n\t\t\t\n"
 ."\t\t".$clang->gT("Constant Value or Regular Expression")."<br />\n"
 ."\t\t<textarea name='ValOrRegEx' cols='40' rows='5'></textarea>\n"
 ."\t\t</td>"
@@ -900,8 +896,8 @@ $conditionsoutput .= "\t<tr><td colspan='3'></td></tr>\n"
 function showSpeaker($hinttext)
 {
   global $imagefiles, $clang;
-  $reshtml= "<img src='$imagefiles/speaker.png' align='bottom' alt=\"$hinttext\" title=\"$hinttext\" "
-           ." onclick=\"alert('".$clang->gT("Question","js").": ".javascript_escape($hinttext)."')\" />";
+  $reshtml= "<img src='$imagefiles/speaker.png' align='bottom' alt=\"".strip_tags($hinttext)."\" title=\"".strip_tags($hinttext)."\" "
+           ." onclick=\"alert('".$clang->gT("Question","js").": ".javascript_escape(strip_tags($hinttext))."')\" />";
   return $reshtml; 
 }
 
