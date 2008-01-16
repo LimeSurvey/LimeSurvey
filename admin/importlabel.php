@@ -141,6 +141,10 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 			
 				if ($labellid == $oldlid) {
 					$labelrowdata['lid']=$newlid;
+
+			// translate internal links
+			$labelrowdata['title']=translink('label', $oldlid, $newlid, $labelrowdata['title']);
+
                     $newvalues=array_values($labelrowdata);
                     $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                     $lainsert = "insert INTO {$dbprefix}labels (".implode(',',array_keys($labelrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix

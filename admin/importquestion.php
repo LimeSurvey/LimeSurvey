@@ -328,6 +328,10 @@ if (isset($labelsetsarray) && $labelsetsarray) {
                 $labellid=$labelrowdata['lid'];
                 if ($labellid == $oldlid) {
                     $labelrowdata['lid']=$newlid;
+
+			// translate internal links
+			$labelrowdata['title']=translink('label', $oldlid, $newlid, $labelrowdata['title']);
+
                     $newvalues=array_values($labelrowdata);
                     $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                     $lainsert = "INSERT INTO {$dbprefix}labels (".implode(',',array_keys($labelrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
@@ -422,6 +426,12 @@ if (isset($questionarray) && $questionarray) {
 		    $other = $questionrowdata["other"]; //Get 'other' field value
 		    $oldlid = $questionrowdata["lid"];
             $questionrowdata=array_map('convertCsvreturn2return', $questionrowdata);
+
+		// translate internal links
+		$questionrowdata['title']=translink('survey', $oldsid, $newsid, $questionrowdata['title']);
+		$questionrowdata['question']=translink('survey', $oldsid, $newsid, $questionrowdata['question']);
+		$questionrowdata['help']=translink('survey', $oldsid, $newsid, $questionrowdata['help']);
+
             $newvalues=array_values($questionrowdata);
             $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
             $qinsert = "INSERT INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
@@ -443,6 +453,10 @@ if (isset($questionarray) && $questionarray) {
                 $code=$answerrowdata["code"];
                 $thisqid=$answerrowdata["qid"];
                 $answerrowdata["qid"]=$newqid;
+
+			// translate internal links
+			$answerrowdata['answer']=translink('survey', $oldsid, $newsid, $answerrowdata['answer']);
+
                         $newvalues=array_values($answerrowdata);
                         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                         $ainsert = "INSERT INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 

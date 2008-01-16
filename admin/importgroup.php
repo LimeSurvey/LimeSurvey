@@ -326,6 +326,10 @@ if (isset($labelsetsarray) && $labelsetsarray) {
                 $labellid=$labelrowdata['lid'];
                 if ($labellid == $oldlid) {
                     $labelrowdata['lid']=$newlid;
+
+		// translate internal links
+		$labelrowdata['title']=translink('label', $oldlid, $newlid, $labelrowdata['title']);
+
                     $newvalues=array_values($labelrowdata);
                     $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                     $lainsert = "INSERT INTO {$dbprefix}labels (".implode(',',array_keys($labelrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
@@ -429,6 +433,12 @@ if (isset($grouparray) && $grouparray)
         
         // Everything set - now insert it
         $grouprowdata=array_map('convertCsvreturn2return', $grouprowdata);
+
+
+	// translate internal links
+	$grouprowdata['group_name']=translink('survey', $oldsid, $newsid, $grouprowdata['group_name']);
+	$grouprowdata['description']=translink('survey', $oldsid, $newsid, $grouprowdata['description']);
+
         $newvalues=array_values($grouprowdata);
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
         $ginsert = "insert INTO {$dbprefix}groups (".implode(',',array_keys($grouprowdata)).") VALUES (".implode(',',$newvalues).")"; 
@@ -483,6 +493,12 @@ if (isset($grouparray) && $grouparray)
 
             // Everything set - now insert it
             $questionrowdata=array_map('convertCsvreturn2return', $questionrowdata);
+
+		// translate internal links
+		$questionrowdata['title']=translink('survey', $oldsid, $newsid, $questionrowdata['title']);
+		$questionrowdata['question']=translink('survey', $oldsid, $newsid, $questionrowdata['question']);
+		$questionrowdata['help']=translink('survey', $oldsid, $newsid, $questionrowdata['help']);
+
             $newvalues=array_values($questionrowdata);
             $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
             $qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
@@ -518,6 +534,10 @@ if (isset($grouparray) && $grouparray)
                 
             // Everything set - now insert it     
             $answerrowdata = array_map('convertCsvreturn2return', $answerrowdata);
+
+		// translate internal links
+		$answerrowdata['answer']=translink('survey', $oldsid, $newsid, $answerrowdata['answer']);
+
             $newvalues=array_values($answerrowdata);
             $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
             $ainsert = "insert INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 

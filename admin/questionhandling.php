@@ -166,6 +166,8 @@ if ($action == "addquestion")
 	. "\t\t<strong>".$clang->gT("Import Question")."</strong></td></tr>\n\t<tr>"
 	. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Select CSV File").":</strong></td>\n"
 	. "\t\t<td align='left'><input name=\"the_file\" type=\"file\" size=\"50\" /></td></tr>\n"
+	. "\t\t<tr>\t\t<td align='right' width='35%'>".$clang->gT("Convert Resources links ?")."</td>\n"
+	. "\t\t<td><input name=\"translinksfields\" type=\"checkbox\" /></td></tr>\n"
 	. "\t<tr><td colspan='2' align='center'><input type='submit' "
 	. "value='".$clang->gT("Import Question")."' />\n"
 	. "\t<input type='hidden' name='action' value='importquestion' />\n"
