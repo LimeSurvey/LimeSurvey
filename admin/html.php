@@ -685,6 +685,7 @@ if ($surveyid)
                  || $action=="setsurveysecurity" ||  $action=="setusergroupsurveysecurity" || $action=="delsurveysecurity" 
                  || $action=="editsurvey" || $action=="addgroup" || $action=="importgroup"
                  || $action=="ordergroups" || $action=="updatesurvey" || $action=="deletesurvey" || $action=="resetsurveylogic"
+                 || $action=="importsurvresources" 
                  || $action=="exportstructure" || $action=="quotas" ) {$showstyle="style='display: none'";}
 		if (!isset($showstyle)) {$showstyle="";}
         $additionnalLanguagesArray = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -1979,7 +1980,7 @@ if ($action == "editsurvey")
 		{
 			$esrow = array_map('htmlspecialchars', $esrow);
 			$editsurvey = include2var('./scripts/addremove.js');
-			$editsurvey .= "<form name='addnewsurvey' action='$scriptname' method='post'>\n";
+			$editsurvey .= "<form id='addnewsurvey' name='addnewsurvey' action='$scriptname' method='post'>\n";
 
 			// header
 			$editsurvey .= "<table width='100%' border='0'>\n\t<tr><td colspan='4' class='settingcaption'>"
@@ -1988,7 +1989,7 @@ if ($action == "editsurvey")
 
 			// beginning TABs section
 			$editsurvey .= "\t<div class='tab-pane' id='tab-pane-1'>\n";
-			// General & ContactTAB
+			// General & Contact TAB
 			$editsurvey .= "\t<div class='tab-page'> <h2 class='tab'>".$clang->gT("General")."</h2>\n";
 
 			// Base Language
@@ -2394,11 +2395,30 @@ if ($action == "editsurvey")
 //			$editsurvey .= "<div class='settingrow'><span class='settingcaption'></span><span class='settingentry'><input type='button' onclick='javascript:document.getElementById(\"addnewsurvey\").submit();' value='".$clang->gT("Create Survey")."' /></span></div>\n";
 			$editsurvey .= "\t</div>\n";
 
+		// Ending First TABs Form
+			$editsurvey .= ""
+			. "\t<input type='hidden' name='action' value='updatesurvey' />\n"
+			. "\t<input type='hidden' name='sid' value=\"{$esrow['sid']}\" />\n"
+			. "\t<input type='hidden' name='languageids' id='languageids' value=\"{$esrow['additional_languages']}\" />\n"
+			. "\t<input type='hidden' name='language' value=\"{$esrow['language']}\" />\n"
+			."\t</form>";
+
 
 		// TAB Uploaded Resources Management
 		$editsurvey .= "\t<div class='tab-page'> <h2 class='tab'>".$clang->gT("Uploaded Resources Management")."</h2>\n"
-			. "<input type='button' onclick='window.open(\"$homeurl/scripts/fckeditor/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php\", \"_blank\")'/ value=\"".$clang->gT("Browse Uploaded Ressources")."\"><br /><br />"
-			. "<input type='button' onclick='window.open(\"$scriptname?action=exportsurvresources&amp;sid={$surveyid}\", \"_blank\")'/ value=\"".$clang->gT("Export Zip archive of uploaded ressources")."\">";
+		. "\t<form enctype='multipart/form-data' name='importsurvresources' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
+		. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
+		. "\t<input type='hidden' name='action' value='importsurvresources'>\n"
+		. "\t<table width='100%' class='form2columns'>\n"
+		. "\t<tbody align='center'>"
+		. "\t\t<tr><td></td><td>\n"
+		. "\t\t<input type='button' onclick='window.open(\"$homeurl/scripts/fckeditor/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php\", \"_blank\")'/ value=\"".$clang->gT("Browse Uploaded Ressources")."\"></td><td><td></tr>\n"
+		. "\t\t<tr><td></td><td><input type='button' onclick='window.open(\"$scriptname?action=exportsurvresources&amp;sid={$surveyid}\", \"_blank\")'/ value=\"".$clang->gT("Export Zip archive of uploaded ressources")."\"></td><td><td></tr>\n"
+		. "\t\t<tr></tr>&nbsp;<tr><td>".$clang->gT("Select ZIP File:")."</td>\n"
+		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"50\" /></td><td></td></tr>\n"
+		. "\t\t<tr><td></td><td><input type='submit' value='".$clang->gT("Import Resources ZIP Archive")."' /></td><td></td>\n"
+		. "\t\t</tr>\n"
+		. "\t</tbody></table></form>\n";
 
 		// End TAB Uploaded Resources Management
 		$editsurvey .= "\t</div>\n";
@@ -2407,13 +2427,10 @@ if ($action == "editsurvey")
 		$editsurvey .= "\t</div>\n";
 
 
-			$editsurvey .= "\t<table><tr><td colspan='4' align='center'><input type='submit' onclick='return UpdateLanguageIDs(mylangs,\"".$clang->gT("All questions, answers, etc for removed languages will be lost. Are you sure?")."\");' class='standardbtn' value='".$clang->gT("Save and Continue")." >>' />\n"
-			. "\t<input type='hidden' name='action' value='updatesurvey' />\n"
-			. "\t<input type='hidden' name='sid' value=\"{$esrow['sid']}\" />\n"
-			. "\t<input type='hidden' name='languageids' id='languageids' value=\"{$esrow['additional_languages']}\" />\n"
-			. "\t<input type='hidden' name='language' value=\"{$esrow['language']}\" />\n"
+			// The external button to sumbit Survey edit changes
+			$editsurvey .= "\t<table><tr><td colspan='4' align='center'><input type='button' onclick='if (UpdateLanguageIDs(mylangs,\"".$clang->gT("All questions, answers, etc for removed languages will be lost. Are you sure?","js")."\")) {document.getElementById(\"addnewsurvey\").submit();}' class='standardbtn' value='".$clang->gT("Save and Continue")." >>' />\n"
 			. "\t</td></tr>\n"
-			. "</table></form>\n";
+			. "</table>\n";
 
 			// Here we do the setup the date javascript
 			$editsurvey .= "<script type=\"text/javascript\">\n"

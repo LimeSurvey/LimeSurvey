@@ -143,6 +143,11 @@ elseif ($action == "conditions")
     if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("conditions.php");}
         else { include("access_denied.php");}    
     }    
+elseif ($action == "importsurvresources") 
+  { 
+      if ($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)	{include("import_resources_zip.php");}
+	    else { include("access_denied.php");}
+  }      
 elseif ($action == "exportstructurecsv")
     {
     if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("export_structure_csv.php");}
@@ -410,6 +415,7 @@ elseif ($action == "replacementfields")
   if (isset($assessmentsoutput)) {$adminoutput.= $assessmentsoutput;}
 
   if (isset($importsurvey)) {$adminoutput.= $importsurvey;}
+  if (isset($importsurvresourcesoutput)) {$adminoutput.= $importsurvresourcesoutput;}
   if (isset($importgroup)) {$adminoutput.= $importgroup;}
   if (isset($importquestion)) {$adminoutput.= $importquestion;}
   if (isset($printablesurveyoutput)) {$adminoutput.= $printablesurveyoutput;}
