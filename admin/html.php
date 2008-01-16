@@ -1247,6 +1247,32 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			. "onclick=\"window.open('$scriptname?action=labels&amp;lid={$qrrow['lid']}', '_blank')\" />\n";
 			}
 			$questionsummary .= "</td></tr>";
+			
+			if ($qrrow['type'] == "1") // Second labelset for "multi scale"
+			{
+				$questionsummary .= "<tr><td align='right'><strong>". $clang->gT("Second Label Set").":</strong></td>";
+				if (!$qrrow['lid1'])
+				{
+					$questionsummary .=  "<td align='left'><font face='verdana' size='1' color='red'>"
+								 . $clang->gT("Warning")." - ".$clang->gT("You need to choose a second label set for this question!")."</font>\n";
+				}
+				else 
+				// If label set ID is configured show the labelset name and ID
+				{
+
+			    	$labelsetname=$connect->GetOne("SELECT label_name FROM ".db_table_name('labelsets')." WHERE lid = ".$qrrow['lid1']);
+			 		$questionsummary .= "<td align='left'>".$labelsetname." (LID: {$qrrow['lid1']}) ";
+				}
+			
+				// If the user has the right to edit the second label sets show the icon for the label set administration
+				if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
+				{
+					$questionsummary .= "<input align='top' type='image' src='$imagefiles/labelssmall.png' title='"
+					. $clang->gT("Edit/Add second Label Sets")."' name='EditThisLabelSet' "
+					. "onclick=\"window.open('$scriptname?action=labels&amp;lid={$qrrow['lid1']}', '_blank')\" />\n";
+				}
+				$questionsummary .= "</td></tr>";
+			}
 		}
 			  
 		
