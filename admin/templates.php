@@ -867,8 +867,8 @@ function mkdir_p($target){
 function makeoptions($array, $value, $text, $selectedvalue) {
 	$return="";
 	foreach ($array as $ar) {
-		$return .= "<option value='".$ar[$value]."'";
-		if ($ar[$value] == $selectedvalue) {
+		$return .= "<option value='".html_escape($ar[$value])."'";
+		if (html_escape($ar[$value]) == $selectedvalue) {
 			$return .= " selected='selected'";
 		}
 		$return .= ">".$ar[$text]."</option>\n";
