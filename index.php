@@ -1245,7 +1245,7 @@ function sendsubmitnotification($sendnotification)
 	global $dbprefix, $clang;
 	global $sitename, $homeurl, $surveyid, $publicurl;
 
-	$subject = "$sitename Survey Submitted";
+	$subject = $clang->gT("Answer Submission for Survey")." ".$thissurvey['name'];
 
 	$message = $clang->gT("Survey Submitted")." - {$thissurvey['name']}\n"
 	. $clang->gT("A new response was entered for your survey")."\n\n";
