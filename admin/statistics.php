@@ -1634,8 +1634,8 @@ if (isset($summary) && $summary)
 					$graph->legend->SetFont(constant($jpgraphfont), FS_NORMAL, $fontsize);
 					$graph->legend->SetPos(0.015, $legendtop, 'right', 'top');
 					$graph->legend->SetFillColor("white");
-    				global $jpgrath_AntiAliasing;
-					if ($jpgrath_AntiAliasing == 1) $graph->SetAntiAliasing();
+    				global $jpgraph_antialiasing;
+					if ($jpgraph_antialiasing == 1) $graph->SetAntiAliasing();
 				}
 				$graph->title->SetColor("#EEEEEE");
 				$graph->SetMarginColor("#FFFFFF");
