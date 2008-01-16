@@ -353,11 +353,13 @@ if(isset($surveyid))
 
         // Remove invalid question attributes on saving
         $qattributes=questionAttributes();
-        $validAttributes=$qattributes[$_POST['type']];
         $attsql="delete from ".db_table_name('question_attributes')." where qid='{$_POST['qid']}' and ";
-        foreach ($validAttributes as  $validAttribute)
-        {
-         $attsql.='attribute<>'.db_quoteall($validAttribute['name'])." and ";
+        if (isset($qattributes[$_POST['type']])){   
+		   $validAttributes=$qattributes[$_POST['type']];
+	       foreach ($validAttributes as  $validAttribute)
+	       {
+	         $attsql.='attribute<>'.db_quoteall($validAttribute['name'])." and ";
+	       }
         }
         $attsql.='1=1';
         db_execute_assoc($attsql) or die ("Couldn't delete obsolete question attributes<br />".htmlspecialchars($attsql)."<br />".htmlspecialchars($connect->ErrorMsg()));
