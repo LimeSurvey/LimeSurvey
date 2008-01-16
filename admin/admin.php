@@ -101,7 +101,7 @@ elseif ($action == "checkintegrity")
   }      
 elseif ($action=="labels" || $action=="newlabelset" || $action=="insertlabelset" ||
         $action=="deletelabelset" || $action=="editlabelset" || $action=="modlabelsetanswers" || 
-        $action=="updateset" || $action=="importlabels")
+        $action=="updateset" || $action=="importlabels" ||$action == "importlabelresources")
   { 
       if ($_SESSION['USER_RIGHT_MANAGE_LABEL']==1)  {$_SESSION['FileManagerContext']="edit:label:$lid";include("labels.php");}
         else { include("access_denied.php");}
@@ -370,7 +370,7 @@ elseif ($action == "replacementfields")
       !isset($assessmentsoutput) && !isset($tokenoutput) && !isset($browseoutput) &&
       !isset($dataentryoutput) && !isset($statisticsoutput)&& !isset($savedsurveyoutput) &&
       !isset($exportoutput) && !isset($importoldresponsesoutput) && !isset($conditionsoutput) &&
-      !isset($vvoutput) && !isset($listcolumnoutput)) 
+      !isset($vvoutput) && !isset($listcolumnoutput) && !isset($importlabelresources)) 
       {
         $adminoutput.= showadminmenu();
       }

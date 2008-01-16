@@ -27,7 +27,7 @@ if (isset($_POST['method']) && get_magic_quotes_gpc())
 	$_POST['method']  = stripslashes($_POST['method']);
 }
 
-if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
+if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 	{
 
 
@@ -47,6 +47,12 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 	{
 		include("importlabel.php");
         if (isset($importlabeloutput)) {$labelsoutput.= $importlabeloutput;}
+        return;
+	}
+	if ($action == "importlabelresources")
+	{
+		include("import_resources_zip.php");
+        if (isset($importlabelresourcesoutput)) {$labelsoutput.= $importlabelresourcesoutput;}
         return;
 	}
 	
@@ -413,6 +419,8 @@ if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 	// TAB for resources management
 	$labelsoutput.= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Uploaded Resources Management")."</h2>\n"
 		. "\t<form enctype='multipart/form-data' name='importlabelresources' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
+		. "\t<input type='hidden' name='lid' value='$lid'>\n"
+		. "\t<input type='hidden' name='action' value='importlabelresources'>\n"
 		. "\t<table width='100%' class='form2columns'>\n"
 		. "\t<tbody align='center'>"
 		. "\t\t<tr><td></td><td>\n"

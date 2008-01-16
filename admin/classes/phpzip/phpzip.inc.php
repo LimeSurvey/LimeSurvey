@@ -214,6 +214,8 @@ class PHPZip
             "\x00\x00";                             // .zip file comment length
     } // end of the 'file()' method
 
+
+// This comes from http://de.tikiwiki.org/xref-BRANCH-1-9/nav.html?lib/sheet/include/org/apicnet/io/archive/CZip.php.source.html
 function extract($dir, $zipfilename){
           if (function_exists("zip_open")) {
                //$dir  = eregi_replace("(\..*$)", "", $zipfilename);
@@ -224,16 +226,48 @@ function extract($dir, $zipfilename){
                  while ($zip_entry = zip_read($zip)) {
                      if (zip_entry_open($zip, $zip_entry, "r")) {
                          $buf = zip_entry_read($zip_entry, zip_entry_filesize($zip_entry));
-                         if (eregi("(\/)", zip_entry_name($zip_entry))) $this->createDir($dir."/".eregi_replace("\/.*$", "", zip_entry_name($zip_entry))); 
-                         $this->createFile($dir."/".zip_entry_name($zip_entry), $buf);
+//                         if (eregi("(\/)", zip_entry_name($zip_entry))) $this->createDir($dir."/".eregi_replace("\/.*$", "", zip_entry_name($zip_entry))); 
+
+// LimeSurvey Only extract first dir for the moment
+                         if ( ! eregi("(\/)", zip_entry_name($zip_entry)))
+			{ 
+                         $this->createFile($dir."/".zip_entry_name($zip_entry), $buf,zip_entry_filesize($zip_entry));
+			}
                          zip_entry_close($zip_entry);
                      }
                  }
                  zip_close($zip);
               }
+	      else
+	      {
+		return "Error:OpenZip";
+	      }
           } 
+	  return 'OK';
       }
 
+  	function createDir($dir){
+          if (eregi("(\/$)", $dir)) @mkdir (substr($dir, 0, strlen($dir) - 1));
+          else @mkdir ($dir);
+      }
+      
+      
+	// This comes from http://fr.php.net/zip
+  	function createFile($file, $data, $size){
+          //$file = new File($file, TRUE);
+          //if ($file->exists()) {
+          //    $file->delFile();
+          //    $file->createFile();
+          //}
+          //$file->writeData($data);
+
+	  if (is_file($file))
+	{
+		unlink($file);
+	}
+	$fopen = fopen($file, "w");
+	fwrite($fopen,$data,$size);
+      }
 
 } // end of the 'PHPZip' class
 ?>

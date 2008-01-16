@@ -80,6 +80,8 @@ $defaulttemplate    =  "default";         // This setting specifys the default t
 
 $allowedtemplateuploads = "gif,jpg,png";   // File types allowed to be uploaded in the templates section.
 
+$allowedresourcesuploads = "gif,jpg,png";   // File types allowed to be uploaded in the resources sections.
+
 
 $debug              =   0;      // Set this to 1 if you are looking for errors. If you still get no errors after enabling this
                                 // then please check your error-logs - either in your hosting provider admin panel or in some /logs dir.

@@ -61,7 +61,7 @@ if ($action == "exportlabelresources" && $lid) {
 		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 
 		header("Content-Type: application/force-download");
-		header( "Content-Disposition: attachment; filename=resources-survey-$surveyid.zip" );
+		header( "Content-Disposition: attachment; filename=resources-survey-$lid.zip" );
 		header( "Content-Description: File Transfer");
 		@readfile($zipfile);
 
