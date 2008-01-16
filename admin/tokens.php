@@ -76,7 +76,9 @@ $encodingsarray = array("armscii8"=>$clang->gT("ARMSCII-8 Armenian")
    if (isset($_POST['csvcharset']) && $_POST['csvcharset'])  //sanitize charset - if encoding is not found sanitize to 'auto'
    {
    $uploadcharset=$_POST['csvcharset'];
-   if (!array_key_exists($uploadcharset,$encodingsarray)) {$uploadcharset='auto';} 
+   if (!array_key_exists($uploadcharset,$encodingsarray)) {$uploadcharset='auto';}
+   $filterduplicatetoken=(isset($_POST['filterduplicatetoken']) && $_POST['filterduplicatetoken']=='on'); 
+   $filterblankemail=(isset($_POST['filterduplicateemail']) && $_POST['filterduplicateemail']=='on'); 
    }
    					   
 }
@@ -1703,7 +1705,7 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 	{
 		$tokenoutput .= "<br /><strong>".$clang->gT("Importing CSV File")."</strong><br />\n<font color='green'>".$clang->gT("Success")."</font><br /><br />\n"
 		.$clang->gT("Creating Token Entries")."<br />\n";
-		$xz = 0; $xx = 0; $xy = 0; $xv = 0; $xe = 0;
+		$xz = 0; $xx = 0; $xy = 0; $xv = 0; $invalidemailcount = 0;
 		// This allows to read file with MAC line endings too
 		@ini_set('auto_detect_line_endings', true);
 		// open it and trim the ednings
@@ -1723,7 +1725,7 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 				$line = convertCSVRowToArray($buffer,',','"');
 				// sanitize it before writing into table
 				$line = array_map('db_quote',$line);
-				if (isset($line[0]) && $line[0] != "" & isset($line[1]) && $line[1] != "" && isset($line[2]) && $line[2] != "")
+				if (isset($line[0]) && $line[0] != "" & isset($line[1]) && $line[1] != "" && isset($line[2]))
 				{
 					// If old export file with first col as TID
 					// with no attribute
@@ -1739,38 +1741,55 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 						$line[6] = $line[6];
 					}
 					
-					$dupquery = "SELECT firstname, lastname from ".db_table_name("tokens_$surveyid")." where email=".$connect->qstr($line[2])." and firstname = ".$connect->qstr($line[0])." and lastname= ".$connect->qstr($line[1])."";
-					$dupresult = $connect->Execute($dupquery);
-					if ( $dupresult->RecordCount() > 0)
+					$dupfound=false;
+					$invalidemail=false;
+
+					if ($filterduplicatetoken)
 					{
-						$dupfound = $dupresult->FetchRow();
-						$xy++;
-					}
-					else
-					{
-						$line[2] = trim($line[2]);
-						if (!validate_email($line[2]))
+						$dupquery = "SELECT firstname, lastname from ".db_table_name("tokens_$surveyid")." where email=".$connect->qstr($line[2])." and firstname = ".$connect->qstr($line[0])." and lastname= ".$connect->qstr($line[1])."";
+						$dupresult = $connect->Execute($dupquery);
+						if ( $dupresult->RecordCount() > 0)
 						{
-							$xe++;
-						} else
-						{
-							if (!isset($line[3]) || $line[3]=='') $line[3] = "OK";
-							if (!isset($line[4]) || $line[4] == "") $line[4] = "";
-							if (!isset($line[5]) || $line[5] == "") $line[4] = GetBaseLanguageFromSurveyID($surveyid);
-							if (!isset($line[6])) $line[6] = "";
-							if (!isset($line[7])) $line[7] = "";
-							$iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
-							. "(";
-							if (isset($line[8])) $iq .="tid, ";
-							$iq .="firstname, lastname, email, emailstatus, token, language, attribute_1, attribute_2, sent, completed";
-							$iq .=") \n"
-							. "VALUES (";
-							if (isset($line[8])) $iq .= $connect->qstr($line[7]).", ";
-							$iq .= $connect->qstr($line[0]).", ".$connect->qstr($line[1]).", ".$connect->qstr($line[2]).", ".$connect->qstr($line[3]).", ".strtolower($connect->qstr($line[4]))." , ".$connect->qstr($line[5]).", ".$connect->qstr($line[6]).", ".$connect->qstr($line[7]).", ".$connect->qstr('N').", ".$connect->qstr('N');
-							$iq .= ")";
-							$ir = $connect->Execute($iq) or die ("Couldn't insert line<br />\n$buffer<br />\n".htmlspecialchars($connect->ErrorMsg())."<pre style='text-align: left'>$iq</pre>\n");
-							$xz++;
+							$dupfound = true;
 						}
+					}	
+				
+				
+					$line[2] = trim($line[2]);
+				
+					//treat blank emails
+					if ($filterblankemail && $line[2]='')
+					{
+						$invalidemail=true;
+					} 
+					if  ($line[2]!='' && !validate_email($line[2])) 
+					{
+						$invalidemail=true;;
+					} 
+					
+					if ($invalidemail)
+					{
+					  ++$invalidemailcount; 
+					}
+					elseif ($dupfound)
+					{
+						++$xy;
+					}
+					else 
+					{
+						if (!isset($line[3]) || $line[3]=='') $line[3] = "OK";
+						if (!isset($line[4]) || $line[4] == "") $line[4] = "";
+						if (!isset($line[5]) || $line[5] == "") $line[4] = GetBaseLanguageFromSurveyID($surveyid);
+						if (!isset($line[6])) $line[6] = "";
+						if (!isset($line[7])) $line[7] = "";
+						$iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
+						. "(firstname, lastname, email, emailstatus, token, language, attribute_1, attribute_2, sent, completed) \n"
+						. "VALUES (";
+						$iq .= $connect->qstr($line[0]).", ".$connect->qstr($line[1]).", ".$connect->qstr($line[2]).", ".$connect->qstr($line[3]).", ".strtolower($connect->qstr($line[4]))." , ".$connect->qstr($line[5]).", ".$connect->qstr($line[6]).", ".$connect->qstr($line[7]).", ".$connect->qstr('N').", ".$connect->qstr('N');
+						$iq .= ")";
+						$ir = $connect->Execute($iq);
+						if (!$ir) $xy++;
+						$xz++;
 					}
 					$xv++;
 				}
@@ -1788,7 +1807,7 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 		$message .= "$xv ".$clang->gT("Records met minumum requirements").".<br />\n";
 		$message .= "$xz ".$clang->gT("Records imported").".<br />\n";
 		$message .= "$xy ".$clang->gT("Duplicate records removed").".<br />\n";
-		$message .= "$xe ".$clang->gT("Records with invalid email address removed").".<br />\n";
+		$message .= "$invalidemailcount ".$clang->gT("Records with invalid email address removed").".<br />\n";
 		$tokenoutput .= "<i>$message</i><br />\n";
 		unlink($the_full_file_path);
 	}
@@ -1901,14 +1920,15 @@ function form_csv_upload($error=false)
     if ($charset=='auto') {$charsetsout.=" selected ='selected'";}
     $charsetsout.=">$title ($charset)</option>";
     }
-	$tokenoutput .= "<form enctype='multipart/form-data' action='$scriptname?action=tokens' method='post'>\n"
+	$tokenoutput .= "<form class='token' enctype='multipart/form-data' action='$scriptname?action=tokens' method='post'>\n"
 	. "<input type='hidden' name='subaction' value='upload' />\n"
 	. "<input type='hidden' name='sid' value='$surveyid' />\n"
-	. $clang->gT("Choose the CSV file to upload:")."\n"
-	. "<input type='file' name='the_file' size='35' /><p />\n"
-	. $clang->gT("Character set of the file:")."<select name='csvcharset' size='1'>$charsetsout</select><p />\n"
-	. "<input type='submit' value='".$clang->gT("Upload")."' />\n"
-	. "</form>\n\n";
+	. "<p><label for='the_file'>".$clang->gT("Choose the CSV file to upload:")."</label><input type='file' name='the_file' size='35' /></p>\n"
+	. "<p><label for='csvcharset'>".$clang->gT("Character set of the file:")."</label><select name='csvcharset' size='1'>$charsetsout</select></p>\n"
+	. "<p><label for='filterblankemail'>".$clang->gT("Filter blank email addresses:")."</label><input type='checkbox' name='filterblankemail' checked='checked'/></p>\n"
+	. "<p><label for='filterduplicatetoken'>".$clang->gT("Filter duplicate records:")."</label><input type='checkbox' name='filterduplicatetoken' checked='checked'/></p>\n"
+	. "<p><input class='submit' type='submit' value='".$clang->gT("Upload")."' /></p>\n"
+	. "</form><p />\n\n";
 } # END form
 
 function formldap($error=false)

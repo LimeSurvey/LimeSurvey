@@ -486,3 +486,37 @@ span.invalidemail {
 th.admincell {
 	background-color: #F8BDB5;
 }
+
+p
+{
+clear:left;
+}
+
+form.token label
+{
+margin-top:1em;
+width: 40%;
+float: left;
+text-align: right;
+margin-right: 0.5em;
+}
+
+form.token select 
+{
+margin-top:1.5em;
+float: left;
+}
+
+form.token input
+{
+margin-top:1.5em;
+float: left;
+}
+
+
+.submit
+{
+ float:none !important;
+ margin:0 auto ;       
+}
+
