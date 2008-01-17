@@ -1,4 +1,6 @@
-Welcome to LimeSurvey v1.52!
+Welcome to LimeSurvey v1.70beta!
+
+WARNING: THIS IS A BETA VERSION. DO NOT USE THIS FOR PRODUCTION!!!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -12,7 +14,7 @@ by you or third parties or a failure of the program to operate with any other pr
 
 This release does have the following requirements:
 
--MySQL 4.1 or higher 	OR   Microsoft SQL Server 2000 or higher
+-One of these databases:  MySQL 4.1 or higher, Microsoft SQL Server 2000 or higher, Postgres 7 or higher 
 -PHP 4.2 or higher with mbstring library installed. (for localizations)
 
 
@@ -49,6 +51,53 @@ HOW TO UPGRADE from earlier versions from LimeSurvey 1.45 or later
 
 
 Thank you to everyone who helped with this new release!
+
+
+Changes from 1.52 to 1.70beta
+
+New Features / Feature Changes - Release Date: 2008/01/17
+
+[Survey at Runtime] INSERTANS for Question Type: Y, E, C (lemeur)
+[Assessments] Valid generic (non-error) front page with list of available surveys. (jasebo)
+[Survey Design] Possibility to upload pictures to use in surveys (lemeur)
+[Installation] Postgresql support (c_schmitz)
+[Survey Design] FCKEditor integration for question design (lemeur)
+[Survey Design] Quota Management (machaven)
+[Survey Design] timestamp at survey start (c_schmitz)
+[Survey Design] Dual Array Scale Question Type (Joesch)
+[Security] Super Administrator Right (lemeur)
+[Templates] Patch/Modification: Implement User Management to Template Access (patched by machaven)
+[Survey at Runtime] Resume an incomplete (and not saved) survey (lemeur)
+[Security] Authorize the 'preview survey' to authenticated LS users only (lemeur)
+[Security] Have admin be a true superadmin: having all rights (lemeur)
+[Security] Add Captcha to open access survey (lemeur)
+[Security] Delegate authentication to the webserver (lemeur)
+[Survey at Runtime] Using a {LANGUAGECHANGER} tag integrates a select box in templates to change language on the fly (lazar)
+[Survey Design] Auto-incrementing answer codes (c_schmitz)
+[Tokens] Options to switch filter empty email field and filter duplicates in token import (c_schmitz)
+[Survey at Runtime] Make Email Subjects of Admin Notifications Translateable (c_schmitz)
+[Survey Design] Move submit button to last question page (c_schmitz)
+[Survey at Runtime] Correct error message and further instructions, if user has disabled Cookies (c_schmitz)
+[Security] Protection against token code brute force attacks (lemeur)  
+[Survey at Runtime] Checkbox for Multiple Choice Other Option (c_schmitz)
+[Survey Design] Mass Logic Eliminator (lemeur)
+[Survey Design] Total sum validation for "Multiple ShortText" Questions (jasebo)
+[Survey Design] Randomize answers for Flexible arrays (jasebo)
+[Survey at Runtime] Alternative presentation of Dates question (jasebo)
+[Survey at Runtime] Print answers after completing the survey (c_schmitz)
+[Survey Design] Survey description: Default values for additional surveys aren't set automatically (c_schmitz)
+[Survey Design] SSL for STMP emailing (Patched by c_schmitz)
+[Import / Export] QueXML Survey structure export (Patched by c_schmitz)
+[Survey Design] Usability improvement: Hover effect for matrix questions (El-Matador-69)
+[Survey Design] Display Label Set Name at Question Details (not only the Label Set ID) (c_schmitz)
+[Tokens] Increased token code entropy (c_schmitz)
+[Tokens] Moved Email settings from survey properties to "Tokens-Settings"-Menu (c_schmitz)
+[Import / Export] Feature Request - Need for Image Upload into Question Templates (lemeur)
+[Survey Design] Change conditions designer so that full question & answer text are visible (jasebo)
+[Survey at Runtime] Attribute to disable/clear other checkboxes in Multiple Options question (jasebo)
+[Survey Design] Adding new questions to very large surveys, and question sorts (jasebo)
+[Survey Design] Question Attribute "display_columns" for Gender Question--Type (jasebo)
+
 
 
 
