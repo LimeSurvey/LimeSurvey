@@ -102,6 +102,8 @@ function create_mandatorylist($ia)
 			case "E":
 			case "F":
 			case "H":
+			$thismandatory=setman_questionandcode($ia);
+			break;
 			case "1":
 			$thismandatory=setman_questionandcode_multiscale($ia);
 			break;
