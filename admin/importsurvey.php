@@ -861,7 +861,7 @@ if (isset($grouparray) && $grouparray) {
 										"newfieldname"=>$newsid."X".$newgid."X".$newqid.$code."comment");
 									}
 								}
-								elseif ($type == "A" || $type == "B" || $type == "C" || $type == "F" || $type == "H") {
+								elseif ($type == "A" || $type == "B" || $type == "C" || $type == "F" || $type == "H" || $type == "E" || $type == "Q" || $type == "K" || $type == "1") {
 									$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code,
 									"newcfieldname"=>$newsid."X".$newgid."X".$newqid.$code,
 									"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code,
@@ -1056,8 +1056,8 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 	}
 }
 
-// TIBO Translate INSERTANS codes
-transInsertAns($oldsid,$newsid,$fieldnames);
+// Translate INSERTANS codes
+transInsertAns($newsid,$oldsid,$fieldnames);
 
 
 

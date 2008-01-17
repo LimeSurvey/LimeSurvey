@@ -4329,7 +4329,7 @@ function transInsertAns($newsid,$oldsid,$fieldnames)
 		return;
 	}
 
-	 $sql = "SELECT qid, language, question, help from {$dbprefix}questions WHERE sid=".$newsid." AND question LIKE '%{INSERTANS:".$newsid."X%' OR help LIKE '%{INSERTANS:".$newsid."X%'";
+	 $sql = "SELECT qid, language, question, help from {$dbprefix}questions WHERE sid=".$newsid." AND question LIKE '%{INSERTANS:".$oldsid."X%' OR help LIKE '%{INSERTANS:".$oldsid."X%'";
 	$res = db_execute_assoc($sql) or die("Can't read question table in transInsertAns ".html_escape($connect->ErrorMsg()));
 
 	while ($qentry = $res->FetchRow())
