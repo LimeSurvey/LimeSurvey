@@ -2243,7 +2243,7 @@ function getQuotaInformation($surveyid)
 */
 function check_quota($checkaction,$surveyid)
 {
-	global $_POST, $_SESSION;
+	global $_POST, $_SESSION, $thistpl, $clang;
 	$global_matched = false;
 	$quota_info = getQuotaInformation($surveyid);
 	$x=0;
@@ -2260,6 +2260,7 @@ function check_quota($checkaction,$surveyid)
 				$y=0;
 				// We need to make the conditions for the select statement here
 				// I'm supporting more than one field for a question/answer, not sure if this is necessary.
+				unset($querycond);
 				foreach($quota['members'] as $member)
 				{
 					$fields_query = array();
@@ -2291,7 +2292,7 @@ function check_quota($checkaction,$surveyid)
 						if (in_array($checkfield,$posted_fields))
 						{
 							$matched_fields = true;
-							$global_matched=true;
+							$global_matched = true;
 						}
 					}
 				}
@@ -2300,9 +2301,10 @@ function check_quota($checkaction,$surveyid)
 				
 				if ($matched_fields == true)
 				{
+					
 					// Check the status of the quota, is it full or not
 					$querysel = "SELECT id FROM ".db_table_name('survey_'.$surveyid)." WHERE ".implode(' AND ',$querycond)." "." AND submitdate !=''";
-					unset($querycond);
+
 					$result = db_execute_assoc($querysel) or die($connect->ErrorMsg());
 					$quota_check = $result->FetchRow();
 
@@ -2351,17 +2353,43 @@ function check_quota($checkaction,$surveyid)
 	{
 		// Need to add quota action enforcement here.
 		reset($quota_info);
+		//die(print_r($quota_info));
 		$tempmsg ="";
 		$found = false;
 		foreach($quota_info as $quota)
 		{
-			if (isset($quota['status']) && $quota['status'] == "matched")
+			if ((isset($quota['status']) && $quota['status'] == "matched") && (isset($quota['Action']) && $quota['Action'] == "1"))
 			{
-				$tempmsg .= "Quota named '{$quota['Name']}' is full.\n<br />\n";
-				$found = true;
+				session_destroy();
+				sendcacheheaders();
+				doHeader();
+				echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+				echo "\t<center><br />\n";
+				echo "\t".$clang->gT("Sorry your responses have exceeded a quota on this survey.")."<br /></center>&nbsp;\n";
+				echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+				doFooter();
+				exit;
+			}
+			
+			if ((isset($quota['status']) && $quota['status'] == "matched") && (isset($quota['Action']) && $quota['Action'] == "2"))
+			{
+				die(print_r($_SESSION).($_POST['thisstep']+1));
+				$surveymover .= "<form method='post' action='".$_SERVER['PHP_SELF']."' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" value=' << prev ' name='move2' />
+					<input type='hidden' name='thisstep' value='".($_POST['thisstep']+1)."' id='thisstep' />
+					<input type='hidden' name='sid' value='".$_POST['sid']."' id='sid' />
+					<input type='hidden' name='token' value='".$_POST['token']."' id='token' /></form>\n";
+				sendcacheheaders();
+				doHeader();
+				echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+				echo "\t<center><br />\n";
+				echo "\t".$clang->gT("Sorry your responses have exceeded a quota on this survey.")."<br /></center>&nbsp;\n";
+				echo $surveymover;
+				echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+				doFooter();
+				exit;
 			}
 		}
-		if ($found == true) die($tempmsg);
+		
 			
 	} else {
 		// Unknown value
