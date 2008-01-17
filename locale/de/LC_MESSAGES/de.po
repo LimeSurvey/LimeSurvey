@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-01-13 13:20+0100\n"
+"PO-Revision-Date: 2008-01-17 22:14+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -81,8 +81,8 @@ msgstr "Bitte auswählen.."
 msgid "None"
 msgstr "Keine"
 
-msgid "Array (Flexible Labels) Multi Scale"
-msgstr "Mehrfach Matrix (Flexible Beschriftungen)"
+msgid "Array (Flexible Labels) Dual Scale"
+msgstr "Dual Matrix (Flexible Beschriftungen)"
 
 msgid "5 Point Choice"
 msgstr "5 Punkte Auswahl"
@@ -493,8 +493,8 @@ msgid "We are sorry but your session has expired."
 msgstr "Es tut uns leid, aber Ihre Sitzung ist abgelaufen."
 
 # D:\web\xampp\htdocs\limesurvey/index.php:69
-msgid "Either you have been inactive for too long or there were problems with your connection."
-msgstr "Entweder sind Sie zu lange inaktive gewesen oder es gab ein Problem mit Ihrer Verbindung."
+msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
+msgstr "Entweder sind Sie zu lange inaktive gewesen, Sie haben Cookies deaktiviert oder es gab ein Problem mit Ihrer Verbindung."
 
 # D:\web\xampp\htdocs\limesurvey/index.php:259
 msgid "No available surveys"
@@ -562,6 +562,9 @@ msgstr ""
 "\n"
 "{ADMINNAME}"
 
+msgid "Answer Submission for Survey"
+msgstr "Antwort Absendung für Umfrage"
+
 msgid "Survey Submitted"
 msgstr "Umfrage wurde ausgefüllt"
 
@@ -627,8 +630,8 @@ msgstr "Zurück"
 msgid "next"
 msgstr "Weiter"
 
-msgid "last"
-msgstr "Abschließen"
+msgid "Sorry your responses have exceeded a quota on this survey."
+msgstr "Leider haben Ihre Antworten eine Quote dieser Umfrage überschritten."
 
 msgid "Survey Name (ID)"
 msgstr "Umfrage Name (ID)"
@@ -964,6 +967,9 @@ msgstr "Diese Frage hat den Frage-Typ nicht gesetzt."
 msgid "This question requires a Labelset, but none is set."
 msgstr "Diese Frage benötigt ein Beschriftung-Set, aber es wurde keines angegeben."
 
+msgid "This question requires a second Labelset, but none is set."
+msgstr "Diese Frage benötigt ein zweites Beschriftungs-Set, aber es wurde keines angegeben."
+
 # D:\web\xampp\htdocs\limesurvey/admin/activate.php:143
 msgid "The labelset used in this question is missing a translation."
 msgstr "Dem in dieser Frage genutzte Beschriftungsset fehlt eine Übersetzung."
@@ -1169,6 +1175,16 @@ msgstr "Datum gestartet"
 # D:\web\xampp\htdocs\limesurvey/admin/browse.php:351
 msgid "Date Last Action"
 msgstr "Datum letzte Aktivität"
+
+# D:\web\xampp\htdocs\limesurvey/admin/browse.php:224
+# D:\web\xampp\htdocs\limesurvey/admin/browse.php:433
+msgid "1. scale"
+msgstr "1. Beschriftungsset"
+
+# D:\web\xampp\htdocs\limesurvey/admin/browse.php:229
+# D:\web\xampp\htdocs\limesurvey/admin/browse.php:438
+msgid "2. scale"
+msgstr "2. Beschriftungsset"
 
 msgid "View Response"
 msgstr "Antwort anzeigen"
@@ -1981,6 +1997,12 @@ msgstr "Gruppen importieren"
 msgid "Select CSV File:"
 msgstr "CSV-Datei auswählen:"
 
+# D:\web\xampp\htdocs\limesurvey/admin/grouphandling.php:64
+# D:\web\xampp\htdocs\limesurvey/admin/labels.php:200
+# D:\web\xampp\htdocs\limesurvey/admin/questionhandling.php:169
+msgid "Convert Resources links ?"
+msgstr "Ressourcen-Links konvertieren?"
+
 msgid "Edit Group"
 msgstr "Gruppe bearbeiten"
 
@@ -2123,6 +2145,17 @@ msgstr "Diese Umfrage bearbeiten"
 
 msgid "Delete Current Survey"
 msgstr "Diese Umfrage löschen"
+
+msgid "Reset Survey Logic"
+msgstr "Umfrage Logik zurücksetzen"
+
+msgid "This survey's questions don't use conditions"
+msgstr "Die Fragen dieser Umfrage nutzen keine Bedingungen."
+
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:891
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:1051
+msgid "Disabled"
+msgstr "Deaktiviert"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:3463
 msgid "Change Group Order"
@@ -2279,11 +2312,6 @@ msgstr "Diese Gruppe löschen"
 msgid "Impossible to delete this group because there is at least one question having a condition on its content"
 msgstr "Es ist unmöglich diese Gruppe zu löschen, da es mindestens eine Frage gibt, die Bedingungen zu eine Frage in dieser Gruppe hat."
 
-# D:\web\xampp\htdocs\limesurvey/admin/html.php:891
-# D:\web\xampp\htdocs\limesurvey/admin/html.php:1051
-msgid "Disabled"
-msgstr "Deaktiviert"
-
 msgid "Change Question Order"
 msgstr "Fragen-Reihenfolge ändern"
 
@@ -2382,6 +2410,15 @@ msgstr "Beschriftung-Set"
 
 msgid "You need to choose a label set for this question!"
 msgstr "Sie müssen ein Beschriftung-Set für diese Frage auswählen!"
+
+msgid "Second Label Set"
+msgstr "Zweites Beschriftungsset"
+
+msgid "You need to choose a second label set for this question!"
+msgstr "Sie müssen ein zweites Beschriftungs-Set für diese Frage auswählen!"
+
+msgid "Edit/Add second Label Sets"
+msgstr "Bearbeiten/Hinzufügen zweites Beschriftungsset"
 
 msgid "Other:"
 msgstr "'Sonstige:' Angabe möglich:"
@@ -2656,6 +2693,27 @@ msgstr "Referrer-URL wird gespeichert."
 msgid "Enable Token-based answers persistence?"
 msgstr "Aktiviere Teilnehmer-Basierte Antworten-Persistenz?"
 
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:2434
+# D:\web\xampp\htdocs\limesurvey/admin/labels.php:424
+msgid "Uploaded Resources Management"
+msgstr "Ressourcen Verwaltung"
+
+msgid "Browse Uploaded Ressources"
+msgstr "Hochgeladene Ressourcen ansehen"
+
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:2442
+# D:\web\xampp\htdocs\limesurvey/admin/labels.php:432
+msgid "Export Zip archive of uploaded ressources"
+msgstr "ZIP-Archiv mit hochgeladenen Ressourcen exportieren"
+
+msgid "Select ZIP File:"
+msgstr "ZIP-Datei auswählen:"
+
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:2445
+# D:\web\xampp\htdocs\limesurvey/admin/labels.php:435
+msgid "Import Resources ZIP Archive"
+msgstr "Ressourcen ZIP Datei importieren"
+
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:3359
 msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
 msgstr "Alle Fragen, Antworten etc. für von Ihnen entfernte Sprachen werden gelöscht. Sind Sie sicher?"
@@ -2731,6 +2789,10 @@ msgstr "Umfrage importieren"
 
 msgid "Select CSV/SQL File:"
 msgstr "CSV/SQL-Datei auswählen:"
+
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:2991
+msgid "Convert Resources links and INSERTANS fields ?"
+msgstr "Ressourcen Links und INSERTANS Felder konvertieren?"
 
 msgid "You need to upload the file"
 msgstr "Sie müssen eine Date hochladen"
@@ -2931,6 +2993,79 @@ msgstr "Import der Umfrage abgeschlossen."
 msgid "Warnings"
 msgstr "Warnungen"
 
+msgid "Import Survey Resources"
+msgstr "Umfrage Ressourcen importieren"
+
+# D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:49
+# D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:219
+#, php-format
+msgid "Incorrect permissions in your %s folder."
+msgstr "Ungültige Zugriffsrechte in Ihrem %s Verzeichnis"
+
+# D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:320
+msgid "Back"
+msgstr "zurück"
+
+msgid "This file is not a valid ZIP file archive. Import failed."
+msgstr "Diese Datei ist keine gültige ZIP Archiv Datei. Import fehlgeschlagen."
+
+# D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:94
+# D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:264
+msgid "Copy failed"
+msgstr "Kopieren fehlgeschlagen"
+
+# D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:103
+# D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:273
+msgid "OK"
+msgstr "OK"
+
+# D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:113
+# D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:283
+msgid "Forbidden Extension"
+msgstr "Verbotene Endung"
+
+# D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:137
+# D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:156
+# D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:307
+# D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:326
+msgid "Imported Files List"
+msgstr "Importierte Dateiliste"
+
+msgid "This ZIP archive contains no valid Resources files. Import failed."
+msgstr "Dieses ZIP-Archiv entält keine gültigen Ressourcen-Dateien. Import fehlgeschlagen."
+
+# D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:143
+# D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:313
+msgid "Remember that we do not support subdirectories in ZIP Archive."
+msgstr "Bitte denken Sie daran, dass Unterverzeichnisse im ZIP-Archiv nicht unterstützt werden"
+
+# D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:151
+# D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:321
+msgid "Partial"
+msgstr "Teilweise"
+
+# D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:155
+# D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:163
+# D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:325
+# D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:333
+msgid "Error Files List"
+msgstr "Fehler Datei Liste"
+
+msgid "Imported Resources for"
+msgstr "Importiere Ressourcen für"
+
+msgid "Resources Import Summary"
+msgstr "Ressourcen-Import Übersicht"
+
+msgid "Total Imported files"
+msgstr "Anzahl importierte Dateien"
+
+msgid "Total Errors"
+msgstr "Fehler Gesamt"
+
+msgid "File"
+msgstr "Datei"
+
 # D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:52
 msgid "Data Consistency Check"
 msgstr "Datenintegritätsprüfung"
@@ -3123,6 +3258,9 @@ msgstr "Neue Beschriftung"
 msgid "Add new label"
 msgstr "Neue Beschriftung hinzufügen"
 
+msgid "Fix Order"
+msgstr "Reihenfolge korrigieren"
+
 # D:\web\xampp\htdocs\limesurvey/admin/labels.php:373
 msgid "Inserting New labels must be done on the first language folder."
 msgstr "Neue Labels dürfen nur auf der ersten Seite eingefügt werden."
@@ -3240,11 +3378,17 @@ msgstr "Bitte faxen Sie den ausgefüllten Fragebogen an"
 msgid "Please submit by"
 msgstr "Bitte übermitteln bis"
 
+msgid "Error: You have to enter a code for this question."
+msgstr "Fehler: Sie müssen einen Code für diese Frage angeben."
+
 msgid "Add Question"
 msgstr "Frage hinzufügen"
 
 msgid "Label Set:"
 msgstr "Beschriftung-Set:"
+
+msgid "Second Label Set:"
+msgstr "Zweites Beschriftungsset:"
 
 # D:\web\xampp\htdocs\limesurvey/admin/database.php:443
 # D:\web\xampp\htdocs\limesurvey/admin/database.php:455
@@ -3375,6 +3519,15 @@ msgstr "Neue Quote"
 # D:\web\xampp\htdocs\limesurvey/admin/quota.php:526
 msgid "Quota Limit"
 msgstr "Quoten Grenze"
+
+msgid "You are about to delete all conditions on this survey's questions"
+msgstr "Sie sind im Begriff alle Bedingungen dieser Umfrage zu löschen."
+
+msgid "We recommend that before you proceed, you export the entire survey from the main administration screen."
+msgstr "Wir empfehlen Ihnen, bevor Sie fortfahren, die gesamte Umfrage zu exportieren."
+
+msgid "All conditions in this survey have been deleted."
+msgstr "Alle Bedingung in dieser Umfrage wurden gelöscht."
 
 msgid "Answered"
 msgstr "Beantwortet"
@@ -3546,9 +3699,6 @@ msgstr "Startseite"
 
 msgid "Question Page"
 msgstr "Fragen-Seite"
-
-msgid "Submit Page"
-msgstr "Senden-Seite"
 
 msgid "Completed Page"
 msgstr "Abschluss-Seite"
@@ -4190,6 +4340,14 @@ msgstr "Wählen Sie eine CSV-Datei zum Hochladen aus:"
 msgid "Character set of the file:"
 msgstr "Zeichenkodierung der Datei:"
 
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1928
+msgid "Filter blank email addresses:"
+msgstr "Filtere leere Email-Adressen:"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1382
+msgid "Filter duplicate records:"
+msgstr "Doppelte Datensätze filtern:"
+
 # C:\Dokumente
 msgid "Sorry, but the LDAP module is missing in your PHP configuration."
 msgstr "Bedauere, aber in ihrer PHP-Konfiguration fehlt das LDAP-Protokoll"
@@ -4284,10 +4442,6 @@ msgstr "Unverändert"
 
 msgid "Email address already exists."
 msgstr "Email-Adresse existiert bereits."
-
-# D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:320
-msgid "Back"
-msgstr "zurück"
 
 msgid "Update user rights successful."
 msgstr "Benutzerrechte erfolgreich geändert."

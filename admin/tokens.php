@@ -708,7 +708,7 @@ if ($subaction == "browse" || $subaction == "search")
 	$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
 	$bresult = db_select_limit_assoc($bquery, 1) or die($clang->gT("Error")." counting fields<br />".htmlspecialchars($connect->ErrorMsg()));
 	$bfieldcount=$bresult->FieldCount()-1;
-	$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
+	$bquery = "SELECT tid,firstname,lastname,email,emailstatus,token,language,sent,completed,attribute_1,attribute_2,mpid FROM ".db_table_name("tokens_$surveyid");
 	if ($searchstring)
 	{
 		$bquery .= " WHERE firstname LIKE '%$searchstring%' "
