@@ -252,7 +252,7 @@ if ($action == "copyquestion")
 				$editquestion .= ">{$lb[1]}</option>\n";
 			}
 		}
-	$newquestionoutput .= "\t\t</select>\n";		
+	$editquestion .= "\t\t</select>\n";		
 	$editquestion .= "\t<tr id='LabelSets1' style='display: none'>\n"
 	. "\t\t<td><strong>".$clang->gT("Second Label Set:")."</strong></td>\n"
 	. "\t\t<td>\n"
