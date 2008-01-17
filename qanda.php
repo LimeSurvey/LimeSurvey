@@ -3462,7 +3462,7 @@ function do_array_flexible_dual($ia)
 				foreach ($labelcode1 as $ld) // second label set
 				{
 					$answer .= "\t\t\t\t\t<td align='center' width='$cellwidth%'>";
-					$answer .= "<label for='answer$myfname-$ld'>";
+					$answer .= "<label for='answer$myfname1-$ld'>";
 					$answer .= "<input class='radio' type='radio' name='$myfname1' value='$ld' id='answer$myfname1-$ld' title='"
 					. html_escape($labelans1[$thiskey])."'";
 					if (isset($_SESSION[$myfname1]) && $_SESSION[$myfname1] == $ld) {$answer .= " checked='checked'";}
