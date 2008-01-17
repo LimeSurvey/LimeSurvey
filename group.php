@@ -58,6 +58,9 @@ $notanswered=addtoarray_single(checkmandatorys($backok),checkconditionalmandator
 //CHECK PREGS
 $notvalidated=checkpregs($backok);
 
+//CHECK QUOTA
+check_quota('enforce',$surveyid);
+
 //SEE IF THIS GROUP SHOULD DISPLAY
 if (isset($_POST['move']) && $_SESSION['step'] != 0 && $_POST['move'] != "movelast" && $_POST['move'] != "movesubmit")
 {
@@ -644,7 +647,7 @@ END;
         // If it is '' (empty) means not answered
         // then a space or a false are interpreted as no answer
         // as we let choose if the questions is answered or not
-        // and doesn´t care the answer, so we wait for a == or !=
+        // and doesnï¿½t care the answer, so we wait for a == or !=
 	// TempFix by lemeur ==> add a check on cd[3]=' ' as well because
 	// condition editor seems not updated yet
         if ($cd[3] == '' || $cd[3] == ' ')
@@ -654,7 +657,7 @@ END;
                 $java .= "document.getElementById('$idname').value == ' ' || !document.getElementById('$idname').value";
             } else 
             {
-                // strange thing, isn´t? whell 0, ' ', '' or false are all false logic values then...
+                // strange thing, isnï¿½t? whell 0, ' ', '' or false are all false logic values then...
                 $java .= "document.getElementById('$idname').value";
             }
         }
@@ -670,10 +673,10 @@ END;
             * If the value is enclossed by @
             * the value of this question must be evaluated instead.
             * Remember $titlejs array? It will be used now
-            * Another note: It´s not clear why is used a norma to call
+            * Another note: Itï¿½s not clear why is used a norma to call
             * some elements like java*, answer* or just the fieldname
-            * as far I can see now it´s used the field name for text elements
-            * so, I´ll use by id with the prefix answer
+            * as far I can see now itï¿½s used the field name for text elements
+            * so, Iï¿½ll use by id with the prefix answer
             */
             if (ereg('^@[^@]+@', $cd[3]))
             {

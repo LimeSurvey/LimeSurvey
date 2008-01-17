@@ -2353,7 +2353,7 @@ function check_quota($checkaction,$surveyid)
 	{
 		// Need to add quota action enforcement here.
 		reset($quota_info);
-		//die(print_r($quota_info));
+
 		$tempmsg ="";
 		$found = false;
 		foreach($quota_info as $quota)
@@ -2373,9 +2373,9 @@ function check_quota($checkaction,$surveyid)
 			
 			if ((isset($quota['status']) && $quota['status'] == "matched") && (isset($quota['Action']) && $quota['Action'] == "2"))
 			{
-				die(print_r($_SESSION).($_POST['thisstep']+1));
+
 				$surveymover .= "<form method='post' action='".$_SERVER['PHP_SELF']."' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" value=' << prev ' name='move2' />
-					<input type='hidden' name='thisstep' value='".($_POST['thisstep']+1)."' id='thisstep' />
+					<input type='hidden' name='thisstep' value='".($_SESSION['step'])."' id='thisstep' />
 					<input type='hidden' name='sid' value='".$_POST['sid']."' id='sid' />
 					<input type='hidden' name='token' value='".$_POST['token']."' id='token' /></form>\n";
 				sendcacheheaders();
