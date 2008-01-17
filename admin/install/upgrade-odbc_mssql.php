@@ -157,21 +157,33 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","ALTER TABLE [prefix_surveys] ADD [tokenanswerspersistence] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_users] ADD [htmleditormode] CHAR(7) DEFAULT 'default'"); echo $modifyoutput; flush();
         modify_database("","CREATE TABLE [prefix_templates_rights] (
-						  [uid] int(11) NOT NULL,
+						  [uid] int NOT NULL,
 						  [folder] varchar(255) NOT NULL,
-						  [use] int(1) NOT NULL,
+						  [use] int NOT NULL,
 						  PRIMARY KEY  ([uid],[folder])
 						  );");echo $modifyoutput; flush();
         modify_database("","CREATE TABLE [prefix_templates] (
 						  [folder] varchar(255) NOT NULL,
-						  [creator] int(11) NOT NULL,
+						  [creator] int NOT NULL,
 						  PRIMARY KEY  ([folder])
 						  );");echo $modifyoutput; flush();        
 	    //123
-        modify_database("","ALTER TABLE [prefix_surveys] ALTER COLUMN [value] VARCHAR(255) NOT NULL DEFAULT ''"); echo $modifyoutput; flush();
-        modify_database("","ALTER TABLE [prefix_labels] ALTER COLUMN [title] text'"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE [prefix_conditions] ALTER COLUMN [value] VARCHAR(255)"); echo $modifyoutput; flush();
+        // There is no other way to remove the previous default value
+        modify_database("","DECLARE @STR VARCHAR(100)
+									SET @STR = (
+									SELECT NAME
+									FROM SYSOBJECTS SO
+									JOIN SYSCONSTRAINTS SC ON SO.ID = SC.CONSTID
+									WHERE OBJECT_NAME(SO.PARENT_OBJ) = 'lime_labels'
+									AND SO.XTYPE = 'D' AND SC.COLID =
+									(SELECT COLID FROM SYSCOLUMNS WHERE ID = OBJECT_ID('lime_labels') AND NAME = 'title'))
+									SET @STR = 'ALTER TABLE lime_labels DROP CONSTRAINT ' + @STR 
+	 								exec (@STR);"); echo $modifyoutput; flush();
+	 								
+        modify_database("","ALTER TABLE [prefix_labels] ALTER COLUMN [title] text"); echo $modifyoutput; flush();
         //124
-        modify_database("","ALTER TABLE [prefix_surveys] ADD [bounce_email] VARCHAR(320)"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE [prefix_surveys] ADD [bounce_email] text"); echo $modifyoutput; flush();
         //125
         upgrade_token_tables125();
         modify_database("","EXEC sp_rename 'prefix_users.move_user','superadmin'"); echo $modifyoutput; flush();
