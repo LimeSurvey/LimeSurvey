@@ -3346,7 +3346,21 @@ function do_array_flexible_dual($ia)
 		$ansresult = db_execute_assoc($ansquery);
 		$anscount = $ansresult->RecordCount();
 		$fn=1;
-		$answer = "\t\t\t<table class='question'>\n"
+		// unselect second scale when using "no answer"
+		$answer = "<script type='text/javascript'>\n"
+		. "<!--\n"
+    	. "\tfunction noanswer_checkconditions(value, name, type)\n"
+    	. "\t\t{"
+    	. "\t\t\tname = name.replace(/#0/g,\"#1\");\n"
+		. "\t\t\tfor(var i=0, n=document.getElementsByName(name).length; i<n; ++i)\n"
+    	. "\t\t\t{\n"
+    	. "\t\t\t\tdocument.getElementsByName(name)[i].checked=false;\n"
+    	. "\t\t\t}\n"
+    	. "\t\tcheckconditions(value, name, type);"
+		. "}\n"
+		. " //-->\n"
+		. " </script>\n";
+		$answer .= "\t\t\t<table class='question'>\n"
 		. "\t\t\t\t<tr>\n"
 		. "\t\t\t\t\t<td width='$answerwidth%'></td>\n";
 		foreach ($labelans as $ld)
@@ -3499,7 +3513,7 @@ function do_array_flexible_dual($ia)
 						. "\t\t\t\t\t\t</script>\n";
 				}
 				// --> START NEW FEATURE - SAVE
-				$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
+				$answer .= " onclick='noanswer_checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
 				// --> END NEW FEATURE - SAVE
 				$answer .= $defaultvaluescript;
 			}
