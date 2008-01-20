@@ -619,7 +619,7 @@ foreach ($filters as $flt)
 		."<br />\n";
 		$statisticsoutput .= "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple='multiple'>\n";
 		$allfields[]=$myfield;
-		$query = "SELECT code, title FROM ".db_table_name("labels")." WHERE lid={$flt[6]} AND language='{$language}' ORDER BY sortorder, title";
+		$query = "SELECT code, title FROM ".db_table_name("labels")." WHERE lid={$flt[6]} AND language='{$language}' ORDER BY sortorder";
 		$result = db_execute_num($query) or die("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 		while($row=$result->FetchRow())
 		{
@@ -1618,9 +1618,15 @@ if (isset($summary) && $summary)
 					$graph->yaxis->title->SetColor("black");
 					//$graph->Set90AndMargin();
 				} else { //Pie Charts
-					$totallines=countLines($lbl);
-					if ($totallines>26) {
-						$gheight=320+(6.7*($totallines-26));
+				
+                    $i = 0;
+                    foreach ($gdata as $data)
+                    {
+                        if ($data != 0){$i++;}
+                    }				
+					$totallines=$i;
+					if ($totallines>15) {
+						$gheight=320+(6.7*($totallines-15));
 						$fontsize=7;
 						$legendtop=0.01;
 						$setcentrey=0.5/(($gheight/320));

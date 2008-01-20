@@ -516,7 +516,7 @@ function getLabelSet($lid) {
 	$query = "SELECT *
 			  FROM ".db_table_name("labels")."
 			  WHERE lid=$lid
-			  ORDER BY sortorder, title";
+			  ORDER BY sortorder";
 	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
 	while($row = $result->FetchRow()) {
 		if ()$row['title'] <> '')

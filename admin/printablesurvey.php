@@ -287,7 +287,7 @@ while ($degrow = $degresult->FetchRow())
 				$dcols=0;
 			}
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose *only one* of the following:")."</u><br />\n";
-			$deaquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} AND language='{$surveyprintlang}' ORDER BY sortorder, title";
+			$deaquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} AND language='{$surveyprintlang}' ORDER BY sortorder";
 			$dearesult = db_execute_assoc($deaquery) or die("ERROR: $deaquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 			$deacount=$dearesult->RecordCount();
 			if ($deqrow['other'] == "Y") {$deacount++;}
