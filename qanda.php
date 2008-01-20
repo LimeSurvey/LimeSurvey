@@ -3521,8 +3521,7 @@ function do_array_flexible_dual($ia)
 						. "\t\t\t\t\t\t</script>\n";
 				}
 				// --> START NEW FEATURE - SAVE
-				// $answer .= " onclick='noanswer_checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
-				$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";				
+				$answer .= " onclick='noanswer_checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
 				// --> END NEW FEATURE - SAVE
 				$answer .= $defaultvaluescript;
 			}
