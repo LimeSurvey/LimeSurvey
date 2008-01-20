@@ -202,24 +202,28 @@ function setman_questionandcode_multiscale($ia)
 		if ($labelscount > 0)
 		{
 				$mandatorys[]=$ia[1].$ansrow['code']."#0";
+				$mandatoryfns[]=$ia[1];
 		}
 		else
 		{
 			$mandatorys[]=$ia[1].$ansrow['code'];
+			$mandatoryfns[]=$ia[1];
 		}
 		// second label set
 		if ($labelscount1 > 0)
 		{
 				$mandatorys[]=$ia[1].$ansrow['code']."#1";
+				$mandatoryfns[]=$ia[1];
 		}
 		else
 		{
 			$mandatorys[]=$ia[1].$ansrow['code'];
+			$mandatoryfns[]=$ia[1];
 		}
 
-	 	$mandatoryfns[]=$ia[1];
+	 	
 	}
-	if ($other == "Y" and ($ia[4]=="!" or $ia[4]=="L" or $ia[4]=="M" or $ia[4]=="P"))
+	if ($other == "Y" and ($ia[4]=="!" or $ia[4]=="L" or $ia[4]=="M" or $ia[4]=="P" or $ia[4]=="1"))
 	{
 		$mandatorys[]=$ia[1]."other";
 		$mandatoryfns[]=$ia[1];
@@ -493,6 +497,8 @@ function mandatory_message($ia)
 				case "H":
 				$qtitle .= "<br />\n".$clang->gT("Please complete all parts").".";
 				break;
+				case "1":
+				$qtitle .= "<br />\n".$clang->gT("Please check the items").".";
 				case "R":
 				$qtitle .= "<br />\n".$clang->gT("Please rank all items").".";
 				break;
@@ -3360,6 +3366,8 @@ function do_array_flexible_dual($ia)
 		. "}\n"
 		. " //-->\n"
 		. " </script>\n";
+		$anscount_dual = $anscount * 2;
+		$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount_dual' />\n";
 		$answer .= "\t\t\t<table class='question'>\n"
 		. "\t\t\t\t<tr>\n"
 		. "\t\t\t\t\t<td width='$answerwidth%'></td>\n";
@@ -3513,7 +3521,8 @@ function do_array_flexible_dual($ia)
 						. "\t\t\t\t\t\t</script>\n";
 				}
 				// --> START NEW FEATURE - SAVE
-				$answer .= " onclick='noanswer_checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
+				// $answer .= " onclick='noanswer_checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
+				$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";				
 				// --> END NEW FEATURE - SAVE
 				$answer .= $defaultvaluescript;
 			}
