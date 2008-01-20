@@ -566,7 +566,7 @@ if ($subaction == "updateemailsettings" && ($_SESSION['USER_RIGHT_SUPERADMIN'] =
 				$usresult = $connect->Execute($usquery) or die("Error updating<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
 			}
 		}
-	$tokenoutput .= "<tr><td align='center'><br /><strong><font color='green'>".$clang->gT("Token Email Settings have been saved.")."</font></strong><br />&nbsp;</td></tr>\n";
+	$tokenoutput .= "<tr><td align='center'><br /><strong><font class='successtitle'>".$clang->gT("Token Email Settings have been saved.")."</font></strong><br />&nbsp;</td></tr>\n";
 
 	}
 
@@ -577,7 +577,7 @@ if ($subaction == "deleteall" && ($sumrows5['edit_survey_property'] || $sumrows5
 {
 	$query="DELETE FROM ".db_table_name("tokens_$surveyid");
 	$result=$connect->Execute($query) or die ("Couldn't update sent field<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-	$tokenoutput .= "<tr><td  align='center'><strong><font color='green'>".$clang->gT("All token entries have been deleted.")."</font></strong></td></tr>\n";
+	$tokenoutput .= "<tr><td  align='center'><strong><font class='successtitle'>".$clang->gT("All token entries have been deleted.")."</font></strong></td></tr>\n";
 	$subaction="";
 }
 
@@ -585,7 +585,7 @@ if ($subaction == "clearinvites" && ($sumrows5['edit_survey_property'] || $sumro
 {
 	$query="UPDATE ".db_table_name("tokens_$surveyid")." SET sent='N'";
 	$result=$connect->Execute($query) or die ("Couldn't update sent field<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-	$tokenoutput .= "<tr><td align='center'><strong><font color='green'>".$clang->gT("All invite entries have been set to 'Not Invited'.")."</font></strong></td></tr>\n";
+	$tokenoutput .= "<tr><td align='center'><strong><font class='successtitle'>".$clang->gT("All invite entries have been set to 'Not Invited'.")."</font></strong></td></tr>\n";
 	$subaction="";
 }
 
@@ -593,7 +593,7 @@ if ($subaction == "cleartokens" && ($sumrows5['edit_survey_property'] || $sumrow
 {
 	$query="UPDATE ".db_table_name("tokens_$surveyid")." SET token=''";
 	$result=$connect->Execute($query) or die("Couldn't reset the tokens field<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-	$tokenoutput .= "<tr><td align='center'><strong><font color='green'>".$clang->gT("All unique token numbers have been removed.")."</font></strong></td></tr>\n";
+	$tokenoutput .= "<tr><td align='center'><strong><font class='successtitle'>".$clang->gT("All unique token numbers have been removed.")."</font></strong></td></tr>\n";
 	$subaction="";
 }
 
@@ -1585,7 +1585,7 @@ if ($subaction == "updatetoken" && ($sumrows5['edit_survey_property'] || $sumrow
 		}
 		$udquery .= " WHERE tid={$tokenid}";
 		$udresult = $connect->Execute($udquery, $data) or die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
-		$tokenoutput .=  "<br /><font color='green'><strong>".$clang->gT("Success")."</strong></font><br />\n"
+		$tokenoutput .=  "<br /><font class='successtitle'><strong>".$clang->gT("Success")."</strong></font><br />\n"
 						."<br />".$clang->gT("Updated Token")."<br /><br />\n"
 						."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse'>".$clang->gT("Display Tokens")."</a><br /><br />\n"
 						."\t</td></tr></table>\n";
@@ -1628,7 +1628,7 @@ if ($subaction == "inserttoken" && ($sumrows5['edit_survey_property'] || $sumrow
 	{
 		// AutoExecute
 		$inresult = $connect->AutoExecute($tblInsert, $data, 'INSERT') or die ("Add new record failed:<br />\n$inquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
-		$tokenoutput .= "<br /><font color='green'><strong>".$clang->gT("Success")."</strong></font><br />\n"
+		$tokenoutput .= "<br /><font class='successtitle'><strong>".$clang->gT("Success")."</strong></font><br />\n"
 		."<br />".$clang->gT("Added New Token")."<br /><br />\n"
 		."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse'>".$clang->gT("Display Tokens")."</a><br />\n"
 		."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnew'>".$clang->gT("Add new token entry")."</a><br /><br />\n"
@@ -1703,7 +1703,7 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 	}
 	else
 	{
-		$tokenoutput .= "<br /><strong>".$clang->gT("Importing CSV File")."</strong><br />\n<font color='green'>".$clang->gT("Success")."</font><br /><br />\n"
+		$tokenoutput .= "<br /><strong>".$clang->gT("Importing CSV File")."</strong><br />\n<font class='successtitle'>".$clang->gT("Success")."</font><br /><br />\n"
 		.$clang->gT("Creating Token Entries")."<br />\n";
 		$xz = 0; $xx = 0; $xy = 0; $xv = 0; $invalidemailcount = 0;
 		// This allows to read file with MAC line endings too
@@ -1799,7 +1799,7 @@ if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['a
 		$xx = $xx-1;
 		if ($xz != 0)
 		{
-			$tokenoutput .= "<font color='green'>".$clang->gT("Success")."</font><br /><br />\n";
+			$tokenoutput .= "<font class='successtitle'>".$clang->gT("Success")."</font><br /><br />\n";
 		} else {
 			$tokenoutput .= "<font color='red'>".$clang->gT("Failed")."</font><br /><br />\n";
 		}
@@ -1885,7 +1885,7 @@ if ($subaction == "uploadldap" && ($sumrows5['edit_survey_property'] || $sumrows
 				} // End foreach responseGroup
 			} // End of if resnum >= 1
 
-			$tokenoutput .= "<font color='green'>".$clang->gT("Success")."</font><br /><br>\n";
+			$tokenoutput .= "<font class='successtitle'>".$clang->gT("Success")."</font><br /><br>\n";
 			$message=str_replace("{TOKENCOUNT}", $resultnum, $clang->gT("{TOKENCOUNT} Records Created"));
 			$tokenoutput .= "<i>$message</i><br />\n";
 		}

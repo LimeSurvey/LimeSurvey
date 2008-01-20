@@ -370,7 +370,6 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SE
 			else
 			{
 				include("access_denied.php");
-				//$addsummary .= "<br />".$clang->gT("You are not allowed to perform this operation!")."<br />\n";
 			}
 		}
 		else

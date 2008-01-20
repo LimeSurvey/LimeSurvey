@@ -73,7 +73,7 @@ if (!$database_exists) //Database named in config.php does not exist
 	{
 		$connect->database = $dbname;
 		$connect->Execute("USE DATABASE `$dbname`");
-		echo "<br />$setfont<strong><font color='green'>\n";
+		echo "<br />$setfont<strong><font class='successtitle'>\n";
 		echo $clang->gT("Database has been created.")."</font></strong></font><br /><br />\n";
 		echo $clang->gT("Please click below to populate the database")."<br /><br />\n";
 		echo "<form method='post'>";

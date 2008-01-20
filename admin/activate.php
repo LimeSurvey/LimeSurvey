@@ -507,7 +507,7 @@ else
 
 		$activateoutput .= "<br />\n<table class='alertbox'>\n";
 		$activateoutput .= "\t\t\t\t<tr><td height='4'><strong>".$clang->gT("Activate Survey")." ($surveyid)</td></tr>\n";
-		$activateoutput .= "\t\t\t\t<tr><td align='center'><font color='green'>".$clang->gT("Survey has been activated. Results table has been successfully created.")."<br /><br />\n";
+		$activateoutput .= "\t\t\t\t<tr><td align='center'><font class='successtitle'>".$clang->gT("Survey has been activated. Results table has been successfully created.")."<br /><br />\n";
 
 		$acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid={$_GET['sid']}";
 		$acresult = $connect->Execute($acquery);

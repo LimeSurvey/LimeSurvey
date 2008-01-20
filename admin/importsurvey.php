@@ -1064,7 +1064,7 @@ transInsertAns($newsid,$oldsid,$fieldnames);
 
 if ($importingfrom == "http")
 {
-	$importsurvey .= "<br />\n<strong><font color='green'>".$clang->gT("Success")."</font></strong><br /><br />\n";
+	$importsurvey .= "<br />\n<strong><font class='successtitle'>".$clang->gT("Success")."</font></strong><br /><br />\n";
 	$importsurvey .= "<strong><u>".$clang->gT("Survey Import Summary")."</u></strong><br />\n";
 	$importsurvey .= "<ul style=\"text-align:left;\">\n\t<li>".$clang->gT("Surveys").": $countsurveys</li>\n";
 	if ($importversion>=111)

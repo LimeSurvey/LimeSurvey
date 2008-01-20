@@ -48,7 +48,7 @@ if (!$database_exists)
 		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
 		.$clang->gT("LimeSurvey Setup")."</strong></td></tr>\n"
 		."\t<tr bgcolor='#CCCCCC'><td align='center'>\n";
-		$adminoutput.= "<br /><strong><font color='green'>\n";
+		$adminoutput.= "<br /><strong><font class='successtitle'>\n";
 		$adminoutput.= sprintf($clang->gT('A database named "%s" already exists.'),$databasename)."</font></strong></font><br /><br />\n";
 		$adminoutput.= $clang->gT("Do you want to populate that database now by creating the necessary tables?")."<br /><br />\n";
 		$adminoutput.= "<form method='post' action='createdb.php'>";

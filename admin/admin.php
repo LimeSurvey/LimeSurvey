@@ -274,9 +274,6 @@ elseif ($action=="assessments" || $action=="assessmentdelete" || $action=="asses
     }    
 elseif ($action == "replacementfields")
     {
-//    if ($editedaction != 'labels' && $surrows['define_questions'])    {include("fck_LimeReplacementFields.php");exit;}
-//	elseif ( $editedaction == 'labels' && $_SESSION['USER_RIGHT_MANAGE_LABEL']==1) {include("fck_LimeReplacementFields.php");exit;}
- //       else { include("access_denied.php");}    
 	switch ($editedaction)
 	{
 		case 'labels':

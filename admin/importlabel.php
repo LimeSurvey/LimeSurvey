@@ -39,7 +39,7 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 $csarray=buildLabelsetCSArray();
 //$csarray is now a keyed array with the Checksum of each of the label sets, and the lid as the key
 
-$importlabeloutput .= "<strong><font color='green'>".$clang->gT("Success")."</font></strong><br />\n";
+$importlabeloutput .= "<strong><font class='successtitle'>".$clang->gT("Success")."</font></strong><br />\n";
 $importlabeloutput .= $clang->gT("File upload succeeded.")."<br /><br />\n";
 $importlabeloutput .= $clang->gT("Reading file..")."<br />\n";
 $handle = fopen($the_full_file_path, "r");
@@ -192,7 +192,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 		else
 		{
         $importlabeloutput .= "<strong>LID:</strong> $newlid<br />\n";
-        $importlabeloutput .= "<br />\n<strong><font color='green'>".$clang->gT("Success")."</font></strong><br />\n";
+        $importlabeloutput .= "<br />\n<strong><font class='successtitle'>".$clang->gT("Success")."</font></strong><br />\n";
         $importlabeloutput .= "<strong><u>".$clang->gT("Label Set Import Summary")."</u></strong><br />\n";
         $importlabeloutput .= "\t<li>".$clang->gT("Label Sets").": $countlabelsets</li>\n";
         $importlabeloutput .= "\t<li>".$clang->gT("Labels").": $countlabels</li>\n";

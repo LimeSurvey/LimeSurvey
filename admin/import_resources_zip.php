@@ -63,7 +63,7 @@ if ($action == "importsurvresources" && $surveyid) {
 
 	if (is_file($zipfile))
 	{
-		$importsurvresourcesoutput .= "<strong><font color='green'>".$clang->gT("Success")."</font></strong><br />\n";
+		$importsurvresourcesoutput .= "<strong><font class='successtitle'>".$clang->gT("Success")."</font></strong><br />\n";
 		$importsurvresourcesoutput .= $clang->gT("File upload succeeded.")."<br /><br />\n";
 		$importsurvresourcesoutput .= $clang->gT("Reading file..")."<br />\n";
 
@@ -233,7 +233,7 @@ if ($action == "importlabelresources" && $lid)
 
 	if (is_file($zipfile))
 	{
-		$importlabelresourcesoutput .= "<strong><font color='green'>".$clang->gT("Success")."</font></strong><br />\n";
+		$importlabelresourcesoutput .= "<strong><font class='successtitle'>".$clang->gT("Success")."</font></strong><br />\n";
 		$importlabelresourcesoutput .= $clang->gT("File upload succeeded.")."<br /><br />\n";
 		$importlabelresourcesoutput .= $clang->gT("Reading file..")."<br />\n";
 

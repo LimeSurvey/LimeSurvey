@@ -65,7 +65,7 @@ else
 }
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
-$importquestion .= "<strong><font color='green'>".$clang->gT("Success")."</font></strong><br />\n"
+$importquestion .= "<strong><font class='successtitle'>".$clang->gT("Success")."</font></strong><br />\n"
 .$clang->gT("File upload succeeded.")."<br /><br />\n"
 .$clang->gT("Reading file..")."\n";
 $handle = fopen($the_full_file_path, "r");
@@ -485,7 +485,7 @@ if (isset($questionarray) && $questionarray) {
 }
 
 
-$importquestion .= "<strong><font color='green'>".$clang->gT("Success")."</font></strong><br /><br />\n"
+$importquestion .= "<strong><font class='successtitle'>".$clang->gT("Success")."</font></strong><br /><br />\n"
 ."<strong><u>".$clang->gT("Question Import Summary")."</u></strong><br />\n"
 ."\t<li>".$clang->gT("Questions").": ";
 if (isset($countquestions)) {$importquestion .= $countquestions;}

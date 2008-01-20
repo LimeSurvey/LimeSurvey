@@ -82,7 +82,7 @@ $lsquery = "SELECT DISTINCT {$dbprefix}labelsets.* FROM {$dbprefix}labelsets, {$
 $lsdump = BuildCSVFromQuery($lsquery);
 
 //5: Labels Table
-$lquery = "SELECT DISTINCT {$dbprefix}labels.* FROM {$dbprefix}labels, {$dbprefix}questions WHERE ({$dbprefix}labels.lid={$dbprefix}questions.lid) AND (type in ('F', 'H', 'Z', 'W')) AND (gid=$gid)";
+$lquery = "SELECT {$dbprefix}labels.* FROM {$dbprefix}labels, {$dbprefix}questions WHERE ({$dbprefix}labels.lid={$dbprefix}questions.lid) AND (type in ('F', 'H', 'Z', 'W')) AND (gid=$gid)";
 $ldump = BuildCSVFromQuery($lquery);
 
 //8: Question Attributes

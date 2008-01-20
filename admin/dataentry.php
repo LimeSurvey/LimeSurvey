@@ -406,7 +406,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				{
 					$scid = $connect->Insert_ID();
 					
-					$dataentryoutput .= "<font color='green'>".$clang->gT("Your survey responses have been saved succesfully")."</font><br />\n";
+					$dataentryoutput .= "<font class='successtitle'>".$clang->gT("Your survey responses have been saved succesfully")."</font><br />\n";
                     
                     $tkquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
                     if ($tkresult = $connect->Execute($tkquery)) //If the query fails, assume no tokens table exists
@@ -420,7 +420,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                     "sent"=>date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust), 	
                     "completed"=>"N");
                     $connect->AutoExecute(db_table_name("tokens_".$surveyid), $tokendata,'INSERT');
-					$dataentryoutput .= "<font color='green'>".$clang->gT("A token entry for the saved survey has been created too.")."</font><br />\n";
+					$dataentryoutput .= "<font class='successtitle'>".$clang->gT("A token entry for the saved survey has been created too.")."</font><br />\n";
 
                     }					
 					
@@ -442,7 +442,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 							if (MailTextMessage($message, $subject, $saver['email'], $from, $sitename, false, getBounceEmail($surveyid)))
 							{
 								$emailsent="Y";
-								$dataentryoutput .= "<font color='green'>".$clang->gT("An email has been sent with details about your saved survey")."</font><br />\n";
+								$dataentryoutput .= "<font class='successtitle'>".$clang->gT("An email has been sent with details about your saved survey")."</font><br />\n";
 							}
 						}
 					}
@@ -454,7 +454,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				}
 
 			}
-			$dataentryoutput .= "\t\t\t<font color='green'><strong>".$clang->gT("Success")."</strong></font><br />\n";
+			$dataentryoutput .= "\t\t\t<font class='successtitle'><strong>".$clang->gT("Success")."</strong></font><br />\n";
 			$thisid=$connect->Insert_ID();
 			$dataentryoutput .= "\t\t\t".$clang->gT("The entry was assigned the following record id: ")." {$thisid}<br />\n";
 		}
@@ -1438,7 +1438,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		while (ob_get_level() > 0) {
 			ob_end_flush();
 		}
-		$dataentryoutput .= "<font color='green'><strong>".$clang->gT("Success")."</strong></font><br />\n"
+		$dataentryoutput .= "<font class='successtitle'><strong>".$clang->gT("Success")."</strong></font><br />\n"
 		.$clang->gT("Record has been updated.")."<br /><br />\n"
 		."<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$id'>".$clang->gT("View This Record")."</a>\n<br />\n"
 		."<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all'>".$clang->gT("Browse Responses")."</a><br />\n"

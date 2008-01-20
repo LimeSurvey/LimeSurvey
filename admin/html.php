@@ -338,6 +338,7 @@ if ($surveyid)
 
 		$s1row = $sumresult1->FetchRow();
 
+        $s1row = array_map('strip_tags', $s1row);
 		$s1row = array_map('htmlspecialchars', $s1row);
 		$activated = $s1row['active'];
 		//BUTTON BAR

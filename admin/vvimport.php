@@ -79,7 +79,7 @@ else
 	}
 	// IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
-	$vvoutput .= "<strong><font color='green'>".$clang->gT("Success")."</font></strong><br />\n";
+	$vvoutput .= "<strong><font class='successtitle'>".$clang->gT("Success")."</font></strong><br />\n";
 	$vvoutput .= $clang->gT("File upload succeeded.")."<br /><br />\n";
 	$vvoutput .= $clang->gT("Reading file..")."<br />\n";
 	$handle = fopen($the_full_file_path, "r");

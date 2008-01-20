@@ -18,9 +18,9 @@ include_once("login_check.php");
 // A FILE TO IMPORT A DUMPED SURVEY FILE, AND CREATE A NEW SURVEY
 
 $importgroup = "<br /><table width='100%' align='center'><tr><td>\n";
-$importgroup .= "<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-$importgroup .= "\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Import Group")."</strong></font></td></tr>\n";
-$importgroup .= "\t<tr bgcolor='#CCCCCC'><td align='center'>\n";
+$importgroup .= "<table class='alertbox' >\n";
+$importgroup .= "\t<tr ><td colspan='2' height='4'><strong>".$clang->gT("Import Group")."</strong></td></tr>\n";
+$importgroup .= "\t<tr><td align='center'>\n";
 
 $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 
@@ -51,7 +51,7 @@ else
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
-$importgroup .= "<strong><font color='green'>".$clang->gT("Success")."</font></strong><br />\n";
+$importgroup .= "<strong><font class='successtitle'>".$clang->gT("Success")."</font></strong><br />\n";
 $importgroup .= $clang->gT("File upload succeeded.")."<br /><br />\n";
 $importgroup .= $clang->gT("Reading file...")."<br />\n";
 $handle = fopen($the_full_file_path, "r");

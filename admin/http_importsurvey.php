@@ -37,7 +37,7 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
-$importsurvey .= "<strong><font color='green'>".$clang->gT("Success")."!</font></strong><br />\n";
+$importsurvey .= "<strong><font class='successtitle'>".$clang->gT("Success")."!</font></strong><br />\n";
 $importsurvey .= $clang->gT("File upload succeeded.")."<br /><br />\n";
 $importsurvey .= $clang->gT("Reading file..")."<br />\n";
 
