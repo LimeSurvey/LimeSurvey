@@ -207,10 +207,20 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		$createtokentable=
 		"tid int I NOTNULL AUTO PRIMARY,\n "
 		. "firstname C(40) ,\n "
-		. "lastname C(40) ,\n "
-		. "email X(320) ,\n "
-		. "emailstatus X(300) DEFAULT 'OK',\n "
-		. "token C(36) ,\n "
+		. "lastname C(40) ,\n ";
+        //MSSQL needs special treatment because of some strangeness in ADODB
+        if ($databasetype=='odbc_mssql')
+             {
+                          $createtokentable.= "email C(320) ,\n "
+                                             ."emailstatus C(300) DEFAULT 'OK',\n ";
+             }
+        else
+            {
+             $createtokentable.= "email X(320) ,\n "
+                                ."emailstatus X(300) DEFAULT 'OK',\n ";
+            }
+        
+		$createtokentable.= "token C(36) ,\n "
 		. "language C(25) ,\n "
 		. "sent C(17) DEFAULT 'N',\n "
 		. "completed C(17) DEFAULT 'N',\n "
@@ -946,7 +956,7 @@ if ($subaction == "email" && ($sumrows5['edit_survey_property'] || $sumrows5['ac
 			$fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
 			$fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
 
-			$subject=Replacefields($thissurvey['email_invite_subj'], $fieldsarray);
+			$subject=htmlspecialchars(Replacefields($thissurvey['email_invite_subj'], $fieldsarray));
 			$textarea=Replacefields($thissurvey['email_invite'], $fieldsarray);
 
 	    	$tokenoutput .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($language,false);
@@ -1171,10 +1181,10 @@ if ($subaction == "remind" && ($sumrows5['edit_survey_property'] || $sumrows5['a
             $fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
             $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
     
-            $subject=Replacefields($thissurvey['email_remind_subj'], $fieldsarray);
+            $subject=htmlspecialchars(Replacefields($thissurvey['email_remind_subj'], $fieldsarray));
             $textarea=Replacefields($thissurvey['email_remind'], $fieldsarray);
 
-			$tokenoutput .= "\t\t<td><input type='text' size='83' name='subject_$language' value='".$subject."' /></td>\n"
+			$tokenoutput .= "\t\t<td><input type='text' size='83' name='subject_$language' value=\"$subject\" /></td>\n"
 			."\t</tr>\n";
 	
 			$tokenoutput .= "\t<tr>\n"

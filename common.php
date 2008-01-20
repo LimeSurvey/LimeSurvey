@@ -4200,7 +4200,7 @@ function getBounceEmail($surveyid)
 	}
 	else
 	{
-		$query = "SELECT `bounce_email` FROM {$dbprefix}surveys WHERE `sid`=".$surveyid;
+		$query = "SELECT bounce_email FROM {$dbprefix}surveys WHERE sid=".$surveyid;
 		
 		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
 		
@@ -4232,7 +4232,7 @@ function getEmailFormat($surveyid)
 	}
 	else
 	{
-		$query = "SELECT `htmlemail` FROM {$dbprefix}surveys WHERE `sid`=".$surveyid;
+		$query = "SELECT htmlemail FROM {$dbprefix}surveys WHERE sid=".$surveyid;
 		
 		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
 		
@@ -4255,7 +4255,7 @@ function getEmailFormat($surveyid)
 function hasTemplateManageRights($userid, $templatefolder) {
       global $connect;
       global $dbprefix;
-      $query = "SELECT `use` FROM {$dbprefix}templates_rights WHERE `uid`=".$userid." AND `folder` LIKE '".$templatefolder."'";
+      $query = "SELECT ".db_quote_id('use')." FROM {$dbprefix}templates_rights WHERE uid=".$userid." AND folder LIKE '".$templatefolder."'";
 
       $result = db_execute_assoc($query) or die($connect->ErrorMsg());
 
