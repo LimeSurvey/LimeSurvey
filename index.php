@@ -103,7 +103,7 @@ if ($surveyid && $issurveyactive===false)
 
 			// Currently it is enough to be listed in the survey
 			// user operator list to get preview access
-			if ($rightresult->RecordCount() > 0)
+			if ($rightresult->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 			{
 				$previewright=true;
 				$savesessionvars["USER_RIGHT_PREVIEW"]=$surveyid;
