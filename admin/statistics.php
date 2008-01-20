@@ -330,7 +330,8 @@ foreach ($filters as $flt)
 		case "D": // Date
 		$myfield2="D$myfield";
 		$myfield3="$myfield2=";
-		$myfield4="$myfield2<"; $myfield5="$myfield2>";
+		$myfield4="$myfield2<"; 
+        $myfield5="$myfield2>";
 		$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'><strong>$flt[3]</strong>"
 		."&nbsp;".showSpeaker($niceqtext)
 		."<br />\n"
@@ -346,6 +347,9 @@ foreach ($filters as $flt)
 		if (isset($_POST[$myfield5])) {$statisticsoutput .= $_POST[$myfield5];}
 		$statisticsoutput .= "' type='text' ".substr(2, 0, -13)
 		."; width:65' /></font>\n";
+        $allfields[]=$myfield3;
+        $allfields[]=$myfield4;
+        $allfields[]=$myfield5;
 		break;
 		case "5": // 5 point choice
 		for ($i=1; $i<=5; $i++)
