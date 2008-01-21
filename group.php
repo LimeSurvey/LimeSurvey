@@ -83,7 +83,7 @@ if (isset($_POST['move']) && $_SESSION['step'] != 0 && $_POST['move'] != "movela
 }
 
 //SUBMIT ###############################################################################
-if (isset($_POST['move']) && $_POST['move'] == "movesubmit")
+if ((isset($_POST['move']) && $_POST['move'] == "movesubmit")  && (!isset($notanswered) || !$notanswered))
 {
 	if ($thissurvey['refurl'] == "Y")                 
     {

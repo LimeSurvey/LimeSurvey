@@ -62,7 +62,7 @@ $notvalidated=checkpregs($backok);
 check_quota('enforce',$surveyid);
 
 //SUBMIT
-if (isset($_POST['move']) && $_POST['move'] == "movesubmit")
+if ((isset($_POST['move']) && $_POST['move'] == "movesubmit")  && (!isset($notanswered) || !$notanswered))
 {
 	if ($thissurvey['refurl'] == "Y")
 	{
