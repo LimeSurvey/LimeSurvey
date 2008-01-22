@@ -363,8 +363,16 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 		$values=do_multiplechoice_withcomments($ia);
 		if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
 		{
-			$qtitle .= "<br />\n<font class = \"questionhelp\">"
-			. $clang->gT("Check any that apply")."</font>";
+			if (!$maxansw=arraySearchByKey("max_answers", $qidattributes, "attribute", 1))
+			{
+				$qtitle .= "<br />\n<font class = \"questionhelp\">"
+				. $clang->gT("Check any that apply")."</font>";
+			}
+			else
+			{
+				$qtitle .= "<br />\n<font class = \"questionhelp\">"
+				. $clang->gT("Check at most")." ".$maxansw['value']." ".$clang->gT("answers")."</font>";
+			}
 		}
 		break;
 		case "Q": //MULTIPLE SHORT TEXT
@@ -1674,7 +1682,7 @@ function do_multiplechoice($ia)
 		$myfname = $ia[1]."other";
 		$answer .= "\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='{$myfname}cbox' id='{$myfname}cbox'";
 		if (isset($_SESSION[$myfname]) && trim($_SESSION[$myfname])!='') {$answer .= " checked='checked'";}
-		$answer .= " onchange='document.getElementById(\"answer$myfname\").value=\"\"'  />";
+		$answer .= " onchange='".$callmaxanswscriptcheckbox."document.getElementById(\"answer$myfname\").value=\"\"'  />";
 		$answer .= "\t\t\t\t\t\t<label for='answer$myfname' class='answertext'>".$clang->gT("Other").":</label> <input class='text' type='text' name='$myfname' id='answer$myfname'";
 		if (isset($_SESSION[$myfname])) {$answer .= " value='".htmlspecialchars($_SESSION[$myfname],ENT_QUOTES)."'";}
 		// --> START NEW FEATURE - SAVE
@@ -1682,7 +1690,10 @@ function do_multiplechoice($ia)
 		. "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
 		// --> END NEW FEATURE - SAVE
 
-		if ($maxansw > 0) { $maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').value != '') { count += 1; }\n"; }
+		if ($maxansw > 0)
+		{
+			$maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').value != '' || document.getElementById('".$myfname."cbox').checked ) { count += 1; }\n"; 
+		}
 
 		if (isset($_SESSION[$myfname])) {$answer .= htmlspecialchars($_SESSION[$myfname],ENT_QUOTES);}
 
@@ -1706,7 +1717,12 @@ function do_multiplechoice($ia)
 			. "\t\t\t\t\t\t{\n"
 			. "\t\t\t\t\t\talert('".$clang->gT("Please choose at most","js")." ' + max + ' ".$clang->gT("answer(s) for question","js")." \"".javascript_escape($ia[3])."\"');\n"
 			. "\t\t\t\t\t\tif (me.type == 'checkbox') {me.checked = false;}\n"
-			. "\t\t\t\t\t\tif (me.type == 'text') {me.value = '';}\n"
+			. "\t\t\t\t\t\tif (me.type == 'text') {\n"
+			. "\t\t\t\t\t\t\tme.value = '';\n"
+			. "\t\t\t\t\t\t\tif (document.getElementById(me.name + 'cbox') ){\n"
+			. "\t\t\t\t\t\t\t\t document.getElementById(me.name + 'cbox').checked = false;\n"
+			. "\t\t\t\t\t\t\t}\n"
+			. "\t\t\t\t\t\t}"
 			. "\t\t\t\t\t\treturn max;\n"
 			. "\t\t\t\t\t\t}\n"
 			. "\t\t\t\t\t}\n"
@@ -1737,6 +1753,27 @@ function do_multiplechoice_withcomments($ia)
 {
 	global $dbprefix, $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
+
+	// Check if the max_answers attribute is set
+	$maxansw=0;
+	$callmaxanswscriptcheckbox = "";
+	$callmaxanswscriptother = "";
+	$maxanswscript = "";
+	if ($maxanswattr=arraySearchByKey("max_answers", $qidattributes, "attribute", 1))
+	{
+		$maxansw=$maxanswattr['value'];
+		$callmaxanswscriptcheckbox = "limitmaxansw_{$ia[0]}(this);";
+		$callmaxanswscriptother = "onkeyup='limitmaxansw_{$ia[0]}(this)'";
+
+		$maxanswscript = "\t\t\t<script type='text/javascript'>\n"
+			. "\t\t\t<!--\n"
+			. "\t\t\t\tfunction limitmaxansw_{$ia[0]}(me)\n"
+			. "\t\t\t\t\t{\n"
+			. "\t\t\t\t\tmax=$maxansw\n"
+			. "\t\t\t\t\tcount=0;\n"
+			. "\t\t\t\t\tif (max == 0) { return count; }\n";
+	}
+
 	$answer  = "\t\t\t<table class='question'>\n"
 	. "\t\t\t\t<tr>\n"
 	. "\t\t\t\t\t<td>&nbsp;</td>\n"
@@ -1780,11 +1817,14 @@ function do_multiplechoice_withcomments($ia)
 				. "\t\t\t\t\t\t\t\t\t</script>\n";	
 		}
 		// --> START NEW FEATURE - SAVE
-		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' />"
+		$answer .= " onclick='".$callmaxanswscriptcheckbox."checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' />"
 		// --> END NEW FEATURE - SAVE
 		. "<label for='answer$myfname' class='answertext'>"
-		. $ansrow['answer']."</label>\n"
-		. $defvaluescript
+		. $ansrow['answer']."</label>\n";
+
+		if ($maxansw > 0) {$maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
+
+		$answer .= $defvaluescript
 		. "\t\t\t\t\t\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
 		if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
 		$answer .= "' />\n"
@@ -1815,7 +1855,7 @@ function do_multiplechoice_withcomments($ia)
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname]) {$answer .= " value='".htmlspecialchars($_SESSION[$myfname],ENT_QUOTES)."'";}
 		$fn++;
 		// --> START NEW FEATURE - SAVE
-		$answer .= " onchange='modfield(this.name)' />\n"
+		$answer .= " onchange='modfield(this.name)' $callmaxanswscriptother/>\n"
 		. "\t\t\t\t\t\t\t\t</td>\n"
 		. "\t\t\t\t\t\t\t\t<td valign='bottom'><label for='answer$myfname2'>\n"
 		. "\t\t\t\t\t\t\t\t\t<input class='text' type='text' size='40' name='$myfname2' id='answer$myfname2' title='".$clang->gT("Make a comment on your choice here:")."' value='";
@@ -1823,8 +1863,14 @@ function do_multiplechoice_withcomments($ia)
 
 		if (isset($_SESSION[$myfname2])) {$answer .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
 		// --> START NEW FEATURE - SAVE
-		$answer .= "' onchange='modfield(this.name)' />\n"
-		. "\t\t\t\t\t\t\t\t</label></td>\n"
+		$answer .= "' onchange='modfield(this.name)' />\n";
+
+		if ($maxansw > 0)
+		{
+			$maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').value != '') { count += 1; }\n"; 
+		}
+
+		$answer .= "\t\t\t\t\t\t\t\t</label></td>\n"
 		. "\t\t\t\t\t\t\t</tr>\n";
 		// --> END NEW FEATURE - SAVE
 
@@ -1836,6 +1882,27 @@ function do_multiplechoice_withcomments($ia)
 	. "\t\t\t\t\t<td>&nbsp;</td>\n"
 	. "\t\t\t\t</tr>\n"
 	. "\t\t\t</table>\n";
+
+	if ( $maxansw > 0 )
+	{
+		$maxanswscript .= "\t\t\t\t\tif (count > max)\n"
+			. "\t\t\t\t\t\t{\n"
+			. "\t\t\t\t\t\talert('".$clang->gT("Please choose at most","js")." ' + max + ' ".$clang->gT("answer(s) for question","js")." \"".javascript_escape($ia[3])."\"');\n"
+			. "\t\t\t\t\t\tif (me.type == 'checkbox') {me.checked = false;}\n"
+			. "\t\t\t\t\t\tif (me.type == 'text') {\n"
+			. "\t\t\t\t\t\t\tme.value = '';\n"
+			. "\t\t\t\t\t\t\tif (document.getElementById(me.name + 'cbox') ){\n"
+			. "\t\t\t\t\t\t\t\t document.getElementById(me.name + 'cbox').checked = false;\n"
+			. "\t\t\t\t\t\t\t}\n"
+			. "\t\t\t\t\t\t}"
+			. "\t\t\t\t\t\treturn max;\n"
+			. "\t\t\t\t\t\t}\n"
+			. "\t\t\t\t\t}\n"
+			. "\t\t\t//-->\n"
+			. "\t\t\t</script>\n";
+		$answer = $maxanswscript . $answer;
+	}
+
 	return array($answer, $inputnames);
 }
 

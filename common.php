@@ -2446,7 +2446,7 @@ function questionAttributes()
 	"types"=>"WZ",
 	"help"=>"Filter the available answers by this value");
 	$qattributes[]=array("name"=>"max_answers",
-	"types"=>"M",
+	"types"=>"MP",
 	"help"=>"Limit the number of possible answers");
     $qattributes[]=array("name"=>"maximum_chars",
     "types"=>"STUNQK",

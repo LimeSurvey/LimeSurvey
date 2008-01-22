@@ -471,9 +471,18 @@ while ($degrow = $degresult->FetchRow())
             */
 
 			case "P":  //MULTIPLE OPTIONS WITH COMMENTS
+			$qidattributes=getQuestionAttributes($deqrow['qid']);
+			if (!$maxansw=arraySearchByKey("max_answers", $qidattributes, "attribute", 1))
+			{
+				$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose all that apply and provide a comment:")."</u><br />\n";
+			}
+			else
+			{
+				$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose *at most* ").$maxansw['value']."</strong> ".$clang->gT("answers and provide a comment:")."</u><br />\n";
+			}
 			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
-			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose all that apply and provide a comment:")."</u><br />\n";
+//			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose all that apply and provide a comment:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<table border='0'>\n";
 			while ($mearow = $mearesult->FetchRow())
 			{
