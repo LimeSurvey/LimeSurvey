@@ -92,7 +92,7 @@ FCKConfig.ToolbarCanCollapse	= true ;
 FCKConfig.IgnoreEmptyParagraphValue = true ;
 FCKConfig.PreserveSessionOnFileBrowser = false ;
 FCKConfig.FloatingPanelsZIndex = 10000 ;
-FCKConfig.HtmlEncodeOutput = false ;
+FCKConfig.HtmlEncodeOutput = true ;
 
 FCKConfig.TemplateReplaceAll = true ;
 FCKConfig.TemplateReplaceCheckbox = true ;
