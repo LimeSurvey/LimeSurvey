@@ -52,17 +52,17 @@ Calendar._FD = 0;
 // full month names
 Calendar._MN = new Array
 ("Janvier",
- "Février",
+ "F vrier",
  "Mars",
  "Avril",
  "Mai",
  "Juin",
  "Juillet",
- "Août",
+ "Ao t",
  "Septembre",
  "Octobre",
  "Novembre",
- "Décembre");
+ "D cembre");
 
 // short month names
 Calendar._SMN = new Array
@@ -99,13 +99,13 @@ Calendar._TT["ABOUT_TIME"] = "\n\n" +
 "- ou Maj-clic pour decrementer\n" +
 "- ou clic et glisser-deplacer pour une selection plus rapide";
 
-Calendar._TT["PREV_YEAR"] = "Année préc. (maintenir pour menu)";
-Calendar._TT["PREV_MONTH"] = "Mois préc. (maintenir pour menu)";
+Calendar._TT["PREV_YEAR"] = "Ann e pr c. (maintenir pour menu)";
+Calendar._TT["PREV_MONTH"] = "Mois pr c. (maintenir pour menu)";
 Calendar._TT["GO_TODAY"] = "Atteindre la date du jour";
 Calendar._TT["NEXT_MONTH"] = "Mois suiv. (maintenir pour menu)";
-Calendar._TT["NEXT_YEAR"] = "Année suiv. (maintenir pour menu)";
-Calendar._TT["SEL_DATE"] = "Sélectionner une date";
-Calendar._TT["DRAG_TO_MOVE"] = "Déplacer";
+Calendar._TT["NEXT_YEAR"] = "Ann e suiv. (maintenir pour menu)";
+Calendar._TT["SEL_DATE"] = "S lectionner une date";
+Calendar._TT["DRAG_TO_MOVE"] = "D placer";
 Calendar._TT["PART_TODAY"] = " (Aujourd'hui)";
 
 // the following is to inform that "%s" is to be the first day of week

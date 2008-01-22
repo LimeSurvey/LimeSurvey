@@ -1,0 +1,3852 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: LimeSurvey Chinese-traditional language file\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-09-17 08:00+0200\n"
+"PO-Revision-Date: 2007-09-30 14:37+0100\n"
+"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
+"Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Chinese\n"
+"X-Poedit-Country: TAIWAN\n"
+"X-Poedit-KeywordsList: gT\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: D:\\web\\xampp\\htdocs\\stable_plus\n"
+
+msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
+msgstr "警告：您還是使用預設密碼（password），請修改這個密碼後重新登入。"
+
+msgid "Administration"
+msgstr "管理 "
+
+msgid "Logged in as"
+msgstr "登入身份是"
+
+msgid "Default Administration Page"
+msgstr "預設管理頁面"
+
+msgid "Create/Edit Users"
+msgstr "建立／修改會員"
+
+msgid "Create/Edit Groups"
+msgstr "建立／修改組別"
+
+msgid "Check Settings"
+msgstr "檢查設定"
+
+msgid "Settings"
+msgstr "設定"
+
+msgid "Check Data Integrity"
+msgstr "檢查資料的完整性"
+
+msgid "List Surveys"
+msgstr "問卷列表"
+
+msgid "Backup Entire Database"
+msgstr "把整個資料庫做備份"
+
+msgid "Edit/Add Label Sets"
+msgstr "修改／新增標籤集 "
+
+msgid "Template Editor"
+msgstr "樣板編輯器"
+
+msgid "Show Help"
+msgstr "顯示求助說明 "
+
+msgid "Logout"
+msgstr "登出"
+
+msgid "Create or Import New Survey"
+msgstr "建立或匯入新的問卷"
+
+msgid "Surveys"
+msgstr "問卷"
+
+msgid "Please Choose..."
+msgstr "請選擇..."
+
+msgid "None"
+msgstr "無"
+
+msgid "5 Point Choice"
+msgstr "五分選擇題"
+
+msgid "Array (5 Point Choice)"
+msgstr "表列(五分選擇題)"
+
+msgid "Array (10 Point Choice)"
+msgstr "表列(十分選擇題)"
+
+msgid "Array (Yes/No/Uncertain)"
+msgstr "表列(是/否/無意見)"
+
+msgid "Date"
+msgstr "日期 "
+
+msgid "Array (Increase, Same, Decrease)"
+msgstr "表列(增加,不變, 減少)"
+
+msgid "Array (Flexible Labels)"
+msgstr "表列(自訂標籤)"
+
+msgid "Gender"
+msgstr "性別 "
+
+msgid "Array (Flexible Labels) by Column"
+msgstr "欄位式表列(自訂標籤)"
+
+msgid "Language Switch"
+msgstr "切換語言"
+
+msgid "List (Radio)"
+msgstr "圓形單選式列表"
+
+msgid "Multiple Options"
+msgstr "多項式選擇"
+
+msgid "Numerical Input"
+msgstr "數值式選項"
+
+msgid "List With Comment"
+msgstr "附評語的列表 "
+
+msgid "Multiple Options With Comments"
+msgstr "附評語的多項選擇"
+
+msgid "Multiple Short Text"
+msgstr "多項式短答 "
+
+msgid "Ranking"
+msgstr "排名"
+
+msgid "Short free text"
+msgstr "短答"
+
+msgid "Long free text"
+msgstr "長答 "
+
+msgid "Huge Free Text"
+msgstr "超級長答"
+
+msgid "List (Flexible Labels) (Dropdown)"
+msgstr "下拉式列表(自訂標籤)"
+
+msgid "Boilerplate Question"
+msgstr "樣板題目 "
+
+msgid "Yes/No"
+msgstr "是／否"
+
+msgid "List (Flexible Labels) (Radio)"
+msgstr "單選式列表 (自訂標籤) "
+
+msgid "List (Dropdown)"
+msgstr "下拉式列表"
+
+msgid "No email notification"
+msgstr "沒有電子信箱通知"
+
+msgid "Basic email notification"
+msgstr "基本電子信箱通知 "
+
+msgid "Detailed email notification with result codes"
+msgstr "附有問卷結果程式碼的詳細電子信箱通知"
+
+msgid "LimeSurvey Setup"
+msgstr "LimeSurvey 安裝 "
+
+msgid "Error"
+msgstr "出錯"
+
+msgid "It appears as if some tables or fields are missing from your database."
+msgstr "看來您的資料庫遺失了資料表或欄位資料了。"
+
+msgid "Check Database Fields"
+msgstr "檢查資料庫的欄位資料"
+
+msgid "Return to Survey Administration"
+msgstr "返回問卷管理頁面 "
+
+msgid "Show summary information"
+msgstr "顯示摘要細節 "
+
+msgid "Display Responses"
+msgstr "顯示答案卷內容 "
+
+msgid "Display Last 50 Responses"
+msgstr "顯示最後50個答案卷內容"
+
+msgid "Dataentry Screen for Survey"
+msgstr "問卷的資料輸入畫面"
+
+msgid "Get statistics from these responses"
+msgstr "根據答案卷內容取得統計資料"
+
+msgid "Export Results to Application"
+msgstr "把問卷結果匯出到應用軟體裡 "
+
+msgid "Export result to a SPSS command file"
+msgstr "把問卷結果匯出到 SPSS 規格的指令檔。"
+
+msgid "Import answers from a deactivated survey table"
+msgstr "根據已停用的問卷資料表匯入答案選項"
+
+msgid "View Saved but not submitted Responses"
+msgstr "檢視已儲存但仍未送出的答案卷內容"
+
+msgid "Import a VV survey file"
+msgstr "匯入 VV 問卷檔"
+
+msgid "Export a VV survey file"
+msgstr "匯出 VV 問卷檔案"
+
+msgid "Preset"
+msgstr "預設 "
+
+msgid "Token"
+msgstr "操作程式碼"
+
+msgid "Date Stamp"
+msgstr "日期記錄"
+
+msgid "IP Address"
+msgstr "IP 地址"
+
+msgid "Referring URL"
+msgstr "送出的url"
+
+msgid "Other"
+msgstr "其他"
+
+msgid "Yes"
+msgstr "是"
+
+msgid "No"
+msgstr "否"
+
+msgid "No answer"
+msgstr "未有回答"
+
+msgid "Male"
+msgstr "男"
+
+msgid "Female"
+msgstr "女"
+
+msgid "Uncertain"
+msgstr "無意見"
+
+msgid "Increase"
+msgstr "增加"
+
+msgid "Decrease"
+msgstr "減少 "
+
+msgid "Same"
+msgstr "相同"
+
+msgid "Comment"
+msgstr "評語 "
+
+msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
+msgstr "注意︰ 若果瀏覽器關閉了 Javascript  的執行功能，您就未必能夠回答本問卷的全部題目 。請確保瀏覽器的參數設定符合問卷的要求。"
+
+msgid "There are no questions in this survey"
+msgstr "此問卷沒有題目."
+
+msgid "There is 1 question in this survey"
+msgstr "此問卷有一條題目."
+
+msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
+msgstr "此問卷有{NUMBEROFQUESTIONS}條問題."
+
+msgid "submit"
+msgstr "送出"
+
+msgid "A Note On Privacy"
+msgstr "私隱權的註解"
+
+msgid "This survey is anonymous."
+msgstr "這是匿名問卷."
+
+msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "<b><i>私隱聲明<i><b><br >這是一份不記名的問卷.<br >問卷內容並不包含任何可辨認身份的資料，除非問卷內有此特別設計的題目。 如果您填寫了一個以操作程式碼(token)作為存取控制的問卷， 請放心，該個程式碼(token)並不與您的答案儲存在一起。  系統只會在您更改或完成問卷時才更新該個程式碼。  我們並不能將操作程式碼和答案卷內容互相比對。"
+
+msgid "Are you sure you want to clear all your responses?"
+msgstr "您確定要清除全部答案卷內容嗎?"
+
+msgid "Exit and Clear Survey"
+msgstr "清除問卷內容後離開"
+
+msgid "Load Unfinished Survey"
+msgstr "載入未完成的問卷"
+
+msgid "Save Survey and Return"
+msgstr "儲存問卷及返回"
+
+msgid "Thank You!"
+msgstr "感謝！"
+
+msgid "You have completed answering the questions in this survey."
+msgstr "您已完成填寫本問卷的全部題目。"
+
+msgid "Click on 'Submit' now to complete the process and save your answers."
+msgstr " 馬上 Click '送出' 就可以完成問卷作業，並儲存您的答案卷內容。"
+
+msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
+msgstr "如果您想要檢查您之前的答案或予以更改, 請 click 選 [<<上一頁] 按鈕。  "
+
+msgid "Answers Cleared"
+msgstr "答案被清除"
+
+msgid "Restart this Survey"
+msgstr "重新開始問卷"
+
+msgid "Close this Window"
+msgstr "關閉本視窗"
+
+msgid "Return To Survey"
+msgstr "返回問卷"
+
+msgid "Save Your Unfinished Survey"
+msgstr "儲存末完成的問卷"
+
+msgid "Enter a name and password for this survey and click save below."
+msgstr "為問卷輸入名稱及密碼，再在下方 click 儲存鍵。"
+
+msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
+msgstr "為這問卷輸入一個名字和密碼然後點選「儲存」。<br >您的問卷將會以這個名字和密碼儲存在系統內，日後您可以用這個名字和密碼登入問卷系統繼續完成問卷。"
+
+msgid "If you give an email address, an email containing the details will be sent to you."
+msgstr "如果您提供電子信箱地址，包含此等資料的電子信箱就會寄發給您。"
+
+msgid "Name"
+msgstr "名稱"
+
+msgid "Password"
+msgstr "密碼"
+
+msgid "Repeat Password"
+msgstr "重複密碼"
+
+msgid "Your Email"
+msgstr "電子信箱"
+
+msgid "Security Question"
+msgstr "安全設定的問題"
+
+msgid "Save Now"
+msgstr "馬上儲存"
+
+msgid "Load A Previously Saved Survey"
+msgstr "載入先前儲存好的問卷"
+
+msgid "You can load a survey that you have previously saved from this screen."
+msgstr "您可在這兒載入您先前儲存了的問卷。"
+
+msgid "Type in the 'name' you used to save the survey, and the password."
+msgstr "輸入用來儲存問卷的 '名稱'和密碼。"
+
+msgid "Saved name"
+msgstr "已儲存的名字"
+
+msgid "Load Now"
+msgstr "馬上傳入"
+
+msgid "You must be registered to complete this survey"
+msgstr "請先登記然後再填此問卷"
+
+msgid "You may register for this survey if you wish to take part."
+msgstr "如果您想參與填寫問卷，您可以先行登記。"
+
+msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr "如果您希望參與這次問卷,請先登記您的個人資料。  一份內有這次問卷詳情的電子郵件即將奉上。"
+
+msgid "First Name"
+msgstr "名"
+
+msgid "Last Name"
+msgstr "姓"
+
+msgid "Email Address"
+msgstr "電子信箱"
+
+msgid "Continue"
+msgstr "繼續"
+
+msgid "Your Assessment"
+msgstr "您的評估"
+
+msgid "Online Manual"
+msgstr "線上操作手冊"
+
+msgid "Support this project - Donate to "
+msgstr "支援本計劃 - 請捐助"
+
+msgid "Visit our website!"
+msgstr "到訪我們的網站吧！"
+
+msgid "Version"
+msgstr "版本"
+
+msgid "Local Submission"
+msgstr "本地送出"
+
+msgid "Executing"
+msgstr "執行中"
+
+msgid "Failed! Reason: "
+msgstr "失敗原因︰"
+
+msgid "Success!"
+msgstr "成功！"
+
+msgid "Save your responses so far"
+msgstr "儲存您到目前為止的答案"
+
+msgid "Did Not Save"
+msgstr "未被儲存"
+
+msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr "由於本問卷已停用，所以您的問卷未被儲存."
+
+msgid "Clear Responses"
+msgstr "清除問卷內容"
+
+msgid "Thank you"
+msgstr "多謝"
+
+msgid "Your survey responses have been recorded."
+msgstr "您的答案卷內容已被儲存."
+
+msgid "Sorry. There is no matching survey."
+msgstr "對不起！找不到相關的問卷."
+
+msgid "This survey is not currently active. You will not be able to save your responses."
+msgstr "本問卷已關閉. 您不能儲存問卷."
+
+msgid "ERROR"
+msgstr "出錯"
+
+msgid "We are sorry but your session has expired."
+msgstr "對不起！您連續操作的時段已屆滿。"
+
+msgid "Either you have been inactive for too long or there were problems with your connection."
+msgstr "如果不是您長時間沒有操作，就是您的網路連接有問題。"
+
+msgid "Please contact"
+msgstr "請聯絡"
+
+msgid "for further assistance"
+msgstr "進一步協助"
+
+msgid "You have not provided a survey identification number"
+msgstr "您未提供問卷編號"
+
+msgid "The answer to the security question is incorrect"
+msgstr "回應安全問題的答案不正確"
+
+msgid "This survey is no longer available."
+msgstr "本問卷已停用."
+
+msgid "You have already completed this survey."
+msgstr "您已完成本問卷"
+
+msgid "You did not provide a name"
+msgstr "您沒有輸入名字"
+
+msgid "You did not provide a password"
+msgstr "您沒有輸入密碼"
+
+msgid "This is a closed-access survey. You need a valid token to participate."
+msgstr "這是封閉式存取的問卷，限於擁有操作程式碼的人士才可以作答."
+
+msgid "The token you have provided is either not valid, or has already been used."
+msgstr "您提供的操作程式碼無效，或已被使用."
+
+msgid "For further information contact"
+msgstr "如有查詢，請聯絡"
+
+msgid "Survey Saved"
+msgstr "已儲存問卷"
+
+msgid "There is no matching saved survey"
+msgstr "找不到符合的問卷"
+
+msgid "complete"
+msgstr "完成"
+
+msgid ""
+"Dear {FIRSTNAME},\n"
+"\n"
+"This email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n"
+"\n"
+"If you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n"
+"\n"
+"Sincerely,\n"
+"\n"
+"{ADMINNAME}"
+msgstr ""
+"尊敬的 {FIRSTNAME},\n"
+"\n"
+"本電子信箱是要確認您已完成填寫標題為  {SURVEYNAME} 的問卷s，而您的答案卷內容已被儲存，多謝您的參與.\n"
+"\n"
+"對本電子信箱如有疑問，歡迎向本人 {ADMINNAME} ／ {ADMINEMAIL}查詢。\n"
+"\n"
+"\n"
+"{ADMINNAME}  謹啟"
+
+msgid "Survey Submitted"
+msgstr "已送出問卷"
+
+msgid "A new response was entered for your survey"
+msgstr "恭喜您！您收到一份剛完成的問卷"
+
+msgid "Click the following link to reload the survey:"
+msgstr "點選以下連結重新載入問卷:"
+
+msgid "Click the following link to see the individual response:"
+msgstr "點選此連結檢視個別的問卷內容:"
+
+msgid "Click the following link to edit the individual response:"
+msgstr "點選以下連結修改個別的問卷內容:"
+
+msgid "View statistics by clicking here:"
+msgstr "點選這裡檢視統計資料:"
+
+msgid "An unexpected error has occurred and your responses cannot be saved."
+msgstr "系統出錯，無法儲存完成的問卷."
+
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr "您完成的問卷並未有遺失，已送交網管作進一步處理.。 "
+
+msgid "An error occurred saving a response to survey id"
+msgstr "無法儲存到本問卷 id"
+
+msgid "DATA TO BE ENTERED"
+msgstr "須輸入資料"
+
+msgid "SQL CODE THAT FAILED"
+msgstr "SQL CODE 出錯"
+
+msgid "ERROR MESSAGE"
+msgstr "訊息出錯"
+
+msgid "Error saving results"
+msgstr "儲存問卷結果出錯"
+
+msgid "Try to submit again"
+msgstr "嘗試再送出問卷"
+
+msgid "This is a controlled survey. You need a valid token to participate."
+msgstr "本問卷限於擁有代幣的人士才可以作答."
+
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
+msgstr "如果您已擁有代幣，請輸入本方格內，再繼續作答."
+
+msgid "This survey does not yet have any questions and cannot be tested or completed."
+msgstr "本問卷未有題目，所以您無法完成作答."
+
+msgid "prev"
+msgstr "上一題"
+
+msgid "next"
+msgstr "下一題"
+
+msgid "last"
+msgstr "最後"
+
+msgid "Choose only one of the following"
+msgstr "請選擇一項"
+
+msgid "Check any that apply"
+msgstr "可選多個答案"
+
+msgid "Check at most"
+msgstr "至少選一項 "
+
+msgid "answers"
+msgstr "答案選項"
+
+msgid "Choose your language"
+msgstr "選擇語言"
+
+msgid "*"
+msgstr "*"
+
+msgid "This question must be answered correctly"
+msgstr "請正確地回答這條問題"
+
+msgid "This question is mandatory"
+msgstr "本題必須作答"
+
+msgid "Please complete all parts"
+msgstr "請回答全部問卷內容"
+
+msgid "Please rank all items"
+msgstr "請為所有項目排序"
+
+msgid "Please check at least one item"
+msgstr "請在項目打鉤"
+
+msgid "You cannot proceed until you enter some text for one or more questions."
+msgstr "您必須在題目的欄位輸入文字才可以繼續。"
+
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
+msgstr "尚有部份題目未完成作答，請完成後才繼續填寫問卷餘下的題目"
+
+msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
+msgstr "之前有問題未被有被正確地回答， 請先修正後才繼續回答問卷。"
+
+msgid "Format: YYYY-MM-DD"
+msgstr "日期格式: YYYY-MM-DD"
+
+msgid "(eg: 2003-12-25 for Christmas day)"
+msgstr "(例: 2003-12-25 是聖誕節)"
+
+msgid "Please choose"
+msgstr "請選擇"
+
+msgid "Error: The labelset used for this question is not available in this language."
+msgstr "出錯︰本題目未有提供本語言版本的標籤集"
+
+msgid "Please choose one of the following"
+msgstr "請選擇"
+
+msgid "Please enter your comment here"
+msgstr "請輸入評語"
+
+msgid "Remove this item"
+msgstr "移除本項"
+
+msgid "Click on an item in the list on the left, starting with your"
+msgstr "點選左方列表的一個項目, 開始您的"
+
+msgid "highest ranking item, moving through to your lowest ranking item."
+msgstr "最高排名的項目, 移到排名的最低位置."
+
+msgid "Your Choices"
+msgstr "您的選擇"
+
+msgid "Your Ranking"
+msgstr "您的排名"
+
+msgid "Click on the scissors next to each item on the right"
+msgstr "點選右方項目旁的剪刀"
+
+msgid "to remove the last entry in your ranked list"
+msgstr "移除排名表的最後一個項目"
+
+msgid "Please choose at most"
+msgstr "請最多選擇"
+
+msgid "answer(s) for question"
+msgstr "題目的答案"
+
+msgid "Make a comment on your choice here:"
+msgstr "請為您的答案作註解:"
+
+msgid "Error: This question has no answers."
+msgstr "出錯︰題目未有答案選項 "
+
+msgid "Only numbers may be entered in this field"
+msgstr "本欄位限輸入數值"
+
+msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
+msgstr "出錯︰用於本題目的標籤集並未有本語言的版本 及／或根本並不存在。"
+
+msgid "The email you used is not valid. Please try again."
+msgstr "您輸入的電子信箱有誤。  請再輸入。"
+
+msgid "The email you used has already been registered."
+msgstr "您輸入的電子信箱已被登記。"
+
+msgid "Thank you for registering to participate in this survey."
+msgstr "多謝您完成這份問卷的登記工作。"
+
+msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
+msgstr "已根據您提供的個人資料寄出電子信箱，請依電子信箱內的連結繼續。"
+
+msgid "Survey Administrator"
+msgstr "問卷管理員"
+
+msgid "Please try again."
+msgstr "請再試。"
+
+msgid "You must supply a name for this saved session."
+msgstr "您必須提供連續操作時段使用的姓名。"
+
+msgid "You must supply a password for this saved session."
+msgstr "您必須提供連續操作時段使用的密碼。"
+
+msgid "Your passwords do not match."
+msgstr "密碼不匹對。"
+
+msgid "This name has already been used for this survey. You must use a unique save name."
+msgstr "這個名字已經被使用。  您必須使用一個獨特的名字。"
+
+msgid "Saved Survey Details"
+msgstr "已儲存的問卷細節"
+
+msgid "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
+msgstr "您,或一個使用此電子信箱的人,儲存了一個未完成的問卷。  您可使用以下細節返回並繼續完成該問卷。"
+
+msgid "Reload your survey by clicking on the following URL:"
+msgstr "請點選以下URL去載入您的問卷:"
+
+msgid "Cannot submit results - there are none to submit."
+msgstr "不能送出問卷結果 ，因為未有人送出問卷."
+
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
+msgstr "您已經送出了問卷，並按了瀏覽器上的「更新」 按鈕，就會出現這個錯誤。在這種情況下，您的答案卷內容已被儲存了。 "
+
+msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "照理您已完成及送出問卷<br ><br >如果您是在填寫問卷期間出現本訊息，請按瀏覽器的 '<- 返回' 鍵及按[重新整理]鍵更新上一頁面。這情況可能是因為系統資源不足造成部份答題內容散失，對此我們深表遺憾。"
+
+msgid "Access denied!"
+msgstr "不能存取系統！"
+
+msgid "You are not allowed dump the database!"
+msgstr "您沒有權限匯出資料庫！"
+
+msgid "You are not allowed export a label set!"
+msgstr "您沒有權限匯出標籤集！"
+
+msgid "You are not allowed to change user data!"
+msgstr "您沒有權限修改使用者資料！"
+
+msgid "You are not allowed to create new surveys!"
+msgstr "您無權建立新問卷。"
+
+msgid "You are not allowed to delete this survey!"
+msgstr "您不獲准刪除本回捲"
+
+msgid "You are not allowed to add new questions for this survey!"
+msgstr "您不獲准新增本問卷的新題目！"
+
+msgid "You are not allowed to activate this survey!"
+msgstr "您不獲准啟用本回捲"
+
+msgid "You are not allowed to deactivate this survey!"
+msgstr "您不獲准關閉本回捲"
+
+msgid "You are not allowed to add a group to this survey!"
+msgstr "您不能新增組別到本問卷"
+
+msgid "You are not allowed to order groups in this survey!"
+msgstr "您不獲准重排問卷內的組別！"
+
+msgid "You are not allowed to edit this survey!"
+msgstr "您不獲准修改本回捲"
+
+msgid "You are not allowed to edit groups in this survey!"
+msgstr "您不能修改本問卷的組別"
+
+msgid "You are not allowed to browse responses!"
+msgstr "您沒有權限瀏覽回應！"
+
+msgid "You are not allowed to set assessment rules!"
+msgstr "您不獲准設計評估的準則！"
+
+msgid "You are not allowed to delete this group!"
+msgstr "您不准刪除本組別！"
+
+msgid "You are not allowed to import a survey!"
+msgstr "您不獲准匯入問卷"
+
+msgid "You are not allowed to import a group!"
+msgstr "您沒有權限匯入群組！"
+
+msgid "You are not allowed to to import a question!"
+msgstr "您沒有權限匯入問題！"
+
+msgid "You are not allowed to perform this operation!"
+msgstr "您不獲准執行本功能！"
+
+msgid "This question is a multiple answer type question but has no answers."
+msgstr "本題目是多項選擇的題型，但未有輸入答案選項。"
+
+msgid "This question does not have a question 'type' set."
+msgstr "本問卷未有'題型集'.   "
+
+msgid "This question requires a Labelset, but none is set."
+msgstr "題目必須標籤集，但目前仍未設定標籤集。"
+
+msgid "The labelset used in this question is missing a translation."
+msgstr "在本題目的標籤集未經翻譯。"
+
+msgid "This question has a condition set, however the condition is based on a question that appears after it."
+msgstr "本題目雖然具備條件設定，但這條件設定是依據之後的題目才生效的。"
+
+msgid "Activate Survey"
+msgstr "啟用問卷"
+
+msgid "Survey does not pass consistency check"
+msgstr "問卷不能透過一致性檢查"
+
+msgid "The following problems have been found:"
+msgstr "發現以下問題︰"
+
+msgid "The survey cannot be activated until these problems have been resolved."
+msgstr "除非問題獲解決，否則問卷不能啟用。"
+
+msgid "Warning"
+msgstr "警告"
+
+msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
+msgstr "請仔細閱讀才繼續"
+
+msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
+msgstr "您要確定問卷已經完全建立好，在毋須再更改的情況下，才可以啟用問卷。"
+
+msgid "Once a survey is activated you can no longer:"
+msgstr "問卷一經啟用，您就無法以︰"
+
+msgid "Add or delete groups"
+msgstr "新增或刪除組別"
+
+msgid "Add or remove answers to Multiple Answer questions"
+msgstr "在多項選擇題新增或移除答案選項 "
+
+msgid "Add or delete questions"
+msgstr "新增或刪除題目"
+
+msgid "However you can still:"
+msgstr "然而您仍可以︰"
+
+msgid "Edit (change) your questions code, text or type"
+msgstr "修改您的題目程式碼、文本內容或題型"
+
+msgid "Edit (change) your group names"
+msgstr "修改您的組別名稱"
+
+msgid "Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)"
+msgstr "新增，移除或者修改預先定義的題目答案選項（除了多項式選擇題的題型外）"
+
+msgid "Change survey name or description"
+msgstr "更改問卷名稱或說明 "
+
+msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
+msgstr "一旦有資料輸入到這份問卷，如果您想增加或者刪除題目組別或者題目的時候，您需要停用這份問卷，這樣已經輸入的資料就會被移動到另一個獨立的存檔資料表內。"
+
+msgid "Survey could not be actived."
+msgstr "問卷不能被啟用。"
+
+msgid "Main Admin Screen"
+msgstr "主管理畫面"
+
+msgid "Survey has been activated. Results table has been successfully created."
+msgstr "問卷已啟用，答案卷內容資料表已成功建立。"
+
+msgid "This survey allows public registration. A token table must also be created."
+msgstr "本問卷容許公開登記及填寫問卷，因此必須建立操作程式碼表。"
+
+msgid "Initialise Tokens"
+msgstr "初始化操作程式碼"
+
+msgid "This survey is now active, and responses can be recorded."
+msgstr "本問卷已啟用，答案卷內容可以被記錄下來。"
+
+msgid "Open-access mode"
+msgstr "開放式存取模式"
+
+msgid "No invitation code is needed to complete the survey."
+msgstr "填寫本問卷毋須邀請程式碼"
+
+msgid "You can switch to the closed-access mode by initialising a token table with the button below."
+msgstr "您可以按下列的按鈕開始操作程式碼表，以切換到封閉型的存取模式。"
+
+msgid "Optional"
+msgstr "選答題"
+
+msgid "Switch to closed-access mode"
+msgstr "切換到封閉存取的模式"
+
+msgid "LimeSurvey Online Manual"
+msgstr "LimeSurvey 線上操作手冊"
+
+msgid "Help"
+msgstr "求助說明 "
+
+msgid "Assessments"
+msgstr "評估"
+
+msgid "No SID Provided"
+msgstr "沒有提供問卷id"
+
+msgid "Scope"
+msgstr "範圍"
+
+msgid "Group"
+msgstr "組別 "
+
+msgid "Minimum"
+msgstr "最小值"
+
+msgid "Maximum"
+msgstr "最大值"
+
+msgid "Heading"
+msgstr "標題"
+
+msgid "Message"
+msgstr "訊息"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Total"
+msgstr "總數"
+
+msgid "Add"
+msgstr "新增"
+
+msgid "Edit"
+msgstr "修改"
+
+msgid "If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission"
+msgstr "如果您要為目前選定的問卷作出評價，這項評價會在問卷結束及送出之後顯示。"
+
+msgid "Actions"
+msgstr "管理動作 "
+
+msgid "Delete"
+msgstr "刪除 "
+
+msgid "Are you sure you want to delete this entry."
+msgstr "您確定要刪除這筆資料嗎?"
+
+msgid "Save"
+msgstr "儲存"
+
+msgid "Cancel"
+msgstr "取消 "
+
+msgid "Browse Responses"
+msgstr "瀏覽答案卷內容"
+
+msgid "The defined surveyor database does not exist"
+msgstr "設定的問卷資料庫不存在"
+
+msgid "Either your selected database has not yet been created or there is a problem accessing it."
+msgstr "您選擇的資料庫並未建立好，又或者資料庫的存取發生問題。"
+
+msgid "You have not selected a survey to browse."
+msgstr "您未選擇問卷以便瀏覽。"
+
+msgid "This survey has not been activated. There are no results to browse."
+msgstr "本問卷尚未被啟用，所以您不能瀏覽到答案卷的內容。"
+
+msgid "There is no matching survey."
+msgstr "對不起！找不到符合的問卷."
+
+msgid "Token ID"
+msgstr "操作程式碼 ID"
+
+msgid "Date Submitted"
+msgstr "已送出日期"
+
+msgid "View Response"
+msgstr "檢視答案卷內容"
+
+msgid "Edit this entry"
+msgstr "修改這資料"
+
+msgid "Delete this entry"
+msgstr "刪除這資料"
+
+msgid "Export this Response"
+msgstr "匯出這個答案卷內容"
+
+msgid "Show previous..."
+msgstr "顯示上一頁..."
+
+msgid "Show next..."
+msgstr "顯示下一頁..."
+
+msgid "Showing Filtered Results"
+msgstr "顯示篩選後的問卷結果"
+
+msgid "Close"
+msgstr "關閉"
+
+msgid "Data View Control"
+msgstr "資料檢視控制"
+
+msgid "Show start.."
+msgstr "顯示開始.."
+
+msgid "Show last..."
+msgstr "顯示最後..."
+
+msgid "Records Displayed:"
+msgstr "顯示的記錄︰"
+
+msgid "Starting From:"
+msgstr "開始於︰"
+
+msgid "Filter incomplete answers:"
+msgstr "篩選不完整的答案︰"
+
+msgid "Enable"
+msgstr "啟動 "
+
+msgid "Disable"
+msgstr "關閉"
+
+msgid "Show"
+msgstr "顯示"
+
+msgid "View This Record"
+msgstr "檢視本記錄"
+
+msgid "responses for this survey"
+msgstr "本問卷的答案卷內容"
+
+msgid "full responses"
+msgstr "完整的答案卷內容"
+
+msgid "responses not completly filled out"
+msgstr "未完全被篩選出去的答案卷內容"
+
+msgid "User name invalid!"
+msgstr "帳號稱無效！"
+
+msgid "User name / password dont match!"
+msgstr "帳號稱／密碼不符合！"
+
+msgid "Condition Designer"
+msgstr "條件設定設計師"
+
+msgid "You have not selected a Survey."
+msgstr "您尚未選擇問卷。"
+
+msgid "You cannot run this script directly."
+msgstr "您不能直接執行源程式。"
+
+msgid "You have not selected a Question."
+msgstr "您仍未選擇題目 "
+
+msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
+msgstr "您不能新增條件設定，因為它沒有指定題目及／或答案。請先選擇有關的題目和答案。"
+
+msgid "Did not copy questions"
+msgstr "切勿複製題目"
+
+msgid "No condition selected to copy from"
+msgstr "未有選擇條件設定的複製來源"
+
+msgid "No question selected to copy condition to"
+msgstr "未有選擇題目，所以無法複製條件設定。"
+
+msgid "Only show question {QID} IF"
+msgstr "只顯示題目 {QID} 若果"
+
+msgid "and"
+msgstr "和"
+
+msgid "OR"
+msgstr "或"
+
+msgid "Equals"
+msgstr "等於"
+
+msgid "Copy Conditions"
+msgstr "複製條件設定"
+
+msgid "Condition"
+msgstr "條件句 "
+
+msgid "Question"
+msgstr "題目"
+
+msgid "copy to"
+msgstr "複製到"
+
+msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
+msgstr "您確定要複製這些題目的條件設定嗎?"
+
+msgid "Add Condition"
+msgstr "新增條件設定 "
+
+msgid "Answer"
+msgstr "答案"
+
+msgid "Clear"
+msgstr "清除"
+
+msgid "Close Window"
+msgstr "關閉視窗"
+
+msgid ""
+"Group could not be added.\\n"
+"\\n"
+"It is missing the group name for the following languages"
+msgstr ""
+"不能新增組別.\\n"
+"\\n"
+"下列語言失去了組別名稱"
+
+msgid "Error: The database reported the following error:"
+msgstr "出錯︰資料庫報告下列錯誤︰"
+
+msgid "Group could not be updated"
+msgstr "組別不能被更新"
+
+msgid "Group could not be deleted"
+msgstr "組別不能被刪除"
+
+msgid "Answer could not be added. You must insert a code in the mandatory field"
+msgstr "不能新增選項，您必須在必須填寫的欄位中插入程式碼"
+
+msgid "Question could not be created."
+msgstr "不能建立題目"
+
+msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
+msgstr "無法更新題目。有其他題目的條件設定維繫著這個題目的答案，因此現在更改題型會出問題，建議您必須先行刪除這些條件設定，才更改題型。"
+
+msgid "Question could not be updated"
+msgstr "不能更新題目"
+
+msgid "Answers can't be deleted"
+msgstr "答案不能被刪除"
+
+msgid "This question relies on other question's answers and can't be moved above groupId:"
+msgstr "這個題目與同組別的其他題目的答案選項互有關連，因此不能被搬移到其也組別。"
+
+msgid "in position"
+msgstr "各就各位"
+
+msgid "See conditions:"
+msgstr "見條件設定︰"
+
+msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
+msgstr "某些其他題目取決於這個題目的答案選項，所以您無法把這個題目移動到其他組別去︰"
+
+msgid "Question could not be added. You must insert a code in the mandatory field"
+msgstr "不能新增題目，您必須在必須填寫的欄位插入程式碼。"
+
+msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
+msgstr "無法刪除題目，有其他題目的條件設定維繫著這個題目。請在刪除這題目之前，先行刪除這些相關的條件設定。"
+
+msgid "Question could not be deleted"
+msgstr "題目無法以被刪除"
+
+msgid "Add new Answer"
+msgstr "新增答案選項"
+
+msgid "Error adding answer: You can't use the same answer code more than once."
+msgstr "新增答案選項時出錯的原因︰您不能重複使用相同的答案程式碼。"
+
+msgid "Failed to insert answer"
+msgstr "不能插入答案 "
+
+msgid "Invalid or empty answer code supplied"
+msgstr "提供無效或空白的答案程式碼"
+
+msgid "Save All"
+msgstr "儲存全部"
+
+msgid "Failed to update answers"
+msgstr "無法更新答案選項 "
+
+msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
+msgstr "程式碼為0或空白的選項是無效的，不能被儲存下來"
+
+msgid "Duplicate codes found, these entries won't be updated"
+msgstr "找到重複的程式碼，因此資料不會被更新。"
+
+msgid "Up"
+msgstr "上"
+
+msgid "Dn"
+msgstr "下"
+
+msgid "Del"
+msgstr "刪除 "
+
+msgid "Failed to delete answer"
+msgstr "不能刪除答案"
+
+msgid "Default"
+msgstr "預設"
+
+msgid "Failed to make answer not default"
+msgstr "無法取消預設的答案選項"
+
+msgid "Failed to make answer default"
+msgstr "無法預設答案選項 "
+
+msgid "Survey could not be updated"
+msgstr "問卷不能被上傳"
+
+msgid "ERROR deleting Survey id"
+msgstr "出錯，︰不能刪除問卷 id"
+
+msgid "Survey could not be created because it did not have a short title"
+msgstr "不能建立問卷，因為問卷未有設定簡短的標題。"
+
+msgid "Survey could not be created"
+msgstr "問卷不能被建立"
+
+msgid "Data Entry"
+msgstr "資料輸入"
+
+msgid "You have not selected a survey for data-entry."
+msgstr "您尚未選擇問卷，以便填寫資料。"
+
+msgid "This is a closed-access survey, you must supply a valid token"
+msgstr "本問卷是封閉式存取的問卷，限於擁有操作程式碼的人士才可以作答."
+
+msgid "The token you have provided is not valid."
+msgstr "您提供的操作程式碼無效。"
+
+msgid "There is already a recorded answer for this token"
+msgstr "此操作程式碼已有記錄好的答案選項 "
+
+msgid "Follow the following link to update it"
+msgstr "點選以下連結修以更新問卷內容"
+
+msgid "This surveys uses anonymous answers, you can't update this response"
+msgstr "本問卷採用匿名答題，所以您無法以更新答案卷內容。"
+
+msgid "Try again"
+msgstr "再嘗試"
+
+msgid "Identifier:"
+msgstr "標識符︰"
+
+msgid "Password:"
+msgstr "密碼︰"
+
+msgid "Confirm Password:"
+msgstr "確認密碼︰"
+
+msgid "Email:"
+msgstr "電子信箱︰"
+
+msgid "Start Language:"
+msgstr "開始語言︰"
+
+msgid "Your survey responses have been saved succesfully"
+msgstr "您的問卷經已成功儲存"
+
+msgid "A token entry for the saved survey has been created too."
+msgstr "已儲存問卷的操作程式碼的資料經已建立。"
+
+msgid "You, someone using your email address, or the administrator has saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
+msgstr "您,或一個使用這電子信箱的持分者,儲存了一個未完成的問卷。 您可使用以下連結返回原處繼續填寫問卷。"
+
+msgid "An email has been sent with details about your saved survey"
+msgstr "您儲存的問卷資料已用電子郵件寄送給您。"
+
+msgid "Success"
+msgstr "成功 "
+
+msgid "The entry was assigned the following record id: "
+msgstr "資料獲分發下列的記錄 id:"
+
+msgid "Add Another Record"
+msgstr "新增另一筆記錄"
+
+msgid "Browse Saved Responses"
+msgstr "瀏覽已儲存的答案卷內容"
+
+msgid "Editing Response"
+msgstr "正在修改答案卷內容 "
+
+msgid "Cannot be modified"
+msgstr "不能被修改"
+
+msgid "Update Entry"
+msgstr "更新資料"
+
+msgid "Finalize response submission"
+msgstr "總結已送出的答案卷內容"
+
+msgid "Save for further completion by survey user"
+msgstr "暫時儲存問卷，供答案卷人日後繼續填寫"
+
+msgid "Record has been updated."
+msgstr "記錄已經更新。"
+
+msgid "Record Deleted"
+msgstr "已刪除記錄"
+
+msgid "Datestamp"
+msgstr "日期印章"
+
+msgid "IP-Address"
+msgstr "IP-地址"
+
+msgid "AND"
+msgstr "及"
+
+msgid "to question {QUESTION}, you answered {ANSWER}"
+msgstr "在題目-> {QUESTION}, 您的回答 -> {ANSWER}"
+
+msgid "No Answer"
+msgstr "沒有回答"
+
+msgid "Only answer this if the following conditions are met:"
+msgstr "只有下面條件設定符合時，才回答本題目︰"
+
+msgid "Help about this question"
+msgstr "有關本題目的求助說明"
+
+msgid "This survey is not yet active. Your response cannot be saved"
+msgstr "本問卷並未啟用目，所以您的答案卷內容不能被儲存"
+
+msgid "The survey you selected does not exist"
+msgstr "您選擇的問卷並不存在"
+
+msgid "Answer could not be added. There is already an answer with this code"
+msgstr "不能增加答案，因為已有相同程式碼的答案存在。"
+
+msgid "You have not selected a survey to delete"
+msgstr "您未選擇要刪除的問卷"
+
+msgid "Answer could not be updated. There is already an answer with this code"
+msgstr "不能更新答案，因為已經有答案使用相同的程式碼。"
+
+msgid "Deactivate Survey"
+msgstr "關閉問卷"
+
+msgid "In an active survey, a table is created to store all the data-entry records."
+msgstr "在已啟用的問卷，資料表的作用就是存放所有輸入資料的記錄。"
+
+msgid "When you deactivate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
+msgstr "當您停用問卷之後，在原來資料表中儲存的資料會被移動到其他舊資料表中。當您再次啟用問卷的時候，這個資料表就是空的，您不能透過LimeSurvey來提取這些資料。"
+
+msgid "Deactivated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
+msgstr "停用問卷的資料只能由系統管理通員透過 phpmyadmin 之類的資料庫的資料提取工具取用。如果您的問卷使用操作程式碼，這個資料表也會被改名並且只能由系統管理員取用。"
+
+msgid "Your responses table will be renamed to:"
+msgstr "您的答案卷內容表已被改名為︰"
+
+msgid "Also you should export your responses before deactivating."
+msgstr "在停用前，您亦應該匯出答案卷內容。 "
+
+msgid "Survey Has Been Deactivated"
+msgstr "問卷已被停用"
+
+msgid "The responses table has been renamed to: "
+msgstr "答案卷內容資料表已更改名稱為︰"
+
+msgid "The responses to this survey are no longer available using LimeSurvey."
+msgstr "本問卷的答案卷內容已不再存在。"
+
+msgid "You should note the name of this table in case you need to access this information later."
+msgstr "若果您需要日後再存取這些資料，您就需要記下本資料表的名稱。"
+
+msgid "The tokens table associated with this survey has been renamed to: "
+msgstr "連結本問卷的操作程式碼表已更改名稱為︰"
+
+msgid "Delete Survey"
+msgstr "刪除問卷"
+
+msgid "You are about to delete this survey"
+msgstr "您即將要刪除本問卷"
+
+msgid "This process will delete this survey, and all related groups, questions answers and conditions."
+msgstr "本設定會刪除問卷、相關的組別、題目答案及條件設定。"
+
+msgid "We recommend that before you delete this survey you export the entire survey from the main administration screen."
+msgstr "建議您在刪除問卷前，先行在管理的工作畫面把整份問卷的資料匯出。"
+
+msgid "This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey."
+msgstr "本問卷已啟用，答案卷內容亦已存在。如果您想刪除這個問卷，所有的相關答案卷內容都會被刪除。建議您在刪除問卷之前匯出所有的答案卷資料。"
+
+msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
+msgstr "本問卷有相關的操作程式碼表。如果您刪除本問卷，正確的操作程式碼表也會被刪除。建議您在刪除問卷之前備份或匯出操作程式碼表的資料。"
+
+msgid "This survey has been deleted."
+msgstr "本問卷已被刪除。"
+
+msgid "Export database"
+msgstr "匯出資料庫"
+
+msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
+msgstr "匯出資料庫只適用於 MySQL 資料庫，其他的資料庫類型請參考備份的方式建立資料庫備份。"
+
+msgid "Export Question"
+msgstr "匯出題目 "
+
+msgid "Export Label Set"
+msgstr "匯出標籤集"
+
+msgid "No LID has been provided. Cannot dump label set."
+msgstr "未提供 LID ，所以不能清除標籤集。"
+
+msgid "No QID has been provided. Cannot dump question."
+msgstr "未提供題目編號，不能刪除題目。"
+
+msgid "Export Survey"
+msgstr "匯出問卷"
+
+msgid "No SID has been provided. Cannot dump survey"
+msgstr "未提供問卷 SID ，所以不能清除問卷。"
+
+msgid "Export Results"
+msgstr "匯出問卷結果"
+
+msgid "Export Responses"
+msgstr "匯出答案卷內容"
+
+msgid "Filtered from Statistics Script"
+msgstr "透過統計程式篩選"
+
+msgid "Single Response"
+msgstr "單選"
+
+msgid "Columns"
+msgstr "欄"
+
+msgid "Questions"
+msgstr "題目"
+
+msgid "Abbreviated headings"
+msgstr "縮寫的標題"
+
+msgid "Full headings"
+msgstr "完整的標題 "
+
+msgid "Question Codes"
+msgstr "題目程式碼"
+
+msgid "Filter incomplete answers"
+msgstr "篩選不完整的答案 "
+
+msgid "Answers"
+msgstr "答案"
+
+msgid "Answer Codes"
+msgstr "答案程式碼"
+
+msgid "Full Answers"
+msgstr "完整答案"
+
+msgid "Format"
+msgstr "格式 "
+
+msgid "Microsoft Word (Latin charset)"
+msgstr "Microsoft Word (拉丁字集)"
+
+msgid "Microsoft Excel (Latin charset)"
+msgstr "Microsoft Excel (拉丁字集)"
+
+msgid "CSV File (UTF-8 charset - use this for non-latin languages)"
+msgstr "CSV 檔案 (UTF-8 字集 - 適用於非拉丁的語言)"
+
+msgid "Export Data"
+msgstr "匯出資料"
+
+msgid "Column Control"
+msgstr "欄控制"
+
+msgid "Choose Columns"
+msgstr "選擇欄位"
+
+msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
+msgstr "您的問卷包含超過255欄的答案。Excel 之類的試算表軟體不能載入超過255欄的資料。請在以下列表選擇您想匯出的欄位。"
+
+msgid "Choose the columns you wish to export."
+msgstr "請選擇您要匯出的欄位資料。"
+
+msgid "Token Control"
+msgstr "操作程式碼控制"
+
+msgid "Choose Token Fields"
+msgstr "選擇操作程式碼的欄位"
+
+msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
+msgstr "您的問卷可以隨每份答案卷資料匯出相關的操作程式碼。請選擇任何您想匯出的額外欄位資料。"
+
+msgid "Email"
+msgstr "電子信箱"
+
+msgid "Attribute 1"
+msgstr "自訂欄位1"
+
+msgid "Attribute 2"
+msgstr "自訂欄位2"
+
+msgid "Time Submitted"
+msgstr "已送出問卷的時間 "
+
+msgid "NEW RECORD"
+msgstr "新記錄 "
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Language"
+msgstr "語言"
+
+msgid "N/A"
+msgstr "無"
+
+msgid "Add Group"
+msgstr "新增組別"
+
+msgid "Base Language"
+msgstr "主體語言"
+
+msgid "Title"
+msgstr "標題"
+
+msgid "Required"
+msgstr "必須的"
+
+msgid "Description:"
+msgstr "說明︰"
+
+msgid "Please select a file to import!"
+msgstr "請選擇要匯入的檔案！"
+
+msgid "Import Group"
+msgstr "匯入組別"
+
+msgid "Select CSV File:"
+msgstr "選擇 CSV 檔案︰"
+
+msgid "Edit Group"
+msgstr "修改組別"
+
+msgid "Update Group"
+msgstr "更新組別 "
+
+msgid "Survey"
+msgstr "問卷"
+
+msgid "Date Created"
+msgstr "建立的日期"
+
+msgid "Access"
+msgstr "存取"
+
+msgid "Answer Privacy"
+msgstr "答案卷的私隱權 "
+
+msgid "Status"
+msgstr "狀態"
+
+msgid "Responses"
+msgstr "答案卷內容"
+
+msgid "Anonymous"
+msgstr "匿名"
+
+msgid "Not Anonymous"
+msgstr "非匿名"
+
+msgid "Closed-access"
+msgstr "封閉式的存取"
+
+msgid "Open-access"
+msgstr "開放式的存取 "
+
+msgid "Expired"
+msgstr "到期的"
+
+msgid "Active"
+msgstr "啟用狀態"
+
+msgid "Inactive"
+msgstr "停用狀態 "
+
+msgid "This survey is active but expired."
+msgstr "本問卷處於啟用狀態但已到期。"
+
+msgid "This survey is active but expired"
+msgstr "本問卷處於啟用狀態但已到期"
+
+msgid "De-activate this Survey"
+msgstr "停用本問卷"
+
+msgid "This survey is currently active"
+msgstr "本問卷現已啟用."
+
+msgid "Activate this Survey"
+msgstr "啟用本問卷"
+
+msgid "This survey is not currently active"
+msgstr "本問卷目前尚未被啟用 "
+
+msgid "No Surveys available - please create one."
+msgstr "未選用問卷 - 請建立問卷"
+
+msgid "LimeSurvey System Summary"
+msgstr "LimeSurvey 系統摘要"
+
+msgid "Database Name"
+msgstr "資料庫的名稱"
+
+msgid "Default Language"
+msgstr "預設語言"
+
+msgid "Current Language"
+msgstr "目前語言"
+
+msgid "Users"
+msgstr "會員"
+
+msgid "Active Surveys"
+msgstr "啟用問卷 "
+
+msgid "De-activated Surveys"
+msgstr "停用問卷"
+
+msgid "Active Token Tables"
+msgstr "啟用操作程式碼表 "
+
+msgid "De-activated Token Tables"
+msgstr "停用操作程式碼表 "
+
+msgid "Show PHPInfo"
+msgstr "顯示PHP資訊"
+
+msgid "Survey cannot be activated. Either you have no permission or there are no questions."
+msgstr "問卷不能被啟用，可能是因為您未有使用權限，又或者問卷未有題目。 "
+
+msgid "Survey Security Settings"
+msgstr "問卷安全設定"
+
+msgid "Test This Survey"
+msgstr "測試本問卷"
+
+msgid "Execute This Survey"
+msgstr "執行本問卷"
+
+msgid "Please select a language:"
+msgstr "請選擇語言︰"
+
+msgid "This survey is not active, data entry is not allowed"
+msgstr "問卷未被啟用，所以不能輸入資料。"
+
+msgid "Printable Version of Survey"
+msgstr "問卷的列印版本"
+
+msgid "Edit Current Survey"
+msgstr "修改目前的問卷內容"
+
+msgid "Delete Current Survey"
+msgstr "刪除目前的問卷"
+
+msgid "Change Group Order"
+msgstr "更改群組順序"
+
+msgid "Export Current Survey"
+msgstr "匯出目前的問卷"
+
+msgid "Set Assessment Rules"
+msgstr "設定評估準則 "
+
+msgid "Browse Responses For This Survey"
+msgstr "瀏覽問卷的答案卷內容"
+
+msgid "Activate/Edit Tokens for this Survey"
+msgstr "啟用／修改問卷的操作程式碼"
+
+msgid "Close this Survey"
+msgstr "關閉本問卷"
+
+msgid "Show Details of this Survey"
+msgstr "顯示問卷細節"
+
+msgid "Hide Details of this Survey"
+msgstr "隱藏本問卷的細節 "
+
+msgid "Add New Group to Survey"
+msgstr "新增組別到問卷內"
+
+msgid "Groups"
+msgstr "組組"
+
+msgid "This survey is NOT anonymous."
+msgstr "這不是匿名問卷"
+
+msgid "It is presented question by question."
+msgstr "本問卷採用逐題發問的方式進行。"
+
+msgid "It is presented group by group."
+msgstr "本問卷採用逐個組別的方式進行。"
+
+msgid "It is presented on one single page."
+msgstr "本問卷採用單頁式進行。"
+
+msgid "Responses will be date stamped"
+msgstr "答案卷內容會記錄日期 "
+
+msgid "IP Addresses will be logged"
+msgstr "IP 地址會被系統記存"
+
+msgid "Referer-URL will be saved"
+msgstr "來訪源 url 會被儲存 "
+
+msgid "It uses cookies for access control."
+msgstr "它採用 cookies 控制存取動作  "
+
+msgid "If tokens are used, the public may register for this survey"
+msgstr "如果使用操作程式碼，公眾持分者就可以登記及填寫問卷。"
+
+msgid "Participants can save partially finished surveys"
+msgstr "特分者可以儲存未完成的問卷"
+
+msgid "Regenerate Question Codes:"
+msgstr "重新產生題目程式碼"
+
+msgid "Are you sure you want regenerate the question codes?"
+msgstr "您確定要再產生題目程式碼嗎?"
+
+msgid "Straight"
+msgstr "連續顯示 "
+
+msgid "By Group"
+msgstr "依組別"
+
+msgid "Survey URL"
+msgstr "問卷 url"
+
+msgid "Survey URL For Language:"
+msgstr "問卷 url 使用的語言︰ "
+
+msgid "Flag"
+msgstr "標識 "
+
+msgid "Welcome:"
+msgstr "歡迎︰"
+
+msgid "Administrator:"
+msgstr "管理員︰"
+
+msgid "Fax To:"
+msgstr "傳真到︰"
+
+msgid "Expiry Date:"
+msgstr "到期日︰"
+
+msgid "Template:"
+msgstr "樣板："
+
+msgid "Base Language:"
+msgstr "主體語言"
+
+msgid "Additional Languages"
+msgstr "第二語言"
+
+msgid "Exit Link"
+msgstr "退出後的連結："
+
+msgid "Number of questions/groups"
+msgstr "題目／組別的數目"
+
+msgid "Survey currently active"
+msgstr "現時啟用中的問卷"
+
+msgid "Survey table name"
+msgstr "問卷資料表名稱"
+
+msgid "Hints"
+msgstr "提示"
+
+msgid "Survey cannot be activated yet."
+msgstr "問卷尚未能被啟用 "
+
+msgid "You need to add groups"
+msgstr "您需要新增組別 "
+
+msgid "You need to add questions"
+msgstr "您需要新增題目"
+
+msgid "Edit Current Group"
+msgstr "修改目前的組別 "
+
+msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
+msgstr "刪除本組別亦會同時刪除組別內的所有題目和回應的答案。您確定要繼續嗎？"
+
+msgid "Delete Current Group"
+msgstr "刪除目前的組別"
+
+msgid "Impossible to delete this group because there is at least one question having a condition on its content"
+msgstr "不能刪除這個組別，因為有題目是包含條件設定。"
+
+msgid "Disabled"
+msgstr "已關閉"
+
+msgid "Change Question Order"
+msgstr "更改題目的次序"
+
+msgid "Export Current Group"
+msgstr "匯出目前的組別"
+
+msgid "Close this Group"
+msgstr "關閉本組別 "
+
+msgid "Show Details of this Group"
+msgstr "顯示本組別細節"
+
+msgid "Hide Details of this Group"
+msgstr "隱藏本組別的細節 "
+
+msgid "Add New Question to Group"
+msgstr "新增題目到本組別"
+
+msgid "Questions with conditions to this group"
+msgstr "有條件設定的題目加進本組別"
+
+msgid "Edit Current Question"
+msgstr "修改目前的題目"
+
+msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
+msgstr "刪除本題目會同時刪除本題目的所有答案選項。您確定要繼續嗎？"
+
+msgid "Delete Current Question"
+msgstr "刪除目前的題目"
+
+msgid "Impossible to delete this question because  there is at least one question having a condition on it"
+msgstr "不能刪除本題目，因為題目附有條件設定。"
+
+msgid "Export this Question"
+msgstr "匯出這道題目"
+
+msgid "Copy Current Question"
+msgstr "複製目前的題目"
+
+msgid "Copy question is not possible in an Active survey"
+msgstr "在已啟用的問卷，是不能複製題目的。"
+
+msgid "Set Conditions for this Question"
+msgstr "為本題目做條件設定"
+
+msgid "Preview This Question"
+msgstr "預覽本題目"
+
+msgid "Edit/Add Answers for this Question"
+msgstr "修改／新增題目的答案選項"
+
+msgid "Close this Question"
+msgstr "關閉本題目"
+
+msgid "Show Details of this Question"
+msgstr "顯示本題目的細節"
+
+msgid "Hide Details of this Question"
+msgstr "隱藏本題目的細節"
+
+msgid "Code:"
+msgstr "程式碼︰"
+
+msgid "Mandatory Question"
+msgstr "必須回答的題目"
+
+msgid "Optional Question"
+msgstr "選答式題目"
+
+msgid "Question:"
+msgstr "題目 "
+
+msgid "Help:"
+msgstr "求助說明︰"
+
+msgid "Validation:"
+msgstr "有效性︰"
+
+msgid "Type:"
+msgstr "類型︰"
+
+msgid "You need to add answers to this question"
+msgstr "您需要為本題目新增答案選項"
+
+msgid "You need to choose a Label Set for this question"
+msgstr "您需要選擇本題目的標籤集"
+
+msgid "Other:"
+msgstr "其他："
+
+msgid "Mandatory:"
+msgstr "必須回答："
+
+msgid "Other questions having conditions on this question:"
+msgstr "本題目包含其他附有條件設定的題目在內︰ "
+
+msgid "Edit Answers"
+msgstr "修改答案"
+
+msgid "Code"
+msgstr "程式碼"
+
+msgid "Action"
+msgstr "管理行動"
+
+msgid "Order"
+msgstr "次序"
+
+msgid "New Answer"
+msgstr "新的答案選項 "
+
+msgid "You cannot add answers or edit answer codes for this question type because the survey is active."
+msgstr "您不能增加此題型的答案選項或更改答案選項的程式碼，因為此問卷已在啟用狀態。"
+
+msgid "Add User"
+msgstr "新增會員"
+
+msgid "User added."
+msgstr "已新增會員"
+
+msgid "Set Survey Rights"
+msgstr "設定問卷權限"
+
+msgid "Failed to add User."
+msgstr "不能新增會員"
+
+msgid "Username already exists."
+msgstr "帳號稱已存在 "
+
+msgid "No Username selected."
+msgstr "未選擇帳號稱"
+
+msgid "Add User Group"
+msgstr "新增群組別"
+
+msgid "User Group added."
+msgstr "已新增群組別"
+
+msgid "Failed to add User Group."
+msgstr "不能新增群組別"
+
+msgid "Deleting User"
+msgstr "正在刪除會員中"
+
+msgid "Username"
+msgstr "帳號稱"
+
+msgid "Could not delete user. User was not supplied."
+msgstr "不能刪除會員，沒有提供帳號。"
+
+msgid "Edit Survey Properties"
+msgstr "修改問卷屬性"
+
+msgid "Define Questions"
+msgstr "設定題目"
+
+msgid "Export"
+msgstr "匯出"
+
+msgid "Edit Survey Property"
+msgstr "修改問卷屬性"
+
+msgid "Browse Response"
+msgstr "瀏覽答案卷內容"
+
+msgid "Survey Security"
+msgstr "問卷的安全設定"
+
+msgid "User Group"
+msgstr "群組別"
+
+msgid "User"
+msgstr "會員"
+
+msgid "Update survey rights successful."
+msgstr "成功更新問卷權限。"
+
+msgid "Failed to update survey rights!"
+msgstr "無法更新問卷權限！"
+
+msgid "Edit Survey - Step 1 of 2"
+msgstr "修改問卷 - 第 1/2 步 "
+
+msgid "Admin Email:"
+msgstr "問卷管理員電子信箱地址︰"
+
+msgid "Format:"
+msgstr "格式︰"
+
+msgid "Question by Question"
+msgstr "逐條題目"
+
+msgid "Group by Group"
+msgstr "逐個組別顯示"
+
+msgid "All in one"
+msgstr "全部在單頁顯示"
+
+msgid "Use Cookies?"
+msgstr "使用 cookies 嗎?"
+
+msgid "Allow Saves?"
+msgstr "可以儲存嗎?"
+
+msgid "Show [<< Prev] button"
+msgstr "顯示 [<< 上一頁] 按鈕"
+
+msgid "Admin Notification:"
+msgstr "通知問卷管理員︰"
+
+msgid "Anonymous answers?"
+msgstr "要採用匿名答案卷嗎?"
+
+msgid "If you set a survey to anonymous, answers to timestamped and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
+msgstr "如果把問卷設定為匿名問卷，答案卷內容會記錄時間，並建立操作程式碼，LimeSurvey 就會用 'Y\" 標記您完成了答案卷的操作程式碼，而並非使用日期／時間，來保護答案卷人的隱私資料。"
+
+msgid "Cannot be changed"
+msgstr "不能被更改"
+
+msgid "Allow public registration?"
+msgstr "容許公眾持分者登記及填寫問卷嗎?"
+
+msgid "Token Attribute Names:"
+msgstr "操作程式碼的屬性名稱︰"
+
+msgid "Date Stamp?"
+msgstr "要記錄日期?"
+
+msgid "Responses will not be date stamped."
+msgstr "答案卷內容不會記錄日期。"
+
+msgid "Responses will be date stamped."
+msgstr "答案卷內容會記錄日期。"
+
+msgid "Save IP Address?"
+msgstr "要儲存 IP 地址嗎?"
+
+msgid "Responses will not have the IP address logged."
+msgstr "答案卷內容不會記存 IP 地址。"
+
+msgid "Responses will have the IP address logged"
+msgstr "答案卷內容會記存 IP 地址"
+
+msgid "Save Referring URL?"
+msgstr "要儲存來訪源的 url 嗎?"
+
+msgid "Responses will not have their referring URL logged."
+msgstr "答案卷內容不會記存來訪源的 url。"
+
+msgid "Responses will have their referring URL logged."
+msgstr "答案卷內容會記存來訪源的 url。"
+
+msgid "Remove"
+msgstr "移除"
+
+msgid "Expires?"
+msgstr "到期嗎?"
+
+msgid "End URL:"
+msgstr "問卷結束URL："
+
+msgid "Automatically load URL when survey complete?"
+msgstr "當完成答案卷後馬上傳入 url 嗎?"
+
+msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
+msgstr "語言被移除後，全部相關的題目及答案等都不會保留，您確定要繼續嗎?"
+
+msgid "Save and Continue"
+msgstr "儲存及繼續"
+
+msgid "This will replace the existing text. Continue?"
+msgstr "這樣會取代目前的文本內容，您確定要繼續嗎?"
+
+msgid "Edit Survey - Step 2 of 2"
+msgstr "修改問卷 -  第 2/2 步 "
+
+msgid "Invitation Email Subject:"
+msgstr "邀請電子信箱的主題："
+
+msgid "Invitation to participate in survey"
+msgstr "填寫問卷的邀請"
+
+msgid "Use default"
+msgstr "使用預設值 "
+
+msgid "Invitation Email:"
+msgstr "邀請電子信箱︰"
+
+msgid ""
+"Dear {FIRSTNAME},\n"
+"\n"
+"You have been invited to participate in a survey.\n"
+"\n"
+"The survey is titled:\n"
+"\"{SURVEYNAME}\"\n"
+"\n"
+"\"{SURVEYDESCRIPTION}\"\n"
+"\n"
+"To participate, please click on the link below.\n"
+"\n"
+"Sincerely,\n"
+"\n"
+"{ADMINNAME} ({ADMINEMAIL})\n"
+"\n"
+"----------------------------------------------\n"
+"Click here to do the survey:\n"
+"{SURVEYURL}"
+msgstr ""
+"尊敬的 {FIRSTNAME},\n"
+"\n"
+"您已獲邀請填寫問卷.\n"
+"\n"
+"問卷標題是:\n"
+"\"{SURVEYNAME}\"\n"
+"\n"
+"\"{SURVEYDESCRIPTION}\"\n"
+"\n"
+"要參與填寫問卷, 請 click 選以下連結。\n"
+"\n"
+"\n"
+"{ADMINNAME} ({ADMINEMAIL})謹啟 \n"
+"\n"
+"----------------------------------------------\n"
+"請Click 以下連結填寫問卷:\n"
+"{SURVEYURL}"
+
+msgid "Email Reminder Subject:"
+msgstr "提醒電子信箱的主題："
+
+msgid "Reminder to participate in survey"
+msgstr "填寫問卷的提醒"
+
+msgid "Email Reminder:"
+msgstr "電子信箱提醒︰"
+
+msgid ""
+"Dear {FIRSTNAME},\n"
+"\n"
+"Recently we invited you to participate in a survey.\n"
+"\n"
+"We note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n"
+"\n"
+"The survey is titled:\n"
+"\"{SURVEYNAME}\"\n"
+"\n"
+"\"{SURVEYDESCRIPTION}\"\n"
+"\n"
+"To participate, please click on the link below.\n"
+"\n"
+"Sincerely,\n"
+"\n"
+"{ADMINNAME} ({ADMINEMAIL})\n"
+"\n"
+"----------------------------------------------\n"
+"Click here to do the survey:\n"
+"{SURVEYURL}"
+msgstr ""
+"尊敬的 {FIRSTNAME},\n"
+"\n"
+"最近我們曾邀請您填寫問卷.\n"
+"\n"
+"但我們注意到您尚未完成問卷，在此懇請您把握時間完成問卷.\n"
+"\n"
+"問卷標題是:\n"
+"\"{SURVEYNAME}\"\n"
+"\n"
+"\"{SURVEYDESCRIPTION}\"\n"
+"\n"
+"要填寫問卷的話, 請 click 選以下連結.\n"
+"\n"
+"\n"
+"{ADMINNAME} ({ADMINEMAIL}) 謹啟\n"
+"\n"
+"----------------------------------------------\n"
+"Click以下連結可填寫問卷:\n"
+"{SURVEYURL}"
+
+msgid "Confirmation Email Subject"
+msgstr "確認電子信箱主題"
+
+msgid "Confirmation of completed survey"
+msgstr "確認完成問卷"
+
+msgid "Confirmation Email"
+msgstr "確認電子信箱 "
+
+msgid "Public registration Email Subject:"
+msgstr "接受公眾登記及填寫問卷的電子信箱主題︰"
+
+msgid "Survey Registration Confirmation"
+msgstr "確認問卷完成登記工作 "
+
+msgid "Public registration Email:"
+msgstr "公開持分者登記的電子信箱地址︰"
+
+msgid ""
+"Dear {FIRSTNAME},\n"
+"\n"
+"You, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n"
+"\n"
+"To complete this survey, click on the following URL:\n"
+"\n"
+"{SURVEYURL}\n"
+"\n"
+"If you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."
+msgstr ""
+"尊敬的 {FIRSTNAME},\n"
+"\n"
+"您或使用本電子信箱地址的其他持分者已登記參與填寫標題為 {SURVEYNAME} 的網上問卷.\n"
+"\n"
+"如要完成問卷, 請 click 選下列 URL:\n"
+"\n"
+"{SURVEYURL}\n"
+"\n"
+"對本問卷如有疑問, 或者您從未登記要求填寫本問卷，又或者是電子信箱出錯，請聯絡 {ADMINNAME} ／ {ADMINEMAIL}."
+
+msgid "URL Description:"
+msgstr "url 說明︰"
+
+msgid "Current survey has questions with conditions outside their own group"
+msgstr "目前問卷的題目附有的條件設定涉及其他組別的題目"
+
+msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "把組別重新排序要先確保條件設定的題目不能排到有條件句的題目的後面"
+
+msgid "The following groups are concerned"
+msgstr "下面的組別是相關的"
+
+msgid "depends on group"
+msgstr "倚附於組別"
+
+msgid "see the marked conditions on"
+msgstr "看一看已標記的條件設定 "
+
+msgid "The uploaded file is bigger than the upload_max_filesize directive in php.ini"
+msgstr "上傳的檔案尺寸大於系統設定的上限"
+
+msgid "The file was only partially uploaded"
+msgstr "檔案只是局部上傳"
+
+msgid "No file was uploaded"
+msgstr "沒有檔案被上傳"
+
+msgid "Error on file transfer. You must select a CSV file"
+msgstr "傳送檔案有問題，請選擇 CSV 格式的檔案"
+
+msgid "Error: You have to enter a title for this survey."
+msgstr "出錯︰您必須輸入本問卷的標題。"
+
+msgid "Create Survey"
+msgstr "建立問卷"
+
+msgid "(This field is mandatory.)"
+msgstr "(本欄必須作答)"
+
+msgid "This setting cannot be changed later!"
+msgstr "本設定以後不能被更改了。"
+
+msgid "Date Format"
+msgstr "日期格式"
+
+msgid "Import Survey"
+msgstr "匯入問卷"
+
+msgid "Select CSV/SQL File:"
+msgstr "選擇 CSV/SQL 檔案:"
+
+msgid "You need to upload the file"
+msgstr "您需要上傳檔案"
+
+msgid "You must upload a CSV file"
+msgstr "您必須上傳csv 格式的檔案 "
+
+msgid "Upload CSV file"
+msgstr "上傳 csv 檔案"
+
+msgid "It is impossible to upload a file other than CSV type"
+msgstr "無法以上傳非 csv 格式的檔案 "
+
+msgid "It is impossible to upload an empty file"
+msgstr "無法以上傳沒有內容的檔案"
+
+msgid "Uploading CSV file"
+msgstr "正在上傳 CSV 檔案 "
+
+msgid "Visualization:"
+msgstr "視像化︰"
+
+msgid "Select the field number you would like to use for your answers:"
+msgstr "請選擇答案選項的欄位編號："
+
+#, php-format
+msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
+msgstr "上傳檔案檔時出錯，可能是由於 %s 資料夾的存取權限設定發生錯誤。"
+
+msgid "File upload succeeded."
+msgstr "檔案檔案成功上傳"
+
+msgid "Reading file.."
+msgstr "檔案檔讀取中 "
+
+msgid "Reading file..."
+msgstr "正在讀取檔案..."
+
+msgid "This file is not a LimeSurvey group file. Import failed."
+msgstr "這不是 LimSurvey 的組別檔案，所以匯入失敗。"
+
+msgid "You can't import a group which doesn't support the current survey's base language."
+msgstr "如果組別不支援目前問卷的主體語言，您就無法匯入該組別。"
+
+msgid "You can't import a question which doesn't support the current survey's base language."
+msgstr "如果題目不支援目前問卷的主體語言，您就不能匯入該題目。"
+
+msgid "You can't import label sets which don't support the current survey's base language."
+msgstr "如果標籤集不支援目前問卷的主體語言，您就不能匯入標籤集。"
+
+msgid "Import partially successful."
+msgstr "成功匯入部份資料"
+
+msgid "The following languages in this group were not imported since the survey does not contain such a language: "
+msgstr "在這個組別中下列的語言沒有被匯入，因為這個問卷沒有包含這樣一個語言："
+
+msgid "Group Import Summary"
+msgstr "組別匯入摘要"
+
+msgid "Conditions"
+msgstr "條件設定"
+
+msgid "Label Set"
+msgstr "標籤集"
+
+msgid "Labels"
+msgstr "標籤"
+
+msgid "Question Attributes:"
+msgstr "題目屬性"
+
+msgid "Import of group is completed."
+msgstr "組別的匯入工作已完成。"
+
+msgid "Import Label Set"
+msgstr "匯入標籤集 "
+
+msgid "This file is not a LimeSurvey label set file. Import failed."
+msgstr "這個檔案不是LimeSurvey的標籤集檔案，所以匯入失敗。"
+
+msgid "Return to Labels Admin"
+msgstr "返回標籤管理界面"
+
+msgid "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead."
+msgstr "已有重複的標籤集被使用，所以匯入失敗。"
+
+msgid "Label Set Import Summary"
+msgstr "標籤集匯入摘要"
+
+msgid "Label Sets"
+msgstr "標籤集"
+
+msgid "Languages"
+msgstr "語言"
+
+msgid "Import of Label Set is completed."
+msgstr "完成標籤集的匯入工作 "
+
+msgid "Quick Statistics"
+msgstr "快速統計"
+
+msgid "Import responses from an old (deactivated) survey table into an active survey"
+msgstr "從舊的(停用)問卷資料表把答案卷內容匯入到啟用中的問卷內"
+
+msgid "Target Survey ID"
+msgstr "目卷問卷的 ID"
+
+msgid "Source table"
+msgstr "來源碼的資料表"
+
+msgid "Import Responses"
+msgstr "匯入答案卷內容"
+
+msgid "Are you sure?"
+msgstr "您確定要繼續嗎?"
+
+msgid "Import Question"
+msgstr "匯入題目"
+
+msgid "No SID (Survey) has been provided. Cannot import question."
+msgstr "未提供問卷 SID，所以不能匯入題目。"
+
+msgid "No GID (Group) has been provided. Cannot import question"
+msgstr "沒有提供 GID (組別) 資料，所以不能匯入題目"
+
+msgid "This file is not a LimeSurvey question file. Import failed."
+msgstr "這個檔案不是LimeSurvey的題目檔案，所以匯入失敗。"
+
+msgid "You can't import a question which doesn't support the current survey's base language"
+msgstr "如果題目不支援不目前問卷的主體語言，您就不能匯入該題目"
+
+msgid "You can't import label sets which don't support the current survey's base language"
+msgstr "如果標籤集不支援目前問卷的主體語言，您就不能匯入標籤集"
+
+msgid "Question Import Summary"
+msgstr "題目匯入摘要"
+
+msgid "Import of Survey is completed."
+msgstr "問卷已完成匯入工作。"
+
+msgid "This file is not a LimeSurvey survey file. Import failed."
+msgstr "這個檔案並非 LimeSurvey 格式的問卷檔案，因此匯入失敗。"
+
+msgid "Import of this survey file failed"
+msgstr "無法匯入本問卷的檔案 "
+
+msgid "File does not contain LimeSurvey data in the correct format."
+msgstr "檔案沒有包含 LimeSurvey  格式的資料。"
+
+msgid "was NOT imported, because the question type is not know"
+msgstr "沒有匯入，因為不明的問題類型"
+
+msgid "was imported, but the type was set to \""
+msgstr "匯入了，但是類型設定為"
+
+msgid "type"
+msgstr "類型"
+
+msgid "\", because is the closest one"
+msgstr "，因為比較相近"
+
+msgid "Survey Import Summary"
+msgstr "問卷匯入摘要"
+
+msgid "Question Attributes"
+msgstr "題目屬性"
+
+msgid "Warnings"
+msgstr "警告"
+
+msgid "Data Consistency Check"
+msgstr "資料一致性檢查"
+
+msgid "If errors are showing up you might have to execute this script repeatedly."
+msgstr "如果出現錯誤，可能是因為您重覆執行了本源程式。"
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:51
+msgid "No matching Cqid"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:58
+msgid "No matching CFIELDNAME Group!"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:62
+msgid "No \"CFIELDNAME\" field set!"
+msgstr ""
+
+msgid "The following conditions should be deleted"
+msgstr "下列條件設定必須被刪除"
+
+msgid "because"
+msgstr "因為"
+
+msgid "All conditions meet consistency standards"
+msgstr "全部條件設定符合一致性的標準 "
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:87
+msgid "No matching qid"
+msgstr ""
+
+msgid "The following question attributes should be deleted"
+msgstr "下列的題目屬性必須被刪除 "
+
+msgid "All question_attributes meet consistency standards"
+msgstr "全部題目屬性必須符合一致性的標準"
+
+#, fuzzy
+msgid "No matching survey"
+msgstr "對不起！找不到符合的問卷."
+
+#, fuzzy
+msgid "No matching group"
+msgstr "關閉本組別 "
+
+msgid "The following assessments should be deleted"
+msgstr "下列評估必須被刪除"
+
+#, fuzzy
+msgid "All Survey (Total) assessments meet consistency standards"
+msgstr "全部評估必須符合一致性的標準 "
+
+#, fuzzy
+msgid "All Group assessments meet consistency standards"
+msgstr "全部評估必須符合一致性的標準 "
+
+#, fuzzy
+msgid "No matching question"
+msgstr "關閉本題目"
+
+msgid "The following answers should be deleted"
+msgstr "下列答案應該被刪除"
+
+msgid "All answers meet consistency standards"
+msgstr "全部答案均符合一致性的標準 "
+
+msgid "Language specific settings missing"
+msgstr "失去語言設定"
+
+msgid "The following surveys should be deleted"
+msgstr "下列問卷應該被刪除"
+
+msgid "All survey settings meet consistency standards"
+msgstr "全部問卷設定必須符合一致性的標準"
+
+#, fuzzy
+msgid "No matching Group"
+msgstr "關閉本組別 "
+
+#, fuzzy
+msgid "No matching Survey!"
+msgstr "對不起！找不到符合的問卷."
+
+msgid "The following questions should be deleted"
+msgstr "下列題目應該被刪除"
+
+msgid "All questions meet consistency standards"
+msgstr "全部題目符合一致性的標準 "
+
+msgid "The following groups should be deleted"
+msgstr "以下的組別必須被刪除"
+
+msgid "All groups meet consistency standards"
+msgstr "所有組別都符合一致性的標準"
+
+msgid "No database action required"
+msgstr "毋須執行資料庫的管理行動"
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:247
+msgid "Should we proceed with the delete?"
+msgstr ""
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:290
+msgid "Yes - Delete Them!"
+msgstr ""
+
+#, fuzzy
+msgid "Deleting Surveys"
+msgstr "刪除問卷"
+
+#, fuzzy
+msgid "Deleting Survey ID"
+msgstr "刪除問卷"
+
+#, fuzzy
+msgid "Deleting Assessments"
+msgstr "評估"
+
+#, fuzzy
+msgid "Deleting ID"
+msgstr "正在刪除會員中"
+
+#, fuzzy
+msgid "Deleting Question_Attributes"
+msgstr "題目屬性"
+
+#, fuzzy
+msgid "Deleting Conditions"
+msgstr "篩選條件句 "
+
+#, fuzzy
+msgid "Deleting cid"
+msgstr "正在刪除組別 id"
+
+#, fuzzy
+msgid "Deleting Answers"
+msgstr "正在刪除會員中"
+
+#, fuzzy
+msgid "Deleting answer with qid"
+msgstr "正在刪除會員中"
+
+#, fuzzy
+msgid "Deleting Questions"
+msgstr "設定題目"
+
+#, fuzzy
+msgid "Deleting qid"
+msgstr "正在刪除組別 id"
+
+msgid "Deleting Groups"
+msgstr "正在刪除組別"
+
+msgid "Deleting group id"
+msgstr "正在刪除組別 id"
+
+#, fuzzy
+msgid "Check database again?"
+msgstr "檢查資料庫的欄位資料"
+
+#, fuzzy
+msgid "Check Again"
+msgstr "檢查資料"
+
+msgid "Label Sets Administration"
+msgstr "標籤集的管理  "
+
+msgid "Add New Label Set"
+msgstr "新增標籤集 "
+
+msgid "Add new label set"
+msgstr "新增標籤集"
+
+msgid "Labelsets"
+msgstr "標籤集 "
+
+msgid "Error: You have to enter a name for this label set."
+msgstr "出錯︰您必須輸入標籤集的名稱。"
+
+msgid "Create New Label Set"
+msgstr "建立新的標籤集 "
+
+msgid "Edit Label Set"
+msgstr "修改標籤集 "
+
+msgid "Set Name"
+msgstr "設定姓名"
+
+msgid "You cannot remove this items since you need at least one language in a labelset."
+msgstr "您不能移除這些項資料，因為在一個標籤集中至少需要一個語言包。"
+
+msgid "Update"
+msgstr "更新"
+
+msgid "Edit label set"
+msgstr "修改標籤集 "
+
+msgid "Delete label set"
+msgstr "刪除標籤集"
+
+msgid "New label"
+msgstr "新標籤 "
+
+msgid "Add new label"
+msgstr "新增標籤 "
+
+msgid "Inserting New labels must be done on the first language folder."
+msgstr "插入新的標籤必須在第一個語言包中完成。"
+
+msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
+msgstr "您不能更改程式碼、新增或刪除這標籤集內的資料，因為它們正在被問卷使用。"
+
+msgid "Fix Sort"
+msgstr "修正排序的問題"
+
+msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
+msgstr "目前有問卷使用這套標籤集。在這套標籤集中修改程式碼，現在新增或者刪除資料可能產生無法預料的後果。"
+
+msgid "Failed to Copy already defined labels to added languages"
+msgstr "無法複製已經定義好的標籤到新加的語言包內"
+
+msgid "Failed to delete labels for removed languages"
+msgstr "無法刪除已被移除語言包的標籤"
+
+msgid "Update of Label Set failed"
+msgstr "無法更新標籤集"
+
+msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
+msgstr "不能刪除標籤集 - 請先行標除相關的題目。 "
+
+msgid "Insert of Label Set failed"
+msgstr "加入標籤集失敗"
+
+msgid "Failed to insert label"
+msgstr "無法插入標籤 "
+
+msgid "This label code is already used in this labelset. Please choose another code or rename the existing one."
+msgstr "本標籤程式碼已經用於本標籤集內，請選擇其他程式碼或更改現有的程式碼。"
+
+msgid "Failed to update label"
+msgstr "無法更新標籤"
+
+msgid "Can't update labels because you are using duplicated codes"
+msgstr "不能更新標籤集，因為您正在使用複製的程式碼 "
+
+msgid "Failed to delete label"
+msgstr "無法刪除標籤"
+
+msgid "You have to enter user name and email."
+msgstr "您必須輸入帳號稱及電子信箱。 "
+
+msgid "Check Data"
+msgstr "檢查資料"
+
+msgid "You have to login first."
+msgstr "您必須先行登出。"
+
+msgid "Login"
+msgstr "登入"
+
+msgid "Forgot Your Password?"
+msgstr "忘記了密碼嗎?"
+
+msgid "if you answered"
+msgstr "如果您有回答"
+
+msgid "or"
+msgstr "或"
+
+msgid "to question"
+msgstr "於問題"
+
+msgid "Only answer this question"
+msgstr "回答這條問題"
+
+msgid "Please choose *only one* of the following:"
+msgstr "請選擇以下*其一* ︰"
+
+msgid "Please enter a date:"
+msgstr "請填上日期:"
+
+msgid "Please number each box in order of preference from 1 to"
+msgstr "請順序按偏好編號各箱子從１至"
+
+msgid "Please choose *all* that apply:"
+msgstr "請選擇<b>全部<b>適用的答案選項:"
+
+msgid "Please choose *at most* "
+msgstr "請選擇 *最多*"
+
+msgid "answers:"
+msgstr "答案選項 ︰"
+
+msgid "Please choose all that apply and provide a comment:"
+msgstr "請選擇所有適用的答案及提供意見:"
+
+msgid "Please write your answer(s) here:"
+msgstr "請在這兒填上您的答案:"
+
+msgid "Please write your answer here:"
+msgstr "請在這兒填上您的答案:"
+
+msgid "Please choose the appropriate response for each item:"
+msgstr "請為以下各項選擇適當答案:"
+
+msgid "Submit Your Survey."
+msgstr "送出您的問卷."
+
+msgid "Thank you for completing this survey."
+msgstr "多謝您完成這份問卷."
+
+msgid "Please fax your completed survey to:"
+msgstr "請將問卷傳真至:"
+
+msgid "Please submit by"
+msgstr "請送出"
+
+msgid "Add Question"
+msgstr "新增題目 "
+
+msgid "Label Set:"
+msgstr "標籤集"
+
+msgid "Select CSV File"
+msgstr "選擇 csv 檔案"
+
+msgid "Copy Question"
+msgstr "複製題目"
+
+msgid "Note: You MUST enter a new question code!"
+msgstr "備註︰您必須輸入全新的題目程式碼！"
+
+msgid "Group:"
+msgstr "組別︰"
+
+msgid "Copy Answers?"
+msgstr "要複製答案選項嗎?"
+
+msgid "Copy Attributes?"
+msgstr "要複製屬性嗎?"
+
+msgid "Edit Question"
+msgstr "修改題目"
+
+msgid "Survey is currently active."
+msgstr "問卷目前已啟用 "
+
+msgid "Update Question"
+msgstr "更新題目"
+
+msgid "Current group is using conditional questions"
+msgstr "目前組別是採用條件設定的題目"
+
+msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "在本組別重排題目是有前題的，您必須確定未有把有條件設定的題目放在同類題目的後面重排。"
+
+msgid "See the conditions marked on the following questions"
+msgstr "見於下列已標記條件設定的題目"
+
+msgid "Answered"
+msgstr "已回案"
+
+msgid "Saved Responses:"
+msgstr "儲存答案卷內容"
+
+msgid "Identifier"
+msgstr "標識符"
+
+msgid "Date Saved"
+msgstr "已儲存日期"
+
+msgid "Are you sure you want to delete this entry?"
+msgstr "您確定要刪除這資料嗎?"
+
+msgid "Record ID"
+msgstr "記錄 id"
+
+msgid "Completion Date"
+msgstr "完成日期"
+
+msgid "Start Language"
+msgstr "開始語言"
+
+msgid "Not Selected"
+msgstr "未選擇"
+
+msgid "Filter Settings"
+msgstr "篩選設定"
+
+msgid "Number greater than"
+msgstr "數字大於"
+
+msgid "Number Less Than"
+msgstr "數字小於"
+
+msgid "Date (YYYY-MM-DD) equals"
+msgstr "日期格式: YYYY-MM-DD 等於 "
+
+msgid "OR between"
+msgstr "或者在...之間"
+
+msgid "Responses Containing"
+msgstr "答案卷內容包括"
+
+msgid "View summary of all available fields"
+msgstr "所有欄位的檢視摘要報告 "
+
+msgid "View Stats"
+msgstr "檢視統計 "
+
+msgid "Please wait ..."
+msgstr "請稍候..."
+
+msgid "Go Back"
+msgstr "回上頁"
+
+msgid "Getting Questions and Answers ..."
+msgstr "正在取得題目及答案選項 ..."
+
+msgid "Getting Result Count ..."
+msgstr "取得問卷結果的數目"
+
+msgid "Results"
+msgstr "問卷結果"
+
+msgid "No of records in this query"
+msgstr "本查詢設定的記錄筆數"
+
+msgid "Total records in survey"
+msgstr "問卷的總筆數"
+
+msgid "Percentage of total"
+msgstr "全部的百分比"
+
+msgid "Browse"
+msgstr "瀏覽"
+
+msgid "Generating Summaries ..."
+msgstr "正在產生摘要..."
+
+msgid "Field Summary for"
+msgstr "欄位摘要"
+
+msgid "Calculation"
+msgstr "計算"
+
+msgid "Result"
+msgstr "問卷結果 "
+
+msgid "Sum"
+msgstr "加總 "
+
+msgid "Standard Deviation"
+msgstr "標準差"
+
+msgid "Average"
+msgstr "平均值 "
+
+msgid "1st Quartile (Q1)"
+msgstr "第一個四分位點(Q1)"
+
+msgid "2nd Quartile (Median)"
+msgstr "第二個四分位點(中位數)"
+
+msgid "3rd Quartile (Q3)"
+msgstr "第三個四分位點(Q3)"
+
+msgid "Null values are ignored in calculations"
+msgstr "計算過程不考慮空白值"
+
+msgid "Q1 and Q3 calculated using"
+msgstr "Q1 及 Q3 的計算法是採用"
+
+msgid "minitab method"
+msgstr "minitab 方法"
+
+msgid "Count"
+msgstr "數目 "
+
+msgid "Percentage"
+msgstr "百分比 "
+
+msgid "Completed"
+msgstr "已完成"
+
+msgid "Select all"
+msgstr "選擇全部"
+
+msgid "Proceed"
+msgstr "繼續"
+
+msgid "Question List"
+msgstr "題目列表"
+
+msgid "Like"
+msgstr "類似"
+
+msgid "Not Equals"
+msgstr "不相等 "
+
+msgid "Filter Conditions"
+msgstr "篩選條件句 "
+
+msgid "Numerical"
+msgstr "數字式"
+
+msgid "Huge free text"
+msgstr "超級長答"
+
+msgid "Failed to copy"
+msgstr "複製失敗"
+
+msgid "to new template directory."
+msgstr "到新的樣板目錄"
+
+msgid "Directory with the name"
+msgstr "這個名字的目錄"
+
+msgid "already exists - choose another name"
+msgstr "已經存在 - 請選擇另一個名稱"
+
+msgid "Unable to create directory"
+msgstr "不能建立目錄"
+
+msgid "Maybe you don't have permission."
+msgstr "也許您有未有此使用權限"
+
+msgid "Directory could not be renamed to"
+msgstr "目錄無法以重新命名為"
+
+msgid "This file type is not allowed to be uploaded."
+msgstr "這個類型的檔案不被允許上傳。"
+
+msgid "Welcome Page"
+msgstr "歡迎頁面"
+
+msgid "Question Page"
+msgstr "題目頁面"
+
+msgid "Submit Page"
+msgstr "送出頁面"
+
+msgid "Completed Page"
+msgstr "已完成的頁面 "
+
+msgid "Clear All Page"
+msgstr "清除全部頁面"
+
+msgid "Register Page"
+msgstr "登記頁面"
+
+msgid "Load Page"
+msgstr "載入頁面"
+
+msgid "Save Page"
+msgstr "儲存的頁面 "
+
+msgid "Create new template called:"
+msgstr "建立新的樣板名為："
+
+msgid "NewTemplate"
+msgstr "新樣板"
+
+msgid "Create new template"
+msgstr "建立新樣板"
+
+msgid "This template can be modified"
+msgstr "這個樣板可以被修改。"
+
+msgid "This template cannot be modified"
+msgstr "這個樣板無法以被修改"
+
+msgid "You can't edit the default template."
+msgstr "您無法以修改預設的樣板。"
+
+msgid "Rename this template to:"
+msgstr "把本樣板改名為︰"
+
+msgid "Rename this template"
+msgstr "把本樣板改名"
+
+msgid "Export Template"
+msgstr "匯出樣板"
+
+msgid "Copy Template"
+msgstr "複製樣板"
+
+msgid "Make a copy of this template"
+msgstr "把這個樣板複製"
+
+msgid "copy_of_"
+msgstr "副本"
+
+msgid "Screen:"
+msgstr "螢幕︰"
+
+msgid "File Control:"
+msgstr "檔案控制︰"
+
+msgid "Standard Files:"
+msgstr "標準檔案︰"
+
+msgid "Now editing:"
+msgstr "正在修改中︰"
+
+msgid "Other Files:"
+msgstr "其他檔案︰"
+
+msgid "Save Changes"
+msgstr "儲存變更 "
+
+msgid "Changes cannot be saved to the default template."
+msgstr "更改的內容不能儲存到預設的樣板裡。"
+
+msgid "Are you sure you want to delete this file?"
+msgstr "您確定要刪除這個檔案嗎?"
+
+msgid "Files in the default template cannot be deleted."
+msgstr "預設樣板內的檔案不能被刪除。"
+
+msgid "Upload a File"
+msgstr "上傳一個檔案"
+
+msgid "Upload"
+msgstr "上傳"
+
+msgid "Preview:"
+msgstr "預覽︰"
+
+msgid "You have not selected a survey"
+msgstr "您未選擇問卷"
+
+msgid "Token table could not be created."
+msgstr "不能建立操作程式碼表"
+
+msgid "A token table has been created for this survey."
+msgstr "本問卷的操作程式碼表已建立好，"
+
+msgid "Tokens have not been initialised for this survey."
+msgstr "本問卷尚未建立操作程式碼"
+
+msgid "If you initialise tokens for this survey, the survey will only be accessible to users who have been assigned a token."
+msgstr "如果您初始化本問卷的操作程式碼，本問卷將會只能由分配了操作程式碼的會員使用。"
+
+msgid "Do you want to create a tokens table for this survey?"
+msgstr "您是否想為本問卷建立操作程式碼表呢?"
+
+msgid "Restore Options"
+msgstr "還原選項"
+
+msgid "The following old token tables could be restored:"
+msgstr "下列的舊操作程式碼表可以被還原︰"
+
+msgid "Restore"
+msgstr "還原 "
+
+msgid "Display Tokens"
+msgstr "顯示操作程式碼"
+
+msgid "Add new token entry"
+msgstr "新增操作程式碼資料"
+
+msgid "Import Tokens from CSV File"
+msgstr "匯入 csv 檔案格式的操作程式碼"
+
+msgid "Import Tokens from LDAP Query"
+msgstr "匯入 LDAP 查詢格式的操作程式碼"
+
+msgid "Export Tokens to CSV file"
+msgstr "匯出 csv 檔案格式的操作程式碼"
+
+msgid "Send email invitation"
+msgstr "寄出電子信箱邀請"
+
+msgid "Send email reminder"
+msgstr "寄出電子信箱提醒"
+
+msgid "Generate Tokens"
+msgstr "產生操作程式碼"
+
+msgid "Drop tokens table"
+msgstr "清除操作程式碼表"
+
+msgid "Total Records in this Token Table"
+msgstr "操作程式碼表內的記錄筆數"
+
+msgid "Total With No Unique Token"
+msgstr "所有操作程式碼不唯一的總筆數"
+
+msgid "Total Invitations Sent"
+msgstr "共送出的電子信箱邀請 "
+
+msgid "Total Surveys Completed"
+msgstr "全部問卷已完成"
+
+msgid "All token entries have been deleted."
+msgstr "全部操作程式碼已被刪除。 "
+
+msgid "All invite entries have been set to 'Not Invited'."
+msgstr "全部邀請的資料已被設定成 '不邀請'的狀態。"
+
+msgid "All unique token numbers have been removed."
+msgstr "所有獨一無二的操作程式碼編號已被移除。"
+
+msgid "Token Database Administration Options"
+msgstr "操作程式碼資料庫管理選項。 "
+
+msgid "Are you really sure you want to reset all invitation records to NO?"
+msgstr "您確定要重設全部邀請記錄為 'N' 嗎?"
+
+msgid "Set all entries to 'No invitation sent'."
+msgstr "設定全部資料成為 '不送出邀請' 的狀態。"
+
+msgid "Are you sure you want to delete all unique token numbers?"
+msgstr "您確定要刪除全部獨一無二的操作程式碼編號嗎?"
+
+msgid "Delete all unique token numbers"
+msgstr "刪除全部獨有的操作程式碼編號"
+
+msgid "Are you really sure you want to delete ALL token entries?"
+msgstr "您確定要刪除全部操作程式碼的資料嗎?"
+
+msgid "Delete all token entries"
+msgstr "刪除全部操作程式碼的資料 "
+
+msgid "Update tokens table with new fields"
+msgstr "更新操作程式碼表的新欄位資料"
+
+msgid "Search"
+msgstr "搜尋"
+
+msgid "Sort by: "
+msgstr "排序方法︰"
+
+msgid "Invite sent?"
+msgstr "已送出邀請嗎?"
+
+msgid "Completed?"
+msgstr "已完成嗎?"
+
+msgid "Edit Token Entry"
+msgstr "修改操作程式碼的資料"
+
+msgid "Delete Token Entry"
+msgstr "刪除操作程式碼資料 "
+
+msgid "Do Survey"
+msgstr "填寫問卷"
+
+msgid "Update Response"
+msgstr "更新答案卷內容"
+
+msgid "Send invitation email to this entry"
+msgstr "送出邀請電子信箱到本資料"
+
+msgid "Send reminder email to this entry"
+msgstr "送出提醒電子信箱到本資料"
+
+msgid "Delete Tokens Table"
+msgstr "刪除操作程式碼的資料表 "
+
+msgid "If you delete this table tokens will no longer be required to access this survey."
+msgstr "如果您刪除本資料表，操作程式碼就不能再使用本問卷了。"
+
+msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
+msgstr "如果您繼執行本工作，就會製作本資料表的備份資料，系統管理員亦可以取用本資料表。"
+
+msgid "Delete Tokens"
+msgstr "刪除操作程式碼"
+
+msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
+msgstr "操作程式碼表已經被移除，使用這份問卷的時候不再需要操作程式碼了。"
+
+msgid "A backup of this table has been made and can be accessed by your system administrator."
+msgstr "本資料表的備份資料已製作完成，系統管理員可以隨時取用。"
+
+msgid "Email Invitation"
+msgstr "電子信箱邀請"
+
+msgid "From"
+msgstr "由 "
+
+msgid "Subject"
+msgstr "主題"
+
+msgid "to TokenID No"
+msgstr "予操作程式碼的編號"
+
+msgid "Send Invitations"
+msgstr "送出邀請"
+
+msgid "Sending Invitations"
+msgstr "發送邀請"
+
+msgid "Sending to TID No:"
+msgstr "送出 TID 編號︰"
+
+msgid "Invitation sent to:"
+msgstr "邀請已寄給︰"
+
+msgid "Mail to {FIRSTNAME} {LASTNAME} ({EMAIL}) Failed"
+msgstr "無法電子信箱給  {FIRSTNAME} {LASTNAME} ({EMAIL})"
+
+msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
+msgstr "還有大批電子信箱有待發送，請 click 選以下的選項繼續發送電子信箱吧！"
+
+msgid "There are {EMAILCOUNT} emails still to be sent."
+msgstr "尚有{EMAILCOUNT} 封電子信箱有待發送。"
+
+msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
+msgstr "未有合資格的電子信箱可供送出 。原因是電子信箱未滿足發送的條件- 部份未提供電子信箱地址；部份未有邀請發送的設定；部份已完成問卷以及部份未有操作程式碼。"
+
+msgid "Email Reminder"
+msgstr "電子信箱提醒"
+
+msgid "Start at Token ID No:"
+msgstr "開始於操作程式碼編號︰"
+
+msgid "Send Reminders"
+msgstr "送出提醒"
+
+msgid "Sending Reminders"
+msgstr "正在發送提醒"
+
+msgid "Reminder sent to:"
+msgstr "提醒電子信箱已送給︰"
+
+msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
+msgstr "沒有合規格的電子信箱地址可以寄發。可能是沒有滿足任何以下一個要求 - 須擁有電子信箱地址，已經發送了邀請，但是還沒有完成問卷。"
+
+msgid "Create Tokens"
+msgstr "建立操作程式碼"
+
+msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
+msgstr "點選 '是' 將會為所有在列表中還未獲得操作程式碼的會員產生操作程式碼。您確定要繼續嗎？"
+
+msgid "{TOKENCOUNT} tokens have been created"
+msgstr "已建立 {TOKENCOUNT} 個操作程式碼"
+
+msgid "Token has been deleted."
+msgstr "已刪除操作程式碼。"
+
+msgid "Reloading Screen. Please wait."
+msgstr "重新載入螢幕，請稍候。"
+
+msgid "Add or Edit Token"
+msgstr "新增或修改操作程式碼"
+
+msgid "Auto"
+msgstr "自動"
+
+msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
+msgstr "您可以不填寫，而採用」產生操作程式碼「按鈕自動產生操作程式碼。"
+
+msgid "Update Token"
+msgstr "更新操作程式碼"
+
+msgid "Add Token"
+msgstr "新增操作程式碼"
+
+msgid "Updated Token"
+msgstr "已更新操作程式碼"
+
+msgid "Added New Token"
+msgstr "新增操作程式碼"
+
+msgid "Upload CSV File"
+msgstr "上傳 csv 檔案"
+
+msgid "Note:"
+msgstr "備註︰"
+
+msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [language code], [attribute1], [attribute2]\"."
+msgstr "檔案應該是標準的 csv 格式 (用逗號分隔) 的檔案，數值用雙引號包圍 (預設值適用於 openoffice 及 Excel )。第一列應包含表頭的資料 (可以被移除) , 資料應以  \"firstname, lastname, email, [token], [language code], [attribute1], [attribute2]\" 的次序排列。"
+
+msgid "Upload LDAP entries"
+msgstr "上傳 LDAP 資料 "
+
+msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
+msgstr "LDAP 查詢設定是由系統管理員透過 config-IDAP.php 檔案設定"
+
+msgid "Upload file not found. Check your permissions and path for the upload directory"
+msgstr "找不到上傳的檔案，請檢查上傳目錄的權限及正確路徑"
+
+msgid "Importing CSV File"
+msgstr "正在匯入 csv 檔案"
+
+msgid "Creating Token Entries"
+msgstr "正在建立操作程式碼資料 "
+
+msgid "Failed"
+msgstr "已失敗"
+
+msgid "Records in CSV"
+msgstr "在 csv 的記錄"
+
+msgid "Records met minumum requirements"
+msgstr "記錄符合最低的要求"
+
+msgid "Records imported"
+msgstr "已匯入記錄"
+
+msgid "Duplicate records removed"
+msgstr "複製的記錄已被移除"
+
+msgid "Records with invalid email address removed"
+msgstr "附有無效電子信箱地址的記錄已被移除"
+
+msgid "Uploading LDAP Query"
+msgstr "正在上傳 LDAP 查詢資料"
+
+msgid "{TOKENCOUNT} Records Created"
+msgstr "已建立 {TOKENCOUNT} 筆記錄"
+
+msgid "Can't bind to the LDAP directory"
+msgstr "無法綁定到LDAP目錄"
+
+msgid "Can't connect to the LDAP directory"
+msgstr "不能連接 LDAP 目錄"
+
+msgid "ARMSCII-8 Armenian"
+msgstr "ARMSCII-8 Armenian"
+
+msgid "US ASCII"
+msgstr "US ASCII"
+
+msgid "Automatic"
+msgstr "自動化"
+
+msgid "Big5 Traditional Chinese"
+msgstr "Big5 正體中文"
+
+msgid "Binary pseudo charset"
+msgstr "Binary pseudo charset"
+
+msgid "Windows Central European"
+msgstr "Windows Central European"
+
+msgid "Windows Cyrillic"
+msgstr "Windows Cyrillic"
+
+msgid "Windows Arabic"
+msgstr "Windows Arabic"
+
+msgid "Windows Baltic"
+msgstr "Windows Baltic"
+
+msgid "DOS West European"
+msgstr "DOS West European"
+
+msgid "DOS Central European"
+msgstr "DOS Central European"
+
+msgid "DOS Russian"
+msgstr "DOS Russian"
+
+msgid "SJIS for Windows Japanese"
+msgstr "SJIS for Windows Japanese"
+
+msgid "DEC West European"
+msgstr "DEC West European"
+
+msgid "UJIS for Windows Japanese"
+msgstr "UJIS for Windows Japanese"
+
+msgid "EUC-KR Korean"
+msgstr "EUC-KR Korean"
+
+msgid "GB2312 Simplified Chinese"
+msgstr "GB2312 正體中文"
+
+msgid "GBK Simplified Chinese"
+msgstr "GBK 正體中文"
+
+msgid "GEOSTD8 Georgian"
+msgstr "GEOSTD8 Georgian"
+
+msgid "ISO 8859-7 Greek"
+msgstr "ISO 8859-7 Greek"
+
+msgid "ISO 8859-8 Hebrew"
+msgstr "ISO 8859-8 Hebrew"
+
+msgid "HP West European"
+msgstr "HP West European"
+
+msgid "DOS Kamenicky Czech-Slovak"
+msgstr "DOS Kamenicky Czech-Slovak"
+
+msgid "KOI8-R Relcom Russian"
+msgstr "KOI8-R Relcom Russian"
+
+msgid "KOI8-U Ukrainian"
+msgstr "KOI8-U Ukrainian"
+
+msgid "cp1252 West European"
+msgstr "cp1252 West European"
+
+msgid "ISO 8859-2 Central European"
+msgstr "ISO 8859-2 Central European"
+
+msgid "ISO 8859-9 Turkish"
+msgstr "ISO 8859-9 Turkish"
+
+msgid "ISO 8859-13 Baltic"
+msgstr "ISO 8859-13 Baltic"
+
+msgid "Mac Central European"
+msgstr "Mac Central European"
+
+msgid "Mac West European"
+msgstr "Mac West European"
+
+msgid "Shift-JIS Japanese"
+msgstr "Shift-JIS Japanese"
+
+msgid "7bit Swedish"
+msgstr "7bit Swedish"
+
+msgid "TIS620 Thai"
+msgstr "TIS620 Thai"
+
+msgid "UCS-2 Unicode"
+msgstr "UCS-2 Unicode"
+
+msgid "EUC-JP Japanese"
+msgstr "EUC-JP Japanese"
+
+msgid "UTF-8 Unicode"
+msgstr "UTF-8 Unicode"
+
+msgid "Choose the CSV file to upload:"
+msgstr "選擇要上傳的 csv 檔案︰"
+
+msgid "Character set of the file:"
+msgstr "檔案的字集集"
+
+msgid "Sorry, but the LDAP module is missing in your PHP configuration."
+msgstr "對不起！您的 PHP 組態沒有 LDAP 的模組設定。 "
+
+msgid "LDAP is disabled or no LDAP query defined."
+msgstr "LDAP 已關閉 或者未有定義 LDAP 的查詢設定。"
+
+msgid "Select the LDAP query you want to run:"
+msgstr "選擇您要執行的 LDAP 查詢設定︰"
+
+msgid "Forgot Password"
+msgstr "忘記密碼"
+
+msgid "User name and/or email not found!"
+msgstr "帳號稱及／或電子信箱不存在！"
+
+msgid "Your data:"
+msgstr "您的資料︰"
+
+msgid "New Password"
+msgstr "新的密碼"
+
+msgid "An email with your login data was sent to you."
+msgstr "包含您登入資料的電子信箱已寄了給您。"
+
+msgid "Email to {NAME} ({EMAIL}) failed."
+msgstr "無法電子信箱給 {NAME} ({EMAIL})"
+
+msgid "Logging in..."
+msgstr "登入中..."
+
+msgid "Incorrect User name and/or Password!"
+msgstr "不正確的帳號稱及／或密碼！"
+
+msgid "Welcome {NAME}"
+msgstr "歡迎 {NAME}"
+
+msgid "You logged in successfully."
+msgstr "您已成功登入。"
+
+msgid "Logout successful."
+msgstr "成功登出。"
+
+msgid "Email address ist not valid."
+msgstr "無效的電子信箱地址。"
+
+msgid "Username was not supplied."
+msgstr "未有提供帳號稱"
+
+msgid "You were signed in on the site"
+msgstr "您已登入本站"
+
+msgid "Login here"
+msgstr "在此登入"
+
+msgid "An email with a generated password was sent to the user."
+msgstr "產生密碼的電子信箱已寄出給會員。"
+
+msgid "Set User Rights"
+msgstr "設定會員權限"
+
+msgid "Username and/or email address already exists."
+msgstr "帳號稱及／或電子信箱地址已經存在"
+
+msgid "Admin cannot be deleted!"
+msgstr "不能刪除網管！"
+
+msgid "Modifying User"
+msgstr "正在修改會員"
+
+msgid "Could not modify User Data."
+msgstr "不能修改會員資料。"
+
+msgid "Unchanged"
+msgstr "保持不變"
+
+msgid "Email address already exists."
+msgstr "電子信箱地址已經存在"
+
+msgid "Back"
+msgstr "返回"
+
+msgid "Update user rights successful."
+msgstr "成功更新會員權限"
+
+msgid "You are not allowed to change your own rights!"
+msgstr "您不能更改自己的權限！"
+
+msgid "Mail to all Members"
+msgstr "電子信箱給全體成員 "
+
+msgid "Edit Current User Group"
+msgstr "修改目前的群組別"
+
+msgid "Delete Current User Group"
+msgstr "刪除目前的群組別"
+
+msgid "Add New User Group"
+msgstr "新增群組別"
+
+msgid "User Groups"
+msgstr "群組別"
+
+msgid "Full name"
+msgstr "完整名稱"
+
+msgid "Configurator"
+msgstr "設定"
+
+msgid "Create User"
+msgstr "建立會員"
+
+msgid "Delete User"
+msgstr "刪除會員"
+
+msgid "Move User"
+msgstr "搬移會員"
+
+msgid "Manage Template"
+msgstr "管理樣板"
+
+msgid "Manage Labels"
+msgstr "管理標籤"
+
+msgid "Setting new Parent"
+msgstr "設定新的上級"
+
+msgid "Set Parent successful."
+msgstr "設定上級成功。"
+
+msgid "User Control"
+msgstr "會員控制"
+
+msgid "Created by"
+msgstr "建立人︰"
+
+msgid "Edit User"
+msgstr "修改持分者 "
+
+msgid "Name:"
+msgstr "名稱："
+
+msgid "Edit User Group (Owner: "
+msgstr "修改持分者組別︰"
+
+msgid "Update User Group"
+msgstr "更新持分者組別"
+
+msgid "Send me a copy:"
+msgstr "送我一個副本︰"
+
+msgid "Subject:"
+msgstr "主題︰"
+
+msgid "Message:"
+msgstr "訊息︰"
+
+msgid "Send"
+msgstr "送出"
+
+msgid "Reset"
+msgstr "重設"
+
+msgid "Deleting User Group"
+msgstr "正在刪除持分者組別"
+
+msgid "Group Name"
+msgstr "組別名稱"
+
+msgid "Could not delete user group."
+msgstr "不能刪除持分者組別。"
+
+msgid "Could not delete user group. No group selected."
+msgstr "不能刪除持分者組別，因為您沒有選擇組別。"
+
+msgid "Adding User Group"
+msgstr "新增持分者組別"
+
+msgid "Description: "
+msgstr "說明︰"
+
+msgid "User group successfully added!"
+msgstr "成功新增群組別！"
+
+msgid "Failed to add Group!"
+msgstr "不能新增組別！"
+
+msgid "Group already exists!"
+msgstr "組別名稱已經存在！"
+
+msgid "Group name was not supplied!"
+msgstr "未有提供組別名稱！"
+
+msgid "Message(s) sent successfully!"
+msgstr "訊息成功送出！"
+
+msgid "To:"
+msgstr "給："
+
+msgid "Mail not sent!"
+msgstr "電子信箱未有送出！"
+
+msgid "Edit User Group Successfully!"
+msgstr "成功修改持分者組別！"
+
+msgid "Failed to update!"
+msgstr "無法更新！"
+
+msgid "Adding User to group"
+msgstr "新增持分者到組別裡"
+
+msgid "File:"
+msgstr "檔案︰"
+
+msgid "Survey ID:"
+msgstr "問卷編號︰"
+
+msgid "Exclude record IDs?"
+msgstr "要排除哪些記錄ID呢?"
+
+msgid "When an imported record matches an existing record ID:"
+msgstr "當匯入的一筆記錄符合現有的記錄編號時︰"
+
+msgid "Report an error (and skip the new record)."
+msgstr "報告程式執行錯誤(略過新記錄)"
+
+msgid "Renumber the new record."
+msgstr "為新記錄重新編號"
+
+msgid "Ignore the new record."
+msgstr "放棄處理新記錄"
+
+msgid "Replace the existing record."
+msgstr "取代現有的記錄 "
+
+msgid "Import"
+msgstr "匯入"
+
+msgid "Cannot import the VVExport file."
+msgstr "不能匯入 VVExport 檔"
+
+msgid "Back to Response Import"
+msgstr "返回答案卷內容的匯入頁面"
+
+msgid "Import Failed on Record"
+msgstr "記錄匯入失敗"
+
+msgid "Important Note:"
+msgstr "重要註解︰"
+
+msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
+msgstr "不要更新此頁面，因為這樣會重新匯入檔案檔，產生重複記錄。"
+
+msgid "Total records imported:"
+msgstr "匯入記錄的總數︰"
+
+msgid "Create Database"
+msgstr "建立資料庫"
+
+msgid "Populate Database"
+msgstr "建立資料庫"
+
+#, php-format
+msgid "Database `%s` has been successfully populated."
+msgstr "資料庫`%s`已成功安裝。"
+
+msgid "Database Information not provided. This script must be run from admin.php only."
+msgstr "未有提供資料庫的資料，源程式必須由  admin.php 直接執行。"
+
+msgid "Database has been created."
+msgstr "已建立好資料庫"
+
+msgid "Please click below to populate the database"
+msgstr "請 click 選正確的項目以便建立資料庫"
+
+msgid "Could not create database"
+msgstr "不能建立資料庫"
+
+msgid "Welcome to LimeSurvey Setup!"
+msgstr "歡迎來到 LimeSurvey 安裝頁面！"
+
+msgid "The database defined in config.php does not exist."
+msgstr "在 config.php 未有設定資料庫。"
+
+msgid "LimeSurvey can attempt to create this database for you."
+msgstr "LimeSurvey 可以嘗試為您建立資料庫。"
+
+msgid "Your selected database name is:"
+msgstr "您選擇的資料庫名稱是︰"
+
+#, fuzzy, php-format
+msgid "A database named \"%s\" already exists."
+msgstr "名為 \"%s\"  的資料庫已經存在。"
+
+msgid "Do you want to populate that database now by creating the necessary tables?"
+msgstr "您是否想馬上建立所需要的資料表，以便建立該資料庫?"
+
+msgid "Database has been successfully upgraded to version "
+msgstr "資料庫已成功升級至版本"
+
+msgid "Basque"
+msgstr "巴斯克語"
+
+msgid "Bulgarian"
+msgstr "保加利亞"
+
+msgid "Chinese (Simplified)"
+msgstr "簡體中文"
+
+msgid "Chinese (Traditional - Hong Kong)"
+msgstr "正體中文（香港）"
+
+msgid "Croatian"
+msgstr "克羅地亞文"
+
+msgid "Danish"
+msgstr "丹麥文"
+
+msgid "Dutch"
+msgstr "荷蘭文"
+
+msgid "English"
+msgstr "英文"
+
+msgid "Finnish"
+msgstr "芬蘭文"
+
+msgid "French"
+msgstr "法文"
+
+msgid "Galician"
+msgstr "葡萄牙語"
+
+msgid "German"
+msgstr "德文"
+
+msgid "German informal"
+msgstr "非正式德文"
+
+msgid "Greek"
+msgstr "希臘文"
+
+msgid "Hebrew"
+msgstr "希伯來文"
+
+msgid "Hungarian"
+msgstr "匈牙利文"
+
+msgid "Italian"
+msgstr "義大利文"
+
+msgid "Japanese"
+msgstr "日文"
+
+msgid "Lithuanian"
+msgstr "立陶宛文 "
+
+msgid "Norwegian"
+msgstr "挪威文"
+
+msgid "Polish"
+msgstr "波蘭語"
+
+msgid "Portuguese"
+msgstr "葡文"
+
+msgid "Portuguese (Brazilian)"
+msgstr "巴西式葡文"
+
+msgid "Russian"
+msgstr "俄羅斯文"
+
+msgid "Romanian"
+msgstr "羅馬尼亞文"
+
+msgid "Slovenian"
+msgstr "斯洛文尼亞 "
+
+msgid "Serbian"
+msgstr "斯洛文尼亞文"
+
+msgid "Spanish"
+msgstr "西班牙文"
+
+msgid "Swedish"
+msgstr "瑞典文"
+
+msgid "Turkish"
+msgstr "土耳其文"
+
+msgid "Thai"
+msgstr "泰語"
+
+msgid "Vietnamese"
+msgstr "越南文"
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:192
+msgid "Czech"
+msgstr ""
+

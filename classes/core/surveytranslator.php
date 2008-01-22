@@ -66,10 +66,18 @@
 	    $supportedLanguages['eu']['description'] = $clang->gT('Basque');
 	    $supportedLanguages['eu']['nativedescription'] = 'Euskara';
 
+	    // Bosnian
+	    $supportedLanguages['bs']['description'] = $clang->gT('Bosnian');
+	    $supportedLanguages['bs']['nativedescription'] = '&#x0411;&#x044a;&#x043b;&#x0433;&#x0430;&#x0440;&#x0441;&#x043a;&#x0438;';
+
 	    // Bulgarian
 	    $supportedLanguages['bg']['description'] = $clang->gT('Bulgarian');
 	    $supportedLanguages['bg']['nativedescription'] = '&#x0411;&#x044a;&#x043b;&#x0433;&#x0430;&#x0440;&#x0441;&#x043a;&#x0438;';
         
+        // Catalan
+		$supportedLanguages['ca']['description'] = $clang->gT('Catalan');
+	    $supportedLanguages['ca']['nativedescription'] = 'Catal&#940;';
+
         // Chinese (Simplified)
 	    $supportedLanguages['zh-Hans']['description'] = $clang->gT('Chinese (Simplified)');
 	    $supportedLanguages['zh-Hans']['nativedescription'] = '&#31616;&#20307;&#20013;&#25991;';
@@ -84,7 +92,7 @@
 
         // Croatian
 	    $supportedLanguages['hr']['description'] = $clang->gT('Croatian');
-	    $supportedLanguages['hr']['nativedescription'] = 'Croatian';
+	    $supportedLanguages['hr']['nativedescription'] = 'Hrvatski';
 
         // Czech
         $supportedLanguages['cs']['description'] = $clang->gT('Czech');
@@ -98,9 +106,13 @@
 	    $supportedLanguages['nl']['description'] = $clang->gT('Dutch');
 	    $supportedLanguages['nl']['nativedescription'] = 'Nederlands';
 
-	    /* English */
+	    // English
 	    $supportedLanguages['en']['description'] = $clang->gT('English');
 	    $supportedLanguages['en']['nativedescription'] = 'English';
+
+        // Estonian
+        $supportedLanguages['et']['description'] = $clang->gT('Estonian');
+        $supportedLanguages['et']['nativedescription'] = 'Eestlane';
 
 	    // Finnish
 	    $supportedLanguages['fi']['description'] = $clang->gT('Finnish');
@@ -147,6 +159,10 @@
 	    $supportedLanguages['lt']['description'] = $clang->gT('Lithuanian');
 	    $supportedLanguages['lt']['nativedescription'] = 'Lietuvi&#371;';
 	    
+	    // Macedonian
+	    $supportedLanguages['mk']['description'] = $clang->gT('Macedonian');
+	    $supportedLanguages['mk']['nativedescription'] = '&#1052;&#1072;&#1082;&#1077;&#1076;&#1086;&#1085;&#1089;&#1082;&#1080;';
+   
 	    // Norwegian Bokmål
 	    $supportedLanguages['nb']['description'] = $clang->gT('Norwegian (Bokmal)');
 	    $supportedLanguages['nb']['nativedescription'] = 'Norsk bokm&#229;l';
@@ -184,6 +200,10 @@
 	    $supportedLanguages['es']['description'] = $clang->gT('Spanish');
 	    $supportedLanguages['es']['nativedescription'] = 'Espa&#241;ol';
 
+	    // Spanish (Mexico)
+	    $supportedLanguages['es-MX']['description'] = $clang->gT('Spanish (Mexico)');
+	    $supportedLanguages['es-MX']['nativedescription'] = 'Espa&#241;ol Mejicano';
+
 	    // Swedish
 	    $supportedLanguages['sv']['description'] = $clang->gT('Swedish');
 	    $supportedLanguages['sv']['nativedescription'] = 'Svenska';
@@ -217,7 +237,7 @@
    }
     
     
-    /*    // future languages
+/*    // future languages
 
 	    // Afrikaans
  	    $supportedLanguages['za']['nativedescription'] = 'Afrikaans';
