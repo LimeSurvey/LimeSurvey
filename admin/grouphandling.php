@@ -25,14 +25,16 @@ if ($action == "addgroup")
     $grplangs = array_reverse($grplangs);
 
     $newgroupoutput = PrepareEditorScript();
-    $newgroupoutput .= "<form action='$scriptname' name='addnewgroupfrom' method='post'>"
+    $newgroupoutput .= ""
                ."<table width='100%' border='0' class='tab-page'><tr>\n"
                ."\t<td colspan='2' class='settingcaption'>\n\t\t<strong>".$clang->gT("Add Group")."</strong></td>"
                ."</tr></table>\n";
 
 
-    $newgroupoutput .="<table width='100%' border='0'  class='tab-page'>\n\t<tr><td>\n"
-    . '<div class="tab-pane" id="tab-pane-1">';
+//    $newgroupoutput .="<table width='100%' border='0'  class='tab-page'>\n\t<tr><td>\n"
+    $newgroupoutput .= "<form action='$scriptname' id ='addnewgroupfrom' name='addnewgroupfrom' method='post'>";
+    $newgroupoutput .="\n"
+    .  '<div class="tab-pane" id="tab-pane-1">';
     foreach ($grplangs as $grouplang)
     {
         $newgroupoutput .= '<div class="tab-page"> <h2 class="tab">'.GetLanguageNameFromCode($grouplang,false);
@@ -45,19 +47,26 @@ if ($action == "addgroup")
         . "\t\t<td><textarea cols='80' rows='8' name='description_$grouplang'></textarea>"
 	. getEditor("group-desc","description_".$grouplang, "[".$clang->gT("Description:", "js")."](".$grouplang.")",$surveyid,'','',$action)
 	."</td></tr>\n"
-        . "</table></div>";
+        . "</table>";
+    	$newgroupoutput.= "\t<table><tr><td colspan='2' align='center'><input type='submit' value='".$clang->gT("Add Group")."' />\n"
+    	. "\t</td></tr></table>\n"
+    	. "\n";
+	$newgroupoutput.= "</div>\n";
+
     }
 
-    $newgroupoutput.= "</div>" 
+    $newgroupoutput.= ""
     . "\t<input type='hidden' name='action' value='insertnewgroup' />\n"
-    . "\t<input type='hidden' name='sid' value='$surveyid' /></td></tr>"
-    . "\t<tr><td colspan='2' align='center'><input type='submit' value='".$clang->gT("Add Group")."' />\n"
-    . "\t</td></tr></table>\n"
-    . "</form></td></tr>\n"
-    . "<tr><td align='center' class='tab-page'><strong>".$clang->gT("OR")."</strong></td></tr>\n"
-    . "<tr><td><form enctype='multipart/form-data' name='importgroup' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
-    . "<table width='100%' border='0' class='form2columns'>\n\t<tr><th colspan='3'>\n"
-    . "\t\t<strong>".$clang->gT("Import Group")."</strong></th></tr>\n\t<tr>"
+    . "\t<input type='hidden' name='sid' value='$surveyid' />\n"
+    . "</form>\n";
+
+
+    // Import TAB
+    $newgroupoutput .= '<div class="tab-page"> <h2 class="tab">'.$clang->gT("Import Group")."</h2>\n";
+    $newgroupoutput.= ""
+    . "<form enctype='multipart/form-data' name='importgroup' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
+    . "<table width='100%' border='0' class='form2columns'>\n"
+    . "\t\t<tr>"
     . "\t\n"
     . "\t\t<td><strong>".$clang->gT("Select CSV File:")."</strong></td>\n"
     . "\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\" /></td></tr>\n"
@@ -66,7 +75,15 @@ if ($action == "addgroup")
     . "\t<tr><td colspan='2'class='centered'><input type='submit' value='".$clang->gT("Import Group")."' />\n"
     . "\t<input type='hidden' name='action' value='importgroup' />\n"
     . "\t<input type='hidden' name='sid' value='$surveyid' />\n"
-    . "\t</td></tr>\n</table></form>\n"
+    . "\t</td></tr>\n</table></form>\n";
+
+    // End Import TABS
+    $newgroupoutput.= "</div>";
+
+	// End of TABS
+    $newgroupoutput.= "</div>";
+
+    $newgroupoutput.= ""
 	."<script type='text/javascript'>\n"
 	."<!--\n"
 	."document.getElementById('group_name_$grouplang').focus();\n"
