@@ -9,6 +9,7 @@
   cursor: default;
   background: Window;
   color: WindowText;
+  z-index: 99;
   font-family: tahoma,verdana,sans-serif;
 }
 
@@ -19,6 +20,7 @@
   cursor: default;
   background: Window;
   color: WindowText;
+  z-index: 99;
   font-family: tahoma,verdana,sans-serif;
 }
 

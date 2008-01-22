@@ -11,6 +11,7 @@
   color: #000;
   cursor: default;
   background: #c8d4d0;
+  z-index: 99;
   font-family: tahoma,verdana,sans-serif;
 }
 
@@ -23,6 +24,7 @@
   color: #000;
   cursor: default;
   background: #c8d4d0;
+  z-index: 99;
   font-family: tahoma,verdana,sans-serif;
 }
 

@@ -8,6 +8,7 @@ div.calendar { position: relative; }
   color: #000;
   cursor: default;
   background: #efe;
+  z-index: 99;
   font-family: tahoma,verdana,sans-serif;
 }
 
