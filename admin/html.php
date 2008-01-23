@@ -339,7 +339,7 @@ if ($surveyid)
 		$s1row = $sumresult1->FetchRow();
 
         $s1row = array_map('strip_tags', $s1row);
-		$s1row = array_map('htmlspecialchars', $s1row);
+		//$s1row = array_map('htmlspecialchars', $s1row);
 		$activated = $s1row['active'];
 		//BUTTON BAR
 		$surveysummary .= "\t<tr>\n"
@@ -864,7 +864,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 	while ($grow = $grpresult->FetchRow())
 	{
         $grow = array_map('strip_tags', $grow);
-		$grow = array_map('htmlspecialchars', $grow);
+		//$grow = array_map('htmlspecialchars', $grow);
 		$groupsummary .= "\t<tr>\n"
 		. "\t\t<td colspan='2'>\n"
 		. "\t\t\t<table class='menubar'>\n"
@@ -1024,7 +1024,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 	while ($qrrow = $qrresult->FetchRow())
 	{
         $qrrow = array_map('strip_tags', $qrrow);
-		$qrrow = array_map('htmlspecialchars', $qrrow);
+		//$qrrow = array_map('htmlspecialchars', $qrrow);
 		$questionsummary .= "\t<tr>\n"
 		. "\t\t<td colspan='2'>\n"
 		. "\t\t\t<table class='menubar'>\n"
