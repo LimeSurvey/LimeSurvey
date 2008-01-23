@@ -561,8 +561,8 @@ elseif ($action == "usertemplates")
 {
       $addsummary = "<br /><strong>".$clang->gT("Set Template Rights")."</strong><br />\n";
 
-	// ONLY SUPERADMINS CAN SET THESE RIGHTS
-      if( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+	// SUPERADMINS AND MANAGE_TEMPLATE USERS CAN SET THESE RIGHTS
+      if( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
       {
                       $templaterights = array();
                       $tquery = "SELECT * FROM ".$dbprefix."templates";
