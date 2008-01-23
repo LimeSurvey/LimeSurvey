@@ -170,7 +170,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
 	    //123
         modify_database("","ALTER TABLE [prefix_conditions] ALTER COLUMN [value] VARCHAR(255)"); echo $modifyoutput; flush();
         // There is no other way to remove the previous default value
-        modify_database("","DECLARE @STR VARCHAR(100)
+        /*modify_database("","DECLARE @STR VARCHAR(100)
 									SET @STR = (
 									SELECT NAME
 									FROM SYSOBJECTS SO
@@ -179,9 +179,9 @@ echo str_pad('Loading... ',4096)."<br />\n";
 									AND SO.XTYPE = 'D' AND SC.COLID =
 									(SELECT COLID FROM SYSCOLUMNS WHERE ID = OBJECT_ID('lime_labels') AND NAME = 'title'))
 									SET @STR = 'ALTER TABLE lime_labels DROP CONSTRAINT ' + @STR 
-	 								exec (@STR);"); echo $modifyoutput; flush();
+	 								exec (@STR);"); echo $modifyoutput; flush();     */
 	 								
-        modify_database("","ALTER TABLE [prefix_labels] ALTER COLUMN [title] text"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE [prefix_labels] ALTER COLUMN [title] varchar(4000)"); echo $modifyoutput; flush();
         //124
         modify_database("","ALTER TABLE [prefix_surveys] ADD [bounce_email] text"); echo $modifyoutput; flush();
         //125

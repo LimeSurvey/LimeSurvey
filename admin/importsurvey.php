@@ -625,10 +625,11 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 
 		//CHECK FOR DUPLICATE LABELSETS
 		$thisset="";
-		$query2 = "SELECT code, title, sortorder
+        
+        $query2 = "SELECT code, title, sortorder, language
                    FROM {$dbprefix}labels
                    WHERE lid=".$newlid."
-                   ORDER BY sortorder, code";
+                   ORDER BY language,sortorder, code";
 		$result2 = db_execute_num($query2) or die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
 		while($row2=$result2->FetchRow())
 		{

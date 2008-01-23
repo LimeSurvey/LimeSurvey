@@ -104,7 +104,7 @@ CREATE TABLE [prefix_groups] (
 CREATE TABLE [prefix_labels] (
   [lid] INT NOT NULL default '0',
   [code] VARCHAR(5) NOT NULL default '',
-  [title] text,
+  [title] VARCHAR(4000),
   [sortorder] INT NOT NULL,
   [language] VARCHAR(20) default 'en',
   PRIMARY KEY  ([lid],[sortorder],[language]),

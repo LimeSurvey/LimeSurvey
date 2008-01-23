@@ -2396,7 +2396,7 @@ function buildLabelsetCSArray()
 		$query2 = "SELECT code, title, sortorder, language
                    FROM ".db_table_name('labels')."
                    WHERE lid={$row['lid']}
-                   ORDER BY sortorder, code";
+                   ORDER BY language, sortorder, code";
 		$result2 = db_execute_num($query2) or die("Died querying labelset $lid<br />$query2<br />".htmlspecialchars($connect->ErrorMsg()));
 		while($row2=$result2->FetchRow())
 		{
