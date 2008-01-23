@@ -1375,7 +1375,7 @@ if (returnglobal('viewanswer'))
 	.$clang->gT("Edit Answers")
 	."\t</td>\n"
 	."</tr>\n"
-	."\t<tr><td colspan='5'><form name='editanswers' method='post' action='$scriptname'onsubmit=\"return codeCheck('code_',$anscount,'".$clang->gT("Error: You are trying to use duplicate answer codes.",'js')."');\""
+	."\t<tr><td colspan='5'><form name='editanswers' method='post' action='$scriptname'onsubmit=\"return codeCheck('code_',$anscount,'".$clang->gT("Error: You are trying to use duplicate answer codes.",'js')."');\">\n"
 	. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
 	. "\t<input type='hidden' name='gid' value='$gid' />\n"
 	. "\t<input type='hidden' name='qid' value='$qid' />\n"
