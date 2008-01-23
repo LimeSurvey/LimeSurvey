@@ -280,7 +280,6 @@ if (isset($questionarray)) {$countquestions = count($questionarray);} else {$cou
 if (isset($answerarray)) {$countanswers = count($answerarray);} else {$countanswers=0;}
 if (isset($conditionsarray)) {$countconditions = count($conditionsarray);} else {$countconditions=0;}
 if (isset($labelsetsarray)) {$countlabelsets = count($labelsetsarray);} else {$countlabelsets=0;}
-if (isset($labelsarray)) {$countlabels = count($labelsarray);} else {$countlabels=0;}
 if (isset($question_attributesarray)) {$countquestion_attributes = count($question_attributesarray);} else {$countquestion_attributes=0;}
 if (isset($assessmentsarray)) {$countassessments=count($assessmentsarray);} else {$countassessments=0;}
 
@@ -544,7 +543,7 @@ if ($importversion>=111)
 // DO SURVEY_RIGHTS
 $isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($newsid,".$_SESSION['loginID'].",1,1,1,1,1,1)";
 @$isrresult = $connect->Execute($isrquery);
-
+$deniedcountlabelsets =0;
 
 
 //DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEIR NEW LID IS FOR THE QUESTIONS
@@ -646,15 +645,16 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 				}
 			}
 		}
-		if (isset($lsmatch))
+		if (isset($lsmatch) || ($_SESSION['USER_RIGHT_MANAGE_LABEL'] != 1))
 		{
-			//There is a matching labelset. So, we will delete this one and refer
-			//to the matched one.
+			//There is a matching labelset or the user is not allowed to edit labels -  
+            // So, we will delete this one and refer to the matched one.
 			$query = "DELETE FROM {$dbprefix}labels WHERE lid=$newlid";
 			$result=$connect->Execute($query) or die("Couldn't delete labels<br />$query<br />".$connect->ErrorMsg());
 			$query = "DELETE FROM {$dbprefix}labelsets WHERE lid=$newlid";
 			$result=$connect->Execute($query) or die("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
-			$newlid=$lsmatch;
+			if (isset($lsmatch)) {$newlid=$lsmatch;}
+              else {++$deniedcountlabelsets;--$countlabelsets;}
 		}
 		else
 		{
@@ -1076,7 +1076,11 @@ if ($importingfrom == "http")
 	$importsurvey .= "\t<li>".$clang->gT("Questions").": $countquestions</li>\n";
 	$importsurvey .= "\t<li>".$clang->gT("Answers").": $countanswers</li>\n";
 	$importsurvey .= "\t<li>".$clang->gT("Conditions").": $countconditions</li>\n";
-	$importsurvey .= "\t<li>".$clang->gT("Label Sets").": $countlabelsets (".$clang->gT("Labels").": $countlabels)</li>\n";
+	$importsurvey .= "\t<li>".$clang->gT("Label Sets").": $countlabelsets</li>\n";
+    if ($deniedcountlabelsets>0) 
+    {
+        $importsurvey .= "\t<li>".$clang->gT("Not imported Label Sets").": $deniedcountlabelsets ".$clang->gT("(Label Sets were not imported since you do not have the permission to create new label sets.)")."</li>\n"; 
+    }
 	$importsurvey .= "\t<li>".$clang->gT("Question Attributes").": $countquestion_attributes</li>\n";
 	$importsurvey .= "\t<li>".$clang->gT("Assessments").": $countassessments</li>\n</ul>\n";
 	
@@ -1099,7 +1103,8 @@ else
 	echo $clang->gT("Questions").": $countquestions\n";
 	echo $clang->gT("Answers").": $countanswers\n";
 	echo $clang->gT("Conditions").": $countconditions\n";
-	echo $clang->gT("Label Sets").": $countlabelsets (".$clang->gT("Labels").": $countlabels)\n";
+	echo $clang->gT("Label Sets").": $countlabelsets\n";
+    if ($deniedcountlabelsets>0) echo $clang->gT("Not imported Label Sets").": $deniedcountlabelsets (".$clang->gT("Label Sets were not imported since you do not have the permission to create new label sets.");
 	echo $clang->gT("Question Attributes").": $countquestion_attributes\n";
 	echo $clang->gT("Assessments").": $countassessments\n\n";
 	
