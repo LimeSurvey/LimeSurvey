@@ -27,7 +27,14 @@ if ($action == "addquestion")
 	. "\t\t<td colspan='2' class='settingcaption'>"
 	. "\t\t<strong>".$clang->gT("Add Question")."\n"
 	. "\t\t</strong></td>\n"
-	. "\t</tr>\n"
+	. "\t</tr></table>\n";
+
+	$newquestionoutput .=  "\t".'<div class="tab-pane" id="tab-pane-1">'."\n"; 
+
+	$newquestionoutput .=  "\t".'<div class="tab-page"> <h2 class="tab">'.$clang->gT("Add Question")."</h2>\n"; 
+
+
+	$newquestionoutput .= "<table width='100%' border='0' class='form2columns'>"
 	. "\t<tr>\n"
 	. "\t\t<td align='right'  width='35%'><strong>".$clang->gT("Code:")."</strong></td>\n"
 	. "\t\t<td align='left'><input type='text' maxlength='20' size='20' name='title' id='title' />"
@@ -146,7 +153,7 @@ if ($action == "addquestion")
 						</select>
 						<input type='text' id='QTtext' name='attribute_value'  /></td></tr>\n";
 	$newquestionoutput .= "\t<tr>\n"
-	. "\t\t<td colspan='2' align='center'>";
+	. "\t\t<td align='right'></td><td align='left'>";
 
 	if (isset($eqrow)) {$newquestionoutput .= questionjavascript($eqrow['type'], $qattributes);}
 	else {$newquestionoutput .= questionjavascript('', $qattributes);}
@@ -158,12 +165,16 @@ if ($action == "addquestion")
 	. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
 	. "\t<input type='hidden' name='gid' value='$gid' />\n"
 	. "</td></tr></table>\n"
-	. "\t</form>\n"
+	. "</div>\n" // End TAB
+	. "\t</form>\n";
+
+	// Import TAB
+	$newquestionoutput .='<div class="tab-page"> <h2 class="tab">'.$clang->gT("Import Question")."</h2>\n";
+
+	$newquestionoutput .= ""
 	. "\t<form enctype='multipart/form-data' name='importquestion' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
 	. "<table width='100%' border='0' >\n\t"
-	. "<tr><td colspan='2' align='center'><strong>".$clang->gT("OR")."</strong></td></tr>\n"
-	. "<tr><td colspan='2' class='settingcaption'>\n"
-	. "\t\t<strong>".$clang->gT("Import Question")."</strong></td></tr>\n\t<tr>"
+	. "\t<tr>"
 	. "\t\t<td align='right' width='35%'><strong>".$clang->gT("Select CSV File").":</strong></td>\n"
 	. "\t\t<td align='left'><input name=\"the_file\" type=\"file\" size=\"50\" /></td></tr>\n"
 	. "\t\t<tr>\t\t<td align='right' width='35%'>".$clang->gT("Convert Resources links ?")."</td>\n"
@@ -180,6 +191,7 @@ if ($action == "addquestion")
 	."//-->\n"
 	."</script>\n";
 
+	$newquestionoutput .='</div>';
 }
 
 if ($action == "copyquestion")
