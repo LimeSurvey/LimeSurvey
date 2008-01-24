@@ -165,7 +165,11 @@
    
 	    // Norwegian Bokmål
 	    $supportedLanguages['nb']['description'] = $clang->gT('Norwegian (Bokmal)');
-	    $supportedLanguages['nb']['nativedescription'] = 'Norsk bokm&#229;l';
+	    $supportedLanguages['nb']['nativedescription'] = 'Norsk Bokm&#229;l';
+
+	    // Norwegian Nynorsk 
+	    $supportedLanguages['nn']['description'] = $clang->gT('Norwegian (Nynorsk)');
+	    $supportedLanguages['nn']['nativedescription'] = 'Norsk Nynorsk';
 
         // Polish
         $supportedLanguages['pl']['description'] = $clang->gT('Polish');

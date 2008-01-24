@@ -1,0 +1,361 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: LimeSurvey Norwegian Nynorsk language file\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2008-01-11 21:44+0100\n"
+"Last-Translator: Guttorm Flatabø <gfl@vestforsk.no>\n"
+"Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-Language: Norwegian Nynorsk\n"
+"X-Poedit-Country: NORWAY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: D:\\xampp\\xampp\\htdocs\\limesurvey\n"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nei"
+
+msgid "Uncertain"
+msgstr "Usikker"
+
+msgid "Tokens"
+msgstr "Pollettar"
+
+msgid "Female"
+msgstr "Kvinne"
+
+msgid "Male"
+msgstr "Mann"
+
+msgid "No answer"
+msgstr "Inkje svar"
+
+msgid "NA"
+msgstr "Gjeld ikkje"
+
+msgid "Other"
+msgstr "Anna"
+
+msgid "Please choose"
+msgstr "Velj"
+
+msgid "Error"
+msgstr "Feil"
+
+# fullstendig?
+msgid "complete"
+msgstr "komplett"
+
+msgid "Increase"
+msgstr "Auk"
+
+# Same, lik?
+msgid "Same"
+msgstr "Uendra"
+
+msgid "Decrease"
+msgstr "Reduser"
+
+msgid "Confirmation"
+msgstr "Stadfesting"
+
+# Betre omsetjing? Kjennemerke, sjetong?
+msgid "Token"
+msgstr "Pollett"
+
+msgid "Continue"
+msgstr "Hald fram"
+
+msgid "Accept"
+msgstr "Godkjenn"
+
+msgid "prev"
+msgstr "førre"
+
+msgid "next"
+msgstr "neste"
+
+msgid "last"
+msgstr "siste"
+
+msgid "submit"
+msgstr "send"
+
+msgid "Please choose one of the following"
+msgstr "Velj ein av følgjande"
+
+msgid "Please enter your comment here"
+msgstr "Skriv dine kommentarar her"
+
+msgid "Only numbers may be entered in this field"
+msgstr "Kun siffer kan brukast i desse felta"
+
+msgid "Exit and Clear Survey"
+msgstr "Avbryt og tøm undersøkinga"
+
+msgid "This question is mandatory"
+msgstr "Dette spørsmålet er obligatorisk"
+
+msgid "Please complete all parts"
+msgstr "Du må fylle ut alle felta"
+
+# Element er her ein anglisisme, kva med objekt eller del?
+msgid "Please check at least one item"
+msgstr "Velj minst eitt element"
+
+# Element er her ein anglisisme, kva med objekt eller del?
+msgid "Please rank all items"
+msgstr "Alle elementa må rangerast"
+
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
+msgstr "Eitt eller fleire av dei obligatoriske spørsmåla er ikke svart på. Du får ikkje halda fram før du har svart på dei"
+
+msgid "Format: YYYY-MM-DD"
+msgstr "Format: ÅÅÅÅ-MM-DD"
+
+# litt for lang streng?
+msgid "(eg: 2003-12-25 for Christmas day)"
+msgstr "(til dømes 2008-01-01 for første nyttårsdag)"
+
+# Element er her ein anglisisme, kva med objekt eller del?
+msgid "Remove this item"
+msgstr "Fjern dette elementet"
+
+msgid "Click on an item in the list on the left, starting with your"
+msgstr "Klikk på eit element i lista til venstre. Start med ditt"
+
+msgid "highest ranking item, moving through to your lowest ranking item."
+msgstr "høgst rangerte element, og hald fram til og med det du rangerar lågast."
+
+msgid "Your Choices"
+msgstr "Vala dine"
+
+msgid "Your Ranking"
+msgstr "Rangeringa di"
+
+msgid "Click on the scissors next to each item on the right"
+msgstr "Klikk på saksa ved sida av kvart element til høgre"
+
+msgid "to remove the last entry in your ranked list"
+msgstr "for å fjerna det siste elementet i rangeringslista di"
+
+msgid "You have not provided a survey identification number"
+msgstr "Du har ikkje oppgjeve noko undersøkings-id"
+
+msgid "Please contact"
+msgstr "Ta kontakt med"
+
+msgid "for further assistance"
+msgstr "for hjelp"
+
+msgid "Answers Cleared"
+msgstr "Svara er fjerna"
+
+msgid "Restart this Survey"
+msgstr "Start undersøkinga på nytt"
+
+msgid "Close this Window"
+msgstr "Lukk dette vindauget"
+
+msgid "Are you sure you want to clear all your responses?"
+msgstr "Er du sikker på at du vil fjerna alle svara dine?"
+
+msgid "Cannot submit results - there are none to submit."
+msgstr "Kan ikkje senda svara. Det er ingen å senda."
+
+# the line break tags should have a slash in them, not included because of encoding trouble?
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.<br ><br >If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refreshreload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "Denne feilen kan oppstå dersom du allereie har sendt inn svara dine og så klikka på 'Oppdater'-knappen i nettlesaren din. I så tilfelle har svara dine allereie blitt lagra.<br ><br >Dersom du har fått denne meldinga midt under ei undersøking, bør du klikka på '<- Tilbake' i nettlesaren din og så 'Oppdater' på sida du kjem tilbake til. Du vil måtta svara på førre spørsmålssida på nytt, men alle svar før den att er lagra. Dette problemet oppstår når vevtenaren som spørjeskjemaet ligg på er overbelasta. Me beklagar."
+
+msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr "Svara dine har ikkje blitt lagra. Denne undersøkinga er førebels ikkje aktiv."
+
+msgid "Clear Responses"
+msgstr "Fjern svar"
+
+msgid "Thank you"
+msgstr "Takk"
+
+msgid "Your survey responses have been recorded."
+msgstr "Svara dine har blitt lagra."
+
+# Undersøkinga er ferdig?
+msgid "Survey Completed"
+msgstr "Undersøking ferdig"
+
+# Ev. "Vart ikkje lagra"?
+msgid "Did Not Save"
+msgstr "Lagra ikkje"
+
+msgid "An unexpected error has occurred and your responses cannot be saved."
+msgstr "Ein uventa feil har medført at svara dine ikkje kunne lagrast."
+
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr "Svara dine har ikkje forsvunne. Dei har blitt sendt til undersøkingsadministratoren og vil bli lagt inn i databasen seinare."
+
+# "survey id" bør omsetjast betre?
+msgid "An error occurred saving a response to survey id"
+msgstr "Ein feil oppsto ved lagring av svar på spørsmål i undersøking"
+
+msgid "DATA TO BE ENTERED"
+msgstr "DATA SOM SKULLE LAGRAST"
+
+msgid "SQL CODE THAT FAILED"
+msgstr "SQL-KODE SOM FEILA"
+
+msgid "ERROR MESSAGE"
+msgstr "FEILMELDING"
+
+msgid "Error saving survey results to database"
+msgstr "Feil ved lagring til databasen"
+
+msgid "Try to submit again"
+msgstr "Prøv å lagra om att"
+
+msgid "Sorry. There is no matching survey."
+msgstr "Beklagar, me finn ikkje den førespurde undersøkinga."
+
+msgid "This is a controlled survey. You need a valid token to participate."
+msgstr "Beklagar, dette er ei tilgangsavgrensa undersøking. Du treng ein pollett for å delta."
+
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
+msgstr "Dersom du har fått ein pollett, så fyll den inn i feltet under og klikk på hald fram."
+
+msgid "The token you have provided is either not valid, or has already been used."
+msgstr "Polletten du skreiv inn er anten ugyldig, eller har allereie blitt brukt."
+
+msgid "This survey does not yet have any questions and cannot be tested or completed."
+msgstr "Denne undersøkinga har førebels ingen spørsmål og kan difor verken testast eller køyrast."
+
+msgid "For further information contact"
+msgstr "For meir informasjon, ta kontakt med"
+
+msgid "This survey is not currently active. You will not be able to save your responses."
+msgstr "Denne undersøkinga er ikkje aktiv. Svar kan ikkje lagrast."
+
+msgid "This survey is no longer available."
+msgstr "Denne undersøkinga er ikkje tilgjengeleg lenger."
+
+msgid "You have already completed this survey."
+msgstr "Du har allereie svart på denne undersøkinga."
+
+msgid "Choose only one of the following"
+msgstr "Velj berre ein av følgjande"
+
+msgid "Check any that apply"
+msgstr "Velj så mange alternativ som passar"
+
+msgid "Survey Submitted"
+msgstr "Undersøkingssvaret er sendt"
+
+# Eller "Eit nytt svar har blitt sendt inn frå undersøkinga di"?
+msgid "A new response was entered for your survey"
+msgstr "Eit nytt svar vart gjeve for undersøkinga di"
+
+msgid "Click the following link to see the individual response:"
+msgstr "Klikk på følgjande lenkje for å sjå svara:"
+
+msgid "View statistics by clicking here:"
+msgstr "Sjå statistikk ved å klikke her:"
+
+# line break tags should have a slash at the end
+msgid "<strong><i>A Note On Privacy<i><strong><br >This survey is anonymous.<br >The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "<strong><i>Om personvern<i><strong><br >Denne undersøkinga er anonym.<br >Dataa lagra under utfyllinga inneheld ikkje identifiserande informasjon om deg med mindre eit spesifikt spørsmål i undersøkinga spør om slik informasjon. Dersom du har svart på ei undersøking som brukar ein identifiserande pollett for å gje deg tilgang til undersøkinga kan du vera trygg på at denne polletten ikkje er lagra saman med svara dine. Den er lagra i ein eigen database og blir berre brukt for halda styr på om du har svart på undersøkinga eller ikkje. Det er ikkje mogleg å kopla denne polletten med svara i undersøkinga."
+
+msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
+msgstr "Det er {NUMBEROFQUESTIONS} spørsmål i denne undersøkinga."
+
+msgid "There is 1 question in this survey."
+msgstr "Det er eitt spørsmål i denne undersøkinga."
+
+msgid "You must be registered to complete this survey"
+msgstr "Du må vera registrert for å fullføra denne undersøkinga"
+
+msgid "You may register for this survey if you wish to take part.<br >nEnter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr "Du kan registrera deg dersom du ønskjer å ta del i undersøkinga.<br >nFyll inn detaljane om deg under. Ein e-post med den informasjonen du treng for å ta del i undersøkinga vil bli sendt til deg med det same."
+
+msgid "Email Address"
+msgstr "E-postadresse"
+
+msgid "First Name"
+msgstr "Førenamn"
+
+msgid "Last Name"
+msgstr "Etternamn"
+
+msgid "The email you used is not valid. Please try again."
+msgstr "E-postadressa du gav er ikkje gyldig. Prøv om att."
+
+msgid "The email you used has already been registered."
+msgstr "E-postadressa du brukte er allereie registrert."
+
+msgid "{SURVEYNAME} Registration Confirmation"
+msgstr "Registreringsstadfesting frå {SURVEYNAME}"
+
+msgid "Thank you for registering to participate in this survey.<br ><br >nAn email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.<br ><br >nSurvey Administrator {ADMINNAME} ({ADMINEMAIL})"
+msgstr "Takk for at du registrerte deg for å ta del i denne undersøkinga.<br ><br >nEin e-post med tilgangsinformasjon for undersøkinga har blitt sendt til e-postadressa du gav. Følj lenkja i e-posten for å halda fram.<br ><br >nUndersøkingsadministrator {ADMINNAME} ({ADMINEMAIL})"
+
+msgid "<strong>Thank You<br ><br >You have completed answering the questions in this survey.<strong><br ><br >Click on [-._SUBMIT.-] now to complete the process and save your answers."
+msgstr "<strong>Takk<br ><br >Du har no svart på alle spørsmåla i undersøkinga.<strong><br ><br >Trykk [-._SUBMIT.-] for å fullføra og lagra svara dine."
+
+msgid "If you want to check any of the answers you have made, andor change them, you can do that now by clicking on the [<< -._PREV.-] button and browsing through your responses."
+msgstr "Dersom du ønskjer å endra eller sjå gjennom svara dine kan du klikka på [<< -._PREV.-]."
+
+msgid "Please choose <strong>only one<strong> of the following:"
+msgstr "Velj <strong>berre ein<strong> av følgjande:"
+
+msgid "Please write your answer here:"
+msgstr "Skriv svaret ditt her:"
+
+# Skal det kanskje vera "alle"?
+msgid "Please choose <strong>all<strong> that apply:"
+msgstr "Velj <strong>alt<strong> som passar:"
+
+# Skal det vera "alle"?
+msgid "Please choose all that apply and provide a comment:"
+msgstr "Velj alt som passar og gje ein kommentar:"
+
+msgid "Please choose the appropriate response for each item:"
+msgstr "Velj eit passande svar for kvart element:"
+
+msgid "Please write your answer(s) here:"
+msgstr "Skriv svar(a dine) her:"
+
+msgid "Please enter a date:"
+msgstr "Oppgje ein dato:"
+
+msgid "Make a comment on your choice here:"
+msgstr "Kommenter valet ditt her:"
+
+msgid "Please number each box in order of preference from 1 to"
+msgstr "Nummerer kvar boks i prioritert rekkefølgje frå 1 til"
+
+msgid "Submit Your Survey."
+msgstr "Send inn undersøkinga."
+
+msgid "Thank you for completing this survey."
+msgstr "Takk for at du gjennomførte undersøkinga."
+
+msgid "Please fax your completed survey to:"
+msgstr "Send den ferdige undersøkinga som faks til:"
+
+msgid "Only answer this question"
+msgstr "Du skal berre svara på dette spørsmålet"
+
+msgid "if you answered"
+msgstr "dersom du svarte"
+
+msgid "and"
+msgstr "og"
+
+msgid "to question"
+msgstr "på spørsmål"
+
+msgid "or"
+msgstr "eller"
+
