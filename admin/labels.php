@@ -421,6 +421,12 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     	$labelsoutput.= "</form>"; // End First TABs form
 
 	// TAB for resources management
+	$ZIPimportAction = " onclick='if (validatefilename(this.form,\"".$clang->gT('Please select a file to import!','js')."\")) {this.form.submit();}'";
+	if (!function_exists("zip_open"))
+	{
+		$ZIPimportAction = " onclick='alert(\"".$clang->gT("zip library not supported by PHP, Import ZIP Disabled","js")."\");'";
+	}
+
 	$labelsoutput.= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Uploaded Resources Management")."</h2>\n"
 		. "\t<form enctype='multipart/form-data' name='importlabelresources' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
 		. "\t<input type='hidden' name='lid' value='$lid'>\n"
@@ -432,7 +438,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 		. "\t\t<tr><td></td><td><input type='button' onclick='window.open(\"$scriptname?action=exportlabelresources&amp;lid={$lid}\", \"_blank\")'/ value=\"".$clang->gT("Export Zip archive of uploaded ressources")."\"></td><td><td></tr>\n"
 		. "\t\t<tr></tr>&nbsp;<tr><td>".$clang->gT("Select ZIP File:")."</td>\n"
 		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"50\" /></td><td></td></tr>\n"
-		. "\t\t<tr><td></td><td><input type='submit' value='".$clang->gT("Import Resources ZIP Archive")."' /></td><td></td>\n"
+		. "\t\t<tr><td></td><td><input type='button' value='".$clang->gT("Import Resources ZIP Archive")."' $ZIPimportAction/></td><td></td>\n"
 		. "\t\t</tr>\n"
 		. "\t</tbody></table></form>\n";
 
