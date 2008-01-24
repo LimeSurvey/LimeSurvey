@@ -24,10 +24,10 @@ dark:	rgb(0,66,174);
 	padding:		3px 6px 3px 6px;
 	background:		rgb(234,242,255);
 	border:			1px solid;
-	border-color:	rgb(120,172,255);
-	border-left:	0;
+	border-color:	rgb(210,210,210);
+	border-left:	1;
 	border-bottom:	0;
-	border-top:		0;
+	border-top:	    1;
 	
 	cursor:			hand;
 	cursor:			pointer;
@@ -36,6 +36,7 @@ dark:	rgb(0,66,174);
 	position:		relative;
 	top:			0;
 }
+
 
 .dynamic-tab-pane-control .tab-row .tab.selected {
 	border:			1px solid rgb(120,172,255);
@@ -65,6 +66,7 @@ dark:	rgb(0,66,174);
 	color: #328639;
 }
 
+
 .dynamic-tab-pane-control .tab-page {
 	clear:			both;
 	border:			1px solid #888888;
@@ -76,6 +78,7 @@ dark:	rgb(0,66,174);
 	font-family:	Verdana, Helvetica, Arial;
 	font-size:		13px;
 	padding:		   10px;
+    padding-bottom: 20px;
 }
 
 .dynamic-tab-pane-control .tab-row {
