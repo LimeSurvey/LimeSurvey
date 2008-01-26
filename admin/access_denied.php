@@ -113,6 +113,11 @@ if (isset($_SESSION['loginID']))
 		$accesssummary .= "<p>".$clang->gT("You are not allowed to to import a question!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
+	elseif($action == "CSRFwarn")
+		{		
+		$accesssummary .= "<p><font color='red'>".$clang->gT("Security Alert")."</font>: ".$clang->gT("Someone my be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator.")."</p>";
+		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+		}
 	else
 		{
 		$accesssummary .= "<br />".$clang->gT("You are not allowed to perform this operation!")."<br />\n";		

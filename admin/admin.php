@@ -49,6 +49,11 @@ if ($action != "showprintablesurvey")
 include_once("login_check.php");
 
 
+if ( $action == 'CSRFwarn')
+{
+	include("access_denied.php");
+}
+
 if(isset($_SESSION['loginID']) && $action!='login')
 {
   //VARIOUS DATABASE OPTIONS/ACTIONS PERFORMED HERE
