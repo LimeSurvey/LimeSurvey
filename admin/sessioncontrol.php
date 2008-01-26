@@ -75,11 +75,13 @@ $clang = new limesurvey_lang($_SESSION['adminlang']);
 // get user rights
 if(isset($_SESSION['loginID'])) {GetSessionUserRights($_SESSION['loginID']);}
 	
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && returnglobal('action') != 'login')
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && 
+	returnglobal('action') != 'login' &&
+	returnglobal('action') != '')
 {
 	if (returnglobal('checksessionbypost') != $_SESSION['checksessionpost'])
 	{
-		error_log("LimeSurvey ERROR while checking POST session- Probable CSRF attack Received=".returnglobal('checksessionbypost')." / Expected= ".$_SESSION['checksessionpost']." .");
+		error_log("LimeSurvey ERROR while checking POST session- Probable CSRF attack Received=".returnglobal('checksessionbypost')." / Expected= ".$_SESSION['checksessionpost']." for action=".returnglobal('action')." .");
 		$action='';
 		$subaction='';
 		if (isset($_POST['action'])) {unset($_POST['action']);}
