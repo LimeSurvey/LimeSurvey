@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && returnglobal('action') != 'login')
 {
 	if (returnglobal('checksessionbypost') != $_SESSION['checksessionpost'])
 	{
-		error_log("LimeSurvey ERROR while checking POST session- Probable CSRF attack");
+		error_log("LimeSurvey ERROR while checking POST session- Probable CSRF attack Received=".returnglobal('checksessionbypost')." / Expected= ".$_SESSION['checksessionpost']." .");
 		$action='';
 		$subaction='';
 		if (isset($_POST['action'])) {unset($_POST['action']);}

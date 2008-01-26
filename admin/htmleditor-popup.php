@@ -53,6 +53,7 @@ if (!isset($_GET['fieldname']) || !isset($_GET['fieldtext']))
 		</table>
 		<form  onsubmit="self.close()">
 			<input type="submit" value="'.$clang->gT("Close Editor").'" />
+			<input type="hidden" name="checksessionbypost" value="'.$_SESSION['checksessionpost'].'" />
 		</form>
 	</body>
 	</html>';
@@ -95,6 +96,7 @@ else {
 	<body>
 	<form method='post' onsubmit='saveChanges=true;'>
 
+			<input type='hidden' name='checksessionbypost' value='".$_SESSION['checksessionpost']."' />
 			<script type='text/javascript'>
 	<!--
 	window.onbeforeunload= function (evt) {
