@@ -91,7 +91,7 @@ elseif ($action == "dumplabel")
   }      
 elseif ($action == "exportlabelresources") 
   { 
-      if ($_SESSION['USER_RIGHT_MANAGE_TEMPLATE']==1)  {include("export_resources_zip.php");}
+      if ($_SESSION['USER_RIGHT_MANAGE_TEMPLATE']==1)  {$_SESSION['FileManagerContext']="edit:label:$lid";include("export_resources_zip.php");}
         else { include("access_denied.php");}
   }      
 elseif ($action == "checkintegrity") 
@@ -145,7 +145,7 @@ elseif ($action == "conditions")
     }    
 elseif ($action == "importsurvresources") 
   { 
-      if ($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)	{include("import_resources_zip.php");}
+      if ($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)	{$_SESSION['FileManagerContext']="edit:survey:$surveyid";include("import_resources_zip.php");}
 	    else { include("access_denied.php");}
   }      
 elseif ($action == "exportstructurecsv")
@@ -160,7 +160,7 @@ elseif ($action == "exportstructurequexml")
     }    
 elseif ($action == "exportsurvresources")
     {
-    if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("export_resources_zip.php");}
+    if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {$_SESSION['FileManagerContext']="edit:survey:$surveyid";include("export_resources_zip.php");}
         else { include("access_denied.php");}    
     }    
 elseif ($action == "dumpquestion")

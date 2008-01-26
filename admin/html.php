@@ -2439,6 +2439,12 @@ if ($action == "editsurvey")
 			$ZIPimportAction = " onclick='alert(\"".$clang->gT("zip library not supported by PHP, Import ZIP Disabled","js")."\");'";
 		}
 
+		$disabledIfNoResources = '';
+		if (hasResources($surveyid,'survey') === false)
+		{
+			$disabledIfNoResources = " disabled='disabled'";
+		}
+
 		$editsurvey .= "\t<div class='tab-page'> <h2 class='tab'>".$clang->gT("Uploaded Resources Management")."</h2>\n"
 		. "\t<form enctype='multipart/form-data' name='importsurvresources' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
 		. "\t<input type='hidden' name='sid' value='$surveyid'>\n"
@@ -2446,8 +2452,8 @@ if ($action == "editsurvey")
 		. "\t<table width='100%' class='form2columns'>\n"
 		. "\t<tbody align='center'>"
 		. "\t\t<tr><td></td><td>\n"
-		. "\t\t<input type='button' onclick='window.open(\"$homeurl/scripts/fckeditor/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php\", \"_blank\")'/ value=\"".$clang->gT("Browse Uploaded Ressources")."\"></td><td><td></tr>\n"
-		. "\t\t<tr><td></td><td><input type='button' onclick='window.open(\"$scriptname?action=exportsurvresources&amp;sid={$surveyid}\", \"_blank\")'/ value=\"".$clang->gT("Export Zip archive of uploaded ressources")."\"></td><td><td></tr>\n"
+		. "\t\t<input type='button' onclick='window.open(\"$homeurl/scripts/fckeditor/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php\", \"_blank\")'/ value=\"".$clang->gT("Browse Uploaded Ressources")."\" $disabledIfNoResources></td><td><td></tr>\n"
+		. "\t\t<tr><td></td><td><input type='button' onclick='window.open(\"$scriptname?action=exportsurvresources&amp;sid={$surveyid}\", \"_blank\")'/ value=\"".$clang->gT("Export Zip archive of uploaded ressources")."\" $disabledIfNoResources></td><td><td></tr>\n"
 		. "\t\t<tr></tr>&nbsp;<tr><td>".$clang->gT("Select ZIP File:")."</td>\n"
 		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"50\" /></td><td></td></tr>\n"
 		. "\t\t<tr><td></td><td><input type='button' value='".$clang->gT("Import Resources ZIP Archive")."' $ZIPimportAction /></td><td></td>\n"

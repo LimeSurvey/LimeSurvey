@@ -4356,6 +4356,43 @@ function transInsertAns($newsid,$oldsid,$fieldnames)
 		} // Enf if modified
 	} // end while qentry
 }
-		
+
+function hasResources($id,$type='survey')
+{
+	global $publicdir;
+	$dirname = "$publicdir/upload";
+
+	if ($type == 'survey')
+	{
+		$dirname .= "/surveys/$id";
+	}
+	elseif ($type == 'label')
+	{
+		$dirname .= "/labels/$id";
+	}
+	else
+	{
+		return false;
+	}
+
+	if (is_dir($dirname) && $dh=opendir($dirname))
+	{
+		while(($entry = readdir($dh)) !== false)
+		{
+			if($entry !== '.' && $entry !== '..')
+			{
+				return true;
+				break;
+			}
+		}
+		closedir($dir);
+	}
+	else
+	{
+		return false;
+	}
+
+	return false;
+}
 
 ?>
