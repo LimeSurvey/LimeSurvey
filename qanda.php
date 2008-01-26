@@ -3288,6 +3288,7 @@ function do_array_flexiblecolumns($ia)
 		}
 		foreach ($answers as $ld)
 		{
+            $myfname = $ia[1].$ansrow['code'];
 			if (!isset($trbc) || $trbc == "array2") {$trbc = "array1";} else {$trbc = "array2";}
 			/* Check if this item has not been answered: the 'notanswered' variable must be an array,
 			containing a list of unanswered questions, the current question must be in the array,
@@ -3433,8 +3434,6 @@ function do_array_flexible_dual($ia)
 		. "}\n"
 		. " //-->\n"
 		. " </script>\n";
-		$anscount_dual = $anscount * 2;
-		$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount_dual' />\n";
 		$answer .= "\t\t\t<table class='question'>\n"
 		. "\t\t\t\t<tr>\n"
 		. "\t\t\t\t\t<td width='$answerwidth%'></td>\n";
@@ -3491,6 +3490,9 @@ function do_array_flexible_dual($ia)
 			if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
 			$answertext=answer_replace($ansrow['answer']);
 			$answertextsave=$answertext;
+            
+            $dualgroup=0; 
+            $myfname = $ia[1].$ansrow['code']."#".$dualgroup;
 			/* Check if this item has not been answered: the 'notanswered' variable must be an array,
 			containing a list of unanswered questions, the current question must be in the array,
 			and there must be no answer available for the item in this session. */
@@ -3515,15 +3517,14 @@ function do_array_flexible_dual($ia)
 			}
             if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
             
-			$dualgroup=0; 
-			$myfname = $ia[1].$ansrow['code']."#".$dualgroup;
+
 			array_push($inputnames,$myfname);
 			$answer .= "\t\t\t\t$htmltbody2<tr class='$trbc'>\n"
 			. "\t\t\t\t\t<td align='right' class='answertext' width='$answerwidth%'>$answertext\n"
 			. "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
 			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
 			$answer .= "' /></td>\n";
-			$thiskey=0;
+     		$thiskey=0;
 			
 			foreach ($labelcode as $ld)
 			{
@@ -3545,7 +3546,7 @@ function do_array_flexible_dual($ia)
 				$myfname1 = $ia[1].$ansrow['code']."#".$dualgroup; // new multi-scale-answer
 				array_push($inputnames,$myfname1);
 				$answer .= "<input type='hidden' name='java$myfname1' id='java$myfname1' value='";
-				if (isset($_SESSION[$myfname1])) {$answer .= $_SESSION[$myfname1];}
+                if (isset($_SESSION[$myfname1])) {$answer .= $_SESSION[$myfname1];}
 				$answer .= "' />";
                 $thiskey=0;
 				foreach ($labelcode1 as $ld) // second label set
