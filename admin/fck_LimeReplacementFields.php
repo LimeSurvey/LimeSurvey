@@ -26,7 +26,8 @@ if (!isset($qid)) {$qid=returnglobal('qid');}
 $fieldtype=preg_replace("/[^_.a-zA-Z0-9-]/", "",$_GET['fieldtype']);
 $action=preg_replace("/[^_.a-zA-Z0-9-]/", "",$_GET['editedaction']);
 
-$InsertansUnsupportedtypes=Array('TEST-A','TEST-B','TEST-C','TEST-D');
+//$InsertansUnsupportedtypes=Array('TEST-A','TEST-B','TEST-C','TEST-D');
+$InsertansUnsupportedtypes=Array(); // Currently all question types are supported
 
 $replFields=Array();
 $isInstertansEnabled=false;
@@ -63,6 +64,7 @@ $limereplacementoutput=""
 	. "</script>\n";
 	
 	
+$limereplacementoutput .= "<table><tr><td>";
 
 switch ($fieldtype)
 {
@@ -122,7 +124,9 @@ if ($isInstertansEnabled===true)
 	
 
 
+	$surveyformat =  getSurveyFormat($surveyid);// S, G, A
 	$prevquestion=null;
+	$previouspagequestion = true;
 	//Go through each question until we reach the current one
 	//error_log(print_r($qrows,true));
 	foreach ($qrows as $qrow)
@@ -171,7 +175,26 @@ if ($isInstertansEnabled===true)
 
 		if ( $AddQuestion===True)
 		{
-			$questionlist[]=$qrow["qid"];
+			if ($surveyformat == "S")
+			{
+				$previouspagequestion = true;
+			}
+			elseif ($surveyformat == "G")
+			{
+				if ($previouspagequestion === true)
+				{ // Last question was on a previous page
+					if ($qrow["gid"] == $gid)
+					{ // This question is on same page
+						$previouspagequestion = false;
+					}
+				}
+			}
+			elseif ($surveyformat == "A")
+			{
+				$previouspagequestion = false;
+			}
+
+			$questionlist[]=Array( "qid" => $qrow["qid"], "previouspage" => $previouspagequestion);
 			$prevquestion=$qrow;
 		}
 		else
@@ -204,7 +227,7 @@ if ($isInstertansEnabled===true)
 	              ."FROM {$dbprefix}questions, "
 	                   ."{$dbprefix}groups "
 	             ."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid "
-	               ."AND {$dbprefix}questions.qid=$ql "
+	               ."AND {$dbprefix}questions.qid=".$ql['qid']." "
 	               ."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
 	               ."AND {$dbprefix}groups.language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
 	
@@ -218,6 +241,7 @@ if ($isInstertansEnabled===true)
 	      $theserows[]=array("qid"=>$myrows['qid'],
 	                         "sid"=>$myrows['sid'],
 	                         "gid"=>$myrows['gid'],
+	                         "previouspage"=>$ql['previouspage'],
 	                         "question"=>$myrows['question'],
 	                         "type"=>$myrows['type'],
 	                         "lid"=>$myrows['lid'],
@@ -263,7 +287,7 @@ if ($isInstertansEnabled===true)
 	                $shortanswer = strip_tags($arows['answer']);
 	
 					$shortanswer .= " [{$arows['code']}]";
-					$cquestions[]=array("$shortquestion [$shortanswer]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']);
+					$cquestions[]=array("$shortquestion [$shortanswer]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'],$rows['previouspage']);
 	
 	      } //while
 	    } //if A,B,C,E,F,H
@@ -283,13 +307,13 @@ if ($isInstertansEnabled===true)
 				}
 				for ($i=1; $i<=$acount; $i++)
 				{
-					$cquestions[]=array("$shortquestion [RANK $i]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i);
+					$cquestions[]=array("$shortquestion [RANK $i]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i,$rows['previouspage']);
 				}
 				unset($quicky);
 	    } // for type R
 			else
 			{
-				$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
+				$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'],$rows['previouspage']);
 	    } //else
 	  } //foreach theserows
 	} //if questionscount > 0
@@ -332,10 +356,14 @@ if (isset($cquestions))
 	$limereplacementoutput .= "\t\t\t\t<optgroup label='".$clang->gT("Previous Answers Fields")."'>\n";
 	foreach ($cquestions as $cqn)
 	{
-		$isDisabled=false;
-		if (!in_array($cqn[2],$InsertansUnsupportedtypes))
+		$isDisabled="";
+		if (in_array($cqn[2],$InsertansUnsupportedtypes))
 		{
-			 $isDisabled=true;
+			 $isDisabled=" disabled='disabled'";
+		}
+		elseif ($cqn[4] === false)
+		{
+			 $isDisabled=" disabled='disabled'";
 		}
 
 		$limereplacementoutput .= "\t\t\t\t<option value='INSERTANS:$cqn[3]'";
@@ -346,6 +374,26 @@ if (isset($cquestions))
 
 
 $limereplacementoutput .= "\t\t\t</select>\n";
+$limereplacementoutput .= "</td></tr>\n";
+
+
+switch ($surveyformat)
+{
+	case 'A':
+		$limereplacementoutput .= "<tr><td>\n";
+		$limereplacementoutput .= "<br /><font color='orange'>".$clang->gT("Some Question have been disabled")."</font>";
+		$limereplacementoutput .= "<br />".$clang->gT("Survey Format is ")." ".$clang->gT("All in one").": <br /><i>".$clang->gT("Only Previous pages answers are available")."</i><br />";
+		$limereplacementoutput .= "</td></tr>\n";
+	break;
+	case 'G':
+		$limereplacementoutput .= "<tr><td>\n";
+		$limereplacementoutput .= "<br /><font color='orange'>".$clang->gT("Some Question have been disabled")."</font>";
+		$limereplacementoutput .= "<br />".$clang->gT("Survey mode is set to ")." ".$clang->gT("Group by Group").": <br/><i>".$clang->gT("Only Previous pages answers are available")."</i><br />";
+		$limereplacementoutput .= "</td></tr>\n";
+	break;
+}
+
+$limereplacementoutput .= "</table>\n";
 
 echo $limereplacementoutput;
 
