@@ -22,6 +22,8 @@ require_once('htmleditor-functions.php');
 
 // Reset FileManagerContext
 $_SESSION['FileManagerContext']='';
+// The following line debug to see if checksessionpost is set in POST
+//error_log(print_r($_POST,true));
 
 if (!isset($adminlang)) {$adminlang=returnglobal('adminlang');} // Admin language
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}         //SurveyID
@@ -440,7 +442,23 @@ elseif ($action == "replacementfields")
   unset($_SESSION['metaHeader']);    
   $adminoutput.= "\t\t</td>\n".helpscreen()
               . "\t</tr>\n"
-              . "</table>\n"
+              . "</table>\n";
+
+	$adminoutput .= "<script type=\"text/javascript\">\n"
+	. "<!--\n"
+	. "\tfor(i=0; i<document.forms.length; i++)\n"
+	. "\t{\n"
+//	. "\t\talert('TIBO formname=' + document.forms[i].name + '\\nformaction=' + document.forms[i].action);\n"
+	. "\t\tvar el = document.createElement('input');\n"
+	. "\t\tel.type = 'hidden';\n"
+	. "\t\tel.name = 'checksessionbypost';\n"
+	. "\t\tel.value = '".$_SESSION['checksessionpost']."';\n"
+	. "\t\tdocument.forms[i].appendChild(el);\n"
+	. "\t}\n"
+	. "//-->\n"
+	. "</script>\n";
+
+	$adminoutput .= ""
               . getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey Online Manual"));
   }
   
@@ -457,8 +475,14 @@ elseif ($action == "replacementfields")
   
   }
 
-if (($action=='showphpinfo') && ($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)) {phpinfo();}
-else {echo $adminoutput;}
+if (($action=='showphpinfo') && ($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)) 
+{
+	phpinfo();
+}
+else
+{
+	echo $adminoutput;
+}
 
 
   function helpscreenscript()

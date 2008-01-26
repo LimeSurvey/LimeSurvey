@@ -114,6 +114,8 @@ if (!isset($_SESSION['loginID']))
 					$_SESSION['loginID'] = intval($fields['uid']);
 					$_SESSION['user'] = $fields['users_name'];
 					$_SESSION['htmleditormode'] = $fields['htmleditormode'];
+					// Compute a checksession random number to test POSTs
+					$_SESSION['checksessionpost'] = randomkey(10);
 					if (isset($postloginlang) && $postloginlang)
 					{
 						$_SESSION['adminlang'] = $postloginlang;
@@ -590,5 +592,18 @@ elseif ($action == "usertemplates")
               }
 }
 
+function randomkey($length)
+{
+	$pattern = "1234567890abcdefghijklmnpqrstuvwxyz";
+	$patternlength = strlen($pattern)-1; 
+	for($i=0;$i<$length;$i++)
+	{
+		if(isset($key))
+		$key .= $pattern{rand(0,$patternlength)};
+		else
+		$key = $pattern{rand(0,$patternlength)};
+	}
+	return $key;
+}
 
 ?>
