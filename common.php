@@ -4395,4 +4395,18 @@ function hasResources($id,$type='survey')
 	return false;
 }
 
+function getSurveyFormat($surveyid)
+// 
+{
+	global $dbprefix, $connect;
+
+	$query="SELECT format FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
+    $result=db_execute_assoc($query) or die ("Couldn't access survey settings<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+	while ($row=$result->FetchRow())
+	{
+        return $row["format"];
+	}              
+	return null;
+}
+
 ?>
