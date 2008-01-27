@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Greek language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-05-20 14:28+0200\n"
-"PO-Revision-Date: 2008-01-18 14:21+0200\n"
+"PO-Revision-Date: 2008-01-22 16:21+0200\n"
 "Last-Translator: Janokary <janokary@yahoo.com>\n"
 "Language-Team: Public Issue <janokary@yahoo.com>\n"
 "MIME-Version: 1.0\n"
@@ -47,7 +47,6 @@ msgstr "Απόρριψε την εγγραφή και ανάφερε λάθος.
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/vvimport.php:68
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/vvimport.php:61
-#, fuzzy
 msgid "Renumber the new record."
 msgstr "Δώσε νέο αύξοντα αριθμό στη νέα εγγραφή."
 
@@ -166,7 +165,7 @@ msgstr "Σφάλμα"
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importgroup.php:53
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importquestion.php:53
 msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your admin folder."
-msgstr ""
+msgstr "Το ανέβασμα του αρχείου δεν έγινε. Αυτό μπορέι να οφείλεται στο υπάρχουν λάθος δικαιόματα στον φάκελο Admin"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/vvimport.php:98
 msgid "Back to Response Import"
@@ -411,14 +410,14 @@ msgstr "Επεξεργασία"
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/assessments.php:138
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/assessments.php:147
 msgid "If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission"
-msgstr ""
+msgstr "Αν φτιάξετε αξιολογήσεις σε αυτήν την σελίδα. για την τρέχουσα έρευνα, οι αξιολογήσεις θα λαβουν χώρα στο τέλος της έρευνας μετά την υποβολή."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/assessments.php:145
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:499
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/assessments.php:154
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:601
 msgid "Actions"
-msgstr ""
+msgstr "Ενέργειες"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/assessments.php:160
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/deletesurvey.php:87
@@ -459,7 +458,7 @@ msgstr "Είστε σίγουροι ότι επιθυμείτε την διαγ�
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:202
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:210
 msgid "Import Label Set"
-msgstr ""
+msgstr "Εισαγωγή Label Set"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:216
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:405
@@ -546,23 +545,23 @@ msgstr "Κεντρική Κονσόλα Διαχείρισης"
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importlabel.php:77
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importquestion.php:89
 msgid "This file is not a LimeSurvey question file. Import failed."
-msgstr ""
+msgstr "Αυτό το αρχείο δεν είναι αρχείο ερώτησης του LimeSurvey. Το ανέβασμα απέτυχε"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importlabel.php:79
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importlabel.php:222
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importlabel.php:78
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importlabel.php:224
 msgid "Return to Labels Admin"
-msgstr ""
+msgstr "Επιστροφή στην Διαχείριση Labels"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importlabel.php:212
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importlabel.php:205
 msgid "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead."
-msgstr ""
+msgstr "Υπάρχει ξανά το ίδιο Labeset οπώτε το ανέβασμα απέτυχε. Θα χρησιμοποιηθεί το αρχικό LabelSet"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importlabel.php:213
 msgid "Label Set Import Summary"
-msgstr ""
+msgstr "Περίληψη ανεβάσματος Label Set"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importgroup.php:515
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importlabel.php:219
@@ -1680,7 +1679,7 @@ msgstr "Κατάσταση"
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:730
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:301
 msgid "Action"
-msgstr ""
+msgstr "Ενέργεια"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:55
 msgid "Responses"
@@ -2172,15 +2171,13 @@ msgstr "Επιπλέον γλώσσες:"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:778
 msgid "Exit Link"
-msgstr ""
+msgstr "Δι"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:785
-#, fuzzy
 msgid "Number of groups in survey"
-msgstr "Σύνολο ερωτήσεων στην έρευνα:"
+msgstr "Αριθμός ομάδων στην έρευνα:"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:786
-#, fuzzy
 msgid "Number of questions in survey"
 msgstr "Σύνολο ερωτήσεων στην έρευνα:"
 
@@ -2495,7 +2492,7 @@ msgstr "Πρέπει να προσθέσετε απαντήσεις σε αυτ�
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:747
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:1190
 msgid "You need to choose a Label Set for this question"
-msgstr ""
+msgstr "Πρέπει να διαλέξετε ένα LabelSet για αυτήν την ενέργεια"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:1196
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/questionhandling.php:92
@@ -3658,9 +3655,8 @@ msgstr "Νέο Πρότυπο"
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importsurvey.php:645
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:246
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:215
-#, fuzzy
 msgid "Manage Labels"
-msgstr "Ετικέτες"
+msgstr "Διαχείριση Ετικέτες"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/userrighthandling.php:309
 msgid "Setting new Parent"
@@ -3935,7 +3931,7 @@ msgstr ""
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:192
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:73
 msgid "Label Sets Administration"
-msgstr ""
+msgstr "Διαχείρηση Label Sets"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:280
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:282
@@ -3968,7 +3964,7 @@ msgstr "Πρόσθεση νέου label"
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:102
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:93
 msgid "Labelsets"
-msgstr ""
+msgstr "Labelsets"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:108
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/questionhandling.php:81
@@ -3989,7 +3985,7 @@ msgstr "Παρακαλώ επιλέξτε..."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:127
 msgid "Error: You have to enter a name for this label set."
-msgstr ""
+msgstr "Σφάλμα: Πρέπει να εισάγετε ένα όνομα για αυτό το Label Set"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:140
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1859
@@ -4000,7 +3996,7 @@ msgstr "Δημιουργία Νέου Label Set"
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:141
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:134
 msgid "Edit Label Set"
-msgstr ""
+msgstr "Επεξεργασία Label Set"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:140
 msgid "Set Name"
@@ -4008,7 +4004,7 @@ msgstr "Καθορισμός Ονόματος"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:160
 msgid "You cannot remove this items since you need at least one language in a labelset."
-msgstr ""
+msgstr "Δεν μπορείτε να διαγράψετε αυτό το αντικείμενο αφού πρέπει να έχετε τουλάχιστο μια γλώσσα σε ένα Label Set"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importgroup.php:513
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importsurvey.php:645
@@ -4016,7 +4012,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:241
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importgroup.php:590
 msgid "Label Set"
-msgstr ""
+msgstr "Label Set"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:245
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/conditions.php:714
@@ -4026,14 +4022,14 @@ msgstr "Κλείσιμο Παραθύρου "
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:226
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:249
 msgid "Edit label set"
-msgstr ""
+msgstr "Επεξεργασία Label Set"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:229
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:230
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1863
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:251
 msgid "Delete label set"
-msgstr ""
+msgstr "Διαγραφή Label Set"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:252
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importoldresponses.php:83
@@ -4081,15 +4077,15 @@ msgstr "Διόρθωση Ταξινόμισης"
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:221
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:427
 msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
-msgstr ""
+msgstr "Κάποιες έρευνες χρησιμοποιούν αυτήν τη στιγμή αυτό το Label Set. Αλλαγή, πρόσθεση ή και διαγραφή κωδικών μπορεί να οδηγήσει σε ανεπιθήμιτα αποτελέσματα σε άλλες έρευνες."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:485
 msgid "Failed to Copy already defined labels to added languages"
-msgstr ""
+msgstr "Αποτυχία αντιγραφής ορισμένων Labels προκυμένου να προστεθούν γλώσσες"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:501
 msgid "Failed to delete labels for removed languages"
-msgstr ""
+msgstr "Αποτυχία διαγραφής Labels προκειμένου να διαγραφούν γλώσσες"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:389
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:423
@@ -4105,15 +4101,15 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:588
 msgid "Failed to insert label"
-msgstr ""
+msgstr "Αποτυχία εσαγωγής Label"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:618
 msgid "Failed to update label"
-msgstr ""
+msgstr "Αποτυχία ενημέρωσης Label"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/labels.php:656
 msgid "Failed to delete label"
-msgstr ""
+msgstr "αποτυχία διαγραφής Label"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:100
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/activate.php:105
@@ -4128,7 +4124,7 @@ msgstr "Η Έρευνα αυτή δεν περιέχει ερωτήσεις κα
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:116
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/activate.php:121
 msgid "This question requires a Labelset, but none is set."
-msgstr ""
+msgstr "Η ερώτηση χρειάζεται Label και δεν έχει οριστεί κάποιο"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:169
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/activate.php:174
@@ -4492,7 +4488,7 @@ msgstr "Προσθήκη Ερώτησης"
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/questionhandling.php:209
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/questionhandling.php:400
 msgid "Label Set:"
-msgstr ""
+msgstr "Label Set:"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1118
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1246
@@ -4719,14 +4715,14 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:152
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:301
 msgid "Number greater than"
-msgstr "Αριθμό μεγαλύτερο από"
+msgstr "Αριθμός μεγαλύτερος από"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:152
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:311
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:156
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:305
 msgid "Number Less Than"
-msgstr "Αριθμό μικρότερο από"
+msgstr "Αριθμός μικρότερος από"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/dataentry.php:1370
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:176
@@ -4922,7 +4918,7 @@ msgstr ""
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importquestion.php:433
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importquestion.php:423
 msgid "Question Import Summary"
-msgstr ""
+msgstr "Περιληψη Εισαγωγής ερώτησης"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:82
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:121
@@ -5109,14 +5105,14 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:149
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:159
 msgid "The following assessments should be deleted"
-msgstr ""
+msgstr "Οι επόμενες αξιολογήσεις θα διαγραφούν"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:155
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:165
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:155
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:165
 msgid "All assessments meet consistency standards"
-msgstr ""
+msgstr "Όλες οι αξιολογήσεις ειναι συνεπείς με τα standarts"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:184
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:184
@@ -5164,7 +5160,7 @@ msgstr ""
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:244
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:267
 msgid "No database action required"
-msgstr ""
+msgstr "Δεν χρειάζεται κάποια διόρθωση στην Βάση Δεδομένων"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:401
 #, fuzzy
@@ -5233,7 +5229,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/stats.php:714
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:710
 msgid "Long free text"
-msgstr ""
+msgstr "Μεγάλο ελεύθερο κείμενο"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/stats.php:725
 msgid "Huge free text"
@@ -6098,7 +6094,7 @@ msgstr "Οι απαντήσεις σας στην έρευνα έχουν κατ
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/deactivate.php:59
 msgid "You should export your responses before de-activating. Click \"Cancel\" to return to the main admin screen without de-activating this survey."
-msgstr "Πρέπει να εξάγετε τις απαντήσεις σας Πριν την απενεργοποίηση Πατήστε \"Ακύρωση\"\ για να επιστρέψετε στην αρχική οθόνη χωρίς να απενεργοποίησετε την έρευνα"
+msgstr "Πρέπει να εξάγετε τις απαντήσεις σας Πριν την απενεργοποίηση Πατήστε \"Ακύρωση\" για να επιστρέψετε στην αρχική οθόνη χωρίς να απενεργοποίησετε την έρευνα"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/deactivate.php:64
 #, fuzzy
