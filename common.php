@@ -574,7 +574,7 @@ function getquestions()
 	if (!isset($questionselecter)) {$questionselecter="";}
 	foreach ($qrows as $qrow)
 	{
-		$qrow['title'] = htmlspecialchars($qrow['title']);
+		$qrow['title'] = strip_tags($qrow['title']);
 		$questionselecter .= "\t\t<option value='$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid={$qrow['qid']}'";
 		if ($qid == $qrow['qid']) {$questionselecter .= " selected='selected'"; $qexists="Y";}
 		$questionselecter .=">{$qrow['title']}:";
@@ -582,11 +582,11 @@ function getquestions()
 		$question=strip_tags($qrow['question']);
 		if (strlen($question)<35)
 		{
-			$questionselecter .= htmlspecialchars($question);
+			$questionselecter .= $question;
 		}
 		else
 		{
-			$questionselecter .= htmlspecialchars(substr($question, 0, 35))."..";
+			$questionselecter .= substr($question, 0, 35)."..";
 		}
 		$questionselecter .= "</option>\n";
 	}
