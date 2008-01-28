@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.70beta!
+Welcome to LimeSurvey v1.70RC1!
 
 WARNING: THIS IS A BETA VERSION. DO NOT USE THIS FOR PRODUCTION!!!
 
@@ -51,6 +51,28 @@ HOW TO UPGRADE from earlier versions from LimeSurvey 1.45 or later
 
 
 Thank you to everyone who helped with this new release!
+
+
+Changes from 1.70beta to 1.70RC1
+
+Fixed Issues - Release Date: 2008/01/17
+
+[Survey Design] Questions with special characters aren't inserted in DB (PostgreSQL) (c_schmitz)
+[Data Entry (non public)] Any action on LimeSurvey interface generates 2 warnings in DB logs (c_schmitz)
+[Translation] Updated German Translation (ElMatador69)
+[Survey Design] LimeReplacementFileds proposes INSERTANS codes for answers that are on the same page (lemeur)
+[Installation] Add check for used library ZZIPlib (lemeur)
+[Translation] Norwegian Nynorsk language file (nn.po, nn.mo) (c_schmitz)
+[Import / Export] Duplicate LAbels when importing Surveys / Groups but not questions ? (c_schmitz)
+[Security] Import Survey/Group/Question bypasses the MANAGE_LABEL priv (c_schmitz)
+[Survey Design] Adding answers to dual scale matrix - Access denied (Joesch)
+[Survey Design] Mandatory Option isn't working for Ranking Question Type (c_schmitz)
+[Statistics] Statistic on question with a large label set fails - make jpgraph switchable on the fly (c_schmitz)
+[Statistics] Filtering Date Fields (c_schmitz)
+[Tokens] HTML Escape issues in email at sending time (c_schmitz)
+[Import / Export] The Extensions list for upload resources is not used by the fckeditor filemanager (lemeur)
+[Security] A superAdmin can see inactive surveys created by others but can't preview them (Permission error) (lemeur)
+[Survey Design] Problem with special characters in Question Text (c_schmitz)
 
 
 Changes from 1.52 to 1.70beta
