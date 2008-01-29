@@ -87,8 +87,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
 		if (isset($_REQUEST['action'])) {unset($_REQUEST['action']);}
 		if (isset($_POST['subaction'])) {unset($_POST['subaction']);}
 		if (isset($_REQUEST['subaction'])) {unset($_REQUEST['subaction']);}
-		if (isset($_POST['sid'])) {unset($_POST['sid']);}
-		if (isset($_REQUEST['sid'])) {unset($_REQUEST['sid']);}
 		$_POST['action'] = 'CSRFwarn';
 		$_REQUEST['action'] = 'CSRFwarn';
 		$action='CSRFwarn';

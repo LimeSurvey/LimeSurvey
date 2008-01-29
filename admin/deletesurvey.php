@@ -59,7 +59,8 @@ if (!isset($ok) || !$ok)
 	$deletesurveyoutput .= "\t<tr>\n";
 	$deletesurveyoutput .= "\t\t<td align='center'><br />\n";
 	$deletesurveyoutput .= "\t\t\t<input type='submit'  value='".$clang->gT("Cancel")."' onclick=\"window.open('admin.php?sid=$surveyid', '_top')\" /><br />\n";
-	$deletesurveyoutput .= "\t\t\t<input type='submit'  value='".$clang->gT("Delete")."' onclick=\"window.open('$scriptname?action=deletesurvey&amp;sid=$surveyid&amp;ok=Y','_top')\" />\n";
+//	$deletesurveyoutput .= "\t\t\t<input type='submit'  value='".$clang->gT("Delete")."' onclick=\"window.open('$scriptname?action=deletesurvey&amp;sid=$surveyid&amp;ok=Y','_top')\" />\n";
+	$deletesurveyoutput .= "\t\t\t<input type='submit'  value='".$clang->gT("Delete")."' onclick=\"".get2post("$scriptname?action=deletesurvey&amp;sid=$surveyid&amp;ok=Y")."\" />\n";
 	$deletesurveyoutput .= "\t\t</td>\n";
 	$deletesurveyoutput .= "\t</tr>\n";
 	$deletesurveyoutput .= "\n";

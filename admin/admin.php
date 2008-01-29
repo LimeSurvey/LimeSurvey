@@ -460,6 +460,31 @@ elseif ($action == "replacementfields")
 	. "\t\tel.value = '".$_SESSION['checksessionpost']."';\n"
 	. "\t\tdocument.forms[i].appendChild(el);\n"
 	. "\t}\n"
+	. "\n"
+	. "\tfunction addHiddenElement(theform,thename,thevalue)\n"
+	. "\t{\n"
+	. "\t\tvar myel = document.createElement('input');\n"
+	. "\t\tmyel.type = 'hidden';\n"
+	. "\t\tmyel.name = thename;\n"
+	. "\t\ttheform.appendChild(myel);\n"
+	. "\t\tmyel.value = thevalue;\n"
+	. "\t\treturn myel;\n"
+	. "\t}\n"
+	. "\n"
+	. "\tfunction sendPost(myaction,checkcode,arrayparam,arrayval)\n"
+	. "\t{\n"
+	. "\t\tvar myform = document.createElement('form');\n"
+	. "\t\tdocument.body.appendChild(myform);\n"
+	. "\t\tmyform.action =myaction;\n"
+	. "\t\tmyform.method = 'POST';\n"
+	. "\t\tfor (i=0;i<arrayparam.length;i++)\n"
+	. "\t\t{\n"
+	. "\t\t\taddHiddenElement(myform,arrayparam[i],arrayval[i])\n"
+	. "\t\t}\n"
+	. "\t\taddHiddenElement(myform,'checksessionbypost',checkcode)\n"
+	. "\t\tmyform.submit();\n"
+	. "\t}\n"
+	. "\n"
 	. "//-->\n"
 	. "</script>\n";
 
@@ -582,6 +607,30 @@ function convertToArray($stringtoconvert, $seperator, $start, $end)
     $stringtoconvert=stripslashes($stringtoconvert);
     $resultarray=explode($seperator, $stringtoconvert);
     return $resultarray;
+}
+
+function get2post($url)
+{
+	$url = preg_replace('/&amp;/i','&',$url);
+	list($calledscript,$query) = explode('?',$url);
+	$aqueryitems = explode('&',$query);
+	$arrayParam = Array();
+	$arrayVal = Array();
+	
+	foreach ($aqueryitems as $queryitem)
+	{
+		list($paramname, $value) = explode ('=', $queryitem);
+		//error_log("TIBO URL=$url Form Action=$calledscript, param=$paramname, value=$value");
+		$arrayParam[] = "'".$paramname."'";
+		$arrayVal[] = "'".$value."'";
+	}
+//	$Paramlist = "[" . implode(",",$arrayParam) . "]";
+//	$Valuelist = "[" . implode(",",$arrayVal) . "]";
+	$Paramlist = "new Array(" . implode(",",$arrayParam) . ")";
+	$Valuelist = "new Array(" . implode(",",$arrayVal) . ")";
+	$callscript = "sendPost('$calledscript','".$_SESSION['checksessionpost']."',$Paramlist,$Valuelist);";
+	//error_log("TIBO = $callscript");
+	return $callscript;
 }
   
 ?>

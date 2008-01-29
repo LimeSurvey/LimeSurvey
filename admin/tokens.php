@@ -128,7 +128,7 @@ if ($subaction == "export" && $sumrows5['export']) //EXPORT FEATURE SUBMITTED BY
 
 if ($subaction == "delete" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey'])) 
 {
-	$_SESSION['metaHeader']="<meta http-equiv=\"refresh\" content=\"1;URL={$scriptname}?action=tokens&amp;subaction=browse&amp;sid={$_GET['sid']}&amp;start=$start&amp;limit=$limit&amp;order=$order\" />";
+	$_SESSION['metaHeader']="<meta http-equiv=\"refresh\" content=\"1;URL={$scriptname}?action=tokens&amp;subaction=browse&amp;sid={$_POST['sid']}&amp;start=$start&amp;limit=$limit&amp;order=$order\" />";
 }
 
 
@@ -202,7 +202,7 @@ while ($chrow = $chresult->FetchRow())
 $tkquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
 if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no tokens table exists
 {
-	if (isset($_GET['createtable']) && $_GET['createtable']=="Y" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
+	if (isset($_POST['createtable']) && $_POST['createtable']=="Y" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
 	{
 		$createtokentable=
 		"tid int I NOTNULL AUTO PRIMARY,\n "
@@ -321,7 +321,8 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 			$tokenoutput .= "\t\t\t".$clang->gT("Do you want to create a tokens table for this survey?");
 			$tokenoutput .= "<br /><br />\n";
 			$tokenoutput .= "\t\t\t<input type='submit' value='"
-			.$clang->gT("Initialise Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;createtable=Y', '_top')\" /><br />\n";
+//			.$clang->gT("Initialise Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;createtable=Y', '_top')\" /><br />\n";
+			.$clang->gT("Initialise Tokens")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;createtable=Y")."\" /><br />\n";
 		}
 		$tokenoutput .= "\t\t\t<input type='submit' value='"
 		.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$homeurl/admin.php?sid=$surveyid', '_top')\" /><br /><br />\n";
@@ -408,10 +409,12 @@ if ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey'])
 	."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=remind', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Send email reminder", "js")."');return false\">" .
 	"<img name='RemindButton' src='$imagefiles/remind.png' title='' align='left'   alt='' /></a>\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif'  border='0' hspace='0' align='left'  alt='' />\n"
-	."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=tokenify', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Generate Tokens", "js")."');return false\">" .
+//	."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=tokenify', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Generate Tokens", "js")."');return false\">" .
+	."\t\t\t<a href=\"#\" onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=tokenify")."\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Generate Tokens", "js")."');return false\">" .
 	"<img name='TokenifyButton' src='$imagefiles/tokenify.png' title='' align='left'  alt='' /></a>\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left'  alt='' />\n"
-	."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Drop tokens table", "js")."');return false\">" .
+//	."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Drop tokens table", "js")."');return false\">" .
+	."\t\t\t<a href=\"#\" onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill")."\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Drop tokens table", "js")."');return false\">" .
 	"<img name='DeleteTokensButton' src='$imagefiles/delete.png' title='' align='left'  alt=''  /></a>\n"
 	."\t\t</td>\n";
 }
@@ -633,20 +636,28 @@ if (!$subaction && ($sumrows5['edit_survey_property'] || $sumrows5['activate_sur
 	."\t\t<td align='center'>\n"
 	."\t\t\t<table align='center'><tr><td>\n"
 	."\t\t\t<br />\n"
-	."\t\t\t<ul><li><a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=clearinvites' onclick='return confirm(\""
-	.$clang->gT("Are you really sure you want to reset all invitation records to NO?")."\")'>".$clang->gT("Set all entries to 'No invitation sent'.")."</a></li>\n"
-	."\t\t\t<li><a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=cleartokens' onclick='return confirm(\""
-	.$clang->gT("Are you sure you want to delete all unique token numbers?")."\")'>".$clang->gT("Delete all unique token numbers")."</a></li>\n"
-	."\t\t\t<li><a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall' onclick='return confirm(\""
-	.$clang->gT("Are you really sure you want to delete ALL token entries?")."\")'>".$clang->gT("Delete all token entries")."</a></li>\n";
+//	."\t\t\t<ul><li><a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=clearinvites' onclick='return confirm(\""
+//	.$clang->gT("Are you really sure you want to reset all invitation records to NO?")."\")'>".$clang->gT("Set all entries to 'No invitation sent'.")."</a></li>\n"
+	."\t\t\t<ul><li><a href='#' onclick=\"if( confirm('"
+	.$clang->gT("Are you really sure you want to reset all invitation records to NO?")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=clearinvites")."}\")'>".$clang->gT("Set all entries to 'No invitation sent'.")."</a></li>\n"
+//	."\t\t\t<li><a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=cleartokens' onclick='return confirm(\""
+//	.$clang->gT("Are you sure you want to delete all unique token numbers?")."\")'>".$clang->gT("Delete all unique token numbers")."</a></li>\n"
+	."\t\t\t<li><a href='#' onclick=\"if ( confirm('"
+	.$clang->gT("Are you sure you want to delete all unique token numbers?")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=cleartokens")."}\">".$clang->gT("Delete all unique token numbers")."</a></li>\n"
+//	."\t\t\t<li><a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall' onclick='return confirm(\""
+//	.$clang->gT("Are you really sure you want to delete ALL token entries?")."\")'>".$clang->gT("Delete all token entries")."</a></li>\n";
+	."\t\t\t<li><a href='' onclick=\" if (confirm('"
+	.$clang->gT("Are you really sure you want to delete ALL token entries?")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall")."}\">".$clang->gT("Delete all token entries")."</a></li>\n";
 	$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
 	$bresult = db_select_limit_assoc($bquery, 1) or die($clang->gT("Error")." counting fields<br />".htmlspecialchars($connect->ErrorMsg()));
 	$bfieldcount=$bresult->FieldCount();
 	if ($bfieldcount==7)
 	{
-		$tokenoutput .= "\t\t\t<li><a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=updatedb'>".$clang->gT("Update tokens table with new fields")."</a></li>\n";
+//		$tokenoutput .= "\t\t\t<li><a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=updatedb'>".$clang->gT("Update tokens table with new fields")."</a></li>\n";
+		$tokenoutput .= "\t\t\t<li><a href='#' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=updatedb")."\">".$clang->gT("Update tokens table with new fields")."</a></li>\n";
 	}
-	$tokenoutput .= "\t\t\t<li><a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill'>".$clang->gT("Drop tokens table")."</a></li></ul>\n"
+//	$tokenoutput .= "\t\t\t<li><a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill'>".$clang->gT("Drop tokens table")."</a></li></ul>\n"
+	$tokenoutput .= "\t\t\t<li><a href='#' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill")."\">".$clang->gT("Drop tokens table")."</a></li></ul>\n"
 	."\t\t\t</td></tr></table>\n"
 	."\t\t</td>\n"
 	."\t</tr>\n"
@@ -823,7 +834,8 @@ if ($subaction == "browse" || $subaction == "search")
 			."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='E' title='"
 			.$clang->gT("Edit Token Entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=edit&amp;tid=".$brow['tid']."', '_top')\" />"
 			."<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='D' title='"
-			.$clang->gT("Delete Token Entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=delete&amp;tid=".$brow['tid']."&amp;limit=$limit&amp;start=$start&amp;order=$order', '_top')\" />";
+//			.$clang->gT("Delete Token Entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=delete&amp;tid=".$brow['tid']."&amp;limit=$limit&amp;start=$start&amp;order=$order', '_top')\" />";
+			.$clang->gT("Delete Token Entry")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=delete&amp;tid=".$brow['tid']."&amp;limit=$limit&amp;start=$start&amp;order=$order")."\" />";
 			if (($brow['completed'] == "N" || $brow['completed'] == "") &&$brow['token']) {$tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='S' title='".$clang->gT("Do Survey")."' onclick=\"window.open('$publicurl/index.php?sid=$surveyid&amp;lang=".$brow['language']."&amp;token=".trim($brow['token'])."', '_blank')\" />\n";}
 			$tokenoutput .= "\n\t\t</td>\n";
 		}
@@ -866,6 +878,7 @@ if ($subaction == "browse" || $subaction == "search")
 		elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] == "N")
 
 		{
+		// TIBO use get2post here
 			$tokenoutput .= "\t\t<td align='center' valign='middle'>\n"
 			."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='I' title='"
 			.$clang->gT("Send invitation email to this entry")."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?action=tokens&amp;sid=$surveyid&amp;subaction=email&amp;tid=".$brow['tid']."', '_top')\" />"
@@ -900,17 +913,18 @@ if ($subaction == "kill" && ($sumrows5['edit_survey_property'] || $sumrows5['act
 	."\t<tr><td colspan='2' align='center'>\n"
 	."<br />\n";
 	// ToDo: Just delete it if there is no token in the table
-	if (!isset($_GET['ok']) || !$_GET['ok'])
+	if (!isset($_POST['ok']) || !$_POST['ok'])
 	{
 		$tokenoutput .= "<font color='red'><strong>".$clang->gT("Warning")."</strong></font><br />\n"
 		.$clang->gT("If you delete this table tokens will no longer be required to access this survey.")."<br />".$clang->gT("A backup of this table will be made if you proceed. Your system administrator will be able to access this table.")."<br />\n"
 		."( \"old_tokens_{$_GET['sid']}_$date\" )<br /><br />\n"
 		."<input type='submit' value='"
-		.$clang->gT("Delete Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill&amp;ok=surething', '_top')\" /><br />\n"
+//		.$clang->gT("Delete Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill&amp;ok=surething', '_top')\" /><br />\n"
+		.$clang->gT("Delete Tokens")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill&amp;ok=surething")."\" /><br />\n"
 		."<input type='submit' value='"
 		.$clang->gT("Cancel")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" />\n";
 	}
-	elseif (isset($_GET['ok']) && $_GET['ok'] == "surething")
+	elseif (isset($_POST['ok']) && $_POST['ok'] == "surething")
 	{
 		$oldtable = "tokens_$surveyid";
 		$newtable = "old_tokens_{$surveyid}_$date";
@@ -918,9 +932,9 @@ if ($subaction == "kill" && ($sumrows5['edit_survey_property'] || $sumrows5['act
 		$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />\n".htmlspecialchars($connect->ErrorMsg())." - Query: $deactivatequery <br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
 		$tokenoutput .= "<span style='display: block; text-align: center; width: 70%'>\n"
 		.$clang->gT("The tokens table has now been removed and tokens are no longer required to access this survey.")."<br /> ".$clang->gT("A backup of this table has been made and can be accessed by your system administrator.")."<br />\n"
-		."(\"{$dbprefix}old_tokens_{$_GET['sid']}_$date\")"."<br /><br />\n"
+		."(\"{$dbprefix}old_tokens_{$_POST['sid']}_$date\")"."<br /><br />\n"
 		."<input type='submit' value='"
-		.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname?sid={$_GET['sid']}', '_top')\" />\n"
+		.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname?sid={$_POST['sid']}', '_top')\" />\n"
 		."</span>\n";
 	}
 	$tokenoutput .= "</font></td></tr></table>\n"
@@ -1375,11 +1389,12 @@ if ($subaction == "tokenify" && ($sumrows5['edit_survey_property'] || $sumrows5[
 {
 	$tokenoutput .= "\t<tr ><td colspan='2' height='4'><strong>".$clang->gT("Create Tokens").":</strong></td></tr>\n";
 	$tokenoutput .= "\t<tr><td align='center'><br />\n";
-	if (!isset($_GET['ok']) || !$_GET['ok'])
+	if (!isset($_POST['ok']) || !$_POST['ok'])
 	{
 		$tokenoutput .= "<br />".$clang->gT("Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?")."<br /><br />\n"
 		."<input type='submit' value='"
-		.$clang->gT("Yes")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=tokenify&amp;ok=Y', '_top')\" />\n"
+//		.$clang->gT("Yes")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=tokenify&amp;ok=Y', '_top')\" />\n"
+		.$clang->gT("Yes")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=tokenify&amp;ok=Y")."\" />\n"
 		."<input type='submit' value='"
 		.$clang->gT("No")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" />\n"
 		."<br /><br />\n";

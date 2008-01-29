@@ -48,7 +48,8 @@ if (!isset($ok) || !$ok)
 	$resetsurveylogicoutput .= "\t<tr>\n";
 	$resetsurveylogicoutput .= "\t\t<td align='center'><br />\n";
 	$resetsurveylogicoutput .= "\t\t\t<input type='submit'  value='".$clang->gT("Cancel")."' onclick=\"window.open('admin.php?sid=$surveyid', '_top')\" /><br />\n";
-	$resetsurveylogicoutput .= "\t\t\t<input type='submit'  value='".$clang->gT("Delete")."' onclick=\"window.open('$scriptname?action=resetsurveylogic&amp;sid=$surveyid&amp;ok=Y','_top')\" />\n";
+//	$resetsurveylogicoutput .= "\t\t\t<input type='submit'  value='".$clang->gT("Delete")."' onclick=\"window.open('$scriptname?action=resetsurveylogic&amp;sid=$surveyid&amp;ok=Y','_top')\" />\n";
+	$resetsurveylogicoutput .= "\t\t\t<input type='submit'  value='".$clang->gT("Delete")."' onclick=\"".get2post("$scriptname?action=resetsurveylogic&amp;sid=$surveyid&amp;ok=Y")."\" />\n";
 	$resetsurveylogicoutput .= "\t\t</td>\n";
 	$resetsurveylogicoutput .= "\t</tr>\n";
 	$resetsurveylogicoutput .= "\n";
