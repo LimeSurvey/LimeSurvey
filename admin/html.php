@@ -1559,7 +1559,8 @@ if($action == "addsurveysecurity")
 
 	$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$_POST['uid'];
 	$result = db_execute_assoc($query);
-	if($result->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+	if( ($result->RecordCount() > 0 && in_array($_POST['uid'],getuserlist('onlyuidarray'))) || 
+		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		if($_POST['uid'] > 0){
 
@@ -1602,7 +1603,9 @@ if($action == "addusergroupsurveysecurity")
 
 	$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];
 	$result = db_execute_assoc($query);
-	if($result->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+	if( ($result->RecordCount() > 0 && 
+		in_array($_POST['ugid'],getsurveyusergrouplist('simpleugidarray')) ) ||
+	     $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		if($_POST['ugid'] > 0){
 			$query2 = "SELECT b.uid FROM (SELECT uid FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid}) AS c RIGHT JOIN ".db_table_name('user_in_groups')." AS b ON b.uid = c.uid WHERE c.uid IS NULL AND b.ugid = {$_POST['ugid']}";
@@ -1847,6 +1850,13 @@ if($action == "surveysecurity")
 		. "\t\t<th>".$clang->gT("User Group")."</th>\n"
 		. "\t\t<th>".$clang->gT("Action")."</th>\n"
 		. "\t</tr>\n";
+		
+		if (isset($usercontrolSameGroupPolicy) &&
+			$usercontrolSameGroupPolicy === true)
+		{
+			$authorizedGroupsList=getusergrouplist('simpleugidarray');
+		}
+
 		if($result2->RecordCount() > 0)
 		{
 			//	output users
@@ -1857,7 +1867,12 @@ if($action == "surveysecurity")
 				$result3 = db_execute_assoc($query3);
 				while ($resul3row = $result3->FetchRow())
 				{
-					$group_ids[] = $resul3row['ugid'];
+					if (!isset($usercontrolSameGroupPolicy) ||
+						$usercontrolSameGroupPolicy === false ||
+						in_array($resul3row['ugid'],$authorizedGroupsList))
+					{
+						$group_ids[] = $resul3row['ugid'];
+					}
 				}
 				
 				if($group_ids[0] != NULL)

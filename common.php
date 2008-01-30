@@ -893,7 +893,7 @@ function getgrouplistlang($gid, $language)
 }
 
 
-function getuserlist()
+function getuserlist($outputformat='fullinfoarray')
 {
 	global $dbprefix, $connect;
 	global $usercontrolSameGroupPolicy;
@@ -922,7 +922,14 @@ function getuserlist()
 	$userlist = array();
 	while ($srow = $uresult->FetchRow())
 	{
-		$userlist[] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id'], "create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "superadmin"=>$srow['superadmin'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);			//added by Dennis modified by Moses
+		if ($outputformat != 'onlyuidarray')
+		{
+			$userlist[] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id'], "create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "superadmin"=>$srow['superadmin'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);			//added by Dennis modified by Moses
+		}
+		else
+		{
+			$userlist[] = $srow['uid'];
+		}
 
 	}
 	return $userlist;
@@ -3183,7 +3190,7 @@ function getgroupuserlist()
 
 function getsurveyuserlist()
     {
-    global $surveyid, $dbprefix, $scriptname, $connect, $clang;
+    global $surveyid, $dbprefix, $scriptname, $connect, $clang, $usercontrolSameGroupPolicy;
 
 	$surveyidquery = "SELECT a.uid, a.users_name FROM ".db_table_name('users')." AS a LEFT OUTER JOIN (SELECT uid AS id FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid}) AS b ON a.uid = b.id WHERE id IS NULL ORDER BY a.users_name";
 
@@ -3191,12 +3198,24 @@ function getsurveyuserlist()
     if (!$surveyidresult) {return "Database Error";}
     $surveyselecter = "";
     $surveynames = $surveyidresult->GetRows();
+
+    if (isset($usercontrolSameGroupPolicy) &&
+		$usercontrolSameGroupPolicy === true)
+    {
+	$authorizedUsersList = getuserlist('onlyuidarray');
+    }
+
     if ($surveynames)
         {
         foreach($surveynames as $sv)
             {
+		if (!isset($usercontrolSameGroupPolicy) ||
+			$usercontrolSameGroupPolicy === false ||
+			in_array($sv['uid'],$authorizedUsersList))
+		{
 			$surveyselecter .= "\t\t\t<option";
-            $surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']}</option>\n";
+			$surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']}</option>\n";
+		}
             }
         }
     if (!isset($svexist)) {$surveyselecter = "\t\t\t<option value='-1' selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;}
@@ -3204,9 +3223,9 @@ function getsurveyuserlist()
     return $surveyselecter;
     }
 
-function getsurveyusergrouplist()
+function getsurveyusergrouplist($outputformat='htmloptions')
     {
-    global $surveyid, $dbprefix, $scriptname, $connect, $clang;
+    global $surveyid, $dbprefix, $scriptname, $connect, $clang, $usercontrolSameGroupPolicy;
 
 	//$surveyidquery = "SELECT a.ugid, a.name, MAX(d.ugid) AS da FROM ".db_table_name('user_groups')." AS a LEFT JOIN (SELECT b.ugid FROM ".db_table_name('user_in_groups')." AS b LEFT JOIN (SELECT * FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid}) AS c ON b.uid = c.uid WHERE c.uid IS NULL) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING da IS NOT NULL";
 	//n.b: the original query (above) uses 'da' in the HAVING clause. MS SQL Server doesn't like that, and forces you to redeclare the expression used in the select. Stupid, stupid, SQL Server.
@@ -3216,20 +3235,41 @@ function getsurveyusergrouplist()
     if (!$surveyidresult) {return "Database Error";}
     $surveyselecter = "";
     $surveynames = $surveyidresult->GetRows();
+
+    if (isset($usercontrolSameGroupPolicy) &&
+		$usercontrolSameGroupPolicy === true)
+    {
+	 $authorizedGroupsList=getusergrouplist('simpleugidarray');
+    }
+
     if ($surveynames)
         {
         foreach($surveynames as $sv)
             {
+		if (!isset($usercontrolSameGroupPolicy) ||
+			$usercontrolSameGroupPolicy === false ||
+			in_array($sv['ugid'],$authorizedGroupsList))
+		{
 			$surveyselecter .= "\t\t\t<option";
-            $surveyselecter .=" value='{$sv['ugid']}'>{$sv['name']}</option>\n";
+			$surveyselecter .=" value='{$sv['ugid']}'>{$sv['name']}</option>\n";
+			$simpleugidarray[] = $sv['ugid'];
+		}
             }
         }
     if (!isset($svexist)) {$surveyselecter = "\t\t\t<option value='-1' selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;}
     else {$surveyselecter = "\t\t\t<option value='-1'>".$clang->gT("None")."</option>\n".$surveyselecter;}
-    return $surveyselecter;
-    }
 
-function getusergrouplist()
+    if ($outputformat == 'simpleugidarray')
+    {
+	return $simpleugidarray;
+    }
+    else
+    {
+    	return $surveyselecter;
+    }
+}
+
+function getusergrouplist($outputformat='optionlist')
     {
     global $dbprefix, $scriptname, $connect, $clang;
 
@@ -3244,15 +3284,24 @@ function getusergrouplist()
         {
         foreach($groupnames as $gn)
             {
-			$selecter .= "\t\t\t<option ";
-            if($_SESSION['loginID'] == $gn['owner_id']) {$selecter .= " style=\"font-weight: bold;\"";}
-			if (isset($_GET['ugid']) && $gn['ugid'] == $_GET['ugid']) {$selecter .= " selected='selected'"; $svexist = 1;}
-            $selecter .=" value='$scriptname?action=editusergroups&amp;ugid={$gn['ugid']}'>{$gn['name']}</option>\n";
+		$selecter .= "\t\t\t<option ";
+		if($_SESSION['loginID'] == $gn['owner_id']) {$selecter .= " style=\"font-weight: bold;\"";}
+		if (isset($_GET['ugid']) && $gn['ugid'] == $_GET['ugid']) {$selecter .= " selected='selected'"; $svexist = 1;}
+		$selecter .=" value='$scriptname?action=editusergroups&amp;ugid={$gn['ugid']}'>{$gn['name']}</option>\n";
+		$simpleguidarray[] = $gn['ugid'];
             }
         }
     if (!isset($svexist)) {$selecter = "\t\t\t<option value='-1' selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$selecter;}
     //else {$selecter = "\t\t\t<option value='-1'>".$clang->gT("None")."</option>\n".$selecter;}
-    return $selecter;
+
+    if ($outputformat == 'simpleugidarray')
+    {
+    	return $simpleguidarray;
+    }
+    else
+    {
+    	return $selecter;
+    }
     }
 
 
