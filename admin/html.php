@@ -1559,7 +1559,7 @@ if($action == "addsurveysecurity")
 
 	$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$_POST['uid'];
 	$result = db_execute_assoc($query);
-	if($result->RecordCount() > 0)
+	if($result->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		if($_POST['uid'] > 0){
 
@@ -1602,7 +1602,7 @@ if($action == "addusergroupsurveysecurity")
 
 	$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];
 	$result = db_execute_assoc($query);
-	if($result->RecordCount() > 0)
+	if($result->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		if($_POST['ugid'] > 0){
 			$query2 = "SELECT b.uid FROM (SELECT uid FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid}) AS c RIGHT JOIN ".db_table_name('user_in_groups')." AS b ON b.uid = c.uid WHERE c.uid IS NULL AND b.ugid = {$_POST['ugid']}";
@@ -1655,7 +1655,7 @@ if($action == "delsurveysecurity"){
 
 		$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$_POST['uid'];
 		$result = db_execute_assoc($query);
-		if($result->RecordCount() > 0)
+		if($result->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 		{
 			if (isset($_POST['uid']))
 			{
@@ -1681,7 +1681,7 @@ if($action == "setsurveysecurity")
 {
 	$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$_POST['uid'];
 	$result = db_execute_assoc($query);
-	if($result->RecordCount() > 0)
+	if($result->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$query2 = "SELECT uid, edit_survey_property, define_questions, browse_response, export, delete_survey, activate_survey FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid} AND uid = ".$_POST['uid'];
 		$result2 = db_execute_assoc($query2);
@@ -1753,7 +1753,7 @@ if($action == "setusergroupsurveysecurity")
 {
 	$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];//." AND owner_id != ".$_POST['uid'];
 	$result = db_execute_assoc($query);
-	if($result->RecordCount() > 0)
+	if($result->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='6' class='header'>\n"
 		. "\t\t".$clang->gT("Set Survey Rights")."</td></tr>\n";
@@ -1836,7 +1836,7 @@ if($action == "surveysecurity")
 {
 	$query = "SELECT sid FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];
 	$result = db_execute_assoc($query);
-	if($result->RecordCount() > 0)
+	if($result->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$query2 = "SELECT a.uid, b.users_name FROM ".db_table_name('surveys_rights')." AS a INNER JOIN ".db_table_name('users')." AS b ON a.uid = b.uid WHERE a.sid = {$surveyid} AND b.uid != ".$_SESSION['loginID'] ." ORDER BY b.users_name";
 		$result2 = db_execute_assoc($query2);
