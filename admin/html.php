@@ -161,7 +161,6 @@ if ($action == "checksettings" || $action == "changelang" || $action=="changehtm
 	$usercount = $result->RecordCount();
 
 	// prepare data for the htmleditormode preference
-	$htmleditormode='default';
 	$edmod1='';
 	$edmod2='';
 	$edmod3='';
