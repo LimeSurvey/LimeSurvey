@@ -2491,17 +2491,20 @@ function array_in_array($needle, $haystack)
 	return false;
 }
 
-function randomkey($length)
+if (!function_exists("randomkey"))
 {
-	$pattern = "1234567890";
-	for($i=0;$i<$length;$i++)
+	function randomkey($length)
 	{
-		if(isset($key))
-		$key .= $pattern{rand(0,9)};
-		else
-		$key = $pattern{rand(0,9)};
+		$pattern = "1234567890";
+		for($i=0;$i<$length;$i++)
+		{
+			if(isset($key))
+			$key .= $pattern{rand(0,9)};
+			else
+			$key = $pattern{rand(0,9)};
+		}
+		return $key;
 	}
-	return $key;
 }
 
 ?>

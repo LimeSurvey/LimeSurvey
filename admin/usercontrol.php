@@ -191,6 +191,8 @@ if (!isset($_SESSION['loginID']))
 			$_SESSION['user'] = $fields['users_name'];
 			$_SESSION['adminlang'] = $fields['lang'];
 			$_SESSION['htmleditormode'] = $fields['htmleditormode'];
+			$_SESSION['checksessionpost'] = randomkey(10);
+			$_SESSION['pw_notify']=false;
 			$clang = new limesurvey_lang($_SESSION['adminlang']);
 			$login = true;
 
@@ -245,6 +247,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 	{
 		$new_pass = createPassword();
 		$uquery = "INSERT INTO {$dbprefix}users (users_name, password,full_name,parent_id,lang,email,create_survey,create_user,delete_user,superadmin,configurator,manage_template,manage_label) VALUES ('".db_quote($new_user)."', '".SHA256::hash($new_pass)."', '".db_quote($new_full_name)."', {$_SESSION['loginID']}, '{$defaultlang}', '".db_quote($new_email)."',0,0,0,0,0,0,0)";
+		//error_log("TIBO=$uquery");
 		$uresult = $connect->Execute($uquery);
 
 		if($uresult)
