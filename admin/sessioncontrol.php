@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
 function GetSessionUserRights($loginID)
 {
 	global $dbprefix,$connect; 
-    $squery = "SELECT create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label FROM {$dbprefix}users WHERE uid=$loginID";	//		added by Dennis
+    $squery = "SELECT uid, users_name, password, parent_id, email, create_survey, configurator, create_user, delete_user, superadmin, manage_template, manage_label FROM ".db_table_name('users')." WHERE uid='{$newqid}'";                 //added by Dennis
     $sresult = db_execute_assoc($squery);
     if ($sresult->RecordCount()>0)
         {
