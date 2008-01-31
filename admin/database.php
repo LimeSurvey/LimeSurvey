@@ -932,7 +932,9 @@ if(isset($surveyid))
 
 		CleanLanguagesFromSurvey($_POST['sid'],$_POST['languageids']);
 		FixLanguageConsistency($_POST['sid'],$_POST['languageids']);
-
+		
+		if(!hasTemplateManageRights($_SESSION['loginID'], $_POST['template'])) $_POST['template'] = "default";
+		
 		$usquery = "UPDATE {$dbprefix}surveys \n"
 		. "SET admin='{$_POST['admin']}', useexpiry='{$_POST['useexpiry']}',\n"
 		. "expires={$_POST['expires']}, adminemail='{$_POST['adminemail']}',\n"
@@ -1068,8 +1070,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 	if (!$_POST['surveyls_title'])
 	{
 		$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Survey could not be created because it did not have a short title","js")."\")\n //-->\n</script>\n";
-	}
-	else
+	} else
 	{
 		$_POST  = array_map('db_quote', $_POST);
 		if (trim($_POST['expires'])=="")
@@ -1088,6 +1089,8 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 			$isresult = db_execute_assoc($isquery);
 		}
 		while ($isresult->RecordCount()>0);
+		
+		if(!hasTemplateManageRights($_SESSION['loginID'], $_POST['template'])) $_POST['template'] = "default";
 
 		$isquery = "INSERT INTO {$dbprefix}surveys\n"
 		. "(sid, owner_id, admin, active, useexpiry, expires, "

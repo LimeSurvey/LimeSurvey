@@ -118,8 +118,6 @@ if ($action == "adduser" || $action=="deluser" || $action == "moduser" || $actio
 
 if ($action == "setusertemplates")
 {
-//    if($_SESSION['loginID'] != $_POST['uid'])
-//    {
               refreshtemplates();
               $usersummary = "<table width='50%' border='0'>\n\t<tr><td colspan='2' bgcolor='black' align='center'><form method='post' action='$scriptname'>\n"
               . "\t\t<strong><font color='white'>".$clang->gT("Set templates that this user may access").": ".$_POST['user']."</td></tr>\n";
@@ -133,7 +131,7 @@ if ($action == "setusertemplates")
                               $squery = "SELECT `folder`, `use` FROM {$dbprefix}templates_rights WHERE uid={$usr['uid']}";
                               $sresult = db_execute_assoc($squery) or die($connect->ErrorMsg());
                               while ($srow = $sresult->FetchRow()) {
-                                      $templaterights[$srow["folder"]] = array("use"=>$srow["use"], "creator"=>$srow["creator"]);
+                                      $templaterights[$srow["folder"]] = array("use"=>$srow["use"]);
                               }
 
                               $usersummary .= "\t\t\t<tr><th>".$clang->gT("Template Name")."</th><th>".$clang->gT("Allowed")."</th></tr>\n"
@@ -146,7 +144,7 @@ if ($action == "setusertemplates")
                                       $usersummary .= "\t\t\t<tr><td>{$trow["folder"]}</td>";
 
                                       $usersummary .= "\t\t<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"{$trow["folder"]}_use\" value=\"{$trow["folder"]}_use\"";
-                                      if($templaterights[$trow["folder"]]["use"] == 1) {
+                                      if(isset($templaterights[$trow["folder"]]) && $templaterights[$trow["folder"]]["use"] == 1) {
                                               $usersummary .= " checked='checked' ";
                                       }
                                       $usersummary .=" /></td>\n\t\t</tr>\n";
@@ -160,14 +158,9 @@ if ($action == "setusertemplates")
                               ."</form>"
                               . "</table>\n";
                               continue;
-                     }       // if
-              }       // foreach
-/*    }       // if
-      else
-      {
-              include("access_denied.php");
-      }*/
-}     // if 
+                     }
+              }
+}
 
 
 if ($action == "modifyuser")
