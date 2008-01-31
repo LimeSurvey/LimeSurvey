@@ -363,7 +363,7 @@ if($sumrows5['edit_survey_property'])
 		if ($subaction == "new_answer_two") $_GET['quota_id'] = $_POST['quota_id'];
 
 		$allowed_types = "(type ='G' or type ='M' or type ='Y' or type ='A' or type ='B' or type ='I')";
-		$query = "SELECT qid, title, question FROM ".db_table_name('questions')." where $allowed_types and language='{$baselang}'";
+		$query = "SELECT qid, title, question FROM ".db_table_name('questions')." WHERE $allowed_types AND sid='$surveyid' AND language='{$baselang}'";
 		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
 		if ($result->RecordCount() == 0)
 		{
