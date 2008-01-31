@@ -106,7 +106,7 @@ function GetSessionUserRights($loginID)
         $_SESSION['USER_RIGHT_CONFIGURATOR'] = $fields['configurator'];
         $_SESSION['USER_RIGHT_CREATE_USER'] = $fields['create_user'];
         $_SESSION['USER_RIGHT_DELETE_USER'] = $fields['delete_user'];
-        $_SESSION['USER_RIGHT_MOVE_USER'] = $fields['move_user'];
+        $_SESSION['USER_RIGHT_SUPERADMIN'] = $fields['superadmin'];
         $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] = $fields['manage_template'];
         $_SESSION['USER_RIGHT_MANAGE_LABEL'] = $fields['manage_label'];
         }
