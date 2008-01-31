@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-12-03 22:04+0100\n"
-"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
+"PO-Revision-Date: 2008-01-31 21:20+0100\n"
+"Last-Translator: Josef Prandstetter <jprandstetter@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -750,7 +750,7 @@ msgid "This error can occur if you have already submitted your responses and pre
 msgstr "Diese Fehler kann auftreten, wenn Sie Ihre Antworten schon abgesendet haben und in Ihrem Browser auf 'Aktualisieren' geklickt haben. In diesem Fall sind Ihre Antworten schon gespeichert worden. "
 
 msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
-msgstr "Wenn Sie diese Nachricht während einer Umfrage erhalten, sollten Sie den 'Zurück'-Button in Ihrem Browser nutzen and dann die vorherige Seite neu laden. Obwhol Sie Antworten von der letzten Seite verlieren könnten, werden Ihre anderen vorherigen Antworten noch vorhanden sein. Diese Problem kann auchtauchen, wenn der Server überlastet ist. Wir bitten um Entschuldigung."
+msgstr "Wenn Sie diese Nachricht während einer Umfrage erhalten, sollten Sie den 'Zurück'-Button in Ihrem Browser nutzen and dann die vorherige Seite neu laden. Obwohl Sie Antworten von der letzten Seite verlieren könnten, werden Ihre anderen vorherigen Antworten noch vorhanden sein. Dieses Problem kann auch auftauchen, wenn der Server überlastet ist. Wir bitten um Entschuldigung."
 
 msgid "Access denied!"
 msgstr "Zugriff verweigert!"
@@ -2947,7 +2947,7 @@ msgstr "Frage aktualisieren"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2504
 msgid "Current group is using conditional questions"
-msgstr "Die aktuelle Gruppe nutzt Fragen mit Bedingungen"
+msgstr "Die aktuelle Gruppe nützt Fragen mit Bedingungen"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2504
 msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
@@ -2981,7 +2981,7 @@ msgid "Start Language"
 msgstr "Start-Sprache"
 
 msgid "Not Selected"
-msgstr "NIcht Gewählt"
+msgstr "Nicht Gewählt"
 
 msgid "Filter Settings"
 msgstr "Filter Einstellungen"
