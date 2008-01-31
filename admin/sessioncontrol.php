@@ -97,19 +97,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
 function GetSessionUserRights($loginID)
 {
 	global $dbprefix,$connect; 
-	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-    $squery = "SELECT create_survey, configurator, create_user, delete_user, superadmin, manage_template, manage_label FROM {$dbprefix}users WHERE uid=$loginID";	//		added by Dennis
-	$sresult = $connect->Execute($squery);
-	if(@$fields = $sresult->FetchRow())
-		{
-		$_SESSION['USER_RIGHT_CREATE_SURVEY'] = $fields['create_survey'];
-		$_SESSION['USER_RIGHT_CONFIGURATOR'] = $fields['configurator'];
-		$_SESSION['USER_RIGHT_CREATE_USER'] = $fields['create_user'];
-		$_SESSION['USER_RIGHT_DELETE_USER'] = $fields['delete_user'];
-		$_SESSION['USER_RIGHT_SUPERADMIN'] = $fields['superadmin'];
-		$_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] = $fields['manage_template'];
-		$_SESSION['USER_RIGHT_MANAGE_LABEL'] = $fields['manage_label'];
-		}
+    $squery = "SELECT create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label FROM {$dbprefix}users WHERE uid=$loginID";	//		added by Dennis
+    $sresult = db_execute_assoc($squery);
+    if ($sresult->RecordCount()>0)
+        {
+        $fields = $sresult->FetchRow();
+        $_SESSION['USER_RIGHT_CREATE_SURVEY'] = $fields['create_survey'];
+        $_SESSION['USER_RIGHT_CONFIGURATOR'] = $fields['configurator'];
+        $_SESSION['USER_RIGHT_CREATE_USER'] = $fields['create_user'];
+        $_SESSION['USER_RIGHT_DELETE_USER'] = $fields['delete_user'];
+        $_SESSION['USER_RIGHT_MOVE_USER'] = $fields['move_user'];
+        $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] = $fields['manage_template'];
+        $_SESSION['USER_RIGHT_MANAGE_LABEL'] = $fields['manage_label'];
+        }
+
+
 
 	// SuperAdmins
 	// * original superadmin with uid=1 unless manually changed and defined
