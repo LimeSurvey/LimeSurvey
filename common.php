@@ -1837,7 +1837,7 @@ function createFieldMap($surveyid, $style="null") {
 		}
 		elseif ($arow['type'] == "1")
 		{
-			$abquery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q"
+			$abquery = "SELECT a.*, q.other, 1.lid, q.lid1 FROM {$dbprefix}answers as a, {$dbprefix}questions as q"
                        ." WHERE a.qid=q.qid AND sid=$surveyid AND q.qid={$arow['qid']} "
                        ." AND a.language='".$s_lang. "' "
                        ." AND q.language='".$s_lang. "' "
@@ -1858,7 +1858,7 @@ function createFieldMap($surveyid, $style="null") {
 				//if ($abmultiscalecount>0)
 				if ($abmultiscaleresultrow=$abmultiscaleresult->FetchRow())
 					{
- 					$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}#0", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code'], "lid"=>$abmultiscaleresultrow["lid"]);
+ 					$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}#0", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code'], "lid"=>$abmultiscaleresultrow["lid"], "lid1"=>$arow["lid1"]);
      					if ($style == "full")
 						{
 							$fieldmap[$counter]['title']=$arow['title'];
@@ -1881,7 +1881,7 @@ function createFieldMap($surveyid, $style="null") {
 				$abmultiscalecount=$abmultiscaleresult->RecordCount();
 				if ($abmultiscaleresultrow=$abmultiscaleresult->FetchRow())
 				{
- 					$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}#1", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code'], "lid"=>$abmultiscaleresultrow["lid"]);
+ 					$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}#1", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code'], "lid"=>$abmultiscaleresultrow["lid"], "lid1"=>$arow["lid1"]);
 					if ($style == "full")
 					{
 						$fieldmap[$counter]['title']=$arow['title'];
