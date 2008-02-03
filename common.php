@@ -2435,7 +2435,7 @@ function questionAttributes()
 	// types - a string with one character representing each question typ to which the attribute applies
 	// help - a short explanation
     $qattributes[]=array("name"=>"answer_width",
-    "types"=>"ABCEF",
+    "types"=>"ABCEF1",
     "help"=>"The percentage width of the answer column");
 	$qattributes[]=array("name"=>"display_columns",
 	"types"=>"LMZG",
@@ -2459,7 +2459,7 @@ function questionAttributes()
     "types"=>"STUNQK",
     "help"=>"Maximum Characters Allowed");
     $qattributes[]=array("name"=>"random_order",
-    "types"=>"!LMOPQKRWZFHABCE",
+    "types"=>"!LMOPQKRWZFHABCE1",
     "help"=>"Present Answers in random order");
     $qattributes[]=array("name"=>"text_input_width",
     "types"=>"NSTU",
@@ -2489,16 +2489,16 @@ function questionAttributes()
 	"types"=>"M",
 	"help"=>"Excludes all other options if this is selected");
 	$qattributes[]=array("name"=>"use_dropdown",
-	"types"=>"1",
+	"types"=>"",
 	"help"=>"Use Dual Dropdown instead of Dual Scale");
 	$qattributes[]=array("name"=>"dropdown_prepostfix",
-	"types"=>"1",
+	"types"=>"",
 	"help"=>"Prefix|Suffix for dropdown lists");
 	$qattributes[]=array("name"=>"dropdown_headers",
-	"types"=>"1",
+	"types"=>"",
 	"help"=>"Header Column A|Header Column B  for dropdown lists");
 	$qattributes[]=array("name"=>"dropdown_separators",
-	"types"=>"1",
+	"types"=>"",
 	"help"=>"Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists");
 	/* -- > Commented out since not yet used
     $qattributes[]=array("name"=>"permission",
