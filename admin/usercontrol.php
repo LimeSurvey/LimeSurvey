@@ -160,6 +160,13 @@ if (!isset($_SESSION['loginID']))
 	}
 	elseif($useWebserverAuth === true && isset($_SERVER['PHP_AUTH_USER']))	// normal login through webserver authentication
 	{
+		$action = 'login';
+		// we'll include database.php
+		// we need to unset surveyid
+		// that could be set if the user clicked on
+		// a link with all params before first auto-login
+		unset($surveyid);
+
 		$loginsummary = "<br /><strong>".$clang->gT("Logging in...")."</strong><br />\n";
 		// getting user name, optionnally mapped
 		if (isset($userArrayMap) && is_array($userArrayMap) &&
@@ -199,11 +206,11 @@ if (!isset($_SESSION['loginID']))
 			$loginsummary .= "<br />" .str_replace("{NAME}", $_SESSION['user'], $clang->gT("Welcome {NAME}")) . "<br />";
 			$loginsummary .= $clang->gT("You logged in successfully.");
 
-			if (isset($_POST['refererargs']) && $_POST['refererargs'] &&
-				strpos($_POST['refererargs'], "action=logout") === FALSE)
+			if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] &&
+				strpos($_SERVER['QUERY_STRING'], "action=logout") === FALSE)
 			{
 				$_SESSION['metaHeader']="<meta http-equiv=\"refresh\""
-				. " content=\"1;URL={$scriptname}?".$_POST['refererargs']."\" />";
+				. " content=\"1;URL={$scriptname}?".$_SERVER['QUERY_STRING']."\" />";
 				$loginsummary .= "<br /><font size='1'><i>".$clang->gT("Reloading Screen. Please wait.")."</i></font>\n";
 			}
 			$loginsummary .= "<br /><br />\n";
