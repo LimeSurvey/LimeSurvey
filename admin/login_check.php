@@ -21,7 +21,7 @@ if (!isset($action)) {$action=returnglobal('action');}
 if( isset($_POST['user']) && isset($_POST['password']) || 
 	($action == "forgotpass") || ($action == "login") || 
 	($action == "logout") || 
-	($useWebserverAuth === true ) )	// added by Dennis
+	($useWebserverAuth === true && !isset($_SESSION['loginID'])) )	// added by Dennis
 {
 	include("usercontrol.php");
 }
