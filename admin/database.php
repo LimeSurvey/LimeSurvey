@@ -46,7 +46,7 @@ function get_max_question_order($gid)
 	global $connect ;
 	global $dbprefix ;
 	$query="SELECT MAX(question_order) as maxorder FROM {$dbprefix}questions where gid=".$gid ;
-	echo $query;
+	// echo $query;
 	$result = db_execute_assoc($query);
 	$gv = $result->FetchRow();
 	return $gv['maxorder'];
@@ -585,8 +585,8 @@ if(isset($surveyid))
             $_POST['question_'.$baselang]=str_replace('<br type="_moz" />','',$_POST['question_'.$baselang]);
             $_POST['help_'.$baselang]=str_replace('<br type="_moz" />','',$_POST['help_'.$baselang]);
             
-			$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, help, other, mandatory, lid, question_order, language) 
-                      VALUES ({$_POST['sid']}, {$_POST['gid']}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$baselang]."', '".$_POST['help_'.$baselang]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}',$max,".db_quoteall($baselang).")";
+			$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, help, other, mandatory, lid, lid1, question_order, language) 
+                      VALUES ({$_POST['sid']}, {$_POST['gid']}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$baselang]."', '".$_POST['help_'.$baselang]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}',$max,".db_quoteall($baselang).")";
 			$result = $connect->Execute($query) or die($connect->ErrorMsg());
 			$newqid = $connect->Insert_ID();
 			if (!$result)
@@ -608,7 +608,7 @@ if(isset($surveyid))
             $_POST['help_'.$qlanguage]=str_replace('<br type="_moz" />','',$_POST['help_'.$qlanguage]);
                 
             if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('questions')." ON");}
-			$query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, lid, question_order, language) 
+			$query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, lid, lid1, question_order, language) 
                       VALUES ($newqid,{$_POST['sid']}, {$_POST['gid']}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$qlanguage]."', '".$_POST['help_'.$qlanguage]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}', $max,".db_quoteall($qlanguage).")";
 			$result = $connect->Execute($query) or die($connect->ErrorMsg());
             if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('questions')." OFF");}
