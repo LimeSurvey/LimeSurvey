@@ -2497,16 +2497,16 @@ function questionAttributes()
 	"types"=>"M",
 	"help"=>"Excludes all other options if this is selected");
 	$qattributes[]=array("name"=>"use_dropdown",
-	"types"=>"",
+	"types"=>"1",
 	"help"=>"Use Dual Dropdown instead of Dual Scale");
 	$qattributes[]=array("name"=>"dropdown_prepostfix",
-	"types"=>"",
+	"types"=>"1",
 	"help"=>"Prefix|Suffix for dropdown lists");
 	$qattributes[]=array("name"=>"dropdown_headers",
-	"types"=>"",
+	"types"=>"1",
 	"help"=>"Header Column A|Header Column B  for dropdown lists");
 	$qattributes[]=array("name"=>"dropdown_separators",
-	"types"=>"",
+	"types"=>"1",
 	"help"=>"Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists");
 	/* -- > Commented out since not yet used
     $qattributes[]=array("name"=>"permission",
