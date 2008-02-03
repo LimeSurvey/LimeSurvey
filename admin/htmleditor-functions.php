@@ -93,6 +93,12 @@ function PrepareEditorScript($fieldtype=null)
 {
 	global $defaulthtmleditormode;
 
+	if (isset($_SESSION['htmleditormode']) &&
+		$_SESSION['htmleditormode'] == 'none')
+	{
+		return '';
+	}
+
 	if (!isset($_SESSION['htmleditormode']) ||
 		($_SESSION['htmleditormode'] != 'inline' &&
 		$_SESSION['htmleditormode'] != 'popup') )
@@ -125,6 +131,12 @@ function PrepareEditorScript($fieldtype=null)
 function getEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
 {
 	global $defaulthtmleditormode;
+
+	if (isset($_SESSION['htmleditormode']) &&
+		$_SESSION['htmleditormode'] == 'none')
+	{
+		return '';
+	}
 
 
 	if (!isset($_SESSION['htmleditormode']) ||
