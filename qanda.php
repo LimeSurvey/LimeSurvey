@@ -3378,16 +3378,28 @@ function do_array_flexible_dual($ia)
 	$lquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
 	$lquery1 = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid1  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
 	$qidattributes=getQuestionAttributes($ia[0]);
-	if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1)) {
-		$answerwidth=$answerwidth['value'];
-	} else {
-		$answerwidth=20;
+
+	if ($useDropdownLayout=arraySearchByKey("use_dropdown", $qidattributes, "attribute", 1))
+	{
+		$useDropdownLayout = true;
 	}
-	$columnswidth=100-($answerwidth*2);
+	else
+	{
+		$useDropdownLayout = false;
+	}
 
 	$lresult = db_execute_assoc($lquery);
-	if ($lresult->RecordCount() > 0)
+	if ($useDropdownLayout === false && $lresult->RecordCount() > 0)
 	{
+
+		if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1)) {
+			$answerwidth=$answerwidth['value'];
+		} else {
+			$answerwidth=20;
+		}
+		$columnswidth=100-($answerwidth*2);
+
+
 		while ($lrow=$lresult->FetchRow())
 		{
 			$labelans[]=$lrow['title'];
@@ -3599,6 +3611,276 @@ function do_array_flexible_dual($ia)
 			//IF a MULTIPLE of flexi-redisplay figure, repeat the headings
 			$fn++;
 		}
+		$answer .= "\t\t\t</table>\n";
+	}
+	elseif ($useDropdownLayout === true && $lresult->RecordCount() > 0)
+	{ //TIBO
+
+		if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1)) {
+			$answerwidth=$answerwidth['value'];
+		} else {
+			$answerwidth=20;
+		}
+		$separatorwidth=(100-$answerwidth)/10;
+		$columnswidth=100-$answerwidth-($separatorwidth*2);
+
+		$answer = "<script type='text/javascript'>\n"
+		. "<!--\n"
+		. "\tfunction special_checkconditions(value, name, type, rank)\n"
+		. "\t\t{\n"
+		. "\t\t\tif (value == '') {\n"
+		. "\t\t\t\tif (rank == 0) { dualname = name.replace(/#0/g,\"#1\"); }\n"
+		. "\t\t\t\telse if (rank == 1) { dualname = name.replace(/#1/g,\"#0\"); }\n"
+		. "\t\t\t\tdocument.getElementsByName(dualname)[0].value=value;\n"
+		. "\t\t\t\tmodfield(dualname);\n"
+		. "\t\t\t}\n"
+		. "\t\t\t\tcheckconditions(value, name, type);\n"
+		. "}\n"
+		. " //-->\n"
+		. " </script>\n";
+
+		// Get Answers
+		if (arraySearchByKey("random_order", $qidattributes, "attribute", 1))
+		{
+			$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+		}
+		else
+		{
+			$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+		}
+		$ansresult = db_execute_assoc($ansquery);
+		$anscount = $ansresult->RecordCount();
+
+		$answer .= "\t\t\t<table class='question'>\n";
+
+		if ($anscount==0) 
+		{
+			$inputnames=array();
+			$answer.="<tr><td class='answertext'>".$clang->gT("Error: This question has no answers.")."</td></tr>\n";
+		}
+		else 
+		{
+			//already done $lresult = db_execute_assoc($lquery);
+			while ($lrow=$lresult->FetchRow())
+			{
+				$labels0[]=Array('code' => $lrow['code'],
+						'title' => $lrow['title']);
+			}
+			$lresult1 = db_execute_assoc($lquery1);
+			while ($lrow1=$lresult1->FetchRow())
+			{
+				$labels1[]=Array('code' => $lrow1['code'],
+						'title' => $lrow1['title']);
+			}
+
+
+			// Get attributes for Headers and Prefix/Suffix
+			if ($ddheaders=arraySearchByKey("dropdown_headers", $qidattributes, "attribute", 1))
+			{
+				list ($leftheader, $rightheader) =explode("|",$ddheaders['value']);
+				$leftheader= htmlspecialchars($leftheader);
+				$rightheader= htmlspecialchars($rightheader);
+			}
+			else
+			{
+				$leftheader ='';
+				$rightheader='';
+			}
+
+			if ($ddprepostfix=arraySearchByKey("dropdown_prepostfix", $qidattributes, "attribute", 1))
+			{
+				list ($ddprefix, $ddsuffix) =explode("|",$ddprepostfix['value']);
+				$ddprefix= htmlspecialchars($ddprefix);
+				$ddsuffix= htmlspecialchars($ddsuffix);
+			}
+			else
+			{
+				$ddprefix ='';
+				$ddsuffix='';
+			}
+			if ($ddseparators=arraySearchByKey("dropdown_separators", $qidattributes, "attribute", 1))
+			{
+				list ($postanswSep, $interddSep) =explode("|",$ddseparators['value']);
+				$postanswSep = htmlspecialchars($postanswSep);
+				$interddSep = htmlspecialchars($interddSep);
+			}
+			else
+			{
+				$ddprefix ='';
+				$ddsuffix='';
+			}
+
+			// headers
+			$answer .= "\t\t\t\t\t\t\t<tr>\n"
+			. "\t\t\t\t\t\t\t\t<td align='right' width='$answerwidth%' class='answertext'>\n"
+			. "\t\t\t\t\t\t\t\t</td>\n"
+			. "\t\t\t\t\t\t\t\t<td align='center' class='ddarrayseparator' width='$separatorwidth%'>\n" // postansSeparator
+			. "\t\t\t\t\t\t\t\t</td>\n"
+			. "\t\t\t\t\t\t\t\t<td align='right' class='ddprefix'>\n" // prefix
+			. "\t\t\t\t\t\t\t\t</td>\n"
+//			. "\t\t\t\t\t\t\t\t<td align='center' width='$columnswidth%'><span class='ddheader'>$leftheader</span></td>\n"
+			. "\t\t\t\t\t\t\t\t<td align='center'><span class='ddheader'>$leftheader</span></td>\n"
+			. "\t\t\t\t\t\t\t\t<td align='right' class='ddsuffix'>\n" // prefix
+			. "\t\t\t\t\t\t\t\t</td>\n"
+			. "\t\t\t\t\t\t\t\t<td align='right' class='ddarrayseparator' width='$separatorwidth%'>\n" // Inter DD separator
+			. "\t\t\t\t\t\t\t\t</td>\n"
+			. "\t\t\t\t\t\t\t\t<td align='right' class='ddprefix'>\n" // prefix
+			. "\t\t\t\t\t\t\t\t</td>\n"
+//			. "\t\t\t\t\t\t\t\t<td align='center' width='$columnswidth%'><span class='ddheader'>$rightheader</span></td>\n"
+			. "\t\t\t\t\t\t\t\t<td align='center'><span class='ddheader'>$rightheader</span></td>\n"
+			. "\t\t\t\t\t\t\t\t<td align='right' class='ddsuffix'>\n" // prefix
+			. "\t\t\t\t\t\t\t\t</td>\n"
+			. "\t\t\t\t\t\t\t</tr>\n";
+			
+			while ($ansrow = $ansresult->FetchRow())
+			{
+				$rowname = $ia[1].$ansrow['code'];
+				$dualgroup=0;
+				$myfname = $ia[1].$ansrow['code']."#".$dualgroup;
+				$dualgroup1=1;
+				$myfname1 = $ia[1].$ansrow['code']."#".$dualgroup1;
+
+				if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "" || $_SESSION[$myfname1] == "") )
+				{
+					$answertext="<span class='errormandatory'>".answer_replace($ansrow['answer'])."</span>";
+				}
+				else
+				{
+					$answertext=answer_replace($ansrow['answer']);
+				}
+
+				if (!isset($trbc) || $trbc == "array1dropdown" || !$trbc) {$trbc = "array2dropdown";} else {$trbc = "array1dropdown";}
+				$htmltbody2 = "";
+				if (($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == false)  || ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "A"))
+				{
+					$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'  /><input type='hidden' name='tbdisp$myfname1' id='tbdisp$myfname1' value='off' />";
+				} else if (($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "S") || ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == true))
+				{
+					$selected = getArrayFiltersForQuestion($ia[0]);
+					if (!in_array($ansrow['code'],$selected))
+					{
+						$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' /><input type='hidden' name='tbdisp$myfname1' id='tbdisp$myfname1' value='off' />";
+						$_SESSION[$myfname] = "";
+					} else
+					{
+						$htmltbody2 = "<tbody id='javatbd$myfname' style='display: '><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on' /><input type='hidden' name='tbdisp$myfname1' id='tbdisp$myfname1' value='on' />";
+					}
+				}
+
+				$answer .= "\t\t\t\t\t\t\t$htmltbody2<tr class='$trbc'>\n"
+				. "\t\t\t\t\t\t\t\t<td align='right' width='$answerwidth%' class='answertext'>\n"
+				. "\t\t\t\t\t\t\t\t\t<label for='answer$rowname'>$answertext</label>\n"
+				. "\t\t\t\t\t\t\t\t</td>\n";
+
+				$answer .= "\t\t\t\t\t\t\t\t<td align='center' class='ddarrayseparator' width='$separatorwidth%'>$postanswSep</td>\n"; //Separator
+		
+				// Label0
+
+				// prefix
+				$answer .= "\t\t\t\t\t\t\t\t<td align='right' class='ddprefix'>$ddprefix</td>\n";
+
+//				$answer .= "\t\t\t\t\t\t\t\t<td align='left' width='$columnswidth%'>\n"
+				$answer .= "\t\t\t\t\t\t\t\t<td align='left'>\n"
+				. "\t\t\t\t\t\t\t\t<select name='$myfname' id='answer$myfname' onchange='special_checkconditions(this.value, this.name, this.type,$dualgroup);modfield(this.name);'>\n";
+
+				if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] =='')
+				{
+					$answer .= "\t\t\t\t\t\t\t\t\t<option value='' selected='selected'>".$clang->gT("Please choose")."..</option>\n";
+				}
+
+				foreach ($labels0 as $lrow)
+				{
+					$answer .= "\t\t\t\t\t\t\t\t\t<option value='".$lrow['code']."' ";
+					if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $lrow['code'])
+					{
+						$answer .= " selected='selected' ";
+					}
+					$answer .= ">".$lrow['title']."</option>\n";
+				}
+				// If not mandatory and showanswer, show no ans
+				if ($ia[6] != "Y" && $shownoanswer == 1)
+				{
+					$answer .= "\t\t\t\t\t\t\t\t\t<option value='' ";
+					if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "")
+					{
+						$answer .= " selected='selected' ";
+						$defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
+						. "\t\t\t\t\t\t<!--\n"
+						. "\t\t\t\t\t\t\tmodfield(\"$myfname\");\n"
+						. "\t\t\t\t\t\t//-->\n"
+						. "\t\t\t\t\t\t</script>\n";
+					}
+					$answer .= ">".$clang->gT("No answer")."</option>\n";
+				}
+				$answer .= "\t\t\t\t\t\t\t\t</select>\n";
+
+				// suffix
+				$answer .= "\t\t\t\t\t\t\t\t<td align='left' class='ddsuffix'>$ddsuffix</td>\n"
+				. "\t\t\t\t\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+				if (isset($_SESSION[$myfname]))
+				{
+					$answer .= $_SESSION[$myfname];
+				}
+				$answer .= "' />\n"
+				. "\t\t\t\t\t\t\t\t</td>\n";
+
+				$inputnames[]=$myfname;
+
+				$answer .= "\t\t\t\t\t\t\t\t<td align='center' class='ddarrayseparator' width='$separatorwidth%'>$interddSep</td>\n"; //Separator
+
+				// Label1
+
+				// prefix
+				$answer .= "\t\t\t\t\t\t\t\t<td align='right' class='ddprefix'>$ddprefix</td>\n";
+//				$answer .= "\t\t\t\t\t\t\t\t<td align='left' width='$columnswidth%'>\n"
+				$answer .= "\t\t\t\t\t\t\t\t<td align='left'>\n"
+				. "\t\t\t\t\t\t\t\t<select name='$myfname1' id='answer$myfname1' onchange='special_checkconditions(this.value, this.name, this.type,$dualgroup1);modfield(this.name);'>\n";
+
+				if (!isset($_SESSION[$myfname1]) || $_SESSION[$myfname1] =='')
+				{
+					$answer .= "\t\t\t\t\t\t\t\t\t<option value='' selected='selected'>".$clang->gT("Please choose")."..</option>\n";
+				}
+
+				foreach ($labels1 as $lrow1)
+				{
+					$answer .= "\t\t\t\t\t\t\t\t\t<option value='".$lrow1['code']."' ";
+					if (isset($_SESSION[$myfname1]) && $_SESSION[$myfname1] == $lrow1['code'])
+					{
+						$answer .= " selected='selected' ";
+					}
+					$answer .= ">".$lrow1['title']."</option>\n";
+				}
+				// If not mandatory and showanswer, show no ans
+				if ($ia[6] != "Y" && $shownoanswer == 1)
+				{
+					$answer .= "\t\t\t\t\t\t\t\t\t<option value='' ";
+					if (!isset($_SESSION[$myfname1]) || $_SESSION[$myfname1] == "")
+					{
+						$answer .= " selected='selected' ";
+						$defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
+						. "\t\t\t\t\t\t<!--\n"
+						. "\t\t\t\t\t\t\tmodfield(\"$myfname1\");\n"
+						. "\t\t\t\t\t\t//-->\n"
+						. "\t\t\t\t\t\t</script>\n";
+					}
+					$answer .= ">".$clang->gT("No answer")."</option>\n";
+				}
+				$answer .= "\t\t\t\t\t\t\t\t</select>\n";
+
+				// suffix
+				$answer .= "\t\t\t\t\t\t\t\t<td align='left' class='ddsuffix'>$ddsuffix</td>\n"
+				. "\t\t\t\t\t\t\t\t<input type='hidden' name='java$myfname1' id='java$myfname1' value='";
+				if (isset($_SESSION[$myfname1]))
+				{
+					$answer .= $_SESSION[$myfname1];
+				}
+				$answer .= "' />\n"
+				. "\t\t\t\t\t\t\t\t</td>\n";
+				$inputnames[]=$myfname1;
+
+				$answer .= "\t\t\t\t\t\t\t</tr>\n";
+			}
+		} // End there are answers
 		$answer .= "\t\t\t</table>\n";
 	}
 	else
