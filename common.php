@@ -4446,7 +4446,7 @@ function hasResources($id,$type='survey')
 				break;
 			}
 		}
-		closedir($dir);
+		closedir($dh);
 	}
 	else
 	{

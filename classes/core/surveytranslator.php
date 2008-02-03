@@ -87,7 +87,7 @@
         $supportedLanguages['zh-Hant-HK']['nativedescription'] = '&#32321;&#39636;&#20013;&#25991;&#35486;&#31995;';
 
         // Chinese (Traditional - Taiwan)
-        $supportedLanguages['zh-Hant-TW']['description'] = $clang->gT('Chinese (Traditional - Hong Kong)');
+        $supportedLanguages['zh-Hant-TW']['description'] = $clang->gT('Chinese (Traditional - Taiwan)');
         $supportedLanguages['zh-Hant-TW']['nativedescription'] = 'Chinese (Traditional - Taiwan)';
 
         // Croatian

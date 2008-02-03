@@ -235,7 +235,7 @@ if (isset($_SESSION['s_lang']))
 			$printoutput .= "\t<tr>\n"
 			."\t\t<td>{$fnames[$i][2]}</td>\n"
 			."\t\t<td>"
-			.htmlspecialchars(getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]]), ENT_QUOTES)
+			.getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]])
 			."</td>\n"
 			."\t</tr>\n";
 		}

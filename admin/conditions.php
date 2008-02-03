@@ -862,8 +862,7 @@ $conditionsoutput .= "\t\t\t<small><br />".$clang->gT("NOTE: If you use a pre-de
 $conditionsoutput .= "\t\t</td>\n"
 ."\t\t<td valign='top' align='center'>\n"
 ."\t\t\t<select name='canswers[]' multiple id='canswers' style='font-family:verdana; font-size:10; min-width:250px;' size='6'>\n";
-
-$conditionsoutput .= "\t\t\t</select>\n\t\t\t\n"
+$conditionsoutput .= "\t\t\t</select><br />\n\t\t\t\n"
 ."\t\t".$clang->gT("Constant Value or Regular Expression")."<br />\n"
 ."\t\t<textarea name='ValOrRegEx' cols='40' rows='5'></textarea>\n"
 ."\t\t</td>"

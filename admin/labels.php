@@ -666,6 +666,9 @@ function modlabelsetanswers($lid)
 			    	$myFilter = new InputFilter('','',1,1,1); // $myFilter->process();
       				$_POST['inserttitle']=$myFilter->process($_POST['inserttitle']);
 	   			}
+                // Fix bug with FCKEditor saving strange BR types
+                $_POST['inserttitle']=str_replace('<br type="_moz" />','',$_POST['inserttitle']);
+               
    				$_POST['inserttitle'] = db_quoteall($_POST['inserttitle'],true);
 	  			foreach ($lslanguages as $lslanguage)
 				{
@@ -717,16 +720,16 @@ function modlabelsetanswers($lid)
 			     	{	   			
 	      				$_POST['title_'.$sortorderid]=$myFilter->process($_POST['title_'.$sortorderid]);
 		   			}
+                    // Fix bug with FCKEditor saving strange BR types
+                    $_POST['title_'.$sortorderid]=str_replace('<br type="_moz" />','',$_POST['title_'.$sortorderid]);
+
 				    $_POST['title_'.$sortorderid] = db_quoteall($_POST['title_'.$sortorderid],true);
 	                $query = "UPDATE ".db_table_name('labels')." SET code=".$_POST['code_'.$codeids[$count]].", title={$_POST['title_'.$sortorderid]} WHERE lid=$lid AND sortorder=$orderid AND language='$langid'";
 
 	        		if (!$result = $connect->Execute($query)) 
 	        		// if update didn't work we assume the label does not exist and insert it
 	        		{
-				     	if ($filterxsshtml)
-				     	{	   			
-		      				$_POST['title_'.$sortorderid]=$myFilter->process($_POST['title_'.$sortorderid]);
-			   			}
+                      
 	                    $query = "insert into ".db_table_name('labels')." (code,title,lid,sortorder,language) VALUES (".$_POST['code_'.$codeids[$count]].", {$_POST['title_'.$sortorderid]}, $lid , $orderid , '$langid')";
 	            		if (!$result = $connect->Execute($query))
 	            		{
