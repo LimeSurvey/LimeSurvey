@@ -286,7 +286,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	)
 	{
-		$query = db_rename_table(db_quote_id(returnglobal('oldtable')) , db_table_name("tokens_$surveyid"));
+		$query = db_rename_table(returnglobal('oldtable') , db_table_name("tokens_$surveyid"));
 		$result=$connect->Execute($query) or die("Failed Rename!<br />".$query."<br />".htmlspecialchars($connect->ErrorMsg()));
 		$tokenoutput .= "\t<tr>\n"
 		."\t\t<td align='center'>\n"
@@ -340,7 +340,8 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		}
 		$tokenoutput .= "\t\t\t<input type='submit' value='"
 		.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$homeurl/admin.php?sid=$surveyid', '_top')\" /><br /><br />\n";
-		if ($tcount>0 && 
+		// Do not offer old postgres token tables for restore since these are having an issue with missing index
+        if ($tcount>0 && $databasetype!='postgres' &&
 			($sumrows5['edit_survey_property'] || 
 				$sumrows5['activate_survey'] ||
 				$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
@@ -970,7 +971,7 @@ if ($subaction == "kill" &&
 	{
 		$tokenoutput .= "<font color='red'><strong>".$clang->gT("Warning")."</strong></font><br />\n"
 		.$clang->gT("If you delete this table tokens will no longer be required to access this survey.")."<br />".$clang->gT("A backup of this table will be made if you proceed. Your system administrator will be able to access this table.")."<br />\n"
-		."( \"old_tokens_{$_GET['sid']}_$date\" )<br /><br />\n"
+		."( \"old_tokens_{$surveyid}_$date\" )<br /><br />\n"
 		."<input type='submit' value='"
 //		.$clang->gT("Delete Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill&amp;ok=surething', '_top')\" /><br />\n"
 		.$clang->gT("Delete Tokens")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill&amp;ok=surething")."\" /><br />\n"
@@ -980,8 +981,16 @@ if ($subaction == "kill" &&
 	elseif (isset($_POST['ok']) && $_POST['ok'] == "surething")
 	{
 		$oldtable = "tokens_$surveyid";
-		$newtable = "old_tokens_{$surveyid}_$date";
-		$deactivatequery = db_rename_table( db_table_name($oldtable), db_table_name($newtable));
+		$newtable = "old_tokens_{$surveyid}_$date";   
+		$deactivatequery = db_rename_table( db_table_name_nq($oldtable), db_table_name_nq($newtable));
+        if ($databasetype=='postgres') 
+        {
+            // Special treatment for postgres - pah!
+            $dict = NewDataDictionary($connect);            
+            $dropindexquery=$dict->DropIndexSQL(db_table_name_nq($oldtable).'_idx');
+            $connect->Execute($dropindexquery[0]);
+            // this also means that old token tables are missing the index :-/
+        }
 		$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />\n".htmlspecialchars($connect->ErrorMsg())." - Query: $deactivatequery <br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
 		$tokenoutput .= "<span style='display: block; text-align: center; width: 70%'>\n"
 		.$clang->gT("The tokens table has now been removed and tokens are no longer required to access this survey.")."<br /> ".$clang->gT("A backup of this table has been made and can be accessed by your system administrator.")."<br />\n"
@@ -1897,7 +1906,7 @@ if ($subaction == "upload" &&
 					{
 						if (!isset($line[3]) || $line[3]=='') $line[3] = "OK";
 						if (!isset($line[4]) || $line[4] == "") $line[4] = "";
-						if (!isset($line[5]) || $line[5] == "") $line[4] = GetBaseLanguageFromSurveyID($surveyid);
+						if (!isset($line[5]) || $line[5] == "") $line[5] = GetBaseLanguageFromSurveyID($surveyid);
 						if (!isset($line[6])) $line[6] = "";
 						if (!isset($line[7])) $line[7] = "";
 						$iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"

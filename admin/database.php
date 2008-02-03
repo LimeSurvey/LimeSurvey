@@ -27,13 +27,20 @@ $_POST  = array_map('stripslashes', $_POST);
 function db_rename_table($oldtable, $newtable)
 {
 	global $connect;
-	switch ($connect->databaseType) {
+
+    $dict = NewDataDictionary($connect);
+    $result=$dict->RenameTableSQL($oldtable, $newtable);
+    return $result[0];
+    
+	/* Old method
+ 	 switch ($connect->databaseType) {
 	
 	    case 'postgres7'  : return "ALTER TABLE $oldtable RENAME TO $newtable";
 		case 'mysql'	  : return "RENAME TABLE $oldtable TO $newtable";
 		case 'odbc_mssql' : return "EXEC sp_rename $oldtable, $newtable";
-		default: die ("Couldn't create 'rename table' query for connection type '$connect->databaseType'"); 
-	}		
+		default: die ("Couldn't create 'rename table' query for connection type '$connect->databaseType'");
+		 
+	}	*/	
 }
 
 
@@ -119,8 +126,8 @@ if(isset($surveyid))
 		     	$_POST['description_'.$grouplang]=$myFilter->process($_POST['description_'.$grouplang]);
 		     	}
                 // Fix bug with FCKEditor saving strange BR types
-                $_POST['group_name_'.$grouplang]=str_replace('<br type="_moz" />','',$_POST['group_name_'.$langname]);
-                $_POST['description_'.$grouplang]=str_replace('<br type="_moz" />','',$_POST['description_'.$langname]);
+                $_POST['group_name_'.$grouplang]=str_replace('<br type="_moz" />','',$_POST['group_name_'.$grouplang]);
+                $_POST['description_'.$grouplang]=str_replace('<br type="_moz" />','',$_POST['description_'.$grouplang]);
 			  	if ($first)
                   {
       			    $query = "INSERT INTO ".db_table_name('groups')." (sid, group_name, description,group_order,language) VALUES ('{$_POST['sid']}', '{$_POST['group_name_'.$grouplang]}', '{$_POST['description_'.$grouplang]}',".getMaxgrouporder($_POST['sid']).",'{$grouplang}')";

@@ -50,9 +50,9 @@ else
 	$tablelist = $connect->MetaTables();
 	if (in_array("{$dbprefix}tokens_{$_GET['sid']}", $tablelist))
 	{
-		$toldtable="{$dbprefix}tokens_{$_GET['sid']}";
-		$tnewtable="{$dbprefix}old_tokens_{$_GET['sid']}_{$date}";
-		$tdeactivatequery = db_rename_table($toldtable ,$tnewtable);
+		$toldtable="tokens_{$_GET['sid']}";
+		$tnewtable="old_tokens_{$_GET['sid']}_{$date}";
+		$tdeactivatequery = db_rename_table(db_table_name_nq($toldtable) ,db_table_name_nq($tnewtable));
 		$tdeactivateresult = $connect->Execute($tdeactivatequery) or die ("Couldn't deactivate tokens table because:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
 	}
 

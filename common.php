@@ -461,20 +461,28 @@ function db_table_name($name)
 	return db_quote_id($dbprefix.$name);
 }
 
+function db_table_name_nq($name)
+//returns the table name without quotes
+{
+    
+    global $dbprefix;
+    return $dbprefix.$name;
+}
+
 /*
  *  Return a sql statement for finding LIKE named tables
  */
 function db_select_tables_like($table)
 {
-	global $connect;
-	switch ($connect->databaseType) {
+	global $databasetype;
+	switch ($databasetype) {
 		case 'mysql'	  : 
 			return "SHOW TABLES LIKE '$table'";
 		case 'odbc_mssql' : 
 			return "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES where TABLE_TYPE='BASE TABLE' and TABLE_NAME LIKE '$table'";
-		case 'postgres7' : 
+		case 'postgres' : 
 			return "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' and table_name like '$table'";
-		default: die ("Couldn't create 'select tables like' query for connection type '$connect->databaseType'"); 
+		default: die ("Couldn't create 'select tables like' query for connection type 'databaseType'"); 
 	}	
 }
 
