@@ -3706,8 +3706,8 @@ function do_array_flexible_dual($ia)
 			}
 			else
 			{
-				$ddprefix ='';
-				$ddsuffix='';
+				$postanswSep = '';
+				$interddSep = '';
 			}
 
 			// headers
