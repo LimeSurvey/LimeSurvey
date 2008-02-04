@@ -2502,9 +2502,12 @@ function questionAttributes()
 	$qattributes[]=array("name"=>"dropdown_prepostfix",
 	"types"=>"1",
 	"help"=>"Prefix|Suffix for dropdown lists");
-	$qattributes[]=array("name"=>"dualscale_headers",
+	$qattributes[]=array("name"=>"dualscale_headerA",
 	"types"=>"1",
-	"help"=>"Header Column A|Header Column B  for dropdown lists");
+	"help"=>"Header for Column A");
+	$qattributes[]=array("name"=>"dualscale_headerB",
+	"types"=>"1",
+	"help"=>"Header for Column B");
 	$qattributes[]=array("name"=>"dropdown_separators",
 	"types"=>"1",
 	"help"=>"Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists");

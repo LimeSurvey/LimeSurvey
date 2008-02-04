@@ -3388,16 +3388,21 @@ function do_array_flexible_dual($ia)
 		$useDropdownLayout = false;
 	}
 
-	if ($dsheaders=arraySearchByKey("dualscale_headers", $qidattributes, "attribute", 1))
+	if ($dsheaderA=arraySearchByKey("dualscale_headerA", $qidattributes, "attribute", 1))
 	{
-		list ($leftheader, $rightheader) =explode("|",$dsheaders['value']);
-		$leftheader= htmlspecialchars($leftheader);
-		$rightheader= htmlspecialchars($rightheader);
+		$leftheader= htmlspecialchars($dsheaderA['value']);
 	}
 	else
 	{
 		$leftheader ='';
-		$rightheader='';
+	}
+	if ($dsheaderB=arraySearchByKey("dualscale_headerB", $qidattributes, "attribute", 1))
+	{
+		$rightheader= htmlspecialchars($dsheaderB['value']);
+	}
+	else
+	{
+		$rightheader ='';
 	}
 
 	$lresult = db_execute_assoc($lquery);
