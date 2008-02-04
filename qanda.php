@@ -3388,6 +3388,18 @@ function do_array_flexible_dual($ia)
 		$useDropdownLayout = false;
 	}
 
+	if ($dsheaders=arraySearchByKey("dualscale_headers", $qidattributes, "attribute", 1))
+	{
+		list ($leftheader, $rightheader) =explode("|",$dsheaders['value']);
+		$leftheader= htmlspecialchars($leftheader);
+		$rightheader= htmlspecialchars($rightheader);
+	}
+	else
+	{
+		$leftheader ='';
+		$rightheader='';
+	}
+
 	$lresult = db_execute_assoc($lquery);
 	if ($useDropdownLayout === false && $lresult->RecordCount() > 0)
 	{
@@ -3446,9 +3458,41 @@ function do_array_flexible_dual($ia)
 		. "}\n"
 		. " //-->\n"
 		. " </script>\n";
+
+
+		// build header if needed
+		if ($leftheader != '' || $rightheader !='')
+		{
+			$myheader = "\t\t\t\t<tr>\n"
+			."\t\t\t\t\t<td width='$answerwidth%'></td>\n";
+
+			$myheader .= "\t\t\t\t\t<td class='array1' width='$cellwidth%' colspan='".count($labelans)."'><span class='dsheader'>$leftheader</span></td>\n";
+
+			if (count($labelans1)>0)
+			{
+				$myheader .= "\t\t\t\t\t<td class='array1' width='$cellwidth%'></td>\n";
+				$myheader .= "\t\t\t\t\t<td class='array1' width='$cellwidth%' colspan='".count($labelans1)."'><span class='dsheader'>$rightheader</span></td>\n";
+			}
+
+			if ($right_exists) {$myheader .= "<td>&nbsp;</td>";}
+			if ($ia[6] != "Y" && $shownoanswer == 1)
+			{
+				$myheader .= "\t\t\t\t\t<td class='array1' width='$cellwidth%'></td>\n";
+				$myheader .= "\t\t\t\t\t<td class='array1' width='$cellwidth%'></td>\n";
+			}
+			$myheader .= "\t\t\t\t</tr>\n";
+		}		
+		else
+		{
+			$myheader = '';
+		}
+
+
 		$answer .= "\t\t\t<table class='question'>\n"
+		. $myheader
 		. "\t\t\t\t<tr>\n"
 		. "\t\t\t\t\t<td width='$answerwidth%'></td>\n";
+
 		foreach ($labelans as $ld)
 		{
 			$answer .= "\t\t\t\t\t<th class='array1' width='$cellwidth%'><font size='1'>".$ld."</font></th>\n";
@@ -3675,17 +3719,6 @@ function do_array_flexible_dual($ia)
 
 
 			// Get attributes for Headers and Prefix/Suffix
-			if ($ddheaders=arraySearchByKey("dropdown_headers", $qidattributes, "attribute", 1))
-			{
-				list ($leftheader, $rightheader) =explode("|",$ddheaders['value']);
-				$leftheader= htmlspecialchars($leftheader);
-				$rightheader= htmlspecialchars($rightheader);
-			}
-			else
-			{
-				$leftheader ='';
-				$rightheader='';
-			}
 
 			if ($ddprepostfix=arraySearchByKey("dropdown_prepostfix", $qidattributes, "attribute", 1))
 			{
@@ -3718,16 +3751,16 @@ function do_array_flexible_dual($ia)
 			. "\t\t\t\t\t\t\t\t</td>\n"
 			. "\t\t\t\t\t\t\t\t<td align='right' class='ddprefix'>\n" // prefix
 			. "\t\t\t\t\t\t\t\t</td>\n"
-//			. "\t\t\t\t\t\t\t\t<td align='center' width='$columnswidth%'><span class='ddheader'>$leftheader</span></td>\n"
-			. "\t\t\t\t\t\t\t\t<td align='center'><span class='ddheader'>$leftheader</span></td>\n"
+//			. "\t\t\t\t\t\t\t\t<td align='center' width='$columnswidth%'><span class='dsheader'>$leftheader</span></td>\n"
+			. "\t\t\t\t\t\t\t\t<td align='center'><span class='dsheader'>$leftheader</span></td>\n"
 			. "\t\t\t\t\t\t\t\t<td align='right' class='ddsuffix'>\n" // prefix
 			. "\t\t\t\t\t\t\t\t</td>\n"
 			. "\t\t\t\t\t\t\t\t<td align='right' class='ddarrayseparator' width='$separatorwidth%'>\n" // Inter DD separator
 			. "\t\t\t\t\t\t\t\t</td>\n"
 			. "\t\t\t\t\t\t\t\t<td align='right' class='ddprefix'>\n" // prefix
 			. "\t\t\t\t\t\t\t\t</td>\n"
-//			. "\t\t\t\t\t\t\t\t<td align='center' width='$columnswidth%'><span class='ddheader'>$rightheader</span></td>\n"
-			. "\t\t\t\t\t\t\t\t<td align='center'><span class='ddheader'>$rightheader</span></td>\n"
+//			. "\t\t\t\t\t\t\t\t<td align='center' width='$columnswidth%'><span class='dsheader'>$rightheader</span></td>\n"
+			. "\t\t\t\t\t\t\t\t<td align='center'><span class='dsheader'>$rightheader</span></td>\n"
 			. "\t\t\t\t\t\t\t\t<td align='right' class='ddsuffix'>\n" // prefix
 			. "\t\t\t\t\t\t\t\t</td>\n"
 			. "\t\t\t\t\t\t\t</tr>\n";
@@ -3780,7 +3813,7 @@ function do_array_flexible_dual($ia)
 				$answer .= "\t\t\t\t\t\t\t\t<td align='right' class='ddprefix'>$ddprefix</td>\n";
 
 //				$answer .= "\t\t\t\t\t\t\t\t<td align='left' width='$columnswidth%'>\n"
-				$answer .= "\t\t\t\t\t\t\t\t<td align='left'>\n"
+				$answer .= "\t\t\t\t\t\t\t\t<td align='center'>\n"
 				. "\t\t\t\t\t\t\t\t<select name='$myfname' id='answer$myfname' onchange='special_checkconditions(this.value, this.name, this.type,$dualgroup);modfield(this.name);'>\n";
 
 				if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] =='')
@@ -3833,7 +3866,7 @@ function do_array_flexible_dual($ia)
 				// prefix
 				$answer .= "\t\t\t\t\t\t\t\t<td align='right' class='ddprefix'>$ddprefix</td>\n";
 //				$answer .= "\t\t\t\t\t\t\t\t<td align='left' width='$columnswidth%'>\n"
-				$answer .= "\t\t\t\t\t\t\t\t<td align='left'>\n"
+				$answer .= "\t\t\t\t\t\t\t\t<td align='center'>\n"
 				. "\t\t\t\t\t\t\t\t<select name='$myfname1' id='answer$myfname1' onchange='special_checkconditions(this.value, this.name, this.type,$dualgroup1);modfield(this.name);'>\n";
 
 				if (!isset($_SESSION[$myfname1]) || $_SESSION[$myfname1] =='')

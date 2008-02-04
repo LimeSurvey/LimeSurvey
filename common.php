@@ -2502,7 +2502,7 @@ function questionAttributes()
 	$qattributes[]=array("name"=>"dropdown_prepostfix",
 	"types"=>"1",
 	"help"=>"Prefix|Suffix for dropdown lists");
-	$qattributes[]=array("name"=>"dropdown_headers",
+	$qattributes[]=array("name"=>"dualscale_headers",
 	"types"=>"1",
 	"help"=>"Header Column A|Header Column B  for dropdown lists");
 	$qattributes[]=array("name"=>"dropdown_separators",
