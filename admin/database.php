@@ -975,7 +975,7 @@ if(isset($surveyid))
 		CleanLanguagesFromSurvey($_POST['sid'],$_POST['languageids']);
 		FixLanguageConsistency($_POST['sid'],$_POST['languageids']);
 		
-		if(!hasTemplateManageRights($_SESSION['loginID'], $_POST['template'])) $_POST['template'] = "default";
+		if($_SESSION['USER_RIGHT_SUPERADMIN'] != 1 && $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] != 1 && !hasTemplateManageRights($_SESSION['loginID'], $_POST['template'])) $_POST['template'] = "default";
 		
 		$usquery = "UPDATE {$dbprefix}surveys \n"
 		. "SET admin='{$_POST['admin']}', useexpiry='{$_POST['useexpiry']}',\n"
@@ -1138,7 +1138,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		}
 		while ($isresult->RecordCount()>0);
 		
-		if(!hasTemplateManageRights($_SESSION['loginID'], $_POST['template'])) $_POST['template'] = "default";
+		if($_SESSION['USER_RIGHT_SUPERADMIN'] != 1 && $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] != 1 && !hasTemplateManageRights($_SESSION['loginID'], $_POST['template'])) $_POST['template'] = "default";
 
 		$isquery = "INSERT INTO {$dbprefix}surveys\n"
 		. "(sid, owner_id, admin, active, useexpiry, expires, "
