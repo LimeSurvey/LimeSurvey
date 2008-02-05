@@ -250,6 +250,7 @@ if (isset($questionlist) && is_array($questionlist))
                    ."{$dbprefix}questions.question, "
                    ."{$dbprefix}questions.type, "
                    ."{$dbprefix}questions.lid, "
+                   ."{$dbprefix}questions.lid1, "                   
                    ."{$dbprefix}questions.title "
               ."FROM {$dbprefix}questions, "
                    ."{$dbprefix}groups "
@@ -271,6 +272,7 @@ if (isset($questionlist) && is_array($questionlist))
                          "question"=>$myrows['question'],
                          "type"=>$myrows['type'],
                          "lid"=>$myrows['lid'],
+                         "lid1"=>$myrows['lid1'],
                          "title"=>$myrows['title']);
 		}
 	}
@@ -286,6 +288,7 @@ if (isset($postquestionlist) && is_array($postquestionlist))
                    ."{$dbprefix}questions.question, "
                    ."{$dbprefix}questions.type, "
                    ."{$dbprefix}questions.lid, "
+                   ."{$dbprefix}questions.lid1, "                   
                    ."{$dbprefix}questions.title "
               ."FROM {$dbprefix}questions, "
                    ."{$dbprefix}groups "
@@ -305,6 +308,7 @@ if (isset($postquestionlist) && is_array($postquestionlist))
                         "question"=>$myrows['question'],
                         "type"=>$myrows['type'],
                         "lid"=>$myrows['lid'],
+                        "lid1"=>$myrows['lid1'],                        
                         "title"=>$myrows['title']);
 		} // while
 	}
@@ -397,6 +401,55 @@ if ($questionscount > 0)
         $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "", $clang->gT("No answer"));
       } //while
     } //if A,B,C,E,F,H
+    elseif ($rows['type'] == "1") //Multi Scale
+    {
+        $aquery="SELECT * "
+            ."FROM {$dbprefix}answers "
+            ."WHERE qid={$rows['qid']} "
+            ."AND {$dbprefix}answers.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+            ."ORDER BY sortorder, "
+            ."answer";
+        $aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
+        
+        while ($arows = $aresult->FetchRow())
+        {
+            $shortanswer = strip_tags($arows['answer']);
+            $shortanswer .= "[[Label 1]{$arows['code']}]";
+            $cquestions[]=array("$shortquestion [$shortanswer]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."#0");
+
+            $shortanswer = strip_tags($arows['answer']);            
+            $shortanswer .= "[[Label 2]{$arows['code']}]";
+            $cquestions[]=array("$shortquestion [$shortanswer]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."#1");
+            
+            // first label
+            $lquery="SELECT * "
+                ."FROM {$dbprefix}labels "
+                ."WHERE lid={$rows['lid']} "
+                ."AND {$dbprefix}labels.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+                ."ORDER BY sortorder, "
+                ."lid";
+            $lresult=db_execute_assoc($lquery) or die ("Couldn't get labels to Array <br />$lquery<br />".$connect->ErrorMsg());                
+            while ($lrows = $lresult->FetchRow())
+            {
+                $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."#0", "{$lrows['code']}", "{$lrows['code']}");
+            }
+            
+            // second label
+            $lquery="SELECT * "
+                ."FROM {$dbprefix}labels "
+                ."WHERE lid={$rows['lid1']} "
+                ."AND {$dbprefix}labels.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+                ."ORDER BY sortorder, "
+                ."lid";
+            $lresult=db_execute_assoc($lquery) or die ("Couldn't get labels to Array <br />$lquery<br />".$connect->ErrorMsg());                
+            while ($lrows = $lresult->FetchRow())
+            {
+                $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."#1", "{$lrows['code']}", "{$lrows['code']}");
+            }
+
+//            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "", $clang->gT("No answer"));
+        } //while
+    }
     elseif ($rows['type'] == "R") //Answer Ranking
 		{
       $aquery="SELECT * "
