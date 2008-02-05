@@ -19,7 +19,16 @@ include_once("login_check.php");
 
 if ($action == "listsurveys")
 {
-	$query = "SELECT a.*, c.* FROM ".db_table_name('surveys')." as a INNER JOIN ".db_table_name('surveys_rights')." AS b ON a.sid = b.sid INNER JOIN ".db_table_name('surveys_languagesettings')." as c ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language ) WHERE b.uid = ".$_SESSION['loginID']." and surveyls_survey_id=a.sid and surveyls_language=a.language ORDER BY surveyls_title";
+	$query = "SELECT a.*, c.*, u.users_name FROM ".db_table_name('surveys')." as a INNER JOIN ".db_table_name('surveys_languagesettings')." as c ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language ) AND surveyls_survey_id=a.sid and surveyls_language=a.language INNER JOIN ".db_table_name('users')." as u ON (uid=a.owner_id) ";
+
+	if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1)
+	{
+		$query .= " INNER JOIN ".db_table_name('surveys_rights')." AS b ON a.sid = b.sid ";
+		$query .= " WHERE b.uid =".$_SESSION['loginID'];
+	}
+
+	$query .= " ORDER BY surveyls_title";
+
 	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
 
 	if($result->RecordCount() > 0) {
@@ -28,6 +37,7 @@ if ($action == "listsurveys")
 				    <th height=\"22\" width='22'>&nbsp</th>
 				    <th height=\"22\"><strong>".$clang->gT("Survey")."</strong></th>
 				    <th><strong>".$clang->gT("Date Created")."</strong></th>
+				    <th><strong>".$clang->gT("Owner")."</strong></th>
 				    <th><strong>".$clang->gT("Access")."</strong></th>
 				    <th><strong>".$clang->gT("Answer Privacy")."</strong></th>
 				    <th><strong>".$clang->gT("Status")."</strong></th>
@@ -78,6 +88,15 @@ if ($action == "listsurveys")
 
 			$datecreated=$rows['datecreated'] ;
 
+			if (in_array($rows['owner_id'],getuserlist('onlyuidarray')))
+			{
+				$ownername=$rows['users_name'] ;
+			}
+			else
+			{
+				$ownername="---";
+			}
+
             if ($gbc == "oddrow") {$gbc = "evenrow";}
             else {$gbc = "oddrow";}
 			$listsurveys.="<tr class='$gbc'>";
@@ -93,7 +112,7 @@ if ($action == "listsurveys")
 				}
 				else
 				{
-					if ($sidsecurity['activate_survey'])
+					if ($_SESSION['USER_RIGHT_SUPERADMIN'] ==1 || $sidsecurity['activate_survey'])
 					{
 						$listsurveys .= "<td><a href=\"#\" onclick=\"window.open('$scriptname?action=deactivate&amp;sid={$rows['sid']}', '_top')\""
 						. "onmouseout=\"hideTooltip()\""
@@ -109,7 +128,7 @@ if ($action == "listsurveys")
 					}
 				}
 			} else {
-				if ($sidsecurity['activate_survey'])
+				if ($_SESSION['USER_RIGHT_SUPERADMIN'] ==1 || $sidsecurity['activate_survey'])
 				{
 					$listsurveys .= "<td><a href=\"#\" onclick=\"window.open('$scriptname?action=activate&amp;sid={$rows['sid']}', '_top')\""
 					. "onmouseout=\"hideTooltip()\""
@@ -126,6 +145,7 @@ if ($action == "listsurveys")
 			
 			$listsurveys.="<td><a href='".$scriptname."?sid=".$rows['sid']."'>".$rows['surveyls_title']."</a></td>".
 					    "<td>".$datecreated."</td>".
+					    "<td>".$ownername."</td>".
 					    "<td>".$visibility."</td>" .
 					    "<td>".$privacy."</td>" .
 					    "<td>".$status."</td>";
@@ -140,7 +160,7 @@ if ($action == "listsurveys")
 		}
 
 		$listsurveys.="<tr class='header'>
-		<td colspan=\"7\">&nbsp;</td>".
+		<td colspan=\"8\">&nbsp;</td>".
 		"</tr>";
 		$listsurveys.="</table><br />" ;
 	}
