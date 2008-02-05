@@ -351,7 +351,7 @@ elseif ($action == "replacementfields")
       $action=="uploadf" || $action=="newsurvey" || $action=="listsurveys" ||   
       $action=="surveyrights" || $action=="quotas") )
 {
-	if ($action=="editsurvey")
+	if ($action=="editsurvey" || $action=="updatesurvey")
 	{
 		 $_SESSION['FileManagerContext']="edit:survey:$surveyid";
 	}

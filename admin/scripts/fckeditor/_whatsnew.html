@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+ * FCKeditor - The text editor for Internet - http://www.fckeditor.net
+ * Copyright (C) 2003-2007 Frederico Caldeira Knabben
+ *
+ * == BEGIN LICENSE ==
+ *
+ * Licensed under the terms of any of the following licenses at your
+ * choice:
+ *
+ *  - GNU General Public License Version 2 or later (the "GPL")
+ *    http://www.gnu.org/licenses/gpl.html
+ *
+ *  - GNU Lesser General Public License Version 2.1 or later (the "LGPL")
+ *    http://www.gnu.org/licenses/lgpl.html
+ *
+ *  - Mozilla Public License Version 1.1 or later (the "MPL")
+ *    http://www.mozilla.org/MPL/MPL-1.1.html
+ *
+ * == END LICENSE ==
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>FCKeditor ChangeLog - What's New?</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style type="text/css">
+		body { font-family: arial, verdana, sans-serif }
+		p { margin-left: 20px }
+		h1 { border-bottom: solid 1px gray; padding-bottom: 20px }
+	</style>
+</head>
+<body>
+	<h1>
+		FCKeditor ChangeLog - What's New?</h1>
+	<h3>
+		Version 2.5.1</h3>
+	<p>
+		New Features and Improvements:</p>
+	<ul>
+		<li><strong>FCKeditor.Net 2.5</strong> compatibility.</li>
+		<li>JavaScript integration file:
+			<ul>
+				<li>The new "<strong>FCKeditor.ReplaceAllTextareas</strong>" function is being introduced,
+					making it possible to replace many (or unknown) &lt;textarea&gt; elements in a single
+					call. The replacement can be also filtered by CSS class name, or by a custom function
+					evaluator. </li>
+				<li>It is now possible to set the default BasePath for all editor instances by setting
+					<strong>FCKeditor.BasePath</strong>. This is extremely useful when working with
+					the ReplaceAllTextareas function. </li>
+			</ul>
+		</li>
+	</ul>
+	<p>
+		Fixed Bugs:</p>
+	<ul>
+		<li>[<a href="http://dev.fckeditor.net/ticket/339" target="_blank">#339</a>] [<a
+			href="http://dev.fckeditor.net/ticket/681" target="_blank">#681</a>] The SpellerPages
+			spell checker will now completely ignore the presence of HTML tags in the text.
+		</li>
+		<li>[<a href="http://dev.fckeditor.net/ticket/1643" target="_blank">#1643</a>] Resolved
+			several "strict warning" messages in Firefox when running FCKeditor. </li>
+		<li>[<a href="http://dev.fckeditor.net/ticket/1603" target="_blank">#1603</a>] Certain
+			specific markup was making FCKeditor entering in a loop, blocking its execution.
+		</li>
+		<li>[<a href="http://dev.fckeditor.net/ticket/1664" target="_blank">#1664</a>] The ENTER
+			key will not any more swap the order of the tags when hit at the end of paragraphs.
+		</li>
+	</ul>
+	<p>
+		<a href="_whatsnew_history.html">See previous versions history</a>
+	</p>
+</body>
+</html>

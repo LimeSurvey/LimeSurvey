@@ -35,6 +35,7 @@ $isInstertansEnabled=false;
 $limereplacementoutput=""
 	. "<script language=\"javascript\">\n"
 	. "var oEditor = window.parent.InnerDialogLoaded() ;\n"
+	. "var dialog = oEditor.FCK ;\n"
 	. "var FCKLang = oEditor.FCKLang ;\n"
 	. "var FCKLimeReplacementFieldss = oEditor.FCKLimeReplacementFieldss ;\n"
 	. "window.onload = function ()\n"
@@ -44,7 +45,7 @@ $limereplacementoutput=""
 	. "\twindow.parent.SetOkButton( true ) ;\n"
 	. "}\n"
 	. "\n"
-	. "var eSelected = oEditor.FCKSelection.GetSelectedElement() ;\n"
+	. "var innertext = '' + dialog.EditorWindow.getSelection() + '' ;\n"
 	. "\n"
 	. "function Ok()\n"
 	. "{\n"
@@ -54,12 +55,14 @@ $limereplacementoutput=""
 	. "}\n"
 	. "function LoadSelected()\n"
 	. "{\n"
-	. "\tif ( !eSelected )\n"
+	. "\tif ( innertext == '' )\n"
 	. "\t\treturn ;\n"
-	. "\tif ( eSelected.tagName == 'SPAN' && eSelected._fckLimeReplacementFields )\n"
-	. "\t\tdocument.getElementById('cquestions').value = eSelected._fckLimeReplacementFields ;\n"
-	. "\telse\n"
-	. "\t\teSelected == null ;\n"
+//	. "\tif ( eSelected.tagName == 'SPAN' && eSelected._fckLimeReplacementFields )\n"
+	. "var replcode=innertext.substring(innertext.indexOf('{')+1,innertext.lastIndexOf('}'));\n"
+//	. "alert('TIBO=' + replcode);\n"
+	. "\t\tdocument.getElementById('cquestions').value = replcode;\n"
+//	. "\telse\n"
+//	. "\t\teSelected == null ;\n"
 	. "}\n"
 	. "</script>\n";
 	
@@ -330,7 +333,7 @@ if ($isInstertansEnabled===true)
 
 if (count($replFields) > 0 || isset($cquestions) )
 {
-	$limereplacementoutput .= "\t\t\t<select name='cquestions' id='cquestions' style='font-family:verdana; background-color: #FFFFFF; font-size:10; border: 0px;width:99%;' size='15'>\n";
+	$limereplacementoutput .= "\t\t\t<select name='cquestions' id='cquestions' style='font-family:verdana; background-color: #FFFFFF; font-size:10; border: 0px;width:99%;' size='15' ondblclick='Ok();'>\n";
 }
 else
 {
