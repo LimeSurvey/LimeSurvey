@@ -3553,11 +3553,13 @@ function do_array_flexible_dual($ia)
 			$answertextsave=$answertext;
             
             $dualgroup=0; 
-            $myfname = $ia[1].$ansrow['code']."#".$dualgroup;
+            $myfname = $ia[1].$ansrow['code']."#0";
+            $myfname1 = $ia[1].$ansrow['code']."#1"; // new multi-scale-answer
 			/* Check if this item has not been answered: the 'notanswered' variable must be an array,
 			containing a list of unanswered questions, the current question must be in the array,
 			and there must be no answer available for the item in this session. */
-			if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "") ) {
+			if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && (($_SESSION[$myfname] == "") || ($_SESSION[$myfname1] == "")) ) 
+            {
 				$answertext = "<span class='errormandatory'>{$answertext}</span>";
 			}
 			$htmltbody2 = "";
@@ -3604,8 +3606,7 @@ function do_array_flexible_dual($ia)
 			{			
 				$dualgroup++;
 				$answer .= "\t\t\t\t\t<td  class='array1'><font size='1'></font></td>\n";		// separator
-				$myfname1 = $ia[1].$ansrow['code']."#".$dualgroup; // new multi-scale-answer
-				array_push($inputnames,$myfname1);
+    			array_push($inputnames,$myfname1);
 				$answer .= "<input type='hidden' name='java$myfname1' id='java$myfname1' value='";
                 if (isset($_SESSION[$myfname1])) {$answer .= $_SESSION[$myfname1];}
 				$answer .= "' />";
