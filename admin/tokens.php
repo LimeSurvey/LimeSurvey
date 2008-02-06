@@ -983,14 +983,14 @@ if ($subaction == "kill" &&
 		$oldtable = "tokens_$surveyid";
 		$newtable = "old_tokens_{$surveyid}_$date";   
 		$deactivatequery = db_rename_table( db_table_name_nq($oldtable), db_table_name_nq($newtable));
-        if ($databasetype=='postgres') 
-        {
-            // Special treatment for postgres - pah!
-            $dict = NewDataDictionary($connect);            
-            $dropindexquery=$dict->DropIndexSQL(db_table_name_nq($oldtable).'_idx');
-            $connect->Execute($dropindexquery[0]);
-            // this also means that old token tables are missing the index :-/
-        }
+	    if ($databasetype=='postgres')
+	    {
+	    // If you deactivate a postgres table you have to rename the according sequence too and alter the id field to point to the changed sequence
+	    	$deactivatequery = db_rename_table(db_table_name_nq($toldtable).'_tid_seq',db_table_name_nq($tnewtable).'_tid_seq');
+			$deactivateresult = $connect->Execute($deactivatequery) or die ("Could not rename the old sequence for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
+	        $setsequence="ALTER TABLE ".db_table_name_nq($tnewtable)." ALTER COLUMN tid SET DEFAULT nextval('".db_table_name_nq($tnewtable)."_tid_seq'::regclass);";
+			$deactivateresult = $connect->Execute($setsequence) or die ("Could not alter the field tid to point to the new sequence name for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
+	    }
 		$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />\n".htmlspecialchars($connect->ErrorMsg())." - Query: $deactivatequery <br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
 		$tokenoutput .= "<span style='display: block; text-align: center; width: 70%'>\n"
 		.$clang->gT("The tokens table has now been removed and tokens are no longer required to access this survey.")."<br /> ".$clang->gT("A backup of this table has been made and can be accessed by your system administrator.")."<br />\n"

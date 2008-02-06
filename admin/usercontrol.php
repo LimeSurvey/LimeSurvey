@@ -259,7 +259,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 
 		if($uresult)
 		{
-			$newqid = $connect->Insert_ID();
+			$newqid = $connect->Insert_ID("{$dbprefix}users","uid");
 
 			// add default template to template rights for user
 			$template_query = "INSERT INTO {$dbprefix}templates_rights (`uid`, `folder`, `use`) VALUES('$newqid','default','1')";

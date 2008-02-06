@@ -3066,7 +3066,7 @@ function addUserGroupInDB($group_name, $group_description) {
 	global $connect;
 	$iquery = "INSERT INTO ".db_table_name('user_groups')." (name, description, owner_id) VALUES('{$group_name}', '{$group_description}', '{$_SESSION['loginID']}')";
 	if($connect->Execute($iquery)) {
-		$id = $connect->Insert_Id();
+		$id = $connect->Insert_Id(db_table_name_nq('user_groups'),'ugid');
 		if($id > 0) {
  			$iquery = "INSERT INTO ".db_table_name('user_in_groups')." VALUES($id, '{$_SESSION['loginID']}')";
 			$connect->Execute($iquery ) or die($connect->ErrorMsg());
@@ -3303,6 +3303,7 @@ function getusergrouplist($outputformat='optionlist')
     if (!$sresult) {return "Database Error";}
     $selecter = "";
     $groupnames = $sresult->GetRows();
+    $simplegidarray=array();
     if ($groupnames)
         {
         foreach($groupnames as $gn)
@@ -3311,15 +3312,15 @@ function getusergrouplist($outputformat='optionlist')
 		if($_SESSION['loginID'] == $gn['owner_id']) {$selecter .= " style=\"font-weight: bold;\"";}
 		if (isset($_GET['ugid']) && $gn['ugid'] == $_GET['ugid']) {$selecter .= " selected='selected'"; $svexist = 1;}
 		$selecter .=" value='$scriptname?action=editusergroups&amp;ugid={$gn['ugid']}'>{$gn['name']}</option>\n";
-		$simpleguidarray[] = $gn['ugid'];
+		$simplegidarray[] = $gn['ugid'];
             }
         }
     if (!isset($svexist)) {$selecter = "\t\t\t<option value='-1' selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$selecter;}
     //else {$selecter = "\t\t\t<option value='-1'>".$clang->gT("None")."</option>\n".$selecter;}
 
-    if ($outputformat == 'simpleugidarray')
+    if ($outputformat == 'simplegidarray')
     {
-    	return $simpleguidarray;
+    	return $simplegidarray;
     }
     else
     {

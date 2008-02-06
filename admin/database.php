@@ -132,7 +132,7 @@ if(isset($surveyid))
                   {
       			    $query = "INSERT INTO ".db_table_name('groups')." (sid, group_name, description,group_order,language) VALUES ('{$_POST['sid']}', '{$_POST['group_name_'.$grouplang]}', '{$_POST['description_'.$grouplang]}',".getMaxgrouporder($_POST['sid']).",'{$grouplang}')";
                     $result = $connect->Execute($query);
-                    $groupid=$connect->Insert_Id();
+                    $groupid=$connect->Insert_Id(db_table_name_nq('groups'),"gid");
                     $first=false;
                   }
                   else{
@@ -288,7 +288,7 @@ if(isset($surveyid))
 			." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}',$question_order,'{$baselang}')";
 			$result = $connect->Execute($query);
 			// Get the last inserted questionid for other languages
-			$qid=$connect->Insert_ID();
+			$qid=$connect->Insert_ID(db_table_name_nq('questions'),"qid");
 
 			// Add other languages
 			if ($result)
@@ -595,7 +595,7 @@ if(isset($surveyid))
 			$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, help, other, mandatory, lid, lid1, question_order, language) 
                       VALUES ({$_POST['sid']}, {$_POST['gid']}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$baselang]."', '".$_POST['help_'.$baselang]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}',$max,".db_quoteall($baselang).")";
 			$result = $connect->Execute($query) or die($connect->ErrorMsg());
-			$newqid = $connect->Insert_ID();
+			$newqid = $connect->Insert_ID("{$dbprefix}questions","qid");
 			if (!$result)
 			{
 				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be created.","js")."\\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";
@@ -1170,7 +1170,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		}
         
         // Fix bug with FCKEditor saving strange BR types
-        $_POST['surveyls_title']=str_replace('<br type="_moz" />','',$_POST['short_title']);
+        $_POST['surveyls_title']=str_replace('<br type="_moz" />','',$_POST['surveyls_title']);
         $_POST['description']=str_replace('<br type="_moz" />','',$_POST['description']);
         $_POST['welcome']=str_replace('<br type="_moz" />','',$_POST['welcome']);
         $_POST['urldescrip']=str_replace('<br type="_moz" />','',$_POST['urldescrip']);

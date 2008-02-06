@@ -626,7 +626,7 @@ function insertlabelset()
 	}
 	else
 	{
-		return $connect->Insert_ID();
+		return $connect->Insert_ID(db_table_name_nq('labelsets'),"lid");
 	}
 
 }

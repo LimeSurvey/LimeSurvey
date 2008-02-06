@@ -1877,7 +1877,7 @@ if($action == "surveysecurity")
 		if (isset($usercontrolSameGroupPolicy) &&
 			$usercontrolSameGroupPolicy === true)
 		{
-			$authorizedGroupsList=getusergrouplist('simpleugidarray');
+			$authorizedGroupsList=getusergrouplist('simplegidarray');
 		}
 
 		if($result2->RecordCount() > 0)
@@ -1898,9 +1898,8 @@ if($action == "surveysecurity")
 					}
 				}
 				
-				if($group_ids[0] != NULL)
+				if(isset($group_ids) && $group_ids[0] != NULL)
 				{				
-					if(!isset($group_ids)) break;	// TODO
 					$group_ids_query = implode(" OR ugid=", $group_ids);
 					unset($group_ids);
 	
@@ -1914,6 +1913,7 @@ if($action == "surveysecurity")
 					if(count($group_names) > 0)
 					$group_names_query = implode(", ", $group_names);
 				}
+                  else {break;} //TODO
 				if(($row % 2) == 0)
 					$surveysecurity .= "\t<tr>\n";
 				else

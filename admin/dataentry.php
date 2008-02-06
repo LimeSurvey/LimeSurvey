@@ -404,7 +404,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 
 				if ($connect->AutoExecute("{$dbprefix}saved_control", $scdata,'INSERT'))
 				{
-					$scid = $connect->Insert_ID();
+					$scid = $connect->Insert_ID("{$dbprefix}saved_control","scid");
 					
 					$dataentryoutput .= "<font class='successtitle'>".$clang->gT("Your survey responses have been saved succesfully")."</font><br />\n";
                     

@@ -312,7 +312,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
         $lsiresult=$connect->Execute($lsainsert);
         
         // Get the new insert id for the labels inside this labelset
-        $newlid=$connect->Insert_ID();
+        $newlid=$connect->Insert_ID("{$dbprefix}labelsets",'lid');
 
         if ($labelsarray) {
             $count=0;
@@ -447,7 +447,7 @@ if (isset($grouparray) && $grouparray)
         //GET NEW GID  .... if is not done before and we count a group if a new gid is required
         if ($newgid == 0) 
         {
-            $newgid = $connect->Insert_ID();
+            $newgid = $connect->Insert_ID("{$dbprefix}groups",'gid');
             $countgroups++;
         }
     }
@@ -507,7 +507,7 @@ if (isset($grouparray) && $grouparray)
             //GET NEW QID  .... if is not done before and we count a question if a new qid is required
             if (!isset($newqids[$oldqid])) 
             {
-                $newqids[$oldqid] = $connect->Insert_ID();
+                $newqids[$oldqid] = $connect->Insert_ID("{$dbprefix}questions",'qid');
                 $countquestions++;
             }
         }

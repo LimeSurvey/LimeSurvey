@@ -314,7 +314,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
         $lsiresult=$connect->Execute($lsainsert);
         
         // Get the new insert id for the labels inside this labelset
-        $newlid=$connect->Insert_ID();
+        $newlid=$connect->Insert_ID("{$dbprefix}labelsets","lid");
 
         if ($labelsarray) {
             $count=0;
@@ -439,7 +439,7 @@ if (isset($questionarray) && $questionarray) {
 
             // set the newqid only if is not set
             if (!isset($newqid))
-		        $newqid=$connect->Insert_ID();
+		        $newqid=$connect->Insert_ID("{$dbprefix}questions","qid");
         }
     }
 

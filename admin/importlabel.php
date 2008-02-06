@@ -126,7 +126,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 		$lsiresult=$connect->Execute($lsainsert);
 		
 		// Get the new insert id for the labels inside this labelset
-		$newlid=$connect->Insert_ID();
+		$newlid=$connect->Insert_ID("{$dbprefix}labelsets",'lid');
 
 		if ($labelsarray) {
 		    $count=0;

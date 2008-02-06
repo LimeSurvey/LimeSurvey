@@ -97,7 +97,7 @@ $result = $connect->Execute($query, array(returnglobal('register_firstname'), re
 returnglobal('register_email'), $newtoken,
 returnglobal('register_attribute1'), returnglobal('register_attribute2'))
 ) or die ($query."<br />".htmlspecialchars($connect->ErrorMsg()));
-$tid=$connect->Insert_ID();
+$tid=$connect->Insert_ID("{$dbprefix}tokens_$surveyid","tid");
 
 
 $fieldsarray["{ADMINNAME}"]=$thissurvey['adminname'];

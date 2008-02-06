@@ -86,7 +86,7 @@ if ((isset($_POST['fieldnames']) && $_POST['fieldnames']) || (isset($_POST['move
 			{
 	            if (substr($subquery,0,6)=='INSERT')
 				{
-	               $tempID=$connect->Insert_ID(); // Find out id immediately if inserted 
+	               $tempID=$connect->Insert_ID($thissurvey['tablename'],"id"); // Find out id immediately if inserted 
 	        	   $_SESSION['srid'] = $tempID;
 	        	   $saved_id = $tempID;
 				}
@@ -233,9 +233,9 @@ function savedcontrol()
 			"startlanguage"=>GetBaseLanguageFromSurveyID($surveyid),
 			"refurl"=>getenv("HTTP_REFERER"));
 			//One of the strengths of ADOdb's AutoExecute() is that only valid field names for $table are updated
-			if ($connect->AutoExecute("{$thissurvey['tablename']}", $sdata,'INSERT'))
+			if ($connect->AutoExecute($thissurvey['tablename'], $sdata,'INSERT'))
 			{
-				$srid = $connect->Insert_ID();
+				$srid = $connect->Insert_ID($thissurvey['tablename'],"sid");
 				$_SESSION['srid'] = $srid;
 			}
 			else
@@ -259,7 +259,7 @@ function savedcontrol()
 
 		if ($connect->AutoExecute("{$dbprefix}saved_control", $scdata,'INSERT'))
 		{
-			$scid = $connect->Insert_ID();
+			$scid = $connect->Insert_ID("{$dbprefix}saved_control",'scid');
 			$_SESSION['scid'] = $scid;
 		}
 		else

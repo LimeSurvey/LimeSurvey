@@ -579,7 +579,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 		$lsiresult=$connect->Execute($lsainsert);
 		
 		// Get the new insert id for the labels inside this labelset
-		$newlid=$connect->Insert_ID();
+		$newlid=$connect->Insert_ID("{$dbprefix}labelsets","lid");
 
 //		$importsurvey .= "OLDLID: $oldlid   NEWLID: $newlid";  
 //      For debugging label import
@@ -725,7 +725,7 @@ if (isset($grouparray) && $grouparray) {
         $ginsert = "insert INTO {$dbprefix}groups (".implode(',',array_keys($grouprowdata)).") VALUES (".implode(',',$newvalues).")"; 
 		$gres = $connect->Execute($ginsert) or die("<strong>".$clang->gT("Error")."</strong> Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
 		//GET NEW GID
-		if ($newgroup) {$newgid=$connect->Insert_ID();}
+		if ($newgroup) {$newgid=$connect->Insert_ID("{$dbprefix}groups","gid");}
 
 		//NOW DO NESTED QUESTIONS FOR THIS GID
 		
@@ -809,7 +809,7 @@ if (isset($grouparray) && $grouparray) {
 					$qres = $connect->Execute($qinsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
 		            if ($newquestion)
 				{
-				 	$newqid=$connect->Insert_ID();
+				 	$newqid=$connect->Insert_ID("{$dbprefix}questions","qid");
 				}
 					
 					$newrank=0;
