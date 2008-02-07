@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿<?php
+﻿﻿﻿﻿﻿﻿<?php
 /*
 * LimeSurvey
 * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
@@ -3189,7 +3189,7 @@ function do_array_flexible($ia)
 			{
 				$answer .= "\t\t\t\t\t<td align='center' width='$cellwidth%'><label for='answer$myfname-$ld'>";
 				$answer .= "<input class='radio' type='radio' name='$myfname' value='$ld' id='answer$myfname-$ld' title='"
-				. html_escape($labelans[$thiskey])."'";
+				. html_escape(strip_tags($labelans[$thiskey]))."'";
 				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ld) {$answer .= " checked='checked'";}
 				// --> START NEW FEATURE - SAVE
 				$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
@@ -3320,7 +3320,7 @@ function do_array_flexiblecolumns($ia)
 				$answer .= "\t\t\t\t\t<td align='center' class='$trbc' width='$cellwidth%'>"
 				. "<label for='answer$myfname-".$ansrow['code']."'>";
 				$answer .= "<input class='radio' type='radio' name='$myfname' value='".$ansrow['code']."' id='answer$myfname-".$ansrow['code']."'"
-				. " title='".html_escape($ansrow['answer'])."'";
+				. " title='".html_escape(strip_tags($ansrow['answer']))."'";
 				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ansrow['code']) {$answer .= " checked='checked'";}
 				elseif (!isset($_SESSION[$myfname]) && $ansrow['code'] == "")
 				{
@@ -3594,7 +3594,7 @@ function do_array_flexible_dual($ia)
 				$answer .= "\t\t\t\t\t<td align='center' width='$cellwidth%'>";
 				$answer .= "<label for='answer$myfname-$ld'>";
 				$answer .= "<input class='radio' type='radio' name='$myfname' value='$ld' id='answer$myfname-$ld' title='"
-				. html_escape($labelans[$thiskey])."'";
+				. html_escape(strip_tags($labelans[$thiskey]))."'";
 				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ld) {$answer .= " checked='checked'";}
 				// --> START NEW FEATURE - SAVE
 				$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label>";
@@ -3616,7 +3616,7 @@ function do_array_flexible_dual($ia)
 					$answer .= "\t\t\t\t\t<td align='center' width='$cellwidth%'>";
 					$answer .= "<label for='answer$myfname1-$ld'>";
 					$answer .= "<input class='radio' type='radio' name='$myfname1' value='$ld' id='answer$myfname1-$ld' title='"
-					. html_escape($labelans1[$thiskey])."'";
+					. html_escape(strip_tags($labelans1[$thiskey]))."'";
 					if (isset($_SESSION[$myfname1]) && $_SESSION[$myfname1] == $ld) {$answer .= " checked='checked'";}
 					// --> START NEW FEATURE - SAVE
 					$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label>";

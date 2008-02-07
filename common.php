@@ -535,27 +535,43 @@ function getsurveylist()
     $surveyidresult = db_execute_num($surveyidquery);
     if (!$surveyidresult) {return "Database Error";}
     $surveyselecter = "";
-    $activestatus="Y";
     $surveynames = $surveyidresult->GetRows();
     if ($surveynames)
-        {
-        $surveyselecter .= "\t\t\t<optgroup label='".$clang->gT("Active")."' class='activesurveyselect'>\n";
+    {
+        $activesurveys='';
+        $inactivesurveys='';
         foreach($surveynames as $sv)
-            {
-            if($activestatus != $sv[5]) 
+        {
+            if($sv[5]!='Y') 
             { 
-              $surveyselecter .= "\t\t\t</optgroup>\n\t\t\t<optgroup label='".$clang->gT("Inactive")."' class='inactivesurveyselect'>\n";
-              $activestatus=$sv[5];
+              $inactivesurveys .= "\t\t\t<option ";
+        			if($_SESSION['loginID'] == $sv[1]) {$inactivesurveys .= " style=\"font-weight: bold;\"";}
+        			if ($sv[0] == $surveyid) {$inactivesurveys .= " selected='selected'"; $svexist = 1;}
+                    $inactivesurveys .=" value='$scriptname?sid=$sv[0]'>$sv[2]</option>\n";
             }
-            $surveyselecter .= "\t\t\t<option";
-			if($_SESSION['loginID'] == $sv[1]) {$surveyselecter .= " style=\"font-weight: bold;\"";}
-			if ($sv[0] == $surveyid) {$surveyselecter .= " selected='selected'"; $svexist = 1;}
-            $surveyselecter .=" value='$scriptname?sid=$sv[0]'>$sv[2]</option>\n";
-            }
-        $surveyselecter .= "\t\t\t</optgroup>\n";
+              else
+              {
+              $activesurveys .= "\t\t\t<option ";
+        			if($_SESSION['loginID'] == $sv[1]) {$activesurveys .= " style=\"font-weight: bold;\"";}
+        			if ($sv[0] == $surveyid) {$activesurveys .= " selected='selected'"; $svexist = 1;}
+                    $activesurveys .=" value='$scriptname?sid=$sv[0]'>$sv[2]</option>\n";
+              
+              }
+        }
 		}
+    //Only show each activesurvey group if there are some 
+    if ($activesurveys!='') 
+    {  
+      $surveyselecter .= "\t\t\t<optgroup label='".$clang->gT("Active")."' class='activesurveyselect'>\n";
+      $surveyselecter .= $activesurveys . "\t\t\t</optgroup>";
+    }
+    if ($inactivesurveys!='') 
+    {  
+      $surveyselecter .= "\t\t\t<optgroup label='".$clang->gT("Inactive")."' class='inactivesurveyselect'>\n";
+      $surveyselecter .= $inactivesurveys . "\t\t\t</optgroup>";
+    }    
     if (!isset($svexist)) {$surveyselecter = "\t\t\t<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;}
-    else {$surveyselecter = "\t\t\t<option value='$scriptname?sid='>".$clang->gT("None")."</option>\n".$surveyselecter;}
+      else {$surveyselecter = "\t\t\t<option value='$scriptname?sid='>".$clang->gT("None")."</option>\n".$surveyselecter;}
     return $surveyselecter;
     }
 
@@ -2001,7 +2017,7 @@ function templatereplace($line)
         ."    this.length = n;\n" 
         ."    return value;\n" 
         ."};\n" 
-		."//--></script>\n"
+		." --></script>\n"
 		."</head>"
 		,$line);
 	}
@@ -2589,7 +2605,7 @@ function getHeader()
 	else {$surveylanguage='en';}
 	if ( !$embedded )
 	{
-		return  "<?xml version=\"1.0\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
+		return  "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
         		. "<html><head>\n"
         		. "<link type=\"text/css\" rel=\"StyleSheet\" href=\"".$rooturl."/scripts/slider/swing.css\" />\n"
         		. "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"".$rooturl."/scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />"
@@ -2636,7 +2652,7 @@ function getAdminFooter($url, $explanation)
 	. "onclick=\"window.open('$url')\" onmouseover=\"document.body.style.cursor='pointer'\" "
 	. "onmouseout=\"document.body.style.cursor='auto'\" /></div>\n"
 	. "\t\t\t<div style='float:right;'><img alt='".$clang->gT("Support this project - Donate to ")."LimeSurvey' title='".$clang->gT("Support this project - Donate to ")."LimeSurvey!' src='$imagefiles/donate.png' "
-	. "onclick=\"window.open('http://www.limesurvey.org/index.php?option=com_content&task=view&id=84')\" onmouseover=\"document.body.style.cursor='pointer'\" "
+	. "onclick=\"window.open('http://www.limesurvey.org/index.php?option=com_content&amp;task=view&amp;id=84')\" onmouseover=\"document.body.style.cursor='pointer'\" "
 	. "onmouseout=\"document.body.style.cursor='auto'\" /></div>\n"
 	. "\t\t\t<div class='subtitle'><a class='subtitle' title='".$clang->gT("Visit our website!")."' href='http://www.limesurvey.org' target='_blank'>LimeSurvey</a><br />".$clang->gT('Version')." $versionnumber $buildtext</div>"
 	. "</div></body>\n</html>";

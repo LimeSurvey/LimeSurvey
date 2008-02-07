@@ -230,7 +230,7 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit")  && (!isset($notan
 		echo templatereplace(file_get_contents("$thistpl/completed.pstpl"));
         echo "\n<br />\n";
         echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
-
+        doFooter();
 		exit;
 //	{
 //		echo templatereplace($op);
@@ -459,7 +459,7 @@ echo "   return false;\n";
 echo "   } \n";
 echo "\n";
 echo "    function ValidDate(oObject)\n";
-echo "    {// --- Regular expression used to check if date is in correct format\n";
+echo "    {// Regular expression used to check if date is in correct format\n";
 echo "     var str_regexp = /[1-9][0-9]{3}-(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1])/;\n";
 echo "     var pattern = new RegExp(str_regexp);\n";
 echo "     if ( oObject.value=='')\n";

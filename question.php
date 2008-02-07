@@ -164,6 +164,7 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit")  && (!isset($notan
 
 	echo "\n<br />\n";
 	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+	doFooter();
 	exit;
 }
 
@@ -451,7 +452,7 @@ echo "\t\t\treturn false;\n";
 echo "\t\t\t} \n";
 echo "\n";
 echo "\t\t\t\tfunction ValidDate(oObject)\n";
-echo "\t\t\t\t{// --- Regular expression used to check if date is in correct format\n";
+echo "\t\t\t\t{// Regular expression used to check if date is in correct format\n";
 echo "\t\t\t\t\tvar str_regexp = /[1-9][0-9]{3}-(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1])/;\n";
 echo "\t\t\t\t\tvar pattern = new RegExp(str_regexp);\n";
 echo "\t\t\t\t\tif ((oObject.value.match(pattern)!=null))\n";

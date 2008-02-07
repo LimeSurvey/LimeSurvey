@@ -619,7 +619,7 @@ if ($action == "editusers")
 	if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_CREATE_USER'])
 	{
 		$usersummary .= "\t\t<form action='$scriptname' method='post'>\n"
-		. "\t\t<table width='100%' borders='0'><tr>\n"
+		. "\t\t<table width='100%'><tr>\n"
         . "\t\t<th colspan='6'>".$clang->gT("Add User")."</th>\n"
         . "\t\t</tr><tr>\n"
 		. "\t\t<td align='center' width='20%'><input type='text' name='new_user' /></td>\n"

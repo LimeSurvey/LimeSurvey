@@ -720,11 +720,12 @@ function modlabelsetanswers($lid)
 			     	{	   			
 	      				$_POST['title_'.$sortorderid]=$myFilter->process($_POST['title_'.$sortorderid]);
 		   			}
-                    // Fix bug with FCKEditor saving strange BR types
-                    $_POST['title_'.$sortorderid]=str_replace('<br type="_moz" />','',$_POST['title_'.$sortorderid]);
 
+            // Fix bug with FCKEditor saving strange BR types
+            $_POST['title_'.$sortorderid]=str_replace('<br type="_moz" />','',$_POST['title_'.$sortorderid]);
 				    $_POST['title_'.$sortorderid] = db_quoteall($_POST['title_'.$sortorderid],true);
-	                $query = "UPDATE ".db_table_name('labels')." SET code=".$_POST['code_'.$codeids[$count]].", title={$_POST['title_'.$sortorderid]} WHERE lid=$lid AND sortorder=$orderid AND language='$langid'";
+
+            $query = "UPDATE ".db_table_name('labels')." SET code=".$_POST['code_'.$codeids[$count]].", title={$_POST['title_'.$sortorderid]} WHERE lid=$lid AND sortorder=$orderid AND language='$langid'";
 
 	        		if (!$result = $connect->Execute($query)) 
 	        		// if update didn't work we assume the label does not exist and insert it

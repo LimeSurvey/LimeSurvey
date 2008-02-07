@@ -34,7 +34,7 @@ if ($action == "listsurveys")
 	if($result->RecordCount() > 0) {
         $listsurveys= "<br /><table cellpadding='1' width='800'>
 				  <tr>
-				    <th height=\"22\" width='22'>&nbsp</th>
+				    <th height=\"22\" width='22'>&nbsp;</th>
 				    <th height=\"22\"><strong>".$clang->gT("Survey")."</strong></th>
 				    <th><strong>".$clang->gT("Date Created")."</strong></th>
 				    <th><strong>".$clang->gT("Owner")."</strong></th>
@@ -133,7 +133,7 @@ if ($action == "listsurveys")
 					$listsurveys .= "<td><a href=\"#\" onclick=\"window.open('$scriptname?action=activate&amp;sid={$rows['sid']}', '_top')\""
 					. "onmouseout=\"hideTooltip()\""
 					. "onmouseover=\"showTooltip(event,'".$clang->gT("Activate this Survey", "js")."');return false\">" .
-					"<img src='$imagefiles/inactive.png' name='ActivateSurvey' title='' alt='".$clang->gT("Activate this Survey")."' border='0' hspace='0' align='left' width='20' /></a></td>\n" ;	
+					"<img src='$imagefiles/inactive.png' title='' alt='".$clang->gT("Activate this Survey")."' border='0' hspace='0' align='left' width='20' /></a></td>\n" ;	
 				} else 
 				{
 					$listsurveys .= "<td><img src='$imagefiles/inactive.png'"
@@ -384,7 +384,7 @@ if ($surveyid)
 			else
 			{
 				$surveysummary .= "<img src='$imagefiles/activate_disabled.png' onmouseout=\"hideTooltip()\""
-				. "onmouseover=\"showTooltip(event,'".$clang->gT("Survey cannot be activated. Either you have no permission or there are no questions.", "js")."');return false\" name='ActivateSurvey' title='' alt='".$clang->gT("Survey cannot be activated. Either you have no permission or there are no questions.")."' align='left' />\n" ;
+				. "onmouseover=\"showTooltip(event,'".$clang->gT("Survey cannot be activated. Either you have no permission or there are no questions.", "js")."');return false\" name='ActivateDisabledSurvey' title='' alt='".$clang->gT("Survey cannot be activated. Either you have no permission or there are no questions.")."' align='left' />\n" ;
 			}
 		}
 		elseif ($activated == "Y")
