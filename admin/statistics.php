@@ -678,8 +678,14 @@ $statisticsoutput .= "\t\t\t</table>\n"
 ."\t\t\t\t\t<<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
 ."\t\t\t\t\t<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
 ."\t\t\t\t</select></td></tr>\n"
-."\t\t\t\t<tr><td align='center'><input type='checkbox' id='noncompleted' name='noncompleted'/><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses (only works when Filter incomplete answers is Disable)")."</label></font></td></tr>\n"
-."\t\t<tr><td align='center'>\n\t\t\t<br />\n"
+."\t\t\t\t<tr><td align='center'><input type='checkbox' id='noncompleted' name='noncompleted'/><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses (only works when Filter incomplete answers is Disable)")."</label></font></td></tr>\n";
+
+if (isset($usejpgraph) && $usejpgraph == 1)
+{
+	$statisticsoutput .= "\t\t\t\t<tr><td align='center'><input type='checkbox' id='usegraph' name='usegraph' checked='checked'/><label for='usergraph'>".$clang->gT("Use graphical output")."</label></font></td></tr>\n";
+}
+
+$statisticsoutput .= "\t\t<tr><td align='center'>\n\t\t\t<br />\n"
 ."\t\t\t<input type='submit' value='".$clang->gT("View Stats")."' />\n"
 ."\t\t\t<input type='button' value='".$clang->gT("Clear")."' onclick=\"window.open('$scriptname?action=statistics&amp;sid=$surveyid', '_top')\" />\n"
 ."\t\t<br />&nbsp;\n"
@@ -1585,7 +1591,7 @@ if (isset($summary) && $summary)
                 $i++;
             }
 
-			if ($usejpgraph == 1 && array_sum($gdata)>0) //JPGRAPH CODING ORIGINALLY SUBMITTED BY Pieterjan Heyse
+			if ($usejpgraph == 1 && isset($_POST['usegraph']) && array_sum($gdata)>0) //JPGRAPH CODING ORIGINALLY SUBMITTED BY Pieterjan Heyse
 			{
 				$graph = "";
 				$p1 = "";
