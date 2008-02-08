@@ -2599,10 +2599,10 @@ function javascript_escape($str) {
 // If you want to echo the header use doHeader() !
 function getHeader()
 {
-	global $embedded, $surveyid, $rooturl;
+	global $embedded, $surveyid, $rooturl,$defaultlang;
 
-	if (isset($surveyid)) {$surveylanguage=GetBaseLanguageFromSurveyID($surveyid);}
-	else {$surveylanguage='en';}
+	if (isset($surveyid) && $surveyid) {$surveylanguage=GetBaseLanguageFromSurveyID($surveyid);}
+	else {$surveylanguage=$defaultlang;}
 	if ( !$embedded )
 	{
 		return  "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"

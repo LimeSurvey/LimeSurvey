@@ -15,6 +15,7 @@
 
 require_once(dirname(__FILE__).'/config.php');
 require_once(dirname(__FILE__).'/common.php');
+require_once(dirname(__FILE__).'/classes/core/language.php');
 @ini_set('session.gc_maxlifetime', $sessionlifetime);
 @ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
 
@@ -144,7 +145,7 @@ if ($surveyid && $issurveyactive===false)
 	{
 		// print an error message
 		if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
-		require_once($rootdir.'/classes/core/language.php');
+		require_once(dirname(__FILE__).'/classes/core/language.php');
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
 		$clang = new limesurvey_lang($baselang);
 		//A nice exit
@@ -173,7 +174,7 @@ if (!isset($_SESSION['grouplist'])  && (isset($_POST['move'])) )
 // geez ... a session time out! RUN! 
 {
     if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
-    require_once($rootdir.'/classes/core/language.php');
+    require_once(dirname(__FILE__).'/classes/core/language.php');
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
 	$clang = new limesurvey_lang($baselang);
 	//A nice exit
@@ -210,14 +211,19 @@ if (isset($_GET['lang']) && $surveyid)
 	UpdateFieldArray();        // to refresh question titles and question text 
 } 
 
-if (isset($_SESSION['s_lang']))
-{
-	$clang = SetSurveyLanguage( $surveyid, $_SESSION['s_lang']);
-} else {
-	$baselang = GetBaseLanguageFromSurveyID($surveyid);
-	$clang = SetSurveyLanguage( $surveyid, $baselang);
-}
-
+    if (isset($_SESSION['s_lang']))
+    {
+	    $clang = SetSurveyLanguage( $surveyid, $_SESSION['s_lang']);
+    } 
+    elseif (isset($surveyid) && $surveyid)
+    {
+	    $baselang = GetBaseLanguageFromSurveyID($surveyid);
+	    $clang = SetSurveyLanguage( $surveyid, $baselang);
+    }
+     else 
+     {
+         $baselang=$defaultlang;
+     }
 
 if (isset($_REQUEST['embedded_inc'])) {die('You cannot start this script directly');}
 if ( $embedded_inc != '' )
@@ -725,7 +731,10 @@ function makelanguagechanger()
   {	
     $surveyid=returnglobal('sid');
   }
-  $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+  if (isset($surveyid)) 
+  {
+      $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+  }
   if (!empty($slangs))
   {
     if (isset($_SESSION['s_lang']) && $_SESSION['s_lang'] != '')
