@@ -118,7 +118,8 @@ foreach ($rows as $row)
 	$row['title'],
 	$row['group_name'],
 	strip_tags($row['question']),
-	$row['lid']);
+	$row['lid'],
+    $row['lid1']);
 
 }
 //var_dump($filters);
@@ -189,7 +190,7 @@ foreach ($filters as $flt)
 		$statisticsoutput .= "\t\t<tr><td align='center' class='settingcaption'>\n"
 		."\t\t<font size='1' face='verdana'><strong>$flt[4]</strong> (".$clang->gT("Group")." $flt[1])</font></td></tr>\n\t\t"
 		."<tr><td align='center'>\n"
-		."\t\t\t<table align='center' class='statisticstable'><tr>\n";
+		."\t\t\t<table align='center' width='70%' class='statisticstable'><tr>\n";
 		$counter=0;
 	}
 	if (isset($counter) && $counter == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>"; $counter=0;}
@@ -198,7 +199,7 @@ foreach ($filters as $flt)
 	//headings
 	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && 
 	    $flt[2] != "F" && $flt[2] != "H" && $flt[2] != "T" && $flt[2] != "U" && 
-		$flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q" && 
+		$flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q" && $flt[2] != "1" && 
 		$flt[2] != "X" && $flt[2] != "W" && $flt[2] != "Z" && $flt[2] != "K") //Have to make an exception for these types!
 	{
 		$statisticsoutput .= "\t\t\t\t<td align='center'>"
@@ -216,6 +217,7 @@ foreach ($filters as $flt)
 		if ($flt[2] != "N") {$statisticsoutput .= "{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple='multiple'>\n";}
 		$allfields[]=$myfield;
 	}
+
 	$statisticsoutput .= "\t\t\t\t\t<!-- QUESTION TYPE = $flt[2] -->\n";
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 	//This section presents the filter list, in various different ways depending on the question type
@@ -633,6 +635,44 @@ foreach ($filters as $flt)
 		} // while
 		$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
 		break;
+        case "1": // MULTI SCALE
+        $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
+        for ($i=0; $i<=1; $i++) 
+        {
+            $query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
+            $result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+            $counter2=0;
+            while ($row=$result->FetchRow())
+            {
+                $myfield2 = $myfield . "$row[0]#".$i;
+                $statisticsoutput .= "<!-- $myfield2 - ";
+                if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
+                $statisticsoutput .= " -->\n";
+                if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
+                $statisticsoutput .= "\t\t\t\t<td align='center'><b>$flt[3] Label ".(1+$i)."($row[0])</b>"
+                    ."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
+                if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
+                $statisticsoutput .= " />&nbsp;"
+                    .showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
+                    ."<br />\n";
+                $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$flt[6+$i]} AND language='{$language}' ORDER BY sortorder, code";
+                //$statisticsoutput .= $fquery;
+                $fresult = db_execute_assoc($fquery);
+                $statisticsoutput .= "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}#{$i}[]' multiple='multiple'>\n";
+                while ($frow = $fresult->FetchRow())
+                {
+                    $statisticsoutput .= "\t\t\t\t\t<option value='{$frow['code']}'";
+                    if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {$statisticsoutput .= " selected";}
+                    $statisticsoutput .= ">{$frow['title']}</option>\n";
+                }
+                $statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
+                $counter2++;
+                $allfields[]=$myfield2;
+            }
+            $statisticsoutput .= "\t\t\t\t<td>\n";
+        }
+        $counter=0;
+        break;
         
 		default:
 		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
@@ -1314,7 +1354,7 @@ if (isset($summary) && $summary)
 			$qqid=$fielddata['qid'];
 			$qanswer=$fielddata['aid'];
 			$rqid=$qqid;
-			$nquery = "SELECT title, type, question, qid, lid, other FROM ".db_table_name("questions")." WHERE qid='{$rqid}' AND language='{$language}'";
+			$nquery = "SELECT title, type, question, qid, lid, lid1, other FROM ".db_table_name("questions")." WHERE qid='{$rqid}' AND language='{$language}'";
 			$nresult = db_execute_num($nquery) or die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
 			while ($nrow=$nresult->FetchRow())
 			{
@@ -1323,7 +1363,8 @@ if (isset($summary) && $summary)
 				$qquestion=strip_tags($nrow[2]);
 				$qiqid=$nrow[3];
 				$qlid=$nrow[4];
-				$qother=$nrow[5];
+                $qlid1=$nrow[5];
+				$qother=$nrow[6];
 			}
 			$alist[]=array("", $clang->gT("No answer"));
 			switch($qtype)
@@ -1427,6 +1468,21 @@ if (isset($summary) && $summary)
 					$alist[]=array($frow['code'], $frow['title']);
 				}
 				break;
+                case "1":
+                $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND language='{$language}' ORDER BY sortorder, code";
+                $fresult = db_execute_assoc($fquery);
+                while ($frow=$fresult->FetchRow())
+                {
+                    $alist[]=array($frow['code'], $frow['title']);
+                }
+                $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid1}' AND language='{$language}' ORDER BY sortorder, code";
+                $fresult = db_execute_assoc($fquery);
+                while ($frow=$fresult->FetchRow())
+                {
+                    $alist[]=array($frow['code'], $frow['title']);
+                }
+
+                break;
 				default:
 				$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qqid' AND language='{$language}' ORDER BY sortorder, answer";
 				$qresult = db_execute_num($qquery) or die ("Couldn't get answers list<br />$qquery<br />".$connect->ErrorMsg());
