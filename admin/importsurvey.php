@@ -20,8 +20,8 @@ if (!isset($importingfrom) || isset($_REQUEST['importingfrom'])) {die("Cannot ru
 $handle = fopen($the_full_file_path, "r");
 while (!feof($handle))
 {
-    //To allow for very long survey lines (up to 10k)  
-	$buffer = fgets($handle, 10240);
+    //To allow for very long survey lines (up to 64k)  
+	$buffer = fgets($handle, 56550);
 	$bigarray[] = $buffer;
 }
 fclose($handle);

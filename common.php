@@ -536,10 +536,10 @@ function getsurveylist()
     if (!$surveyidresult) {return "Database Error";}
     $surveyselecter = "";
     $surveynames = $surveyidresult->GetRows();
+    $activesurveys='';
+    $inactivesurveys='';
     if ($surveynames)
     {
-        $activesurveys='';
-        $inactivesurveys='';
         foreach($surveynames as $sv)
         {
             if($sv[5]!='Y') 
