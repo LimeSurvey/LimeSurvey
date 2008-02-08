@@ -226,6 +226,7 @@ if ($isInstertansEnabled===true)
 	                   ."{$dbprefix}questions.question, "
 	                   ."{$dbprefix}questions.type, "
 	                   ."{$dbprefix}questions.lid, "
+                       ."{$dbprefix}questions.lid1, "  
 	                   ."{$dbprefix}questions.title "
 	              ."FROM {$dbprefix}questions, "
 	                   ."{$dbprefix}groups "
@@ -248,6 +249,7 @@ if ($isInstertansEnabled===true)
 	                         "question"=>$myrows['question'],
 	                         "type"=>$myrows['type'],
 	                         "lid"=>$myrows['lid'],
+                             "lid1"=>$myrows['lid1'],     
 	                         "title"=>$myrows['title']);
 			}
 		}
@@ -314,6 +316,49 @@ if ($isInstertansEnabled===true)
 				}
 				unset($quicky);
 	    } // for type R
+        elseif ($rows['type'] == "1") //Answer multi scale 
+        {
+            $aquery="SELECT * "
+                ."FROM {$dbprefix}answers "
+                ."WHERE qid={$rows['qid']} "
+                ."AND {$dbprefix}answers.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+                ."ORDER BY sortorder, "
+                ."answer";
+            $aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to multi scale question<br />$aquery<br />".$connect->ErrorMsg());
+            $acount=$aresult->RecordCount();            
+            while ($arow=$aresult->FetchRow())
+            {
+                $theanswer = addcslashes($arow['code'], "'");
+                $quicky[]=array($arow['code'], $theanswer);
+
+                $lquery="SELECT * "
+                    ."FROM {$dbprefix}labels "
+                    ."WHERE lid={$rows['lid']} "
+                    ."AND {$dbprefix}labels.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+                    ."ORDER BY sortorder, "
+                    ."lid";
+                $lresult=db_execute_assoc($lquery) or die ("Couldn't get labels to Array <br />$lquery<br />".$connect->ErrorMsg());                
+                while ($lrows = $lresult->FetchRow())
+                {
+                    $cquestions[]=array($rows['title']." ".$arow['code']." [Label ".$lrows['code']."]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arow['code']."#0",$rows['previouspage']);
+                }                
+               $lquery="SELECT * "
+                    ."FROM {$dbprefix}labels "
+                    ."WHERE lid={$rows['lid1']} "
+                    ."AND {$dbprefix}labels.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+                    ."ORDER BY sortorder, "
+                    ."lid";
+                $lresult=db_execute_assoc($lquery) or die ("Couldn't get labels to Array <br />$lquery<br />".$connect->ErrorMsg());                
+                while ($lrows = $lresult->FetchRow())
+                {
+                    $cquestions[]=array($rows['title']." ".$arow['code']." [Label ".$lrows['code']."]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arow['code']."#1",$rows['previouspage']);
+                }                
+
+            }        
+            unset($quicky);
+
+        
+        }   //Answer multi scale
 			else
 			{
 				$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'],$rows['previouspage']);
