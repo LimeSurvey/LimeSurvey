@@ -278,7 +278,7 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 					$gid=$gl[0];
 					$groupname=$gl[1];
 					$groupdescription=$gl[2];
-					if ($_POST['lastgroupname'] != $groupname && $groupdescription) {$newgroup = "Y";} else {$newgroup == "N";}
+					if (auto_unescape($_POST['lastgroupname']) != strip_tags($groupname) && $groupdescription) {$newgroup = "Y";} else {$newgroup == "N";}
 				}
 			}
 		}
@@ -596,7 +596,7 @@ if (remove_nulls_from_array($conmandatoryfns))
 echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep' />\n";
 echo "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
 echo "<input type='hidden' name='token' value='$token' id='token' />\n";
-echo "<input type='hidden' name='lastgroupname' value='".htmlspecialchars($groupname)."' id='lastgroupname' />\n";
+echo "<input type='hidden' name='lastgroupname' value='".htmlspecialchars(strip_tags($groupname),ENT_QUOTES,'UTF-8')."' id='lastgroupname' />\n";
 echo "</form>\n";
 //foreach(file("$thistpl/endpage.pstpl") as $op)
 //{
@@ -615,7 +615,7 @@ function checkIfNewGroup($ia)
 			$gid=$gl[0];
 			$groupname=$gl[1];
 			$groupdescription=$gl[2];
-			if (isset($_POST['lastgroupname']) && $_POST['lastgroupname'] != $groupname && $groupdescription)
+			if (isset($_POST['lastgroupname']) && auto_unescape($_POST['lastgroupname']) != strip_tags($groupname) && $groupdescription)
 			{
 				$newgroup = "Y";
 			}
