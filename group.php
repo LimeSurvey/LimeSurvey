@@ -534,7 +534,7 @@ END;
     */
 	foreach ($conditions as $cd)
 	{
-		if ($cd[6]=='') $cd[6]='==';
+		if (trim($cd[6])=='') $cd[6]='==';
         if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq)) //New if statement
 		{
 			$java .= $endzone;
