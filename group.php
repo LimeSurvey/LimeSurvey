@@ -27,18 +27,12 @@ if (!isset($_POST['thisstep'])) {$_POST['thisstep'] = "";}
 if (!isset($gl)) {$gl=array("null");}
 if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep']-1;}
 if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step']=$_POST['thisstep']+1;}
-if (isset($_POST['move']) && $_POST['move'] == "movelast") {$_SESSION['step'] = $_POST['thisstep']+1;}
 
 // This prevents the user from going back to the question pages and keeps him on the final page
 // That way his session can be kept so he can still print his answers until he closes the browser
 if (isset($_SESSION['finished'])) {$_POST['move']="movesubmit"; }
 
 
-// If on SUBMIT page and select SAVE SO FAR it will return to SUBMIT page
-if ($_SESSION['step'] > $_SESSION['totalsteps'] && $_POST['move'] != "movesubmit")
-{
-	$_POST['move'] = "movelast";
-}
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
 //First, see if we are moving backwards or doing a Save so far, and its OK not to check:
@@ -62,7 +56,7 @@ $notvalidated=checkpregs($backok);
 check_quota('enforce',$surveyid);
 
 //SEE IF THIS GROUP SHOULD DISPLAY
-if (isset($_POST['move']) && $_SESSION['step'] != 0 && $_POST['move'] != "movelast" && $_POST['move'] != "movesubmit")
+if (isset($_POST['move']) && $_SESSION['step'] != 0 && $_POST['move'] != "movesubmit")
 {
 	while(checkgroupfordisplay($_SESSION['grouplist'][$_SESSION['step']-1][0]) === false)
 	{
@@ -74,11 +68,6 @@ if (isset($_POST['move']) && $_SESSION['step'] != 0 && $_POST['move'] != "movela
         {
             $_SESSION['step']=$_SESSION['step']+1;
         }
-		if ($_SESSION['step']-1 == $_SESSION['totalsteps'])
-		{
-			$_POST['move'] = "movelast";
-			break;
-		}
 	}
 }
 
@@ -240,40 +229,6 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit")  && (!isset($notan
 	exit;
 }
 
-//LAST PHASE ###########################################################################
-if (isset($_POST['move']) && $_POST['move'] == "movelast" && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
-{
-	//READ TEMPLATES, INSERT DATA AND PRESENT PAGE
-	sendcacheheaders();
-	doHeader();
-	if ($thissurvey['private'] != "N")
-	{
-		$privacy="";
-		$privacy .= templatereplace(file_get_contents("$thistpl/privacy.pstpl"));
-
-	}
-	
-    echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey'>\n";
-	echo "\n\n<!-- START THE SURVEY -->\n";
-    echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
-
-	//READ SUBMIT TEMPLATE
-	echo templatereplace(file_get_contents("$thistpl/submit.pstpl"));
-	$navigator = surveymover();
-	echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
-	echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
-print <<<END
-	<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep' />
-	<input type='hidden' name='sid' value='$surveyid' id='sid' />
-	<input type='hidden' name='token' value='$token' id='token' />
-	</form>
-END;
-	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
-
-	doFooter();
-	exit;
-}
 
 //SEE IF $surveyid EXISTS ####################################################################
 if ($surveyexists <1)

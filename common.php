@@ -1861,7 +1861,7 @@ function createFieldMap($surveyid, $style="null") {
 		}
 		elseif ($arow['type'] == "1")
 		{
-			$abquery = "SELECT a.*, q.other, 1.lid, q.lid1 FROM {$dbprefix}answers as a, {$dbprefix}questions as q"
+			$abquery = "SELECT a.*, q.other, q.lid, q.lid1 FROM {$dbprefix}answers as a, {$dbprefix}questions as q"
                        ." WHERE a.qid=q.qid AND sid=$surveyid AND q.qid={$arow['qid']} "
                        ." AND a.language='".$s_lang. "' "
                        ." AND q.language='".$s_lang. "' "

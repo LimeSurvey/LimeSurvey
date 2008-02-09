@@ -28,17 +28,10 @@ if (!isset($_POST['newgroupondisplay'])) {$_POST['newgroupondisplay'] = "";}
 if (isset($_POST['move']) && $_POST['move'] == "moveprev" && !$_POST['newgroupondisplay']) {$_SESSION['step'] = $_POST['thisstep']-1;}
 elseif (isset($_POST['move']) && $_POST['move'] == "moveprev" && $_POST['newgroupondisplay'] == "Y") {$_SESSION['step'] = $_POST['thisstep'];}
 if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep']+1;}
-if (isset($_POST['move']) && $_POST['move'] == "movelast") {$_SESSION['step'] = $_POST['thisstep']+1;}
 
 // This prevents the user from going back to teh question pages and keeps him on the final page
 // That way his session can be kept so he can still print his answers until he closes the browser
 if (isset($_SESSION['finished'])) {$_POST['move']="movesubmit"; }
-
-// If on SUBMIT page and select SAVE SO FAR it will return to SUBMIT page
-if ($_SESSION['step'] > $_SESSION['totalsteps'] && $_POST['move'] != "movesubmit")
-{
-	$_POST['move'] = "movelast";
-}
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
 //First, see if we are moving backwards or doing a Save so far, and its OK not to check:
@@ -168,12 +161,6 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit")  && (!isset($notan
 	exit;
 }
 
-//LAST PHASE ###########################################################################
-if (isset($_POST['move']) && $_POST['move'] == "movelast" && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
-{
-	last();
-	exit;
-}
 
 //SEE IF $surveyid EXISTS ####################################################################
 if ($surveyexists <1)
@@ -293,14 +280,6 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 					$groupdescription=$gl[2];
 					if ($_POST['lastgroupname'] != $groupname && $groupdescription) {$newgroup = "Y";} else {$newgroup == "N";}
 				}
-			}
-
-			if ($_SESSION['step'] > $_SESSION['totalsteps'])
-			{
-				//The last question was conditional and has been skipped. Move into panic mode.
-				$conditionforthisquestion="N";
-				last();
-				exit;
 			}
 		}
 		elseif (returnglobal('move') == "moveprev")
@@ -626,45 +605,6 @@ echo "</form>\n";
 echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 doFooter();
 
-function last()
-{
-	global $thissurvey;
-	global $thistpl, $surveyid, $token;
-	if (!isset($privacy)) {$privacy="";}
-	if ($thissurvey['private'] != "N")
-	{
-		$privacy .= templatereplace(file_get_contents("$thistpl/privacy.pstpl"));
-	}
-	//READ TEMPLATES, INSERT DATA AND PRESENT PAGE
-	sendcacheheaders();
-	doHeader();
-	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-	echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n";
-	echo "\t<script type='text/javascript'>\n";
-	echo "\t<!--\n";
-	echo "\t\tfunction checkconditions(value, name, type)\n";
-	echo "\t\t\t{\n";
-	echo "\t\t\t}\n";
-	echo "\t//-->\n";
-	echo "\t</script>\n\n";
-	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey'>\n";
-	$GLOBALS["privacy"]=$privacy;
-	echo "\n\n<!-- START THE SURVEY -->\n";
-	echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
-	//READ SUBMIT TEMPLATE
-	echo templatereplace(file_get_contents("$thistpl/submit.pstpl"));
-
-	$GLOBALS["navigator"]=surveymover();
-	echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
-	echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
-	echo "\n";
-	echo "\n<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep' />\n";
-	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
-	echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
-	echo "\n</form>\n";
-	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
-	doFooter();
-}
 
 function checkIfNewGroup($ia)
 {
