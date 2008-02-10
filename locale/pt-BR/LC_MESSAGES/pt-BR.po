@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Portuguese-Br language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-12-21 08:00+0100\n"
-"PO-Revision-Date: 2007-12-21 19:40-0200\n"
-"Last-Translator: JE Iglesias <iglesias@arqhost.com>\n"
+"PO-Revision-Date: 2008-01-23 16:47-0300\n"
+"Last-Translator: José Eduardo De Lucca <jedelucca@gmail.com>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -224,17 +224,17 @@ msgstr "A importação falhou no registro"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/integritycheck.php:188
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/integritycheck.php:217
 msgid "because"
-msgstr "Porque"
+msgstr "porque"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:230
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/vvimport.php:206
 msgid "Important Note:"
-msgstr "Nota Importante:"
+msgstr "Observação importante:"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/vvimport.php:238
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/vvimport.php:206
 msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
-msgstr "NÃO atualizar esta página, dado que isso importaria novamente o arquivo e produziria duplicados"
+msgstr "NÃO atualizar esta página, dado que isso importaria novamente o arquivo e produziria duplicações"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/vvimport.php:208
 msgid "Total records imported:"
@@ -337,7 +337,7 @@ msgstr "Modificar"
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/assessments.php:139
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/assessments.php:127
 msgid "If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission"
-msgstr "Se você criou alguma avaliação nesta página, para o questionário atual, a avaliação será feita no final do questionário, depois de submeter as suas respostas. "
+msgstr "Se você criou alguma avaliação nesta página para o questionário atual, ela será realizada ao final do questionário, depois de submeter as suas respostas."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/assessments.php:132
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:647
@@ -2068,7 +2068,7 @@ msgstr "Tipo:"
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:313
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:314
 msgid "Edit/Add Label Sets"
-msgstr "Editar/Adicionar Rótulos"
+msgstr "Editar/Adicionar Conjuntos de etiquetas"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1148
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1157
@@ -2239,7 +2239,7 @@ msgstr "Usuário adicionado."
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1717
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1766
 msgid "Set Survey Rights"
-msgstr "Determinar Privilégios do Questionário"
+msgstr "Definir Privilégios do Questionário"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1440
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1446
@@ -2513,21 +2513,21 @@ msgstr "Respostas anônimas?"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2450
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:302
 msgid "If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
-msgstr "Se habilitar a opção \"Respostas anonimas\" e criar uma tabela de tokens, LimeSurve, para garantir o anonimato dos participantes,  marcará todos tokens com \"Y\" em vez de colocar a data e hora. "
+msgstr "Se habilitar a opção \"Respostas anonimas\" e criar uma tabela de tokens, o LimeSurvey marcará todos tokens completados somente com um \"Y\" em vez de colocar a data e hora, para garantir o anonimato dos participantes."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1916
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1953
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1977
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2001
 msgid "Cannot be changed"
-msgstr "Não pôde ser alterado"
+msgstr "Não pode ser alterado"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1761
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2082
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1932
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2477
 msgid "Allow public registration?"
-msgstr "Permitir registro público?"
+msgstr "Permitir inscrição pública?"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1941
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2488
@@ -2798,21 +2798,21 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2181
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2482
 msgid "Public registration Email Subject:"
-msgstr "Assunto do e-mail de Registro Público: "
+msgstr "Assunto do e-mail de Inscrição Pública: "
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1772
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2088
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2183
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2483
 msgid "Survey Registration Confirmation"
-msgstr "Confirmação de Registro no Questionário"
+msgstr "Confirmação de Inscrição no Questionário"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1775
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2090
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2186
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2485
 msgid "Public registration Email:"
-msgstr "E-mail para registro público"
+msgstr "E-mail para inscrição pública"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1777
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2091
@@ -2831,13 +2831,13 @@ msgid ""
 msgstr ""
 "Caro (a) {FIRSTNAME},\n"
 "\n"
-"Você, ou alguem usando o seu email registou-se para participar do  Questionário online chamado {SURVEYNAME}.\n"
+"Você, ou alguem usando o seu email inscreveu-se para participar do Questionário online chamado {SURVEYNAME}.\n"
 "\n"
 "Para preencher o Questionário clique no link abaixo:\n"
 "\n"
 "{SURVEYURL}\n"
 "\n"
-"Se tiver alguma questão sobre este Questionário ou se não fez o registro para participar e considera este e-mail um erro, por favor contacte {ADMINNAME} através do e-mail {ADMINEMAIL}."
+"Se tiver alguma questão sobre este Questionário ou se não fez a inscrição para participar e considera este e-mail um erro, por favor contacte {ADMINNAME} através do e-mail {ADMINEMAIL}."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2191
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2533
@@ -2905,7 +2905,7 @@ msgstr "(Este campo é obrigatório.)"
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2510
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2520
 msgid "This setting cannot be changed later!"
-msgstr "Esta configuração não pode ser alterada mais tarde"
+msgstr "Esta configuração não poderá ser alterada mais tarde"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2528
 msgid "Date Format"
@@ -2975,12 +2975,12 @@ msgstr "Selecione o número do campo que pretende utilizar para as suas resposta
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/saved.php:53
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:444
 msgid "Browse Saved Responses"
-msgstr "Visualizar as Respostas Salvas"
+msgstr "Ver as respostas salvas"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/saved.php:64
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/saved.php:68
 msgid "Saved Responses:"
-msgstr "Respostas Salvas"
+msgstr "Respostas salvas"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/saved.php:103
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/saved.php:84
@@ -2989,11 +2989,11 @@ msgstr "Identificador"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/saved.php:86
 msgid "Date Saved"
-msgstr "Data Salva"
+msgstr "Data salva"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/saved.php:100
 msgid "Are you sure you want to delete this entry?"
-msgstr "Você está certo(a) que quer apagar esta entrada?"
+msgstr "Você está certo(a) de que quer apagar esta entrada?"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/saved.php:126
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:361
@@ -3004,12 +3004,12 @@ msgstr "Mostrar resumo de informações"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/saved.php:128
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1270
 msgid "Display Responses"
-msgstr "Mostrar Respostas"
+msgstr "Mostrar respostas"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dumpquestion.php:35
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dumpgroup.php:38
 msgid "Export Question"
-msgstr "Exportar Pergunta"
+msgstr "Exportar pergunta"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dumpquestion.php:37
 msgid "No QID has been provided. Cannot dump question."
@@ -3561,7 +3561,7 @@ msgstr "O questionário foi ativado. A tabela de resultados foi criada com êxit
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/activate.php:476
 msgid "This survey allows public registration. A token table must also be created."
-msgstr "Este questionário permite o registro público. É também obrigatória a criação de uma tabela de códigos. "
+msgstr "Este questionário permite o inscrição pública. Por isso é obrigatória a criação de uma tabela de códigos."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/activate.php:477
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:309
@@ -5867,7 +5867,7 @@ msgstr "E-mail para {NAME} ({EMAIL}) falhou"
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/usercontrol.php:94
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:84
 msgid "Logging in..."
-msgstr "Fazendo o 'login'..."
+msgstr "Fazendo 'login'..."
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/usercontrol.php:56
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/usercontrol.php:104
@@ -6032,7 +6032,7 @@ msgstr "Favor contactar"
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:174
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:194
 msgid "for further assistance"
-msgstr "para mais assistência"
+msgstr "se precisar de assistência"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:103
 msgid "You have not provided a survey identification number"
@@ -6132,7 +6132,7 @@ msgstr "Clique aqui para ver as estatísticas:"
 #: /srv/www/virtual/limesurvey.org/stableSVN/question.php:85
 #: /srv/www/virtual/limesurvey.org/stableSVN/survey.php:92
 msgid "Did Not Save"
-msgstr "Não Foi Salvo"
+msgstr "Não foi salvo"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:1044
 msgid "An unexpected error has occurred and your responses cannot be saved."
@@ -6148,7 +6148,7 @@ msgstr "Ocorreu um erro ao salvar resposta no id do questionário"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:1049
 msgid "DATA TO BE ENTERED"
-msgstr "DADOS PARA SEREM INSERIDOS"
+msgstr "DADOS A SEREM INSERIDOS"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:1054
 msgid "SQL CODE THAT FAILED"
@@ -6318,11 +6318,11 @@ msgstr "Selecione pelo menos um item"
 # D:\xampp\xampp\htdocs\phpsurveyor/qanda.php:462
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:443
 msgid "You cannot proceed until you enter some text for one or more questions."
-msgstr "Você não pode prosseguir até que introduza algum texto em uma ou mais perguntas."
+msgstr "Não é possivel ir adiante sem digitar texto em uma ou mais perguntas."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:447
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
-msgstr "Uma ou mais perguntas obrigatórias não foram respondidas. Você não pode proceder até que seja completada. "
+msgstr "Uma ou mais perguntas obrigatórias não foram respondidas. Você não pode avançar até que seja completada. "
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:470
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
@@ -6382,7 +6382,7 @@ msgstr "Erro: Esta pergunta não tem respostas."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:1747
 msgid "Only numbers may be entered in this field"
-msgstr "Neste campo só seram aceitos números"
+msgstr "Neste campo só são aceitos números"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/qanda.php:2585
 # D:\xampp\xampp\htdocs\phpsurveyor/qanda.php:2692
@@ -6574,7 +6574,7 @@ msgstr "Pré-ajuste"
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:1768
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1858
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
-msgstr "Atenção: A execução de JavaScript não é permitida pelo seu 'browser'. Você poderá não conseguir responder a todas as perguntas deste questionário. Por favor, verifique os parâmetros do seu 'browser'."
+msgstr "Atenção: Seu browser não permite a execução de JavaScript. Talvez você não consiga responder a todas as perguntas deste questionário. Por favor, verifique os parâmetros do seu 'browser'."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1878
 msgid "There are no questions in this survey"
