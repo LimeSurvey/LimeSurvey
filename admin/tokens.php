@@ -2132,8 +2132,7 @@ function getLine($file)
 	return $buffer;
 }
 
-if (!function_exists("randomkey"))
-{
+
 	function randomkey($length)
 	{
 		$pattern = "1234567890abcdefghijklmnpqrstuvwxyz";
@@ -2147,6 +2146,6 @@ if (!function_exists("randomkey"))
 		}
 		return $key;
 	}
-}
+
 
 ?>

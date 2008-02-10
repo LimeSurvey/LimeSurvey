@@ -1213,7 +1213,8 @@ function submittokens()
 	$cnfquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." WHERE token='".db_quote($_POST['token'])."' AND completed!='N' AND completed!=''";
   
 	$cnfresult = db_execute_assoc($cnfquery);
-	while ($cnfrow = $cnfresult->FetchRow())
+	$cnfrow = $cnfresult->FetchRow();
+    if (isset($cnfrow))
 	{
 		$from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
 		$to = $cnfrow['email'];
