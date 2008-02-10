@@ -867,12 +867,12 @@ if(isset($surveyid))
 						$_POST['answer_'.$sortorderid]=$myFilter->process($_POST['answer_'.$sortorderid]);
 					}
                     // Fix bug with FCKEditor saving strange BR types
-                    $_POST['answer']=str_replace('<br type="_moz" />','',$_POST['answer']);
+                    $_POST['answer_'.$sortorderid]=str_replace('<br type="_moz" />','',$_POST['answer_'.$sortorderid]);
 
         			$_POST['code_'.$codeids[$count]]=sanitize_paranoid_string($_POST['code_'.$codeids[$count]]);
 					// Now we insert the answers
         			$query = "INSERT INTO ".db_table_name('answers')." (code,answer,qid,sortorder,language) 
-					          VALUES (".$connect->qstr($_POST['code_'.$codeids[$count]]).",	".
+					          VALUES (".$connect->qstr($_POST['code_'.$codeids[$count]]).", ".
 							            $connect->qstr($_POST['answer_'.$sortorderid]).", ".
 										$connect->qstr($qid).", ".
 										$connect->qstr($orderid).", ".

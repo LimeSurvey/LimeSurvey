@@ -609,7 +609,10 @@ if (isset($grouparray) && $grouparray)
             $newcfieldname = $newsid . "X" . $newgid . "X" . $conditionrowdata["cqid"] .substr($oldqidanscode,strlen($oldcgid));
             
             $conditionrowdata["cfieldname"] = $newcfieldname;
-            
+            if (!isset($conditionrowdata["method"]) || trim($conditionrowdata["method"])=='') 
+            {
+                $conditionrowdata["method"]='==';
+            }            
             $newvalues=array_values($conditionrowdata);
             $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
             $conditioninsert = "insert INTO {$dbprefix}conditions (".implode(',',array_keys($conditionrowdata)).") VALUES (".implode(',',$newvalues).")"; 

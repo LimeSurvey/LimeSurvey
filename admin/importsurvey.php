@@ -1044,7 +1044,10 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 		
 		if (isset($newcqid)) {
 			$conditionrowdata["cqid"]=$newcqid;
-
+            if (!isset($conditionrowdata["method"]) || trim($conditionrowdata["method"])=='') 
+            {
+                $conditionrowdata["method"]='==';
+            }
             $newvalues=array_values($conditionrowdata);
             $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
             $conditioninsert = "insert INTO {$dbprefix}conditions (".implode(',',array_keys($conditionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
