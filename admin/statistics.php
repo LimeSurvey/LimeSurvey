@@ -722,7 +722,7 @@ $statisticsoutput .= "\t\t\t</table>\n"
 
 if (isset($usejpgraph) && $usejpgraph == 1)
 {
-	$statisticsoutput .= "\t\t\t\t<tr><td align='center'><input type='checkbox' id='usegraph' name='usegraph' checked='checked'/><label for='usergraph'>".$clang->gT("Use graphical output")."</label></font></td></tr>\n";
+	$statisticsoutput .= "\t\t\t\t<tr><td align='center'><input type='checkbox' id='usegraph' name='usegraph' checked='checked'/><label for='usergraph'>".$clang->gT("Show Graphs")."</label></font></td></tr>\n";
 }
 
 $statisticsoutput .= "\t\t<tr><td align='center'>\n\t\t\t<br />\n"

@@ -2491,8 +2491,6 @@ function array_in_array($needle, $haystack)
 	return false;
 }
 
-if (!function_exists("randomkey"))
-{
 	function randomkey($length)
 	{
 		$pattern = "1234567890";
@@ -2505,6 +2503,5 @@ if (!function_exists("randomkey"))
 		}
 		return $key;
 	}
-}
 
 ?>

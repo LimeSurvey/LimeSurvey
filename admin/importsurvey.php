@@ -1107,7 +1107,7 @@ else
 	echo $clang->gT("Answers").": $countanswers\n";
 	echo $clang->gT("Conditions").": $countconditions\n";
 	echo $clang->gT("Label Sets").": $countlabelsets\n";
-    if ($deniedcountlabelsets>0) echo $clang->gT("Not imported Label Sets").": $deniedcountlabelsets (".$clang->gT("Label Sets were not imported since you do not have the permission to create new label sets.");
+    if ($deniedcountlabelsets>0) echo $clang->gT("Not imported Label Sets").": $deniedcountlabelsets (".$clang->gT("(Label Sets were not imported since you do not have the permission to create new label sets.)");
 	echo $clang->gT("Question Attributes").": $countquestion_attributes\n";
 	echo $clang->gT("Assessments").": $countassessments\n\n";
 	
