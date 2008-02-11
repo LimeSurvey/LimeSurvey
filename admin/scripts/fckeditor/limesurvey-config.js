@@ -140,7 +140,7 @@ FCKConfig.ToolbarSets["LimeSurveyToolbarfull"] = [
 	['Image','Flash','Table','Rule','Smiley','SpecialChar','PageBreak'],
 	'/',
 	['Style','FontFormat','FontName','FontSize'],
-	['TextColor','BGColor','About', 'LimeFitWin','LimeReplacementFields']
+	['TextColor','BGColor','About', 'LimeReplacementFields', 'LimeFitWin']
 ] ;
 
 FCKConfig.ToolbarSets["LimeSurveyToolbarfullPopup"] = [
