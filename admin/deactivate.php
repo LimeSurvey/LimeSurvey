@@ -17,7 +17,7 @@ include_once("login_check.php");  //Login Check dies also if the script is start
 
 $date = date('YmdHis'); //'Hi' adds 24hours+minutes to name to allow multiple deactiviations in a day
 $deactivateoutput='';
-if (!isset($_GET['ok']) || !$_GET['ok'])
+if (!isset($_POST['ok']) || !$_POST['ok'])
 {
 	$deactivateoutput .= "<br />\n<table class='alertbox'>\n";
 	$deactivateoutput .= "\t\t\t\t<tr ><td height='4'><strong>".$clang->gT("Deactivate Survey")." ($surveyid)</strong></td></tr>\n";
@@ -49,30 +49,30 @@ else
 {
 	//See if there is a tokens table for this survey
 	$tablelist = $connect->MetaTables();
-	if (in_array("{$dbprefix}tokens_{$_GET['sid']}", $tablelist))
+	if (in_array("{$dbprefix}tokens_{$_POST['sid']}", $tablelist))
 	{
-		$toldtable="tokens_{$_GET['sid']}";
-		$tnewtable="old_tokens_{$_GET['sid']}_{$date}";
+		$toldtable="tokens_{$_POST['sid']}";
+		$tnewtable="old_tokens_{$_POST['sid']}_{$date}";
 		$tdeactivatequery = db_rename_table(db_table_name_nq($toldtable) ,db_table_name_nq($tnewtable));
-		$tdeactivateresult = $connect->Execute($tdeactivatequery) or die ("Couldn't deactivate tokens table because:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
+		$tdeactivateresult = $connect->Execute($tdeactivatequery) or die ("Couldn't deactivate tokens table because:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_POST['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
 
 	    if ($databasetype=='postgres')
 	    {
 	    // If you deactivate a postgres table you have to rename the according sequence too and alter the id field to point to the changed sequence
 	    	$deactivatequery = db_rename_table(db_table_name_nq($toldtable).'_tid_seq',db_table_name_nq($tnewtable).'_tid_seq');
-			$deactivateresult = $connect->Execute($deactivatequery) or die ("Could not rename the old sequence for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
+			$deactivateresult = $connect->Execute($deactivatequery) or die ("Could not rename the old sequence for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$_POST['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
 	        $setsequence="ALTER TABLE ".db_table_name_nq($tnewtable)." ALTER COLUMN tid SET DEFAULT nextval('".db_table_name_nq($tnewtable)."_tid_seq'::regclass);";
-			$deactivateresult = $connect->Execute($setsequence) or die ("Could not alter the field 'tid' to point to the new sequence name for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
+			$deactivateresult = $connect->Execute($setsequence) or die ("Could not alter the field 'tid' to point to the new sequence name for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_POST['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
 	    }
 
 	}
 
     // IF there are any records in the saved_control table related to this survey, they have to be deleted
-    $query = "DELETE FROM {$dbprefix}saved_control WHERE sid={$_GET['sid']}";
+    $query = "DELETE FROM {$dbprefix}saved_control WHERE sid={$_POST['sid']}";
     $result = $connect->Execute($query);
     
-	$oldtable="{$dbprefix}survey_{$_GET['sid']}";
-	$newtable="{$dbprefix}old_survey_{$_GET['sid']}_{$date}";
+	$oldtable="{$dbprefix}survey_{$_POST['sid']}";
+	$newtable="{$dbprefix}old_survey_{$_POST['sid']}_{$date}";
 
 	//Update the auto_increment value from the table before renaming
 	$new_autonumber_start=0;
@@ -99,15 +99,15 @@ else
 	@$result = $connect->Execute($query); //Note this won't die if it fails - that's deliberate.
 
 	$deactivatequery = db_rename_table($oldtable,$newtable);
-	$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't make backup of the survey table. Please try again. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
+	$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't make backup of the survey table. Please try again. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_POST['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
     
     if ($databasetype=='postgres')
     {
     // If you deactivate a postgres table you have to rename the according sequence too and alter the id field to point to the changed sequence
     	$deactivatequery = db_rename_table($oldtable.'_id_seq',$newtable.'_id_seq');
-		$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't make backup of the survey table. Please try again. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
+		$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't make backup of the survey table. Please try again. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_POST['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
         $setsequence="ALTER TABLE $newtable ALTER COLUMN id SET DEFAULT nextval('{$newtable}_id_seq'::regclass);";
-		$deactivateresult = $connect->Execute($setsequence) or die ("Couldn't make backup of the survey table. Please try again. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
+		$deactivateresult = $connect->Execute($setsequence) or die ("Couldn't make backup of the survey table. Please try again. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_POST['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
     }
 
 //            $dict = NewDataDictionary($connect);            
@@ -115,7 +115,7 @@ else
 //            $connect->Execute($dropindexquery[0]);
 
 	$deactivatequery = "UPDATE {$dbprefix}surveys SET active='N' WHERE sid=$surveyid";
-	$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>Admin</a>");
+	$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$_POST['sid']}'>Admin</a>");
 	$deactivateoutput .= "<br />\n<table class='alertbox'>\n";
 	$deactivateoutput .= "\t\t\t\t<tr ><td height='4'><strong>".$clang->gT("Deactivate Survey")." ($surveyid)</strong></td></tr>\n";
 	$deactivateoutput .= "\t<tr>\n";

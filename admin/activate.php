@@ -18,7 +18,7 @@
 include_once("login_check.php");  //Login Check dies also if the script is started directly
 
 $activateoutput='';
-if (!isset($_GET['ok']) || !$_GET['ok'])
+if (!isset($_POST['ok']) || !$_POST['ok'])
 {
 	if (isset($_GET['fixnumbering']) && $_GET['fixnumbering'])
 	{
@@ -269,7 +269,7 @@ else
 	$createsurvey .= " submitdate T,\n";
 	$createsurvey .= " startlanguage C(20) NOTNULL ,\n";
 	//Check for any additional fields for this survey and create necessary fields (token and datestamp)
-	$pquery = "SELECT private, allowregister, datestamp, ipaddr, refurl FROM {$dbprefix}surveys WHERE sid={$_GET['sid']}";
+	$pquery = "SELECT private, allowregister, datestamp, ipaddr, refurl FROM {$dbprefix}surveys WHERE sid={$_POST['sid']}";
 	$presult=db_execute_assoc($pquery);
 	while($prow=$presult->FetchRow())
 	{
@@ -300,9 +300,9 @@ else
 	//Get list of questions for the base language
 	$aquery = " SELECT * FROM ".db_table_name('questions').", ".db_table_name('groups')
 	." WHERE ".db_table_name('questions').".gid=".db_table_name('groups').".gid "
-	." AND ".db_table_name('questions').".sid={$_GET['sid']} "
-	." AND ".db_table_name('groups').".language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
-	." AND ".db_table_name('questions').".language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
+	." AND ".db_table_name('questions').".sid={$_POST['sid']} "
+	." AND ".db_table_name('groups').".language='".GetbaseLanguageFromSurveyid($_POST['sid']). "' "
+	." AND ".db_table_name('questions').".language='".GetbaseLanguageFromSurveyid($_POST['sid']). "' "
 	." ORDER BY ".db_table_name('groups').".group_order, title";
 	$aresult = db_execute_assoc($aquery);
 	while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
@@ -363,9 +363,9 @@ else
 		{
 			//MULTI ENTRY
 			$abquery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q"
-                       ." WHERE a.qid=q.qid AND sid={$_GET['sid']} AND q.qid={$arow['qid']} "
-                       ." AND a.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
-                       ." AND q.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
+                       ." WHERE a.qid=q.qid AND sid={$_POST['sid']} AND q.qid={$arow['qid']} "
+                       ." AND a.language='".GetbaseLanguageFromSurveyid($_POST['sid']). "' "
+                       ." AND q.language='".GetbaseLanguageFromSurveyid($_POST['sid']). "' "
                        ." ORDER BY a.sortorder, a.answer";
 			$abresult=db_execute_assoc($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 			while ($abrow=$abresult->FetchRow())
@@ -388,9 +388,9 @@ else
 		}
 		elseif ($arow['type'] == "Q")
 		{
-			$abquery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q WHERE a.qid=q.qid AND sid={$_GET['sid']} AND q.qid={$arow['qid']} "
-                                   ." AND a.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
-                                   ." AND q.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
+			$abquery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q WHERE a.qid=q.qid AND sid={$_POST['sid']} AND q.qid={$arow['qid']} "
+                                   ." AND a.language='".GetbaseLanguageFromSurveyid($_POST['sid']). "' "
+                                   ." AND q.language='".GetbaseLanguageFromSurveyid($_POST['sid']). "' "
                                    ." ORDER BY a.sortorder, a.answer";
 			$abresult=db_execute_assoc($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 			while ($abrow = $abresult->FetchRow())
@@ -401,9 +401,9 @@ else
 		
 		elseif ($arow['type'] == "K") //Multiple Numeric - replica of multiple short text, except numbers only
 		{
-			$abquery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q WHERE a.qid=q.qid AND sid={$_GET['sid']} AND q.qid={$arow['qid']} "
-                                   ." AND a.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
-                                   ." AND q.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
+			$abquery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q WHERE a.qid=q.qid AND sid={$_POST['sid']} AND q.qid={$arow['qid']} "
+                                   ." AND a.language='".GetbaseLanguageFromSurveyid($_POST['sid']). "' "
+                                   ." AND q.language='".GetbaseLanguageFromSurveyid($_POST['sid']). "' "
                                    ." ORDER BY a.sortorder, a.answer";
 			$abresult=db_execute_assoc($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 			while ($abrow = $abresult->FetchRow())
@@ -424,9 +424,9 @@ else
 		{
 			//MULTI ENTRY
     		$abquery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q"
-                       ." WHERE a.qid=q.qid AND sid={$_GET['sid']} AND q.qid={$arow['qid']} "
-                       ." AND a.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
-                       ." AND q.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
+                       ." WHERE a.qid=q.qid AND sid={$_POST['sid']} AND q.qid={$arow['qid']} "
+                       ." AND a.language='".GetbaseLanguageFromSurveyid($_POST['sid']). "' "
+                       ." AND q.language='".GetbaseLanguageFromSurveyid($_POST['sid']). "' "
                        ." ORDER BY a.sortorder, a.answer";
 			$abresult=$connect->Execute($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 			$abcount=$abresult->RecordCount();
@@ -438,19 +438,19 @@ else
 		elseif ($arow['type'] == "1") 
 		{
 			$abquery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q"
-                       ." WHERE a.qid=q.qid AND sid={$_GET['sid']} AND q.qid={$arow['qid']} "
-                       ." AND a.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
-                       ." AND q.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
+                       ." WHERE a.qid=q.qid AND sid={$_POST['sid']} AND q.qid={$arow['qid']} "
+                       ." AND a.language='".GetbaseLanguageFromSurveyid($_POST['sid']). "' "
+                       ." AND q.language='".GetbaseLanguageFromSurveyid($_POST['sid']). "' "
                        ." ORDER BY a.sortorder, a.answer";
 			$abresult=db_execute_assoc($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 			$abcount=$abresult->RecordCount();
 			while ($abrow = $abresult->FetchRow())
 			{
 				$abmultiscalequery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q, {$dbprefix}labels as l"
-					     ." WHERE a.qid=q.qid AND sid={$_GET['sid']} AND q.qid={$arow['qid']} "
-	                     ." AND l.lid=q.lid AND sid={$_GET['sid']} AND q.qid={$arow['qid']} AND l.title = '' "
-                         ." AND l.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
-                         ." AND q.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' ";
+					     ." WHERE a.qid=q.qid AND sid={$_POST['sid']} AND q.qid={$arow['qid']} "
+	                     ." AND l.lid=q.lid AND sid={$_POST['sid']} AND q.qid={$arow['qid']} AND l.title = '' "
+                         ." AND l.language='".GetbaseLanguageFromSurveyid($_POST['sid']). "' "
+                         ." AND q.language='".GetbaseLanguageFromSurveyid($_POST['sid']). "' ";
 				$abmultiscaleresult=$connect->Execute($abmultiscalequery) or die ("Couldn't get perform answers query<br />$abmultiscalequery<br />".$connect->ErrorMsg());
 				$abmultiscaleresultcount =$abmultiscaleresult->RecordCount();
 				$abmultiscaleresultcount = 1;
@@ -464,7 +464,7 @@ else
 			
 	// If last question is of type MCABCEFHP^QKJR let's get rid of the ending coma in createsurvey
 	$createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a comma
-	$tabname = "{$dbprefix}survey_{$_GET['sid']}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
+	$tabname = "{$dbprefix}survey_{$_POST['sid']}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
 
 	$taboptarray = array('mysql' => 'TYPE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
 	$dict = NewDataDictionary($connect);
@@ -476,7 +476,7 @@ else
 	"<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Activate Survey")." ($surveyid)</strong></font></td></tr>\n" .
 	"<tr><td>\n" .
 	"<font color='red'>".$clang->gT("Survey could not be actived.")."</font><br />\n" .
-	"<center><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a></center>\n" .
+	"<center><a href='$scriptname?sid={$_POST['sid']}'>".$clang->gT("Main Admin Screen")."</a></center>\n" .
 	"DB ".$clang->gT("Error").":<br />\n<font color='red'>" . $connect->ErrorMsg() . "</font>\n" .
 	"<pre>$createsurvey</pre>\n" .
 	"</td></tr></table></br>&nbsp;\n" .
@@ -484,7 +484,7 @@ else
 	}
 	if ($execresult != 0 && $execresult !=1)
 	{
-		$anquery = "SELECT autonumber_start FROM {$dbprefix}surveys WHERE sid={$_GET['sid']}";
+		$anquery = "SELECT autonumber_start FROM {$dbprefix}surveys WHERE sid={$_POST['sid']}";
 		if ($anresult=db_execute_assoc($anquery))
 		{
 			//if there is an autonumber_start field, start auto numbering here
@@ -492,7 +492,7 @@ else
 			{
 				if ($row['autonumber_start'] > 0)
 				{
-					$autonumberquery = "ALTER TABLE {$dbprefix}survey_{$_GET['sid']} AUTO_INCREMENT = ".$row['autonumber_start'];
+					$autonumberquery = "ALTER TABLE {$dbprefix}survey_{$_POST['sid']} AUTO_INCREMENT = ".$row['autonumber_start'];
 					if ($result = $connect->Execute($autonumberquery))
 					{
 						//We're happy it worked!
@@ -509,7 +509,7 @@ else
 		$activateoutput .= "\t\t\t\t<tr><td height='4'><strong>".$clang->gT("Activate Survey")." ($surveyid)</td></tr>\n";
 		$activateoutput .= "\t\t\t\t<tr><td align='center'><font class='successtitle'>".$clang->gT("Survey has been activated. Results table has been successfully created.")."</font><br /><br />\n";
 
-		$acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid={$_GET['sid']}";
+		$acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid={$_POST['sid']}";
 		$acresult = $connect->Execute($acquery);
 
 // Private means data privacy, not closed access survey
@@ -523,14 +523,14 @@ else
 		{
 			$activateoutput .= $clang->gT("This survey allows public registration. A token table must also be created.")."<br /><br />\n";
 //			$activateoutput .= "<input type='submit' value='".$clang->gT("Initialise Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid={$_GET['sid']}&amp;createtable=Y', '_top')\" />\n";
-			$activateoutput .= "<input type='submit' value='".$clang->gT("Initialise Tokens")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid={$_GET['sid']}&amp;createtable=Y")."\" />\n";
+			$activateoutput .= "<input type='submit' value='".$clang->gT("Initialise Tokens")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid={$_POST['sid']}&amp;createtable=Y")."\" />\n";
 		}
 		else
 		{
 			$activateoutput .= $clang->gT("This survey is now active, and responses can be recorded.")."<br /><br />\n";
 			$activateoutput .= "<strong>".$clang->gT("Open-access mode").":</strong> ".$clang->gT("No invitation code is needed to complete the survey.")."<br />".$clang->gT("You can switch to the closed-access mode by initialising a token table with the button below.")."<br /><br />\n";
 //			$activateoutput .= $clang->gT("Optional").": <input type='submit' value='".$clang->gT("Switch to closed-access mode")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid={$_GET['sid']}&amp;createtable=Y', '_top')\" />\n";
-			$activateoutput .= $clang->gT("Optional").": <input type='submit' value='".$clang->gT("Switch to closed-access mode")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid={$_GET['sid']}&amp;createtable=Y")."\" />\n";
+			$activateoutput .= $clang->gT("Optional").": <input type='submit' value='".$clang->gT("Switch to closed-access mode")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid={$_POST['sid']}&amp;createtable=Y")."\" />\n";
 		}
 		$activateoutput .= "\t\t\t\t</font></font></td></tr></table><br />&nbsp;\n";
 	}
