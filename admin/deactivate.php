@@ -38,7 +38,8 @@ if (!isset($_GET['ok']) || !$_GET['ok'])
 	$deactivateoutput .= "\t</tr>\n";
 	$deactivateoutput .= "\t<tr>\n";
 	$deactivateoutput .= "\t\t<td align='center'>\n";
-	$deactivateoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Deactivate Survey")."' onclick=\"window.open('$scriptname?action=deactivate&amp;ok=Y&amp;sid={$_GET['sid']}', '_top')\">\n";
+//	$deactivateoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Deactivate Survey")."' onclick=\"window.open('$scriptname?action=deactivate&amp;ok=Y&amp;sid={$_GET['sid']}', '_top')\">\n";
+	$deactivateoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Deactivate Survey")."' onclick=\"".get2post("$scriptname?action=deactivate&amp;ok=Y&amp;sid={$_GET['sid']}")."\">\n";
 	$deactivateoutput .= "\t\t<br />&nbsp;</td>\n";
 	$deactivateoutput .= "\t</tr>\n";
 	$deactivateoutput .= "</table><br />&nbsp;\n";
