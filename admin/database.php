@@ -823,22 +823,17 @@ if(isset($surveyid))
             
             for ($i=0; $i<count($sortorderids); $i++)
             {
-            	if (isset($codeids[$i])) array_push($testarray,$_POST['code_'.$codeids[$i]]);
+            	if (isset($codeids[$i])) $testarray[]=$_POST['code_'.$codeids[$i]];
             }
-             //die(print_r($testarray));
+
  			$dupanswers = array();
-			for ($i=0; $i<=count($testarray); $i++)
-			{
-				$value = $testarray[$i];
-				if (count($testarray) > 1 )
-				{
-					unset($testarray[$i]);
-					if (in_array($value, $testarray))
-					{
-						array_push($dupanswers,$value);
-					}
-				}
-			}
+            // Find duplicate codes and add these to dupanswers array
+            $foundCat=array_count_values($testarray);
+            foreach($foundCat as $key=>$value){
+                if($value>=2){
+                    $dupanswers[]=$key;
+                }
+            } 
 
 			require_once("../classes/inputfilter/class.inputfilter_clean.php");
 		    $myFilter = new InputFilter('','',1,1,1); // $myFilter->process();
