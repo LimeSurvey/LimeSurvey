@@ -140,25 +140,25 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit")  && (!isset($notan
 			sendsubmitnotification($thissurvey['sendnotification']);
 		}
 
-			$content='';
+		$content='';
 
-			$content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+		$content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
-			//echo $thissurvey['url'];
-			//Check for assessments
-			$assessments = doAssessment($surveyid);
-			if ($assessments)
-			{
+		//echo $thissurvey['url'];
+		//Check for assessments
+		$assessments = doAssessment($surveyid);
+		if ($assessments)
+		{
 
-				$content .= templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
+			$content .= templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
 
-			}
+		}
 
-			$completed = "<br /><font size='2'><font color='green'><strong>"
-			.$clang->gT("Thank you")."</strong></font><br /><br />\n\n"
-			. $clang->gT("Your survey responses have been recorded.")."<br />\n"
-			. "<a href='javascript:window.close()'>"
-			.$clang->gT("Close this Window")."</a></font><br /><br />\n";
+		$completed = "<br /><font size='2'><font color='green'><strong>"
+		.$clang->gT("Thank you")."</strong></font><br /><br />\n\n"
+		. $clang->gT("Your survey responses have been recorded.")."<br />\n"
+		. "<a href='javascript:window.close()'>"
+		.$clang->gT("Close this Window")."</a></font><br /><br />\n";
 
          // Link to Print Answer Preview  **********
          if ($thissurvey['printanswers']=='Y')
@@ -170,49 +170,36 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit")  && (!isset($notan
          }
         //*****************************************
 
+        $_SESSION['finished']=true; 
+        $_SESSION['sid']=$surveyid;
 
-			//Update the token if needed and send a confirmation email
-			if (isset($_POST['token']) && $_POST['token'])
-			{
-				submittokens();
+		sendcacheheaders();
+		if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['url'])
+		{
+			//Automatically redirect the page to the "url" setting for the survey
+			
+			/* this part doesn't have sense because $mytoken is not declared nor asigned value anywhere
+            $redir = $thissurvey['url'];
+            
+            // Add the token to the redirect just in case
+            if (isset($mytoken)) 
+            {
+			$redir .= "?token=".$mytoken;
 			}
+			header("Location: {$redir}");	*/
 
-			//Send notification to survey administrator //Thanks to Jeff Clement http://jclement.ca
-			if ($thissurvey['sendnotification'] > 0 && $thissurvey['adminemail'])
-			{
-				sendsubmitnotification($thissurvey['sendnotification']);
-			}
+			$url = $thissurvey['url'];
+			$url=str_replace("{SAVEDID}",$saved_id, $url);			// to activate the SAVEDID in the END URL
+            $url=str_replace("{TOKEN}",$_POST['token'], $url);            // to activate the TOKEN in the END URL
+            $url=str_replace("{SID}", $surveyid, $url);       // to activate the SID in the RND URL
 
-            $_SESSION['finished']=true; 
-            $_SESSION['sid']=$surveyid;
-
-			sendcacheheaders();
-			if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['url'])
-			{
-				//Automatically redirect the page to the "url" setting for the survey
-				
-				/* this part doesn't have sense because $mytoken is not declared nor asigned value anywhere
-                $redir = $thissurvey['url'];
-                
-                // Add the token to the redirect just in case
-                if (isset($mytoken)) 
-                {
-				$redir .= "?token=".$mytoken;
-				}
-				header("Location: {$redir}");	*/
-
-				$url = $thissurvey['url'];
-				$url=str_replace("{SAVEDID}",$saved_id, $url);			// to activate the SAVEDID in the END URL
-                $url=str_replace("{TOKEN}",$_POST['token'], $url);            // to activate the TOKEN in the END URL
-                $url=str_replace("{SID}", $surveyid, $url);       // to activate the SID in the RND URL
-	
-				header("Location: {$url}");
-				
-			}
+			header("Location: {$url}");
+			
+		}
 
 
-			doHeader();
-			echo $content;
+		doHeader();
+		echo $content;
 			
 		}
 
