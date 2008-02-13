@@ -112,8 +112,7 @@ if(isset($surveyid))
 
 		else
 		{
-			$_POST  = array_map('db_quote', $_POST);
-            $first=true;
+        $first=true;
 	   		require_once("../classes/inputfilter/class.inputfilter_clean.php");
 		    $myFilter = new InputFilter('','',1,1,1); // $myFilter->process();
          
@@ -122,12 +121,15 @@ if(isset($surveyid))
 		     	//Clean XSS
 		     	if ($filterxsshtml)
 		     	{
-		 		$_POST['group_name_'.$grouplang]=$myFilter->process($_POST['group_name_'.$grouplang]);
+  		 		$_POST['group_name_'.$grouplang]=$myFilter->process($_POST['group_name_'.$grouplang]);
 		     	$_POST['description_'.$grouplang]=$myFilter->process($_POST['description_'.$grouplang]);
 		     	}
                 // Fix bug with FCKEditor saving strange BR types
                 $_POST['group_name_'.$grouplang]=str_replace('<br type="_moz" />','',$_POST['group_name_'.$grouplang]);
                 $_POST['description_'.$grouplang]=str_replace('<br type="_moz" />','',$_POST['description_'.$grouplang]);
+
+    			$_POST  = array_map('db_quote', $_POST);
+               
 			  	if ($first)
                   {
       			    $query = "INSERT INTO ".db_table_name('groups')." (sid, group_name, description,group_order,language) VALUES ('{$_POST['sid']}', '{$_POST['group_name_'.$grouplang]}', '{$_POST['description_'.$grouplang]}',".getMaxgrouporder($_POST['sid']).",'{$grouplang}')";
@@ -157,7 +159,6 @@ if(isset($surveyid))
 
 	elseif ($action == "updategroup" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
-		$_POST  = array_map('db_quote', $_POST);
 		$grplangs = GetAdditionalLanguagesFromSurveyID($_POST['sid']);
 		$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);
 		array_push($grplangs,$baselang);
@@ -175,7 +176,8 @@ if(isset($surveyid))
                 // Fix bug with FCKEditor saving strange BR types
                 $_POST['group_name_'.$grplang]=str_replace('<br type="_moz" />','',$_POST['group_name_'.$grplang]);
                 $_POST['description_'.$grplang]=str_replace('<br type="_moz" />','',$_POST['description_'.$grplang]);
-                
+
+    		$_POST  = array_map('db_quote', $_POST);
 				$ugquery = "UPDATE ".db_table_name('groups')." SET group_name='{$_POST['group_name_'.$grplang]}', description='{$_POST['description_'.$grplang]}' WHERE sid={$_POST['sid']} AND gid={$_POST['gid']} AND language='{$grplang}'";
 				$ugresult = $connect->Execute($ugquery);
 				if ($ugresult)
@@ -255,7 +257,6 @@ if(isset($surveyid))
 		}
 		else
 		{
-			$_POST  = array_map('db_quote', $_POST);
 			if (!isset($_POST['lid']) || $_POST['lid'] == '') {$_POST['lid']="0";}
 			if (!isset($_POST['lid1']) || $_POST['lid1'] == '') {$_POST['lid1']="0";}
 			$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);	
@@ -283,6 +284,7 @@ if(isset($surveyid))
             $_POST['question']=str_replace('<br type="_moz" />','',$_POST['question']);
             $_POST['help']=str_replace('<br type="_moz" />','',$_POST['help']);
             
+			$_POST  = array_map('db_quote', $_POST);
 			$query = "INSERT INTO ".db_table_name('questions')." (sid, gid, type, title, question, preg, help, other, mandatory, lid,  lid1, question_order, language)"
 			." VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
 			." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}',$question_order,'{$baselang}')";
@@ -420,7 +422,6 @@ if(isset($surveyid))
 			while ($ccr=$ccresult->FetchRow()) {$qidarray[]=$ccr['qid'];}
 			if (isset($qidarray) && $qidarray) {$qidlist=implode(", ", $qidarray);}
 		}
-		$_POST  = array_map('db_quote', $_POST);
 		if (isset($cccount) && $cccount)
 		{
 			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question.","js")." ($qidlist)\")\n //-->\n</script>\n";
@@ -458,6 +459,8 @@ if(isset($surveyid))
                         $_POST['question_'.$qlang]=str_replace('<br type="_moz" />','',$_POST['question_'.$qlang]);
                         $_POST['help_'.$qlang]=str_replace('<br type="_moz" />','',$_POST['help_'.$qlang]);
                        
+        		$_POST  = array_map('db_quote', $_POST);
+
 						if (isset($qlang) && $qlang != "")
 						{ // ToDo: Sanitize the POST variables !
 							$uqquery = "UPDATE ".db_table_name('questions')
@@ -568,7 +571,6 @@ if(isset($surveyid))
 		}
 		else
 		{
-			$_POST  = array_map('db_quote', $_POST);
     		$questlangs = GetAdditionalLanguagesFromSurveyID($_POST['sid']);
     		$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);
     		
@@ -592,6 +594,7 @@ if(isset($surveyid))
             $_POST['question_'.$baselang]=str_replace('<br type="_moz" />','',$_POST['question_'.$baselang]);
             $_POST['help_'.$baselang]=str_replace('<br type="_moz" />','',$_POST['help_'.$baselang]);
             
+			$_POST  = array_map('db_quote', $_POST);
 			$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, help, other, mandatory, lid, lid1, question_order, language) 
                       VALUES ({$_POST['sid']}, {$_POST['gid']}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$baselang]."', '".$_POST['help_'.$baselang]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}',$max,".db_quoteall($baselang).")";
 			$result = $connect->Execute($query) or die($connect->ErrorMsg());
@@ -961,7 +964,6 @@ if(isset($surveyid))
 	elseif ($action == "updatesurvey" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property']))
 	{
 		if ($_POST['url'] == "http://") {$_POST['url']="";}
-		$_POST  = array_map('db_quote', $_POST);
 
 		if (trim($_POST['expires'])=="")
 		{
@@ -972,6 +974,7 @@ if(isset($surveyid))
 		
 		if($_SESSION['USER_RIGHT_SUPERADMIN'] != 1 && $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] != 1 && !hasTemplateManageRights($_SESSION['loginID'], $_POST['template'])) $_POST['template'] = "default";
 		
+		$_POST  = array_map('db_quote', $_POST);
 		$usquery = "UPDATE {$dbprefix}surveys \n"
 		. "SET admin='{$_POST['admin']}', useexpiry='{$_POST['useexpiry']}',\n"
 		. "expires='{$_POST['expires']}', adminemail='{$_POST['adminemail']}',\n"
@@ -1068,7 +1071,6 @@ if(isset($surveyid))
 	// Save the 2nd page from the survey-properties
 	elseif ($action == "updatesurvey2" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property']))
 	{
-		$_POST  = array_map('db_quote', $_POST);
 		$languagelist = GetAdditionalLanguagesFromSurveyID($surveyid);
 		$languagelist[]=GetBaseLanguageFromSurveyID($surveyid);
 		require_once("../classes/inputfilter/class.inputfilter_clean.php");
@@ -1092,10 +1094,11 @@ if(isset($surveyid))
                 $_POST['welcome_'.$langname]=str_replace('<br type="_moz" />','',$_POST['welcome_'.$langname]);
                 $_POST['urldescrip_'.$langname]=str_replace('<br type="_moz" />','',$_POST['urldescrip_'.$langname]);
                 
+    		$_POST  = array_map('db_quote', $_POST);
 				$usquery = "UPDATE ".db_table_name('surveys_languagesettings')." \n"
 				. "SET surveyls_title='".$_POST['short_title_'.$langname]."', surveyls_description='".$_POST['description_'.$langname]."',\n"
 				. "surveyls_welcometext='".$_POST['welcome_'.$langname]."',\n"
-				. "surveyls_urldescription='".$_POST['urldescrip_'.$langname]."'\n"
+				. "surveyls_urldescription='". $_POST['urldescrip_'.$langname]."'\n"
 				. "WHERE surveyls_survey_id=".$_POST['sid']." and surveyls_language='".$langname."'";
 				$usresult = $connect->Execute($usquery) or die("Error updating<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
 			}
@@ -1115,7 +1118,6 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Survey could not be created because it did not have a short title","js")."\")\n //-->\n</script>\n";
 	} else
 	{
-		$_POST  = array_map('db_quote', $_POST);
 		if (trim($_POST['expires'])=="")
 		{
 			$_POST['expires']='1980-01-01';
@@ -1134,6 +1136,8 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		while ($isresult->RecordCount()>0);
 		
 		if($_SESSION['USER_RIGHT_SUPERADMIN'] != 1 && $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] != 1 && !hasTemplateManageRights($_SESSION['loginID'], $_POST['template'])) $_POST['template'] = "default";
+
+		$_POST  = array_map('db_quote', $_POST);
 
 		$isquery = "INSERT INTO {$dbprefix}surveys\n"
 		. "(sid, owner_id, admin, active, useexpiry, expires, "
