@@ -41,7 +41,9 @@ if ($action == "listsurveys")
 				    <th><strong>".$clang->gT("Access")."</strong></th>
 				    <th><strong>".$clang->gT("Answer Privacy")."</strong></th>
 				    <th><strong>".$clang->gT("Status")."</strong></th>
-				    <th><strong>".$clang->gT("Responses")."</strong></th>
+				    <th><strong>".$clang->gT("Full Responses")."</strong></th>
+                                    <th><strong>".$clang->gT("Partial Responses")."</strong></th>
+                                    <th><strong>".$clang->gT("Total Responses")."</strong></th>
 				  </tr>";
         $gbc = "evenrow"; 
 
@@ -75,14 +77,20 @@ if ($action == "listsurveys")
 				} else {
 					$status=$clang->gT("Active") ;
 				}
-				
-				// Survey Responses - added by DLR
-				$gnquery = "SELECT count(id) FROM ".db_table_name("survey_".$rows['sid']);
-			    $gnresult = db_execute_num($gnquery);
-				while ($gnrow = $gnresult->FetchRow())	     
-                {
-					$responses=$gnrow[0];
-	            }
+				// Complete Survey Responses - added by DLR
+                                $gnquery = "SELECT count(id) FROM ".db_table_name("survey_".$rows['sid'])." WHERE submitdate IS NULL";
+                                $gnresult = db_execute_num($gnquery);
+                                while ($gnrow = $gnresult->FetchRow())
+                                {
+                                        $partial_responses=$gnrow[0];
+                                }
+                                $gnquery = "SELECT count(id) FROM ".db_table_name("survey_".$rows['sid']);
+                                $gnresult = db_execute_num($gnquery);
+                                while ($gnrow = $gnresult->FetchRow())
+                                {
+                                        $responses=$gnrow[0];
+                                }
+
 			}
 			else $status =$clang->gT("Inactive") ;
 
@@ -152,15 +160,20 @@ if ($action == "listsurveys")
 
 					    if ($status==$clang->gT("Active"))
 					    {
-					        $listsurveys .= "<td align='center'>".$responses."</td>";
+						$complete = $responses - $partial_responses;
+                                                $listsurveys .= "<td align='center'>".$complete."</td>";
+                                                $listsurveys .= "<td align='center'>".$partial_responses."</td>";
+                                                $listsurveys .= "<td align='center'>".$responses."</td>";
 					    }else{
+						$listsurveys .= "<td>&nbsp;</td>";
+						$listsurveys .= "<td>&nbsp;</td>";
 						$listsurveys .= "<td>&nbsp;</td>";
 					    }
 					    $listsurveys .= "</tr>" ;
 		}
 
 		$listsurveys.="<tr class='header'>
-		<td colspan=\"8\">&nbsp;</td>".
+		<td colspan=\"10\">&nbsp;</td>".
 		"</tr>";
 		$listsurveys.="</table><br />" ;
 	}
