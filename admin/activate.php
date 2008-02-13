@@ -125,7 +125,7 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 			$chkresult2 = db_execute_assoc($chkquery2);
 			if ($chkresult2->RecordCount()==0)
 	            {
-				$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("The labelset used in this question is missing a translation."), '');
+				$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("The labelset used in this question does not exists or is missing a translation."), $chkrow['gid']);
 	    		}
 			}  //foreach
 	} //while 
