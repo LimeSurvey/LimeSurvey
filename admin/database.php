@@ -78,6 +78,17 @@ if(isset($surveyid))
 	{
 		if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
 		{
+            if ($_POST['attribute_name']=='dropdown_separators' || $_POST['attribute_name']=='dropdown_headers' || 
+                $_POST['attribute_name']=='dropdown_prepostfix' || $_POST['attribute_name']=='prefix' || $_POST['attribute_name']=='suffix')
+            {
+               if ($filterxsshtml)
+               {
+                   require_once("../classes/inputfilter/class.inputfilter_clean.php");
+                   $myFilter = new InputFilter('','',1,1,1); // $myFilter->process();
+                   $_POST['attribute_value']=$myFilter->process($_POST['attribute_value']);
+                } 
+            }
+                
 			$_POST  = array_map('db_quote', $_POST);
 			$query = "INSERT INTO ".db_table_name('question_attributes')."
 					  (qid, attribute, value)
