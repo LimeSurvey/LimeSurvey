@@ -1122,10 +1122,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		{
 			$_POST['expires']='1980-01-01';
 		}
-		else
-		{
-			$_POST['expires']="'".$_POST['expires']."'";
-		}
+
 		// Get random ids until one is found that is not used
 		do
 		{
@@ -1146,7 +1143,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		. "allowsave, autoredirect, allowprev, printanswers, datecreated, listpublic,htmlemail,tokenanswerspersistence,usecaptcha)\n"
 		. "VALUES ($surveyid, {$_SESSION['loginID']},\n"
 		. "'{$_POST['admin']}', 'N', \n"
-		. "'{$_POST['useexpiry']}',{$_POST['expires']}, '{$_POST['adminemail']}', '{$_POST['bounce_email']}', '{$_POST['private']}',\n"
+		. "'{$_POST['useexpiry']}','{$_POST['expires']}', '{$_POST['adminemail']}', '{$_POST['bounce_email']}', '{$_POST['private']}',\n"
 		. "'{$_POST['faxto']}', '{$_POST['format']}', '{$_POST['template']}', '{$_POST['url']}',\n"
 		. "'{$_POST['language']}', '{$_POST['datestamp']}', '{$_POST['ipaddr']}', '{$_POST['refurl']}',\n"
 		. "'{$_POST['usecookie']}', '{$_POST['notification']}', '{$_POST['allowregister']}',\n"
@@ -1154,6 +1151,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		. "'{$_POST['allowsave']}', '{$_POST['autoredirect']}', \n"
         . "'{$_POST['allowprev']}', '{$_POST['printanswers']}', \n'"
 		. date("Y-m-d")."', '{$_POST['public']}', '{$_POST['htmlemail']}', '{$_POST['tokenanswerspersistence']}', '{$_POST['usecaptcha']}')";
+
 		$isresult = $connect->Execute($isquery);
 
 		// insert base language into surveys_language_settings
