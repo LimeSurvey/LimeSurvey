@@ -1869,7 +1869,7 @@ if($action == "exportstructure")
     .$clang->gT("queXML Survey XML Format (*.xml)")." ";
     if (!$xml_module_available)
     {
-    $exportstructure.= "<small class='warningtitle '>".$clang->gT("(XML module is not installed)")."</small>";
+    $exportstructure.= "<small class='warningtitle '>".$clang->gT("(XML module only in PHP 4 available)")."</small>";
     }
     
     $exportstructure.="</label>\n"
