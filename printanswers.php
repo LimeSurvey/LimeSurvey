@@ -191,6 +191,27 @@ if (isset($_SESSION['s_lang']))
 				$fnames[] = array("$field$i", "$ftitle ($i)", "{$fnrow['question']} ($i)");
 			}
 		}
+        elseif ($fnrow['type'] == "1") //Multi Scale
+        {
+            $field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
+            $ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
+            $fquestion = $fnrow['question'];
+
+            $aquery="SELECT * "
+                ."FROM {$dbprefix}answers "
+                ."WHERE qid={$fnrow['qid']} "
+                ."AND {$dbprefix}answers.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+                ."ORDER BY sortorder, "
+                ."answer";
+            $aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
+        
+            while ($arows = $aresult->FetchRow())
+            {
+                $fnames[] = array("{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}{$arows['code']}#0", "$ftitle ", "{$fnrow['question']} {$arows['answer']}");                
+                $fnames[] = array("{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}{$arows['code']}#1", "$ftitle ", "{$fnrow['question']} {$arows['answer']}");
+            } //while
+        }
+        
 		elseif ($fnrow['type'] == "O")
 		{
 			$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}");
