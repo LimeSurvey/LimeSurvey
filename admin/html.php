@@ -1849,17 +1849,30 @@ if($action == "exportstructure")
 {
     if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'])
     {
+    $xml_module_available=function_exists("domxml_new_doc");
+
     $exportstructure = "<form name='exportstructure' action='$scriptname' method='post'>\n" 
     ."<table width='100%' border='0' >\n\t<tr><td class='settingcaption'>"
     .$clang->gT("Export Survey Structure")."\n</td></tr>\n"
     ."\t<tr>\n"
-    ."\t\t<td style='text-align:left; padding-left:40%;padding-right:30%;'>\n"
+    ."\t\t<td style='text-align:left; padding-left:35%;padding-right:25%;'>\n"
     ."\t\t\t<br /><input type='radio' class='radiobtn' name='type' value='structurecsv' checked='checked' id='surveycsv' onclick=\"this.form.action.value='exportstructurecsv'\";/>"
     ."<label for='surveycsv'>"
     .$clang->gT("LimeSurvey Survey File (*.csv)")."</label><br />\n"
-    ."\t\t\t<input type='radio' class='radiobtn' name='type' value='structurequeXML'  id='queXML' onclick=\"this.form.action.value='exportstructurequexml'\";/>"
+    ."\t\t\t<input type='radio' class='radiobtn' name='type' value='structurequeXML'  id='queXML' onclick=\"this.form.action.value='exportstructurequexml'\"";
+    if (!$xml_module_available)
+    {
+    $exportstructure.=' disabled=disabled ';
+    }
+    $exportstructure.="/>"
     ."<label for='queXML'>"
-    .$clang->gT("queXML Survey XML Format (*.xml)")."</label>\n"
+    .$clang->gT("queXML Survey XML Format (*.xml)")." ";
+    if (!$xml_module_available)
+    {
+    $exportstructure.= "<small class='warningtitle '>".$clang->gT("(XML module is not installed)")."</small>";
+    }
+    
+    $exportstructure.="</label>\n"
     ."\t\t<br />&nbsp;</td>\n"
     ."\t</tr>\n"
     ."\t<tr><td height='2' bgcolor='silver'></td></tr>\n"
