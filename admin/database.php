@@ -858,8 +858,13 @@ if(isset($surveyid))
    			
          	foreach ($sortorderids as $sortorderid)
         	{
-        		$langid=substr($sortorderid,0,strrpos($sortorderid,'_')); 
+        		$defaultanswerset='N';
+            $langid=substr($sortorderid,0,strrpos($sortorderid,'_')); 
         		$orderid=substr($sortorderid,strrpos($sortorderid,'_')+1,20);
+        		if (isset($_POST['default_answer']) && $_POST['default_answer']==$orderid) 
+        		{
+        		 $defaultanswerset='Y';
+            }
         		if ($_POST['code_'.$codeids[$count]] != "0" && trim($_POST['code_'.$codeids[$count]]) != "" && !in_array($_POST['code_'.$codeids[$count]],$dupanswers))
         		{
      				$oldcode=false;
@@ -880,12 +885,13 @@ if(isset($surveyid))
 
         			$_POST['code_'.$codeids[$count]]=sanitize_paranoid_string($_POST['code_'.$codeids[$count]]);
 					// Now we insert the answers
-        			$query = "INSERT INTO ".db_table_name('answers')." (code,answer,qid,sortorder,language) 
+        			$query = "INSERT INTO ".db_table_name('answers')." (code,answer,qid,sortorder,language,default_value) 
 					          VALUES (".$connect->qstr($_POST['code_'.$codeids[$count]]).", ".
 							            $connect->qstr($_POST['answer_'.$sortorderid]).", ".
 										$connect->qstr($qid).", ".
 										$connect->qstr($orderid).", ".
-										$connect->qstr($langid).")";
+										$connect->qstr($langid).", ".
+										$connect->qstr($defaultanswerset).")";
                     if (!$result = $connect->Execute($query))
         			{
         				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update answers","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";

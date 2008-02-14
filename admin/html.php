@@ -1471,7 +1471,12 @@ if (returnglobal('viewanswer'))
 			if ($first) {$codeids=$codeids.' '.$row['sortorder'];}
 			
 			$vasummary .= "<tr><td width='20%' align='right'>\n";
-			if ($row['default_value'] == 'Y') $vasummary .= "<font color='#FF0000'>".$clang->gT("Default")."</font>";
+			if ($row['default_value'] == 'Y') 
+      {
+         $vasummary .= "<font color='#FF0000'>".$clang->gT("Default")."</font>"
+  			               ."\t<input type='hidden' name='default_answer' value=\"{$row['sortorder']}\" />";
+         
+      }
 
 			if (($activated != 'Y' && $first) || ($activated == 'Y' && $first && (($qtype=='O')  || ($qtype=='L') || ($qtype=='!') ))) 
 			{
