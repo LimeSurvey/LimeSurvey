@@ -1,6 +1,6 @@
 # translation of es-MX.po to
 # Juan Rafael Fernández García <juanrafael.fernandez@hispalinux.es>, 2006.
-# Carlos Juan Martín Pérez <cmartin@una.ac.cr>, 2007, 2008.
+# Carlos Juan Martin Perez <k@ues.edu.sv>, 2007, 2008.
 # Leonardo Andrés Gallego <gallego.leonardo@gmail.com>, 2007.
 # Leonardo Andrés Gallego <lgallego@tida.com.ar>, 2007.
 # Francisco Bricio <franciscobricio@gmail.com>,2007 Espa�ol MEXICO.
@@ -11,14 +11,14 @@
 # header is not removed and modified versions are marked
 # as such.
 # Luis M. Martínez
-# Carlos Juan Martín Pérez <cmartin@una.ac.cr>
+# Carlos Juan Martín Pérez <k@ues.edu.sv>
 msgid ""
 msgstr ""
 "Project-Id-Version: es-MX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-28 08:00+0100\n"
-"PO-Revision-Date: 2008-01-28 06:34-0600\n"
-"Last-Translator: Carlos Juan Martín Pérez <cmartin@una.ac.cr>\n"
+"POT-Creation-Date: 2008-02-15 08:00+0100\n"
+"PO-Revision-Date: 2008-02-15 13:06-0600\n"
+"Last-Translator: Carlos Juan Martin Perez <k@ues.edu.sv>\n"
 "Language-Team:  <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2678,7 +2678,7 @@ msgid ""
 "If you turn on the -Anonymous answers- option and create a tokens table, "
 "LimeSurvey will mark your completed tokens only with a 'Y' instead of date/"
 "time to ensure the anonymity of your participants."
-msgstr "Si usted hace que una encuesta sea anónima y decide crear una tabla de encuestados, LimeSurvey asignará a la fecha de conclusión de la encuesta una 'Y' en lugar de la fecha y hora exacta (la cual no obstante siempre quedará registrada junto a la respuesta) a fin de preservar el anonimato de sus participantes."
+msgstr "Si usted activa la opción de encuesta anónima y crea una tabla de encuestados/as, LimeSurvey marcará las respuestas completadas con una 'Y' en vez de con la fecha y hora para asegurar el anonimato de sus participantes."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1916
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1953
@@ -4507,7 +4507,7 @@ msgstr "Porcentaje"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:1457
 msgid "Non completed"
-msgstr "incompleto"
+msgstr "Incompleta"
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dbedit.php:390
 msgid "Answer could not be added. There is already an answer with this code"
@@ -4540,7 +4540,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:107
 msgid "Sorry, importing questions is limited to the same version. Import failed."
-msgstr "Disculpe, la importación de preguntas está limitada a la misma versión: la importación falló."
+msgstr "Disculpe, la importación de preguntas está limitada a la misma versión. La importación falló."
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:235
 msgid ""
@@ -6251,7 +6251,6 @@ msgstr "Salida exitosa."
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:164
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:322
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:179
-#, fuzzy
 msgid "Email address is not valid."
 msgstr "La dirección de correo electrónico no es válida"
 
