@@ -36,7 +36,7 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
-$csarray=buildLabelsetCSArray();
+$csarray=buildLabelSetCheckSumArray();
 //$csarray is now a keyed array with the Checksum of each of the label sets, and the lid as the key
 
 $importlabeloutput .= "<strong><font class='successtitle'>".$clang->gT("Success")."</font></strong><br />\n";
@@ -104,7 +104,7 @@ $countlabels = count($labelsarray)-1;
 
 
 if (isset($labelsetsarray) && $labelsetsarray) {
-	$csarray=buildLabelsetCSArray();   // build checksums over all existing labelsets
+	$csarray=buildLabelSetCheckSumArray();   // build checksums over all existing labelsets
 	$count=0;
 	foreach ($labelsetsarray as $lsa) {
         $fieldorders  =convertCSVRowToArray($labelsetsarray[0],',','"');

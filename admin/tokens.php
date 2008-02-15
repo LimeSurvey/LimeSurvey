@@ -570,7 +570,7 @@ if ($subaction == "emailsettings")
 			. getEditor("email-reg","email_register_{$grouplang}", "[".$clang->gT("Public registration Email:", "js")."](".$grouplang.")",$surveyid,'','',$action)
 			. "\t\t<input type='hidden' name='email_register_default_".$esrow['surveyls_language']."' id='email_register_default_{$grouplang}' value='".$bplang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.")."' />\n"
 			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onclick='javascript:  fillin(\"email_register_{$grouplang}\",\"email_register_default_{$grouplang}\")' />\n"
-			. "\t</span></div>\n</div>";
+			. "\t</span><br /><br /><br /><br /><br /><br /></div>\n</div>";
 		}
 		$tokenoutput .= '</div>';
 		$tokenoutput .= "\t<p><p><p><input type='submit' class='standardbtn' value='".$clang->gT("Save")."' />\n"

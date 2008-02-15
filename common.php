@@ -2412,7 +2412,7 @@ function SetSurveyLanguage($surveyid, $language)// SetSurveyLanguage($surveyid)
 }
 
 
-function buildLabelsetCSArray()
+function buildLabelSetCheckSumArray()
 {
 	global $connect;
 	// BUILD CHECKSUMS FOR ALL EXISTING LABEL SETS

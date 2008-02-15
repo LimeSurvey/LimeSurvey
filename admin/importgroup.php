@@ -291,7 +291,7 @@ $newlids = array(); // this array will have the "new lid" for the label sets, th
 
 //DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEIR NEW LID IS FOR THE QUESTIONS
 if (isset($labelsetsarray) && $labelsetsarray) {
-    $csarray=buildLabelsetCSArray();   // build checksums over all existing labelsets
+    $csarray=buildLabelSetCheckSumArray();   // build checksums over all existing labelsets
     $count=0;
     foreach ($labelsetsarray as $lsa) {
         $fieldorders  =convertCSVRowToArray($labelsetsarray[0],',','"');
