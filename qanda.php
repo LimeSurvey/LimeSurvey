@@ -3390,7 +3390,7 @@ function do_array_flexible_dual($ia)
 
 	if ($dsheaderA=arraySearchByKey("dualscale_headerA", $qidattributes, "attribute", 1))
 	{
-		$leftheader= htmlspecialchars($dsheaderA['value']);
+		$leftheader= $dsheaderA['value'];
 	}
 	else
 	{
@@ -3398,7 +3398,7 @@ function do_array_flexible_dual($ia)
 	}
 	if ($dsheaderB=arraySearchByKey("dualscale_headerB", $qidattributes, "attribute", 1))
 	{
-		$rightheader= htmlspecialchars($dsheaderB['value']);
+		$rightheader= $dsheaderB['value'];
 	}
 	else
 	{
@@ -3729,8 +3729,8 @@ function do_array_flexible_dual($ia)
 			if ($ddprepostfix=arraySearchByKey("dropdown_prepostfix", $qidattributes, "attribute", 1))
 			{
 				list ($ddprefix, $ddsuffix) =explode("|",$ddprepostfix['value']);
-				$ddprefix= htmlspecialchars($ddprefix);
-				$ddsuffix= htmlspecialchars($ddsuffix);
+				$ddprefix= $ddprefix;
+				$ddsuffix= $ddsuffix;
 			}
 			else
 			{
@@ -3740,8 +3740,8 @@ function do_array_flexible_dual($ia)
 			if ($ddseparators=arraySearchByKey("dropdown_separators", $qidattributes, "attribute", 1))
 			{
 				list ($postanswSep, $interddSep) =explode("|",$ddseparators['value']);
-				$postanswSep = htmlspecialchars($postanswSep);
-				$interddSep = htmlspecialchars($interddSep);
+				$postanswSep = $postanswSep;
+				$interddSep = $interddSep;
 			}
 			else
 			{

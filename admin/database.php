@@ -78,7 +78,7 @@ if(isset($surveyid))
 	{
 		if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
 		{
-            if ($_POST['attribute_name']=='dropdown_separators' || $_POST['attribute_name']=='dropdown_headers' || 
+            if ($_POST['attribute_name']=='dropdown_separators' || $_POST['attribute_name']=='dualscale_headerA' || $_POST['attribute_name']=='dualscale_headerB' ||
                 $_POST['attribute_name']=='dropdown_prepostfix' || $_POST['attribute_name']=='prefix' || $_POST['attribute_name']=='suffix')
             {
                if ($filterxsshtml)
