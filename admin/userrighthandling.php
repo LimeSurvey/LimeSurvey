@@ -75,8 +75,9 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 	if($ugid && $grpresultcount > 0 &&
 		$_SESSION['loginID'] == $grow['owner_id'])
 	{
-		$usergroupsummary .= "\t\t\t\t\t<a href='$scriptname?action=delusergroup&amp;ugid=$ugid' onclick=\"return confirm('".$clang->gT("Are you sure you want to delete this entry.","js")."')\""
-		. "onmouseout=\"hideTooltip()\""
+//		$usergroupsummary .= "\t\t\t\t\t<a href='$scriptname?action=delusergroup&amp;ugid=$ugid' onclick=\"return confirm('".$clang->gT("Are you sure you want to delete this entry.","js")."')\""
+		$usergroupsummary .= "\t\t\t\t\t<a href='#' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry.","js")."')) {".get2post("$scriptname?action=delusergroup&amp;ugid=$ugid")."}\" "
+		. "onmouseout=\"hideTooltip()\" "
 		. "onmouseover=\"showTooltip(event,'".$clang->gT("Delete Current User Group", "js")."');return false\">"
 		. "<img src='$imagefiles/delete.png' alt='' name='DeleteUserGroup' title='' align='left' border='0' hspace='0' /></a>";
 	}
@@ -708,15 +709,15 @@ if ($action == "delusergroup")
 	{
 	$usersummary = "<br /><strong>".$clang->gT("Deleting User Group")."</strong><br />\n";
 
-	if(!empty($_GET['ugid']) && $_GET['ugid'] > -1)
+	if(!empty($_POST['ugid']) && $_POST['ugid'] > -1)
 	{
-		$query = "SELECT ugid, name, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND owner_id = ".$_SESSION['loginID'];
+		$query = "SELECT ugid, name, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$_POST['ugid']." AND owner_id = ".$_SESSION['loginID'];
 		$result = db_select_limit_assoc($query, 1);
 		if($result->RecordCount() > 0)
 		{
 			$row = $result->FetchRow();
 
-			$remquery = "DELETE FROM ".db_table_name('user_groups')." WHERE ugid = {$_GET['ugid']} AND owner_id = {$_SESSION['loginID']}";
+			$remquery = "DELETE FROM ".db_table_name('user_groups')." WHERE ugid = {$_POST['ugid']} AND owner_id = {$_SESSION['loginID']}";
 			if($connect->Execute($remquery))
 			{
 				$usersummary .= "<br />".$clang->gT("Group Name").": {$row['name']}<br />\n";
