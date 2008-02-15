@@ -82,11 +82,11 @@ $cquery = "SELECT DISTINCT {$dbprefix}conditions.* FROM {$dbprefix}conditions, {
 $cdump = BuildCSVFromQuery($cquery);
 
 //7: Label Sets
-$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.lid, label_name, {$dbprefix}labelsets.languages FROM {$dbprefix}labelsets, {$dbprefix}questions WHERE {$dbprefix}labelsets.lid={$dbprefix}questions.lid AND type IN ('F', 'H', 'W', 'Z') AND sid=$surveyid";
+$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.lid, label_name, {$dbprefix}labelsets.languages FROM {$dbprefix}labelsets, {$dbprefix}questions WHERE ({$dbprefix}labelsets.lid={$dbprefix}questions.lid or {$dbprefix}labelsets.lid={$dbprefix}questions.lid1) AND type IN ('F', 'H', 'W', 'Z', '1') AND sid=$surveyid";
 $lsdump = BuildCSVFromQuery($lsquery);
 
 //8: Labels
-$lquery = "SELECT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder,{$dbprefix}labels.language FROM {$dbprefix}labels, {$dbprefix}questions WHERE {$dbprefix}labels.lid={$dbprefix}questions.lid AND type in ('F', 'W', 'H', 'Z') AND sid=$surveyid group by {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder,{$dbprefix}labels.language";
+$lquery = "SELECT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder,{$dbprefix}labels.language FROM {$dbprefix}labels, {$dbprefix}questions WHERE ({$dbprefix}labels.lid={$dbprefix}questions.lid or {$dbprefix}labels.lid={$dbprefix}questions.lid1) AND type in ('F', 'W', 'H', 'Z', '1') AND sid=$surveyid group by {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder,{$dbprefix}labels.language";
 $ldump = BuildCSVFromQuery($lquery);
 
 //9: Question Attributes
