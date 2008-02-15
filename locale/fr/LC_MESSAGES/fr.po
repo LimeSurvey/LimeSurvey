@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey French language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-01-24 00:57+0100\n"
-"PO-Revision-Date: 2008-02-11 20:23+0100\n"
+"PO-Revision-Date: 2008-02-15 18:23+0100\n"
 "Last-Translator: seb <seb>\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -27,7 +27,7 @@ msgstr "ERREUR"
 # D:\www\limesurvey/admin/templates.php:111
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/index.php:158
 msgid "We are sorry but you don't have permissions to do this."
-msgstr "Désolé mais vous n'avez pas la permission de faire celà."
+msgstr "Désolé mais vous n'avez pas la permission de faire cela."
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/index.php:159
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/index.php:188
@@ -103,12 +103,12 @@ msgstr "Ce questionnaire n'est plus disponible."
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/dumpgroup.php:40
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/http_importsurvey.php:32
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/resetsurveylogic.php:28
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2744
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2748
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2752
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2758
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3225
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3237
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2775
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2779
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2783
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2789
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3256
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3268
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/dataentry.php:44
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/dataentry.php:60
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/dataentry.php:121
@@ -241,7 +241,7 @@ msgstr "Terminé"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/index.php:1242
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:560
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:1034
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:1049
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -378,13 +378,13 @@ msgstr "Question de sécurité"
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:1030
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:1066
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:1071
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1608
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1613
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1664
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1669
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1702
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2030
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3290
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1626
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1631
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1682
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1687
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1720
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2061
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3321
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/access_denied.php:28
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/access_denied.php:33
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/access_denied.php:38
@@ -507,14 +507,14 @@ msgstr "Vos réponses ont été enregistrées."
 msgid "Click here to print your answers."
 msgstr "Cliquez ici pour imprimer vos réponses."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/group.php:239
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/group.php:226
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/survey.php:190
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/question.php:173
 msgid "Sorry. There is no matching survey."
 msgstr "Désolé. Il n'y a pas de questionnaire correspondant."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/group.php:261
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/group.php:765
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/group.php:248
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/group.php:752
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/survey.php:601
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/question.php:197
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/question.php:554
@@ -523,7 +523,7 @@ msgstr "Ce questionnaire n'est pas encore activé. Vous ne pourrez pas sauver vo
 
 # E:\www\limesurvey/admin/usercontrol.php:153
 # E:\www\limesurvey/admin/usercontrol.php:277
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/group.php:445
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/group.php:432
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/survey.php:349
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/question.php:459
 msgid "Date is not valid!"
@@ -576,11 +576,11 @@ msgstr "Adresse IP :"
 msgid "Referring URL"
 msgstr "URL référente"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/printanswers.php:228
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/printanswers.php:249
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/conditions.php:820
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/conditions.php:869
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/conditions.php:952
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1059
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1072
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:759
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:765
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/templates.php:278
@@ -588,7 +588,7 @@ msgstr "URL référente"
 msgid "Question"
 msgstr "Question :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/printanswers.php:228
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/printanswers.php:249
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/templates.php:278
 msgid "Your Answer"
 msgstr "Votre réponse"
@@ -649,7 +649,7 @@ msgstr "Sauvegarder entièrement la base de données"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:308
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:309
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1276
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1289
 msgid "Edit/Add Label Sets"
 msgstr "Éditer/Ajouter des jeux d'étiquettes"
 
@@ -681,21 +681,21 @@ msgid "Create or Import New Survey"
 msgstr "Créer ou importer un nouveau questionnaire"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:347
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:291
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:304
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1073
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1100
 msgid "Surveys"
 msgstr "Questionnaires "
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:565
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:76
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:153
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:78
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:161
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/quota.php:262
 msgid "Active"
 msgstr "Activé"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:570
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:87
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:95
 msgid "Inactive"
 msgstr "Inactif"
 
@@ -725,7 +725,7 @@ msgstr "Veuillez sélectionner..."
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:914
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:3261
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:3299
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:695
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:708
 msgid "None"
 msgstr "Aucun"
 
@@ -846,17 +846,17 @@ msgid "List (Dropdown)"
 msgstr "Liste déroulante"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:805
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:733
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:746
 msgid "No email notification"
 msgstr "Aucune notification par mail"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:806
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:736
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:749
 msgid "Basic email notification"
 msgstr "Notification simple par mail"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:807
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:739
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:752
 msgid "Detailed email notification with result codes"
 msgstr "Notification par mail avec les codes des réponses"
 
@@ -901,10 +901,10 @@ msgid "Display Last 50 Responses"
 msgstr "Afficher les 50 dernières réponses"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:1330
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:479
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:480
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:489
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:490
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:492
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:493
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:502
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:503
 msgid "Dataentry Screen for Survey"
 msgstr "Écran de saisie de données pour le questionnaire"
 
@@ -927,8 +927,8 @@ msgid "Import answers from a deactivated survey table"
 msgstr "Importer des réponses d'un ancien (désactivé) questionnaire"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:1346
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:643
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:644
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:656
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:657
 msgid "View Saved but not submitted Responses"
 msgstr "Voir les réponses enregistrées mais non validées"
 
@@ -1010,37 +1010,37 @@ msgstr "Autre"
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/printablesurvey.php:161
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/printablesurvey.php:532
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/printablesurvey.php:591
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:840
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1315
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1324
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2167
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2179
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2191
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2203
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2219
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2240
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2252
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2264
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2317
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2369
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2393
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2418
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2444
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2458
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2858
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2867
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2875
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2883
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2901
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2915
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2927
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2936
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2961
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2995
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3002
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3009
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3016
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3023
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:853
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1328
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1337
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2198
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2210
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2222
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2234
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2250
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2271
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2283
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2295
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2348
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2400
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2424
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2449
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2475
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2489
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2889
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2898
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2906
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2914
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2932
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2946
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2958
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2967
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2992
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3026
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3033
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3040
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3047
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3054
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/dataentry.php:1126
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/dataentry.php:1187
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/dataentry.php:1603
@@ -1090,37 +1090,37 @@ msgstr "Oui"
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/printablesurvey.php:163
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/printablesurvey.php:533
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/printablesurvey.php:593
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:836
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1315
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1324
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2170
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2182
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2194
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2206
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2222
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2243
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2255
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2267
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2321
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2372
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2396
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2421
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2447
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2461
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2861
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2868
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2876
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2884
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2902
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2916
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2929
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2937
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2962
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2996
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3003
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3010
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3017
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3024
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:849
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1328
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1337
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2201
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2213
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2225
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2237
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2253
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2274
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2286
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2298
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2352
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2403
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2427
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2452
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2478
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2492
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2892
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2899
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2907
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2915
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2933
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2947
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2960
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2968
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2993
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3027
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3034
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3041
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3048
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3055
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/dataentry.php:1129
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/dataentry.php:1193
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/dataentry.php:1604
@@ -1449,8 +1449,8 @@ msgstr "Votre mail"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:2247
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:367
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1764
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1817
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1782
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1835
 msgid "Save Now"
 msgstr "Sauvegarder maintenant"
 
@@ -1942,8 +1942,8 @@ msgstr "Portée"
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/assessments.php:89
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/assessments.php:110
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/assessments.php:143
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:897
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2664
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:910
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2695
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/stats.php:293
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:191
 msgid "Group"
@@ -2006,7 +2006,7 @@ msgstr "Total"
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/assessments.php:96
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:151
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:168
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2091
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2122
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/stats.php:367
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:589
 msgid "Add"
@@ -2038,7 +2038,7 @@ msgstr "Actions"
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:488
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:569
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:958
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1939
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1970
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:616
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/templates.php:670
 msgid "Delete"
@@ -2049,7 +2049,7 @@ msgstr "Supprimer"
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:488
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:569
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:958
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1939
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1970
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/browse.php:283
 msgid "Are you sure you want to delete this entry."
 msgstr "Êtes-vous sûr de vouloir supprimer cet élément ?"
@@ -2057,7 +2057,7 @@ msgstr "Êtes-vous sûr de vouloir supprimer cet élément ?"
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/assessments.php:180
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:576
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:646
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2592
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2623
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:607
 msgid "Save"
 msgstr "Sauver"
@@ -2066,10 +2066,10 @@ msgstr "Sauver"
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/deletesurvey.php:61
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:979
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/resetsurveylogic.php:50
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:468
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:524
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1180
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3108
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:481
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:537
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1193
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3139
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -2229,8 +2229,8 @@ msgid "Import of Label Set is completed."
 msgstr "L'importation du jeu d'étiquette est terminée."
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/deletesurvey.php:23
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1726
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1791
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1744
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1809
 msgid "Delete Survey"
 msgstr "Supprimer le questionnaire"
 
@@ -2251,14 +2251,14 @@ msgstr "Vous n'avez pas sélectionné de questionnaire à supprimer"
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:406
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:476
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/resetsurveylogic.php:42
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1250
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1263
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1287
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1560
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2350
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2659
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2990
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3204
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1276
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1300
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1578
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2381
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2690
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3021
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3235
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:710
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/deactivate.php:27
 msgid "Warning"
@@ -2410,7 +2410,7 @@ msgid "Add Condition"
 msgstr "Ajouter une condition"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/conditions.php:874
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1438
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1451
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1095
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1121
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1513
@@ -2455,8 +2455,8 @@ msgstr "Ajouter un groupe"
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:527
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:1045
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:1252
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1429
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2574
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1442
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2605
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:216
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:407
 msgid "Base Language"
@@ -2466,10 +2466,10 @@ msgstr "Langue de base"
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/grouphandling.php:141
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/grouphandling.php:157
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:296
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:715
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1009
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2577
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2800
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:728
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1022
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2608
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2831
 msgid "Title"
 msgstr "Titre"
 
@@ -2487,12 +2487,12 @@ msgstr "Obligatoire"
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/grouphandling.php:162
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:644
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:666
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:771
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1013
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2579
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2581
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2802
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2804
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:784
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1026
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2610
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2612
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2833
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2835
 msgid "Description:"
 msgstr "Description :"
 
@@ -2505,9 +2505,9 @@ msgstr "Importer le groupe"
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/grouphandling.php:67
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:426
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:439
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2480
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2493
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3043
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2511
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2524
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3074
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:175
 msgid "Please select a file to import!"
 msgstr "SVP sélectionnez un fichier à importer !"
@@ -2560,8 +2560,8 @@ msgstr "Date de sauvegarde"
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/saved.php:88
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:300
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:915
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1441
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1874
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1454
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1905
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/quota.php:249
 msgid "Action"
 msgstr "Action"
@@ -2792,8 +2792,8 @@ msgstr "Si vous initialisez des invitations pour ce questionnaire, seuls les uti
 # D:\www\limesurvey/admin/html.php:2484
 # D:\www\limesurvey/admin/tokens.php:269
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:331
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2350
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2990
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2381
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3021
 msgid "If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
 msgstr "Si vous concevez un questionnaire anonyme mais avec des invitations, LimeSurvey complétera les invitations utilisées avec un 'Y' plutôt que la date et l'heure pour renforcer l'anonymat des participants."
 
@@ -2821,8 +2821,8 @@ msgstr "Restaurer"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:382
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:850
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2308
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2955
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2339
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2986
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/spss.php:60
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/exportresults.php:326
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/exportresults.php:512
@@ -2832,8 +2832,8 @@ msgstr "Attribut_1"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:383
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:854
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2310
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2956
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2341
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2987
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/spss.php:61
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/exportresults.php:328
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/exportresults.php:517
@@ -2908,7 +2908,7 @@ msgid "Total Surveys Completed"
 msgstr "Nombre total de questionnaire(s) terminé(s)"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:510
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2557
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2588
 msgid "This will replace the existing text. Continue?"
 msgstr "Cela remplacera le texte existant. Continuer ?"
 
@@ -2921,7 +2921,7 @@ msgid "Invitation Email Subject:"
 msgstr "Objet du mail d'invitation :"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:532
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:1029
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:1044
 msgid "Invitation to participate in survey"
 msgstr "Invitation à participer à un questionnaire"
 
@@ -2944,7 +2944,7 @@ msgstr "Mail de l'invitation"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:538
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:1032
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:1030
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:1045
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -2989,7 +2989,7 @@ msgid "Email Reminder Subject:"
 msgstr "Objet du mail de rappel :"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:543
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:1031
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:1046
 msgid "Reminder to participate in survey"
 msgstr "Rappel pour répondre à un questionnaire"
 
@@ -3000,7 +3000,7 @@ msgstr "Mail de rappel :"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:549
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:1248
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:1032
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:1047
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -3049,7 +3049,7 @@ msgid "Confirmation Email Subject"
 msgstr "Objet du mail de confirmation :"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:554
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:1033
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:1048
 msgid "Confirmation of completed survey"
 msgstr "Confirmation de réponse à un questionnaire"
 
@@ -3063,7 +3063,7 @@ msgid "Public registration Email Subject:"
 msgstr "Objet du mail d'enregistrement public :"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:565
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:1035
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:1050
 msgid "Survey Registration Confirmation"
 msgstr "Confirmation de l'enregistrement de la participation au questionnaire"
 
@@ -3073,7 +3073,7 @@ msgid "Public registration Email:"
 msgstr "Mail de l'enregistrement public :"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:571
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:1036
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:1051
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -3583,8 +3583,8 @@ msgstr "Un second jeu d'étiquettes est requis pour cette question. Aucun n'est 
 
 # D:\www\limesurvey/admin/activate.php:143
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/activate.php:128
-msgid "The labelset used in this question is missing a translation."
-msgstr "Il manque une traduction pour le jeu d'étiquettes utilisée dans cette question."
+msgid "The labelset used in this question does not exists or is missing a translation."
+msgstr "Le jeu d'étiquettes utilisé dans cette question n'existe pas ou manque d'une traduction."
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/activate.php:184
 msgid "This question has a condition set, however the condition is based on a question that appears after it."
@@ -3595,8 +3595,8 @@ msgstr "Cette question a une condition paramétrée, toutefois la condition est 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/activate.php:259
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/activate.php:476
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/activate.php:509
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1727
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1792
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1745
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1810
 msgid "Activate Survey"
 msgstr "Activer le questionnaire"
 
@@ -3724,8 +3724,8 @@ msgstr "Vous devez entrer un nom d'utilisateur et un mail."
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:442
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:913
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:1013
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1691
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1872
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1709
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1903
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
@@ -3751,7 +3751,7 @@ msgid "Forgot Your Password?"
 msgstr "Mot de passe oublié ?"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/login_check.php:109
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:254
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:267
 msgid "Current Language"
 msgstr "Langue courante"
 
@@ -3799,7 +3799,7 @@ msgstr "Définir le nom"
 
 # E:\www\limesurvey/admin/html.php:3228
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:151
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2091
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2122
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/quota.php:279
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/quota.php:317
 msgid "Remove"
@@ -3816,7 +3816,7 @@ msgid "Update"
 msgstr "Mise à jour"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:234
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1259
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1272
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importgroup.php:653
 msgid "Label Set"
 msgstr "Jeu d'étiquettes"
@@ -3836,12 +3836,12 @@ msgid "Are you sure?"
 msgstr "Êtes-vous sûr?"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:292
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1435
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1448
 msgid "Code"
 msgstr "Code :"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:304
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1444
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1457
 msgid "Order"
 msgstr "Trier"
 
@@ -3852,38 +3852,38 @@ msgstr "Étiquettes :"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:336
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:776
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1491
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1495
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:926
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1509
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1513
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:941
 msgid "Del"
 msgstr "Supprimer"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:342
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:752
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1504
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2624
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2705
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1522
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2655
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2736
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:637
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:799
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:902
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:917
 msgid "Up"
 msgstr "Haut"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:347
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:764
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1509
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2636
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2710
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1527
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2667
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2741
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:649
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:803
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:914
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:929
 msgid "Dn"
 msgstr "Bas"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:354
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:692
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1517
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:814
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1535
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:828
 msgid "Save All"
 msgstr "Sauver tout"
 
@@ -3910,32 +3910,32 @@ msgid "You cannot change codes, add or delete entries in this label set because 
 msgstr "Vous ne pouvez pas changer des codes, ajouter ou supprimer des entrées dans ce jeu d'étiquettes parce que celles-ci sont utilisées par un questionnaire activé."
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:429
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2483
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2514
 msgid "zip library not supported by PHP, Import ZIP Disabled"
 msgstr "Librairie ZIP non supportée par PHP. L'importation de ZIP est désactivé"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:438
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2492
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2523
 msgid "Uploaded Resources Management"
 msgstr "Gestion des ressources envoyées"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:445
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2499
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2530
 msgid "Browse Uploaded Resources"
 msgstr "Parcourir les ressources envoyées"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:446
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2500
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2531
 msgid "Export Resources As ZIP Archive"
 msgstr "Exporter les ressources en tant qu'archive ZIP"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:447
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2501
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2532
 msgid "Select ZIP File:"
 msgstr "Choisir un fichier ZIP :"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:449
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2503
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2534
 msgid "Import Resources ZIP Archive"
 msgstr "Importation d'archive ZIP de ressources"
 
@@ -4005,14 +4005,14 @@ msgid "Answered"
 msgstr "Nombre de réponses déjà données"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/http_importsurvey.php:25
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3040
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3051
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3071
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3082
 msgid "Import Survey"
 msgstr "Importer le questionnaire"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/resetsurveylogic.php:23
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:565
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:572
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:578
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:585
 msgid "Reset Survey Logic"
 msgstr "Remise à zéro de la logique du questionnaire"
 
@@ -4098,8 +4098,8 @@ msgstr "Déconnexion réussie."
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:623
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:628
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:979
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1581
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1967
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1599
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1998
 msgid "Add User"
 msgstr "Ajouter un utilisateur"
 
@@ -4111,9 +4111,9 @@ msgstr "Ajouter un utilisateur"
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/usercontrol.php:316
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:1064
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:1070
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1606
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1612
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1668
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1624
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1630
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1686
 msgid "Failed to add User."
 msgstr "Échec de la création de l'utilisateur"
 
@@ -4157,7 +4157,7 @@ msgid "Username and/or email address already exists."
 msgstr "Le nom d'utilisateur et/ou l'adresse mail existe déjà."
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/usercontrol.php:324
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1680
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1698
 msgid "Deleting User"
 msgstr "Supprimer un utilisateur"
 
@@ -4167,7 +4167,7 @@ msgstr "Le super-administrateur initial ne peut pas être effacé !"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/usercontrol.php:393
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:1017
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1695
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1713
 msgid "Could not delete user. User was not supplied."
 msgstr "Impossible de supprimer l'utilisateur. Le nom d'utilisateur n'était pas rempli."
 
@@ -4324,7 +4324,7 @@ msgid "Please submit by"
 msgstr "Veuillez répondre avant le"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:35
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1873
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1904
 msgid "User Group"
 msgstr "Groupes d'utilisateurs"
 
@@ -4377,10 +4377,10 @@ msgid "SuperAdministrator"
 msgstr "Super-administrateur"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:290
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2822
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2907
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2967
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3036
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2853
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2938
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2998
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3067
 msgid "Create Survey"
 msgstr "Créer un questionnaire"
 
@@ -4434,8 +4434,8 @@ msgid "Take Ownership"
 msgstr "Prendre la propriété"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:640
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1625
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1982
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1643
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2013
 msgid "Add User Group"
 msgstr "Ajouter un groupe d'utilisateurs"
 
@@ -4562,25 +4562,25 @@ msgid "Adding User to group"
 msgstr "Ajouter un utilisateur au groupe"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:1059
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1595
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1613
 msgid "User added."
 msgstr "Utilisateur ajouté."
 
 # E:\www\limesurvey/admin/admin.php:102
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:1064
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1606
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1624
 msgid "Username already exists."
 msgstr "Le nom d'utilisateur existe déjà."
 
 # E:\www\limesurvey/admin/html.php:1957
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/userrighthandling.php:1070
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1612
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1668
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1630
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1686
 msgid "No Username selected."
 msgstr "Pas de nom d'utilisateur sélectionné."
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:38
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:368
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:381
 msgid "Survey"
 msgstr "Questionnaire"
 
@@ -4600,7 +4600,7 @@ msgstr "Accès"
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:42
 #, fuzzy
 msgid "Answer Privacy"
-msgstr "Réponses anonymes"
+msgstr "Anonymat de la réponse"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:43
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/quota.php:245
@@ -4608,450 +4608,458 @@ msgid "Status"
 msgstr "Statut"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:44
-msgid "Responses"
-msgstr "Réponses"
+msgid "Full Responses"
+msgstr "Réponses complètes"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:56
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:45
+msgid "Partial Responses"
+msgstr "Réponses partielles"
+
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:46
+msgid "Total Responses"
+msgstr "Réponses totales"
+
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:58
 msgid "Anonymous"
 msgstr "Anonyme"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:58
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:60
 msgid "Not Anonymous"
 msgstr "Non anonyme"
 
 # D:\www\limesurvey/admin/html.php:73
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:63
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:65
 msgid "Closed-access"
 msgstr "Accès restreint"
 
 # D:\www\limesurvey/admin/html.php:77
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:67
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:69
 msgid "Open-access"
 msgstr "Accès public"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:74
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:76
 msgid "Expired"
 msgstr "Expiré"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:109
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:395
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:117
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:408
 msgid "This survey is active but expired."
 msgstr "Ce questionnaire est activé mais expiré."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:111
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:397
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:119
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:410
 msgid "This survey is active but expired"
 msgstr "Ce questionnaire est activé mais expiré"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:119
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:121
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:410
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:412
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:127
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:129
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:423
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:425
 msgid "De-activate this Survey"
 msgstr "Désactiver ce questionnaire"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:125
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:127
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:402
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:404
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:133
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:135
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:415
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:417
 msgid "This survey is currently active"
 msgstr "Ce questionnaire est actuellement activé"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:135
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:136
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:381
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:382
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:143
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:144
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:394
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:395
 msgid "Activate this Survey"
 msgstr "Activer ce questionnaire"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:140
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:142
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:374
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:376
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:148
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:150
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:387
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:389
 msgid "This survey is not currently active"
 msgstr "Ce questionnaire est actuellement désactivé"
 
 # C:\wamp\www\limesurvey/admin/html.php:94
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:167
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:180
 msgid "No Surveys available - please create one."
 msgstr "Pas de questionnaire disponible. Veuillez en créer un."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:233
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:246
 msgid "LimeSurvey System Summary"
 msgstr "Résumé système LimeSurvey"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:239
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:252
 msgid "Database Name"
 msgstr "Nom de la base de données"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:246
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:259
 msgid "Default Language"
 msgstr "Langue par défaut"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:270
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:283
 msgid "Preferred HTML editor mode"
 msgstr "Mode d'édition HTML préféré"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:273
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:286
 msgid "Default HTML editor mode"
 msgstr "Mode d'édition HTML par défaut"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:274
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:287
 msgid "No HTML editor"
 msgstr "Pas d'éditeur HTML"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:275
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:288
 msgid "Inline HTML editor"
 msgstr "Éditeur HTML en ligne"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:276
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:289
 msgid "Popup HTML editor"
 msgstr "Éditeur HTML dans une fenêtre"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:284
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:297
 msgid "Users"
 msgstr "Utilisateur(s)"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:298
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:311
 msgid "Active Surveys"
 msgstr "Questionnaire(s) activé(s)"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:305
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:318
 msgid "De-activated Surveys"
 msgstr "Questionnaire(s) désactivé(s)"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:312
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:325
 msgid "Active Token Tables"
 msgstr "Table(s) d'invitation(s) activée(s)"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:319
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:332
 msgid "De-activated Token Tables"
 msgstr "Table(s) d'invitation(s) désactivée(s)"
 
 # D:\www\limesurvey/admin/html.php:270
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:329
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:342
 msgid "Show PHPInfo"
 msgstr "Afficher PHPInfo"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:387
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:400
 msgid "Survey cannot be activated. Either you have no permission or there are no questions."
 msgstr "Le questionnaire ne peut pas être activé. Soit vous n'en avez pas la permission soit il ne comporte pas de question."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:427
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:429
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:440
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:442
 msgid "Survey Security Settings"
 msgstr "Paramètres de sécurité du questionnaire"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:438
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:451
 msgid "Test This Survey"
 msgstr "Tester ce questionnaire"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:441
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:454
 msgid "Execute This Survey"
 msgstr "Exécuter ce questionnaire"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:463
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:519
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1175
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3092
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:476
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:532
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1188
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3123
 msgid "Please select a language:"
 msgstr "SVP sélectionnez une langue :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:487
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:500
 msgid "This survey is not active, data entry is not allowed"
 msgstr "Ce questionnaire n'est pas activé, la saisie de données n'est pas permise."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:499
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:500
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:508
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:509
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:512
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:513
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:521
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:522
 msgid "Printable Version of Survey"
 msgstr "Version imprimable du questionnaire"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:537
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:538
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:550
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:551
 msgid "Edit Current Survey"
 msgstr "Éditer le questionnaire courant"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:551
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:564
 msgid "Delete Current Survey"
 msgstr "Supprimer le questionnaire courant"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:570
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:583
 msgid "This survey's questions don't use conditions"
 msgstr "Ces questions n'utilisent pas de conditions"
 
 # D:\www\limesurvey/admin/html.php:891
 # D:\www\limesurvey/admin/html.php:1051
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:572
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:933
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1097
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1132
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:585
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:946
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1110
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1145
 msgid "Disabled"
 msgstr "Désactivé"
 
 # C:\wamp\www\limesurvey/admin/html.php:498
 # C:\wamp\www\limesurvey/admin/html.php:499
 # C:\wamp\www\limesurvey/admin/html.php:3524
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:585
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:586
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2650
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:598
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:599
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2681
 msgid "Change Group Order"
 msgstr "Changer l'ordre des groupes"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:597
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1836
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:610
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1856
 msgid "Export Survey Structure"
 msgstr "Exporter la structure du questionnaire"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:598
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:611
 msgid "Export Current Survey"
 msgstr "Exporter le questionnaire courant"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:610
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:611
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:623
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:624
 msgid "Set Assessment Rules"
 msgstr "Définir des règles d'évaluation"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:623
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:624
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:636
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:637
 msgid "Set Survey Quotas"
 msgstr "Définir les quotas pour ce questionnaire"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:636
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:637
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:649
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:650
 msgid "Browse Responses For This Survey"
 msgstr "Parcourir les réponses pour ce questionnaire"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:652
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:653
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:665
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:666
 msgid "Activate/Edit Tokens for this Survey"
 msgstr "Activer/Éditer les invitations pour ce questionnaire"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:660
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:673
 msgid "Close this Survey"
 msgstr "Fermer ce questionnaire"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:668
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:681
 msgid "Show Details of this Survey"
 msgstr "Afficher les détails de ce questionnaire"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:670
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:683
 msgid "Hide Details of this Survey"
 msgstr "Masquer les détails de ce questionnaire"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:682
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:695
 msgid "Add New Group to Survey"
 msgstr "Ajouter un nouveau groupe au questionnaire"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:685
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1976
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:698
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2007
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1078
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1105
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importgroup.php:641
 msgid "Groups"
 msgstr "Groupes "
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:719
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2359
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:732
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2390
 msgid "Answers to this survey are anonymized."
 msgstr "Les réponses de ce questionnaire sont anonymisées"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:720
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2358
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:733
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2389
 msgid "This survey is NOT anonymous."
 msgstr "Ce questionnaire n'est PAS anonyme."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:721
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:734
 msgid "It is presented question by question."
 msgstr "Présentation : une question par page."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:722
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:735
 msgid "It is presented group by group."
 msgstr "Présentation : un groupe de questions par page."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:723
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:736
 msgid "It is presented on one single page."
 msgstr "Présentation : une page unique."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:724
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:737
 msgid "Responses will be date stamped"
 msgstr "Les réponses seront datées"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:725
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:738
 msgid "IP Addresses will be logged"
 msgstr "Les adresses IP seront enregistrées"
 
 # E:\www\limesurvey/admin/html.php:417
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:726
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:739
 msgid "Referer-URL will be saved"
 msgstr "L'URL de provenance sera enregistrée"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:727
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:740
 msgid "It uses cookies for access control."
 msgstr "Utilisation des cookies pour le contrôle d'accès."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:728
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:741
 msgid "If tokens are used, the public may register for this survey"
 msgstr "Si les invitations sont utilisées, les participants doivent s'enregistrer pour remplir ce questionnaire"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:729
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:742
 msgid "Participants can save partially finished surveys"
 msgstr "Les participants peuvent sauvegarder un remplissage partiel du questionnaire"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:745
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:758
 msgid "Regenerate Question Codes:"
 msgstr "Régénérer les codes des questions :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:749
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:754
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:762
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:767
 msgid "Are you sure you want regenerate the question codes?"
 msgstr "Êtes-vous sûr de vouloir régénérer les codes des questions ?"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:750
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:763
 msgid "Straight"
 msgstr "Complet"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:755
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:768
 msgid "By Group"
 msgstr "Par groupe"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:760
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:773
 msgid "Survey URL"
 msgstr "URL du questionnaire"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:765
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:778
 msgid "Survey URL For Language:"
 msgstr "URL du questionnaire pour la langue :"
 
 # D:\www\limesurvey/admin/html.php:675
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:765
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:778
 msgid "Flag"
 msgstr "Drapeau"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:776
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2583
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2585
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2806
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2808
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:789
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2614
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2616
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2837
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2839
 msgid "Welcome:"
 msgstr "Message de bienvenue :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:779
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2112
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2810
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:792
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2143
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2841
 msgid "Administrator:"
 msgstr "Administrateur :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:782
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2118
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2816
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:795
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2149
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2847
 msgid "Fax To:"
 msgstr "Fax à :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:786
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2244
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2917
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:799
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2275
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2948
 msgid "Expiry Date:"
 msgstr "Date limite de réponse :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:797
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2145
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2837
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:810
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2176
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2868
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/templates.php:560
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/templates.php:571
 msgid "Template:"
 msgstr "Modèle :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:801
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2067
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2785
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:814
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2098
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2816
 msgid "Base Language:"
 msgstr "Langue de base :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:810
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2072
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:823
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2103
 msgid "Additional Languages"
 msgstr "Autres langues"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:826
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:839
 msgid "Exit Link"
 msgstr "Lien de sortie"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:831
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:844
 msgid "Number of questions/groups"
 msgstr "Nombre de question(s)/groupe(s)"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:833
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:846
 msgid "Survey currently active"
 msgstr "Questionnaire actuellement activé"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:847
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:860
 msgid "Survey table name"
 msgstr "Nom de la table du questionnaire"
 
 # D:\www\limesurvey/admin/html.php:760
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:850
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:863
 msgid "Hints"
 msgstr "Conseils"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:854
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:867
 msgid "Survey cannot be activated yet."
 msgstr "Impossible d'activer le questionnaire maintenant."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:857
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:870
 msgid "You need to add groups"
 msgstr "Vous devez ajouter des groupes"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:861
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:874
 msgid "You need to add questions"
 msgstr "Vous devez ajouter des questions"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:910
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:923
 msgid "Edit Current Group"
 msgstr "Éditer le groupe en cours"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:923
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:936
 msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
 msgstr "Supprimer ce groupe supprimera également toutes les questions et réponses qu'il contient. Êtes-vous sûr de vouloir continuer ?"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:925
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:933
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:938
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:946
 msgid "Delete Current Group"
 msgstr "Supprimer le groupe en cours"
 
 # D:\www\limesurvey/admin/html.php:889
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:931
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:944
 msgid "Impossible to delete this group because there is at least one question having a condition on its content"
 msgstr "impossible d'effacer ce groupe car il possède une question servant à définir au moins une condition."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:944
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:945
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:957
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:958
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:698
 msgid "Change Question Order"
 msgstr "Changer l'ordre des questions"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:955
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:968
 msgid "Export Current Group"
 msgstr "Exporter le groupe en cours"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:970
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:983
 msgid "Close this Group"
 msgstr "Fermer ce groupe"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:978
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:991
 msgid "Show Details of this Group"
 msgstr "Afficher les détails de ce groupe"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:981
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:994
 msgid "Hide Details of this Group"
 msgstr "Masquer les détails de ce groupe"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:993
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1006
 msgid "Add New Question to Group"
 msgstr "Ajouter une nouvelle question au groupe"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:997
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1010
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importquestion.php:490
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1079
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1106
@@ -5062,84 +5070,84 @@ msgid "Questions"
 msgstr "Questions"
 
 # D:\www\limesurvey/admin/html.php:3548
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1020
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1033
 msgid "Questions with conditions to this group"
 msgstr "Questions avec des conditions dans ce groupe."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1071
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1084
 msgid "Edit Current Question"
 msgstr "Éditer la question en cours"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1086
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1099
 msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
 msgstr "Supprimer cette question supprimera également toutes les réponses qu'elle contient. Êtes-vous sûr de vouloir continuer ?"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1088
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1097
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1101
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1110
 msgid "Delete Current Question"
 msgstr "Supprimer la question en cours"
 
 # D:\www\limesurvey/admin/html.php:1049
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1095
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1108
 msgid "Impossible to delete this question because  there is at least one question having a condition on it"
 msgstr "Impossible de supprimer cette question car des conditions reposent sur celle-ci"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1108
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1121
 msgid "Export this Question"
 msgstr "Exporter cette question"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1124
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1132
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1137
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1145
 msgid "Copy Current Question"
 msgstr "Copier la question en cours"
 
 # D:\www\limesurvey/admin/html.php:1070
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1132
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1145
 msgid "Copy question is not possible in an Active survey"
 msgstr "La copie de question est impossible dans un questionnaire activé."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1145
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1158
 msgid "Set Conditions for this Question"
 msgstr "Affecter des conditions à cette question"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1159
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1165
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1172
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1178
 msgid "Preview This Question"
 msgstr "Pré-visualiser cette question"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1196
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1252
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1209
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1265
 msgid "Edit/Add Answers for this Question"
 msgstr "Éditer/Ajouter des réponses pour cette question"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1207
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1220
 msgid "Close this Question"
 msgstr "Fermer cette question"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1210
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1223
 msgid "Show Details of this Question"
 msgstr "Afficher les détails de cette question"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1213
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1226
 msgid "Hide Details of this Question"
 msgstr "Masquer les détails de cette question"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1222
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1235
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:39
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:217
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:410
 msgid "Code:"
 msgstr "Code :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1226
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1239
 msgid "Mandatory Question"
 msgstr "Question obligatoire"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1227
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1240
 msgid "Optional Question"
 msgstr "Question optionnelle"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1231
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1244
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:43
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:45
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:224
@@ -5150,7 +5158,7 @@ msgstr "Question optionnelle"
 msgid "Question:"
 msgstr "Question :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1233
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1246
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:49
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:51
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:227
@@ -5161,119 +5169,119 @@ msgstr "Question :"
 msgid "Help:"
 msgstr "Aide :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1239
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1252
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:63
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:243
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:563
 msgid "Validation:"
 msgstr "Validation :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1244
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1257
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:55
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:236
 msgid "Type:"
 msgstr "Type :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1250
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1263
 msgid "You need to add answers to this question"
 msgstr "Vous devez ajouter des réponses à cette question"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1263
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1276
 msgid "You need to choose a label set for this question!"
 msgstr "Vous devez choisir un jeu d'étiquettes pour cette question"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1283
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1296
 msgid "Second Label Set"
 msgstr "Second jeux d'étiquettes"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1287
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1300
 msgid "You need to choose a second label set for this question!"
 msgstr "Vous devez choisir un second jeu d'étiquettes pour cette question"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1301
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1314
 msgid "Edit/Add second Label Sets"
 msgstr "Éditer/Ajouter un second jeu d'étiquettes"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1313
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1326
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:105
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:298
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:530
 msgid "Other:"
 msgstr "Autre :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1322
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1335
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:115
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:311
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/questionhandling.php:551
 msgid "Mandatory:"
 msgstr "Obligatoire :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1331
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1344
 msgid "Other questions having conditions on this question:"
 msgstr "Autres questions dépendantes de celle-ci :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1404
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1417
 msgid "Edit Answers"
 msgstr "Éditer les réponses"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1407
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1420
 msgid "Error: You are trying to use duplicate answer codes."
 msgstr "Erreur, vous avez essayé d'utiliser des codes de réponse en double"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1461
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1499
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:936
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1476
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1517
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:951
 msgid "Default"
 msgstr "Défaut"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1484
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1539
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1502
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1557
 msgid "Answer:"
 msgstr "Réponse :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1527
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1545
 msgid "New Answer"
 msgstr "Nouvelle réponse"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1542
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:755
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1560
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:769
 msgid "Add new Answer"
 msgstr "Ajouter une nouvelle réponse"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1560
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1578
 msgid "You cannot add answers or edit answer codes for this question type because the survey is active."
 msgstr "Vous ne pouvez pas ajouter ou éditer des codes de réponses pour ce type de question car le questionnaire est activé."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1597
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1653
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1720
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1785
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1946
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1995
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1615
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1671
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1738
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1803
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1977
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2026
 msgid "Set Survey Rights"
 msgstr "Définir les droits sur ce questionnaire"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1650
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1668
 msgid "User Group added."
 msgstr "Groupe d'utilisateurs ajouté."
 
 # E:\www\limesurvey/admin/usercontrol.php:153
 # E:\www\limesurvey/admin/usercontrol.php:157
 # E:\www\limesurvey/admin/usercontrol.php:171
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1662
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1680
 msgid "Failed to add User Group."
 msgstr "Échec de la création du groupe d'utilisateurs"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1722
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1740
 msgid "Edit Survey Properties"
 msgstr "Éditer les propriétés du questionnaire"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1723
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1788
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1741
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1806
 msgid "Define Questions"
 msgstr "Définir des questions"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1724
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1742
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/dataentry.php:473
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/dataentry.php:484
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/dataentry.php:1444
@@ -5290,387 +5298,391 @@ msgstr "Définir des questions"
 msgid "Browse Responses"
 msgstr "Parcourir les réponses"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1725
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1790
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1743
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1808
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:981
 msgid "Export"
 msgstr "Exporter"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1787
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1805
 msgid "Edit Survey Property"
 msgstr "Éditer les propriétés du questionnaire"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1789
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1807
 msgid "Browse Response"
 msgstr "Parcourir les réponses"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1841
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1861
 msgid "LimeSurvey Survey File (*.csv)"
 msgstr "Fichier d'enquête LimeSurvey (*.csv)"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1844
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1869
 msgid "queXML Survey XML Format (*.xml)"
 msgstr "Format de Fichier queXML (*.xml)"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1851
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1872
+msgid "(XML module only in PHP 4 available)"
+msgstr "(module XML disponible uniquement avec PHP 4)"
+
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1882
 msgid "Export To File"
 msgstr "Exporter vers le fichier"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1870
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1901
 msgid "Survey Security"
 msgstr "Sécurité du questionnaire"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1961
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1992
 msgid "User"
 msgstr "Utilisateur"
 
 # E:\www\limesurvey/admin/usercontrol.php:342
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2024
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2055
 msgid "Update survey rights successful."
 msgstr "Réussite de la mise à jour des droits sur ce questionnaire."
 
 # E:\www\limesurvey/admin/usercontrol.php:342
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2028
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2059
 msgid "Failed to update survey rights!"
 msgstr "Échec de la mise à jour des droits du questionnaire !"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2058
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2089
 msgid "Edit Survey - Step 1 of 2"
 msgstr "Édition du questionnaire - Étape 1 sur 2"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2064
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2779
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2095
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2810
 msgid "General"
 msgstr "Général"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2114
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2812
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2145
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2843
 msgid "Admin Email:"
 msgstr "Mail de l'administrateur :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2116
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2814
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2147
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2845
 msgid "Bounce Email:"
 msgstr "Mail de retour"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2127
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2827
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2158
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2858
 msgid "Presentation & Navigation"
 msgstr "Présentation et navigation"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2130
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2830
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2161
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2861
 msgid "Format:"
 msgstr "Format :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2134
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2832
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2165
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2863
 msgid "Question by Question"
 msgstr "Question par question"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2137
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2833
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2168
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2864
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/fck_LimeReplacementFields.php:439
 msgid "Group by Group"
 msgstr "Groupe par groupe"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2140
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2834
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2171
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2865
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/fck_LimeReplacementFields.php:433
 msgid "All in one"
 msgstr "Tout sur la même page"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2163
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2854
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2194
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2885
 msgid "Allow Saves?"
 msgstr "Autoriser les sauvegardes ?"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2175
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2865
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2206
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2896
 msgid "Show [<< Prev] button"
 msgstr "Montrer le bouton [Précédent]"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2187
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2873
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2218
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2904
 msgid "Participiants may print answers?"
 msgstr "Les participants peuvent imprimer leur réponses ?"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2199
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2881
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2230
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2912
 msgid "List survey publicly:"
 msgstr "Lister les questionnaires pour le public."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2213
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2891
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2244
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2922
 msgid "End URL:"
 msgstr "URL de fin :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2215
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2899
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2246
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2930
 msgid "Automatically load URL when survey complete?"
 msgstr "Charger automatiquement l'URL quand le questionnaire est terminé ?"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2232
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2911
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2263
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2942
 msgid "Publication & Access control"
 msgstr "Publication et contrôle d'accès"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2237
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2914
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2268
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2945
 msgid "Expires?"
 msgstr "Date limite de réponse ?"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2248
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2923
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2279
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2954
 msgid "Use Cookies?"
 msgstr "Utiliser des cookies ?"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2260
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2934
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2291
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2965
 msgid "Allow public registration?"
 msgstr "Permettre l'enregistrement public ?"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2271
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2941
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2302
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2972
 msgid "Use CAPTCHA for"
 msgstr "Utilisez CAPTCHA pour"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2275
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2279
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2283
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2292
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2943
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2944
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2945
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2947
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2306
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2310
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2314
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2323
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2974
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2975
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2976
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2978
 msgid "Survey Access"
 msgstr "Accès au questionnaire"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2275
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2279
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2287
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2295
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2943
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2944
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2946
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2948
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2306
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2310
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2318
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2326
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2974
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2975
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2977
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2979
 msgid "Registration"
 msgstr "Inscription"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2275
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2283
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2287
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2298
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2943
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2945
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2946
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2949
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2306
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2314
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2318
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2329
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2974
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2976
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2977
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2980
 msgid "Save & Load"
 msgstr "Sauvegarder et charger"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2306
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2954
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2337
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2985
 msgid "Token Attribute Names:"
 msgstr "Nom des champs supplémentaires pour l'enregistrement public :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2313
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2959
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2344
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2990
 msgid "Use HTML format for token emails?"
 msgstr "Utilisation du format HTML pour envoi des mails d'invitations ?"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2330
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2971
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2361
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3002
 msgid "Notification & Data Management"
 msgstr "Notification et gestion des données"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2334
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2974
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2365
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3005
 msgid "Admin Notification:"
 msgstr "Notification de l'administrateur :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2342
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2982
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2373
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3013
 msgid "Anonymous answers?"
 msgstr "Réponses anonymes ?"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2360
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2384
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2409
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2435
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2391
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2415
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2440
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2466
 msgid "Cannot be changed"
 msgstr "Ne peut pas être modifié"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2378
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3000
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2409
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3031
 msgid "Date Stamp?"
 msgstr "Réponses datées :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2382
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2413
 msgid "Responses will not be date stamped."
 msgstr "Les réponses ne seront pas datées"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2383
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2414
 msgid "Responses will be date stamped."
 msgstr "Les réponses seront datées"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2402
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3007
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2433
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3038
 msgid "Save IP Address?"
 msgstr "Sauvegarder l'adresse IP ?"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2407
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2438
 msgid "Responses will not have the IP address logged."
 msgstr "Les réponses ne contiendront pas l'adresse IP."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2408
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2439
 msgid "Responses will have the IP address logged"
 msgstr "Les réponses contiendront l'adresse IP"
 
 # E:\www\limesurvey/admin/html.php:1785
 # E:\www\limesurvey/admin/html.php:2047
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2428
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3014
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2459
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3045
 msgid "Save Referring URL?"
 msgstr "Sauvegarder l'URL référente ?"
 
 # D:\www\limesurvey/admin/html.php:1992
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2433
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2464
 msgid "Responses will not have their referring URL logged."
 msgstr "Les réponses ne contiendront pas l'URL référente"
 
 # D:\www\limesurvey/admin/html.php:1993
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2434
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2465
 msgid "Responses will have their referring URL logged."
 msgstr "Les réponses contiendront l'URL référente"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2454
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3021
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2485
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3052
 #, fuzzy
 msgid "Enable Token-based answers persistence?"
 msgstr "Activation de la persistance des réponses provenant d'invitations ?"
 
 # D:\www\limesurvey/admin/html.php:3363
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2515
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2546
 msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
 msgstr "Toutes les questions, réponses,etc...associées aux langues supprimées seront perdues. Êtes-vous sûr ?"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2515
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2546
 msgid "Save and Continue"
 msgstr "Sauvegarder et continuer"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2563
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2594
 msgid "Edit Survey - Step 2 of 2"
 msgstr "Édition du questionnaire - Étape 2 sur 2"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2587
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2895
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2618
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2926
 msgid "URL Description:"
 msgstr "Description de l'URL :"
 
 # D:\www\limesurvey/admin/html.php:3548
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2659
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2690
 msgid "Current survey has questions with conditions outside their own group"
 msgstr "Le questionnaire en cours possède des questions avec des conditions en dehors de leur propre groupe."
 
 # D:\www\limesurvey/admin/html.php:3548
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2659
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2690
 msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
 msgstr "La réorganisation des groupes est restreinte pour être sûr que les questions sur lesquelles se basent des conditions, ne sont pas réordonnées après la définition des conditions"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2659
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2690
 msgid "The following groups are concerned"
 msgstr "Les groupes suivants sont concernés"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2664
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2695
 msgid "depends on group"
 msgstr "dépend du groupe"
 
 # D:\www\limesurvey/admin/html.php:3581
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2664
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2695
 msgid "see the marked conditions on"
 msgstr "voir les conditions affectées sur"
 
 # E:\www\limesurvey/admin/html.php:1907
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2744
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2775
 msgid "The uploaded file is bigger than the upload_max_filesize directive in php.ini"
 msgstr "Le fichier envoyé est plus gros que la maximum spécifié dans la directive upload_max_filesize du fichier php.ini "
 
 # E:\www\limesurvey/admin/html.php:1911
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2748
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2779
 msgid "The file was only partially uploaded"
 msgstr "Le fichier a été partiellement envoyé"
 
 # E:\www\limesurvey/admin/html.php:1915
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2752
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2783
 msgid "No file was uploaded"
 msgstr "Aucun fichier n'a été envoyé"
 
 # E:\www\limesurvey/admin/html.php:1921
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2758
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2789
 msgid "Error on file transfer. You must select a CSV file"
 msgstr "Erreur lors de l'envoi du fichier. Vous devez choisir un fichier CSV valide."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2769
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2800
 msgid "Error: You have to enter a title for this survey."
 msgstr "Erreur : vous devez renseigner un titre pour ce questionnaire."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2773
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2804
 msgid "Create or Import Survey"
 msgstr "Créer ou importer un nouveau questionnaire"
 
 # C:\wamp\www\limesurvey/admin/html.php:3738
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2796
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2827
 msgid "This setting cannot be changed later!"
 msgstr "Ce paramètre ne peut pas être changé après !"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2801
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2832
 msgid "(This field is mandatory.)"
 msgstr "(Ce champ est obligatoire)"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2920
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:2951
 msgid "Date Format"
 msgstr "Format date"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3047
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3078
 msgid "Select CSV/SQL File:"
 msgstr "Sélectionner un fichier CSV/SQL :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3049
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3080
 msgid "Convert Resources links and INSERTANS fields ?"
 msgstr "Conversion des liens de ressources et des champs INSERTANS ?"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3204
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3235
 msgid "You need to upload the file"
 msgstr "Vous devez envoyer le fichier"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3211
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3242
 msgid "You must upload a CSV file"
 msgstr "Vous devez envoyer un fichier CSV"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3213
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3244
 msgid "Upload CSV file"
 msgstr "Envoyer le fichier CSV"
 
 # E:\www\limesurvey/admin/html.php:2210
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3225
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3256
 msgid "It is impossible to upload a file other than CSV type"
 msgstr "Il est impossible d'envoyer un fichier autre que CSV"
 
 # E:\www\limesurvey/admin/html.php:2222
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3237
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3268
 msgid "It is impossible to upload an empty file"
 msgstr "Il est impossible d'envoyer un fichier vide"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3244
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3275
 msgid "Uploading CSV file"
 msgstr "Envoi du fichier CSV"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3245
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3276
 msgid "Visualization:"
 msgstr "Visualisation :"
 
 # E:\www\limesurvey/admin/html.php:2230
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3245
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:3276
 msgid "Select the field number you would like to use for your answers:"
 msgstr "Sélectionnez le numéro du champ que vous voulez utiliser pour vos réponses :"
 
@@ -7377,7 +7389,7 @@ msgstr "Pourcentage"
 msgid "Non completed"
 msgstr "non complété"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:110
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:121
 msgid ""
 "Group could not be added.\\n"
 "\\n"
@@ -7388,143 +7400,143 @@ msgstr ""
 "Il manque le nom du groupe pour les langues suivantes"
 
 # E:\www\limesurvey/admin/database.php:116
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:145
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:158
 msgid "Error: The database reported the following error:"
 msgstr "Erreur : la base de données a retourné l'erreur suivante :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:187
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:200
 msgid "Group could not be updated"
 msgstr "Le groupe ne peut pas être mis à jour"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:208
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:233
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:221
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:246
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:259
 msgid "Group could not be deleted"
 msgstr "Le groupe ne peut pas être supprimé"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:254
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:267
 msgid "Answer could not be added. You must insert a code in the mandatory field ("
 msgstr "La réponse ne peut pas être ajoutée. Vous devez inclure un code dans le champ obligatoire ("
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:318
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:601
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:625
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:331
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:615
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:639
 msgid "Question could not be created."
 msgstr "La question ne peut pas être créée."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:426
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:438
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "La question ne peut pas être mise à jour. Il y a des conditions pour d'autres questions qui se fondent sur les réponses à cette question et changer le type poserait des problèmes. Vous devez supprimer ces conditions avant de pouvoir changer le type de cette question."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:499
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:557
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:513
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:571
 msgid "Question could not be updated"
 msgstr "La question ne peut pas être mise à jour"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:519
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:533
 msgid "Answers can't be deleted"
 msgstr "Les réponses ne peuvent pas être supprimées"
 
 # D:\www\limesurvey/admin/database.php:442
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:529
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:543
 msgid "This question relies on other question's answers and can't be moved above groupId:"
 msgstr "Cette question repose sur les réponses à d'autres questions et ne peut pas être déplacée au-dessus du groupe d'ID :"
 
 # D:\www\limesurvey/admin/database.php:443
 # D:\www\limesurvey/admin/database.php:455
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:530
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:542
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:544
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:556
 msgid "in position"
 msgstr "en position"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:531
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:543
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:545
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:557
 msgid "See conditions:"
 msgstr "Voir les conditions :"
 
 # D:\www\limesurvey/admin/database.php:454
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:541
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:555
 msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
 msgstr "Des questions reposent sur les réponses à cette question. Vous ne pouvez pas déplacer cette question en dessous du groupe d'ID :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:567
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:581
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "La question ne peut pas être ajoutée. Vous devez inclure un code dans le champ obligatoire."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:684
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:725
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:698
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:739
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "La question ne peut pas être supprimée. Il y a des conditions qui reposent sur cette question.  Vous ne pourrez pas supprimer cette question tant que ces conditions ne sont pas enlevées"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:709
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:746
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:723
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:760
 msgid "Question could not be deleted"
 msgstr "La question ne peut pas être supprimée"
 
 # D:\www\limesurvey/admin/database.php:587
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:770
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:784
 msgid "Error adding answer: You can't use the same answer code more than once."
 msgstr "Erreur d'ajout de réponse : vous ne pouvez utiliser le même code de réponse qu'une seule fois."
 
 # E:\www\limesurvey/admin/usercontrol.php:153
 # E:\www\limesurvey/admin/usercontrol.php:157
 # E:\www\limesurvey/admin/usercontrol.php:171
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:789
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:805
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:803
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:819
 msgid "Failed to insert answer"
 msgstr "Échec de la création de la réponse"
 
 # D:\www\limesurvey/admin/database.php:566
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:810
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:824
 msgid "Invalid or empty answer code supplied"
 msgstr "Mauvais ou absence de code de réponse fourni"
 
 # E:\www\limesurvey/admin/usercontrol.php:342
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:882
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:897
 msgid "Failed to update answers"
 msgstr "Échec de la mise à jour des réponses"
 
 # D:\www\limesurvey/admin/database.php:605
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:897
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:912
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "Les réponses avec 0 (zéro) comme code ou sans code ne sont pas permises et ne seront pas sauvegardées"
 
 # D:\www\limesurvey/admin/database.php:660
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:898
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:913
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "Doublons sur le codes trouvés, ces entrées ne seront pas mises à jour."
 
 # E:\www\limesurvey/admin/usercontrol.php:153
 # E:\www\limesurvey/admin/usercontrol.php:157
 # E:\www\limesurvey/admin/usercontrol.php:171
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:930
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:945
 msgid "Failed to delete answer"
 msgstr "Échec de la suppression de la réponse"
 
 # E:\www\limesurvey/admin/usercontrol.php:342
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:945
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:960
 msgid "Failed to make answer not default"
 msgstr "Impossible de NE PAS mettre cette réponse comme celle par défaut."
 
 # E:\www\limesurvey/admin/usercontrol.php:342
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:959
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:974
 msgid "Failed to make answer default"
 msgstr "Impossible de mettre cette réponse comme celle par défaut"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:1052
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:1067
 msgid "Survey could not be updated"
 msgstr "Le questionnaire ne peut pas être mis à jour"
 
 # D:\www\limesurvey/admin/database.php:868
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:1067
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:1082
 msgid "ERROR deleting Survey id"
 msgstr "ERREUR en effaçant le questionnaire d'ID"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:1120
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:1135
 msgid "Survey could not be created because it did not have a short title"
 msgstr "Le questionnaire ne peut pas être créé parce qu'il n'a pas de titre"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:1196
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/database.php:1210
 msgid "Survey could not be created"
 msgstr "Le questionnaire ne peut pas être créé"
 
