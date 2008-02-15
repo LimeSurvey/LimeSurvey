@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-02-10 16:39+0100\n"
+"PO-Revision-Date: 2008-02-16 00:02+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -982,8 +982,8 @@ msgid "This question requires a second Labelset, but none is set."
 msgstr "Diese Frage benötigt ein zweites Beschriftungs-Set, aber es wurde keines angegeben."
 
 # D:\web\xampp\htdocs\limesurvey/admin/activate.php:143
-msgid "The labelset used in this question is missing a translation."
-msgstr "Dem in dieser Frage genutzte Beschriftungsset fehlt eine Übersetzung."
+msgid "The labelset used in this question does not exists or is missing a translation."
+msgstr "Das in dieser Frage angegebene Beschriftungsset ist nicht vorhanden oder es fehlt eine Übersetzung."
 
 msgid "This question has a condition set, however the condition is based on a question that appears after it."
 msgstr "Diese Frage hat eine Bedingung. Die Bedingung basiert jedoch auf einer Frage, die im Ablauf NACH dieser Frage kommt."
@@ -2055,8 +2055,14 @@ msgstr "Schutz der Antwortdaten"
 msgid "Status"
 msgstr "Status"
 
-msgid "Responses"
-msgstr "Antworten"
+msgid "Full Responses"
+msgstr "Komplett ausgefüllt"
+
+msgid "Partial Responses"
+msgstr "Teilweise ausgefüllt"
+
+msgid "Total Responses"
+msgstr "Antworten Gesamt"
 
 msgid "Anonymous"
 msgstr "Anonym"
@@ -2555,6 +2561,10 @@ msgstr "LimeSurvey Umfrage Datei (*.csv)"
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:1759
 msgid "queXML Survey XML Format (*.xml)"
 msgstr "queXML Umfrage XML Format (*.xml)"
+
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:1872
+msgid "(XML module only in PHP 4 available)"
+msgstr "(nur möglich mit PHP4)"
 
 msgid "Export To File"
 msgstr "Als Datei exportieren"
