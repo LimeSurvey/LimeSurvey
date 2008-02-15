@@ -23,6 +23,7 @@ if (empty($homedir)) {die ("Cannot run this script directly");}
 if (!isset($_SESSION['step'])) {$_SESSION['step'] = 0;}
 if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
 if (!isset($_POST['thisstep'])) {$_POST['thisstep'] = "";}
+    else {$_POST['thisstep']=sanitize_int($_POST['thisstep']);}
 
 if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep']-1;}
 if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep']+1;}

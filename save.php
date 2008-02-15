@@ -123,6 +123,10 @@ if ($thissurvey['allowsave'] == "Y"  && isset($_POST['saveall']) && !isset($_SES
 {
 	showsaveform();
 }
+elseif ($thissurvey['allowsave'] == "Y"  && isset($_POST['saveall']) && isset($_SESSION['scid']) )   //update the saved step only
+{
+    $connect->Execute("update ".db_table_name("saved_control")." set saved_thisstep=".$_POST['thisstep']." where scid=".$_SESSION['scid']);
+}
 
 
 
@@ -158,7 +162,7 @@ function showsaveform()
 	}
 	//END
 	echo "<input type='hidden' name='sid' value='$surveyid'>\n";
-	echo "<input type='hidden' name='thisstep' value='0'>\n";
+	echo "<input type='hidden' name='thisstep' value='",$_POST['thisstep'],"'>\n";
 	echo "<input type='hidden' name='token' value='".returnglobal('token')."'>\n";
 	echo "<input type='hidden' name='saveprompt' value='Y'>\n";
 	echo "</form>";
