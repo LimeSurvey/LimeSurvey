@@ -1974,7 +1974,7 @@ function templatereplace($line)
 	// Optimized By				: swales
 
 	global $surveylist, $sitename;
-	global $thissurvey, $imagefiles;
+	global $thissurvey, $imagefiles, $defaulttemplate;
 	global $percentcomplete;
 	global $groupname, $groupdescription, $question;
 	global $questioncode, $answer, $navigator;
@@ -1988,7 +1988,7 @@ function templatereplace($line)
 	global $totalBoilerplatequestions;
     global $languagechanger;    
     global $printoutput;
-
+                     
 	if (stripos ($line,"</head>"))
 	{
 		$line=str_ireplace("</head>",
@@ -2165,9 +2165,12 @@ function templatereplace($line)
 		if ($thissurvey['templatedir']) {
 			$templateurl="$publicurl/templates/{$thissurvey['templatedir']}/";
 		}
-		else {
+		elseif ($surveyid)    {
 			$templateurl="$publicurl/templates/default/";
 		}
+        elseif (!$surveyid)    {
+            $templateurl="$publicurl/templates/{$defaulttemplate}/";
+        }
 		$line=str_replace("{TEMPLATEURL}", $templateurl, $line);
 	}
 	if (strpos($line, "{SUBMITCOMPLETE}") !== false) $line=str_replace("{SUBMITCOMPLETE}", "<strong>".$clang->gT("Thank You!")."<br /><br />".$clang->gT("You have completed answering the questions in this survey.")."</strong><br /><br />".$clang->gT("Click on 'Submit' now to complete the process and save your answers."), $line);
