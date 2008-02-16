@@ -85,7 +85,7 @@ body.default
 			<table width='100%' cellspacing='0'>
 				<tr>
 					<td align='center' bgcolor='#EEEEEE'>
-						<font size='2'><strong>{QUESTION}</strong>
+						<font size='2'>{QUESTION}
 					</font></td>
 				</tr>
 				<tr>

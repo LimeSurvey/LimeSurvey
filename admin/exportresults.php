@@ -397,7 +397,7 @@ if (isset($_POST['colselect']))
 	{
 		if ($cs != 'completed')
 		{
-			$selectfields.= "$surveytable.".db_quote_id($cs).", ";
+			$selectfields.= db_quote_id($cs).", ";
 		}
 		else
 		{
