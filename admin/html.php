@@ -238,7 +238,7 @@ if ($action == "checksettings" || $action == "changelang" || $action=="changehtm
 	if(isset($tokenlist) && is_array($tokenlist))
 	{$activetokens=count($tokenlist);} else {$activetokens=0;}
 	$cssummary = "<table><tr><td height='1'></td></tr></table>\n"
-	. "<form action='$scriptname'>"
+	. "<form action='$scriptname' method='POST'>"
 	. "<table class='table2columns'"
 	. "cellpadding='1' cellspacing='0' width='600'>\n"
 	. "\t<tr>\n"

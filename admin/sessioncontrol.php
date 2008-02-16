@@ -82,7 +82,7 @@ if(isset($_SESSION['loginID'])) {GetSessionUserRights($_SESSION['loginID']);}
 // TIBO check wrong GET request
 $dangerousActionsArray = Array
 	(
-		'changelog' => Array(),
+		'changelang' => Array(),
 		'changehtmleditormode' => Array(),
 		'deluser' => Array(),
 		'moduser' => Array(),
