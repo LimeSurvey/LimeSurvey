@@ -1944,7 +1944,7 @@ if($action == "surveysecurity")
 					if(count($group_names) > 0)
 					$group_names_query = implode(", ", $group_names);
 				}
-                  else {break;} //TODO
+//                  else {break;} //TODO Commented by lemeur
 				if(($row % 2) == 0)
 					$surveysecurity .= "\t<tr>\n";
 				else
