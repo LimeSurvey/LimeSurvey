@@ -2039,7 +2039,7 @@ function doAssessment($surveyid)
 			
 			foreach($fieldmap as $field)
 			{
-				if (($field['fieldname'] != "datestamp") and ($field['fieldname'] != "ipaddr") and ($field['fieldname'] != "token"))
+				if (($field['fieldname'] != "datestamp") and ($field['fieldname'] != "refurl") and ($field['fieldname'] != "ipaddr") and ($field['fieldname'] != "token"))
 				{
 					if (isset($_SESSION[$field['fieldname']])) 
 					{
@@ -2056,8 +2056,8 @@ function doAssessment($surveyid)
 					}
 					else {$fieldmap[$i]['answer']=0;}
 					$groups[]=$field['gid'];
-					$i++;
 				}
+                $i++;
 			}
 			$groups=array_unique($groups);
 
