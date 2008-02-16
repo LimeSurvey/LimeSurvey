@@ -290,7 +290,7 @@ if($sumrows5['edit_survey_property'])
             		<td align="center"><strong>'.$clang->gT("Answers").'</strong></td>
             		<td align="center">&nbsp;</td>
             		<td align="center">&nbsp;</td>
-            		<td style="padding: 3px;" align="center"><form action="'.$scriptname.'" method="get">
+            		<td style="padding: 3px;" align="center"><form action="'.$scriptname.'" method="post">
             				<input name="submit" type="submit" id="quota_new" value="'.$clang->gT("Add Answer").'">
             				<input type="hidden" name="sid" value="'.$surveyid.'" />
             				<input type="hidden" name="action" value="quotas" />
@@ -339,7 +339,7 @@ if($sumrows5['edit_survey_property'])
 		}
 
 		$quotasoutput .='<tr>
-            				<td align="center"><form action="'.$scriptname.'" method="get">
+            				<td align="center"><form action="'.$scriptname.'" method="post">
             				<input name="submit" type="submit" id="quota_new" value="'.$clang->gT("Add New Quota").'">
             				<input type="hidden" name="sid" value="'.$surveyid.'" />
             				<input type="hidden" name="action" value="quotas" />
@@ -360,7 +360,7 @@ if($sumrows5['edit_survey_property'])
 
 	if($subaction == "new_answer" || ($subaction == "new_answer_two" && !isset($_POST['quota_qid'])))
 	{
-		if ($subaction == "new_answer_two") $_GET['quota_id'] = $_POST['quota_id'];
+		if ($subaction == "new_answer_two") $_POST['quota_id'] = $_POST['quota_id'];
 
 		$allowed_types = "(type ='G' or type ='M' or type ='Y' or type ='A' or type ='B' or type ='I')";
 		$query = "SELECT qid, title, question FROM ".db_table_name('questions')." WHERE $allowed_types AND sid='$surveyid' AND language='{$baselang}'";
@@ -416,7 +416,7 @@ if($sumrows5['edit_survey_property'])
             									<input type="hidden" name="sid" value="'.$surveyid.'" />
             									<input type="hidden" name="action" value="quotas" />
             									<input type="hidden" name="subaction" value="new_answer_two" />
-            									<input type="hidden" name="quota_id" value="'.$_GET['quota_id'].'" />
+            									<input type="hidden" name="quota_id" value="'.$_POST['quota_id'].'" />
             								</td>
           								</tr>
         								</tbody>

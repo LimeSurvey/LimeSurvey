@@ -156,6 +156,15 @@ $dangerousActionsArray = Array
 			11 => Array('subaction' => 'cleartokens'),
 			12 => Array('subaction' => 'deleteall'),
 			13 => Array('createtable' => 'Y')
+			),
+		'quotas' => Array(
+			0 => Array('subaction' => 'new_quota'),
+			1 => Array('subaction' => 'insertquota'),
+			2 => Array('subaction' => 'quota_delquota'),
+			3 => Array('subaction' => 'new_answer_two'),
+			4 => Array('subaction' => 'new_answer'),
+			5 => Array('subaction' => 'insertquotaanswer'),
+			6 => Array('subaction' => 'quota_delans')
 			)
 	);
 
