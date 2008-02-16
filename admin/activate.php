@@ -322,7 +322,8 @@ else
 				$createsurvey .= " C(20)";
 				break;
 				case "S":  //SHORT TEXT
-				$createsurvey .= " C(255)";
+				if ($databasetype=='mysql')	{$createsurvey .= " X";}
+				   else  {$createsurvey .= " C(255)";}
 				break;
 				case "L":  //LIST (RADIO)
 				case "!":  //LIST (DROPDOWN)
