@@ -54,6 +54,11 @@ if ( $action == 'CSRFwarn')
 	include("access_denied.php");
 }
 
+if ( $action == 'FakeGET')
+{
+	include("access_denied.php");
+}
+
 if(isset($_SESSION['loginID']) && $action!='login')
 {
   //VARIOUS DATABASE OPTIONS/ACTIONS PERFORMED HERE

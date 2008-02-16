@@ -79,6 +79,124 @@ $clang = new limesurvey_lang($_SESSION['adminlang']);
 // get user rights
 if(isset($_SESSION['loginID'])) {GetSessionUserRights($_SESSION['loginID']);}
 	
+// TIBO check wrong GET request
+$dangerousActionsArray = Array
+	(
+		'changelog' => Array(),
+		'changehtmleditormode' => Array(),
+		'deluser' => Array(),
+		'moduser' => Array(),
+		'usertemplates' => Array(),
+		'adduser' => Array(),
+		'usergroupindb' => Array(),
+		'editusergroupindb' => Array(),
+		'deleteuserfromgroup' => Array(),
+		'addusertogroup' => Array(),
+		'delusergroup' => Array(),
+		'mailsendusergroup' => Array(),
+		'insertnewsurvey' => Array(),
+		'importsurvey' => Array(),
+		'updatesurvey' => Array(),
+		'importsurvresources' => Array(),
+		'updatesurvey2' => Array(),
+		'deletesurvey' => Array(),
+		'renumberquestions' => Array(),
+		'insertnewgroup' => Array(),
+		'importgroup' => Array(),
+		'updategroup' => Array(),
+		'delgroup' => Array(),
+		'insertnewquestion' => Array(),
+		'importquestion' => Array(),
+		'updatequestion' => Array(),
+		'copynewquestion' => Array(),
+		'delquestion' => Array(),
+		'addattribute' => Array(),
+		'editattribute' => Array(),
+		'delattribute' => Array(),
+		'modanswer' => Array(),
+		'resetsurveylogic' => Array(),
+		'activate' => Array(
+				0 => Array ('ok' => 'Y')
+				),
+		'deactivate' => Array(
+				0 => Array('ok' => 'Y')
+				),
+		'conditions' => Array(
+			0 => Array('subaction' => 'insertcondition'),
+			1 => Array('subaction' => 'delete'),
+			2 => Array('subaction' => 'copyconditions'),
+			),
+		'insertlabelset' => Array(),
+		'importlabels' => Array(),
+		'modlabelsetanswers' => Array(),
+		'importlabelresources' => Array(),
+		'deletelabelset' => Array(),
+		'templatecopy' => Array(),
+		'templaterename' => Array(),
+		'assessmentadd' => Array(),
+		'assessmentedit' => Array(),
+		'assessmentdelete' => Array(),
+		'dataentry' => Array(
+			0 => Array('subaction' => 'delete'),
+			1 => Array('subaction' => 'update'),
+			2 => Array('subaction' => 'insert'),
+			),
+		'tokens' => Array(
+			0 => Array('subaction' => 'updatetoken'),
+			1 => Array('subaction' => 'inserttoken'),
+			2 => Array('subaction' => 'upload'),
+			3 => Array('subaction' => 'uploadldap'),
+			4 => Array('subaction' => 'updateemailsettings'),
+			5 => Array('subaction' => 'email', 'ok' => 'absolutely'),
+			6 => Array('subaction' => 'remind', 'ok' => 'absolutely'),
+			7 => Array('subaction' => 'tokenify'),
+			8 => Array('subaction' => 'kill'),
+			9 => Array('subaction' => 'delete'),
+			10 => Array('subaction' => 'clearinvites'),
+			11 => Array('subaction' => 'cleartokens'),
+			12 => Array('subaction' => 'deleteall'),
+			13 => Array('createtable' => 'Y')
+			)
+	);
+
+if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['action']) && 
+	isset($dangerousActionsArray[$_GET['action']]))
+{
+	$getauthorized=false;
+	if (is_array($dangerousActionsArray[$_GET['action']]) &&
+		count($dangerousActionsArray[$_GET['action']]) == 0)
+	{
+		$getauthorized=false; // Authorization denied
+	}
+	else
+	{ // there are other parameters to check
+		$getauthorized=true; //Let's support it is ok
+		foreach ($dangerousActionsArray[$_GET['action']] as $arrayparams)
+		{
+			if ($getauthorized==true)
+			{
+				foreach ($arrayparams as $param => $val)
+				{
+					if (isset($_GET[$param]) &&
+						$_GET[$param] == $val)
+					{
+						$getauthorized=false;
+					}
+				}
+			}
+		}
+	}
+
+	if ($getauthorized == false)
+	{
+		$_GET['action'] = 'FakeGET';
+		$action = 'FakeGET';
+		$_REQUEST['action'] = 'FakeGET';
+		if (isset($_GET['subaction'])) {unset($_GET['subaction']);}
+		if (isset($_REQUEST['subaction'])) {unset($_REQUEST['subaction']);}
+	}
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && 
 	returnglobal('action') != 'login' &&
 	returnglobal('action') != '')
