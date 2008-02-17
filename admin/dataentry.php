@@ -1804,7 +1804,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						{
 							$dataentryoutput .= "<option value='-oth-'>".$blang->gT("Other")."</option>\n";
 						}
-						$dataentryoutput .= "\t\t\t</select>\n";
+						$dataentryoutput .= "\t\t\t</select>yyy\n";
 						if ($fother == "Y")
 						{
 							$dataentryoutput .= "\t\t\t"
@@ -1815,12 +1815,13 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					case "1": // multi scale^
 						$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY sortorder, answer";
 						$dearesult = db_execute_assoc($deaquery);
+                        $dataentryoutput .= "\t\t\t</tr>\n\t\t\t<tr>";
 						while ($dearow = $dearesult->FetchRow())
 						{
 							// first scale
 							$delquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} ORDER BY sortorder, lid, code";
 							$delresult = db_execute_assoc($delquery);
-							$dataentryoutput .= "\t\t\t<select name='$fieldname{$dearow['code']}#0'>\n";
+							$dataentryoutput .= "\t\t\t<td></td><td><b>{$dearow['answer']}</b><br>Label 1<br><select name='$fieldname{$dearow['code']}#0'>\n";
 							$dataentryoutput .= "\t\t\t\t<option selected='selected' value=''>".$clang->gT("Please choose")."..</option>\n";
 							while ($delrow = $delresult->FetchRow())
 							{
@@ -1828,15 +1829,17 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 								$dataentryoutput .= ">{$delrow['title']}</option>\n";
 							}
 							// second scale
+                            $dataentryoutput .= "\t\t\t</select></td>\n";
 							$delquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid1']} ORDER BY sortorder, lid, code";
 							$delresult = db_execute_assoc($delquery);
-							$dataentryoutput .= "\t\t\t<select name='$fieldname{$dearow['code']}#1'>\n";
+							$dataentryoutput .= "\t\t\t<td><br>Label 2<br><select name='$fieldname{$dearow['code']}#1'>\n";
 							$dataentryoutput .= "\t\t\t\t<option selected='selected' value=''>".$clang->gT("Please choose")."..</option>\n";
 							while ($delrow = $delresult->FetchRow())
 							{
 								$dataentryoutput .= "\t\t\t\t<option value='{$delrow['code']}'";
 								$dataentryoutput .= ">{$delrow['title']}</option>\n";
 							}
+                            $dataentryoutput .= "\t\t\t</select></td></tr>\n"; 
 						}
 						$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$deqrow['qid']} AND language='{$baselang}'";
 						$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -1848,13 +1851,14 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						{
 							$dataentryoutput .= "<option value='-oth-'>".$clang->gT("Other")."</option>\n";
 						}
-						$dataentryoutput .= "\t\t\t</select>\n";
+						// $dataentryoutput .= "\t\t\t</select>vvv\n";
 						if ($fother == "Y")
 						{
 							$dataentryoutput .= "\t\t\t"
 							.$clang->gT("Other").":</font>"
 							."<input type='text' name='{$fieldname}other' value='' />\n";
 						}
+                        // $dataentryoutput .= "</tr>"; 
 						break;
 					case "L": //LIST drop-down/radio-button list
 					case "!":
