@@ -1471,7 +1471,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 	{
 		$slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
-		array_unshift($slangs,$sbaselang);
+		array_unshift($slangs,$baselang);
 		
 		if(!isset($_GET['language']) || !in_array($_GET['language'],$slangs))
 		{
@@ -1482,7 +1482,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			$language = $_GET['language'];
 		}
 		
-		$langlistbox = languageDropdown($surveyid,$_GET['language']);
+		$langlistbox = languageDropdown($surveyid,$language);
 		$thissurvey=getSurveyInfo($surveyid);
 		//This is the default, presenting a blank dataentry form
 		$fieldmap=createFieldMap($surveyid);
