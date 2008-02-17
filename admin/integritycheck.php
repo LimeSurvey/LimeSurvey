@@ -247,7 +247,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             $integritycheck .= "<br />".$clang->gT("No database action required");
         } else {
             $integritycheck .= "<br />".$clang->gT("Should we proceed with the delete?")."<br />\n";
-            $integritycheck .= "<form action='{$_SERVER['PHP_SELF']}?action=checkintegrity' method='POST'>\n";
+            $integritycheck .= "<form action='{$_SERVER['PHP_SELF']}?action=checkintegrity' method='post'>\n";
             if (isset($cdelete)) {
                 foreach ($cdelete as $cd) {
                     $integritycheck .= "<input type='hidden' name='cdelete[]' value='{$cd['cid']}' />\n";

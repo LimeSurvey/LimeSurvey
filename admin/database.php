@@ -1148,7 +1148,8 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 			$isresult = db_execute_assoc($isquery);
 		}
 		while ($isresult->RecordCount()>0);
-		
+
+		if (!isset($_POST['template'])) {$_POST['template']='default';}		
 		if($_SESSION['USER_RIGHT_SUPERADMIN'] != 1 && $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] != 1 && !hasTemplateManageRights($_SESSION['loginID'], $_POST['template'])) $_POST['template'] = "default";
 
 		$_POST  = array_map('db_quote', $_POST);
