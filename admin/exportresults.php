@@ -388,6 +388,29 @@ $elang=new limesurvey_lang($explang);
 //STEP 1: First line is column headings
 
 $fieldmap=createFieldMap($surveyid);
+
+// We make the fieldmap alot more accesible by using the SGQA identifier as key 
+// so we do not need ArraySearchByKey later
+foreach ($fieldmap as $fieldentry)
+{
+    $outmap[]=$fieldentry['fieldname'];
+    $outmap[$fieldentry['fieldname']]['type']= $fieldentry['type'];
+    $outmap[$fieldentry['fieldname']]['sid']= $fieldentry['sid'];
+    $outmap[$fieldentry['fieldname']]['gid']= $fieldentry['gid'];
+    $outmap[$fieldentry['fieldname']]['qid']= $fieldentry['qid'];
+    $outmap[$fieldentry['fieldname']]['aid']= $fieldentry['aid'];
+    if ($fieldentry['qid']!='')
+    {
+        $qq = "SELECT lid, other FROM {$dbprefix}questions WHERE qid={$fieldentry['qid']} and language='$surveybaselang'";
+        $qr = db_execute_assoc($qq) or die("Error selecting type and lid from questions table.<br />".$qq."<br />".htmlspecialchars($connect->ErrorMsg()));
+        while ($qrow = $qr->FetchRow())
+        {
+            $outmap[$fieldentry['fieldname']]['lid']=$qrow['lid'];
+            $outmap[$fieldentry['fieldname']]['other']=$qrow['other'];        
+        }
+    }
+ 
+} 
 //Get the fieldnames from the survey table for column headings
 $surveytable = "{$dbprefix}survey_$surveyid";
 if (isset($_POST['colselect']))
@@ -544,7 +567,9 @@ for ($i=0; $i<$fieldcount; $i++)
 	else
 	{
 		//Data fields!
-		$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
+        //$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
+        $fielddata=$outmap[$fieldinfo];
+        
 		$fqid=$fielddata['qid'];
 		$ftype=$fielddata['type'];
 		$fsid=$fielddata['sid'];
@@ -826,32 +851,28 @@ elseif ($answers == "long")
 		{
 			$exportoutput .= "\n\n\n".$elang->gT('NEW RECORD')."\n";
 		}
-		if (!ini_get('safe_mode'))
-		{
-			set_time_limit(3); //Give each record 3 seconds
-		}
 		for ($i=0; $i<$fieldcount; $i++) //For each field, work out the QID
 		{
 			$fqid=0;            // By default fqid is set to zero 
             $field=$dresult->FetchField($i);
 			$fieldinfo=$field->name;
-            if ($fieldinfo != "startlanguge" && $fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "ipaddr"  && $fieldinfo != "refurl" && $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && $fieldinfo != "attribute_1" && $fieldinfo != "attribute_2" && $fieldinfo != "completed")
+            if ($fieldinfo != "startlanguage" && $fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "ipaddr"  && $fieldinfo != "refurl" && $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && $fieldinfo != "attribute_1" && $fieldinfo != "attribute_2" && $fieldinfo != "completed")
 			{
 				//die(print_r($fieldmap));
-				$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
+//				$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
+                $fielddata=$outmap[$fieldinfo];
 				$fqid=$fielddata['qid'];
 				$ftype=$fielddata['type'];
 				$fsid=$fielddata['sid'];
 				$fgid=$fielddata['gid'];
 				$faid=$fielddata['aid'];
+                $lid=$fielddata['lid'];
+                $fother=$fielddata['other'];
+                
 				if ($type == "doc")
 				{
                     $ftitle=$flarray[$i];
 				}
-				$qq = "SELECT lid, other FROM {$dbprefix}questions WHERE qid=$fqid and language='$surveybaselang'";
-				$qr = db_execute_assoc($qq) or die("Error selecting type and lid from questions table.<br />".$qq."<br />".htmlspecialchars($connect->ErrorMsg()));
-				while ($qrow = $qr->FetchRow())
-				{$lid=$qrow['lid']; $fother=$qrow['other'];} // dgk bug fix. $ftype should not be modified here!
 			}
 			else
 			{
@@ -900,7 +921,8 @@ elseif ($answers == "long")
 						$ftitle=$elang->gT("Language").":";
 						break;
 						default:
-						$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
+                        $fielddata=$outmap[$fieldinfo];  
+//						$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
 						if (isset($fielddata['title']) && !isset($ftitle)) {$ftitle=$fielddata['title'].":";} 
 					} // switch
 				}
