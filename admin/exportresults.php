@@ -399,6 +399,7 @@ foreach ($fieldmap as $fieldentry)
     $outmap[$fieldentry['fieldname']]['gid']= $fieldentry['gid'];
     $outmap[$fieldentry['fieldname']]['qid']= $fieldentry['qid'];
     $outmap[$fieldentry['fieldname']]['aid']= $fieldentry['aid'];
+    if (isset($fieldentry['lid1'])) {$outmap[$fieldentry['fieldname']]['lid1']= $fieldentry['lid1'];}
     if ($fieldentry['qid']!='')
     {
         $qq = "SELECT lid, other FROM {$dbprefix}questions WHERE qid={$fieldentry['qid']} and language='$surveybaselang'";
@@ -840,6 +841,7 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
 elseif ($answers == "long")
 {
 //	echo $dquery;
+    $labelscache=array();
 	$dresult = db_execute_num($dquery) or die("ERROR: $dquery -".htmlspecialchars($connect->ErrorMsg()));
 	$fieldcount = $dresult->FieldCount();
 	$rowcounter=0;
@@ -866,7 +868,8 @@ elseif ($answers == "long")
 				$fsid=$fielddata['sid'];
 				$fgid=$fielddata['gid'];
 				$faid=$fielddata['aid'];
-                $lid=$fielddata['lid'];
+                $flid=$fielddata['lid'];
+    			if (isset($fielddata['lid1'])) {$flid=$fielddata['lid'];}
                 $fother=$fielddata['other'];
                 
 				if ($type == "doc")
@@ -992,7 +995,7 @@ elseif ($answers == "long")
 					}
 					else
 					{
-						$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND language='$explang' AND code='$drow[$i]'";
+						$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$flid AND language='$explang' AND code='$drow[$i]'";
 						$fresult = db_execute_assoc($fquery) or die("ERROR:".$fquery."\n".$qq."\n".htmlspecialchars($connect->ErrorMsg()));
 						while ($frow = $fresult->FetchRow())
 						{
@@ -1077,12 +1080,21 @@ elseif ($answers == "long")
 				break;
 				case "F":
 				case "H":
-				$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND language='$explang' AND code='$drow[$i]'";
-				$fresult = db_execute_assoc($fquery) or die("ERROR:".$fquery."\n".$qq."\n".htmlspecialchars($connect->ErrorMsg()));
-				while ($frow = $fresult->FetchRow())
-				{
-					$exportoutput .= $frow['title'];
-				}
+                if (!isset($labelscache[$flid.'|'.$explang.'|'.$drow[$i]]))
+                {
+				    $fquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$flid AND language='$explang' AND code='$drow[$i]'";
+				    $fresult = db_execute_assoc($fquery) or die("ERROR:".$fquery."\n".$qq."\n".htmlspecialchars($connect->ErrorMsg()));
+				    if ($fresult) 
+				    {
+                        $frow=$fresult->FetchRow();
+					    $exportoutput .= $frow['title'];
+                        $labelscache[$flid.'|'.$explang.'|'.$drow[$i]]=$frow['title'];
+				    }
+                }
+                else 
+                    {
+                        $exportoutput .=$labelscache[$flid.'|'.$explang.'|'.$drow[$i]];
+                    }     
 				break;
                 case "1": //dual scale
                 $flid=$fielddata['lid']; 
@@ -1090,19 +1102,17 @@ elseif ($answers == "long")
                 if (substr($fielddata['fieldname'],-1) == '0')
                 {
                     $strlabel = "1";
-                    $lq = "select a.*, l.* from lime_answers as a, lime_labels as l where a.code='$faid' and qid=$fqid AND l.lid = $flid AND a.language='$surveybaselang'  group by l.lid";
+                    $lq = "select answer from lime_labels as l where l.lid = $flid AND l.language='$surveybaselang'";
                 }
                 else 
                 {
                     $strlabel = "2";
-                   $lq = "select a.*, l.* from lime_answers as a, lime_labels as l where a.code='$faid' and qid=$fqid AND l.lid = $flid1 AND a.language='$surveybaselang'  group by l.lid";
+                    $lq = "select answer from lime_labels as l where l.lid = $flid1 AND l.language='$surveybaselang'";
                 }
                 $lr = db_execute_assoc($lq);
-                $j=0;    
                 while ($lrow=$lr->FetchRow())
                 {
                     $fquest .= " [".$lrow['answer']."][".$strlabel.". label]";
-                    $j++;
                 }
             
                 break;
