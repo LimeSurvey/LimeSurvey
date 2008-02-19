@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Swedish language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-17 18:27+0100\n"
-"PO-Revision-Date: 2008-02-17 18:28+0100\n"
+"POT-Creation-Date: 2008-02-19 12:06+0100\n"
+"PO-Revision-Date: 2008-02-19 12:51+0100\n"
 "Last-Translator: bpmildh <bjorn@verklighet.nu>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -219,7 +219,7 @@ msgid "Multiple Short Text"
 msgstr "Flera korta textsvar"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/common.php:771
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:582
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:608
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/statistics.php:1134
 msgid "Ranking"
 msgstr "Rangordning"
@@ -298,13 +298,13 @@ msgstr "LimeSurvey inställningar"
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:159
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:160
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:161
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2449
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2453
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/deletesurvey.php:28
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dumpgroup.php:40
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dumplabel.php:32
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dumpquestion.php:37
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/export_structure_csv.php:44
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:452
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:476
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2775
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2779
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2783
@@ -457,9 +457,9 @@ msgstr "Förinställning"
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:519
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1513
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:319
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:506
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:507
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:888
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:530
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:531
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:912
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/spss.php:411
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:830
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:1586
@@ -477,7 +477,7 @@ msgstr "Datumstämpel"
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/browse.php:159
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/browse.php:386
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:527
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:867
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:891
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/saved.php:85
 msgid "IP Address"
 msgstr "IP-adress"
@@ -486,9 +486,9 @@ msgstr "IP-adress"
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/printanswers.php:156
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/browse.php:163
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/browse.php:390
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:541
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:542
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:873
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:565
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:566
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:897
 msgid "Referring URL"
 msgstr "Hänvisande URL"
 
@@ -508,18 +508,18 @@ msgstr "Hänvisande URL"
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:797
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1805
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1811
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1849
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1855
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1883
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1889
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2115
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2131
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2175
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:589
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:601
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:621
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:945
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:969
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1852
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1858
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1887
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1893
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2119
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2135
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2179
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:615
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:627
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:647
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:970
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:994
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/printablesurvey.php:313
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/printablesurvey.php:326
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/printablesurvey.php:365
@@ -546,11 +546,11 @@ msgstr "Annat"
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1187
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1603
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1621
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2198
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2255
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:995
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1022
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1033
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2202
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2259
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1020
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1047
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1058
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:853
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:1328
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:1337
@@ -628,12 +628,12 @@ msgstr "Ja"
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1193
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1604
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1623
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2199
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2257
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:996
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1023
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1024
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1036
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2203
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2261
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1021
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1048
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1049
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1061
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:849
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:1328
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:1337
@@ -758,7 +758,7 @@ msgstr "Inget svar"
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:724
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1610
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1766
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1003
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1028
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/printablesurvey.php:150
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/printablesurvey.php:276
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/quota.php:32
@@ -778,7 +778,7 @@ msgstr "Man"
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:721
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1611
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1765
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1004
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1029
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/printablesurvey.php:151
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/printablesurvey.php:275
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/quota.php:33
@@ -798,8 +798,8 @@ msgstr "Kvinna"
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/conditions.php:379
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1190
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1622
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2256
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1039
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2260
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1064
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/printablesurvey.php:162
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/printablesurvey.php:592
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/results.php:234
@@ -816,8 +816,8 @@ msgstr "Vet ej"
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/qanda.php:3029
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/conditions.php:383
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1642
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2275
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1046
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2279
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1071
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/printablesurvey.php:169
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/printablesurvey.php:609
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/results.php:238
@@ -834,8 +834,8 @@ msgstr "Öka"
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/qanda.php:3040
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/conditions.php:385
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1643
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2277
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1052
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2281
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1077
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/printablesurvey.php:170
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/printablesurvey.php:611
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/results.php:240
@@ -852,8 +852,8 @@ msgstr "Minska"
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/qanda.php:3034
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/conditions.php:384
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1644
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2276
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1049
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2280
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1074
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/printablesurvey.php:171
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/printablesurvey.php:610
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/results.php:239
@@ -866,7 +866,7 @@ msgid "Same"
 msgstr "Samma"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/common.php:1775
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1908
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1912
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -890,7 +890,7 @@ msgstr "Den här enkäten innehåller {NUMBEROFQUESTIONS} frågor."
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/index.php:1996
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:186
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1329
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2423
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2427
 msgid "submit"
 msgstr "skicka"
 
@@ -1060,9 +1060,9 @@ msgstr "Fyll i dina uppgifter nedan och så skickas en länk till enkäten till 
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/common.php:2285
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:313
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:496
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:497
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:876
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:520
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:521
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:900
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/spss.php:75
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:811
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:1554
@@ -1071,9 +1071,9 @@ msgstr "Förnamn"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/common.php:2292
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:315
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:491
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:492
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:879
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:515
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:516
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:903
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/spss.php:78
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:815
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:1560
@@ -1081,8 +1081,8 @@ msgid "Last Name"
 msgstr "Efternamn"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/common.php:2299
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:501
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:502
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:525
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:526
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/saved.php:87
 msgid "Email Address"
 msgstr "E-postadress"
@@ -1498,7 +1498,7 @@ msgstr "Enkätens namn (ID)"
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/browse.php:144
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/browse.php:369
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:519
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:891
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:915
 msgid "Token ID"
 msgstr "Behörighetskod ID"
 
@@ -1656,9 +1656,8 @@ msgid "Year"
 msgstr "År"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/qanda.php:692
-#, fuzzy
 msgid "Please complete all parts of the date"
-msgstr "Du måste fylla i alla delar"
+msgstr "Du måste fylla i alla delar av datumet"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/qanda.php:706
 msgid "Format: YYYY-MM-DD"
@@ -1681,17 +1680,17 @@ msgstr "(tex: 2004-12-24 för Julafton)"
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1123
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1764
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1790
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1824
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1834
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1872
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1905
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2144
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2197
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2212
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2233
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2254
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2274
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2305
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1825
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1836
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1876
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1909
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2148
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2201
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2216
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2237
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2258
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2278
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2309
 msgid "Please choose"
 msgstr "Välj"
 
@@ -1710,7 +1709,7 @@ msgstr "Skriv din kommentar här"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/qanda.php:1479
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:942
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2029
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2033
 msgid "Remove this item"
 msgstr "Ta bort detta objekt"
 
@@ -1724,14 +1723,14 @@ msgstr "högst rankade objekt, upprepa tills ditt lägst rankade objekt."
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/qanda.php:1526
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:964
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2062
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2066
 msgid "Your Choices"
 msgstr "Dina val"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/qanda.php:1535
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/qanda.php:1541
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:969
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2067
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2071
 msgid "Your Ranking"
 msgstr "Din rangordning"
 
@@ -1767,21 +1766,20 @@ msgid "Error: This question has no answers."
 msgstr "Fel: Frågan har inga svar."
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/qanda.php:2099
-#, fuzzy
 msgid "Only numbers may be entered in these fields"
-msgstr "Endast nummer kan skrivas i detta fält"
+msgstr "Endast nummer kan skrivas i dessa fält"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/qanda.php:2103
 msgid "Total of all entries must not exceed "
-msgstr ""
+msgstr "Summan av alla poster får inte överstiga"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/qanda.php:2107
 msgid "Total of all entries must equal "
-msgstr ""
+msgstr "Summan av alla poster måste vara lika med"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/qanda.php:2111
 msgid "Total of all entries must be at least "
-msgstr ""
+msgstr "Summan av alla poster måste var minst"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/qanda.php:2116
 msgid "Total: "
@@ -1796,12 +1794,12 @@ msgstr "Kvar:"
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/qanda.php:2185
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/qanda.php:2194
 msgid "Answer is invalid. The total of all entries should not add up to more than "
-msgstr ""
+msgstr "Svaret är ogiltigt. Summan av alla poster får inte bli mer än"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/qanda.php:2166
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/qanda.php:2172
 msgid "Answer is invalid. The total of all entries should add up to at least "
-msgstr ""
+msgstr "Svaret är ogiltigt. Summan av alla poster måste bli minst"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/qanda.php:2237
 msgid "Only numbers may be entered in this field"
@@ -1892,7 +1890,7 @@ msgstr "Du har inte behörighet att göra en dump av databasen!"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/access_denied.php:32
 msgid "You are not allowed export a label set!"
-msgstr "Du har inte behörighet att exportera ett etikett-set!"
+msgstr "Du har inte behörighet att exportera etikett-samling!"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/access_denied.php:37
 msgid "You are not allowed to change user data!"
@@ -1966,11 +1964,11 @@ msgstr "Säkerhetsvarning"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/access_denied.php:118
 msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
-msgstr ""
+msgstr "Någon kan ha försökt använda din LimeSurvey-session (misstänkt CSRF-attack). Om du precis klickat på en misstänkt länk, rapportera detta till systemadministratören."
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/access_denied.php:123
 msgid "Someone may be trying to use your LimeSurvey session by using dangerous GET requests (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
-msgstr ""
+msgstr "Någon kan ha försökt använda din LimeSurvey-session genom en farlig GET-fråga (misstänkt CSRF-attack). Om du precis klickat på en misstänkt länk, rapportera detta till systemadministratören."
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/access_denied.php:128
 msgid "You are not allowed to perform this operation!"
@@ -2109,7 +2107,7 @@ msgstr "Enkäten kunde inte aktiveras."
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/browse.php:112
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:48
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:63
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2451
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2455
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/deactivate.php:57
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/deactivate.php:63
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/deactivate.php:65
@@ -2366,9 +2364,9 @@ msgstr "Det finns ingen passande enkät."
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/browse.php:147
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/browse.php:372
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:531
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:532
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:870
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:555
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:556
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:894
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/quota.php:248
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/statistics.php:1779
 msgid "Completed"
@@ -2382,7 +2380,7 @@ msgstr "Datum påbörjad"
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/browse.php:154
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/browse.php:379
 msgid "Date Last Action"
-msgstr ""
+msgstr "Datum senaste åtgärd"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/browse.php:224
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/browse.php:436
@@ -2553,7 +2551,7 @@ msgstr "Mindre än"
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/conditions.php:687
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/conditions.php:907
 msgid "Less than or Equal to"
-msgstr ""
+msgstr "Mindre än eller lika med"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/conditions.php:688
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/conditions.php:908
@@ -2570,7 +2568,7 @@ msgstr "Inte lika med"
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/conditions.php:690
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/conditions.php:910
 msgid "Greater than or Equal to"
-msgstr ""
+msgstr "Större än eller lika med"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/conditions.php:691
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/conditions.php:911
@@ -2580,7 +2578,7 @@ msgstr "Större än"
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/conditions.php:692
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/conditions.php:912
 msgid "Regular Expression"
-msgstr ""
+msgstr "Reguljärt uttryck"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/conditions.php:715
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/printablesurvey.php:123
@@ -2637,7 +2635,7 @@ msgstr ""
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/conditions.php:919
 msgid "Constant Value or Regular Expression"
-msgstr ""
+msgstr "Konstant värde eller reguljärt uttryck"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/conditions.php:925
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/statistics.php:730
@@ -2954,7 +2952,7 @@ msgstr "FEL vid radering av enkät id"
 msgid "Survey could not be created because it did not have a short title"
 msgstr "Enkäten kunde inte skapas eftersom den inte har en kort titel"
 
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/database.php:1210
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/database.php:1211
 msgid "Survey could not be created"
 msgstr "Enkäten kunde inte skapas"
 
@@ -2998,27 +2996,27 @@ msgstr "Försök igen"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:169
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1311
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2395
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2399
 msgid "Identifier:"
 msgstr "Identifiering:"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:171
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2397
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2401
 msgid "Password:"
 msgstr "Lösenord:"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:173
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2399
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2403
 msgid "Confirm Password:"
 msgstr "Bekräfta lösenord:"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:175
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2401
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2405
 msgid "Email:"
 msgstr "E-post:"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:177
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2403
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2407
 msgid "Start Language:"
 msgstr "Första språk:"
 
@@ -3092,12 +3090,12 @@ msgid "Update Entry"
 msgstr "Uppdatera denna inmatning"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1305
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2385
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2389
 msgid "Finalize response submission"
 msgstr "Slutför lämnandet av svaren"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1307
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2391
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2395
 msgid "Save for further completion by survey user"
 msgstr "Spara för vidare komplettering av enkät-användare"
 
@@ -3115,8 +3113,8 @@ msgid "Datestamp"
 msgstr "Datumstämpel"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:1552
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:536
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:537
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:560
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:561
 msgid "IP-Address"
 msgstr "IP-adress"
 
@@ -3138,11 +3136,11 @@ msgstr "Svara bara på detta om följande villkor är uppfyllda:"
 msgid "Help about this question"
 msgstr "Hjälp för denna fråga"
 
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2440
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2444
 msgid "This survey is not yet active. Your response cannot be saved"
 msgstr "Denna enkät är inte aktiverad än. Dina svar kan inte sparas"
 
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2450
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/dataentry.php:2454
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:189
 msgid "The survey you selected does not exist"
 msgstr "Enkäten du valt existerar inte"
@@ -3343,7 +3341,7 @@ msgstr "Microsoft Excel (alla textkodningar)"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:201
 msgid "CSV File (All charsets)"
-msgstr ""
+msgstr "CSV-fil (alla textkodningar)"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:208
 msgid "Export Data"
@@ -3381,7 +3379,7 @@ msgid "Your survey can export associated token data with each response. Select a
 msgstr "Din enkät kan exportera tillhörande behörighetskoder med varje svar. Välj de ytterligare fält du vill exportera."
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:317
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:882
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:906
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/login_check.php:42
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/spss.php:81
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:820
@@ -3395,8 +3393,8 @@ msgid "Email"
 msgstr "E-post"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:326
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:512
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:894
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:536
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:918
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2339
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2986
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/spss.php:60
@@ -3406,8 +3404,8 @@ msgid "Attribute 1"
 msgstr "Attribut 1"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:328
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:517
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:897
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:541
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:921
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2341
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2987
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/spss.php:61
@@ -3416,41 +3414,41 @@ msgstr "Attribut 1"
 msgid "Attribute 2"
 msgstr "Attribut 2"
 
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:526
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:527
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:864
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:550
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:551
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:888
 msgid "Time Submitted"
 msgstr "Enkäten skickades"
 
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:827
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:854
 msgid "NEW RECORD"
 msgstr "NY POST"
 
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:885
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:909
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/statistics.php:135
 msgid "ID"
 msgstr "ID"
 
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:900
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:924
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:835
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:1598
 msgid "Language"
 msgstr "språk"
 
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:997
-#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1005
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1022
+#: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/exportresults.php:1030
 msgid "N/A"
 msgstr "Ej tillämpbar"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/fck_LimeReplacementFields.php:82
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/fck_LimeReplacementFields.php:96
 msgid "Firstname from token"
-msgstr ""
+msgstr "Förnamn från behörighetskod"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/fck_LimeReplacementFields.php:83
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/fck_LimeReplacementFields.php:97
 msgid "Lastname from token"
-msgstr ""
+msgstr "Efternamn från behörighetskod"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/fck_LimeReplacementFields.php:84
 msgid "Name of the survey"
@@ -3487,11 +3485,11 @@ msgstr "Enkätens URL"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/fck_LimeReplacementFields.php:98
 msgid "Email from the token"
-msgstr ""
+msgstr "Epost från behörighetskod"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/fck_LimeReplacementFields.php:385
 msgid "No replacement variable available for this field"
-msgstr ""
+msgstr "Ingen ersättningsvariabel tillgänglig för detta fält"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/fck_LimeReplacementFields.php:392
 msgid "Standard Fields"
@@ -3503,14 +3501,12 @@ msgstr ""
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/fck_LimeReplacementFields.php:432
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/fck_LimeReplacementFields.php:438
-#, fuzzy
 msgid "Some Question have been disabled"
-msgstr "Alla behörighetskoder har raderats."
+msgstr "Några frågor har stängts av"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/fck_LimeReplacementFields.php:433
-#, fuzzy
 msgid "Survey Format is "
-msgstr "Ändra enkät-inställningar"
+msgstr "Enkätens format är"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/fck_LimeReplacementFields.php:433
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2171
@@ -3521,12 +3517,11 @@ msgstr "Alla frågor samtidigt"
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/fck_LimeReplacementFields.php:433
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/fck_LimeReplacementFields.php:439
 msgid "Only Previous pages answers are available"
-msgstr ""
+msgstr "Endast föregående sidas svar ät tillgängliga"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/fck_LimeReplacementFields.php:439
-#, fuzzy
 msgid "Survey mode is set to "
-msgstr "Enkätens administratör"
+msgstr "Enkätens läge är satt till"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/fck_LimeReplacementFields.php:439
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2168
@@ -3740,23 +3735,23 @@ msgstr "Aktuellt språk"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:283
 msgid "Preferred HTML editor mode"
-msgstr ""
+msgstr "Önskat läge för HTML-redigerare"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:286
 msgid "Default HTML editor mode"
-msgstr ""
+msgstr "Förinställt läge för HTML-redigerare"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:287
 msgid "No HTML editor"
-msgstr ""
+msgstr "Ingen HTML-redigerare"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:288
 msgid "Inline HTML editor"
-msgstr ""
+msgstr "HTML-redigerare i sidan"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:289
 msgid "Popup HTML editor"
-msgstr ""
+msgstr "HTML-redigerare i nytt fönster"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:297
 msgid "Users"
@@ -3833,9 +3828,8 @@ msgid "Reset Survey Logic"
 msgstr "Återställ enkätens logik"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:583
-#, fuzzy
 msgid "This survey's questions don't use conditions"
-msgstr "Denna enkät är inte aktiv nu"
+msgstr "Denna enkäts frågor använder inte villkor"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:585
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:946
@@ -3852,9 +3846,8 @@ msgstr "Ändra gruppordning"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:610
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:1856
-#, fuzzy
 msgid "Export Survey Structure"
-msgstr "Exportera enkät"
+msgstr "Exportera enkätens struktur"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:611
 msgid "Export Current Survey"
@@ -3867,9 +3860,8 @@ msgstr "Ange regler för utvärdering"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:636
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:637
-#, fuzzy
 msgid "Set Survey Quotas"
-msgstr "Ange behörigheter för enkät"
+msgstr "Ange enkätens kvoter"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:649
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:650
@@ -3907,9 +3899,8 @@ msgstr "Grupper"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:732
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2390
-#, fuzzy
 msgid "Answers to this survey are anonymized."
-msgstr "Importen av denna enkät-fil misslyckades"
+msgstr "Svaren i enkäten är anonymiserade."
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:733
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2389
@@ -4222,24 +4213,20 @@ msgid "Label Set"
 msgstr "Etikett-samling"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:1276
-#, fuzzy
 msgid "You need to choose a label set for this question!"
-msgstr "Du måste välja en etikett-samling för denna fråga"
+msgstr "Du måste välja en etikett-samling för denna fråga!"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:1296
-#, fuzzy
 msgid "Second Label Set"
-msgstr "Ändra etikett-samling"
+msgstr "Andra etikett-samlingen"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:1300
-#, fuzzy
 msgid "You need to choose a second label set for this question!"
-msgstr "Du måste välja en etikett-samling för denna fråga"
+msgstr "Du måste välja en anddra etikett-samling för denna fråga!"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:1314
-#, fuzzy
 msgid "Edit/Add second Label Sets"
-msgstr "Ändra/lägg till etikett-samling"
+msgstr "Ändra/lägg till en andra etikett-samling"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:1326
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/questionhandling.php:105
@@ -4265,7 +4252,7 @@ msgstr "Ändra svar"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:1420
 msgid "Error: You are trying to use duplicate answer codes."
-msgstr ""
+msgstr "Fel: Du försöker använda duplicerade svarskoder."
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:1448
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/labels.php:292
@@ -4412,15 +4399,15 @@ msgstr "Bläddra bland svaren"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:1861
 msgid "LimeSurvey Survey File (*.csv)"
-msgstr ""
+msgstr "LimeSurvey enkätfil (*.csv)"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:1869
 msgid "queXML Survey XML Format (*.xml)"
-msgstr ""
+msgstr "queXML enkät XML-format (*.xml)"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:1872
 msgid "(XML module only in PHP 4 available)"
-msgstr ""
+msgstr "(XML-modulen är bara tillgänglig i PHP 4)"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:1882
 msgid "Export To File"
@@ -4501,15 +4488,13 @@ msgstr "Visa [<< tillbaka] knappen"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2218
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2904
-#, fuzzy
 msgid "Participiants may print answers?"
-msgstr "Deltagare kan spara delvis ifyllda enkäter."
+msgstr "Deltagare kan skriva ut svar?"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2230
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2912
-#, fuzzy
 msgid "List survey publicly:"
-msgstr "Lista enkäter"
+msgstr "Lista enkäter öppet:"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2244
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2922
@@ -4554,9 +4539,8 @@ msgstr "Använd CAPTCHA till"
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2975
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2976
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2978
-#, fuzzy
 msgid "Survey Access"
-msgstr "Lyckades"
+msgstr "Åtkomst till enkäten"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2306
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2310
@@ -4666,7 +4650,7 @@ msgstr ""
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2514
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/labels.php:429
 msgid "zip library not supported by PHP, Import ZIP Disabled"
-msgstr ""
+msgstr "zip-biblioteket stöds inte av PHP, import av ZIP avstängt"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2523
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/labels.php:438
@@ -4675,14 +4659,13 @@ msgstr ""
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2530
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/labels.php:445
-#, fuzzy
 msgid "Browse Uploaded Resources"
-msgstr "Bläddra bland sparade svar"
+msgstr "Visa uppladdade resurser"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2531
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/labels.php:446
 msgid "Export Resources As ZIP Archive"
-msgstr ""
+msgstr "Exportera resurser som ZIP-arkiv"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2532
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/labels.php:447
@@ -4692,7 +4675,7 @@ msgstr "Välj ZIP-fil:"
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2534
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/labels.php:449
 msgid "Import Resources ZIP Archive"
-msgstr ""
+msgstr "Importera resurser som ZIP-arkiv"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/html.php:2546
 msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
@@ -4876,9 +4859,8 @@ msgid "Reading file.."
 msgstr "Läser fil.."
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/import_resources_zip.php:43
-#, fuzzy
 msgid "Import Survey Resources"
-msgstr "Importera enkät"
+msgstr "Importera enkät-resurser"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/import_resources_zip.php:49
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/import_resources_zip.php:219
@@ -4897,9 +4879,8 @@ msgstr "Tillbaka"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/import_resources_zip.php:73
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/import_resources_zip.php:243
-#, fuzzy
 msgid "This file is not a valid ZIP file archive. Import failed."
-msgstr "Detta är inte en LimeSurvey etikettsamlings-fil. Importen misslyckades."
+msgstr "Detta är inte ett giltigt ZIP-arkiv. Importen misslyckades."
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/import_resources_zip.php:94
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/import_resources_zip.php:264
@@ -4948,15 +4929,13 @@ msgstr ""
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/import_resources_zip.php:166
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/import_resources_zip.php:336
-#, fuzzy
 msgid "Imported Resources for"
-msgstr "Importera svar"
+msgstr "Importera resurser till"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/import_resources_zip.php:168
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/import_resources_zip.php:338
-#, fuzzy
 msgid "Resources Import Summary"
-msgstr "Sammanfattning av enkätimport"
+msgstr "Sammanfattning av resursimport"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/import_resources_zip.php:169
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/import_resources_zip.php:339
@@ -4983,9 +4962,8 @@ msgid "Import Label Set"
 msgstr "Importera etikett-samling"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/importgroup.php:39
-#, fuzzy
 msgid "No SID (Survey) has been provided. Cannot import group."
-msgstr "Inget SID (enkät) finns. Kan inte importera frågan."
+msgstr "Inget SID (enkät) finns. Kan inte importera gruppen."
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/importgroup.php:56
 msgid "Reading file..."
@@ -5033,9 +5011,8 @@ msgid "Labels"
 msgstr "Etiketter"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/importgroup.php:658
-#, fuzzy
 msgid "Question Attributes: "
-msgstr "Fråge attribut:"
+msgstr "Frågeattribut:"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/importgroup.php:661
 msgid "Import of group is completed."
@@ -5043,7 +5020,7 @@ msgstr "Import av grupp är klar."
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/importlabel.php:55
 msgid "This file is not a LimeSurvey label set file. Import failed."
-msgstr "Detta är inte en LimeSurvey etikettsamlings-fil. Importen misslyckades."
+msgstr "Filen är inte en LimeSurvey etikettsamling. Importen misslyckades."
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/importlabel.php:56
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/importlabel.php:207
@@ -5123,7 +5100,7 @@ msgstr "Denna fil är inte en LimeSurvey frågefil. Importen misslyckades."
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/importquestion.php:107
 msgid "Sorry, importing questions is limited to the same version. Import failed."
-msgstr ""
+msgstr "Tyvärr, frågor kan bara importeras till samma version. Importen misslyckades."
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/importquestion.php:240
 msgid "You can't import a question which doesn't support the current survey's base language"
@@ -5140,9 +5117,8 @@ msgid "Question Attributes:"
 msgstr "Fråge attribut:"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/importquestion.php:505
-#, fuzzy
 msgid "Question import is complete."
-msgstr "Import av grupp är klar."
+msgstr "Import av frågor är klar."
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/importsurvey.php:51
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/importsurvey.php:59
@@ -5177,14 +5153,13 @@ msgstr "Sammanfattning av enkätimport"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/importsurvey.php:1085
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/importsurvey.php:1110
-#, fuzzy
 msgid "Not imported Label Sets"
-msgstr "Importera etikett-samling"
+msgstr "Inte importera etikett-samling"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/importsurvey.php:1085
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/importsurvey.php:1110
 msgid "(Label Sets were not imported since you do not have the permission to create new label sets.)"
-msgstr ""
+msgstr "(Etikett-samlingarna importerades inte eftersom du inte har rättigheter att ska nya etikett-samlingar.)"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/importsurvey.php:1087
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/importsurvey.php:1111
@@ -5301,14 +5276,12 @@ msgid "All survey settings meet consistency standards"
 msgstr "Alla frågor är följdriktiga"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/integritycheck.php:205
-#, fuzzy
 msgid "No matching Group"
 msgstr "Ingen passande grupp"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/integritycheck.php:211
-#, fuzzy
 msgid "No matching Survey!"
-msgstr "Ingen passande enkät."
+msgstr "Ingen passande enkät!"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/integritycheck.php:216
 msgid "The following questions should be deleted"
@@ -5418,7 +5391,7 @@ msgstr "Etikett-samlingar"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/labels.php:120
 msgid "Error: You have to enter a name for this label set."
-msgstr "Fel: Du måste ange ett namn för denna grupp etiketter."
+msgstr "Fel: Du måste ange ett namn för denna etikettsamling."
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/labels.php:126
 msgid "Create New Label Set"
@@ -5464,9 +5437,8 @@ msgid "Add new label"
 msgstr "Lägg till ny etikett"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/labels.php:371
-#, fuzzy
 msgid "Fix Order"
-msgstr "Ordning"
+msgstr "Åtgärda ordning"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/labels.php:397
 msgid "Inserting New labels must be done on the first language folder."
@@ -5511,7 +5483,7 @@ msgstr "Misslyckades att lägga till etikett"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/labels.php:686
 msgid "This label code is already used in this labelset. Please choose another code or rename the existing one."
-msgstr "Den etikett-koden används redan i denna etikettgrupp. Välj en annan kod eller döp om den befintliga."
+msgstr "Den etikett-koden används redan i denna etikettsamling. Välj en annan kod eller döp om den befintliga."
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/labels.php:737
 msgid "Failed to update label"
@@ -5596,9 +5568,8 @@ msgid "Please choose all that apply and provide a comment:"
 msgstr "Välj alla som stämmer och skriv en kommentar:"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/printablesurvey.php:481
-#, fuzzy
 msgid "answers and provide a comment:"
-msgstr "Välj alla som stämmer och skriv en kommentar:"
+msgstr "svar och skriv en kommentar:"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/printablesurvey.php:500
 msgid "Please write your answer(s) here:"
@@ -5638,9 +5609,8 @@ msgid "Please submit by"
 msgstr "Skicka genom"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/questionhandling.php:24
-#, fuzzy
 msgid "Error: You have to enter a code for this question."
-msgstr "Fel: Du måste ange ett namn för denna grupp etiketter."
+msgstr "Fel: Du måste ange en kod för denna fråga."
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/questionhandling.php:28
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/questionhandling.php:34
@@ -5657,9 +5627,8 @@ msgstr "Etikett-samling:"
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/questionhandling.php:85
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/questionhandling.php:269
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/questionhandling.php:492
-#, fuzzy
 msgid "Second Label Set:"
-msgstr "Etikett-samling:"
+msgstr "Andra etikett-samlingen:"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/questionhandling.php:131
 msgid "Position:"
@@ -5803,15 +5772,13 @@ msgid "Question Selection"
 msgstr "Fråga för fråga"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/quota.php:376
-#, fuzzy
 msgid "Sorry there are no supported question types in this survey."
-msgstr "Det finns inga frågor i enkäten"
+msgstr "Tyvärr finns inga giltiga frågetyper i denna enkät"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/quota.php:389
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/quota.php:465
-#, fuzzy
 msgid "Survey Quota"
-msgstr "Enkät"
+msgstr "Enkätens kvoter"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/quota.php:396
 msgid "Select Question"
@@ -5824,7 +5791,7 @@ msgstr "Nästa"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/quota.php:452
 msgid "All answers are already selected in this quota."
-msgstr ""
+msgstr "Alla svar har redan valts i denna kvot"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/quota.php:472
 msgid "Select Answer"
@@ -5849,9 +5816,8 @@ msgid "We recommend that before you proceed, you export the entire survey from t
 msgstr "Vi föreslår att du innan du raderar enkäten exporterar hela enkäten från administrationens huvudsida."
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/resetsurveylogic.php:68
-#, fuzzy
 msgid "All conditions in this survey have been deleted."
-msgstr "Alla behörighetskoder har raderats."
+msgstr "Alla villkor i enkäten har raderats."
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/results.php:189
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/results.php:190
@@ -6450,7 +6416,7 @@ msgstr "Återställ"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:395
 msgid "Show Token Summary"
-msgstr ""
+msgstr "Visa sammanfattning för behörighetskoder"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:400
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:1701
@@ -6515,9 +6481,8 @@ msgid "Total Surveys Completed"
 msgstr "Antal genomförda enkäter"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:517
-#, fuzzy
 msgid "Edit Email Settings"
-msgstr "Ändra etikett-samling"
+msgstr "Ändra epost-inställningar"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:530
 msgid "Invitation Email Subject:"
@@ -6636,9 +6601,8 @@ msgstr "Sortera efter"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:825
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:1573
-#, fuzzy
 msgid "Email Status"
-msgstr "Status"
+msgstr "Epoststatus"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:840
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:1609
@@ -6722,9 +6686,8 @@ msgstr "Skickar till TID nr:"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:1076
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:1307
-#, fuzzy
 msgid "Bypass token with failing email addresses"
-msgstr "Poster med ogiltig e-postadress raderade"
+msgstr "Ignorera behörighetskoder med ogiltig epost"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:1082
 msgid "Send Invitations"
@@ -6777,9 +6740,8 @@ msgid "Sending Reminders"
 msgstr "Skickar påminnelser"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:1336
-#, fuzzy
 msgid "From Token ID"
-msgstr "Behörighetskod ID"
+msgstr "Från behörighetskodens ID"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:1409
 msgid "Reminder sent to:"
@@ -6814,7 +6776,6 @@ msgstr "Laddar om sidan. Var vänlig vänta."
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:1546
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:1671
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:1723
-#, fuzzy
 msgid "Add or Edit Token Entry"
 msgstr "Lägg till eller ändra behörighetskod"
 
@@ -6850,9 +6811,8 @@ msgid "There is already an entry with that exact token in the table. The same to
 msgstr ""
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:1708
-#, fuzzy
 msgid "Show this token entry"
-msgstr "Lägg till ny behörighetskod"
+msgstr "Visa denna behörighetskod"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/tokens.php:1747
 msgid "Added New Token"
@@ -7089,9 +7049,8 @@ msgid "Set Template Rights"
 msgstr "Ange mall-rättigheter"
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/usercontrol.php:599
-#, fuzzy
 msgid "Update usertemplates successful."
-msgstr "Ändringen av användares behörigheter lyckades."
+msgstr "Ändringen av användarmallar lyckades."
 
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/userrighthandling.php:56
 #: /Volumes/hdny/Arbeten/limesurvey/limesurvey/admin/userrighthandling.php:688
