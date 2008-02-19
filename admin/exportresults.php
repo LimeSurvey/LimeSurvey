@@ -1102,17 +1102,17 @@ elseif ($answers == "long")
                 if (substr($fielddata['fieldname'],-1) == '0')
                 {
                     $strlabel = "1";
-                    $lq = "select answer from lime_labels as l where l.lid = $flid AND l.language='$surveybaselang'";
+                    $lq = "select title from lime_labels as l where l.lid = $flid AND l.language='$surveybaselang'";
                 }
                 else 
                 {
                     $strlabel = "2";
-                    $lq = "select answer from lime_labels as l where l.lid = $flid1 AND l.language='$surveybaselang'";
+                    $lq = "select title from lime_labels as l where l.lid = $flid1 AND l.language='$surveybaselang'";
                 }
                 $lr = db_execute_assoc($lq);
                 while ($lrow=$lr->FetchRow())
                 {
-                    $fquest .= " [".$lrow['answer']."][".$strlabel.". label]";
+                    $fquest .= " [".$lrow['title']."][".$strlabel.". label]";
                 }
             
                 break;
