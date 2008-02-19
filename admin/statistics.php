@@ -1336,7 +1336,7 @@ if (isset($summary) && $summary)
 				else
 				{
 					$statisticsoutput .= "\t<tr>\n"
-					."\t\t<td align='center'  colspan='3'>Not enough values for calculation</td>\n"
+					."\t\t<td align='center'  colspan='3'>".$clang->gT("Not enough values for calculation")."</td>\n"
 					."\t</tr>\n</table>\n";
 					unset($showem);
 				}
