@@ -120,14 +120,21 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 		$labelsoutput.= "<form style='margin-bottom:0;' method='post' action='admin.php' onsubmit=\"return isEmpty(document.getElementById('label_name'), '".$clang->gT("Error: You have to enter a name for this label set.","js")."')\">\n"
 		."<table width='100%' class='form2columns'>\n"
 		."\t<tr>\n"
-		."<th colspan='4'><strong>\n"
+		."<th>\n"
 		."<input type='image' src='$imagefiles/close.gif' align='right' "
 		."onclick=\"window.open('admin.php?action=labels&amp;lid=$lid', '_top')\" />\n";
-		if ($action == "newlabelset") {$labelsoutput.= $clang->gT("Create New Label Set"); $langids="en";}
-		else {$labelsoutput.= $clang->gT("Edit Label Set");}
+		if ($action == "newlabelset") {$labelsoutput.= $clang->gT("Create or Import New Label Set"); $langids="en"; $tabitem=$clang->gT("Create New Label Set");}
+		else {$labelsoutput.= $clang->gT("Edit Label Set"); $tabitem=$clang->gT("Edit Label Set");}
 		$langidsarray=explode(" ",trim($langids)); //Make an array of it
-		$labelsoutput.= "</strong></td>\n"
-		."\t</tr>\n"
+		$labelsoutput.= "</td>\n"
+		."\t</th></table>\n";
+
+
+		$labelsoutput.= "<div class='tab-pane' id='tab-pane-1'>\n";
+
+		$labelsoutput.= "<div class='tab-page'> <h2 class='tab'>".$tabitem."</h2>\n";
+
+		$labelsoutput.= "<table width='100%' class='form2columns'>\n"
 		."\t<tr>\n"
 		."<td><strong>".$clang->gT("Set Name").":</strong></td>\n"
 		."<td>\n"
@@ -180,10 +187,13 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 		
         $labelsoutput.= "</td>\n"
 		."\t</tr>\n";
-		$labelsoutput.= "</table></form>\n";
+		$labelsoutput.= "</table></form></div>\n";
+
 		if ($action == "newlabelset")
 		{
-            $labelsoutput.= "<center><strong>".$clang->gT("OR")."</strong></center>\n"
+		$labelsoutput.= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Import Label Set")."</h2>\n";
+			
+            $labelsoutput.= ""
 			."<form enctype='multipart/form-data' name='importlabels' action='admin.php' method='post'>\n"
 			."<table width='100%' class='form2columns'>\n"
 			."\t<tr>\n"
@@ -202,8 +212,9 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 			."</td></tr>\n"
 			."\t<tr><td></td><td><input type='submit' value='".$clang->gT("Import Label Set")."' />\n"
 			."\t<input type='hidden' name='action' value='importlabels' /></td>\n"
-			."\t</tr></table></form>\n";
+			."\t</tr></table></form></div>\n";
 		}
+            $labelsoutput.= "</div>\n";
 	}
 	//SET SELECTED
 	if (isset($lid) && ($action != "editlabelset") && $lid)
