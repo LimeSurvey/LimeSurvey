@@ -51,14 +51,15 @@ dark:	rgb(0,66,174);
 .dynamic-tab-pane-control .tab-row .tab a {
 	font-family:		Verdana, Helvetica, Arial;
 	font-size:			13px;
-	color:				#AAAAAA;
+	color:				#5670A1;
 	text-decoration:	none;
 	cursor:			hand;
 	cursor:			pointer;	
 }
 
 .dynamic-tab-pane-control .tab-row .hover a {
-	color:	#333333;
+	color:	#328639;
+	text-decoration:	underline;
 }
 
 .dynamic-tab-pane-control .tab-row .tab.selected a {
