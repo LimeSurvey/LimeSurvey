@@ -200,7 +200,8 @@ if ($action == "copyquestion")
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
 	array_unshift($questlangs,$baselang);
 	$qattributes=questionAttributes();
-	$editquestion ="<table width='100%' border='0' class='form2columns'>\n\t<tr><th>"
+	$editquestion = PrepareEditorScript();
+	$editquestion .= "<table width='100%' border='0' class='form2columns'>\n\t<tr><th>"
 	. "\t\t".$clang->gT("Copy Question")."</th></tr></table>\n"
 	. "<form name='frmeditquestion' action='$scriptname' method='post'>\n"
 	. '<div class="tab-pane" id="tab-pane-1">';
@@ -223,9 +224,11 @@ if ($action == "copyquestion")
              }    
 		$editquestion .=  "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Question:")."</span>\n"
 		. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='question_{$eqrow['language']}'>{$eqrow['question']}</textarea>\n"
+		. getEditor("question-text","question_".$eqrow['language'], "[".$clang->gT("Question:", "js")."](".$eqrow['language'].")",$surveyid,$gid,$qid,$action)
 		. "\t</span></div>\n"
 		. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Help:")."</span>\n"
 		. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='help_{$eqrow['language']}'>{$eqrow['help']}</textarea>\n"
+		.  getEditor("question-help","help_".$eqrow['language'], "[".$clang->gT("Help:", "js")."](".$eqrow['language'].")",$surveyid,$gid,$qid,$action)
 		. "\t</span></div>\n"
         . "\t<div class='settingrow'><span class='settingcaption'></span>\n"
         . "\t\t<span class='settingentry'>\n"

@@ -161,6 +161,7 @@ if ($isInstertansEnabled===true)
 				}
 			break;
 
+			case 'copyquestion':
 			case 'editquestion':
 				if (empty($gid)) {die("No GID provided.");}
 				if (empty($qid)) {die("No QID provided.");}

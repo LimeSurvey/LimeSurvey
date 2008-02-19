@@ -328,6 +328,7 @@ elseif ($action == "replacementfields")
 				include("access_denied.php");
 			}
 		case 'editquestion':
+		case 'copyquestion':
 		case 'editgroup':
 		case 'addquestion':
 		case 'addgroup':
