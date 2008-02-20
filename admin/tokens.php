@@ -78,9 +78,14 @@ $encodingsarray = array("armscii8"=>$clang->gT("ARMSCII-8 Armenian")
    $uploadcharset=$_POST['csvcharset'];
    if (!array_key_exists($uploadcharset,$encodingsarray)) {$uploadcharset='auto';}
    $filterduplicatetoken=(isset($_POST['filterduplicatetoken']) && $_POST['filterduplicatetoken']=='on'); 
-   $filterblankemail=(isset($_POST['filterduplicateemail']) && $_POST['filterduplicateemail']=='on'); 
+   $filterblankemail=(isset($_POST['filterblankemail']) && $_POST['filterblankemail']=='on'); 
    }
    					   
+}
+if ($subaction == "importldap" || $subaction == "uploadldap" )
+{
+   $filterduplicatetoken=(isset($_POST['filterduplicatetoken']) && $_POST['filterduplicatetoken']=='on'); 
+   $filterblankemail=(isset($_POST['filterblankemail']) && $_POST['filterblankemail']=='on'); 
 }
 
 
@@ -1885,7 +1890,7 @@ if ($subaction == "upload" &&
 					$line[2] = trim($line[2]);
 				
 					//treat blank emails
-					if ($filterblankemail && $line[2]='')
+					if ($filterblankemail && $line[2]=='')
 					{
 						$invalidemail=true;
 					} 
@@ -1977,6 +1982,10 @@ if ($subaction == "uploadldap" &&
 		if ($resbind) {
 			$ResArray=array();
 			$resultnum=ldap_doTokenSearch($ds, $ldapq, $ResArray);
+			$xz = 0; // imported token count
+			$xv = 0; // meet minim requirement count
+			$xy = 0; // duplicate tokens skipped count
+			$invalidemailcount = 0;
 
 			if ($resultnum >= 1) {
 				foreach ($ResArray as $responseGroupId => $responseGroup) {
@@ -1992,10 +2001,37 @@ if ($subaction == "uploadldap" &&
 
 						// The first 3 attrs MUST exist in the ldap answer
 						// ==> send PHP notice msg to apache logs otherwise
-						$myfirstname = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['firstname_attr']]);
-						$mylastame = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['lastname_attr']]);
-						$myemail = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['email_attr']]);
-						$myemail= sanitize_email($myemail);
+						$meetminirequirements=true;
+						if (isset($responseGroup[$j][$ldap_queries[$ldapq]['firstname_attr']]) &&
+							isset($responseGroup[$j][$ldap_queries[$ldapq]['lastname_attr']])
+						)
+						{
+							// minimum requirement for ldap
+							// * at least a firstanme
+							// * at least a lastname
+							// * if filterblankemail is set (default): at least an email address
+							$myfirstname = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['firstname_attr']]);
+							$mylastname = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['lastname_attr']]);
+							if (isset($responseGroup[$j][$ldap_queries[$ldapq]['email_attr']]))
+							{
+								$myemail = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['email_attr']]);
+								$myemail= sanitize_email($myemail);
+								++$xv;
+							}
+							elseif ($filterblankemail !==true)
+							{
+								$myemail = '';
+								++$xv;
+							}
+							else
+							{
+								$meetminirequirements=false;
+							}
+						}
+						else
+						{
+							$meetminirequirements=false;
+						}
 
 						// The following attrs are optionnal
 						if ( isset($responseGroup[$j][$ldap_queries[$ldapq]['token_attr']]) ) $mytoken = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['token_attr']]);
@@ -2003,22 +2039,69 @@ if ($subaction == "uploadldap" &&
 						if ( isset($responseGroup[$j][$ldap_queries[$ldapq]['attr2']]) ) $myattr2 = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['attr2']]);
 						if ( isset($responseGroup[$j][$ldap_queries[$ldapq]['language']]) ) $mylanguage = ldap_readattr($response[$ldap_queries[$ldapq]['language']]);
 
-						$iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
-						. "(firstname, lastname, email, emailstatus, token, language";
-						if (!empty($myattr1)) {$iq .= ", attribute_1";}
-						if (!empty($myattr2)) {$iq .= ", attribute_2";}
-						$iq .=") \n"
-						. "VALUES ('$myfirstname', '$mylastame', '$myemail', 'OK', '$mytoken', '$mylanguage'";
-						if (!empty($myattr1)) {$iq .= ", '$myattr1'";}
-						if (!empty($myattr2)) {$iq .= ", '$myattr2'";}
-						$iq .= ")";
-						$ir = $connect->Execute($iq) or die ("Couldn't insert line<br />\n$buffer<br />\n".htmlspecialchars($connect->ErrorMsg())."<pre style='text-align: left'>$iq</pre>\n");
+						// Now check for duplicates or bad formatted email addresses
+						$dupfound=false;
+						$invalidemail=false;
+						if ($filterduplicatetoken)
+						{
+							$dupquery = "SELECT firstname, lastname from ".db_table_name("tokens_$surveyid")." where email='$myemail' and firstname='$myfirstname' and lastname='$mylastname'";
+							$dupresult = $connect->Execute($dupquery);
+							if ( $dupresult->RecordCount() > 0)
+							{
+								$dupfound = true;
+							}
+						}	
+						if ($filterblankemail && $myemail=='')
+						{
+							$invalidemail=true;
+						} 
+						if  ($myemail!='' && !validate_email($myemail)) 
+						{
+							$invalidemail=true;;
+						} 
+						
+						if ($invalidemail)
+						{
+						  ++$invalidemailcount; 
+						}
+						elseif ($dupfound)
+						{
+							++$xy;
+						}
+						elseif ($meetminirequirements===true)
+						{
+							// No issue, let's import
+							$iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
+							. "(firstname, lastname, email, emailstatus, token, language";
+							if (!empty($myattr1)) {$iq .= ", attribute_1";}
+							if (!empty($myattr2)) {$iq .= ", attribute_2";}
+							$iq .=") \n"
+							. "VALUES ('$myfirstname', '$mylastname', '$myemail', 'OK', '$mytoken', '$mylanguage'";
+							if (!empty($myattr1)) {$iq .= ", '$myattr1'";}
+							if (!empty($myattr2)) {$iq .= ", '$myattr2'";}
+							$iq .= ")";
+							$ir = $connect->Execute($iq);
+							if (!$ir) $xy++;
+							$xz++;
+							// or die ("Couldn't insert line<br />\n$buffer<br />\n".htmlspecialchars($connect->ErrorMsg())."<pre style='text-align: left'>$iq</pre>\n");
+						} 
 					} // End for each entry
 				} // End foreach responseGroup
 			} // End of if resnum >= 1
 
-			$tokenoutput .= "<font class='successtitle'>".$clang->gT("Success")."</font><br /><br>\n";
-			$message=str_replace("{TOKENCOUNT}", $resultnum, $clang->gT("{TOKENCOUNT} Records Created"));
+			if ($xz != 0)
+			{
+				$tokenoutput .= "<font class='successtitle'>".$clang->gT("Success")."</font><br /><br>\n";
+			}
+			else
+			{
+				$tokenoutput .= "<font color='red'>".$clang->gT("Failed")."</font><br /><br />\n";
+			}
+			$message = "$resultnum ".$clang->gT("Results from LDAP Query").".<br />\n";
+			$message .= "$xv ".$clang->gT("Records met minumum requirements").".<br />\n";
+			$message .= "$xz ".$clang->gT("Records imported").".<br />\n";
+			$message .= "$xy ".$clang->gT("Duplicate records removed").".<br />\n";
+			$message .= "$invalidemailcount ".$clang->gT("Records with invalid email address removed").".<br />\n";
 			$tokenoutput .= "<i>$message</i><br />\n";
 		}
 		else {
@@ -2091,6 +2174,8 @@ function formldap($error=false)
 			$tokenoutput .= " <option value=".$q_number.">".$q['name']."</option>";
 		}
 		$tokenoutput .= "</select><br />";
+		$tokenoutput .= "<p><label for='filterblankemail'>".$clang->gT("Filter blank email addresses:")."</label><input type='checkbox' name='filterblankemail' checked='checked'/></p>\n"
+		. "<p><label for='filterduplicatetoken'>".$clang->gT("Filter duplicate records:")."</label><input type='checkbox' name='filterduplicatetoken' checked='checked'/></p>\n";
 		$tokenoutput .= "<input type='hidden' name='sid' value='$surveyid' />";
 		$tokenoutput .= "<input type='hidden' name='subaction' value='uploadldap' />";
 		$tokenoutput .= "<input type='submit' name='submit'>";
