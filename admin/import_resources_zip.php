@@ -163,7 +163,7 @@ if ($action == "importsurvresources" && $surveyid) {
 		        $ErrorListHeader .= "<br /><strong><u>".$clang->gT("Error Files List").":</u></strong><br />\n";
 		}
 
-        		$importsurvresourcesoutput .= "<strong>".$clang->gT("Imported Resources for")." LID:</strong> $lid<br />\n";
+        		$importsurvresourcesoutput .= "<strong>".$clang->gT("Imported Resources for")." SID:</strong> $surveyid<br />\n";
 		        $importsurvresourcesoutput .= "<br />\n<strong><font color='$color'>".$status."</font></strong><br />\n";
 		        $importsurvresourcesoutput .= "<strong><u>".$clang->gT("Resources Import Summary")."</u></strong><br />\n";
 		        $importsurvresourcesoutput .= "".$clang->gT("Total Imported files").": $okfiles<br />\n";
