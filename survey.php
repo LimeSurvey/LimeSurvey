@@ -278,7 +278,7 @@ echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name
 echo "\n\n<!-- INPUT NAMES -->\n"
 ."\t<input type='hidden' name='fieldnames' id='fieldnames' value='"
 .implode("|", $inputnames)
-."'>\n";
+."' />\n";
 
 // --> START NEW FEATURE - SAVE
 // Used to keep track of the fields modified, so only those are updated during save
@@ -292,7 +292,7 @@ echo "\t<input type='hidden' name='modfields' value='";
 //	echo implode("|", $inputmodfields);
 //}
 
-echo "' id='modfields'>\n";
+echo "' id='modfields' />\n";
 echo "\n";
 echo "\n\n<!-- JAVASCRIPT FOR MODIFIED QUESTIONS -->\n";
 echo "\t<script type='text/javascript'>\n";
@@ -619,27 +619,27 @@ if (is_array($conditions) && count($conditions) != 0 )
 if (remove_nulls_from_array($mandatorys))
 {
 	$mandatory=implode("|", remove_nulls_from_array($mandatorys));
-	echo "<input type='hidden' name='mandatory' value='$mandatory' id='mandatory'>\n";
+	echo "<input type='hidden' name='mandatory' value='$mandatory' id='mandatory' />\n";
 }
 if (remove_nulls_from_array($conmandatorys))
 {
 	$conmandatory=implode("|", remove_nulls_from_array($conmandatorys));
-	echo "<input type='hidden' name='conmandatory' value='$conmandatory' id='conmandatory'>\n";
+	echo "<input type='hidden' name='conmandatory' value='$conmandatory' id='conmandatory' />\n";
 }
 if (remove_nulls_from_array($mandatoryfns))
 {
 	$mandatoryfn=implode("|", remove_nulls_from_array($mandatoryfns));
-	echo "<input type='hidden' name='mandatoryfn' value='$mandatoryfn' id='mandatoryfn'>\n";
+	echo "<input type='hidden' name='mandatoryfn' value='$mandatoryfn' id='mandatoryfn' />\n";
 }
 if (remove_nulls_from_array($conmandatoryfns))
 {
 	$conmandatoryfn=implode("|", remove_nulls_from_array($conmandatoryfns));
-	echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn' id='conmandatoryfn'>\n";
+	echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn' id='conmandatoryfn' />\n";
 }
 
-echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep'>\n"
-."<input type='hidden' name='sid' value='$surveyid' id='sid'>\n"
-."<input type='hidden' name='token' value='$token' id='token'>\n"
+echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep' />\n"
+."<input type='hidden' name='sid' value='$surveyid' id='sid' />\n"
+."<input type='hidden' name='token' value='$token' id='token' />\n"
 ."</form>\n";
 echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 echo "\n";
