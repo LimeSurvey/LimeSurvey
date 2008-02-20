@@ -655,8 +655,7 @@ if(isset($surveyid))
 					}			
                     // Fix bug with FCKEditor saving strange BR types
                     $qr1['answer']=str_replace('<br type="_moz" />','',$qr1['answer']);
-                    $_POST['help_'.$qlanguage]=str_replace('<br type="_moz" />','',$_POST['help_'.$qlanguage]);
-                    	    
+             	    
 					$qr1 = array_map('db_quote', $qr1);
 					$i1 = "INSERT INTO {$dbprefix}answers (qid, code, answer, default_value, sortorder, language) "
 					. "VALUES ('$newqid', '{$qr1['code']}', "
