@@ -79,7 +79,7 @@ if (!isset($_SESSION['loginID']))
 			}
 		}
 	}
-	elseif($action == "login")	// normal login
+	elseif($action == "login" && $useWebserverAuth === false)	// normal login
 	{
 		$loginsummary = "<br /><strong>".$clang->gT("Logging in...")."</strong><br />\n";
 
@@ -185,12 +185,71 @@ if (!isset($_SESSION['loginID']))
 		$result = $connect->SelectLimit($query, 1) or die ($query."<br />".$connect->ErrorMsg());
 		if ($result->RecordCount() < 1)
 		{
-			// wrong or unknown username 
-			$loginsummary .= "<br />".$clang->gT("Incorrect User name and/or Password!")."<br />";
-			$loginsummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+			if (isset($WebserverAuth_autocreateUser) && 
+				$WebserverAuth_autocreateUser === true &&
+				isset($WebserverAuth_autouserprofile) &&
+				is_array ($WebserverAuth_autouserprofile) )
+			{ // user doesn't exist but auto-create user is set
+				$isAuthenticated=false;
+				$new_pass = createPassword();
+				if (function_exists("hook_get_autouserprofile"))
+				{
+					// If defined this function returns an array
+					// describing the defaukt profile for this user
+					$WebserverAuth_autouserprofile = hook_get_autouserprofile($mappeduser);
+				}
+
+				$uquery = "INSERT INTO {$dbprefix}users "
+				."(users_name, password,full_name,parent_id,lang,email,create_survey,create_user,delete_user,superadmin,configurator,manage_template,manage_label) "
+				."VALUES ("
+				. $connect->qstr($mappeduser).", "
+				. "'".SHA256::hash($new_pass)."', "
+				. "'".db_quote($WebserverAuth_autouserprofile['full_name'])."', "
+				. getInitialAdmin_uid()." , "
+				. "'".$WebserverAuth_autouserprofile['lang']."', "
+				. "'".db_quote($WebserverAuth_autouserprofile['email'])."', "
+				. intval($WebserverAuth_autouserprofile['create_survey']).","
+				. intval($WebserverAuth_autouserprofile['create_user']).","
+				. intval($WebserverAuth_autouserprofile['delete_user']).","
+				. intval($WebserverAuth_autouserprofile['superadmin']).","
+				. intval($WebserverAuth_autouserprofile['configurator']).","
+				. intval($WebserverAuth_autouserprofile['manage_template']).","
+				. intval($WebserverAuth_autouserprofile['manage_label'])
+				.")";
+
+				$uresult = $connect->Execute($uquery);
+				if ($uresult)
+				{
+					$isAuthenticated=true;
+					// read again user from newly created entry
+					$result = $connect->SelectLimit($query, 1) or die ($query."<br />".$connect->ErrorMsg());
+					$newqid = $connect->Insert_ID("{$dbprefix}users","uid");
+					$template_query = "INSERT INTO {$dbprefix}templates_rights (uid, folder, use) VALUES('$newqid','default','1')";
+					$connect->Execute($template_query);
+				}
+				else
+				{
+					$loginsummary .= "<br />".$clang->gT("Auto Import User Failed!")."<br />";
+					$loginsummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+					$isAuthenticated=false;
+				}
+				
+			}
+			else
+			{
+				// wrong or unknown username 
+				$loginsummary .= "<br />".$clang->gT("Incorrect User name and/or Password!")."<br />";
+				$loginsummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+				$isAuthenticated=false;
+			}
 
 		}
 		else
+		{ // User already exists
+			$isAuthenticated=true;
+		}
+
+		if ($isAuthenticated ===true)
 		{ // user exists and was authenticated by webserver
 			$fields = $result->FetchRow();
 
@@ -618,6 +677,16 @@ function randomkey($length)
 		$key = $pattern{rand(0,$patternlength)};
 	}
 	return $key;
+}
+
+function getInitialAdmin_uid()
+{
+	global $dbprefix;
+	// Initial SuperAdmin has parent_id == 0
+	$adminquery = "SELECT uid FROM {$dbprefix}users WHERE parent_id=0";
+	$adminresult = db_select_limit_assoc($adminquery, 1);
+	$row=$adminresult->FetchRow();
+	return $row['uid'];
 }
 
 ?>

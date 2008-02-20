@@ -168,9 +168,9 @@ $defaulthtmleditormode = 'inline';
 // unless a username mapping is used see $userArrayMap below
 //
 // The user still needs to be defined in the limesurvey database in order to
-// login and get his permissions
+// login and get his permissions (unless $WebserverAuth_autocreateUser is set to true)
 $useWebserverAuth = false;
-
+//
 // $userArrayMap
 // Enable username mapping
 // This parameter is an array mapping username from the webserver to username
@@ -178,6 +178,59 @@ $useWebserverAuth = false;
 // Can be usefull if you have no way to add an 'admin' user to the database
 // used by the webserver, then you could map your true loginame to admin with
 // $userArrayMap = Array ('mylogin' => 'admin');
+//
+// $WebserverAuth_autocreateUser
+// Enable this if you want to automatically create users authenticated by the 
+// webserver in LS
+// Default is false (commenting this options also means false)
+// $WebserverAuth_autocreateUser = false;
+//
+// $WebserverAuth_autouserprofile
+// This parameter MUST be defined if you set $WebserverAuth_autocreateUser to true
+// otherwise autocreateUser will be disabled.
+// This is an array describing the default profile to use for auto-created users
+// This profile will be the same for all users (unless you define the optionnal 
+// 'hook_get_autouserprofile' function).
+// 
+//$WebserverAuth_autouserprofile = Array(
+//					'full_name' => 'autouser',
+//					'email' => $siteadminemail,
+//					'lang' => 'en',
+//					'htmleditormode' => $defaulthtmleditormode,
+//					'create_survey' => 1,
+//					'create_user' => 0,
+//					'delete_user' => 0,
+//					'superadmin' => 0,
+//					'configurator' =>0,
+//					'manage_template' => 0,
+//					'manage_label' => 0);
+//
+//
+// The optionnal 'hook_get_autouserprofile' function
+// is for advanced user usage only.
+// It is used to customize the profile of the imported user
+// If set, the this function will overwrite the $WebserverAuth_autouserprofile
+// defined above by its return value
+// 
+// You can use any external DB in order to fill the profile for the user_name
+// passed as the first parameter
+// A dummy example for the 'hook_get_autouserprofile' function is given
+// below:
+//function hook_get_autouserprofile($user_name)
+//{
+//	return Array(
+//			'full_name' => "$user_name",
+//			'email' => "$user_name@localdomain.org",
+//			'lang' => 'en',
+//			'htmleditormode' => 'inline',
+//			'create_survey' => 1,
+//			'create_user' => 0,
+//			'delete_user' => 0,
+//			'superadmin' => 0,
+//			'configurator' =>0,
+//			'manage_template' => 0,
+//			'manage_label' => 0);
+//}			
 
 
 //$filterxsshtml
