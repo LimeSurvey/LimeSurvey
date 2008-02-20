@@ -160,6 +160,13 @@ $filterout_incomplete_answers = true;
 //  * none: no html editor
 $defaulthtmleditormode = 'inline';
 
+// $surveyPreview_require_Auth
+// Enforce Authentication to the LS system
+// before beeing able to preview a survey (testing a non active survey)
+// Default is true
+$surveyPreview_require_Auth = true;
+
+
 // $useWebserverAuth
 // Enable delegation of authentication to the webserver.
 // If you set this parameter to true and set your webserver to authenticate

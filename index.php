@@ -47,7 +47,10 @@ if ($surveyid)
 }
 
 
-if ($surveyid && $issurveyactive===false)
+if ($surveyid && 
+	$issurveyactive===false && 
+	isset ($surveyPreview_require_Auth) &&
+	$surveyPreview_require_Auth === true)
 {
 	// admin session and permission have not already been imported
 	// for this particular survey
