@@ -69,6 +69,11 @@ if (isset($_POST['move']) && $_SESSION['step'] != 0 && $_POST['move'] != "movesu
         {
             $_SESSION['step']=$_SESSION['step']+1;
         }
+        if ($_SESSION['step']>=$_SESSION['totalsteps']) 
+        {
+            $_POST['move'] = "movesubmit";
+            break;
+        } 
 	}
 }
 
