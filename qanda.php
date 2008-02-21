@@ -1660,7 +1660,11 @@ function do_multiplechoice($ia)
 		{
 		  $answer .= "excludeAllOthers(this.id);";
 		} elseif ($excludeallothers != "") {
-		  $excludeallotherscripton .= "document.getElementById('answer$ia[1]{$ansrow['code']}').checked='';\ndocument.getElementById('answer$ia[1]{$ansrow['code']}').disabled='true';\n";
+		  $excludeallotherscripton .= "thiselt=document.getElementById('answer$ia[1]{$ansrow['code']}');\n"
+					. "\t\tthiselt.checked='';\n"
+					. "\t\tthiselt.disabled='true';\n"
+					. "\t\tmodfield(thiselt.name);\n"
+					. "\t\tcheckconditions(thiselt.value, thiselt.name, thiselt.type);\n";
 		  $excludeallotherscriptoff.= "document.getElementById('answer$ia[1]{$ansrow['code']}').disabled='';\n";
 		}
 		$answer .= $callmaxanswscriptcheckbox."checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /><label for='answer$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
