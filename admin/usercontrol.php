@@ -33,7 +33,9 @@ if (!isset($_SESSION['loginID']))
 	// If Web server Authent delegation is ON, then
 	// read the loginname. This can be either PHP_AUTH_USER or
 	// REMOTE_USER
-	if ($useWebserverAuth === true && !isset($_SERVER['PHP_AUTH_USER']))
+	if ($useWebserverAuth === true && 
+		!isset($_SERVER['PHP_AUTH_USER']) &&
+		isset($_SERVER['REMOTE_USER']) )
 	{
 		$_SERVER['PHP_AUTH_USER'] = $_SERVER['REMOTE_USER'];
 	}
@@ -193,19 +195,24 @@ if (!isset($_SESSION['loginID']))
 		$result = $connect->SelectLimit($query, 1) or die ($query."<br />".$connect->ErrorMsg());
 		if ($result->RecordCount() < 1)
 		{
+			// In case the hook function is defined
+			// overrite the default auto-import profile
+			// by this function's result
+			if (function_exists("hook_get_autouserprofile"))
+			{
+				// If defined this function returns an array
+				// describing the defaukt profile for this user
+				$WebserverAuth_autouserprofile = hook_get_autouserprofile($mappeduser);
+			}
+
 			if (isset($WebserverAuth_autocreateUser) && 
 				$WebserverAuth_autocreateUser === true &&
 				isset($WebserverAuth_autouserprofile) &&
-				is_array ($WebserverAuth_autouserprofile) )
+				is_array ($WebserverAuth_autouserprofile) &&
+				count($WebserverAuth_autouserprofile) > 0 )
 			{ // user doesn't exist but auto-create user is set
 				$isAuthenticated=false;
 				$new_pass = createPassword();
-				if (function_exists("hook_get_autouserprofile"))
-				{
-					// If defined this function returns an array
-					// describing the defaukt profile for this user
-					$WebserverAuth_autouserprofile = hook_get_autouserprofile($mappeduser);
-				}
 
 				$uquery = "INSERT INTO {$dbprefix}users "
 				."(users_name, password,full_name,parent_id,lang,email,create_survey,create_user,delete_user,superadmin,configurator,manage_template,manage_label) "
