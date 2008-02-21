@@ -1004,14 +1004,14 @@ function do_list_radio($ia)
 	while ($ansrow = $ansresult->FetchRow())
 	{
 		$rowcounter++;
-		$answer .= "\t\t\t\t\t\t\t\t<div style='text-indent: -22px; margin: 0px 0px 0px 22px;'>  <input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='answer$ia[1]{$ansrow['code']}'";
+		$answer .= "\t\t\t\t\t\t\t\t<input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='answer$ia[1]{$ansrow['code']}'";
 		if ($_SESSION[$ia[1]] == $ansrow['code'])
 		{
 			$answer .= " checked='checked'";
 		}
 		elseif ($ansrow['default_value'] == "Y") {$answer .= " checked='checked'"; $defexists = "Y";}
 		// --> START NEW FEATURE - SAVE
-		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='answer$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br /></div>\n";
+		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='answer$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
 		// --> END NEW FEATURE - SAVE
 
 		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
