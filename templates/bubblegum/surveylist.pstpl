@@ -1,0 +1,35 @@
+<table width='100%' align='center' cellspacing='0'>
+      <tr>
+            <td align='center' bgcolor='#EEF6FF'>
+             <p><font face='verdana' size='4' color='#328639'><strong>{SITENAME}</strong></font></p>
+            </td>
+      </tr>
+      <tr>
+            <td align='center'>
+             {NOSURVEYID}
+            </td>
+      </tr>
+	<tr>
+		<td align='center' bgcolor='#EEF6FF'>
+             <strong>{SURVEYLISTHEADING}</strong>
+             <table align='center'>
+               <tr>
+                <td>
+                 <ul>{SURVEYLIST}</ul>
+                </td>
+               </tr>
+             </table>
+		</td>
+	</tr>
+      <tr>
+            <td align='center'>
+             {SURVEYCONTACT}
+            </td>
+      </tr>
+      <tr>
+            <td align='center' bgcolor='#EEF6FF'>
+             <p>{LANGUAGECHANGER}</p>
+             <a href='http://www.limesurvey.org' target='_blank'><img src='{TEMPLATEURL}limesurvey_logo.png' border='0' title='Powered by LimeSurvey' /></a>
+            </td>
+      </tr>
+</table>
