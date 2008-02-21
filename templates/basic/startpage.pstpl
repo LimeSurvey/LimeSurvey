@@ -33,10 +33,30 @@ img { border: 0; }
       font-size: 10px; 
 	  font-style: italic; 
 }
+.innergraph
+	{
+	font-family: verdana;
+	font-size: 10pt;
+	}
+
 .innergraph img
 {
   height:12px;
+  vertical-align:top;
 }
+.innergraph table
+{
+  height:12px;
+  border:1px solid #000;
+  table-layout:fixed !important;
+}
+
+.innergraph td
+{
+  height:12px;
+}
+
+
 table.question tr.array1:hover {background-color: #A7A9D1; }
 table.question tr.array2:hover {background-color: #A7A9D1; }
 </style>
