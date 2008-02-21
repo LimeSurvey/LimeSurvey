@@ -30,6 +30,14 @@ if (isset($_POST['full_name'])) {$postfull_name=sanitize_userfullname($_POST['fu
 
 if (!isset($_SESSION['loginID']))
 {
+	// If Web server Authent delegation is ON, then
+	// read the loginname. This can be either PHP_AUTH_USER or
+	// REMOTE_USER
+	if ($useWebserverAuth === true && !isset($_SERVER['PHP_AUTH_USER']))
+	{
+		$_SERVER['PHP_AUTH_USER'] = $_SERVER['REMOTE_USER'];
+	}
+
 	if($action == "forgotpass")
 	{
 		$loginsummary = "<br /><strong>".$clang->gT("Forgot Password")."</strong><br />\n";
