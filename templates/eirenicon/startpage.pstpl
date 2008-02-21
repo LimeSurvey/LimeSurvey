@@ -110,10 +110,18 @@ body{
 .innergraph img
 {
   height:12px;
+  vertical-align:top;
 }
 .innergraph table
 {
-border:1px solid #000;
+  height:12px;
+  border:1px solid #000;
+  table-layout:fixed !important;
+}
+
+.innergraph td
+{
+  height:12px;
 }
 
 .printouttable
