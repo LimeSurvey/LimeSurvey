@@ -116,12 +116,19 @@ while ($degrow = $degresult->FetchRow())
 		//GET ANY CONDITIONS THAT APPLY TO THIS QUESTION
 		$explanation = ""; //reset conditions explanation
 		$x=0;
-		$distinctquery="SELECT DISTINCT cqid, ".db_table_name("questions").".title FROM ".db_table_name("conditions").", ".db_table_name("questions")." WHERE ".db_table_name("conditions").".cqid=".db_table_name("questions").".qid AND ".db_table_name("conditions").".qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY cqid";
+		$distinctquery="SELECT DISTINCT cqid, method, ".db_table_name("questions").".title FROM ".db_table_name("conditions").", ".db_table_name("questions")." WHERE ".db_table_name("conditions").".cqid=".db_table_name("questions").".qid AND ".db_table_name("conditions").".qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY cqid";
 		$distinctresult=db_execute_assoc($distinctquery);
 		while ($distinctrow=$distinctresult->FetchRow())
 		{
 			if ($x > 0) {$explanation .= " <i>".$clang->gT("and")."</i> ";}
-			$explanation .= $clang->gT("if you answered")." ";
+			if (trim($distinctrow['method'])=='') {$distinctrow['method']='==';}
+      if ($distinctrow['method']=='==') {$explanation .= $clang->gT("if you answered")." ";}
+        elseif ($distinctrow['method']='!=')
+        {$explanation .= $clang->gT("if you have NOT answered")." ";}
+        else
+        {$explanation .= $clang->gT("if you answered")." ";}
+
+			
 			$conquery="SELECT cid, cqid, ".db_table_name("questions").".title,\n"
 			."".db_table_name("questions").".question, value, ".db_table_name("questions").".type,\n"
 			."".db_table_name("questions").".lid, cfieldname\n"
@@ -133,6 +140,7 @@ while ($degrow = $degresult->FetchRow())
 			$conditions=array();
 			while ($conrow=$conresult->FetchRow())
 			{
+			
 				$postans="";
 				$value=$conrow['value'];
 				switch($conrow['type'])

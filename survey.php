@@ -13,10 +13,6 @@
 * $Id$
 */
 
-// Performance optimized	: Nov 27, 2006
-// Performance Improvement	: 41% (Call to templatereplace())
-// Optimized By				: swales
-
 if (empty($homedir)) {die ("Cannot run this script directly");}
 
 //Move current step ###########################################################################
@@ -71,20 +67,12 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit") && (!isset($notans
 	{
 		sendcacheheaders();
 		doHeader();
-//		foreach(file("$thistpl/startpage.pstpl") as $op)
-//		{
-//			echo templatereplace($op);
-//		}
 		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
 		//Check for assessments
 		$assessments = doAssessment($surveyid);
 		if ($assessments)
 		{
-//			foreach(file("$thistpl/assessment.pstpl") as $op)
-//			{
-//				echo templatereplace($op);
-//			}
 			echo templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
 		}
 
