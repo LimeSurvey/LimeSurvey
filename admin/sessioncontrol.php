@@ -171,32 +171,36 @@ $dangerousActionsArray = Array
 if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['action']) && 
 	isset($dangerousActionsArray[$_GET['action']]))
 {
-	$getauthorized=false;
-	if (is_array($dangerousActionsArray[$_GET['action']]) &&
-		count($dangerousActionsArray[$_GET['action']]) == 0)
+	$getauthorized=true;
+	if (is_array($dangerousActionsArray[$_GET['action']]))
 	{
-		$getauthorized=false; // Authorization denied
-	}
-	else
-	{ // there are other parameters to check
-		$getauthorized=true; //Let's support it is ok
-		foreach ($dangerousActionsArray[$_GET['action']] as $arrayparams)
+		foreach ($dangerousActionsArray[$_GET['action']] as $key => $arrayparams)
 		{
-			if ($getauthorized==true)
+			//error_log("TIBO trying dangerous-subparams number $key");
+			$totalparamcount=count($arrayparams);
+			$matchparamcount=0;
+			foreach ($arrayparams as $param => $val)
 			{
-				foreach ($arrayparams as $param => $val)
+				if (isset($_GET[$param]) &&
+					$_GET[$param] == $val)
 				{
-					if (isset($_GET[$param]) &&
-						$_GET[$param] == $val)
-					{
-						$getauthorized=false;
-					}
+					$matchparamcount++;
+					//error_log("TIBO match param=$param val=$val count=$matchparamcount/$totalparamcount");
 				}
+			}
+			if ($matchparamcount == $totalparamcount)
+			{
+				$getauthorized=false;
+				break;
 			}
 		}
 	}
+	else
+	{ // ERROR
+		$getauthorized=false;
+	}
 
-	if ($getauthorized == false)
+	if ($getauthorized === false)
 	{
 		$_GET['action'] = 'FakeGET';
 		$action = 'FakeGET';
