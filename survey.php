@@ -405,6 +405,18 @@ if ((isset($conditions) && is_array($conditions)) || (isset($array_filterqs) && 
 	."\t\t\t\t}\n";
 	$java="";
 	$cqcount=1;
+
+    /* $conditions element structure
+    * $condition[n][0] => question id
+    * $condition[n][1] => question with value to evaluate
+    * $condition[n][2] => internal field name of element [1]
+    * $condition[n][3] => value to be evaluated on answers labeled. 
+    *                     *NEW* tittle of questions to evaluate.
+    * $condition[n][4] => type of question
+    * $condition[n][5] => equal to [2], but concatenated in this time (why the same value 2 times?)
+    * $condition[n][6] => method used to evaluate *NEW*
+    */
+	
 	foreach ($conditions as $cd)
 	{
 		if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq)) //New if statement
@@ -465,11 +477,11 @@ if ((isset($conditions) && is_array($conditions)) || (isset($array_filterqs) && 
 
     if ($cd[3] == '' || $cd[3] == ' ')
     {
-      $java .= "document.getElementById('$idname').value == ' ' || !document.getElementById('$idname').value";
+      $java .= "document.getElementById('$idname').value $cd[6] ' ' || !document.getElementById('$idname').value";
         }
 		elseif($cd[4] == "M" || $cd[4] == "P")
 		{
-			$java .= "document.getElementById('$idname').value == 'Y'";
+			$java .= "document.getElementById('$idname').value $cd[6] 'Y'";
 		}
 		else
 		{
@@ -482,7 +494,7 @@ if ((isset($conditions) && is_array($conditions)) || (isset($array_filterqs) && 
 	  }
 	  else
 	  {
-			$java .= "document.getElementById('$idname').value == '$cd[3]'";
+			$java .= "document.getElementById('$idname').value $cd[6] '$cd[3]'";
 		}
     }
 

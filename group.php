@@ -464,17 +464,15 @@ $array_filterqs = getArrayFiltersForGroup($gid);
 // Put in the radio button reset javascript for the array filter unselect
 if (isset($array_filterqs) && is_array($array_filterqs)) 
 {
-print <<<END
+echo "
     function radio_unselect(radioObj)
-	{   
-		var radioLength = radioObj.length;
-		for(var i = 0; i < radioLength; i++)
-		{
-			radioObj[i].checked = false;
-		}
-	}
-    
-END;
+  	{   
+  		var radioLength = radioObj.length;
+  		for(var i = 0; i < radioLength; i++)
+  		{
+  			radioObj[i].checked = false;
+  		}
+  	}";    
 }
 
 print <<<END
@@ -528,7 +526,7 @@ END;
 	foreach ($conditions as $cd)
 	{
 		if (trim($cd[6])=='') $cd[6]='==';
-        if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq)) //New if statement
+    if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq)) //New if statement
 		{
 			$java .= $endzone;
 			$endzone = "";
@@ -605,7 +603,7 @@ END;
                 $java .= "document.getElementById('$idname').value == ' ' || !document.getElementById('$idname').value";
             } else 
             {
-                // strange thing, isn�t? whell 0, ' ', '' or false are all false logic values then...
+                // strange thing, isn't it ? well 0, ' ', '' or false are all false logic values then...
                 $java .= "document.getElementById('$idname').value";
             }
         }

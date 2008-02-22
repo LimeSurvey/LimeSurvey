@@ -237,7 +237,7 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 		{
 			$thistype=$ccrows['type'];
 		}
-		$cqquery = "SELECT cfieldname, value, cqid FROM {$dbprefix}conditions WHERE qid={$ia[0]} AND cqid={$crows['cqid']}";
+		$cqquery = "SELECT cfieldname, value, cqid, method FROM {$dbprefix}conditions WHERE qid={$ia[0]} AND cqid={$crows['cqid']}";
 		$cqresult = db_execute_assoc($cqquery) or die("Couldn't get conditions for this question/cqid<br />$cquery<br />".htmlspecialchars($connect->ErrorMsg()));
 		$amatchhasbeenfound="N";
 		while ($cqrows=$cqresult->FetchRow()) //Check each condition
@@ -251,7 +251,7 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 				$conditionvalue = "Y";
 			}
 			if (!isset($_SESSION[$conditionfieldname]) || !$_SESSION[$conditionfieldname] || $_SESSION[$conditionfieldname] == ' ') {$currentvalue="NULL";} else {$currentvalue=$_SESSION[$conditionfieldname];}
-			if ($currentvalue == $conditionvalue) {$amatchhasbeenfound="Y";}
+			if (eval("if (\$currentvalue". $cqrows['method']."\$conditionvalue) return true; else return false;")) {$amatchhasbeenfound="Y";}
 		}
 		if ($amatchhasbeenfound == "Y") {$cqidmatches++;}
 	}
