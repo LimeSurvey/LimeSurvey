@@ -236,11 +236,16 @@ if (!isset($_SESSION['loginID']))
 				if ($uresult)
 				{
 					$isAuthenticated=true;
+					$newqid = $connect->Insert_ID("{$dbprefix}users","uid");
+					$arrayTemplates=explode(",",$WebserverAuth_autouserprofile['templatelist']);
+					foreach ($arrayTemplates as $tplname)
+					{
+						$template_query = "INSERT INTO {$dbprefix}templates_rights VALUES('$newqid','$tplname','1')";
+						$connect->Execute($template_query);
+					}
+
 					// read again user from newly created entry
 					$result = $connect->SelectLimit($query, 1) or die ($query."<br />".$connect->ErrorMsg());
-					$newqid = $connect->Insert_ID("{$dbprefix}users","uid");
-					$template_query = "INSERT INTO {$dbprefix}templates_rights (uid, folder, use) VALUES('$newqid','default','1')";
-					$connect->Execute($template_query);
 				}
 				else
 				{
@@ -336,7 +341,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 			$newqid = $connect->Insert_ID("{$dbprefix}users","uid");
 
 			// add default template to template rights for user
-			$template_query = "INSERT INTO {$dbprefix}templates_rights (uid, folder, use) VALUES('$newqid','default','1')";
+			$template_query = "INSERT INTO {$dbprefix}templates_rights VALUES('$newqid','default','1')";
 			$connect->Execute($template_query);
 			
 			// add new user to userlist
