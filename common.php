@@ -3288,7 +3288,7 @@ function getsurveyusergrouplist($outputformat='htmloptions')
     if (isset($usercontrolSameGroupPolicy) &&
 		$usercontrolSameGroupPolicy === true)
     {
-	 $authorizedGroupsList=getusergrouplist('simpleugidarray');
+	 $authorizedGroupsList=getusergrouplist('simplegidarray');
     }
 
     if ($surveynames)
