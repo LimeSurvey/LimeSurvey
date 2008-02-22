@@ -241,6 +241,10 @@ if (!$surveyid)
     {
       $baselang = $_GET['lang'];
     }
+     elseif (!isset($baselang)) 
+     {
+      		$baselang=$defaultlang;
+	 }
 	$clang = new limesurvey_lang($baselang);
     if(!isset($defaulttemplate)) {$defaulttemplate="default";}
     $languagechanger = makelanguagechanger();
