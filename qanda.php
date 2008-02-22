@@ -342,14 +342,6 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 			}
 		}
 		break;
-		case "J": //FILE CSV MORE
-		$values=do_multiplechoice_CSV($ia);
-		if (count($values[1]) > 1)
-		{
-			$qtitle .= "<br />\n<font class = \"questionhelp\">"
-			. $clang->gT("Check any that apply")."</font>";
-		}
-		break;
 
 		case "I": //Language Question
 		$values=do_language($ia);
@@ -733,6 +725,7 @@ function do_language($ia)
 	$answerlangs [] = GetBaseLanguageFromSurveyID($surveyid);
 	$answer = "\n\t\t\t\t\t<select name='$ia[1]' id='answer$ia[1]' onchange='document.getElementById(\"lang\").value=this.value; checkconditions(this.value, this.name, this.type);modfield(this.name);'>\n";
 	if (!$_SESSION[$ia[1]]) {$answer .= "\t\t\t\t\t\t<option value='' selected='selected'>".$clang->gT("Please choose")."..</option>\n";}
+	$defaultvaluescript = "";
 	foreach ($answerlangs as $ansrow)
 	{
 		$answer .= "\t\t\t\t\t\t<option value='{$ansrow}'";
@@ -740,11 +733,21 @@ function do_language($ia)
 		{
 			$answer .= " selected='selected'";
 		}
-		elseif ($ansrow['default_value'] == "Y") {$answer .= " selected='selected'"; $defexists = "Y";}
+		elseif ($ansrow['default_value'] == "Y")
+		{
+			$answer .= " selected='selected'"; 
+		 	$defexists = "Y";
+		 	$defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
+			. "\t\t\t\t\t\t<!--\n"
+			. "\t\t\t\t\t\t\tmodfield(\"$ia[1]\");\n"
+			. "\t\t\t\t\t\t//-->\n"
+			. "\t\t\t\t\t\t</script>\n";
+		}
 		$answer .= ">".getLanguageNameFromCode($ansrow, true)."</option>\n";
 	}
 	$answer .= "\t\t\t\t\t</select>\n";
-    $answer .= "\t\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}' />\n";
+	$answer .= "\t\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}' />\n";
+	 $answer .= $defaultvaluescript;
 
 	$inputnames[]=$ia[1];
     $answer .= "\n\t\t\t<input type='hidden' name='lang' id='lang' value='' />";
@@ -777,7 +780,16 @@ function do_list_dropdown($ia)
 		{
 			$answer .= " selected='selected'";
 		}
-		elseif ($ansrow['default_value'] == "Y") {$answer .= " selected='selected'"; $defexists = "Y";}
+		elseif ($ansrow['default_value'] == "Y")
+		{
+			$answer .= " selected='selected'"; 
+			$defexists = "Y";
+		 	$defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
+			. "\t\t\t\t\t\t<!--\n"
+			. "\t\t\t\t\t\t\tmodfield(\"$ia[1]\");\n"
+			. "\t\t\t\t\t\t//-->\n"
+			. "\t\t\t\t\t\t</script>\n";
+		}
 		$answer .= ">{$ansrow['answer']}</option>\n";
 	}
 	if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists))
@@ -1237,7 +1249,16 @@ function do_listwithcomment($ia)
 			$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='answer$ia[1]{$ansrow['code']}'";
 			if ($_SESSION[$ia[1]] == $ansrow['code'])
 			{$answer .= " checked='checked'";}
-			elseif ($ansrow['default_value'] == "Y") {$answer .= " checked='checked'"; $defexists = "Y";}
+			elseif ($ansrow['default_value'] == "Y")
+			{
+				$answer .= " checked='checked'"; 
+				$defexists = "Y";
+				$defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
+					. "\t\t\t\t\t\t<!--\n"
+					. "\t\t\t\t\t\t\tmodfield(\"$ia[1]\");\n"
+					. "\t\t\t\t\t\t//-->\n"
+					. "\t\t\t\t\t\t</script>\n";
+			}
 			// --> START NEW FEATURE - SAVE
 			$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='answer$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
 			// --> END NEW FEATURE - SAVE
@@ -1262,8 +1283,8 @@ function do_listwithcomment($ia)
 				$answer .= " />";
 			}
 			$answer .= "<label for='answer$ia[1] ' class='answertext'>".$clang->gT("No answer")."</label>\n";
-			 $answer .= $defaultvaluescript;
 		}
+		$answer .= $defaultvaluescript;
 		$answer .= "\t\t\t\t\t</td>\n";
 		$fname2 = $ia[1]."comment";
 		if ($anscount > 8) {$tarows = $anscount/1.2;} else {$tarows = 4;}
@@ -1300,7 +1321,16 @@ function do_listwithcomment($ia)
 			$answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
 			if ($_SESSION[$ia[1]] == $ansrow['code'])
 			{$answer .= " selected='selected'";}
-			elseif ($ansrow['default_value'] == "Y") {$answer .= " selected='selected'"; $defexists = "Y";}
+			elseif ($ansrow['default_value'] == "Y")
+			{
+				$answer .= " selected='selected'"; 
+				$defexists = "Y";
+				$defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
+				. "\t\t\t\t\t\t<!--\n"
+				. "\t\t\t\t\t\t\tmodfield(\"$ia[1]\");\n"
+				. "\t\t\t\t\t\t//-->\n"
+				. "\t\t\t\t\t\t</script>\n";
+			}
 			$answer .= ">{$ansrow['answer']}</option>\n";
 			if (strlen($ansrow['answer']) > $maxoptionsize)
 			{
@@ -1917,40 +1947,6 @@ function do_multiplechoice_withcomments($ia)
 
 	return array($answer, $inputnames);
 }
-
-function do_multiplechoice_CSV($ia)
-{
-	global $dbprefix;
-	$answer  = "\t\t\t<table class='question'>\n"
-	. "\t\t\t\t<tr>\n"
-	. "\t\t\t\t\t<td>&nbsp;</td>\n"
-	. "\t\t\t\t\t<td align='left' class='answertext'>\n";
-	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
-	$ansresult = db_execute_assoc($ansquery) or die(htmlspecialchars($connect->ErrorMsg()));
-	$anscount = $ansresult->RecordCount();
-	$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
-	$fn = 1;
-	if (!isset($multifields)) {$multifields="";}
-	while ($ansrow = $ansresult->FetchRow())
-	{
-		$myfname = $ia[1].$ansrow['code'];
-		$answer .= "\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='$ia[1]{$ansrow['code']}' id='$ia[1]{$ansrow['code']}' value='Y'";
-		// --> START NEW FEATURE - SAVE
-		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
-		// --> END NEW FEATURE - SAVE
-		$fn++;
-		$answer .= "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
-		if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
-		$answer .= "' />\n";
-		$inputnames[]=$myfname;
-	}
-	$answer .= "\t\t\t\t\t</td>\n"
-	. "\t\t\t\t\t<td>&nbsp;</td>\n"
-	. "\t\t\t\t</tr>\n"
-	. "\t\t\t</table>\n";
-	return array($answer, $inputnames);
-}
-
 
 function do_multipleshorttext($ia)
 {
