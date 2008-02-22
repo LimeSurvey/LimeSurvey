@@ -419,6 +419,7 @@ if ((isset($conditions) && is_array($conditions)) || (isset($array_filterqs) && 
 	
 	foreach ($conditions as $cd)
 	{
+	  if (trim($cd[6])=='') {$cd[6]='==';} 
 		if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq)) //New if statement
 		{
 			$java .= $endzone;

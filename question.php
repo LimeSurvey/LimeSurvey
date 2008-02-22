@@ -250,6 +250,7 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 				$conditionfieldname .= $conditionvalue;
 				$conditionvalue = "Y";
 			}
+			if (trim($cqrows['method'])=='') {$cqrows['method']='==';}
 			if (!isset($_SESSION[$conditionfieldname]) || !$_SESSION[$conditionfieldname] || $_SESSION[$conditionfieldname] == ' ') {$currentvalue="NULL";} else {$currentvalue=$_SESSION[$conditionfieldname];}
 			if (eval("if (\$currentvalue". $cqrows['method']."\$conditionvalue) return true; else return false;")) {$amatchhasbeenfound="Y";}
 		}
