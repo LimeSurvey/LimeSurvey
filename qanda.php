@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿<?php
+<?php
 /*
 * LimeSurvey
 * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
@@ -1009,7 +1009,15 @@ function do_list_radio($ia)
 		{
 			$answer .= " checked='checked'";
 		}
-		elseif ($ansrow['default_value'] == "Y") {$answer .= " checked='checked'"; $defexists = "Y";}
+		elseif ($ansrow['default_value'] == "Y") 
+            {
+                $answer .= " checked='checked'"; $defexists = "Y";
+                $defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
+                . "\t\t\t\t\t\t<!--\n"
+                . "\t\t\t\t\t\t\tmodfield(\"$ia[1]\");\n"
+                . "\t\t\t\t\t\t//-->\n"
+                . "\t\t\t\t\t\t</script>\n";
+            }
 		// --> START NEW FEATURE - SAVE
 		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='answer$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
 		// --> END NEW FEATURE - SAVE
@@ -1054,7 +1062,6 @@ function do_list_radio($ia)
 		// --> START NEW FEATURE - SAVE
 		$answer .=" onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/>"
 		. "<label for='answer$ia[1]NANS' class='answertext'>".$clang->gT("No answer")."</label>\n";
-		$answer .= $defaultvaluescript;
 		// --> END NEW FEATURE - SAVE
 
 		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
@@ -1063,6 +1070,7 @@ function do_list_radio($ia)
 	. "\t\t\t\t\t\t\t</td>\n"
 	. "\t\t\t\t\t\t</tr>\n"
 	. "\t\t\t\t\t</table>\n";
+    $answer .= $defaultvaluescript;
 	$inputnames[]=$ia[1];
 	return array($answer, $inputnames);
 }
