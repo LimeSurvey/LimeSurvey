@@ -933,7 +933,6 @@ if ($subaction == "browse" || $subaction == "search")
 		elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] == "N")
 
 		{
-		// TIBO use get2post here
 			$tokenoutput .= "\t\t<td align='center' valign='middle'>\n"
 			."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='I' title='"
 			.$clang->gT("Send invitation email to this entry")."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?action=tokens&amp;sid=$surveyid&amp;subaction=email&amp;tid=".$brow['tid']."', '_top')\" />"
@@ -1160,10 +1159,7 @@ if ($subaction == "email" &&
 				if ($found==false) {$emrow['language']=$baselanguage;} 
 				
 				$from = $_POST['from_'.$emrow['language']];
-                $fieldsarray["{SURVEYURL}"]="$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language']);
-                
-				$modsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
-				$modmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
+
 				if (getEmailFormat($surveyid) == 'html')
 				{
 					$ishtml=true;
@@ -1172,6 +1168,17 @@ if ($subaction == "email" &&
 				{
 					$ishtml=false;
 				}
+				if ($ishtml === false)
+				{
+					$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language']);
+				}
+				else
+				{
+					$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language']).">$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language'])."</a>";
+				}
+                
+				$modsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
+				$modmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
 
 				if (MailTextMessage($modmessage, $modsubject, $to , $from, $sitename, $ishtml, getBounceEmail($surveyid)))
 				{
@@ -1395,10 +1402,6 @@ if ($subaction == "remind" &&
 				if ($found==false) {$emrow['language']=$baselanguage;} 
 
 				$from = $_POST['from_'.$emrow['language']];
-                $fieldsarray["{SURVEYURL}"]="$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language']);
-
-				$msgsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
-				$sendmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
 
 				if (getEmailFormat($surveyid) == 'html')
 				{
@@ -1408,6 +1411,18 @@ if ($subaction == "remind" &&
 				{
 					$ishtml=false;
 				}
+
+				if ($ishtml === false)
+				{
+					$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language']);
+				}
+				else
+				{
+					$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language']).">$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language'])."</a>";
+				}
+
+				$msgsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
+				$sendmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
 
 				if (MailTextMessage($sendmessage, $msgsubject, $to, $from, $sitename,$ishtml,getBounceEmail($surveyid)))
 				{
