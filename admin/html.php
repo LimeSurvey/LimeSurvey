@@ -19,7 +19,7 @@ include_once("login_check.php");
 
 if ($action == "listsurveys")
 {
-	$query = "SELECT a.*, c.*, u.users_name FROM ".db_table_name('surveys')." as a INNER JOIN ".db_table_name('surveys_languagesettings')." as c ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language ) AND surveyls_survey_id=a.sid and surveyls_language=a.language INNER JOIN ".db_table_name('users')." as u ON (uid=a.owner_id) ";
+	$query = "SELECT a.*, c.*, u.users_name FROM ".db_table_name('surveys')." as a INNER JOIN ".db_table_name('surveys_languagesettings')." as c ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language ) AND surveyls_survey_id=a.sid and surveyls_language=a.language INNER JOIN ".db_table_name('users')." as u ON (u.uid=a.owner_id) ";
 
 	if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1)
 	{
