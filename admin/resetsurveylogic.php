@@ -66,7 +66,7 @@ else //delete conditions in the survey
 	$resetsurveylogicoutput .= "\t<tr>\n";
 	$resetsurveylogicoutput .= "\t\t<td align='center'><br />\n";
 	$resetsurveylogicoutput .= "\t\t\t<strong>".$clang->gT("All conditions in this survey have been deleted.")."<br /><br />\n";
-	$resetsurveylogicoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
+	$resetsurveylogicoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Continue")."' onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" />\n";
 	$resetsurveylogicoutput .= "\t\t</strong></td>\n";
 	$resetsurveylogicoutput .= "\t</tr>\n";
 	$surveyid=false;
