@@ -696,14 +696,14 @@ while ($degrow = $degresult->FetchRow())
 			$fresult = db_execute_assoc($fquery);
 			$fcount = $fresult->RecordCount();
 			$fwidth = "120";
-			$i=0;
+			$l1=0;
             $printablesurveyoutput2 = '<td></td>';
             $myheader2 = '';
 			while ($frow = $fresult->FetchRow())
 			{
 				$printablesurveyoutput2 .="\t\t\t\t\t\t<td align='center' valign='bottom' $headstyle><font size='1'>{$frow['title']}</font></td>\n";
                 $myheader2 .= "<td></td>";
-				$i++;
+				$l1++;
 			}
 			// second scale
 			$printablesurveyoutput2 .="\t\t\t\t\t\t<td align='center' valign='bottom' $headstyle><font size='1'></font></td>\n";
@@ -711,22 +711,23 @@ while ($degrow = $degresult->FetchRow())
 			$fresult1 = db_execute_assoc($fquery1);
 			$fcount1 = $fresult1->RecordCount();
 			$fwidth = "120";
-			$i=0;
+			$l2=0;
 			while ($frow1 = $fresult1->FetchRow())
 			{
 				$printablesurveyoutput2 .="\t\t\t\t\t\t<td align='center' valign='bottom' $headstyle><font size='1'>{$frow1['title']}</font></td>\n";
-				$i++;
+				$l2++;
 			}
             // build header if needed
             if ($leftheader != '' || $rightheader !='')
             {
                 $myheader = "\t\t\t\t\t<td></td>";
-                $myheader .= "\t\t\t\t\t<td><span class='dsheader'>$leftheader</span></td>\n";
+                $myheader .= "\t\t\t\t\t<td align='center' colspan='".$l1."' rowspan='1' width='20px'><span class='dsheader'>$leftheader</span></td>\n";
 
                 if ($rightheader !='')
                 {
-                    $myheader .= "\t\t\t\t\t" .$myheader2;
-                    $myheader .= "\t\t\t\t\t<td><span class='dsheader'>$rightheader</span></td>\n";
+                    // $myheader .= "\t\t\t\t\t" .$myheader2;
+                    $myheader .= "\t\t\t\t\t<td></td>";
+                    $myheader .= "\t\t\t\t\t<td align='center' colspan='".$l2."' rowspan='1' width='20px'><span class='dsheader'>$rightheader</span></td>\n";
                 }
 
                 $myheader .= "\t\t\t\t</tr>\n";
