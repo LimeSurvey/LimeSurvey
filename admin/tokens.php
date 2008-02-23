@@ -691,14 +691,14 @@ if (!$subaction &&
 //	."\t\t\t<ul><li><a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=clearinvites' onclick='return confirm(\""
 //	.$clang->gT("Are you really sure you want to reset all invitation records to NO?")."\")'>".$clang->gT("Set all entries to 'No invitation sent'.")."</a></li>\n"
 	."\t\t\t<ul><li><a href='#' onclick=\"if( confirm('"
-	.$clang->gT("Are you really sure you want to reset all invitation records to NO?")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=clearinvites")."}\")'>".$clang->gT("Set all entries to 'No invitation sent'.")."</a></li>\n"
+	.$clang->gT("Are you really sure you want to reset all invitation records to NO?")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=clearinvites")."}\">".$clang->gT("Set all entries to 'No invitation sent'.")."</a></li>\n"
 //	."\t\t\t<li><a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=cleartokens' onclick='return confirm(\""
 //	.$clang->gT("Are you sure you want to delete all unique token numbers?")."\")'>".$clang->gT("Delete all unique token numbers")."</a></li>\n"
 	."\t\t\t<li><a href='#' onclick=\"if ( confirm('"
 	.$clang->gT("Are you sure you want to delete all unique token numbers?")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=cleartokens")."}\">".$clang->gT("Delete all unique token numbers")."</a></li>\n"
 //	."\t\t\t<li><a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall' onclick='return confirm(\""
 //	.$clang->gT("Are you really sure you want to delete ALL token entries?")."\")'>".$clang->gT("Delete all token entries")."</a></li>\n";
-	."\t\t\t<li><a href='' onclick=\" if (confirm('"
+	."\t\t\t<li><a href='#' onclick=\" if (confirm('"
 	.$clang->gT("Are you really sure you want to delete ALL token entries?")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall")."}\">".$clang->gT("Delete all token entries")."</a></li>\n";
 	$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
 	$bresult = db_select_limit_assoc($bquery, 1) or die($clang->gT("Error")." counting fields<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -803,7 +803,7 @@ if ($subaction == "browse" || $subaction == "search")
 	$bgc="";
 
 	$tokenoutput .= "<tr><td colspan='3'>\n"
-	."<table width='100%' cellpadding='1' cellspacing='1' cellspacing='1' cellpadding='1' border='0' style='border: 1px solid rgb(85, 85, 85);'>\n";
+	."<table width='100%' cellpadding='1' cellspacing='1' border='0' style='border: 1px solid rgb(85, 85, 85);'>\n";
 	//COLUMN HEADINGS
 	$tokenoutput .= "\t<tr>\n"
 	."\t\t<th align='left' valign='top' class='settingcaption'>"
@@ -1564,34 +1564,33 @@ if (($subaction == "edit" || $subaction == "addnew") &&
 	."<table width='100%' class='form2columns'>\n"
     ."<tr><th colspan='2' ><strong>\n"
     .$clang->gT("Add or Edit Token Entry")."</strong></th></tr><tr>\n"
-	."\t<td align='right' width='20%'><strong>ID:</strong></font></td>\n"
+	."\t<td align='right' width='20%'><strong>ID:</strong></td>\n"
 	."\t<td>";
 	if ($subaction == "edit")
 	{$tokenoutput .=$tokenid;} else {$tokenoutput .=$clang->gT("Auto");}
-	$tokenoutput .= "</font></td>\n"
+	$tokenoutput .= "</td>\n"
 	."</tr>\n"
 	."<tr>\n"
-	."\t<td align='right' width='20%'><strong>".$clang->gT("First Name").":</strong></font></td>\n"
+	."\t<td align='right' width='20%'><strong>".$clang->gT("First Name").":</strong></td>\n"
 	."\t<td><input type='text' size='30' name='firstname' value=\"";
 	if (isset($firstname)) {$tokenoutput .= $firstname;}
-	$tokenoutput .= "\"></font></td>\n"
+	$tokenoutput .= "\" /></td>\n"
 	."</tr>\n"
 	."<tr>\n"
-	."\t<td align='right' width='20%'><strong>".$clang->gT("Last Name").":</strong></font></td>\n"
+	."\t<td align='right' width='20%'><strong>".$clang->gT("Last Name").":</strong></td>\n"
 	."\t<td ><input type='text' size='30' name='lastname' value=\"";
 	if (isset($lastname)) {$tokenoutput .= $lastname;}
-	$tokenoutput .= "\"></font></td>\n"
+	$tokenoutput .= "\" /></td>\n"
 	."</tr>\n"
 	."<tr>\n"
-	."\t<td align='right' width='20%'><strong>".$clang->gT("Email").":</strong></font></td>\n"
-	."\t<td ><input type='text' maxsize='320' size='50' name='email' value=\"";
+	."\t<td align='right' width='20%'><strong>".$clang->gT("Email").":</strong></td>\n"
+	."\t<td ><input type='text' maxlength='320' size='50' name='email' value=\"";
 	if (isset($email)) {$tokenoutput .= $email;}
-	$tokenoutput .= "\"></font></td>\n"
+	$tokenoutput .= "\" /></td>\n"
 	."</tr>\n"
 	."<tr>\n"
-	."<tr>\n"
-	."\t<td align='right' width='20%'><strong>".$clang->gT("Email Status").":</strong></font></td>\n"
-	."\t<td ><input type='text' maxsize='320' size='50' name='emailstatus' value=\"";
+	."\t<td align='right' width='20%'><strong>".$clang->gT("Email Status").":</strong></td>\n"
+	."\t<td ><input type='text' maxlength='320' size='50' name='emailstatus' value=\"";
 	if (isset($emailstatus))
 	{
 		$tokenoutput .= $emailstatus;
@@ -1600,43 +1599,43 @@ if (($subaction == "edit" || $subaction == "addnew") &&
 	{
 		$tokenoutput .= "OK";
 	}
-	$tokenoutput .= "\"></font></td>\n"
+	$tokenoutput .= "\" /></td>\n"
 	."</tr>\n"
 	."<tr>\n"
-	."\t<td align='right' width='20%'><strong>".$clang->gT("Token").":</strong></font></td>\n"
+	."\t<td align='right' width='20%'><strong>".$clang->gT("Token").":</strong></td>\n"
 	."\t<td ><input type='text' size='15' name='token' value=\"";
 	if (isset($token)) {$tokenoutput .= $token;}
-	$tokenoutput .= "\">\n";
+	$tokenoutput .= "\" />\n";
 	if ($subaction == "addnew")
 	{
-		$tokenoutput .= "\t\t<font size='1' color='red'>".$clang->gT("You can leave this blank, and automatically generate tokens using 'Create Tokens'")."</font></font>\n";
+		$tokenoutput .= "\t\t<font size='1' color='red'>".$clang->gT("You can leave this blank, and automatically generate tokens using 'Create Tokens'")."</font>\n";
 	}
-	$tokenoutput .= "\t</font></td>\n"
+	$tokenoutput .= "\t</td>\n"
 	."</tr>\n"
 
 	."<tr>\n"
-	."\t<td align='right' width='20%'><strong>".$clang->gT("Language").":</strong></font></td>\n"
+	."\t<td align='right' width='20%'><strong>".$clang->gT("Language").":</strong></td>\n"
 	."\t<td>";
 	if (isset($language)) {$tokenoutput .= languageDropdownClean($surveyid,$language);}
 	else {
 		$tokenoutput .= languageDropdownClean($surveyid,GetBaseLanguageFromSurveyID($surveyid));
 	}
-	$tokenoutput .= "</font></td>\n"
+	$tokenoutput .= "</td>\n"
 	."</tr>\n"
 
 
 	."<tr>\n"
-	."\t<td align='right' width='20%'><strong>".$clang->gT("Invite sent?").":</strong></font></td>\n"
+	."\t<td align='right' width='20%'><strong>".$clang->gT("Invite sent?").":</strong></td>\n"
 
 	// TLR change to put date into sent and completed
 	//	."\t<td bgcolor='#EEEEEE'><input type='text' size='1' name='sent' value=\"";
 	."\t<td><input type='text' size='15' name='sent' value=\"";
 
 	if (isset($sent)) {$tokenoutput .= $sent;}	else {$tokenoutput .= "N";}
-	$tokenoutput .= "\"></font></td>\n"
+	$tokenoutput .= "\" /></td>\n"
 	."</tr>\n"
 	."<tr>\n"
-	."\t<td align='right' width='20%'><strong>".$clang->gT("Completed?").":</strong></font></td>\n"
+	."\t<td align='right' width='20%'><strong>".$clang->gT("Completed?").":</strong></td>\n"
 
 	// TLR change to put date into sent and completed
 	//	."\t<td bgcolor='#EEEEEE'><input type='text' size='1' name='completed' value=\"";
@@ -1645,39 +1644,39 @@ if (($subaction == "edit" || $subaction == "addnew") &&
 	if (isset($completed)) {$tokenoutput .= $completed;} else {$tokenoutput .= "N";}
 	if ($edfieldcount > 7)
 	{
-		$tokenoutput .= "\"></font></td>\n"
+		$tokenoutput .= "\" /></td>\n"
 		."</tr>\n"
 		."<tr>\n"
-		."\t<td align='right' width='20%'><strong>".$attr1_name.":</strong></font></td>\n"
+		."\t<td align='right' width='20%'><strong>".$attr1_name.":</strong></td>\n"
 		."\t<td ><input type='text' size='50' name='attribute1' value=\"";
 		if (isset($attribute_1)) {$tokenoutput .= $attribute_1;}
-		$tokenoutput .= "\"></font></td>\n"
+		$tokenoutput .= "\" /></td>\n"
 		."</tr>\n"
 		."<tr>\n"
-		."\t<td align='right' width='20%'><strong>".$attr2_name.":</strong></font></td>\n"
+		."\t<td align='right' width='20%'><strong>".$attr2_name.":</strong></td>\n"
 		."\t<td><input type='text' size='50' name='attribute2' value=\"";
 		if (isset($attribute_2)) {$tokenoutput .= $attribute_2;}
 	}
-	$tokenoutput .= "\"></font></td>\n"
+	$tokenoutput .= "\" /></td>\n"
 	."</tr>\n"
 	."<tr>\n"
 	."\t<td colspan='2' class='centered'>";
 	switch($subaction)
 	{
 		case "edit":
-			$tokenoutput .= "\t\t<input type='submit' value='".$clang->gT("Update Token")."'>\n"
-			."\t\t<input type='hidden' name='subaction' value='updatetoken'>\n"
-			."\t\t<input type='hidden' name='tid' value='{$tokenid}'>\n";
+			$tokenoutput .= "\t\t<input type='submit' value='".$clang->gT("Update Token")."' />\n"
+			."\t\t<input type='hidden' name='subaction' value='updatetoken' />\n"
+			."\t\t<input type='hidden' name='tid' value='{$tokenid}' />\n";
 			break;
 		case "addnew":
-			$tokenoutput .= "\t\t<input type='submit' value='".$clang->gT("Add Token")."'>\n"
-			."\t\t<input type='hidden' name='subaction' value='inserttoken'>\n";
+			$tokenoutput .= "\t\t<input type='submit' value='".$clang->gT("Add Token")."' />\n"
+			."\t\t<input type='hidden' name='subaction' value='inserttoken' />\n";
 			break;
 	}
-	$tokenoutput .= "\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
+	$tokenoutput .= "\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
 	."\t</td>\n"
 	."</tr>\n\n"
-	."</table></form>\n";
+	."</table></form></table>\n";
 }
 
 
@@ -2155,10 +2154,10 @@ function form_csv_upload($error=false)
 	. "<input type='hidden' name='sid' value='$surveyid' />\n"
 	. "<p><label for='the_file'>".$clang->gT("Choose the CSV file to upload:")."</label><input type='file' name='the_file' size='35' /></p>\n"
 	. "<p><label for='csvcharset'>".$clang->gT("Character set of the file:")."</label><select name='csvcharset' size='1'>$charsetsout</select></p>\n"
-	. "<p><label for='filterblankemail'>".$clang->gT("Filter blank email addresses:")."</label><input type='checkbox' name='filterblankemail' checked='checked'/></p>\n"
-	. "<p><label for='filterduplicatetoken'>".$clang->gT("Filter duplicate records:")."</label><input type='checkbox' name='filterduplicatetoken' checked='checked'/></p>\n"
+	. "<p><label for='filterblankemail'>".$clang->gT("Filter blank email addresses:")."</label><input type='checkbox' name='filterblankemail' checked='checked' /></p>\n"
+	. "<p><label for='filterduplicatetoken'>".$clang->gT("Filter duplicate records:")."</label><input type='checkbox' name='filterduplicatetoken' checked='checked' /></p>\n"
 	. "<p><input class='submit' type='submit' value='".$clang->gT("Upload")."' /></p>\n"
-	. "</form><p />\n\n";
+	. "</form></table>\n\n";
 } # END form
 
 function formldap($error=false)
@@ -2189,11 +2188,11 @@ function formldap($error=false)
 			$tokenoutput .= " <option value=".$q_number.">".$q['name']."</option>";
 		}
 		$tokenoutput .= "</select><br />";
-		$tokenoutput .= "<p><label for='filterblankemail'>".$clang->gT("Filter blank email addresses:")."</label><input type='checkbox' name='filterblankemail' checked='checked'/></p>\n"
-		. "<p><label for='filterduplicatetoken'>".$clang->gT("Filter duplicate records:")."</label><input type='checkbox' name='filterduplicatetoken' checked='checked'/></p>\n";
+		$tokenoutput .= "<p><label for='filterblankemail'>".$clang->gT("Filter blank email addresses:")."</label><input type='checkbox' name='filterblankemail' checked='checked' /></p>\n"
+		. "<p><label for='filterduplicatetoken'>".$clang->gT("Filter duplicate records:")."</label><input type='checkbox' name='filterduplicatetoken' checked='checked' /></p>\n";
 		$tokenoutput .= "<input type='hidden' name='sid' value='$surveyid' />";
 		$tokenoutput .= "<input type='hidden' name='subaction' value='uploadldap' />";
-		$tokenoutput .= "<input type='submit' name='submit'>";
+		$tokenoutput .= "<input type='submit' name='submit' />";
 		$tokenoutput .= '</form></font>';
 	}
 }

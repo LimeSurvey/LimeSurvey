@@ -538,7 +538,7 @@ if($sumrows5['edit_survey_property'])
           								</tr>
           								<tr align="left" class="evenrow"> 
             								<td>&nbsp;</td>
-            								<td><input name="submit" type="submit" value="'.$clang->gT("Add New Quota").'">
+            								<td><input name="submit" type="submit" value="'.$clang->gT("Add New Quota").'" />
             								<input type="hidden" name="sid" value="'.$surveyid.'" />
             								<input type="hidden" name="action" value="quotas" />
             								<input type="hidden" name="subaction" value="insertquota" />

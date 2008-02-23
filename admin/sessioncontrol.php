@@ -212,6 +212,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['action']) &&
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && 
 	returnglobal('action') != 'login' &&
+    returnglobal('action') != 'forgotpass' &&
+    returnglobal('action') != 'changelang' &&
 	returnglobal('action') != '')
 {
 	if (returnglobal('checksessionbypost') != $_SESSION['checksessionpost'])
