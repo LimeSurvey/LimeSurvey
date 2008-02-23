@@ -608,8 +608,9 @@ END;
             }
         }
 	    elseif ($cd[4] == "M" || 
-                $cd[4] == "P" ||
-                $cd[4] == "!")
+		$cd[4] == "P")
+//                $cd[4] == "P" ||
+//                $cd[4] == "!")
 	    {
 		    //$java .= "!document.getElementById('$idname') || document.getElementById('$idname').value == ' '";
             $java .= "document.getElementById('$idname').value == 'Y'"; // 
