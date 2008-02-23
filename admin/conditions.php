@@ -251,7 +251,8 @@ if (isset($questionlist) && is_array($questionlist))
                    ."{$dbprefix}questions.type, "
                    ."{$dbprefix}questions.lid, "
                    ."{$dbprefix}questions.lid1, "                   
-                   ."{$dbprefix}questions.title "
+                   ."{$dbprefix}questions.title, "
+                   ."{$dbprefix}questions.mandatory "
               ."FROM {$dbprefix}questions, "
                    ."{$dbprefix}groups "
              ."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid "
@@ -273,6 +274,7 @@ if (isset($questionlist) && is_array($questionlist))
                          "type"=>$myrows['type'],
                          "lid"=>$myrows['lid'],
                          "lid1"=>$myrows['lid1'],
+                         "mandatory"=>$myrows['mandatory'],
                          "title"=>$myrows['title']);
 		}
 	}
@@ -289,7 +291,8 @@ if (isset($postquestionlist) && is_array($postquestionlist))
                    ."{$dbprefix}questions.type, "
                    ."{$dbprefix}questions.lid, "
                    ."{$dbprefix}questions.lid1, "                   
-                   ."{$dbprefix}questions.title "
+                   ."{$dbprefix}questions.title, "
+                   ."{$dbprefix}questions.mandatory "
               ."FROM {$dbprefix}questions, "
                    ."{$dbprefix}groups "
              ."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND "
@@ -309,6 +312,7 @@ if (isset($postquestionlist) && is_array($postquestionlist))
                         "type"=>$myrows['type'],
                         "lid"=>$myrows['lid'],
                         "lid1"=>$myrows['lid1'],                        
+                        "mandatory"=>$myrows['mandatory'],
                         "title"=>$myrows['title']);
 		} // while
 	}
@@ -398,7 +402,11 @@ if ($questionscount > 0)
 					}
 					break;
 				}
-        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "", $clang->gT("No answer"));
+	// Only Show No-Answer if question is not mandatory
+	if ($rows['mandatory'] != 'Y')
+	{
+        	$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "", $clang->gT("No answer"));
+	}
       } //while
     } //if A,B,C,E,F,H
     elseif ($rows['type'] == "1") //Multi Scale
@@ -447,7 +455,12 @@ if ($questionscount > 0)
                 $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."#1", "{$lrows['code']}", "{$lrows['code']}");
             }
 
-//            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "", $clang->gT("No answer"));
+	// Only Show No-Answer if question is not mandatory
+		if ($rows['mandatory'] != 'Y')
+		{
+            		$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."#0", "", $clang->gT("No answer"));
+            		$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."#1", "", $clang->gT("No answer"));
+		}
         } //while
     }
     elseif ($rows['type'] == "R") //Answer Ranking
@@ -471,7 +484,11 @@ if ($questionscount > 0)
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, $qck[0], $qck[1]);
 				}
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, " ", $clang->gT("No answer"));
+	// Only Show No-Answer if question is not mandatory
+				if ($rows['mandatory'] != 'Y')
+				{
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, " ", $clang->gT("No answer"));
+				}
 			}
 			unset($quicky);
     } // for type R
@@ -483,19 +500,31 @@ if ($questionscount > 0)
         case "Y": // Y/N/NA
 				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "Y", $clang->gT("Yes"));
 				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "N", $clang->gT("No"));
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
+	// Only Show No-Answer if question is not mandatory
+				if ($rows['mandatory'] != 'Y')
+				{
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
+				}
 				break;
         case "G": //Gender
 				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "F", $clang->gT("Female"));
 				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "M", $clang->gT("Male"));
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
+	// Only Show No-Answer if question is not mandatory
+				if ($rows['mandatory'] != 'Y')
+				{
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
+				}
 				break;
         case "5": // 5 choice
 				for ($i=1; $i<=5; $i++)
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $i, $i);
 				}
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
+	// Only Show No-Answer if question is not mandatory
+				if ($rows['mandatory'] != 'Y')
+				{
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
+				}
 				break;
         case "W": // List
         case "Z": // List Flexible Radio Button
@@ -510,7 +539,11 @@ if ($questionscount > 0)
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], $frow['code'], $frow['title']);
 				}
-				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
+	// Only Show No-Answer if question is not mandatory
+				if ($rows['mandatory'] != 'Y')
+				{
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
+				}
 				break;
 				default:
             $aquery="SELECT * "
@@ -529,7 +562,11 @@ if ($questionscount > 0)
 				}
             if ($rows['type'] == "D")
             {
-               $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
+	// Only Show No-Answer if question is not mandatory
+		if ($rows['mandatory'] != 'Y')
+		{
+			$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
+		}
 
                // Now, save the questions type D only, then
                // it don´t need pass by all the array elements...
@@ -552,7 +589,11 @@ if ($questionscount > 0)
                     $rows['type'] != "J" &&
                     $rows['type'] != "I" )
             {
-              $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
+	// Only Show No-Answer if question is not mandatory
+		if ($rows['mandatory'] != 'Y')
+		{
+			$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
+		}
 	}
         break;
         // types X,D,!,0,Q,N,S,T,U,^ just have an option as "No Answer" originally
