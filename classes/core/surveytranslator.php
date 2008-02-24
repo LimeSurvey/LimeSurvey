@@ -191,6 +191,10 @@
 	    // Romanian
 	    $supportedLanguages['ro']['description'] = $clang->gT('Romanian');
 	    $supportedLanguages['ro']['nativedescription'] = 'Rom&#226;nesc';
+ 
+ 	    // Slovak
+	    $supportedLanguages['sk']['description'] = $clang->gT('Slovak');
+	    $supportedLanguages['sk']['nativedescription'] = 'Slovák';
 
 	    // Slovenian
 	    $supportedLanguages['sl']['description'] = $clang->gT('Slovenian');

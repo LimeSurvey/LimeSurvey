@@ -126,8 +126,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 		if ($action == "newlabelset") {$labelsoutput.= $clang->gT("Create or Import New Label Set"); $langids="en"; $tabitem=$clang->gT("Create New Label Set");}
 		else {$labelsoutput.= $clang->gT("Edit Label Set"); $tabitem=$clang->gT("Edit Label Set");}
 		$langidsarray=explode(" ",trim($langids)); //Make an array of it
-		$labelsoutput.= "</td>\n"
-		."\t</th></table>\n";
+		$labelsoutput.= "\n\t</th></tr></table>\n";
 
 
 		$labelsoutput.= "<div class='tab-pane' id='tab-pane-1'>\n";
