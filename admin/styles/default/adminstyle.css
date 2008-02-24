@@ -384,18 +384,18 @@ span.settingcaption {
 	-moz-border-radius: 5px;
 	background: #555;
 }
-.movableNodeul {
+.movableList {
 	padding-left: 0;
 	margin-left: 0;
 	margin-top: 0;
 	padding-top: 0;
-	width: 50em;
+	width: 60em;
 }
 .movableNode {
 	list-style-type: none;
 	border: 1px solid #999;
 	padding: 0.5em;
-	width: 50em;
+	width: 60em;
 	text-align: left;
 	margin-top: 2px;
 	background: #EEEFFF;

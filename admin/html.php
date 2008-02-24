@@ -2687,7 +2687,7 @@ if ($action == "ordergroups")
 	$groupdepsarray = GetGroupDepsForConditions($surveyid);
 	if (!is_null($groupdepsarray))
 	{
-		$ordergroups .= "<li class='movableNode'><strong><font color='orange'>".$clang->gT("Warning").":</font> ".$clang->gT("Current survey has questions with conditions outside their own group")."</strong><br /><br /><i>".$clang->gT("Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set")."</i></strong><br /><br/>".$clang->gT("The following groups are concerned").":<ul>\n";
+		$ordergroups .= "<ul class='movableList'><li class='movableNode'><strong><font color='orange'>".$clang->gT("Warning").":</font> ".$clang->gT("Current survey has questions with conditions outside their own group")."</strong><br /><br /><i>".$clang->gT("Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set")."</i></strong><br /><br/>".$clang->gT("The following groups are concerned").":<ul>\n";
 		foreach ($groupdepsarray as $depgid => $depgrouprow)
 		{
 			foreach($depgrouprow as $targgid => $targrow)
@@ -2701,10 +2701,10 @@ if ($action == "ordergroups")
 				$ordergroups .= "</li>\n";
 			}
 		}
-		$ordergroups .= "</ul></li>";
+		$ordergroups .= "</ul></li></ul>";
 	}
 
-	$ordergroups .= "<form method='post'>";
+	$ordergroups .= "<form method='post' action=''><ul class='movableList'>";
 		//Get the groups from this survey
 		$s_lang = GetBaseLanguageFromSurveyID($surveyid);
 		$ogquery = "SELECT * FROM {$dbprefix}groups WHERE sid='{$surveyid}' AND language='{$s_lang}' order by group_order,group_name" ;
@@ -2729,7 +2729,7 @@ if ($action == "ordergroups")
 				$updisabled = "disabled=\"true\" class=\"disabledbtn\"";
 			}
 	
-			$ordergroups.="<li class='movableNode' id='".$ogarray[$i]['gid']."'>\n" ;
+			$ordergroups.="<li class='movableNode' id='gid".$ogarray[$i]['gid']."'>\n" ;
 			$ordergroups.= "\t<input style='float:right;";
 	
 	                if ($i == 0){$ordergroups.="visibility:hidden;";}
@@ -2737,7 +2737,7 @@ if ($action == "ordergroups")
 	
 	   		if ($i < $groupcount-1)
 	    			{
-	    				// Fill the sortorder hiddenfield so we now what field is moved down
+	    				// Fill the hidden field 'sortorder' so we know what field is moved down
 					$ordergroups.= "\t<input type='submit' style='float:right;' name='groupordermethod' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$ogarray[$i]['group_order']}'\" ".$downdisabled."/>\n";
 	    			}
 				$ordergroups.=$ogarray[$i]['group_name']."</li>\n" ;

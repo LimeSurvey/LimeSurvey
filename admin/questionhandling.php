@@ -699,7 +699,6 @@ if($action == "orderquestions")
     
     $orderquestions = "<table width='100%' border='0'>\n\t<tr ><td colspan='2' class='settingcaption'>"
     	. "\t\t".$clang->gT("Change Question Order")."</td></tr>"
-//        . "<tr> <td >".("Question Name")."</td><td>".("Action")."</td></tr>"
         . "</table>\n";
 
 $questioncount = $oqresult->RecordCount();        
@@ -710,7 +709,7 @@ $minioqarray=$oqarray;
 $questdepsarray = GetQuestDepsForConditions($surveyid,$gid);
 if (!is_null($questdepsarray))
 {
-	$orderquestions .= "<li class='movableNode'><strong><font color='orange'>".$clang->gT("Warning").":</font> ".$clang->gT("Current group is using conditional questions")."</strong><br /><br /><i>".$clang->gT("Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set")."</i></strong><br /><br/>".$clang->gT("See the conditions marked on the following questions").":<ul>\n";
+	$orderquestions .= "<ul><li class='movableNode'><strong><font color='orange'>".$clang->gT("Warning").":</font> ".$clang->gT("Current group is using conditional questions")."</strong><br /><br /><i>".$clang->gT("Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set")."</i></strong><br /><br/>".$clang->gT("See the conditions marked on the following questions").":<ul>\n";
 	foreach ($questdepsarray as $depqid => $depquestrow)
 	{
 		foreach ($depquestrow as $targqid => $targcid)
@@ -722,10 +721,10 @@ if (!is_null($questdepsarray))
 		}
 		$orderquestions .= "</li>\n";
 	}
-	$orderquestions .= "</ul></li>";
+	$orderquestions .= "</ul></li></ul>";
 }
 
-    $orderquestions	.= "<form method='post'>";	
+    $orderquestions	.= "<form method='post' action=''><ul class='movableList'>";	
 
 for($i=0; $i < $questioncount ; $i++) //Assumes that all question orders start with 0
 {
@@ -749,7 +748,7 @@ for($i=0; $i < $questioncount ; $i++) //Assumes that all question orders start w
 	//Move to location 
 	$orderquestions.="<li class='movableNode'>\n" ;
 	$orderquestions.="\t<select style='float:right; margin-left: 5px;";
-	$orderquestions.="' name='questionmovetomethod$i' onChange=\"this.form.questionmovefrom.value='".$oqarray[$i]['question_order']."';this.form.questionmoveto.value=this.value;submit()\"/>\n";
+	$orderquestions.="' name='questionmovetomethod$i' onchange=\"this.form.questionmovefrom.value='".$oqarray[$i]['question_order']."';this.form.questionmoveto.value=this.value;submit()\">\n";
 	$orderquestions.="<option value=''>".$clang->gT("Place after..")."</option>\n";
     //Find out if there are any dependencies
 	$max_start_order=0;

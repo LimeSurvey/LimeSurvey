@@ -923,7 +923,7 @@ if (isset($cquestions))
 {
 	foreach ($cquestions as $cqn)
 	{
-		$conditionsoutput .= "\t\t\t\t<option value='$cqn[3]' title='$cqn[0]'";
+		$conditionsoutput .= "\t\t\t\t<option value='$cqn[3]' title=\"$cqn[0]\"";
 		if (isset($_POST['cquestions']) && $cqn[3] == $_POST['cquestions']) {
 			$conditionsoutput .= " selected";
 		}
