@@ -208,8 +208,9 @@ foreach ($qrows as $qrow)
 {
 	if ($qrow["qid"] != $qid && $position=="before")
 	{
-    if ($qrow['type'] != "T" && // $qrow['type'] != "S" &&
-        $qrow['type'] != "Q" &&
+//    if ($qrow['type'] != "T" && // $qrow['type'] != "S" &&
+ //       $qrow['type'] != "Q" &&
+    if ($qrow['type'] != "Q" &&
 		$qrow['type'] != "K")   //&& $qrow['type'] != "D"
     { //remember the questions of this type
 			$questionlist[]=$qrow["qid"];
