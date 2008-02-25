@@ -318,7 +318,7 @@ for ($i=0; $i<$stoppoint-1; $i++)
 $bigarray = array_values($bigarray);
 
 if (isset($surveyarray)) {$countsurveys = count($surveyarray);} else {$countsurveys = 0;}
-if (isset($surveylsarray)) {$countlanguages = count($surveylsarray)-1;} else {$countlanguages = 0;}
+if (isset($surveylsarray)) {$countlanguages = count($surveylsarray);} else {$countlanguages = 1;}
 if (isset($grouparray)) {$countgroups = count($grouparray);} else {$countgroups = 0;}
 if (isset($questionarray)) {$countquestions = count($questionarray);} else {$countquestions=0;}
 if (isset($answerarray)) {$countanswers = count($answerarray);} else {$countanswers=0;}
