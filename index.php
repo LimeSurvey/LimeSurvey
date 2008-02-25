@@ -13,7 +13,7 @@
 * $Id$
 */
 
-require_once(dirname(__FILE__).'/config.php');
+require_once(dirname(__FILE__).'/config-defaults.php');
 require_once(dirname(__FILE__).'/common.php');
 require_once(dirname(__FILE__).'/classes/core/language.php');
 @ini_set('session.gc_maxlifetime', $sessionlifetime);

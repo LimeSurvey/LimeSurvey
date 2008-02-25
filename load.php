@@ -14,7 +14,7 @@
 */
 
 
-require_once(dirname(__FILE__).'/config.php');
+require_once(dirname(__FILE__).'/config-defaults.php');
 require_once(dirname(__FILE__).'/common.php');
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}

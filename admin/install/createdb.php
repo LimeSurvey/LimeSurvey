@@ -15,7 +15,7 @@
 
 //Ensure script is not run directly, avoid path disclosure
 if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
-require_once(dirname(__FILE__).'/../../config.php');
+require_once(dirname(__FILE__).'/../../config-defaults.php');
 require_once(dirname(__FILE__).'/../../common.php');
 require_once($rootdir.'/classes/core/language.php');
 $clang = new limesurvey_lang("en");
@@ -57,7 +57,7 @@ if (!$dbname)
 	exit;
 }
 	
-if (!$database_exists) //Database named in config.php does not exist
+if (!$database_exists) //Database named in config-defaults.php does not exist
 {
 	// TODO SQL: Portable to other databases??
 	switch ($databasetype)

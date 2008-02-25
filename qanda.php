@@ -239,7 +239,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 	//question.php, group.php or survey.php
 
 	//globalise required config variables
-	global $dbprefix, $shownoanswer, $clang; //These are from the config.php file
+	global $dbprefix, $shownoanswer, $clang; //These are from the config-defaults.php file
 	//-----
 	global $thissurvey, $gl; //These are set by index.php
 	global $connect;

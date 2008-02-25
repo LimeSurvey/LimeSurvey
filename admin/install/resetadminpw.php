@@ -13,7 +13,7 @@
 * $Id: index.php 4037 2008-01-20 15:23:53Z c_schmitz $
 */
 
-require_once(dirname(__FILE__).'/../../config.php');  // config.php itself includes common.php
+require_once(dirname(__FILE__).'/../../config-defaults.php');  
 require_once(dirname(__FILE__).'/../../common.php');
 require_once($rootdir.'/classes/core/language.php');
 $clang = new limesurvey_lang("en");

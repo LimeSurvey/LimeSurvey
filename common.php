@@ -2388,7 +2388,7 @@ function GetAdditionalLanguagesFromSurveyID($surveyid)
 
 
 //For multilanguage surveys
-// If null or 0 is given for $surveyid then the default language from config.php is returned
+// If null or 0 is given for $surveyid then the default language from config-defaults.php is returned
 function SetSurveyLanguage($surveyid, $language)// SetSurveyLanguage($surveyid)
 {
 

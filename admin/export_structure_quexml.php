@@ -42,7 +42,7 @@ if (!$surveyid)
 
 function cleanup($string)
 {
-	return str_replace("&", "&amp;", $string);
+	return strip_tags($string);
 }
 	
 

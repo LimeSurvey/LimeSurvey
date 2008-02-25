@@ -252,7 +252,7 @@ function GetSessionUserRights($loginID)
 
 	// SuperAdmins
 	// * original superadmin with uid=1 unless manually changed and defined
-	//   in config.php
+	//   in config-defaults.php
 	// * or any user having USER_RIGHT_SUPERADMIN right
 
 	// Let's check if I am the Initial SuperAdmin
