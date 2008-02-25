@@ -195,6 +195,15 @@ if($sumrows5['edit_survey_property'])
 
 	}
 
+	if($subaction == "modifyquota")
+	{
+		$_POST  = array_map('db_quote', $_POST);
+		$query = "UPDATE ".db_table_name('quota')." SET name='{$_POST['quota_name']}', qlimit='{$_POST['quota_limit']}', action='{$_POST['quota_action']}' where id='{$_POST['quota_id']}' ";
+		$connect->Execute($query) or die($connect->ErrorMsg());
+		$viewquota = "1";
+
+	}
+	
 	if($subaction == "insertquotaanswer")
 	{
 		$_POST  = array_map('db_quote', $_POST);
@@ -226,6 +235,68 @@ if($sumrows5['edit_survey_property'])
 
 	}
 
+	if ($subaction == "quota_editquota")
+	{
+		$_POST  = array_map('db_quote', $_POST);
+		$query = "SELECT * FROM ".db_table_name('quota')." where id='{$_POST['quota_id']}'";
+		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+		$quotainfo = $result->FetchRow();
+		
+		$quotasoutput .='<form action="'.$scriptname.'" method="post">
+					<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
+  						<tr>
+    						<td valign="top">
+								<table width="100%" border="0">
+        							<tbody>
+          								<tr> 
+            								<td colspan="2" class="header">'.$clang->gT("Modify Quota").'</td>
+          								</tr>
+          								<tr class="evenrow"> 
+            								<td align="right"><blockquote> 
+                								<p><strong>'.$clang->gT("Quota Name").':</strong></p>
+              									</blockquote></td>
+            								<td align="left"> <input name="quota_name" type="text" size="30" maxlength="255" value="'.$quotainfo['name'].'"></td>
+          								</tr>
+          								<tr class="evenrow"> 
+            								<td align="right"><blockquote> 
+                								<p><strong>'.$clang->gT("Quota Limit").':</strong></p>
+              									</blockquote></td>
+            								<td align="left"><input name="quota_limit" type="text" size="12" maxlength="8" value="'.$quotainfo['qlimit'].'"></td>
+          								</tr>
+          								<tr class="evenrow"> 
+            								<td align="right"><blockquote> 
+                								<p><strong>'.$clang->gT("Quota Action").':</strong></p>
+              									</blockquote></td>
+            								<td align="left"> <select name="quota_action">
+            									<option value ="1" ';
+            									if($quotainfo['action'] == 1) $quotasoutput .= "selected";
+            									$quotasoutput .='>'.$clang->gT("Terminate Survey") .'</option> 
+            									<option value ="2" ';
+            									if($quotainfo['action'] == 2) $quotasoutput .= "selected";
+            									$quotasoutput .= '>'.$clang->gT("Terminate Survey With Warning") .'</option>
+            									</select></td>
+          								</tr>
+          								<tr align="left" class="evenrow"> 
+            								<td>&nbsp;</td>
+            								<td><table width="30%"><tr><td align="left"><input name="submit" type="submit" value="'.$clang->gT("Update Quota").'" />
+            								<input type="hidden" name="sid" value="'.$surveyid.'" />
+            								<input type="hidden" name="action" value="quotas" />
+            								<input type="hidden" name="subaction" value="modifyquota" />
+            								<input type="hidden" name="quota_id" value="'.$quotainfo['id'].'" />
+            								</form></td><td>
+            								<form action="'.$scriptname.'" method="post">
+            								<input name="submit" type="submit" id="submit" value="'.$clang->gT("Cancel").'">
+            								<input type="hidden" name="sid" value="'.$surveyid.'" />
+            								<input type="hidden" name="action" value="quotas" />
+            								</form></td></tr></table></td>
+          								</tr>
+       							</tbody>
+      						</table>
+    					</td>
+  					</tr>
+				</table>';
+	}
+	
 	if (($action == "quotas" && !isset($subaction)) || isset($viewquota))
 	{
 
@@ -275,13 +346,21 @@ if($sumrows5['edit_survey_property'])
             		<td align="center">'.$quotalisting['qlimit'].'</td>
             		<td align="center">N/A</td>
             		<td align="center" style="padding: 3px;">
+            		<table width="100%"><tr><td align="center">
+            		<form action="'.$scriptname.'" method="post">
+            			<input name="submit" type="submit" id="submit" value="'.$clang->gT("Modify").'">
+            			<input type="hidden" name="sid" value="'.$surveyid.'" />
+            			<input type="hidden" name="action" value="quotas" />
+            			<input type="hidden" name="quota_id" value="'.$quotalisting['id'].'" />
+            			<input type="hidden" name="subaction" value="quota_editquota" />
+            		</form></td><td>
             		<form action="'.$scriptname.'" method="post">
             			<input name="submit" type="submit" id="submit" value="'.$clang->gT("Remove").'">
             			<input type="hidden" name="sid" value="'.$surveyid.'" />
             			<input type="hidden" name="action" value="quotas" />
             			<input type="hidden" name="quota_id" value="'.$quotalisting['id'].'" />
             			<input type="hidden" name="subaction" value="quota_delquota" />
-            		</form>
+            		</form></td></tr></table>
             		</td>
           		</tr>
           		<tr class="evenrow"> 
