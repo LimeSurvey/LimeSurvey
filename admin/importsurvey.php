@@ -260,18 +260,62 @@ for ($i=0; $i<=$stoppoint+1; $i++)
 }
 $bigarray = array_values($bigarray);
 
+//LANGAUGE SETTINGS
+if (array_search("# QUOTA TABLE\n", $bigarray))
+{
+	$stoppoint = array_search("# QUOTA TABLE\n", $bigarray);
+}
+elseif (array_search("# QUOTA TABLE\r\n", $bigarray))
+{
+	$stoppoint = array_search("# QUOTA TABLE\r\n", $bigarray);
+}
+else
+{
+	$stoppoint = count($bigarray)-1;
+}
+for ($i=0; $i<=$stoppoint+1; $i++)
+{
+//	if ($i<$stoppoint-2 || $i==count($bigarray)-1)
+	if ($i<$stoppoint-2)
+	{
+		$surveylsarray[] = $bigarray[$i];
+	}
+	unset($bigarray[$i]);
+}
+$bigarray = array_values($bigarray);
+
+//QUOTA
+if (array_search("# QUOTA_MEMBERS TABLE\n", $bigarray))
+{
+	$stoppoint = array_search("# QUOTA_MEMBERS TABLE\n", $bigarray);
+}
+elseif (array_search("# QUOTA_MEMBERS TABLE\r\n", $bigarray))
+{
+	$stoppoint = array_search("# QUOTA_MEMBERS TABLE\r\n", $bigarray);
+}
+else
+{
+	$stoppoint = count($bigarray)-1;
+}
+for ($i=0; $i<=$stoppoint+1; $i++)
+{
+//	if ($i<$stoppoint-2 || $i==count($bigarray)-1)
+	if ($i<$stoppoint-2)
+	{
+		$quotaarray[] = $bigarray[$i];
+	}
+	unset($bigarray[$i]);
+}
+$bigarray = array_values($bigarray);
 
 //Survey Language Settings
 $stoppoint = count($bigarray)-1;
-for ($i=0; $i<=$stoppoint+1; $i++)
+for ($i=0; $i<$stoppoint-1; $i++)
 {
-	if ($i<$stoppoint-1) {$surveylsarray[] = $bigarray[$i];}
+	if ($i<=$stoppoint) {$quotamembersarray[] = $bigarray[$i];}
 	unset($bigarray[$i]);
 }
-
 $bigarray = array_values($bigarray);
-
-
 
 if (isset($surveyarray)) {$countsurveys = count($surveyarray);} else {$countsurveys = 0;}
 if (isset($surveylsarray)) {$countlanguages = count($surveylsarray)-1;} else {$countlanguages = 0;}
@@ -282,6 +326,7 @@ if (isset($conditionsarray)) {$countconditions = count($conditionsarray);} else 
 if (isset($labelsetsarray)) {$countlabelsets = count($labelsetsarray);} else {$countlabelsets=0;}
 if (isset($question_attributesarray)) {$countquestion_attributes = count($question_attributesarray);} else {$countquestion_attributes=0;}
 if (isset($assessmentsarray)) {$countassessments=count($assessmentsarray);} else {$countassessments=0;}
+if (isset($quotaarray)) {$countquota=count($quotaarray);} else {$countquota=0;}
 
 // CREATE SURVEY
 
@@ -295,6 +340,7 @@ if ($importversion>=111)
     if ($countconditions>0){$countconditions--;};
     if ($countlabelsets>0){$countlabelsets--;};
     if ($countquestion_attributes>0){$countquestion_attributes--;};
+    if ($countquota>0){$countquota--;};
     $sfieldorders  =convertCSVRowToArray($surveyarray[0],',','"');
     $sfieldcontents=convertCSVRowToArray($surveyarray[1],',','"');
 }
@@ -999,6 +1045,74 @@ if (isset($assessmentsarray) && $assessmentsarray) {//ONLY DO THIS IF THERE ARE 
 	}
 }
 
+if (isset($quotaarray) && $quotaarray) {//ONLY DO THIS IF THERE ARE QUOTAS
+    $count=0;
+	foreach ($quotaarray as $qar) {
+        
+        $fieldorders=convertCSVRowToArray($quotaarray[0],',','"');
+        $fieldcontents=convertCSVRowToArray($qar,',','"');
+        if ($count==0) {$count++; continue;}
+	
+        $asrowdata=array_combine($fieldorders,$fieldcontents);
+
+		$oldsid=$asrowdata["sid"];
+		foreach ($substitutions as $subs) {
+			if ($oldsid==$subs[0]) {$newsid=$subs[3];}
+		}
+
+		$asrowdata["sid"]=$newsid;
+		$oldid = $asrowdata["id"];
+		unset($asrowdata["id"]);
+
+        $newvalues=array_values($asrowdata);
+        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+
+        $asinsert = "insert INTO {$dbprefix}quota (".implode(',',array_keys($asrowdata)).") VALUES (".implode(',',$newvalues).")"; 
+		$result=$connect->Execute($asinsert) or die ("Couldn't insert quota<br />$asinsert<br />".$connect->ErrorMsg());
+		$quotaids[] = array($oldid,$connect->Insert_ID(db_table_name_nq('quota'),"id"));
+
+	}
+}
+
+if (isset($quotamembersarray) && $quotamembersarray) {//ONLY DO THIS IF THERE ARE QUOTAS
+    $count=0;
+	foreach ($quotamembersarray as $qar) {
+        
+        $fieldorders  =convertCSVRowToArray($quotamembersarray[0],',','"');
+        $fieldcontents=convertCSVRowToArray($qar,',','"');
+        if ($count==0) {$count++; continue;}
+	
+        $asrowdata=array_combine($fieldorders,$fieldcontents);
+
+		$oldsid=$asrowdata["sid"];
+		$newqid="";
+		$newquotaid="";
+		$oldqid=$asrowdata['qid'];
+		$oldquotaid=$asrowdata['quota_id'];
+
+		foreach ($substitutions as $subs) {
+			if ($oldsid==$subs[0]) {$newsid=$subs[3];}
+			if ($oldqid==$subs[2]) {$newqid=$subs[5];}
+		}
+
+		foreach ($quotaids as $quotaid) {
+			if ($oldquotaid==$quotaid[0]) {$newquotaid=$quotaid[1];}
+		}
+		
+		$asrowdata["sid"]=$newsid;
+		$asrowdata["qid"]=$newqid;
+		$asrowdata["quota_id"]=$newquotaid;
+		unset($asrowdata["id"]);
+
+        $newvalues=array_values($asrowdata);
+        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+
+        $asinsert = "insert INTO {$dbprefix}quota_members (".implode(',',array_keys($asrowdata)).") VALUES (".implode(',',$newvalues).")"; 
+		$result=$connect->Execute($asinsert) or die ("Couldn't insert quota<br />$asinsert<br />".$connect->ErrorMsg());
+
+	}
+}
+
 if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CONDITIONS!
     $count='0';  
 	foreach ($conditionsarray as $car) {
@@ -1085,7 +1199,8 @@ if ($importingfrom == "http")
         $importsurvey .= "\t<li>".$clang->gT("Not imported Label Sets").": $deniedcountlabelsets ".$clang->gT("(Label Sets were not imported since you do not have the permission to create new label sets.)")."</li>\n"; 
     }
 	$importsurvey .= "\t<li>".$clang->gT("Question Attributes").": $countquestion_attributes</li>\n";
-	$importsurvey .= "\t<li>".$clang->gT("Assessments").": $countassessments</li>\n</ul>\n";
+	$importsurvey .= "\t<li>".$clang->gT("Assessments").": $countassessments</li>\n";
+	$importsurvey .= "\t<li>".$clang->gT("Quotas").": $countquota</li>\n</ul>\n";
 	
 	$importsurvey .= "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />\n";
 	if ($importwarning != "") $importsurvey .= "<br><strong>".$clang->gT("Warnings").":</strong><br><ul style=\"text-align:left;\">" . $importwarning . "</ul><br>\n";

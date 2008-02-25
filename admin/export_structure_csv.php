@@ -18,14 +18,17 @@
 // DUMP THE RELATED DATA FOR A SINGLE SURVEY INTO A SQL FILE FOR IMPORTING LATER ON OR ON ANOTHER SURVEY SETUP
 // DUMP ALL DATA WITH RELATED SID FROM THE FOLLOWING TABLES
 // 1. Surveys
-// 2. Groups
-// 3. Questions
-// 4. Answers
-// 5. Conditions 
-// 6. Label Sets
-// 7. Labels
-// 8. Question Attributes
-// 9. Assessments
+// 2. Surveys Language Table
+// 3. Groups
+// 4. Questions
+// 5. Answers
+// 6. Conditions 
+// 7. Label Sets
+// 8. Labels
+// 9. Question Attributes
+// 10. Assessments
+// 11. Quota
+// 12. Quota Members
 
 include_once("login_check.php");
 
@@ -97,6 +100,14 @@ $qadump = BuildCSVFromQuery($query);
 $query = "SELECT {$dbprefix}assessments.* FROM {$dbprefix}assessments WHERE {$dbprefix}assessments.sid=$surveyid";
 $asdump = BuildCSVFromQuery($query);
 
+//11: Quota;
+$query = "SELECT {$dbprefix}quota.* FROM {$dbprefix}quota WHERE {$dbprefix}quota.sid=$surveyid";
+$quotadump = BuildCSVFromQuery($query);
+
+//12: Quota Members;
+$query = "SELECT {$dbprefix}quota_members.* FROM {$dbprefix}quota_members WHERE {$dbprefix}quota_members.sid=$surveyid";
+$quotamemdump = BuildCSVFromQuery($query);
+
 $fn = "limesurvey_survey_$surveyid.csv";
 
 header("Content-Type: application/download");
@@ -106,6 +117,6 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header("Pragma: no-cache");                          // HTTP/1.0
 
-echo $dumphead, $sdump, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump, $qadump, $asdump, $slsdump."\n";
+echo $dumphead, $sdump, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump, $qadump, $asdump, $slsdump, $quotadump, $quotamemdump."\n";
 exit;
 ?>
