@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.70RC2!
+Welcome to LimeSurvey v1.70!
 
 WARNING: THIS IS A RELEASE CANDIDATE VERSION. BE CAREFUL WHEN USING THIS FOR PRODUCTION!!!
 
@@ -52,97 +52,9 @@ HOW TO UPGRADE from earlier versions from LimeSurvey 1.45 or later
 
 Thank you to everyone who helped with this new release!
 
-Changes from 1.70RC1 to 1.70RC2
-Fixed #1653: DB error when deleting tokens table in Postgres (c_schmitz)
-French language updated (b00z00)
-Fixed references to GET param into POST for previous commit rev4200 (lemeur)
-Fixed #1620: Position of Special FCKEditor-Buttons (lemeur)
-Applied get2post to other dangerous links (see #1464) (lemeur)
-Some minor fixes and updated German translation (c_schmitz)
-Updated Polish translation by Dam (xqleg) (4xqleg (at) gmail (-d-o-t-) com
-Updated Italian translation by Lorenzo Vigentini (l(dot)vigentini(-at-)ed(dot)ac(dot)uk)
-Updated Portuguese Brazilian translation by De Lucca (delucca (at) inf -dt- ufsc -dt- br)
-Fixed possibility of double confirmation mail at double token entry (c_schmitz)
-Fixed conditions import from older surveys (c_schmitz)
-Fixed charset in inputfilter conversion (c_schmitz)
-Fixed a conditions bug related to #1580: Mandatory question & default answer problem (c_schmitz)
-Fixed Single quote in group name prevents survey from moving on in question-by-question mode (c_schmitz)
-Get2Post for a dangerous link (see #1464) (lemeur)
-Removed remaining links to old 'submit' page. (c_schmitz)
-Fixed Notice after saving (but not submitting) a response, captchas not showing (c_schmitz)
-Fixed small layout problems (c_schmitz)
-Raised line length limit on import (c_schmitz)
-Fixed #1569: Adding a user generates an DB error in postgres logs (c_schmitz)
-Fixed errors in postgres sql log when visiting root page (c_schmitz)
-Implemented LimeReplacementField for Dual Scale Question Type (joeschneider)
-Fixed #1630: statistics with Dual Scale Question Type (joeschneider)
-Fixed #1528: Import question "results page" uses old style (c_schmitz)
-Fixed #1632: When jpgraph is used for a very long survey this could lead to issues while computing results (lemeur)
-Fixed HTML tags showing up in array title hints (c_schmitz)
-Fixed other numerous xhtml issues (c_schmitz)
-Fixed ADODB _insertid function to find out the right id for a postgres type serial field (c_schmitz)
-Fixed numerous postgres bugs (c_schmitz)
-Fixed that not answered mandatorys are red highlighted for "multi scale" (joeschneider)
-Updated Fckeditor (#1568) + Fixed #1594 (cannot set font color) + implement doubleclick on LimeReplacementFields select box (lemeur)
-Fixed a dangerous GET-link see for renumberquestions see #1464 (lemeur)
-Fixed #1593: SUPERADMIN can see surveys owned by others in dropdown list but not in "listsurveys" (lemeur) 
-Fixed #1506: Display Creator of Survey + Fix issue in listsurveys where SUPERADMIN was not able to activate/de-activate survey (lemeur)
-Added feature "condition" for Dual Scale Question Typ (joeschneider)
-Fixed SUPERADMIN can't change template because they do not have Template Rights(lemeur)
-Split dual scale header attribute in order to increase the size of each header to 20 chars max (lemeur)
-Fixed alignment issue with dropdown version of dual scale + header also available in standard dual scale (lemeur)
-Fixed part of #1574: in $useWebserverAuth = true mode duplicate warning when trying to create a user (lemeur)
-Fixed #1583: Double header upon admin login using $useWebserverAuth = true; AND the automatic redirect to sid/gid/qid/... action at auto-login when $useWebserverAuth = true (lemeur)
-Fixed #01597: When the HTML editor mode is set to NONE and HTML format is email, the default htmleditor is used for email (lemeur)
-Fixed #1598: Importing token CSV file results in language code beeing added to the token column (c_schmitz)
-Fixed #1600: Save second label when copy question (joeschneider)
-Fixed #1575: Editing a Field in Firefox adds a fake "<br />" (c_schmitz)
-Fixed Display issue in conditions.php (c_schmitz)
-Fixed saving issue in survey settings using Postgres (c_schmitz)
-Fixed images/HTML not shown in print answer page. (c_schmitz)
-Fix some notices in dropdown layout for dual scale questions (lemeur)
-Implemented dropdown layout for Dual Scale Question Type (lemeur)
-Fixed error when exporting results of Dual Scale Question Type  (lemeur)
-Fixed #1564: Notices at "Set Template Rights" (machaven)
-Fixed #1554: Bypass Template Rights is possible (machaven)
-Added that by default users have access to use the "default" template (machaven)
-Fixed a strange bug with an invalid select conditions and short LimeSurvey path (c_schmitz)
-Fixed #1582: Input field on Labels template cuts off URL because of MAXLENGTH attribute ==> raised limit from 100 too 3000 (el-matador-69)
-Fixed #1545: Small notice with Quotas (machaven)
-Fixed #1565: All Questions of a LS installation are available at Quota Menu (machaven)
-Fixed #1507: Can't change HTML Editor Mode when register_globals=on (c_schmitz)
-Fixed #1574: added checksessionpost in useWebserverAuth mode, +avoid duplicate definition of randmokey in tokens and dataentry (lemeur)
-Fixed #1578: usercontrolSameGroupPolicy issue if user has survey creation privilege (lemeur)
-Fixed #1579: A SuperAdmin isn't able to manage rights for a survey he is doens't own. (lemeur)
-Fixed #1577: Several Errors in Tokens due to rights not handled correctly (lemeur)
-Fixed #1464: new function get2post to make dangerous GET requests (mostly links to dangerous actions) been translated to POST requests by generating a form at click time. (lemeur)
+Changes from 1.52 to 1.70
 
-
-Changes from 1.70beta to 1.70RC1
-
-Fixed Issues - Release Date: 2008/01/17
-
-[Survey Design] Questions with special characters aren't inserted in DB (PostgreSQL) (c_schmitz)
-[Data Entry (non public)] Any action on LimeSurvey interface generates 2 warnings in DB logs (c_schmitz)
-[Translation] Updated German Translation (ElMatador69)
-[Survey Design] LimeReplacementFileds proposes INSERTANS codes for answers that are on the same page (lemeur)
-[Installation] Add check for used library ZZIPlib (lemeur)
-[Translation] Norwegian Nynorsk language file (nn.po, nn.mo) (c_schmitz)
-[Import / Export] Duplicate LAbels when importing Surveys / Groups but not questions ? (c_schmitz)
-[Security] Import Survey/Group/Question bypasses the MANAGE_LABEL priv (c_schmitz)
-[Survey Design] Adding answers to dual scale matrix - Access denied (Joesch)
-[Survey Design] Mandatory Option isn't working for Ranking Question Type (c_schmitz)
-[Statistics] Statistic on question with a large label set fails - make jpgraph switchable on the fly (c_schmitz)
-[Statistics] Filtering Date Fields (c_schmitz)
-[Tokens] HTML Escape issues in email at sending time (c_schmitz)
-[Import / Export] The Extensions list for upload resources is not used by the fckeditor filemanager (lemeur)
-[Security] A superAdmin can see inactive surveys created by others but can't preview them (Permission error) (lemeur)
-[Survey Design] Problem with special characters in Question Text (c_schmitz)
-
-
-Changes from 1.52 to 1.70beta
-
-New Features / Feature Changes - Release Date: 2008/01/17
+New Features / Feature Changes - Release Date: 2008/02/25
 
 [Survey at Runtime] INSERTANS for Question Type: Y, E, C (lemeur)
 [Import / Export] Automatic Translation of relative links (images) at Survey/Group/Question Import (lemeur)
@@ -178,7 +90,6 @@ New Features / Feature Changes - Release Date: 2008/01/17
 [Survey Design] Re-organized survey creation/edition interface (lemeur)
 [Survey at Runtime] Alternative presentation of Dates question (jasebo)
 [Survey at Runtime] Print answers after completing the survey (c_schmitz)
-[Survey Design] Survey description: Default values for additional surveys aren't set automatically (c_schmitz)
 [Survey Design] SSL for STMP emailing (Patched by c_schmitz)
 [Import / Export] QueXML Survey structure export (Patched by c_schmitz)
 [Survey Design] Usability improvement: Hover effect for matrix questions (El-Matador-69)
@@ -189,8 +100,8 @@ New Features / Feature Changes - Release Date: 2008/01/17
 [Survey at Runtime] Attribute to disable/clear other checkboxes in Multiple Options question (jasebo)
 [Survey Design] Adding new questions to very large surveys, and question sorts (jasebo)
 [Survey Design] Question Attribute "display_columns" for Gender Question--Type (jasebo)
-
-
+[Survey Design] Implemented dropdown layout for Dual Scale Question Type (lemeur)
+[Language] Added Slovak translation provided by Juraj Zubán aka D4v1dZ ( d4v1dz -a-t- gmail -d-o-t- com)
 
 
 
