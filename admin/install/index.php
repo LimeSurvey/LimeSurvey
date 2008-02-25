@@ -32,7 +32,7 @@ if (!$database_exists)
 	.$clang->gT("LimeSurvey Setup")."</strong></td></tr>\n"
 	."\t<tr bgcolor='#CCCCCC'><td align='center'>\n"
 	."<strong>".$clang->gT("Welcome to LimeSurvey Setup!")."</strong><br /><br />\n"
-	.$clang->gT("The database defined in config-defaults.php does not exist.")."<br />\n"
+	.$clang->gT("The database defined in config.php does not exist.")."<br />\n"
 	.$clang->gT("LimeSurvey can attempt to create this database for you.")."<br /><br />\n"
 	.$clang->gT("Your selected database name is:")."<strong> $databasename</strong><br />\n"
 	."<br /><input type='submit' value='"

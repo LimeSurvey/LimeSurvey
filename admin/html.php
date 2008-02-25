@@ -2989,8 +2989,8 @@ if ($action == "newsurvey")
 	// Email format
         $newsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Use HTML format for token emails?")."</span>\n"
         . "\t\t<span class='settingentry'><select name='htmlemail'>\n"
-        . "\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
-        . "\t\t\t<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
+        . "\t\t\t<option value='Y' selected='selected'>".$clang->gT("Yes")."</option>\n"
+        . "\t\t\t<option value='N'>".$clang->gT("No")."</option>\n"
         . "\t\t</select></span>\n\t</div>\n";
 
 		// End Publication and access control TAB
