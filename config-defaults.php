@@ -258,5 +258,6 @@ $filterxsshtml = true;
 $usercontrolSameGroupPolicy = true;
 
 //DO NOT CHANGE BELOW HERE --------------------
+require_once(dirname(__FILE__).'/config.php');
 
 ?>
