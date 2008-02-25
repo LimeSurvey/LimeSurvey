@@ -245,7 +245,7 @@ $filterxsshtml = true;
 $usercontrolSameGroupPolicy = true;
 
 //DO NOT EVER CHANGE THE FOLLOWING LINE ---------------
-include_once('config.php');
+require_once(dirname(__FILE__).'/config.php');
 //-----------------------------------------------------
 
 // === Advanced Setup
