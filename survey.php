@@ -460,7 +460,9 @@ if ((isset($conditions) && is_array($conditions)) || (isset($array_filterqs) && 
             $cd[4] == "N" ||
             $cd[4] == "S" ||
             $cd[4] == "T" ||
-            $cd[4] == "U" )
+            $cd[4] == "U" ||
+            $cd[4] == "Q" ||
+            $cd[4] == "K" )
     {
         $idname="answer$cd[2]";
     }

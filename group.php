@@ -478,7 +478,7 @@ echo "
   		{
   			radioObj[i].checked = false;
   		}
-  	}";    
+  	}\n";    
 }
 
 print <<<END
@@ -576,7 +576,9 @@ foreach ($conditions as $cd)
 			$cd[4] == "N" ||
 			$cd[4] == "S" ||
 			$cd[4] == "T" ||
-			$cd[4] == "U" )
+			$cd[4] == "U" ||
+			$cd[4] == "Q" ||
+			$cd[4] == "K")
 	{
 		ereg("[0-9]+X([0-9]+)X.*",$cd[2],$sourceQuestionGid);
 		if ($sourceQuestionGid[1] == $gid)

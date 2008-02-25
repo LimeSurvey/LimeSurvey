@@ -208,11 +208,10 @@ foreach ($qrows as $qrow)
 {
 	if ($qrow["qid"] != $qid && $position=="before")
 	{
-//    if ($qrow['type'] != "T" && // $qrow['type'] != "S" &&
- //       $qrow['type'] != "Q" &&
-    if ($qrow['type'] != "Q" &&
-		$qrow['type'] != "K")   //&& $qrow['type'] != "D"
-    { //remember the questions of this type
+//		if ($qrow['type'] != "Q" &&
+//				$qrow['type'] != "K")   //&& $qrow['type'] != "D"
+		if ($qrow['type'] != "UNSUPPORTEDTYPE")
+		{ //remember the questions of this type
 			$questionlist[]=$qrow["qid"];
 		}
 	}
@@ -461,6 +460,29 @@ if ($questionscount > 0)
 		{
             		$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."#0", "", $clang->gT("No answer"));
             		$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."#1", "", $clang->gT("No answer"));
+		}
+        } //while
+    }
+    elseif ($rows['type'] == "K" ||$rows['type'] == "Q") //Multi shorttext/numerical
+    { //TIBO
+        $aquery="SELECT * "
+            ."FROM {$dbprefix}answers "
+            ."WHERE qid={$rows['qid']} "
+            ."AND {$dbprefix}answers.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+            ."ORDER BY sortorder, "
+            ."answer";
+        $aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
+        
+        while ($arows = $aresult->FetchRow())
+        {
+            $shortanswer = strip_tags($arows['answer']);
+            $shortanswer .= "[{$arows['code']}]";
+            $cquestions[]=array("$shortquestion [$shortanswer]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']);
+
+	// Only Show No-Answer if question is not mandatory
+		if ($rows['mandatory'] != 'Y')
+		{
+            		$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "", $clang->gT("No answer"));
 		}
         } //while
     }

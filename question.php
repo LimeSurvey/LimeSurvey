@@ -237,6 +237,19 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 		{
 			$thistype=$ccrows['type'];
 		}
+		// In case thistype = Q or K, then multiple conditions are ANDed
+		// and thus  must match
+		// ==> increase $cqidcount to the number of conditions
+		// avoiding the 'distinct' keyword in the SQL above
+		// (which is used for type M or P questions whose conditions
+		//  are ORed)
+		if ($thistype =="Q" || $thistype =="K")
+		{
+			$cquery2="SELECT cqid FROM {$dbprefix}conditions WHERE qid={$ia[0]} AND cqid={$crows['cqid']}";
+			$cresult2=db_execute_assoc($cquery2) or die("Couldn't count cqids<br />$cquery<br />".htmlspecialchars($connect->ErrorMsg()));
+			$cqidcount2=$cresult2->RecordCount();
+			$cqidcount += $cqidcount2 - 1; // substract 1 as it has been already counted once by $cquery
+		}
 		$cqquery = "SELECT cfieldname, value, cqid, method FROM {$dbprefix}conditions WHERE qid={$ia[0]} AND cqid={$crows['cqid']}";
 		$cqresult = db_execute_assoc($cqquery) or die("Couldn't get conditions for this question/cqid<br />$cquery<br />".htmlspecialchars($connect->ErrorMsg()));
 		$amatchhasbeenfound="N";
@@ -289,8 +302,25 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 					$amatchhasbeenfound="Y";
 				}
 			}
+			if ( ($thistype =="Q" || $thistype =="K") &&
+				$amatchhasbeenfound=="Y")
+			{ 
+				// For type Q/K questions each match is counted
+				// because this is an AND condition
+				$cqidmatches++;
+				// then we reset matchfound switch in order
+				// to check the next condition
+				$amatchhasbeenfound="N";
+			}
 		}
-		if ($amatchhasbeenfound == "Y") {$cqidmatches++;}
+		if ($amatchhasbeenfound == "Y" && 
+			($thistype !="Q" && $thistype !="K") )
+		{
+			// For all other question type than Q and K, 
+			// conditions on same Question are ORed (type M or P)
+			// so increment counter at least one of the conditions matches
+			$cqidmatches++;
+		}
 	}
 	if ($cqidmatches == $cqidcount)
 	{

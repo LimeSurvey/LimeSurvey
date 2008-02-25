@@ -1993,7 +1993,7 @@ function do_multipleshorttext($ia)
 			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
 	
 			// --> START NEW FEATURE - SAVE
-			$answer .= "' onchange='modfield(this.name)' $numbersonly maxlength='$maxsize'/>\n"
+			$answer .= "' onchange='modfield(this.name);checkconditions(this.value, this.name, this.type);' $numbersonly maxlength='$maxsize'/>\n"
 			. "\t\t\t\t\t\t\t\t</td>\n"
 			. "\t\t\t\t\t\t\t</tr>\n";
 			// --> END NEW FEATURE - SAVE
@@ -2096,7 +2096,7 @@ function do_multiplenumeric($ia)
 			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
 	
 			// --> START NEW FEATURE - SAVE
-			$answer .= "' onchange='modfield(this.name)' $numbersonly maxlength='$maxsize'/>$suffix\n"
+			$answer .= "' onchange='modfield(this.name);checkconditions(this.value, this.name, this.type);' $numbersonly maxlength='$maxsize'/>$suffix\n"
 			. "\t\t\t\t\t\t\t\t</td>\n"
 			. "\t\t\t\t\t\t\t</tr>\n";
 			// --> END NEW FEATURE - SAVE
