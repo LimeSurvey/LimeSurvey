@@ -30,7 +30,7 @@ if (isset($_POST['move']) && $_POST['move'] == "moveprev" && !$_POST['newgroupon
 elseif (isset($_POST['move']) && $_POST['move'] == "moveprev" && $_POST['newgroupondisplay'] == "Y") {$_SESSION['step'] = $_POST['thisstep'];}
 if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep']+1;}
 
-// This prevents the user from going back to teh question pages and keeps him on the final page
+// This prevents the user from going back to the question pages and keeps him on the final page
 // That way his session can be kept so he can still print his answers until he closes the browser
 if (isset($_SESSION['finished'])) {$_POST['move']="movesubmit"; }
 
@@ -54,114 +54,6 @@ $notvalidated=checkpregs($backok);
 
 //CHECK QUOTA
 check_quota('enforce',$surveyid);
-
-//SUBMIT
-if ((isset($_POST['move']) && $_POST['move'] == "movesubmit")  && (!isset($notanswered) || !$notanswered))
-{
-	if ($thissurvey['refurl'] == "Y")
-	{
-		if (!in_array("refurl", $_SESSION['insertarray'])) //Only add this if it doesn't already exist
-		{
-			$_SESSION['insertarray'][] = "refurl";
-		}
-//		$_SESSION['refurl'] = $_SESSION['refurl'];
-	}
-
-
-	//COMMIT CHANGES TO DATABASE
-	if ($thissurvey['active'] != "Y")
-	{
-		sendcacheheaders();
-		doHeader();
-		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-
-		//Check for assessments
-		$assessments = doAssessment($surveyid);
-		if ($assessments)
-		{
-			echo templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
-		}
-
-		$completed = "<br /><strong><font size='2' color='red'>".$clang->gT("Did Not Save")."</font></strong><br /><br />\n\n";
-		$completed .= $clang->gT("Your survey responses have not been recorded. This survey is not yet active.")."<br /><br />\n";
-		$completed .= "<a href='".$_SERVER['PHP_SELF']."?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
-	}
-	else
-	{
-
-
-		if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1) //don't use cookies if tokens are being used
-		{
-			$cookiename="PHPSID".returnglobal('sid')."STATUS";
-			setcookie("$cookiename", "COMPLETE", time() + 31536000);
-		}
-
-
-		$content='';
-		$content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-
-		//Check for assessments
-		$assessments = doAssessment($surveyid);
-		if ($assessments)
-		{
-			$content .= templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
-		}
-
-		$completed = "<br /><font size='2'><font color='green'><strong>"
-		.$clang->gT("Thank you")."</strong></font><br /><br />\n\n"
-		.$clang->gT("Your survey responses have been recorded.")."<br />\n"
-		."<a href='javascript:window.close()'>"
-		.$clang->gT("Close this Window")."</a></font><br /><br />\n";
-
-        // Link to Print Answer Preview  **********
-        if ($thissurvey['printanswers']=='Y')
-        {
-            $completed .= "<br /><br />"
-            ."<a class='printlink' href='printanswers.php' target='_blank'>"
-            .$clang->gT("Click here to print your answers.")
-            ."</a><br />\n";
-         }
-        //*****************************************
-
-		//Update the token if needed and send a confirmation email
-		if (isset($_POST['token']) && $_POST['token'])
-		{
-			submittokens();
-		}
-
-		//Send notification to survey administrator //Thanks to Jeff Clement http://jclement.ca
-		if ($thissurvey['sendnotification'] > 0 && $thissurvey['adminemail'])
-		{
-			sendsubmitnotification($thissurvey['sendnotification']);
-		}
-
-		$_SESSION['finished']=true;
-        $_SESSION['sid']=$surveyid;
-
-		if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['url'])
-		{
-			//Automatically redirect the page to the "url" setting for the survey
-			$url = $thissurvey['url'];
-			$url=str_replace("{SAVEDID}",$saved_id, $url);			// to activate the SAVEDID in the END URL
-            $url=str_replace("{TOKEN}",$_POST['token'], $url);            // to activate the TOKEN in the END URL
-            $url=str_replace("{SID}", $surveyid, $url);       // to activate the SID in the RND URL
-
-			header("Location: {$url}");
-		}
-
-		doHeader();
-		if (isset($content)) {echo $content;}
-
-	}
-
-	echo templatereplace(file_get_contents("$thistpl/completed.pstpl"));
-
-	echo "\n<br />\n";
-	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
-	doFooter();
-	exit;
-}
-
 
 //SEE IF $surveyid EXISTS ####################################################################
 if ($surveyexists <1)
@@ -338,7 +230,12 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 			{
 				$ia=$_SESSION['fieldarray'][$currentquestion];
 			}
-			$_SESSION['step']++;
+            if ($_SESSION['step']>=$_SESSION['totalsteps']) 
+            {
+                $_POST['move']="movesubmit"; 
+                break;       
+            }
+            $_SESSION['step']++;
 			foreach ($_SESSION['grouplist'] as $gl)
 			{
 				if ($gl[0] == $ia[5])
@@ -359,6 +256,114 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 		$conditionforthisquestion=$ia[7];
 	}
 }
+
+//SUBMIT
+if ((isset($_POST['move']) && $_POST['move'] == "movesubmit")  && (!isset($notanswered) || !$notanswered))
+{
+    if ($thissurvey['refurl'] == "Y")
+    {
+        if (!in_array("refurl", $_SESSION['insertarray'])) //Only add this if it doesn't already exist
+        {
+            $_SESSION['insertarray'][] = "refurl";
+        }
+//        $_SESSION['refurl'] = $_SESSION['refurl'];
+    }
+
+
+    //COMMIT CHANGES TO DATABASE
+    if ($thissurvey['active'] != "Y")
+    {
+        sendcacheheaders();
+        doHeader();
+        echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+
+        //Check for assessments
+        $assessments = doAssessment($surveyid);
+        if ($assessments)
+        {
+            echo templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
+        }
+
+        $completed = "<br /><strong><font size='2' color='red'>".$clang->gT("Did Not Save")."</font></strong><br /><br />\n\n";
+        $completed .= $clang->gT("Your survey responses have not been recorded. This survey is not yet active.")."<br /><br />\n";
+        $completed .= "<a href='".$_SERVER['PHP_SELF']."?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
+    }
+    else
+    {
+
+
+        if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1) //don't use cookies if tokens are being used
+        {
+            $cookiename="PHPSID".returnglobal('sid')."STATUS";
+            setcookie("$cookiename", "COMPLETE", time() + 31536000);
+        }
+
+
+        $content='';
+        $content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+
+        //Check for assessments
+        $assessments = doAssessment($surveyid);
+        if ($assessments)
+        {
+            $content .= templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
+        }
+
+        $completed = "<br /><font size='2'><font color='green'><strong>"
+        .$clang->gT("Thank you")."</strong></font><br /><br />\n\n"
+        .$clang->gT("Your survey responses have been recorded.")."<br />\n"
+        ."<a href='javascript:window.close()'>"
+        .$clang->gT("Close this Window")."</a></font><br /><br />\n";
+
+        // Link to Print Answer Preview  **********
+        if ($thissurvey['printanswers']=='Y')
+        {
+            $completed .= "<br /><br />"
+            ."<a class='printlink' href='printanswers.php' target='_blank'>"
+            .$clang->gT("Click here to print your answers.")
+            ."</a><br />\n";
+         }
+        //*****************************************
+
+        //Update the token if needed and send a confirmation email
+        if (isset($_POST['token']) && $_POST['token'])
+        {
+            submittokens();
+        }
+
+        //Send notification to survey administrator //Thanks to Jeff Clement http://jclement.ca
+        if ($thissurvey['sendnotification'] > 0 && $thissurvey['adminemail'])
+        {
+            sendsubmitnotification($thissurvey['sendnotification']);
+        }
+
+        $_SESSION['finished']=true;
+        $_SESSION['sid']=$surveyid;
+
+        if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['url'])
+        {
+            //Automatically redirect the page to the "url" setting for the survey
+            $url = $thissurvey['url'];
+            $url=str_replace("{SAVEDID}",$saved_id, $url);            // to activate the SAVEDID in the END URL
+            $url=str_replace("{TOKEN}",$_POST['token'], $url);            // to activate the TOKEN in the END URL
+            $url=str_replace("{SID}", $surveyid, $url);       // to activate the SID in the RND URL
+
+            header("Location: {$url}");
+        }
+
+        doHeader();
+        if (isset($content)) {echo $content;}
+
+    }
+
+    echo templatereplace(file_get_contents("$thistpl/completed.pstpl"));
+
+    echo "\n<br />\n";
+    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+    doFooter();
+    exit;
+}
+
 
 if ($questionsSkipped == 0 && $newgroup == "Y" && isset($_POST['move']) && $_POST['move'] == "moveprev" && (isset($_POST['grpdesc']) && $_POST['grpdesc']=="Y")) //a small trick to manage moving backwards from a group description
 {

@@ -39,19 +39,6 @@ $rootsymlinked      =   0;  // if your root document dir is symlinked LimeSurvey
                             // If you notice that labels are not being translated like "_ADMINISTRATION_" instead of "Administration"
                             // then try setting this to 1 .
 
-// === Advanced Setup
-
-    //The following url and dir locations do not need to be modified unless you have a non-standard
-    //LimeSurvey installation. Do not change unless you know what you are doing.
-    $homeurl        =   "$rooturl/admin"; // The website location (url) of the admin scripts
-    $publicurl      =   "$rooturl";       // The public website location (url) of the public survey script
-    $tempurl        =   "$rooturl/tmp";
-    $imagefiles     =   "$rooturl/images"; //Location of button bar files for admin script
-    $homedir        =   "$rootdir/admin"; // The physical disk location of the admin scripts
-    $publicdir      =   "$rootdir";       // The physical disk location of the public scripts
-    $tempdir        =   "$rootdir/tmp";   // The physical location where LimeSurvey can store temporary files
-                                          // Note: For OS/2 the $tempdir may need to be defined as an actual directory
-                                          // example: "x:/limesurvey/tmp". We don't know why.
 
 // Site Info
 $sitename           =   "LimeSurvey";     // The official name of the site (appears in the Window title)
@@ -257,7 +244,24 @@ $filterxsshtml = true;
 // Otherwise they can see all operators defines in LimeSurvey
 $usercontrolSameGroupPolicy = true;
 
-//DO NOT CHANGE BELOW HERE --------------------
-require_once(dirname(__FILE__).'/config.php');
+//DO NOT EVER CHANGE THE FOLLOWING LINE ---------------
+include_once('config.php');
+//-----------------------------------------------------
+
+// === Advanced Setup
+
+    //The following url and dir locations do not need to be modified unless you have a non-standard
+    //LimeSurvey installation. Do not change unless you know what you are doing.
+    $homeurl        =   "$rooturl/admin"; // The website location (url) of the admin scripts
+    $publicurl      =   "$rooturl";       // The public website location (url) of the public survey script
+    $tempurl        =   "$rooturl/tmp";
+    $imagefiles     =   "$rooturl/images"; //Location of button bar files for admin script
+    $homedir        =   "$rootdir/admin"; // The physical disk location of the admin scripts
+    $publicdir      =   "$rootdir";       // The physical disk location of the public scripts
+    $tempdir        =   "$rootdir/tmp";   // The physical location where LimeSurvey can store temporary files
+                                          // Note: For OS/2 the $tempdir may need to be defined as an actual directory
+                                          // example: "x:/limesurvey/tmp". We don't know why.
+
+
 
 ?>
