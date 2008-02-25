@@ -244,19 +244,43 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 		{
 			$currentcqid=$cqrows['cqid'];
 			$conditionfieldname=$cqrows['cfieldname'];
-			if (!$cqrows['value'] || $cqrows['value'] == ' ') {$conditionvalue="NULL";} else {$conditionvalue=$cqrows['value'];}
+			if (!$cqrows['value'] || $cqrows['value'] == ' ')
+			{
+				$conditionvalue="NULL";
+			} 
+			else
+			{
+				$conditionvalue=$cqrows['value'];
+			}
 			if ($thistype == "M" || $thistype == "P") //Adjust conditionfieldname for multiple option type questions
 			{
 				$conditionfieldname .= $conditionvalue;
 				$conditionvalue = "Y";
 			}
+			// If condition value is @SIDXGIDXQID[aid]@ field
+			if (ereg('^@([0-9]+X[0-9]+X[^@]+)@',$conditionvalue, $targetconditionfieldname))
+			{
+				$conditionvalue = $_SESSION[$targetconditionfieldname[1]];
+			}
 			if (trim($cqrows['method'])=='') {$cqrows['method']='==';}
-			if (!isset($_SESSION[$conditionfieldname]) || !$_SESSION[$conditionfieldname] || $_SESSION[$conditionfieldname] == ' ') {$currentvalue="NULL";} else {$currentvalue=$_SESSION[$conditionfieldname];}
+			if (!isset($_SESSION[$conditionfieldname]) || 
+				!$_SESSION[$conditionfieldname] || 
+				$_SESSION[$conditionfieldname] == ' ')
+			{
+				$currentvalue="NULL";
+			} 
+			else 
+			{
+				$currentvalue=$_SESSION[$conditionfieldname];
+			}
 
-			// TIBO the following ios ok for std operators but not for RX
 			if ( $cqrows['method'] != 'RX')
 			{
-				if (eval("if (\$currentvalue". $cqrows['method']."\$conditionvalue) return true; else return false;")) {$amatchhasbeenfound="Y";}
+			
+				if (eval("if (\$currentvalue". $cqrows['method']."\$conditionvalue) return true; else return false;"))
+				{
+					$amatchhasbeenfound="Y";
+				}
 			}
 			else
 			{
