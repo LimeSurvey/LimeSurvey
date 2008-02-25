@@ -830,13 +830,15 @@ function checkgroupfordisplay($gid)
 		{
 			$totalands=0;
 			$query = "SELECT * FROM ".db_table_name('conditions')."\n"
-			."WHERE qid=$cc[0] ORDER BY cqid";
+				."WHERE qid=$cc[0] ORDER BY cqid";
 			$result = db_execute_assoc($query) or die("Couldn't check conditions<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+
+			$andedMultipleCqidCount=0; // count of multiple cqids for type Q or K
 			while($row=$result->FetchRow())
 			{
 				//Iterate through each condition for this question and check if it is met.
 				$query2= "SELECT type, gid FROM ".db_table_name('questions')."\n"
-				." WHERE qid={$row['cqid']} AND language='".$_SESSION['s_lang']."'";
+					." WHERE qid={$row['cqid']} AND language='".$_SESSION['s_lang']."'";
 				$result2=db_execute_assoc($query2) or die ("Coudn't get type from questions<br />$ccquery<br />".htmlspecialchars($connect->ErrorMsg()));
 				while($row2=$result2->FetchRow())
 				{
@@ -844,7 +846,15 @@ function checkgroupfordisplay($gid)
 					//Find out the "type" of the question this condition uses
 					$thistype=$row2['type'];
 				}
-                
+
+				if ($thistype == 'K' || $thistype == 'Q')
+				{
+					// will be used as an index for Multiple conditions
+					// on type Q or K so that there will be ANDed and 
+					// not ORed
+					$andedMultipleCqidCount++;
+				}
+
 				if ($gid == $cq_gid)
 				{
 					//Don't do anything - this cq is in the current group
@@ -854,31 +864,106 @@ function checkgroupfordisplay($gid)
 					// For multiple choice type questions, the "answer" value will be "Y"
 					// if selected, the fieldname will have the answer code appended.
 					$fieldname=$row['cfieldname'].$row['value'];
-                    $cvalue="Y";     
+					$cvalue="Y";     
+					if (isset($_SESSION[$fieldname])) { $cfieldname=$_SESSION[$fieldname]; } else { $cfieldname=""; }
+				}
+				elseif (ereg('^@([0-9]+X[0-9]+X[^@]+)@',$row['value'],$targetconditionfieldname) &&
+					isset($_SESSION[$targetconditionfieldname[1]]) )
+				{ 
+					// If value uses @SIDXGIDXQID@ codes i
+					// then try to replace them with a 
+					// value recorded in SESSION if any
+					$cvalue=$_SESSION[$targetconditionfieldname[1]];
 					if (isset($_SESSION[$fieldname])) { $cfieldname=$_SESSION[$fieldname]; } else { $cfieldname=""; }
 				}
 				else
 				{
 					//For all other questions, the "answer" value will be the answer code.
 					if (isset($_SESSION[$row['cfieldname']])) {$cfieldname=$_SESSION[$row['cfieldname']];} else {$cfieldname=' ';}
-                    $cvalue=$row['value'];
+					$cvalue=$row['value'];
 				}
-                
-				if (trim($cfieldname) == trim($cvalue))
+
+				if ($row['method'] != 'RX')
 				{
-					//This condition is met
-					//Bugfix provided by Zoran Avtarovski
-					if (!isset($distinctcqids[$row['cqid']])  || $distinctcqids[$row['cqid']] == 0)
+//					if (trim($cfieldname) == trim($cvalue))
+					if (eval("if (trim(\$cfieldname)". $row['method']." trim(\$cvalue)) return true; else return false;"))
 					{
-						$distinctcqids[$row['cqid']]=1;
+						$conditionMatches=true;
+						//This condition is met
+						//Bugfix provided by Zoran Avtarovski
+//						if (!isset($distinctcqids[$row['cqid']])  || $distinctcqids[$row['cqid']] == 0)
+//						{
+//							$distinctcqids[$row['cqid']]=1;
+//						}
+					}
+					else
+					{
+						$conditionMatches=false;
+//						if (!isset($distinctcqids[$row['cqid']]))
+//						{
+//							$distinctcqids[$row['cqid']]=0;
+//						}
 					}
 				}
 				else
 				{
-					if (!isset($distinctcqids[$row['cqid']]))
+					if (ereg(trim($cvalue),trim($cfieldname)))
 					{
-						$distinctcqids[$row['cqid']]=0;
+						$conditionMatches=true;
+						//This condition is met
+						//Bugfix provided by Zoran Avtarovski
+//						if (!isset($distinctcqids[$row['cqid']])  || $distinctcqids[$row['cqid']] == 0)
+//						{
+//							$distinctcqids[$row['cqid']]=1;
+//						}
 					}
+					else
+					{
+						$conditionMatches=false;
+//						if (!isset($distinctcqids[$row['cqid']]))
+//						{
+//							$distinctcqids[$row['cqid']]=0;
+//						}
+					}
+				}
+
+				if ($conditionMatches === true)
+				{
+					if ($thistype != 'Q' && $thistype != 'K')
+					{
+						//This condition is met
+						//Bugfix provided by Zoran Avtarovski
+						if (!isset($distinctcqids[$row['cqid']])  || $distinctcqids[$row['cqid']] == 0)
+						{
+							$distinctcqids[$row['cqid']]=1;
+						}
+					}
+					else
+					{ //$andedMultipleCqidCount
+						if (!isset($distinctcqids[$row['cqid']."-$andedMultipleCqidCount"])  || $distinctcqids[$row['cqid']] == 0)
+						{
+							$distinctcqids[$row['cqid']."-$andedMultipleCqidCount"]=1;
+						}
+					
+					}
+				}
+				else
+				{
+					if ($thistype != 'Q' && $thistype != 'K')
+					{
+						if (!isset($distinctcqids[$row['cqid']]))
+						{
+							$distinctcqids[$row['cqid']]=0;
+						}
+					}
+					else
+					{
+						if (!isset($distinctcqids[$row['cqid']."-$andedMultipleCqidCount"]))
+						{
+							$distinctcqids[$row['cqid']."-$andedMultipleCqidCount"]=0;
+						}
+					}
+
 				}
 			} // while
 			foreach($distinctcqids as $key=>$val)
