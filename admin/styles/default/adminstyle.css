@@ -338,7 +338,7 @@ font.settingcaption {
 
 span.settingcaption {
 	float: left;
-	width: 150px;
+	width: 350px;
 	text-align: right;
 	font-weight: bold;
 	clear: left;
@@ -357,7 +357,7 @@ span.settingcaption {
     background-color: #F8F8FF;
 }
 .settingrow {
-	width: 800px;
+	width: 1000px;
 	clear: left;
 	margin-bottom: 20px;
     background-color: #F8F8FF;
