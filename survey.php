@@ -341,6 +341,12 @@ echo "     oObject.select();\n";
 echo "     return false;\n";
 echo "    }\n";
 //echo "  }\n";
+echo "    function match_regex(testedstring,str_regexp)\n";
+echo "    {// Regular expression test\n";
+echo "      if (str_regexp == '' || testedstring == '') return false;\n";
+echo "      pattern = new RegExp(str_regexp);\n";
+echo "      return pattern.test(testedstring)\n";
+echo "    }\n";
 echo "\t//-->\n";
 echo "\t</script>\n\n";
 // <-- END NEW FEATURE - SAVE
@@ -485,14 +491,21 @@ if ((isset($conditions) && is_array($conditions)) || (isset($array_filterqs) && 
       // NEW
       // If the value is enclossed by @
       // the value of this question must be evaluated instead.
-      if (ereg('^@[^@]+@', $cd[3]))
+      if (ereg('^@([0-9]+X[0-9]+X[^@]+)@', $cd[3], $comparedfieldname))
       {
-        $java .= "document.getElementById('$idname').value $cd[6] document.getElementById('$cd[2]').value";
-	  }
-	  else
-	  {
-			$java .= "document.getElementById('$idname').value $cd[6] '$cd[3]'";
-		}
+            $java .= "document.getElementById('$idname').value $cd[6] document.getElementById('answer".$comparedfieldname[1]."').value";
+      }
+      else
+      {
+        if ($cd[6] == 'RX')
+        {
+            $java .= "match_regex(document.getElementById('$idname').value,'$cd[3]')";
+        }
+        else
+        {
+            $java .= "document.getElementById('$idname').value $cd[6] '$cd[3]'";
+        }
+      }
     }
 
 		if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq))//Close if statement

@@ -440,6 +440,12 @@ echo "     oObject.focus();\n";
 echo "     oObject.select();\n";
 echo "     return false;\n";
 echo "    }\n";
+echo "    function match_regex(testedstring,str_regexp)\n";
+echo "    {// Regular expression test\n";
+echo "      if (str_regexp == '' || testedstring == '') return false;\n";
+echo "      pattern = new RegExp(str_regexp);\n";
+echo "      return pattern.test(testedstring)\n";
+echo "    }\n";
 echo " //-->\n";
 echo " </script>\n\n";
 // <-- END NEW FEATURE - SAVE
@@ -510,161 +516,177 @@ print <<<END
             }
         }
 END;
-    $java="";
-	$cqcount=1;
+$java="";
+$cqcount=1;
 
-    /* $conditions element structure
-    * $condition[n][0] => question id
-    * $condition[n][1] => question with value to evaluate
-    * $condition[n][2] => internal field name of element [1]
-    * $condition[n][3] => value to be evaluated on answers labeled. 
-    *                     *NEW* tittle of questions to evaluate.
-    * $condition[n][4] => type of question
-    * $condition[n][5] => equal to [2], but concatenated in this time (why the same value 2 times?)
-    * $condition[n][6] => method used to evaluate *NEW*
-    */
-	foreach ($conditions as $cd)
+/* $conditions element structure
+ * $condition[n][0] => question id
+ * $condition[n][1] => question with value to evaluate
+ * $condition[n][2] => internal field name of element [1]
+ * $condition[n][3] => value to be evaluated on answers labeled. 
+ *                     *NEW* tittle of questions to evaluate.
+ * $condition[n][4] => type of question
+ * $condition[n][5] => equal to [2], but concatenated in this time (why the same value 2 times?)
+ * $condition[n][6] => method used to evaluate *NEW*
+ */
+foreach ($conditions as $cd)
+{
+	if (trim($cd[6])=='') $cd[6]='==';
+	if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq)) //New if statement
 	{
-		if (trim($cd[6])=='') $cd[6]='==';
-    if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq)) //New if statement
-		{
-			$java .= $endzone;
-			$endzone = "";
-			$cqcount=1;
-            $java .= "\n\tif ((";
-        }
-        if (!isset($oldcq) || !$oldcq)
-        {
-            $oldcq = $cd[2];
+		$java .= $endzone;
+		$endzone = "";
+		$cqcount=1;
+		$java .= "\n\tif ((";
+	}
+	if (!isset($oldcq) || !$oldcq)
+	{
+		$oldcq = $cd[2];
+	}
+	if ($cd[4] == "L") //Just in case the dropdown threshold is being applied, check number of answers here
+	{
+		$cccquery="SELECT COUNT(*) FROM {$dbprefix}answers WHERE qid={$cd[1]} AND language='".$_SESSION['s_lang']."'";
+		$cccresult=db_execute_num($cccquery);
+		list($cccount) = $cccresult->FetchRow();
+	}
+	if ($cd[4] == "R")
+	{
+		$idname="java$cd[2]";  
+	}
+	elseif ($cd[4] == "5" ||
+			$cd[4] == "A" ||
+			$cd[4] == "B" ||
+			$cd[4] == "C" ||
+			$cd[4] == "E" ||
+			$cd[4] == "F" ||
+			$cd[4] == "H" ||
+			$cd[4] == "G" ||
+			$cd[4] == "Y" ||
+			$cd[4] == "1" ||
+			($cd[4] == "L" && $cccount <= $dropdownthreshold))
+	{
+		$idname="java$cd[2]";
+	}
+	elseif ($cd[4] == "M" ||
+			$cd[4] == "P")
+	{
+		$idname="java$cd[2]$cd[3]";
+	}
+	elseif ($cd[4] == "D" ||
+			$cd[4] == "N" ||
+			$cd[4] == "S" ||
+			$cd[4] == "T" ||
+			$cd[4] == "U" )
+	{
+		ereg("[0-9]+X([0-9]+)X.*",$cd[2],$sourceQuestionGid);
+		if ($sourceQuestionGid[1] == $gid)
+		{ // if question is on same page then field is answerXXXX	
+			$idname="answer$cd[2]";
 		}
-		if ($cd[4] == "L") //Just in case the dropdown threshold is being applied, check number of answers here
-        {
-			$cccquery="SELECT COUNT(*) FROM {$dbprefix}answers WHERE qid={$cd[1]} AND language='".$_SESSION['s_lang']."'";
-			$cccresult=db_execute_num($cccquery);
-			list($cccount) = $cccresult->FetchRow();
+		else
+		{ // If question is on another page then field if javaXXXX
+			$idname="java$cd[2]";
 		}
-        if ($cd[4] == "R")
-        {
-            $idname="java$cd[2]";  
-        }
-        elseif ($cd[4] == "5" ||
-                $cd[4] == "A" ||
-                $cd[4] == "B" ||
-                $cd[4] == "C" ||
-                $cd[4] == "E" ||
-                $cd[4] == "F" ||
-                $cd[4] == "H" ||
-                $cd[4] == "G" ||
-                $cd[4] == "Y" ||
-                $cd[4] == "1" ||
-               ($cd[4] == "L" && $cccount <= $dropdownthreshold))
-        {
-            $idname="java$cd[2]";
-        }
-        elseif ($cd[4] == "M" ||
-                $cd[4] == "P")
-        {
-            $idname="java$cd[2]$cd[3]";
-        }
-        elseif ($cd[4] == "D" ||
-                $cd[4] == "N" ||
-                $cd[4] == "S" ||
-                $cd[4] == "T" ||
-                $cd[4] == "U" )
-        {
-            $idname="answer$cd[2]";
-        }
-        else
-        {
-            $idname="java".$cd[2];
-        }
+	}
+	else
+	{
+		$idname="java".$cd[2];
+	}
 
-        if ($cqcount > 1 && $oldcq ==$cd[2])
-        {
-            $java .= " || ";
-        }
-        elseif ($cqcount >1 && $oldcq != $cd[2])
-        {
-            $java .= ") && (";
-        }
+	if ($cqcount > 1 && $oldcq ==$cd[2])
+	{
+		$java .= " || ";
+	}
+	elseif ($cqcount >1 && $oldcq != $cd[2])
+	{
+		$java .= ") && (";
+	}
 
-        // The [3] element is for the value used to be compared with
-        // If it is '' (empty) means not answered
-        // then a space or a false are interpreted as no answer
-        // as we let choose if the questions is answered or not
-        // and doesn�t care the answer, so we wait for a == or !=
+// The [3] element is for the value used to be compared with
+	// If it is '' (empty) means not answered
+	// then a space or a false are interpreted as no answer
+	// as we let choose if the questions is answered or not
+	// and doesn�t care the answer, so we wait for a == or !=
 	// TempFix by lemeur ==> add a check on cd[3]=' ' as well because
 	// condition editor seems not updated yet
-        if ($cd[3] == '' || $cd[3] == ' ')
-        {
-            if ($cd[6] == '==')
-            {
-                $java .= "document.getElementById('$idname').value == ' ' || !document.getElementById('$idname').value";
-            } else 
-            {
-                // strange thing, isn't it ? well 0, ' ', '' or false are all false logic values then...
-                $java .= "document.getElementById('$idname').value";
-            }
-        }
-	    elseif ($cd[4] == "M" || 
-		$cd[4] == "P")
-//                $cd[4] == "P" ||
-//                $cd[4] == "!")
-	    {
-		    //$java .= "!document.getElementById('$idname') || document.getElementById('$idname').value == ' '";
-            $java .= "document.getElementById('$idname').value == 'Y'"; // 
-	    } else
-        {
-            /* NEW
-            * If the value is enclossed by @
-            * the value of this question must be evaluated instead.
-            * Remember $titlejs array? It will be used now
-            * Another note: It�s not clear why is used a norma to call
-            * some elements like java*, answer* or just the fieldname
-            * as far I can see now it�s used the field name for text elements
-            * so, I�ll use by id with the prefix answer
-            */
-            if (ereg('^@[^@]+@', $cd[3]))
-            {
-                $auxqtitle = substr($cd[3],1,strlen($cd[3])-2);
-                $java .= "(document.getElementById('answer" . $cd[2] . "').value != '') && ";
+	if ($cd[3] == '' || $cd[3] == ' ')
+	{
+		if ($cd[6] == '==')
+		{
+			$java .= "document.getElementById('$idname').value == ' ' || !document.getElementById('$idname').value";
+		} else 
+		{
+			// strange thing, isn't it ? well 0, ' ', '' or false are all false logic values then...
+			$java .= "document.getElementById('$idname').value";
+		}
+	}
+	elseif ($cd[4] == "M" || 
+			$cd[4] == "P")
+		//                $cd[4] == "P" ||
+		//                $cd[4] == "!")
+	{
+		//$java .= "!document.getElementById('$idname') || document.getElementById('$idname').value == ' '";
+		$java .= "document.getElementById('$idname').value == 'Y'"; // 
+	} else
+	{
+		/* NEW
+		 * If the value is enclossed by @
+		 * the value of this question must be evaluated instead.
+		 * Remember $titlejs array? It will be used now
+		 * Another note: It�s not clear why is used a norma to call
+		 * some elements like java*, answer* or just the fieldname
+		 * as far I can see now it�s used the field name for text elements
+		 * so, I�ll use by id with the prefix answer
+		 */
+		if (ereg('^@([0-9]+X[0-9]+X[^@]+)@', $cd[3], $comparedfieldname))
+		{
+			//$auxqtitle = substr($cd[3],1,strlen($cd[3])-2);
+			$auxqtitle = $comparedfieldname;
+			$java .= "(document.getElementById('answer" . $cd[2] . "').value != '') && ";
 
-                if (in_array($titlejsid[$auxqtitle], $_SESSION['insertarray']))
-		        {
-                    $java .= "(document.getElementById('answer" . $titlejsid[$auxqtitle] . "').value != '') && ";
-                    $java .= "(document.getElementById('answer" . $cd[2] . "').value $cd[6] document.getElementById('answer".$titlejsid[$auxqtitle]."').value)";
-                } else 
-                {
-                    $java .= "(document.getElementById('answer" . $titlejsid[$auxqtitle] . "').value != '') && ";
-                    $java .= "(document.getElementById('answer" . $cd[2] . "').value $cd[6] document.getElementById('answer".$titlejsid[$auxqtitle]."').value)";
-	            }
-		    } else
-		    {
-	            if ($cd[3]) //Well supose that we are comparing a non empty value
-	            {
-	                $java .= "document.getElementById('$idname').value != '' && ";
-	            }
-                $java .= "document.getElementById('$idname').value $cd[6] '$cd[3]'";
-	        }
-	    }
-	    if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq))//Close if statement
-	    {
-		    $endzone = "))\n";
-		    $endzone .= "\t{\n";
-		    $endzone .= "\t\tdocument.getElementById('question$cd[0]').style.display='';\n";
-		    $endzone .= "\t\tdocument.getElementById('display$cd[0]').value='on';\n";
-		    $endzone .= "\t}\n";
-		    $endzone .= "\telse\n";
-		    $endzone .= "\t{\n";
-		    $endzone .= "\t\tdocument.getElementById('question$cd[0]').style.display='none';\n";
-		    $endzone .= "\t\tdocument.getElementById('display$cd[0]').value='';\n";
-		    $endzone .= "\t}\n";
-		    $cqcount++;
-	    }
-	    $oldq = $cd[0]; //Update oldq for next loop
-	    $oldcq = $cd[2];  //Update oldcq for next loop
-    } // end foreach
-    $java .= $endzone;
+			if (in_array($titlejsid[$auxqtitle], $_SESSION['insertarray']))
+			{
+				$java .= "(document.getElementById('answer" . $titlejsid[$auxqtitle] . "').value != '') && ";
+				$java .= "(document.getElementById('answer" . $cd[2] . "').value $cd[6] document.getElementById('answer".$titlejsid[$auxqtitle]."').value)";
+			} else 
+			{ // Comment FIXME by lemeur: isn't it the same as above, so why if/else ???
+				$java .= "(document.getElementById('answer" . $titlejsid[$auxqtitle] . "').value != '') && ";
+				$java .= "(document.getElementById('answer" . $cd[2] . "').value $cd[6] document.getElementById('answer".$titlejsid[$auxqtitle]."').value)";
+			}
+		} else
+		{
+			if ($cd[3]) //Well supose that we are comparing a non empty value
+			{
+				$java .= "document.getElementById('$idname').value != '' && ";
+			}
+			if ($cd[6] == 'RX')
+			{
+				$java .= "match_regex(document.getElementById('$idname').value,'$cd[3]')";
+			}
+			else
+			{
+				$java .= "document.getElementById('$idname').value $cd[6] '$cd[3]'";
+			}
+		}
+	}
+	if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq))//Close if statement
+	{
+		$endzone = "))\n";
+		$endzone .= "\t{\n";
+		$endzone .= "\t\tdocument.getElementById('question$cd[0]').style.display='';\n";
+		$endzone .= "\t\tdocument.getElementById('display$cd[0]').value='on';\n";
+		$endzone .= "\t}\n";
+		$endzone .= "\telse\n";
+		$endzone .= "\t{\n";
+		$endzone .= "\t\tdocument.getElementById('question$cd[0]').style.display='none';\n";
+		$endzone .= "\t\tdocument.getElementById('display$cd[0]').value='';\n";
+		$endzone .= "\t}\n";
+		$cqcount++;
+	}
+	$oldq = $cd[0]; //Update oldq for next loop
+	$oldcq = $cd[2];  //Update oldcq for next loop
+} // end foreach
+$java .= $endzone;
 }
 
 if (isset($array_filterqs) && is_array($array_filterqs))

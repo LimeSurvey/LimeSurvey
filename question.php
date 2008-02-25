@@ -252,7 +252,19 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 			}
 			if (trim($cqrows['method'])=='') {$cqrows['method']='==';}
 			if (!isset($_SESSION[$conditionfieldname]) || !$_SESSION[$conditionfieldname] || $_SESSION[$conditionfieldname] == ' ') {$currentvalue="NULL";} else {$currentvalue=$_SESSION[$conditionfieldname];}
-			if (eval("if (\$currentvalue". $cqrows['method']."\$conditionvalue) return true; else return false;")) {$amatchhasbeenfound="Y";}
+
+			// TIBO the following ios ok for std operators but not for RX
+			if ( $cqrows['method'] != 'RX')
+			{
+				if (eval("if (\$currentvalue". $cqrows['method']."\$conditionvalue) return true; else return false;")) {$amatchhasbeenfound="Y";}
+			}
+			else
+			{
+				if (ereg($conditionvalue,$currentvalue))
+				{
+					$amatchhasbeenfound="Y";
+				}
+			}
 		}
 		if ($amatchhasbeenfound == "Y") {$cqidmatches++;}
 	}
