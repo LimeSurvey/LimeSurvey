@@ -1,14 +1,14 @@
-# translation of limesurvey.po to es.po
+# translation of es.po to
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Carlos Juan Martin Perez <cmartin@una.ac.cr>, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: limesurvey\n"
+"Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-02-24 09:00+0100\n"
-"PO-Revision-Date: 2008-02-24 19:37-0600\n"
+"PO-Revision-Date: 2008-02-26 09:24-0600\n"
 "Last-Translator: Carlos Juan Martin Perez <cmartin@una.ac.cr>\n"
 "Language-Team:  <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2888,6 +2888,12 @@ msgstr "Nombres de los atributos de los/as encuestados/as:"
 msgid "Use HTML format for token emails?"
 msgstr "¿Utilizar formato HTML para los correos de los/as encuestados/as?"
 
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2345
+msgid ""
+"If you switch email mode, you'll have to review your email templates to fit "
+"the new format"
+msgstr "Si usted cambia a modo de correo electrónico, tendrá que revisar sus plantillas de correo para adaptarse al nuevo formato"
+
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2361
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3002
 msgid "Notification & Data Management"
@@ -3255,9 +3261,9 @@ msgstr "Sólo están disponibles las páginas de respuestas anteriores"
 msgid "Survey mode is set to "
 msgstr "El modo de la Encuesta está establecido como "
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:241
-msgid "Survey Quotas"
-msgstr "Cuotas de la Encuesta"
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:252
+msgid "Modify Quota"
+msgstr "Modificar Cuota"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:244
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:520
@@ -3269,14 +3275,6 @@ msgstr "Nombre de la cuota"
 msgid "Quota Action"
 msgstr "Acción de la cuota"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:247
-msgid "Limit"
-msgstr "Límite"
-
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:264
-msgid "Not Active"
-msgstr "Inactivo"
-
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:270
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:535
 msgid "Terminate Survey"
@@ -3286,6 +3284,26 @@ msgstr "Concluir encuesta"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:536
 msgid "Terminate Survey With Warning"
 msgstr "Concluir la encuesta con una Advertencia"
+
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:281
+msgid "Update Quota"
+msgstr "Actualizar Cuota"
+
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:312
+msgid "Survey Quotas"
+msgstr "Cuotas de la encuesta"
+
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:318
+msgid "Limit"
+msgstr "Límite"
+
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:335
+msgid "Not Active"
+msgstr "Inactiva"
+
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:351
+msgid "Modify"
+msgstr "Modificar"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:294
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:373
@@ -4093,6 +4111,10 @@ msgstr "(Los conjuntos de etiquetas no fueron importados dado que usted no tiene
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1111
 msgid "Question Attributes"
 msgstr "Atributos de la pregunta"
+
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1203
+msgid "Quotas"
+msgstr "Cuotas"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1090
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1114
@@ -7766,6 +7788,10 @@ msgstr "Ruso"
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:192
 msgid "Romanian"
 msgstr "Rumano"
+
+#: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:196
+msgid "Slovak"
+msgstr "Eslovaco"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:196
 msgid "Slovenian"
