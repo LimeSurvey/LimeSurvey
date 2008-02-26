@@ -673,9 +673,14 @@ function modlabelsetanswers($lid)
 		     	if ($filterxsshtml)
 		     	{	   			
 					require_once("../classes/inputfilter/class.inputfilter_clean.php");
-			    	$myFilter = new InputFilter('','',1,1,1); // $myFilter->process();
+			    	$myFilter = new InputFilter('','',1,1,1); 
       				$_POST['inserttitle']=$myFilter->process($_POST['inserttitle']);
 	   			}
+                else
+                          {
+                            $_POST['inserttitle'] = html_entity_decode($_POST['inserttitle'], ENT_QUOTES, "UTF-8");
+                          }
+                
                 // Fix bug with FCKEditor saving strange BR types
                 $_POST['inserttitle']=str_replace('<br type="_moz" />','',$_POST['inserttitle']);
                
@@ -719,7 +724,7 @@ function modlabelsetanswers($lid)
 		     	if ($filterxsshtml)
 		     	{	   			
 					require_once("../classes/inputfilter/class.inputfilter_clean.php");
-			    	$myFilter = new InputFilter('','',1,1,1); // $myFilter->process();
+			    	$myFilter = new InputFilter('','',1,1,1); 
 	   			}
 
 	         	foreach ($sortorderids as $sortorderid)
@@ -730,6 +735,11 @@ function modlabelsetanswers($lid)
 			     	{	   			
 	      				$_POST['title_'.$sortorderid]=$myFilter->process($_POST['title_'.$sortorderid]);
 		   			}
+                        else
+                          {
+                            $_POST['title_'.$sortorderid] = html_entity_decode($_POST['title_'.$sortorderid], ENT_QUOTES, "UTF-8");
+                          }
+                    
 
             // Fix bug with FCKEditor saving strange BR types
             $_POST['title_'.$sortorderid]=str_replace('<br type="_moz" />','',$_POST['title_'.$sortorderid]);

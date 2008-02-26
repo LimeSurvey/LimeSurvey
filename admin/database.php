@@ -84,9 +84,13 @@ if(isset($surveyid))
                if ($filterxsshtml)
                {
                    require_once("../classes/inputfilter/class.inputfilter_clean.php");
-                   $myFilter = new InputFilter('','',1,1,1); // $myFilter->process();
+                   $myFilter = new InputFilter('','',1,1,1); 
                    $_POST['attribute_value']=$myFilter->process($_POST['attribute_value']);
                 } 
+                   else
+                          {
+                            $_POST['attribute_value'] = html_entity_decode($_POST['attribute_value'], ENT_QUOTES, "UTF-8");
+                          }
             }
                 
 			$_POST  = array_map('db_quote', $_POST);
@@ -125,7 +129,7 @@ if(isset($surveyid))
 		{
         $first=true;
 	   		require_once("../classes/inputfilter/class.inputfilter_clean.php");
-		    $myFilter = new InputFilter('','',1,1,1); // $myFilter->process();
+		    $myFilter = new InputFilter('','',1,1,1); 
          
     		foreach ($grplangs as $grouplang)
 	       	{
@@ -135,6 +139,12 @@ if(isset($surveyid))
   		 		$_POST['group_name_'.$grouplang]=$myFilter->process($_POST['group_name_'.$grouplang]);
 		     	$_POST['description_'.$grouplang]=$myFilter->process($_POST['description_'.$grouplang]);
 		     	}
+                   else
+                          {
+                            $_POST['group_name_'.$grouplang] = html_entity_decode($_POST['group_name_'.$grouplang], ENT_QUOTES, "UTF-8");
+                            $_POST['description_'.$grouplang] = html_entity_decode($_POST['description_'.$grouplang], ENT_QUOTES, "UTF-8");
+                          }
+                
                 // Fix bug with FCKEditor saving strange BR types
                 $_POST['group_name_'.$grouplang]=str_replace('<br type="_moz" />','',$_POST['group_name_'.$grouplang]);
                 $_POST['description_'.$grouplang]=str_replace('<br type="_moz" />','',$_POST['description_'.$grouplang]);
@@ -184,6 +194,12 @@ if(isset($surveyid))
 			    $_POST['group_name_'.$grplang]=$myFilter->process($_POST['group_name_'.$grplang]);
 			    $_POST['description_'.$grplang]=$myFilter->process($_POST['description_'.$grplang]);
 			    }
+                   else
+                          {
+                            $_POST['group_name_'.$grplang] = html_entity_decode($_POST['group_name_'.$grplang], ENT_QUOTES, "UTF-8");
+                            $_POST['description_'.$grplang] = html_entity_decode($_POST['description_'.$grplang], ENT_QUOTES, "UTF-8");
+                          }
+                
                 // Fix bug with FCKEditor saving strange BR types
                 $_POST['group_name_'.$grplang]=str_replace('<br type="_moz" />','',$_POST['group_name_'.$grplang]);
                 $_POST['description_'.$grplang]=str_replace('<br type="_moz" />','',$_POST['description_'.$grplang]);
@@ -285,11 +301,18 @@ if(isset($surveyid))
 	     	if ($filterxsshtml)
 	     	{
 	   			require_once("../classes/inputfilter/class.inputfilter_clean.php");
-			    $myFilter = new InputFilter('','',1,1,1); // $myFilter->process();
+			    $myFilter = new InputFilter('','',1,1,1); 
 				$_POST['title']=$myFilter->process($_POST['title']);
 				$_POST['question']=$myFilter->process($_POST['question']);
 				$_POST['help']=$myFilter->process($_POST['help']);
 			}	
+                   else
+                          {
+                            $_POST['title'] = html_entity_decode($_POST['title'], ENT_QUOTES, "UTF-8");
+                            $_POST['question'] = html_entity_decode($_POST['question'], ENT_QUOTES, "UTF-8");
+                            $_POST['help'] = html_entity_decode($_POST['help'], ENT_QUOTES, "UTF-8");
+                          }
+            
             // Fix bug with FCKEditor saving strange BR types
             $_POST['title']=str_replace('<br type="_moz" />','',$_POST['title']);
             $_POST['question']=str_replace('<br type="_moz" />','',$_POST['question']);
@@ -453,9 +476,14 @@ if(isset($surveyid))
 			     	if ($filterxsshtml)
 	    		 	{
 						require_once("../classes/inputfilter/class.inputfilter_clean.php");
-				    	$myFilter = new InputFilter('','',1,1,1); // $myFilter->process();
+				    	$myFilter = new InputFilter('','',1,1,1); 
 						$_POST['title']=$myFilter->process($_POST['title']);
 					}
+                          else
+                          {
+                            $_POST['title'] = html_entity_decode($_POST['title'], ENT_QUOTES, "UTF-8");
+                          }
+                     
                     // Fix bug with FCKEditor saving strange BR types
                     $_POST['title']=str_replace('<br type="_moz" />','',$_POST['title']);
                     
@@ -466,6 +494,11 @@ if(isset($surveyid))
 							$_POST['question_'.$qlang]=$myFilter->process($_POST['question_'.$qlang]);
 							$_POST['help_'.$qlang]=$myFilter->process($_POST['help_'.$qlang]);
 						}
+                          else
+                          {
+                            $_POST['question_'.$qlang] = html_entity_decode($_POST['question_'.$qlang], ENT_QUOTES, "UTF-8");
+                            $_POST['help_'.$qlang] = html_entity_decode($_POST['help_'.$qlang], ENT_QUOTES, "UTF-8");
+                          }
                         // Fix bug with FCKEditor saving strange BR types
                         $_POST['question_'.$qlang]=str_replace('<br type="_moz" />','',$_POST['question_'.$qlang]);
                         $_POST['help_'.$qlang]=str_replace('<br type="_moz" />','',$_POST['help_'.$qlang]);
@@ -593,12 +626,19 @@ if(isset($surveyid))
 	     	if ($filterxsshtml)
 	     	{
 		   		require_once("../classes/inputfilter/class.inputfilter_clean.php");
-			    $myFilter = new InputFilter('','',1,1,1); // $myFilter->process();
+			    $myFilter = new InputFilter('','',1,1,1); 
 				// Prevent XSS attacks
 				$_POST['title']=$myFilter->process($_POST['title']);
 				$_POST['question_'.$baselang]=$myFilter->process($_POST['question_'.$baselang]);
 				$_POST['help_'.$baselang]=$myFilter->process($_POST['help_'.$baselang]);
 			}
+                   else
+                          {
+                            $_POST['title'] = html_entity_decode($_POST['title'], ENT_QUOTES, "UTF-8");
+                            $_POST['question_'.$baselang] = html_entity_decode($_POST['question_'.$baselang], ENT_QUOTES, "UTF-8");
+                            $_POST['help_'.$baselang] = html_entity_decode($_POST['help_'.$baselang], ENT_QUOTES, "UTF-8");
+                          }
+            
             
             // Fix bug with FCKEditor saving strange BR types
             $_POST['title']=str_replace('<br type="_moz" />','',$_POST['title']);
@@ -623,6 +663,11 @@ if(isset($surveyid))
 					$_POST['question_'.$qlanguage]=$myFilter->process($_POST['question_'.$qlanguage]);
 					$_POST['help_'.$qlanguage]=$myFilter->process($_POST['help_'.$qlanguage]);
 				}
+                   else
+                          {
+                            $_POST['question_'.$qlanguage] = html_entity_decode($_POST['question_'.$qlanguage], ENT_QUOTES, "UTF-8");
+                            $_POST['help_'.$qlanguage] = html_entity_decode($_POST['help_'.$qlanguage], ENT_QUOTES, "UTF-8");
+                          }
                 
             // Fix bug with FCKEditor saving strange BR types
             $_POST['question_'.$qlanguage]=str_replace('<br type="_moz" />','',$_POST['question_'.$qlanguage]);
@@ -653,6 +698,12 @@ if(isset($surveyid))
 					    $myFilter = new InputFilter('','',1,1,1); 
 					    $qr1['answer']=$myFilter->process($qr1['answer']);
 					}			
+                    else
+                          {
+                            $qr1['answer'] = html_entity_decode($qr1['answer'], ENT_QUOTES, "UTF-8");
+                          }
+
+                    
                     // Fix bug with FCKEditor saving strange BR types
                     $qr1['answer']=str_replace('<br type="_moz" />','',$qr1['answer']);
              	    
@@ -792,6 +843,11 @@ if(isset($surveyid))
 					        $myFilter = new InputFilter('','',1,1,1); 
 					        $_POST['insertanswer']=$myFilter->process($_POST['insertanswer']);
 					    }
+                        else
+                          {
+                            $_POST['insertanswer'] = html_entity_decode($_POST['insertanswer'], ENT_QUOTES, "UTF-8");
+                          }
+
                         // Fix bug with FCKEditor saving strange BR types
                         $_POST['insertanswer']=str_replace('<br type="_moz" />','',$_POST['insertanswer']);
                         
@@ -849,7 +905,7 @@ if(isset($surveyid))
             } 
 
 			require_once("../classes/inputfilter/class.inputfilter_clean.php");
-		    $myFilter = new InputFilter('','',1,1,1); // $myFilter->process();
+		    $myFilter = new InputFilter('','',1,1,1); 
 
 			//First delete all answers 
   			$query = "delete from ".db_table_name('answers')." where qid=".$connect->qstr($qid);
@@ -879,6 +935,11 @@ if(isset($surveyid))
 	     			{
 						$_POST['answer_'.$sortorderid]=$myFilter->process($_POST['answer_'.$sortorderid]);
 					}
+                        else
+                          {
+                            $_POST['answer_'.$sortorderid] = html_entity_decode($_POST['answer_'.$sortorderid], ENT_QUOTES, "UTF-8");
+                          }
+                    
                     // Fix bug with FCKEditor saving strange BR types
                     $_POST['answer_'.$sortorderid]=str_replace('<br type="_moz" />','',$_POST['answer_'.$sortorderid]);
 
@@ -1090,7 +1151,7 @@ if(isset($surveyid))
 		$languagelist = GetAdditionalLanguagesFromSurveyID($surveyid);
 		$languagelist[]=GetBaseLanguageFromSurveyID($surveyid);
 		require_once("../classes/inputfilter/class.inputfilter_clean.php");
-	    $myFilter = new InputFilter('','',1,1,1); // $myFilter->process();
+	    $myFilter = new InputFilter('','',1,1,1); 
 		
 		foreach ($languagelist as $langname)
 		{
@@ -1104,6 +1165,14 @@ if(isset($surveyid))
 				    $_POST['welcome_'.$langname]=$myFilter->process($_POST['welcome_'.$langname]);
 				    $_POST['urldescrip_'.$langname]=$myFilter->process($_POST['urldescrip_'.$langname]);
 			  	}
+                else
+                          {
+                            $_POST['short_title_'.$langname] = html_entity_decode($_POST['short_title_'.$langname], ENT_QUOTES, "UTF-8");
+                            $_POST['description_'.$langname] = html_entity_decode($_POST['description_'.$langname], ENT_QUOTES, "UTF-8");
+                            $_POST['welcome_'.$langname] = html_entity_decode($_POST['welcome_'.$langname], ENT_QUOTES, "UTF-8");
+                            $_POST['urldescrip_'.$langname] = html_entity_decode($_POST['urldescrip_'.$langname], ENT_QUOTES, "UTF-8");
+                          }
+                
                 // Fix bug with FCKEditor saving strange BR types
                 $_POST['short_title_'.$langname]=str_replace('<br type="_moz" />','',$_POST['short_title_'.$langname]);
                 $_POST['description_'.$langname]=str_replace('<br type="_moz" />','',$_POST['description_'.$langname]);
@@ -1182,7 +1251,14 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		    $_POST['welcome']=$myFilter->process($_POST['welcome']);
 		    $_POST['urldescrip']=$myFilter->process($_POST['urldescrip']);	
 		}
-        
+        else
+              {
+                $_POST['surveyls_title'] = html_entity_decode($_POST['surveyls_title'], ENT_QUOTES, "UTF-8");
+                $_POST['description'] = html_entity_decode($_POST['description'], ENT_QUOTES, "UTF-8");
+                $_POST['welcome'] = html_entity_decode($_POST['welcome'], ENT_QUOTES, "UTF-8");
+                $_POST['urldescrip'] = html_entity_decode($_POST['urldescrip'], ENT_QUOTES, "UTF-8");
+              }
+                
         // Fix bug with FCKEditor saving strange BR types
         $_POST['surveyls_title']=str_replace('<br type="_moz" />','',$_POST['surveyls_title']);
         $_POST['description']=str_replace('<br type="_moz" />','',$_POST['description']);
