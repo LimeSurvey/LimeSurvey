@@ -1858,11 +1858,10 @@ function do_multiplechoice_withcomments($ia)
 				. "\t\t\t\t\t\t\t\t\t//-->\n"
 				. "\t\t\t\t\t\t\t\t\t</script>\n";	
 		}
-		// --> START NEW FEATURE - SAVE
-		$answer .= " onclick='".$callmaxanswscriptcheckbox."checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' />"
-		// --> END NEW FEATURE - SAVE
-		. "<label for='answer$myfname' class='answertext'>"
-		. $ansrow['answer']."</label>\n";
+		$answer .=" onclick='".$callmaxanswscriptcheckbox."checkconditions(this.value, this.name, this.type)' "
+  				. " onchange='modfield(this.name);document.getElementById(\"answer$myfname2\").value=\"\"'' />"
+				. "<label for='answer$myfname' class='answertext'>"
+				. $ansrow['answer']."</label>\n";
 
 		if ($maxansw > 0) {$maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
 
@@ -1877,7 +1876,8 @@ function do_multiplechoice_withcomments($ia)
 		."<input class='text' type='text' size='40' id='answer$myfname2' name='$myfname2' title='".$clang->gT("Make a comment on your choice here:")."' value='";
 		if (isset($_SESSION[$myfname2])) {$answer .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
 		// --> START NEW FEATURE - SAVE
-		$answer .= "' onchange='modfield(this.name)' /></label>\n"
+		$answer .= "' onchange='modfield(this.name)' onkeypress='document.getElementById(\"answer{$myfname}\").checked=true;' /></label>\n"
+		
 		. "\t\t\t\t\t\t\t\t</td>\n"
 		. "\t\t\t\t\t\t\t</tr>\n";
 		// --> END NEW FEATURE - SAVE
