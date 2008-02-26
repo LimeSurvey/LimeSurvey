@@ -1175,7 +1175,8 @@ if ($subaction == "email" &&
 				else
 				{
 					$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language']).">$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language'])."</a>";
-				}
+                    $_POST['message_'.$emrow['language']] = html_entity_decode($_POST['message_'.$emrow['language']], ENT_QUOTES, "UTF-8");
+                }
                 
 				$modsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
 				$modmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
@@ -1419,7 +1420,8 @@ if ($subaction == "remind" &&
 				else
 				{
 					$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language']).">$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language'])."</a>";
-				}
+                    $_POST['message_'.$emrow['language']] = html_entity_decode($_POST['message_'.$emrow['language']], ENT_QUOTES, "UTF-8");
+                }
 
 				$msgsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
 				$sendmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
