@@ -104,9 +104,13 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit") && (!isset($notans
 
         // this three lines are to set the submitdate
         unset($_POST['modfields']);
-        $subquery = createinsertquery();
-        $connect->Execute($subquery);
-
+        
+        // only update submitdate if the user did not already visit the submit page
+        if (!isset($_SESSION['finished']))
+        {
+            $subquery = createinsertquery();
+            $connect->Execute($subquery);
+        }
 		//Create text for use in later print section
 		$completed = "<br /><strong><font size='2'><font color='green'>"
 		. $clang->gT("Thank you")."</strong></font><br /><br />\n\n"
