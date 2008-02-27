@@ -1,6 +1,4 @@
-Welcome to LimeSurvey v1.70!
-
-WARNING: THIS IS A RELEASE CANDIDATE VERSION. BE CAREFUL WHEN USING THIS FOR PRODUCTION!!!
+Welcome to LimeSurvey v1.70+!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -47,7 +45,18 @@ HOW TO UPGRADE from earlier versions from LimeSurvey 1.45 or later
 7. Done.
 
 
+Changes From 1.70+ to 1.70 
+==========================
 
+* Fixed strange warnings with html_entity_decode() and PHP 4 (c_schmitz)
+* Updated Galician Language File by Carlos Neira Cortizas  (http://cidadania.coop/) (c_schmitz)
+* Fixed #1726: Pressing back button after submit produces "Fatal error: Call to undefined function createinsertquery()" (c_schmitz)
+* Added some javascript to question type "Multiple choice with Comments" so unmarked boxes with comments aren't possible (c_schmitz)
+* French language updated (b00z00)
+* Spanish language updated (kadejo)
+* Fixed Quoting problem when XSS filter is off (c_schmitz)
+* Fixed Quoting problem in emails when XSS filter is off (c_schmitz)
+* Fixed a faulty link to FCKEditor config.php which resulted in uploades not working
 
 
 Thank you to everyone who helped with this new release!
