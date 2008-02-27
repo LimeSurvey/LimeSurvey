@@ -311,12 +311,12 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 {
 	$addsummary = "<br /><strong>".$clang->gT("Add User")."</strong><br />\n";
 
-	$new_user = html_entity_decode($postnew_user);
-	$new_email = html_entity_decode($postnew_email);
-	$new_full_name = html_entity_decode($postnew_full_name);
+	$new_user = @html_entity_decode($postnew_user);
+	$new_email = @html_entity_decode($postnew_email);
+	$new_full_name = @html_entity_decode($postnew_full_name);
 	$new_user = $postnew_user; // TODO: check if html decode should be used here
 	$new_email = $postnew_email; // TODO: check if html decode should be used here
-	$new_full_name = html_entity_decode($postnew_full_name);
+	$new_full_name = @html_entity_decode($postnew_full_name);
 	$valid_email = true;
 
 	if(!validate_email($new_email))
@@ -502,10 +502,10 @@ elseif ($action == "moduser")
 		($sresultcount > 0 && $_SESSION['USER_RIGHT_CREATE_USER'])
 	  )
 	{
-		$users_name = html_entity_decode($postuser);
-		$email = html_entity_decode($postemail);
-		$pass = html_entity_decode($_POST['pass']);
-		$full_name = html_entity_decode($postfull_name);
+		$users_name = @html_entity_decode($postuser);
+		$email = @html_entity_decode($postemail);
+		$pass = @html_entity_decode($_POST['pass']);
+		$full_name = @html_entity_decode($postfull_name);
 		$valid_email = true;
 
 		if(!validate_email($email))
