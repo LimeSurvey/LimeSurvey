@@ -164,7 +164,7 @@ if (isset($_SESSION['s_lang']))
 		$fnrow['type'] == "A" || $fnrow['type'] == "B" ||
 		$fnrow['type'] == "C" || $fnrow['type'] == "E" ||
 		$fnrow['type'] == "F" || $fnrow['type'] == "H" ||
-		$fnrow['type'] == "J" ||
+		$fnrow['type'] == "J" || $fnrow['type'] == "K" ||     
 		$fnrow['type'] == "P" || $fnrow['type'] == "^")
 		{
 			$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} AND	language='{$language}' ORDER BY sortorder, answer";
