@@ -4293,64 +4293,33 @@ function mydebug_var($strOutput)
 // getBounceEmail: returns email used to receive error notifications
 function getBounceEmail($surveyid)
 {
-	global $connect;
-	global $dbprefix;
-
-	if (!isset($surveyid) || is_null($surveyid))
+    $surveyInfo=getSurveyInfo($surveyid);
+	
+	if ($surveyInfo['bounce_email'] == '')
 	{
-		return null;
+		return null; // will be converted to from in MailText
 	}
 	else
 	{
-		$query = "SELECT bounce_email FROM {$dbprefix}surveys WHERE sid=".$surveyid;
-		
-		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
-		
-		if ($result->RecordCount() == 0)	return 'ERROR';
-		
-		$row = $result->FetchRow();
-	
-		if ($row['bounce_email'] == '')
-		{
-			return null; // will be converted to from in MailText
-		}
-		else
-		{
-			return $row['bounce_email'];
-		}	
-	}
+		return $row['bounce_email'];
+	}	
 }
 
 // getEmailFormat: returns email format for the survey
 // returns 'text' or 'html'
 function getEmailFormat($surveyid)
 {
-	global $connect;
-	global $dbprefix;
 
-	if (!isset($surveyid) || is_null($surveyid))
+	$surveyInfo=getSurveyInfo($surveyid);
+	if ($surveyInfo['htmlemail'] == 'Y')
 	{
-		return 'ERROR';
+		return 'html';
 	}
 	else
 	{
-		$query = "SELECT htmlemail FROM {$dbprefix}surveys WHERE sid=".$surveyid;
-		
-		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
-		
-		if ($result->RecordCount() == 0)	return 'ERROR';
-		
-		$row = $result->FetchRow();
-	
-		if ($row['htmlemail'] == 'Y')
-		{
-			return 'html';
-		}
-		else
-		{
-			return 'text';
-		}	
-	}
+		return 'text';
+	}	
+
 }
 
 // Check if user has manage rights for a template
@@ -4497,19 +4466,6 @@ function hasResources($id,$type='survey')
 	return false;
 }
 
-function getSurveyFormat($surveyid)
-// 
-{
-	global $dbprefix, $connect;
-
-	$query="SELECT format FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
-    $result=db_execute_assoc($query) or die ("Couldn't access survey settings<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
-	while ($row=$result->FetchRow())
-	{
-        return $row["format"];
-	}              
-	return null;
-}
 
 function randomkey($length)
 {

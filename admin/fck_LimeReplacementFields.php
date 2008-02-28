@@ -127,7 +127,8 @@ if ($isInstertansEnabled===true)
 	
 
 
-	$surveyformat =  getSurveyFormat($surveyid);// S, G, A
+    $surveyInfo = getSurveyInfo($surveyid);
+	$surveyformat = $surveyInfo['format'];// S, G, A
 	$prevquestion=null;
 	$previouspagequestion = true;
 	//Go through each question until we reach the current one
@@ -425,21 +426,23 @@ if (isset($cquestions))
 $limereplacementoutput .= "\t\t\t</select>\n";
 $limereplacementoutput .= "</td></tr>\n";
 
-
-switch ($surveyformat)
+if (isset($surveyformat))
 {
-	case 'A':
-		$limereplacementoutput .= "<tr><td>\n";
-		$limereplacementoutput .= "<br /><font color='orange'>".$clang->gT("Some Question have been disabled")."</font>";
-		$limereplacementoutput .= "<br />".$clang->gT("Survey Format is ")." ".$clang->gT("All in one").": <br /><i>".$clang->gT("Only Previous pages answers are available")."</i><br />";
-		$limereplacementoutput .= "</td></tr>\n";
-	break;
-	case 'G':
-		$limereplacementoutput .= "<tr><td>\n";
-		$limereplacementoutput .= "<br /><font color='orange'>".$clang->gT("Some Question have been disabled")."</font>";
-		$limereplacementoutput .= "<br />".$clang->gT("Survey mode is set to ")." ".$clang->gT("Group by Group").": <br/><i>".$clang->gT("Only Previous pages answers are available")."</i><br />";
-		$limereplacementoutput .= "</td></tr>\n";
-	break;
+    switch ($surveyformat)
+    {
+	    case 'A':
+		    $limereplacementoutput .= "<tr><td>\n";
+		    $limereplacementoutput .= "<br /><font color='orange'>".$clang->gT("Some Question have been disabled")."</font>";
+		    $limereplacementoutput .= "<br />".$clang->gT("Survey Format is ")." ".$clang->gT("All in one").": <br /><i>".$clang->gT("Only Previous pages answers are available")."</i><br />";
+		    $limereplacementoutput .= "</td></tr>\n";
+	    break;
+	    case 'G':
+		    $limereplacementoutput .= "<tr><td>\n";
+		    $limereplacementoutput .= "<br /><font color='orange'>".$clang->gT("Some Question have been disabled")."</font>";
+		    $limereplacementoutput .= "<br />".$clang->gT("Survey mode is set to ")." ".$clang->gT("Group by Group").": <br/><i>".$clang->gT("Only Previous pages answers are available")."</i><br />";
+		    $limereplacementoutput .= "</td></tr>\n";
+	    break;
+    }
 }
 
 $limereplacementoutput .= "</table>\n";

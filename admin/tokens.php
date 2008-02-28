@@ -34,45 +34,51 @@ include_once("login_check.php");
 include_once("database.php");
 
 
+//$invitationBody = "Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}";
+//$reminderBody = "Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}";
+//$confirmationBody = "Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}";
+//$registrationBody = "Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.");
+
+
 if ($subaction == "import" || $subaction == "upload" )  // THis array only needs to be defined for these two functions
 {
-$encodingsarray = array("armscii8"=>$clang->gT("ARMSCII-8 Armenian")
-		               ,"ascii"=>$clang->gT("US ASCII")
-		               ,"auto"=>$clang->gT("Automatic")
-		               ,"big5"=>$clang->gT("Big5 Traditional Chinese")
-		               ,"binary"=>$clang->gT("Binary pseudo charset")
-		               ,"cp1250"=>$clang->gT("Windows Central European")
-		               ,"cp1251"=>$clang->gT("Windows Cyrillic")
-		               ,"cp1256"=>$clang->gT("Windows Arabic")
-		               ,"cp1257"=>$clang->gT("Windows Baltic")
-		               ,"cp850"=>$clang->gT("DOS West European")
-		               ,"cp852"=>$clang->gT("DOS Central European")
-		               ,"cp866"=>$clang->gT("DOS Russian")
-		               ,"cp932"=>$clang->gT("SJIS for Windows Japanese")
-		               ,"dec8"=>$clang->gT("DEC West European")
-		               ,"eucjpms"=>$clang->gT("UJIS for Windows Japanese")
-		               ,"euckr"=>$clang->gT("EUC-KR Korean")
-		               ,"gb2312"=>$clang->gT("GB2312 Simplified Chinese")
-		               ,"gbk"=>$clang->gT("GBK Simplified Chinese")
-		               ,"geostd8"=>$clang->gT("GEOSTD8 Georgian")
-		               ,"greek"=>$clang->gT("ISO 8859-7 Greek")
-		               ,"hebrew"=>$clang->gT("ISO 8859-8 Hebrew")
-		               ,"hp8"=>$clang->gT("HP West European")
-		               ,"keybcs2"=>$clang->gT("DOS Kamenicky Czech-Slovak")
-		               ,"koi8r"=>$clang->gT("KOI8-R Relcom Russian")
-		               ,"koi8u"=>$clang->gT("KOI8-U Ukrainian")
-		               ,"latin1"=>$clang->gT("cp1252 West European")
-		               ,"latin2"=>$clang->gT("ISO 8859-2 Central European")
-		               ,"latin5"=>$clang->gT("ISO 8859-9 Turkish")
-		               ,"latin7"=>$clang->gT("ISO 8859-13 Baltic")
-		               ,"macce"=>$clang->gT("Mac Central European")
-		               ,"macroman"=>$clang->gT("Mac West European")
-		               ,"sjis"=>$clang->gT("Shift-JIS Japanese")
-		               ,"swe7"=>$clang->gT("7bit Swedish")
-		               ,"tis620"=>$clang->gT("TIS620 Thai")
-		               ,"ucs2"=>$clang->gT("UCS-2 Unicode")
-		               ,"ujis"=>$clang->gT("EUC-JP Japanese")
-		               ,"utf8"=>$clang->gT("UTF-8 Unicode"));
+    $encodingsarray = array("armscii8"=>$clang->gT("ARMSCII-8 Armenian")
+		                   ,"ascii"=>$clang->gT("US ASCII")
+		                   ,"auto"=>$clang->gT("Automatic")
+		                   ,"big5"=>$clang->gT("Big5 Traditional Chinese")
+		                   ,"binary"=>$clang->gT("Binary pseudo charset")
+		                   ,"cp1250"=>$clang->gT("Windows Central European")
+		                   ,"cp1251"=>$clang->gT("Windows Cyrillic")
+		                   ,"cp1256"=>$clang->gT("Windows Arabic")
+		                   ,"cp1257"=>$clang->gT("Windows Baltic")
+		                   ,"cp850"=>$clang->gT("DOS West European")
+		                   ,"cp852"=>$clang->gT("DOS Central European")
+		                   ,"cp866"=>$clang->gT("DOS Russian")
+		                   ,"cp932"=>$clang->gT("SJIS for Windows Japanese")
+		                   ,"dec8"=>$clang->gT("DEC West European")
+		                   ,"eucjpms"=>$clang->gT("UJIS for Windows Japanese")
+		                   ,"euckr"=>$clang->gT("EUC-KR Korean")
+		                   ,"gb2312"=>$clang->gT("GB2312 Simplified Chinese")
+		                   ,"gbk"=>$clang->gT("GBK Simplified Chinese")
+		                   ,"geostd8"=>$clang->gT("GEOSTD8 Georgian")
+		                   ,"greek"=>$clang->gT("ISO 8859-7 Greek")
+		                   ,"hebrew"=>$clang->gT("ISO 8859-8 Hebrew")
+		                   ,"hp8"=>$clang->gT("HP West European")
+		                   ,"keybcs2"=>$clang->gT("DOS Kamenicky Czech-Slovak")
+		                   ,"koi8r"=>$clang->gT("KOI8-R Relcom Russian")
+		                   ,"koi8u"=>$clang->gT("KOI8-U Ukrainian")
+		                   ,"latin1"=>$clang->gT("cp1252 West European")
+		                   ,"latin2"=>$clang->gT("ISO 8859-2 Central European")
+		                   ,"latin5"=>$clang->gT("ISO 8859-9 Turkish")
+		                   ,"latin7"=>$clang->gT("ISO 8859-13 Baltic")
+		                   ,"macce"=>$clang->gT("Mac Central European")
+		                   ,"macroman"=>$clang->gT("Mac West European")
+		                   ,"sjis"=>$clang->gT("Shift-JIS Japanese")
+		                   ,"swe7"=>$clang->gT("7bit Swedish")
+		                   ,"tis620"=>$clang->gT("TIS620 Thai")
+		                   ,"ucs2"=>$clang->gT("UCS-2 Unicode")
+		                   ,"ujis"=>$clang->gT("EUC-JP Japanese")
+		                   ,"utf8"=>$clang->gT("UTF-8 Unicode"));
    if (isset($_POST['csvcharset']) && $_POST['csvcharset'])  //sanitize charset - if encoding is not found sanitize to 'auto'
    {
    $uploadcharset=$_POST['csvcharset'];
@@ -521,6 +527,7 @@ if ($subaction == "emailsettings")
         . "<table width='100%' border='0'>\n\t<tr><td class='settingcaption'>"
 		. "\t\t".$clang->gT("Edit Email Settings")."</td></tr></table>\n"
 		. '<div class="tab-pane" id="tab-pane-1">';
+        $surveyinfo=getSurveyInfo($surveyid);
 		foreach ($grplangs as $grouplang)
 		{
             // this one is created to get the right default texts fo each language
@@ -531,7 +538,6 @@ if ($subaction == "emailsettings")
 			$tokenoutput .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($esrow['surveyls_language'],false);
 			if ($esrow['surveyls_language']==GetBaseLanguageFromSurveyID($surveyid)) {$tokenoutput .= '('.$clang->gT("Base Language").')';}
 			$tokenoutput .= '</h2>';
-			$esrow = array_map('htmlspecialchars', $esrow);
 			$tokenoutput .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Invitation Email Subject:")."</span>\n"
 			. "\t\t<span class='settingentry'><input type='text' size='80' name='email_invite_subj_".$esrow['surveyls_language']."' id='email_invite_subj_{$grouplang}' value=\"{$esrow['surveyls_email_invite_subj']}\" />\n"
 			. "\t\t<input type='hidden' name='email_invite_subj_default_".$esrow['surveyls_language']."' id='email_invite_subj_default_{$grouplang}' value='".$bplang->gT("Invitation to participate in survey")."' />\n"
@@ -575,7 +581,7 @@ if ($subaction == "emailsettings")
 			. getEditor("email-reg","email_register_{$grouplang}", "[".$clang->gT("Public registration Email:", "js")."](".$grouplang.")",$surveyid,'','',$action)
 			. "\t\t<input type='hidden' name='email_register_default_".$esrow['surveyls_language']."' id='email_register_default_{$grouplang}' value='".$bplang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.")."' />\n"
 			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onclick='javascript:  fillin(\"email_register_{$grouplang}\",\"email_register_default_{$grouplang}\")' />\n"
-			. "\t</span><br /><br /><br /><br /><br /><br /></div>\n</div>";
+			. "\t</span><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /></div>\n</div>";
 		}
 		$tokenoutput .= '</div>';
 		$tokenoutput .= "\t<p><p><p><input type='submit' class='standardbtn' value='".$clang->gT("Save")."' />\n"
@@ -1015,12 +1021,21 @@ if ($subaction == "email" &&
 		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
    )
 {
+    if (getEmailFormat($surveyid) == 'html')
+    {
+        $ishtml=true;
+    }
+    else
+    {
+        $ishtml=false;
+    }    
+
 	$tokenoutput .= PrepareEditorScript();
 	$tokenoutput .= "\t<tr>\n\t\t<td colspan='2' height='4'>"
 	."<strong>"
 	.$clang->gT("Email Invitation").":</strong></td>\n\t</tr>\n"
 	."\t<tr>\n\t\t<td colspan='2' align='center'>\n";
-	if (!isset($_POST['ok']) || !$_POST['ok'])
+    if (!isset($_POST['ok']) || !$_POST['ok'])
 	{
 
 		$tokenoutput .= "<form method='post' action='$scriptname?action=tokens&amp;sid=$surveyid'>";
@@ -1034,11 +1049,20 @@ if ($subaction == "email" &&
 			//GET SURVEY DETAILS
 			$thissurvey=getSurveyInfo($surveyid,$language);
 			if (!$thissurvey['email_invite']) 
-      {
-        $thissurvey['email_invite']=str_replace("\n", "\r\n", $clang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"));
-	      if ($thissurvey['format']) 
-
-        }
+            {
+                if ($ishtml===true)
+                {
+                    $thissurvey['email_invite']=html_escape(str_replace("\n", "<br />", $clang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped')));
+                }
+                else
+                {
+                    $thissurvey['email_invite']=str_replace("\n", "\r\n", $clang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"));
+                }
+            }
+            if (!$thissurvey['email_invite_subj'])
+            {
+                $thissurvey['email_invite_subj']=$clang->gT("Invitation to participate in survey");
+            }
 			$fieldsarray["{ADMINNAME}"]= $thissurvey['adminname'];
 			$fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
 			$fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
@@ -1097,14 +1121,6 @@ if ($subaction == "email" &&
 	}
 	else
 	{
-		if (getEmailFormat($surveyid) == 'html')
-		{
-			$ishtml=true;
-		}
-		else
-		{
-			$ishtml=false;
-		}	
 		$tokenoutput .= $clang->gT("Sending Invitations");
 		if (isset($tokenid)) {$tokenoutput .= " (".$clang->gT("Sending to Token ID").":&nbsp;{$tokenid})";}
 		$tokenoutput .= "<br />\n";
@@ -1148,7 +1164,7 @@ if ($subaction == "email" &&
 		    {
 			$_POST['message_'.$language]=auto_unescape($_POST['message_'.$language]);
 			$_POST['subject_'.$language]=auto_unescape($_POST['subject_'.$language]);
-      if ($ishtml) $_POST['message_'.$language] = @html_entity_decode($_POST['message_'.$language], ENT_QUOTES, "UTF-8");
+            if ($ishtml) $_POST['message_'.$language] = @html_entity_decode($_POST['message_'.$language], ENT_QUOTES, "UTF-8");
 			
 			}
 
@@ -1182,12 +1198,13 @@ if ($subaction == "email" &&
 				else
 				{
 					$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language'])."'>$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language'])."</a>";
-        }
+
+                }
                 
 				$modsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
 				$modmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
-
-				if (MailTextMessage($modmessage, $modsubject, $to , $from, $sitename, $ishtml, getBounceEmail($surveyid)))
+                $modmessage=htmlwrap($modmessage);
+                if (MailTextMessage($modmessage, $modsubject, $to , $from, $sitename, $ishtml, getBounceEmail($surveyid)))
 				{
 					// Put date into sent
 					$today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
@@ -2113,7 +2130,7 @@ if ($subaction == "uploadldap" &&
 
 			if ($xz != 0)
 			{
-				$tokenoutput .= "<font class='successtitle'>".$clang->gT("Success")."</font><br /><br>\n";
+				$tokenoutput .= "<font class='successtitle'>".$clang->gT("Success")."</font><br /><br />\n";
 			}
 			else
 			{
