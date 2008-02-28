@@ -179,18 +179,4 @@ function templatereplace1($line)
 	return $line;
 }
 
-function randomkey($length)
-{
-	$pattern = "1234567890abcdefghijklmnpqrstuvwxyz";
-	$patternlength = strlen($pattern)-1; 
-	for($i=0;$i<$length;$i++)
-	{
-		if(isset($key))
-		$key .= $pattern{rand(0,$patternlength)};
-		else
-		$key = $pattern{rand(0,$patternlength)};
-	}
-	return $key;
-}
-
 ?>

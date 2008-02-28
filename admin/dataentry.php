@@ -414,8 +414,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                     $tokendata = array (
                     "firstname"=> $saver['identifier'],	
                     "lastname"=> $saver['identifier'], 	
-    				"email"=>$saver['email'],
-                    "token"=>randomkey(10),
+    				        "email"=>$saver['email'],
+                    "token"=>randomkey(15),
                     "language"=>$saver['language'],
                     "sent"=>date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust), 	
                     "completed"=>"N");
@@ -2494,18 +2494,5 @@ function array_in_array($needle, $haystack)
 	}
 	return false;
 }
-
-	function randomkey($length)
-	{
-		$pattern = "1234567890";
-		for($i=0;$i<$length;$i++)
-		{
-			if(isset($key))
-			$key .= $pattern{rand(0,9)};
-			else
-			$key = $pattern{rand(0,9)};
-		}
-		return $key;
-	}
 
 ?>
