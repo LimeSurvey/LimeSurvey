@@ -26,7 +26,7 @@ global $Config ;
 
 
 // read LimeSurvey config files and standard library
-require_once(dirname(__FILE__).'/../../../../../../../config.php');
+require_once(dirname(__FILE__).'/../../../../../../../config-defaults.php');
 require_once(dirname(__FILE__).'/../../../../../../../common.php');
 
 $usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";
