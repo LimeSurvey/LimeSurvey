@@ -1033,8 +1033,12 @@ if ($subaction == "email" &&
 	    {
 			//GET SURVEY DETAILS
 			$thissurvey=getSurveyInfo($surveyid,$language);
-			if (!$thissurvey['email_invite']) {$thissurvey['email_invite']=str_replace("\n", "\r\n", $clang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"));}
-	
+			if (!$thissurvey['email_invite']) 
+      {
+        $thissurvey['email_invite']=str_replace("\n", "\r\n", $clang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"));
+	      if ($thissurvey['format']) 
+
+        }
 			$fieldsarray["{ADMINNAME}"]= $thissurvey['adminname'];
 			$fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
 			$fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
@@ -1093,6 +1097,14 @@ if ($subaction == "email" &&
 	}
 	else
 	{
+		if (getEmailFormat($surveyid) == 'html')
+		{
+			$ishtml=true;
+		}
+		else
+		{
+			$ishtml=false;
+		}	
 		$tokenoutput .= $clang->gT("Sending Invitations");
 		if (isset($tokenid)) {$tokenoutput .= " (".$clang->gT("Sending to Token ID").":&nbsp;{$tokenid})";}
 		$tokenoutput .= "<br />\n";
@@ -1136,6 +1148,8 @@ if ($subaction == "email" &&
 		    {
 			$_POST['message_'.$language]=auto_unescape($_POST['message_'.$language]);
 			$_POST['subject_'.$language]=auto_unescape($_POST['subject_'.$language]);
+      if ($ishtml) $_POST['message_'.$language] = @html_entity_decode($_POST['message_'.$language], ENT_QUOTES, "UTF-8");
+			
 			}
 
 		
@@ -1160,23 +1174,15 @@ if ($subaction == "email" &&
 				
 				$from = $_POST['from_'.$emrow['language']];
 
-				if (getEmailFormat($surveyid) == 'html')
-				{
-					$ishtml=true;
-				}
-				else
-				{
-					$ishtml=false;
-				}
+
 				if ($ishtml === false)
 				{
 					$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language']);
 				}
 				else
 				{
-					$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language']).">$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language'])."</a>";
-                    $_POST['message_'.$emrow['language']] = @html_entity_decode($_POST['message_'.$emrow['language']], ENT_QUOTES, "UTF-8");
-                }
+					$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language'])."'>$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language'])."</a>";
+        }
                 
 				$modsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
 				$modmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
@@ -2232,7 +2238,6 @@ function getLine($file)
 	// return the line buffer.
 	return $buffer;
 }
-
 
 
 ?>

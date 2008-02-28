@@ -1018,9 +1018,9 @@ function getSurveyInfo($surveyid, $languagecode='')
         $thissurvey["email_confirm"]=$thissurvey['surveyls_email_confirm'];
         $thissurvey["email_register_subj"]=$thissurvey['surveyls_email_register_subj'];
         $thissurvey["email_register"]=$thissurvey['surveyls_email_register'];
-		if (!isset($thissurvey['adminname'])) {$thissurvey['adminname']=$siteadminname;}
-		if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail']=$siteadminemail;}
-		if (!isset($thissurvey['urldescrip'])) {$thissurvey['urldescrip']=$thissurvey['url'];}
+		    if (!isset($thissurvey['adminname'])) {$thissurvey['adminname']=$siteadminname;}
+		    if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail']=$siteadminemail;}
+		    if (!isset($thissurvey['urldescrip'])) {$thissurvey['urldescrip']=$thissurvey['url'];}
         $thissurvey["tokenanswerspersistence"]=$thissurvey['tokenanswerspersistence'];
         $thissurvey["usecaptcha"]=$thissurvey['usecaptcha'];
         $thissurvey["htmlemail"]=$thissurvey['htmlemail'];
@@ -2754,6 +2754,8 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
 
 	global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword;
 
+  $body=htmlwrap($body);
+
 	if (is_null($bouncemail) )
 	{
 		$sender=$from;
@@ -2822,7 +2824,7 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
     	$mail->Body = $textbody;
         }
 
-	$mail->Subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
+	if (trim($subject)!='') {$mail->Subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";}
 	return $mail->Send();
 }
 
@@ -4524,5 +4526,112 @@ function randomkey($length)
 }
 
 
+function htmlwrap($str, $width = 60, $break = "\n", $nobreak = "") {
+
+  // Split HTML content into an array delimited by < and >
+  // The flags save the delimeters and remove empty variables
+  $content = preg_split("/([<>])/", $str, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+
+  // Transform protected element lists into arrays
+  $nobreak = explode(" ", strtolower($nobreak));
+
+  // Variable setup
+  $intag = false;
+  $innbk = array();
+  $drain = "";
+
+  // List of characters it is "safe" to insert line-breaks at
+  // It is not necessary to add < and > as they are automatically implied
+  $lbrks = "/?!%)-}]\\\"':;&";
+
+  // Is $str a UTF8 string?
+  $utf8 = (preg_match("/^([\x09\x0A\x0D\x20-\x7E]|[\xC2-\xDF][\x80-\xBF]|\xE0[\xA0-\xBF][\x80-\xBF]|[\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}|\xED[\x80-\x9F][\x80-\xBF]|\xF0[\x90-\xBF][\x80-\xBF]{2}|[\xF1-\xF3][\x80-\xBF]{3}|\xF4[\x80-\x8F][\x80-\xBF]{2})*$/", $str)) ? "u" : "";
+
+  while (list(, $value) = each($content)) {
+    switch ($value) {
+
+      // If a < is encountered, set the "in-tag" flag
+      case "<": $intag = true; break;
+
+      // If a > is encountered, remove the flag
+      case ">": $intag = false; break;
+
+      default:
+
+        // If we are currently within a tag...
+        if ($intag) {
+
+          // Create a lowercase copy of this tag's contents
+          $lvalue = strtolower($value);
+
+          // If the first character is not a / then this is an opening tag
+          if ($lvalue{0} != "/") {
+
+            // Collect the tag name   
+            preg_match("/^(\w*?)(\s|$)/", $lvalue, $t);
+
+            // If this is a protected element, activate the associated protection flag
+            if (in_array($t[1], $nobreak)) array_unshift($innbk, $t[1]);
+
+          // Otherwise this is a closing tag
+          } else {
+
+            // If this is a closing tag for a protected element, unset the flag
+            if (in_array(substr($lvalue, 1), $nobreak)) {
+              reset($innbk);
+              while (list($key, $tag) = each($innbk)) {
+                if (substr($lvalue, 1) == $tag) {
+                  unset($innbk[$key]);
+                  break;
+                }
+              }
+              $innbk = array_values($innbk);
+            }
+          }
+
+        // Else if we're outside any tags...
+        } else if ($value) {
+
+          // If unprotected...
+          if (!count($innbk)) {
+
+            // Use the ACK (006) ASCII symbol to replace all HTML entities temporarily
+            $value = str_replace("\x06", "", $value);
+            preg_match_all("/&([a-z\d]{2,7}|#\d{2,5});/i", $value, $ents);
+            $value = preg_replace("/&([a-z\d]{2,7}|#\d{2,5});/i", "\x06", $value);
+
+            // Enter the line-break loop
+            do {
+              $store = $value;
+
+              // Find the first stretch of characters over the $width limit
+              if (preg_match("/^(.*?\s)?([^\s]{".$width."})(?!(".preg_quote($break, "/")."|\s))(.*)$/s{$utf8}", $value, $match)) {
+
+                if (strlen($match[2])) {
+                  // Determine the last "safe line-break" character within this match
+                  for ($x = 0, $ledge = 0; $x < strlen($lbrks); $x++) $ledge = max($ledge, strrpos($match[2], $lbrks{$x}));
+                  if (!$ledge) $ledge = strlen($match[2]) - 1;
+
+                  // Insert the modified string
+                  $value = $match[1].substr($match[2], 0, $ledge + 1).$break.substr($match[2], $ledge + 1).$match[4];
+                }
+              }
+
+            // Loop while overlimit strings are still being found
+            } while ($store != $value);
+
+            // Put captured HTML entities back into the string
+            foreach ($ents[0] as $ent) $value = preg_replace("/\x06/", $ent, $value, 1);
+          }
+        }
+    }
+
+    // Send the modified segment down the drain
+    $drain .= $value;
+  }
+
+  // Return contents of the drain
+  return $drain;
+} 
 
 ?>

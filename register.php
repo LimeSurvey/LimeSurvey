@@ -80,13 +80,13 @@ if (($result->RecordCount()) > 0)
 	exit;
 }
 
-$insert = "NO";
-while ($insert != "OK")
+$mayinsert = false;
+while ($mayinsert != true)
 {
 	$newtoken = randomkey(15);
 	$ntquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='$newtoken'";
 	$ntresult = $connect->Execute($ntquery);
-	if (!$ntresult->RecordCount()) {$insert = "OK";}
+	if (!$ntresult->RecordCount()) {$mayinsert = true;}
 }
 
 //Insert new entry into tokens db
