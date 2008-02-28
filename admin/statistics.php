@@ -1143,7 +1143,7 @@ if (isset($summary) && $summary)
 		}
 		elseif (substr($rt, 0, 1) == "N" || substr($rt, 0, 1) == "K") //NUMERICAL TYPE
 		{
-			if (substr($rt, -1) == "G" || substr($rt, -1) == "L" || substr($rt, -1) == "=")
+			if (substr($rt, -1) == "G" ||  substr($rt, -1) == "L" || substr($rt, -1) == "=")
 			{
 				//DO NOTHING
 			}
@@ -1342,7 +1342,7 @@ if (isset($summary) && $summary)
 				}
 			}
 		}
-		elseif (substr($rt, 0, 2) == "id" || substr($rt, 0, 9) == "datestamp")
+ 		elseif (substr($rt, 0, 2) == "id" || substr($rt, 0, 9) == "datestamp" || (substr($rt, 0, 1) == "D"))
 		{
 		}
 		else // NICE SIMPLE SINGLE OPTION ANSWERS
