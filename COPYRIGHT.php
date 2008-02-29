@@ -36,7 +36,7 @@ Bogdan Anastasiei, Alexei G. Tchernov, Alexander Shilov, Gasper Koren,
 Luis M. Martinez, Juan Rafael Fernández, Jose Luis Ramirez, Björn Mildh,
 Niklas Andersson, Vinh Ngo and Mitchell Butler.
 
-LimeSurvey includes or is derivative of works distributed under the following copyright notices:
+LimeSurvey also includes or is derivative of works distributed under the following copyright notices:
 
 PHPSurveyor
 ----
@@ -88,3 +88,9 @@ Sanitize Library
 ---
 Copyright:  2002,2003 Free Software Foundation
 License:	GNU General Public License (GPL)
+
+TCPDF Class
+---
+Copyright: 2006 Nicola Asuni
+License: GNU Lesser General Public License (LGPL)
+
