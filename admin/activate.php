@@ -396,7 +396,16 @@ else
 			$abresult=db_execute_assoc($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 			while ($abrow = $abresult->FetchRow())
 			{
-				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` C(255),\n";
+				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}`";
+                if ($databasetype=='mysql')    
+                {
+                    $createsurvey .= " X";
+                }
+                else
+                {
+                    $createsurvey .= " C(255)";
+                }
+                $createsurvey .= ",\n";
 			}
 		}
 		
