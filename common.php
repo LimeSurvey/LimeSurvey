@@ -4590,4 +4590,18 @@ function htmlwrap($str, $width = 60, $break = "\n", $nobreak = "") {
   return $drain;
 } 
 
+function conditional_nl2br($mytext,$ishtml)
+{
+	if ($ishtml === true)
+	{
+		// $mytext has been processed by clang->gT with html mode
+		// and thus \n has already been translated to &#10;
+		return str_replace('&#10;', '<br />',$mytext);
+	}
+	else
+	{
+		return $mytext;
+	}
+}
+
 ?>

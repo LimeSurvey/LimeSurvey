@@ -66,6 +66,7 @@ function PrepareEditorPopupScript()
 	. "\t{\n"
 	. "\t\tvar oMyEditor = mypopup.FCKeditorAPI.GetInstance('MyTextarea');\n"
 	. "\t\tif (oMyEditor) {oMyEditor.SetHTML(value);}\n"
+	. "\t\tmypopup.focus();\n"
 	. "\t}\n"
 	. "}\n"
 	. "--></script>\n";
