@@ -57,7 +57,17 @@ function PrepareEditorPopupScript()
 	. "\t\t{\n"
 	. "\t\t\tactivepopup.focus();\n"
 	. "\t\t}\n"
-	. "\t}\n\n"
+	. "\t}\n"
+	. "\n"
+	. "function updateFCKeditor(fieldname,value)\n" 
+	. "{\t\n"
+	. "\tvar mypopup= editorwindowsHash[fieldname];\n"
+	. "\tif (mypopup)\n"
+	. "\t{\n"
+	. "\t\tvar oMyEditor = mypopup.FCKeditorAPI.GetInstance('MyTextarea');\n"
+	. "\t\tif (oMyEditor) {oMyEditor.SetHTML(value);}\n"
+	. "\t}\n"
+	. "}\n"
 	. "--></script>\n";
 
 	return $script;
@@ -66,7 +76,16 @@ function PrepareEditorPopupScript()
 function PrepareEditorInlineScript()
 {
 	global $homeurl;
-	$script ="<script type=\"text/javascript\" src=\"".$homeurl."/scripts/fckeditor/fckeditor.js\"></script>\n";
+	$script ="<script type=\"text/javascript\" src=\"".$homeurl."/scripts/fckeditor/fckeditor.js\"></script>\n"
+	. "<script type=\"text/javascript\">\n"
+	. "<!--\n"
+	. "function updateFCKeditor(fieldname,value)\n"
+	. "{\n"
+	. "\tvar oMyEditor = FCKeditorAPI.GetInstance(fieldname);\n"
+	. "\toMyEditor.SetHTML(value);\n"
+	. "}\n"
+	. "-->\n"
+	. "</script>\n";
 /*** Commented because of inconsistencies
 	$script .= ""
 	. "<script type='text/javascript'>\n"
@@ -96,7 +115,11 @@ function PrepareEditorScript($fieldtype=null)
 	if (isset($_SESSION['htmleditormode']) &&
 		$_SESSION['htmleditormode'] == 'none')
 	{
-		return '';
+		return "<script type=\"text/javascript\">\n"
+		. "<!--\n"
+		. "function updateFCKeditor(fieldname,value) { return true;}\n"
+		. "-->\n"
+		. "</script>\n";
 	}
 
 	if (!isset($_SESSION['htmleditormode']) ||
