@@ -98,10 +98,17 @@ else {
 			<input type='hidden' name='checksessionbypost' value='".$_SESSION['checksessionpost']."' />
 			<script type='text/javascript'>
 	<!--
-	window.onbeforeunload= function (evt) {
-		close_editor();
+	function closeme()
+	{
+		window.onbeforeunload = new Function('return true;');
 		self.close();
 	}
+
+	window.onbeforeunload= function (evt) {
+		close_editor();
+		closeme();
+	}
+
 
 	var saveChanges = false;
 
