@@ -276,9 +276,17 @@ else
 for ($i=0; $i<=$stoppoint+1; $i++)
 {
 //	if ($i<$stoppoint-2 || $i==count($bigarray)-1)
-	if ($i<$stoppoint-2)
+                           //$bigarray[$i]=        trim($bigarray[$i]);
+	if (isset($bigarray[$i]) && (trim($bigarray[$i])!=''))
 	{
-		$surveylsarray[] = $bigarray[$i];
+		if (strpos("# QUOTA_MEMBERS TABLE",$bigarray[$i])===false)
+        {
+        $surveylsarray[] = $bigarray[$i];
+        }
+        else
+        {
+            break;
+        }
 	}
 	unset($bigarray[$i]);
 }
@@ -318,7 +326,7 @@ for ($i=0; $i<$stoppoint-1; $i++)
 $bigarray = array_values($bigarray);
 
 if (isset($surveyarray)) {$countsurveys = count($surveyarray);} else {$countsurveys = 0;}
-if (isset($surveylsarray)) {$countlanguages = count($surveylsarray);} else {$countlanguages = 1;}
+if (isset($surveylsarray)) {$countlanguages = count($surveylsarray)-1;} else {$countlanguages = 1;}
 if (isset($grouparray)) {$countgroups = count($grouparray);} else {$countgroups = 0;}
 if (isset($questionarray)) {$countquestions = count($questionarray);} else {$countquestions=0;}
 if (isset($answerarray)) {$countanswers = count($answerarray);} else {$countanswers=0;}
