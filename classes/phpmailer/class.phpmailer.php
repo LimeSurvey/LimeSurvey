@@ -222,7 +222,7 @@ class PHPMailer
     var $boundary        = array();
     var $language        = array();
     var $error_count     = 0;
-    var $LE              = "\n";
+    var $LE              = "\r\n";
     /**#@-*/
     
     /////////////////////////////////////////////////

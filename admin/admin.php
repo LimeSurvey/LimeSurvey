@@ -19,8 +19,8 @@
 // with PHP5/dom or PHP6/dom
 // see http://alexandre.alapetite.net/doc-alex/domxml-php4-php5/index.en.html#licence
 if (version_compare(PHP_VERSION,'5','>='))
- require_once(dirname(__FILE__).'/classes/core/domxml-php4-to-php5.php');
-
+require_once(dirname(__FILE__).'/classes/core/domxml-php4-to-php5.php');
+require_once(dirname(__FILE__).'/classes/core/html_entity_decode_php4.php');
 require_once(dirname(__FILE__).'/../config-defaults.php');  
 require_once(dirname(__FILE__).'/../common.php');
 require_once('htmleditor-functions.php');

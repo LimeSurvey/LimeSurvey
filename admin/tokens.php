@@ -1176,7 +1176,7 @@ if ($subaction == "email" &&
 		    {
 			$_POST['message_'.$language]=auto_unescape($_POST['message_'.$language]);
 			$_POST['subject_'.$language]=auto_unescape($_POST['subject_'.$language]);
-            if ($ishtml) $_POST['message_'.$language] = @html_entity_decode($_POST['message_'.$language], ENT_QUOTES, "UTF-8");
+            if ($ishtml) $_POST['message_'.$language] = html_entity_decode_php4($_POST['message_'.$language], ENT_QUOTES, "UTF-8");
 			
 			}
 
@@ -1455,7 +1455,7 @@ if ($subaction == "remind" &&
 				else
 				{
 					$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language']).">$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language'])."</a>";
-                    $_POST['message_'.$emrow['language']] = @html_entity_decode($_POST['message_'.$emrow['language']], ENT_QUOTES, "UTF-8");
+                    $_POST['message_'.$emrow['language']] = html_entity_decode_php4($_POST['message_'.$emrow['language']], ENT_QUOTES, "UTF-8");
                 }
 
 				$msgsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
