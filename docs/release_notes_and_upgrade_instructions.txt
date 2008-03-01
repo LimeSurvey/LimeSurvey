@@ -44,9 +44,30 @@ HOW TO UPGRADE from earlier versions from LimeSurvey 1.45 or later
 6. Run the installer in /admin/install/install.php to update the database.
 7. Done.
 
+Thank you to everyone who helped with this new release!
 
-Changes From 1.70+ to 1.70 
-==========================
+
+
+Changes from 1.70+ Revision 4363 to 4381 (2008/03/01)
+
+* Replaced html_entity_decode with a custom html_entity_decode_php4 function that is PHP4 and PHP5 compatible (lemeur)
+* Fixed Use Default for html email doesn't replace end of lines with BR (lemeur)
+* Fixed #1739:  Default button weren't working for HTML Email Settings (lemeur)
+* Fixed issue #1555: Data submission on questions with radio buttons fails with Safari 2.0.4 and IE 5.2 on Mac OS X in question by question mode (c_schmitz)
+* Fixed #1733: infinite loop in popup editor mode for Safari (c_schmitz)
+* Updated Dutch Translation by Arno Fleming (a -dot- fleming -a-t-- stichtingdeombudsman -d-o-t- nl ) (c_schmitz)
+* Fixed issue #1748: Row size too large error with MySQL - Multiple short text Question type used 255 chars per field. I changed this to TEXT fields in MySQL. (Do not do that for other DB systems since most other DB systems cannot select on TEXT fields which is important for statistics) (c_schmitz)
+* Fixed issue #1728:Survey Import from prior LS versions was failing (c_schmitz)
+* Fixed issue #1745: View summary of all available fields failed when survey contained a date question(c_schmitz)
+* Fixed issues #1736: SQL error while printing user's answers and using Multiple Numerical Question Type(c_schmitz)
+* Fixed numerous errors in HTML email handling (c_schmitz)
+* Fixed a link to config.php instead of config-defaults in the FCKeditor filemanager (lemeur)
+* Fixed #1744: CRSF possible on modify quota action (lemeur)
+* Fixed #1742: Export queXML doesn't work for PHP5. Special Thanks for  Alexandre Alapetite (lemeur)
+* Fixed issue #1713: Fatal error with 'randomkey' on setting up tokens (c_schmitz))
+
+
+Changes from 1.70 to 1.70+ Revision 4363 (2008/02/27)
 
 * Fixed strange warnings with html_entity_decode() and PHP 4 (c_schmitz)
 * Updated Galician Language File by Carlos Neira Cortizas  (http://cidadania.coop/) (c_schmitz)
@@ -57,9 +78,6 @@ Changes From 1.70+ to 1.70
 * Fixed Quoting problem when XSS filter is off (c_schmitz)
 * Fixed Quoting problem in emails when XSS filter is off (c_schmitz)
 * Fixed a faulty link to FCKEditor config.php which resulted in uploades not working
-
-
-Thank you to everyone who helped with this new release!
 
 Changes from 1.52 to 1.70
 
