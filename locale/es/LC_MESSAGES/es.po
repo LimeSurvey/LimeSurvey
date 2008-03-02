@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-02-24 09:00+0100\n"
-"PO-Revision-Date: 2008-02-26 09:24-0600\n"
+"PO-Revision-Date: 2008-03-02 13:03-0600\n"
 "Last-Translator: Carlos Juan Martin Perez <cmartin@una.ac.cr>\n"
 "Language-Team:  <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1960,7 +1960,7 @@ msgstr "Grupos"
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:3271
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:3309
 msgid "None"
-msgstr "Ninguna"
+msgstr "Ninguno"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:728
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1022
@@ -2967,7 +2967,7 @@ msgstr "La respuestas registrarán la URL referente."
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2485
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3052
 msgid "Enable Token-based answers persistence?"
-msgstr "Habilitar la persistencia de las respuestas basada en el/la encuestado/a?"
+msgstr "¿Habilitar la persistencia de las respuestas basada en el/la encuestado/a?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2511
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2524
@@ -7480,19 +7480,19 @@ msgid ""
 "Caution: JavaScript execution is disabled in your browser. You may not be "
 "able to answer all questions in this survey. Please, verify your browser "
 "parameters."
-msgstr "Aviso: La ejecución de JavaScript está deshabilitada en su navegador. Es posible que no pueda responder todas las preguntas del cuestionario. Por favor, verifique la configuración de su navegador."
+msgstr "Aviso: La ejecución de JavaScript está deshabilitada en su navegador. Es posible que no pueda responder todas las preguntas de la encuesta. Por favor, verifique la configuración de su navegador."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2062
 msgid "There are no questions in this survey"
-msgstr "Aún no hay preguntas en este cuestionario"
+msgstr "Aún no hay preguntas en esta encuesta."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2066
 msgid "There is 1 question in this survey"
-msgstr "Hay una pregunta en este cuestionario."
+msgstr "Hay una pregunta en esta encuesta."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2070
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
-msgstr "Hay {NUMBEROFQUESTIONS} preguntas en este cuestionario."
+msgstr "Hay {NUMBEROFQUESTIONS} preguntas en esta encuesta."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2119
 msgid "A Note On Privacy"
@@ -7520,11 +7520,11 @@ msgstr "¿Está seguro/a de querer eliminar todas sus respuestas?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2129
 msgid "Exit and Clear Survey"
-msgstr "Salir y reiniciar el cuestionario"
+msgstr "Salir y reiniciar la encuesta"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2162
 msgid "Save Survey and Return"
-msgstr "Guardar cuestionario y regresar"
+msgstr "Guardar las respuestas realizadas y regresar"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2183
 msgid "Thank You!"
@@ -7532,7 +7532,7 @@ msgstr "¡Gracias!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2183
 msgid "You have completed answering the questions in this survey."
-msgstr "Ha respondido a todas las preguntas del cuestionario"
+msgstr "Ha respondido a todas las preguntas de la encuesta."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2183
 msgid "Click on 'Submit' now to complete the process and save your answers."
@@ -7552,31 +7552,31 @@ msgstr "Respuestas borradas"
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2215
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2221
 msgid "Restart this Survey"
-msgstr "Reiniciar el cuestionario"
+msgstr "Reiniciar la encuesta"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2226
 msgid "Save Your Unfinished Survey"
-msgstr "Guardar un cuestionario no terminado"
+msgstr "Guardar una encuesta no terminada"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2227
 msgid "Enter a name and password for this survey and click save below."
-msgstr "Elija un nombre y una contraseña para este cuestionario y pulse \"Guardar\"."
+msgstr "Elija un nombre y una contraseña para esta encuesta y pulse \"Guardar\"."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2227
 msgid ""
 "Your survey will be saved using that name and password, and can be completed "
 "later by logging in with the same name and password."
-msgstr "Su cuestionario se guardará con ese nombre y contraseña, y lo podrá completar luego ingresando con el mismo nombre de usuario y contraseña."
+msgstr "Su encuesta se guardará con ese nombre y contraseña, y la podrá completar posteriormente ingresando con el mismo nombre de usuario y contraseña."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2227
 msgid ""
 "If you give an email address, an email containing the details will be sent "
 "to you."
-msgstr "Si nos proporciona una dirección de correo electrónico, se le enviará un mensaje con las indicaciones para volver al cuestionario."
+msgstr "Si nos proporciona una dirección de correo electrónico, se le enviará un mensaje con las indicaciones para volver a la encuesta."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2235
 msgid "Return To Survey"
-msgstr "Volver al cuestionario"
+msgstr "Volver a la encuesta"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2246
 msgid "Repeat Password"
@@ -7588,15 +7588,15 @@ msgstr "Su correo electrónico"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2262
 msgid "Load A Previously Saved Survey"
-msgstr "Cargar un cuestionario guardado previamente"
+msgstr "Cargar una encuesta guardada previamente"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2263
 msgid "You can load a survey that you have previously saved from this screen."
-msgstr "Puede recuperar un cuestionario guardado previamente desde esta pantalla."
+msgstr "Puede recuperar una encuesta guardada previamente desde esta pantalla."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2263
 msgid "Type in the 'name' you used to save the survey, and the password."
-msgstr "Escriba el nombre que usó para guardar el cuestionario y la contraseña."
+msgstr "Escriba el nombre que usó para guardar la encuesta y la contraseña."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2266
 msgid "Saved name"
@@ -7608,11 +7608,11 @@ msgstr "Recuperar ahora"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2284
 msgid "You must be registered to complete this survey"
-msgstr "Debe estar registrado para completar este cuestionario"
+msgstr "Debe estar registrado para completar esta encuesta"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2285
 msgid "You may register for this survey if you wish to take part."
-msgstr "Puede inscribirse en este cuestionario si desea participar."
+msgstr "Puede inscribirse en esta encuesta si desea participar."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2285
 msgid ""
@@ -7663,7 +7663,7 @@ msgstr "Albano"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:66
 msgid "Basque"
-msgstr "Euskera / Vasco"
+msgstr "Euskara / Vasco"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:70
 msgid "Bosnian"

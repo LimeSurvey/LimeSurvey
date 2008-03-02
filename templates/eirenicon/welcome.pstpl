@@ -9,7 +9,7 @@
 	<tr>
 		<td align='center' bgcolor='#E5E5E5'>
 			<font size='2'>{WELCOME}<br /><br />
-			<i>There are {NUMBEROFQUESTIONS} questions in this survey.</i></font>
+			<i>{THEREAREXQUESTIONS}</i></font>
 		</td>
 	</tr>
 </table>
