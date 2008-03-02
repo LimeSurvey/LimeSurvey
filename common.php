@@ -2817,7 +2817,7 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
     if ($ishtml) { 
         $mail->IsHTML(true);
     	$mail->Body = $body;
-    	$mail->AltBody = $textbody;
+    	$mail->AltBody = strip_tags(br2nl(html_entity_decode_php4($textbody)));
     } else
         {
         $mail->IsHTML(false);

@@ -1340,6 +1340,10 @@ function submittokens()
             {
                 $message=strip_tags(br2nl(html_entity_decode_php4($thissurvey['email_confirm'], ENT_QUOTES, "UTF-8")));
             }
+            else 
+            {
+                $message=html_entity_decode_php4($message,ENT_QUOTES, "UTF-8");
+            }
 		}
 		else
 		{
