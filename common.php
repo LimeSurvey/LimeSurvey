@@ -4301,7 +4301,7 @@ function getBounceEmail($surveyid)
 	}
 	else
 	{
-		return $row['bounce_email'];
+		return $surveyInfo['bounce_email'];
 	}	
 }
 
@@ -4602,6 +4602,10 @@ function conditional_nl2br($mytext,$ishtml)
 	{
 		return $mytext;
 	}
+}
+
+function br2nl( $data ) {
+     return preg_replace( '!<br.*>!iU', "\n", $data );
 }
 
 ?>

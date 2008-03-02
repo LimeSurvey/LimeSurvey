@@ -1324,21 +1324,35 @@ function submittokens()
 
 		$subject=Replacefields($subject, $fieldsarray);
 
+        if (getEmailFormat($surveyid) == 'html')
+        {
+            $ishtml=true;
+        }
+        else
+        {
+            $ishtml=false;
+        }           
+        
 		if ($thissurvey['email_confirm'])
 		{
 			$message=$thissurvey['email_confirm'];
+            if (!$ishtml)
+            {
+                $message=strip_tags(br2nl(html_entity_decode_php4($thissurvey['email_confirm'], ENT_QUOTES, "UTF-8")));
+            }
 		}
 		else
 		{
 			//Get the default email_confirm from the default language file
 			// Todo: This can't be right
-			$message = $clang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}");
+			$message = conditional_nl2br($clang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}"),$ishtml);
 		}
 
 		$message=Replacefields($message, $fieldsarray);
 
 		//Only send confirmation email if there is a valid email address
-		if (validate_email($cnfrow['email'])) {MailTextMessage($message, $subject, $to, $from, $sitename);}
+        
+		if (validate_email($cnfrow['email'])) {MailTextMessage($message, $subject, $to, $from, $sitename,$ishtml);}
 	}
 }
 
