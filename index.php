@@ -1370,7 +1370,7 @@ function sendsubmitnotification($sendnotification)
 		$message .= "----------------------------\n";
 		foreach ($_SESSION['insertarray'] as $value)
 		{
-			$questiontitle=returnquestiontitlefromfieldcode($value);
+			$questiontitle=strip_tages(html_entity_decode_php4(returnquestiontitlefromfieldcode($value), ENT_QUOTES, "UTF-8"));
 			$message .= "$questiontitle:   ";
 			$details = arraySearchByKey($value, createFieldMap($surveyid),"fieldname", 1);
 			if ( $details['type'] == "T" or $details['type'] == "U")
@@ -1378,12 +1378,16 @@ function sendsubmitnotification($sendnotification)
 				$message .= "\r\n";
 				if (isset($_SESSION[$value]))
 				{
-					foreach (explode("\n",getextendedanswer($value,$_SESSION[$value])) as $line) $message .= "\t" . $line . "\n";
+					foreach (explode("\n",getextendedanswer($value,$_SESSION[$value])) as $line) 
+					{
+					 		$message .= "\t" . strip_tags(html_entity_decode_php4($line, ENT_QUOTES, "UTF-8"));
+							$message .= "\n";
+					}
 				}
 			}
 			elseif (isset($_SESSION[$value]))
 			{
-				$message .= getextendedanswer($value, $_SESSION[$value]);
+				$message .= strip_tags(html_entity_decode_php4(getextendedanswer($value, $_SESSION[$value],ENT_QUOTES, "UTF-8")));
 				$message .= "\n";
 			}
 		}
