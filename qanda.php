@@ -3571,19 +3571,20 @@ function do_array_flexible_dual($ia)
 				$answertext = "<span class='errormandatory'>{$answertext}</span>";
 			}
 			$htmltbody2 = "";
+            $hiddenanswers="";
 			if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == false)
 			{
-				$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' />";
+				$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'>"; $hiddenanswers  .="<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' />";
 			} else if (($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "S") || ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == true))
 			{
 				$selected = getArrayFiltersForQuestion($ia[0]);
 				if (!in_array($ansrow['code'],$selected))
 				{
-					$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' />";
+					$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'>"; $hiddenanswers  .="<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' />";
 					$_SESSION[$myfname] = "";
 				} else
 				{
-					$htmltbody2 = "<tbody id='javatbd$myfname' style='display: '><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on' />";
+					$htmltbody2 = "<tbody id='javatbd$myfname' style='display: '>"; $hiddenanswers  .="<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on' />";
 				}
 			}
             if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
@@ -3591,10 +3592,11 @@ function do_array_flexible_dual($ia)
 
 			array_push($inputnames,$myfname);
 			$answer .= "\t\t\t\t$htmltbody2<tr class='$trbc'>\n"
-			. "\t\t\t\t\t<td align='right' class='answertext' width='$answerwidth%'>$answertext\n"
+			. "\t\t\t\t\t<td align='right' class='answertext' width='$answerwidth%'> $answertext\n"
 			. "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
 			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
-			$answer .= "' /></td>\n";
+			$answer .= "' />$hiddenanswers</td>\n";
+            $hiddenanswers="";
      		$thiskey=0;
 			
 			foreach ($labelcode as $ld)
@@ -3613,11 +3615,12 @@ function do_array_flexible_dual($ia)
 			if (count($labelans1)>0) // if second label set is used
 			{			
 				$dualgroup++;
+                $hiddenanswers='';
 				$answer .= "\t\t\t\t\t<td  class='array1'><font size='1'></font></td>\n";		// separator
     			array_push($inputnames,$myfname1);
-				$answer .= "<input type='hidden' name='java$myfname1' id='java$myfname1' value='";
-                if (isset($_SESSION[$myfname1])) {$answer .= $_SESSION[$myfname1];}
-				$answer .= "' />";
+				$hiddenanswers .= "<input type='hidden' name='java$myfname1' id='java$myfname1' value='";
+                if (isset($_SESSION[$myfname1])) {$hiddenanswers .= $_SESSION[$myfname1];}
+				$hiddenanswers .= "' />";
                 $thiskey=0;
 				foreach ($labelcode1 as $ld) // second label set
 				{
@@ -3638,6 +3641,7 @@ function do_array_flexible_dual($ia)
       {
       	$answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
       	$answer .= "\t\t\t\t<td class='answertextright' width='$answerwidth%'>$answertext</td>\n";
+        $hiddenanswers='';
       }
       elseif ($right_exists)
       {
@@ -3800,17 +3804,17 @@ function do_array_flexible_dual($ia)
 				$htmltbody2 = "";
 				if (($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == false)  || ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "A"))
 				{
-					$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'  /><input type='hidden' name='tbdisp$myfname1' id='tbdisp$myfname1' value='off' />";
+					$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'>";$hiddenanswers="<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off'  /><input type='hidden' name='tbdisp$myfname1' id='tbdisp$myfname1' value='off' />";
 				} else if (($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "S") || ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == true))
 				{
 					$selected = getArrayFiltersForQuestion($ia[0]);
 					if (!in_array($ansrow['code'],$selected))
 					{
-						$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' /><input type='hidden' name='tbdisp$myfname1' id='tbdisp$myfname1' value='off' />";
+						$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'>";$hiddenanswers="<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' /><input type='hidden' name='tbdisp$myfname1' id='tbdisp$myfname1' value='off' />";
 						$_SESSION[$myfname] = "";
 					} else
 					{
-						$htmltbody2 = "<tbody id='javatbd$myfname' style='display: '><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on' /><input type='hidden' name='tbdisp$myfname1' id='tbdisp$myfname1' value='on' />";
+						$htmltbody2 = "<tbody id='javatbd$myfname' style='display: '>";$hiddenanswers="<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on' /><input type='hidden' name='tbdisp$myfname1' id='tbdisp$myfname1' value='on' />";
 					}
 				}
 
@@ -3928,7 +3932,8 @@ function do_array_flexible_dual($ia)
 				$answer .= "\t\t\t\t\t\t\t</tr>\n";
 			}
 		} // End there are answers
-		$answer .= "\t\t\t</table>\n";
+		$answer .= "\t\t\t</table>$hiddenanswers\n";
+        $hiddenanswers='';
 	}
 	else
 	{
