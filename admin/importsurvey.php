@@ -279,16 +279,19 @@ for ($i=0; $i<=$stoppoint+1; $i++)
                            //$bigarray[$i]=        trim($bigarray[$i]);
 	if (isset($bigarray[$i]) && (trim($bigarray[$i])!=''))
 	{
-		if (strpos("# QUOTA_MEMBERS TABLE",$bigarray[$i])===false)
+		if (strpos($bigarray[$i],"#")===0)
         {
-        $surveylsarray[] = $bigarray[$i];
+            unset($bigarray[$i]);
+            unset($bigarray[$i+1]);
+            unset($bigarray[$i+2]);
+            break ;
         }
         else
         {
-            break;
+            $surveylsarray[] = $bigarray[$i];
         }
 	}
-	unset($bigarray[$i]);
+    unset($bigarray[$i]);
 }
 $bigarray = array_values($bigarray);
 
