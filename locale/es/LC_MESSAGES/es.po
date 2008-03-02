@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-02-24 09:00+0100\n"
-"PO-Revision-Date: 2008-03-02 13:03-0600\n"
+"PO-Revision-Date: 2008-03-02 13:46-0600\n"
 "Last-Translator: Carlos Juan Martin Perez <cmartin@una.ac.cr>\n"
 "Language-Team:  <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -7663,7 +7663,7 @@ msgstr "Albano"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:66
 msgid "Basque"
-msgstr "Euskara / Vasco"
+msgstr "Euskara"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:70
 msgid "Bosnian"
@@ -7675,7 +7675,7 @@ msgstr "Búlgaro"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:78
 msgid "Catalan"
-msgstr "Catalán"
+msgstr "Català"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:82
 msgid "Chinese (Simplified)"
@@ -7723,7 +7723,7 @@ msgstr "Francés"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:127
 msgid "Galician"
-msgstr "Gallego"
+msgstr "Galego"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:131
 msgid "German"
