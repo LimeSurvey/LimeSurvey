@@ -1392,7 +1392,7 @@ function sendsubmitnotification($sendnotification)
 				$message .= "\n";
 			}
 		}
-		$message .= "----------------------------\n\n";
+		$message .= "\n\n----------------------------\n\n";
 	}
 	$message.= "LimeSurvey";
 	$from = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';

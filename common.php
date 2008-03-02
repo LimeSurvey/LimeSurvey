@@ -2754,7 +2754,7 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
 
 	global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword;
 
-  $body=htmlwrap($body);
+    if ($ishtml) {$body=htmlwrap($body,300);}
 
 	if (is_null($bouncemail) )
 	{
