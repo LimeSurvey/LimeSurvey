@@ -16,6 +16,7 @@
 require_once(dirname(__FILE__).'/config-defaults.php');
 require_once(dirname(__FILE__).'/common.php');
 require_once(dirname(__FILE__).'/classes/core/language.php');
+require_once(dirname(__FILE__).'/classes/core/html_entity_decode_php4.php');
 @ini_set('session.gc_maxlifetime', $sessionlifetime);
 @ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
 
