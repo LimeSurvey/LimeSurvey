@@ -1370,7 +1370,7 @@ function sendsubmitnotification($sendnotification)
 		$message .= "----------------------------\n";
 		foreach ($_SESSION['insertarray'] as $value)
 		{
-			$questiontitle=strip_tages(html_entity_decode_php4(returnquestiontitlefromfieldcode($value), ENT_QUOTES, "UTF-8"));
+			$questiontitle=strip_tags(html_entity_decode_php4(returnquestiontitlefromfieldcode($value), ENT_QUOTES, "UTF-8"));
 			$message .= "$questiontitle:   ";
 			$details = arraySearchByKey($value, createFieldMap($surveyid),"fieldname", 1);
 			if ( $details['type'] == "T" or $details['type'] == "U")
