@@ -1008,18 +1008,22 @@ function checkconfield($value)
 				if($rows['type'] == "M" || $rows['type'] == "P")
 				{
 					$matchfield=$rows['cfieldname'].$rows['value'];
+                    $matchmethod=$rows['method'];
 					$matchvalue="Y";
 				}
 				else
 				{
 					$matchfield=$rows['cfieldname'];
+                    $matchmethod=$rows['method'];
 					$matchvalue=$rows['value'];
 				}
 				$cqval[]=array("cfieldname"=>$rows['cfieldname'],
 				"value"=>$rows['value'],
 				"type"=>$rows['type'],
 				"matchfield"=>$matchfield,
-				"matchvalue"=>$matchvalue);
+				"matchvalue"=>$matchvalue,
+                "matchmethod"=>$matchmethod
+                );
 				if ($rows['cfieldname'] != $currentcfield)
 				{
 					$container[]=$rows['cfieldname'];
@@ -1035,7 +1039,7 @@ function checkconfield($value)
 				{//Go through each condition
 					if($cqv['cfieldname'] == $con)
 					{
-						if(isset($_SESSION[$cqv['matchfield']]) && $_SESSION[$cqv['matchfield']] == $cqv['matchvalue'])
+						if (isset($_SESSION[$cqv['matchfield']]) && eval('if ($_SESSION[$cqv["matchfield"]]'.$cqv['matchmethod'].' $cqv["matchvalue"]) {return true;} else {return false;}'))
 						{//plug succesful matches into appropriate container
 							$addon=1;
 						}
