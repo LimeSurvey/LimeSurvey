@@ -232,7 +232,7 @@ function upgrade_token_tables125()
   	$tokentables=$connect->MetaTables('TABLES',false,$dbprefix."tokens%");
     foreach ($tokentables as $sv)
             {
-            modify_database("","ALTER TABLE ".$sv." ADD COLUMN [emailstatus ] VARCHAR(300)"); echo $modifyoutput; flush();
+            modify_database("","ALTER TABLE ".$sv." ADD COLUMN [emailstatus ] VARCHAR(300) DEFAULT 'OK'"); echo $modifyoutput; flush();
             }
 }
 
