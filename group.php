@@ -54,7 +54,10 @@ $notanswered=addtoarray_single(checkmandatorys($backok),checkconditionalmandator
 $notvalidated=checkpregs($backok);
 
 //CHECK QUOTA
-check_quota('enforce',$surveyid);
+if ($thissurvey['active'] == "Y")
+{ 
+    check_quota('enforce',$surveyid);
+}
 
 //SEE IF THIS GROUP SHOULD DISPLAY
 if (isset($_POST['move']) && $_SESSION['step'] != 0 && $_POST['move'] != "movesubmit")

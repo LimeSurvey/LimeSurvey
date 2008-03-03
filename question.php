@@ -53,7 +53,10 @@ $notanswered=addtoarray_single(checkmandatorys($backok),checkconditionalmandator
 $notvalidated=checkpregs($backok);
 
 //CHECK QUOTA
-check_quota('enforce',$surveyid);
+if ($thissurvey['active'] == "Y")
+{ 
+    check_quota('enforce',$surveyid);
+}
 
 //SEE IF $surveyid EXISTS ####################################################################
 if ($surveyexists <1)
