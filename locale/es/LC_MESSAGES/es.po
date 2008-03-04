@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-02-24 09:00+0100\n"
-"PO-Revision-Date: 2008-03-02 13:46-0600\n"
+"PO-Revision-Date: 2008-03-04 14:59-0600\n"
 "Last-Translator: Carlos Juan Martin Perez <cmartin@una.ac.cr>\n"
 "Language-Team:  <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2892,7 +2892,7 @@ msgstr "¿Utilizar formato HTML para los correos de los/as encuestados/as?"
 msgid ""
 "If you switch email mode, you'll have to review your email templates to fit "
 "the new format"
-msgstr "Si usted cambia a modo de correo electrónico, tendrá que revisar sus plantillas de correo para adaptarse al nuevo formato"
+msgstr "Si usted cambia de formato de correo electrónico, tendrá que revisar sus plantillas de correos para adaptarlas al nuevo formato"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2361
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3002
@@ -5404,7 +5404,7 @@ msgstr "Fecha"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:674
 msgid "Numerical"
-msgstr "Respuesta Numérica"
+msgstr "Varias respuestas numéricas"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:696
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:773
@@ -7416,7 +7416,7 @@ msgstr "Opción Múltiple con comentarios"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:770
 msgid "Multiple Short Text"
-msgstr "Múltiples Textos Cortos"
+msgstr "Varios textos cortos"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:774
 msgid "Huge Free Text"
