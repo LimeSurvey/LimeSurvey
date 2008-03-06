@@ -106,7 +106,7 @@ class gettext_reader {
    */
   function gettext_reader($Reader, $enable_cache = true) {
     // If there isn't a StreamReader, turn on short circuit mode.
-
+  global $translationmode;  
     if (! $Reader || isset($Reader->error) ) {
       $this->short_circuit = true;
       return;
@@ -115,28 +115,22 @@ class gettext_reader {
     // Caching can be turned off
     $this->enable_cache = $enable_cache;
 
-/**
-     * Both variables require php variable overloading. If value
-     * is too big, php should subtract biggest allowed value. These
-     * numbers are big and sometimes don't fit into system's
-     * integer limitations.
-     *
-     * Original php-gettext implementation was broken from php 5.0.2.
-     * Borrowed from squirrel mail implementation     
-     */
 
+if ($translationmode==1)
+  { $MAGIC1 = (int) 0x950412de;
+    $MAGIC2 = (int) 0xde120495;
+  }
+  else 
+  {
     $MAGIC1 = (int) ((222) | (18<<8) | (4<<16) | (149<<24));
     $MAGIC2 = (int) ((149) | (4<<8) | (18<<16) | (222<<24));
+  }  
+    
+ 
 
     $this->STREAM = $Reader;
-    if ($this->STREAM->error>0)
-    {
-      $this->error=1;
-      return false;
-    }
     $magic = $this->readint();
-    if ($magic == $MAGIC1)
-    {
+    if ($magic == $MAGIC1) {
       $this->BYTEORDER = 0;
     } elseif ($magic == $MAGIC2) {
       $this->BYTEORDER = 1;
@@ -144,7 +138,6 @@ class gettext_reader {
       $this->error = 1; // not MO file
       return false;
     }
-
     
     // FIXME: Do we care about revision? We should.
     $revision = $this->readint();
