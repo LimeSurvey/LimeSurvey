@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-03-07 15:32+0100\n"
-"Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
+"PO-Revision-Date: 2008-03-07 23:58+0100\n"
+"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -957,7 +957,7 @@ msgstr "Klicken Sie nun auf 'Absenden', um die Umfrage abzuschließen und Ihre A
 # D:\xampp\xampp\htdocs\limesurvey/common.php:1575
 #: D:\web\htdocs\limesurvey/common.php:2190
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
-msgstr "Wenn Sie irgendeine Ihrer Antworten nochmals überprüfen oder ändern wollen, so können Sie dies, indem Sie auf [Zurück] klicken und Sie Ihre Antworten nochmals durchschauen."
+msgstr "Wenn Sie irgendeine Ihrer Antworten nochmals überprüfen oder ändern wollen, so können Sie dies, indem Sie auf [Zurück] klicken und Sie Ihre Antworten nochmals durchgehen."
 
 #: D:\web\htdocs\limesurvey/common.php:2211
 msgid "Answers Cleared"
@@ -1030,7 +1030,7 @@ msgstr "Passwort wiederholen"
 
 #: D:\web\htdocs\limesurvey/common.php:2250
 msgid "Your Email"
-msgstr "Deine E-Mail"
+msgstr "Ihre E-Mail"
 
 #: D:\web\htdocs\limesurvey/common.php:2255
 #: D:\web\htdocs\limesurvey/common.php:2275
@@ -1185,7 +1185,7 @@ msgstr "Weiter"
 
 #: D:\web\htdocs\limesurvey/common.php:2351
 msgid "Your Assessment"
-msgstr "Deine Bewertung"
+msgstr "Ihre Bewertung"
 
 #: D:\web\htdocs\limesurvey/common.php:2662
 msgid "Online Manual"
@@ -1562,7 +1562,7 @@ msgstr "Frage"
 #: D:\web\htdocs\limesurvey/printanswers.php:249
 #: D:\web\htdocs\limesurvey/admin/templates.php:278
 msgid "Your Answer"
-msgstr "Deine Antwort"
+msgstr "Ihre Antwort"
 
 #: D:\web\htdocs\limesurvey/qanda.php:291
 #: D:\web\htdocs\limesurvey/qanda.php:299
