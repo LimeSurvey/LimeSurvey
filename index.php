@@ -1328,6 +1328,8 @@ function submittokens()
 
 		$subject=Replacefields($subject, $fieldsarray);
 
+        $subject=html_entity_decode_php4($subject, ENT_QUOTES, "UTF-8");
+
         if (getEmailFormat($surveyid) == 'html')
         {
             $ishtml=true;
@@ -1340,9 +1342,11 @@ function submittokens()
 		if ($thissurvey['email_confirm'])
 		{
 			$message=$thissurvey['email_confirm'];
+            $message=Replacefields($message, $fieldsarray);
+            
             if (!$ishtml)
             {
-                $message=strip_tags(br2nl(html_entity_decode_php4($thissurvey['email_confirm'], ENT_QUOTES, "UTF-8")));
+                $message=strip_tags(br2nl(html_entity_decode_php4($message, ENT_QUOTES, "UTF-8")));
             }
             else 
             {
@@ -1355,8 +1359,6 @@ function submittokens()
 			// Todo: This can't be right
 			$message = conditional_nl2br($clang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}"),$ishtml);
 		}
-
-		$message=Replacefields($message, $fieldsarray);
 
 		//Only send confirmation email if there is a valid email address
         
