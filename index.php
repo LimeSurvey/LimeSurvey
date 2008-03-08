@@ -886,24 +886,14 @@ function checkgroupfordisplay($gid)
 
 				if ($row['method'] != 'RX')
 				{
-//					if (trim($cfieldname) == trim($cvalue))
-					if (eval("if (trim(\$cfieldname)". $row['method']." trim(\$cvalue)) return true; else return false;"))
+					if (eval('if (trim($cfieldname)'. $row['method'].' trim($cvalue)) return true; else return false;'))
 					{
 						$conditionMatches=true;
 						//This condition is met
-						//Bugfix provided by Zoran Avtarovski
-//						if (!isset($distinctcqids[$row['cqid']])  || $distinctcqids[$row['cqid']] == 0)
-//						{
-//							$distinctcqids[$row['cqid']]=1;
-//						}
 					}
 					else
 					{
 						$conditionMatches=false;
-//						if (!isset($distinctcqids[$row['cqid']]))
-//						{
-//							$distinctcqids[$row['cqid']]=0;
-//						}
 					}
 				}
 				else
@@ -911,20 +901,11 @@ function checkgroupfordisplay($gid)
 					if (ereg(trim($cvalue),trim($cfieldname)))
 					{
 						$conditionMatches=true;
-						//This condition is met
-						//Bugfix provided by Zoran Avtarovski
-//						if (!isset($distinctcqids[$row['cqid']])  || $distinctcqids[$row['cqid']] == 0)
-//						{
-//							$distinctcqids[$row['cqid']]=1;
-//						}
+
 					}
 					else
 					{
 						$conditionMatches=false;
-//						if (!isset($distinctcqids[$row['cqid']]))
-//						{
-//							$distinctcqids[$row['cqid']]=0;
-//						}
 					}
 				}
 
@@ -933,7 +914,6 @@ function checkgroupfordisplay($gid)
 					if ($thistype != 'Q' && $thistype != 'K')
 					{
 						//This condition is met
-						//Bugfix provided by Zoran Avtarovski
 						if (!isset($distinctcqids[$row['cqid']])  || $distinctcqids[$row['cqid']] == 0)
 						{
 							$distinctcqids[$row['cqid']]=1;
@@ -1040,7 +1020,7 @@ function checkconfield($value)
 					if($cqv['cfieldname'] == $con)
 					{
 						if (isset($_SESSION[$cqv['matchfield']]) && eval('if ($_SESSION[$cqv["matchfield"]]'.$cqv['matchmethod'].' $cqv["matchvalue"]) {return true;} else {return false;}'))
-						{//plug succesful matches into appropriate container
+						{//plug successful matches into appropriate container
 							$addon=1;
 						}
 					}
@@ -1368,9 +1348,9 @@ function submittokens()
 
 function sendsubmitnotification($sendnotification)
 {
-	global $thissurvey;
+	global $thissurvey, $debug;
 	global $dbprefix, $clang;
-	global $sitename, $homeurl, $surveyid, $publicurl;
+	global $sitename, $homeurl, $surveyid, $publicurl, $maildebug;
 
 	$subject = $clang->gT("Answer Submission for Survey")." ".$thissurvey['name'];
 
@@ -1425,12 +1405,18 @@ function sendsubmitnotification($sendnotification)
 	{
 		foreach ($recips as $rc)
 		{
-			MailTextMessage($message, $subject, trim($rc), $from, $sitename);
-		}
+			if (!MailTextMessage($message, $subject, trim($rc), $from, $sitename))
+            {
+                if ($debug>0) {echo '<br />Email could not be sent. Reason: '.$maildebug.'<br/>';}
+            }
+        }
 	}
 	else
 	{
-		MailTextMessage($message, $subject, $thissurvey['adminemail'], $from, $sitename);
+		if (!MailTextMessage($message, $subject, $thissurvey['adminemail'], $from, $sitename))
+        {
+            if ($debug>0) {echo '<br />Email could not be sent. Reason: '.$maildebug.'<br/>';}
+        }
 	}
 }
 

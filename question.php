@@ -185,7 +185,7 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 			if ( $cqrows['method'] != 'RX')
 			{
 			
-				if (eval("if (\$currentvalue". $cqrows['method']."\$conditionvalue) return true; else return false;"))
+				if (eval('if ($currentvalue'. $cqrows['method'].'$conditionvalue) return true; else return false;'))
 				{
 					$amatchhasbeenfound="Y";
 				}

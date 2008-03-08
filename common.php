@@ -22,7 +22,7 @@ $buildnumber = "";
 
 
 if ($debug>0) {
-        error_reporting(E_ALL); //For debug purposes - switch on in config.phh
+        error_reporting(E_ALL); //For debug purposes - switch on in config.phh  
         }
 
 if (ini_get("max_execution_time")<120) @set_time_limit(120); // Maximum execution time - works only if safe_mode is off
@@ -33,9 +33,11 @@ if (ini_get("max_execution_time")<120) @set_time_limit(120); // Maximum executio
 $ver = explode( '.', PHP_VERSION );
 $ver_num = $ver[0] . $ver[1] . $ver[2];
 $dieoutput='';
-if ( $ver_num < 420 )
+$maildebug='';
+
+if ( $ver_num < 430 )
 {
-    $dieoutput .= 'This script needs PHP 4.2.0 or above! Your version: '.phpversion().'<br />';
+    $dieoutput .= 'This script needs PHP 4.3.0 or above! Your version: '.phpversion().'<br />';
 }
 
 if (!function_exists('mb_convert_encoding'))
@@ -2752,7 +2754,7 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
 // This function mails a text $body to the recipient $to. YOu can use more than one 
 // recipient when using a comma separated string with recipients.
 
-	global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword;
+	global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword, $defaultlang, $rootdir, $maildebug;
 
     if ($ishtml) {$body=htmlwrap($body,300);}
 
@@ -2766,6 +2768,10 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
 	}
 
 	$mail = new PHPMailer;
+    if (!$mail->SetLanguage($defaultlang,$rootdir.'/classes/phpmailer/language/')) 
+    {
+        $mail->SetLanguage('en',$rootdir.'/classes/phpmailer/language/');
+    }
 	$mail->CharSet = "UTF-8";
 	if (isset($emailsmtpssl) && $emailsmtpssl==1) {$mail->Protocol = "ssl";}
 
@@ -2825,7 +2831,9 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
         }
 
 	if (trim($subject)!='') {$mail->Subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";}
-	return $mail->Send();
+    $sent=$mail->Send();
+    $maildebug=$mail->ErrorInfo;
+	return $sent;
 }
 
 // This functions removes all tags, CRs, linefeeds and other strange chars from a given text
