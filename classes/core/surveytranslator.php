@@ -112,7 +112,7 @@
 
         // Estonian
         $supportedLanguages['et']['description'] = $clang->gT('Estonian');
-        $supportedLanguages['et']['nativedescription'] = 'Eestlane';
+        $supportedLanguages['et']['nativedescription'] = 'Eesti';
 
 	    // Finnish
 	    $supportedLanguages['fi']['description'] = $clang->gT('Finnish');
