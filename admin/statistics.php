@@ -1353,6 +1353,7 @@ if (isset($summary) && $summary)
 			$qgid=$fielddata['gid'];
 			$qqid=$fielddata['qid'];
 			$qanswer=$fielddata['aid'];
+            $qtype=$fielddata['type'];
 			$rqid=$qqid;
 			$nquery = "SELECT title, type, question, qid, lid, lid1, other FROM ".db_table_name("questions")." WHERE qid='{$rqid}' AND language='{$language}'";
 			$nresult = db_execute_num($nquery) or die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
@@ -1469,19 +1470,22 @@ if (isset($summary) && $summary)
 				}
 				break;
                 case "1":
-                $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND language='{$language}' ORDER BY sortorder, code";
+                if (substr($rt,-1,1) == 0)
+                {
+                    // Label 1
+                    $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND language='{$language}' ORDER BY sortorder, code";
+                }
+                else 
+                {
+                    // Label 2
+                    $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid1}' AND language='{$language}' ORDER BY sortorder, code";
+                }
                 $fresult = db_execute_assoc($fquery);
                 while ($frow=$fresult->FetchRow())
                 {
                     $alist[]=array($frow['code'], $frow['title']);
                 }
-                $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid1}' AND language='{$language}' ORDER BY sortorder, code";
-                $fresult = db_execute_assoc($fquery);
-                while ($frow=$fresult->FetchRow())
-                {
-                    $alist[]=array($frow['code'], $frow['title']);
-                }
-
+                $qtitle = $qtitle." (".$qanswer.")";
                 break;
 				default:
 				$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qqid' AND language='{$language}' ORDER BY sortorder, answer";
