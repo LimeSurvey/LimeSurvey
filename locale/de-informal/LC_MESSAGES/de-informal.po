@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German Informal language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-02-16 00:09+0100\n"
+"PO-Revision-Date: 2008-03-09 22:19+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -310,8 +310,9 @@ msgstr "Umfrage verlassen und löschen"
 msgid "Load Unfinished Survey"
 msgstr "Zwischengespeicherte Umfrage laden"
 
-msgid "Save Survey and Return"
-msgstr "Umfrage speichern und zurückkehren"
+# D:\web\xampp\htdocs\limesurvey/common.php:2165
+msgid "Resume Later"
+msgstr "Später fortfahren"
 
 msgid "Thank You!"
 msgstr "Vielen Dank!"
@@ -967,6 +968,10 @@ msgstr "Sicherheits-Hinweis"
 msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
 msgstr "Jemand könnte gerade versuchen Dein LimeSurvey Sitzung zu übernehmen (Verdacht auf CSRF Angriff). Wenn Du gerade auf einen verdächtigen Link geklickt hast, melde dies bitte Deinem System Administrator."
 
+# D:\web\xampp\htdocs\limesurvey/admin/access_denied.php:118
+msgid "Someone may be trying to use your LimeSurvey session by using dangerous GET requests (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
+msgstr "Jemand könnte gerade versuchen Deine LimeSurvey Sitzung zu übernehmen (Verdacht auf CSRF Angriff). Wenn Due gerade auf einen verdächtigen Link geklickt haben, melden dies bitte Deinem System Administrator."
+
 # D:\web\xampp\htdocs\limesurvey/admin/access_denied.php:138
 msgid "You are not allowed to perform this operation!"
 msgstr "Du bist nicht berechtigt diese Operation durchzuführen!"
@@ -1414,15 +1419,9 @@ msgstr "Gruppe konnte nicht aktualisiert werden."
 msgid "Group could not be deleted"
 msgstr "Gruppe konnte nicht gelöscht werden."
 
-msgid "Answer could not be added. You must insert a code in the mandatory field ("
-msgstr "Antwort konnte nicht hinzugefügt werden. Du musst einen Code in das Pflichtfeld eingeben ("
-
-msgid "title"
-msgstr "Titel"
-
-# D:\web\xampp\htdocs\limesurvey/admin/database.php:238
-msgid ")"
-msgstr ")"
+#, php-format
+msgid "Answer could not be added. You must insert a code in the mandatory field (%s)"
+msgstr "Antwort konnte nicht hinzugefügt werden. Du musst einen Code in das Pflichtfeld eingeben (%s)"
 
 msgid "Question could not be created."
 msgstr "Frage konnte nicht erstellt werden."
@@ -2718,6 +2717,10 @@ msgstr "Zugangsschlüssel Schlüssel:"
 msgid "Use HTML format for token emails?"
 msgstr "HTML Format für Probanden Emails benutzen?"
 
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:2345
+msgid "If you switch email mode, you'll have to review your email templates to fit the new format"
+msgstr "Wenn Du den Email-Modus umstellst, musst Du Deine Email-Vorlagen überarbeiten und diese ggf. auf das neue Format anpassen."
+
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2233
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2838
 msgid "Notification & Data Management"
@@ -3058,19 +3061,13 @@ msgid "File does not contain LimeSurvey data in the correct format."
 msgstr "Diese Datei enthält keine LimeSurvey-Daten im richtigen Format."
 
 # D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:742
-msgid "was NOT imported, because the question type is not know"
+msgid "was NOT imported because the question type is unknown."
 msgstr "wurde NICHT importiert, da der Fragetyp unbekannt ist."
 
 # D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:748
-msgid "was imported, but the type was set to \""
-msgstr "wurde importiert, aber der Typ wurde konvertiert auf \""
-
-msgid "type"
-msgstr "Typ"
-
-# D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:748
-msgid "\", because is the closest one"
-msgstr "\", da er diesem am ähnlichsten ist"
+#, php-format
+msgid "was imported but the type was set to '%s' because it is the most similiar one."
+msgstr "wurde importiert, aber der Typ wurde konvertiert auf '%s', da dies der ähnlichste Typ ist."
 
 msgid "Survey Import Summary"
 msgstr "Umfragen-Import übersicht"
@@ -3085,6 +3082,10 @@ msgstr "(Beschriftungs-Sets wurden nicht importiert, da Du nicht die Berechtigun
 
 msgid "Question Attributes"
 msgstr "Fragen-Attribute:"
+
+# D:\web\xampp\htdocs\limesurvey/admin/quota.php:516
+msgid "Quotas"
+msgstr "Umfrage Quoten"
 
 msgid "Import of Survey is completed."
 msgstr "Import der Umfrage abgeschlossen."
@@ -3327,6 +3328,9 @@ msgstr "Beschriftungsvorlage"
 msgid "Error: You have to enter a name for this label set."
 msgstr "Fehler: Du musst einen Titel für dieses Beschriftungsset angeben."
 
+msgid "Create or Import New Label Set"
+msgstr "Neues Beschriftungsset erstellen oder importieren"
+
 msgid "Create New Label Set"
 msgstr "Neues Beschriftung-Set"
 
@@ -3440,6 +3444,9 @@ msgstr "Hast Du Dein Passwort vergessen?"
 
 msgid "if you answered"
 msgstr "falls Deine Antwort"
+
+msgid "if you have NOT answered"
+msgstr "wenn Du nicht geantwortet hast"
 
 # D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:225
 msgid "or"
@@ -3575,21 +3582,19 @@ msgstr "Platzieren nach..."
 msgid "View Question"
 msgstr "Frage anzeigen"
 
-msgid "Survey Quotas"
-msgstr "Umfrage Quoten"
+# D:\web\xampp\htdocs\limesurvey/admin/quota.php:252
+msgid "Modify Quota"
+msgstr "Quote bearbeiten"
 
 msgid "Quota Name"
 msgstr "Quoten-Name"
 
+# D:\web\xampp\htdocs\limesurvey/admin/quota.php:526
+msgid "Quota Limit"
+msgstr "Quoten Grenze"
+
 msgid "Quota Action"
 msgstr "Quoten Aktion"
-
-# D:\web\xampp\htdocs\limesurvey/admin/quota.php:247
-msgid "Limit"
-msgstr "Limit"
-
-msgid "Not Active"
-msgstr "Nicht aktiv"
 
 msgid "Terminate Survey"
 msgstr "Umfrage beenden"
@@ -3598,6 +3603,23 @@ msgstr "Umfrage beenden"
 # D:\web\xampp\htdocs\limesurvey/admin/quota.php:536
 msgid "Terminate Survey With Warning"
 msgstr "Umfrage beenden mit Warnung"
+
+msgid "Update Quota"
+msgstr "Quote aktualisieren"
+
+msgid "Survey Quotas"
+msgstr "Umfrage Quoten"
+
+# D:\web\xampp\htdocs\limesurvey/admin/quota.php:247
+msgid "Limit"
+msgstr "Limit"
+
+msgid "Not Active"
+msgstr "Nicht aktiv"
+
+# D:\web\xampp\htdocs\limesurvey/admin/quota.php:351
+msgid "Modify"
+msgstr "Ändern"
 
 msgid "Add Answer"
 msgstr "Antwort hinzufügen"
@@ -3633,10 +3655,6 @@ msgstr "Antwort wählen"
 # D:\web\xampp\htdocs\limesurvey/admin/quota.php:516
 msgid "New Quota"
 msgstr "Neue Quote"
-
-# D:\web\xampp\htdocs\limesurvey/admin/quota.php:526
-msgid "Quota Limit"
-msgstr "Quoten Grenze"
 
 msgid "You are about to delete all conditions on this survey's questions"
 msgstr "Du bist im Begriff alle Bedingungen dieser Umfrage zu löschen."
@@ -3779,6 +3797,9 @@ msgstr "Q1 and Q1 werden berechnet durch die"
 # D:\web\xampp\htdocs\limesurvey/admin/statistics.php:1173
 msgid "minitab method"
 msgstr "minitab-Methode"
+
+msgid "Not enough values for calculation"
+msgstr "Nicht genug Werte für Berechnung"
 
 msgid "Percentage"
 msgstr "Prozent"
@@ -4446,8 +4467,8 @@ msgstr "Datensätze mit ungültiger Email-Adresse entfernt"
 msgid "Uploading LDAP Query"
 msgstr "Lade LDAP Abfrage hoch"
 
-msgid "{TOKENCOUNT} Records Created"
-msgstr "{TOKENCOUNT} Einträge erstellt"
+msgid "Results from LDAP Query"
+msgstr "Ergebnis aus LDAP Abfrage"
 
 # D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1417
 msgid "Can't bind to the LDAP directory"
@@ -4533,6 +4554,10 @@ msgstr "LimeSurvey wurde konfiguriert die Webserver Authentifizierung zu nutzen,
 # D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:156
 msgid "Please contact your system administrator"
 msgstr "Bitte kontaktiere  Deinen Systemadministrator"
+
+# D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:252
+msgid "Auto Import User Failed!"
+msgstr "Auto Import Benutzer fehlgeschlagen!"
 
 # D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:141
 msgid "Logout successful."
@@ -4985,6 +5010,10 @@ msgstr "Russisch"
 
 msgid "Romanian"
 msgstr "Rumänisch"
+
+# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:156
+msgid "Slovak"
+msgstr "Slovakisch"
 
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:156
 msgid "Slovenian"

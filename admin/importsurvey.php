@@ -813,13 +813,13 @@ if (isset($grouparray) && $grouparray) {
                 	$questionrowdata["type"] = strtoupper($questionrowdata["type"]);
                 	if (!array_key_exists($questionrowdata["type"], $qtypes))
                 	{
-                		$importwarning .= "<li>" . $clang->gT("Question") . " \"{$questionrowdata["title"]} - {$questionrowdata["question"]}\" " . $clang->gT("was NOT imported, because the question type is not know") . "</li>";
+                		$importwarning .= "<li>" . $clang->gT("Question") . " \"{$questionrowdata["title"]} - {$questionrowdata["question"]}\" " . $clang->gT("was NOT imported because the question type is unknown.") . "</li>";
                 		$countquestions--;
                 		continue;
                 	}
-                	else	// the upper case worked well
+                	else	// the upper case worked well                                                                                                                                                                            $qtypes[$questionrowdata["type"]]
                 	{
-                		$importwarning .= "<li>" . $clang->gT("Question") . " \"{$questionrowdata["title"]} - {$questionrowdata["question"]}\" " . $clang->gT("was imported, but the type was set to \"" . $qtypes[$questionrowdata["type"]]  . "\", because is the closest one") . "</li>";
+                		$importwarning .= "<li>" . $clang->gT("Question") . " \"{$questionrowdata["title"]} - {$questionrowdata["question"]}\" " . sprintf($clang->gT("was imported but the type was set to '%s' because it is the most similiar one."),$qtypes[$questionrowdata["type"]]) . "</li>";
                 	}
                 }
                         		
