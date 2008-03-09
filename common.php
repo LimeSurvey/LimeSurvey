@@ -2591,6 +2591,7 @@ function auto_escape($str) {
 // this is useful when the value is destined for a web page (eg) not
 // a SQL query.
 function auto_unescape($str) {
+    if (!isset($str)) {return null;};
 	if (!get_magic_quotes_gpc())
 	return $str;
 	return stripslashes($str);
