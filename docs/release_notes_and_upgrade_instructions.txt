@@ -47,6 +47,26 @@ HOW TO UPGRADE from earlier versions from LimeSurvey 1.45 or later
 Thank you to everyone who helped with this new release!
 
 
+
+
+Changes from 1.70+ Revision 4396 to 4417(2008/03/09)
+Updated Slovak translation provided by Juraj Zubán
+Set default language for email error messages coming from PHPMailer (c_schmitz)
+Added debug output to admin notification to find out why an email is failing (c_schmitz)
+Updated Estonian Translation by Eric Hints (eric -d-0-t- hints -a-t- gmail -d-0-t- com)
+Fixed issue #1723: Display error with statistics and "dual scale" question typ (joeschneider)
+Fixed issue #1746: Umlauts coming from {SURVEYDESCRIPTION} are not resolved in the confirmation email (c_schmitz)
+Updated German Translations( c_schmitz)
+Changed 'Save Survey and Return' button caption to 'Resume Later' (c_schmitz)
+Fixed a small problem with single quotes in template name translations. (c_schmitz)
+Updated version of gettext.php (c_schmitz).
+Fixed issue #1786: When using a non-equal condition the Logic Eliminator wasn't aware of it and dropped the value. After that a mandatory warning was raised. (c_schmitz)
+Fixed issue #1761: token emailstatus left NULL on upgrade (c_schmitz)
+Fixed issue: Quotas are checked even if the survey is inactive. (c_schmitz)
+Updated spanish language (kadejo)
+
+
+
 Changes from 1.70+ Revision 4381 to 4395(2008/03/02)
 Fixed #1757: Encoding Problem of Confirmation Email(c_schmitz)
 Fixed #1754: Invalid HTML in Dual Scale Matrix causing Layout Problem with Hoover Effect in IE(c_schmitz)
