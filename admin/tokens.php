@@ -1215,7 +1215,6 @@ if ($subaction == "email" &&
                 
 				$modsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
 				$modmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
-                $modmessage=htmlwrap($modmessage);
                 if (MailTextMessage($modmessage, $modsubject, $to , $from, $sitename, $ishtml, getBounceEmail($surveyid)))
 				{
 					// Put date into sent
