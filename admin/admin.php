@@ -29,7 +29,7 @@ require_once($rootdir.'/classes/core/html_entity_decode_php4.php');  // has been
 
 require_once('htmleditor-functions.php');
 
-@ini_set('session.gc_maxlifetime', $sessionlifetime);
+//@ini_set('session.gc_maxlifetime', $sessionlifetime);     Might cause problems in client?? 
 
 // Reset FileManagerContext
 $_SESSION['FileManagerContext']='';
@@ -284,7 +284,7 @@ elseif ($action == "browse")
 elseif ($action == "tokens")
     {
     if($surrows['activate_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("tokens.php");}               
-        else { include("access_denied.php");}    
+        else { include("access_denied.php"); }    
     }    
 elseif ($action=="showprintablesurvey")  
     { 
@@ -388,7 +388,11 @@ elseif ($action == "replacementfields")
      $action=="addusergroup" || $action=="editusergroup" || $action=="mailusergroup" ||
      $action=="delusergroup" || $action=="usergroupindb" || $action=="mailsendusergroup" || 
      $action=="editusergroupindb" || $action=="editusergroups" || $action=="deleteuserfromgroup" ||
-     $action=="addusertogroup" || $action=="setuserrights" || $action=="setasadminchild") include ("userrighthandling.php");
+     $action=="addusertogroup" || $action=="setuserrights" || $action=="setasadminchild") 
+ 
+ {
+     include ("userrighthandling.php");
+ }
 
   
   // For some output we dont want to have the standard admin menu bar

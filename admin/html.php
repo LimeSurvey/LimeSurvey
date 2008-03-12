@@ -2026,8 +2026,12 @@ elseif ($action == "surveyrights")
 	$addsummary = "<br /><strong>".$clang->gT("Set Survey Rights")."</strong><br />\n";
 
 	if(isset($_POST['uid'])){
-		$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$_POST['uid'];
-	}
+		$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} ";
+        if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1)  
+        {
+            $query.=" AND owner_id != ".$_POST['uid']." AND owner_id = ".$_SESSION['loginID'];
+        }
+    }
 	else{
 		$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];//." AND owner_id != ".$_POST['uid'];
 	}
