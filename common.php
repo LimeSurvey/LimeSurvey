@@ -932,7 +932,8 @@ function getuserlist($outputformat='fullinfoarray')
 		{
 			$myuid=$_SESSION['loginID'];
 			// List users from same group as me + all my childs
-			$uquery = "SELECT u.* FROM ".db_table_name('users')." AS u, ".db_table_name('user_in_groups')." AS ga ,".db_table_name('user_in_groups')." AS gb WHERE ga.ugid=gb.ugid AND ( (gb.uid=$myuid AND u.uid=ga.uid) OR (u.parent_id=$myuid) ) GROUP BY u.uid";
+			$uquery = "SELECT u.* FROM ".db_table_name('users')." AS u, ".db_table_name('user_in_groups')." AS ga ,".db_table_name('user_in_groups')." AS gb WHERE u.uid=".$_SESSION['loginID']." OR (ga.ugid=gb.ugid AND ( (gb.uid=$myuid AND u.uid=ga.uid) OR (u.parent_id=$myuid) ) ) GROUP BY u.uid";
+			error_log("TIBO: $uquery");
 		}
 		else
 		{
@@ -947,15 +948,30 @@ function getuserlist($outputformat='fullinfoarray')
 
 	$uresult = db_execute_assoc($uquery);
 	$userlist = array();
+	$userlist[0] = "Reserved for logged in user";
 	while ($srow = $uresult->FetchRow())
 	{
 		if ($outputformat != 'onlyuidarray')
 		{
-			$userlist[] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id'], "create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "superadmin"=>$srow['superadmin'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);			//added by Dennis modified by Moses
+			if ($srow['uid'] != $_SESSION['loginID'])
+			{
+				$userlist[] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id'], "create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "superadmin"=>$srow['superadmin'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);			//added by Dennis modified by Moses
+			}
+			else
+			{
+				$userlist[0] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id'], "create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "superadmin"=>$srow['superadmin'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);
+			}
 		}
 		else
 		{
-			$userlist[] = $srow['uid'];
+			if ($srow['uid'] != $_SESSION['loginID'])
+			{
+				$userlist[] = $srow['uid'];
+			}
+			else
+			{
+				$userlist[0] = $srow['uid'];
+			}
 		}
 
 	}
