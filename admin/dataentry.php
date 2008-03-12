@@ -571,11 +571,10 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			{
 				$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} and language='{$language}' ORDER BY sortorder, answer";
 				$fnrresult = $connect->Execute($fnrquery);
-				$fnrcount = $fnrresult->RecordCount();
-				for ($j=1; $j<=$fnrcount; $j++)
+                while ($fnrrow = $fnrresult->FetchRow())
 				{
-					$fnames[] = array("$field$j", "$ftitle ($j)", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "$j", "{$fnrow['qid']}", "{$fnrow['lid']}");
-					$fnames[] = array("$field$j", "$ftitle ($j)", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "$j", "{$fnrow['qid']}", "{$fnrow['lid1']}");
+					$fnames[] = array("$field{$fnrrow['code']}#0", "$ftitle ({$fnrrow['code']})", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']} (1)", "{$fnrow['qid']}", "{$fnrow['lid']}");
+					$fnames[] = array("$field{$fnrrow['code']}#1", "$ftitle ({$fnrrow['code']})", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']} (2)", "{$fnrow['qid']}", "{$fnrow['lid1']}");
 				}
 			}
 			elseif ($fnrow['type'] == "O")
@@ -1224,7 +1223,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					$dataentryoutput .= "</table>\n";
 					break;
 					case "F": //ARRAY (Flexible Labels)
-					case "H":
+                    case "H":
+					case "1":
 						$dataentryoutput .= "<table>\n";
 						$thisqid=$fnames[$i][7];
 						while (isset($fnames[$i][7]) && $fnames[$i][7] == $thisqid)
@@ -1361,7 +1361,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			if ($irow['type'] != "Q" && $irow['type'] != "M" && $irow['type'] != "P" && $irow['type'] != "A" && 
 			    $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "F" && 
 				$irow['type'] != "H" && $irow['type'] != "O" && $irow['type'] != "R" && $irow['type'] != "^" && 
-				$irow['type'] != "J" && $irow['type'] != "K")
+				$irow['type'] != "J" && $irow['type'] != "K" && $irow['type'] != "1" )
 			{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 				if (isset($_POST[$fieldname])) { $thisvalue=$_POST[$fieldname]; } else {$thisvalue="";}

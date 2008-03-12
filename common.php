@@ -1161,7 +1161,7 @@ function sql_table_exists($tableName, $tables)
 ################################################################################
 # Compares two elements from an array (passed by the usort function)
 # and returns -1, 0 or 1 depending on the result of the comparison of
-# group_name and then title.
+# the sort order of the group_order and question_order field
 function CompareGroupThenTitle($a, $b)
 {
 	if (isset($a["group_order"]) && isset($b["group_order"]))
