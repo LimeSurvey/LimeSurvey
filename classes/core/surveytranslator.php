@@ -194,7 +194,7 @@
  
  	    // Slovak
 	    $supportedLanguages['sk']['description'] = $clang->gT('Slovak');
-	    $supportedLanguages['sk']['nativedescription'] = 'Slovák';
+	    $supportedLanguages['sk']['nativedescription'] = 'Slov&aacute;k';
 
 	    // Slovenian
 	    $supportedLanguages['sl']['description'] = $clang->gT('Slovenian');
