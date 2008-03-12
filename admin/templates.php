@@ -307,8 +307,8 @@ switch($screenname) {
 
 	$surveylist=array(
 	                  "nosid"=>$clang->gT("You have not provided a survey identification number"),
-	                  "contact"=>$clang->gT("Please contact")." $siteadminname ( $siteadminemail ) ".$clang->gT("for further assistance"),
-                      "listheading"=>$clang->gT("The Following Surveys Are Available"),
+	                  "contact"=>sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail),
+                      "listheading"=>$clang->gT("The following surveys are available:"),
 					  "list"=>implode("\n",$list),
 					  );
 
@@ -828,7 +828,7 @@ function filetext($templatefile) {
 
 function makegraph($thisstep, $total)
 {
-	global $templatedir, $publicurl, $templatename;
+	global $templatedir, $publicurl, $templatename, $clang;
 	$chart="$publicurl/templates/$templatedir/chart.jpg";
 	if (!is_file($chart)) {$shchart="chart.jpg";}
 	else {$shchart = "$publicurl/templates/$templatedir/chart.jpg";}

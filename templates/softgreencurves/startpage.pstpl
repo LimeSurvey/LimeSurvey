@@ -160,6 +160,16 @@ border-width:1px;
 }
 table.question tr.array1:hover {background-color: #A7A9D1; }
 table.question tr.array2:hover {background-color: #A7A9D1; }
+
+.surveytitle
+{
+  font-size:1.2em;
+  height:1.5em;
+}
+.languagechanger
+{
+ font-size:1em;
+}
 </style>
 </head>
 <body vlink='#003300' link='#003300'>

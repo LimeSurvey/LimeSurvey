@@ -1,35 +1,35 @@
-<table width="100%" cellspacing="0" align="center">
-    <tbody>
-        <tr>
-            <td width="1%" bgcolor="#e9e9e9" align="center">
-            <p><font size="4" face="verdana" color="#328639"><strong><span style="background-color: rgb(255, 255, 0); color: rgb(0, 0, 0); cursor: default;" /></strong></font></p>
-            <a target="_blank" href="http://www.limesurvey.org"><img border="0" title="Powered by LimeSurvey" src="{TEMPLATEURL}limesurvey_logo.png" alt="" /></a></td>
-            <td bgcolor="#e9e9e9" style="text-align: center;"><span style="font-size: x-large;"><font face="verdana" color="#328639"><strong><span style="color: rgb(0, 0, 0); cursor: default;">{SITENAME}</span></strong></font><font face="verdana" color="#328639"><strong><span style="color: rgb(0, 0, 0); cursor: default;" /></strong></font></span></td>
-            <td width="1%" bgcolor="#e9e9e9" style="text-align: center;">&nbsp;<a target="_blank" href="http://www.limesurvey.org"><img border="0" title="Powered by LimeSurvey" src="{TEMPLATEURL}limesurvey_logo.png" alt="" /></a></td>
-        </tr>
-        <tr>
-            <td align="center" colspan="3"><span style="color: rgb(0, 0, 0); cursor: default;">{NOSURVEYID}</span></td>
-        </tr>
-        <tr>
-            <td bgcolor="#e9e9e9" align="center" colspan="3"><strong><span style="color: rgb(0, 0, 0); cursor: default;">{SURVEYLISTHEADING}</span></strong>
-            <table align="center">
-                <tbody>
-                    <tr>
-                        <td>
-                        <ul><span style="color: rgb(0, 0, 0); cursor: default;">{SURVEYLIST}</span></ul>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+<table width='100%' align='center' cellspacing='0'>
+    <tr>
+            <td align='center' bgcolor='#FFFFFF'>
+             <p><font face='verdana' size='4' color='#328639'><strong>{SITENAME}</strong></font></p>
+            </td>
+    </tr>
+	<tr>
+		<td align='center' bgcolor='#EEF6FF'>
+             <strong>{SURVEYLISTHEADING}</strong>
+         </td>
+    </tr>
+	<tr>
+		<td align='center' bgcolor='#FFFFFF'>
+             <table align='center'>
+               <tr>
+                <td>
+                <ul>{SURVEYLIST}</ul>
                 </td>
-            </tr>
-            <tr>
-                <td align="center" colspan="3"><span style="color: rgb(0, 0, 0); cursor: default;">{SURVEYCONTACT}</span></td>
-            </tr>
-            <tr>
-                <td bgcolor="#e9e9e9" align="center" colspan="3">
-                <p><span style="color: rgb(0, 0, 0); cursor: default;">{LANGUAGECHANGER}</span></p>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+               </tr>
+             </table>
+		</td>
+	</tr>
+      <tr>
+            <td align='center'>
+             {SURVEYCONTACT}
+            </td>
+      </tr>
+      <tr>
+            <td align='center' height='100px' bgcolor='#EEF6FF' valign='bottom'>
+             <p>{LANGUAGECHANGER}</p>
+             <a href='http://www.limesurvey.org' target='_blank'><img src='{TEMPLATEURL}limesurvey_logo.png' border='0' title='LimeSurvey' /></a><br />
+             <a href='http://www.limesurvey.org' target='_blank'><font color='#000000'>The Online Survey Tool</font></a> - Free & Open Source<br />
+            </td>
+      </tr>
+</table>

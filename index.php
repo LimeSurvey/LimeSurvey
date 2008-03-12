@@ -160,7 +160,7 @@ if ($surveyid &&
 		echo "\t\t<center><br />\n"
 		."\t\t\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
 		."\t\t\t".$clang->gT("We are sorry but you don't have permissions to do this.")."<br /><br />\n"
-		."\t\t\t".$clang->gT("Please contact")." $siteadminname ( $siteadminemail ) ".$clang->gT("for further assistance").".\n"
+		."\t\t\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail)."\n"
 		."\t\t</center><br />\n";
 	
 		echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
@@ -189,7 +189,7 @@ if (!isset($_SESSION['grouplist'])  && (isset($_POST['move'])) )
 	echo "\t\t<center><br />\n"
 	."\t\t\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
 	."\t\t\t".$clang->gT("We are sorry but your session has expired.")."<br />".$clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
-	."\t\t\t".$clang->gT("Please contact")." $siteadminname ( $siteadminemail ) ".$clang->gT("for further assistance").".\n"
+    ."\t\t\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail)."\n"
 	."\t\t</center><br />\n";
 
 	echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
@@ -280,8 +280,8 @@ if (!$surveyid)
 	}
 	$surveylist=array(
 	                  "nosid"=>$clang->gT("You have not provided a survey identification number"),
-	                  "contact"=>$clang->gT("Please contact")." $siteadminname ( $siteadminemail ) ".$clang->gT("for further assistance"),
-                      "listheading"=>$clang->gT("The Following Surveys Are Available"),
+	                  "contact"=>sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail),
+                      "listheading"=>$clang->gT("The following surveys are available:"),
 					  "list"=>implode("\n",$list),
 					  );
 
@@ -359,8 +359,8 @@ if ($thissurvey['expiry'] < date("Y-m-d") && $thissurvey['useexpiry'] == "Y")
 	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
 	echo "\t\t<center><br />\n"
 	."\t\t\t".$clang->gT("This survey is no longer available.")."<br /><br />\n"
-	."\t\t\t".$clang->gT("Please contact")." <i>{$thissurvey['adminname']}</i> (<i>{$thissurvey['adminemail']}</i>) "
-	.$clang->gT("for further assistance")."<br /><br />\n";
+    ."\t\t\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail']).".\n"
+	."<br /><br />\n";
 
 	echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
 	doFooter();
@@ -379,8 +379,8 @@ if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $this
 	echo "\t\t<center><br />\n"
 	."\t\t\t<font color='RED'><strong>".$clang->gT("Error")."</strong></font><br />\n"
 	."\t\t\t".$clang->gT("You have already completed this survey.")."<br /><br />\n"
-	."\t\t\t".$clang->gT("Please contact")." <i>{$thissurvey['adminname']}</i> (<i>{$thissurvey['adminemail']}</i>) "
-	.$clang->gT("for further assistance")."<br /><br />\n";
+    ."\t\t\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])."\n"
+	."<br /><br />\n";
 
 	echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
 	doFooter();
@@ -760,7 +760,7 @@ function makelanguagechanger()
     else
       $lang = GetBaseLanguageFromSurveyID($surveyid);
       
-    $htmlcode ="<select name=\"select\" onChange=\"javascript:window.location=this.value\">\n";
+    $htmlcode ="<select name=\"select\" class='languagechanger' onchange=\"javascript:window.location=this.value\">\n";
     $htmlcode .= "<option value=\"index.php?sid=". $surveyid ."&lang=". $lang ."\">".getLanguageNameFromCode($lang,false)."</option>\n";
     
     foreach ($slangs as $otherlang)
@@ -779,7 +779,7 @@ function makelanguagechanger()
     return $htmlcode;
   } elseif (!isset($surveyid)) {
     global $defaultlang, $baselang;
-    $htmlcode = "<select name=\"select\" onChange=\"javascript:window.location=this.value\">\n";
+    $htmlcode = "<select name=\"select\" class='languagechanger' onchange=\"javascript:window.location=this.value\">\n";
     $htmlcode .= "<option value=\"index.php?lang=". $defaultlang ."\">".getLanguageNameFromCode($defaultlang,false)."</option>\n";
     foreach(getlanguagedata() as $key=>$val)
     {
