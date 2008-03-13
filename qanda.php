@@ -3618,9 +3618,10 @@ function do_array_flexible_dual($ia)
                 $hiddenanswers='';
 				$answer .= "\t\t\t\t\t<td  class='array1'><font size='1'></font></td>\n";		// separator
     			array_push($inputnames,$myfname1);
-				$hiddenanswers .= "<input type='hidden' name='java$myfname1' id='java$myfname1' value='";
-                if (isset($_SESSION[$myfname1])) {$hiddenanswers .= $_SESSION[$myfname1];}
-				$hiddenanswers .= "' />";
+				// $hiddenanswers .= "<input type='hidden' name='java$myfname1' id='java$myfname1' value='";
+                $answer .= "\t\t\t\t<input type='hidden' name='java$myfname1' id='java$myfname1' value='";
+                if (isset($_SESSION[$myfname1])) {$answers .= $_SESSION[$myfname1];}
+				$answer .= "' />\n";
                 $thiskey=0;
 				foreach ($labelcode1 as $ld) // second label set
 				{
