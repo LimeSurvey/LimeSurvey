@@ -93,15 +93,7 @@ function nice_addslashes($string)
 	return addslashes($string);
 }
 
-// internal function for utf8 decoding
-// thanks to Hokkaido for noticing that PHP's utf8_decode function is a little
-// screwy, and to jamie for the code
-function my_utf8_decode($string)
-{
-	return strtr($string,
-	"????????     ?        ?                 ?                     ???  ? ",
-	"SOZsozYYuAAAAAAACEEEEIIIIDNOOOOOOUUUUYsaaaaaaaceeeeiiiionoooooouuuuyy");
-}
+
 
 // paranoid sanitization -- only let the alphanumeric set through
 function sanitize_paranoid_string($string, $min='', $max='')
@@ -117,7 +109,13 @@ function sanitize_paranoid_string($string, $min='', $max='')
 }
 
 function sanitize_email($email) {
-    return preg_replace('/[^a-zA-Z0-9;+_.@-]/i', '', $email); 
+// Handles now emails separated with a semikolon    
+    $emailarray=explode(';',$email);
+    for ($i = 0; $i <= count($emailarray)-1; $i++)
+    {
+      $emailarray[$i]=preg_replace('/[^a-zA-Z0-9;+_.@-]/i', '', $emailarray[$i]);
+    }
+    return implode(';',$emailarray);
 }
 
 // sanitize a string in prep for passing a single argument to system() (or similar)
@@ -244,7 +242,6 @@ function sanitize_float($float, $min='', $max='')
 // glue together all the other functions
 function sanitize($input, $flags, $min='', $max='')
 {
-	if($flags & UTF8) $input = my_utf8_decode($input);
 	if($flags & PARANOID) $input = sanitize_paranoid_string($input, $min, $max);
 	if($flags & INT) $input = sanitize_int($input, $min, $max);
 	if($flags & FLOAT) $input = sanitize_float($input, $min, $max);

@@ -2832,7 +2832,7 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
 	}
 	$mail->From = $fromemail;
 	$mail->Sender = $senderemail; // Sets Return-Path for error notifications
-    $toemails = explode(",", $to);
+    $toemails = explode(";", $to);
     foreach ($toemails as $singletoemail)
     {
         if (strpos($singletoemail, '<') )

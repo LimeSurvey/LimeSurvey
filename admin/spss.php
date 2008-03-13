@@ -565,16 +565,16 @@ foreach ($fields as $field)
 }
 
 function strip_tags_full($string) {
+    $string=html_entity_decode_php4($string, ENT_QUOTES, "UTF-8");
     mb_regex_encoding('utf-8');
-    $pattern = array('&nbsp;', '&agrave;', '&nbsp;', '&agrave;', '&egrave;', '&igrave;', '&ograve;', '&ugrave;', '&eacute;',
-    				 '&Agrave;', '&Egrave;', '&Igrave;', '&Ograve;', '&Ugrave;', '&Eacute;', '\r', '\n', '-oth-');
+    $pattern = array('\r', '\n', '-oth-');
     for ($i=0; $i<sizeof($pattern); $i++) {
         $string = mb_ereg_replace($pattern[$i], '', $string);
     }
     
     $string = mb_ereg_replace("'", "\'", $string);
 
-    return $string;
+    return strip_tags($string);
 }
 
 exit;

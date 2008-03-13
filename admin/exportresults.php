@@ -583,8 +583,8 @@ for ($i=0; $i<$fieldcount; $i++)
 			$qr = db_execute_assoc($qq);
 			while ($qrow=$qr->FetchRow())
 			{$qname=$qrow['question'];}
+            $qname=strip_tags_full($qname);               
 			$qname=mb_substr($qname, 0, 15)."..";
-			$qname=strip_tags($qname);
 			$firstline = str_replace("\n", "", $firstline);
 			$firstline = str_replace("\r", "", $firstline);
 			if ($type == "csv") {$firstline .= "\"$qname";}
@@ -632,7 +632,7 @@ for ($i=0; $i<$fieldcount; $i++)
 					$lr = db_execute_assoc($lq);
 					while ($lrow = $lr->FetchRow())
 					{
-						$fquest .= " [".$lrow['answer']."]";
+						$fquest .= " [".strip_tags_full($lrow['answer'])."]";
 					}
 				}
 				break;
@@ -652,7 +652,7 @@ for ($i=0; $i<$fieldcount; $i++)
 					$lr = db_execute_assoc($lq);
 					while ($lrow = $lr->FetchRow())
 					{
-						$fquest .= " [".$lrow['answer']."]";
+						$fquest .= " [".strip_tags_full($lrow['answer'])."]";
 					}
 				}
 				if (isset($comment) && $comment == true) {$fquest .= " - comment"; $comment=false;}
@@ -675,7 +675,7 @@ for ($i=0; $i<$fieldcount; $i++)
 					$lr = db_execute_assoc($lq);
 					while ($lrow=$lr->FetchRow())
 					{
-						$fquest .= " [".$lrow['answer']."]";
+						$fquest .= " [".strip_tags_full($lrow['answer'])."]";
 					}
 				}
 				break;
@@ -696,14 +696,15 @@ for ($i=0; $i<$fieldcount; $i++)
 				$j=0;	
 				while ($lrow=$lr->FetchRow())
 				{
-                    $fquest .= " [".$lrow['answer']."][".$strlabel.". label]";
+                    $fquest .= " [".strip_tags_full($lrow['answer'])."][".strip_tags_full($strlabel).". label]";
 					$j++;
 				}
 			
 				break;
 				
 			}
-			$fquest = strip_tags($fquest);
+            $fquest=strip_tags_full($fquest);               
+            
 			$fquest = str_replace("\n", " ", $fquest);
 			$fquest = str_replace("\r", "", $fquest);
 			if ($type == "csv")
@@ -946,7 +947,7 @@ elseif ($answers == "long")
 				$lr = db_execute_assoc($lq, array($drow[$i]));
 				while ($lrow = $lr->FetchRow())
 				{
-					$exportoutput .= $lrow['answer'];
+					$exportoutput .= strip_tags_full($lrow['answer']);
 				}
 				break;
 				case "1":
@@ -954,7 +955,7 @@ elseif ($answers == "long")
 					$lr = db_execute_assoc($lq, array($drow[$i])) or die($lq."<br />ERROR:<br />".htmlspecialchars($connect->ErrorMsg()));
 					while ($lrow = $lr->FetchRow())
 					{
-						$exportoutput .= $lrow['lcode'];
+						$exportoutput .= strip_tags_full(($lrow['lcode']);
 					}
 				break;
 				case "L": //DROPDOWN LIST
@@ -976,7 +977,7 @@ elseif ($answers == "long")
 						while ($lrow = $lr->FetchRow())
 						{
 							//if ($lrow['code'] == $drow[$i]) {$exportoutput .= $lrow['answer'];}
-							$exportoutput .= $lrow['answer'];
+							$exportoutput .= strip_tags_full($lrow['answer']);
 						}
 					}
 				}
@@ -1010,7 +1011,7 @@ elseif ($answers == "long")
 				$found = "";
 				while ($lrow = $lr->FetchRow())
 				{
-					if ($lrow['code'] == $drow[$i]) {$exportoutput .= $lrow['answer']; $found = "Y";}
+					if ($lrow['code'] == $drow[$i]) {$exportoutput .= strip_tags_full($lrow['answer']); $found = "Y";}
 				}
 				if ($found != "Y") {if ($type == "csv") {$exportoutput .= str_replace("\"", "\"\"", $drow[$i]);} else {$exportoutput .= str_replace("\r\n", " ", $drow[$i]);}}
 				break;
@@ -1112,7 +1113,7 @@ elseif ($answers == "long")
                 $lr = db_execute_assoc($lq);
                 while ($lrow=$lr->FetchRow())
                 {
-                    $fquest .= " [".$lrow['title']."][".$strlabel.". label]";
+                    $fquest .= " [".strip_tags_full($lrow['title'])."][".strip_tags_full($strlabel).". label]";
                 }
             
                 break;
@@ -1161,4 +1162,19 @@ elseif ($answers == "long")
 if ($type=='xls') { $workbook->close();}
     else {echo $exportoutput;}
 exit;
+
+
+function strip_tags_full($string) {
+    $string=html_entity_decode_php4($string, ENT_QUOTES, "UTF-8");
+    mb_regex_encoding('utf-8');
+    $pattern = array('\r', '\n', '-oth-');
+    for ($i=0; $i<sizeof($pattern); $i++) {
+        $string = mb_ereg_replace($pattern[$i], '', $string);
+    }
+    
+    $string = mb_ereg_replace("'", "\'", $string);
+
+    return strip_tags($string);
+}
+
 ?>

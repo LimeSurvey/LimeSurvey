@@ -672,27 +672,6 @@ if ($subaction == "cleartokens" &&
 	$subaction="";
 }
 
-if ($subaction == "updatedb" && $surveyid && 
-	($sumrows5['edit_survey_property'] || 
-		$sumrows5['activate_survey'] ||
-		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-   )
-{
-	$query = "ALTER TABLE `tokens_$surveyid`\n"
-	. "ADD `attribute_1` varchar(100) NULL,\n"
-	. "ADD `attribute_2` varchar(100) NULL,\n"
-	. "ADD `mpid` int NULL";
-	if ($result = $connect->Execute($query))
-	{
-		$tokenoutput .= "<tr><td align='center'>".$clang->gT("Success")."</td></tr>\n";
-		$subaction="";
-	}
-	else
-	{
-		$tokenoutput .= "<tr><td align='center'>".$clang->gT("Error")."</td></tr>\n";
-		$subaction="";
-	}
-}
 
 if (!$subaction && 
 	($sumrows5['edit_survey_property'] || 
@@ -721,12 +700,6 @@ if (!$subaction &&
 	$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
 	$bresult = db_select_limit_assoc($bquery, 1) or die($clang->gT("Error")." counting fields<br />".htmlspecialchars($connect->ErrorMsg()));
 	$bfieldcount=$bresult->FieldCount();
-	if ($bfieldcount==7)
-	{
-//		$tokenoutput .= "\t\t\t<li><a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=updatedb'>".$clang->gT("Update tokens table with new fields")."</a></li>\n";
-		$tokenoutput .= "\t\t\t<li><a href='#' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=updatedb")."\">".$clang->gT("Update tokens table with new fields")."</a></li>\n";
-	}
-//	$tokenoutput .= "\t\t\t<li><a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill'>".$clang->gT("Drop tokens table")."</a></li></ul>\n"
 	$tokenoutput .= "\t\t\t<li><a href='#' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill")."\">".$clang->gT("Drop tokens table")."</a></li></ul>\n"
 	."\t\t\t</td></tr></table>\n"
 	."\t\t</td>\n"
