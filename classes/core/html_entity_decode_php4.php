@@ -40,7 +40,7 @@ function code_to_utf8($num) {
 /**
  * Reverse function for htmlentities.
  * Convert entities in UTF-8.
- * @param $text_to_convert Text to convert.
+ * @param $text_to_convert Text to convert.      
  * @return string converted
  */
 function html_entity_decode_php4($text_to_convert) {
@@ -221,6 +221,7 @@ function html_entity_decode_php4($text_to_convert) {
         "&prop;" => "".chr(226).chr(136).chr(157)."",
         "&Psi;" => "".chr(206).chr(168)."",
         "&psi;" => "".chr(207).chr(136)."",
+        "&quot;" => chr(34),
         "&radic;" => "".chr(226).chr(136).chr(154)."",
         "&rang;" => "".chr(226).chr(140).chr(170)."",
         "&raquo;" => "".chr(194).chr(187)."",

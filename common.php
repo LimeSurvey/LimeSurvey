@@ -1352,7 +1352,7 @@ function browsemenubar()
 	."onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Get statistics from these responses", "js")."')\">"
 	."<img name='Statistics' src='$imagefiles/statistics.png' title='' alt='' align='left' /></a>\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n";
-	if ($sumrows5['export'] == "1")
+	if ($sumrows5['export'] == "1" || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$browsemenubar .= "\t\t\t<a href='$scriptname?action=exportresults&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Results to Application", "js")."')\"><img name='Export' src='$imagefiles/export.png' "
 		. "title='' alt=''align='left' /></a>\n"
@@ -1366,7 +1366,7 @@ function browsemenubar()
 		"<img src='$imagefiles/saved.png' title='' alt='' align='left'  name='BrowseSaved' /></a>\n"
 	. "\t\t\t<a href='$scriptname?action=vvimport&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Import a VV survey file", "js")."')\">\n"
 	. "<img src='$imagefiles/importvv.png' align='left' title='' border='0' alt='' /></a>\n";
-	if ($sumrows5['export'] == "1")
+	if ($sumrows5['export'] == "1" || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$browsemenubar .= "\t\t\t<a href='$scriptname?action=vvexport&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export a VV survey file", "js")."')\">" .
 		"<img src='$imagefiles/exportvv.png' align='left' title='' alt='' border='0' /></a>\n";

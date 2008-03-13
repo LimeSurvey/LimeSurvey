@@ -27,7 +27,7 @@ $sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surv
 $sumresult5 = db_execute_assoc($sumquery5);
 $sumrows5 = $sumresult5->FetchRow();
 
-if ($sumrows5['export'] != "1")
+if ($sumrows5['export'] != "1" && $_SESSION['USER_RIGHT_SUPERADMIN'] != 1)
 {
 	exit;
 }
@@ -482,34 +482,7 @@ for ($i=0; $i<$fieldcount; $i++)
 	//Iterate through column names and output headings
 	$field=$dresult->FetchField($i);
 	$fieldinfo=$field->name;
-//	if ($fieldinfo == "token")
-//	{
-//		if ($answers == "short")
-//		{
-//			if ($type == "csv")
-//			{
-//				$firstline.="\"".$elang->gT("Token")."\"$separator";
-//			}
-//			else
-//			{
-//				$firstline .= $elang->gT("Token")."$separator";
-//			}
-//		}
-//		if ($answers == "long")
-//		{
-//			if ($style == "abrev")
-//			{
-//				if ($type == "csv") {$firstline .= "\"".$elang->gT("Token")."\"$separator";}
-//				else {$firstline .= $elang->gT("Token")."$separator";}
-//			}
-//			else
-//			{
-//				if ($type == "csv") {$firstline .= "\"".$elang->gT("Token")."\"$separator";}
-//				else {$firstline .= $elang->gT("Token")."$separator";}
-//			}
-//		}
-//	}
-//	elseif ($fieldinfo == "lastname")
+
 	if ($fieldinfo == "lastname")
 	{
 		if ($type == "csv") {$firstline .= "\"".$elang->gT("Last Name")."\"$separator";}
@@ -955,7 +928,7 @@ elseif ($answers == "long")
 					$lr = db_execute_assoc($lq, array($drow[$i])) or die($lq."<br />ERROR:<br />".htmlspecialchars($connect->ErrorMsg()));
 					while ($lrow = $lr->FetchRow())
 					{
-						$exportoutput .= strip_tags_full(($lrow['lcode']);
+						$exportoutput .= strip_tags_full($lrow['lcode']);
 					}
 				break;
 				case "L": //DROPDOWN LIST
@@ -977,7 +950,15 @@ elseif ($answers == "long")
 						while ($lrow = $lr->FetchRow())
 						{
 							//if ($lrow['code'] == $drow[$i]) {$exportoutput .= $lrow['answer'];}
-							$exportoutput .= strip_tags_full($lrow['answer']);
+                             if ($type == "csv") 
+                             {
+                                $exportoutput .= str_replace("\"", "\"\"", strip_tags_full($lrow['answer']));
+                             }
+                                 else
+                                 {
+                                    $exportoutput .= strip_tags_full($lrow['answer']);
+                                 }
+
 						}
 					}
 				}
@@ -1171,9 +1152,6 @@ function strip_tags_full($string) {
     for ($i=0; $i<sizeof($pattern); $i++) {
         $string = mb_ereg_replace($pattern[$i], '', $string);
     }
-    
-    $string = mb_ereg_replace("'", "\'", $string);
-
     return strip_tags($string);
 }
 
