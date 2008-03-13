@@ -3282,85 +3282,93 @@ function do_array_flexiblecolumns($ia)
 	    }
 		$ansresult = db_execute_assoc($ansquery);
 		$anscount = $ansresult->RecordCount();
-		$fn=1;
-		$answer = "\t\t\t<table class='question' align='center'>\n"
-		. "\t\t\t\t<tr>\n"
-		. "\t\t\t\t\t<td></td>\n";
-		$cellwidth=$anscount;
-	
-		$cellwidth=round(50/$cellwidth);
-		while ($ansrow = $ansresult->FetchRow())
+        if ($anscount>0)
 		{
-			$anscode[]=$ansrow['code'];
-			$answers[]=answer_replace($ansrow['answer']);
-		}
-		foreach ($answers as $ld)
-		{
-            $myfname = $ia[1].$ansrow['code'];
-			if (!isset($trbc) || $trbc == "array2") {$trbc = "array1";} else {$trbc = "array2";}
-			/* Check if this item has not been answered: the 'notanswered' variable must be an array,
-			containing a list of unanswered questions, the current question must be in the array,
-			and there must be no answer available for the item in this session. */
-			if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "") ) {
-				$ld = "<span class='errormandatory'>{$ld}</span>";
-			}
-			$answer .= "\t\t\t\t\t<td class='$trbc'><span class='answertext'>"
-			. $ld."</span></td>\n";
-		}
-		unset($trbc);
-		$answer .= "\t\t\t\t</tr>\n";
-		$ansrowcount=0;
-		$ansrowtotallength=0;
-		while ($ansrow = $ansresult->FetchRow())
-		{
-			$ansrowcount++;
-			$ansrowtotallength=$ansrowtotallength+strlen($ansrow['answer']);
-		}
-		$percwidth=100 - ($cellwidth*$anscount);
-		foreach($labels as $ansrow)
-		{
-			$answer .= "\t\t\t\t<tr>\n"
-			. "\t\t\t\t\t<td class='arraycaptionleft'>{$ansrow['answer']}</td>\n";
-			foreach ($anscode as $ld)
-			{
-				if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
-				$myfname=$ia[1].$ld;
-				$answer .= "\t\t\t\t\t<td align='center' class='$trbc' width='$cellwidth%'>"
-				. "<label for='answer$myfname-".$ansrow['code']."'>";
-				$answer .= "<input class='radio' type='radio' name='$myfname' value='".$ansrow['code']."' id='answer$myfname-".$ansrow['code']."'"
-				. " title='".html_escape(strip_tags($ansrow['answer']))."'";
-				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ansrow['code']) {$answer .= " checked='checked'";}
-				elseif (!isset($_SESSION[$myfname]) && $ansrow['code'] == "")
-				{
-					$answer .= " checked='checked'";
-					// Humm.. (by lemeur), not sure this section can be reached
-					// because I think $_SESSION[$myfname] is always set (by save.php ??) !
-					// should remove the !isset part I think !!
-					$defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
-						. "\t\t\t\t\t\t<!--\n"
-						. "\t\t\t\t\t\t\tmodfield(\"$myfname\");\n"
-						. "\t\t\t\t\t\t//-->\n"
-						. "\t\t\t\t\t\t</script>\n";
-				}
-				// --> START NEW FEATURE - SAVE
-				$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
-				// --> END NEW FEATURE - SAVE
-				$answer .= $defaultvaluescript;
-			}
+            $fn=1;
+		    $answer = "\t\t\t<table class='question' align='center'>\n"
+		    . "\t\t\t\t<tr>\n"
+		    . "\t\t\t\t\t<td></td>\n";
+		    $cellwidth=$anscount;
+	    
+		    $cellwidth=round(50/$cellwidth);
+		    while ($ansrow = $ansresult->FetchRow())
+		    {
+			    $anscode[]=$ansrow['code'];
+			    $answers[]=answer_replace($ansrow['answer']);
+		    }
+		    foreach ($answers as $ld)
+		    {
+                $myfname = $ia[1].$ansrow['code'];
+			    if (!isset($trbc) || $trbc == "array2") {$trbc = "array1";} else {$trbc = "array2";}
+			    /* Check if this item has not been answered: the 'notanswered' variable must be an array,
+			    containing a list of unanswered questions, the current question must be in the array,
+			    and there must be no answer available for the item in this session. */
+			    if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "") ) {
+				    $ld = "<span class='errormandatory'>{$ld}</span>";
+			    }
+			    $answer .= "\t\t\t\t\t<td class='$trbc'><span class='answertext'>"
+			    . $ld."</span></td>\n";
+		    }
 		    unset($trbc);
-			$answer .= "\t\t\t\t</tr>\n";
-			$fn++;
-		}
+		    $answer .= "\t\t\t\t</tr>\n";
+		    $ansrowcount=0;
+		    $ansrowtotallength=0;
+		    while ($ansrow = $ansresult->FetchRow())
+		    {
+			    $ansrowcount++;
+			    $ansrowtotallength=$ansrowtotallength+strlen($ansrow['answer']);
+		    }
+		    $percwidth=100 - ($cellwidth*$anscount);
+		    foreach($labels as $ansrow)
+		    {
+			    $answer .= "\t\t\t\t<tr>\n"
+			    . "\t\t\t\t\t<td class='arraycaptionleft'>{$ansrow['answer']}</td>\n";
+			    foreach ($anscode as $ld)
+			    {
+				    if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
+				    $myfname=$ia[1].$ld;
+				    $answer .= "\t\t\t\t\t<td align='center' class='$trbc' width='$cellwidth%'>"
+				    . "<label for='answer$myfname-".$ansrow['code']."'>";
+				    $answer .= "<input class='radio' type='radio' name='$myfname' value='".$ansrow['code']."' id='answer$myfname-".$ansrow['code']."'"
+				    . " title='".html_escape(strip_tags($ansrow['answer']))."'";
+				    if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ansrow['code']) {$answer .= " checked='checked'";}
+				    elseif (!isset($_SESSION[$myfname]) && $ansrow['code'] == "")
+				    {
+					    $answer .= " checked='checked'";
+					    // Humm.. (by lemeur), not sure this section can be reached
+					    // because I think $_SESSION[$myfname] is always set (by save.php ??) !
+					    // should remove the !isset part I think !!
+					    $defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
+						    . "\t\t\t\t\t\t<!--\n"
+						    . "\t\t\t\t\t\t\tmodfield(\"$myfname\");\n"
+						    . "\t\t\t\t\t\t//-->\n"
+						    . "\t\t\t\t\t\t</script>\n";
+				    }
+				    // --> START NEW FEATURE - SAVE
+				    $answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
+				    // --> END NEW FEATURE - SAVE
+				    $answer .= $defaultvaluescript;
+			    }
+		        unset($trbc);
+			    $answer .= "\t\t\t\t</tr>\n";
+			    $fn++;
+		    }
 	
-		$answer .= "\t\t\t</table>\n";
-		foreach($anscode as $ld)
-		{
-			$myfname=$ia[1].$ld;
-			$answer .= "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
-			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
-			$answer .= "' />\n";
-			$inputnames[]=$myfname;
-		}
+		    $answer .= "\t\t\t</table>\n";
+		    foreach($anscode as $ld)
+		    {
+			    $myfname=$ia[1].$ld;
+			    $answer .= "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+			    if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+			    $answer .= "' />\n";
+			    $inputnames[]=$myfname;
+		    }
+        }
+        else
+        {
+        $answer = "<font color=red>".$clang->gT('Error: There are no answers defined for this question.')."</font>";
+        $inputnames="";
+        }    
 		
 	}
 	else
