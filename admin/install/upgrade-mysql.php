@@ -207,7 +207,7 @@ function upgrade_survey_tables117()
         {
         while ( $sv = $surveyidresult->FetchRow() )
             {
-            modify_database("","ALTER TABLE ".db_table_name('survey_'.$sv[0])." ADD `startdate` datetime NOT NULL AFTER `datestamp`"); echo $modifyoutput; flush();
+            modify_database("","ALTER TABLE ".db_table_name('survey_'.$sv[0])." ADD `startdate` datetime AFTER `datestamp`"); echo $modifyoutput; flush();
             }
         }
 }
