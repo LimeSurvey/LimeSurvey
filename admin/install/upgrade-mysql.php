@@ -188,6 +188,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","ALTER TABLE `prefix_users` DROP COLUMN `move_user`"); echo $modifyoutput; flush();
 		//126
         modify_database("","ALTER TABLE `prefix_questions` ADD `lid1` integer NOT NULL default '0'"); echo $modifyoutput; flush();
+        modify_database("","UPDATE `prefix_conditions` SET `method`='==' where (`method` is null) or `method`=''"); echo $modifyoutput; flush();
         
 		modify_database("","update `prefix_settings_global` set `stg_value`='126' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }

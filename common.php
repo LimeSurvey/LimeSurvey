@@ -1658,8 +1658,8 @@ function validate_email($email)
 
 function validate_templatedir($templatename)
 {
-    global $publicurl, $defaulttemplate;
-    if (is_dir("$publicurl/templates/{$templatename}/"))
+    global $publicdir, $defaulttemplate;
+    if (is_dir("$publicdir/templates/{$templatename}/"))
     {
          return $templatename;
     }

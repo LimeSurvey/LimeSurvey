@@ -190,6 +190,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","UPDATE [prefix_users] SET [superadmin]=1 where ([create_survey]=1 AND [create_user]=1 AND [delete_user]=1 AND [configurator]=1)"); echo $modifyoutput; flush();
         //126
         modify_database("","ALTER TABLE [prefix_questions] ADD [lid1] int NOT NULL DEFAULT '0'"); echo $modifyoutput; flush();
+        modify_database("","UPDATE [prefix_conditions] SET [method]='==' where ( [method] is null) or [method]=''"); echo $modifyoutput; flush();
         
         modify_database("","update [prefix_settings_global] set [stg_value]='126' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
