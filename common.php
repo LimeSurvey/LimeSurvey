@@ -1654,8 +1654,22 @@ function validate_email($email)
 	// see http://data.iana.org/TLD/tlds-alpha-by-domain.txt
 	$maxrootdomainlength = 6;
     return ( ! preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,".$maxrootdomainlength."}$/ix", $email)) ? FALSE : TRUE;  
-    
 }
+
+function validate_templatedir($templatename)
+{
+    global $publicurl, $defaulttemplate;
+    if (is_dir("$publicurl/templates/{$templatename}/"))
+    {
+         return $templatename;
+    }
+    else 
+    {
+         return $defaulttemplate;
+
+    }     
+}
+
 
 function crlf_lineendings($text)
 {
@@ -2188,13 +2202,13 @@ function templatereplace($line)
 		$line=str_replace("{SAVE}", $saveall, $line);
 	}
 	if (strpos($line, "{TEMPLATEURL}") !== false) {
-		if ($thissurvey['templatedir']) {
-			$templateurl="$publicurl/templates/{$thissurvey['templatedir']}/";
+        
+    
+		if ($thissurvey['templatedir']) 
+		{
+			$templateurl="$publicurl/templates/".validate_templatedir($thissurvey['templatedir'])."/";
 		}
-		elseif ($surveyid)    {
-			$templateurl="$publicurl/templates/default/";
-		}
-        elseif (!$surveyid)    {
+        else  {
             $templateurl="$publicurl/templates/{$defaulttemplate}/";
         }
 		$line=str_replace("{TEMPLATEURL}", $templateurl, $line);

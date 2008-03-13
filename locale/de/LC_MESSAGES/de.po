@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-03-11 00:49+0100\n"
+"PO-Revision-Date: 2008-03-13 09:49+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1304,22 +1304,13 @@ msgstr "Leider haben Sie keine Berechtigung, dies zu tun."
 # D:\web\htdocs\limesurvey/index.php:163
 # D:\web\htdocs\limesurvey/index.php:192
 # D:\web\htdocs\limesurvey/index.php:283
-# D:\web\htdocs\limesurvey/index.php:362
-# D:\web\htdocs\limesurvey/index.php:382
-# D:\web\htdocs\limesurvey/printanswers.php:40
-# D:\web\htdocs\limesurvey/admin/templates.php:310
-msgid "Please contact"
-msgstr "Bitte kontaktieren Sie"
-
-# D:\web\htdocs\limesurvey/index.php:163
-# D:\web\htdocs\limesurvey/index.php:192
-# D:\web\htdocs\limesurvey/index.php:283
 # D:\web\htdocs\limesurvey/index.php:363
 # D:\web\htdocs\limesurvey/index.php:383
 # D:\web\htdocs\limesurvey/printanswers.php:40
 # D:\web\htdocs\limesurvey/admin/templates.php:310
-msgid "for further assistance"
-msgstr "für weitere Unterstützung."
+#, php-format
+msgid "Please contact %s ( %s ) for further assistance."
+msgstr "Bitte kontaktieren Sie %s ( %s ) für weitere Unterstützung."
 
 # D:\web\xampp\htdocs\limesurvey/index.php:69
 # D:\web\htdocs\limesurvey/index.php:191
@@ -1345,8 +1336,8 @@ msgstr "Sie haben keine Identifikationsnummer für den Fragebogen angegeben."
 
 # D:\web\htdocs\limesurvey/index.php:284
 # D:\web\htdocs\limesurvey/admin/templates.php:311
-msgid "The Following Surveys Are Available"
-msgstr "Die folgenden Umfragen sind verfügbar"
+msgid "The following surveys are available:"
+msgstr "Die folgenden Umfragen sind verfügbar:"
 
 # D:\web\htdocs\limesurvey/index.php:361
 msgid "This survey is no longer available."

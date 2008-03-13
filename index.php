@@ -345,8 +345,14 @@ else
 
 
 //SET THE TEMPLATE DIRECTORY
-if (!$thissurvey['templatedir']) {$thistpl=$tpldir."/default";} else {$thistpl=$tpldir."/{$thissurvey['templatedir']}";}
-if (!is_dir($thistpl)) {$thistpl=$tpldir."/default";}
+if (!$thissurvey['templatedir']) 
+{
+    $thistpl=$tpldir."/".$defaulttemplate;
+} 
+    else 
+    {
+        $thistpl=$tpldir."/".validate_templatedir($thissurvey['templatedir']);
+    }
 
 
 
@@ -711,10 +717,10 @@ function getTokenData($surveyid, $token)
 function makegraph($thisstep, $total)
 {
 	global $thissurvey;
-	global $thistpl, $publicurl, $clang;
-	$chart=$thistpl."/chart.jpg";
-	if (!is_file($chart)) {$shchart="chart.jpg";}
-	else {$shchart = "$publicurl/templates/{$thissurvey['templatedir']}/chart.jpg";}
+	global $publicurl, $clang;
+
+	$shchart = "$publicurl/templates/".validate_templatedir($thissurvey['templatedir'])."/chart.jpg";
+
 	$graph = "<table class='graph' width='100' align='center' cellpadding='2'><tr><td>\n"
 	. "<table width='180' align='center' cellpadding='0' cellspacing='0' border='0' class='innergraph'>\n"
 	. "<tr><td align='right' width='40'>0%&nbsp;</td>\n";

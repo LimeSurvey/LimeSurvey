@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German Informal language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-03-09 22:19+0100\n"
+"PO-Revision-Date: 2008-03-13 09:49+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -488,11 +488,9 @@ msgstr "FEHLER"
 msgid "We are sorry but you don't have permissions to do this."
 msgstr "Leider hast Du keine Berechtigung, dies zu tun."
 
-msgid "Please contact"
-msgstr "Bitte kontaktiere"
-
-msgid "for further assistance"
-msgstr "für weitere Unterstützung."
+#, php-format
+msgid "Please contact %s ( %s ) for further assistance."
+msgstr "Bitte kontaktiere %s ( %s ) für weitere Unterstützung."
 
 # D:\web\xampp\htdocs\limesurvey/index.php:69
 msgid "We are sorry but your session has expired."
@@ -509,8 +507,8 @@ msgstr "Keine verfügbaren Umfragen"
 msgid "You have not provided a survey identification number"
 msgstr "Du hast keine Identifikationsnummer für den Fragebogen angegeben."
 
-msgid "The Following Surveys Are Available"
-msgstr "Die folgenden Umfragen sind verfügbar"
+msgid "The following surveys are available:"
+msgstr "Die folgenden Umfragen sind verfügbar:"
 
 msgid "This survey is no longer available."
 msgstr "Diese Umfrage ist beendet und steht nicht mehr zur Verfügung."
