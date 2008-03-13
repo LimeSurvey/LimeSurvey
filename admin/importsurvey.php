@@ -842,13 +842,18 @@ if (isset($grouparray) && $grouparray) {
 
                     // Now we will fix up the label id 
 					$type = $questionrowdata["type"]; //Get the type
-					if ($type == "F" || $type == "H" || $type == "W" || $type == "Z") 
+					if ($type == "F" || $type == "H" || $type == "W" || $type == "Z" || $type == "1") 
                     {//IF this is a flexible label array, update the lid entry
 						if (isset($labelreplacements)) {
 							foreach ($labelreplacements as $lrp) {
-								if ($lrp[0] == $questionrowdata["lid"]) {
+								if ($lrp[0] == $questionrowdata["lid"]) 
+                                {
 									$questionrowdata["lid"]=$lrp[1];
-								}
+                                }
+                                if ($lrp[0] == $questionrowdata["lid1"]) 
+                                {
+                                    $questionrowdata["lid1"]=$lrp[1];
+                                }
 							}
 						}
                     }
