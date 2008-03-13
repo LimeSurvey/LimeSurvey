@@ -92,8 +92,11 @@ $stoppoint = count($bigarray)-1;
 
 for ($i=0; $i<$stoppoint; $i++)
 {
-	$labelsarray[] = $bigarray[$i];
-//	$importlabeloutput .= "($i)[$stoppoint]An Answer! - {$bigarray[$i]}<br />";
+    // do not import empty lines
+	if (trim($bigarray[$i])!='') 
+    {
+        $labelsarray[] = $bigarray[$i];
+    }
 	unset($bigarray[$i]);
 }
 
