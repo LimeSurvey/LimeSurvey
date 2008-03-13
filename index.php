@@ -670,6 +670,7 @@ function loadanswers()
 			if ($column == "saved_thisstep")
 			{
 				$_SESSION['step']=$value;
+                $_POST['thisstep']=$value-1;
 			}
 			if ($column == "scid")
 			{
