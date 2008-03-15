@@ -180,7 +180,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","ALTER TABLE `prefix_conditions` CHANGE `value` `value` VARCHAR(255) NOT NULL default ''"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE `prefix_labels` CHANGE `title` `title` text"); echo $modifyoutput; flush();
 		//124
-        modify_database("","ALTER TABLE `prefix_surveys` ADD `bounce_email` varCHAR(320)"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys` ADD `bounce_email` text"); echo $modifyoutput; flush();
         //125
         upgrade_token_tables125();
         modify_database("","ALTER TABLE `prefix_users` ADD `superadmin` tinyint(1) NOT NULL default '0'"); echo $modifyoutput; flush();
@@ -238,7 +238,7 @@ function upgrade_token_tables125()
         {
         while ( $sv = $surveyidresult->FetchRow() )
             {
-            modify_database("","ALTER TABLE ".$sv[0]." ADD `emailstatus` VARCHAR(300) NOT NULL DEFAULT 'OK'"); echo $modifyoutput; flush();
+            modify_database("","ALTER TABLE ".$sv[0]." ADD `emailstatus` text NOT NULL DEFAULT 'OK'"); echo $modifyoutput; flush();
             }
         }
 }
