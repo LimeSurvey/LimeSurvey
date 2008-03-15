@@ -163,7 +163,7 @@
 	    $supportedLanguages['mk']['description'] = $clang->gT('Macedonian');
 	    $supportedLanguages['mk']['nativedescription'] = '&#1052;&#1072;&#1082;&#1077;&#1076;&#1086;&#1085;&#1089;&#1082;&#1080;';
    
-	    // Norwegian Bokmål
+	    // Norwegian Bokml
 	    $supportedLanguages['nb']['description'] = $clang->gT('Norwegian (Bokmal)');
 	    $supportedLanguages['nb']['nativedescription'] = 'Norsk Bokm&#229;l';
 
