@@ -519,7 +519,7 @@ function getLabelSet($lid) {
 			  ORDER BY sortorder";
 	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
 	while($row = $result->FetchRow()) {
-		if ()$row['title'] <> '')
+		if ($row['title'] <> '')
 		{
 			$answer[]=array("code"=>$row['code'],
 			"answer"=>$row['title']);

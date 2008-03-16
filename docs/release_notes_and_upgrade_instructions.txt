@@ -46,7 +46,11 @@ HOW TO UPGRADE from earlier versions from LimeSurvey 1.45 or later
 
 Thank you to everyone who helped with this new release!
 
-
+UPGRADING from 1.53 to 1.70+
+----------------------------
+After you upgraded please check the global user rights of each user. There was a 
+new superadmin right introduced. The upgrade script is guessing who to make 
+superadmin - so this is not perfect and has to be supervised by YOU. 
 
 
 Changes from 1.70+ Revision 4396 to 4417(2008/03/09)
