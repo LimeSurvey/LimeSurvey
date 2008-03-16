@@ -113,7 +113,7 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit")  && (!isset($notan
 	}
 	else
 	{
-		if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1)
+	if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1)
 		{
 			$cookiename="PHPSID".returnglobal('sid')."STATUS";
 			setcookie("$cookiename", "COMPLETE", time() + 31536000);
@@ -209,19 +209,18 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit")  && (!isset($notan
 
 		doHeader();
 		echo $content;
-			
-		}
 
-		echo templatereplace(file_get_contents("$thistpl/completed.pstpl"));
-        echo "\n<br />\n";
-        echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
-        doFooter();
-		exit;
-//	{
-//		echo templatereplace($op);
-//	}
-	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+	}
 
+	echo templatereplace(file_get_contents("$thistpl/completed.pstpl"));
+    echo "\n<br />\n";
+    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+    doFooter();
+	if($thissurvey['printanswers'] != 'Y' && $thissurvey['usecookie'] != 'Y' && $tokensexist !=1)
+    {
+      session_unset();
+      session_destroy();
+    }    
 	exit;
 }
 
