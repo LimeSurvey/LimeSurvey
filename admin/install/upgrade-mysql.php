@@ -238,7 +238,7 @@ function upgrade_token_tables125()
         {
         while ( $sv = $surveyidresult->FetchRow() )
             {
-            modify_database("","ALTER TABLE ".$sv[0]." ADD `emailstatus` text NOT NULL DEFAULT 'OK'"); echo $modifyoutput; flush();
+            modify_database("","ALTER TABLE ".$sv[0]." ADD `emailstatus` varchar(255) NOT NULL DEFAULT 'OK'"); echo $modifyoutput; flush();
             }
         }
 }
