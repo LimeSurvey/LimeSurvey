@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-03-13 09:49+0100\n"
-"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
+"PO-Revision-Date: 2008-03-16 19:45+0100\n"
+"Last-Translator: Josef Prandstetter <jprandstetter@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -1489,7 +1489,7 @@ msgstr "Bitte bestätigen Sie den Zugang zur Umfrage indem Sie die Sicherheitsfr
 # D:\web\htdocs\limesurvey/index.php:1642
 # D:\web\htdocs\limesurvey/index.php:1679
 msgid "This is a controlled survey. You need a valid token to participate."
-msgstr "Um an dieser Umfrage teilzunehmen, benötigen Sie ein passenden Zugangsschlüssel."
+msgstr "Um an dieser Umfrage teilzunehmen, benötigen Sie einen passenden Zugangsschlüssel."
 
 # D:\web\htdocs\limesurvey/index.php:1562
 # D:\web\htdocs\limesurvey/index.php:1684
