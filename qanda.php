@@ -3626,14 +3626,18 @@ function do_array_flexible_dual($ia)
                 $hiddenanswers='';
 				$answer .= "\t\t\t\t\t<td  class='array1'><font size='1'></font></td>\n";		// separator
     			array_push($inputnames,$myfname1);
-				// $hiddenanswers .= "<input type='hidden' name='java$myfname1' id='java$myfname1' value='";
-                $answer .= "\t\t\t\t<input type='hidden' name='java$myfname1' id='java$myfname1' value='";
-                if (isset($_SESSION[$myfname1])) {$answers .= $_SESSION[$myfname1];}
-				$answer .= "' />\n";
+				$hiddenanswers .= "<input type='hidden' name='java$myfname1' id='java$myfname1' value='";
+                if (isset($_SESSION[$myfname1])) {$hiddenanswers .= $_SESSION[$myfname1];}
+				$hiddenanswers .= "' />";
                 $thiskey=0;
 				foreach ($labelcode1 as $ld) // second label set
 				{
 					$answer .= "\t\t\t\t\t<td align='center' width='$cellwidth%'>";
+                    if ($hiddenanswers!='')
+                    	{
+                    		$answer .=$hiddenanswers;
+                    		$hiddenanswers='';
+                    	}
 					$answer .= "<label for='answer$myfname1-$ld'>";
 					$answer .= "<input class='radio' type='radio' name='$myfname1' value='$ld' id='answer$myfname1-$ld' title='"
 					. html_escape(strip_tags($labelans1[$thiskey]))."'";

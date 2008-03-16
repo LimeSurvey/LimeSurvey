@@ -41,19 +41,54 @@ HOW TO UPGRADE from earlier versions from LimeSurvey 1.45 or later
 4. Upload the new version to the same place
 5. Adjust the settings in config.php to the setting from the backup config.php. 
    --Do NOT just copy over the old config.php over the new one.--
-6. Run the installer in /admin/install/install.php to update the database.
+6. Run the installer in /admin/install/index.php to update the database.
 7. Done.
 
 Thank you to everyone who helped with this new release!
 
-UPGRADING from 1.53 to 1.70+
-----------------------------
+Special note for UPGRADING from 1.53 to 1.70+
+----------------------------------------------
 After you upgraded please check the global user rights of each user. There was a 
 new superadmin right introduced. The upgrade script is guessing who to make 
 superadmin - so this is not perfect and has to be supervised by YOU. 
 
+Changes from 1.70+ Revision 4418 to 4466(2008/03/16)
+
+Fixed #1817: PHP Syntax error in admin/results.php (c_schmitz)
+Fixed #1805: Survey cannot be re-used without closing and reopening browser, even with cookies turned off (jcleeland)
+Reverted changes to gettext - didn't work out as expected (c_schmitz)
+Fixed a bug in upgrade script and mysql4 where the emailstatus field was not added due to size limitations (c_schmitz)
+Updated Bosnian Language file by Darko Saracevic >darko -a-t- alterart -d-0-t- ba< 
+Fixed bug in inport where label sets of Dual Scale Type Questions are not properly transformed regarding their LID (c_schmitz)
+Fix for conditions on upgrade (c_schmitz)
+Fixed #1794: Errors showing when previewing question without answers in Flexible Array by Column Question Type (c_schmitz)
+Fixed #1802: "Resume Later" -> reloading saved survey starts at first page (c_schmitz)
+Fixed HTML entities showing up in Excel,CSV & SPSS export (c_schmitz)
+Fixed #1780: Java script error with dual scale
+Updated tokens and email validation to be able to use several email addresses separated by semikolon when sending an invitation (c_schmitz)
+Fixed SPSS & data export to filter out tags and html-encoded chars (c_schmitz)
+Fixed #1774: array_combine() error on importing a label (c_schmitz)
+Fixed a small display bug when the template for an imported survey did not exist (c_schmitz)
+Fixed #1798: In reminder email (html format) surveyurl is displayed as HTML code in Outlook (c_schmitz)
+Fixed #1785: Upgrade script failed to add startdate column under certain circumstances  (c_schmitz)
+Fixed #1781: Errors when editing a survey response with dual scale question type questions  (c_schmitz)
+Fixed bug with assigning user rights and Superuser right (c_schmitz)
+Removed the {NOSID} message from default page since robot tools are looking for it  (c_schmitz)
+Added a class tag to the language changer  (c_schmitz)
+Some minor CSS corrections (c_schmitz)
+Fixed #1796: in HTML email, SURVEYURL text may be corrupted (lemeur)
+Fixed #1773: Error in userrighthandling.php + fixed usercontrol list with current user bolded instead of admin user (lemeur)
+Added static JS for cell->ctl mapping (awarren)
+Some minor correction with progress bar in template designer (c_schmitz)
+Spanish language updated. (kadejo)
+Updated German Language  (c_schmitz)
+Updated Lithuanian Translation by Mykolas Okulic-Kazarinas
+Updated Galician Translation by Carlos Neira Cortizas 
+Fixed issue #1782: Lines wrapping in plain text invite  (c_schmitz)
+
 
 Changes from 1.70+ Revision 4396 to 4417(2008/03/09)
+
 Updated Slovak translation provided by Juraj Zubán
 Set default language for email error messages coming from PHPMailer (c_schmitz)
 Added debug output to admin notification to find out why an email is failing (c_schmitz)
@@ -70,8 +105,8 @@ Fixed issue: Quotas are checked even if the survey is inactive. (c_schmitz)
 Updated spanish language (kadejo)
 
 
-
 Changes from 1.70+ Revision 4381 to 4395(2008/03/02)
+
 Fixed #1757: Encoding Problem of Confirmation Email(c_schmitz)
 Fixed #1754: Invalid HTML in Dual Scale Matrix causing Layout Problem with Hoover Effect in IE(c_schmitz)
 Fixed a bug where non-html emails are wrapped.(c_schmitz)
