@@ -52,6 +52,12 @@ After you upgraded please check the global user rights of each user. There was a
 new superadmin right introduced. The upgrade script is guessing who to make 
 superadmin - so this is not perfect and has to be supervised by YOU. 
 
+Changes from 1.70+ Revision 4466 to 4469 (2008/03/17)
+
+Fixed #1818: corrected a german typo (el-matador-69)
+Fixed a bug in upgrade script and mysql4 where the emailstatus field was not added due to size limitations - 2nd try (c_schmitz)
+Fixed #1808: Condition not implemented for the "other" answer // Fix for questions type List Radio/Dropdown (lemeur)
+
 Changes from 1.70+ Revision 4418 to 4466(2008/03/16)
 
 Fixed #1817: PHP Syntax error in admin/results.php (c_schmitz)
