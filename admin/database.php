@@ -1022,7 +1022,7 @@ if(isset($surveyid))
 					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to make answer not default","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
 				}
 			} else {	
-				$query = "SELECT type from ".db_table_name('questions')." where qid={$qid} GROUP BY qid";
+				$query = "SELECT type from ".db_table_name('questions')." where qid={$qid} GROUP BY type";
 				$result = db_execute_assoc($query);
 				$row = $result->FetchRow();
 				if ($row['type'] == "O" || $row['type'] == "L" || $row['type'] == "!")
