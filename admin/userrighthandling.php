@@ -455,7 +455,7 @@ if ($action == "editusers")
 
 	//	output users
 	// output admin user only if the user logged in has user management rights
-	if ($_SESSION['USER_RIGHT_DELETE_USER']||$_SESSION['USER_RIGHT_CREATE_USER']||$_SESSION['USER_RIGHT_SUPERADMIN']){
+//	if ($_SESSION['USER_RIGHT_DELETE_USER']||$_SESSION['USER_RIGHT_CREATE_USER']||$_SESSION['USER_RIGHT_SUPERADMIN']){
 
 
 		$usersummary .= "\t<tr class='oddrow'>\n"
@@ -473,17 +473,19 @@ if ($action == "editusers")
 		}
 		$usersummary .= "\t\t<td class='oddrow' align='center' style='padding:3px;'>\n";
 		
-		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-		{
+//		if ($_SESSION['USER_RIGHT_DELETE_USER']||$_SESSION['USER_RIGHT_CREATE_USER']||$_SESSION['USER_RIGHT_SUPERADMIN'] || 1 == 1)
+//		{
 			$usersummary .= "\t\t\t<form method='post' action='$scriptname'>"
 			."<input type='submit' value='".$clang->gT("Edit User")."' />"
 			."<input type='hidden' name='action' value='modifyuser' />"
 			."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
 			."</form>";
-		}
+//		}
+
 		// Standard users and SuperAdmins are allowed to delete all successor users (but the admin not himself)
 		// 
-		if ($usrhimself['parent_id'] != 0 && ($_SESSION['USER_RIGHT_DELETE_USER'] == 1 || ($usrhimself['uid'] == $_SESSION['loginID'])))
+//		if ($usrhimself['parent_id'] != 0 && ($_SESSION['USER_RIGHT_DELETE_USER'] == 1 || ($usrhimself['uid'] == $_SESSION['loginID'])))
+		if ($usrhimself['parent_id'] != 0 && $_SESSION['USER_RIGHT_DELETE_USER'] == 1 )
 		{
 			$usersummary .= "\t\t\t<form method='post' action='$scriptname?action=deluser'>"
 			."<input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.","js")."\")' />"
@@ -498,7 +500,7 @@ if ($action == "editusers")
 	
 		// empty row
 		if(count($userlist) > 0) $usersummary .= "\t<tr>\n\t<td height=\"20\" colspan=\"6\"></td>\n\t</tr>";
-	}
+//	}
 
 	
 	// other users

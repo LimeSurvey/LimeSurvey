@@ -398,7 +398,8 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 	$addsummary .= "<br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 }
 
-elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_DELETE_USER'] || ($postuid == $_SESSION['loginID'])))
+//elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_DELETE_USER'] || ($postuid == $_SESSION['loginID'])))
+elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_DELETE_USER'] ))
 {
 	$addsummary = "<br /><strong>".$clang->gT("Deleting User")."</strong><br />\n";
 
@@ -435,7 +436,7 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SE
 				$sresultcount = $sresult->RecordCount();
 			}
 	
-			if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sresultcount > 0)
+			if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sresultcount > 0 || $postuserid == $_SESSION['loginID'])
 				{
 				// We are about to kill an uid with potential childs
 				// Let's re-assign them their grand-father as their
