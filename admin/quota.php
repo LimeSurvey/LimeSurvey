@@ -180,7 +180,7 @@ function getQuotaAnswers($qid,$surveyid,$quota_id)
 	}
 }
 
-if($sumrows5['edit_survey_property'])
+if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 {
 	if (isset($_POST['quotamax'])) $_POST['quotamax']=sanitize_int($_POST['quotamax']);
 	if (!isset($action)) $action=returnglobal('action');
