@@ -105,6 +105,11 @@ if ($action == "listsurveys")
 				$ownername="---";
 			}
 
+			$questionsCount = 0;
+			$questionsCountQuery = "SELECT * FROM ".db_table_name('questions')." WHERE sid={$rows['sid']} AND language='".$rows['language']."'"; //Getting a count of questions for this survey
+			$questionsCountResult = $connect->Execute($questionsCountQuery);
+			$questionsCount = $questionsCountResult->RecordCount();
+
             if ($gbc == "oddrow") {$gbc = "evenrow";}
             else {$gbc = "oddrow";}
 			$listsurveys.="<tr class='$gbc'>";
@@ -136,7 +141,7 @@ if ($action == "listsurveys")
 					}
 				}
 			} else {
-				if ($_SESSION['USER_RIGHT_SUPERADMIN'] ==1 || $sidsecurity['activate_survey'])
+				if ( ($_SESSION['USER_RIGHT_SUPERADMIN'] ==1 || $sidsecurity['activate_survey']) && $questionsCount > 0)
 				{
 					$listsurveys .= "<td><a href=\"#\" onclick=\"window.open('$scriptname?action=activate&amp;sid={$rows['sid']}', '_top')\""
 					. "onmouseout=\"hideTooltip()\""
