@@ -465,7 +465,10 @@ if ($action == "editusers")
 		. "\t\t<td class='oddrow' align='center'><strong>********</strong></td>\n";
 		
 		if(isset($usrhimself['parent_id']) && $usrhimself['parent_id']!=0) { 
-			$usersummary .= "\t\t<td class='oddrow' align='center'>{$usrhimself['parent_name']}</td>\n";
+		$uquery = "SELECT users_name FROM ".db_table_name('users')." WHERE uid=".$usrhimself['parent_id'];
+		$uresult = db_execute_assoc($uquery);
+		$srow = $uresult->FetchRow();
+			$usersummary .= "\t\t<td class='oddrow' align='center'><strong>{$srow['users_name']}</strong></td>\n";
 		}
 		else
 		{
