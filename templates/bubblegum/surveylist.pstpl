@@ -5,7 +5,7 @@
             </td>
     </tr>
 	<tr>
-		<td align='center' bgcolor='#EEF6FF'>
+		<td align='center' bgcolor='#FFFFFF'>
              <strong>{SURVEYLISTHEADING}</strong>
          </td>
     </tr>
@@ -21,12 +21,12 @@
 		</td>
 	</tr>
       <tr>
-            <td align='center'>
+            <td align='center' bgcolor='#FFFFFF'>
              {SURVEYCONTACT}
             </td>
       </tr>
       <tr>
-            <td align='center' height='100px' bgcolor='#EEF6FF' valign='bottom'>
+            <td align='center' height='100px' bgcolor='#FFFFFF' valign='bottom'>
              <p>{LANGUAGECHANGER}</p>
              <a href='http://www.limesurvey.org' target='_blank'><img src='{TEMPLATEURL}limesurvey_logo.png' border='0' title='LimeSurvey' /></a><br />
              <a href='http://www.limesurvey.org' target='_blank'><font color='#000000'>The Online Survey Tool</font></a> - Free & Open Source<br />

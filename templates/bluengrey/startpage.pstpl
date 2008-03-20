@@ -191,7 +191,7 @@ table.question tr.array2:hover {background-color: #A7A9D1; }
 }
 </style>
 </head>
-<body>
+<body style="background-image: url({TEMPLATEURL}linearer_gradient_LimeSurvey2.gif);">
 <br/>
 <table width='85%' align='center' style='border-collapse:collapse; border-color:#444444;' bgcolor='#E9E9E9' border='2' cellspacing='0'>
 	<tr>
