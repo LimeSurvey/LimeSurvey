@@ -516,6 +516,7 @@ elseif ($action == "replacementfields")
 }
   else
   { //not logged in
+    sendcacheheaders();
     if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
     $adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput;  // All future output is written into this and then outputted at the end of file
     unset($_SESSION['metaHeader']);    
