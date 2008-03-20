@@ -147,6 +147,10 @@
 	    $supportedLanguages['hu']['description'] = $clang->gT('Hungarian');
 	    $supportedLanguages['hu']['nativedescription'] = 'Magyar';
 
+	    // Indonesian
+	    $supportedLanguages['id']['description'] = $clang->gT('Indonesian');
+	    $supportedLanguages['id']['nativedescription'] = 'Bahasa Indonesia';
+
 	    // Italian
 	    $supportedLanguages['it']['description'] = $clang->gT('Italian');
 	    $supportedLanguages['it']['nativedescription'] = 'Italiano';
