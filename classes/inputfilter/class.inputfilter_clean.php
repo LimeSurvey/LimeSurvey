@@ -119,8 +119,16 @@ class InputFilter {
 		$newSet = array();
 		for ($i = 0; $i <count($attrSet); $i++) {
 			if (!$attrSet[$i]) continue;
-			$attrSubSet[] = trim(substr($attrSet[$i],0,strpos($attrSet[$i],'=')));
-            $attrSubSet[] = trim(substr($attrSet[$i],strpos($attrSet[$i],'=')+1));
+            $attrSubSet=array();
+            if (strpos($attrSet[$i],'=')===false)
+            {
+                $attrSubSet[] = $attrSet[$i];
+            }
+            else
+            {
+			    $attrSubSet[] = trim(substr($attrSet[$i],0,strpos($attrSet[$i],'=')));
+                $attrSubSet[] = trim(substr($attrSet[$i],strpos($attrSet[$i],'=')+1));
+            }
 			list($attrSubSet[0]) = explode(' ', $attrSubSet[0]);
 			if ((!eregi("^[a-z]*$",$attrSubSet[0])) || (($this->xssAuto) && ((in_array(strtolower($attrSubSet[0]), $this->attrBlacklist)) || (substr($attrSubSet[0], 0, 2) == 'on')))) 
 				continue;

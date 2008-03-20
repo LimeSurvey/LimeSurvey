@@ -546,6 +546,18 @@ if (isset($grouparray) && $grouparray)
         }
     }
     // ANSWERS is DONE
+
+   // Fix Group sortorder 
+   fixsortorderGroups();
+   //... and for the questions inside the groups
+   // get all group ids and fix questions inside each group
+   $gquery = "SELECT gid FROM {$dbprefix}groups where sid=$newsid group by gid ORDER BY gid"; //Get last question added (finds new qid)
+   $gres = db_execute_assoc($gquery);
+   while ($grow = $gres->FetchRow()) 
+        {
+        fixsortorderQuestions(0,$grow['gid']);
+        }
+   } 
     
     // do ATTRIBUTES
     if (isset($question_attributesarray) && $question_attributesarray) 
