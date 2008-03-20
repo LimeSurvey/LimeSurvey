@@ -149,11 +149,11 @@ if(isset($surveyid))
                 $_POST['group_name_'.$grouplang]=str_replace('<br type="_moz" />','',$_POST['group_name_'.$grouplang]);
                 $_POST['description_'.$grouplang]=str_replace('<br type="_moz" />','',$_POST['description_'.$grouplang]);
 
-    			$_POST  = array_map('db_quote', $_POST);
+    			//$_POST  = array_map('db_quote', $_POST);
                
 			  	if ($first)
                   {
-      			    $query = "INSERT INTO ".db_table_name('groups')." (sid, group_name, description,group_order,language) VALUES ('{$_POST['sid']}', '{$_POST['group_name_'.$grouplang]}', '{$_POST['description_'.$grouplang]}',".getMaxgrouporder($_POST['sid']).",'{$grouplang}')";
+      			    $query = "INSERT INTO ".db_table_name('groups')." (sid, group_name, description,group_order,language) VALUES ('".db_quote($_POST['sid'])."', '".db_quote($_POST['group_name_'.$grouplang])."', '".db_quote($_POST['description_'.$grouplang])."',".getMaxgrouporder($_POST['sid']).",'{$grouplang}')";
                     $result = $connect->Execute($query);
                     $groupid=$connect->Insert_Id(db_table_name_nq('groups'),"gid");
                     $first=false;
@@ -185,38 +185,40 @@ if(isset($surveyid))
 		array_push($grplangs,$baselang);
 		require_once("../classes/inputfilter/class.inputfilter_clean.php");
 	    $myFilter = new InputFilter('','',1,1,1);
-		foreach ($grplangs as $grplang)
-		{
-			if (isset($grplang) && $grplang != "")
-			{
-		     	if ($filterxsshtml)
-		     	{
-			    $_POST['group_name_'.$grplang]=$myFilter->process($_POST['group_name_'.$grplang]);
-			    $_POST['description_'.$grplang]=$myFilter->process($_POST['description_'.$grplang]);
+	    foreach ($grplangs as $grplang)
+	    {
+		    if (isset($grplang) && $grplang != "")
+		    {
+			    if ($filterxsshtml)
+			    {
+				    $_POST['group_name_'.$grplang]=$myFilter->process($_POST['group_name_'.$grplang]);
+				    $_POST['description_'.$grplang]=$myFilter->process($_POST['description_'.$grplang]);
 			    }
-                   else
-                          {
-                            $_POST['group_name_'.$grplang] = html_entity_decode_php4($_POST['group_name_'.$grplang], ENT_QUOTES, "UTF-8");
-                            $_POST['description_'.$grplang] = html_entity_decode_php4($_POST['description_'.$grplang], ENT_QUOTES, "UTF-8");
-                          }
-                
-                // Fix bug with FCKEditor saving strange BR types
-                $_POST['group_name_'.$grplang]=str_replace('<br type="_moz" />','',$_POST['group_name_'.$grplang]);
-                $_POST['description_'.$grplang]=str_replace('<br type="_moz" />','',$_POST['description_'.$grplang]);
+			    else
+			    {
+				    $_POST['group_name_'.$grplang] = html_entity_decode_php4($_POST['group_name_'.$grplang], ENT_QUOTES, "UTF-8");
+				    $_POST['description_'.$grplang] = html_entity_decode_php4($_POST['description_'.$grplang], ENT_QUOTES, "UTF-8");
+			    }
 
-    		$_POST  = array_map('db_quote', $_POST);
-				$ugquery = "UPDATE ".db_table_name('groups')." SET group_name='{$_POST['group_name_'.$grplang]}', description='{$_POST['description_'.$grplang]}' WHERE sid={$_POST['sid']} AND gid={$_POST['gid']} AND language='{$grplang}'";
-				$ugresult = $connect->Execute($ugquery);
-				if ($ugresult)
-				{
-					$groupsummary = getgrouplist($_POST['gid']);
-				}
-				else
-				{
-					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be updated","js")."\")\n //-->\n</script>\n";
-				}
-			}
-		}
+			    // Fix bug with FCKEditor saving strange BR types
+			    $_POST['group_name_'.$grplang]=str_replace('<br type="_moz" />','',$_POST['group_name_'.$grplang]);
+			    $_POST['description_'.$grplang]=str_replace('<br type="_moz" />','',$_POST['description_'.$grplang]);
+
+			    // don't use array_map db_quote on POST
+			    // since this is iterated for each language
+			    //$_POST  = array_map('db_quote', $_POST);
+			    $ugquery = "UPDATE ".db_table_name('groups')." SET group_name='".db_quote($_POST['group_name_'.$grplang])."', description='".db_quote($_POST['description_'.$grplang])."' WHERE sid=".db_quote($_POST['sid'])." AND gid=".db_quote($_POST['gid'])." AND language='{$grplang}'";
+			    $ugresult = $connect->Execute($ugquery);
+			    if ($ugresult)
+			    {
+				    $groupsummary = getgrouplist($_POST['gid']);
+			    }
+			    else
+			    {
+				    $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be updated","js")."\")\n //-->\n</script>\n";
+			    }
+		    }
+	    }
 
 	}
 
@@ -505,15 +507,15 @@ if(isset($surveyid))
                         $_POST['question_'.$qlang]=str_replace('<br type="_moz" />','',$_POST['question_'.$qlang]);
                         $_POST['help_'.$qlang]=str_replace('<br type="_moz" />','',$_POST['help_'.$qlang]);
                        
-        		$_POST  = array_map('db_quote', $_POST);
+        		//$_POST  = array_map('db_quote', $_POST);
 
 						if (isset($qlang) && $qlang != "")
 						{ // ToDo: Sanitize the POST variables !
 							$uqquery = "UPDATE ".db_table_name('questions')
-							. "SET type='{$_POST['type']}', title='{$_POST['title']}', "
-							. "question='{$_POST['question_'.$qlang]}', preg='{$_POST['preg']}', help='{$_POST['help_'.$qlang]}', "
-							. "gid='{$_POST['gid']}', other='{$_POST['other']}', "
-							. "mandatory='{$_POST['mandatory']}'";
+							. "SET type='".db_quote($_POST['type'])."', title='".db_quote($_POST['title'])."', "
+							. "question='".db_quote($_POST['question_'.$qlang])."', preg='".db_quote($_POST['preg'])."', help='".db_quote($_POST['help_'.$qlang])."', "
+							. "gid='".db_quote($_POST['gid'])."', other='".db_quote($_POST['other'])."', "
+							. "mandatory='".db_quote($_POST['mandatory'])."'";
 	        				if ($oldgid!=$_POST['gid'])
 						{
 							if ( getGroupOrder($_POST['sid'],$oldgid) > getGroupOrder($_POST['sid'],$_POST['gid']) )
@@ -534,14 +536,14 @@ if(isset($surveyid))
 						}
 							if (isset($_POST['lid']) && trim($_POST['lid'])!="")
 							{
-								$uqquery.=", lid='{$_POST['lid']}' ";
+								$uqquery.=", lid='".db_quote($_POST['lid'])."' ";
 							}
 							if (isset($_POST['lid1']) && trim($_POST['lid1'])!="")
 							{
-								$uqquery.=", lid1='{$_POST['lid1']}' ";
+								$uqquery.=", lid1='".db_quote($_POST['lid1'])."' ";
 							}
 
-							$uqquery.= "WHERE sid='{$_POST['sid']}' AND qid='{$_POST['qid']}' AND language='{$qlang}'";
+							$uqquery.= "WHERE sid='".db_quote($_POST['sid'])."' AND qid='".db_quote($_POST['qid'])."' AND language='{$qlang}'";
 							$uqresult = $connect->Execute($uqquery) or die ("Error Update Question: ".htmlspecialchars($uqquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
 							if (!$uqresult)
 							{
@@ -561,7 +563,7 @@ if(isset($surveyid))
 	                		}
 					if ($keepanswers == "0")
 					{
-						$query = "DELETE FROM ".db_table_name('answers')." WHERE qid={$_POST['qid']}";
+						$query = "DELETE FROM ".db_table_name('answers')." WHERE qid=".db_quote($_POST['qid']);
 						$result = $connect->Execute($query) or die("Error: ".htmlspecialchars($connect->ErrorMsg()));
 						if (!$result)
 						{
@@ -1181,12 +1183,12 @@ if(isset($surveyid))
                 $_POST['welcome_'.$langname]=str_replace('<br type="_moz" />','',$_POST['welcome_'.$langname]);
                 $_POST['urldescrip_'.$langname]=str_replace('<br type="_moz" />','',$_POST['urldescrip_'.$langname]);
                 
-    		$_POST  = array_map('db_quote', $_POST);
+    		//$_POST  = array_map('db_quote', $_POST);
 				$usquery = "UPDATE ".db_table_name('surveys_languagesettings')." \n"
-				. "SET surveyls_title='".$_POST['short_title_'.$langname]."', surveyls_description='".$_POST['description_'.$langname]."',\n"
-				. "surveyls_welcometext='".$_POST['welcome_'.$langname]."',\n"
-				. "surveyls_urldescription='". $_POST['urldescrip_'.$langname]."'\n"
-				. "WHERE surveyls_survey_id=".$_POST['sid']." and surveyls_language='".$langname."'";
+				. "SET surveyls_title='".db_quote($_POST['short_title_'.$langname])."', surveyls_description='".db_quote($_POST['description_'.$langname])."',\n"
+				. "surveyls_welcometext='".db_quote($_POST['welcome_'.$langname])."',\n"
+				. "surveyls_urldescription='".db_quote($_POST['urldescrip_'.$langname])."'\n"
+				. "WHERE surveyls_survey_id=".db_quote($_POST['sid'])." and surveyls_language='".$langname."'";
 				$usresult = $connect->Execute($usquery) or die("Error updating<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
 			}
 		}
