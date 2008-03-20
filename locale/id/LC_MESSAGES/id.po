@@ -1,14 +1,14 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# LIMESURVEY INDONESIAN LANGUAGE FILE
+# Copyright (C) 2008
+# This file is distributed under the same license as the LimeSurvey package.
+# Lukas <lukas@elitemail.org>,2008.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-03-19 09:00+0100\n"
-"PO-Revision-Date: 2008-03-20 13:48+0100\n"
+"PO-Revision-Date: 2008-03-20 23:57+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: Lukas <lukas@elitemail.org>\n"
 "MIME-Version: 1.0\n"
@@ -56,7 +56,7 @@ msgstr "Nama Survei (ID)"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:369
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:519
 msgid "Token ID"
-msgstr ""
+msgstr "Token ID"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:145
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:155
@@ -68,7 +68,7 @@ msgstr "Tanggal Pengiriman"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:523
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1435
 msgid "Date Stamp"
-msgstr ""
+msgstr "Penanda Tanggal"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:152
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:865
@@ -88,7 +88,7 @@ msgstr "Alamat IP"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:390
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1437
 msgid "Referring URL"
-msgstr ""
+msgstr "URL Pengusul"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:249
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:278
@@ -298,7 +298,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:151
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:321
 msgid "Partial"
-msgstr ""
+msgstr "Sebagian"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:155
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:163
@@ -325,7 +325,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:170
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:340
 msgid "Total Errors"
-msgstr ""
+msgstr "Kesalahan Total"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:174
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:180
@@ -402,7 +402,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:63
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2455
 msgid "Main Admin Screen"
-msgstr ""
+msgstr "Layar Admin Utama"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:31
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1367
@@ -459,7 +459,7 @@ msgstr "Impor"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:464
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1336
 msgid "Return to Survey Administration"
-msgstr ""
+msgstr "Kembali ke Administrasi Survei"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:56
 msgid "Cannot import the VVExport file."
@@ -467,7 +467,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:76
 msgid "Back to Response Import"
-msgstr ""
+msgstr "Kembali ke Impor Respons"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:203
 msgid "Import Failed on Record"
@@ -511,7 +511,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1464
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1492
 msgid "Browse Responses"
-msgstr ""
+msgstr "Lihat Respons"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/assessments.php:63
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1218
@@ -659,13 +659,13 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1240
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:496
 msgid "Label Sets"
-msgstr ""
+msgstr "Kumpulan Label (Label Set)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:201
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:280
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importgroup.php:655
 msgid "Labels"
-msgstr ""
+msgstr "Label"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:202
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:147
@@ -681,7 +681,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:42
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:303
 msgid "Survey List Page"
-msgstr ""
+msgstr "Halaman Daftar Survei"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:43
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:251
@@ -767,7 +767,7 @@ msgstr "Jenis file ini tidak diijinkan diupload."
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:309
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:282
 msgid "You have not provided a survey identification number"
-msgstr ""
+msgstr "Anda belum memberikan nomor identifikasi survei"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:311
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:284
@@ -784,11 +784,11 @@ msgstr "Editor template"
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:243
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:244
 msgid "Default Administration Page"
-msgstr ""
+msgstr "Halaman Administrasi Default"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:558
 msgid "Create new template called:"
-msgstr ""
+msgstr "Buat template baru dengan nama:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:558
 msgid "NewTemplate"
@@ -828,15 +828,15 @@ msgstr "Ubah nama template ini"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:605
 msgid "Export Template"
-msgstr ""
+msgstr "Ekspor Template"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:609
 msgid "Copy Template"
-msgstr ""
+msgstr "Salin Template"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:610
 msgid "Make a copy of this template"
-msgstr ""
+msgstr "Membuat salinan dari template ini"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:610
 msgid "copy_of_"
@@ -848,11 +848,11 @@ msgstr "Layar:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:627
 msgid "File Control:"
-msgstr ""
+msgstr "File Control:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:637
 msgid "Standard Files:"
-msgstr ""
+msgstr "File-file Standar:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:638
 msgid "Now editing:"
@@ -860,7 +860,7 @@ msgstr "Saat ini sedang mengedit:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:641
 msgid "Other Files:"
-msgstr ""
+msgstr "File-file lainnya:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:658
 msgid "Save Changes"
@@ -868,7 +868,7 @@ msgstr "Simpan Perubahan"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:660
 msgid "Changes cannot be saved to the default template."
-msgstr ""
+msgstr "Perubahan tidak dapat disimpan ke dalam template default"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:671
 msgid "Are you sure you want to delete this file?"
@@ -876,7 +876,7 @@ msgstr "Anda yakin ingin menghapus file ini?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:673
 msgid "Files in the default template cannot be deleted."
-msgstr ""
+msgstr "File dalam template default tidak dapat dihapus"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:684
 msgid "Upload a File"
@@ -929,20 +929,20 @@ msgstr "Pertanyaan"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:164
 msgid "Abbreviated headings"
-msgstr ""
+msgstr "Judul Ringkas"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:167
 msgid "Full headings"
-msgstr ""
+msgstr "Judul Lengkap"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:170
 msgid "Question Codes"
-msgstr ""
+msgstr "Kode Pertanyaan"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:171
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvexport.php:49
 msgid "Filter incomplete answers"
-msgstr ""
+msgstr "Tapis (filter) jawaban yang tidak lengkap"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:172
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:626
@@ -989,7 +989,7 @@ msgstr "Microsoft Excel (semua set karakter)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:201
 msgid "CSV File (All charsets)"
-msgstr ""
+msgstr "CSV File (All charsets)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:208
 msgid "Export Data"
@@ -1483,7 +1483,7 @@ msgstr "Menurun"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:59
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:45
 msgid "The defined surveyor database does not exist"
-msgstr ""
+msgstr "Basisdata survei yang ditentukan tidak ada"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:60
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:46
@@ -1492,15 +1492,15 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:72
 msgid "You have not selected a survey to browse."
-msgstr ""
+msgstr "Anda belum memilih survei yang ingin dilihat"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:96
 msgid "This survey has not been activated. There are no results to browse."
-msgstr ""
+msgstr "Survei ini belum diaktifkan. Belum ada hasil yang dapat dilihat"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:111
 msgid "There is no matching survey."
-msgstr ""
+msgstr "Tidak ada survei yang sesuai."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:153
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:378
@@ -1515,12 +1515,12 @@ msgstr "Tanggal Aksi Terakhir"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:224
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:436
 msgid "1. scale"
-msgstr ""
+msgstr "1. skala"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:229
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:441
 msgid "2. scale"
-msgstr ""
+msgstr "2. skala"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:266
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:902
@@ -1589,7 +1589,7 @@ msgstr "Mulai dari:"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:625
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:717
 msgid "Filter incomplete answers:"
-msgstr ""
+msgstr "Tapis (filter) jawaban yang tidak lengkap:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:629
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:764
@@ -1792,7 +1792,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:342
 msgid "Show PHPInfo"
-msgstr ""
+msgstr "Tampilkan PHPInfo"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:400
 msgid "Survey cannot be activated. Either you have no permission or there are no questions."
@@ -1809,7 +1809,7 @@ msgstr "Ujicoba Survei ini"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:454
 msgid "Execute This Survey"
-msgstr ""
+msgstr "Jalankan Survei Ini"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:476
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:532
@@ -1824,33 +1824,33 @@ msgstr "Silahkan pilih bahasa:"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:503
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1349
 msgid "Dataentry Screen for Survey"
-msgstr ""
+msgstr "Layar Pemasukan Data Survei"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:500
 msgid "This survey is not active, data entry is not allowed"
-msgstr ""
+msgstr "Survei ini tidak aktif, pemasukan data tidak diijinkan"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:512
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:513
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:521
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:522
 msgid "Printable Version of Survey"
-msgstr ""
+msgstr "Versi Cetak dari Survei"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:550
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:551
 msgid "Edit Current Survey"
-msgstr ""
+msgstr "Edit/Ubah Survei Ini"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:564
 msgid "Delete Current Survey"
-msgstr ""
+msgstr "Hapus Survei Ini"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:578
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:585
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/resetsurveylogic.php:23
 msgid "Reset Survey Logic"
-msgstr ""
+msgstr "Hapus Logika Survei"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:583
 msgid "This survey's questions don't use conditions"
@@ -1861,13 +1861,13 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1110
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1145
 msgid "Disabled"
-msgstr ""
+msgstr "Terkunci / Tidak Aktif"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:598
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:599
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2685
 msgid "Change Group Order"
-msgstr ""
+msgstr "Ubah Urutan Grup"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:610
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1856
@@ -1926,7 +1926,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1236
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importgroup.php:641
 msgid "Groups"
-msgstr ""
+msgstr "Grup"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:708
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:577
@@ -1936,7 +1936,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:3313
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:3351
 msgid "None"
-msgstr ""
+msgstr "Kosong"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:728
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1022
@@ -1947,41 +1947,41 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/grouphandling.php:141
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/grouphandling.php:157
 msgid "Title"
-msgstr ""
+msgstr "Judul"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:732
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2394
 msgid "Answers to this survey are anonymized."
-msgstr ""
+msgstr "Jawaban survei ini anonim."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:733
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2393
 msgid "This survey is NOT anonymous."
-msgstr ""
+msgstr "Survei ini TIDAK anonim."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:734
 msgid "It is presented question by question."
-msgstr ""
+msgstr "Tampilan pertanyaan per pertanyaan (satu persatu)."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:735
 msgid "It is presented group by group."
-msgstr ""
+msgstr "Tampilan pertanyaan per kelompok."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:736
 msgid "It is presented on one single page."
-msgstr ""
+msgstr "Tampilan pertanyaan seluruhnya dalam satu halaman."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:737
 msgid "Responses will be date stamped"
-msgstr ""
+msgstr "Respons akan diberi penanda tanggal"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:738
 msgid "IP Addresses will be logged"
-msgstr ""
+msgstr "Alamat IP akan dicatat"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:739
 msgid "Referer-URL will be saved"
-msgstr ""
+msgstr "URL Pengusul akan disimpan"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:740
 msgid "It uses cookies for access control."
@@ -2068,30 +2068,30 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2147
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2845
 msgid "Administrator:"
-msgstr ""
+msgstr "Administrator:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:795
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2153
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2851
 msgid "Fax To:"
-msgstr ""
+msgstr "Di-fax ke nomor:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:799
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2279
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2952
 msgid "Expiry Date:"
-msgstr ""
+msgstr "Tanggal Kadaluarsa"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:814
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2102
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2820
 msgid "Base Language:"
-msgstr ""
+msgstr "Bahasa Utama:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:823
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2107
 msgid "Additional Languages"
-msgstr ""
+msgstr "Bahasa-bahasa Tambahan"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:839
 msgid "Exit Link"
@@ -2099,11 +2099,11 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:844
 msgid "Number of questions/groups"
-msgstr ""
+msgstr "Jumlah pertanyaan/kelompok"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:846
 msgid "Survey currently active"
-msgstr ""
+msgstr "Survei yang sedang aktif"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:860
 msgid "Survey table name"
@@ -2115,7 +2115,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:867
 msgid "Survey cannot be activated yet."
-msgstr ""
+msgstr "Survei belum bisa diaktifkan."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:870
 msgid "You need to add groups"
@@ -2146,35 +2146,35 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:958
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:701
 msgid "Change Question Order"
-msgstr ""
+msgstr "Ubah Urutan Pertanyaan"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:968
 msgid "Export Current Group"
-msgstr ""
+msgstr "Ekspor Kelompok ini"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:983
 msgid "Close this Group"
-msgstr ""
+msgstr "Hapus Kelompok ini"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:991
 msgid "Show Details of this Group"
-msgstr ""
+msgstr "Tampilkan Detail Kelompok ini"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:994
 msgid "Hide Details of this Group"
-msgstr ""
+msgstr "Sembunyikan Detaik Kelompok ini"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1006
 msgid "Add New Question to Group"
-msgstr ""
+msgstr "Tambah Pertanyaan Baru ke dalam Kelompok"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1033
 msgid "Questions with conditions to this group"
-msgstr ""
+msgstr "Pertanyaan dengan kondisi/persyaratan pada kelompok ini"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1084
 msgid "Edit Current Question"
-msgstr ""
+msgstr "Edit/Ubah Pertanyaan ini"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1099
 msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
@@ -2233,15 +2233,15 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:218
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:413
 msgid "Code:"
-msgstr ""
+msgstr "Kode:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1239
 msgid "Mandatory Question"
-msgstr ""
+msgstr "Pertanyaan Wajib Dijawab"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1240
 msgid "Optional Question"
-msgstr ""
+msgstr "Pertanyaan Tidak Wajib Dijawab"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1244
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:43
@@ -2253,7 +2253,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:437
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:439
 msgid "Question:"
-msgstr ""
+msgstr "Pertanyaan:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1246
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:49
@@ -2265,20 +2265,20 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:441
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:443
 msgid "Help:"
-msgstr ""
+msgstr "Bantuan:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1252
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:63
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:246
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:566
 msgid "Validation:"
-msgstr ""
+msgstr "Validasi:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1257
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:55
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:239
 msgid "Type:"
-msgstr ""
+msgstr "Tipe:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1263
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1276
@@ -2303,17 +2303,17 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1476
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/deactivate.php:27
 msgid "Warning"
-msgstr ""
+msgstr "Peringatan"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1263
 msgid "You need to add answers to this question"
-msgstr ""
+msgstr "Anda perlu menambahkan jawaban untuk pertanyaan ini"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1272
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:244
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importgroup.php:653
 msgid "Label Set"
-msgstr ""
+msgstr "Set Label"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1276
 msgid "You need to choose a label set for this question!"
@@ -2342,14 +2342,14 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:301
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:533
 msgid "Other:"
-msgstr ""
+msgstr "Lainnya:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1335
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:115
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:314
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:554
 msgid "Mandatory:"
-msgstr ""
+msgstr "Wajib:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1344
 msgid "Other questions having conditions on this question:"
@@ -2373,12 +2373,12 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1062
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1272
 msgid "Base Language"
-msgstr ""
+msgstr "Bahasa Utama"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1448
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:302
 msgid "Code"
-msgstr ""
+msgstr "Kode"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1451
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:951
@@ -2386,7 +2386,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1121
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1517
 msgid "Answer"
-msgstr ""
+msgstr "Jawaban"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1454
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1905
@@ -2395,23 +2395,23 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:918
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:310
 msgid "Action"
-msgstr ""
+msgstr "Aksi"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1457
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:314
 msgid "Order"
-msgstr ""
+msgstr "Urutan"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1476
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1517
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1013
 msgid "Default"
-msgstr ""
+msgstr "Default"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1502
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1557
 msgid "Answer:"
-msgstr ""
+msgstr "Jawaban:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1509
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1513
@@ -2419,7 +2419,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:796
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1003
 msgid "Del"
-msgstr ""
+msgstr "Hapus"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1522
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2659
@@ -2430,7 +2430,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:801
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:979
 msgid "Up"
-msgstr ""
+msgstr "Naik"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1527
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2671
@@ -2441,27 +2441,27 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:805
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:991
 msgid "Dn"
-msgstr ""
+msgstr "Turun"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1535
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:364
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:707
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:885
 msgid "Save All"
-msgstr ""
+msgstr "Simpan Semua"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1545
 msgid "New Answer"
-msgstr ""
+msgstr "Jawaban Baru"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1560
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:821
 msgid "Add new Answer"
-msgstr ""
+msgstr "Tambahkan Jawaban Baru"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1578
 msgid "You cannot add answers or edit answer codes for this question type because the survey is active."
-msgstr ""
+msgstr "Anda tidak dapat menambahkan jawaban atau mengubah kode jawaban untuk pertanyaan ini karena survei sedang aktif."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1599
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1998
@@ -2470,12 +2470,12 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:982
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:312
 msgid "Add User"
-msgstr ""
+msgstr "Tambahkan pengguna (user)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1613
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:1062
 msgid "User added."
-msgstr ""
+msgstr "Pengguna telah ditambahkan."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1615
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1671
@@ -2484,7 +2484,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1977
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2026
 msgid "Set Survey Rights"
-msgstr ""
+msgstr "Atur Hak Survei"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1624
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1630
@@ -2495,12 +2495,12 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:329
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:395
 msgid "Failed to add User."
-msgstr ""
+msgstr "Gagal menambahkan Pengguna."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1624
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:1067
 msgid "Username already exists."
-msgstr ""
+msgstr "Nama Pengguna (Username) telah ada. "
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1626
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1631
@@ -2569,32 +2569,32 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1710
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2376
 msgid "Continue"
-msgstr ""
+msgstr "Lanjut"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1630
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1686
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:1073
 msgid "No Username selected."
-msgstr ""
+msgstr "Tidak ada nama pengguna (username) yang dipilih."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1643
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2013
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:643
 msgid "Add User Group"
-msgstr ""
+msgstr "Tambahkan Grup Pengguna"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1668
 msgid "User Group added."
-msgstr ""
+msgstr "Grup Pengguna telah ditambahkan."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1680
 msgid "Failed to add User Group."
-msgstr ""
+msgstr "Gagal menambahkan Grup Pengguna."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1698
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:404
 msgid "Deleting User"
-msgstr ""
+msgstr "Menghapus Pengguna"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1709
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1903
@@ -2612,7 +2612,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:532
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:535
 msgid "Username"
-msgstr ""
+msgstr "Nama Pengguna (username)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1713
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:1020
@@ -2633,13 +2633,13 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1808
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:981
 msgid "Export"
-msgstr ""
+msgstr "Ekspor"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1744
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1809
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/deletesurvey.php:23
 msgid "Delete Survey"
-msgstr ""
+msgstr "Hapus Survei"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1745
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1810
@@ -2649,26 +2649,26 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:486
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:519
 msgid "Activate Survey"
-msgstr ""
+msgstr "Aktifkan Survei"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1782
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1835
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:368
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2290
 msgid "Save Now"
-msgstr ""
+msgstr "Simpan Sekarang"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1805
 msgid "Edit Survey Property"
-msgstr ""
+msgstr "Edit/Ubah Aturan Survei"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1807
 msgid "Browse Response"
-msgstr ""
+msgstr "Lihat Respons"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1861
 msgid "LimeSurvey Survey File (*.csv)"
-msgstr ""
+msgstr "LimeSurvey Survey File (*.csv)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1869
 msgid "queXML Survey XML Format (*.xml)"
@@ -2680,86 +2680,86 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1882
 msgid "Export To File"
-msgstr ""
+msgstr "Ekspor ke File"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1901
 msgid "Survey Security"
-msgstr ""
+msgstr "Keamanan Survei"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1904
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:35
 msgid "User Group"
-msgstr ""
+msgstr "Grup Pengguna"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1992
 msgid "User"
-msgstr ""
+msgstr "Pengguna"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2059
 msgid "Update survey rights successful."
-msgstr ""
+msgstr "Pembaruan hak survei berhasil dilakukan."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2063
 msgid "Failed to update survey rights!"
-msgstr ""
+msgstr "Gagal memperbaharui hak survei!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2093
 msgid "Edit Survey - Step 1 of 2"
-msgstr ""
+msgstr "Edit/Ubah Survei - Langkah 1 dari 2"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2099
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2814
 msgid "General"
-msgstr ""
+msgstr "Umum"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2126
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:358
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:396
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:157
 msgid "Remove"
-msgstr ""
+msgstr "Hapus"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2149
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2847
 msgid "Admin Email:"
-msgstr ""
+msgstr "Admin Email:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2151
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2849
 msgid "Bounce Email:"
-msgstr ""
+msgstr "Alamat Email bila ditolak:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2162
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2862
 msgid "Presentation & Navigation"
-msgstr ""
+msgstr "Penampilan dan Navigasi"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2165
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2865
 msgid "Format:"
-msgstr ""
+msgstr "Format:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2169
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2867
 msgid "Question by Question"
-msgstr ""
+msgstr "Pertanyaan demi pertanyaan"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2172
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2868
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/fck_LimeReplacementFields.php:442
 msgid "Group by Group"
-msgstr ""
+msgstr "Kelompok demi kelompok"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2175
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2869
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/fck_LimeReplacementFields.php:436
 msgid "All in one"
-msgstr ""
+msgstr "Seluruhnya bersamaan"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2198
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2889
 msgid "Allow Saves?"
-msgstr ""
+msgstr "Ijinkan Simpan?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2210
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2900
@@ -2794,7 +2794,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2272
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2949
 msgid "Expires?"
-msgstr ""
+msgstr "Kadaluarsa?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2283
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2958
