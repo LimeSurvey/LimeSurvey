@@ -163,7 +163,7 @@ if ($action == "listsurveys")
 					    "<td>".$privacy."</td>" .
 					    "<td>".$status."</td>";
 
-					    if ($status==$clang->gT("Active"))
+					    if ($rows['active']=="Y")
 					    {
 						$complete = $responses - $partial_responses;
                                                 $listsurveys .= "<td align='center'>".$complete."</td>";
