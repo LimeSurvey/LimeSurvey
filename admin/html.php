@@ -663,12 +663,24 @@ if ($surveyid)
 				. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n";
 			}
 		}
-		if ($activated == "Y" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'] || $sumrows5['activate_survey']))
+		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'] || $sumrows5['activate_survey'])
 		{
-						$surveysummary .="<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\""
-			. "onmouseout=\"hideTooltip()\""
-			. "onmouseover=\"showTooltip(event,'".$clang->gT("Activate/Edit Tokens for this Survey", "js")."');return false\">" .
-			"<img src='$imagefiles/tokens.png' title='' align='left'  name='TokensControl' alt='".$clang->gT("Activate/Edit Tokens for this Survey")."' /></a>\n" ;
+            if ($activated == "Y")
+            {
+			    $surveysummary .="<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\""
+			    . "onmouseout=\"hideTooltip()\""
+			    . "onmouseover=\"showTooltip(event,'".$clang->gT("Activate/Edit Tokens for this Survey", "js")."');return false\">" .
+			    "<img src='$imagefiles/tokens.png' title='' align='left'  name='TokensControl' alt='".$clang->gT("Activate/Edit Tokens for this Survey")."' /></a>\n" ;
+            }
+            else
+            {
+                $surveysummary .= "<a href=\"#\" onclick=\"alert('".$clang->gT("Adding/editing tokens is not possible because this survey is not activated.","js")."')\""
+                . "onmouseout=\"hideTooltip()\""
+                . "onmouseover=\"showTooltip(event,'".$clang->gT("Activate/Edit Tokens for this Survey", "js")."');return false\">"
+                . "<img src='$imagefiles/tokens_disabled.png' title='' align='left' alt='".$clang->gT("Activate/Edit Tokens for this Survey")."'"
+                . "name='DoDataentry' /></a>\n";
+                
+            }
 		}
 		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n"
 		. "\t\t\t\t</td>\n"
