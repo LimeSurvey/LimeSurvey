@@ -979,9 +979,7 @@ if (isset($grouparray) && $grouparray) {
 	}
 }
 
-if ($importversion<=100)  
-   {
-   // Fix sortorder of the groups from older survey version
+   // Fix sortorder of the groups  - if users removed groups manually from the csv file there would be gaps
    fixsortorderGroups();
    //... and for the questions inside the groups
    // get all group ids and fix questions inside each group
@@ -991,8 +989,8 @@ if ($importversion<=100)
         {
         fixsortorderQuestions(0,$grow['gid']);
         }
-   } 
-//We've built two arrays along the way - one containing the old SID, GID and QIDs - and their NEW equivalents
+
+        //We've built two arrays along the way - one containing the old SID, GID and QIDs - and their NEW equivalents
 //and one containing the old 'extended fieldname' and its new equivalent.  These are needed to import conditions and question_attributes.
 if (isset($question_attributesarray) && $question_attributesarray) {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUES
     $count=0;
