@@ -35,7 +35,7 @@ FCKCommands.RegisterCommand( 'LimeReplacementFields',
 		'&editedaction=' + FCK.Config.LimeReplacementFieldsAction, 
 	500, 400 ) ) ;
 
-// Create the "Plaholder" toolbar button.
+// Create the "LimeReplacementFields" toolbar button.
 var oLimeReplacementFieldsItem = new FCKToolbarButton( 'LimeReplacementFields', FCKLang.LimeReplacementFieldsBtn ) ;
 oLimeReplacementFieldsItem.IconPath = FCKPlugins.Items['LimeReplacementFields'].Path + 'LimeReplacementFields.png' ;
 
@@ -56,8 +56,8 @@ FCKLimeReplacementFieldss.SetupSpan = function( span, name )
 {
 	span.innerHTML = '{' + name + '}' ;
 
-	span.style.backgroundColor = '#ffff00' ;
-	span.style.color = '#000000' ;
+	//span.style.backgroundColor = '#ffff00' ;
+	//span.style.color = '#000000' ;
 
 	if ( FCKBrowserInfo.IsGecko )
 		span.style.cursor = 'default' ;
@@ -128,7 +128,8 @@ if ( FCKBrowserInfo.IsIE )
 			{
 				//var sName = aPlaholders[i].match( /\{\s*([^\}]*?)\s*\}/ )[1] ;
 				var sName = aPlaholders[i].match( /\{([^\}]+)\}/ )[1] ;
-				oRange.pasteHTML( '<span style="color: #000000; background-color: #ffff00" contenteditable="false" _fckLimeReplacementFields="' + sName + '">' + aPlaholders[i] + '</span>' ) ;
+//				oRange.pasteHTML( '<span style="color: #000000; background-color: #ffff00" contenteditable="false" _fckLimeReplacementFields="' + sName + '">' + aPlaholders[i] + '</span>' ) ;
+				oRange.pasteHTML( '<span contenteditable="false" _fckLimeReplacementFields="' + sName + '">' + aPlaholders[i] + '</span>' ) ;
 			}
 		}
 	}
