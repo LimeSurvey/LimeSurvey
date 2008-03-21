@@ -244,6 +244,15 @@ $filterxsshtml = true;
 // Otherwise they can see all operators defines in LimeSurvey
 $usercontrolSameGroupPolicy = true;
 
+
+// $addTitleToLinks
+// If this option is set to true, then LimeSurvey will add 'title' html element
+// to all links used in menus. This will help screen reader to analyse the
+// menus. Only set this to true if you're using a screen reader because
+// it overlaps with tooltips.
+$addTitleToLinks = false;
+
+
 //DO NOT EVER CHANGE THE FOLLOWING LINE ---------------
 require_once(dirname(__FILE__).'/config.php');
 //-----------------------------------------------------

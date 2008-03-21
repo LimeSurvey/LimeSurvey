@@ -239,7 +239,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                     . "\t\t\t</tr>\n"
                     . "\t\t\t<tr>\n"
                     . "\t\t\t\t<td>\n"
-                    . "\t\t\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname', '_top')\" title=\"".$clang->gT("Default Administration Page")."\"" .
+                    . "\t\t\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname', '_top')\" title=\"".$clang->gTview("Default Administration Page")."\"" .
                      "onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Default Administration Page", "js")."');return false\">" .
                      "<img src='$imagefiles/home.png' name='HomeButton' alt='".$clang->gT("Default Administration Page")."' "
                     ."title=''" ."align='left' /></a>\n";
@@ -248,20 +248,20 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                     . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n";
 
 		// edit users
-		$adminmenu .= "\t\t\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" title=\"".$clang->gT("Create/Edit Users")."\" " .
+		$adminmenu .= "\t\t\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" title=\"".$clang->gTview("Create/Edit Users")."\" " .
 					"onmouseout=\"hideTooltip()\""
 					. "onmouseover=\"showTooltip(event,'".$clang->gT("Create/Edit Users", "js")."');return false\">" .
 					 "<img src='$imagefiles/security.png' name='AdminSecurity'"
 					." title='' alt='".$clang->gT("Create/Edit Users")."'  align='left' /></a>";
 
-		$adminmenu .="<a href=\"#\" onclick=\"window.open('$scriptname?action=editusergroups', '_top')\" title=\"".$clang->gT("Create/Edit Groups")."\" "
+		$adminmenu .="<a href=\"#\" onclick=\"window.open('$scriptname?action=editusergroups', '_top')\" title=\"".$clang->gTview("Create/Edit Groups")."\" "
 					. "onmouseout=\"hideTooltip()\""
 					. "onmouseover=\"showTooltip(event,'".$clang->gT("Create/Edit Groups", "js")."');return false\">" .
 					"<img src='$imagefiles/usergroup.png' title='' align='left' alt='".$clang->gT("Create/Edit Groups")."' /></a>\n" ;
 
 		// check settings
         //"\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='34'  align='left'>\n".
-						$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=checksettings', '_top')\" title=\"".$clang->gT("Show System Summary")."\" "
+						$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=checksettings', '_top')\" title=\"".$clang->gTview("Show System Summary")."\" "
 					    . "onmouseout=\"hideTooltip()\""
                       	. "onmouseover=\"showTooltip(event,'".$clang->gT("Show System Summary", "js")."');return false\">"
 						. "\t\t\t\t\t<img src='$imagefiles/summary.png' name='CheckSettings' title='"
@@ -271,7 +271,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 		// check data cosistency
         if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 			{
-			$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=checkintegrity', '_top')\" title=\"".$clang->gT("Check Data Integrity")."\" ".
+			$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=checkintegrity', '_top')\" title=\"".$clang->gTview("Check Data Integrity")."\" ".
 						   "onmouseout=\"hideTooltip()\""
 						  ."onmouseover=\"showTooltip(event,'".$clang->gT("Check Data Integrity", "js")."');return false\">".
 						"<img src='$imagefiles/checkdb.png' name='CheckDataINtegrity' title=''  alt='".$clang->gT("Check Data Integrity")."' align='left' /></a>\n";
@@ -282,7 +282,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 			}
 
 		// list surveys
-		$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=listsurveys', '_top')\" title=\"".$clang->gT("List Surveys")."\# "
+		$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=listsurveys', '_top')\" title=\"".$clang->gTview("List Surveys")."\" "
 		 			."onmouseout=\"hideTooltip()\""
                     ."onmouseover=\"showTooltip(event,'".$clang->gT("List Surveys", "js")."');return false\">\n"
 		 			."<img src='$imagefiles/surveylist.png' name='ListSurveys' title=''"
@@ -292,7 +292,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 		// db backup & label editor
 		if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 			{
-			$adminmenu  .= "<a href=\"#\" title=\"".$clang->gT("Backup Entire Database")."\" "
+			$adminmenu  .= "<a href=\"#\" title=\"".$clang->gTview("Backup Entire Database")."\" "
 						. "onclick=\"window.open('$scriptname?action=dumpdb', '_top')\""
 						. "onmouseout=\"hideTooltip()\""
 						. "onmouseover=\"showTooltip(event,'".$clang->gT("Backup Entire Database", "js")."');return false\">"
@@ -306,7 +306,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 			}
 		if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			{
-			$adminmenu  .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=labels', '_top')\" title=\"".$clang->gT("Edit/Add Label Sets")."\" "
+			$adminmenu  .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=labels', '_top')\" title=\"".$clang->gTview("Edit/Add Label Sets")."\" "
 						. "onmouseout=\"hideTooltip()\""
 						. "onmouseover=\"showTooltip(event,'".$clang->gT("Edit/Add Label Sets", "js")."');return false\">" .
 						 "<img src='$imagefiles/labels.png' align='left' name='LabelsEditor' title='' alt='". $clang->gT("Edit/Add Label Sets")."' /></a>\n"
@@ -319,7 +319,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
         if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 			{
 	        $adminmenu .= "<a href=\"#\" " .
-	        			  "onclick=\"window.open('$scriptname?action=templates', '_top')\" title=\"".$clang->gT("Template Editor")."\" "
+	        			  "onclick=\"window.open('$scriptname?action=templates', '_top')\" title=\"".$clang->gTview("Template Editor")."\" "
 	                    . "onmouseout=\"hideTooltip()\""
 	                    . "onmouseover=\"showTooltip(event,'".$clang->gT("Template Editor", "js")."');return false\">" .
 	                    "<img src='$imagefiles/templates.png' name='EditTemplates' title='' alt='". $clang->gT("Template Editor")."' align='left' /></a>\n"
@@ -329,13 +329,13 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 	        {
 	        $adminmenu .= "\t\t\t\t<td align='right' width='430'>\n"
 	                    . "<a href=\"#\" onclick=\"showhelp('show')\""
-	                    . "title=\"".$clang->gT("Show Help")."\" "
+	                    . "title=\"".$clang->gTview("Show Help")."\" "
 	                    . "onmouseout=\"hideTooltip()\""
 	                    . "onmouseover=\"showTooltip(event,'".$clang->gT("Show Help", "js")."');return false\">"
 	                    . "<img src='$imagefiles/showhelp.png' name='ShowHelp' title=''"
 	                    . "alt='". $clang->gT("Show Help")."' align='right'  /></a>"
 		                . "\t\t\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=logout', '_top')\""
-                        . "title=\"".$clang->gT("Logout")."\" "
+                        . "title=\"".$clang->gTview("Logout")."\" "
                         . "onmouseout=\"hideTooltip()\""
 					    . "onmouseover=\"showTooltip(event,'".$clang->gT("Logout", "js")."');return false\">"
                         . "<img src='$imagefiles/logout.png' name='Logout'"
@@ -345,7 +345,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 			if($_SESSION['USER_RIGHT_CREATE_SURVEY'] == 1)
 				{
 			$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=newsurvey', '_top')\""
-						. "title=\"".$clang->gT("Create or Import New Survey")."\" "
+						. "title=\"".$clang->gTview("Create or Import New Survey")."\" "
 						. "onmouseout=\"hideTooltip()\""
 						. "onmouseover=\"showTooltip(event,'".$clang->gT("Create or Import New Survey", "js")."');return false\">" .
 						"<img src='$imagefiles/add.png' align='right' name='AddSurvey' title='' alt='". $clang->gT("Create or Import New Survey")."' /></a>\n";
@@ -1335,62 +1335,62 @@ function browsemenubar()
 	$browsemenubar = "\t<tr>\n"
 	. "\t\t<td>\n"
 	. "\t\t\t<a href='$scriptname?sid=$surveyid' onmouseout=\"hideTooltip()\" " .
-			"title=\"".$clang->gT("Return to Survey Administration")."\" " .
+			"title=\"".$clang->gTview("Return to Survey Administration")."\" " .
 			"onmouseover=\"showTooltip(event,'".$clang->gT("Return to Survey Administration", "js")."')\">" .
 			"<img name='Administration' src='$imagefiles/home.png' title='' alt='' align='left' /></a>\n"
 	. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'  align='left' />\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n"
 	. "\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid' onmouseout=\"hideTooltip()\"" .
-			" title=\"".$clang->gT("Show summary information")."\" " .
+			" title=\"".$clang->gTview("Show summary information")."\" " .
 			" onmouseover=\"showTooltip(event,'".$clang->gT("Show summary information", "js")."')\"" .
 			"><img name='SurveySummary' src='$imagefiles/summary.png' title='' alt='' align='left' /></a>\n"
 	. "\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all' onmouseout=\"hideTooltip()\"" .
-			"title=\"".$clang->gT("Display Responses")."\" " .
+			"title=\"".$clang->gTview("Display Responses")."\" " .
 			"onmouseover=\"showTooltip(event,'".$clang->gT("Display Responses", "js")."')\">" .
 			"<img name='ViewAll' src='$imagefiles/document.png' title='' alt='' align='left' /></a>\n"
 	. "\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all&amp;limit=50&amp;order=desc'" .
-			" title=\"".$clang->gT("Display Last 50 Responses")."\" " .
+			" title=\"".$clang->gTview("Display Last 50 Responses")."\" " .
 			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Display Last 50 Responses", "js")."')\">" .
 			"<img name='ViewLast' src='$imagefiles/viewlast.png' title='' alt='' align='left' /></a>\n"
 	. "\t\t\t<a href='$scriptname?action=dataentry&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" ".
-			" title=\"".$clang->gT("Dataentry Screen for Survey")."\" " .
+			" title=\"".$clang->gTview("Dataentry Screen for Survey")."\" " .
 			" onmouseover=\"showTooltip(event,'".$clang->gT("Dataentry Screen for Survey", "js")."')\">" .
 	  "<img name='DataEntry' src='$imagefiles/dataentry.png' title='' alt='' align='left' /></a>\n"
 	. "\t\t\t<a href='$scriptname?action=statistics&amp;sid=$surveyid' "
-	."title=\"".$clang->gT("Get statistics from these responses")."\" "
+	."title=\"".$clang->gTview("Get statistics from these responses")."\" "
 	."onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Get statistics from these responses", "js")."')\">"
 	."<img name='Statistics' src='$imagefiles/statistics.png' title='' alt='' align='left' /></a>\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n";
 	if ($sumrows5['export'] == "1" || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$browsemenubar .= "\t\t\t<a href='$scriptname?action=exportresults&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" "
-		. "title=\"".$clang->gT("Export Results to Application")."\" "
+		. "title=\"".$clang->gTview("Export Results to Application")."\" "
 		. "onmouseover=\"showTooltip(event,'".$clang->gT("Export Results to Application", "js")."')\">"
 		. "<img name='Export' src='$imagefiles/export.png' "
 		. "title='' alt=''align='left' /></a>\n"
 		. "\t\t\t<a href='$scriptname?action=exportspss&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" "
-		. "title=\"".$clang->gT("Export result to a SPSS command file")."\" "
+		. "title=\"".$clang->gTview("Export result to a SPSS command file")."\" "
 		. "onmouseover=\"showTooltip(event,'".$clang->gT("Export result to a SPSS command file", "js")."')\">"
 		. "<img src='$imagefiles/exportspss.png' align='left' "
 		. "title='' border='0' alt='". $clang->gT("Export result to a SPSS command file")."' /></a>\n";
 	}
 	$browsemenubar .= "\t\t\t<a href='$scriptname?action=importoldresponses&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" "
-	. " title=\"".$clang->gT("Import answers from a deactivated survey table")."\" "
+	. " title=\"".$clang->gTview("Import answers from a deactivated survey table")."\" "
 	. " onmouseover=\"showTooltip(event,'".$clang->gT("Import answers from a deactivated survey table", "js")."')\" >" .
 			"<img name='Export' src='$imagefiles/importold.png' title='' alt=''align='left' /></a>\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n"
 	. "\t\t\t<a href='$scriptname?action=saved&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" "
-	. " title=\"".$clang->gT("View Saved but not submitted Responses")."\" "
+	. " title=\"".$clang->gTview("View Saved but not submitted Responses")."\" "
 	. " onmouseover=\"showTooltip(event,'".$clang->gT("View Saved but not submitted Responses", "js")."')\" >" .
 		"<img src='$imagefiles/saved.png' title='' alt='' align='left'  name='BrowseSaved' /></a>\n"
 	. "\t\t\t<a href='$scriptname?action=vvimport&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" "
-	. " title=\"".$clang->gT("Import a VV survey file")."\" "
+	. " title=\"".$clang->gTview("Import a VV survey file")."\" "
 	. " onmouseover=\"showTooltip(event,'".$clang->gT("Import a VV survey file", "js")."')\">\n"
 	. "<img src='$imagefiles/importvv.png' align='left' title='' border='0' alt='' /></a>\n";
 	if ($sumrows5['export'] == "1" || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$browsemenubar .= "\t\t\t<a href='$scriptname?action=vvexport&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" " .
-		" title=\"".$clang->gT("Export a VV survey file")."\" " .
+		" title=\"".$clang->gTview("Export a VV survey file")."\" " .
 		" onmouseover=\"showTooltip(event,'".$clang->gT("Export a VV survey file", "js")."')\">" .
 		"<img src='$imagefiles/exportvv.png' align='left' title='' alt='' border='0' /></a>\n";
 	}

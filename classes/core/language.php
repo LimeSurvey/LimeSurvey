@@ -44,6 +44,19 @@ class limesurvey_lang {
 	return $this->langcode;
     }
    
+    function gTview($string, $escapemode = 'html')
+    {
+	global $addTitleToLinks;
+	if ( $addTitleToLinks === true)
+	{
+		return $this->gT($string, $escapemode = 'html');
+	}
+	else
+	{
+		return '';
+	}
+    }
+
     function gT($string, $escapemode = 'html')
     {
     	if ($this->gettextclass)
