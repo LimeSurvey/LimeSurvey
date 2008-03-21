@@ -325,9 +325,9 @@ table.question tr.array2:hover {background-color: #A7A9D1; }
 
 <table align="center" cellpadding="0" cellspacing="0">
   <tr class="grayboxheader">
-    <td width="14"><img src="/survey/templates/BPB/box_left.gif" border="0" width="14"></td>
-    <td background="/survey/templates/BPB/box_bg.gif">{SURVEYNAME}</td>
-    <td width="14"><img src="/survey/templates/BPB/box_right.gif" border="0" width="14"></td>
+    <td width="14"><img src="{TEMPLATEURL}box_left.gif" border="0" width="14"></td>
+    <td background="{TEMPLATEURL}box_bg.gif">{SURVEYNAME}</td>
+    <td width="14"><img src="{TEMPLATEURL}box_right.gif" border="0" width="14"></td>
   </tr>
 </table>
 
