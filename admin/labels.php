@@ -67,7 +67,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 	.$clang->gT("Label Sets Administration")."</strong></td></tr>\n"
 	."<tr >\n"
 	."\t<td>\n"
-	."\t<a href='$scriptname' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Return to Survey Administration", "js")."');return false\">" .
+	."\t<a href='$scriptname' onmouseout=\"hideTooltip()\" title=\"".$clang->gT("Return to Survey Administration")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Return to Survey Administration", "js")."');return false\">" .
 			"<img name='Administration' src='$imagefiles/home.png' title='' alt='' align='left'  /></a>"
 	."\t<img src='$imagefiles/blank.gif' width='11' height='20' border='0' hspace='0' align='left' alt='' />\n"
 	."\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
@@ -75,6 +75,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 	."\t<td align='right' width='620'>\n"
 	."<a href=\"#\" onclick=\"showhelp('show')\"" 
 	."onmouseout=\"hideTooltip()\"" 
+	."title=\"".$clang->gT("Show Help")."\"" 
 	."onmouseover=\"showTooltip(event,'".$clang->gT("Show Help", "js")."');return false\">" 
 	."<img src='$imagefiles/showhelp.png' name='ShowHelp' title=''" 
 	."alt='". $clang->gT("Show Help")."' align='right'  /></a>"	
@@ -82,6 +83,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 	."\t<img src='$imagefiles/seperator.gif' align='right' hspace='0' border='0' alt='' />\n"
 	."<a href=\"#\" onclick=\"window.open('admin.php?action=newlabelset', '_top')\"" 
 	."onmouseout=\"hideTooltip()\"" 
+	."title=\"".$clang->gT("Add New Label Set")."\"" 
 	."onmouseover=\"showTooltip(event,'".$clang->gT("Add New Label Set", "js")."');return false\">"
 	."<img src='$imagefiles/add.png' align='right' name='AddLabel' title='' alt='". $clang->gT("Add new label set")."' /></a>\n"	 
 	."\t<font class='boxcaption'>".$clang->gT("Labelsets").": </font>"
@@ -249,14 +251,14 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 			."onclick=\"window.open('admin.php?action=labels', '_top')\" />\n"
 			."\t<img src='$imagefiles/blank.gif' width='50' height='20' border='0' hspace='0' align='left' alt='' />\n"
 			."\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
-			."\t<a href='admin.php?action=editlabelset&amp;lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Edit label set", "js")."');return false\">" .
+			."\t<a href='admin.php?action=editlabelset&amp;lid=$lid' onmouseout=\"hideTooltip()\" title=\"".$clang->gT("Edit label set")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Edit label set", "js")."');return false\">" .
 			"<img name='EditLabelsetButton' src='$imagefiles/edit.png' alt='' align='left'  /></a>" 
 //			."\t<a href='admin.php?action=deletelabelset&amp;lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Delete label set", "js")."');return false\">"
-			."\t<a href='#' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Delete label set", "js")."');return false\">"
+			."\t<a href='#' onmouseout=\"hideTooltip()\" title=\"".$clang->gT("Delete label set")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Delete label set", "js")."');return false\">"
 //			."<img src='$imagefiles/delete.png' border='0' alt='' title='' align='left' onclick=\"return confirm('".$clang->gT("Are you sure?","js")."')\" /></a>\n"
 			."<img src='$imagefiles/delete.png' border='0' alt='' title='' align='left' onclick=\"if (confirm('".$clang->gT("Are you sure?","js")."')) {".get2post("admin.php?action=deletelabelset&amp;lid=$lid")."}\" /></a>\n"
 			."\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
-			."\t<a href='admin.php?action=dumplabel&amp;lid=$lid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Label Set", "js")."');return false\">" .
+			."\t<a href='admin.php?action=dumplabel&amp;lid=$lid' onmouseout=\"hideTooltip()\" title=\"".$clang->gT("Export Label Set")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Label Set", "js")."');return false\">" .
 					"<img src='$imagefiles/exportcsv.png' alt='".$clang->gT("Export Label Set")."' title='' align='left' /></a>" 
 			."\t</td>\n"
 			."</tr>\n"
