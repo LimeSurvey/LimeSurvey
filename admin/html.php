@@ -2363,7 +2363,7 @@ if ($action == "editsurvey")
 
 	// Email format
         $editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Use HTML format for token emails?")."</span>\n"
-        . "\t\t<span class='settingentry'><select name='htmlemail' onchange='alert(\"".$clang->gT("If you switch email mode, you'll have to review your email templates to fit the new format","js")."\");'>\n"
+        . "\t\t<span class='settingentry'><select name='htmlemail' onchange=\"alert('".$clang->gT("If you switch email mode, you'll have to review your email templates to fit the new format","js")."');\">\n"
         . "\t\t\t<option value='Y'";
 	if ($esrow['htmlemail'] == "Y") {$editsurvey .= " selected='selected'";}
 	$editsurvey .= ">".$clang->gT("Yes")."</option>\n"
