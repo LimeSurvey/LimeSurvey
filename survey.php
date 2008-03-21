@@ -47,13 +47,7 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit") && (!isset($notans
 {
 	if ($thissurvey['private'] == "Y")
 	{
-		$privacy="";
-//		foreach (file("$thistpl/privacy.pstpl") as $op)
-//		{
-//			$privacy .= templatereplace($op);
-//		}
-			$privacy .= templatereplace(file_get_contents("$thistpl/privacy.pstpl"));
-
+		$privacy = templatereplace(file_get_contents("$thistpl/privacy.pstpl"));
 	}
 	if ($thissurvey['refurl'] == "Y")
 	{
@@ -81,8 +75,7 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit") && (!isset($notans
 
 		$completed = "<br /><strong><font size='2' color='red'>".$clang->gT("Did Not Save")."</strong></font><br /><br />\n\n"
 		. $clang->gT("Your survey responses have not been recorded. This survey is not yet active.")."<br /><br />\n"
-		. "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n"
-		. "<font size='1'>$subquery</font>\n";
+		. "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
 	}
 	else
 	{
@@ -362,7 +355,8 @@ echo "\t//-->\n";
 echo "\t</script>\n\n";
 // <-- END NEW FEATURE - SAVE
 
-echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"));
+echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"))."\n";
+echo templatereplace(file_get_contents("$thistpl/privacy.pstpl"))."\n";
 
 echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
 ."\t<script type='text/javascript'>\n"

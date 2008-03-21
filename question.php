@@ -84,8 +84,8 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 
 	echo "\n\n<!-- START THE SURVEY -->\n";
 
-	echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"));
-	echo "\n";
+	echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"))."\n";
+    echo templatereplace(file_get_contents("$thistpl/privacy.pstpl"))."\n";
 	$navigator = surveymover();
 	echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
 	if ($thissurvey['active'] != "Y")

@@ -246,8 +246,8 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey'>\n";
 	echo "\n\n<!-- START THE SURVEY -->\n";
-	echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"));
-	echo "\n";
+    echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"))."\n";
+    echo templatereplace(file_get_contents("$thistpl/privacy.pstpl"))."\n";
 	$navigator = surveymover();
 	echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
 
