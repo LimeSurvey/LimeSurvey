@@ -477,7 +477,7 @@ function mandatory_message($ia)
 {
 	//This function checks to see if this question is mandatory and
 	//is being re-displayed because it wasn't answered. It returns
-	global $notanswered, $clang;
+	global $notanswered, $clang, $dbprefix;
 	$qtitle="";
 	if (isset($notanswered) && is_array($notanswered)) //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
 	{
@@ -504,7 +504,14 @@ function mandatory_message($ia)
 				break;
 				case "M":
 				case "P":
-				$qtitle .= "<br />\n".$clang->gT("Please check at least one item").".";
+				$qtitle .= " ".$clang->gT("Please check at least one item").".";
+                $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
+                $qresult = db_execute_assoc($qquery);
+                $qrow = $qresult->FetchRow();
+                if ($qrow['other']=='Y')
+                {
+                    $qtitle .= "<br />\n".$clang->gT("If you choose 'Other:' you must provide a description.");
+                }
 				break;
 			} // end switch
 			$qtitle .= "</span></strong><br />\n";
