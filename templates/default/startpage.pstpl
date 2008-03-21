@@ -122,6 +122,11 @@ border-width:1px;
 {
   font-size:1.2em;
   height:1.5em;
+  }
+.surveytitle:hover
+{
+  text-decoration: underline;
+  color: #819d26;
 }
 .languagechanger
 {
