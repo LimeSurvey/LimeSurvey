@@ -1189,7 +1189,10 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 }
 
 // Translate INSERTANS codes
-transInsertAns($newsid,$oldsid,$fieldnames);
+if (isset($fieldnames))
+{
+    transInsertAns($newsid,$oldsid,$fieldnames);
+}
 
 
 
