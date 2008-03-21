@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-03-17 09:00+0100\n"
-"PO-Revision-Date: 2008-03-20 13:56+0100\n"
-"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
+"PO-Revision-Date: 2008-03-21 21:11+0100\n"
+"Last-Translator: Darko Saracevic <darko@alterart.ba>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -41,7 +41,7 @@ msgstr "Ili ste bili neaktivni suviše dugo, ili imate onemogućene cookies u va
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:388
 #, php-format
 msgid "Please contact %s ( %s ) for further assistance."
-msgstr "Molimo vas da kontaktirate %s ( %s ) za dodatnu pomoć."
+msgstr "Molimo vas da kontaktirate %s (%s) za dodatnu pomoć."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:123
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:276
@@ -107,7 +107,7 @@ msgstr "Vaš odogovor"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:43
 msgid "Import Survey Resources"
-msgstr "Importuj resurse za nketu"
+msgstr "Importuj resurse za anketu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:48
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:72
@@ -263,14 +263,14 @@ msgstr "Čitanje dokumenta.."
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:73
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:243
 msgid "This file is not a valid ZIP file archive. Import failed."
-msgstr "Fajl nije validna ZIP arhiva. Imprtovanje nije uspjelo."
+msgstr "Fajl nije validna ZIP arhiva. Importovanje nije uspjelo."
 
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:94
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:264
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:94
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:264
 msgid "Copy failed"
-msgstr "Kpiranje nije uspjelo."
+msgstr "Kopiranje nije uspjelo."
 
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:103
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:273
@@ -521,7 +521,7 @@ msgstr "NEMOJTE osvježavati ovu stranicu jer ćeto time importovati fajl ponovo
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:218
 msgid "Total records imported:"
-msgstr "Ukupno imoprtovanih zapisa:"
+msgstr "Ukupno importovanih zapisa:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:219
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:56
@@ -608,7 +608,7 @@ msgstr "Dodaj"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/assessments.php:156
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/saved.php:102
 msgid "Edit"
-msgstr "Izmjeni"
+msgstr "Izmijeni"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/assessments.php:127
 msgid "If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission"
@@ -708,7 +708,7 @@ msgstr "Importovanje seta labela završeno."
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:42
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:303
 msgid "Survey List Page"
-msgstr ""
+msgstr "Stranica sa listom anketa"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:43
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:251
@@ -751,7 +751,7 @@ msgstr "Snimite stranicu"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:50
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:449
 msgid "Print Answers Page"
-msgstr ""
+msgstr "Stranica za štampanje ankete"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:127
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:245
@@ -761,11 +761,11 @@ msgstr "Ne može se kopirati"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:127
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:245
 msgid "to new template directory."
-msgstr ""
+msgstr "u novi direktorij predloška."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:133
 msgid "Directory with the name"
-msgstr ""
+msgstr "Direktorij sa imenom"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:133
 msgid "already exists - choose another name"
@@ -782,7 +782,7 @@ msgstr "Možda nemate dozvolu."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:143
 msgid "Directory could not be renamed to"
-msgstr ""
+msgstr "Direktorij ne može biti preimenovan u"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:172
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:184
@@ -807,7 +807,7 @@ msgstr "Ove ankete su dostupne:"
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:324
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:325
 msgid "Template Editor"
-msgstr "Template editor"
+msgstr "Editor predložaka"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:551
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:243
@@ -817,15 +817,15 @@ msgstr "Glavni administratorski panel"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:558
 msgid "Create new template called:"
-msgstr "Kreiraj novi template pod imenom:"
+msgstr "Kreiraj novi predložak pod imenom:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:558
 msgid "NewTemplate"
-msgstr "Novi template"
+msgstr "Novi predložak"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:559
 msgid "Create new template"
-msgstr "Kreirajte novi template"
+msgstr "Kreirajte novi predložak"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:561
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:572
@@ -833,43 +833,43 @@ msgstr "Kreirajte novi template"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2180
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2872
 msgid "Template:"
-msgstr "Template:"
+msgstr "Predložak:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:579
 msgid "This template can be modified"
-msgstr "Ovaj template ne možete mjenjati"
+msgstr "Ovaj predložak možete mjenjati"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:582
 msgid "This template cannot be modified"
-msgstr "Ovaj template ne možete mjenjati"
+msgstr "Ovaj predložak ne možete mjenjati"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:593
 msgid "You can't edit the default template."
-msgstr "Ne možete mjenjati osnovni template"
+msgstr "Ne možete mjenjati osnovni predložak"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:598
 msgid "Rename this template to:"
-msgstr "Preimenuj ovaj template u:"
+msgstr "Preimenuj ovaj predložak u:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:600
 msgid "Rename this template"
-msgstr "Preimenuj ovaj template"
+msgstr "Preimenuj ovaj predložak"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:605
 msgid "Export Template"
-msgstr "Exportujte template"
+msgstr "Exportujte predložak"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:609
 msgid "Copy Template"
-msgstr "Kopirajte template"
+msgstr "Kopirajte predložak"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:610
 msgid "Make a copy of this template"
-msgstr "Napravi kopiju ovog templatea"
+msgstr "Napravi kopiju ovog predloška"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:610
 msgid "copy_of_"
-msgstr ""
+msgstr "kopija_od_"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:616
 msgid "Screen:"
@@ -897,7 +897,7 @@ msgstr "Snimi promjene"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:660
 msgid "Changes cannot be saved to the default template."
-msgstr "Promjene osnovnog teplatea ne mogu biti snimljene."
+msgstr "Promjene osnovnog predloška ne mogu biti snimljene."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:671
 msgid "Are you sure you want to delete this file?"
@@ -905,7 +905,7 @@ msgstr "Jeste li sigurni da želite izbrisati ovaj file?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:673
 msgid "Files in the default template cannot be deleted."
-msgstr "Fajlovi u osnovnom temlateu ne mogu biti izbrisani."
+msgstr "Fajlovi u osnovnom predlošku ne mogu biti izbrisani."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:684
 msgid "Upload a File"
@@ -944,7 +944,7 @@ msgstr "Pojedinačni odziv"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:157
 msgid "Columns"
-msgstr "kolona"
+msgstr "Kolone"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:159
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1010
@@ -1415,7 +1415,7 @@ msgstr "N/p"
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2484
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1595
 msgid "Male"
-msgstr "Muško"
+msgstr "Muški"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1011
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:33
@@ -1435,7 +1435,7 @@ msgstr "Muško"
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2472
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1596
 msgid "Female"
-msgstr "Žensko"
+msgstr "Ženski"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1046
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:555
@@ -1454,7 +1454,7 @@ msgstr "Žensko"
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2821
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1605
 msgid "Uncertain"
-msgstr "Nije sigurno"
+msgstr "Nisam siguran/na"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1053
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:560
@@ -1561,12 +1561,12 @@ msgstr "2. skala"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:266
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:902
 msgid "View Response"
-msgstr "Pogledaj odgovor"
+msgstr "Pogledaj odziv"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:273
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:134
 msgid "Edit this entry"
-msgstr "Izmjeni ovaj zapis"
+msgstr "Izmijeni ovaj zapis"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:282
 msgid "Delete this entry"
@@ -1640,15 +1640,15 @@ msgstr "Pogledaj ovaj zapis"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:706
 msgid "responses for this survey"
-msgstr "ispunjavanja ove ankete"
+msgstr "odziva na anketu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:707
 msgid "full responses"
-msgstr "- potpuno ispunjavanje"
+msgstr "- potpunih odziva"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:708
 msgid "responses not completely filled out"
-msgstr "- nepotpuno ispunjavanje "
+msgstr "- nepotpunih odziva"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:38
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:381
@@ -1679,11 +1679,11 @@ msgstr "Status"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:44
 msgid "Full Responses"
-msgstr "- potpuno ispunjavanje "
+msgstr "Puni odzivi "
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:45
 msgid "Partial Responses"
-msgstr "Parcijalni odgovori"
+msgstr "Parcijalni odzivi"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:46
 msgid "Total Responses"
@@ -1707,7 +1707,7 @@ msgstr "Otvoreni pristup"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:76
 msgid "Expired"
-msgstr "Isteklo"
+msgstr "Istekla"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:78
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:161
@@ -1882,7 +1882,7 @@ msgstr "Verzija ankete za printanje"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:550
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:551
 msgid "Edit Current Survey"
-msgstr "Izmjeni ovu anketu"
+msgstr "Izmijeni ovu anketu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:564
 msgid "Delete Current Survey"
@@ -1909,7 +1909,7 @@ msgstr "Onemogućeno"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:599
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2685
 msgid "Change Group Order"
-msgstr "Izmjeni raspored grupa"
+msgstr "Izmijeni raspored grupa"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:610
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1856
@@ -1944,7 +1944,7 @@ msgstr "Pogledaj sačuvane ali još neposlane odzive"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:665
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:666
 msgid "Activate/Edit Tokens for this Survey"
-msgstr "Aktiviraj/izmjeni tokene za ovu anketu"
+msgstr "Aktiviraj/izmijeni tokene za ovu anketu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:673
 msgid "Close this Survey"
@@ -2027,7 +2027,7 @@ msgstr "Referentni URL-ovi će biti sačuvani"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:740
 msgid "It uses cookies for access control."
-msgstr "Za kontrolu pristupa se koriste cookies."
+msgstr "Za kontrolu pristupa se koriste cookies"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:741
 msgid "If tokens are used, the public may register for this survey"
@@ -2169,7 +2169,7 @@ msgstr "Morate dodati pitanja"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:923
 msgid "Edit Current Group"
-msgstr "Izmjeni ovu grupu"
+msgstr "Izmijeni ovu grupu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:936
 msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
@@ -2188,7 +2188,7 @@ msgstr "Nije moguće izbrisati ovu grupu jer postoji najmanje jedno pitanje sa p
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:958
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:701
 msgid "Change Question Order"
-msgstr "Izmjeni raspored pitanja"
+msgstr "Izmjena rasporeda pitanja"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:968
 msgid "Export Current Group"
@@ -2216,7 +2216,7 @@ msgstr "Pitanja sa uslovima za ovu grupu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1084
 msgid "Edit Current Question"
-msgstr "Izmjeni ovo pitanje"
+msgstr "Izmijeni ovo pitanje"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1099
 msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
@@ -2256,7 +2256,7 @@ msgstr "Testiraj ovo pitanje"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1209
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1265
 msgid "Edit/Add Answers for this Question"
-msgstr "Izmjeni/dodaj odgovore za ovo pitanje"
+msgstr "Izmijeni/dodaj odgovore za ovo pitanje"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1220
 msgid "Close this Question"
@@ -2365,7 +2365,7 @@ msgstr "Trebate izabrati set labela za ovo pitanje!"
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:311
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:312
 msgid "Edit/Add Label Sets"
-msgstr "Izmjeni/dodaj setove labela"
+msgstr "Izmijeni/dodaj setove labela"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1296
 msgid "Second Label Set"
@@ -2377,7 +2377,7 @@ msgstr "Trebate izabrati drugi set labela za ovo pitanje!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1314
 msgid "Edit/Add second Label Sets"
-msgstr "Izmjeni/dodaj drugi set labela"
+msgstr "Izmijeni/dodaj drugi set labela"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1326
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:105
@@ -2399,7 +2399,7 @@ msgstr "Druga pitanja koja imaju uslov na ovom pitanju:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1417
 msgid "Edit Answers"
-msgstr "Izmjeni odgovore:"
+msgstr "Izmijeni odgovore:"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:1420
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1420
@@ -2665,7 +2665,7 @@ msgstr "Nije moguće izbrisati korisnika. Korisnik nije zadan."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1740
 msgid "Edit Survey Properties"
-msgstr "Izmjeni svojstva ankete"
+msgstr "Izmijeni svojstva ankete"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1741
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1806
@@ -2703,7 +2703,7 @@ msgstr "Snimi sada"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1805
 msgid "Edit Survey Property"
-msgstr "Izmjeni svojstva ankete"
+msgstr "Izmijeni svojstva ankete"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1807
 msgid "Browse Response"
@@ -2915,7 +2915,7 @@ msgstr "Koristi HTML format emaila za tokene?"
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2349
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2349
 msgid "If you switch email mode, you'll have to review your email templates to fit the new format"
-msgstr "Ako promjenite email mod, morat ćete provjeriti email postavke da bi odgovarale novom formatu"
+msgstr "Ako promjenite email mod, morat ćete provjeriti email predloške da bi odgovarale novom formatu"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2365
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:3006
@@ -2948,7 +2948,7 @@ msgstr "Ako uključite 'Anonimni odgovori' i kreirate tabelu tokena, LimeSurvey 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2444
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2470
 msgid "Cannot be changed"
-msgstr "Ne može se promijeniti"
+msgstr "Ne može se izmijeniti"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2413
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3035
@@ -3078,19 +3078,19 @@ msgstr "Promjena rasporeda grupa je ograničena da bi se osiguralo da pitanja na
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2694
 msgid "The following groups are concerned"
-msgstr ""
+msgstr "Tiče se ovih grupa"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2699
 msgid "depends on group"
-msgstr ""
+msgstr "zavisi od grupe"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2699
 msgid "see the marked conditions on"
-msgstr ""
+msgstr "vidi označene uslove na"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2779
 msgid "The uploaded file is bigger than the upload_max_filesize directive in php.ini"
-msgstr ""
+msgstr "Učitani fajl je veći od vrijednosti zadane u upload_max_filesize komandi u php.ini"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2783
 msgid "The file was only partially uploaded"
@@ -3106,7 +3106,7 @@ msgstr "Greška pri prijenosu fajla. Morate izabrati CSV fajl"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2804
 msgid "Error: You have to enter a title for this survey."
-msgstr "Grečka: Morate unijeti ime za ovu anketu."
+msgstr "Greška: Morate unijeti ime za ovu anketu."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2808
 msgid "Create or Import Survey"
@@ -3145,7 +3145,7 @@ msgstr "Izaberite CSV/SQL fajl:"
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:3084
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3084
 msgid "Convert Resources links and INSERTANS fields ?"
-msgstr ""
+msgstr "Konvertuj linkove resursa i INSERTANS polja?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3239
 msgid "You need to upload the file"
@@ -3177,7 +3177,7 @@ msgstr "Vizualizacija:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3280
 msgid "Select the field number you would like to use for your answers:"
-msgstr ""
+msgstr "Izaberite broj polja koji želite koristiti za vaš odgovor:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/saved.php:53
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:471
@@ -3218,7 +3218,7 @@ msgstr "Exportuj pitanje"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dumpquestion.php:37
 msgid "No QID has been provided. Cannot dump question."
-msgstr ""
+msgstr "QID nije obezbijeđen. Nije moguće izbrisati pitanje."
 
 # D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:82
 # D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:96
@@ -3278,7 +3278,7 @@ msgstr "Email iz tokena"
 # D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:387
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/fck_LimeReplacementFields.php:387
 msgid "No replacement variable available for this field"
-msgstr ""
+msgstr "Nema zamjenskih varijabli dostupnih za ovo polje"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/fck_LimeReplacementFields.php:394
 msgid "Standard Fields"
@@ -3287,7 +3287,7 @@ msgstr "Standardna polja"
 # D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:406
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/fck_LimeReplacementFields.php:406
 msgid "Previous Answers Fields"
-msgstr ""
+msgstr "Polja prethodnih odgovora"
 
 # D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:435
 # D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:441
@@ -3305,7 +3305,7 @@ msgstr "Format ankete je"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/fck_LimeReplacementFields.php:436
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/fck_LimeReplacementFields.php:442
 msgid "Only Previous pages answers are available"
-msgstr ""
+msgstr "Samo su odgovori sa prethodne strane dostupni"
 
 # D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:442
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/fck_LimeReplacementFields.php:442
@@ -3315,7 +3315,7 @@ msgstr "Mod ankete je postavljen na"
 # D:\web\xampp\htdocs\limesurvey/admin/quota.php:252
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:252
 msgid "Modify Quota"
-msgstr "Izmjeni kvotu"
+msgstr "Izmijeni kvotu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:256
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:315
@@ -3371,7 +3371,7 @@ msgstr "Nije aktivna"
 # D:\web\xampp\htdocs\limesurvey/admin/quota.php:351
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:351
 msgid "Modify"
-msgstr "Izmjeni"
+msgstr "Izmijeni"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:373
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:452
@@ -3434,7 +3434,7 @@ msgstr "Exportuj anketu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/export_structure_csv.php:48
 msgid "No SID has been provided. Cannot dump survey"
-msgstr "SID nije obezbijeđen. Nije moguće izbrisati anketu"
+msgstr "SID nije obezbijeđen. Nije moguće izbrisati anketu."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:405
 msgid "Record ID"
@@ -3461,7 +3461,7 @@ msgstr "Slanje emaila svim članovima"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:67
 msgid "Edit Current User Group"
-msgstr "Izmjeni ovu Grupu korisnika"
+msgstr "Izmijeni ovu Grupu korisnika"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:81
 msgid "Delete Current User Group"
@@ -3478,11 +3478,11 @@ msgstr "Grupe korisnika"
 # D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:124
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:124
 msgid "Set templates that this user may access"
-msgstr "Postavi template kojima ovaj korisnik može pristupiti"
+msgstr "Postavi predloške kojima ovaj korisnik može pristupiti"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:138
 msgid "Template Name"
-msgstr "Ime template-a"
+msgstr "Ime predloška"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:138
 msgid "Allowed"
@@ -3546,7 +3546,7 @@ msgstr "Brisanje korisnika"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:303
 msgid "Manage Template"
-msgstr "Upravljanje template-ima"
+msgstr "Upravljanje predloškom"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:306
 msgid "Manage Labels"
@@ -3572,7 +3572,7 @@ msgstr "Kreirao"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:479
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:609
 msgid "Edit User"
-msgstr "Izmjeni podatke o korisniku"
+msgstr "Izmijeni podatke o korisniku"
 
 # D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:591
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:591
@@ -3582,7 +3582,7 @@ msgstr "Preuzmi vlasništvo"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:600
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:657
 msgid "Set Template Rights"
-msgstr "Postavi prava na template"
+msgstr "Postavi prava na predložak"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:643
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:665
@@ -3603,7 +3603,7 @@ msgstr "Dodaj grupu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:663
 msgid "Edit User Group (Owner: "
-msgstr "Izmjeni grupu korisnika (vlasnik: "
+msgstr "Izmijeni grupu korisnika (vlasnik: "
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:669
 msgid "Update User Group"
@@ -3793,7 +3793,7 @@ msgstr "Kreiraj novi set labela"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:127
 msgid "Edit Label Set"
-msgstr "Izmjeni set labela"
+msgstr "Izmijeni set labela"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:138
 msgid "Set Name"
@@ -3815,7 +3815,7 @@ msgstr "Izaberi CSV fajl:"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/grouphandling.php:73
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:180
 msgid "Convert Resources links ?"
-msgstr "Konvertuj liknove resursa?"
+msgstr "Konvertuj linkove resursa?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:248
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:1006
@@ -3824,7 +3824,7 @@ msgstr "Zatvori prozor"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:252
 msgid "Edit label set"
-msgstr "Izmjeni set labela"
+msgstr "Izmijeni set labela"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:255
 msgid "Delete label set"
@@ -3870,7 +3870,7 @@ msgstr "Ne možete mjenjati kodove, dodavati ili brisati unose u ovom setu label
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:476
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:805
 msgid "Fix Sort"
-msgstr "Fiksiraj sortiranje"
+msgstr "Popravi raspored"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:486
 msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
@@ -3924,7 +3924,7 @@ msgstr "Importuj grupu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/grouphandling.php:132
 msgid "Edit Group"
-msgstr "Izmjeni grupu"
+msgstr "Izmijeni grupu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/grouphandling.php:166
 msgid "Update Group"
@@ -3932,20 +3932,20 @@ msgstr "Osvježi grupu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:84
 msgid "This question is a multiple answer type question but has no answers."
-msgstr ""
+msgstr "Ovo pitanje je tipa sa višestrukim odgovorima, ali nema odgovora."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:93
 msgid "This question does not have a question 'type' set."
-msgstr ""
+msgstr "Ovo pitanje nema zadan 'tip'"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:103
 msgid "This question requires a Labelset, but none is set."
-msgstr ""
+msgstr "Ovo pitanje zahtijeva set labela, ali niti jedan nije zadan."
 
 # D:\web\xampp\htdocs\limesurvey/admin/activate.php:110
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:110
 msgid "This question requires a second Labelset, but none is set."
-msgstr ""
+msgstr "Ovo pitanje zatiijeva drugi set labela, ali set nije postavljen."
 
 # D:\web\xampp\htdocs\limesurvey/admin/activate.php:128
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:128
@@ -3954,7 +3954,7 @@ msgstr "Set labela korišten u ovom pitanju ili ne postoji ili nema prijevoda."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:184
 msgid "This question has a condition set, however the condition is based on a question that appears after it."
-msgstr ""
+msgstr "Ovo pitanje ima postavljen uslov, ali se uslov odnosi na pitanje koje se pojavljuje nakon ovog."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:219
 msgid "Survey does not pass consistency check"
@@ -3999,19 +3999,19 @@ msgstr "Ipak, moći ćete:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:252
 msgid "Edit (change) your questions code, text or type"
-msgstr "Izmjeniti kod, tekst ili tip pojedinog pitanja"
+msgstr "Izmijeniti kod, tekst ili tip pojedinog pitanja"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:252
 msgid "Edit (change) your group names"
-msgstr "Izmjeniti nazive grupa"
+msgstr "Izmijeniti nazive grupa"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:252
 msgid "Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)"
-msgstr "Dodati, brisati ili izmjeniti zadate odgovore na pitanja (osim za Multi-answer pitanja)"
+msgstr "Dodati, brisati ili izmijeniti zadate odgovore na pitanja (osim za Multi-answer pitanja)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:252
 msgid "Change survey name or description"
-msgstr "Izmjeniti naziv ankete i/ili opis"
+msgstr "Izmijeniti naziv ankete i/ili opis"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:253
 msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
@@ -4098,12 +4098,12 @@ msgstr "Ovo nije LimeSurvey fajl sa anketom. Importovanje nije uspjelo."
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:564
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:594
 msgid "Import of this survey file failed"
-msgstr ""
+msgstr "Importovanje ove ankete nije uspjelo"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:373
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:381
 msgid "File does not contain LimeSurvey data in the correct format."
-msgstr ""
+msgstr "Fajl ne sadrži LimeSurvey podatke u ispravnom formatu."
 
 # D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:816
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:816
@@ -4165,7 +4165,7 @@ msgstr "Niste unijeli korisničko ime i email."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/login_check.php:48
 msgid "Check Data"
-msgstr ""
+msgstr "Provjeri podatke"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/login_check.php:74
 msgid "You have to login first."
@@ -4185,32 +4185,32 @@ msgstr "Dizajniranje uslova"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:40
 msgid "You have not selected a Survey."
-msgstr ""
+msgstr "Niste izabrali anketu."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:40
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:48
 msgid "You cannot run this script directly."
-msgstr ""
+msgstr "Ne možete pokrenuti ovu skriptu direktno."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:48
 msgid "You have not selected a Question."
-msgstr ""
+msgstr "Niste izabrali pitanje."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:68
 msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
-msgstr ""
+msgstr "Uslov ne može biti dodan! Ne postoji pitanje i/ili odgovor na koje se uslov odnosi. Izaberite i pitanje i odgovor."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:148
 msgid "Did not copy questions"
-msgstr ""
+msgstr "Pitanje nije kopirano"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:151
 msgid "No condition selected to copy from"
-msgstr ""
+msgstr "Uslov za kopiranje nije izabran "
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:155
 msgid "No question selected to copy condition to"
-msgstr ""
+msgstr "Nije izabrano pitanje na koje se uslov kopira"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:408
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:461
@@ -4354,7 +4354,7 @@ msgstr "Uslov"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:897
 msgid "copy to"
-msgstr ""
+msgstr "kopiraj u"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:910
 msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
@@ -4462,7 +4462,7 @@ msgstr "Kopiraj atribute?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:402
 msgid "Edit Question"
-msgstr "Izmjeni pitanje"
+msgstr "Izmijeni pitanje"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:454
 msgid "Question Type:"
@@ -4496,11 +4496,11 @@ msgstr "Ova grupa koristi pitanja sa uslovima"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:712
 msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
-msgstr ""
+msgstr "Promjena rasporeda pitanja u ovoj grupi je ograničena da bi se osiguralo da pitanja od kojih zavisi uslov ne budu premještena nakon pitanja na kojem je uslov postavljen."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:712
 msgid "See the conditions marked on the following questions"
-msgstr ""
+msgstr "Pogledaj uslove vezane za ova pitanja"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:752
 msgid "Place after.."
@@ -4524,7 +4524,7 @@ msgstr "Nije vam dozvoljeno da exportujete set labela!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/access_denied.php:37
 msgid "You are not allowed to change user data!"
-msgstr "Nije vam dozvoljeno da izmjenite podatke o korisniku!"
+msgstr "Nije vam dozvoljeno da izmijenite podatke o korisniku!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/access_denied.php:42
 msgid "You are not allowed to create new surveys!"
@@ -4631,7 +4631,7 @@ msgstr "Importuj odzive"
 # D:\web\xampp\htdocs\limesurvey/admin/importgroup.php:39
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importgroup.php:39
 msgid "No SID (Survey) has been provided. Cannot import group."
-msgstr ""
+msgstr "Nije obezbijeđen SID (anketa). Nije moguće importovati grupu."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importgroup.php:56
 msgid "Reading file..."
@@ -4639,20 +4639,20 @@ msgstr "Čitanje dokumenta.."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importgroup.php:68
 msgid "This file is not a LimeSurvey group file. Import failed."
-msgstr ""
+msgstr "Ovo nije LimeSurvey fajl sa grupom. Importovanje nije uspjelo."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importgroup.php:249
 msgid "You can't import a group which doesn't support the current survey's base language."
-msgstr ""
+msgstr "Ne možete importovati grupu koja ne podržava osnovni jezik ove ankete."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importgroup.php:265
 msgid "You can't import a question which doesn't support the current survey's base language."
-msgstr ""
+msgstr "Ne možete importovati pitanje koje ne podržava osnovni jezik ove ankete."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importgroup.php:283
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:281
 msgid "You can't import label sets which don't support the current survey's base language"
-msgstr ""
+msgstr "Ne možete importovati set labela koji ne podržava osnovni jezik ove ankete."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importgroup.php:628
 msgid "Import partially successful."
@@ -4722,7 +4722,7 @@ msgstr "Ne uzimaj u obzir nekompletne odzive (radi samo kada je Filter nekomplet
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:725
 msgid "Show Graphs"
-msgstr "Pokaži grafikon"
+msgstr "Prikaži grafikone"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:729
 msgid "View Stats"
@@ -4859,19 +4859,19 @@ msgstr "Odgovorenih"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:43
 msgid "No SID (Survey) has been provided. Cannot import question."
-msgstr ""
+msgstr "Nije obezbijeđen SID (anketa). Nije moguće importovati pitanje."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:57
 msgid "No GID (Group) has been provided. Cannot import question"
-msgstr ""
+msgstr "Nije obezbijeđen GID (Grupa). Nije moguće importovati pitanje."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:97
 msgid "This file is not a LimeSurvey question file. Import failed."
-msgstr ""
+msgstr "Ovo nije LimeSurvey fajl sa pitanjem. Importovanje nije uspjelo."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:107
 msgid "Sorry, importing questions is limited to the same version. Import failed."
-msgstr ""
+msgstr "Na žalost, importovanje pitanja je ograničeno na istu verziju. Importovanje nije uspjelo."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:240
 msgid "You can't import a question which doesn't support the current survey's base language"
@@ -4891,6 +4891,9 @@ msgid ""
 "\\n"
 "It is missing the group name for the following languages"
 msgstr ""
+"Grupa ne može biti dodana.\\n"
+"\\n"
+"Nedostaje ime grupe za ove jezike"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:168
 msgid "Error: The database reported the following error:"
@@ -4920,7 +4923,7 @@ msgstr "Pitanje ne može biti kreirano"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:463
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
-msgstr ""
+msgstr "Pitanje ne može biti osvježeno. Postoje uslovi na druga pitanja koji se oslanjaju na odgovore na ovo pitanje i promjena tipa može izazvati probleme. Prvo morate izbrisati te uslove, pa tek onda možete mijenjati tip ovog pitanja."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:548
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:606
@@ -4933,12 +4936,12 @@ msgstr "Odgovori ne mogu biti izbrisani"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:578
 msgid "This question relies on other question's answers and can't be moved above groupId:"
-msgstr ""
+msgstr "Ovo pitanje zavisi od odgovora na druga pitanja i ne može biti premješteno iznad groupID:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:579
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:591
 msgid "in position"
-msgstr ""
+msgstr "na mjesto"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:580
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:592
@@ -4947,7 +4950,7 @@ msgstr "Vidi uslove:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:590
 msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
-msgstr ""
+msgstr "Neka pitanja zavise od odgovora na ovo pitanje i ne može biti premješteno ispod groupID:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:616
 msgid "Question could not be added. You must insert a code in the mandatory field"
@@ -4956,7 +4959,7 @@ msgstr "Pitanje ne može biti dodano. Morate unijeti kod u obavezno polje"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:750
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:791
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
-msgstr ""
+msgstr "Pitanje nije moguće izbrisati. Postoje uslovi za druga pitanja koja zavise od ovog pitanja. Ne možete izbrisati ovo pitanje dok ti uslovi nisu uklonjeni."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:775
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:812
@@ -4965,7 +4968,7 @@ msgstr "Pitanje ne može biti izbriano"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:836
 msgid "Error adding answer: You can't use the same answer code more than once."
-msgstr ""
+msgstr "Greška u dodavanju odgovora: Ne možete više puta koristiti isti kod odgovora."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:860
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:876
@@ -4994,11 +4997,11 @@ msgstr "Brisanje odgovora nije uspjelo"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1022
 msgid "Failed to make answer not default"
-msgstr ""
+msgstr "Postavka odgovora kao 'nije zadan' nije uspjela"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1036
 msgid "Failed to make answer default"
-msgstr ""
+msgstr "Postavka odgovora kao 'zadanog' nije uspjela"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1106
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:555
@@ -5035,9 +5038,9 @@ msgstr ""
 "Pozivamo vas da učestvujete u našoj anketi.\n"
 "\n"
 "Anketa nosi naziv:\n"
-"\"{SURVEYNAME}\"\n"
 "\n"
-"\"{SURVEYDESCRIPTION}\"\n"
+"{SURVEYNAME}\n"
+"{SURVEYDESCRIPTION}\n"
 "\n"
 "Za otvaranje prozora sa anketom, kliknite na link ispod.\n"
 "\n"
@@ -5086,9 +5089,9 @@ msgstr ""
 "Primijetili smo da još niste popunili formular, pa vas podsjećamo da je anketa aktivna i da još uvijek možete odgovoriti na pitanja ako želite.\n"
 "\n"
 "Naziv ankete je:\n"
-"\"{SURVEYNAME}\"\n"
 "\n"
-"\"{SURVEYDESCRIPTION}\"\n"
+"{SURVEYNAME}\n"
+"{SURVEYDESCRIPTION}\n"
 "\n"
 "Za otvaranje prozora sa anketom, kliknite na link ispod.\n"
 "\n"
@@ -5121,7 +5124,7 @@ msgid ""
 msgstr ""
 "Zdravo {FIRSTNAME},\n"
 "\n"
-"Ovaj email je potvrda da ste popunili anketu pod nazivom {SURVEYNAME} i da su vaši odgovori sačuvani. Hvala na odzivu.\n"
+"Ovaj email je potvrda da ste popunili anketu pod nazivom '{SURVEYNAME}' i da su vaši odgovori sačuvani. Hvala na odzivu.\n"
 "\n"
 "Ako imate dodatnih pitanja, molimo vas da se obratite {ADMINNAME} na {ADMINEMAIL}.\n"
 "\n"
@@ -5185,16 +5188,16 @@ msgstr "Ako se pojavljuju greške, možda ćete ovu skriptu morati izvršiti vi�
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:53
 msgid "No matching Cqid"
-msgstr ""
+msgstr "Nema takvog Cqid"
 
 # D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:60
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:60
 msgid "No matching CFIELDNAME Group!"
-msgstr ""
+msgstr "Nema takve CFIELDNAME grupe!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:64
 msgid "No \"CFIELDNAME\" field set!"
-msgstr ""
+msgstr "Nema postavljenog \"CFIELDNAME\" polja!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:69
 msgid "The following conditions should be deleted"
@@ -5206,7 +5209,7 @@ msgstr "Svi 'uslovi' ispunjavaju standarde integriteta"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:89
 msgid "No matching qid"
-msgstr ""
+msgstr "Nema takvog qid"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:93
 msgid "The following question attributes should be deleted"
@@ -5218,11 +5221,11 @@ msgstr "Svi 'question_attributes' ispunjavaju standarde integriteta"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:111
 msgid "No matching survey"
-msgstr ""
+msgstr "Nema takve ankete"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:123
 msgid "No matching group"
-msgstr ""
+msgstr "Nema takve grupe"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:129
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:139
@@ -5239,7 +5242,7 @@ msgstr "Sve 'procjene grupa' ispunjavaju standarde integriteta"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:158
 msgid "No matching question"
-msgstr ""
+msgstr "Nema takvog pitanja"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:164
 msgid "The following answers should be deleted"
@@ -5264,7 +5267,7 @@ msgstr "Svi 'podešavanja ankete' ispunjavaju standarde integriteta"
 # D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:205
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:205
 msgid "No matching Group"
-msgstr ""
+msgstr "Nema takve grupe"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:211
 msgid "No matching Survey!"
@@ -5362,7 +5365,7 @@ msgstr "Provjeri ponovo"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/cmdline_importsurvey.php:58
 msgid "User name invalid!"
-msgstr "Pogrečno korisničko ime!"
+msgstr "Pogrešno korisničko ime!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/cmdline_importsurvey.php:80
 msgid "User name / password dont match!"
@@ -5418,7 +5421,7 @@ msgstr "Veliki slobodni tekst"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dumplabel.php:32
 msgid "No LID has been provided. Cannot dump label set."
-msgstr ""
+msgstr "LID nije obezbijeđen. Nije moguće izbrisati set labela."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:45
 msgid "ARMSCII-8 Armenian"
@@ -5642,7 +5645,7 @@ msgstr "Exportuj tokene u CSV fajl"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:439
 msgid "Edit Email Templates"
-msgstr "Izmjena postavki emaila"
+msgstr "Izmjena emaila predložaka"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:441
 msgid "Send email invitation"
@@ -5732,7 +5735,7 @@ msgstr "Tekst emaila javne registracije:"
 # D:\web\xampp\htdocs\limesurvey/admin/tokens.php:632
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:632
 msgid "Token Email Settings have been saved."
-msgstr "Postavki emaila za tokene su sačuvane."
+msgstr "Postavke emaila za tokene su sačuvane."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:647
 msgid "All token entries have been deleted."
@@ -5809,7 +5812,7 @@ msgstr "Anketa završena?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:881
 msgid "Edit Token Entry"
-msgstr "Izmjeni token"
+msgstr "Izmijeni token"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:884
 msgid "Delete Token Entry"
@@ -5849,11 +5852,11 @@ msgstr "Izbriši tokene"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:991
 msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
-msgstr ""
+msgstr "Tabela tokena je izbrisana i tokeni više nisu potrebni za pristup ovoj anketi."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:991
 msgid "A backup of this table has been made and can be accessed by your system administrator."
-msgstr ""
+msgstr "Backup kopija ove tabele je napravljena i može joj pristupiti sistemski administrator."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1021
 msgid "Email Invitation"
@@ -5885,7 +5888,7 @@ msgstr "Slanje na token ID"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1093
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1327
 msgid "Bypass token with failing email addresses"
-msgstr ""
+msgstr "Preskoči token sa nedostajućom email adresom"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1099
 msgid "Send Invitations"
@@ -5906,16 +5909,16 @@ msgstr "Slanje maila za {FIRSTNAME} {LASTNAME} ({EMAIL}) nije uspjelo"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1215
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1454
 msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
-msgstr ""
+msgstr "Ima još emali poruka koje mogu biti poslane odjednom. Klikni ispod za nastavak slanja."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1216
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1455
 msgid "There are {EMAILCOUNT} emails still to be sent."
-msgstr ""
+msgstr "Ima još {EMAILCOUNT} emaila za poslati."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1236
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
-msgstr ""
+msgstr "Nema email adresa na koje se može poslati poruka. Razlog može biti da nema tokena sa unešenim email adresama, nema tokena kojima poziv još nije poslan, nema tokena koji nisu popunili anketu ili nama uopšte tokena."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1253
 msgid "Email Reminder"
@@ -5927,7 +5930,7 @@ msgstr "Email podsjetnik:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1314
 msgid "Start at Token ID No:"
-msgstr ""
+msgstr "Počni na tokenu ID broj:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1332
 msgid "Send Reminders"
@@ -5940,7 +5943,7 @@ msgstr "Slanje podsjetnika"
 # D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1356
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1356
 msgid "From Token ID"
-msgstr ""
+msgstr "Od tokena ID"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1438
 msgid "Reminder sent to:"
@@ -5948,7 +5951,7 @@ msgstr "Podsjetnik poslan za:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1477
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
-msgstr ""
+msgstr "Nema email poruka koje se mogu poslati. Razlog može biti da nijedna ne zadovoljava kriterij: ima email adresu i poziv već poslan, ali još nije popunjena anketa."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1493
 msgid "Create Tokens"
@@ -5979,7 +5982,7 @@ msgstr "Osvježavanje ekrana u toku. Sačekajte malo."
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1699
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1751
 msgid "Add or Edit Token Entry"
-msgstr "Dodaj ili izmjeni token"
+msgstr "Dodaj ili izmijeni token"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1579
 msgid "Auto"
@@ -6013,7 +6016,7 @@ msgstr "Neuspješno"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1735
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1783
 msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
-msgstr ""
+msgstr "Već postoji zapis u tabeli sa istim takvim tokenom. Isti token se ne može koristiti više puta."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1736
 msgid "Show this token entry"
@@ -6026,7 +6029,7 @@ msgstr "Novi token dodan"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1798
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1841
 msgid "Upload CSV File"
-msgstr "Uploaduj CSV fajl"
+msgstr "Učitaj CSV fajl"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1804
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1826
@@ -6036,23 +6039,23 @@ msgstr "Napomena:"
 # D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1805
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1805
 msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [emailstatus], [token], [language code], [attribute1], [attribute2]\"."
-msgstr ""
+msgstr "Fajl mora biti standardni CSV (comma delimited) fajl sa duplim navodnicima oko vrijednosti (default za openoffice i Excel). Prva linija treba da sadrži zaglavlje (biti će uklonjeno). Podaci trebaju biti poredani ovako: \"ime, prezime, email, [emailstatus], [token], [kod jezika], [atribut1], [atribut2]\"."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1820
 msgid "Upload LDAP entries"
-msgstr ""
+msgstr "Učitaj LDAP zapise"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1827
 msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
-msgstr ""
+msgstr "LDAP upite definiše sistemski administrator u config-ldap.php fajlu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1856
 msgid "Upload file not found. Check your permissions and path for the upload directory"
-msgstr ""
+msgstr "Učitani fajl nije pronađen. Provjerite dozvole i tačnu lokaciju direktorija za učitavanje"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1861
 msgid "Importing CSV File"
-msgstr ""
+msgstr "Importovanje CSV fajla"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1862
 msgid "Creating Token Entries"
@@ -6065,7 +6068,7 @@ msgstr "Zapisa u CSV"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1962
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2124
 msgid "Records met minumum requirements"
-msgstr ""
+msgstr "Zapisi zadovoljavaju minimum zahtjeva"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1963
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2125
@@ -6080,39 +6083,39 @@ msgstr "Dupli zapisi izbrisani"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1965
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2127
 msgid "Records with invalid email address removed"
-msgstr ""
+msgstr "Zapisi sa netačnim email adresama su izbrisani"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1979
 msgid "Uploading LDAP Query"
-msgstr ""
+msgstr "Učitavanje LDAP upita"
 
 # D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2123
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2123
 msgid "Results from LDAP Query"
-msgstr ""
+msgstr "Rezultati iz LDAP upita"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2131
 msgid "Can't bind to the LDAP directory"
-msgstr ""
+msgstr "Nije moguće povezivanje sa LDAP direktorijem"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2137
 msgid "Can't connect to the LDAP directory"
-msgstr ""
+msgstr "Nije moguće uspostaviti vezu sa LDAP direktorijem"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2164
 msgid "Choose the CSV file to upload:"
-msgstr ""
+msgstr "Izaberite CSV fajl za učitavanje:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2165
 msgid "Character set of the file:"
-msgstr ""
+msgstr "Set karaktera u fajlu:"
 
 # D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2166
 # D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2200
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2166
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2200
 msgid "Filter blank email addresses:"
-msgstr ""
+msgstr "Filtriraj prazne email adrese:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2167
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2201
@@ -6121,15 +6124,15 @@ msgstr "Filtriraj duplirane zapise: "
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2181
 msgid "Sorry, but the LDAP module is missing in your PHP configuration."
-msgstr ""
+msgstr "Na žalost, LDAP modul u PHP configuraciji nedostaje."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2187
 msgid "LDAP is disabled or no LDAP query defined."
-msgstr ""
+msgstr "LDAP je onemogućen ili LDAP upit nije definisan."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2192
 msgid "Select the LDAP query you want to run:"
-msgstr ""
+msgstr "Izaberite LDAP upit koji želite pokrenuti:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:125
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:129
@@ -6255,11 +6258,11 @@ msgstr "Popuni bazu podataka"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/install/createdb.php:38
 #, php-format
 msgid "Database `%s` has been successfully populated."
-msgstr ""
+msgstr "Baza podataka `%s` je uspješno popunjena."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/install/createdb.php:53
 msgid "Database Information not provided. This script must be run from admin.php only."
-msgstr ""
+msgstr "Informacije o bazi podataka nisu obezijeđene. Ova skripta mora biti startovana samo iz admin.php."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/install/createdb.php:77
 msgid "Database has been created."
@@ -6267,11 +6270,11 @@ msgstr "Baza podataka je kreirana."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/install/createdb.php:78
 msgid "Please click below to populate the database"
-msgstr ""
+msgstr "Kliknite ispod da popunite bazu podataka"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/install/createdb.php:85
 msgid "Could not create database"
-msgstr ""
+msgstr "Nije moguće kreirati bazu podataka"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/install/index.php:32
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/install/index.php:49
@@ -6293,20 +6296,20 @@ msgstr "LimeSurvey može pokušati kreirati ovu azu podataka za vas."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/install/index.php:37
 msgid "Your selected database name is:"
-msgstr ""
+msgstr "Vaše izabrano ime baze podataka je:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/install/index.php:52
 #, php-format
 msgid "A database named \"%s\" already exists."
-msgstr ""
+msgstr "Baza podataka sa imenom \"%s\" već postoji."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/install/index.php:53
 msgid "Do you want to populate that database now by creating the necessary tables?"
-msgstr ""
+msgstr "Želite li popuniti bazu podataka sada kreirajući potrebne tabele?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/install/index.php:85
 msgid "Database has been successfully upgraded to version "
-msgstr ""
+msgstr "Baza podataka je uspješno unaprijeđena u verziju"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/deactivate.php:23
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/deactivate.php:42
@@ -6366,7 +6369,7 @@ msgstr "Unos podataka"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:61
 msgid "You have not selected a survey for data-entry."
-msgstr ""
+msgstr "Niste izabrali anketu za unos podataka."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:121
 msgid "This is a closed-access survey, you must supply a valid token"
@@ -6378,15 +6381,15 @@ msgstr "Token koji ste obezbijedili nije ispravan."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:129
 msgid "There is already a recorded answer for this token"
-msgstr ""
+msgstr "Već postoji sačuvan odgovor za ovaj token"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:132
 msgid "Follow the following link to update it"
-msgstr ""
+msgstr "Pratite ovaj link da osvježite"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:138
 msgid "This surveys uses anonymous answers, you can't update this response"
-msgstr ""
+msgstr "Ove ankete imaju anonimne odgovore i ne možete osvježiti odzive"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:159
 #: /srv/www/virtual/limesurvey.org/devSVN/save.php:199
@@ -6447,7 +6450,7 @@ msgstr "Odziv na anketu je uspješno sačuvan."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:423
 msgid "A token entry for the saved survey has been created too."
-msgstr ""
+msgstr "Token za sačuvanu anketu je također kreiran."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:432
 #: /srv/www/virtual/limesurvey.org/devSVN/save.php:283
@@ -6465,7 +6468,7 @@ msgstr "Otvorite novi prozor sa vašom sačuvanom anketom koristeći ovaj link"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:445
 msgid "An email has been sent with details about your saved survey"
-msgstr ""
+msgstr "Email sa podacima o sačuvanoj anketi je poslan"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:459
 msgid "The entry was assigned the following record id: "
@@ -6510,20 +6513,20 @@ msgstr "Izaberite"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2033
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1517
 msgid "Remove this item"
-msgstr ""
+msgstr "Ukloni"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:963
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2066
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1564
 msgid "Your Choices"
-msgstr "Vaš izbor"
+msgstr "Ponuđeni izbor"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:968
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2071
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1573
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1579
 msgid "Your Ranking"
-msgstr ""
+msgstr "Vaš poredak"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1271
 msgid "Update Entry"
@@ -6545,7 +6548,7 @@ msgstr "Zapis je osvježen."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1463
 msgid "Record Deleted"
-msgstr "Unos izbrisan"
+msgstr "Zapis izbrisan"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1593
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1693
@@ -6580,7 +6583,7 @@ msgstr "Exportuj bazu podataka"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dumpdb.php:56
 msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
-msgstr ""
+msgstr "Exportovanje baze podataka je moguće samo za MySQL baze. Za druge tipove baza koristite njihove mehanizme za izvoz podataka."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:45
 msgid "Forgot Password"
@@ -6588,7 +6591,7 @@ msgstr "Zaboravili ste šifru?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:57
 msgid "User name and/or email not found!"
-msgstr "korisničko ime / šifra nisu pronađeni!"
+msgstr "Korisničko ime i/ili email nisu pronađeni!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:66
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:360
@@ -6601,17 +6604,17 @@ msgstr "Nova šifra"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:80
 msgid "An email with your login data was sent to you."
-msgstr "Email sa vašim login podacima vam je poslat."
+msgstr "Email sa vašim podacima za prijavu vam je poslat."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:85
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:383
 msgid "Email to {NAME} ({EMAIL}) failed."
-msgstr ""
+msgstr "Email poruka za {NAME} ({EMAIL}) nije uspjela."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:94
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:180
 msgid "Logging in..."
-msgstr "Logovanje ..."
+msgstr "Prijava ..."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:105
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:160
@@ -6627,12 +6630,12 @@ msgstr "Dobrodošli {NAME}"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:146
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:286
 msgid "You logged in successfully."
-msgstr "Logovali ste se uspješno."
+msgstr "Prijavili ste se uspješno."
 
 # D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:168
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:168
 msgid "LimeSurvey is setup to use the webserver authentication, but it seems you have not already been authenticated"
-msgstr ""
+msgstr "LimeSurvey je podešen da koristi autorizaciju web servera, ali izgleda da još niste autorizovani."
 
 # D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:169
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:169
@@ -6642,11 +6645,11 @@ msgstr "Molimo vas da kontaktirate sistemskog administratora"
 # D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:252
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:252
 msgid "Auto Import User Failed!"
-msgstr ""
+msgstr "Automatsko importovanje korisnika nije uspjelo!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:306
 msgid "Logout successful."
-msgstr "Odlogovali ste se uspješno."
+msgstr "Odjavili ste se uspješno."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:325
 msgid "Email address is not valid."
@@ -6675,16 +6678,16 @@ msgstr "Korisnički ime i/ili email adresa već postoje."
 # D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:413
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:413
 msgid "Initial Superadmin cannot be deleted!"
-msgstr ""
+msgstr "Inicijalni Superadmin ne može biti izbrisan!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:515
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:539
 msgid "Could not modify User Data."
-msgstr ""
+msgstr "Izmjena korisničkih podataka nije moguća\""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:515
 msgid "Email address ist not valid."
-msgstr ""
+msgstr "Email adresa nije ispravna."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:531
 msgid "Unchanged"
@@ -6692,7 +6695,7 @@ msgstr "Nepromjenjeno"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:539
 msgid "Email address already exists."
-msgstr "Email adresa vec postoji"
+msgstr "Email adresa već postoji"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:600
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:640
@@ -6705,7 +6708,7 @@ msgstr "Nije vam dozvoljeno da mjenjate svoja vlastita prava!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:678
 msgid "Update usertemplates successful."
-msgstr "Osvježavanje korisničkih templatea uspješno."
+msgstr "Osvježavanje korisničkih predložaka uspješno."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/save.php:157
 msgid "Please try again."
@@ -6721,7 +6724,7 @@ msgstr "Odgovor na sigurnosno pitanje nije tačan"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/save.php:226
 msgid "This name has already been used for this survey. You must use a unique save name."
-msgstr ""
+msgstr "Ovo ime je već korišteno za ovu anketu. Morate koristiti jedinstveno ime."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/save.php:285
 msgid "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
@@ -6729,15 +6732,15 @@ msgstr "Vi, neko ko koristi vašu email adresu ili administrator ste/su sačuval
 
 #: /srv/www/virtual/limesurvey.org/devSVN/save.php:476
 msgid "Cannot submit results - there are none to submit."
-msgstr ""
+msgstr "Nije moguće poslati rezultate - nema rezultata za slanje."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/save.php:477
 msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
-msgstr ""
+msgstr "Ova greška se može desiti ako ste već poslali vašu anketu i onda kliknuli 'refresh' u vašem browseru. U tom slučaju, vaši odgovori su već sačuvani."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/save.php:477
 msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
-msgstr ""
+msgstr "Ako ste primili ovu poruku tokom popunjavanja ankete, idite na '<- BACK' u vašem browseru i onda 'refresh/reload' prethodnu stranicu. Iako ste izgubili odgovore na posljednjoj stranici, svi prijašnji su sačuvani. Ovaj problem se može desiti ukoliko je server preopterećen. Izvinjavamo se zbog neugodnosti."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:162
 msgid "We are sorry but you don't have permissions to do this."
@@ -6754,7 +6757,7 @@ msgstr "Ova anketa više nije dostupna."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:387
 msgid "You have already completed this survey."
-msgstr ""
+msgstr "Već ste završili ovu anketu."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:438
 msgid "You did not provide a name"
@@ -6806,11 +6809,11 @@ msgstr "Anketa sačuvana"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:656
 msgid "There is no matching saved survey"
-msgstr ""
+msgstr "Nema takve sačuvane ankete"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1362
 msgid "Answer Submission for Survey"
-msgstr ""
+msgstr "Slanje odgovora za anketu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1364
 msgid "Survey Submitted"
@@ -6822,7 +6825,7 @@ msgstr " Stigao je novi odziv na vašu anketu."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1368
 msgid "Click the following link to reload the survey:"
-msgstr ""
+msgstr "Kliknite ovaj link da ponovo učitate anketu:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1372
 msgid "Click the following link to see the individual response:"
@@ -6830,7 +6833,7 @@ msgstr "Kliknite ovdje da vidite poslani odziv:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1375
 msgid "Click the following link to edit the individual response:"
-msgstr "Kliknite ovdje da izmjenite poslani odziv:"
+msgstr "Kliknite ovdje da izmijenite poslani odziv:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1378
 msgid "View statistics by clicking here:"
@@ -6845,31 +6848,31 @@ msgstr "Nije sačuvano"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1439
 msgid "An unexpected error has occurred and your responses cannot be saved."
-msgstr ""
+msgstr "Dogodila se neočekivana greška i vaši odgovori nisu sačuvani."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1442
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
-msgstr ""
+msgstr "Vaši odgovori nisu izgubljeni, već su u obliku emaila poslani administratoru koji će ih ručno uvrstiti u bazu podataka."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1443
 msgid "An error occurred saving a response to survey id"
-msgstr ""
+msgstr "Desila se greška pri snimanju odziva na anketu id"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1444
 msgid "DATA TO BE ENTERED"
-msgstr ""
+msgstr "PODACI KOJE TREBA UNIJETI"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1449
 msgid "SQL CODE THAT FAILED"
-msgstr ""
+msgstr "SQL KOD SA GREŠKOM"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1451
 msgid "ERROR MESSAGE"
-msgstr ""
+msgstr "PORUKA O GREŠKI"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1453
 msgid "Error saving results"
-msgstr ""
+msgstr "Greška prilikom snimanja rezultata"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1461
 msgid "Try to submit again"
@@ -6930,7 +6933,7 @@ msgstr "Nažalost, jedan od vaših odgovora je prešao zadanu kvotu potrebnih an
 #: /srv/www/virtual/limesurvey.org/devSVN/group.php:40
 #: /srv/www/virtual/limesurvey.org/devSVN/question.php:39
 msgid "Save your responses so far"
-msgstr ""
+msgstr "Sačuvajte dosadašnje odgovore"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/group.php:111
 #: /srv/www/virtual/limesurvey.org/devSVN/question.php:291
@@ -6971,7 +6974,7 @@ msgstr "Kliknite ovdje da odštampate vaše odgovore."
 #: /srv/www/virtual/limesurvey.org/devSVN/question.php:69
 #: /srv/www/virtual/limesurvey.org/devSVN/survey.php:190
 msgid "Sorry. There is no matching survey."
-msgstr ""
+msgstr "Na žalost, nema takve ankete."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/group.php:256
 #: /srv/www/virtual/limesurvey.org/devSVN/group.php:782
@@ -6989,19 +6992,19 @@ msgstr "Datum nije tačan!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/register.php:63
 msgid "The email you used is not valid. Please try again."
-msgstr ""
+msgstr "Korišteni email nije ispravan. Pokušajte ponovo."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/register.php:78
 msgid "The email you used has already been registered."
-msgstr ""
+msgstr "Korišteni email je već ranije registrovan."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/register.php:132
 msgid "Thank you for registering to participate in this survey."
-msgstr ""
+msgstr "Hvala na registraciji za učešće u ovoj anketi."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/register.php:132
 msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
-msgstr ""
+msgstr "Email poruka sa pristupnim podacima ovoj anketi je poslana na adresu koju ste obezbijedili. Pratite link u emailu za nastavak. "
 
 #: /srv/www/virtual/limesurvey.org/devSVN/register.php:132
 msgid "Survey Administrator"
@@ -7013,7 +7016,7 @@ msgstr "Administrator ankete"
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:315
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:323
 msgid "Choose one of the following answers"
-msgstr "Odaberite samo jedan od ponuđenih odgovora"
+msgstr "Odaberite jedno"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:336
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:361
@@ -7023,7 +7026,7 @@ msgstr "Označite sve moguće odgovore"
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:341
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:366
 msgid "Check at most"
-msgstr ""
+msgstr "Izaberite najviše"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:341
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:366
@@ -7036,7 +7039,7 @@ msgstr "Odaberite vaš jezik"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:470
 msgid "This question must be answered correctly"
-msgstr ""
+msgstr "Na pitanje treba ispravno odgovoriti"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:487
 msgid "This question is mandatory"
@@ -7044,24 +7047,24 @@ msgstr "Ovo pitanje je obavezno"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:498
 msgid "Please complete all parts"
-msgstr ""
+msgstr "Popunite sve dijelove"
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:501
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:501
 msgid "Please check the items"
-msgstr ""
+msgstr "Izaberite stavke"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:503
 msgid "Please rank all items"
-msgstr ""
+msgstr "Rangirajte stavke"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:507
 msgid "Please check at least one item"
-msgstr ""
+msgstr "Izaberite barem jednu stavku"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:527
 msgid "You cannot proceed until you enter some text for one or more questions."
-msgstr ""
+msgstr "Ne možete nastaviti dok ne odgovorite tekstom na jedno ili više pitanja."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:531
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
@@ -7069,7 +7072,7 @@ msgstr "Niste odgovorili na jedno ili više obaveznih pitanja. Ne možete nastav
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:554
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
-msgstr ""
+msgstr "Na jedno ili više pitanja nije odgovoreno na ispravan način. Ne možete nastaviti dok odgovori nisu ispravni."
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:621
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:621
@@ -7145,7 +7148,7 @@ msgstr "Godina"
 # D:\web\xampp\htdocs\limesurvey/qanda.php:684
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:684
 msgid "Please complete all parts of the date"
-msgstr ""
+msgstr "Popunite sve dijelove datuma"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:698
 msgid "Format: YYYY-MM-DD"
@@ -7153,7 +7156,7 @@ msgstr "Format: GGGG-MM-DD"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:699
 msgid "(eg: 2003-12-25 for Christmas day)"
-msgstr "(npr. 2003-12-25 za Božić)"
+msgstr "(godina-mjesec-dan)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:929
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1169
@@ -7162,64 +7165,64 @@ msgstr "Greška: Set labela korišten u ovom pitanju nije dostupan u ovom jeziku
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1241
 msgid "Please choose one of the following"
-msgstr ""
+msgstr "Odaberite jedno"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1242
 msgid "Please enter your comment here"
-msgstr ""
+msgstr "Ovdje unesite vaš komentar"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1558
 msgid "Click on an item in the list on the left, starting with your"
-msgstr ""
+msgstr "Kliknite na listu ponuđenog izbora, počevši sa"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1559
 msgid "highest ranking item, moving through to your lowest ranking item."
-msgstr ""
+msgstr "prvom stavkom koju preferirate, pa redom do posljednje."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1587
 msgid "Click on the scissors next to each item on the right"
-msgstr ""
+msgstr "Kliknite na makaze desno od stavke"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1588
 msgid "to remove the last entry in your ranked list"
-msgstr ""
+msgstr "da uklonite posljednji izbor u vašoj listi."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1760
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1932
 msgid "Please choose at most"
-msgstr ""
+msgstr "Izaberite najviše"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1760
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1932
 msgid "answer(s) for question"
-msgstr ""
+msgstr "odgovor(a) na pitanje"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1980
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2083
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2782
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3734
 msgid "Error: This question has no answers."
-msgstr ""
+msgstr "Greška: Ovo pitanje nema odgovor."
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:2107
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2107
 msgid "Only numbers may be entered in these fields"
-msgstr ""
+msgstr "Samo brojevi mogu biti unešeni u ova polja"
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:2111
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2111
 msgid "Total of all entries must not exceed "
-msgstr ""
+msgstr "Zbroj unosa ne smije preći "
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:2115
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2115
 msgid "Total of all entries must equal "
-msgstr ""
+msgstr "Zbroj unosa mora niti jednak "
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:2119
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2119
 msgid "Total of all entries must be at least "
-msgstr ""
+msgstr "Zbroj unosa mora biti najmanje "
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2124
 msgid "Total: "
@@ -7228,7 +7231,7 @@ msgstr "Ukupno:"
 # D:\web\xampp\htdocs\limesurvey/qanda.php:2127
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2127
 msgid "Remaining: "
-msgstr ""
+msgstr "Preostalo:"
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:2157
 # D:\web\xampp\htdocs\limesurvey/qanda.php:2163
@@ -7239,14 +7242,14 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2193
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2202
 msgid "Answer is invalid. The total of all entries should not add up to more than "
-msgstr ""
+msgstr "Odgovor nije ispravan. Zbroj svih unosa ne smije preći "
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:2174
 # D:\web\xampp\htdocs\limesurvey/qanda.php:2180
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2174
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2180
 msgid "Answer is invalid. The total of all entries should add up to at least "
-msgstr ""
+msgstr "Odgovor nije ispravan. Zbroj svih unosa mora biti najmanje "
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2245
 msgid "Only numbers may be entered in this field"
@@ -7256,7 +7259,7 @@ msgstr "Samo brojevi mogu biti unešeni u ovo polje"
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3376
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3953
 msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
-msgstr ""
+msgstr "Greška: Set labela korišten za ovo pitanje nije dostupan u ovom jeziku i/ili ne postoji."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3369
 msgid "Error: There are no answers defined for this question."
@@ -7264,7 +7267,7 @@ msgstr "Greška: nema definisanih odgovora na ovo pitanje."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:227
 msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
-msgstr ""
+msgstr "Upozorenje: Još uvijek koristite osnovnu šifru 'password'. Izmijenite šifru i prijavite se ponovo."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:233
 msgid "Administration"
@@ -7272,17 +7275,17 @@ msgstr "Administracija"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:236
 msgid "Logged in as"
-msgstr "Logovan kao"
+msgstr "Prijavljen kao"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:253
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:255
 msgid "Create/Edit Users"
-msgstr "Kreiraj/izmjeni korisnika"
+msgstr "Kreiraj/izmijeni korisnika"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:259
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:260
 msgid "Create/Edit Groups"
-msgstr "Kreiraj/izmjeni grupu korisnika"
+msgstr "Kreiraj/izmijeni grupu korisnika"
 
 # D:\web\xampp\htdocs\limesurvey/common.php:266
 # D:\web\xampp\htdocs\limesurvey/common.php:268
@@ -7309,7 +7312,7 @@ msgstr "Backup čitave baze podataka"
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:338
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:340
 msgid "Logout"
-msgstr "Odloguj se"
+msgstr "Odjavi se"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:347
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:348
@@ -7412,11 +7415,11 @@ msgstr "Lista (Dropdown)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1144
 msgid "It appears as if some tables or fields are missing from your database."
-msgstr ""
+msgstr "Izgleda da neke tabele ili polja nedostaju u vašoj bazi poataka."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1146
 msgid "Check Database Fields"
-msgstr ""
+msgstr "Provjeri polja u bazi podataka"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1347
 msgid "Display Last 50 Responses"
@@ -7441,7 +7444,7 @@ msgstr "Importuj odgovore iz deaktivirane tabele ankete"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1433
 msgid "Preset"
-msgstr ""
+msgstr "Osnovno postavljenje"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2073
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
@@ -7571,7 +7574,7 @@ msgstr "Unesite vaše podatke ispod i email sa linkom za učešće u anketi će 
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2383
 msgid "Your Assessment"
-msgstr ""
+msgstr "Vaša procjena"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2695
 msgid "Online Manual"
@@ -7591,16 +7594,16 @@ msgstr "Verzija"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2908
 msgid "Local Submission"
-msgstr ""
+msgstr "Lokalno slanje"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:3112
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:3117
 msgid "Executing"
-msgstr ""
+msgstr "Izvršavanje"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:3112
 msgid "Failed! Reason: "
-msgstr ""
+msgstr "Nije uspjelo! Razlog:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:3117
 msgid "Success!"
