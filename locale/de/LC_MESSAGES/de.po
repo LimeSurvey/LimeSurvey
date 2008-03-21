@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-03-16 19:45+0100\n"
-"Last-Translator: Josef Prandstetter <jprandstetter@limesurvey.org>\n"
+"PO-Revision-Date: 2008-03-21 11:31+0100\n"
+"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -1866,6 +1866,10 @@ msgstr "In dieses Feld dürfen nur Ziffern eingetragen werden"
 msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
 msgstr "Fehler: Das für diese Frage benutzte Beschriftungsset ist nicht in dieser Übersetzung verfügbar oder wurde nicht angegeben."
 
+# D:\web\htdocs\limesurvey/admin/questionhandling.php:24
+msgid "Error: There are no answers defined for this question."
+msgstr "Fehler: Es sind keine Antworten für diese Frage definiert."
+
 # D:\web\htdocs\limesurvey/register.php:63
 msgid "The email you used is not valid. Please try again."
 msgstr "Die angegebene Email-Adresse ist ungültig. Bitte versuchen Sie es erneut."
@@ -3606,13 +3610,10 @@ msgstr "Vorname Proband"
 msgid "Lastname from token"
 msgstr "Nachname Proband"
 
-# D:\web\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:84
-msgid "Name of the survey"
-msgstr "Name der Umfrage"
-
-# D:\web\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:85
-msgid "Description of the survey"
-msgstr "Beschreibung der Umfrage"
+# D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:93
+# D:\web\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:98
+msgid "Email from the token"
+msgstr "E-Mail von Teilnehmer"
 
 # D:\web\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:86
 # D:\web\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:99
@@ -3623,6 +3624,14 @@ msgstr "Attribute 1 aus Proband"
 # D:\web\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:100
 msgid "Attribute_2 from token"
 msgstr "Attribute 2 aus Proband"
+
+# D:\web\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:84
+msgid "Name of the survey"
+msgstr "Name der Umfrage"
+
+# D:\web\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:85
+msgid "Description of the survey"
+msgstr "Beschreibung der Umfrage"
 
 # D:\web\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:88
 msgid "Name of the survey administrator"
@@ -3637,11 +3646,6 @@ msgstr "E-Mail Adresse des Umfrage-Administrators"
 # D:\web\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:90
 msgid "URL of the survey"
 msgstr "URL der Umfrage:"
-
-# D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:93
-# D:\web\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:98
-msgid "Email from the token"
-msgstr "E-Mail von Teilnehmer"
 
 # D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:313
 # D:\web\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:387
@@ -4050,6 +4054,10 @@ msgstr "Ergebnisse dieser Umfrage ansehen"
 # D:\web\htdocs\limesurvey/admin/html.php:666
 msgid "Activate/Edit Tokens for this Survey"
 msgstr "Probanden aktivieren/bearbeiten für diese Umfrage"
+
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:677
+msgid "Adding/editing tokens is not possible because this survey is not activated."
+msgstr "Hinzufügen/Bearbeiten von Probanden nicht möglich, da die Umfrage nicht aktiviert ist."
 
 # D:\web\htdocs\limesurvey/admin/html.php:673
 msgid "Close this Survey"
@@ -6986,10 +6994,6 @@ msgstr "Sind Sie wirklich sicher, dass Sie ALLE Probanden-Einträge löschen wol
 msgid "Delete all token entries"
 msgstr "Alle Probanden-Einträge löschen."
 
-# D:\web\htdocs\limesurvey/admin/tokens.php:727
-msgid "Update tokens table with new fields"
-msgstr "Zugangsschlüssel-Tabelle mit neuen Feldern aktualisieren"
-
 # D:\web\htdocs\limesurvey/admin/tokens.php:781
 msgid "Search"
 msgstr "Suchen"
@@ -7940,6 +7944,10 @@ msgstr "Hebräisch"
 # D:\web\htdocs\limesurvey/classes/core/surveytranslator.php:147
 msgid "Hungarian"
 msgstr "Ungarisch"
+
+# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:151
+msgid "Indonesian"
+msgstr "Indonesisch"
 
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:123
 # D:\web\htdocs\limesurvey/classes/core/surveytranslator.php:151

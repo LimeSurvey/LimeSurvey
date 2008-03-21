@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German Informal language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-03-13 09:49+0100\n"
+"PO-Revision-Date: 2008-03-21 11:35+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -342,7 +342,7 @@ msgstr "Umfrage zwischenspeichern"
 
 # D:\web\xampp\htdocs\limesurvey/common.php:1852
 msgid "Enter a name and password for this survey and click save below."
-msgstr "Gebe einen Namen und ein Passwort für diese Umfrage an und klicken auf Speichern."
+msgstr "Gebe einen Namen und ein Passwort für diese Umfrage an und klicke auf Speichern."
 
 # D:\xampp\xampp\htdocs\limesurvey/common.php:1624
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
@@ -845,6 +845,9 @@ msgstr "In dieses Feld dürfen nur Ziffern eingetragen werden"
 # D:\web\xampp\htdocs\limesurvey/qanda.php:2692
 msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
 msgstr "Fehler: Das für diese Frage benutzte Beschriftungsset ist nicht in dieser Übersetzung verfügbar oder wurde nicht angegeben."
+
+msgid "Error: There are no answers defined for this question."
+msgstr "Fehler: Es sind keine Antworten für diese Frage definiert."
 
 msgid "The email you used is not valid. Please try again."
 msgstr "Die angegebene Email-Adresse ist ungültig. Bitte versuche es erneut."
@@ -1760,7 +1763,7 @@ msgid "Help about this question"
 msgstr "Hilfe zu dieser Frage"
 
 msgid "This survey is not yet active. Your response cannot be saved"
-msgstr "Diese Umfrage ist noch nicht aktiviert. Deine Antwort kann nicht abgespeichert werden"
+msgstr "Diese Umfrage ist noch nicht aktiviert. Deine Antwort kann nicht abgespeichert werden."
 
 msgid "The survey you selected does not exist"
 msgstr "Die ausgewählte Umfrage existiert nicht."
@@ -1922,7 +1925,7 @@ msgid "Token Control"
 msgstr "Zugangsschlüssel Steuerung"
 
 msgid "Choose Token Fields"
-msgstr "Wähle die Zugangsschlüssel-Felder."
+msgstr "Wähle die Zugangsschlüssel-Felder"
 
 msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
 msgstr "Deine Umfragedaten können mit den zugeordneten Token exportiert werden. Wähle zusätzliche Felder, die mit exportiert werden sollen."
@@ -1969,17 +1972,21 @@ msgstr "Vorname Proband"
 msgid "Lastname from token"
 msgstr "Nachname Proband"
 
-msgid "Name of the survey"
-msgstr "Name der Umfrage"
-
-msgid "Description of the survey"
-msgstr "Beschreibung der Umfrage"
+# D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:93
+msgid "Email from the token"
+msgstr "E-Mail von Teilnehmer"
 
 msgid "Attribute_1 from token"
 msgstr "Attribute 1 aus Proband"
 
 msgid "Attribute_2 from token"
 msgstr "Attribute 2 aus Proband"
+
+msgid "Name of the survey"
+msgstr "Name der Umfrage"
+
+msgid "Description of the survey"
+msgstr "Beschreibung der Umfrage"
 
 msgid "Name of the survey administrator"
 msgstr "Name des Umfrage-Administrators"
@@ -1991,10 +1998,6 @@ msgstr "E-Mail Adresse des Umfrage-Administrators"
 # D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:85
 msgid "URL of the survey"
 msgstr "URL der Umfrage:"
-
-# D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:93
-msgid "Email from the token"
-msgstr "E-Mail von Teilnehmer"
 
 # D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:313
 msgid "No replacement variable available for this field"
@@ -2244,6 +2247,10 @@ msgstr "Ergebnisse dieser Umfrage ansehen"
 
 msgid "Activate/Edit Tokens for this Survey"
 msgstr "Zugangsschlüssel aktivierenbearbeiten für diese Umfrage"
+
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:677
+msgid "Adding/editing tokens is not possible because this survey is not activated."
+msgstr "Hinzufügen/Bearbeiten von Probanden ist nicht möglich, da die Umfrage nicht aktiviert ist."
 
 msgid "Close this Survey"
 msgstr "Diese Umfrage schließen"
@@ -4250,9 +4257,6 @@ msgstr "Bist du wirklich sicher, dass Du ALLE Zugangsschlüssel entfernen willst
 msgid "Delete all token entries"
 msgstr "Alle Zugangsschlüssel-Einträge löschen."
 
-msgid "Update tokens table with new fields"
-msgstr "Zugangsschlüssel-Tabelle mit neuen Feldern aktualisieren"
-
 msgid "Search"
 msgstr "Suchen"
 
@@ -4965,6 +4969,10 @@ msgstr "Hebräisch"
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:119
 msgid "Hungarian"
 msgstr "Ungarisch"
+
+# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:151
+msgid "Indonesian"
+msgstr "Indonesisch"
 
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:123
 msgid "Italian"
