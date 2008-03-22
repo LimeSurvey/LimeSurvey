@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-03-22 09:00+0100\n"
-"PO-Revision-Date: 2008-03-22 13:05+0100\n"
+"PO-Revision-Date: 2008-03-22 18:54+0100\n"
 "Last-Translator: Darko Saracevic <darko@alterart.ba>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -769,7 +769,7 @@ msgstr "Direktorij sa imenom"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:133
 msgid "already exists - choose another name"
-msgstr "već postoji - odaberite drugo ime"
+msgstr "već postoji - izaberite drugo ime"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:135
 msgid "Unable to create directory"
@@ -7032,7 +7032,7 @@ msgstr "Administrator ankete"
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:315
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:323
 msgid "Choose one of the following answers"
-msgstr "Odaberite jedno"
+msgstr "Izaberite jedan od ponuđenih odgovora"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:336
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:361
