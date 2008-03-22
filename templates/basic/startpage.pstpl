@@ -64,6 +64,10 @@ table.question tr.array2:hover {background-color: #A7A9D1; }
   font-size:1.2em;
   height:1.5em;
 }
+.surveytitle:hover
+{
+ background-color: #F0F0F0;
+}
 .languagechanger
 {
  font-size:1em;

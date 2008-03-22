@@ -75,6 +75,14 @@ body.default
     font-size: 9pt;
     font-family: verdana;
     }
+table.question tr.array1:hover
+    {
+    background-color: #A7A9D1;
+    }
+table.question tr.array2:hover
+    {
+    background-color: #A7A9D1;
+    }
 </style>
 </head>
 <body class='default'>
