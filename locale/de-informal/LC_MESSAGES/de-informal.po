@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German Informal language file\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-03-21 11:35+0100\n"
+"PO-Revision-Date: 2008-03-22 14:25+0100\n"
 "Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -682,6 +682,10 @@ msgstr "Bitte bringe alle Elemente in eine Rangfolge"
 
 msgid "Please check at least one item"
 msgstr "Bitte mache mindestens ein Kreuz"
+
+# D:\web\xampp\htdocs\limesurvey/qanda.php:513
+msgid "If you choose 'Other:' you must provide a description."
+msgstr "Wenn Du 'Sonstiges' wählst, musst Du eine Beschreibung angeben."
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:454
 msgid "You cannot proceed until you enter some text for one or more questions."
@@ -2233,9 +2237,6 @@ msgstr "Ändern der Gruppen Reihenfolge"
 msgid "Export Survey Structure"
 msgstr "Umfrage-Struktur exportieren"
 
-msgid "Export Current Survey"
-msgstr "Diese Umfrage exportieren"
-
 msgid "Set Assessment Rules"
 msgstr "Bewertungsregeln setzen"
 
@@ -2914,6 +2915,14 @@ msgstr "Visualisierung:"
 # D:\xampp\xampp\htdocs\limesurvey/admin/html.php:2178
 msgid "Select the field number you would like to use for your answers:"
 msgstr "Wähle die Feldnummer aus, die Du für Deine Antworten nutzen möchtest:"
+
+# D:\web\xampp\htdocs\limesurvey/admin/htmleditor-functions.php:221
+msgid "Start HTML Editor in a Popup Window"
+msgstr "Starte HTML-Editor im Popup-Fenster"
+
+# D:\web\xampp\htdocs\limesurvey/admin/htmleditor-functions.php:221
+msgid "Give focus to the HTML Editor Popup Window"
+msgstr "Focus auf das HTML Editor Popup -Fenster setzen"
 
 msgid "HTML Editor"
 msgstr "HTML-Editor"
