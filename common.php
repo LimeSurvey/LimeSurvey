@@ -2153,7 +2153,7 @@ function templatereplace($line)
 	{
 		$answreplace=substr($line, strpos($line, "{INSERTANS:"), strpos($line, "}", strpos($line, "{INSERTANS:"))-strpos($line, "{INSERTANS:")+1);
 		$answreplace2=substr($answreplace, 11, strpos($answreplace, "}", strpos($answreplace, "{INSERTANS:"))-11);
-		$answreplace3=retrieve_Answer($answreplace2);
+		$answreplace3=strip_tags(retrieve_Answer($answreplace2));
 		$line=str_replace($answreplace, $answreplace3, $line);
 	}
 	if (strpos($line, "{NAVIGATOR}") !== false) $line=str_replace("{NAVIGATOR}", $navigator, $line);
