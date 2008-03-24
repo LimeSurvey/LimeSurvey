@@ -68,8 +68,9 @@ HOW TO UPGRADE from a LimeSurvey 1.70  or 1.70+ version to the latest 1.70+
 Thank you to everyone who helped with this new release!
 
 
-Changes from 1.70+ Revision 4470 to 4551 (2008/03/24)
+Changes from 1.70+ Revision 4470 to 4553 (2008/03/24)
 
+Added notice in config.php about config-defaults.php (el-matador-69)
 Fixed #1825: some missing upgrade instructions for 1.70+ upgrades
 Fixed #1828: User unable to change password. A user is now able to modify his
 own information (name and password whatever his permissions). He is also able

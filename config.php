@@ -13,6 +13,15 @@
 * $Id: config-defaults.php 4334 2008-02-25 13:21:10Z c_schmitz $
 */
 
+/* IMPORTANT NOTICE
+*  With LimeSurvey v1.70+ the configuration of LimeSurvey was simplified,
+*  Now config.php only contains the basic required settings.
+*  Some optional settings are also set by default in config-defaults.php.
+*  If you want to change an optional paramter, DON'T change values in config-defaults.php!!!
+*  Just copy the parameter into your config.php-file and adjust the value!
+*  All settings in config.php overwrite the default values from config-defaults.php
+*/
+
 
 // Basic Setup
 
