@@ -1,0 +1,46 @@
+diff -ruNp old/common.php new/common.php
+--- old/common.php	2008-03-21 23:48:35.000000000 +0100
++++ new/common.php	2008-03-22 21:06:24.000000000 +0100
+@@ -172,7 +172,7 @@ If (!$dbexistsbutempty && $sourcefrom=='
+ 
+     if (is_dir($homedir."/install") && $debug<2)
+     {
+-     Die ("<br />Everything is fine - you just forgot to delete or rename your LimeSurvey installation directory (/admin/install). <br />Please do so since it may be a security risk.");
++     Die ("<br />Everything is fine - you just have to delete or rename your LimeSurvey installation directory (".$rootdir."/admin/install). <br />Please do so since it may be a security risk.");
+     }
+ 
+ }
+diff -ruNp old/config.php new/config.php
+--- old/config.php	2008-03-21 23:48:35.000000000 +0100
++++ new/config.php	2008-03-22 21:18:47.000000000 +0100
+@@ -13,14 +13,16 @@
+ * $Id: config-defaults.php 4334 2008-02-25 13:21:10Z c_schmitz $
+ */
+ 
++// Get variables set by dbconfig-common
++require_once('/etc/limesurvey/dbconfig.php');
+ 
+ // Basic Setup
+ 
+-$databasetype       =   "mysql";       // ADOdb database driver - valid values are mysql, odbc_mssql or postgres
+-$databaselocation   =   "localhost";   // Network location of your Database - for odbc_mssql use the mssql servername, not localhost or IP
+-$databasename       =   "limesurvey";  // The name of the database that we will create
+-$databaseuser       =   "root";        // The name of a user with rights to create db (or if db already exists, then rights within that db)
+-$databasepass       =   "";            // Password of db user
++$databasetype       =   $dbtype;       // ADOdb database driver - valid values are mysql, odbc_mssql or postgres
++$databaselocation   =   $dbserver;   // Network location of your Database - for odbc_mssql use the mssql servername, not localhost or IP
++$databasename       =   $dbname;  // The name of the database that we will create
++$databaseuser       =   $dbuser;        // The name of a user with rights to create db (or if db already exists, then rights within that db)
++$databasepass       =   $dbpass;            // Password of db user
+ $dbprefix           =   "lime_";       // A global prefix that can be added to all LimeSurvey tables. Use this if you are sharing
+                                        // a database with other applications. Suggested prefix is "lime_"
+ 
+@@ -28,7 +30,7 @@ $dbprefix           =   "lime_";       /
+ $rooturl            =   "http://{$_SERVER['SERVER_NAME']}/limesurvey"; //The root web url for your limesurvey installation.
+ $relativeurl        =   "/limesurvey"; // the url relative to you DocumentRoot where is installed LimeSurvey. Usually same as $rooturl without http://{$_SERVER['SERVER_NAME']}. Used by Fcked Filemanager
+ 
+-$rootdir            =   dirname(__FILE__); // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this setting.
++$rootdir            =   "/usr/share/limesurvey"; // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this setting.
+                                            // If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir="C:\Inetpub\wwwroot\limesurvey"!
+                                            // Some IIS installations also require to use forward slashes instead of backslashes, e.g.  $rootDir="C:/Inetpub/wwwroot/limesurvey"!
+                                           // If you use OS/2 this must be the complete rootdir with FORWARD slashes e.g.: $rootDir="c:/limesurvey";!

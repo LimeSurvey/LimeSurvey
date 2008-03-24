@@ -1,0 +1,4 @@
+etc/limesurvey
+var/lib/limesurvey/tmp
+var/lib/limesurvey/upload
+usr/share/doc/limesurvey

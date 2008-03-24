@@ -1,0 +1,5 @@
+etc/limesurvey/config.php            usr/share/limesurvey/config.php
+etc/limesurvey/config-defaults.php   usr/share/limesurvey/config-defaults.php
+etc/limesurvey/config-ldap.php       usr/share/limesurvey/config-ldap.php
+var/lib/limesurvey/templates         usr/share/limesurvey/templates
+

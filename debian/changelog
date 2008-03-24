@@ -1,0 +1,20 @@
+limesurvey (1.70+build4530ubuntu1~ppa1) hardy; urgency=low
+  
+  * updated from upstream to build 4530
+
+ -- Nicolas Barcet <nicolas.barcet@canonical.com>  Mon, 24 Mar 2008 01:19:18 +0100
+
+
+limesurvey (1.70+build4523ubuntu1~ppa3) hardy; urgency=low
+ 
+  * fix tmp problem
+  * added dependancy for ldap and gd
+ 
+ -- Nicolas Barcet <nicolas.barcet@canonical.com>  Sun, 23 Mar 2008 09:35:19 +0100
+
+
+limesurvey (1.70+build4523ubuntu1~ppa2) hardy; urgency=low
+
+  * Initial package
+
+ -- Nicolas Barcet <nicolas.barcet@canonical.com>  Fri, 21 Mar 2008 23:59:58 +0100

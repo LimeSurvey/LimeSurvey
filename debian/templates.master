@@ -1,0 +1,5 @@
+Template: limesurvey/webserver
+Type: multiselect
+Choices: apache, apache-ssl, apache-perl, apache2
+Default: apache2
+_Description: Web server(s) that should be configured automatically:

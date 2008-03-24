@@ -1,0 +1,236 @@
+# Catalan translation of drupal
+# Copyright (c) 2004 Software in the Public Interest, Inc.
+# This file is distributed under the same license as the drupal package.
+# Josep Monés i Teixidor <jmones@puntbarra.com>, 2004.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: drupal\n"
+"Report-Msgid-Bugs-To: luigi@debian.org\n"
+"POT-Creation-Date: 2007-03-06 14:23+0100\n"
+"PO-Revision-Date: 2005-03-21 11:09+0100\n"
+"Last-Translator: Sergio Talens-Oliag <sto@debian.org>\n"
+"Language-Team: Catalan <debian-l10n-catalan@lists.debian.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#  Type: multiselect
+#  Description
+#. Type: multiselect
+#. Description
+#: ../templates.master:1001
+#, fuzzy
+msgid "Web server(s) that should be configured automatically:"
+msgstr "Servidor(s) web que han de ser configurats automàticament"
+
+#  Type: boolean
+#  Description
+#~ msgid "Automatically create Drupal database?"
+#~ msgstr "Voleu crear automàticament una base de dades del Drupal?"
+
+#  Type: boolean
+#  Description
+#~ msgid ""
+#~ "Drupal needs access to a database, along with initialized data structures "
+#~ "in order to function properly. This can be created automatically by this "
+#~ "package, for MySQL or PostgreSQL databases."
+#~ msgstr ""
+#~ "Al Drupal li cal una base de dades configurada amb estructures de dades "
+#~ "inicialitzades per a funcionar correctament. Aixó pot ser creat "
+#~ "automàticament per aquest paquet per a bases de dades MySQL o PostgreSQL."
+
+#  Type: boolean
+#  Description
+#~ msgid ""
+#~ "Automatically creating the database does not make sense if a Drupal "
+#~ "database already exists or if no database server has been setup when "
+#~ "Drupal is installed."
+#~ msgstr ""
+#~ "Crear automàticament la base de dades no te trellat si ja existeix una "
+#~ "base de dades del Drupal o si no s'ha configurat cap servidor de bases de "
+#~ "dades quan s'ha instal.lat el Drupal."
+
+#  Type: select
+#  Description
+#~ msgid "Database engine to be used with Drupal"
+#~ msgstr "Motor de base de dades a fer servir amb el Drupal"
+
+#  Type: string
+#  Description
+#~ msgid "Database server for Drupal's database"
+#~ msgstr "Servidor de bases de dades per a la base de dades del Drupal"
+
+#  Type: string
+#  Description
+#~ msgid "Database server administrator user name on host ${host}"
+#~ msgstr ""
+#~ "Nom d'usuari de l'administrador del servidor de base de dades al equip "
+#~ "${host}"
+
+#  Type: password
+#  Description
+#~ msgid "Password for database server administrator ${user} on host ${host}"
+#~ msgstr ""
+#~ "Contrasenya per a l'administrador del servidor de base de dades ${user} "
+#~ "al equip ${host}"
+
+#  Type: password
+#  Description
+#~ msgid "The answer will not be stored anywhere permanently."
+#~ msgstr "La resposta no es guardarà en cap lloc permanentment."
+
+#  Type: string
+#  Description
+#~ msgid "Drupal database owner username"
+#~ msgstr "Nom d'usuari del propietari de la base de dades del Drupal"
+
+#  Type: string
+#  Description
+#~ msgid ""
+#~ "This username will be used by Drupal to connect to the database server."
+#~ msgstr ""
+#~ "Aquest nom d'usuari serà emprat per el Drupal per a conectar amb el "
+#~ "servidor de bases de dades."
+
+#~ msgid "Drupal database owner password"
+#~ msgstr "Contrasenya del propietari de la base de dades del Drupal"
+
+#  Type: password
+#  Description
+#~ msgid ""
+#~ "If no password is specified here, a random password will be generated."
+#~ msgstr "Si no es tria cap contrasenya ací, es generarà una aleatòriament."
+
+#  Type: string
+#  Description
+#~ msgid "Drupal database name"
+#~ msgstr "Nom de la base de dades del Drupal"
+
+#  Type: string
+#  Description
+#, fuzzy
+#~ msgid "Drupal Base Url"
+#~ msgstr "Nom de la base de dades del Drupal"
+
+#  Type: boolean
+#  Description
+#~ msgid "Remove Drupal database when the package is removed?"
+#~ msgstr ""
+#~ "Eliminar les bases de dades del Drupal quan el paquet siga eliminat?"
+
+#  Type: boolean
+#  Description
+#~ msgid "Remove former database backups when the package is removed?"
+#~ msgstr ""
+#~ "Eliminar les còpies de les bases de dades anteriors quan el paquet siga "
+#~ "eliminat?"
+
+#  Type: boolean
+#  Description
+#~ msgid ""
+#~ "These backups are stored in /var/lib/drupal/backups. This will not remove "
+#~ "the current database from the DBMS."
+#~ msgstr ""
+#~ "Les còpies de seguretat es guarden a /var/lib/drupal/backups. Aixó no "
+#~ "eliminarà la base de dades actual del sistema de gestió de bases de dades."
+
+#, fuzzy
+#~ msgid "Database update neccesary. Continue?"
+#~ msgstr "Executar guió d'actualització de la base de dades?"
+
+#  Type: note
+#  Description
+#~ msgid "User creation failed"
+#~ msgstr "Ha fallat la creació de l'usuari"
+
+#~ msgid "Attempt to modify config file ${conffile} failed"
+#~ msgstr ""
+#~ "Va fallar l'intent de modificar el fitxer de configuració ${conffile}"
+
+#  Type: note
+#  Description
+#~ msgid "Database creation failed"
+#~ msgstr "Ha fallat la creació de la base de dades"
+
+#  Type: note
+#  Description
+#~ msgid "Database initialization failed"
+#~ msgstr "Ha fallat la inicialització de la base de dades"
+
+#  Type: note
+#  Description
+#~ msgid "Database removal failed"
+#~ msgstr "Ha fallat l'eliminació de la base de dades"
+
+#~ msgid "Script output:"
+#~ msgstr "Eixida del guió:"
+
+#~ msgid "${result}"
+#~ msgstr "${result}"
+
+#~ msgid "Run database update script?"
+#~ msgstr "Executar guió d'actualització de la base de dades?"
+
+#  Type: boolean
+#  Description
+#~ msgid ""
+#~ "If you are upgrading Drupal from an older upstream version, the database "
+#~ "structure needs to be updated. This package can perform this task "
+#~ "automatically."
+#~ msgstr ""
+#~ "Si està actualitzant Drupal des de una versió original antiga es necesari "
+#~ "actualitzar l'estructura de la base de dades. Aquest paquet pot fer-ho "
+#~ "automàticament per vosté."
+
+#~ msgid ""
+#~ "A manual update procedure is available by pointing a web browser to "
+#~ "<http://$SITE/update.php>."
+#~ msgstr ""
+#~ "Hi ha un procedimet d'actualització manual disponible accedint a la "
+#~ "adreça <http://$SITE/update.php> amb un navegador."
+
+#  Type: boolean
+#  Description
+#~ msgid "The database will be backed up to prevent data loss."
+#~ msgstr ""
+#~ "Es farà una còpia de seguretat de la base de dades per a prevenir perdues "
+#~ "d'informació."
+
+#  Type: note
+#  Description
+#~ msgid "Automatic database update failed"
+#~ msgstr "Ha fallat l'actualització automàtica de la base de dades"
+
+#  Type: note
+#  Description
+#~ msgid "The automatic update script failed to update the database."
+#~ msgstr ""
+#~ "El guió d'actualització automàtica no ha actualitzat la base de dades."
+
+#  Type: note
+#  Description
+#~ msgid "Automatic update script can not be run"
+#~ msgstr "El guió d'actualització automàtica no es pot executar"
+
+#  Type: note
+#  Description
+#~ msgid ""
+#~ "Configuration files of a Drupal package ${oldversion} have been found, "
+#~ "but the package itself has been removed. Therefore, it is not possible to "
+#~ "run the automatic update script."
+#~ msgstr ""
+#~ "S'han trobat fitxers de configuració de Drupal ${old_version}, però el "
+#~ "paquet ha estat el.liminat. Així que no es pot executar el guió "
+#~ "d'actualització automàtica."
+
+#  Type: note
+#  Description
+#~ msgid ""
+#~ "Please run it by hand after the package has been successfully installed. "
+#~ "Either point your web browser to ${site_root}/update.php or run /usr/"
+#~ "share/drupal/scripts/debian-update.php from a shell."
+#~ msgstr ""
+#~ "Per favor executa-ho manualment després que el paquet estiga correctament "
+#~ "instal.lat. Apunteu amb el vostre navegador a ${site_root}/update.php o "
+#~ "executa /usr/share/drupal/FIXME des d'una shell."

@@ -1,0 +1,13 @@
+--- old/config-defaults.php	2008-03-23 08:51:32.000000000 +0100
++++ new/config-defaults.php	2008-03-23 08:38:23.000000000 +0100
+@@ -257,8 +257,8 @@ require_once(dirname(__FILE__).'/config.
+     $tempurl        =   "$rooturl/tmp";
+     $imagefiles     =   "$rooturl/images"; //Location of button bar files for admin script
+     $homedir        =   "$rootdir/admin"; // The physical disk location of the admin scripts
+-    $publicdir      =   "$rootdir";       // The physical disk location of the public scripts
+-    $tempdir        =   "$rootdir/tmp";   // The physical location where LimeSurvey can store temporary files
++    $publicdir      =   "/var/lib/limesurvey";       // The physical disk location of the public scripts
++    $tempdir        =   "/var/lib/limesurvey/tmp";   // The physical location where LimeSurvey can store temporary files
+                                           // Note: For OS/2 the $tempdir may need to be defined as an actual directory
+                                           // example: "x:/limesurvey/tmp". We don't know why.
+ 

@@ -1,0 +1,105 @@
+This package was debianized by nijaba <nick.barcet@canonical.com> 
+Sat, 22 Mar 2008 00:24:37 +0100
+
+It was downloaded from: http://www.limesurvey.org/
+
+Upstream Authors: The LimeSurvey Project Team
+ Jason Cleeland, Carsten Schmitz, Thibault Le Meur, Josef Prandstetter,
+ David Olivier, Gustavo San Roman, Sébastien Gaugry, Esteban Adrián Pérez,
+ Gasper Koren, Yeung Kai Sun, Shawn Wales, Ronald Leenes, Mario Marani,
+ Darrel O'Pry, Marco Ermini, Patrick McKnight, Chris Wessells, Johannes Kutsam,
+ Karyl Stein, Arjen Gideonse, Nikolay Tsanov, Thomas Lee, Liang Zhao,
+ Katarina Pavic, Mikkel Skovgaard Sørensen, Rolf Njor Jensen, Johan Geertsma,
+ Ronald Leenes, Peter De Berdt, Patrick Drews, Peter Sereinigg,
+ Artemis Mendrinos, David Selmeczi, Gabriele Carioli, Masaru Ryumae,
+ Odd-Jarle Kristoffersen, Eirik Sunde, Rosaura Gazzola, Job Vieira Lúcio,
+ Bogdan Anastasiei, Alexei G. Tchernov, Alexander Shilov, Gasper Koren,
+ Luis M. Martinez, Juan Rafael Fernández, Jose Luis Ramirez, Björn Mildh,
+ Niklas Andersson, Vinh Ngo and Mitchell Butler.
+
+Copyright:
+        Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+	All rights reserved.
+
+License:
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 or later of the License.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License with
+ the Debian GNU/Linux distribution in file /usr/share/common-licenses/GPL;
+ if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth
+ Floor, Boston, MA 02110-1301, USA.
+
+ On Debian systems, the complete text of the GNU General Public
+ License, version 2, can be found in /usr/share/common-licenses/GPL-2.
+
+ LimeSurvey also includes or is derivative of works distributed under the 
+ following copyright notices:
+
+	PHPSurveyor
+	----
+	Copyright:  Jason Cleeland, 2003
+	License:        GNU General Public License (GPL V2 or later)
+
+	ADOdb
+	----
+	Copyright:  John Lim, 2004
+	License:        GNU Lesser General Public License (LGPL)
+
+	PHP-gettext
+	----
+	Copyright:  Danilo Segan, 2003, 2006
+	License:        GNU General Public License (GPL V2 or later)
+
+	DHTML Calendar Widget
+	----
+	Copyright:      Mihai Bazon, 2002-2005
+	License:        GNU Lesser General Public License (LGPL)
+
+	Slider
+	----
+	Copyright:  Erik Arvidsson, 1999 - 2002
+	License:    GNU General Public License
+
+	SHA256 static class
+	----
+	Copyright:  Developer's Network (2005)
+	Author: feyd _at_ devnetwork .dot. net
+	License:        GNU Lesser General Public License (LGPL)
+
+	tabPANE
+	----
+	Copyright:  Emil A Eklund (2004) http://webfx.eae.net
+	License:        Apache Software License 2.0
+
+	PEAR
+	----
+	Copyright:      1997-2004 The PHP Group
+	License:        PHP license
+
+	phpMailer
+	----
+	Copyright:      2001 - 2003  Brent R. Matzelle
+	License:        GNU Lesser General Public License (LGPL)
+
+	Sanitize Library
+	---
+	Copyright:  2002,2003 Free Software Foundation
+	License:        GNU General Public License (GPL)
+
+	TCPDF Class
+	---
+	Copyright: 2006 Nicola Asuni
+	License: GNU Lesser General Public License (LGPL)
+
+The Ubuntu packaging:
+        Copyright (C) 2008 by nijaba <nick.barcet@canonical.com>
+        released under GNU/GPL License v2 
+
+

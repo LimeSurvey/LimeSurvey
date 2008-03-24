@@ -1,0 +1,172 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: drupal\n"
+"Report-Msgid-Bugs-To: luigi@debian.org\n"
+"POT-Creation-Date: 2007-03-06 14:23+0100\n"
+"PO-Revision-Date: 2005-05-19 21:41+0200\n"
+"Last-Translator: Gleydson Mazioli da Silva <gleydson@debian.org>\n"
+"Language-Team: Brazilian Portuguese <debian-l10n-portuguese@lists.debian."
+"org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: multiselect
+#. Description
+#: ../templates.master:1001
+#, fuzzy
+msgid "Web server(s) that should be configured automatically:"
+msgstr "O servidor Web que deverá ser configurado automaticamente"
+
+#~ msgid "Automatically create Drupal database?"
+#~ msgstr "Criar automaticamente o banco de dados do Drupal?"
+
+#~ msgid ""
+#~ "Drupal needs access to a database, along with initialized data structures "
+#~ "in order to function properly. This can be created automatically by this "
+#~ "package, for MySQL or PostgreSQL databases."
+#~ msgstr ""
+#~ "O Drupal precisa ter acesso a um banco de dados e também as estruturas de "
+#~ "dados já inicializadas para funcionar adequadamente. Isto poderá ser "
+#~ "criado automaticamente por este pacote, para bases de dados MySQL ou "
+#~ "PostgreSQL."
+
+#~ msgid ""
+#~ "Automatically creating the database does not make sense if a Drupal "
+#~ "database already exists or if no database server has been setup when "
+#~ "Drupal is installed."
+#~ msgstr ""
+#~ "A criação automática do banco de dados não faz sentido se um banco de "
+#~ "dados drupal já existe ou se um servidor de banco de dados foi "
+#~ "configurado para ser usado pelo drupal após a instalação."
+
+#~ msgid "Database engine to be used with Drupal"
+#~ msgstr "Tipo de banco de dados que será usado com o Drupal"
+
+#~ msgid "Database server for Drupal's database"
+#~ msgstr "Servidor de banco de dados do banco de dados do Drupal"
+
+#~ msgid "Database server administrator user name on host ${host}"
+#~ msgstr "Nome do administrador do banco de dados na máquina ${host}"
+
+#~ msgid "Password for database server administrator ${user} on host ${host}"
+#~ msgstr ""
+#~ "Senha para o banco de dados do administrador ${user} na máquina ${host}"
+
+#~ msgid "The answer will not be stored anywhere permanently."
+#~ msgstr "A resposta não será armazenada em qualquer lugar permanentemente."
+
+#~ msgid "Drupal database owner username"
+#~ msgstr "Nome do dono da base de dados do Drupal"
+
+#~ msgid ""
+#~ "This username will be used by Drupal to connect to the database server."
+#~ msgstr ""
+#~ "Este nome de usuário será usado pelo Drupal para se conectar ao servidor "
+#~ "dobanco de dados."
+
+#~ msgid "Drupal database owner password"
+#~ msgstr "Senha do dono da base de dados do Drupal"
+
+#~ msgid ""
+#~ "If no password is specified here, a random password will be generated."
+#~ msgstr ""
+#~ "Caso nenhuma senha seja especificada aqui, uma senha qualquer será gerada."
+
+#~ msgid "Drupal database name"
+#~ msgstr "Nome da base de dados do Drupal"
+
+#, fuzzy
+#~ msgid "Drupal Base Url"
+#~ msgstr "Nome da base de dados do Drupal"
+
+#~ msgid "Remove Drupal database when the package is removed?"
+#~ msgstr "Remover a base de dados do Drupal quando o pacote for removido?"
+
+#~ msgid "Remove former database backups when the package is removed?"
+#~ msgstr "Remover os backups da base de dados quando o pacote for removido?"
+
+#~ msgid ""
+#~ "These backups are stored in /var/lib/drupal/backups. This will not remove "
+#~ "the current database from the DBMS."
+#~ msgstr ""
+#~ "Estes backups estão armazenados em /var/lib/drupal/backups. Isto não "
+#~ "removerá o banco de dados atual do DBMS."
+
+#, fuzzy
+#~ msgid "Database update neccesary. Continue?"
+#~ msgstr "Executar o script de atualização do banco de dados?"
+
+#~ msgid "User creation failed"
+#~ msgstr "Ocorreu uma falha durante a criação do usuário"
+
+#~ msgid "Attempt to modify config file ${conffile} failed"
+#~ msgstr ""
+#~ "Falha na tentativa de modificar o arquivo de configuração ${conffile}"
+
+#~ msgid "Database creation failed"
+#~ msgstr "Falha na criação do banco de dados"
+
+#~ msgid "Database initialization failed"
+#~ msgstr "Falha na inicialização do banco de dados"
+
+#~ msgid "Database removal failed"
+#~ msgstr "Falha na remoção da base de dados"
+
+#~ msgid "Script output:"
+#~ msgstr "Saida do script:"
+
+#~ msgid "${result}"
+#~ msgstr "${result}"
+
+#~ msgid "Run database update script?"
+#~ msgstr "Executar o script de atualização do banco de dados?"
+
+#~ msgid ""
+#~ "If you are upgrading Drupal from an older upstream version, the database "
+#~ "structure needs to be updated. This package can perform this task "
+#~ "automatically."
+#~ msgstr ""
+#~ "Se estiver atualizando o Drupal de uma versão upstream antiga, a "
+#~ "estrutura do banco de dados precisará ser atualizada. Este pacote poderá "
+#~ "fazer esta tarefa automaticamente."
+
+#~ msgid ""
+#~ "A manual update procedure is available by pointing a web browser to "
+#~ "<http://$SITE/update.php>."
+#~ msgstr ""
+#~ "Um procedimento de atualização manual está disponível apontando seu "
+#~ "navegadorweb para <http://$SITE/update.php>."
+
+#~ msgid "The database will be backed up to prevent data loss."
+#~ msgstr ""
+#~ "Será feito um backup do banco de dados para se evitar uma perda de dados."
+
+#~ msgid "Automatic database update failed"
+#~ msgstr "Falha na atualização automática do banco de dados"
+
+#~ msgid "The automatic update script failed to update the database."
+#~ msgstr ""
+#~ "O script de atualização automática falhou ao tentar atualizar o banco de "
+#~ "dados."
+
+#~ msgid "Automatic update script can not be run"
+#~ msgstr "O script de atualização automática não pode ser executado"
+
+#~ msgid ""
+#~ "Configuration files of a Drupal package ${oldversion} have been found, "
+#~ "but the package itself has been removed. Therefore, it is not possible to "
+#~ "run the automatic update script."
+#~ msgstr ""
+#~ "Foram emcontrados arquivos de configuração do pacote Drupal "
+#~ "${oldversion}, mas o pacote foi removido. No entanto, é possível executar "
+#~ "o script automático de atualização."
+
+#~ msgid ""
+#~ "Please run it by hand after the package has been successfully installed. "
+#~ "Either point your web browser to ${site_root}/update.php or run /usr/"
+#~ "share/drupal/scripts/debian-update.php from a shell."
+#~ msgstr ""
+#~ "Por favor execute manualmente após o pacote ser instalado com sucesso. Ou "
+#~ "apontando seu navegador para ${site_root}/update.php ou executando /usr/"
+#~ "share/drupal/scripts/debian-update.php a partir de um shell."
