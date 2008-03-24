@@ -2048,34 +2048,9 @@ function templatereplace($line)
 	if (stripos ($line,"</head>"))
 	{
 		$line=str_ireplace("</head>",
-		"<script type=\"text/javascript\"><!-- \n"
-		."var DOM1;\n"
-		."window.onload=function() {\n"
-		."  DOM1 = (typeof document.getElementsByTagName!='undefined');\n"
-		."  if (typeof checkconditions!='undefined') checkconditions();\n"
-		."  if (typeof template_onload!='undefined') template_onload();\n"
-		."}\n"
-        ."Array.prototype.push = function() {\n" 
-        ."    var n = this.length >>> 0;\n" 
-        ."    for (var i = 0; i < arguments.length; i++) {\n" 
-        ."        this[n] = arguments[i];\n" 
-        ."        n = n + 1 >>> 0;\n" 
-        ."    }\n" 
-        ."    this.length = n;\n" 
-        ."    return n;\n" 
-        ."};\n" 
-        ."Array.prototype.pop = function() {\n" 
-        ."    var n = this.length >>> 0, value;\n" 
-        ."    if (n) {\n" 
-        ."        value = this[--n];\n" 
-        ."        delete this[n];\n" 
-        ."    }\n" 
-        ."    this.length = n;\n" 
-        ."    return value;\n" 
-        ."};\n" 
-		." --></script>\n"
-		."</head>"
-		,$line);
+			"<script type=\"text/javascript\" src=\"scripts/surveyRuntime.js\">\n"
+			."</script>\n"
+			."</head>", $line);
 	}
 
 
