@@ -1354,6 +1354,7 @@ if (isset($summary) && $summary)
 			$qqid=$fielddata['qid'];
 			$qanswer=$fielddata['aid'];
             $qtype=$fielddata['type'];
+            $qastring=$fielddata['question'];
 			$rqid=$qqid;
 			$nquery = "SELECT title, type, question, qid, lid, lid1, other FROM ".db_table_name("questions")." WHERE qid='{$rqid}' AND language='{$language}'";
 			$nresult = db_execute_num($nquery) or die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
@@ -1485,7 +1486,9 @@ if (isset($summary) && $summary)
                 {
                     $alist[]=array($frow['code'], $frow['title']);
                 }
-                $qtitle = $qtitle." (".$qanswer.")";
+                $qtitle = $qtitle." [".$qanswer."]";
+                // $qtitle = $qtitle." (".$qastring.")";
+                $qquestion  = $qastring;
                 break;
 				default:
 				$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qqid' AND language='{$language}' ORDER BY sortorder, answer";
