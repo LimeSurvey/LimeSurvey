@@ -633,7 +633,7 @@ if (isset($grouparray) && $grouparray)
         }
     }
     // CONDITIONS is DONE
-}
+
 
 if (isset($skippedlanguages))
 {
