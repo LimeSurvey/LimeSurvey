@@ -1471,24 +1471,42 @@ if (isset($summary) && $summary)
 				}
 				break;
                 case "1":
+                $qidattributes=getQuestionAttributes($qqid);
                 if (substr($rt,-1,1) == 0)
                 {
                     // Label 1
                     $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND language='{$language}' ORDER BY sortorder, code";
+                    if ($dsheaderA=arraySearchByKey("dualscale_headerA", $qidattributes, "attribute", 1))
+                    {
+                        $labelheader= $dsheaderA['value'];
+                    }
+                    else
+                    {
+                        $labelheader ='';
+                    }
+                    $labelno = "Label 1";
                 }
                 else 
                 {
                     // Label 2
                     $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid1}' AND language='{$language}' ORDER BY sortorder, code";
+                    if ($dsheaderB=arraySearchByKey("dualscale_headerB", $qidattributes, "attribute", 1))
+                    {
+                        $labelheader= $dsheaderB['value'];
+                    }
+                    else
+                    {
+                        $labelheader ='';
+                    }
+                    $labelno = "Label 2";
                 }
                 $fresult = db_execute_assoc($fquery);
                 while ($frow=$fresult->FetchRow())
                 {
                     $alist[]=array($frow['code'], $frow['title']);
                 }
-                $qtitle = $qtitle." [".$qanswer."]";
-                // $qtitle = $qtitle." (".$qastring.")";
-                $qquestion  = $qastring;
+                $qtitle = $qtitle." [".$qanswer."][".$labelno."]";
+                $qquestion  = $qastring . "[" .$labelheader. "]";
                 break;
 				default:
 				$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qqid' AND language='{$language}' ORDER BY sortorder, answer";
