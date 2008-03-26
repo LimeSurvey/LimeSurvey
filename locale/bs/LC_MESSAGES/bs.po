@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-03-22 09:00+0100\n"
-"PO-Revision-Date: 2008-03-22 18:54+0100\n"
+"PO-Revision-Date: 2008-03-26 11:18+0100\n"
 "Last-Translator: Darko Saracevic <darko@alterart.ba>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -4043,7 +4043,7 @@ msgstr "Anketa je aktivirana. Tabela rezultata je uspješno kreirana."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:534
 msgid "This survey allows public registration. A token table must also be created."
-msgstr "Ova anketa dozvoljava javnu rgistraciju. Tabela tokena mora biti kreirana."
+msgstr "Ova anketa dozvoljava javnu registraciju. Tabela tokena mora biti kreirana."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:536
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:350
