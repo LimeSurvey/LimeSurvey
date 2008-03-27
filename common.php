@@ -1566,11 +1566,14 @@ function getextendedanswer($fieldcode, $value, $format='')
 	// Performance Improvement	: 36%
 	// Optimized By				: swales
 
-	global $dbprefix, $surveyid, $connect, $clang;
+	global $dbprefix, $surveyid, $connect, $clang, $action;
 
 	// use Survey base language if s_lang isn't set in _SESSION (when browsing answers)
 	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
-	if (isset($_SESSION['s_lang'])) $s_lang = $_SESSION['s_lang'];
+	if  (!isset($action) || (isset($action) && $action!='browse') ) 
+    {
+        if (isset($_SESSION['s_lang'])) $s_lang = $_SESSION['s_lang'];  //This one does not work in admin mode when you browse a particular answer
+    }
 
 	//Fieldcode used to determine question, $value used to match against answer code
 	//Returns NULL if question type does not suit

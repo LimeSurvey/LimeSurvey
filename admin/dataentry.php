@@ -26,6 +26,8 @@ $dataentryoutput ='';
 
 include_once("login_check.php");
 
+$language = GetBaseLanguageFromSurveyID($surveyid);
+
 $actsurquery = "SELECT browse_response FROM ".db_table_name("surveys_rights")." WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
 $actsurresult = $connect->Execute($actsurquery) or die($connect->ErrorMsg());
 $actsurrows = $actsurresult->FetchRow();
@@ -1241,6 +1243,11 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 								if ($idrow[$fnames[$i][0]] == $frow['code']) {$dataentryoutput .= " checked";}
 								$dataentryoutput .= " />".$frow['title']."&nbsp;\n";
 							}
+                            //Add 'No Answer'
+                            $dataentryoutput .= "\t\t\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value=''";
+                            if ($idrow[$fnames[$i][0]] == '') {$dataentryoutput .= " checked";}
+                            $dataentryoutput .= " />".$clang->gT("No answer")."&nbsp;\n";
+                            
 							$dataentryoutput .= "\t\t</font></td>\n"
 							."\t</tr>\n";
 							$i++;
