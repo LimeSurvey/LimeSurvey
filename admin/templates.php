@@ -259,6 +259,7 @@ $thissurvey['templatedir']=$templatename;
 $thissurvey['format']="G";
 $thissurvey['url']="http://www.limesurvey.org/";
 $thissurvey['urldescrip']="A URL Description";
+$thissurvey['usecaptcha']="A";
 $percentcomplete=makegraph(6, 10);
 $groupname="Group 1: The first lot of questions";
 $groupdescription="This group description is fairly vacuous, but quite important.";

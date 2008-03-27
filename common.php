@@ -95,6 +95,18 @@ if (eregi($slashlesshome, $slashlesspath) || eregi("dump", $_SERVER['PHP_SELF'])
 } else {
 	$sourcefrom="public";
 }
+
+// Set path for captcha verification.php
+if ($sourcefrom == "admin")
+    {
+        $captchapath='../';
+    }
+    else
+    {
+        $captchapath='';
+    }
+
+
 //BEFORE SESSIONCONTOL BECAUSE OF THE CONNECTION
 //CACHE DATA
 $connect=&ADONewConnection($databasetype);
@@ -1038,12 +1050,9 @@ function getSurveyInfo($surveyid, $languagecode='')
         $thissurvey["email_confirm"]=$thissurvey['surveyls_email_confirm'];
         $thissurvey["email_register_subj"]=$thissurvey['surveyls_email_register_subj'];
         $thissurvey["email_register"]=$thissurvey['surveyls_email_register'];
-		    if (!isset($thissurvey['adminname'])) {$thissurvey['adminname']=$siteadminname;}
-		    if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail']=$siteadminemail;}
-		    if (!isset($thissurvey['urldescrip'])) {$thissurvey['urldescrip']=$thissurvey['url'];}
-        $thissurvey["tokenanswerspersistence"]=$thissurvey['tokenanswerspersistence'];
-        $thissurvey["usecaptcha"]=$thissurvey['usecaptcha'];
-        $thissurvey["htmlemail"]=$thissurvey['htmlemail'];
+	    if (!isset($thissurvey['adminname'])) {$thissurvey['adminname']=$siteadminname;}
+	    if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail']=$siteadminemail;}
+	    if (!isset($thissurvey['urldescrip'])) {$thissurvey['urldescrip']=$thissurvey['url'];}
 	}              
     
     //not sure this should be here... ToDo: Find a better place
@@ -2043,7 +2052,7 @@ function templatereplace($line)
 	global $saved_id;
 	global $totalBoilerplatequestions;
     global $languagechanger;    
-    global $printoutput;
+    global $printoutput, $captchapath;
                      
 	if (stripos ($line,"</head>"))
 	{
@@ -2288,7 +2297,7 @@ function templatereplace($line)
 		$saveform .= "'></td></tr>\n";
         if (function_exists("ImageCreate") && captcha_enabled('saveandloadscreen',$thissurvey['usecaptcha']))
         {
-		    $saveform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='middle'><img src='verification.php' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table></td></tr>\n";
+		    $saveform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='middle'><img src='{$captchapath}verification.php' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table></td></tr>\n";
         }
 		$saveform .= "<tr><td align='right'></td><td></td></tr>\n"
 		. "<tr><td></td><td><input type='submit' name='savesubmit' value='".$clang->gT("Save Now")."'></td></tr>\n"
@@ -2308,7 +2317,7 @@ function templatereplace($line)
 		$loadform .= "' /></td></tr>\n";
         if (function_exists("ImageCreate") && captcha_enabled('saveandloadscreen',$thissurvey['usecaptcha']))
         {
-            $loadform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='middle'><img src='verification.php' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' alt=''/></td></tr></table></td></tr>\n";
+            $loadform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='middle'><img src='{$captchapath}verification.php' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' alt=''/></td></tr></table></td></tr>\n";
         }
 
         
@@ -2351,10 +2360,12 @@ function templatereplace($line)
 		if (isset($_GET['lang'])) $reglang = $_GET['lang'];
 		if (isset($_POST['lang'])) $reglang = $_POST['lang'];
         
+
         if (function_exists("ImageCreate") && captcha_enabled('registrationscreen',$thissurvey['usecaptcha']))
         {
-            $registerform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='middle'><img src='verification.php' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table></td></tr>\n";
+            $registerform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='middle'><img src='{$captchapath}verification.php' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table></td></tr>\n";
         }
+      
 
 		$registerform .= "<tr><td align='right'><input type='hidden' name='lang' value='".$reglang."'></td><td></td></tr>\n";
 		if(isset($thissurvey['attribute1']) && $thissurvey['attribute1'])
