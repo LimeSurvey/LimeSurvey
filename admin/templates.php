@@ -828,10 +828,8 @@ function filetext($templatefile) {
 
 function makegraph($thisstep, $total)
 {
-	global $templatedir, $publicurl, $templatename, $clang;
-	$chart="$publicurl/templates/$templatedir/chart.jpg";
-	if (!is_file($chart)) {$shchart="chart.jpg";}
-	else {$shchart = "$publicurl/templates/$templatedir/chart.jpg";}
+	global $thissurvey, $publicurl, $templatename, $clang;
+	$shchart="$publicurl/templates/{$thissurvey['templatedir']}/chart.jpg";
 	$graph = "<table class='graph' width='100' align='center' cellpadding='2'><tr><td>\n"
 	. "<table width='180' align='center' cellpadding='0' cellspacing='0' border='0' class='innergraph'>\n"
 	. "<tr><td align='right' width='40'>0%&nbsp;</td>\n";
