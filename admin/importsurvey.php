@@ -839,7 +839,10 @@ if (isset($grouparray) && $grouparray) {
                         $questionrowdata['language']=$newlanguage;
                         } 
 					$oldqid=$qid;
-
+                    if (!isset($questionrowdata["lid1"]))
+                    {
+                      $questionrowdata["lid1"]=0; 
+					}
                     // Now we will fix up the label id 
 					$type = $questionrowdata["type"]; //Get the type
 					if ($type == "F" || $type == "H" || $type == "W" || $type == "Z" || $type == "1") 
