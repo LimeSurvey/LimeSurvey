@@ -1478,7 +1478,7 @@ if (isset($summary) && $summary)
                     $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND language='{$language}' ORDER BY sortorder, code";
                     if ($dsheaderA=arraySearchByKey("dualscale_headerA", $qidattributes, "attribute", 1))
                     {
-                        $labelheader= $dsheaderA['value'];
+                        $labelheader= "[".$dsheaderA['value']."]";
                     }
                     else
                     {
@@ -1492,7 +1492,7 @@ if (isset($summary) && $summary)
                     $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid1}' AND language='{$language}' ORDER BY sortorder, code";
                     if ($dsheaderB=arraySearchByKey("dualscale_headerB", $qidattributes, "attribute", 1))
                     {
-                        $labelheader= $dsheaderB['value'];
+                        $labelheader= "[" . $dsheaderB['value'] . "]";
                     }
                     else
                     {
@@ -1506,7 +1506,7 @@ if (isset($summary) && $summary)
                     $alist[]=array($frow['code'], $frow['title']);
                 }
                 $qtitle = $qtitle." [".$qanswer."][".$labelno."]";
-                $qquestion  = $qastring . "[" .$labelheader. "]";
+                $qquestion  = $qastring .$labelheader;
                 break;
 				default:
 				$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qqid' AND language='{$language}' ORDER BY sortorder, answer";
