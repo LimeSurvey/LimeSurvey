@@ -3,9 +3,8 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Norwegian language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-10-02 08:00+0200\n"
-"PO-Revision-Date: 2008-03-13 11:22+0100\n"
-"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
-"Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
+"PO-Revision-Date: 2008-03-27 11:22+0100\n"
+"Last-Translator: Pål Monstad <pal@hkskole.no>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -48,9 +47,8 @@ msgstr "Opprett/rediger grupper"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:81
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1311
-#, fuzzy
 msgid "Show System Summary"
-msgstr "LimeSurvey systemoppsummering"
+msgstr "Vis systemoppsummering"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:244
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:246
@@ -125,9 +123,8 @@ msgstr "Ingen"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:482
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1677
-#, fuzzy
 msgid "Array (Flexible Labels) Dual Scale"
-msgstr "Valgmuligheter (fleksible etiketter)"
+msgstr "Valgmuligheter (fleksible etiketter) dobbel"
 
 msgid "5 Point Choice"
 msgstr "5-poengs vurdering"
@@ -178,9 +175,8 @@ msgstr "Endre språk"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:472
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1667
-#, fuzzy
 msgid "Multiple Numerical Input"
-msgstr "Numerisk"
+msgstr "Numerisk, flere"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:467
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1662
@@ -432,13 +428,13 @@ msgstr "Hent uferdige undersøkelser"
 
 # D:\web\xampp\htdocs\limesurvey/common.php:2194
 msgid "Resume Later"
-msgstr ""
+msgstr "Fullfør senere"
 
 msgid "Thank You!"
 msgstr "Mange takk"
 
 msgid "You have completed answering the questions in this survey."
-msgstr "Du har svart på alle spørsmålene i undersøkelsen."
+msgstr "Du har svart på alle spørsmålene i denne undersøkelsen."
 
 # D:\web\xampp\htdocs\stable_plus/common.php:2006
 msgid "Click on 'Submit' now to complete the process and save your answers."
@@ -485,7 +481,7 @@ msgid "Repeat Password"
 msgstr "Gjenta passord"
 
 msgid "Your Email"
-msgstr "Din e-post"
+msgstr "Din e-postadresse"
 
 msgid "Security Question"
 msgstr "Sikkerhetsspørsmål"
@@ -560,9 +556,8 @@ msgstr "Lokal støtte"
 # D:\web\xampp\htdocs\stable_plus/common.php:2800
 # D:\web\xampp\htdocs\stable_plus/common.php:2805
 msgid "Executing"
-msgstr ""
+msgstr "Utfører"
 
-#, fuzzy
 msgid "Failed! Reason: "
 msgstr "FEIL! Årsak:"
 
@@ -588,9 +583,8 @@ msgstr "Takk"
 msgid "Your survey responses have been recorded."
 msgstr "Dine besvarelser er lagret."
 
-#, fuzzy
 msgid "Click here to print your answers."
-msgstr "Vennligst skriv her:"
+msgstr "Klikk her for å skrive ut besvarelsen."
 
 msgid "Sorry. There is no matching survey."
 msgstr "Beklager, men kunne ikke finne en passende undersøkelse."
@@ -600,9 +594,8 @@ msgstr "Denne undersøkelsen er ikke aktiv. Du kan derfor ikke lagre dine besvar
 
 # D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:156
 # D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:314
-#, fuzzy
 msgid "Date is not valid!"
-msgstr "E-postadressen er ikke gyldig."
+msgstr "Dato er ikke gyldig."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/index.php:69
 msgid "ERROR"
@@ -610,33 +603,28 @@ msgstr "FEIL"
 
 # D:\web\xampp\htdocs\stable_plus/admin/templates.php:106
 # D:\web\xampp\htdocs\stable_plus/admin/templates.php:114
-#, fuzzy
 msgid "We are sorry but you don't have permissions to do this."
-msgstr "Kan hende har du ikke rettigheter."
+msgstr "Beklager men du har ikke rettigheter til å gjøre dette."
 
-#, fuzzy, php-format
 msgid "Please contact %s ( %s ) for further assistance."
-msgstr "for videre assistanse"
+msgstr "Vennligst kontakt %s ( %s ) for videre assistanse."
 
 # D:\web\xampp\htdocs\stable_plus/index.php:52
 msgid "We are sorry but your session has expired."
 msgstr "Vi beklager, men sesjonen har utløpt."
 
 # D:\web\xampp\htdocs\stable_plus/index.php:52
-#, fuzzy
 msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
-msgstr "Enten har du vært inaktiv for lenge, eller det har vært problemer med oppkoblingen din."
+msgstr "Enten har du vært inaktiv for lenge, cookies i nettleseren er slått av, eller det har vært problemer med oppkoblingen din."
 
-#, fuzzy
 msgid "No available surveys"
-msgstr "Ingen passende undersøkelser"
+msgstr "Ingen tilgjengelige undersøkelser"
 
 msgid "You have not provided a survey identification number"
 msgstr "Du har ikke oppgitt et identifikasjonsnummer til undersøkelsen"
 
-#, fuzzy
 msgid "The following surveys are available:"
-msgstr "Følgende undersøkelser må slettes"
+msgstr "Følgende undersøkelser finnes:"
 
 msgid "This survey is no longer available."
 msgstr "Denne undersøkelsen er ikke lenger tilgjengelig."
@@ -700,9 +688,8 @@ msgstr ""
 "\n"
 "{ADMINNAME}"
 
-#, fuzzy
 msgid "Answer Submission for Survey"
-msgstr "Send undersøkelsen."
+msgstr "Send svar på undersøkelse"
 
 msgid "Survey Submitted"
 msgstr "Undersøkelsen er sendt"
@@ -752,7 +739,7 @@ msgstr "Prøv igjen"
 
 # D:\web\xampp\htdocs\limesurvey/index.php:1502
 msgid "Please confirm access to survey by answering the security question below and click continue."
-msgstr ""
+msgstr "Vennligst bekreft tilgang til undersøkelsen ved å først svare på sikkerhetsspørsmålet under."
 
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "Dette er en lukket undersøkelse som krever at du har en nøkkel for at du skal kunne delta."
@@ -760,9 +747,8 @@ msgstr "Dette er en lukket undersøkelse som krever at du har en nøkkel for at 
 msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr "Hvis du har en nøkkel, vennligst oppgi den i feltet under."
 
-#, fuzzy
 msgid "Please confirm the token by answering the security question below and click continue."
-msgstr "Hvis du har en nøkkel, vennligst oppgi den i feltet under."
+msgstr "Vennligst bekreft nøkkelen ved å først besvare sikkerhetsspørsmålet under."
 
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Denne undersøkelsen har enda ingen spørsmål og kan derfor ikke besvares."
@@ -773,14 +759,12 @@ msgstr "forrige"
 msgid "next"
 msgstr "neste"
 
-#, fuzzy
 msgid "Sorry your responses have exceeded a quota on this survey."
-msgstr "Feil: Du må angi en tittel på undersøkelsen"
+msgstr "Beklager, men din besvarelse overskrider tillat svarkvote for denne undersøkelsen."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/vvimport.php:63
-#, fuzzy
 msgid "Survey Name (ID)"
-msgstr "Undersøkelses-ID:"
+msgstr "Navn på undersøkelse (ID)"
 
 msgid "Token ID"
 msgstr "Nøkkel-ID"
@@ -791,16 +775,14 @@ msgstr "Dato sendt"
 msgid "Question"
 msgstr "Spørsmål"
 
-#, fuzzy
 msgid "Your Answer"
-msgstr "Ikke noe svar"
+msgstr "Ditt svar"
 
-#, fuzzy
 msgid "Choose one of the following answers"
-msgstr "Velg kun en av følgende"
+msgstr "Velg ett av alternativene"
 
 msgid "Check any that apply"
-msgstr "Velg alle du er enige i"
+msgstr "Velg alternativene som passer"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:244
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:246
@@ -817,7 +799,7 @@ msgstr "Velg ønsket språk"
 # C:\eclipse\workspace\limesurvey-sourceforge/qanda.php:366
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/printablesurvey.php:253
 msgid "*"
-msgstr ""
+msgstr "*"
 
 msgid "This question must be answered correctly"
 msgstr "Dette spørsmålet må besvares riktig"
@@ -828,9 +810,8 @@ msgstr "Dette spørsmåler er obligatorisk"
 msgid "Please complete all parts"
 msgstr "Vennligst fyll ut alle felter"
 
-#, fuzzy
 msgid "Please check the items"
-msgstr "Kryss av minst ett alternativ"
+msgstr "Kryss av"
 
 msgid "Please rank all items"
 msgstr "Ranger alle alternativer"
@@ -850,55 +831,53 @@ msgstr "Et eller flere spørsmål er ikke besvart korrekt. Du kan ikke fortsette
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:621
 msgid "Day"
-msgstr ""
+msgstr "Dag"
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:629
 msgid "Month"
-msgstr ""
+msgstr "Måned"
 
-#, fuzzy
 msgid "Jan"
-msgstr "og"
+msgstr "jan"
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:631
 msgid "Feb"
-msgstr ""
+msgstr "feb"
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:632
 msgid "Mar"
-msgstr ""
+msgstr "mar"
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:633
 msgid "Apr"
-msgstr ""
+msgstr "apr"
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:634
 msgid "May"
-msgstr ""
+msgstr "mai"
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:635
 msgid "Jun"
-msgstr ""
+msgstr "jun"
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:636
 msgid "Jul"
-msgstr ""
+msgstr "jul"
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:637
 msgid "Aug"
-msgstr ""
+msgstr "aug"
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:638
 msgid "Sep"
-msgstr ""
+msgstr "sep"
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:639
 msgid "Oct"
-msgstr ""
+msgstr "okt"
 
-#, fuzzy
 msgid "Nov"
-msgstr "Nei"
+msgstr "nov"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:540
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:850
@@ -907,19 +886,16 @@ msgstr "Nei"
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:235
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1044
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1148
-#, fuzzy
 msgid "Dec"
-msgstr "Slett"
+msgstr "des"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/conditions.php:683
-# C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:656
-#, fuzzy
+# C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:65
 msgid "Year"
-msgstr "Nullstill"
+msgstr "År"
 
-#, fuzzy
 msgid "Please complete all parts of the date"
-msgstr "Vennligst fyll ut alle felter"
+msgstr "Vennligst fyll ut datoen korrekt"
 
 msgid "Format: YYYY-MM-DD"
 msgstr "Datoformat: ÅÅÅÅ-MM-DD"
@@ -933,7 +909,7 @@ msgstr "Vennligst velg"
 # D:\web\xampp\htdocs\stable_plus/qanda.php:706
 # D:\web\xampp\htdocs\stable_plus/qanda.php:930
 msgid "Error: The labelset used for this question is not available in this language."
-msgstr "Feil: Etikettene til dette spørsmålet er ikke på riktig språk"
+msgstr "Feil: Etikettene til dette spørsmålet er ikke på riktig språk."
 
 msgid "Please choose one of the following"
 msgstr "Velg en av følgende"
@@ -974,44 +950,41 @@ msgstr "Legg til en kommentar til svaret her:"
 msgid "Error: This question has no answers."
 msgstr "Feil : Dette spørsmålet har ikke noe svar."
 
-#, fuzzy
 msgid "Only numbers may be entered in these fields"
-msgstr "Dette feltet kan kun inneholde tallverdier"
+msgstr "Disse feltene kan kun inneholde tallverdier"
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:2111
 msgid "Total of all entries must not exceed "
-msgstr ""
+msgstr "Totalverdien av alle felt kan ikke overskride "
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:2115
 msgid "Total of all entries must equal "
-msgstr ""
+msgstr "Totalverdien av alle felter må være lik "
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:2119
 msgid "Total of all entries must be at least "
-msgstr ""
+msgstr "Totalverdien av alle felter må være minst "
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/assessments.php:100
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/assessments.php:119
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:964
-#, fuzzy
 msgid "Total: "
-msgstr "Total"
+msgstr "Total: "
 
-#, fuzzy
 msgid "Remaining: "
-msgstr "Rangering"
+msgstr "Gjenstår: "
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:2157
 # D:\web\xampp\htdocs\limesurvey/qanda.php:2163
 # D:\web\xampp\htdocs\limesurvey/qanda.php:2193
 # D:\web\xampp\htdocs\limesurvey/qanda.php:2202
 msgid "Answer is invalid. The total of all entries should not add up to more than "
-msgstr ""
+msgstr "Svaret er feil. Totalt antall oppføringer skal ikke være mer enn"
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:2174
 # D:\web\xampp\htdocs\limesurvey/qanda.php:2180
 msgid "Answer is invalid. The total of all entries should add up to at least "
-msgstr ""
+msgstr "Svaret er feil. Totalt antall oppføringer skal minst være"
 
 msgid "Only numbers may be entered in this field"
 msgstr "Dette feltet kan kun inneholde tallverdier"
@@ -1019,7 +992,7 @@ msgstr "Dette feltet kan kun inneholde tallverdier"
 # D:\web\xampp\htdocs\stable_plus/qanda.php:2575
 # D:\web\xampp\htdocs\stable_plus/qanda.php:2686
 msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
-msgstr "Feil: Etikettene til dette sørsmålet er ikke tilgjengelige på riktig språk, eller de finnes ikke."
+msgstr "Feil: Etikettene til dette spørsmålet er ikke tilgjengelige på riktig språk, eller de finnes ikke."
 
 msgid "The email you used is not valid. Please try again."
 msgstr "Den oppgitte e-postadressen er ugyldig. Vennligst prøv igjen."
@@ -1134,17 +1107,16 @@ msgstr "Du har ikke lov å importere en gruppe!"
 msgid "You are not allowed to to import a question!"
 msgstr "Du har ikke lov å importere et spørsmål!"
 
-#, fuzzy
 msgid "Security Alert"
-msgstr "Sikkerhetsspørsmål"
+msgstr "Sikkerhetsadvarsel"
 
 # D:\web\xampp\htdocs\limesurvey/admin/access_denied.php:118
 msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
-msgstr ""
+msgstr "Noen kan finne på å bruke din LimeSurvey-sesjon (antatt CSRF-angrep). Hvis du trykker en mistenkelig lenke, vennligst rapporter dette til din systemadministrator."
 
 # D:\web\xampp\htdocs\limesurvey/admin/access_denied.php:123
 msgid "Someone may be trying to use your LimeSurvey session by using dangerous GET requests (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
-msgstr ""
+msgstr "Noen kan finne på å bruke din LimeSurvey-sesjon ved å bruke farlige GET-forespørsler (antatt CSRF-angrep). Hvis du klikket på en mistenkelig lenke, vennligst rapporter dette til din systemadministrator."
 
 # D:\web\xampp\htdocs\stable_plus/admin/access_denied.php:116
 msgid "You are not allowed to perform this operation!"
@@ -1162,14 +1134,12 @@ msgid "This question requires a Labelset, but none is set."
 msgstr "Dette spørsmålet trenger etiketter, men ingen er angitt."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:116
-#, fuzzy
 msgid "This question requires a second Labelset, but none is set."
-msgstr "Dette spørsmålet trenger etiketter, men ingen er angitt."
+msgstr "Dette spørsmålet trenger flere etiketter, men ingen er angitt."
 
 # D:\web\xampp\htdocs\stable_plus/admin/activate.php:117
-#, fuzzy
 msgid "The labelset used in this question does not exists or is missing a translation."
-msgstr "Etikettene brukt i denne undersøkelsen mangler oversettelse."
+msgstr "Etikettene brukt i denne undersøkelsen finnes ikke eller mangler oversettelse."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:169
 msgid "This question has a condition set, however the condition is based on a question that appears after it."
@@ -1180,7 +1150,7 @@ msgstr "Dette spørsmålet har en avhengighet som avhenger av et spørsmål som 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:402
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:452
 msgid "Activate Survey"
-msgstr "Aktiver undersøkelsen"
+msgstr "Aktiver undersøkelse"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/activate.php:199
 msgid "Survey does not pass consistency check"
@@ -1531,24 +1501,23 @@ msgstr "Det finnes ingen slik undersøkelse."
 msgid "Completed"
 msgstr "Fullført"
 
-#, fuzzy
 msgid "Date Started"
-msgstr "Data lagret"
+msgstr "Dato for oppstart"
 
 # D:\web\xampp\htdocs\limesurvey/admin/browse.php:154
 # D:\web\xampp\htdocs\limesurvey/admin/browse.php:379
 msgid "Date Last Action"
-msgstr ""
+msgstr "Dato for siste hendelse"
 
 # D:\web\xampp\htdocs\limesurvey/admin/browse.php:224
 # D:\web\xampp\htdocs\limesurvey/admin/browse.php:436
 msgid "1. scale"
-msgstr ""
+msgstr "1. skala"
 
 # D:\web\xampp\htdocs\limesurvey/admin/browse.php:229
 # D:\web\xampp\htdocs\limesurvey/admin/browse.php:441
 msgid "2. scale"
-msgstr ""
+msgstr "2. skala"
 
 msgid "View Response"
 msgstr "Vis besvarelse"
@@ -1617,7 +1586,7 @@ msgstr "Start fra:"
 # D:\web\xampp\htdocs\stable_plus/admin/browse.php:548
 # D:\web\xampp\htdocs\stable_plus/admin/statistics.php:630
 msgid "Filter incomplete answers:"
-msgstr "Filtrer ufullstendige svar:"
+msgstr "Filtrer ufullstendige besvarelser:"
 
 # D:\web\xampp\htdocs\stable_plus/admin/browse.php:549
 # D:\web\xampp\htdocs\stable_plus/admin/exportresults.php:139
@@ -1650,7 +1619,6 @@ msgid "full responses"
 msgstr "helt utfylt"
 
 # D:\web\xampp\htdocs\stable_plus/admin/browse.php:631
-#, fuzzy
 msgid "responses not completely filled out"
 msgstr "besvarelser er ikke fullstendig utfylt"
 
@@ -1697,14 +1665,13 @@ msgstr "Vis kun spørsmål {QID} HVIS"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:152
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:311
-#, fuzzy
 msgid "Less than"
-msgstr "Nummer mindre enn"
+msgstr "Mindre enn"
 
 # D:\web\xampp\htdocs\limesurvey/admin/conditions.php:751
 # D:\web\xampp\htdocs\limesurvey/admin/conditions.php:971
 msgid "Less than or Equal to"
-msgstr ""
+msgstr "Mindre enn eller lik"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/conditions.php:545
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/conditions.php:674
@@ -1712,25 +1679,23 @@ msgid "Equals"
 msgstr "Er lik"
 
 # D:\web\xampp\htdocs\stable_plus/admin/stats.php:356
-#, fuzzy
 msgid "Not Equal to"
 msgstr "Ulik"
 
 # D:\web\xampp\htdocs\limesurvey/admin/conditions.php:754
 # D:\web\xampp\htdocs\limesurvey/admin/conditions.php:974
 msgid "Greater than or Equal to"
-msgstr ""
+msgstr "Større enn eller lik"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:148
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:307
-#, fuzzy
 msgid "Greater than"
-msgstr "Nummer større enn"
+msgstr "Større enn"
 
 # D:\web\xampp\htdocs\limesurvey/admin/conditions.php:756
 # D:\web\xampp\htdocs\limesurvey/admin/conditions.php:976
 msgid "Regular Expression"
-msgstr ""
+msgstr "Vanlig uttrykk"
 
 msgid "and"
 msgstr "og"
@@ -1770,11 +1735,11 @@ msgstr "Svar"
 
 # D:\web\xampp\htdocs\limesurvey/admin/conditions.php:978
 msgid "NOTE: If you use a pre-defined answer as your condition, only the equals or not-equal-to conditions apply."
-msgstr ""
+msgstr "Merk: Hvis du bruker et forhåndsdefinert svar som avhengighet, gjelder kun like eller ulike avhengigheter."
 
 # D:\web\xampp\htdocs\limesurvey/admin/conditions.php:983
 msgid "Constant Value or Regular Expression"
-msgstr ""
+msgstr "Konstant verdi eller vanlig uttrykk"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/conditions.php:683
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:656
@@ -1810,9 +1775,8 @@ msgstr "Gruppe kunne ikke slettes"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:193
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:325
-#, fuzzy, php-format
 msgid "Answer could not be added. You must insert a code in the mandatory field (%s)"
-msgstr "Svar kunne ikke legges til. Du må sette inn en kode i det obligatoriske feltet"
+msgstr "Svar kunne ikke legges til. Du må sette inn en kode i det obligatoriske feltet (%s)"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:206
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/database.php:336
@@ -1936,11 +1900,11 @@ msgstr "Standard"
 
 # D:\web\xampp\htdocs\stable_plus/admin/database.php:763
 msgid "Failed to make answer not default"
-msgstr ""
+msgstr "Kunne ikke endre svaret til ikke forhåndsvalgt"
 
 # D:\web\xampp\htdocs\stable_plus/admin/database.php:777
 msgid "Failed to make answer default"
-msgstr "Feil: Kunne ikke sette svar som forhåndssvar"
+msgstr "Feil: Kunne ikke sette svar til forhåndsvalgt"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1679
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:2000
@@ -2393,16 +2357,15 @@ msgstr "Format"
 
 # D:\web\xampp\htdocs\stable_plus/admin/exportresults.php:162
 msgid "Microsoft Word (Latin charset)"
-msgstr "Microsoft Word (tegnsett latin"
+msgstr "Microsoft Word (tegnsett latin)"
 
 # D:\web\xampp\htdocs\stable_plus/admin/exportresults.php:165
-#, fuzzy
 msgid "Microsoft Excel (All charsets)"
-msgstr "Microsoft Excel (tegnsett latin"
+msgstr "Microsoft Excel (alle tegnsett)"
 
 # D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:201
 msgid "CSV File (All charsets)"
-msgstr ""
+msgstr "CSV-fil (alle tegnsett)"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/export.php:165
 msgid "Export Data"
@@ -2499,20 +2462,18 @@ msgstr "Ingen SID er oppgitt. Kan ikke dumpe undersøkelse"
 # D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:82
 # D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:96
 msgid "Firstname from token"
-msgstr ""
+msgstr "Fornavn fra nøkkel"
 
 # D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:83
 # D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:97
 msgid "Lastname from token"
-msgstr ""
+msgstr "Etternavn fra nøkkel"
 
-#, fuzzy
 msgid "Name of the survey"
-msgstr "Ingen passende undersøkelser"
+msgstr "Undersøkelsens navn"
 
-#, fuzzy
 msgid "Description of the survey"
-msgstr "besvarelser til denne undersøkelsen"
+msgstr "Beskrivelse av undersøkelsen"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/export.php:286
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/export.php:442
@@ -2523,9 +2484,9 @@ msgstr "besvarelser til denne undersøkelsen"
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/spss.php:36
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:229
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:489
-#, fuzzy
+
 msgid "Attribute_1 from token"
-msgstr "Attributt 1"
+msgstr "Attributt_1 fra nøkkel"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/export.php:286
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/export.php:442
@@ -2536,47 +2497,46 @@ msgstr "Attributt 1"
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/spss.php:36
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:229
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:489
-#, fuzzy
-msgid "Attribute_2 from token"
-msgstr "Attributt 1"
 
-#, fuzzy
+msgid "Attribute_2 from token"
+msgstr "Attributt_2 fra nøkkel"
+
+
 msgid "Name of the survey administrator"
-msgstr "Administrasjon"
+msgstr "Navn på administrator"
 
 # D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:89
 msgid "Email address of the survey administrator"
-msgstr ""
+msgstr "E-postadresse til administrator"
 
-#, fuzzy
+
 msgid "URL of the survey"
-msgstr "Ingen passende undersøkelser"
+msgstr "URL til undersøkelsen"
 
 # D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:98
 msgid "Email from the token"
-msgstr ""
+msgstr "E-posadresse fra nøkkel"
 
 # D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:387
 msgid "No replacement variable available for this field"
-msgstr ""
+msgstr "Ingen erstatningsvariabel finnes til dete feltet"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/templates.php:577
-#, fuzzy
+
 msgid "Standard Fields"
-msgstr "Standardfiler:"
+msgstr "Standardfelter"
 
 # D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:406
 msgid "Previous Answers Fields"
-msgstr ""
+msgstr "Forrige svarfelt"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:311
-#, fuzzy
-msgid "Some Question have been disabled"
-msgstr "Alle nøkkeloppføringer er slettet"
 
-#, fuzzy
+msgid "Some Question have been disabled"
+msgstr "Noen spørsmål er blitt deaktivert"
+
 msgid "Survey Format is "
-msgstr "Redigere egenskaper til undersøkelsen"
+msgstr "Formatet på undersøkelsen er "
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1591
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1941
@@ -2588,11 +2548,10 @@ msgstr "Alt i ett"
 # D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:436
 # D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:442
 msgid "Only Previous pages answers are available"
-msgstr ""
+msgstr "Kun svar fra forrige side er tilgjengelige"
 
-#, fuzzy
 msgid "Survey mode is set to "
-msgstr "Administrasjon"
+msgstr "Modus på undersøkelse er satt til "
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1588
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1940
@@ -2661,7 +2620,7 @@ msgstr "Velg CSV-fil:"
 # D:\web\xampp\htdocs\limesurvey/admin/labels.php:209
 # D:\web\xampp\htdocs\limesurvey/admin/questionhandling.php:180
 msgid "Convert Resources links ?"
-msgstr ""
+msgstr "Konverter ressurslenker?"
 
 # D:\web\xampp\htdocs\stable_plus/admin/grouphandling.php:102
 msgid "Edit Group"
@@ -2681,7 +2640,7 @@ msgstr "Dato opprettet"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:40
 msgid "Owner"
-msgstr ""
+msgstr "Eier"
 
 # D:\web\xampp\htdocs\stable_plus/admin/html.php:29
 msgid "Access"
@@ -2695,17 +2654,14 @@ msgstr "Privatliv"
 msgid "Status"
 msgstr "Status"
 
-#, fuzzy
 msgid "Full Responses"
-msgstr "helt utfylt"
+msgstr "Fullstendige besvarelser"
 
-#, fuzzy
 msgid "Partial Responses"
-msgstr "Slett svar"
+msgstr "Delvise besvarelser"
 
-#, fuzzy
 msgid "Total Responses"
-msgstr "Eksporterer besvarelser"
+msgstr "Totalt besvarelser"
 
 # D:\web\xampp\htdocs\stable_plus/admin/html.php:44
 msgid "Anonymous"
@@ -2769,23 +2725,23 @@ msgstr "Gjeldende språk"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:283
 msgid "Preferred HTML editor mode"
-msgstr ""
+msgstr "Foretrukket HTML-editormodus"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:286
 msgid "Default HTML editor mode"
-msgstr ""
+msgstr "Standard HTML-edtor"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:287
 msgid "No HTML editor"
-msgstr ""
+msgstr "Ingen HTML-edtor"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:288
-msgid "Inline HTML editor"
-msgstr ""
+msgid "Inline HTML-editor"
+msgstr "Integrert HTML-editor"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:289
 msgid "Popup HTML editor"
-msgstr ""
+msgstr "Sprettopp HTML-editor"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:115
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1338
@@ -2795,7 +2751,7 @@ msgstr "Brukere"
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:129
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1346
 msgid "Active Surveys"
-msgstr "Aktive undersøkelser"
+msgstr "Aktiv undersøkelse"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:136
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1350
@@ -2850,13 +2806,11 @@ msgstr "Rediger gjeldende undersøkelse"
 msgid "Delete Current Survey"
 msgstr "Slett gjeldende undersøkelse"
 
-#, fuzzy
 msgid "Reset Survey Logic"
-msgstr "Slett undersøkelsen"
+msgstr "Nullstill undersøkelsen"
 
-#, fuzzy
 msgid "This survey's questions don't use conditions"
-msgstr "Denne undersøkelsen er ikke aktiv"
+msgstr "Spørsmål i denne undersøkelsen bruker ikke avhengigheter"
 
 # D:\web\xampp\htdocs\stable_plus/admin/html.php:826
 # D:\web\xampp\htdocs\stable_plus/admin/html.php:986
@@ -2872,9 +2826,9 @@ msgstr "Endre rekkefølge på gruppe"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/dumpsurvey.php:56
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/vvexport.php:49
-#, fuzzy
+
 msgid "Export Survey Structure"
-msgstr "Eksporter undersøkelse"
+msgstr "Eksporter undersøkelsestruktur"
 
 msgid "Export Current Survey"
 msgstr "Eksportere gjeldende undersøkelse"
@@ -2882,9 +2836,8 @@ msgstr "Eksportere gjeldende undersøkelse"
 msgid "Set Assessment Rules"
 msgstr "Angi vurderingsregler"
 
-#, fuzzy
 msgid "Set Survey Quotas"
-msgstr "Angi rettigheter til undersøkelsen"
+msgstr "Angi kvote for undersøkelse"
 
 msgid "Browse Responses For This Survey"
 msgstr "Se besvarelsene for denne undersøkelsen"
@@ -2919,9 +2872,9 @@ msgstr "Grupper"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importsurvey.php:290
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importsurvey.php:312
-#, fuzzy
+
 msgid "Answers to this survey are anonymized."
-msgstr "Feil: Denne filen kunne ikke importeres"
+msgstr "Besvarelser til denne undersøkelsen er anonymisert."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:408
 msgid "This survey is NOT anonymous."
@@ -2972,7 +2925,7 @@ msgstr "Er du sikker på at du vil gjenopprette spørsmålets kode?"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:433
 msgid "Straight"
-msgstr "Rett"
+msgstr "Serie"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:436
 msgid "By Group"
@@ -3059,7 +3012,7 @@ msgid "Number of questions/groups"
 msgstr "Antall spørsmål/grupper"
 
 msgid "Survey currently active"
-msgstr "Aktive undersøkelser"
+msgstr "Aktiv undersøkelse"
 
 msgid "Survey table name"
 msgstr "Tabellnavn"
@@ -3246,27 +3199,24 @@ msgid "Label Set"
 msgstr "Etiketter"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:747
-#, fuzzy
+
 msgid "You need to choose a label set for this question!"
-msgstr "Du må velge etiketter til dette spørsmålet"
+msgstr "Du må velge etiketter til dette spørsmålet!"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:141
-#, fuzzy
 msgid "Second Label Set"
-msgstr "Rediger etiketter"
+msgstr "Alternative etiketter"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:747
-#, fuzzy
 msgid "You need to choose a second label set for this question!"
-msgstr "Du må velge etiketter til dette spørsmålet"
+msgstr "Du må velge alternative etiketter til dette spørsmålet!"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:266
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:268
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:730
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1854
-#, fuzzy
 msgid "Edit/Add second Label Sets"
-msgstr "Rediger/Legg til etiketter"
+msgstr "Rediger/Legg til alternative etiketter"
 
 msgid "Other:"
 msgstr "Kommentar:"
@@ -3287,7 +3237,7 @@ msgstr "Rediger svar"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:1420
 msgid "Error: You are trying to use duplicate answer codes."
-msgstr ""
+msgstr "FEIL: Du prøver å bruker duplikate svarkoder."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:801
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:251
@@ -3318,9 +3268,8 @@ msgstr "Hendelse"
 msgid "Order"
 msgstr "Rekkefølge"
 
-#, fuzzy
 msgid "Answer:"
-msgstr "Svar"
+msgstr "Svar:"
 
 msgid "New Answer"
 msgstr "Nytt svar"
@@ -3413,23 +3362,23 @@ msgstr "Se gjennom besvarelse"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:1861
 msgid "LimeSurvey Survey File (*.csv)"
-msgstr ""
+msgstr "LimeSurvey undersøkelsefil (*.csv)"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:1869
 msgid "queXML Survey XML Format (*.xml)"
-msgstr ""
+msgstr "queXML Survey XML-format (*.xml)"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:1872
 msgid "(XML module only in PHP 4 available)"
-msgstr ""
+msgstr "(XML-modul er bare tilgjengelig i PHP 4)"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/templates.php:542
-#, fuzzy
+
 msgid "Export To File"
-msgstr "Eksporter tema"
+msgstr "Eksporter til fil"
 
 msgid "Survey Security"
-msgstr "Sikkerhet i undersøkelsen"
+msgstr "Sikkerhet i undersøkelse"
 
 msgid "User Group"
 msgstr "Brukergruppe"
@@ -3452,9 +3401,8 @@ msgstr "Rediger undersøkelse - steg 1 av 2"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:465
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1660
-#, fuzzy
 msgid "General"
-msgstr "Kjønn"
+msgstr "Generelt"
 
 # D:\web\xampp\htdocs\stable_plus/admin/html.php:2042
 # D:\web\xampp\htdocs\stable_plus/admin/labels.php:142
@@ -3467,14 +3415,13 @@ msgstr "Slette"
 msgid "Admin Email:"
 msgstr "Administrators e-postadresse:"
 
-#, fuzzy
 msgid "Bounce Email:"
-msgstr "Din e-post"
+msgstr "Din e-postadresse:"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2162
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2862
 msgid "Presentation & Navigation"
-msgstr ""
+msgstr "Presentasjon og navigasjon"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1581
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1937
@@ -3506,15 +3453,15 @@ msgstr "Vis [<< Forrige]"
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2222
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2908
 msgid "Participiants may print answers?"
-msgstr ""
+msgstr "Kan besvarelsen skrives ut?"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:289
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:122
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importsurvey.php:640
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1342
-#, fuzzy
+
 msgid "List survey publicly:"
-msgstr "Vis undersøkelser"
+msgstr "Vis undersøkelsepublisitet:"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1838
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:2065
@@ -3535,7 +3482,7 @@ msgstr "Automatisk laste URL når undersøkelsen er fullført?"
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2267
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2946
 msgid "Publication & Access control"
-msgstr ""
+msgstr "Publisitet og tilgangskontroll"
 
 # D:\web\xampp\htdocs\stable_plus/admin/html.php:2057
 # D:\web\xampp\htdocs\stable_plus/admin/html.php:2522
@@ -3557,23 +3504,21 @@ msgstr "Tillat offentlig registrering?"
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2306
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2976
 msgid "Use CAPTCHA for"
-msgstr ""
+msgstr "Bruk captcha for"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:289
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:122
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importsurvey.php:640
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1342
-#, fuzzy
+
 msgid "Survey Access"
-msgstr "Undersøkelser"
+msgstr "Tilgang til undersøkelse"
 
-#, fuzzy
 msgid "Registration"
-msgstr "Administrasjon"
+msgstr "Registrering"
 
-#, fuzzy
 msgid "Save & Load"
-msgstr "Lagre nå"
+msgstr "Lagre og last inn"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1726
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:2028
@@ -3585,16 +3530,16 @@ msgstr "Nøkkel attributtnavn:"
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2348
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2994
 msgid "Use HTML format for token emails?"
-msgstr ""
+msgstr "Bruk HTML-format for e-post om nøkler?"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2349
 msgid "If you switch email mode, you'll have to review your email templates to fit the new format"
-msgstr ""
+msgstr "Hvis du skifter e-postmodus, må du sjekke e-postmalene slik at de passer det nye formatet"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2365
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:3006
 msgid "Notification & Data Management"
-msgstr ""
+msgstr "Varsler og databehandling"
 
 msgid "Admin Notification:"
 msgstr "Varsle administrator:"
@@ -3605,9 +3550,9 @@ msgstr "Anonyme besvarelser?"
 # D:\web\xampp\htdocs\stable_plus/admin/html.php:1905
 # D:\web\xampp\htdocs\stable_plus/admin/html.php:2450
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:250
-#, fuzzy
+
 msgid "If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
-msgstr "Hvis du gjør en undersøkelse anonym, vil svar med datostempel og nøkkeltabell vil bli merket 'Y' i stedet for dato/tid for å opprettholde full anonymitet"
+msgstr "Hvis du slår på valget Anonyme basvarelser, og deretter lager en nøkkeltabell, vil besvarte undersøkelser bli merket med Y i stedet for dato/klokkeslett for å opprettholde anonymiteten"
 
 # D:\web\xampp\htdocs\stable_plus/admin/html.php:1915
 # D:\web\xampp\htdocs\stable_plus/admin/html.php:1952
@@ -3658,37 +3603,36 @@ msgstr "Besvarelser vil bli lagret med avsenders URL."
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2489
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:3056
 msgid "Enable Token-based answers persistence?"
-msgstr ""
+msgstr "Slå på nøkkelbaserte svar i fortsettelsen?"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2518
 # D:\web\xampp\htdocs\limesurvey/admin/labels.php:439
 msgid "zip library not supported by PHP, Import ZIP Disabled"
-msgstr ""
+msgstr "zip-arkiv er ikke støttet av PHP, Import ZIP er slått av"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2527
 # D:\web\xampp\htdocs\limesurvey/admin/labels.php:448
 msgid "Uploaded Resources Management"
-msgstr ""
+msgstr "Behandling av opplastede ressurser"
 
-#, fuzzy
 msgid "Browse Uploaded Resources"
-msgstr "Se gjennom lagrede besvarelser"
+msgstr "Se gjennom opplastede ressurser"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2535
 # D:\web\xampp\htdocs\limesurvey/admin/labels.php:456
 msgid "Export Resources As ZIP Archive"
-msgstr ""
+msgstr "Eksporter ressurser som et ZIP-arkiv"
 
 # D:\web\xampp\htdocs\stable_plus/admin/grouphandling.php:57
 # D:\web\xampp\htdocs\stable_plus/admin/labels.php:187
-#, fuzzy
+
 msgid "Select ZIP File:"
-msgstr "Velg CSV-fil:"
+msgstr "Velg ZIP-fil:"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2538
 # D:\web\xampp\htdocs\limesurvey/admin/labels.php:459
 msgid "Import Resources ZIP Archive"
-msgstr ""
+msgstr "Importer ZIP-arkiv med ressurser"
 
 # D:\web\xampp\htdocs\stable_plus/admin/html.php:2077
 msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
@@ -3754,7 +3698,7 @@ msgstr "Feil: Du må angi en tittel på undersøkelsen"
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:288
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:482
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1856
-#, fuzzy
+
 msgid "Create or Import Survey"
 msgstr "Opprett eller importer undersøkelse"
 
@@ -3763,7 +3707,7 @@ msgid "This setting cannot be changed later!"
 msgstr "Denne innstillingen kan ikke endres senere!"
 
 msgid "(This field is mandatory.)"
-msgstr "(Dette feltet er obligatorisk.)"
+msgstr "Obligatorisk"
 
 msgid "Create Survey"
 msgstr "Lag undersøkelse"
@@ -3781,7 +3725,7 @@ msgstr "Velg CSV/SQL-fil:"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:3084
 msgid "Convert Resources links and INSERTANS fields ?"
-msgstr ""
+msgstr "Konverter ressurslenker og INSERTANS-felt?"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:2184
 msgid "You need to upload the file"
@@ -3817,15 +3761,15 @@ msgstr "Velg feltnummeret du vil bruke til dine svar:"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:273
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:276
-#, fuzzy
+
 msgid "HTML Editor"
-msgstr "Temaredigering"
+msgstr "HTML-editor"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:273
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:276
-#, fuzzy
+
 msgid "Close Editor"
-msgstr "Temaredigering"
+msgstr "Lukk editor"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/assessments.php:130
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/assessments.php:155
@@ -3834,13 +3778,13 @@ msgstr "Temaredigering"
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:888
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:946
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/saved.php:121
-#, fuzzy
+
 msgid "Editing"
 msgstr "Redigere"
 
 # D:\web\xampp\htdocs\limesurvey/admin/htmleditor-popup.php:167
 msgid "Do you want to save your changes ?"
-msgstr ""
+msgstr "Vil du lagre innstillingene?"
 
 # D:\web\xampp\htdocs\stable_plus/admin/http_importsurvey.php:31
 # D:\web\xampp\htdocs\stable_plus/admin/importgroup.php:29
@@ -3869,9 +3813,9 @@ msgid "Reading file.."
 msgstr "Leser fil..."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importquestion.php:76
-#, fuzzy
+
 msgid "No SID (Survey) has been provided. Cannot import group."
-msgstr "Ingen SID (undersøkelse) rt oppgitt. Kan ikke importere spørsmål."
+msgstr "Ingen SID (undersøkelse) er oppgitt. Kan ikke importere gruppe."
 
 # D:\web\xampp\htdocs\stable_plus/admin/importgroup.php:39
 msgid "Reading file..."
@@ -3922,7 +3866,6 @@ msgstr "Etiketter"
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importsurvey.php:646
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1121
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1934
-#, fuzzy
 msgid "Question Attributes: "
 msgstr "Spørsmålsattributter:"
 
@@ -3997,7 +3940,7 @@ msgstr "Importer spørsmål"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importquestion.php:76
 msgid "No SID (Survey) has been provided. Cannot import question."
-msgstr "Ingen SID (undersøkelse) rt oppgitt. Kan ikke importere spørsmål."
+msgstr "Ingen SID (undersøkelse) er oppgitt. Kan ikke importere spørsmål."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importquestion.php:85
 msgid "No GID (Group) has been provided. Cannot import question"
@@ -4010,7 +3953,7 @@ msgstr "Feil: Dette er ikke en LimeSurvey spørsmålsfil."
 
 # D:\web\xampp\htdocs\stable_plus/admin/importquestion.php:107
 msgid "Sorry, importing questions is limited to the same version. Import failed."
-msgstr ""
+msgstr "Beklager. Import av spørsmål kan kun skje innen samme versjon av LimeSurvey. Importen feilet."
 
 # D:\web\xampp\htdocs\stable_plus/admin/importquestion.php:194
 msgid "You can't import a question which doesn't support the current survey's base language"
@@ -4031,13 +3974,12 @@ msgstr "Spørsmålsimport - oppsummering"
 msgid "Question Attributes:"
 msgstr "Spørsmålsattributter:"
 
-#, fuzzy
 msgid "Question import is complete."
-msgstr "Import av gruppen er ferdig."
+msgstr "Import av svar er ferdig."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importsurvey.php:77
 msgid "This file is not a LimeSurvey survey file. Import failed."
-msgstr "Feil: Denne filen er ikke en LimeSurvey-fil."
+msgstr "Feil: Denne filen er ikke en LimeSurvey-fil. Importen feilet."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importsurvey.php:290
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importsurvey.php:312
@@ -4049,37 +3991,34 @@ msgid "File does not contain LimeSurvey data in the correct format."
 msgstr "Filen inneholder ikke korrekte LimeSurvey-data."
 
 # D:\web\xampp\htdocs\stable_plus/admin/importsurvey.php:720
-#, fuzzy
 msgid "was NOT imported because the question type is unknown."
 msgstr "ble IKKE importert fordi spørsmålstypen er ukjent"
 
 # D:\web\xampp\htdocs\stable_plus/admin/importsurvey.php:726
-#, fuzzy, php-format
 msgid "was imported but the type was set to '%s' because it is the most similiar one."
-msgstr "ble importert men typen ble satt til \""
+msgstr "ble importert men typen ble satt til '%s' fordi den ligner mest."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importsurvey.php:639
 msgid "Survey Import Summary"
-msgstr "Undersøkelsesimport, oppsummering"
+msgstr "Oppsummering av undersøkelsesimport"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importlabel.php:43
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:178
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:186
-#, fuzzy
 msgid "Not imported Label Sets"
-msgstr "Importer etiketter"
+msgstr "Etiketter som ikke er importert"
 
 # D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:1210
 # D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:1236
 msgid "(Label Sets were not imported since you do not have the permission to create new label sets.)"
-msgstr ""
+msgstr "(Etiketter ble ikke importert siden du ikke har rettigheter til å lage nye etiketter.)"
 
 msgid "Question Attributes"
 msgstr "Spørsmålsattributter"
 
 # D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:1214
 msgid "Quotas"
-msgstr ""
+msgstr "Kvoter"
 
 msgid "Import of Survey is completed."
 msgstr "Import av undersøkelse er utført."
@@ -4087,92 +4026,85 @@ msgstr "Import av undersøkelse er utført."
 msgid "Warnings"
 msgstr "Advarsler"
 
-#, fuzzy
 msgid "Import Survey Resources"
-msgstr "Importer undersøkelse"
+msgstr "Importer undersøkelsesressurser"
 
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:49
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:219
 #, php-format
 msgid "Incorrect permissions in your %s folder."
-msgstr ""
+msgstr "Feil rettigheter i katalogen %s."
 
 # D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:344
 msgid "Back"
 msgstr "Tilbake"
 
 # D:\web\xampp\htdocs\stable_plus/admin/importlabel.php:53
-#, fuzzy
 msgid "This file is not a valid ZIP file archive. Import failed."
-msgstr "Denne filen er ikke en etikettfil. Importen bli ikke gjennomført."
+msgstr "Denne filen er ikke et ZIP-arkiv. Importen bli ikke gjennomført."
 
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:94
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:264
 msgid "Copy failed"
-msgstr ""
+msgstr "Feil ved kopiering"
 
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:103
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:273
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:113
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:283
 msgid "Forbidden Extension"
-msgstr ""
+msgstr "Forbudt tillegg"
 
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:137
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:156
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:307
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:326
 msgid "Imported Files List"
-msgstr ""
+msgstr "Liste over importerte filer"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importsurvey.php:77
-#, fuzzy
 msgid "This ZIP archive contains no valid Resources files. Import failed."
-msgstr "Feil: Denne filen er ikke en LimeSurvey-fil."
+msgstr "Feil: Dette ZIP-arkivet inneholdt ikke gyldige ressursfiler."
 
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:143
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:313
 msgid "Remember that we do not support subdirectories in ZIP Archive."
-msgstr ""
+msgstr "Husk at underkataloger i ZIP-arkiv ikke støttes."
 
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:151
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:321
 msgid "Partial"
-msgstr ""
+msgstr "Delvis"
 
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:155
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:163
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:325
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:333
 msgid "Error Files List"
-msgstr ""
+msgstr "Liste over filer med feil"
 
-#, fuzzy
 msgid "Imported Resources for"
-msgstr "Importer besvarelser"
+msgstr "Importerte ressurser for"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importsurvey.php:639
-#, fuzzy
 msgid "Resources Import Summary"
-msgstr "Undersøkelsesimport, oppsummering"
+msgstr "Oppsummering av ressursimport"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/vvimport.php:240
-#, fuzzy
 msgid "Total Imported files"
-msgstr "Totalt imorterte poster:"
+msgstr "Totalt importerte filer"
 
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:170
 # D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:340
 msgid "Total Errors"
-msgstr ""
+msgstr "Antall feil"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/vvimport.php:62
-#, fuzzy
 msgid "File"
-msgstr "Fil:"
+msgstr "Fil"
 
 # D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:30
 # D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:304
@@ -4189,9 +4121,8 @@ msgid "No matching Cqid"
 msgstr "Ingen passende Cqid"
 
 # D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:58
-#, fuzzy
 msgid "No matching CFIELDNAME Group!"
-msgstr "Ingen passende CFIELDNAME gruppe"
+msgstr "Ingen passende CFIELDNAME-gruppe!"
 
 # D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:62
 msgid "No \"CFIELDNAME\" field set!"
@@ -4261,13 +4192,11 @@ msgstr "Følgende undersøkelser må slettes"
 msgid "All survey settings meet consistency standards"
 msgstr "Allle undersøkelsesinnstillinger oppfyller konsistensstandardene"
 
-#, fuzzy
 msgid "No matching Group"
-msgstr "Ingen passende grupper"
+msgstr "Ingen passende gruppe"
 
-#, fuzzy
 msgid "No matching Survey!"
-msgstr "Ingen passende undersøkelser"
+msgstr "Ingen passende undersøkelse!"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:213
 msgid "The following questions should be deleted"
@@ -4275,7 +4204,7 @@ msgstr "Følgende spørsmål må slettes"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:219
 msgid "All questions meet consistency standards"
-msgstr "Ale spørsmål oppfyller konsistensstandardene"
+msgstr "Alle spørsmål oppfyller konsistensstandardene"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/dbchecker.php:234
 msgid "The following groups should be deleted"
@@ -4384,9 +4313,8 @@ msgstr "Feil: Du må angi et navn på disse etikettene."
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:288
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:482
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1856
-#, fuzzy
 msgid "Create or Import New Label Set"
-msgstr "Opprett eller importer undersøkelse"
+msgstr "Opprett eller importer nye etiketter"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:140
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1859
@@ -4430,9 +4358,8 @@ msgstr "Slett etiketter"
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importlabel.php:219
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importsurvey.php:645
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:246
-#, fuzzy
 msgid "Label:"
-msgstr "Etiketter"
+msgstr "Etikett:"
 
 # D:\web\xampp\htdocs\stable_plus/admin/labels.php:340
 msgid "New label"
@@ -4445,9 +4372,8 @@ msgstr "Legg til ny etikett"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:260
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:227
-#, fuzzy
 msgid "Fix Order"
-msgstr "Rekkefølge"
+msgstr "Fast rekkefølge"
 
 # D:\web\xampp\htdocs\stable_plus/admin/labels.php:374
 msgid "Inserting New labels must be done on the first language folder."
@@ -4535,9 +4461,8 @@ msgstr "Har du glemt passordet?"
 msgid "if you answered"
 msgstr "hvis du svarte"
 
-#, fuzzy
 msgid "if you have NOT answered"
-msgstr "hvis du svarte"
+msgstr "hvis du IKKE har svart"
 
 # D:\web\xampp\htdocs\stable_plus/admin/printablesurvey.php:213
 msgid "or"
@@ -4570,9 +4495,8 @@ msgstr "svar:"
 msgid "Please choose all that apply and provide a comment:"
 msgstr "Vennligst velg de alternativene som passer, og legg evt. til en kommentar:"
 
-#, fuzzy
 msgid "answers and provide a comment:"
-msgstr "Vennligst velg de alternativene som passer, og legg evt. til en kommentar:"
+msgstr "svar og gi en kommentar:"
 
 msgid "Please write your answer(s) here:"
 msgstr "Vennligst skriv her:"
@@ -4587,7 +4511,7 @@ msgid "Submit Your Survey."
 msgstr "Send undersøkelsen."
 
 msgid "Thank you for completing this survey."
-msgstr "Takk for din besvarelse"
+msgstr "Takk for din besvarelse."
 
 msgid "Please fax your completed survey to:"
 msgstr "Vennligst send den utfylte besvarelsen til faksnummer:"
@@ -4597,9 +4521,8 @@ msgid "Please submit by"
 msgstr "Vennligst send"
 
 # D:\web\xampp\htdocs\stable_plus/admin/labels.php:111
-#, fuzzy
 msgid "Error: You have to enter a code for this question."
-msgstr "Feil: Du må angi et navn på disse etikettene."
+msgstr "Feil: Du må angi en kode til dete spørsmålet."
 
 msgid "Add Question"
 msgstr "Legg til spørsmål"
@@ -4615,27 +4538,25 @@ msgstr "Etiketter:"
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1205
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1347
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:740
-#, fuzzy
 msgid "Second Label Set:"
-msgstr "Etiketter:"
+msgstr "Alternative etiketter:"
 
 # D:\web\xampp\htdocs\stable_plus/admin/database.php:421
 # D:\web\xampp\htdocs\stable_plus/admin/database.php:433
-#, fuzzy
 msgid "Position:"
-msgstr "i posisjon"
+msgstr "Posisjon:"
 
 # D:\web\xampp\htdocs\limesurvey/admin/questionhandling.php:134
 msgid "At end"
-msgstr ""
+msgstr "Til slutt"
 
 # D:\web\xampp\htdocs\limesurvey/admin/questionhandling.php:135
 msgid "At beginning"
-msgstr ""
+msgstr "I starten"
 
 # D:\web\xampp\htdocs\limesurvey/admin/questionhandling.php:138
 msgid "After"
-msgstr ""
+msgstr "Etter"
 
 # D:\web\xampp\htdocs\stable_plus/admin/questionhandling.php:118
 msgid "Select CSV File"
@@ -4665,17 +4586,15 @@ msgstr "Kopiere attributter?"
 msgid "Edit Question"
 msgstr "Rediger spørsmål"
 
-#, fuzzy
 msgid "Question Type:"
-msgstr "Spørsmål:"
+msgstr "Spørsmålstype:"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/dataentry.php:582
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1334
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1370
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1396
-#, fuzzy
 msgid "Cannot be modified (Survey is active)"
-msgstr "kan ikke endres"
+msgstr "Kan ikke endres (undersøkelsen er aktiv)"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:495
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1334
@@ -4699,26 +4618,23 @@ msgstr "Endring av rekkefølge på spørsmål er ikke mulig siden noen spørsmå
 msgid "See the conditions marked on the following questions"
 msgstr "Se avhengigheter markert på disse spørsmålene"
 
-#, fuzzy
 msgid "Place after.."
-msgstr "Vennligst vent..."
+msgstr "Plasser etter..."
 
-#, fuzzy
 msgid "View Question"
-msgstr "Rediger spørsmål"
+msgstr "Vis spørsmål"
 
 # D:\web\xampp\htdocs\limesurvey/admin/quota.php:252
 msgid "Modify Quota"
-msgstr ""
+msgstr "Endre kvotering"
 
-#, fuzzy
 msgid "Quota Name"
-msgstr "Angi navn"
+msgstr "Navn på kvote"
 
 # D:\web\xampp\htdocs\limesurvey/admin/quota.php:262
 # D:\web\xampp\htdocs\limesurvey/admin/quota.php:605
 msgid "Quota Limit"
-msgstr ""
+msgstr "Kvotegrense"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:802
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1001
@@ -4728,107 +4644,91 @@ msgstr ""
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1030
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1131
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/saved.php:107
-#, fuzzy
-msgid "Quota Action"
-msgstr "Hendelse"
 
-#, fuzzy
+msgid "Quota Action"
+msgstr "Hendelse ved oppnådd kvote"
+
 msgid "Terminate Survey"
-msgstr "Lag undersøkelse"
+msgstr "Avslutt undersøkelse"
 
 # D:\web\xampp\htdocs\limesurvey/admin/quota.php:276
 # D:\web\xampp\htdocs\limesurvey/admin/quota.php:343
 # D:\web\xampp\htdocs\limesurvey/admin/quota.php:615
 msgid "Terminate Survey With Warning"
-msgstr ""
+msgstr "Avslutt undersøkelse med advarsel først"
 
-#, fuzzy
 msgid "Update Quota"
-msgstr "Oppdater spørsmål"
+msgstr "Oppdater kvote"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:289
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:122
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/importsurvey.php:640
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:1342
-#, fuzzy
 msgid "Survey Quotas"
-msgstr "Undersøkelser"
+msgstr "Kvote for Undersøkelse"
 
 # D:\web\xampp\htdocs\limesurvey/admin/quota.php:318
 msgid "Limit"
-msgstr ""
+msgstr "Grense"
 
 # D:\web\xampp\htdocs\stable_plus/admin/html.php:64
 # D:\web\xampp\htdocs\stable_plus/admin/html.php:131
-#, fuzzy
 msgid "Not Active"
-msgstr "Aktiv"
+msgstr "Ikke aktiv"
 
 # D:\web\xampp\htdocs\limesurvey/admin/quota.php:351
 msgid "Modify"
-msgstr ""
+msgstr "Endre"
 
 # D:\web\xampp\htdocs\stable_plus/admin/database.php:610
 # D:\web\xampp\htdocs\stable_plus/admin/html.php:1355
-#, fuzzy
 msgid "Add Answer"
-msgstr "Legg til nytt svar"
+msgstr "Legg til svar"
 
-#, fuzzy
 msgid "No quotas have been set for this survey"
-msgstr "Det ble opprettet en nøkkeltabell til denne undersøkelsen."
+msgstr "Ingen kvote er satt for denne undersøkelsen"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:1184
-#, fuzzy
 msgid "Add New Quota"
-msgstr "Lagt til ny nøkkel"
+msgstr "Legg til ny kvote"
 
-#, fuzzy
 msgid "Question Selection"
-msgstr "Spørsmål for spørsmål"
+msgstr "Spørsmålsutvalg"
 
-#, fuzzy
 msgid "Sorry there are no supported question types in this survey."
-msgstr "Det er ingen spørsmål i denne undersøkelsen"
+msgstr "Beklager, men det er ikke noen støttede spørsmålstyper i denne undersøkelsen."
 
-#, fuzzy
 msgid "Survey Quota"
-msgstr "Undersøkelsen er nå lagret"
+msgstr "Kvote for undersøkelse"
 
-#, fuzzy
 msgid "Select Question"
-msgstr "Sikkerhetsspørsmål"
+msgstr "Spørsmålsutvalg"
 
-#, fuzzy
 msgid "Next"
-msgstr "neste"
+msgstr "Neste"
 
 # D:\web\xampp\htdocs\limesurvey/admin/quota.php:531
 msgid "All answers are already selected in this quota."
-msgstr ""
+msgstr "Alle besvarelser er allerede valgt i denne kvoten."
 
-#, fuzzy
 msgid "Select Answer"
-msgstr "Sletter svar"
+msgstr "Velg svar"
 
 # D:\web\xampp\htdocs\limesurvey/admin/quota.php:595
 msgid "New Quota"
-msgstr ""
+msgstr "Ny kvote"
 
-#, fuzzy
 msgid "You are about to delete all conditions on this survey's questions"
-msgstr "Du er i ferd med å slette denne undersøkelsen"
+msgstr "Du er i ferd med å slette alle avhengigheter i denne undersøkelsens spørsmål"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/deletesurvey.php:70
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:419
-#, fuzzy
 msgid "We recommend that before you proceed, you export the entire survey from the main administration screen."
-msgstr "Vi anbefaler at du før sletting eksporterer hele undersøkelsen. Dette gjøres fra hovedsiden administrasjon."
+msgstr "Vi anbefaler at før du fortsetter, eksorterer du hele undersøkelsen. Gjør dette fra menyen under Administrasjon."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:311
-#, fuzzy
 msgid "All conditions in this survey have been deleted."
-msgstr "Alle nøkkeloppføringer er slettet"
+msgstr "Alle avhengigheter i denne undersøkelsen er slettet."
 
 msgid "Answered"
 msgstr "Besvart"
@@ -4896,16 +4796,15 @@ msgstr "Vis oppsummering av alle tilgjengelige felt"
 
 # D:\web\xampp\htdocs\limesurvey/admin/statistics.php:721
 msgid "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)"
-msgstr ""
+msgstr "Ikke ta hensyn til ufullstendige besvarelser (virker kun når filter for ufullstendige besvarelser er slått av)"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/browse.php:248
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/browse.php:478
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/browse.php:483
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:400
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:405
-#, fuzzy
 msgid "Show Graphs"
-msgstr "Vis siste..."
+msgstr "Vis grafer"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:655
 msgid "View Stats"
@@ -4920,7 +4819,7 @@ msgstr "Gå tilbake"
 
 # D:\web\xampp\htdocs\stable_plus/admin/statistics.php:725
 msgid "Getting Questions and Answers ..."
-msgstr "henter spørsmål og svar..."
+msgstr "Henter spørsmål og svar..."
 
 # D:\web\xampp\htdocs\stable_plus/admin/statistics.php:833
 msgid "Getting Result Count ..."
@@ -4981,15 +4880,15 @@ msgstr "Antall"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:1102
 msgid "1st Quartile (Q1)"
-msgstr ""
+msgstr "1. kvartal"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:1123
 msgid "2nd Quartile (Median)"
-msgstr ""
+msgstr "2. kvartal"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:1151
 msgid "3rd Quartile (Q3)"
-msgstr ""
+msgstr "3. kvartal"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:1171
 msgid "Null values are ignored in calculations"
@@ -5004,17 +4903,15 @@ msgid "minitab method"
 msgstr "minitab-metode"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:1171
-#, fuzzy
 msgid "Not enough values for calculation"
-msgstr "Nullverdier er ignorert i kalkuleringer"
+msgstr "Ikke nok verdier til å foreta kalkulasjon"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/statistics.php:1338
 msgid "Percentage"
 msgstr "Prosent"
 
-#, fuzzy
 msgid "Non completed"
-msgstr "gjennomført"
+msgstr "Ikke fullførte"
 
 # D:\web\xampp\htdocs\stable_plus/admin/stats.php:236
 msgid "Select all"
@@ -5048,9 +4945,8 @@ msgstr "Numerisk"
 msgid "Huge free text"
 msgstr "Stor fritekst"
 
-#, fuzzy
 msgid "Survey List Page"
-msgstr "Tabellnavn"
+msgstr "Liste over undersøkelser"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/templates.php:214
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/templates.php:273
@@ -5086,9 +4982,8 @@ msgstr "Last inn side"
 msgid "Save Page"
 msgstr "Lagre side"
 
-#, fuzzy
 msgid "Print Answers Page"
-msgstr "Rediger svar"
+msgstr "Skriv ut besvarelser"
 
 # D:\web\xampp\htdocs\stable_plus/admin/templates.php:98
 # D:\web\xampp\htdocs\stable_plus/admin/templates.php:223
@@ -5220,11 +5115,11 @@ msgstr "Forhåndsvis:"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1595
 msgid "ARMSCII-8 Armenian"
-msgstr ""
+msgstr "ARMSCII-8 armensk"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1596
 msgid "US ASCII"
-msgstr ""
+msgstr "US ASCII"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1597
 msgid "Automatic"
@@ -5236,7 +5131,7 @@ msgstr "Big5 tradisjonell kinesisk"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1599
 msgid "Binary pseudo charset"
-msgstr ""
+msgstr "Binær pseudo-tegnsett"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1600
 msgid "Windows Central European"
@@ -5244,7 +5139,7 @@ msgstr "Windows sentral-europeisk"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1601
 msgid "Windows Cyrillic"
-msgstr ""
+msgstr "Windows kyryllisk"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1602
 msgid "Windows Arabic"
@@ -5292,7 +5187,7 @@ msgstr "GBK enkel kinesisk"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1613
 msgid "GEOSTD8 Georgian"
-msgstr ""
+msgstr "GEOSTD8 georgisk"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1614
 msgid "ISO 8859-7 Greek"
@@ -5308,11 +5203,11 @@ msgstr "HP vest-europeisk"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1617
 msgid "DOS Kamenicky Czech-Slovak"
-msgstr ""
+msgstr "DOS Kamenicky tjekkisk-sovaisk"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1618
 msgid "KOI8-R Relcom Russian"
-msgstr ""
+msgstr "KOI8-R Relcom russisk"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1619
 msgid "KOI8-U Ukrainian"
@@ -5344,7 +5239,7 @@ msgstr "Mac vest-europeisk"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1626
 msgid "Shift-JIS Japanese"
-msgstr ""
+msgstr "Shift-JIS japansk"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1627
 msgid "7bit Swedish"
@@ -5352,19 +5247,19 @@ msgstr "7bit svensk"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1628
 msgid "TIS620 Thai"
-msgstr ""
+msgstr "TIS620 thai"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1629
 msgid "UCS-2 Unicode"
-msgstr ""
+msgstr "UCS-2 unicode"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1630
 msgid "EUC-JP Japanese"
-msgstr ""
+msgstr "EUC-JP japansk"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1631
 msgid "UTF-8 Unicode"
-msgstr ""
+msgstr "UTF-8 unicode"
 
 msgid "You have not selected a survey"
 msgstr "Du har ikke valgt en undersøkelse"
@@ -5402,7 +5297,7 @@ msgstr "Gjennopprett"
 
 # D:\web\xampp\htdocs\limesurvey/admin/tokens.php:406
 msgid "Show Token Summary"
-msgstr ""
+msgstr "Vis oppsummering av nøkler"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:244
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:1161
@@ -5428,9 +5323,8 @@ msgid "Export Tokens to CSV file"
 msgstr "Eksporter nøkler til en CSV-fil"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/templates.php:542
-#, fuzzy
 msgid "Edit Email Templates"
-msgstr "Eksporter tema"
+msgstr "Rediger e-postmaler"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:255
 msgid "Send email invitation"
@@ -5465,9 +5359,8 @@ msgid "Total Surveys Completed"
 msgstr "Gjennomførte undersøkelser"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/labels.php:141
-#, fuzzy
 msgid "Edit Email Settings"
-msgstr "Rediger etiketter"
+msgstr "Rediger innstillinger for e-post"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1677
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1999
@@ -5535,13 +5428,12 @@ msgid "Public registration Email:"
 msgstr "Offentlig e-postregistrering:"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:311
-#, fuzzy
 msgid "Token Email Settings have been saved."
-msgstr "Alle nøkkeloppføringer er slettet"
+msgstr "Innstillinger for e-post om nøkler er lagret."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:311
 msgid "All token entries have been deleted."
-msgstr "Alle nøkkeloppføringer er slettet"
+msgstr "Alle nøkkeloppføringer er slettet."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:319
 msgid "All invite entries have been set to 'Not Invited'."
@@ -5598,14 +5490,13 @@ msgid "Sort by: "
 msgstr "Sorter etter:"
 
 # D:\web\xampp\htdocs\stable_plus/admin/html.php:31
-#, fuzzy
 msgid "Email Status"
-msgstr "Status"
+msgstr "Status for e-post"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:479
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:1081
 msgid "Invite sent?"
-msgstr "Sende invitasjon?"
+msgstr "Invitasjon sendt?"
 
 msgid "Completed?"
 msgstr "Ferdig?"
@@ -5672,14 +5563,12 @@ msgstr "Emne"
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:679
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:802
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:842
-#, fuzzy
 msgid "Sending to Token ID"
-msgstr "Sender til TID-nummer:"
+msgstr "Sender til nøkkel-ID"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1489
-#, fuzzy
 msgid "Bypass token with failing email addresses"
-msgstr "Poster med ugyldige e-postadresser er fjernet"
+msgstr "Hoppet over nøkkel grunnet feil e-postadresse"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:666
 msgid "Send Invitations"
@@ -5718,9 +5607,8 @@ msgstr "E-postpåminnelse"
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1577
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1933
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:490
-#, fuzzy
 msgid "Reminder Email:"
-msgstr "Administrators e-postadresse:"
+msgstr "E-postpåminnelse:"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:969
 msgid "Start at Token ID No:"
@@ -5734,9 +5622,8 @@ msgstr "Send påminnelser"
 msgid "Sending Reminders"
 msgstr "Sender påminnelser"
 
-#, fuzzy
 msgid "From Token ID"
-msgstr "Nøkkel-ID"
+msgstr "Fra nøkkel-ID"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1061
 msgid "Reminder sent to:"
@@ -5744,7 +5631,7 @@ msgstr "Påminnelse sendt til:"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:922
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
-msgstr ""
+msgstr "Det fantes ikke noen kvalifiserte e-poster å sende. Dette skyldes at ingen oppfyller kriteriene, en oppgitt e-postadresse, blitt sendt en invitasjon, men ikke fullført undersøkelsen."
 
 msgid "Create Tokens"
 msgstr "Opprett nøkler"
@@ -5768,9 +5655,8 @@ msgstr "Laster skjermbilde på nytt. Vennligst vent."
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:1043
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:1138
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:1168
-#, fuzzy
 msgid "Add or Edit Token Entry"
-msgstr "Legg til eller endre nøkkel"
+msgstr "Legg til eller endre nøkkeloppføring"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1189
 msgid "Auto"
@@ -5796,13 +5682,12 @@ msgstr "Feil"
 # D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1762
 # D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1810
 msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
-msgstr ""
+msgstr "Det finnes allerede en oppføring med denne nøkkelen i tabelen. Samme nøkkel kan ikke brukes i flere oppføringer."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:248
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:1186
-#, fuzzy
 msgid "Show this token entry"
-msgstr "Legg til nøkkeloppføring"
+msgstr "Vis denne nøkkeloppføringen"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/tokens.php:1184
 msgid "Added New Token"
@@ -5818,9 +5703,8 @@ msgid "Note:"
 msgstr "Merknad:"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1358
-#, fuzzy
 msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [emailstatus], [token], [language code], [attribute1], [attribute2]\"."
-msgstr "Filen må være standard CSV (kommaseparert) med doble anførselstegn rundt verdier (standard for OpenOffice og Excel). Første linje skal inneholde informasjon (vil bli slettet). Formatet skal se slik ut \"firstname, lastname, email, [token], [language code], [attribute1], [attribute2]\"."
+msgstr "Filen må være standard CSV (kommaseparert) med doble anførselstegn rundt verdier (standard for OpenOffice og Excel). Første linje skal inneholde informasjon (vil bli slettet). Formatet skal se slik ut \"firstname, lastname, email, [emailstatus], [token], [language code], [attribute1], [attribute2]\"."
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1369
 msgid "Upload LDAP entries"
@@ -5867,9 +5751,8 @@ msgid "Uploading LDAP Query"
 msgstr "Last opp LDAP-spørring"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:324
-#, fuzzy
 msgid "Results from LDAP Query"
-msgstr "Importer nøkler fra en LDAP-spørring"
+msgstr "Resultater fra LDAP-spørring"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1571
 msgid "Can't bind to the LDAP directory"
@@ -5890,12 +5773,11 @@ msgstr "Karaktersett i denne filen:"
 # D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2193
 # D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2227
 msgid "Filter blank email addresses:"
-msgstr ""
+msgstr "Filtrer tomme e-postadresser:"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1488
-#, fuzzy
 msgid "Filter duplicate records:"
-msgstr "Duplikate poster er slettet"
+msgstr "Filtrer duplikate poster:"
 
 # D:\web\xampp\htdocs\stable_plus/admin/tokens.php:1659
 msgid "Sorry, but the LDAP module is missing in your PHP configuration."
@@ -5952,25 +5834,24 @@ msgstr "Vellykket innlogging"
 
 # D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:168
 msgid "LimeSurvey is setup to use the webserver authentication, but it seems you have not already been authenticated"
-msgstr ""
+msgstr "LimeSurvey er satt til å bruker webserverens autentisering, men det ser ikke ut til at du er autentisert"
 
 # D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:169
 msgid "Please contact your system administrator"
-msgstr ""
+msgstr "Vennligst kontakt systemadministrator"
 
 # D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:252
 msgid "Auto Import User Failed!"
-msgstr ""
+msgstr "Feil ved automatisk import av bruker!"
 
 # D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:137
 msgid "Logout successful."
-msgstr "Vellykket utlogging"
+msgstr "Vellykket utlogging."
 
 # D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:156
 # D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:314
-#, fuzzy
 msgid "Email address is not valid."
-msgstr "E-postadressen er ikke gyldig."
+msgstr "E-postadresse er ikke gyldig."
 
 # D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:161
 msgid "Username was not supplied."
@@ -5999,9 +5880,8 @@ msgstr "Angi brukerrettigheter"
 msgid "Username and/or email address already exists."
 msgstr "Brukernavn og/eller e-postadresse finnes allerede."
 
-#, fuzzy
 msgid "Initial Superadmin cannot be deleted!"
-msgstr "Admin kan ikke slettes!"
+msgstr "Administrator kan ikke slettes!"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/usercontrol.php:172
 msgid "Modifying User"
@@ -6037,14 +5917,13 @@ msgstr "Du har ikke lov å endre dine egne brukerettigheter!"
 # D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:362
 # D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:167
 # D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:440
-#, fuzzy
+
 msgid "Set Template Rights"
-msgstr "Angi brukerrettigheter"
+msgstr "Angi temarettigheter"
 
 # D:\web\xampp\htdocs\stable_plus/admin/usercontrol.php:389
-#, fuzzy
 msgid "Update usertemplates successful."
-msgstr "Vellykket oppdatering av brukerrettigheter."
+msgstr "Vellykket oppdatering av brukertema."
 
 # D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:51
 # D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:528
@@ -6068,7 +5947,7 @@ msgstr "Brukergrupper"
 
 # D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:124
 msgid "Set templates that this user may access"
-msgstr ""
+msgstr "Angi tema denne brukeren skal ha tilgang til"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:471
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1595
@@ -6078,33 +5957,29 @@ msgstr ""
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:500
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/templates.php:512
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/templates.php:523
-#, fuzzy
 msgid "Template Name"
-msgstr "Tema:"
+msgstr "Temanavn"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1618
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:1967
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:356
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:374
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/navigator.php:501
-#, fuzzy
 msgid "Allowed"
-msgstr "Tillat lagring?"
+msgstr "Tillat"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:236
 # C:\eclipse\workspace\limesurvey-sourceforge/common.php:239
-#, fuzzy
 msgid "Save Settings"
-msgstr "Innstillinger"
+msgstr "Lagre innstillinger"
 
 # D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:133
 # D:\web\xampp\htdocs\stable_plus/admin/userrighthandling.php:310
 msgid "Full name"
 msgstr "Fullt navn"
 
-#, fuzzy
 msgid "SuperAdministrator"
-msgstr "Administrasjon"
+msgstr "Superadministrator"
 
 msgid "Configurator"
 msgstr "Konfigurator"
@@ -6122,14 +5997,12 @@ msgstr "Rediger tema"
 msgid "Manage Labels"
 msgstr "Behandle etiketter"
 
-#, fuzzy
 msgid "Setting as Administrator Child"
-msgstr "Administrasjon"
+msgstr "Satt som adminisratorbarn"
 
 # D:\web\xampp\htdocs\stable_plus/admin/importgroup.php:599
-#, fuzzy
 msgid "Set Parent successful."
-msgstr "Import delvis vellykket."
+msgstr "Vellykket valg av foreldre."
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:973
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/html.php:996
@@ -6146,7 +6019,7 @@ msgstr "Rediger bruker"
 
 # D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:591
 msgid "Take Ownership"
-msgstr ""
+msgstr "Ta eierskap"
 
 msgid "Name:"
 msgstr "Navn:"
@@ -6277,7 +6150,7 @@ msgstr "Overskriv den eksisterende posten."
 
 # D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:42
 msgid "Import as not finalized answers?"
-msgstr ""
+msgstr "Importer som ikke fullførte spørsmål?"
 
 msgid "Import"
 msgstr "Importere"
@@ -6304,7 +6177,7 @@ msgstr "Ikke oppdater/last denne siden en gang til. Da vil filen importeres på 
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/vvimport.php:240
 msgid "Total records imported:"
-msgstr "Totalt imorterte poster:"
+msgstr "Totalt importerte poster:"
 
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/admin.php:88
 # C:\eclipse\workspace\limesurvey-sourceforge/admin/createdb.php:46
@@ -6370,26 +6243,23 @@ msgstr "Vil du fylle ut denne databasen nå ved å lage nødvendige tabeller?"
 msgid "Database has been successfully upgraded to version "
 msgstr "Data´basen er nå oppgradert til versjon "
 
-#, fuzzy
 msgid "Albanian"
-msgstr "rumensk"
+msgstr "albansk"
 
 # D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:60
 msgid "Basque"
 msgstr "baskisk"
 
-#, fuzzy
 msgid "Bosnian"
-msgstr "rumensk"
+msgstr "bosnisk"
 
 # D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:64
 msgid "Bulgarian"
 msgstr "bulgarsk"
 
 # D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:125
-#, fuzzy
 msgid "Catalan"
-msgstr "italiensk"
+msgstr "katalansk"
 
 # D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:68
 msgid "Chinese (Simplified)"
@@ -6400,9 +6270,8 @@ msgid "Chinese (Traditional - Hong Kong)"
 msgstr "kinesisk (tradisjonell - Hong Kong)"
 
 # D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:72
-#, fuzzy
 msgid "Chinese (Traditional - Taiwan)"
-msgstr "kinesisk (tradisjonell - Hong Kong)"
+msgstr "kinesisk (tradisjonell - Taiwan)"
 
 msgid "Croatian"
 msgstr "kroatisk"
@@ -6423,9 +6292,8 @@ msgstr "nederlandsk"
 msgid "English"
 msgstr "engelsk"
 
-#, fuzzy
 msgid "Estonian"
-msgstr "rumensk"
+msgstr "estisk"
 
 # D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:92
 msgid "Finnish"
@@ -6437,7 +6305,7 @@ msgstr "fransk"
 
 # D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:101
 msgid "Galician"
-msgstr ""
+msgstr "galisisk"
 
 # D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:105
 msgid "German"
@@ -6473,17 +6341,16 @@ msgstr "litauisk"
 
 # D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:163
 msgid "Macedonian"
-msgstr ""
+msgstr "makedonsk"
 
 # D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:137
-#, fuzzy
+
 msgid "Norwegian (Bokmal)"
-msgstr "norsk"
+msgstr "norsk (bokmål)"
 
 # D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:137
-#, fuzzy
 msgid "Norwegian (Nynorsk)"
-msgstr "norsk"
+msgstr "norsk (nynorsk)"
 
 # D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:141
 msgid "Polish"
@@ -6505,7 +6372,7 @@ msgid "Romanian"
 msgstr "rumensk"
 
 # D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:162
-#, fuzzy
+
 msgid "Slovak"
 msgstr "slovakisk"
 
@@ -6522,9 +6389,8 @@ msgid "Spanish"
 msgstr "spansk"
 
 # D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:170
-#, fuzzy
 msgid "Spanish (Mexico)"
-msgstr "spansk"
+msgstr "spansk (Mexico)"
 
 # D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:174
 msgid "Swedish"
@@ -6541,4 +6407,3 @@ msgstr "thai"
 # D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:187
 msgid "Vietnamese"
 msgstr "vietnamesisk"
-
