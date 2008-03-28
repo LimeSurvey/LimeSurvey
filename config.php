@@ -17,7 +17,7 @@
 *  With LimeSurvey v1.70+ the configuration of LimeSurvey was simplified,
 *  Now config.php only contains the basic required settings.
 *  Some optional settings are also set by default in config-defaults.php.
-*  If you want to change an optional paramter, DON'T change values in config-defaults.php!!!
+*  If you want to change an optional parameter, DON'T change values in config-defaults.php!!!
 *  Just copy the parameter into your config.php-file and adjust the value!
 *  All settings in config.php overwrite the default values from config-defaults.php
 */
@@ -34,8 +34,8 @@ $dbprefix           =   "lime_";       // A global prefix that can be added to a
                                        // a database with other applications. Suggested prefix is "lime_"
 
 // File Locations
-$rooturl            =   "http://{$_SERVER['SERVER_NAME']}/limesurvey"; //The root web url for your limesurvey installation.
-$relativeurl        =   "/limesurvey"; // the url relative to you DocumentRoot where is installed LimeSurvey. Usually same as $rooturl without http://{$_SERVER['SERVER_NAME']}. Used by Fcked Filemanager
+$rooturl            =   "http://{$_SERVER['SERVER_NAME']}/limesurvey"; //The root web url for your limesurvey installation (without a trailing slash).
+$relativeurl        =   "/limesurvey"; // the url relative to you DocumentRoot where is installed LimeSurvey (without a trailing slash). Usually same as $rooturl without http://{$_SERVER['SERVER_NAME']}. Used by Fcked Filemanager
 
 $rootdir            =   dirname(__FILE__); // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this setting.
                                            // If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir="C:\Inetpub\wwwroot\limesurvey"!

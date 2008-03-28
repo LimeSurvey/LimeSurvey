@@ -50,20 +50,26 @@ After you upgraded please check the global user rights of each user. There was a
 new superadmin right introduced. The upgrade script is guessing who to make 
 superadmin - so this is not perfect and has to be supervised by YOU. 
 
-HOW TO UPGRADE from a LimeSurvey 1.70  or 1.70+ version to the latest 1.70+
+HOW TO UPGRADE from a LimeSurvey 1.70 or 1.70+ version to the latest 1.70+
 ---------------------------------------------------------------------------
-1. Make backups of your files and database.
-2. Backup your config.php (and your config-ldap.php file if used)
-3. Export all templates that have been edited
-4. Backup your limesurvey/upload resources directory
-5. Delete all old files 
-6. Upload the new version to the same place
+1. Make backups of your files (especially config.php and config-ldap.php)
+   and database.
+2. Export all templates that have been edited
+3. Backup your limesurvey/upload resources directory
+4. Delete all old files 
+5. Upload the new version to the same place
+6. Have a look at the provided config.php in order to check if some new
+   required parameters have been added and add these to your previous
+   config.php file.
 7. Copy your backuped config.php file overwritting the one from the new release 
-   --Have a look to the config-defaults.php file for any new parameters--
-8. Copy your backup upload directory to the new limesurvey/upload directory 
-9. Run the installer in /admin/install/index.php to update the database
-10. Import all your saved templates
-11. Done.
+8. Have a look to the config-defaults.php file for any new parameters that 
+   could suit your setup. If you need to change the default setting, copy the
+   parameter lines to your config.php file and adjust their values accordingly.
+9. Copy your previously backuped 'upload' directory to the new 
+   limesurvey/upload directory 
+10. Run the installer in /admin/install/index.php to update the database
+11. Import all your saved templates
+12. Done.
 
 Thank you to everyone who helped with this new release!
 
