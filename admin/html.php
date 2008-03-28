@@ -460,15 +460,17 @@ if ($surveyid)
 		if ($activated == "N")
         {
             $icontext=$clang->gT("Test This Survey");
+            $icontext2=$clang->gTview("Test This Survey");
         } else
             {
             $icontext=$clang->gT("Execute This Survey");
+            $icontext2=$clang->gTview("Execute This Survey");
             }
 		if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
 		{
 			$surveysummary .= "<a href=\"#\" accesskey='d' onclick=\"window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y', '_blank')\""
 			. "onmouseout=\"hideTooltip()\""
-			. "title=\"".$icontext."\""
+			. "title=\"".$icontext2."\""
 			. "onmouseover=\"showTooltip(event,'$icontext');return false\">"
 			."<img  src='$imagefiles/do.png' title='' "
 			. "name='DoSurvey' align='left' alt='$icontext' /></a>";
@@ -476,7 +478,7 @@ if ($surveyid)
 		} else {
 			$surveysummary .= "<a href=\"#\" accesskey='d' onclick=\"hideTooltip(); document.getElementById('printpopup').style.visibility='hidden'; document.getElementById('testsurvpopup').style.visibility='visible';\""
 			. "onmouseout=\"hideTooltip()\""
-			. "title=\"".$icontext."\""
+			. "title=\"".$icontext2."\""
 			. "onmouseover=\"showTooltip(event,'$icontext');return false\">"
 			."<img  src='$imagefiles/do.png' title='' "
 			. "name='DoSurvey' align='left' alt='$icontext' /></a>";
