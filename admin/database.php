@@ -926,14 +926,6 @@ if(isset($surveyid))
             }
         		if ($_POST['code_'.$codeids[$count]] != "0" && trim($_POST['code_'.$codeids[$count]]) != "" && !in_array($_POST['code_'.$codeids[$count]],$dupanswers))
         		{
-     				$oldcode=false;
-        			$query = "SELECT code from ".db_table_name('answers')." WHERE qid=".$connect->qstr($qid)." and sortorder=".$connect->qstr($orderid)." ";
-     				$result = $connect->SelectLimit($query, 1);
-     				if($result->RecordCount() > 0)
-					{
-						$tmpcode = $result->FetchRow();
-						$oldcode=$tmpcode['code'];
-					}
 					//Sanitize input, strip XSS
 	     			if ($filterxsshtml)
 	     			{
@@ -960,10 +952,14 @@ if(isset($surveyid))
         			{
         				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update answers","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
     				}
-    				if ($oldcode != false)
+    				//if ($oldcode != false)
+				if ($_POST['previouscode_'.$codeids[$count]] != $_POST['code_'.$codeids[$count]])
     				{
     					// Update the Answer code in conditions (updates if row exists right)
-    					$query = "UPDATE ".db_table_name('conditions')." SET value = ".$connect->qstr($_POST['code_'.$codeids[$count]])." where cqid='$qid' and value='$oldcode'";
+    					$query = "UPDATE ".db_table_name('conditions')." SET value = ".$connect->qstr($_POST['code_'.$codeids[$count]])." where cqid='$qid' and value=".$connect->qstr($_POST['previouscode_'.$codeids[$count]]);
+        				$result = $connect->Execute($query);
+					// also update references like @sidXgidXqidAid@
+    					$query = "UPDATE ".db_table_name('conditions')." SET value = '@".$surveyid."X".$gid."X".$qid.db_quote($_POST['code_'.$codeids[$count]])."@' where cqid='$qid' and value='@".$surveyid."X".$gid."X".$qid.db_quote($_POST['previouscode_'.$codeids[$count]])."@'";
         				$result = $connect->Execute($query);
     				}
         		} else {
