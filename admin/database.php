@@ -861,7 +861,13 @@ if(isset($surveyid))
         				{
         					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
         				}
-
+					// Added by lemeur for AutoSaveAll
+					$_POST['code_'.($newsortorder+0)] = $_POST['insertcode'];
+					$_POST['previouscode_'.($newsortorder+0)] = $_POST['insertcode'];
+					$_POST['codeids'] = $_POST['codeids'] . " ".($newsortorder+0);
+					$_POST['answer_'.$baselang.'_'.($newsortorder+0)] = $_POST['insertanswer'];
+					$_POST['sortorderids'] = $_POST['sortorderids'] . " ".$baselang."_".($newsortorder+0);
+					// End lemeur AutoSaveAll
         				// Last code was successfully inserted - found out the next incrementing code and remember it
 						$_SESSION['nextanswercode']=getNextCode($_POST['insertcode']);
                         //Now check if this new code doesn't exist. For now then there is no code inserted.
@@ -877,16 +883,21 @@ if(isset($surveyid))
         					{
         						$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
         					}
+					// Added by lemeur for AutoSaveAll
+					$_POST['answer_'.$anslang.'_'.($newsortorder+0)] = $_POST['insertanswer'];
+					$_POST['sortorderids'] = $_POST['sortorderids'] . " ".$anslang."_".($newsortorder+0);
+					// End lemeur AutoSaveAll
         				}
         		}
 			} else {
 				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Invalid or empty answer code supplied","js")."\")\n //-->\n</script>\n";
 			}
-		break;
+		//break; // Commented by lemeur for AutoSaveAll
 		// Save all answers with one button
 		case $clang->gT("Save All", "unescaped"):
 			//Determine autoids by evaluating the hidden field		
             $sortorderids=explode(' ', trim($_POST['sortorderids']));
+            sort($sortorderids); // // Added by lemeur for AutoSaveAll
             $codeids=explode(' ', trim($_POST['codeids']));
             $count=0;
             $invalidCode = 0;
