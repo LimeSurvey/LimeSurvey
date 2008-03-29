@@ -78,6 +78,10 @@
 		$supportedLanguages['ca']['description'] = $clang->gT('Catalan');
 	    $supportedLanguages['ca']['nativedescription'] = 'Catal&#940;';
 
+        // Welsh
+		$supportedLanguages['cy']['description'] = $clang->gT('Welsh');
+	    $supportedLanguages['cy']['nativedescription'] = 'Cymraeg';
+
         // Chinese (Simplified)
 	    $supportedLanguages['zh-Hans']['description'] = $clang->gT('Chinese (Simplified)');
 	    $supportedLanguages['zh-Hans']['nativedescription'] = '&#31616;&#20307;&#20013;&#25991;';
