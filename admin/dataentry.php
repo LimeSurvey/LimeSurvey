@@ -29,7 +29,8 @@ include_once("login_check.php");
 $language = GetBaseLanguageFromSurveyID($surveyid);
 
 $actsurquery = "SELECT browse_response FROM ".db_table_name("surveys_rights")." WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
-$actsurresult = $connect->Execute($actsurquery) or die($connect->ErrorMsg());
+//$actsurresult = $connect->Execute($actsurquery) or die($connect->ErrorMsg());
+$actsurresult = db_execute_assoc($actsurquery) or die($connect->ErrorMsg());
 $actsurrows = $actsurresult->FetchRow();
 
 if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
