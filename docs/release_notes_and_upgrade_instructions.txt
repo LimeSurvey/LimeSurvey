@@ -73,6 +73,28 @@ HOW TO UPGRADE from a LimeSurvey 1.70 or 1.70+ version to the latest 1.70+
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.70+ Revision 4553 to 4600 (2008/03/30)
+insert feature 01854 (joeschneider)
+fix Bug 1858: Group import results in PHP Parse error (el-matador-69)
+fixed output when no "header" is set for dualscale (joeschneider)
+Fixed #1851: Empty Progress Bar in Template Editor (c_schmitz)
+Fixed issue #1857: Missing No Answer option for array questions and other issues in dataentry when using different languages in admin interface and survey. (c_schmitz)
+Fixed error #1856: DB error when delete tokens table (Postgres) - Patch by doc (c_schmitz)
+Fixed #1861: Notice at importing LimeSurvey Sample Survey (c_schmitz)
+Fixed #1868: Double Tooltips at "Execute this Survey"-Button (lemeur)
+Updated Norwegian Bokmål translation by Pål Monstad (pal -a-t- hkskole -d-o-t-
+no) (c_schmitz)
+Updated Hungarian Translation by Daniel Fuleki (daniel -d-0-t- fuleki -@-t-
+gmail -d-0-tt- com) (c_schmitz)
+Fixed #1815: Unknown Menubar-Object "LimeReplacementFields"/"LimeFitWin" + some information about updates in config files and release-notes (lemeur)
+Updated German Translation (c_schmitz)
+Cleaned up Greek Translation (c_schmitz)
+Fixed #1873: Changing answers codes doesn't update conditions (lemeur)
+Fixed #1797: Entered answers lost when Save All not clicked (lemeur)
+Added a a first Welsh Language stub by Geraint Howell (G -d-o-t- S  -d-o-t-  J -d-o-t-  Howell -@-t- swansea -d-o-t-  ac -d-o-t-  uk) (c_schmitz)
+Spanish translation updated, 1446 strings. (kadejo)
+Updated Norwegian Bokmål translation by Pål Monstad (pl -a-t- hkskole -d-o-t no) (c_schmitz)
+
 
 Changes from 1.70+ Revision 4470 to 4553 (2008/03/24)
 
