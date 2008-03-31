@@ -935,7 +935,7 @@ elseif ($answers == "long")
 				case "!":
 				if (mb_substr($fieldinfo, -5, 5) == "other")
 				{
-					$exportoutput .= $drow[$i];
+					$exportoutput .= strip_tags_full($drow[$i]);
 				}
 				else
 				{
@@ -967,7 +967,7 @@ elseif ($answers == "long")
 				case "Z":
 				if (mb_substr($fieldinfo, -5, 5) == "other")
 				{
-					$exportoutput .= $drow[$i];
+					$exportoutput .= strip_tags_full($drow[$i]);
 				}
 				else
 				{
@@ -981,7 +981,7 @@ elseif ($answers == "long")
 						$fresult = db_execute_assoc($fquery) or die("ERROR:".$fquery."\n".$qq."\n".htmlspecialchars($connect->ErrorMsg()));
 						while ($frow = $fresult->FetchRow())
 						{
-							$exportoutput .= $frow['title'];
+							$exportoutput .= strip_tags_full($frow['title']);
 						}
 					}
 				}
@@ -1016,11 +1016,11 @@ elseif ($answers == "long")
 				case "P":
 				if (mb_substr($fieldinfo, -5, 5) == "other")
 				{
-					$exportoutput .= "$drow[$i]";
+					$exportoutput .= strip_tags_full($drow[$i]);
 				}
 				elseif (mb_substr($fieldinfo, -7, 7) == "comment")
 				{
-					$exportoutput .= "$drow[$i]";
+                    $exportoutput .= strip_tags_full($drow[$i]);
 				}
 				else
 				{
@@ -1069,8 +1069,8 @@ elseif ($answers == "long")
 				    if ($fresult) 
 				    {
                         $frow=$fresult->FetchRow();
-					    $exportoutput .= $frow['title'];
-                        $labelscache[$flid.'|'.$explang.'|'.$drow[$i]]=$frow['title'];
+					    $exportoutput .= strip_tags_full($frow['title']);
+                        $labelscache[$flid.'|'.$explang.'|'.$drow[$i]]=strip_tags_full($frow['title']);
 				    }
                 }
                 else 
@@ -1116,7 +1116,7 @@ elseif ($answers == "long")
 				else
 				{
 					if ($type == "csv")
-					{$exportoutput .= str_replace("\r\n", "\n", str_replace("\"", "\"\"", $drow[$i]));}
+					{$exportoutput .= str_replace("\r\n", "\n", str_replace("\"", "\"\"", strip_tags_full($drow[$i])));}
 					else
 					{$exportoutput .= str_replace("\r\n", " ", $drow[$i]);}
 				}

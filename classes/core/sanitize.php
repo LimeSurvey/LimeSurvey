@@ -199,7 +199,13 @@ function sanitize_int($integer, $min='', $max='')
 {
 	$int = ereg_replace("[^0-9]", "", $integer);
 	if((($min != '') && ($int < $min)) || (($max != '') && ($int > $max)))
-	return FALSE;
+    {
+	    return FALSE;
+    }
+    if ($int=='') 
+    {
+        return null;
+    }
 	return $int;
 }
 

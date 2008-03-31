@@ -63,8 +63,10 @@ else
 			$deactivateresult = $connect->Execute($deactivatequery) or die ("Could not rename the old sequence for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$_POST['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
 	        $setsequence="ALTER TABLE ".db_table_name_nq($tnewtable)." ALTER COLUMN tid SET DEFAULT nextval('".db_table_name_nq($tnewtable)."_tid_seq'::regclass);";
 			$deactivateresult = $connect->Execute($setsequence) or die ("Could not alter the field 'tid' to point to the new sequence name for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_POST['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
-	    }
-
+	    	$setidx="ALTER INDEX ".db_table_name_nq($toldtable)."_idx RENAME TO ".db_table_name_nq($tnewtable)."_idx;";
+			$deactivateresult = $connect->Execute($setidx) or die ("Could not alter the index for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
+		
+		}
 	}
 
     // IF there are any records in the saved_control table related to this survey, they have to be deleted
