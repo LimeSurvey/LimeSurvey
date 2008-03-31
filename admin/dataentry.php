@@ -1812,7 +1812,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						{
 							$dataentryoutput .= "<option value='-oth-'>".$blang->gT("Other")."</option>\n";
 						}
-						$dataentryoutput .= "\t\t\t</select>yyy\n";
+						$dataentryoutput .= "\t\t\t</select>\n";
 						if ($fother == "Y")
 						{
 							$dataentryoutput .= "\t\t\t"
