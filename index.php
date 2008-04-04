@@ -1024,11 +1024,26 @@ function checkconfield($value)
 				$addon=0;
 				foreach($cqval as $cqv)
 				{//Go through each condition
+					// Replace @SGQA@ condition values
+					// By corresponding value
+					if (ereg('^@([0-9]+X[0-9]+X[^@]+)@',$cqv["matchvalue"], $targetconditionfieldname))
+					{
+						$cqv["matchvalue"] = $_SESSION[$targetconditionfieldname[1]];
+					}
+					// Use == as default operator
+					if (trim($cqv['method'])=='') {$cqv['method']='==';}
 					if($cqv['cfieldname'] == $con)
 					{
-						if (isset($_SESSION[$cqv['matchfield']]) && eval('if ($_SESSION[$cqv["matchfield"]]'.$cqv['matchmethod'].' $cqv["matchvalue"]) {return true;} else {return false;}'))
-						{//plug successful matches into appropriate container
-							$addon=1;
+						if ($cqv['matchmethod'] != "RX")
+						{
+							if (isset($_SESSION[$cqv['matchfield']]) && eval('if ($_SESSION[$cqv["matchfield"]]'.$cqv['matchmethod'].' $cqv["matchvalue"]) {return true;} else {return false;}'))
+							{//plug successful matches into appropriate container
+								$addon=1;
+							}
+						}
+						elseif (ereg($cqv["matchvalue"],$_SESSION[$cqv["matchfield"]]))
+						{
+								$addon=1;
 						}
 					}
 				}
@@ -1036,7 +1051,11 @@ function checkconfield($value)
 			}
 			if($total<count($container))
 			{
+				// Reset the calue in SESSION
 				$_SESSION[$value]="";
+				// Simulate a modfield on this answer
+				// in order to have save.php overwrite the value	
+				$_POST['modfields'] = $_POST['modfields']."|".$value;
 			}
 			unset($cqval);
 			unset($container);
