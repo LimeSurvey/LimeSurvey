@@ -40,11 +40,17 @@ $relativeurl        =   "/limesurvey"; // the url relative to you DocumentRoot w
 $rootdir            =   dirname(__FILE__); // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this setting.
                                            // If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir="C:\Inetpub\wwwroot\limesurvey"!
                                            // Some IIS installations also require to use forward slashes instead of backslashes, e.g.  $rootDir="C:/Inetpub/wwwroot/limesurvey"!
-                                          // If you use OS/2 this must be the complete rootdir with FORWARD slashes e.g.: $rootDir="c:/limesurvey";!
+                                           // If you use OS/2 this must be the complete rootdir with FORWARD slashes e.g.: $rootDir="c:/limesurvey";!
 // Site Setup
 $sitename           =   "LimeSurvey";     // The official name of the site (appears in the Window title)
 
 $defaultuser        =   "admin";          // This is the default username when LimeSurvey is installed
 $defaultpass        =   "password";       // This is the default password for the default user when LimeSurvey is installed
+
+// Email Settings
+
+$siteadminemail     =   "your@email.org"; // The default email address of the site administrator
+$siteadminbounce    =   "your@email.org"; // The default email address used for error notification of sent messages for the site administrator (Return-Path)
+$siteadminname      =   "Your Name";      // The name of the site administrator
 
 ?>
