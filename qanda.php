@@ -1002,7 +1002,8 @@ function do_list_radio($ia)
 	}
 	$ansresult = db_execute_assoc($ansquery) or die("Couldn't get answers<br />$ansquery<br />".htmlspecialchars($connect->ErrorMsg()));
 	$anscount = $ansresult->RecordCount();
-	if ((isset($other) && $other=="Y") || ($ia[6] != "Y" && $shownoanswer == 1)) {$anscount++;} //Count up for the Other answer
+	if (isset($other) && $other=="Y") {$anscount++;} //Count up for the Other answer
+	if ($ia[6] != "Y" && $shownoanswer == 1) {$anscount++;} //Count up if "No answer" is showing
 	$divider="";
 	$maxrows=0;
 	if ($dcols >0 && $anscount >= $dcols) //Break into columns
