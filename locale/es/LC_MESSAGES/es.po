@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-03-30 09:00+0200\n"
-"PO-Revision-Date: 2008-03-30 21:06-0600\n"
+"PO-Revision-Date: 2008-04-07 13:13-0600\n"
 "Last-Translator: Carlos Juan Martin Perez <cmartin@una.ac.cr>\n"
 "Language-Team:  <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1919,7 +1919,7 @@ msgstr "Exportar Encuesta"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:649
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:650
 msgid "Set Assessment Rules"
-msgstr "Fijar reglas de evaluación"
+msgstr "Establecer reglas de evaluación"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:663
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:664
@@ -4357,7 +4357,7 @@ msgstr "Sin respuesta"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:740
 msgid "Only show question {QID} IF"
-msgstr "Sólo mostrar la respuesta {QID} SI"
+msgstr "Sólo mostrar la pregunta {QID} SI"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:763
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:983
