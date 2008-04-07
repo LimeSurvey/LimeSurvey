@@ -961,6 +961,14 @@ function getuserlist($outputformat='fullinfoarray')
 	}
 
 	$uresult = db_execute_assoc($uquery);
+    
+    if ($uresult->RecordCount()==0)  
+    //user is not in a group and usercontrolSameGroupPolicy is activated - at least show his own userinfo
+    {
+            $uquery = "SELECT u.* FROM ".db_table_name('users')." AS u WHERE u.uid=".$_SESSION['loginID'];
+            $uresult = db_execute_assoc($uquery);
+    }
+
 	$userlist = array();
 	$userlist[0] = "Reserved for logged in user";
 	while ($srow = $uresult->FetchRow())
