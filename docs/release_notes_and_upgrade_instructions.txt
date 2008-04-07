@@ -73,7 +73,25 @@ HOW TO UPGRADE from a LimeSurvey 1.70 or 1.70+ version to the latest 1.70+
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.70+ Revision 4600 to 4629 (2008/04/07)
+
+Fixed #1866: Error at DataEntry for user with little rights (lemeur)
+Spanish language updated, welcome to welsh! (kadejo)
+Fixed #1878: Cannot send reminder e-mail [postgres] (c_schmitz)
+Fixed #1856: DB error when delete tokens table (Postgres) - Patch kindly provided by doc (c_schmitz)
+Fixed #1807 - Can't export to excel when using certain question types and special chars (c_schmitz)
+Small update to Welsh locale file (g_mawr)
+Updated Norwegian Bokmål translation by  Michael Barakat (bmichel -a-t- gmail -d-o-t- com) (c_schmitz)
+Updated Dutch translation by Hendri Wessels (hendriwessels -a-t- hotmail -d-o-t-com) (c_schmitz)
+Fixed #1836: Option deletenonvalues doesn't work on most cases (lemeur)
+fixed bug 01891: Clear "no answer" when selecting second label using "dual scale" (joeschneider)
+added the following parameters back into config.php: $siteadminemail; $siteadminbounce; $siteadminname (el-matador-69)
+Fixed bug #01833 - incorrect columns displayed when "other" and "No answer" displayed. (jcleeland)
+Fixed #1863: Users unable to change their own password (c_schmitz)
+
+
 Changes from 1.70+ Revision 4553 to 4600 (2008/03/30)
+
 insert feature 01854 (joeschneider)
 fix Bug 1858: Group import results in PHP Parse error (el-matador-69)
 fixed output when no "header" is set for dualscale (joeschneider)
