@@ -1765,7 +1765,7 @@ function do_multiplechoice($ia)
 	{
 		$maxanswscript .= "\t\t\t\t\tif (count > max)\n"
 			. "\t\t\t\t\t\t{\n"
-			. "\t\t\t\t\t\talert('".$clang->gT("Please choose at most","js")." ' + max + ' ".$clang->gT("answer(s) for question","js")." \"".javascript_escape($ia[3])."\"');\n"
+			. "\t\t\t\t\t\talert('".$clang->gT("Please choose at most","js")." ' + max + ' ".$clang->gT("answer(s) for question","js")." \"".javascript_escape(html_entity_decode_php4($ia[3]))."\"');\n"
 			. "\t\t\t\t\t\tif (me.type == 'checkbox') {me.checked = false;}\n"
 			. "\t\t\t\t\t\tif (me.type == 'text') {\n"
 			. "\t\t\t\t\t\t\tme.value = '';\n"
@@ -1937,7 +1937,7 @@ function do_multiplechoice_withcomments($ia)
 	{
 		$maxanswscript .= "\t\t\t\t\tif (count > max)\n"
 			. "\t\t\t\t\t\t{\n"
-			. "\t\t\t\t\t\talert('".$clang->gT("Please choose at most","js")." ' + max + ' ".$clang->gT("answer(s) for question","js")." \"".javascript_escape($ia[3])."\"');\n"
+			. "\t\t\t\t\t\talert('".$clang->gT("Please choose at most","js")." ' + max + ' ".$clang->gT("answer(s) for question","js")." \"".javascript_escape(html_entity_decode_php4($ia[3]))."\"');\n"
 			. "\t\t\t\t\t\tif (me.type == 'checkbox') {me.checked = false;}\n"
 			. "\t\t\t\t\t\tif (me.type == 'text') {\n"
 			. "\t\t\t\t\t\t\tme.value = '';\n"
