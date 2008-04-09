@@ -1378,23 +1378,23 @@ function sendsubmitnotification($sendnotification)
 	global $dbprefix, $clang;
 	global $sitename, $homeurl, $surveyid, $publicurl, $maildebug;
 
-	$subject = $clang->gT("Answer Submission for Survey")." ".$thissurvey['name'];
+	$subject = $clang->gT("Answer Submission for Survey","unescaped")." ".$thissurvey['name'];
 
-	$message = $clang->gT("Survey Submitted")." - {$thissurvey['name']}\n"
-	. $clang->gT("A new response was entered for your survey")."\n\n";
+	$message = $clang->gT("Survey Submitted","unescaped")." - {$thissurvey['name']}\n"
+	. $clang->gT("A new response was entered for your survey","unescaped")."\n\n";
 	if ($thissurvey['allowsave'] == "Y" && isset($_SESSION['scid']))
 	{
-		$message .= $clang->gT("Click the following link to reload the survey:")."\n";
+		$message .= $clang->gT("Click the following link to reload the survey:","unescaped")."\n";
 		$message .= "  $publicurl/index.php?sid=$surveyid&loadall=reload&scid=".$_SESSION['scid']."&loadname=".urlencode($_SESSION['holdname'])."&loadpass=".urlencode($_SESSION['holdpass'])."\n\n";
 	}
 
-	$message .= $clang->gT("Click the following link to see the individual response:")."\n"
+	$message .= $clang->gT("Click the following link to see the individual response:","unescaped")."\n"
 	. "  $homeurl/admin.php?action=browse&sid=$surveyid&subaction=id&id=".$_SESSION['srid']."\n\n"
 	// Add link to edit individual responses from notification email
-	. $clang->gT("Click the following link to edit the individual response:")."\n"
+	. $clang->gT("Click the following link to edit the individual response:","unescaped")."\n"
 
 	. "  $homeurl/admin.php?action=dataentry&sid=$surveyid&subaction=edit&surveytable=survey_$surveyid&id=".$_SESSION['srid']."\n\n"
-	. $clang->gT("View statistics by clicking here:")."\n"
+	. $clang->gT("View statistics by clicking here:","unescaped")."\n"
 	. "  $homeurl/admin.php?action=statistics&sid=$surveyid\n\n";
 	if ($sendnotification > 1)
 	{ //Send results as well. Currently just bare-bones - will be extended in later release
@@ -1431,7 +1431,7 @@ function sendsubmitnotification($sendnotification)
 	{
 		foreach ($recips as $rc)
 		{
-			if (!MailTextMessage($message, $subject, trim($rc), $from, $sitename))
+			if (!MailTextMessage($message, $subject, trim($rc), $from, $sitename, false, getBounceEmail($surveyid)))
             {
                 if ($debug>0) {echo '<br />Email could not be sent. Reason: '.$maildebug.'<br/>';}
             }
@@ -1439,7 +1439,7 @@ function sendsubmitnotification($sendnotification)
 	}
 	else
 	{
-		if (!MailTextMessage($message, $subject, $thissurvey['adminemail'], $from, $sitename))
+		if (!MailTextMessage($message, $subject, $thissurvey['adminemail'], $from, $sitename, false, getBounceEmail($surveyid)))
         {
             if ($debug>0) {echo '<br />Email could not be sent. Reason: '.$maildebug.'<br/>';}
         }
@@ -1459,17 +1459,17 @@ function submitfailed($errormsg)
 	if ($thissurvey['adminemail'])
 	{
 		$completed .= $clang->gT("Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point.")."<br /><br />\n";
-		$email=$clang->gT("An error occurred saving a response to survey id")." ".$thissurvey['name']." - $surveyid\n\n";
-		$email .= $clang->gT("DATA TO BE ENTERED").":\n";
+		$email=$clang->gT("An error occurred saving a response to survey id","unescaped")." ".$thissurvey['name']." - $surveyid\n\n";
+		$email .= $clang->gT("DATA TO BE ENTERED","unescaped").":\n";
 		foreach ($_SESSION['insertarray'] as $value)
 		{
 			$email .= "$value: {$_SESSION[$value]}\n";
 		}
-		$email .= "\n".$clang->gT("SQL CODE THAT FAILED").":\n"
+		$email .= "\n".$clang->gT("SQL CODE THAT FAILED","unescaped").":\n"
 		. "$subquery\n\n"
-		. $clang->gT("ERROR MESSAGE").":\n"
+		. $clang->gT("ERROR MESSAGE","unescaped").":\n"
 		. $errormsg."\n\n";
-		MailTextMessage($email, $clang->gT("Error saving results"), $thissurvey['adminemail'], $thissurvey['adminemail'], "LimeSurvey");
+		MailTextMessage($email, $clang->gT("Error saving results","unescaped"), $thissurvey['adminemail'], $thissurvey['adminemail'], "LimeSurvey", false, getBounceEmail($surveyid));
 		echo "<!-- EMAIL CONTENTS:\n$email -->\n";
 		//An email has been sent, so we can kill off this session.
 		session_unset();

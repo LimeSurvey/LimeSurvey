@@ -282,16 +282,16 @@ function savedcontrol()
 				// --> START ENHANCEMENT
 				$subject=$clang->gT("Saved Survey Details") . " - " . $thissurvey['name'];
 				// <-- END ENHANCEMENT
-				$message=$clang->gT("You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off.");
+				$message=$clang->gT("You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off.","unescaped");
 				$message.="\n\n".$thissurvey['name']."\n\n";
-				$message.=$clang->gT("Name").": ".$_POST['savename']."\n";
-				$message.=$clang->gT("Password").": ".$_POST['savepass']."\n\n";
-				$message.=$clang->gT("Reload your survey by clicking on the following URL:").":\n";
+				$message.=$clang->gT("Name","unescaped").": ".$_POST['savename']."\n";
+				$message.=$clang->gT("Password","unescaped").": ".$_POST['savepass']."\n\n";
+				$message.=$clang->gT("Reload your survey by clicking on the following URL:","unescaped").":\n";
 				$message.=$publicurl."/index.php?sid=$surveyid&loadall=reload&scid=".$scid."&loadname=".urlencode($_POST['savename'])."&loadpass=".urlencode($_POST['savepass']);
 
 				if (returnglobal('token')){$message.="&token=".returnglobal('token');}
 				$from="{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
-				if (MailTextMessage($message, $subject, $_POST['saveemail'], $from, $sitename))
+				if (MailTextMessage($message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid)))
 				{
 					$emailsent="Y";
 				}
