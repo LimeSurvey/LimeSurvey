@@ -325,7 +325,11 @@ echo "\t</script>\n\n";
 // <-- END NEW FEATURE - SAVE
 
 echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"))."\n";
-echo templatereplace(file_get_contents("$thistpl/privacy.pstpl"))."\n";
+
+if ($thissurvey['private'] == "Y")
+{
+	echo templatereplace(file_get_contents("$thistpl/privacy.pstpl"))."\n";
+}
 
 echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
 ."\t<script type='text/javascript'>\n"
