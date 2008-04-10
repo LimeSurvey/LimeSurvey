@@ -109,7 +109,7 @@ elseif ($action == "dumpdb")
   }      
 elseif ($action == "dumplabel") 
   { 
-      if ($_SESSION['USER_RIGHT_MANAGE_TEMPLATE']==1)  {include("dumplabel.php");}
+      if ($_SESSION['USER_RIGHT_MANAGE_LABEL']==1)  {include("dumplabel.php");}
         else { include("access_denied.php");}
   }      
 elseif ($action == "exportlabelresources") 
