@@ -897,7 +897,7 @@ if(isset($surveyid))
 		case $clang->gT("Save All", "unescaped"):
 			//Determine autoids by evaluating the hidden field		
             $sortorderids=explode(' ', trim($_POST['sortorderids']));
-            sort($sortorderids); // // Added by lemeur for AutoSaveAll
+            natsort($sortorderids); // // Added by lemeur for AutoSaveAll
             $codeids=explode(' ', trim($_POST['codeids']));
             $count=0;
             $invalidCode = 0;
