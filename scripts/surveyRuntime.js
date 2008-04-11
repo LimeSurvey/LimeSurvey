@@ -81,9 +81,9 @@ function cellAdapter(src)
 		//Some cells contain hidden fields
 		for (i = 0; i < eChildren.length; i++)
 		{
-			if (eChildren[i].type == 'radio' && eChild == null)
+			if ( (eChildren[i].type == 'radio' || eChildren[i].type == 'checkbox') && eChild == null)
 				eChild = eChildren[i];
-			else if (eChildren[i].type == 'radio' && eChild != null)
+			else if ( (eChildren[i].type == 'radio' || eChildren[i].type == 'checkbox') && eChild != null)
 			{
 				//A cell with multiple radio buttons; unhandled
 				return;
