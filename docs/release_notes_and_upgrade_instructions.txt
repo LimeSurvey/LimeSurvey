@@ -73,6 +73,31 @@ HOW TO UPGRADE from a LimeSurvey 1.70 or 1.70+ version to the latest 1.70+
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.70+ Revision 4629 to 4648 (2008/04/14)
+
+Just a few spanish language adjustments. By the way, Latin- american version will be coming soon, thanks to Francisco Bricio. (kadejo)
+Fixed #1853: wrong characters in IE alert windows (lemeur)
+Fixed #1906: Problem of apostrophes in the some e-mail (lemeur)
+Fixed #1904 (workaround): IE: Opening LimeReplacementField-Window isn't possible - Javascript-Error (lemeur)
+Fixed #01905: Editing List (Radio) Answers - Code & Answer values are no longer mapped once new answer exceeds 9 (thanks to Endymion92)
+Fixed #1907: User unable to export a label set even though they have permision to (lemeur)
+Fixed #1902: Privacy Message: Always the same text "This is an anonymous survey" (lemeur)
+Fixed Issue #1911 -must test against IE/Safari -- I don't have these at home
+(awarren)
+IE throws a nonsensical error when it receives an HTTP payload
+matching all of the following conditions
+ a) Over SSL
+ b) with a Pragma: no-cache
+ c) a mime-type which is not known on the receiving system
+ d) User has the "Do not save encrypted pages to disk" option set
+        (this is the default)
+ So I've changed Pragma: no-cache to Pragma: cache, and/or inserted the
+ directive to places
+ where non standard mime types are used (application/download).  If this is
+ problematic, we
+ can change the mime type to text/plain for the CSV/VV exports. (awarren)
+
+
 Changes from 1.70+ Revision 4600 to 4629 (2008/04/07)
 
 Fixed #1866: Error at DataEntry for user with little rights (lemeur)
