@@ -107,7 +107,8 @@ if ($subaction == "export" && ( $sumrows5['export'] || $_SESSION['USER_RIGHT_SUP
 
 	header("Content-Disposition: attachment; filename=tokens_".$surveyid.".csv");
 	header("Content-type: text/comma-separated-values; charset=UTF-8");
-	Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+	header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+	header("Pragma: cache");
 
 	$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
 	$bquery .= " ORDER BY tid";

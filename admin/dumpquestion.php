@@ -111,8 +111,8 @@ header("Content-Type: application/download");
 header("Content-Disposition: attachment; filename=$fn");
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-header("Pragma: no-cache");                          // HTTP/1.0
+header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+header("Pragma: cache");                          // HTTP/1.0
 echo $dumphead, $qdump, $adump, $lsdump, $ldump, $qadump;
 exit;
 ?>

@@ -65,7 +65,8 @@ elseif (isset($surveyid) && $surveyid)
 	//Export is happening
 	header("Content-Disposition: attachment; filename=vvexport_$surveyid.csv");
 	header("Content-type: text/comma-separated-values; charset=UTF-8");
-	Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+	header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+	header("Pragma: cache");
 	$s="\t";
 
 	$fieldmap=createFieldMap($surveyid, "full");
