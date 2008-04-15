@@ -689,15 +689,15 @@ if (!$subaction &&
 //	."\t\t\t<ul><li><a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=clearinvites' onclick='return confirm(\""
 //	.$clang->gT("Are you really sure you want to reset all invitation records to NO?")."\")'>".$clang->gT("Set all entries to 'No invitation sent'.")."</a></li>\n"
 	."\t\t\t<ul><li><a href='#' onclick=\"if( confirm('"
-	.$clang->gT("Are you really sure you want to reset all invitation records to NO?")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=clearinvites")."}\">".$clang->gT("Set all entries to 'No invitation sent'.")."</a></li>\n"
+	.$clang->gT("Are you really sure you want to reset all invitation records to NO?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=clearinvites")."}\">".$clang->gT("Set all entries to 'No invitation sent'.")."</a></li>\n"
 //	."\t\t\t<li><a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=cleartokens' onclick='return confirm(\""
 //	.$clang->gT("Are you sure you want to delete all unique token numbers?")."\")'>".$clang->gT("Delete all unique token numbers")."</a></li>\n"
 	."\t\t\t<li><a href='#' onclick=\"if ( confirm('"
-	.$clang->gT("Are you sure you want to delete all unique token numbers?")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=cleartokens")."}\">".$clang->gT("Delete all unique token numbers")."</a></li>\n"
+	.$clang->gT("Are you sure you want to delete all unique token numbers?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=cleartokens")."}\">".$clang->gT("Delete all unique token numbers")."</a></li>\n"
 //	."\t\t\t<li><a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall' onclick='return confirm(\""
 //	.$clang->gT("Are you really sure you want to delete ALL token entries?")."\")'>".$clang->gT("Delete all token entries")."</a></li>\n";
 	."\t\t\t<li><a href='#' onclick=\" if (confirm('"
-	.$clang->gT("Are you really sure you want to delete ALL token entries?")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall")."}\">".$clang->gT("Delete all token entries")."</a></li>\n";
+	.$clang->gT("Are you really sure you want to delete ALL token entries?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall")."}\">".$clang->gT("Delete all token entries")."</a></li>\n";
 	$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
 	$bresult = db_select_limit_assoc($bquery, 1) or die($clang->gT("Error")." counting fields<br />".htmlspecialchars($connect->ErrorMsg()));
 	$bfieldcount=$bresult->FieldCount();
