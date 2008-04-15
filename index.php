@@ -1297,7 +1297,7 @@ function submittokens()
 	global $sitename, $thistpl, $clang;
 
 	// Put date into sent and completed
-	
+
 	$today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);     
 	$utquery = "UPDATE {$dbprefix}tokens_$surveyid\n";
 	if (bIsTokenCompletedDatestamped($thissurvey))
@@ -1314,10 +1314,10 @@ function submittokens()
 
 	// TLR change to put date into sent and completed
 	$cnfquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." WHERE token='".db_quote($_POST['token'])."' AND completed!='N' AND completed!=''";
-  
+
 	$cnfresult = db_execute_assoc($cnfquery);
 	$cnfrow = $cnfresult->FetchRow();
-    if (isset($cnfrow))
+	if (isset($cnfrow))
 	{
 		$from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
 		$to = $cnfrow['email'];
@@ -1334,41 +1334,45 @@ function submittokens()
 
 		$subject=Replacefields($subject, $fieldsarray);
 
-        $subject=html_entity_decode_php4($subject, ENT_QUOTES, "UTF-8");
+		$subject=html_entity_decode_php4($subject, ENT_QUOTES, "UTF-8");
 
-        if (getEmailFormat($surveyid) == 'html')
-        {
-            $ishtml=true;
-        }
-        else
-        {
-            $ishtml=false;
-        }           
-        
+		if (getEmailFormat($surveyid) == 'html')
+		{
+			$ishtml=true;
+		}
+		else
+		{
+			$ishtml=false;
+		}           
+
 		if ($thissurvey['email_confirm'])
 		{
 			$message=$thissurvey['email_confirm'];
-            $message=Replacefields($message, $fieldsarray);
-            
-            if (!$ishtml)
-            {
-                $message=strip_tags(br2nl(html_entity_decode_php4($message, ENT_QUOTES, "UTF-8")));
-            }
-            else 
-            {
-                $message=html_entity_decode_php4($message,ENT_QUOTES, "UTF-8");
-            }
+			$message=Replacefields($message, $fieldsarray);
+
+			if (!$ishtml)
+			{
+				$message=strip_tags(br2nl(html_entity_decode_php4($message, ENT_QUOTES, "UTF-8")));
+			}
+			else 
+			{
+				$message=html_entity_decode_php4($message,ENT_QUOTES, "UTF-8");
+			}
 		}
 		else
 		{
 			//Get the default email_confirm from the default language file
 			// Todo: This can't be right
 			$message = conditional_nl2br($clang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}"),$ishtml);
+			$message=Replacefields($message, $fieldsarray);
 		}
 
 		//Only send confirmation email if there is a valid email address
-        
-		if (validate_email($cnfrow['email'])) {MailTextMessage($message, $subject, $to, $from, $sitename,$ishtml);}
+
+		if (validate_email($cnfrow['email']))
+		{
+			MailTextMessage($message, $subject, $to, $from, $sitename,$ishtml);
+		}
 	}
 }
 
