@@ -175,7 +175,8 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 			}
 			if (trim($cqrows['method'])=='') {$cqrows['method']='==';}
 			if (!isset($_SESSION[$conditionfieldname]) || 
-				!$_SESSION[$conditionfieldname] || 
+//				!$_SESSION[$conditionfieldname] || 
+				$_SESSION[$conditionfieldname] == '' || 
 				$_SESSION[$conditionfieldname] == ' ')
 			{
 				$currentvalue="NULL";
