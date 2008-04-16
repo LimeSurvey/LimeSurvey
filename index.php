@@ -1031,7 +1031,7 @@ function checkconfield($value)
 						$cqv["matchvalue"] = $_SESSION[$targetconditionfieldname[1]];
 					}
 					// Use == as default operator
-					if (trim($cqv['method'])=='') {$cqv['method']='==';}
+					if (trim($cqv['matchmethod'])=='') {$cqv['matchmethod']='==';}
 					if($cqv['cfieldname'] == $con)
 					{
 						if ($cqv['matchmethod'] != "RX")
