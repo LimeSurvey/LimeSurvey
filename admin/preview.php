@@ -56,7 +56,7 @@ echo "<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
 			}
 	//-->
 	</script>";
-echo "<form method='post' action='/limesurvey/index.php' id='limesurvey' name='limesurvey'>\n";
+echo "<form method='post' action='index.php' id='limesurvey' name='limesurvey'>\n";
 $question="<label for='$answers[0][7]'>" . $answers[0][0] . "</label>";
 $answer=$answers[0][1];
 $help=$answers[0][2];
