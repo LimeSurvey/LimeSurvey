@@ -1,5 +1,5 @@
 # LimeSurvey Survey Dump
-# DBVersion 111
+# DBVersion 126
 # This is a dumped survey from the LimeSurvey Script
 # http://www.limesurvey.org/
 # Do not change this header!
@@ -7,97 +7,97 @@
 #
 # SURVEYS TABLE
 #
-"sid","owner_id","admin","active","expires","adminemail","private","faxto","format","template","url","language","additional_languages","datestamp","usecookie","notification","allowregister","attribute1","attribute2","allowsave","autonumber_start","autoredirect","allowprev","ipaddr","useexpiry","refurl","datecreated"
-"40","1","Administratorname","N",null,"admin@localhost","Y","000-00000000","G","default","","en","","Y","N","0","N","","","Y","0","N","Y","N","N","N",""
+"sid","owner_id","admin","active","expires","adminemail","private","faxto","format","template","url","language","additional_languages","datestamp","usecookie","notification","allowregister","attribute1","attribute2","allowsave","printanswers","autonumber_start","autoredirect","allowprev","ipaddr","useexpiry","refurl","datecreated","listpublic","htmlemail","tokenanswerspersistence","usecaptcha","bounce_email"
+"40","1","Administratorname","N","1980-01-01","admin@localhost","Y","000-00000000","G","default","","en","","Y","N","0","N","","","Y","N","0","N","Y","N","N","N","2008-04-21","N","N","N","N","admin@localhost"
 
 #
 # GROUPS TABLE
 #
 "gid","sid","group_name","group_order","description","language"
-"14","40","Single Choice Questions","8","","en"
-"15","40","Multiple Choice Questions","7","This group consist only of Multiple Choice questions.","en"
-"11","40","Array Questions","0","This is a group with the different array questions.","en"
-"12","40","Text Questions","9","","en"
-"13","40","Mask Questions","6","This is the group description.","en"
+"23","40","Array Questions","0","This is a group with the different array questions.","en"
+"24","40","Text Questions","5","","en"
+"25","40","Mask Questions","2","This is the group description.","en"
+"26","40","Single Choice Questions","4","","en"
+"27","40","Multiple Choice Questions","3","This group consist only of Multiple Choice questions.","en"
 
 #
 # QUESTIONS TABLE
 #
-"qid","sid","gid","type","title","question","preg","help","other","mandatory","lid","question_order","language"
-"72","40","15","M","M","Type M - Multiple Options Question","","This is a type M multiple Options questions.","Y","N","0","1","en"
-"68","40","14","L","L","Type L - List Radio question","","","Y","N","0","3","en"
-"69","40","14","5","5","Type 5 - 5 point choice","","Help2","N","N","0","4","en"
-"70","40","14","!","!","Type ! - List Dropdown Question","","","Y","N","0","5","en"
-"71","40","15","P","P","Type P: Multiple Options Question with Comments ","","This is a Multiple Options Question with the ability to comment it.","Y","N","0","0","en"
-"66","40","14","W","W","Type W - List Flexible Labels Dropdown question type","","This question is reusing the same label set as some of the array questions.","N","N","7","1","en"
-"67","40","14","O","O","Type O : List with Comment Question","","","N","N","0","2","en"
-"56","40","12","T","T","Type T - Long Text Question?","","Helptext","N","N","0","1","en"
-"54","40","11","H","H","Type H - Array Flexible Labels by Column question","","This is the same question type as before just the orientation has changed","N","N","7","5","en"
-"65","40","14","Z","Z","Type Z - List Flexible Labels Dropdown","","This question is reusing the same label set as some of the array questions.","N","N","7","0","en"
-"63","40","13","Y","Y","Type Y - Yes/No Question","","","N","N","0","4","en"
-"64","40","13","D","D","Type D - Date question?","","Helptext","N","N","0","5","en"
-"61","40","13","N","N","Type N - Numerical Input Question","","","N","N","0","2","en"
-"62","40","13","R","R","Type R - Ranking Question","","","N","N","0","3","en"
-"57","40","12","S","S","Type S - Short Free Text?","","helptext","N","N","0","2","en"
-"58","40","12","U","U","Type U - Huge Free text?","","Helptext","N","N","0","3","en"
-"59","40","13","X","X","Type X - Boilerplate question","","This is the boilerplate question type. It's not so much a question but a simple text display.","N","Y","0","0","en"
-"60","40","13","G","G","Type G - Gender question?","","This is a standard question aksing for the participiant's sex.","N","N","0","1","en"
-"49","40","11","A","A","Type A - Array 5 Point Choice Question","","","N","N","0","0","en"
-"50","40","11","B","B","Type B - Array 10 point choice Question","","This is the help text for this question. ","N","N","0","1","en"
-"51","40","11","C","C","Type C - Array Yes/No/Uncertain Question","","","N","N","0","2","en"
-"52","40","11","E","E","Type E - Array Increase/Same/Decrease Question","","This is the questions help text.","N","N","0","3","en"
-"55","40","12","Q","Q","Type Q - Multiple Short Text Question","","This is a Multiple Short Text Question","N","N","0","0","en"
-"53","40","11","F","F","Type F - Array using Flexible Labels question","","This is a array using a flexible label set. Flexible labels sets can be created with as many answer as you like to. We created only one for this survey that will be re-used over and over.","N","N","7","4","en"
+"qid","sid","gid","type","title","question","preg","help","other","mandatory","lid","question_order","language","lid1"
+"214","40","23","A","A","Type A - Array 5 Point Choice Question","","","N","N","0","0","en","0"
+"215","40","23","B","B","Type B - Array 10 point choice Question","","This is the help text for this question. ","N","N","0","1","en","0"
+"216","40","23","C","C","Type C - Array Yes/No/Uncertain Question","","","N","N","0","2","en","0"
+"217","40","23","E","E","Type E - Array Increase/Same/Decrease Question","","This is the questions help text.","N","N","0","3","en","0"
+"218","40","23","F","F","Type F - Array using Flexible Labels question","","This is a array using a flexible label set. Flexible labels sets can be created with as many answer as you like to. We created only one for this survey that will be re-used over and over.","N","N","18","4","en","0"
+"219","40","23","H","H","Type H - Array Flexible Labels by Column question","","This is the same question type as before just the orientation has changed","N","N","18","5","en","0"
+"220","40","24","Q","Q","Type Q - Multiple Short Text Question","","This is a Multiple Short Text Question","N","N","0","0","en","0"
+"221","40","24","T","T","Type T - Long Text Question?","","Helptext","N","N","0","2","en","0"
+"222","40","24","S","S","Type S - Short Free Text?","","helptext","N","N","0","1","en","0"
+"223","40","24","U","U","Type U - Huge Free text?","","Helptext","N","N","0","3","en","0"
+"224","40","25","X","X","Type X - Boilerplate question","","This is the boilerplate question type. It's not so much a question but a simple text display.","N","Y","0","4","en","0"
+"225","40","25","G","G","Type G - Gender question?","","This is a standard question aksing for the participiant's sex.","N","N","0","1","en","0"
+"226","40","25","N","N","Type N - Numerical Input Question","","","N","N","0","2","en","0"
+"227","40","25","R","R","Type R - Ranking Question","","","N","N","0","3","en","0"
+"228","40","25","Y","Y","Type Y - Yes/No Question","","","N","N","0","5","en","0"
+"229","40","25","D","D","Type D - Date question?","","Helptext","N","N","0","0","en","0"
+"230","40","26","Z","Z","Type Z - List Flexible Labels Dropdown","","This question is reusing the same label set as some of the array questions.","N","N","18","5","en","0"
+"231","40","26","W","W","Type W - List Flexible Labels Dropdown question type","","This question is reusing the same label set as some of the array questions.","N","N","18","4","en","0"
+"232","40","26","O","O","Type O - List with Comment Question","","","N","N","0","3","en","0"
+"233","40","26","L","L","Type L - List Radio qeustion","","","Y","N","0","2","en","0"
+"234","40","26","5","5","Type 5 - 5 point choice","","Help2","N","N","0","1","en","0"
+"235","40","26","!","!","Type ! - List Dropdown Question","","","Y","N","0","0","en","0"
+"236","40","27","P","P","Type P - Multiple Options Question with Comments ","","This is a Multiple Options Question with the ability to comment it.","Y","N","0","1","en","0"
+"237","40","27","M","M","Type M - Multiple Options Question","","This is a type M multiple Options questions.","Y","N","0","0","en","0"
 
 #
 # ANSWERS TABLE
 #
 "qid","code","answer","default_value","sortorder","language"
-"72","M1","Yes","N","0","en"
-"72","M2","No","N","1","en"
-"72","M3","Maybe","N","2","en"
-"68","L1"," Green","N","0","en"
-"68","L2","Red","N","1","en"
-"68","L3","Blue","N","2","en"
-"70","EC1","Green","N","0","en"
-"70","EC2","Red","N","1","en"
-"70","EC3","Blue","N","2","en"
-"71","P1","I am glad","N","0","en"
-"71","P2","I don't care","N","1","en"
-"71","P3","I am unhappy","N","2","en"
-"67","O1","Red","N","0","en"
-"67","O2","Green","N","1","en"
-"67","O3","Blue","N","2","en"
-"54","H1","Deannan Troi","N","0","en"
-"54","H2","Wesley Crusher","N","1","en"
-"54","H3","Data","N","2","en"
-"54","H4","Jean-Luc Picard","N","3","en"
-"62","R1","Red","N","0","en"
-"62","R2","Green","N","1","en"
-"62","R3","Blue","N","2","en"
-"49","A1","FBI","N","0","en"
-"49","A2","CIA","N","1","en"
-"49","A3","G5","N","2","en"
-"49","A4","NASA","N","3","en"
-"50","B1","Darth Vader","N","0","en"
-"50","B2","Luke Skywalker","N","1","en"
-"50","B3","Princess Leia","N","2","en"
-"50","B4","Jabba the Hut","N","3","en"
-"51","C1","I am blonde","N","0","en"
-"51","C2","I am blue","N","1","en"
-"51","C3","I am pissed","N","2","en"
-"51","C4","I am drunk","N","3","en"
-"52","E1","Pain","N","0","en"
-"52","E2","Pleasure","N","1","en"
-"52","E3","Luck","N","2","en"
-"52","E4","Happiness","N","3","en"
-"55","Q1","blue","N","0","en"
-"55","Q2","red","N","1","en"
-"55","Q3","green","N","2","en"
-"53","F1","Deannan Troi","N","0","en"
-"53","F2","Wesley Crusher","N","1","en"
-"53","F3","Jean-Luc Picard","N","2","en"
-"53","F4","Seven of  Nine","N","3","en"
+"214","A1","FBI","N","0","en"
+"214","A2","CIA","N","1","en"
+"214","A3","G5","N","2","en"
+"214","A4","NASA","N","3","en"
+"215","B1","Darth Vader","N","0","en"
+"215","B2","Luke Skywalker","N","1","en"
+"215","B3","Princess Leia","N","2","en"
+"215","B4","Jabba the Hut","N","3","en"
+"216","C1","I am blonde","N","0","en"
+"216","C2","I am blue","N","1","en"
+"216","C3","I am pissed","N","2","en"
+"216","C4","I am drunk","N","3","en"
+"217","E1","Pain","N","0","en"
+"217","E2","Pleasure","N","1","en"
+"217","E3","Luck","N","2","en"
+"217","E4","Happiness","N","3","en"
+"218","F1","Deannan Troi","N","0","en"
+"218","F2","Wesley Crusher","N","1","en"
+"218","F3","Jean-Luc Picard","N","2","en"
+"218","F4","Seven of  Nine","N","3","en"
+"219","H1","Deannan Troi","N","0","en"
+"219","H2","Wesley Crusher","N","1","en"
+"219","H3","Data","N","2","en"
+"219","H4","Jean-Luc Picard","N","3","en"
+"220","Q1","blue","N","0","en"
+"220","Q2","red","N","1","en"
+"220","Q3","green","N","2","en"
+"227","R1","Red","N","0","en"
+"227","R2","Green","N","1","en"
+"227","R3","Blue","N","2","en"
+"232","O1","Red","N","0","en"
+"232","O2","Green","N","1","en"
+"232","O3","Blue","N","2","en"
+"233","L1"," Green","N","0","en"
+"233","L2","Red","N","1","en"
+"233","L3","Blue","N","2","en"
+"235","EC1","Green","N","0","en"
+"235","EC2","Red","N","1","en"
+"235","EC3","Blue","N","2","en"
+"236","P1","I am glad","N","0","en"
+"236","P2","I don't care","N","1","en"
+"236","P3","I am unhappy","N","2","en"
+"237","M1","Yes","N","0","en"
+"237","M2","No","N","1","en"
+"237","M3","Maybe","N","2","en"
 
 #
 # CONDITIONS TABLE
@@ -106,19 +106,19 @@
 #
 # LABELSETS TABLE
 #
-"lid","label_name"
-"7","Test Labelset"
+"lid","label_name","languages"
+"18","Test Labelset","en"
 
 #
 # LABELS TABLE
 #
-"lid","code","title","sortorder"
-"7","TL1","6 - Like it very much","0"
-"7","TL2","5","1"
-"7","TL3","4","2"
-"7","TL4","3","3"
-"7","TL5","2","4"
-"7","TL6","1 - Dont like it at all","5"
+"lid","code","title","sortorder","language"
+"18","TL1","6 - Like it very much","0","en"
+"18","TL2","5","1","en"
+"18","TL3","4","2","en"
+"18","TL4","3","3","en"
+"18","TL5","2","4","en"
+"18","TL6","1 - Dont like it at all","5","en"
 
 #
 # QUESTION_ATTRIBUTES TABLE
@@ -132,5 +132,13 @@
 # SURVEYS_LANGUAGESETTINGS TABLE
 #
 "surveyls_survey_id","surveyls_language","surveyls_title","surveyls_description","surveyls_welcometext","surveyls_urldescription","surveyls_email_invite_subj","surveyls_email_invite","surveyls_email_remind_subj","surveyls_email_remind","surveyls_email_register_subj","surveyls_email_register","surveyls_email_confirm_subj","surveyls_email_confirm"
-"40","en","Sample Survey","This is a sample survey showing of all the question types you can use in LimeSurvey.","This is the welcome text for the survey!r<br />You can can edit it in the survey properties.","","Invitation to participate in survey","Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n&quot;{SURVEYNAME}&quot;\n\n&quot;{SURVEYDESCRIPTION}&quot;\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}","Reminder to participate in survey","Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n&quot;{SURVEYNAME}&quot;\n\n&quot;{SURVEYDESCRIPTION}&quot;\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}","Survey Registration Confirmation","Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.","Confirmation of completed survey","Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}"
+"40","en","Sample Survey","This is a sample survey showing of all the question types you can use in LimeSurvey.","This is the welcome text for the survey!<br />\nYou can can edit it in the survey properties.","","Invitation to participate in survey","Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n&quot;{SURVEYNAME}&quot;\n\n&quot;{SURVEYDESCRIPTION}&quot;\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}","Reminder to participate in survey","Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n&quot;{SURVEYNAME}&quot;\n\n&quot;{SURVEYDESCRIPTION}&quot;\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}","Survey Registration Confirmation","Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.","Confirmation of completed survey","Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}"
+
+#
+# QUOTA TABLE
+#
+
+#
+# QUOTA_MEMBERS TABLE
+#
 
