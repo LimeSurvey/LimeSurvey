@@ -1391,6 +1391,25 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}comment";
 				$updateqr .= db_quote_id($fieldname)." = '" . auto_escape($_POST[$fieldname]) . "', \n";
 			}
+            elseif ($irow['type'] == "1")
+            {
+                $i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")." WHERE
+                ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND ".db_table_name("questions").".qid={$irow['qid']} AND 
+                ".db_table_name("questions").".language = '{$language}' AND ".db_table_name("answers").".language = '{$language}' AND
+                ".db_table_name("questions").".sid=$surveyid ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
+            
+                $i2result = $connect->Execute($i2query);
+                $i2count = $i2result->RecordCount();
+                while ($i2answ = $i2result->FetchRow())
+                {
+                    // first scale
+                    $fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2answ['code']}#0";
+                    $updateqr .= db_quote_id($fieldname)." = '" . $_POST[$fieldname] . "', \n";                                          // second scale
+                    // second  scale                        
+                    $fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2answ['code']}#1";
+                    $updateqr .= db_quote_id($fieldname)." = '" . $_POST[$fieldname] . "', \n";                  
+                }
+            }
 			elseif ($irow['type'] == "R")
 			{
 				$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")."
