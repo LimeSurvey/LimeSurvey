@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Dutch Language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-04-02 09:00+0200\n"
-"PO-Revision-Date: 2008-04-02 15:49+0100\n"
-"Last-Translator: Hendri Wessels <hendriwessels@hotmail.com>\n"
+"PO-Revision-Date: 2008-04-11 16:29+0100\n"
+"Last-Translator: Menno Dekker <menno.dekker@erasmusmc.nl>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -318,7 +318,7 @@ msgstr "Samenvatting van de geimporteerde bestanden"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:169
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:339
 msgid "Total Imported files"
-msgstr "Totaal aantal geÃ¯mporteerde bestanden:"
+msgstr "Totaal aantal geïmporteerde bestanden:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:170
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:340
@@ -423,7 +423,7 @@ msgstr "Record IDs uitsluiten?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:36
 msgid "When an imported record matches an existing record ID:"
-msgstr "Als een geÃ¯mporteerd record gelijk is aan record ID:"
+msgstr "Als een geïmporteerd record gelijk is aan record ID:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:37
 msgid "Report an error (and skip the new record)."
@@ -494,7 +494,7 @@ msgstr "Belangrijk: Ververs deze pagina NIET omdat het bestand anders opnieuw za
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:218
 msgid "Total records imported:"
-msgstr "Totaal aantal geÃ¯mporteerde records:"
+msgstr "Totaal aantal geïmporteerde records:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:219
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:56
@@ -649,7 +649,7 @@ msgstr "Terug naar Labelbeheer"
 # D:\xampp\xampp\htdocs\limesurvey/admin/importlabel.php:212
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:191
 msgid "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead."
-msgstr "Deze labelset bestond al, de labelset is dus niet geÃ¯mporteerd. De bestaande wordt gebruikt."
+msgstr "Deze labelset bestond al, de labelset is dus niet geïmporteerd. De bestaande wordt gebruikt."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:199
 msgid "Label Set Import Summary"
@@ -1758,7 +1758,7 @@ msgstr "Deze vragenlijst is momenteel inactief"
 # D:\limesurvey/admin/html.php:158
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:188
 msgid "No Surveys available - please create one."
-msgstr "Geen Vragenlijsten aanwezig - maak er Ã©Ã©n aub."
+msgstr "Geen Vragenlijsten aanwezig - maak er één aub."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:254
 msgid "LimeSurvey System Summary"
@@ -2015,7 +2015,7 @@ msgstr "Wordt groep voor groep getoond."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:780
 msgid "It is presented on one single page."
-msgstr "Wordt op Ã©Ã©n pagina getoond."
+msgstr "Wordt op één pagina getoond."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:781
 msgid "Responses will be date stamped"
@@ -2146,7 +2146,7 @@ msgstr "Additionele talen"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:883
 msgid "Exit Link"
-msgstr "Uitgangslink:"
+msgstr "Uitgangslink"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:888
 msgid "Number of questions/groups"
@@ -2192,7 +2192,7 @@ msgstr "Verwijder huidige groep"
 # D:\limesurvey/admin/html.php:870
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:990
 msgid "Impossible to delete this group because there is at least one question having a condition on its content"
-msgstr "Het is niet mogelijk deze groep te verwijderen, omdat er minstens Ã©Ã©n conditionele vraag m.b.t. de inhoud vanaf hangt"
+msgstr "Het is niet mogelijk deze groep te verwijderen, omdat er minstens één conditionele vraag m.b.t. de inhoud vanaf hangt"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1005
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1006
@@ -2240,7 +2240,7 @@ msgstr "Verwijder huidige vraag"
 # D:\limesurvey/admin/html.php:1030
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1159
 msgid "Impossible to delete this question because  there is at least one question having a condition on it"
-msgstr "Het is niet mogelijk deze groep te verwijderen, omdat er minstens Ã©Ã©n conditionele vraag vanaf hangt"
+msgstr "Het is niet mogelijk deze groep te verwijderen, omdat er minstens één conditionele vraag vanaf hangt"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1174
 msgid "Export this Question"
@@ -3889,7 +3889,7 @@ msgstr "Naam van de labelset"
 # D:\limesurvey/admin/labels.php:157
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:159
 msgid "You cannot remove this items since you need at least one language in a labelset."
-msgstr "U kunt deze items niet verwijderen, omdat er minstens Ã©Ã©n taal in de set aanwezig dient te zijn."
+msgstr "U kunt deze items niet verwijderen, omdat er minstens één taal in de set aanwezig dient te zijn."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:207
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/grouphandling.php:71
@@ -4209,7 +4209,7 @@ msgstr "is NIET geimporteerd, omdat het vraagtype onbekend is."
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:822
 #, php-format
 msgid "was imported but the type was set to '%s' because it is the most similiar one."
-msgstr "Was geÃ¯mporteerd, maar het type is gewijzigd in '%s' omdat dit de meest voorkomende is."
+msgstr "Was geïmporteerd, maar het type is gewijzigd in '%s' omdat dit de meest voorkomende is."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1206
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1234
@@ -4225,7 +4225,7 @@ msgstr "Voorwaarden"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1219
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1245
 msgid "Not imported Label Sets"
-msgstr "Niet geÃ¯mporteerde Labelsets"
+msgstr "Niet geïmporteerde Labelsets"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1219
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1245
@@ -4990,11 +4990,11 @@ msgstr "Beantwoord"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:43
 msgid "No SID (Survey) has been provided. Cannot import question."
-msgstr "Er is geen SID (Vragenlijst) opgegeven waardoor de vraag niet kan worden geÃ¯mporteerd."
+msgstr "Er is geen SID (Vragenlijst) opgegeven waardoor de vraag niet kan worden geïmporteerd."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:57
 msgid "No GID (Group) has been provided. Cannot import question"
-msgstr "Er is geen GID (groep) opgegeven waardoor de vraag niet kan worden geÃ¯mporteerd."
+msgstr "Er is geen GID (groep) opgegeven waardoor de vraag niet kan worden geïmporteerd."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:97
 msgid "This file is not a LimeSurvey question file. Import failed."
@@ -6088,7 +6088,7 @@ msgstr "Versturen van E-mail naar {FIRSTNAME} {LASTNAME} ({EMAIL}) is mislukt"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1220
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1459
 msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
-msgstr "Er staan meer E-mails in de wachtrij dan in Ã©Ã©;n keer kunnen worden verstuurd. Ga verder met het versturen door hieronder te klikken."
+msgstr "Er staan meer E-mails in de wachtrij dan in één keer kunnen worden verstuurd. Ga verder met het versturen door hieronder te klikken."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1221
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1460
@@ -6250,7 +6250,7 @@ msgstr "Gegevens voldoen aan minumumvereisten"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1968
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2130
 msgid "Records imported"
-msgstr "Totaal aantal geÃ¯mporteerde records:"
+msgstr "Totaal aantal geïmporteerde records:"
 
 # D:\limesurvey/admin/tokens.php:1383
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1969
@@ -6351,7 +6351,7 @@ msgstr "*"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:391
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:539
 msgid "Please choose *only one* of the following:"
-msgstr "Kies au.b. Ã©Ã©n van de volgende"
+msgstr "Kies au.b. één van de volgende"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:278
 msgid "Please enter a date:"
@@ -7237,7 +7237,7 @@ msgstr "Vragenlijst Beheerder:"
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:315
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:323
 msgid "Choose one of the following answers"
-msgstr "Kies Ã©Ã©n van de volgende antwoorden"
+msgstr "Kies één van de volgende antwoorden"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:336
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:361
@@ -7280,7 +7280,7 @@ msgstr "Rangschik alle opties"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:507
 msgid "Please check at least one item"
-msgstr "Kies minimaal Ã©Ã©n optie"
+msgstr "Kies minimaal één optie"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:513
 msgid "If you choose 'Other:' you must provide a description."
@@ -7293,11 +7293,11 @@ msgstr "U kunt pas doorgaan nadat u tekst voor 1 of meerdere vragen hebt toegevo
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:538
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
-msgstr "EÃ©n of meer verplichte vragen zijn niet beantwoord. U kunt niet verdergaan zonder ze te beantwoorden."
+msgstr "Eén of meer verplichte vragen zijn niet beantwoord. U kunt niet verdergaan zonder ze te beantwoorden."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:561
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
-msgstr "EÃ©n of meer vragen zijn onjuist beantwoord. U kunt niet verdergaan dit te herstellen."
+msgstr "Eén of meer vragen zijn onjuist beantwoord. U kunt niet verdergaan dit te herstellen."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:628
 msgid "Day"
@@ -7380,7 +7380,7 @@ msgstr "Fout: De gebruikte labelset voor deze vraag is niet beschikbaar in deze 
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1248
 msgid "Please choose one of the following"
-msgstr "Kies Ã©Ã©n van de volgende"
+msgstr "Kies één van de volgende"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1249
 msgid "Please enter your comment here"
@@ -8005,3 +8005,4 @@ msgstr "Thais"
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:237
 msgid "Vietnamese"
 msgstr "Vietnamees"
+
