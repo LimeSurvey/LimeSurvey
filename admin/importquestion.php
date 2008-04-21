@@ -388,6 +388,14 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 if (isset($questionarray) && $questionarray) {
     $qafieldorders=convertCSVRowToArray($questionarray[0],',','"');
     unset($questionarray[0]);
+
+    //Assuming we will only import one question at a time we will now find out the maximum question order in this group 
+    //and save it for later
+    $qmaxqo = "SELECT MAX(question_order) AS maxqo FROM ".db_table_name('questions')." WHERE sid=$newsid AND gid=$newgid";
+    $qres = db_execute_assoc($qmaxqo) or die ("<strong>".$clang->gT("Error")."</strong> Failed to find out maximum question order value<br />\n$qmaxqo<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+    $qrow=$qres->FetchRow();
+    $newquestionorder=$qrow['maxqo']+1;
+
 	foreach ($questionarray as $qa) {
         $qacfieldcontents=convertCSVRowToArray($qa,',','"');
 		$newfieldcontents=$qacfieldcontents;
@@ -406,11 +414,9 @@ if (isset($questionarray) && $questionarray) {
                 
 		    $questionrowdata["sid"] = $newsid;
 		    $questionrowdata["gid"] = $newgid;
+            $questionrowdata["question_order"] = $newquestionorder;
 
-            $qmaxqo = "SELECT MAX(question_order) AS maxqo FROM ".db_table_name('questions')." WHERE sid=$newsid AND gid=$newgid";
-		    $qres = db_execute_assoc($qmaxqo) or die ("<strong>".$clang->gT("Error")."</strong> Failed to find out maximum question order value<br />\n$qmaxqo<br />\n".$connect->ErrorMsg()."</body>\n</html>");
-            $qrow=$qres->FetchRow();
-		    $questionrowdata["question_order"]= $qrow['maxqo']+1; // echo $questionrowdata["question_order"];
+            
             // Now we will fix up the label id 
 		    $type = $questionrowdata["type"]; //Get the type
 		    if ($type == "F" || $type == "H" || $type == "W" || $type == "Z") 
