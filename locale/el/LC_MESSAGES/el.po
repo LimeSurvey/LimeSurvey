@@ -3,9 +3,9 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Greek language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-05-20 14:28+0200\n"
-"PO-Revision-Date: 2008-02-19 16:09+0200\n"
+"PO-Revision-Date: 2008-04-21 09:44+0200\n"
 "Last-Translator: Janokary <janokary@yahoo.com>\n"
-"Language-Team: Public Issue <janokary@yahoo.com>\n"
+"Language-Team: Public Issue <janokary@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -716,7 +716,7 @@ msgstr "Βοήθεια"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/exportresults.php:241
 msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
-msgstr ""
+msgstr "Η έρευνά σας περιέχει περισσότερες από 255 στήλες με απαντήσεις. Εφαρμογές λογιστικών φύλλων όπως το Excel περιορίζονται στις 255 στήλες. Επιλέξτε ποιές στήλες θέλετε να εξάγετε."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/exportresults.php:247
 msgid "Choose the columns you wish to export."
@@ -727,15 +727,15 @@ msgstr "Επιλέξτε τις Πεδία για εξαγωγή"
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:141
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:154
 msgid "Token Control"
-msgstr "Token Control"
+msgstr "Οθόνη κουπονιών"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/exportresults.php:292
 msgid "Choose Token Fields"
-msgstr "Επιλέξτε πεδια Token"
+msgstr "Επιλέξτε πεδια κουπονιών"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/exportresults.php:298
 msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
-msgstr "Μπορεί να γίνει εξαγωγή των σχετικών token δεδομέων για κάθε απάντηση. Παρακαλώ επιλέξτε τα πρόσθετα πεδία που θα θέλατε να εξάγετε."
+msgstr "Μπορεί να γίνει εξαγωγή των σχετικών κουπονιών δεδομέων για κάθε απάντηση. Παρακαλώ επιλέξτε τα πρόσθετα πεδία που θα θέλατε να εξάγετε."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/exportresults.php:301
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/exportresults.php:463
@@ -791,7 +791,7 @@ msgstr "Διεύθυνση Email"
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/index.php:1093
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:1359
 msgid "Token"
-msgstr "Συμβολικός"
+msgstr "Κουπόνι"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/exportresults.php:314
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/exportresults.php:479
@@ -1174,7 +1174,7 @@ msgstr "Λυπούμαστε. Δεν υπάρχει Έρευνα που να τ�
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/browse.php:356
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:442
 msgid "Token ID"
-msgstr "Token"
+msgstr "ID κουπονιού"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/browse.php:170
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/browse.php:358
@@ -1237,7 +1237,7 @@ msgstr "κλείσιμο"
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/browse.php:532
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:486
 msgid "Data View Control"
-msgstr ""
+msgstr "Οθόνη απαντήσεων έρευνας."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/browse.php:538
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:491
@@ -1247,7 +1247,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/browse.php:548
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:501
 msgid "Show last..."
-msgstr ""
+msgstr "Δείξε"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/browse.php:570
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:515
@@ -1262,7 +1262,7 @@ msgstr "Αρχή από:"
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/browse.php:572
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:654
 msgid "Filter incomplete answers:"
-msgstr ""
+msgstr "Φιλτράρισμα ημιτελών απαντήσεων:"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/browse.php:576
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:517
@@ -1418,11 +1418,11 @@ msgstr "Απενεργοποιημένες Έρευνες"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:267
 msgid "Active Token Tables"
-msgstr "Ενεργά token tables"
+msgstr "Ενεργοί πίνακες κουπονιού"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:274
 msgid "De-activated Token Tables"
-msgstr "Ανενεργά Token Tables"
+msgstr "Ανενεργοί πίνακες κουπονιού"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:387
 msgid "Survey cannot be activated. Either you have no permission or there are no questions."
@@ -1510,12 +1510,12 @@ msgstr "Προβολή απαντήσεων για αυτή την έρευνα.
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:608
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:1270
 msgid "View Saved but not submitted Responses"
-msgstr "Προβολή σωσμένων αλλά οχι "
+msgstr "Προβολή σωσμένων αλλά οχι ολοκληρωμένων απαντήσεων"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:616
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:617
 msgid "Activate/Edit Tokens for this Survey"
-msgstr "Ενεργοποίηση/Επεξεργασία Tokens για αυτήν την έρευνα"
+msgstr "Ενεργοποίηση/Επεξεργασία κουπονιών για αυτήν την έρευνα"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:624
 msgid "Close this Survey"
@@ -1593,7 +1593,7 @@ msgstr "Η διευθύνσεις IP θα καταγραφούν"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:687
 msgid "Referer-URL will be saved"
-msgstr ""
+msgstr "Το URL αναφοράς θα καταχωρηθεί"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:688
 msgid "It uses cookies for access control."
@@ -1601,7 +1601,7 @@ msgstr "Χρησιμοποιεί cookies για τον έλεγχο πρόσβα
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:689
 msgid "If tokens are used, the public may register for this survey"
-msgstr "Με την χρήση tokens, πρέπει να γίνεται εγγραφή για την συμπλήρωση της έρευνας"
+msgstr "Με την χρήση κουπονιών, πρέπει να γίνεται εγγραφή για την συμπλήρωση της έρευνας"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:690
 msgid "Participants can save partially finished surveys"
@@ -1748,7 +1748,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:875
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:1035
 msgid "Disabled"
-msgstr ""
+msgstr "Απενεργοποιημένο"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:886
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:887
@@ -2286,7 +2286,7 @@ msgstr "Ανώνυμη?"
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:1986
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:2010
 msgid "Cannot be changed"
-msgstr ""
+msgstr "Δεν μπορεί να αλλάξει"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:1941
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:2473
@@ -2296,7 +2296,7 @@ msgstr "Η δημόσια εγγραφή επιτρέπεται ?"
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:1950
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:2484
 msgid "Token Attribute Names:"
-msgstr "Ονόματα ειδικών πεδίων tokens"
+msgstr "Ονόματα ειδικών πεδίων κουπονιών"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:1955
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:2487
@@ -2345,7 +2345,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:2067
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:2516
 msgid "Expires?"
-msgstr ""
+msgstr "Λήξη?"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:2075
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/html.php:2523
@@ -3289,17 +3289,17 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/activate.php:468
 msgid "This is not an anonymous survey. A token table must also be created."
-msgstr ""
+msgstr "Αυτή η έρευνα δεν είναι ανώνυμη. Πρέπει να δημιουργηθεί και ένας πίνακας κουπονιών"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/activate.php:469
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/activate.php:474
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:263
 msgid "Initialise Tokens"
-msgstr ""
+msgstr "Δημιουργία Πίνακα κουπονιών"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/activate.php:473
 msgid "This survey allows public registration. A token table must also be created."
-msgstr ""
+msgstr "Σε αυτή την έρευνα επιτρέπονται δημόσιες εγγραφές. Πρέπει να δημιουργηθεί ο Πίνακας κουπονιών"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/activate.php:478
 msgid "This survey is now active, and responses can be recorded."
@@ -3328,7 +3328,7 @@ msgstr "Αυτή η έρευνα είναι ενεργή και υπάρχουν
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/deletesurvey.php:84
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
-msgstr ""
+msgstr "Αυτή η έρευνα έχει ένα πίνακα κουπονιών. Αν γίνει διαγραφή αυτή της έρευνας, θα διαγραφεί και ο πίνακας κουπονιών. Συνιστάται η εξαγωγή της έρευνας πριν την διαγραφή της."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/deletesurvey.php:150
 msgid "This survey has been deleted."
@@ -3641,11 +3641,11 @@ msgstr "Δεν σας επιτρέπεται να επεξεργαστήτε τ�
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/access_denied.php:103
 msgid "You are not allowed to browse response!"
-msgstr ""
+msgstr "Δεν σας επιτρέπεται να δείτε αποτελέσματα."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/access_denied.php:108
 msgid "You are not allowed to set assessment rules!"
-msgstr ""
+msgstr "Δεν σας επιτρέπεται να θέσετε κανόνες τέλους."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/access_denied.php:115
 msgid "You are not allowed to delete this group!"
@@ -3657,13 +3657,13 @@ msgstr "Δεν σας επιτρέπεται να εισάγετε κάποια 
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/access_denied.php:137
 msgid "You are not allowed to perform this operation!"
-msgstr ""
+msgstr "Δεν σας επιτρέπεται η ενέργεια αυτή."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importoldresponses.php:58
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:99
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/stats.php:101
 msgid "Quick Statistics"
-msgstr ""
+msgstr "Γρήγορες Αναφορές"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importoldresponses.php:64
 msgid "Import responses from an old (deactivated) survey table into an active survey"
@@ -3675,7 +3675,7 @@ msgstr "Προς Έρευνα Κωδικός"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importoldresponses.php:73
 msgid "Source table"
-msgstr ""
+msgstr "Πίνακας πυγής"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importoldresponses.php:83
 msgid "Import Responses"
@@ -3683,23 +3683,23 @@ msgstr "Εισαγωγή Απαντήσεων"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importgroup.php:63
 msgid "Reading file..."
-msgstr ""
+msgstr "Ανάγνωση αρχείου ..."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importgroup.php:75
 msgid "This file is not a LimeSurvey group file. Import failed."
-msgstr ""
+msgstr "Το αρχείο αυτό δεν αρχείο ομάδας Limesurvey. Η εισαγωγή απέτυχε."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importgroup.php:565
 msgid "Import partially successful."
-msgstr ""
+msgstr "Η εισαγωγή ολοκληρώθηκε μερικώς"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importgroup.php:566
 msgid "The following languages in this group were not imported since the survey does not contain such a language: "
-msgstr ""
+msgstr "Οι εξής γλώσσες της ομάδας δεν εισήχθησαν αφου η έρευνα δεν έχει αυτήν την γλώσσα:"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importgroup.php:577
 msgid "Group Import Summary"
-msgstr ""
+msgstr "Αναφορά εισαγωγής"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importgroup.php:598
 msgid "Import of group is completed."
@@ -3707,7 +3707,7 @@ msgstr "Η αντιγραφή της ομάδας ολοκληρώθηκε"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:107
 msgid "Filter Settings"
-msgstr ""
+msgstr "Ρυθμίσεις φίλτρου"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:152
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:301
@@ -3732,7 +3732,7 @@ msgstr "Η ημερομηνιία(ΕΕΕΕ-ΜΜ-ΗΗ) ισούτε"
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:182
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:323
 msgid "OR between"
-msgstr ""
+msgstr "ή ανάμεσα"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:254
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:276
@@ -3742,7 +3742,7 @@ msgstr "Απαντήσεις που περιέχουν"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:651
 msgid "View summary of all available fields"
-msgstr ""
+msgstr "Αναφορά διαθέσιμων πεδίων"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:659
 msgid "View Stats"
@@ -3754,11 +3754,11 @@ msgstr "Παρακαλώ περιμένετε..."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:750
 msgid "Getting Questions and Answers ..."
-msgstr ""
+msgstr "Υπολογισμός Ερωτήσεωων και απαντήσεων ... "
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:858
 msgid "Getting Result Count ..."
-msgstr ""
+msgstr "Αριθμός μετρήσεων ..."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:884
 msgid "Results"
@@ -3774,22 +3774,22 @@ msgstr "Σύνολο εγγραφών στην έρευνα"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:892
 msgid "Percentage of total"
-msgstr ""
+msgstr "Ποσοστό συνόλου"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:903
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:1427
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:1433
 msgid "Browse"
-msgstr ""
+msgstr "Browse"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:960
 msgid "Generating Summaries ..."
-msgstr ""
+msgstr "Δημιουργεία αναφορών"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:1073
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:1371
 msgid "Field Summary for"
-msgstr ""
+msgstr "Αναφορά Πεδίου για"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:1077
 msgid "Calculation"
@@ -3833,7 +3833,7 @@ msgstr "Τα Q1 και Q3 υπολογίστηκαν χρησιμοποιόντ�
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:1209
 msgid "minitab method"
-msgstr ""
+msgstr "minitab method"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:1378
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:1494
@@ -3842,7 +3842,7 @@ msgstr "Σύνολο"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:1380
 msgid "Percentage"
-msgstr ""
+msgstr "Ποσοστό"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/statistics.php:1571
 msgid "Completed"
@@ -3850,11 +3850,11 @@ msgstr "Ολοκληρώθηκε"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dbedit.php:411
 msgid "Answer could not be added. There is already an answer with this code"
-msgstr ""
+msgstr "Η απάντηση δεν καταχωρήθηκε. Υπάρχει ήδη απάντηση με αυτόν τον κωδικό"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dbedit.php:565
 msgid "Answer could not be updated. There is already an answer with this code"
-msgstr ""
+msgstr "Η απάντηση δεν ανανεώθηκε. Υπάρχει ήδη απάντηση με αυτόν τον κωδικό"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/results.php:211
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/results.php:212
@@ -3865,11 +3865,11 @@ msgstr "Απαντήθηκαν"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importquestion.php:74
 msgid "No SID (Survey) has been provided. Cannot import question."
-msgstr ""
+msgstr "Δεν έχει δωθεί έρευνα (SID). Αδύνατη η εισαγωγή ερώτησης"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importquestion.php:82
 msgid "No GID (Group) has been provided. Cannot import question"
-msgstr ""
+msgstr "Δεν έχει δωθεί ομάδα (GID). Αδύνατη η εισαγωγή ερώτησης"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/importquestion.php:423
 msgid "Question Import Summary"
@@ -3887,36 +3887,36 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:143
 msgid "Error: The database reported the following error:"
-msgstr ""
+msgstr "Λάθος: Στην Βάση δεδομένων διαπιστώθηκε το εξής λάθος."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:175
 msgid "Group could not be updated"
-msgstr ""
+msgstr "Η ομάδα δεν αναενεώθηκε"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:196
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:219
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:232
 msgid "Group could not be deleted"
-msgstr ""
+msgstr "Η ομάδα δεν διαγράφηκε"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:240
 msgid "Answer could not be added. You must insert a code in the mandatory field"
-msgstr ""
+msgstr "Η απάντηση δεν καταγράφηκε. Πρέπει να προστεθεί ο κωδικός στο υποχρεωτικό πεδίο"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:278
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:498
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:510
 msgid "Question could not be created."
-msgstr ""
+msgstr "Η ερώτηση δεν μπόρεσε να δημιουργηθεί."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:362
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
-msgstr ""
+msgstr "Η ερώτηση δεν αποθηκεύτηκε. Υπάρχουν συνθήκες σε άλλες ερωτήσεις οι οποίες εξαρτώνται από τις απαντήσεις αυτής της ερώτησης. Η αλλαγή του τύπου της ερώτησης θα δημιουργήσει πρόβλημα. Πρέπει να διαγραφούν οι συνθήκες πρίν γίνει αλλαγή στον τύπο της ερώτησης."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:412
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:470
 msgid "Question could not be updated"
-msgstr ""
+msgstr "Η ερώτηση δεν αποθηκεύτηκε"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:432
 msgid "Answers can't be deleted"
@@ -3924,12 +3924,12 @@ msgstr "Οι απαντήσεις δεν μπορούν να διαγραφού�
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:442
 msgid "This question relies on other question's answers and can't be moved above groupId:"
-msgstr ""
+msgstr "Αυτή η ερώτηση εξαρτάται από τις απαντήσεις άλλων ερ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:443
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:455
 msgid "in position"
-msgstr ""
+msgstr "σε θέση"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:444
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:456
@@ -3938,7 +3938,7 @@ msgstr "Συνθήκες:"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:454
 msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
-msgstr ""
+msgstr "Υπάρχουν σχετικές συνθήκες σε άλλες ερωτήσεις που αναφέρονται σε αυτήν την ερώτηση. Δεν είναι δυνατή η μεταφορά της ερώτησης σε άλλη ομάδα."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:480
 msgid "Question could not be added. You must insert a code in the mandatory field"
@@ -3947,49 +3947,49 @@ msgstr "H ομάδα δεν μπόρεσε να προστεθεί. Προσθέ
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:559
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:600
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
-msgstr ""
+msgstr "Η ερώτηση δεν καταχωρήθηκε. Υπάρχουν σχετικές συνθήκες σε άλλες ερωτήσεις που αναφέρονται σε αυτήν. Δεν είναι δυνατή η διαγραφή της ερώτησης αν δεν διαγραφούν πρώτα αυτές οι συνθήκες."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:584
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:621
 msgid "Question could not be deleted"
-msgstr ""
+msgstr "Η ερώτηση δεν καταχωρήθηκε"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:645
 msgid "Error adding answer: You can't use the same answer code more than once."
-msgstr ""
+msgstr "Αποτυχία καταχώρησης ερώτησης. Δεν είναι δυνατή η χρήση ενός κωδικού περισσότερο από μια φορές."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:655
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:663
 msgid "Failed to insert answer"
-msgstr ""
+msgstr "Η εισαγωγή ερώτησης απαίτυχε"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:668
 msgid "Invalid or empty answer code supplied"
-msgstr ""
+msgstr "δοθηκε λανθασμένος ή κενός κωδικός. "
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:720
 msgid "Failed to update answers"
-msgstr ""
+msgstr "Αποτυχία κατά την κααχώρηση των απαντήσεων"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:735
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
-msgstr ""
+msgstr "Απαντήσεις με κωδικό 0 (μηδέν) ή κενές δεν επιτρέπονται, και δεν θα καταχωρηθούν."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:736
 msgid "Duplicate codes found, these entries won't be updated"
-msgstr ""
+msgstr "Βρέθηκαν διπλοί κωδικοί οι εγγραφές δεν ανανεώθηκαν"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:768
 msgid "Failed to delete answer"
-msgstr ""
+msgstr "Απέτυχε η διαγραφή  απάντησης"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:783
 msgid "Failed to make answer not default"
-msgstr ""
+msgstr "Απέτυχε η αλλαγή απάντησης σε μη ερήμην"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:797
 msgid "Failed to make answer default"
-msgstr ""
+msgstr "Απέτυχε η αλλαγή απάντησης σε ερήμην"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:1035
 msgid "Survey could not be updated"
@@ -3997,11 +3997,11 @@ msgstr "Η έρευνα δεν μπόρεσε να ανανεωθεί"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:1050
 msgid "ERROR deleting Survey id"
-msgstr ""
+msgstr "Λάθος κατα την διαγραφή της έρευνας"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:1088
 msgid "Survey could not be created because it did not have a short title"
-msgstr ""
+msgstr "Η έρευνα δεν δημιουργήθηκε. Δεν έχει τίτλο"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/database.php:1149
 msgid "Survey could not be created"
@@ -4010,28 +4010,28 @@ msgstr "Η έρευνα δεν μπορεί να δημιουργηθεί."
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:52
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:326
 msgid "Data Consistency Check"
-msgstr ""
+msgstr "Data Consistency Check"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:52
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:326
 msgid "If errors are showing up you might have to execute this script repeatedly."
-msgstr ""
+msgstr "Αν παρουσιαστούν λάθη θα πρέπει να εκτελέσετε αυτό το script ξανά"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:89
 msgid "The following conditions should be deleted"
-msgstr ""
+msgstr "Οι εξής συνθήκες πρέπει να διαγραφούν"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:97
 msgid "All conditions meet consistency standards"
-msgstr ""
+msgstr "Όλες οι συνθήκες ειναι σωστές"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:113
 msgid "The following question attributes should be deleted"
-msgstr ""
+msgstr "Τα εξής χαρακτηριστικά ερωτήσεων πρέπει να διαγραφούν"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:119
 msgid "All question_attributes meet consistency standards"
-msgstr ""
+msgstr "Όλα τα χαρακτηριστικά των ερωτήσεων είναι σωστά"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:149
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:159
@@ -4045,15 +4045,15 @@ msgstr "Όλες οι αξιολογήσεις ειναι συνεπείς με 
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:184
 msgid "The following answers should be deleted"
-msgstr ""
+msgstr "Οι εξής απαντήσεις πρέπει να διαγραφούν"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:190
 msgid "All answers meet consistency standards"
-msgstr ""
+msgstr "Όλες οι απαντήσεις είναι σωστές."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:202
 msgid "Language specific settings missing"
-msgstr ""
+msgstr "Λοίπουν ρυθμίσεις σχετικά με τις γλώσσες."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:207
 msgid "The following surveys should be deleted"
@@ -4061,23 +4061,23 @@ msgstr "Η εξής έρευνες θα πρέπει να διαγραφούν."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:213
 msgid "All survey settings meet consistency standards"
-msgstr ""
+msgstr "Όλες οι έρευνες είναι σωστές."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:236
 msgid "The following questions should be deleted"
-msgstr ""
+msgstr "Οι εξής ερωτήσει πρέπει να διαγραφούν"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:242
 msgid "All questions meet consistency standards"
-msgstr ""
+msgstr "Όλες οι ερωτήσεις είναι σωστές"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:257
 msgid "The following groups should be deleted"
-msgstr ""
+msgstr "Οι εξής ομάδες πρέπει να διαγραφούν."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:263
 msgid "All groups meet consistency standards"
-msgstr ""
+msgstr "Όλες οι ομάδες είναι σωστές"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:267
 msgid "No database action required"
@@ -4089,19 +4089,19 @@ msgstr "Διαγραφή Ομάδας"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/integritycheck.php:403
 msgid "Deleting group id"
-msgstr ""
+msgstr "Διαγραφή ομάδας"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dumpsurvey.php:67
 msgid "No SID has been provided. Cannot dump survey"
-msgstr ""
+msgstr "Δεν έχετε δώσει το SID της έρευνας. Δεν μπορεί να γίνει εξαγωγή σε αρχείο."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/stats.php:256
 msgid "Select all"
-msgstr ""
+msgstr "Επιλογή όλων"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/stats.php:257
 msgid "Proceed"
-msgstr ""
+msgstr "Proceed"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/stats.php:298
 msgid "Question List"
@@ -4109,7 +4109,7 @@ msgstr "Λίστα Ερωτήσεις"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/stats.php:368
 msgid "Like"
-msgstr ""
+msgstr "Όπως"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/stats.php:376
 msgid "Not Equals"
@@ -4132,7 +4132,7 @@ msgstr "Ημερομηνία"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/stats.php:692
 msgid "Numerical"
-msgstr ""
+msgstr "Αριθμητικό"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/stats.php:714
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:710
@@ -4145,7 +4145,7 @@ msgstr "ελεύθερο κείμενο μικρού μήκους (short free te
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dumplabel.php:57
 msgid "No LID has been provided. Cannot dump label set."
-msgstr ""
+msgstr "Δεν έχετε δώσει το LID της εττικέτας. Δεν μπορεί να γίνει εξαγωγή σε αρχείο."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:125
 msgid "You have not selected a survey"
@@ -4154,11 +4154,11 @@ msgstr "Δεν έχετε επιλέξει κάποια έρευνα"
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:143
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:2228
 msgid "The survey you selected does not exist"
-msgstr ""
+msgstr "Η έρευνα που έχετε επιλέξει δεν υπάρχει"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:191
 msgid "Token table could not be created."
-msgstr "Ο πίνακας token της έρευνας δεν μπορεί να δημιουργηθεί."
+msgstr "Ο πίνακας κουπονιών της έρευνας δεν μπορεί να δημιουργηθεί."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:211
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:230
@@ -4167,76 +4167,76 @@ msgstr "Ένας πίνακας κουπονιών έχει δημιουργηθ
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:255
 msgid "Tokens have not been initialised for this survey."
-msgstr ""
+msgstr "Δεν υπάρχουν κουπόνια για αυτή την έρευνα"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:258
 msgid "If you initialise tokens for this survey, the survey will only be accessible to users who have been assigned a token."
-msgstr ""
+msgstr "Αν δημιουργήσετε κουπόνια για αυτήν την έρευνα τότε θα είναι προσβάσιμη μόνο από χρήστες στους οποίου έχει αντιστοιχηθεί ένα κουπόνι."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:260
 msgid "Do you want to create a tokens table for this survey?"
-msgstr ""
+msgstr "Θέλετε να δημιουργηθεί ο Πίνακας κουπονιών αυτής της έρευνας?"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:274
 msgid "The following old token tables could be restored:"
-msgstr ""
+msgstr "Οι εξής πίνακες κουπονιών μπορούν να αποκατασταθούν"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:281
 msgid "Restore"
-msgstr ""
+msgstr "Αποκατάσταση."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:318
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1246
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1272
 msgid "Display Tokens"
-msgstr ""
+msgstr "Οθόνη Κουπονιών"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:325
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1273
 msgid "Add new token entry"
-msgstr ""
+msgstr "Προσθήκη εγγραφής κουπονιού"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:328
 msgid "Import Tokens from CSV File"
-msgstr ""
+msgstr "Εισαγωγή κουπονιών απο αρχείο CSV"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:330
 msgid "Import Tokens from LDAP Query"
-msgstr ""
+msgstr "Εισαγωγή κουπονιών απο ερώτημα σε LDAP"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:335
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:336
 msgid "Export Tokens to CSV file"
-msgstr ""
+msgstr "Εξαγωγή κουπονιών σε αρχείο CSV"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:341
 msgid "Send email invitation"
-msgstr ""
+msgstr "Αποστολή πρόσκλησης με email."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:343
 msgid "Send email reminder"
-msgstr ""
+msgstr "Αποστολή υπενθύμισης με email."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:346
 msgid "Generate Tokens"
-msgstr ""
+msgstr "Δημιουργία κουπονιών"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:349
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:463
 msgid "Drop tokens table"
-msgstr ""
+msgstr "Διαγραφή του πίνακα κουπονιών."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:366
 msgid "Total Records in this Token Table"
-msgstr ""
+msgstr "Συνολικές εγγραφές σε αυτόν τον Πίνακα κουπονιών."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:373
 msgid "Total With No Unique Token"
-msgstr ""
+msgstr "Συνολικές με μη μοναδικό κουπόνι"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:380
 msgid "Total Invitations Sent"
-msgstr "Σύνολο σταλθέντων προσκλήσεων"
+msgstr "Σύνολο αποσταλμένων προσκλήσεων"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:385
 msgid "Total Surveys Completed"
@@ -4244,19 +4244,19 @@ msgstr "Σύνολο Ολοκληρωμένων Ερευνών:"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:404
 msgid "All token entries have been deleted."
-msgstr ""
+msgstr "Όλες οι εγγραφές κουπονιών έχων διαγραφεί"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:412
 msgid "All invite entries have been set to 'Not Invited'."
-msgstr ""
+msgstr "Όλες οι εγγραφές έχουν τεθεί σε 'Δεν έχει προσκληθεί'"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:420
 msgid "All unique token numbers have been removed."
-msgstr ""
+msgstr "Όλες οι μοναδικές εγγραφές κουπονιών έχουν διαγραφεί."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:445
 msgid "Token Database Administration Options"
-msgstr ""
+msgstr "Επιλογές διαχείρισης Πίνακα κουπονιών"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:451
 msgid "Are you really sure you want to reset all invitation records to NO?"
@@ -4264,7 +4264,7 @@ msgstr "Είστε σίγουροι ότι επιθυμείτε την επαν�
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:451
 msgid "Set all entries to 'No invitation sent'."
-msgstr ""
+msgstr "Σήμανση εγγραφών : 'Δεν έχει αποσταλεί πρόσκληση'."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:453
 msgid "Are you sure you want to delete all unique token numbers?"
@@ -4272,7 +4272,7 @@ msgstr "Είστε σίγουροι ότι επιθυμείτε την διαγ�
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:453
 msgid "Delete all unique token numbers"
-msgstr ""
+msgstr "Διαργαφή όλων των μοναδικών αριθμών κουπονιών"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:455
 msgid "Are you really sure you want to delete ALL token entries?"
@@ -4280,11 +4280,11 @@ msgstr "Είστε σίγουροι ότι επιθυμείτε την διαγ�
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:455
 msgid "Delete all token entries"
-msgstr ""
+msgstr "Διαγραφή όλων των εγγραφών του πίνακα κουπονιών"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:461
 msgid "Update tokens table with new fields"
-msgstr ""
+msgstr "Ενημέρωση Πίνακα κουπονιών με τις νέες εγγραφές"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:507
 msgid "Search"
@@ -4306,7 +4306,7 @@ msgstr "Ταξινόμηση κατά:"
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:581
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1162
 msgid "Invite sent?"
-msgstr ""
+msgstr "Αποστολή πρόσκλησης?"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:585
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1172
@@ -4315,11 +4315,11 @@ msgstr "Ολοκληρώθηκε ?"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:617
 msgid "Edit Token Entry"
-msgstr ""
+msgstr "Επεξεργασία εγγραφής κουπονιού"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:619
 msgid "Delete Token Entry"
-msgstr ""
+msgstr "Διαγραφή εγγραφής κουπονιού"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:620
 msgid "Do Survey"
@@ -4331,43 +4331,43 @@ msgstr "Ανανέωση Απάντησης"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:659
 msgid "Send invitation email to this entry"
-msgstr ""
+msgstr "Αποστολή πρόσκλησης  σε αυτήν την εγγραφή."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:668
 msgid "Send reminder email to this entry"
-msgstr ""
+msgstr "Αποστολή υπενθύμισης σε αυτήν την εγγραφή"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:687
 msgid "Delete Tokens Table"
-msgstr ""
+msgstr "Διαγραφή πίνακα κουπονιών"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:694
 msgid "If you delete this table tokens will no longer be required to access this survey."
-msgstr ""
+msgstr "Αν διαγραφεί ο πίνακας κουπονιών δεν θα χρειάζονται κουπόνια για την πρόσβαση σε αυτή την έρευνα"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:694
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
-msgstr ""
+msgstr "Αν συνέχισετε θα δημιουργηθεί ένα αντίγραφο ασφαλείας το οποίο θα μπορει να προσπελαστεί μόνο από τον διαχειριστή του συστήματος."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:697
 msgid "Delete Tokens"
-msgstr ""
+msgstr "Διαγραφή κουπονιών"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:708
 msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
-msgstr "O πίνακας token έχει διαγραφεί και δεν χρειάζεται προεγγραφή για την συμπλήρωση αυτής της έρευνας"
+msgstr "O πίνακας κουπονιών έχει διαγραφεί και δεν χρειάζεται προεγγραφή για την συμπλήρωση αυτής της έρευνας"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:708
 msgid "A backup of this table has been made and can be accessed by your system administrator."
-msgstr ""
+msgstr "Έχει δημιουργηθεί ένα αντίγραφο ασφαλείας το οποίο μπορει να προσπελαστεί μόνο από τον διαχειριστή του συστήματος."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:724
 msgid "Email Invitation"
-msgstr ""
+msgstr "Πρόσκληση με email."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:745
 msgid "to TokenID No"
-msgstr ""
+msgstr "στο κουπόνι με αριθμό ID:"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:749
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:884
@@ -4382,115 +4382,115 @@ msgstr "Θέμα"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:765
 msgid "Send Invitations"
-msgstr ""
+msgstr "Αποστολη προσκλήσεων."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:775
 msgid "Sending Invitations"
-msgstr ""
+msgstr "Αποστολη προσκλήσεων."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:778
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:904
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:944
 msgid "Sending to TID No:"
-msgstr ""
+msgstr "Αποστολή στο TID:"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:829
 msgid "Invitation Sent To:"
-msgstr ""
+msgstr "Αποστάλθηκε πρόσκληση στον:"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:833
 msgid "Mail to {FIRSTNAME} {LASTNAME} ({EMAIL}) Failed"
-msgstr ""
+msgstr "Η αποστολή στον  {FIRSTNAME} {LASTNAME} ({EMAIL}) απέτυχε"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:845
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1007
 msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
-msgstr ""
+msgstr "Υπάρουν περισσότερα mails σε εκκρεμότητα από΄αυτά που μπορούν να σταλούν με μια προσπάθεια. Συνεχίστε να στέλνετε τα υπόλοιπα mails κάνοντας κλικ παρακάτω."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:846
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1008
 msgid "There are {EMAILCOUNT} emails still to be sent."
-msgstr ""
+msgstr "Θα σταλούν {EMAILCOUNT} emails."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:862
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
-msgstr ""
+msgstr "Δεν βρέθηκαν σωστές διευθύνσεις email. Αυτό συμβαίνει γιατί δεν ικανοποιήθηκε κανένα από τα κριτήρια:α) Υπάρχει διεύθυνση email β) Δεν έχει σταλθεί πρόσκληση ακόμη γ) Να έχει ολοκληρωθεί η έρευνα δ) Να υπάρχει κουπόνι"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:874
 msgid "Email Reminder"
-msgstr ""
+msgstr "Αποστολή υπενθύμησης με email"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:896
 msgid "Start at TID No:"
-msgstr ""
+msgstr "Αρχή απο εγγραφή TID:"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:927
 msgid "Send Reminders"
-msgstr ""
+msgstr "Αποστολή υπενθυμήσεων"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:939
 msgid "Sending Reminders"
-msgstr ""
+msgstr "Αποστολή υπενθυμήσεων"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:991
 msgid "Reminder Sent To:"
-msgstr ""
+msgstr "η υπενθύμιση στάλθηκε:"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1027
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
-msgstr ""
+msgstr "Δεν βρέθηκαν σωστές διευθύνσεις email. Αυτό συμβαίνει γιατί δεν ικανοποιήθηκε κανένα από τα κριτήρια:α) Υπάρχει διεύθυνση email β) Δεν έχει σταλθεί πρόσκληση ακόμη γ) Να έχει ολοκληρωθεί η έρευνα δ) Να υπάρχει κουπόνι"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1039
 msgid "Create Tokens"
-msgstr ""
+msgstr "Δημιουργία κουπονιών"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1043
 msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
-msgstr ""
+msgstr "Επιλέγοντας ναι θα αναπαραχθούν κουπόνια για όλλες τις εγγραφές που δεν έχουν. OK?"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1069
 msgid "{TOKENCOUNT} tokens have been created"
-msgstr ""
+msgstr "Δημιουργήθηκαν {TOKENCOUNT} κουπόνια"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1083
 msgid "Token has been deleted."
-msgstr ""
+msgstr "Το κουπόνι έχει διαγραφεί"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1084
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/usercontrol.php:128
 msgid "Reloading Screen. Please wait."
-msgstr ""
+msgstr "Επαναφόρτωση οθόνης παρακαλώ περιμένετε."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1109
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1221
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1253
 msgid "Add or Edit Token"
-msgstr ""
+msgstr "Προσθήκη ή επεξεργασία κουπονιού"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1145
 msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
-msgstr ""
+msgstr "Το πεδίο αυτό μπορεί να είναι μείνει άδειο και να γεμίσει αυτόματα με την λειτουργία 'Δημιουργία κουπονιών'"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1201
 msgid "Update Token"
-msgstr "Ανανέωση Συμβολικών"
+msgstr "Ανανέωση κουπονιών"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1206
 msgid "Add Token"
-msgstr "Πρόσθεση Token"
+msgstr "Πρόσθεση κουπονιού"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1245
 msgid "Updated Token"
-msgstr ""
+msgstr "Ανανέωση κουπονιού"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1271
 msgid "Added New Token"
-msgstr ""
+msgstr "Προσθήκη νέου κουπονιού"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1281
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1316
 msgid "Upload CSV File"
-msgstr ""
+msgstr "Αναίβασμα αρχείου CSV."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1287
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1305
@@ -4503,23 +4503,23 @@ msgstr "Το αρχείο πρέπει να είναι μορφής CSV με δ�
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1299
 msgid "Upload LDAP entries"
-msgstr ""
+msgstr "Ανέβασμα εγγραφών LDAP"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1306
 msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
-msgstr ""
+msgstr "Τα ερωτήμστα LDAP ορίζονται από τον διαχειρηστή του συστήματος στο αρχείο config-ldap.php"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1331
 msgid "Upload file not found. Check your permissions and path for the upload directory"
-msgstr ""
+msgstr "Το αρχείο δεν βρέθηκε παρακαλώ ελέγξτε τα δικαιώματα στον φάκελο αρχειών"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1336
 msgid "Importing CSV File"
-msgstr ""
+msgstr "Εισαγωγή αρχείου CSV"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1337
 msgid "Creating Token Entries"
-msgstr ""
+msgstr "Δημιουργεία εγγραφών κουπονιών"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1402
 msgid "Failed"
@@ -4527,11 +4527,11 @@ msgstr "Αποτυχεία"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1404
 msgid "Records in CSV"
-msgstr ""
+msgstr "εγγραφές σε CSV"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1405
 msgid "Records met minumum requirements"
-msgstr ""
+msgstr "Οι εγγραφές έχουν τις ελάχιστες προδιαγραφές"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1406
 msgid "Records imported"
@@ -4539,195 +4539,195 @@ msgstr "Συνολο εγγραφών που εισήχθησαν: "
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1407
 msgid "Duplicate records removed"
-msgstr ""
+msgstr "Οι διπλές εγγραφές έχουν διαγραφεί."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1408
 msgid "Records with invalid email address removed"
-msgstr ""
+msgstr "Οι εγγραφές με την λανθασμένο email έχουν διαγραφεί."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1417
 msgid "Uploading LDAP Query"
-msgstr ""
+msgstr "Εκτέλεση ερωτήματος στον LDAP server"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1475
 msgid "{TOKENCOUNT} Records Created"
-msgstr ""
+msgstr "Δημιουργήθικαν {TOKENCOUNT} εγραφές κουπονιών"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1479
 msgid "Can't bind to the LDAP directory"
-msgstr ""
+msgstr "Αποτυχεία επικοινωνίας με τον LDAP server"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1485
 msgid "Can't connect to the LDAP directory"
-msgstr ""
+msgstr "Αποτυχεία επικοινωνίας με τον LDAP server"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1503
 msgid "ARMSCII-8 Armenian"
-msgstr ""
+msgstr "ARMSCII-8 Armenian"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1504
 msgid "US ASCII"
-msgstr ""
+msgstr "US ASCII"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1505
 msgid "Automatic"
-msgstr ""
+msgstr "Αυτόματο"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1506
 msgid "Big5 Traditional Chinese"
-msgstr ""
+msgstr "Big5 Traditional Chinese"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1507
 msgid "Binary pseudo charset"
-msgstr ""
+msgstr "Binary pseudo charset"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1508
 msgid "Windows Central European"
-msgstr ""
+msgstr "Windows Central European"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1509
 msgid "Windows Cyrillic"
-msgstr ""
+msgstr "Windows Cyrillic"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1510
 msgid "Windows Arabic"
-msgstr ""
+msgstr "Windows Arabic"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1511
 msgid "Windows Baltic"
-msgstr ""
+msgstr "Windows Baltic"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1512
 msgid "DOS West European"
-msgstr ""
+msgstr "DOS West European"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1513
 msgid "DOS Central European"
-msgstr ""
+msgstr "DOS Central European"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1514
 msgid "DOS Russian"
-msgstr ""
+msgstr "DOS Russian"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1515
 msgid "SJIS for Windows Japanese"
-msgstr ""
+msgstr "SJIS for Windows Japanese"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1516
 msgid "DEC West European"
-msgstr ""
+msgstr "DEC West European"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1517
 msgid "UJIS for Windows Japanese"
-msgstr ""
+msgstr "UJIS for Windows Japanese"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1518
 msgid "EUC-KR Korean"
-msgstr ""
+msgstr "EUC-KR Korean"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1519
 msgid "GB2312 Simplified Chinese"
-msgstr ""
+msgstr "GB2312 Simplified Chinese"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1520
 msgid "GBK Simplified Chinese"
-msgstr ""
+msgstr "GBK Simplified Chinese"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1521
 msgid "GEOSTD8 Georgian"
-msgstr ""
+msgstr "GEOSTD8 Georgian"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1522
 msgid "ISO 8859-7 Greek"
-msgstr ""
+msgstr "ISO 8859-7 Greek"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1523
 msgid "ISO 8859-8 Hebrew"
-msgstr ""
+msgstr "ISO 8859-8 Hebrew"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1524
 msgid "HP West European"
-msgstr ""
+msgstr "HP West European"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1525
 msgid "DOS Kamenicky Czech-Slovak"
-msgstr ""
+msgstr "DOS Kamenicky Czech-Slovak"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1526
 msgid "KOI8-R Relcom Russian"
-msgstr ""
+msgstr "KOI8-R Relcom Russian"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1527
 msgid "KOI8-U Ukrainian"
-msgstr ""
+msgstr "KOI8-U Ukrainian"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1528
 msgid "cp1252 West European"
-msgstr ""
+msgstr "cp1252 West European"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1529
 msgid "ISO 8859-2 Central European"
-msgstr ""
+msgstr "ISO 8859-2 Central European"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1530
 msgid "ISO 8859-9 Turkish"
-msgstr ""
+msgstr "ISO 8859-9 Turkish"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1531
 msgid "ISO 8859-13 Baltic"
-msgstr ""
+msgstr "ISO 8859-13 Baltic"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1532
 msgid "Mac Central European"
-msgstr ""
+msgstr "Mac Central European"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1533
 msgid "Mac West European"
-msgstr ""
+msgstr "Mac West European"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1534
 msgid "Shift-JIS Japanese"
-msgstr ""
+msgstr "Shift-JIS Japanese"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1535
 msgid "7bit Swedish"
-msgstr ""
+msgstr "7bit Swedish"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1536
 msgid "TIS620 Thai"
-msgstr ""
+msgstr "TIS620 Thai"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1537
 msgid "UCS-2 Unicode"
-msgstr ""
+msgstr "UCS-2 Unicode"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1538
 msgid "EUC-JP Japanese"
-msgstr ""
+msgstr "EUC-JP Japanese"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1539
 msgid "UTF-8 Unicode"
-msgstr ""
+msgstr "UTF-8 Unicode"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1551
 msgid "Choose the CSV file to upload:"
-msgstr ""
+msgstr "Επιλέξτε το CSV αρχείο που θα ανεβάσετε:"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1553
 msgid "Character set of the file:"
-msgstr ""
+msgstr "Character set του αρχείου:"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1567
 msgid "Sorry, but the LDAP module is missing in your PHP configuration."
-msgstr ""
+msgstr "Συγγνώμη αλλά το module για ldap λείπει από εγκατάσταση της PHP."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1573
 msgid "LDAP is disabled or no LDAP query defined."
-msgstr ""
+msgstr "O LDAP είναι απενεργοποιημένος ή έχει οριστεί LDAP ερώτημα"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/tokens.php:1578
 msgid "Select the LDAP query you want to run:"
-msgstr ""
+msgstr "Παρακαλώ επιλέξτε τον LDAP server το οποίο θέλετε να χρησιμοποιήσετε."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/printablesurvey.php:130
 msgid "if you answered"
@@ -4833,11 +4833,11 @@ msgstr "Καλωσορίσατε στις Ρυθμίσεις του LimeSurvey"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/install/index.php:53
 msgid "The database defined in config.php does not exist."
-msgstr ""
+msgstr "Η βάση που έχει οριστεί στο αρχείο config.php δεν υπάρχει."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/install/index.php:54
 msgid "LimeSurvey can attempt to create this database for you."
-msgstr ""
+msgstr "Το LimeSurvey μπορεί να δημιουργήσει αυτήν την βάση αυτομάτος."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/install/index.php:55
 msgid "Your selected database name is:"
@@ -4850,11 +4850,11 @@ msgstr "Υπάρχει ήδη μια βάση δεδομένων με το όν�
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/install/index.php:71
 msgid "Do you want to populate that database now by creating the necessary tables?"
-msgstr ""
+msgstr "Θέλετε να γίνει διαμόρφωση της βάσης με την δημιουργία των απαραίτητων πινάκων?"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/install/index.php:103
 msgid "Database has been successfully upgraded to version "
-msgstr ""
+msgstr "Η βάση δεδομένων αναβαθμίστηκε επιτυχώς στην έκδοση "
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/deactivate.php:46
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/deactivate.php:115
@@ -4867,11 +4867,11 @@ msgstr "Σε μια ενεργή έρευνα, δημιουργήται ένα t
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/deactivate.php:56
 msgid "When you de-activate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
-msgstr ""
+msgstr "Όταν απενεργοποιήτε μια έρευνα τα δεδομένα των απαντήσεων και οι πίνακες κουπονιών αρχειοποιούνται. Όταν θα ενεργοποιήσετε την έρευνα αυτή ξανά ο πίνακας αυτός θα είναι άδειος. Δεν θα μπορείτε να δείτε τα τωρινά δεδομένα πάλι. Θα πρέπει να επικοινωνήσετε με τον διαχειριστή του συστήματος για περισσότερες πληροφορίες."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/deactivate.php:57
 msgid "De-activated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
-msgstr ""
+msgstr "Απενεργοποιημένες έρευνες μπορούν να προσπελαστούν μόνο απο τους διαχειρηστές τους συστήματος με εξωτερικά όπως το phpmyadmin. Αν στην έρευνα χρησιμοποιούνται κουπόνια, τότε ο πίνακας κουπονιών είναι προσπελάσιμος μόνο απο διαχειριστές του συστήματος."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/deactivate.php:58
 msgid "Your responses table will be renamed to:"
@@ -4899,11 +4899,11 @@ msgstr "Η απαντήσεις αυτής της έρευνας δεν είνα
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/deactivate.php:125
 msgid "You should note the name of this table in case you need to access this information later."
-msgstr ""
+msgstr "Παρακαλώ σημειώστε το όνομα αυτού του πίνακα σε περίπτωση που θα πρέπει να τον χρησιμοποιήσετε αργότερα."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/deactivate.php:128
 msgid "The tokens table associated with this survey has been renamed to: "
-msgstr ""
+msgstr "Ο πίνακας κουπονιών αυτής της έρευνας έχει μετονομαστεί σε:"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:63
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:79
@@ -4913,7 +4913,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:1362
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:1407
 msgid "Data Entry"
-msgstr ""
+msgstr "Οθόνη εισαγωγής με το χέρι"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:82
 msgid "You have not selected a survey for data-entry."
@@ -4921,7 +4921,7 @@ msgstr "Δέν έχει προσδιορίσθεί το ID της έρευνας
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:105
 msgid "This survey is not anonymous, you must supply a valid token"
-msgstr ""
+msgstr "Η έρευνα αυτήν δεν είναι ανώνυμη. Πρέπει να εισάγετε ένα κουπόνι για να συνεχίσετε."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:125
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/save.php:212
@@ -4946,7 +4946,7 @@ msgstr "Προσπαθήστε ξανά"
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:1222
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:2182
 msgid "Identifier:"
-msgstr ""
+msgstr "Αναγνωριστικό(id):"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:137
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:2184
@@ -4966,7 +4966,7 @@ msgstr "Διεύθυνση Εmail:"
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:143
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:2190
 msgid "Start Language:"
-msgstr ""
+msgstr "Γλώσσα έναρξης:"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:152
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:1240
@@ -4982,7 +4982,7 @@ msgstr "Οι απαντήσεις της Έρευνάς σας αποθηκεύ�
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:346
 msgid "A token entry for the saved survey has been created too."
-msgstr "Ένας πίνακας tokens έχει δημιουργηθεί για αυτήν την έρευνα."
+msgstr "Ένας πίνακας κουπονιών έχει δημιουργηθεί για αυτήν την έρευνα."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:355
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/save.php:292
@@ -5004,15 +5004,15 @@ msgstr "Σας απεστάλει email με τις πληροφορίες σχ�
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:382
 msgid "The entry was assigned the following record id: "
-msgstr ""
+msgstr "Η εγγραφή έχει αντιστοιχιστεί με τον εξής record:"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:386
 msgid "Add Another Record"
-msgstr ""
+msgstr "Προσθήκη επόμενης εγγραφής"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:581
 msgid "Editing Response"
-msgstr ""
+msgstr "Επεξεργασία απάντησης"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:626
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:653
@@ -5058,12 +5058,12 @@ msgstr "Η ταξινόμησή σας"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:1184
 msgid "Update Entry"
-msgstr ""
+msgstr "Ανανέωση εγγραφής"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:1216
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:2176
 msgid "Finalize response submission"
-msgstr ""
+msgstr "Ολοκλήρωση εισαγωγής απάντησης"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:1218
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:2178
@@ -5072,11 +5072,11 @@ msgstr "Αποθήκευση για περαιτέρω συμπλήρωση απ
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:1350
 msgid "Record has been updated."
-msgstr ""
+msgstr "Η εγγραφή έχει ανανεωθεί."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:1371
 msgid "Record Deleted"
-msgstr ""
+msgstr "Η εγγραφή έχει σβηστεί."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:1485
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/dataentry.php:1560
@@ -5170,7 +5170,7 @@ msgstr "Δεν δόθηκε το όνομα χρήστη"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/usercontrol.php:193
 msgid "You were signed in on the site"
-msgstr ""
+msgstr "Έχετε εισέλθει στο σύστημα."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/usercontrol.php:197
 msgid "Login here"
@@ -5178,11 +5178,11 @@ msgstr "Κάντε Login εδώ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/usercontrol.php:207
 msgid "An email with a generated password was sent to the user."
-msgstr ""
+msgstr "ένα email με τον νέο password θα σταλεί στον χρήστη."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/usercontrol.php:224
 msgid "Username and/or email address already exists."
-msgstr ""
+msgstr "Το όνομα χρήστη ή/και το email υπάρχουν."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/usercontrol.php:240
 msgid "Admin cannot be deleted!"
@@ -5191,27 +5191,27 @@ msgstr "Ο χρήστης Admin δεν μπορεί να διαγραφεί"
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/usercontrol.php:322
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/usercontrol.php:346
 msgid "Could not modify User Data."
-msgstr ""
+msgstr "Δεν ήταν εφικτή η αλλαγή των στοιχείων του χρήστη."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/usercontrol.php:338
 msgid "Unchanged"
-msgstr ""
+msgstr "Χωρίς αλλαγές"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/usercontrol.php:346
 msgid "Email address already exists."
-msgstr ""
+msgstr "Η διεύθηνση mail υπάρχει ήδη."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/usercontrol.php:352
 msgid "Back"
-msgstr ""
+msgstr "Πίσω"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/usercontrol.php:397
 msgid "Update user rights successful."
-msgstr ""
+msgstr "Επιτυχής αποθήκευση διακιωμάτων χρήστη"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/admin/usercontrol.php:407
 msgid "You are not allowed to change your own rights!"
-msgstr ""
+msgstr "Δεν μπορείτε να αλλάξετε τα δικά σας δικαιώματα!"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/save.php:170
 msgid "Please try again."
@@ -5222,7 +5222,7 @@ msgstr "Παρακαλώ προσπαθήστε ξανά."
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/index.php:249
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/register.php:71
 msgid "The answer to the security question is incorrect"
-msgstr ""
+msgstr "Η απάντηση στην ερώτηση ασφαλείας είναι λανθασμένη"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/save.php:237
 msgid "This name has already been used for this survey. You must use a unique save name."
@@ -5251,7 +5251,7 @@ msgstr "ΣΦΑΛΜΑ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/index.php:69
 msgid "We are sorry but your session has expired."
-msgstr ""
+msgstr "Συγνώμη αλλά το session έχει ληξει"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/index.php:69
 msgid "Either you have been inactive for too long or there were problems with your connection."
@@ -5301,12 +5301,12 @@ msgstr "Επανεκίνση Ημιτελής Έρευνας"
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/index.php:1085
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/index.php:1127
 msgid "This is a controlled survey. You need a valid token to participate."
-msgstr "Πρόκειται για ελεγχόμενη Έρευνα στην οποία θα χρειαστείτε έγκυρα στοιχεία για να συμμετέχετε."
+msgstr "Πρόκειται για ελεγχόμενη Έρευνα στην οποία θα χρειαστείτε κάποιο κουπόνι για να συμμετέχετε."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/index.php:298
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/index.php:1128
 msgid "The token you have provided is either not valid, or has already been used."
-msgstr "Τα στοιχεία που δώσατε είτε είναι μη-έγκυρα είτε έχουν ήδη χρησιμοποιηθεί."
+msgstr "Το κουπόνι πο υδώσατε είτε είναι μη-έγκυρο είτε έχει ήδη χρησιμοποιηθεί."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/index.php:299
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/index.php:1129
@@ -5394,7 +5394,7 @@ msgstr "ΜΗΝΗΜΑ ΣΦΑΛΜΑΤΟΣ"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/index.php:1039
 msgid "Error saving results"
-msgstr ""
+msgstr "Λάθος κατα την αποθήκευση των αποτελεσμάτων"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/index.php:1047
 msgid "Try to submit again"
@@ -5402,7 +5402,7 @@ msgstr "Προσπαθήστε την υποβολή ξανά"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/index.php:1086
 msgid "If you have been issued with a token, please enter it in the box below and click continue."
-msgstr "Στην περίπτωση που δεν σας έχουν αποδοθεί στοιχεία, παρακαλείσθε να τα καταχωρήσετε στο παρακάτω πλαίσιο και να πατήσετε το κουμπί Συνέχεια."
+msgstr "Στην περίπτωση που σας έχει αποσταλεί κοπόνι, παρακαλείσθε να το καταχωρήσετε στο παρακάτω πλαίσιο και να πατήσετε το κουμπί Συνέχεια."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/index.php:1098
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:2037
@@ -5450,7 +5450,7 @@ msgstr "Διαγραφή Απαντήσεων"
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/question.php:131
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/survey.php:141
 msgid "Thank you"
-msgstr "Σας ευχαρηστούμε"
+msgstr "Σας ευχαριστούμε"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/group.php:150
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/question.php:132
@@ -5516,7 +5516,7 @@ msgstr "Απαντήσεις"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/qanda.php:305
 msgid "Choose your language"
-msgstr ""
+msgstr "Επιλέξτε γλώσσα"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/qanda.php:409
 msgid "This question must be answered correctly"
@@ -5540,7 +5540,7 @@ msgstr "Παρακαλώ επιλέξτε τουλάχιστον ένα στοι
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/qanda.php:463
 msgid "You cannot proceed until you enter some text for one or more questions."
-msgstr ""
+msgstr "Δεν μπορείτε να συνεχίσετε αν δεν συμπηλρώσετε κάποιο κείμενο για μια ή περισσότερες ερωτήσεις"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/qanda.php:467
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
@@ -5723,11 +5723,11 @@ msgstr "Λίστα (Dropdown)"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:1048
 msgid "It appears as if some tables or fields are missing from your database."
-msgstr ""
+msgstr "Φαίνεται πως κάποια πεδία ή πίνακες λοίπουν από την βάση δεδομένων σας."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:1050
 msgid "Check Database Fields"
-msgstr ""
+msgstr "Έλεγχος πεδίων βάσης"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:1252
 msgid "Display Last 50 Responses"
@@ -5748,15 +5748,15 @@ msgstr "Εξαγωγή των αποτελεσμάτων σε μορφή αρχ�
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:1267
 msgid "Import answers from a deactivated survey table"
-msgstr ""
+msgstr "Εισαγωγή απαντήσεων από μία απενεργοποιημένη έρευνα"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:1358
 msgid "Preset"
-msgstr ""
+msgstr "Preset"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:1852
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
-msgstr ""
+msgstr "Προσοχή. Η εκτέλεση Javascript είναι απενεργοποιημένη στον φυλλομετρητή σας (Broswer). Μπορεί να μην μπορείτε να απαντήσετε όλες τις ερωτήσεις σε αυτήν την έρευνα. Παρακαλώ ελεξτε τις ρυθμίσεις στον φυλλομετρητή σας."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:1864
 msgid "There is 1 question in this survey"
@@ -5821,15 +5821,15 @@ msgstr "Αποθήκευση της Ημιτελούς Έρευνάς σας"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:2019
 msgid "Enter a name and password for this survey and click save below."
-msgstr ""
+msgstr "Παρακαλώ συμπληρώστε ένα όνομα και τον κωδικό για αυτήν την έρευνα και πατήστε αποθήκευση."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:2019
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
-msgstr ""
+msgstr "Η έρευνα θα αποθηκευτεί χρησιμοποιόντας αυτό το όνομα και κωδικό. Μπορείτε να την συμπηρώσετε αργότερα με το ίδιο όνομα και κωδικό."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:2019
 msgid "If you give an email address, an email containing the details will be sent to you."
-msgstr ""
+msgstr "Αν καταχωρήσετε την διεύθυνση του email σας θα σας αποσταλεί αμέσως email με τις λεπτομέρειες"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:2029
 msgid "Repeat Password"
@@ -5845,11 +5845,11 @@ msgstr "Φόρτωση Αποθηκευμένης Έρευνας"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:2046
 msgid "You can load a survey that you have previously saved from this screen."
-msgstr ""
+msgstr "Μπορείτε να συνεχίσετε αργότερα μια έρευνα της οποία έχετε προυγουμένος αποθηκεύσει, από αυτήν την οθόνη"
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:2046
 msgid "Type in the 'name' you used to save the survey, and the password."
-msgstr ""
+msgstr "Παρακαλώ δώστε το όνομα το οποίο χρησιμοποιήσατε για να σώσετε αυτη΄ν την έρευνα, και το κωδικό."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:2049
 msgid "Saved name"
@@ -5864,11 +5864,11 @@ msgstr "Πρέπει να εγγραφείτε για να συμπληρώσε�
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:2068
 msgid "You may register for this survey if you wish to take part."
-msgstr ""
+msgstr "Μπορείτε να κάνετε δημόσια εγραφή προκειμένου να συμμετέχετε σε αυτήν την έρευνα."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:2068
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
-msgstr ""
+msgstr "Γράψτε τα στοιχεία σας εδώ και ένα email με πληροφορίες για το πως θα συμμετέχετε στην έρευνα θα σας σταλεί αμέσως."
 
 #: /srv/www/virtual/limesurvey.org/_demo-unstable/limesurvey/common.php:2133
 msgid "Your Assessment"
