@@ -73,6 +73,25 @@ HOW TO UPGRADE from a LimeSurvey 1.70 or 1.70+ version to the latest 1.70+
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.70+ Revision 4648 to 4690 (2008/04/21)
+
+Fixed #1929: When confirmation email is not defined, the hardcoded default email contains tags {XXX} that are not replaced (lemeur)
+Fixed #1927: Set all entries to 'No invitation sent' - not working if the translated confirmation text contains single quotes (lemeur)
+Fixed #1922: Multiple Numerical Input doesn't work with condition greater than or equal to (lemeur)
+Fixed a warning in index.php reported in bug #1921 (lemeur)
+Updated Dutch translation by Menno Dekker (c_schmitz)
+Updated Swedish translation by Max Zomborszki (c_schmitz)
+fixed bug 01938: edit response with "dual scale" (joeschneider)
+Updated Danish Language File by Thomas Clausen ( tntc1978 -a-t- gmail -d-0-t- com ) (c_schmitz)
+Fixed #1892: Rooturl is wrong when HTTP port is not the default (80) (c_schmitz)
+Fixed #1913: Hardcoded reference to limesurvey in action path in preview.php
+(c_schmitz)
+Fixed #1943: Problem activating official LimeSurvey sample survey (c_schmitz)
+Updated Greek Translation by Yiannos Katsirintakis (c_schmitz)
+Fixed #1939: Question reorder does not work in all languages after importing the particular question using question import (c_schmitz)
+updated queXML-Export - THX to Adam Zammit (http://quexml.sourceforge.net/)
+(el-matador-69)
+
 Changes from 1.70+ Revision 4629 to 4648 (2008/04/14)
 
 Just a few spanish language adjustments. By the way, Latin- american version will be coming soon, thanks to Francisco Bricio. (kadejo)
