@@ -480,4 +480,39 @@ function createinsertquery()
 	}
 }
 
+// submitanswer sets the submitdate
+// only used by question.php and group.php if next pages
+// should not display due to conditions
+// In this case all answers have already been updated by save.php
+// but movesubmit status was only set after calling save.php
+// ==> thus we need to update submitdate here.
+function submitanswer()
+{
+	global $thissurvey,$timeadjust;
+	global $surveyid, $connect, $clang;
+
+	if ($thissurvey['private'] =="Y" && $thissurvey['datestamp'] =="N")
+	{
+		// In case of anonymous answers survey with no datestamp
+		// then the the answer submutdate gets a conventional timestamp
+		// 1st Jan 1980
+		$mysubmitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
+	}
+	else
+	{
+		$mysubmitdate = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);      
+	}
+
+	$query = "";
+	if ((isset($_POST['move']) && $_POST['move'] == "movesubmit"))
+	{
+		$query = "UPDATE {$thissurvey['tablename']} SET ";
+		$query .= " submitdate = ".$connect->DBDate($mysubmitdate);
+		$query .= " WHERE id=" . $_SESSION['srid'];
+	}
+
+	$result=$connect->Execute($query);
+		return $result;
+}
+
 ?>

@@ -240,6 +240,7 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
             if ($_SESSION['step']>=$_SESSION['totalsteps']) 
             {
                 $_POST['move']="movesubmit"; 
+		submitanswer(); // complete this answer (submitdate)
                 break;       
             }
             $_SESSION['step']++;

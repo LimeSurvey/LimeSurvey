@@ -75,6 +75,7 @@ if (isset($_POST['move']) && $_SESSION['step'] != 0 && $_POST['move'] != "movesu
         if ($_SESSION['step']>$_SESSION['totalsteps']) 
         {
             $_POST['move'] = "movesubmit";
+		submitanswer(); // complete this answer (submitdate)
             break;
         } 
 	}
