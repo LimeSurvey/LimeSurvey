@@ -18,6 +18,7 @@
 include_once("login_check.php");
 
 
+
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
 if (!$surveyid)
@@ -38,6 +39,9 @@ if (!$surveyid)
 		."</body></html>\n";
 	exit;
 	}
+
+
+
 
 
 function cleanup($string)
@@ -96,11 +100,14 @@ function fixed_array($array)
 
 
 
-function create_fixed($lid,$rotate=false)
+function create_fixed($qlid,$rotate=false,$labels=true)
 {
 	global $dom;
 	global $dbprefix;
-	$Query = "SELECT * FROM {$dbprefix}labels WHERE lid = $lid ORDER BY sortorder ASC";
+	if ($labels)
+		$Query = "SELECT * FROM {$dbprefix}labels WHERE lid = $qlid ORDER BY sortorder ASC";
+	else
+		$Query = "SELECT code,answer as title,sortorder FROM {$dbprefix}answers WHERE qid = $qlid ORDER BY sortorder ASC";
 	$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
 
 	$fixed = $dom->create_element("fixed");
@@ -223,7 +230,7 @@ $questionnaire->append_child($questionnaireInfo);
 //section == group
 
 
-$Query = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid";
+$Query = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid order by group_order ASC";
 $QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
 //for each section
 while ($Row = mysql_fetch_assoc($QueryResult))
@@ -247,7 +254,7 @@ while ($Row = mysql_fetch_assoc($QueryResult))
 	$section->set_attribute("id", $gid);
 	
 	//boilerplate questions convert to sectionInfo elements
-	$Query = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid = $gid AND type LIKE 'X' ORDER BY qid ASC";
+	$Query = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid = $gid AND type LIKE 'X' ORDER BY question_order ASC";
 	$QR = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
 	while ($RowQ = mysql_fetch_assoc($QR))
 	{
@@ -269,7 +276,7 @@ while ($Row = mysql_fetch_assoc($QueryResult))
 
 	
 	//foreach question
-	$Query = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid = $gid AND type NOT LIKE 'X' ORDER BY qid ASC";
+	$Query = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid = $gid AND type NOT LIKE 'X' ORDER BY question_order ASC";
 	$QR = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
 	while ($RowQ = mysql_fetch_assoc($QR))
 	{
@@ -329,7 +336,7 @@ while ($Row = mysql_fetch_assoc($QueryResult))
 			    $question->append_child($response);
 		            break;
 		        case "!": //List - dropdown
-			    $response->append_child(create_fixed($lid));
+			    $response->append_child(create_fixed($qid,false,false));
 			    $question->append_child($response);		            
 		            break;
 		        case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
@@ -423,7 +430,6 @@ $dom->append_child($questionnaire);
 
 
 $fn = "survey_$surveyid.xml";
-
 header("Content-Type: application/download");
 header("Content-Disposition: attachment; filename=$fn");
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
@@ -431,6 +437,6 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header("Pragma: no-cache");                          // HTTP/1.0
 
-echo $dom->dump_mem(true);
+echo $dom->dump_mem(true,'UTF-8');
 exit;
 ?>
