@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-03-31 23:03+0100\n"
-"PO-Revision-Date: 2008-03-31 23:03+0100\n"
-"Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
+"PO-Revision-Date: 2008-04-23 23:08+0100\n"
+"Last-Translator: Josef Prandstetter <jprandstetter@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4658,7 +4658,7 @@ msgstr "Bitte nummerieren Sie jede Box in der Reihenfolge Ihrer Präferenz, begi
 
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:424
 msgid "Please choose *all* that apply:"
-msgstr "Bitte alle wählen Sie alle Punke aus, die zutreffen:"
+msgstr "Bitte wählen Sie alle Punke aus, die zutreffen:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:428
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:489
