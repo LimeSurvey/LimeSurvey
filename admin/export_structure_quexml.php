@@ -328,7 +328,7 @@ while ($Row = mysql_fetch_assoc($QueryResult))
 			    $question->append_child($response);
 		            break;
 		        case "L": //LIST drop-down/radio-button list
-			    $response->append_child(create_fixed($lid));
+			    $response->append_child(create_fixed($qid,false,false));
 			    $question->append_child($response);
 		            break;
 		        case "W": //List - dropdown
