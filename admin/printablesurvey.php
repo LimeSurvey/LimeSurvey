@@ -505,6 +505,9 @@ while ($degrow = $degresult->FetchRow())
 			$printablesurveyoutput .="\t\t\t</table>\n";
 			break;
 			case "Q":  //MULTIPLE SHORT TEXT
+			$width=60;
+			case "K":  //MULTIPLE NUMERICAL
+			$width=(!isset($width)) ? 30 : $width;
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please write your answer(s) here:")."</u><br />\n";
 			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
@@ -512,7 +515,7 @@ while ($degrow = $degresult->FetchRow())
 			while ($mearow = $mearesult->FetchRow())
 			{
 				$printablesurveyoutput .="\t\t\t\t<tr>\n";
-				$printablesurveyoutput .="\t\t\t\t\t<td>{$mearow['answer']}: <input type='text' size='60' name='$fieldname{$mearow['code']}' value=''";
+				$printablesurveyoutput .="\t\t\t\t\t<td align='right'>{$mearow['answer']}:</td><td><input type='text' size='$width' name='$fieldname{$mearow['code']}' value=''";
 				if ($mearow['default_value'] == "Y") {$printablesurveyoutput .=" checked";}
 				$printablesurveyoutput .=" readonly='readonly' /></td>\n";
 				$printablesurveyoutput .="\t\t\t\t</tr>\n";
