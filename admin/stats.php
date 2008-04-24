@@ -485,7 +485,7 @@ function getAnswerArray($data) {
 			"id"=>$row['code'],
 			"answers"=>array(0=>array("qid"=>$qid,
 			"code"=>$row['code'],
-			"answer"=>$clang->gT("Short free text"),
+			"answer"=>$clang->gT("Short Free text"),
 			"default_answer"=>"",
 			"sortorder"=>0)
 			)
@@ -682,7 +682,7 @@ function getAnswerArray($data) {
 		"id"=>"",
 		"answers"    =>array(0=>array("qid"=>$qid,
 		"code"=>"",
-		"answer"=>$clang->gT("Short free text"),
+		"answer"=>$clang->gT("Short Free Text"),
 		"default_value"=>"",
 		"sortorder"=>1)
 		)
@@ -693,7 +693,7 @@ function getAnswerArray($data) {
 		"id"=>"",
 		"answers"    =>array(0=>array("qid"=>$qid,
 		"code"=>"",
-		"answer"=>$clang->gT("Long free text"),
+		"answer"=>$clang->gT("Long Free Text"),
 		"default_value"=>"",
 		"sortorder"=>1)
 		)
@@ -704,7 +704,7 @@ function getAnswerArray($data) {
 		"id"=>"",
 		"answers"    =>array(0=>array("qid"=>$qid,
 		"code"=>"",
-		"answer"=>$clang->gT("Huge free text"),
+		"answer"=>$clang->gT("Huge Free Text"),
 		"default_value"=>"",
 		"sortorder"=>1)
 		)
