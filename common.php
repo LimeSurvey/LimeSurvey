@@ -2540,7 +2540,7 @@ function questionAttributes()
     "types"=>"TU",
     "help"=>"How many rows to display");
 	$qattributes[]=array("name"=>"hide_tip",
-	"types"=>"!LMOPWZ",
+	"types"=>"!LMOPWZK",
 	"help"=>"Hide the tip that is normally supplied with question");
 	$qattributes[]=array("name"=>"code_filter",
 	"types"=>"WZ",

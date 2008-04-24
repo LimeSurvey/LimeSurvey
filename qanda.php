@@ -2074,6 +2074,12 @@ function do_multiplenumeric($ia)
 	{
 		$tiwidth=10;
 	}
+    if ($hidetip=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
+    {
+        $hidetip=$hidetip['value'];
+    } else {
+        $hidetip=0;
+    }
 	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	} else {
@@ -2112,8 +2118,10 @@ function do_multiplenumeric($ia)
 			$fn++;
 			$inputnames[]=$myfname;
 		}
-		$answer .= "<br />\t\t\t<font size='1'><i>".$clang->gT("Only numbers may be entered in these fields")."</i></font>\n";
-
+		if($hidetip == 0) 
+		{
+		    $answer .= "<br />\t\t\t<font size='1'><i>".$clang->gT("Only numbers may be entered in these fields")."</i></font>\n";
+        }
         if ($maxvalue)
             {
 			$answer .= "\t\t\t<div id='max_num_value'><font size='1'><i>".$clang->gT("Total of all entries must not exceed ").$max_num_value."</i></font></div>\n";
