@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Dutch Language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-04-02 09:00+0200\n"
-"PO-Revision-Date: 2008-04-11 16:29+0100\n"
+"PO-Revision-Date: 2008-04-24 09:13+0100\n"
 "Last-Translator: Menno Dekker <menno.dekker@erasmusmc.nl>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -2067,7 +2067,7 @@ msgstr "Genereer vraagnummers opnieuw:"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:806
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:811
 msgid "Are you sure you want regenerate the question codes?"
-msgstr "Weet u zeker dat u alle unieke toegangscodes wilt verwijderen?"
+msgstr "Weet u zeker dat u alle vraagcodes opnieuw wilt genereren?"
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/html.php:504
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:807
@@ -5584,7 +5584,8 @@ msgid "Long free text"
 msgstr "Lang vrij antwoord"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:707
-msgid "Huge free text"
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:792
+msgid "Huge Free Text"
 msgstr "Extra lang vrij antwoord"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dumplabel.php:32
@@ -7600,10 +7601,6 @@ msgstr "Meerkeuzevraag met opmerkingen"
 msgid "Multiple Short Text"
 msgstr "Meerdere korte antwoorden"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:792
-msgid "Huge Free Text"
-msgstr "Lang vrij antwoord"
-
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:793
 msgid "List (Flexible Labels) (Dropdown)"
 msgstr "Lijstselectie enkel (eigen opties) (dropdown)"
@@ -7862,7 +7859,7 @@ msgstr "Chinees (Tradiotineel - Hong Kong)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:94
 msgid "Chinese (Traditional - Taiwan)"
-msgstr "Chinees (Traditioneel - Hong Kong)"
+msgstr "Chinees (Traditioneel - Taiwan)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:98
 msgid "Croatian"
