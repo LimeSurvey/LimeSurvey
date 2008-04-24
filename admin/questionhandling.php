@@ -851,6 +851,7 @@ function questionjavascript($type, $qattributes)
                         }
                     }
                 }";
+    //The following javascript turns on and off (hides/displays) various fields when the questiontype is changed
     $newquestionoutput .="\nfunction OtherSelection(QuestionType)\n"
     . "\t{\n"
     . "if (QuestionType == '') {QuestionType=document.getElementById('question_type').value;}\n"
@@ -878,7 +879,7 @@ function questionjavascript($type, $qattributes)
     . "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
     . "\t\tdocument.getElementById('MandatorySelection').style.display='';\n"
     . "\t\t}\n"
-    . "\telse if (QuestionType == 'S' || QuestionType == 'T' || QuestionType == 'U' || QuestionType == 'N' || QuestionType=='')\n"
+    . "\telse if (QuestionType == 'S' || QuestionType == 'T' || QuestionType == 'U' || QuestionType == 'N' || QuestionType=='' || QuestionType=='K')\n"
     . "\t\t{\n"
     . "\t\tdocument.getElementById('Validation').style.display = '';\n"
     . "\t\tdocument.getElementById('OtherSelection').style.display ='none';\n"
