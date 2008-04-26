@@ -1577,7 +1577,7 @@ function buildsurveysession()
           echo " <center><br />";
 	      if (isset($secerror)) echo "<font color='#FF0000'>".$secerror."</font><br />"; 
 	      echo $clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />";
-	      echo $clang->gT("If you have been issued with a token, please enter it in the box below and click continue.")."<br />&nbsp;
+	      echo $clang->gT("If you have been issued a token, please enter it in the box below and click continue.")."<br />&nbsp;
 	        <form method='get' action='".$_SERVER['PHP_SELF']."'>
 	        <table align='center'>
 		        <tr>
