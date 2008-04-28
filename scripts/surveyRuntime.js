@@ -127,3 +127,12 @@ function prepCellAdapters()
 		}
 	}
 }
+
+function addHiddenField(theform,thename,thevalue)
+{
+	var myel = document.createElement('input');
+	myel.type = 'hidden';
+	myel.name = thename;	
+	theform.appendChild(myel);
+	myel.value = thevalue;
+}
