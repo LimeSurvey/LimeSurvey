@@ -73,6 +73,25 @@ HOW TO UPGRADE from a LimeSurvey 1.70 or 1.70+ version to the latest 1.70+
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.70+ Revision 4648 to 4717 (2008/04/28)
+
+Fixed #1931: answers are recorded as not-completed (not finalized) if last survey page was hidden due to condition (lemeur)
+Upload the latest version of queXML-Export (to fix output of type "L") - Thx to Adam Zammit (el-matador-69)
+#1954: fixed a typo in the german translation - Thx to Rookie (el-matador-69)
+Fixed bug #01959, added multiple numerical to printablesurvey.php. (Also tidied up the layout for multiple numerical and short text) (jcleeland)
+Fixed bug #01601 - question attribute hide_tip for multiple numerical input.  Added feature. (jcleeland)
+Fixed bug #01855 - Entering validation fields in multiple choice questions is fiddly. Validation now available on new/edit question for multiple numerical (jcleeland)
+Slovenian language updated (gasper_koren)
+Updated Dutch translation by Menno Dekker (c_schmitz)
+Fixed some small translation issues (c_schmitz)
+removed obsolete file (c_schmitz)
+Updated Welsh Language File by John doit Moorhouse (a-t-) Powys doit gov doit
+uk (c_schmitz)
+#1973: Some more translation to Norwegian Nynorsk (nn) - Thx to dittaeva
+(el-matador-69)
+#1971: correct a typo at token notification - thx to nosynack for reporting it (el-matador-69)
+Updated Estonian translation by Karin.Ruul (ot) eitsa.ee (el-matador-69)
+
 Changes from 1.70+ Revision 4648 to 4690 (2008/04/21)
 
 Fixed #1929: When confirmation email is not defined, the hardcoded default email contains tags {XXX} that are not replaced (lemeur)
