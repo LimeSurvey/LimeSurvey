@@ -73,7 +73,7 @@ HOW TO UPGRADE from a LimeSurvey 1.70 or 1.70+ version to the latest 1.70+
 
 Thank you to everyone who helped with this new release!
 
-Changes from 1.70+ Revision 4648 to 4717 (2008/04/28)
+Changes from 1.70+ Revision 4648 to 4721 (2008/04/28)
 
 Fixed #1931: answers are recorded as not-completed (not finalized) if last survey page was hidden due to condition (lemeur)
 Upload the latest version of queXML-Export (to fix output of type "L") - Thx to Adam Zammit (el-matador-69)
