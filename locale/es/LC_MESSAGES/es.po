@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-03-30 09:00+0200\n"
-"PO-Revision-Date: 2008-04-28 20:09-0600\n"
+"PO-Revision-Date: 2008-04-28 20:27-0600\n"
 "Last-Translator: Carlos Juan Martin Perez <cmartin@una.ac.cr>\n"
 "Language-Team:  <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -6405,7 +6405,7 @@ msgstr "Por favor, enumere cada recuadro en orden de preferencia desde 1 a"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:424
 msgid "Please choose *all* that apply:"
-msgstr "Por favor, marque *todas* las que correspondan:"
+msgstr "Por favor, marque las opciones que correspondan:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:428
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:489
