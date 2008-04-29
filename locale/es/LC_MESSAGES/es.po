@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-03-30 09:00+0200\n"
-"PO-Revision-Date: 2008-04-07 13:13-0600\n"
+"PO-Revision-Date: 2008-04-28 20:09-0600\n"
 "Last-Translator: Carlos Juan Martin Perez <cmartin@una.ac.cr>\n"
 "Language-Team:  <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -765,7 +765,7 @@ msgstr "Directorio con el nombre"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:133
 msgid "already exists - choose another name"
-msgstr "ya existe - elija otro nombre"
+msgstr "ya existe - escoja otro nombre"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:135
 msgid "Unable to create directory"
@@ -1024,7 +1024,7 @@ msgstr "Control de Columnas"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:248
 msgid "Choose Columns"
-msgstr "Elija las columnas"
+msgstr "Seleccione las columnas"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:252
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:258
@@ -1045,7 +1045,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:259
 msgid "Choose the columns you wish to export."
-msgstr "Elija las columnas que desea exportar."
+msgstr "Seleccione las columnas que desea exportar."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:299
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:180
@@ -1056,7 +1056,7 @@ msgstr "Control de encuestados/as"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:304
 msgid "Choose Token Fields"
-msgstr "Elija los campos de los/as encuestados/as"
+msgstr "Seleccione los campos de los/as encuestados/as"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:310
 msgid ""
@@ -3770,7 +3770,7 @@ msgstr "Conjuntos de etiquetas"
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:3368
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:3404
 msgid "Please Choose..."
-msgstr "Por favor elija..."
+msgstr "Por favor seleccione..."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:122
 msgid "Error: You have to enter a name for this label set."
@@ -3916,7 +3916,7 @@ msgid ""
 "or rename the existing one."
 msgstr ""
 "El código de la etiqueta ya está en uso en este mismo conjunto. Por favor, "
-"elija otro código o renombre el anterior."
+"escoja otro código o renombre el anterior."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:759
 msgid "Failed to update label"
@@ -6326,7 +6326,7 @@ msgstr "No puede conectarse al directorio LDAP"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2169
 msgid "Choose the CSV file to upload:"
-msgstr "Elija el archivo CSV para subir:"
+msgstr "Escoja el archivo CSV para subir:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2170
 msgid "Character set of the file:"
@@ -6387,7 +6387,7 @@ msgstr "*"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:391
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:539
 msgid "Please choose *only one* of the following:"
-msgstr "Por favor elija *sólo una* de las siguientes opciones:"
+msgstr "Por favor seleccione *sólo una* de las siguientes opciones:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:278
 msgid "Please enter a date:"
@@ -6410,7 +6410,7 @@ msgstr "Por favor, marque *todas* las que correspondan:"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:428
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:489
 msgid "Please choose *at most* "
-msgstr "Por favor elija *a lo sumo* "
+msgstr "Por favor seleccione *a lo sumo* "
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:428
 msgid "answers:"
@@ -6418,7 +6418,7 @@ msgstr "opciones:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:485
 msgid "Please choose all that apply and provide a comment:"
-msgstr "Por favor, elija todas las opciones que correspondan y escriba un comentario:"
+msgstr "Por favor, seleccione todas las opciones que correspondan y escriba un comentario:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:489
 msgid "answers and provide a comment:"
@@ -6443,7 +6443,7 @@ msgstr "Por favor, escriba su respuesta aquí:"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:692
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:781
 msgid "Please choose the appropriate response for each item:"
-msgstr "Por favor, elija la respuesta apropiada para cada concepto:"
+msgstr "Por favor, seleccione la respuesta apropiada para cada concepto:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:824
 msgid "Submit Your Survey."
@@ -6760,7 +6760,7 @@ msgstr "Modificando la respuesta"
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3859
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3912
 msgid "Please choose"
-msgstr "Escoja, por favor"
+msgstr "Seleccione, por favor"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:943
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2040
@@ -7205,9 +7205,7 @@ msgstr ""
 msgid ""
 "If you have been issued with a token, please enter it in the box below and "
 "click continue."
-msgstr ""
-"Si se le ha proporcionado una contraseña, por favor introdúzcala en el "
-"cuadro de texto y pulse en continuar."
+msgstr "Si se le ha proporcionado una contraseña, por favor introdúzcala en el cuadro de texto y pulse en continuar."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1691
 msgid ""
@@ -7334,7 +7332,7 @@ msgstr "Administrador de la encuesta"
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:315
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:323
 msgid "Choose one of the following answers"
-msgstr "Escoja una de las siguientes opciones"
+msgstr "Seleccione una de las siguientes opciones"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:336
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:361
@@ -7353,7 +7351,7 @@ msgstr "opciones"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:351
 msgid "Choose your language"
-msgstr "Elija su Idioma"
+msgstr "Seleccione su Idioma"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:470
 msgid "This question must be answered correctly"
@@ -7484,11 +7482,11 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1248
 msgid "Please choose one of the following"
-msgstr "Por favor, elija uno de los siguientes"
+msgstr "Por favor, seleccione uno de los siguientes"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1249
 msgid "Please enter your comment here"
-msgstr "Por favor, escriba su comentario aquí"
+msgstr "Por favor, escriba la justificación de su respuesta aquí"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1565
 msgid "Click on an item in the list on the left, starting with your"
@@ -7511,7 +7509,7 @@ msgstr "para eliminar la última entrada de su clasificación"
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1767
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1939
 msgid "Please choose at most"
-msgstr "Por favor, escoja a lo sumo"
+msgstr "Por favor, seleccione a lo sumo"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1767
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1939
@@ -7821,7 +7819,7 @@ msgstr "Salir y reiniciar la encuesta"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2211
 msgid "Resume Later"
-msgstr "Volver en otro momento"
+msgstr "Guardar y Volver en otro momento"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2232
 msgid "Thank You!"
@@ -7833,7 +7831,7 @@ msgstr "Ha respondido a todas las preguntas de la encuesta."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2232
 msgid "Click on 'Submit' now to complete the process and save your answers."
-msgstr "Presione \"Enviar\" para completar el proceso y guardar sus respuestas."
+msgstr "Presione \"Enviar\" para concluir la encuesta y enviar definitivamente sus respuestas."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2238
 msgid ""
@@ -7859,7 +7857,7 @@ msgstr "Guardar una encuesta no terminada"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2276
 msgid "Enter a name and password for this survey and click save below."
-msgstr "Elija un nombre y una contraseña para esta encuesta y pulse \"Guardar\"."
+msgstr "Introduzca un nombre y una contraseña para esta encuesta y pulse \"Guardar\"."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2276
 msgid ""
