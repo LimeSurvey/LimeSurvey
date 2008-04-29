@@ -71,7 +71,7 @@ if ($database_exists && $databasetype=='mysql') {
 		$result = db_execute_assoc("SHOW COLUMNS FROM $tablename") or die("Table $tablename not existing in database");
 		while($row = $result->FetchRow())
 		{
-			$def .= "    $row[Field] $row[Type]";
+			$def .= "    `$row[Field]` $row[Type]";
 			if (!is_null($row["Default"])) $def .= " DEFAULT '$row[Default]'";
 			if ($row["Null"] != "YES") $def .= " NOT NULL";
 			if ($row["Extra"] != "") $def .= " $row[Extra]";
