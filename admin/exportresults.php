@@ -85,7 +85,7 @@ if (!$style)
 		elseif ($rows['type']=='1')
 		{
 			// $detailquery="select code from {$dbprefix}answers where qid=".$rows['qid']." and language='$surveybaselang' order by sortorder,code";
-			$detailquery="select a.code, l.lid from lime_answers as a, {$dbprefix}labels as l where qid=".$rows['qid']." AND (l.lid =".$rows['lid'].") and a.language='$surveybaselang' group by a.code order by a.code ";
+			$detailquery="select a.code, l.lid from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=".$rows['qid']." AND (l.lid =".$rows['lid'].") and a.language='$surveybaselang' group by a.code order by a.code ";
 			$detailresult=db_execute_assoc($detailquery) or die("Couldn't find detailfields<br />$detailquery<br />".htmlspecialchars($connect->ErrorMsg()));
 			$i=0;
 			while ($detailrows = $detailresult->FetchRow())
@@ -95,7 +95,7 @@ if (!$style)
 				$i++;
 			}
             // second scale
-            $detailquery="select a.code, l.lid from lime_answers as a, {$dbprefix}labels as l where qid=".$rows['qid']." AND (l.lid =".$rows['lid1'].") and a.language='$surveybaselang' group by a.code order by a.code ";
+            $detailquery="select a.code, l.lid from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=".$rows['qid']." AND (l.lid =".$rows['lid1'].") and a.language='$surveybaselang' group by a.code order by a.code ";
             $detailresult=db_execute_assoc($detailquery) or die("Couldn't find detailfields<br />$detailquery<br />".htmlspecialchars($connect->ErrorMsg()));
             $i=0;
             while ($detailrows = $detailresult->FetchRow())
@@ -658,12 +658,12 @@ for ($i=0; $i<$fieldcount; $i++)
                 if (substr($fielddata['fieldname'],-1) == '0')
                 {
                     $strlabel = "1";
-        		    $lq = "select a.*, l.* from lime_answers as a, lime_labels as l where a.code='$faid' and qid=$fqid AND l.lid = $flid AND a.language='$surveybaselang'  group by l.lid";
+        		    $lq = "select a.*, l.* from {$dbprefix}answers as a, {$dbprefix}labels as l where a.code='$faid' and qid=$fqid AND l.lid = $flid AND a.language='$surveybaselang'  group by l.lid";
                 }
                 else 
                 {
                     $strlabel = "2";
-                   $lq = "select a.*, l.* from lime_answers as a, lime_labels as l where a.code='$faid' and qid=$fqid AND l.lid = $flid1 AND a.language='$surveybaselang'  group by l.lid";
+                   $lq = "select a.*, l.* from {$dbprefix}answers as a, {$dbprefix}labels as l where a.code='$faid' and qid=$fqid AND l.lid = $flid1 AND a.language='$surveybaselang'  group by l.lid";
                 }
 				$lr = db_execute_assoc($lq);
 				$j=0;	
@@ -924,7 +924,7 @@ elseif ($answers == "long")
 				}
 				break;
 				case "1":
-					$lq = "select a.*, l.*, l.code as lcode from lime_answers as a, lime_labels as l where qid=$fqid AND l.lid =$flid AND a.language='$explang' AND l.code = ? group by l.lid";
+					$lq = "select a.*, l.*, l.code as lcode from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=$fqid AND l.lid =$flid AND a.language='$explang' AND l.code = ? group by l.lid";
 					$lr = db_execute_assoc($lq, array($drow[$i])) or die($lq."<br />ERROR:<br />".htmlspecialchars($connect->ErrorMsg()));
 					while ($lrow = $lr->FetchRow())
 					{
@@ -1084,12 +1084,12 @@ elseif ($answers == "long")
                 if (substr($fielddata['fieldname'],-1) == '0')
                 {
                     $strlabel = "1";
-                    $lq = "select title from lime_labels as l where l.lid = $flid AND l.language='$surveybaselang'";
+                    $lq = "select title from {$dbprefix}labels as l where l.lid = $flid AND l.language='$surveybaselang'";
                 }
                 else 
                 {
                     $strlabel = "2";
-                    $lq = "select title from lime_labels as l where l.lid = $flid1 AND l.language='$surveybaselang'";
+                    $lq = "select title from {$dbprefix}labels as l where l.lid = $flid1 AND l.language='$surveybaselang'";
                 }
                 $lr = db_execute_assoc($lq);
                 while ($lrow=$lr->FetchRow())
