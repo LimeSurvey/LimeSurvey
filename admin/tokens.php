@@ -717,7 +717,7 @@ if ($subaction == "settings" &&
 
 if ($subaction == "browse" || $subaction == "search")
 {
-	if (!isset($limit)) {$limit = 50;}
+	if (!isset($limit)) {$limit = 100;}
 	if (!isset($start)) {$start = 0;}
 
 	if ($limit > $tkcount) {$limit=$tkcount;}
