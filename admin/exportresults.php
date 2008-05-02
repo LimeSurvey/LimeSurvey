@@ -843,7 +843,9 @@ elseif ($answers == "long")
 				$fgid=$fielddata['gid'];
 				$faid=$fielddata['aid'];
                 $flid=$fielddata['lid'];
-                $flid1=$fielddata['lid1'];
+                // $flid1=$fielddata['lid1'];
+                if (isset($fielddata['lid1'])) {$flid1=$fielddata['lid1'];}
+                
                 $fother=$fielddata['other'];
                 
 				if ($type == "doc")
