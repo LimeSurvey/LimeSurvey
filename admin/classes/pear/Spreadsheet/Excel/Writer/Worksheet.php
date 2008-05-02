@@ -475,7 +475,7 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
     function _initialize()
     {
         // Open tmp file for storing Worksheet data
-        $fh = tmpfile();
+        $fh = @tmpfile();
         if ($fh) {
             // Store filehandle
             $this->_filehandle = $fh;
