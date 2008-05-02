@@ -754,9 +754,15 @@ if (isset($grouparray) && $grouparray) {
 		//Now an additional integrity check if there are any groups not belonging into this survey
 		if ($gsid != $surveyid)
 		{
-			$importsurvey .= "<br />\n<font color='red'><strong>".$clang->gT("Error")."</strong></font>"
-			."<br />\nA group in the sql file does not come from the same Survey. Import of survey stopped.<br /><br />\n";
-			if ($importingfrom != "http") echo $clang->gT("Error").": A group in the sql file does not come from the same Survey. Import of survey stopped.\n";
+			if ($importingfrom == "http") 
+            { 
+                $importsurvey .= "<br />\n<font color='red'><strong>".$clang->gT("Error")."</strong></font>"
+                                ."<br />\n".$clang->gT("A group in the SQL file is not part of the same survey. The import of the survey was stopped.")."<br /><br />\n";
+            }
+            else
+            {
+                echo $clang->gT("Error").": A group in the SQL file is not part of the same Survey. The import of the survey was stopped.\n";
+            }
 			return;
 		}
 		//remove the old group id
