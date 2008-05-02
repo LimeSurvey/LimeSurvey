@@ -82,10 +82,10 @@ if (isset($_POST['move']) && $_SESSION['step'] != 0 && $_POST['move'] != "movesu
 }
 
 //SUBMIT ###############################################################################
-if ((isset($_POST['move']) && $_POST['move'] == "movesubmit")  && (!isset($notanswered) || !$notanswered))
+if ((isset($_POST['move']) && $_POST['move'] == "movesubmit")  && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) || !$notvalidated ))
 {
 	if ($thissurvey['refurl'] == "Y")                 
-    {
+    {                                                                                              
 		if (!in_array("refurl", $_SESSION['insertarray'])) //Only add this if it doesn't already exist
 		{
 			$_SESSION['insertarray'][] = "refurl";

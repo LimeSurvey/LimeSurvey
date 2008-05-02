@@ -266,7 +266,7 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 }
 
 //SUBMIT
-if ((isset($_POST['move']) && $_POST['move'] == "movesubmit")  && (!isset($notanswered) || !$notanswered))
+if ((isset($_POST['move']) && $_POST['move'] == "movesubmit")  && (!isset($notanswered) || !$notanswered)  && (!isset($notvalidated) || !$notvalidated ))   
 {
     if ($thissurvey['refurl'] == "Y")
     {
@@ -421,7 +421,7 @@ if ($plus_inputnames && !$bIsGroupDescrPage)
 }
 
 //Display the "mandatory" popup if necessary
-if (isset($notanswered))
+if (isset($notanswered) && $notanswered!=false)
 {
 	list($mandatorypopup, $popup)=mandatory_popup($ia, $notanswered);
 }
