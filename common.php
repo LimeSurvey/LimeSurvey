@@ -4535,7 +4535,7 @@ function hasResources($id,$type='survey')
 
 function randomkey($length)
 {
-	$pattern = "1234567890abcdefghijklmnpqrstuvwxyz";
+	$pattern = "23456789abcdefghijkmnpqrstuvwxyz";
 	$patternlength = strlen($pattern)-1; 
 	for($i=0;$i<$length;$i++)
 	{
