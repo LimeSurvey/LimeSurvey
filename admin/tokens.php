@@ -1206,8 +1206,11 @@ if ($subaction == "email" &&
 				}
 				else
 				{
-					$tokenoutput .= ReplaceFields($clang->gT("Mail to {FIRSTNAME} {LASTNAME} ({EMAIL}) Failed"), $fieldsarray);
-					$tokenoutput .= "<br /><pre>$modsubject<br />$modmessage</pre>";
+					$tokenoutput .= ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:")." ".$maildebug."<br />", $fieldsarray);
+					if ($debug>0) 
+					{
+						$tokenoutput .= "<br /><pre>Subject : $modsubject<br /><br />".htmlspecialchars($maildebugbody)."<br /></pre>";
+					}
 				}
 			}
 			if ($ctcount > $emcount)
@@ -1445,8 +1448,13 @@ if ($subaction == "remind" &&
 				}
 				else
 				{
-					$tokenoutput .= "\t\t\t({$emrow['tid']})[Email to {$emrow['firstname']} {$emrow['lastname']} failed]<br />\n";
-				}
+                    $tokenoutput .= $emrow['tid'] ." ".ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:")." ".$maildebug."<br />", $fieldsarray);
+                    if ($debug>0) 
+                    {
+                        $tokenoutput .= "<pre>Subject : $msgsubject<br /><br />".htmlspecialchars($maildebugbody)."<br /></pre>";
+                    }
+               
+                }
 				$lasttid = $emrow['tid'];
 			}
 			if ($ctcount > $emcount)
