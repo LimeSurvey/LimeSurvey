@@ -28,7 +28,6 @@ $surveyid=sanitize_int($surveyid);
 if (!$publicdir) {$publicdir=".";}
 $tpldir="$publicdir/templates";
 
-
 @session_start();
 
 
@@ -122,7 +121,7 @@ if ($surveyid &&
 		// ==> the original admin session remains valid
 		// ==> it is possible to start a new session
 		session_name($initial_session_name);
-		if (session_regenerate_id() === false) { die("Error Regenerating Sesion Id");}
+		if (session_regenerate_id() === false) { die("Error Regenerating Session Id");}
 		@session_destroy();
 
 		// start new session
@@ -130,7 +129,7 @@ if ($surveyid &&
 		// regenerate id so that the header geenrated by previous
 		// regenerate_id is overwritten
 		// needed after clearall
-		if (session_regenerate_id() === false) { die("Error Regenerating Sesion Id");}
+		if (session_regenerate_id() === false) { die("Error Regenerating Session Id");}
 
 		if ( $previewright === true)
 		{
@@ -893,7 +892,11 @@ function checkgroupfordisplay($gid)
 
 				if ($row['method'] != 'RX')
 				{
-					if (eval('if (trim($cfieldname)'. $row['method'].' trim($cvalue)) return true; else return false;'))
+					if (trim($row['method'])=='') 
+                    {
+                        $row['method']='==';
+                    }
+                    if (eval('if (trim($cfieldname)'. $row['method'].' trim($cvalue)) return true; else return false;'))
 					{
 						$conditionMatches=true;
 						//This condition is met

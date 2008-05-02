@@ -88,6 +88,7 @@ function cellAdapter(src)
 				//A cell with multiple radio buttons; unhandled
 				return;
 			}
+            
 		}
 	}
 	else
@@ -95,7 +96,8 @@ function cellAdapter(src)
 		eChild = eChildren[0];
 	}
 	if (eChild.type == 'radio') eChild.checked = true;
-	else if (eChild.type == 'checkbox') eChild.checked = !eChild.checked;
+//	else if (eChild.type == 'checkbox') eChild.checked = !eChild.checked;   
+//  Commented out  since it cause direct clicks on checkboxes to be reversed - see multiple choice with comments question
 	if (typeof modfield != 'undefined') modfield(eChild.name);
 }
 
