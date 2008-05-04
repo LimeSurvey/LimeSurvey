@@ -17,6 +17,7 @@ if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
 require_once(dirname(__FILE__).'/config-defaults.php');
 require_once(dirname(__FILE__).'/common.php');
 require_once($rootdir.'/classes/core/language.php');
+require_once(dirname(__FILE__).'/classes/core/html_entity_decode_php4.php');
 
 $surveyid=returnglobal('sid');
 
@@ -104,7 +105,6 @@ $fieldsarray["{ADMINNAME}"]=$thissurvey['adminname'];
 $fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
 $fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
 $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
-$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?sid=$surveyid&token=$newtoken&lang=".$baselang;
 $fieldsarray["{FIRSTNAME}"]=returnglobal('register_firstname');
 $fieldsarray["{LASTNAME}"]=returnglobal('register_lastname');
 $fieldsarray["{ATTRIBUTE_1}"]=returnglobal('register_attribute1');
@@ -113,14 +113,26 @@ $fieldsarray["{ATTRIBUTE_2}"]=returnglobal('register_attribute2');
 $message=$thissurvey['email_register'];
 $subject=$thissurvey['email_register_subj'];
 
-$message=Replacefields($message, $fieldsarray);
-$subject=Replacefields($subject, $fieldsarray);
 
 $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
 
+if (getEmailFormat($surveyid) == 'html')
+{
+	$useHtmlEmail = true;
+	$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?sid=$surveyid&token=$newtoken&lang=".$baselang."'>".htmlspecialchars("$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".$baselang)."</a>";
+}
+else
+{
+	$useHtmlEmail = false;
+	$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?sid=$surveyid&token=$newtoken&lang=".$baselang;
+}
+
+$message=Replacefields($message, $fieldsarray);
+$subject=Replacefields($subject, $fieldsarray);
+
 $html=""; //Set variable
 
-if (MailTextMessage($message, $subject, returnglobal('register_email'), $from, $sitename))
+if (MailTextMessage($message, $subject, returnglobal('register_email'), $from, $sitename,$useHtmlEmail,getBounceEmail($surveyid)))
 {
 	// TLR change to put date into sent
 	//	$query = "UPDATE {$dbprefix}tokens_$surveyid\n"
