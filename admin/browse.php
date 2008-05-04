@@ -667,7 +667,7 @@ elseif ($subaction == "all")
 			$browseoutput .= "\t\t<td align='center'><font size='1'>\n";
 			if (isset($TokenRow) && $TokenRow)
 			{
-				$browseoutput .= "\t\t<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=edit&amp;tid={$TokenRow['tid']}' title='Edit this token'>";
+				$browseoutput .= "\t\t<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=edit&amp;tid={$TokenRow['tid']}' title='".$clang->gT("Edit this token")."'>";
 			}
 			$browseoutput .= "{$dtrow['token']}";
 			if (isset($TokenRow) && $TokenRow)
