@@ -119,12 +119,12 @@ $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
 if (getEmailFormat($surveyid) == 'html')
 {
 	$useHtmlEmail = true;
-	$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?sid=$surveyid&token=$newtoken&lang=".$baselang."'>".htmlspecialchars("$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".$baselang)."</a>";
+	$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?lang=".$baselang."&sid=$surveyid&token=$newtoken'>".htmlspecialchars("$publicurl/index.php?lang=".$baselang."&sid=$surveyid&token=$newtoken")."</a>";
 }
 else
 {
 	$useHtmlEmail = false;
-	$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?sid=$surveyid&token=$newtoken&lang=".$baselang;
+	$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?lang=".$baselang."&sid=$surveyid&token=$newtoken";
 }
 
 $message=Replacefields($message, $fieldsarray);

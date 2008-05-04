@@ -1184,11 +1184,11 @@ if ($subaction == "email" &&
 
 				if ($ishtml === false)
 				{
-					$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language']);
+					$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}";
 				}
 				else
 				{
-					$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language'])."'>".htmlspecialchars("$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language']))."</a>";
+					$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}'>".htmlspecialchars("$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}")."</a>";
 
                 }
                 
@@ -1431,11 +1431,11 @@ if ($subaction == "remind" &&
 
 				if ($ishtml === false)
 				{
-					$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language']);
+					$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}";
 				}
 				else
 				{
-					$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language'])."'>".htmlspecialchars("$publicurl/index.php?sid=$surveyid&token={$emrow['token']}&lang=".trim($emrow['language']))."</a>";
+					$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}'>".htmlspecialchars("$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}")."</a>";
                     $_POST['message_'.$emrow['language']] = html_entity_decode_php4($_POST['message_'.$emrow['language']], ENT_QUOTES, "UTF-8");
                 }
 
