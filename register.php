@@ -92,10 +92,10 @@ while ($mayinsert != true)
 
 //Insert new entry into tokens db
 $query = "INSERT INTO {$dbprefix}tokens_$surveyid\n"
-. "(firstname, lastname, email, token, attribute_1, attribute_2)\n"
-. "VALUES (?, ?, ?, ?, ?, ?)";
+. "(firstname, lastname, email, emailstatus, token, attribute_1, attribute_2)\n"
+. "VALUES (?, ?, ?, ?, ?, ?, ?)";
 $result = $connect->Execute($query, array(returnglobal('register_firstname'), returnglobal('register_lastname'),
-returnglobal('register_email'), $newtoken,
+returnglobal('register_email'), 'OK', $newtoken,
 returnglobal('register_attribute1'), returnglobal('register_attribute2'))
 ) or die ($query."<br />".htmlspecialchars($connect->ErrorMsg()));
 $tid=$connect->Insert_ID("{$dbprefix}tokens_$surveyid","tid");
