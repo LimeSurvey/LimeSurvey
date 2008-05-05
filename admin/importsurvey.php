@@ -757,11 +757,11 @@ if (isset($grouparray) && $grouparray) {
 			if ($importingfrom == "http") 
             { 
                 $importsurvey .= "<br />\n<font color='red'><strong>".$clang->gT("Error")."</strong></font>"
-                                ."<br />\n".$clang->gT("A group in the SQL file is not part of the same survey. The import of the survey was stopped.")."<br /><br />\n";
+                                ."<br />\n".$clang->gT("A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped.")."<br /><br />\n";
             }
             else
             {
-                echo $clang->gT("Error").": A group in the SQL file is not part of the same Survey. The import of the survey was stopped.\n";
+                echo $clang->gT("Error").": A group in the CSV/SQL file is not part of the same Survey. The import of the survey was stopped.\n";
             }
 			return;
 		}
