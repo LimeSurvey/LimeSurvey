@@ -545,9 +545,13 @@ elseif ($subaction == "all")
 		}
 		else
 		{
-			$dtquery = "SELECT *, CASE WHEN submitdate IS NULL THEN 'N' ELSE 'Y' END as completed FROM $surveytable WHERE ".stripcslashes($_POST['sql'])." ";
-            if (incompleteAnsFilterstate() === true) {$dtquery .= " AND submitdate is not null ";}
-			$dtquery .= " ORDER BY id";
+            dtquery = "SELECT *, CASE WHEN submitdate IS NULL THEN 'N' ELSE 'Y' END as completed FROM $surveytable WHERE ";
+            if (incompleteAnsFilterstate() === true) {
+                $dtquery .= " submitdate is not null ";
+                if (stripcslashes($_POST['sql']) !== "") { $dtquery .= " AND "; }
+            }
+            if (stripcslashes($_POST['sql']) !== "") { $dtquery .= stripcslashes($_POST['sql'])." "; }
+            $dtquery .= " ORDER BY id";
 		}
 	}
 	else
