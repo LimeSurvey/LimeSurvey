@@ -545,7 +545,7 @@ elseif ($subaction == "all")
 		}
 		else
 		{
-            dtquery = "SELECT *, CASE WHEN submitdate IS NULL THEN 'N' ELSE 'Y' END as completed FROM $surveytable WHERE ";
+            $dtquery = "SELECT *, CASE WHEN submitdate IS NULL THEN 'N' ELSE 'Y' END as completed FROM $surveytable WHERE ";
             if (incompleteAnsFilterstate() === true) {
                 $dtquery .= " submitdate is not null ";
                 if (stripcslashes($_POST['sql']) !== "") { $dtquery .= " AND "; }

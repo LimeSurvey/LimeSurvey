@@ -572,7 +572,7 @@ function strip_tags_full($string) {
         $string = mb_ereg_replace($pattern[$i], '', $string);
     }
     
-    $string = mb_ereg_replace("'", "\'", $string);
+    $string = mb_ereg_replace("'", "&apos;", $string);
 
     return strip_tags($string);
 }
