@@ -1104,22 +1104,32 @@ if(isset($surveyid))
 				$usresult = $connect->Execute($usquery) or die("Error deleting obsolete surveysettings<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
 				if ($usresult->RecordCount()==0)
 				{
+
+				if (getEmailFormat($surveyid) == "html")
+				{
+					$ishtml=true;
+				}
+				else
+				{
+					$ishtml=false;
+				}
+
                     $bplang = new limesurvey_lang($langname);        
-					$usquery = "insert into ".db_table_name('surveys_languagesettings')
+					$usquery = "INSERT INTO ".db_table_name('surveys_languagesettings')
                              ." (surveyls_survey_id, surveyls_language, surveyls_title, "
                              ." surveyls_email_invite_subj, surveyls_email_invite, "
                              ." surveyls_email_remind_subj, surveyls_email_remind, "
-                             ." surveyls_email_register_subj, surveyls_email_register, "
-                             ." surveyls_email_confirm_subj, surveyls_email_confirm) "
+                             ." surveyls_email_confirm_subj, surveyls_email_confirm, "
+                             ." surveyls_email_register_subj, surveyls_email_register) "
                              ." VALUES ({$_POST['sid']}, '".$langname."', '',"
                              .$connect->qstr($bplang->gT("Invitation to participate in survey",'unescaped')).","
-                             .$connect->qstr($bplang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped')).","
+                             .$connect->qstr(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped'),$ishtml)).","
                              .$connect->qstr($bplang->gT("Reminder to participate in survey",'unescaped')).","
-                             .$connect->qstr($bplang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped')).","
+                             .$connect->qstr(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped'),$ishtml)).","
                              .$connect->qstr($bplang->gT("Confirmation of completed survey",'unescaped')).","
-                             .$connect->qstr($bplang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}",'unescaped')).","
+                             .$connect->qstr(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}",'unescaped'),$ishtml)).","
                              .$connect->qstr($bplang->gT("Survey Registration Confirmation",'unescaped')).","
-                             .$connect->qstr($bplang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.",'unescaped'))
+                             .$connect->qstr(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.",'unescaped'),$ishtml))
                              .")";  
                     unset($bplang);         
 					$usresult = $connect->Execute($usquery) or die("Error deleting obsolete surveysettings<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
@@ -1275,15 +1285,39 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
         $_POST['description']=str_replace('<br type="_moz" />','',$_POST['description']);
         $_POST['welcome']=str_replace('<br type="_moz" />','',$_POST['welcome']);
         $_POST['urldescrip']=str_replace('<br type="_moz" />','',$_POST['urldescrip']);
-        
+
+	// Prepare default emailsettings	
+	if ($_POST['htmlemail'] == "Y")
+	{
+		$ishtml=true;
+	}
+	else
+	{
+		$ishtml=false;
+	}
+	$bplang = new limesurvey_lang($_POST['language']);	
+
 		$isquery = "INSERT INTO ".db_table_name('surveys_languagesettings')
-		. "(surveyls_survey_id, surveyls_language, surveyls_title, surveyls_description, surveyls_welcometext, surveyls_urldescription)\n"
+		. "(surveyls_survey_id, surveyls_language, surveyls_title, surveyls_description, surveyls_welcometext, surveyls_urldescription,"
+		." surveyls_email_invite_subj, surveyls_email_invite, "
+		." surveyls_email_remind_subj, surveyls_email_remind, "
+		." surveyls_email_confirm_subj, surveyls_email_confirm, "
+		." surveyls_email_register_subj, surveyls_email_register) "
 		. "VALUES ($surveyid, '{$_POST['language']}', '{$_POST['surveyls_title']}', '{$_POST['description']}',\n"
 		. "'".str_replace("\n", "<br />", $_POST['welcome'])."',\n"
-		. "'{$_POST['urldescrip']}')";
-
+		. "'{$_POST['urldescrip']}', "
+		.$connect->qstr($bplang->gT("Invitation to participate in survey",'unescaped')).","
+		.$connect->qstr(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped'),$ishtml)).","
+		.$connect->qstr($bplang->gT("Reminder to participate in survey",'unescaped')).","
+		.$connect->qstr(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped'),$ishtml)).","
+		.$connect->qstr($bplang->gT("Confirmation of completed survey",'unescaped')).","
+		.$connect->qstr(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}",'unescaped'),$ishtml)).","
+		.$connect->qstr($bplang->gT("Survey Registration Confirmation",'unescaped')).","
+		.$connect->qstr(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.",'unescaped'),$ishtml))
+		.")";  
 
 		$isresult = $connect->Execute($isquery);
+		unset($bplang);
 
 		// Insert into survey_rights
 		$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($surveyid,". $_SESSION['loginID'].",1,1,1,1,1,1)"; //inserts survey rights for owner

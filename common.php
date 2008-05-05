@@ -4564,6 +4564,18 @@ function conditional_nl2br($mytext,$ishtml)
 	}
 }
 
+function conditional2_nl2br($mytext,$ishtml)
+{
+	if ($ishtml === true)
+	{
+		return str_replace("\n", '<br />',$mytext);
+	}
+	else
+	{
+		return $mytext;
+	}
+}
+
 function br2nl( $data ) {
      return preg_replace( '!<br.*>!iU', "\n", $data );
 }
