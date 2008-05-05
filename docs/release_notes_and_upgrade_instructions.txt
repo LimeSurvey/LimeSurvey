@@ -73,6 +73,41 @@ HOW TO UPGRADE from a LimeSurvey 1.70 or 1.70+ version to the latest 1.70+
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.70+ Revision 4721 to 4758 (2008/05/05)
+
+Fixed #1901: Pressing Enter While Filling Out Survey Opens "Resume Later" page
+(lemeur)
+Little adjustments to spanish translation (some advices that were suggested by a philologist that I completely agreed) (kadejo)
+Fixed bug #01976 - Problem when re-importing full db backup, when unusual characters in field names. (jcleeland)
+French language updated (b00z00)
+#1978: Databse prefix lime_ was hardcoded at exportresults.php for Dual Scale Matrix - THX to jcconsult (el-matador-69)
+raised amount of tokens displayed on one page from 50 to 100 ((el-matador-69)
+Fixed a bug where clicking in the check box did cause the selection to be reversed in Firefox (c_schmitz)
+Fixed a bug on upgrade where the comparison operator was missing (c_schmitz)
+Removed htmlwrap function. (c_schmitz)
+Added more detailed error message on invitation and reminder sending
+(c_schmitz)
+Fixed #1936: Validation of the last question in a survey does not work
+(c_schmitz)
+Fixed issue #1953: Some untranslated string on import survey (c_schmitz)
+fixed bug 01982; Dual Scale answers are not conveniently labelled in export to xls/csv (joeschneider)
+Fixed #1960: Warning on Excel-Export with an open_basedir restriction leads to corrupted excel file (c_schmitz)
+Fixed issue #1963: force tokenify to begin with a non zero value or other hard to read characters (c_schmitz)
+fixed bug 01982; fixed error with "Undefined index" (joeschneider)
+Updated Croatian Language file by Igor Dobra¿a <idobraca -o-t- veleri -da-t- hr> (c_schmitz)
+Fixed #1981: HTML mails have body text with HTML entities (lemeur)
+Fixed #1990: Public registration forget to add emailstatus=OK, thus email is displayed in red in the tokens table (lemeur)
+Updated Italian Language file by Igor Dobra¿a <idobraca -o-t- veleri -da-t- hr> (c_schmitz)
+Fixed #1984 (corrupted survey URL in some emails): Applied a workaround in SurveyURL displayed in  invitation/registration emails so that bogus(?) email clients won't translate the GET parameter '& l a n g' to the '& l a n g ;' entity (lemeur)
+Fixed FCKeditor inline mode Encoding Htmloutput <> popup mode (lemeur)
+Fixed #1986: token link in browse results not displaying (c_schmitz)
+"Edit this token" is now translateable in browse.php (el-matador-69)
+Updated Croatian Language file by Igor Dobra¿a <idobraca -o-t- veleri -da-t- hr> (c_schmitz)
+Updated German Translation and minor translation fixes (c_schmitz)
+Fixed issue #1983: incorrect request in browse.php - patch by steph33560 (c_schmitz)
+Implemented #1958: Standard sitename and sitemail when creating survey (lemeur)
+Fixed #1967: correctly sets default email settings for new additionnal languages and set default email settings for survey base language. Takes Email format (html,text) into account (lemeur)
+
 Changes from 1.70+ Revision 4648 to 4721 (2008/04/28)
 
 Fixed #1931: answers are recorded as not-completed (not finalized) if last survey page was hidden due to condition (lemeur)
