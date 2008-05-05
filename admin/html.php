@@ -2904,11 +2904,11 @@ if ($action == "newsurvey")
 		. getEditor("survey-welc","welcome", "[".$clang->gT("Welcome:", "js")."]",'','','',$action)
 		. "</span></div>\n"
 		. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Administrator:")."</span>\n"
-		. "\t\t<span class='settingentry'><input type='text' size='50' name='admin' /></span></div>\n"
+		. "\t\t<span class='settingentry'><input type='text' size='50' name='admin' value='$siteadminname' /></span></div>\n"
 		. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Admin Email:")."</span>\n"
-		. "\t\t<span class='settingentry'><input type='text' size='50' name='adminemail' /></span></div>\n"
+		. "\t\t<span class='settingentry'><input type='text' size='50' name='adminemail' value='$siteadminemail' /></span></div>\n"
 		. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Bounce Email:")."</span>\n"
-		. "\t\t<span class='settingentry'><input type='text' size='50' name='bounce_email' /></span></div>\n";
+		. "\t\t<span class='settingentry'><input type='text' size='50' name='bounce_email' value='$siteadminemail' /></span></div>\n";
 		$newsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Fax To:")."</span>\n"
 		. "\t\t<span class='settingentry'><input type='text' size='50' name='faxto' /></span></div>\n";
 
