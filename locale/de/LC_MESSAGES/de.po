@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-05-05 15:11+0100\n"
-"PO-Revision-Date: 2008-05-05 15:14+0100\n"
+"PO-Revision-Date: 2008-05-05 23:33+0100\n"
 "Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -4662,7 +4662,7 @@ msgstr "Bitte wählen Sie nur eine der folgenden Antworten aus:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:278
 msgid "Please enter a date:"
-msgstr "Bitte ein datum eingeben"
+msgstr "Bitte ein Datum eingeben:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:405
 msgid "Please number each box in order of preference from 1 to"
@@ -4683,7 +4683,7 @@ msgstr "Antworten:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:485
 msgid "Please choose all that apply and provide a comment:"
-msgstr "Bitte alle auswählen die zutreffen und einen Kommentar dazuschreiben"
+msgstr "Bitte wählen Sie die zutreffenden Punkte aus und schreiben Sie einen Kommentar dazu:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:489
 msgid "answers and provide a comment:"

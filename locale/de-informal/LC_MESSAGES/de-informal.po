@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German Informal language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-05 15:11+0100\n"
-"PO-Revision-Date: 2008-05-05 15:13+0100\n"
+"POT-Creation-Date: 2008-05-05 23:34+0100\n"
+"PO-Revision-Date: 2008-05-05 23:35+0100\n"
 "Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1646,7 +1646,7 @@ msgstr "Abbrechen"
 #: D:\web\xampp\htdocs\limesurvey/admin/browse.php:108
 #: D:\web\xampp\htdocs\limesurvey/admin/browse.php:123
 #: D:\web\xampp\htdocs\limesurvey/admin/browse.php:329
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:693
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:697
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:476
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:487
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1471
@@ -1721,12 +1721,12 @@ msgid "Export this Response"
 msgstr "Diese Antwort exportieren"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/browse.php:291
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:594
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:598
 msgid "Show previous..."
 msgstr "Zeige vorherige:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/browse.php:295
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:598
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:602
 msgid "Show next..."
 msgstr "Zeige nächsten.."
 
@@ -1738,61 +1738,61 @@ msgstr "Zeige gefilterte Ergebnisse"
 msgid "Close"
 msgstr "Schließen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:586
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:590
 msgid "Data View Control"
 msgstr "Ansicht der Daten"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:591
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:595
 msgid "Show start.."
 msgstr "Zeige ersten.."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:601
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:605
 msgid "Show last..."
 msgstr "Zeige vorherigen.."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:623
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:627
 msgid "Records Displayed:"
 msgstr "Angezeigte Datensätze:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:624
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:628
 msgid "Starting From:"
 msgstr "Start von:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:625
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:629
 msgid "Filter incomplete answers:"
 msgstr "Unvollständige Antworten filtern:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:626
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:630
 msgid "Enable"
 msgstr "Aktivieren"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:627
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:631
 msgid "Disable"
 msgstr "Deaktivieren"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:629
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:633
 msgid "Show"
 msgstr "Anzeigen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:655
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:659
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:470
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1470
 msgid "View This Record"
 msgstr "Diesen Datensatz anzeigen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:670
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:674
 msgid "Edit this token"
 msgstr "Teilnehmer bearbeiten"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:706
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:710
 msgid "responses for this survey"
 msgstr "Antworten für diese Umfrage"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:707
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:711
 msgid "full responses"
 msgstr "komplette Antworten"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:708
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:712
 msgid "responses not completely filled out"
 msgstr "Antworten nicht komplett ausgefüllt"
 
@@ -2074,11 +2074,13 @@ msgstr "Konnte Benutzergruppe nicht hinzufügen."
 msgid "Failed to make answer default"
 msgstr "Konnte Benutzergruppe nicht hinzufügen."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1115
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1125
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1309
 msgid "Invitation to participate in survey"
 msgstr "Einladung zur Teilnahme an einer Umfrage"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1116
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1126
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1310
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -2114,11 +2116,13 @@ msgstr ""
 "Klicken hier um die Umfrage zu starten:\n"
 "{SURVEYURL}"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1117
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1127
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1311
 msgid "Reminder to participate in survey"
 msgstr "Erinnerung an die Teilnahme an einer Umfrage"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1118
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1128
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1312
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -2162,15 +2166,18 @@ msgstr ""
 "Klicken Du hier um die Umfrage zu starten:\n"
 "{SURVEYURL}"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1119
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1129
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1313
 msgid "Confirmation of completed survey"
 msgstr "Abschlussbestätigung einer Umfrage"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1121
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1131
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1315
 msgid "Survey Registration Confirmation"
 msgstr "Registrierungsbestätigung für Teilnahmeumfrage"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1122
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1132
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1316
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -2190,19 +2197,19 @@ msgstr ""
 "\n"
 "Wenn Du irgendwelche Fragen zu dieser Umfrage hast oder wenn Du Dich _nicht_ für diese Umfrage angemeldet hast und Du glaubst, dass Dir diese Email irrtümlicherweise zugeschickt worden ist, kontaktiere bitte {ADMINNAME} unter {ADMINEMAIL}."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1138
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1148
 msgid "Survey could not be updated"
 msgstr "Umfrage konnte nicht aktualisiert werden."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1153
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1163
 msgid "ERROR deleting Survey id"
 msgstr "FEHLER beim Löschen der Umfrage ID"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1214
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1224
 msgid "Survey could not be created because it did not have a short title"
 msgstr "Umfrage konnte nicht erstellt werden. Bitte gebe einen Titel für diese Umfrage an."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1297
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1331
 msgid "Survey could not be created"
 msgstr "Umfrage konnte nicht erstellt werden."
 
@@ -4647,7 +4654,7 @@ msgstr "Bitte wähle nur eine der folgenden Antworten aus:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:278
 msgid "Please enter a date:"
-msgstr "Bitte ein Datum eingeben"
+msgstr "Bitte ein Datum eingeben:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:405
 msgid "Please number each box in order of preference from 1 to"
