@@ -19,6 +19,7 @@ if (!isset($limit)) {$limit=returnglobal('limit');}
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($id)) {$id=returnglobal('id');}
 if (!isset($order)) {$order=returnglobal('order');}
+if (!isset($browselang)) {$browselang=returnglobal('browselang');}
 
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
@@ -36,14 +37,23 @@ $sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surv
 $sumresult5 = db_execute_assoc($sumquery5);
 $sumrows5 = $sumresult5->FetchRow();
 
-//Select public language file
-$query = "SELECT language FROM ".db_table_name("surveys")." WHERE sid=$surveyid";
-$result = db_execute_assoc($query) or die("Error selecting language: <br />".$query."<br />".$connect->ErrorMsg());
-
 require_once(dirname(__FILE__).'/sessioncontrol.php');
 
 // Set language for questions and labels to base language of this survey
-$language = GetBaseLanguageFromSurveyID($surveyid);
+
+if (isset($browselang) && $browselang!='')
+{
+   $_SESSION['browselang']=$browselang; 
+   $language=$_SESSION['browselang'];
+}
+elseif (isset($_SESSION['browselang']))
+{
+   $language=$_SESSION['browselang'];
+}
+else
+{    
+    $language = GetBaseLanguageFromSurveyID($surveyid);
+}
 
 
 $surveyoptions = browsemenubar();

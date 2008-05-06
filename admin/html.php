@@ -476,7 +476,7 @@ if ($surveyid)
 			. "name='DoSurvey' align='left' alt='$icontext' /></a>";
 		
 		} else {
-			$surveysummary .= "<a href=\"#\" accesskey='d' onclick=\"hideTooltip(); document.getElementById('printpopup').style.visibility='hidden'; document.getElementById('testsurvpopup').style.visibility='visible';\""
+			$surveysummary .= "<a href=\"#\" accesskey='d' onclick=\"hideTooltip(); document.getElementById('printpopup').style.visibility='hidden'; document.getElementById('langpopup2').style.visibility='visible';\""
 			. "onmouseout=\"hideTooltip()\""
 			. "title=\"".$icontext2."\""
 			. "onmouseover=\"showTooltip(event,'$icontext');return false\">"
@@ -488,15 +488,15 @@ if ($surveyid)
 			$tmp_survlangs[] = $baselang;
 			rsort($tmp_survlangs);
 			// Test Survey Language Selection Popup
-			$surveysummary .="<div class=\"testsurvpopup\" id=\"testsurvpopup\"><table width=\"100%\"><tr><td>".$clang->gT("Please select a language:")."</td></tr>";
+			$surveysummary .="<div class=\"langpopup2\" id=\"langpopup2\"><table width=\"100%\"><tr><td>".$clang->gT("Please select a language:")."</td></tr>";
 			foreach ($tmp_survlangs as $tmp_lang)
 			{
-				$surveysummary .= "<tr><td><a href=\"#\" accesskey='d' onclick=\"document.getElementById('testsurvpopup').style.visibility='hidden'; window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=".$tmp_lang."', '_blank')\"><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></td></tr>";
+				$surveysummary .= "<tr><td><a href=\"#\" accesskey='d' onclick=\"document.getElementById('langpopup2').style.visibility='hidden'; window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=".$tmp_lang."', '_blank')\"><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></td></tr>";
 			}
-			$surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('testsurvpopup').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></div>";
+			$surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('langpopup2').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></div>";
 			
 			$tmp_pheight = getPopupHeight();
-			$surveysummary .= "<script type='text/javascript'>document.getElementById('testsurvpopup').style.height='".$tmp_pheight."px';</script>";
+			$surveysummary .= "<script type='text/javascript'>document.getElementById('langpopup2').style.height='".$tmp_pheight."px';</script>";
 
 		}
 
@@ -534,7 +534,7 @@ if ($surveyid)
 		
 		} else {
 			
-			$surveysummary .= "<a href=\"#\" onclick=\"hideTooltip(); document.getElementById('printpopup').style.visibility='visible'; document.getElementById('testsurvpopup').style.visibility='hidden';\""
+			$surveysummary .= "<a href=\"#\" onclick=\"hideTooltip(); document.getElementById('printpopup').style.visibility='visible'; document.getElementById('langpopup2').style.visibility='hidden';\""
 			. "onmouseout=\"hideTooltip()\""
 			. "title=\"".$clang->gTview("Printable Version of Survey")."\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Printable Version of Survey", "js")."');return false\">\n"
@@ -548,7 +548,7 @@ if ($surveyid)
 			rsort($tmp_survlangs);
 			
 			// Test Survey Language Selection Popup
-			$surveysummary .="<div class=\"testsurvpopup\" id=\"printpopup\"><table width=\"100%\"><tr><td>".$clang->gT("Please select a language:")."</td></tr>";
+			$surveysummary .="<div class=\"langpopup2\" id=\"printpopup\"><table width=\"100%\"><tr><td>".$clang->gT("Please select a language:")."</td></tr>";
 			foreach ($tmp_survlangs as $tmp_lang)
 			{
 				$surveysummary .= "<tr><td><a href=\"#\" accesskey='d' onclick=\"document.getElementById('printpopup').style.visibility='hidden'; window.open('$scriptname?action=showprintablesurvey&amp;sid=$surveyid&amp;lang=".$tmp_lang."', '_blank')\"><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></td></tr>";
@@ -1024,7 +1024,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 
 		$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
 		. "\t\t\t\t\t</td>\n"
-		. "\t\t\t\t\t<td align='right' width='400'>\n";
+		. "\t\t\t\t\t<td align='right' width='500'>\n";
 
 		if (!$qid)
 		{
@@ -1230,7 +1230,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			. "<img src='$imagefiles/preview.png' title='' alt='' align='left' name='previewquestion' /></a>\n"
 			. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
 			} else {
-				$questionsummary .= "<a href=\"#\" accesskey='d' onclick=\"hideTooltip(); document.getElementById('printpopup').style.visibility='hidden'; document.getElementById('testsurvpopup').style.visibility='hidden'; document.getElementById('previewquestion').style.visibility='visible';\""
+				$questionsummary .= "<a href=\"#\" accesskey='d' onclick=\"hideTooltip(); document.getElementById('printpopup').style.visibility='hidden'; document.getElementById('langpopup2').style.visibility='hidden'; document.getElementById('previewquestion').style.visibility='visible';\""
 				. "onmouseout=\"hideTooltip()\""
 				. "title=\"".$clang->gTview("Preview This Question")."\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("Preview This Question", "js")."');return false\">"
@@ -3176,38 +3176,6 @@ if ($action == "newsurvey")
 	}
 }
 
-function getPopupHeight() 
-{
-	global $clang, $surveyid;
-	
-	$rowheight = 20;
-	$height = 0;
-	$bottomPad = 15;
-	
-	// header text height
-	$htext = ceil(strlen($clang->gT("Please select a language:")) / 17);
-	$height += $rowheight * $htext;
-		
-	// language list height
-	$survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-	$baselang = GetBaseLanguageFromSurveyID($surveyid);
-	$survlangs[] = $baselang;
-	
-	foreach ($survlangs as $lang)
-	{
-		$ltext = ceil(strlen(getLanguageNameFromCode($lang,false)) / 17);
-		$height += $rowheight * $ltext;
-		if ($ltext > 1) $height += ($ltext * 3);
-	}
-
-	// footer height
-	$ftext = ceil(count($clang->gT("Cancel")) / 17);
-	$height += $rowheight * $ftext;
-	
-	$height += $bottomPad;
-	
-	return $height;
-}
 
 function replacenewline ($texttoreplace)
 {

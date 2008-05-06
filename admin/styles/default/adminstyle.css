@@ -400,7 +400,7 @@ span.settingcaption {
 	margin-top: 2px;
 	background: #EEEFFF;
 }
-.testsurvpopup {
+.langpopup2 {
    position: absolute;
    width: 100px;
    height: 110px;
@@ -421,11 +421,43 @@ span.settingcaption {
    font: 11px arial, verdana, sans-serif;
 }
 
-.testsurvpopup	td {
+.langpopup2	td {
     background: #FDFDF5;
 }
 
-.testsurvpopup	td:first-child {
+.langpopup2	td:first-child {
+    color: #000;
+	font-size: 10pt;
+}
+
+
+
+.langpopup1 {
+   position: absolute;
+   width: 100px;
+   height: 110px;
+   top: 100px;
+   left: 80px;
+   border-style: solid;
+   border-width: 1px;
+   border-color: #000;
+   padding: 8px;
+   z-index: 10000;
+   opacity: 0.7;
+   visibility: hidden;
+   filter: alpha(opacity=95);
+   -khtml-opacity: 0.95;
+   -moz-opacity: 0.95;
+   -moz-border-radius: 6px;
+   background: #FDFDF5;
+   font: 11px arial, verdana, sans-serif;
+}
+
+.langpopup1	td {
+    background: #FDFDF5;
+}
+
+.langpopup1	td:first-child {
     color: #000;
 	font-size: 10pt;
 }

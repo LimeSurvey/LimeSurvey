@@ -1360,12 +1360,41 @@ function browsemenubar()
 	. "\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid' onmouseout=\"hideTooltip()\"" .
 			" title=\"".$clang->gTview("Show summary information")."\" " .
 			" onmouseover=\"showTooltip(event,'".$clang->gT("Show summary information", "js")."')\"" .
-			"><img name='SurveySummary' src='$imagefiles/summary.png' title='' alt='' align='left' /></a>\n"
-	. "\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all' onmouseout=\"hideTooltip()\"" .
-			"title=\"".$clang->gTview("Display Responses")."\" " .
-			"onmouseover=\"showTooltip(event,'".$clang->gT("Display Responses", "js")."')\">" .
-			"<img name='ViewAll' src='$imagefiles/document.png' title='' alt='' align='left' /></a>\n"
-	. "\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all&amp;limit=50&amp;order=desc'" .
+			"><img name='SurveySummary' src='$imagefiles/summary.png' title='' alt='' align='left' /></a>\n";
+    if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
+    {
+        $browsemenubar .="\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all' onmouseout=\"hideTooltip()\"" .
+        "title=\"".$clang->gTview("Display Responses")."\" " .
+        "onmouseover=\"showTooltip(event,'".$clang->gT("Display Responses", "js")."')\">" .
+        "<img name='ViewAll' src='$imagefiles/document.png' title='' alt='' align='left' /></a>\n";
+    
+    } else {
+            $browsemenubar .= "<a href=\"#\" accesskey='b' onclick=\"hideTooltip(); document.getElementById('browsepopup').style.visibility='visible';\""
+            . "onmouseout=\"hideTooltip()\""
+            . "title=\"".$clang->gTview("Display Responses")."\" " 
+            . "onmouseover=\"showTooltip(event,'".$clang->gT("Display Responses", "js")."');return false\">"
+            ."<img src='$imagefiles/document.png' title='".$clang->gTview("Display Responses")."' "
+            . "name='ViewAll' align='left' alt='' /></a>";
+            
+            $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+            $baselang = GetBaseLanguageFromSurveyID($surveyid);
+            $tmp_survlangs[] = $baselang;
+            rsort($tmp_survlangs);
+            
+            $browsemenubar .="<div class=\"langpopup1\" id=\"browsepopup\"><table width=\"100%\"><tr><td>".$clang->gT("Please select a language:")."</td></tr>";
+            foreach ($tmp_survlangs as $tmp_lang)
+            {
+                $browsemenubar .= "<tr><td><a href=\"$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all&amp;browselang=".$tmp_lang."\" accesskey='d' onclick=\"document.getElementById('browsepopup').style.visibility='hidden';\"><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></td></tr>";
+            }
+            $browsemenubar .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('browsepopup').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></div>";
+            
+            $tmp_pheight = getPopupHeight();
+            $browsemenubar .= "<script type='text/javascript'>document.getElementById('browsepopup').style.height='".$tmp_pheight."px';</script>";
+
+        }            
+            
+            
+	$browsemenubar .= "\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all&amp;limit=50&amp;order=desc'" .
 			" title=\"".$clang->gTview("Display Last 50 Responses")."\" " .
 			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Display Last 50 Responses", "js")."')\">" .
 			"<img name='ViewLast' src='$imagefiles/viewlast.png' title='' alt='' align='left' /></a>\n"
@@ -4578,6 +4607,39 @@ function conditional2_nl2br($mytext,$ishtml)
 
 function br2nl( $data ) {
      return preg_replace( '!<br.*>!iU', "\n", $data );
+}
+
+function getPopupHeight() 
+{
+    global $clang, $surveyid;
+    
+    $rowheight = 20;
+    $height = 0;
+    $bottomPad = 15;
+    
+    // header text height
+    $htext = ceil(strlen($clang->gT("Please select a language:")) / 17);
+    $height += $rowheight * $htext;
+        
+    // language list height
+    $survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+    $baselang = GetBaseLanguageFromSurveyID($surveyid);
+    $survlangs[] = $baselang;
+    
+    foreach ($survlangs as $lang)
+    {
+        $ltext = ceil(strlen(getLanguageNameFromCode($lang,false)) / 17);
+        $height += $rowheight * $ltext;
+        if ($ltext > 1) $height += ($ltext * 3);
+    }
+
+    // footer height
+    $ftext = ceil(count($clang->gT("Cancel")) / 17);
+    $height += $rowheight * $ftext;
+    
+    $height += $bottomPad;
+    
+    return $height;
 }
 
 ?>
