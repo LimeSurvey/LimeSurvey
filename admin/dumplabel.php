@@ -22,7 +22,7 @@
 
 //Ensure script is not run directly, avoid path disclosure
 include_once("login_check.php");
-$lid=$_GET['lid'];
+$lid=returnglobal('lid');
 if (!$lid)
 {
 	echo "<br />\n";

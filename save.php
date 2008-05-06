@@ -73,6 +73,10 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 		if (!isset($_POST[$pf])) {$_SESSION[$pf] = "";}
 	}
 }
+if (isset($_POST['thisstep'])) 
+{
+    $_POST['thisstep']=sanitize_int($_POST['thisstep']);
+}
 //SAVE if on page with questions or on submit page
 if ((isset($_POST['fieldnames']) && $_POST['fieldnames']) || (isset($_POST['move']) && $_POST['move'] == "movesubmit"))
 {

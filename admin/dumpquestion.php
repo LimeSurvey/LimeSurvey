@@ -22,7 +22,7 @@
 
 include_once("login_check.php");
 
-$qid = $_GET['qid'];
+$qid = returnglobal('qid');
 
 include_once("login_check.php");
 

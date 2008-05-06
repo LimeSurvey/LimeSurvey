@@ -20,6 +20,8 @@ if (!isset($action)) {$action=returnglobal('action');}
 
 if (get_magic_quotes_gpc())
 $_POST  = array_map('stripslashes', $_POST);
+$_POST['gid'] = sanitize_int($_POST['gid']);
+
 
 /*
  * Return a sql statement for renaming a table
@@ -106,7 +108,7 @@ if(isset($surveyid))
 		{
 			settype($_POST['qaid'], "integer");
 			$query = "UPDATE ".db_table_name('question_attributes')."
-					  SET value='{$_POST['attribute_value']}' WHERE qaid='{$_POST['qaid']}' AND qid='{$_POST['qid']}'";
+					  SET value='{$_POST['attribute_value']}' WHERE qaid=".returnglobal('qaid')." AND qid=".returnglobal('qid');
 			$result = $connect->Execute($query) or die("Error<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
 		}
 	}
@@ -153,13 +155,13 @@ if(isset($surveyid))
                
 			  	if ($first)
                   {
-      			    $query = "INSERT INTO ".db_table_name('groups')." (sid, group_name, description,group_order,language) VALUES ('".db_quote($_POST['sid'])."', '".db_quote($_POST['group_name_'.$grouplang])."', '".db_quote($_POST['description_'.$grouplang])."',".getMaxgrouporder($_POST['sid']).",'{$grouplang}')";
+      			    $query = "INSERT INTO ".db_table_name('groups')." (sid, group_name, description,group_order,language) VALUES ('".db_quote($_POST['sid'])."', '".db_quote($_POST['group_name_'.$grouplang])."', '".db_quote($_POST['description_'.$grouplang])."',".getMaxgrouporder(returnglobal('sid')).",'{$grouplang}')";
                     $result = $connect->Execute($query);
                     $groupid=$connect->Insert_Id(db_table_name_nq('groups'),"gid");
                     $first=false;
                   }
                   else{
-                        $query = "INSERT INTO ".db_table_name('groups')." (gid, sid, group_name, description,group_order,language) VALUES ('{$groupid}','{$_POST['sid']}', '{$_POST['group_name_'.$grouplang]}', '{$_POST['description_'.$grouplang]}',".getMaxgrouporder($_POST['sid']).",'{$grouplang}')";
+                        $query = "INSERT INTO ".db_table_name('groups')." (gid, sid, group_name, description,group_order,language) VALUES ('{$groupid}','{$_POST['sid']}', '{$_POST['group_name_'.$grouplang]}', '{$_POST['description_'.$grouplang]}',".getMaxgrouporder(returnglobal('sid')).",'{$grouplang}')";
                         if ($connect->databaseType == 'odbc_mssql') $query = "SET IDENTITY_INSERT ".db_table_name('groups')." ON; " . $query . "SET IDENTITY_INSERT ".db_table_name('groups')." OFF;";
                         $result = $connect->Execute($query) or die("Error<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
                      }
@@ -293,7 +295,7 @@ if(isset($surveyid))
 			$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);	
 			if(!empty($_POST['questionposition']) || $_POST['questionposition'] == '0')
 			{
-			   $question_order=($_POST['questionposition']+1);
+			   $question_order=(sanitize_int($_POST['questionposition'])+1);
 			    //Need to renumber all questions on or after this
 	           $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=question_order+1 WHERE gid=".$_POST['gid']." AND question_order >= ".$question_order;
     	       $cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
@@ -469,7 +471,7 @@ if(isset($surveyid))
 			if (isset($_POST['gid']) && $_POST['gid'] != "")
 			{
 				
-				$array_result=checkMovequestionConstraintsForConditions($_POST['sid'],$_POST['qid'], $_POST['gid']);
+				$array_result=checkMovequestionConstraintsForConditions(sanitize_int($_POST['sid']),sanitize_int($_POST['qid']), sanitize_int($_POST['gid']));
 				// If there is no blocking conditions that could prevent this move
 				if (is_null($array_result['notAbove']) && is_null($array_result['notBelow']))
 				{
@@ -518,7 +520,7 @@ if(isset($surveyid))
 							. "mandatory='".db_quote($_POST['mandatory'])."'";
 	        				if ($oldgid!=$_POST['gid'])
 						{
-							if ( getGroupOrder($_POST['sid'],$oldgid) > getGroupOrder($_POST['sid'],$_POST['gid']) )
+							if ( getGroupOrder(returnglobal('sid'),$oldgid) > getGroupOrder(returnglobal('sid'),returnglobal('gid')) )
 							{
 								// Moving question to a 'upper' group
 								// insert question at the end of the destination group
@@ -984,6 +986,10 @@ if(isset($surveyid))
 			if ($duplicateCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Duplicate codes found, these entries won't be updated","js")."\")\n //-->\n</script>\n";
 		break;
 
+        if (isset($_POST['sortorder'])) 
+        {
+            $_POST['sortorder']=sanitize_int($_POST['sortorder']);
+        }
 		// Pressing the Up button
 		case $clang->gT("Up", "unescaped"):
 		$newsortorder=$_POST['sortorder']-1;

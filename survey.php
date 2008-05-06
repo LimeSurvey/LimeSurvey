@@ -337,7 +337,7 @@ echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
 
 
 // Find out if there are any array_filter questions in this group
-$array_filterqs = getArrayFiltersForGroup($gid);
+$array_filterqs = getArrayFiltersForGroup($surveyid,$gid);
 // Put in the radio button reset javascript for the array filter unselect
 if (isset($array_filterqs) && is_array($array_filterqs)) {
 	print <<<END

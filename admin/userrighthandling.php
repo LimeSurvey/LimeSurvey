@@ -1116,3 +1116,21 @@ function refreshtemplates() {
 	}
 	return true;
 }
+
+// adds Usergroups in Database by Moses
+function addUserGroupInDB($group_name, $group_description) {
+    global $connect;
+    $iquery = "INSERT INTO ".db_table_name('user_groups')." (name, description, owner_id) VALUES('{$group_name}', '{$group_description}', '{$_SESSION['loginID']}')";
+    if($connect->Execute($iquery)) {
+        $id = $connect->Insert_Id(db_table_name_nq('user_groups'),'ugid');
+        if($id > 0) {
+             $iquery = "INSERT INTO ".db_table_name('user_in_groups')." VALUES($id, '{$_SESSION['loginID']}')";
+            $connect->Execute($iquery ) or die($connect->ErrorMsg());
+        }
+        return $id;
+    } else {
+        return -1;
+    }
+}
+
+?>

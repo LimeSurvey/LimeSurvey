@@ -39,18 +39,18 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
 		$result=$connect->Execute($query) or die("Error inserting<br />$query<br />".$connect->ErrorMsg());
 	} elseif ($action == "assessmentupdate") {
 		$query = "UPDATE {$dbprefix}assessments
-				  SET scope='".$_POST['scope']."',
-				  gid=".$_POST['gid'].",
-				  minimum='".$_POST['minimum']."',
-				  maximum='".$_POST['maximum']."',
+				  SET scope='".db_quote($_POST['scope'])."',
+				  gid=".sanitize_int($_POST['gid']).",
+				  minimum='".sanitize_int($_POST['minimum'])."',
+				  maximum='".sanitize_int($_POST['maximum'])."',
 				  name='".db_quote($_POST['name'])."',
 				  message='".db_quote($_POST['message'])."',
 				  link='".db_quote($_POST['link'])."'
-				  WHERE id=".$_POST['id'];
+				  WHERE id=".sanitize_int($_POST['id']);
 		$result = $connect->Execute($query) or die("Error updating<br />$query<br />".$connect->ErrorMsg());
 	} elseif ($action == "assessmentdelete") {
 		$query = "DELETE FROM {$dbprefix}assessments
-				  WHERE id=".$_POST['id'];
+				  WHERE id=".sanitize_int($_POST['id']);
 		$result=$connect->Execute($query);
 	}
 	
@@ -98,7 +98,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
 	$thisid="";
 	
 	if ($action == "assessmentedit") {
-		$query = "SELECT * FROM {$dbprefix}assessments WHERE id=".$_POST['id'];
+		$query = "SELECT * FROM {$dbprefix}assessments WHERE id=".sanitize_int($_POST['id']);
 		$results = db_execute_assoc($query);
 		while($row=$results->FetchRow()) {
 			$editdata=$row;

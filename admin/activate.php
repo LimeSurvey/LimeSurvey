@@ -519,7 +519,7 @@ else
 		$activateoutput .= "\t\t\t\t<tr><td height='4'><strong>".$clang->gT("Activate Survey")." ($surveyid)</td></tr>\n";
 		$activateoutput .= "\t\t\t\t<tr><td align='center'><font class='successtitle'>".$clang->gT("Survey has been activated. Results table has been successfully created.")."</font><br /><br />\n";
 
-		$acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid={$_POST['sid']}";
+		$acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid=".returnglobal('sid');
 		$acresult = $connect->Execute($acquery);
 
 // Private means data privacy, not closed access survey

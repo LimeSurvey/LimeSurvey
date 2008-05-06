@@ -1059,7 +1059,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 		}
 		$groupsummary .= "\t\t\t\t\t<font class=\"boxcaption\">".$clang->gT("Questions").":</font>&nbsp;<select class=\"listboxquestions\" name='qid' "
 		. "onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n"
-		. getquestions()
+		. getquestions($surveyid,$gid,$qid)
 		. "\t\t\t\t\t</select>\n"
 		. "\t\t\t\t</td></tr>\n"
 		. "\t\t\t</table>\n"
