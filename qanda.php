@@ -1730,6 +1730,19 @@ function do_multiplechoice($ia)
 	{
 		$rowcounter++;
 		$myfname = $ia[1]."other";
+	    if($excludeallothers != "") 
+		{
+		  $excludeallotherscripton .= "thiselt=document.getElementById('$ia[1]othercbox');\n"
+		                            . "\t\tthiselt.checked='';\n"
+		                            . "\t\tthiselt.disabled='true';\n";
+		  $excludeallotherscripton .= "thiselt=document.getElementById('answer$ia[1]other');\n"
+		                            . "\t\tthiselt.value='';\n"
+		                            . "\t\tthiselt.disabled='true';\n"
+		                            . "\t\tmodfield(thiselt.name);\n"
+		                            . "\t\tcheckconditions(thiselt.value, thiselt.name, thiselt.type);\n";
+		  $excludeallotherscriptoff .="document.getElementById('answer$ia[1]other').disabled='';\n";
+		  $excludeallotherscriptoff .="document.getElementById('$ia[1]othercbox').disabled='';\n";
+		}
 		$answer .= "\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='{$myfname}cbox' id='{$myfname}cbox'";
 		if (isset($_SESSION[$myfname]) && trim($_SESSION[$myfname])!='') {$answer .= " checked='checked'";}
 		$answer .= " onchange='".$callmaxanswscriptcheckbox."document.getElementById(\"answer$myfname\").value=\"\"'  />";
