@@ -2592,7 +2592,7 @@ if ($action == "editsurvey")
 		. "\t<table width='100%' class='form2columns'>\n"
 		. "\t<tbody align='center'>"
 		. "\t\t<tr><td></td><td>\n"
-		. "\t\t<input type='button' onclick='window.open(\"$homeurl/scripts/fckeditor/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php\", \"_blank\")'/ value=\"".$clang->gT("Browse Uploaded Resources")."\" $disabledIfNoResources></td><td><td></tr>\n"
+		. "\t\t<input type='button' onclick='window.open(\"$fckeditordir/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php\", \"_blank\")'/ value=\"".$clang->gT("Browse Uploaded Resources")."\" $disabledIfNoResources></td><td><td></tr>\n"
 		. "\t\t<tr><td></td><td><input type='button' onclick='window.open(\"$scriptname?action=exportsurvresources&amp;sid={$surveyid}\", \"_blank\")'/ value=\"".$clang->gT("Export Resources As ZIP Archive")."\" $disabledIfNoResources></td><td><td></tr>\n"
 		. "\t\t<tr></tr>&nbsp;<tr><td>".$clang->gT("Select ZIP File:")."</td>\n"
 		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"50\" /></td><td></td></tr>\n"
