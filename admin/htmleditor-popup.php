@@ -151,7 +151,8 @@ if ($fieldtype == 'editanswer' ||
 }
 else
 {
-	$output .= "\t\tvar editedtext = oEditor.GetXHTML();\n";
+	//$output .= "\t\tvar editedtext = oEditor.GetXHTML();\n";
+	$output .= "\t\tvar editedtext = oEditor.GetXHTML('no strip new line');\n"; // adding a parameter avoids stripping \n
 }
 
 
