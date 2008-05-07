@@ -56,7 +56,8 @@ if (isset($_SESSION['loginID']) && isset($_SESSION['FileManagerContext']))
 	// disable upload at survey creation time
 	// because we don't know the sid yet
 	if (preg_match('/^(create|edit):(question|group|answer)/',$_SESSION['FileManagerContext']) != 0 ||
-		preg_match('/^edit:survey/',$_SESSION['FileManagerContext']) != 0)
+		preg_match('/^edit:survey/',$_SESSION['FileManagerContext']) !=0 ||
+		preg_match('/^edit:emailsettings/',$_SESSION['FileManagerContext']) != 0)
 	{
 		$contextarray=split(':',$_SESSION['FileManagerContext'],3);
 		$surveyid=$contextarray[2];

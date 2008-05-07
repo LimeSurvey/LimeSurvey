@@ -283,7 +283,7 @@ elseif ($action == "browse")
     }    
 elseif ($action == "tokens")
     {
-    if($surrows['activate_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include("tokens.php");}               
+    if($surrows['activate_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {$_SESSION['FileManagerContext']="edit:emailsettings:$surveyid";include("tokens.php");}               
         else { include("access_denied.php"); }    
     }    
 elseif ($action=="showprintablesurvey")  
