@@ -486,7 +486,7 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == $clang->gT("Load Unfinished
 // bypass only this check at first page (Step=0) because
 // this check is done in buildsurveysession and error message
 // could be more interresting there (takes into accound captcha if used)
-if ($tokensexist == 1 && $token &&
+if ($tokensexist == 1 && isset($token) && $token &&
 	isset($_SESSION['step']) && $_SESSION['step']>0)
 {
 	//check if token actually does exist
