@@ -19,8 +19,9 @@ include_once("login_check.php");
 if (!isset($action)) {$action=returnglobal('action');}
 
 if (get_magic_quotes_gpc())
-$_POST  = array_map('stripslashes', $_POST);
-$_POST['gid'] = sanitize_int($_POST['gid']);
+    {$_POST  = array_map('stripslashes', $_POST);}
+if (isset($_POST['gid'])) 
+    {$_POST['gid'] = sanitize_int($_POST['gid']);}
 
 
 /*

@@ -33,7 +33,7 @@ function codeCheck(prefix, elementcount, helperMsg)
  var i, j;
  var X = new Array();
 
- for (i=0; i<elementcount; i++) {
+ for (i=1; i<=elementcount; i++) {
    j = document.getElementById(prefix+i);
    X[i]=j.value;
  }   
@@ -41,7 +41,6 @@ function codeCheck(prefix, elementcount, helperMsg)
  {
  		alert(helperMsg);
 	    return false;
-
  }
  return true;
 
