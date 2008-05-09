@@ -20,7 +20,7 @@
 * the data (scan & output at same time), the information needed to construct the
 * DATA LIST is held in the $fields array, while the actual data is written to a
 * to a temporary location, updating length (size) values in the $fields array as
-* the tmp file is generated (uses fwrite's return value rather than strlen).
+* the tmp file is generated (uses @fwrite's return value rather than strlen).
 * Final output renders $fields to a DATA LIST, and then stitches in the tmp file data.
 *
 * Optimization opportunities remain in the VALUE LABELS section, which runs a query / column
@@ -99,11 +99,11 @@ function mkTmpFile(){
 	global $headerComment, $tempFile, $surveyid;
 	$fp = @tmpfile();
 	if(!$fp){
-		$headerComment .= "* Failed to use builtin tmpfile command (are you in safe_mode)?\n";
-		$tempFile = tempnam($tempdir, "spss_");
-		$fp = fopen($tempFile, "w");
+		$headerComment .= "* Failed to use builtin tmpfile command (trying $tempdir)?\n";
+		$tempFile = @tempnam($tempdir, "spss_");
+		$fp = @fopen($tempFile, "w");
 		if(!$fp){
-			$headerComment .= "* Failed to create temp file in $tempdir (defined in config.php / config-defaults.php)\n";
+			$headerComment .= "* Failed to create temp file in \$tempdir=$tempdir (defined in config.php / config-defaults.php)\n";
 			$headerComment .= "* Please ensure that $tempdir is owned by the same user who owns this script\n";
 			$fp = null;
 		}
@@ -172,7 +172,7 @@ $fieldno=0;
 
 if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
 	$query="SHOW COLUMNS FROM ".db_table_name("tokens_$surveyid");
-	$result=db_execute_num($query) or die("Couldn't count fields in tokens<br />$query<br />".$connect->ErrorMsg());
+	$result=db_execute_assoc($query) or die("Couldn't count fields in tokens<br />$query<br />".$connect->ErrorMsg());
 	while ($row=$result->FetchRow()) {
 		$token_fields[]=$row[0];
 	}
@@ -322,75 +322,75 @@ $num_results = $result->RecordCount();
 $num_fields = $result->FieldCount();
 ini_set("safe_mode", 1);
 $fp = mkTmpFile();
-fwrite($fp, "BEGIN DATA\n");
+@fwrite($fp, "BEGIN DATA\n");
 for ($i=0; $i < $num_results; $i++) {
 	$row = $result->FetchRow();
 	$fieldno = 0;
 	while ($fieldno < $num_fields)
 	{
 		//echo " field: ".$fields[$fieldno]["id"]." id : ".$fields[$fieldno]["qid"]." val:".$row[$fieldno]."-type: ".$fields[$fieldno]["type"]." |<br> ";
-		if ($fieldno % 20 == 0) fwrite($fp, chr(65+intval($fieldno/20))." ");
+		if ($fieldno % 20 == 0) @fwrite($fp, chr(65+intval($fieldno/20))." ");
 		//if ($i==0) { echo "Field: $fieldno - Dati: ";var_dump($fields[$fieldno]);echo "\n"; }
 		if ($fields[$fieldno]["SPSStype"]=="DATETIME20.0"){
 			#convert mysql  datestamp (yyyy-mm-dd hh:mm:ss) to SPSS datetime (dd-mmm-yyyy hh:mm:ss) format
 			list( $year, $month, $day, $hour, $minute, $second ) = split( '([^0-9])', $row[$fieldno] );
 			if ($year != "" && (int)$year >= 1970) 
 			{
-				fwrite($fp, "'".date("d-m-Y H:i:s", mktime( $hour, $minute, $second, $month, $day, $year ) )."' ");
+				@fwrite($fp, "'".date("d-m-Y H:i:s", mktime( $hour, $minute, $second, $month, $day, $year ) )."' ");
 			} else 
 			{
-				fwrite($fp,  "''");
+				@fwrite($fp,  "''");
 			}
 		} else if ($fields[$fieldno]["LStype"] == "Y") 
 		{
 			if ($row[$fieldno] == "Y")
 			{
-				fwrite($fp, "'1' ");
+				@fwrite($fp, "'1' ");
 			} else if ($row[$fieldno] == "N"){
-				fwrite($fp, "'2' ");
+				@fwrite($fp, "'2' ");
 			} else {
-				fwrite($fp, "'0' ");
+				@fwrite($fp, "'0' ");
 			}
 		} else if ($fields[$fieldno]["LStype"] == "G") 
 		{
 			if ($row[$fieldno] == "F")
 			{
-				fwrite($fp, "'1' ");
+				@fwrite($fp, "'1' ");
 			} else if ($row[$fieldno] == "M"){
-				fwrite($fp, "'2' ");
+				@fwrite($fp, "'2' ");
 			} else {
-				fwrite($fp, "'0' ");
+				@fwrite($fp, "'0' ");
 			}
 		} else if ($fields[$fieldno]["LStype"] == "C") 
 		{
 			if ($row[$fieldno] == "Y")
 			{
-				fwrite($fp, "'1' ");
+				@fwrite($fp, "'1' ");
 			} else if ($row[$fieldno] == "N"){
-				fwrite($fp, "'2' ");
+				@fwrite($fp, "'2' ");
 			} else if ($row[$fieldno] == "U"){
-				fwrite($fp, "'3' ");
+				@fwrite($fp, "'3' ");
 			} else {
-				fwrite($fp, "'0' ");
+				@fwrite($fp, "'0' ");
 			}
 		} else if ($fields[$fieldno]["LStype"] == "E") 
 		{
 			if ($row[$fieldno] == "I")
 			{
-				fwrite($fp, "'1' ");
+				@fwrite($fp, "'1' ");
 			} else if ($row[$fieldno] == "S"){
-				fwrite($fp, "'2' ");
+				@fwrite($fp, "'2' ");
 			} else if ($row[$fieldno] == "D"){
-				fwrite($fp, "'3' ");
+				@fwrite($fp, "'3' ");
 			} else {
-				fwrite($fp, "'0' ");
+				@fwrite($fp, "'0' ");
 			}
 		} else if ($fields[$fieldno]["LStype"] == "M") 
 		{
 			if ($fields[$fieldno]["code"] == "other")
 			{
 				$strTmp = strip_tags_full($row[$fieldno]);
-				$len = fwrite($fp, "'$strTmp' ") - 3; //Don't count the quotes
+				$len = @fwrite($fp, "'$strTmp' ") - 3; //Don't count the quotes
 				//echo "On fields[$fieldno] wrote $len bytes current:{$fields[$fieldno]["size"]} ($strTmp)\n";
 				if($len > $fields[$fieldno]["size"]){
 					$fields[$fieldno]["size"] = $len;
@@ -398,17 +398,17 @@ for ($i=0; $i < $num_results; $i++) {
 				}
 			} else if ($row[$fieldno] == "Y")
 			{
-				fwrite($fp, "'1' ");
+				@fwrite($fp, "'1' ");
 			} else
 			{
-			   fwrite($fp, "'0' ");
+			   @fwrite($fp, "'0' ");
 			}
 		} else if ($fields[$fieldno]["LStype"] == "P") 
 		{
 			if ($fields[$fieldno]["code"] == "other" || $fields[$fieldno]["code"] == "comment" || $fields[$fieldno]["code"] == "othercomment")
 			{
 				$strTmp = strip_tags_full($row[$fieldno]);
-				$len = fwrite($fp, "'$strTmp' ") - 3; //Don't count the quotes
+				$len = @fwrite($fp, "'$strTmp' ") - 3; //Don't count the quotes
 				//echo "On fields[$fieldno] wrote $len bytes current:{$fields[$fieldno]["size"]} ($strTmp)\n";
 				if($len > $fields[$fieldno]["size"]){
 					$fields[$fieldno]["size"] = $len;
@@ -416,10 +416,10 @@ for ($i=0; $i < $num_results; $i++) {
 				}
 			} else if ($row[$fieldno] == "Y")
 			{
-				fwrite($fp, "'1' ");
+				@fwrite($fp, "'1' ");
 			} else
 			{
-			   fwrite($fp, "'0' ");
+			   @fwrite($fp, "'0' ");
 			}
 		} else {
 			$strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
@@ -433,10 +433,10 @@ for ($i=0; $i < $num_results; $i++) {
 			if($len > $fields[$fieldno]["size"]) $fields[$fieldno]["size"] = $len;
 
 			if (mb_ereg_replace(" ", '', $strTmp) == ""){
-				fwrite($fp, "'0'");
+				@fwrite($fp, "'0'");
 			}
 			else {
-				$len = fwrite($fp, "'$strTmp' ") - 3; //Don't count the quotes
+				$len = @fwrite($fp, "'$strTmp' ") - 3; //Don't count the quotes
 				//echo "On fields[$fieldno] wrote $len bytes current:{$fields[$fieldno]["size"]} ($strTmp)\n";
 				if($len > $fields[$fieldno]["size"]){
 					$fields[$fieldno]["size"] = $len;
@@ -445,14 +445,14 @@ for ($i=0; $i < $num_results; $i++) {
 			}
 		}
 		$fieldno++;
-		if ($fieldno % 20 == 0) fwrite($fp, "\n");
+		if ($fieldno % 20 == 0) @fwrite($fp, "\n");
 	}
-	if ($fieldno % 20 != 0) fwrite($fp, "\n");
+	if ($fieldno % 20 != 0) @fwrite($fp, "\n");
 	#Conditions for SPSS fields:
 	# - Length may not be longer than 8 charac
 }
-fwrite($fp, "END DATA.\nEXECUTE.\n\n");
-fseek($fp, 0);
+@fwrite($fp, "END DATA.\nEXECUTE.\n\n");
+@fseek($fp, 0);
 /**
  * End of DATA print out
  *
@@ -460,10 +460,18 @@ fseek($fp, 0);
  * be sent to the client.
  */
 renderDataList($fields);
-while($data = fread($fp, 4096)){
-	echo $data;
+if($fp){
+	while($data = fread($fp, 4096)){
+		echo $data;
+	}
+	closeTmpFile($fp);
+} else {
+	echo "* This is where your data would be, however LimeSurvey was unable to create a temporary file\n";
+	echo "* to store the data as it was processed / outputted to generate the DATA LIST and BEGIN DATA / END DATA\n";
+	echo "* statements.  Please verify that you have a you have a value stored in \$tempvalue, it's assigned\n";
+	echo "* in config-defaults.php, but you may have to over ride it to a path that is owned by the same\n";
+	echo "* user that owns this script (owns refers to file permissions)\n";
 }
-closeTmpFile($fp);
 
 echo "*Define Variable Properties.\n";//minni"<br />";
 foreach ($fields as $field){
