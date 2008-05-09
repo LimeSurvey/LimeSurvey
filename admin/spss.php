@@ -29,9 +29,12 @@
 $length_data = "255"; // Set the max text length of Text Data
 $length_varlabel = "255"; // Set the max text length of Variable Labels
 $length_vallabel = "255"; // Set the max text length of Value Labels
+$headerComment = "";
+$tempFile = "";
 
 include_once("login_check.php");
 error_reporting(E_ALL ^ E_NOTICE); // No Notices!
+
 $typeMap = array(
 "5"=>Array("name"=>"5 Point Choice","size"=>1,"SPSStype"=>"A"),
 "B"=>Array("name"=>"Array (10 Point Choice)","size"=>1,"SPSStype"=>"A"),
@@ -63,6 +66,58 @@ $typeMap = array(
 );
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
+
+function renderDataList($fieldArr){
+	global $headerComment;
+	echo $headerComment;
+	echo "NEW FILE.\n";
+	echo "FILE TYPE NESTED RECORD=1(A).\n";
+
+	$i=0;
+	foreach ($fieldArr as $field){
+		if ($i % 20 == 0) echo "- RECORD TYPE '".chr(65+intval($i/20))."'.\n- DATA LIST LIST / i".intval($i/20)."(A1)";
+		if($field["SPSStype"] == "DATETIME20.0") $field["size"]=null;
+		echo " {$field["id"]}({$field["SPSStype"]}{$field["size"]})";
+		$i++;
+		//if ($i % 25 == 0) echo "\n   /";
+		if ($i % 20 == 0) echo ".\n\n";
+	}
+
+	if ($i % 20 != 0) echo ".\n";
+	echo "END FILE TYPE.\n\n";
+}
+
+/**
+ * Try to create a temp file using PHPs builtin (since v4)
+ * this can cause a problem in safe_mode, which requires the owner of the temp directory
+ * be the same as the owner of the script.  So, we've got the $tempdir defined in config-defaults.php
+ * try using that instead.
+ *
+ * This method generates output for the user, it should be adjusted to use the il8n framework.
+ */
+function mkTmpFile(){
+	global $headerComment, $tempFile, $surveyid;
+	$fp = tmpfile();
+	if(!$fp){
+		$headerComment .= "* Failed to use builtin tmpfile command (are you in safe_mode)?\n";
+		$tempFile = tempnam($tempdir);
+		$fp = fopen($tempFile, "w");
+		if(!$fp){
+			$headerComment .= "* Failed to create temp file in $tempdir (defined in config.php / config-defaults.php)\n";
+			$headerComment .= "* Please ensure that $tempdir is owned by the same user who owns this script\n";
+			$fp = null;
+		}
+	} else $tempFile = "";
+	return $fp;
+}
+
+function closeTmpFile($fp){
+	global $tempFile;
+	fclose($fp);
+	//If it's blank we used the builtin tmpfile() method
+	if($tempFile !== "")
+		unlink($tempFile);
+}
 
 
 mb_http_output("UTF-8");
@@ -230,23 +285,6 @@ EXECUTE.
 
 */
 
-function renderDataList($fieldArr){
-	echo "NEW FILE.\n";
-	echo "FILE TYPE NESTED RECORD=1(A).\n";
-
-	$i=0;
-	foreach ($fieldArr as $field){
-		if ($i % 20 == 0) echo "- RECORD TYPE '".chr(65+intval($i/20))."'.\n- DATA LIST LIST / i".intval($i/20)."(A1)";
-		if($field["SPSStype"] == "DATETIME20.0") $field["size"]=null;
-		echo " {$field["id"]}({$field["SPSStype"]}{$field["size"]})";
-		$i++;
-		//if ($i % 25 == 0) echo "\n   /";
-		if ($i % 20 == 0) echo ".\n\n";
-	}
-
-	if ($i % 20 != 0) echo ".\n";
-	echo "END FILE TYPE.\n\n";
-}
 
 /**
  * Code that prints out the actual data
@@ -282,9 +320,8 @@ if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
 $result=db_execute_num($query) or die("Couldn't get results<br />$query<br />".$connect->ErrorMsg());
 $num_results = $result->RecordCount();
 $num_fields = $result->FieldCount();
-
-$fp = tmpfile();
-
+ini_set("safe_mode", 1);
+$fp = mkTmpFile();
 fwrite($fp, "BEGIN DATA\n");
 for ($i=0; $i < $num_results; $i++) {
 	$row = $result->FetchRow();
@@ -426,7 +463,7 @@ renderDataList($fields);
 while($data = fread($fp, 4096)){
 	echo $data;
 }
-fclose($fp);
+closeTmpFile($fp);
 
 echo "*Define Variable Properties.\n";//minni"<br />";
 foreach ($fields as $field){
