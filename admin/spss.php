@@ -97,7 +97,7 @@ function renderDataList($fieldArr){
  */
 function mkTmpFile(){
 	global $headerComment, $tempFile, $surveyid;
-	$fp = tmpfile();
+	$fp = @tmpfile();
 	if(!$fp){
 		$headerComment .= "* Failed to use builtin tmpfile command (are you in safe_mode)?\n";
 		$tempFile = tempnam($tempdir);
