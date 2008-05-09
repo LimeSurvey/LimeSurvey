@@ -100,7 +100,7 @@ function mkTmpFile(){
 	$fp = @tmpfile();
 	if(!$fp){
 		$headerComment .= "* Failed to use builtin tmpfile command (are you in safe_mode)?\n";
-		$tempFile = tempnam($tempdir);
+		$tempFile = tempnam($tempdir, "spss_");
 		$fp = fopen($tempFile, "w");
 		if(!$fp){
 			$headerComment .= "* Failed to create temp file in $tempdir (defined in config.php / config-defaults.php)\n";
