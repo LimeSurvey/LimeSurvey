@@ -96,7 +96,7 @@ function renderDataList($fieldArr){
  * This method generates output for the user, it should be adjusted to use the il8n framework.
  */
 function mkTmpFile(){
-	global $headerComment, $tempFile, $surveyid;
+	global $headerComment, $tempFile, $surveyid, $tempdir;
 	$fp = @tmpfile();
 	if(!$fp){
 		$headerComment .= "* Failed to use builtin tmpfile command (trying $tempdir)?\n";
@@ -109,7 +109,7 @@ function mkTmpFile(){
 		}
 	} else $tempFile = "";
 	return $fp;
-}
+
 
 function closeTmpFile($fp){
 	global $tempFile;
