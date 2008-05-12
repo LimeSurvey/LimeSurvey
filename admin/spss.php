@@ -101,7 +101,7 @@ function mkTmpFile(){
 	if(!$fp){
 		$headerComment .= "* Failed to use builtin tmpfile command (trying $tempdir)?\n";
 		$tempFile = @tempnam($tempdir, "spss_");
-		$fp = @fopen($tempFile, "w");
+		$fp = @fopen($tempFile, "w+");
 		if(!$fp){
 			$headerComment .= "* Failed to create temp file in \$tempdir=$tempdir (defined in config.php / config-defaults.php)\n";
 			$headerComment .= "* Please ensure that $tempdir is owned by the same user who owns this script\n";
@@ -212,14 +212,9 @@ for ($i=0; $i < $num_results; $i++) {
 	$fieldtype = "";
 	$val_size = 1;
 	//echo $fieldname." - ";
-	#Rename 'datestamp' to stamp
-	if ($fieldname =="datestamp") {
-		$fieldname = "stamp";
-	}
-
 	
 	#Determine field type
-	if ($fieldname=="stamp" || $fieldname=="submitdate"){
+	if ($fieldname=="submitdate" || $fieldname=="startdate" || $fieldname == "datestamp") {
 		$fieldtype = "DATETIME20.0";
 		$ftype = "DATETIME";
 	} elseif ($fieldname=="startlanguage") {
@@ -232,13 +227,20 @@ for ($i=0; $i < $num_results; $i++) {
 	} elseif ($fieldname=="id") {
 		$fieldtype = "N"; 
 		$val_size = 7; //Arbitrarilty restrict to 9,999,999 (7 digits) responses/survey
-	} 
+	} elseif ($fieldname == "ipaddr") {
+		$fieldtype = "A";
+		$val_size = "15";
+	} elseif ($fieldname == "refurl") {
+		$fieldtype = "A";
+		$val_size = 255;
+	}
 	
 	#Get qid (question id)
 	$code="";
-	if ($fieldname == "id" OR $fieldname=="token" OR $fieldname=="stamp" OR $fieldname=="attribute_1" OR $fieldname=="attribute_2"){
+	$noQID = Array("id", "token", "stamp", "submitdate", "startdate", "attribute_1", "attribute_2", "startlanguage", "ipaddr", "refurl");
+	if (in_array($fieldname, $noQID)){
 		$qid = 0;
-	}else{
+	} else{
 		//GET FIELD DATA
 		$fielddata=arraySearchByKey($fieldname, $fieldmap, "fieldname", 1);
 		$qid=$fielddata['qid'];
@@ -320,7 +322,7 @@ if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
 $result=db_execute_num($query) or die("Couldn't get results<br />$query<br />".$connect->ErrorMsg());
 $num_results = $result->RecordCount();
 $num_fields = $result->FieldCount();
-ini_set("safe_mode", 1);
+
 $fp = mkTmpFile();
 @fwrite($fp, "BEGIN DATA\n");
 for ($i=0; $i < $num_results; $i++) {
