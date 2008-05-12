@@ -749,6 +749,17 @@ function makelanguagechanger()
   {
       $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
   }
+
+  $token = returnglobal('token');
+  if ($token != '')
+  {
+    $tokenparam = "&token=$token";
+  }
+  else
+  {
+    $tokenparam = "";
+  }
+    
   if (!empty($slangs))
   {
     if (isset($_SESSION['s_lang']) && $_SESSION['s_lang'] != '')
@@ -767,16 +778,16 @@ function makelanguagechanger()
       $lang = GetBaseLanguageFromSurveyID($surveyid);
       
     $htmlcode ="<select name=\"select\" class='languagechanger' onchange=\"javascript:window.location=this.value\">\n";
-    $htmlcode .= "<option value=\"index.php?sid=". $surveyid ."&lang=". $lang ."\">".getLanguageNameFromCode($lang,false)."</option>\n";
+    $htmlcode .= "<option value=\"index.php?sid=". $surveyid ."&lang=". $lang ."$tokenparam\">".getLanguageNameFromCode($lang,false)."</option>\n";
     
     foreach ($slangs as $otherlang)
     {
         if($otherlang != $lang)
-        $htmlcode .= "\t<option value=\"index.php?sid=". $surveyid ."&lang=". $otherlang ."\" >".getLanguageNameFromCode($otherlang,false)."</option>\n";
+        $htmlcode .= "\t<option value=\"index.php?sid=". $surveyid ."&lang=". $otherlang ."$tokenparam\" >".getLanguageNameFromCode($otherlang,false)."</option>\n";
     }
     if($lang != GetBaseLanguageFromSurveyID($surveyid))
     {
-      $htmlcode .= "<option value=\"index.php?sid=".$surveyid."&lang=".GetBaseLanguageFromSurveyID($surveyid)."\">".getLanguageNameFromCode(GetBaseLanguageFromSurveyID($surveyid),false)."</option>\n";  
+      $htmlcode .= "<option value=\"index.php?sid=".$surveyid."&lang=".GetBaseLanguageFromSurveyID($surveyid)."$tokenparam\">".getLanguageNameFromCode(GetBaseLanguageFromSurveyID($surveyid),false)."</option>\n";  
     }
     
     $htmlcode .= "</select>\n";
@@ -786,10 +797,10 @@ function makelanguagechanger()
   } elseif (!isset($surveyid)) {
     global $defaultlang, $baselang;
     $htmlcode = "<select name=\"select\" class='languagechanger' onchange=\"javascript:window.location=this.value\">\n";
-    $htmlcode .= "<option value=\"index.php?lang=". $defaultlang ."\">".getLanguageNameFromCode($defaultlang,false)."</option>\n";
+    $htmlcode .= "<option value=\"index.php?lang=". $defaultlang ."$tokenparam\">".getLanguageNameFromCode($defaultlang,false)."</option>\n";
     foreach(getlanguagedata() as $key=>$val)
     {
-	    $htmlcode .= "\t<option value=\"index.php?lang=".$key."\" ";
+	    $htmlcode .= "\t<option value=\"index.php?lang=".$key."$tokenparam\" ";
 		if($key == $baselang) {$htmlcode .= " selected";}
 		$htmlcode .= ">".getLanguageNameFromCode($key,false)."</option>\n";
 	}
