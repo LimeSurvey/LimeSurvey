@@ -109,7 +109,7 @@ function mkTmpFile(){
 		}
 	} else $tempFile = "";
 	return $fp;
-
+}
 
 function closeTmpFile($fp){
 	global $tempFile;
