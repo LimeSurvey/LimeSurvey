@@ -2256,7 +2256,7 @@ function do_numerical($ia)
 	}
 	else
 	{
-		$maxsize=255;
+		$maxsize=20;  // The field lenght for numerical fields is 20
 	}
 	if ($maxchars=arraySearchByKey("text_input_width", $qidattributes, "attribute", 1))
 	{
