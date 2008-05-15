@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey 1.53 / DK Translation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-17 09:00+0200\n"
-"PO-Revision-Date: 2008-04-17 20:32+0100\n"
-"Last-Translator: Thomas Clausen <tntc1978@gmail.com>\n"
+"POT-Creation-Date: 2008-05-15 09:00+0200\n"
+"PO-Revision-Date: 2008-05-15 12:31+0100\n"
+"Last-Translator: stefan granhol <stefangranholm@gmail.com>\n"
 "Language-Team: Paw M. K. Gyldenkærne <pmkg@inbox.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -14,28 +14,28 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:38
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:161
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:190
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:160
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:189
 msgid "ERROR"
 msgstr "FEJL"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:39
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:191
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:190
 msgid "We are sorry but your session has expired."
 msgstr "Beklager, men din session er udløbet."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:39
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:191
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:190
 msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
 msgstr "Du har enten været inaktiv for længe, du har fjernet muligheden for cookies i din browser, eller der opstod et problem med internet forbindelsen."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:40
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:311
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:163
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:192
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:283
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:368
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:388
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:162
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:191
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:282
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:367
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:387
 #, php-format
 msgid "Please contact %s ( %s ) for further assistance."
 msgstr "Kontakt venligst %s ( %s ) for yderligere assistance."
@@ -46,50 +46,50 @@ msgid "Survey Name (ID)"
 msgstr "Spørgeskema ID"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:143
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:889
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:144
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:369
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:897
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:154
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:379
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:522
 msgid "Token ID"
 msgstr "Respondentnøgle ID"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:145
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:155
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:380
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:165
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:390
 msgid "Date Submitted"
 msgstr "Dato for indsendelse"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:148
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:526
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1475
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1528
 msgid "Date Stamp"
 msgstr "Datomærke"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:152
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:865
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:159
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:386
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:873
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:169
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:396
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/saved.php:85
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:530
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1476
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1529
 msgid "IP Address"
 msgstr "IP-adresse"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:156
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:538
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:539
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:871
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:163
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:390
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1477
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:879
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:173
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:400
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1530
 msgid "Referring URL"
 msgstr "Reference URL"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:249
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:279
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1122
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:816
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:822
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:828
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:897
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:946
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:1029
@@ -125,16 +125,16 @@ msgstr "Importer spørgeskemaressourcer"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:171
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:183
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:476
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:58
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:71
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:95
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:110
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:68
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:81
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:105
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:120
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2840
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2844
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2848
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2854
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3321
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3333
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3289
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3301
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dumpquestion.php:37
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/export_structure_csv.php:47
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dumpgroup.php:40
@@ -143,11 +143,11 @@ msgstr "Importer spørgeskemaressourcer"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/deletesurvey.php:28
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:50
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:371
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:757
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:759
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:783
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:874
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:916
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:764
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:789
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:880
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:922
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importgroup.php:29
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importgroup.php:67
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importgroup.php:248
@@ -164,9 +164,9 @@ msgstr "Importer spørgeskemaressourcer"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:106
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:239
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:280
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:411
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:438
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:463
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:395
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:444
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:469
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dumplabel.php:32
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:183
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:201
@@ -174,9 +174,9 @@ msgstr "Importer spørgeskemaressourcer"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:702
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:775
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:794
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1862
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2137
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2143
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1870
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2145
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2151
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/install/createdb.php:52
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/install/createdb.php:84
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:47
@@ -187,11 +187,11 @@ msgstr "Importer spørgeskemaressourcer"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:162
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:163
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:164
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2461
-#: /srv/www/virtual/limesurvey.org/devSVN/save.php:475
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:386
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1161
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:4284
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2480
+#: /srv/www/virtual/limesurvey.org/devSVN/save.php:479
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:385
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1171
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:4306
 msgid "Error"
 msgstr "Fejl"
 
@@ -217,20 +217,20 @@ msgstr "Tilbage"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:82
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:42
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:198
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1205
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1233
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1211
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1239
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importgroup.php:54
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importgroup.php:650
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/http_importsurvey.php:40
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:68
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:488
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1733
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1780
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1867
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1963
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2123
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:494
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1741
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1788
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1875
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1971
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2131
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:460
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1449
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1468
 msgid "Success"
 msgstr "Succes"
 
@@ -357,10 +357,10 @@ msgstr "Importer label-sæt"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:161
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:173
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:185
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:61
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:74
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:98
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:112
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:71
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:84
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:108
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:122
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dumpquestion.php:38
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/export_structure_csv.php:50
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dumpgroup.php:41
@@ -397,12 +397,12 @@ msgstr "Importer label-sæt"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/deactivate.php:112
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:51
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:66
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2463
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2482
 msgid "Main Admin Screen"
 msgstr "Overordnet administration"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:31
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1405
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1455
 msgid "Import a VV survey file"
 msgstr "Importer en VV spørgeskema fil"
 
@@ -454,7 +454,7 @@ msgstr "Importer"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:70
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:404
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:467
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1356
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1377
 msgid "Return to Survey Administration"
 msgstr "Retur til overordnet administration"
 
@@ -494,25 +494,25 @@ msgid "Total records imported:"
 msgstr "Importerede observationer i alt:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:219
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:56
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:69
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:93
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:108
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:123
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:329
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:693
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:66
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:79
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:103
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:118
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:133
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:339
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:707
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1803
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:476
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:487
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1452
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1472
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1500
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1471
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1491
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1519
 msgid "Browse Responses"
 msgstr "Gennemse besvarelser"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/assessments.php:63
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1222
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1247
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1228
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1253
 msgid "Assessments"
 msgstr "Evalueringer"
 
@@ -531,7 +531,6 @@ msgstr "Fokus"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:954
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2760
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:191
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:293
 msgid "Group"
 msgstr "Gruppe"
 
@@ -551,7 +550,7 @@ msgstr "Overskrift"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/assessments.php:88
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1082
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1302
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1305
 msgid "Message"
 msgstr "Besked"
 
@@ -570,7 +569,6 @@ msgstr "Total"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:159
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:176
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:592
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:367
 msgid "Add"
 msgstr "Tilføj"
 
@@ -600,12 +598,12 @@ msgstr "Handlinger"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:860
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:619
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/resetsurveylogic.php:52
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1546
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1554
 msgid "Delete"
 msgstr "Slet"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/assessments.php:161
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:283
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:293
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2031
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:79
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:494
@@ -626,11 +624,12 @@ msgstr "Gem"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:496
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:556
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1251
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3204
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:288
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/deletesurvey.php:61
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/resetsurveylogic.php:50
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:975
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1410
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:4633
 msgid "Cancel"
 msgstr "Fortryd"
 
@@ -652,9 +651,9 @@ msgid "Label Set Import Summary"
 msgstr "Opsummering af label-sæt import"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:200
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1216
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1244
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:496
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1222
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1250
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:502
 msgid "Label Sets"
 msgstr "Label-sæt"
 
@@ -666,8 +665,8 @@ msgstr "Labels"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:202
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:149
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1210
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1238
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1216
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1244
 msgid "Languages"
 msgstr "Sprog"
 
@@ -762,12 +761,12 @@ msgid "This file type is not allowed to be uploaded."
 msgstr "Det er ikke tilladt at uploade denne fil-type."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:310
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:282
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:281
 msgid "You have not provided a survey identification number"
 msgstr "Intet spørgeskema ID nummer angivet"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:312
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:284
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:283
 msgid "The following surveys are available:"
 msgstr "Følgende spørgeskema er tilgængelige:"
 
@@ -880,7 +879,7 @@ msgid "Upload a File"
 msgstr "Upload en fil"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:686
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2174
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2182
 msgid "Upload"
 msgstr "Upload"
 
@@ -889,7 +888,7 @@ msgid "Preview:"
 msgstr "Preview:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:841
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:732
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:731
 msgid "complete"
 msgstr "færdig"
 
@@ -917,10 +916,10 @@ msgstr "Kolonner"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:159
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1060
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:368
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1213
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1241
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1219
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1247
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importgroup.php:656
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:490
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:496
 msgid "Questions"
 msgstr "Spørgsmål"
 
@@ -942,14 +941,14 @@ msgid "Filter incomplete answers"
 msgstr "Filtre ufuldstændige besvarelser"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:172
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:626
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:640
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvexport.php:51
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:718
 msgid "Enable"
 msgstr "Slå til"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:173
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:627
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:641
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvexport.php:52
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:719
 msgid "Disable"
@@ -957,10 +956,10 @@ msgstr "Slå fra"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:178
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:369
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1214
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1242
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1220
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1248
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importgroup.php:659
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:493
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:499
 msgid "Answers"
 msgstr "Svar"
 
@@ -1033,34 +1032,34 @@ msgstr "Spørgeskemaet kan eksporteres med respondentnøgle oplysninger tilknytt
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:313
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:493
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:494
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:874
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:75
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:882
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:180
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:808
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1589
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2349
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1597
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2402
 msgid "First Name"
 msgstr "Fornavn"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:315
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:488
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:489
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:877
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:78
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:885
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:183
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:812
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1595
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2356
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1603
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2409
 msgid "Last Name"
 msgstr "Efternavn"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:317
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:880
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:81
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:888
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:186
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:206
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:444
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:920
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/login_check.php:42
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:817
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1601
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1609
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:79
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:377
 msgid "Email"
@@ -1069,26 +1068,26 @@ msgstr "E-mail"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:319
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:503
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:504
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:886
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:369
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:411
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:894
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:379
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:493
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:827
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1620
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1628
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:522
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1521
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1587
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1710
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1722
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1474
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1540
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1601
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1724
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1736
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1527
 msgid "Token"
 msgstr "Respondentnøgle"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:326
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:509
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:892
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:900
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2404
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3051
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:60
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:165
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:394
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:847
 msgid "Attribute 1"
@@ -1096,10 +1095,10 @@ msgstr "Attribut 1"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:328
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:514
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:895
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:903
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2406
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3052
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:61
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:166
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:395
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:851
 msgid "Attribute 2"
@@ -1108,21 +1107,21 @@ msgstr "Attribut 2"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:498
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:499
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/saved.php:87
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2363
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2416
 msgid "Email Address"
 msgstr "E-mail adresse"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:523
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:524
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:862
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:870
 msgid "Time Submitted"
 msgstr "Tidspunkt for indsendelse"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:528
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:529
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:868
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:147
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:372
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:876
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:157
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:382
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:319
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1804
 msgid "Completed"
@@ -1130,21 +1129,21 @@ msgstr "Færdiggjort"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:533
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:534
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1560
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1579
 msgid "IP-Address"
 msgstr "IP-adresse"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:581
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1134
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:789
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:791
 msgid "Ranking"
 msgstr "Rangordning"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:588
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:600
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:620
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:944
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:976
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:626
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:960
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:992
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:625
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1081
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1520
@@ -1159,48 +1158,48 @@ msgstr "Rangordning"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:465
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:762
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:799
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1813
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1819
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1860
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1866
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1895
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1901
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2127
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2143
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2187
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1832
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1838
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1879
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1885
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1914
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1920
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2146
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2162
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2206
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:818
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:928
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1057
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1060
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1188
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1191
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1736
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1904
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1616
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1834
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1900
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1910
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1749
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1917
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1669
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1887
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1953
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1963
 msgid "Other"
 msgstr "Andet"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:828
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:834
 msgid "NEW RECORD"
 msgstr "NY OBSERVATION"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:883
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:891
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:135
 msgid "ID"
 msgstr "ID"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:898
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:906
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:832
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1632
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1640
 msgid "Language"
 msgstr "Sprog"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1002
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1029
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1040
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1018
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1045
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1056
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:897
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1387
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1396
@@ -1233,10 +1232,10 @@ msgstr "Sprog"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3112
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3119
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:135
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:529
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:535
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:547
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:553
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:611
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:617
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:629
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:635
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:386
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:528
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:107
@@ -1257,34 +1256,32 @@ msgstr "Sprog"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/results.php:288
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/results.php:337
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/results.php:367
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:544
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:621
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1100
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1335
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1506
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1338
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1514
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:151
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:169
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:540
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:599
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:543
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:602
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1128
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1189
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1611
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1629
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2210
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2267
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2423
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2778
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2824
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1624
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1630
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1646
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1630
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1648
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2229
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2286
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2445
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2800
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2846
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1677
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1683
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1699
 msgid "Yes"
 msgstr "Ja"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1003
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1030
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1031
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1043
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1019
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1046
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1047
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1059
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:893
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1387
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1396
@@ -1317,8 +1314,8 @@ msgstr "Ja"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3113
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3120
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:136
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:548
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:554
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:630
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:636
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:388
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:529
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:109
@@ -1336,278 +1333,274 @@ msgstr "Ja"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/results.php:250
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/results.php:338
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/results.php:369
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:554
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:626
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1101
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1336
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1508
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1339
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1516
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:152
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:171
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:541
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:601
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:544
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:604
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1131
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1195
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1612
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1631
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2211
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2269
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2429
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2780
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2836
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1631
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1647
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1650
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2230
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2288
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2451
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2802
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2858
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1684
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1700
 msgid "No"
 msgstr "Nej"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1004
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1012
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1020
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1028
 msgid "N/A"
 msgstr "N/A"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1010
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1026
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:32
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:542
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:624
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:538
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:372
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:759
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1447
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/results.php:254
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/results.php:341
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:648
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:158
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:284
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:726
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1618
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1774
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2492
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1638
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1637
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1793
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2514
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1691
 msgid "Male"
 msgstr "Mand"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1011
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1027
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:33
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:541
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:623
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:537
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:369
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:758
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1446
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/results.php:255
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/results.php:342
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:653
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:159
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:283
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:723
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1619
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1773
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2480
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1639
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1638
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1792
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2502
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1692
 msgid "Female"
 msgstr "Kvinde"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1046
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:555
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1062
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:637
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:387
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:487
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1409
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/results.php:234
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/results.php:368
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:549
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:170
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:600
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:603
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1192
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1630
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2268
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2779
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2829
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1648
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1649
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2287
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2801
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2851
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1701
 msgid "Uncertain"
 msgstr "Ved ikke"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1053
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:560
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1069
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:642
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:391
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:519
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1420
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/results.php:238
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/results.php:360
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:571
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:177
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:617
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1650
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2287
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3007
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3045
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1654
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:620
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1669
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2306
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3029
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3067
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1707
 msgid "Increase"
 msgstr "Øges"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1056
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:561
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1072
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:643
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:392
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:522
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1421
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/results.php:239
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/results.php:361
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:576
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:179
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:618
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1652
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2288
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3008
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3050
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1656
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:621
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1671
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2307
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3030
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3072
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1709
 msgid "Same"
 msgstr "Uændret"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1059
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:562
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1075
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:644
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:393
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:525
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1422
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/results.php:240
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/results.php:362
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:581
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:178
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:619
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1651
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2289
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3009
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3056
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1655
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:622
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1670
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2308
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3031
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3078
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1708
 msgid "Decrease"
 msgstr "Mindskes"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:59
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:69
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:48
 msgid "The defined surveyor database does not exist"
 msgstr "Den definerede spørgeskema database eksisterer ikke"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:60
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:70
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:49
 msgid "Either your selected database has not yet been created or there is a problem accessing it."
 msgstr "Enten er den valgte database endnu ikke oprettet, eller også er der et problem med at få adgang til den."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:72
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:82
 msgid "You have not selected a survey to browse."
 msgstr "Du har ikke valgt et spørgeskema til gennemsyn."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:96
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:106
 msgid "This survey has not been activated. There are no results to browse."
 msgstr "Spørgeskemaet er ikke blevet aktiveret. Der er ingen resultater at gennemse."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:111
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:121
 msgid "There is no matching survey."
 msgstr "Intet matchende spørgeskema."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:153
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:378
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:163
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:388
 msgid "Date Started"
 msgstr "Dato startet"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:154
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:379
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:164
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:389
 msgid "Date Last Action"
 msgstr "Dato for sidste handling"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:224
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:436
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:234
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:446
 msgid "1. scale"
 msgstr "1. scala"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:229
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:441
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:239
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:451
 msgid "2. scale"
 msgstr "2. scala"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:266
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:276
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:903
 msgid "View Response"
 msgstr "Se besvarelse"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:273
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:283
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:137
 msgid "Edit this entry"
 msgstr "Rediger posten"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:282
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:292
 msgid "Delete this entry"
 msgstr "Slet posten"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:286
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:287
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:296
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:297
 msgid "Export this Response"
 msgstr "Eksporter denne besvarelse"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:291
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:594
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:301
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:608
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:742
 msgid "Show previous..."
 msgstr "Vis forrige..."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:295
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:598
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:305
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:612
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:746
 msgid "Show next..."
 msgstr "Vis næste..."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:338
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:348
 msgid "Showing Filtered Results"
 msgstr "Viser filtrerede resultater"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:339
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:349
 msgid "Close"
 msgstr "Luk"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:586
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:600
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:734
 msgid "Data View Control"
 msgstr "Datavisningskontrol"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:591
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:605
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:739
 msgid "Show start.."
 msgstr "Vis start..."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:601
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:615
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:749
 msgid "Show last..."
 msgstr "Vis sidste..."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:623
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:637
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:763
 msgid "Records Displayed:"
 msgstr "Observationer vist:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:624
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:638
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:764
 msgid "Starting From:"
 msgstr "Begyndende fra:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:625
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:639
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:717
 msgid "Filter incomplete answers:"
 msgstr "Filtre ufuldstændige besvarelser:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:629
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:643
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:765
 msgid "Show"
 msgstr "Vis"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:655
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:669
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:470
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1451
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1470
 msgid "View This Record"
 msgstr "Vis observationen"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:706
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:684
+msgid "Edit this token"
+msgstr "Rediger respondentnøgle"
+
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:720
 msgid "responses for this survey"
 msgstr "besvarelser af spørgeskemaet"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:707
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:721
 msgid "full responses"
 msgstr "fuldstændige besvarelser"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:708
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:722
 msgid "responses not completely filled out"
 msgstr "svar er ikke fuldstændigt udfyldte"
 
@@ -1764,8 +1757,8 @@ msgid "Users"
 msgstr "Brugere"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:312
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1207
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1235
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1213
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1241
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:365
 msgid "Surveys"
 msgstr "Spørgeskemaer"
@@ -1810,7 +1803,8 @@ msgstr "Distribuer spørgeskemaet"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:491
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:551
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1246
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3188
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1405
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:4617
 msgid "Please select a language:"
 msgstr "Vælg venligst sprog:"
 
@@ -1818,7 +1812,7 @@ msgstr "Vælg venligst sprog:"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:509
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:519
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:520
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1374
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1424
 msgid "Dataentry Screen for Survey"
 msgstr "Indtastning af observationer"
 
@@ -1888,7 +1882,7 @@ msgstr "Gennemse besvarelser af spørgeskemaet"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:685
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:686
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1401
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1451
 msgid "View Saved but not submitted Responses"
 msgstr "Vis gemte besvarelser som ikke er blevet indsendt"
 
@@ -1921,19 +1915,19 @@ msgstr "Tilføj gruppe til spørgeskemaet"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:742
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2068
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1212
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1240
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1218
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1246
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importgroup.php:653
 msgid "Groups"
 msgstr "Gruppe"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:752
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:592
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:864
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:889
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:932
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3339
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3377
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:867
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:892
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:935
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3354
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3393
 msgid "None"
 msgstr "Ingen"
 
@@ -1995,17 +1989,17 @@ msgid "Participants can save partially finished surveys"
 msgstr "Respondenter kan gemme delvist fuldførte spørgeskemaer."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:790
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:823
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:825
 msgid "No email notification"
 msgstr "Ingen rykkermail."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:793
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:824
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:826
 msgid "Basic email notification"
 msgstr "Standard rykkermail"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:796
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:825
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:827
 msgid "Detailed email notification with result codes"
 msgstr "Detaljeret rykkermail med resultatkoder"
 
@@ -2286,7 +2280,7 @@ msgstr "Type:"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2446
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2755
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3086
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3300
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3268
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:409
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:418
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:488
@@ -2296,10 +2290,10 @@ msgstr "Type:"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/resetsurveylogic.php:42
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:330
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:968
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1219
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1242
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1459
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1482
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1222
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1245
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1467
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1490
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/deactivate.php:27
 msgid "Warning"
 msgstr "Bemærk"
@@ -2370,7 +2364,7 @@ msgstr "Fejl: Du forsøger at bruge den to ens svarkoder."
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:410
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:552
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1068
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1278
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1281
 msgid "Base Language"
 msgstr "Standard sprog"
 
@@ -2403,7 +2397,7 @@ msgstr "Orden"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1535
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1578
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1022
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1029
 msgid "Default"
 msgstr "Standard"
 
@@ -2416,7 +2410,7 @@ msgstr "Svar:"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1574
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:348
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:798
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1012
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1019
 msgid "Del"
 msgstr "Slet"
 
@@ -2427,7 +2421,7 @@ msgstr "Slet"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:774
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:640
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:801
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:988
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:995
 msgid "Up"
 msgstr "Op"
 
@@ -2438,14 +2432,14 @@ msgstr "Op"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:786
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:652
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:805
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1000
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1007
 msgid "Dn"
 msgstr "Ned"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1596
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:366
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:709
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:897
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:900
 msgid "Save All"
 msgstr "Gem alt"
 
@@ -2454,7 +2448,7 @@ msgid "New Answer"
 msgstr "Nyt svar"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1621
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:823
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:826
 msgid "Add new Answer"
 msgstr "Tilføj nyt svar"
 
@@ -2507,7 +2501,7 @@ msgstr "Brugernavn findes allerede."
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1748
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1781
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2126
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3386
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3354
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:428
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:744
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:772
@@ -2547,8 +2541,8 @@ msgstr "Brugernavn findes allerede."
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/resetsurveylogic.php:69
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:286
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:308
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1224
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1463
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1227
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1471
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:58
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:81
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:87
@@ -2563,10 +2557,10 @@ msgstr "Brugernavn findes allerede."
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:642
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:652
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:680
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1548
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1595
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1733
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2402
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1562
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1609
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1747
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2455
 msgid "Continue"
 msgstr "Fortsæt"
 
@@ -2653,7 +2647,7 @@ msgstr "Aktiver spørgeskema"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1843
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1896
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:368
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2314
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2367
 msgid "Save Now"
 msgstr "Gem"
 
@@ -3069,35 +3063,35 @@ msgstr "Vælg CSV/SQL-fil:"
 msgid "Convert Resources links and INSERTANS fields ?"
 msgstr "Konverter ressourcelinks og INSERTANS felter?"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3300
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3268
 msgid "You need to upload the file"
 msgstr "Du må uploade filen"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3307
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3275
 msgid "You must upload a CSV file"
 msgstr "Du må uploade en CSV-fil"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3309
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3277
 msgid "Upload CSV file"
 msgstr "Importer CSV-fil"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3321
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3289
 msgid "It is impossible to upload a file other than CSV type"
 msgstr "Det er kun muligt at uploade CSV-filer"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3333
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3301
 msgid "It is impossible to upload an empty file"
 msgstr "Det er ikke muligt at uploade en tom fil"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3340
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3308
 msgid "Uploading CSV file"
 msgstr "Uploader CSV-fil"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3341
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3309
 msgid "Visualization:"
 msgstr "Visualisering:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3341
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3309
 msgid "Select the field number you would like to use for your answers:"
 msgstr "Vælg feltnummeret, som skal anvendes til svarene."
 
@@ -3124,12 +3118,13 @@ msgid "Are you sure you want to delete this entry?"
 msgstr "Er du sikker på, at du vil slette posten?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/saved.php:126
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1362
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1383
 msgid "Show summary information"
 msgstr "Vis opsummering"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/saved.php:128
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1366
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1389
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1396
 msgid "Display Responses"
 msgstr "Vis besvarelser"
 
@@ -3343,20 +3338,20 @@ msgstr "Eksporter spørgeskema"
 msgid "No SID has been provided. Cannot dump survey"
 msgstr "Intet SID angivet. Kan ikke dumpe spørgeskema"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:405
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:487
 msgid "Record ID"
 msgstr "Observations ID"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:407
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:489
 msgid "Completion Date"
 msgstr "Dato for fuldførelse"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:409
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:491
 msgid "Start Language"
 msgstr "Standard sprog"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:530
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:536
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:612
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:618
 msgid "Not Selected"
 msgstr "Ikke valgt"
 
@@ -3415,9 +3410,9 @@ msgstr "Fulde navn"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:365
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:532
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:535
-#: /srv/www/virtual/limesurvey.org/devSVN/save.php:288
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2300
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2326
+#: /srv/www/virtual/limesurvey.org/devSVN/save.php:292
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2353
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2379
 msgid "Password"
 msgstr "Adgangskode"
 
@@ -3595,8 +3590,8 @@ msgstr "Brugergruppe redigeret!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:873
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:438
-#: /srv/www/virtual/limesurvey.org/devSVN/save.php:287
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2297
+#: /srv/www/virtual/limesurvey.org/devSVN/save.php:291
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2350
 msgid "Name"
 msgstr "Navn"
 
@@ -3627,12 +3622,12 @@ msgstr "Luk editor"
 msgid "Editing"
 msgstr "Redigerer"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/htmleditor-popup.php:167
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/htmleditor-popup.php:168
 msgid "Do you want to save your changes ?"
 msgstr "Vil du gemme dine ændringer?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvexport.php:43
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1411
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1461
 msgid "Export a VV survey file"
 msgstr "Eksporter en VV spørgeskema fil"
 
@@ -3669,14 +3664,14 @@ msgstr "Label-sæt"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:504
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:591
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:638
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:750
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:863
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:888
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:931
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3304
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3338
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3376
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3412
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:752
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:866
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:891
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:934
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3319
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3353
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3392
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3428
 msgid "Please Choose..."
 msgstr "Vælg venligst.."
 
@@ -4001,52 +3996,56 @@ msgstr "Import af spørgeskema-filen mislykkedes"
 msgid "File does not contain LimeSurvey data in the correct format."
 msgstr "Filen indeholder ikke LimeSurvey data i det korrekte format."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:816
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:760
+msgid "A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped."
+msgstr "In gruppe i CSV/SQL filen er ikke en del af samme undersøgelse. Importeringen er stoppet."
+
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:822
 msgid "was NOT imported because the question type is unknown."
 msgstr "blev IKKE importeret, da spørgsmålstypen ikke er kendt."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:822
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:828
 #, php-format
 msgid "was imported but the type was set to '%s' because it is the most similiar one."
 msgstr "blev importeret, men typen blev sat til '%s' fordi det er den som kommer tættest på."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1206
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1234
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1212
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1240
 msgid "Survey Import Summary"
 msgstr "Opsummering af spørgeskema import"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1215
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1243
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1221
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1249
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importgroup.php:662
 msgid "Conditions"
 msgstr "Betingelser"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1219
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1245
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1225
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1251
 msgid "Not imported Label Sets"
 msgstr "Ikke Importeret label-sæt"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1219
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1245
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1225
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1251
 msgid "(Label Sets were not imported since you do not have the permission to create new label sets.)"
 msgstr "(Label sæt blev ikke importeret, da du ikke har rettigheder til at oprette nye label sæt.)"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1221
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1246
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1227
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1252
 msgid "Question Attributes"
 msgstr "Spørgsmålsattributer"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1223
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1229
 msgid "Quotas"
 msgstr "Kvoter"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1225
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1249
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1231
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1255
 msgid "Import of Survey is completed."
 msgstr "Import af spørgeskema fuldført."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1226
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1250
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1232
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1256
 msgid "Warnings"
 msgstr "Advarsler"
 
@@ -4128,7 +4127,7 @@ msgstr "Ingen spørgsmål valgt at kopiere fra"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/results.php:345
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/results.php:377
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1250
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1760
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1779
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:604
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:820
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:930
@@ -4137,30 +4136,30 @@ msgstr "Ingen spørgsmål valgt at kopiere fra"
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1293
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1352
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1361
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2445
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2516
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2565
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2624
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2681
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2730
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2783
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2850
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3012
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3069
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3147
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3165
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3230
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3283
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3284
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3553
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3580
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3687
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3896
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3949
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1632
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1640
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:4270
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:4275
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2467
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2538
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2587
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2646
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2703
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2752
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2805
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2872
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3034
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3091
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3169
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3187
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3252
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3305
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3306
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3575
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3602
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3709
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3918
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3971
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1685
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1693
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:4292
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:4297
 msgid "No answer"
 msgstr "Uoplyst"
 
@@ -4180,8 +4179,6 @@ msgstr "Mindre end eller lig med"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:765
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:985
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:351
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:357
 msgid "Equals"
 msgstr "Lig med"
 
@@ -4213,13 +4210,13 @@ msgid "and"
 msgstr "og"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:799
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1680
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1710
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1699
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1729
 msgid "OR"
 msgstr "ELLER"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:851
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1722
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1741
 msgid "No Answer"
 msgstr "Intet svar"
 
@@ -4298,7 +4295,7 @@ msgstr "Efter"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:151
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:586
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:501
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:507
 msgid "Question Attributes:"
 msgstr "Spørgsmålsattributer:"
 
@@ -4480,7 +4477,6 @@ msgstr "Du har ikke tilladelse til at udføre denne handling!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importoldresponses.php:37
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:82
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:83
 msgid "Quick Statistics"
 msgstr "Hurtige statistikker"
 
@@ -4562,7 +4558,7 @@ msgid "Number Less Than"
 msgstr "Tal mindre end"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:160
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1549
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1568
 msgid "Datestamp"
 msgstr "Datomærke"
 
@@ -4746,15 +4742,15 @@ msgstr "Importering er begrænset til den samme version. Import mislykkedes. "
 msgid "You can't import a question which doesn't support the current survey's base language"
 msgstr "Du kan ikke importere et spørgsmål, som ikke understøtter det nuværende spørgeskemas standard sprog"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:489
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:495
 msgid "Question Import Summary"
 msgstr "Opsummering import af spørgsmål"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:505
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:511
 msgid "Question import is complete."
 msgstr "Import af spørgsmål fuldført."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:125
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:128
 msgid ""
 "Group could not be added.\\n"
 "\\n"
@@ -4764,120 +4760,122 @@ msgstr ""
 "\\n"
 "Der mangler gruppenavn for følgende sprog"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:168
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:171
 msgid "Error: The database reported the following error:"
 msgstr "Fejl: Databasen rapporterede følgende fejl:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:218
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:221
 msgid "Group could not be updated"
 msgstr "Kunne ikke opdatere gruppe"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:239
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:264
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:277
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:242
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:267
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:280
 msgid "Group could not be deleted"
 msgstr "Kunne ikke slette gruppe"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:286
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:289
 #, php-format
 msgid "Answer could not be added. You must insert a code in the mandatory field (%s)"
 msgstr "Kunne ikke tilføje svar. Du skal indsætte en kode i det obligatoriske felt (%s)"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:358
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:659
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:688
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:361
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:662
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:691
 msgid "Question could not be created."
 msgstr "Spørgsmål kunne ikke oprettes."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:465
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:468
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "Kunne ikke opdatere spørgsmål. Andre spørgsmål har betingelser tilknyttet dette spørgsmål, hvorfor ændring af dets type vil medføre problemer. Du skal slette disse betingelser, før du kan ændre dette spørgsmåls type."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:550
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:608
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:553
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:611
 msgid "Question could not be updated"
 msgstr "Spørgsmål kunne ikke opdateres"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:570
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:573
 msgid "Answers can't be deleted"
 msgstr "Svarene kan ikke slettes"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:580
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:583
 msgid "This question relies on other question's answers and can't be moved above groupId:"
 msgstr "Spørgsmålet afhænger af svar på andre spørgsmål, og det kan ikke flyttes over gruppeID:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:581
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:593
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:584
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:596
 msgid "in position"
 msgstr "på position"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:582
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:594
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:585
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:597
 msgid "See conditions:"
 msgstr "Se betingelser:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:592
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:595
 msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
 msgstr "Der er spørgsmål, der afhænger af svar givet til dette spørgsmål. Du kan ikke flytte dette spørgsmål under gruppeID:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:618
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:621
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "Kunne ikke tilføje spørgsmål. Du skal indsætte en kode i det obligatoriske felt"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:752
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:793
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:755
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:796
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "Kunne ikke slette spørgsmål. Andre spørgsmål har betingelser tilknyttet dette spørgsmål. Du skal slette disse betingelser, før du kan slette dette spørgsmål."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:777
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:814
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:780
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:817
 msgid "Question could not be deleted"
 msgstr "Kunne ikke slette spørgsmål"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:838
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:841
 msgid "Error adding answer: You can't use the same answer code more than once."
 msgstr "Fejl ved tilføjelse af svar: Du kan ikke anvende den samme svarkode mere end én gang."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:862
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:884
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:865
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:887
 msgid "Failed to insert answer"
 msgstr "Indsætning af svar mislykkedes"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:893
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:896
 msgid "Invalid or empty answer code supplied"
 msgstr "Ugyldig eller tom svarkode angivet"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:964
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:967
 msgid "Failed to update answers"
 msgstr "Opdatering af svar mislykkedes"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:983
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:986
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "Svar med koden 0 (nul) eller blank kode er ikke tilladt, og vil ikke blive gemt"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:984
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:987
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "Kode duplikater fundet, posterne vil ikke blive opdateret"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1016
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1023
 msgid "Failed to delete answer"
 msgstr "Kunne ikke slet svar"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1031
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1038
 msgid "Failed to make answer not default"
 msgstr "Svar kun ikke ændres til ikke-standard"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1045
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1052
 msgid "Failed to make answer default"
 msgstr "Kunne ikke gøre svar til standard"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1115
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1132
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1316
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:556
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1055
 msgid "Invitation to participate in survey"
 msgstr "Invitation til deltagelse i undersøgelse"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1116
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1133
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1317
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:562
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1046
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1050
@@ -4920,14 +4918,16 @@ msgstr ""
 "Tryk her for at besvare spørgeskemaet:\n"
 "{SURVEYURL}"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1117
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1134
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1318
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:567
 msgid "Reminder to participate in survey"
 msgstr "Påmindelse om deltagelse i undersøgelse"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1118
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1135
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1319
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:573
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1274
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1277
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -4971,14 +4971,16 @@ msgstr ""
 "Tryk her for at besvare spørgeskemaet:\n"
 "{SURVEYURL}"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1119
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1136
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1320
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:578
 msgid "Confirmation of completed survey"
 msgstr "Bekræftelse af besvaret spørgeskema"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1120
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1137
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1321
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:584
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1366
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1380
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -5000,12 +5002,14 @@ msgstr ""
 "\n"
 "{ADMINNAME}"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1121
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1138
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1322
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:589
 msgid "Survey Registration Confirmation"
 msgstr "Bekræftelse af tilmelding"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1122
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1139
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1323
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:595
 msgid ""
 "Dear {FIRSTNAME},\n"
@@ -5028,19 +5032,19 @@ msgstr ""
 "\n"
 "Hvis du har spørgsmål til undersøgelsen, eller en anden har anvendt din mail til registrering, så er du altid velkommen til at kontakte {ADMINNAME} via e-mail: {ADMINEMAIL}."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1138
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1155
 msgid "Survey could not be updated"
 msgstr "Spørgeskemaet kunne ikke opdateres"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1153
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1170
 msgid "ERROR deleting Survey id"
 msgstr "FEJL ved sletning af Spørgeskema ID"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1214
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1231
 msgid "Survey could not be created because it did not have a short title"
 msgstr "Spørgeskemaet kunne ikke oprettes, da det ikke havde en kort titel"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1297
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1338
 msgid "Survey could not be created"
 msgstr "Spørgeskemaet kunne ikke oprettes"
 
@@ -5237,54 +5241,6 @@ msgstr "Brugernavn ugyldigt!"
 msgid "User name / password dont match!"
 msgstr "Brugernavn og adgangskode matcher ikke!"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:238
-msgid "Select all"
-msgstr "Vælg alle"
-
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:239
-msgid "Proceed"
-msgstr "Fortsæt"
-
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:280
-msgid "Question List"
-msgstr "Spørgsmålsliste"
-
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:350
-msgid "Like"
-msgstr "Lig"
-
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:358
-msgid "Not Equals"
-msgstr "Ikke lig med"
-
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:414
-msgid "Filter Conditions"
-msgstr "Filter betingelser"
-
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:488
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:685
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:790
-msgid "Short free text"
-msgstr "Kort fri-tekst"
-
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:664
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:776
-msgid "Date"
-msgstr "Dato"
-
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:674
-msgid "Numerical"
-msgstr "Numerisk"
-
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:696
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:791
-msgid "Long free text"
-msgstr "Lang fri-tekst"
-
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/stats.php:707
-msgid "Huge free text"
-msgstr "Stor fri-tekst"
-
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dumplabel.php:32
 msgid "No LID has been provided. Cannot dump label set."
 msgstr "Intet LID angivet. Kan ikke dumpe label-sæt."
@@ -5442,7 +5398,7 @@ msgid "You have not selected a survey"
 msgstr "Intet spørgeskema valgt"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:201
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2462
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2481
 msgid "The survey you selected does not exist"
 msgstr "Det valgte spørgeskema eksisterer ikke"
 
@@ -5484,15 +5440,15 @@ msgid "Show Token Summary"
 msgstr "Vis respondentnøglens opsummering"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:412
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1735
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1782
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1743
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1790
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1798
 msgid "Display Tokens"
 msgstr "Vis Respondenter"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:420
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1783
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1791
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1799
 msgid "Add new token entry"
 msgstr "Tilføj ny respondent"
 
@@ -5660,17 +5616,17 @@ msgid "Sort by: "
 msgstr "Sorter efter:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:822
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1607
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1615
 msgid "Email Status"
 msgstr "E-mail status"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:837
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1643
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1651
 msgid "Invite sent?"
 msgstr "Invitation sendt?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:841
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1653
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1661
 msgid "Completed?"
 msgstr "Fuldført?"
 
@@ -5727,24 +5683,24 @@ msgid "Email Invitation"
 msgstr "Invitationsmail"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1074
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1283
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1286
 msgid "From"
 msgstr "Fra"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1078
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1287
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1290
 msgid "Subject"
 msgstr "Emne"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1095
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1116
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1328
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1363
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1331
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1366
 msgid "Sending to Token ID"
 msgstr "Sender til respondent ID"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1099
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1333
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1336
 msgid "Bypass token with failing email addresses"
 msgstr "Overskriv respondentnøgle ved fejlende e-mail adresser"
 
@@ -5761,224 +5717,225 @@ msgid "Invitation sent to:"
 msgstr "Invitation sendt til:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1209
-msgid "Mail to {FIRSTNAME} {LASTNAME} ({EMAIL}) Failed"
-msgstr "Mail til {FIRSTNAME} {LASTNAME} ({EMAIL}) mislykkedes"
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1451
+msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:"
+msgstr "EMail til {FIRSTNAME} {LASTNAME} ({EMAIL}) mislykkedes. Fejl meddelelse:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1221
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1460
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1224
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1468
 msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
 msgstr "Der er flere uafsendte e-mail, end der kan sendes i ét batch. Forsæt med at sende e-mails ved at trykke nedenfor."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1222
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1461
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1225
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1469
 msgid "There are {EMAILCOUNT} emails still to be sent."
 msgstr "Der er stadig {EMAILCOUNT} e-mails, som skal sendes."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1242
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1245
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
 msgstr "Der var ingen respondent, som kunne få tilsendt en e-mail. Det skyldes, at ingen opfylder kriterierne - at have en e-mail adresse, ikke allerede at have fået en invitationsmail, allerede har fuldført spørgeskemaet samt have en respondentnøgle."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1259
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1262
 msgid "Email Reminder"
 msgstr "Rykkermail"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1309
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1312
 msgid "Reminder Email:"
 msgstr "Påmindelses e-mail:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1320
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1323
 msgid "Start at Token ID No:"
 msgstr "Start ved respondent nr:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1338
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1341
 msgid "Send Reminders"
 msgstr "Send rykkere"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1350
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1353
 msgid "Sending Reminders"
 msgstr "Sender rykkere"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1362
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1365
 msgid "From Token ID"
 msgstr "Fra respondentnøgle ID"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1444
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1447
 msgid "Reminder sent to:"
 msgstr "Rykker sendt til:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1483
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1491
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
 msgstr "Der var ingen respondent, som kunne få tilsendt en e-mail. Det skyldes, at ingen opfylder kriterierne - at have en e-mail adresse, og har fået en invitationsmail, men endnu ikke fuldført spørgeskemaet."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1499
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1507
 msgid "Create Tokens"
 msgstr "Opret respondentnøgler"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1503
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1511
 msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
 msgstr "Når du trykker 'Ja' vil der blive oprettet respondentnøgler for alle respondenter, som endnu ikke har fået en tildelt en nøgle. OK?"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1530
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1538
 msgid "{TOKENCOUNT} tokens have been created"
 msgstr "{TOKENCOUNT} respondentnøgler er blevet oprettet"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1548
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1556
 msgid "Token has been deleted."
 msgstr "Respondent er blevet slettet."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1549
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1557
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:153
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:293
 msgid "Reloading Screen. Please wait."
 msgstr "Genindlæser side. Vent venligst."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1581
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1705
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1757
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1589
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1713
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1765
 msgid "Add or Edit Token Entry"
 msgstr "Tilføj eller rediger respondent indtastning"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1585
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1593
 msgid "Auto"
 msgstr "Auto"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1626
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1634
 msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
 msgstr "Du kan lade den være blank, og automatisk oprette respondentnøgler ved at bruge 'Opret respondentnøgler'"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1682
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1690
 msgid "Update Token"
 msgstr "Opdater respondent"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1687
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1695
 msgid "Add Token"
 msgstr "Tilføj respondent"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1734
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1742
 msgid "Updated Token"
 msgstr "Opdaterede respondent"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1740
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1788
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1965
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2127
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1748
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1796
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1973
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2135
 msgid "Failed"
 msgstr "Mislykkedes"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1741
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1789
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1749
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1797
 msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
 msgstr "Der er allerede en indtastning med den respondentnøgle i denne tabel. Den samme nøgle kan ikke bruges til flere indtastninger."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1742
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1750
 msgid "Show this token entry"
 msgstr "Vis denne respondents besvarelser"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1781
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1789
 msgid "Added New Token"
 msgstr "Tilføjede ny respondent"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1804
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1847
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1812
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1855
 msgid "Upload CSV File"
 msgstr "Importer CSV-fil"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1810
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1832
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1818
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1840
 msgid "Note:"
 msgstr "Note:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1811
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1819
 msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [emailstatus], [token], [language code], [attribute1], [attribute2]\"."
 msgstr "Filen skal være en standard CSV-fil (komma separeret) med dobbelt citationstegn omkring værdierne (standard for OpenOffice og MS Excel). Den første linje bør indeholde overskrifter (vil blive fjernet). Data bør ordnes som \"fornavn, efternavn, email, [respondentnøgle], [sprog kode], [attribut1], [attribut2]\"."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1826
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1834
 msgid "Upload LDAP entries"
 msgstr "Upload LDAP poster"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1833
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1841
 msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
 msgstr "LDAP-forespørgsler defineres af administratoren i config-ldap.php filen"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1862
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1870
 msgid "Upload file not found. Check your permissions and path for the upload directory"
 msgstr "Upload fil ikke fundet. Kontroller dine rettigheder og stien til upload mappen."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1867
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1875
 msgid "Importing CSV File"
 msgstr "Importerer CSV-fil"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1868
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1876
 msgid "Creating Token Entries"
 msgstr "Opretter respondenter"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1967
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1975
 msgid "Records in CSV"
 msgstr "Observationer i CSV"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1968
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2130
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1976
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2138
 msgid "Records met minumum requirements"
 msgstr "Observationer opfyldte minimumskrav"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1969
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2131
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1977
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2139
 msgid "Records imported"
 msgstr "Observationer importeret"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1970
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2132
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1978
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2140
 msgid "Duplicate records removed"
 msgstr "Duplikat observationer fjernet"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1971
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2133
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1979
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2141
 msgid "Records with invalid email address removed"
 msgstr "Observationer med invalide e-mail adresser fjernet"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1985
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1993
 msgid "Uploading LDAP Query"
 msgstr "Uploader LDAP-forespørgsel"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2129
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2137
 msgid "Results from LDAP Query"
 msgstr "Resultat fra LDAP-forespørgsel"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2137
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2145
 msgid "Can't bind to the LDAP directory"
 msgstr "Kan ikke etablere binding til LDAP mappe"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2143
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2151
 msgid "Can't connect to the LDAP directory"
 msgstr "Kan ikke oprette forbindelse til LDAP mappe"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2170
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2178
 msgid "Choose the CSV file to upload:"
 msgstr "Vælg CSV-fil som skal importeres:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2171
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2179
 msgid "Character set of the file:"
 msgstr "Filens tegnsæt:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2172
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2206
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2180
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2214
 msgid "Filter blank email addresses:"
 msgstr "Filtrer blank e-mail adresser:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2173
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2207
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2181
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2215
 msgid "Filter duplicate records:"
 msgstr "Filtrer duplikat observationer:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2187
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2195
 msgid "Sorry, but the LDAP module is missing in your PHP configuration."
 msgstr "LDAP-modulet mangler desværre i din PHP konfiguration."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2193
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2201
 msgid "LDAP is disabled or no LDAP query defined."
 msgstr "LDAP er slået fra eller der er ikke defineret en LDAP-forespørgsel."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2198
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2206
 msgid "Select the LDAP query you want to run:"
 msgstr "Vælg LDAP-forespørgelsen, som du ønsker at køre:"
 
@@ -6013,7 +5970,7 @@ msgstr "*"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:297
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:349
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:391
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:539
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:542
 msgid "Please choose *only one* of the following:"
 msgstr "Vælg venligst kun én af følgende:"
 
@@ -6022,8 +5979,8 @@ msgid "Please enter a date:"
 msgstr "Indtast en dato:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:398
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1884
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1911
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1897
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1924
 msgid "Make a comment on your choice here:"
 msgstr "Kommentar til dit valg skrives her:"
 
@@ -6052,40 +6009,40 @@ msgstr "Vælg alle som passer og skriv en kommentar:"
 msgid "answers and provide a comment:"
 msgstr "Svar og skriv en kommentar:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:508
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:511
 msgid "Please write your answer(s) here:"
 msgstr "Skriv dine svar her:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:523
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:527
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:531
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:535
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:526
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:530
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:534
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:538
 msgid "Please write your answer here:"
 msgstr "Skriv dine svar her:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:546
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:573
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:592
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:610
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:630
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:692
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:781
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:549
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:576
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:595
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:613
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:633
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:695
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:784
 msgid "Please choose the appropriate response for each item:"
 msgstr "Vælg ét svar for hvert element:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:824
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:827
 msgid "Submit Your Survey."
 msgstr "Indsend spørgeskema"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:825
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:828
 msgid "Thank you for completing this survey."
 msgstr "Tak for deltagelsen i undersøgelsen."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:828
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:831
 msgid "Please fax your completed survey to:"
 msgstr "Du kan faxe det udfyldte spørgeskema til:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:832
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:835
 msgid "Please submit by"
 msgstr "Insend venligst inden"
 
@@ -6124,7 +6081,7 @@ msgstr "Kunne ikke oprette database"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/install/index.php:32
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/install/index.php:49
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1158
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1168
 msgid "LimeSurvey Setup"
 msgstr "LimeSurvey opsætning"
 
@@ -6208,8 +6165,8 @@ msgstr "Nøgletabellen, som er tilknyttet spørgeskemaet, er blevet omdøbt til:
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:82
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:672
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1356
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1462
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1507
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1481
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1526
 msgid "Data Entry"
 msgstr "Dataindtastning"
 
@@ -6238,17 +6195,17 @@ msgid "This surveys uses anonymous answers, you can't update this response"
 msgstr "Undersøgelsen er anonym, hvorfor besvarelsen ikke kan opdateres"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:162
-#: /srv/www/virtual/limesurvey.org/devSVN/save.php:199
+#: /srv/www/virtual/limesurvey.org/devSVN/save.php:203
 msgid "You must supply a name for this saved session."
 msgstr "Der skal angives et navn for den gemte session."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:163
-#: /srv/www/virtual/limesurvey.org/devSVN/save.php:200
+#: /srv/www/virtual/limesurvey.org/devSVN/save.php:204
 msgid "You must supply a password for this saved session."
 msgstr "Der skal angives et navn for den gemte session."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:164
-#: /srv/www/virtual/limesurvey.org/devSVN/save.php:202
+#: /srv/www/virtual/limesurvey.org/devSVN/save.php:206
 msgid "Your passwords do not match."
 msgstr "Din adgangskode matcher ikke."
 
@@ -6258,35 +6215,35 @@ msgstr "Forsøg igen"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:172
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1319
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2407
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2426
 msgid "Identifier:"
 msgstr "Identifikation:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:174
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2409
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2428
 msgid "Password:"
 msgstr "Adgangskode:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:176
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2411
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2430
 msgid "Confirm Password:"
 msgstr "Bekræft adgangskode:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:178
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2413
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2432
 msgid "Email:"
 msgstr "E-mail:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:180
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2415
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2434
 msgid "Start Language:"
 msgstr "Standard sprog:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:189
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1337
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2435
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:2133
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2156
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2454
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:2147
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2209
 msgid "submit"
 msgstr "Indsend"
 
@@ -6299,7 +6256,7 @@ msgid "A token entry for the saved survey has been created too."
 msgstr "Der er også blevet dannet en repondentnøgle til det gemte spørgeskema."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:435
-#: /srv/www/virtual/limesurvey.org/devSVN/save.php:283
+#: /srv/www/virtual/limesurvey.org/devSVN/save.php:287
 msgid "Saved Survey Details"
 msgstr "Detaljer for gemt spørgeskema"
 
@@ -6308,7 +6265,7 @@ msgid "You, someone using your email address, or the administrator has saved a s
 msgstr "Der er tilknyttet udfuldstændigt spørgeskema til din konto. Følgende oplysninger kan anvendes til at returnere til det, og fortsætte hvor du kom fra."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:440
-#: /srv/www/virtual/limesurvey.org/devSVN/save.php:289
+#: /srv/www/virtual/limesurvey.org/devSVN/save.php:293
 msgid "Reload your survey by clicking on the following URL:"
 msgstr "Genåbn dit spørgeskema ved at trykke på følgende link:"
 
@@ -6334,41 +6291,41 @@ msgstr "Rediger besvarelse"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:810
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1057
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1125
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1772
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1798
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1833
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1844
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1884
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1917
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2156
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2209
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2224
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2245
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2266
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2286
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2317
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1791
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1817
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1852
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1863
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1903
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1936
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2175
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2228
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2243
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2264
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2285
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2305
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2336
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:734
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:804
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:914
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3871
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3924
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3893
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3946
 msgid "Please choose"
 msgstr "Vælg venligst"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:944
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2041
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2060
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1525
 msgid "Remove this item"
 msgstr "Fjern elementet"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:966
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2074
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2093
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1572
 msgid "Your Choices"
 msgstr "Dine valg"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:971
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2079
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2098
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1581
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1587
 msgid "Your Ranking"
@@ -6379,47 +6336,47 @@ msgid "Update Entry"
 msgstr "Opdater post"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1313
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2397
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2416
 msgid "Finalize response submission"
 msgstr "Færdiggør og indsend"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1315
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2403
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2422
 msgid "Save for further completion by survey user"
 msgstr "Gem, så respondent kan færdiggøre senere"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1450
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1469
 msgid "Record has been updated."
 msgstr "Observation er blevet opdateret."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1471
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1490
 msgid "Record Deleted"
 msgstr "Observation slettet"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1601
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1701
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1620
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1720
 msgid "AND"
 msgstr "OG"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1718
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1723
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1737
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1742
 msgid "to question {QUESTION}, you answered {ANSWER}"
 msgstr "til spørgsmålet {QUESTION} svarede du {ANSWER}"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1732
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1751
 msgid "Only answer this if the following conditions are met:"
 msgstr "Svar kun på det, hvis følgende betingelse er opfyldt:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1754
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1773
 msgid "Help about this question"
 msgstr "Hjælp til spørgsmålet"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1920
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1851
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1939
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1904
 msgid "Comment"
 msgstr "Kommentar"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2452
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2471
 msgid "This survey is not yet active. Your response cannot be saved"
 msgstr "Dette spørgeskema er endnu ikke aktiveret. Besvarelser kan ikke gemmes."
 
@@ -6552,218 +6509,221 @@ msgstr "Du har ikke tilladelse til at ændre dine egne rettigheder!"
 msgid "Update usertemplates successful."
 msgstr "Opdatering af brugerskabeloner succesfuld."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/save.php:157
+#: /srv/www/virtual/limesurvey.org/devSVN/save.php:161
 msgid "Please try again."
 msgstr "Forsøg igen."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/save.php:210
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:454
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1529
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1694
-#: /srv/www/virtual/limesurvey.org/devSVN/register.php:56
+#: /srv/www/virtual/limesurvey.org/devSVN/save.php:214
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:453
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1543
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1708
+#: /srv/www/virtual/limesurvey.org/devSVN/register.php:57
 msgid "The answer to the security question is incorrect"
 msgstr "Svaret på sikkerhedsspørgsmålet er forkert"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/save.php:226
+#: /srv/www/virtual/limesurvey.org/devSVN/save.php:230
 msgid "This name has already been used for this survey. You must use a unique save name."
 msgstr "Navnet er allerede anvendt ifm. dette spørgeskema. Du skal angive et unikt navn."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/save.php:285
+#: /srv/www/virtual/limesurvey.org/devSVN/save.php:289
 msgid "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
 msgstr "Du, eller en som anvender din e-mail adresse, har gemt et ufuldstændigt spørgeskema. Følgende oplysninger kan anvendes til at returnere til spørgeskemaet, og fortsætte besvarelsen af det."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/save.php:476
+#: /srv/www/virtual/limesurvey.org/devSVN/save.php:480
 msgid "Cannot submit results - there are none to submit."
 msgstr "Kan ikke indsende resultater - der er intet at sende"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/save.php:477
+#: /srv/www/virtual/limesurvey.org/devSVN/save.php:481
 msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
 msgstr "Denne fejl kan opstå, hvis du allerede har indsendt din besvarelse og dernæst trykket 'genindlæs' i browseren. Hvis det er tilfældet, så er dine spørgeskema svar allerede gemt."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/save.php:477
+#: /srv/www/virtual/limesurvey.org/devSVN/save.php:481
 msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
 msgstr "Hvis du modtager denne besked midt i udfyldningen af et spørgeskema, så bør du vælge '<-TILBAGE' i din browser og dernæst genindlæse den forrige side. Du vil miste svarene fra den sidste side, men alle dine øvrige svar vil forblive uændret. Problemet kan skyldes en overbelastning af serveren. Beklager det besvær det må have forvoldt."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:162
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:161
 msgid "We are sorry but you don't have permissions to do this."
 msgstr "Beklager, men du har ikke tilladelse til at gøre dette."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:279
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:278
 msgid "No available surveys"
 msgstr "Ingen ledige spørgeskema"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:367
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:366
 msgid "This survey is no longer available."
 msgstr "Spørgeskemaet er ikke længere tilgængeligt."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:387
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:386
 msgid "You have already completed this survey."
 msgstr "Du har allerede besvaret spørgeskemaet."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:438
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:437
 msgid "You did not provide a name"
 msgstr "Intet navn angivet"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:443
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:442
 msgid "You did not provide a password"
 msgstr "Ingen adgangskode angivet"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:474
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:478
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2211
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:473
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:477
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2264
 msgid "Load Unfinished Survey"
 msgstr "Åbn gemt spørgeskema"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:506
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:505
 msgid "This is a closed-access survey. You need a valid token to participate."
 msgstr "Der er begrænset adgang til spørgeskemaet. Du skal bruge en gyldig respondentnøgle for at deltage."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:507
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1625
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1661
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:506
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1639
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1675
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr "Respondentnøglen, som du har anvendt, er enten ugyldig eller er allerede blevet anvendt."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:508
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1626
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1662
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1818
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:507
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1640
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1676
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1832
 msgid "For further information contact"
 msgstr "For yderligere information kontakt"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:511
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1629
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1665
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1821
-#: /srv/www/virtual/limesurvey.org/devSVN/group.php:138
-#: /srv/www/virtual/limesurvey.org/devSVN/group.php:170
-#: /srv/www/virtual/limesurvey.org/devSVN/question.php:323
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:510
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1643
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1679
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1835
+#: /srv/www/virtual/limesurvey.org/devSVN/group.php:139
+#: /srv/www/virtual/limesurvey.org/devSVN/group.php:171
+#: /srv/www/virtual/limesurvey.org/devSVN/question.php:324
 #: /srv/www/virtual/limesurvey.org/devSVN/survey.php:115
-#: /srv/www/virtual/limesurvey.org/devSVN/register.php:134
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2281
+#: /srv/www/virtual/limesurvey.org/devSVN/register.php:146
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2334
 msgid "Close this Window"
 msgstr "Luk vinduet"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:623
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:622
 msgid "Survey Saved"
 msgstr "Spørgeskema gemt"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:656
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:655
 msgid "There is no matching saved survey"
 msgstr "Ingen gemte spørgeskemaer matcher"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1385
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1399
 msgid "Answer Submission for Survey"
 msgstr "Indsend spørgeskema"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1387
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1401
 msgid "Survey Submitted"
 msgstr "Spørgeskema indsendt"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1388
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1402
 msgid "A new response was entered for your survey"
 msgstr "En ny besvarelse af spørgeskemaet er blevet afleveret"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1391
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1405
 msgid "Click the following link to reload the survey:"
 msgstr "Tryk på følgende link for at genindlæse spørgeskemaet:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1395
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1409
 msgid "Click the following link to see the individual response:"
 msgstr "Tryk på følgende link for at se den individuelle besvarelse:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1398
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1412
 msgid "Click the following link to edit the individual response:"
 msgstr "Tryk på følgende link for at redigere den individuelle besvarelse:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1401
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1415
 msgid "View statistics by clicking here:"
 msgstr "Se statistikker ved at trykke her:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1461
-#: /srv/www/virtual/limesurvey.org/devSVN/group.php:110
-#: /srv/www/virtual/limesurvey.org/devSVN/question.php:294
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1475
+#: /srv/www/virtual/limesurvey.org/devSVN/group.php:111
+#: /srv/www/virtual/limesurvey.org/devSVN/question.php:295
 #: /srv/www/virtual/limesurvey.org/devSVN/survey.php:76
 msgid "Did Not Save"
 msgstr "Blev ikke gemt"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1462
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1476
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "En uventet fejl opstod - dine svar kan ikke gemmes."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1465
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1479
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr "Dine svar er ikke gået tabt, men er blevet e-mailet til spørgeskemaets administrator, som vil sikre, at de bliver indtastet i databasen på et senere tidspunkt."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1466
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1480
 msgid "An error occurred saving a response to survey id"
 msgstr "Der opstod en fejl ved gemning af svar til spørgeskema ID"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1467
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1481
 msgid "DATA TO BE ENTERED"
 msgstr "DATA SOM SKAL INDTASTES"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1472
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1486
 msgid "SQL CODE THAT FAILED"
 msgstr "SQL KODE SOM MISLYKKEDES"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1474
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1488
 msgid "ERROR MESSAGE"
 msgstr "FEJL MEDDELELSE"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1476
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1490
 msgid "Error saving results"
 msgstr "Fejl ved gemning af resultater"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1484
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1498
 msgid "Try to submit again"
 msgstr "Forsøg at genindsende"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1532
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1546
 msgid "Please confirm access to survey by answering the security question below and click continue."
 msgstr "For at få adgang til spørgeskemaet skal du svare på sikkerhedspørgsmålet nedenfor og klikke næste."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1545
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1592
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1730
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2311
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2331
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2377
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1559
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1606
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1744
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2364
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2384
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2430
 msgid "Security Question"
 msgstr "Sikkerhedsspørgsmål"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1579
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1624
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1660
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1697
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1593
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1638
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1674
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1711
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "Der er begrænset adgang til spørgeskemaet. Du skal bruge en respondentnøgle for at deltage."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1580
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1702
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1594
+msgid "If you have been issued a token, please enter it in the box below and click continue."
+msgstr "Hvis du har fået en respondentnøgle, så indtast den i feltet nedenfor og tryk fortsæt."
+
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1716
 msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr "Hvis du har fået en respondentnøgle, så indtast den i feltet nedenfor og tryk fortsæt."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1714
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1728
 msgid "Please confirm the token by answering the security question below and click continue."
 msgstr "Bekræfte venligst respondentnøglen ved at indtaste sikkerhedsspørgsmålet nedenfor og klik næste."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1817
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:1831
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Spørgeskemaet har endnu ingen spørgsmål, og kan derfor ikke testes eller fuldføres."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:2112
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:2126
 msgid "prev"
 msgstr "tilbage"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:2117
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:2123
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:2128
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:2131
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:2137
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:2142
 msgid "next"
 msgstr "næste"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:2515
-#: /srv/www/virtual/limesurvey.org/devSVN/index.php:2528
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:2529
+#: /srv/www/virtual/limesurvey.org/devSVN/index.php:2542
 msgid "Sorry your responses have exceeded a quota on this survey."
 msgstr "Beklager dine svar rækker ud over den kvote der er sat i dette spørgeskema."
 
@@ -6772,75 +6732,75 @@ msgstr "Beklager dine svar rækker ud over den kvote der er sat i dette spørges
 msgid "Save your responses so far"
 msgstr "Gem dine nuværende svar"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/group.php:111
-#: /srv/www/virtual/limesurvey.org/devSVN/question.php:295
+#: /srv/www/virtual/limesurvey.org/devSVN/group.php:112
+#: /srv/www/virtual/limesurvey.org/devSVN/question.php:296
 #: /srv/www/virtual/limesurvey.org/devSVN/survey.php:77
 msgid "Your survey responses have not been recorded. This survey is not yet active."
 msgstr "Spørgeskema svarene er ikke registreret. Spørgeskemaet er ikke aktiveret i øjeblikket."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/group.php:112
-#: /srv/www/virtual/limesurvey.org/devSVN/question.php:296
+#: /srv/www/virtual/limesurvey.org/devSVN/group.php:113
+#: /srv/www/virtual/limesurvey.org/devSVN/question.php:297
 #: /srv/www/virtual/limesurvey.org/devSVN/survey.php:78
 msgid "Clear Responses"
 msgstr "Nulstil besvarelser"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/group.php:135
-#: /srv/www/virtual/limesurvey.org/devSVN/group.php:167
-#: /srv/www/virtual/limesurvey.org/devSVN/question.php:320
+#: /srv/www/virtual/limesurvey.org/devSVN/group.php:136
+#: /srv/www/virtual/limesurvey.org/devSVN/group.php:168
+#: /srv/www/virtual/limesurvey.org/devSVN/question.php:321
 #: /srv/www/virtual/limesurvey.org/devSVN/survey.php:112
 msgid "Thank you"
 msgstr "Mange tak"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/group.php:136
-#: /srv/www/virtual/limesurvey.org/devSVN/group.php:168
-#: /srv/www/virtual/limesurvey.org/devSVN/question.php:321
+#: /srv/www/virtual/limesurvey.org/devSVN/group.php:137
+#: /srv/www/virtual/limesurvey.org/devSVN/group.php:169
+#: /srv/www/virtual/limesurvey.org/devSVN/question.php:322
 #: /srv/www/virtual/limesurvey.org/devSVN/survey.php:113
 msgid "Your survey responses have been recorded."
 msgstr "Dine besvarelser er blevet gemt."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/group.php:177
-#: /srv/www/virtual/limesurvey.org/devSVN/question.php:330
+#: /srv/www/virtual/limesurvey.org/devSVN/group.php:178
+#: /srv/www/virtual/limesurvey.org/devSVN/question.php:331
 #: /srv/www/virtual/limesurvey.org/devSVN/survey.php:122
 msgid "Click here to print your answers."
 msgstr "Klik her for at printe dine svar."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/group.php:234
+#: /srv/www/virtual/limesurvey.org/devSVN/group.php:235
 #: /srv/www/virtual/limesurvey.org/devSVN/question.php:69
 #: /srv/www/virtual/limesurvey.org/devSVN/survey.php:183
 msgid "Sorry. There is no matching survey."
 msgstr "Beklager. Der er intet matchende spørgeskema."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/group.php:259
-#: /srv/www/virtual/limesurvey.org/devSVN/group.php:754
+#: /srv/www/virtual/limesurvey.org/devSVN/group.php:260
+#: /srv/www/virtual/limesurvey.org/devSVN/group.php:755
 #: /srv/www/virtual/limesurvey.org/devSVN/question.php:96
-#: /srv/www/virtual/limesurvey.org/devSVN/question.php:617
+#: /srv/www/virtual/limesurvey.org/devSVN/question.php:618
 #: /srv/www/virtual/limesurvey.org/devSVN/survey.php:604
 msgid "This survey is not currently active. You will not be able to save your responses."
 msgstr "Spørgeskemaet er pt. ikke aktivt. Du vil ikke være i stand til at gemme dine svar."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/group.php:418
-#: /srv/www/virtual/limesurvey.org/devSVN/question.php:519
+#: /srv/www/virtual/limesurvey.org/devSVN/group.php:419
+#: /srv/www/virtual/limesurvey.org/devSVN/question.php:520
 #: /srv/www/virtual/limesurvey.org/devSVN/survey.php:318
 msgid "Date is not valid!"
 msgstr "Ugyldig dato!"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/register.php:63
+#: /srv/www/virtual/limesurvey.org/devSVN/register.php:64
 msgid "The email you used is not valid. Please try again."
 msgstr "Den anvendte e-mail er ugyldig. Forsøg igen."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/register.php:78
+#: /srv/www/virtual/limesurvey.org/devSVN/register.php:79
 msgid "The email you used has already been registered."
 msgstr "E-mailen, som du angav, er allerede registeret."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/register.php:132
+#: /srv/www/virtual/limesurvey.org/devSVN/register.php:144
 msgid "Thank you for registering to participate in this survey."
 msgstr "Mange tak for registreringen som deltager i undersøgelsen."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/register.php:132
+#: /srv/www/virtual/limesurvey.org/devSVN/register.php:144
 msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
 msgstr "En e-mail er blevet sendt med oplysninger om, hvordan du får adgang til spørgeskemaet. Følg venligst linket i e-mailen for at fortsætte. "
 
-#: /srv/www/virtual/limesurvey.org/devSVN/register.php:132
+#: /srv/www/virtual/limesurvey.org/devSVN/register.php:144
 msgid "Survey Administrator"
 msgstr "Spørgeskema administrator"
 
@@ -7012,70 +6972,70 @@ msgstr "Tryk på saksen til højre"
 msgid "to remove the last entry in your ranked list"
 msgstr "for at fjerne det sidste element i listen"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1768
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1940
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1781
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1953
 msgid "Please choose at most"
 msgstr "Vælg maksimalt"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1768
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1940
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1781
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1953
 msgid "answer(s) for question"
 msgstr "svar til spørgsmålet"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1988
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2091
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2790
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3753
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2001
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2110
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2812
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3775
 msgid "Error: This question has no answers."
 msgstr "Fejl: Spørgsmålet har ingen svar."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2115
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2136
 msgid "Only numbers may be entered in these fields"
 msgstr "Der må kun skrives tal i disse felter"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2119
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2140
 msgid "Total of all entries must not exceed "
 msgstr "Antallet af indtastninger må ikke overstige"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2123
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2144
 msgid "Total of all entries must equal "
 msgstr "Antallet af indtastninger skal være lig med"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2127
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2148
 msgid "Total of all entries must be at least "
 msgstr "Antallet af indtastninger skal være mindst"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2132
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2153
 msgid "Total: "
 msgstr "Total:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2135
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2156
 msgid "Remaining: "
 msgstr "Tilbage:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2165
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2171
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2201
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2210
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2186
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2192
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2222
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2231
 msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "Svar er ugyldig. Antallet af indtastninger burde ikke summere op til mere end"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2182
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2188
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2203
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2209
 msgid "Answer is invalid. The total of all entries should add up to at least "
 msgstr "Svar er ugyldig. Antallet af indtastninger burde summere op til minimum"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2253
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2275
 msgid "Only numbers may be entered in this field"
 msgstr "Der må kun skrives tal i feltet"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3255
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3384
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3972
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3277
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3406
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3994
 msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
 msgstr "Fejl: Label-sættet, som anvendes til spørgsmålet, er ikke tilgængeligt i dette sprog og/eller det findes ikke. "
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3377
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3399
 msgid "Error: There are no answers defined for this question."
 msgstr "Fejl: Der er ingen svar defineret til dette spørgsmål."
 
@@ -7131,290 +7091,302 @@ msgstr "Log af"
 msgid "Create or Import New Survey"
 msgstr "Opret eller importer spørgeskema"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:771
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:773
 msgid "Array (Flexible Labels) Dual Scale"
 msgstr "Spørgsmålsbatteri (med fleksible kategorier) på to skalaer"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:772
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:774
 msgid "5 Point Choice"
 msgstr "5 svarkategorier"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:773
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:775
 msgid "Array (5 Point Choice)"
 msgstr "Spørgsmålsbatteri (Svarmulighed 1-5)"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:774
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:776
 msgid "Array (10 Point Choice)"
 msgstr "Spørgsmålsbatteri (Svarmulighed 1-10)"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:775
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:777
 msgid "Array (Yes/No/Uncertain)"
 msgstr "Spørgsmålsbatteri (Ja/Nej/Ved ikke)"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:777
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:778
+msgid "Date"
+msgstr "Dato"
+
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:779
 msgid "Array (Increase, Same, Decrease)"
 msgstr "Spørgsmålsbatteri (Forøg, Uændret, Nedsæt)"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:778
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:780
 msgid "Array (Flexible Labels)"
 msgstr "Spørgsmålsbatteri (Svarmuligheder: Tekst labels)"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:779
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:781
 msgid "Gender"
 msgstr "Køn"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:780
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:782
 msgid "Array (Flexible Labels) by Column"
 msgstr "Spørgsmålsbatteri (Rækker: Tekst labels / Kolonner: Spm)"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:781
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:783
 msgid "Language Switch"
 msgstr "Sprogvalg"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:782
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:784
 msgid "Multiple Numerical Input"
 msgstr "Multipel numerisk input"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:783
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:785
 msgid "List (Radio)"
 msgstr "Liste (Radioknapper)"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:784
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:786
 msgid "Multiple Options"
 msgstr "Multiple svarmuligheder"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:785
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:787
 msgid "Numerical Input"
 msgstr "Numerisk input"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:786
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:788
 msgid "List With Comment"
 msgstr "Liste med kommentarfelt"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:787
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:789
 msgid "Multiple Options With Comments"
 msgstr "Multiple svarmuligheder med kommentarfelt"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:788
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:790
 msgid "Multiple Short Text"
 msgstr "Multiple kort tekst"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:792
+msgid "Short Free Text"
+msgstr "Kort fri tekst"
+
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:793
+msgid "Long Free Text"
+msgstr "Lang fri tekst"
+
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:794
 msgid "Huge Free Text"
 msgstr "Stor fri-tekst"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:793
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:795
 msgid "List (Flexible Labels) (Dropdown)"
 msgstr "Liste (Tekst labels) (Rullemenu)"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:794
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:796
 msgid "Boilerplate Question"
 msgstr "Tekst element (Overskrift, kommentar m.v.)"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:795
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:797
 msgid "Yes/No"
 msgstr "Ja/Nej"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:796
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:798
 msgid "List (Flexible Labels) (Radio)"
 msgstr "Liste (Tekst labels) (Radioknapper)"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:797
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:799
 msgid "List (Dropdown)"
 msgstr "Liste (Rullemenu)"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1163
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1173
 msgid "It appears as if some tables or fields are missing from your database."
 msgstr "Det ser ud til at databasen mangler nogle tabeller eller felter."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1165
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1175
 msgid "Check Database Fields"
 msgstr "Kontroller database felter"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1370
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1420
 msgid "Display Last 50 Responses"
 msgstr "Vis de sidste 50 besvarelser"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1378
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1428
 msgid "Get statistics from these responses"
 msgstr "Vis statistiske nøgletal baseret på besvarelserne"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1385
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1435
 msgid "Export Results to Application"
 msgstr "Eksporter resultater"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1390
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1392
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1440
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1442
 msgid "Export result to a SPSS command file"
 msgstr "Eksporter resultat til en SPSS syntax-fil (*.sps)"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1396
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1446
 msgid "Import answers from a deactivated survey table"
 msgstr "Importer besvarelser fra en deaktiveret spørgeskema tabel"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1473
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:1526
 msgid "Preset"
 msgstr "Forudindstil"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2091
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2144
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr "Bemærk: JavaScript kørsel er slået fra i din browser. Du er muligvis ikke i stand til at besvare alle spørgesmål i spørgeskemaet. Kontroller din browsers indstillinger."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2113
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2166
 msgid "There are no questions in this survey"
 msgstr "Der er ingen spørgesmål i spørgeskemaet"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2117
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2170
 msgid "There is 1 question in this survey"
 msgstr "Der er ét spørgsmål i spørgeskemaet"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2121
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2174
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "Spørgeskemaet indeholder {NUMBEROFQUESTIONS} spørgsmål. "
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2175
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2228
 msgid "A Note On Privacy"
 msgstr "Note om fortrolighed"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2175
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2228
 msgid "This survey is anonymous."
 msgstr "Spørgeskemaet er anonymt."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2175
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2228
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr "Der registreres ingen oplysninger ifm. besvarelsen af de enkelte spørgsmål, som kan identificere dig, medmindre det eksplicit fremgår af et givent spørgsmål. Hvis du har besvaret et spørgeskema, som anvender unikke respondentnøgler, så skal det bemærkes, at ingen respondentnøgler opbevares sammen med dine svar. Respondentnøglerne gemmes i en seperat database, og opdateres kun for at indikere at du har (eller ikke har) besvaret spørgeskemaet. Det er ikke muligt at matche respondentnøgler med besvarelser."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2185
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2238
 msgid "Are you sure you want to clear all your responses?"
 msgstr "Er du sikker på, at du vil nulstille alle dine svar?"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2186
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2239
 msgid "Exit and Clear Survey"
 msgstr "Afslut og nulstil spørgeskema"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2219
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2272
 msgid "Resume Later"
 msgstr "Fortsæt senere"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2240
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2293
 msgid "Thank You!"
 msgstr "Mange tak!"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2240
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2293
 msgid "You have completed answering the questions in this survey."
 msgstr "Du har besvaret alle spørgsmål i spørgeskemaet."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2240
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2293
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "Tryk 'Indsend' for at fuldføre og gemme dine svar."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2246
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2299
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr "Hvis du ønsker at kontrollere og/eller ændre dine svar, så kan du gøre det nu ved at trykke på [<<tilbage] knappen og gennemse dine svar."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2267
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2320
 msgid "Answers Cleared"
 msgstr "Besvarelse nulstillet"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2272
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2278
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2325
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2331
 msgid "Restart this Survey"
 msgstr "Genstart spørgeskemaet"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2283
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2336
 msgid "Save Your Unfinished Survey"
 msgstr "Gem ufuldstænding besvarelse"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2284
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2337
 msgid "Enter a name and password for this survey and click save below."
 msgstr "Indtast et spørgeskemanavn og en adgangskode, og tryk gem nedenfor."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2284
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2337
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr "Spørgeskemaet vil blive gemt, og kan færdiggøres senere ved at logge ind med det valgte navn og adgangskode."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2284
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2337
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "Oplysningerne bliver sendt til dig, hvis du angiver en e-mail adresse."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2292
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2345
 msgid "Return To Survey"
 msgstr "Retur til spørgeskema"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2303
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2356
 msgid "Repeat Password"
 msgstr "Gentag adgangskode"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2306
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2359
 msgid "Your Email"
 msgstr "Din e-mail"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2319
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2372
 msgid "Load A Previously Saved Survey"
 msgstr "Åbn et gemt spørgeskema"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2320
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2373
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr "Fra denne skærm kan du åbne et spørgeskema, som du tidligere har gemt."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2320
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2373
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr "Skriv 'navnet' som du anvendte til at geme spørgeskemaet, og adgangskoden"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2323
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2376
 msgid "Saved name"
 msgstr "Navn gemt"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2336
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2389
 msgid "Load Now"
 msgstr "Åbn"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2341
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2394
 msgid "You must be registered to complete this survey"
 msgstr "Registrering er påkrævet for at besvare spørgeskemaet"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2342
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2395
 msgid "You may register for this survey if you wish to take part."
 msgstr "Du har mulighed for registrere dig, hvis du ønsker at deltage."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2342
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2395
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "Indtast dine oplysninger nedenfor, og du vil hurtigst muligt få tilsendt en e-mail med et link til dit personlige spørgeskema. "
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2409
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2462
 msgid "Your Assessment"
 msgstr "Din evaluering"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2721
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2780
 msgid "Online Manual"
 msgstr "Online manual"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2724
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2783
 msgid "Support this project - Donate to "
 msgstr "Støt projektet - Doner til"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2727
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2786
 msgid "Visit our website!"
 msgstr "Besøg vores hjemmeside!"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2727
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2786
 msgid "Version"
 msgstr "Version"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2934
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2994
 msgid "Local Submission"
 msgstr "Lokal indsendelse"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3138
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3143
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3203
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3208
 msgid "Executing"
 msgstr "Udfører"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3138
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3203
 msgid "Failed! Reason: "
 msgstr "Mislykkedes! Årsag:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3143
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3208
 msgid "Success!"
 msgstr "Lykkedes!"
 
@@ -7594,6 +7566,22 @@ msgstr "Thailandsk"
 msgid "Vietnamese"
 msgstr "Vietnamesisk"
 
+#~ msgid "Select all"
+#~ msgstr "Vælg alle"
+#~ msgid "Proceed"
+#~ msgstr "Fortsæt"
+#~ msgid "Question List"
+#~ msgstr "Spørgsmålsliste"
+#~ msgid "Like"
+#~ msgstr "Lig"
+#~ msgid "Not Equals"
+#~ msgstr "Ikke lig med"
+#~ msgid "Filter Conditions"
+#~ msgstr "Filter betingelser"
+#~ msgid "Numerical"
+#~ msgstr "Numerisk"
+#~ msgid "Huge free text"
+#~ msgstr "Stor fri-tekst"
 #~ msgid "CSV File (UTF-8 charset - use this for non-latin languages)"
 #~ msgstr "CSV-fil (UTF-8 tegnsæt)"
 #~ msgid "Responses"
