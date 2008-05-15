@@ -1916,7 +1916,7 @@ if($action == "exportstructure")
     ."<table width='100%' border='0' >\n\t<tr><td class='settingcaption'>"
     .$clang->gT("Export Survey Structure")."\n</td></tr>\n"
     ."\t<tr>\n"
-    ."\t\t<td style='text-align:left; padding-left:35%;padding-right:25%;'>\n"
+    ."\t\t<td style='text-align:center;'>\n"
     ."\t\t\t<br /><input type='radio' class='radiobtn' name='type' value='structurecsv' checked='checked' id='surveycsv' onclick=\"this.form.action.value='exportstructurecsv'\";/>"
     ."<label for='surveycsv'>"
     .$clang->gT("LimeSurvey Survey File (*.csv)")."</label><br />\n"
