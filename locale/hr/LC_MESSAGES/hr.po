@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-05 14:48+0100\n"
-"PO-Revision-Date: 2008-05-05 14:49+0100\n"
+"POT-Creation-Date: 2008-05-18 16:17+0100\n"
+"PO-Revision-Date: 2008-05-18 16:20+0100\n"
 "Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
 "Language-Team: LimeSurvey Team <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -47,9 +47,8 @@ msgstr "Dodaj/Mjenjaj grupe pitanja"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:278
 #: D:\web\xampp\htdocs\limesurvey/common.php:280
-#, fuzzy
 msgid "Show System Summary"
-msgstr "Pregled sistema LimeSurvey"
+msgstr "Prikaži podatke o sustavu"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:288
 #: D:\web\xampp\htdocs\limesurvey/common.php:289
@@ -74,7 +73,7 @@ msgstr "Mijenjaj/Dodaj set markera"
 #: D:\web\xampp\htdocs\limesurvey/common.php:336
 #: D:\web\xampp\htdocs\limesurvey/common.php:337
 msgid "Template Editor"
-msgstr "Uređivać predložaka"
+msgstr "Uređivač predložaka"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:346
 #: D:\web\xampp\htdocs\limesurvey/common.php:348
@@ -105,280 +104,287 @@ msgstr "Neaktivan"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:591
 #: D:\web\xampp\htdocs\limesurvey/common.php:638
-#: D:\web\xampp\htdocs\limesurvey/common.php:750
-#: D:\web\xampp\htdocs\limesurvey/common.php:863
-#: D:\web\xampp\htdocs\limesurvey/common.php:888
-#: D:\web\xampp\htdocs\limesurvey/common.php:931
-#: D:\web\xampp\htdocs\limesurvey/common.php:3305
-#: D:\web\xampp\htdocs\limesurvey/common.php:3339
-#: D:\web\xampp\htdocs\limesurvey/common.php:3377
-#: D:\web\xampp\htdocs\limesurvey/common.php:3413
+#: D:\web\xampp\htdocs\limesurvey/common.php:752
+#: D:\web\xampp\htdocs\limesurvey/common.php:866
+#: D:\web\xampp\htdocs\limesurvey/common.php:891
+#: D:\web\xampp\htdocs\limesurvey/common.php:934
+#: D:\web\xampp\htdocs\limesurvey/common.php:3319
+#: D:\web\xampp\htdocs\limesurvey/common.php:3353
+#: D:\web\xampp\htdocs\limesurvey/common.php:3392
+#: D:\web\xampp\htdocs\limesurvey/common.php:3428
 msgid "Please Choose..."
 msgstr "Molimo vas izaberite..."
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:592
-#: D:\web\xampp\htdocs\limesurvey/common.php:864
-#: D:\web\xampp\htdocs\limesurvey/common.php:889
-#: D:\web\xampp\htdocs\limesurvey/common.php:932
-#: D:\web\xampp\htdocs\limesurvey/common.php:3340
-#: D:\web\xampp\htdocs\limesurvey/common.php:3378
+#: D:\web\xampp\htdocs\limesurvey/common.php:867
+#: D:\web\xampp\htdocs\limesurvey/common.php:892
+#: D:\web\xampp\htdocs\limesurvey/common.php:935
+#: D:\web\xampp\htdocs\limesurvey/common.php:3354
+#: D:\web\xampp\htdocs\limesurvey/common.php:3393
 msgid "None"
 msgstr "Nema"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:771
-#, fuzzy
+#: D:\web\xampp\htdocs\limesurvey/common.php:773
 msgid "Array (Flexible Labels) Dual Scale"
-msgstr "Niz (fleksibilni markeri)"
+msgstr "Niz (fleksibilni markeri) dvostruka skala"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:772
+#: D:\web\xampp\htdocs\limesurvey/common.php:774
 msgid "5 Point Choice"
 msgstr "Izbor u 5 opcija"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:773
+#: D:\web\xampp\htdocs\limesurvey/common.php:775
 msgid "Array (5 Point Choice)"
 msgstr "Niz (izbor u 5 opcija)"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:774
+#: D:\web\xampp\htdocs\limesurvey/common.php:776
 msgid "Array (10 Point Choice)"
 msgstr "Niz (izbor u 10 opcija)"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:775
+#: D:\web\xampp\htdocs\limesurvey/common.php:777
 msgid "Array (Yes/No/Uncertain)"
 msgstr "Niz (Da/Ne/Nesiguran)"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:776
+#: D:\web\xampp\htdocs\limesurvey/common.php:778
 msgid "Date"
 msgstr "Datum"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:777
+#: D:\web\xampp\htdocs\limesurvey/common.php:779
 msgid "Array (Increase, Same, Decrease)"
 msgstr "Niz (Povećaj, Isto, Smanji)"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:778
+#: D:\web\xampp\htdocs\limesurvey/common.php:780
 msgid "Array (Flexible Labels)"
 msgstr "Niz (fleksibilni markeri)"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:779
+#: D:\web\xampp\htdocs\limesurvey/common.php:781
 msgid "Gender"
 msgstr "Spol"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:780
+#: D:\web\xampp\htdocs\limesurvey/common.php:782
 msgid "Array (Flexible Labels) by Column"
 msgstr "Niz (fleksibilni markeri) po kolonama"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:781
+#: D:\web\xampp\htdocs\limesurvey/common.php:783
 msgid "Language Switch"
 msgstr "Promena jezika"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:782
-#, fuzzy
+#: D:\web\xampp\htdocs\limesurvey/common.php:784
 msgid "Multiple Numerical Input"
-msgstr "Numerički unos"
+msgstr "Višestruki numerički unos"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:783
+#: D:\web\xampp\htdocs\limesurvey/common.php:785
 msgid "List (Radio)"
 msgstr "Lista (Radio)"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:784
+#: D:\web\xampp\htdocs\limesurvey/common.php:786
 msgid "Multiple Options"
 msgstr "Više opcija"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:785
+#: D:\web\xampp\htdocs\limesurvey/common.php:787
 msgid "Numerical Input"
 msgstr "Numerički unos"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:786
+#: D:\web\xampp\htdocs\limesurvey/common.php:788
 msgid "List With Comment"
 msgstr "Lista sa komentarom"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:787
+#: D:\web\xampp\htdocs\limesurvey/common.php:789
 msgid "Multiple Options With Comments"
 msgstr "Više opcija sa komentarima"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:788
+#: D:\web\xampp\htdocs\limesurvey/common.php:790
 msgid "Multiple Short Text"
 msgstr "Više kraćih tekstova"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:789
+#: D:\web\xampp\htdocs\limesurvey/common.php:791
 msgid "Ranking"
 msgstr "Rangiranje"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:790
-#, fuzzy
-msgid "Short Free text"
+#: D:\web\xampp\htdocs\limesurvey/common.php:792
+msgid "Short Free Text"
 msgstr "Kratak slobodan tekst"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:791
-#, fuzzy
-msgid "Long Free text"
+#: D:\web\xampp\htdocs\limesurvey/common.php:793
+msgid "Long Free Text"
 msgstr "Dugačak slobodan tekst"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:792
+#: D:\web\xampp\htdocs\limesurvey/common.php:794
 msgid "Huge Free Text"
 msgstr "Veliki slobodan tekst"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:793
+#: D:\web\xampp\htdocs\limesurvey/common.php:795
 msgid "List (Flexible Labels) (Dropdown)"
 msgstr "Lista (fleksibilni markeri) (padajuća lista)"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:794
+#: D:\web\xampp\htdocs\limesurvey/common.php:796
 msgid "Boilerplate Question"
 msgstr "Boilerplate pitanje"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:795
+#: D:\web\xampp\htdocs\limesurvey/common.php:797
 msgid "Yes/No"
 msgstr "Da/Ne"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:796
+#: D:\web\xampp\htdocs\limesurvey/common.php:798
 msgid "List (Flexible Labels) (Radio)"
 msgstr "Lista (fleksibilni markeri) (radio)"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:797
+#: D:\web\xampp\htdocs\limesurvey/common.php:799
 msgid "List (Dropdown)"
 msgstr "Lista (padajuća lista)"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:823
+#: D:\web\xampp\htdocs\limesurvey/common.php:825
 msgid "No email notification"
 msgstr "Bez obaveštenja na email"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:824
+#: D:\web\xampp\htdocs\limesurvey/common.php:826
 msgid "Basic email notification"
 msgstr "Osnovna obavijest email-om"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:825
+#: D:\web\xampp\htdocs\limesurvey/common.php:827
 msgid "Detailed email notification with result codes"
 msgstr "Detaljna obavijest putem email-a sa kodovima rezultata"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1158
+#: D:\web\xampp\htdocs\limesurvey/common.php:1168
 msgid "LimeSurvey Setup"
 msgstr "Podešavanje LimeSurvey-a"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1161
-#: D:\web\xampp\htdocs\limesurvey/common.php:4285
+#: D:\web\xampp\htdocs\limesurvey/common.php:1171
+#: D:\web\xampp\htdocs\limesurvey/common.php:4306
 #: D:\web\xampp\htdocs\limesurvey/index.php:385
-#: D:\web\xampp\htdocs\limesurvey/save.php:475
+#: D:\web\xampp\htdocs\limesurvey/save.php:479
 msgid "Error"
 msgstr "Greška"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1163
+#: D:\web\xampp\htdocs\limesurvey/common.php:1173
 msgid "It appears as if some tables or fields are missing from your database."
 msgstr "Izgleda da neke tablice ili polja nedostaju u vašoj bazi podataka."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1165
+#: D:\web\xampp\htdocs\limesurvey/common.php:1175
 msgid "Check Database Fields"
 msgstr "Proveri polja baze podataka"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1356
+#: D:\web\xampp\htdocs\limesurvey/common.php:1377
 msgid "Return to Survey Administration"
 msgstr "Povratak u Administraciju upitnika"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1362
+#: D:\web\xampp\htdocs\limesurvey/common.php:1383
 msgid "Show summary information"
 msgstr "Prikaži sumirane informacije"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1366
+#: D:\web\xampp\htdocs\limesurvey/common.php:1389
+#: D:\web\xampp\htdocs\limesurvey/common.php:1396
 msgid "Display Responses"
 msgstr "Prikaži odgovore"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1370
+#: D:\web\xampp\htdocs\limesurvey/common.php:1405
+#: D:\web\xampp\htdocs\limesurvey/common.php:4617
+msgid "Please select a language:"
+msgstr "Molimo izaberite jezik:"
+
+#: D:\web\xampp\htdocs\limesurvey/common.php:1410
+#: D:\web\xampp\htdocs\limesurvey/common.php:4633
+msgid "Cancel"
+msgstr "Prekini"
+
+#: D:\web\xampp\htdocs\limesurvey/common.php:1420
 msgid "Display Last 50 Responses"
 msgstr "Prikaži posljednjih 50 odgovora"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1374
+#: D:\web\xampp\htdocs\limesurvey/common.php:1424
 msgid "Dataentry Screen for Survey"
 msgstr "Ekran za ručno unošenje podataka u upitnik"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1378
+#: D:\web\xampp\htdocs\limesurvey/common.php:1428
 msgid "Get statistics from these responses"
 msgstr "Pokaži statistiku iz ovih odgovora"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1385
+#: D:\web\xampp\htdocs\limesurvey/common.php:1435
 msgid "Export Results to Application"
 msgstr "Izvezi rezultate u aplikaciju"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1390
-#: D:\web\xampp\htdocs\limesurvey/common.php:1392
+#: D:\web\xampp\htdocs\limesurvey/common.php:1440
+#: D:\web\xampp\htdocs\limesurvey/common.php:1442
 msgid "Export result to a SPSS command file"
 msgstr "Izvezi rezultate u SPSS komandnu datoteku"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1396
+#: D:\web\xampp\htdocs\limesurvey/common.php:1446
 msgid "Import answers from a deactivated survey table"
 msgstr "Uvezi odgovore iz deaktivirane tabele upitnika"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1401
+#: D:\web\xampp\htdocs\limesurvey/common.php:1451
 msgid "View Saved but not submitted Responses"
 msgstr "Pregledaj snimljene ali ne poslane odgovore"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1405
+#: D:\web\xampp\htdocs\limesurvey/common.php:1455
 msgid "Import a VV survey file"
 msgstr "Uvezi VV upitnik datoteku"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1411
+#: D:\web\xampp\htdocs\limesurvey/common.php:1461
 msgid "Export a VV survey file"
 msgstr "Izvezi VV upitnik datoteku"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1473
+#: D:\web\xampp\htdocs\limesurvey/common.php:1526
 msgid "Preset"
 msgstr "Predefinirani"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1474
-#: D:\web\xampp\htdocs\limesurvey/index.php:1590
-#: D:\web\xampp\htdocs\limesurvey/index.php:1713
-#: D:\web\xampp\htdocs\limesurvey/index.php:1725
+#: D:\web\xampp\htdocs\limesurvey/common.php:1527
+#: D:\web\xampp\htdocs\limesurvey/index.php:1601
+#: D:\web\xampp\htdocs\limesurvey/index.php:1724
+#: D:\web\xampp\htdocs\limesurvey/index.php:1736
 msgid "Token"
 msgstr "Token"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1475
+#: D:\web\xampp\htdocs\limesurvey/common.php:1528
 #: D:\web\xampp\htdocs\limesurvey/printanswers.php:148
 msgid "Date Stamp"
 msgstr "Datum poslužitelja"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1476
+#: D:\web\xampp\htdocs\limesurvey/common.php:1529
 #: D:\web\xampp\htdocs\limesurvey/printanswers.php:152
 msgid "IP Address"
 msgstr "IP adresa"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1477
+#: D:\web\xampp\htdocs\limesurvey/common.php:1530
 #: D:\web\xampp\htdocs\limesurvey/printanswers.php:156
 msgid "Referring URL"
 msgstr "URL Preporuke"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1616
-#: D:\web\xampp\htdocs\limesurvey/common.php:1834
-#: D:\web\xampp\htdocs\limesurvey/common.php:1900
-#: D:\web\xampp\htdocs\limesurvey/common.php:1910
+#: D:\web\xampp\htdocs\limesurvey/common.php:1669
+#: D:\web\xampp\htdocs\limesurvey/common.php:1887
+#: D:\web\xampp\htdocs\limesurvey/common.php:1953
+#: D:\web\xampp\htdocs\limesurvey/common.php:1963
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:818
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:928
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:1057
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:1060
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:1188
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:1191
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1736
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1904
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1749
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1917
 msgid "Other"
 msgstr "Ostalo"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1624
-#: D:\web\xampp\htdocs\limesurvey/common.php:1630
-#: D:\web\xampp\htdocs\limesurvey/common.php:1646
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2431
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2786
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2832
+#: D:\web\xampp\htdocs\limesurvey/common.php:1677
+#: D:\web\xampp\htdocs\limesurvey/common.php:1683
+#: D:\web\xampp\htdocs\limesurvey/common.php:1699
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2445
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2800
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2846
 msgid "Yes"
 msgstr "Da"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1631
-#: D:\web\xampp\htdocs\limesurvey/common.php:1647
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2437
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2788
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2844
+#: D:\web\xampp\htdocs\limesurvey/common.php:1684
+#: D:\web\xampp\htdocs\limesurvey/common.php:1700
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2451
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2802
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2858
 msgid "No"
 msgstr "Ne"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1632
-#: D:\web\xampp\htdocs\limesurvey/common.php:1640
-#: D:\web\xampp\htdocs\limesurvey/common.php:4271
-#: D:\web\xampp\htdocs\limesurvey/common.php:4276
+#: D:\web\xampp\htdocs\limesurvey/common.php:1685
+#: D:\web\xampp\htdocs\limesurvey/common.php:1693
+#: D:\web\xampp\htdocs\limesurvey/common.php:4292
+#: D:\web\xampp\htdocs\limesurvey/common.php:4297
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:604
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:820
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:930
@@ -387,293 +393,293 @@ msgstr "Ne"
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:1293
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:1352
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:1361
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2453
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2524
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2573
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2632
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2689
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2738
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2791
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2858
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3020
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3077
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3155
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3173
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3238
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3291
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3292
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3561
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3588
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3695
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3904
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3957
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2467
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2538
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2587
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2646
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2703
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2752
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2805
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2872
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3034
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3091
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3169
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3187
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3252
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3305
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3306
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3575
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3602
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3709
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3918
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3971
 msgid "No answer"
 msgstr "Bez odgovora"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1638
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2500
+#: D:\web\xampp\htdocs\limesurvey/common.php:1691
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2514
 msgid "Male"
 msgstr "Muški"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1639
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2488
+#: D:\web\xampp\htdocs\limesurvey/common.php:1692
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2502
 msgid "Female"
 msgstr "Ženski"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1648
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2787
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2837
+#: D:\web\xampp\htdocs\limesurvey/common.php:1701
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2801
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2851
 msgid "Uncertain"
 msgstr "Neodlučan"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1654
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3015
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3053
+#: D:\web\xampp\htdocs\limesurvey/common.php:1707
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3029
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3067
 msgid "Increase"
 msgstr "Povećaj"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1655
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3017
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3064
+#: D:\web\xampp\htdocs\limesurvey/common.php:1708
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3031
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3078
 msgid "Decrease"
 msgstr "Smanji"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1656
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3016
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3058
+#: D:\web\xampp\htdocs\limesurvey/common.php:1709
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3030
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3072
 msgid "Same"
 msgstr "Isto"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:1851
+#: D:\web\xampp\htdocs\limesurvey/common.php:1904
 msgid "Comment"
 msgstr "Komentar"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2091
+#: D:\web\xampp\htdocs\limesurvey/common.php:2144
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr "Upozorenje: Izvršavanje JavaScript koda je isključeno u vašem pregledniku. Moguće je da nećete biti u prilici odgovoriti na sva pitanja u ovom upitniku. Molimo da izmjenite parametre u svom pretraživaču. "
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2113
+#: D:\web\xampp\htdocs\limesurvey/common.php:2166
 msgid "There are no questions in this survey"
 msgstr "Nema pitanja u ovom upitniku"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2117
+#: D:\web\xampp\htdocs\limesurvey/common.php:2170
 msgid "There is 1 question in this survey"
 msgstr "Postoji 1 pitanje u ovom upitniku"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2121
+#: D:\web\xampp\htdocs\limesurvey/common.php:2174
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "Postoji {NUMBEROFQUESTIONS} pitanja u ovom upitniku."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2156
-#: D:\web\xampp\htdocs\limesurvey/index.php:2136
+#: D:\web\xampp\htdocs\limesurvey/common.php:2209
+#: D:\web\xampp\htdocs\limesurvey/index.php:2147
 msgid "submit"
 msgstr "Pošalji"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2175
+#: D:\web\xampp\htdocs\limesurvey/common.php:2228
 msgid "A Note On Privacy"
 msgstr "Informacija o privatnosti"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2175
+#: D:\web\xampp\htdocs\limesurvey/common.php:2228
 msgid "This survey is anonymous."
 msgstr "Ovaj upitnik je anoniman."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2175
+#: D:\web\xampp\htdocs\limesurvey/common.php:2228
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr "Zapis sa vašim odgovorima na upitnik ne sadrže nikakve informacije o Vama osim u slučaju da neko pitanje to eksplicitno ne traži od vas. U slučaju da ste koristili token kako bi pristupili ovom upitniku, budite sigurni da token nije snimljen zajedno sa vašim odgovorima. Ovi podaci se drže u drugoj bazi podataka i biti će osvježeni sa statusom da li ste (ili niste) kompletirali upitnik. Ne postoji način da se tokeni povežu sa odgovorima iz ovog upitnika."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2185
+#: D:\web\xampp\htdocs\limesurvey/common.php:2238
 msgid "Are you sure you want to clear all your responses?"
 msgstr "Da li ste sigurni da želite obrisati odgovore na pitanja?"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2186
+#: D:\web\xampp\htdocs\limesurvey/common.php:2239
 msgid "Exit and Clear Survey"
 msgstr "Izađi i obriši odgovore"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2211
+#: D:\web\xampp\htdocs\limesurvey/common.php:2264
 #: D:\web\xampp\htdocs\limesurvey/index.php:473
 #: D:\web\xampp\htdocs\limesurvey/index.php:477
 msgid "Load Unfinished Survey"
 msgstr "Učitaj nedovršeni upitnik"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2219
+#: D:\web\xampp\htdocs\limesurvey/common.php:2272
 msgid "Resume Later"
 msgstr "Nastavi kasnije"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2240
+#: D:\web\xampp\htdocs\limesurvey/common.php:2293
 msgid "Thank You!"
 msgstr "Hvala vam!"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2240
+#: D:\web\xampp\htdocs\limesurvey/common.php:2293
 msgid "You have completed answering the questions in this survey."
 msgstr "Završili ste sa odgovaranjem na pitanja u ovom upitniku."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2240
+#: D:\web\xampp\htdocs\limesurvey/common.php:2293
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "Izaberi 'Pošalji' kako bi završili proces i snimili svoje odgovore."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2246
+#: D:\web\xampp\htdocs\limesurvey/common.php:2299
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr "Ako želite provjeriti svoje odgovore na pitanja i/ili promjeniti ih to možete napraviti izborom [<<preth] dugmeta i prolaskom kroz svoje odgovore."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2267
+#: D:\web\xampp\htdocs\limesurvey/common.php:2320
 msgid "Answers Cleared"
 msgstr "Odgovori obrisani"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2272
-#: D:\web\xampp\htdocs\limesurvey/common.php:2278
+#: D:\web\xampp\htdocs\limesurvey/common.php:2325
+#: D:\web\xampp\htdocs\limesurvey/common.php:2331
 msgid "Restart this Survey"
 msgstr "Pokreni ponovo"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2281
+#: D:\web\xampp\htdocs\limesurvey/common.php:2334
 #: D:\web\xampp\htdocs\limesurvey/group.php:139
 #: D:\web\xampp\htdocs\limesurvey/group.php:171
 #: D:\web\xampp\htdocs\limesurvey/index.php:510
-#: D:\web\xampp\htdocs\limesurvey/index.php:1632
-#: D:\web\xampp\htdocs\limesurvey/index.php:1668
-#: D:\web\xampp\htdocs\limesurvey/index.php:1824
+#: D:\web\xampp\htdocs\limesurvey/index.php:1643
+#: D:\web\xampp\htdocs\limesurvey/index.php:1679
+#: D:\web\xampp\htdocs\limesurvey/index.php:1835
 #: D:\web\xampp\htdocs\limesurvey/question.php:324
 #: D:\web\xampp\htdocs\limesurvey/register.php:146
 #: D:\web\xampp\htdocs\limesurvey/survey.php:115
 msgid "Close this Window"
 msgstr "Zatvori ovaj prozor"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2283
+#: D:\web\xampp\htdocs\limesurvey/common.php:2336
 msgid "Save Your Unfinished Survey"
 msgstr "Snimi svoj nezavršeni upitnik"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2284
+#: D:\web\xampp\htdocs\limesurvey/common.php:2337
 msgid "Enter a name and password for this survey and click save below."
 msgstr "Unesi korisničko ime i lozinku za ovaj upitnik i izaberi 'SNIMI' ispod."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2284
+#: D:\web\xampp\htdocs\limesurvey/common.php:2337
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr "Vaš upitnik će biti snimljen sa vašim imenom i lozinkom, i možete ga završiti kasnije ponovnim pristup sa istim imenom i lozinkom."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2284
+#: D:\web\xampp\htdocs\limesurvey/common.php:2337
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "Ako ste dostavili email adresu, email koji sadrži detalje će vam biti poslan."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2292
+#: D:\web\xampp\htdocs\limesurvey/common.php:2345
 msgid "Return To Survey"
 msgstr "Povratak u upitnik"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2297
-#: D:\web\xampp\htdocs\limesurvey/save.php:287
+#: D:\web\xampp\htdocs\limesurvey/common.php:2350
+#: D:\web\xampp\htdocs\limesurvey/save.php:291
 msgid "Name"
 msgstr "Ime"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2300
-#: D:\web\xampp\htdocs\limesurvey/common.php:2326
-#: D:\web\xampp\htdocs\limesurvey/save.php:288
+#: D:\web\xampp\htdocs\limesurvey/common.php:2353
+#: D:\web\xampp\htdocs\limesurvey/common.php:2379
+#: D:\web\xampp\htdocs\limesurvey/save.php:292
 msgid "Password"
 msgstr "Lozinka"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2303
+#: D:\web\xampp\htdocs\limesurvey/common.php:2356
 msgid "Repeat Password"
 msgstr "Ponovo unesi lozinku"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2306
+#: D:\web\xampp\htdocs\limesurvey/common.php:2359
 msgid "Your Email"
 msgstr "Vaš email"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2311
-#: D:\web\xampp\htdocs\limesurvey/common.php:2331
-#: D:\web\xampp\htdocs\limesurvey/common.php:2377
-#: D:\web\xampp\htdocs\limesurvey/index.php:1548
-#: D:\web\xampp\htdocs\limesurvey/index.php:1595
-#: D:\web\xampp\htdocs\limesurvey/index.php:1733
+#: D:\web\xampp\htdocs\limesurvey/common.php:2364
+#: D:\web\xampp\htdocs\limesurvey/common.php:2384
+#: D:\web\xampp\htdocs\limesurvey/common.php:2430
+#: D:\web\xampp\htdocs\limesurvey/index.php:1559
+#: D:\web\xampp\htdocs\limesurvey/index.php:1606
+#: D:\web\xampp\htdocs\limesurvey/index.php:1744
 msgid "Security Question"
 msgstr "Sigurnosno pitanje"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2314
+#: D:\web\xampp\htdocs\limesurvey/common.php:2367
 msgid "Save Now"
 msgstr "Snimi sada"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2319
+#: D:\web\xampp\htdocs\limesurvey/common.php:2372
 msgid "Load A Previously Saved Survey"
 msgstr "Učitaj prethodno snimljen upitnik"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2320
+#: D:\web\xampp\htdocs\limesurvey/common.php:2373
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr "Sa ovog ekrana možete učitati prethodno snimljen upitnik."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2320
+#: D:\web\xampp\htdocs\limesurvey/common.php:2373
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr "Unesite 'ime' koje ste koristili kada ste snimili upitnik kao i lozinku."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2323
+#: D:\web\xampp\htdocs\limesurvey/common.php:2376
 msgid "Saved name"
 msgstr "Ime pod kojim je snimljeno"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2336
+#: D:\web\xampp\htdocs\limesurvey/common.php:2389
 msgid "Load Now"
 msgstr "Učitaj sada"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2341
+#: D:\web\xampp\htdocs\limesurvey/common.php:2394
 msgid "You must be registered to complete this survey"
 msgstr "Morate biti registrirani da bi ste popunili ovaj upitnik"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2342
+#: D:\web\xampp\htdocs\limesurvey/common.php:2395
 msgid "You may register for this survey if you wish to take part."
 msgstr "Možete se registrirani za popunjavanje upitnika ako želite."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2342
+#: D:\web\xampp\htdocs\limesurvey/common.php:2395
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "Unesite svoje podatke niže i email sa linkom za sudjelovanje će Vam biti poslan."
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2349
+#: D:\web\xampp\htdocs\limesurvey/common.php:2402
 msgid "First Name"
 msgstr "Ime"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2356
+#: D:\web\xampp\htdocs\limesurvey/common.php:2409
 msgid "Last Name"
 msgstr "Prezime"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2363
+#: D:\web\xampp\htdocs\limesurvey/common.php:2416
 msgid "Email Address"
 msgstr "Email adresa"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2402
-#: D:\web\xampp\htdocs\limesurvey/index.php:1551
-#: D:\web\xampp\htdocs\limesurvey/index.php:1598
-#: D:\web\xampp\htdocs\limesurvey/index.php:1736
+#: D:\web\xampp\htdocs\limesurvey/common.php:2455
+#: D:\web\xampp\htdocs\limesurvey/index.php:1562
+#: D:\web\xampp\htdocs\limesurvey/index.php:1609
+#: D:\web\xampp\htdocs\limesurvey/index.php:1747
 msgid "Continue"
 msgstr "Nastavi"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2409
+#: D:\web\xampp\htdocs\limesurvey/common.php:2462
 msgid "Your Assessment"
 msgstr "Vaši odgovori"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2721
+#: D:\web\xampp\htdocs\limesurvey/common.php:2780
 msgid "Online Manual"
 msgstr "Uputstvo za upotrebu"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2724
+#: D:\web\xampp\htdocs\limesurvey/common.php:2783
 msgid "Support this project - Donate to "
 msgstr "Podržite ovaj projekat - Doniraj "
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2727
+#: D:\web\xampp\htdocs\limesurvey/common.php:2786
 msgid "Visit our website!"
 msgstr "Posjetite našu web stranicu!"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2727
+#: D:\web\xampp\htdocs\limesurvey/common.php:2786
 msgid "Version"
 msgstr "Verzija"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:2935
+#: D:\web\xampp\htdocs\limesurvey/common.php:2994
 msgid "Local Submission"
 msgstr "Lokalna prijava"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3139
-#: D:\web\xampp\htdocs\limesurvey/common.php:3144
+#: D:\web\xampp\htdocs\limesurvey/common.php:3203
+#: D:\web\xampp\htdocs\limesurvey/common.php:3208
 msgid "Executing"
 msgstr "Izvršavam"
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3139
+#: D:\web\xampp\htdocs\limesurvey/common.php:3203
 msgid "Failed! Reason: "
 msgstr "Neuspješno! Razlog: "
 
-#: D:\web\xampp\htdocs\limesurvey/common.php:3144
+#: D:\web\xampp\htdocs\limesurvey/common.php:3208
 msgid "Success!"
 msgstr "Uspješno!"
 
@@ -683,7 +689,7 @@ msgid "Save your responses so far"
 msgstr "Snimi svoje dosadašnje odgovore"
 
 #: D:\web\xampp\htdocs\limesurvey/group.php:111
-#: D:\web\xampp\htdocs\limesurvey/index.php:1464
+#: D:\web\xampp\htdocs\limesurvey/index.php:1475
 #: D:\web\xampp\htdocs\limesurvey/question.php:295
 #: D:\web\xampp\htdocs\limesurvey/survey.php:76
 msgid "Did Not Save"
@@ -718,9 +724,8 @@ msgstr "Vaši odgovori na pitanja su snimljeni."
 #: D:\web\xampp\htdocs\limesurvey/group.php:178
 #: D:\web\xampp\htdocs\limesurvey/question.php:331
 #: D:\web\xampp\htdocs\limesurvey/survey.php:122
-#, fuzzy
 msgid "Click here to print your answers."
-msgstr "Molimo unesite svoj(e) odgovor(e) ovdje:"
+msgstr "Klikni ovdje za ispis tvojih odgovora."
 
 #: D:\web\xampp\htdocs\limesurvey/group.php:235
 #: D:\web\xampp\htdocs\limesurvey/question.php:69
@@ -749,9 +754,8 @@ msgid "ERROR"
 msgstr "GREŠKA"
 
 #: D:\web\xampp\htdocs\limesurvey/index.php:161
-#, fuzzy
 msgid "We are sorry but you don't have permissions to do this."
-msgstr "Možda nemate prava"
+msgstr "Žao nam je, ali nemate prava za tu radnju."
 
 #: D:\web\xampp\htdocs\limesurvey/index.php:162
 #: D:\web\xampp\htdocs\limesurvey/index.php:191
@@ -802,10 +806,10 @@ msgid "You did not provide a password"
 msgstr "Niste unijeli lozinku"
 
 #: D:\web\xampp\htdocs\limesurvey/index.php:453
-#: D:\web\xampp\htdocs\limesurvey/index.php:1532
-#: D:\web\xampp\htdocs\limesurvey/index.php:1697
+#: D:\web\xampp\htdocs\limesurvey/index.php:1543
+#: D:\web\xampp\htdocs\limesurvey/index.php:1708
 #: D:\web\xampp\htdocs\limesurvey/register.php:57
-#: D:\web\xampp\htdocs\limesurvey/save.php:210
+#: D:\web\xampp\htdocs\limesurvey/save.php:214
 msgid "The answer to the security question is incorrect"
 msgstr "Odgovor na sigurnosno pitanje nije ispravan"
 
@@ -814,15 +818,15 @@ msgid "This is a closed-access survey. You need a valid token to participate."
 msgstr "Ovo je upitnik zatvorenog tipa. Potreban vam je ispravan token za učešće."
 
 #: D:\web\xampp\htdocs\limesurvey/index.php:506
-#: D:\web\xampp\htdocs\limesurvey/index.php:1628
-#: D:\web\xampp\htdocs\limesurvey/index.php:1664
+#: D:\web\xampp\htdocs\limesurvey/index.php:1639
+#: D:\web\xampp\htdocs\limesurvey/index.php:1675
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr "Token koji ste unjeli ili nije ispravan ili je već iskorišten."
 
 #: D:\web\xampp\htdocs\limesurvey/index.php:507
-#: D:\web\xampp\htdocs\limesurvey/index.php:1629
-#: D:\web\xampp\htdocs\limesurvey/index.php:1665
-#: D:\web\xampp\htdocs\limesurvey/index.php:1821
+#: D:\web\xampp\htdocs\limesurvey/index.php:1640
+#: D:\web\xampp\htdocs\limesurvey/index.php:1676
+#: D:\web\xampp\htdocs\limesurvey/index.php:1832
 msgid "For further information contact"
 msgstr "Za više informacija kontaktirajte"
 
@@ -838,7 +842,7 @@ msgstr "Ne postoji odgovarajući spremljeni upitnik"
 msgid "complete"
 msgstr "dovršen"
 
-#: D:\web\xampp\htdocs\limesurvey/index.php:1369
+#: D:\web\xampp\htdocs\limesurvey/index.php:1380
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -850,108 +854,116 @@ msgid ""
 "\n"
 "{ADMINNAME}"
 msgstr ""
+"Poštovani(a) {FIRSTNAME},\n"
+" \n"
+" Ovaj e-mail je potvrda da ste završili ispunjavanje upitnika pod nazivom{SURVEYNAME} i da su Vaši odgovori snimljeni. \n"
+"Hvala Vam na sudjelovanju.\n"
+"\n"
+"Ako imate pitanja u vezi ovog e-maila, možete kontaktirati {ADMINNAME} putem e-mail adrese {ADMINEMAIL}.\n"
+"\n"
+"Sa štovanjem,\n"
+"\n"
+"{ADMINNAME}"
 
-#: D:\web\xampp\htdocs\limesurvey/index.php:1388
-#, fuzzy
+#: D:\web\xampp\htdocs\limesurvey/index.php:1399
 msgid "Answer Submission for Survey"
-msgstr "Pošalji svoj upitnik."
+msgstr "Pošalji odgovore za upitnik"
 
-#: D:\web\xampp\htdocs\limesurvey/index.php:1390
+#: D:\web\xampp\htdocs\limesurvey/index.php:1401
 msgid "Survey Submitted"
 msgstr "Upitnik je poslan"
 
-#: D:\web\xampp\htdocs\limesurvey/index.php:1391
+#: D:\web\xampp\htdocs\limesurvey/index.php:1402
 msgid "A new response was entered for your survey"
 msgstr "Novi odgovor je unjet u Vaš upitnik"
 
-#: D:\web\xampp\htdocs\limesurvey/index.php:1394
+#: D:\web\xampp\htdocs\limesurvey/index.php:1405
 msgid "Click the following link to reload the survey:"
 msgstr "Izaberite sljedeći link kako bi učitali upitnik:"
 
-#: D:\web\xampp\htdocs\limesurvey/index.php:1398
+#: D:\web\xampp\htdocs\limesurvey/index.php:1409
 msgid "Click the following link to see the individual response:"
 msgstr "Izaberite sljedeći link kako bi vidjeli pojedinačne odgovore:"
 
-#: D:\web\xampp\htdocs\limesurvey/index.php:1401
+#: D:\web\xampp\htdocs\limesurvey/index.php:1412
 msgid "Click the following link to edit the individual response:"
 msgstr "Izaberite sljedeći link kako bi promijenili pojedinačne odgovore:"
 
-#: D:\web\xampp\htdocs\limesurvey/index.php:1404
+#: D:\web\xampp\htdocs\limesurvey/index.php:1415
 msgid "View statistics by clicking here:"
 msgstr "Pogledajte statistiku odabirom sljedećeg linka:"
 
-#: D:\web\xampp\htdocs\limesurvey/index.php:1465
+#: D:\web\xampp\htdocs\limesurvey/index.php:1476
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "Dogodila se neočekivana greška i vaši odgovori nisu snimljeni."
 
-#: D:\web\xampp\htdocs\limesurvey/index.php:1468
+#: D:\web\xampp\htdocs\limesurvey/index.php:1479
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr "Vaši odgovori nisu izgubljeni već su poslati administratoru i biti će ručno uneseni u bazu podataka."
 
-#: D:\web\xampp\htdocs\limesurvey/index.php:1469
+#: D:\web\xampp\htdocs\limesurvey/index.php:1480
 msgid "An error occurred saving a response to survey id"
 msgstr "Dogodila se greška prilikom snimanja odgovora u id upitnika"
 
-#: D:\web\xampp\htdocs\limesurvey/index.php:1470
+#: D:\web\xampp\htdocs\limesurvey/index.php:1481
 msgid "DATA TO BE ENTERED"
 msgstr "PODACI KOJI SE UNOSE"
 
-#: D:\web\xampp\htdocs\limesurvey/index.php:1475
+#: D:\web\xampp\htdocs\limesurvey/index.php:1486
 msgid "SQL CODE THAT FAILED"
 msgstr "SQL KOD KOJI NIJE USPIO"
 
-#: D:\web\xampp\htdocs\limesurvey/index.php:1477
+#: D:\web\xampp\htdocs\limesurvey/index.php:1488
 msgid "ERROR MESSAGE"
 msgstr "PORUKA O GREŠCI"
 
-#: D:\web\xampp\htdocs\limesurvey/index.php:1479
+#: D:\web\xampp\htdocs\limesurvey/index.php:1490
 msgid "Error saving results"
 msgstr "Greška pri snimanju rezultata"
 
-#: D:\web\xampp\htdocs\limesurvey/index.php:1487
+#: D:\web\xampp\htdocs\limesurvey/index.php:1498
 msgid "Try to submit again"
 msgstr "Probajte ponovo slanje"
 
-#: D:\web\xampp\htdocs\limesurvey/index.php:1535
+#: D:\web\xampp\htdocs\limesurvey/index.php:1546
 msgid "Please confirm access to survey by answering the security question below and click continue."
 msgstr "Molim potvrdite pristup upitniku odgovarajući na sigurnosno pitanje. Nakon unosa klikni na nastavak."
 
-#: D:\web\xampp\htdocs\limesurvey/index.php:1582
-#: D:\web\xampp\htdocs\limesurvey/index.php:1627
-#: D:\web\xampp\htdocs\limesurvey/index.php:1663
-#: D:\web\xampp\htdocs\limesurvey/index.php:1700
+#: D:\web\xampp\htdocs\limesurvey/index.php:1593
+#: D:\web\xampp\htdocs\limesurvey/index.php:1638
+#: D:\web\xampp\htdocs\limesurvey/index.php:1674
+#: D:\web\xampp\htdocs\limesurvey/index.php:1711
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "Ovaj upitnik je pod kontrolom sustava. Potreban vam je ispravan token za učešće."
 
-#: D:\web\xampp\htdocs\limesurvey/index.php:1583
-#, fuzzy
+#: D:\web\xampp\htdocs\limesurvey/index.php:1594
 msgid "If you have been issued a token, please enter it in the box below and click continue."
 msgstr "Ako ste dobili token, molimo unesite ga u polje ispod i izaberite nastavak."
 
-#: D:\web\xampp\htdocs\limesurvey/index.php:1705
+#: D:\web\xampp\htdocs\limesurvey/index.php:1716
 msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr "Ako ste dobili token, molimo unesite ga u polje ispod i izaberite nastavak."
 
-#: D:\web\xampp\htdocs\limesurvey/index.php:1717
+#: D:\web\xampp\htdocs\limesurvey/index.php:1728
 msgid "Please confirm the token by answering the security question below and click continue."
 msgstr "Molim potvrdite token tako da odgovorite na sigurnosno pitanje."
 
-#: D:\web\xampp\htdocs\limesurvey/index.php:1820
+#: D:\web\xampp\htdocs\limesurvey/index.php:1831
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Ovaj upitnik još uvijek nema pitanja i ne može biti testiran niti popunjen."
 
-#: D:\web\xampp\htdocs\limesurvey/index.php:2115
+#: D:\web\xampp\htdocs\limesurvey/index.php:2126
 msgid "prev"
 msgstr "Prethodna"
 
-#: D:\web\xampp\htdocs\limesurvey/index.php:2120
-#: D:\web\xampp\htdocs\limesurvey/index.php:2126
 #: D:\web\xampp\htdocs\limesurvey/index.php:2131
+#: D:\web\xampp\htdocs\limesurvey/index.php:2137
+#: D:\web\xampp\htdocs\limesurvey/index.php:2142
 msgid "next"
 msgstr "Slijedeća"
 
-#: D:\web\xampp\htdocs\limesurvey/index.php:2518
-#: D:\web\xampp\htdocs\limesurvey/index.php:2531
+#: D:\web\xampp\htdocs\limesurvey/index.php:2529
+#: D:\web\xampp\htdocs\limesurvey/index.php:2542
 msgid "Sorry your responses have exceeded a quota on this survey."
 msgstr "Žao nam je ali vaši odgovori prelaze kvotu ovog upitnika."
 
@@ -1107,9 +1119,8 @@ msgid "Year"
 msgstr "Godina"
 
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:691
-#, fuzzy
 msgid "Please complete all parts of the date"
-msgstr "Molimo da popunite sve dijelove pitanja"
+msgstr "Molimo da popunite sve dijelove datuma"
 
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:705
 msgid "Format: YYYY-MM-DD"
@@ -1122,8 +1133,8 @@ msgstr "(npr. 2003-01-06 za Božić)"
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:734
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:804
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:914
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3879
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3932
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3893
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3946
 msgid "Please choose"
 msgstr "Molimo izaberite"
 
@@ -1169,79 +1180,77 @@ msgstr "Izaberi škarice pored svake opcije sa desne strane"
 msgid "to remove the last entry in your ranked list"
 msgstr "kako bi uklonili zadnji unos u vašoj list"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1768
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1940
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1781
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1953
 msgid "Please choose at most"
 msgstr "Molimo izaberite najviše"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1768
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1940
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1781
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1953
 msgid "answer(s) for question"
 msgstr "odgovor(a) na pitanje"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1884
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1911
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1897
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:1924
 msgid "Make a comment on your choice here:"
 msgstr "Unesite komentar na vaš izbor ovde:"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:1988
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2097
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2798
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3761
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2001
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2110
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2812
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3775
 msgid "Error: This question has no answers."
 msgstr "Greška: Ovo pitanje nema odgovora."
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2123
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2136
 msgid "Only numbers may be entered in these fields"
 msgstr "Samo brojevi mogu biti uneseni u ovom polju"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2127
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2140
 msgid "Total of all entries must not exceed "
 msgstr "Svih ulaza ne može biti više od"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2131
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2144
 msgid "Total of all entries must equal "
 msgstr "Svih ulaza mora biti točno"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2135
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2148
 msgid "Total of all entries must be at least "
 msgstr "Svih ulaza mora biti najmanje"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2140
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2153
 msgid "Total: "
 msgstr "Ukupno:"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2143
-#, fuzzy
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2156
 msgid "Remaining: "
-msgstr "Rangiranje"
+msgstr "Preostalo:"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2173
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2179
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2209
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2218
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2186
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2192
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2222
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2231
 msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "Odgovor je neispravan. Ukupnost svih odgovora ne može ići iznad"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2190
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2196
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2203
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2209
 msgid "Answer is invalid. The total of all entries should add up to at least "
 msgstr "Odgovor je neispravan. Ukupnost svih odgovora mora ići do"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2261
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2275
 msgid "Only numbers may be entered in this field"
 msgstr "Samo brojevi mogu biti uneseni u ovom polju"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3263
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3392
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3980
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3277
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3406
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3994
 msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
 msgstr "Greška: Set oznaka korišten za ovo pitanje nije dostupan i/ili ne postoji za ovaj jezik."
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3385
-#, fuzzy
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3399
 msgid "Error: There are no answers defined for this question."
-msgstr "Morate dodati odgovore na trenutno pitanje"
+msgstr "Greška: Nema definiranih odgovora u ovom pitanju."
 
 #: D:\web\xampp\htdocs\limesurvey/register.php:64
 msgid "The email you used is not valid. Please try again."
@@ -1263,47 +1272,47 @@ msgstr "E-mail je poslan na adresu koju se dostavili sa detaljima za pristup ovo
 msgid "Survey Administrator"
 msgstr "Administrator upitnika"
 
-#: D:\web\xampp\htdocs\limesurvey/save.php:157
+#: D:\web\xampp\htdocs\limesurvey/save.php:161
 msgid "Please try again."
 msgstr "Molimo Vas pokušajte ponovno."
 
-#: D:\web\xampp\htdocs\limesurvey/save.php:199
+#: D:\web\xampp\htdocs\limesurvey/save.php:203
 msgid "You must supply a name for this saved session."
 msgstr "Morate koristiti ime za ovu snimljenu sesiju."
 
-#: D:\web\xampp\htdocs\limesurvey/save.php:200
+#: D:\web\xampp\htdocs\limesurvey/save.php:204
 msgid "You must supply a password for this saved session."
 msgstr "Morate koristiti lozinku za ovu snimljenu sesiju."
 
-#: D:\web\xampp\htdocs\limesurvey/save.php:202
+#: D:\web\xampp\htdocs\limesurvey/save.php:206
 msgid "Your passwords do not match."
 msgstr "Vaše lozinke se ne poklapaju."
 
-#: D:\web\xampp\htdocs\limesurvey/save.php:226
+#: D:\web\xampp\htdocs\limesurvey/save.php:230
 msgid "This name has already been used for this survey. You must use a unique save name."
 msgstr "Ovo ime je već korišćeno za trenutni upitnik. Morate koristiti jedinstveno ime za snimanje."
 
-#: D:\web\xampp\htdocs\limesurvey/save.php:283
+#: D:\web\xampp\htdocs\limesurvey/save.php:287
 msgid "Saved Survey Details"
 msgstr "Detalji spremljenog upitnika"
 
-#: D:\web\xampp\htdocs\limesurvey/save.php:285
+#: D:\web\xampp\htdocs\limesurvey/save.php:289
 msgid "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
 msgstr "Vi ili netko tko koristi vašu email adresu snimio je upitnik koji je u toku. Sljedeći detalji se mogu koristiti kako bi se vratili ovom upitniku i nastavili gdje ste stali."
 
-#: D:\web\xampp\htdocs\limesurvey/save.php:289
+#: D:\web\xampp\htdocs\limesurvey/save.php:293
 msgid "Reload your survey by clicking on the following URL:"
 msgstr "Učitajte ponovo vaš upitnik klikom na sljedeći URL:"
 
-#: D:\web\xampp\htdocs\limesurvey/save.php:476
+#: D:\web\xampp\htdocs\limesurvey/save.php:480
 msgid "Cannot submit results - there are none to submit."
 msgstr "Nije moguće slanje odgovora - ne postoji nijedan za slanje."
 
-#: D:\web\xampp\htdocs\limesurvey/save.php:477
+#: D:\web\xampp\htdocs\limesurvey/save.php:481
 msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
 msgstr "Ova greška se javlja u slučaju da ste poslali svoje odgovore i pritisnuli gumb 'refresh' u vašem pregledniku. U ovom slučaju vaši odgovori su već snimljeni."
 
-#: D:\web\xampp\htdocs\limesurvey/save.php:477
+#: D:\web\xampp\htdocs\limesurvey/save.php:481
 msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
 msgstr "Ako ste primili ovu poruku tokom popunjavanja upitnika, potrebno je odabrati gumb '<-BACK' u vašem pretraživaču i zatim izabrati 'refresh' po učitavanju stranice. U ovom slučaju podatci sa posljednje strane neće biti spremljeni ali će svi prethodni podaci biti spremljeni. Ovaj problem se javlja u slučaju da je poslužitelj preopterećen. Ispričavamo se zbog poteškoća."
 
@@ -1386,9 +1395,8 @@ msgstr "Niste ovlašteni uvoziti pitanje!"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/access_denied.php:118
 #: D:\web\xampp\htdocs\limesurvey/admin/access_denied.php:123
-#, fuzzy
 msgid "Security Alert"
-msgstr "Sigurnosno pitanje"
+msgstr "Sigurnosno upozorenje"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/access_denied.php:118
 msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
@@ -1419,9 +1427,8 @@ msgid "This question requires a second Labelset, but none is set."
 msgstr "Ovo pitanje zahtjeva set markera, ali nijedan set nije izabran."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/activate.php:128
-#, fuzzy
 msgid "The labelset used in this question does not exists or is missing a translation."
-msgstr "Set oznaka korišten u ovom pitanju nema prijevod"
+msgstr "Set oznaka korišten u ovom pitanju ili ne postoji ili nema prijevod."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/activate.php:184
 msgid "This question has a condition set, however the condition is based on a question that appears after it."
@@ -1507,10 +1514,10 @@ msgid "Survey could not be actived."
 msgstr "Upitnik ne može biti aktiviran."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/activate.php:489
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:61
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:74
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:98
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:112
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:71
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:84
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:108
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:122
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:51
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:66
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2482
@@ -1643,7 +1650,7 @@ msgid "Delete"
 msgstr "Obriši"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/assessments.php:161
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:283
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:293
 msgid "Are you sure you want to delete this entry."
 msgstr "Jeste li ste sigurni da želite obrisati ovaj zapis."
 
@@ -1651,18 +1658,13 @@ msgstr "Jeste li ste sigurni da želite obrisati ovaj zapis."
 msgid "Save"
 msgstr "Snimi"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/assessments.php:181
-#: D:\web\xampp\htdocs\limesurvey/admin/deletesurvey.php:61
-msgid "Cancel"
-msgstr "Prekini"
-
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:56
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:69
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:93
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:108
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:123
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:329
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:693
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:66
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:79
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:103
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:118
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:133
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:339
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:707
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:476
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:487
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1471
@@ -1671,145 +1673,144 @@ msgstr "Prekini"
 msgid "Browse Responses"
 msgstr "Pregled odgovora"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:59
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:69
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:48
 msgid "The defined surveyor database does not exist"
 msgstr "Ne postoji definirana baza upitnika"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:60
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:70
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:49
 msgid "Either your selected database has not yet been created or there is a problem accessing it."
 msgstr "Ili vaša odabrana baza još uvijek nije kreirana ili postoji problem u pristupu."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:72
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:82
 msgid "You have not selected a survey to browse."
 msgstr "Niste odabrali upitnik za pregled."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:96
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:106
 msgid "This survey has not been activated. There are no results to browse."
 msgstr "Ovaj upitnik još nije aktiviran. Ne postoje rezultati za pregled."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:111
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:121
 msgid "There is no matching survey."
 msgstr "Ne postoji odgovarajući upitnik."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:147
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:372
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:157
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:382
 msgid "Completed"
 msgstr "dovršeno"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:153
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:378
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:163
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:388
 msgid "Date Started"
 msgstr "Datum početka"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:154
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:379
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:164
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:389
 msgid "Date Last Action"
 msgstr "Datum zadnje aktivnosti"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:224
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:436
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:234
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:446
 msgid "1. scale"
 msgstr "1. skala"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:229
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:441
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:239
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:451
 msgid "2. scale"
 msgstr "2. skala"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:266
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:276
 msgid "View Response"
 msgstr "Pogledaj odgovor"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:273
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:283
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:137
 msgid "Edit this entry"
 msgstr "Mijenjaj ovaj unos"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:282
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:292
 msgid "Delete this entry"
 msgstr "Obriši ovaj unos"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:286
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:287
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:296
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:297
 msgid "Export this Response"
 msgstr "Izvezi ove odgovore"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:291
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:594
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:301
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:608
 msgid "Show previous..."
 msgstr "Prikaži prethodni..."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:295
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:598
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:305
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:612
 msgid "Show next..."
 msgstr "Prikaži sljedeći..."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:338
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:348
 msgid "Showing Filtered Results"
 msgstr "Prikaži filtrirane rezultate"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:339
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:349
 msgid "Close"
 msgstr "Zatvori"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:586
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:600
 msgid "Data View Control"
 msgstr "Kontrola prikaza podataka"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:591
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:605
 msgid "Show start.."
 msgstr "Prikaži početak..."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:601
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:615
 msgid "Show last..."
 msgstr "Prikaži posljednji..."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:623
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:637
 msgid "Records Displayed:"
 msgstr "Prikazano zapisa:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:624
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:638
 msgid "Starting From:"
 msgstr "Početak od:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:625
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:639
 msgid "Filter incomplete answers:"
 msgstr "Filtriraj nekompletne odgovore:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:626
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:640
 msgid "Enable"
 msgstr "Uključi"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:627
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:641
 msgid "Disable"
 msgstr "Isključi"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:629
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:643
 msgid "Show"
 msgstr "Prikaži"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:655
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:669
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:470
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1470
 msgid "View This Record"
 msgstr "Pogledaj ovaj zapis"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:670
-#, fuzzy
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:684
 msgid "Edit this token"
-msgstr "Mijenjaj ovaj unos"
+msgstr "Mijenjaj ovaj token"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:706
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:720
 msgid "responses for this survey"
 msgstr "odgovora na upitnik"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:707
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:721
 msgid "full responses"
 msgstr "kompletni odgovori"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:708
+#: D:\web\xampp\htdocs\limesurvey/admin/browse.php:722
 msgid "responses not completely filled out"
 msgstr "nekompletnih odgovora"
 
@@ -1860,9 +1861,8 @@ msgstr "Samo prikaži pitanja {QID} AKO"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditions.php:763
 #: D:\web\xampp\htdocs\limesurvey/admin/conditions.php:983
-#, fuzzy
 msgid "Less than"
-msgstr "Broj manji od"
+msgstr "Manje od"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditions.php:764
 #: D:\web\xampp\htdocs\limesurvey/admin/conditions.php:984
@@ -1876,7 +1876,6 @@ msgstr "je jednako"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditions.php:766
 #: D:\web\xampp\htdocs\limesurvey/admin/conditions.php:986
-#, fuzzy
 msgid "Not Equal to"
 msgstr "Nije jednako"
 
@@ -1887,9 +1886,8 @@ msgstr "Veći ili jednak"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditions.php:768
 #: D:\web\xampp\htdocs\limesurvey/admin/conditions.php:988
-#, fuzzy
 msgid "Greater than"
-msgstr "Broj veći od"
+msgstr "Veće od"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditions.php:769
 #: D:\web\xampp\htdocs\limesurvey/admin/conditions.php:989
@@ -1953,7 +1951,7 @@ msgstr "Obriši"
 msgid "Close Window"
 msgstr "Zatvori prozor"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:125
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:128
 msgid ""
 "Group could not be added.\\n"
 "\\n"
@@ -1963,142 +1961,144 @@ msgstr ""
 "\\n"
 "Ne postoji ime grupe za sljedeće jezike."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:168
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:171
 msgid "Error: The database reported the following error:"
 msgstr "Greška: Baza podataka je prijavila sljedeću grešku:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:218
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:221
 msgid "Group could not be updated"
 msgstr "Nije moguće promijeniti podatke o grupi"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:239
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:264
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:277
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:242
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:267
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:280
 msgid "Group could not be deleted"
 msgstr "Nije moguće obrisati grupu"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:286
-#, fuzzy, php-format
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:289
+#, php-format
 msgid "Answer could not be added. You must insert a code in the mandatory field (%s)"
-msgstr "Nije moguće dodati odgovor. Morate unjeti kod u obavezno polje"
+msgstr "Nije moguće dodati odgovor. Morate unijeti kod u obavezno polje (%s)"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:358
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:659
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:688
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:361
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:662
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:691
 msgid "Question could not be created."
 msgstr "Nije moguće kreirati pitanje."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:465
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:468
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "Pitanje ne može biti promjenjeno. Postoje uvijeti/pravila za druga pitanja koja se oslanjaju na odgovore na ovo pitanje i promjena tipa pitanja će uzorokovati probleme. Morate obrisati ove uvijete/pravila prije nego što promijenite tip ovog pitanja."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:550
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:608
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:553
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:611
 msgid "Question could not be updated"
 msgstr "Nije moguće promijeniti pitanje"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:570
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:573
 msgid "Answers can't be deleted"
 msgstr "Nije moguće obrisati odgovore"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:580
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:583
 msgid "This question relies on other question's answers and can't be moved above groupId:"
 msgstr "Ovo pitanje se oslanja na odgovore na druge pitanja i ne može se pomaknuti iznad gruopId:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:581
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:593
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:584
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:596
 msgid "in position"
 msgstr "na poziciji"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:582
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:594
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:585
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:597
 msgid "See conditions:"
 msgstr "Pogledajte uvijete/pravila:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:592
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:595
 msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
 msgstr "Neka pitanja se oslanjaju na ovaj odgovor. Ne možete pomaknuti ovo pitanje ispod gruopId:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:618
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:621
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "Nije moguće dodati pitanje. Morate unjeti kod u obavezno polje"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:752
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:793
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:755
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:796
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "Pitanje ne može biti obrisano. Postoje uvijeti/pravila za druga pitanja koja se oslanjaju na ovo pitanje. Ne možete obrisati ovo pitanje dok ne uklonite uvijete/pravila."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:777
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:814
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:780
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:817
 msgid "Question could not be deleted"
 msgstr "Pitanje nije moguće obrisati"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:823
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:826
 msgid "Add new Answer"
 msgstr "Dodatj novi odgovor"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:838
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:841
 msgid "Error adding answer: You can't use the same answer code more than once."
 msgstr "Greška pri dodavanju odgovora: Ne možete koristiti isti kod odgovora više puta."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:862
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:884
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:865
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:887
 msgid "Failed to insert answer"
 msgstr "Greška pri dodavanju odgovora"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:893
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:896
 msgid "Invalid or empty answer code supplied"
 msgstr "Unijet je neodgovarajući ili prazan kod odgovora"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:897
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:900
 msgid "Save All"
 msgstr "Snimi sve"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:964
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:967
 msgid "Failed to update answers"
 msgstr "Greška pri izmjeni odgovora"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:983
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:986
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "Odgovori sa kodom 0 (nula) ili praznim kodom nisu dozvoljeni, i neće biti snimljeni."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:984
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:987
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "Pronađeni su duplikati kodova, ovi zapisi neće biti promjenjeni"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:988
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:995
 msgid "Up"
 msgstr "Gore"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1000
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1007
 msgid "Dn"
 msgstr "Dolje"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1012
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1019
 msgid "Del"
 msgstr "Obriši"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1016
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1023
 msgid "Failed to delete answer"
 msgstr "Neuspješno brisanje odgovora"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1022
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1029
 msgid "Default"
 msgstr "Osnovno"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1031
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1038
 msgid "Failed to make answer not default"
 msgstr "Neuspješno postavljanje odgovora u ne osnovno stanje"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1045
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1052
 msgid "Failed to make answer default"
 msgstr "Neuspješno postavljanje odgovora u osnovno stanje"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1115
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1132
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1316
 msgid "Invitation to participate in survey"
 msgstr "Pozivnica sudionicima u upitniku"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1116
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1133
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1317
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -2119,12 +2119,29 @@ msgid ""
 "Click here to do the survey:\n"
 "{SURVEYURL}"
 msgstr ""
+"Poštovani(a) {FIRSTNAME},\n"
+"\n"
+"Pozvani ste sudjelovati u popunjavanju upitnika.\n"
+"\n"
+"Naziv upitnika je:\n"
+"\"{SURVEYNAME}\"\n"
+"\"{SURVEYDESCRIPTION}\"\n"
+"\n"
+"Za sudjelovanje molimo da kliknete na link:\n"
+"{SURVEYURL}\n"
+"\n"
+"Sa štovanjem,\n"
+"\n"
+"{ADMINNAME}\n"
+"({ADMINEMAIL})\n"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1117
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1134
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1318
 msgid "Reminder to participate in survey"
 msgstr "Podsjetnik za sudjelovanje u upitniku"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1118
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1135
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1319
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -2147,16 +2164,36 @@ msgid ""
 "Click here to do the survey:\n"
 "{SURVEYURL}"
 msgstr ""
+"Poštovani(a) {FIRSTNAME},\n"
+"\n"
+"Nedavno smo Vas pozvali da sudjelujete u ispunjavanju upitnika.\n"
+"\n"
+"Do danas niste ispunili upitnik. \n"
+"Ovom prilikom želimo Vas podsjetiti da je upitnik još uvijek dostupan u slučaju da želite sudjelovati.\n"
+"\n"
+"Naziv upitnika:\n"
+"\"{SURVEYNAME}\"\n"
+"\"{SURVEYDESCRIPTION}\"\n"
+"\n"
+"Za sudjelovanje molimo Vas da kliknete na:\n"
+"{SURVEYURL}\n"
+"\n"
+"Sa štovanjem,\n"
+"{ADMINNAME} \n"
+"({ADMINEMAIL})\n"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1119
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1136
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1320
 msgid "Confirmation of completed survey"
 msgstr "Potvrda o ispunjenom upitniku"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1121
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1138
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1322
 msgid "Survey Registration Confirmation"
 msgstr "Potvrda o registraciji za upitnik"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1122
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1139
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1323
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -2168,20 +2205,29 @@ msgid ""
 "\n"
 "If you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."
 msgstr ""
+"Poštovani(a) {FIRSTNAME},\n"
+"\n"
+"Vi, ili neko koristeći vašu email adresu prijavio se za sudjelovanje u online upitniku {SURVEYNAME}.\n"
+"\n"
+"Za popunjavanje upitnika izaberite sljedeći URL:\n"
+"\n"
+"{SURVEYURL}\n"
+"\n"
+"U slučaju da imate pitanja o ovom upitniku, ili se niste prijavili za sujelovanje, molimo vas da kontaktirate {ADMINNAME} na sljedećoj email adresi {ADMINEMAIL}."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1138
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1155
 msgid "Survey could not be updated"
 msgstr "Upitnik nije moguće promijeniti"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1153
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1170
 msgid "ERROR deleting Survey id"
 msgstr "GREŠKA pri brisanju id-a upitnika"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1214
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1231
 msgid "Survey could not be created because it did not have a short title"
 msgstr "Upitnik nije moguće kreirati zbog nedostatka kratkog opisa"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1297
+#: D:\web\xampp\htdocs\limesurvey/admin/database.php:1338
 msgid "Survey could not be created"
 msgstr "Upitnik nije moguće kreirati"
 
@@ -2559,13 +2605,13 @@ msgid "Your survey can export associated token data with each response. Select a
 msgstr "Vaš upitnik može izvesti priključene podatke o tokenima sa svakim odgovorom. Izaberite dodatna polja koja želite izvesti."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:317
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:882
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:888
 msgid "Email"
 msgstr "Email"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:326
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:509
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:894
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:900
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:2404
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:3051
 msgid "Attribute 1"
@@ -2573,7 +2619,7 @@ msgstr "Atribut 1"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:328
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:514
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:897
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:903
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:2406
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:3052
 msgid "Attribute 2"
@@ -2581,24 +2627,24 @@ msgstr "Atribut 2"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:523
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:524
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:864
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:870
 msgid "Time Submitted"
 msgstr "Vrijeme slanja"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:828
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:834
 msgid "NEW RECORD"
 msgstr "NOVI ZAPIS"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:885
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:891
 msgid "ID"
 msgstr "ID"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:900
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:906
 msgid "Language"
 msgstr "Jezik"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1014
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1022
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1020
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1028
 msgid "N/A"
 msgstr "N/A"
 
@@ -2946,13 +2992,6 @@ msgstr "Testiraj upitnik"
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:466
 msgid "Execute This Survey"
 msgstr "Pokreni upitnik"
-
-#: D:\web\xampp\htdocs\limesurvey/admin/html.php:491
-#: D:\web\xampp\htdocs\limesurvey/admin/html.php:551
-#: D:\web\xampp\htdocs\limesurvey/admin/html.php:1246
-#: D:\web\xampp\htdocs\limesurvey/admin/html.php:3188
-msgid "Please select a language:"
-msgstr "Molimo izaberite jezik:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:516
 msgid "This survey is not active, data entry is not allowed"
@@ -3853,35 +3892,35 @@ msgstr "Izaberi CSV/SQL tip datoteke:"
 msgid "Convert Resources links and INSERTANS fields ?"
 msgstr "Konvertirati linkove resursa i polja INSERTANS?"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/html.php:3300
+#: D:\web\xampp\htdocs\limesurvey/admin/html.php:3268
 msgid "You need to upload the file"
 msgstr "Morate poslati datoteku"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/html.php:3307
+#: D:\web\xampp\htdocs\limesurvey/admin/html.php:3275
 msgid "You must upload a CSV file"
 msgstr "Morate poslati CSV datoteku"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/html.php:3309
+#: D:\web\xampp\htdocs\limesurvey/admin/html.php:3277
 msgid "Upload CSV file"
 msgstr "Pošaljite CSV datoteku"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/html.php:3321
+#: D:\web\xampp\htdocs\limesurvey/admin/html.php:3289
 msgid "It is impossible to upload a file other than CSV type"
 msgstr "Nije moguće poslati datoteku koja nije u CSV formatu"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/html.php:3333
+#: D:\web\xampp\htdocs\limesurvey/admin/html.php:3301
 msgid "It is impossible to upload an empty file"
 msgstr "Nije moguće poslati praznu datoteku"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/html.php:3340
+#: D:\web\xampp\htdocs\limesurvey/admin/html.php:3308
 msgid "Uploading CSV file"
 msgstr "Slanje CSV datoteke"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/html.php:3341
+#: D:\web\xampp\htdocs\limesurvey/admin/html.php:3309
 msgid "Visualization:"
 msgstr "Vizualizacija:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/html.php:3341
+#: D:\web\xampp\htdocs\limesurvey/admin/html.php:3309
 msgid "Select the field number you would like to use for your answers:"
 msgstr "Izaberite broj polje koji želite koristiti za vaše odgovore:"
 
@@ -3907,7 +3946,7 @@ msgstr "Zatvori uređivač"
 msgid "Editing"
 msgstr "Promjeni"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/htmleditor-popup.php:167
+#: D:\web\xampp\htdocs\limesurvey/admin/htmleditor-popup.php:168
 msgid "Do you want to save your changes ?"
 msgstr "Želiš li snimiti promjene?"
 
@@ -3939,9 +3978,8 @@ msgid "Reading file.."
 msgstr "Čitam datoteku.."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/importgroup.php:39
-#, fuzzy
 msgid "No SID (Survey) has been provided. Cannot import group."
-msgstr "SID (upitnika) nije dostavljen. nije moguć uvoz pitanja."
+msgstr "SID (upitnika) nije dostavljen. Nije moguć uvoz grupe."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/importgroup.php:56
 msgid "Reading file..."
@@ -3988,7 +4026,6 @@ msgid "Labels"
 msgstr "Oznake"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/importgroup.php:670
-#, fuzzy
 msgid "Question Attributes: "
 msgstr "Atributi pitanja:"
 
@@ -4092,9 +4129,8 @@ msgid "Question Attributes:"
 msgstr "Atributi pitanja:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/importquestion.php:511
-#, fuzzy
 msgid "Question import is complete."
-msgstr "Uvoz grupa pitanja je završen."
+msgstr "Uvoz pitanja je završen."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:51
 #: D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:59
@@ -4115,18 +4151,17 @@ msgid "File does not contain LimeSurvey data in the correct format."
 msgstr "Datoteka ne sadrži LimeSurvey podatke u pravilnom formatu."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:760
-msgid "A group in the SQL file is not part of the same survey. The import of the survey was stopped."
-msgstr ""
+msgid "A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped."
+msgstr "Grupa u CSV/SQL datoteci ne čini dio istog upitnika. Uvoz je zaustavljen."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:822
-#, fuzzy
 msgid "was NOT imported because the question type is unknown."
-msgstr "NIJE uvezeneo, tip pitanja je nepoznat"
+msgstr "NIJE uvezeno jer je tip pitanja nepoznat."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:828
-#, fuzzy, php-format
+#, php-format
 msgid "was imported but the type was set to '%s' because it is the most similiar one."
-msgstr "je uvezeno, ali tip je postavnje na \""
+msgstr "je uvezeno, ali tip je postavljen na '%s'  jer je najsličniji."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:1212
 #: D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:1240
@@ -4135,9 +4170,8 @@ msgstr "Sažeti prika uvoza upitnika"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:1225
 #: D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:1251
-#, fuzzy
 msgid "Not imported Label Sets"
-msgstr "Uvezi set oznaka"
+msgstr "Nije uvezen set oznaka"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:1225
 #: D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:1251
@@ -4310,14 +4344,12 @@ msgid "All question_attributes meet consistency standards"
 msgstr "Svi atributi pitanja su zadovoljili standarde koezistentnosti"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:111
-#, fuzzy
 msgid "No matching survey"
-msgstr "Ne postoji odgovarajući upitnik."
+msgstr "Nema podudarajućeg upitnika"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:123
-#, fuzzy
 msgid "No matching group"
-msgstr "Zatvori ovu grupu pitanja"
+msgstr "Nema podudarajuće grupe"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:129
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:139
@@ -4325,19 +4357,16 @@ msgid "The following assessments should be deleted"
 msgstr "Sledeće (assessments) ankete bi trebale biti obrisane"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:135
-#, fuzzy
 msgid "All Survey (Total) assessments meet consistency standards"
-msgstr "Sve (assessments) ankete su zadovoljile standarde koezistentnosti"
+msgstr "Svi zadaci upitnika zadovoljili su standarde konzistentnosti"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:145
-#, fuzzy
 msgid "All Group assessments meet consistency standards"
-msgstr "Sve (assessments) ankete su zadovoljile standarde koezistentnosti"
+msgstr "Svi grupni zadaci zadovoljili su standarde konzistentnosti"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:158
-#, fuzzy
 msgid "No matching question"
-msgstr "Zatvori trenutno pitanje"
+msgstr "Ne postoji odgovorajuće pitanje"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:164
 msgid "The following answers should be deleted"
@@ -4360,14 +4389,12 @@ msgid "All survey settings meet consistency standards"
 msgstr "Svi upitnici su zadovoljili standarde koezistentnosti"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:205
-#, fuzzy
 msgid "No matching Group"
-msgstr "Zatvori ovu grupu pitanja"
+msgstr "Ne postoji odgovorajuća grupa"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:211
-#, fuzzy
 msgid "No matching Survey!"
-msgstr "Ne postoji odgovarajući upitnik."
+msgstr "Ne postoji odgovarajući upitnik!"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:216
 msgid "The following questions should be deleted"
@@ -4398,61 +4425,50 @@ msgid "Yes - Delete Them!"
 msgstr "Da - Izbriši ih!"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:320
-#, fuzzy
 msgid "Deleting Surveys"
-msgstr "Obriši upitnik"
+msgstr "Brisanje upitnika"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:322
-#, fuzzy
 msgid "Deleting Survey ID"
-msgstr "Obriši upitnik"
+msgstr "Brisanje upitnika ID"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:329
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:337
-#, fuzzy
 msgid "Deleting Assessments"
-msgstr "Ankete"
+msgstr "Brisanje zadataka"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:331
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:339
-#, fuzzy
 msgid "Deleting ID"
-msgstr "Brisanje korisnika"
+msgstr "Brisanje ID"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:345
-#, fuzzy
 msgid "Deleting Question_Attributes"
-msgstr "Atributi pitanja"
+msgstr "Brisanje atributa pitanja"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:353
-#, fuzzy
 msgid "Deleting Conditions"
-msgstr "Filtriraj uvijete/pravila"
+msgstr "Filtriraj uvjeta"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:355
-#, fuzzy
 msgid "Deleting cid"
-msgstr "Brisanje ID-a grupe pitanja"
+msgstr "Brisanje cid"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:362
-#, fuzzy
 msgid "Deleting Answers"
-msgstr "Brisanje korisnika"
+msgstr "Brisanje odgovora"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:365
-#, fuzzy
 msgid "Deleting answer with qid"
-msgstr "Brisanje korisnika"
+msgstr "Brisanje odgovora s qid"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:372
-#, fuzzy
 msgid "Deleting Questions"
-msgstr "Definiraj pitanja"
+msgstr "Brisanje pitanja"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:374
-#, fuzzy
 msgid "Deleting qid"
-msgstr "Brisanje ID-a grupe pitanja"
+msgstr "Brisanje qid"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:381
 msgid "Deleting Groups"
@@ -4463,14 +4479,12 @@ msgid "Deleting group id"
 msgstr "Brisanje ID-a grupe pitanja"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:389
-#, fuzzy
 msgid "Check database again?"
-msgstr "Proveri polja baze podataka"
+msgstr "Ponovo provijeri bazu podataka"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:390
-#, fuzzy
 msgid "Check Again"
-msgstr "Provjeri podatke"
+msgstr "Provjeri ponovo"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/labels.php:67
 msgid "Label Sets Administration"
@@ -4625,9 +4639,8 @@ msgid "if you answered"
 msgstr "ako ste odgovorili"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:127
-#, fuzzy
 msgid "if you have NOT answered"
-msgstr "ako ste odgovorili"
+msgstr "ako NISTE odgovorili"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:227
 msgid "or"
@@ -4676,9 +4689,8 @@ msgid "Please choose all that apply and provide a comment:"
 msgstr "Molimo izaberite sve opcije koje vam odgovaraju i komentirajte:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:489
-#, fuzzy
 msgid "answers and provide a comment:"
-msgstr "Molimo izaberite sve opcije koje vam odgovaraju i komentirajte:"
+msgstr "odgovori i napiši komentar:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:511
 msgid "Please write your answer(s) here:"
@@ -4714,14 +4726,12 @@ msgid "Please fax your completed survey to:"
 msgstr "Molimo pošaljite faksom ispunjen upitnik na:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:835
-#, fuzzy
 msgid "Please submit by"
-msgstr "Molimo pričekajte..."
+msgstr "Molim pošalji od"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/questionhandling.php:24
-#, fuzzy
 msgid "Error: You have to enter a code for this question."
-msgstr "Greška: Morate izabrati ime za ovaj set markera"
+msgstr "Greška: Morate unijeti kod za ovo pitanje."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/questionhandling.php:28
 #: D:\web\xampp\htdocs\limesurvey/admin/questionhandling.php:34
@@ -4738,14 +4748,12 @@ msgstr "Set markera:"
 #: D:\web\xampp\htdocs\limesurvey/admin/questionhandling.php:85
 #: D:\web\xampp\htdocs\limesurvey/admin/questionhandling.php:272
 #: D:\web\xampp\htdocs\limesurvey/admin/questionhandling.php:495
-#, fuzzy
 msgid "Second Label Set:"
-msgstr "Set markera:"
+msgstr "Drugi set markera:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/questionhandling.php:131
-#, fuzzy
 msgid "Position:"
-msgstr "na poziciji"
+msgstr "Pozicija:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/questionhandling.php:134
 msgid "At end"
@@ -4791,14 +4799,12 @@ msgid "Edit Question"
 msgstr "Uredi pitanje"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/questionhandling.php:454
-#, fuzzy
 msgid "Question Type:"
-msgstr "Pitanje:"
+msgstr "Tip pitanja:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/questionhandling.php:465
-#, fuzzy
 msgid "Cannot be modified (Survey is active)"
-msgstr "Ne može se promijeniti"
+msgstr "Ne može se promijeniti (upitnik je aktivan)"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/questionhandling.php:518
 #: D:\web\xampp\htdocs\limesurvey/admin/questionhandling.php:519
@@ -4823,14 +4829,12 @@ msgid "See the conditions marked on the following questions"
 msgstr "Pogledaj obilježene uvijete/pravila na sljedećim pitanjima"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/questionhandling.php:752
-#, fuzzy
 msgid "Place after.."
-msgstr "Molimo pričekajte..."
+msgstr "Postavi iza..."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/questionhandling.php:807
-#, fuzzy
 msgid "View Question"
-msgstr "Uredi pitanje"
+msgstr "Prikaži pitanje"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/quota.php:252
 msgid "Modify Quota"
@@ -4938,19 +4942,16 @@ msgid "New Quota"
 msgstr "Nova kvota"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/resetsurveylogic.php:43
-#, fuzzy
 msgid "You are about to delete all conditions on this survey's questions"
-msgstr "Pred brisanjem ste ovog upitnika"
+msgstr "Pred brisanjem ste svih uvjeta u ovom upitniku"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/resetsurveylogic.php:44
-#, fuzzy
 msgid "We recommend that before you proceed, you export the entire survey from the main administration screen."
-msgstr "Preporučujemo da prije brisanja ovog upitnika, izvezete kompletan upitnik sa glavnog administratorskog ekrana."
+msgstr "Preporučujemo da prije nastavka, izvezete kompletan upitnik sa glavnog administratorskog ekrana."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/resetsurveylogic.php:68
-#, fuzzy
 msgid "All conditions in this survey have been deleted."
-msgstr "Svi token zapisi su obrisani."
+msgstr "Svi uvjeti u ovom upitniku su obrisani."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/results.php:189
 #: D:\web\xampp\htdocs\limesurvey/admin/results.php:190
@@ -4976,20 +4977,20 @@ msgstr "Datum spremanja"
 msgid "Are you sure you want to delete this entry?"
 msgstr "Jeste li sigurni da želite obrisati ovaj zapis?"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/spss.php:405
+#: D:\web\xampp\htdocs\limesurvey/admin/spss.php:487
 msgid "Record ID"
 msgstr "ID zapisa"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/spss.php:407
+#: D:\web\xampp\htdocs\limesurvey/admin/spss.php:489
 msgid "Completion Date"
 msgstr "Datum završetka"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/spss.php:409
+#: D:\web\xampp\htdocs\limesurvey/admin/spss.php:491
 msgid "Start Language"
 msgstr "Početni jezik"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/spss.php:530
-#: D:\web\xampp\htdocs\limesurvey/admin/spss.php:536
+#: D:\web\xampp\htdocs\limesurvey/admin/spss.php:612
+#: D:\web\xampp\htdocs\limesurvey/admin/spss.php:618
 msgid "Not Selected"
 msgstr "Nije označen"
 
@@ -5034,9 +5035,8 @@ msgid "Don't consider NON completed responses (only works when Filter incomplete
 msgstr "Ne uzimaj u obzir NE kompletirane odgovore (radi samo ako je Filtriranje nekompletnih odgovora isključeno)"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:725
-#, fuzzy
 msgid "Show Graphs"
-msgstr "Prikaži posljednji..."
+msgstr "Prikaži grafikone"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:729
 msgid "View Stats"
@@ -5140,18 +5140,16 @@ msgid "minitab method"
 msgstr "minitab metodu"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:1339
-#, fuzzy
 msgid "Not enough values for calculation"
-msgstr "Prazna polja nisu uzeta u izračun"
+msgstr "Nema dovoljno vrijednosti za izračun"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:1542
 msgid "Percentage"
 msgstr "Postotak"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:1638
-#, fuzzy
 msgid "Non completed"
-msgstr "dovršen"
+msgstr "Nije dovršen"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/templates.php:42
 #: D:\web\xampp\htdocs\limesurvey/admin/templates.php:304
@@ -5328,7 +5326,6 @@ msgid "Upload a File"
 msgstr "Pošalji datoteku"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/templates.php:686
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2182
 msgid "Upload"
 msgstr "Pošalji"
 
@@ -5551,9 +5548,8 @@ msgid "Export Tokens to CSV file"
 msgstr "Izvezi tokene kao CSV datoteku"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:440
-#, fuzzy
 msgid "Edit Email Templates"
-msgstr "Izvezi predložak"
+msgstr "Izmijeni e-mail predložak"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:442
 msgid "Send email invitation"
@@ -5589,9 +5585,8 @@ msgid "Total Surveys Completed"
 msgstr "Ukupno popunjenih upitnika"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:541
-#, fuzzy
 msgid "Edit Email Settings"
-msgstr "Mijenjaj ovaj set markera"
+msgstr "Izmijeni e-mail postavke"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:554
 msgid "Invitation Email Subject:"
@@ -5642,9 +5637,8 @@ msgid "Public registration Email:"
 msgstr "Email javne registracije"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:633
-#, fuzzy
 msgid "Token Email Settings have been saved."
-msgstr "Svi token zapisi su obrisani."
+msgstr "Postavke za token e-mail su spremljeni."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:648
 msgid "All token entries have been deleted."
@@ -5737,11 +5731,11 @@ msgstr "Promijeni odgovor"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:930
 msgid "Send invitation email to this entry"
-msgstr "Pošalji email sa pozivnicom ovom zapisu"
+msgstr "Pošalji e-mail sa pozivnicom ovom zapisu"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:939
 msgid "Send reminder email to this entry"
-msgstr "Pošalji email sa podsjetnikom ovom zapisu"
+msgstr "Pošalji e-mail sa podsjetnikom ovom zapisu"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:961
 msgid "Delete Tokens Table"
@@ -5753,7 +5747,7 @@ msgstr "U slučaju da obrišete ovu tabelu, tokeni više neće biti potrebni kak
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:969
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
-msgstr "Sigurnosna kopija će biti kreirana u slučaju da nastavite. Sistem administrator može pristupiti ovoj tabeli."
+msgstr "Sigurnosna kopija će biti kreirana u slučaju da nastavite. Sistem administrator može pristupiti ovoj tablici."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:973
 msgid "Delete Tokens"
@@ -5769,7 +5763,7 @@ msgstr "Sigurnosna kopija ove tablice je kreirana i administrator joj može pris
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1027
 msgid "Email Invitation"
-msgstr "Slanje pozivnice email-om"
+msgstr "Slanje pozivnice e-mailom"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1074
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1286
@@ -5785,15 +5779,13 @@ msgstr "Naslov"
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1116
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1331
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1366
-#, fuzzy
 msgid "Sending to Token ID"
-msgstr "Slanje TID broj:"
+msgstr "Slanje na token ID"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1099
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1336
-#, fuzzy
 msgid "Bypass token with failing email addresses"
-msgstr "Zapisi sa lošim email adresama su obrisani"
+msgstr "Preskoči tokene sa neispravnim e-mail adresama"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1105
 msgid "Send Invitations"
@@ -5809,32 +5801,30 @@ msgstr "Pozivnica poslana :"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1209
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1451
-#, fuzzy
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:"
-msgstr "Mail za  {FIRSTNAME} {LASTNAME} ({EMAIL}) nije poslan"
+msgstr "Mail za  {FIRSTNAME} {LASTNAME} ({EMAIL}) nije poslan. Poruka o grešci:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1224
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1468
 msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
-msgstr "Postoji više email-ova koji čekaju na slanje u jednom slanju. Kako bi nastavili slanje kliknite ispod. "
+msgstr "Postoji više e-mail-ova koji čekaju na slanje u jednom slanju. Kako bi nastavili slanje kliknite ispod. "
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1225
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1469
 msgid "There are {EMAILCOUNT} emails still to be sent."
-msgstr "Postoji {EMAILCOUNT} email-a koji nisu poslati."
+msgstr "Postoji {EMAILCOUNT} e-maila koji nisu poslati."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1245
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
-msgstr "Ne postoje email-ovi koji zadovoljavaju uvijete slanja. Nisu zadovoljeni sledeći kriteriji - postojanje email adrese, još uvijek neposlana pozivnica,već popunjen upitnik i posjedovanje tokena."
+msgstr "Ne postoje e-mail-ovi koji zadovoljavaju uvijete slanja. Nisu zadovoljeni sljedeći kriteriji - postojanje e-mail adrese, još uvijek neposlana pozivnica,već popunjen upitnik i posjedovanje tokena."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1262
 msgid "Email Reminder"
 msgstr "Email podsjetnik"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1312
-#, fuzzy
 msgid "Reminder Email:"
-msgstr "Email administratora:"
+msgstr "E-mail podsjetnik:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1323
 msgid "Start at Token ID No:"
@@ -5849,13 +5839,12 @@ msgid "Sending Reminders"
 msgstr "Slanje podsjetnika"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1365
-#, fuzzy
 msgid "From Token ID"
-msgstr "ID tokena"
+msgstr "Od ID tokena"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1447
 msgid "Reminder sent to:"
-msgstr "Podsjetnik poslan :"
+msgstr "Podsjetnik poslan:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1491
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
@@ -5878,15 +5867,16 @@ msgid "Token has been deleted."
 msgstr "Token je obrisan."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1557
+#: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:153
+#: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:293
 msgid "Reloading Screen. Please wait."
-msgstr "Ponovno učitavanje ekrana. Molimo sačekajte."
+msgstr "Ponovno učitavanje ekrana. Molimo pričekajte."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1589
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1713
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1765
-#, fuzzy
 msgid "Add or Edit Token Entry"
-msgstr "Dodaj ili promijeni token"
+msgstr "Dodaj ili promijeni zapis tokena"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1593
 msgid "Auto"
@@ -5921,9 +5911,8 @@ msgid "There is already an entry with that exact token in the table. The same to
 msgstr "Već postoji takav token u tablici. Isti token ne može biti korišten za više unosa."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1750
-#, fuzzy
 msgid "Show this token entry"
-msgstr "Dodaj novi zapis tokena"
+msgstr "Prikaži ovaj zapis tokena"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1789
 msgid "Added New Token"
@@ -5940,9 +5929,8 @@ msgid "Note:"
 msgstr "Napomena:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1819
-#, fuzzy
 msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [emailstatus], [token], [language code], [attribute1], [attribute2]\"."
-msgstr "Datoteka mora biti u standardnom CSV (razgraničenje zarezima) formata sa duplim navodima oko vrijednosti (standardna vrijednsot za OpenOffice i Excel).Prva lina mora sadržati sledeće informacije (koje će biti uklonjene). Podatci moraju biti sređeni u sledećem rasporedu \"Ime, prezime, email, [token], [kod jezika], [atribut1], [atribut2]\"."
+msgstr "Datoteka mora biti u standardnom CSV (razgraničenje zarezima) formata sa duplim navodima oko vrijednosti (standardna vrijednsot za OpenOffice i Excel). Prva linija mora sadržati informacije o zaglavlju (koje će biti uklonjene). Podaci moraju biti u sljedećem rasporedu \"Ime, prezime, email, [emailstatus], [token], [kod jezika], [atribut1], [atribut2]\"."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1834
 msgid "Upload LDAP entries"
@@ -5993,9 +5981,8 @@ msgid "Uploading LDAP Query"
 msgstr "Učitavanje LDAP upita"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2137
-#, fuzzy
 msgid "Results from LDAP Query"
-msgstr "Uvezi tokene iz LDAP upita"
+msgstr "Rezultat LDAP upita"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2145
 msgid "Can't bind to the LDAP directory"
@@ -6020,9 +6007,8 @@ msgstr "Filtriram prazne e-mail adrese:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2181
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2215
-#, fuzzy
 msgid "Filter duplicate records:"
-msgstr "Duplirani zapisi su obrisani"
+msgstr "Filtriraj duplicirane zapise:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2195
 msgid "Sorry, but the LDAP module is missing in your PHP configuration."
@@ -6042,7 +6028,7 @@ msgstr "Zaboravljena lozinka"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:57
 msgid "User name and/or email not found!"
-msgstr "Vaše ime i/ili email nisu nađeni!"
+msgstr "Vaše ime i/ili e-mail nisu nađeni!"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:66
 #: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:360
@@ -6128,12 +6114,11 @@ msgstr "Postavi korisnikova prava"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:395
 msgid "Username and/or email address already exists."
-msgstr "Korisničko ime i/ili email adresa već postoje."
+msgstr "Korisničko ime i/ili e-mail adresa već postoje."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:414
-#, fuzzy
 msgid "Initial Superadmin cannot be deleted!"
-msgstr "Administrator ne može biti obrisan!"
+msgstr "Inicijalni Super administrator ne može biti obrisan!"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:482
 #: D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:203
@@ -6147,7 +6132,7 @@ msgstr "Ne mogu promeniti podatke o korisniku."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:516
 msgid "Email address ist not valid."
-msgstr "Email adresa nije ispravna."
+msgstr "E-mail adresa nije ispravna."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:532
 msgid "Unchanged"
@@ -6172,15 +6157,14 @@ msgid "Set Template Rights"
 msgstr "Postavi prava predložaka"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:679
-#, fuzzy
 msgid "Update usertemplates successful."
-msgstr "Promena privilegija korisnika uspješna."
+msgstr "Izmjena korisničkih predložaka uspješna."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:56
 #: D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:693
 #: D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:797
 msgid "Mail to all Members"
-msgstr "Email svim korisnicima/članovima"
+msgstr "E-mail svim korisnicima/članovima"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:67
 msgid "Edit Current User Group"
@@ -6200,7 +6184,7 @@ msgstr "Grupa korisnika"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:124
 msgid "Set templates that this user may access"
-msgstr "Odrdi koje predloške korisnik može koristiti"
+msgstr "Odredi koje predloške korisnik može koristiti"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:138
 msgid "Template Name"
@@ -6344,7 +6328,7 @@ msgstr "Grupa korisnika već postoji!"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:784
 msgid "Group name was not supplied!"
-msgstr "Ime grupe korisinika nije uneseno!"
+msgstr "Ime grupe korisnika nije uneseno!"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:842
 msgid "Message(s) sent successfully!"
@@ -6418,19 +6402,19 @@ msgstr "Neuspješan uvoz VVEizvoz datoteke."
 msgid "Back to Response Import"
 msgstr "Povratak na  -  Uvoz Odgovora"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:211
+#: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:203
 msgid "Import Failed on Record"
 msgstr "Uvoz neuspješan na zapisu broj"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:224
+#: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:216
 msgid "Important Note:"
 msgstr "Bitna napomena:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:224
+#: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:216
 msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
-msgstr "NEMOJTE raditi osvježavanje ove stranice, time ćete ponovo slati datoteku i  duplicirati podatke"
+msgstr "NEMOJTE raditi osvježavanje ove stranice, time ćete ponovo slati datoteku i duplicirati podatke"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:226
+#: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:218
 msgid "Total records imported:"
 msgstr "Uvezeno ukupno zapisa:"
 
@@ -6453,7 +6437,7 @@ msgstr "Baza podataka `%s` je uspješno popunjena."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/install/createdb.php:53
 msgid "Database Information not provided. This script must be run from admin.php only."
-msgstr "Podaci o bazi podataka nisu osigurani. Skripta mora biti aktivirana iz admin.php datoteke."
+msgstr "Podaci o bazi podataka nisu zadani. Skripta mora biti pozvana iz admin.php datoteke."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/install/createdb.php:77
 msgid "Database has been created."
@@ -6484,9 +6468,9 @@ msgid "Your selected database name is:"
 msgstr "Ime vaše izabrane baze podataka je:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/install/index.php:52
-#, fuzzy, php-format
+#, php-format
 msgid "A database named \"%s\" already exists."
-msgstr "Baza podataka sa imenom \"%s\" ne postoji."
+msgstr "Baza podataka sa imenom \"%s\" već postoji."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/install/index.php:53
 msgid "Do you want to populate that database now by creating the necessary tables?"
@@ -6497,27 +6481,24 @@ msgid "Database has been successfully upgraded to version "
 msgstr "Baza podataka je uspješno nadograđena na verziju "
 
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:62
-#, fuzzy
 msgid "Albanian"
-msgstr "Rumunski"
+msgstr "Albanski"
 
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:66
 msgid "Basque"
 msgstr "Baskijski"
 
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:70
-#, fuzzy
 msgid "Bosnian"
-msgstr "Rumunski"
+msgstr "Bosanski"
 
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:74
 msgid "Bulgarian"
 msgstr "Bugarski"
 
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:78
-#, fuzzy
 msgid "Catalan"
-msgstr "Italijanski"
+msgstr "Katalonski"
 
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:82
 msgid "Welsh"
@@ -6532,7 +6513,6 @@ msgid "Chinese (Traditional - Hong Kong)"
 msgstr "Kineski (tradicionalni - Hong Kong)"
 
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:94
-#, fuzzy
 msgid "Chinese (Traditional - Taiwan)"
 msgstr "Kineski (tradicionalni - Hong Kong)"
 
@@ -6557,9 +6537,8 @@ msgid "English"
 msgstr "Engleski"
 
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:118
-#, fuzzy
 msgid "Estonian"
-msgstr "Rumunski"
+msgstr "Estonski"
 
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:122
 msgid "Finnish"
@@ -6614,14 +6593,12 @@ msgid "Macedonian"
 msgstr "Makedonski"
 
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:175
-#, fuzzy
 msgid "Norwegian (Bokmal)"
-msgstr "Norveški"
+msgstr "Norveški (Bokmal)"
 
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:179
-#, fuzzy
 msgid "Norwegian (Nynorsk)"
-msgstr "Norveški"
+msgstr "Norveški (Nynorsk)"
 
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:183
 msgid "Polish"
@@ -6644,9 +6621,8 @@ msgid "Romanian"
 msgstr "Rumunski"
 
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:204
-#, fuzzy
 msgid "Slovak"
-msgstr "Slovenački"
+msgstr "Slovački"
 
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:208
 msgid "Slovenian"
@@ -6661,9 +6637,8 @@ msgid "Spanish"
 msgstr "Španski"
 
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:220
-#, fuzzy
 msgid "Spanish (Mexico)"
-msgstr "Španski"
+msgstr "Španjolski (Meksiko)"
 
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:224
 msgid "Swedish"
