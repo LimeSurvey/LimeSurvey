@@ -151,6 +151,14 @@ if(isset($surveyid))
                 // Fix bug with FCKEditor saving strange BR types
                 $_POST['group_name_'.$grouplang]=str_replace('<br type="_moz" />','',$_POST['group_name_'.$grouplang]);
                 $_POST['description_'.$grouplang]=str_replace('<br type="_moz" />','',$_POST['description_'.$grouplang]);
+		if ($_POST['group_name_'.$grouplang] == "<br />")
+		{
+			$_POST['group_name_'.$grouplang] = '';
+		}
+		if ($_POST['description_'.$grouplang] == "<br />")
+		{
+			$_POST['description_'.$grouplang] = '';
+		}
 
     			//$_POST  = array_map('db_quote', $_POST);
                
@@ -206,6 +214,14 @@ if(isset($surveyid))
 			    // Fix bug with FCKEditor saving strange BR types
 			    $_POST['group_name_'.$grplang]=str_replace('<br type="_moz" />','',$_POST['group_name_'.$grplang]);
 			    $_POST['description_'.$grplang]=str_replace('<br type="_moz" />','',$_POST['description_'.$grplang]);
+			    if ($_POST['group_name_'.$grplang] == "<br />")
+			    {
+				    $_POST['group_name_'.$grplang] = '';
+			    }
+			    if ($_POST['description_'.$grplang] == "<br />")
+			    {
+				    $_POST['description_'.$grplang] = '';
+			    }
 
 			    // don't use array_map db_quote on POST
 			    // since this is iterated for each language
@@ -325,6 +341,21 @@ if(isset($surveyid))
             $_POST['question']=str_replace('<br type="_moz" />','',$_POST['question']);
             $_POST['help']=str_replace('<br type="_moz" />','',$_POST['help']);
             
+	    if ($_POST['title'] == "<br />")
+	    {
+		    $_POST['title'] = '';
+	    }
+
+	    if ($_POST['question'] == "<br />")
+	    {
+		    $_POST['question'] = '';
+	    }
+
+	    if ($_POST['help'] == "<br />")
+	    {
+		    $_POST['help'] = '';
+	    }
+
 			$_POST  = array_map('db_quote', $_POST);
 			$query = "INSERT INTO ".db_table_name('questions')." (sid, gid, type, title, question, preg, help, other, mandatory, lid,  lid1, question_order, language)"
 			." VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
@@ -493,6 +524,10 @@ if(isset($surveyid))
                      
                     // Fix bug with FCKEditor saving strange BR types
                     $_POST['title']=str_replace('<br type="_moz" />','',$_POST['title']);
+		    if ($_POST['title'] == "<br />")
+		    {
+			    $_POST['title'] = '';
+		    }
                     
 					foreach ($questlangs as $qlang)
 					{
@@ -509,6 +544,14 @@ if(isset($surveyid))
                         // Fix bug with FCKEditor saving strange BR types
                         $_POST['question_'.$qlang]=str_replace('<br type="_moz" />','',$_POST['question_'.$qlang]);
                         $_POST['help_'.$qlang]=str_replace('<br type="_moz" />','',$_POST['help_'.$qlang]);
+			if ($_POST['question_'.$qlang] == "<br />")
+			{
+				$_POST['question_'.$qlang] = '';
+			}
+			if ($_POST['help_'.$qlang] == "<br />")
+			{
+				$_POST['help_'.$qlang] = '';
+			}
                        
         		//$_POST  = array_map('db_quote', $_POST);
 
@@ -651,6 +694,18 @@ if(isset($surveyid))
             $_POST['title']=str_replace('<br type="_moz" />','',$_POST['title']);
             $_POST['question_'.$baselang]=str_replace('<br type="_moz" />','',$_POST['question_'.$baselang]);
             $_POST['help_'.$baselang]=str_replace('<br type="_moz" />','',$_POST['help_'.$baselang]);
+			if ($_POST['title']== "<br />")
+			{
+				$_POST['title'] = '';
+			}
+			if ($_POST['question_'.$baselang] == "<br />")
+			{
+				$_POST['question_'.$baselang] = '';
+			}
+			if ($_POST['help_'.$baselang] == "<br />")
+			{
+				$_POST['help_'.$baselang] = '';
+			}
             
 			$_POST  = array_map('db_quote', $_POST);
 			$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, help, other, mandatory, lid, lid1, question_order, language) 
@@ -679,6 +734,14 @@ if(isset($surveyid))
             // Fix bug with FCKEditor saving strange BR types
             $_POST['question_'.$qlanguage]=str_replace('<br type="_moz" />','',$_POST['question_'.$qlanguage]);
             $_POST['help_'.$qlanguage]=str_replace('<br type="_moz" />','',$_POST['help_'.$qlanguage]);
+			if ($_POST['question_'.$qlanguage] == "<br />")
+			{
+				$_POST['question_'.$qlanguage] = '';
+			}
+			if ($_POST['question_'.$qlanguage] == "<br />")
+			{
+				$_POST['question_'.$qlanguage] = '';
+			}
                 
             if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('questions')." ON");}
 			$query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, lid, lid1, question_order, language) 
@@ -713,6 +776,10 @@ if(isset($surveyid))
                     
                     // Fix bug with FCKEditor saving strange BR types
                     $qr1['answer']=str_replace('<br type="_moz" />','',$qr1['answer']);
+		    if ($qr1['answer'] == "<br />")
+		    {
+			    $qr1['answer']  = '';
+		    }
              	    
 					$qr1 = array_map('db_quote', $qr1);
 					$i1 = "INSERT INTO {$dbprefix}answers (qid, code, answer, default_value, sortorder, language) "
@@ -857,6 +924,10 @@ if(isset($surveyid))
 
                         // Fix bug with FCKEditor saving strange BR types
                         $_POST['insertanswer']=str_replace('<br type="_moz" />','',$_POST['insertanswer']);
+		    if ($_POST['insertanswer'] == "<br />")
+		    {
+			    $_POST['insertanswer']  = '';
+		    }
                         
         				// Add new Answer for Base Language Question
         				$query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language) VALUES ('{$_POST['qid']}', ".$connect->qstr($_POST['insertcode']).", ".$connect->qstr($_POST['insertanswer']).", '{$newsortorder}', 'N','$baselang')";
@@ -952,6 +1023,10 @@ if(isset($surveyid))
                     
                     // Fix bug with FCKEditor saving strange BR types
                     $_POST['answer_'.$sortorderid]=str_replace('<br type="_moz" />','',$_POST['answer_'.$sortorderid]);
+		    if ($_POST['answer_'.$sortorderid] == "<br />")
+		    {
+			    $_POST['answer_'.$sortorderid]  = '';
+		    }
 
         			$_POST['code_'.$codeids[$count]]=sanitize_paranoid_string($_POST['code_'.$codeids[$count]]);
 					// Now we insert the answers
@@ -1206,6 +1281,22 @@ if(isset($surveyid))
                 $_POST['description_'.$langname]=str_replace('<br type="_moz" />','',$_POST['description_'.$langname]);
                 $_POST['welcome_'.$langname]=str_replace('<br type="_moz" />','',$_POST['welcome_'.$langname]);
                 $_POST['urldescrip_'.$langname]=str_replace('<br type="_moz" />','',$_POST['urldescrip_'.$langname]);
+		    if ($_POST['short_title_'.$langname] == "<br />")
+		    {
+			    $_POST['short_title_'.$langname]  = '';
+		    }
+		    if ( $_POST['description_'.$langname] == "<br />")
+		    {
+			     $_POST['description_'.$langname] = '';
+		    }
+		    if ($_POST['welcome_'.$langname] == "<br />")
+		    {
+			    $_POST['welcome_'.$langname]  = '';
+		    }
+		    if ($_POST['urldescrip_'.$langname] == "<br />")
+		    {
+			    $_POST['urldescrip_'.$langname] = '';
+		    }
                 
     		//$_POST  = array_map('db_quote', $_POST);
 				$usquery = "UPDATE ".db_table_name('surveys_languagesettings')." \n"
@@ -1292,6 +1383,22 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
         $_POST['description']=str_replace('<br type="_moz" />','',$_POST['description']);
         $_POST['welcome']=str_replace('<br type="_moz" />','',$_POST['welcome']);
         $_POST['urldescrip']=str_replace('<br type="_moz" />','',$_POST['urldescrip']);
+	if ($_POST['surveyls_title'] == "<br />")
+	{
+		$_POST['surveyls_title'] = '';
+	}
+	if ($_POST['description'] == "<br />")
+	{
+		$_POST['description'] = '';
+	}
+	if ($_POST['welcome'] = "<br />")
+	{
+		$_POST['welcome'] = '';
+	}
+	if ($_POST['urldescrip'] == "<br />")
+	{
+		$_POST['urldescrip'] = '';
+	}
 
 	// Prepare default emailsettings	
 	if ($_POST['htmlemail'] == "Y")
