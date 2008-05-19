@@ -73,6 +73,17 @@ HOW TO UPGRADE from a LimeSurvey 1.70 or 1.70+ version to the latest 1.70+
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.70+ Revision 4758 to 4875 (2008/05/19)
+
+Fixed small bug with input length in numerical questions (c_schmitz)
+Updated Danish Language by Stefan Grandhol ( stefangranholm -a-t- gmail -d-i-t c.o.m ) (c_schmitz)
+Spanish language updated (kadejo)
+# 2017: User unable to export their own survey ==> fixed style in html.php ==> THX to jak82 (el-matador-69)
+Updated Welsh Language File by John doit Moorhouse (a-t-) Powys doit gov doit uk (c_schmitz)
+Updated Croatian & Italian Language files by Igor Dobra¿a <idobraca -o-t- veleri -da-t- hr> (c_schmitz)
+Fixed #2002: group page is displayed even when no description (lemeur)
+
+
 Changes from 1.70+ Revision 4758 to 4831 (2008/05/12)
 
 Small corrections for the German language files (c_schmitz)
