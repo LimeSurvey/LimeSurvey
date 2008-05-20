@@ -443,10 +443,14 @@ function createinsertquery()
                     $query .= " submitdate = ".$connect->DBDate($mysubmitdate).", ";
 				}
 				$fields=explode("|", $_POST['modfields']);
+				$fields=array_unique($fields);
 				foreach ($fields as $field)
 				{
+			      if(!empty($field))
+			        {
 					if (!isset($_POST[$field])) {$_POST[$field]='';}
                     $query .= db_quote_id($field)." = '".db_quote($_POST[$field])."',";
+                    }
 				}
 				$query .= "WHERE id=" . $_SESSION['srid'];
 				$query = str_replace(",WHERE", " WHERE", $query);   // remove comma before WHERE clause

@@ -993,9 +993,10 @@ function checkgroupfordisplay($gid)
 function checkconfield($value)
 {
 	global $dbprefix, $connect;
-	foreach ($_SESSION['fieldarray'] as $sfa)
+	//$value is the fieldname for the field we are checking for conditions
+	foreach ($_SESSION['fieldarray'] as $sfa) //Go through each field
 	{
-		if ($sfa[1] == $value && $sfa[7] == "Y" && isset($_SESSION[$value]) && $_SESSION[$value])
+		if ($sfa[1] == $value && $sfa[7] == "Y" && isset($_SESSION[$value]) && $_SESSION[$value]) //Do this if there is a condition based on this answer
 		{
 			$currentcfield="";
 			$query = "SELECT ".db_table_name('conditions').".*, ".db_table_name('questions').".type "
@@ -1004,7 +1005,7 @@ function checkconfield($value)
 			. "AND ".db_table_name('conditions').".qid=$sfa[0] "
 			. "ORDER BY ".db_table_name('conditions').".qid";
 			$result=db_execute_assoc($query) or die($query."<br />".htmlspecialchars($connect->ErrorMsg()));
-			while($rows = $result->FetchRow())
+			while($rows = $result->FetchRow()) //Go through the condition on this field
 			{
 				if($rows['type'] == "M" || $rows['type'] == "P")
 				{
@@ -1065,11 +1066,15 @@ function checkconfield($value)
 			}
 			if($total<count($container))
 			{
-				// Reset the calue in SESSION
-				$_SESSION[$value]="";
-				// Simulate a modfield on this answer
-				// in order to have save.php overwrite the value	
-				$_POST['modfields'] = $_POST['modfields']."|".$value;
+			    //If this is not a "moveprev" then
+				// Reset the value in SESSION
+	            //if(isset($_POST['move']) && $_POST['move'] != "moveprev")
+	            //{
+				    $_SESSION[$value]="";
+				    // Simulate a modfield on this answer
+				    // in order to have save.php overwrite the value	
+				    $_POST['modfields'] = empty($_POST['modfields']) ? $value : $_POST['modfields']."|".$value;
+				//}
 			}
 			unset($cqval);
 			unset($container);
