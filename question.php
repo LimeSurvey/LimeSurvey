@@ -179,7 +179,12 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 				$_SESSION[$conditionfieldname] == '' || 
 				$_SESSION[$conditionfieldname] == ' ')
 			{
-				$currentvalue="NULL";
+			    if($thistype == "K")
+			    {
+			      $currentvalue = 0;
+			    } else {
+				  $currentvalue="NULL";
+				}
 			} 
 			else 
 			{
