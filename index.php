@@ -261,7 +261,7 @@ if (!$surveyid)
 			  AND a.useexpiry = 'Y') OR
 			  (a.useexpiry = 'N'))
 			  ORDER BY surveyls_title";
-	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+	$result = db_execute_assoc($query,false,true) or die("Could not connect to database. If you try to install LimeSurvey please refer to the <a href='http://docs.limesurvey.org'>installation docs</a> and/or contact the system administrator of this webpage.");
 	$list=array();
 	if($result->RecordCount() > 0) 
 	{
