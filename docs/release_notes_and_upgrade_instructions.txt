@@ -73,7 +73,7 @@ HOW TO UPGRADE from a LimeSurvey 1.70 or 1.70+ version to the latest 1.70+
 
 Thank you to everyone who helped with this new release!
 
-Changes from 1.70+ Revision 4758 to 4875 (2008/05/19)
+Changes from 1.70+ Revision 4758 to 4855 (2008/05/21)
 
 Fixed small bug with input length in numerical questions (c_schmitz)
 Updated Danish Language by Stefan Grandhol ( stefangranholm -a-t- gmail -d-i-t c.o.m ) (c_schmitz)
@@ -82,7 +82,9 @@ Spanish language updated (kadejo)
 Updated Welsh Language File by John doit Moorhouse (a-t-) Powys doit gov doit uk (c_schmitz)
 Updated Croatian & Italian Language files by Igor Dobra¿a <idobraca -o-t- veleri -da-t- hr> (c_schmitz)
 Fixed #2002: group page is displayed even when no description (lemeur)
-
+French language updated (b00z00)
+Fix related to bug #02029 - cleans up the internal changes to $_POST['modfields'] that are hacked in when checking conditionals, stops script from crashing out when moving back onto conditional question. (jcleeland)
+Fix related to bug #02029 - conditions checker was converting missing numerical responses to null, instead of zero, breaking the eval and forcing a false positive match. (jcleeland)
 
 Changes from 1.70+ Revision 4758 to 4831 (2008/05/12)
 
