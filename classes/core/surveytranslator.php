@@ -163,6 +163,10 @@
 	    $supportedLanguages['ja']['description'] = $clang->gT('Japanese');
 	    $supportedLanguages['ja']['nativedescription'] = '&#x65e5;&#x672c;&#x8a9e;';
 
+	    // Korean
+	    $supportedLanguages['ko']['description'] = $clang->gT('Korean');
+	    $supportedLanguages['ko']['nativedescription'] = '&#54620;&#44397;&#50612;';
+
 	    // Lithuanian
 	    $supportedLanguages['lt']['description'] = $clang->gT('Lithuanian');
 	    $supportedLanguages['lt']['nativedescription'] = 'Lietuvi&#371;';
