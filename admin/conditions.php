@@ -716,8 +716,17 @@ $conditionsoutput .= "\t\t\tvar Keys = new Array();\n"
 $conditionsoutput .= "\t\t\tfor (var i=0;i<Keys.length;i++)\n"
 ."\t\t\t\t{\n";
 //$conditionsoutput .= "\t\t\t\talert(Answers[Keys[i]]);\n";
+// I added the condition to show or not the CONST_RGX div
+// depending on the lenght of answer options' array for the question to be conditioned.
+// It will hidde too the canswers box because it is empty.
 $conditionsoutput .= "\t\t\t\tdocument.getElementById('canswers').options[document.getElementById('canswers').options.length] = new Option(Answers[Keys[i]], Codes[Keys[i]]);\n"
 ."\t\t\t\t}\n"
+. "\t\t\tif (document.getElementById('canswers').options.length > 0){\n"                                                                         
+. "\t\t\t\tdocument.getElementById('CONST_RGX').style.display = 'none';\n"
+. "\t\t\t\tdocument.getElementById('canswers').style.display = '';}\n"
+. "\t\t\telse {\n"                                                                         
+. "\t\t\t\tdocument.getElementById('CONST_RGX').style.display = '';\n"
+. "\t\t\t\tdocument.getElementById('canswers').style.display = 'none';}\n"
 ."\t\t}\n"
 ."function evaluateLabels(val)\n"
 ."{\n"
@@ -992,9 +1001,15 @@ $conditionsoutput .= "\t\t\t<small><br />".$clang->gT("NOTE: If you use a pre-de
 $conditionsoutput .= "\t\t</td>\n"
 ."\t\t<td valign='top' align='center'>\n"
 ."\t\t\t<select name='canswers[]' multiple id='canswers' style='font-family:verdana; font-size:10; min-width:250px;' size='6'>\n";
-$conditionsoutput .= "\t\t\t</select><br />\n\t\t\t\n"
+$conditionsoutput .= "\t\t\t</select><br />\n\t\t\t\n";
+// Some one request to hidde this if it is not necesary
+// It will be showed when answers array is empty
+// on HTML´s JS code. I fixed that enclosing it in a div called
+// CONST_RGX and it will be showed or not.
+$conditionsoutput .= "<div id='CONST_RGX' style='display: none'>"
 ."\t\t".$clang->gT("Constant Value or Regular Expression")."<br />\n"
-."\t\t<textarea name='ValOrRegEx' cols='40' rows='5'></textarea>\n"
+."\t\t<textarea name='ValOrRegEx' cols='40' rows='5'></textarea>\n";
+$conditionsoutput .= "</div>"
 ."\t\t</td>"
 ."\t</tr>\n"
 ."\t<tr>\n"
