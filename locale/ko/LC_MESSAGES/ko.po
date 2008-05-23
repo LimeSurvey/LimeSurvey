@@ -5,18 +5,18 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: LimeSurvey\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-05-11 09:00+0200\n"
-"PO-Revision-Date: 2008-05-22 09:50+0900\n"
-"Last-Translator: Lee <paradise_dw@nate.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2008-05-24 00:57+0100\n"
+"Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
+"Language-Team: Korean <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: gT\n"
 "X-Poedit-Basepath: .\n"
-"X-Poedit-Bookmarks: 1356,435,-1,-1,-1,-1,-1,-1,-1,-1\n"
+"X-Poedit-Bookmarks: 1356,1296,-1,-1,-1,-1,-1,-1,-1,-1\n"
 "X-Poedit-SearchPath-0: C:\\LimeSurvey_Sources\\source\\limesurvey\n"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:38
@@ -28,7 +28,7 @@ msgstr "오류"
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:39
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:190
 msgid "We are sorry but your session has expired."
-msgstr "죄송하지만 당신의 작업시간이 만기되었습니다."
+msgstr "죄송하지만 당신의 작업시간이 만료되었습니다."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:39
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:190
@@ -405,7 +405,7 @@ msgstr "레이블 세트 불러오기"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:66
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2482
 msgid "Main Admin Screen"
-msgstr "주 관리자 화면"
+msgstr "주관리 화면"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:31
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1455
@@ -786,7 +786,7 @@ msgstr "템플릿 편집기"
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:255
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:256
 msgid "Default Administration Page"
-msgstr "관리 페이지 초기화"
+msgstr "초기 관리 페이지"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:559
 msgid "Create new template called:"
@@ -1453,7 +1453,7 @@ msgstr "증가"
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3071
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1709
 msgid "Same"
-msgstr "같은"
+msgstr "동일"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1075
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:642
@@ -1779,11 +1779,11 @@ msgstr "비활성화된 설문들"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:333
 msgid "Active Token Tables"
-msgstr "토큰 테이블 활성화"
+msgstr "활성화된 토큰 테이블"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:340
 msgid "De-activated Token Tables"
-msgstr "토큰 테이블 비활성화"
+msgstr "비활성화된 토큰 테이블"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:350
 msgid "Show PHPInfo"
@@ -3962,7 +3962,7 @@ msgstr "삭제할 설문을 선택하지 않았습니다."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/deletesurvey.php:43
 msgid "You are about to delete this survey"
-msgstr "당신은 설문은 삭제하려 하고 있습니다."
+msgstr "당신은 설문을 삭제하려 하고 있습니다."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/deletesurvey.php:44
 msgid "This process will delete this survey, and all related groups, questions answers and conditions."
@@ -3970,7 +3970,7 @@ msgstr "이 과정은 이 설문과 관련된 그룹, 질문, 응답, 조건들�
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/deletesurvey.php:45
 msgid "We recommend that before you delete this survey you export the entire survey from the main administration screen."
-msgstr "이 설문을 삭제하기 전에 메인 관리 화면에서 전체 설문을 전송하시기 바랍니다."
+msgstr "이 설문을 삭제하기 전에 주관리 화면에서 전체 설문을 내보내시기 바랍니다."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/deletesurvey.php:49
 msgid "This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey."
@@ -4094,7 +4094,7 @@ msgstr "질문을 선택하지 않았습니다."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:68
 msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
-msgstr "당신의 조건은 추가될 수 없습니다. 그 조건을 기초로 하는 질문이나 응답을 포함하지 않습니다. 질문이나 응답을 선택해주시기 바랍니다."
+msgstr "당신의 조건은 추가될 수 없습니다. 그 조건을 기초로 하는 질문이나 응답을 선택하지 않았습니다. 질문이나 응답을 선택해주시기 바랍니다."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:148
 msgid "Did not copy questions"
@@ -4909,19 +4909,19 @@ msgstr ""
 "\n"
 "당신은 설문에 참여하도록 초대되었습니다.\n"
 "\n"
-"설문은 이름 붙여졌습니다:\n"
+"설문의 이름은 다음과 같습니다:\n"
 "\"{SURVEYNAME}\"\n"
 "\n"
 "\"{SURVEYDESCRIPTION}\"\n"
 "\n"
 "참여하기 위해서는, 아래의 링크를 클릭하십시오.\n"
 "\n"
-"진정으로\n"
+"감사합니다.\n"
 "\n"
 "{ADMINNAME} ({ADMINEMAIL})\n"
 "\n"
 "----------------------------------------------\n"
-"설문 하기 위해 이곳을 클릭하십시오:\n"
+"설문에 참여하려면 이곳을 클릭하십시오:\n"
 "{SURVEYURL}"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1134
@@ -4960,7 +4960,7 @@ msgstr ""
 "\n"
 "최근에 우리는 당신이 설문에 참여하도록 초대했습니다.\n"
 "\n"
-"우리는 당신이 아직 설문을 완료하지 않았음을 말씀드렸습니다, 그리고 당신에게 설문이 여전히 유효하기 때문에 당신이 참여하시기를 원하다는 사실을 알려드립니다.\n"
+"우리는 당신이 아직 설문을 완료하지 않았음을 알려드리는 바입니다. 그리고 그 설문은 아직 진행 중이므로 당신이 참여해 주셨으면 합니다.\n"
 "\n"
 "설문에 표제가 있습니다:\n"
 "\"{SURVEYNAME}\"\n"
@@ -4970,12 +4970,12 @@ msgstr ""
 "참여하기 위해서는, 아래의 링크를 클릭하십시오\n"
 "\n"
 "\n"
-"진정으로\n"
+"감사합니다.\n"
 "\n"
 "{ADMINNAME} ({ADMINEMAIL})\n"
 "\n"
 "----------------------------------------------\n"
-"설문하려면 여기를 누르십시오:\n"
+"설문에 참여하려면 이곳을 클릭하십시오:\n"
 "{SURVEYURL}"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1136
@@ -5001,9 +5001,9 @@ msgid ""
 msgstr ""
 "친애하는 {FIRSTNAME},\n"
 "\n"
-"이 메일은 당신이{SURVEYNAME}을 완벽히 지어냈다는 것을 알리기 위함이며 당신의 응답이 저장되었음을 말하고 있습니다. 협력해주셔서 감사합니다.\n"
+"이 메일은 당신이 {SURVEYNAME}으로 이름 붙여진 설문을 완성했다는 것을 알리기 위함이며, 당신의 응답이 저장되었음을 알려드리는 바입니다. 협력해주셔서 감사합니다.\n"
 "\n"
-"만약 당신이 이 메일과 관련하여 궁금한 사항이 있다면,  {ADMINEMAIL}에 있는{ADMINNAME}과 연락하시기 바랍니다.\n"
+"만약 당신이 이 메일과 관련하여 궁금한 사항이 있다면,  {ADMINEMAIL}을 이용하여 {ADMINNAME}와(과) 연락해 보시기 바랍니다.\n"
 "\n"
 "감사합니다\n"
 "\n"
@@ -5037,7 +5037,7 @@ msgstr ""
 "\n"
 "{SURVEYURL}\n"
 "\n"
-"이 설문에 대해 질문이 있거나, 당신이 설문을 위해 이메일을 등록하지 않았고 이 이메일에 문제가 있다고 생각한다면, {ADMINEMAIL}로 {ADMINNAME}과 접촉해보시기 바랍니다."
+"이 설문에 대해 질문이 있거나, 당신이 설문을 위해 이메일을 등록하지 않았고 이 이메일에 문제가 있다고 생각한다면, {ADMINEMAIL}을 이용하여 {ADMINNAME}와(과) 연락해 보시기 바랍니다."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1155
 msgid "Survey could not be updated"
@@ -6340,7 +6340,7 @@ msgstr "당신의 순위"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1279
 msgid "Update Entry"
-msgstr "항목 업데이트"
+msgstr "기재사항 업데이트"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1313
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2416
@@ -6464,7 +6464,7 @@ msgstr "이메일 주소가 유효하지 않습니다."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:330
 msgid "Username was not supplied."
-msgstr "사용자 이름이 제공되지 않습니다."
+msgstr "사용자 이름이 제공되지 않았습니다."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:359
 msgid "You were signed in on the site"
@@ -6876,7 +6876,7 @@ msgstr "하나 또는 여러 개의 필수 질문이 응답되지 않았습니�
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:561
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
-msgstr "하나 또는 여러 개의 질문이 유효한 방법으로 답변되지 않았습니다. 이 응답들이 유효해질 때까지 당신은 진행할 수 없습니다."
+msgstr "하나 또는 여러 개의 질문이 유효한 방법으로 답변되지 않았습니다. 이 응답들이 유효해질 때까지 당신은 설문을 진행할 수 없습니다."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:628
 msgid "Day"
@@ -6965,29 +6965,29 @@ msgstr "당신의 해설을 이곳에 기재하십시오."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1566
 msgid "Click on an item in the list on the left, starting with your"
-msgstr "좌측에 있는 목록 중 하나를 클릭하고, 시작하시오."
+msgstr "좌측에 있는 목록 중 하나를 클릭하고, 시작하십시오."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1567
 msgid "highest ranking item, moving through to your lowest ranking item."
-msgstr "당신의 가장 하위수준의 항목으로 가장 높은 수준의 항목을 움직이시오."
+msgstr "가장 높은 순위의 항목부터 가장 낮은 순위의 항목 순서로 옮기시면 됩니다."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1595
 msgid "Click on the scissors next to each item on the right"
-msgstr "우측에 있는 각 항목 옆의 삭제를 클릭하시오."
+msgstr "우측에 있는 각 항목 옆의 가위표시를 클릭하시면"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1596
 msgid "to remove the last entry in your ranked list"
-msgstr "당신이 순서를 매긴 목록의 마지막 기재사항을 삭제하기 위해서는"
+msgstr "당신이 순서를 매긴 목록의 마지막 기재사항이 삭제 됩니다."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1781
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1953
 msgid "Please choose at most"
-msgstr "가장 많은 것을 선택하시오."
+msgstr "가장 많은 것을 선택하십시오."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1781
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1953
 msgid "answer(s) for question"
-msgstr "물음에 답하시오."
+msgstr "물음에 답하십시오."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2001
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2110
@@ -7124,11 +7124,11 @@ msgstr "날짜"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:779
 msgid "Array (Increase, Same, Decrease)"
-msgstr "정렬 (증가, 통일, 감소)"
+msgstr "정렬 (증가, 동일, 감소)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:780
 msgid "Array (Flexible Labels)"
-msgstr "정렬 (유동적인 항목)"
+msgstr "정렬 (유동 레이블)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:781
 msgid "Gender"
@@ -7136,7 +7136,7 @@ msgstr "성(姓)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:782
 msgid "Array (Flexible Labels) by Column"
-msgstr "(유동적인 레이블을) 단에 따라 정렬"
+msgstr "(유동 레이블을) 단에 따라 정렬"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:783
 msgid "Language Switch"
@@ -7184,7 +7184,7 @@ msgstr "자유로운 매우 긴 글"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:795
 msgid "List (Flexible Labels) (Dropdown)"
-msgstr "목록 (유동 레이블) (탈락)"
+msgstr "목록 (유동 레이블) (늘어진 목록)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:796
 msgid "Boilerplate Question"
@@ -7196,11 +7196,11 @@ msgstr "예/아니오"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:798
 msgid "List (Flexible Labels) (Radio)"
-msgstr "목록 (유동적인 항목) (Radio)"
+msgstr "목록 (유동 레이블) (Radio)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:799
 msgid "List (Dropdown)"
-msgstr "목록 (탈락)"
+msgstr "목록 (늘어진 목록)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1173
 msgid "It appears as if some tables or fields are missing from your database."
@@ -7249,19 +7249,19 @@ msgstr "이 설문에는 한 개의 질문이 있습니다."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2174
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
-msgstr "이 설문에는 {NUMBEROFQUESTIONS} 질문이 있습니다."
+msgstr "이 설문에는 {NUMBEROFQUESTIONS}개의 질문이 있습니다."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2228
 msgid "A Note On Privacy"
-msgstr "사적인 사항에 대한 메모"
+msgstr "익명성과 관련된 메모"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2228
 msgid "This survey is anonymous."
-msgstr "이 설문은 익명설문입니다."
+msgstr "이 설문은 익명으로 진행됩니다."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2228
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
-msgstr "만약 당신의 신원을 확인할 수 있는 정보에 대한 구체적인 질문이 설문에 없다면, 당신이 설문에 응답한 자료는 신원에 대한 정보를 포함하고 있지 않습니다. 당신의 신원을 확인하여 설문에 참여할 수 있게 하는 토큰을 사용하는 설문에 응답한다면, 당신은 신원확인 토큰이 당신의 응답에 들어있지 않으므로 개의치 않아도 됩니다. 토큰은 다른 데이터베이스에서 따로 관리하고, 당신이 설문을 완수하거나 하지 않았다는 것을 알려주기 위한 경우에만 갱신됩니다. 이 설문에서는 설문에 대해 응답한 사람에 대한 신원정보를 알 수 없습니다."
+msgstr "만약 당신의 신원 정보에 대한 구체적인 질문이 설문에 없다면, 당신이 설문에 응답한 자료는 신원 정보를 포함하지 않습니다. 당신의 신원을 확인하여 설문에 참여할 수 있게 하는 토큰을 사용하는 설문에 응답하는 경우에, 신원확인 토큰이 응답에 포함되지 않음은 신경쓰지 않으셔도 됩니다. 토큰은 다른 데이터베이스에서 따로 관리하고, 당신이 설문을 완수하거나 완수하지 않았다는 것을 알려주기 위한 경우에 갱신됩니다. 이 설문에서는 설문에 응답한 사람의 신원정보를 알 수 없습니다."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2238
 msgid "Are you sure you want to clear all your responses?"
