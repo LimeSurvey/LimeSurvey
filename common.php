@@ -2734,8 +2734,13 @@ function getHeader()
 	else {$surveylanguage=$defaultlang;}
 	if ( !$embedded )
 	{
-		return  "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
-        		. "<html><head>\n"
+		$header=  "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
+        		. "<html ";
+        if (getLanguageRTL($surveylanguage))
+        {
+            $header.=" dir=\"rtl\" ";
+        }
+        $header.= "\"><head>\n"
         		. "<link type=\"text/css\" rel=\"StyleSheet\" href=\"".$rooturl."/scripts/slider/swing.css\" />\n"
         		. "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"".$rooturl."/scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />"
         		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/slider/range.js\"></script>\n"
@@ -2744,7 +2749,8 @@ function getHeader()
         		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/calendar.js\"></script>\n"
         		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/lang/calendar-".$surveylanguage.".js\"></script>\n"
         		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/calendar-setup.js\"></script>\n";
-        	}
+        return $header;        
+    }
 
 	global $embedded_headerfunc;
 
@@ -2799,12 +2805,18 @@ function getAdminHeader($meta=false)
 	global $sitename, $admintheme, $rooturl;
 	if (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='') {$_SESSION['adminlang']='en';}
 	$strAdminHeader="<?xml version=\"1.0\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
-	."<html>\n<head>\n"
+	."<html ";
+    
+    if (getLanguageRTL($_SESSION['adminlang']))
+    {
+        $strAdminHeader.=" dir=\"rtl\" ";
+    }
+    $strAdminHeader.=">\n<head>\n"
 	. "<!--[if lt IE 7]>\n"
 	. "<script defer type=\"text/javascript\" src=\"scripts/pngfix.js\"></script>\n"
 	. "<![endif]-->\n"
-//	. "<script type='text/javascript' src='$rooturl/scripts/fckeditor/fckeditor.js'></script>\n"
 	. "<title>$sitename</title>\n";
+    
 	if ($meta)
         {
         $strAdminHeader.=$meta;
