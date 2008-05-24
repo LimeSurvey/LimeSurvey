@@ -193,10 +193,25 @@ if (!$style)
 	."\t\t\t<input type='radio' class='radiobtn' name='type' value='doc' id='worddoc' onclick='document.getElementById(\"ansfull\").checked=true;document.getElementById(\"ansabbrev\").disabled=true;'>"
 	."<font size='1'><label for='worddoc'>"
 	.$clang->gT("Microsoft Word (Latin charset)")."</label><br />\n"
-	."\t\t\t<input type='radio' class='radiobtn' name='type' value='xls' checked id='exceldoc' onclick='document.getElementById(\"ansabbrev\").disabled=false;'>"
+	."\t\t\t<input type='radio' class='radiobtn' name='type' value='xls' checked id='exceldoc'";
+    if (!function_exists('iconv'))  
+    {
+      $exportoutput.=' disabled="disabled" ';
+    }    
+    $exportoutput.="onclick='document.getElementById(\"ansabbrev\").disabled=false;'>"
 	."<label for='exceldoc'>"
-	.$clang->gT("Microsoft Excel (All charsets)")."</label><br />\n"
-	."\t\t\t<input type='radio' class='radiobtn' name='type' value='csv' id='csvdoc' onclick='document.getElementById(\"ansabbrev\").disabled=false;'>"
+	.$clang->gT("Microsoft Excel (All charsets)");
+     if (!function_exists('iconv'))
+    {
+      $exportoutput.='<br /><font class="warningtitle">'.$clang->gT("(Iconv Library not installed)").'</font>';
+    }
+    $exportoutput.="</label><br />\n"
+	."\t\t\t<input type='radio' class='radiobtn' name='type' value='csv' id='csvdoc'";
+    if (!function_exists('iconv'))  
+    {
+      $exportoutput.=' checked="checked" ';
+    }    
+    $exportoutput.=" onclick='document.getElementById(\"ansabbrev\").disabled=false;'>"
 	."<label for='csvdoc'>"
 	.$clang->gT("CSV File (All charsets)")."</label>\n"
 	."\t\t</font></font></td>\n"
