@@ -582,6 +582,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			}
 			elseif ($fnrow['type'] == "O")
 			{
+                if (!isset($fnrrow)) {$fnrrow=array("code"=>"", "answer"=>"");}
 				$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
 				$field2 = $field."comment";
 				$ftitle2 = $ftitle."[Comment]";
@@ -599,15 +600,6 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			}
 		}
 		$nfncount = count($fnames)-1;
-
-		//	foreach ($fnames as $fnm)
-		//		{
-		//$dataentryoutput .= "<!-- DEBUG FNAMES: $fnm[0], $fnm[1], $fnm[2], $fnm[3], $fnm[4], $fnm[5], $fnm[6]";
-		//if (isset($fnm[7])){$dataentryoutput .= $fnm[7];}
-		//$dataentryoutput .= ",";
-		//if (isset($fnm[8])) {$dataentryoutput .= $fnm[8];}
-		//$dataentryoutput .= " -->\n";
-		//		}
 
 		//SHOW INDIVIDUAL RECORD
 
