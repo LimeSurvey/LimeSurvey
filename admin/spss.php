@@ -171,10 +171,10 @@ for ($i=0; $i < $num_results; $i++) {
 $fieldno=0;
 
 if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
-	$query="SHOW COLUMNS FROM ".db_table_name("tokens_$surveyid");
-	$result=db_execute_assoc($query) or die("Couldn't count fields in tokens<br />$query<br />".$connect->ErrorMsg());
-	while ($row=$result->FetchRow()) {
-		$token_fields[]=$row[0];
+
+    $tablefieldnames = array_values($connect->MetaColumnNames("tokens_$surveyid", true));
+	foreach ($tablefieldnames as $tokenfieldname) {
+		$token_fields[]=$tokenfieldname;
 	}
 	if (in_array("firstname", $token_fields)) {
 		$fields[$fieldno++]=array("id"=>"fname","name"=>$clang->gT("First Name"),"code"=>"","qid"=>0,"SPSStype"=>"A","size"=>40);
@@ -198,17 +198,15 @@ if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
 //$fieldno=1;
 $fieldno=0;
 $tempArray = array();
-$query="SHOW COLUMNS FROM ".db_table_name("survey_$surveyid");
-$result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());
-$num_results = $result->RecordCount();
+$fieldnames = array_values($connect->MetaColumnNames("survey_$surveyid", true));
+$num_results = count($fieldnames);
 $num_fields = $num_results;
 # Build array that has to be returned
 for ($i=0; $i < $num_results; $i++) {
-	$row = $result->FetchRow();
 	#Conditions for SPSS fields:
 	# - Length may not be longer than 8 characters
 	# - Name may not begin with a digit
-	$fieldname = $row["Field"];
+	$fieldname = $fieldnames[$i];
 	$fieldtype = "";
 	$val_size = 1;
 	//echo $fieldname." - ";
