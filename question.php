@@ -478,21 +478,6 @@ echo "\n\n<!-- INPUT NAMES -->\n";
 echo "\t<input type='hidden' name='fieldnames' value='";
 echo implode("|", $inputnames);
 echo "' id='fieldnames'  />\n";
-
-// --> START NEW FEATURE - SAVE
-// Used to keep track of the fields modified, so only those are updated during save
-echo "\t<input type='hidden' name='modfields' value='";
-
-// Debug - uncomment if you want to see the value of modfields on the next page source (to see what was modified)
-//         however doing so will cause the save routine to save all fields that have ever been modified whether
-//	   they are on the current page or not.  Recommend just using this for debugging.
-//if (isset($_POST['modfields']) && $_POST['modfields']) {
-//	$inputmodfields=explode("|", $_POST['modfields']);
-//	echo implode("|", $inputmodfields);
-//}
-
-echo "' id='modfields' />\n";
-echo "\n";
 echo "\n\n<!-- JAVASCRIPT FOR MODIFIED QUESTIONS -->\n";
 echo "\t<script type='text/javascript'>\n";
 echo "\t<!--\n";
@@ -554,10 +539,6 @@ if ($bIsGroupDescrPage)
 	echo "\t<!--\n";
 	echo "\t\tfunction checkconditions(value, name, type)\n";
 	echo "\t\t\t{\n";
-	echo "\t\t\t\tif (navigator.userAgent.indexOf('Safari')>-1 && name !== undefined )\n";
-	echo "\t\t\t\t{ // Safari eats the onchange so run modfield manually exepect at onload time\n";
-	echo "\t\t\t\t\tmodfield(name);\n";
-	echo "\t\t\t\t}\n";
 	echo "\t\t\t}\n";
 	echo "\t//-->\n";
 	echo "\t</script>\n\n";
@@ -583,10 +564,6 @@ else
 	echo "\t<!--\n";
 	echo "\t\tfunction checkconditions(value, name, type)\n";
 	echo "\t\t\t{\n";
-	echo "\t\t\t\tif (navigator.userAgent.indexOf('Safari')>-1 && name !== undefined )\n";
-	echo "\t\t\t\t{ // Safari eats the onchange so run modfield manually exepect at onload time\n";
-	echo "\t\t\t\t\tmodfield(name);\n";
-	echo "\t\t\t\t}\n";
 	echo "\t\t\t}\n";
 	echo "\t//-->\n";
 	echo "\t</script>\n\n";

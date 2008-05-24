@@ -1071,9 +1071,6 @@ function checkconfield($value)
 	            //if(isset($_POST['move']) && $_POST['move'] != "moveprev")
 	            //{
 				    $_SESSION[$value]="";
-				    // Simulate a modfield on this answer
-				    // in order to have save.php overwrite the value	
-				    $_POST['modfields'] = empty($_POST['modfields']) ? $value : $_POST['modfields']."|".$value;
 				//}
 			}
 			unset($cqval);

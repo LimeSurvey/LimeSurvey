@@ -31,25 +31,6 @@ Array.prototype.pop = function() {
 
 
 //defined in group.php & question.php & survey.php, but a static function
-function modfield(name) 
-{
-    temp=document.getElementById('modfields').value;
-    if (temp=='')
-	{
-    	document.getElementById('modfields').value=name;
-    }
-    else
-	{
-    	myarray=temp.split('|');
-		if (!inArray(name, myarray))
-		{
-			myarray.push(name);
-			document.getElementById('modfields').value=myarray.join('|');
-		}
-	}
-}
-
-//defined in group.php & question.php & survey.php, but a static function
 function inArray(needle, haystack)
 {
 	for (h in haystack)
@@ -98,7 +79,7 @@ function cellAdapter(src)
 	if (eChild.type == 'radio') eChild.checked = true;
 //	else if (eChild.type == 'checkbox') eChild.checked = !eChild.checked;   
 //  Commented out  since it cause direct clicks on checkboxes to be reversed - see multiple choice with comments question
-	if (typeof modfield != 'undefined') modfield(eChild.name);
+
 }
 
 function prepCellAdapters()

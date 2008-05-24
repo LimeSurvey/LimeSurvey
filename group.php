@@ -370,20 +370,6 @@ print <<<END
 <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />
 END;
 
-// --> START NEW FEATURE - SAVE
-// Used to keep track of the fields modified, so only those are updated during save
-echo "\t<input type='hidden' name='modfields' value='";
-
-// Debug - uncomment if you want to see the value of modfields on the next page source (to see what was modified)
-//         however doing so will cause the save routine to save all fields that have ever been modified whether
-//	   they are on the current page or not.  Recommend just using this for debugging.
-//if (isset($_POST['modfields']) && $_POST['modfields']) {
-//	$inputmodfields=explode("|", $_POST['modfields']);
-//	echo implode("|", $inputmodfields);
-//}
-
-echo "' id='modfields' />\n";
-echo "\n";
 echo "\n\n<!-- JAVASCRIPT FOR MODIFIED QUESTIONS -->\n";
 echo " <script type='text/javascript'>\n";
 echo " <!--\n";
@@ -521,7 +507,7 @@ foreach ($conditions as $cd)
 	if ($cd[4] == "L") //Just in case the dropdown threshold is being applied, check number of answers here
 	{
 		$cccquery="SELECT COUNT(*) FROM {$dbprefix}answers WHERE qid={$cd[1]} AND language='".$_SESSION['s_lang']."'";
-		$cccresult=db_execute_num($cccquery);
+		$cccresult=db_execute_num($cccquery); //Checked
 		list($cccount) = $cccresult->FetchRow();
 	}
 	if ($cd[4] == "R")
@@ -583,7 +569,7 @@ foreach ($conditions as $cd)
 	// If it is '' (empty) means not answered
 	// then a space or a false are interpreted as no answer
 	// as we let choose if the questions is answered or not
-	// and doesn�t care the answer, so we wait for a == or !=
+	// and doesnt care the answer, so we wait for a == or !=
 	// TempFix by lemeur ==> add a check on cd[3]=' ' as well because
 	// condition editor seems not updated yet
 	if ($cd[3] == '' || $cd[3] == ' ')
@@ -678,7 +664,7 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 		if ($attralist['type'] == "M")
 		{
 			$qquery = "SELECT code FROM {$dbprefix}answers WHERE qid='".$attralist['qid']."' AND language='".$_SESSION['s_lang']."' order by code;";
-			$qresult = db_execute_assoc($qquery);
+			$qresult = db_execute_assoc($qquery); //Checked
 			while ($fansrows = $qresult->FetchRow())
 			{
 				$fquestans = "java".$qfbase.$fansrows['code'];
@@ -704,12 +690,7 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 }
 
 if (isset($java)) {echo $java;}
-echo "\n\tif (navigator.userAgent.indexOf('Safari')>-1 && name !== undefined )\n"
-."\t\t{ // Safari eats the onchange so run modfield manually, except when called at onload time\n"
-."\t\t\t//alert('For Safari (Useragent: '+navigator.userAgent+' calling modfield for ' + name);\n"
-."\t\t\tmodfield(name);\n"
-."\t\t}\n"
-."\t}\n"
+echo "\t}\n"
 ."\t//-->\n"
 ."\t</script>\n\n"; // End checkconditions javascript function
 

@@ -50,10 +50,6 @@ echo "<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
 		function checkconditions(value, name, type)
 			{
 			}
-
-		function modfield(name)
-			{
-			}
 	//-->
 	</script>";
 echo "<form method='post' action='index.php' id='limesurvey' name='limesurvey'>\n";

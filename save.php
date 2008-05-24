@@ -45,7 +45,7 @@ Details.
 1. The answers are saved in the "survey_x" table only.  The "saved" table is no longer used.
 2. The "saved_control" table has new column (srid) that points to the "survey_x" record it corresponds to.
 3. Answers are saved every time you move between pages (Next,Prev,Last,Submit, or Save so far).
-4. Only the fields modified on the page are updated. A new hidden field "modfields" store which fields have changed.
+4. Only the fields modified on the page are updated. A new hidden field "modfields" store which fields have changed. - REVERTED
 5. Answered are reloaded from the database after the save so that if some other answers were modified by someone else
 the updates would be picked up for the current page.  There is still an issue if two people modify the same
 answer at the same time.. the 'last one to save' wins.
@@ -426,7 +426,7 @@ function createinsertquery()
 		else
 		{  // UPDATE EXISTING ROW
 			// Updates only the MODIFIED fields posted on current page.
-			if (isset($_POST['modfields']) && $_POST['modfields'])
+			if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 			{
 				$query = "UPDATE {$thissurvey['tablename']} SET ";
 				if ($thissurvey['datestamp'] == "Y")
@@ -442,7 +442,7 @@ function createinsertquery()
 				{
                     $query .= " submitdate = ".$connect->DBDate($mysubmitdate).", ";
 				}
-				$fields=explode("|", $_POST['modfields']);
+				$fields=explode("|", $_POST['fieldnames']);
 				$fields=array_unique($fields);
 				foreach ($fields as $field)
 				{

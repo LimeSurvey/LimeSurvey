@@ -99,7 +99,7 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit") && (!isset($notans
 		}
 
         // this three lines are to set the submitdate
-        unset($_POST['modfields']);
+        unset($_POST['fieldnames']);
         
         // only update submitdate if the user did not already visit the submit page
         if (!isset($_SESSION['finished']))
@@ -272,19 +272,6 @@ echo "\n\n<!-- INPUT NAMES -->\n"
 .implode("|", $inputnames)
 ."' />\n";
 
-// --> START NEW FEATURE - SAVE
-// Used to keep track of the fields modified, so only those are updated during save
-echo "\t<input type='hidden' name='modfields' value='";
-
-// Debug - uncomment if you want to see the value of modfields on the next page source (to see what was modified)
-//         however doing so will cause the save routine to save all fields that have ever been modified whether
-//	   they are on the current page or not.  Recommend just using this for debugging.
-//if (isset($_POST['modfields']) && $_POST['modfields']) {
-//	$inputmodfields=explode("|", $_POST['modfields']);
-//	echo implode("|", $inputmodfields);
-//}
-
-echo "' id='modfields' />\n";
 echo "\n";
 echo "\n\n<!-- JAVASCRIPT FOR MODIFIED QUESTIONS -->\n";
 echo "\t<script type='text/javascript'>\n";
@@ -547,12 +534,7 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 
 
 if (isset($java)) {echo $java;}
-echo "\t\t\t\tif (navigator.userAgent.indexOf('Safari')>-1 && name !== undefined )\n"
-."\t\t\t\t{ // Safari eats the onchange so run modfield manually, except when called at onload time\n"
-."\t\t\t\t\t//alert('For Safari calling modfield for ' + name);\n"
-."\t\t\t\t\tmodfield(name);\n"
-."\t\t\t\t}\n"
-."\t\t\t}\n"
+echo "\t\t\t}\n"
 ."\t//-->\n"
 ."\t</script>\n\n"; // End checkconditions javascript function
 
