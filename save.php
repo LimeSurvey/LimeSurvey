@@ -512,7 +512,7 @@ function submitanswer()
 	}
 
 	$query = "";
-	if ((isset($_POST['move']) && $_POST['move'] == "movesubmit"))
+	if (isset($_POST['move']) && ($_POST['move'] == "movesubmit") && ($thissurvey['active'] == "Y"))
 	{
 		$query = "UPDATE {$thissurvey['tablename']} SET ";
 		$query .= " submitdate = ".$connect->DBDate($mysubmitdate);
