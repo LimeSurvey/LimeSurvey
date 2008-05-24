@@ -627,12 +627,18 @@ for ($i=0; $i<$fieldcount; $i++)
 				}
 				else
 				{
-					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$faid' AND language = '$explang'";
-					$lr = db_execute_assoc($lq);
-					while ($lrow = $lr->FetchRow())
-					{
-						$fquest .= " [".strip_tags_full($lrow['answer'])."]";
-					}
+                    if ($answers == "short") {
+                        $fquest .= " [$faid]"; //Show only the code
+                    }
+                    else 
+                    {
+    					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$faid' AND language = '$explang'";
+    					$lr = db_execute_assoc($lq);
+    					while ($lrow = $lr->FetchRow())
+    					{
+    						$fquest .= " [".strip_tags_full($lrow['answer'])."]";
+    					}
+    				}
 				}
 				if (isset($comment) && $comment == true) {$fquest .= " - comment"; $comment=false;}
 				break;
