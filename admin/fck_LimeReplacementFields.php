@@ -89,6 +89,10 @@ switch ($fieldtype)
 
 	case 'email-inv':
 	case 'email-rem':
+		// these 2 fields are supported by email-inv and email-rem
+		// but not email-conf and email-reg for the moment
+		$replFields[]=array('EMAIL',$clang->gT("Email from the token"));
+		$replFields[]=array('TOKEN',$clang->gT("Token code for this participant"));
 	case 'email-conf':
 	case 'email-reg':
 		$replFields[]=array('FIRSTNAME',$clang->gT("Firstname from token"));
