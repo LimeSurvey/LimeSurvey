@@ -965,6 +965,7 @@ if(isset($surveyid))
         		}
 			} else {
 				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Invalid or empty answer code supplied","js")."\")\n //-->\n</script>\n";
+				break; // let's break because in this case we do not want an AutoSaveAll
 			}
 		//break; // Commented by lemeur for AutoSaveAll
 		// Save all answers with one button
