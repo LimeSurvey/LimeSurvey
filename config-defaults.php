@@ -36,6 +36,7 @@ $dbprefix           =   "lime_";       // A global prefix that can be added to a
 $databasetabletype  =   "myISAM";	   // Storage engine mysql should use when creating survey results tables and token tables (if mysql is used). If available, InnoDB is recommended. Default is myISAM.
 
 // FILE LOCATIONS
+
 $rooturl            =   "http://{$_SERVER['HTTP_HOST']}/limesurvey"; //The root web url for your limesurvey installation.
 $relativeurl        =   "/limesurvey"; // the url relative to you DocumentRoot where is installed LimeSurvey. Usually same as $rooturl without http://{$_SERVER['HTTP_HOST']}. Used by Fcked Filemanager
 
@@ -82,7 +83,7 @@ $allowedresourcesuploads = "7z,aiff,asf,avi,bmp,csv,doc,fla,flv,gif,gz,gzip,jpeg
 $debug              =   0;      // Set this to 1 if you are looking for errors. If you still get no errors after enabling this
                                 // then please check your error-logs - either in your hosting provider admin panel or in some /logs dir.
                                 // LimeSurvey developers set this to 2.   
-$memorylimit       =  "16M";    // This sets how much memory LimeSurvey can access. 16M is the minimum (M=mb) recommended.
+$memorylimit       =  "32M";    // This sets how much memory LimeSurvey can access. 16M is the minimum (M=mb) recommended.
 $translationmode    =   0;      // If interface translations are not working this might be because of a bug in your PHP version. 
                                 // Set this to '1' to activate a workaround for this bug
                                 
@@ -282,5 +283,12 @@ require_once(dirname(__FILE__).'/config.php');
     $fckeditordir   =   "$homeurl/scripts/fckeditor.26";
 //    $fckeditordir   =   "$homeurl/scripts/fckeditor"; // version 2.5.1
 
+//PDF Export Settings
+$usepdfexport   = 1;                        //Set 0 to disable; 1 to enable 
+$pdfexportdir   = "/admin/classes/TCPDF";  //Directory with the TCPDF.php extensionTCPDF.php
+$pdffonts       = $pdfexportdir."/fonts";  //Directory for the TCPDF fonts
+$pdfdefaultfont = 'freemono';               //Default font for the pdf Export
+$pdffontsize    = 10;                       //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
+$notsupportlanguages = array("zh-Hant-TW","zh-Hant-HK","zh-Hans","ja","th");
 
 ?>

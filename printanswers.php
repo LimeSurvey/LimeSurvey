@@ -13,6 +13,10 @@
 
 require_once(dirname(__FILE__).'/config-defaults.php');
 require_once(dirname(__FILE__).'/common.php');
+if(isset($usepdfexport) && $usepdfexport == 1)
+{
+    require_once(dirname(__FILE__).$pdfexportdir."/extensionTCPDF.php");
+}
 
 //DEFAULT SETTINGS FOR TEMPLATES
 if (!$publicdir) {$publicdir=".";}
@@ -120,7 +124,20 @@ if (isset($_SESSION['s_lang']))
     $clang = SetSurveyLanguage( $surveyid, $baselang);
 }
 	//SHOW HEADER
-	$printoutput = "\t<span class='printouttitle'><strong>".$clang->gT("Survey Name (ID)").":</strong> $surveyname ($surveyid)</span><br />\n";
+    $pdfprintoutput = '';
+    if(isset($usepdfexport) && $usepdfexport == 1)
+    {
+        $printoutput .= "<form action='printanswers.php' method='post'>\n<center><input type='submit' value='".$clang->gT("PDF Export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
+    }
+    if(isset($_POST['printableexport']))
+    {
+        $pdf = new PDF('P');
+        $pdf->SetFont($pdfdefaultfont,'',$pdffontsize);
+        $pdf->AddPage(); 
+        $pdf->titleintopdf("Survey Name: ".$surveyname,"SurveyID: ".$surveyid);
+    }
+  $printoutput .=$pdfprintoutput;
+	$printoutput .= "\t<span class='printouttitle'><strong>".$clang->gT("Survey Name (ID)").":</strong> $surveyname ($surveyid)</span><br />\n";
 
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
 	$fnquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups").", ".db_table_name("surveys")."
@@ -246,6 +263,10 @@ if (isset($_SESSION['s_lang']))
 	$next=$id+1;
 	$last=$id-1;
 	$printoutput .= "<table class='printouttable' >\n";
+    if(isset($_POST['printableexport']))
+    {
+        $pdf->intopdf($clang->gT("Question").": ".$clang->gT("Your Answer"));
+    }
     $printoutput .= "<tr><th>".$clang->gT("Question")."</th><th>".$clang->gT("Your Answer")."</th></tr>\n";
 	$idresult = db_execute_assoc($idquery) or die ("Couldn't get entry<br />$idquery<br />".$connect->ErrorMsg());
 	while ($idrow = $idresult->FetchRow())
@@ -259,9 +280,19 @@ if (isset($_SESSION['s_lang']))
 			.getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]])
 			."</td>\n"
 			."\t</tr>\n";
+            
+            if(isset($_POST['printableexport']))
+            {
+                $pdf->intopdf(strip_tags($fnames[$i][2]).": ".strip_tags(getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]])));
+                $pdf->ln(2);
+            }
 		}
 	}
     $printoutput .= "</table>\n";
+    if(isset($_POST['printableexport']))
+    {
+        $pdf->write_out($surveyname.".pdf");
+    }
 
 
 //tadaaaaaaaaaaa : display the page with the answers of user
