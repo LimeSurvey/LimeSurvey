@@ -15,6 +15,7 @@
 
 //Ensure script is not run directly, avoid path disclosure
 include_once("login_check.php");
+include_once(dirname(__FILE__)."/classes/tcpdf/extensionTCPDF.php");    
 
 $printablesurveyoutput="<?xml version=\"1.0\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
 ."<html>\n<head>\n"
@@ -27,17 +28,22 @@ $printablesurveyoutput="<?xml version=\"1.0\"?><!DOCTYPE html PUBLIC \"-//W3C//D
 . "<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>\n"
 . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />\n"
 . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"scripts/tabpane/css/tab.webfx.css \" />\n"
-//. "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle.css\" />\n"
+. "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/printablestyle.css\" />\n"
 . "<script type=\"text/javascript\" src=\"../scripts/calendar/calendar.js\"></script>\n"
 . "<script type=\"text/javascript\" src=\"../scripts/calendar/lang/calendar-".$_SESSION['adminlang'].".js\"></script>\n"
 . "<script type=\"text/javascript\" src=\"../scripts/calendar/calendar-setup.js\"></script>\n"
-. "<script type=\"text/javascript\" src=\"scripts/validation.js\"></script>"
+. "<script type=\"text/javascript\" src=\"scripts/validation.js\"></script>\n"
 . "</head>\n<body>\n";
 
 $surveyid = $_GET['sid'];
 
 // PRESENT SURVEY DATAENTRY SCREEN
-
+if(isset($_POST['printableexport']))
+{
+    $pdf = new PDF ('L','mm','A4');
+    $pdf->SetFont($pdfdefaultfont,'',$pdffontsize);   
+    $pdf->AddPage(); 
+}
 // Set the language of the survey, either from GET parameter of session var
 if (isset($_GET['lang']))
 {
@@ -53,7 +59,7 @@ $clang = new limesurvey_lang($surveyprintlang);
 
 $desquery = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid) WHERE sid=$surveyid and surveyls_language=".$connect->qstr($surveyprintlang); //Getting data for this survey
 
-$desresult = db_execute_assoc($desquery);
+$desresult = db_execute_assoc($desquery);                       
 while ($desrow = $desresult->FetchRow())
 {
 	$surveyname = $desrow['surveyls_title'];
@@ -69,7 +75,17 @@ if (!isset($surveyfaxto) || !$surveyfaxto and isset($surveyfaxnumber))
 	$surveyfaxto=$surveyfaxnumber; //Use system fax number if none is set in survey.
 }
 
+
 $printablesurveyoutput .="<table width='100%' cellspacing='0'>\n";
+if(isset($usepdfexport) && $usepdfexport == 1 && !in_array($surveyprintlang,$notsupportlanguages))
+{
+    $printablesurveyoutput .="<form action='$scriptname?action=showprintablesurvey&sid=".$surveyid."&lang=".$surveyprintlang."' method='post'>\n";
+    $printablesurveyoutput .="<tr><td colspan='3' align='center'><input type='submit' value='".$clang->gT("PDF Export")."'/>";
+    $printablesurveyoutput .="<input type='hidden' name='checksessionbypost' value='".$_SESSION['checksessionpost']."'/>";
+    $printablesurveyoutput .="<input type='hidden' name='printableexport' value='true'/>";
+    $printablesurveyoutput .="</form>";
+}
+if(isset($_POST['printableexport'])){$pdf->titleintopdf($surveyname,$surveydesc);}
 $printablesurveyoutput .="\t<tr>\n";
 $printablesurveyoutput .="\t\t<td colspan='3' align='center'>\n";
 $printablesurveyoutput .="\t\t\t<table border='1' style='border-collapse: collapse; border-color: #111111; width: 100%'>\n";
@@ -104,6 +120,7 @@ while ($degrow = $degresult->FetchRow())
 	{
 		$printablesurveyoutput .="\t\t\t<br /><font size='2' face='verdana'>{$degrow['description']}</font>\n";
 	}
+    if(isset($_POST['printableexport'])){$pdf->titleintopdf($degrow['group_name'],$degrow['description']);}
 	$printablesurveyoutput .="\t\t</td>\n";
 	$printablesurveyoutput .="\t</tr>\n";
 	$gid = $degrow['gid'];
@@ -239,29 +256,31 @@ while ($degrow = $degresult->FetchRow())
 		{
 			$explanation = "[".$clang->gT("Only answer this question")." ".$explanation."]";
 			$printablesurveyoutput .="<tr bgcolor='$bgc'><td colspan='3'>$explanation</td></tr>\n";
-		}
-
+        }
 		//END OF GETTING CONDITIONS
 
 		$qid = $deqrow['qid'];
 		$fieldname = "$surveyid"."X"."$gid"."X"."$qid";
 		$printablesurveyoutput .="\t<tr bgcolor='$bgc'>\n";
 		$printablesurveyoutput .="\t\t<td valign='top' align='left' colspan='3'>\n";
+        $pdfoutput ='';
 		if ($deqrow['mandatory'] == "Y")
 		{
 			$printablesurveyoutput .=$clang->gT("*");
+            $pdfoutput .= $clang->gT("*");
 		}
 		$printablesurveyoutput .="\t\t\t<strong>{$deqrow['title']}: {$deqrow['question']}</strong>\n";
 		$printablesurveyoutput .="\t\t</td>\n";
 		$printablesurveyoutput .="\t</tr>\n";
-		//DIFFERENT TYPES OF DATA FIELD HERE
+		//DIFFERENT TYPES OF DATA FIELD HERE     
+        if(isset($_POST['printableexport'])){$pdf->intopdf($deqrow['title']." ".$deqrow['question']);}
 		$printablesurveyoutput .="\t<tr bgcolor='$bgc'>\n";
 		$printablesurveyoutput .="\t\t<td width='15%' valign='top'>\n";
 		if ($deqrow['help'])
 		{
 			$hh = $deqrow['help'];
 			$printablesurveyoutput .="\t\t\t<table width='100%' border='1'><tr><td align='center'><font size='1'>$hh</font></td></tr></table>\n";
-
+            if(isset($_POST['printableexport'])){$pdf->helptextintopdf($hh);}
 		}
 		$printablesurveyoutput .="\t\t</td>\n";
 		$printablesurveyoutput .="\t\t<td style='padding-left: 20px'>\n";
@@ -269,19 +288,26 @@ while ($degrow = $degresult->FetchRow())
 		{
 			case "5":  //5 POINT CHOICE
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose *only one* of the following:")."</u><br />\n";
+            if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *only one* of the following:"),"U");}
+            $pdfoutput ='';
 			for ($i=1; $i<=5; $i++)
 			{
+                $pdfoutput .=" o ".$i." ";
 				$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='$i' readonly='readonly' />$i \n";
 			}
+            if(isset($_POST['printableexport'])){$pdf->intopdf($pdfoutput);}
 			break;
 			case "D":  //DATE
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please enter a date:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<input type='text' class='boxstyle' name='$fieldname' size='30' value='&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;' readonly='readonly' />\n";
+            if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please enter a date:")." ___________");}
 			break;
 			case "G":  //GENDER
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose *only one* of the following:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='F' readonly='readonly' />".$clang->gT("Female")."<br />\n";
 			$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='M' readonly='readonly' />".$clang->gT("Male")."<br />\n";
+            if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *only one* of the following:"));}
+            if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT("Female")." | o ".$clang->gT("Male"));}
 			break;
 			case "W": //Flexible List
 			case "Z":
@@ -295,6 +321,7 @@ while ($degrow = $degresult->FetchRow())
 				$dcols=0;
 			}
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose *only one* of the following:")."</u><br />\n";
+            if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *only one* of the following:"),"U");}
 			$deaquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} AND language='{$surveyprintlang}' ORDER BY sortorder";
 			$dearesult = db_execute_assoc($deaquery) or die("ERROR: $deaquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 			$deacount=$dearesult->RecordCount();
@@ -314,11 +341,13 @@ while ($degrow = $degresult->FetchRow())
 						$upto=0;
 					}
 					$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' readonly='readonly' />{$dearow['title']}<br />\n";
+                    if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$dearow['title']);}
 					$upto++;
 				}
 				if ($deqrow['other'] == "Y")
 				{
 					$printablesurveyoutput .="\t\t\t<input type='checkbox' readonly='readonly' />".$clang->gT("Other")." <input type='text' size='30' readonly='readonly' /><br />\n";
+                    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Other").": ________");}
 				}
 				$printablesurveyoutput .="</td></tr></table>\n";
 				//Let's break the presentation into columns.
@@ -328,10 +357,12 @@ while ($degrow = $degresult->FetchRow())
 				while ($dearow = $dearesult->FetchRow())
 				{
 					$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' readonly='readonly' />{$dearow['title']}<br />\n";
+                    if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$dearow['title']);}
 				}
 				if ($deqrow['other'] == "Y")
 				{
 					$printablesurveyoutput .="\t\t\t<input type='checkbox' readonly='readonly' />".$clang->gT("Other")." <input type='text' size='30' readonly='readonly' /><br />\n";
+                    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Other").": ________");}
 				}
 			}
 			break;
@@ -347,6 +378,7 @@ while ($degrow = $degresult->FetchRow())
 				$dcols=0;
 			}
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose *only one* of the following:")."</u><br />\n";
+            if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *only one* of the following:"));}
 			$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$dearesult = db_execute_assoc($deaquery);
 			$deacount=$dearesult->RecordCount();
@@ -366,11 +398,13 @@ while ($degrow = $degresult->FetchRow())
 						$upto=0;
 					}
 					$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' readonly='readonly' />{$dearow['answer']}<br />\n";
+                    if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$dearow['answer']);}
 					$upto++;
 				}
 				if ($deqrow['other'] == "Y")
 				{
 					$printablesurveyoutput .="\t\t\t<input type='checkbox' readonly='readonly' />".$clang->gT("Other")." <input type='text' size='30' readonly='readonly' /><br />\n";
+                    if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT("Other").": ________");}
 				}
 				$printablesurveyoutput .="</td></tr></table>\n";
 				//Let's break the presentation into columns.
@@ -380,33 +414,44 @@ while ($degrow = $degresult->FetchRow())
 				while ($dearow = $dearesult->FetchRow())
 				{
 					$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' readonly='readonly' />{$dearow['answer']}<br />\n";
+                    if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$dearow['answer']);}
 				}
 				if ($deqrow['other'] == "Y")
 				{
 					$printablesurveyoutput .="\t\t\t<input type='checkbox' readonly='readonly' />".$clang->gT("Other")." <input type='text' size='30' readonly='readonly' /><br />\n";
+                    if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT("Other").": ________");}
 				}
 			}
 			break;
 			case "O":  //LIST WITH COMMENT
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose *only one* of the following:")."</u><br />\n";
+            if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *only one* of the following:"),"U");}
 			$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer ";
 			$dearesult = db_execute_assoc($deaquery);
 			while ($dearow = $dearesult->FetchRow())
 			{
 				$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' readonly='readonly' />{$dearow['answer']}<br />\n";
+                if(isset($_POST['printableexport'])){$pdf->intopdf($dearow['answer']);}
 			}
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Make a comment on your choice here:")."</u><br />\n";
+            if(isset($_POST['printableexport'])){$pdf->intopdf("Make a comment on your choice here:");}
 			$printablesurveyoutput .="\t\t\t<textarea class='boxstyle' cols='50' rows='8' name='$fieldname"."comment"."' readonly='readonly'></textarea>\n";
+            for($i=0;$i<9;$i++)
+            {
+                if(isset($_POST['printableexport'])){$pdf->intopdf("____________________");}
+            }
 			break;
 			case "R":  //RANKING Type Question
 			$reaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$rearesult = db_execute_assoc($reaquery) or die ("Couldn't get ranked answers<br />".htmlspecialchars($connect->ErrorMsg()));
 			$reacount = $rearesult->RecordCount();
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please number each box in order of preference from 1 to")." $reacount</u><br />\n";
+            if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please number each box in order of preference from 1 to ").$reacount,"U");}
 			while ($rearow = $rearesult->FetchRow())
 			{
 				$printablesurveyoutput .="\t\t\t<table cellspacing='1' cellpadding='0'><tr><td width='20' height='20' bgcolor='white' style='border: solid 1 #111111'>&nbsp;</td>\n";
 				$printablesurveyoutput .="\t\t\t<td valign='middle'>{$rearow['answer']}</td></tr></table>\n";
+                if(isset($_POST['printableexport'])){$pdf->intopdf("__ ".$rearow['answer']);}
 			}
 			break;
 			case "M":  //MULTIPLE OPTIONS (Quite tricky really!)
@@ -422,10 +467,12 @@ while ($degrow = $degresult->FetchRow())
 			if (!$maxansw=arraySearchByKey("max_answers", $qidattributes, "attribute", 1))
 			{
 				$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose *all* that apply:")."</u><br />\n";
+                if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *all* that apply:"),"U");}
 			}
 			else
 			{
 				$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose *at most* ").$maxansw['value']."</strong> ".$clang->gT("answers:")."</u><br />\n";
+                if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *at most* ").$maxansw['value'].$clang->gT("answers:"),"U");}
 			}
 			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
@@ -446,11 +493,14 @@ while ($degrow = $degresult->FetchRow())
 						$upto=0;
 					}
 					$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y' readonly='readonly' />{$mearow['answer']}<br />\n";
+                    if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$mearow['answer']);}
 					$upto++;
 				}
 				if ($deqrow['other'] == "Y")
 				{
 					$printablesurveyoutput .="\t\t\t".$clang->gT("Other").": <input type='text' class='boxstyle' size='60' name='$fieldname" . "other' readonly='readonly' />\n";
+                    if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT("Other").": ________");}
+                    
 				}
 				$printablesurveyoutput .="</td></tr></table>\n";
 			}
@@ -459,10 +509,12 @@ while ($degrow = $degresult->FetchRow())
 				while ($mearow = $mearesult->FetchRow())
 				{
 					$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='Y' readonly='readonly' />{$mearow['answer']}<br />\n";
+                     if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$mearow['answer']);}
 				}
 				if ($deqrow['other'] == "Y")
 				{
 					$printablesurveyoutput .="\t\t\t".$clang->gT("Other").": <input type='text' class='boxstyle' size='60' name='$fieldname" . "other' readonly='readonly' />\n";
+                    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Other").": ________");}
 				}
 			}
 			break;
@@ -483,15 +535,19 @@ while ($degrow = $degresult->FetchRow())
 			if (!$maxansw=arraySearchByKey("max_answers", $qidattributes, "attribute", 1))
 			{
 				$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose all that apply and provide a comment:")."</u><br />\n";
+                if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose all that apply and provide a comment:"),"U");}
 			}
 			else
 			{
 				$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose *at most* ").$maxansw['value']."</strong> ".$clang->gT("answers and provide a comment:")."</u><br />\n";
+                if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *at most* ").$maxansw['value'].$clang->gT("answers and provide a comment:"),"U");}
 			}
 			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
 //			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose all that apply and provide a comment:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<table border='0'>\n";
+            $pdfoutput=array();
+            $j=0;
 			while ($mearow = $mearesult->FetchRow())
 			{
 				$printablesurveyoutput .="\t\t\t\t<tr>\n";
@@ -501,13 +557,19 @@ while ($degrow = $degresult->FetchRow())
 				//This is the commments field:
 				$printablesurveyoutput .="\t\t\t\t\t<td><input type='text' class='boxstyle' name='$fieldname{$mearow['code']}comment' size='60' readonly='readonly' /></td>\n";
 				$printablesurveyoutput .="\t\t\t\t</tr>\n";
+                $pdfoutput[$j]=array(" o ".$mearow['code']," __________");
+                $j++;
 			}
 			$printablesurveyoutput .="\t\t\t</table>\n";
+            if(isset($_POST['printableexport'])){$pdf->tableintopdf($pdfoutput);}
 			break;
 			case "Q":  //MULTIPLE SHORT TEXT
+
+
 			$width=60;
 			case "K":  //MULTIPLE NUMERICAL
 			$width=(!isset($width)) ? 30 : $width;
+			if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please write your answer(s) here:"),"U");}
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please write your answer(s) here:")."</u><br />\n";
 			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
@@ -519,35 +581,57 @@ while ($degrow = $degresult->FetchRow())
 				if ($mearow['default_value'] == "Y") {$printablesurveyoutput .=" checked";}
 				$printablesurveyoutput .=" readonly='readonly' /></td>\n";
 				$printablesurveyoutput .="\t\t\t\t</tr>\n";
+                if(isset($_POST['printableexport'])){$pdf->intopdf($mearow['answer'].": ____________________");}
 			}
 			$printablesurveyoutput .="\t\t\t</table>\n";
 			break;
 			case "S":  //SHORT TEXT
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please write your answer here:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<input type='text' name='$fieldname' size='60' class='boxstyle' readonly='readonly' />\n";
+            if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please write your answer here:"),"U");}
+            if(isset($_POST['printableexport'])){$pdf->intopdf("____________________");}
 			break;
 			case "T":  //LONG TEXT
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please write your answer here:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<textarea class='boxstyle' cols='50' rows='8' name='$fieldname' readonly='readonly'></textarea>\n";
+            if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please write your answer here:"),"U");}
+            for($i=0;$i<9;$i++)
+            {
+                if(isset($_POST['printableexport'])){$pdf->intopdf("____________________");}
+            }
 			break;
 			case "U":  //HUGE TEXT
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please write your answer here:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<textarea class='boxstyle' cols='70' rows='50' name='$fieldname' readonly='readonly'></textarea>\n";
+            if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please write your answer here:"),"U");}
+            for($i=0;$i<20;$i++)
+            {
+                if(isset($_POST['printableexport'])){$pdf->intopdf("____________________");}
+            }
 			break;
 			case "N":  //NUMERICAL
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please write your answer here:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<input type='text' size='40' class='boxstyle' readonly='readonly' />\n";
+            if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please write your answer here:"),"U");}
+            if(isset($_POST['printableexport'])){$pdf->intopdf("____________________");}
+            
 			break;
 			case "Y":  //YES/NO
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose *only one* of the following:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='Y' readonly='readonly' />".$clang->gT("Yes")."<br />\n";
 			$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='N' readonly='readonly' />".$clang->gT("No")."<br />\n";
+            if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *only one* of the following:"),"U");}
+            if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT("Yes"));}
+            if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT("No"));}
 			break;
 			case "A":  //ARRAY (5 POINT CHOICE)
 			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}'  ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose the appropriate response for each item:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<table>\n";
+            if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose the appropriate response for each item:"),"U");}
+            $pdfoutput = array();
+            $j=0;
 			while ($mearow = $mearesult->FetchRow())
 			{
 				$printablesurveyoutput .="\t\t\t\t<tr>\n";
@@ -555,9 +639,11 @@ while ($degrow = $degresult->FetchRow())
                 if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
 				$printablesurveyoutput .="\t\t\t\t\t<td align='left'>$answertext</td>\n";
 				$printablesurveyoutput .="\t\t\t\t\t<td>";
+                $pdfoutput[$j][0]=$answertext;
 				for ($i=1; $i<=5; $i++)
 				{
 					$printablesurveyoutput .="\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='$i' readonly='readonly' />$i&nbsp;\n";
+                    $pdfoutput[$j][$i]=" o ".$i;
 				}
 				$printablesurveyoutput .="\t\t\t\t\t</td>\n";
                 $answertext=$mearow['answer'];
@@ -567,33 +653,45 @@ while ($degrow = $degresult->FetchRow())
                        $printablesurveyoutput .= "\t\t\t\t<td class='answertextright'>$answertext</td>\n";
                 }
 				$printablesurveyoutput .="\t\t\t\t</tr>\n";
+                $j++;
 			}
 			$printablesurveyoutput .="\t\t\t</table>\n";
+            if(isset($_POST['printableexport'])){$pdf->tableintopdf($pdfoutput);}
 			break;
 			case "B":  //ARRAY (10 POINT CHOICE)
 			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose the appropriate response for each item:")."</u><br />";
 			$printablesurveyoutput .="\t\t\t<table border='0'>\n";
+            if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose the appropriate response for each item:"),"U");}
+            $pdfoutput=array();
+            $j=0;
 			while ($mearow = $mearesult->FetchRow())
 			{
 				$printablesurveyoutput .="\t\t\t\t<tr>\n";
 				$printablesurveyoutput .="\t\t\t\t\t<td align='left'>{$mearow['answer']}</td>\n";
 				$printablesurveyoutput .="\t\t\t\t\t<td>\n";
+                $pdfoutput[$j][0]=$mearow['answer'];
 				for ($i=1; $i<=10; $i++)
 				{
 					$printablesurveyoutput .="\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='$i' readonly='readonly' />$i&nbsp;\n";
+                    $pdfoutput[$j][$i]=" o ".$i;
 				}
 				$printablesurveyoutput .="\t\t\t\t\t</td>\n";
 				$printablesurveyoutput .="\t\t\t\t</tr>\n";
+                $j++;
 			}
 			$printablesurveyoutput .="\t\t\t</table>\n";
+            if(isset($_POST['printableexport'])){$pdf->tableintopdf($pdfoutput);}
 			break;
 			case "C":  //ARRAY (YES/UNCERTAIN/NO)
 			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose the appropriate response for each item:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<table>\n";
+            if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose the appropriate response for each item:"),"U");}
+            $pdfoutput = array();
+            $j=0;
 			while ($mearow = $mearesult->FetchRow())
 			{
 				$printablesurveyoutput .="\t\t\t\t<tr>\n";
@@ -604,14 +702,21 @@ while ($degrow = $degresult->FetchRow())
 				$printablesurveyoutput .="\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='N' readonly='readonly' />".$clang->gT("No")."&nbsp;\n";
 				$printablesurveyoutput .="\t\t\t\t\t</td>\n";
 				$printablesurveyoutput .="\t\t\t\t</tr>\n";
+                
+                $pdfoutput[$j]=array($mearow['answer']," o ".$clang->gT("Yes")," o ".$clang->gT("Uncertain")," o ".$clang->gT("No"));
+                $j++;
 			}
 			$printablesurveyoutput .="\t\t\t</table>\n";
+            if(isset($_POST['printableexport'])){$pdf->tableintopdf($pdfoutput);}
 			break;
 			case "E":  //ARRAY (Increase/Same/Decrease)
 			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}'  ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose the appropriate response for each item:")."</u><br />\n";
 			$printablesurveyoutput .="\t\t\t<table>\n";
+            if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose the appropriate response for each item:"),"U");}
+            $pdfoutput = array();
+            $j=0;
 			while ($mearow = $mearesult->FetchRow())
 			{
 				$printablesurveyoutput .="\t\t\t\t<tr>\n";
@@ -622,8 +727,11 @@ while ($degrow = $degresult->FetchRow())
 				$printablesurveyoutput .="\t\t\t\t\t\t<input type='checkbox' name='$fieldname{$mearow['code']}' value='D' readonly='readonly' />".$clang->gT("Decrease")."&nbsp;\n";
 				$printablesurveyoutput .="\t\t\t\t\t</td>\n";
 				$printablesurveyoutput .="\t\t\t\t</tr>\n";
+                $pdfoutput[$j]=array($mearow['answer'].":"," o ".$clang->gT("Increase")," o ".$clang->gT("Same")," o ".$clang->gT("Decrease"));
+                $j++;
 			}
 			$printablesurveyoutput .="\t\t\t</table>\n";
+            if(isset($_POST['printableexport'])){$pdf->tableintopdf($pdfoutput);}
 			break;
 			case "F": //ARRAY (Flexible Labels)
 			//$headstyle="style='border-left-style: solid; border-left-width: 1px; border-left-color: #AAAAAA'";
@@ -636,13 +744,18 @@ while ($degrow = $degresult->FetchRow())
 			$fresult = db_execute_assoc($fquery);
 			$fcount = $fresult->RecordCount();
 			$fwidth = "120";
-			$i=0;
+			$i=1;
+            $pdfoutput = array();
+            $pdfoutput[0][0]='';
+            if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose the appropriate response for each item:"),"U");}
 			while ($frow = $fresult->FetchRow())
 			{
 				$printablesurveyoutput .="\t\t\t\t\t\t<td align='center' valign='bottom' $headstyle><font size='1'>{$frow['title']}</font></td>\n";
-				$i++;
-			}
+                $pdfoutput[0][$i] = $frow['title'];
+                $i++;
+			}                 
 			$printablesurveyoutput .="\t\t\t\t\t\t</tr>\n";
+            $counter = 1;
 			while ($mearow = $mearesult->FetchRow())
 			{
 				$printablesurveyoutput .="\t\t\t\t<tr>\n";
@@ -650,6 +763,7 @@ while ($degrow = $degresult->FetchRow())
                 if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
 				$printablesurveyoutput .="\t\t\t\t\t<td align='left'>$answertext</td>\n";
 				//$printablesurveyoutput .="\t\t\t\t\t<td>";
+                $pdfoutput[$counter][0]=$answertext;
 				for ($i=1; $i<=$fcount; $i++)
 				{
 
@@ -658,16 +772,22 @@ while ($degrow = $degresult->FetchRow())
 					$printablesurveyoutput .=">\n";
 					$printablesurveyoutput .="\t\t\t\t\t\t<input type='checkbox' readonly='readonly' />\n";
 					$printablesurveyoutput .="\t\t\t\t\t</td>\n";
-				}
+                    $pdfoutput[$counter][$i] = "o";
+                    
+                }
+                $counter++;
+                
                 $answertext=$mearow['answer'];
                 if (strpos($answertext,'|')) 
                 {
                     $answertext=substr($answertext,strpos($answertext,'|')+1);
                        $printablesurveyoutput .= "\t\t\t\t<td class='answertextright'>$answertext</td>\n";
+                    
                 }
 				$printablesurveyoutput .="\t\t\t\t</tr>\n";
 			}
 			$printablesurveyoutput .="\t\t\t</table>\n";
+            if(isset($_POST['printableexport'])){$pdf->tableintopdf($pdfoutput);}
 			break;
 			case "1": //ARRAY (Flexible Labels) multi scale
             $qidattributes=getQuestionAttributes($deqrow['qid']);
@@ -693,6 +813,7 @@ while ($degrow = $degresult->FetchRow())
 			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose the appropriate response for each item:")."</u><br />\n";
+            if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose the appropriate response for each item:"),"U");}
 			$printablesurveyoutput .="\t\t\t<table align='left' cellspacing='0'>";
 
 			$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$deqrow['lid']}'  AND language='{$surveyprintlang}' ORDER BY sortorder, code";
@@ -702,10 +823,13 @@ while ($degrow = $degresult->FetchRow())
 			$l1=0;
             $printablesurveyoutput2 = '<td></td>';
             $myheader2 = '';
+            $pdfoutput = array();
+            $pdfoutput[0][0]='';
 			while ($frow = $fresult->FetchRow())
 			{
 				$printablesurveyoutput2 .="\t\t\t\t\t\t<td align='center' valign='bottom' $headstyle><font size='1'>{$frow['title']}</font></td>\n";
                 $myheader2 .= "<td></td>";
+                $pdfoutput[0][$ll+1]=$frow['title'];
 				$l1++;
 			}
 			// second scale
@@ -718,6 +842,7 @@ while ($degrow = $degresult->FetchRow())
 			while ($frow1 = $fresult1->FetchRow())
 			{
 				$printablesurveyoutput2 .="\t\t\t\t\t\t<td align='center' valign='bottom' $headstyle><font size='1'>{$frow1['title']}</font></td>\n";
+                $pdfoutput[1][$l2]=$frow['title'];
 				$l2++;
 			}
             // build header if needed
@@ -775,6 +900,7 @@ while ($degrow = $degresult->FetchRow())
 				$printablesurveyoutput .="\t\t\t\t</tr>\n";
 			}
 			$printablesurveyoutput .="\t\t\t</table>\n";
+            if(isset($_POST['printableexport'])){$pdf->tableintopdf($pdfoutput);}
 			break;
 			case "H": //ARRAY (Flexible Labels) by Column
 			//$headstyle="style='border-left-style: solid; border-left-width: 1px; border-left-color: #AAAAAA'";
@@ -782,23 +908,29 @@ while ($degrow = $degresult->FetchRow())
 			$fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$fresult = db_execute_assoc($fquery);
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose the appropriate response for each item:")."</u><br />\n";
+            if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose the appropriate response for each item:"),"U");}
 			$printablesurveyoutput .="\t\t\t<table align='left' cellspacing='0'><tr><td></td>\n";
 			$meaquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$deqrow['lid']}'  AND language='{$surveyprintlang}' ORDER BY sortorder, code";
 			$mearesult = db_execute_assoc($meaquery);
 			$fcount = $fresult->RecordCount();
 			$fwidth = "120";
 			$i=0;
+            $pdfoutput = array();
+            $pdfoutput[0][0]='';
 			while ($frow = $fresult->FetchRow())
 			{
 				$printablesurveyoutput .="\t\t\t\t\t<td align='center'>{$frow['answer']}</td>\n";
 				$i++;
+                $pdfoutput[0][$i]=$frow['answer'];
 			}
 			$printablesurveyoutput .="\t\t\t\t\t\t</tr>\n";
+            $a=1;
 			while ($mearow = $mearesult->FetchRow())
 			{
 				$printablesurveyoutput .="\t\t\t\t<tr>\n";
 				$printablesurveyoutput .="\t\t\t\t\t\t<td align='left' valign='bottom' $headstyle><font size='1'>{$mearow['title']}</font></td>\n";
 				//$printablesurveyoutput .="\t\t\t\t\t<td>";
+                $pdfoutput[$a][0]=$mearow['title'];
 				for ($i=1; $i<=$fcount; $i++)
 				{
 
@@ -807,16 +939,20 @@ while ($degrow = $degresult->FetchRow())
 					$printablesurveyoutput .=">\n";
 					$printablesurveyoutput .="\t\t\t\t\t\t<input type='checkbox' readonly='readonly' />\n";
 					$printablesurveyoutput .="\t\t\t\t\t</td>\n";
+                    $pdfoutput[$a][$i]="o";
 				}
 				//$printablesurveyoutput .="\t\t\t\t\t</tr></table></td>\n";
 				$printablesurveyoutput .="\t\t\t\t</tr>\n";
+                $a++;
 			}
 			$printablesurveyoutput .="\t\t\t</table>\n";
+            if(isset($_POST['printableexport'])){$pdf->tableintopdf($pdfoutput);}
 			break;
 		}
 		$printablesurveyoutput .="\t\t</td>\n";
 		$printablesurveyoutput .="\t</tr>\n";
 		$printablesurveyoutput .="\t<tr><td height='3' colspan='3'><hr noshade='noshade' size='1' /></td></tr>\n";
+        if(isset($_POST['printableexport'])){$pdf->ln(5);}
 	}
 }
 $printablesurveyoutput .="\t<tr>\n";
@@ -826,13 +962,17 @@ $printablesurveyoutput .="\t\t\t\t<tr>\n";
 $printablesurveyoutput .="\t\t\t\t\t<td align='center'>\n";
 $printablesurveyoutput .="\t\t\t\t\t\t<strong>".$clang->gT("Submit Your Survey.")."</strong><br />\n";
 $printablesurveyoutput .="\t\t\t\t\t\t".$clang->gT("Thank you for completing this survey.");
+if(isset($_POST['printableexport'])){$pdf->titleintopdf($clang->gT("Submit Your Survey."),$clang->gT("Thank you for completing this survey."));}
 if(!empty($surveyfaxto)) //If no fax number exists, don't display faxing information!
 {
-$printablesurveyoutput .= $clang->gT("Please fax your completed survey to:")." $surveyfaxto";
+    $printablesurveyoutput .= $clang->gT("Please fax your completed survey to:")." $surveyfaxto";
+    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please fax your completed survey to:")."$surveyfaxto",'B');}
 }
+
 if ($surveyuseexpiry=="Y")
 {
     $printablesurveyoutput .=$clang->gT("Please submit by")." $surveyexpirydate";
+    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please submit by")." $surveyexpirydate");}
 }
 $printablesurveyoutput .=".\n";
 $printablesurveyoutput .="\t\t\t\t\t</td>\n";
@@ -842,6 +982,10 @@ $printablesurveyoutput .="\t\t</td>\n";
 $printablesurveyoutput .="\t</tr>\n";
 $printablesurveyoutput .="</table>\n";
 $printablesurveyoutput .="</body>\n</html>";
+if(isset($_POST['printableexport']))  
+{
+    $pdf->write_out($surveyname.".pdf");
+}
 echo $printablesurveyoutput ;
 exit;
 ?>
