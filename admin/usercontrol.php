@@ -13,6 +13,9 @@
 * $Id$
 */
 
+// Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB     
+
+
 if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 include_once("login_check.php");  //Login Check dies also if the script is started directly
 require_once($homedir."/classes/core/sha256.php");
@@ -23,7 +26,7 @@ if (isset($_POST['loginlang'])) {$postloginlang=sanitize_languagecode($_POST['lo
 if (isset($_POST['new_user'])) {$postnew_user=sanitize_user($_POST['new_user']);}
 if (isset($_POST['new_email'])) {$postnew_email=sanitize_email($_POST['new_email']);}
 if (isset($_POST['new_full_name'])) {$postnew_full_name=sanitize_userfullname($_POST['new_full_name']);}
-if (isset($_POST['uid'])) {$postuid=sanitize_int($_POST['uid']);}
+if (isset($_POST['uid'])) {$postuserid=sanitize_int($_POST['uid']);}
 if (isset($_POST['full_name'])) {$postfull_name=sanitize_userfullname($_POST['full_name']);}
 
 
@@ -49,7 +52,7 @@ if (!isset($_SESSION['loginID']))
 			include("database.php");
 			$emailaddr = $postemail;
 			$query = "SELECT users_name, password, uid FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser)." AND email=".$connect->qstr($emailaddr);
-			$result = db_select_limit_assoc($query, 1) or die ($query."<br />".$connect->ErrorMsg());
+			$result = db_select_limit_assoc($query, 1) or die ($query."<br />".$connect->ErrorMsg());  // Checked
 
 			if ($result->RecordCount() < 1)
 			{
@@ -75,7 +78,7 @@ if (!isset($_SESSION['loginID']))
 				if(MailTextMessage($body, $subject, $to, $from, $sitename, false,$siteadminbounce))
 				{
 					$query = "UPDATE ".db_table_name('users')." SET password='".SHA256::hash($new_pass)."' WHERE uid={$fields['uid']}";
-					$connect->Execute($query);
+					$connect->Execute($query); //Checked
 					$loginsummary .= "<br />".$clang->gT("Username").": {$fields['users_name']}<br />".$clang->gT("Email").": {$emailaddr}<br />";
 					$loginsummary .= "<br />".$clang->gT("An email with your login data was sent to you.");
 					$loginsummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
@@ -97,7 +100,7 @@ if (!isset($_SESSION['loginID']))
 		{
 			include("database.php");
 			$query = "SELECT uid, users_name, password, parent_id, email, lang, htmleditormode FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser);
-			$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+			$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC; //Checked
 			$result = $connect->SelectLimit($query, 1) or die ($query."<br />".$connect->ErrorMsg());
 			if ($result->RecordCount() < 1)
 			{
@@ -129,11 +132,11 @@ if (!isset($_SESSION['loginID']))
 					if (isset($postloginlang) && $postloginlang)
 					{
 						$_SESSION['adminlang'] = $postloginlang;
-						$clang = new limesurvey_lang($_SESSION['adminlang']);
+						$clang = new limesurvey_lang($postloginlang);
 						$uquery = "UPDATE {$dbprefix}users "
-						. "SET lang='{$_SESSION['adminlang']}' "
+						. "SET lang='{$postloginlang}' "
 						. "WHERE uid={$_SESSION['loginID']}";
-						$uresult = $connect->Execute($uquery);
+						$uresult = $connect->Execute($uquery);  // Checked
 					}
 					else
 					{
@@ -191,7 +194,7 @@ if (!isset($_SESSION['loginID']))
 
 		include("database.php");
 		$query = "SELECT uid, users_name, password, parent_id, email, lang, htmleditormode FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($mappeduser);
-		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC; //Checked
 		$result = $connect->SelectLimit($query, 1) or die ($query."<br />".$connect->ErrorMsg());
 		if ($result->RecordCount() < 1)
 		{
@@ -232,7 +235,7 @@ if (!isset($_SESSION['loginID']))
 				. intval($WebserverAuth_autouserprofile['manage_label'])
 				.")";
 
-				$uresult = $connect->Execute($uquery);
+				$uresult = $connect->Execute($uquery); //Checked
 				if ($uresult)
 				{
 					$isAuthenticated=true;
@@ -241,11 +244,11 @@ if (!isset($_SESSION['loginID']))
 					foreach ($arrayTemplates as $tplname)
 					{
 						$template_query = "INSERT INTO {$dbprefix}templates_rights VALUES('$newqid','$tplname','1')";
-						$connect->Execute($template_query);
+						$connect->Execute($template_query);  //Checked
 					}
 
 					// read again user from newly created entry
-					$result = $connect->SelectLimit($query, 1) or die ($query."<br />".$connect->ErrorMsg());
+					$result = $connect->SelectLimit($query, 1) or die ($query."<br />".$connect->ErrorMsg());//Checked
 				}
 				else
 				{
@@ -334,7 +337,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 		$new_pass = createPassword();
 		$uquery = "INSERT INTO {$dbprefix}users (users_name, password,full_name,parent_id,lang,email,create_survey,create_user,delete_user,superadmin,configurator,manage_template,manage_label) VALUES ('".db_quote($new_user)."', '".SHA256::hash($new_pass)."', '".db_quote($new_full_name)."', {$_SESSION['loginID']}, '{$defaultlang}', '".db_quote($new_email)."',0,0,0,0,0,0,0)";
 		//error_log("TIBO=$uquery");
-		$uresult = $connect->Execute($uquery);
+		$uresult = $connect->Execute($uquery); //Checked
 
 		if($uresult)
 		{
@@ -342,11 +345,11 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 
 			// add default template to template rights for user
 			$template_query = "INSERT INTO {$dbprefix}templates_rights VALUES('$newqid','default','1')";
-			$connect->Execute($template_query);
+			$connect->Execute($template_query); //Checked
 			
 			// add new user to userlist
 			$squery = "SELECT uid, users_name, password, parent_id, email, create_survey, configurator, create_user, delete_user, superadmin, manage_template, manage_label FROM ".db_table_name('users')." WHERE uid='{$newqid}'";			//added by Dennis
-			$sresult = db_execute_assoc($squery);
+			$sresult = db_execute_assoc($squery);//Checked
 			$srow = $sresult->FetchRow();
 			$userlist = getuserlist();
 			array_push($userlist, array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'],
@@ -398,7 +401,6 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 	$addsummary .= "<br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 }
 
-//elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_DELETE_USER'] || ($postuid == $_SESSION['loginID'])))
 elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_DELETE_USER'] ))
 {
 	$addsummary = "<br /><strong>".$clang->gT("Deleting User")."</strong><br />\n";
@@ -406,33 +408,22 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SE
 	// CAN'T DELETE ORIGINAL SUPERADMIN
 	// Initial SuperAdmin has parent_id == 0
 	$adminquery = "SELECT uid FROM {$dbprefix}users WHERE parent_id=0";
-	$adminresult = db_select_limit_assoc($adminquery, 1);
+	$adminresult = db_select_limit_assoc($adminquery, 1);//Checked
 	$row=$adminresult->FetchRow();
 
-	if($row['uid'] == $postuid)	// it's the original superadmin !!!
+	if($row['uid'] == $postuserid)	// it's the original superadmin !!!
 	{
 		$addsummary .= "<br />".$clang->gT("Initial Superadmin cannot be deleted!")."<br />\n";
 	}
 	else
 	{
-		if (isset($postuid))
+		if (isset($postuserid))
 		{
-			// is the user allowed to delete?
-//			$userlist = getuserlist();
-//			foreach ($userlist as $usr)
-//			{
-//				if ($usr['uid'] == $postuid)
-//				{
-//					$isallowed = true;
-//					continue;
-//				}
-//			}
-
 			$sresultcount = 0;// 1 if I am parent of $postuserid
 			if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1)
 			{
 				$squery = "SELECT uid FROM {$dbprefix}users WHERE uid=$postuserid AND parent_id=".$_SESSION['loginID'];
-				$sresult = $connect->Execute($squery);
+				$sresult = $connect->Execute($squery); //Checked
 				$sresultcount = $sresult->RecordCount();
 			}
 	
@@ -441,25 +432,25 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SE
 				// We are about to kill an uid with potential childs
 				// Let's re-assign them their grand-father as their
 				// new parentid
-				$squery = "SELECT parent_id FROM {$dbprefix}users WHERE uid=".db_quote($postuid);
-				$sresult = $connect->Execute($squery);
+				$squery = "SELECT parent_id FROM {$dbprefix}users WHERE uid=".$postuserid;
+				$sresult = $connect->Execute($squery); //Checked
 				$fields = $sresult->FetchRow($sresult);
 
 				if (isset($fields[0]))
 				{
-					$uquery = "UPDATE ".db_table_name('users')." SET parent_id={$fields[0]} WHERE parent_id=".db_quote($postuid);	//		added by Dennis
-					$uresult = $connect->Execute($uquery);
+					$uquery = "UPDATE ".db_table_name('users')." SET parent_id={$fields[0]} WHERE parent_id=".$postuserid;	//		added by Dennis
+					$uresult = $connect->Execute($uquery); //Checked
 				}
 
 				//DELETE USER FROM TABLE
-				$dquery="DELETE FROM {$dbprefix}users WHERE uid=".db_quote($postuid);	//	added by Dennis
-				$dresult=$connect->Execute($dquery);
+				$dquery="DELETE FROM {$dbprefix}users WHERE uid=".$postuserid;	//	added by Dennis
+				$dresult=$connect->Execute($dquery);  //Checked
 
 				// Delete user rights
-				$dquery="DELETE FROM {$dbprefix}surveys_rights WHERE uid=".db_quote($postuid);
-				$dresult=$connect->Execute($dquery);
+				$dquery="DELETE FROM {$dbprefix}surveys_rights WHERE uid=".$postuserid;
+				$dresult=$connect->Execute($dquery); //Checked
 
-				if($postuid == $_SESSION['loginID']) killSession();	// user deleted himself
+				if($postuserid == $_SESSION['loginID']) killSession();	// user deleted himself
 
 				$addsummary .= "<br />".$clang->gT("Username").": {$postuser}<br />\n";
 			}
@@ -482,24 +473,10 @@ elseif ($action == "moduser")
 	$addsummary = "<br /><strong>".$clang->gT("Modifying User")."</strong><br />\n";
 
 	$squery = "SELECT uid FROM {$dbprefix}users WHERE uid=$postuserid AND parent_id=".$_SESSION['loginID'];
-	$sresult = $connect->Execute($squery);
+	$sresult = $connect->Execute($squery); //Checked
 	$sresultcount = $sresult->RecordCount();
 
-
-	//$userlist = getuserlist();
-	//foreach ($userlist as $usr)
-	//{
-	//	if ($usr['uid'] == $postuid)
-	//	{
-	//			$squery = "SELECT create_survey, configurator, create_user, delete_user, superadmin, manage_template, manage_label FROM {$dbprefix}users WHERE uid={$usr['parent_id']}";	//		added by Dennis
-	//			$sresult = $connect->Execute($squery);
-	//			$parent = $sresult->FetchRow();
-	//			break;
-	//	}
-	//}
-//	if($postuid == $_SESSION['loginID'] || $_SESSION['loginID'] == 1 || $parent['create_user'] == 1)
-
-	if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $postuid == $_SESSION['loginID'] ||
+	if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $postuserid == $_SESSION['loginID'] ||
 		($sresultcount > 0 && $_SESSION['USER_RIGHT_CREATE_USER'])
 	  )
 	{
@@ -520,12 +497,12 @@ elseif ($action == "moduser")
 			$failed = false;
 			if(empty($pass))
 			{
-				$uquery = "UPDATE ".db_table_name('users')." SET email='".db_quote($email)."', full_name='".db_quote($full_name)."' WHERE uid=".db_quote($postuid);
+				$uquery = "UPDATE ".db_table_name('users')." SET email='".db_quote($email)."', full_name='".db_quote($full_name)."' WHERE uid=".$postuserid;
 			} else {
-				$uquery = "UPDATE ".db_table_name('users')." SET email='".db_quote($email)."', full_name='".db_quote($full_name)."', password='".SHA256::hash($pass)."' WHERE uid=".db_quote($postuid);
+				$uquery = "UPDATE ".db_table_name('users')." SET email='".db_quote($email)."', full_name='".db_quote($full_name)."', password='".SHA256::hash($pass)."' WHERE uid=".$postuserid;
 			}
 			
-			$uresult = $connect->Execute($uquery);
+			$uresult = $connect->Execute($uquery);//Checked
 
 			if($uresult && empty($pass))
 			{
@@ -545,7 +522,7 @@ elseif ($action == "moduser")
 			$addsummary .= "<br /><br /><form method='post' action='$scriptname'>"
 			."<input type='submit' value='".$clang->gT("Back")."'>"
 			."<input type='hidden' name='action' value='modifyuser'>"
-			."<input type='hidden' name='uid' value='{$postuid}'>"
+			."<input type='hidden' name='uid' value='{$postuserid}'>"
 			."</form>";
 		}
 		else
@@ -564,23 +541,10 @@ elseif ($action == "userrights")
 	$addsummary = "<br /><strong>".$clang->gT("Set User Rights")."</strong><br />\n";
 
 	// A user can't modify his own rights ;-)
-	if($postuid != $_SESSION['loginID'])
+	if($postuserid != $_SESSION['loginID'])
 	{
-		// DON'T DO THAT CAUS getuserlist returns
-		// ALL USERS
-		// (or all users from same groups depeding on policy)
-		// IT DOESN'T ONLY SHOWS CHILDS !!!
-		//$userlist = getuserlist();
-		//foreach ($userlist as $usr)
-		//{
-		//	if ($usr['uid'] == $postuid)
-		//	{
-		//		$isallowed = true;
-		//		continue;
-		//	}
-		//}
 		$squery = "SELECT uid FROM {$dbprefix}users WHERE uid=$postuserid AND parent_id=".$_SESSION['loginID'];
-		$sresult = $connect->Execute($squery);
+		$sresult = $connect->Execute($squery); // Checked
 		$sresultcount = $sresult->RecordCount();
 
 		if($_SESSION['USER_RIGHT_SUPERADMIN'] != 1 && $sresultcount > 0)
@@ -597,7 +561,7 @@ elseif ($action == "userrights")
 			if(isset($_POST['manage_template']) && $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'])$rights['manage_template']=1;	else $rights['manage_template']=0;
 			if(isset($_POST['manage_label']) && $_SESSION['USER_RIGHT_MANAGE_LABEL'])$rights['manage_label']=1;			else $rights['manage_label']=0;
 
-			setuserrights($postuid, $rights);
+			setuserrights($postuserid, $rights);
 			$addsummary .= "<br />".$clang->gT("Update user rights successful.")."<br />\n";
 			$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
@@ -637,7 +601,7 @@ elseif ($action == "userrights")
 			if(isset($_POST['manage_template']))$rights['manage_template']=1;	else $rights['manage_template']=0;
 			if(isset($_POST['manage_label']))$rights['manage_label']=1;			else $rights['manage_label']=0;
 
-			setuserrights($postuid, $rights);
+			setuserrights($postuserid, $rights);
 			$addsummary .= "<br />".$clang->gT("Update user rights successful.")."<br />\n";
 			$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
@@ -671,7 +635,7 @@ elseif ($action == "usertemplates")
                       }
                       echo "<!-- \n";
                       foreach ($templaterights as $key => $value) {
-                              $uquery = "INSERT INTO {$dbprefix}templates_rights SET `uid`=".$_POST['uid'].", `folder`='".$key."', `use`=".$value." ON DUPLICATE KEY UPDATE `use`=".$value;
+                              $uquery = "INSERT INTO {$dbprefix}templates_rights SET uid={$postuserid}, folder='".$key."', use=".$value." ON DUPLICATE KEY UPDATE use=".$value;
                               echo $uquery."\n";
                               $uresult = mysql_query($uquery);
                       }

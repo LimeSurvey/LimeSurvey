@@ -13,6 +13,8 @@
 * $Id$
 */
 
+//Security Checked: POST, GET, SESSION, DB, REQUEST, returnglobal
+
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 $versionnumber = "1.70+";
@@ -52,7 +54,6 @@ if ($dieoutput!='') die($dieoutput);
 ##################################################################################
 ## DO NOT EDIT BELOW HERE
 ##################################################################################
-if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
 require_once ($rootdir.'/classes/adodb/adodb.inc.php');
 require_once ($rootdir.'/classes/phpmailer/class.phpmailer.php');
 require_once ($rootdir.'/classes/php-gettext/gettextinc.php');
@@ -1475,13 +1476,17 @@ function returnglobal($stringname)
 		if ($stringname == "sid" || $stringname == "gid" || 
 			$stringname == "qid" || $stringname == "tid" ||
 			$stringname == "lid" || $stringname == "ugid"||
-            $stringname == "qaid" )
+            $stringname == "qaid" || $stringname == "scid")
 		{
 			return sanitize_int($_REQUEST[$stringname]);
 		}
-        elseif ($stringname =="lang")
+        elseif ($stringname =="lang" || $stringname =="adminlang")
         {
             return sanitize_languagecode($_REQUEST[$stringname]);
+        }
+        elseif ($stringname =="htmleditormode")
+        {
+            return sanitize_paranoid_string($_REQUEST[$stringname]);    
         }
 		return $_REQUEST[$stringname];
 	}
@@ -2180,7 +2185,7 @@ function templatereplace($line)
 			$line=str_replace("{TOKEN}", $token, $line);
 		}
 		elseif (isset($_POST['token'])) {
-			$line=str_replace("{TOKEN}", $_POST['token'], $line);
+			$line=str_replace("{TOKEN}", htmlentities($_POST['token'],ENT_QUOTES,'UTF-8'), $line);
 		}
 		else {
 			$line=str_replace("{TOKEN}",'', $line);
@@ -2216,7 +2221,7 @@ function templatereplace($line)
 		$line=str_replace("{URL}", $linkreplace, $line);            
         $line=str_replace("{SAVEDID}",$saved_id, $line);     // to activate the SAVEDID in the END URL 
         if (isset($_POST['token'])) {$token=$_POST['token'];} else {$token='';}
-		$line=str_replace("{TOKEN}",$token, $line);			// to activate the TOKEN in the END URL 
+		$line=str_replace("{TOKEN}",urlencode($token), $line);			// to activate the TOKEN in the END URL 
         $line=str_replace("{SID}", $surveyid, $line);       // to activate the SID in the RND URL
 	}
 	if (strpos($line, "{PRIVACY}") !== false) 
@@ -2232,7 +2237,7 @@ function templatereplace($line)
 		. "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall&amp;lang=".$_SESSION['s_lang'];
 		if (returnglobal('token'))
 		{
-			$clearall .= "&amp;token=".returnglobal('token');
+			$clearall .= "&amp;token=".urlencode(returnglobal('token'));
 		}
 		$clearall .="' onclick='return confirm(\""
 		. $clang->gT("Are you sure you want to clear all your responses?")."\")'>["
@@ -2326,8 +2331,8 @@ function templatereplace($line)
 		} else {
 			$restart_extra = "";
 			$restart_token = returnglobal('token');
-			if (!empty($restart_token)) $restart_extra .= "&amp;token=".$restart_token;
-			if (!empty($_GET['lang'])) $restart_extra .= "&amp;lang=".$_GET['lang'];
+			if (!empty($restart_token)) $restart_extra .= "&amp;token=".urlencode($restart_token);
+			if (!empty($_GET['lang'])) $restart_extra .= "&amp;lang=".returnglobal('lang');
 			$line=str_replace("{RESTART}",  "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid".$restart_extra."'>".$clang->gT("Restart this Survey")."</a>", $line);
 		}
 	}
@@ -2340,7 +2345,7 @@ function templatereplace($line)
 		$savereturn = "<a href='index.php?sid=$surveyid";
 		if (returnglobal('token'))
 		{
-			$savereturn.= "&amp;token=".returnglobal('token');
+			$savereturn.= "&amp;token=".urlencode(returnglobal('token'));
 		}
  		$savereturn .= "'>".$clang->gT("Return To Survey")."</a>";
 		$line=str_replace("{RETURNTOSURVEY}", $savereturn, $line);
@@ -2374,10 +2379,10 @@ function templatereplace($line)
 	if (strpos($line, "{LOADFORM}") !== false) {
 		//LOAD SURVEY DETAILS
 		$loadform = "<table><tr><td align='right'>".$clang->gT("Saved name").":</td><td><input type='text' name='loadname' value='";
-		if (isset($_POST['loadname'])) {$loadform .= html_escape(auto_unescape($_POST['loadname']));}
+		if ($loadname) {$loadform .= html_escape(auto_unescape($loadname));}
 		$loadform .= "' /></td></tr>\n"
 		. "<tr><td align='right'>".$clang->gT("Password").":</td><td><input type='password' name='loadpass' value='";
-		if (isset($_POST['loadpass'])) {$loadform .= html_escape(auto_unescape($_POST['loadpass']));}
+		if (isset($loadpass)) { $loadform .= html_escape(auto_unescape($loadpass)); }
 		$loadform .= "' /></td></tr>\n";
         if (function_exists("ImageCreate") && captcha_enabled('saveandloadscreen',$thissurvey['usecaptcha']))
         {
@@ -2403,26 +2408,31 @@ function templatereplace($line)
 		."<td align='left'><input class='text' type='text' name='register_firstname'";
 		if (isset($_POST['register_firstname']))
 		{
-			$registerform .= " value='".returnglobal('register_firstname')."'";
+			$registerform .= " value='".htmlentities(returnglobal('register_firstname'),ENT_QUOTES,'UTF-8')."'";
 		}
 		$registerform .= " /></td></tr>"
 		."<tr><td align='right'>".$clang->gT("Last Name").":</td>\n"
 		."<td align='left'><input class='text' type='text' name='register_lastname'";
 		if (isset($_POST['register_lastname']))
 		{
-			$registerform .= " value='".returnglobal('register_lastname')."'";
+			$registerform .= " value='".htmlentities(returnglobal('register_lastname'),ENT_QUOTES,'UTF-8')."'";
 		}
 		$registerform .= " /></td></tr>\n"
 		."<tr><td align='right'>".$clang->gT("Email Address").":</td>\n"
 		."<td align='left'><input class='text' type='text' name='register_email'";
 		if (isset($_POST['register_email']))
 		{
-			$registerform .= " value='".returnglobal('register_email')."'";
+			$registerform .= " value='".htmlentities(returnglobal('register_email'),ENT_QUOTES,'UTF-8')."'";
 		}
 		$registerform .= " /></td></tr>\n";
-		if (!isset($_GET['lang']) && !isset($_POST['lang'])) $reglang = GetBaseLanguageFromSurveyID($surveyid);
-		if (isset($_GET['lang'])) $reglang = $_GET['lang'];
-		if (isset($_POST['lang'])) $reglang = $_POST['lang'];
+        if (!isset($_REQUEST['lang']))
+        {
+		    $reglang = GetBaseLanguageFromSurveyID($surveyid);
+        }
+        else
+            {
+              $reglang = returnglobal('lang');    
+            }
         
 
         if (function_exists("ImageCreate") && captcha_enabled('registrationscreen',$thissurvey['usecaptcha']))
@@ -2438,7 +2448,7 @@ function templatereplace($line)
 			."<td align='left'><input class='text' type='text' name='register_attribute1'";
 			if (isset($_POST['register_attribute1']))
 			{
-				$registerform .= " value='".returnglobal('register_attribute1')."'";
+				$registerform .= " value='".htmlentities(returnglobal('register_attribute1'),ENT_QUOTES,'UTF-8')."'";
 			}
 			$registerform .= " /></td></tr>\n";
 		}
@@ -2448,7 +2458,7 @@ function templatereplace($line)
 			."<td align='left'><input class='text' type='text' name='register_attribute2'";
 			if (isset($_POST['register_attribute2']))
 			{
-				$registerform .= " value='".returnglobal('register_attribute2')."'";
+				$registerform .= " value='".htmlentities(returnglobal('register_attribute2'),ENT_QUOTES,'UTF-8')."'";
 			}
 			$registerform .= " /></td></tr>\n";
 		}
@@ -3480,46 +3490,6 @@ function languageDropdownClean($surveyid,$selected)
 	$html .= "</select>";
 	return $html;
 }
-
-/*function GetGroupstoRandomize($surveyid){
-	global $connect;
-	$query = "SELECT language, groupset FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
-	$result = db_execute_num($query);
-	while ($result && ($row=$result->FetchRow())) {$language = $row[0]; $groupset=$row[1];}
-	if (isset($groupset)) $GroupsInSet = explode(" ", trim($groupset));
-	if (!isset($groupset) || $groupset==false) { $GroupsInSet = array();}
-	return $GroupsInSet;
-}
-
-function getGroupNamefromGid($surveyid, $groupid) {
- global $connect;
- 
- $query = "SELECT group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid and gid=$groupid";
-	$result = db_execute_num($query);
-	while ($result && ($row=$result->FetchRow())) {$groupname = $row[0];}
-	return $groupname;
-}
-
-function getgrouplistwithoutrandomset($surveyid)
-{
-	global $surveyid, $dbprefix, $scriptname, $connect;
-	$groupselecter="";
-	if (!$surveyid) {$surveyid=$_POST['sid'];}
-	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
-	$theset = GetGroupstoRandomize($surveyid);
-
-	$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid='{$surveyid}' AND  language='{$s_lang}'  ORDER BY group_order";
-	//
-	$gidresult = db_execute_num($gidquery) or die("Couldn't get group list in common.php<br />$gidquery<br />".htmlspecialchars($connect->ErrorMsg()));
-	while($gv = $gidresult->FetchRow())
-	{
-		if (!in_array($gv[0], $theset)) {
-		$groupselecter .= "\t\t<option id='$gv[0]'";
-		$groupselecter .= " value='$gv[0]'>".htmlspecialchars($gv[1])."</option>\n";
-		}
-	}
-	return $groupselecter;
-}*/
 
 function include2var($file)
 //This function includes a file but doesn't output it - instead it writes it into the return variable

@@ -13,13 +13,18 @@
 * $Id$
 */
 
+//Security Checked: POST, GET, SESSION, DB, REQUEST, returnglobal      
+
 //Ensure script is not run directly, avoid path disclosure
 include_once("login_check.php");
-
+if (isset($_POST['uid'])) {$postuserid=sanitize_int($_POST['uid']);}
+if (isset($_POST['ugid'])) {$postusergroupid=sanitize_int($_POST['ugid']);}
 
 if ($action == "listsurveys")
 {
-	$query = "SELECT a.*, c.*, u.users_name FROM ".db_table_name('surveys')." as a INNER JOIN ".db_table_name('surveys_languagesettings')." as c ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language ) AND surveyls_survey_id=a.sid and surveyls_language=a.language INNER JOIN ".db_table_name('users')." as u ON (u.uid=a.owner_id) ";
+	$query = " SELECT a.*, c.*, u.users_name FROM ".db_table_name('surveys')." as a "
+            ." INNER JOIN ".db_table_name('surveys_languagesettings')." as c ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language ) AND surveyls_survey_id=a.sid and surveyls_language=a.language "
+            ." INNER JOIN ".db_table_name('users')." as u ON (u.uid=a.owner_id) ";
 
 	if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1)
 	{
@@ -29,7 +34,7 @@ if ($action == "listsurveys")
 
 	$query .= " ORDER BY surveyls_title";
 
-	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+	$result = db_execute_assoc($query) or die($connect->ErrorMsg()); //Checked
 
 	if($result->RecordCount() > 0) {
         $listsurveys= "<br /><table cellpadding='1' width='800'>
@@ -50,7 +55,7 @@ if ($action == "listsurveys")
 		while($rows = $result->FetchRow())
 		{
 			$sidsecurityQ = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid='{$rows['sid']}' AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
-			$sidsecurityR = db_execute_assoc($sidsecurityQ);
+			$sidsecurityR = db_execute_assoc($sidsecurityQ); //Checked
 			$sidsecurity = $sidsecurityR->FetchRow();
 			
 			if($rows['private']=="Y")
@@ -79,13 +84,13 @@ if ($action == "listsurveys")
 				}
 				// Complete Survey Responses - added by DLR
                                 $gnquery = "SELECT count(id) FROM ".db_table_name("survey_".$rows['sid'])." WHERE submitdate IS NULL";
-                                $gnresult = db_execute_num($gnquery);
+                                $gnresult = db_execute_num($gnquery); //Checked
                                 while ($gnrow = $gnresult->FetchRow())
                                 {
                                         $partial_responses=$gnrow[0];
                                 }
                                 $gnquery = "SELECT count(id) FROM ".db_table_name("survey_".$rows['sid']);
-                                $gnresult = db_execute_num($gnquery);
+                                $gnresult = db_execute_num($gnquery); //Checked
                                 while ($gnrow = $gnresult->FetchRow())
                                 {
                                         $responses=$gnrow[0];
@@ -107,7 +112,7 @@ if ($action == "listsurveys")
 
 			$questionsCount = 0;
 			$questionsCountQuery = "SELECT * FROM ".db_table_name('questions')." WHERE sid={$rows['sid']} AND language='".$rows['language']."'"; //Getting a count of questions for this survey
-			$questionsCountResult = $connect->Execute($questionsCountQuery);
+			$questionsCountResult = $connect->Execute($questionsCountQuery); //Checked
 			$questionsCount = $questionsCountResult->RecordCount();
 
             if ($gbc == "oddrow") {$gbc = "evenrow";}
@@ -192,13 +197,13 @@ if ($action == "checksettings" || $action == "changelang" || $action=="changehtm
 {
 	//GET NUMBER OF SURVEYS
 	$query = "SELECT sid FROM ".db_table_name('surveys');
-	$result = $connect->Execute($query);
+	$result = $connect->Execute($query); //Checked
 	$surveycount=$result->RecordCount();
 	$query = "SELECT sid FROM ".db_table_name('surveys')." WHERE active='Y'";
-	$result = $connect->Execute($query);
+	$result = $connect->Execute($query); //Checked
 	$activesurveycount=$result->RecordCount();
 	$query = "SELECT users_name FROM ".db_table_name('users');
-	$result = $connect->Execute($query);
+	$result = $connect->Execute($query); //Checked
 	$usercount = $result->RecordCount();
 
 	// prepare data for the htmleditormode preference
@@ -354,24 +359,24 @@ if ($action == "checksettings" || $action == "changelang" || $action=="changehtm
 if ($surveyid)
 {
 	$query = "SELECT * FROM ".db_table_name('surveys_rights')." WHERE  sid = {$surveyid} AND uid = ".$_SESSION['loginID'];
-	$result = $connect->SelectLimit($query, 1);
+	$result = $connect->SelectLimit($query, 1); 
 	if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $result->RecordCount() > 0)
 	{
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
 		$sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
-		$sumresult5 = db_execute_assoc($sumquery5);
+		$sumresult5 = db_execute_assoc($sumquery5); //Checked
 		$sumrows5 = $sumresult5->FetchRow();
 		$sumquery3 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND language='".$baselang."'"; //Getting a count of questions for this survey
-		$sumresult3 = $connect->Execute($sumquery3);
+		$sumresult3 = $connect->Execute($sumquery3); //Checked
 		$sumcount3 = $sumresult3->RecordCount();
 		$sumquery6 = "SELECT * FROM ".db_table_name('conditions')." as c, ".db_table_name('questions')."as q WHERE c.qid = q.qid AND q.sid=$surveyid"; //Getting a count of conditions for this survey
-		$sumresult6 = $connect->Execute($sumquery6) or die("Can't coun't conditions");
+		$sumresult6 = $connect->Execute($sumquery6) or die("Can't coun't conditions"); //Checked
 		$sumcount6 = $sumresult6->RecordCount();
 		$sumquery2 = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='".$baselang."'"; //Getting a count of groups for this survey
-		$sumresult2 = $connect->Execute($sumquery2);
+		$sumresult2 = $connect->Execute($sumquery2); //Checked
 		$sumcount2 = $sumresult2->RecordCount();
 		$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid"; //Getting data for this survey
-		$sumresult1 = db_select_limit_assoc($sumquery1, 1);
+		$sumresult1 = db_select_limit_assoc($sumquery1, 1); //Checked
 
         // Output starts here...
 		$surveysummary = "<table width='100%' align='center' bgcolor='#FFFFFF' border='0'>\n";
@@ -933,11 +938,11 @@ if ($surveyid && $gid )   // Show the group toolbar
 	// TODO: check that surveyid and thus baselang are always set here
 	$sumquery4 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND
 	gid=$gid AND language='".$baselang."'"; //Getting a count of questions for this survey
-	$sumresult4 = $connect->Execute($sumquery4);
+	$sumresult4 = $connect->Execute($sumquery4); //Checked
 	$sumcount4 = $sumresult4->RecordCount();
 	$grpquery ="SELECT * FROM ".db_table_name('groups')." WHERE gid=$gid AND
 	language='".$baselang."' ORDER BY ".db_table_name('groups').".group_order";
-	$grpresult = db_execute_assoc($grpquery);
+	$grpresult = db_execute_assoc($grpquery); //Checked
 
 	// Check if other questions/groups are dependent upon this group
 	$condarray=GetGroupDepsForConditions($surveyid,"all",$gid,"by-targgid");	
@@ -1102,10 +1107,10 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 	// TODO: check that surveyid is set and that so is $baselang
 	//Show Question Details
 	$qrq = "SELECT * FROM ".db_table_name('answers')." WHERE qid=$qid AND language='".$baselang."' ORDER BY sortorder, answer";
-	$qrr = $connect->Execute($qrq);
+	$qrr = $connect->Execute($qrq); //Checked
 	$qct = $qrr->RecordCount();
 	$qrquery = "SELECT * FROM ".db_table_name('questions')." WHERE gid=$gid AND sid=$surveyid AND qid=$qid AND language='".$baselang."'";
-	$qrresult = db_execute_assoc($qrquery) or die($qrquery."<br />".$connect->ErrorMsg());
+	$qrresult = db_execute_assoc($qrquery) or die($qrquery."<br />".$connect->ErrorMsg()); //Checked
 	$questionsummary = "<table width='100%' align='center' border='0'>\n";
 
 	// Check if other questions in the Survey are dependent upon this question
@@ -1426,12 +1431,12 @@ if (returnglobal('viewanswer'))
     foreach ($anslangs as $language)
     {
         $qquery = "SELECT count(*) as num_ans  FROM ".db_table_name('answers')." WHERE qid=$qid AND language='".$language."'";
-        $qresult = db_execute_assoc($qquery);
-        $qrow = $qresult->FetchRow();
+        $qresult = db_execute_assoc($qquery); //Checked
+        $qrow = $qresult->FetchRow(); 
         if ($qrow["num_ans"] == 0)   // means that no record for the language exists in the answers table
         {
             $qquery = "INSERT INTO ".db_table_name('answers')." (SELECT `qid`,`code`,`answer`,`default_value`,`sortorder`, '".$language."' FROM ".db_table_name('answers')." WHERE qid=$qid AND language='".$baselang."')";
-            $connect->Execute($qquery);
+            $connect->Execute($qquery); //Checked
         }
     }
 
@@ -1439,23 +1444,23 @@ if (returnglobal('viewanswer'))
     
     //delete the answers in languages not supported by the survey
     $qquery = "SELECT DISTINCT language FROM ".db_table_name('answers')." WHERE (qid = $qid) AND (language NOT IN ('".implode("','",$anslangs)."'))";
-    $qresult = db_execute_assoc($qquery);
+    $qresult = db_execute_assoc($qquery); //Checked
     while ($qrow = $qresult->FetchRow())
     {
         $qquery = "DELETE FROM ".db_table_name('answers')." WHERE (qid = $qid) AND (language = '".$qrow["language"]."')";
-        $connect->Execute($qquery);
+        $connect->Execute($qquery); //Checked
     }
     
 	
 	// Check sort order for answers
 	$qquery = "SELECT type FROM ".db_table_name('questions')." WHERE qid=$qid AND language='".$baselang."'";
-	$qresult = db_execute_assoc($qquery);
+	$qresult = db_execute_assoc($qquery); //Checked
 	while ($qrow=$qresult->FetchRow()) {$qtype=$qrow['type'];}
 	if (!isset($_POST['ansaction']))
 	{
 		//check if any nulls exist. If they do, redo the sortorders
 		$caquery="SELECT * FROM ".db_table_name('answers')." WHERE qid=$qid AND sortorder is null AND language='".$baselang."'";
-		$caresult=$connect->Execute($caquery);
+		$caresult=$connect->Execute($caquery); //Checked
 		$cacount=$caresult->RecordCount();
 		if ($cacount)
 		{
@@ -1467,7 +1472,7 @@ if (returnglobal('viewanswer'))
 	$vasummary = PrepareEditorScript("editanswer");
 
      $query = "SELECT * FROM ".db_table_name('answers')." WHERE qid='{$qid}' AND language='".GetBaseLanguageFromSurveyID($surveyid)."'";
-     $result = db_execute_assoc($query) or die($connect->ErrorMsg());
+     $result = db_execute_assoc($query) or die($connect->ErrorMsg()); //Checked
      $anscount = $result->RecordCount();	
      
      $vasummary .= "\t<table width='100%' >\n"
@@ -1494,7 +1499,7 @@ if (returnglobal('viewanswer'))
 	{
 		$position=0;
     	$query = "SELECT * FROM ".db_table_name('answers')." WHERE qid='{$qid}' AND language='{$anslang}' ORDER BY sortorder, code";
-		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+		$result = db_execute_assoc($query) or die($connect->ErrorMsg()); //Checked
 		$anscount = $result->RecordCount();
         $vasummary .= "<div class='tab-page'>"
                 ."<h2 class='tab'>".getLanguageNameFromCode($anslang, false);
@@ -1659,15 +1664,15 @@ if($action == "addsurveysecurity")
 {
 	$addsummary = "<br /><strong>".$clang->gT("Add User")."</strong><br />\n";
 
-	$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$_POST['uid'];
-	$result = db_execute_assoc($query);
-	if( ($result->RecordCount() > 0 && in_array($_POST['uid'],getuserlist('onlyuidarray'))) || 
+	$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$postuserid;
+	$result = db_execute_assoc($query); //Checked
+	if( ($result->RecordCount() > 0 && in_array($postuserid,getuserlist('onlyuidarray'))) || 
 		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
-		if($_POST['uid'] > 0){
+		if($postuserid > 0){
 
-			$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($surveyid,". $_POST['uid'].",0,0,0,0,0,0)";
-			$isrresult = $connect->Execute($isrquery);
+			$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($surveyid,". $postuserid.",0,0,0,0,0,0)";
+			$isrresult = $connect->Execute($isrquery); //Checked
 
 			if($isrresult)
 			{
@@ -1675,8 +1680,7 @@ if($action == "addsurveysecurity")
 				$addsummary .= "<br /><form method='post' action='$scriptname?sid={$surveyid}'>"
 				."<input type='submit' value='".$clang->gT("Set Survey Rights")."' />"
 				."<input type='hidden' name='action' value='setsurveysecurity' />"
-				//."<input type='hidden' name='user' value='{$_POST['user']}'>"
-				."<input type='hidden' name='uid' value='{$_POST['uid']}' />"
+				."<input type='hidden' name='uid' value='{$postuserid}' />"
 				."</form>\n";
 			}
 			else
@@ -1704,14 +1708,13 @@ if($action == "addusergroupsurveysecurity")
 	$addsummary = "<br /><strong>".$clang->gT("Add User Group")."</strong><br />\n";
 
 	$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];
-	$result = db_execute_assoc($query);
-	if( ($result->RecordCount() > 0 && 
-		in_array($_POST['ugid'],getsurveyusergrouplist('simpleugidarray')) ) ||
+	$result = db_execute_assoc($query); //Checked
+	if( ($result->RecordCount() > 0 && in_array($postusergroupid,getsurveyusergrouplist('simpleugidarray')) ) ||
 	     $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
-		if($_POST['ugid'] > 0){
-			$query2 = "SELECT b.uid FROM (SELECT uid FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid}) AS c RIGHT JOIN ".db_table_name('user_in_groups')." AS b ON b.uid = c.uid WHERE c.uid IS NULL AND b.ugid = {$_POST['ugid']}";
-			$result2 = db_execute_assoc($query2);
+		if($postusergroupid > 0){
+			$query2 = "SELECT b.uid FROM (SELECT uid FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid}) AS c RIGHT JOIN ".db_table_name('user_in_groups')." AS b ON b.uid = c.uid WHERE c.uid IS NULL AND b.ugid = {$postusergroupid}";
+			$result2 = db_execute_assoc($query2); //Checked
 			if($result2->RecordCount() > 0)
 			{
 				while ($row2 = $result2->FetchRow())
@@ -1722,7 +1725,7 @@ if($action == "addusergroupsurveysecurity")
 				$values_implode = implode(",", $values);
 
 				$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES ".$values_implode;
-				$isrresult = $connect->Execute($isrquery);
+				$isrresult = $connect->Execute($isrquery); //Checked
 
 				if($isrresult)
 				{
@@ -1731,7 +1734,7 @@ if($action == "addusergroupsurveysecurity")
 					$addsummary .= "<br /><form method='post' action='$scriptname?sid={$surveyid}'>"
 					."<input type='submit' value='".$clang->gT("Set Survey Rights")."' />"
 					."<input type='hidden' name='action' value='setusergroupsurveysecurity' />"
-					."<input type='hidden' name='ugid' value='{$_POST['ugid']}' />"
+					."<input type='hidden' name='ugid' value='{$postusergroupid}' />"
 					."</form>\n";
 				}
 			}
@@ -1758,16 +1761,16 @@ if($action == "delsurveysecurity"){
 	{
 		$addsummary = "<br /><strong>".$clang->gT("Deleting User")."</strong><br />\n";
 
-		$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$_POST['uid'];
-		$result = db_execute_assoc($query);
+		$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$postuserid;
+		$result = db_execute_assoc($query); //Checked
 		if($result->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 		{
-			if (isset($_POST['uid']))
+			if (isset($postuserid))
 			{
-				$dquery="DELETE FROM {$dbprefix}surveys_rights WHERE uid={$_POST['uid']} AND sid={$surveyid}";	//	added by Dennis
-				$dresult=$connect->Execute($dquery);
+				$dquery="DELETE FROM {$dbprefix}surveys_rights WHERE uid={$postuserid} AND sid={$surveyid}";	//	added by Dennis
+				$dresult=$connect->Execute($dquery); //Checked
 
-				$addsummary .= "<br />".$clang->gT("Username").": {$_POST['user']}<br />\n";
+				$addsummary .= "<br />".$clang->gT("Username").": ".sanitize_system_string($_POST['user'])."<br />\n";
 			}
 			else
 			{
@@ -1784,12 +1787,12 @@ if($action == "delsurveysecurity"){
 
 if($action == "setsurveysecurity")
 {
-	$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$_POST['uid'];
-	$result = db_execute_assoc($query);
+	$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$postuserid;
+	$result = db_execute_assoc($query); //Checked
 	if($result->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
-		$query2 = "SELECT uid, edit_survey_property, define_questions, browse_response, export, delete_survey, activate_survey FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid} AND uid = ".$_POST['uid'];
-		$result2 = db_execute_assoc($query2);
+		$query2 = "SELECT uid, edit_survey_property, define_questions, browse_response, export, delete_survey, activate_survey FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid} AND uid = ".$postuserid;
+		$result2 = db_execute_assoc($query2); //Checked
 
 		if($result2->RecordCount() > 0)
 		{
@@ -1842,7 +1845,7 @@ if($action == "setsurveysecurity")
 			$usersummary .= "\t\n\t<tr><td colspan='6' align='center'>"
 			."<input type='submit' value='".$clang->gT("Save Now")."' />"
 			."<input type='hidden' name='action' value='surveyrights' />"
-			."<input type='hidden' name='uid' value='{$_POST['uid']}' /></td></tr>"
+			."<input type='hidden' name='uid' value='{$postuserid}' /></td></tr>"
 			."</form>"
 			. "</table>\n";
 		}
@@ -1856,8 +1859,8 @@ if($action == "setsurveysecurity")
 
 if($action == "setusergroupsurveysecurity")
 {
-	$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];//." AND owner_id != ".$_POST['uid'];
-	$result = db_execute_assoc($query);
+	$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];//." AND owner_id != ".$postuserid;
+	$result = db_execute_assoc($query); //Checked
 	if($result->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='6' class='header'>\n"
@@ -1895,7 +1898,7 @@ if($action == "setusergroupsurveysecurity")
 		$usersummary .= "\t\n\t<tr><td colspan='6' align='center'>"
 		."<input type='submit' value='".$clang->gT("Save Now")."' />"
 		."<input type='hidden' name='action' value='surveyrights' />"
-		."<input type='hidden' name='ugid' value='{$_POST['ugid']}' /></td></tr>"
+		."<input type='hidden' name='ugid' value='{$postusergroupid}' /></td></tr>"
 		."</form>"
 		. "</table>\n";
 	}
@@ -1953,11 +1956,11 @@ if($action == "exportstructure")
 if($action == "surveysecurity")
 {
 	$query = "SELECT sid FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];
-	$result = db_execute_assoc($query);
+	$result = db_execute_assoc($query); //Checked
 	if($result->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$query2 = "SELECT a.uid, b.users_name FROM ".db_table_name('surveys_rights')." AS a INNER JOIN ".db_table_name('users')." AS b ON a.uid = b.uid WHERE a.sid = {$surveyid} AND b.uid != ".$_SESSION['loginID'] ." ORDER BY b.users_name";
-		$result2 = db_execute_assoc($query2);
+		$result2 = db_execute_assoc($query2); //Checked
 		$surveysecurity = "<table width='100%' rules='rows' border='1' class='table2columns'>\n\t<tr><td colspan='3' align='center' class='settingcaption'>\n"
 		. "\t\t<strong>".$clang->gT("Survey Security")."</strong></td></tr>\n"
 		. "\t<tr>\n"
@@ -1979,7 +1982,7 @@ if($action == "surveysecurity")
 			while ($resul2row = $result2->FetchRow())
 			{
 				$query3 = "SELECT a.ugid FROM ".db_table_name('user_in_groups')." AS a RIGHT OUTER JOIN ".db_table_name('users')." AS b ON a.uid = b.uid WHERE b.uid = ".$resul2row['uid'];
-				$result3 = db_execute_assoc($query3);
+				$result3 = db_execute_assoc($query3); //Checked
 				while ($resul3row = $result3->FetchRow())
 				{
 					if (!isset($usercontrolSameGroupPolicy) ||
@@ -1996,7 +1999,7 @@ if($action == "surveysecurity")
 					unset($group_ids);
 	
 					$query4 = "SELECT name FROM ".db_table_name('user_groups')." WHERE ugid = ".$group_ids_query;
-					$result4 = db_execute_assoc($query4);
+					$result4 = db_execute_assoc($query4); //Checked
 					
 					while ($resul4row = $result4->FetchRow())
 					{
@@ -2086,17 +2089,17 @@ elseif ($action == "surveyrights")
 {
 	$addsummary = "<br /><strong>".$clang->gT("Set Survey Rights")."</strong><br />\n";
 
-	if(isset($_POST['uid'])){
+	if(isset($postuserid)){
 		$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} ";
         if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1)  
         {
-            $query.=" AND owner_id != ".$_POST['uid']." AND owner_id = ".$_SESSION['loginID'];
+            $query.=" AND owner_id != ".$postuserid." AND owner_id = ".$_SESSION['loginID'];
         }
     }
 	else{
-		$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];//." AND owner_id != ".$_POST['uid'];
+		$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];
 	}
-	$result = db_execute_assoc($query);
+	$result = db_execute_assoc($query); //Checked
 	if($result->RecordCount() > 0)
 	{
 		$rights = array();
@@ -2108,8 +2111,8 @@ elseif ($action == "surveyrights")
 		if(isset($_POST['delete_survey']))$rights['delete_survey']=1;				else $rights['delete_survey']=0;
 		if(isset($_POST['activate_survey']))$rights['activate_survey']=1;			else $rights['activate_survey']=0;
 
-		if(isset($_POST['uid'])){
-			$uids[] = $_POST['uid'];
+		if(isset($postuserid)){
+			$uids[] = $postuserid;
 		}
 		else{
 			$uids = $_SESSION['uids'];
@@ -2142,7 +2145,7 @@ if ($action == "editsurvey")
 	if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['edit_survey_property'])
 	{
 		$esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
-		$esresult = db_execute_assoc($esquery);
+		$esresult = db_execute_assoc($esquery); //Checked
 		while ($esrow = $esresult->FetchRow())
 		{
 			$esrow = array_map('htmlspecialchars', $esrow);
@@ -2664,7 +2667,7 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
             // this one is created to get the right default texts fo each language
             $bplang = new limesurvey_lang($grouplang);		
     		$esquery = "SELECT * FROM ".db_table_name("surveys_languagesettings")." WHERE surveyls_survey_id=$surveyid and surveyls_language='$grouplang'";
-    		$esresult = db_execute_assoc($esquery);
+    		$esresult = db_execute_assoc($esquery); //Checked
     		$esrow = $esresult->FetchRow();
 			$editsurvey .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($esrow['surveyls_language'],false);
 			if ($esrow['surveyls_language']==GetBaseLanguageFromSurveyID($surveyid)) {$editsurvey .= '('.$clang->gT("Base Language").')';}
@@ -2712,32 +2715,33 @@ if ($action == "ordergroups")
 	if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['edit_survey_property'])
 	{
 	// Check if one of the up/down buttons have been clicked
-	if (isset($_POST['groupordermethod']))
+	if (isset($_POST['groupordermethod']) && isset($_POST['sortorder']))
 	{
+       $postsortorder=sanitize_int($_POST['sortorder']);
 	   switch($_POST['groupordermethod'])
 	   {
         // Pressing the Up button
 		case $clang->gT("Up", "unescaped"):
-		$newsortorder=$_POST['sortorder']-1;
-		$oldsortorder=$_POST['sortorder'];
+		$newsortorder=$postsortorder-1;
+		$oldsortorder=$postsortorder;
 		$cdquery = "UPDATE ".db_table_name('groups')." SET group_order=-1 WHERE sid=$surveyid AND group_order=$newsortorder";
-		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg()); //Checked
 		$cdquery = "UPDATE ".db_table_name('groups')." SET group_order=$newsortorder WHERE sid=$surveyid AND group_order=$oldsortorder";
-		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg()); //Checked
 		$cdquery = "UPDATE ".db_table_name('groups')." SET group_order='$oldsortorder' WHERE sid=$surveyid AND group_order=-1";
-		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg()); //Checked
 		break;
 
         // Pressing the Down button
 		case $clang->gT("Dn", "unescaped"):
-		$newsortorder=$_POST['sortorder']+1;
-		$oldsortorder=$_POST['sortorder'];
+		$newsortorder=$postsortorder+1;
+		$oldsortorder=$postsortorder;
 		$cdquery = "UPDATE ".db_table_name('groups')." SET group_order=-1 WHERE sid=$surveyid AND group_order=$newsortorder";
-		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());//Checked
 		$cdquery = "UPDATE ".db_table_name('groups')." SET group_order='$newsortorder' WHERE sid=$surveyid AND group_order=$oldsortorder";
-		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());//Checked
 		$cdquery = "UPDATE ".db_table_name('groups')." SET group_order=$oldsortorder WHERE sid=$surveyid AND group_order=-1";
-		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());//Checked
 		break;
         }
     }
@@ -2773,7 +2777,7 @@ if ($action == "ordergroups")
 		//Get the groups from this survey
 		$s_lang = GetBaseLanguageFromSurveyID($surveyid);
 		$ogquery = "SELECT * FROM {$dbprefix}groups WHERE sid='{$surveyid}' AND language='{$s_lang}' order by group_order,group_name" ;
-		$ogresult = db_execute_assoc($ogquery) or die($connect->ErrorMsg());
+		$ogresult = db_execute_assoc($ogquery) or die($connect->ErrorMsg());//Checked
 
 		$ogarray = $ogresult->GetArray();
     		$groupcount = count($ogarray);
@@ -2820,41 +2824,6 @@ if ($action == "ordergroups")
 		include("access_denied.php");
 	}
 }
-if ($action == "uploadf")
-{
-	if (!isset($tempdir))
-	{
-		$the_path = $homedir;
-	}
-	else
-	{
-		$the_path = $tempdir;
-	}
-	$the_file_name = $_FILES['the_file']['name'];
-	$the_file = $_FILES['the_file']['tmp_name'];
-	$the_full_file_path = $the_path."/".$the_file_name;
-	switch($_FILES['the_file']['error'])
-	{
-		case UPLOAD_ERR_INI_SIZE:
-		upload();
-		$editcsv .="<b><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("The uploaded file is bigger than the upload_max_filesize directive in php.ini")."</b>\n";
-		break;
-		case UPLOAD_ERR_PARTIAL:
-		upload();
-		$editcsv .="<b><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("The file was only partially uploaded")."</b>\n";
-		break;
-		case UPLOAD_ERR_NO_FILE:
-		upload();
-		$editcsv .="<b><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("No file was uploaded")."</b>\n";
-		break;
-		case UPLOAD_ERR_OK:
-		control();
-		break;
-		default:
-		$editcsv .="<b><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("Error on file transfer. You must select a CSV file")."</b>\n";
-	}
-}
-
 
 
 if ($action == "newsurvey")
@@ -3191,23 +3160,22 @@ function replacenewline ($texttoreplace)
 }
 /*
 function questionjavascript($type, $qattributes)
-{
-	$newquestionoutput = "<script type='text/javascript'>\n"
-    ."if (navigator.userAgent.indexOf(\"Gecko\") != -1)\n"
-	."window.addEventListener(\"load\", init_gecko_select_hack, false);\n";	
-	$jc=0;
-	$newquestionoutput .= "\t\t\tvar qtypes = new Array();\n";
-	$newquestionoutput .= "\t\t\tvar qnames = new Array();\n\n";
-	foreach ($qattributes as $key=>$val)
 	{
-		foreach ($val as $vl)
-		{
-			$newquestionoutput .= "\t\t\tqtypes[$jc]='".$key."';\n";
-			$newquestionoutput .= "\t\t\tqnames[$jc]='".$vl['name']."';\n";
-			$jc++;
-		}
-	}
-	$newquestionoutput .= "\t\t\t function buildQTlist(type)
+	$newquestion = "<script type='text/javascript'>\n"
+				 . "<!--\n";
+		$jc=0;
+		$newquestion .= "\t\t\tvar qtypes = new Array();\n";
+		$newquestion .= "\t\t\tvar qnames = new Array();\n\n";
+		foreach ($qattributes as $key=>$val)
+			{
+			foreach ($val as $vl)
+				{
+				$newquestion .= "\t\t\tqtypes[$jc]='".$key."';\n";
+				$newquestion .= "\t\t\tqnames[$jc]='".$vl['name']."';\n";
+				$jc++;
+				}
+			}
+		$newquestion .= "\t\t\t function buildQTlist(type)
 				{
 				document.getElementById('QTattributes').style.display='none';
 				for (var i=document.getElementById('QTlist').options.length-1; i>=0; i--)
@@ -3223,137 +3191,41 @@ function questionjavascript($type, $qattributes)
 						}
 					}
 				}";
-	$newquestionoutput .="\nfunction OtherSelection(QuestionType)\n"
-	. "\t{\n"
-	. "if (QuestionType == '') {QuestionType=document.getElementById('question_type').value;}\n"
-	. "\tif (QuestionType == 'M' || QuestionType == 'P' || QuestionType == 'L' || QuestionType == '!')\n"
-	. "\t\t{\n"
-	. "\t\tdocument.getElementById('OtherSelection').style.display = '';\n"
-	. "\t\tdocument.getElementById('LabelSets').style.display = 'none';\n"
-	. "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
-	. "\t\t}\n"
-	. "\telse if (QuestionType == 'F' || QuestionType == 'H' || QuestionType == 'W' || QuestionType == 'Z')\n"
-	. "\t\t{\n"
-	. "\t\tdocument.getElementById('LabelSets').style.display = '';\n"
-	. "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n"
-	. "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
-	. "\t\t}\n"
-	. "\telse if (QuestionType == 'S' || QuestionType == 'T' || QuestionType == 'U' || QuestionType == 'N' || QuestionType == 'D' || QuestionType=='')\n"
-	. "\t\t{\n"
-	. "\t\tdocument.getElementById('Validation').style.display = '';\n"
-	. "\t\tdocument.getElementById('OtherSelection').style.display ='none';\n"
-	. "\t\tdocument.getElementById('ON').checked = true;\n"
-	. "\t\tdocument.getElementById('LabelSets').style.display='none';\n"
-	. "\t\t}\n"
-	. "\telse\n"
-	. "\t\t{\n"
-	. "\t\tdocument.getElementById('LabelSets').style.display = 'none';\n"
-	. "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n"
-	. "\t\tdocument.getElementById('ON').checked = true;\n"
-	. "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
-	//. "\t\tdocument.addnewquestion.other[1].checked = true;\n"
-	. "\t\t}\n"
-	. "\tbuildQTlist(QuestionType);\n"
-	. "\t}\n"
-	. "\tOtherSelection('$type');\n"
-	. "</script>\n";
-    
+	$newquestion .="\nfunction OtherSelection(QuestionType)\n"
+				 . "\t{\n"
+				 . "if (QuestionType == '') {QuestionType=document.getElementById('question_type').value;}\n"
+				 . "\tif (QuestionType == 'M' || QuestionType == 'P' || QuestionType == 'L' || QuestionType == '!')\n"
+				 . "\t\t{\n"
+				 . "\t\tdocument.getElementById('OtherSelection').style.display = '';\n"
+				 . "\t\tdocument.getElementById('LabelSets').style.display = 'none';\n"
+				 . "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
+				 . "\t\t}\n"
+				 . "\telse if (QuestionType == 'F' || QuestionType == 'H' || QuestionType == 'W' || QuestionType == 'Z')\n"
+				 . "\t\t{\n"
+				 . "\t\tdocument.getElementById('LabelSets').style.display = '';\n"
+				 . "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n"
+				 . "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
+				 . "\t\t}\n"
+				 . "\telse if (QuestionType == 'S' || QuestionType == 'T' || QuestionType == 'U' || QuestionType == 'N' || QuestionType=='')\n"
+				 . "\t\t{\n"
+				 . "\t\tdocument.getElementById('Validation').style.display = '';\n"
+				 . "\t\tdocument.getElementById('OtherSelection').style.display ='none';\n"
+				 . "\t\tdocument.getElementById('ON').checked = true;\n"
+				 . "\t\tdocument.getElementById('LabelSets').style.display='none';\n"
+				 . "\t\t}\n"
+				 . "\telse\n"
+				 . "\t\t{\n"
+				 . "\t\tdocument.getElementById('LabelSets').style.display = 'none';\n"
+				 . "\t\tdocument.getElementById('OtherSelection').style.display = 'none';\n"
+				 . "\t\tdocument.getElementById('ON').checked = true;\n"
+				 . "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
+				 //. "\t\tdocument.addnewquestion.other[1].checked = true;\n"
+				 . "\t\t}\n"
+				 . "\tbuildQTlist(QuestionType);\n"
+				 . "\t}\n"
+				 . "\tOtherSelection('$type');\n"
+				 . "-->\n"
+				 . "</script>\n";
+
 }      */
-
-function upload()
-{
-	global $questionsummary, $sid, $qid, $gid;
-	$questionsummary .= "\t\t<tr><td>&nbsp;</td><td>"
-	. "<font face='verdana' size='1' color='green'>"
-	. $clang->gT("Warning").": ". $clang->gT("You need to upload the file")." "
-	. "\n<form enctype='multipart/form-data' action='" . $_SERVER['PHP_SELF'] . "' method='post'>\n"
-	. "<input type='hidden' name='action' value='uploadf' />\n"
-	. "<input type='hidden' name='sid' value='$sid' />\n"
-	. "<input type='hidden' name='gid' value='$gid' />\n"
-	. "<input type='hidden' name='qid' value='$qid' />\n"
-	. "<font face='verdana' size='2' color='green'><b>"
-	. $clang->gT("You must upload a CSV file")."</font><br />\n"
-	. "<input type='file' name='the_file' size='35' /><br />\n"
-	. "<input type='submit' value='".$clang->gT("Upload CSV file")."' />\n"
-	. "</form></font>\n\n";
-}
-
-function control()
-{
-	global $editcsv, $questionsummary, $sid, $qid, $gid;
-	$info = pathinfo($_FILES['the_file']['name']);
-	$ext = $info['extension'] ;
-	if ($ext != "csv")
-	{
-		upload();
-		$editcsv .="<b><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("It is impossible to upload a file other than CSV type")."</b>\n";
-		$questionsummary .= "</table>\n";
-	}
-	else
-	{
-		copy($_FILES['the_file']['tmp_name'],".\\".$_FILES['the_file']['name']);
-		unlink($_FILES['the_file']['tmp_name']);
-		$lines = file($_FILES['the_file']['name']);
-		$result = count($lines);
-		if ($result <= 1)
-		{
-			upload();
-			$editcsv .="<b><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("It is impossible to upload an empty file")."</b>\n";
-			$questionsummary .= "</table>\n";
-		}
-		else
-		{
-			$editcsv  = "<table width='100%' align='center' border='0'>\n"
-			. "<tr bgcolor='#555555'><td colspan='2'><font color='white'><b>"
-			. $clang->gT("Uploading CSV file")."</b></td></tr>\n";
-			$editcsv .= "<tr><th>".$clang->gT("Visualization:")."</font></th><th>".$clang->gT("Select the field number you would like to use for your answers:")."</font></th>"
-			. "</tr>\n";
-			$ricorpv = substr_count($lines[0],";");
-			$ricorv = substr_count($lines[0],",");
-			if ($ricorpv > $ricorv)
-			{
-				$vettoreriga = explode(";",$lines[0]);
-				$elem = ";";
-			}
-			else
-			{
-				$vettoreriga = explode(",",$lines[0]);
-				$elem = ",";
-			}
-			$editcsv .= "<tr><form action='".$scriptname."' method='post'>\n"
-			. "<td align = 'center'><select name=\"$K\">\n";
-			$band = 0;
-			foreach ($lines as $K => $v)
-			{
-				if ($band == 1)
-				{
-					$editcsv .= "<option value=$lines[$K]>$lines[$K]</option>\n";
-				}
-				$band = 1;
-			}
-			$svettore = implode("^", $lines);
-			$editcsv .= "</select></td>\n";
-			$svettore = htmlspecialchars($svettore, ENT_QUOTES);
-			$editcsv.="<input type='hidden' name='sid' value='$sid' />\n"
-			. "\t<input type='hidden' name='gid' value='$gid' />\n"
-			. "\t<input type='hidden' name='qid' value='$qid' />\n"
-			. "\t<input type='hidden' name='elem' value='$elem' />\n"
-			. "\t<input type='hidden' name='svettore' value='".$svettore."' />\n";
-
-			$editcsv.="\t\t\t<td align = 'center'><select name='numcol'>\n";
-			$numerocampo = 0;
-			foreach ($vettoreriga as $K => $v)
-			{
-				$numerocampo = $numerocampo + 1;
-				$editcsv .= "\t\t<option value=$numerocampo>$numerocampo</option>\n";
-			}
-			$editcsv .= "</select></td>\n"
-			. "\t<input type='hidden' name='filev' value='$fp' />\n"
-			. "\t<input type='hidden' name='action' value='insertCSV' />\n"
-			. "\t<tr><td align='right'><input type='submit' value='"
-			.$clang->gT("Continue")."'></td>\n";
-		}
-	}
-}
-
 ?>

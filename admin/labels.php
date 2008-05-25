@@ -28,10 +28,10 @@ if (isset($_POST['method']) && get_magic_quotes_gpc())
 }
 
 if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
-	{
+{
 
 
-	if (isset($_POST['sortorder'])) {$_POST['sortorder']=sanitize_int($_POST['sortorder']);}
+	if (isset($_POST['sortorder'])) {$postsortorder=sanitize_int($_POST['sortorder']);}
 
 	if (!isset($action)) {$action=returnglobal('action');}
 	if (!isset($lid)) {$lid=returnglobal('lid');}
@@ -780,8 +780,8 @@ function modlabelsetanswers($lid)
 
         // Pressing the Up button
 		case $clang->gT("Up", "unescaped"):
-        $newsortorder=$_POST['sortorder']-1;
-		$oldsortorder=$_POST['sortorder'];
+        $newsortorder=$postsortorder-1;
+		$oldsortorder=$postsortorder;
 		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder=-1 WHERE lid=$lid AND sortorder=$newsortorder";
 		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
 		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder=$newsortorder WHERE lid=$lid AND sortorder=$oldsortorder";
@@ -792,8 +792,8 @@ function modlabelsetanswers($lid)
 
         // Pressing the Down button
 		case $clang->gT("Dn", "unescaped"):
-		$newsortorder=$_POST['sortorder']+1;
-		$oldsortorder=$_POST['sortorder'];
+		$newsortorder=$postsortorder+1;
+		$oldsortorder=$postsortorder;
 		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder=-1 WHERE lid=$lid AND sortorder='$newsortorder'";
 		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
 		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder='$newsortorder' WHERE lid=$lid AND sortorder=$oldsortorder";
@@ -804,7 +804,7 @@ function modlabelsetanswers($lid)
 		
 		// Delete Button
 		case $clang->gT("Del", "unescaped"):
-		$query = "DELETE FROM ".db_table_name('labels')." WHERE lid=$lid AND sortorder='{$_POST['sortorder']}'";
+		$query = "DELETE FROM ".db_table_name('labels')." WHERE lid=$lid AND sortorder='{$postsortorder}'";
 		if (!$result = $connect->Execute($query))
 		{
 			$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to delete label","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";

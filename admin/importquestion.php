@@ -38,7 +38,7 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 }
 
 // validate that we have a SID and GID
-if (!$_POST['sid'])
+if (!returnglobal('sid'))
 {
     $importquestion .= $clang->gT("No SID (Survey) has been provided. Cannot import question.")."<br /><br />\n"
     ."<input type='submit' value='"
@@ -49,10 +49,10 @@ if (!$_POST['sid'])
 }
 else
 {
-	$postsid=sanitize_int($_POST['sid']);
+	$postsid=returnglobal('sid');
 }
 
-if (!$_POST['gid'])
+if (!returnglobal('gid'))
 {
     $importquestion .= $clang->gT("No GID (Group) has been provided. Cannot import question")."<br /><br />\n"
     ."</td></tr></table>\n";
@@ -61,7 +61,7 @@ if (!$_POST['gid'])
 }
 else
 {
-	$postgid=sanitize_int($_POST['gid']);
+	$postgid=returnglobal('gid');
 }
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY

@@ -144,7 +144,7 @@ if ($subaction == "delete" &&
 		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
    ) 
 {
-	$_SESSION['metaHeader']="<meta http-equiv=\"refresh\" content=\"1;URL={$scriptname}?action=tokens&amp;subaction=browse&amp;sid={$_POST['sid']}&amp;start=$start&amp;limit=$limit&amp;order=$order\" />";
+	$_SESSION['metaHeader']="<meta http-equiv=\"refresh\" content=\"1;URL={$scriptname}?action=tokens&amp;subaction=browse&amp;sid=".returnglobal('sid')."&amp;start=$start&amp;limit=$limit&amp;order=$order\" />";
 }
 
 
@@ -626,7 +626,7 @@ if ($subaction == "updateemailsettings" &&
 				. "surveyls_email_remind='".$_POST['email_remind_'.$langname]."', surveyls_email_register_subj='".$_POST['email_register_subj_'.$langname]."',\n"
 				. "surveyls_email_register='".$_POST['email_register_'.$langname]."', surveyls_email_confirm_subj='".$_POST['email_confirm_subj_'.$langname]."',\n"
 				. "surveyls_email_confirm='".$_POST['email_confirm_'.$langname]."'\n"
-				. "WHERE surveyls_survey_id=".$_POST['sid']." and surveyls_language='".$langname."'";
+				. "WHERE surveyls_survey_id=".$surveyid." and surveyls_language='".$langname."'";
 				$usresult = $connect->Execute($usquery) or die("Error updating<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
 			}
 		}
@@ -995,9 +995,9 @@ if ($subaction == "kill" &&
 	    }
 		$tokenoutput .= "<span style='display: block; text-align: center; width: 70%'>\n"
 		.$clang->gT("The tokens table has now been removed and tokens are no longer required to access this survey.")."<br /> ".$clang->gT("A backup of this table has been made and can be accessed by your system administrator.")."<br />\n"
-		."(\"{$dbprefix}old_tokens_{$_POST['sid']}_$date\")"."<br /><br />\n"
+		."(\"{$dbprefix}old_tokens_{$surveyid}_$date\")"."<br /><br />\n"
 		."<input type='submit' value='"
-		.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname?sid={$_POST['sid']}', '_top')\" />\n"
+		.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname?sid={$surveyid}', '_top')\" />\n"
 		."</span>\n";
 	}
 	$tokenoutput .= "</font></td></tr></table>\n"

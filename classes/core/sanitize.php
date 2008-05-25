@@ -39,7 +39,6 @@
 //           alphanumeric
 // sanitize_system_string($string) -- input string, returns string stripped of special
 //           characters
-// OSBOLETE: sanitize_sql_string($string) -- input string, returns string with slashed out quotes
 // sanitize_html_string($string) -- input string, returns string with html replacements
 //           for special characters
 // sanitize_int($integer) -- input integer, returns ONLY the integer (no extraneous

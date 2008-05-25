@@ -12,7 +12,7 @@
 * 
 * $Id$
 */
-
+//Security Checked: POST/GET/DB/SESSION
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 if (isset($_POST['uid'])) {$postuserid=sanitize_int($_POST['uid']);}
@@ -23,7 +23,7 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 	if($ugid)
 	{
 		$grpquery = "SELECT gp.* FROM ".db_table_name('user_groups')." AS gp, ".db_table_name('user_in_groups')." AS gu WHERE gp.ugid=gu.ugid AND gp.ugid = $ugid AND gu.uid=".$_SESSION['loginID'];
-		$grpresult = db_execute_assoc($grpquery);
+		$grpresult = db_execute_assoc($grpquery);//Checked
 		$grpresultcount = $grpresult->RecordCount();
 		$grow = array_map('htmlspecialchars', $grpresult->FetchRow());
 	}
@@ -126,11 +126,11 @@ if ($action == "setusertemplates")
               $userlist = getuserlist();
               foreach ($userlist as $usr)
               {
-                      if ($usr['uid'] == $_POST['uid'])
+                      if ($usr['uid'] == $postuserid)
                       {
                               $templaterights = array();
                               $squery = "SELECT `folder`, `use` FROM {$dbprefix}templates_rights WHERE uid={$usr['uid']}";
-                              $sresult = db_execute_assoc($squery) or die($connect->ErrorMsg());
+                              $sresult = db_execute_assoc($squery) or die($connect->ErrorMsg());//Checked
                               while ($srow = $sresult->FetchRow()) {
                                       $templaterights[$srow["folder"]] = array("use"=>$srow["use"]);
                               }
@@ -140,7 +140,7 @@ if ($action == "setusertemplates")
                                       ."<form action='$scriptname' method='post'>\n";
 
                               $tquery = "SELECT * FROM ".$dbprefix."templates";
-                              $tresult = db_execute_assoc($tquery) or die($connect->ErrorMsg());
+                              $tresult = db_execute_assoc($tquery) or die($connect->ErrorMsg()); //Checked
                               while ($trow = $tresult->FetchRow()) {
                                       $usersummary .= "\t\t\t<tr><td>{$trow["folder"]}</td>";
 
@@ -155,7 +155,7 @@ if ($action == "setusertemplates")
                               ."\t\n\t<tr><td colspan='3' align='center'>"
                               ."<input type='submit' value='".$clang->gT("Save Settings")."' />"
                               ."<input type='hidden' name='action' value='usertemplates' />"
-                              ."<input type='hidden' name='uid' value='".$_POST['uid']."' /></td></tr>"
+                              ."<input type='hidden' name='uid' value='{$postuserid}' /></td></tr>"
                               ."</form>"
                               . "</table>\n";
                               continue;
@@ -166,39 +166,23 @@ if ($action == "setusertemplates")
 
 if ($action == "modifyuser")
 {
-// THIS DOESN'T MAKE SENS
-// BECAUSE parent of a user is always granted  for user create !!
-//	$userlist = getuserlist();
-//	foreach ($userlist as $usr)
-//	{
-//		if ($usr['uid'] == $postuserid)
-//		{
-//				$squery = "SELECT create_survey, configurator, create_user, delete_user, superadmin, manage_template, manage_label FROM {$dbprefix}users WHERE uid={$usr['parent_id']}";	//		added by Dennis
-//				$sresult = $connect->Execute($squery);
-//				$parent = $sresult->FetchRow();
-//				break;
-//		}
-//	}
-
-if (isset($postuserid) && $postuserid)
-{
-	$squery = "SELECT uid FROM {$dbprefix}users WHERE uid=$postuserid AND parent_id=".$_SESSION['loginID'];	//		added by Dennis
-	$sresult = $connect->Execute($squery);
-	$sresultcount = $sresult->RecordCount();
-}
-else
-{
-		include("access_denied.php");
-}
-
-// RELIABLY CHECK MY RIGHTS
-if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['loginID'] == $postuserid ||
-	( $_SESSION['USER_RIGHT_CREATE_USER'] &&
-		$sresultcount > 0	
-	) )
-{	
-//	error_log("TIBO ".print_r($_SESSION,true));
-//	if($_SESSION['loginID'] == 1 || $_SESSION['loginID'] == $postuserid || $parent['create_user'] == 1)
+    if (isset($postuserid) && $postuserid)
+    {
+    	$squery = "SELECT uid FROM {$dbprefix}users WHERE uid=$postuserid AND parent_id=".$_SESSION['loginID'];	//		added by Dennis
+    	$sresult = $connect->Execute($squery);//Checked
+    	$sresultcount = $sresult->RecordCount(); 
+    }
+    else
+    {
+    		include("access_denied.php");
+    }
+    
+    // RELIABLY CHECK MY RIGHTS
+    if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['loginID'] == $postuserid ||
+    	( $_SESSION['USER_RIGHT_CREATE_USER'] &&
+    		$sresultcount > 0	
+    	) )
+    {	
 		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='4' class='header'>\n"
 		. "\t\t<strong>".$clang->gT("Modifying User")."</td></tr>\n"
 		. "\t<tr>\n"
@@ -238,7 +222,7 @@ if ($action == "setuserrights")
 	if (isset($postuserid) && $postuserid)
 	{
 		$squery = "SELECT uid FROM {$dbprefix}users WHERE uid=$postuserid AND parent_id=".$_SESSION['loginID'];	//		added by Dennis
-		$sresult = $connect->Execute($squery);
+		$sresult = $connect->Execute($squery);//Checked
 		$sresultcount = $sresult->RecordCount();
 	}
 	else
@@ -274,7 +258,7 @@ if ($action == "setuserrights")
 			if ($usr['uid'] == $postuserid)
 			{
 				$squery = "SELECT create_survey, configurator, create_user, delete_user, superadmin, manage_template, manage_label FROM {$dbprefix}users WHERE uid={$usr['parent_id']}";	//		added by Dennis
-				$sresult = $connect->Execute($squery);
+				$sresult = $connect->Execute($squery); //Checked
 				$parent = $sresult->FetchRow();
 
 				// Initial SuperAdmin has parent_id == 0
@@ -380,37 +364,6 @@ if ($action == "setuserrights")
 	}
 }	// if
 
-/*  Commented since it is not used and not safe
-
-if($action == "setnewparents")
-{
-	// muss noch eingeschraenkt werden ...
-	if($_SESSION['USER_RIGHT_SUPERADMIN'])
-	{
-		$uid = $postuserid;
-		$newparentid = $_POST['parent'];
-		$oldparent = -1;
-		$query = "SELECT parent_id FROM ".db_table_name('users')." WHERE uid = ".$uid;
-		$result = $connect->Execute($query) or die($connect->ErrorMsg());
-		if($srow = $result->FetchRow()) {
-			$oldparent = $srow['parent_id'];
-		}
-		$query = "SELECT create_survey, configurator, create_user, delete_user, superadmin, manage_template, manage_label FROM ".db_table_name('users')." WHERE uid = ".$newparentid;
-		$result = $connect->Execute($query) or die($connect->ErrorMsg());
-		$srow = $result->FetchRow();
-		$query = "UPDATE ".db_table_name('users')." SET parent_id = ".$newparentid.", create_survey = IF({$srow['create_survey']} = 1, create_survey, {$srow['create_survey']}), configurator = IF({$srow['configurator']} = 1, configurator, {$srow['configurator']}), create_user = IF({$srow['create_user']} = 1, create_user, {$srow['create_user']}), delete_user = IF({$srow['delete_user']} = 1, delete_user, {$srow['delete_user']}), superadmin = IF({$srow['superadmin']} = 1, superadmin, {$srow['superadmin']}), manage_template = IF({$srow['manage_template']} = 1, manage_template, {$srow['manage_template']}), manage_label = IF({$srow['manage_label']} = 1, manage_label, {$srow['manage_label']}) WHERE uid = ".$uid;
-		$connect->Execute($query) or die($connect->ErrorMsg()." ".$query);
-		$query = "UPDATE ".db_table_name('users')." SET parent_id = ".$oldparent." WHERE parent_id = ".$uid;
-		$connect->Execute($query) or die($connect->ErrorMsg()." ".$query);
-		$usersummary = "<br /><strong>".$clang->gT("Setting new Parent")."</strong><br />"
-		. "<br />".$clang->gT("Set Parent successful.")."<br />"
-		. "<br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
-	}
-	else
-	{
-		include("access_denied.php");
-	}
-}*/
 
 if($action == "setasadminchild")
 {
@@ -420,9 +373,8 @@ if($action == "setasadminchild")
 
 	if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
-		$uid = $postuserid;
-		$query = "UPDATE ".db_table_name('users')." SET parent_id =1 WHERE uid = ".$uid;
-		$connect->Execute($query) or die($connect->ErrorMsg()." ".$query);
+		$query = "UPDATE ".db_table_name('users')." SET parent_id =1 WHERE uid = ".$postuserid;
+		$connect->Execute($query) or die($connect->ErrorMsg()." ".$query); //Checked
 		$usersummary = "<br /><strong>".$clang->gT("Setting as Administrator Child")."</strong><br />"
 		. "<br />".$clang->gT("Set Parent successful.")."<br />"
 		. "<br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
@@ -466,7 +418,7 @@ if ($action == "editusers")
 		
 		if(isset($usrhimself['parent_id']) && $usrhimself['parent_id']!=0) { 
 		$uquery = "SELECT users_name FROM ".db_table_name('users')." WHERE uid=".$usrhimself['parent_id'];
-		$uresult = db_execute_assoc($uquery);
+		$uresult = db_execute_assoc($uquery); //Checked
 		$srow = $uresult->FetchRow();
 			$usersummary .= "\t\t<td class='oddrow' align='center'><strong>{$srow['users_name']}</strong></td>\n";
 		}
@@ -529,7 +481,7 @@ if ($action == "editusers")
 
 		// Get Parent's User Name
 		$uquery = "SELECT users_name FROM ".db_table_name('users')." WHERE uid=".$usr['parent_id'];
-		$uresult = db_execute_assoc($uquery);
+		$uresult = db_execute_assoc($uquery); //Checked
 		$userlist = array();
 		$srow = $uresult->FetchRow();
 		$usr['parent'] = $srow['users_name'];
@@ -684,7 +636,7 @@ if ($action == "editusergroup")
 if ($action == "mailusergroup")
 {
 	$query = "SELECT a.ugid, a.name, a.owner_id, b.uid FROM ".db_table_name('user_groups') ." AS a LEFT JOIN ".db_table_name('user_in_groups') ." AS b ON a.ugid = b.ugid WHERE a.ugid = {$ugid} AND uid = {$_SESSION['loginID']} ORDER BY name";
-	$result = db_execute_assoc($query);
+	$result = db_execute_assoc($query); //Checked
 	$crow = $result->FetchRow();
 
 
@@ -714,16 +666,16 @@ if ($action == "delusergroup")
 	{
 	$usersummary = "<br /><strong>".$clang->gT("Deleting User Group")."</strong><br />\n";
 
-	if(!empty($_POST['ugid']) && $_POST['ugid'] > -1)
+	if(!empty($postusergroupid) && ($postusergroupid > -1))
 	{
-		$query = "SELECT ugid, name, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$_POST['ugid']." AND owner_id = ".$_SESSION['loginID'];
+		$query = "SELECT ugid, name, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = {$postusergroupid} AND owner_id = ".$_SESSION['loginID'];
 		$result = db_select_limit_assoc($query, 1);
 		if($result->RecordCount() > 0)
 		{
 			$row = $result->FetchRow();
 
-			$remquery = "DELETE FROM ".db_table_name('user_groups')." WHERE ugid = {$_POST['ugid']} AND owner_id = {$_SESSION['loginID']}";
-			if($connect->Execute($remquery))
+			$remquery = "DELETE FROM ".db_table_name('user_groups')." WHERE ugid = {$postusergroupid} AND owner_id = {$_SESSION['loginID']}";
+			if($connect->Execute($remquery)) //Checked
 			{
 				$usersummary .= "<br />".$clang->gT("Group Name").": {$row['name']}<br />\n";
 			}
@@ -799,14 +751,14 @@ if ($action == "mailsendusergroup")
 	// user must be in user group
 	// or superadmin
 	$query = "SELECT uid FROM ".db_table_name('user_in_groups') ." WHERE ugid = {$ugid} AND uid = {$_SESSION['loginID']}";
-	$result = db_execute_assoc($query);
+	$result = db_execute_assoc($query); //Checked
 
 	if($result->RecordCount() > 0 ||
 		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 
     	$eguquery = "SELECT * FROM ".db_table_name("user_in_groups")." AS a INNER JOIN ".db_table_name("users")." AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " AND b.uid != {$_SESSION['loginID']} ORDER BY b.users_name";
-    	$eguresult = db_execute_assoc($eguquery);
+    	$eguresult = db_execute_assoc($eguquery); //Checked
     	$addressee = '';
     	$to = '';
     	while ($egurow = $eguresult->FetchRow())
@@ -818,7 +770,7 @@ if ($action == "mailsendusergroup")
     	$addressee = substr("$addressee", 0, -2);
 
 		$from_user = "SELECT email, users_name FROM ".db_table_name("users")." WHERE uid = " .$_SESSION['loginID'];
-		$from_user_result = db_execute_assoc($from_user);
+		$from_user_result = db_execute_assoc($from_user); //Checked
 		$from_user_row = $from_user_result->FetchRow();
 
 		$from = $from_user_row['users_name'].' <'.$from_user_row['email'].'> ';
@@ -893,10 +845,10 @@ if ($action == "editusergroups" )
 	{
 		if(isset($_GET['ugid']))
 		{
-			$ugid = $_GET['ugid'];
+			$ugid = sanitize_int($_GET['ugid']);
 	
 			$query = "SELECT a.ugid, a.name, a.owner_id, a.description, b.uid FROM ".db_table_name('user_groups') ." AS a LEFT JOIN ".db_table_name('user_in_groups') ." AS b ON a.ugid = b.ugid WHERE a.ugid = {$ugid} AND uid = {$_SESSION['loginID']} ORDER BY name";
-			$result = db_execute_assoc($query);
+			$result = db_execute_assoc($query); //Checked
 			$crow = $result->FetchRow();
 	
 			if($result->RecordCount() > 0)
@@ -913,7 +865,7 @@ if ($action == "editusergroups" )
 	
 	
 				$eguquery = "SELECT * FROM ".db_table_name("user_in_groups")." AS a INNER JOIN ".db_table_name("users")." AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " ORDER BY b.users_name";
-				$eguresult = db_execute_assoc($eguquery);
+				$eguresult = db_execute_assoc($eguquery); //Checked
 				$usergroupsummary .= "<table  width='100%' border='0'>\n"
 				. "\t<tr>\n"
 				. "\t\t<th>".$clang->gT("Username")."</th>\n"
@@ -1010,11 +962,11 @@ if($action == "deleteuserfromgroup")
 		$usersummary = "<br /><strong>".$clang->gT("Delete User")."</strong><br />\n";
 	
 		$query = "SELECT ugid, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$ugid." AND ((owner_id = ".$_SESSION['loginID']." AND owner_id != ".$uid.") OR (owner_id != ".$_SESSION['loginID']." AND $uid = ".$_SESSION['loginID']."))";
-		$result = db_execute_assoc($query);
+		$result = db_execute_assoc($query); //Checked
 		if($result->RecordCount() > 0)
 		{
 			$remquery = "DELETE FROM ".db_table_name('user_in_groups')." WHERE ugid = {$ugid} AND uid = {$uid}";
-			if($connect->Execute($remquery))
+			if($connect->Execute($remquery)) //Checked
 			{
 				$usersummary .= "<br />".$clang->gT("Username").": ".sanitize_system_string($_POST['user'])."<br />\n";
 			}
@@ -1047,18 +999,19 @@ if($action == "deleteuserfromgroup")
 
 if($action == "addusertogroup")
 { 
-	if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+	$ugid=returnglobal('ugid');
+    if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$addsummary = "<br /><strong>".$clang->gT("Adding User to group")."...</strong><br />\n";
 	
-		$query = "SELECT ugid, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$postuserid;
-		$result = db_execute_assoc($query);
+		$query = "SELECT ugid, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = {$ugid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$postuserid;
+		$result = db_execute_assoc($query); //Checked
 		if($result->RecordCount() > 0)
 		{
 			if($postuserid > 0)
 			{
-				$isrquery = "INSERT INTO {$dbprefix}user_in_groups VALUES(".$_GET['ugid'].",". $postuserid.")";
-				$isrresult = $connect->Execute($isrquery);
+				$isrquery = "INSERT INTO {$dbprefix}user_in_groups VALUES({$ugid},{$postuserid})";
+				$isrresult = $connect->Execute($isrquery); //Checked
 	
 				if($isrresult)
 				{
@@ -1069,12 +1022,12 @@ if($action == "addusertogroup")
 					// Username already exists.
 					$addsummary .= "<br /><strong>".$clang->gT("Failed to add User.")."</strong><br />\n" . " " . $clang->gT("Username already exists.")."<br />\n";
 				}
-				$addsummary .= "<br /><a href='$scriptname?action=editusergroups&amp;ugid=".$_GET['ugid']."'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+				$addsummary .= "<br /><a href='$scriptname?action=editusergroups&amp;ugid={$ugid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 			}
 			else
 			{
 				$addsummary .= "<br /><strong>".$clang->gT("Failed to add User.")."</strong><br />\n" . " " . $clang->gT("No Username selected.")."<br />\n";
-				$addsummary .= "<br /><a href='$scriptname?action=editusergroups&amp;ugid=".$_GET['ugid']."'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+				$addsummary .= "<br /><a href='$scriptname?action=editusergroups&amp;ugid={$ugid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 			}
 		}
 		else
@@ -1095,7 +1048,7 @@ function updateusergroup($name, $description, $ugid)
 
     $uquery = "UPDATE ".db_table_name('user_groups')." SET name = '$name', description = '$description' WHERE ugid =$ugid";
     // TODO
-    return $connect->Execute($uquery) or die($connect->ErrorMsg()) ;
+    return $connect->Execute($uquery) or die($connect->ErrorMsg()) ; //Checked
 }
 
 function refreshtemplates() {
@@ -1107,11 +1060,11 @@ function refreshtemplates() {
 		// check for each folder if there is already an entry in the database
 		// if not create it with current user as creator (user with rights "create user" can assign template rights)
 		$query = "SELECT * FROM ".$dbprefix."templates WHERE folder LIKE '".$tp."'";
-		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+		$result = db_execute_assoc($query) or die($connect->ErrorMsg()); //Checked 
 		
 		if ($result->RecordCount() == 0) {
 			$query2 = "INSERT INTO ".$dbprefix."templates SET folder='".$tp."', creator=".$_SESSION['loginID'] ;
-			$connect->Execute($query2);
+			$connect->Execute($query2);  //Checked
 		}
 	}
 	return true;
@@ -1121,11 +1074,11 @@ function refreshtemplates() {
 function addUserGroupInDB($group_name, $group_description) {
     global $connect;
     $iquery = "INSERT INTO ".db_table_name('user_groups')." (name, description, owner_id) VALUES('{$group_name}', '{$group_description}', '{$_SESSION['loginID']}')";
-    if($connect->Execute($iquery)) {
+    if($connect->Execute($iquery)) { //Checked
         $id = $connect->Insert_Id(db_table_name_nq('user_groups'),'ugid');
         if($id > 0) {
              $iquery = "INSERT INTO ".db_table_name('user_in_groups')." VALUES($id, '{$_SESSION['loginID']}')";
-            $connect->Execute($iquery ) or die($connect->ErrorMsg());
+            $connect->Execute($iquery ) or die($connect->ErrorMsg()); //Checked
         }
         return $id;
     } else {

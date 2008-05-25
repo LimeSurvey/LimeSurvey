@@ -13,6 +13,8 @@
 * $Id$
 */
 
+// Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB     
+
 //SESSIONCONTROL.PHP FILE MANAGES ADMIN SESSIONS. 
 //Ensure script is not run directly, avoid path disclosure
 
@@ -20,7 +22,7 @@ if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this scr
 
 // Read the session name from the settings table
 $usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";
-$usresult = db_execute_assoc($usquery,'',true);
+$usresult = db_execute_assoc($usquery,'',true);       // CHecked
 if ($usresult)
 {
 	$usrow = $usresult->FetchRow();
@@ -46,15 +48,13 @@ if (returnglobal('action') == "changelang" && (!isset($login) || !$login ))
 	if(isset($_SESSION['loginID']))
 		{
 		$uquery = "UPDATE {$dbprefix}users SET lang='{$_SESSION['adminlang']}' WHERE uid={$_SESSION['loginID']}";	//		added by Dennis
-		$uresult = $connect->Execute($uquery);
+		$uresult = $connect->Execute($uquery); //Checked
 		}
 	}
 elseif (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='' )
 	{
 	$_SESSION['adminlang']=$defaultlang;
 	}
-// OLD LANGUAGE SETTING
-//SetInterfaceLanguage($_SESSION['adminlang']);
 
 // if changehtmleditormode is called then update user htmleditormode
 if (returnglobal('action') == "changehtmleditormode" )	
@@ -63,7 +63,7 @@ if (returnglobal('action') == "changehtmleditormode" )
 	if(isset($_SESSION['loginID']))
 		{
 		$uquery = "UPDATE {$dbprefix}users SET htmleditormode='{$_SESSION['htmleditormode']}' WHERE uid={$_SESSION['loginID']}";	//		added by Dennis
-		$uresult = $connect->Execute($uquery) or die("Can't update htmleditor setting");
+		$uresult = $connect->Execute($uquery) or die("Can't update htmleditor setting"); //Checked
 		}
 	}
 elseif (!isset($_SESSION['htmleditormode']) || $_SESSION['htmleditormode']=='' )
@@ -236,7 +236,7 @@ function GetSessionUserRights($loginID)
 {
 	global $dbprefix,$connect; 
     $squery = "SELECT create_survey, configurator, create_user, delete_user, superadmin, manage_template, manage_label FROM {$dbprefix}users WHERE uid=$loginID";
-    $sresult = db_execute_assoc($squery);
+    $sresult = db_execute_assoc($squery); //Checked
     if ($sresult->RecordCount()>0)
         {
         $fields = $sresult->FetchRow();

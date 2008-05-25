@@ -13,6 +13,9 @@
 * $Id$
 */
 
+// Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
+
+
 // XML code for LS1.70 is based on the experimental PHP4 domxml
 // extension. PHP5 uses the PHP5/dom extension.
 // the following file is a wrapper to use PHP4/domxml scripts 
@@ -33,8 +36,6 @@ require_once('htmleditor-functions.php');
 
 // Reset FileManagerContext
 $_SESSION['FileManagerContext']='';
-// The following line debug to see if checksessionpost is set in POST
-//error_log(print_r($_POST,true));
 
 if (!isset($adminlang)) {$adminlang=returnglobal('adminlang');} // Admin language
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}         //SurveyID
@@ -46,9 +47,6 @@ if (!isset($code)) {$code=returnglobal('code');}                // ??
 if (!isset($action)) {$action=returnglobal('action');}          //Desired action
 if (!isset($subaction)) {$subaction=returnglobal('subaction');} //Desired subaction
 if (!isset($editedaction)) {$editedaction=returnglobal('editedaction');} // for html editor integration
-if (!isset($ok)) {$ok=returnglobal('ok');}                      // ??
-if (!isset($fp)) {$fp=returnglobal('filev');}                   //??
-if (!isset($elem)) {$elem=returnglobal('elem');}                //??
 
 if ($action != "showprintablesurvey")
 {
@@ -114,7 +112,7 @@ elseif ($action == "dumplabel")
   }      
 elseif ($action == "exportlabelresources") 
   { 
-      if ($_SESSION['USER_RIGHT_MANAGE_TEMPLATE']==1)  {$_SESSION['FileManagerContext']="edit:label:$lid";include("export_resources_zip.php");}
+      if ($_SESSION['USER_RIGHT_MANAGE_TEMPLATE']==1)  {$_SESSION['FileManagerContext']="edit:label:$lid"; include("export_resources_zip.php");}
         else { include("access_denied.php");}
   }      
 elseif ($action == "checkintegrity") 
@@ -126,7 +124,7 @@ elseif ($action=="labels" || $action=="newlabelset" || $action=="insertlabelset"
         $action=="deletelabelset" || $action=="editlabelset" || $action=="modlabelsetanswers" || 
         $action=="updateset" || $action=="importlabels" ||$action == "importlabelresources")
   { 
-      if ($_SESSION['USER_RIGHT_MANAGE_LABEL']==1)  {$_SESSION['FileManagerContext']="edit:label:$lid";include("labels.php");}
+      if ($_SESSION['USER_RIGHT_MANAGE_LABEL']==1)  {$_SESSION['FileManagerContext']="edit:label:$lid"; include("labels.php");}
         else { include("access_denied.php");}
   }      
 elseif ($action=="templates" || $action=="templatecopy" || $action=="templatesavechanges" || 
@@ -233,7 +231,7 @@ elseif ($action == "previewquestion")
     }
 elseif ($action=="addgroup" || $action=="editgroup")        
     {
-    if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {$_SESSION['FileManagerContext']="edit:group:$surveyid";include("grouphandling.php");}
+    if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {$_SESSION['FileManagerContext']="edit:group:$surveyid"; include("grouphandling.php");}
         else { include("access_denied.php");}    
     }
 elseif ($action == "vvexport")
@@ -283,7 +281,7 @@ elseif ($action == "browse")
     }    
 elseif ($action == "tokens")
     {
-    if($surrows['activate_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {$_SESSION['FileManagerContext']="edit:emailsettings:$surveyid";include("tokens.php");}               
+    if($surrows['activate_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {$_SESSION['FileManagerContext']="edit:emailsettings:$surveyid"; include("tokens.php");}               
         else { include("access_denied.php"); }    
     }    
 elseif ($action=="showprintablesurvey")  
@@ -365,7 +363,7 @@ elseif ($action == "replacementfields")
      !isset($vvoutput) && !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&    
      (isset($surveyid) || $action=="listurveys" || $action=="changelang" ||  $action=="changehtmleditormode" || $action=="checksettings" ||       //Still to check
       $action=="editsurvey" || $action=="updatesurvey" || $action=="ordergroups"  ||
-      $action=="uploadf" || $action=="newsurvey" || $action=="listsurveys" ||   
+      $action=="newsurvey" || $action=="listsurveys" ||   
       $action=="surveyrights" || $action=="quotas") )
 {
 	if ($action=="editsurvey" || $action=="updatesurvey")
@@ -599,7 +597,6 @@ else
   	{
   		$helpdoc = "$langdir/group.html";
   	}
-  	//elseif ($surveyid && $gid && $qid && !$_GET['viewanswer'] && !$_POST['viewanswer'])
   	elseif ($surveyid && $gid && $qid && !returnglobal('viewanswer'))
   	{
   		$helpdoc = "$langdir/question.html";

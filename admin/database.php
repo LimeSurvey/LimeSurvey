@@ -17,6 +17,7 @@
 include_once("login_check.php");
 
 if (!isset($action)) {$action=returnglobal('action');}
+$postsid=returnglobal('sid');
 
 if (get_magic_quotes_gpc())
     {$_POST  = array_map('stripslashes', $_POST);}
@@ -115,8 +116,8 @@ if(isset($surveyid))
 	}
 	elseif ($action == "insertnewgroup" && ( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
-  		$grplangs = GetAdditionalLanguagesFromSurveyID($_POST['sid']);
-  		$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);
+  		$grplangs = GetAdditionalLanguagesFromSurveyID($postsid);
+  		$baselang = GetBaseLanguageFromSurveyID($postsid);
   		$grplangs[] = $baselang;
         $errorstring = '';  
         foreach ($grplangs as $grouplang)
@@ -164,13 +165,13 @@ if(isset($surveyid))
                
 			  	if ($first)
                   {
-      			    $query = "INSERT INTO ".db_table_name('groups')." (sid, group_name, description,group_order,language) VALUES ('".db_quote($_POST['sid'])."', '".db_quote($_POST['group_name_'.$grouplang])."', '".db_quote($_POST['description_'.$grouplang])."',".getMaxgrouporder(returnglobal('sid')).",'{$grouplang}')";
+      			    $query = "INSERT INTO ".db_table_name('groups')." (sid, group_name, description,group_order,language) VALUES ('".db_quote($postsid)."', '".db_quote($_POST['group_name_'.$grouplang])."', '".db_quote($_POST['description_'.$grouplang])."',".getMaxgrouporder(returnglobal('sid')).",'{$grouplang}')";
                     $result = $connect->Execute($query);
                     $groupid=$connect->Insert_Id(db_table_name_nq('groups'),"gid");
                     $first=false;
                   }
                   else{
-                        $query = "INSERT INTO ".db_table_name('groups')." (gid, sid, group_name, description,group_order,language) VALUES ('{$groupid}','{$_POST['sid']}', '{$_POST['group_name_'.$grouplang]}', '{$_POST['description_'.$grouplang]}',".getMaxgrouporder(returnglobal('sid')).",'{$grouplang}')";
+                        $query = "INSERT INTO ".db_table_name('groups')." (gid, sid, group_name, description,group_order,language) VALUES ('{$groupid}','{$postsid}', '{$_POST['group_name_'.$grouplang]}', '{$_POST['description_'.$grouplang]}',".getMaxgrouporder(returnglobal('sid')).",'{$grouplang}')";
                         if ($connect->databaseType == 'odbc_mssql') $query = "SET IDENTITY_INSERT ".db_table_name('groups')." ON; " . $query . "SET IDENTITY_INSERT ".db_table_name('groups')." OFF;";
                         $result = $connect->Execute($query) or die("Error<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
                      }
@@ -191,8 +192,8 @@ if(isset($surveyid))
 
 	elseif ($action == "updategroup" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
-		$grplangs = GetAdditionalLanguagesFromSurveyID($_POST['sid']);
-		$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);
+		$grplangs = GetAdditionalLanguagesFromSurveyID($postsid);
+		$baselang = GetBaseLanguageFromSurveyID($postsid);
 		array_push($grplangs,$baselang);
 		require_once("../classes/inputfilter/class.inputfilter_clean.php");
 	    $myFilter = new InputFilter('','',1,1,1);
@@ -226,7 +227,7 @@ if(isset($surveyid))
 			    // don't use array_map db_quote on POST
 			    // since this is iterated for each language
 			    //$_POST  = array_map('db_quote', $_POST);
-			    $ugquery = "UPDATE ".db_table_name('groups')." SET group_name='".db_quote($_POST['group_name_'.$grplang])."', description='".db_quote($_POST['description_'.$grplang])."' WHERE sid=".db_quote($_POST['sid'])." AND gid=".db_quote($_POST['gid'])." AND language='{$grplang}'";
+			    $ugquery = "UPDATE ".db_table_name('groups')." SET group_name='".db_quote($_POST['group_name_'.$grplang])."', description='".db_quote($_POST['description_'.$grplang])."' WHERE sid=".db_quote($postsid)." AND gid=".db_quote($_POST['gid'])." AND language='{$grplang}'";
 			    $ugresult = $connect->Execute($ugquery);
 			    if ($ugresult)
 			    {
@@ -309,7 +310,7 @@ if(isset($surveyid))
 		{
 			if (!isset($_POST['lid']) || $_POST['lid'] == '') {$_POST['lid']="0";}
 			if (!isset($_POST['lid1']) || $_POST['lid1'] == '') {$_POST['lid1']="0";}
-			$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);	
+			$baselang = GetBaseLanguageFromSurveyID($postsid);	
 			if(!empty($_POST['questionposition']) || $_POST['questionposition'] == '0')
 			{
 			   $question_order=(sanitize_int($_POST['questionposition'])+1);
@@ -358,7 +359,7 @@ if(isset($surveyid))
 
 			$_POST  = array_map('db_quote', $_POST);
 			$query = "INSERT INTO ".db_table_name('questions')." (sid, gid, type, title, question, preg, help, other, mandatory, lid,  lid1, question_order, language)"
-			." VALUES ('{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
+			." VALUES ('{$postsid}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
 			." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}',$question_order,'{$baselang}')";
 			$result = $connect->Execute($query);
 			// Get the last inserted questionid for other languages
@@ -367,13 +368,13 @@ if(isset($surveyid))
 			// Add other languages
 			if ($result)
 			{
-				$addlangs = GetAdditionalLanguagesFromSurveyID($_POST['sid']);
+				$addlangs = GetAdditionalLanguagesFromSurveyID($postsid);
 				foreach ($addlangs as $alang)
 				{
 					if ($alang != "")
 					{	
 						$query = "INSERT INTO ".db_table_name('questions')." (qid, sid, gid, type, title, question, preg, help, other, mandatory, lid, lid1, question_order, language)"
-						." VALUES ('$qid','{$_POST['sid']}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
+						." VALUES ('$qid','{$postsid}', '{$_POST['gid']}', '{$_POST['type']}', '{$_POST['title']}',"
 						." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}',".getMaxquestionorder($_POST['gid']).",'{$alang}')";
                         if ($connect->databaseType == 'odbc_mssql') $query = "SET IDENTITY_INSERT ".db_table_name('questions')." ON; " . $query . "SET IDENTITY_INSERT ".db_table_name('questions')." OFF;";
 						$result2 = $connect->Execute($query);
@@ -503,13 +504,13 @@ if(isset($surveyid))
 			if (isset($_POST['gid']) && $_POST['gid'] != "")
 			{
 				
-				$array_result=checkMovequestionConstraintsForConditions(sanitize_int($_POST['sid']),sanitize_int($_POST['qid']), sanitize_int($_POST['gid']));
+				$array_result=checkMovequestionConstraintsForConditions(sanitize_int($postsid),sanitize_int($_POST['qid']), sanitize_int($_POST['gid']));
 				// If there is no blocking conditions that could prevent this move
 				if (is_null($array_result['notAbove']) && is_null($array_result['notBelow']))
 				{
 
-					$questlangs = GetAdditionalLanguagesFromSurveyID($_POST['sid']);
-					$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);
+					$questlangs = GetAdditionalLanguagesFromSurveyID($postsid);
+					$baselang = GetBaseLanguageFromSurveyID($postsid);
 					array_push($questlangs,$baselang);
 			     	if ($filterxsshtml)
 	    		 	{
@@ -576,7 +577,7 @@ if(isset($surveyid))
 							{
 								// Moving question to a 'lower' group
 								// insert question at the beginning of the destination group
-								shiftorderQuestions($_POST['sid'],$_POST['gid'],1); // makes 1 spare room for new question at top of dest group
+								shiftorderQuestions($postsid,$_POST['gid'],1); // makes 1 spare room for new question at top of dest group
 								$uqquery .=', question_order=0 ';
 							}
 						}
@@ -589,7 +590,7 @@ if(isset($surveyid))
 								$uqquery.=", lid1='".db_quote($_POST['lid1'])."' ";
 							}
 
-							$uqquery.= "WHERE sid='".db_quote($_POST['sid'])."' AND qid='".db_quote($_POST['qid'])."' AND language='{$qlang}'";
+							$uqquery.= "WHERE sid='".db_quote($postsid)."' AND qid='".db_quote($_POST['qid'])."' AND language='{$qlang}'";
 							$uqresult = $connect->Execute($uqquery) or die ("Error Update Question: ".htmlspecialchars($uqquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
 							if (!$uqresult)
 							{
@@ -665,8 +666,8 @@ if(isset($surveyid))
 		}
 		else
 		{
-    		$questlangs = GetAdditionalLanguagesFromSurveyID($_POST['sid']);
-    		$baselang = GetBaseLanguageFromSurveyID($_POST['sid']);
+    		$questlangs = GetAdditionalLanguagesFromSurveyID($postsid);
+    		$baselang = GetBaseLanguageFromSurveyID($postsid);
     		
 			if (!isset($_POST['lid']) || $_POST['lid']=='') {$_POST['lid']=0;}
 			if (!isset($_POST['lid1']) || $_POST['lid1']=='') {$_POST['lid1']=0;}			
@@ -709,7 +710,7 @@ if(isset($surveyid))
             
 			$_POST  = array_map('db_quote', $_POST);
 			$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, help, other, mandatory, lid, lid1, question_order, language) 
-                      VALUES ({$_POST['sid']}, {$_POST['gid']}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$baselang]."', '".$_POST['help_'.$baselang]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}',$max,".db_quoteall($baselang).")";
+                      VALUES ({$postsid}, {$_POST['gid']}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$baselang]."', '".$_POST['help_'.$baselang]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}',$max,".db_quoteall($baselang).")";
 			$result = $connect->Execute($query) or die($connect->ErrorMsg());
 			$newqid = $connect->Insert_ID("{$dbprefix}questions","qid");
 			if (!$result)
@@ -745,7 +746,7 @@ if(isset($surveyid))
                 
             if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('questions')." ON");}
 			$query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, lid, lid1, question_order, language) 
-                      VALUES ($newqid,{$_POST['sid']}, {$_POST['gid']}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$qlanguage]."', '".$_POST['help_'.$qlanguage]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}', $max,".db_quoteall($qlanguage).")";
+                      VALUES ($newqid,{$postsid}, {$_POST['gid']}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$qlanguage]."', '".$_POST['help_'.$qlanguage]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}', $max,".db_quoteall($qlanguage).")";
 			$result = $connect->Execute($query) or die($connect->ErrorMsg());
             if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('questions')." OFF");}
 			}
@@ -1065,12 +1066,12 @@ if(isset($surveyid))
 
         if (isset($_POST['sortorder'])) 
         {
-            $_POST['sortorder']=sanitize_int($_POST['sortorder']);
+            $postsortorder=sanitize_int($_POST['sortorder']);
         }
 		// Pressing the Up button
 		case $clang->gT("Up", "unescaped"):
-		$newsortorder=$_POST['sortorder']-1;
-		$oldsortorder=$_POST['sortorder'];
+		$newsortorder=$postsortorder-1;
+		$oldsortorder=$postsortorder;
 		$cdquery = "UPDATE ".db_table_name('answers')." SET sortorder=-1 WHERE qid=$qid AND sortorder='$newsortorder'";
 		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
 		$cdquery = "UPDATE ".db_table_name('answers')." SET sortorder=$newsortorder WHERE qid=$qid AND sortorder=$oldsortorder";
@@ -1081,8 +1082,8 @@ if(isset($surveyid))
 
         // Pressing the Down button
 		case $clang->gT("Dn", "unescaped"):
-		$newsortorder=$_POST['sortorder']+1;
-		$oldsortorder=$_POST['sortorder'];
+		$newsortorder=$postsortorder+1;
+		$oldsortorder=$postsortorder;
 		$cdquery = "UPDATE ".db_table_name('answers')." SET sortorder=-1 WHERE qid=$qid AND sortorder='$newsortorder'";
 		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
 		$cdquery = "UPDATE ".db_table_name('answers')." SET sortorder='$newsortorder' WHERE qid=$qid AND sortorder=$oldsortorder";
@@ -1093,7 +1094,7 @@ if(isset($surveyid))
 		
 		// Delete Button
 		case $clang->gT("Del", "unescaped"):
-			$query = "DELETE FROM ".db_table_name('answers')." WHERE qid={$qid} AND sortorder='{$_POST['sortorder']}'";
+			$query = "DELETE FROM ".db_table_name('answers')." WHERE qid={$qid} AND sortorder='{$postsortorder}'";
 			if (!$result = $connect->Execute($query))
 			{
 				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to delete answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
@@ -1103,12 +1104,12 @@ if(isset($surveyid))
 		
 		// Default Button
 		case $clang->gT("Default", "unescaped"):
-			$query = "SELECT default_value from ".db_table_name('answers')." where qid={$qid} AND sortorder='{$_POST['sortorder']}' GROUP BY default_value";
+			$query = "SELECT default_value from ".db_table_name('answers')." where qid={$qid} AND sortorder='{$postsortorder}' GROUP BY default_value";
 			$result = db_execute_assoc($query);
 			$row = $result->FetchRow();
 			if ($row['default_value'] == "Y")
 			{
-				$query = "UPDATE ".db_table_name('answers')." SET default_value='N' WHERE qid={$qid} AND sortorder='{$_POST['sortorder']}'";
+				$query = "UPDATE ".db_table_name('answers')." SET default_value='N' WHERE qid={$qid} AND sortorder='{$postsortorder}'";
 				if (!$result = $connect->Execute($query))
 				{
 					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to make answer not default","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
@@ -1122,7 +1123,7 @@ if(isset($surveyid))
 					$query = "UPDATE ".db_table_name('answers')." SET default_value='N' WHERE qid={$qid}";
 					$result = $connect->Execute($query);
 				}
-				$query = "UPDATE ".db_table_name('answers')." SET default_value='Y' WHERE qid={$qid} AND sortorder='{$_POST['sortorder']}'";
+				$query = "UPDATE ".db_table_name('answers')." SET default_value='Y' WHERE qid={$qid} AND sortorder='{$postsortorder}'";
 				if (!$result = $connect->Execute($query))
 				{
 					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to make answer default","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
@@ -1140,8 +1141,8 @@ if(isset($surveyid))
 		{
 			$_POST['expires']='1980-01-01';
 		}
-		CleanLanguagesFromSurvey($_POST['sid'],$_POST['languageids']);
-		FixLanguageConsistency($_POST['sid'],$_POST['languageids']);
+		CleanLanguagesFromSurvey($postsid,$_POST['languageids']);
+		FixLanguageConsistency($postsid,$_POST['languageids']);
 		
 		if($_SESSION['USER_RIGHT_SUPERADMIN'] != 1 && $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] != 1 && !hasTemplateManageRights($_SESSION['loginID'], $_POST['template'])) $_POST['template'] = "default";
 		
@@ -1162,7 +1163,7 @@ if(isset($surveyid))
 		. "autoredirect='{$_POST['autoredirect']}', allowprev='{$_POST['allowprev']}',\n"
 		. "listpublic='{$_POST['public']}', htmlemail='{$_POST['htmlemail']}',\n"
 		. "tokenanswerspersistence='{$_POST['tokenanswerspersistence']}', usecaptcha='{$_POST['usecaptcha']}'\n"
-		. "WHERE sid={$_POST['sid']}";
+		. "WHERE sid={$postsid}";
 		
 		$usresult = $connect->Execute($usquery) or die("Error updating<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
 		$sqlstring ='';
@@ -1176,14 +1177,14 @@ if(isset($surveyid))
 		// Add base language too
 		$sqlstring .= "and surveyls_language <> '".GetBaseLanguageFromSurveyID($surveyid)."' ";
 
-		$usquery = "Delete from ".db_table_name('surveys_languagesettings')." where surveyls_survey_id={$_POST['sid']} ".$sqlstring;
+		$usquery = "Delete from ".db_table_name('surveys_languagesettings')." where surveyls_survey_id={$postsid} ".$sqlstring;
 		$usresult = $connect->Execute($usquery) or die("Error deleting obsolete surveysettings<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
 
 		foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
 		{
 			if ($langname)
 			{
-				$usquery = "select * from ".db_table_name('surveys_languagesettings')." where surveyls_survey_id={$_POST['sid']} and surveyls_language='".$langname."'";
+				$usquery = "select * from ".db_table_name('surveys_languagesettings')." where surveyls_survey_id={$postsid} and surveyls_language='".$langname."'";
 				$usresult = $connect->Execute($usquery) or die("Error deleting obsolete surveysettings<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
 				if ($usresult->RecordCount()==0)
 				{
@@ -1204,7 +1205,7 @@ if(isset($surveyid))
                              ." surveyls_email_remind_subj, surveyls_email_remind, "
                              ." surveyls_email_confirm_subj, surveyls_email_confirm, "
                              ." surveyls_email_register_subj, surveyls_email_register) "
-                             ." VALUES ({$_POST['sid']}, '".$langname."', '',"
+                             ." VALUES ({$postsid}, '".$langname."', '',"
                              .$connect->qstr($bplang->gT("Invitation to participate in survey",'unescaped')).","
                              .$connect->qstr(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped'),$ishtml)).","
                              .$connect->qstr($bplang->gT("Reminder to participate in survey",'unescaped')).","
@@ -1299,12 +1300,11 @@ if(isset($surveyid))
 			    $_POST['urldescrip_'.$langname] = '';
 		    }
                 
-    		//$_POST  = array_map('db_quote', $_POST);
 				$usquery = "UPDATE ".db_table_name('surveys_languagesettings')." \n"
 				. "SET surveyls_title='".db_quote($_POST['short_title_'.$langname])."', surveyls_description='".db_quote($_POST['description_'.$langname])."',\n"
 				. "surveyls_welcometext='".db_quote($_POST['welcome_'.$langname])."',\n"
 				. "surveyls_urldescription='".db_quote($_POST['urldescrip_'.$langname])."'\n"
-				. "WHERE surveyls_survey_id=".db_quote($_POST['sid'])." and surveyls_language='".$langname."'";
+				. "WHERE surveyls_survey_id=".db_quote($postsid)." and surveyls_language='".$langname."'";
 				$usresult = $connect->Execute($usquery) or die("Error updating<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
 			}
 		}

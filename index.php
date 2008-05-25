@@ -13,6 +13,10 @@
 * $Id$
 */
 
+// Security Checked: 
+// ToDo: POST, GET, SESSION, REQUEST, returnglobal, DB     
+
+
 require_once(dirname(__FILE__).'/config-defaults.php');
 require_once(dirname(__FILE__).'/common.php');
 require_once(dirname(__FILE__).'/classes/core/language.php');
@@ -20,6 +24,10 @@ require_once(dirname(__FILE__).'/classes/core/html_entity_decode_php4.php');
 @ini_set('session.gc_maxlifetime', $sessionlifetime);
 @ini_set("session.bug_compat_warn", 0); //Turn this off until first "Next" warning is worked out
 
+if (returnglobal('loadname')) $loadname=returnglobal('loadname');
+if (returnglobal('loadpass')) $loadpass=returnglobal('loadpass');
+if (returnglobal('scid')) $scid=returnglobal('scid');
+  
 if (!isset($surveyid)) {	$surveyid=returnglobal('sid');}
 //This next line is for security reasons. It ensures that the $surveyid value is never anything but a number.
 $surveyid=sanitize_int($surveyid);
@@ -199,18 +207,17 @@ if (!isset($_SESSION['grouplist'])  && (isset($_POST['move'])) )
 // Set the language of the survey, either from POST, GET parameter of session var
 if (isset($_POST['lang']) && $_POST['lang']!='')  // this one comes from the language question
 {
-    $_POST['lang'] = preg_replace("/[^a-zA-Z0-9-]/", "", $_POST['lang']);
-//    echo $_POST['lang'];
-	if ($_POST['lang']) $clang = SetSurveyLanguage( $surveyid, $_POST['lang']);
-	UpdateSessionGroupList($_POST['lang']);  // to refresh the language strings in the group list session variable
+    $templang = sanitize_languagecode($_POST['lang']);
+	$clang = SetSurveyLanguage( $surveyid, $templang);
+	UpdateSessionGroupList($templang);  // to refresh the language strings in the group list session variable
 	UpdateFieldArray();        // to refresh question titles and question text 
 } 
 else 
 if (isset($_GET['lang']) && $surveyid)
 {
-	$_GET['lang'] = preg_replace("/[^a-zA-Z0-9-]/", "", $_GET['lang']);
-	if ($_GET['lang']) $clang = SetSurveyLanguage( $surveyid, $_GET['lang']);
-	UpdateSessionGroupList($_GET['lang']);  // to refresh the language strings in the group list session variable
+    $templang = sanitize_languagecode($_GET['lang']);
+	$clang = SetSurveyLanguage( $surveyid, $templang);
+	UpdateSessionGroupList($templang);  // to refresh the language strings in the group list session variable
 	UpdateFieldArray();        // to refresh question titles and question text 
 } 
 
@@ -239,7 +246,7 @@ if (!$surveyid)
 {
     if(isset($_GET['lang']))
     {
-      $baselang = $_GET['lang'];
+      $baselang = sanitize_languagecode($_GET['lang']);
     }
      elseif (!isset($baselang)) 
      {
@@ -268,7 +275,7 @@ if (!$surveyid)
 		while($rows = $result->FetchRow())
 		{
 		$link = "<li class='surveytitle'><a href='index.php?sid=".$rows['sid'];
-		if(isset($_GET['lang'])) {$link .= "&amp;lang=".$_GET['lang'];}
+		if (isset($_GET['lang'])) {$link .= "&amp;lang=".sanitize_languagecode($_GET['lang']);}
 		$link .= "' >".$rows['surveyls_title']."</a></li>\n";
 		$list[]=$link;
 	    }
@@ -421,9 +428,6 @@ if (isset($_GET['loadall']) && $_GET['loadall'] == "reload")
 	if (returnglobal('loadname') && returnglobal('loadpass'))
 	{
 		$_POST['loadall']="reload";
-		$_POST['loadname']=returnglobal('loadname');
-		$_POST['loadpass']=returnglobal('loadpass');
-		$_POST['scid']=returnglobal('scid');
 	}
 }
 
@@ -432,12 +436,12 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 {
 	$errormsg="";
 	// if (loadname is not set) or if ((loadname is set) and (loadname is NULL))
-	if (!isset($_POST['loadname']) || (isset($_POST['loadname']) && ($_POST['loadname'] == null)))
+	if (!isset($loadname) || (isset($loadname) && ($loadname == null)))
 	{
 		$errormsg .= $clang->gT("You did not provide a name")."<br />\n";
 	}
 	// if (loadpass is not set) or if ((loadpass is set) and (loadpass is NULL))
-	if (!isset($_POST['loadpass']) || (isset($_POST['loadpass']) && ($_POST['loadpass'] == null)))
+	if (!isset($loadpass) || (isset($loadpass) && ($loadpass == null)))
 	{
 		$errormsg .= $clang->gT("You did not provide a password")."<br />\n";
 	}
@@ -461,8 +465,8 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 	}
 
 	// --> START NEW FEATURE - SAVE
-	$_SESSION['holdname']=$_POST['loadname']; //Session variable used to load answers every page.
-	$_SESSION['holdpass']=$_POST['loadpass']; //Session variable used to load answers every page.
+	$_SESSION['holdname']=$loadname; //Session variable used to load answers every page.
+	$_SESSION['holdpass']=$loadpass; //Session variable used to load answers every page.
 
 	if ($errormsg == "") loadanswers();
 	// <-- END NEW FEATURE - SAVE
@@ -635,7 +639,7 @@ function loadanswers()
 			WHERE ".db_table_name('saved_control').".sid=$surveyid\n";
 		if (isset($_POST['scid'])) //Would only come from email
 		{
-			$query .= "AND ".db_table_name('saved_control').".scid=".auto_escape($_POST['scid'])."\n";
+			$query .= "AND ".db_table_name('saved_control').".scid=".intval($_POST['scid'])."\n";
 		}
 		$query .="AND ".db_table_name('saved_control').".identifier = '".auto_escape($_SESSION['holdname'])."'
 				  AND ".db_table_name('saved_control').".access_code ". (($databasetype == 'mysql')? "=": "like" ) ." '".md5(auto_unescape($_SESSION['holdpass']))."'\n";
@@ -764,15 +768,15 @@ function makelanguagechanger()
   {
     if (isset($_SESSION['s_lang']) && $_SESSION['s_lang'] != '')
     { 
-      $lang = $_SESSION['s_lang'];
+      $lang = sanitize_languagecode($_SESSION['s_lang']);
     }
     else if(isset($_POST['lang']) && $_POST['lang']!='')
     { 
-      $lang = $_POST['lang'];
+      $lang = sanitize_languagecode($_POST['lang']);
     }
     else if (isset($_GET['lang']) && $_GET['lang'] != '')
     {
-      $lang = $_GET['lang'];
+      $lang = sanitize_languagecode($_GET['lang']);
     }
     else
       $lang = GetBaseLanguageFromSurveyID($surveyid);
@@ -2544,7 +2548,7 @@ function check_quota($checkaction,$surveyid)
 				echo "\t".$clang->gT("Sorry your responses have exceeded a quota on this survey.")."<br /></center>&nbsp;\n";
 				echo "<form method='post' action='".$_SERVER['PHP_SELF']."' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" value=' << prev ' name='move2' />
 					<input type='hidden' name='thisstep' value='".($_SESSION['step'])."' id='thisstep' />
-					<input type='hidden' name='sid' value='".$_POST['sid']."' id='sid' />
+					<input type='hidden' name='sid' value='".returnglobal('sid')."' id='sid' />
 					<input type='hidden' name='token' value='".$_POST['token']."' id='token' /></form>\n";
 				echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 				doFooter();

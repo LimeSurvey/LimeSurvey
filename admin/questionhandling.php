@@ -17,6 +17,8 @@
 //Ensure script is not run directly, avoid path disclosure
 include_once("login_check.php");
 
+if (isset($_POST['sortorder'])) {$postsortorder=sanitize_int($_POST['sortorder']);}
+
 if ($action == "addquestion")
 {
 	if (!isset($gid)) {$gid=returnglobal('gid');}
@@ -638,8 +640,8 @@ if($action == "orderquestions")
        {
         // Pressing the Up button
     	case $clang->gT("Up", "unescaped"):
-    	$newsortorder=$_POST['sortorder']-1;
-    	$oldsortorder=$_POST['sortorder'];
+    	$newsortorder=$postsortorder-1;
+    	$oldsortorder=$postsortorder;
     	$cdquery = "UPDATE ".db_table_name('questions')." SET question_order=-1 WHERE gid=$gid AND question_order=$newsortorder";
     	$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
     	$cdquery = "UPDATE ".db_table_name('questions')." SET question_order=$newsortorder WHERE gid=$gid AND question_order=$oldsortorder";
@@ -650,8 +652,8 @@ if($action == "orderquestions")
 
         // Pressing the Down button
     	case $clang->gT("Dn", "unescaped"):
-    	$newsortorder=$_POST['sortorder']+1;
-    	$oldsortorder=$_POST['sortorder'];
+    	$newsortorder=$postsortorder+1;
+    	$oldsortorder=$postsortorder;
     	$cdquery = "UPDATE ".db_table_name('questions')." SET question_order=-1 WHERE gid=$gid AND question_order=$newsortorder";
     	$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
     	$cdquery = "UPDATE ".db_table_name('questions')." SET question_order='$newsortorder' WHERE gid=$gid AND question_order=$oldsortorder";

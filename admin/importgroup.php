@@ -34,7 +34,7 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 }
 
 // validate that we have a SID 
-if (!$_POST['sid'])
+if (!returnglobal('sid'))
 {
     $importquestion .= $clang->gT("No SID (Survey) has been provided. Cannot import group.")."<br /><br />\n"
     ."<input type='submit' value='"
@@ -45,7 +45,7 @@ if (!$_POST['sid'])
 }
 else
 {
-    $newsid = sanitize_int($_POST['sid']);
+    $newsid = returnglobal('sid');
 }
 
 

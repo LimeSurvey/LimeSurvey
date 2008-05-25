@@ -13,12 +13,14 @@
 * $Id$
 */
 
+// Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
+
 //Exports all responses to a survey in special "Verified Voting" format.
 
 include_once("login_check.php");
 
 $sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
-$sumresult5 = db_execute_assoc($sumquery5);
+$sumresult5 = db_execute_assoc($sumquery5); //Checked
 $sumrows5 = $sumresult5->FetchRow();
 
 if ($sumrows5['export'] != "1")
@@ -97,7 +99,7 @@ elseif (isset($surveyid) && $surveyid)
 	{
 		$query .= " WHERE submitdate is not null ";
 	}
-	$result = db_execute_assoc($query) or die("Error:<br />$query<br />".$connect->ErrorMsg());
+	$result = db_execute_assoc($query) or die("Error:<br />$query<br />".$connect->ErrorMsg()); //Checked
 
 	while ($row=$result->FetchRow())
 	{

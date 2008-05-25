@@ -14,6 +14,7 @@
 */
 
 //include_once("login_check.php");
+//Security Checked: POST/GET/SESSION/DB/returnglobal   
 
 function PrepareEditorPopupScript()
 {
