@@ -2354,19 +2354,19 @@ function templatereplace($line)
 		//SAVE SURVEY DETAILS
 		$saveform = "<table><tr><td align='right'>".$clang->gT("Name").":</td><td><input type='text' name='savename' value='";
 		if (isset($_POST['savename'])) {$saveform .= html_escape(auto_unescape($_POST['savename']));}
-		$saveform .= "'></td></tr>\n"
+		$saveform .= "' /></td></tr>\n"
 		. "<tr><td align='right'>".$clang->gT("Password").":</td><td><input type='password' name='savepass' value='";
 		if (isset($_POST['savepass'])) {$saveform .= html_escape(auto_unescape($_POST['savepass']));}
-		$saveform .= "'></td></tr>\n"
+		$saveform .= "' /></td></tr>\n"
 		. "<tr><td align='right'>".$clang->gT("Repeat Password").":</td><td><input type='password' name='savepass2' value='";
 		if (isset($_POST['savepass2'])) {$saveform .= html_escape(auto_unescape($_POST['savepass2']));}
-		$saveform .= "'></td></tr>\n"
+		$saveform .= "' /></td></tr>\n"
 		. "<tr><td align='right'>".$clang->gT("Your Email").":</td><td><input type='text' name='saveemail' value='";
 		if (isset($_POST['saveemail'])) {$saveform .= html_escape(auto_unescape($_POST['saveemail']));}
-		$saveform .= "'></td></tr>\n";
+		$saveform .= "' /></td></tr>\n";
         if (function_exists("ImageCreate") && captcha_enabled('saveandloadscreen',$thissurvey['usecaptcha']))
         {
-		    $saveform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='middle'><img src='{$captchapath}verification.php' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table></td></tr>\n";
+		    $saveform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='middle'><img src='{$captchapath}verification.php' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
         }
 		$saveform .= "<tr><td align='right'></td><td></td></tr>\n"
 		. "<tr><td></td><td><input type='submit' name='savesubmit' value='".$clang->gT("Save Now")."'></td></tr>\n"
@@ -2401,7 +2401,7 @@ function templatereplace($line)
 	if (strpos($line, "{REGISTERFORM}") !== false)
 	{
 		$registerform="<form method='post' action='register.php'>\n"
-		."<table class='register'>\n"
+		."<table class='register' summary='Registrationform'>\n"
 		."<tr><td align='right'>"
 		."<input type='hidden' name='sid' value='$surveyid' id='sid' />\n"
 		.$clang->gT("First Name").":</td>"
@@ -2437,11 +2437,11 @@ function templatereplace($line)
 
         if (function_exists("ImageCreate") && captcha_enabled('registrationscreen',$thissurvey['usecaptcha']))
         {
-            $registerform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='middle'><img src='{$captchapath}verification.php' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table></td></tr>\n";
+            $registerform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='middle'><img src='{$captchapath}verification.php' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
         }
       
 
-		$registerform .= "<tr><td align='right'><input type='hidden' name='lang' value='".$reglang."'></td><td></td></tr>\n";
+		$registerform .= "<tr><td align='right'><input type='hidden' name='lang' value='".$reglang."' /></td><td></td></tr>\n";
 		if(isset($thissurvey['attribute1']) && $thissurvey['attribute1'])
 		{
 			$registerform .= "<tr><td align='right'>".$thissurvey['attribute1'].":</td>\n"
@@ -2462,10 +2462,10 @@ function templatereplace($line)
 			}
 			$registerform .= " /></td></tr>\n";
 		}
-		$registerform .= "<tr><td></td><td><input class='submit' type='submit' value='".$clang->gT("Continue")."'>"
+		$registerform .= "<tr><td></td><td><input class='submit' type='submit' value='".$clang->gT("Continue")."' />"
 		."</td></tr>\n"
-		."</form>\n"
-		."</table>\n";
+		."</table>\n"
+		."</form>\n";
 		$line=str_replace("{REGISTERFORM}", $registerform, $line);
 	}
 	if (strpos($line, "{ASSESSMENTS}") !== false) $line=str_replace("{ASSESSMENTS}", $assessments, $line);
