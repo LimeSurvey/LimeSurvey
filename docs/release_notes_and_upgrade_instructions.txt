@@ -73,7 +73,35 @@ HOW TO UPGRADE from a LimeSurvey 1.70 or 1.70+ version to the latest 1.70+
 
 Thank you to everyone who helped with this new release!
 
-Changes from 1.70+ Revision 4831 to 4855 (2008/05/21)
+Changes from 1.70+ Revision 4885 to 4927 (2008/05/26)
+
+Small fix to have a purtier message on index.php if LimeSurvey is not yet installed. (c_schmitz)
+Complete Korean Translation submitted by Sehee Kim (cactusgrlkr -a-t- naver -dot-com) on behalf of the Korean Police School translation team. (c_schmitz)
+Fix for Hungarian (c_schmitz)
+include tcpdf-class (stfreud)
+Added a small fix to condition window by DG Esteban Adrián Pérez (c_schmitz)
+Added basic support for Right-to-Left languages (c_schmitz)
+Added Farsi language stub by Laurent Giacobino (c_schmitz)
+Updated Swedish translation by Max Zomborszki  max -i-t- friskissvettis -d-i-t- se (c_schmitz)
+Updated Korean Translation submitted by Sehee Kim (cactusgrlkr -a-t- naver -dot-com) on behalf of the South Korean Police School translation team. (c_schmitz)
+Completed Greek Translation by Yiannos Katsirintakis (c_schmitz)
+French language updated (b00z00)
+Fixed issue #1997: Problem exporting "Only Code" for Type P - Multiple Options Question with Comments (c_schmitz)
+- Removed modfield function out of the whole system as it is causing numerous problems, especially with old browsers, key navigation etc. (c_schmitz)
+Fixed #2016: Notice at not activated survey in debug mode (c_schmitz)
+Fixed issue #1998: Notive Undefined variable: fnrrow in ... dataentry.php with List with comments question type (c_schmitz)
+Fixed issue #1807: Export to Excel on PHP4 creates empty .xls file. According warning message is shown in export window and export to excel to deactivated when iconv library in PHP4 is not installed. (c_schmitz)
+Fixed #1985: Exporting to SPSS shows 'SHOW COLUMNS ' error (c_schmitz)
+Fixed #2032: Code errors when adding answers to question type List (Dropdown) (lemeur)
+Fixed #2031: Missing Replacement fields in the Rich Text editor (lemeur)
+Sanitizing the script (c_schmitz)
+include new pdf-features (stfreud)
+Updated Croatian & Italian Language files by Igor Dobra¿a (c_schmitz)
+Updated German Translation (c_schmitz)
+Some W3C and language corrections submitted by Juliette Reinders Folmer (c_schmitz)
+bug 2042 (stfreud)
+
+Changes from 1.70+ Revision 4831 to 4885 (2008/05/21)
 
 Fixed small bug with input length in numerical questions (c_schmitz)
 Updated Danish Language by Stefan Grandhol ( stefangranholm -a-t- gmail -d-i-t c.o.m ) (c_schmitz)
