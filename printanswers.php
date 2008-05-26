@@ -15,7 +15,7 @@ require_once(dirname(__FILE__).'/config-defaults.php');
 require_once(dirname(__FILE__).'/common.php');
 if(isset($usepdfexport) && $usepdfexport == 1)
 {
-    require_once(dirname(__FILE__).$pdfexportdir."/extensionTCPDF.php");
+    require_once(dirname(__FILE__).$pdfexportdir."/extensiontcpdf.php");
 }
 
 //DEFAULT SETTINGS FOR TEMPLATES
@@ -124,7 +124,7 @@ if (isset($_SESSION['s_lang']))
     $clang = SetSurveyLanguage( $surveyid, $baselang);
 }
 	//SHOW HEADER
-    $pdfprintoutput = '';
+    $printoutput = '';
     if(isset($usepdfexport) && $usepdfexport == 1)
     {
         $printoutput .= "<form action='printanswers.php' method='post'>\n<center><input type='submit' value='".$clang->gT("PDF Export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
@@ -136,7 +136,6 @@ if (isset($_SESSION['s_lang']))
         $pdf->AddPage(); 
         $pdf->titleintopdf("Survey Name: ".$surveyname,"SurveyID: ".$surveyid);
     }
-  $printoutput .=$pdfprintoutput;
 	$printoutput .= "\t<span class='printouttitle'><strong>".$clang->gT("Survey Name (ID)").":</strong> $surveyname ($surveyid)</span><br />\n";
 
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE

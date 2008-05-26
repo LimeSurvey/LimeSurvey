@@ -285,7 +285,7 @@ require_once(dirname(__FILE__).'/config.php');
 
 //PDF Export Settings
 $usepdfexport   = 1;                        //Set 0 to disable; 1 to enable 
-$pdfexportdir   = "/admin/classes/TCPDF";  //Directory with the TCPDF.php extensionTCPDF.php
+$pdfexportdir   = "/admin/classes/tcpdf";  //Directory with the tcpdf.php extensiontcpdf.php
 $pdffonts       = $pdfexportdir."/fonts";  //Directory for the TCPDF fonts
 $pdfdefaultfont = 'freemono';               //Default font for the pdf Export
 $pdffontsize    = 10;                       //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
