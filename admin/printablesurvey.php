@@ -15,7 +15,7 @@
 
 //Ensure script is not run directly, avoid path disclosure
 include_once("login_check.php");
-include_once(dirname(__FILE__)."/classes/tcpdf/extensionTCPDF.php");    
+include_once(dirname(__FILE__)."/classes/tcpdf/extensiontcpdf.php");    
 
 $printablesurveyoutput="<?xml version=\"1.0\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
 ."<html>\n<head>\n"

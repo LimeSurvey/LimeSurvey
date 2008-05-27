@@ -35,7 +35,7 @@ if ($sumrows5['export'] != "1" && $_SESSION['USER_RIGHT_SUPERADMIN'] != 1)
 
 include_once("login_check.php");
 include_once(dirname(__FILE__)."/classes/pear/Spreadsheet/Excel/Writer.php");
-include_once(dirname(__FILE__)."/classes/tcpdf/extensionTCPDF.php"); 
+include_once(dirname(__FILE__)."/classes/tcpdf/extensiontcpdf.php"); 
 
 $surveybaselang=GetBaseLanguageFromSurveyID($surveyid);
 $exportoutput="";
