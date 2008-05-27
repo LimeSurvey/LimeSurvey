@@ -404,6 +404,7 @@ switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c
         $pdf->intopdf($clang->gT("General informations in language: ").getLanguageNameFromCode($row['surveyls_language']),'B');
         $pdf->ln();
         $pdf->titleintopdf($row['surveyls_title'],$row['surveyls_description']);
+        $surveyname=$row['surveyls_title'];
     }
     $pdf->AddPage();  
     $separator="\t";
@@ -1269,8 +1270,7 @@ if ($type=='xls')
 }
 else if($type=='pdf')
 {
-  //$pdf->Write(5,strip_tags_full($exportoutput));
-  $pdf->Output("Survey Export ".date("Y.m.d",time()).".pdf","D");
+  $pdf->Output($clang->gT($surveyname)." ".$surveyid.".pdf","D");
 }
 else 
 {

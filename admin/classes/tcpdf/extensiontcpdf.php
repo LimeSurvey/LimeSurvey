@@ -72,7 +72,7 @@ class PDF extends TCPDF
         {
             for($j=0;$j<sizeof($array[$i]);$j++)
             {
-                if(($j-1)>=0)
+                if(($i-1)>=0)
                 {
                      if(strlen($array[($i-1)][$j]) < strlen($array[$i][$j]))
                      {

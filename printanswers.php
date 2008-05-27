@@ -290,7 +290,7 @@ if (isset($_SESSION['s_lang']))
     $printoutput .= "</table>\n";
     if(isset($_POST['printableexport']))
     {
-        $pdf->write_out($surveyname.".pdf");
+        $pdf->write_out($clang->gT($surveyname)." ".$surveyid.".pdf");
     }
 
 

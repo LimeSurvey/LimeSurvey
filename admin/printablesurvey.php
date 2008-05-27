@@ -984,7 +984,7 @@ $printablesurveyoutput .="</table>\n";
 $printablesurveyoutput .="</body>\n</html>";
 if(isset($_POST['printableexport']))  
 {
-    $pdf->write_out($surveyname.".pdf");
+    $pdf->write_out($clang->gT($surveyname)." ".$surveyid.".pdf");
 }
 echo $printablesurveyoutput ;
 exit;
