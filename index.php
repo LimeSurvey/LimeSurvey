@@ -16,7 +16,11 @@
 // Security Checked: 
 // ToDo: POST, GET, SESSION, REQUEST, returnglobal, DB     
 
-
+// Check if register_globals is activated, if yes take countermeasures.
+if (@ini_get('register_globals') == '1' || strtolower(@ini_get('register_globals')) == 'on')
+{
+	deregister_globals();
+}
 require_once(dirname(__FILE__).'/config-defaults.php');
 require_once(dirname(__FILE__).'/common.php');
 require_once(dirname(__FILE__).'/classes/core/language.php');
@@ -27,9 +31,10 @@ require_once(dirname(__FILE__).'/classes/core/html_entity_decode_php4.php');
 if (returnglobal('loadname')) $loadname=returnglobal('loadname');
 if (returnglobal('loadpass')) $loadpass=returnglobal('loadpass');
 if (returnglobal('scid')) $scid=returnglobal('scid');
-  
-if (!isset($surveyid)) {	$surveyid=returnglobal('sid');}
-//This next line is for security reasons. It ensures that the $surveyid value is never anything but a number.
+
+if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
+
+//This next line ensures that the $surveyid value is never anything but a number.
 $surveyid=sanitize_int($surveyid);
 
 //DEFAULT SETTINGS FOR TEMPLATES
@@ -40,7 +45,7 @@ $tpldir="$publicdir/templates";
 
 
 // First check if survey is active
-// if not:  copy some vars from the admin session 
+// if not: copy some vars from the admin session 
 // to a new user session
 
 if ($surveyid)
@@ -2563,5 +2568,57 @@ function check_quota($checkaction,$surveyid)
 	}
 	
 }
+
+/*
+* Remove variables created by register_globals from the global scope
+* Thanks to Matt Kavanagh
+*/
+function deregister_globals()
+{
+	$not_unset = array(
+		'GLOBALS'	=> true,
+		'_GET'		=> true,
+		'_POST'		=> true,
+		'_COOKIE'	=> true,
+		'_REQUEST'	=> true,
+		'_SERVER'	=> true,
+		'_SESSION'	=> true,
+		'_ENV'		=> true,
+		'_FILES'	=> true
+	);
+
+	// Not only will array_merge and array_keys give a warning if
+	// a parameter is not an array, array_merge will actually fail.
+	// So we check if _SESSION has been initialised.
+	if (!isset($_SESSION) || !is_array($_SESSION))
+	{
+		$_SESSION = array();
+	}
+
+	// Merge all into one extremely huge array; unset this later
+	$input = array_merge(
+		array_keys($_GET),
+		array_keys($_POST),
+		array_keys($_COOKIE),
+		array_keys($_SERVER),
+		array_keys($_SESSION),
+		array_keys($_ENV),
+		array_keys($_FILES)
+	);
+
+	foreach ($input as $varname)
+	{
+		if (isset($not_unset[$varname]))
+		{
+			// Hacking attempt. No point in continuing.
+			exit;
+		}
+
+		unset($GLOBALS[$varname]);
+	}
+
+	unset($input);
+}
+
 
 ?>

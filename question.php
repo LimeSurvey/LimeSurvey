@@ -18,7 +18,7 @@
 // Performance Improvement	: 41% (Call to templatereplace())
 // Optimized By				: swales
 
-if (empty($homedir)) {die ("Cannot run this script directly");}
+if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 
 //Move current step
 if (!isset($_SESSION['step'])) {$_SESSION['step']=0;}
