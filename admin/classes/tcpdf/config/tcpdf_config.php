@@ -38,13 +38,13 @@ if (!defined("K_TCPDF_EXTERNAL_CONFIG")) {
 	/**
 	 * installation path (/var/www/tcpdf/)
 	 */
-	define ("K_PATH_MAIN", "d:/xampplite/xampplite/htdocs/source/limesurvey/admin/classes/tcpdf/");
+	define ("K_PATH_MAIN", "$rootdir/admin/classes/tcpdf/");
 	
 	/**
 	 * url path (http://localhost/tcpdf/)
 	 */
 	
-	define ("K_PATH_URL", "http://localhost/source/limesurvey/admin/classes/tcpdf/");
+	define ("K_PATH_URL", "$homeurl/admin/classes/tcpdf/");
 	
 	/**
 	 * path for PDF fonts
