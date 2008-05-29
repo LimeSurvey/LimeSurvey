@@ -15,8 +15,7 @@
 
 //Ensure script is not run directly, avoid path disclosure
 include_once("login_check.php");
-if (isset($_GET['sid'])) {$surveyid = $_GET['sid'];}
-if (isset($_GET['ok'])) {$ok = $_GET['ok'];}
+$deleteok = returnglobal('deleteok');
 
 $deletesurveyoutput = "<br />\n";
 $deletesurveyoutput .= "<table class='alertbox' >\n";
@@ -33,7 +32,7 @@ if (!isset($surveyid) || !$surveyid)
 	return;
 }
 
-if (!isset($ok) || !$ok)
+if (!isset($deleteok) || !$deleteok)
 {
 	$tablelist = $connect->MetaTables();
 
@@ -60,7 +59,7 @@ if (!isset($ok) || !$ok)
 	$deletesurveyoutput .= "\t\t<td align='center'><br />\n";
 	$deletesurveyoutput .= "\t\t\t<input type='submit'  value='".$clang->gT("Cancel")."' onclick=\"window.open('admin.php?sid=$surveyid', '_top')\" /><br />\n";
 //	$deletesurveyoutput .= "\t\t\t<input type='submit'  value='".$clang->gT("Delete")."' onclick=\"window.open('$scriptname?action=deletesurvey&amp;sid=$surveyid&amp;ok=Y','_top')\" />\n";
-	$deletesurveyoutput .= "\t\t\t<input type='submit'  value='".$clang->gT("Delete")."' onclick=\"".get2post("$scriptname?action=deletesurvey&amp;sid=$surveyid&amp;ok=Y")."\" />\n";
+	$deletesurveyoutput .= "\t\t\t<input type='submit'  value='".$clang->gT("Delete")."' onclick=\"".get2post("$scriptname?action=deletesurvey&amp;sid=$surveyid&amp;deleteok=Y")."\" />\n";
 	$deletesurveyoutput .= "\t\t</td>\n";
 	$deletesurveyoutput .= "\t</tr>\n";
 	$deletesurveyoutput .= "\n";
