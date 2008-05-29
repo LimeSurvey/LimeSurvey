@@ -71,11 +71,10 @@ global $connect;
 //CONVERT POSTED ANSWERS TO SESSION VARIABLES
 if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 {
-
     $postedfieldnames=explode("|", $_POST['fieldnames']);
     
       // Remove invalid fieldnames from fieldnames array  
-      for($x<count($postedfieldnames)-1;$x=0;$x--)
+      for($x=count($postedfieldnames)-1;$x>=0;$x--)
       {
          if (strpos($postedfieldnames[$x],$surveyid.'X')===false)
          {
