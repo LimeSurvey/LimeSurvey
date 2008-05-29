@@ -13,6 +13,7 @@
 * $Id$
 */
 
+// Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB  
 
 /*************** LDAP Functions *************/
 /*					    */

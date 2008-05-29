@@ -13,7 +13,7 @@
 * $Id$
 */
 
-if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
+require_once(dirname(__FILE__).'/classes/core/startup.php');    // Since this file can be directly run
 require_once(dirname(__FILE__).'/config-defaults.php');
 require_once(dirname(__FILE__).'/common.php');
 require_once($rootdir.'/classes/core/language.php');

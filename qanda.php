@@ -15,7 +15,7 @@
 
 // Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
 
-if (empty($publicdir)) {die ("Cannot run this script directly (qanda.php)");}
+if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 
 /*
 * Let's explain what this strange $ia var means

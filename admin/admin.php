@@ -15,6 +15,7 @@
 
 // Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
 
+require_once(dirname(__FILE__).'/../classes/core/startup.php');
 
 // XML code for LS1.70 is based on the experimental PHP4 domxml
 // extension. PHP5 uses the PHP5/dom extension.

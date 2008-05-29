@@ -135,19 +135,6 @@ function sanitize_system_string($string, $min='', $max='')
 }
 
 // sanitize a string for SQL input (simple slash out quotes and slashes)
-// OBSOLETE: should use db_quote from common.php instead since it is DB independent
-/*function sanitize_sql_string($string, $min='', $max='')
-{
-	$string = nice_addslashes($string); //gz
-	$pattern = "/;/"; // jp
-	$replacement = "";
-	$len = strlen($string);
-	if((($min != '') && ($len < $min)) || (($max != '') && ($len > $max)))
-	return FALSE;
-	return preg_replace($pattern, $replacement, $string);
-}*/
-
-// sanitize a string for SQL input (simple slash out quotes and slashes)
 function sanitize_sql_db_tablename($string)
 {
 	$bad = array ('*','^','&','\'','-',';','\"','(',')','%','$','?');
@@ -214,7 +201,7 @@ function sanitize_int($integer, $min='', $max='')
 function sanitize_user($string)
 {
 	$username_length=64;
-	$string=substr($string,0,$username_length);
+	$string=mb_substr($string,0,$username_length);
 	return $string;
 }
 
@@ -224,14 +211,14 @@ function sanitize_user($string)
 function sanitize_userfullname($string)
 {
 	$username_length=50;
-	$string=substr($string,0,$username_length);
+	$string=mb_substr($string,0,$username_length);
 	return $string;
 }
 
 function sanitize_labelname($string)
 {
 	$username_length=100;
-	$string=substr($string,0,$username_length);
+	$string=mb_substr($string,0,$username_length);
 	return $string;
 }
 

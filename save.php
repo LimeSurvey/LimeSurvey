@@ -60,6 +60,11 @@ Notes
 1. A new column SRID has been added to saved_control.
 2. saved table no longer exists.
 */
+
+
+if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
+
+
 global $connect;
 //First, save the posted data to session
 //Doing this ensures that answers on the current page are saved as well.

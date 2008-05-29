@@ -11,6 +11,7 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
+require_once(dirname(__FILE__).'/classes/core/startup.php');   
 require_once(dirname(__FILE__).'/config-defaults.php');
 require_once(dirname(__FILE__).'/common.php');
 if(isset($usepdfexport) && $usepdfexport == 1)
