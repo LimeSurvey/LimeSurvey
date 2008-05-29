@@ -13,10 +13,8 @@
 * $Id$
 */
 
+//Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
 
-// Performance optimized	: Nov 27, 2006
-// Performance Improvement	: 41% (Call to templatereplace())
-// Optimized By				: swales
 
 if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 
@@ -24,21 +22,19 @@ if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this scri
 //Move current step ###########################################################################
 if (!isset($_SESSION['step'])) {$_SESSION['step']=0;}
 if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
-if (!isset($_POST['thisstep'])) {$_POST['thisstep'] = "";}
-    else {$_POST['thisstep']=sanitize_int($_POST['thisstep']);}
 if (!isset($gl)) {$gl=array("null");}
-if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep']-1;}
-if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step']=$_POST['thisstep']+1;}
+if (isset($move) && $move == "moveprev") {$_SESSION['step'] = $thisstep-1;}
+if (isset($move) && $move == "movenext") {$_SESSION['step'] = $thisstep+1;}
 
 // This prevents the user from going back to the question pages and keeps him on the final page
 // That way his session can be kept so he can still print his answers until he closes the browser
-if (isset($_SESSION['finished'])) {$_POST['move']="movesubmit"; }
+if (isset($_SESSION['finished'])) {$move="movesubmit"; }
 
 
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
 //First, see if we are moving backwards or doing a Save so far, and its OK not to check:
-if ($allowmandbackwards==1 && ((isset($_POST['move']) &&  $_POST['move'] == "moveprev") || (isset($_POST['saveall']) && $_POST['saveall'] == $clang->gT("Save your responses so far"))))
+if ($allowmandbackwards==1 && ((isset($move) &&  $move == "moveprev") || (isset($_POST['saveall']) && $_POST['saveall'] == $clang->gT("Save your responses so far"))))
 {
 	$backok="Y";
 }
@@ -61,21 +57,21 @@ if ($thissurvey['active'] == "Y")
 }
 
 //SEE IF THIS GROUP SHOULD DISPLAY
-if (isset($_POST['move']) && $_SESSION['step'] != 0 && $_POST['move'] != "movesubmit")
+if (isset($move) && $_SESSION['step'] != 0 && $move != "movesubmit")
 {
 	while(checkgroupfordisplay($_SESSION['grouplist'][$_SESSION['step']-1][0]) === false)
 	{
-		if (isset($_POST['move']) && $_POST['move'] == "moveprev") 
+		if (isset($move) && $move == "moveprev") 
         {
             $_SESSION['step']=$_SESSION['step']-1;
         }
-		if (isset($_POST['move']) && $_POST['move'] == "movenext") 
+		if (isset($move) && $move == "movenext") 
         {
             $_SESSION['step']=$_SESSION['step']+1;
         }
         if ($_SESSION['step']>$_SESSION['totalsteps']) 
         {
-            $_POST['move'] = "movesubmit";
+            $move = "movesubmit";
 		submitanswer(); // complete this answer (submitdate)
             break;
         } 
@@ -83,7 +79,7 @@ if (isset($_POST['move']) && $_SESSION['step'] != 0 && $_POST['move'] != "movesu
 }
 
 //SUBMIT ###############################################################################
-if ((isset($_POST['move']) && $_POST['move'] == "movesubmit")  && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) || !$notvalidated ))
+if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) || !$notvalidated ))
 {
 	if ($thissurvey['refurl'] == "Y")                 
     {                                                                                              
@@ -91,7 +87,6 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit")  && (!isset($notan
 		{
 			$_SESSION['insertarray'][] = "refurl";
 		}
-		//$_SESSION['refurl'] = $_SESSION['refurl'];                 
     }
 
 	//COMMIT CHANGES TO DATABASE
@@ -140,7 +135,7 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit")  && (!isset($notan
 			       . $clang->gT("Close this Window")."</a></font><br /><br />\n";
 
 		//Update the token if needed and send a confirmation email
-		if (isset($_POST['token']) && $_POST['token'])
+		if (isset($clienttoken) && $clienttoken)
 		{
 			submittokens();
 		}
@@ -201,7 +196,7 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit")  && (!isset($notan
 
 			$url = $thissurvey['url'];
 			$url=str_replace("{SAVEDID}",$saved_id, $url);			// to activate the SAVEDID in the END URL
-            $url=str_replace("{TOKEN}",$_POST['token'], $url);            // to activate the TOKEN in the END URL
+            $url=str_replace("{TOKEN}",$clienttoken, $url);            // to activate the TOKEN in the END URL
             $url=str_replace("{SID}", $surveyid, $url);       // to activate the SID in the RND URL
 
 			header("Location: {$url}");

@@ -1474,8 +1474,8 @@ function returnglobal($stringname)
 	if (isset($_REQUEST[$stringname]))
 		{
 		if ($stringname == "sid" || $stringname == "gid" || 
-			$stringname == "qid" || $stringname == "tid" ||
-			$stringname == "lid" || $stringname == "ugid"||
+			$stringname == "qid" || $stringname == "tid" || 
+			$stringname == "lid" || $stringname == "ugid"|| $stringname == "thisstep" || 
             $stringname == "qaid" || $stringname == "scid")
 		{
 			return sanitize_int($_REQUEST[$stringname]);
@@ -1490,6 +1490,7 @@ function returnglobal($stringname)
         }
 		return $_REQUEST[$stringname];
 	}
+    else return NULL;
 }
 
 
@@ -2107,9 +2108,9 @@ function templatereplace($line)
 	// Performance Improvement	: 49%
 	// Optimized By				: swales
 
-	global $surveylist, $sitename;
+	global $surveylist, $sitename, $clienttoken;
 	global $thissurvey, $imagefiles, $defaulttemplate;
-	global $percentcomplete;
+	global $percentcomplete, $move;
 	global $groupname, $groupdescription, $question;
 	global $questioncode, $answer, $navigator;
 	global $help, $totalquestions, $surveyformat;
@@ -2184,8 +2185,8 @@ function templatereplace($line)
 		if (isset($token)) {
 			$line=str_replace("{TOKEN}", $token, $line);
 		}
-		elseif (isset($_POST['token'])) {
-			$line=str_replace("{TOKEN}", htmlentities($_POST['token'],ENT_QUOTES,'UTF-8'), $line);
+		elseif (isset($clienttoken)) {
+			$line=str_replace("{TOKEN}", htmlentities($clienttoken,ENT_QUOTES,'UTF-8'), $line);
 		}
 		else {
 			$line=str_replace("{TOKEN}",'', $line);
@@ -2220,7 +2221,7 @@ function templatereplace($line)
 		else {$linkreplace="";}
 		$line=str_replace("{URL}", $linkreplace, $line);            
         $line=str_replace("{SAVEDID}",$saved_id, $line);     // to activate the SAVEDID in the END URL 
-        if (isset($_POST['token'])) {$token=$_POST['token'];} else {$token='';}
+        if (isset($clienttoken)) {$token=$clienttoken;} else {$token='';}
 		$line=str_replace("{TOKEN}",urlencode($token), $line);			// to activate the TOKEN in the END URL 
         $line=str_replace("{SID}", $surveyid, $line);       // to activate the SID in the RND URL
 	}
@@ -2268,7 +2269,7 @@ function templatereplace($line)
 			{
 				$saveall = "<input type='submit' name='loadall' value='".$clang->gT("Load Unfinished Survey")."' class='saveall' ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") ."/>";
 			}
-			elseif (isset($_SESSION['scid']) && (isset($_POST['move']) && $_POST['move'] == "movelast"))  //Already saved and on Submit Page, dont show Save So Far button
+			elseif (isset($_SESSION['scid']) && (isset($move) && $move == "movelast"))  //Already saved and on Submit Page, dont show Save So Far button
 			{
 				$saveall="";
 			}

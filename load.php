@@ -13,6 +13,9 @@
 * $Id$
 */
 
+//Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
+
+
 if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 //This next line is for security reasons. It ensures that the $surveyid value is never anything but a number.

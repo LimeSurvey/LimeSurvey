@@ -11,6 +11,8 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
+//Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
+
 require_once(dirname(__FILE__).'/classes/core/startup.php');   
 require_once(dirname(__FILE__).'/config-defaults.php');
 require_once(dirname(__FILE__).'/common.php');
@@ -82,7 +84,7 @@ if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die("browse - Cannot run 
 
 //Select public language file
 $query = "SELECT language FROM ".db_table_name("surveys")." WHERE sid=$surveyid";
-$result = db_execute_assoc($query) or die("Error selecting language: <br />".$query."<br />".$connect->ErrorMsg());
+$result = db_execute_assoc($query) or die("Error selecting language: <br />".$query."<br />".$connect->ErrorMsg());  //Checked
 
 
 // Set language for questions and labels to base language of this survey
@@ -102,7 +104,7 @@ if ($thissurvey['printanswers']=='N') die();  //Die quietly if print answers is 
 //CHECK IF SURVEY IS ACTIVATED AND EXISTS
 $actquery = "SELECT * FROM ".db_table_name('surveys')." as a inner join ".db_table_name('surveys_languagesettings')." as b on (b.surveyls_survey_id=a.sid and b.surveyls_language=a.language) WHERE a.sid=$surveyid";
 
-$actresult = db_execute_assoc($actquery);
+$actresult = db_execute_assoc($actquery);    //Checked
 $actcount = $actresult->RecordCount();
 if ($actcount > 0)
 {
@@ -144,7 +146,7 @@ if (isset($_SESSION['s_lang']))
 	WHERE ".db_table_name("questions").".gid=".db_table_name("groups").".gid AND ".db_table_name("groups").".sid=".db_table_name("surveys").".sid
 	AND ".db_table_name("questions").".sid='$surveyid' AND
 	".db_table_name("questions").".language='{$language}' AND ".db_table_name("groups").".language='{$language}' ORDER BY ".db_table_name("groups").".group_order, ".db_table_name("questions").".title";
-	$fnresult = db_execute_assoc($fnquery);
+	$fnresult = db_execute_assoc($fnquery);  //Checked   
 	$fncount = 0;
 
 	$fnrows = array(); //Create an empty array in case fetch_array does not return any rows
@@ -185,7 +187,7 @@ if (isset($_SESSION['s_lang']))
 		$fnrow['type'] == "P" || $fnrow['type'] == "^")
 		{
 			$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} AND	language='{$language}' ORDER BY sortorder, answer";
-			$fnrresult = db_execute_assoc($fnrquery);
+			$fnrresult = db_execute_assoc($fnrquery);  //Checked   
 			while ($fnrrow = $fnrresult->FetchRow())
 			{
 				$fnames[] = array("$field{$fnrrow['code']}", "$ftitle ({$fnrrow['code']})", "{$fnrow['question']} ({$fnrrow['answer']})");
@@ -201,7 +203,7 @@ if (isset($_SESSION['s_lang']))
 			$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} AND
 			language='{$language}'
 			ORDER BY sortorder, answer";
-			$fnrresult = $connect->Execute($fnrquery);
+			$fnrresult = $connect->Execute($fnrquery); //Checked   
 			$fnrcount = $fnrresult->RecordCount();
 			for ($i=1; $i<=$fnrcount; $i++)
 			{
@@ -220,7 +222,7 @@ if (isset($_SESSION['s_lang']))
                 ."AND {$dbprefix}answers.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
                 ."ORDER BY sortorder, "
                 ."answer";
-            $aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
+            $aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg()); //Checked   
         
             while ($arows = $aresult->FetchRow())
             {
@@ -250,15 +252,8 @@ if (isset($_SESSION['s_lang']))
 	$nfncount = count($fnames)-1;
 	//SHOW INDIVIDUAL RECORD
 	$idquery = "SELECT * FROM $surveytable WHERE ";
-	if (incompleteAnsFilterstate() === true) {$idquery .= "submitdate >= ".$connect->DBDate('1980-01-01'). " AND ";}
-	if ($id<1) {$id=1;}
-	if (isset($_POST['sql']) && $_POST['sql'])
-	{
-		if (get_magic_quotes_gpc()) {$idquery .= stripslashes($_POST['sql']);}
-		else {$idquery .= "{$_POST['sql']}";}
-	}
-	else {$idquery .= "id=$id";}
-	$idresult = db_execute_assoc($idquery) or die ("Couldn't get entry<br />\n$idquery<br />\n".$connect->ErrorMsg());
+	if (incompleteAnsFilterstate() === true) {$idquery .= "submitdate >= ".$connect->DBDate('1980-01-01'). " AND id=$id";}
+	$idresult = db_execute_assoc($idquery) or die ("Couldn't get entry<br />\n$idquery<br />\n".$connect->ErrorMsg()); //Checked   
 	while ($idrow = $idresult->FetchRow()) {$id=$idrow['id']; $rlangauge=$idrow['startlanguage'];}
 	$next=$id+1;
 	$last=$id-1;
@@ -268,7 +263,7 @@ if (isset($_SESSION['s_lang']))
         $pdf->intopdf($clang->gT("Question").": ".$clang->gT("Your Answer"));
     }
     $printoutput .= "<tr><th>".$clang->gT("Question")."</th><th>".$clang->gT("Your Answer")."</th></tr>\n";
-	$idresult = db_execute_assoc($idquery) or die ("Couldn't get entry<br />$idquery<br />".$connect->ErrorMsg());
+	$idresult = db_execute_assoc($idquery) or die ("Couldn't get entry<br />$idquery<br />".$connect->ErrorMsg()); //Checked   
 	while ($idrow = $idresult->FetchRow())
 	{
 		$i=0;

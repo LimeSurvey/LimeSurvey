@@ -827,14 +827,14 @@ function filetext($templatefile) {
 	return $output;
 }
 
-function makegraph($thisstep, $total)
+function makegraph($currentstep, $total)
 {
 	global $thissurvey, $publicurl, $templatename, $clang;
 	$shchart="$publicurl/templates/{$thissurvey['templatedir']}/chart.jpg";
 	$graph = "<table class='graph' width='100' align='center' cellpadding='2'><tr><td>\n"
 	. "<table width='180' align='center' cellpadding='0' cellspacing='0' border='0' class='innergraph'>\n"
 	. "<tr><td align='right' width='40'>0%&nbsp;</td>\n";
-	$size=intval(($thisstep-1)/$total*100);
+	$size=intval(($currentstep-1)/$total*100);
 	$graph .= "<td width='100' align='left'>\n"
 	. "<table cellspacing='0' cellpadding='0' border='0' width='100%'>\n"
 	. "<tr><td>\n"

@@ -13,30 +13,25 @@
 * $Id$
 */
 
-
-// Performance optimized	: Nov 27, 2006
-// Performance Improvement	: 41% (Call to templatereplace())
-// Optimized By				: swales
+//Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB       
 
 if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 
 //Move current step
 if (!isset($_SESSION['step'])) {$_SESSION['step']=0;}
 if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
-if (!isset($_POST['thisstep'])) {$_POST['thisstep'] = "";}
-    else {$_POST['thisstep']=sanitize_int($_POST['thisstep']);}
 if (!isset($_POST['newgroupondisplay'])) {$_POST['newgroupondisplay'] = "";}
-if (isset($_POST['move']) && $_POST['move'] == "moveprev" && !$_POST['newgroupondisplay']) {$_SESSION['step'] = $_POST['thisstep']-1;}
-elseif (isset($_POST['move']) && $_POST['move'] == "moveprev" && $_POST['newgroupondisplay'] == "Y") {$_SESSION['step'] = $_POST['thisstep'];}
-if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep']+1;}
+if (isset($move) && $move == "moveprev" && !$_POST['newgroupondisplay']) {$_SESSION['step'] = $thisstep-1;}
+elseif (isset($move) && $move == "moveprev" && $_POST['newgroupondisplay'] == "Y") {$_SESSION['step'] = $thisstep;}
+if (isset($move) && $move == "movenext") {$_SESSION['step'] = $thisstep+1;}
 
 // This prevents the user from going back to the question pages and keeps him on the final page
 // That way his session can be kept so he can still print his answers until he closes the browser
-if (isset($_SESSION['finished'])) {$_POST['move']="movesubmit"; }
+if (isset($_SESSION['finished'])) {$move="movesubmit"; }
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
 //First, see if we are moving backwards or doing a Save so far, and its OK not to check:
-if ($allowmandbackwards==1 && ((isset($_POST['move']) &&  $_POST['move'] == "moveprev") || (isset($_POST['saveall']) && $_POST['saveall'] == $clang->gT("Save your responses so far"))))
+if ($allowmandbackwards==1 && ((isset($move) &&  $move == "moveprev") || (isset($_POST['saveall']) && $_POST['saveall'] == $clang->gT("Save your responses so far"))))
 {
 	$backok="Y";
 }
@@ -123,14 +118,14 @@ $questionsSkipped=0;
 while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS ARE MET
 {
 	$cquery="SELECT distinct cqid FROM {$dbprefix}conditions WHERE qid={$ia[0]}";
-	$cresult=db_execute_assoc($cquery) or die("Couldn't count cqids<br />$cquery<br />".htmlspecialchars($connect->ErrorMsg()));
+	$cresult=db_execute_assoc($cquery) or die("Couldn't count cqids<br />$cquery<br />".htmlspecialchars($connect->ErrorMsg()));  //Checked
 	$cqidcount=$cresult->RecordCount();
 	$cqidmatches=0;
 	while ($crows=$cresult->FetchRow())//Go through each condition for this current question
 	{
 		//Check if the condition is multiple type
 		$ccquery="SELECT type FROM {$dbprefix}questions WHERE qid={$crows['cqid']} AND language='".$_SESSION['s_lang']."' ";
-		$ccresult=db_execute_assoc($ccquery) or die ("Coudn't get type from questions<br />$ccquery<br />".htmlspecialchars($connect->ErrorMsg()));
+		$ccresult=db_execute_assoc($ccquery) or die ("Coudn't get type from questions<br />$ccquery<br />".htmlspecialchars($connect->ErrorMsg()));   //Checked
 		while($ccrows=$ccresult->FetchRow())
 		{
 			$thistype=$ccrows['type'];
@@ -144,12 +139,12 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 		if ($thistype =="Q" || $thistype =="K")
 		{
 			$cquery2="SELECT cqid FROM {$dbprefix}conditions WHERE qid={$ia[0]} AND cqid={$crows['cqid']}";
-			$cresult2=db_execute_assoc($cquery2) or die("Couldn't count cqids<br />$cquery<br />".htmlspecialchars($connect->ErrorMsg()));
+			$cresult2=db_execute_assoc($cquery2) or die("Couldn't count cqids<br />$cquery<br />".htmlspecialchars($connect->ErrorMsg())); //Checked
 			$cqidcount2=$cresult2->RecordCount();
 			$cqidcount += $cqidcount2 - 1; // substract 1 as it has been already counted once by $cquery
 		}
 		$cqquery = "SELECT cfieldname, value, cqid, method FROM {$dbprefix}conditions WHERE qid={$ia[0]} AND cqid={$crows['cqid']}";
-		$cqresult = db_execute_assoc($cqquery) or die("Couldn't get conditions for this question/cqid<br />$cquery<br />".htmlspecialchars($connect->ErrorMsg()));
+		$cqresult = db_execute_assoc($cqquery) or die("Couldn't get conditions for this question/cqid<br />$cquery<br />".htmlspecialchars($connect->ErrorMsg())); //Checked
 		$amatchhasbeenfound="N";
 		while ($cqrows=$cqresult->FetchRow()) //Check each condition
 		{
@@ -175,7 +170,6 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 			}
 			if (trim($cqrows['method'])=='') {$cqrows['method']='==';}
 			if (!isset($_SESSION[$conditionfieldname]) || 
-//				!$_SESSION[$conditionfieldname] || 
 				$_SESSION[$conditionfieldname] == '' || 
 				$_SESSION[$conditionfieldname] == ' ')
 			{
@@ -244,7 +238,7 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 			}
             if ($_SESSION['step']>=$_SESSION['totalsteps']) 
             {
-                $_POST['move']="movesubmit"; 
+                $move="movesubmit"; 
 		submitanswer(); // complete this answer (submitdate)
                 break;       
             }
@@ -271,7 +265,7 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 }
 
 //SUBMIT
-if ((isset($_POST['move']) && $_POST['move'] == "movesubmit")  && (!isset($notanswered) || !$notanswered)  && (!isset($notvalidated) || !$notvalidated ))   
+if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notanswered)  && (!isset($notvalidated) || !$notvalidated ))   
 {
     if ($thissurvey['refurl'] == "Y")
     {
@@ -339,7 +333,7 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit")  && (!isset($notan
         //*****************************************
 
         //Update the token if needed and send a confirmation email
-        if (isset($_POST['token']) && $_POST['token'])
+        if (isset($clienttoken) && $clienttoken)
         {
             submittokens();
         }
@@ -358,7 +352,7 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit")  && (!isset($notan
             //Automatically redirect the page to the "url" setting for the survey
             $url = $thissurvey['url'];
             $url=str_replace("{SAVEDID}",$saved_id, $url);            // to activate the SAVEDID in the END URL
-            $url=str_replace("{TOKEN}",$_POST['token'], $url);            // to activate the TOKEN in the END URL
+            $url=str_replace("{TOKEN}",$clienttoken, $url);            // to activate the TOKEN in the END URL
             $url=str_replace("{SID}", $surveyid, $url);       // to activate the SID in the RND URL
 
             header("Location: {$url}");
@@ -383,7 +377,7 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit")  && (!isset($notan
 }
 
 
-if ($questionsSkipped == 0 && $newgroup == "Y" && isset($_POST['move']) && $_POST['move'] == "moveprev" && (isset($_POST['grpdesc']) && $_POST['grpdesc']=="Y")) //a small trick to manage moving backwards from a group description
+if ($questionsSkipped == 0 && $newgroup == "Y" && isset($move) && $move == "moveprev" && (isset($_POST['grpdesc']) && $_POST['grpdesc']=="Y")) //a small trick to manage moving backwards from a group description
 {
 	//This does not work properly in all instances.
 	$currentquestion++;
@@ -395,7 +389,7 @@ list($newgroup, $gid, $groupname, $groupdescription, $gl)=checkIfNewGroup($ia);
 
 //Check if current page is for group description only
 $bIsGroupDescrPage = false;
-if ($newgroup == "Y" && $groupdescription && (isset($_POST['move']) && $_POST['move'] != "moveprev"))
+if ($newgroup == "Y" && $groupdescription && (isset($move) && $move != "moveprev"))
 {
 	// This is a group description page
 	//  - $ia contains next question description, 

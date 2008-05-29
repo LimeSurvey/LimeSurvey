@@ -25,9 +25,14 @@ require_once(dirname(__FILE__).'/classes/core/language.php');
 require_once(dirname(__FILE__).'/classes/core/html_entity_decode_php4.php');
 @ini_set('session.gc_maxlifetime', $sessionlifetime);
 
-if (returnglobal('loadname')) $loadname=returnglobal('loadname');
-if (returnglobal('loadpass')) $loadpass=returnglobal('loadpass');
-if (returnglobal('scid')) $scid=returnglobal('scid');
+$loadname=returnglobal('loadname');
+$loadpass=returnglobal('loadpass');
+$scid=returnglobal('scid');
+$thisstep=returnglobal('thisstep');
+$move=sanitize_paranoid_string(returnglobal('move'));
+$clienttoken=sanitize_system_string(strip_tags(returnglobal('token')));      
+if (!isset($thisstep)) {$thisstep = "";}
+
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
@@ -183,7 +188,7 @@ if (isset($_SESSION['srid']))
 	$saved_id = $_SESSION['srid'];
 }
 
-if (!isset($_SESSION['grouplist'])  && (isset($_POST['move'])) )
+if (!isset($_SESSION['grouplist'])  && (isset($move)) )
 // geez ... a session time out! RUN! 
 {
     if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
@@ -472,7 +477,7 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 
 	if ($errormsg == "") loadanswers();
 	// <-- END NEW FEATURE - SAVE
-	$_POST['move'] = "movenext";
+	$move = "movenext";
 
 	if ($errormsg)
 	{
@@ -594,7 +599,7 @@ if (    $thissurvey['tokenanswerspersistence'] == 'Y' &&
 }
 
 // SAVE POSTED ANSWERS TO DATABASE IF MOVE (NEXT,PREV,LAST, or SUBMIT) or RETURNING FROM SAVE FORM
-if (isset($_POST['move']) || isset($_POST['saveprompt']))
+if (isset($move) || isset($_POST['saveprompt']))
 {
 	require_once("save.php");
 
@@ -631,8 +636,8 @@ if (isset($_POST['saveall']))
 function loadanswers()
 {
 	global $dbprefix,$surveyid,$errormsg;
-	global $thissurvey, $clang;
-    global $databasetype;
+	global $thissurvey, $thisstep, $clang;
+    global $databasetype, $clienttoken;
 
 	if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 	{
@@ -669,13 +674,13 @@ function loadanswers()
 		{
 			if ($column == "token")
 			{
-				$_POST['token']=$value;
+				$clienttoken=$value;
 				$token=$value;
 			}
 			if ($column == "saved_thisstep")
 			{
 				$_SESSION['step']=$value;
-                $_POST['thisstep']=$value-1;
+                $thisstep=$value-1;
 			}
 			if ($column == "scid")
 			{
@@ -720,7 +725,7 @@ function getTokenData($surveyid, $token)
 	return $thistoken;
 }
 
-function makegraph($thisstep, $total)
+function makegraph($currentstep, $total)
 {
 	global $thissurvey;
 	global $publicurl, $clang;
@@ -730,7 +735,7 @@ function makegraph($thisstep, $total)
 	$graph = "<table class='graph' width='100' align='center' cellpadding='2'><tr><td>\n"
 	. "<table width='180' align='center' cellpadding='0' cellspacing='0' border='0' class='innergraph'>\n"
 	. "<tr><td align='right' width='40'>0%&nbsp;</td>\n";
-	$size=intval(($thisstep-1)/$total*100);
+	$size=intval(($currentstep-1)/$total*100);
 	$graph .= "<td width='100' align='left'>\n"
 	. "<table cellspacing='0' cellpadding='0' border='0' width='100%'>\n"
 	. "<tr><td>\n"
@@ -1074,7 +1079,7 @@ function checkconfield($value)
 			{
 			    //If this is not a "moveprev" then
 				// Reset the value in SESSION
-	            //if(isset($_POST['move']) && $_POST['move'] != "moveprev")
+	            //if(isset($move) && $move != "moveprev")
 	            //{
 				    $_SESSION[$value]="";
 				//}
@@ -1088,7 +1093,7 @@ function checkconfield($value)
 
 function checkmandatorys($backok=null)
 {
-	global $clang;
+	global $clang, $thisstep;
 	if ((isset($_POST['mandatory']) && $_POST['mandatory']) && (!isset($backok) || $backok != "Y"))
 	{
 		$chkmands=explode("|", $_POST['mandatory']); //These are the mandatory questions to check
@@ -1104,8 +1109,8 @@ function checkmandatorys($backok=null)
 					{
 						//The number of questions not answered is equal to the number of questions
 						//This section gets used if it is a multiple choice type question
-						if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep'];}
-						if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep'];}
+						if (isset($move) && $move == "moveprev") {$_SESSION['step'] = $thisstep;}
+						if (isset($move) && $move == "movenext") {$_SESSION['step'] = $thisstep;}
 						$notanswered[]=substr($multiname, 5, strlen($multiname));
 						$$multiname=0;
 						$$multiname2=0;
@@ -1124,8 +1129,8 @@ function checkmandatorys($backok=null)
 			elseif ((!isset($_POST[$multiname]) || !$_POST[$multiname]) && (!isset($_POST[$dtcm]) || $_POST[$dtcm] == "on"))
 			{
 				//One of the mandatory questions hasn't been asnwered
-				if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($move) && $move == "moveprev") {$_SESSION['step'] = $thisstep;}
+				if (isset($move) && $move == "movenext") {$_SESSION['step'] = $thisstep;}
 				$notanswered[]=$mfns[$mi];
 			}
 			else
@@ -1141,8 +1146,8 @@ function checkmandatorys($backok=null)
 			if ($$multiname == $$multiname2) //so far all multiple choice options are unanswered
 			{
 				//The number of questions not answered is equal to the number of questions
-				if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($move) && $move == "moveprev") {$_SESSION['step'] = $thisstep;}
+				if (isset($move) && $move == "movenext") {$_SESSION['step'] = $thisstep;}
 				$notanswered[]=substr($multiname, 5, strlen($multiname));
 				$$multiname="";
 				$$multiname2="";
@@ -1155,6 +1160,7 @@ function checkmandatorys($backok=null)
 
 function checkconditionalmandatorys($backok=null)
 {
+    global $thisstep;
 	if ((isset($_POST['conmandatory']) && $_POST['conmandatory']) && (!isset($backok) || $backok != "Y")) //Mandatory conditional questions that should only be checked if the conditions for displaying that question are met
 	{
 		$chkcmands=explode("|", $_POST['conmandatory']);
@@ -1169,8 +1175,8 @@ function checkconditionalmandatorys($backok=null)
 					if ($$multiname == $$multiname2) //For this lot all multiple choice options are unanswered
 					{
 						//The number of questions not answered is equal to the number of questions
-						if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep'];}
-						if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep'];}
+						if (isset($move) && $move == "moveprev") {$_SESSION['step'] = $thisstep;}
+						if (isset($move) && $move == "movenext") {$_SESSION['step'] = $thisstep;}
 						$notanswered[]=substr($multiname, 5, strlen($multiname));
 						$$multiname=0;
 						$$multiname2=0;
@@ -1190,8 +1196,8 @@ function checkconditionalmandatorys($backok=null)
 			}
 			elseif ((isset($_POST[$dccm]) && $_POST[$dccm] == "on") && (!isset($_POST[$multiname]) || !$_POST[$multiname]) && (!isset($_POST[$dtccm]) || $_POST[$dtccm] == "on")) // Question and Answers is on, there is no answer, but it's a multiple
 			{
-				if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($move) && $move == "moveprev") {$_SESSION['step'] = $thisstep;}
+				if (isset($move) && $move == "movenext") {$_SESSION['step'] = $thisstep;}
 				$notanswered[]=$cmfns[$mi];
 			}
 			elseif (isset($_POST[$dccm]) && $_POST[$dccm] == "on")
@@ -1207,8 +1213,8 @@ function checkconditionalmandatorys($backok=null)
 			if ($$multiname == $$multiname2) //so far all multiple choice options are unanswered
 			{
 				//The number of questions not answered is equal to the number of questions
-				if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep'];}
-				if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep'];}
+				if (isset($move) && $move == "moveprev") {$_SESSION['step'] = $thisstep;}
+				if (isset($move) && $move == "movenext") {$_SESSION['step'] = $thisstep;}
 				$notanswered[]=substr($multiname, 5, strlen($multiname));
 			}
 		}
@@ -1219,7 +1225,7 @@ function checkconditionalmandatorys($backok=null)
 
 function checkpregs($backok=null)
 {
-	global $connect;
+	global $connect, $thisstep;
 	if (!isset($backok) || $backok != "Y")
 	{
 		global $dbprefix;
@@ -1260,8 +1266,8 @@ function checkpregs($backok=null)
 		        //$maxvalue_answername="maxvalue_answer".$maxvalueanswer;
 		        if (!empty($_POST['qattribute_answer'.$maxvalueanswer]))
 		            {
-        			if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep'];}
-        			if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep'];}
+        			if (isset($move) && $move == "moveprev") {$_SESSION['step'] = $thisstep;}
+        			if (isset($move) && $move == "movenext") {$_SESSION['step'] = $thisstep;}
 					$notvalidated[]=$maxvalueanswer;
         			return $notvalidated;
 					}
@@ -1270,8 +1276,8 @@ function checkpregs($backok=null)
 
 		if (isset($notvalidated) && is_array($notvalidated))
 		{
-			if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep'];}
-			if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep'];}
+			if (isset($move) && $move == "moveprev") {$_SESSION['step'] = $thisstep;}
+			if (isset($move) && $move == "movenext") {$_SESSION['step'] = $thisstep;}
 			return $notvalidated;
 		}
 	}
@@ -1316,7 +1322,7 @@ function submittokens()
 {
 	global $thissurvey, $timeadjust;
 	global $dbprefix, $surveyid, $connect;
-	global $sitename, $thistpl, $clang;
+	global $sitename, $thistpl, $clang, $clienttoken;
 
 	// Put date into sent and completed
 
@@ -1330,12 +1336,12 @@ function submittokens()
 	{
 		$utquery .= "SET completed='Y'\n";
 	}
-	$utquery .= "WHERE token='".db_quote($_POST['token'])."'";
+	$utquery .= "WHERE token='".db_quote($clienttoken)."'";
 
 	$utresult = $connect->Execute($utquery) or die ("Couldn't update tokens table!<br />\n$utquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
 
 	// TLR change to put date into sent and completed
-	$cnfquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." WHERE token='".db_quote($_POST['token'])."' AND completed!='N' AND completed!=''";
+	$cnfquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." WHERE token='".db_quote($clienttoken)."' AND completed!='N' AND completed!=''";
 
 	$cnfresult = db_execute_assoc($cnfquery);
 	$cnfrow = $cnfresult->FetchRow();
@@ -2412,7 +2418,7 @@ function getQuotaInformation($surveyid)
 */
 function check_quota($checkaction,$surveyid)
 {
-	global $_POST, $_SESSION, $thistpl, $clang;
+	global $_POST, $_SESSION, $thistpl, $clang, $clienttoken;
 	$global_matched = false;
 	$quota_info = getQuotaInformation($surveyid);
 	$x=0;
@@ -2551,7 +2557,7 @@ function check_quota($checkaction,$surveyid)
 				echo "<form method='post' action='".$_SERVER['PHP_SELF']."' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" value=' << prev ' name='move2' />
 					<input type='hidden' name='thisstep' value='".($_SESSION['step'])."' id='thisstep' />
 					<input type='hidden' name='sid' value='".returnglobal('sid')."' id='sid' />
-					<input type='hidden' name='token' value='".$_POST['token']."' id='token' /></form>\n";
+					<input type='hidden' name='token' value='".$clienttoken."' id='token' /></form>\n";
 				echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 				doFooter();
 				exit;

@@ -12,6 +12,7 @@
 * 
 * $Id$
 
+//Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
 
 Redesigned 7/25/2006 - swales
 
@@ -38,8 +39,7 @@ Save Feature redesign
 Benefits
 1. Partial survey answers are saved (provided at least Next/Prev/Last/Submit/Save so far clicked at least once).
 2. Multiple users can work on same survey instance at same time.
-3. Each page keeps track of fields modified and only those are updated in database.
-4. Answers are reloaded after each page save, so if other people are changing them the current user will see updates.
+3. Answers are reloaded after each page save, so if other people are changing them the current user will see updates.
 
 Details.
 1. The answers are saved in the "survey_x" table only.  The "saved" table is no longer used.
@@ -71,27 +71,38 @@ global $connect;
 //CONVERT POSTED ANSWERS TO SESSION VARIABLES
 if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 {
-	$postedfieldnames=explode("|", $_POST['fieldnames']);
+
+    $postedfieldnames=explode("|", $_POST['fieldnames']);
+    
+      // Remove invalid fieldnames from fieldnames array  
+      for($x<count($postedfieldnames)-1;$x=0;$x--)
+      {
+         if (strpos($postedfieldnames[$x],$surveyid.'X')===false)
+         {
+             array_remval($postedfieldnames[$x],$postedfieldnames);
+         }
+         
+      }
+      $_POST['fieldnames']=implode("|",$postedfieldnames);
+ 
+    
 	foreach ($postedfieldnames as $pf)
 	{
 		if (isset($_POST[$pf])) {$_SESSION[$pf] = $_POST[$pf];}
 		if (!isset($_POST[$pf])) {$_SESSION[$pf] = "";}
 	}
-}
-if (isset($_POST['thisstep'])) 
-{
-    $_POST['thisstep']=sanitize_int($_POST['thisstep']);
-}
+}                  
+
 //SAVE if on page with questions or on submit page
-if ((isset($_POST['fieldnames']) && $_POST['fieldnames']) || (isset($_POST['move']) && $_POST['move'] == "movesubmit"))
+if (isset($postedfieldnames))
 {
-	if ($thissurvey['active'] == "Y" && !isset($_SESSION['finished'])) 	// Only save if active and the survey wasn't already submittedt completely
+	if ($thissurvey['active'] == "Y" && !isset($_SESSION['finished'])) 	// Only save if active and the survey wasn't already submitted 
 	{
 		// SAVE DATA TO SURVEY_X RECORD
 		$subquery = createinsertquery();
 		if ($subquery)
 		{
-			if ($result=$connect->Execute($subquery))
+			if ($result=$connect->Execute($subquery))  // Checked
 			{
 	            if (substr($subquery,0,6)=='INSERT')
 				{
@@ -99,9 +110,9 @@ if ((isset($_POST['fieldnames']) && $_POST['fieldnames']) || (isset($_POST['move
 	        	   $_SESSION['srid'] = $tempID;
 	        	   $saved_id = $tempID;
 				}
-				if (isset($_POST['move']) && $_POST['move'] == "movesubmit")
+				if (isset($move) && $move == "movesubmit")
 				{
-					$connect->Execute("DELETE FROM ".db_table_name("saved_control")." where srid=".$_SESSION['srid']);
+					$connect->Execute("DELETE FROM ".db_table_name("saved_control")." where srid=".$_SESSION['srid']);   // Checked    
 				}
 			} else {echo submitfailed($connect->ErrorMsg());}
 		}
@@ -134,7 +145,7 @@ if ($thissurvey['allowsave'] == "Y"  && isset($_POST['saveall']) && !isset($_SES
 }
 elseif ($thissurvey['allowsave'] == "Y"  && isset($_POST['saveall']) && isset($_SESSION['scid']) )   //update the saved step only
 {
-    $connect->Execute("update ".db_table_name("saved_control")." set saved_thisstep=".$_POST['thisstep']." where scid=".$_SESSION['scid']);
+    $connect->Execute("update ".db_table_name("saved_control")." set saved_thisstep={$thisstep} where scid=".$_SESSION['scid']);  // Checked    
 }
 
 
@@ -142,7 +153,7 @@ elseif ($thissurvey['allowsave'] == "Y"  && isset($_POST['saveall']) && isset($_
 function showsaveform()
 {
 	//Show 'SAVE FORM' only when click the 'Save so far' button the first time, or when duplicate is found on SAVE FORM.
-	global $thistpl, $errormsg, $thissurvey, $surveyid, $clang;
+	global $thistpl, $errormsg, $thissurvey, $surveyid, $clang, $clienttoken;
 
 	sendcacheheaders();
 	echo "<html>\n";
@@ -171,8 +182,8 @@ function showsaveform()
 	}
 	//END
 	echo "<input type='hidden' name='sid' value='$surveyid'>\n";
-	echo "<input type='hidden' name='thisstep' value='",$_POST['thisstep'],"'>\n";
-	echo "<input type='hidden' name='token' value='".returnglobal('token')."'>\n";
+	echo "<input type='hidden' name='thisstep' value='",$thisstep,"'>\n";
+	echo "<input type='hidden' name='token' value='",$clienttoken,"'>\n";
 	echo "<input type='hidden' name='saveprompt' value='Y'>\n";
 	echo "</form>";
 
@@ -201,7 +212,7 @@ function savedcontrol()
 	// - "value" which is the value of the response
 	//We start by generating the first 5 values which are consistent for all rows.
 
-	global $connect, $surveyid, $dbprefix, $thissurvey, $errormsg, $publicurl, $sitename, $timeadjust, $clang;
+	global $connect, $surveyid, $dbprefix, $thissurvey, $errormsg, $publicurl, $sitename, $timeadjust, $clang, $clienttoken;
 
 	//Check that the required fields have been completed.
 	$errormsg="";
@@ -227,8 +238,8 @@ function savedcontrol()
 	//All the fields are correct. Now make sure there's not already a matching saved item
 	$query = "SELECT COUNT(*) FROM {$dbprefix}saved_control\n"
 	."WHERE sid=$surveyid\n"
-	."AND identifier='".$_POST['savename']."'\n";
-	$result = db_execute_num($query) or die("Error checking for duplicates!<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+	."AND identifier=".db_quoteall($_POST['savename'],true);
+	$result = db_execute_num($query) or die("Error checking for duplicates!<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));   // Checked    
 	list($count) = $result->FetchRow();
 	if ($count > 0)
 	{
@@ -246,7 +257,7 @@ function savedcontrol()
 			"startlanguage"=>GetBaseLanguageFromSurveyID($surveyid),
 			"refurl"=>getenv("HTTP_REFERER"));
 			//One of the strengths of ADOdb's AutoExecute() is that only valid field names for $table are updated
-			if ($connect->AutoExecute($thissurvey['tablename'], $sdata,'INSERT'))
+			if ($connect->AutoExecute($thissurvey['tablename'], $sdata,'INSERT'))    // Checked    
 			{
 				$srid = $connect->Insert_ID($thissurvey['tablename'],"sid");
 				$_SESSION['srid'] = $srid;
@@ -260,17 +271,17 @@ function savedcontrol()
         $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);      
 		$scdata = array("sid"=>$surveyid,
 		"srid"=>$_SESSION['srid'],
-		"identifier"=>$_POST['savename'],
+		"identifier"=>$_POST['savename'], // Binding does escape , so no quoting/escaping necessary
 		"access_code"=>md5($_POST['savepass']),
 		"email"=>$_POST['saveemail'],
 		"ip"=>$_SERVER['REMOTE_ADDR'],
 		"refurl"=>getenv("HTTP_REFERER"),
-		"saved_thisstep"=>$_POST['thisstep'],
+		"saved_thisstep"=>$thisstep,
 		"status"=>"S",
 		"saved_date"=>$today);
 
 
-		if ($connect->AutoExecute("{$dbprefix}saved_control", $scdata,'INSERT'))
+		if ($connect->AutoExecute("{$dbprefix}saved_control", $scdata,'INSERT'))   // Checked    
 		{
 			$scid = $connect->Insert_ID("{$dbprefix}saved_control",'scid');
 			$_SESSION['scid'] = $scid;
@@ -280,11 +291,11 @@ function savedcontrol()
 			die("Unable to insert record into saved_control table.<br /><br />".htmlspecialchars($connect->ErrorMsg()));
 		}
 
-		$_SESSION['holdname']=$_POST['savename']; //Session variable used to load answers every page.
-		$_SESSION['holdpass']=$_POST['savepass']; //Session variable used to load answers every page.
+		$_SESSION['holdname']=$_POST['savename']; //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output
+		$_SESSION['holdpass']=$_POST['savepass']; //Session variable used to load answers every page.  Unsafe - so it has to be taken care of on output        
 
 		//Email if needed
-		if (isset($_POST['saveemail']))
+		if (isset($_POST['saveemail']) )
 		{
 			if (validate_email($_POST['saveemail']))
 			{
@@ -298,7 +309,7 @@ function savedcontrol()
 				$message.=$clang->gT("Reload your survey by clicking on the following URL:","unescaped").":\n";
 				$message.=$publicurl."/index.php?sid=$surveyid&loadall=reload&scid=".$scid."&loadname=".urlencode($_POST['savename'])."&loadpass=".urlencode($_POST['savepass']);
 
-				if (returnglobal('token')){$message.="&token=".returnglobal('token');}
+				if ($clienttoken){$message.="&token=".$clienttoken;}
 				$from="{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
 				if (MailTextMessage($message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid)))
 				{
@@ -316,13 +327,10 @@ function savedcontrol()
 //FUNCTIONS USED WHEN SUBMITTING RESULTS:
 function createinsertquery()
 {
-	// Performance optimized	: Nov 13, 2006
-	// Performance Improvement	: 31%
-	// Optimized By				: swales
 
 	global $thissurvey,$timeadjust;
 	global $deletenonvalues, $thistpl;
-	global $surveyid, $connect, $clang;
+	global $surveyid, $connect, $clang, $postedfieldnames;
 
 	$fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
 	
@@ -401,7 +409,7 @@ function createinsertquery()
 			{
 				$query .= ",".db_quote_id('refurl'); 
 			}
-			if ((isset($_POST['move']) && $_POST['move'] == "movesubmit") && ($thissurvey['format'] != "A"))
+			if ((isset($move) && $move == "movesubmit") && ($thissurvey['format'] != "A"))
 			{
 				$query .= ",".db_quote_id('submitdate'); 
 			}
@@ -421,7 +429,7 @@ function createinsertquery()
 			{
 				$query .= ", '".$_SESSION['refurl']."'";
 			}
-			if ((isset($_POST['move']) && $_POST['move'] == "movesubmit") && ($thissurvey['format'] != "A"))
+			if ((isset($move) && $move == "movesubmit") && ($thissurvey['format'] != "A"))
 			{
                 // is if a ALL-IN-ONE survey, we don't set the submit date before the data is validated
 				$query .= ", ".$connect->DBDate($mysubmitdate);
@@ -431,7 +439,7 @@ function createinsertquery()
 		else
 		{  // UPDATE EXISTING ROW
 			// Updates only the MODIFIED fields posted on current page.
-			if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
+			if (isset($postedfieldnames) && $postedfieldnames)
 			{
 				$query = "UPDATE {$thissurvey['tablename']} SET ";
 				if ($thissurvey['datestamp'] == "Y")
@@ -443,11 +451,11 @@ function createinsertquery()
 					$query .= " ipaddr = '".$_SERVER['REMOTE_ADDR']."',";
 				}
                 // is if a ALL-IN-ONE survey, we don't set the submit date before the data is validated
-				if ((isset($_POST['move']) && $_POST['move'] == "movesubmit") && ($thissurvey['format'] != "A"))       
+				if ((isset($move) && $move == "movesubmit") && ($thissurvey['format'] != "A"))       
 				{
                     $query .= " submitdate = ".$connect->DBDate($mysubmitdate).", ";
 				}
-				$fields=explode("|", $_POST['fieldnames']);
+				$fields=explode("|", $postedfieldnames);
 				$fields=array_unique($fields);
 				foreach ($fields as $field)
 				{
@@ -463,7 +471,7 @@ function createinsertquery()
 			else
 			{
 				$query = "";
-				if ((isset($_POST['move']) && $_POST['move'] == "movesubmit"))
+				if ((isset($move) && $move == "movesubmit"))
 				{
 					$query = "UPDATE {$thissurvey['tablename']} SET ";
                     $query .= " submitdate = ".$connect->DBDate($mysubmitdate);
@@ -517,15 +525,27 @@ function submitanswer()
 	}
 
 	$query = "";
-	if (isset($_POST['move']) && ($_POST['move'] == "movesubmit") && ($thissurvey['active'] == "Y"))
+	if (isset($move) && ($move == "movesubmit") && ($thissurvey['active'] == "Y"))
 	{
 		$query = "UPDATE {$thissurvey['tablename']} SET ";
 		$query .= " submitdate = ".$connect->DBDate($mysubmitdate);
 		$query .= " WHERE id=" . $_SESSION['srid'];
 	}
 
-	$result=$connect->Execute($query);
+	$result=$connect->Execute($query);    // Checked    
 		return $result;
 }
+
+    function array_remval($val, &$arr)
+    {
+          $array_remval = $arr;
+          for($x=0;$x<count($array_remval)-1;$x++)
+          {
+              $i=array_search($val,$array_remval);
+              if($i===false)return false;
+              $array_remval=array_merge(array_slice($array_remval, 0,$i), array_slice($array_remval, $i+1));
+          }
+          return $array_remval;
+    }
 
 ?>

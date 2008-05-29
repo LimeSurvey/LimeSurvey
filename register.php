@@ -13,6 +13,8 @@
 * $Id$
 */
 
+// Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB 
+
 require_once(dirname(__FILE__).'/classes/core/startup.php');    // Since this file can be directly run
 require_once(dirname(__FILE__).'/config-defaults.php');
 require_once(dirname(__FILE__).'/common.php');
@@ -20,9 +22,7 @@ require_once($rootdir.'/classes/core/language.php');
 require_once(dirname(__FILE__).'/classes/core/html_entity_decode_php4.php');
 
 $surveyid=returnglobal('sid');
-
-//This next line is for security reasons. It ensures that the $surveyid value is never anything but a number.
-settype($surveyid, "int");
+$postlang=returnglobal('lang');
 
 //Check that there is a SID
 if (!isset($surveyid))
@@ -34,13 +34,13 @@ if (!isset($surveyid))
 session_start();
 
 // Get passed language from form, so that we dont loose this!
-if (!isset($_POST['lang']) || $_POST['lang'] == "")
+if (!isset($postlang) || $postlang == "")
 {
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
 	$clang = new limesurvey_lang($baselang);
 } else {
-	$clang = new limesurvey_lang($_POST['lang']);
-	$baselang = $_POST['lang'];
+	$clang = new limesurvey_lang($postlang);
+	$baselang = $postlang;
 }
 
 $thissurvey=getSurveyInfo($surveyid,$baselang);
@@ -72,8 +72,8 @@ if ($register_errormsg != "")
 
 //Check if this email already exists in token database
 $query = "SELECT email FROM {$dbprefix}tokens_$surveyid\n"
-. "WHERE email = '".returnglobal('register_email')."'";
-$result = $connect->Execute($query) or die ($query."<br />".htmlspecialchars($connect->ErrorMsg()));
+. "WHERE email = ".db_quoteall(sanitize_email(returnglobal('register_email')));
+$result = $connect->Execute($query) or die ($query."<br />".htmlspecialchars($connect->ErrorMsg()));   //Checked
 if (($result->RecordCount()) > 0)
 {
 	$register_errormsg=$clang->gT("The email you used has already been registered.");
@@ -86,18 +86,27 @@ while ($mayinsert != true)
 {
 	$newtoken = randomkey(15);
 	$ntquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='$newtoken'";
-	$ntresult = $connect->Execute($ntquery);
+	$ntresult = $connect->Execute($ntquery); //Checked
 	if (!$ntresult->RecordCount()) {$mayinsert = true;}
 }
+
+$postfirstname=sanitize_system_string(strip_tags(returnglobal('register_firstname')));   
+$postlastname=sanitize_system_string(strip_tags(returnglobal('register_lastname')));   
+$postattribute1=sanitize_system_string(strip_tags(returnglobal('register_attribute1')));   
+$postattribute2=sanitize_system_string(strip_tags(returnglobal('register_attribute2')));   
 
 //Insert new entry into tokens db
 $query = "INSERT INTO {$dbprefix}tokens_$surveyid\n"
 . "(firstname, lastname, email, emailstatus, token, attribute_1, attribute_2)\n"
 . "VALUES (?, ?, ?, ?, ?, ?, ?)";
-$result = $connect->Execute($query, array(returnglobal('register_firstname'), returnglobal('register_lastname'),
-returnglobal('register_email'), 'OK', $newtoken,
-returnglobal('register_attribute1'), returnglobal('register_attribute2'))
-) or die ($query."<br />".htmlspecialchars($connect->ErrorMsg()));
+$result = $connect->Execute($query, array($postfirstname, 
+                                          $postlastname,
+                                          returnglobal('register_email'), 
+                                          'OK', 
+                                          $newtoken,
+                                          $postattribute1, 
+                                          $postattribute2)
+) or die ($query."<br />".htmlspecialchars($connect->ErrorMsg()));  //Checked - According to adodb docs the bound variables are quoted automatically
 $tid=$connect->Insert_ID("{$dbprefix}tokens_$surveyid","tid");
 
 
@@ -105,10 +114,10 @@ $fieldsarray["{ADMINNAME}"]=$thissurvey['adminname'];
 $fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
 $fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
 $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
-$fieldsarray["{FIRSTNAME}"]=returnglobal('register_firstname');
-$fieldsarray["{LASTNAME}"]=returnglobal('register_lastname');
-$fieldsarray["{ATTRIBUTE_1}"]=returnglobal('register_attribute1');
-$fieldsarray["{ATTRIBUTE_2}"]=returnglobal('register_attribute2');
+$fieldsarray["{FIRSTNAME}"]=$postfirstname;
+$fieldsarray["{LASTNAME}"]=$postlastname;
+$fieldsarray["{ATTRIBUTE_1}"]=$postattribute1;
+$fieldsarray["{ATTRIBUTE_2}"]=$postattribute2;
 
 $message=$thissurvey['email_register'];
 $subject=$thissurvey['email_register_subj'];
@@ -140,7 +149,7 @@ if (MailTextMessage($message, $subject, returnglobal('register_email'), $from, $
 	$today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
 	$query = "UPDATE {$dbprefix}tokens_$surveyid\n"
 	."SET sent='$today' WHERE tid=$tid";
-	$result=$connect->Execute($query) or die ("$query<br />".htmlspecialchars($connect->ErrorMsg()));
+	$result=$connect->Execute($query) or die ("$query<br />".htmlspecialchars($connect->ErrorMsg()));     //Checked
 	$html="<center>".$clang->gT("Thank you for registering to participate in this survey.")."<br /><br />\n".$clang->gT("An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.")."<br /><br />\n".$clang->gT("Survey Administrator")." {ADMINNAME} ({ADMINEMAIL})";
 	$html=Replacefields($html, $fieldsarray);
 	$html .= "<br /><br />\n<input type='submit' onclick='javascript: self.close()' value='".$clang->gT("Close this Window")."'></center>\n";

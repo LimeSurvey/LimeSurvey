@@ -13,21 +13,19 @@
 * $Id$
 */
 
-if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
+//Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB       
 
+if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 
 //Move current step ###########################################################################
 if (!isset($_SESSION['step'])) {$_SESSION['step'] = 0;}
 if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
-if (!isset($_POST['thisstep'])) {$_POST['thisstep'] = "";}
-    else {$_POST['thisstep']=sanitize_int($_POST['thisstep']);}
-
-if (isset($_POST['move']) && $_POST['move'] == "moveprev") {$_SESSION['step'] = $_POST['thisstep']-1;}
-if (isset($_POST['move']) && $_POST['move'] == "movenext") {$_SESSION['step'] = $_POST['thisstep']+1;}
+if (isset($move) && $move == "moveprev") {$_SESSION['step'] = $thisstep-1;}
+if (isset($move) && $move == "movenext") {$_SESSION['step'] = $thisstep+1;}
 
 // This prevents the user from going back to the question pages and keeps him on the final page
 // That way his session can be kept so he can still print his answers until he closes the browser
-if (isset($_SESSION['finished'])) {$_POST['move']="movesubmit"; }
+if (isset($_SESSION['finished'])) {$move="movesubmit"; }
 
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
@@ -44,7 +42,7 @@ if ($thissurvey['active'] == "Y")
 }
 
 //SUBMIT
-if ((isset($_POST['move']) && $_POST['move'] == "movesubmit") && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
+if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
 {
 	if ($thissurvey['private'] == "Y")
 	{
@@ -56,7 +54,6 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit") && (!isset($notans
 		{
 			$_SESSION['insertarray'][] = "refurl";
 		}
-		//$_SESSION['refurl'] = $_SESSION['refurl'];
 	}
 
 
@@ -106,7 +103,7 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit") && (!isset($notans
         if (!isset($_SESSION['finished']))
         {
             $subquery = createinsertquery();
-            $connect->Execute($subquery);
+            $connect->Execute($subquery);   // Checked
         }
 		//Create text for use in later print section
 		$completed = "<br /><strong><font size='2'><font color='green'>"
@@ -126,7 +123,7 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit") && (!isset($notans
         //*****************************************
 
 		//Update the token if needed and send a confirmation email
-		if (isset($_POST['token']) && $_POST['token'])
+		if (isset($clienttoken) && $clienttoken)
 		{
 			submittokens();
 		}
@@ -148,7 +145,7 @@ if ((isset($_POST['move']) && $_POST['move'] == "movesubmit") && (!isset($notans
 			
 			$url = $thissurvey['url'];
 			$url=str_replace("{SAVEDID}",$saved_id, $url);			// to activate the SAVEDID in the END URL
-            $url=str_replace("{TOKEN}",$_POST['token'], $url);            // to activate the TOKEN in the END URL
+            $url=str_replace("{TOKEN}",$clienttoken, $url);            // to activate the TOKEN in the END URL
             $url=str_replace("{SID}", $surveyid, $url);       // to activate the SID in the RND URL
 
 			header("Location: {$url}");
@@ -397,7 +394,7 @@ if ((isset($conditions) && is_array($conditions)) || (isset($array_filterqs) && 
     if ($cd[4] == "L")
 		{
 			$cccquery="SELECT code FROM {$dbprefix}answers WHERE qid={$cd[1]}";
-			$cccresult=$connect->Execute($cccquery);
+			$cccresult=$connect->Execute($cccquery); // Checked
 			$cccount=$cccresult->RecordCount();
 		}
     if ($cd[4] == "R")
@@ -509,7 +506,7 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 		if ($attralist['type'] == "M")
 		{
 			$qquery = "SELECT code FROM {$dbprefix}answers WHERE qid='".$attralist['qid']."' AND language='".$_SESSION['s_lang']."' order by code;";
-			$qresult = db_execute_assoc($qquery);
+			$qresult = db_execute_assoc($qquery); // Checked
 			while ($fansrows = $qresult->FetchRow())
 			{
 				$fquestans = "java".$qfbase.$fansrows['code'];
