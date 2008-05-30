@@ -251,8 +251,7 @@ if (isset($_SESSION['s_lang']))
 
 	$nfncount = count($fnames)-1;
 	//SHOW INDIVIDUAL RECORD
-	$idquery = "SELECT * FROM $surveytable WHERE ";
-	if (incompleteAnsFilterstate() === true) {$idquery .= "submitdate >= ".$connect->DBDate('1980-01-01'). " AND id=$id";}
+	$idquery = "SELECT * FROM $surveytable WHERE id=$id";
 	$idresult = db_execute_assoc($idquery) or die ("Couldn't get entry<br />\n$idquery<br />\n".$connect->ErrorMsg()); //Checked   
 	while ($idrow = $idresult->FetchRow()) {$id=$idrow['id']; $rlangauge=$idrow['startlanguage'];}
 	$next=$id+1;
