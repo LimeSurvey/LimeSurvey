@@ -62,24 +62,25 @@ function cellAdapter(src)
 		//Some cells contain hidden fields
 		for (i = 0; i < eChildren.length; i++)
 		{
-			if ( (eChildren[i].type == 'radio' || eChildren[i].type == 'checkbox') && eChild == null)
+			if ( eChildren[i].type == 'radio' && eChild == null)
 				eChild = eChildren[i];
-			else if ( (eChildren[i].type == 'radio' || eChildren[i].type == 'checkbox') && eChild != null)
+			else if ( eChildren[i].type == 'radio' && eChild != null)
 			{
-				//A cell with multiple radio buttons; unhandled
+				//A cell with multiple radio buttons -- unhandled
 				return;
 			}
             
 		}
 	}
-	else
-	{
-		eChild = eChildren[0];
-	}
-	if (eChild.type == 'radio') eChild.checked = true;
-//	else if (eChild.type == 'checkbox') eChild.checked = !eChild.checked;   
-//  Commented out  since it cause direct clicks on checkboxes to be reversed - see multiple choice with comments question
+	else eChild = eChildren[0];
 
+	if (eChild && eChild.type == 'radio')
+	{
+		eChild.checked = true;
+		//Make sure the change propagates to the conditions handling mechanism
+		if(eChild.onclick) eChild.onclick();
+		if(eChild.onchange) eChild.onchange();
+	}
 }
 
 function prepCellAdapters()
