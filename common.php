@@ -2741,8 +2741,18 @@ function getHeader()
 {
 	global $embedded, $surveyid, $rooturl,$defaultlang;
 
-	if (isset($surveyid) && $surveyid) {$surveylanguage=GetBaseLanguageFromSurveyID($surveyid);}
-	else {$surveylanguage=$defaultlang;}
+    if (isset($_SESSION['s_lang']) && $_SESSION['s_lang'])
+    {
+        $surveylanguage= $_SESSION['s_lang'];
+    }
+    elseif (isset($surveyid) && $surveyid) 
+    {
+        $surveylanguage=GetBaseLanguageFromSurveyID($surveyid);
+    }
+	else 
+    {
+        $surveylanguage=$defaultlang;
+    }
 	if ( !$embedded )
 	{
 		$header=  "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
