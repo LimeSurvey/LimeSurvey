@@ -641,12 +641,18 @@ for ($i=0; $i<$fieldcount; $i++)
 				}
 				else
 				{
+                    if ($answers == "short") {
+                        $fquest .= " [$faid]"; //Show only the code
+                    }
+                    else 
+                    {
 					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$faid' AND language = '$explang'";
 					$lr = db_execute_assoc($lq);
 					while ($lrow = $lr->FetchRow())
 					{
 						$fquest .= " [".strip_tags_full($lrow['answer'])."]";
 					}
+				}
 				}
 				break;
 				case "P": //multioption with comment
@@ -701,7 +707,7 @@ for ($i=0; $i<$fieldcount; $i++)
 				case "1": // multi scale Headline				
                 $flid=$fielddata['lid']; 
 		        $flid1=$fielddata['lid1'];
-                if (substr($fielddata['fieldname'],-1) == '0')
+                if (substr($fieldinfo,-1) == '0')
                 {
                     $strlabel = "1";
         		    $lq = "select a.*, l.* from {$dbprefix}answers as a, {$dbprefix}labels as l where a.code='$faid' and qid=$fqid AND l.lid = $flid AND a.language='$surveybaselang'  group by l.lid";
@@ -909,7 +915,8 @@ elseif ($answers == "long")        //vollständige Antworten gewählt
 				$fgid=$fielddata['gid'];
 				$faid=$fielddata['aid'];		
                 $flid=$fielddata['lid'];
-    			if (isset($fielddata['lid1'])) {$flid=$fielddata['lid'];}
+                if (isset($fielddata['lid1'])) {$flid1=$fielddata['lid1'];}
+                
                 $fother=$fielddata['other'];
 				if ($type == "doc" || $type == "pdf")
 				{
@@ -992,7 +999,14 @@ elseif ($answers == "long")        //vollständige Antworten gewählt
 				}
 				break;
 				case "1":
+                    if (substr($fieldinfo,-1) == 0) 
+                    {
 					$lq = "select a.*, l.*, l.code as lcode from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=$fqid AND l.lid =$flid AND a.language='$explang' AND l.code = ? group by l.lid";
+                    }
+                    else
+                    {
+                     $lq = "select a.*, l.*, l.code as lcode from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=$fqid AND l.lid =$flid1 AND a.language='$explang' AND l.code = ? group by l.lid";
+                    }
 					$lr = db_execute_assoc($lq, array($drow[$i])) or die($lq."<br />ERROR:<br />".htmlspecialchars($connect->ErrorMsg()));
 					while ($lrow = $lr->FetchRow())
 					{
@@ -1202,7 +1216,7 @@ elseif ($answers == "long")        //vollständige Antworten gewählt
                 case "1": //dual scale
                 $flid=$fielddata['lid']; 
                 $flid1=$fielddata['lid1'];
-                if (substr($fielddata['fieldname'],-1) == '0')
+                if (substr($fieldinfo,-1) == '0')
                 {
                     $strlabel = "1";
                     $lq = "select title from {$dbprefix}labels as l where l.lid = $flid AND l.language='$surveybaselang'";
