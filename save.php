@@ -454,7 +454,7 @@ function createinsertquery()
 				{
                     $query .= " submitdate = ".$connect->DBDate($mysubmitdate).", ";
 				}
-				$fields=explode("|", $postedfieldnames);
+				$fields=$postedfieldnames;
 				$fields=array_unique($fields);
 				foreach ($fields as $field)
 				{
