@@ -168,6 +168,8 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 			$thisset .= implode('.', $row2);
 		} // while
 		$newcs=dechex(crc32($thisset)*1);
+        unset($lsmatch);
+        
 		if (isset($csarray))
 		{
 			foreach($csarray as $key=>$val)
