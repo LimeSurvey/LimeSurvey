@@ -1770,7 +1770,7 @@ if($action == "delsurveysecurity"){
 				$dquery="DELETE FROM {$dbprefix}surveys_rights WHERE uid={$postuserid} AND sid={$surveyid}";	//	added by Dennis
 				$dresult=$connect->Execute($dquery); //Checked
 
-				$addsummary .= "<br />".$clang->gT("Username").": ".sanitize_system_string($_POST['user'])."<br />\n";
+				$addsummary .= "<br />".$clang->gT("Username").": ".sanitize_xss_string($_POST['user'])."<br />\n";
 			}
 			else
 			{

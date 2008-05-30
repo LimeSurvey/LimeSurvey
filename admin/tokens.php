@@ -1717,7 +1717,7 @@ if ($subaction == "updatetoken" &&
 	$data[] = $_POST['lastname'];
 	$data[] = sanitize_email($_POST['email']);
 	$data[] = $_POST['emailstatus'];
-	$santitizedtoken=sanitize_system_string($_POST['token']);
+	$santitizedtoken=sanitize_xss_string(strip_tags($_POST['token']));
 	$data[] = $santitizedtoken;
 	$data[] = sanitize_languagecode($_POST['language']);
 	$data[] = $_POST['sent'];
@@ -1760,7 +1760,7 @@ if ($subaction == "inserttoken" &&
 		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
    )
 {
-	$santitizedtoken=sanitize_system_string($_POST['token']);
+	$santitizedtoken=sanitize_system_string(strip_tags($_POST['token']));
 	$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
 	.$clang->gT("Add or Edit Token Entry")."</strong></td></tr>\n"
 	."\t<tr><td align='center'>\n";

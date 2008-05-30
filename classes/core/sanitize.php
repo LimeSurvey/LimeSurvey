@@ -134,6 +134,17 @@ function sanitize_system_string($string, $min='', $max='')
    }
 }
 
+function sanitize_xss_string($string)
+{
+    if (isset($string))  
+    {
+        $bad = array ('*','^','&','\'','-',';','\"','(',')','%','$','?');
+        return str_replace($bad, '',$string);
+    }
+}
+
+
+
 // sanitize a string for SQL input (simple slash out quotes and slashes)
 function sanitize_sql_db_tablename($string)
 {

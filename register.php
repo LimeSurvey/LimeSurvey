@@ -90,10 +90,10 @@ while ($mayinsert != true)
 	if (!$ntresult->RecordCount()) {$mayinsert = true;}
 }
 
-$postfirstname=sanitize_system_string(strip_tags(returnglobal('register_firstname')));   
-$postlastname=sanitize_system_string(strip_tags(returnglobal('register_lastname')));   
-$postattribute1=sanitize_system_string(strip_tags(returnglobal('register_attribute1')));   
-$postattribute2=sanitize_system_string(strip_tags(returnglobal('register_attribute2')));   
+$postfirstname=sanitize_xss_string(strip_tags(returnglobal('register_firstname')));   
+$postlastname=sanitize_xss_string(strip_tags(returnglobal('register_lastname')));   
+$postattribute1=sanitize_xss_string(strip_tags(returnglobal('register_attribute1')));   
+$postattribute2=sanitize_xss_string(strip_tags(returnglobal('register_attribute2')));   
 
 //Insert new entry into tokens db
 $query = "INSERT INTO {$dbprefix}tokens_$surveyid\n"

@@ -13,8 +13,8 @@
 * $Id$
 */
 
-// Security Checked: 
-// ToDo: POST, GET, SESSION, REQUEST, returnglobal, DB     
+// Security Checked: POST, GET, SESSION, REQUEST,
+// ToDo: returnglobal, DB     
 
 
 require_once(dirname(__FILE__).'/classes/core/startup.php');
@@ -30,7 +30,7 @@ $loadpass=returnglobal('loadpass');
 $scid=returnglobal('scid');
 $thisstep=returnglobal('thisstep');
 $move=sanitize_paranoid_string(returnglobal('move'));
-$clienttoken=sanitize_system_string(strip_tags(returnglobal('token')));      
+$clienttoken=sanitize_xss_string(strip_tags(returnglobal('token')));      
 if (!isset($thisstep)) {$thisstep = "";}
 
 
@@ -471,12 +471,10 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 		buildsurveysession();
 	}
 
-	// --> START NEW FEATURE - SAVE
 	$_SESSION['holdname']=$loadname; //Session variable used to load answers every page.
 	$_SESSION['holdpass']=$loadpass; //Session variable used to load answers every page.
 
 	if ($errormsg == "") loadanswers();
-	// <-- END NEW FEATURE - SAVE
 	$move = "movenext";
 
 	if ($errormsg)
@@ -638,15 +636,15 @@ function loadanswers()
 	global $dbprefix,$surveyid,$errormsg;
 	global $thissurvey, $thisstep, $clang;
     global $databasetype, $clienttoken;
-
+    $scid=returnglobal('scid');
 	if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 	{
 		$query = "SELECT * FROM ".db_table_name('saved_control')." INNER JOIN {$thissurvey['tablename']}
 			ON ".db_table_name('saved_control').".srid = {$thissurvey['tablename']}.id
 			WHERE ".db_table_name('saved_control').".sid=$surveyid\n";
-		if (isset($_POST['scid'])) //Would only come from email
+		if (isset($scid)) //Would only come from email
 		{
-			$query .= "AND ".db_table_name('saved_control').".scid=".intval($_POST['scid'])."\n";
+			$query .= "AND ".db_table_name('saved_control').".scid={$scid}\n";
 		}
 		$query .="AND ".db_table_name('saved_control').".identifier = '".auto_escape($_SESSION['holdname'])."'
 				  AND ".db_table_name('saved_control').".access_code ". (($databasetype == 'mysql')? "=": "like" ) ." '".md5(auto_unescape($_SESSION['holdpass']))."'\n";
@@ -1699,7 +1697,7 @@ function buildsurveysession()
 		// IF CAPTCHA ANSWER IS NOT CORRECT
 		else
 		{
-			$gettoken = returnglobal('token');
+			$gettoken = $clienttoken;
 			sendcacheheaders();
 			doHeader();
 			// No or bad answer to required security question
@@ -1780,7 +1778,7 @@ function buildsurveysession()
 
 	if (isset($_GET['token'])){
 	//get language from token (if one exists)
-		$tkquery2 = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(returnglobal('token')))."' AND (completed = 'N' or completed='')";
+		$tkquery2 = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim($clienttoken))."' AND (completed = 'N' or completed='')";
 		//echo $tkquery2;
 		$result = db_execute_assoc($tkquery2) or die ("Couldn't get tokens<br />$tkquery<br />".htmlspecialchars($connect->ErrorMsg()));
 		while ($rw = $result->FetchRow())
@@ -1861,14 +1859,14 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 	//See rem at end..
 	if ($thissurvey['private'] == "N")
 	{
-		$_SESSION['token'] = returnglobal('token');
+		$_SESSION['token'] = $clienttoken;
 		$_SESSION['insertarray'][]= "token";
 	}
 
 	if ($tokensexist == 1 && $thissurvey['private'] == "N")
 	{
 		//Gather survey data for "non anonymous" surveys, for use in presenting questions
-		$_SESSION['thistoken']=getTokenData($surveyid, returnglobal('token'));
+		$_SESSION['thistoken']=getTokenData($surveyid, $clienttoken);
 	}
 
 	foreach ($arows as $arow)
@@ -2077,14 +2075,15 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 
 		//3(b) See if any of the insertarray values have been passed in the query URL
 
-		if (isset($_SESSION['insertarray']))
-		{foreach($_SESSION['insertarray'] as $field)
+		if (isset($_SESSION['insertarray']))        
 		{
-			if (isset($_GET[$field]))
-			{
-				$_SESSION[$field]=$_GET[$field];
-			}
-		}
+            foreach($_SESSION['insertarray'] as $field)
+		    {
+			    if (isset($_GET[$field]))
+			    {
+				    $_SESSION[$field]=$_GET[$field];
+			    }
+		    }
 		}
 
 		//4. SESSION VARIABLE: fieldarray
@@ -2418,7 +2417,7 @@ function getQuotaInformation($surveyid)
 */
 function check_quota($checkaction,$surveyid)
 {
-	global $_POST, $_SESSION, $thistpl, $clang, $clienttoken;
+	global $thistpl, $clang, $clienttoken;
 	$global_matched = false;
 	$quota_info = getQuotaInformation($surveyid);
 	$x=0;

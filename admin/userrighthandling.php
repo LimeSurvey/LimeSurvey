@@ -239,7 +239,7 @@ if ($action == "setuserrights")
 //	if($_SESSION['loginID'] != $postuserid)
 	{
 		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='8' class='header' align='center'>\n"
-		. "\t\t".$clang->gT("Set User Rights").": ".sanitize_system_string($_POST['user'])."</td></tr>\n";
+		. "\t\t".$clang->gT("Set User Rights").": ".sanitize_xss_string($_POST['user'])."</td></tr>\n";
 
 		// HERE WE LIST FOR USER RIGHTS YOU CAN SET
 		// TO THE USER
@@ -968,7 +968,7 @@ if($action == "deleteuserfromgroup")
 			$remquery = "DELETE FROM ".db_table_name('user_in_groups')." WHERE ugid = {$ugid} AND uid = {$uid}";
 			if($connect->Execute($remquery)) //Checked
 			{
-				$usersummary .= "<br />".$clang->gT("Username").": ".sanitize_system_string($_POST['user'])."<br />\n";
+				$usersummary .= "<br />".$clang->gT("Username").": ".sanitize_xss_string(strip_tags($_POST['user']))."<br />\n";
 			}
 			else
 			{
