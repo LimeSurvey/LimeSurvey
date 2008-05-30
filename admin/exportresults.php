@@ -911,7 +911,7 @@ elseif ($answers == "long")        //vollständige Antworten gewählt
                 $flid=$fielddata['lid'];
     			if (isset($fielddata['lid1'])) {$flid=$fielddata['lid'];}
                 $fother=$fielddata['other'];
-				if ($type == "doc" || $type = "pdf")
+				if ($type == "doc" || $type == "pdf")
 				{
                     $ftitle=$flarray[$i];
 				}
