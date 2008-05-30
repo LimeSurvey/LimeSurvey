@@ -327,7 +327,7 @@ function savedcontrol()
 function createinsertquery()
 {
 
-	global $thissurvey,$timeadjust;
+	global $thissurvey, $timeadjust, $move;
 	global $deletenonvalues, $thistpl;
 	global $surveyid, $connect, $clang, $postedfieldnames;
 
