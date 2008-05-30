@@ -202,7 +202,7 @@ if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
 //$fieldno=1;
 $fieldno=0;
 $tempArray = array();
-$fieldnames = array_values($connect->MetaColumnNames("survey_$surveyid", true));
+$fieldnames = array_values($connect->MetaColumnNames("{$dbprefix}survey_$surveyid", true));
 $num_results = count($fieldnames);
 $num_fields = $num_results;
 # Build array that has to be returned
