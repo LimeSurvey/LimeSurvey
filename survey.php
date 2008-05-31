@@ -96,8 +96,8 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
 			$content .= templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
 		}
 
-        // this three lines are to set the submitdate
-        unset($_POST['fieldnames']);
+        // Unsetting $postedfieldnames tells the createinsertquery() function only to set the sbumit date, nothing else
+        unset($postedfieldnames);
         
         // only update submitdate if the user did not already visit the submit page
         if (!isset($_SESSION['finished']))

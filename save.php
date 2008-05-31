@@ -113,7 +113,11 @@ if (isset($postedfieldnames))
 				{
 					$connect->Execute("DELETE FROM ".db_table_name("saved_control")." where srid=".$_SESSION['srid']);   // Checked    
 				}
-			} else {echo submitfailed($connect->ErrorMsg());}
+			} 
+            else 
+                {
+                    echo submitfailed($connect->ErrorMsg());
+                }
 		}
 	}
 }
@@ -335,36 +339,6 @@ function createinsertquery()
 	
 	if (isset($_SESSION['insertarray']) && is_array($_SESSION['insertarray']))
 	{
-		$inserts=array_unique($_SESSION['insertarray']);
-	
-		foreach ($inserts as $value)
-		{
-			//Work out if the field actually exists in this survey
-			$fieldexists = arraySearchByKey($value, $fieldmap, "fieldname", 1);
-			//Iterate through possible responses
-			if (isset($_SESSION[$value]) && !empty($fieldexists))
-			{
-				//If deletenonvalues is ON, delete any values that shouldn't exist
-				if($deletenonvalues==1) {checkconfield($value);}
-				//Only create column name and data entry if there is actually data!
-				$colnames[]=$value;
-                // most databases do not allow to insert an empty value into a datefield, 
-                // therefore if no date was chosen in a date question the insert value has to be NULL
-                if ($_SESSION[$value]=='' && $fieldexists['type']=='D')      
-                {                        
-                    $values[]='NULL';
-                }
-                  else  {
-				$values[]=$connect->qstr($_SESSION[$value]);
-                        }
-			}
-		}
-
-		if (!isset($colnames) || !is_array($colnames)) //If something went horribly wrong - ie: none of the insertarray fields exist for this survey, crash out
-		{
-			echo submitfailed();
-			exit;
-		}
 
 		if ($thissurvey['datestamp'] == "Y")
 		{
@@ -388,10 +362,42 @@ function createinsertquery()
 		}
 	
 		// CHECK TO SEE IF ROW ALREADY EXISTS
+        // srid (=Survey Record ID ) is set when the there were already answers saved for that survey
 		if (!isset($_SESSION['srid']))
 		{
+            //Prepare row insertion
+            $inserts=array_unique($_SESSION['insertarray']);
+        
+            foreach ($inserts as $value)
+            {
+                //Work out if the field actually exists in this survey
+                $fieldexists = arraySearchByKey($value, $fieldmap, "fieldname", 1);
+                //Iterate through possible responses
+                if (isset($_SESSION[$value]) && !empty($fieldexists))
+                {
+                    //If deletenonvalues is ON, delete any values that shouldn't exist
+                    if($deletenonvalues==1) {checkconfield($value);}
+                    //Only create column name and data entry if there is actually data!
+                    $colnames[]=$value;
+                    // most databases do not allow to insert an empty value into a datefield, 
+                    // therefore if no date was chosen in a date question the insert value has to be NULL
+                    if ($_SESSION[$value]=='' && $fieldexists['type']=='D')      
+                    {                        
+                        $values[]='NULL';
+                    }
+                      else  {
+                    $values[]=$connect->qstr($_SESSION[$value]);
+                            }
+                }
+            }
+
+            if (!isset($colnames) || !is_array($colnames)) //If something went horribly wrong - ie: none of the insertarray fields exist for this survey, crash out
+            {
+                echo submitfailed();
+                exit;
+            }
+            
 			// INSERT NEW ROW
-			// TODO SQL: quote colum name correctly
 			$query = "INSERT INTO ".db_quote_id($thissurvey['tablename'])."\n"
 			."(".implode(', ', array_map('db_quote_id',$colnames));
 			if ($thissurvey['datestamp'] == "Y")
@@ -458,11 +464,19 @@ function createinsertquery()
 				$fields=array_unique($fields);
 				foreach ($fields as $field)
 				{
-			      if(!empty($field))
-			        {
-					if (!isset($_POST[$field])) {$_POST[$field]='';}
-                    $query .= db_quote_id($field)." = '".db_quote($_POST[$field])."',";
-                    }
+                      if(!empty($field))
+                      {
+                          $fieldinfo = arraySearchByKey($field, $fieldmap, "fieldname", 1);
+                          if (!isset($_POST[$field])) {$_POST[$field]='';}
+                          if ($_POST[$field]=='' && $fieldinfo['type']=='D')      
+                          {                        
+                              $query .= db_quote_id($field)." = NULL,";
+                          }
+                          else
+                          {
+                              $query .= db_quote_id($field)." = '".db_quote($_POST[$field])."',";
+                          }
+                      }
 				}
 				$query .= "WHERE id=" . $_SESSION['srid'];
 				$query = str_replace(",WHERE", " WHERE", $query);   // remove comma before WHERE clause

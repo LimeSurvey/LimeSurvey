@@ -33,9 +33,10 @@ if (!isset($thisstep)) {$thisstep = "";}
 
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
-
-//This next line ensures that the $surveyid value is never anything but a number.
-$surveyid=sanitize_int($surveyid);
+else {
+		//This next line ensures that the $surveyid value is never anything but a number.
+		$surveyid=sanitize_int($surveyid);
+	 }
 
 //DEFAULT SETTINGS FOR TEMPLATES
 if (!$publicdir) {$publicdir=".";}
@@ -578,7 +579,7 @@ getreferringurl();
 //  - the survey is active
 //  - a token information has been provided
 //  - the survey is setup to allow token-response-persistence
-if (    $thissurvey['tokenanswerspersistence'] == 'Y' &&
+if ($thissurvey['tokenanswerspersistence'] == 'Y' &&
 	!isset($_SESSION['srid']) && 
 	$thissurvey['private'] == "N" &&
 	$thissurvey['active'] == "Y" && $token !='')
