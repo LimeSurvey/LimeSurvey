@@ -217,7 +217,12 @@
 	    $supportedLanguages['lt']['description'] = $clang->gT('Lithuanian');
 	    $supportedLanguages['lt']['nativedescription'] = 'Lietuvi&#371;';
 	    $supportedLanguages['lt']['rtl'] = false;
-	    
+
+        // Latvian
+        $supportedLanguages['lv']['description'] = $clang->gT('Latvian');
+        $supportedLanguages['lv']['nativedescription'] = 'Latvie&#353;u';
+        $supportedLanguages['lv']['rtl'] = false;	    
+
 	    // Macedonian
 	    $supportedLanguages['mk']['description'] = $clang->gT('Macedonian');
 	    $supportedLanguages['mk']['nativedescription'] = '&#1052;&#1072;&#1082;&#1077;&#1076;&#1086;&#1085;&#1089;&#1082;&#1080;';
