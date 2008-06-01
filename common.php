@@ -2121,7 +2121,7 @@ function templatereplace($line)
 	global $saved_id;
 	global $totalBoilerplatequestions, $relativeurl;
     global $languagechanger;    
-    global $printoutput, $captchapath;
+    global $printoutput, $captchapath, $loadname;
                      
 	if (stripos ($line,"</head>"))
 	{
