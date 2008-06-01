@@ -242,7 +242,7 @@ function savedcontrol()
 	$query = "SELECT COUNT(*) FROM {$dbprefix}saved_control\n"
 	."WHERE sid=$surveyid\n"
 	."AND identifier=".db_quoteall($_POST['savename'],true);
-	$result = db_execute_num($query) or die("Error checking for duplicates!<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));   // Checked    
+	$result = db_execute_num($query) or safe_die("Error checking for duplicates!<br />$query<br />".$connect->ErrorMsg());   // Checked    
 	list($count) = $result->FetchRow();
 	if ($count > 0)
 	{
@@ -267,7 +267,7 @@ function savedcontrol()
 			}
 			else
 			{
-				die("Unable to insert record into survey table.<br /><br />".htmlspecialchars($connect->ErrorMsg()));
+				safe_die("Unable to insert record into survey table.<br /><br />".$connect->ErrorMsg());
 			}
 		}
 		//CREATE ENTRY INTO "saved_control"
@@ -291,7 +291,7 @@ function savedcontrol()
 		}
 		else
 		{
-			die("Unable to insert record into saved_control table.<br /><br />".htmlspecialchars($connect->ErrorMsg()));
+			safe_die("Unable to insert record into saved_control table.<br /><br />".$connect->ErrorMsg());
 		}
 
 		$_SESSION['holdname']=$_POST['savename']; //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output

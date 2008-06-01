@@ -80,14 +80,14 @@ if (isset($_POST['subaction']) && $_POST['subaction'] == "insertcondition")
 // Modified
          $query = "INSERT INTO {$dbprefix}conditions (qid, cqid, cfieldname, method, value) VALUES "
          . "('{$_POST['qid']}', '{$_POST['cqid']}', '{$_POST['cquestions']}', '{$_POST['method']}', '$ca')";
-         $result = $connect->Execute($query) or die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
+         $result = $connect->Execute($query) or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
       }
     }
     if (isset($_POST['ValOrRegEx']) && $_POST['ValOrRegEx']) //Remmember: '', ' ', 0 are evaluated as FALSE
     { //here is saved the textarea for constants or regex
       $query = "INSERT INTO {$dbprefix}conditions (qid, cqid, cfieldname, method, value) VALUES "
       . "('{$_POST['qid']}', '{$_POST['cqid']}', '{$_POST['cquestions']}', '{$_POST['method']}', '{$_POST['ValOrRegEx']}')";
-			$result = $connect->Execute($query) or die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
+			$result = $connect->Execute($query) or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
 		}
 	}
 }
@@ -95,7 +95,7 @@ if (isset($_POST['subaction']) && $_POST['subaction'] == "insertcondition")
 if (isset($_POST['subaction']) && $_POST['subaction'] == "delete")
 {
 	$query = "DELETE FROM {$dbprefix}conditions WHERE cid={$_POST['cid']}";
-	$result = $connect->Execute($query) or die ("Couldn't delete condition<br />$query<br />".$connect->ErrorMsg());
+	$result = $connect->Execute($query) or safe_die ("Couldn't delete condition<br />$query<br />".$connect->ErrorMsg());
 }
 //COPY CONDITIONS IF THIS IS COPY
 if (isset($_POST['subaction']) && $_POST['subaction'] == "copyconditions")
@@ -110,7 +110,7 @@ if (isset($_POST['subaction']) && $_POST['subaction'] == "copyconditions")
 		."WHERE cid in ('";
 		$query .= implode("', '", $copyconditionsfrom);
 		$query .= "')";
-		$result = db_execute_assoc($query) or die("Couldn't get conditions for copy<br />$query<br />".$connect->ErrorMsg());
+		$result = db_execute_assoc($query) or safe_die("Couldn't get conditions for copy<br />$query<br />".$connect->ErrorMsg());
 		while($row=$result->FetchRow())
 		{
 			$proformaconditions[]=array("cqid"=>$row['cqid'],
@@ -130,7 +130,7 @@ if (isset($_POST['subaction']) && $_POST['subaction'] == "copyconditions")
 				."AND cfieldname='".$pfc['cfieldname']."'\n"
 				."AND method='".$pfc['method']."'\n"
 				."AND value='".$pfc['value']."'";
-				$result = $connect->Execute($query) or die("Couldn't check for existing condition<br />$query<br />".$connect->ErrorMsg());
+				$result = $connect->Execute($query) or safe_die("Couldn't check for existing condition<br />$query<br />".$connect->ErrorMsg());
 				$count = $result->RecordCount();
 				if ($count == 0) //If there is no match, add the condition.
 				{
@@ -138,7 +138,7 @@ if (isset($_POST['subaction']) && $_POST['subaction'] == "copyconditions")
 					."VALUES ( '$newqid', '".$pfc['cqid']."',"
 					."'".$pfc['cfieldname']."', '".$pfc['method']."',"
 					."'".$pfc['value']."')";
-					$result=$connect->Execute($query) or die ("Couldn't insert query<br />$query<br />".$connect->ErrorMsg());
+					$result=$connect->Execute($query) or safe_die ("Couldn't insert query<br />$query<br />".$connect->ErrorMsg());
 				}
 			}
 		}
@@ -175,7 +175,7 @@ $query = "SELECT * "
         ."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid "
           ."AND qid=$qid "
           ."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
-$result = db_execute_assoc($query) or die ("Couldn't get information for question $qid<br />$query<br />".$connect->ErrorMsg());
+$result = db_execute_assoc($query) or safe_die ("Couldn't get information for question $qid<br />$query<br />".$connect->ErrorMsg());
 while ($rows=$result->FetchRow())
 {
 	$questiongroupname=$rows['group_name'];
@@ -197,7 +197,7 @@ $qquery = "SELECT * "
           ."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
           ."AND {$dbprefix}groups.language='".GetBaseLanguageFromSurveyID($surveyid)."' " ;
 
-$qresult = db_execute_assoc($qquery) or die ("$qquery<br />".$connect->ErrorMsg());
+$qresult = db_execute_assoc($qquery) or safe_die ("$qquery<br />".$connect->ErrorMsg());
 $qrows = $qresult->GetRows();
 // Perform a case insensitive natural sort on group name then question title (known as "code" in the form) of a multidimensional array
 usort($qrows, 'CompareGroupThenTitle');
@@ -302,7 +302,7 @@ if (isset($postquestionlist) && is_array($postquestionlist))
                    ."{$dbprefix}questions.qid=$pq AND "
                    ."{$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
 
-		$result = db_execute_assoc($query) or die("Couldn't get postquestions $qid<br />$query<br />".$connect->ErrorMsg());
+		$result = db_execute_assoc($query) or safe_die("Couldn't get postquestions $qid<br />$query<br />".$connect->ErrorMsg());
 
 		$postcount=$result->RecordCount();
 
@@ -359,7 +359,7 @@ if ($questionscount > 0)
 				."ORDER BY sortorder, "
 				."answer";
 
-			$aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
+			$aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
 
 			while ($arows = $aresult->FetchRow())
 			{
@@ -421,7 +421,7 @@ if ($questionscount > 0)
 				."AND {$dbprefix}answers.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
 				."ORDER BY sortorder, "
 				."answer";
-			$aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
+			$aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
 
 			while ($arows = $aresult->FetchRow())
 			{
@@ -440,7 +440,7 @@ if ($questionscount > 0)
 					."AND {$dbprefix}labels.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
 					."ORDER BY sortorder, "
 					."lid";
-				$lresult=db_execute_assoc($lquery) or die ("Couldn't get labels to Array <br />$lquery<br />".$connect->ErrorMsg());                
+				$lresult=db_execute_assoc($lquery) or safe_die ("Couldn't get labels to Array <br />$lquery<br />".$connect->ErrorMsg());                
 				while ($lrows = $lresult->FetchRow())
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."#0", "{$lrows['code']}", "{$lrows['code']}");
@@ -453,7 +453,7 @@ if ($questionscount > 0)
 					."AND {$dbprefix}labels.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
 					."ORDER BY sortorder, "
 					."lid";
-				$lresult=db_execute_assoc($lquery) or die ("Couldn't get labels to Array <br />$lquery<br />".$connect->ErrorMsg());                
+				$lresult=db_execute_assoc($lquery) or safe_die ("Couldn't get labels to Array <br />$lquery<br />".$connect->ErrorMsg());                
 				while ($lrows = $lresult->FetchRow())
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."#1", "{$lrows['code']}", "{$lrows['code']}");
@@ -475,7 +475,7 @@ if ($questionscount > 0)
 				."AND {$dbprefix}answers.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
 				."ORDER BY sortorder, "
 				."answer";
-			$aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
+			$aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
 
 			while ($arows = $aresult->FetchRow())
 			{
@@ -497,7 +497,7 @@ if ($questionscount > 0)
 				."WHERE qid={$rows['qid']} "
 				."AND ".db_table_name('answers').".language='".GetBaseLanguageFromSurveyID($surveyid)."' "
 				."ORDER BY sortorder, answer";
-			$aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to Ranking question<br />$aquery<br />".$connect->ErrorMsg());
+			$aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Ranking question<br />$aquery<br />".$connect->ErrorMsg());
 			$acount=$aresult->RecordCount();
 			while ($arow=$aresult->FetchRow())
 			{
@@ -580,7 +580,7 @@ if ($questionscount > 0)
 					."ORDER BY sortorder, "
 					."answer";
 				// Ranking question? Replacing "Ranking" by "this"
-				$aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to this question<br />$aquery<br />".$connect->ErrorMsg());
+				$aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to this question<br />$aquery<br />".$connect->ErrorMsg());
 
 				while ($arows=$aresult->FetchRow())
 				{
@@ -764,7 +764,7 @@ $query = "SELECT {$dbprefix}conditions.cid, "
            ."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
            ."AND {$dbprefix}conditions.qid=$qid\n"
       ."ORDER BY {$dbprefix}conditions.cfieldname";
-$result = db_execute_assoc($query) or die ("Couldn't get other conditions for question $qid<br />$query<br />".$connect->ErrorMsg());
+$result = db_execute_assoc($query) or safe_die ("Couldn't get other conditions for question $qid<br />$query<br />".$connect->ErrorMsg());
 $conditionscount=$result->RecordCount();
 
 // this array will be used soon,

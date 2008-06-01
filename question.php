@@ -118,14 +118,14 @@ $questionsSkipped=0;
 while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS ARE MET
 {
 	$cquery="SELECT distinct cqid FROM {$dbprefix}conditions WHERE qid={$ia[0]}";
-	$cresult=db_execute_assoc($cquery) or die("Couldn't count cqids<br />$cquery<br />".htmlspecialchars($connect->ErrorMsg()));  //Checked
+	$cresult=db_execute_assoc($cquery) or safe_die("Couldn't count cqids<br />$cquery<br />".$connect->ErrorMsg());  //Checked
 	$cqidcount=$cresult->RecordCount();
 	$cqidmatches=0;
 	while ($crows=$cresult->FetchRow())//Go through each condition for this current question
 	{
 		//Check if the condition is multiple type
 		$ccquery="SELECT type FROM {$dbprefix}questions WHERE qid={$crows['cqid']} AND language='".$_SESSION['s_lang']."' ";
-		$ccresult=db_execute_assoc($ccquery) or die ("Coudn't get type from questions<br />$ccquery<br />".htmlspecialchars($connect->ErrorMsg()));   //Checked
+		$ccresult=db_execute_assoc($ccquery) or safe_die ("Coudn't get type from questions<br />$ccquery<br />".$connect->ErrorMsg());   //Checked
 		while($ccrows=$ccresult->FetchRow())
 		{
 			$thistype=$ccrows['type'];
@@ -139,12 +139,12 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 		if ($thistype =="Q" || $thistype =="K")
 		{
 			$cquery2="SELECT cqid FROM {$dbprefix}conditions WHERE qid={$ia[0]} AND cqid={$crows['cqid']}";
-			$cresult2=db_execute_assoc($cquery2) or die("Couldn't count cqids<br />$cquery<br />".htmlspecialchars($connect->ErrorMsg())); //Checked
+			$cresult2=db_execute_assoc($cquery2) or safe_die("Couldn't count cqids<br />$cquery<br />".$connect->ErrorMsg()); //Checked
 			$cqidcount2=$cresult2->RecordCount();
 			$cqidcount += $cqidcount2 - 1; // substract 1 as it has been already counted once by $cquery
 		}
 		$cqquery = "SELECT cfieldname, value, cqid, method FROM {$dbprefix}conditions WHERE qid={$ia[0]} AND cqid={$crows['cqid']}";
-		$cqresult = db_execute_assoc($cqquery) or die("Couldn't get conditions for this question/cqid<br />$cquery<br />".htmlspecialchars($connect->ErrorMsg())); //Checked
+		$cqresult = db_execute_assoc($cqquery) or safe_die("Couldn't get conditions for this question/cqid<br />$cquery<br />".$connect->ErrorMsg()); //Checked
 		$amatchhasbeenfound="N";
 		while ($cqrows=$cqresult->FetchRow()) //Check each condition
 		{

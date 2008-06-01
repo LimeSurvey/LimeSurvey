@@ -25,7 +25,7 @@ if (!isset($browselang)) {$browselang=returnglobal('browselang');}
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 
 //Check if results table exists
-$tablelist = $connect->MetaTables() or die ("Error getting tokens<br />".htmlspecialchars($connect->ErrorMsg()));
+$tablelist = $connect->MetaTables() or safe_die ("Error getting tokens<br />".$connect->ErrorMsg());
 foreach ($tablelist as $tbl)
 {
 	if (db_quote_id($tbl) == db_table_name('survey_'.$surveyid)) $resultsexist = 1;
@@ -266,7 +266,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 		else {$idquery .= "{$_POST['sql']}";}
 	}
 	else {$idquery .= "id=$id";}
-	$idresult = db_execute_assoc($idquery) or die ("Couldn't get entry<br />\n$idquery<br />\n".$connect->ErrorMsg());
+	$idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get entry<br />\n$idquery<br />\n".$connect->ErrorMsg());
 	while ($idrow = $idresult->FetchRow()) {$id=$idrow['id']; $rlangauge=$idrow['startlanguage'];}
 	$next=$id+1;
 	$last=$id-1;
@@ -307,7 +307,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	."\t\t</td>\n"
 	."\t</tr>\n"
 	."\t<tr><td colspan='2' bgcolor='#CCCCCC' height='1'></td></tr>\n";
-	$idresult = db_execute_assoc($idquery) or die ("Couldn't get entry<br />$idquery<br />".$connect->ErrorMsg());
+	$idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get entry<br />$idquery<br />".$connect->ErrorMsg());
 	while ($idrow = $idresult->FetchRow())
 	{
 		$i=0;
@@ -575,11 +575,11 @@ elseif ($subaction == "all")
 	if (isset($limit))
 	{
 		if (!isset($start)) {$start = 0;}
-		$dtresult = db_select_limit_assoc($dtquery, $limit, $start) or die("Couldn't get surveys<br />$dtquery<br />".$connect->ErrorMsg());
+		$dtresult = db_select_limit_assoc($dtquery, $limit, $start) or safe_die("Couldn't get surveys<br />$dtquery<br />".$connect->ErrorMsg());
 	}
 	else
 	{
-		$dtresult = db_execute_assoc($dtquery) or die("Couldn't get surveys<br />$dtquery<br />".$connect->ErrorMsg());
+		$dtresult = db_execute_assoc($dtquery) or safe_die("Couldn't get surveys<br />$dtquery<br />".$connect->ErrorMsg());
 	}
 	$dtcount2 = $dtresult->RecordCount();
 	$cells = $fncount+1;

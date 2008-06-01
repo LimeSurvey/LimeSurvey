@@ -270,7 +270,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 
 
 		$qulabelset = "SELECT * FROM ".db_table_name('labelsets')." WHERE lid=$lid";
-		$rslabelset = db_execute_assoc($qulabelset) or die($connect->ErrorMsg());
+		$rslabelset = db_execute_assoc($qulabelset) or safe_die($connect->ErrorMsg());
 		$rwlabelset=$rslabelset->FetchRow();
 		$lslanguages=explode(" ", trim($rwlabelset['languages'])); 
 		
@@ -293,7 +293,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 		{
      		$position=0;
     		$query = "SELECT * FROM ".db_table_name('labels')." WHERE lid=$lid and language='$lslanguage' ORDER BY sortorder, code";
-    		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+    		$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
     		$labelcount = $result->RecordCount();
             $labelsoutput.= "<div class='tab-page'>"
                 ."<h2 class='tab'>".getLanguageNameFromCode($lslanguage)."</h2>"
@@ -594,7 +594,7 @@ function deletelabelset($lid)
 	global $dbprefix, $connect, $clang, $labelsoutput;
 	//CHECK THAT THERE ARE NO QUESTIONS THAT RELY ON THIS LID
 	$query = "SELECT qid FROM ".db_table_name('questions')." WHERE type IN ('F','H','W','Z') AND lid=$lid";
-	$result = $connect->Execute($query) or die("Error");
+	$result = $connect->Execute($query) or safe_die("Error");
 	$count = $result->RecordCount();
 	if ($count > 0)
 	{
@@ -650,7 +650,7 @@ function modlabelsetanswers($lid)
 	global $dbprefix, $connect, $clang, $labelsoutput, $databasetype, $filterxsshtml;
 	
 	$qulabelset = "SELECT * FROM ".db_table_name('labelsets')." WHERE lid='$lid'";
-	$rslabelset = db_execute_assoc($qulabelset) or die($connect->ErrorMsg());
+	$rslabelset = db_execute_assoc($qulabelset) or safe_die($connect->ErrorMsg());
 	$rwlabelset=$rslabelset->FetchRow();
 	$lslanguages=explode(" ", trim($rwlabelset['languages'])); 
 	
@@ -783,11 +783,11 @@ function modlabelsetanswers($lid)
         $newsortorder=$postsortorder-1;
 		$oldsortorder=$postsortorder;
 		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder=-1 WHERE lid=$lid AND sortorder=$newsortorder";
-		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
 		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder=$newsortorder WHERE lid=$lid AND sortorder=$oldsortorder";
-		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
 		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder='$oldsortorder' WHERE lid=$lid AND sortorder=-1";
-		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
 		break;
 
         // Pressing the Down button
@@ -795,11 +795,11 @@ function modlabelsetanswers($lid)
 		$newsortorder=$postsortorder+1;
 		$oldsortorder=$postsortorder;
 		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder=-1 WHERE lid=$lid AND sortorder='$newsortorder'";
-		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
 		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder='$newsortorder' WHERE lid=$lid AND sortorder=$oldsortorder";
-		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
 		$cdquery = "UPDATE ".db_table_name('labels')." SET sortorder=$oldsortorder WHERE lid=$lid AND sortorder=-1";
-		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
 		break;
 		
 		// Delete Button
@@ -823,7 +823,7 @@ function fixorder($lid) //Function rewrites the sortorder for a group of answers
 {
 	global $dbprefix, $connect, $labelsoutput;
 	$qulabelset = "SELECT * FROM ".db_table_name('labelsets')." WHERE lid=$lid";
-	$rslabelset = db_execute_assoc($qulabelset) or die($connect->ErrorMsg());
+	$rslabelset = db_execute_assoc($qulabelset) or safe_die($connect->ErrorMsg());
 	$rwlabelset=$rslabelset->FetchRow();
 	$lslanguages=explode(" ", trim($rwlabelset['languages'])); 
 	foreach ($lslanguages as $lslanguage)
@@ -835,7 +835,7 @@ function fixorder($lid) //Function rewrites the sortorder for a group of answers
     	{
     		$position=sprintf("%05d", $position);
     		$query2="UPDATE ".db_table_name('labels')." SET sortorder='$position' WHERE lid=? AND code=? AND title=? AND language='$lslanguage' ";
-    		$result2=$connect->Execute($query2, array ($row[0], $row[1], $row[2])) or die ("Couldn't update sortorder<br />$query2<br />".$connect->ErrorMsg());
+    		$result2=$connect->Execute($query2, array ($row[0], $row[1], $row[2])) or safe_die ("Couldn't update sortorder<br />$query2<br />".$connect->ErrorMsg());
     		$position++;
     	}
     }	

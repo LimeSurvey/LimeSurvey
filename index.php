@@ -53,7 +53,7 @@ if ($surveyid)
 {
 	$issurveyactive=false;
 	$actquery="SELECT * FROM ".db_table_name('surveys')." WHERE sid=$surveyid and active='Y'";
-	$actresult=db_execute_assoc($actquery) or die ("Couldn't access survey settings<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));      //Checked
+	$actresult=db_execute_assoc($actquery) or safe_die ("Couldn't access survey settings<br />$query<br />".$connect->ErrorMsg());      //Checked
 	if ($actresult->RecordCount() > 0)
 	{
 		$issurveyactive=true;
@@ -135,7 +135,7 @@ if ($surveyid &&
 		// ==> the original admin session remains valid
 		// ==> it is possible to start a new session
 		session_name($initial_session_name);
-		if (session_regenerate_id() === false) { die("Error Regenerating Session Id");}
+		if (session_regenerate_id() === false) { safe_die("Error Regenerating Session Id");}
 		@session_destroy();
 
 		// start new session
@@ -143,7 +143,7 @@ if ($surveyid &&
 		// regenerate id so that the header geenrated by previous
 		// regenerate_id is overwritten
 		// needed after clearall
-		if (session_regenerate_id() === false) { die("Error Regenerating Session Id");}
+		if (session_regenerate_id() === false) { safe_die("Error Regenerating Session Id");}
 
 		if ( $previewright === true)
 		{
@@ -161,7 +161,7 @@ if ($surveyid &&
 	if ( $previewright === false)
 	{
 		// print an error message
-		if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
+		if (isset($_REQUEST['rootdir'])) {safe_die('You cannot start this script directly');}
 		require_once(dirname(__FILE__).'/classes/core/language.php');
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
 		$clang = new limesurvey_lang($baselang);
@@ -190,7 +190,7 @@ if (isset($_SESSION['srid']))
 if (!isset($_SESSION['grouplist'])  && (isset($move)) )
 // geez ... a session time out! RUN! 
 {
-    if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
+    if (isset($_REQUEST['rootdir'])) {safe_die('You cannot start this script directly');}
     require_once(dirname(__FILE__).'/classes/core/language.php');
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
 	$clang = new limesurvey_lang($baselang);
@@ -241,7 +241,7 @@ if (isset($_GET['lang']) && $surveyid)
          $baselang=$defaultlang;
      }
 
-if (isset($_REQUEST['embedded_inc'])) {die('You cannot start this script directly');}
+if (isset($_REQUEST['embedded_inc'])) {safe_die('You cannot start this script directly');}
 if ( $embedded_inc != '' )
 require_once( $embedded_inc );
 
@@ -588,7 +588,7 @@ if ($thissurvey['tokenanswerspersistence'] == 'Y' &&
 	$srquery="SELECT id FROM {$thissurvey['tablename']}"
 		. " WHERE {$thissurvey['tablename']}.token='".$token."'\n";
 
-	$result = db_execute_assoc($srquery) or die ("Error loading results<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));   //Checked 
+	$result = db_execute_assoc($srquery) or safe_die ("Error loading results<br />$query<br />".$connect->ErrorMsg());   //Checked 
 	while ($srrow = $result->FetchRow() )
 	{
 		$_SESSION['srid'] = $srrow['id'];
@@ -657,7 +657,7 @@ function loadanswers()
 	{
 		return;
 	}
-	$result = db_execute_assoc($query) or die ("Error loading results<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));   //Checked 
+	$result = db_execute_assoc($query) or safe_die ("Error loading results<br />$query<br />".$connect->ErrorMsg());   //Checked 
 	if ($result->RecordCount() < 1)
 	{
 		$errormsg .= $clang->gT("There is no matching saved survey")."<br />\n";
@@ -709,7 +709,7 @@ function getTokenData($surveyid, $token)
 {
 	global $dbprefix, $connect;
 	$query = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."'";
-	$result = db_execute_assoc($query) or die("Couldn't get token info in getTokenData()<br />".$query."<br />".htmlspecialchars($connect->ErrorMsg()));    //Checked 
+	$result = db_execute_assoc($query) or safe_die("Couldn't get token info in getTokenData()<br />".$query."<br />".$connect->ErrorMsg());    //Checked 
 	while($row=$result->FetchRow())
 	{
 		$thistoken=array("firstname"=>$row['firstname'],
@@ -857,7 +857,7 @@ function checkgroupfordisplay($gid)
 			$totalands=0;
 			$query = "SELECT * FROM ".db_table_name('conditions')."\n"
 				."WHERE qid=$cc[0] ORDER BY cqid";
-			$result = db_execute_assoc($query) or die("Couldn't check conditions<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));   //Checked 
+			$result = db_execute_assoc($query) or safe_die("Couldn't check conditions<br />$query<br />".$connect->ErrorMsg());   //Checked 
 
 			$andedMultipleCqidCount=0; // count of multiple cqids for type Q or K
 			while($row=$result->FetchRow())
@@ -865,7 +865,7 @@ function checkgroupfordisplay($gid)
 				//Iterate through each condition for this question and check if it is met.
 				$query2= "SELECT type, gid FROM ".db_table_name('questions')."\n"
 					." WHERE qid={$row['cqid']} AND language='".$_SESSION['s_lang']."'";
-				$result2=db_execute_assoc($query2) or die ("Coudn't get type from questions<br />$ccquery<br />".htmlspecialchars($connect->ErrorMsg()));   //Checked 
+				$result2=db_execute_assoc($query2) or safe_die ("Coudn't get type from questions<br />$ccquery<br />".$connect->ErrorMsg());   //Checked 
 				while($row2=$result2->FetchRow())
 				{
 					$cq_gid=$row2['gid'];
@@ -1012,7 +1012,7 @@ function checkconfield($value)
 			. "WHERE ".db_table_name('conditions').".cqid=".db_table_name('questions').".qid "
 			. "AND ".db_table_name('conditions').".qid=$sfa[0] "
 			. "ORDER BY ".db_table_name('conditions').".qid";
-			$result=db_execute_assoc($query) or die($query."<br />".htmlspecialchars($connect->ErrorMsg()));         //Checked 
+			$result=db_execute_assoc($query) or safe_die($query."<br />".$connect->ErrorMsg());         //Checked 
 			while($rows = $result->FetchRow()) //Go through the condition on this field
 			{
 				if($rows['type'] == "M" || $rows['type'] == "P")
@@ -1240,7 +1240,7 @@ function checkpregs($backok=null)
 					."FROM ".db_table_name('questions')."\n"
 					."WHERE qid=".$fieldinfo['qid']." "
 					. "AND language='".$_SESSION['s_lang']."'";
-					$pregresult=db_execute_assoc($pregquery) or die("ERROR: $pregquery<br />".htmlspecialchars($connect->ErrorMsg()));      //Checked 
+					$pregresult=db_execute_assoc($pregquery) or safe_die("ERROR: $pregquery<br />".$connect->ErrorMsg());      //Checked 
 					while($pregrow=$pregresult->FetchRow())
 					{
 						$preg=$pregrow['preg'];
@@ -1335,7 +1335,7 @@ function submittokens()
 	}
 	$utquery .= "WHERE token='".db_quote($clienttoken)."'";
 
-	$utresult = $connect->Execute($utquery) or die ("Couldn't update tokens table!<br />\n$utquery<br />\n".htmlspecialchars($connect->ErrorMsg()));     //Checked 
+	$utresult = $connect->Execute($utquery) or safe_die ("Couldn't update tokens table!<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked 
 
 	// TLR change to put date into sent and completed
 	$cnfquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." WHERE token='".db_quote($clienttoken)."' AND completed!='N' AND completed!=''";
@@ -1779,7 +1779,7 @@ function buildsurveysession()
 	//get language from token (if one exists)
 		$tkquery2 = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($clienttoken)."' AND (completed = 'N' or completed='')";
 		//echo $tkquery2;
-		$result = db_execute_assoc($tkquery2) or die ("Couldn't get tokens<br />$tkquery<br />".htmlspecialchars($connect->ErrorMsg()));    //Checked 
+		$result = db_execute_assoc($tkquery2) or safe_die ("Couldn't get tokens<br />$tkquery<br />".$connect->ErrorMsg());    //Checked 
 		while ($rw = $result->FetchRow())
 		{
 			$tklanguage=$rw['language'];
@@ -1931,7 +1931,7 @@ UpdateSessionGroupList($_SESSION['s_lang']);
                          ." AND a.language='".$_SESSION['s_lang']. "' "
                          ." AND q.language='".$_SESSION['s_lang']. "' ";
                         
-				$abmultiscaleresult=db_execute_assoc($abmultiscalequery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());  //Checked 
+				$abmultiscaleresult=db_execute_assoc($abmultiscalequery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());  //Checked 
 				$abmultiscalecount=$abmultiscaleresult->RecordCount();
 				if ($abmultiscalecount>0)
 				{
@@ -1953,7 +1953,7 @@ UpdateSessionGroupList($_SESSION['s_lang']);
                          ." AND a.language='".$_SESSION['s_lang']. "' "
                          ." AND q.language='".$_SESSION['s_lang']. "' ";
                        
-				$abmultiscaleresult=db_execute_assoc($abmultiscalequery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());  //Checked 
+				$abmultiscaleresult=db_execute_assoc($abmultiscalequery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());  //Checked 
 				$abmultiscalecount=$abmultiscaleresult->RecordCount();
 				if ($abmultiscalecount>0)
 				{
@@ -1993,7 +1993,7 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 			. " AND ".db_table_name('answers').".language='".$_SESSION['s_lang']."' \n"
 			. " ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
 
-			$abresult = $connect->Execute($abquery) or die("ERROR:<br />".$abquery."<br />".htmlspecialchars($connect->ErrorMsg()));  //Checked 
+			$abresult = $connect->Execute($abquery) or safe_die("ERROR:<br />".$abquery."<br />".$connect->ErrorMsg());  //Checked 
 			$abcount = $abresult->RecordCount();
 			for ($i=1; $i<=$abcount; $i++)
 			{
@@ -2309,7 +2309,7 @@ function UpdateSessionGroupList($language)
    global $surveyid;
     unset ($_SESSION['grouplist']);
 	$query = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='".$language."' ORDER BY ".db_table_name('groups').".group_order";
-	$result = db_execute_assoc($query) or die ("Couldn't get group list<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));  //Checked 
+	$result = db_execute_assoc($query) or safe_die ("Couldn't get group list<br />$query<br />".$connect->ErrorMsg());  //Checked 
 	while ($row = $result->FetchRow())
 	{
 		$_SESSION['grouplist'][]=array($row['gid'], $row['group_name'], $row['description']);
@@ -2331,7 +2331,7 @@ function UpdateFieldArray()
       		$questionarray =& $_SESSION['fieldarray'][$key];
 
            	$query = "SELECT * FROM ".db_table_name('questions')." WHERE qid=".$questionarray[0]." AND language='".$_SESSION['s_lang']."'";
-        	$result = db_execute_assoc($query) or die ("Couldn't get question <br />$query<br />".htmlspecialchars($connect->ErrorMsg()));      //Checked 
+        	$result = db_execute_assoc($query) or safe_die ("Couldn't get question <br />$query<br />".$connect->ErrorMsg());      //Checked 
         	$row = $result->FetchRow();
    	  		$questionarray[2]=$row['title'];
   	  		$questionarray[3]=$row['question'];
@@ -2355,7 +2355,7 @@ function getQuotaInformation($surveyid)
 {
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
 	$query = "SELECT * FROM ".db_table_name('quota')." WHERE sid='{$surveyid}'";
-	$result = db_execute_assoc($query) or die($connect->ErrorMsg());    //Checked 
+	$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());    //Checked 
 	$quota_info = array();
 	$x=0;
 	
@@ -2366,14 +2366,14 @@ function getQuotaInformation($surveyid)
 		{
 			array_push($quota_info,array('Name' => $survey_quotas['name'],'Limit' => $survey_quotas['qlimit'],'Action' => $survey_quotas['action']));
 			$query = "SELECT * FROM ".db_table_name('quota_members')." WHERE quota_id='{$survey_quotas['id']}'";
-			$result_qe = db_execute_assoc($query) or die($connect->ErrorMsg());      //Checked 
+			$result_qe = db_execute_assoc($query) or safe_die($connect->ErrorMsg());      //Checked 
 			$quota_info[$x]['members'] = array();
 			if ($result_qe->RecordCount() > 0)
 			{
 				while ($quota_entry = $result_qe->FetchRow())
 				{
 					$query = "SELECT type, title,gid FROM ".db_table_name('questions')." WHERE qid='{$quota_entry['qid']}' AND language='{$baselang}'";
-					$result_quest = db_execute_assoc($query) or die($connect->ErrorMsg());     //Checked 
+					$result_quest = db_execute_assoc($query) or safe_die($connect->ErrorMsg());     //Checked 
 					$qtype = $result_quest->FetchRow();
 					
 					$fieldnames = "0";
@@ -2478,7 +2478,7 @@ function check_quota($checkaction,$surveyid)
 					// Check the status of the quota, is it full or not
 					$querysel = "SELECT id FROM ".db_table_name('survey_'.$surveyid)." WHERE ".implode(' AND ',$querycond)." "." AND submitdate !=''";
 
-					$result = db_execute_assoc($querysel) or die($connect->ErrorMsg());    //Checked 
+					$result = db_execute_assoc($querysel) or safe_die($connect->ErrorMsg());    //Checked 
 					$quota_check = $result->FetchRow();
 
 					if ($result->RecordCount() >= $quota['Limit']) // Quota is full!! 

@@ -61,7 +61,7 @@ function retrieveConditionInfo($ia)
 		            ."AND {$dbprefix}questions.language='".$_SESSION['s_lang']."' "
         	   ."ORDER BY {$dbprefix}conditions.cqid, "
         	            ."{$dbprefix}conditions.cfieldname";
-		$cresult = db_execute_assoc($cquery) or die ("OOPS<br />$cquery<br />".htmlspecialchars($connect->ErrorMsg()));     //Checked
+		$cresult = db_execute_assoc($cquery) or safe_die ("OOPS<br />$cquery<br />".$connect->ErrorMsg());     //Checked
 		while ($crow = $cresult->FetchRow())
 		{
 			$conditions[] = array ($crow['qid'],
@@ -263,7 +263,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 
 	//GET HELP
 	$hquery="SELECT help FROM {$dbprefix}questions WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."'";
-	$hresult=db_execute_num($hquery) or die(htmlspecialchars($connect->ErrorMsg()));       //Checked
+	$hresult=db_execute_num($hquery) or safe_die($connect->ErrorMsg());       //Checked
 	$help="";
 	while ($hrow=$hresult->FetchRow()) {$help=$hrow[0];}
 
@@ -463,7 +463,7 @@ function validation_message($ia)
 			$helpselect="SELECT help\n"
 			."FROM {$dbprefix}questions\n"
 			."WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'";
-			$helpresult=db_execute_assoc($helpselect) or die("$helpselect<br />".htmlspecialchars($connect->ErrorMsg()));     //Checked
+			$helpresult=db_execute_assoc($helpselect) or safe_die("$helpselect<br />".$connect->ErrorMsg());     //Checked
 			while ($helprow=$helpresult->FetchRow())
 			{
 				$help=" <font class = \"questionhelp\">(".$helprow['help'].")</font>";
@@ -764,7 +764,7 @@ function do_list_dropdown($ia)
 	} else {
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
 	}
-	$ansresult = db_execute_assoc($ansquery) or die("Couldn't get answers<br />$ansquery<br />".htmlspecialchars($connect->ErrorMsg()));    //Checked
+	$ansresult = db_execute_assoc($ansquery) or safe_die("Couldn't get answers<br />$ansquery<br />".$connect->ErrorMsg());    //Checked
 	while ($ansrow = $ansresult->FetchRow())
 	{
 		$answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
@@ -869,7 +869,7 @@ function do_list_flexible_dropdown($ia)
 	} else {
 		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
 	}
-	$ansresult = db_execute_assoc($ansquery) or die("Couldn't get answers<br />$ansquery<br />".htmlspecialchars($connect->ErrorMsg()));//Checked
+	$ansresult = db_execute_assoc($ansquery) or safe_die("Couldn't get answers<br />$ansquery<br />".$connect->ErrorMsg());//Checked
 
 	if (labelset_exists($lid,$_SESSION['s_lang']))
 	{
@@ -966,7 +966,7 @@ function do_list_radio($ia)
 	} else {
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
 	}
-	$ansresult = db_execute_assoc($ansquery) or die("Couldn't get answers<br />$ansquery<br />".htmlspecialchars($connect->ErrorMsg()));  //Checked
+	$ansresult = db_execute_assoc($ansquery) or safe_die("Couldn't get answers<br />$ansquery<br />".$connect->ErrorMsg());  //Checked
 	$anscount = $ansresult->RecordCount();
 	if (isset($other) && $other=="Y") {$anscount++;} //Count up for the Other answer
 	if ($ia[6] != "Y" && $shownoanswer == 1) {$anscount++;} //Count up if "No answer" is showing
@@ -1084,7 +1084,7 @@ function do_list_flexible_radio($ia)
 	} else {
 		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
 	}
-	$ansresult = db_execute_assoc($ansquery) or die("Couldn't get answers<br />$ansquery<br />".htmlspecialchars($connect->ErrorMsg()));    //Checked
+	$ansresult = db_execute_assoc($ansquery) or safe_die("Couldn't get answers<br />$ansquery<br />".$connect->ErrorMsg());    //Checked
 	$anscount = $ansresult->RecordCount();
 	
 	
@@ -3829,7 +3829,7 @@ function answer_replace($text) {
 function labelset_exists($labelid,$language) {
 
 	$qulabel = "SELECT * FROM ".db_table_name('labels')." WHERE lid=$labelid AND language='$language'";
-	$tablabel = db_execute_assoc($qulabel) or die("Couldn't check for labelset<br />$ansquery<br />".htmlspecialchars($connect->ErrorMsg())); //Checked
+	$tablabel = db_execute_assoc($qulabel) or safe_die("Couldn't check for labelset<br />$ansquery<br />".$connect->ErrorMsg()); //Checked
 	if ($tablabel->RecordCount()>0) {return true;} else {return false;}
 }
 

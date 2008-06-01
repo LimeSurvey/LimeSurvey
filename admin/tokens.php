@@ -276,7 +276,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 			
 		} else {
 			$createtokentableindex = $dict->CreateIndexSQL("{$tabname}_idx", $tabname, array('token'));
-			$dict->ExecuteSQLArray($createtokentableindex, false) or die ("Failed to create token table index<br />$createtokentableindex<br /><br />".htmlspecialchars($connect->ErrorMsg()));
+			$dict->ExecuteSQLArray($createtokentableindex, false) or safe_die ("Failed to create token table index<br />$createtokentableindex<br /><br />".$connect->ErrorMsg());
 
 			$tokenoutput .= "\t<tr>\n"
 			."\t\t<td align='center'>\n"
@@ -299,7 +299,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 	)
 	{
 		$query = db_rename_table(returnglobal('oldtable') , db_table_name("tokens_$surveyid"));
-		$result=$connect->Execute($query) or die("Failed Rename!<br />".$query."<br />".htmlspecialchars($connect->ErrorMsg()));
+		$result=$connect->Execute($query) or safe_die("Failed Rename!<br />".$query."<br />".$connect->ErrorMsg());
 		$tokenoutput .= "\t<tr>\n"
 		."\t\t<td align='center'>\n"
 		."\t\t\t<br /><br />\n"
@@ -316,7 +316,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 	else
 	{
 		$query=db_select_tables_like("{$dbprefix}old_tokens_".$surveyid."_%");
-		$result=db_execute_num($query) or die("Couldn't get old table list<br />".$query."<br />".htmlspecialchars($connect->ErrorMsg()));
+		$result=db_execute_num($query) or safe_die("Couldn't get old table list<br />".$query."<br />".$connect->ErrorMsg());
 		$tcount=$result->RecordCount();
 		if ($tcount > 0)
 		{
@@ -389,7 +389,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 
 #Lookup the names of the attributes
 $query = "SELECT attribute1, attribute2 FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
-$result = db_execute_assoc($query) or die("Couldn't execute query: <br />$query<br />".$connect->ErrorMsg());
+$result = db_execute_assoc($query) or safe_die("Couldn't execute query: <br />$query<br />".$connect->ErrorMsg());
 $row = $result->FetchRow();
 if ($row["attribute1"]) {$attr1_name = $row["attribute1"];} else {$attr1_name=$clang->gT("Attribute 1");}
 if ($row["attribute2"]) {$attr2_name = $row["attribute2"];} else {$attr2_name=$clang->gT("Attribute 2");}
@@ -486,7 +486,7 @@ if ($subaction==''){
 	{$tokenoutput .= "\t\t\t\t\t\t".$clang->gT("Total Invitations Sent").": $tkr[0] / $tkcount<br />\n";}
 	$tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE (completed!='N' and completed<>'')";
 	
-	$tksr = db_execute_num($tksq) or die ("Couldn't execute token selection query<br />$abquery<br />".$connect->ErrorMsg());
+	$tksr = db_execute_num($tksq) or safe_die ("Couldn't execute token selection query<br />$abquery<br />".$connect->ErrorMsg());
 	while ($tkr = $tksr->FetchRow())
 	{$tokenoutput .= "\t\t\t\t\t\t".$clang->gT("Total Surveys Completed").": $tkr[0] / $tkcount\n";}
 	$tokenoutput .= "\t\t\t\t\t</td>\n"
@@ -627,7 +627,7 @@ if ($subaction == "updateemailsettings" &&
 				. "surveyls_email_register='".$_POST['email_register_'.$langname]."', surveyls_email_confirm_subj='".$_POST['email_confirm_subj_'.$langname]."',\n"
 				. "surveyls_email_confirm='".$_POST['email_confirm_'.$langname]."'\n"
 				. "WHERE surveyls_survey_id=".$surveyid." and surveyls_language='".$langname."'";
-				$usresult = $connect->Execute($usquery) or die("Error updating<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
+				$usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br />".$connect->ErrorMsg());
 			}
 		}
 	$tokenoutput .= "<tr><td align='center'><br /><strong><font class='successtitle'>".$clang->gT("Token Email Settings have been saved.")."</font></strong><br />&nbsp;</td></tr>\n";
@@ -644,7 +644,7 @@ if ($subaction == "deleteall" &&
    )
 {
 	$query="DELETE FROM ".db_table_name("tokens_$surveyid");
-	$result=$connect->Execute($query) or die ("Couldn't update sent field<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+	$result=$connect->Execute($query) or safe_die ("Couldn't update sent field<br />$query<br />".$connect->ErrorMsg());
 	$tokenoutput .= "<tr><td  align='center'><strong><font class='successtitle'>".$clang->gT("All token entries have been deleted.")."</font></strong></td></tr>\n";
 	$subaction="";
 }
@@ -656,7 +656,7 @@ if ($subaction == "clearinvites" &&
    )
 {
 	$query="UPDATE ".db_table_name("tokens_$surveyid")." SET sent='N'";
-	$result=$connect->Execute($query) or die ("Couldn't update sent field<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+	$result=$connect->Execute($query) or safe_die ("Couldn't update sent field<br />$query<br />".$connect->ErrorMsg());
 	$tokenoutput .= "<tr><td align='center'><strong><font class='successtitle'>".$clang->gT("All invite entries have been set to 'Not Invited'.")."</font></strong></td></tr>\n";
 	$subaction="";
 }
@@ -668,7 +668,7 @@ if ($subaction == "cleartokens" &&
    )
 {
 	$query="UPDATE ".db_table_name("tokens_$surveyid")." SET token=''";
-	$result=$connect->Execute($query) or die("Couldn't reset the tokens field<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+	$result=$connect->Execute($query) or safe_die("Couldn't reset the tokens field<br />$query<br />".$connect->ErrorMsg());
 	$tokenoutput .= "<tr><td align='center'><strong><font class='successtitle'>".$clang->gT("All unique token numbers have been removed.")."</font></strong></td></tr>\n";
 	$subaction="";
 }
@@ -699,7 +699,7 @@ if (!$subaction &&
 	."\t\t\t<li><a href='#' onclick=\" if (confirm('"
 	.$clang->gT("Are you really sure you want to delete ALL token entries?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall")."}\">".$clang->gT("Delete all token entries")."</a></li>\n";
 	$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
-	$bresult = db_select_limit_assoc($bquery, 1) or die($clang->gT("Error")." counting fields<br />".htmlspecialchars($connect->ErrorMsg()));
+	$bresult = db_select_limit_assoc($bquery, 1) or safe_die($clang->gT("Error")." counting fields<br />".$connect->ErrorMsg());
 	$bfieldcount=$bresult->FieldCount();
 	$tokenoutput .= "\t\t\t<li><a href='#' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill")."\">".$clang->gT("Drop tokens table")."</a></li></ul>\n"
 	."\t\t\t</td></tr></table>\n"
@@ -772,7 +772,7 @@ if ($subaction == "browse" || $subaction == "search")
 	."\t\t</form></td>\n"
 	."\t</tr>\n";
 	$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
-	$bresult = db_select_limit_assoc($bquery, 1) or die($clang->gT("Error")." counting fields<br />".htmlspecialchars($connect->ErrorMsg()));
+	$bresult = db_select_limit_assoc($bquery, 1) or safe_die($clang->gT("Error")." counting fields<br />".$connect->ErrorMsg());
 	$bfieldcount=$bresult->FieldCount()-1;
 	$bquery = "SELECT tid,firstname,lastname,email,emailstatus,token,language,sent,completed,attribute_1,attribute_2,mpid FROM ".db_table_name("tokens_$surveyid");
 	if ($searchstring)
@@ -790,8 +790,8 @@ if ($subaction == "browse" || $subaction == "search")
 	}
 	if (!isset($order) || !$order) {$bquery .= " ORDER BY tid";}
 	else {$bquery .= " ORDER BY $order"; }
-	//die($bquery.":::".$start.":::".$limit);
-	$bresult = db_select_limit_assoc($bquery, $limit, $start) or die ($clang->gT("Error").": $bquery<br />".htmlspecialchars($connect->ErrorMsg()));
+	//safe_die($bquery.":::".$start.":::".$limit);
+	$bresult = db_select_limit_assoc($bquery, $limit, $start) or safe_die ($clang->gT("Error").": $bquery<br />".$connect->ErrorMsg());
 	$bgc="";
 
 	$tokenoutput .= "<tr><td colspan='3'>\n"
@@ -890,7 +890,7 @@ if ($subaction == "browse" || $subaction == "search")
 		{
 			// Get response Id
 			$query="SELECT id FROM ".db_table_name("survey_$surveyid")." WHERE token='".$brow['token']."' ORDER BY id desc";
-			$result=db_execute_num($query) or die ("<br />Could not find token!<br />\n" . htmlspecialchars($connect->ErrorMsg()));
+			$result=db_execute_num($query) or safe_die ("<br />Could not find token!<br />\n" .$connect->ErrorMsg());
 			list($id) = $result->FetchRow();
 
 
@@ -985,13 +985,13 @@ if ($subaction == "kill" &&
 	    // If you deactivate a postgres table you have to rename the according sequence too and alter the id field to point to the changed sequence
 	    	$oldTableJur = db_table_name_nq($oldtable);
 		$deactivatequery = db_rename_table(db_table_name_nq($oldtable),db_table_name_nq($newtable).'_tid_seq');
-			$deactivateresult = $connect->Execute($deactivatequery) or die ("oldtable : ".$oldtable. " / oldtableJur : ". $oldTableJur . " / ".$deactivatequery." / Could not rename the old sequence for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
+			$deactivateresult = $connect->Execute($deactivatequery) or die ("oldtable : ".$oldtable. " / oldtableJur : ". $oldTableJur . " / ".htmlspecialchars($deactivatequery)." / Could not rename the old sequence for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
 	        $setsequence="ALTER TABLE ".db_table_name_nq($newtable)."_tid_seq ALTER COLUMN tid SET DEFAULT nextval('".db_table_name_nq($newtable)."_tid_seq'::regclass);";
-			$deactivateresult = $connect->Execute($setsequence) or die ($setsequence." Could not alter the field tid to point to the new sequence name for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
+			$deactivateresult = $connect->Execute($setsequence) or die (htmlspecialchars($setsequence)." Could not alter the field tid to point to the new sequence name for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
 	    	$setidx="ALTER INDEX ".db_table_name_nq($oldtable)."_idx RENAME TO ".db_table_name_nq($newtable)."_idx;";
-			$deactivateresult = $connect->Execute($setidx) or die ($setidx." Could not alter the index for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
+			$deactivateresult = $connect->Execute($setidx) or die (htmlspecialchars($setidx)." Could not alter the index for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
 		} else {
-		$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />\n".htmlspecialchars($connect->ErrorMsg())." - Query: $deactivatequery <br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
+		$deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />\n".htmlspecialchars($connect->ErrorMsg())." - Query: ".htmlspecialchars($deactivatequery)." <br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
 	    }
 		$tokenoutput .= "<span style='display: block; text-align: center; width: 70%'>\n"
 		.$clang->gT("The tokens table has now been removed and tokens are no longer required to access this survey.")."<br /> ".$clang->gT("A backup of this table has been made and can be accessed by your system administrator.")."<br />\n"
@@ -1129,7 +1129,7 @@ if ($subaction == "email" &&
 
 		if (isset($tokenid)) {$ctquery .= " AND tid='{$tokenid}'";}
 		$tokenoutput .= "<!-- ctquery: $ctquery -->\n";
-		$ctresult = $connect->Execute($ctquery) or die("Database error!<br />\n" . htmlspecialchars($connect->ErrorMsg()));
+		$ctresult = $connect->Execute($ctquery) or safe_die("Database error!<br />\n" . $connect->ErrorMsg());
 		$ctcount = $ctresult->RecordCount();
 		$ctfieldcount = $ctresult->FieldCount();
 
@@ -1140,7 +1140,7 @@ if ($subaction == "email" &&
 
 		if (isset($tokenid)) {$emquery .= " and tid='{$tokenid}'";}
 		$tokenoutput .= "\n\n<!-- emquery: $emquery -->\n\n";
-		$emresult = db_select_limit_assoc($emquery,$maxemails) or die ("Couldn't do query.<br />\n$emquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
+		$emresult = db_select_limit_assoc($emquery,$maxemails) or safe_die ("Couldn't do query.<br />\n$emquery<br />\n".$connect->ErrorMsg());
 		$emcount = $emresult->RecordCount();
 
 		$tokenoutput .= "<table width='500px' align='center' >\n"
@@ -1201,7 +1201,7 @@ if ($subaction == "email" &&
 					$udequery = "UPDATE ".db_table_name("tokens_{$surveyid}")."\n"
 					."SET sent='$today' WHERE tid={$emrow['tid']}";
 					//
-					$uderesult = $connect->Execute($udequery) or die ("Could not update tokens<br />$udequery<br />".htmlspecialchars($connect->ErrorMsg()));
+					$uderesult = $connect->Execute($udequery) or safe_die ("Could not update tokens<br />$udequery<br />".$connect->ErrorMsg());
 					$tokenoutput .= "[".$clang->gT("Invitation sent to:")."{$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
 				}
 				else
@@ -1379,7 +1379,7 @@ if ($subaction == "remind" &&
 		if (isset($starttokenid)) {$ctquery .= " AND tid > '{$starttokenid}'";}
 		if (isset($tokenid) && $tokenid) {$ctquery .= " AND tid = '{$tokenid}'";}
 		$tokenoutput .= "<!-- ctquery: $ctquery -->\n";
-		$ctresult = $connect->Execute($ctquery) or die ("Database error!<br />\n" . htmlspecialchars($connect->ErrorMsg()));
+		$ctresult = $connect->Execute($ctquery) or safe_die ("Database error!<br />\n" . $connect->ErrorMsg());
 		$ctcount = $ctresult->RecordCount();
 		$ctfieldcount = $ctresult->FieldCount();
 		$emquery = "SELECT firstname, lastname, email, token, tid, language ";
@@ -1391,7 +1391,7 @@ if ($subaction == "remind" &&
 		if (isset($starttokenid)) {$emquery .= " AND tid > '{$starttokenid}'";}
 		if (isset($tokenid) && $tokenid) {$emquery .= " AND tid = '{$tokenid}'";}
 		$emquery .= " ORDER BY tid ";
-		$emresult = db_select_limit_assoc($emquery, $maxemails) or die ("Couldn't do query.<br />$emquery<br />".htmlspecialchars($connect->ErrorMsg()));
+		$emresult = db_select_limit_assoc($emquery, $maxemails) or safe_die ("Couldn't do query.<br />$emquery<br />".$connect->ErrorMsg());
 		$emcount = $emresult->RecordCount();
 		$tokenoutput .= "<table width='500' align='center' >\n"
 		."\t<tr>\n"
@@ -1520,7 +1520,7 @@ if ($subaction == "tokenify" &&
 	{
 		$newtokencount = 0;
 		$tkquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." WHERE token IS NULL OR token=''";
-		$tkresult = db_execute_assoc($tkquery) or die ("Mucked up!<br />$tkquery<br />".htmlspecialchars($connect->ErrorMsg()));
+		$tkresult = db_execute_assoc($tkquery) or safe_die ("Mucked up!<br />$tkquery<br />".$connect->ErrorMsg());
 		while ($tkrow = $tkresult->FetchRow())
 		{
 			$insert = "NO";
@@ -1549,7 +1549,7 @@ if ($subaction == "delete" &&
    )
 {
 	$dlquery = "DELETE FROM ".db_table_name("tokens_$surveyid")." WHERE tid={$tokenid}";
-	$dlresult = $connect->Execute($dlquery) or die ("Couldn't delete record {$tokenid}<br />".htmlspecialchars($connect->ErrorMsg()));
+	$dlresult = $connect->Execute($dlquery) or safe_die ("Couldn't delete record {$tokenid}<br />".$connect->ErrorMsg());
 	$tokenoutput .= "\t<tr ><td colspan='2' height='4'><strong>"
 	.$clang->gT("Delete")."</strong></td></tr>\n"
 	."\t<tr><td align='center'><br />\n"
@@ -1723,7 +1723,7 @@ if ($subaction == "updatetoken" &&
 	$data[] = $_POST['sent'];
 	$data[] = $_POST['completed'];
 
-	$udresult = $connect->Execute("Select * from ".db_table_name("tokens_$surveyid")." where tid<>{$tokenid} and token<>'' and token='{$santitizedtoken}'") or die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
+	$udresult = $connect->Execute("Select * from ".db_table_name("tokens_$surveyid")." where tid<>{$tokenid} and token<>'' and token='{$santitizedtoken}'") or safe_die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".$connect->ErrorMsg());
 	if ($udresult->RecordCount()==0)
 	{
 		// Using adodb Execute with blinding method so auto-dbquote is done
@@ -1737,7 +1737,7 @@ if ($subaction == "updatetoken" &&
 			$udquery .= ", attribute_1=?, attribute_2=?";
 		}
 		$udquery .= " WHERE tid={$tokenid}";
-		$udresult = $connect->Execute($udquery, $data) or die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
+		$udresult = $connect->Execute($udquery, $data) or safe_die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".$connect->ErrorMsg());
 		$tokenoutput .=  "<br /><font class='successtitle'><strong>".$clang->gT("Success")."</strong></font><br />\n"
 						."<br />".$clang->gT("Updated Token")."<br /><br />\n"
 						."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse'>".$clang->gT("Display Tokens")."</a><br /><br />\n"
@@ -1784,7 +1784,7 @@ if ($subaction == "inserttoken" &&
 	if ($udresult->RecordCount()==0)
 	{
 		// AutoExecute
-		$inresult = $connect->AutoExecute($tblInsert, $data, 'INSERT') or die ("Add new record failed:<br />\n$inquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
+		$inresult = $connect->AutoExecute($tblInsert, $data, 'INSERT') or safe_die ("Add new record failed:<br />\n$inquery<br />\n".$connect->ErrorMsg());
 		$tokenoutput .= "<br /><font class='successtitle'><strong>".$clang->gT("Success")."</strong></font><br />\n"
 		."<br />".$clang->gT("Added New Token")."<br /><br />\n"
 		."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse'>".$clang->gT("Display Tokens")."</a><br />\n"
@@ -2120,7 +2120,7 @@ if ($subaction == "uploadldap" &&
 							$ir = $connect->Execute($iq);
 							if (!$ir) $xy++;
 							$xz++;
-							// or die ("Couldn't insert line<br />\n$buffer<br />\n".htmlspecialchars($connect->ErrorMsg())."<pre style='text-align: left'>$iq</pre>\n");
+							// or safe_die ("Couldn't insert line<br />\n$buffer<br />\n".htmlspecialchars($connect->ErrorMsg())."<pre style='text-align: left'>$iq</pre>\n");
 						} 
 					} // End for each entry
 				} // End foreach responseGroup

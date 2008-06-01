@@ -29,8 +29,7 @@ include_once("login_check.php");
 $language = GetBaseLanguageFromSurveyID($surveyid);
 
 $actsurquery = "SELECT browse_response FROM ".db_table_name("surveys_rights")." WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
-//$actsurresult = $connect->Execute($actsurquery) or die($connect->ErrorMsg());
-$actsurresult = db_execute_assoc($actsurquery) or die($connect->ErrorMsg());
+$actsurresult = db_execute_assoc($actsurquery) or safe_die($connect->ErrorMsg());
 $actsurrows = $actsurresult->FetchRow();
 
 if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
@@ -205,9 +204,9 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				{
 					//Delete all the existing entries TODO WTF IS REDO?
 					//$delete="DELETE FROM ".db_table_name("saved")." WHERE scid=".$saver['scid'];
-					//$result=$connect->Execute($delete) or die("Couldn't delete old record<br />$delete<br />".htmlspecialchars($connect->ErrorMsg()));
+					//$result=$connect->Execute($delete) or safe_die("Couldn't delete old record<br />$delete<br />".htmlspecialchars($connect->ErrorMsg()));
 					//$delete="DELETE FROM ".db_table_name("saved_control")." WHERE scid=".$surveytable['scid'];
-					//$result=$connect->Execute($delete) or die("Couldn't delete old record<br />$delete<br />".htmlspecialchars($connect->ErrorMsg()));
+					//$result=$connect->Execute($delete) or safe_die("Couldn't delete old record<br />$delete<br />".htmlspecialchars($connect->ErrorMsg()));
 				}
 			}
 			//BUILD THE SQL TO INSERT RESPONSES
@@ -358,7 +357,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					($insertqr)";
 			//$dataentryoutput .= $SQL; //Debugging line
 		
-			$iinsert = $connect->Execute($SQL) or die ("Could not insert your data:<br />$SQL<br />\n" . htmlspecialchars($connect->ErrorMsg()) . "\n<pre style='text-align: left'>$SQL</pre>\n</body>\n");
+			$iinsert = $connect->Execute($SQL) or safe_die ("Could not insert your data:<br />$SQL<br />\n" .$connect->ErrorMsg());
 			/*if (returnglobal('redo')=="yes")
 			{
 			//This submission of data came from a saved session. Must delete the
@@ -367,7 +366,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			if ($dresult=$connect->Execute($dquery))
 			{
 			$dquery = "DELETE FROM ".db_table_name("saved")." WHERE scid=".$saver['scid'];
-			$dresult=$connect->Execute($dquery) or die("Couldn't delete saved data<br />$dquery<br />".htmlspecialchars($connect->ErrorMsg()));
+			$dresult=$connect->Execute($dquery) or safe_die("Couldn't delete saved data<br />$dquery<br />".htmlspecialchars($connect->ErrorMsg()));
 			}
 			else
 			{
@@ -388,7 +387,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					$utquery .= "SET completed='Y'\n";
 				}
 				$utquery .= "WHERE token='{$_POST['token']}'";
-				$utresult = $connect->Execute($utquery) or die ("Couldn't update tokens table!<br />\n$utquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
+				$utresult = $connect->Execute($utquery) or safe_die ("Couldn't update tokens table!<br />\n$utquery<br />\n".$connect->ErrorMsg());
 			}
 			if (isset($_POST['save']) && $_POST['save'] == "on")
 			{
@@ -453,7 +452,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				}
 				else
 				{
-					die("Unable to insert record into saved_control table.<br /><br />".htmlspecialchars($connect->ErrorMsg()));
+					safe_die("Unable to insert record into saved_control table.<br /><br />".$connect->ErrorMsg());
 				}
 
 			}
@@ -606,7 +605,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		if ($subaction == "edit")
 		{
 			$idquery = "SELECT * FROM $surveytable WHERE id=$id";
-			$idresult = db_execute_assoc($idquery) or die ("Couldn't get individual record<br />$idquery<br />".htmlspecialchars($connect->ErrorMsg()));
+			$idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get individual record<br />$idquery<br />".$connect->ErrorMsg());
 			while ($idrow = $idresult->FetchRow())
 			{
 				$results[]=$idrow;
@@ -626,7 +625,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						WHERE sid=$surveyid
 						AND identifier='".$_GET['identifier']."'
 						AND access_code='".$password."'";
-			$svresult=db_execute_assoc($svquery) or die("Error getting save<br />$svquery<br />".htmlspecialchars($connect->ErrorMsg()));
+			$svresult=db_execute_assoc($svquery) or safe_die("Error getting save<br />$svquery<br />".$connect->ErrorMsg());
 			while($svrow=$svresult->FetchRow())
 			{
 				$saver['email']=$svrow['email'];
@@ -634,7 +633,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				$saver['ip']=$svrow['ip'];
 			}
 			$svquery = "SELECT * FROM ".db_table_name("saved_control")." WHERE scid=".$saver['scid'];
-			$svresult=db_execute_assoc($svquery) or die("Error getting saved info<br />$svquery<br />".htmlspecialchars($connect->ErrorMsg()));
+			$svresult=db_execute_assoc($svquery) or safe_die("Error getting saved info<br />$svquery<br />".$connect->ErrorMsg());
 			while($svrow=$svresult->FetchRow())
 			{
 				$responses[$svrow['fieldname']]=$svrow['value'];
@@ -742,7 +741,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 								$dataentryoutput .= ">{$llrow['title']}</option>\n";
 							}
 							$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$fnames[$i][7]} AND ".db_table_name("questions").".language = '{$language}'";
-							$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
+							$oresult=db_execute_assoc($oquery) or safe_die("Couldn't get other for list question<br />".$oquery."<br />".$connect->ErrorMsg());
 							while($orow = $oresult->FetchRow())
 							{
 								$fother=$orow['other'];
@@ -779,7 +778,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 							$dataentryoutput .= ">{$llrow['answer']}</option>\n";
 						}
 						$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$fnames[$i][7]} AND ".db_table_name("questions").".language = '{$language}'";
-						$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
+						$oresult=db_execute_assoc($oquery) or safe_die("Couldn't get other for list question<br />".$oquery."<br />".$connect->ErrorMsg());
 						while($orow = $oresult->FetchRow())
 						{
 							$fother=$orow['other'];
@@ -1452,7 +1451,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		if (isset($_POST['token']) && $_POST['token']) {$updateqr .= ", token='{$_POST['token']}'";}
 		if (isset($_POST['language']) && $_POST['language']) {$updateqr .= ", startlanguage='{$_POST['language']}'";}
 		$updateqr .= " WHERE id=$id";
-		$updateres = $connect->Execute($updateqr) or die("Update failed:<br />\n" . htmlspecialchars($connect->ErrorMsg()) . "\n<pre style='text-align: left'>$updateqr</pre>");
+		$updateres = $connect->Execute($updateqr) or safe_die("Update failed:<br />\n" . $connect->ErrorMsg() . "<br />$updateqr");
 		$thissurvey=getSurveyInfo($surveyid);
 		while (ob_get_level() > 0) {
 			ob_end_flush();
@@ -1478,7 +1477,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		."\t</tr>\n";
 		$delquery = "DELETE FROM $surveytable WHERE id=$id";
 		$dataentryoutput .= "\t<tr>\n";
-		$delresult = $connect->Execute($delquery) or die ("Couldn't delete record $id<br />\n".htmlspecialchars($connect->ErrorMsg()));
+		$delresult = $connect->Execute($delquery) or safe_die ("Couldn't delete record $id<br />\n".$connect->ErrorMsg());
 		$dataentryoutput .= "\t\t<td align='center'><br /><strong>".$clang->gT("Record Deleted")." (ID: $id)</strong><br /><br />\n"
 		."\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all'>".$clang->gT("Browse Responses")."</a></font>\n"
 		."\t\t</td>\n"
@@ -1647,7 +1646,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 								$fquery = "SELECT * FROM ".db_table_name("labels")."\n"
 								. "WHERE lid='{$conrow['lid']}'\n and language='$language' "
 								. "AND code='{$conrow['value']}'";
-								$fresult=db_execute_assoc($fquery) or die("$fquery<br />".htmlspecialchars($connect->ErrorMsg()));
+								$fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />".$connect->ErrorMsg());
 								while($frow=$fresult->FetchRow())
 								{
 									$postans=$frow['title'];
@@ -1669,7 +1668,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 								$fquery = "SELECT * FROM ".db_table_name("labels")."\n"
 								. "WHERE lid='{$conrow['lid']}'\n and language='$language' "
 								. "AND code='{$conrow['value']}'";
-								$fresult=db_execute_assoc($fquery) or die("$fquery<br />".htmlspecialchars($connect->ErrorMsg()));
+								$fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />".$connect->ErrorMsg());
 								while($frow=$fresult->FetchRow())
 								{
 									$postans=$frow['title'];
@@ -1814,7 +1813,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						}
 
 						$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$deqrow['qid']} AND language='{$language}'";
-						$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
+						$oresult=db_execute_assoc($oquery) or safe_die("Couldn't get other for list question<br />".$oquery."<br />".$connect->ErrorMsg());
 						while($orow = $oresult->FetchRow())
 						{
 							$fother=$orow['other'];
@@ -1861,7 +1860,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                             $dataentryoutput .= "\t\t\t</select></td></tr>\n"; 
 						}
 						$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$deqrow['qid']} AND language='{$baselang}'";
-						$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
+						$oresult=db_execute_assoc($oquery) or safe_die("Couldn't get other for list question<br />".$oquery."<br />".$connect->ErrorMsg());
 						while($orow = $oresult->FetchRow())
 						{
 							$fother=$orow['other'];
@@ -1896,7 +1895,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						else {$dataentryoutput .=$datatemp;}
 
 						$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$deqrow['qid']} AND language='{$language}'";
-						$oresult=db_execute_assoc($oquery) or die("Couldn't get other for list question<br />".$oquery."<br />".htmlspecialchars($connect->ErrorMsg()));
+						$oresult=db_execute_assoc($oquery) or safe_die("Couldn't get other for list question<br />".$oquery."<br />".$connect->ErrorMsg());
 						while($orow = $oresult->FetchRow())
 						{
 							$fother=$orow['other'];
@@ -2286,7 +2285,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					break;
 					case "E": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
 					$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} ORDER BY sortorder, answer";
-					$mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".htmlspecialchars($connect->ErrorMsg()));
+					$mearesult=db_execute_assoc($meaquery) or safe_die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".$connect->ErrorMsg());
 					$dataentryoutput .= "<table>\n";
 					while ($mearow = $mearesult->FetchRow())
 					{
@@ -2307,7 +2306,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					case "F": //ARRAY (Flexible Labels)
 					case "H":
 						$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} and language='$language' ORDER BY sortorder, answer";
-						$mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".htmlspecialchars($connect->ErrorMsg()));
+						$mearesult=db_execute_assoc($meaquery) or safe_die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".$connect->ErrorMsg());
 						$dataentryoutput .= "<table>\n";
 						while ($mearow = $mearesult->FetchRow())
 						{
@@ -2341,7 +2340,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						break;
 /* 					case "1":
 						$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} and language='$language' ORDER BY sortorder, answer";
-						$mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".htmlspecialchars($connect->ErrorMsg()));
+						$mearesult=db_execute_assoc($meaquery) or safe_die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />".$connect->ErrorMsg());
 						$dataentryoutput .= "<table>\n";
 						while ($mearow = $mearesult->FetchRow())
 						{

@@ -51,7 +51,7 @@ $dumphead = "# LimeSurvey Question Dump\n"
 function BuildOutput($Query)
 {
 	global $dbprefix, $connect;
-	$QueryResult = db_execute_assoc($Query) or die ("ERROR: $QueryResult<br />".htmlspecialchars($connect->ErrorMsg()));
+	$QueryResult = db_execute_assoc($Query) or safe_die ("ERROR: $QueryResult<br />".$connect->ErrorMsg());
 	preg_match('/FROM (\w+)( |,)/i', $Query, $MatchResults);
 	$TableName = $MatchResults[1];;
 	if ($dbprefix)

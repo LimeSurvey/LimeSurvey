@@ -346,7 +346,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
                    FROM {$dbprefix}labels
                    WHERE lid=".$newlid."
                    ORDER BY language, sortorder, code";    
-        $result2 = db_execute_num($query2) or die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
+        $result2 = db_execute_num($query2) or safe_die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
         while($row2=$result2->FetchRow())
         {
             $thisset .= implode('.', $row2);
@@ -368,9 +368,9 @@ if (isset($labelsetsarray) && $labelsetsarray) {
             //There is a matching labelset. So, we will delete this one and refer
             //to the matched one.
             $query = "DELETE FROM {$dbprefix}labels WHERE lid=$newlid";
-            $result=$connect->Execute($query) or die("Couldn't delete labels<br />$query<br />".$connect->ErrorMsg());
+            $result=$connect->Execute($query) or safe_die("Couldn't delete labels<br />$query<br />".$connect->ErrorMsg());
             $query = "DELETE FROM {$dbprefix}labelsets WHERE lid=$newlid";
-            $result=$connect->Execute($query) or die("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
+            $result=$connect->Execute($query) or safe_die("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
             $newlid=$lsmatch;
         }
         else
@@ -393,7 +393,7 @@ if (isset($questionarray) && $questionarray) {
     //Assuming we will only import one question at a time we will now find out the maximum question order in this group 
     //and save it for later
     $qmaxqo = "SELECT MAX(question_order) AS maxqo FROM ".db_table_name('questions')." WHERE sid=$newsid AND gid=$newgid";
-    $qres = db_execute_assoc($qmaxqo) or die ("<strong>".$clang->gT("Error")."</strong> Failed to find out maximum question order value<br />\n$qmaxqo<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+    $qres = db_execute_assoc($qmaxqo) or safe_die ($clang->gT("Error").": Failed to find out maximum question order value<br />\n$qmaxqo<br />\n".$connect->ErrorMsg());
     $qrow=$qres->FetchRow();
     $newquestionorder=$qrow['maxqo']+1;
 
@@ -442,7 +442,7 @@ if (isset($questionarray) && $questionarray) {
             $newvalues=array_values($questionrowdata);
             $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
             $qinsert = "INSERT INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-		    $qres = $connect->Execute($qinsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+		    $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg());
 
             // set the newqid only if is not set
             if (!isset($newqid))
@@ -467,7 +467,7 @@ if (isset($questionarray) && $questionarray) {
                         $newvalues=array_values($answerrowdata);
                         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                         $ainsert = "INSERT INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-                $ares = $connect->Execute($ainsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+                $ares = $connect->Execute($ainsert) or safe_die ($clang->gT("Error").": Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg());
             }
         }
     }
@@ -485,7 +485,7 @@ if (isset($questionarray) && $questionarray) {
             $newvalues=array_values($qarowdata);
             $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
             $qainsert = "INSERT INTO {$dbprefix}question_attributes (".implode(',',array_keys($qarowdata)).") VALUES (".implode(',',$newvalues).")"; 
-            $result=$connect->Execute($qainsert) or die ("Couldn't insert question_attribute<br />$qainsert<br />".$connect->ErrorMsg());
+            $result=$connect->Execute($qainsert) or safe_die ("Couldn't insert question_attribute<br />$qainsert<br />".$connect->ErrorMsg());
         }
     }
 

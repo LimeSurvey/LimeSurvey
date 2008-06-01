@@ -119,7 +119,6 @@ if ($action == "editgroup")
     {
         if ($value != 99)
         {
-            //die("INSERT:".$key);
             $egquery = "INSERT INTO ".db_table_name('groups')." (gid, sid, group_name, description,group_order,language) VALUES ('{$gid}', '{$surveyid}', '{$basesettings['group_name']}', '{$basesettings['description']}','{$basesettings['group_order']}', '{$key}')";
             $egresult = $connect->Execute($egquery);
         }

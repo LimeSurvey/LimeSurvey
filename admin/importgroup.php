@@ -345,7 +345,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
                    FROM {$dbprefix}labels
                    WHERE lid=".$newlid."
                    ORDER BY language, sortorder, code";    
-        $result2 = db_execute_num($query2) or die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
+        $result2 = db_execute_num($query2) or safe_die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
         while($row2=$result2->FetchRow())
         {
             $thisset .= implode('.', $row2);
@@ -367,9 +367,9 @@ if (isset($labelsetsarray) && $labelsetsarray) {
             //There is a matching labelset. So, we will delete this one and refer
             //to the matched one.
             $query = "DELETE FROM {$dbprefix}labels WHERE lid=$newlid";
-            $result=$connect->Execute($query) or die("Couldn't delete labels<br />$query<br />".$connect->ErrorMsg());
+            $result=$connect->Execute($query) or safe_die("Couldn't delete labels<br />$query<br />".$connect->ErrorMsg());
             $query = "DELETE FROM {$dbprefix}labelsets WHERE lid=$newlid";
-            $result=$connect->Execute($query) or die("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
+            $result=$connect->Execute($query) or safe_die("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
             $newlid=$lsmatch;
         }
         else
@@ -423,7 +423,7 @@ if (isset($grouparray) && $grouparray)
             
             // find the maximum group order and use this grouporder+1 to assign it to the new group 
             $qmaxgo = "select max(group_order) as maxgo from ".db_table_name('groups')." where sid=$newsid";
-            $gres = db_execute_assoc($qmaxgo) or die ("<strong>".$clang->gT("Error")."</strong> Failed to find out maximum group order value<br />\n$qmaxqo<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+            $gres = db_execute_assoc($qmaxgo) or safe_die ($clang->gT("Error")." Failed to find out maximum group order value<br />\n$qmaxqo<br />\n".$connect->ErrorMsg());
             $grow=$gres->FetchRow();
             $group_order = $grow['maxgo']+1;            
         }
@@ -443,7 +443,7 @@ if (isset($grouparray) && $grouparray)
         $newvalues=array_values($grouprowdata);
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
         $ginsert = "insert INTO {$dbprefix}groups (".implode(',',array_keys($grouprowdata)).") VALUES (".implode(',',$newvalues).")"; 
-        $gres = $connect->Execute($ginsert) or die("<strong>".$clang->gT("Error")."</strong> Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+        $gres = $connect->Execute($ginsert) or safe_die($clang->gT("Error").": Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg());
         
         //GET NEW GID  .... if is not done before and we count a group if a new gid is required
         if ($newgid == 0) 
@@ -503,7 +503,7 @@ if (isset($grouparray) && $grouparray)
             $newvalues=array_values($questionrowdata);
             $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
             $qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-            $qres = $connect->Execute($qinsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+            $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error")."Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg());
 
             //GET NEW QID  .... if is not done before and we count a question if a new qid is required
             if (!isset($newqids[$oldqid])) 
@@ -542,7 +542,7 @@ if (isset($grouparray) && $grouparray)
             $newvalues=array_values($answerrowdata);
             $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
             $ainsert = "insert INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-            $ares = $connect->Execute($ainsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+            $ares = $connect->Execute($ainsert) or safe_die ($clang->gT("Error")."Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg());
             $countanswers++;
         }
     }
@@ -581,7 +581,7 @@ if (isset($grouparray) && $grouparray)
             $newvalues=array_values($qarowdata);
             $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
             $qainsert = "insert INTO {$dbprefix}question_attributes (".implode(',',array_keys($qarowdata)).") VALUES (".implode(',',$newvalues).")"; 
-            $result=$connect->Execute($qainsert) or die ("Couldn't insert question_attribute<br />$qainsert<br />".$connect->ErrorMsg());
+            $result=$connect->Execute($qainsert) or safe_die ("Couldn't insert question_attribute<br />$qainsert<br />".$connect->ErrorMsg());
             $countquestion_attributes++;        
         }
     }
@@ -629,7 +629,7 @@ if (isset($grouparray) && $grouparray)
             $newvalues=array_values($conditionrowdata);
             $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
             $conditioninsert = "insert INTO {$dbprefix}conditions (".implode(',',array_keys($conditionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-            $result=$connect->Execute($conditioninsert) or die ("Couldn't insert condition<br />$conditioninsert<br />".$connect->ErrorMsg());
+            $result=$connect->Execute($conditioninsert) or safe_die ("Couldn't insert condition<br />$conditioninsert<br />".$connect->ErrorMsg());
             $countconditions++;
         }
     }

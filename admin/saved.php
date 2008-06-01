@@ -76,7 +76,7 @@ function showSavedList($surveyid)
 	."FROM {$dbprefix}saved_control\n"
 	."WHERE sid=$surveyid\n"
 	."ORDER BY saved_date desc";
-	$result = db_execute_assoc($query) or die ("Couldn't summarise saved entries<br />$query<br />".$connect->ErrorMsg());
+	$result = db_execute_assoc($query) or safe_die ("Couldn't summarise saved entries<br />$query<br />".$connect->ErrorMsg());
 	if ($result->RecordCount() > 0)
 	{
 		$savedsurveyoutput .= "<table class='outlinetable' cellspacing='0' align='center'>\n";

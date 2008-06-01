@@ -20,7 +20,7 @@ if (!isset($action)) {$action=returnglobal('action');}
 
 
 $actsurquery = "SELECT edit_survey_property FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
-$actsurresult = $connect->Execute($actsurquery) or die($connect->ErrorMsg());		
+$actsurresult = $connect->Execute($actsurquery) or safe_die($connect->ErrorMsg());		
 $actsurrows = $actsurresult->FetchRow();
 
 if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property']){
@@ -36,7 +36,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
 		'name' => $_POST['name'],
 		'message' => $_POST['message'],
 		'link' => $_POST['link'] ));
-		$result=$connect->Execute($query) or die("Error inserting<br />$query<br />".$connect->ErrorMsg());
+		$result=$connect->Execute($query) or safe_die("Error inserting<br />$query<br />".$connect->ErrorMsg());
 	} elseif ($action == "assessmentupdate") {
 		$query = "UPDATE {$dbprefix}assessments
 				  SET scope='".db_quote($_POST['scope'])."',
@@ -47,7 +47,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
 				  message='".db_quote($_POST['message'])."',
 				  link='".db_quote($_POST['link'])."'
 				  WHERE id=".sanitize_int($_POST['id']);
-		$result = $connect->Execute($query) or die("Error updating<br />$query<br />".$connect->ErrorMsg());
+		$result = $connect->Execute($query) or safe_die("Error updating<br />$query<br />".$connect->ErrorMsg());
 	} elseif ($action == "assessmentdelete") {
 		$query = "DELETE FROM {$dbprefix}assessments
 				  WHERE id=".sanitize_int($_POST['id']);
@@ -198,7 +198,7 @@ function getAssessments($surveyid) {
 			  FROM ".db_table_name('assessments')."
 			  WHERE sid='$surveyid'
 			  ORDER BY scope, gid";
-	$result=db_execute_assoc($query) or die("Error getting assessments<br />$query<br />".$connect->ErrorMsg());
+	$result=db_execute_assoc($query) or safe_die("Error getting assessments<br />$query<br />".$connect->ErrorMsg());
 	$output=array();
 	while($row=$result->FetchRow()) {
 		$output[]=$row;
@@ -213,7 +213,7 @@ function getGroups($surveyid) {
 			  FROM ".db_table_name('groups')."
 			  WHERE sid='$surveyid' and language='$baselang'
 			  ORDER BY group_order";
-	$result = db_execute_assoc($query) or die("Error getting groups<br />$query<br />".$connect->ErrorMsg());
+	$result = db_execute_assoc($query) or safe_die("Error getting groups<br />$query<br />".$connect->ErrorMsg());
 	$output=array();
 	while($row=$result->FetchRow()) {
 		$output[$row['gid']]=$row;

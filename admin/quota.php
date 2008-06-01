@@ -20,14 +20,14 @@ function getQuotaAnswers($qid,$surveyid,$quota_id)
 	global $clang;
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
 	$query = "SELECT type, title FROM ".db_table_name('questions')." WHERE qid='{$qid}' AND language='{$baselang}'";
-	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+	$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 	$qtype = $result->FetchRow();
 
 	if ($qtype['type'] == 'G')
 	{
 		$query = "SELECT * FROM ".db_table_name('quota_members')." WHERE sid='{$surveyid}' and qid='{$qid}' and quota_id='{$quota_id}'";
 
-		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+		$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
 		$answerlist = array('M' => array('Title' => $qtype['title'], 'Display' => $clang->gT("Male"), 'code' => 'M'),
 		'F' => array('Title' => $qtype['title'],'Display' => $clang->gT("Female"), 'code' => 'F'));
@@ -45,10 +45,10 @@ function getQuotaAnswers($qid,$surveyid,$quota_id)
 	if ($qtype['type'] == 'M')
 	{
 		$query = "SELECT * FROM ".db_table_name('quota_members')." WHERE sid='{$surveyid}' and qid='{$qid}' and quota_id='{$quota_id}'";
-		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+		$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
 		$query = "SELECT code,answer FROM ".db_table_name('answers')." WHERE qid='{$qid}'";
-		$ansresult = db_execute_assoc($query) or die($connect->ErrorMsg());
+		$ansresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 		
 		$answerlist = array();
 		
@@ -71,10 +71,10 @@ function getQuotaAnswers($qid,$surveyid,$quota_id)
 	if ($qtype['type'] == 'A')
 	{
 		$query = "SELECT * FROM ".db_table_name('quota_members')." WHERE sid='{$surveyid}' and qid='{$qid}' and quota_id='{$quota_id}'";
-		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+		$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
 		$query = "SELECT code,answer FROM ".db_table_name('answers')." WHERE qid='{$qid}'";
-		$ansresult = db_execute_assoc($query) or die($connect->ErrorMsg());
+		$ansresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 		
 		$answerlist = array();
 		
@@ -100,10 +100,10 @@ function getQuotaAnswers($qid,$surveyid,$quota_id)
 	if ($qtype['type'] == 'B')
 	{
 		$query = "SELECT * FROM ".db_table_name('quota_members')." WHERE sid='{$surveyid}' and qid='{$qid}' and quota_id='{$quota_id}'";
-		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+		$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
 		$query = "SELECT code,answer FROM ".db_table_name('answers')." WHERE qid='{$qid}'";
-		$ansresult = db_execute_assoc($query) or die($connect->ErrorMsg());
+		$ansresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 		
 		$answerlist = array();
 		
@@ -130,7 +130,7 @@ function getQuotaAnswers($qid,$surveyid,$quota_id)
 	{
 		$query = "SELECT * FROM ".db_table_name('quota_members')." WHERE sid='{$surveyid}' and qid='{$qid}' and quota_id='{$quota_id}'";
 
-		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+		$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
 		$answerlist = array('Y' => array('Title' => $qtype['title'], 'Display' => $clang->gT("Yes"), 'code' => 'Y'),
 		'N' => array('Title' => $qtype['title'],'Display' => $clang->gT("No"), 'code' => 'N'));
@@ -152,7 +152,7 @@ function getQuotaAnswers($qid,$surveyid,$quota_id)
 		array_unshift($slangs,$baselang);
 		
 		$query = "SELECT * FROM ".db_table_name('quota_members')." WHERE sid='{$surveyid}' and qid='{$qid}' and quota_id='{$quota_id}'";
-		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+		$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
 		while(list($key,$value) = each($slangs))
 		{
@@ -190,7 +190,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$_POST  = array_map('db_quote', $_POST);
 		$query = "INSERT INTO ".db_table_name('quota')." (sid,name,qlimit,action) VALUES ('$surveyid','{$_POST['quota_name']}','{$_POST['quota_limit']}','{$_POST['quota_action']}')";
-		$connect->Execute($query) or die($connect->ErrorMsg());
+		$connect->Execute($query) or safe_die($connect->ErrorMsg());
 		$viewquota = "1";
 
 	}
@@ -199,7 +199,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$_POST  = array_map('db_quote', $_POST);
 		$query = "UPDATE ".db_table_name('quota')." SET name='{$_POST['quota_name']}', qlimit='{$_POST['quota_limit']}', action='{$_POST['quota_action']}' where id='{$_POST['quota_id']}' ";
-		$connect->Execute($query) or die($connect->ErrorMsg());
+		$connect->Execute($query) or safe_die($connect->ErrorMsg());
 		$viewquota = "1";
 
 	}
@@ -208,7 +208,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$_POST  = array_map('db_quote', $_POST);
 		$query = "INSERT INTO ".db_table_name('quota_members')." (sid,qid,quota_id,code) VALUES ('$surveyid','{$_POST['quota_qid']}','{$_POST['quota_id']}','{$_POST['quota_anscode']}')";
-		$connect->Execute($query) or die($connect->ErrorMsg());
+		$connect->Execute($query) or safe_die($connect->ErrorMsg());
 		$viewquota = "1";
 
 	}
@@ -217,7 +217,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$_POST  = array_map('db_quote', $_POST);
 		$query = "DELETE FROM ".db_table_name('quota_members')." WHERE qid='{$_POST['quota_qid']}' and code='{$_POST['quota_anscode']}'";
-		$connect->Execute($query) or die($connect->ErrorMsg());
+		$connect->Execute($query) or safe_die($connect->ErrorMsg());
 		$viewquota = "1";
 
 	}
@@ -227,10 +227,10 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$_POST  = array_map('db_quote', $_POST);
 		$query = "DELETE FROM ".db_table_name('quota')." WHERE id='{$_POST['quota_id']}'";
-		$connect->Execute($query) or die($connect->ErrorMsg());
+		$connect->Execute($query) or safe_die($connect->ErrorMsg());
 
 		$query = "DELETE FROM ".db_table_name('quota_members')." WHERE quota_id='{$_POST['quota_id']}'";
-		$connect->Execute($query) or die($connect->ErrorMsg());
+		$connect->Execute($query) or safe_die($connect->ErrorMsg());
 		$viewquota = "1";
 
 	}
@@ -239,7 +239,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$_POST  = array_map('db_quote', $_POST);
 		$query = "SELECT * FROM ".db_table_name('quota')." where id='{$_POST['quota_id']}'";
-		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+		$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 		$quotainfo = $result->FetchRow();
 		
 		$quotasoutput .='<form action="'.$scriptname.'" method="post">
@@ -301,7 +301,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 
 		$query = "SELECT * FROM ".db_table_name('quota')." where sid='".$surveyid."'";
-		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+		$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
 		$quotasoutput .='<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
   						<tr>
@@ -378,7 +378,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
           		</tr>';
 
 				$query = "SELECT id,code,qid FROM ".db_table_name('quota_members')." where quota_id='".$quotalisting['id']."'";
-				$result2 = db_execute_assoc($query) or die($connect->ErrorMsg());
+				$result2 = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
 				if ($result2->RecordCount() > 0)
 				{
@@ -443,7 +443,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 
 		$allowed_types = "(type ='G' or type ='M' or type ='Y' or type ='A' or type ='B' or type ='I')";
 		$query = "SELECT qid, title, question FROM ".db_table_name('questions')." WHERE $allowed_types AND sid='$surveyid' AND language='{$baselang}'";
-		$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+		$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 		if ($result->RecordCount() == 0)
 		{
 			$quotasoutput .='<table width="100%" border="0">

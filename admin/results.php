@@ -490,7 +490,7 @@ function returnQuestionResults($surveyid, $questionfields, $sql=null) {
 	if (!empty($sql)) {
 		$query .= "\nWHERE $sql";
 	}
-	$result = db_execute_assoc($query) or die("error getting results in returnQuestionResults<br />$query<br />".$connect->ErrorMsg());
+	$result = db_execute_assoc($query) or safe_diee("error getting results in returnQuestionResults<br />$query<br />".$connect->ErrorMsg());
 	while($row=$result->FetchRow()) {
 		$output[]=$row;
 	} // while
@@ -517,7 +517,7 @@ function getLabelSet($lid) {
 			  FROM ".db_table_name("labels")."
 			  WHERE lid=$lid
 			  ORDER BY sortorder";
-	$result = db_execute_assoc($query) or die($connect->ErrorMsg());
+	$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 	while($row = $result->FetchRow()) {
 		if ($row['title'] <> '')
 		{

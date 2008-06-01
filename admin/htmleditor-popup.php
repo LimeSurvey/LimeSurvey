@@ -16,7 +16,6 @@
 //Ensure script is not run directly, avoid path disclosure
 //include_once("login_check.php");
 
-//if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
 require_once(dirname(__FILE__).'/../config-defaults.php');
 require_once(dirname(__FILE__).'/../common.php');
 

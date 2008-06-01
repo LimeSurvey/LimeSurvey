@@ -40,22 +40,22 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         //          ."WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid "
         //          ."ORDER BY qid, cqid, cfieldname, value";
         $query = "SELECT * FROM {$dbprefix}conditions ORDER BY cid";
-        $result = db_execute_assoc($query) or die("Couldn't get list of conditions from database<br />$query<br />".$connect->ErrorMsg());
+        $result = db_execute_assoc($query) or safe_die("Couldn't get list of conditions from database<br />$query<br />".$connect->ErrorMsg());
         while ($row=$result->FetchRow())
         {
             $qquery="SELECT qid FROM {$dbprefix}questions WHERE qid='{$row['qid']}'";
-            $qresult=$connect->Execute($qquery) or die ("Couldn't check questions table for qids<br />$qquery<br />".$connect->ErrorMsg());
+            $qresult=$connect->Execute($qquery) or safe_die ("Couldn't check questions table for qids<br />$qquery<br />".$connect->ErrorMsg());
             $qcount=$qresult->RecordCount();
             if (!$qcount) {$cdelete[]=array("cid"=>$row['cid'], "reason"=>"No matching qid");}
             $qquery = "SELECT qid FROM {$dbprefix}questions WHERE qid='{$row['cqid']}'";
-            $qresult=$connect->Execute($qquery) or die ("Couldn't check questions table for qids<br />$qquery<br />".$connect->ErrorMsg());
+            $qresult=$connect->Execute($qquery) or safe_die ("Couldn't check questions table for qids<br />$qquery<br />".$connect->ErrorMsg());
             $qcount=$qresult->RecordCount();
             if (!$qcount) {$cdelete[]=array("cid"=>$row['cid'], "reason"=>$clang->gT("No matching Cqid"));}
             if ($row['cfieldname']) //Only do this if there actually is a "cfieldname"
             {
                 list ($surveyid, $gid, $rest) = explode("X", $row['cfieldname']);
                 $qquery = "SELECT gid FROM {$dbprefix}groups WHERE gid=$gid";
-                $qresult = $connect->Execute($qquery) or die ("Couldn't check conditional group matches<br />$qquery<br />".$connect->ErrorMsg());
+                $qresult = $connect->Execute($qquery) or safe_die ("Couldn't check conditional group matches<br />$qquery<br />".$connect->ErrorMsg());
                 $qcount=$qresult->RecordCount();
                 if ($qcount < 1) {$cdelete[]=array("cid"=>$row['cid'], "reason"=>$clang->gT("No matching CFIELDNAME Group!")." ($gid) ({$row['cfieldname']})");}
             }
@@ -79,11 +79,11 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
     
         // Check question_attributes to delete
         $query = "SELECT * FROM {$dbprefix}question_attributes ORDER BY qid";
-        $result = db_execute_assoc($query) or die($connect->ErrorMsg());
+        $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
         while($row = $result->FetchRow())
         {
             $aquery = "SELECT * FROM {$dbprefix}questions WHERE qid = {$row['qid']}";
-            $aresult = $connect->Execute($aquery) or die($connect->ErrorMsg());
+            $aresult = $connect->Execute($aquery) or safe_die($connect->ErrorMsg());
             $qacount = $aresult->RecordCount();
             if (!$qacount) {
                 $qadelete[]=array("qaid"=>$row['qaid'], "attribute"=>$row['attribute'], "reason"=>$clang->gT("No matching qid"));
@@ -101,11 +101,11 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
     
         // Check assessments
         $query = "SELECT * FROM {$dbprefix}assessments WHERE scope='T' ORDER BY sid";
-        $result = db_execute_assoc($query) or die ("Couldn't get list of assessments<br />$query<br />".$connect->ErrorMsg());
+        $result = db_execute_assoc($query) or safe_die ("Couldn't get list of assessments<br />$query<br />".$connect->ErrorMsg());
         while($row = $result->FetchRow())
         {
             $aquery = "SELECT * FROM {$dbprefix}surveys WHERE sid = {$row['sid']}";
-            $aresult = db_execute_assoc($aquery) or die("Oh dear - died in assessments surveys:".$aquery ."<br />".$connect->ErrorMsg());
+            $aresult = db_execute_assoc($aquery) or safe_die("Oh dear - died in assessments surveys:".$aquery ."<br />".$connect->ErrorMsg());
             $acount = $aresult->RecordCount();
             if (!$acount) {
                 $assdelete[]=array("id"=>$row['id'], "assessment"=>$row['name'], "reason"=>$clang->gT("No matching survey"));
@@ -113,11 +113,11 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         } // while
     
         $query = "SELECT * FROM {$dbprefix}assessments WHERE scope='G' ORDER BY gid";
-        $result = db_execute_assoc($query) or die ("Couldn't get list of assessments<br />$query<br />".$connect->ErrorMsg());
+        $result = db_execute_assoc($query) or safe_die ("Couldn't get list of assessments<br />$query<br />".$connect->ErrorMsg());
         while($row = $result->FetchRow())
         {
             $aquery = "SELECT * FROM {$dbprefix}groups WHERE gid = {$row['gid']}";
-            $aresult = $connect->Execute($aquery) or die("Oh dear - died:".$aquery ."<br />".$connect->ErrorMsg());
+            $aresult = $connect->Execute($aquery) or safe_die("Oh dear - died:".$aquery ."<br />".$connect->ErrorMsg());
             $acount = $aresult->RecordCount();
             if (!$acount) {
                 $asgdelete[]=array("id"=>$row['id'], "assessment"=>$row['name'], "reason"=>$clang->gT("No matching group"));
@@ -147,12 +147,12 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
     
         // Check answers
         $query = "SELECT * FROM {$dbprefix}answers ORDER BY qid";
-        $result = db_execute_assoc($query) or die ("Couldn't get list of answers from database<br />$query<br />".$connect->ErrorMsg());
+        $result = db_execute_assoc($query) or safe_die ("Couldn't get list of answers from database<br />$query<br />".$connect->ErrorMsg());
         while ($row=$result->FetchRow())
         {
             //$integritycheck .= "Checking answer {$row['code']} to qid {$row['qid']}<br />\n";
             $qquery="SELECT qid FROM {$dbprefix}questions WHERE qid='{$row['qid']}'";
-            $qresult=$connect->Execute($qquery) or die ("Couldn't check questions table for qids from answers<br />$qquery<br />".$connect->ErrorMsg());
+            $qresult=$connect->Execute($qquery) or safe_die ("Couldn't check questions table for qids from answers<br />$qquery<br />".$connect->ErrorMsg());
             $qcount=$qresult->RecordCount();
             if (!$qcount) {
                 $adelete[]=array("qid"=>$row['qid'], "code"=>$row['code'], "reason"=>$clang->gT("No matching question"));
@@ -172,11 +172,11 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
     
         // Check surveys
         $query = "SELECT * FROM {$dbprefix}surveys ORDER BY sid";
-        $result = db_execute_assoc($query) or die ("Couldn't get list of answers from database<br />$query<br />".$connect->ErrorMsg());
+        $result = db_execute_assoc($query) or safe_die ("Couldn't get list of answers from database<br />$query<br />".$connect->ErrorMsg());
         while ($row=$result->FetchRow())
         {
             $qquery="SELECT surveyls_survey_id FROM {$dbprefix}surveys_languagesettings WHERE surveyls_survey_id='{$row['sid']}'";
-            $qresult=$connect->Execute($qquery) or die ("Couldn't check languagesettings table for sids from surveys<br />$qquery<br />".$connect->ErrorMsg());
+            $qresult=$connect->Execute($qquery) or safe_die ("Couldn't check languagesettings table for sids from surveys<br />$qquery<br />".$connect->ErrorMsg());
             $qcount=$qresult->RecordCount();
             if (!$qcount) {
                 $sdelete[]=array("sid"=>$row['sid'], "reason"=>$clang->gT("Language specific settings missing"));
@@ -195,17 +195,17 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
     
         //check questions
         $query = "SELECT * FROM {$dbprefix}questions ORDER BY sid, gid, qid";
-        $result = db_execute_assoc($query) or die ("Couldn't get list of questions from database<br />$query<br />".$connect->ErrorMsg());
+        $result = db_execute_assoc($query) or safe_die ("Couldn't get list of questions from database<br />$query<br />".$connect->ErrorMsg());
         while ($row=$result->FetchRow())
         {
             //Make sure group exists
             $qquery="SELECT * FROM {$dbprefix}groups WHERE gid={$row['gid']}";
-            $qresult=$connect->Execute($qquery) or die ("Couldn't check groups table for gids from questions<br />$qquery<br />".$connect->ErrorMsg());
+            $qresult=$connect->Execute($qquery) or safe_die ("Couldn't check groups table for gids from questions<br />$qquery<br />".$connect->ErrorMsg());
             $qcount=$qresult->RecordCount();
             if (!$qcount) {$qdelete[]=array("qid"=>$row['qid'], "reason"=>$clang->gT("No matching Group")." ({$row['gid']})");}
             //Make sure survey exists
             $qquery="SELECT * FROM {$dbprefix}surveys WHERE sid={$row['sid']}";
-            $qresult=$connect->Execute($qquery) or die ("Couldn't check surveys table for sids from questions<br />$qquery<br />".$connect->ErrorMsg());
+            $qresult=$connect->Execute($qquery) or safe_die ("Couldn't check surveys table for sids from questions<br />$qquery<br />".$connect->ErrorMsg());
             $qcount=$qresult->RecordCount();
             if (!$qcount) {
                 if (!isset($qdelete) || !in_array($row['qid'], $qdelete)) {$qdelete[]=array("qid"=>$row['qid'], "reason"=>$clang->gT("No matching Survey!")." ({$row['sid']})");}
@@ -223,12 +223,12 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         }
         //check groups
         $query = "SELECT * FROM {$dbprefix}groups ORDER BY sid, gid";
-        $result=db_execute_assoc($query) or die ("Couldn't get list of groups for checking<br />$query<br />".$connect->ErrorMsg());
+        $result=db_execute_assoc($query) or safe_die ("Couldn't get list of groups for checking<br />$query<br />".$connect->ErrorMsg());
         while ($row=$result->FetchRow())
         {
             //make sure survey exists
             $qquery = "SELECT * FROM {$dbprefix}groups WHERE sid={$row['sid']}";
-            $qresult=$connect->Execute($qquery) or die("Couldn't check surveys table for gids from groups<br />$qquery<br />".$connect->ErrorMsg());
+            $qresult=$connect->Execute($qquery) or safe_die("Couldn't check surveys table for gids from groups<br />$qquery<br />".$connect->ErrorMsg());
             $qcount=$qresult->RecordCount();
             if (!$qcount) {$gdelete[]=array($row['gid']);}
         }
@@ -321,7 +321,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             foreach ($sdelete as $ass) {
                 $integritycheck .= $clang->gT("Deleting Survey ID").":".$ass."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}surveys WHERE sid=$ass";
-                $result = $connect->Execute($sql) or die ("Couldn't delete ($sql)<br />".$connect->ErrorMsg());
+                $result = $connect->Execute($sql) or safe_die ("Couldn't delete ($sql)<br />".$connect->ErrorMsg());
             }
         }    
     
@@ -330,7 +330,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             foreach ($assdelete as $ass) {
                 $integritycheck .= $clang->gT("Deleting ID").":".$ass."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}assessments WHERE id=$ass";
-                $result = $connect->Execute($sql) or die ("Couldn't delete ($sql)<br />".$connect->ErrorMsg());
+                $result = $connect->Execute($sql) or safe_die ("Couldn't delete ($sql)<br />".$connect->ErrorMsg());
             }
         }
         if (isset($asgdelete)) {
@@ -338,7 +338,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             foreach ($asgdelete as $asg) {
                 $integritycheck .= $clang->gT("Deleting ID").":".$asg."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}assessments WHERE id=$asg";
-                $result = $connect->Execute($sql) or die ("Couldn't delete ($sql)<br />".$connect->ErrorMsg());
+                $result = $connect->Execute($sql) or safe_die ("Couldn't delete ($sql)<br />".$connect->ErrorMsg());
             }
         }
         if (isset($qadelete)) {
@@ -346,7 +346,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             foreach ($qadelete as $qad) {
                 $integritycheck .= "Deleting QAID:".$qad."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}question_attributes WHERE qaid=$qad";
-                $result = $connect->Execute($sql) or die ("Couldn't delete ($sql)<br />".$connect->ErrorMsg());
+                $result = $connect->Execute($sql) or safe_die ("Couldn't delete ($sql)<br />".$connect->ErrorMsg());
             }
         }
         if (isset($cdelete)) {
@@ -354,7 +354,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             foreach ($cdelete as $cd) {
                 $integritycheck .= $clang->gT("Deleting cid").":".$cd."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}conditions WHERE cid=$cd";
-                $result=$connect->Execute($sql) or die ("Couldn't Delete ($sql)<br />".$connect->ErrorMsg());
+                $result=$connect->Execute($sql) or safe_die ("Couldn't Delete ($sql)<br />".$connect->ErrorMsg());
             }
             $integritycheck .= "</font><br />\n";
         }
@@ -364,7 +364,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
                 list($ad1, $ad2)=explode("|", $ad);
                 $integritycheck .= $clang->gT("Deleting answer with qid").":".$ad1." and code: ".$ad2."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}answers WHERE qid=$ad1 AND code='$ad2'";
-                $result=$connect->Execute($sql) or die ("Couldn't Delete ($sql)<br />".$connect->ErrorMsg());
+                $result=$connect->Execute($sql) or safe_die ("Couldn't Delete ($sql)<br />".$connect->ErrorMsg());
             }
             $integritycheck .= "</font><br />\n";
         }
@@ -373,7 +373,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             foreach ($qdelete as $qd) {
                 $integritycheck .= $clang->gT("Deleting qid").":".$qd."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}questions WHERE qid=$qd";
-                $result=$connect->Execute($sql) or die ("Couldn't Delete ($sql)<br />".$connect->ErrorMsg());
+                $result=$connect->Execute($sql) or safe_die ("Couldn't Delete ($sql)<br />".$connect->ErrorMsg());
             }
             $integritycheck .= "</font><br />\n";
         }
@@ -382,7 +382,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             foreach ($gdelete as $gd) {
                 $integritycheck .= $clang->gT("Deleting group id").":".$gd."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}groups WHERE gid=$gd";
-                $result=$connect->Execute($sql) or die ("Couldn't Delete ($sql)<br />".$connect->ErrorMsg());
+                $result=$connect->Execute($sql) or safe_die ("Couldn't Delete ($sql)<br />".$connect->ErrorMsg());
             }
             $integritycheck .= "</font><br />\n";
         }

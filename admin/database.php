@@ -38,16 +38,6 @@ function db_rename_table($oldtable, $newtable)
     $dict = NewDataDictionary($connect);
     $result=$dict->RenameTableSQL($oldtable, $newtable);
     return $result[0];
-    
-	/* Old method
- 	 switch ($connect->databaseType) {
-	
-	    case 'postgres7'  : return "ALTER TABLE $oldtable RENAME TO $newtable";
-		case 'mysql'	  : return "RENAME TABLE $oldtable TO $newtable";
-		case 'odbc_mssql' : return "EXEC sp_rename $oldtable, $newtable";
-		default: die ("Couldn't create 'rename table' query for connection type '$connect->databaseType'");
-		 
-	}	*/	
 }
 
 
@@ -78,7 +68,7 @@ if(isset($surveyid))
 	{
 		$query = "DELETE FROM ".db_table_name('question_attributes')."
 				  WHERE qaid={$postqaid} AND qid={$postqid}";
-		$result=$connect->Execute($query) or die("Couldn't delete attribute<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
+		$result=$connect->Execute($query) or safe_die("Couldn't delete attribute<br />".$query."<br />".$connect->ErrorMsg());
 	}
 	elseif ($action == "addattribute" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
@@ -103,7 +93,7 @@ if(isset($surveyid))
 			$query = "INSERT INTO ".db_table_name('question_attributes')."
 					  (qid, attribute, value)
 					  VALUES ('{$postqid}', '{$_POST['attribute_name']}', '{$_POST['attribute_value']}')";
-			$result = $connect->Execute($query) or die("Error<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
+			$result = $connect->Execute($query) or safe_die("Error<br />".$query."<br />".$connect->ErrorMsg());
 		}
 	}
 	elseif ($action == "editattribute" && ( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
@@ -112,7 +102,7 @@ if(isset($surveyid))
 		{
 			$query = "UPDATE ".db_table_name('question_attributes')."
 					  SET value='{$_POST['attribute_value']}' WHERE qaid=".$postqaid." AND qid=".returnglobal('qid');
-			$result = $connect->Execute($query) or die("Error<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
+			$result = $connect->Execute($query) or safe_die("Error<br />".$query."<br />".$connect->ErrorMsg());
 		}
 	}
 	elseif ($action == "insertnewgroup" && ( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
@@ -174,7 +164,7 @@ if(isset($surveyid))
                   else{
                         $query = "INSERT INTO ".db_table_name('groups')." (gid, sid, group_name, description,group_order,language) VALUES ('{$groupid}','{$postsid}', '{$_POST['group_name_'.$grouplang]}', '{$_POST['description_'.$grouplang]}',".getMaxgrouporder(returnglobal('sid')).",'{$grouplang}')";
                         if ($connect->databaseType == 'odbc_mssql') $query = "SET IDENTITY_INSERT ".db_table_name('groups')." ON; " . $query . "SET IDENTITY_INSERT ".db_table_name('groups')." OFF;";
-                        $result = $connect->Execute($query) or die("Error<br />".htmlspecialchars($query)."<br />".htmlspecialchars($connect->ErrorMsg()));
+                        $result = $connect->Execute($query) or safe_die("Error<br />".$query."<br />".$connect->ErrorMsg());
                      }
 				if (!$result)
 				{
@@ -247,7 +237,7 @@ if(isset($surveyid))
 	{
 		if (!isset($gid)) $gid=returnglobal('gid');
 		$query = "DELETE FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid";
-		$result = $connect->Execute($query) or die($connect->ErrorMsg()) ;
+		$result = $connect->Execute($query) or safe_die($connect->ErrorMsg()) ;
 		
 		if ($result)
 		{
@@ -286,7 +276,7 @@ if(isset($surveyid))
 			}
 		}
 		$query = "DELETE FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid";
-		$result = $connect->Execute($query) or die($connect->ErrorMsg()) ;
+		$result = $connect->Execute($query) or safe_die($connect->ErrorMsg()) ;
 		if ($result)
 		{
 			$gid = "";
@@ -317,7 +307,7 @@ if(isset($surveyid))
 			   $question_order=(sanitize_int($_POST['questionposition'])+1);
 			    //Need to renumber all questions on or after this
 	           $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=question_order+1 WHERE gid=".$postgid." AND question_order >= ".$question_order;
-    	       $cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    	       $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
 			} else {
 			    $question_order=(getMaxquestionorder($postgid));
 			    $question_order++;
@@ -416,7 +406,7 @@ if(isset($surveyid))
 		."AND a.sid=$surveyid\n"
 		."group BY a.gid, a.qid\n"
 		."ORDER BY ".db_table_name('groups').".group_order, question_order";
-		$gresult=db_execute_assoc($gselect) or die ("Error: ".htmlspecialchars($connect->ErrorMsg()));
+		$gresult=db_execute_assoc($gselect) or safe_die ("Error: ".$connect->ErrorMsg());
 		$grows = array(); //Create an empty array in case FetchRow does not return any rows
 		while ($grow = $gresult->FetchRow()) {$grows[] = $grow;} // Get table output into array
 //		usort($grows, 'CompareGroupThenTitle');
@@ -432,7 +422,7 @@ if(isset($surveyid))
 			."SET title='".str_pad($question_number, 4, "0", STR_PAD_LEFT)."'\n"
 			."WHERE qid=".$grow['qid'];
 			//$databaseoutput .= "[$sql]";
-			$uresult=$connect->Execute($usql) or die("Error: ".htmlspecialchars($connect->ErrorMsg()));
+			$uresult=$connect->Execute($usql) or safe_die("Error: ".$connect->ErrorMsg());
 			$question_number++;
 			$group_number=$grow['gid'];
 		}
@@ -441,7 +431,7 @@ if(isset($surveyid))
 	elseif ($action == "updatequestion" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
 		$cqquery = "SELECT type, gid FROM ".db_table_name('questions')." WHERE qid={$postqid}";
-		$cqresult=db_execute_assoc($cqquery) or die ("Couldn't get question type to check for change<br />".htmlspecialchars($cqquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
+		$cqresult=db_execute_assoc($cqquery) or safe_die ("Couldn't get question type to check for change<br />".$cqquery."<br />".$connect->ErrorMsg());
 		$cqr=$cqresult->FetchRow();
         	$oldtype=$cqr['type'];
 		$oldgid=$cqr['gid'];
@@ -457,7 +447,7 @@ if(isset($surveyid))
 	       }
         }
         $attsql.='1=1';
-        db_execute_assoc($attsql) or die ("Couldn't delete obsolete question attributes<br />".htmlspecialchars($attsql)."<br />".htmlspecialchars($connect->ErrorMsg()));
+        db_execute_assoc($attsql) or safe_die ("Couldn't delete obsolete question attributes<br />".$attsql."<br />".$connect->ErrorMsg());
         
    		$keepanswers = "1"; // Generally we try to keep answers if the question type has changed
 		
@@ -491,7 +481,7 @@ if(isset($surveyid))
 		{
 			//Make sure there are no conditions based on this question, since we are changing the type
 			$ccquery = "SELECT * FROM ".db_table_name('conditions')." WHERE cqid={$postqid}";
-			$ccresult = db_execute_assoc($ccquery) or die ("Couldn't get list of cqids for this question<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
+			$ccresult = db_execute_assoc($ccquery) or safe_die ("Couldn't get list of cqids for this question<br />".$ccquery."<br />".$connect->ErrorMsg());
 			$cccount=$ccresult->RecordCount();
 			while ($ccr=$ccresult->FetchRow()) {$qidarray[]=$ccr['qid'];}
 			if (isset($qidarray) && $qidarray) {$qidlist=implode(", ", $qidarray);}
@@ -592,7 +582,7 @@ if(isset($surveyid))
 							}
 
 							$uqquery.= "WHERE sid='".db_quote($postsid)."' AND qid='".db_quote($postqid)."' AND language='{$qlang}'";
-							$uqresult = $connect->Execute($uqquery) or die ("Error Update Question: ".htmlspecialchars($uqquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
+							$uqresult = $connect->Execute($uqquery) or safe_die ("Error Update Question: ".$uqquery."<br />".$connect->ErrorMsg());
 							if (!$uqresult)
 							{
 								$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
@@ -612,7 +602,7 @@ if(isset($surveyid))
 					if ($keepanswers == "0")
 					{
 						$query = "DELETE FROM ".db_table_name('answers')." WHERE qid=".db_quote($postqid);
-						$result = $connect->Execute($query) or die("Error: ".htmlspecialchars($connect->ErrorMsg()));
+						$result = $connect->Execute($query) or safe_die("Error: ".$connect->ErrorMsg());
 						if (!$result)
 						{
 							$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers can't be deleted","js")."\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";
@@ -712,7 +702,7 @@ if(isset($surveyid))
 			$_POST  = array_map('db_quote', $_POST);
 			$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, help, other, mandatory, lid, lid1, question_order, language) 
                       VALUES ({$postsid}, {$postgid}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$baselang]."', '".$_POST['help_'.$baselang]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}',$max,".db_quoteall($baselang).")";
-			$result = $connect->Execute($query) or die($connect->ErrorMsg());
+			$result = $connect->Execute($query) or safe_die($connect->ErrorMsg());
 			$newqid = $connect->Insert_ID("{$dbprefix}questions","qid");
 			if (!$result)
 			{
@@ -748,7 +738,7 @@ if(isset($surveyid))
             if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('questions')." ON");}
 			$query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, lid, lid1, question_order, language) 
                       VALUES ($newqid,{$postsid}, {$postgid}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$qlanguage]."', '".$_POST['help_'.$qlanguage]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}', $max,".db_quoteall($qlanguage).")";
-			$result = $connect->Execute($query) or die($connect->ErrorMsg());
+			$result = $connect->Execute($query) or safe_die($connect->ErrorMsg());
             if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('questions')." OFF");}
 			}
 			if (!$result)
@@ -815,7 +805,7 @@ if(isset($surveyid))
 		if (!isset($qid)) {$qid=returnglobal('qid');}
 		//check if any other questions have conditions which rely on this question. Don't delete if there are.
 		$ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid=$qid";
-		$ccresult = db_execute_assoc($ccquery) or die ("Couldn't get list of cqids for this question<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
+		$ccresult = db_execute_assoc($ccquery) or safe_die ("Couldn't get list of cqids for this question<br />".$ccquery."<br />".$connect->ErrorMsg());
 		$cccount=$ccresult->RecordCount();
 		while ($ccr=$ccresult->FetchRow()) {$qidarray[]=$ccr['qid'];}
 		if (isset($qidarray)) {$qidlist=implode(", ", $qidarray);}
@@ -856,7 +846,7 @@ if(isset($surveyid))
 		if (!isset($qid)) {$qid=returnglobal('qid');}
 		//check if any other questions have conditions which rely on this question. Don't delete if there are.
 		$ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_GET['qid']}";
-		$ccresult = db_execute_assoc($ccquery) or die ("Couldn't get list of cqids for this question<br />".htmlspecialchars($ccquery)."<br />".htmlspecialchars($connect->ErrorMsg()));
+		$ccresult = db_execute_assoc($ccquery) or safe_die ("Couldn't get list of cqids for this question<br />".$ccquery."<br />".$connect->ErrorMsg());
 		$cccount=$ccresult->RecordCount();
 		while ($ccr=$ccresult->FetchRow()) {$qidarray[]=$ccr['qid'];}
 		if (isset($qidarray) && $qidarray) {$qidlist=implode(", ", $qidarray);}
@@ -1074,11 +1064,11 @@ if(isset($surveyid))
 		$newsortorder=$postsortorder-1;
 		$oldsortorder=$postsortorder;
 		$cdquery = "UPDATE ".db_table_name('answers')." SET sortorder=-1 WHERE qid=$qid AND sortorder='$newsortorder'";
-		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
 		$cdquery = "UPDATE ".db_table_name('answers')." SET sortorder=$newsortorder WHERE qid=$qid AND sortorder=$oldsortorder";
-		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
 		$cdquery = "UPDATE ".db_table_name('answers')." SET sortorder='$oldsortorder' WHERE qid=$qid AND sortorder=-1";
-		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
 		break;
 
         // Pressing the Down button
@@ -1086,11 +1076,11 @@ if(isset($surveyid))
 		$newsortorder=$postsortorder+1;
 		$oldsortorder=$postsortorder;
 		$cdquery = "UPDATE ".db_table_name('answers')." SET sortorder=-1 WHERE qid=$qid AND sortorder='$newsortorder'";
-		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
 		$cdquery = "UPDATE ".db_table_name('answers')." SET sortorder='$newsortorder' WHERE qid=$qid AND sortorder=$oldsortorder";
-		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
 		$cdquery = "UPDATE ".db_table_name('answers')." SET sortorder=$oldsortorder WHERE qid=$qid AND sortorder=-1";
-		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+		$cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
 		break;
 		
 		// Delete Button
@@ -1166,7 +1156,7 @@ if(isset($surveyid))
 		. "tokenanswerspersistence='{$_POST['tokenanswerspersistence']}', usecaptcha='{$_POST['usecaptcha']}'\n"
 		. "WHERE sid={$postsid}";
 		
-		$usresult = $connect->Execute($usquery) or die("Error updating<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
+		$usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br /><strong>".$connect->ErrorMsg());
 		$sqlstring ='';
 		foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
 		{
@@ -1179,14 +1169,14 @@ if(isset($surveyid))
 		$sqlstring .= "and surveyls_language <> '".GetBaseLanguageFromSurveyID($surveyid)."' ";
 
 		$usquery = "Delete from ".db_table_name('surveys_languagesettings')." where surveyls_survey_id={$postsid} ".$sqlstring;
-		$usresult = $connect->Execute($usquery) or die("Error deleting obsolete surveysettings<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
+		$usresult = $connect->Execute($usquery) or safe_die("Error deleting obsolete surveysettings<br />".$usquery."<br /><br /><strong>".$connect->ErrorMsg());
 
 		foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
 		{
 			if ($langname)
 			{
 				$usquery = "select * from ".db_table_name('surveys_languagesettings')." where surveyls_survey_id={$postsid} and surveyls_language='".$langname."'";
-				$usresult = $connect->Execute($usquery) or die("Error deleting obsolete surveysettings<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
+				$usresult = $connect->Execute($usquery) or safe_die("Error deleting obsolete surveysettings<br />".$usquery."<br /><br /><strong>".$connect->ErrorMsg());
 				if ($usresult->RecordCount()==0)
 				{
 
@@ -1217,7 +1207,7 @@ if(isset($surveyid))
                              .$connect->qstr(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.",'unescaped'),$ishtml))
                              .")";  
                     unset($bplang);         
-					$usresult = $connect->Execute($usquery) or die("Error deleting obsolete surveysettings<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
+					$usresult = $connect->Execute($usquery) or safe_die("Error deleting obsolete surveysettings<br />".$usquery."<br /><br />".$connect->ErrorMsg());
 				}
 			}
 		}
@@ -1306,7 +1296,7 @@ if(isset($surveyid))
 				. "surveyls_welcometext='".db_quote($_POST['welcome_'.$langname])."',\n"
 				. "surveyls_urldescription='".db_quote($_POST['urldescrip_'.$langname])."'\n"
 				. "WHERE surveyls_survey_id=".db_quote($postsid)." and surveyls_language='".$langname."'";
-				$usresult = $connect->Execute($usquery) or die("Error updating<br />".htmlspecialchars($usquery)."<br /><br /><strong>".htmlspecialchars($connect->ErrorMsg()));
+				$usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br /><strong>".$connect->ErrorMsg());
 			}
 		}
 	}
@@ -1437,7 +1427,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 
 		// Insert into survey_rights
 		$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($surveyid,". $_SESSION['loginID'].",1,1,1,1,1,1)"; //inserts survey rights for owner
-		$isrresult = $connect->Execute($isrquery) or die ($isrquery."<br />".$connect->ErrorMsg()); //ADDED by Moses
+		$isrresult = $connect->Execute($isrquery) or safe_die ($isrquery."<br />".$connect->ErrorMsg()); //ADDED by Moses
 		if ($isresult)
 		{
 			$surveyselect = getsurveylist();

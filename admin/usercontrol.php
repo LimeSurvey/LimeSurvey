@@ -52,7 +52,7 @@ if (!isset($_SESSION['loginID']))
 			include("database.php");
 			$emailaddr = $postemail;
 			$query = "SELECT users_name, password, uid FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser)." AND email=".$connect->qstr($emailaddr);
-			$result = db_select_limit_assoc($query, 1) or die ($query."<br />".$connect->ErrorMsg());  // Checked
+			$result = db_select_limit_assoc($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());  // Checked
 
 			if ($result->RecordCount() < 1)
 			{
@@ -101,7 +101,7 @@ if (!isset($_SESSION['loginID']))
 			include("database.php");
 			$query = "SELECT uid, users_name, password, parent_id, email, lang, htmleditormode FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser);
 			$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC; //Checked
-			$result = $connect->SelectLimit($query, 1) or die ($query."<br />".$connect->ErrorMsg());
+			$result = $connect->SelectLimit($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());
 			if ($result->RecordCount() < 1)
 			{
 				// wrong or unknown username 
@@ -195,7 +195,7 @@ if (!isset($_SESSION['loginID']))
 		include("database.php");
 		$query = "SELECT uid, users_name, password, parent_id, email, lang, htmleditormode FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($mappeduser);
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC; //Checked
-		$result = $connect->SelectLimit($query, 1) or die ($query."<br />".$connect->ErrorMsg());
+		$result = $connect->SelectLimit($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());
 		if ($result->RecordCount() < 1)
 		{
 			// In case the hook function is defined
@@ -248,7 +248,7 @@ if (!isset($_SESSION['loginID']))
 					}
 
 					// read again user from newly created entry
-					$result = $connect->SelectLimit($query, 1) or die ($query."<br />".$connect->ErrorMsg());//Checked
+					$result = $connect->SelectLimit($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());//Checked
 				}
 				else
 				{

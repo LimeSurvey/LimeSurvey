@@ -130,7 +130,7 @@ if ($action == "setusertemplates")
                       {
                               $templaterights = array();
                               $squery = "SELECT `folder`, `use` FROM {$dbprefix}templates_rights WHERE uid={$usr['uid']}";
-                              $sresult = db_execute_assoc($squery) or die($connect->ErrorMsg());//Checked
+                              $sresult = db_execute_assoc($squery) or safe_die($connect->ErrorMsg());//Checked
                               while ($srow = $sresult->FetchRow()) {
                                       $templaterights[$srow["folder"]] = array("use"=>$srow["use"]);
                               }
@@ -140,7 +140,7 @@ if ($action == "setusertemplates")
                                       ."<form action='$scriptname' method='post'>\n";
 
                               $tquery = "SELECT * FROM ".$dbprefix."templates";
-                              $tresult = db_execute_assoc($tquery) or die($connect->ErrorMsg()); //Checked
+                              $tresult = db_execute_assoc($tquery) or safe_die($connect->ErrorMsg()); //Checked
                               while ($trow = $tresult->FetchRow()) {
                                       $usersummary .= "\t\t\t<tr><td>{$trow["folder"]}</td>";
 
@@ -374,7 +374,7 @@ if($action == "setasadminchild")
 	if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$query = "UPDATE ".db_table_name('users')." SET parent_id =1 WHERE uid = ".$postuserid;
-		$connect->Execute($query) or die($connect->ErrorMsg()." ".$query); //Checked
+		$connect->Execute($query) or safe_die($connect->ErrorMsg()." ".$query); //Checked
 		$usersummary = "<br /><strong>".$clang->gT("Setting as Administrator Child")."</strong><br />"
 		. "<br />".$clang->gT("Set Parent successful.")."<br />"
 		. "<br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
@@ -1048,7 +1048,7 @@ function updateusergroup($name, $description, $ugid)
 
     $uquery = "UPDATE ".db_table_name('user_groups')." SET name = '$name', description = '$description' WHERE ugid =$ugid";
     // TODO
-    return $connect->Execute($uquery) or die($connect->ErrorMsg()) ; //Checked
+    return $connect->Execute($uquery) or safe_die($connect->ErrorMsg()) ; //Checked
 }
 
 function refreshtemplates() {
@@ -1060,7 +1060,7 @@ function refreshtemplates() {
 		// check for each folder if there is already an entry in the database
 		// if not create it with current user as creator (user with rights "create user" can assign template rights)
 		$query = "SELECT * FROM ".$dbprefix."templates WHERE folder LIKE '".$tp."'";
-		$result = db_execute_assoc($query) or die($connect->ErrorMsg()); //Checked 
+		$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked 
 		
 		if ($result->RecordCount() == 0) {
 			$query2 = "INSERT INTO ".$dbprefix."templates SET folder='".$tp."', creator=".$_SESSION['loginID'] ;
@@ -1078,7 +1078,7 @@ function addUserGroupInDB($group_name, $group_description) {
         $id = $connect->Insert_Id(db_table_name_nq('user_groups'),'ugid');
         if($id > 0) {
              $iquery = "INSERT INTO ".db_table_name('user_in_groups')." VALUES($id, '{$_SESSION['loginID']}')";
-            $connect->Execute($iquery ) or die($connect->ErrorMsg()); //Checked
+            $connect->Execute($iquery ) or safe_die($connect->ErrorMsg()); //Checked
         }
         return $id;
     } else {

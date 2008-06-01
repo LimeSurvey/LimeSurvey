@@ -84,7 +84,7 @@ if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die("browse - Cannot run 
 
 //Select public language file
 $query = "SELECT language FROM ".db_table_name("surveys")." WHERE sid=$surveyid";
-$result = db_execute_assoc($query) or die("Error selecting language: <br />".$query."<br />".$connect->ErrorMsg());  //Checked
+$result = db_execute_assoc($query) or safe_die("Error selecting language: <br />".$query."<br />".$connect->ErrorMsg());  //Checked
 
 
 // Set language for questions and labels to base language of this survey
@@ -222,7 +222,7 @@ if (isset($_SESSION['s_lang']))
                 ."AND {$dbprefix}answers.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
                 ."ORDER BY sortorder, "
                 ."answer";
-            $aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg()); //Checked   
+            $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg()); //Checked   
         
             while ($arows = $aresult->FetchRow())
             {
@@ -252,7 +252,7 @@ if (isset($_SESSION['s_lang']))
 	$nfncount = count($fnames)-1;
 	//SHOW INDIVIDUAL RECORD
 	$idquery = "SELECT * FROM $surveytable WHERE id=$id";
-	$idresult = db_execute_assoc($idquery) or die ("Couldn't get entry<br />\n$idquery<br />\n".$connect->ErrorMsg()); //Checked   
+	$idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get entry<br />\n$idquery<br />\n".$connect->ErrorMsg()); //Checked   
 	while ($idrow = $idresult->FetchRow()) {$id=$idrow['id']; $rlangauge=$idrow['startlanguage'];}
 	$next=$id+1;
 	$last=$id-1;
@@ -262,7 +262,7 @@ if (isset($_SESSION['s_lang']))
         $pdf->intopdf($clang->gT("Question").": ".$clang->gT("Your Answer"));
     }
     $printoutput .= "<tr><th>".$clang->gT("Question")."</th><th>".$clang->gT("Your Answer")."</th></tr>\n";
-	$idresult = db_execute_assoc($idquery) or die ("Couldn't get entry<br />$idquery<br />".$connect->ErrorMsg()); //Checked   
+	$idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get entry<br />$idquery<br />".$connect->ErrorMsg()); //Checked   
 	while ($idrow = $idresult->FetchRow())
 	{
 		$i=0;

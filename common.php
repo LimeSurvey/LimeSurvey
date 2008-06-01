@@ -16,7 +16,7 @@
 //Security Checked: POST, GET, SESSION, DB, REQUEST, returnglobal
 
 //Ensure script is not run directly, avoid path disclosure
-if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
+if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run this script directly");}
 $versionnumber = "1.70+";
 $dbversionnumber = 126;
 $buildnumber = "";
@@ -122,7 +122,7 @@ switch ($databasetype)
 	case "postgres": if ($databaseport!="default") {$dbport="$databaselocation:$databaseport";}
 		 			 	 else {$dbport=$databaselocation;}
 	break;
-	default: die("Unknown database type");
+	default: safe_die("Unknown database type");
 }
 // Now try connecting to the database
 if (@$connect->Connect($dbport, $databaseuser, $databasepass, $databasename))
@@ -133,7 +133,7 @@ else {
 	if ($databasetype=='odbc_mssql') {$dbport="Driver={SQL Server};Server=$databaselocation;";}
 	if (!@$connect->Connect($dbport, $databaseuser, $databasepass))
     {
-       Die("<strong>Can't connect to LimeSurvey database. Reason:</strong> ".$connect->ErrorMsg());
+       safe_die("Can't connect to LimeSurvey database. Reason: ".$connect->ErrorMsg());
     }
 }
 
@@ -150,7 +150,7 @@ if ($databasetype=='mysql') {
     $infoarray=$connect->ServerInfo();
     if (version_compare ($infoarray['version'],'4.1','<'))
     {
-      Die ("<br />Error: You need at least MySQL version 4.1 to run LimeSurvey");
+      safe_die ("<br />Error: You need at least MySQL version 4.1 to run LimeSurvey");
     }
     @$connect->Execute("SET CHARACTER SET 'utf8'");  //Checked    
 }
@@ -163,7 +163,7 @@ if ($databasetype=='odbc_mssql') {
 
 // Check if the DB is up to date
 If ($dbexistsbutempty && $sourcefrom=='admin') {
-     Die ("<br />The LimeSurvey database does exist but it seems to be empty. Please run the <a href='$homeurl/install/index.php'>install script</a> to create the necessary tables.");
+     die ("<br />The LimeSurvey database does exist but it seems to be empty. Please run the <a href='$homeurl/install/index.php'>install script</a> to create the necessary tables.");
 }
 
 
@@ -175,17 +175,17 @@ If (!$dbexistsbutempty && $sourcefrom=='admin')
     $usresult = db_execute_assoc($usquery,'',true); //checked
     if (!$usresult)
     {
-     Die ("<br />The configured LimeSurvey database does not seem to exist and the LimeSurvey tables weren't found. <br />Please check the <a href='http://docs.limesurvey.org'>online manual</a> for installation instructions.<br />If you already edited config.php please run the <a href='$homeurl/install/index.php'>installation script</a>.");
+     die ("<br />The configured LimeSurvey database does not seem to exist and the LimeSurvey tables weren't found. <br />Please check the <a href='http://docs.limesurvey.org'>online manual</a> for installation instructions.<br />If you already edited config.php please run the <a href='$homeurl/install/index.php'>installation script</a>.");
 	}
     $usrow = $usresult->FetchRow();
     if (intval($usrow['stg_value'])<$dbversionnumber)
     {
-     Die ("<br />The LimeSurvey database is not up to date. <br />Please run the <a href='$homeurl/install/index.php'>installation script</a> to upgrade your database.");
+     die ("<br />The LimeSurvey database is not up to date. <br />Please run the <a href='$homeurl/install/index.php'>installation script</a> to upgrade your database.");
     }
 
     if (is_dir($homedir."/install") && $debug<2)
     {
-     Die ("<br />Everything is fine - you just forgot to delete or rename your LimeSurvey installation directory (/admin/install). <br />Please do so since it may be a security risk.");
+     die ("<br />Everything is fine - you just forgot to delete or rename your LimeSurvey installation directory (/admin/install). <br />Please do so since it may be a security risk.");
     }
 
 }
@@ -398,7 +398,7 @@ function &db_select_limit_num($sql,$numrows=-1,$offset=-1,$inputarr=false)
 {
 	global $connect;
 
-	$dataset=$connect->SelectLimit($sql,$numrows=-1,$offset=-1,$inputarr=false) or die($sql);
+	$dataset=$connect->SelectLimit($sql,$numrows=-1,$offset=-1,$inputarr=false) or safe_die($sql);
 	return $dataset;
 }
 
@@ -409,7 +409,7 @@ function &db_execute_assoc($sql,$inputarr=false,$silent=false)
 //	$oldfetchmode=
     $connect->SetFetchMode(ADODB_FETCH_ASSOC);
 	$dataset=$connect->Execute($sql,$inputarr);    //Checked    
-	if (!$silent && !$dataset)  {die($connect->ErrorMsg().':'.$sql);}      
+	if (!$silent && !$dataset)  {safe_die($connect->ErrorMsg().':'.$sql);}      
 //	$connect->SetFetchMode($oldfetchmode);
 	return $dataset;
 }
@@ -420,7 +420,7 @@ function &db_select_limit_assoc($sql,$numrows=-1,$offset=-1,$inputarr=false,$die
 
 	$connect->SetFetchMode(ADODB_FETCH_ASSOC);
 	$dataset=$connect->SelectLimit($sql,$numrows,$offset,$inputarr=false);
-    if (!$dataset && $dieonerror) {die($connect->ErrorMsg().':'.$sql);}
+    if (!$dataset && $dieonerror) {safe_die($connect->ErrorMsg().':'.$sql);}
 	return $dataset;
 }
 
@@ -501,7 +501,7 @@ function db_select_tables_like($table)
 			return "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES where TABLE_TYPE='BASE TABLE' and TABLE_NAME LIKE '$table'";
 		case 'postgres' : 
 			return "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' and table_name like '$table'";
-		default: die ("Couldn't create 'select tables like' query for connection type 'databaseType'"); 
+		default: safe_die ("Couldn't create 'select tables like' query for connection type 'databaseType'"); 
 	}	
 }
 
@@ -713,7 +713,6 @@ function getMaxquestionorder($gid)
 	$gid=sanitize_int($gid);
 	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
 	$max_sql = "SELECT max( question_order ) AS max FROM ".db_table_name('questions')." WHERE gid='$gid' AND language='$s_lang'";
-	//		echo "debug: ".$max_sql."<br />" and die;
 
 	$max_result =db_execute_assoc($max_sql) ; //Checked
 	$maxrow = $max_result->FetchRow() ;
@@ -855,7 +854,7 @@ function getgrouplist($gid)
 	if (!$surveyid) {$surveyid=returnglobal('sid');}
 	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
 	$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid='{$surveyid}' AND  language='{$s_lang}'  ORDER BY group_order";
-	$gidresult = db_execute_num($gidquery) or die("Couldn't get group list in common.php<br />$gidquery<br />".htmlspecialchars($connect->ErrorMsg())); //Checked
+	$gidresult = db_execute_num($gidquery) or safe_die("Couldn't get group list in common.php<br />$gidquery<br />".$connect->ErrorMsg()); //Checked
 	while($gv = $gidresult->FetchRow())
 	{
 		$groupselecter .= "\t\t<option";
@@ -880,7 +879,7 @@ function getgrouplist2($gid)
 	$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
 
 
-	$gidresult = db_execute_num($gidquery) or die("Plain old did not work!");   //Checked
+	$gidresult = db_execute_num($gidquery) or safe_die("Plain old did not work!");   //Checked
 	while ($gv = $gidresult->FetchRow())
 	{
 		$groupselecter .= "\t\t<option";
@@ -905,7 +904,7 @@ function getgrouplist3($gid)
 	$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
 
 
-	$gidresult = db_execute_num($gidquery) or die("Plain old did not work!");      //Checked
+	$gidresult = db_execute_num($gidquery) or safe_die("Plain old did not work!");      //Checked
 	while ($gv = $gidresult->FetchRow())
 	{
 		$groupselecter .= "\t\t<option";
@@ -923,7 +922,7 @@ function getgrouplistlang($gid, $language)
 	$groupselecter="";
     if (!$surveyid) {$surveyid=returnglobal('sid');}
 	$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='".$language."' ORDER BY group_order";
-	$gidresult = db_execute_num($gidquery) or die("Couldn't get group list in common.php<br />$gidquery<br />".htmlspecialchars($connect->ErrorMsg()));   //Checked
+	$gidresult = db_execute_num($gidquery) or safe_die("Couldn't get group list in common.php<br />$gidquery<br />".$connect->ErrorMsg());   //Checked
 	while($gv = $gidresult->FetchRow())
 	{
 		$groupselecter .= "\t\t<option";
@@ -959,7 +958,7 @@ function getuserlist($outputformat='fullinfoarray')
 		}
 		else
 		{
-			return Array(); // Or DIE maybe
+			return Array(); // Or die maybe
 		}
 
 	}
@@ -1045,7 +1044,7 @@ function getSurveyInfo($surveyid, $languagecode='')
 	   $languagecode=GetBaseLanguageFromSurveyID($surveyid);;
     }
 	$query="SELECT * FROM ".db_table_name('surveys').",".db_table_name('surveys_languagesettings')." WHERE sid=$surveyid and surveyls_survey_id=$surveyid and surveyls_language='$languagecode'";
-    $result=db_execute_assoc($query) or die ("Couldn't access survey settings<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));   //Checked
+    $result=db_execute_assoc($query) or safe_die ("Couldn't access survey settings<br />$query<br />".$connect->ErrorMsg());   //Checked
 	while ($row=$result->FetchRow())
 	{
         $thissurvey=$row;
@@ -1098,7 +1097,7 @@ function getlabelsets($languages=null)
         $query .=" 1=1 ";
     }
     $query .=" order by label_name";
-	$result = db_execute_assoc($query) or die ("Couldn't get list of label sets<br />$query<br />".htmlspecialchars($connect->ErrorMsg())); //Checked
+	$result = db_execute_assoc($query) or safe_die ("Couldn't get list of label sets<br />$query<br />".$connect->ErrorMsg()); //Checked
 	$labelsets=array();
 	while ($row=$result->FetchRow())
 	{
@@ -1222,7 +1221,7 @@ function conditionscount($qid)
 	global $dbprefix, $connect;
     $qid=sanitize_int($qid);
 	$query="SELECT COUNT(*) FROM ".db_table_name('conditions')." WHERE qid=$qid";
-	$result=db_execute_num($query) or die ("Couldn't get conditions<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+	$result=db_execute_num($query) or safe_die ("Couldn't get conditions<br />$query<br />".$connect->ErrorMsg());
 	list($count) = $result->FetchRow();
 	return $count;
 }
@@ -1279,7 +1278,7 @@ function fixsortorderAnswers($qid) //Function rewrites the sortorder for a group
 	while ($cdrow=$cdresult->FetchRow())
 	{
 		$cd2query="UPDATE ".db_table_name('answers')." SET sortorder={$position} WHERE qid={$cdrow[0]} AND code='{$cdrow[1]}' AND sortorder={$cdrow[2]} ";
-		$cd2result=$connect->Execute($cd2query) or die ("Couldn't update sortorder<br />$cd2query<br />".htmlspecialchars($connect->ErrorMsg())); //Checked    
+		$cd2result=$connect->Execute($cd2query) or safe_die ("Couldn't update sortorder<br />$cd2query<br />".$connect->ErrorMsg()); //Checked    
 		$position++;
 	}
 }
@@ -1302,7 +1301,7 @@ function fixsortorderQuestions($qid,$gid=0) //Function rewrites the sortorder fo
 	while ($cdrow=$cdresult->FetchRow())
 	{
 		$cd2query="UPDATE ".db_table_name('questions')." SET question_order='{$position}' WHERE qid='{$cdrow['qid']}' ";
-		$cd2result = $connect->Execute($cd2query) or die ("Couldn't update question_order<br />$cd2query<br />".htmlspecialchars($connect->ErrorMsg()));    //Checked    
+		$cd2result = $connect->Execute($cd2query) or safe_die ("Couldn't update question_order<br />$cd2query<br />".$connect->ErrorMsg());    //Checked    
 		$position++;
 	}
 }
@@ -1321,7 +1320,7 @@ function shiftorderQuestions($sid,$gid,$shiftvalue) //Function shifts the sortor
 	while ($cdrow=$cdresult->FetchRow())
 	{
 		$cd2query="UPDATE ".db_table_name('questions')." SET question_order='{$position}' WHERE qid='{$cdrow['qid']}' ";
-		$cd2result = $connect->Execute($cd2query) or die ("Couldn't update question_order<br />$cd2query<br />".htmlspecialchars($connect->ErrorMsg())); //Checked 
+		$cd2result = $connect->Execute($cd2query) or safe_die ("Couldn't update question_order<br />$cd2query<br />".$connect->ErrorMsg()); //Checked 
 		$position++;
 	}
 }
@@ -1335,7 +1334,7 @@ function fixsortorderGroups() //Function rewrites the sortorder for groups
 	while ($cdrow=$cdresult->FetchRow())
 	{
 		$cd2query="UPDATE ".db_table_name('groups')." SET group_order='{$position}' WHERE gid='{$cdrow['gid']}' ";
-		$cd2result = $connect->Execute($cd2query) or die ("Couldn't update group_order<br />$cd2query<br />".htmlspecialchars($connect->ErrorMsg()));  //Checked   
+		$cd2result = $connect->Execute($cd2query) or safe_die ("Couldn't update group_order<br />$cd2query<br />".$connect->ErrorMsg());  //Checked   
 		$position++;
 	}
 }
@@ -1362,7 +1361,7 @@ function fixmovedquestionConditions($qid,$oldgid,$newgid) //Function rewrites th
 			." SET cfieldname='{$newcfn}' WHERE cid={$mycid}";
 
 			$c2result=$connect->Execute($c2query)     //Checked   
-			or die ("Couldn't update conditions<br />$c2query<br />".htmlspecialchars($connect->ErrorMsg()));
+			or safe_die ("Couldn't update conditions<br />$c2query<br />".$connect->ErrorMsg());
 		}
 	}
 }
@@ -1557,7 +1556,7 @@ function returnquestiontitlefromfieldcode($fieldcode)
 	if (isset($details['aid']) && $details['aid']) //Add answer if necessary (array type questions)
 	{
 		$qq = "SELECT answer FROM ".db_table_name('answers')." WHERE qid=$fqid AND code='{$details['aid']}' AND language='".$_SESSION['s_lang']."'";
-		$qr = db_execute_assoc($qq) or die ("ERROR: ".htmlspecialchars($connect->ErrorMsg())."<br />$qq"); //Checked
+		$qr = db_execute_assoc($qq) or safe_die ("ERROR: ".$connect->ErrorMsg()."<br />$qq"); //Checked
 		while($qrow=$qr->FetchRow())
 		{
 			$qname.=" [".$qrow['answer']."]";
@@ -1604,7 +1603,7 @@ function getsidgidqidaidtype($fieldcode)
 
 		$s_lang = GetBaseLanguageFromSurveyID($fsid);
 		$query = "SELECT type FROM ".db_table_name('questions')." WHERE qid=".$fqid." AND language='".$s_lang."'";  
-		$result = db_execute_assoc($query) or die ("Couldn't get question type - getsidgidqidaidtype() in common.php<br />".htmlspecialchars($connect->ErrorMsg())); //Checked   
+		$result = db_execute_assoc($query) or safe_die ("Couldn't get question type - getsidgidqidaidtype() in common.php<br />".$connect->ErrorMsg()); //Checked   
 		if ( $result->RecordCount() == 0 )
 		{ // question doesn't exist
 			return Array();
@@ -1649,7 +1648,7 @@ function getextendedanswer($fieldcode, $value, $format='')
 		$fields=arraySearchByKey($fieldcode, createFieldMap($surveyid), "fieldname", 1);
 		//Find out the question type
 		$query = "SELECT type, lid, lid1 FROM ".db_table_name('questions')." WHERE qid={$fields['qid']} AND language='".$s_lang."'";
-		$result = db_execute_assoc($query) or die ("Couldn't get question type - getextendedanswer() in common.php<br />".htmlspecialchars($connect->ErrorMsg())); //Checked   
+		$result = db_execute_assoc($query) or safe_die ("Couldn't get question type - getextendedanswer() in common.php<br />".$connect->ErrorMsg()); //Checked   
 		while($row=$result->FetchRow())
 		{
 			$this_type=$row['type'];
@@ -1665,7 +1664,7 @@ function getextendedanswer($fieldcode, $value, $format='')
 			case "I":
 			case "R":
 			$query = "SELECT code, answer FROM ".db_table_name('answers')." WHERE qid={$fields['qid']} AND code='".$connect->escape($value)."' AND language='".$s_lang."'";
-			$result = db_execute_assoc($query) or die ("Couldn't get answer type L - getextendedanswer() in common.php<br />$query<br />".htmlspecialchars($connect->ErrorMsg())); //Checked   
+			$result = db_execute_assoc($query) or safe_die ("Couldn't get answer type L - getextendedanswer() in common.php<br />$query<br />".$connect->ErrorMsg()); //Checked   
 			while($row=$result->FetchRow())
 			{
 				$this_answer=$row['answer'];
@@ -1721,7 +1720,7 @@ function getextendedanswer($fieldcode, $value, $format='')
 			case "Z":
 			case "1":
 			$query = "SELECT title FROM ".db_table_name('labels')." WHERE ((lid=$this_lid) OR (lid=$this_lid1)) AND code='".$connect->escape($value)."' AND language='".$s_lang."'";
-			$result = db_execute_assoc($query) or die ("Couldn't get answer type F/H - getextendedanswer() in common.php");   //Checked
+			$result = db_execute_assoc($query) or safe_die ("Couldn't get answer type F/H - getextendedanswer() in common.php");   //Checked
 			while($row=$result->FetchRow())
 			{
 				$this_answer=$row['title'];
@@ -1857,7 +1856,7 @@ function createFieldMap($surveyid, $style="null") {
 	.db_table_name('questions').".language='{$s_lang}' AND "
 	.db_table_name('groups').".language='{$s_lang}' "
 	." ORDER BY {$dbprefix}groups.group_order, title";
-	$aresult = db_execute_assoc($aquery) or die ("Couldn't get list of questions in createFieldMap function.<br />$query<br />".htmlspecialchars($connect->ErrorMsg())); //Checked
+	$aresult = db_execute_assoc($aquery) or safe_die ("Couldn't get list of questions in createFieldMap function.<br />$query<br />".$connect->ErrorMsg()); //Checked
 	while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
 	{
 		if ($arow['type'] != "M" && $arow['type'] != "A" && $arow['type'] != "B" &&
@@ -1926,7 +1925,7 @@ function createFieldMap($surveyid, $style="null") {
 			." AND ".db_table_name('answers').".language='".$s_lang."'"
 			." AND ".db_table_name('questions').".qid={$arow['qid']} "
 			." ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
-			$abresult=db_execute_assoc($abquery) or die ("Couldn't get list of answers in createFieldMap function (case M/A/B/C/E/F/H/P)<br />$abquery<br />".htmlspecialchars($connect->ErrorMsg()));  //Checked
+			$abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get list of answers in createFieldMap function (case M/A/B/C/E/F/H/P)<br />$abquery<br />".$connect->ErrorMsg());  //Checked
 			while ($abrow=$abresult->FetchRow())
 			{
 				$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code']);
@@ -1981,7 +1980,7 @@ function createFieldMap($surveyid, $style="null") {
 			.db_table_name('answers').".language='".$s_lang."' AND "
 			.db_table_name('questions').".language='".$s_lang."' AND "
 			.db_table_name('questions').".qid={$arow['qid']} ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
-			$abresult=db_execute_assoc($abquery) or die ("Couldn't get list of answers in createFieldMap function (type Q)<br />$abquery<br />".htmlspecialchars($connect->ErrorMsg())); //Checked
+			$abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get list of answers in createFieldMap function (type Q)<br />$abquery<br />".$connect->ErrorMsg()); //Checked
 			while ($abrow=$abresult->FetchRow())
 			{
 				$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code']);
@@ -2001,7 +2000,7 @@ function createFieldMap($surveyid, $style="null") {
                        ." AND a.language='".$s_lang. "' "
                        ." AND q.language='".$s_lang. "' "
                        ." ORDER BY a.sortorder, a.answer";
-			$abresult=db_execute_assoc($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());    //Checked    
+			$abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());    //Checked    
 			$abcount=$abresult->RecordCount();
 			while ($abrow=$abresult->FetchRow())
 			{
@@ -2012,7 +2011,7 @@ function createFieldMap($surveyid, $style="null") {
                          ." AND a.language='".$s_lang. "' "
                          ." AND q.language='".$s_lang. "' ";
                         
-				$abmultiscaleresult=db_execute_assoc($abmultiscalequery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg()); //Checked
+				$abmultiscaleresult=db_execute_assoc($abmultiscalequery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg()); //Checked
 				$abmultiscalecount=$abmultiscaleresult->RecordCount();
 				//if ($abmultiscalecount>0)
 				if ($abmultiscaleresultrow=$abmultiscaleresult->FetchRow())
@@ -2036,7 +2035,7 @@ function createFieldMap($surveyid, $style="null") {
                        ." AND a.language='".$s_lang. "' "
                        ." AND q.language='".$s_lang. "' ";
                        
-				$abmultiscaleresult=db_execute_assoc($abmultiscalequery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg()); //Checked
+				$abmultiscaleresult=db_execute_assoc($abmultiscalequery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg()); //Checked
 				$abmultiscalecount=$abmultiscaleresult->RecordCount();
 				if ($abmultiscaleresultrow=$abmultiscaleresult->FetchRow())
 				{
@@ -2063,7 +2062,7 @@ function createFieldMap($surveyid, $style="null") {
 			.db_table_name('questions').".language='".$s_lang."' AND"
 			.db_table_name('questions').".qid={$arow['qid']} ORDER BY ".db_table_name('answers')
 			.".sortorder, ".db_table_name('answers').".answer";
-			$abresult=db_execute_assoc($abquery) or die ("Couldn't get list of answers in createFieldMap function (type R)<br />$abquery<br />".htmlspecialchars($connect->ErrorMsg())); //Checked
+			$abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get list of answers in createFieldMap function (type R)<br />$abquery<br />".$connect->ErrorMsg()); //Checked
 			$abcount=$abresult->RecordCount();
 			for ($i=1; $i<=$abcount; $i++)
 			{
@@ -2264,7 +2263,6 @@ function templatereplace($line)
 		{
 			// Find out if the user has any saved data
 			
-			//die(returnglobal('token'));
 			if (!isset($_SESSION['step']) || !$_SESSION['step'])  //First page, show LOAD
 			{
 				$saveall = "<input type='submit' name='loadall' value='".$clang->gT("Load Unfinished Survey")."' class='saveall' ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") ."/>";
@@ -2481,7 +2479,7 @@ function getSavedCount($surveyid)
     $surveyid=sanitize_int($surveyid);
     
 	$query = "SELECT COUNT(*) FROM ".db_table_name('saved_control')." WHERE sid=$surveyid";
-	$result=db_execute_num($query) or die ("Couldn't get saved summary<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));    //Checked
+	$result=db_execute_num($query) or safe_die ("Couldn't get saved summary<br />$query<br />".$connect->ErrorMsg());    //Checked
 	list($count) = $result->FetchRow();
 	return $count;
 }
@@ -2557,7 +2555,7 @@ function buildLabelSetCheckSumArray()
 	$query = "SELECT lid
               FROM ".db_table_name('labelsets')."
               ORDER BY lid";
-	$result = db_execute_assoc($query) or die("Died collecting labelset ids<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));  //Checked  
+	$result = db_execute_assoc($query) or safe_die("safe_died collecting labelset ids<br />$query<br />".$connect->ErrorMsg());  //Checked  
 	$csarray=array();
 	while ($row=$result->FetchRow())
 	{
@@ -2566,7 +2564,7 @@ function buildLabelSetCheckSumArray()
                    FROM ".db_table_name('labels')."
                    WHERE lid={$row['lid']}
                    ORDER BY language, sortorder, code";
-		$result2 = db_execute_num($query2) or die("Died querying labelset $lid<br />$query2<br />".htmlspecialchars($connect->ErrorMsg())); //Checked  
+		$result2 = db_execute_num($query2) or safe_die("safe_died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg()); //Checked  
 		while($row2=$result2->FetchRow())
 		{
 			$thisset .= implode('.', $row2);
@@ -2581,7 +2579,7 @@ function getQuestionAttributes($qid)
 	global $dbprefix, $connect;
     $qid=sanitize_int($qid);
 	$query = "SELECT * FROM ".db_table_name('question_attributes')." WHERE qid=$qid";
-	$result = db_execute_assoc($query) or die("Error finding question attributes");  //Checked
+	$result = db_execute_assoc($query) or safe_die("Error finding question attributes");  //Checked
 	$qid_attributes=array();
 	while ($row=$result->FetchRow())
 	{
@@ -3077,7 +3075,6 @@ function getArrayFiltersForGroup($surveyid,$gid)
 			$val = $qresult->FetchRow(); // Get the Value of the Attribute ( should be a previous question's title in same group )
 			foreach ($grows2 as $avalue)
 			{
-				//die(print_r($avalue));
 				if ($avalue['title'] == $val[0])
 				{
 					$filter = array('qid' => $qrow['qid'], 'mandatory' => $qrow['mandatory'], 'type' => $avalue['type'], 'fid' => $avalue['qid']);
@@ -3087,7 +3084,6 @@ function getArrayFiltersForGroup($surveyid,$gid)
 			reset($grows2);
 		}
 	}
-	//die(print_r($attrmach));
 	return $attrmach;
 }
 
@@ -3146,7 +3142,7 @@ function getArrayFiltersOutGroup($qid)
 	if ($result->RecordCount() == 1) // We Found a array_filter attribute
 	{
 		$val = $result->FetchRow(); // Get the Value of the Attribute ( should be a previous question's title in same group )
-		//die(print_r($val));
+
 		// we found the target question, now we need to know what the answers where, we know its a multi!
 		$query = "SELECT gid FROM ".db_table_name('questions')." where title='{$val['value']}' AND language='".$_SESSION['s_lang']."'";
 		$qresult = db_execute_assoc($query); //Checked
@@ -3516,7 +3512,7 @@ function include2var($file)
 function BuildCSVFromQuery($Query)
 {
 	global $dbprefix, $connect;
-	$QueryResult = db_execute_assoc($Query) or die ("ERROR: $QueryResult<br />".htmlspecialchars($connect->ErrorMsg())); //safe
+	$QueryResult = db_execute_assoc($Query) or safe_die ("ERROR: $QueryResult<br />".$connect->ErrorMsg()); //safe
 	preg_match('/FROM (\w+)( |,)/i', $Query, $MatchResults);
 	$TableName = $MatchResults[1];;
 	if ($dbprefix)
@@ -3606,21 +3602,21 @@ function CleanLanguagesFromSurvey($sid, $availlangs)
 	
 	// Remove From Answers Table
 	$query = "SELECT qid FROM ".db_table_name('questions')." WHERE sid='{$sid}' and ($sqllang)";
-	$qidresult = db_execute_assoc($query) or die($connect->ErrorMsg());    //Checked
+	$qidresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg());    //Checked
 	while ($qrow =  $qidresult->FetchRow())
 	{
 		$myqid = $qrow[0];
 		$query = "DELETE FROM ".db_table_name('answers')." WHERE qid='$myqid' and ($sqllang)";
-		$connect->Execute($query) or die($connect->ErrorMsg());    //Checked
+		$connect->Execute($query) or safe_die($connect->ErrorMsg());    //Checked
 	}
 	
 	// Remove From Questions Table
 	$query = "DELETE FROM ".db_table_name('questions')." WHERE sid='{$sid}' and ($sqllang)";
-	$connect->Execute($query) or die($connect->ErrorMsg());   //Checked
+	$connect->Execute($query) or safe_die($connect->ErrorMsg());   //Checked
 	
 	// Remove From Groups Table
 	$query = "DELETE FROM ".db_table_name('groups')." WHERE sid='{$sid}' and ($sqllang)";
-	$connect->Execute($query) or die($connect->ErrorMsg());   //Checked
+	$connect->Execute($query) or safe_die($connect->ErrorMsg());   //Checked
 	
 	return true;
 }
@@ -3647,7 +3643,7 @@ function FixLanguageConsistency($sid, $availlangs)
 	$baselang = GetBaseLanguageFromSurveyID($sid);
 	$sid=sanitize_int($sid);
 	$query = "SELECT * FROM ".db_table_name('groups')." WHERE sid='{$sid}' AND language='{$baselang}'  ORDER BY group_order";
-	$result = db_execute_assoc($query) or die($connect->ErrorMsg());  //Checked
+	$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());  //Checked
 	if ($result->RecordCount() > 0)
 	{
 		while($group = $result->FetchRow())
@@ -3655,12 +3651,12 @@ function FixLanguageConsistency($sid, $availlangs)
 			foreach ($langs as $lang)
 			{
 				$query = "SELECT gid FROM ".db_table_name('groups')." WHERE sid='{$sid}' AND gid='{$group['gid']}' AND language='{$lang}'";
-				$gresult = db_execute_assoc($query) or die($connect->ErrorMsg()); //Checked
+				$gresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
 				if ($gresult->RecordCount() < 1)
 				{
                     if ($databasetype=='odbc_mssql') {$connect->Execute("SET IDENTITY_INSERT ".db_table_name('groups')." ON");}   //Checked
 					$query = "INSERT INTO ".db_table_name('groups')." (gid,sid,group_name,group_order,description,language) VALUES('{$group['gid']}','{$group['sid']}',".db_quoteall($group['group_name']).",'{$group['group_order']}',".db_quoteall($group['description']).",'{$lang}')";  
-					$connect->Execute($query) or die($connect->ErrorMsg());  //Checked
+					$connect->Execute($query) or safe_die($connect->ErrorMsg());  //Checked
                     if ($databasetype=='odbc_mssql') {$connect->Execute("SET IDENTITY_INSERT ".db_table_name('groups')." OFF");}   //Checked
 				}
 			}
@@ -3670,7 +3666,7 @@ function FixLanguageConsistency($sid, $availlangs)
 	
 	$quests = array();
 	$query = "SELECT * FROM ".db_table_name('questions')." WHERE sid='{$sid}' AND language='{$baselang}' ORDER BY question_order";
-	$result = db_execute_assoc($query) or die($connect->ErrorMsg());  //Checked
+	$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());  //Checked
 	if ($result->RecordCount() > 0)
 	{
 		while($question = $result->FetchRow())
@@ -3679,12 +3675,12 @@ function FixLanguageConsistency($sid, $availlangs)
 			foreach ($langs as $lang)
 			{
 				$query = "SELECT qid FROM ".db_table_name('questions')." WHERE sid='{$sid}' AND qid='{$question['qid']}' AND language='{$lang}'";
-				$gresult = db_execute_assoc($query) or die($connect->ErrorMsg());   //Checked
+				$gresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg());   //Checked
 				if ($gresult->RecordCount() < 1)
 				{
                     if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('questions')." ON");}    //Checked
 					$query = "INSERT INTO ".db_table_name('questions')." (qid,sid,gid,type,title,question,preg,help,other,mandatory,lid,question_order,language) VALUES('{$question['qid']}','{$question['sid']}','{$question['gid']}','{$question['type']}',".db_quoteall($question['title']).",".db_quoteall($question['question']).",".db_quoteall($question['preg']).",".db_quoteall($question['help']).",'{$question['other']}','{$question['mandatory']}','{$question['lid']}','{$question['question_order']}','{$lang}')";
-					$connect->Execute($query) or die(print "$query\n: ".$connect->ErrorMsg());   //Checked
+					$connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());   //Checked
                     if ($databasetype=='odbc_mssql') {$connect->Execute("SET IDENTITY_INSERT ".db_table_name('questions')." OFF");}      //Checked
 				}
 			}
@@ -3698,7 +3694,7 @@ function FixLanguageConsistency($sid, $availlangs)
 		}
 
 		$query = "SELECT * FROM ".db_table_name('answers')." WHERE language='{$baselang}' and (".trim($sqlans,' OR').") ORDER BY qid, code";
-		$result = db_execute_assoc($query) or die($connect->ErrorMsg()); //Checked
+		$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
 		if ($result->RecordCount() > 0)
 		{
 			while($answer = $result->FetchRow())
@@ -3706,12 +3702,12 @@ function FixLanguageConsistency($sid, $availlangs)
 				foreach ($langs as $lang)
 				{
 					$query = "SELECT qid FROM ".db_table_name('answers')." WHERE code='{$answer['code']}' AND qid='{$answer['qid']}' AND language='{$lang}'";
-					$gresult = db_execute_assoc($query) or die($connect->ErrorMsg());  //Checked
+					$gresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg());  //Checked
 					if ($gresult->RecordCount() < 1)
 					{
                         if ($databasetype=='odbc_mssql') {@$connect->Execute("SET IDENTITY_INSERT ".db_table_name('answers')." ON");}    //Checked
 						$query = "INSERT INTO ".db_table_name('answers')." (qid,code,answer,default_value,sortorder,language) VALUES('{$answer['qid']}',".db_quoteall($answer['code']).",".db_quoteall($answer['answer']).",".db_quoteall($answer['default_value']).",'{$answer['sortorder']}','{$lang}')";
-						$connect->Execute($query) or die($connect->ErrorMsg()); //Checked
+						$connect->Execute($query) or safe_die($connect->ErrorMsg()); //Checked
                         if ($databasetype=='odbc_mssql') {$connect->Execute("SET IDENTITY_INSERT ".db_table_name('answers')." OFF");}   //Checked
 					}
 				}
@@ -3807,7 +3803,7 @@ function GetGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="b
 		. "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tg.language='{$baselang}' AND tg2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
 		. "AND tq.gid = tg.gid AND tg2.gid = tq2.gid "
 		. "AND tq2.qid=tc.cqid AND tq.gid != tg2.gid $sqldepgid $sqltarggid";
-	$condresult=db_execute_assoc($condquery) or die($connect->ErrorMsg());   //Checked
+	$condresult=db_execute_assoc($condquery) or safe_die($connect->ErrorMsg());   //Checked
 	
 	if ($condresult->RecordCount() > 0) {
 		while ($condrow = $condresult->FetchRow())
@@ -3895,7 +3891,7 @@ function GetQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",
 		. "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
 		. "AND  tq2.qid=tc.cqid $sqlsearchscope $sqlgid $sqldepqid $sqltargqid";
 
-		$condresult=db_execute_assoc($condquery) or die($connect->ErrorMsg());    //Checked
+		$condresult=db_execute_assoc($condquery) or safe_die($connect->ErrorMsg());    //Checked
 
 	if ($condresult->RecordCount() > 0) {
 		while ($condrow = $condresult->FetchRow())
@@ -3978,7 +3974,7 @@ function checkMovequestionConstraintsForConditions($sid,$qid,$newgid="all")
 		. "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
 		. "AND  tq2.qid=tc.cqid AND tg.gid=tq.gid AND tg2.gid=tq2.gid AND tq.qid=$qid ORDER BY tg2.group_order DESC";
 	
-	$condresult=db_execute_assoc($condquery) or die($connect->ErrorMsg());    //Checked
+	$condresult=db_execute_assoc($condquery) or safe_die($connect->ErrorMsg());    //Checked
 
 	if ($condresult->RecordCount() > 0) {
 
@@ -4019,7 +4015,7 @@ function checkMovequestionConstraintsForConditions($sid,$qid,$newgid="all")
 		. "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
 		. "AND  tq2.qid=tc.cqid AND tg.gid=tq.gid AND tg2.gid=tq2.gid AND tq2.qid=$qid ORDER BY tg.group_order";
 	
-	$condresult=db_execute_assoc($condquery) or die($connect->ErrorMsg());        //Checked    
+	$condresult=db_execute_assoc($condquery) or safe_die($connect->ErrorMsg());        //Checked    
 
 	if ($condresult->RecordCount() > 0) {
 
@@ -4250,7 +4246,6 @@ function retrieve_Answer($code)
 	if (isset($_SESSION[$code]))
 	{
 		$questiondetails=getsidgidqidaidtype($code);
-		//die(print_r($questiondetails));
 		//the getsidgidqidaidtype function is in common.php and returns
 		//a SurveyID, GroupID, QuestionID and an Answer code
 		//extracted from a "fieldname" - ie: 1X2X3a
@@ -4260,7 +4255,7 @@ function retrieve_Answer($code)
 			$questiondetails['type'] == "P")
 		{
 			$query="SELECT * FROM {$dbprefix}answers WHERE qid='".$questiondetails['qid']."' AND language='".$_SESSION['s_lang']."'";
-			$result=db_execute_assoc($query) or die("Error getting answer<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));  //Checked
+			$result=db_execute_assoc($query) or safe_die("Error getting answer<br />$query<br />".$connect->ErrorMsg());  //Checked
 			while($row=$result->FetchRow())
 			{
 				if (isset($_SESSION[$code.$row['code']]) && $_SESSION[$code.$row['code']] == "Y")
@@ -4314,7 +4309,7 @@ function bHasSurveyGotTokentable($thesurvey, $sid=null)
 		$surveyid = $sid;
 	}
 
-	$tablelist = $connect->MetaTables() or die ("Error getting tokens<br />".htmlspecialchars($connect->ErrorMsg()));
+	$tablelist = $connect->MetaTables() or safe_die ("Error getting tokens<br />".$connect->ErrorMsg());
 	foreach ($tablelist as $tbl)
 	{
 		if (db_quote_id($tbl) == db_table_name('tokens_'.$surveyid)) 
@@ -4410,7 +4405,7 @@ function hasTemplateManageRights($userid, $templatefolder) {
       $templatefolder=sanitize_paranoid_string($templatefolder);
       $query = "SELECT ".db_quote_id('use')." FROM {$dbprefix}templates_rights WHERE uid=".$userid." AND folder LIKE '".$templatefolder."'";
 
-      $result = db_execute_assoc($query) or die($connect->ErrorMsg());  //Safe
+      $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());  //Safe
 
       if ($result->RecordCount() == 0)	return false;
 
@@ -4485,7 +4480,7 @@ function transInsertAns($newsid,$oldsid,$fieldnames)
     $newsid=sanitize_int($newsid);
     $oldsid=sanitize_int($oldsid);
 	$sql = "SELECT qid, language, question, help from {$dbprefix}questions WHERE sid=".$newsid." AND question LIKE '%{INSERTANS:".$oldsid."X%' OR help LIKE '%{INSERTANS:".$oldsid."X%'";
-	$res = db_execute_assoc($sql) or die("Can't read question table in transInsertAns ".html_escape($connect->ErrorMsg()));     // Checked
+	$res = db_execute_assoc($sql) or safe_die("Can't read question table in transInsertAns ".$connect->ErrorMsg());     // Checked
 
 	while ($qentry = $res->FetchRow())
 	{
@@ -4507,7 +4502,7 @@ function transInsertAns($newsid,$oldsid,$fieldnames)
 		{
 			// Update Field
 			$sqlupdate = "UPDATE {$dbprefix}questions SET question='".$question."', help='".$help."' WHERE qid=$qid AND language='$language'";
-			$updateres=$connect->Execute($sqlupdate) or die ("Couldn't update INSERTANS in question<br />$sqlupdate<br />".$connect->ErrorMsg());    //Checked
+			$updateres=$connect->Execute($sqlupdate) or safe_die ("Couldn't update INSERTANS in question<br />$sqlupdate<br />".$connect->ErrorMsg());    //Checked
 		} // Enf if modified
 	} // end while qentry
 }
@@ -4629,6 +4624,14 @@ function getPopupHeight()
     $height += $bottomPad;
     
     return $height;
+}
+
+function safe_die($text)
+{
+    //Only allowed tag: <br />
+    $textarray=explode('<br />',$text);
+    array_map('htmlspecialchars',$textarray);
+    die(implode( '<br />',$textarray));
 }
 
 ?>

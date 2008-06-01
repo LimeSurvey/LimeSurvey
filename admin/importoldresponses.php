@@ -25,7 +25,7 @@ if (!$subaction == "import")
 	// show UI for choosing old table
 
 	$query = db_select_tables_like("{$dbprefix}old\_survey_{$surveyid}\_%");
-	$result = db_execute_num($query) or die("Error:<br />$query<br />".$connect->ErrorMsg());
+	$result = db_execute_num($query) or safe_die("Error:<br />$query<br />".$connect->ErrorMsg());
 	$optionElements = '';
 	while ($row = $result->FetchRow())
 	{
@@ -85,7 +85,7 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
 	// fields we can import
 	$importablefields = array();
 	$query = "SHOW COLUMNS FROM {$activetable}";
-	$result = db_execute_assoc($query) or die("Error:<br />$query<br />".$connect->ErrorMsg());
+	$result = db_execute_assoc($query) or safe_die("Error:<br />$query<br />".$connect->ErrorMsg());
 	while ($row = $result->FetchRow())
 	{
 		if (!in_array($row['Field'],$dontimportfields))
@@ -97,7 +97,7 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
 	// fields we can supply
 	$availablefields = array();
 	$query = "SHOW COLUMNS FROM {$oldtable}";
-	$result = db_execute_assoc($query) or die("Error:<br />$query<br />".$connect->ErrorMsg());
+	$result = db_execute_assoc($query) or safe_die("Error:<br />$query<br />".$connect->ErrorMsg());
 	while ($row = $result->FetchRow())
 	{
 		$availablefields[] = $row['Field'];
@@ -130,7 +130,7 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
 		." AND {$oldtable}.id <= {$importidrange['last']}";
 	}
 
-	$result = $connect->Execute($query) or die("Error:<br />$query<br />".$connect->ErrorMsg());
+	$result = $connect->Execute($query) or safe_die("Error:<br />$query<br />".$connect->ErrorMsg());
 
 	header("Location: $scriptname?action=browse&sid=$surveyid");
 }

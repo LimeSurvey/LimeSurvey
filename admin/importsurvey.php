@@ -545,7 +545,7 @@ if ($importversion<=100)
     $values=array_values($surveylsrowdata);
     $values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
     $insert = "insert INTO {$dbprefix}surveys_languagesettings (".implode(',',array_keys($surveylsrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
-    $iresult = $connect->Execute($insert) or die("<br />".$clang->gT("Import of this survey file failed")."<br />\n<font size='1'>[$insert]</font><hr>$surveyarray[0]<br /><br />\n" . $connect->ErrorMsg() . "</body>\n</html>");
+    $iresult = $connect->Execute($insert) or safe_die("<br />".$clang->gT("Import of this survey file failed")."<br />\n[$insert]<br />{$surveyarray[0]}<br /><br />\n" . $connect->ErrorMsg());
 
 
 
@@ -561,7 +561,7 @@ if (!isset($surveyrowdata['datecreated']) || $surveyrowdata['datecreated']=='' |
 $values=array_values($surveyrowdata);
 $values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
 $insert = "INSERT INTO {$dbprefix}surveys (".implode(',',array_keys($surveyrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
-$iresult = $connect->Execute($insert) or die("<br />".$clang->gT("Import of this survey file failed")."<br />\n<font size='1'>[$insert]</font><hr>$surveyarray[0]<br /><br />\n" . $connect->ErrorMsg());
+$iresult = $connect->Execute($insert) or safe_die("<br />".$clang->gT("Import of this survey file failed")."<br />\n[$insert]<br />{$surveyarray[0]}<br /><br />\n" . $connect->ErrorMsg());
 
 $oldsid=$surveyid;
 
@@ -591,7 +591,7 @@ if ($importversion>=111)
         $newvalues=array_values($surveylsrowdata);
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
         $lsainsert = "INSERT INTO {$dbprefix}surveys_languagesettings (".implode(',',array_keys($surveylsrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
-		$lsiresult=$connect->Execute($lsainsert) or die("<br />".$clang->gT("Import of this survey file failed")."<br />\n<font size='1'>[$lsainsert]</font><hr><br />\n" . $connect->ErrorMsg() );
+		$lsiresult=$connect->Execute($lsainsert) or safe_die("<br />".$clang->gT("Import of this survey file failed")."<br />\n[$lsainsert]<br />\n" . $connect->ErrorMsg() );
 	}	
 		
 }
@@ -686,7 +686,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
                    FROM {$dbprefix}labels
                    WHERE lid=".$newlid."
                    ORDER BY language, sortorder, code";
-		$result2 = db_execute_num($query2) or die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
+		$result2 = db_execute_num($query2) or safe_die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
 		while($row2=$result2->FetchRow())
 		{
 			$thisset .= implode('.', $row2);
@@ -708,9 +708,9 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 			//There is a matching labelset or the user is not allowed to edit labels -  
             // So, we will delete this one and refer to the matched one.
 			$query = "DELETE FROM {$dbprefix}labels WHERE lid=$newlid";
-			$result=$connect->Execute($query) or die("Couldn't delete labels<br />$query<br />".$connect->ErrorMsg());
+			$result=$connect->Execute($query) or safe_die("Couldn't delete labels<br />$query<br />".$connect->ErrorMsg());
 			$query = "DELETE FROM {$dbprefix}labelsets WHERE lid=$newlid";
-			$result=$connect->Execute($query) or die("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
+			$result=$connect->Execute($query) or safe_die("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
 			if (isset($lsmatch)) {$newlid=$lsmatch;}
               else {++$deniedcountlabelsets;--$countlabelsets;}
 		}
@@ -787,7 +787,7 @@ if (isset($grouparray) && $grouparray) {
         
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
         $ginsert = "insert INTO {$dbprefix}groups (".implode(',',array_keys($grouprowdata)).") VALUES (".implode(',',$newvalues).")"; 
-		$gres = $connect->Execute($ginsert) or die("<strong>".$clang->gT("Error")."</strong> Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+		$gres = $connect->Execute($ginsert) or safe_die($clang->gT("Error").": Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg());
 		//GET NEW GID
 		if ($newgroup) {$newgid=$connect->Insert_ID("{$dbprefix}groups","gid");}
 
@@ -878,7 +878,7 @@ if (isset($grouparray) && $grouparray) {
                     $newvalues=array_values($questionrowdata);
                     $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                     $qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-					$qres = $connect->Execute($qinsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+					$qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg());
 		            if ($newquestion)
 				{
 				 	$newqid=$connect->Insert_ID("{$dbprefix}questions","qid");
@@ -920,7 +920,7 @@ if (isset($grouparray) && $grouparray) {
                                 $newvalues=array_values($answerrowdata);
                                 $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                                 $ainsert = "insert INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-								$ares = $connect->Execute($ainsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+								$ares = $connect->Execute($ainsert) or safe_die ($clang->gT("Error").": Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg());
 								
 								if ($type == "M" || $type == "P") {
 									$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid,
@@ -1029,7 +1029,7 @@ if (isset($question_attributesarray) && $question_attributesarray) {//ONLY DO TH
         $newvalues=array_values($qarowdata);
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
         $qainsert = "insert INTO {$dbprefix}question_attributes (".implode(',',array_keys($qarowdata)).") VALUES (".implode(',',$newvalues).")"; 
-		$result=$connect->Execute($qainsert) or die ("Couldn't insert question_attribute<br />$qainsert<br />".$connect->ErrorMsg());
+		$result=$connect->Execute($qainsert) or safe_die ("Couldn't insert question_attribute<br />$qainsert<br />".$connect->ErrorMsg());
 	}
 }
 
@@ -1063,7 +1063,7 @@ if (isset($assessmentsarray) && $assessmentsarray) {//ONLY DO THIS IF THERE ARE 
         $newvalues=array_values($asrowdata);
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
         $asinsert = "insert INTO {$dbprefix}assessments (".implode(',',array_keys($asrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-		$result=$connect->Execute($asinsert) or die ("Couldn't insert assessment<br />$asinsert<br />".$connect->ErrorMsg());
+		$result=$connect->Execute($asinsert) or safe_die ("Couldn't insert assessment<br />$asinsert<br />".$connect->ErrorMsg());
 
 		unset($newgid);
 	}
@@ -1092,7 +1092,7 @@ if (isset($quotaarray) && $quotaarray) {//ONLY DO THIS IF THERE ARE QUOTAS
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 
         $asinsert = "insert INTO {$dbprefix}quota (".implode(',',array_keys($asrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-		$result=$connect->Execute($asinsert) or die ("Couldn't insert quota<br />$asinsert<br />".$connect->ErrorMsg());
+		$result=$connect->Execute($asinsert) or safe_die ("Couldn't insert quota<br />$asinsert<br />".$connect->ErrorMsg());
 		$quotaids[] = array($oldid,$connect->Insert_ID(db_table_name_nq('quota'),"id"));
 
 	}
@@ -1132,7 +1132,7 @@ if (isset($quotamembersarray) && $quotamembersarray) {//ONLY DO THIS IF THERE AR
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 
         $asinsert = "insert INTO {$dbprefix}quota_members (".implode(',',array_keys($asrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-		$result=$connect->Execute($asinsert) or die ("Couldn't insert quota<br />$asinsert<br />".$connect->ErrorMsg());
+		$result=$connect->Execute($asinsert) or safe_die ("Couldn't insert quota<br />$asinsert<br />".$connect->ErrorMsg());
 
 	}
 }
@@ -1189,7 +1189,7 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
             $newvalues=array_values($conditionrowdata);
             $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
             $conditioninsert = "insert INTO {$dbprefix}conditions (".implode(',',array_keys($conditionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-			$result=$connect->Execute($conditioninsert) or die ("Couldn't insert condition<br />$conditioninsert<br />".$connect->ErrorMsg());
+			$result=$connect->Execute($conditioninsert) or safe_die ("Couldn't insert condition<br />$conditioninsert<br />".$connect->ErrorMsg());
 		} else {
 			$importsurvey .= "<font size=1>Condition for $oldqid skipped ($oldcqid does not exist)</font><br />";
 			if ($importingfrom != "http") echo "Condition for $oldqid skipped ($oldcqid does not exist)\n";

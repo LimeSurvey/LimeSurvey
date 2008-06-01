@@ -73,7 +73,7 @@ if ($register_errormsg != "")
 //Check if this email already exists in token database
 $query = "SELECT email FROM {$dbprefix}tokens_$surveyid\n"
 . "WHERE email = ".db_quoteall(sanitize_email(returnglobal('register_email')));
-$result = $connect->Execute($query) or die ($query."<br />".htmlspecialchars($connect->ErrorMsg()));   //Checked
+$result = $connect->Execute($query) or safe_die ($query."<br />".$connect->ErrorMsg());   //Checked
 if (($result->RecordCount()) > 0)
 {
 	$register_errormsg=$clang->gT("The email you used has already been registered.");
@@ -106,7 +106,7 @@ $result = $connect->Execute($query, array($postfirstname,
                                           $newtoken,
                                           $postattribute1, 
                                           $postattribute2)
-) or die ($query."<br />".htmlspecialchars($connect->ErrorMsg()));  //Checked - According to adodb docs the bound variables are quoted automatically
+) or safe_die ($query."<br />".$connect->ErrorMsg());  //Checked - According to adodb docs the bound variables are quoted automatically
 $tid=$connect->Insert_ID("{$dbprefix}tokens_$surveyid","tid");
 
 
@@ -149,7 +149,7 @@ if (MailTextMessage($message, $subject, returnglobal('register_email'), $from, $
 	$today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
 	$query = "UPDATE {$dbprefix}tokens_$surveyid\n"
 	."SET sent='$today' WHERE tid=$tid";
-	$result=$connect->Execute($query) or die ("$query<br />".htmlspecialchars($connect->ErrorMsg()));     //Checked
+	$result=$connect->Execute($query) or safe_die ("$query<br />".$connect->ErrorMsg());     //Checked
 	$html="<center>".$clang->gT("Thank you for registering to participate in this survey.")."<br /><br />\n".$clang->gT("An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.")."<br /><br />\n".$clang->gT("Survey Administrator")." {ADMINNAME} ({ADMINEMAIL})";
 	$html=Replacefields($html, $fieldsarray);
 	$html .= "<br /><br />\n<input type='submit' onclick='javascript: self.close()' value='".$clang->gT("Close this Window")."'></center>\n";

@@ -57,13 +57,13 @@ if (!$style)
 	." where q.gid=g.gid and g.sid=$surveyid and g.language='$surveybaselang' and q.language='$surveybaselang'"
 	." order by group_order, question_order";
 
-	$result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+	$result=db_execute_assoc($query) or safe_die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());
 	while ($rows = $result->FetchRow())
 	{
 		if (($rows['type']=='A') || ($rows['type']=='B')||($rows['type']=='C')||($rows['type']=='M')||($rows['type']=='P')||($rows['type']=='Q')||($rows['type'] == "K") ||($rows['type']=='E')||($rows['type']=='F')||($rows['type']=='H'))
 		{
 			$detailquery="select code from {$dbprefix}answers where qid=".$rows['qid']." and language='$surveybaselang' order by sortorder,code";
-			$detailresult=db_execute_assoc($detailquery) or die("Couldn't find detailfields<br />$detailquery<br />".htmlspecialchars($connect->ErrorMsg()));
+			$detailresult=db_execute_assoc($detailquery) or safe_die("Couldn't find detailfields<br />$detailquery<br />".$connect->ErrorMsg());
 			while ($detailrows = $detailresult->FetchRow())
 			{
 				$excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid'].$detailrows['code'];
@@ -76,7 +76,7 @@ if (!$style)
 		elseif ($rows['type']=='R')
 		{
 			$detailquery="select code from {$dbprefix}answers where qid=".$rows['qid']." and language='$surveybaselang' order by sortorder,code";
-			$detailresult=db_execute_assoc($detailquery) or die("Couldn't find detailfields<br />$detailquery<br />".htmlspecialchars($connect->ErrorMsg()));
+			$detailresult=db_execute_assoc($detailquery) or safe_die("Couldn't find detailfields<br />$detailquery<br />".$connect->ErrorMsg());
 			$i=1;
 			while ($detailrows = $detailresult->FetchRow())
 			{
@@ -88,7 +88,7 @@ if (!$style)
 		{
 			// $detailquery="select code from {$dbprefix}answers where qid=".$rows['qid']." and language='$surveybaselang' order by sortorder,code";
 			$detailquery="select a.code, l.lid from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=".$rows['qid']." AND (l.lid =".$rows['lid'].") and a.language='$surveybaselang' group by a.code order by a.code ";
-			$detailresult=db_execute_assoc($detailquery) or die("Couldn't find detailfields<br />$detailquery<br />".htmlspecialchars($connect->ErrorMsg()));
+			$detailresult=db_execute_assoc($detailquery) or safe_die("Couldn't find detailfields<br />$detailquery<br />".$connect->ErrorMsg());
 			$i=0;
 			while ($detailrows = $detailresult->FetchRow())
 			{
@@ -98,7 +98,7 @@ if (!$style)
 			}
             // second scale
             $detailquery="select a.code, l.lid from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=".$rows['qid']." AND (l.lid =".$rows['lid1'].") and a.language='$surveybaselang' group by a.code order by a.code ";
-            $detailresult=db_execute_assoc($detailquery) or die("Couldn't find detailfields<br />$detailquery<br />".htmlspecialchars($connect->ErrorMsg()));
+            $detailresult=db_execute_assoc($detailquery) or safe_die("Couldn't find detailfields<br />$detailquery<br />".($connect->ErrorMsg());
             $i=0;
             while ($detailrows = $detailresult->FetchRow())
             {
@@ -252,12 +252,12 @@ if (!$style)
 	."</table>\n"
 	."</td>";
 	$query="SELECT private FROM {$dbprefix}surveys WHERE sid=$surveyid"; //Find out if tokens are used
-	$result=db_execute_assoc($query) or die("Couldn't get privacy data<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+	$result=db_execute_assoc($query) or safe_die("Couldn't get privacy data<br />$query<br />".$connect->ErrorMsg());
 	while ($rows = $result->FetchRow()) {$surveyprivate=$rows['private'];}
 	if ($surveyprivate == "N")
 	{
 		$query=db_select_tables_like("{$dbprefix}tokens_$surveyid"); //SEE IF THERE IS AN ASSOCIATED TOKENS TABLE
-		$result=$connect->Execute($query) or die("Couldn't get table list<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+		$result=$connect->Execute($query) or safe_die("Couldn't get table list<br />$query<br />".$connect->ErrorMsg());
 		$tablecount=$result->RecordCount();
 	}
 	$exportoutput .= "<td valign='top'>\n"
@@ -342,7 +342,7 @@ if (!$style)
 			."<input type='checkbox' class='checkboxbtn' name='token' id='token'>"
 			."<label for='token'>".$clang->gT("Token")."</label><br />\n";
 			$query = "SELECT * FROM {$dbprefix}tokens_$surveyid"; //SEE IF TOKENS TABLE HAS ATTRIBUTE FIELDS
-			$result = db_select_limit_assoc($query, 1) or die ($query."<br />".htmlspecialchars($connect->ErrorMsg()));
+			$result = db_select_limit_assoc($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());
 			$rowcount = $result->FieldCount();
 			if ($rowcount > 7)
 			{
@@ -398,7 +398,7 @@ switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c
     $pdf->AddPage(); 
 	$pdf->intopdf("PDF Export ".date("Y.m.d-H:i",time()));
 	$query="SELECT * FROM {$dbprefix}surveys_languagesettings WHERE surveyls_survey_id=".$surveyid;
-	$result=db_execute_assoc($query) or die("Couldn't get privacy data<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+	$result=db_execute_assoc($query) or safe_die("Couldn't get privacy data<br />$query<br />".$connect->ErrorMsg());
     while ($row = $result->FetchRow())
    {
         $pdf->intopdf($clang->gT("General informations in language: ").getLanguageNameFromCode($row['surveyls_language']),'B');
@@ -443,7 +443,7 @@ foreach ($fieldmap as $fieldentry)
     if ($fieldentry['qid']!='')
     {
         $qq = "SELECT lid, other FROM {$dbprefix}questions WHERE qid={$fieldentry['qid']} and language='$surveybaselang'";
-        $qr = db_execute_assoc($qq) or die("Error selecting type and lid from questions table.<br />".$qq."<br />".htmlspecialchars($connect->ErrorMsg()));
+        $qr = db_execute_assoc($qq) or safe_die("Error selecting type and lid from questions table.<br />".$qq."<br />".$connect->ErrorMsg());
         while ($qrow = $qr->FetchRow())
         {
             $outmap[$fieldentry['fieldname']]['lid']=$qrow['lid'];
@@ -513,7 +513,7 @@ if (incompleteAnsFilterstate() === true)
 }
 $dquery .=" ORDER BY id";
 
-$dresult = db_select_limit_assoc($dquery, 1) or die($clang->gT("Error")." getting results<br />$dquery<br />".htmlspecialchars($connect->ErrorMsg()));
+$dresult = db_select_limit_assoc($dquery, 1) or safe_die($clang->gT("Error")." getting results<br />$dquery<br />".$connect->ErrorMsg());
 $fieldcount = $dresult->FieldCount();
 $firstline="";
 $faid="";
@@ -609,7 +609,7 @@ for ($i=0; $i<$fieldcount; $i++)
 		else
 		{
 			$qq = "SELECT question, type, other, title FROM {$dbprefix}questions WHERE qid=$fqid AND language='$explang' ORDER BY gid, title"; //get the question
-			$qr = db_execute_assoc($qq) or die ("ERROR:<br />".$qq."<br />".htmlspecialchars($connect->ErrorMsg()));
+			$qr = db_execute_assoc($qq) or safe_die ("ERROR:<br />".$qq."<br />".$connect->ErrorMsg());
 			while ($qrow=$qr->FetchRow())
 			{
 				if ($style == "headcodes"){$fquest=$qrow['title'];}
@@ -878,7 +878,7 @@ elseif ($answers == "long")        //vollständige Antworten gewählt
 {
 //	echo $dquery;
     $labelscache=array();
-	$dresult = db_execute_num($dquery) or die("ERROR: $dquery -".htmlspecialchars($connect->ErrorMsg()));
+	$dresult = db_execute_num($dquery) or safe_die("ERROR: $dquery -".$connect->ErrorMsg());
 	$fieldcount = $dresult->FieldCount();
 	$rowcounter=0;
 
@@ -906,7 +906,6 @@ elseif ($answers == "long")        //vollständige Antworten gewählt
 			$fieldinfo=$field->name;
             if ($fieldinfo != "startlanguage" && $fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "ipaddr"  && $fieldinfo != "refurl" && $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && $fieldinfo != "attribute_1" && $fieldinfo != "attribute_2" && $fieldinfo != "completed")
 			{
-				//die(print_r($fieldmap));
 //				$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
                 $fielddata=$outmap[$fieldinfo];
 				$fqid=$fielddata['qid'];
@@ -1007,7 +1006,7 @@ elseif ($answers == "long")        //vollständige Antworten gewählt
                     {
                      $lq = "select a.*, l.*, l.code as lcode from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=$fqid AND l.lid =$flid1 AND a.language='$explang' AND l.code = ? group by l.lid";
                     }
-					$lr = db_execute_assoc($lq, array($drow[$i])) or die($lq."<br />ERROR:<br />".htmlspecialchars($connect->ErrorMsg()));
+					$lr = db_execute_assoc($lq, array($drow[$i])) or safe_die($lq."<br />ERROR:<br />".$connect->ErrorMsg());
 					while ($lrow = $lr->FetchRow())
 					{
 						$exportoutput .= strip_tags_full($lrow['lcode']);
@@ -1031,7 +1030,7 @@ elseif ($answers == "long")        //vollständige Antworten gewählt
 					else
 					{
 						$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND language='$explang' AND code = ?";
-						$lr = db_execute_assoc($lq, array($drow[$i])) or die($lq."<br />ERROR:<br />".htmlspecialchars($connect->ErrorMsg()));
+						$lr = db_execute_assoc($lq, array($drow[$i])) or safe_die($lq."<br />ERROR:<br />".$connect->ErrorMsg());
 						while ($lrow = $lr->FetchRow())
 						{
 							//if ($lrow['code'] == $drow[$i]) {$exportoutput .= $lrow['answer'];}
@@ -1067,7 +1066,7 @@ elseif ($answers == "long")        //vollständige Antworten gewählt
 					else
 					{
 						$fquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$flid AND language='$explang' AND code='$drow[$i]'";
-						$fresult = db_execute_assoc($fquery) or die("ERROR:".$fquery."\n".$qq."\n".htmlspecialchars($connect->ErrorMsg()));
+						$fresult = db_execute_assoc($fquery) or safe_die("ERROR:".$fquery."<br />".$qq."<br />".$connect->ErrorMsg());
 						while ($frow = $fresult->FetchRow())
 						{
 							$exportoutput .= strip_tags_full($frow['title']);
@@ -1078,7 +1077,7 @@ elseif ($answers == "long")        //vollständige Antworten gewählt
 				break;
 				case "O": //DROPDOWN LIST WITH COMMENT
 				$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND language='$explang' ORDER BY answer";
-				$lr = db_execute_assoc($lq) or die ("Could do it<br />$lq<br />".htmlspecialchars($connect->ErrorMsg()));
+				$lr = db_execute_assoc($lq) or safe_die ("Could do it<br />$lq<br />".$connect->ErrorMsg());
 				$found = "";
 				while ($lrow = $lr->FetchRow())
 				{
@@ -1198,7 +1197,7 @@ elseif ($answers == "long")        //vollständige Antworten gewählt
                 if (!isset($labelscache[$flid.'|'.$explang.'|'.$drow[$i]]))
                 {
 				    $fquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$flid AND language='$explang' AND code='$drow[$i]'";
-				    $fresult = db_execute_assoc($fquery) or die("ERROR:".$fquery."\n".$qq."\n".htmlspecialchars($connect->ErrorMsg()));
+				    $fresult = db_execute_assoc($fquery) or safe_die("ERROR:".$fquery."\n".$qq."\n".$connect->ErrorMsg());
 				    if ($fresult) 
 				    {
                         $frow=$fresult->FetchRow();
@@ -1238,7 +1237,7 @@ elseif ($answers == "long")        //vollständige Antworten gewählt
 				if ($tempresult->name == "token")
 				{
 					$tokenquery = "SELECT firstname, lastname FROM {$dbprefix}tokens_$surveyid WHERE token='$drow[$i]'";
-					if ($tokenresult = db_execute_assoc($tokenquery)) //or die ("Couldn't get token info<br />$tokenquery<br />".$connect->ErrorMsg());
+					if ($tokenresult = db_execute_assoc($tokenquery)) //or safe_die ("Couldn't get token info<br />$tokenquery<br />".$connect->ErrorMsg());
 					while ($tokenrow=$tokenresult->FetchRow())
 					{
 						$exportoutput .= "{$tokenrow['lastname']}, {$tokenrow['firstname']}";

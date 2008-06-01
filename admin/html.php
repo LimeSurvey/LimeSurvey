@@ -34,7 +34,7 @@ if ($action == "listsurveys")
 
 	$query .= " ORDER BY surveyls_title";
 
-	$result = db_execute_assoc($query) or die($connect->ErrorMsg()); //Checked
+	$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
 
 	if($result->RecordCount() > 0) {
         $listsurveys= "<br /><table cellpadding='1' width='800'>
@@ -1110,7 +1110,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 	$qrr = $connect->Execute($qrq); //Checked
 	$qct = $qrr->RecordCount();
 	$qrquery = "SELECT * FROM ".db_table_name('questions')." WHERE gid=$gid AND sid=$surveyid AND qid=$qid AND language='".$baselang."'";
-	$qrresult = db_execute_assoc($qrquery) or die($qrquery."<br />".$connect->ErrorMsg()); //Checked
+	$qrresult = db_execute_assoc($qrquery) or safe_die($qrquery."<br />".$connect->ErrorMsg()); //Checked
 	$questionsummary = "<table width='100%' align='center' border='0'>\n";
 
 	// Check if other questions in the Survey are dependent upon this question
@@ -1472,7 +1472,7 @@ if (returnglobal('viewanswer'))
 	$vasummary = PrepareEditorScript("editanswer");
 
      $query = "SELECT * FROM ".db_table_name('answers')." WHERE qid='{$qid}' AND language='".GetBaseLanguageFromSurveyID($surveyid)."'";
-     $result = db_execute_assoc($query) or die($connect->ErrorMsg()); //Checked
+     $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
      $anscount = $result->RecordCount();	
      
      $vasummary .= "\t<table width='100%' >\n"
@@ -1499,7 +1499,7 @@ if (returnglobal('viewanswer'))
 	{
 		$position=0;
     	$query = "SELECT * FROM ".db_table_name('answers')." WHERE qid='{$qid}' AND language='{$anslang}' ORDER BY sortorder, code";
-		$result = db_execute_assoc($query) or die($connect->ErrorMsg()); //Checked
+		$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
 		$anscount = $result->RecordCount();
         $vasummary .= "<div class='tab-page'>"
                 ."<h2 class='tab'>".getLanguageNameFromCode($anslang, false);
@@ -2725,11 +2725,11 @@ if ($action == "ordergroups")
 		$newsortorder=$postsortorder-1;
 		$oldsortorder=$postsortorder;
 		$cdquery = "UPDATE ".db_table_name('groups')." SET group_order=-1 WHERE sid=$surveyid AND group_order=$newsortorder";
-		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg()); //Checked
+		$cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg()); //Checked
 		$cdquery = "UPDATE ".db_table_name('groups')." SET group_order=$newsortorder WHERE sid=$surveyid AND group_order=$oldsortorder";
-		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg()); //Checked
+		$cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg()); //Checked
 		$cdquery = "UPDATE ".db_table_name('groups')." SET group_order='$oldsortorder' WHERE sid=$surveyid AND group_order=-1";
-		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg()); //Checked
+		$cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg()); //Checked
 		break;
 
         // Pressing the Down button
@@ -2737,11 +2737,11 @@ if ($action == "ordergroups")
 		$newsortorder=$postsortorder+1;
 		$oldsortorder=$postsortorder;
 		$cdquery = "UPDATE ".db_table_name('groups')." SET group_order=-1 WHERE sid=$surveyid AND group_order=$newsortorder";
-		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());//Checked
+		$cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());//Checked
 		$cdquery = "UPDATE ".db_table_name('groups')." SET group_order='$newsortorder' WHERE sid=$surveyid AND group_order=$oldsortorder";
-		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());//Checked
+		$cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());//Checked
 		$cdquery = "UPDATE ".db_table_name('groups')." SET group_order=$oldsortorder WHERE sid=$surveyid AND group_order=-1";
-		$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());//Checked
+		$cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());//Checked
 		break;
         }
     }
@@ -2777,7 +2777,7 @@ if ($action == "ordergroups")
 		//Get the groups from this survey
 		$s_lang = GetBaseLanguageFromSurveyID($surveyid);
 		$ogquery = "SELECT * FROM {$dbprefix}groups WHERE sid='{$surveyid}' AND language='{$s_lang}' order by group_order,group_name" ;
-		$ogresult = db_execute_assoc($ogquery) or die($connect->ErrorMsg());//Checked
+		$ogresult = db_execute_assoc($ogquery) or safe_die($connect->ErrorMsg());//Checked
 
 		$ogarray = $ogresult->GetArray();
     		$groupcount = count($ogarray);

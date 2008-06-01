@@ -153,7 +153,7 @@ while ($degrow = $degresult->FetchRow())
 			."WHERE ".db_table_name("conditions").".cqid=".db_table_name("questions").".qid\n"
 			."AND ".db_table_name("conditions").".cqid={$distinctrow['cqid']}\n"
 			."AND ".db_table_name("conditions").".qid={$deqrow['qid']} AND language='{$surveyprintlang}'";
-			$conresult=db_execute_assoc($conquery) or die("$conquery<br />".htmlspecialchars($connect->ErrorMsg()));
+			$conresult=db_execute_assoc($conquery) or safe_die("$conquery<br />".htmlspecialchars($connect->ErrorMsg()));
 			$conditions=array();
 			while ($conrow=$conresult->FetchRow())
 			{
@@ -205,7 +205,7 @@ while ($degrow = $degresult->FetchRow())
 					$fquery = "SELECT * FROM ".db_table_name("labels")."\n"
 					. "WHERE lid='{$conrow['lid']}'\n"
 					. "AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
-					$fresult=db_execute_assoc($fquery) or die("$fquery<br />".htmlspecialchars($connect->ErrorMsg()));
+					$fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />".htmlspecialchars($connect->ErrorMsg()));
 					while($frow=$fresult->FetchRow())
 					{
 						$postans=$frow['title'];
@@ -323,7 +323,7 @@ while ($degrow = $degresult->FetchRow())
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose *only one* of the following:")."</u><br />\n";
             if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *only one* of the following:"),"U");}
 			$deaquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} AND language='{$surveyprintlang}' ORDER BY sortorder";
-			$dearesult = db_execute_assoc($deaquery) or die("ERROR: $deaquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
+			$dearesult = db_execute_assoc($deaquery) or safe_die("ERROR: $deaquery<br />\n".$connect->ErrorMsg());
 			$deacount=$dearesult->RecordCount();
 			if ($deqrow['other'] == "Y") {$deacount++;}
 			if ($dcols > 0 && $deacount >= $dcols)
@@ -443,7 +443,7 @@ while ($degrow = $degresult->FetchRow())
 			break;
 			case "R":  //RANKING Type Question
 			$reaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
-			$rearesult = db_execute_assoc($reaquery) or die ("Couldn't get ranked answers<br />".htmlspecialchars($connect->ErrorMsg()));
+			$rearesult = db_execute_assoc($reaquery) or safe_die ("Couldn't get ranked answers<br />".$connect->ErrorMsg());
 			$reacount = $rearesult->RecordCount();
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please number each box in order of preference from 1 to")." $reacount</u><br />\n";
             if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please number each box in order of preference from 1 to ").$reacount,"U");}

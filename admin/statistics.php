@@ -96,7 +96,7 @@ $statisticsoutput .= "</table>\n"
 
 //Select public language file
 $query = "SELECT datestamp FROM {$dbprefix}surveys WHERE sid=$surveyid";
-$result = db_execute_assoc($query) or die("Error selecting language: <br />".$query."<br />".mysql_error());
+$result = db_execute_assoc($query) or safe_die("Error selecting language: <br />".$query."<br />".$connect->ErrorMsg());       
 while ($row=$result->FetchRow()) {$datestamp=$row['datestamp'];}
 
 // 1: Get list of questions from survey
@@ -106,7 +106,7 @@ $query = "SELECT ".db_table_name("questions").".*, group_name, group_order\n"
 ."AND ".db_table_name("groups").".language='".$language."'\n"
 ."AND ".db_table_name("questions").".language='".$language."'\n"
 ."AND ".db_table_name("questions").".sid=$surveyid";
-$result = db_execute_assoc($query) or die("Couldn't do it!<br />$query<br />".$connect->ErrorMsg());
+$result = db_execute_assoc($query) or safe_die("Couldn't do it!<br />$query<br />".$connect->ErrorMsg());
 $rows = $result->GetRows();
 //SORT IN NATURAL ORDER!
 usort($rows, 'CompareGroupThenTitle');
@@ -227,7 +227,7 @@ foreach ($filters as $flt)
 		case "K": // Multiple Numerical
 		$statisticsoutput .= "\t\t\t\t\t</tr>\n\t\t\t\t\t<tr>\n";
 		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language = '{$language}' ORDER BY sortorder, answer";
-		$result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 		$counter2=0;
 		while ($row=$result->FetchRow())
 		{
@@ -258,7 +258,7 @@ foreach ($filters as $flt)
 		case "Q": // Multiple Short Text
 		$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
-		$result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 		$counter2=0;
 		while ($row = $result->FetchRow())
 		{
@@ -394,7 +394,7 @@ foreach ($filters as $flt)
 		case "A": // ARRAY OF 5 POINT CHOICE QUESTIONS
 		$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
-		$result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 		$counter2=0;
 		while ($row=$result->FetchRow())
 		{
@@ -428,7 +428,7 @@ foreach ($filters as $flt)
 		case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
 		$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
-		$result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 		$counter2=0;
 		while ($row=$result->FetchRow())
 		{
@@ -462,7 +462,7 @@ foreach ($filters as $flt)
 		case "C": // ARRAY OF YES\No\$clang->gT("Uncertain") QUESTIONS
 		$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
-		$result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 		$counter2=0;
 		while ($row=$result->FetchRow())
 		{
@@ -498,7 +498,7 @@ foreach ($filters as $flt)
 		case "E": // ARRAY OF Increase/Same/Decrease QUESTIONS
 		$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
-		$result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 		$counter2=0;
 		while ($row=$result->FetchRow())
 		{
@@ -534,7 +534,7 @@ foreach ($filters as $flt)
 		case "H": // ARRAY OF Flexible Questions (By Column)
 		$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
-		$result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 		$counter2=0;
 		while ($row=$result->FetchRow())
 		{
@@ -569,7 +569,7 @@ foreach ($filters as $flt)
 		case "R": //RANKING
 		$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
-		$result = db_execute_assoc($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		$result = db_execute_assoc($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 		$count = $result->RecordCount();
 		while ($row = $result->FetchRow())
 		{
@@ -626,7 +626,7 @@ foreach ($filters as $flt)
 		$statisticsoutput .= "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple='multiple'>\n";
 		$allfields[]=$myfield;
 		$query = "SELECT code, title FROM ".db_table_name("labels")." WHERE lid={$flt[6]} AND language='{$language}' ORDER BY sortorder";
-		$result = db_execute_num($query) or die("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		$result = db_execute_num($query) or safe_die("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 		while($row=$result->FetchRow())
 		{
 			$statisticsoutput .= "\t\t\t\t\t\t<option value='{$row[0]}'";
@@ -640,7 +640,7 @@ foreach ($filters as $flt)
         for ($i=0; $i<=1; $i++) 
         {
             $query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
-            $result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+            $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
             $counter2=0;
             while ($row=$result->FetchRow())
             {
@@ -676,7 +676,7 @@ foreach ($filters as $flt)
         
 		default:
 		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
-		$result = db_execute_num($query) or die("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		$result = db_execute_num($query) or safe_die("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 		while ($row=$result->FetchRow())
 		{
 			$statisticsoutput .= "\t\t\t\t\t\t<option value='{$row[0]}'";
@@ -842,7 +842,7 @@ if (isset($_POST['display']) && $_POST['display'])
 			{
 				list($lsid, $lgid, $lqid) = explode("X", $pv);
 				$aquery="SELECT code FROM ".db_table_name("answers")." WHERE qid=$lqid AND language='{$language}' ORDER BY sortorder, answer";
-				$aresult=db_execute_num($aquery) or die ("Couldn't get answers<br />$aquery<br />".$connect->ErrorMsg());
+				$aresult=db_execute_num($aquery) or safe_die ("Couldn't get answers<br />$aquery<br />".$connect->ErrorMsg());
 				while ($arow=$aresult->FetchRow()) // go through every possible answer
 				{
 					if (in_array($arow[0], $_POST[$pv])) // only add condition if answer has been chosen
@@ -931,7 +931,7 @@ if (isset($_POST['display']) && $_POST['display'])
 	$prb->moveStep(35);
 	$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid");
 	if (incompleteAnsFilterstate() === true) {$query .= " WHERE submitdate is not null";}
-	$result = db_execute_num($query) or die ("Couldn't get total<br />$query<br />".$connect->ErrorMsg());
+	$result = db_execute_num($query) or safe_die ("Couldn't get total<br />$query<br />".$connect->ErrorMsg());
 	while ($row=$result->FetchRow()) {$total=$row[0];}
 	if (isset($selects) && $selects)
 	{
@@ -946,7 +946,7 @@ if (isset($_POST['display']) && $_POST['display'])
 		if (incompleteAnsFilterstate() === true) {$query .= " AND ".$newsql;}
 		else {$query .= " WHERE ".$newsql;}
 	}
-	$result=db_execute_num($query) or die("Couldn't get results<br />$query<br />".$connect->ErrorMsg());
+	$result=db_execute_num($query) or safe_die("Couldn't get results<br />$query<br />".$connect->ErrorMsg());
 	while ($row=$result->FetchRow()) {$results=$row[0];}
 
 	// 3: Present results including option to view those rows
@@ -997,7 +997,7 @@ if (isset($_POST['display']) && $_POST['display'])
 					case "M":
 					list($lsid, $lgid, $lqid) = explode("X", substr($viewfields, 1, strlen($viewfields)-1));
 					$aquery="SELECT code FROM ".db_table_name("answers")." WHERE qid=$lqid AND language='{$language}' ORDER BY sortorder, answer";
-					$aresult=db_execute_num($aquery) or die ("Couldn't get answers<br />$aquery<br />".$connect->ErrorMsg());
+					$aresult=db_execute_num($aquery) or safe_die ("Couldn't get answers<br />$aquery<br />".$connect->ErrorMsg());
 					while ($arow=$aresult->FetchRow()) // go through every possible answer
 					{
 						$field = substr($viewfields, 1, strlen($viewfields)-1).$arow[0];
@@ -1057,7 +1057,7 @@ if (isset($summary) && $summary)
 		{
 			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 			$nquery = "SELECT title, type, question, lid, other FROM ".db_table_name("questions")." WHERE language='{$language}' and qid='$qqid'";
-			$nresult = db_execute_num($nquery) or die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
+			$nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
 			while ($nrow=$nresult->FetchRow())
 			{
 				$qtitle=$nrow[0];
@@ -1069,7 +1069,7 @@ if (isset($summary) && $summary)
 
 			//1. Get list of answers
 			$query="SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qqid' AND language='{$language}' ORDER BY sortorder, answer";
-			$result=db_execute_num($query) or die("Couldn't get list of answers for multitype<br />$query<br />".$connect->ErrorMsg());
+			$result=db_execute_num($query) or safe_die("Couldn't get list of answers for multitype<br />$query<br />".$connect->ErrorMsg());
 			while ($row=$result->FetchRow())
 			{
 				$mfield=substr($rt, 1, strlen($rt))."$row[0]";
@@ -1085,7 +1085,7 @@ if (isset($summary) && $summary)
 		{
 			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 			$nquery = "SELECT title, type, question, other FROM ".db_table_name("questions")." WHERE qid='$qqid' AND language='{$language}'";
-			$nresult = db_execute_num($nquery) or die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
+			$nresult = db_execute_num($nquery) or safe_die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
 			while ($nrow=$nresult->FetchRow())
 			{
 				$qtitle=$nrow[0]; $qtype=$nrow[1];
@@ -1103,7 +1103,7 @@ if (isset($summary) && $summary)
             $qidlength=strlen($tmpqid);
             $qaid=substr($qqid, $qidlength, strlen($qqid)-$qidlength);
 			$nquery = "SELECT title, type, question, other FROM ".db_table_name("questions")." WHERE qid='".substr($qqid, 0, $qidlength)."' AND language='{$language}'";
-			$nresult = db_execute_num($nquery) or die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
+			$nresult = db_execute_num($nquery) or safe_die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
 			$count = substr($qqid, strlen($qqid)-1);
 			while ($nrow=$nresult->FetchRow())
 			{
@@ -1111,7 +1111,7 @@ if (isset($summary) && $summary)
 				$qquestion=strip_tags($nrow[2]);
 			}
 		    $qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qqid' AND code='$qaid' AND language='{$language}' ORDER BY sortorder, answer";
-		    $qresult=db_execute_num($qquery) or die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".$connect->ErrorMsg());
+		    $qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".$connect->ErrorMsg());
 		    while ($qrow=$qresult->FetchRow())
 	    	{
 		    	$atext=$qrow[1];
@@ -1126,7 +1126,7 @@ if (isset($summary) && $summary)
 			$lengthofnumeral=substr($rt, strpos($rt, "-")+1, 1);
 			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strpos($rt, "-")-($lengthofnumeral+1)), 3);
 			$nquery = "SELECT title, type, question FROM ".db_table_name("questions")." WHERE qid='$qqid' AND language='{$language}'";
-			$nresult = db_execute_num($nquery) or die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
+			$nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
 			while ($nrow=$nresult->FetchRow())
 			{
 				$qtitle=$nrow[0]. " [".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
@@ -1134,7 +1134,7 @@ if (isset($summary) && $summary)
 				$qquestion=strip_tags($nrow[2]). "[".$clang->gT("Ranking")." ".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
 			}
 			$query="SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qqid' AND language='{$language}' ORDER BY sortorder, answer";
-			$result=db_execute_num($query) or die("Couldn't get list of answers for multitype<br />$query<br />".$connect->ErrorMsg());
+			$result=db_execute_num($query) or safe_die("Couldn't get list of answers for multitype<br />$query<br />".$connect->ErrorMsg());
 			while ($row=$result->FetchRow())
 			{
 				$mfield=substr($rt, 1, strpos($rt, "-")-1);
@@ -1161,10 +1161,10 @@ if (isset($summary) && $summary)
 							   FROM ".db_table_name("questions")." 
 							   WHERE qid='".substr($qqid, 0, $qidlength)."' 
 							   AND language='{$language}'";
-			        $nresult = db_execute_num($nquery) or die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
+			        $nresult = db_execute_num($nquery) or safe_die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
 				} else {
 				    $nquery = "SELECT title, type, question, qid, lid FROM ".db_table_name("questions")." WHERE qid='$qqid' AND language='{$language}'";
-				    $nresult = db_execute_num($nquery) or die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
+				    $nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
 				}
 				while ($nrow=$nresult->FetchRow()) 
 				{
@@ -1178,7 +1178,7 @@ if (isset($summary) && $summary)
 				if(substr($rt, 0, 1) == "K")
 				{
 				    $qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qaid' AND language='{$language}' ORDER BY sortorder, answer";
-				    $qresult=db_execute_num($qquery) or die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".$connect->ErrorMsg());
+				    $qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".$connect->ErrorMsg());
 				    while ($qrow=$qresult->FetchRow())
 			    	{
 				    	$atext=$qrow[1];
@@ -1211,7 +1211,7 @@ if (isset($summary) && $summary)
 				
                 if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate is not null";}
 				if ($sql != "NULL") {$query .= " AND $sql";}
-				$result=db_execute_assoc($query) or die("Couldn't do maths testing<br />$query<br />".$connect->ErrorMsg());
+				$result=db_execute_assoc($query) or safe_die("Couldn't do maths testing<br />$query<br />".$connect->ErrorMsg());
 				while ($row=$result->FetchRow())
 				{
 					$showem[]=array($clang->gT("Sum"), $row['sum']);
@@ -1227,7 +1227,7 @@ if (isset($summary) && $summary)
 				$query ="SELECT ".db_quote_id($fieldname)." FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT null AND ".db_quote_id($fieldname)." != ' '";
 				if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate is not null";}
 				if ($sql != "NULL") {$query .= " AND $sql";}
-				$result=$connect->Execute($query) or die("Disaster during median calculation<br />$query<br />".$connect->ErrorMsg());
+				$result=$connect->Execute($query) or safe_die("Disaster during median calculation<br />$query<br />".$connect->ErrorMsg());
 				$querystarter="SELECT ".db_quote_id($fieldname)." FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT null AND ".db_quote_id($fieldname)." != ' '";
 				if (incompleteAnsFilterstate() === true) {$querystarter .= " AND submitdate is not null";}                     
 				if ($sql != "NULL") {$querystarter .= " AND $sql";}
@@ -1248,7 +1248,7 @@ if (isset($summary) && $summary)
 					{
 						//ODD NUMBER
 						$query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
-						$result=db_select_limit_assoc($query, $q1c, 2) or die("1st Quartile query failed<br />".$connect->ErrorMsg());
+						$result=db_select_limit_assoc($query, $q1c, 2) or safe_die("1st Quartile query failed<br />".$connect->ErrorMsg());
 						while ($row=$result->FetchRow())
 						{
 							if ($total == 0)    {$total=$total-$row[$fieldname];}
@@ -1264,7 +1264,7 @@ if (isset($summary) && $summary)
 						//EVEN NUMBER
 						//TODO: See note above for 'ODD'
 						$query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
-						$result=db_select_limit_assoc($query,1, $q1c) or die ("1st Quartile query failed<br />".$connect->ErrorMsg());
+						$result=db_select_limit_assoc($query,1, $q1c) or safe_die ("1st Quartile query failed<br />".$connect->ErrorMsg());
 						while ($row=$result->FetchRow()) {$showem[]=array("1st Quartile (Q1)", $row[$fieldname]);}
 					}
 					$total=0;
@@ -1277,7 +1277,7 @@ if (isset($summary) && $summary)
 					{
 						//remainder
 						$query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
-						$result=db_select_limit_assoc($query,2, $medianc) or die("What a complete mess with the remainder<br />$query<br />".$connect->ErrorMsg());
+						$result=db_select_limit_assoc($query,2, $medianc) or safe_die("What a complete mess with the remainder<br />$query<br />".$connect->ErrorMsg());
 						while ($row=$result->FetchRow()) {$total=$total+$row[$fieldname];}
 						$showem[]=array($clang->gT("2nd Quartile (Median)"), $total/2);
 					}
@@ -1285,7 +1285,7 @@ if (isset($summary) && $summary)
 					{
 						//EVEN NUMBER
 						$query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
-						$result=db_select_limit_assoc($query,1, $medianc) or die("What a complete mess<br />$query<br />".$connect->ErrorMsg());
+						$result=db_select_limit_assoc($query,1, $medianc) or safe_die("What a complete mess<br />$query<br />".$connect->ErrorMsg());
 						while ($row=$result->FetchRow()) {$showem[]=array("Median Value", $row[$fieldname]);}
 					}
 					$total=0;
@@ -1297,7 +1297,7 @@ if (isset($summary) && $summary)
 					if ($q3 != $q3b)
 					{
 						$query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
-						$result = db_select_limit_assoc($query,2,$q3c) or die("3rd Quartile query failed<br />".$connect->ErrorMsg());
+						$result = db_select_limit_assoc($query,2,$q3c) or safe_die("3rd Quartile query failed<br />".$connect->ErrorMsg());
 						$lastnumber='';
 						while ($row=$result->FetchRow())
 						{
@@ -1312,7 +1312,7 @@ if (isset($summary) && $summary)
 					else
 					{
 						$query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1";
-						$result = db_select_limit_assoc($query,1, $q3c) or die("3rd Quartile even query failed<br />".$connect->ErrorMsg());
+						$result = db_select_limit_assoc($query,1, $q3c) or safe_die("3rd Quartile even query failed<br />".$connect->ErrorMsg());
 						while ($row=$result->FetchRow()) {$showem[]=array("3rd Quartile (Q3)", $row[$fieldname]);}
 					}
 					$total=0;
@@ -1357,7 +1357,7 @@ if (isset($summary) && $summary)
             $qastring=$fielddata['question'];
 			$rqid=$qqid;
 			$nquery = "SELECT title, type, question, qid, lid, lid1, other FROM ".db_table_name("questions")." WHERE qid='{$rqid}' AND language='{$language}'";
-			$nresult = db_execute_num($nquery) or die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
+			$nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
 			while ($nrow=$nresult->FetchRow())
 			{
 				$qtitle=$nrow[0];
@@ -1373,7 +1373,7 @@ if (isset($summary) && $summary)
 			{
 				case "A": //Array of 5 point choices
 				$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qanswer' AND language='{$language}' ORDER BY sortorder, answer";
-				$qresult=db_execute_num($qquery) or die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".$connect->ErrorMsg());
+				$qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".$connect->ErrorMsg());
 				while ($qrow=$qresult->FetchRow())
 				{
 					for ($i=1; $i<=5; $i++)
@@ -1387,7 +1387,7 @@ if (isset($summary) && $summary)
 				break;
 				case "B": //Array of 10 point choices
 				$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qanswer' AND language='{$language}' ORDER BY sortorder, answer";
-				$qresult=db_execute_num($qquery) or die ("Couldn't get answer details (Array 10p Q)<br />$qquery<br />".$connect->ErrorMsg());
+				$qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details (Array 10p Q)<br />$qquery<br />".$connect->ErrorMsg());
 				while ($qrow=$qresult->FetchRow())
 				{
 					for ($i=1; $i<=10; $i++)
@@ -1401,7 +1401,7 @@ if (isset($summary) && $summary)
 				break;
 				case "C": //Array of Yes/No/$clang->gT("Uncertain")
 				$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qanswer' AND language='{$language}' ORDER BY sortorder, answer";
-				$qresult=db_execute_num($qquery) or die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
+				$qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
 				while ($qrow=$qresult->FetchRow())
 				{
 					$alist[]=array("Y", $clang->gT("Yes"));
@@ -1414,7 +1414,7 @@ if (isset($summary) && $summary)
 				break;
 				case "E": //Array of Yes/No/$clang->gT("Uncertain")
 				$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qanswer' AND language='{$language}' ORDER BY sortorder, answer";
-				$qresult=db_execute_num($qquery) or die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
+				$qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
 				while ($qrow=$qresult->FetchRow())
 				{
 					$alist[]=array("I", $clang->gT("Increase"));
@@ -1428,7 +1428,7 @@ if (isset($summary) && $summary)
 				case "F": //Array of Flexible
 				case "H": //Array of Flexible by Column
 				$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qanswer' AND language='{$language}' ORDER BY sortorder, answer";
-				$qresult=db_execute_num($qquery) or die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
+				$qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
 				while ($qrow=$qresult->FetchRow())
 				{
 					$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND language='{$language}'ORDER BY sortorder, code";
@@ -1510,7 +1510,7 @@ if (isset($summary) && $summary)
                 break;
 				default:
 				$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qqid' AND language='{$language}' ORDER BY sortorder, answer";
-				$qresult = db_execute_num($qquery) or die ("Couldn't get answers list<br />$qquery<br />".$connect->ErrorMsg());
+				$qresult = db_execute_num($qquery) or safe_die ("Couldn't get answers list<br />$qquery<br />".$connect->ErrorMsg());
 				while ($qrow=$qresult->FetchRow())
 				{
 					$alist[]=array("$qrow[0]", "$qrow[1]");
@@ -1583,7 +1583,7 @@ if (isset($summary) && $summary)
 				}
 				if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate is not null";}                     
 				if ($sql != "NULL") {$query .= " AND $sql";}
-				$result=db_execute_num($query) or die ("Couldn't do count of values<br />$query<br />".$connect->ErrorMsg());
+				$result=db_execute_num($query) or safe_die ("Couldn't do count of values<br />$query<br />".$connect->ErrorMsg());
 				// $statisticsoutput .= "\n<!-- ($sql): $query -->\n\n";
                 while ($row=$result->FetchRow())                   // this just extracts the data, after we present
 				{

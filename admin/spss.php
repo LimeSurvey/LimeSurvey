@@ -142,7 +142,7 @@ sendcacheheaders();
 
 //These results are over written just a few lines down, they can't be doing anything
 //$query = "SELECT DISTINCT qid FROM ".db_table_name("questions")." WHERE sid=$surveyid"; //GET LIST OF LEGIT QIDs FOR TESTING LATER
-//$result=$connect->Execute($query) or die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());
+//$result=$connect->Execute($query) or safe_die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());
 //$num_results = $result->RecordCount();
 
 # Build array that has to be returned
@@ -152,7 +152,7 @@ $fieldmap=createFieldMap($surveyid);
 //print_r($fieldmap);
 
 #See if tokens are being used
-$tablelist = $connect->MetaTables() or die ("Error getting table list<br />".$connect->ErrorMsg());
+$tablelist = $connect->MetaTables() or safe_die ("Error getting table list<br />".$connect->ErrorMsg());
 foreach ($tablelist as $tbl)
 {
 	if ($tbl == "{$dbprefix}tokens_$surveyid") {$tokensexist =  1;}
@@ -160,7 +160,7 @@ foreach ($tablelist as $tbl)
 
 #Lookup the names of the attributes
 $query="SELECT sid, attribute1, attribute2, private, language FROM {$dbprefix}surveys WHERE sid=$surveyid";
-$result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());  //Checked
+$result=db_execute_assoc($query) or safe_die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());  //Checked
 $num_results = $result->RecordCount();
 $num_fields = $num_results;
 # Build array that has to be returned
@@ -321,7 +321,7 @@ if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
 }
 
 
-$result=db_execute_num($query) or die("Couldn't get results<br />$query<br />".$connect->ErrorMsg()); //Checked
+$result=db_execute_num($query) or safe_die("Couldn't get results<br />$query<br />".$connect->ErrorMsg()); //Checked
 $num_results = $result->RecordCount();
 $num_fields = $result->FieldCount();
 
@@ -502,7 +502,7 @@ foreach ($fields as $field){
 			FROM {$dbprefix}questions WHERE sid='".$surveyid."' AND language='".$language."' 
 			AND qid='".$field["qid"]."'";
 			
-			$result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg()); //Checked
+			$result=db_execute_assoc($query) or safe_die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg()); //Checked
 			$num_results = $result->RecordCount();
 			$num_fields = $num_results;
 			if ($num_results >0){
@@ -516,7 +516,7 @@ foreach ($fields as $field){
 			#Lookup the answer
 			$query = "SELECT answer FROM {$dbprefix}answers WHERE 
 			qid='".$field["qid"]."' and language='".$language."' AND code ='".$field["code"]."'";
-			$result=db_execute_assoc($query) or die("Couldn't lookup answer<br />$query<br />".$connect->ErrorMsg());  //Checked
+			$result=db_execute_assoc($query) or safe_die("Couldn't lookup answer<br />$query<br />".$connect->ErrorMsg());  //Checked
 			$num_results = $result->RecordCount();
 			$num_fields = $num_results;
 			if ($num_results >0){
@@ -539,7 +539,7 @@ foreach ($fields as $field){
 			$query = "SELECT question FROM {$dbprefix}questions 
 			WHERE sid ='".$surveyid."' AND language='".$language."' 
 			AND qid='".$field["qid"]."'";
-			$result=db_execute_assoc($query) or die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg()); //Checked
+			$result=db_execute_assoc($query) or safe_die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg()); //Checked
 			$row = $result->FetchRow();
 			echo "VARIABLE LABELS ".$field["id"]." '".
 			mb_substr(strip_tags_full($row["question"]), 0, $length_varlabel)."'.\n";
@@ -560,7 +560,7 @@ foreach ($fields as $field)
 			{$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE 
 			{$dbprefix}answers.qid = '".$field["qid"]."' and {$dbprefix}questions.language='".$language."' and  {$dbprefix}answers.language='".$language."'
 			and {$dbprefix}questions.qid='".$field["qid"]."'";
-			$result=db_execute_assoc($query) or die("Couldn't lookup value labels<br />$query<br />".$connect->ErrorMsg()); //Checked
+			$result=db_execute_assoc($query) or safe_die("Couldn't lookup value labels<br />$query<br />".$connect->ErrorMsg()); //Checked
 			$num_results = $result->RecordCount();
 			if ($num_results > 0)
 			{
@@ -588,7 +588,7 @@ foreach ($fields as $field)
 			{$dbprefix}questions, {$dbprefix}labels WHERE {$dbprefix}labels.language='".$language."' and
 			{$dbprefix}questions.language='".$language."' and 
 			{$dbprefix}questions.qid ='".$field["qid"]."' and {$dbprefix}questions.lid={$dbprefix}labels.lid";
-			$result=db_execute_assoc($query) or die("Couldn't get labels<br />$query<br />".$connect->ErrorMsg());   //Checked
+			$result=db_execute_assoc($query) or safe_die("Couldn't get labels<br />$query<br />".$connect->ErrorMsg());   //Checked
 			$num_results = $result->RecordCount();
 			if ($num_results > 0)
 			{

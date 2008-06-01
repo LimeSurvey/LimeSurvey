@@ -51,7 +51,7 @@ if ($order == "alpha")
 	$query .= " ORDER BY ".db_quote_id($column);
 }
 
-$result=db_execute_assoc($query) or die("Error with query: ".$query."<br />".$connect->ErrorMsg());
+$result=db_execute_assoc($query) or safe_die("Error with query: ".$query."<br />".$connect->ErrorMsg());
 $listcolumnoutput= "<table width='98%' class='statisticstable' border='1' cellpadding='2' cellspacing='0'>\n";
 $listcolumnoutput.= "<tr><td><input type='image' src='$imagefiles/downarrow.png' align='middle' onclick=\"window.open('admin.php?action=listcolumn&amp;sid=$surveyid&amp;column=$column&amp;order=id', '_top')\" /></td>\n";
 $listcolumnoutput.= "<td valign='top'><input type='image' align='right' src='$imagefiles/close.gif' onclick='window.close()' />";

@@ -99,7 +99,7 @@ elseif (isset($surveyid) && $surveyid)
 	{
 		$query .= " WHERE submitdate is not null ";
 	}
-	$result = db_execute_assoc($query) or die("Error:<br />$query<br />".$connect->ErrorMsg()); //Checked
+	$result = db_execute_assoc($query) or safe_die("Error:<br />$query<br />".$connect->ErrorMsg()); //Checked
 
 	while ($row=$result->FetchRow())
 	{

@@ -34,7 +34,8 @@ $dbprefix           =   "lime_";       // A global prefix that can be added to a
                                        // a database with other applications. Suggested prefix is "lime_"
 
 // File Locations
-$rooturl            =   "http://{$_SERVER['HTTP_HOST']}/limesurvey"; //The root web url for your limesurvey installation (without a trailing slash).
+$rooturl            =   "http://localhost:81/file:/D:/web/xampp/htdocs/limesurvey"; //The root web url for your limesurvey installation.
+//$rooturl            =   "http://{$_SERVER['SERVER_NAME']}/limesurvey"; //The root web url for your limesurvey installation (without a trailing slash).
 
 $rootdir            =   dirname(__FILE__); // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this setting.
                                            // If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir="C:\Inetpub\wwwroot\limesurvey"!
@@ -45,11 +46,24 @@ $sitename           =   "LimeSurvey";     // The official name of the site (appe
 
 $defaultuser        =   "admin";          // This is the default username when LimeSurvey is installed
 $defaultpass        =   "password";       // This is the default password for the default user when LimeSurvey is installed
+$debug=2;
 
 // Email Settings
 
-$siteadminemail     =   "your@email.org"; // The default email address of the site administrator
-$siteadminbounce    =   "your@email.org"; // The default email address used for error notification of sent messages for the site administrator (Return-Path)
+$siteadminemail     =   "carsten.schmitz.hh@gmx.de"; // The default email address of the site administrator
+$siteadminbounce    =   "carsten.schmitz.hh@gmx.de"; // The default email address used for error notification of sent messages for the site administrator (Return-Path)
 $siteadminname      =   "Your Name";      // The name of the site administrator
+$emailmethod        =   "smtp";           // The following values can be used:
+									      // mail      -  use internal PHP Mailer
+                                          // sendmail  -  use Sendmail Mailer
+                                          // smtp      -  use SMTP relaying
+
+$emailsmtphost      =   "mail.gmx.net";      // Sets the SMTP host. All hosts must be separated by a semicolon.
+                                          // You can also specify a different port for each host by using
+                                          // this format: [hostname:port] (e.g. "smtp1.example.com:25;smtp2.example.com").
+
+$emailsmtpuser      =   "carsten.schmitz.hh@gmx.de";               // SMTP authorisation username - only set this if your server requires authorization - if you set it you HAVE to set a password too
+$emailsmtppassword  =   "corny99killer";               // SMTP authorisation password - empty password is not allowed
+$emailsmtpssl       =   1;                // Set this to 1 to use SSL for SMTP connection 
 
 ?>

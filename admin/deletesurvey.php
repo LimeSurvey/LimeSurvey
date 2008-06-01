@@ -74,23 +74,23 @@ else //delete the survey
 	{			
 		$dsquery = $dict->DropTableSQL("{$dbprefix}survey_$surveyid");	
 		//$dict->ExecuteSQLArray($sqlarray);		
-		$dsresult = $dict->ExecuteSQLArray($dsquery) or die ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
+		$dsresult = $dict->ExecuteSQLArray($dsquery) or safe_die ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
 	}
 
 	if (in_array("{$dbprefix}tokens_$surveyid", $tablelist)) //delete the tokens_$surveyid table
 	{
 		$dsquery = $dict->DropTableSQL("{$dbprefix}tokens_$surveyid");
-		$dsresult = $dict->ExecuteSQLArray($dsquery) or die ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
+		$dsresult = $dict->ExecuteSQLArray($dsquery) or safe_die ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
 	}
 
 	$dsquery = "SELECT qid FROM {$dbprefix}questions WHERE sid=$surveyid";
-	$dsresult = db_execute_assoc($dsquery) or die ("Couldn't find matching survey to delete<br />$dsquery<br />".$connect->ErrorMsg());
+	$dsresult = db_execute_assoc($dsquery) or safe_die ("Couldn't find matching survey to delete<br />$dsquery<br />".$connect->ErrorMsg());
 	while ($dsrow = $dsresult->FetchRow())
 	{
 		$asdel = "DELETE FROM {$dbprefix}answers WHERE qid={$dsrow['qid']}";
 		$asres = $connect->Execute($asdel);
 		$cddel = "DELETE FROM {$dbprefix}conditions WHERE qid={$dsrow['qid']}";
-		$cdres = $connect->Execute($cddel) or die ("Delete conditions failed<br />$cddel<br />".$connect->ErrorMsg());
+		$cdres = $connect->Execute($cddel) or safe_die ("Delete conditions failed<br />$cddel<br />".$connect->ErrorMsg());
 		$qadel = "DELETE FROM {$dbprefix}question_attributes WHERE qid={$dsrow['qid']}";
 		$qares = $connect->Execute($qadel);
 	}

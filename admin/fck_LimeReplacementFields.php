@@ -136,7 +136,7 @@ if ($isInstertansEnabled===true)
 	          ."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
 	          ."AND {$dbprefix}groups.language='".GetBaseLanguageFromSurveyID($surveyid)."' " ;
 	
-	$qresult = db_execute_assoc($qquery) or die ("$qquery<br />".$connect->ErrorMsg());
+	$qresult = db_execute_assoc($qquery) or safe_die ("$qquery<br />".$connect->ErrorMsg());
 	$qrows = $qresult->GetRows();
 	// Perform a case insensitive natural sort on group name then question title (known as "code" in the form) of a multidimensional array
 	usort($qrows, 'CompareGroupThenTitle');
@@ -303,7 +303,7 @@ if ($isInstertansEnabled===true)
 	           ."ORDER BY sortorder, "
 	                    ."answer";
 	
-				$aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
+				$aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
 	
 				while ($arows = $aresult->FetchRow())
 				{
@@ -321,7 +321,7 @@ if ($isInstertansEnabled===true)
 	             ."WHERE qid={$rows['qid']} "
 	             ."AND ".db_table_name('answers').".language='".GetBaseLanguageFromSurveyID($surveyid)."' "
 				."ORDER BY sortorder, answer";
-				$aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to Ranking question<br />$aquery<br />".$connect->ErrorMsg());
+				$aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Ranking question<br />$aquery<br />".$connect->ErrorMsg());
 				$acount=$aresult->RecordCount();
 				while ($arow=$aresult->FetchRow())
 				{
@@ -342,7 +342,7 @@ if ($isInstertansEnabled===true)
                 ."AND {$dbprefix}answers.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
                 ."ORDER BY sortorder, "
                 ."answer";
-            $aresult=db_execute_assoc($aquery) or die ("Couldn't get answers to multi scale question<br />$aquery<br />".$connect->ErrorMsg());
+            $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to multi scale question<br />$aquery<br />".$connect->ErrorMsg());
             $acount=$aresult->RecordCount();            
             while ($arow=$aresult->FetchRow())
             {
@@ -355,7 +355,7 @@ if ($isInstertansEnabled===true)
                     ."AND {$dbprefix}labels.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
                     ."ORDER BY sortorder, "
                     ."lid";
-                $lresult=db_execute_assoc($lquery) or die ("Couldn't get labels to Array <br />$lquery<br />".$connect->ErrorMsg());                
+                $lresult=db_execute_assoc($lquery) or safe_die ("Couldn't get labels to Array <br />$lquery<br />".$connect->ErrorMsg());                
                 while ($lrows = $lresult->FetchRow())
                 {
                     $cquestions[]=array($rows['title']." ".$arow['code']." [Label ".$lrows['code']."]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arow['code']."#0",$rows['previouspage']);
@@ -366,7 +366,7 @@ if ($isInstertansEnabled===true)
                     ."AND {$dbprefix}labels.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
                     ."ORDER BY sortorder, "
                     ."lid";
-                $lresult=db_execute_assoc($lquery) or die ("Couldn't get labels to Array <br />$lquery<br />".$connect->ErrorMsg());                
+                $lresult=db_execute_assoc($lquery) or safe_die ("Couldn't get labels to Array <br />$lquery<br />".$connect->ErrorMsg());                
                 while ($lrows = $lresult->FetchRow())
                 {
                     $cquestions[]=array($rows['title']." ".$arow['code']." [Label ".$lrows['code']."]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arow['code']."#1",$rows['previouspage']);

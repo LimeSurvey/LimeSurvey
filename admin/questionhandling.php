@@ -643,11 +643,11 @@ if($action == "orderquestions")
     	$newsortorder=$postsortorder-1;
     	$oldsortorder=$postsortorder;
     	$cdquery = "UPDATE ".db_table_name('questions')." SET question_order=-1 WHERE gid=$gid AND question_order=$newsortorder";
-    	$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    	$cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
     	$cdquery = "UPDATE ".db_table_name('questions')." SET question_order=$newsortorder WHERE gid=$gid AND question_order=$oldsortorder";
-    	$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    	$cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
     	$cdquery = "UPDATE ".db_table_name('questions')." SET question_order='$oldsortorder' WHERE gid=$gid AND question_order=-1";
-    	$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    	$cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
     	break;
 
         // Pressing the Down button
@@ -655,11 +655,11 @@ if($action == "orderquestions")
     	$newsortorder=$postsortorder+1;
     	$oldsortorder=$postsortorder;
     	$cdquery = "UPDATE ".db_table_name('questions')." SET question_order=-1 WHERE gid=$gid AND question_order=$newsortorder";
-    	$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    	$cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
     	$cdquery = "UPDATE ".db_table_name('questions')." SET question_order='$newsortorder' WHERE gid=$gid AND question_order=$oldsortorder";
-    	$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    	$cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
     	$cdquery = "UPDATE ".db_table_name('questions')." SET question_order=$oldsortorder WHERE gid=$gid AND question_order=-1";
-    	$cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    	$cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
     	break;
         }
      }
@@ -671,26 +671,26 @@ if($action == "orderquestions")
 	    {
 		  //Move the question we're changing out of the way
 		  $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=-1 WHERE gid=$gid AND question_order=$oldpos";
-    	  $cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    	  $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
 	      //Move all question_orders that are less than the newpos down one
 	      $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=question_order-1 WHERE gid=$gid AND question_order > 0 AND question_order <= $newpos";
-    	  $cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    	  $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
     	  //Renumber the question we're changing
 		  $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=$newpos WHERE gid=$gid AND question_order=-1";
-    	  $cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    	  $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
 		}
 	    if(($newpos+1) < $oldpos)
 	    {
 	      //echo "Newpos $newpos, Oldpos $oldpos";
 		  //Move the question we're changing out of the way
 		  $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=-1 WHERE gid=$gid AND question_order=$oldpos";
-    	  $cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    	  $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
 	      //Move all question_orders that are later than the newpos up one
 	      $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=question_order+1 WHERE gid=$gid AND question_order > ".$newpos." AND question_order <= $oldpos";
-    	  $cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    	  $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
     	  //Renumber the question we're changing
 		  $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=".($newpos+1)." WHERE gid=$gid AND question_order=-1";
-    	  $cdresult=$connect->Execute($cdquery) or die($connect->ErrorMsg());
+    	  $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
 		}
 	 }
 

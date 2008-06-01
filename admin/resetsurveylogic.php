@@ -61,7 +61,7 @@ else //delete conditions in the survey
 	$dict = NewDataDictionary($connect);
 
 	$resetlogicquery = "DELETE c.* FROM {$dbprefix}conditions as c, {$dbprefix}questions as q WHERE c.qid=q.qid AND q.sid=$surveyid";
-	$resetlogicresult = $connect->Execute($resetlogicquery) or die ("Couldn't delete conditions<br />$resetlogicquery<br />".$connect->ErrorMsg());
+	$resetlogicresult = $connect->Execute($resetlogicquery) or safe_die ("Couldn't delete conditions<br />$resetlogicquery<br />".$connect->ErrorMsg());
 
 	$resetsurveylogicoutput .= "\t<tr>\n";
 	$resetsurveylogicoutput .= "\t\t<td align='center'><br />\n";

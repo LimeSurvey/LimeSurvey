@@ -162,7 +162,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
                    FROM ".db_table_name('labels')."
                    WHERE lid=".$newlid."
                    ORDER BY sortorder, code";
-		$result2 = db_execute_num($query2) or die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
+		$result2 = db_execute_num($query2) or safe_die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
 		while($row2=$result2->FetchRow())
 		{
 			$thisset .= implode('.', $row2);
@@ -186,9 +186,9 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 			//There is a matching labelset. So, we will delete this one and refer
 			//to the matched one.
 			$query = "DELETE FROM {$dbprefix}labels WHERE lid=$newlid";
-			$result=$connect->Execute($query) or die("Couldn't delete labels<br />$query<br />".$connect->ErrorMsg());
+			$result=$connect->Execute($query) or safe_die("Couldn't delete labels<br />$query<br />".$connect->ErrorMsg());
 			$query = "DELETE FROM {$dbprefix}labelsets WHERE lid=$newlid";
-			$result=$connect->Execute($query) or die("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
+			$result=$connect->Execute($query) or safe_die("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
 			$newlid=$lsmatch;
 	        $importlabeloutput.="<p><i><font color='red'>".$clang->gT("There was a duplicate labelset, so this set was not imported. The duplicate will be used instead.")."</font></i>\n";
             $importlabeloutput .= "<strong>Existing LID:</strong> $newlid</p><br />\n";
