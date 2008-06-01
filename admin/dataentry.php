@@ -985,7 +985,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						$dcols=0;
 					}
 
-					while ($fnames[$i][3] == "M" && $question != "" && $question == $fnames[$i][2])
+//					while ($fnames[$i][3] == "M" && $question != "" && $question == $fnames[$i][2])
+					while ($fnames[$i][3] == "M" && $question == $fnames[$i][2])
 					{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 						//$dataentryoutput .= substr($fnames[$i][0], strlen($fnames[$i][0])-5, 5)."<br />\n";
