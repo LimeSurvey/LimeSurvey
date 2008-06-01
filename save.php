@@ -338,7 +338,31 @@ function createinsertquery()
 	
 	if (isset($_SESSION['insertarray']) && is_array($_SESSION['insertarray']))
 	{
-
+        $inserts=array_unique($_SESSION['insertarray']);
+    
+        foreach ($inserts as $value)
+        {
+            //Work out if the field actually exists in this survey
+            $fieldexists = arraySearchByKey($value, $fieldmap, "fieldname", 1);
+            //Iterate through possible responses
+            if (isset($_SESSION[$value]) && !empty($fieldexists))
+            {
+                //If deletenonvalues is ON, delete any values that shouldn't exist
+                if($deletenonvalues==1) {checkconfield($value);}
+                //Only create column name and data entry if there is actually data!
+                $colnames[]=$value;
+                // most databases do not allow to insert an empty value into a datefield, 
+                // therefore if no date was chosen in a date question the insert value has to be NULL
+                if ($_SESSION[$value]=='' && $fieldexists['type']=='D')      
+                {                        
+                    $values[]='NULL';
+                }
+                  else  {
+                $values[]=$connect->qstr($_SESSION[$value]);
+                        }
+            }
+        }
+            
 		if ($thissurvey['datestamp'] == "Y")
 		{
 			$_SESSION['datestamp']=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);      
@@ -365,30 +389,7 @@ function createinsertquery()
 		if (!isset($_SESSION['srid']))
 		{
             //Prepare row insertion
-            $inserts=array_unique($_SESSION['insertarray']);
-        
-            foreach ($inserts as $value)
-            {
-                //Work out if the field actually exists in this survey
-                $fieldexists = arraySearchByKey($value, $fieldmap, "fieldname", 1);
-                //Iterate through possible responses
-                if (isset($_SESSION[$value]) && !empty($fieldexists))
-                {
-                    //If deletenonvalues is ON, delete any values that shouldn't exist
-                    if($deletenonvalues==1) {checkconfield($value);}
-                    //Only create column name and data entry if there is actually data!
-                    $colnames[]=$value;
-                    // most databases do not allow to insert an empty value into a datefield, 
-                    // therefore if no date was chosen in a date question the insert value has to be NULL
-                    if ($_SESSION[$value]=='' && $fieldexists['type']=='D')      
-                    {                        
-                        $values[]='NULL';
-                    }
-                      else  {
-                    $values[]=$connect->qstr($_SESSION[$value]);
-                            }
-                }
-            }
+
 
             if (!isset($colnames) || !is_array($colnames)) //If something went horribly wrong - ie: none of the insertarray fields exist for this survey, crash out
             {
