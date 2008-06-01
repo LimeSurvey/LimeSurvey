@@ -2119,7 +2119,7 @@ function templatereplace($line)
 	global $assessments, $s_lang;
 	global $errormsg, $clang;
 	global $saved_id;
-	global $totalBoilerplatequestions;
+	global $totalBoilerplatequestions, $relativeurl;
     global $languagechanger;    
     global $printoutput, $captchapath;
                      
@@ -2341,7 +2341,7 @@ function templatereplace($line)
 	if (strpos($line, "{SAVEMESSAGE}") !== false) $line=str_replace("{SAVEMESSAGE}", $clang->gT("Enter a name and password for this survey and click save below.")."<br />\n".$clang->gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.")."<br /><br />\n".$clang->gT("If you give an email address, an email containing the details will be sent to you."), $line);
 	if (strpos($line, "{RETURNTOSURVEY}") !== false) 
 	{
-		$savereturn = "<a href='index.php?sid=$surveyid";
+		$savereturn = "<a href='$relativeurl/index.php?sid=$surveyid";
 		if (returnglobal('token'))
 		{
 			$savereturn.= "&amp;token=".urlencode(returnglobal('token'));

@@ -280,8 +280,8 @@ if (!$surveyid)
 	{
 		while($rows = $result->FetchRow())
 		{
-		$link = "<li class='surveytitle'><a href='index.php?sid=".$rows['sid'];
-		if (isset($_GET['lang'])) {$link .= "&amp;lang=".sanitize_languagecode($_GET['lang']);}
+      $link = "<li class='surveytitle'><a href='$relativeurl/index.php?sid=".$rows['sid'];
+    if (isset($_GET['lang'])) {$link .= "&amp;lang=".sanitize_languagecode($_GET['lang']);}
 		$link .= "' >".$rows['surveyls_title']."</a></li>\n";
 		$list[]=$link;
 	    }
@@ -749,6 +749,7 @@ function makegraph($currentstep, $total)
 
 function makelanguagechanger()
 {
+  global $relativeurl;
   if (!isset($surveyid)) 
   {	
     $surveyid=returnglobal('sid');
@@ -786,16 +787,16 @@ function makelanguagechanger()
       $lang = GetBaseLanguageFromSurveyID($surveyid);
       
     $htmlcode ="<select name=\"select\" class='languagechanger' onchange=\"javascript:window.location=this.value\">\n";
-    $htmlcode .= "<option value=\"index.php?sid=". $surveyid ."&lang=". $lang ."$tokenparam\">".getLanguageNameFromCode($lang,false)."</option>\n";
+    $htmlcode .= "<option value=\"$relativeurl/index.php?sid=". $surveyid ."&lang=". $lang ."$tokenparam\">".getLanguageNameFromCode($lang,false)."</option>\n";
     
     foreach ($slangs as $otherlang)
     {
         if($otherlang != $lang)
-        $htmlcode .= "\t<option value=\"index.php?sid=". $surveyid ."&lang=". $otherlang ."$tokenparam\" >".getLanguageNameFromCode($otherlang,false)."</option>\n";
+        $htmlcode .= "\t<option value=\"$relativeurl/index.php?sid=". $surveyid ."&lang=". $otherlang ."$tokenparam\" >".getLanguageNameFromCode($otherlang,false)."</option>\n";
     }
     if($lang != GetBaseLanguageFromSurveyID($surveyid))
     {
-      $htmlcode .= "<option value=\"index.php?sid=".$surveyid."&lang=".GetBaseLanguageFromSurveyID($surveyid)."$tokenparam\">".getLanguageNameFromCode(GetBaseLanguageFromSurveyID($surveyid),false)."</option>\n";  
+      $htmlcode .= "<option value=\"$relativeurl/index.php?sid=".$surveyid."&lang=".GetBaseLanguageFromSurveyID($surveyid)."$tokenparam\">".getLanguageNameFromCode(GetBaseLanguageFromSurveyID($surveyid),false)."</option>\n";  
     }
     
     $htmlcode .= "</select>\n";
@@ -805,10 +806,10 @@ function makelanguagechanger()
   } elseif (!isset($surveyid)) {
     global $defaultlang, $baselang;
     $htmlcode = "<select name=\"select\" class='languagechanger' onchange=\"javascript:window.location=this.value\">\n";
-    $htmlcode .= "<option value=\"index.php?lang=". $defaultlang ."$tokenparam\">".getLanguageNameFromCode($defaultlang,false)."</option>\n";
+    $htmlcode .= "<option value=\"$relativeurl/index.php?lang=". $defaultlang ."$tokenparam\">".getLanguageNameFromCode($defaultlang,false)."</option>\n";
     foreach(getlanguagedata() as $key=>$val)
     {
-	    $htmlcode .= "\t<option value=\"index.php?lang=".$key."$tokenparam\" ";
+	    $htmlcode .= "\t<option value=\"$relativeurl/index.php?lang=".$key."$tokenparam\" ";
 		if($key == $baselang) {$htmlcode .= " selected";}
 		$htmlcode .= ">".getLanguageNameFromCode($key,false)."</option>\n";
 	}

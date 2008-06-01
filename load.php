@@ -35,7 +35,7 @@ echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
 ."\t\t\t}\n"
 ."\t</script>\n\n";
 
-echo "<form method='post' action='index.php'>\n";
+echo "<form method='post' action='$relativeurl/index.php'>\n";
 foreach(file("$thistpl/load.pstpl") as $op)
 {
 	echo templatereplace($op);

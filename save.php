@@ -156,8 +156,7 @@ elseif ($thissurvey['allowsave'] == "Y"  && isset($_POST['saveall']) && isset($_
 function showsaveform()
 {
 	//Show 'SAVE FORM' only when click the 'Save so far' button the first time, or when duplicate is found on SAVE FORM.
-	global $thistpl, $errormsg, $thissurvey, $surveyid, $clang, $clienttoken;
-
+	global $thistpl, $errormsg, $thissurvey, $surveyid, $clang, $clienttoken, $relativeurl, $thisstep;
 	sendcacheheaders();
 	echo "<html>\n";
 	foreach(file("$thistpl/startpage.pstpl") as $op)
@@ -173,7 +172,7 @@ function showsaveform()
 	."\t//-->\n"
 	."\t</script>\n\n";
 
-	echo "<form method='post' action='index.php'>\n";
+	echo "<form method='post' action='$relativeurl/index.php'>\n";
 	//PRESENT OPTIONS SCREEN
 	if (isset($errormsg) && $errormsg != "")
 	{
@@ -215,7 +214,7 @@ function savedcontrol()
 	// - "value" which is the value of the response
 	//We start by generating the first 5 values which are consistent for all rows.
 
-	global $connect, $surveyid, $dbprefix, $thissurvey, $errormsg, $publicurl, $sitename, $timeadjust, $clang, $clienttoken;
+	global $connect, $surveyid, $dbprefix, $thissurvey, $errormsg, $publicurl, $sitename, $timeadjust, $clang, $clienttoken, $thisstep;
 
 	//Check that the required fields have been completed.
 	$errormsg="";
