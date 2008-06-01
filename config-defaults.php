@@ -38,7 +38,6 @@ $databasetabletype  =   "myISAM";	   // Storage engine mysql should use when cre
 // FILE LOCATIONS
 
 $rooturl            =   "http://{$_SERVER['HTTP_HOST']}/limesurvey"; //The root web url for your limesurvey installation.
-$relativeurl        =   "/limesurvey"; // the url relative to you DocumentRoot where is installed LimeSurvey. Usually same as $rooturl without http://{$_SERVER['HTTP_HOST']}. Used by Fcked Filemanager
 
 $rootdir            =   dirname(__FILE__); // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this setting.
                                            // If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir="C:\Inetpub\wwwroot\limesurvey"!
@@ -268,6 +267,13 @@ require_once(dirname(__FILE__).'/config.php');
 //-----------------------------------------------------
 
 // === Advanced Setup
+// The following parameters need information from config.php
+// and thus are defined here (After reading your config.php file).
+// This means that if you want to tweak these very advanced parameters
+// you'll have to do this in this file and not in config.php
+// In this case, don't forget to backup your config-defaults.php settings when upgrading LS
+// and report them to the new config-defaults.php file (Do not simply overwrite the new 
+// config-defaults file with your old one
 
     //The following url and dir locations do not need to be modified unless you have a non-standard
     //LimeSurvey installation. Do not change unless you know what you are doing.
@@ -291,4 +297,10 @@ $pdfdefaultfont = 'freemono';               //Default font for the pdf Export
 $pdffontsize    = 10;                       //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
 $notsupportlanguages = array("zh-Hant-TW","zh-Hant-HK","zh-Hans","ja","th");
 
+// Computing relative url
+// $relativeurl  is the url relative to you DocumentRoot where is installed LimeSurvey.
+// Usually same as $rooturl without http://{$_SERVER['HTTP_HOST']}.
+// $relativeurl  is now automatically computed from $rooturl
+$parsedurl = parse_url($rooturl);
+$relativeurl= $parsedurl['path'];
 ?>

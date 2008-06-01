@@ -35,7 +35,6 @@ $dbprefix           =   "lime_";       // A global prefix that can be added to a
 
 // File Locations
 $rooturl            =   "http://{$_SERVER['HTTP_HOST']}/limesurvey"; //The root web url for your limesurvey installation (without a trailing slash).
-$relativeurl        =   "/limesurvey"; // the url relative to you DocumentRoot where is installed LimeSurvey (without a trailing slash). Usually same as $rooturl without http://{$_SERVER['HTTP_HOST']}. Used by Fcked Filemanager
 
 $rootdir            =   dirname(__FILE__); // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this setting.
                                            // If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir="C:\Inetpub\wwwroot\limesurvey"!
