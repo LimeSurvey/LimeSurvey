@@ -1754,7 +1754,7 @@ function validate_email($email)
 
 	// see http://data.iana.org/TLD/tlds-alpha-by-domain.txt
 	$maxrootdomainlength = 6;
-    return ( ! preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,".$maxrootdomainlength."}$/ix", $email)) ? FALSE : TRUE;  
+    return ( ! preg_match("/^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.(([0-9]{1,3})|([a-zA-Z]{2,".$maxrootdomainlength."}))$/ix", $email)) ? FALSE : TRUE;  
 }
 
 function validate_templatedir($templatename)
