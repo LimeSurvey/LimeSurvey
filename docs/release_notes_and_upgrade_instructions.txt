@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.70+!
+Welcome to LimeSurvey v1.71!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -29,7 +29,7 @@ HOW TO UPGRADE from earlier versions of LimeSurvey (<=1.08)
 -------------------------------------------------------------
 We are sorry but you can't upgrade from versions <= 1.0.8. Seriously! 
 The database structure has changed that much it wouldn't be feasible.
-However, you can import old surveys from version 1.0 when you create a new survey in this new version.
+However, you can import old survey structures from version 1.0 (when you create a new survey there is an option to do that).
 Just do a new installation as described on http://docs.limesurvey.org.
 
 
@@ -44,13 +44,13 @@ HOW TO UPGRADE from LimeSurvey 1.45 or later (<=1.70)
 6. Run the installer in /admin/install/index.php to update the database.
 7. Done.
 
-Special note for UPGRADING from 1.53 to 1.70+
-----------------------------------------------
+Special note for UPGRADING from 1.53 to 1.71(+)
+-----------------------------------------------
 After you upgraded please check the global user rights of each user. There was a 
 new superadmin right introduced. The upgrade script is guessing who to make 
 superadmin - so this is not perfect and has to be supervised by YOU. 
 
-HOW TO UPGRADE from a LimeSurvey 1.70 or 1.70+ version to the latest 1.70+
+HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.71(+)
 ---------------------------------------------------------------------------
 1. Make backups of your files (especially config.php and config-ldap.php)
    and database.
@@ -61,7 +61,7 @@ HOW TO UPGRADE from a LimeSurvey 1.70 or 1.70+ version to the latest 1.70+
 6. Have a look at the provided config.php in order to check if some new
    required parameters have been added and add these to your previous
    config.php file.
-7. Copy your backuped config.php file overwritting the one from the new release 
+7. Copy your backuped config.php file overwriting the one from the new release 
 8. Have a look to the config-defaults.php file for any new parameters that 
    could suit your setup. If you need to change the default setting, copy the
    parameter lines to your config.php file and adjust their values accordingly.
@@ -73,165 +73,77 @@ HOW TO UPGRADE from a LimeSurvey 1.70 or 1.70+ version to the latest 1.70+
 
 Thank you to everyone who helped with this new release!
 
-Changes from 1.70+ Revision 4885 to 4927 (2008/05/26)
 
-Small fix to have a purtier message on index.php if LimeSurvey is not yet installed. (c_schmitz)
-Complete Korean Translation submitted by Sehee Kim (cactusgrlkr -a-t- naver -dot-com) on behalf of the Korean Police School translation team. (c_schmitz)
-Fix for Hungarian (c_schmitz)
-include tcpdf-class (stfreud)
-Added a small fix to condition window by DG Esteban Adrián Pérez (c_schmitz)
-Added basic support for Right-to-Left languages (c_schmitz)
-Added Farsi language stub by Laurent Giacobino (c_schmitz)
-Updated Swedish translation by Max Zomborszki  max -i-t- friskissvettis -d-i-t- se (c_schmitz)
-Updated Korean Translation submitted by Sehee Kim (cactusgrlkr -a-t- naver -dot-com) on behalf of the South Korean Police School translation team. (c_schmitz)
-Completed Greek Translation by Yiannos Katsirintakis (c_schmitz)
-French language updated (b00z00)
-Fixed issue #1997: Problem exporting "Only Code" for Type P - Multiple Options Question with Comments (c_schmitz)
-- Removed modfield function out of the whole system as it is causing numerous problems, especially with old browsers, key navigation etc. (c_schmitz)
-Fixed #2016: Notice at not activated survey in debug mode (c_schmitz)
-Fixed issue #1998: Notive Undefined variable: fnrrow in ... dataentry.php with List with comments question type (c_schmitz)
-Fixed issue #1807: Export to Excel on PHP4 creates empty .xls file. According warning message is shown in export window and export to excel to deactivated when iconv library in PHP4 is not installed. (c_schmitz)
-Fixed #1985: Exporting to SPSS shows 'SHOW COLUMNS ' error (c_schmitz)
+
+
+Changes from 1.70 to 1.71 (2008/06/02)
+
+New Features:
+-Standard sitename and sitemail when creating survey (lemeur)
+-Complete Korean translation submitted by Sehee Kim (cactusgrlkr -a-t- naver -dot-com) on behalf of the Korean Police School translation team. 
+-Added basic support for Right-to-Left languages 
+-Added Farsi translation stub by Laurent Giacobino 
+-Added Welsh translation
+-Added Indonesian translation by Lukas (c_schmitz)
+-Numerous translation updates kindly provided by the project translators and users out there. 
+-Include new pdf-features (stfreud)
+-Reworked the SPSS export to
+    a) remove redundant pass throughs of dataset (in DATA LIST build)
+    b) adjust DATA LIST column widths to account for data (uses tmpfile())
+    c) escape apostrophe's in a string to an html entity
+Note, this was only tested with SPSS 15, it's likely there are UTF-8 problems. (awarren)
+-Raised amount of tokens displayed on one page from 50 to 100 ((el-matador-69)
+-Added more detailed error message on invitation and reminder sending (c_schmitz)
+-Updated queXML-Export - Thx to Adam Zammit (el-matador-69)
+-Adding support for debian packaging (nbarcet)
+-Integrated table cell -> Radio button mapping (awarren)
+
+
+
+Bug fixes: 
+Lots of security fixes & Sanitizing the script (c_schmitz)
+Fixed #1807: Export to Excel on PHP4 creates empty .xls file. According warning message is shown in export window and export to excel to deactivated when iconv library in PHP4 is not installed. (c_schmitz)
+Fixed #1985: Exporting to SPSS shows 'SHOW COLUMNS ' error with non MySQL DB (awarren)
 Fixed #2032: Code errors when adding answers to question type List (Dropdown) (lemeur)
 Fixed #2031: Missing Replacement fields in the Rich Text editor (lemeur)
-Sanitizing the script (c_schmitz)
-include new pdf-features (stfreud)
-Updated Croatian & Italian Language files by Igor Dobra¿a (c_schmitz)
-Updated German Translation (c_schmitz)
-Some W3C and language corrections submitted by Juliette Reinders Folmer (c_schmitz)
-bug 2042 (stfreud)
-
-Changes from 1.70+ Revision 4831 to 4885 (2008/05/21)
-
-Fixed small bug with input length in numerical questions (c_schmitz)
-Updated Danish Language by Stefan Grandhol ( stefangranholm -a-t- gmail -d-i-t c.o.m ) (c_schmitz)
-Spanish language updated (kadejo)
-# 2017: User unable to export their own survey ==> fixed style in html.php ==> THX to jak82 (el-matador-69)
-Updated Welsh Language File by John doit Moorhouse (a-t-) Powys doit gov doit uk (c_schmitz)
-Updated Croatian & Italian Language files by Igor Dobra¿a <idobraca -o-t- veleri -da-t- hr> (c_schmitz)
 Fixed #2002: group page is displayed even when no description (lemeur)
-French language updated (b00z00)
-Fix related to bug #02029 - cleans up the internal changes to $_POST['modfields'] that are hacked in when checking conditionals, stops script from crashing out when moving back onto conditional question. (jcleeland)
-Fix related to bug #02029 - conditions checker was converting missing numerical responses to null, instead of zero, breaking the eval and forcing a false positive match. (jcleeland)
-
-Changes from 1.70+ Revision 4758 to 4831 (2008/05/12)
-
-Small corrections for the German language files (c_schmitz)
-Fixed issue #1991: Problem exporting "Only Code" of Multiple Options (c_schmitz)
-Fixed issue #01908: Small style fix to have wider select boxes in menu bars (c_schmitz)
-Fixed #01407: "View Responses" (V button) from the display token menu does not offer you to select language (c_schmitz)
-Finished SQL security audit of common.php (c_schmitz)
-corrected a type in the german translation: Punke ==> Punkte (el-matador-69)
-Fixed minor bugs #1999 and #2001 (c_schmitz)
-Fixed bug #1812 - exclude_all_others attribute doesn't exclude the OTHER answer (jcleeland)
+Fixed #1812 - exclude_all_others attribute doesn't exclude the OTHER answer (jcleeland)
 Fixed #2003: The FCKeditor Filemanager (uploader) can't be reached in Emailsettings page (lemeur)
-Fixed #2005: FCKeditor in popup mode doesn't keep HTML formatting (all HTML code in a single line) (lemeur)
-FCKeditor 2.6 integration, should solve some issues // FCKeditor version can be switched in config-defaults.php to ensure backward compatibility in case a problem is found (lemeur)
-Fixed a minor warning reported by Matador (lemeur)
-Reworked the SPSS export to
-a) remove redundant pass throughs of dataset (in DATA LIST build)
-b) adjust DATA LIST column widths to account for data (uses tmpfile())
-c) escape apostrophe's in a string to an html entity
-Note, this was only tested with SPSS 15, it's likely there are UTF-8 problems. (awarren)
-Completed Greek Translation by Yiannos Katsirintakis (c_schmitz)
-Attempt to fix bug 02010, caused by attempt to write to /tmp while in safe_mode.
-Hide warning message re:tmpfile() which is attempted before the tempnam() command.  Related to bug #2010 (awarren)
-More fixes for #2010:
--attempt to suppress error message generated by failed fopen/fwrite/fseek
--enhanced generated error messages to explain understanding thus far of the problem
--code now explains variables to look at, error message re:open_basedir should still render (awarren)
-included $tempdir in globals list for function using tempnam...sigh (awarren)
 Fixed #1935: Switching language and going back forgets token code (lemeur)
-Addressing bug 1737
--no field type (A or N) was being produced for startdate, refurl, ipaddr
--switched fopen to use w+ (read and write with file purge) awarren)
-
-Changes from 1.70+ Revision 4721 to 4758 (2008/05/05)
-
-Fixed #1901: Pressing Enter While Filling Out Survey Opens "Resume Later" page
-(lemeur)
-Little adjustments to spanish translation (some advices that were suggested by a philologist that I completely agreed) (kadejo)
-Fixed bug #01976 - Problem when re-importing full db backup, when unusual characters in field names. (jcleeland)
-French language updated (b00z00)
-#1978: Databse prefix lime_ was hardcoded at exportresults.php for Dual Scale Matrix - THX to jcconsult (el-matador-69)
-raised amount of tokens displayed on one page from 50 to 100 ((el-matador-69)
-Fixed a bug where clicking in the check box did cause the selection to be reversed in Firefox (c_schmitz)
-Fixed a bug on upgrade where the comparison operator was missing (c_schmitz)
-Removed htmlwrap function. (c_schmitz)
-Added more detailed error message on invitation and reminder sending
-(c_schmitz)
-Fixed #1936: Validation of the last question in a survey does not work
-(c_schmitz)
-Fixed issue #1953: Some untranslated string on import survey (c_schmitz)
-fixed bug 01982; Dual Scale answers are not conveniently labelled in export to xls/csv (joeschneider)
+Fixed #1737: No field type (A or N) was being produced for startdate, refurl, ipaddr. Switched fopen to use w+ (read and write with file purge) awarren)
+Fixed #1901: Pressing Enter While Filling Out Survey Opens "Resume Later" page(lemeur)
+Fixed #1936: Validation of the last question in a survey does not work(c_schmitz)
+Fixed #1982; Dual Scale answers are not conveniently labelled in export to xls/csv (joeschneider)
 Fixed #1960: Warning on Excel-Export with an open_basedir restriction leads to corrupted excel file (c_schmitz)
-Fixed issue #1963: force tokenify to begin with a non zero value or other hard to read characters (c_schmitz)
-fixed bug 01982; fixed error with "Undefined index" (joeschneider)
-Updated Croatian Language file by Igor Dobra¿a <idobraca -o-t- veleri -da-t- hr> (c_schmitz)
+Fixed #1963: force tokenify to begin with a non zero value or other hard to read characters (c_schmitz)
+Fixed #1982; fixed error with "Undefined index" (joeschneider)
 Fixed #1981: HTML mails have body text with HTML entities (lemeur)
 Fixed #1990: Public registration forget to add emailstatus=OK, thus email is displayed in red in the tokens table (lemeur)
-Updated Italian Language file by Igor Dobra¿a <idobraca -o-t- veleri -da-t- hr> (c_schmitz)
 Fixed #1984 (corrupted survey URL in some emails): Applied a workaround in SurveyURL displayed in  invitation/registration emails so that bogus(?) email clients won't translate the GET parameter '& l a n g' to the '& l a n g ;' entity (lemeur)
-Fixed FCKeditor inline mode Encoding Htmloutput <> popup mode (lemeur)
 Fixed #1986: token link in browse results not displaying (c_schmitz)
-"Edit this token" is now translateable in browse.php (el-matador-69)
-Updated Croatian Language file by Igor Dobra¿a <idobraca -o-t- veleri -da-t- hr> (c_schmitz)
-Updated German Translation and minor translation fixes (c_schmitz)
-Fixed issue #1983: incorrect request in browse.php - patch by steph33560 (c_schmitz)
-Implemented #1958: Standard sitename and sitemail when creating survey (lemeur)
+Fixed #1983: incorrect request in browse.php - patch by steph33560 (c_schmitz)
 Fixed #1967: correctly sets default email settings for new additionnal languages and set default email settings for survey base language. Takes Email format (html,text) into account (lemeur)
-
-Changes from 1.70+ Revision 4648 to 4721 (2008/04/28)
-
 Fixed #1931: answers are recorded as not-completed (not finalized) if last survey page was hidden due to condition (lemeur)
 Upload the latest version of queXML-Export (to fix output of type "L") - Thx to Adam Zammit (el-matador-69)
-#1954: fixed a typo in the german translation - Thx to Rookie (el-matador-69)
-Fixed bug #01959, added multiple numerical to printablesurvey.php. (Also tidied up the layout for multiple numerical and short text) (jcleeland)
-Fixed bug #01601 - question attribute hide_tip for multiple numerical input.  Added feature. (jcleeland)
-Fixed bug #01855 - Entering validation fields in multiple choice questions is fiddly. Validation now available on new/edit question for multiple numerical (jcleeland)
-Slovenian language updated (gasper_koren)
-Updated Dutch translation by Menno Dekker (c_schmitz)
-Fixed some small translation issues (c_schmitz)
-removed obsolete file (c_schmitz)
-Updated Welsh Language File by John doit Moorhouse (a-t-) Powys doit gov doit
-uk (c_schmitz)
-#1973: Some more translation to Norwegian Nynorsk (nn) - Thx to dittaeva
-(el-matador-69)
-#1971: correct a typo at token notification - thx to nosynack for reporting it (el-matador-69)
-Updated Estonian translation by Karin.Ruul (ot) eitsa.ee (el-matador-69)
-
-Changes from 1.70+ Revision 4648 to 4690 (2008/04/21)
-
+Fixed #1959, added multiple numerical to printablesurvey.php. (Also tidied up the layout for multiple numerical and short text) (jcleeland)
+Fixed #1601 - question attribute hide_tip for multiple numerical input.  Added feature. (jcleeland)
+Fixed #1855 - Entering validation fields in multiple choice questions is fiddly. Validation now available on new/edit question for multiple numerical (jcleeland)
+Fixed #1971: correct a typo at token notification - thx to nosynack for reporting it (el-matador-69)
 Fixed #1929: When confirmation email is not defined, the hardcoded default email contains tags {XXX} that are not replaced (lemeur)
 Fixed #1927: Set all entries to 'No invitation sent' - not working if the translated confirmation text contains single quotes (lemeur)
 Fixed #1922: Multiple Numerical Input doesn't work with condition greater than or equal to (lemeur)
 Fixed a warning in index.php reported in bug #1921 (lemeur)
-Updated Dutch translation by Menno Dekker (c_schmitz)
-Updated Swedish translation by Max Zomborszki (c_schmitz)
-fixed bug 01938: edit response with "dual scale" (joeschneider)
-Updated Danish Language File by Thomas Clausen ( tntc1978 -a-t- gmail -d-0-t- com ) (c_schmitz)
+Fixed #1938: edit response with "dual scale" (joeschneider)
 Fixed #1892: Rooturl is wrong when HTTP port is not the default (80) (c_schmitz)
-Fixed #1913: Hardcoded reference to limesurvey in action path in preview.php
-(c_schmitz)
-Fixed #1943: Problem activating official LimeSurvey sample survey (c_schmitz)
-Updated Greek Translation by Yiannos Katsirintakis (c_schmitz)
+Fixed #1913: Hardcoded reference to limesurvey in action path in preview.php(c_schmitz)
 Fixed #1939: Question reorder does not work in all languages after importing the particular question using question import (c_schmitz)
-updated queXML-Export - THX to Adam Zammit (http://quexml.sourceforge.net/)
-(el-matador-69)
-
-Changes from 1.70+ Revision 4629 to 4648 (2008/04/14)
-
-Just a few spanish language adjustments. By the way, Latin- american version will be coming soon, thanks to Francisco Bricio. (kadejo)
 Fixed #1853: wrong characters in IE alert windows (lemeur)
 Fixed #1906: Problem of apostrophes in the some e-mail (lemeur)
 Fixed #1904 (workaround): IE: Opening LimeReplacementField-Window isn't possible - Javascript-Error (lemeur)
-Fixed #01905: Editing List (Radio) Answers - Code & Answer values are no longer mapped once new answer exceeds 9 (thanks to Endymion92)
+Fixed #1905: Editing List (Radio) Answers - Code & Answer values are no longer mapped once new answer exceeds 9 (thanks to Endymion92)
 Fixed #1907: User unable to export a label set even though they have permision to (lemeur)
 Fixed #1902: Privacy Message: Always the same text "This is an anonymous survey" (lemeur)
-Fixed Issue #1911 -must test against IE/Safari -- I don't have these at home
-(awarren)
-IE throws a nonsensical error when it receives an HTTP payload
-matching all of the following conditions
+Fixed #1911: IE throws a nonsensical error when it receives an HTTP payload matching all of the following conditions:
  a) Over SSL
  b) with a Pragma: no-cache
  c) a mime-type which is not known on the receiving system
@@ -242,197 +154,90 @@ matching all of the following conditions
  where non standard mime types are used (application/download).  If this is
  problematic, we
  can change the mime type to text/plain for the CSV/VV exports. (awarren)
-
-
-Changes from 1.70+ Revision 4600 to 4629 (2008/04/07)
-
 Fixed #1866: Error at DataEntry for user with little rights (lemeur)
-Spanish language updated, welcome to welsh! (kadejo)
 Fixed #1878: Cannot send reminder e-mail [postgres] (c_schmitz)
 Fixed #1856: DB error when delete tokens table (Postgres) - Patch kindly provided by doc (c_schmitz)
-Fixed #1807 - Can't export to excel when using certain question types and special chars (c_schmitz)
-Small update to Welsh locale file (g_mawr)
-Updated Norwegian Bokmål translation by  Michael Barakat (bmichel -a-t- gmail -d-o-t- com) (c_schmitz)
-Updated Dutch translation by Hendri Wessels (hendriwessels -a-t- hotmail -d-o-t-com) (c_schmitz)
+Fixed #1807: Can't export to excel when using certain question types and special chars (c_schmitz)
 Fixed #1836: Option deletenonvalues doesn't work on most cases (lemeur)
-fixed bug 01891: Clear "no answer" when selecting second label using "dual scale" (joeschneider)
-added the following parameters back into config.php: $siteadminemail; $siteadminbounce; $siteadminname (el-matador-69)
-Fixed bug #01833 - incorrect columns displayed when "other" and "No answer" displayed. (jcleeland)
+Fixed #1891: Clear "no answer" when selecting second label using "dual scale" (joeschneider)
+Fixed #1833: incorrect columns displayed when "other" and "No answer" displayed. (jcleeland)
 Fixed #1863: Users unable to change their own password (c_schmitz)
-
-
-Changes from 1.70+ Revision 4553 to 4600 (2008/03/30)
-
-insert feature 01854 (joeschneider)
-fix Bug 1858: Group import results in PHP Parse error (el-matador-69)
-fixed output when no "header" is set for dualscale (joeschneider)
-Fixed #1851: Empty Progress Bar in Template Editor (c_schmitz)
-Fixed issue #1857: Missing No Answer option for array questions and other issues in dataentry when using different languages in admin interface and survey. (c_schmitz)
-Fixed error #1856: DB error when delete tokens table (Postgres) - Patch by doc (c_schmitz)
+Fixed #1858: Group import results in PHP Parse error (el-matador-69)
+Ffixed output when no "header" is set for dualscale (joeschneider)
+Fixed #1857: Missing No Answer option for array questions and other issues in dataentry when using different languages in admin interface and survey. (c_schmitz)
+Fixed #1856: DB error when delete tokens table (Postgres) - Patch by doc (c_schmitz)
 Fixed #1861: Notice at importing LimeSurvey Sample Survey (c_schmitz)
 Fixed #1868: Double Tooltips at "Execute this Survey"-Button (lemeur)
-Updated Norwegian Bokmål translation by Pål Monstad (pal -a-t- hkskole -d-o-t-
-no) (c_schmitz)
-Updated Hungarian Translation by Daniel Fuleki (daniel -d-0-t- fuleki -@-t-
-gmail -d-0-tt- com) (c_schmitz)
 Fixed #1815: Unknown Menubar-Object "LimeReplacementFields"/"LimeFitWin" + some information about updates in config files and release-notes (lemeur)
-Updated German Translation (c_schmitz)
-Cleaned up Greek Translation (c_schmitz)
 Fixed #1873: Changing answers codes doesn't update conditions (lemeur)
 Fixed #1797: Entered answers lost when Save All not clicked (lemeur)
-Added a a first Welsh Language stub by Geraint Howell (G -d-o-t- S  -d-o-t-  J -d-o-t-  Howell -@-t- swansea -d-o-t-  ac -d-o-t-  uk) (c_schmitz)
-Spanish translation updated, 1446 strings. (kadejo)
-Updated Norwegian Bokmål translation by Pål Monstad (pl -a-t- hkskole -d-o-t no) (c_schmitz)
-
-
-Changes from 1.70+ Revision 4470 to 4553 (2008/03/24)
-
-Added notice in config.php about config-defaults.php (el-matador-69)
-Fixed #1825: some missing upgrade instructions for 1.70+ upgrades
-Fixed #1828: User unable to change password. A user is now able to modify his
-own information (name and password whatever his permissions). He is also able
-to delete himself if he's got the DELETE_USER permission (lemeur)
+Fixed #1828: User unable to change password. A user is now able to modify his own information (name and password whatever his permissions). He is also able to delete himself if he's got the DELETE_USER permission (lemeur)
 Fixed #1831: Super User cannot change quotas for other users' surveys (lemeur)
 Fixed #1840: Translation error and accent issue in calendar in French (lemeur)
-Removed a forgotten error_log debug statement (lemeur)
 Fixed #1830: User can Activate survey from the list survey section even though there are no questions (lemeur)
 Fixed #1828: Missing Parent name of current logged in user (lemeur)
-Updated Bosnian Language file by Darko Saracevic >darko -a-t- alterart -d-0-t- ba< (c_schmitz)
-Added Indonesian Language by Lukas (lukas -a-t-- elitemail -d-o--t-- org) (c_schmitz)
-Updated Bosnian Language file by Darko Saracevic >darko -a-t- alterart -d-0-t- ba< (c_schmitz)
 Fixed #1822: Missing http headers for on admin login page. (c_schmitz)
 Fixed attribute tag filtering being negligent of quotes (c_schmitz)
 Fixed #1835: List Surveys: Responses aren't shown for expired surveys (c_schmitz)
-Fixed issue #1843: Unable to re-order Question groups (c_schmitz)
+Fixed #1843: Unable to re-order Question groups (c_schmitz)
 Fixed #1846: Make Tokens-Button should be available, also if survey is not active (c_schmitz)
-Updated Italian translation by Stefano Ratti (c_schmitz)
 Fix issues with formattong LimeReplacementFields (persitent and inconsistent yellow formatting) (lemeur)
-Changed BG-Color of Public Survey Frontpage to WHITE (el-matador-69)
-Added background linearer gradient to the bluengrey-template (el-matador-69)
 Fixed #1844: Use of apostrophe in FCKeditor causes a series of slashes \\\\ (lemeur)
-Updated Dutch language by Menno Dekker (menno -d-o-t-  dekker -a-t- erasmusmc -d-o-t- nl) (c_schmitz)
-Updated LimeReplacementFields in order to enable TOKEN based tags in Survey text fields (lemeur)
-Updated Indonesian Language by Lukas (lukas -a-t-- elitemail -d-o--t-- org) (c_schmitz)
-Updated German Translation (c_schmitz)
-corrected relative paths to {TEMPLATEURL} for css_only-Template (el-matador-69)
 Added back in missing privacy message (c_schmitz)
 Fixed #1842: IE Javascript error when clicking "Edit Current Survey" (c_schmitz)
 Fixed #1848: Empty survey gives notice on Import (c_schmitz)
 Added according text to mandatory message for multiple choice with other option (c_schmitz)
-Finished Bosnian Language file kindly provided by Darko Saracevic >darko -a-t- alterart -d-0-t- ba< (c_schmitz)
-added hover effect (text-decoration: underline) for SURVEYLIST to the default template (el-matador-69)
 Fixed #1845: Improve Accessibility for blind people: make menu icons readable (lemeur)
 Fixed #1845 again, making the fix switchable with new config parameter $addTitleToLinks (lemeur)
-French language updated (b00z00)
-Language Updates (c_schmitz)
-some expressions are fixed - Bosnian (sarach)
-added a hover background of {SURVEYLIST} to the surveylist of some templates (el-matador-69)
-minor color adjustments to clear_logo-templates - color of the (el-matador-69)
-privacey-message wasn't adjusted (el-matador-69)
-added hover effect to the question preview for matrix questions (==> now they look the same in the preview as live) (el-matador-69)
 Fixed #1732: {INSERTANS:SIDXGIDXQID} includes HTML tags (c_schmitz)
-adding debian packaging (nbarcet)
-Integrated table cell -> Radio button mapping (awarren)
-Refactored some duplicated JS out of survey.php, question.php, and group.php into static file included by common.php (awarren)
-
-Change from 1.70+ Revision 4466 to 4469 (2008/03/17)
-
-Fixed #1818: corrected a german typo (el-matador-69)
 Fixed a bug in upgrade script and mysql4 where the emailstatus field was not added due to size limitations - 2nd try (c_schmitz)
 Fixed #1808: Condition not implemented for the "other" answer // Fix for questions type List Radio/Dropdown (lemeur)
-
-Changes from 1.70+ Revision 4418 to 4466(2008/03/16)
-
-Fixed #1817: PHP Syntax error in admin/results.php (c_schmitz)
 Fixed #1805: Survey cannot be re-used without closing and reopening browser, even with cookies turned off (jcleeland)
-Reverted changes to gettext - didn't work out as expected (c_schmitz)
 Fixed a bug in upgrade script and mysql4 where the emailstatus field was not added due to size limitations (c_schmitz)
-Updated Bosnian Language file by Darko Saracevic >darko -a-t- alterart -d-0-t- ba< 
-Fixed bug in inport where label sets of Dual Scale Type Questions are not properly transformed regarding their LID (c_schmitz)
-Fix for conditions on upgrade (c_schmitz)
 Fixed #1794: Errors showing when previewing question without answers in Flexible Array by Column Question Type (c_schmitz)
 Fixed #1802: "Resume Later" -> reloading saved survey starts at first page (c_schmitz)
-Fixed HTML entities showing up in Excel,CSV & SPSS export (c_schmitz)
+Fixed HTML entities showing up in Excel, CSV & SPSS export (c_schmitz)
 Fixed #1780: Java script error with dual scale
 Updated tokens and email validation to be able to use several email addresses separated by semikolon when sending an invitation (c_schmitz)
 Fixed SPSS & data export to filter out tags and html-encoded chars (c_schmitz)
-Fixed #1774: array_combine() error on importing a label (c_schmitz)
-Fixed a small display bug when the template for an imported survey did not exist (c_schmitz)
 Fixed #1798: In reminder email (html format) surveyurl is displayed as HTML code in Outlook (c_schmitz)
 Fixed #1785: Upgrade script failed to add startdate column under certain circumstances  (c_schmitz)
 Fixed #1781: Errors when editing a survey response with dual scale question type questions  (c_schmitz)
 Fixed bug with assigning user rights and Superuser right (c_schmitz)
 Removed the {NOSID} message from default page since robot tools are looking for it  (c_schmitz)
-Added a class tag to the language changer  (c_schmitz)
-Some minor CSS corrections (c_schmitz)
 Fixed #1796: in HTML email, SURVEYURL text may be corrupted (lemeur)
 Fixed #1773: Error in userrighthandling.php + fixed usercontrol list with current user bolded instead of admin user (lemeur)
-Added static JS for cell->ctl mapping (awarren)
-Some minor correction with progress bar in template designer (c_schmitz)
-Spanish language updated. (kadejo)
-Updated German Language  (c_schmitz)
-Updated Lithuanian Translation by Mykolas Okulic-Kazarinas
-Updated Galician Translation by Carlos Neira Cortizas 
-Fixed issue #1782: Lines wrapping in plain text invite  (c_schmitz)
-
-
-Changes from 1.70+ Revision 4396 to 4417(2008/03/09)
-
-Updated Slovak translation provided by Juraj Zubán
+Fixed #1782: Lines wrapping in plain text invite  (c_schmitz)
 Set default language for email error messages coming from PHPMailer (c_schmitz)
-Added debug output to admin notification to find out why an email is failing (c_schmitz)
-Updated Estonian Translation by Eric Hints (eric -d-0-t- hints -a-t- gmail -d-0-t- com)
-Fixed issue #1723: Display error with statistics and "dual scale" question typ (joeschneider)
-Fixed issue #1746: Umlauts coming from {SURVEYDESCRIPTION} are not resolved in the confirmation email (c_schmitz)
-Updated German Translations( c_schmitz)
+Fixed #1723: Display error with statistics and "dual scale" question typ (joeschneider)
+Fixed #1746: Umlauts coming from {SURVEYDESCRIPTION} are not resolved in the confirmation email (c_schmitz)
 Changed 'Save Survey and Return' button caption to 'Resume Later' (c_schmitz)
-Fixed a small problem with single quotes in template name translations. (c_schmitz)
-Updated version of gettext.php (c_schmitz).
-Fixed issue #1786: When using a non-equal condition the Logic Eliminator wasn't aware of it and dropped the value. After that a mandatory warning was raised. (c_schmitz)
-Fixed issue #1761: token emailstatus left NULL on upgrade (c_schmitz)
-Fixed issue: Quotas are checked even if the survey is inactive. (c_schmitz)
-Updated spanish language (kadejo)
-
-
-Changes from 1.70+ Revision 4381 to 4395(2008/03/02)
-
+Fixed #1786: When using a non-equal condition the Logic Eliminator wasn't aware of it and dropped the value. After that a mandatory warning was raised. (c_schmitz)
+Fixed #1761: token emailstatus left NULL on upgrade (c_schmitz)
+Fixed Quotas are checked even if the survey is inactive. (c_schmitz)
 Fixed #1757: Encoding Problem of Confirmation Email(c_schmitz)
 Fixed #1754: Invalid HTML in Dual Scale Matrix causing Layout Problem with Hoover Effect in IE(c_schmitz)
-Fixed a bug where non-html emails are wrapped.(c_schmitz)
 Fixed #1755: HTML entities in admin notification email(c_schmitz)
-Updated Fench language updated (bug 01751 fixed) (b00z00)
-
-
-Changes from 1.70+ Revision 4363 to 4381 (2008/03/01)
-
-* Replaced html_entity_decode with a custom html_entity_decode_php4 function that is PHP4 and PHP5 compatible (lemeur)
-* Fixed Use Default for html email doesn't replace end of lines with BR (lemeur)
-* Fixed #1739:  Default button weren't working for HTML Email Settings (lemeur)
-* Fixed issue #1555: Data submission on questions with radio buttons fails with Safari 2.0.4 and IE 5.2 on Mac OS X in question by question mode (c_schmitz)
-* Fixed #1733: infinite loop in popup editor mode for Safari (c_schmitz)
-* Updated Dutch Translation by Arno Fleming (a -dot- fleming -a-t-- stichtingdeombudsman -d-o-t- nl ) (c_schmitz)
-* Fixed issue #1748: Row size too large error with MySQL - Multiple short text Question type used 255 chars per field. I changed this to TEXT fields in MySQL. (Do not do that for other DB systems since most other DB systems cannot select on TEXT fields which is important for statistics) (c_schmitz)
-* Fixed issue #1728:Survey Import from prior LS versions was failing (c_schmitz)
-* Fixed issue #1745: View summary of all available fields failed when survey contained a date question(c_schmitz)
-* Fixed issues #1736: SQL error while printing user's answers and using Multiple Numerical Question Type(c_schmitz)
-* Fixed numerous errors in HTML email handling (c_schmitz)
-* Fixed a link to config.php instead of config-defaults in the FCKeditor filemanager (lemeur)
-* Fixed #1744: CRSF possible on modify quota action (lemeur)
-* Fixed #1742: Export queXML doesn't work for PHP5. Special Thanks for  Alexandre Alapetite (lemeur)
-* Fixed issue #1713: Fatal error with 'randomkey' on setting up tokens (c_schmitz))
-
-
-Changes from 1.70 to 1.70+ Revision 4363 (2008/02/27)
-
-* Fixed strange warnings with html_entity_decode() and PHP 4 (c_schmitz)
-* Updated Galician Language File by Carlos Neira Cortizas  (http://cidadania.coop/) (c_schmitz)
-* Fixed #1726: Pressing back button after submit produces "Fatal error: Call to undefined function createinsertquery()" (c_schmitz)
-* Added some javascript to question type "Multiple choice with Comments" so unmarked boxes with comments aren't possible (c_schmitz)
-* French language updated (b00z00)
-* Spanish language updated (kadejo)
-* Fixed Quoting problem when XSS filter is off (c_schmitz)
-* Fixed Quoting problem in emails when XSS filter is off (c_schmitz)
-* Fixed a faulty link to FCKEditor config.php which resulted in uploades not working
+Replaced html_entity_decode with a custom html_entity_decode_php4 function that is PHP4 and PHP5 compatible (lemeur)
+Fixed Use Default for html email doesn't replace end of lines with BR (lemeur)
+Fixed #1739:  Default button weren't working for HTML Email Settings (lemeur)
+Fixed #1555: Data submission on questions with radio buttons fails with Safari 2.0.4 and IE 5.2 on Mac OS X in question by question mode (c_schmitz)
+Fixed #1733: infinite loop in popup editor mode for Safari (c_schmitz)
+Updated Dutch Translation by Arno Fleming (a -dot- fleming -a-t-- stichtingdeombudsman -d-o-t- nl ) (c_schmitz)
+Fixed #1748: Row size too large error with MySQL - Multiple short text Question type used 255 chars per field. I changed this to TEXT fields in MySQL. (Do not do that for other DB systems since most other DB systems cannot select on TEXT fields which is important for statistics) (c_schmitz)
+Fixed #1728:Survey Import from prior LS versions was failing (c_schmitz)
+Fixed #1745: View summary of all available fields failed when survey contained a date question(c_schmitz)
+Fixed #1736: SQL error while printing user's answers and using Multiple Numerical Question Type(c_schmitz)
+Fixed numerous errors in HTML email handling (c_schmitz)
+Fixed #1744: CRSF possible on modify quota action (lemeur)
+Fixed #1742: Export queXML doesn't work for PHP5. Special Thanks for  Alexandre Alapetite (lemeur)
+Fixed #1713: Fatal error with 'randomkey' on setting up tokens (c_schmitz))
+Fixed strange warnings with html_entity_decode() and PHP 4 (c_schmitz)
+Fixed #1726: Pressing back button after submit produces "Fatal error: Call to undefined function createinsertquery()" (c_schmitz)
+Added some javascript to question type "Multiple choice with Comments" so unmarked boxes with comments aren't possible (c_schmitz)
+Fixed Quoting problem when XSS filter is off (c_schmitz)
+Fixed Quoting problem in emails when XSS filter is off (c_schmitz)
+Fixed a faulty link to FCKEditor config.php which resulted in uploades not working
 
 Changes from 1.52 to 1.70
 
