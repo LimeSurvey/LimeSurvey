@@ -98,7 +98,7 @@ if (!$style)
 			}
             // second scale
             $detailquery="select a.code, l.lid from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=".$rows['qid']." AND (l.lid =".$rows['lid1'].") and a.language='$surveybaselang' group by a.code order by a.code ";
-            $detailresult=db_execute_assoc($detailquery) or safe_die("Couldn't find detailfields<br />$detailquery<br />".($connect->ErrorMsg());
+            $detailresult=db_execute_assoc($detailquery) or safe_die("Couldn't find detailfields<br />$detailquery<br />".$connect->ErrorMsg());
             $i=0;
             while ($detailrows = $detailresult->FetchRow())
             {
