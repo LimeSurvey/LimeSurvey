@@ -287,7 +287,6 @@ require_once(dirname(__FILE__).'/config.php');
                                           // Note: For OS/2 the $tempdir may need to be defined as an actual directory
                                           // example: "x:/limesurvey/tmp". We don't know why.
     $fckeditordir   =   "$homeurl/scripts/fckeditor.26";
-//    $fckeditordir   =   "$homeurl/scripts/fckeditor"; // version 2.5.1
 
 //PDF Export Settings
 $usepdfexport   = 1;                        //Set 0 to disable; 1 to enable 
