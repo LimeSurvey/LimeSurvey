@@ -45,10 +45,10 @@ else
 
 //Now, we check mandatory questions if necessary
 //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
-$notanswered=addtoarray_single(checkmandatorys($backok),checkconditionalmandatorys($backok));
+$notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
 
 //CHECK PREGS
-$notvalidated=checkpregs($backok);
+$notvalidated=checkpregs($move,$backok);
 
 //CHECK QUOTA
 if ($thissurvey['active'] == "Y")

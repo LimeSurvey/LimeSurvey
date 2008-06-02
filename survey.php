@@ -30,10 +30,10 @@ if (isset($_SESSION['finished'])) {$move="movesubmit"; }
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
 //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
-$notanswered=addtoarray_single(checkmandatorys(),checkconditionalmandatorys());
+$notanswered=addtoarray_single(checkmandatorys($move),checkconditionalmandatorys($move));
 
 //CHECK PREGS
-$notvalidated=checkpregs();
+$notvalidated=checkpregs($move);
 
 //CHECK QUOTA
 if ($thissurvey['active'] == "Y")

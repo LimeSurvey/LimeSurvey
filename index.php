@@ -1089,7 +1089,7 @@ function checkconfield($value)
 
 }
 
-function checkmandatorys($backok=null)
+function checkmandatorys($move, $backok=null)
 {
 	global $clang, $thisstep;
 	if ((isset($_POST['mandatory']) && $_POST['mandatory']) && (!isset($backok) || $backok != "Y"))
@@ -1156,7 +1156,7 @@ function checkmandatorys($backok=null)
 	return $notanswered;
 }
 
-function checkconditionalmandatorys($backok=null)
+function checkconditionalmandatorys($move, $backok=null)
 {
     global $thisstep;
 	if ((isset($_POST['conmandatory']) && $_POST['conmandatory']) && (!isset($backok) || $backok != "Y")) //Mandatory conditional questions that should only be checked if the conditions for displaying that question are met
@@ -1221,7 +1221,7 @@ function checkconditionalmandatorys($backok=null)
 	return $notanswered;
 }
 
-function checkpregs($backok=null)
+function checkpregs($move,$backok=null)
 {
 	global $connect, $thisstep;
 	if (!isset($backok) || $backok != "Y")
