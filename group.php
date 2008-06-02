@@ -677,7 +677,7 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 				$appendj .= "\t{\n";
 				$appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
 				$appendj .= "\t\tdocument.getElementById('$dtbody').value='off';\n";
-				$appendj .= "\t\tradio_unselect(document.forms['phpsurveyor'].elements['$tbodyae']);\n";
+				$appendj .= "\t\tradio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
 				$appendj .= "\t}\n";
 			}
 		}
@@ -709,7 +709,7 @@ if (isset($qanda) && is_array($qanda))
 		echo "\n\t<!-- NEW QUESTION -->\n";
 		echo "\t\t\t\t<div id='question$qa[4]'";
 		if ($qa[3] != "Y") {echo ">\n";} else {echo " style='display: none'>\n";}
-		$question="<label for='answer$qa[7]'>" . $qa[0] . "</label>";
+		$question=$qa[0];
 		$answer=$qa[1];
 		$help=$qa[2];
 		$questioncode=$qa[5];

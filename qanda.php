@@ -3006,7 +3006,7 @@ function do_array_flexible($ia)
 		$ansresult = db_execute_assoc($ansquery); //Checked
 		$anscount = $ansresult->RecordCount();
 		$fn=1;
-		$answer = "\t\t\t<table class='question'>\n"
+		$answer = "\t\t\t<table class='question'><thead>\n"
 		. "\t\t\t\t<tr>\n"
 		. "\t\t\t\t\t<td width='$answerwidth%'></td>\n";
 		foreach ($labelans as $ld)
@@ -3018,7 +3018,7 @@ function do_array_flexible($ia)
 		{
 			$answer .= "\t\t\t\t\t<th class='array1' width='$cellwidth%'><font size='1'>".$clang->gT("No answer")."</font></th>\n";
 		}
-		$answer .= "\t\t\t\t</tr>\n";
+		$answer .= "\t\t\t\t</tr></thead>\n";
 
 		while ($ansrow = $ansresult->FetchRow())
 		{
@@ -3052,23 +3052,23 @@ function do_array_flexible($ia)
 			$htmltbody2 = "";
 			if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == false)
 			{
-				$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' />";
+				$htmltbody2 = "<tr id='javatbd$myfname' style='display: none' class='$trbc'><td align='right' class='answertext' width='$answerwidth%'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' />";
 			} else if (($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "S") || ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == true))
 			{
 				$selected = getArrayFiltersForQuestion($ia[0]);
 				if (!in_array($ansrow['code'],$selected))
 				{
-					$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' />";
+					$htmltbody2 = "<tr id='javatbd$myfname' style='display: none' class='$trbc'><td align='right' class='answertext' width='$answerwidth%'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' />";
 					$_SESSION[$myfname] = "";
 				} else
 				{
-					$htmltbody2 = "<tbody id='javatbd$myfname' style='display: '><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on' />";
+					$htmltbody2 = "<tr id='javatbd$myfname' style='display: ' class='$trbc'><td align='right' class='answertext' width='$answerwidth%'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on' />";
 				}
 			}
             if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
 
-			$answer .= "\t\t\t\t$htmltbody2<tr class='$trbc'>\n"
-			. "\t\t\t\t\t<td align='right' class='answertext' width='$answerwidth%'>$answertext\n"
+			$answer .= "\t\t\t\t$htmltbody2\n"
+			. "\t\t\t\t\t$answertext\n"
 			. "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
 			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
 			$answer .= "' /></td>\n";
