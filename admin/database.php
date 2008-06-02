@@ -879,7 +879,12 @@ if(isset($surveyid))
 
 	elseif ($action == "modanswer" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
-		switch($_POST['method'])
+
+        if (isset($_POST['sortorder'])) 
+        {
+            $postsortorder=sanitize_int($_POST['sortorder']);
+        }
+        switch($_POST['method'])
 		{
 			// Add a new answer button
 			case $clang->gT("Add new Answer", "unescaped"):
@@ -1055,10 +1060,6 @@ if(isset($surveyid))
 			if ($duplicateCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Duplicate codes found, these entries won't be updated","js")."\")\n //-->\n</script>\n";
 		break;
 
-        if (isset($_POST['sortorder'])) 
-        {
-            $postsortorder=sanitize_int($_POST['sortorder']);
-        }
 		// Pressing the Up button
 		case $clang->gT("Up", "unescaped"):
 		$newsortorder=$postsortorder-1;
