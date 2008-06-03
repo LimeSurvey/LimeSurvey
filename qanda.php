@@ -3065,6 +3065,10 @@ function do_array_flexible($ia)
 					$htmltbody2 = "<tr id='javatbd$myfname' style='display: ' class='$trbc'><td align='right' class='answertext' width='$answerwidth%'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on' />";
 				}
 			}
+            else 
+            {
+                    $htmltbody2 = "<tr id='javatbd$myfname' class='$trbc'><td align='right' class='answertext' width='$answerwidth%'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on' />";
+            }
             if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
 
 			$answer .= "\t\t\t\t$htmltbody2\n"

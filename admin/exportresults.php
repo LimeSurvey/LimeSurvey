@@ -401,7 +401,7 @@ switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c
 	$result=db_execute_assoc($query) or safe_die("Couldn't get privacy data<br />$query<br />".$connect->ErrorMsg());
     while ($row = $result->FetchRow())
    {
-        $pdf->intopdf($clang->gT("General informations in language: ").getLanguageNameFromCode($row['surveyls_language']),'B');
+        $pdf->intopdf($clang->gT("General information in language: ").getLanguageNameFromCode($row['surveyls_language']),'B');
         $pdf->ln();
         $pdf->titleintopdf($row['surveyls_title'],$row['surveyls_description']);
         $surveyname=$row['surveyls_title'];
