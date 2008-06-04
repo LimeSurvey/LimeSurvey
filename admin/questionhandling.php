@@ -663,7 +663,7 @@ if($action == "orderquestions")
     	break;
         }
      }
-     if (!empty($_POST['questionmovefrom']) && !empty($_POST['questionmoveto']))
+     if ((!empty($_POST['questionmovefrom']) || (isset($_POST['questionmovefrom']) && $_POST['questionmovefrom'] == '0')) && (!empty($_POST['questionmoveto']) || (isset($_POST['questionmoveto']) && $_POST['questionmoveto'] == '0')))
      {
         $newpos=$_POST['questionmoveto'];
         $oldpos=$_POST['questionmovefrom'];
@@ -752,6 +752,12 @@ for($i=0; $i < $questioncount ; $i++) //Assumes that all question orders start w
 	$orderquestions.="\t<select style='float:right; margin-left: 5px;";
 	$orderquestions.="' name='questionmovetomethod$i' onchange=\"this.form.questionmovefrom.value='".$oqarray[$i]['question_order']."';this.form.questionmoveto.value=this.value;submit()\">\n";
 	$orderquestions.="<option value=''>".$clang->gT("Place after..")."</option>\n";
+	//Display the "position at beginning" item
+	if(!is_null($questdepsarray)  && $i != 0 &&
+	   !array_key_exists($oqarray[$i]['qid'], $questdepsarray)) 
+	   {
+	     $orderquestions.="<option value='-1'>".$clang->gT("At beginning")."</option>\n";
+	   }
     //Find out if there are any dependencies
 	$max_start_order=0;
     if ( !is_null($questdepsarray) && $i!=0 &&
@@ -760,7 +766,7 @@ for($i=0; $i < $questioncount ; $i++) //Assumes that all question orders start w
 	       foreach($questdepsarray[$oqarray[$i]['qid']] as $key=>$val) {
 		     //qet the question_order value for each of the dependencies
 		     foreach($minioqarray as $mo) {
-			   if($mo['qid'] == $key && $mo['question_order'] > $max_start_order) //If there is a matching condition, and the question order for that condition is higher than the on already set:
+			   if($mo['qid'] == $key && $mo['question_order'] > $max_start_order) //If there is a matching condition, and the question order for that condition is higher than the one already set:
 			   {
 			     $max_start_order = $mo['question_order']; //Set the maximum question condition to this
 			   }
