@@ -1,14 +1,24 @@
 <?php
-require_once('tcpdf.php');
-//require_once('config/lang/eng.php');
+
+require_once('checkphpversion.php');
 
 class PDF extends TCPDF
 {    
     function PDF($orientation='L', $unit='mm', $format='A4')
     {
-        parent::__construct($orientation,$unit,$format); 
+        if (version_compare(PHP_VERSION, '5.0.0', '<') && version_compare(PHP_VERSION, '4.0.0', '>'))
+        {
+//          require_once('tcpdf_php4.php');
+          parent::TCPDF($orientation,$unit,$format);
+        }
+        else if(version_compare(PHP_VERSION, '5.0.0', '>'))
+        {
+//          require_once('tcpdf.php');
+          parent::__construct($orientation,$unit,$format);
+        }
         $this->SetAutoPageBreak(true,10); 
         $this->AliasNbPages();
+        
     }    
         
     function intopdf($text,$format='')
@@ -66,7 +76,7 @@ class PDF extends TCPDF
         }
         $this->ln(5);
     }
-    private function getmaxwidth($array)
+    function getmaxwidth($array)
     {  
         for($i=0;$i<sizeof($array);$i++)
         {
