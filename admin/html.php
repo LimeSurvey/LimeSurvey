@@ -1471,17 +1471,18 @@ if (returnglobal('viewanswer'))
 	// Print Key Control JavaScript
 	$vasummary = PrepareEditorScript("editanswer");
 
-     $query = "SELECT * FROM ".db_table_name('answers')." WHERE qid='{$qid}' AND language='".GetBaseLanguageFromSurveyID($surveyid)."'";
+     $query = "SELECT sortorder FROM ".db_table_name('answers')." WHERE qid='{$qid}' AND language='".GetBaseLanguageFromSurveyID($surveyid)."' ORDER BY sortorder desc";
      $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
      $anscount = $result->RecordCount();	
-     
+     $row=$result->FetchRow();
+     $maxsortorder=$row['sortorder']+1;
      $vasummary .= "\t<table width='100%' >\n"
 	."<tr  >\n"
 	."\t<td colspan='4' class='settingcaption'>\n"
 	.$clang->gT("Edit Answers")
 	."\t</td>\n"
 	."</tr>\n"
-	."\t<tr><td colspan='5'><form name='editanswers' method='post' action='$scriptname'onsubmit=\"return codeCheck('code_',$anscount,'".$clang->gT("Error: You are trying to use duplicate answer codes.",'js')."');\">\n"
+	."\t<tr><td colspan='5'><form name='editanswers' method='post' action='$scriptname'onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate answer codes.",'js')."');\">\n"
 	. "\t<input type='hidden' name='sid' value='$surveyid' />\n"
 	. "\t<input type='hidden' name='gid' value='$gid' />\n"
 	. "\t<input type='hidden' name='qid' value='$qid' />\n"
@@ -1536,11 +1537,10 @@ if (returnglobal('viewanswer'))
 			
 			$vasummary .= "<tr><td width='20%' align='right'>\n";
 			if ($row['default_value'] == 'Y') 
-      {
-         $vasummary .= "<font color='#FF0000'>".$clang->gT("Default")."</font>"
-  			               ."\t<input type='hidden' name='default_answer' value=\"{$row['sortorder']}\" />";
-         
-      }
+            {     
+                $vasummary .= "<font color='#FF0000'>".$clang->gT("Default")."</font>"
+  			                       ."\t<input type='hidden' name='default_answer' value=\"{$row['sortorder']}\" />";
+            }
 
 			if (($activated != 'Y' && $first) || ($activated == 'Y' && $first && (($qtype=='O')  || ($qtype=='L') || ($qtype=='!') ))) 
 			{
@@ -1595,6 +1595,7 @@ if (returnglobal('viewanswer'))
 			$vasummary .= "\t</td></tr>\n";
 			$position++;
 		}
+        ++$anscount;
 		if ($anscount > 0)
 		{
 			$vasummary .= "\t<tr><td colspan='4'><center>"
@@ -1606,11 +1607,11 @@ if (returnglobal('viewanswer'))
 		{
 			
             if ($first==true)
-			{
+			{                                                                                                  
 				$vasummary .= "<tr><td><br /></td></tr><tr><td width='20%' align='right'>"
 				."<strong>".$clang->gT("New Answer").":</strong> ";
                 if (!isset($_SESSION['nextanswercode'])) $_SESSION['nextanswercode']='';
-				$vasummary .= "\t<input type='text' name='insertcode' value=\"{$_SESSION['nextanswercode']}\"id='addnewanswercode' maxlength='5' size='5' "
+				$vasummary .= "\t<input type='text' name='insertcode' value=\"{$_SESSION['nextanswercode']}\" id='code_".$maxsortorder."' maxlength='5' size='5' "
 				." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('newanswerbtn').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
 				." />";
                 unset($_SESSION['nextanswercode']);
@@ -1629,7 +1630,7 @@ if (returnglobal('viewanswer'))
 				."\t<td>\n"
 				."<script type='text/javascript'>\n"
 				."<!--\n"
-				."document.getElementById('addnewanswercode').focus();\n"
+				."document.getElementById('code_".$maxsortorder."').focus();\n"
 				."//-->\n"
 				."</script>\n"
 				."\t</td>\n"
