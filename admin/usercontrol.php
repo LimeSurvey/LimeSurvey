@@ -336,7 +336,6 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 	{
 		$new_pass = createPassword();
 		$uquery = "INSERT INTO {$dbprefix}users (users_name, password,full_name,parent_id,lang,email,create_survey,create_user,delete_user,superadmin,configurator,manage_template,manage_label) VALUES ('".db_quote($new_user)."', '".SHA256::hash($new_pass)."', '".db_quote($new_full_name)."', {$_SESSION['loginID']}, '{$defaultlang}', '".db_quote($new_email)."',0,0,0,0,0,0,0)";
-		//error_log("TIBO=$uquery");
 		$uresult = $connect->Execute($uquery); //Checked
 
 		if($uresult)
@@ -633,15 +632,25 @@ elseif ($action == "usertemplates")
                               else
                                       $templaterights[$trow["folder"]] = 0;
                       }
-                      echo "<!-- \n";
+                      //echo "<!-- \n";
                       foreach ($templaterights as $key => $value) {
-                              $uquery = "INSERT INTO {$dbprefix}templates_rights SET uid={$postuserid}, folder='".$key."', use=".$value." ON DUPLICATE KEY UPDATE use=".$value;
-                              echo $uquery."\n";
+//             WRONG                 $uquery = "INSERT INTO {$dbprefix}templates_rights SET `uid`={$postuserid}, `folder`='".$key."', `use`=".$value." ON DUPLICATE KEY UPDATE `use`=".$value;
+                              $uquery = "INSERT INTO {$dbprefix}templates_rights SET `uid`={$postuserid}, `folder`='".$key."', `use`=".$value." ON DUPLICATE KEY UPDATE `use`=".$value;
+                              //echo $uquery."\n";
                               $uresult = mysql_query($uquery);
                       }
-                      echo "--> \n";
-                      $addsummary .= "<br />".$clang->gT("Update usertemplates successful.")."<br />\n";
-                      $addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+                      //echo mysql_error()."--> \n";
+		      if ($uresult)
+		      {
+			      $addsummary .= "<br />".$clang->gT("Update usertemplates successful.")."<br />\n";
+			      $addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+		      }
+		      else
+		      {
+			      $addsummary .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+			      $addsummary .= "<br />".$clang->gT("Error while updating usertemplates.")."<br />\n";
+			      $addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+		      }
 
               }
               else
