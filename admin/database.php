@@ -409,12 +409,11 @@ if(isset($surveyid))
 		$gresult=db_execute_assoc($gselect) or safe_die ("Error: ".$connect->ErrorMsg());
 		$grows = array(); //Create an empty array in case FetchRow does not return any rows
 		while ($grow = $gresult->FetchRow()) {$grows[] = $grow;} // Get table output into array
-//		usort($grows, 'CompareGroupThenTitle');
 		foreach($grows as $grow)
 		{
 			//Go through all the questions
-			if ((isset($_GET['style']) && $_GET['style']=="bygroup") && (!isset($group_number) || $group_number != $grow['gid']))
-			{
+			if ((isset($_POST['style']) && $_POST['style']=="bygroup") && (!isset($group_number) || $group_number != $grow['gid']))
+			{ //If we're doing this by group, restart the numbering when the group number changes
 				$question_number=1;
 				$group_number++;
 			}
