@@ -2032,23 +2032,23 @@ function do_multiplenumeric($ia)
         }
         if ($maxvalue)
             {
-			$answer .= "\t\t\t<div id='max_num_value'><font size='1'><i>".$clang->gT("Total of all entries must not exceed ").$max_num_value."</i></font></div>\n";
+			$answer .= "\t\t\t<div id='max_num_value_{$ia[1]}'><font size='1'><i>".$clang->gT("Total of all entries must not exceed ").$max_num_value."</i></font></div>\n";
 			}
         if ($equalvalue)
             {
-			$answer .= "\t\t\t<div id='equals_num_value'><font size='1'><i>".$clang->gT("Total of all entries must equal ").$equals_num_value."</i></font></div>\n";
+			$answer .= "\t\t\t<div id='equals_num_value_{$ia[1]}'><font size='1'><i>".$clang->gT("Total of all entries must equal ").$equals_num_value."</i></font></div>\n";
 			}
         if ($minvalue)
             {
-			$answer .= "\t\t\t<div id='min_num_value'><font size='1'><i>".$clang->gT("Total of all entries must be at least ").$min_num_value."</i></font></div>\n";
+			$answer .= "\t\t\t<div id='min_num_value_{$ia[1]}'><font size='1'><i>".$clang->gT("Total of all entries must be at least ").$min_num_value."</i></font></div>\n";
 			}
 		if ($maxvalue || $equalvalue || $minvalue)
 		    {
 	    	$answer .= "\t\t\t\t\t\t<tr><td colspan='2'><table class='question' style='border: 1px solid #111111'>\n";
-			$answer .= "<tr><td align='right' class='answertext'>".$clang->gT("Total: ")."</td><td>$prefix<input type='text' id='totalvalue' disabled style='border: 0px' size='$tiwidth'>$suffix</td></tr>\n";
+			$answer .= "<tr><td align='right' class='answertext'>".$clang->gT("Total: ")."</td><td>$prefix<input type='text' id='totalvalue_{$ia[1]}' disabled style='border: 0px' size='$tiwidth'>$suffix</td></tr>\n";
     		if ($equalvalue)
     		    {
-    			$answer .= "<tr><td align='right' class='answertext'>".$clang->gT("Remaining: ")."</td><td>$prefix<input type='text' id='remainingvalue' disabled style='border: 0px' size='$tiwidth'>$suffix</td></tr>\n";
+    			$answer .= "<tr><td align='right' class='answertext'>".$clang->gT("Remaining: ")."</td><td>$prefix<input type='text' id='remainingvalue_{$ia[1]}' disabled style='border: 0px' size='$tiwidth'>$suffix</td></tr>\n";
     			}
 			$answer .= "</table></td></tr>\n";
 			}
@@ -2069,63 +2069,63 @@ function do_multiplenumeric($ia)
             $javainputnames[]="parseInt(parseFloat(document.limesurvey.answer".$inputname.".value)*1000)"; 
 		}
 	    $answer .= "       bob = eval('document.limesurvey.qattribute_answer".$ia[1]."');\n";
-	    $answer .= "       totalvalue=(";
+	    $answer .= "       totalvalue_".$ia[1]."=(";
 	    $answer .= implode(" + ", $javainputnames);
 	    $answer .= ")/1000;\n";
-	    $answer .= "       document.getElementById('totalvalue').value=parseFloat(totalvalue);\n";
+	    $answer .= "       document.getElementById('totalvalue_{$ia[1]}').value=parseFloat(totalvalue_{$ia[1]});\n";
 	    $answer .= "       switch(method)\n";
 	    $answer .= "       {\n";
 	    $answer .= "       case 1:\n";
-	    $answer .= "          if (totalvalue > $max_num_value)\n";
+	    $answer .= "          if (totalvalue_".$ia[1]." > $max_num_value)\n";
 	    $answer .= "             {\n";
 	    $answer .= "               bob.value = '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$max_num_value."';\n";
-	    $answer .= "               document.getElementById('totalvalue').style.color='red';\n";
-	    $answer .= "               document.getElementById('max_num_value').style.color='red';\n";
+	    $answer .= "               document.getElementById('totalvalue_{$ia[1]}').style.color='red';\n";
+	    $answer .= "               document.getElementById('max_num_value_{$ia[1]}').style.color='red';\n";
 		$answer .= "             }\n";
 		$answer .= "             else\n";
 		$answer .= "             {\n";
 		$answer .= "               if (bob.value == '' || bob.value == '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$max_num_value."')\n";
 		$answer .= "               {\n";
 		$answer .= "                 bob.value = '';\n";
-	    $answer .= "                 document.getElementById('totalvalue').style.color='black';\n";
+	    $answer .= "                 document.getElementById('totalvalue_{$ia[1]}').style.color='black';\n";
 		$answer .= "               }\n";
-	    $answer .= "               document.getElementById('max_num_value').style.color='black';\n";
+	    $answer .= "               document.getElementById('max_num_value_{$ia[1]}').style.color='black';\n";
 		$answer .= "             }\n";
 		$answer .= "          break;\n";
 		$answer .= "       case 2:\n";
-	    $answer .= "          if (totalvalue < $min_num_value)\n";
+	    $answer .= "          if (totalvalue_".$ia[1]." < $min_num_value)\n";
 	    $answer .= "             {\n";
 	    $answer .= "               bob.value = '".$clang->gT("Answer is invalid. The total of all entries should add up to at least ").$min_num_value."';\n";
-	    $answer .= "               document.getElementById('totalvalue').style.color='red';\n";
-	    $answer .= "               document.getElementById('min_num_value').style.color='red';\n";
+	    $answer .= "               document.getElementById('totalvalue_".$ia[1]."').style.color='red';\n";
+	    $answer .= "               document.getElementById('min_num_value_".$ia[1]."').style.color='red';\n";
 		$answer .= "             }\n";
 		$answer .= "             else\n";
 		$answer .= "             {\n";
 		$answer .= "               if (bob.value == '' || bob.value == '".$clang->gT("Answer is invalid. The total of all entries should add up to at least ").$min_num_value."')\n";
 		$answer .= "               {\n";
 		$answer .= "                 bob.value = '';\n";
-	    $answer .= "                 document.getElementById('totalvalue').style.color='black';\n";
+	    $answer .= "                 document.getElementById('totalvalue_".$ia[1]."').style.color='black';\n";
 		$answer .= "               }\n";
-	    $answer .= "               document.getElementById('min_num_value').style.color='black';\n";
+	    $answer .= "               document.getElementById('min_num_value_".$ia[1]."').style.color='black';\n";
 		$answer .= "             }\n";
 		$answer .= "          break;\n";
 		$answer .= "       case 3:\n";
-		$answer .= "          remainingvalue = (parseInt(parseFloat($equals_num_value)*1000) - parseInt(parseFloat(totalvalue)*1000))/1000;\n";
-		$answer .= "          document.getElementById('remainingvalue').value=remainingvalue;\n";
-	    $answer .= "          if (totalvalue == $equals_num_value)\n";
+		$answer .= "          remainingvalue = (parseInt(parseFloat($equals_num_value)*1000) - parseInt(parseFloat(totalvalue_".$ia[1].")*1000))/1000;\n";
+		$answer .= "          document.getElementById('remainingvalue_".$ia[1]."').value=remainingvalue;\n";
+	    $answer .= "          if (totalvalue_".$ia[1]." == $equals_num_value)\n";
 		$answer .= "             {\n";
 		$answer .= "               if (bob.value == '' || bob.value == '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$equals_num_value."')\n";
 		$answer .= "               {\n";
 		$answer .= "                 bob.value = '';\n";
-	    $answer .= "                 document.getElementById('totalvalue').style.color='black';\n";
-	    $answer .= "                 document.getElementById('equals_num_value').style.color='black';\n";
+	    $answer .= "                 document.getElementById('totalvalue_".$ia[1]."').style.color='black';\n";
+	    $answer .= "                 document.getElementById('equals_num_value_".$ia[1]."').style.color='black';\n";
 		$answer .= "               }\n";
 		$answer .= "             }\n";
 		$answer .= "             else\n";
 		$answer .= "             {\n";
 	    $answer .= "             bob.value = '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$equals_num_value."';\n";
-	    $answer .= "             document.getElementById('totalvalue').style.color='red';\n";
-	    $answer .= "             document.getElementById('equals_num_value').style.color='red';\n";
+	    $answer .= "             document.getElementById('totalvalue_".$ia[1]."').style.color='red';\n";
+	    $answer .= "             document.getElementById('equals_num_value_".$ia[1]."').style.color='red';\n";
 		$answer .= "             }\n";
 		$answer .= "             break;\n";
 		$answer .= "       }\n";
