@@ -193,6 +193,11 @@
 	    $supportedLanguages['hu']['nativedescription'] = 'Magyar';
 	    $supportedLanguages['hu']['rtl'] = false;
 
+	    // Icelandic
+	    $supportedLanguages['is']['description'] = $clang->gT('Icelandic');
+	    $supportedLanguages['is']['nativedescription'] = '&#237;slenska';
+	    $supportedLanguages['is']['rtl'] = false;
+
 	    // Indonesian
 	    $supportedLanguages['id']['description'] = $clang->gT('Indonesian');
 	    $supportedLanguages['id']['nativedescription'] = 'Bahasa Indonesia';
