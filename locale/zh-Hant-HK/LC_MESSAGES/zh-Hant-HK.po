@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Chinese-traditional language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-06-01 16:29+0100\n"
-"PO-Revision-Date: 2008-06-03 09:09+0100\n"
-"Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
+"PO-Revision-Date: 2008-06-05 07:33+0800\n"
+"Last-Translator: Mark Yeung <pstudy@gmail.com>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -110,9 +110,8 @@ msgstr "停用狀態 "
 #: D:\web\xampp\htdocs\limesurvey/common.php:3382
 #: D:\web\xampp\htdocs\limesurvey/common.php:3421
 #: D:\web\xampp\htdocs\limesurvey/common.php:3457
-#, fuzzy
 msgid "Please Choose..."
-msgstr "請選擇"
+msgstr "請選擇..."
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:593
 #: D:\web\xampp\htdocs\limesurvey/common.php:867
@@ -120,14 +119,12 @@ msgstr "請選擇"
 #: D:\web\xampp\htdocs\limesurvey/common.php:935
 #: D:\web\xampp\htdocs\limesurvey/common.php:3383
 #: D:\web\xampp\htdocs\limesurvey/common.php:3422
-#, fuzzy
 msgid "None"
-msgstr "否"
+msgstr "沒有"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:773
-#, fuzzy
 msgid "Array (Flexible Labels) Dual Scale"
-msgstr "表列(自訂標籤)"
+msgstr "雙尺度表列(自訂標籤)"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:774
 msgid "5 Point Choice"
@@ -170,9 +167,8 @@ msgid "Language Switch"
 msgstr "切換語言"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:784
-#, fuzzy
 msgid "Multiple Numerical Input"
-msgstr "數值式選項"
+msgstr "多項式數值欄位"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:785
 msgid "List (Radio)"
@@ -203,14 +199,12 @@ msgid "Ranking"
 msgstr "排名"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:792
-#, fuzzy
 msgid "Short Free Text"
-msgstr "短答"
+msgstr "短文回答"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:793
-#, fuzzy
 msgid "Long Free Text"
-msgstr "長答 "
+msgstr "長文回答 "
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:794
 msgid "Huge Free Text"
@@ -728,9 +722,8 @@ msgstr "您的答卷內容已被儲存."
 #: D:\web\xampp\htdocs\limesurvey/group.php:174
 #: D:\web\xampp\htdocs\limesurvey/question.php:330
 #: D:\web\xampp\htdocs\limesurvey/survey.php:120
-#, fuzzy
 msgid "Click here to print your answers."
-msgstr "請在這兒填上你的答案:"
+msgstr "請在這兒打印你的答案:"
 
 #: D:\web\xampp\htdocs\limesurvey/group.php:231
 #: D:\web\xampp\htdocs\limesurvey/question.php:64
@@ -1001,9 +994,8 @@ msgstr "你的答案"
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:308
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:316
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:324
-#, fuzzy
 msgid "Choose one of the following answers"
-msgstr "請選擇一項"
+msgstr "請選擇一個答案選項"
 
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:337
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:362
@@ -1041,9 +1033,8 @@ msgid "Please complete all parts"
 msgstr "請回答全部問卷內容"
 
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:502
-#, fuzzy
 msgid "Please check the items"
-msgstr "請在項目打鉤"
+msgstr "請在項目方格打鉤"
 
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:504
 msgid "Please rank all items"
@@ -1156,7 +1147,7 @@ msgstr "出錯︰本題目未有提供本語言版本的標籤集"
 
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:1194
 msgid "Please choose one of the following"
-msgstr "請選擇"
+msgstr "請選擇下列其中一項"
 
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:1195
 msgid "Please enter your comment here"
@@ -1230,9 +1221,8 @@ msgid "Total of all entries must be at least "
 msgstr "所有條目的總數必須至少是"
 
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:2048
-#, fuzzy
 msgid "Total: "
-msgstr "總數"
+msgstr "總數:"
 
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:2051
 msgid "Remaining: "
@@ -1318,7 +1308,7 @@ msgstr "請點擊以下URL去載入你的問卷:"
 
 #: D:\web\xampp\htdocs\limesurvey/save.php:510
 msgid "Cannot submit results - there are none to submit."
-msgstr "不能提交問卷結果 ，因為未有人提交問卷."
+msgstr "不能提交問卷結果 ，因為沒有人提交問卷."
 
 #: D:\web\xampp\htdocs\limesurvey/save.php:511
 msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
@@ -1381,9 +1371,8 @@ msgid "You are not allowed to edit groups in this survey!"
 msgstr "你不能修改本問卷的組別"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/access_denied.php:87
-#, fuzzy
 msgid "You are not allowed to browse responses!"
-msgstr "你不獲准瀏覽答卷內容！ "
+msgstr "你無權瀏覽答卷內容! "
 
 #: D:\web\xampp\htdocs\limesurvey/admin/access_denied.php:92
 msgid "You are not allowed to set assessment rules!"
@@ -1408,14 +1397,12 @@ msgstr "您不獲准導入題目!"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/access_denied.php:118
 #: D:\web\xampp\htdocs\limesurvey/admin/access_denied.php:123
-#, fuzzy
 msgid "Security Alert"
-msgstr "安全設定的問題"
+msgstr "安全提問"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/access_denied.php:118
-#, fuzzy
 msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
-msgstr "有人嘗試操作你的 LimeSurvey (疑是 CSRF 攻擊)。如果你剛才曾 click 入惡意的連結，請馬上向系統管理員報告。"
+msgstr "有人可能正在嘗試操作你的 LimeSurvey (疑是 CSRF 攻擊)。如果你剛才曾 click 入惡意連結，請馬上向系統管理員報告。"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/access_denied.php:123
 msgid "Someone may be trying to use your LimeSurvey session by using dangerous GET requests (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
@@ -1826,9 +1813,8 @@ msgid "full responses"
 msgstr "完整的答卷內容"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/browse.php:722
-#, fuzzy
 msgid "responses not completely filled out"
-msgstr "未完全被篩選出去的答卷內容"
+msgstr "未完全回答問卷內容"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/cmdline_importsurvey.php:58
 msgid "User name invalid!"
@@ -1877,9 +1863,8 @@ msgstr "只顯示題目 {QID} 若果"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditions.php:772
 #: D:\web\xampp\htdocs\limesurvey/admin/conditions.php:992
-#, fuzzy
 msgid "Less than"
-msgstr "數字小於"
+msgstr "小於"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditions.php:773
 #: D:\web\xampp\htdocs\limesurvey/admin/conditions.php:993
@@ -1893,9 +1878,8 @@ msgstr "等於"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditions.php:775
 #: D:\web\xampp\htdocs\limesurvey/admin/conditions.php:995
-#, fuzzy
 msgid "Not Equal to"
-msgstr "不相等 "
+msgstr "不等於 "
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditions.php:776
 #: D:\web\xampp\htdocs\limesurvey/admin/conditions.php:996
@@ -1904,9 +1888,8 @@ msgstr "大於或等於"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditions.php:777
 #: D:\web\xampp\htdocs\limesurvey/admin/conditions.php:997
-#, fuzzy
 msgid "Greater than"
-msgstr "數字大於"
+msgstr "大於"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditions.php:778
 #: D:\web\xampp\htdocs\limesurvey/admin/conditions.php:998
@@ -1967,9 +1950,8 @@ msgid "Clear"
 msgstr "清除"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditions.php:1034
-#, fuzzy
 msgid "Close Window"
-msgstr "關閉本視窗"
+msgstr "關閉視窗"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/database.php:120
 msgid ""
@@ -2588,9 +2570,8 @@ msgid "Microsoft Word (Latin charset)"
 msgstr "Microsoft Word (拉丁字符)"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:205
-#, fuzzy
 msgid "Microsoft Excel (All charsets)"
-msgstr "Microsoft Excel (拉丁字符)"
+msgstr "Microsoft Excel (全部字符)"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:208
 msgid "(Iconv Library not installed)"
@@ -2638,7 +2619,6 @@ msgstr "你的問卷可以隨每份答卷数據導出相關的操作代码。請
 
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:341
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:951
-#, fuzzy
 msgid "Email"
 msgstr "電郵"
 
@@ -2689,7 +2669,6 @@ msgstr "語言"
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1106
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1122
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1123
-#, fuzzy
 msgid "N/A"
 msgstr "不適用"
 
@@ -2727,16 +2706,14 @@ msgstr "來自操作代碼的電郵 "
 #: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:86
 #: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:102
 #: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:115
-#, fuzzy
 msgid "Attribute_1 from token"
-msgstr "自訂欄位1"
+msgstr "操作代碼的 Attribute_1"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:87
 #: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:103
 #: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:116
-#, fuzzy
 msgid "Attribute_2 from token"
-msgstr "自訂欄位1"
+msgstr "操作代碼的 Attribute_2"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:95
 msgid "Token code for this participant"
@@ -2900,7 +2877,6 @@ msgid "Status"
 msgstr "狀態"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:49
-#, fuzzy
 msgid "Full Responses"
 msgstr "完整的答卷內容"
 
@@ -3090,7 +3066,6 @@ msgstr "已關閉"
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:627
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:628
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:2750
-#, fuzzy
 msgid "Change Group Order"
 msgstr "更改組別的次序"
 
@@ -3440,7 +3415,6 @@ msgid "Label Set"
 msgstr "標籤集"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:1340
-#, fuzzy
 msgid "You need to choose a label set for this question!"
 msgstr "您需要選擇本題目的標籤集"
 
@@ -3449,7 +3423,6 @@ msgid "Second Label Set"
 msgstr "第二個標籤集 "
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:1364
-#, fuzzy
 msgid "You need to choose a second label set for this question!"
 msgstr "您需要選擇本題目的標籤集"
 
@@ -3458,7 +3431,6 @@ msgid "Edit/Add second Label Sets"
 msgstr "修改／新增第二個標籤集 "
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:1390
-#, fuzzy
 msgid "Other:"
 msgstr "其他"
 
@@ -3493,7 +3465,6 @@ msgstr "次序"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:1568
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:1623
-#, fuzzy
 msgid "Answer:"
 msgstr "答案"
 
@@ -3779,7 +3750,6 @@ msgstr "要採用匿名答卷嗎?"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:2449
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:3055
-#, fuzzy
 msgid "If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
 msgstr "如果把問卷設定為匿名問卷，答卷內容會記錄時間，並建立操作代碼，LimeSurvey 就會用 'Y\" 標記你完成了答卷的操作代碼，而並非使用日期／時間，來保護答卷人的隱私資料。"
 
@@ -3994,7 +3964,6 @@ msgid "Reading file.."
 msgstr "文件檔讀取中 "
 
 #: D:\web\xampp\htdocs\limesurvey/admin/importgroup.php:39
-#, fuzzy
 msgid "No SID (Survey) has been provided. Cannot import group."
 msgstr "未提供問卷 SID，所以不能導入題目。"
 
@@ -4043,7 +4012,6 @@ msgid "Labels"
 msgstr "標籤"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/importgroup.php:671
-#, fuzzy
 msgid "Question Attributes: "
 msgstr "題目屬性"
 
@@ -4173,7 +4141,6 @@ msgid "A group in the CSV/SQL file is not part of the same survey. The import of
 msgstr "由於 在CSV/SQL 檔案的組別並非屬於同一份問卷，所以導入問卷的工作停頓了。"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:823
-#, fuzzy
 msgid "was NOT imported because the question type is unknown."
 msgstr "不能被導入因為題型仍未確定"
 
@@ -4213,7 +4180,6 @@ msgstr "問卷已完成導入工作。"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:1233
 #: D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:1257
-#, fuzzy
 msgid "Warnings"
 msgstr "警告"
 
@@ -4242,7 +4208,6 @@ msgstr "本文件不是有效的 zip 壓縮檔，所以導入失敗。"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:94
 #: D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:264
-#, fuzzy
 msgid "Copy failed"
 msgstr "已完成"
 
@@ -4327,7 +4292,6 @@ msgid "No matching Cqid"
 msgstr "並無吻合的 Cqid"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:60
-#, fuzzy
 msgid "No matching CFIELDNAME Group!"
 msgstr "沒有吻合的 CFIELDNAME  組別"
 
@@ -4366,7 +4330,6 @@ msgid "All question_attributes meet consistency standards"
 msgstr "全部題目屬性必須符合一致性的標準"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:111
-#, fuzzy
 msgid "No matching survey"
 msgstr "對不起！找不到匹配的問卷."
 
@@ -4380,7 +4343,6 @@ msgid "The following assessments should be deleted"
 msgstr "下列評估必須被刪除"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:135
-#, fuzzy
 msgid "All Survey (Total) assessments meet consistency standards"
 msgstr "全部評估必須符合一致性的標準 "
 
@@ -4413,12 +4375,10 @@ msgid "All survey settings meet consistency standards"
 msgstr "全部問卷設定必須符合一致性的標準"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:205
-#, fuzzy
 msgid "No matching Group"
 msgstr "找不到匹配的組別"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:211
-#, fuzzy
 msgid "No matching Survey!"
 msgstr "對不起！找不到匹配的問卷."
 
@@ -4705,7 +4665,6 @@ msgid "Please number each box in order of preference from 1 to"
 msgstr "請由數字1起順序在方格旁加上編號"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:449
-#, fuzzy
 msgid "Please number each box in order of preference from 1 to "
 msgstr "請由數字1起順序在方格旁加上編號"
 
@@ -4954,7 +4913,6 @@ msgstr "修改"
 #: D:\web\xampp\htdocs\limesurvey/admin/quota.php:468
 #: D:\web\xampp\htdocs\limesurvey/admin/quota.php:528
 #: D:\web\xampp\htdocs\limesurvey/admin/quota.php:544
-#, fuzzy
 msgid "Add Answer"
 msgstr "新增答案選項"
 
@@ -4987,7 +4945,6 @@ msgstr "選擇題目"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/quota.php:494
 #: D:\web\xampp\htdocs\limesurvey/admin/quota.php:570
-#, fuzzy
 msgid "Next"
 msgstr "下一題"
 
@@ -5008,7 +4965,6 @@ msgid "You are about to delete all conditions on this survey's questions"
 msgstr "您即將要刪除本問卷題目的所有條件設定"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/resetsurveylogic.php:44
-#, fuzzy
 msgid "We recommend that before you proceed, you export the entire survey from the main administration screen."
 msgstr "建議你在刪除問卷前，先行在管理的工作畫面把整份問卷的數據導出。"
 
@@ -5110,7 +5066,6 @@ msgid "Please wait ..."
 msgstr "請稍候..."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:809
-#, fuzzy
 msgid "Go Back"
 msgstr "返回"
 
@@ -5844,7 +5799,6 @@ msgstr "主題"
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1116
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1331
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1366
-#, fuzzy
 msgid "Sending to Token ID"
 msgstr "送出 TID 編號︰"
 
@@ -5943,7 +5897,6 @@ msgid "Add or Edit Token Entry"
 msgstr "新增或修改操作代碼的條目"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1593
-#, fuzzy
 msgid "Auto"
 msgstr "自動化"
 
@@ -5994,7 +5947,6 @@ msgid "Note:"
 msgstr "備註︰"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1819
-#, fuzzy
 msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [emailstatus], [token], [language code], [attribute1], [attribute2]\"."
 msgstr "文件應該是標準的 csv 格式 (用逗號分隔) 的檔案，數值用雙引號包圍 (預設值適用於 openoffice 及 Excel )。第一列應包含表頭的資料 (可以被移除) , 資料應以  \"firstname, lastname, email, [token], [language code], [attribute1], [attribute2]\" 的次序排列。"
 
@@ -6152,7 +6104,6 @@ msgid "Logout successful."
 msgstr "成功登出。"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:328
-#, fuzzy
 msgid "Email address is not valid."
 msgstr "無效的電郵地址。"
 
@@ -6271,7 +6222,6 @@ msgid "Full name"
 msgstr "完整名稱"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:272
-#, fuzzy
 msgid "SuperAdministrator"
 msgstr "問卷管理員"
 
@@ -6536,7 +6486,7 @@ msgid "Your selected database name is:"
 msgstr "你選擇的數據庫名稱是︰"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/install/index.php:52
-#, fuzzy, php-format
+#, php-format
 msgid "A database named \"%s\" already exists."
 msgstr "名為 \"%s\"  的數據庫已經存在。"
 
@@ -6577,12 +6527,10 @@ msgid "Chinese (Simplified)"
 msgstr "簡體中文"
 
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:111
-#, fuzzy
 msgid "Chinese (Traditional - Hong Kong)"
 msgstr "正體中文"
 
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:116
-#, fuzzy
 msgid "Chinese (Traditional - Taiwan)"
 msgstr "正體中文"
 
@@ -6675,12 +6623,10 @@ msgid "Macedonian"
 msgstr "馬其頓人 "
 
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:232
-#, fuzzy
 msgid "Norwegian (Bokmal)"
 msgstr "挪威文"
 
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:237
-#, fuzzy
 msgid "Norwegian (Nynorsk)"
 msgstr "挪威文"
 
@@ -6705,7 +6651,6 @@ msgid "Romanian"
 msgstr "羅馬尼亞文"
 
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:268
-#, fuzzy
 msgid "Slovak"
 msgstr "斯洛文尼亞 "
 
