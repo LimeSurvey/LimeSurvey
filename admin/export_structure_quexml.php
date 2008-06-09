@@ -102,17 +102,17 @@ function fixed_array($array)
 
 function create_fixed($qlid,$rotate=false,$labels=true)
 {
-	global $dom;
+	global $dom, $connect;
 	global $dbprefix;
 	if ($labels)
 		$Query = "SELECT * FROM {$dbprefix}labels WHERE lid = $qlid ORDER BY sortorder ASC";
 	else
 		$Query = "SELECT code,answer as title,sortorder FROM {$dbprefix}answers WHERE qid = $qlid ORDER BY sortorder ASC";
-	$QueryResult = mysql_query($Query) or safe_die ("ERROR: $QueryResult<br />".mysql_error());
+	$QueryResult = db_execute_assoc($Query) or safe_die ("ERROR: $QueryResult<br />".$connect->ErrorMsg());
 
 	$fixed = $dom->create_element("fixed");
 	
-	while ($Row = mysql_fetch_assoc($QueryResult))
+	while ($Row = $QueryResult->FetchRow())
 	{
 	    $category = $dom->create_element("category");
 	    
@@ -135,12 +135,12 @@ function create_fixed($qlid,$rotate=false,$labels=true)
 
 function create_multi(&$question,$qid,$varname)
 {
-	global $dom;
+	global $dom, $connect;
 	global $dbprefix;
 	$Query = "SELECT * FROM {$dbprefix}answers WHERE qid = $qid ORDER BY sortorder ASC";
-	$QueryResult = mysql_query($Query) or safe_die ("ERROR: $QueryResult<br />".mysql_error());
+	$QueryResult = db_execute_assoc($Query) or safe_die ("ERROR: $QueryResult<br />".$connect->ErrorMsg());
 
-	while ($Row = mysql_fetch_assoc($QueryResult))
+	while ($Row = $QueryResult->FetchRow())
 	{
 	    $response = $dom->create_element("response");
 	    $fixed = $dom->create_element("fixed");
@@ -169,12 +169,12 @@ function create_multi(&$question,$qid,$varname)
 
 function create_subQuestions(&$question,$qid,$varname)
 {
-	global $dom;
+	global $dom, $connect;
 	global $dbprefix;
 	$Query = "SELECT * FROM {$dbprefix}answers WHERE qid = $qid ORDER BY sortorder ASC";
-	$QueryResult = mysql_query($Query) or safe_die ("ERROR: $QueryResult<br />".mysql_error());
+	$QueryResult = db_execute_assoc($Query) or safe_die ("ERROR: $QueryResult<br />".$connect->ErrorMsg());
 
-	while ($Row = mysql_fetch_assoc($QueryResult))
+	while ($Row = $QueryResult->FetchRow())
 	{
 	    $subQuestion = $dom->create_element("subQuestion");
             $text = $dom->create_element("text");
@@ -197,8 +197,8 @@ $title = $dom->create_element("title");
 
 $baselang=GetBaseLanguageFromSurveyID($surveyid);
 $Query = "SELECT * FROM {$dbprefix}surveys,{$dbprefix}surveys_languagesettings WHERE sid=$surveyid and surveyls_survey_id=sid and surveyls_language='".$baselang."'";
-$QueryResult = mysql_query($Query) or safe_die ("ERROR: $QueryResult<br />".mysql_error());
-$Row = mysql_fetch_assoc($QueryResult);
+$QueryResult = db_execute_assoc($Query) or safe_die ("ERROR: $QueryResult<br />".$connect->ErrorMsg());
+$Row = $QueryResult->FetchRow();
 $questionnaire->set_attribute("id", $Row['sid']);
 $title->set_content(cleanup($Row['surveyls_title']));
 $questionnaire->append_child($title);
@@ -231,9 +231,9 @@ $questionnaire->append_child($questionnaireInfo);
 
 
 $Query = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid order by group_order ASC";
-$QueryResult = mysql_query($Query) or safe_die ("ERROR: $QueryResult<br />".mysql_error());
+$QueryResult = db_execute_assoc($Query) or safe_die ("ERROR: $QueryResult<br />".$connect->ErrorMsg());
 //for each section
-while ($Row = mysql_fetch_assoc($QueryResult))
+while ($Row = $QueryResult->FetchRow())
 {
 	$gid = $Row['gid'];
 	
@@ -255,8 +255,8 @@ while ($Row = mysql_fetch_assoc($QueryResult))
 	
 	//boilerplate questions convert to sectionInfo elements
 	$Query = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid = $gid AND type LIKE 'X' ORDER BY question_order ASC";
-	$QR = mysql_query($Query) or safe_die ("ERROR: $QueryResult<br />".mysql_error());
-	while ($RowQ = mysql_fetch_assoc($QR))
+	$QR = db_execute_assoc($Query) or safe_die ("ERROR: $QueryResult<br />".$connect->ErrorMsg());
+	while ($RowQ = $QR->FetchRow())
 	{
 		$sectionInfo = $dom->create_element("sectionInfo");	
 		$position = $dom->create_element("position");
@@ -277,8 +277,8 @@ while ($Row = mysql_fetch_assoc($QueryResult))
 	
 	//foreach question
 	$Query = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid = $gid AND type NOT LIKE 'X' ORDER BY question_order ASC";
-	$QR = mysql_query($Query) or safe_die ("ERROR: $QueryResult<br />".mysql_error());
-	while ($RowQ = mysql_fetch_assoc($QR))
+	$QR = db_execute_assoc($Query) or safe_die ("ERROR: $QueryResult<br />".$connect->ErrorMsg());
+	while ($RowQ = $QR->FetchRow())
 	{
 		$question = $dom->create_element("question");
 		$type = $RowQ['type'];

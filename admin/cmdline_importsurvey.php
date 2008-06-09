@@ -77,7 +77,7 @@ else
 		else
 		{
 			// password don't match username
-			echo "\n".$clang->gT("User name / password dont match!")."\n";
+			echo "\n".$clang->gT("User name and password do not match!")."\n";
 			exit;
 		}
 	}

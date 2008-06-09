@@ -625,21 +625,17 @@ elseif ($action == "usertemplates")
       {
                       $templaterights = array();
                       $tquery = "SELECT * FROM ".$dbprefix."templates";
-                      $tresult = mysql_query($tquery);
-                      while ($trow = mysql_fetch_assoc($tresult)) {
+                      $tresult = ($tquery);
+                      while ($trow = $tresult->FetchRow()) {
                               if (isset($_POST[$trow["folder"]."_use"]))
                                       $templaterights[$trow["folder"]] = 1;
                               else
                                       $templaterights[$trow["folder"]] = 0;
                       }
-                      //echo "<!-- \n";
                       foreach ($templaterights as $key => $value) {
-//             WRONG                 $uquery = "INSERT INTO {$dbprefix}templates_rights SET `uid`={$postuserid}, `folder`='".$key."', `use`=".$value." ON DUPLICATE KEY UPDATE `use`=".$value;
                               $uquery = "INSERT INTO {$dbprefix}templates_rights SET `uid`={$postuserid}, `folder`='".$key."', `use`=".$value." ON DUPLICATE KEY UPDATE `use`=".$value;
-                              //echo $uquery."\n";
-                              $uresult = mysql_query($uquery);
+                              $uresult = $connect->execute($uquery);
                       }
-                      //echo mysql_error()."--> \n";
 		      if ($uresult)
 		      {
 			      $addsummary .= "<br />".$clang->gT("Update usertemplates successful.")."<br />\n";

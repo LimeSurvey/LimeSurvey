@@ -510,7 +510,7 @@ if ($tokensexist == 1 && isset($token) && $token &&
 		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 		echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 		echo "\t<center><br />\n"
-		."\t".$clang->gT("This is a closed-access survey. You need a valid token to participate.")."<br /><br />\n"
+		."\t".$clang->gT("This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance.")."<br /><br />\n"
 		."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."\n"
 		."\t".$clang->gT("For further information contact")." {$thissurvey['adminname']} "
 		."(<a href='mailto:{$thissurvey['adminemail']}'>"
@@ -2136,28 +2136,28 @@ function surveymover()
 	if (isset($_SESSION['step']) && $_SESSION['step'] > 0 && $thissurvey['format'] != "A" && !$presentinggroupdescription && $thissurvey['allowprev'] != "N")
 	{
 		$surveymover .= "<input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" value=' << "
-		. $clang->gT("prev")." ' name='move2' />\n";
+		. $clang->gT("Previous")." ' name='move2' />\n";
 	}
 	if (isset($_SESSION['step']) && $_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
 	{
 		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
-		. $clang->gT("next")." >> ' name='move2' />\n";
+		. $clang->gT("Next")." >> ' name='move2' />\n";
 	}
     // here, in some lace, is where I must modify to turn the next button conditionable
 	if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	{
 		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
-		. $clang->gT("next")." >> ' name='move2' />\n";
+		. $clang->gT("Next")." >> ' name='move2' />\n";
 	}
 	if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && $presentinggroupdescription == "yes")
 	{
 		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
-		. $clang->gT("next")." >> ' name='move2' />\n";
+		. $clang->gT("Next")." >> ' name='move2' />\n";
 	}
 	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription)
 	{
 		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' accesskey='l' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" value=' "
-		. $clang->gT("submit")." ' name='move2' />\n";
+		. $clang->gT("Submit")." ' name='move2' />\n";
 	}
 
 //	$surveymover .= "<input type='hidden' name='PHPSESSID' value='".session_id()."' id='PHPSESSID' />\n";

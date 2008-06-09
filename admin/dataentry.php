@@ -120,11 +120,11 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 
 		if (bHasSurveyGotTokentable($thissurvey) && (!isset($_POST['token']) || !$_POST['token']))
 		{// First Check if the survey uses tokens and if a token has been provided
-			$errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("This is a closed-access survey, you must supply a valid token")."</strong>\n";
+			$errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance.")."</strong>\n";
 		}
 		elseif (bHasSurveyGotTokentable($thissurvey) && $lastanswfortoken == 'UnknownToken')
 		{
-			$errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("The token you have provided is not valid.")."</strong>\n";
+			$errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("The token you have provided is not valid or has already been used.")."</strong>\n";
 		}
 		elseif (bHasSurveyGotTokentable($thissurvey) && $lastanswfortoken != '')
 		{
@@ -137,7 +137,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			}
 			else
 			{
-				$errormsg .= "<br /><br />".$clang->gT("This surveys uses anonymous answers, you can't update this response").".\n";
+				$errormsg .= "<br /><br />".$clang->gT("This surveys uses anonymous answers, so you can't update your response.")."\n";
 			}
 		}
 		else
@@ -185,7 +185,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 							$dataentryoutput .= "<input type='hidden' name='$key' value='$val' />\n";
 						}
 					}
-					$dataentryoutput .= "</td></tr><tr><td></td><td><input type='submit' value='".$clang->gT("submit")."' />
+					$dataentryoutput .= "</td></tr><tr><td></td><td><input type='submit' value='".$clang->gT("Submit")."' />
 					 <input type='hidden' name='sid' value='$surveyid' />
 					 <input type='hidden' name='surveytable' value='".$_POST['surveytable']."' />
 					 <input type='hidden' name='subaction' value='".$_POST['subaction']."' />
@@ -408,7 +408,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				{
 					$scid = $connect->Insert_ID("{$dbprefix}saved_control","scid");
 					
-					$dataentryoutput .= "<font class='successtitle'>".$clang->gT("Your survey responses have been saved succesfully")."</font><br />\n";
+					$dataentryoutput .= "<font class='successtitle'>".$clang->gT("Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you.")."</font><br />\n";
                     
                     $tkquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
                     if ($tkresult = $connect->Execute($tkquery)) //If the query fails, assume no tokens table exists
@@ -432,11 +432,11 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						if (validate_email($saver['email']) && !returnglobal('redo'))
 						{
 							$subject=$clang->gT("Saved Survey Details");
-							$message=$clang->gT("You, someone using your email address, or the administrator has saved a survey in progress. The following details can be used to return to this survey and continue where you left off.");
+							$message=$clang->gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
 							$message.="\n\n".$thissurvey['name']."\n\n";
 							$message.=$clang->gT("Name").": ".$saver['identifier']."\n";
 							$message.=$clang->gT("Password").": ".$saver['password']."\n\n";
-							$message.=$clang->gT("Reload your survey by clicking on the following URL:").":\n";
+							$message.=$clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):").":\n";
 							$message.=$publicurl."/index.php?sid=$surveyid&loadall=reload&scid=".$scid."&lang=".urlencode($saver['language'])."&loadname=".urlencode($saver['identifier'])."&loadpass=".urlencode($saver['password']);
 							if (isset($tokendata['token'])) {$message.="&token=".$tokendata['token'];}
 							$from = $thissurvey['adminemail'];
@@ -1326,7 +1326,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			."</div>\n";
 			$dataentryoutput .= "	<tr>
 					<td align='center'>
-					 <input type='submit' value='".$clang->gT("submit")."' />
+					 <input type='submit' value='".$clang->gT("Submit")."' />
 					 <input type='hidden' name='sid' value='$surveyid' />
 					 <input type='hidden' name='subaction' value='insert' />
 					 <input type='hidden' name='language' value='".$datalang."' />
@@ -2443,7 +2443,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			}
 			$dataentryoutput .= "\t<tr>\n";
 			$dataentryoutput .= "\t\t<td colspan='3' align='center'>\n";
-			$dataentryoutput .= "\t\t\t<input type='submit' id='submitdata' value='".$clang->gT("submit")."'";
+			$dataentryoutput .= "\t\t\t<input type='submit' id='submitdata' value='".$clang->gT("Submit")."'";
 
 			if (bHasSurveyGotTokentable($thissurvey))
 			{

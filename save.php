@@ -304,11 +304,11 @@ function savedcontrol()
 				// --> START ENHANCEMENT
 				$subject=$clang->gT("Saved Survey Details") . " - " . $thissurvey['name'];
 				// <-- END ENHANCEMENT
-				$message=$clang->gT("You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off.","unescaped");
+				$message=$clang->gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.","unescaped");
 				$message.="\n\n".$thissurvey['name']."\n\n";
 				$message.=$clang->gT("Name","unescaped").": ".$_POST['savename']."\n";
 				$message.=$clang->gT("Password","unescaped").": ".$_POST['savepass']."\n\n";
-				$message.=$clang->gT("Reload your survey by clicking on the following URL:","unescaped").":\n";
+				$message.=$clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):","unescaped").":\n";
 				$message.=$publicurl."/index.php?sid=$surveyid&loadall=reload&scid=".$scid."&loadname=".urlencode($_POST['savename'])."&loadpass=".urlencode($_POST['savepass']);
 
 				if ($clienttoken){$message.="&token=".$clienttoken;}
