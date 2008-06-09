@@ -176,7 +176,7 @@ $fieldno=0;
 
 if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
 
-    $tablefieldnames = array_values($connect->MetaColumnNames("tokens_$surveyid", true));
+    $tablefieldnames = array_values($connect->MetaColumnNames("{$dbprefix}tokens_$surveyid", true));
 	foreach ($tablefieldnames as $tokenfieldname) {
 		$token_fields[]=$tokenfieldname;
 	}
