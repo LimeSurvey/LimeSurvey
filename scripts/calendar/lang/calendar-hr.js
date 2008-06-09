@@ -4,12 +4,6 @@
 * Public License, as long as you do not remove or alter this notice.
 */
 
-
-
-
-
-
-
 Calendar._DN = new Array
 ("Nedjelja",
  "Ponedjeljak",
@@ -19,19 +13,7 @@ Calendar._DN = new Array
  "Petak",
  "Subota",
  "Nedjelja");
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+
  // short day names
 Calendar._SDN = new Array
 ("Sun",

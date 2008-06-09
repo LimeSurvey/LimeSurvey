@@ -1,8 +1,8 @@
 // ** I18N
 
-// Calendar EN language
-// Author: Mihai Bazon, <mihai_bazon@yahoo.com>
-// Encoding: any
+// Calendar VI language
+// Author: Tien D. Tran, <coolersport@yahoo.com>
+// Encoding: UTF-8
 // Distributed under the same terms as the calendar itself.
 
 // For translators: please use UTF-8 if possible.  We strongly believe that
@@ -11,14 +11,14 @@
 
 // full day names
 Calendar._DN = new Array
-("Sunday",
- "Monday",
- "Tuesday",
- "Wednesday",
- "Thursday",
- "Friday",
- "Saturday",
- "Sunday");
+("Chủ nhật",
+ "Thứ hai",
+ "Thứ ba",
+ "Thứ tư",
+ "Thứ năm",
+ "Thứ sáu",
+ "Thứ bảy",
+ "Chủ nhật");
 
 // Please note that the following array of short day names (and the same goes
 // for short month names, _SMN) isn't absolutely necessary.  We give it here
@@ -34,14 +34,14 @@ Calendar._DN = new Array
 
 // short day names
 Calendar._SDN = new Array
-("Sun",
- "Mon",
- "Tue",
- "Wed",
- "Thu",
- "Fri",
- "Sat",
- "Sun");
+("CN",
+ "Hai",
+ "Ba",
+ "Tư",
+ "Năm",
+ "Sáu",
+ "Bảy",
+ "CN");
 
 // First day of the week. "0" means display Sunday first, "1" means display
 // Monday first, etc.
@@ -49,79 +49,79 @@ Calendar._FD = 0;
 
 // full month names
 Calendar._MN = new Array
-("January",
- "February",
- "March",
- "April",
- "May",
- "June",
- "July",
- "August",
- "September",
- "October",
- "November",
- "December");
+("Tháng 1",
+ "Tháng 2",
+ "Tháng 3",
+ "Tháng 4",
+ "Tháng 5",
+ "Tháng 6",
+ "Tháng 7",
+ "Tháng 8",
+ "Tháng 9",
+ "Tháng 10",
+ "Tháng 11",
+ "Tháng 12");
 
 // short month names
 Calendar._SMN = new Array
-("Jan",
- "Feb",
- "Mar",
- "Apr",
- "May",
- "Jun",
- "Jul",
- "Aug",
- "Sep",
- "Oct",
- "Nov",
- "Dec");
+("Một",
+ "Hai",
+ "Ba",
+ "Tư",
+ "Năm",
+ "Sáu",
+ "Bảy",
+ "Tám",
+ "Chín",
+ "Mười",
+ "M.Một",
+ "M.Hai");
 
 // tooltips
 Calendar._TT = {};
-Calendar._TT["INFO"] = "About the calendar";
+Calendar._TT["INFO"] = "Thông tin tác giả";
 
 Calendar._TT["ABOUT"] =
 "DHTML Date/Time Selector\n" +
 "(c) dynarch.com 2002-2005 / Author: Mihai Bazon\n" + // don't translate this this ;-)
-"For latest version visit: http://www.dynarch.com/projects/calendar/\n" +
-"Distributed under GNU LGPL.  See http://gnu.org/licenses/lgpl.html for details." +
+"Địa chỉ lấy phiên bản mới nhất: http://www.dynarch.com/projects/calendar/\n" +
+"Bản quyền GNU LGPL.  Tham khảo http://gnu.org/licenses/lgpl.html về chi tiết bản quyền." +
 "\n\n" +
-"Date selection:\n" +
-"- Use the \xab, \xbb buttons to select year\n" +
-"- Use the " + String.fromCharCode(0x2039) + ", " + String.fromCharCode(0x203a) + " buttons to select month\n" +
-"- Hold mouse button on any of the above buttons for faster selection.";
+"Chọn ngày:\n" +
+"- Sử dụng các nút \xab, \xbb để chọn năm\n" +
+"- Sử dụng các nút " + String.fromCharCode(0x2039) + ", " + String.fromCharCode(0x203a) + " để chọn tháng\n" +
+"- Nhấn và giữ phím trái chuột trên các nút trên để xuất hiện menu chọn.";
 Calendar._TT["ABOUT_TIME"] = "\n\n" +
-"Time selection:\n" +
-"- Click on any of the time parts to increase it\n" +
-"- or Shift-click to decrease it\n" +
-"- or click and drag for faster selection.";
+"Chọn giờ:\n" +
+"- Nhấn chuột vào giờ, phút hoặc giây để tăng\n" +
+"- hoặc nhấn chuột kèm Shift để giảm\n" +
+"- hoặc nhấn và kéo để thay đổi nhanh.";
 
-Calendar._TT["PREV_YEAR"] = "Prev. year (hold for menu)";
-Calendar._TT["PREV_MONTH"] = "Prev. month (hold for menu)";
-Calendar._TT["GO_TODAY"] = "Go Today";
-Calendar._TT["NEXT_MONTH"] = "Next month (hold for menu)";
-Calendar._TT["NEXT_YEAR"] = "Next year (hold for menu)";
-Calendar._TT["SEL_DATE"] = "Select date";
-Calendar._TT["DRAG_TO_MOVE"] = "Drag to move";
-Calendar._TT["PART_TODAY"] = " (today)";
+Calendar._TT["PREV_YEAR"] = "Năm trước (giữ để mở menu)";
+Calendar._TT["PREV_MONTH"] = "Tháng trước (giữ để mở menu)";
+Calendar._TT["GO_TODAY"] = "Xem ngày hôm nay";
+Calendar._TT["NEXT_MONTH"] = "Tháng tới (giữ để mở menu)";
+Calendar._TT["NEXT_YEAR"] = "Năm tới (giữ để mở menu)";
+Calendar._TT["SEL_DATE"] = "Chọn ngày";
+Calendar._TT["DRAG_TO_MOVE"] = "Kéo để di chuyển";
+Calendar._TT["PART_TODAY"] = " (hôm nay)";
 
 // the following is to inform that "%s" is to be the first day of week
 // %s will be replaced with the day name.
-Calendar._TT["DAY_FIRST"] = "Display %s first";
+Calendar._TT["DAY_FIRST"] = "Hiển thị %s trước tiên";
 
 // This may be locale-dependent.  It specifies the week-end days, as an array
 // of comma-separated numbers.  The numbers are from 0 to 6: 0 means Sunday, 1
 // means Monday, etc.
 Calendar._TT["WEEKEND"] = "0,6";
 
-Calendar._TT["CLOSE"] = "Close";
-Calendar._TT["TODAY"] = "Today";
-Calendar._TT["TIME_PART"] = "(Shift-)Click or drag to change value";
+Calendar._TT["CLOSE"] = "Đóng";
+Calendar._TT["TODAY"] = "Hôm nay";
+Calendar._TT["TIME_PART"] = "Nhấn chuột (có thể kèm SHIFT) hoặc kéo để thay đổi giá trị";
 
 // date formats
 Calendar._TT["DEF_DATE_FORMAT"] = "%Y-%m-%d";
-Calendar._TT["TT_DATE_FORMAT"] = "%a, %b %e";
+Calendar._TT["TT_DATE_FORMAT"] = "%A, ngày %e %B năm %Y";
 
-Calendar._TT["WK"] = "wk";
-Calendar._TT["TIME"] = "Time:";
+Calendar._TT["WK"] = "tuần";
+Calendar._TT["TIME"] = "Giờ:";

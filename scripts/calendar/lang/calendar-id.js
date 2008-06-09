@@ -1,24 +1,13 @@
 // ** I18N
-
-// Calendar EN language
-// Author: Mihai Bazon, <mihai_bazon@yahoo.com>
-// Encoding: any
-// Distributed under the same terms as the calendar itself.
-
-// For translators: please use UTF-8 if possible.  We strongly believe that
-// Unicode is the answer to a real internationalized world.  Also please
-// include your contact information in the header, as can be seen above.
-
-// full day names
 Calendar._DN = new Array
-("Sunday",
- "Monday",
- "Tuesday",
- "Wednesday",
- "Thursday",
- "Friday",
- "Saturday",
- "Sunday");
+("Minggu",
+ "Senin",
+ "Selasa",
+ "Rabu",
+ "Kamis",
+ "Jumat",
+ "Sabtu",
+ "Minggu");
 
 // Please note that the following array of short day names (and the same goes
 // for short month names, _SMN) isn't absolutely necessary.  We give it here
@@ -49,18 +38,18 @@ Calendar._FD = 0;
 
 // full month names
 Calendar._MN = new Array
-("January",
- "February",
- "March",
+("Januari",
+ "Februari",
+ "Maret",
  "April",
- "May",
- "June",
- "July",
- "August",
+ "Mei",
+ "Juni",
+ "Juli",
+ "Agustus",
  "September",
- "October",
+ "Oktober",
  "November",
- "December");
+ "Desember");
 
 // short month names
 Calendar._SMN = new Array
@@ -68,14 +57,14 @@ Calendar._SMN = new Array
  "Feb",
  "Mar",
  "Apr",
- "May",
+ "Mei",
  "Jun",
  "Jul",
  "Aug",
  "Sep",
  "Oct",
  "Nov",
- "Dec");
+ "Des");
 
 // tooltips
 Calendar._TT = {};
@@ -97,14 +86,14 @@ Calendar._TT["ABOUT_TIME"] = "\n\n" +
 "- or Shift-click to decrease it\n" +
 "- or click and drag for faster selection.";
 
-Calendar._TT["PREV_YEAR"] = "Prev. year (hold for menu)";
-Calendar._TT["PREV_MONTH"] = "Prev. month (hold for menu)";
-Calendar._TT["GO_TODAY"] = "Go Today";
-Calendar._TT["NEXT_MONTH"] = "Next month (hold for menu)";
-Calendar._TT["NEXT_YEAR"] = "Next year (hold for menu)";
-Calendar._TT["SEL_DATE"] = "Select date";
-Calendar._TT["DRAG_TO_MOVE"] = "Drag to move";
-Calendar._TT["PART_TODAY"] = " (today)";
+Calendar._TT["PREV_YEAR"] = "Tahun sebelumnya (hold untuk menu)";
+Calendar._TT["PREV_MONTH"] = "Bulan sebelumnya (hold untuk menu)";
+Calendar._TT["GO_TODAY"] = "Langsung ke Hari Ini";
+Calendar._TT["NEXT_MONTH"] = "Bulan berikutnya (hold untuk menu)";
+Calendar._TT["NEXT_YEAR"] = "Tahun berikutnya (hold untuk menu)";
+Calendar._TT["SEL_DATE"] = "Pilih tanggal";
+Calendar._TT["DRAG_TO_MOVE"] = "Drag untuk memindahkan";
+Calendar._TT["PART_TODAY"] = " (hari ini)";
 
 // the following is to inform that "%s" is to be the first day of week
 // %s will be replaced with the day name.
@@ -115,13 +104,13 @@ Calendar._TT["DAY_FIRST"] = "Display %s first";
 // means Monday, etc.
 Calendar._TT["WEEKEND"] = "0,6";
 
-Calendar._TT["CLOSE"] = "Close";
-Calendar._TT["TODAY"] = "Today";
+Calendar._TT["CLOSE"] = "Tutup";
+Calendar._TT["TODAY"] = "Hari Ini";
 Calendar._TT["TIME_PART"] = "(Shift-)Click or drag to change value";
 
 // date formats
-Calendar._TT["DEF_DATE_FORMAT"] = "%Y-%m-%d";
-Calendar._TT["TT_DATE_FORMAT"] = "%a, %b %e";
+Calendar._TT["DEF_DATE_FORMAT"] = "y-mm-dd";
+Calendar._TT["TT_DATE_FORMAT"] = "DD, d MM y";
 
-Calendar._TT["WK"] = "wk";
+Calendar._TT["WK"] = "mg";
 Calendar._TT["TIME"] = "Time:";

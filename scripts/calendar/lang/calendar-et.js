@@ -1,6 +1,6 @@
 // ** I18N
 
-// Calendar EN language
+// Calendar Estonian (et) language
 // Author: Mihai Bazon, <mihai_bazon@yahoo.com>
 // Encoding: any
 // Distributed under the same terms as the calendar itself.
@@ -11,14 +11,14 @@
 
 // full day names
 Calendar._DN = new Array
-("Sunday",
- "Monday",
- "Tuesday",
- "Wednesday",
- "Thursday",
- "Friday",
- "Saturday",
- "Sunday");
+("Pühapäev",
+ "Esmaspäev",
+ "Teisipäev",
+ "Kolmapäev",
+ "Neljapäev",
+ "Reede",
+ "Laupäev",
+ "Pühapäev");
 
 // Please note that the following array of short day names (and the same goes
 // for short month names, _SMN) isn't absolutely necessary.  We give it here
@@ -34,14 +34,14 @@ Calendar._DN = new Array
 
 // short day names
 Calendar._SDN = new Array
-("Sun",
- "Mon",
- "Tue",
- "Wed",
- "Thu",
- "Fri",
- "Sat",
- "Sun");
+("P",
+ "E",
+ "T",
+ "K",
+ "N",
+ "R",
+ "L",
+ "P");
 
 // First day of the week. "0" means display Sunday first, "1" means display
 // Monday first, etc.
@@ -49,37 +49,37 @@ Calendar._FD = 0;
 
 // full month names
 Calendar._MN = new Array
-("January",
- "February",
- "March",
- "April",
- "May",
- "June",
- "July",
+("Jaanuar",
+ "Veebruar",
+ "Märts",
+ "Aprill",
+ "Mai",
+ "Juuni",
+ "Juuli",
  "August",
  "September",
- "October",
+ "Oktoober",
  "November",
- "December");
+ "Detsember");
 
 // short month names
 Calendar._SMN = new Array
 ("Jan",
- "Feb",
- "Mar",
+ "Vebr",
+ "Märts",
  "Apr",
- "May",
- "Jun",
- "Jul",
+ "Mai",
+ "Juun",
+ "Juul",
  "Aug",
- "Sep",
- "Oct",
+ "Sept",
+ "Okt",
  "Nov",
- "Dec");
+ "Dets");
 
 // tooltips
 Calendar._TT = {};
-Calendar._TT["INFO"] = "About the calendar";
+Calendar._TT["INFO"] = "Kalendrist";
 
 Calendar._TT["ABOUT"] =
 "DHTML Date/Time Selector\n" +
@@ -97,26 +97,26 @@ Calendar._TT["ABOUT_TIME"] = "\n\n" +
 "- or Shift-click to decrease it\n" +
 "- or click and drag for faster selection.";
 
-Calendar._TT["PREV_YEAR"] = "Prev. year (hold for menu)";
-Calendar._TT["PREV_MONTH"] = "Prev. month (hold for menu)";
-Calendar._TT["GO_TODAY"] = "Go Today";
-Calendar._TT["NEXT_MONTH"] = "Next month (hold for menu)";
-Calendar._TT["NEXT_YEAR"] = "Next year (hold for menu)";
-Calendar._TT["SEL_DATE"] = "Select date";
-Calendar._TT["DRAG_TO_MOVE"] = "Drag to move";
-Calendar._TT["PART_TODAY"] = " (today)";
+Calendar._TT["PREV_YEAR"] = "Eelmine aasta (hold for menu)";
+Calendar._TT["PREV_MONTH"] = "Eelmine kuu (hold for menu)";
+Calendar._TT["GO_TODAY"] = "Mine tänasele";
+Calendar._TT["NEXT_MONTH"] = "Järgmine kuu (hold for menu)";
+Calendar._TT["NEXT_YEAR"] = "Järgmine aasta (hold for menu)";
+Calendar._TT["SEL_DATE"] = "Vali kuupäev";
+Calendar._TT["DRAG_TO_MOVE"] = "Lohista";
+Calendar._TT["PART_TODAY"] = " (täna)";
 
 // the following is to inform that "%s" is to be the first day of week
 // %s will be replaced with the day name.
-Calendar._TT["DAY_FIRST"] = "Display %s first";
+Calendar._TT["DAY_FIRST"] = "Näita %s esimesena";
 
 // This may be locale-dependent.  It specifies the week-end days, as an array
 // of comma-separated numbers.  The numbers are from 0 to 6: 0 means Sunday, 1
 // means Monday, etc.
 Calendar._TT["WEEKEND"] = "0,6";
 
-Calendar._TT["CLOSE"] = "Close";
-Calendar._TT["TODAY"] = "Today";
+Calendar._TT["CLOSE"] = "Sulge";
+Calendar._TT["TODAY"] = "Tänane kuupäev";
 Calendar._TT["TIME_PART"] = "(Shift-)Click or drag to change value";
 
 // date formats
@@ -124,4 +124,6 @@ Calendar._TT["DEF_DATE_FORMAT"] = "%Y-%m-%d";
 Calendar._TT["TT_DATE_FORMAT"] = "%a, %b %e";
 
 Calendar._TT["WK"] = "wk";
-Calendar._TT["TIME"] = "Time:";
+Calendar._TT["TIME"] = "Aeg:";
+
+window['calendar/calendar-et.js'] = true;

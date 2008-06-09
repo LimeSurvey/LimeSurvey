@@ -7,9 +7,6 @@
 
 // full day names
 
-
-
-
 Calendar._DN = new Array
 ("Sunnuntai",
  "Maanantai",
@@ -19,18 +16,7 @@ Calendar._DN = new Array
  "Perjantai",
  "Lauantai",
  "Sunnuntai");
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+
 
 // short day names
 Calendar._SDN = new Array

@@ -51,7 +51,7 @@ Calendar._FD = 1;
 Calendar._MN = new Array
 ("Januar",
  "Februar",
- "M\u00e4rz",
+ "März",
  "April",
  "Mai",
  "Juni",
@@ -66,7 +66,7 @@ Calendar._MN = new Array
 Calendar._SMN = new Array
 ("Jan",
  "Feb",
- "M\u00e4r",
+ "Mrz",
  "Apr",
  "May",
  "Jun",
@@ -102,7 +102,7 @@ Calendar._TT["PREV_MONTH"] = "Voriger Monat (Festhalten f\u00fcr Schnellauswahl)
 Calendar._TT["GO_TODAY"] = "Heute ausw\u00e4hlen";
 Calendar._TT["NEXT_MONTH"] = "N\u00e4chst. Monat (Festhalten f\u00fcr Schnellauswahl)";
 Calendar._TT["NEXT_YEAR"] = "N\u00e4chst. Jahr (Festhalten f\u00fcr Schnellauswahl)";
-Calendar._TT["SEL_DATE"] = "Datum ausw\u00e4hlen";
+Calendar._TT["SEL_DATE"] = "Datum auswählen";
 Calendar._TT["DRAG_TO_MOVE"] = "Zum Bewegen festhalten";
 Calendar._TT["PART_TODAY"] = " (Heute)";
 
@@ -115,7 +115,7 @@ Calendar._TT["DAY_FIRST"] = "Woche beginnt mit %s ";
 // means Monday, etc.
 Calendar._TT["WEEKEND"] = "0,6";
 
-Calendar._TT["CLOSE"] = "Schlie\u00dfen";
+Calendar._TT["CLOSE"] = "Schließen";
 Calendar._TT["TODAY"] = "Heute";
 Calendar._TT["TIME_PART"] = "(Shift-)Klick oder Festhalten und Ziehen um den Wert zu \u00e4ndern";
 

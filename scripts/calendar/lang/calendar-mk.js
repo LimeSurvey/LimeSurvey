@@ -1,8 +1,9 @@
 // ** I18N
 
-// Calendar EN language
-// Author: Mihai Bazon, <mihai_bazon@yahoo.com>
-// Encoding: any
+// Calendar mk locale
+// Author: Mark Garrett, <L10n@modernbill.com>
+// Data: CLDR 1.3, http;//www.unicode.org/cldr/
+// Encoding: utf-8
 // Distributed under the same terms as the calendar itself.
 
 // For translators: please use UTF-8 if possible.  We strongly believe that
@@ -11,14 +12,13 @@
 
 // full day names
 Calendar._DN = new Array
-("Sunday",
- "Monday",
- "Tuesday",
- "Wednesday",
- "Thursday",
- "Friday",
- "Saturday",
- "Sunday");
+("недела",
+"понеделник",
+"вторник",
+"среда",
+"четврток",
+"петок",
+"сабота");
 
 // Please note that the following array of short day names (and the same goes
 // for short month names, _SMN) isn't absolutely necessary.  We give it here
@@ -34,58 +34,56 @@ Calendar._DN = new Array
 
 // short day names
 Calendar._SDN = new Array
-("Sun",
- "Mon",
- "Tue",
- "Wed",
- "Thu",
- "Fri",
- "Sat",
- "Sun");
+("нед.",
+"пон.",
+"вт.",
+"сре.",
+"чет.",
+"пет.",
+"саб.");
 
 // First day of the week. "0" means display Sunday first, "1" means display
 // Monday first, etc.
-Calendar._FD = 0;
+Calendar._FD = 1;
 
 // full month names
 Calendar._MN = new Array
-("January",
- "February",
- "March",
- "April",
- "May",
- "June",
- "July",
- "August",
- "September",
- "October",
- "November",
- "December");
+("јануари",
+"февруари",
+"март",
+"април",
+"мај",
+"јуни",
+"јули",
+"август",
+"септември",
+"октомври",
+"ноември",
+"декември");
 
 // short month names
 Calendar._SMN = new Array
-("Jan",
- "Feb",
- "Mar",
- "Apr",
- "May",
- "Jun",
- "Jul",
- "Aug",
- "Sep",
- "Oct",
- "Nov",
- "Dec");
+("јан.",
+"фев.",
+"мар.",
+"апр.",
+"мај.",
+"јун.",
+"јул.",
+"авг.",
+"септ.",
+"окт.",
+"ноем.",
+"декем.");
 
 // tooltips
-Calendar._TT = {};
+Calendar._TT_en = Calendar._TT = {};
 Calendar._TT["INFO"] = "About the calendar";
 
 Calendar._TT["ABOUT"] =
 "DHTML Date/Time Selector\n" +
-"(c) dynarch.com 2002-2005 / Author: Mihai Bazon\n" + // don't translate this this ;-)
-"For latest version visit: http://www.dynarch.com/projects/calendar/\n" +
-"Distributed under GNU LGPL.  See http://gnu.org/licenses/lgpl.html for details." +
+"(c) dynarch.com 2002-2005 / Author: Mihai Bazon\n" + // don't translate this ;-)
+"For latest version visit: http://www.dynarch.com/\n" +
 "\n\n" +
 "Date selection:\n" +
 "- Use the \xab, \xbb buttons to select year\n" +
@@ -99,7 +97,7 @@ Calendar._TT["ABOUT_TIME"] = "\n\n" +
 
 Calendar._TT["PREV_YEAR"] = "Prev. year (hold for menu)";
 Calendar._TT["PREV_MONTH"] = "Prev. month (hold for menu)";
-Calendar._TT["GO_TODAY"] = "Go Today";
+Calendar._TT["GO_TODAY"] = "Go Today (hold for history)";
 Calendar._TT["NEXT_MONTH"] = "Next month (hold for menu)";
 Calendar._TT["NEXT_YEAR"] = "Next year (hold for menu)";
 Calendar._TT["SEL_DATE"] = "Select date";
@@ -120,8 +118,10 @@ Calendar._TT["TODAY"] = "Today";
 Calendar._TT["TIME_PART"] = "(Shift-)Click or drag to change value";
 
 // date formats
-Calendar._TT["DEF_DATE_FORMAT"] = "%Y-%m-%d";
-Calendar._TT["TT_DATE_FORMAT"] = "%a, %b %e";
+Calendar._TT["DEF_DATE_FORMAT"] = "%d.%m.%y";
+Calendar._TT["TT_DATE_FORMAT"] = "%A, %d %B %Y";
 
 Calendar._TT["WK"] = "wk";
 Calendar._TT["TIME"] = "Time:";
+
+Calendar._TT["E_RANGE"] = "Outside the range";

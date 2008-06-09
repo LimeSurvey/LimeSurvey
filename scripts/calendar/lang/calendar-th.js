@@ -1,4 +1,4 @@
-// ** I18N
+﻿// ** I18N
 
 // Calendar EN language
 // Author: Mihai Bazon, <mihai_bazon@yahoo.com>
@@ -11,14 +11,14 @@
 
 // full day names
 Calendar._DN = new Array
-("Sunday",
- "Monday",
- "Tuesday",
- "Wednesday",
- "Thursday",
- "Friday",
- "Saturday",
- "Sunday");
+("อาทิตย์",
+ "จันทร์",
+ "อังคาร",
+ "พุธ",
+ "พฤหัสบดี",
+ "ศุกร์",
+ "เสาร์",
+ "อาทิตย์");
 
 // Please note that the following array of short day names (and the same goes
 // for short month names, _SMN) isn't absolutely necessary.  We give it here
@@ -34,14 +34,14 @@ Calendar._DN = new Array
 
 // short day names
 Calendar._SDN = new Array
-("Sun",
- "Mon",
- "Tue",
- "Wed",
- "Thu",
- "Fri",
- "Sat",
- "Sun");
+("อ",
+ "จ",
+ "อ",
+ "พ",
+ "พ",
+ "ศ",
+ "ส",
+ "อ");
 
 // First day of the week. "0" means display Sunday first, "1" means display
 // Monday first, etc.
@@ -49,33 +49,33 @@ Calendar._FD = 0;
 
 // full month names
 Calendar._MN = new Array
-("January",
- "February",
- "March",
- "April",
- "May",
- "June",
- "July",
- "August",
- "September",
- "October",
- "November",
- "December");
+("มกราคม",
+ "กุมภาพันธ์",
+ "มีนาคม",
+ "เมษายน",
+ "พฤษภาคม",
+ "มิถุนายน",
+ "กรกฎาคม",
+ "สิงหาคม",
+ "กันยายน",
+ "ตุลาคม",
+ "พฤศจิกายน",
+ "ธันวาคม");
 
 // short month names
 Calendar._SMN = new Array
-("Jan",
- "Feb",
- "Mar",
- "Apr",
- "May",
- "Jun",
- "Jul",
- "Aug",
- "Sep",
- "Oct",
- "Nov",
- "Dec");
+("ม.ค.",
+ "ก.พ.",
+ "มี.ค.",
+ "ม.ย.",
+ "พ.ค.",
+ "ม.ย.",
+ "ก.ค.",
+ "ส.ค.",
+ "ก.ย.",
+ "ต.ค.",
+ "พ.ย.",
+ "ธ.ค.");
 
 // tooltips
 Calendar._TT = {};
@@ -97,14 +97,14 @@ Calendar._TT["ABOUT_TIME"] = "\n\n" +
 "- or Shift-click to decrease it\n" +
 "- or click and drag for faster selection.";
 
-Calendar._TT["PREV_YEAR"] = "Prev. year (hold for menu)";
-Calendar._TT["PREV_MONTH"] = "Prev. month (hold for menu)";
-Calendar._TT["GO_TODAY"] = "Go Today";
-Calendar._TT["NEXT_MONTH"] = "Next month (hold for menu)";
-Calendar._TT["NEXT_YEAR"] = "Next year (hold for menu)";
-Calendar._TT["SEL_DATE"] = "Select date";
+Calendar._TT["PREV_YEAR"] = "ปีก่อน (hold for menu)";
+Calendar._TT["PREV_MONTH"] = "เดือนก่อน (hold for menu)";
+Calendar._TT["GO_TODAY"] = "ไปวันนี้";
+Calendar._TT["NEXT_MONTH"] = "เดือนกหน้า (hold for menu)";
+Calendar._TT["NEXT_YEAR"] = "ปีหน้า (hold for menu)";
+Calendar._TT["SEL_DATE"] = "เลือกวันที่";
 Calendar._TT["DRAG_TO_MOVE"] = "Drag to move";
-Calendar._TT["PART_TODAY"] = " (today)";
+Calendar._TT["PART_TODAY"] = " (วันนี้)";
 
 // the following is to inform that "%s" is to be the first day of week
 // %s will be replaced with the day name.
@@ -116,12 +116,13 @@ Calendar._TT["DAY_FIRST"] = "Display %s first";
 Calendar._TT["WEEKEND"] = "0,6";
 
 Calendar._TT["CLOSE"] = "Close";
-Calendar._TT["TODAY"] = "Today";
+Calendar._TT["TODAY"] = "วันนี้";
 Calendar._TT["TIME_PART"] = "(Shift-)Click or drag to change value";
 
 // date formats
 Calendar._TT["DEF_DATE_FORMAT"] = "%Y-%m-%d";
 Calendar._TT["TT_DATE_FORMAT"] = "%a, %b %e";
 
-Calendar._TT["WK"] = "wk";
-Calendar._TT["TIME"] = "Time:";
+Calendar._TT["WK"] = "สัปดาห์";
+Calendar._TT["TIME"] = "เวลา:";
+

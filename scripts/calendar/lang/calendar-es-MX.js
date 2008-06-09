@@ -1,6 +1,6 @@
 // ** I18N
 
-// Calendar ES (spanish) language
+// Calendar es-MX (spanish) language
 // Author: Mihai Bazon, <mihai_bazon@yahoo.com>
 // Updater: Servilio Afre Puentes <servilios@yahoo.com>
 // Updated: 2004-06-03
