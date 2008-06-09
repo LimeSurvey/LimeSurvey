@@ -1,19 +1,21 @@
-# SOME DESCRIPTIVE TITLE.
+# translation of lv.po to Latvian
+# translation of lv.po to
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+# Marcis Trapencieris <marcis@sociology.lv>, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: lv\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-05-29 09:00+0200\n"
-"PO-Revision-Date: 2008-05-31 12:13+0200\n"
-"Last-Translator: Marcis <marcis@sociology.lv>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2008-06-09 16:51+0100\n"
+"Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
+"Language-Team: Latvian\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:42
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:173
@@ -24,7 +26,7 @@ msgstr "KĻŪDA"
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:43
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:203
 msgid "We are sorry but your session has expired."
-msgstr "Jūsu sesisja ir beigusies."
+msgstr "Jūsu sesija ir beigusies."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:43
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:203
@@ -40,7 +42,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:399
 #, php-format
 msgid "Please contact %s ( %s ) for further assistance."
-msgstr ""
+msgstr "Lūdzu kontaktēties ar %s ( %s ) ."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:130
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:83
@@ -69,8 +71,9 @@ msgstr "Nosūtīšanas datums"
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:164
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:526
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1533
+#, fuzzy
 msgid "Date Stamp"
-msgstr ""
+msgstr "Date Stamp"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:168
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:930
@@ -89,8 +92,9 @@ msgstr "IP adrese"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:173
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:400
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1535
+#, fuzzy
 msgid "Referring URL"
-msgstr ""
+msgstr "Referring URL"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:267
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:269
@@ -259,7 +263,7 @@ msgstr "Nolasu failu..."
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:73
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:243
 msgid "This file is not a valid ZIP file archive. Import failed."
-msgstr ""
+msgstr "Šis fails nav derīgs ZIP arhīvs.  Importēšana nav izdevusies."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:94
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:264
@@ -274,36 +278,36 @@ msgstr "OK"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:113
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:283
 msgid "Forbidden Extension"
-msgstr ""
+msgstr "Aizliegts faila paplašinājums"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:137
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:156
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:307
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:326
 msgid "Imported Files List"
-msgstr ""
+msgstr "Importēto failu saraksts"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:142
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:312
 msgid "This ZIP archive contains no valid Resources files. Import failed."
-msgstr ""
+msgstr "Šis ZIP fails nesatur darīgus resursu failus.  Importēšana nav izdevusies."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:143
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:313
 msgid "Remember that we do not support subdirectories in ZIP Archive."
-msgstr "Atcerieties, kas apakšdirektorijas ZIp arhīvā netiek atbalstītas."
+msgstr "Atcerieties, ka apakšdirektorijas ZIp arhīvā netiek atbalstītas."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:151
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:321
 msgid "Partial"
-msgstr ""
+msgstr "Daļējs"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:155
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:163
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:325
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:333
 msgid "Error Files List"
-msgstr ""
+msgstr "Kļūdaino failu saraksts"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:166
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:336
@@ -318,7 +322,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:169
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:339
 msgid "Total Imported files"
-msgstr ""
+msgstr "Kopā importēti faili"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:170
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:340
@@ -350,7 +354,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:202
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:214
 msgid "Import Label Set"
-msgstr ""
+msgstr "Apzīmējumu kopas importēšana"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:220
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:244
@@ -435,7 +439,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:39
 msgid "Ignore the new record."
-msgstr ""
+msgstr "Ignorēt jauno ierakstu."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:40
 msgid "Replace the existing record."
@@ -521,7 +525,7 @@ msgstr "Vērtējumi"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/assessments.php:76
 msgid "No SID Provided"
-msgstr ""
+msgstr "Nav norādīts SID (pētījuma ID)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/assessments.php:88
 msgid "Scope"
@@ -641,12 +645,12 @@ msgstr "Atcelt"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:55
 msgid "This file is not a LimeSurvey label set file. Import failed."
-msgstr ""
+msgstr "Šis fails nav LimeSurvey apzīmējumu kopas fails.  Importēšana nav izdevusies."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:56
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:210
 msgid "Return to Labels Admin"
-msgstr ""
+msgstr "Atgriezties pie apzīmējumu administrēšanas"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:191
 msgid "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead."
@@ -654,7 +658,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:199
 msgid "Label Set Import Summary"
-msgstr ""
+msgstr "Apzīmējumu kopas importēšnas kopsavilkums."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:200
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1222
@@ -678,7 +682,7 @@ msgstr "Valodas"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:209
 msgid "Import of Label Set is completed."
-msgstr ""
+msgstr "Apzīmējumu kopas importēšana pabeigta."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:42
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:304
@@ -711,7 +715,7 @@ msgstr "Notīrīt visu lapu"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:47
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:360
 msgid "Register Page"
-msgstr ""
+msgstr "Reģistrēšanās lapa"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:48
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:402
@@ -726,7 +730,7 @@ msgstr "Saglabāt lapu"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:50
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:450
 msgid "Print Answers Page"
-msgstr ""
+msgstr "Atbilžu drukāšanas lapa"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:127
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:245
@@ -736,24 +740,24 @@ msgstr "Kopēšana nav izdevusies"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:127
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:245
 msgid "to new template directory."
-msgstr ""
+msgstr "uz jauno šablonu direktoriju."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:133
 msgid "Directory with the name"
-msgstr ""
+msgstr "Direktorijas vārds"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:133
 msgid "already exists - choose another name"
-msgstr "jau pastāv - lūdzu izvēlieties citu vārdu"
+msgstr "jau pastāv - lūdzu izvēlēties citu vārdu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:135
 msgid "Unable to create directory"
-msgstr "Nav izdevies izveidot direktoriju"
+msgstr "Direktoriju nav izdevies izveidot"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:135
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:143
 msgid "Maybe you don't have permission."
-msgstr "Varbūt Jums nav piekļuve."
+msgstr "Varbūt Jums nav tiesību to darīt."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:143
 msgid "Directory could not be renamed to"
@@ -781,7 +785,7 @@ msgstr "Sekojoši pētījumi ir pieejami:"
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:337
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:338
 msgid "Template Editor"
-msgstr ""
+msgstr "Šablonu redaktors"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:552
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:256
@@ -791,15 +795,16 @@ msgstr "Noklusētā administrēšanas lapa"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:559
 msgid "Create new template called:"
-msgstr ""
+msgstr "Izveidot jaunu šablonu ar nosaukumu:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:559
+#, fuzzy
 msgid "NewTemplate"
-msgstr ""
+msgstr "NewTemplate"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:560
 msgid "Create new template"
-msgstr ""
+msgstr "IZveidot jaunu šablonu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:562
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:573
@@ -807,39 +812,39 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2244
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2902
 msgid "Template:"
-msgstr ""
+msgstr "Šablons:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:580
 msgid "This template can be modified"
-msgstr ""
+msgstr "Šo šablonu iespējams modificēt"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:583
 msgid "This template cannot be modified"
-msgstr ""
+msgstr "Šo šablonu nav iespējams modificēt"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:594
 msgid "You can't edit the default template."
-msgstr ""
+msgstr "Pamatšablonu nav iespējams rediģēt"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:599
 msgid "Rename this template to:"
-msgstr ""
+msgstr "Pārdēvēt šo šablonu kā:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:601
 msgid "Rename this template"
-msgstr ""
+msgstr "Pārdēvēt šo šablonu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:606
 msgid "Export Template"
-msgstr ""
+msgstr "Šablona eksportēšana"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:610
 msgid "Copy Template"
-msgstr ""
+msgstr "Šamblona kopēšana"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:611
 msgid "Make a copy of this template"
-msgstr ""
+msgstr "Izveidot šī šablona kopiju"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:611
 #, fuzzy
@@ -852,7 +857,7 @@ msgstr "Ekrāns:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:628
 msgid "File Control:"
-msgstr ""
+msgstr "Failu kontrole:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:638
 msgid "Standard Files:"
@@ -872,15 +877,15 @@ msgstr "Saglabāt izmaiņas"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:661
 msgid "Changes cannot be saved to the default template."
-msgstr ""
+msgstr "Noklusētajā šablonā izmaiņas nevar tikt saglabātas."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:672
 msgid "Are you sure you want to delete this file?"
-msgstr ""
+msgstr "Vai Jūs tiešām vēlaties izdzēst šo failu?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:674
 msgid "Files in the default template cannot be deleted."
-msgstr ""
+msgstr "Failus pamatšablona direktorijā nevar izdzēst."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:685
 msgid "Upload a File"
@@ -946,7 +951,7 @@ msgstr "Jautājumu kodi"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:173
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvexport.php:51
 msgid "Filter incomplete answers"
-msgstr ""
+msgstr "Filtrēt nepabeigtās atbildes"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:174
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:640
@@ -977,7 +982,7 @@ msgstr "Atbilžu kodi"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:188
 msgid "Full Answers"
-msgstr ""
+msgstr "Pilnīgas atbildes"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:192
 msgid "Format"
@@ -1009,7 +1014,7 @@ msgstr "Datu eksports"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:267
 msgid "Column Control"
-msgstr ""
+msgstr "Kolonnu kontrole"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:272
 msgid "Choose Columns"
@@ -1024,7 +1029,7 @@ msgstr "Palīdzība"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:277
 msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
-msgstr ""
+msgstr "Jūsu pētījums satur vairāk kā 255 atbilžu kolonnas.  Tādas programmas kā Excel nevar ielādēt vairāk par 255.  Šajā sarakstā lūdzu izvēlēties kolonnas, kuras Jūs vēlaties eksportēt."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:283
 msgid "Choose the columns you wish to export."
@@ -1122,7 +1127,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:404
 msgid "General informations in language: "
-msgstr ""
+msgstr "Vispārējā informācija valodā:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:538
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:539
@@ -1208,7 +1213,7 @@ msgstr "Ranžēšana"
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1958
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1968
 msgid "Other"
-msgstr "Cits"
+msgstr "Cita atbilde"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:857
 msgid "New Record"
@@ -1537,19 +1542,19 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:70
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:49
 msgid "Either your selected database has not yet been created or there is a problem accessing it."
-msgstr ""
+msgstr "Vai nu izvēlētā datubāze vēl nav izveidota, vai arī ir problēmas ar piekļuvi tai."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:82
 msgid "You have not selected a survey to browse."
-msgstr ""
+msgstr "Jūs neesat izvēlējies pārlūkojamo pētījumu."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:106
 msgid "This survey has not been activated. There are no results to browse."
-msgstr ""
+msgstr "Šis pētījums nav aktivizēts.  Nav pārlūkojamu rezultātu."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:121
 msgid "There is no matching survey."
-msgstr ""
+msgstr "Nav atbilstoša pētījuma."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:163
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:388
@@ -1604,7 +1609,7 @@ msgstr "Parādīt nākamo..."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:348
 msgid "Showing Filtered Results"
-msgstr ""
+msgstr "Rāda filtrētos ierakstus"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:349
 msgid "Close"
@@ -1628,17 +1633,17 @@ msgstr "Parādīt pēdējo..."
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:637
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:763
 msgid "Records Displayed:"
-msgstr ""
+msgstr "Parādīti ieraksti:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:638
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:764
 msgid "Starting From:"
-msgstr ""
+msgstr "Sākot ar:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:639
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:717
 msgid "Filter incomplete answers:"
-msgstr ""
+msgstr "Filtrēt nepilnīgās atbildes:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:643
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:765
@@ -1665,7 +1670,7 @@ msgstr "pilnas atbildes"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:722
 msgid "responses not completely filled out"
-msgstr ""
+msgstr "atbildes nav pilnīgi aizpildītas"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:43
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:394
@@ -1674,7 +1679,7 @@ msgstr "Pētījums"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:44
 msgid "Date Created"
-msgstr "IZveidošanas datums"
+msgstr "Izveidošanas datums"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:45
 msgid "Owner"
@@ -1686,7 +1691,7 @@ msgstr "Pieeja"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:47
 msgid "Answer Privacy"
-msgstr ""
+msgstr "Atbilžu privātums"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:48
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:316
@@ -1695,7 +1700,7 @@ msgstr "Statuss"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:49
 msgid "Full Responses"
-msgstr "Pilnas atbildes"
+msgstr "Pilnīgas atbildes"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:50
 msgid "Partial Responses"
@@ -1739,12 +1744,12 @@ msgstr "Neaktīvs"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:127
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:422
 msgid "This survey is active but expired."
-msgstr ""
+msgstr "Šis aptauja ir aktīva, taču jau beigusies."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:129
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:424
 msgid "This survey is active but expired"
-msgstr ""
+msgstr "Šis aptauja ir aktīva, taču jau beigusies"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:138
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:140
@@ -1775,10 +1780,12 @@ msgid "This survey is not currently active"
 msgstr "Šis pētījums nav aktivizēts"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:193
+#, fuzzy
 msgid "No Surveys available - please create one."
-msgstr ""
+msgstr "Nav pieejamu pētījumu - lūdzams izveidot (vienu)."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:259
+#, fuzzy
 msgid "LimeSurvey System Summary"
 msgstr "LimeSurvey System Summary"
 
@@ -1796,24 +1803,29 @@ msgid "Current Language"
 msgstr "Pašreizējā valoda"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:296
+#, fuzzy
 msgid "Preferred HTML editor mode"
-msgstr ""
+msgstr "Preferred HTML editor mode"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:299
+#, fuzzy
 msgid "Default HTML editor mode"
-msgstr ""
+msgstr "Default HTML editor mode"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:300
+#, fuzzy
 msgid "No HTML editor"
-msgstr ""
+msgstr "No HTML editor"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:301
+#, fuzzy
 msgid "Inline HTML editor"
-msgstr ""
+msgstr "Inline HTML editor"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:302
+#, fuzzy
 msgid "Popup HTML editor"
-msgstr ""
+msgstr "Popup HTML editor"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:310
 msgid "Users"
@@ -1848,12 +1860,12 @@ msgstr "Parādīt PHP informāciju"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:414
 msgid "Survey cannot be activated. Either you have no permission or there are no questions."
-msgstr ""
+msgstr "Pētījumu nav iespējams aktivizēt.  Vai nu Jums nav tiesību to darīt, vai arī nav tam nav pievienoti jautājumi."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:456
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:458
 msgid "Survey Security Settings"
-msgstr "Pētījuma drošības vide"
+msgstr "Pētījuma drošības iestatījumi"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:467
 msgid "Test This Survey"
@@ -1893,7 +1905,7 @@ msgstr "Pētījuma izdrukas versija"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:575
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:576
 msgid "Edit Current Survey"
-msgstr "|Rediģēt šo pētījumu"
+msgstr "Rediģēt šo pētījumu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:590
 msgid "Delete Current Survey"
@@ -1907,7 +1919,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:610
 msgid "This survey's questions don't use conditions"
-msgstr ""
+msgstr "Šī pētījuma jautājumos nav izmantoti nosacījumi"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:613
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:998
@@ -1947,7 +1959,7 @@ msgstr "Aplūkot šī pētījuma atbildes"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:691
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1452
 msgid "View Saved but not submitted Responses"
-msgstr "Aplūkot saglabātās bet nenosūtītās atbildes"
+msgstr "Aplūkot saglabātās, bet vēl nenosūtītās atbildes"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:702
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:703
@@ -2036,8 +2048,9 @@ msgid "IP Addresses will be logged"
 msgstr "IP adreses tiks reģistrētas"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:788
+#, fuzzy
 msgid "Referer-URL will be saved"
-msgstr ""
+msgstr "Referer-URL will be saved"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:789
 msgid "It uses cookies for access control."
@@ -2054,17 +2067,17 @@ msgstr "Dalībieki var saglabāt daļēji pabeigtus pētījumus"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:795
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:826
 msgid "No email notification"
-msgstr ""
+msgstr "Bez paziņošanas pa e-pastu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:798
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:827
 msgid "Basic email notification"
-msgstr ""
+msgstr "Vienkāršs e-pasta paziņojums"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:801
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:828
 msgid "Detailed email notification with result codes"
-msgstr ""
+msgstr "Detalizēts e-pasta paziņojums ar atbilžu kodiem"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:807
 msgid "Regenerate Question Codes:"
@@ -2073,7 +2086,7 @@ msgstr "No jauna ģenerēt jautājuma kodus:"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:811
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:816
 msgid "Are you sure you want regenerate the question codes?"
-msgstr ""
+msgstr "Vai Jūs tiešām vēlaties ģenerēt jautājuma kodus no jauna?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:812
 msgid "Straight"
@@ -2129,14 +2142,15 @@ msgstr "Administrators:"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:844
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2217
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2881
+#, fuzzy
 msgid "Fax To:"
-msgstr ""
+msgstr "Fax To:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:848
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2343
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2982
 msgid "Expiry Date:"
-msgstr ""
+msgstr "Beigu datums:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:863
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2166
@@ -2167,7 +2181,7 @@ msgstr "Pētījuma tabulas nosaukums"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:912
 msgid "Hints"
-msgstr "Mājiens"
+msgstr "Mājieni"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:916
 msgid "Survey cannot be activated yet."
@@ -2196,7 +2210,7 @@ msgstr "Izdzēst šo grupu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:995
 msgid "Impossible to delete this group because there is at least one question having a condition on its content"
-msgstr ""
+msgstr "Nav iespējams izdzēst šo grupu, jo ir vismaz viens saistītais jautājums"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1010
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1011
@@ -2234,7 +2248,7 @@ msgstr "Rediģēt šo jautājumu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1155
 msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
-msgstr "Izdzēšot šo jautājumu tiks izdzēst arī tā atbildes.  Vai Jūs tiešām vēlaties turpināt?"
+msgstr "Izdzēšot šo jautājumu tiks izdzēstas arī tā atbildes.  Vai Jūs tiešām vēlaties turpināt?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1157
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1167
@@ -2256,11 +2270,11 @@ msgstr "Kopēt šo jautājumu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1205
 msgid "Copy question is not possible in an Active survey"
-msgstr ""
+msgstr "Jautājuma kopēšana nav iespējams aktīvā pētījumā"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1219
 msgid "Set Conditions for this Question"
-msgstr ""
+msgstr "Izveidot šim jautājumam nosacījumus"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1234
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1241
@@ -2274,7 +2288,7 @@ msgstr "Rediģēt/pielikt atbildes šim jautājumam"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1284
 msgid "Close this Question"
-msgstr "AIzvērt šo jautājumu"
+msgstr "Aizvērt šo jautājumu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1287
 msgid "Show Details of this Question"
@@ -2372,7 +2386,7 @@ msgstr "Apzīmējumu kopa"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1340
 msgid "You need to choose a label set for this question!"
-msgstr ""
+msgstr "Šim jautājumam nepieciešams izvēlēties apzīmējumu kopu!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1353
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:324
@@ -2382,22 +2396,22 @@ msgstr "Rediģēt/pievienot apzīmējumu kopas"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1360
 msgid "Second Label Set"
-msgstr ""
+msgstr "Otrā apzīmējumu kopa"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1364
 msgid "You need to choose a second label set for this question!"
-msgstr ""
+msgstr "Šim jautājumam nepieciešams izvēlēties otro apzīmējumu kopu!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1378
 msgid "Edit/Add second Label Sets"
-msgstr ""
+msgstr "Rediģēt/pievienot otro apzīmējumu kopu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1390
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:107
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:303
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:535
 msgid "Other:"
-msgstr "Cits:"
+msgstr "Cita atbilde:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1399
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:117
@@ -2408,7 +2422,7 @@ msgstr "Obligāts:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1408
 msgid "Other questions having conditions on this question:"
-msgstr ""
+msgstr "Citi jautājumi, kuriem ir saistīti nosacījumi ar šo jautājumu:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1481
 msgid "Edit Answers"
@@ -2416,7 +2430,7 @@ msgstr "Rediģēt atbildes:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1484
 msgid "Error: You are trying to use duplicate answer codes."
-msgstr ""
+msgstr "Kļūda: Jūs meģināt izmantot dublicējošus atbilžu kodus."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1506
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2673
@@ -2473,6 +2487,7 @@ msgstr "Atbilde:"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:348
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:806
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1096
+#, fuzzy
 msgid "Del"
 msgstr "Del"
 
@@ -2484,6 +2499,7 @@ msgstr "Del"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:642
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:803
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1072
+#, fuzzy
 msgid "Up"
 msgstr "Up"
 
@@ -2495,6 +2511,7 @@ msgstr "Up"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:654
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:807
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1084
+#, fuzzy
 msgid "Dn"
 msgstr "Dn"
 
@@ -2516,7 +2533,7 @@ msgstr "Pievienot jaunu atbildi"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1644
 msgid "You cannot add answers or edit answer codes for this question type because the survey is active."
-msgstr ""
+msgstr "Šim jautājumam nav iespējams pievienot atbildes vai atbilžu kodus, jo pētījums ir aktivizēts."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1665
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2062
@@ -2643,12 +2660,12 @@ msgstr "Lietotāju grupa pievienota."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1744
 msgid "Failed to add User Group."
-msgstr "Nav izdevies peivienot lietotāju grupu."
+msgstr "Nav izdevies pievienot lietotāju grupu."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1762
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:406
 msgid "Deleting User"
-msgstr "Izdzēš leitotāju"
+msgstr "Izdzēš lietotāju"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1773
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1967
@@ -2672,11 +2689,11 @@ msgstr "Lietotāja vārds"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:975
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:464
 msgid "Could not delete user. User was not supplied."
-msgstr "Nav iespējams izdzēst lietotāju.  Lietotāja vārds nav norādīts."
+msgstr "Lietotāju nav izdevies izdzēst.  Lietotāja vārds nav norādīts."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1804
 msgid "Edit Survey Properties"
-msgstr ""
+msgstr "Rediģēt pētījuma īpašības"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1805
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1870
@@ -2714,27 +2731,30 @@ msgstr "Saglabāt"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1869
 msgid "Edit Survey Property"
-msgstr ""
+msgstr "Rediģēt pētījuma īpašību"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1871
 msgid "Browse Response"
 msgstr "Pārlūkot atbildi"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1925
+#, fuzzy
 msgid "LimeSurvey Survey File (*.csv)"
 msgstr "LimeSurvey Survey File (*.csv)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1933
+#, fuzzy
 msgid "queXML Survey XML Format (*.xml)"
 msgstr "queXML Survey XML Format (*.xml)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1936
+#, fuzzy
 msgid "(XML module only in PHP 4 available)"
 msgstr "(XML module only in PHP 4 available)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1946
 msgid "Export To File"
-msgstr "Eksportēt uz failu"
+msgstr "Eksportēt kā failu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1965
 msgid "Survey Security"
@@ -2786,7 +2806,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2226
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2892
 msgid "Presentation & Navigation"
-msgstr ""
+msgstr "Attēlošana un navigācija"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2229
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2895
@@ -2796,19 +2816,19 @@ msgstr "Formatēt:"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2233
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2897
 msgid "Question by Question"
-msgstr ""
+msgstr "Katrs jautājums savā lapā"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2236
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2898
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/fck_LimeReplacementFields.php:458
 msgid "Group by Group"
-msgstr ""
+msgstr "Katra grupa savā lapā"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2239
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2899
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/fck_LimeReplacementFields.php:452
 msgid "All in one"
-msgstr ""
+msgstr "Viss vienā lapā"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2262
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2919
@@ -2818,7 +2838,7 @@ msgstr "Atļaut saglabāšanu?"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2274
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2930
 msgid "Show [<< Prev] button"
-msgstr "Parādīt [<<Prev>] pogu"
+msgstr "Parādīt [<< Prev] pogu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2286
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2938
@@ -2828,42 +2848,45 @@ msgstr "Vai dalībnieki drīkst drukāt atbildes?"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2298
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2946
 msgid "List survey publicly:"
-msgstr ""
+msgstr "Parādīt pētījumu publiski:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2312
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2956
+#, fuzzy
 msgid "End URL:"
-msgstr ""
+msgstr "End URL:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2314
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2964
 msgid "Automatically load URL when survey complete?"
-msgstr ""
+msgstr "Automātiski ielādēt URL, kad pētījums pabeigts?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2331
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2976
 msgid "Publication & Access control"
-msgstr ""
+msgstr "Publiskošana un piekļuves kontrole"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2336
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2979
 msgid "Expires?"
-msgstr ""
+msgstr "Beidzas?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2347
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2988
+#, fuzzy
 msgid "Use Cookies?"
-msgstr ""
+msgstr "Use Cookies?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2359
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2999
 msgid "Allow public registration?"
-msgstr ""
+msgstr "Atļaut publisku reģistrēšanos?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2370
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3006
+#, fuzzy
 msgid "Use CAPTCHA for"
-msgstr ""
+msgstr "Use CAPTCHA for"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2374
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2378
@@ -2915,12 +2938,12 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2429
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3036
 msgid "Notification & Data Management"
-msgstr ""
+msgstr "Atgādināšana un datu vadība"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2433
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3039
 msgid "Admin Notification:"
-msgstr ""
+msgstr "Paziņošana administratoram:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2441
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3047
@@ -2951,7 +2974,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2482
 msgid "Responses will be date stamped."
-msgstr ""
+msgstr "Atbildēm tiks pievienots datums."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2501
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3072
@@ -2996,8 +3019,9 @@ msgstr "Lūdzu izvēlēties failu, kuru importēt!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2582
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:441
+#, fuzzy
 msgid "zip library not supported by PHP, Import ZIP Disabled"
-msgstr ""
+msgstr "zip library not supported by PHP, Import ZIP Disabled"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2591
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:450
@@ -3026,7 +3050,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2614
 msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
-msgstr "Visi jautājumi, atbildes, utt. noņemtajām valodām tiks pazaudētas.  Vai Jūs esat drošs?"
+msgstr "Noņemtajām valodām visi jautājumi, atbildes, u.c. tiks pazaudētas.  Vai Jūs tiešām esat pārliecināts?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2614
 msgid "Save and Continue"
@@ -3035,7 +3059,7 @@ msgstr "Saglabāt un turpināt"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2656
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:530
 msgid "This will replace the existing text. Continue?"
-msgstr ""
+msgstr "Esošais teksts tiks pārrakstīts.  Turpināt?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2662
 msgid "Edit Survey - Step 2 of 2"
@@ -3068,7 +3092,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2834
 msgid "Error: You have to enter a title for this survey."
-msgstr "Kļūda:  Jābūt pētījuma nosaukumam."
+msgstr "Kļūda:  Jānorāda pētījuma nosaukums."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2838
 msgid "Create or Import Survey"
@@ -3076,7 +3100,7 @@ msgstr "Izveidot vai importēt pētījumu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2861
 msgid "This setting cannot be changed later!"
-msgstr ""
+msgstr "Šo iestatījumu vēlāk mainīt nav iespējams!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2866
 msgid "(This field is mandatory.)"
@@ -3105,13 +3129,14 @@ msgid "Select CSV/SQL File:"
 msgstr "Izvēlēties CSV/SQL failu:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3114
+#, fuzzy
 msgid "Convert Resources links and INSERTANS fields ?"
-msgstr ""
+msgstr "Convert Resources links and INSERTANS fields ?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/saved.php:53
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:474
 msgid "Browse Saved Responses"
-msgstr ""
+msgstr "Pārlūkot saglabātās atbildes"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/saved.php:64
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/saved.php:68
@@ -3128,12 +3153,12 @@ msgstr "Saglabāšanas datums"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/saved.php:100
 msgid "Are you sure you want to delete this entry?"
-msgstr "Vai Jūs tiešām gribat izdzēst šo ierakstu?"
+msgstr "Vai Jūs tiešām vēlaties izdzēst šo ierakstu?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/saved.php:126
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1384
 msgid "Show summary information"
-msgstr ""
+msgstr "Parādīt kopsavilkuma informāciju"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/saved.php:128
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1390
@@ -3253,7 +3278,7 @@ msgstr "Kvotas limits"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:317
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:611
 msgid "Quota Action"
-msgstr "Kvotas darb;iba"
+msgstr "Kvotas darbība"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:273
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:341
@@ -3311,7 +3336,7 @@ msgstr "Jautājuma izvēle"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:455
 msgid "Sorry there are no supported question types in this survey."
-msgstr "Sorry, nav atbilstošu jautājuma tipu šajā pētījumā"
+msgstr "Šajā pētījumā nav atbilstošu jautājuma tipu."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:468
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:544
@@ -3328,6 +3353,7 @@ msgid "Next"
 msgstr "Nākošais"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:531
+#, fuzzy
 msgid "All answers are already selected in this quota."
 msgstr "Šajā kvotā visas atbildes ir izvēlētas."
 
@@ -3401,7 +3427,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:138
 msgid "Template Name"
-msgstr ""
+msgstr "Šablona nosaukums"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:138
 msgid "Allowed"
@@ -3409,7 +3435,7 @@ msgstr "Atļauts"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:156
 msgid "Save Settings"
-msgstr ""
+msgstr "Saglabāt iestatījumus"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:187
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:473
@@ -3437,14 +3463,14 @@ msgstr "Parole"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:210
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:177
 msgid "Update"
-msgstr ""
+msgstr "Atjaunināt"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:242
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:539
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:391
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:541
 msgid "Set User Rights"
-msgstr ""
+msgstr "Notiekt lietotāju tiesības"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:272
 msgid "SuperAdministrator"
@@ -3481,7 +3507,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:392
 msgid "User Control"
-msgstr ""
+msgstr "Lietotāja kontrole"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:399
 msgid "Created by"
@@ -3494,12 +3520,12 @@ msgstr "Labot lietotāju"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:548
 msgid "Take Ownership"
-msgstr ""
+msgstr "Pārņemt tiesības"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:557
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:622
 msgid "Set Template Rights"
-msgstr ""
+msgstr "Noteikt šablonu tiesības"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:600
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:622
@@ -3524,7 +3550,7 @@ msgstr "Rediģēt lietotāju grupu (īpašnieku:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:626
 msgid "Update User Group"
-msgstr ""
+msgstr "Atjaunināt lietotāju grupu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:647
 msgid "Send me a copy:"
@@ -3615,7 +3641,7 @@ msgstr "Vārds"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:829
 msgid "Failed to update!"
-msgstr ""
+msgstr "Nav izdevies atjaunināt!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:1005
 msgid "Adding User to group"
@@ -3646,8 +3672,9 @@ msgstr "Vai Jūs vēlaties saglabāt izmaiņas?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvexport.php:45
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1462
+#, fuzzy
 msgid "Export a VV survey file"
-msgstr ""
+msgstr "Export a VV survey file"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:67
 msgid "Label Sets Administration"
@@ -3663,15 +3690,15 @@ msgstr "Parādīt palīdzību"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:87
 msgid "Add New Label Set"
-msgstr ""
+msgstr "Pievienot jaunu apzīmējumu kopu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:88
 msgid "Add new label set"
-msgstr ""
+msgstr "Pievienot jaunu apzīmējumu kopu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:89
 msgid "Labelsets"
-msgstr ""
+msgstr "Apzīmējumu kopas"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:103
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:79
@@ -3695,23 +3722,24 @@ msgstr "Lūdzu izvēlēties:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:122
 msgid "Error: You have to enter a name for this label set."
-msgstr ""
+msgstr "Kļūda: Apzīmējumu kopai jāizveido nosaukums."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:128
 msgid "Create or Import New Label Set"
-msgstr ""
+msgstr "Izveidot vai importēt jaunu apzīmējumu kopu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:128
 msgid "Create New Label Set"
-msgstr ""
+msgstr "Izveidot jaunu apzīmējumu kopu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:129
 msgid "Edit Label Set"
-msgstr ""
+msgstr "Rediģēt apzīmējumu kopu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:140
+#, fuzzy
 msgid "Set Name"
-msgstr ""
+msgstr "Noteikt vārdu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:159
 msgid "You cannot remove this items since you need at least one language in a labelset."
@@ -3725,8 +3753,9 @@ msgstr "Izvēlēties CSV failu:"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:211
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/grouphandling.php:73
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:182
+#, fuzzy
 msgid "Convert Resources links ?"
-msgstr ""
+msgstr "Convert Resources links ?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:250
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:1034
@@ -3735,36 +3764,36 @@ msgstr "Aizvērt logu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:254
 msgid "Edit label set"
-msgstr ""
+msgstr "Rediģēt apzīmējumu kopu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:257
 msgid "Delete label set"
-msgstr ""
+msgstr "Izdzēst apzīmējumu kopu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:259
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importoldresponses.php:62
 msgid "Are you sure?"
-msgstr "Via Jūs esat drošs?"
+msgstr "Vai Jūs tiešām esat pārliecināts?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:261
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:262
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dumplabel.php:30
 msgid "Export Label Set"
-msgstr ""
+msgstr "Eksportēt apzīmējumu kopu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:343
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:377
 msgid "Label:"
-msgstr ""
+msgstr "Apzīmējums"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:373
 msgid "New label"
-msgstr ""
+msgstr "Jauns apzīmējums"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:380
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:662
 msgid "Add new label"
-msgstr ""
+msgstr "Pievienot jaunu apzīmējumu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:383
 msgid "Fix Order"
@@ -3797,7 +3826,7 @@ msgstr "Nav izdevies izdzēst noņemto valodu apzīmējumus"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:585
 msgid "Update of Label Set failed"
-msgstr "Nav izdevies precizēt apzīmējumu kopu"
+msgstr "Nav izdevies atjaunināt apzīmējumu kopu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:601
 msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
@@ -3817,7 +3846,7 @@ msgstr "Šis apzīmējuma kods jau tiek izmantots šajā apzīmējumu kopā.  L�
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:767
 msgid "Failed to update label"
-msgstr "Nav izdevies precizēt apzīmējumu"
+msgstr "Nav izdevies atjaunināt apzīmējumu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:776
 msgid "Can't update labels because you are using duplicated codes"
@@ -3839,7 +3868,7 @@ msgstr "Rediģēt grupu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/grouphandling.php:166
 msgid "Update Group"
-msgstr "Atjaunot grupu"
+msgstr "Atjaunināt grupu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:84
 msgid "This question is a multiple answer type question but has no answers."
@@ -3859,11 +3888,11 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:128
 msgid "The labelset used in this question does not exists or is missing a translation."
-msgstr ""
+msgstr "Šajā jautājumā izmantotā apzīmējumu kopa nepastāv vai arī tai trūkst tulkojuma."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:184
 msgid "This question has a condition set, however the condition is based on a question that appears after it."
-msgstr ""
+msgstr "Šim jautājuma ir nosacījums, taču tas ir kādā no nākamajiem jautājumiem."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:219
 msgid "Survey does not pass consistency check"
@@ -3875,20 +3904,20 @@ msgstr "Atrastas sekojošas problēmas:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:231
 msgid "The survey cannot be activated until these problems have been resolved."
-msgstr ""
+msgstr "Pētījumu nav iespējams aktivizēt, kamēr šīs problēmas nav atrisinātas."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:244
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/deactivate.php:29
 msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
-msgstr "UZMANĪGI IZLAISIET PIRMS TURPINĀT"
+msgstr "UZMANĪGI IZLASIET PIRMS TURPINĀT"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:250
 msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
-msgstr ""
+msgstr "Pētījumu vēlams aktivizēt tikai tad, kad Jūs esat pilnīgi drošs, ka visi sagatavošanas darbi ir pabeigti un nebūs nepieciešams veikt kādas izmaiņas."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:251
 msgid "Once a survey is activated you can no longer:"
-msgstr ""
+msgstr "Līdz ko pētījums ir aktivizēts Jūs nevarat:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:251
 msgid "Add or delete groups"
@@ -3896,7 +3925,7 @@ msgstr "Pievienot vai izdzēst grupas"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:251
 msgid "Add or remove answers to Multiple Answer questions"
-msgstr ""
+msgstr "Pievienot vai noņemt atbildes vairāku atbilžu jautājumiem"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:251
 msgid "Add or delete questions"
@@ -3928,11 +3957,11 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:488
 msgid "Survey could not be actived."
-msgstr ""
+msgstr "Pētījumu nevar aktivizēt."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:520
 msgid "Survey has been activated. Results table has been successfully created."
-msgstr ""
+msgstr "Pētījums ir aktivizēts.  Rezultātu tabula izveidota veiksmīgi."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:534
 msgid "This survey allows public registration. A token table must also be created."
@@ -3945,11 +3974,11 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:540
 msgid "This survey is now active, and responses can be recorded."
-msgstr ""
+msgstr "Šis pētījums ir aktīvs un tā atbildes var tikt fiksētas."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:541
 msgid "Open-access mode"
-msgstr ""
+msgstr "Atvērta pieeja"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:541
 msgid "No invitation code is needed to complete the survey."
@@ -3961,32 +3990,32 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:543
 msgid "Optional"
-msgstr ""
+msgstr "Papildus"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/activate.php:543
 msgid "Switch to closed-access mode"
-msgstr ""
+msgstr "Pārslēgt uz slēgtu pieeju"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/deletesurvey.php:29
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/resetsurveylogic.php:29
 msgid "You have not selected a survey to delete"
-msgstr ""
+msgstr "Jūs neesat izvēlējies, kuru pētījumu izdzēst"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/deletesurvey.php:43
 msgid "You are about to delete this survey"
-msgstr ""
+msgstr "Jūs tūlīt izdzēsīsiet šo pētījumu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/deletesurvey.php:44
 msgid "This process will delete this survey, and all related groups, questions answers and conditions."
-msgstr ""
+msgstr "Šī darbība izdzēsīs šo pētījumu un ar to saistītās grupas, jautājumus, atbildes un nosacījumus."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/deletesurvey.php:45
 msgid "We recommend that before you delete this survey you export the entire survey from the main administration screen."
-msgstr ""
+msgstr "Pirms šī pētījuma izdzēšanas ir ieteicams eksportēt visu pētījumu no galvenā adminsitrēšanas ekrāna."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/deletesurvey.php:49
 msgid "This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey."
-msgstr ""
+msgstr "Šis pētījums ir aktīvs un tam ir piesaistīta atbilžu tabula.  Ja Jūs izdzēsīsiet šo pētījumu, tiks izdzēstas arī tā atbildes.  Pirms pētījuma izdzēšanas Ir ieteicams eksportēt atbildes."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/deletesurvey.php:54
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
@@ -3999,7 +4028,7 @@ msgstr "Šis pētījums ir izdzēsts."
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:51
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:59
 msgid "This file is not a LimeSurvey survey file. Import failed."
-msgstr ""
+msgstr "Šis nav LimeSurvey pētījuma fails.  Importēšana nav izdevusies."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:372
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:381
@@ -4007,12 +4036,12 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:564
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:594
 msgid "Import of this survey file failed"
-msgstr ""
+msgstr "Pētījuma faila importēšana nav izdevusies"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:373
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:381
 msgid "File does not contain LimeSurvey data in the correct format."
-msgstr ""
+msgstr "Failā nav LimeSurvey dati korektā formātā."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:760
 msgid "A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped."
@@ -4020,7 +4049,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:822
 msgid "was NOT imported because the question type is unknown."
-msgstr ""
+msgstr "netika importēts, jo jautājuma tips nav atpazīstams."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:828
 #, php-format
@@ -4030,23 +4059,23 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1212
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1240
 msgid "Survey Import Summary"
-msgstr ""
+msgstr "Pētījuma importēšanas kopsavilkums"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1221
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1249
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importgroup.php:662
 msgid "Conditions"
-msgstr ""
+msgstr "Nosacījumi"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1225
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1251
 msgid "Not imported Label Sets"
-msgstr ""
+msgstr "Neimportētās apzīmējumu kopas"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1225
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1251
 msgid "(Label Sets were not imported since you do not have the permission to create new label sets.)"
-msgstr ""
+msgstr "(Apzīmējumu kopas netika importētas, jo Jums nav tiesību izveidot jaunas apzīmējumu kopas.)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1227
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1252
@@ -4065,7 +4094,7 @@ msgstr "Pētījuma importēšana pabeigta."
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1232
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1256
 msgid "Warnings"
-msgstr ""
+msgstr "Brīdinājumi"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/login_check.php:35
 msgid "You have to enter user name and email."
@@ -4073,11 +4102,11 @@ msgstr "Jums jānorāda lietotāja vārds un parole."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/login_check.php:48
 msgid "Check Data"
-msgstr ""
+msgstr "Pārbaudīt datus"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/login_check.php:74
 msgid "You have to login first."
-msgstr ""
+msgstr "Vispirms Jums jāpieslēdzas."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/login_check.php:96
 msgid "Login"
@@ -4089,7 +4118,7 @@ msgstr "Aizmirsāt paroli?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:33
 msgid "Condition Designer"
-msgstr ""
+msgstr "Nosacījumu redaktors"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:40
 msgid "You have not selected a Survey."
@@ -4183,7 +4212,7 @@ msgstr "Nav atbildes"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:749
 msgid "Only show question {QID} IF"
-msgstr ""
+msgstr "Parādīt jautājumu {QID} tikai tad, JA"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:772
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:992
@@ -4250,15 +4279,16 @@ msgstr "Nav atbildes"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:901
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:932
 msgid "Copy Conditions"
-msgstr ""
+msgstr "Kopēt nosacījumus"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:906
 msgid "Condition"
-msgstr ""
+msgstr "Nosacījums"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:919
+#, fuzzy
 msgid "copy to"
-msgstr ""
+msgstr "copy to"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:932
 msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
@@ -4267,15 +4297,16 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:950
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:1018
 msgid "Add Condition"
-msgstr ""
+msgstr "Pievienot nosacījumu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:1000
 msgid "NOTE: If you use a pre-defined answer as your condition, only the equals or not-equal-to conditions apply."
 msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:1010
+#, fuzzy
 msgid "Constant Value or Regular Expression"
-msgstr ""
+msgstr "Constant Value or Regular Expression"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:1017
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:730
@@ -4284,7 +4315,7 @@ msgstr "Notīrīt"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:26
 msgid "Error: You have to enter a code for this question."
-msgstr ""
+msgstr "Kļūda: šim jautājumam jānorāda kods."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:30
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:36
@@ -4296,7 +4327,7 @@ msgstr "Pievienot jautājumu"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:255
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:473
 msgid "Label Set:"
-msgstr ""
+msgstr "Apzīmējumu kopa:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:87
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:274
@@ -4306,19 +4337,19 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:133
 msgid "Position:"
-msgstr ""
+msgstr "Vieta:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:136
 msgid "At end"
-msgstr ""
+msgstr "Beigās"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:137
 msgid "At beginning"
-msgstr ""
+msgstr "Sākumā"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:140
 msgid "After"
-msgstr ""
+msgstr "Pēc"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:153
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:588
@@ -4330,21 +4361,21 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:185
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:24
 msgid "Import Question"
-msgstr ""
+msgstr "Importēt jautājumu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:180
 msgid "Select CSV File"
-msgstr ""
+msgstr "Izvēlēties CSV failu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:207
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:335
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:356
 msgid "Copy Question"
-msgstr ""
+msgstr "Kopēt juatājumu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:221
 msgid "Note: You MUST enter a new question code!"
-msgstr ""
+msgstr "Atgādinājums: Jānorāda jauns jautājums kods!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:296
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:529
@@ -4353,7 +4384,7 @@ msgstr "Grupa:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:346
 msgid "Copy Answers?"
-msgstr ""
+msgstr "Kopēt atbildes?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:351
 msgid "Copy Attributes?"
@@ -4369,14 +4400,14 @@ msgstr "Jautājuma tips:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:467
 msgid "Cannot be modified (Survey is active)"
-msgstr ""
+msgstr "Nav iespējams veikt izmaiņas (Pētījums ir aktīvs)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:520
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:521
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:550
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:695
 msgid "Cannot be modified"
-msgstr ""
+msgstr "Nav iespējams veikt izmaiņas"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:520
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:521
@@ -4386,7 +4417,7 @@ msgstr "Pētījums pašreiz nav aktīvs."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:575
 msgid "Update Question"
-msgstr ""
+msgstr "Atjaunināt jautājumu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:714
 msgid "Current group is using conditional questions"
@@ -4402,7 +4433,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:754
 msgid "Place after.."
-msgstr ""
+msgstr "Novietot pēc..."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:809
 msgid "View Question"
@@ -4418,7 +4449,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/access_denied.php:32
 msgid "You are not allowed export a label set!"
-msgstr ""
+msgstr "Jums nav tiesību eksportēt apzīmējumu kopu!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/access_denied.php:37
 msgid "You are not allowed to change user data!"
@@ -4450,7 +4481,7 @@ msgstr "Jums nav tiesību pivienot grupu šim pētījumam!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/access_denied.php:72
 msgid "You are not allowed to order groups in this survey!"
-msgstr ""
+msgstr "Jums nav tiesību mainīt šī pētījuma grupu secību!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/access_denied.php:77
 msgid "You are not allowed to edit this survey!"
@@ -4566,36 +4597,41 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importgroup.php:673
 msgid "Import of group is completed."
-msgstr ""
+msgstr "Grupas importēšana pabeigta."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:90
 msgid "Filter Settings"
-msgstr ""
+msgstr "Filtra iestatījumi"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:136
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:244
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:321
+#, fuzzy
 msgid "Number greater than"
 msgstr "Number greater than"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:140
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:248
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:325
+#, fuzzy
 msgid "Number Less Than"
 msgstr "Number Less Than"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:160
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1560
+#, fuzzy
 msgid "Datestamp"
-msgstr ""
+msgstr "Datestamp"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:162
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:340
+#, fuzzy
 msgid "Date (YYYY-MM-DD) equals"
-msgstr ""
+msgstr "Date (YYYY-MM-DD) equals"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:166
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:344
+#, fuzzy
 msgid "OR between"
 msgstr "OR between"
 
@@ -4603,11 +4639,11 @@ msgstr "OR between"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:296
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:312
 msgid "Responses Containing"
-msgstr ""
+msgstr "Atbildes satur"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:714
 msgid "View summary of all available fields"
-msgstr ""
+msgstr "Aplūkot visu pieejamo lauku kopsavilkumu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:721
 msgid "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)"
@@ -4647,7 +4683,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:960
 msgid "Total records in survey"
-msgstr ""
+msgstr "Ieraksti kopā"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:964
 msgid "Percentage of total"
@@ -4661,7 +4697,7 @@ msgstr "Pārlūkot"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1033
 msgid "Generating Summaries ..."
-msgstr ""
+msgstr "Izveido kopsavilkumus ..."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1190
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1533
@@ -4670,7 +4706,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1194
 msgid "Calculation"
-msgstr ""
+msgstr "Aprēķins"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1196
 msgid "Result"
@@ -4681,12 +4717,14 @@ msgid "Sum"
 msgstr "Summa"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1218
+#, fuzzy
 msgid "Standard Deviation"
-msgstr ""
+msgstr "Standard Deviation"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1219
+#, fuzzy
 msgid "Average"
-msgstr ""
+msgstr "Average"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1236
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1540
@@ -4695,32 +4733,37 @@ msgid "Count"
 msgstr "Skaits"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1260
+#, fuzzy
 msgid "1st Quartile (Q1)"
-msgstr ""
+msgstr "1st Quartile (Q1)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1282
+#, fuzzy
 msgid "2nd Quartile (Median)"
-msgstr ""
+msgstr "2nd Quartile (Median)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1310
+#, fuzzy
 msgid "3rd Quartile (Q3)"
-msgstr ""
+msgstr "3rd Quartile (Q3)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1329
 msgid "Null values are ignored in calculations"
-msgstr ""
+msgstr "Nulles vērtības aprēķinos tiek ignorētas"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1330
+#, fuzzy
 msgid "Q1 and Q3 calculated using"
-msgstr ""
+msgstr "Q1 and Q3 calculated using"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1330
+#, fuzzy
 msgid "minitab method"
-msgstr ""
+msgstr "minitab method"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1339
 msgid "Not enough values for calculation"
-msgstr ""
+msgstr "Nav pietiekami daudz vērtību, lai veikt aprēķinus"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1542
 msgid "Percentage"
@@ -4728,19 +4771,19 @@ msgstr "Procenti"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:1638
 msgid "Non completed"
-msgstr ""
+msgstr "Nav pabeigts"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/resetsurveylogic.php:43
 msgid "You are about to delete all conditions on this survey's questions"
-msgstr ""
+msgstr "Tūlīt Jūs izdzēsīsiet visu šī pētījuma jautājumu nosacījumus"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/resetsurveylogic.php:44
 msgid "We recommend that before you proceed, you export the entire survey from the main administration screen."
-msgstr ""
+msgstr "Pirms turpināt, ir ieteicams eksportēt visu pētījumu no galvenā administrēšanas ekrāna."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/resetsurveylogic.php:68
 msgid "All conditions in this survey have been deleted."
-msgstr ""
+msgstr "Visi šī pētījum anosacījumi ir izdzēsti."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/results.php:189
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/results.php:190
@@ -4790,13 +4833,13 @@ msgstr "Kļūda: sekojoša datubāzes kļūda:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:238
 msgid "Group could not be updated"
-msgstr ""
+msgstr "Grupu nav izdevies atjaunināt"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:259
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:284
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:297
 msgid "Group could not be deleted"
-msgstr "Grupu nav iespējams izdzēst"
+msgstr "Grupu nav izdevies izdzēst"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:306
 #, php-format
@@ -4807,16 +4850,16 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:718
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:755
 msgid "Question could not be created."
-msgstr "Juatājumu nav iespējams izveidot."
+msgstr "Juatājumu nav izdevies izveidot."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:500
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
-msgstr ""
+msgstr "Grupu nav izdevies atjaunināt.  Citos jautājumos ir nosacījumi, kuri ir saistīti ar šī jautājuma atbildēm, un izmaiņas jautājuma tipā var radīt problēmas.  Vispirms Jums jāizdzēs šie nosacījumu un tad iespējams izmainīt jautājuma tipu."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:597
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:655
 msgid "Question could not be updated"
-msgstr ""
+msgstr "Jautājumu nav izdevies atjaunināt"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:617
 msgid "Answers can't be deleted"
@@ -4828,13 +4871,14 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:628
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:640
+#, fuzzy
 msgid "in position"
-msgstr ""
+msgstr "vietā"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:629
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:641
 msgid "See conditions:"
-msgstr ""
+msgstr "Skatīt nosacījumus:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:639
 msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
@@ -4842,12 +4886,12 @@ msgstr "Daži jautājumi ir pakārtoti šī jautājuma atbildēm.  Nav iespējam
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:665
 msgid "Question could not be added. You must insert a code in the mandatory field"
-msgstr ""
+msgstr "Jautājumu nav iespējams pievienot.  Jums jāievada kods obligātajā laukā"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:823
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:864
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
-msgstr ""
+msgstr "Jautājumu nav iespējams izdzēst.  Citos jautājumos pastāv nosacījumi, kuri ir pakļauti šim jautājumam.  Jūs nevarat izdzēst šo jautājumu, kamēr nav noņemti šie nosacījumi"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:848
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:885
@@ -4856,7 +4900,7 @@ msgstr "Jautājumu nav iespējams izdzēst"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:909
 msgid "Error adding answer: You can't use the same answer code more than once."
-msgstr ""
+msgstr "Atbildes pievienošanas kļūda:  Nedrīkst izmantot vienu un to pašu atbildes kodu vairāk kā vienu reizi."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:937
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:959
@@ -4869,7 +4913,7 @@ msgstr "Norādīts nepareizs vai tukšs atbildes kods"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1044
 msgid "Failed to update answers"
-msgstr ""
+msgstr "Atbldes nav izdevies atjaunināt"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1063
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
@@ -4903,6 +4947,7 @@ msgstr "Ielūgums piedalīties pētījumā"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:562
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1046
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1050
+#, fuzzy
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -4923,6 +4968,24 @@ msgid ""
 "Click here to do the survey:\n"
 "{SURVEYURL}"
 msgstr ""
+"Cien. {FIRSTNAME},\n"
+"\n"
+"Mēs Jūs aicinām piedalīties aptaujā.\n"
+"\n"
+"Aptaujas nosaukums:\n"
+"\"{SURVEYNAME}\"\n"
+"\n"
+"\"{SURVEYDESCRIPTION}\"\n"
+"\n"
+"Lai piedalītos, lūdzams klikšķināt uz zemāk norādītās saites.\n"
+"\n"
+"Ar cieņu,\n"
+"\n"
+"{ADMINNAME} ({ADMINEMAIL})\n"
+"\n"
+"----------------------------------------------\n"
+"Lūdzu klikšķināt šeit:\n"
+"{SURVEYURL}"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1211
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1426
@@ -4934,6 +4997,7 @@ msgstr "Atgādinājums piedalīties pētījumā"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1427
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:573
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1277
+#, fuzzy
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -4956,6 +5020,26 @@ msgid ""
 "Click here to do the survey:\n"
 "{SURVEYURL}"
 msgstr ""
+"Cien. {FIRSTNAME},\n"
+"\n"
+"Nesen mēs Jūs aicinājām piedalīties aptaujā.\n"
+"\n"
+"Izskatās, ka Jūs vēl neesat aptauju pabeidzis, tādējādi mēs vēlamies atgādināt, ka aptauja vēl ir pieejama, ja Jūs vēlaties piedalīties.\n"
+"\n"
+"Aptaujas nosaukums:\n"
+"\"{SURVEYNAME}\"\n"
+"\n"
+"\"{SURVEYDESCRIPTION}\"\n"
+"\n"
+"Lai piedalītos, lūdzams klikšķināt uz zemāk norādītās saites.\n"
+"\n"
+"Ar cieņu,\n"
+"\n"
+"{ADMINNAME} ({ADMINEMAIL})\n"
+"\n"
+"----------------------------------------------\n"
+"Lūdzu klikšķināt šeit:\n"
+"{SURVEYURL}"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1213
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/database.php:1428
@@ -5028,7 +5112,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:53
 msgid "No matching Cqid"
-msgstr ""
+msgstr "Nav atbilstoša Cqid"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:60
 msgid "No matching CFIELDNAME Group!"
@@ -5040,19 +5124,20 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:69
 msgid "The following conditions should be deleted"
-msgstr ""
+msgstr "Sekojošus nosacījumus nepieciešams izdzēst"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:77
 msgid "All conditions meet consistency standards"
 msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:89
+#, fuzzy
 msgid "No matching qid"
-msgstr ""
+msgstr "No matching qid"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:93
 msgid "The following question attributes should be deleted"
-msgstr ""
+msgstr "Sekojoši jautājuma parametri ir jāizdzēš"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:99
 msgid "All question_attributes meet consistency standards"
@@ -5085,7 +5170,7 @@ msgstr "Nav atbilstoša jautājuma"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:164
 msgid "The following answers should be deleted"
-msgstr ""
+msgstr "Sekojošas atbildes ir jāizdzēš"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:170
 msgid "All answers meet consistency standards"
@@ -5093,11 +5178,11 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:182
 msgid "Language specific settings missing"
-msgstr ""
+msgstr "Nepastāv valodai specifiskie iestatītjumi"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:187
 msgid "The following surveys should be deleted"
-msgstr ""
+msgstr "Sēkojošus pētījumus nepieciešams izdzēst"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:193
 msgid "All survey settings meet consistency standards"
@@ -5133,7 +5218,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:249
 msgid "Should we proceed with the delete?"
-msgstr ""
+msgstr "Vai turpināt izdzēšanas darbību?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:292
 msgid "Yes - Delete Them!"
@@ -5163,11 +5248,12 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:353
 msgid "Deleting Conditions"
-msgstr ""
+msgstr "Izdzēš nosacījumus"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:355
+#, fuzzy
 msgid "Deleting cid"
-msgstr ""
+msgstr "Izdzēš cid"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:362
 msgid "Deleting Answers"
@@ -5182,16 +5268,18 @@ msgid "Deleting Questions"
 msgstr "Izdzēš jautājumus"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:374
+#, fuzzy
 msgid "Deleting qid"
-msgstr ""
+msgstr "Izdzēš qid"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:381
 msgid "Deleting Groups"
 msgstr "Izdzēš grupas"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:383
+#, fuzzy
 msgid "Deleting group id"
-msgstr ""
+msgstr "Izdzēš group id"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:389
 msgid "Check database again?"
@@ -5214,150 +5302,187 @@ msgid "No LID has been provided. Cannot dump label set."
 msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:45
+#, fuzzy
 msgid "ARMSCII-8 Armenian"
 msgstr "ARMSCII-8 Armenian"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:46
+#, fuzzy
 msgid "US ASCII"
 msgstr "US ASCII"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:47
+#, fuzzy
 msgid "Automatic"
 msgstr "Automatic"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:48
+#, fuzzy
 msgid "Big5 Traditional Chinese"
 msgstr "Big5 Traditional Chinese"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:49
+#, fuzzy
 msgid "Binary pseudo charset"
 msgstr "Binary pseudo charset"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:50
+#, fuzzy
 msgid "Windows Central European"
 msgstr "Windows Central European"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:51
+#, fuzzy
 msgid "Windows Cyrillic"
 msgstr "Windows Cyrillic"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:52
+#, fuzzy
 msgid "Windows Arabic"
 msgstr "Windows Arabic"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:53
+#, fuzzy
 msgid "Windows Baltic"
 msgstr "Windows Baltic"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:54
+#, fuzzy
 msgid "DOS West European"
 msgstr "DOS West European"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:55
+#, fuzzy
 msgid "DOS Central European"
 msgstr "DOS Central European"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:56
+#, fuzzy
 msgid "DOS Russian"
 msgstr "DOS Russian"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:57
+#, fuzzy
 msgid "SJIS for Windows Japanese"
 msgstr "SJIS for Windows Japanese"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:58
+#, fuzzy
 msgid "DEC West European"
 msgstr "DEC West European"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:59
+#, fuzzy
 msgid "UJIS for Windows Japanese"
 msgstr "UJIS for Windows Japanese"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:60
+#, fuzzy
 msgid "EUC-KR Korean"
 msgstr "EUC-KR Korean"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:61
+#, fuzzy
 msgid "GB2312 Simplified Chinese"
 msgstr "GB2312 Simplified Chinese"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:62
+#, fuzzy
 msgid "GBK Simplified Chinese"
 msgstr "GBK Simplified Chinese"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:63
+#, fuzzy
 msgid "GEOSTD8 Georgian"
 msgstr "GEOSTD8 Georgian"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:64
+#, fuzzy
 msgid "ISO 8859-7 Greek"
 msgstr "ISO 8859-7 Greek"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:65
+#, fuzzy
 msgid "ISO 8859-8 Hebrew"
 msgstr "ISO 8859-8 Hebrew"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:66
+#, fuzzy
 msgid "HP West European"
 msgstr "HP West European"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:67
+#, fuzzy
 msgid "DOS Kamenicky Czech-Slovak"
 msgstr "DOS Kamenicky Czech-Slovak"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:68
+#, fuzzy
 msgid "KOI8-R Relcom Russian"
 msgstr "KOI8-R Relcom Russian"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:69
+#, fuzzy
 msgid "KOI8-U Ukrainian"
 msgstr "KOI8-U Ukrainian"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:70
+#, fuzzy
 msgid "cp1252 West European"
 msgstr "cp1252 West European"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:71
+#, fuzzy
 msgid "ISO 8859-2 Central European"
 msgstr "ISO 8859-2 Central European"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:72
+#, fuzzy
 msgid "ISO 8859-9 Turkish"
 msgstr "ISO 8859-9 Turkish"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:73
+#, fuzzy
 msgid "ISO 8859-13 Baltic"
 msgstr "ISO 8859-13 Baltic"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:74
+#, fuzzy
 msgid "Mac Central European"
 msgstr "Mac Central European"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:75
+#, fuzzy
 msgid "Mac West European"
 msgstr "Mac West European"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:76
+#, fuzzy
 msgid "Shift-JIS Japanese"
 msgstr "Shift-JIS Japanese"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:77
+#, fuzzy
 msgid "7bit Swedish"
 msgstr "7bit Swedish"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:78
+#, fuzzy
 msgid "TIS620 Thai"
 msgstr "TIS620 Thai"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:79
+#, fuzzy
 msgid "UCS-2 Unicode"
 msgstr "UCS-2 Unicode"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:80
+#, fuzzy
 msgid "EUC-JP Japanese"
 msgstr "EUC-JP Japanese"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:81
+#, fuzzy
 msgid "UTF-8 Unicode"
 msgstr "UTF-8 Unicode"
 
@@ -5393,7 +5518,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:363
 msgid "Restore Options"
-msgstr ""
+msgstr "Atjaunošanas opcijas"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:367
 msgid "The following old token tables could be restored:"
@@ -5612,7 +5737,7 @@ msgstr "Piedalīties pētījumā"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:915
 msgid "Update Response"
-msgstr ""
+msgstr "Papildināt atbildi"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:930
 msgid "Send invitation email to this entry"
@@ -5657,8 +5782,9 @@ msgstr "No"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1078
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1290
+#, fuzzy
 msgid "Subject"
-msgstr ""
+msgstr "Subject"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1095
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1116
@@ -5717,11 +5843,11 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1341
 msgid "Send Reminders"
-msgstr ""
+msgstr "Sūtīt atgādinājumus"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1353
 msgid "Sending Reminders"
-msgstr ""
+msgstr "Sūta atgādinājumus"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1365
 msgid "From Token ID"
@@ -5764,8 +5890,9 @@ msgid "Add or Edit Token Entry"
 msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1593
+#, fuzzy
 msgid "Auto"
-msgstr ""
+msgstr "Auto"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1634
 msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
@@ -5958,7 +6085,7 @@ msgstr "Lūdzu norādīt datumu:"
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1792
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1819
 msgid "Make a comment on your choice here:"
-msgstr ""
+msgstr "Lūdzu komentējiet savu atbildi šeit:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:448
 msgid "Please number each box in order of preference from 1 to"
@@ -6031,7 +6158,7 @@ msgstr "Lūdzu izvēlieties atbilstošu atbildi katram punktam:"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:963
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:965
 msgid "Submit Your Survey."
-msgstr "Ņosūtīt pētījumu."
+msgstr "Nosūtīt pētījumu."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:964
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:965
@@ -6084,24 +6211,26 @@ msgstr "Datubāze nav izveidota"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/install/index.php:32
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/install/index.php:49
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1169
+#, fuzzy
 msgid "LimeSurvey Setup"
 msgstr "LimeSurvey Setup"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/install/index.php:34
+#, fuzzy
 msgid "Welcome to LimeSurvey Setup!"
 msgstr "Welcome to LimeSurvey Setup!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/install/index.php:35
 msgid "The database defined in config.php does not exist."
-msgstr ""
+msgstr "config.php failā definētā datubāze nepastāv."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/install/index.php:36
 msgid "LimeSurvey can attempt to create this database for you."
-msgstr "LImeSurvey var mēģināt izvedot šo datubāzi."
+msgstr "LimeSurvey var mēģināt izvedot šo datubāzi."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/install/index.php:37
 msgid "Your selected database name is:"
-msgstr ""
+msgstr "Izvēlētās datubāzes nosaukums ir:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/install/index.php:52
 #, php-format
@@ -6136,11 +6265,11 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/deactivate.php:37
 msgid "Your responses table will be renamed to:"
-msgstr ""
+msgstr "Atbilžu tabula tiks pārdēvēta kā:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/deactivate.php:38
 msgid "Also you should export your responses before deactivating."
-msgstr ""
+msgstr "Kā ārī pirms deaktivizēšanas vēlams eksportēt savas atbildes."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/deactivate.php:127
 msgid "Survey Has Been Deactivated"
@@ -6148,7 +6277,7 @@ msgstr "Pētījums deaktivizēts"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/deactivate.php:132
 msgid "The responses table has been renamed to: "
-msgstr ""
+msgstr "Atbilžu tabula pārdēvēta par:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/deactivate.php:133
 msgid "The responses to this survey are no longer available using LimeSurvey."
@@ -6209,7 +6338,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:164
 #: /srv/www/virtual/limesurvey.org/devSVN/save.php:206
 msgid "Your passwords do not match."
-msgstr ""
+msgstr "Ievadītās paroles nesakrīt."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:168
 msgid "Try again"
@@ -6331,25 +6460,25 @@ msgstr "Jūsu izvēles"
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1494
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1500
 msgid "Your Ranking"
-msgstr "Jūsu ranžējums"
+msgstr "Tavs \"tops\""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1271
 msgid "Update Entry"
-msgstr ""
+msgstr "Atjaunināt ierakstu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1305
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2408
 msgid "Finalize response submission"
-msgstr ""
+msgstr "Pabeigt atbilžu nosūtīšanu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1307
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2414
 msgid "Save for further completion by survey user"
-msgstr ""
+msgstr "Saglabāt aizpildīšanai vēlāk"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1461
 msgid "Record has been updated."
-msgstr ""
+msgstr "Ieraksts ir atjaunināts."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1482
 msgid "Record Deleted"
@@ -6371,7 +6500,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1765
 msgid "Help about this question"
-msgstr ""
+msgstr "Palīdzība par šo jautājumu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1931
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1909
@@ -6380,7 +6509,7 @@ msgstr "Komentārs"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2463
 msgid "This survey is not yet active. Your response cannot be saved"
-msgstr ""
+msgstr "Šis pētījums vēl nav aktīvs.  Jūs atbildi nevar saglabāt"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dumpdb.php:55
 msgid "Export database"
@@ -6392,11 +6521,11 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:48
 msgid "Forgot Password"
-msgstr ""
+msgstr "Aizmirsu paroli"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:60
 msgid "User name and/or email not found!"
-msgstr ""
+msgstr "Lietotāja vārds un/via parole nav atrasta!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:69
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:363
@@ -6409,17 +6538,17 @@ msgstr "Jauna parole"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:83
 msgid "An email with your login data was sent to you."
-msgstr ""
+msgstr "E-pasta vēstule ar pieslēgšanās informāciju Jums nosūtīta."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:88
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:386
 msgid "Email to {NAME} ({EMAIL}) failed."
-msgstr ""
+msgstr "E-pasta nosūtīšana {NAME} ({EMAIL}) nav izdevusies."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:97
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:183
 msgid "Logging in..."
-msgstr ""
+msgstr "Pieslēdzos..."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:108
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:163
@@ -6430,12 +6559,12 @@ msgstr "Nepareiz lietotāja vārds un/vai parole!"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:148
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:288
 msgid "Welcome {NAME}"
-msgstr ""
+msgstr "Sveicināts {NAME}"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:149
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:289
 msgid "You logged in successfully."
-msgstr ""
+msgstr "Pieslēgšanās izdevusies."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:171
 msgid "LimeSurvey is setup to use the webserver authentication, but it seems you have not already been authenticated"
@@ -6443,23 +6572,23 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:172
 msgid "Please contact your system administrator"
-msgstr ""
+msgstr "Lūdzu sazinieties ar sistēmas administratoru"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:255
 msgid "Auto Import User Failed!"
-msgstr ""
+msgstr "Automātiska lietotāja importēšana nav izdevusies"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:309
 msgid "Logout successful."
-msgstr ""
+msgstr "Atslēgšanās izdevusies."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:328
 msgid "Email address is not valid."
-msgstr ""
+msgstr "E-pasta adrese nav derīga."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:333
 msgid "Username was not supplied."
-msgstr ""
+msgstr "Lietotāja vārds nav norādīts."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:362
 msgid "You were signed in on the site"
@@ -6467,49 +6596,49 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:371
 msgid "Login here"
-msgstr ""
+msgstr "Pieslēgties šeit"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:381
 msgid "An email with a generated password was sent to the user."
-msgstr ""
+msgstr "E-pasta vēstule ar paroli nosūtīta lietotājam."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:398
 msgid "Username and/or email address already exists."
-msgstr ""
+msgstr "Lietotājs un/vai e-pasta adrese jau pastāv."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:416
 msgid "Initial Superadmin cannot be deleted!"
-msgstr ""
+msgstr "Sākotnējais Superadministrators nav izdzēšams!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:493
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:517
 msgid "Could not modify User Data."
-msgstr ""
+msgstr "Lietotāja datu nav iespējams modificēt."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:493
 msgid "Email address ist not valid."
-msgstr ""
+msgstr "E-pasta adrese nav derīga."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:509
 msgid "Unchanged"
-msgstr ""
+msgstr "Bez izmaiņām"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:517
 msgid "Email address already exists."
-msgstr ""
+msgstr "E-pasta adrese jau eksistē."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:565
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:605
 msgid "Update user rights successful."
-msgstr ""
+msgstr "Lietotāja tiesību papildināšana izdevusies."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:615
 msgid "You are not allowed to change your own rights!"
-msgstr ""
+msgstr "Jūs nedrīkstat mainīt paša tiesības!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:643
 msgid "Update usertemplates successful."
-msgstr ""
+msgstr "Lietotāja šablonu atjaunināšana veiksmīga."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/save.php:161
 msgid "Please try again."
@@ -6521,11 +6650,11 @@ msgstr "Mēģiniet vēlreiz."
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1719
 #: /srv/www/virtual/limesurvey.org/devSVN/register.php:57
 msgid "The answer to the security question is incorrect"
-msgstr ""
+msgstr "Atbilde uz drošības jautājumu nav pareiza"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/save.php:230
 msgid "This name has already been used for this survey. You must use a unique save name."
-msgstr ""
+msgstr "Šis vārds šajā pētījumā jau ir izmantots.  Jums jāizvēlas cits (unikāls) vārds."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/save.php:289
 msgid "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
@@ -6545,7 +6674,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:174
 msgid "We are sorry but you don't have permissions to do this."
-msgstr ""
+msgstr "Jums nav tiesību veikt šo darbību."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:290
 msgid "No available surveys"
@@ -6588,7 +6717,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1687
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1843
 msgid "For further information contact"
-msgstr ""
+msgstr "Papildus informācijai lūdzu sazināties ar"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:519
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1654
@@ -6609,7 +6738,7 @@ msgstr "Pētījums saglabāts"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:664
 msgid "There is no matching saved survey"
-msgstr ""
+msgstr "Nav atbilstoša saglabāta pētījuma"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1410
 msgid "Answer Submission for Survey"
@@ -6621,7 +6750,7 @@ msgstr "Pētījums nosūtīts"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1413
 msgid "A new response was entered for your survey"
-msgstr ""
+msgstr "Jūsu pētījumam pievienota jauna atbilde"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1416
 msgid "Click the following link to reload the survey:"
@@ -6652,19 +6781,21 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1490
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
-msgstr ""
+msgstr "Jūsu atbildes nav pazaudētas un ir nosūtītas pētījuma administratoram, un tās tiks pievienotas datubāzei vēlāk."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1491
 msgid "An error occurred saving a response to survey id"
 msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1492
+#, fuzzy
 msgid "DATA TO BE ENTERED"
-msgstr ""
+msgstr "DATA TO BE ENTERED"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1497
+#, fuzzy
 msgid "SQL CODE THAT FAILED"
-msgstr ""
+msgstr "SQL CODE THAT FAILED"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1499
 msgid "ERROR MESSAGE"
@@ -6738,7 +6869,7 @@ msgstr "Saglabāt Jūsu atbildes"
 #: /srv/www/virtual/limesurvey.org/devSVN/question.php:301
 #: /srv/www/virtual/limesurvey.org/devSVN/survey.php:78
 msgid "Your survey responses have not been recorded. This survey is not yet active."
-msgstr ""
+msgstr "Jūsu atbildes uz pētījumu nav saglabātas.  Šis pētījums vēl nav aktivizēts."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/group.php:114
 #: /srv/www/virtual/limesurvey.org/devSVN/question.php:302
@@ -6770,7 +6901,7 @@ msgstr "Nospiest šeit, lai izdrukātu atbildes."
 #: /srv/www/virtual/limesurvey.org/devSVN/question.php:69
 #: /srv/www/virtual/limesurvey.org/devSVN/survey.php:184
 msgid "Sorry. There is no matching survey."
-msgstr ""
+msgstr "Nav atbilstošas aptaujas."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/group.php:261
 #: /srv/www/virtual/limesurvey.org/devSVN/group.php:737
@@ -6778,7 +6909,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/question.php:600
 #: /srv/www/virtual/limesurvey.org/devSVN/survey.php:587
 msgid "This survey is not currently active. You will not be able to save your responses."
-msgstr ""
+msgstr "Šis pētījums pašlaik nav aktīvs.  Nebūs iespējams saglabāt atbildes."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/group.php:406
 #: /srv/www/virtual/limesurvey.org/devSVN/question.php:510
@@ -6812,7 +6943,7 @@ msgstr "Pētījuma administrators"
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:316
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:324
 msgid "Choose one of the following answers"
-msgstr "Izvēleities vieno no sekojošām atbildēm"
+msgstr "Izvēlieties vienu no sekojošām atbildēm"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:337
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:362
@@ -6859,19 +6990,19 @@ msgstr "Lūdzu atzīmēt vismaz vienu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:514
 msgid "If you choose 'Other:' you must provide a description."
-msgstr "Ja Jūs esat izvēlējies 'Cits', lūdzu aprakstiet."
+msgstr "Ja Jūs izvēlējāties citu atbildi, lūdzu aprakstiet."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:535
 msgid "You cannot proceed until you enter some text for one or more questions."
-msgstr "Jūs nevariet turpināt pirms neesat atbildējies uz vienu vai vairākiem jautājumiem."
+msgstr "Jūs nevarat turpināt pirms neesat atbildējes uz vienu vai vairākiem jautājumiem."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:539
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
-msgstr "Viens vai vairāki obligātie jautājumi nav atbildēti.  Jūs nevariet turpināt pirms tie nav pabeigti"
+msgstr "Viens vai vairāki obligātie jautājumi nav atbildēti.  Jūs nevarat turpināt pirms tie nav pabeigti"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:562
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
-msgstr "Viens vai vairāki jautājumi nav atbildēti atbilstoši.  Jūs nevariet turpināt pirms tie nav atbilstoši pabeigti"
+msgstr "Viens vai vairāki jautājumi nav atbildēti atbilstoši.  Jūs nevarat turpināt pirms atbildes ir derīgas"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:622
 msgid "Day"
@@ -6935,7 +7066,7 @@ msgstr "Gads"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:684
 msgid "Please complete all parts of the date"
-msgstr "Lūdzu aizpildīet visas datuma daļas"
+msgstr "Lūdzu aizpildīt visas datuma daļas"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:698
 msgid "Format: YYYY-MM-DD"
@@ -6959,12 +7090,13 @@ msgid "Please enter your comment here"
 msgstr "Lūdzu ierakstiet komentāru šeit"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1479
+#, fuzzy
 msgid "Click on an item in the list on the left, starting with your"
-msgstr ""
+msgstr "Uzklikšķiniet uz objekta sarakstā pa kreisi sākot ar"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1480
 msgid "highest ranking item, moving through to your lowest ranking item."
-msgstr ""
+msgstr "augstāk ierindojamo un turpiniet secībā līdz zemāk novērtētajam."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1508
 msgid "Click on the scissors next to each item on the right"
@@ -6972,17 +7104,17 @@ msgstr "Nospiediet uz šķēru ikonas pa labi no katra punkta"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1509
 msgid "to remove the last entry in your ranked list"
-msgstr ""
+msgstr "lai noņemtu pēdējo saraksta ierakstu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1684
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1848
 msgid "Please choose at most"
-msgstr ""
+msgstr "Lūdzu izvēlēties ne vairāk kā"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1684
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1848
 msgid "answer(s) for question"
-msgstr "atbilde(-es) uz jautājumu"
+msgstr "atbildi (atbildes) uz jautājumu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1896
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2005
@@ -6997,15 +7129,15 @@ msgstr "Šajos laukos var ievadīt tikai ciparus"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2035
 msgid "Total of all entries must not exceed "
-msgstr ""
+msgstr "Visu atbilžu summa nedrīkst pārsniegt"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2039
 msgid "Total of all entries must equal "
-msgstr ""
+msgstr "Visu atbilžu summai jābut vienādai ar"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2043
 msgid "Total of all entries must be at least "
-msgstr ""
+msgstr "Visu atbilžu summa nedrīkst būt mazāka kā"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2048
 msgid "Total: "
@@ -7039,7 +7171,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3234
 msgid "Error: There are no answers defined for this question."
-msgstr ""
+msgstr "Kļūda: šim jautājumam nav definētas atbildes."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:240
 msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
@@ -7051,7 +7183,7 @@ msgstr "Administrācija"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:249
 msgid "Logged in as"
-msgstr ""
+msgstr "Pieslēdzies kā"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:266
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:268
@@ -7065,13 +7197,15 @@ msgstr "Izveidot/rediģēt grupas"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:279
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:281
+#, fuzzy
 msgid "Show System Summary"
-msgstr ""
+msgstr "Show System Summary"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:289
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:290
+#, fuzzy
 msgid "Check Data Integrity"
-msgstr ""
+msgstr "Check Data Integrity"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:300
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:302
@@ -7081,12 +7215,12 @@ msgstr "Parādīt pētījumus"
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:311
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:312
 msgid "Backup Entire Database"
-msgstr ""
+msgstr "Izveidot visas datubāzes kopiju"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:353
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:355
 msgid "Logout"
-msgstr ""
+msgstr "Atslēgties"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:363
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:364
@@ -7099,8 +7233,9 @@ msgid "Array (Flexible Labels) Dual Scale"
 msgstr "Array (Flexible Labels) Dual Scale"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:775
+#, fuzzy
 msgid "5 Point Choice"
-msgstr "5 punktu izvēle"
+msgstr "5 Point Choice"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:776
 #, fuzzy
@@ -7220,7 +7355,7 @@ msgstr "List (Dropdown)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1174
 msgid "It appears as if some tables or fields are missing from your database."
-msgstr "Izskatās, ka atsevišākas tabulas vai lauki nav iekļauti datubāzē."
+msgstr "Šķiet, ka atsevišķas tabulas vai lauki nav iekļauti datubāzē."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1176
 msgid "Check Database Fields"
@@ -7236,7 +7371,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1436
 msgid "Export Results to Application"
-msgstr ""
+msgstr "Rezultātu eksportēšana uz programmu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1441
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1443
@@ -7245,7 +7380,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1447
 msgid "Import answers from a deactivated survey table"
-msgstr ""
+msgstr "Importēt atbildes no deaktivizēta pētījuma tabulas"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1531
 msgid "Preset"
@@ -7269,7 +7404,7 @@ msgstr "Šajā pētījumā ir {NUMBEROFQUESTIONS} jautājumi."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2233
 msgid "A Note On Privacy"
-msgstr ""
+msgstr "Privātuma paziņojums"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2233
 msgid "This survey is anonymous."
@@ -7281,7 +7416,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2243
 msgid "Are you sure you want to clear all your responses?"
-msgstr ""
+msgstr "Vai Jūs tiešām vēlaties izdzēst savas atbildes?"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2244
 msgid "Exit and Clear Survey"
@@ -7330,7 +7465,7 @@ msgstr "Pētījums tiks saglabāts ar norādīto vārdu un paroli un Jūs to var
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2342
 msgid "If you give an email address, an email containing the details will be sent to you."
-msgstr "Ja Jūs norādīsiet derīgu e-pasta adresi, e-pasts ar detaļām Jums tiks nosūtīts."
+msgstr "Ja Jūs norādīsiet derīgu e-pasta adresi, Jums tiks nosūtīts e-pasts ar papildus informāciju."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2350
 msgid "Return To Survey"
@@ -7338,7 +7473,7 @@ msgstr "Atgreizties uz pētījumu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2361
 msgid "Repeat Password"
-msgstr ""
+msgstr "Atkārtot paroli"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2364
 msgid "Your Email"
@@ -7374,17 +7509,19 @@ msgstr "Ja Jūs vēlaties piedalīties šajā pētījumā, Jums ir nepieciešams
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2400
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
-msgstr ""
+msgstr "Ludzu zemāk ievadīt informāciju par sevi un Jums tiks nosūtīts e-pasts, kādā veidā Jūs varat piedalīties pētījumā."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2472
 msgid "Your Assessment"
 msgstr "Jūsu vērtējums"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2796
+#, fuzzy
 msgid "Online Manual"
 msgstr "Online Manual"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2799
+#, fuzzy
 msgid "Support this project - Donate to "
 msgstr "Support this project - Donate to "
 
@@ -7403,7 +7540,7 @@ msgstr "Local Submission"
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:3225
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:3230
 msgid "Executing"
-msgstr ""
+msgstr "Izpilda"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:3225
 msgid "Failed! Reason: "
