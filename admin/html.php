@@ -2243,7 +2243,8 @@ if ($action == "editsurvey")
 
 			//TEMPLATES
 			$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Template:")."</span>\n"
-			. "\t\t<span class='settingentry'><select name='template'>\n";
+			. "\t\t<span class='settingentry'><select name='template'  "
+            . " onkeyup='this.onchange();' onchange='document.getElementById(\"preview\").src=\"".$publicurl."/templates/\"+this.value+\"/preview.png\";'>\n";
 			foreach (gettemplatelist() as $tname)
 			{
 				
@@ -2256,8 +2257,13 @@ if ($action == "editsurvey")
                 }
 
 			}
-			$editsurvey .= "\t\t</select></span>\n"
-			. "\t</div>\n";
+			$editsurvey .= "\t\t</select> </span>\n"
+            . "\t</div>\n";
+            
+            $editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Template Preview:")."</span>\n"
+            . "\t\t<span class='settingentry'><img id='preview' src='$publicurl/templates/{$esrow['template']}/preview.png'>\n"
+            . "</span>\n"
+            . "\t</div>\n";
 
 			//ALLOW SAVES
 			$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Allow Saves?")."</span>\n"

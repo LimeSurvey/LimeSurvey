@@ -221,7 +221,7 @@ if ($action == "templatezip") {
 }
 
 
-$normalfiles=array("DUMMYENTRY", ".", "..");
+$normalfiles=array("DUMMYENTRY", ".", "..", "preview.png");
 foreach ($files as $fl) {
 	$normalfiles[]=$fl["name"];
 }
@@ -738,6 +738,7 @@ unlink_wc($tempdir, "template_temp_*.html"); //Delete any older template files
 $time=date("ymdHis");
 $fnew=fopen("$tempdir/template_temp_$time.html", "w+");
 fwrite ($fnew, getHeader());
+$myoutput=str_replace($templatename.'.css',$templatename.".css?t=$time",$myoutput);
 foreach($myoutput as $line) {
 	fwrite($fnew, $line);
 }
