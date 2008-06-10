@@ -57,7 +57,6 @@ $thissurvey['active']='N';
 $file_version="LimeSurvey Template Editor ".$versionnumber;
 $_SESSION['s_lang']=$_SESSION['adminlang'];
 
-
 if (!isset($templatename)) {$templatename = sanitize_paranoid_string(returnglobal('templatename'));}
 if (!isset($templatedir)) {$templatedir = sanitize_paranoid_string(returnglobal('templatedir'));}
 if (!isset($editfile)) {$editfile = sanitize_paranoid_string(returnglobal('editfile'));}
@@ -70,6 +69,10 @@ if (!isset($action)) {$action=sanitize_paranoid_string(returnglobal('action'));}
 if (!isset($otherfile)) {$otherfile = sanitize_paranoid_string(returnglobal('otherfile'));}
 if (!isset($newname)) {$newname = sanitize_paranoid_string(returnglobal('newname'));}
 if (!isset($copydir)) {$copydir = sanitize_paranoid_string(returnglobal('copydir'));}
+
+
+if (file_exists($publicdir."/templates/".$templatename."/".$templatename.".css")) { $files[]=array("name"=>$templatename.".css"); }
+
 
 if (isset ($_POST['changes'])) {
 	    $changedtext=$_POST['changes'];
@@ -222,6 +225,8 @@ $normalfiles=array("DUMMYENTRY", ".", "..");
 foreach ($files as $fl) {
 	$normalfiles[]=$fl["name"];
 }
+if (file_exists($publicdir."/templates/".$templatename."/".$templatename.".css")) { $normalfiles[]=$templatename.".css"; }
+
 
 
 //Page Display Instructions
@@ -303,6 +308,7 @@ $addbr=false;
 switch($screenname) {
     case $clang->gT("Survey List Page", "unescaped"):
 	unset($files);
+
 	$list[]="<li class='surveytitle'><a href='#'>Survey Number 1</a></li>\n";
 	$list[]="<li class='surveytitle'><a href='#'>Survey Number 2</a></li>\n";
 
@@ -318,6 +324,8 @@ switch($screenname) {
 		$files[]=array("name"=>$qs);
 		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/$qs"));
 	}
+    if (file_exists($publicdir."/templates/".$templatename."/".$templatename.".css")) { $files[]=array("name"=>$templatename.".css"); }
+
     break;
 
 	case $clang->gT("Question Page", "unescaped"):
@@ -348,6 +356,8 @@ switch($screenname) {
 	$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/endgroup.pstpl"));
 	$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/navigator.pstpl"));
 	$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/endpage.pstpl"));
+    if (file_exists($publicdir."/templates/".$templatename."/".$templatename.".css")) { $files[]=array("name"=>$templatename.".css"); }
+    
 	break;
 	case $clang->gT("Welcome Page", "unescaped"):
 	unset($files);
@@ -356,7 +366,9 @@ switch($screenname) {
 		$files[]=array("name"=>$qs);
 		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/$qs"));
 	}
+    if (file_exists($publicdir."/templates/".$templatename."/".$templatename.".css")) { $files[]=array("name"=>$templatename.".css"); }
 	break;
+
 	case $clang->gT("Register Page", "unescaped"):
 	unset($files);
 	foreach($Register as $qs) {
@@ -379,7 +391,9 @@ switch($screenname) {
 		$myoutput[]=templatereplace($op);
 	}
 	$myoutput[]= "\n";
+    if (file_exists($publicdir."/templates/".$templatename."/".$templatename.".css")) { $files[]=array("name"=>$templatename.".css"); }
 	break;
+
 	case $clang->gT("Save Page", "unescaped"):
 	unset($files);
 	foreach($Save as $qs) {
@@ -398,7 +412,9 @@ switch($screenname) {
 		$myoutput[]=templatereplace($op);
 	}
 	$myoutput[]= "\n";
+    if (file_exists($publicdir."/templates/".$templatename."/".$templatename.".css")) { $files[]=array("name"=>$templatename.".css"); }
 	break;
+
 	case $clang->gT("Load Page", "unescaped"):
 	unset($files);
 	foreach($Load as $qs) {
@@ -417,7 +433,9 @@ switch($screenname) {
 		$myoutput[]=templatereplace($op);
 	}
 	$myoutput[]= "\n";
+    if (file_exists($publicdir."/templates/".$templatename."/".$templatename.".css")) { $files[]=array("name"=>$templatename.".css"); }
 	break;
+
 	case $clang->gT("Clear All Page", "unescaped"):
 	unset($files);
 	foreach ($Clearall as $qs) {
@@ -436,7 +454,9 @@ switch($screenname) {
 		$myoutput[]=templatereplace($op);
 	}
 	$myoutput[]= "\n";
+    if (file_exists($publicdir."/templates/".$templatename."/".$templatename.".css")) { $files[]=array("name"=>$templatename.".css"); }
 	break;
+
 	case $clang->gT("Completed Page", "unescaped"):
 	unset($files);
 	$myoutput[]="";
@@ -444,6 +464,7 @@ switch($screenname) {
 		$files[]=array("name"=>$qs);
 		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/$qs"));
 	}
+    if (file_exists($publicdir."/templates/".$templatename."/".$templatename.".css")) { $files[]=array("name"=>$templatename.".css"); }
 	break;
 
 
@@ -465,6 +486,7 @@ switch($screenname) {
         $myoutput[]=templatereplace($op);
     }
     $myoutput[]= "\n";
+    if (file_exists($publicdir."/templates/".$templatename."/".$templatename.".css")) { $files[]=array("name"=>$templatename.".css"); }
     break;
 }
 $myoutput[]="</html>";

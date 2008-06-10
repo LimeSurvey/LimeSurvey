@@ -1,0 +1,133 @@
+body {
+font-size:8pt;
+font-family:verdana;
+}
+
+.answertextright {
+text-align:left;
+}
+
+.clearall {
+font-size:7pt;
+}
+
+.clearall
+A:hover {
+text-decoration:underline;
+font-family:verdana;
+color:#F60;
+}
+
+.submit {
+background-color:#007000;
+color:#EFEFEF;
+border-color:#0B0 #111 #111 #0B0;
+}
+
+.rank {
+border:solid;
+background-color:#DFD;
+font-family:verdana;
+font-size:8pt;
+border-color:#AAA;
+border-width:1px;
+}
+
+.graph {
+border:outset;
+background-color:#CFC;
+border-color:#030;
+border-width:1px;
+}
+
+.array1 {
+background-color:#DFD;
+}
+
+.array2 {
+background-color:#EFE;
+}
+
+.warningjs {
+font-size:12px;
+font-weight:700;
+color:RED;
+}
+
+.asterisk {
+color:red;
+font-size:9pt;
+font-family:verdana;
+}
+
+.questionhelp {
+font-size:10px;
+font-style:italic;
+}
+
+.innergraph img {
+height:12px;
+vertical-align:top;
+}
+
+.innergraph table {
+height:12px;
+border:1px solid #000;
+table-layout:fixed !important;
+}
+
+.innergraph td {
+height:12px;
+}
+
+.printouttable {
+width:100%;
+}
+
+.printouttable td {
+border-color:#fff #fff #ddf;
+border-style:solid;
+border-width:1px;
+}
+
+.printouttable td:first-child {
+background-color:#ddf;
+font-weight:700;
+text-align:right;
+padding-right:5px;
+padding-left:5px;
+}
+
+.printouttitle {
+padding-right:5px;
+padding-left:5px;
+font-size:18px;
+}
+
+.surveytitle {
+font-size:1.2em;
+height:1.5em;
+}
+
+.languagechanger {
+font-size:1em;
+}
+
+.clearall
+A:link,.clearall
+A:visited,.clearall
+A:active {
+text-decoration:none;
+font-family:verdana;
+color:#F60;
+}
+
+.select,.text,.textarea {
+font-family:verdana;
+font-size:9pt;
+color:#030;
+}
+
+table.question tr.array1:hover,table.question tr.array2:hover {
+background-color:#A7A9D1;
+}

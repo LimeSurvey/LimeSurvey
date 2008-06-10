@@ -1,0 +1,173 @@
+body {
+color:#444;
+background-color:#B7B7B7;
+font-family:arial;
+font-size:9pt;
+}
+
+.answertextright {
+text-align:left;
+}
+
+.submit {
+background-color:#CCF;
+font-size:9pt;
+font-family:arial;
+}
+
+.text {
+background-color:#EFEFEF;
+color:#777;
+font-size:9pt;
+font-family:arial;
+}
+
+.select {
+background-color:#EFEFEF;
+color:#555;
+font-family:arial;
+font-size:9pt;
+}
+
+.textarea {
+background-color:#EFEFEF;
+color:#666;
+font-size:9pt;
+font-family:arial;
+width:400px;
+}
+
+.clearall {
+font-size:7pt;
+}
+
+.clearall
+A:link {
+text-decoration:none;
+font-family:arial;
+color:#555;
+}
+
+.clearall
+A:visited {
+text-decoration:none;
+font-family:arial;
+color:#666;
+}
+
+.clearall
+A:active {
+text-decoration:none;
+font-family:arial;
+color:#EEE;
+}
+
+.clearall
+A:hover {
+text-decoration:underline;
+font-family:arial;
+color:#222;
+}
+
+.graph {
+border:solid;
+background-color:EFEFEF;
+border-color:#777;
+border-width:1px;
+}
+
+.innergraph {
+background-color:EFEFEF;
+color:#777;
+font-family:arial;
+font-size:8pt;
+}
+
+.array1 {
+background-color:#D1D1D1;
+color:#777;
+text-alignment:left;
+}
+
+.array2 {
+background-color:#EFEFEF;
+color:#777;
+}
+
+.questionhelp {
+font-size:10px;
+font-style:italic;
+}
+
+.warningjs {
+font-size:12px;
+font-weight:700;
+color:RED;
+}
+
+.asterisk {
+color:red;
+font-size:9pt;
+font-family:verdana;
+}
+
+.innergraph img {
+height:12px;
+vertical-align:top;
+}
+
+.innergraph table {
+height:12px;
+border:1px solid #000;
+table-layout:fixed !important;
+}
+
+.innergraph td {
+height:12px;
+}
+
+.printouttable {
+width:100%;
+}
+
+.printouttable td {
+border-color:#fff #fff #ddf;
+border-style:solid;
+border-width:1px;
+}
+
+.printouttable td:first-child {
+background-color:#ddf;
+font-weight:700;
+text-align:right;
+padding-right:5px;
+padding-left:5px;
+}
+
+.printouttitle {
+padding-right:5px;
+padding-left:5px;
+font-size:18px;
+}
+
+.surveytitle {
+font-size:1.2em;
+height:1.5em;
+}
+
+.surveytitle:hover {
+background-color:#F0F0F0;
+}
+
+.languagechanger {
+font-size:1em;
+}
+
+.rank,.question {
+background-color:#E1E1E1;
+color:#777;
+}
+
+table.question tr.array1:hover,table.question tr.array2:hover {
+background-color:#A7A9D1;
+}

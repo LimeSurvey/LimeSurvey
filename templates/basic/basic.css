@@ -1,0 +1,108 @@
+body {
+font-family:arial, verdana, sans-serif;
+font-size:14px;
+line-height:17px;
+background-color:#999;
+}
+
+table.question {
+border:1px;
+border-color:#aaa;
+}
+
+td {
+font-family:arial, verdana, sans-serif;
+font-size:14px;
+line-height:17px;
+}
+
+td.tenpoint {
+font-size:12px;
+line-height:15px;
+}
+
+.answertextright {
+text-align:left;
+}
+
+.b3 {
+background-color:#333;
+}
+
+.b9 {
+background-color:#999;
+}
+
+.ba {
+background-color:#aaa;
+}
+
+.bd {
+background-color:#ddd;
+}
+
+.asterisk {
+color:red;
+font-size:9pt;
+font-family:verdana;
+}
+
+.questionhelp {
+font-size:10px;
+font-style:italic;
+}
+
+.innergraph {
+font-family:verdana;
+font-size:10pt;
+}
+
+.innergraph img {
+height:12px;
+vertical-align:top;
+}
+
+.innergraph table {
+height:12px;
+border:1px solid #000;
+table-layout:fixed !important;
+}
+
+.innergraph td {
+height:12px;
+}
+
+.surveytitle {
+font-size:1.2em;
+height:1.5em;
+}
+
+.surveytitle:hover {
+background-color:#F0F0F0;
+}
+
+.languagechanger {
+font-size:1em;
+}
+
+table,img {
+border:0;
+}
+
+.be,.array1 {
+background-color:#eee;
+}
+
+.bf,.array2 {
+background-color:#fff;
+}
+
+.errormandatory,.warningjs {
+font-size:13px;
+font-weight:700;
+color:red;
+}
+
+table.question tr.array1:hover,table.question tr.array2:hover {
+background-color:#A7A9D1;
+}
