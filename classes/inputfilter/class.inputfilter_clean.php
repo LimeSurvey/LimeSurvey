@@ -43,78 +43,208 @@ class InputFilter {
 		}
 		return $source;
 	}	
-	function filterTags($source) {
-		$preTag = NULL;
-		$postTag = $source;
-		$tagOpen_start = strpos($source, '<');
-		while($tagOpen_start !== FALSE) {
-			$preTag .= substr($postTag, 0, $tagOpen_start);
-			$postTag = substr($postTag, $tagOpen_start);
-			$fromTagOpen = substr($postTag, 1);
-			$tagOpen_end = strpos($fromTagOpen, '>');
-			if ($tagOpen_end === false) break;
-			$tagOpen_nested = strpos($fromTagOpen, '<');
-			if (($tagOpen_nested !== false) && ($tagOpen_nested < $tagOpen_end)) {
-				$preTag .= substr($postTag, 0, ($tagOpen_nested+1));
-				$postTag = substr($postTag, ($tagOpen_nested+1));
-				$tagOpen_start = strpos($postTag, '<');
-				continue;
-			} 
-			$tagOpen_nested = (strpos($fromTagOpen, '<') + $tagOpen_start + 1);
-			$currentTag = substr($fromTagOpen, 0, $tagOpen_end);
-			$tagLength = strlen($currentTag);
-			if (!$tagOpen_end) {
-				$preTag .= $postTag;
-				$tagOpen_start = strpos($postTag, '<');			
-			}
-			$tagLeft = $currentTag;
-			$attrSet = array();
-			$currentSpace = strpos($tagLeft, ' ');
-			if (substr($currentTag, 0, 1) == "/") {
-				$isCloseTag = TRUE;
-				list($tagName) = explode(' ', $currentTag);
-				$tagName = substr($tagName, 1);
-			} else {
-				$isCloseTag = FALSE;
-				list($tagName) = explode(' ', $currentTag);
-			}		
-			if ((!preg_match("/^[a-z][a-z0-9]*$/i",$tagName)) || (!$tagName) || ((in_array(strtolower($tagName), $this->tagBlacklist)) && ($this->xssAuto))) { 				
-				$postTag = substr($postTag, ($tagLength + 2));
-				$tagOpen_start = strpos($postTag, '<');
-				continue;
-			}
-			while ($currentSpace !== FALSE) {
-				$fromSpace = substr($tagLeft, ($currentSpace+1));
-				$nextSpace = strpos($fromSpace, ' ');
-				$openQuotes = strpos($fromSpace, '"');
-				$closeQuotes = strpos(substr($fromSpace, ($openQuotes+1)), '"') + $openQuotes + 1;
-				if (strpos($fromSpace, '=') !== FALSE) {
-					if (($openQuotes !== FALSE) && (strpos(substr($fromSpace, ($openQuotes+1)), '"') !== FALSE))
-						$attr = substr($fromSpace, 0, ($closeQuotes+1));
-					else $attr = substr($fromSpace, 0, $nextSpace);
-				} else $attr = substr($fromSpace, 0, $nextSpace);
-				if (!$attr) $attr = $fromSpace;
-				$attrSet[] = $attr;
-				$tagLeft = substr($fromSpace, strlen($attr));
-				$currentSpace = strpos($tagLeft, ' ');
-			}
-			$tagFound = in_array(strtolower($tagName), $this->tagsArray);			
-			if ((!$tagFound && $this->tagsMethod) || ($tagFound && !$this->tagsMethod)) {
-				if (!$isCloseTag) {
-					$attrSet = $this->filterAttr($attrSet);
-					$preTag .= '<' . $tagName;
-					for ($i = 0; $i < count($attrSet); $i++)
-						$preTag .= ' ' . $attrSet[$i];
-					if (strpos($fromTagOpen, "</" . $tagName)) $preTag .= '>';
-					else $preTag .= ' />';
-			    } else $preTag .= '</' . $tagName . '>';
-			}
-			$postTag = substr($postTag, ($tagLength + 2));
-			$tagOpen_start = strpos($postTag, '<');			
-		}
-		$preTag .= $postTag;
-		return $preTag;
-	}
+    
+    function filterTags($source)
+    {
+        /*
+         * In the beginning we don't really have a tag, so everything is
+         * postTag
+         */
+        $preTag        = null;
+        $postTag    = $source;
+
+        /*
+         * Is there a tag? If so it will certainly start with a '<'
+         */
+        $tagOpen_start    = strpos($source, '<');
+
+        while ($tagOpen_start !== false)
+        {
+
+            /*
+             * Get some information about the tag we are processing
+             */
+            $preTag           .= substr($postTag, 0, $tagOpen_start);
+            $postTag        = substr($postTag, $tagOpen_start);
+            $fromTagOpen    = substr($postTag, 1);
+            $tagOpen_end    = strpos($fromTagOpen, '>');
+
+            /*
+             * Let's catch any non-terminated tags and skip over them
+             */
+            if ($tagOpen_end === false)
+            {
+                $postTag        = substr($postTag, $tagOpen_start +1);
+                $tagOpen_start    = strpos($postTag, '<');
+                continue;
+            }
+
+            /*
+             * Do we have a nested tag?
+             */
+            $tagOpen_nested = strpos($fromTagOpen, '<');
+            $tagOpen_nested_end    = strpos(substr($postTag, $tagOpen_end), '>');
+            if (($tagOpen_nested !== false) && ($tagOpen_nested < $tagOpen_end))
+            {
+                $preTag           .= substr($postTag, 0, ($tagOpen_nested +1));
+                $postTag        = substr($postTag, ($tagOpen_nested +1));
+                $tagOpen_start    = strpos($postTag, '<');
+                continue;
+            }
+
+
+            /*
+             * Lets get some information about our tag and setup attribute pairs
+             */
+            $tagOpen_nested    = (strpos($fromTagOpen, '<') + $tagOpen_start +1);
+            $currentTag        = substr($fromTagOpen, 0, $tagOpen_end);
+            $tagLength        = strlen($currentTag);
+            $tagLeft        = $currentTag;
+            $attrSet        = array ();
+            $currentSpace    = strpos($tagLeft, ' ');
+
+            /*
+             * Are we an open tag or a close tag?
+             */
+            if (substr($currentTag, 0, 1) == "/")
+            {
+                // Close Tag
+                $isCloseTag        = true;
+                list ($tagName)    = explode(' ', $currentTag);
+                $tagName        = substr($tagName, 1);
+            } else
+            {
+                // Open Tag
+                $isCloseTag        = false;
+                list ($tagName)    = explode(' ', $currentTag);
+            }
+
+            /*
+             * Exclude all "non-regular" tagnames
+             * OR no tagname
+             * OR remove if xssauto is on and tag is blacklisted
+             */
+            if ((!preg_match("/^[a-z][a-z0-9]*$/i", $tagName)) || (!$tagName) || ((in_array(strtolower($tagName), $this->tagBlacklist)) && ($this->xssAuto)))
+            {
+                $postTag        = substr($postTag, ($tagLength +2));
+                $tagOpen_start    = strpos($postTag, '<');
+                // Strip tag
+                continue;
+            }
+
+            /*
+             * Time to grab any attributes from the tag... need this section in
+             * case attributes have spaces in the values.
+             */
+            while ($currentSpace !== false)
+            {
+                $fromSpace        = substr($tagLeft, ($currentSpace +1));
+                $nextSpace        = strpos($fromSpace, ' ');
+                $openQuotes        = strpos($fromSpace, '"');
+                $closeQuotes    = strpos(substr($fromSpace, ($openQuotes +1)), '"') + $openQuotes +1;
+
+                /*
+                 * Do we have an attribute to process? [check for equal sign]
+                 */
+                if (strpos($fromSpace, '=') !== false)
+                {
+                    /*
+                     * If the attribute value is wrapped in quotes we need to
+                     * grab the substring from the closing quote, otherwise grab
+                     * till the next space
+                     */
+                    if (($openQuotes !== false) && (strpos(substr($fromSpace, ($openQuotes +1)), '"') !== false))
+                    {
+                        $attr = substr($fromSpace, 0, ($closeQuotes +1));
+                    } else
+                    {
+                        $attr = substr($fromSpace, 0, $nextSpace);
+                    }
+                } else
+                {
+                    /*
+                     * No more equal signs so add any extra text in the tag into
+                     * the attribute array [eg. checked]
+                     */
+                    $attr = substr($fromSpace, 0, $nextSpace);
+                }
+
+                // Last Attribute Pair
+                if (!$attr)
+                {
+                    $attr = $fromSpace;
+                }
+
+                /*
+                 * Add attribute pair to the attribute array
+                 */
+                $attrSet[] = $attr;
+
+                /*
+                 * Move search point and continue iteration
+                 */
+                $tagLeft        = substr($fromSpace, strlen($attr));
+                $currentSpace    = strpos($tagLeft, ' ');
+            }
+
+            /*
+             * Is our tag in the user input array?
+             */
+            $tagFound = in_array(strtolower($tagName), $this->tagsArray);
+
+            /*
+             * If the tag is allowed lets append it to the output string
+             */
+            if ((!$tagFound && $this->tagsMethod) || ($tagFound && !$this->tagsMethod))
+            {
+                /*
+                 * Reconstruct tag with allowed attributes
+                 */
+                if (!$isCloseTag)
+                {
+                    // Open or Single tag
+                    $attrSet = $this->filterAttr($attrSet);
+                    $preTag .= '<'.$tagName;
+                    for ($i = 0; $i < count($attrSet); $i ++)
+                    {
+                        $preTag .= ' '.$attrSet[$i];
+                    }
+
+                    /*
+                     * Reformat single tags to XHTML
+                     */
+                    if (strpos($fromTagOpen, "</".$tagName))
+                    {
+                        $preTag .= '>';
+                    } else
+                    {
+                        $preTag .= ' />';
+                    }
+                } else
+                {
+                    // Closing Tag
+                    $preTag .= '</'.$tagName.'>';
+                }
+            }
+
+            /*
+             * Find next tag's start and continue iteration
+             */
+            $postTag        = substr($postTag, ($tagLength +2));
+            $tagOpen_start    = strpos($postTag, '<');
+            //print "T: $preTag\n";
+        }
+
+        /*
+         * Append any code after the end of tags and return
+         */
+        if ($postTag != '<')
+        {
+            $preTag .= $postTag;
+        }
+        return $preTag;
+    }
+    
 	function filterAttr($attrSet) {	
 		$newSet = array();
 		for ($i = 0; $i <count($attrSet); $i++) {
@@ -139,6 +269,11 @@ class InputFilter {
 				if ((substr($attrSubSet[1], 0, 1) == "'") && (substr($attrSubSet[1], (strlen($attrSubSet[1]) - 1), 1) == "'"))
 					$attrSubSet[1] = substr($attrSubSet[1], 1, (strlen($attrSubSet[1]) - 2));
 				$attrSubSet[1] = stripslashes($attrSubSet[1]);
+                if (strtolower($attrSubSet[0])=='style')
+                {
+                    $attrSubSet[1]=$this->__remove_css_comments($attrSubSet[1]);
+                }
+                
 			}
 			if (	((strpos(strtolower($attrSubSet[1]), 'expression') !== false) &&	(strtolower($attrSubSet[0]) == 'style')) ||
 					(strpos(strtolower($attrSubSet[1]), 'javascript:') !== false) ||
@@ -181,5 +316,62 @@ class InputFilter {
 		else mysql_real_escape_string($string);
 		return $string;
 	}
+    
+     function __remove_css_comments($code)  
+     {  
+         $mq = $sq = $mc = $sc = false;  
+         $output = "";  
+         for($i = 0; $i < strlen($code); $i++)  
+         {  
+             $l = $code{$i};  
+             $n = $i+1;  
+             if ($n<strlen($code))
+             {
+                          $ll = $code{$i}.$code{$n};  
+             }
+       
+             switch($l)  
+             {  
+                 case "\n":  
+                     $sc = false;  
+                 break;  
+                 case "/":  
+                     if($code{$n} == "/")  
+                     {  
+                         if(!$sc && !$mc && !$sq && !$mq)  
+                             $sc = true;  
+                         $i++;  
+                     }  
+                     else if($code{$n} == "*")  
+                     {  
+                         if(!$sc && !$mc && !$sq && !$mq)  
+                             $mc = true;  
+                         $i++;  
+                     }  
+                     continue 2;  
+                 break;  
+                 case "'":  
+                     if(!$sc && !$mc && !$mq)  
+                         $sq = !$sq;  
+                 break;  
+                 case "\"":  
+                     if(!$sc && !$mc && !$sq)  
+                         $mq = !$mq;  
+                 break;  
+                 case "*":  
+                     if($code{$n} == "/")  
+                     {  
+                         if(!$sc && !$sq && !$mq)  
+                             $mc = false;  
+                         $i++;  
+                     }  
+                     continue 2;  
+                 break;  
+             }  
+             if(!$sc && !$mc)  
+                 $output .= $l;  
+         }  
+         return $output;  
+     }      
 }
 ?>

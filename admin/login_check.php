@@ -66,7 +66,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
 		$hidden_loginlang = '';
 		if (isset($_POST['lang']) && $_POST['lang'])
 		{
-			$hidden_loginlang = "<input type='hidden' name='loginlang' value='".$_POST['lang']."' />";
+			$hidden_loginlang = "<input type='hidden' name='loginlang' value='".sanitize_languagecode($_POST['lang'])."' />";
 		}
         
 		if (!isset($logoutsummary))
