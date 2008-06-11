@@ -2025,7 +2025,7 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 			$fn2 = $fieldname."comment";
 			$_SESSION['insertarray'][] = $fn2;
 		}
-		elseif ($arow['type'] == "L" || $arow['type'] == "!")	// List (Radio) - List (Dropdown)
+		elseif ($arow['type'] == "L" || $arow['type'] == "!" || $arow['type'] == "Z" || $arow['type'] == "L")	// List (Radio) - List (Dropdown)
 		{
 			$_SESSION['insertarray'][] = $fieldname;
 			if ($arow['other'] == "Y") { $_SESSION['insertarray'][] = $fieldname."other";}

@@ -112,7 +112,7 @@ if (!$style)
 		{
 			$excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid'];
 		}
-		if ($rows['other']=="Y" && (($rows['type']=='M') || ($rows['type']=='!')|| ($rows['type']=='L')|| ($rows['type']=='P')))
+		if ($rows['other']=="Y" && ($rows['type']=='M' || $rows['type']=='!'|| $rows['type']=='L' || $rows['type']=='P' || $rows['type'] == "Z" || $rows['type'] == "W"))
 		{
 			$excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid']."other";
 		}

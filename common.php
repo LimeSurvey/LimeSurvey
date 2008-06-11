@@ -1875,8 +1875,10 @@ function createFieldMap($surveyid, $style="null") {
 			$counter++;
 			switch($arow['type'])
 			{
-				case "L":  //DROPDOWN LIST
-				case "!":
+				case "L":  //RADIO LIST
+				case "!":  //DROPDOWN LIST
+				case "W":  //FLEXIBLE DROPDOWN LIST
+				case "Z":  //FLEXIBLE RADIO LIST
 				if ($arow['other'] == "Y")
 				{
 					$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other",
@@ -2664,6 +2666,9 @@ function questionAttributes()
 	$qattributes[]=array("name"=>"dropdown_separators",
 	"types"=>"1",
 	"help"=>"Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists");
+	$qattributes[]=array("name"=>"other_replace_text",
+	"types"=>"LMPWZ!",
+	"help"=>"Replaces the 'other' label with text");
 	/* -- > Commented out since not yet used
     $qattributes[]=array("name"=>"permission",
     "types"=>"5DGL!OMPQNRSTUYABCEFHWZ",

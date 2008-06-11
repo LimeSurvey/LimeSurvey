@@ -754,6 +754,14 @@ function do_list_dropdown($ia)
 	global $dbprefix,  $dropdownthreshold, $lwcdropdowns, $connect;
 	global $shownoanswer, $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
+	if ($othertexts=arraySearchByKey("other_replace_text", $qidattributes, "attribute", 1))
+	{
+		$othertext=$othertexts['value'];
+	}
+	else
+	{
+		$othertext=$clang->gT("Other");
+	}
 	$answer="";
 	if (isset($defexists)) {unset ($defexists);}
 	$query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
@@ -790,7 +798,7 @@ function do_list_dropdown($ia)
 		{
 			$answer .= " selected='selected'";
 		}
-		$answer .= ">".$clang->gT("Other")."</option>\n";
+		$answer .= ">".$othertext."</option>\n";
 	}
 	if ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != "") && (!isset($defexists) || !$defexists) && $ia[6] != "Y" && $shownoanswer == 1) {$answer .= "\t\t\t\t\t\t<option value=' '>".$clang->gT("No answer")."</option>\n";}
 	$answer .= "\t\t\t\t\t</select>\n";
@@ -850,6 +858,14 @@ function do_list_flexible_dropdown($ia)
 	global $dbprefix, $dropdownthreshold, $lwcdropdowns, $connect;
 	global $shownoanswer, $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
+	if ($othertexts=arraySearchByKey("other_replace_text", $qidattributes, "attribute", 1))
+	{
+		$othertext=$othertexts['value'];
+	}
+	else
+	{
+		$othertext=$clang->gT("Other");
+	}
 	$answer="";
 	$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);  //Checked
@@ -893,7 +909,7 @@ function do_list_flexible_dropdown($ia)
 			{
 				$answer .= " selected='selected'";
 			}
-			$answer .= ">".$clang->gT("Other")."</option>\n";
+			$answer .= ">".$othertext."</option>\n";
 		}
 		if ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != "") && (!isset($defexists) || !$defexists) && $ia[6] != "Y" && $shownoanswer == 1) {$answer .= "\t\t\t\t\t\t<option value=' '>".$clang->gT("No answer")."</option>\n";}
 		$answer .= "\t\t\t\t\t</select>\n";
@@ -957,6 +973,14 @@ function do_list_radio($ia)
 	{
 		$dcols=0;
 	}
+	if ($othertexts=arraySearchByKey("other_replace_text", $qidattributes, "attribute", 1))
+	{
+		$othertext=$othertexts['value'];
+	}
+	else
+	{
+		$othertext=$clang->gT("Other");
+	}
 	if (isset($defexists)) {unset ($defexists);}
 	$query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
 	$result = db_execute_assoc($query);  //Checked
@@ -1015,7 +1039,7 @@ function do_list_radio($ia)
 			$answer .= " checked='checked'";
 		}
 		// --> START NEW FEATURE - SAVE
-		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' /><label for='SOTH$ia[1]' class='answertext'>".$clang->gT("Other")."</label>\n";
+		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' /><label for='SOTH$ia[1]' class='answertext'>".$othertext."</label>\n";
 		// --> END NEW FEATURE - SAVE
 
 		$answer .= "<label for='answer$ia[1]othertext'><input type='text' class='text' id='answer$ia[1]othertext' name='$ia[1]other' size='20' title='".$clang->gT("Other")."' ";
@@ -1056,6 +1080,14 @@ function do_list_flexible_radio($ia)
 	global $shownoanswer, $clang;
 	$answer="";
 	$qidattributes=getQuestionAttributes($ia[0]);
+	if ($othertexts=arraySearchByKey("other_replace_text", $qidattributes, "attribute", 1))
+	{
+		$othertext=$othertexts['value'];
+	}
+	else
+	{
+		$othertext=$clang->gT("Other");
+	}
 	if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
 	{
 		$dcols=$displaycols['value'];
@@ -1139,7 +1171,7 @@ function do_list_flexible_radio($ia)
 			$answer .= " checked='checked'";
 		}
 		// --> START NEW FEATURE - SAVE
-		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' /><label for='SOTH$ia[1]' class='answertext'>".$clang->gT("Other")."</label>\n";
+		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' /><label for='SOTH$ia[1]' class='answertext'>".$othertext."</label>\n";
 		// --> END NEW FEATURE - SAVE
 
 		$answer .= "<label for='answer$ia[1]othertext'><input type='text' class='text' id='answer$ia[1]othertext' name='$ia[1]other' size='20' title='".$clang->gT("Other")."' ";
@@ -1518,6 +1550,14 @@ function do_multiplechoice($ia)
 {
 	global $dbprefix, $clang, $connect;
 	$qidattributes=getQuestionAttributes($ia[0]);
+	if ($othertexts=arraySearchByKey("other_replace_text", $qidattributes, "attribute", 1))
+	{
+		$othertext=$othertexts['value'];
+	}
+	else
+	{
+		$othertext=$clang->gT("Other");
+	}
 	if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
 	{
 		$dcols=$displaycols['value'];
@@ -1649,7 +1689,7 @@ function do_multiplechoice($ia)
 		$answer .= "\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='{$myfname}cbox' id='{$myfname}cbox'";
 		if (isset($_SESSION[$myfname]) && trim($_SESSION[$myfname])!='') {$answer .= " checked='checked'";}
 		$answer .= " onchange='".$callmaxanswscriptcheckbox."document.getElementById(\"answer$myfname\").value=\"\"'  />";
-		$answer .= "\t\t\t\t\t\t<label for='answer$myfname' class='answertext'>".$clang->gT("Other").":</label> <input class='text' type='text' name='$myfname' id='answer$myfname'";
+		$answer .= "\t\t\t\t\t\t<label for='answer$myfname' class='answertext'>".$othertext.":</label> <input class='text' type='text' name='$myfname' id='answer$myfname'";
 		if (isset($_SESSION[$myfname])) {$answer .= " value='".htmlspecialchars($_SESSION[$myfname],ENT_QUOTES)."'";}
 		// --> START NEW FEATURE - SAVE
 		$answer .= " onkeypress='document.getElementById(\"{$myfname}cbox\").checked=true;' ".$callmaxanswscriptother."/>\n"
@@ -1719,7 +1759,14 @@ function do_multiplechoice_withcomments($ia)
 {
 	global $dbprefix, $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
-
+	if ($othertexts=arraySearchByKey("other_replace_text", $qidattributes, "attribute", 1))
+	{
+		$othertext=$othertexts['value'];
+	}
+	else
+	{
+		$othertext=$clang->gT("Other");
+	}
 	// Check if the max_answers attribute is set
 	$maxansw=0;
 	$callmaxanswscriptcheckbox = "";
@@ -1809,7 +1856,7 @@ function do_multiplechoice_withcomments($ia)
 		$anscount = $anscount + 2;
 		$answer .= "\t\t\t\t\t\t\t<tr>\n"
 		. "\t\t\t\t\t\t\t\t<td class='answertext'>\n"
-		. "\t\t\t\t\t\t\t\t\t<label for='answer$myfname' class='answertext'>".$clang->gT("Other").":</label><input class='text' type='text' name='$myfname' id='answer$myfname' title='".$clang->gT("Other")."' size='10'";
+		. "\t\t\t\t\t\t\t\t\t<label for='answer$myfname' class='answertext'>".$othertext.":</label><input class='text' type='text' name='$myfname' id='answer$myfname' title='".$clang->gT("Other")."' size='10'";
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname]) {$answer .= " value='".htmlspecialchars($_SESSION[$myfname],ENT_QUOTES)."'";}
 		$fn++;
 		// --> START NEW FEATURE - SAVE

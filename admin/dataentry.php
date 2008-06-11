@@ -223,7 +223,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				if ($irow['type'] != "M" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && 
 				    $irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "H" && $irow['type'] != "P" && 
 					$irow['type'] != "O" && $irow['type'] != "R" && $irow['type'] != "Q" && $irow['type'] != "J" &&
-					$irow['type'] != "K" && $irow['type'] != "1")
+					$irow['type'] != "K" && $irow['type'] != "1" )
 				{
 					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 					if (isset($_POST[$fieldname]))
@@ -287,7 +287,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					while ($i2row = $i2result->FetchRow())
 					{
 						$otherexists = "";
-						if ($i2row['other'] == "Y" and ($irow['type']=="!" or $irow['type']=="L" or $irow['type']=="M" or $irow['type']=="P")) {$otherexists = "Y";}
+						if ($i2row['other'] == "Y" and ($irow['type']=="!" or $irow['type']=="L" or $irow['type']=="M" or $irow['type']=="P" or $irow['type'] == "W" or $irow['type'] == "Z")) {$otherexists = "Y";}
 						$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}";
 						if (isset($_POST[$fieldname]))
 						{
@@ -592,7 +592,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			{
 				if (!isset($fnrrow)) {$fnrrow=array("code"=>"", "answer"=>"");}
 				$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
-				if (($fnrow['type'] == "L" || $fnrow['type'] == "!") && $fnrow['other'] =="Y")
+				if (($fnrow['type'] == "L" || $fnrow['type'] == "!" || $fnrow['type'] == "Z" || $fnrow['type'] == "W") && $fnrow['other'] =="Y")
 				{
 					$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "{$fnrrow['answer']}", "{$fnrow['qid']}", "{$fnrow['lid']}");
 				}
@@ -1059,7 +1059,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 
 					case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
 					$dataentryoutput .= "<table>\n";
-					while ($fnames[$i][3] == "P")
+					while (isset($fnames[$i]) && $fnames[$i][3] == "P")
 					{
 						$thefieldname=$fnames[$i][0];
 						if (substr($thefieldname, -7) == "comment")
@@ -1368,7 +1368,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				$updateqr .= db_quote_id($fieldname)." = '" . auto_escape($thisvalue) . "', \n";
 				unset($thisvalue);
 				// handle ! other
-				if ($irow['type'] == "!" && $irow['other'] == "Y")
+				if (($irow['type'] == "!" || $irow['type'] == "W" || $irow['type'] == "Z" || $irow['type'] == "L") && $irow['other'] == "Y")
 				{
 					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
 					if (isset($_POST[$fieldname])) {$thisvalue=$_POST[$fieldname];} else {$thisvalue="";}

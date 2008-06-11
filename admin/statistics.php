@@ -1469,6 +1469,10 @@ if (isset($summary) && $summary)
 				{
 					$alist[]=array($frow['code'], $frow['title']);
 				}
+				if ($qother == "Y")
+				{
+					$alist[]=array($clang->gT("Other"),$clang->gT("Other"),$fielddata['fieldname'].'other');
+				}
 				break;
                 case "1":
                 $qidattributes=getQuestionAttributes($qqid);

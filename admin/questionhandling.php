@@ -863,7 +863,7 @@ function questionjavascript($type, $qattributes)
     $newquestionoutput .="\nfunction OtherSelection(QuestionType)\n"
     . "\t{\n"
     . "if (QuestionType == '') {QuestionType=document.getElementById('question_type').value;}\n"
-    . "\tif (QuestionType == 'M' || QuestionType == 'P' || QuestionType == 'L' || QuestionType == '!')\n"
+    . "\tif (QuestionType == 'M' || QuestionType == 'P' || QuestionType == 'L' || QuestionType == '!' || QuestionType == 'W' || QuestionType == 'Z')\n"
     . "\t\t{\n"
     . "\t\tdocument.getElementById('OtherSelection').style.display = '';\n"
     . "\t\tdocument.getElementById('LabelSets').style.display = 'none';\n"
