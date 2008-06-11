@@ -334,6 +334,9 @@ function createinsertquery()
 	global $deletenonvalues, $thistpl;
 	global $surveyid, $connect, $clang, $postedfieldnames;
 
+    require_once("./classes/inputfilter/class.inputfilter_clean.php");
+    $myFilter = new InputFilter('','',1,1,1);
+
 	$fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
 	
 	if (isset($_SESSION['insertarray']) && is_array($_SESSION['insertarray']))
@@ -358,7 +361,7 @@ function createinsertquery()
                     $values[]='NULL';
                 }
                   else  {
-                $values[]=$connect->qstr($_SESSION[$value]);
+                		$values[]=$connect->qstr($myFilter->process($_SESSION[$value]));
                         }
             }
         }
@@ -474,7 +477,7 @@ function createinsertquery()
                           }
                           else
                           {
-                              $query .= db_quote_id($field)." = '".db_quote($_POST[$field])."',";
+                              $query .= db_quote_id($field)." = '".db_quote($myFilter->process($_POST[$field]))."',";
                           }
                       }
 				}

@@ -73,7 +73,41 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.71(+)
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.71 to 1.71+ Build 5044 -   Legend:   + = New  # = Changed  - = Fix
++Added Icelandic translation kindly provided by Jóhann Friðriksson ( johannfr -i-t- arskoli -d-i-t- is )
++Added template preview to survey settings (c_schmitz)
++Added the ability to the template editor to edit a CSS file - where the CSS filename must be the same name as the template. (c_schmitz)
++Added Prefix & Suffix Question Attributes for Short Text, and Multiple Short Text (jcleeland)
++Added feature request #02065 - Prefix & Suffix Question Attributes for Numerical Input (jcleeland)
++Added new attribute "other_replace_text" to use alternative text to "Other" for question types that have this option (jcleeland)
 
+#Renamed css_only template to sherpa (c_schmitz)
+#Moved CSS to separate files for all templates (c_schmitz)
+#Added and updated calendar translations (c_schmitz)
+#Updated Chinese Traditional Language File by Mark Yeung
+#Updated Danish translation by Thomas Clausen 
+#Updated Korean translation submitted by the Korea National Police university translation team
+#Updated Latvian translation provided by Marcis Trapencieris (marcic -a-t- sociology -d-i-t- lv)
+#Updated Portuguese-Brazilian translation by Luiz Rafael Santos (lrsantos11 -i-t- gmail -d-o-a-t com)
+#Updated Spanish translation (kedajo)
+#Updated Portuguese Translation by Duarte Geraldes (duarte -it- roquettegeraldes -d-i-t- com)
+
+-Security Fixes - Separate Security advisory will be published soon
+-Fixed missing "other" option for List (flexible) question types. (jcleeland)
+-Fixed #2095: Error exporting a not public survey in spss format (awarren)
+-Fixed some English strings
+-Fixed several cases where mysql query procedures instead of adodb were used (c_schmitz)
+-Fixed #2064: Multiple Numerical Input total value calculator not working correctly when more than one on the page. Used arekbb's suggestion to make each div id unique per question (jcleeland)
+-Fixed #2084: Regenerate Question Codes always does straight - change in link so that query was via _POST rather than _GET broke this feature. (jcleeland)
+-Fixed #2068: max_answers function is not working because of html tags in question (c_schmitz)
+-Fixed #2090: Can't change user access right for templates. Removed SQL code in HTML comments (lemeur)
+-Fixed #2086: PDF Export fails on PHP 4 (stfreud)
+-Fixed issue with tokens (c_schmitz)
+-Fixed #2071: Problem deleting and adding new answers to a question (c_schmitz)
+-Fixed #2074: Reordering questions isn't working with "Place After" command. Also added "At beginning" as option. (jcleeland)
+-Fixed a small issue with html header(c_schmitz)
+-Fixed array_filter not working right in group-by-group mode on the same page(c_schmitz)
+-Fixed #2067: corrected topright_bord.gif - THX to moontan (el-matador)
 
 
 Changes from 1.70 to 1.71 (2008/06/02)
