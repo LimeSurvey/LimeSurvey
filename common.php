@@ -2640,10 +2640,10 @@ function questionAttributes()
 	"types"=>"K",
 	"help"=>"Multiple numeric inputs must be greater than this value");
 	$qattributes[]=array("name"=>"prefix",
-	"types"=>"K",
+	"types"=>"KN",
 	"help"=>"Add a prefix to the answer field");
 	$qattributes[]=array("name"=>"suffix",
-	"types"=>"K",
+	"types"=>"KN",
 	"help"=>"Add a suffix to the answer field");
 	$qattributes[]=array("name"=>"dropdown_dates",
 	"types"=>"D",

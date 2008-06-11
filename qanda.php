@@ -2192,6 +2192,18 @@ function do_numerical($ia)
 {
 	global $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
+	if ($prefix=arraySearchByKey("prefix", $qidattributes, "attribute", 1))
+	{
+	    $prefix = $prefix['value'];
+	} else {
+	    $prefix = "";
+	}
+	if ($suffix=arraySearchByKey("suffix", $qidattributes, "attribute", 1))
+	{
+	    $suffix = $suffix['value'];
+	} else {
+	    $suffix = "";
+	}
 	if ($maxchars=arraySearchByKey("maximum_chars", $qidattributes, "attribute", 1))
 	{
 		$maxsize=$maxchars['value'];
@@ -2211,9 +2223,9 @@ function do_numerical($ia)
 	}
 	// --> START NEW FEATURE - SAVE
 	$answer = keycontroljs()
-	. "\t\t\t<input class='text' type='text' size='$tiwidth' name='$ia[1]' "
+	. "\t\t\t$prefix<input class='text' type='text' size='$tiwidth' name='$ia[1]' "
 	. "id='answer{$ia[1]}' value=\"{$_SESSION[$ia[1]]}\" onkeypress=\"return goodchars(event,'0123456789.')\" onkeyup='checkconditions(this.value, this.name, this.type)'"
-	. "maxlength='$maxsize' /><br />\n"
+	. "maxlength='$maxsize' />$suffix<br />\n"
 	. "\t\t\t<font size='1'><i>".$clang->gT("Only numbers may be entered in this field")."</i></font>\n";
 	// --> END NEW FEATURE - SAVE
 
