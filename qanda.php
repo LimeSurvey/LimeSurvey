@@ -1926,6 +1926,18 @@ function do_multipleshorttext($ia)
     } else {
         $maxsize=255;
     }
+	if ($prefix=arraySearchByKey("prefix", $qidattributes, "attribute", 1))
+	{
+	    $prefix = $prefix['value'];
+	} else {
+	    $prefix = "";
+	}
+	if ($suffix=arraySearchByKey("suffix", $qidattributes, "attribute", 1))
+	{
+	    $suffix = $suffix['value'];
+	} else {
+	    $suffix = "";
+	}
 	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	} else {
@@ -1952,11 +1964,11 @@ function do_multipleshorttext($ia)
 			. "\t\t\t\t\t\t\t\t\t<label for='answer$myfname'>{$ansrow['answer']}</label>\n"
 			. "\t\t\t\t\t\t\t\t</td>\n"
 			. "\t\t\t\t\t\t\t\t<td align='left'>\n"
-			. "\t\t\t\t\t\t\t\t\t<input class='text' type='text' size='40' name='$myfname' id='answer$myfname' value='";
+			. "\t\t\t\t\t\t\t\t\t$prefix<input class='text' type='text' size='40' name='$myfname' id='answer$myfname' value='";
 			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
 	
 			// --> START NEW FEATURE - SAVE
-			$answer .= "' onchange='checkconditions(this.value, this.name, this.type);' $numbersonly maxlength='$maxsize'/>\n"
+			$answer .= "' onchange='checkconditions(this.value, this.name, this.type);' $numbersonly maxlength='$maxsize'/>$suffix\n"
 			. "\t\t\t\t\t\t\t\t</td>\n"
 			. "\t\t\t\t\t\t\t</tr>\n";
 			// --> END NEW FEATURE - SAVE
@@ -2253,10 +2265,22 @@ function do_shortfreetext($ia)
 	{
 		$tiwidth=50;
 	}
+	if ($prefix=arraySearchByKey("prefix", $qidattributes, "attribute", 1))
+	{
+	    $prefix = $prefix['value'];
+	} else {
+	    $prefix = "";
+	}
+	if ($suffix=arraySearchByKey("suffix", $qidattributes, "attribute", 1))
+	{
+	    $suffix = $suffix['value'];
+	} else {
+	    $suffix = "";
+	}
 	// --> START NEW FEATURE - SAVE
-	$answer = "\t\t\t<input class='text' type='text' size='$tiwidth' name='$ia[1]' id='answer$ia[1]' value=\""
+	$answer = "\t\t\t$prefix<input class='text' type='text' size='$tiwidth' name='$ia[1]' id='answer$ia[1]' value=\""
 	.str_replace ("\"", "'", str_replace("\\", "", $_SESSION[$ia[1]]))
-	."\" maxlength='$maxsize' onkeyup='checkconditions(this.value, this.name, this.type)'/>\n";
+	."\" maxlength='$maxsize' onkeyup='checkconditions(this.value, this.name, this.type)'/>$suffix\n";
 	// --> END NEW FEATURE - SAVE
 
 	$inputnames[]=$ia[1];
