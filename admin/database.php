@@ -468,7 +468,7 @@ if(isset($surveyid))
 		}
 
 		// These are the questions types that have the other option therefore we set everything else to 'No Other'
-		if (($_POST['type']!= "L") && ($_POST['type']!= "!") && ($_POST['type']!= "P") && ($_POST['type']!="M"))
+		if (($_POST['type']!= "L") && ($_POST['type']!= "!") && ($_POST['type']!= "P") && ($_POST['type']!="M") && ($_POST['type'] != "W") && ($_POST['type'] != "Z"))
 		{
 			$_POST['other']='N';
 		}
