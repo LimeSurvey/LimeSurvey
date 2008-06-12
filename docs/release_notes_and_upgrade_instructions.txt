@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.71!
+Welcome to LimeSurvey v1.71+!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -72,6 +72,12 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.71(+)
 12. Done.
 
 Thank you to everyone who helped with this new release!
+
+Changes from 1.71+ Build 5044 to 5048 -  Legend:   + = New  # = Changed  - = Fix
+-Fixed bug with "array_filter" question attribute, where if another question used the same ID in a different survey, the attribute would fail. Search for matching question name now restricts itself only to questions from the same survey. (jcleeland)
+-Fixed bug #02104: Can't choose labelset and other option isn't available (jcleeland)
+#Spanish translation updated. 100% now, hopefully ready for 1.71+. (kadejo)
+
 
 Changes from 1.71 to 1.71+ Build 5044 -   Legend:   + = New  # = Changed  - = Fix
 +Added Icelandic translation kindly provided by Jóhann Friðriksson ( johannfr -i-t- arskoli -d-i-t- is )
