@@ -3149,7 +3149,7 @@ function getArrayFiltersOutGroup($qid)
 		$val = $result->FetchRow(); // Get the Value of the Attribute ( should be a previous question's title in same group )
 
 		// we found the target question, now we need to know what the answers where, we know its a multi!
-		$query = "SELECT gid FROM ".db_table_name('questions')." where title='{$val['value']}' AND language='".$_SESSION['s_lang']."'";
+		$query = "SELECT gid FROM ".db_table_name('questions')." where title='{$val['value']}' AND language='".$_SESSION['s_lang']."' AND sid = $surveyid";
 		$qresult = db_execute_assoc($query); //Checked
 		if ($qresult->RecordCount() == 1)
 		{
