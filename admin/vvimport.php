@@ -18,8 +18,60 @@ if (!isset($noid)) {$noid=returnglobal('noid');}
 if (!isset($insertstyle)) {$insertstyle=returnglobal('insert');}
 if (!isset($finalized)) {$finalized=returnglobal('finalized');}
 
+$encodingsarray = array("armscii8"=>$clang->gT("ARMSCII-8 Armenian")
+		,"ascii"=>$clang->gT("US ASCII")
+		,"auto"=>$clang->gT("Automatic")
+		,"big5"=>$clang->gT("Big5 Traditional Chinese")
+		,"binary"=>$clang->gT("Binary pseudo charset")
+		,"cp1250"=>$clang->gT("Windows Central European")
+		,"cp1251"=>$clang->gT("Windows Cyrillic")
+		,"cp1256"=>$clang->gT("Windows Arabic")
+		,"cp1257"=>$clang->gT("Windows Baltic")
+		,"cp850"=>$clang->gT("DOS West European")
+		,"cp852"=>$clang->gT("DOS Central European")
+		,"cp866"=>$clang->gT("DOS Russian")
+		,"cp932"=>$clang->gT("SJIS for Windows Japanese")
+		,"dec8"=>$clang->gT("DEC West European")
+		,"eucjpms"=>$clang->gT("UJIS for Windows Japanese")
+		,"euckr"=>$clang->gT("EUC-KR Korean")
+		,"gb2312"=>$clang->gT("GB2312 Simplified Chinese")
+		,"gbk"=>$clang->gT("GBK Simplified Chinese")
+		,"geostd8"=>$clang->gT("GEOSTD8 Georgian")
+		,"greek"=>$clang->gT("ISO 8859-7 Greek")
+		,"hebrew"=>$clang->gT("ISO 8859-8 Hebrew")
+		,"hp8"=>$clang->gT("HP West European")
+		,"keybcs2"=>$clang->gT("DOS Kamenicky Czech-Slovak")
+		,"koi8r"=>$clang->gT("KOI8-R Relcom Russian")
+		,"koi8u"=>$clang->gT("KOI8-U Ukrainian")
+		,"latin1"=>$clang->gT("cp1252 West European")
+		,"latin2"=>$clang->gT("ISO 8859-2 Central European")
+		,"latin5"=>$clang->gT("ISO 8859-9 Turkish")
+		,"latin7"=>$clang->gT("ISO 8859-13 Baltic")
+		,"macce"=>$clang->gT("Mac Central European")
+		,"macroman"=>$clang->gT("Mac West European")
+		,"sjis"=>$clang->gT("Shift-JIS Japanese")
+		,"swe7"=>$clang->gT("7bit Swedish")
+		,"tis620"=>$clang->gT("TIS620 Thai")
+		,"ucs2"=>$clang->gT("UCS-2 Unicode")
+		,"ujis"=>$clang->gT("EUC-JP Japanese")
+		,"utf8"=>$clang->gT("UTF-8 Unicode"));
+if (isset($_POST['vvcharset']) && $_POST['vvcharset'])  //sanitize charset - if encoding is not found sanitize to 'utf8' which is the default for vvexport
+{
+	$uploadcharset=$_POST['vvcharset'];
+	if (!array_key_exists($uploadcharset,$encodingsarray)) {$uploadcharset='utf8';}
+}
+   					   
 if ($subaction != "upload")
 {
+	asort($encodingsarray);               
+	$charsetsout='';
+	foreach  ($encodingsarray as $charset=>$title)
+	{
+		$charsetsout.="<option value='$charset' ";
+		if ($charset=='utf8') {$charsetsout.=" selected ='selected'";}
+		$charsetsout.=">$title ($charset)</option>";
+	}
+
 	//Make sure that the survey is active
 	$tablelist = $connect->MetaTables();
 	if (in_array("{$dbprefix}survey_$surveyid", $tablelist))
@@ -40,6 +92,9 @@ if ($subaction != "upload")
         <option value='replace'>".$clang->gT("Replace the existing record.")."</option>
         </select></td></tr>
 		<tr><td>".$clang->gT("Import as not finalized answers?")."</td><td><input type='checkbox' name='finalized' value='notfinalized' ></td></tr>
+		<tr><td>".$clang->gT("Character set of the file:")."</td><td><select id='vvcharset' name='vvcharset'>
+		$charsetsout
+		</select></td></tr>
 		<tr><td colspan='2' align='center' ><input type='submit' value='".$clang->gT("Import")."'>
 		<input type='hidden' name='action' value='vvimport' />
 		<input type='hidden' name='subaction' value='upload' />
@@ -86,7 +141,7 @@ else
 	while (!feof($handle))
 	{
 		$buffer = fgets($handle); //To allow for very long lines 
-		$bigarray[] = $buffer;
+		$bigarray[] = @mb_convert_encoding($buffer,"UTF-8",$uploadcharset);
 	}
 	fclose($handle);
 
