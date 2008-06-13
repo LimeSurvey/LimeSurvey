@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey French language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-12 09:00+0200\n"
-"PO-Revision-Date: 2008-06-13 12:03+0100\n"
+"POT-Creation-Date: 2008-06-13 12:23+0200\n"
+"PO-Revision-Date: 2008-06-13 20:32+0100\n"
 "Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -133,7 +133,7 @@ msgstr "Importer des ressources de questionnaire"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:311
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:330
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:355
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:74
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:129
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:30
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:54
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:162
@@ -225,7 +225,7 @@ msgstr "Précédent"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:134
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:236
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:304
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:82
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:137
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:42
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:200
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1212
@@ -247,7 +247,7 @@ msgstr "Succès"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:67
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:237
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:83
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:138
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:43
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importgroup.php:55
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/http_importsurvey.php:41
@@ -257,7 +257,7 @@ msgstr "Fichier transmis avec succès."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:68
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:238
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:84
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:139
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:44
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/http_importsurvey.php:42
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:70
@@ -342,7 +342,7 @@ msgstr "Fichier"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:186
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:356
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:75
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:130
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:31
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:163
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importgroup.php:30
@@ -412,53 +412,281 @@ msgstr "Importer le jeu d'étiquettes"
 msgid "Main Admin Screen"
 msgstr "Écran principal d'administration"
 
+# D:\www\limesurvey/admin/tokens.php:1499
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:21
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:45
+msgid "ARMSCII-8 Armenian"
+msgstr "Arménien (ARMSCII-8)"
+
+# D:\www\limesurvey/admin/tokens.php:1500
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:22
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:46
+msgid "US ASCII"
+msgstr "US (ASCII)"
+
+# D:\www\limesurvey/admin/tokens.php:1501
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:23
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:47
+msgid "Automatic"
+msgstr "Automatique"
+
+# D:\www\limesurvey/admin/tokens.php:1502
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:24
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:48
+msgid "Big5 Traditional Chinese"
+msgstr "Chinois traditionnel (Big5)"
+
+# D:\www\limesurvey/admin/tokens.php:1503
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:25
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:49
+msgid "Binary pseudo charset"
+msgstr "Pseudo charset binaire"
+
+# D:\www\limesurvey/admin/tokens.php:1504
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:26
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:50
+msgid "Windows Central European"
+msgstr "Europe centrale (Windows-1250)"
+
+# D:\www\limesurvey/admin/tokens.php:1505
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:27
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:51
+msgid "Windows Cyrillic"
+msgstr "Cyrillique (Windows-1251)"
+
+# D:\www\limesurvey/admin/tokens.php:1506
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:28
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:52
+msgid "Windows Arabic"
+msgstr "Arabe (Windows-1256)"
+
+# D:\www\limesurvey/admin/tokens.php:1507
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:29
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:53
+msgid "Windows Baltic"
+msgstr "Balte (Windows-1257)"
+
+# D:\www\limesurvey/admin/tokens.php:1508
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:30
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:54
+msgid "DOS West European"
+msgstr "Europe de l'Ouest (DOS)"
+
+# D:\www\limesurvey/admin/tokens.php:1509
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:31
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:55
+msgid "DOS Central European"
+msgstr "Europe centrale (DOS)"
+
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:148
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:32
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:56
+msgid "DOS Russian"
+msgstr "Russe (DOS)"
+
+# D:\www\limesurvey/admin/tokens.php:1511
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:33
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:57
+msgid "SJIS for Windows Japanese"
+msgstr "Japonais (SJIS)"
+
+# D:\www\limesurvey/admin/tokens.php:1512
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:34
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:58
+msgid "DEC West European"
+msgstr "Europe de l'Ouest (DEC)"
+
+# D:\www\limesurvey/admin/tokens.php:1513
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:35
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:59
+msgid "UJIS for Windows Japanese"
+msgstr "Japonais (UJIS)"
+
+# D:\www\limesurvey/admin/tokens.php:1514
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:36
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:60
+msgid "EUC-KR Korean"
+msgstr "Coréen (EUC-KR)"
+
+# D:\www\limesurvey/admin/tokens.php:1515
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:37
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:61
+msgid "GB2312 Simplified Chinese"
+msgstr "Chinois simplifié (GB2312)"
+
+# D:\www\limesurvey/admin/tokens.php:1516
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:38
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:62
+msgid "GBK Simplified Chinese"
+msgstr "Chinois simplifié (GBK)"
+
+# D:\www\limesurvey/admin/tokens.php:1517
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:39
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:63
+msgid "GEOSTD8 Georgian"
+msgstr "Géorgien (GEOSTD8)"
+
+# D:\www\limesurvey/admin/tokens.php:1518
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:40
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:64
+msgid "ISO 8859-7 Greek"
+msgstr "Grec (ISO-88597)"
+
+# D:\www\limesurvey/admin/tokens.php:1519
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:41
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:65
+msgid "ISO 8859-8 Hebrew"
+msgstr "Hébreux (ISO-8859-8)"
+
+# D:\www\limesurvey/admin/tokens.php:1520
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:42
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:66
+msgid "HP West European"
+msgstr "Europe de l'Ouest (HP)"
+
+# D:\www\limesurvey/admin/tokens.php:1521
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:43
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:67
+msgid "DOS Kamenicky Czech-Slovak"
+msgstr "Tchèque/Slovaque (DOS Kamenicky)"
+
+# D:\www\limesurvey/admin/tokens.php:1522
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:44
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:68
+msgid "KOI8-R Relcom Russian"
+msgstr "Cyrillique (KOI8-R)"
+
+# D:\www\limesurvey/admin/tokens.php:1523
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:45
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:69
+msgid "KOI8-U Ukrainian"
+msgstr "Ukrainien (KOI8-U)"
+
+# D:\www\limesurvey/admin/tokens.php:1524
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:46
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:70
+msgid "cp1252 West European"
+msgstr "Europe de l'Ouest (cp1252)"
+
+# D:\www\limesurvey/admin/tokens.php:1525
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:47
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:71
+msgid "ISO 8859-2 Central European"
+msgstr "Europe centrale (ISO-8859-2)"
+
+# D:\www\limesurvey/admin/tokens.php:1526
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:48
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:72
+msgid "ISO 8859-9 Turkish"
+msgstr "Turc (ISO-8859-9)"
+
+# D:\www\limesurvey/admin/tokens.php:1527
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:49
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:73
+msgid "ISO 8859-13 Baltic"
+msgstr "Balte (ISO-8859-13)"
+
+# D:\www\limesurvey/admin/tokens.php:1528
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:50
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:74
+msgid "Mac Central European"
+msgstr "Europe centrale (Mac)"
+
+# D:\www\limesurvey/admin/tokens.php:1529
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:51
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:75
+msgid "Mac West European"
+msgstr "Europe de l'Ouest (Mac)"
+
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:127
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:52
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:76
+msgid "Shift-JIS Japanese"
+msgstr "Japonais (Shift-JIS)"
+
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:164
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:53
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:77
+msgid "7bit Swedish"
+msgstr "Suédois (7-bit)"
+
+# D:\www\limesurvey/admin/tokens.php:1532
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:54
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:78
+msgid "TIS620 Thai"
+msgstr "Thaï (TIS-620)"
+
+# D:\www\limesurvey/admin/tokens.php:1533
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:55
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:79
+msgid "UCS-2 Unicode"
+msgstr "Unicode (UCS-2)"
+
+# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:127
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:56
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:80
+msgid "EUC-JP Japanese"
+msgstr "Japonais (EUC-JP)"
+
+# D:\www\limesurvey/admin/tokens.php:1535
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:57
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:81
+msgid "UTF-8 Unicode"
+msgstr "Unicode (UTF-8)"
+
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:83
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1455
 msgid "Import a VV survey file"
 msgstr "Importer un fichier VV"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:32
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:84
 msgid "File:"
 msgstr "Fichier :"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:33
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:85
 msgid "Survey ID:"
 msgstr "ID du questionnaire :"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:34
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:86
 msgid "Exclude record IDs?"
 msgstr "Exclure les ID enregistrés ?"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:36
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:88
 msgid "When an imported record matches an existing record ID:"
 msgstr "Quand un enregistrement importé correspond à un enregistrement existant (ID): "
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:37
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:89
 msgid "Report an error (and skip the new record)."
 msgstr "Reporter une erreur (et sauter le nouvel enregistrement)."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:38
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:90
 msgid "Renumber the new record."
 msgstr "Renuméroter le nouvel enregistrement."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:39
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:91
 msgid "Ignore the new record."
 msgstr "Ignorer le nouvel enregistrement."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:40
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:92
 msgid "Replace the existing record."
 msgstr "Remplacer l'enregistrement existant."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:42
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:94
 msgid "Import as not finalized answers?"
 msgstr "Importer comme réponse partielle ?"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:43
+# D:\www\limesurvey/admin/tokens.php:1549
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:95
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2179
+msgid "Character set of the file:"
+msgstr "Jeux de caractères du fichier :"
+
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:98
 msgid "Import"
 msgstr "Importer"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:47
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:58
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:102
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:113
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/assessments.php:67
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/saved.php:121
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvexport.php:62
@@ -469,20 +697,20 @@ msgstr "Importer"
 msgid "Return to Survey Administration"
 msgstr "Retourner à l'écran d'administration des questionnaires"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:56
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:111
 msgid "Cannot import the VVExport file."
 msgstr "Impossible d'importer le fichier VV."
 
 # D:\www\limesurvey/admin/vvimport.php:98
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:76
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:131
 msgid "Back to Response Import"
 msgstr "Retour à l'importation de réponse"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:203
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:258
 msgid "Import Failed on Record"
 msgstr "Échec de l'importation sur l'enregistrement"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:203
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:258
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:71
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:94
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:130
@@ -494,19 +722,19 @@ msgid "because"
 msgstr "parce que"
 
 # D:\www\limesurvey/admin/vvimport.php:235
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:216
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:271
 msgid "Important Note:"
 msgstr "Note importante :"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:216
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:271
 msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
 msgstr "Ne pas ACTUALISER cette page sous peine d'importer de nouveau le fichier et de créer des doublons"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:218
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:273
 msgid "Total records imported:"
 msgstr "Nombre d'enregistrement(s) importé(s) :"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:219
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:274
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:66
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:79
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:103
@@ -5498,191 +5726,6 @@ msgstr "Le nom d'utilisateur et le mot de passe ne correspondent pas !"
 msgid "No LID has been provided. Cannot dump label set."
 msgstr "Aucun ID de jeu d'étiquettes (LID) fourni. Impossible d'exporter ce jeu d'étiquettes."
 
-# D:\www\limesurvey/admin/tokens.php:1499
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:45
-msgid "ARMSCII-8 Armenian"
-msgstr "Arménien (ARMSCII-8)"
-
-# D:\www\limesurvey/admin/tokens.php:1500
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:46
-msgid "US ASCII"
-msgstr "US (ASCII)"
-
-# D:\www\limesurvey/admin/tokens.php:1501
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:47
-msgid "Automatic"
-msgstr "Automatique"
-
-# D:\www\limesurvey/admin/tokens.php:1502
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:48
-msgid "Big5 Traditional Chinese"
-msgstr "Chinois traditionnel (Big5)"
-
-# D:\www\limesurvey/admin/tokens.php:1503
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:49
-msgid "Binary pseudo charset"
-msgstr "Pseudo charset binaire"
-
-# D:\www\limesurvey/admin/tokens.php:1504
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:50
-msgid "Windows Central European"
-msgstr "Europe centrale (Windows-1250)"
-
-# D:\www\limesurvey/admin/tokens.php:1505
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:51
-msgid "Windows Cyrillic"
-msgstr "Cyrillique (Windows-1251)"
-
-# D:\www\limesurvey/admin/tokens.php:1506
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:52
-msgid "Windows Arabic"
-msgstr "Arabe (Windows-1256)"
-
-# D:\www\limesurvey/admin/tokens.php:1507
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:53
-msgid "Windows Baltic"
-msgstr "Balte (Windows-1257)"
-
-# D:\www\limesurvey/admin/tokens.php:1508
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:54
-msgid "DOS West European"
-msgstr "Europe de l'Ouest (DOS)"
-
-# D:\www\limesurvey/admin/tokens.php:1509
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:55
-msgid "DOS Central European"
-msgstr "Europe centrale (DOS)"
-
-# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:148
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:56
-msgid "DOS Russian"
-msgstr "Russe (DOS)"
-
-# D:\www\limesurvey/admin/tokens.php:1511
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:57
-msgid "SJIS for Windows Japanese"
-msgstr "Japonais (SJIS)"
-
-# D:\www\limesurvey/admin/tokens.php:1512
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:58
-msgid "DEC West European"
-msgstr "Europe de l'Ouest (DEC)"
-
-# D:\www\limesurvey/admin/tokens.php:1513
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:59
-msgid "UJIS for Windows Japanese"
-msgstr "Japonais (UJIS)"
-
-# D:\www\limesurvey/admin/tokens.php:1514
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:60
-msgid "EUC-KR Korean"
-msgstr "Coréen (EUC-KR)"
-
-# D:\www\limesurvey/admin/tokens.php:1515
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:61
-msgid "GB2312 Simplified Chinese"
-msgstr "Chinois simplifié (GB2312)"
-
-# D:\www\limesurvey/admin/tokens.php:1516
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:62
-msgid "GBK Simplified Chinese"
-msgstr "Chinois simplifié (GBK)"
-
-# D:\www\limesurvey/admin/tokens.php:1517
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:63
-msgid "GEOSTD8 Georgian"
-msgstr "Géorgien (GEOSTD8)"
-
-# D:\www\limesurvey/admin/tokens.php:1518
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:64
-msgid "ISO 8859-7 Greek"
-msgstr "Grec (ISO-88597)"
-
-# D:\www\limesurvey/admin/tokens.php:1519
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:65
-msgid "ISO 8859-8 Hebrew"
-msgstr "Hébreux (ISO-8859-8)"
-
-# D:\www\limesurvey/admin/tokens.php:1520
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:66
-msgid "HP West European"
-msgstr "Europe de l'Ouest (HP)"
-
-# D:\www\limesurvey/admin/tokens.php:1521
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:67
-msgid "DOS Kamenicky Czech-Slovak"
-msgstr "Tchèque/Slovaque (DOS Kamenicky)"
-
-# D:\www\limesurvey/admin/tokens.php:1522
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:68
-msgid "KOI8-R Relcom Russian"
-msgstr "Cyrillique (KOI8-R)"
-
-# D:\www\limesurvey/admin/tokens.php:1523
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:69
-msgid "KOI8-U Ukrainian"
-msgstr "Ukrainien (KOI8-U)"
-
-# D:\www\limesurvey/admin/tokens.php:1524
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:70
-msgid "cp1252 West European"
-msgstr "Europe de l'Ouest (cp1252)"
-
-# D:\www\limesurvey/admin/tokens.php:1525
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:71
-msgid "ISO 8859-2 Central European"
-msgstr "Europe centrale (ISO-8859-2)"
-
-# D:\www\limesurvey/admin/tokens.php:1526
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:72
-msgid "ISO 8859-9 Turkish"
-msgstr "Turc (ISO-8859-9)"
-
-# D:\www\limesurvey/admin/tokens.php:1527
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:73
-msgid "ISO 8859-13 Baltic"
-msgstr "Balte (ISO-8859-13)"
-
-# D:\www\limesurvey/admin/tokens.php:1528
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:74
-msgid "Mac Central European"
-msgstr "Europe centrale (Mac)"
-
-# D:\www\limesurvey/admin/tokens.php:1529
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:75
-msgid "Mac West European"
-msgstr "Europe de l'Ouest (Mac)"
-
-# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:127
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:76
-msgid "Shift-JIS Japanese"
-msgstr "Japonais (Shift-JIS)"
-
-# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:164
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:77
-msgid "7bit Swedish"
-msgstr "Suédois (7-bit)"
-
-# D:\www\limesurvey/admin/tokens.php:1532
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:78
-msgid "TIS620 Thai"
-msgstr "Thaï (TIS-620)"
-
-# D:\www\limesurvey/admin/tokens.php:1533
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:79
-msgid "UCS-2 Unicode"
-msgstr "Unicode (UCS-2)"
-
-# C:\wamp\www\limesurvey/classes/core/surveytranslator.php:127
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:80
-msgid "EUC-JP Japanese"
-msgstr "Japonais (EUC-JP)"
-
-# D:\www\limesurvey/admin/tokens.php:1535
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:81
-msgid "UTF-8 Unicode"
-msgstr "Unicode (UTF-8)"
-
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:183
 msgid "You have not selected a survey"
 msgstr "Vous n'avez pas sélectionné de questionnaire"
@@ -6215,11 +6258,6 @@ msgstr "Ne peut se connecter à l'annuaire LDAP"
 msgid "Choose the CSV file to upload:"
 msgstr "Choisir le fichier CSV à envoyer :"
 
-# D:\www\limesurvey/admin/tokens.php:1549
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2179
-msgid "Character set of the file:"
-msgstr "Jeux de caractères du fichier :"
-
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2180
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2214
 msgid "Filter blank email addresses:"
@@ -6601,7 +6639,7 @@ msgstr "Envoyer"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:411
 msgid "Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."
-msgstr ""
+msgstr "Vos réponses au questionnaire ont été sauvées correctement. Vous aller recevoir un email de confirmation. S'il vous plait, Prenez garde à ne pas perdre votre mot de passe, nous ne serons pas en mesure de le retrouver pour vous."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:425
 msgid "A token entry for the saved survey has been created too."
@@ -6614,15 +6652,13 @@ msgstr "Détails sur le questionnaire que vous avez sauvegardé"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:435
 #: /srv/www/virtual/limesurvey.org/devSVN/save.php:307
-#, fuzzy
 msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
-msgstr "Vous, ou quelqu'un utilisant votre adresse mail, a sauvegardé ses réponses partielles à un questionnaire. Les informations suivantes peuvent être utilisées pour retourner à ce questionnaire et le continuer où vous en étiez."
+msgstr "Merci d'avoir sauvegarder votre questionnaire incomplet. Les détails suivants peuvent être utiliser pour revenir à celui-ci et le poursuivre la ou vous l'avez laissé. S'il vous plait, garder cet email comme pense-bête - nous ne pouvons pas retrouver votre mot de passe pour vous"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:439
 #: /srv/www/virtual/limesurvey.org/devSVN/save.php:311
-#, fuzzy
 msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
-msgstr "Rechargez votre questionnaire en cliquant sur l'URL suivante :"
+msgstr "Rechargez votre questionnaire en cliquant sur l'URL suivante (ou coller la dans votre navigateur):"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:447
 msgid "An email has been sent with details about your saved survey"
@@ -6896,7 +6932,7 @@ msgstr "Réussite de la mise à jour des droits du modèle."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:647
 msgid "Error while updating usertemplates."
-msgstr ""
+msgstr "Une erreur s'est produite pendant le téléchargement de votre modèle"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/save.php:179
 msgid "Please try again."
@@ -7924,7 +7960,7 @@ msgstr "Hongrois"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:197
 msgid "Icelandic"
-msgstr ""
+msgstr "Irlandais"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:202
 msgid "Indonesian"
@@ -7951,9 +7987,8 @@ msgid "Lithuanian"
 msgstr "Lituanien"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:227
-#, fuzzy
 msgid "Latvian"
-msgstr "Croate"
+msgstr "Letton"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:232
 msgid "Macedonian"
