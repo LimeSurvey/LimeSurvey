@@ -191,6 +191,15 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'] || !isset($totalquestions))
 	$_SESSION['step'] = 1;
 	}
 
+// If the survey uses answer persistence and a srid is registered in SESSION
+// then loadanswers from this srid
+if ($thissurvey['tokenanswerspersistence'] == 'Y' &&
+	$thissurvey['private'] == "N" &&
+	isset($_SESSION['srid']) &&
+	$thissurvey['active'] == "Y")
+{
+	loadanswers();
+}
 
 //******************************************************************************************************
 //PRESENT SURVEY
