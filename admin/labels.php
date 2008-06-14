@@ -759,8 +759,6 @@ function modlabelsetanswers($lid)
 
 				$query = "UPDATE ".db_table_name('labels')." SET code=".$_POST['code_'.$codeids[$count]].", title={$_POST['title_'.$sortorderid]} WHERE lid=$lid AND sortorder=$orderid AND language='$langid'";
 
-				update_labelcodes_in_conditions($lid,$_POST['oldcode_'.$codeids[$count]],$_POST['code_'.$codeids[$count]]);
-
 				if (!$result = $connect->Execute($query)) 
 					// if update didn't work we assume the label does not exist and insert it
 				{
@@ -771,6 +769,9 @@ function modlabelsetanswers($lid)
 						$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update label","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
 					}
 				}
+
+				update_labelcodes_in_conditions($lid,$_POST['oldcode_'.$codeids[$count]],$_POST['code_'.$codeids[$count]]);
+
 				$count++;
 				if ($count>count($codeids)-1) {$count=0;}
 			}
