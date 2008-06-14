@@ -334,7 +334,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
                 }
     			else
     			{
-    				$labelsoutput.= "\t<input type='text' name='code_{$row['sortorder']}' maxlength='5' size='10' value=\"{$row['code']}\" onkeypress=\"return catchenter(event,'saveallbtn');\" />\n"; // TIBO
+    				$labelsoutput.= "\t<input type='hidden' name='oldcode_{$row['sortorder']}' value=\"{$row['code']}\" />\n"; 
+    				$labelsoutput.= "\t<input type='text' name='code_{$row['sortorder']}' maxlength='5' size='10' value=\"{$row['code']}\" onkeypress=\"return catchenter(event,'saveallbtn');\" />\n";
     			}
     			
     			$labelsoutput.= "\t</td>\n"
@@ -720,6 +721,7 @@ function modlabelsetanswers($lid)
 		foreach ($codeids as $codeid)
 		{
 			$_POST['code_'.$codeid] = db_quoteall($_POST['code_'.$codeid],true);
+			$_POST['oldcode_'.$codeid] = db_quoteall($_POST['oldcode_'.$codeid],true);
 			// Get the code values to check for duplicates
 			$codevalues[] = $_POST['code_'.$codeid];
 		}
@@ -727,48 +729,50 @@ function modlabelsetanswers($lid)
 		// Check that there is no code duplicate
 		if (count(array_unique($codevalues)) == count($codevalues))
 		{
-		     	if ($filterxsshtml)
-		     	{	   			
-					require_once("../classes/inputfilter/class.inputfilter_clean.php");
-			    	$myFilter = new InputFilter('','',1,1,1); 
-	   			}
+			if ($filterxsshtml)
+			{	   			
+				require_once("../classes/inputfilter/class.inputfilter_clean.php");
+				$myFilter = new InputFilter('','',1,1,1); 
+			}
 
-	         	foreach ($sortorderids as $sortorderid)
-	        	{
-	        		$langid=substr($sortorderid,0,strrpos($sortorderid,'_')); 
-	        		$orderid=substr($sortorderid,strrpos($sortorderid,'_')+1,20);
-			     	if ($filterxsshtml)
-			     	{	   			
-	      				$_POST['title_'.$sortorderid]=$myFilter->process($_POST['title_'.$sortorderid]);
-		   			}
-                        else
-                          {
-                            $_POST['title_'.$sortorderid] = html_entity_decode_php4($_POST['title_'.$sortorderid], ENT_QUOTES, "UTF-8");
-                          }
-                    
+			foreach ($sortorderids as $sortorderid)
+			{
+				$langid=substr($sortorderid,0,strrpos($sortorderid,'_')); 
+				$orderid=substr($sortorderid,strrpos($sortorderid,'_')+1,20);
+				if ($filterxsshtml)
+				{	   			
+					$_POST['title_'.$sortorderid]=$myFilter->process($_POST['title_'.$sortorderid]);
+				}
+				else
+				{
+					$_POST['title_'.$sortorderid] = html_entity_decode_php4($_POST['title_'.$sortorderid], ENT_QUOTES, "UTF-8");
+				}
 
-            // Fix bug with FCKEditor saving strange BR types
-            $_POST['title_'.$sortorderid]=str_replace('<br type="_moz" />','',$_POST['title_'.$sortorderid]);
-		if ($_POST['title_'.$sortorderid] == "<br />")
-		{
-			$_POST['title_'.$sortorderid]='';
-		}
-				    $_POST['title_'.$sortorderid] = db_quoteall($_POST['title_'.$sortorderid],true);
 
-            $query = "UPDATE ".db_table_name('labels')." SET code=".$_POST['code_'.$codeids[$count]].", title={$_POST['title_'.$sortorderid]} WHERE lid=$lid AND sortorder=$orderid AND language='$langid'";
+				// Fix bug with FCKEditor saving strange BR types
+				$_POST['title_'.$sortorderid]=str_replace('<br type="_moz" />','',$_POST['title_'.$sortorderid]);
+				if ($_POST['title_'.$sortorderid] == "<br />")
+				{
+					$_POST['title_'.$sortorderid]='';
+				}
+				$_POST['title_'.$sortorderid] = db_quoteall($_POST['title_'.$sortorderid],true);
 
-	        		if (!$result = $connect->Execute($query)) 
-	        		// if update didn't work we assume the label does not exist and insert it
-	        		{
-                      
-	                    $query = "insert into ".db_table_name('labels')." (code,title,lid,sortorder,language) VALUES (".$_POST['code_'.$codeids[$count]].", {$_POST['title_'.$sortorderid]}, $lid , $orderid , '$langid')";
-	            		if (!$result = $connect->Execute($query))
-	            		{
-	            			$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update label","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
-	        			}
-	    			}
-	    			$count++;
-	    			if ($count>count($codeids)-1) {$count=0;}
+				$query = "UPDATE ".db_table_name('labels')." SET code=".$_POST['code_'.$codeids[$count]].", title={$_POST['title_'.$sortorderid]} WHERE lid=$lid AND sortorder=$orderid AND language='$langid'";
+
+				update_labelcodes_in_conditions($lid,$_POST['oldcode_'.$codeids[$count]],$_POST['code_'.$codeids[$count]]);
+
+				if (!$result = $connect->Execute($query)) 
+					// if update didn't work we assume the label does not exist and insert it
+				{
+
+					$query = "insert into ".db_table_name('labels')." (code,title,lid,sortorder,language) VALUES (".$_POST['code_'.$codeids[$count]].", {$_POST['title_'.$sortorderid]}, $lid , $orderid , '$langid')";
+					if (!$result = $connect->Execute($query))
+					{
+						$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update label","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+					}
+				}
+				$count++;
+				if ($count>count($codeids)-1) {$count=0;}
 			}
 		}
 		else
@@ -841,7 +845,19 @@ function fixorder($lid) //Function rewrites the sortorder for a group of answers
     }	
 }
 
+function update_labelcodes_in_conditions($labelid,$oldcode,$newcode)
+{
+	global $dbprefix, $connect;
 
+	if ($oldcode != $newcode)
+	{
+		// If question type is not dual scale, then update only if: value is old label code AND question uses the modified label
+		// If question is Dualscale then check if it uses the modified label as lid or lid1 and check 
+		$query = "UPDATE ".db_table_name('conditions')." AS c INNER JOIN ".db_table_name('questions')." AS q ON  c.cqid=q.qid SET value=$newcode WHERE c.value=$oldcode AND ( (q.type <> 1 AND q.lid=$labelid) OR (q.type = 1 AND q.lid=$labelid AND c.cfieldname like '%#0') OR (q.type = 1 AND q.lid1=$labelid AND c.cfieldname like '%#1') )";
+		$result=$connect->Execute($query) or safe_die($connect->ErrorMsg());
+		//error_log("TIBO=$query");
+	}
+}
 
 
 ?>
