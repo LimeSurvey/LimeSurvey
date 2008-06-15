@@ -301,9 +301,7 @@ function savedcontrol()
 		{
 			if (validate_email($_POST['saveemail']))
 			{
-				// --> START ENHANCEMENT
 				$subject=$clang->gT("Saved Survey Details") . " - " . $thissurvey['name'];
-				// <-- END ENHANCEMENT
 				$message=$clang->gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.","unescaped");
 				$message.="\n\n".$thissurvey['name']."\n\n";
 				$message.=$clang->gT("Name","unescaped").": ".$_POST['savename']."\n";
@@ -372,7 +370,6 @@ function createinsertquery()
             
 		}
 
-		// --> START NEW FEATURE - SAVE
 
 		// First compute the submitdate
 		if ($thissurvey['private'] =="Y" && $thissurvey['datestamp'] =="N")
@@ -477,7 +474,7 @@ function createinsertquery()
                           }
                           else
                           {
-                              $query .= db_quote_id($field)." = '".db_quote($myFilter->process($_POST[$field]))."',";
+                              $query .= db_quote_id($field)." = '".auto_escape($myFilter->process($_POST[$field]))."',";
                           }
                       }
 				}
@@ -495,7 +492,6 @@ function createinsertquery()
 				}
 			}
 		}
-		// <-- END NEW FEATURE - SAVE
 		//DEBUG START
 		//echo $query;
 		//DEBUG END
