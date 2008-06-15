@@ -410,9 +410,9 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 		case "H": //ARRAY (Flexible) - Column Format
 		$values=do_array_flexiblecolumns($ia);
 		break;
-		case "^": //SLIDER CONTROL
-		$values=do_slider($ia);
-		break;
+//		case "^": //SLIDER CONTROL
+//		$values=do_slider($ia);
+//		break;
 		case "1": //Array (Flexible Labels) dual scale
 		$values=do_array_flexible_dual($ia);
 		break;
@@ -2834,7 +2834,7 @@ function do_array_yesnouncertain($ia)
 	return array($answer, $inputnames);
 }
 
-function do_slider($ia)
+/*function do_slider($ia)
 {
 	global $shownoanswer;
 	global $dbprefix;
@@ -2938,7 +2938,7 @@ var s = new Slider(document.getElementById(\"slider-$myfname\"),
 	$inputnames[]=$ia[1];
 
 	return array($answer, $inputnames);
-}
+}*/
 
 function do_array_increasesamedecrease($ia)
 {

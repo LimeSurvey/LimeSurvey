@@ -1786,7 +1786,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					."\t\t\t</select>\n";
 					break;
 					case "Q": //MULTIPLE SHORT TEXT
-					case "^": //Slider
+//					case "^": //Slider
 					case "K":
 					$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
 					$dearesult = db_execute_assoc($deaquery);

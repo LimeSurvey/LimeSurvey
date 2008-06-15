@@ -410,7 +410,7 @@ while ($Row = $QueryResult->FetchRow())
 			    $response->append_child(create_fixed($lid,true));
 			    $question->append_child($response);			    
 	                    break;
-			case "^": //SLIDER CONTROL
+//			case "^": //SLIDER CONTROL
 		            //Not yet implemented
 			    break;
 		} //End Switch
