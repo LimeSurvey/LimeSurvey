@@ -133,7 +133,7 @@ else {
 	{
 		//editorInstance.Events.AttachEvent( 'OnSelectionChange', DoSomething ) ;
 		editorInstance.ToolbarSet.CurrentInstance.Commands.GetCommand('FitWindow').Execute();
-		window.status='LimeSurvey ".$clang->gT("Editing", "js")." ".javascript_escape($fieldtext)."';
+		window.status='LimeSurvey ".$clang->gT("Editing", "js")." ".javascript_escape($fieldtext,true)."';
 	}
 
 	function html_transfert()

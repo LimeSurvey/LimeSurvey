@@ -2735,9 +2735,23 @@ function html_escape($str) {
 }
 
 // make a string safe to include in a JavaScript String parameter.
-function javascript_escape($str) {
-	return str_replace('\'',"\\'",$str);
-}
+function javascript_escape($str, $strip_tags=false) {
+    $new_str ='';
+
+    $str=html_entity_decode_php4($str);
+    if ($strip_tags==true)
+    {
+        $str=strip_tags($str);
+    }
+    
+    for($i = 0; $i < strlen($str); $i++) {
+        $val = ord(substr($str, $i, 1));
+        $prefix = $val < 16 ? '\\x0' : '\\x';
+        $new_str .= $prefix . dechex($val);
+    }
+
+    return $new_str;
+} 
 
 // This function returns the header as result string
 // If you want to echo the header use doHeader() !

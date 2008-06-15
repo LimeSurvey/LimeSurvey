@@ -1041,7 +1041,7 @@ function showSpeaker($hinttext)
 {
   global $imagefiles, $clang;
   $reshtml= "<img src='$imagefiles/speaker.png' align='bottom' alt=\"".strip_tags($hinttext)."\" title=\"".strip_tags($hinttext)."\" "
-           ." onclick=\"alert('".$clang->gT("Question","js").": ".javascript_escape(strip_tags($hinttext))."')\" />";
+           ." onclick=\"alert('".$clang->gT("Question","js").": ".javascript_escape($hinttext,true)."')\" />";
   return $reshtml; 
 }
 
