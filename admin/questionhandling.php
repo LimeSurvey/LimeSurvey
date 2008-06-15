@@ -153,7 +153,7 @@ if ($action == "addquestion")
 						<td align='right'><strong>".$clang->gT("Question Attributes:")."</strong></td>
 						<td align='left'><select id='QTlist' name='attribute_name' >
 						</select>
-						<input type='text' id='QTtext' name='attribute_value'  /></td></tr>\n";
+						<input type='text' id='QTtext' name='attribute_value' maxlength='20' /></td></tr>\n";
 	$newquestionoutput .= "\t<tr>\n"
 	. "\t\t<td align='right'></td><td align='left'>";
 
@@ -590,7 +590,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 						  <tr><th colspan='4' height='5'></th></tr>
                           <tr>  			  
 						  <td nowrap='nowrap' width='50%' ><select id='QTlist' name='attribute_name' >
-						  </select></td><td align='center' width='20%'><input type='text' id='QTtext'  name='attribute_value'  /></td>
+						  </select></td><td align='center' width='20%'><input type='text' id='QTtext'  name='attribute_value' maxlength='20' /></td>
 						  <td align='center'><input type='submit' value='".$clang->gT("Add")."' />
 						  <input type='hidden' name='action' value='addattribute' />
 						  <input type='hidden' name='sid' value='$surveyid' />
@@ -607,7 +607,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		."<table width='100%'><tr><td width='65%'>"
 		.$qa['attribute']."</td>
 					   <td align='center' width='25%'><input type='text' name='attribute_value' value='"
-		.$qa['value']."' /></td>
+		.$qa['value']."' maxlength='20' /></td>
 					   <td ><input type='submit' value='"
 		.$clang->gT("Save")."' />
 					   <input type='hidden' name='action' value='editattribute' />\n
