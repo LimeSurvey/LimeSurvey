@@ -385,7 +385,7 @@ switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c
       // Creating the first worksheet
       $sheet =& $workbook->addWorksheet('Survey Results');
 	     $sheet->setInputEncoding('utf-8');      
-      $separator="|";
+      $separator="~|";
 	break;
 	case "csv":
 	header("Content-Disposition: attachment; filename=survey.csv");
