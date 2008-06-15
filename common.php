@@ -1781,17 +1781,18 @@ function crlf_lineendings($text)
 	return $text;
 }
 
-function createFieldMap($surveyid, $style="null") {
-	// Performance optimized	: Nov 13, 2006
-	// Performance Improvement	: 88%
-	// Optimized By				: swales
 
-	//This function generates an array containing the fieldcode, and matching data in the same
-	//order as the activate script
+
+//This function generates an array containing the fieldcode, and matching data in the same
+//order as the activate script
+// @param: $force_refresh  - Forces to really refresh the array, not just take the session copy
+
+function createFieldMap($surveyid, $style="null", $force_refresh=false) {
+
 	global $dbprefix, $connect, $globalfieldmap, $clang;
     $surveyid=sanitize_int($surveyid);
 	//checks to see if fieldmap has already been built for this page.
-	if (isset($globalfieldmap) && $globalfieldmap[0] == $surveyid) {
+	if (isset($globalfieldmap) && $globalfieldmap[0] == $surveyid  && $force_refresh==false) {
 		return $globalfieldmap[1];
 	}
 

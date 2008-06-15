@@ -557,7 +557,7 @@ foreach ($filters as $flt)
 			{
 				$statisticsoutput .= "\t\t\t\t\t<option value='{$frow['code']}'";
 				if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {$statisticsoutput .= " selected";}
-				$statisticsoutput .= ">{$frow['title']}</option>\n";
+				$statisticsoutput .= ">({$frow['code']}) ".strip_tags($frow['title'])."</option>\n";
 			}
 			$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
 			$counter2++;
@@ -631,7 +631,8 @@ foreach ($filters as $flt)
 		{
 			$statisticsoutput .= "\t\t\t\t\t\t<option value='{$row[0]}'";
 			if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {$statisticsoutput .= " selected";}
-			$statisticsoutput .= ">$row[1]</option>\n";
+			$statisticsoutput .= ">({$row[0]}) ".strip_tags($row[1])."</option>\n";
+            
 		} // while
 		$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
 		break;
@@ -663,7 +664,8 @@ foreach ($filters as $flt)
                 {
                     $statisticsoutput .= "\t\t\t\t\t<option value='{$frow['code']}'";
                     if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {$statisticsoutput .= " selected";}
-                    $statisticsoutput .= ">{$frow['title']}</option>\n";
+                    $statisticsoutput .= ">({$frow['code']}) ".strip_tags($frow['title'])."</option>\n";
+                    
                 }
                 $statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
                 $counter2++;
@@ -736,12 +738,12 @@ $statisticsoutput .= "\t\t<tr><td align='center'>\n\t\t\t<br />\n"
 ."</td></tr></table>\n"
 ."\t</form>\n";
 
-$fieldmap = createFieldMap($surveyid, "full");
+$fieldmap = createFieldMap($surveyid, "full",true);
 $selectlist = "";
 foreach ($fieldmap as $field)
 {
 	$selectlist .= "<option value='".$field['fieldname']."'>"
-	.$field['title'].": ".$field['question']."</option>\n";
+	.strip_tags($field['title']).": ".$field['question']."</option>\n";
 	//create a select list of all the possible answers to this question
 	switch($field['type'])
 	{
@@ -1088,7 +1090,7 @@ if (isset($summary) && $summary)
 			$nresult = db_execute_num($nquery) or safe_die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
 			while ($nrow=$nresult->FetchRow())
 			{
-				$qtitle=$nrow[0]; $qtype=$nrow[1];
+				$qtitle=strip_tags($nrow[0]); $qtype=$nrow[1];
 				$qquestion=strip_tags($nrow[2]);
 			}
 			$mfield=substr($rt, 1, strlen($rt));
@@ -1107,7 +1109,7 @@ if (isset($summary) && $summary)
 			$count = substr($qqid, strlen($qqid)-1);
 			while ($nrow=$nresult->FetchRow())
 			{
-				$qtitle=$nrow[0].'-'.$count; $qtype=$nrow[1];
+				$qtitle=strip_tags($nrow[0]).'-'.$count; $qtype=$nrow[1];
 				$qquestion=strip_tags($nrow[2]);
 			}
 		    $qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qqid' AND code='$qaid' AND language='{$language}' ORDER BY sortorder, answer";
@@ -1129,7 +1131,7 @@ if (isset($summary) && $summary)
 			$nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
 			while ($nrow=$nresult->FetchRow())
 			{
-				$qtitle=$nrow[0]. " [".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
+				$qtitle=strip_tags($nrow[0]). " [".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
 				$qtype=$nrow[1];
 				$qquestion=strip_tags($nrow[2]). "[".$clang->gT("Ranking")." ".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
 			}
@@ -1168,7 +1170,7 @@ if (isset($summary) && $summary)
 				}
 				while ($nrow=$nresult->FetchRow()) 
 				{
-				    $qtitle=$nrow[0]; 
+				    $qtitle=strip_tags($nrow[0]); 
 					$qtype=$nrow[1]; 
 					$qquestion=strip_tags($nrow[2]); 
 					$qiqid=$nrow[3]; 
@@ -1360,7 +1362,7 @@ if (isset($summary) && $summary)
 			$nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
 			while ($nrow=$nresult->FetchRow())
 			{
-				$qtitle=$nrow[0];
+				$qtitle=strip_tags($nrow[0]);
 				$qtype=$nrow[1];
 				$qquestion=strip_tags($nrow[2]);
 				$qiqid=$nrow[3];
@@ -1435,7 +1437,7 @@ if (isset($summary) && $summary)
 					$fresult = db_execute_assoc($fquery);
 					while ($frow=$fresult->FetchRow())
 					{
-						$alist[]=array($frow['code'], $frow['title']);
+						$alist[]=array($frow['code'], strip_tags($frow['title']));
 					}
 					$atext=$qrow[1];
 				}
@@ -1467,7 +1469,7 @@ if (isset($summary) && $summary)
 				$fresult = db_execute_assoc($fquery);
 				while ($frow=$fresult->FetchRow())
 				{
-					$alist[]=array($frow['code'], $frow['title']);
+					$alist[]=array($frow['code'], strip_tags($frow['title']));
 				}
 				if ($qother == "Y")
 				{
@@ -1507,7 +1509,7 @@ if (isset($summary) && $summary)
                 $fresult = db_execute_assoc($fquery);
                 while ($frow=$fresult->FetchRow())
                 {
-                    $alist[]=array($frow['code'], $frow['title']);
+                    $alist[]=array($frow['code'], strip_tags($frow['title']));
                 }
                 $qtitle = $qtitle." [".$qanswer."][".$labelno."]";
                 $qquestion  = $qastring .$labelheader;
