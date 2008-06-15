@@ -368,7 +368,7 @@ if (!$style)
 //sendcacheheaders();             // sending "cache headers" before this permit us to send something else than a "text/html" content-type
 switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c)
 	case "doc":
-	header("Content-Disposition: attachment; filename=survey.doc");
+	header("Content-Disposition: attachment; filename=results-survey".$surveyid.".doc");
 	header("Content-type: application/vnd.ms-word");
 	$separator="\t";
 	break;
@@ -381,14 +381,14 @@ switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c
       if (!empty($tempdir)) {
         $workbook->setTempDir($tempdir);
       }
-      $workbook->send('results.xls');
+      $workbook->send('results-survey'.$surveyid.'.xls');
       // Creating the first worksheet
       $sheet =& $workbook->addWorksheet('Survey Results');
 	     $sheet->setInputEncoding('utf-8');      
       $separator="~|";
 	break;
 	case "csv":
-	header("Content-Disposition: attachment; filename=survey.csv");
+	header("Content-Disposition: attachment; filename=results-survey".$surveyid.".csv");
 	header("Content-type: text/comma-separated-values; charset=UTF-8");
 	$separator=",";
 	break;
@@ -410,7 +410,7 @@ switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c
     $separator="\t";
 	break;
 	default:
-	header("Content-Disposition: attachment; filename=survey.csv");
+	header("Content-Disposition: attachment; filename=results-survey".$surveyid.".csv");
 	header("Content-type: text/comma-separated-values; charset=UTF-8");
 	$separator=",";
 	break;
