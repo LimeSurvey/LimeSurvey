@@ -294,7 +294,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	}
 	 $browseoutput .= "\t\t\t<a href='$scriptname?action=exportresults&amp;sid=$surveyid&amp;id=$id'" .
 		"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export this Response", "js")."')\">" .
-		"<img name='Export' src='$imagefiles/export.png' title='' alt='". $clang->gT("Export this Response")."'align='left' /></a>\n"
+		"<img name='ExportAnswer' src='$imagefiles/export.png' title='' alt='". $clang->gT("Export this Response")."'align='left' /></a>\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' width='20' height='20' border='0' hspace='0' align='left' alt='' />\n"
 	."\t\t\t<a href='$scriptname?action=browse&amp;subaction=id&amp;id=$last&amp;sid=$surveyid&amp;surveytable=$surveytable'" .

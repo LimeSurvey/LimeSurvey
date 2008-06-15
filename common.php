@@ -1444,7 +1444,7 @@ function browsemenubar()
 	$browsemenubar .= "\t\t\t<a href='$scriptname?action=importoldresponses&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" "
 	. " title=\"".$clang->gTview("Import answers from a deactivated survey table")."\" "
 	. " onmouseover=\"showTooltip(event,'".$clang->gT("Import answers from a deactivated survey table", "js")."')\" >" .
-			"<img name='Export' src='$imagefiles/importold.png' title='' alt=''align='left' /></a>\n"
+			"<img name='ImportOld' src='$imagefiles/importold.png' title='' alt=''align='left' /></a>\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n"
 	. "\t\t\t<a href='$scriptname?action=saved&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" "
 	. " title=\"".$clang->gTview("View Saved but not submitted Responses")."\" "
@@ -2735,22 +2735,18 @@ function html_escape($str) {
 }
 
 // make a string safe to include in a JavaScript String parameter.
-function javascript_escape($str, $strip_tags=false) {
+function javascript_escape($str, $strip_tags=false, $htmldecode=false) {
     $new_str ='';
 
-    $str=html_entity_decode_php4($str);
+    if ($htmldecode==true) {
+        $str=html_entity_decode_php4($str);
+    }
     if ($strip_tags==true)
     {
         $str=strip_tags($str);
     }
     
-    for($i = 0; $i < strlen($str); $i++) {
-        $val = ord(substr($str, $i, 1));
-        $prefix = $val < 16 ? '\\x0' : '\\x';
-        $new_str .= $prefix . dechex($val);
-    }
-
-    return $new_str;
+    return str_replace('\'',"\\'",$str);
 } 
 
 // This function returns the header as result string
