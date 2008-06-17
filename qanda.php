@@ -1577,7 +1577,7 @@ function do_multiplechoice($ia)
 	    $excludeallotherscript = "
 		<script type='text/javascript'>
 		<!--
-		function excludeAllOthers(value)
+		function excludeAllOthers$ia[1](value, doconditioncheck)
 		{\n";
 		$excludeallotherscripton="";
 		$excludeallotherscriptoff="";
@@ -1630,6 +1630,7 @@ function do_multiplechoice($ia)
 	$fn = 1;
 	if (!isset($multifields)) {$multifields="";}
 	$rowcounter=0;
+	$postrow="";
 	while ($ansrow = $ansresult->FetchRow())
 	{
 		$rowcounter++;
@@ -1640,6 +1641,14 @@ function do_multiplechoice($ia)
 			if ($_SESSION[$myfname] == "Y")
 			{
 				$answer .= " checked='checked'";
+				if($ansrow['code'] == $excludeallothers) 
+				{
+				  $postrow.="\n\n<script type='text/javascript'>
+				  <!--
+				  excludeAllOthers$ia[1]('answer$ia[1]{$ansrow['code']}', 'no');
+				  -->
+				  </script>\n";
+				}
 			}
 		}
 		elseif ($ansrow['default_value'] == 'Y')
@@ -1650,12 +1659,14 @@ function do_multiplechoice($ia)
 		$answer .= " onclick='";
 		if($ansrow['code'] == $excludeallothers) 
 		{
-		  $answer .= "excludeAllOthers(this.id);";
+		  $answer .= "excludeAllOthers$ia[1](this.id, \"yes\");"; // was "this.id"
 		} elseif ($excludeallothers != "") {
 		  $excludeallotherscripton .= "thiselt=document.getElementById('answer$ia[1]{$ansrow['code']}');\n"
 					. "\t\tthiselt.checked='';\n"
 					. "\t\tthiselt.disabled='true';\n"
-					. "\t\tcheckconditions(thiselt.value, thiselt.name, thiselt.type);\n";
+					. "\t\tif (doconditioncheck == 'yes') {\n"
+					. "\t\t\tcheckconditions(thiselt.value, thiselt.name, thiselt.type);\n"
+					. "\t\t}\n";
 		  $excludeallotherscriptoff.= "document.getElementById('answer$ia[1]{$ansrow['code']}').disabled='';\n";
 		}
 		$answer .= $callmaxanswscriptcheckbox."checkconditions(this.value, this.name, this.type)'  /><label for='answer$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
@@ -1682,7 +1693,9 @@ function do_multiplechoice($ia)
 		  $excludeallotherscripton .= "thiselt=document.getElementById('answer$ia[1]other');\n"
 		                            . "\t\tthiselt.value='';\n"
 		                            . "\t\tthiselt.disabled='true';\n"
-		                            . "\t\tcheckconditions(thiselt.value, thiselt.name, thiselt.type);\n";
+									. "\t\tif (doconditioncheck == 'yes') {\n"
+		                            . "\t\t\tcheckconditions(thiselt.value, thiselt.name, thiselt.type);\n"
+									. "\t\t}\n";
 		  $excludeallotherscriptoff .="document.getElementById('answer$ia[1]other').disabled='';\n";
 		  $excludeallotherscriptoff .="document.getElementById('$ia[1]othercbox').disabled='';\n";
 		}
@@ -1752,6 +1765,7 @@ function do_multiplechoice($ia)
 		</script>";
 	    $answer = $excludeallotherscript . $answer;
 	}
+	$answer .= $postrow;
 	return array($answer, $inputnames);
 }
 
