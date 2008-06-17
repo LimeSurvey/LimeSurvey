@@ -625,7 +625,7 @@ elseif ($action == "usertemplates")
       {
                       $templaterights = array();
                       $tquery = "SELECT * FROM ".$dbprefix."templates";
-                      $tresult = ($tquery);
+                      $tresult = db_execute_assoc($tquery);
                       while ($trow = $tresult->FetchRow()) {
                               if (isset($_POST[$trow["folder"]."_use"]))
                                       $templaterights[$trow["folder"]] = 1;
