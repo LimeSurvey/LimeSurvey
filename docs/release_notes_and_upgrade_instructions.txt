@@ -73,6 +73,26 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.71(+)
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.71+ Build 5048 to XXXX -  Legend:   + = New  # = Changed  - = Fix
+#Updated Basque Translation by inforbek13 --i-t-- eps -d-a-t- mondragon -d-a-t- edu (c_schmitz)
+#Updated French translation by Wael Almoman walmoman -a-t- hemisa -d-o-z- com (c_schmitz)
+#Updated German translations (c_schmitz)
+#Updated Farsi translation by Hooman Mesgary  - mesgary -a-tt- gmail -d-o-tt- com (c_schmitz)
+-Fixed #2110: VVimport only works for UTF8 encoded files. Added "Character set" option to vvimport (lemeur)
+-Fixed #2082: AllowPresistence for token answers isn't working on All-In-One surveys (lemeur)
+-Fixed #2000: Changing an answer code of a labelset doesn't update conditions (lemeur)
+-Fixed #645: Labels defined as a simple image aren't displayed in Dropdown lists - at least the label code is shown now (c_schmitz)
+-Fixed #2088: max_answer javascript does not work when question has line breaks.
+(Needed to add strip_tags parameter to javascript_escape function since the processing order is important) (c_schmitz)
+-Fixed bug #02112: Pipe-Char of Semantic Differential breaks Excel Export - internal $seperator value doesn't have to be just a pipe (so far as I can see) (jcleeland)
+-Fixed bug #02107: other_replace_text truncated (fix supplied by ITEd) (jcleeland)
+-Fixed bug #02113: Add some details to Naming of Excel Export File (or is it a new feature).. anyway, it's done (minor change)  (jcleeland)
+-Fixed some minor html issues & the javascript escaping again (c_schmitz)
+-Fixed #2117: Browse Response: (other) isn't translated (c_schmitz)
+-Fixed #2091: Single and double quotes ( " and ') in a text field are prepended with slashes
+-Fixed a fatal error in template rights (c_schmitz)
+
+
 Changes from 1.71+ Build 5044 to 5048 -  Legend:   + = New  # = Changed  - = Fix
 -Fixed bug with "array_filter" question attribute, where if another question used the same ID in a different survey, the attribute would fail. Search for matching question name now restricts itself only to questions from the same survey. (jcleeland)
 -Fixed bug #02104: Can't choose labelset and other option isn't available (jcleeland)
