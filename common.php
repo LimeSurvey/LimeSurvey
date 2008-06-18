@@ -37,9 +37,9 @@ $ver_num = $ver[0] . $ver[1] . $ver[2];
 $dieoutput='';
 $maildebug='';
 
-if ( $ver_num < 430 )
+if ( $ver_num < 432 )
 {
-    $dieoutput .= 'This script needs PHP 4.3.0 or above! Your version: '.phpversion().'<br />';
+    $dieoutput .= 'This script needs PHP 4.3.2 or above! Your version: '.phpversion().'<br />';
 }
 
 if (!function_exists('mb_convert_encoding'))
