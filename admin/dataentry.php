@@ -44,7 +44,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		.$clang->gT("Data Entry")."</strong></td></tr>\n"
 		."\t<tr><td align='center'>\n"
 		."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
-		.$clang->gT("The defined surveyor database does not exist")."<br />\n"
+		.$clang->gT("The defined LimeSurvey database does not exist")."<br />\n"
 		.$clang->gT("Either your selected database has not yet been created or there is a problem accessing it.")."<br /><br />\n"
 		."<input type='submit' value='"
 		.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /></font><br />\n"

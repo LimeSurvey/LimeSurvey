@@ -512,7 +512,7 @@ if ($tokensexist == 1 && isset($token) && $token &&
 		echo "\t<center><br />\n"
 		."\t".$clang->gT("This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance.")."<br /><br />\n"
 		."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."\n"
-		."\t".$clang->gT("For further information contact")." {$thissurvey['adminname']} "
+		."\t".."\t".sprintf($clang->gT("For further information contact %s"), $thissurvey['adminname'])
 		."(<a href='mailto:{$thissurvey['adminemail']}'>"
 		."{$thissurvey['adminemail']}</a>)<br /><br />\n"
 		."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
@@ -736,7 +736,7 @@ function makegraph($currentstep, $total)
 	$graph .= "<td width='100' align='left'>\n"
 	. "<table cellspacing='0' cellpadding='0' border='0' width='100%'>\n"
 	. "<tr><td>\n"
-	. "<img src='$shchart' width='$size' align='left' alt='$size% ".$clang->gT("complete")."' />\n"
+    . "<img src='$shchart' width='$size' align='left' alt='".sprintf($clang->gT("%s\% complete"), $size)."' />\n"
 	. "</td></tr>\n"
 	. "</table>\n"
 	. "</td>\n"
@@ -1649,7 +1649,7 @@ function buildsurveysession()
 			echo "\t<center><br />\n"
 			."\t".$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
 			."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."\n"
-			."\t".$clang->gT("For further information contact")." {$thissurvey['adminname']} "
+			."\t".."\t".sprintf($clang->gT("For further information contact %s"), $thissurvey['adminname'])
 			."(<a href='mailto:{$thissurvey['adminemail']}'>"
 			."{$thissurvey['adminemail']}</a>)<br /><br />\n"
 			."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
@@ -1685,7 +1685,7 @@ function buildsurveysession()
 				echo "\t<center><br />\n"
 				."\t".$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
 				."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."\n"
-				."\t".$clang->gT("For further information contact")." {$thissurvey['adminname']} "
+				."\t".."\t".sprintf($clang->gT("For further information contact %s"), $thissurvey['adminname'])
 				."(<a href='mailto:{$thissurvey['adminemail']}'>"
 				."{$thissurvey['adminemail']}</a>)<br /><br />\n"
 				."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";

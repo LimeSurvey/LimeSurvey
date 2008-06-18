@@ -254,9 +254,9 @@ else
 			}
 			if (!$result)
 			{
-				$vvoutput .= "<table align='center' class='outlintable'>
-				      <tr><td>".$clang->gT("Import Failed on Record")." $recordcount ".$clang->gT("because")." [".utf8_encode($connect->ErrorMsg())."]
-					  </td></tr></table>\n";
+				$vvoutput .= "<table align='center' class='outlintable'>\n"
+                            ."<tr><td>".sprintf($clang->gT("Import Failed on Record %d because [%s]"), $recordcount, utf8_encode($connect->ErrorMsg()))
+                            ."</td>\n</tr></table>\n";
 			}
 			else
 			{

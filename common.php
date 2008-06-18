@@ -1738,7 +1738,7 @@ function getextendedanswer($fieldcode, $value, $format='')
 		}
 		else
 		{
-			return $this_answer;
+			return strip_tags($this_answer);
 		}
 	}
 	else
@@ -2158,13 +2158,6 @@ function templatereplace($line)
 	if (strpos($line, "{PERCENTCOMPLETE}") !== false) $line=str_replace("{PERCENTCOMPLETE}", $percentcomplete, $line);
 	if (strpos($line, "{GROUPNAME}") !== false) $line=str_replace("{GROUPNAME}", $groupname, $line);
 	if (strpos($line, "{GROUPDESCRIPTION}") !== false) $line=str_replace("{GROUPDESCRIPTION}", $groupdescription, $line);
-//	while (strpos($line, "{INSERTANS:") !== false)
-//	{
-//		$answreplace=substr($line, strpos($line, "{INSERTANS:"), strpos($line, "}", strpos($line, "{INSERTANS:"))-strpos($line, "{INSERTANS:")+1);
-//		$answreplace2=substr($answreplace, 11, strpos($answreplace, "}", strpos($answreplace, "{INSERTANS:"))-11);
-//		$answreplace3=retrieve_Answer($answreplace2);
-//		$line=str_replace($answreplace, $answreplace3, $line);
-//	}
 	if (strpos($line, "{QUESTION}") !== false) $line=str_replace("{QUESTION}", $question, $line);
 	if (strpos($line, "{QUESTION_CODE}") !== false) $line=str_replace("{QUESTION_CODE}", $questioncode, $line);
 	if (strpos($line, "{ANSWER}") !== false) $line=str_replace("{ANSWER}", $answer, $line);

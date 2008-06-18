@@ -2032,7 +2032,7 @@ if($action == "surveysecurity")
 				. "\t\t<td align='center' style='padding-top:10px;'>\n";
 
 				$surveysecurity .= "<form method='post' action='$scriptname?sid={$surveyid}'>"
-				."<input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.","js")."\")' />"
+				."<input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
 				."<input type='hidden' name='action' value='delsurveysecurity' />"
 				."<input type='hidden' name='user' value='{$resul2row['users_name']}' />"
 				."<input type='hidden' name='uid' value='{$resul2row['uid']}' />"

@@ -127,13 +127,13 @@ if ($action == "templatecopy" && isset($newname) && isset($copydir)) {
 			$copyfile=$copydirname."/".$file;
 			$newfile=$newdirname."/".$file;
 			if (!copy($copyfile, $newfile)) {
-				echo "<script type=\"text/javascript\">\n<!--\nalert(\"".$clang-gT("Failed to copy","js")." $file ".$clang->gT("to new template directory.","js")."\");\n//-->\n</script>";
+                echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang-gT("Failed to copy %s to new template directory.","js"), $file)."\");\n//-->\n</script>";
 			}
 		}
 		$templates[]=array("name"=>$newname, "dir"=>$newdirname);
 		$templatename=$newname;
 	} elseif($mkdirresult == 2) {
-		echo "<script type=\"text/javascript\">\n<!--\nalert(\"".$clang->gT("Directory with the name","js")." `".$newname."` ".$clang->gT("already exists - choose another name","js")."\");\n//-->\n</script>";
+        echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Directory with the name `%s` already exists - choose another name","js"), $newname)."\");\n//-->\n</script>";
 	} else {
 		echo "<script type=\"text/javascript\">\n<!--\nalert(\"".$clang->gT("Unable to create directory","js")." `".$newname."`. ".$clang->gT("Maybe you don't have permission.","js")."\");\n//-->\n</script>";
 	}
@@ -143,7 +143,7 @@ if ($action == "templaterename" && isset($newname) && isset($copydir)) {
 	$newdirname=$publicdir."/templates/".$newname;
 	$olddirname=$publicdir."/templates/".$copydir;
 	if (rename($olddirname, $newdirname)==false) {
-		echo "<script type=\"text/javascript\">\n<!--\nalert(\"".$clang->gT("Directory could not be renamed to","js")." `".$newname."`. ".$clang->gT("Maybe you don't have permission.","js")."\");\n//-->\n</script>";
+        echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Directory could not be renamed to `%s`.","js"), $newname)." ".$clang->gT("Maybe you don't have permission.","js")."\");\n//-->\n</script>";
 	} else {
 		$templates[]=array("name"=>$newname, "dir"=>$newdirname);
 		$templatename=$newname;
@@ -247,7 +247,7 @@ foreach ($files as $file) {
 		$copyfile="$publicdir/templates/default/".$file['name'];
 		$newfile=$thisfile;
 		if (!@copy($copyfile, $newfile)) {
-			echo "<script type=\"text/javascript\">\n<!--\nalert(\"".$clang->gT("Failed to copy","js")." ".$file['name']." ".$clang->gT("to new template directory.","js")."\");\n//-->\n</script>";
+            echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang-gT("Failed to copy %s to new template directory.","js"), $file['name'])."\");\n//-->\n</script>";
 		}
 	}
 }
@@ -861,7 +861,7 @@ function makegraph($currentstep, $total)
 	$graph .= "<td width='100' align='left'>\n"
 	. "<table cellspacing='0' cellpadding='0' border='0' width='100%'>\n"
 	. "<tr><td>\n"
-	. "<img src='$shchart' width='$size' align='left' alt='$size% ".$clang->gT("complete")."' />\n"
+    . "<img src='$shchart' width='$size' align='left' alt='".sprintf($clang->gT("%s\% complete"), $size)."' />\n"
 	. "</td></tr>\n"
 	. "</table>\n"
 	. "</td>\n"

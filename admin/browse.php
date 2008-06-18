@@ -66,7 +66,7 @@ if (!$database_exists) //DATABASE DOESN'T EXIST OR CAN'T CONNECT
 	. $clang->gT("Browse Responses")."</strong></td></tr>\n"
 	."\t<tr><td align='center'>$setfont\n"
 	."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
-	. $clang->gT("The defined surveyor database does not exist")."<br />\n"
+	. $clang->gT("The defined LimeSurvey database does not exist")."<br />\n"
 	. $clang->gT("Either your selected database has not yet been created or there is a problem accessing it.")."<br /><br />\n"
 	."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
 	."</td></tr></table>\n"
@@ -287,10 +287,10 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	{
 //		$browseoutput .=  "\t\t\t<a href='$scriptname?action=dataentry&amp;subaction=delete&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
 //			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Delete this entry", "js")."')\">"
-//		."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='' title='' onclick=\"return confirm('".$clang->gT("Are you sure you want to delete this entry.","js")."')\" /></a>\n";
+//		."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='' title='' onclick=\"return confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')\" /></a>\n";
 		$browseoutput .=  "\t\t\t<a href='#'" .
 			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Delete this entry", "js")."')\">"
-		."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='' title='' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry.","js")."')) {".get2post("$scriptname?action=dataentry&amp;subaction=delete&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable")."}\" /></a>\n";
+		."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='' title='' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')) {".get2post("$scriptname?action=dataentry&amp;subaction=delete&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable")."}\" /></a>\n";
 	}
 	 $browseoutput .= "\t\t\t<a href='$scriptname?action=exportresults&amp;sid=$surveyid&amp;id=$id'" .
 		"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export this Response", "js")."')\">" .

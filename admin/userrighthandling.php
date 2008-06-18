@@ -75,8 +75,8 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 	if($ugid && $grpresultcount > 0 &&
 		$_SESSION['loginID'] == $grow['owner_id'])
 	{
-//		$usergroupsummary .= "\t\t\t\t\t<a href='$scriptname?action=delusergroup&amp;ugid=$ugid' onclick=\"return confirm('".$clang->gT("Are you sure you want to delete this entry.","js")."')\""
-		$usergroupsummary .= "\t\t\t\t\t<a href='#' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry.","js")."')) {".get2post("$scriptname?action=delusergroup&amp;ugid=$ugid")."}\" "
+//		$usergroupsummary .= "\t\t\t\t\t<a href='$scriptname?action=delusergroup&amp;ugid=$ugid' onclick=\"return confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')\""
+		$usergroupsummary .= "\t\t\t\t\t<a href='#' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')) {".get2post("$scriptname?action=delusergroup&amp;ugid=$ugid")."}\" "
 		. "onmouseout=\"hideTooltip()\" "
 		. "onmouseover=\"showTooltip(event,'".$clang->gT("Delete Current User Group", "js")."');return false\">"
 		. "<img src='$imagefiles/delete.png' alt='' name='DeleteUserGroup' title='' align='left' border='0' hspace='0' /></a>";
@@ -443,7 +443,7 @@ if ($action == "editusers")
 		if ($usrhimself['parent_id'] != 0 && $_SESSION['USER_RIGHT_DELETE_USER'] == 1 )
 		{
 			$usersummary .= "\t\t\t<form method='post' action='$scriptname?action=deluser'>"
-			."<input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.","js")."\")' />"
+			."<input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
 			."<input type='hidden' name='action' value='deluser' />"
 			."<input type='hidden' name='user' value='{$usrhimself['user']}' />"
 			."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
@@ -524,7 +524,7 @@ if ($action == "editusers")
 		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || ($_SESSION['USER_RIGHT_DELETE_USER'] == 1  && $usr['parent_id'] == $_SESSION['loginID']))
 		{
 			$usersummary .= "\t\t\t<form method='post' action='$scriptname?action=deluser'>"
-			."<input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.","js")."\")' />"
+			."<input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
 			."<input type='hidden' name='action' value='deluser' />"
 			."<input type='hidden' name='user' value='{$usr['user']}' />"
 			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
@@ -913,7 +913,7 @@ if ($action == "editusergroups" )
 					if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 					{
 						$usergroupentries .= "\t\t\t<form method='post' action='$scriptname?action=deleteuserfromgroup&amp;ugid=$ugid'>"
-						." <input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry.","js")."\")' />"
+						." <input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
 						." <input type='hidden' name='user' value='{$egurow['users_name']}' />"
 						." <input name='uid' type='hidden' value='{$egurow['uid']}' />"
 						." <input name='ugid' type='hidden' value='{$ugid}' />";
