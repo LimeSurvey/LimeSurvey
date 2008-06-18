@@ -1760,7 +1760,7 @@ if ($subaction == "inserttoken" &&
 		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
    )
 {
-	$santitizedtoken=sanitize_xss_string(strip_tags($_POST['token']));
+	$santitizedtoken=trim(sanitize_xss_string(strip_tags($_POST['token'])));
 	$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
 	.$clang->gT("Add or Edit Token Entry")."</strong></td></tr>\n"
 	."\t<tr><td align='center'>\n";

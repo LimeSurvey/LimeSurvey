@@ -7,7 +7,7 @@
 
 {COMPLETED}
 
-<p>Thank you very much for completing and submitting this survey!<p>
+<p>{URL}<p>
 
 <center><input type="button" name="closeme" value="Close Window" onClick="top.window.close();"></center>
 

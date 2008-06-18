@@ -2233,7 +2233,7 @@ function templatereplace($line)
 		. "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall&amp;lang=".$_SESSION['s_lang'];
 		if (returnglobal('token'))
 		{
-			$clearall .= "&amp;token=".urlencode(returnglobal('token'));
+			$clearall .= "&amp;token=".urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('token')))));
 		}
 		$clearall .="' onclick='return confirm(\""
 		. $clang->gT("Are you sure you want to clear all your responses?")."\")'>["
@@ -2340,7 +2340,7 @@ function templatereplace($line)
 		$savereturn = "<a href='$relativeurl/index.php?sid=$surveyid";
 		if (returnglobal('token'))
 		{
-			$savereturn.= "&amp;token=".urlencode(returnglobal('token'));
+			$savereturn.= "&amp;token=".urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('token')))));
 		}
  		$savereturn .= "'>".$clang->gT("Return To Survey")."</a>";
 		$line=str_replace("{RETURNTOSURVEY}", $savereturn, $line);

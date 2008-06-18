@@ -27,7 +27,7 @@ class InputFilter {
 		$this->xssAuto = $xssAuto;
 	}
 	function process($source) {
-*		if (is_array($source)) {
+		if (is_array($source)) {
 			foreach($source as $key => $value)
 				if (is_string($value)) $source[$key] = $this->remove($this->decode($value));
 			return $source;
