@@ -147,8 +147,8 @@
         $supportedLanguages['et']['nativedescription'] = 'Eesti';
 	    $supportedLanguages['et']['rtl'] = false;
 
-	    // Farsi / Persian
-	    $supportedLanguages['fa']['description'] = $clang->gT('Farsi');
+	    // Persian
+	    $supportedLanguages['fa']['description'] = $clang->gT('Persian');
 	    $supportedLanguages['fa']['nativedescription'] = '&#1601;&#1575;&#1585;&#1587;&#1740;';
 	    $supportedLanguages['fa']['rtl'] = true;
 
