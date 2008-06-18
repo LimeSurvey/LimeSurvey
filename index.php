@@ -736,7 +736,7 @@ function makegraph($currentstep, $total)
 	$graph .= "<td width='100' align='left'>\n"
 	. "<table cellspacing='0' cellpadding='0' border='0' width='100%'>\n"
 	. "<tr><td>\n"
-    . "<img src='$shchart' width='$size' align='left' alt='".sprintf($clang->gT("%s\% complete"), $size)."' />\n"
+    . "<img src='$shchart' width='$size' align='left' alt='".sprintf($clang->gT("%s % complete"), $size)."' />\n"
 	. "</td></tr>\n"
 	. "</table>\n"
 	. "</td>\n"
