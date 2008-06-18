@@ -147,11 +147,6 @@
         $supportedLanguages['et']['nativedescription'] = 'Eesti';
 	    $supportedLanguages['et']['rtl'] = false;
 
-	    // Persian
-	    $supportedLanguages['fa']['description'] = $clang->gT('Persian');
-	    $supportedLanguages['fa']['nativedescription'] = '&#1601;&#1575;&#1585;&#1587;&#1740;';
-	    $supportedLanguages['fa']['rtl'] = true;
-
 	    // Finnish
 	    $supportedLanguages['fi']['description'] = $clang->gT('Finnish');
 	    $supportedLanguages['fi']['nativedescription'] = 'Suomi';
@@ -242,6 +237,11 @@
 	    $supportedLanguages['nn']['description'] = $clang->gT('Norwegian (Nynorsk)');
 	    $supportedLanguages['nn']['nativedescription'] = 'Norsk Nynorsk';
 	    $supportedLanguages['nn']['rtl'] = false;
+
+	    // Persian
+	    $supportedLanguages['fa']['description'] = $clang->gT('Persian');
+	    $supportedLanguages['fa']['nativedescription'] = '&#1601;&#1575;&#1585;&#1587;&#1740;';
+	    $supportedLanguages['fa']['rtl'] = true;
 
         // Polish
         $supportedLanguages['pl']['description'] = $clang->gT('Polish');

@@ -124,7 +124,8 @@ if (!isset($_SESSION['loginID']))
 						$_SESSION['pw_notify']=false;
 					} // Check if the user has changed his default password
 
-					$_SESSION['loginID'] = intval($fields['uid']);
+				    session_regenerate_id();
+                    $_SESSION['loginID'] = intval($fields['uid']);
 					$_SESSION['user'] = $fields['users_name'];
 					$_SESSION['htmleditormode'] = $fields['htmleditormode'];
 					// Compute a checksession random number to test POSTs
