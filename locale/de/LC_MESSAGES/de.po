@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-18 10:37+0100\n"
-"PO-Revision-Date: 2008-06-18 10:40+0100\n"
+"POT-Creation-Date: 2008-06-18 18:19+0100\n"
+"PO-Revision-Date: 2008-06-18 18:20+0100\n"
 "Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -825,6 +825,7 @@ msgstr "Das von ihnen angegebene Schlüsselwort ist entweder ungültig oder wurd
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:515
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1652
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1688
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1844
 #, php-format
 msgid "For further information contact %s"
 msgstr "Um weitere Informationen zu erhalten, kontaktieren Sie bitte %s"
@@ -837,8 +838,10 @@ msgstr "Umfrage gespeichert"
 msgid "There is no matching saved survey"
 msgstr "Es gibt keine entsprechende Umfrage."
 
-msgid "%s % complete"
-msgstr "%s % vollständig"
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:739
+#, php-format
+msgid "%s %% complete"
+msgstr "%s %%  vollständig"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1392
 msgid ""
@@ -948,10 +951,6 @@ msgstr "Bitte bestätigen Sie den Zugangsschlüssel, indem Sie die Sicherheitsfr
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1843
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Für diese Umfrage wurden noch keine Fragen angelegt. Sie kann weder getestet noch abgeschlossen werden."
-
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1844
-msgid "For further information contact"
-msgstr "Um weitere Informationen zu erhalten, kontaktieren Sie bitte"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2139
 msgid "Previous"
@@ -2757,8 +2756,9 @@ msgid "Some Question have been disabled"
 msgstr "Einige Fragen wurden deaktiviert"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:452
-msgid "Survey Format is "
-msgstr "Umfrage Format ist"
+#, php-format
+msgid "Survey Format is %s:"
+msgstr "Umfrage Format ist %s:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:452
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2240
@@ -2772,8 +2772,9 @@ msgid "Only Previous pages answers are available"
 msgstr "Nur Antworten der vorherigen Seiten sind verfügbar"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:458
-msgid "Survey mode is set to "
-msgstr "Umfrage Modus ist gesetzt auf"
+#, php-format
+msgid "Survey mode is set to %s:"
+msgstr "Umfrage Modus ist auf %s gesetzt:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:458
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2237
@@ -5226,18 +5227,22 @@ msgid "Directory with the name `%s` already exists - choose another name"
 msgstr "Ein Verzeichnis mit dem Namen `%s` existiert bereits - wählen Sie einen anderen Namen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:138
-msgid "Unable to create directory"
-msgstr "Verzeichnis konnte nicht erstellt werden"
+#, php-format
+msgid "Unable to create directory `%s`."
+msgstr "Verzeichnis `%s konnte nicht erstellt werden"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:138
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:146
-msgid "Maybe you don't have permission."
-msgstr "Evenuell haben Sie keine Rechte."
+msgid "Please check the directory permissions."
+msgstr "Bitte überprüfen Sie die Verzeichnisrechte."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:146
 #, php-format
 msgid "Directory could not be renamed to `%s`."
 msgstr "Verzeichnis konnte nicht nach  `%s` umbenannt werden."
+
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:146
+msgid "Maybe you don't have permission."
+msgstr "Evenuell haben Sie keine Rechte."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:175
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:187
@@ -6039,7 +6044,7 @@ msgid "User name and/or email not found!"
 msgstr "Benutzername und/oder Email-Adresse nicht gefunden!"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:69
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:362
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:363
 msgid "Your data:"
 msgstr "Ihre Daten:"
 
@@ -6052,123 +6057,123 @@ msgid "An email with your login data was sent to you."
 msgstr "Es wurde eine Email mit den Login-Daten an Sie versandt."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:88
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:385
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:386
 msgid "Email to {NAME} ({EMAIL}) failed."
 msgstr "Email für {NAME} ({EMAIL}) fehlgeschlagen."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:97
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:183
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:184
 msgid "Logging in..."
 msgstr "Anmelden..."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:108
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:163
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:264
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:164
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:265
 msgid "Incorrect User name and/or Password!"
 msgstr "Benutzername und/oder Passwort falsch!"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:148
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:288
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:149
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:289
 msgid "Welcome {NAME}"
 msgstr "Willkommen {NAME}"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:149
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:289
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:150
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:290
 msgid "You logged in successfully."
 msgstr "Sie haben sich erfolgreich eingeloggt."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:171
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:172
 msgid "LimeSurvey is setup to use the webserver authentication, but it seems you have not already been authenticated"
 msgstr "LimeSurvey wurde konfiguriert die Webserver Authentifizierung zu nutzen, aber Sie sind anscheinend nicht angemeldet."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:172
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:173
 msgid "Please contact your system administrator"
 msgstr "Bitte kontaktieren Sie Ihren Systemadministrator"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:255
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:256
 msgid "Auto Import User Failed!"
 msgstr "Auto Import Benutzer fehlgeschlagen!"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:309
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:310
 msgid "Logout successful."
 msgstr "Abmelden erfolgreich."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:328
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:329
 msgid "Email address is not valid."
 msgstr "Email-Adresse ist nicht gültig."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:333
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:334
 msgid "Username was not supplied."
 msgstr "Es wurde kein Benutzername angegeben."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:361
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:362
 msgid "You were signed in on the site"
 msgstr "Sie wurden eingetragen auf der Webseite"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:370
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:371
 msgid "Login here"
 msgstr "Anmeldung hier"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:380
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:381
 msgid "An email with a generated password was sent to the user."
 msgstr "Es wurde eine Email mit einem generierten Passwort an den Benutzer versandt."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:390
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:540
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:391
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:541
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:242
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:539
 msgid "Set User Rights"
 msgstr "Setze Benutzerrechte"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:397
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:398
 msgid "Username and/or email address already exists."
 msgstr "Benutzername oder Email-Adresse existiert bereits."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:415
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:416
 msgid "Initial Superadmin cannot be deleted!"
 msgstr "Ursprungs-Super-Administrator kann nicht gelöscht werden!"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:472
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:473
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:187
 msgid "Modifying User"
 msgstr "Benutzer bearbeiten"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:492
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:516
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:493
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:517
 msgid "Could not modify User Data."
 msgstr "Benutzerdaten konnten nicht geändert werden."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:492
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:493
 msgid "Email address ist not valid."
 msgstr "Email-Adresse ist nicht gültig."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:508
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:509
 msgid "Unchanged"
 msgstr "Unverändert"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:516
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:517
 msgid "Email address already exists."
 msgstr "Email-Adresse existiert bereits."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:564
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:604
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:565
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:605
 msgid "Update user rights successful."
 msgstr "Benutzerrechte erfolgreich geändert."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:614
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:615
 msgid "You are not allowed to change your own rights!"
 msgstr "Sie sind nicht berechtigt Ihre eigenen Rechte zu ändern!"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:621
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:622
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:557
 msgid "Set Template Rights"
 msgstr "Setze Vorlagen Rechte"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:641
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:642
 msgid "Update usertemplates successful."
 msgstr "Benutzer-Vorlage erfolgreich aktualisiert."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:647
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:648
 msgid "Error while updating usertemplates."
 msgstr "Fehler während der Aktualisierung von usertemplates."
 
@@ -6554,80 +6559,80 @@ msgid "Estonian"
 msgstr "Estnisch"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:151
-msgid "Farsi"
-msgstr "Persisch"
-
-#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:156
 msgid "Finnish"
 msgstr "Finnisch"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:162
+#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:157
 msgid "French"
 msgstr "Französisch"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:167
+#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:162
 msgid "Galician"
 msgstr "Galizisch"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:172
+#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:167
 msgid "German"
 msgstr "Deutsch (Sie-Form)"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:177
+#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:172
 msgid "German informal"
 msgstr "Deutsch (Du-Form)"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:182
+#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:177
 msgid "Greek"
 msgstr "Griechisch"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:187
+#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:182
 msgid "Hebrew"
 msgstr "Hebräisch"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:192
+#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:187
 msgid "Hungarian"
 msgstr "Ungarisch"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:197
+#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:192
 msgid "Icelandic"
 msgstr "Isländisch"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:202
+#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:197
 msgid "Indonesian"
 msgstr "Indonesisch"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:207
+#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:202
 msgid "Italian"
 msgstr "Italienisch"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:212
+#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:207
 msgid "Japanese"
 msgstr "Japanisch"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:217
+#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:212
 msgid "Korean"
 msgstr "Koreanisch"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:222
+#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:217
 msgid "Lithuanian"
 msgstr "Litauisch"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:227
+#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:222
 msgid "Latvian"
 msgstr "Lettisch"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:232
+#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:227
 msgid "Macedonian"
 msgstr "Mazedonisch"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:237
+#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:232
 msgid "Norwegian (Bokmal)"
 msgstr "Norwegisch (Bokmal)"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:242
+#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:237
 msgid "Norwegian (Nynorsk)"
 msgstr "Norwegisch (Nynorsk)"
+
+#: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:242
+msgid "Persian"
+msgstr "Persisch"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:247
 msgid "Polish"
@@ -6685,6 +6690,10 @@ msgstr "Thailändisch"
 msgid "Vietnamese"
 msgstr "Vietnamesisch"
 
+#~ msgid "For further information contact"
+#~ msgstr "Um weitere Informationen zu erhalten, kontaktieren Sie bitte"
+#~ msgid "Farsi"
+#~ msgstr "Persisch"
 #~ msgid "Are you sure you want to delete this entry."
 #~ msgstr "Sind Sie sicher, dass Sie diesen Eintrag löschen wollen?"
 #~ msgid "Failed to copy"

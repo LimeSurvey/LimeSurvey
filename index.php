@@ -1841,7 +1841,7 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 		echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 		echo "\t<center><br />\n"
 		."\t".$clang->gT("This survey does not yet have any questions and cannot be tested or completed.")."<br /><br />\n"
-		."\t".$clang->gT("For further information contact")." {$thissurvey['adminname']}"
+		."\t".sprintf($clang->gT("For further information contact %s"), $thissurvey['adminname'])
 		." (<a href='mailto:{$thissurvey['adminemail']}'>"
 		."{$thissurvey['adminemail']}</a>)<br /><br />\n"
 		."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";

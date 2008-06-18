@@ -135,8 +135,8 @@ if ($action == "templatecopy" && isset($newname) && isset($copydir)) {
 	} elseif($mkdirresult == 2) {
         echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Directory with the name `%s` already exists - choose another name","js"), $newname)."\");\n//-->\n</script>";
 	} else {
-		echo "<script type=\"text/javascript\">\n<!--\nalert(\"".$clang->gT("Unable to create directory","js")." `".$newname."`. ".$clang->gT("Maybe you don't have permission.","js")."\");\n//-->\n</script>";
-	}
+            echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Unable to create directory `%s`.","js"), $newname)." ".$clang->gT("Please check the directory permissions.","js")."\");\n//-->\n</script>";	
+    }
 }
 
 if ($action == "templaterename" && isset($newname) && isset($copydir)) {

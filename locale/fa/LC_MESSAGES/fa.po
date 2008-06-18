@@ -1,13 +1,12 @@
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# This file is distributed under the same license as the LimeSurvey package.
+# Hooman Mesgary <info@mesgary.com>, 2008.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-06-15 09:00+0200\n"
-"PO-Revision-Date: 2008-06-17 00:45+0330\n"
+"PO-Revision-Date: 2008-06-18 14:54+0330\n"
 "Last-Translator: Hooman Mesgary <info@mesgary.com>\n"
 "Language-Team: Hooman Mesgary <info@mesgary.com>\n"
 "MIME-Version: 1.0\n"
@@ -59,7 +58,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:379
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:521
 msgid "Token ID"
-msgstr ""
+msgstr "شناسهٔ نشانه"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:164
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:165
@@ -71,7 +70,7 @@ msgstr "تاریخ ارسال"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:525
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1533
 msgid "Date Stamp"
-msgstr ""
+msgstr "مهر تاریخ"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:171
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:936
@@ -91,7 +90,7 @@ msgstr "آدرس آی.پی."
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:400
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1535
 msgid "Referring URL"
-msgstr ""
+msgstr "نشانی اینترنتی ارجاع کننده"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:262
 #: /srv/www/virtual/limesurvey.org/devSVN/printanswers.php:264
@@ -114,7 +113,7 @@ msgstr "جواب شما"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:43
 msgid "Import Survey Resources"
-msgstr ""
+msgstr "وارد کردن منابع نظرسنجی"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:48
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:72
@@ -204,7 +203,7 @@ msgstr "خطا"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:219
 #, php-format
 msgid "Incorrect permissions in your %s folder."
-msgstr ""
+msgstr "مجوزهای لازم در پوشهٔ %s وجود ندارد."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:50
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:74
@@ -237,7 +236,7 @@ msgstr "عقب"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:459
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1460
 msgid "Success"
-msgstr ""
+msgstr "موفقیت"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:67
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:237
@@ -261,12 +260,12 @@ msgstr "در حال خواندن فایل .."
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:73
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:243
 msgid "This file is not a valid ZIP file archive. Import failed."
-msgstr ""
+msgstr "این یک فایل آرشیو فشردهٔ معتبر نیست. وارد کردن با شکست مواجه شد."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:94
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:264
 msgid "Copy failed"
-msgstr ""
+msgstr "کپی کردن با شکست مواجه شد"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:103
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:273
@@ -276,24 +275,24 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:113
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:283
 msgid "Forbidden Extension"
-msgstr ""
+msgstr "پسوند ممنوع"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:137
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:156
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:307
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:326
 msgid "Imported Files List"
-msgstr ""
+msgstr "لیست فایل‌های وارد شده"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:142
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:312
 msgid "This ZIP archive contains no valid Resources files. Import failed."
-msgstr ""
+msgstr "این آرشیو فشرده شامل هیچ فایل منبع معتبری نیست. وارد کردن با شکست مواجه شد."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:143
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:313
 msgid "Remember that we do not support subdirectories in ZIP Archive."
-msgstr ""
+msgstr "به خاطر داشته باشید که در آرشیو فشرده از پوشه‌ها پشتیبانی نمی‌شود."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:151
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:321
@@ -305,17 +304,17 @@ msgstr "ناتمام"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:325
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:333
 msgid "Error Files List"
-msgstr ""
+msgstr "لیست فایل‌های خطا"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:166
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:336
 msgid "Imported Resources for"
-msgstr ""
+msgstr "وارد کردن منابع برای"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:168
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:338
 msgid "Resources Import Summary"
-msgstr ""
+msgstr "خلاصهٔ وارد کردن منابع"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:169
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:339
@@ -344,7 +343,7 @@ msgstr "فایل"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:32
 #, php-format
 msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
-msgstr ""
+msgstr "بارگذاری فایل با خطا مواجه شد. این خطا ممکن است به دلیل عدم وجود مجوزهای لازم در پوشهٔ %s رخ داده باشد."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:213
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:23
@@ -352,7 +351,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:202
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:214
 msgid "Import Label Set"
-msgstr ""
+msgstr "وارد کردن مجموعه برچسب"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:220
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/import_resources_zip.php:244
@@ -594,7 +593,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:83
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1455
 msgid "Import a VV survey file"
-msgstr ""
+msgstr "وارد کردن یک فایل VV نظرسنجی"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:84
 msgid "File:"
@@ -602,27 +601,27 @@ msgstr "فایل:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:85
 msgid "Survey ID:"
-msgstr ""
+msgstr "شناسهٔ نظرسنجی:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:86
 msgid "Exclude record IDs?"
-msgstr ""
+msgstr "شناسه‌های رکوردهای مستثنی شده؟"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:88
 msgid "When an imported record matches an existing record ID:"
-msgstr ""
+msgstr "وقتی که یک رکورد وارد شده با شناسهٔ یک رکورد موجود مطابقت دارد:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:89
 msgid "Report an error (and skip the new record)."
-msgstr ""
+msgstr "گزارش دادن خطا (و پرش از رکورد جدید)."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:90
 msgid "Renumber the new record."
-msgstr ""
+msgstr "شماره گذاری مجدد رکورد جدید."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:91
 msgid "Ignore the new record."
-msgstr ""
+msgstr "صرفنظر کردن از رکورد جدید."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:92
 msgid "Replace the existing record."
@@ -630,12 +629,12 @@ msgstr "رکورد موجود جایگزین شود."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:94
 msgid "Import as not finalized answers?"
-msgstr ""
+msgstr "وارد کردن بصورت پاسخ‌های نهایی نشده؟"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:95
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2179
 msgid "Character set of the file:"
-msgstr ""
+msgstr "مجموعه نویسهٔ فایل:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:98
 msgid "Import"
@@ -651,19 +650,19 @@ msgstr "وارد کردن"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:466
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1377
 msgid "Return to Survey Administration"
-msgstr ""
+msgstr "بازگشت به مدیریت نظرسنجی"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:111
 msgid "Cannot import the VVExport file."
-msgstr ""
+msgstr "امکان وارد کردن فایل صادر شدهٔ VV نیست."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:131
 msgid "Back to Response Import"
-msgstr ""
+msgstr "بازگشت به وارد کردن واکنش"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:258
 msgid "Import Failed on Record"
-msgstr ""
+msgstr "شکست در وارد کردن رکورد"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:258
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/integritycheck.php:71
@@ -678,11 +677,11 @@ msgstr "زیرا"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:271
 msgid "Important Note:"
-msgstr ""
+msgstr "یادداشت مهم:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:271
 msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
-msgstr ""
+msgstr "این صفحه را بازآوری نکنید، زیرا باعث وارد شدن مجدد فایل و ایجاد تکرار می‌شود"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvimport.php:273
 msgid "Total records imported:"
@@ -703,7 +702,7 @@ msgstr "مجموع رکوردهای وارد شده:"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1483
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1511
 msgid "Browse Responses"
-msgstr "مرور پاسخ‌ها"
+msgstr "مرور واکنش‌ها"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/assessments.php:63
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1229
@@ -713,7 +712,7 @@ msgstr "دارایی‌ها"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/assessments.php:76
 msgid "No SID Provided"
-msgstr ""
+msgstr "هیچ شناسهٔ نظرسنجی وارد نشده است"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/assessments.php:88
 msgid "Scope"
@@ -741,7 +740,7 @@ msgstr "حداکثر"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/assessments.php:88
 msgid "Heading"
-msgstr ""
+msgstr "سرفصل"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/assessments.php:88
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1082
@@ -775,7 +774,7 @@ msgstr "ویرایش"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/assessments.php:127
 msgid "If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission"
-msgstr ""
+msgstr "اگر شما یک دارایی در این صفحه برای نظرسنجی‌ای که انتخاب شده است ایجاد کنید، آن دارایی در پایان نظرسنجی و یعد از ارسال آن اجرا خواهد شد."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/assessments.php:132
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:857
@@ -805,7 +804,7 @@ msgstr "حذف"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:527
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:916
 msgid "Are you sure you want to delete this entry."
-msgstr ""
+msgstr "آیا شما از حذف این مورد مطمئن هستید؟"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/assessments.php:180
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2698
@@ -830,33 +829,33 @@ msgstr "انصراف"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:55
 msgid "This file is not a LimeSurvey label set file. Import failed."
-msgstr ""
+msgstr "این فایل یک فایل مجموعه برچسب LimeSurvey نیست. وارد کردن با شکست مواجه شد."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:56
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:212
 msgid "Return to Labels Admin"
-msgstr ""
+msgstr "بازگشت به مدیریت برچسب‌ها"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:193
 msgid "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead."
-msgstr ""
+msgstr "یک مجموعه برچسب تکراری وجود دارد و در نتیجه این مجموعه وارد نشد و به جای آن نسخهٔ تکراری قبلی استفاده خواهد شد."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:201
 msgid "Label Set Import Summary"
-msgstr ""
+msgstr "خلاصهٔ وارد کردن مجموعه برچسب"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:202
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1223
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importsurvey.php:1251
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importquestion.php:503
 msgid "Label Sets"
-msgstr ""
+msgstr "مجموعه‌های برچسب"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:203
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:282
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importgroup.php:668
 msgid "Labels"
-msgstr ""
+msgstr "برچسب‌ها"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:204
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:149
@@ -867,7 +866,7 @@ msgstr "زبان‌ها"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importlabel.php:211
 msgid "Import of Label Set is completed."
-msgstr ""
+msgstr "وارد کردن مجموعه برچسب اتمام یافته است."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:42
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:309
@@ -925,11 +924,11 @@ msgstr "کپی کردن شکست خورد"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:130
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:250
 msgid "to new template directory."
-msgstr ""
+msgstr "به پوشهٔ جدید قالب."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:136
 msgid "Directory with the name"
-msgstr ""
+msgstr "پوشه با نام"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:136
 msgid "already exists - choose another name"
@@ -942,23 +941,23 @@ msgstr "ساختن پوشه ممکن نیست"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:138
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:146
 msgid "Maybe you don't have permission."
-msgstr ""
+msgstr "شاید شما مجوزهای لازم را ندارید."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:146
 msgid "Directory could not be renamed to"
-msgstr ""
+msgstr "پوشه قابل تغییر نام نیست به"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:175
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:187
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:543
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:552
 msgid "This file type is not allowed to be uploaded."
-msgstr ""
+msgstr "این فایل اجازهٔ بارگذاری ندارد."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:316
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:294
 msgid "You have not provided a survey identification number"
-msgstr ""
+msgstr "شما شمارهٔ شناسهٔ نظرسنجی را ارائه نکرده‌اید"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:318
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:296
@@ -975,11 +974,11 @@ msgstr "ویرایشگر قالب"
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:256
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:257
 msgid "Default Administration Page"
-msgstr ""
+msgstr "صفحهٔ پیش‌فرض مدیریت"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:581
 msgid "Create new template called:"
-msgstr ""
+msgstr "ایجاد یک قالب جدید با نام:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:581
 msgid "NewTemplate"
@@ -1035,43 +1034,43 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:639
 msgid "Screen:"
-msgstr ""
+msgstr "صفحه‌نمایش:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:650
 msgid "File Control:"
-msgstr ""
+msgstr "کنترل فایل:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:660
 msgid "Standard Files:"
-msgstr ""
+msgstr "فایل‌های استاندارد:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:661
 msgid "Now editing:"
-msgstr ""
+msgstr "در حال ویرایش:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:664
 msgid "Other Files:"
-msgstr ""
+msgstr "فایل‌های دیگر:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:681
 msgid "Save Changes"
-msgstr ""
+msgstr "ذخیره کردن تغییرات"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:683
 msgid "Changes cannot be saved to the default template."
-msgstr ""
+msgstr "تغییرات نمی‌تواند بر روی قالب پیش‌فرض ذخیره شود."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:694
 msgid "Are you sure you want to delete this file?"
-msgstr ""
+msgstr "آیا از حذف این فایل مطمئن هستید؟"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:696
 msgid "Files in the default template cannot be deleted."
-msgstr ""
+msgstr "فایل‌های قالب پیش‌فرض قابل حذف نیستند."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:707
 msgid "Upload a File"
-msgstr ""
+msgstr "بارگذاری فایل"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:708
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2182
@@ -1085,7 +1084,7 @@ msgstr "پیش‌نمایش:"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:864
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:739
 msgid "complete"
-msgstr ""
+msgstr "کامل"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:134
 msgid "Export Results"
@@ -1094,7 +1093,7 @@ msgstr "صدور نتایج"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:144
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvexport.php:58
 msgid "Export Responses"
-msgstr "صدور پاسخ‌ها"
+msgstr "صدور واکنش‌ها"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:145
 msgid "Filtered from Statistics Script"
@@ -1102,7 +1101,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:146
 msgid "Single Response"
-msgstr "یک پاسخ تنها"
+msgstr "یک واکنش تنها"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:159
 msgid "Columns"
@@ -1120,11 +1119,11 @@ msgstr "پرسش‌ها"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:166
 msgid "Abbreviated headings"
-msgstr ""
+msgstr "سرفصل‌های مختصر شده"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:169
 msgid "Full headings"
-msgstr ""
+msgstr "سرفصل‌های کامل"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:172
 msgid "Question Codes"
@@ -1133,21 +1132,21 @@ msgstr "کدهای پرسش‌ها"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:173
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvexport.php:51
 msgid "Filter incomplete answers"
-msgstr ""
+msgstr "فیلتر کردن پاسخ‌های ناتمام"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:174
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:640
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvexport.php:53
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:718
 msgid "Enable"
-msgstr ""
+msgstr "به کار انداختن"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:175
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:641
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/vvexport.php:54
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:719
 msgid "Disable"
-msgstr ""
+msgstr "از کار انداختن"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:180
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:369
@@ -1196,11 +1195,11 @@ msgstr "صدور داده‌ها"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:267
 msgid "Column Control"
-msgstr ""
+msgstr "کنترل ستونی"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:272
 msgid "Choose Columns"
-msgstr ""
+msgstr "ستون‌ها را انتخاب کنید"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:276
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:282
@@ -1211,11 +1210,11 @@ msgstr "راهنما"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:277
 msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
-msgstr ""
+msgstr "نظرسنجی شما دارای بیش از ۲۵۵ ستون از پاسخ‌ها است. برنامه‌های صفحه گسترده مانند اکسل دارای محدودیت ۲۵۵ هستند. ستون‌هایی را که می‌خواهید صادر کنید، انتخاب کنید."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:283
 msgid "Choose the columns you wish to export."
-msgstr ""
+msgstr "ستون‌هایی را که می‌خواهید صادر کنید، انتخاب کنید."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:323
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:181
@@ -1763,7 +1762,7 @@ msgstr "۲. مقیاس"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:276
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:903
 msgid "View Response"
-msgstr "مشاهدهٔ پاسخ"
+msgstr "مشاهدهٔ واکنش"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:283
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:136
@@ -1777,7 +1776,7 @@ msgstr "حذف این مورد"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:296
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:297
 msgid "Export this Response"
-msgstr "صدور این پاسخ"
+msgstr "صدور این واکنش"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:301
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:608
@@ -1850,7 +1849,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:721
 msgid "full responses"
-msgstr "پاسخ‌های کامل"
+msgstr "واکنش‌های کامل"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:722
 msgid "responses not completely filled out"
@@ -1884,15 +1883,15 @@ msgstr "وضعیت"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:49
 msgid "Full Responses"
-msgstr "پاسخ‌های کامل"
+msgstr "واکنش‌های کامل"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:50
 msgid "Partial Responses"
-msgstr "پاسخ‌های ناتمام"
+msgstr "واکنش‌های ناتمام"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:51
 msgid "Total Responses"
-msgstr "تمام پاسخ‌ها"
+msgstr "تمام واکنش‌ها"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:63
 msgid "Anonymous"
@@ -2299,7 +2298,7 @@ msgstr "پرچم"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/grouphandling.php:159
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/grouphandling.php:161
 msgid "Description:"
-msgstr ""
+msgstr "شرح:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:838
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2689
@@ -2307,19 +2306,19 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2878
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2880
 msgid "Welcome:"
-msgstr ""
+msgstr "خوش آمدید:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:841
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2212
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2882
 msgid "Administrator:"
-msgstr ""
+msgstr "مدیریت:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:844
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2218
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2888
 msgid "Fax To:"
-msgstr ""
+msgstr "ارسال فکس به:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:848
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2350
@@ -2360,15 +2359,15 @@ msgstr "راهنمایی‌ها"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:916
 msgid "Survey cannot be activated yet."
-msgstr ""
+msgstr "نظرسنجی هنوز فعال نشده است."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:919
 msgid "You need to add groups"
-msgstr ""
+msgstr "شما باید گروه اضافه کنید"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:923
 msgid "You need to add questions"
-msgstr ""
+msgstr "شما باید پرسش اضافه کنید"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:973
 msgid "Edit Current Group"
@@ -2391,27 +2390,27 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1011
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:703
 msgid "Change Question Order"
-msgstr ""
+msgstr "تغییر ترتیب پرسش"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1022
 msgid "Export Current Group"
-msgstr ""
+msgstr "صادر کردن گروه کنونی"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1037
 msgid "Close this Group"
-msgstr ""
+msgstr "بستن این گروه"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1045
 msgid "Show Details of this Group"
-msgstr ""
+msgstr "نمایش جزئیات این گروه"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1048
 msgid "Hide Details of this Group"
-msgstr ""
+msgstr "پنهان کردن جزئیات این گروه"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1061
 msgid "Add New Question to Group"
-msgstr ""
+msgstr "افزودن پرسش جدید به گروه"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1088
 msgid "Questions with conditions to this group"
@@ -2419,7 +2418,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1140
 msgid "Edit Current Question"
-msgstr ""
+msgstr "ویرایش پرسش کنونی"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1155
 msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
@@ -2428,7 +2427,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1157
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1167
 msgid "Delete Current Question"
-msgstr ""
+msgstr "حذف پرسش کنونی"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1164
 msgid "Impossible to delete this question because  there is at least one question having a condition on it"
@@ -2436,25 +2435,25 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1179
 msgid "Export this Question"
-msgstr ""
+msgstr "صادر کردن این پرسش"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1196
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1205
 msgid "Copy Current Question"
-msgstr ""
+msgstr "کپی کردن پرسش کنونی"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1205
 msgid "Copy question is not possible in an Active survey"
-msgstr ""
+msgstr "کپی کردن پرسش در نظرسنجی فعال ممکن نیست"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1219
 msgid "Set Conditions for this Question"
-msgstr ""
+msgstr "تنظیم شرایط برای این پرسش"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1234
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1241
 msgid "Preview This Question"
-msgstr ""
+msgstr "پیش‌نمایش این پرسش"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1273
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1329
@@ -2463,30 +2462,30 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1284
 msgid "Close this Question"
-msgstr ""
+msgstr "بستن این پرسش"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1287
 msgid "Show Details of this Question"
-msgstr ""
+msgstr "نمایش جزئیات این پرسش"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1290
 msgid "Hide Details of this Question"
-msgstr ""
+msgstr "پنهان کردن جزئیات این پرسش"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1299
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:41
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:220
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:415
 msgid "Code:"
-msgstr ""
+msgstr "کد:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1303
 msgid "Mandatory Question"
-msgstr ""
+msgstr "پرسش اجباری"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1304
 msgid "Optional Question"
-msgstr ""
+msgstr "پرسش اختیاری"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1308
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:45
@@ -2498,7 +2497,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:439
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:441
 msgid "Question:"
-msgstr ""
+msgstr "پرسش:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1310
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:51
@@ -2510,7 +2509,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:443
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:445
 msgid "Help:"
-msgstr ""
+msgstr "راهنما:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1316
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:65
@@ -2523,7 +2522,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:57
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:241
 msgid "Type:"
-msgstr ""
+msgstr "نوع:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1327
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1340
@@ -2547,7 +2546,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1490
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/deactivate.php:29
 msgid "Warning"
-msgstr ""
+msgstr "اخطار"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1327
 msgid "You need to add answers to this question"
@@ -2557,7 +2556,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:246
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/importgroup.php:666
 msgid "Label Set"
-msgstr ""
+msgstr "مجموعه برچسب"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1340
 msgid "You need to choose a label set for this question!"
@@ -2567,11 +2566,11 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:324
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:325
 msgid "Edit/Add Label Sets"
-msgstr ""
+msgstr "ویرایش/افزودن مجموعه برچسب"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1360
 msgid "Second Label Set"
-msgstr ""
+msgstr "مجموعه برچسب دوم"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1364
 msgid "You need to choose a second label set for this question!"
@@ -2586,14 +2585,14 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:303
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:535
 msgid "Other:"
-msgstr ""
+msgstr "غیره:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1399
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:117
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:316
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:556
 msgid "Mandatory:"
-msgstr ""
+msgstr "اجباری:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1408
 msgid "Other questions having conditions on this question:"
@@ -2601,7 +2600,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1482
 msgid "Edit Answers"
-msgstr ""
+msgstr "ویرایش پاسخ‌ها"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1485
 msgid "Error: You are trying to use duplicate answer codes."
@@ -2617,7 +2616,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1068
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1281
 msgid "Base Language"
-msgstr ""
+msgstr "زبان پایه"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1513
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/labels.php:304
@@ -2908,7 +2907,7 @@ msgstr "ویرایش ویژگی نظرسنجی"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1872
 msgid "Browse Response"
-msgstr "مرور پاسخ‌ها"
+msgstr "مرور واکنش‌ها"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1926
 msgid "LimeSurvey Survey File (*.csv)"
@@ -3141,11 +3140,11 @@ msgstr "مهر تاریخ؟"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2488
 msgid "Responses will not be date stamped."
-msgstr "پاسخ‌ها مهر تاریخ نخواهند خورد."
+msgstr "واکنش‌ها مهر تاریخ نخواهند خورد."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2489
 msgid "Responses will be date stamped."
-msgstr "پاسخ‌ها مهر تاریخ خواهند خورد."
+msgstr "واکنش‌ها مهر تاریخ خواهند خورد."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2508
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3079
@@ -3154,11 +3153,11 @@ msgstr "آدرس آی.پی. ذخیره شود؟"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2513
 msgid "Responses will not have the IP address logged."
-msgstr "آدرس آی.پی. پاسخ‌ها ثبت نمی‌شود."
+msgstr "آدرس آی.پی. واکنش‌ها ثبت نمی‌شود."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2514
 msgid "Responses will have the IP address logged"
-msgstr "آدرس آی.پی. پاسخ‌ها ثبت می‌شود."
+msgstr "آدرس آی.پی. واکنش‌ها ثبت می‌شود."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2534
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3086
@@ -3167,11 +3166,11 @@ msgstr "نشانی اینترنتی ارجاع کننده ذخیره شود؟"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2539
 msgid "Responses will not have their referring URL logged."
-msgstr "نشانی اینترنتی ارجاع کنندهٔ پاسخ‌ها ثبت نمی‌شود."
+msgstr "نشانی اینترنتی ارجاع کنندهٔ واکنش‌ها ثبت نمی‌شود."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2540
 msgid "Responses will have their referring URL logged."
-msgstr "نشانی اینترنتی ارجاع کنندهٔ پاسخ‌ها ثبت می‌شود."
+msgstr "نشانی اینترنتی ارجاع کنندهٔ واکنش‌ها ثبت می‌شود."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2560
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3093
@@ -3314,15 +3313,15 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/saved.php:84
 msgid "Identifier"
-msgstr ""
+msgstr "شناسه"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/saved.php:86
 msgid "Date Saved"
-msgstr ""
+msgstr "تاریخ ذخیره شدن"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/saved.php:100
 msgid "Are you sure you want to delete this entry?"
-msgstr ""
+msgstr "آیا شما از حذف این مورد مطمئن هستید؟"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/saved.php:126
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1383
@@ -4651,7 +4650,7 @@ msgstr "شما مجاز به ویرایش گروه‌های این نظرسنج�
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/access_denied.php:87
 msgid "You are not allowed to browse responses!"
-msgstr "شما مجاز به مرور پاسخ‌ها نیستید!"
+msgstr "شما مجاز به مرور واکنش‌ها نیستید!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/access_denied.php:92
 msgid "You are not allowed to set assessment rules!"
@@ -6324,7 +6323,7 @@ msgstr "افزودن یک رکورد دیگر"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:665
 msgid "Editing Response"
-msgstr "ویرایش پاسخ"
+msgstr "ویرایش واکنش"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:711
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:735
@@ -6458,23 +6457,23 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:97
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:183
 msgid "Logging in..."
-msgstr ""
+msgstr "در حال ورود به سیستم..."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:108
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:163
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:264
 msgid "Incorrect User name and/or Password!"
-msgstr ""
+msgstr "نام کاربری و/یا رمز عبور نادرست است!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:148
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:288
 msgid "Welcome {NAME}"
-msgstr ""
+msgstr "{NAME} خوش آمدید"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:149
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:289
 msgid "You logged in successfully."
-msgstr ""
+msgstr "با موفقیت به سیستم وارد شدید."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:171
 msgid "LimeSurvey is setup to use the webserver authentication, but it seems you have not already been authenticated"
@@ -6490,15 +6489,15 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:309
 msgid "Logout successful."
-msgstr ""
+msgstr "با موفقیت از سیستم خارج شدید."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:328
 msgid "Email address is not valid."
-msgstr ""
+msgstr "آدرس ایمیل معتبر نیست."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:333
 msgid "Username was not supplied."
-msgstr ""
+msgstr "نام کاربری ارائه نشده است."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:361
 msgid "You were signed in on the site"
@@ -6556,7 +6555,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/save.php:179
 msgid "Please try again."
-msgstr ""
+msgstr "لطفاً مجدداً سعی کنید."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/save.php:232
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:463
@@ -6564,7 +6563,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1720
 #: /srv/www/virtual/limesurvey.org/devSVN/register.php:57
 msgid "The answer to the security question is incorrect"
-msgstr ""
+msgstr "جواب پرسش امنیتی نادرست است"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/save.php:248
 msgid "This name has already been used for this survey. You must use a unique save name."
@@ -6588,29 +6587,29 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:291
 msgid "No available surveys"
-msgstr ""
+msgstr "هیچ نظرسنجی موجود نیست"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:379
 msgid "This survey is no longer available."
-msgstr ""
+msgstr "این نظرسنجی هم‌اکنون موجود نیست."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:399
 msgid "You have already completed this survey."
-msgstr ""
+msgstr "شما قبلاً این نظرسنجی را تمام کرده‌اید."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:447
 msgid "You did not provide a name"
-msgstr ""
+msgstr "شما اسم را وارد نکرده‌اید"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:452
 msgid "You did not provide a password"
-msgstr ""
+msgstr "شما رمز عبور را وارد نکرده‌اید"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:481
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:485
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2270
 msgid "Load Unfinished Survey"
-msgstr ""
+msgstr "بار کردن نظرسنجی ناتمام"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:514
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1651
@@ -6623,7 +6622,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1688
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1844
 msgid "For further information contact"
-msgstr ""
+msgstr "برای اطلاعات بیشتر تماس بگیرید"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:518
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1655
@@ -6672,7 +6671,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1427
 msgid "View statistics by clicking here:"
-msgstr ""
+msgstr "آمار را با کلیک کردن اینجا مشاهده کنید:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1487
 #: /srv/www/virtual/limesurvey.org/devSVN/group.php:107
@@ -6695,23 +6694,23 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1493
 msgid "DATA TO BE ENTERED"
-msgstr ""
+msgstr "داده‌ای که باید وارد شود"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1498
 msgid "SQL CODE THAT FAILED"
-msgstr ""
+msgstr "کد SQL شکست خورده"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1500
 msgid "ERROR MESSAGE"
-msgstr ""
+msgstr "پیغام خطا"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1502
 msgid "Error saving results"
-msgstr ""
+msgstr "خطا در ذخیره کردن نتایج"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1510
 msgid "Try to submit again"
-msgstr ""
+msgstr "مجدداً برای ارسال سعی کنید"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:1558
 msgid "Please confirm access to survey by answering the security question below and click continue."
@@ -6773,14 +6772,14 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/question.php:296
 #: /srv/www/virtual/limesurvey.org/devSVN/survey.php:76
 msgid "Clear Responses"
-msgstr "پاک کردن پاسخ‌ها"
+msgstr "پاک کردن واکنش‌ها"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/group.php:132
 #: /srv/www/virtual/limesurvey.org/devSVN/group.php:164
 #: /srv/www/virtual/limesurvey.org/devSVN/question.php:320
 #: /srv/www/virtual/limesurvey.org/devSVN/survey.php:110
 msgid "Thank you"
-msgstr ""
+msgstr "متشکریم"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/group.php:133
 #: /srv/www/virtual/limesurvey.org/devSVN/group.php:165
@@ -6833,7 +6832,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/register.php:153
 msgid "Survey Administrator"
-msgstr ""
+msgstr "مدیریت نظرسنجی"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:292
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:300
@@ -6968,7 +6967,7 @@ msgstr "لطفاً تمام بخش‌های تاریخ را وارد کنید."
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:698
 msgid "Format: YYYY-MM-DD"
-msgstr ""
+msgstr "قالب: YYYY-MM-DD"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:699
 msgid "(eg: 2003-12-25 for Christmas day)"
@@ -7076,7 +7075,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:246
 msgid "Administration"
-msgstr ""
+msgstr "مدیریت"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:249
 msgid "Logged in as"
@@ -7236,7 +7235,7 @@ msgstr "بررسی "
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1420
 msgid "Display Last 50 Responses"
-msgstr "نمایش ۵۰ پاسخ آخر"
+msgstr "نمایش ۵۰ واکنش آخر"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1428
 msgid "Get statistics from these responses"
@@ -7257,7 +7256,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1531
 msgid "Preset"
-msgstr ""
+msgstr "از پیش تنظیم شده"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2151
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
@@ -7289,7 +7288,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2245
 msgid "Are you sure you want to clear all your responses?"
-msgstr "آیا مطمئن هستید که می‌خواهید همهٔ پاسخ‌های خود را پاک کنید؟"
+msgstr "آیا مطمئن هستید که می‌خواهید همهٔ واکنش‌های خود را پاک کنید؟"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2246
 msgid "Exit and Clear Survey"
@@ -7297,11 +7296,11 @@ msgstr "از این صفحه خارج شوید"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2278
 msgid "Resume Later"
-msgstr ""
+msgstr "بعداً از سرگیری شود"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2299
 msgid "Thank You!"
-msgstr ""
+msgstr "متشکریم!"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2299
 msgid "You have completed answering the questions in this survey."
@@ -7370,7 +7369,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2395
 msgid "Load Now"
-msgstr ""
+msgstr "هم اکنون بار شود"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2400
 msgid "You must be registered to complete this survey"
@@ -7411,7 +7410,7 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:3237
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:3242
 msgid "Executing"
-msgstr ""
+msgstr "اجرا کردن"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:3237
 msgid "Failed! Reason: "
@@ -7423,7 +7422,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:76
 msgid "Albanian"
-msgstr ""
+msgstr "آلبانی"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:81
 msgid "Basque"
@@ -7435,7 +7434,7 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:91
 msgid "Bulgarian"
-msgstr ""
+msgstr "بلغاری"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:96
 msgid "Catalan"
@@ -7443,31 +7442,31 @@ msgstr ""
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:101
 msgid "Welsh"
-msgstr ""
+msgstr "والش"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:106
 msgid "Chinese (Simplified)"
-msgstr ""
+msgstr "چینی (ساده شده)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:111
 msgid "Chinese (Traditional - Hong Kong)"
-msgstr ""
+msgstr "چینی (سنتی - هنگ کنگ)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:116
 msgid "Chinese (Traditional - Taiwan)"
-msgstr ""
+msgstr "چینی (سنتی - تایوان)"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:121
 msgid "Croatian"
-msgstr ""
+msgstr "کرواتی"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:126
 msgid "Czech"
-msgstr ""
+msgstr "چک"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:131
 msgid "Danish"
-msgstr ""
+msgstr "دانمارکی"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:136
 msgid "Dutch"
@@ -7479,7 +7478,7 @@ msgstr "انگلیسی"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:146
 msgid "Estonian"
-msgstr ""
+msgstr "استونیایی"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:151
 msgid "Farsi"
@@ -7487,7 +7486,7 @@ msgstr "فارسی"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:156
 msgid "Finnish"
-msgstr ""
+msgstr "فنلاندی"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:162
 msgid "French"
@@ -7495,7 +7494,7 @@ msgstr "فرانسوی"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:167
 msgid "Galician"
-msgstr ""
+msgstr "گالیسی"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:172
 msgid "German"
@@ -7523,7 +7522,7 @@ msgstr "ایسلندی"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:202
 msgid "Indonesian"
-msgstr ""
+msgstr "اندونزیایی"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:207
 msgid "Italian"
@@ -7539,7 +7538,7 @@ msgstr "کره‌ای"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:222
 msgid "Lithuanian"
-msgstr ""
+msgstr "لیتوانی"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/classes/core/surveytranslator.php:227
 msgid "Latvian"
