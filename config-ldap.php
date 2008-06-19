@@ -32,8 +32,8 @@ $ldap_server[$serverId]['server'] = "ldap.mycompany.org";
 
 // Define the TCP port on which the LDAP server is listenning
 // This should be 389 for standard LDAP servers
-// or 686 for standard LDAPS connections
-$ldap_server[$serverId]['port'] = "686"; 
+// or 636 for standard LDAPS connections
+$ldap_server[$serverId]['port'] = "636"; 
 
 // Define the ldap protocol to use
 // 'ldapv2' and 'ldapv3' are supported
@@ -54,6 +54,10 @@ $ldap_server[$serverId]['referrals'] = false;
 // Define the authentication used to bind to the directory
 // We currently support simple authentication
 // If anonymous bind must be performed, comment the following two lines
+// Note that Active Directory (AD) usually requires authentication before 
+// you are authorized to read its content. Remeber as well that user's DN 
+// in AD are in the form of CN=username,CN=Users,DC=WindowsDomainName,DC=mycompany,DC=org
+// 
 $ldap_server[$serverId]['binddn']	=	"uid=mybinduser,dc=mycompany,dc=org";
 $ldap_server[$serverId]['bindpw']	=	"AsecretPassword";
 
@@ -93,7 +97,9 @@ $ldap_queries[$query_id]['userbase'] = 'ou=staff,dc=mycompany,dc=org';
 
 // Define the user filter to apply
 // Must begin with '(' and end with ')'
-$ldap_queries[$query_id]['userfilter'] = '(&(objectClass=inetOrgPerson)(account-status=enabled))';
+// Note that for AD, checking the 'active' status of a user is done with the following filter: 
+// "(&(objectCategory=Person)(objectClass=user)(!(userAccountControl=514)))"
+$ldap_queries[$query_id]['userfilter'] = '(&(objectClass=inetOrgPerson)(my-fake-accountstatus-attribute=enabled))';
 
 // Define how deep under the userbase you want to search
 // 'sub' means: search on the entire subtree
@@ -135,6 +141,8 @@ $query_id++;
 $ldap_queries[$query_id]['ldapServerId'] = 0;
 $ldap_queries[$query_id]['name'] = 'Administrator group';
 // Define a group filter (base, filter, scope)
+// Note that in AD, user groups are defined in the foloowing base:
+// CN=Users,DC=WindowsDomainName,DC=mycompany,DC=org
 $ldap_queries[$query_id]['groupbase'] = 'ou=groups,dc=mycompany,dc=org';
 $ldap_queries[$query_id]['groupfilter'] = '(&(objectClass=groupOfNames)(cn=AdministratorGroup))';
 $ldap_queries[$query_id]['groupscope'] = 'sub';
@@ -148,7 +156,7 @@ $ldap_queries[$query_id]['groupmemberisdn'] = true;
 // Comment the userbase, userfilter, and userscope lines 
 // if you don't use this extra filter.
 $ldap_queries[$query_id]['userbase'] = 'ou=users,dc=mycompany,dc=org';
-$ldap_queries[$query_id]['userfilter'] = '(account-status=enabled)';
+$ldap_queries[$query_id]['userfilter'] = '(my-fake-accountstatus-attribute=enabled)';
 $ldap_queries[$query_id]['userscope'] = 'sub';
 
 $ldap_queries[$query_id]['firstname_attr'] = 'givenname';
