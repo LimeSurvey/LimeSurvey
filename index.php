@@ -1524,6 +1524,7 @@ function buildsurveysession()
 	global $surveyid, $dbprefix, $connect;
 	global $register_errormsg, $clang;
 	global $totalBoilerplatequestions;
+	global $templang;
 	
 	$totalBoilerplatequestions = 0;
 
@@ -1560,7 +1561,8 @@ function buildsurveysession()
 			        <table align='center'>
 				        <tr>
 					        <td align='right' valign='middle'>
-					        <input type='hidden' name='sid' value='".$surveyid."' id='sid' />";
+					        <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
+					        <input type='hidden' name='lang' value='".$templang."' id='lang' />";
 
 
 			echo "			
