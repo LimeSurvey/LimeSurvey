@@ -251,7 +251,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 			$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}");
 			if (($fnrow['type'] == "L" || $fnrow['type'] == "!" || $fnrow['type'] == "W" || $fnrow['type'] == "Z") && $fnrow['other'] == "Y")
 			{
-				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)");
+				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(".$clang->gT("Other").")");
 			}
 		}
 	}
@@ -413,7 +413,7 @@ elseif ($subaction == "all")
 			$fnames[] = array("$field", "$ftitle", "$fquestion", "{$fnrow['gid']}");
 			if (($fnrow['type'] == "L" || $fnrow['type'] == "!" || $fnrow['type'] == "W" || $fnrow['type'] == "Z") && $fnrow['other'] == "Y")
 			{
-				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)", "{$fnrow['gid']}");
+				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(".$clang->gT("Other").")", "{$fnrow['gid']}");
 			}
 
 		}
