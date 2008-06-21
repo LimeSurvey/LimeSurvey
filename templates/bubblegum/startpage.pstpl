@@ -1,7 +1,7 @@
 	<title>
 	A SURVEY: {SURVEYNAME}
 	</title>
-<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}bubblegum.css">
+<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}template.css">
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 	<meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
 </head>
