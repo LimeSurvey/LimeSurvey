@@ -69,6 +69,12 @@ font-family:Verdana;
 font-size:12pt;
 }
 
+.questiontext{
+font-family:verdana;
+font-size:12px;
+font-weight:bold;
+}
+
 .questionhelp {
 font-size:10px;
 font-style:italic;

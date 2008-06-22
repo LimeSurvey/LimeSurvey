@@ -63,6 +63,12 @@ font-size:10px;
 font-style:italic;
 }
 
+.questiontext{
+font-family:verdana;
+font-size:12px;
+font-weight:bold;
+}
+
 .asterisk {
 color:red;
 font-size:9pt;

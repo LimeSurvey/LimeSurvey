@@ -86,7 +86,7 @@ font-size:8pt;
 .array1 {
 background-color:#D1D1D1;
 color:#777;
-text-alignment:left;
+text-align:left;
 }
 
 .array2 {
@@ -97,6 +97,12 @@ color:#777;
 .questionhelp {
 font-size:10px;
 font-style:italic;
+}
+
+.questiontext{
+font-family:verdana;
+font-size:12px;
+font-weight:bold;
 }
 
 .warningjs {
