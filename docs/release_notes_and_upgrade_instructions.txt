@@ -73,16 +73,30 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.71(+)
 
 Thank you to everyone who helped with this new release!
 
-Changes from 1.71+ Build 5048 to XXXX -  Legend:   + = New  # = Changed  - = Fix
-#Updated Basque Translation by inforbek13 --i-t-- eps -d-a-t- mondragon -d-a-t- edu (c_schmitz)
-#Updated French translation by Wael Almoman walmoman -a-t- hemisa -d-o-z- com (c_schmitz)
+Changes from 1.71+ Build 5048 to 5146 -  Legend:   + = New  # = Changed  - = Fix
+
+#Raised LimeSurvey requirement to at least PHP 4.3.2 installed (c_schmitz)
+#Added session regeneration after login to prevent Session Fixation attacks (c_schmitz)
+#Updated Basque Translation by inforbek13 --i-t-- eps -d-a-t- mondragon -d-a-t- edu 
+#Updated French translation by Wael Almoman walmoman -a-t- hemisa -d-o-z- com 
 #Updated German translations (c_schmitz)
-#Updated Farsi translation by Hooman Mesgary  - mesgary -a-tt- gmail -d-o-tt- com (c_schmitz)
+#Updated Spanish translation (kadejo)
+#Updated Persian translation by Hooman Mesgary  - mesgary -a-tt- gmail -d-o-tt- com
+#Updated Hungarian, Macedonian, Traditional Chinese (Taiwan), Italian, Croatian & Estonain Language Files
+#Renamed Farsi to Persian (c_schmitz)
+#Added another XSS filter. Now there are two XSS filters double-checking the input to prevent XSS attacks due to security flaws in the IE6 browser.  (c_schmitz)
+-Fixed #2117: Fixed two more "(other)" haven't been translated at browse.php (el-matador)
+-Fixed #1867: "Test this survey" loose lang code after 2nd page. (lemeur)
+-Fixed #2184: SQL Error when Reordering Label Set (lemeur)
+-Fixed #2134 and #1711 related to typos and better comments in config-ldap.php (lemeur)
+-Minor changes to ensure token integrity (c_schmitz)
+-Changes to original text changes to make it more compatible for translations - thanks to  Hooman Mesgary 
+-Fixed #02121: Problem with "exclude all others" question attribute - exclude_all_others didn't work when there was more than one question on page using attribute. Also fixed feature to disable other checkboxes when reloading a previously completed page. (jcleeland))
 -Fixed #2110: VVimport only works for UTF8 encoded files. Added "Character set" option to vvimport (lemeur)
 -Fixed #2082: AllowPresistence for token answers isn't working on All-In-One surveys (lemeur)
 -Fixed #2000: Changing an answer code of a labelset doesn't update conditions (lemeur)
 -Fixed #645: Labels defined as a simple image aren't displayed in Dropdown lists - at least the label code is shown now (c_schmitz)
--Fixed #2088: max_answer javascript does not work when question has line breaks.
+-Fixed #2088: max_answer javascript does not work when question has line breaks. (c_schmitz)
 (Needed to add strip_tags parameter to javascript_escape function since the processing order is important) (c_schmitz)
 -Fixed bug #02112: Pipe-Char of Semantic Differential breaks Excel Export - internal $seperator value doesn't have to be just a pipe (so far as I can see) (jcleeland)
 -Fixed bug #02107: other_replace_text truncated (fix supplied by ITEd) (jcleeland)
