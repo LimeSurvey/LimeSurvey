@@ -797,7 +797,7 @@ if ($action == "mailsendusergroup")
 		}
 		else
 		{
-			$usersummary .= "<br /><strong>".$clang->gT("Mail not sent!")."</strong><br />\n";
+			$usersummary .= "<br /><strong>".$clang->gT("Email not sent!")."</strong><br />\n";
 			$usersummary .= "<br /><a href='$scriptname?action=mailusergroup&amp;ugid={$ugid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
 	}

@@ -717,9 +717,9 @@ else
 	while ($gnrow=$gnresult->FetchRow()) {$num_total_answers=$gnrow[0];}
 	while ($gnrow2=$gnresult2->FetchRow()) {$num_completed_answers=$gnrow2[0];}
 	$browseoutput .= "<table width='100%' border='0'>\n"
-	."\t<tr><td align='center'>$num_total_answers ".$clang->gT("responses for this survey")." ("
-	."$num_completed_answers ".$clang->gT("full responses").", "
-	.($num_total_answers-$num_completed_answers)." ".$clang->gT("responses not completely filled out").")"
+	."\t<tr><td align='center'>".sprintf($clang->gT("%d responses for this survey"), $num_total_answers)." ("
+	.sprintf($clang->gT("%d full responses"), $num_completed_answers).", "
+	.sprintf($clang->gT("%d responses not completely filled out"), $num_total_answers-$num_completed_answers).")"
 	."\t</td></tr>\n"
 	."</table>\n";
 

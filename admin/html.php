@@ -588,7 +588,7 @@ if ($surveyid)
 			. "onmouseout=\"hideTooltip()\""
 			. "title=\"".$clang->gTview("Delete Current Survey")."\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Delete Current Survey", "js")."');return false\">\n" .
-			"<img src='$imagefiles/delete.png' title='' align='left' name='DeleteWholeSurvey' alt='Delete Current Survey'  /></a>" ;
+			"<img src='$imagefiles/delete.png' title='' align='left' name='DeleteWholeSurvey' alt='".$clang->gT("Delete Current Survey")."'  /></a>" ;
 		}
 		else
 		{
@@ -603,7 +603,7 @@ if ($surveyid)
 				. "onmouseout=\"hideTooltip()\""
 				. "title=\"".$clang->gTview("Reset Survey Logic")."\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("Reset Survey Logic", "js")."');return false\">\n" .
-				"<img src='$imagefiles/resetsurveylogic.png' title='' align='left' name='ResetSurveyLogic' alt='Reset Survey Logic'  /></a>" ;
+				"<img src='$imagefiles/resetsurveylogic.png' title='' align='left' name='ResetSurveyLogic' alt='".$clang->gT("Reset Survey Logic")."' /></a>";
 			}
 			else
 			{
@@ -611,7 +611,7 @@ if ($surveyid)
 				. "onmouseout=\"hideTooltip()\""
 				. "title=\"".$clang->gTview("Reset Survey Logic")."\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("Reset Survey Logic", "js")."-".$clang->gT("Disabled", "js")."');return false\">\n" .
-				"<img src='$imagefiles/resetsurveylogic_disabled.png' title='' align='left' name='ResetSurveyLogic' alt='Reset Survey Logic'  /></a>" ;
+				"<img src='$imagefiles/resetsurveylogic_disabled.png' title='' align='left' name='ResetSurveyLogic' alt='".$clang->gT("Reset Survey Logic")."' /></a>" ;
 			}
 		}
 		else
@@ -1020,7 +1020,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 			$groupsummary .="<a href='$scriptname?action=dumpgroup&amp;sid=$surveyid&amp;gid=$gid' onmouseout=\"hideTooltip()\""
 			. "title=\"".$clang->gTview("Export Current Group")."\" "
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Export Current Group", "js")."');return false\">" .
-			"<img src='$imagefiles/exportcsv.png' title='' alt=''name='ExportGroup' align='left' /></a>";
+			"<img src='$imagefiles/exportcsv.png' title='' alt='' name='ExportGroup' align='left' /></a>";
 		}
 		else
 		{
@@ -1194,7 +1194,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 				"onmouseout=\"hideTooltip()\""
 				. "title=\"".$clang->gTview("Copy Current Question")."\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("Copy Current Question", "js")."');return false\">" .
-				"<img src='$imagefiles/copy.png' title=''alt='' align='left' name='CopyQuestion' /></a>\n"
+				"<img src='$imagefiles/copy.png' title='' alt='' align='left' name='CopyQuestion' /></a>\n"
 				. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
 			}
 			else
@@ -1203,7 +1203,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 				"onmouseout=\"hideTooltip()\""
 				. "title=\"".$clang->gTview("Copy Current Question")."\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("Disabled","js")."-".$clang->gT("Copy Current Question", "js")."');return false\" onclick=\"alert('".$clang->gT("Copy question is not possible in an Active survey","js")."')\">" .
-				"<img src='$imagefiles/copy_disabled.png' title=''alt='' align='left' name='CopyQuestion' /></a>\n"
+				"<img src='$imagefiles/copy_disabled.png' title='' alt='' align='left' name='CopyQuestion' /></a>\n"
 				. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
 			}
 		}
@@ -2768,11 +2768,11 @@ if ($action == "ordergroups")
 		{
 			foreach($depgrouprow as $targgid => $targrow)
 			{
-				$ordergroups .= "<li>".$clang->gT("Group")." <a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."')\">".$targrow['depgpname']."</a> ".$clang->gT("depends on group")." <a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$targgid."')\">".$targrow['targetgpname']."</a> ".$clang->gT("see the marked conditions on").":";
+				$ordergroups .= "<li>".sprintf($clang->gT("Group %s depends on group %s, see the marked conditions on:"), "<a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."')\">".$targrow['depgpname']."</a>", "<a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$targgid."')\">".$targrow['targetgpname']."</a> ");
 				foreach($targrow['conditions'] as $depqid => $depqrow)
 				{
 					$listcid=implode("-",$depqrow);
-					$ordergroups .= " <a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\"> [QID: ".$depqid."]</a>";
+					$ordergroups .= " <a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\"> [".$clang->gT("QID").": ".$depqid."]</a>";
 				}
 				$ordergroups .= "</li>\n";
 			}
