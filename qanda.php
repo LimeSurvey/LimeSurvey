@@ -468,7 +468,7 @@ function validation_message($ia)
 			{
 				$help=" <font class = \"questionhelp\">(".$helprow['help'].")</font>";
 			}
-			$qtitle .= "<strong><br /><span class='errormandatory'>".$clang->gT("This question must be answered correctly")." $help</span></strong><br />\n";
+			$qtitle .= "<br /><span class='errormandatory'>".$clang->gT("This question must be answered correctly")." $help</span><br />\n";
 		}
 	}
 	return $qtitle;
@@ -1687,7 +1687,7 @@ function do_multiplechoice($ia)
 		$myfname = $ia[1]."other";
 	    if($excludeallothers != "") 
 		{
-		  $excludeallotherscripton .= "thiselt=document.getElementById('$ia[1]othercbox');\n"
+		  $excludeallotherscripton .= "thiselt=document.getElementById('answer{$ia[1]}othercbox');\n"
 		                            . "\t\tthiselt.checked='';\n"
 		                            . "\t\tthiselt.disabled='true';\n";
 		  $excludeallotherscripton .= "thiselt=document.getElementById('answer$ia[1]other');\n"
@@ -1697,9 +1697,9 @@ function do_multiplechoice($ia)
 		                            . "\t\t\tcheckconditions(thiselt.value, thiselt.name, thiselt.type);\n"
 									. "\t\t}\n";
 		  $excludeallotherscriptoff .="document.getElementById('answer$ia[1]other').disabled='';\n";
-		  $excludeallotherscriptoff .="document.getElementById('$ia[1]othercbox').disabled='';\n";
+		  $excludeallotherscriptoff .="document.getElementById('answer{$ia[1]}othercbox').disabled='';\n";
 		}
-		$answer .= "\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='{$myfname}cbox' id='{$myfname}cbox'";
+		$answer .= "\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='{$myfname}cbox' id='answer{$myfname}cbox'";
 		if (isset($_SESSION[$myfname]) && trim($_SESSION[$myfname])!='') {$answer .= " checked='checked'";}
 		$answer .= " onchange='".$callmaxanswscriptcheckbox."document.getElementById(\"answer$myfname\").value=\"\"'  />";
 		$answer .= "\t\t\t\t\t\t<label for='answer$myfname' class='answertext'>".$othertext.":</label> <input class='text' type='text' name='$myfname' id='answer$myfname'";
@@ -3075,7 +3075,7 @@ function do_array_flexible($ia)
 	} else {
 		$answerwidth=20;
 	}
-	$columnswidth=100-($answerwidth*2);
+	$columnswidth=100-$answerwidth;
 
 	$lresult = db_execute_assoc($lquery);   //Checked
 	if ($lresult->RecordCount() > 0)
@@ -3395,7 +3395,7 @@ function do_array_flexible_dual($ia)
 		} else {
 			$answerwidth=20;
 		}
-		$columnswidth=100-($answerwidth*2);
+		$columnswidth=100-$answerwidth;
 
 
 		while ($lrow=$lresult->FetchRow())

@@ -110,6 +110,12 @@ font-family:verdana;
 font-size:11px;
 }
 
+.questiontext{
+font-family:verdana;
+font-size:12px;
+font-weight:bold;
+}
+
 .errormandatory,.warningjs {
 font-size:12px;
 font-weight:700;
