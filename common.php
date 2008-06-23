@@ -1725,6 +1725,10 @@ function getextendedanswer($fieldcode, $value, $format='')
 			{
 				$this_answer=$row['title'];
 			} // while
+			if ($value == "-oth-")
+			{
+				$this_answer=$clang->gT("Other");
+			}
 			break;
 			default:
 			;
