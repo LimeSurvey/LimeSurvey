@@ -2081,7 +2081,7 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 		{
             foreach($_SESSION['insertarray'] as $field)
 		    {
-			    if (isset($_GET[$field]))
+			    if (isset($_GET[$field]) && $field!='token')
 			    {
 				    $_SESSION[$field]=$_GET[$field];
 			    }
