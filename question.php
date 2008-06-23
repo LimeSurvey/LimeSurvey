@@ -570,7 +570,7 @@ else
 			echo "\n\t<!-- NEW QUESTION -->\n";
 			echo "\n\t<!-- QUESTION TYPE ".$qa[5]."-->\n";
 			echo "\t\t\t\t<div id='question$qa[4]'>";
-			$question="<label for='$ia[7]'>" . $qa[0] . "</label>";
+			$question= $qa[0];
 			$answer=$qa[1];
 			$help=$qa[2];
 			$questioncode=$qa[5];

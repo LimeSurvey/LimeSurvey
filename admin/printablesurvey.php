@@ -971,8 +971,8 @@ if(!empty($surveyfaxto)) //If no fax number exists, don't display faxing informa
 
 if ($surveyuseexpiry=="Y")
 {
-    $printablesurveyoutput .=$clang->gT("Please submit by")." $surveyexpirydate";
-    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please submit by")." $surveyexpirydate");}
+    $printablesurveyoutput .= sprintf($clang->gT("Please submit by %s"), $surveyexpirydate);
+    if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT("Please submit by %s"), $surveyexpirydate));}
 }
 $printablesurveyoutput .=".\n";
 $printablesurveyoutput .="\t\t\t\t\t</td>\n";

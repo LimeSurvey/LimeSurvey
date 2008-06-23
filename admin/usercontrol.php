@@ -359,7 +359,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 			"manage_label"=>$srow['manage_label']));
 
 			// send Mail
-			$body = $clang->gT("You were signed in on the site")." ".$sitename."<br />\n";
+			$body = sprintf($clang->gT("You were signed in on the site %s"), $sitename)."<br />\n";
 			$body .= $clang->gT("Your data:")."<br />\n";
 			$body .= $clang->gT("Username") . ": " . $new_user . "<br />\n";
 			if ($useWebserverAuth === false)
@@ -490,7 +490,7 @@ elseif ($action == "moduser")
 		{
 			$valid_email = false;
 			$failed = true;
-			$addsummary .= "<br /><strong>".$clang->gT("Could not modify User Data.")."</strong><br />\n" . " ".$clang->gT("Email address ist not valid.")."<br />\n";
+			$addsummary .= "<br /><strong>".$clang->gT("Could not modify User Data.")."</strong><br />\n" . " ".$clang->gT("Email address is not valid.")."<br />\n";
 		}
 		elseif($valid_email)
 		{
