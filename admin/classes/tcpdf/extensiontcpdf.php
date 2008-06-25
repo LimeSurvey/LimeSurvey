@@ -21,6 +21,7 @@ class PDF extends TCPDF
         
     function intopdf($text,$format='')
     {
+        $text = $this->delete_html($text);
         $oldformat = $this->FontStyle;
         $this->SetFont('',$format,$this->FontSizePt);
         $this->Write(5,$text);
@@ -39,6 +40,7 @@ class PDF extends TCPDF
     {
         if(!empty($title))
         {
+            $title = $this->delete_html($title);
             $oldsize = $this->FontSizePt;
             $this->SetFontSize($oldsize+4);
             $this->Line(5,$this->y,($this->w-5),$this->y);
@@ -46,6 +48,7 @@ class PDF extends TCPDF
             $this->MultiCell('','',$title,'','C',0);
             if(!empty($description) && isset($description))
             {
+                $description = $this->delete_html($description);
                 $this->ln(7);
                 $this->SetFontSize($oldsize+2);
                 $this->MultiCell('','',$description,'','C',0);
@@ -68,7 +71,7 @@ class PDF extends TCPDF
         {
             for($b=0;$b<sizeof($array[$a]);$b++)
             {
-                $this->Cell($maxwidth[$b]*($this->FontSize),4,$array[$a][$b],0,0,'C');
+                $this->Cell($maxwidth[$b]*($this->FontSize),4,$this->delete_html($array[$a][$b]),0,0,'C');
             }
             $this->ln();
         }
@@ -98,6 +101,11 @@ class PDF extends TCPDF
     function write_out($name)
     {      
         $this->Output($name,"D");
+    }
+    
+    function delete_html($text)
+    {
+       return strip_tags($text);
     }
 }    
 ?>
