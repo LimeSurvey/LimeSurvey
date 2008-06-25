@@ -3659,7 +3659,7 @@ function do_array_flexible_dual($ia)
 		$answer .= "\t\t\t</table>\n";
 	}
 	elseif ($useDropdownLayout === true && $lresult->RecordCount() > 0)
-	{ //TIBO
+	{ 
 
 		if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1)) {
 			$answerwidth=$answerwidth['value'];

@@ -341,6 +341,7 @@ function createinsertquery()
 	{
         $inserts=array_unique($_SESSION['insertarray']);
     
+	$colnames_hidden=Array();
         foreach ($inserts as $value)
         {
             //Work out if the field actually exists in this survey
@@ -349,7 +350,13 @@ function createinsertquery()
             if (isset($_SESSION[$value]) && !empty($fieldexists))
             {
                 //If deletenonvalues is ON, delete any values that shouldn't exist
-                if($deletenonvalues==1) {checkconfield($value);}
+                if($deletenonvalues==1)
+		{
+			if (!checkconfield($value))
+			{
+				$colnames_hidden[]=$value;
+			}
+		}
                 //Only create column name and data entry if there is actually data!
                 $colnames[]=$value;
                 // most databases do not allow to insert an empty value into a datefield, 
@@ -455,29 +462,55 @@ function createinsertquery()
 				{
 					$query .= " ipaddr = '".$_SERVER['REMOTE_ADDR']."',";
 				}
-                // is if a ALL-IN-ONE survey, we don't set the submit date before the data is validated
+				// is if a ALL-IN-ONE survey, we don't set the submit date before the data is validated
 				if ((isset($move) && $move == "movesubmit") && ($thissurvey['format'] != "A"))       
 				{
-                    $query .= " submitdate = ".$connect->DBDate($mysubmitdate).", ";
+					$query .= " submitdate = ".$connect->DBDate($mysubmitdate).", ";
 				}
+
+				// Resets fields hidden due to conditions
+				if ($deletenonvalues == 1)
+				{
+					$hiddenfields=array_unique(array_values($colnames_hidden));				
+					foreach ($hiddenfields as $hiddenfield)
+					{
+						$fieldinfo = arraySearchByKey($hiddenfield, $fieldmap, "fieldname", 1);
+						if ($fieldinfo['type']=='D')
+						{
+							$query .= db_quote_id($hiddenfield)." = NULL,";
+						}
+						else
+						{
+							$query .= db_quote_id($hiddenfield)." = '',";
+						}
+					}
+				}
+				else
+				{
+					$hiddenfields=Array();
+				}
+
 				$fields=$postedfieldnames;
 				$fields=array_unique($fields);
+				$fields=array_diff($fields,$hiddenfields); // Do not take fields that are hidden
 				foreach ($fields as $field)
 				{
-                      if(!empty($field))
-                      {
-                          $fieldinfo = arraySearchByKey($field, $fieldmap, "fieldname", 1);
-                          if (!isset($_POST[$field])) {$_POST[$field]='';}
-                          if ($_POST[$field]=='' && $fieldinfo['type']=='D')      
-                          {                        
-                              $query .= db_quote_id($field)." = NULL,";
-                          }
-                          else
-                          {
-                              $query .= db_quote_id($field)." = '".auto_escape($myFilter->process($_POST[$field]))."',";
-                          }
-                      }
+					if(!empty($field))
+					{
+						$fieldinfo = arraySearchByKey($field, $fieldmap, "fieldname", 1);
+						if (!isset($_POST[$field])) {$_POST[$field]='';}
+						if ($_POST[$field]=='' && $fieldinfo['type']=='D')      
+						{                        
+							$query .= db_quote_id($field)." = NULL,";
+						}
+						else
+						{
+							$query .= db_quote_id($field)." = '".auto_escape($myFilter->process($_POST[$field]))."',";
+						}
+					}
 				}
+				
+
 				$query .= "WHERE id=" . $_SESSION['srid'];
 				$query = str_replace(",WHERE", " WHERE", $query);   // remove comma before WHERE clause
 			}
@@ -487,7 +520,7 @@ function createinsertquery()
 				if ((isset($move) && $move == "movesubmit"))
 				{
 					$query = "UPDATE {$thissurvey['tablename']} SET ";
-                    $query .= " submitdate = ".$connect->DBDate($mysubmitdate);
+					$query .= " submitdate = ".$connect->DBDate($mysubmitdate);
 					$query .= " WHERE id=" . $_SESSION['srid'];
 				}
 			}

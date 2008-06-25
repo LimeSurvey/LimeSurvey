@@ -1002,6 +1002,8 @@ function checkgroupfordisplay($gid)
 function checkconfield($value)
 {
 	global $dbprefix, $connect;
+	$fieldisdisplayed=true;
+
 	//$value is the fieldname for the field we are checking for conditions
 	foreach ($_SESSION['fieldarray'] as $sfa) //Go through each field
 	{
@@ -1080,12 +1082,14 @@ function checkconfield($value)
 	            //if(isset($move) && $move != "moveprev")
 	            //{
 				    $_SESSION[$value]="";
+				$fieldisdisplayed=false;
 				//}
 			}
 			unset($cqval);
 			unset($container);
 		}
 	}
+	return $fieldisdisplayed;
 
 }
 
