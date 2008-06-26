@@ -40,7 +40,7 @@ $surveyid = $_GET['sid'];
 // PRESENT SURVEY DATAENTRY SCREEN
 if(isset($_POST['printableexport']))
 {
-    $pdf = new PDF ('L','mm','A4');
+    $pdf = new PDF ($pdforientation,'mm','A4');
     $pdf->SetFont($pdfdefaultfont,'',$pdffontsize);   
     $pdf->AddPage(); 
 }

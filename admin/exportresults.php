@@ -393,7 +393,7 @@ switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c
 	$separator=",";
 	break;
 	case "pdf":
-	$pdf = new PDF('P','mm','A4');
+	$pdf = new PDF($pdforientation,'mm','A4');
     $pdf->SetFont($pdfdefaultfont,'',$pdffontsize);   
     $pdf->AddPage(); 
 	$pdf->intopdf("PDF Export ".date("Y.m.d-H:i",time()));

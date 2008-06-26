@@ -134,7 +134,7 @@ if (isset($_SESSION['s_lang']))
     }
     if(isset($_POST['printableexport']))
     {
-        $pdf = new PDF('P');
+        $pdf = new PDF($pdforientation);
         $pdf->SetFont($pdfdefaultfont,'',$pdffontsize);
         $pdf->AddPage(); 
         $pdf->titleintopdf("Survey Name: ".$surveyname,"SurveyID: ".$surveyid);

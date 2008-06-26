@@ -79,7 +79,7 @@ $allowedtemplateuploads = "gif,jpg,png";   // File types allowed to be uploaded 
 $allowedresourcesuploads = "7z,aiff,asf,avi,bmp,csv,doc,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xml,zip";   // File types allowed to be uploaded in the resources sections, and with the HTML Editor
 
 
-$debug              =   0;      // Set this to 1 if you are looking for errors. If you still get no errors after enabling this
+$debug              =   2;      // Set this to 1 if you are looking for errors. If you still get no errors after enabling this
                                 // then please check your error-logs - either in your hosting provider admin panel or in some /logs dir.
                                 // LimeSurvey developers set this to 2.   
 $memorylimit       =  "32M";    // This sets how much memory LimeSurvey can access. 16M is the minimum (M=mb) recommended.
@@ -295,6 +295,7 @@ $pdffonts       = $pdfexportdir."/fonts";  //Directory for the TCPDF fonts
 $pdfdefaultfont = 'freemono';               //Default font for the pdf Export
 $pdffontsize    = 10;                       //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
 $notsupportlanguages = array("zh-Hant-TW","zh-Hant-HK","zh-Hans","ja","th");
+$pdforientation = 'P';                     // Set L for Landscape or P for portrait format
 
 // Computing relative url
 // $relativeurl  is the url relative to you DocumentRoot where is installed LimeSurvey.
