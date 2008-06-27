@@ -2450,8 +2450,13 @@ if ($action == "editsurvey")
 			$editsurvey .= "\n"
 			. "\t<script type=\"text/javascript\"><!-- \n"
 			. "\tfunction alertPrivacy()\n"
-			. "\t{"
-			. "\t\tif (document.getElementById('private').value == 'Y')\n"
+			. "\t{\n"
+			. "\t\tif (document.getElementById('tokenanswerspersistence').value == 'Y')\n"
+			. "\t\t{\n"
+			. "\t\t\talert('".$clang->gT("You can't use Anonymous answers when Token-based answers persistence is enabled.","js")."');\n"
+			. "\t\t\tdocument.getElementById('private').value = 'N';\n"
+			. "\t\t}\n"
+			. "\t\telse if (document.getElementById('private').value == 'Y')\n"
 			. "\t\t{\n"
 			. "\t\t\talert('".$clang->gT("Warning").": ".$clang->gT("If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.","js")."');\n"
 			. "\t\t}\n"
@@ -2558,7 +2563,7 @@ if ($action == "editsurvey")
 
 		// Token answers persistence
 		$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Enable Token-based answers persistence?")."</span>\n"
-		. "\t\t<span class='settingentry'><select name='tokenanswerspersistence'>\n" 
+		. "\t\t<span class='settingentry'><select id='tokenanswerspersistence' name='tokenanswerspersistence' onchange=\"javascript: if (document.getElementById('private').value == 'Y') {alert('".$clang->gT("This option can't be set if Anonymous answers are used","js")."'); this.value='N';}\">\n" 
         . "\t\t\t<option value='Y'";
 		if ($esrow['tokenanswerspersistence'] == "Y") {$editsurvey .= " selected='selected'";}
 		$editsurvey .= ">".$clang->gT("Yes")."</option>\n"
