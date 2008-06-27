@@ -1997,6 +1997,16 @@ if ($subaction == "uploadldap" &&
 	$ldap_server_id=$ldap_queries[$ldapq]['ldapServerId'];
 	$ldapserver=$ldap_server[$ldap_server_id]['server'];
 	$ldapport=$ldap_server[$ldap_server_id]['port'];
+	if (isset($ldap_server[$ldap_server_id]['encoding']) &&
+		$ldap_server[$ldap_server_id]['encoding'] != 'utf-8' &&
+		$ldap_server[$ldap_server_id]['encoding'] != 'UTF-8')
+	{
+		$ldapencoding=$ldap_server[$ldap_server_id]['encoding'];
+	}
+	else
+	{
+		$ldapencoding='';
+	}
 
 	// define $attrlist: list of attributes to read from users' entries
 	$attrparams = array('firstname_attr','lastname_attr',
@@ -2075,6 +2085,16 @@ if ($subaction == "uploadldap" &&
 						if ( isset($responseGroup[$j][$ldap_queries[$ldapq]['attr1']]) ) $myattr1 = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['attr1']]);
 						if ( isset($responseGroup[$j][$ldap_queries[$ldapq]['attr2']]) ) $myattr2 = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['attr2']]);
 						if ( isset($responseGroup[$j][$ldap_queries[$ldapq]['language']]) ) $mylanguage = ldap_readattr($response[$ldap_queries[$ldapq]['language']]);
+
+						// In case Ldap Server encoding isn't UTF-8, let's translate
+						// the strings to UTF-8
+						if ($ldapencoding != '')
+						{
+							$myfirstname = @mb_convert_encoding($myfirstname,"UTF-8",$ldapencoding);
+							$mylastname = @mb_convert_encoding($mylastname,"UTF-8",$ldapencoding);
+							$myattr1 = @mb_convert_encoding($myattr1,"UTF-8",$ldapencoding);
+							$myattr2 = @mb_convert_encoding($myattr2,"UTF-8",$ldapencoding);	
+						}
 
 						// Now check for duplicates or bad formatted email addresses
 						$dupfound=false;

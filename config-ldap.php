@@ -51,6 +51,12 @@ $ldap_server[$serverId]['encrypt'] = "ldaps";
 // 'false' is recommended for ActiveDirectory servers
 $ldap_server[$serverId]['referrals'] = false;
 
+// Define the encoding used by the Ldap directory
+// You may omit this parameter (let it commented out)
+// as the default value, 'utf-8', should work for most installations.
+// However, Active Directory in West Europe may use 'cp850'.
+// $ldap_server[$serverId]['encoding'] = 'utf-8';
+
 // Define the authentication used to bind to the directory
 // We currently support simple authentication
 // If anonymous bind must be performed, comment the following two lines
