@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-22 14:46+0100\n"
-"PO-Revision-Date: 2008-06-22 14:51+0100\n"
+"POT-Creation-Date: 2008-06-28 12:28+0100\n"
+"PO-Revision-Date: 2008-06-28 12:30+0100\n"
 "Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -106,10 +106,10 @@ msgstr "Inaktiv"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:866
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:891
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:934
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3357
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3391
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3430
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3466
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3361
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3395
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3434
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3470
 msgid "Please Choose..."
 msgstr "Bitte auswählen.."
 
@@ -117,8 +117,8 @@ msgstr "Bitte auswählen.."
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:867
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:892
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:935
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3392
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3431
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3396
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3435
 msgid "None"
 msgstr "Keine"
 
@@ -247,9 +247,9 @@ msgid "LimeSurvey Setup"
 msgstr "LimeSurvey Einrichten"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1171
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:4303
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:4307
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:398
-#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:508
+#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:541
 msgid "Error"
 msgstr "Fehler"
 
@@ -275,12 +275,12 @@ msgid "Display Responses"
 msgstr "Zeige Antworten an"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1405
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:4614
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:4618
 msgid "Please select a language:"
 msgstr "Bitte wählen Sie eine Sprache aus:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1410
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:4630
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:4634
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -326,9 +326,9 @@ msgid "Preset"
 msgstr "Voreinstellung"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1532
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1615
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1738
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1750
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1619
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1742
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1754
 msgid "Token"
 msgstr "Schlüsselwort"
 
@@ -348,9 +348,10 @@ msgid "Referring URL"
 msgstr "Referrer-URL"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1674
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1895
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1961
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1971
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1730
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1899
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1965
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1975
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:763
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:867
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:982
@@ -382,8 +383,8 @@ msgstr "Nein"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1690
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1698
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:4289
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:4294
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:4293
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:4298
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:599
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:803
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:914
@@ -449,236 +450,236 @@ msgstr "Abnahme"
 msgid "Same"
 msgstr "Unverändert"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1912
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1916
 msgid "Comment"
 msgstr "Kommentar"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2152
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2156
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr "Achtung: Javascript ist in Ihrem Browser deaktiviert. Es kann sein, dass sie daher die Umfrage nicht abschließen werden können. Bitte überprüfen Sie ihre Browser-Einstellungen."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2167
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2171
 msgid "There are no questions in this survey"
 msgstr "Diese Umfrage enthält keine Fragen"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2171
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2175
 msgid "There is 1 question in this survey"
 msgstr "Diese Umfrage enthält eine Frage."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2175
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2179
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "Diese Umfrage enthält {NUMBEROFQUESTIONS} Fragen."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2210
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2162
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2214
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2166
 msgid "Submit"
 msgstr "Absenden"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2229
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2233
 msgid "A Note On Privacy"
 msgstr "Eine Bemerkung zum Datenschutz"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2229
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2233
 msgid "This survey is anonymous."
 msgstr "Dies ist eine anonyme Umfrage."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2229
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2233
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr "Die Daten mit Ihren Antworten enthalten keinerlei auf Sie zurückzuführende/identifizierende Informationen, es sei denn bestimmte Fragen haben Sie explizit danach gefragt. Wenn Sie für diese Umfrage einen Zugangsschlüssel benutzt haben, so können Sie sicher sein, dass der Zugangsschlüssel nicht zusammen mit den Daten abgespeichert wurde. Er wird in einer getrennten Datenbank aufbewahrt und nur aktualisiert, um zu speichern, ob sie diese Umfrage abgeschlossen haben oder nicht. Es gibt keinen Weg die Zugangsschlüssel mit den Umfrageergebnissen zusammenzuführen."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2239
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2243
 msgid "Are you sure you want to clear all your responses?"
 msgstr "Sind sie wirklich sicher, dass Sie alle Ihre  Antworten löschen wollen?"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2240
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2244
 msgid "Exit and Clear Survey"
 msgstr "Umfrage verlassen und löschen"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2264
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2268
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:481
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:485
 msgid "Load Unfinished Survey"
 msgstr "Zwischengespeicherte Umfrage laden"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2272
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2276
 msgid "Resume Later"
 msgstr "Später Fortfahren"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2293
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2297
 msgid "Thank You!"
 msgstr "Vielen Dank!"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2293
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2297
 msgid "You have completed answering the questions in this survey."
 msgstr "Sie haben die Beantwortung der Fragen in dieser Umfrage abgeschlossen."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2293
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2297
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "Klicken Sie nun auf 'Absenden', um die Umfrage abzuschließen und Ihre Antworten zu speichern."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2299
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2303
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr "Wenn Sie irgendeine Ihrer Antworten nochmals überprüfen oder ändern wollen, so können Sie dies, indem Sie auf [Zurück] klicken und Sie Ihre Antworten nochmals durchgehen."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2320
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2324
 msgid "Answers Cleared"
 msgstr "Antworten gelöscht"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2325
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2331
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2329
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2335
 msgid "Restart this Survey"
 msgstr "Diese Umfrage neu starten"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2334
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2338
 #: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:135
 #: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:167
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:518
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1657
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1693
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1849
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1661
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1697
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1853
 #: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:323
 #: D:\web\TechPlat\apache\htdocs\limesurvey/register.php:155
 #: D:\web\TechPlat\apache\htdocs\limesurvey/survey.php:113
 msgid "Close this Window"
 msgstr "Fenster schließen"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2336
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2340
 msgid "Save Your Unfinished Survey"
 msgstr "Umfrage zwischenspeichern"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2337
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2341
 msgid "Enter a name and password for this survey and click save below."
 msgstr "Geben Sie einen Namen und ein Passwort für diese Umfrage an und klicken Sie auf Speichern."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2337
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2341
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr "Ihre Umfrage  wird dann unter diesem Namen und Passwort gespeichert und kann dann später von Ihnen weitergeführt und abgeschlossen werden, wenn Sie sich unter Ihrem Namen und Passwort wieder anmelden."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2337
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2341
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "Wenn Sie eine Emailadresse angeben, wird Ihnen eine Email mit weitere Einzelheiten zugesandt."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2345
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2349
 msgid "Return To Survey"
 msgstr "Zur Umfrage zurückkehren"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2350
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2354
 #: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:307
 msgid "Name"
 msgstr "Name"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2353
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2379
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2357
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2383
 #: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:308
 msgid "Password"
 msgstr "Passwort"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2356
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2360
 msgid "Repeat Password"
 msgstr "Passwort wiederholen"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2359
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2363
 msgid "Your Email"
 msgstr "Ihre E-Mail"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2364
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2384
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2435
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1573
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1620
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1758
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2368
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2388
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2439
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1577
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1624
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1762
 msgid "Security Question"
 msgstr "Sicherheitsfrage"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2367
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2371
 msgid "Save Now"
 msgstr "Jetzt Speichern"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2372
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2376
 msgid "Load A Previously Saved Survey"
 msgstr "Zwischengespeicherte Umfrage laden"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2373
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2377
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr "Auf dieser Seite können Sie eine vorher zwischengespeichterte Umfrage laden."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2373
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2377
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr "Bitte geben Sie den Namen ein, den Sie benutzt haben, als Sie Ihre Umfragedaten zwischengespeichert haben (und natürlich das Passwort)."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2376
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2380
 msgid "Saved name"
 msgstr "Gespeicherter Name"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2389
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2393
 msgid "Load Now"
 msgstr "Jetzt laden"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2394
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2398
 msgid "You must be registered to complete this survey"
 msgstr "Sie müssen registriert sein, um an dieser Umfrage teilzunehmen."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2395
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2399
 msgid "You may register for this survey if you wish to take part."
 msgstr "Sie müssen Sich für die Umfrage registrieren, wenn Sie teilnehmen wollen."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2395
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2399
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "Bitte geben Sie unten die notwendigen Daten ein und nach dem Absenden erhalten Sie per Email einen Link zu der Umfrage."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2402
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2406
 msgid "First Name"
 msgstr "Vorname"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2409
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2413
 msgid "Last Name"
 msgstr "Nachname"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2416
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2420
 msgid "Email Address"
 msgstr "Email-Addresse"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2460
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1576
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1623
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1761
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2464
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1580
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1627
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1765
 msgid "Continue"
 msgstr "Weiter"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2467
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2471
 msgid "Your Assessment"
 msgstr "Ihre Bewertung"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2814
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2818
 msgid "Online Manual"
 msgstr "Online Bedienungsanleitung"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2817
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2821
 msgid "Support this project - Donate to "
 msgstr "Unterstützen Sie dieses Projekt - Spenden Sie an "
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2820
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2824
 msgid "Visit our website!"
 msgstr "Besuchen Sie unsere Webseite!"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2820
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2824
 msgid "Version"
 msgstr "Version"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3034
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3038
 msgid "Local Submission"
 msgstr "Lokale Weiterleitung"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3241
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3246
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3245
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3250
 msgid "Executing"
 msgstr "Ausführen"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3241
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3245
 msgid "Failed! Reason: "
 msgstr "Fehlgeschlagen! Grund:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3246
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3250
 msgid "Success!"
 msgstr "Erfolgreich!"
 
@@ -688,7 +689,7 @@ msgid "Save your responses so far"
 msgstr "Bisherige Antworten speichern"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:107
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1487
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1491
 #: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:294
 #: D:\web\TechPlat\apache\htdocs\limesurvey/survey.php:74
 msgid "Did Not Save"
@@ -805,8 +806,8 @@ msgid "You did not provide a password"
 msgstr "Sie haben kein Passwort angegeben"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:463
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1556
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1722
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1560
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1726
 #: D:\web\TechPlat\apache\htdocs\limesurvey/register.php:57
 #: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:232
 msgid "The answer to the security question is incorrect"
@@ -817,15 +818,15 @@ msgid "This is a closed-access survey, so you must supply a valid token.  Please
 msgstr "Dies ist eine Umfrage mit geschlossenem Teilnehmerkreis, daher müssen Sie einen Zugangsschlüssel angeben. Bitte kontaktieren Sie den Administrator für weitere Informationen."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:514
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1653
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1689
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1657
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1693
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr "Das von ihnen angegebene Schlüsselwort ist entweder ungültig oder wurde bereits verwendet."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:515
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1654
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1690
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1846
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1658
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1694
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1850
 #, php-format
 msgid "For further information contact %s"
 msgstr "Um weitere Informationen zu erhalten, kontaktieren Sie bitte %s"
@@ -843,7 +844,7 @@ msgstr "Es gibt keine entsprechende Umfrage."
 msgid "%s %% complete"
 msgstr "%s %%  vollständig"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1392
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1396
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -865,105 +866,105 @@ msgstr ""
 "\n"
 "{ADMINNAME}"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1411
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1415
 msgid "Answer Submission for Survey"
 msgstr "Antwort Absendung für Umfrage"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1413
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1417
 msgid "Survey Submitted"
 msgstr "Umfrage wurde ausgefüllt"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1414
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1418
 msgid "A new response was entered for your survey"
 msgstr "Es sind neue Daten in Ihrer Umfrage vorhanden."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1417
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1421
 msgid "Click the following link to reload the survey:"
 msgstr "Klicken Sie auf den folgenden Link um den Fragebogen neu zu laden."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1421
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1425
 msgid "Click the following link to see the individual response:"
 msgstr "Klicken Sie hier, um die einzelnen Antworten zu sehen:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1424
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1428
 msgid "Click the following link to edit the individual response:"
 msgstr "Klicken Sie auf den folgenden Link um die Antwortdaten direkt zu editieren:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1427
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1431
 msgid "View statistics by clicking here:"
 msgstr "Klicken Sie hier, um die Gesamtstatistik zu sehen:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1488
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1492
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "Ein unerwarteter Fehler ist aufgetreten. Ihre Antworten können leider nicht gespeichert werden."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1491
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1495
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr "Ihre Antworten sind nicht verloren gegangen. Sie wurden per eMail an den Administrator dieser Umfrage geschickt und werden zu einem späteren Zeitpunkt manuell in die Datenbank eingepflegt."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1492
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1496
 msgid "An error occurred saving a response to survey id"
 msgstr "Beim Speichern Ihrer Fragebogen-Zugangsschlüssels ist ein Fehler aufgetreten."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1493
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1497
 msgid "DATA TO BE ENTERED"
 msgstr "EINZUGEBENDE DATEN"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1498
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1502
 msgid "SQL CODE THAT FAILED"
 msgstr "FEHLERHAFTE SQL ANWEISUNG"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1500
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1504
 msgid "ERROR MESSAGE"
 msgstr "FEHLERMELDUNG"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1502
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1506
 msgid "Error saving results"
 msgstr "Fehler beim Speichern der Ergebnisse"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1510
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1514
 msgid "Try to submit again"
 msgstr "Versuchen Sie das Abschicken erneut"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1559
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1563
 msgid "Please confirm access to survey by answering the security question below and click continue."
 msgstr "Bitte bestätigen Sie den Zugang zur Umfrage indem Sie die Sicherheitsfrage unten beantworten und auf Weiter klicken."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1607
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1652
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1688
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1725
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1611
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1656
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1692
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1729
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "Um an dieser Umfrage teilzunehmen, benötigen Sie einen passenden Zugangsschlüssel."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1608
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1612
 msgid "If you have been issued a token, please enter it in the box below and click continue."
 msgstr "Falls Sie ein Schlüsselwort erhalten haben, geben Sie es bitte in das untenstehende Feld ein und klicken Sie auf 'Weiter'."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1730
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1734
 msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr "Falls Sie ein Schlüsselwort erhalten haben, geben Sie es bitte in das untenstehende Feld ein und klicken Sie auf 'Weiter'."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1742
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1746
 msgid "Please confirm the token by answering the security question below and click continue."
 msgstr "Bitte bestätigen Sie den Zugangsschlüssel, indem Sie die Sicherheitsfrage unten beantworten und auf Weiter klicken."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1845
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1849
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Für diese Umfrage wurden noch keine Fragen angelegt. Sie kann weder getestet noch abgeschlossen werden."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2141
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2145
 msgid "Previous"
 msgstr "Zurück"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2146
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2152
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2157
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2150
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2156
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2161
 msgid "Next"
 msgstr "Weiter"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2544
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2557
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2548
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2561
 msgid "Sorry your responses have exceeded a quota on this survey."
 msgstr "Leider haben Ihre Antworten eine Quote dieser Umfrage überschritten."
 
@@ -1310,15 +1311,15 @@ msgstr "Danke, dass sie Ihre Antworten zwischengespeichert haben. Die folgenden 
 msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
 msgstr "Rufen Sie die Umfrage auf, indem Sie auf folgende URL klicken (oder den Link manuell in Ihrem Browser eingeben):"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:509
+#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:542
 msgid "Cannot submit results - there are none to submit."
 msgstr "Kann keine Ergebnisse abschicken, da keine vorhanden sind."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:510
+#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:543
 msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
 msgstr "Diese Fehler kann auftreten, wenn Sie Ihre Antworten schon abgesendet haben und in Ihrem Browser auf 'Aktualisieren' geklickt haben. In diesem Fall sind Ihre Antworten schon gespeichert worden. "
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:510
+#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:543
 msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
 msgstr "Wenn Sie diese Nachricht während einer Umfrage erhalten, sollten Sie den 'Zurück'-Button in Ihrem Browser nutzen and dann die vorherige Seite neu laden. Obwohl Sie Antworten von der letzten Seite verlieren könnten, werden Ihre anderen vorherigen Antworten noch vorhanden sein. Dieses Problem kann auftauchen, wenn der Server überlastet ist. Wir bitten um Entschuldigung."
 
@@ -4153,13 +4154,14 @@ msgid "A group in the CSV/SQL file is not part of the same survey. The import of
 msgstr "Eine Gruppe in der CSV/SQL-Datei stammt nicht aus der gleichen Umfrage. Der Import der Umfrage wurde gestoppt."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:823
-msgid "was NOT imported because the question type is unknown."
-msgstr "wurde NICHT importiert, da der Fragetyp unbekannt ist."
+#, php-format
+msgid "Question \"%s - %s\" was NOT imported because the question type is unknown."
+msgstr "Frage \"%s - %s\" wurde NICHT importiert, da der Fragetyp unbekannt ist."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:829
 #, php-format
-msgid "was imported but the type was set to '%s' because it is the most similiar one."
-msgstr "wurde importiert, aber der Typ wurde konvertiert auf '%s', da dies der ähnlichste Typ ist."
+msgid "Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."
+msgstr "Frage \"%s - %s\" wurde importiert, aber der Typ wurde konvertiert auf '%s', da dies der ähnlichste Typ ist."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1213
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1241
@@ -4757,8 +4759,9 @@ msgstr "Bitte faxen Sie den ausgefüllten Fragebogen an"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:974
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:975
-msgid "Please submit by"
-msgstr "Bitte übermitteln bis"
+#, php-format
+msgid "Please submit by %s"
+msgstr "Bitte übermitteln bis %s"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:26
 msgid "Error: You have to enter a code for this question."
@@ -6106,6 +6109,7 @@ msgid "Logout successful."
 msgstr "Abmelden erfolgreich."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:329
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:493
 msgid "Email address is not valid."
 msgstr "Email-Adresse ist nicht gültig."
 
@@ -6114,8 +6118,9 @@ msgid "Username was not supplied."
 msgstr "Es wurde kein Benutzername angegeben."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:362
-msgid "You were signed in on the site"
-msgstr "Sie wurden eingetragen auf der Webseite"
+#, php-format
+msgid "You were signed in on the site %s"
+msgstr "Sie wurden auf der Webseite %s als User eingetragen."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:371
 msgid "Login here"
@@ -6149,10 +6154,6 @@ msgstr "Benutzer bearbeiten"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:517
 msgid "Could not modify User Data."
 msgstr "Benutzerdaten konnten nicht geändert werden."
-
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:493
-msgid "Email address ist not valid."
-msgstr "Email-Adresse ist nicht gültig."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:509
 msgid "Unchanged"
@@ -6697,6 +6698,8 @@ msgstr "Thailändisch"
 msgid "Vietnamese"
 msgstr "Vietnamesisch"
 
+#~ msgid "Email address ist not valid."
+#~ msgstr "Email-Adresse ist nicht gültig."
 #~ msgid "depends on group"
 #~ msgstr "Hängt ab von Gruppe"
 #~ msgid "For further information contact"
