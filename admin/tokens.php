@@ -573,12 +573,12 @@ if ($subaction == "emailsettings")
 			. "\t\t<input type='hidden' name='email_remind_default_".$esrow['surveyls_language']."' id='email_remind_default_{$grouplang}' value='".conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"),$ishtml)."' />\n"
 			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_remind_{$grouplang}\",\"email_remind_default_{$grouplang}\")' />\n"
 			. "\t</span></div>\n";
-		$tokenoutput .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Confirmation Email Subject")."</span>\n"
+		$tokenoutput .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Confirmation Email Subject:")."</span>\n"
 			. "\t\t<span class='settingentry'><input type='text' size='80' name='email_confirm_subj_".$esrow['surveyls_language']."' id='email_confirm_subj_{$grouplang}' value=\"{$esrow['surveyls_email_confirm_subj']}\" />\n"
 			. "\t\t<input type='hidden' name='email_confirm_subj_default_".$esrow['surveyls_language']."' id='email_confirm_subj_default_{$grouplang}' value='".$bplang->gT("Confirmation of completed survey")."' />\n"
 			. "\t\t<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_confirm_subj_{$grouplang}\",\"email_confirm_subj_default_{$grouplang}\")' />\n"
 			. "\t</span></div>\n";
-		$tokenoutput .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Confirmation Email")."</span>\n"
+		$tokenoutput .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Confirmation Email:")."</span>\n"
 			. "\t\t<span class='settingentry'><textarea cols='80' rows='10' name='email_confirm_".$esrow['surveyls_language']."' id='email_confirm_{$grouplang}'>{$esrow['surveyls_email_confirm']}</textarea>\n"
 			. getEditor("email-conf","email_confirm_{$grouplang}", "[".$clang->gT("Confirmation Email", "js")."](".$grouplang.")",$surveyid,'','',$action)
 			. "\t\t<input type='hidden' name='email_confirm_default_".$esrow['surveyls_language']."' id='email_confirm_default_{$grouplang}' value='".conditional_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}"),$ishtml)."' />\n"

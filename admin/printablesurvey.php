@@ -254,7 +254,7 @@ while ($degrow = $degresult->FetchRow())
 
 		if ($explanation)
 		{
-			$explanation = "[".$clang->gT("Only answer this question")." ".$explanation."]";
+			$explanation = "[".sprintf($clang->gT("Only answer this question %s"), $explanation)."]";
 			$printablesurveyoutput .="<tr bgcolor='$bgc'><td colspan='3'>$explanation</td></tr>\n";
         }
 		//END OF GETTING CONDITIONS

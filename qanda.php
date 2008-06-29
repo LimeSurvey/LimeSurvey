@@ -339,7 +339,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 			else
 			{
 				$qtitle .= "<br />\n<font class = \"questionhelp\">"
-				. $clang->gT("Check at most")." ".$maxansw['value']." ".$clang->gT("answers")."</font>";
+				. sprintf($clang->gT("Check at most %d answers"), $maxansw['value'])."</font>";
 			}
 		}
 		break;
@@ -364,7 +364,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 			else
 			{
 				$qtitle .= "<br />\n<font class = \"questionhelp\">"
-				. $clang->gT("Check at most")." ".$maxansw['value']." ".$clang->gT("answers")."</font>";
+				. sprintf($clang->gT("Check at most %d answers"), $maxansw['value'])."</font>";
 			}
 		}
 		break;
@@ -1537,8 +1537,7 @@ function do_ranking($ia)
 	. "\t\t\t\t</tr>\n"
 	. "\t\t\t\t<tr>\n"
 	. "\t\t\t\t\t<td colspan='2' class='rank'><font size='1'>\n"
-	. "\t\t\t\t\t\t".$clang->gT("Click on the scissors next to each item on the right")
-	. "\t\t\t\t\t\t".$clang->gT("to remove the last entry in your ranked list").""
+	. "\t\t\t\t\t\t".$clang->gT("Click on the scissors next to each item on the right to remove the last entry in your ranked list").""
 	. "\t\t\t\t\t</font></td>\n"
 	. "\t\t\t\t</tr>\n"
 	. "\t\t\t</table>\n";
@@ -1734,7 +1733,7 @@ function do_multiplechoice($ia)
 	{
 		$maxanswscript .= "\t\t\t\t\tif (count > max)\n"
 			. "\t\t\t\t\t\t{\n"
-			. "\t\t\t\t\t\talert('".$clang->gT("Please choose at most","js")." ' + max + ' ".$clang->gT("answer(s) for question","js")." \"".trim(javascript_escape($ia[3],true,true))."\"');\n"
+			. "\t\t\t\t\t\talert('".sprintf($clang->gT("Please choose at most '%d' answer(s) for question \"%s\"","js"), max, trim(javascript_escape($ia[3],true,true)))."');\n"
 			. "\t\t\t\t\t\tif (me.type == 'checkbox') {me.checked = false;}\n"
 			. "\t\t\t\t\t\tif (me.type == 'text') {\n"
 			. "\t\t\t\t\t\t\tme.value = '';\n"
@@ -1906,7 +1905,7 @@ function do_multiplechoice_withcomments($ia)
 	{
 		$maxanswscript .= "\t\t\t\t\tif (count > max)\n"
 			. "\t\t\t\t\t\t{\n"
-			. "\t\t\t\t\t\talert('".$clang->gT("Please choose at most","js")." ' + max + ' ".$clang->gT("answer(s) for question","js")." \"".trim(javascript_escape($ia[3],true,true))."\"');\n"
+			. "\t\t\t\t\t\talert('".sprintf($clang->gT("Please choose at most '%d' answer(s) for question \"%s\"","js"), max, trim(javascript_escape($ia[3],true,true)))."');\n"
 			. "\t\t\t\t\t\tif (me.type == 'checkbox') {me.checked = false;}\n"
 			. "\t\t\t\t\t\tif (me.type == 'text') {\n"
 			. "\t\t\t\t\t\t\tme.value = '';\n"
@@ -2105,7 +2104,7 @@ function do_multiplenumeric($ia)
         }
         if ($maxvalue)
             {
-			$answer .= "\t\t\t<div id='max_num_value_{$ia[1]}'><font size='1'><i>".$clang->gT("Total of all entries must not exceed ").$max_num_value."</i></font></div>\n";
+			$answer .= "\t\t\t<div id='max_num_value_{$ia[1]}'><font size='1'><i>".sprintf($clang->gT("Total of all entries must not exceed %d"), $max_num_value)."</i></font></div>\n";
 			}
         if ($equalvalue)
             {
