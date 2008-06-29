@@ -36,8 +36,8 @@ class ADODB_Pager {
 	// Localize text strings here
 	var $first = '<code>|&lt;</code>';
 	var $prev = '<code>&lt;&lt;</code>';
-	var $next = '<code>>></code>';
-	var $last = '<code>>|</code>';
+	var $next = '<code>&gt;&gt;</code>';
+	var $last = '<code>&gt;|</code>';
 	var $moreLinks = '...';
 	var $startLinks = '...';
 	var $gridHeader = false;

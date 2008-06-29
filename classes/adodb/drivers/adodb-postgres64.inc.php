@@ -61,11 +61,11 @@ class ADODB_postgres64 extends ADOConnection{
 	var $_resultid = false;
   	var $concat_operator='||';
 	var $metaDatabasesSQL = "select datname from pg_database where datname not in ('template0','template1') order by 1";
-    var $metaTablesSQL = "select tablename,'T' from pg_tables where tablename not like 'pg\_%'
+    var $metaTablesSQL = "select tablename,'T' from pg_tables where tablename not like 'pg_%'
 	and tablename not in ('sql_features', 'sql_implementation_info', 'sql_languages',
 	 'sql_packages', 'sql_sizing', 'sql_sizing_profiles') 
 	union 
-        select viewname,'V' from pg_views where viewname not like 'pg\_%'";
+        select viewname,'V' from pg_views where viewname not like 'pg_%'";
 	//"select tablename from pg_tables where tablename not like 'pg_%' order by 1";
 	var $isoDates = true; // accepts dates in ISO format
 	var $sysDate = "CURRENT_DATE";
@@ -157,7 +157,7 @@ a different OID if a database must be reloaded. */
 		if (!is_resource($this->_resultid) || get_resource_type($this->_resultid) !== 'pgsql result') return false;
 		$oid = pg_getlastoid($this->_resultid);
 		// to really return the id, we need the table and column-name, else we can only return the oid != id
-		return empty($table) || empty($column) ? $oid : $this->GetOne("SELECT $column FROM $table WHERE oid=".(int)$oid);
+		return empty($table) || empty($column) ? $oid : $this->GetOne("SELECT CURRVAL('".$table."_".$column."_seq')");
 	}
 
 // I get this error with PHP before 4.0.6 - jlim
@@ -205,10 +205,10 @@ a different OID if a database must be reloaded. */
 	{
 		$info = $this->ServerInfo();
 		if ($info['version'] >= 7.3) {
-	    	$this->metaTablesSQL = "select tablename,'T' from pg_tables where tablename not like 'pg\_%'
+	    	$this->metaTablesSQL = "select tablename,'T' from pg_tables where tablename not like 'pg_%'
 			  and schemaname  not in ( 'pg_catalog','information_schema')
 	union 
-        select viewname,'V' from pg_views where viewname not like 'pg\_%'  and schemaname  not in ( 'pg_catalog','information_schema') ";
+        select viewname,'V' from pg_views where viewname not like 'pg_%'  and schemaname  not in ( 'pg_catalog','information_schema') ";
 		}
 		if ($mask) {
 			$save = $this->metaTablesSQL;
