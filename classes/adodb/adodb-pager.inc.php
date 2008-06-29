@@ -1,7 +1,7 @@
 <?php
 
 /*
-	V4.94 23 Jan 2007  (c) 2000-2007 John Lim (jlim#natsoft.com.my). All rights reserved.
+	V4.98 13 Feb 2008  (c) 2000-2008 John Lim (jlim#natsoft.com.my). All rights reserved.
 	  Released under both BSD license and Lesser GPL library license. 
 	  Whenever there is any discrepancy between the two licenses, 
 	  the BSD license will take precedence. 
@@ -36,8 +36,8 @@ class ADODB_Pager {
 	// Localize text strings here
 	var $first = '<code>|&lt;</code>';
 	var $prev = '<code>&lt;&lt;</code>';
-	var $next = '<code>&gt;&gt;</code>';
-	var $last = '<code>&gt;|</code>';
+	var $next = '<code>>></code>';
+	var $last = '<code>>|</code>';
 	var $moreLinks = '...';
 	var $startLinks = '...';
 	var $gridHeader = false;

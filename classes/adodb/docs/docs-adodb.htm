@@ -15,7 +15,7 @@ pre {
 <body bgcolor="#ffffff" text="black">
 
 <h2>ADOdb Library for PHP</h2>
-<p>V4.94 23 Jan 2007 (c) 2000-2007 John Lim (jlim#natsoft.com)</p>
+<p>V4.98 13 Feb 2008 (c) 2000-2008 John Lim (jlim#natsoft.com)</p>
 <p><font size="1">This software is dual licensed using BSD-Style and LGPL. This 
   means you can use it in compiled proprietary and commercial products.</font></p>
   
@@ -531,6 +531,7 @@ can be controlled using $rsPrefix. Here we set it to 'hack_rs_', which will make
 <p></p><p>Don't forget to call the constructor of the parent class in
 your constructor. If you want to use the default ADOdb drivers return
 false in the above hack_factory() function.
+ Also you can define your own ADORecordSet_empty() class, by defining a class $$this->rsPrefix.'empty' since 4.96/5.02.
 <a name="php5"></a>
 </p><h2>PHP5 Features</h2>
  ADOdb 4.02 or later will transparently determine which version of PHP you are using.
@@ -2113,10 +2114,11 @@ row3: Rose, Flower </font></p>
 </font></p><p><font><b>GetOne<a name="getone"></a>($sql,$inputarr=false)</b></font></p>
 <p><font>Executes the SQL and returns the first field of the first row. The recordset 
   and remaining rows are discarded for you automatically. If an error occur, false 
-  is returned.</font></p>
+  is returned; use ErrorNo() or ErrorMsg() to get the error details.
+  Since 4.96, we return null if no records were found.</font></p>
 <p><font><b>GetRow<a name="getrow"></a>($sql,$inputarr=false)</b></font></p>
 <p><font>Executes the SQL and returns the first row as an array. The recordset and remaining 
-  rows are discarded for you automatically. If an error occurs, false is returned.</font></p>
+  rows are discarded for you automatically. If no records are returned, an empty array is returned. If an error occurs, false is returned.</font></p>
 <p><font><b>GetAll<a name="getall"></a>($sql,$inputarr=false)</b></font></p>
 
 <p>Executes the SQL and returns the all the rows as a 2-dimensional 
@@ -2136,7 +2138,8 @@ row3: Rose, Flower </font></p>
   cached in the $ADODB_CACHE_DIR directory for $secs2cache seconds. Good for speeding 
   up queries on rarely changing data. Note that the $secs2cache parameter is optional. 
   If omitted, we use the value in $connection-&gt;cacheSecs (default is 3600 seconds, 
-  or 1 hour).</font></p>
+  or 1 hour).</font>
+  </p>
 <p><font><b>Prepare<a name="prepare"></a>($sql )</b></font></p>
  
 <p><font>Prepares (compiles) an SQL query for repeated execution. Bind parameters
@@ -2927,6 +2930,53 @@ of MySQL.</font></p>
 
 <h2><font>Change Log<a name="Changes"></a><a name="changes"></a><a name="changelog"></a></font></h2>
 
+<p><a name="4.98"></a><b>4.98/5.04 ? ? 2008</b>
+<p> Fixed adodb_mktime problem which causes a performance bottleneck in $hrs.
+<p>Added mysqli support to adodb_getcount().
+<p>Removed MYSQLI_TYPE_CHAR from MetaType().
+
+<p><a name="4.97"></a><b>4.97/5.03 22 Jan 2008</b>
+<p>Active Record: $ADODB_ASSOC_CASE=1 did not work properly. Fixed. 
+<p>Modified Fields() in recordset class to support display null fields in FetchNextObject().
+<p>In ADOdb5, active record implementation, we now support column names with spaces in them - we autoconvert the spaces to _ using
+ __set(). Thx Daniel Cook. http://phplens.com/lens/lensforum/msgs.php?id=17200
+<p>Removed $arg3 from mysqli SelectLimit. See http://phplens.com/lens/lensforum/msgs.php?id=16243. Thx Zsolt Szeberenyi.
+<p>Changed oci8 FetchField, which returns the max_length of BLOB/CLOB/NCLOB as 4000 (incorrectly) to -1.
+<p>CacheExecute would sometimes return an error on Windows if it was unable to lock the cache file. This is harmless
+and has been changed to a warning that can be ignored. Also adodb_write_file() code revised.
+<p>ADOdb perf code changed to only log sql if execution time >= 0.05 seconds. New $ADODB_PERF_MIN variable holds min sql timing. 
+Any SQL with timing value below this and is not causing an error is not logged.
+<p>Also adodb_backtrace() now traces 1 level deeper as sometimes actual culprit function is not displayed.
+<p>Fixed a group by problem with adodb_getcount() for db's which are not postgres/oci8 based.
+<p>Changed mssql driver Parameter() from SQLCHAR to SQLVARCHAR: case 'string': $type = SQLVARCHAR; break.
+<p>Problem with mssql driver in php5 (for adodb 5.03) because some functions are not static. Fixed.
+
+
+<p><a name="4.96"></a><b>4.96/5.02 24 Sept 2007</b>
+<p>ADOdb perf for oci8 now has non-table-locking code when clearing the sql. Slower but better transparency. Added in 4.96a and 5.02a.
+<p>Fix adodb count optimisation. Preg_match did not work properly. Also rewrote the ORDER BY stripping code in _adodb_getcount(), adodb-lib.inc.php.
+<p>SelectLimit for oci8 not optimal for large recordsets when offset=0. Changed $nrows check.
+<p>Active record optimizations. 
+Added support for assoc arrays in Set().
+<p>Now GetOne returns null if EOF (no records found), and false if error occurs. Use ErrorMsg()/ErrorNo() to get the error.
+<p>Also CacheGetRow and CacheGetCol will return false if error occurs, or empty array() if EOF, just like GetRow and GetCol.
+<p>Datadict now allows changing of types which are not resizable, eg. VARCHAR to TEXT in ChangeTableSQL. --  Mateo Tibaquirá
+<p>Added BIT data type support to adodb-ado.inc.php and adodb-ado5.inc.php.
+<p>Ldap driver did not return actual ldap error messages. Fixed.
+<p>Implemented GetRandRow($sql, $inputarr). Optimized for Oci8.
+<p>Changed adodb5 active record to use static SetDatabaseAdapter() and removed php4 constructor. Bas van Beek bas.vanbeek#gmail.com.
+<p>Also in adodb5, changed adodb-session2 to use static function declarations in class. Thx Daniel Berlin.
+<p>Added "Clear SQL Log" to bottom of Performance screen.
+<p>Sessions2 code echo'ed directly to the screen in debug mode. Now uses ADOConnection::outp().
+<p>In mysql/mysqli, qstr(null) will return the string "null" instead of empty quoted string "''".
+<p>postgresql optimizeTable in perf-postgres.inc.php added by Daniel Berlin (mail#daniel-berlin.de)
+<p>Added 5.2.1 compat code for oci8.
+<p>Changed @@identity to SCOPE_IDENTITY() for multiple mssql drivers. Thx  Stefano Nari.
+<p>Code sanitization introduced in 4.95 caused problems in European locales (as float 3.2 was typecast to 3,2). Now we only sanitize if is_numeric fails.
+<p>Added support for customizing ADORecordset_empty using $this->rsPrefix.'empty'. By Josh Truwin.
+<p>Added proper support for ALterColumnSQL for Postgresql in datadict code. Thx. Josh Truwin. 
+<p>Added better support for MetaType() in mysqli when using an array recordset.
+<p>Changed parser for pgsql error messages in adodb-error.inc.php  to case-insensitive regex.
 <p><a name="4.95"></a><b>4.95/5.01 17 May 2007</b>
 <p>CacheFlush debug outp() passed in invalid parameters. Fixed.
 <p>Added Thai language file for adodb. Thx Trirat Petchsingh rosskouk#gmail.com and Marcos Pont</p>
@@ -2940,7 +2990,7 @@ of MySQL.</font></p>
 <p>For ADOdb 5.01, fixed some adodb-datadict.inc.php MetaType compat issues with PHP5.
 <p>The $argHostname was wiped out in adodb-ado5.inc.php. Fixed.
 <p>Adodb5 version, added iterator support for adodb_recordset_empty.
-
+<p>Adodb5 version,more error checking code now will use exceptions if available.
 <p><a name="4.94"></a><b>4.94 23 Jan 2007</b>
 <p>Active Record: $ADODB_ASSOC_CASE=2 did not work properly. Fixed. Thx gmane#auxbuss.com.
 <p>mysqli had bugs in BeginTrans() and EndTrans(). Fixed.</p>

@@ -18,7 +18,7 @@ font-size: 8pt;
 </head>
 <body>
 <h3>The ADOdb Performance Monitoring Library</h3>
-<p>V4.94 23 Jan 2007 (c) 2000-2007 John Lim (jlim#natsoft.com.my)</p>
+<p>V4.98 13 Feb 2008 (c) 2000-2008 John Lim (jlim#natsoft.com.my)</p>
 <p><font size="1">This software is dual licensed using BSD-Style and
 LGPL. This means you can use it in compiled proprietary and commercial
 products.</font></p>
@@ -298,6 +298,9 @@ $this-&gt;DBParameter("data cache size").</p>
 <p>Returns the CPU load of the database client (NOT THE SERVER) as a
 percentage. Only works for Linux and Windows. For Windows, WMI must be
 available.</p>
+<h3>$ADODB_PERF_MIN</h3>
+<p>New in adodb 4.97/5.03 is this global variable, which controls whether sql timings which are too small are not saved. Currently it defaults 
+to 0.05 (seconds). This means that all sql's which are faster than 0.05 seconds to execute are not saved.
 <h3>Format of $settings Property</h3>
 <p> To create new database parameters, you need to understand
 $settings. The $settings data structure is an associative array. Each

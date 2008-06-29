@@ -1,7 +1,7 @@
 <?php
 /*
 
-  version V4.94 23 Jan 2007 (c) 2000-2007 John Lim. All rights reserved.
+  version V4.98 13 Feb 2008 (c) 2000-2008 John Lim. All rights reserved.
 
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
@@ -541,6 +541,12 @@ NATSOFT.DOMAIN =
 		return $s. "')";
 	}
 	
+	function GetRandRow($sql, $arr = false)
+	{
+		$sql = "SELECT * FROM ($sql ORDER BY dbms_random.value) WHERE rownum = 1";
+		
+		return $this->GetRow($sql,$arr);
+	}
 	
 	/*
 	This algorithm makes use of
@@ -567,7 +573,7 @@ NATSOFT.DOMAIN =
 				$sql = preg_replace('/^[ \t\n]*select/i','SELECT /*+FIRST_ROWS*/',$sql);
 		}
 		
-		if ($offset < $this->selectOffsetAlg1) {
+		if ($offset < $this->selectOffsetAlg1 && 0 < $nrows  && $nrows < 1000) {
 			if ($nrows > 0) {	
 				if ($offset > 0) $nrows += $offset;
 				//$inputarr['adodb_rownum'] = $nrows;
@@ -748,7 +754,6 @@ NATSOFT.DOMAIN =
 		}
 		if ($inputarr) {
 			#if (!is_array($inputarr)) $inputarr = array($inputarr);
-			
 			$element0 = reset($inputarr);
 			
 			# is_object check because oci8 descriptors can be passed in
@@ -1290,19 +1295,26 @@ class ADORecordset_oci8 extends ADORecordSet {
 			  fields in a certain query result. If the field offset isn't specified, the next field that wasn't yet retrieved by
 			  fetchField() is retrieved.		*/
 
-	function &_FetchField($fieldOffset = -1)
+	function _FetchField($fieldOffset = -1)
 	{
 		$fld = new ADOFieldObject;
 		$fieldOffset += 1;
 		$fld->name =OCIcolumnname($this->_queryID, $fieldOffset);
 		$fld->type = OCIcolumntype($this->_queryID, $fieldOffset);
 		$fld->max_length = OCIcolumnsize($this->_queryID, $fieldOffset);
-	 	if ($fld->type == 'NUMBER') {
+	 	switch($fld->type) {
+		case 'NUMBER':
 	 		$p = OCIColumnPrecision($this->_queryID, $fieldOffset);
 			$sc = OCIColumnScale($this->_queryID, $fieldOffset);
 			if ($p != 0 && $sc == 0) $fld->type = 'INT';
-			//echo " $this->name ($p.$sc) ";
-	 	}
+			break;
+		
+	 	case 'CLOB':
+		case 'NCLOB':
+		case 'BLOB': 
+			$fld->max_length = -1;
+			break;
+		}
 		return $fld;
 	}
 	

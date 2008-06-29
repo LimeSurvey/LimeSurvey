@@ -1,7 +1,7 @@
 <?php
 
 /**
-  V4.97 22 Jan 2008  (c) 2000-2008 John Lim (jlim#natsoft.com.my). All rights reserved.
+  V4.98 13 Feb 2008  (c) 2000-2008 John Lim (jlim#natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence.
@@ -225,11 +225,11 @@ class ADODB2_postgres extends ADODB_DataDict {
 	   }
 	
 	   // does not have alter column
-		if (!$tableflds) {
-			if ($this->debug) ADOConnection::outp("AlterColumnSQL needs a complete table-definiton for PostgreSQL");
-			return array();
-		}
-		return $this->_recreate_copy_table($tabname,False,$tableflds,$tableoptions);
+	   if (!$tableflds) {
+	      if ($this->debug) ADOConnection::outp("AlterColumnSQL needs a complete table-definiton for PostgreSQL");
+	      return array();
+	   }
+	   return $this->_recreate_copy_table($tabname,False,$tableflds,$tableoptions);
 	}
 	
 	/**

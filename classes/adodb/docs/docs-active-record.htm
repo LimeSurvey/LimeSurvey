@@ -14,7 +14,7 @@ font-family: Arial, Helvetica, sans-serif ;
 <title>ADOdb Active Record</title>
 <body>
 <h1>ADOdb Active Record</h1>
-<p> (c) 2000-2007 John Lim (jlim#natsoft.com)</p>
+<p> (c) 2000-2008 John Lim (jlim#natsoft.com)</p>
 <p><font size="1">This software is dual licensed using BSD-Style and LGPL. This 
   means you can use it in compiled proprietary and commercial products.</font></p>
 <p><hr>
@@ -501,6 +501,14 @@ echo "&lt;p>Name first (should be John): ",$person->name_first, "&lt;br>Class = 
  <p>PHP5 specific: Change PHP5 implementation of Active Record to use __get() and __set() for better performance.
 
 <h3> Change Log</h3>
+<p>0.09
+<p>In ADOdb5, active record implementation, we now support column names with spaces in them - we autoconvert the spaces to _ using
+ __set(). Thx Daniel Cook. http://phplens.com/lens/lensforum/msgs.php?id=17200
+ <p>Fixed support for $ADODB_ASSOC_CASE problems.
+ 
+<p>0.08
+Added support for assoc arrays in Set().
+
 <p>0.07
 <p>$ADODB_ASSOC_CASE=2 did not work properly. Fixed.
 <p>Added === check in ADODB_SetDatabaseAdapter for $db, adodb-active-record.inc.php. Thx Christian Affolter.
