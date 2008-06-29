@@ -1,6 +1,56 @@
+/*******************************************************************
+* The http://phpmailer.codeworxtech.com/ website now carries a few *
+* advertisements through the Google Adsense network. Please visit  *
+* the advertiser sites and help us offset some of our costs.       *
+* Thanks ....                                                      *
+********************************************************************/
+
 PHPMailer
 Full Featured Email Transfer Class for PHP
 ==========================================
+
+Version 2.0.2 (June 04 2008)
+
+With this release, we are announcing that the development of PHPMailer for PHP5
+will be our focus from this date on. We have implemented all the enhancements
+and fixes from the sourceforge.net Tracker.
+
+** NOTE: WE HAVE A NEW LANGUAGE VARIABLE FOR DIGITALLY SIGNED S/MIME EMAILS.
+   IF YOU CAN HELP WITH LANGUAGES OTHER THAN ENGLISH AND SPANISH, IT WOULD BE
+   APPRECIATED.
+
+We have now added S/MIME functionality (ability to digitally sign emails).
+BIG THANKS TO "sergiocambra" for posting this patch back in November 2007.
+The "Signed Emails" functionality adds the Sign method to pass the private key
+filename and the password to read it, and then email will be sent with
+content-type multipart/signed and with the digital signature attached.
+
+We have also included more example files to show the use of "sendmail", "mail()",
+"smtp", and "gmail".
+
+We are also looking for more programmers to join the volunteer development team.
+If you have an interest in this, please let us know.
+
+Enjoy!
+
+** NOTE:
+
+As of November 2007, PHPMailer has a new project team headed by industry
+veteran Andy Prevost (codeworxtech). The first release in more than two
+years will focus on fixes, adding ease-of-use enhancements, provide
+basic compatibility with PHP4 and PHP5 using PHP5 backwards compatibility
+features. A new release is planned before year-end 2007 that will provide
+full compatiblity with PHP4 and PHP5, as well as more bug fixes.
+
+We are looking for project developers to assist in restoring PHPMailer to
+its leadership position. Our goals are to simplify use of PHPMailer, provide
+good documentation and examples, and retain backward compatibility to level
+1.7.3 standards.
+
+If you are interested in helping out, visit http://sourceforge.net/phpmailer
+and indicate your interest.
+
+**
 
 http://phpmailer.sourceforge.net/
 
@@ -39,14 +89,14 @@ Installation:
 
 Copy class.phpmailer.php into your php.ini include_path. If you are
 using the SMTP mailer then place class.smtp.php in your path as well.
-In the language directory you will find several files like 
-phpmailer.lang-en.php.  If you look right before the .php extension 
-that there are two letters.  These represent the language type of the 
-translation file.  For instance "en" is the English file and "br" is 
-the Portuguese file.  Chose the file that best fits with your language 
-and place it in the PHP include path.  If your language is English 
-then you have nothing more to do.  If it is a different language then 
-you must point PHPMailer to the correct translation.  To do this, call 
+In the language directory you will find several files like
+phpmailer.lang-en.php.  If you look right before the .php extension
+that there are two letters.  These represent the language type of the
+translation file.  For instance "en" is the English file and "br" is
+the Portuguese file.  Chose the file that best fits with your language
+and place it in the PHP include path.  If your language is English
+then you have nothing more to do.  If it is a different language then
+you must point PHPMailer to the correct translation.  To do this, call
 the PHPMailer SetLanguage method like so:
 
 // To load the Portuguese version
@@ -99,4 +149,4 @@ See ChangeLog.txt
 
 Download: http://sourceforge.net/project/showfiles.php?group_id=26031
 
-Brent R. Matzelle
+Andy Prevost

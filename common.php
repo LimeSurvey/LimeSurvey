@@ -2933,7 +2933,10 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
         $mail->SetLanguage('en',$rootdir.'/classes/phpmailer/language/');
     }
 	$mail->CharSet = "UTF-8";
-	if (isset($emailsmtpssl) && $emailsmtpssl==1) {$mail->Protocol = "ssl";}
+	if (isset($emailsmtpssl) && trim($emailsmtpssl)!=='' && $emailsmtpssl!=0) {
+        if ($emailsmtpssl==1) {$mail->SMTPSecure = "ssl";}
+    	 else {$mail->SMTPSecure = $emailsmtpssl;}
+	 }
 
 	$fromname='';
 	$fromemail=$from;
