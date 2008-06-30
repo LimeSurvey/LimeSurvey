@@ -302,5 +302,5 @@ $pdforientation = 'P';                     // Set L for Landscape or P for portr
 // Usually same as $rooturl without http://{$_SERVER['HTTP_HOST']}.
 // $relativeurl  is now automatically computed from $rooturl
 $parsedurl = parse_url($rooturl);
-$relativeurl= $parsedurl['path'];
+$relativeurl= isset($parsedurl['path']) ? $parsedurl['path'] : "";
 ?>
