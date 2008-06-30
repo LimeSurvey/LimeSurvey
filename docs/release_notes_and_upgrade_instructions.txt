@@ -73,6 +73,32 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.71(+)
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.71+ Build 5146 to 5203 -  Legend:   + = New  # = Changed  - = Fix
+
++ PDF Orientation can be changed in config-defaults.php (stfreud)
++ Updated PHPMailer to version 2.02 - ssl/tls is now possible (previously only tls) (c_schmitz)
+# Removed style code from source and placed it into CSS file (c_schmitz)
+# added .questiontext to all templates (addendum to rev. 5149) (el-matador-69)
+# Updated Persian translation by Hooman Mesgary (c_schmitz)
+# Applied changes to originals texts for better i18n compatibility by Hooman Mesgary (c_schmitz)
+# Removed obsolete label tag (c_schmitz)
+# French language updated (b00z00)
+# Add a warning when "Token Persistence" is set at the same time as "Anonymous answers"
+# Updated German Translation (c_schmitz)
+# Spanish language updated (kadejo)
+# Updated configs for faster parsing (c_schmitz)
+# Upgraded adodb to 4.98 (c_schmitz)
+# Rewrote commandline installation for better security and merged into one file
+- Fixed a W3C issues with javascript (c_schmitz)
+- Fixed bug #02187: INSERTANS not working for "Other" of List (Flexible Label) (jcleeland)
+- Fixed bug #2124: white characters in tokens are accepted in non-anonymous surveys (c_schmitz)
+- Fixed #2083: deletenonanswers now working for question-per-page and group-per-page surveys (lemeur)
+- Fixing two small notices when trying to import an invalid survey file (c_schmitz)
+- Fixed Bug 02215 & 02118 HMTL Code deleted in pdf-export (stfreud)
+- Fixed #1957: Unable to use other than a-zA-Z0-9 in name from ldap (lemeur)
+- Fixed #2097: Path Error was thrown in config.php when installing in root dir (c_schmitz)
+
+
 Changes from 1.71+ Build 5048 to 5146 -  Legend:   + = New  # = Changed  - = Fix
 
 #Raised LimeSurvey requirement to at least PHP 4.3.2 installed (c_schmitz)
