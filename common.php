@@ -63,7 +63,7 @@ require_once ($rootdir.'/classes/core/sanitize.php');
 $dbprefix=strtolower($dbprefix);
 define("_PHPVERSION", phpversion());
 
-if($_SERVER['SERVER_SOFTWARE'] == "Xitami") //Deal with Xitami Issue
+if(isset($_SERVER['SERVER_SOFTWARE']) && $_SERVER['SERVER_SOFTWARE'] == "Xitami") //Deal with Xitami Issue
 {
 	$_SERVER['PHP_SELF'] = substr($_SERVER['SERVER_URL'], 0, -1) .$_SERVER['SCRIPT_NAME'];
 }
