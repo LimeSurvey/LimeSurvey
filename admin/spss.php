@@ -30,43 +30,42 @@
 * Optimization opportunities remain in the VALUE LABELS section, which runs a query / column
 */
 
-$length_data = "255"; // Set the max text length of Text Data
-$length_varlabel = "255"; // Set the max text length of Variable Labels
-$length_vallabel = "255"; // Set the max text length of Value Labels
-$headerComment = "";
-$tempFile = "";
+$length_data = '255'; // Set the max text length of Text Data
+$length_varlabel = '255'; // Set the max text length of Variable Labels
+$length_vallabel = '255'; // Set the max text length of Value Labels
+$headerComment = '';
+$tempFile = '';
 
-include_once("login_check.php");
-error_reporting(E_ALL ^ E_NOTICE); // No Notices!
+include_once('login_check.php');
 
 $typeMap = array(
-"5"=>Array("name"=>"5 Point Choice","size"=>1,"SPSStype"=>"A"),
-"B"=>Array("name"=>"Array (10 Point Choice)","size"=>1,"SPSStype"=>"A"),
-"A"=>Array("name"=>"Array (5 Point Choice)","size"=>1,"SPSStype"=>"A"),
-"F"=>Array("name"=>"Array (Flexible Labels)","size"=>1,"SPSStype"=>"A"),
-"1"=>Array("name"=>"Array (Flexible Labels) Dual Scale","size"=>1,"SPSStype"=>"A"),
-"H"=>Array("name"=>"Array (Flexible Labels) by Column","size"=>1,"SPSStype"=>"A"),
-"E"=>Array("name"=>"Array (Increase, Same, Decrease)","size"=>1,"SPSStype"=>"N"),
-"C"=>Array("name"=>"Array (Yes/No/Uncertain)","size"=>1,"SPSStype"=>"N"),
-"X"=>Array("name"=>"Boilerplate Question","size"=>1,"SPSStype"=>"A"),
-"D"=>Array("name"=>"Date","size"=>null,"SPSStype"=>"DATETIME20.0"),
-"G"=>Array("name"=>"Gender","size"=>1,"SPSStype"=>"N"),
-"U"=>Array("name"=>"Huge Free Text","size"=>1,"SPSStype"=>"A"),
-"I"=>Array("name"=>"Language Switch","size"=>1,"SPSStype"=>"A"),
-"!"=>Array("name"=>"List (Dropdown)","size"=>1,"SPSStype"=>"A"),
-"W"=>Array("name"=>"List (Flexible Labels) (Dropdown)","size"=>1,"SPSStype"=>"A"),
-"Z"=>Array("name"=>"List (Flexible Labels) (Radio)","size"=>1,"SPSStype"=>"A"),
-"L"=>Array("name"=>"List (Radio)","size"=>1,"SPSStype"=>"A"),
-"O"=>Array("name"=>"List With Comment","size"=>1,"SPSStype"=>"A"),
-"T"=>Array("name"=>"Long free text","size"=>1,"SPSStype"=>"A"),
-"K"=>Array("name"=>"Multiple Numerical Input","size"=>1,"SPSStype"=>"N"),
-"M"=>Array("name"=>"Multiple Options","size"=>1,"SPSStype"=>"N"),
-"P"=>Array("name"=>"Multiple Options With Comments","size"=>1,"SPSStype"=>"A"),
-"Q"=>Array("name"=>"Multiple Short Text","size"=>1,"SPSStype"=>"A"),
-"N"=>Array("name"=>"Numerical Input","size"=>3,"SPSStype"=>"N"),
-"R"=>Array("name"=>"Ranking","size"=>1,"SPSStype"=>"A"),
-"S"=>Array("name"=>"Short free text","size"=>1,"SPSStype"=>"A"),
-"Y"=>Array("name"=>"Yes/No","size"=>1,"SPSStype"=>"N"),
+'5'=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'A'),
+'B'=>Array('name'=>'Array (10 Point Choice)','size'=>1,'SPSStype'=>'A'),
+'A'=>Array('name'=>'Array (5 Point Choice)','size'=>1,'SPSStype'=>'A'),
+'F'=>Array('name'=>'Array (Flexible Labels)','size'=>1,'SPSStype'=>'A'),
+'1'=>Array('name'=>'Array (Flexible Labels) Dual Scale','size'=>1,'SPSStype'=>'A'),
+'H'=>Array('name'=>'Array (Flexible Labels) by Column','size'=>1,'SPSStype'=>'A'),
+'E'=>Array('name'=>'Array (Increase, Same, Decrease)','size'=>1,'SPSStype'=>'N'),
+'C'=>Array('name'=>'Array (Yes/No/Uncertain)','size'=>1,'SPSStype'=>'N'),
+'X'=>Array('name'=>'Boilerplate Question','size'=>1,'SPSStype'=>'A'),
+'D'=>Array('name'=>'Date','size'=>null,'SPSStype'=>'DATETIME20.0'),
+'G'=>Array('name'=>'Gender','size'=>1,'SPSStype'=>'N'),
+'U'=>Array('name'=>'Huge Free Text','size'=>1,'SPSStype'=>'A'),
+'I'=>Array('name'=>'Language Switch','size'=>1,'SPSStype'=>'A'),
+'!'=>Array('name'=>'List (Dropdown)','size'=>1,'SPSStype'=>'A'),
+'W'=>Array('name'=>'List (Flexible Labels) (Dropdown)','size'=>1,'SPSStype'=>'A'),
+'Z'=>Array('name'=>'List (Flexible Labels) (Radio)','size'=>1,'SPSStype'=>'A'),
+'L'=>Array('name'=>'List (Radio)','size'=>1,'SPSStype'=>'A'),
+'O'=>Array('name'=>'List With Comment','size'=>1,'SPSStype'=>'A'),
+'T'=>Array('name'=>'Long free text','size'=>1,'SPSStype'=>'A'),
+'K'=>Array('name'=>'Multiple Numerical Input','size'=>1,'SPSStype'=>'N'),
+'M'=>Array('name'=>'Multiple Options','size'=>1,'SPSStype'=>'N'),
+'P'=>Array('name'=>'Multiple Options With Comments','size'=>1,'SPSStype'=>'A'),
+'Q'=>Array('name'=>'Multiple Short Text','size'=>1,'SPSStype'=>'A'),
+'N'=>Array('name'=>'Numerical Input','size'=>3,'SPSStype'=>'N'),
+'R'=>Array('name'=>'Ranking','size'=>1,'SPSStype'=>'A'),
+'S'=>Array('name'=>'Short free text','size'=>1,'SPSStype'=>'A'),
+'Y'=>Array('name'=>'Yes/No','size'=>1,'SPSStype'=>'N'),
 );
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
@@ -80,8 +79,8 @@ function renderDataList($fieldArr){
 	$i=0;
 	foreach ($fieldArr as $field){
 		if ($i % 20 == 0) echo "- RECORD TYPE '".chr(65+intval($i/20))."'.\n- DATA LIST LIST / i".intval($i/20)."(A1)";
-		if($field["SPSStype"] == "DATETIME20.0") $field["size"]=null;
-		echo " {$field["id"]}({$field["SPSStype"]}{$field["size"]})";
+		if($field['SPSStype'] == 'DATETIME20.0') $field['size']=null;
+		echo " {$field['id']}({$field['SPSStype']}{$field['size']})";
 		$i++;
 		//if ($i % 25 == 0) echo "\n   /";
 		if ($i % 20 == 0) echo ".\n\n";
@@ -124,10 +123,9 @@ function closeTmpFile($fp){
 }
 
 
-mb_http_output("UTF-8");
 
 header("Content-Type: application/download; charset=utf-8");
-header("Content-Disposition: attachment; filename=survey_".$surveyid.".sps");
+header("Content-Disposition: attachment; filename=survey_".$surveyid."_SPSS_syntax_file.sps");
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
@@ -214,49 +212,53 @@ for ($i=0; $i < $num_results; $i++) {
 	//echo $fieldname." - ";
 	
 	#Determine field type
-	if ($fieldname=="submitdate" || $fieldname=="startdate" || $fieldname == "datestamp") {
-		$fieldtype = "DATETIME20.0";
-		$ftype = "DATETIME";
-	} elseif ($fieldname=="startlanguage") {
-		$fieldtype = "A";
+	if ($fieldname=='submitdate' || $fieldname=='startdate' || $fieldname == 'datestamp') {
+		$fieldtype = 'DATETIME20.0';
+		$ftype = 'DATETIME';
+	} elseif ($fieldname=='startlanguage') {
+		$fieldtype = 'A';
 		$val_size = 19;
-	} elseif ($fieldname=="token") {
-		$fieldtype = "N";
-		$ftype = "VARCHAR";
+	} elseif ($fieldname=='token') {
+		$fieldtype = 'N';
+		$ftype = 'VARCHAR';
 		$val_size = 16;
-	} elseif ($fieldname=="id") {
-		$fieldtype = "N"; 
+	} elseif ($fieldname=='id') {
+		$fieldtype = 'N'; 
+        $ftype = 'ID'; 
 		$val_size = 7; //Arbitrarilty restrict to 9,999,999 (7 digits) responses/survey
-	} elseif ($fieldname == "ipaddr") {
-		$fieldtype = "A";
-		$val_size = "15";
-	} elseif ($fieldname == "refurl") {
-		$fieldtype = "A";
+	} elseif ($fieldname == 'ipaddr') {
+		$fieldtype = 'A';
+        $ftype = 'IP'; 
+		$val_size = '15';
+	} elseif ($fieldname == 'refurl') {
+		$fieldtype = 'A';
+        $ftype = 'REFURL'; 
 		$val_size = 255;
 	}
 	
 	#Get qid (question id)
-	$code="";
-	$noQID = Array("id", "token", "stamp", "submitdate", "startdate", "attribute_1", "attribute_2", "startlanguage", "ipaddr", "refurl");
+	$code='';
+	$noQID = Array('id', 'token', 'stamp', 'submitdate', 'startdate', 'attribute_1', 'attribute_2', 'startlanguage', 'ipaddr', 'refurl');
 	if (in_array($fieldname, $noQID)){
 		$qid = 0;
 	} else{
 		//GET FIELD DATA
-		$fielddata=arraySearchByKey($fieldname, $fieldmap, "fieldname", 1);
+		$fielddata=arraySearchByKey($fieldname, $fieldmap, 'fieldname', 1);
 		$qid=$fielddata['qid'];
 		$ftype=$fielddata['type'];
 		$fsid=$fielddata['sid'];
 		$fgid=$fielddata['gid'];
 		$code=$fielddata['aid'];
-		if($fieldtype == "") $fieldtype = $typeMap[$ftype]["SPSStype"];
+		if($fieldtype == '') $fieldtype = $typeMap[$ftype]['SPSStype'];
 	}
+    
 	$tempArray = array($fieldno++ =>array("id"=>"d".$fieldno,
 			"name"=>mb_substr($fieldname, 0, 8),
 			"qid"=>$qid, "code"=>$code,"SPSStype"=>$fieldtype,
-			"LStype"=>"$ftype","LSlong"=>$typeMap[$ftype]["name"],"ValueLabels"=>"",
-			"VariableLabel"=>"","sql_name"=>$row["Field"],"size"=>$val_size));
-	$fields = $fields + $tempArray;
-}
+			"LStype"=>"$ftype","LSlong"=>isset($typeMap[$ftype]["name"])?$typeMap[$ftype]["name"]:$ftype,"ValueLabels"=>"",
+			"VariableLabel"=>"","sql_name"=>$fieldname,"size"=>$val_size));
+	    $fields = $fields + $tempArray;
+    }
 //print_r($fields);
 //reset($fields);
 
@@ -292,14 +294,14 @@ EXECUTE.
  * Code that prints out the actual data
  * Refactoring this into a function is impractical at this point, as it relies heavily on global variables.
  */
-if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
+if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == 'N') {
 	$query="SELECT {$dbprefix}tokens_$surveyid.firstname   ,
 	       {$dbprefix}tokens_$surveyid.lastname    ,
 	       {$dbprefix}tokens_$surveyid.email";
-	if (in_array("attribute_1", $token_fields)) {
+	if (in_array('attribute_1', $token_fields)) {
 		$query .= ",\n		{$dbprefix}tokens_$surveyid.attribute_1";
 	}
-	if (in_array("attribute_2", $token_fields)) {
+	if (in_array('attribute_2', $token_fields)) {
 		$query .= ",\n		{$dbprefix}tokens_$surveyid.attribute_2";
 	}
 	$query .= ",\n	       {$dbprefix}survey_$surveyid.*
@@ -314,7 +316,7 @@ if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
 	FROM {$dbprefix}survey_$surveyid";
 	if (incompleteAnsFilterstate() === true)
 	{
-		$query .= " WHERE submitdate is not null ";
+		$query .= ' WHERE submitdate is not null ';
 	}
 }
 
@@ -330,93 +332,99 @@ for ($i=0; $i < $num_results; $i++) {
 	$fieldno = 0;
 	while ($fieldno < $num_fields)
 	{
-		//echo " field: ".$fields[$fieldno]["id"]." id : ".$fields[$fieldno]["qid"]." val:".$row[$fieldno]."-type: ".$fields[$fieldno]["type"]." |<br> ";
-		if ($fieldno % 20 == 0) @fwrite($fp, chr(65+intval($fieldno/20))." ");
+		//echo " field: ".$fields[$fieldno]["id"]." id : ".$fields[$fieldno]["qid"]." val:".$row[$fieldno]."-type: ".$fields[$fieldno]['type']." |<br> ";
+		if ($fieldno % 20 == 0) @fwrite($fp, chr(65+intval($fieldno/20)).' ');
 		//if ($i==0) { echo "Field: $fieldno - Dati: ";var_dump($fields[$fieldno]);echo "\n"; }
-		if ($fields[$fieldno]["SPSStype"]=="DATETIME20.0"){
+		if ($fields[$fieldno]['SPSStype']=='DATETIME20.0'){
 			#convert mysql  datestamp (yyyy-mm-dd hh:mm:ss) to SPSS datetime (dd-mmm-yyyy hh:mm:ss) format
-			list( $year, $month, $day, $hour, $minute, $second ) = split( '([^0-9])', $row[$fieldno] );
-			if ($year != "" && (int)$year >= 1970) 
-			{
-				@fwrite($fp, "'".date("d-m-Y H:i:s", mktime( $hour, $minute, $second, $month, $day, $year ) )."' ");
-			} else 
-			{
-				@fwrite($fp,  "''");
-			}
-		} else if ($fields[$fieldno]["LStype"] == "Y") 
+            if (isset($row[$fieldno]))
+            {
+			    list( $year, $month, $day, $hour, $minute, $second ) = split( '([^0-9])', $row[$fieldno] );
+			    if ($year != '' && (int)$year >= 1970) 
+			    {
+				    @fwrite($fp, "'".date('d-m-Y H:i:s', mktime( $hour, $minute, $second, $month, $day, $year ) )."' ");
+			    } else 
+			    {
+				    @fwrite($fp,  "''");
+			    }
+            }  else 
+                {
+                    @fwrite($fp,  "''");
+                }
+		} else if ($fields[$fieldno]['LStype'] == 'Y') 
 		{
-			if ($row[$fieldno] == "Y")
+			if ($row[$fieldno] == 'Y')
 			{
 				@fwrite($fp, "'1' ");
-			} else if ($row[$fieldno] == "N"){
+			} else if ($row[$fieldno] == 'N'){
 				@fwrite($fp, "'2' ");
 			} else {
 				@fwrite($fp, "'0' ");
 			}
-		} else if ($fields[$fieldno]["LStype"] == "G") 
+		} else if ($fields[$fieldno]['LStype'] == 'G') 
 		{
-			if ($row[$fieldno] == "F")
+			if ($row[$fieldno] == 'F')
 			{
 				@fwrite($fp, "'1' ");
-			} else if ($row[$fieldno] == "M"){
+			} else if ($row[$fieldno] == 'M'){
 				@fwrite($fp, "'2' ");
 			} else {
 				@fwrite($fp, "'0' ");
 			}
-		} else if ($fields[$fieldno]["LStype"] == "C") 
+		} else if ($fields[$fieldno]['LStype'] == 'C') 
 		{
-			if ($row[$fieldno] == "Y")
+			if ($row[$fieldno] == 'Y')
 			{
 				@fwrite($fp, "'1' ");
-			} else if ($row[$fieldno] == "N"){
+			} else if ($row[$fieldno] == 'N'){
 				@fwrite($fp, "'2' ");
-			} else if ($row[$fieldno] == "U"){
+			} else if ($row[$fieldno] == 'U'){
 				@fwrite($fp, "'3' ");
 			} else {
 				@fwrite($fp, "'0' ");
 			}
-		} else if ($fields[$fieldno]["LStype"] == "E") 
+		} else if ($fields[$fieldno]['LStype'] == 'E') 
 		{
-			if ($row[$fieldno] == "I")
+			if ($row[$fieldno] == 'I')
 			{
 				@fwrite($fp, "'1' ");
-			} else if ($row[$fieldno] == "S"){
+			} else if ($row[$fieldno] == 'S'){
 				@fwrite($fp, "'2' ");
-			} else if ($row[$fieldno] == "D"){
+			} else if ($row[$fieldno] == 'D'){
 				@fwrite($fp, "'3' ");
 			} else {
 				@fwrite($fp, "'0' ");
 			}
-		} else if ($fields[$fieldno]["LStype"] == "M") 
+		} else if ($fields[$fieldno]['LStype'] == 'M') 
 		{
-			if ($fields[$fieldno]["code"] == "other")
+			if ($fields[$fieldno]['code'] == 'other')
 			{
 				$strTmp = strip_tags_full($row[$fieldno]);
 				$len = @fwrite($fp, "'$strTmp' ") - 3; //Don't count the quotes
 				//echo "On fields[$fieldno] wrote $len bytes current:{$fields[$fieldno]["size"]} ($strTmp)\n";
-				if($len > $fields[$fieldno]["size"]){
-					$fields[$fieldno]["size"] = $len;
+				if($len > $fields[$fieldno]['size']){
+					$fields[$fieldno]['size'] = $len;
 					//echo "max length changed\n";
 				}
-			} else if ($row[$fieldno] == "Y")
+			} else if ($row[$fieldno] == 'Y')
 			{
 				@fwrite($fp, "'1' ");
 			} else
 			{
 			   @fwrite($fp, "'0' ");
 			}
-		} else if ($fields[$fieldno]["LStype"] == "P") 
+		} else if ($fields[$fieldno]['LStype'] == 'P') 
 		{
-			if ($fields[$fieldno]["code"] == "other" || $fields[$fieldno]["code"] == "comment" || $fields[$fieldno]["code"] == "othercomment")
+			if ($fields[$fieldno]['code'] == 'other' || $fields[$fieldno]['code'] == 'comment' || $fields[$fieldno]['code'] == 'othercomment')
 			{
 				$strTmp = strip_tags_full($row[$fieldno]);
 				$len = @fwrite($fp, "'$strTmp' ") - 3; //Don't count the quotes
 				//echo "On fields[$fieldno] wrote $len bytes current:{$fields[$fieldno]["size"]} ($strTmp)\n";
-				if($len > $fields[$fieldno]["size"]){
-					$fields[$fieldno]["size"] = $len;
+				if($len > $fields[$fieldno]['size']){
+					$fields[$fieldno]['size'] = $len;
 					//echo "max length changed\n";
 				}
-			} else if ($row[$fieldno] == "Y")
+			} else if ($row[$fieldno] == 'Y')
 			{
 				@fwrite($fp, "'1' ");
 			} else
@@ -427,21 +435,20 @@ for ($i=0; $i < $num_results; $i++) {
 			$strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
 			$len = strlen($strTmp);
 	
-			if($len > $fields[$fieldno]["size"]){
-				$fields[$fieldno]["size"] = $len;
+			if($len > $fields[$fieldno]['size']){
+				$fields[$fieldno]['size'] = $len;
 				//echo "max length changed\n";
 			}
 
-			if($len > $fields[$fieldno]["size"]) $fields[$fieldno]["size"] = $len;
+			if($len > $fields[$fieldno]['size']) $fields[$fieldno]['size'] = $len;
 
-			if (mb_ereg_replace(" ", '', $strTmp) == ""){
-				@fwrite($fp, "'0'");
+			if (trim($strTmp) == ''){
+				fwrite($fp, "'0'");
 			}
 			else {
-				$len = @fwrite($fp, "'$strTmp' ") - 3; //Don't count the quotes
-				//echo "On fields[$fieldno] wrote $len bytes current:{$fields[$fieldno]["size"]} ($strTmp)\n";
-				if($len > $fields[$fieldno]["size"]){
-					$fields[$fieldno]["size"] = $len;
+				$len = fwrite($fp, '\''.$strTmp.'\'') - 3; //Don't count the quotes
+				if($len > $fields[$fieldno]['size']){
+					$fields[$fieldno]['size'] = $len;
 					//echo "max length changed\n";
 				}
 			}
@@ -477,23 +484,23 @@ if($fp){
 
 echo "*Define Variable Properties.\n";//minni"<br />";
 foreach ($fields as $field){
-	if (	$field["id"] == "fname" OR
-	$field["id"]=="lname" OR
-	$field["id"]=="email" OR
-	$field["id"]=="attr1" OR
-	$field["id"]=="attr2"){
-		echo "VARIABLE LABELS ".$field["id"]." '".mb_substr(strip_tags_full($field["name"]), 0, $length_varlabel)."'.\n";//minni"<br />";
-	} elseif ($field["name"]=="id") {
-		echo "VARIABLE LABELS ".$field["id"]." '".$clang->gT("Record ID")."'.\n";//minni"<br />";
-	} elseif ($field["name"]=="submitda") {
-		echo "VARIABLE LABELS ".$field["id"]." '".$clang->gT("Completion Date")."'.\n";//minni"<br />";
-	} elseif ($field["name"]=="startlan") {
-		echo "VARIABLE LABELS ".$field["id"]." '".$clang->gT("Start Language")."'.\n";//minni"<br />";
-	} elseif ($field["name"]=="token") {
-		echo "VARIABLE LABELS ".$field["id"]." '".$clang->gT("Token")."'.\n";
+	if (	$field['id'] == 'fname' OR
+	$field['id']=='lname' OR
+	$field['id']=='email' OR
+	$field['id']=='attr1' OR
+	$field['id']=='attr2'){
+		echo "VARIABLE LABELS ".$field['id']." '".mb_substr(strip_tags_full($field['name']), 0, $length_varlabel)."'.\n";//minni"<br />";
+	} elseif ($field['name']=='id') {
+		echo "VARIABLE LABELS ".$field["id"]." '".$clang->gT('Record ID')."'.\n";//minni"<br />";
+	} elseif ($field['name']=='submitda') {
+		echo 'VARIABLE LABELS '.$field['id']." '".$clang->gT('Completion Date')."'.\n";//minni"<br />";
+	} elseif ($field['name']=='startlan') {
+		echo 'VARIABLE LABELS '.$field['id']." '".$clang->gT('Start Language')."'.\n";//minni"<br />";
+	} elseif ($field['name']=='token') {
+		echo 'VARIABLE LABELS '.$field['id']." '".$clang->gT('Token')."'.\n";
 	}else{
 		#If a split question
-		if ($field["code"] != ""){
+		if ($field['code'] != ''){
 			#Lookup the question
 
 			$query = "SELECT question, title 
@@ -507,8 +514,8 @@ foreach ($fields as $field){
 				# Build array that has to be returned
 				for ($i=0; $i < $num_results; $i++) {
 					$row = $result->FetchRow();
-					$question_text = $row["question"];
-					$question_title = $row["title"];
+					$question_text = $row['question'];
+					$question_title = $row['title'];
 				}
 			}
 			#Lookup the answer
@@ -521,7 +528,7 @@ foreach ($fields as $field){
 				# Build array that has to be returned
 				for ($i=0; $i < $num_results; $i++) {
 					$row = $result->FetchRow();
-					echo "VARIABLE LABELS ".$field["id"]." '".mb_substr(strip_tags_full($question_title), 0, $length_varlabel)." - ".mb_substr(strip_tags_full($row["answer"]), 0, $length_varlabel)."'.\n";//minni"<br />";
+					echo "VARIABLE LABELS ".$field['id']." '".mb_substr(strip_tags_full($question_title), 0, $length_varlabel)." - ".mb_substr(strip_tags_full($row['answer']), 0, $length_varlabel)."'.\n";//minni"<br />";
 				}
 			}
 			if (mb_substr($field['sql_name'], -5)=='other') {
@@ -529,17 +536,17 @@ foreach ($fields as $field){
 				mb_substr(strip_tags_full($question_text), 0, $length_varlabel-8)." - OTHER'.\n";
 			}
 			if (mb_substr($field['sql_name'], -7)=='comment') {
-				echo "VARIABLE LABELS ".$field["id"]." '".
+				echo "VARIABLE LABELS ".$field['id']." '".
 				mb_substr(strip_tags_full($question_text), 0, $length_varlabel-10)." - COMMENT'.\n";
 			}
 		}else{
-			$test=explode ("X", $field["name"]);
+			$test=explode ("X", $field['name']);
 			$query = "SELECT question FROM {$dbprefix}questions 
 			WHERE sid ='".$surveyid."' AND language='".$language."' 
-			AND qid='".$field["qid"]."'";
+			AND qid='".$field['qid']."'";
 			$result=db_execute_assoc($query) or safe_die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg()); //Checked
 			$row = $result->FetchRow();
-			echo "VARIABLE LABELS ".$field["id"]." '".
+			echo "VARIABLE LABELS ".$field['id']." '".
 			mb_substr(strip_tags_full($row["question"]), 0, $length_varlabel)."'.\n";
 		}
 	}
@@ -550,14 +557,14 @@ echo "*Define Value labels.\n";
 reset($fields);
 foreach ($fields as $field)
 {
-	if ($field["qid"]!=0)
+	if ($field['qid']!=0)
 	{
-		if ($field['LStype'] != "T" && $field['LStype'] != "S" && $field['LStype'] != "Q" && $field['LStype'] != "U" && $field['LStype'] != "A" && $field['LStype'] != "B" && $field['LStype'] != "F" && $field['LStype'] != "M" && $field['LStype'] != "P" && $field['LStype'] != "C" && $field['LStype'] != "E")
+		if ($field['LStype'] != 'T' && $field['LStype'] != 'S' && $field['LStype'] != 'Q' && $field['LStype'] != 'U' && $field['LStype'] != 'A' && $field['LStype'] != 'B' && $field['LStype'] != 'F' && $field['LStype'] != 'M' && $field['LStype'] != 'P' && $field['LStype'] != 'C' && $field['LStype'] != 'E')
 		{
 			$query = "SELECT {$dbprefix}answers.code, {$dbprefix}answers.answer, 
 			{$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE 
 			{$dbprefix}answers.qid = '".$field["qid"]."' and {$dbprefix}questions.language='".$language."' and  {$dbprefix}answers.language='".$language."'
-			and {$dbprefix}questions.qid='".$field["qid"]."'";
+			and {$dbprefix}questions.qid='".$field['qid']."'";
 			$result=db_execute_assoc($query) or safe_die("Couldn't lookup value labels<br />$query<br />".$connect->ErrorMsg()); //Checked
 			$num_results = $result->RecordCount();
 			if ($num_results > 0)
@@ -568,18 +575,18 @@ foreach ($fields as $field)
 				{
 					$row = $result->FetchRow();
 
-					if ($displayvaluelabel == 0) echo "VALUE LABELS ".$field["id"]."\n";
+					if ($displayvaluelabel == 0) echo 'VALUE LABELS '.$field['id']."\n";
 					if ($displayvaluelabel == 0) $displayvaluelabel = 1;
 					if ($i == ($num_results-1))
 					{
-						echo "\"" . $row["code"]."\" \"".strip_tags_full(mb_substr($row["answer"],0,$length_vallabel))."\".\n"; // put .
+						echo "\"" . $row['code']."\" \"".strip_tags_full(mb_substr($row["answer"],0,$length_vallabel))."\".\n"; // put .
 					} else {
-						echo "\"" . $row["code"]."\" \"".strip_tags_full(mb_substr($row["answer"],0,$length_vallabel))."\"\n";
+						echo "\"" . $row['code']."\" \"".strip_tags_full(mb_substr($row['answer'],0,$length_vallabel))."\"\n";
 					}
 				}
 			}
 		}
-		if ($field['LStype'] == "F" || $field['LStype'] == "W" || $field['LStype'] == "Z")
+		if ($field['LStype'] == 'F' || $field['LStype'] == 'W' || $field['LStype'] == 'Z')
 		{
 			$displayvaluelabel = 0;
 			$query = "SELECT {$dbprefix}questions.lid, {$dbprefix}labels.code, {$dbprefix}labels.title from 
@@ -593,66 +600,65 @@ foreach ($fields as $field)
 				for ($i=0; $i < $num_results; $i++)
 				{
 					$row = $result->FetchRow();
-					if ($displayvaluelabel == 0) echo "VALUE LABELS ".$field["id"]."\n";
+					if ($displayvaluelabel == 0) echo "VALUE LABELS ".$field['id']."\n";
 					if ($displayvaluelabel == 0) $displayvaluelabel = 1;
 					if ($i == ($num_results-1))
 					{
 						echo $row["code"]." \"".strip_tags_full(mb_substr($row["title"],0,$length_vallabel))."\".\n"; // put . at end
 					} else {
-						echo $row["code"]." \"".strip_tags_full(mb_substr($row["title"],0,$length_vallabel))."\"\n";
+						echo $row['code']." \"".strip_tags_full(mb_substr($row["title"],0,$length_vallabel))."\"\n";
 
 					}
 				}
 			}
 		}
-		if ($field['LStype'] == "M" && $field['code'] != "other" && $field['size'] > 0)
+		if ($field['LStype'] == 'M' && $field['code'] != 'other' && $field['size'] > 0)
 		{
-			echo "VALUE LABELS ".$field["id"]."\n";
-			echo "1 \"".$clang->gT("Yes")."\"\n";
-			echo "0 \"".$clang->gT("Not Selected")."\".\n";
+			echo "VALUE LABELS ".$field['id']."\n";
+			echo "1 \"".$clang->gT('Yes')."\"\n";
+			echo "0 \"".$clang->gT('Not Selected')."\".\n";
 		}
-		if ($field['LStype'] == "P" && $field['code'] != "other" && $field['code'] != "comment" && $field['code'] != "othercomment")
+		if ($field['LStype'] == "P" && $field['code'] != 'other' && $field['code'] != 'comment' && $field['code'] != 'othercomment')
 		{
-			echo "VALUE LABELS ".$field["id"]."\n";
+			echo "VALUE LABELS ".$field['id']."\n";
 			echo "1 \"".$clang->gT("Yes")."\"\n";
-			echo "0 \"".$clang->gT("Not Selected")."\".\n";
+			echo "0 \"".$clang->gT('Not Selected')."\".\n";
 		}
 		if ($field['LStype'] == "G" && $field['size'] > 0)
 		{
-			echo "VALUE LABELS ".$field["id"]."\n";
-			echo "1 \"".$clang->gT("Female")."\"\n";
+			echo "VALUE LABELS ".$field['id']."\n";
+			echo "1 \"".$clang->gT('Female')."\"\n";
 			echo "2 \"".$clang->gT("Male")."\".\n";
 		}
 		if ($field['LStype'] == "Y" && $field['size'] > 0)
 		{
-			echo "VALUE LABELS ".$field["id"]."\n";
-			echo "1 \"".$clang->gT("Yes")."\"\n";
+			echo "VALUE LABELS ".$field['id']."\n";
+			echo "1 \"".$clang->gT('Yes')."\"\n";
 			echo "2 \"".$clang->gT("No")."\".\n";
 		}
 		if ($field['LStype'] == "C" && $field['size'] > 0)
 		{
-			echo "VALUE LABELS ".$field["id"]."\n";
-			echo "1 \"".$clang->gT("Yes")."\"\n";
-			echo "2 \"".$clang->gT("No")."\".\n";
-			echo "3 \"".$clang->gT("Uncertain")."\".\n";
+			echo "VALUE LABELS ".$field['id']."\n";
+			echo "1 \"".$clang->gT('Yes')."\"\n";
+			echo "2 \"".$clang->gT('No')."\".\n";
+			echo "3 \"".$clang->gT('Uncertain')."\".\n";
 		}
 		if ($field['LStype'] == "E" && $field['size'] > 0)
 		{
-			echo "VALUE LABELS ".$field["id"]."\n";
-			echo "1 \"".$clang->gT("Increase")."\"\n";
-			echo "2 \"".$clang->gT("Same")."\".\n";
-			echo "3 \"".$clang->gT("Decrease")."\".\n";
+			echo "VALUE LABELS ".$field['id']."\n";
+			echo "1 \"".$clang->gT('Increase')."\"\n";
+			echo "2 \"".$clang->gT('Same')."\".\n";
+			echo "3 \"".$clang->gT('Decrease')."\".\n";
 		}
 	}
 }
 
 function strip_tags_full($string) {
 	$string=html_entity_decode_php4($string, ENT_QUOTES, "UTF-8");
-    mb_regex_encoding('utf-8');
 	//combining these into one mb_ereg_replace call ought to speed things up
-	$string = mb_ereg_replace("[\r\n]|-oth-", '', $string);
+	$string = str_replace(array("\r\n",'-oth-'), '', $string);
 	//The backslashes must be escaped twice, once for php, and again for the regexp 
-    $string = mb_ereg_replace("'|\\\\'", "&apos;", $string);
+    $string = str_replace("'|\\\\'", "&apos;", $string);
     return strip_tags($string);
 }
 
