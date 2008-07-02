@@ -199,8 +199,6 @@ if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
 	$fields=array();
 }
 
-//$fieldno=1;
-$fieldno=0;
 $tempArray = array();
 $fieldnames = array_values($connect->MetaColumnNames("{$dbprefix}survey_$surveyid", true));
 $num_results = count($fieldnames);
@@ -574,9 +572,9 @@ foreach ($fields as $field)
 					if ($displayvaluelabel == 0) $displayvaluelabel = 1;
 					if ($i == ($num_results-1))
 					{
-						echo $row["code"]." \"".strip_tags_full(mb_substr($row["answer"],0,$length_vallabel))."\".\n"; // put .
+						echo "\"" . $row["code"]."\" \"".strip_tags_full(mb_substr($row["answer"],0,$length_vallabel))."\".\n"; // put .
 					} else {
-						echo $row["code"]." \"".strip_tags_full(mb_substr($row["answer"],0,$length_vallabel))."\"\n";
+						echo "\"" . $row["code"]."\" \"".strip_tags_full(mb_substr($row["answer"],0,$length_vallabel))."\"\n";
 					}
 				}
 			}
