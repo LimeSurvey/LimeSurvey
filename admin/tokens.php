@@ -1316,11 +1316,11 @@ if ($subaction == "remind" &&
 		}	
 
         $tokenoutput .= "</div><table class='table2columns'>\n";
-		if (isset($tokenid))
+		if (!isset($tokenid))
 		{
 			$tokenoutput .= "\t<tr>\n"
 			."\t\t<td align='right' width='150' valign='top'><strong>"
-			.$clang->gT("Start at Token ID No:")."</strong></td>\n"
+			.$clang->gT("Start at Token ID:")."</strong></td>\n"
 			."\t\t<td><input type='text' size='5' name='last_tid' /></td>\n"
 			."\t</tr>\n";
 		}
@@ -1328,7 +1328,7 @@ if ($subaction == "remind" &&
 		{
 			$tokenoutput .= "\t<tr>\n"
 			."\t\t<td align='right' width='150' valign='top'><strong>"
-			.$clang->gT("Sending to Token ID").":&nbsp;</strong></font></td>\n"
+			.$clang->gT("Stop at Token ID:").":&nbsp;</strong></font></td>\n"
 			."\t\t<td>{$tokenid}</font></td>\n"
 			."\t</tr>\n";
 		}		
