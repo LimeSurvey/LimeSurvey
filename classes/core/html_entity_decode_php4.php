@@ -44,6 +44,12 @@ function code_to_utf8($num) {
  * @return string converted
  */
 function html_entity_decode_php4($text_to_convert) {
+    
+    if (function_exists('html_entity_decode') && version_compare(PHP_VERSION, '5.0.0', '>'))
+    {
+        return html_entity_decode($text_to_convert,ENT_COMPAT,'UTF-8');
+    }    
+    
     $htmlentities_table = array (
         "&Aacute;" => "".chr(195).chr(129)."",
         "&aacute;" => "".chr(195).chr(161)."",
