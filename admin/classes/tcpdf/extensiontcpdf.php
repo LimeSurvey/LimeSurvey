@@ -32,7 +32,7 @@ class PDF extends TCPDF
     {
         $oldsize = $this->FontSizePt;
         $this->SetFontSize($oldsize-2);
-        $this->Write(5,$text);
+        $this->Write(5,$this->delete_html($text));
         $this->ln(5);
         $this->SetFontSize($oldsize);
     }   
@@ -105,6 +105,7 @@ class PDF extends TCPDF
     
     function delete_html($text)
     {
+       $text = html_entity_decode_php4($text);
        return strip_tags($text);
     }
 }    
