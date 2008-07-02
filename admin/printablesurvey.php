@@ -829,7 +829,7 @@ while ($degrow = $degresult->FetchRow())
 			{
 				$printablesurveyoutput2 .="\t\t\t\t\t\t<td align='center' valign='bottom' $headstyle><font size='1'>{$frow['title']}</font></td>\n";
                 $myheader2 .= "<td></td>";
-                $pdfoutput[0][$ll+1]=$frow['title'];
+                $pdfoutput[0][$l1+1]=$frow['title'];
 				$l1++;
 			}
 			// second scale
