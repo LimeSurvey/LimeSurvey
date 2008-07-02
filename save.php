@@ -555,7 +555,7 @@ function createinsertquery()
 function submitanswer()
 {
 	global $thissurvey,$timeadjust;
-	global $surveyid, $connect, $clang;
+	global $surveyid, $connect, $clang, $move;
 
 	if ($thissurvey['private'] =="Y" && $thissurvey['datestamp'] =="N")
 	{
