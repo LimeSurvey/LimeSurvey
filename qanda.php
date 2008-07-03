@@ -572,9 +572,9 @@ function validation_popup($ia, $notvalidated=null)
 //QUESTION METHODS
 function do_boilerplate($ia)
 {
-	$answer="";
-	$inputnames[]="";
-	return array($answer, $inputnames);
+    $answer = "\t\t\<input type='hidden' name='$ia[1]' id='answer$ia[1]' value='' />\n";
+    $inputnames[]=$ia[1];
+ 	return array($answer, $inputnames);
 }
 
 function do_5pointchoice($ia)
