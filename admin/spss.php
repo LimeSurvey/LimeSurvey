@@ -179,19 +179,19 @@ if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
 		$token_fields[]=$tokenfieldname;
 	}
 	if (in_array("firstname", $token_fields)) {
-		$fields[$fieldno++]=array("id"=>"fname","name"=>$clang->gT("First Name"),"code"=>"","qid"=>0,"SPSStype"=>"A","size"=>40);
+		$fields[$fieldno++]=array("id"=>"fname","name"=>$clang->gT("First Name"),"code"=>"","qid"=>0,"LStype"=>"Undef","SPSStype"=>"A","size"=>40);
 	}
 	if (in_array("lastname", $token_fields)) {
-		$fields[$fieldno++]=array("id"=>"lname","name"=> $clang->gT("Last Name"),"code"=>"","qid"=>0,"SPSStype"=>"A","size"=>40);
+		$fields[$fieldno++]=array("id"=>"lname","name"=> $clang->gT("Last Name"),"code"=>"","qid"=>0,"LStype"=>"Undef","SPSStype"=>"A","size"=>40);
 	}
 	if (in_array("email", $token_fields)) {
-		$fields[$fieldno++]=array("id"=>"email","name"=> $clang->gT("Email"),"code"=>"","qid"=>0,"SPSStype"=>"A","size"=>100);
+		$fields[$fieldno++]=array("id"=>"email","name"=> $clang->gT("Email"),"code"=>"","qid"=>0,"LStype"=>"Undef","SPSStype"=>"A","size"=>100);
 	}
 	if (in_array("attribute_1", $token_fields)) {
-		$fields[$fieldno++]=array("id"=>"attr1","name"=>$attr1_name,"code"=>"","qid"=>0,"SPSStype"=>"A","size"=>100);
+		$fields[$fieldno++]=array("id"=>"attr1","name"=>$attr1_name,"code"=>"","qid"=>0,"LStype"=>"Undef","SPSStype"=>"A","size"=>100);
 	}
 	if (in_array("attribute_2", $token_fields)) {
-		$fields[$fieldno++]=array("id"=>"attr2","name"=>$attr2_name,"code"=>"","qid"=>0,"SPSStype"=>"A","size"=>100);
+		$fields[$fieldno++]=array("id"=>"attr2","name"=>$attr2_name,"code"=>"","qid"=>0,"LStype"=>"Undef","SPSStype"=>"A","size"=>100);
 	}
 } else {
 	$fields=array();
@@ -219,7 +219,7 @@ for ($i=0; $i < $num_results; $i++) {
 		$fieldtype = 'A';
 		$val_size = 19;
 	} elseif ($fieldname=='token') {
-		$fieldtype = 'N';
+		$fieldtype = 'A';
 		$ftype = 'VARCHAR';
 		$val_size = 16;
 	} elseif ($fieldname=='id') {
@@ -604,9 +604,9 @@ foreach ($fields as $field)
 					if ($displayvaluelabel == 0) $displayvaluelabel = 1;
 					if ($i == ($num_results-1))
 					{
-						echo $row["code"]." \"".strip_tags_full(mb_substr($row["title"],0,$length_vallabel))."\".\n"; // put . at end
+						echo "\"" . $row['code']."\" \"".strip_tags_full(mb_substr($row["title"],0,$length_vallabel))."\".\n"; // put . at end
 					} else {
-						echo $row['code']." \"".strip_tags_full(mb_substr($row["title"],0,$length_vallabel))."\"\n";
+						echo "\"" . $row['code']."\" \"".strip_tags_full(mb_substr($row["title"],0,$length_vallabel))."\"\n";
 
 					}
 				}
