@@ -22,19 +22,19 @@ if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this scri
 //Move current step ###########################################################################
 if (!isset($_SESSION['step'])) {$_SESSION['step']=0;}
 if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
-if (!isset($gl)) {$gl=array("null");}
-if (isset($move) && $move == "moveprev") {$_SESSION['step'] = $thisstep-1;}
-if (isset($move) && $move == "movenext") {$_SESSION['step'] = $thisstep+1;}
+if (!isset($gl)) {$gl=array('null');}
+if (isset($move) && $move == 'moveprev') {$_SESSION['step'] = $thisstep-1;}
+if (isset($move) && $move == 'movenext') {$_SESSION['step'] = $thisstep+1;}
 
 // This prevents the user from going back to the question pages and keeps him on the final page
 // That way his session can be kept so he can still print his answers until he closes the browser
-if (isset($_SESSION['finished'])) {$move="movesubmit"; }
+if (isset($_SESSION['finished'])) {$move='movesubmit'; }
 
 
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
 //First, see if we are moving backwards or doing a Save so far, and its OK not to check:
-if ($allowmandbackwards==1 && ((isset($move) &&  $move == "moveprev") || (isset($_POST['saveall']) && $_POST['saveall'] == $clang->gT("Save your responses so far"))))
+if ($allowmandbackwards==1 && ((isset($move) &&  $move == 'moveprev') || (isset($_POST['saveall']) && $_POST['saveall'] == $clang->gT("Save your responses so far"))))
 {
 	$backok="Y";
 }
