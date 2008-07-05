@@ -98,11 +98,11 @@ $siteadminname      =   'Your Name';      // The name of the site administrator
 $emailmethod        =   'mail';           // The following values can be used:
 									      // mail      -  use internal PHP Mailer
                                           // sendmail  -  use Sendmail Mailer
+                                          // qmail     -  use Qmail MTA
                                           // smtp      -  use SMTP relaying
 
-$emailsmtphost      =   'localhost';      // Sets the SMTP host. All hosts must be separated by a semicolon.
-                                          // You can also specify a different port for each host by using
-                                          // this format: [hostname:port] (e.g. 'smtp1.example.com:25;smtp2.example.com').
+$emailsmtphost      =   'localhost';      // Sets the SMTP host. You can also specify a different port than 25 by using
+                                          // this format: [hostname:port] (e.g. 'smtp1.example.com:25').
 
 $emailsmtpuser      =   '';               // SMTP authorisation username - only set this if your server requires authorization - if you set it you HAVE to set a password too
 $emailsmtppassword  =   '';               // SMTP authorisation password - empty password is not allowed

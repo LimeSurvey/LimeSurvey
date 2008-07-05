@@ -2953,13 +2953,28 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
 		$sendername=trim(substr($sender,0, strpos($sender,'<')-1));
 	}
 
-	$mail->Mailer = $emailmethod;
+    if ($emailmethod=="qmail")
+    {
+        $mail->IsQmail();
+    }
+    else
+    {
+        $mail->Mailer = $emailmethod;
+    }
 	if ($emailmethod=="smtp")
-	{ $mail->Host = $emailsmtphost;
-	$mail->Username =$emailsmtpuser;
-	$mail->Password =$emailsmtppassword;
-	if ($emailsmtpuser!="")
-	{$mail->SMTPAuth = true;}
+	{ 
+        if (strpos($emailsmtphost,':')>0)
+        {
+            $mail->Host = substr($emailsmtphost,0,strpos($emailsmtphost,':'));
+            $mail->Port = substr($emailsmtphost,strpos($emailsmtphost,':')+1);
+        }
+        else {
+            $mail->Host = $emailsmtphost;
+        }
+	    $mail->Username =$emailsmtpuser;
+	    $mail->Password =$emailsmtppassword;
+	    if ($emailsmtpuser!="")
+	    {$mail->SMTPAuth = true;}
 	}
 	$mail->From = $fromemail;
 	$mail->Sender = $senderemail; // Sets Return-Path for error notifications
