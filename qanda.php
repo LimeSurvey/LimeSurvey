@@ -572,7 +572,7 @@ function validation_popup($ia, $notvalidated=null)
 //QUESTION METHODS
 function do_boilerplate($ia)
 {
-    $answer = "\t\t\<input type='hidden' name='$ia[1]' id='answer$ia[1]' value='' />\n";
+    $answer = "\t\t<input type='hidden' name='$ia[1]' id='answer$ia[1]' value='' />\n";
     $inputnames[]=$ia[1];
  	return array($answer, $inputnames);
 }

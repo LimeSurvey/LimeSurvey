@@ -2742,8 +2742,7 @@ function javascript_escape($str, $strip_tags=false, $htmldecode=false) {
     {
         $str=strip_tags($str);
     }
-    
-    return str_replace('\'',"\\'",$str);
+    return str_replace(array('\'','"'),array("\\'",'\u0022'),$str);
 } 
 
 // This function returns the header as result string
