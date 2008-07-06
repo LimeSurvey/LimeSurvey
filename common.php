@@ -3086,13 +3086,15 @@ function getArrayFiltersForGroup($surveyid,$gid)
 	global $dbprefix;
     $surveyid=sanitize_int($surveyid);
     $gid=sanitize_int($gid);
-	// Get All Questions in Current Group
-	$qquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid='$surveyid' AND gid='$gid' AND language='".$_SESSION['s_lang']."' ORDER BY qid";
+    // Get All Questions in Current Group
+	$qquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid='$surveyid'";
+	if($gid != "") {$qquery .= " AND gid='$gid'";}
+	$qquery .= " AND language='".$_SESSION['s_lang']."' ORDER BY qid";
 	$qresult = db_execute_assoc($qquery);  //Checked
 	$grows = array(); //Create an empty array in case query not return any rows
 	// Store each result as an array with in the $grows array
 	while ($qrow = $qresult->FetchRow()) {
-		$grows[$qrow['qid']] = array('qid' => $qrow['qid'],'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'], 'title' => $qrow['title']);
+		$grows[$qrow['qid']] = array('qid' => $qrow['qid'],'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'], 'title' => $qrow['title'], 'gid' => $qrow['gid']);
 	}
 	$attrmach = array(); // Stores Matches of filters that have their values as questions with in current group
 	$grows2 = $grows;
@@ -3107,7 +3109,7 @@ function getArrayFiltersForGroup($surveyid,$gid)
 			{
 				if ($avalue['title'] == $val[0])
 				{
-					$filter = array('qid' => $qrow['qid'], 'mandatory' => $qrow['mandatory'], 'type' => $avalue['type'], 'fid' => $avalue['qid']);
+					$filter = array('qid' => $qrow['qid'], 'mandatory' => $qrow['mandatory'], 'type' => $avalue['type'], 'fid' => $avalue['qid'], 'gid' => $qrow['gid']);
 					array_push($attrmach,$filter);
 				}
 			}

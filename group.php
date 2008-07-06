@@ -452,7 +452,7 @@ if ((isset($conditions) && is_array($conditions)) ||
     {
         $endzone="";
     }
-//        if (type == 'radio' || type == 'select-one' || type == 'text')
+
 print <<<END
         if (type == 'radio' || type == 'select-one')
         {
@@ -473,8 +473,8 @@ print <<<END
             }
         }
 END;
-$java="";
-$cqcount=1;
+    $java="";
+    $cqcount=1;
 
 /* $conditions element structure
  * $condition[n][0] => question id
@@ -500,7 +500,9 @@ foreach ($conditions as $cd)
 	{
 		$oldcq = $cd[2];
 	}
-	if ($cd[4] == "L") //Just in case the dropdown threshold is being applied, check number of answers here
+	
+	//Just in case the dropdown threshold is being applied, check number of answers here
+	if ($cd[4] == "L") 
 	{
 		$cccquery="SELECT COUNT(*) FROM {$dbprefix}answers WHERE qid={$cd[1]} AND language='".$_SESSION['s_lang']."'";
 		$cccresult=db_execute_num($cccquery); //Checked

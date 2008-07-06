@@ -325,13 +325,15 @@ if ($thissurvey['private'] == "Y")
 	echo templatereplace(file_get_contents("$thistpl/privacy.pstpl"))."\n";
 }
 
-echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
-."\t<script type='text/javascript'>\n"
-."\t<!--\n";
+print <<<END
 
+<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
+<script type='text/javascript'>
+<!--
 
+END;
 // Find out if there are any array_filter questions in this group
-$array_filterqs = getArrayFiltersForGroup($surveyid,$gid);
+$array_filterqs = getArrayFiltersForGroup($surveyid, "");
 // Put in the radio button reset javascript for the array filter unselect
 if (isset($array_filterqs) && is_array($array_filterqs)) {
 	print <<<END
@@ -345,30 +347,45 @@ if (isset($array_filterqs) && is_array($array_filterqs)) {
 			}
 		}
 
-
 END;
+
 }
 
-echo  "\t\tfunction checkconditions(value, name, type)\n"
-."\t\t\t{\n";
+print <<<END
+	function checkconditions(value, name, type)
+	{
+    
+END;
 
-if ((isset($conditions) && is_array($conditions)) || (isset($array_filterqs) && is_array($array_filterqs)))
+// If there are conditions or arrray_filter questions then include the appropriate Javascript
+if ((isset($conditions) && is_array($conditions)) || 
+    (isset($array_filterqs) && is_array($array_filterqs)))
 {
-	if (!isset($endzone)) {$endzone="";}
-	echo "\t\t\tif (type == 'radio' || type == 'select-one')\n"
-	."\t\t\t\t{\n"
-	."\t\t\t\tvar hiddenformname='java'+name;\n"
-	."\t\t\t\tdocument.getElementById(hiddenformname).value=value;\n"
-	."\t\t\t\t}\n"
-	."\t\t\tif (type == 'checkbox')\n"
-	."\t\t\t\t{\n"
-	."\t\t\t\tvar hiddenformname='java'+name;\n"
-	."\t\t\t\tvar chkname='answer'+name;\n"
-	."\t\t\t\tif (document.getElementById(chkname).checked) {\n"
-	."\t\t\t\t\tdocument.getElementById(hiddenformname).value='Y';}\n"
-	."\t\t\t\telse {\n"
-	."\t\t\t\t\tdocument.getElementById(hiddenformname).value='';}\n"
-	."\t\t\t\t}\n";
+	if (!isset($endzone)) 
+	{
+	    $endzone="";
+	}
+	
+print <<<END
+        if (type == 'radio' || type == 'select-one')
+        {
+            var hiddenformname='java'+name;
+            document.getElementById(hiddenformname).value=value;
+        }
+
+        if (type == 'checkbox')
+        {
+            var hiddenformname='java'+name;
+            var chkname='answer'+name;
+            if (document.getElementById(chkname).checked)
+            {
+                document.getElementById(hiddenformname).value='Y';
+            } else
+            {
+		        document.getElementById(hiddenformname).value='';
+            }
+        }
+END;
 	$java="";
 	$cqcount=1;
 
@@ -397,12 +414,12 @@ if ((isset($conditions) && is_array($conditions)) || (isset($array_filterqs) && 
     if (!isset($oldcq) || !$oldcq)
     {
         $oldcq = $cd[2];
-		}
+	}
 
     //Just in case the dropdown threshold is being applied, check number of answers here
     if ($cd[4] == "L")
 		{
-			$cccquery="SELECT code FROM {$dbprefix}answers WHERE qid={$cd[1]}";
+			$cccquery="SELECT code FROM {$dbprefix}answers WHERE qid={$cd[1]} AND language='".$_SESSION['s_lang']."'";
 			$cccresult=$connect->Execute($cccquery); // Checked
 			$cccount=$cccresult->RecordCount();
 		}
@@ -416,15 +433,16 @@ if ((isset($conditions) && is_array($conditions)) || (isset($array_filterqs) && 
             $cd[4] == "C" ||
             $cd[4] == "E" ||
             $cd[4] == "F" ||
+			$cd[4] == "H" ||
             $cd[4] == "G" ||
             $cd[4] == "Y" ||
             $cd[4] == "1" ||
-            ($cd[4] == "L" &&
-             $cccount <= $dropdownthreshold))
+            ($cd[4] == "L" && $cccount <= $dropdownthreshold))
     {
         $idname="java$cd[2]";
     }
-    elseif ($cd[4] == "M" || $cd[4] == "P")
+    elseif ($cd[4] == "M" || 
+	        $cd[4] == "P")
     {
         $idname="java$cd[2]$cd[3]";
     }
@@ -455,13 +473,13 @@ if ((isset($conditions) && is_array($conditions)) || (isset($array_filterqs) && 
     if ($cd[3] == '' || $cd[3] == ' ')
     {
       $java .= "document.getElementById('$idname').value $cd[6] ' ' || !document.getElementById('$idname').value";
-        }
-		elseif($cd[4] == "M" || $cd[4] == "P")
-		{
-			$java .= "document.getElementById('$idname').value $cd[6] 'Y'";
-		}
-		else
-		{
+    }
+	elseif($cd[4] == "M" || $cd[4] == "P")
+	{
+		$java .= "document.getElementById('$idname').value $cd[6] 'Y'";
+	}
+	else
+	{
       // NEW
       // If the value is enclossed by @
       // the value of this question must be evaluated instead.
@@ -509,39 +527,39 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 
 	foreach ($array_filterqs as $attralist)
 	{
-		//die(print_r($attrflist));
-		$qbase = $surveyid."X".$gid."X".$attralist['qid'];
-		$qfbase = $surveyid."X".$gid."X".$attralist['fid'];
+		//die(print_r($attralist));
+		$qbase = $surveyid."X".$attralist['gid']."X".$attralist['qid'];
+		$qfbase = $surveyid."X".$attralist['gid']."X".$attralist['fid'];
 		if ($attralist['type'] == "M")
 		{
 			$qquery = "SELECT code FROM {$dbprefix}answers WHERE qid='".$attralist['qid']."' AND language='".$_SESSION['s_lang']."' order by code;";
-			$qresult = db_execute_assoc($qquery); // Checked
+			$qresult = db_execute_assoc($qquery); //Checked
 			while ($fansrows = $qresult->FetchRow())
 			{
 				$fquestans = "java".$qfbase.$fansrows['code'];
 				$tbody = "javatbd".$qbase.$fansrows['code'];
 				$dtbody = "tbdisp".$qbase.$fansrows['code'];
 				$tbodyae = $qbase.$fansrows['code'];
-				$appendj .= "\n\t\t\tif ((document.getElementById('$fquestans').value == 'Y'))\n";
-				$appendj .= "\t\t\t{\n";
-				$appendj .= "\t\t\t\tdocument.getElementById('$tbody').style.display='';\n";
-				$appendj .= "\t\t\t\tdocument.getElementById('$dtbody').value='on';\n";
-				$appendj .= "\t\t\t}\n";
-				$appendj .= "\t\t\telse\n";
-				$appendj .= "\t\t\t{\n";
-				$appendj .= "\t\t\t\tdocument.getElementById('$tbody').style.display='none';\n";
-				$appendj .= "\t\t\t\tdocument.getElementById('$dtbody').value='off';\n";
-				$appendj .= "\t\t\t\tradio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
-				$appendj .= "\t\t\t}\n";
+				$appendj .= "\n";
+                $appendj .= "\tif ((document.getElementById('$fquestans').value == 'Y'))\n";
+				$appendj .= "\t{\n";
+				$appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
+				$appendj .= "\t\tdocument.getElementById('$dtbody').value='on';\n";
+				$appendj .= "\t}\n";
+				$appendj .= "\telse\n";
+				$appendj .= "\t{\n";
+				$appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
+				$appendj .= "\t\tdocument.getElementById('$dtbody').value='off';\n";
+				$appendj .= "\t\tradio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
+				$appendj .= "\t}\n";
 			}
 		}
 	}
 	$java .= $appendj;
 }
 
-
 if (isset($java)) {echo $java;}
-echo "\t\t\t}\n"
+echo "\t}\n"
 ."\t//-->\n"
 ."\t</script>\n\n"; // End checkconditions javascript function
 
