@@ -73,6 +73,33 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.71(+)
 
 Thank you to everyone who helped with this new release!
 
+
+Changes from 1.71+ Build 5204 to 5243 -  Legend:   + = New  # = Changed  - = Fix
+
+# Optimized image sizes (c_schmitz)
++ Added qmail to possible mailer config settings (c_schmitz)
+# Updated FCKeditor to version 2.6.2 (lemeur)
+# Updated German Translations (c_schmitz)
+# Updated French Translation (b00z00)
+# Updated Estonian Translation by Villem Vannas (villem -dot- vannas(a) mail (dot) ee)
+- Fixed $debug being set to 2 in config-defaults.php (c_schmitz)
+- Fixed #2118 unwanted HTML tags (stfreud)
+- Fixed #2240 undefined variable (stfreud)
+- Fixed #02244: array_filter doesnt work after changes made to questions - actually, array_filter wasn't working properly in all-in-one survey mode. Modified common.php function getArrayFiltersForGroup() which was only working for groups. Also cleaned up code so that similar functions in group.php & survey.php could be better compared. (jcleeland)
+- Fixed mailer being able to use a port in the hostnamesetting (c_schmitz)
+- Fixed small Javascript escape issue (c_schmitz)
+- More SPSS issues fixed - patch kindly provided by Menno Dekker
+- Fixed completion not saved if last group only contains  aboilerplate question (c_schmitz)
+- Fixed some serious bugs in SPSS export. Speed improvements by 90%. (c_schmitz)
+- Fixed #1926: SPSS export is missing fields  - thanks to mdekker (c_schmitz)
+- Fixed #2229: Reminder Sending function does not work with "Start From" parameter (c_schmitz)
+- Fixed #2193: Group by group and question by question mode do not save completion when last group/question is not shown due to conditions (c_schmitz)
+- Fixed #2188: Logout/login page language direction wrong with RTL-languages (c_schmitz)
+- Fixed #2251: corrected a german typo (el-matador-69)
+
+
+
+
 Changes from 1.71+ Build 5146 to 5203 -  Legend:   + = New  # = Changed  - = Fix
 
 + PDF Orientation can be changed in config-defaults.php (stfreud)
@@ -90,8 +117,8 @@ Changes from 1.71+ Build 5146 to 5203 -  Legend:   + = New  # = Changed  - = Fix
 # Upgraded adodb to 4.98 (c_schmitz)
 # Rewrote commandline installation for better security and merged into one file
 - Fixed a W3C issues with javascript (c_schmitz)
-- Fixed bug #02187: INSERTANS not working for "Other" of List (Flexible Label) (jcleeland)
-- Fixed bug #2124: white characters in tokens are accepted in non-anonymous surveys (c_schmitz)
+- Fixed #02187: INSERTANS not working for "Other" of List (Flexible Label) (jcleeland)
+- Fixed #2124: white characters in tokens are accepted in non-anonymous surveys (c_schmitz)
 - Fixed #2083: deletenonanswers now working for question-per-page and group-per-page surveys (lemeur)
 - Fixing two small notices when trying to import an invalid survey file (c_schmitz)
 - Fixed Bug 02215 & 02118 HMTL Code deleted in pdf-export (stfreud)
