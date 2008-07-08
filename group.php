@@ -529,7 +529,7 @@ foreach ($conditions as $cd)
 	elseif ($cd[4] == "M" ||
 			$cd[4] == "P")
 	{
-		$idname="java$cd[2]$cd[3]";
+		$idname="java$cd[5]$cd[3]";
 	}
 	elseif ($cd[4] == "D" ||
 			$cd[4] == "N" ||
@@ -587,17 +587,17 @@ foreach ($conditions as $cd)
 		//                $cd[4] == "!")
 	{
 		//$java .= "!document.getElementById('$idname') || document.getElementById('$idname').value == ' '";
-		$java .= "document.getElementById('$idname').value == 'Y'"; // 
+		$java .= "document.getElementById('$idname') != undefined && document.getElementById('$idname').value $cd[6] 'Y'"; // 
 	} else
 	{
 		/* NEW
 		 * If the value is enclossed by @
 		 * the value of this question must be evaluated instead.
 		 * Remember $titlejs array? It will be used now
-		 * Another note: It�s not clear why is used a norma to call
+		 * Another note: It's not clear why is used a norma to call
 		 * some elements like java*, answer* or just the fieldname
-		 * as far I can see now it�s used the field name for text elements
-		 * so, I�ll use by id with the prefix answer
+		 * as far I can see now it's used the field name for text elements
+		 * so, I'll use by id with the prefix answer
 		 */
 		if (ereg('^@([0-9]+X[0-9]+X[^@]+)@', $cd[3], $comparedfieldname))
 		{
@@ -670,7 +670,7 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 				$dtbody = "tbdisp".$qbase.$fansrows['code'];
 				$tbodyae = $qbase.$fansrows['code'];
                 $appendj .= "\n";
-                $appendj .= "\tif ((document.getElementById('$fquestans').value == 'Y'))\n";
+                $appendj .= "\tif ((document.getElementById('$fquestans') != undefined && document.getElementById('$fquestans').value == 'Y'))\n";
 				$appendj .= "\t{\n";
 				$appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
 				$appendj .= "\t\tdocument.getElementById('$dtbody').value='on';\n";

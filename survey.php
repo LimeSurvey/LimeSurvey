@@ -444,7 +444,7 @@ END;
     elseif ($cd[4] == "M" || 
 	        $cd[4] == "P")
     {
-        $idname="java$cd[2]$cd[3]";
+        $idname="java$cd[5]$cd[3]";
     }
     elseif ($cd[4] == "D" ||
             $cd[4] == "N" ||
@@ -476,7 +476,7 @@ END;
     }
 	elseif($cd[4] == "M" || $cd[4] == "P")
 	{
-		$java .= "document.getElementById('$idname').value $cd[6] 'Y'";
+		$java .= "document.getElementById('$idname') != undefined && document.getElementById('$idname').value $cd[6] 'Y'";
 	}
 	else
 	{
@@ -541,7 +541,7 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 				$dtbody = "tbdisp".$qbase.$fansrows['code'];
 				$tbodyae = $qbase.$fansrows['code'];
 				$appendj .= "\n";
-                $appendj .= "\tif ((document.getElementById('$fquestans').value == 'Y'))\n";
+                $appendj .= "\tif ((document.getElementById('$fquestans') != undefined && document.getElementById('$fquestans').value == 'Y'))\n";
 				$appendj .= "\t{\n";
 				$appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
 				$appendj .= "\t\tdocument.getElementById('$dtbody').value='on';\n";
