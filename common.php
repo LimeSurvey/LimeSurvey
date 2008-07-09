@@ -236,50 +236,44 @@ $singleborderstyle = "style='border: 1px solid #111111'";
     function showadminmenu()
         {
         global $homedir, $scriptname, $surveyid, $setfont, $imagefiles, $clang, $debug;
-        $adminmenu  = "<table class='menubar'>\n";
-        if  ($_SESSION['pw_notify'] && $debug<2)  {$adminmenu .="<tr><td align='center'><font color='red'>".$clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")."</font></td></tr>";}
-        $adminmenu  .="\t<tr>\n"
-                    . "\t\t<td>\n"
-                    . "\t\t\t<table class='menubar'>\n"
-                    . "\t\t\t<tr>\n"
-                    . "\t\t\t\t<td colspan='2' height='8' align='left'>\n"
-                    . "\t\t\t\t<strong>".$clang->gT("Administration")."</strong>";
+        $adminmenu  = "<div class='menubar'>\n";
+        if  ($_SESSION['pw_notify'] && $debug<2)  {$adminmenu .="<div class='alert'>".$clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")."</div>";}
+        $adminmenu  .="\t<div class='menubar-title'>\n"
+                    . "\t\t<strong>".$clang->gT("Administration")."</strong>";
 		if(isset($_SESSION['loginID']))
 			{
 			$adminmenu  .= " --  ".$clang->gT("Logged in as"). ": <strong>". $_SESSION['user'] ."</strong>"."\n";
 			}
-       	$adminmenu .= "\t\t\t\t</td>\n"
-                    . "\t\t\t</tr>\n"
-                    . "\t\t\t<tr>\n"
-                    . "\t\t\t\t<td>\n"
+       	$adminmenu .= "\t\t</div>\n"
+                    . "\t\t\t<div class='menubar-main'>\n"
+                    . "\t\t\t\t<div class='menubar-left'>\n"
                     . "\t\t\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname', '_top')\" title=\"".$clang->gTview("Default Administration Page")."\"" .
                      "onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Default Administration Page", "js")."');return false\">" .
                      "<img src='$imagefiles/home.png' name='HomeButton' alt='".$clang->gT("Default Administration Page")."' "
-                    ."title=''" ."align='left' /></a>\n";
+                    ."title=''" ." /></a>\n";
 
-		$adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'  align='left' />\n"
-                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  align='left' />\n";
+		$adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'   />\n"
+                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  />\n";
 
 		// edit users
 		$adminmenu .= "\t\t\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" title=\"".$clang->gTview("Create/Edit Users")."\" " .
 					"onmouseout=\"hideTooltip()\""
 					. "onmouseover=\"showTooltip(event,'".$clang->gT("Create/Edit Users", "js")."');return false\">" .
 					 "<img src='$imagefiles/security.png' name='AdminSecurity'"
-					." title='' alt='".$clang->gT("Create/Edit Users")."'  align='left' /></a>";
+					." title='' alt='".$clang->gT("Create/Edit Users")."' /></a>";
 
 		$adminmenu .="<a href=\"#\" onclick=\"window.open('$scriptname?action=editusergroups', '_top')\" title=\"".$clang->gTview("Create/Edit Groups")."\" "
 					. "onmouseout=\"hideTooltip()\""
 					. "onmouseover=\"showTooltip(event,'".$clang->gT("Create/Edit Groups", "js")."');return false\">" .
-					"<img src='$imagefiles/usergroup.png' title='' align='left' alt='".$clang->gT("Create/Edit Groups")."' /></a>\n" ;
+					"<img src='$imagefiles/usergroup.png' title=''  alt='".$clang->gT("Create/Edit Groups")."' /></a>\n" ;
 
 		// check settings
-        //"\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='34'  align='left'>\n".
 						$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=checksettings', '_top')\" title=\"".$clang->gTview("Show System Summary")."\" "
 					    . "onmouseout=\"hideTooltip()\""
                       	. "onmouseover=\"showTooltip(event,'".$clang->gT("Show System Summary", "js")."');return false\">"
 						. "\t\t\t\t\t<img src='$imagefiles/summary.png' name='CheckSettings' title='"
-						. "' alt='". $clang->gT("Show System Summary")."' align='left' /></a>"
-						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n";
+						. "' alt='". $clang->gT("Show System Summary")."'/></a>"
+						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  border='0' hspace='0' />\n";
 
 		// check data cosistency
         if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
@@ -287,11 +281,11 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 			$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=checkintegrity', '_top')\" title=\"".$clang->gTview("Check Data Integrity")."\" ".
 						   "onmouseout=\"hideTooltip()\""
 						  ."onmouseover=\"showTooltip(event,'".$clang->gT("Check Data Integrity", "js")."');return false\">".
-						"<img src='$imagefiles/checkdb.png' name='CheckDataINtegrity' title=''  alt='".$clang->gT("Check Data Integrity")."' align='left' /></a>\n";
+						"<img src='$imagefiles/checkdb.png' name='CheckDataINtegrity' title=''  alt='".$clang->gT("Check Data Integrity")."'  /></a>\n";
 			}
 		else
 			{
-			$adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left' />\n";
+			$adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  />\n";
 			}
 
 		// list surveys
@@ -299,7 +293,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 		 			."onmouseout=\"hideTooltip()\""
                     ."onmouseover=\"showTooltip(event,'".$clang->gT("List Surveys", "js")."');return false\">\n"
 		 			."<img src='$imagefiles/surveylist.png' name='ListSurveys' title=''"
-		 			."  alt='".$clang->gT("List Surveys")."' align='left' onclick=\"window.open('$scriptname?action=listsurveys', '_top')\" />"
+		 			."  alt='".$clang->gT("List Surveys")."'  onclick=\"window.open('$scriptname?action=listsurveys', '_top')\" />"
                     ."</a>" ;
 
 		// db backup & label editor
@@ -309,25 +303,25 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 						. "onclick=\"window.open('$scriptname?action=dumpdb', '_top')\""
 						. "onmouseout=\"hideTooltip()\""
 						. "onmouseover=\"showTooltip(event,'".$clang->gT("Backup Entire Database", "js")."');return false\">"
-						."<img src='$imagefiles/backup.png' name='ExportDB' title='' alt='". $clang->gT("Backup Entire Database")."($surveyid)' align='left' />"
+						."<img src='$imagefiles/backup.png' name='ExportDB' title='' alt='". $clang->gT("Backup Entire Database")."($surveyid)'  />"
 						."</a>\n"
-						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n";
+						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  border='0' hspace='0' />\n";
 			}
 		else
 			{
-			  $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left' />\n";
+			  $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'   />\n";
 			}
 		if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			{
 			$adminmenu  .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=labels', '_top')\" title=\"".$clang->gTview("Edit/Add Label Sets")."\" "
 						. "onmouseout=\"hideTooltip()\""
 						. "onmouseover=\"showTooltip(event,'".$clang->gT("Edit/Add Label Sets", "js")."');return false\">" .
-						 "<img src='$imagefiles/labels.png' align='left' name='LabelsEditor' title='' alt='". $clang->gT("Edit/Add Label Sets")."' /></a>\n"
-						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='left' border='0' hspace='0' />\n";
+						 "<img src='$imagefiles/labels.png'  name='LabelsEditor' title='' alt='". $clang->gT("Edit/Add Label Sets")."' /></a>\n"
+						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  border='0' hspace='0' />\n";
            	}
 		else
 			{
-			  $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  align='left' />\n";
+			  $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'   />\n";
 			}
         if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 			{
@@ -335,45 +329,44 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 	        			  "onclick=\"window.open('$scriptname?action=templates', '_top')\" title=\"".$clang->gTview("Template Editor")."\" "
 	                    . "onmouseout=\"hideTooltip()\""
 	                    . "onmouseover=\"showTooltip(event,'".$clang->gT("Template Editor", "js")."');return false\">" .
-	                    "<img src='$imagefiles/templates.png' name='EditTemplates' title='' alt='". $clang->gT("Template Editor")."' align='left' /></a>\n"
-	                    . "\t\t\t\t</td>\n";
+	                    "<img src='$imagefiles/templates.png' name='EditTemplates' title='' alt='". $clang->gT("Template Editor")."'  /></a>\n";
             }
-        if(isset($_SESSION['loginID'])) //ADDED by Moses to prevent errors by reading db while not logged in.
+            // survey select box
+            $adminmenu .= "\t\t\t\t\t</div><div class='menubar-right'><font class=\"boxcaption\">".$clang->gT("Surveys").":</font>"
+                        . "\t\t\t\t\t<select onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
+                        . getsurveylist()
+                        . "\t\t\t\t\t</select>\n";
+            
+            if($_SESSION['USER_RIGHT_CREATE_SURVEY'] == 1)
+                {
+            $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=newsurvey', '_top')\""
+                        . "title=\"".$clang->gTview("Create or Import New Survey")."\" "
+                        . "onmouseout=\"hideTooltip()\""
+                        . "onmouseover=\"showTooltip(event,'".$clang->gT("Create or Import New Survey", "js")."');return false\">" .
+                        "<img src='$imagefiles/add.png' name='AddSurvey' title='' alt='". $clang->gT("Create or Import New Survey")."' /></a>\n";
+                 }
+
+
+        if(isset($_SESSION['loginID'])) //ADDED to prevent errors by reading db while not logged in.
 	        {
-	        $adminmenu .= "\t\t\t\t<td align='right' width='430'>\n"
-	                    . "<a href=\"#\" onclick=\"showhelp('show')\""
-	                    . "title=\"".$clang->gTview("Show Help")."\" "
-	                    . "onmouseout=\"hideTooltip()\""
-	                    . "onmouseover=\"showTooltip(event,'".$clang->gT("Show Help", "js")."');return false\">"
-	                    . "<img src='$imagefiles/showhelp.png' name='ShowHelp' title=''"
-	                    . "alt='". $clang->gT("Show Help")."' align='right'  /></a>"
-		                . "\t\t\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=logout', '_top')\""
+	        $adminmenu .= "\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' />\n"
+                        . "\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=logout', '_top')\""
                         . "title=\"".$clang->gTview("Logout")."\" "
                         . "onmouseout=\"hideTooltip()\""
 					    . "onmouseover=\"showTooltip(event,'".$clang->gT("Logout", "js")."');return false\">"
                         . "<img src='$imagefiles/logout.png' name='Logout'"
-					    . "title='' alt='".$clang->gT("Logout")."'  align='right' /></a>"
-	                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='right' border='0' hspace='0' />\n";
-
-			if($_SESSION['USER_RIGHT_CREATE_SURVEY'] == 1)
-				{
-			$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=newsurvey', '_top')\""
-						. "title=\"".$clang->gTview("Create or Import New Survey")."\" "
-						. "onmouseout=\"hideTooltip()\""
-						. "onmouseover=\"showTooltip(event,'".$clang->gT("Create or Import New Survey", "js")."');return false\">" .
-						"<img src='$imagefiles/add.png' align='right' name='AddSurvey' title='' alt='". $clang->gT("Create or Import New Survey")."' /></a>\n";
-	             }
-			$adminmenu .= "\t\t\t\t\t<font class=\"boxcaption\">".$clang->gT("Surveys").":</font>"
-	                    . "\t\t\t\t\t<select onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
-	                    . getsurveylist()
-	                    . "\t\t\t\t\t</select>\n"
-	                    . "\t\t\t\t</td>\n";
+					    . "title='' alt='".$clang->gT("Logout")."'/></a>"
+	                    . "\t\t<a href=\"#\" onclick=\"showhelp('show')\""
+                        . "title=\"".$clang->gTview("Show Help")."\" "
+                        . "onmouseout=\"hideTooltip()\""
+                        . "onmouseover=\"showTooltip(event,'".$clang->gT("Show Help", "js")."');return false\">"
+                        . "<img src='$imagefiles/showhelp.png' name='ShowHelp' title=''"
+                        . "alt='". $clang->gT("Show Help")."'/></a>";
+                        
+	        $adminmenu .= "\t\t\t\t</div>\n"
+                        . "\t\t\t</div>\n"
+                        . "\t\t</div>\n";
             }
-            $adminmenu .= "\t\t\t</tr>\n"
-	                    . "\t\t</table>\n"
-	                    . "\t</td>\n"
-	                    . "</tr>\n"
-	                    . "</table>\n";
         return $adminmenu;
         }
 
@@ -2856,9 +2849,16 @@ function getAdminHeader($meta=false)
 	. "<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
 	. "<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />\n"
-    . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"scripts/tabpane/css/tab.webfx.css \" />\n"
-    . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle.css\" />\n"
-	. "<script type=\"text/javascript\" src=\"../scripts/calendar/calendar.js\"></script>\n"
+    . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"scripts/tabpane/css/tab.webfx.css \" />\n";
+    if (getLanguageRTL($_SESSION['adminlang']))
+    {
+    $strAdminHeader.="<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle-rtl.css\" />\n";
+    }
+    else
+    {
+    $strAdminHeader.="<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle.css\" />\n";
+    }
+	$strAdminHeader.= "<script type=\"text/javascript\" src=\"../scripts/calendar/calendar.js\"></script>\n"
 	. "<script type=\"text/javascript\" src=\"../scripts/calendar/lang/calendar-".$_SESSION['adminlang'].".js\"></script>\n"
 	. "<script type=\"text/javascript\" src=\"../scripts/calendar/calendar-setup.js\"></script>\n"
 	. "<script type=\"text/javascript\" src=\"scripts/validation.js\"></script>"
