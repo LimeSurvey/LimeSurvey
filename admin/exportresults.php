@@ -1088,7 +1088,16 @@ elseif ($answers == "long")        //vollständige Antworten gewählt
                         if($type == "pdf"){$pdf->intopdf(strip_tags_full($lrow['answer']));}
                     }
 				}
-//				if ($found != "Y") {if ($type == "csv"  || $type == "pdf") {$exportoutput .= str_replace("\"", "\"\"", $drow[$i]);} else {$exportoutput .= str_replace("\r\n", " ", $drow[$i]);}}
+				//This following section exports the comment field
+				if ($found != "Y") 
+				{
+					if ($type == "csv")
+					{$exportoutput .= str_replace("\r\n", "\n", str_replace("\"", "\"\"", strip_tags_full($drow[$i])));}
+					else if ($type == "pdf")
+                    {$pdf->intopdf(str_replace("\r\n", " ", strip_tags_full($drow[$i])));}
+                    else
+					{$exportoutput .= str_replace("\r\n", " ", $drow[$i]);}
+                }
 				break;
 				case "Y": //YES\NO
 				switch($drow[$i])
