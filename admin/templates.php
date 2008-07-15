@@ -576,7 +576,16 @@ $templatesoutput.= "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
 . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='10' border='0' hspace='0' align='left' />\n"
 . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />"
 . "</td><td align='right'>"
-. "<img src='$imagefiles/blank.gif' alt='' border='0' hspace='0' width='60' height='1' align='right'  />"
+. "<img src='$imagefiles/blank.gif' alt='' border='0' hspace='0' width='20' height='1' align='right'  />"
+
+//Logout Button
+. "\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=logout', '_top')\""
+. "title=\"".$clang->gTview("Logout")."\" "
+. "onmouseout=\"hideTooltip()\""
+. "onmouseover=\"showTooltip(event,'".$clang->gT("Logout", "js")."');return false\">"
+. "<img src='$imagefiles/logout.png' name='Logout'"
+. "title='' alt='".$clang->gT("Logout")."' align='right'/></a>"
+
 . "<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='right' />"
 . "<a href='#' onclick=\"javascript: copyprompt('".$clang->gT("Create new template called:")."', '".$clang->gT("NewTemplate")."', 'default', 'copy')\"" 
 . " onmouseout=\"hideTooltip()\" title=\"".$clang->gTview("Create new template")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Create new template", "js")."')\">" 
