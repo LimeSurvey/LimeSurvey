@@ -74,6 +74,14 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.71(+)
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.71+ Build 5243 to 5326 -  Legend:   + = New  # = Changed  - = Fix
+
+- Fixed bug 02250: The dropdown-date atribute, on a date type question, cancels its mandatory characteristic. Javascript modified so that answer field not filled in until all date elements have been chosen (jcleeland)
+- Fixed bug #02223/02228: Javascript Error with Array Filter. Also fixed javascript for related error where missing array_filter values were causing javascript to crash. Array filter javascript now also checks for existence of object before testing its value. (jcleeland)
+- Fixed bugs in RTL language display (c_schmitz)
+- Fixed bug #02277: question attributes active when conditional question should be skipped - now checks that the display value is turned on before running validation (jcleeland)
+- Fixed bug #02271: Logout icon in Editing Label Sets - added logout button to templates and labelsets screens (jcleeland)
+
 Changes from 1.71+ Build 5204 to 5243 -  Legend:   + = New  # = Changed  - = Fix
 
 # Optimized image sizes (c_schmitz)
