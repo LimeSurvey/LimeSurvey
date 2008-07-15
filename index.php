@@ -1266,7 +1266,7 @@ function checkpregs($move,$backok=null)
 		foreach ($_POST['qattribute_answer'] as $maxvalueanswer)
 		    {
 		        //$maxvalue_answername="maxvalue_answer".$maxvalueanswer;
-		        if (!empty($_POST['qattribute_answer'.$maxvalueanswer]))
+		        if (!empty($_POST['qattribute_answer'.$maxvalueanswer]) && $_POST['display'.$maxvalueanswer] == "on")
 		            {
         			if (isset($move) && $move == "moveprev") {$_SESSION['step'] = $thisstep;}
         			if (isset($move) && $move == "movenext") {$_SESSION['step'] = $thisstep;}
