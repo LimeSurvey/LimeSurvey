@@ -1529,6 +1529,11 @@ function buildsurveysession()
 	global $register_errormsg, $clang;
 	global $totalBoilerplatequestions;
 	global $templang;
+
+	if (!isset($templang) || $templang='')
+	{
+		$templang=$thissurvey['language'];
+	}
 	
 	$totalBoilerplatequestions = 0;
 
