@@ -95,11 +95,11 @@ Calendar._TT["ABOUT_TIME"] = "\n\n" +
 "- و یا برای کاهش از کلید مبدل و کلیک کردن استفاده کنید\n" +
 "- و برای انتخاب سریع‌تر کلیک کنید و بکشید.";
 
-Calendar._TT["PREV_YEAR"] = "سال قبل (برای مشاهدهٔ سال قبل نگه‌دارید)";
-Calendar._TT["PREV_MONTH"] = "ماه قبل (برای مشاهدهٔ سال قبل نگه‌دارید)";
+Calendar._TT["PREV_YEAR"] = "سال قبل (برای مشاهدهٔ سال‌های قبلی نگه‌دارید)";
+Calendar._TT["PREV_MONTH"] = "ماه قبل (برای مشاهدهٔ ماه‌های قبلی نگه‌دارید)";
 Calendar._TT["GO_TODAY"] = "امروز";
-Calendar._TT["NEXT_MONTH"] = "ماه بعد (برای مشاهدهٔ سال قبل نگه‌دارید)";
-Calendar._TT["NEXT_YEAR"] = "سال بعد (برای مشاهدهٔ سال قبل نگه‌دارید)";
+Calendar._TT["NEXT_MONTH"] = "ماه بعد (برای مشاهدهٔ ماه‌های بعدی نگه‌دارید)";
+Calendar._TT["NEXT_YEAR"] = "سال بعد (برای مشاهدهٔ سال‌های بعدی نگه‌دارید)";
 Calendar._TT["SEL_DATE"] = "انتخاب تاریخ";
 Calendar._TT["DRAG_TO_MOVE"] = "برای جابجایی بکشید";
 Calendar._TT["PART_TODAY"] = " (امروز)";
@@ -113,7 +113,7 @@ Calendar._TT["DAY_FIRST"] = "ابتدا %s نمایش داده شود";
 // means Monday, etc.
 Calendar._TT["WEEKEND"] = "4,5";
 
-Calendar._TT["CLOSE"] = "تعطیل";
+Calendar._TT["CLOSE"] = "بستن";
 Calendar._TT["TODAY"] = "امروز";
 Calendar._TT["TIME_PART"] = "برای تغییر مقدار کلید مبدل را گرفته و کلیک کنید (و یا بکشید)";
 
