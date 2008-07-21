@@ -2290,7 +2290,7 @@ if ($action == "editsurvey")
 			. "\t</div>\n";
 
             //Result printing
-            $editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Participiants may print answers?")."</span>\n"
+            $editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Participants may print answers?")."</span>\n"
             . "\t\t<span class='settingentry'><select name='printanswers'>\n"
             . "\t\t\t<option value='Y'";
             if (!isset($esrow['printanswers']) || !$esrow['printanswers'] || $esrow['printanswers'] == "Y") {$editsurvey .= " selected='selected'";}
