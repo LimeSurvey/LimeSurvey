@@ -501,7 +501,7 @@ if ($surveyid)
 			$surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('langpopup2').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></div>";
 			
 			$tmp_pheight = getPopupHeight();
-			$surveysummary .= "<script type='text/javascript'>document.getElementById('langpopup2').style.height='".$tmp_pheight."px';</script>";
+			$surveysummary .= "<script type='text/javascript'>document.getElementById('langpopup2').style.height='".$tmp_pheight."px';</script>\n";
 
 		}
 
@@ -560,10 +560,10 @@ if ($surveyid)
 			}
 			$surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('printpopup').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></div>";
 			
-			$surveysummary .= "<script type='text/javascript'>document.getElementById('printpopup').style.left='152px';</script>";
+			$surveysummary .= "<script type='text/javascript'>document.getElementById('printpopup').style.left='152px';</script>\n";
 			
 			$tmp_pheight = getPopupHeight();
-			$surveysummary .= "<script type='text/javascript'>document.getElementById('printpopup').style.height='".$tmp_pheight."px';</script>";
+			$surveysummary .= "<script type='text/javascript'>document.getElementById('printpopup').style.height='".$tmp_pheight."px';</script>\n";
 			
 		}
 
@@ -754,7 +754,7 @@ if ($surveyid)
 		}
 		else
 		{
-			$surveysummary .= "<option>".$clang->gT("None")."</option>\n";
+			$surveysummary .= "\t\t\t\t\t\t<option>".$clang->gT("None")."</option>\n";
 		}
 		$surveysummary .= "</select>\n"
 		. "\t\t\t\t</td>"
@@ -776,7 +776,7 @@ if ($surveyid)
 		$surveysummary .= "\t<tr id='surveydetails' $showstyle><td><table class='table2columns'><tr><td align='right' valign='top' width='15%'>"
 		. "<strong>".$clang->gT("Title").":</strong></td>\n"
 		. "\t<td align='left' class='settingentryhighlight'><strong>{$s1row['surveyls_title']} "
-		. "(ID {$s1row['sid']})</strong></td></tr>\n";
+		. "(".$clang->gT("ID")." {$s1row['sid']})</strong></td></tr>\n";
 		$surveysummary2 = "";
 		if ($s1row['private'] != "N") {$surveysummary2 .= $clang->gT("Answers to this survey are anonymized.")."<br />\n";}
 		else {$surveysummary2 .= $clang->gT("This survey is NOT anonymous.")."<br />\n";}
@@ -957,7 +957,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 		. "\t\t\t<table class='menubar'>\n"
 		. "\t\t\t\t<tr><td align='left' colspan='2' height='4'>"
 		. "<strong>".$clang->gT("Group")."</strong> "
-		. "<font class='basic'>{$grow['group_name']} (ID:$gid)</font></td></tr>\n"
+		. "<font class='basic'>{$grow['group_name']} (".$clang->gT("ID").":$gid)</font></td></tr>\n"
 		. "\t\t\t\t<tr>\n"
 		. "\t\t\t\t\t<td>\n"
 		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='55' height='20' border='0' hspace='0' align='left' />\n"
@@ -1124,7 +1124,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		. "\t\t<td colspan='2'>\n"
 		. "\t\t\t<table class='menubar'>\n"
 		. "\t\t\t\t<tr><td colspan='2' height='4' align='left'><strong>"
-		. $clang->gT("Question")."</strong> <font class='basic'>{$qrrow['question']} (ID:$qid)</font></td></tr>\n"
+		. $clang->gT("Question")."</strong> <font class='basic'>{$qrrow['question']} (".$clang->gT("ID").":$qid)</font></td></tr>\n"
 		. "\t\t\t\t<tr>\n"
 		. "\t\t\t\t\t<td>\n"
 		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='55' height='20' border='0' hspace='0' align='left' />\n"

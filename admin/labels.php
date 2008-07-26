@@ -96,6 +96,9 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 	."<img src='$imagefiles/add.png' align='right' name='AddLabel' title='' alt='". $clang->gT("Add new label set")."' /></a>\n"	 
 	."\t<font class='boxcaption'>".$clang->gT("Labelsets").": </font>"
 	."\t<select onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
+	$labelsoutput.= "<option value=''";
+	if (!isset($lid) || $lid<1) {$labelsoutput.= " selected='selected'";}
+	$labelsoutput.= ">".$clang->gT("Please Choose...")."</option>\n";
 	$labelsets=getlabelsets();
 	if (count($labelsets)>0)
 	{
@@ -106,9 +109,6 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 			$labelsoutput.= ">{$lb[1]}</option>\n";
 		}
 	}
-	$labelsoutput.= "<option value=''";
-	if (!isset($lid) || $lid<1) {$labelsoutput.= " selected='selected'";}
-	$labelsoutput.= ">".$clang->gT("Please Choose...")."</option>\n";
 	
 	$labelsoutput.= "\t</select>\n"
 	."\t</td>\n"

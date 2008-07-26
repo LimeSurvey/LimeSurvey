@@ -125,7 +125,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
 	
 	$assessmentsoutput.= "<br /><table align='center'  width='90%'>
 		<tr><td colspan='12'>".$clang->gT("If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission")."</th></tr>"
-		."<tr><th>ID</th><th>SID</th>\n";
+		."<tr><th>".$clang->gT("ID")."</th><th>".$clang->gT("SID")."</th>\n";
 	foreach ($headings as $head) {
 		$assessmentsoutput.= "<th>$head</th>\n";
 	}
