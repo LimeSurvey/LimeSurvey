@@ -709,7 +709,7 @@ if ($surveyid)
                 . "title=\"".$clang->gTview("Activate/Edit Tokens for this Survey")."\""
                 . "onmouseover=\"showTooltip(event,'".$clang->gT("Activate/Edit Tokens for this Survey", "js")."');return false\">"
                 . "<img src='$imagefiles/tokens_disabled.png' title='' align='left' alt='".$clang->gT("Activate/Edit Tokens for this Survey")."'"
-                . "name='DoDataentry' /></a>\n";
+                . "name='DoTokens' /></a>\n";
                 
             }
 		}
