@@ -1383,7 +1383,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 	{
 		$_POST['description'] = '';
 	}
-	if ($_POST['welcome'] = "<br />")
+	if ($_POST['welcome'] == "<br />")
 	{
 		$_POST['welcome'] = '';
 	}
