@@ -55,7 +55,8 @@ class  ADODB_odbc_mssql extends ADODB_odbc {
 		$row = $this->GetRow("execute sp_server_info 2");
 		$ADODB_FETCH_MODE = $save;
 		if (!is_array($row)) return false;
-		$arr['description'] = $row[2];
+        
+		$arr['description'] = isset($row[2])?$row[2]:'';
 		$arr['version'] = ADOConnection::_findvers($arr['description']);
 		return $arr;
 	}

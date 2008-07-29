@@ -841,7 +841,11 @@ function checkgroupfordisplay($gid)
 			}
 		}
 	}
-	if ($countQuestionsInThisGroup != $countConditionalQuestionsInThisGroup || !isset($QuestionsWithConditions))
+    if ($countQuestionsInThisGroup===0)
+    {
+        return false;
+    }    
+	elseif ($countQuestionsInThisGroup != $countConditionalQuestionsInThisGroup || !isset($QuestionsWithConditions) )
 	{
 		//One of the questions in this group is NOT conditional, therefore
 		//the group MUST be displayed
