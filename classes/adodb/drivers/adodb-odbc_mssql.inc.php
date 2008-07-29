@@ -1,6 +1,6 @@
 <?php
 /* 
-V4.98 13 Feb 2008  (c) 2000-2008 John Lim (jlim#natsoft.com.my). All rights reserved.
+V4.990 11 July 2008  (c) 2000-2008 John Lim (jlim#natsoft.com). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. 
@@ -35,7 +35,7 @@ class  ADODB_odbc_mssql extends ADODB_odbc {
 	var $substr = 'substring';
 	var $length = 'len';
 	var $ansiOuter = true; // for mssql7 or later
-	var $identitySQL = 'select SCOPE_IDENTITY()'; // 'select SCOPE_IDENTITY'; # for mssql 2000
+	var $identitySQL = 'select @@identity'; // 'select SCOPE_IDENTITY'; # for mssql 2000
 	var $hasInsertID = true;
 	var $connectStmt = 'SET CONCAT_NULL_YIELDS_NULL OFF'; # When SET CONCAT_NULL_YIELDS_NULL is ON, 
 														  # concatenating a null value with a string yields a NULL result
@@ -179,8 +179,17 @@ order by constraint_name, referenced_table_name, keyno";
 	
 	function _query($sql,$inputarr)
 	{
-		if (is_string($sql)) $sql = str_replace('||','+',$sql);
-		return ADODB_odbc::_query($sql,$inputarr);
+/*
+		if (is_string($sql)) $sql = str_replace('||','+',$sql); 
+            $getIdentity = false;
+            if (!is_array($sql) && preg_match('/^\\s*insert/i', $sql)) {
+                $getIdentity = true;
+                $sql .= (preg_match('/;\\s*$/i', $sql) ? ' ' : '; ') . $this->identitySQL;
+            }
+*/        
+		
+        $rs = ADODB_odbc::_query($sql,$inputarr);
+        return $rs; 
 	}
 	
 	function SetTransactionMode( $transaction_mode ) 
