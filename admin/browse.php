@@ -640,7 +640,7 @@ elseif ($subaction == "all")
 	."\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
 	."\t\t\t\t<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
 	."\t\t\t</select>\n"
-	."\t\t\t&nbsp&nbsp&nbsp&nbsp<input type='submit' value='".$clang->gT("Show")."' />\n"
+	."\t\t\t&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' value='".$clang->gT("Show")."' />\n"
 	."\t\t</font>\n"
 	."\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
 	."\t\t<input type='hidden' name='action' value='browse' />\n"

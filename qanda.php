@@ -2615,7 +2615,7 @@ function do_array_5point($ia)
 			  $answer .= "\t\t\t\t\t<td class='answertextright' width='$answerwidth%'>$answertext2</td>\n";
            } 
 		elseif 
-		    ($right_exists)  {$answer .= "\t\t\t\t\t<td class='answertextright'>&nbsp</td>\n";}
+		    ($right_exists)  {$answer .= "\t\t\t\t\t<td class='answertextright'>&nbsp;</td>\n";}
 
 		
 		if ($ia[6] != "Y" && $shownoanswer == 1)

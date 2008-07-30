@@ -717,10 +717,10 @@ $statisticsoutput .= "\t\t\t</table>\n"
 ."\t\t<tr><td align='center' class='settingcaption'>\n"
 ."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
 ."\t\t\t\t<tr><td align='center'>".$clang->gT("Filter incomplete answers:")."<select name='filterinc'>\n"
-."\t\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
-."\t\t\t\t\t<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
+."\t\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Enabled")."</option>\n"
+."\t\t\t\t\t<option value='show' $selectshow>".$clang->gT("Disabled")."</option>\n"
 ."\t\t\t\t</select></td></tr>\n"
-."\t\t\t\t<tr><td align='center'><input type='checkbox' id='noncompleted' name='noncompleted'/><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses (only works when Filter incomplete answers is Disable)")."</label></font></td></tr>\n";
+."\t\t\t\t<tr><td align='center'><input type='checkbox' id='noncompleted' name='noncompleted'/><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses (only works when Filter incomplete answers is Disabled)")."</label></font></td></tr>\n";
 
 if (isset($usejpgraph) && $usejpgraph == 1)
 {

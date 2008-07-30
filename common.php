@@ -366,7 +366,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 	        $adminmenu .= "\t\t\t\t</div>\n"
                         . "\t\t\t</div>\n"
                         . "\t\t</div>\n";
-            $adminmenu .= "<font style='size:1px;line-height:0;'>&nbsp</font>"; //CSS Firefox 2 transition fix
+            $adminmenu .= "<font style='size:1px;line-height:0;'>&nbsp;</font>"; //CSS Firefox 2 transition fix
                         
             }
         return $adminmenu;
@@ -2109,7 +2109,7 @@ function templatereplace($line)
 	// Performance Improvement	: 49%
 	// Optimized By				: swales
 
-	global $surveylist, $sitename, $clienttoken;
+	global $surveylist, $sitename, $clienttoken, $rooturl;
 	global $thissurvey, $imagefiles, $defaulttemplate;
 	global $percentcomplete, $move;
 	global $groupname, $groupdescription, $question;
@@ -2128,7 +2128,7 @@ function templatereplace($line)
 	if (stripos ($line,"</head>"))
 	{
 		$line=str_ireplace("</head>",
-			"<script type=\"text/javascript\" src=\"scripts/surveyRuntime.js\">\n"
+			"<script type=\"text/javascript\" src=\"$rooturl/scripts/surveyRuntime.js\">\n"
 			."</script>\n"
 			."</head>", $line);
 	}

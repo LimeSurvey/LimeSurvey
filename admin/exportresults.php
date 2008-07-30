@@ -843,7 +843,8 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
 	$rowcounter=0;
 	while ($drow = $dresult->FetchRow())
 	{
-		$rowcounter++;
+		$drow=array_map('strip_tags_full',$drow);
+        $rowcounter++;
         if ($type == "csv")
 	     	{
 	     		$exportoutput .= "\"".implode("\"$separator\"", str_replace("\"", "\"\"", str_replace("\r\n", " ", $drow))) . "\"\n"; //create dump from each row
@@ -854,7 +855,7 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
         	foreach ($drow as $rowfield)
         	{
         	  $rowfield=str_replace("?","-",$rowfield);
-              $sheet->write($rowcounter,$colcounter,mb_convert_encoding($rowfield, "ISO-8859-1", "UTF-8"));
+              $sheet->write($rowcounter,$colcounter,$rowfield);
               $colcounter++;
         	}
         }
@@ -864,7 +865,7 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
             foreach ($drow as $rowfield)
             {
               $rowfield=str_replace("?","-",$rowfield);
-              $pdfstring .=mb_convert_encoding($rowfield, "ISO-8859-1", "UTF-8")." | ";
+              $pdfstring .=$rowfield." | ";
             }
             $pdf->intopdf($pdfstring);
         }		

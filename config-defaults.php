@@ -64,6 +64,9 @@ $repeatheadings     =   '25';             // The number of answers to show befor
 $minrepeatheadings  =   3;                // The minimum number of remaing answers that are required before repeating the headings in array (flexible) questions.
 $defaultlang        =   'en';             // The default language to use - the available languages are the directory names in the /locale dir - for example de = German
 
+$translationmode    =   0;                // If interface translations are not working this might be because of a bug in your PHP version. 
+                                          // Set this to '1' to activate a workaround for this bug
+
 $timeadjust         =   0;                // Number of hours to adjust between your webserver local time and your own local time (for datestamping responses)
 $allowexportalldb   =   1;                // 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported
 $allowmandbackwards =   1;                // Allow moving backwards (ie: << prev) through survey if a mandatory question
@@ -83,8 +86,6 @@ $debug              =   0;      // Set this to 1 if you are looking for errors. 
                                 // then please check your error-logs - either in your hosting provider admin panel or in some /logs dir.
                                 // LimeSurvey developers set this to 2.   
 $memorylimit       =  '32M';    // This sets how much memory LimeSurvey can access. 16M is the minimum (M=mb) recommended.
-$translationmode    =   0;      // If interface translations are not working this might be because of a bug in your PHP version. 
-                                // Set this to '1' to activate a workaround for this bug
                                 
 $sessionlifetime    =   3600;   // How long until a survey session expires in seconds
 
@@ -92,7 +93,7 @@ $sessionlifetime    =   3600;   // How long until a survey session expires in se
 // These settings determine how LimeSurvey will send emails
 
 $siteadminemail     =   'your@email.org'; // The default email address of the site administrator
-$siteadminbounce     =   'your@email.org'; // The default email address used for error notification of sent messages for the site administrator (Return-Path)
+$siteadminbounce    =   'your@email.org'; // The default email address used for error notification of sent messages for the site administrator (Return-Path)
 $siteadminname      =   'Your Name';      // The name of the site administrator
 
 $emailmethod        =   'mail';           // The following values can be used:
