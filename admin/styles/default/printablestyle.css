@@ -1,0 +1,3 @@
+@media print{
+  #exportbutton {display: none;}
+}
