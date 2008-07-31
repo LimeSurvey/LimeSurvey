@@ -1733,18 +1733,18 @@ if (isset($summary) && $summary)
 						$legendtop=0.07;
 						$setcentrey=0.5;
 					}
-					$graph = new PieGraph(640,$gheight,'png');
+					$graph = new PieGraph(680,$gheight,'png');
 					$graph->legend->SetFont(constant($jpgraphfont), FS_NORMAL, $fontsize);
 					$graph->legend->SetPos(0.015, $legendtop, 'right', 'top');
 					$graph->legend->SetFillColor("white");
     				global $jpgraph_antialiasing;
 					if ($jpgraph_antialiasing == 1) $graph->SetAntiAliasing();
 				}
-				$graph->title->SetColor("#EEEEEE");
+				$graph->title->SetColor("black");
 				$graph->SetMarginColor("#FFFFFF");
 				// Set A title for the plot
-				//$graph->title->Set($qquestion);
-				$graph->title->SetFont(constant($jpgraphfont),FS_BOLD,13);
+				// $graph->title->Set($qquestion); //disabled: printing titles is only a good solution if question texts are short
+				$graph->title->SetFont(constant($jpgraphfont),FS_BOLD,12);
 				// Create pie plot
 				if ($qtype == "M" || $qtype == "P") { //Bar Graph
 					$p1 = new BarPlot($grawdata);
