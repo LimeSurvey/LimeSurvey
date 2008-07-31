@@ -33,7 +33,7 @@ $databaseuser       =   'root';        // The name of a user with rights to crea
 $databasepass       =   '';            // Password of db user
 $dbprefix           =   'lime_';       // A global prefix that can be added to all LimeSurvey tables. Use this if you are sharing
                                        // a database with other applications. Suggested prefix is 'lime_'
-$databasetabletype  =   'myISAM';	   // Storage engine mysql should use when creating survey results tables and token tables (if mysql is used). If available, InnoDB is recommended. Default is myISAM.
+$databasetabletype  =   'myISAM';	     // Storage engine mysql should use when creating survey results tables and token tables (if mysql is used). If available, InnoDB is recommended. Default is myISAM.
 
 // FILE LOCATIONS
 
@@ -77,7 +77,7 @@ $admintheme         =  'default';         // This setting specifys the directory
 
 $defaulttemplate    =  'default';         // This setting specifys the default theme used for the 'public list' of surveys
 
-$allowedtemplateuploads = 'gif,jpg,png';   // File types allowed to be uploaded in the templates section.
+$allowedtemplateuploads = 'gif,jpg,png';  // File types allowed to be uploaded in the templates section.
 
 $allowedresourcesuploads = '7z,aiff,asf,avi,bmp,csv,doc,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xml,zip';   // File types allowed to be uploaded in the resources sections, and with the HTML Editor
 
@@ -97,7 +97,7 @@ $siteadminbounce    =   'your@email.org'; // The default email address used for 
 $siteadminname      =   'Your Name';      // The name of the site administrator
 
 $emailmethod        =   'mail';           // The following values can be used:
-									      // mail      -  use internal PHP Mailer
+									                        // mail      -  use internal PHP Mailer
                                           // sendmail  -  use Sendmail Mailer
                                           // qmail     -  use Qmail MTA
                                           // smtp      -  use SMTP relaying
@@ -116,13 +116,13 @@ $maxemails          =   50;               // The maximum number of emails to sen
 // LimeSurvey has been tested using version 1.13. Documentation for this is available at the
 // jpgraph website. LimeSurvey cannot assist in the setting up of this system.
 // To use JPGraph adjust the next two lines, and adjust the location as suites.
-$usejpgraph         =   0; //Set to 1 to enable
+$usejpgraph         =   0;                //Set to 1 to enable
 $jpgraphdir         =   '/var/apache/htdocs/jpgraph'; //The location of the jpgraph class (where jpgraph.php is)
                                                       // If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir='C:\\Inetpub\\wwwroot\\jpgraph'
 $jpgraphfont        =   'FF_ARIAL'; //The font to use with graphs. A failsafe setting would be 'FF_FONT1'
 $jpgraphfontdir     =   '';         //On debian based systems, the fonts aren't in the old font dir of XFree86 : (/usr/X11R6/lib/X11/fonts/truetype/)
                                     //To have beautiful fonts with JpGraph it might be necessary to set this to a new path , for example: /usr/share/fonts/truetype/msttcorefonts/
-$jpgraph_antialiasing	=	'0'; // Set to 1 to enable AntiAliasing, this will make your graph's curves smoother, but will take more than twise aslong to generate statistics or might even timeout.
+$jpgraph_antialiasing	=	'0';        // Set to 1 to enable AntiAliasing, this will make your graph's curves smoother, but will take more than twise aslong to generate statistics or might even timeout.
 
 // CMS Integration Settings
 // Set $embedded to true and specify the header and footer functions if the survey is to be displayed embedded in a CMS
@@ -278,23 +278,23 @@ require_once(dirname(__FILE__).'/config.php');
 
     //The following url and dir locations do not need to be modified unless you have a non-standard
     //LimeSurvey installation. Do not change unless you know what you are doing.
-    $homeurl        =   "$rooturl/admin"; // The website location (url) of the admin scripts
-    $publicurl      =   "$rooturl";       // The public website location (url) of the public survey script
+    $homeurl        =   "$rooturl/admin";  // The website location (url) of the admin scripts
+    $publicurl      =   "$rooturl";        // The public website location (url) of the public survey script
     $tempurl        =   "$rooturl/tmp";
-    $imagefiles     =   "$rooturl/images"; //Location of button bar files for admin script
-    $homedir        =   "$rootdir/admin"; // The physical disk location of the admin scripts
-    $publicdir      =   "$rootdir";       // The physical disk location of the public scripts
-    $tempdir        =   "$rootdir/tmp";   // The physical location where LimeSurvey can store temporary files
-                                          // Note: For OS/2 the $tempdir may need to be defined as an actual directory
-                                          // example: "x:/limesurvey/tmp". We don't know why.
+    $imagefiles     =   "$rooturl/images"; // Location of button bar files for admin script
+    $homedir        =   "$rootdir/admin";  // The physical disk location of the admin scripts
+    $publicdir      =   "$rootdir";        // The physical disk location of the public scripts
+    $tempdir        =   "$rootdir/tmp";    // The physical location where LimeSurvey can store temporary files
+                                           // Note: For OS/2 the $tempdir may need to be defined as an actual directory
+                                           // example: "x:/limesurvey/tmp". We don't know why.
     $fckeditordir   =   "$homeurl/scripts/fckeditor.262";
 
 //PDF Export Settings
-$usepdfexport   = 1;                        //Set 0 to disable; 1 to enable 
+$usepdfexport   = 1;                       //Set 0 to disable; 1 to enable 
 $pdfexportdir   = '/admin/classes/tcpdf';  //Directory with the tcpdf.php extensiontcpdf.php
 $pdffonts       = $pdfexportdir.'/fonts';  //Directory for the TCPDF fonts
-$pdfdefaultfont = 'freemono';               //Default font for the pdf Export
-$pdffontsize    = 10;                       //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
+$pdfdefaultfont = 'freemono';              //Default font for the pdf Export
+$pdffontsize    = 10;                      //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
 $notsupportlanguages = array('zh-Hant-TW','zh-Hant-HK','zh-Hans','ja','th');
 $pdforientation = 'P';                     // Set L for Landscape or P for portrait format
 
