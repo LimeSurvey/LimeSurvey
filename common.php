@@ -4525,8 +4525,8 @@ function transInsertAns($newsid,$oldsid,$fieldnames)
 
 		foreach ($fieldnames as $fnrow)
 		{
-			$pattern = "\{INSERTANS:".$fnrow['oldfieldname']."\}";
-			$replacement = "\{INSERTANS:".$fnrow['newfieldname']."\}";
+			$pattern = "{INSERTANS:".$fnrow['oldfieldname']."}";
+			$replacement = "{INSERTANS:".$fnrow['newfieldname']."}";
 			$question=ereg_replace($pattern, $replacement, $question);
 			$help=ereg_replace($pattern, $replacement, $help);
 		}
