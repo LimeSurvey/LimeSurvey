@@ -2915,7 +2915,7 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
 // This function mails a text $body to the recipient $to. YOu can use more than one 
 // recipient when using a comma separated string with recipients.
 
-	global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword, $defaultlang, $rootdir, $maildebug, $maildebugbody;
+	global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword, $defaultlang, $rootdir, $maildebug, $maildebugbody, $emailsmtpssl;
 
     //if ($ishtml) {$body=htmlwrap($body,110);}
 
@@ -2934,8 +2934,8 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
         $mail->SetLanguage('en',$rootdir.'/classes/phpmailer/language/');
     }
 	$mail->CharSet = "UTF-8";
-	if (isset($emailsmtpssl) && trim($emailsmtpssl)!=='' && $emailsmtpssl!=0) {
-        if ($emailsmtpssl==1) {$mail->SMTPSecure = "ssl";}
+	if (isset($emailsmtpssl) && trim($emailsmtpssl)!=='' && $emailsmtpssl!==0) {
+        if ($emailsmtpssl===1) {$mail->SMTPSecure = "ssl";}
     	 else {$mail->SMTPSecure = $emailsmtpssl;}
 	 }
 
