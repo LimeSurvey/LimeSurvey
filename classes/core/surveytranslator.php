@@ -77,6 +77,11 @@
 	    $supportedLanguages['sq']['nativedescription'] = 'Shqipe';
 	    $supportedLanguages['sq']['rtl'] = false;
 
+	    // Arabic
+	    $supportedLanguages['ar']['description'] = $clang->gT('Arabic');
+	    $supportedLanguages['ar']['nativedescription'] = '&#1593;&#1614;&#1585;&#1614;&#1576;&#1610;&#1618;';
+	    $supportedLanguages['ar']['rtl'] = true;
+
 	    // Basque
 	    $supportedLanguages['eu']['description'] = $clang->gT('Basque');
 	    $supportedLanguages['eu']['nativedescription'] = 'Euskara';
