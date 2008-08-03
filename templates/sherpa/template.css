@@ -304,3 +304,9 @@ width:100%;
 table.question tr.array1:hover,table.question tr.array2:hover {
 background-color:#A7A9D1;
 }
+
+.errormandatory,.warningjs {
+font-size:12px;
+font-weight:700;
+color:RED;
+}
