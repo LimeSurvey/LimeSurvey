@@ -635,7 +635,7 @@ if ($surveyid)
 		{
             $surveysummary .= "\t\t\t\t\t<a href=\"#\""
             . "onmouseout=\"hideTooltip()\" "
-            . "title=\"".$clang->gTview("Change Group Order")." - ".$clang->gT("Disabled")."\" "
+            . "title=\"".$clang->gTview("Change Group Order")." - ".$clang->gTview("Disabled")."\" "
             . "onmouseover=\"showTooltip(event,'".$clang->gT("Change Group Order", "js")." - ".$clang->gT("Disabled", "js")."');return false\">"
             . "<img src='$imagefiles/reorder_disabled.png' title='' alt='".$clang->gT("Change Group Order")." - ".$clang->gT("Disabled")."' name='ordergroups' /></a>\n";
 		}

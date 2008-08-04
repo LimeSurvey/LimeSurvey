@@ -129,7 +129,7 @@ if ($action == "setusertemplates")
                       if ($usr['uid'] == $postuserid)
                       {
                               $templaterights = array();
-                              $squery = "SELECT `folder`, `use` FROM {$dbprefix}templates_rights WHERE uid={$usr['uid']}";
+                              $squery = 'SELECT '.db_quote_id('folder').','.db_quote_id('use')." FROM {$dbprefix}templates_rights WHERE uid={$usr['uid']}";
                               $sresult = db_execute_assoc($squery) or safe_die($connect->ErrorMsg());//Checked
                               while ($srow = $sresult->FetchRow()) {
                                       $templaterights[$srow["folder"]] = array("use"=>$srow["use"]);
