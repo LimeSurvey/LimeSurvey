@@ -1521,6 +1521,7 @@ function returnquestiontitlefromfieldcode($fieldcode)
 	// Performance optimized	: Nov 13, 2006
 	// Performance Improvement	: 37%
 	// Optimized By				: swales
+    
 
 	global $dbprefix, $surveyid, $connect, $clang;
 	if (!isset($fieldcode)) {return $clang->gT("Preset");}
@@ -1548,20 +1549,21 @@ function returnquestiontitlefromfieldcode($fieldcode)
 			$qname=strip_tags($qrow['question']);
 		}
 	}
+    $aname='';
 	if (isset($details['aid']) && $details['aid']) //Add answer if necessary (array type questions)
 	{
 		$qq = "SELECT answer FROM ".db_table_name('answers')." WHERE qid=$fqid AND code='{$details['aid']}' AND language='".$_SESSION['s_lang']."'";
 		$qr = db_execute_assoc($qq) or safe_die ("ERROR: ".$connect->ErrorMsg()."<br />$qq"); //Checked
 		while($qrow=$qr->FetchRow())
 		{
-			$qname.=" [".$qrow['answer']."]";
+			$aname=$qrow['answer'];
 		}
 	}
-	if (substr($fieldcode, -5) == "other")
+	if (substr($fieldcode, -5) == 'other')
 	{
-		$qname .= " [Other]";
+		$aname = $clang->gT('Other');
 	}
-	return $qname;
+	return array($qname,$aname);
 }
 
 

@@ -1437,10 +1437,25 @@ function sendsubmitnotification($sendnotification)
 	if ($sendnotification > 1)
 	{ //Send results as well. Currently just bare-bones - will be extended in later release
 		$message .= "----------------------------\n";
+        $prevquestion='';
 		foreach ($_SESSION['insertarray'] as $value)
 		{
-			$questiontitle=strip_tags(html_entity_decode_php4(returnquestiontitlefromfieldcode($value), ENT_QUOTES, "UTF-8"));
-			$message .= "$questiontitle:   ";
+            $qaarray=returnquestiontitlefromfieldcode($value);
+            if ($prevquestion!=$qaarray[0])
+            {
+                $prevquestion=$qaarray[0];
+                $questiontitle=strip_tags(html_entity_decode_php4($prevquestion, ENT_QUOTES, 'UTF-8'));
+                $message .= "$questiontitle: ";
+                if ($qaarray[1]!='')
+                {
+                    $message .= "\n";
+                }
+            }
+            if ($qaarray[1]!='')
+            {
+			    $answeroption=strip_tags(html_entity_decode_php4($qaarray[1], ENT_QUOTES, 'UTF-8'));
+			    $message .= "[$answeroption]:   ";
+            }
 			$details = arraySearchByKey($value, createFieldMap($surveyid),"fieldname", 1);
 			if ( $details['type'] == "T" or $details['type'] == "U")
 			{
