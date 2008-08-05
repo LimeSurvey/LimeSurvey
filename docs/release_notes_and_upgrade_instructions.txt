@@ -74,6 +74,28 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.71(+)
 Thank you to everyone who helped with this new release!
 
 
+
+
+Changes from 1.71+ Build 5372 to 5394 -  Legend:   + = New  # = Changed  - = Fix
+
++New Arabic translation by shubbar
+-Fixed #2224: 100% on graphs does not show full number (el-matador-69) 
+-Small fixes for style and username handling (c_schmitz)
+-Fixed problems with editing users and template rights in MS SQL (c_schmitz)
+-Fixed #2367: Updated Norwegian Nynorsk translation - Thx to dittaeva (el-matador-69)
+-Fixed a problem with SMTP and SSL (c_schmitz)
+-Fixed a bug with INSERTANS-convert on survey import inserting escape chars (c_schmitz)
+#Removed obsolete lines in admin notification mail (c_schmitz)
+#French translation updated (b00z00) 
+#Updated Italian translation by Eniel Ninka  ( e d-0-t- ninka -a-t- univpm -d-a-t- it)
+#Better markup for mandatory errors in Sherpa template (c_schmitz)
+#Admin maintoolbar and survey toolbar are converted to pure CSS now (thanks to Messi) (c_schmitz)
+#Updated Bulgarian translation by Alexander Simidchiev <simid -a-t- mail -d-i-t- bg
+#Updated Albanian Language file by Eniel Ninka (e -d-o-t- ninka -a-t- univpm -d-o-t- it )
+#Updated Greek translation by Christos Rodosthenous  ( chrisrodo -a-t- cti -d-o-t gr )
+#Updated Dutch translation by Hans Delva
+
+
 Changes from 1.71+ Build 5327 to 5371 -  Legend:   + = New  # = Changed  - = Fix
 
 - Fixed small HTML errors (c_schmitz)
