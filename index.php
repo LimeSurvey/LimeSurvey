@@ -1445,7 +1445,7 @@ function sendsubmitnotification($sendnotification)
             {
                 $prevquestion=$qaarray[0];
                 $questiontitle=strip_tags(html_entity_decode_php4($prevquestion, ENT_QUOTES, 'UTF-8'));
-                $message .= "$questiontitle: ";
+                $message .= "\n$questiontitle: ";
                 if ($qaarray[1]!='')
                 {
                     $message .= "\n";
@@ -1483,7 +1483,7 @@ function sendsubmitnotification($sendnotification)
 	if ($recips=explode(";", $thissurvey['adminemail']))
 	{
 		foreach ($recips as $rc)
-		{
+		{                                        
 			if (!MailTextMessage($message, $subject, trim($rc), $from, $sitename, false, getBounceEmail($surveyid)))
             {
                 if ($debug>0) {echo '<br />Email could not be sent. Reason: '.$maildebug.'<br/>';}

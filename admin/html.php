@@ -768,7 +768,7 @@ if ($surveyid)
         . "\t\t\t\t</div>\n"
 		. "\t\t\t</div>\n"
 		. "\t\t</div>\n";
-                    $surveysummary .= "<font style='size:1px;line-height:0;'>&nbsp;</font>"; //CSS Firefox 2 transition fix
+        $surveysummary .= "<font style='size:1px;line-height:0;'>&nbsp;&nbsp;&nbsp;&nbsp;</font>"; //CSS Firefox 2 transition fix
 
 
 		//SURVEY SUMMARY
