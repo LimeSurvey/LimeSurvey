@@ -168,7 +168,7 @@ $tokenoutput .= "<script type='text/javascript'>\n"
 
 $tokenoutput .= "<table width='100%' border='0' cellpadding='0' cellspacing='0'>\n"
 ."\t<tr>\n"
-."\t\t<td valign='top' align='center' >\n"
+."\t\t<td valign='top' align='left' >\n"
 ."\t\t<table><tr><td></td></tr></table>\n";
 
 $tokenoutput .= "<table class='menubar' cellpadding='1' cellspacing='0'>\n";
@@ -397,9 +397,6 @@ if ($row["attribute2"]) {$attr2_name = $row["attribute2"];} else {$attr2_name=$c
 // IF WE MADE IT THIS FAR, THEN THERE IS A TOKENS TABLE, SO LETS DEVELOP THE MENU ITEMS
 $tokenoutput .= "\t<tr>\n"
 ."\t\t<td>\n"
-."\t\t\t<a href=\"#\" onclick=\"showhelp('show')\" onmouseout=\"hideTooltip()\""
-."onmouseover=\"showTooltip(event,'".$clang->gT("Show Help", "js")."');return false\">" .
-"<img src='$imagefiles/showhelp.png' title='' align='right' alt='' /></a>\n"
 ."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" onmouseout=\"hideTooltip()\""
 ."onmouseover=\"showTooltip(event,'".$clang->gT("Return to Survey Administration", "js")."');return false\">" .
 "<img name='HomeButton' src='$imagefiles/home.png' align='left'  alt=''  /></a>\n"
@@ -450,11 +447,15 @@ if ($sumrows5['edit_survey_property'] ||
 	."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left'  alt='' />\n"
 //	."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Drop tokens table", "js")."');return false\">" .
 	."\t\t\t<a href=\"#\" onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill")."\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Drop tokens table", "js")."');return false\">" .
-	"<img name='DeleteTokensButton' src='$imagefiles/delete.png' title='' align='left'  alt=''  /></a>\n"
-	."\t\t</td>\n";
+	"<img name='DeleteTokensButton' src='$imagefiles/delete.png' title='' align='left'  alt=''  /></a>\n";
 }
 
-$tokenoutput .= "\t</tr>\n";
+$tokenoutput .="\t\t\t<a href=\"#\" onclick=\"showhelp('show')\" onmouseout=\"hideTooltip()\""
+                ."onmouseover=\"showTooltip(event,'".$clang->gT("Show Help", "js")."');return false\">" .
+                "<img src='$imagefiles/showhelp.png' title='' align='right' alt='' /></a>\n";
+
+
+$tokenoutput .= "\t</td></tr>\n";
 
 // SEE HOW MANY RECORDS ARE IN THE TOKEN TABLE
 $tkcount = $tkresult->RecordCount();

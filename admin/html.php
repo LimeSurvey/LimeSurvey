@@ -747,21 +747,21 @@ if ($surveyid)
             . "<img src='$imagefiles/add.png' title='' alt='' name='AddNewGroup' /></a>\n";
         }
         $surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' alt='' hspace='0' />\n"
-        . "\t\t\t\t\t<input type='image' src='$imagefiles/minus.gif' title='". $clang->gT("Hide Details of this Survey")."' "
-        . "alt='". $clang->gT("Hide Details of this Survey")."' name='MinimiseSurveyWindow' "
+        . "\t\t\t\t\t<input type='image' src='$imagefiles/minus.gif' title='". $clang->gT("Hide details of this Survey")."' "
+        . "alt='". $clang->gT("Hide details of this Survey")."' name='MinimiseSurveyWindow' "
         . "onclick='document.getElementById(\"surveydetails\").style.display=\"none\";' />\n";
-        $surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/plus.gif' title='". $clang->gT("Show Details of this Survey")."' "
-        . "alt='". $clang->gT("Show Details of this Survey")."' name='MaximiseSurveyWindow' "
+        $surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/plus.gif' title='". $clang->gT("Show details of this survey")."' "
+        . "alt='". $clang->gT("Show details of this survey")."' name='MaximiseSurveyWindow' "
         . "onclick='document.getElementById(\"surveydetails\").style.display=\"\";' />\n";
         if (!$gid)
         {
-            $surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' title='". $clang->gT("Close this Survey")."' "
-            . "alt='".$clang->gT("Close this Survey")."' name='CloseSurveyWindow' "
+            $surveysummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' title='". $clang->gT("Close this survey")."' "
+            . "alt='".$clang->gT("Close this survey")."' name='CloseSurveyWindow' "
             . "onclick=\"window.open('$scriptname', '_top')\" />\n";
         }
         else
         {
-            $surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' width='40' alt='' />\n";
+            $surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' width='20' alt='' />\n";
         }
         
 		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' border='0' width='8' alt='' />\n"

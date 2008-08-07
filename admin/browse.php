@@ -64,7 +64,7 @@ if (!$database_exists) //DATABASE DOESN'T EXIST OR CAN'T CONNECT
 {
 	$browseoutput .= "\t<tr ><td colspan='2' height='4'><strong>"
 	. $clang->gT("Browse Responses")."</strong></td></tr>\n"
-	."\t<tr><td align='center'>$setfont\n"
+	."\t<tr><td align='center'>\n"
 	."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
 	. $clang->gT("The defined LimeSurvey database does not exist")."<br />\n"
 	. $clang->gT("Either your selected database has not yet been created or there is a problem accessing it.")."<br /><br />\n"
@@ -77,7 +77,7 @@ if (!$surveyid && !$subaction) //NO SID OR ACTION PROVIDED
 {
 	$browseoutput .= "\t<tr ><td colspan='2' height='4'><strong>"
 	. $clang->gT("Browse Responses")."</strong></td></tr>\n"
-	."\t<tr><td align='center'>$setfont\n"
+	."\t<tr><td align='center'>\n"
 	."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
 	. $clang->gT("You have not selected a survey to browse.")."<br /><br />\n"
 	."<input type='submit' value='"
@@ -315,8 +315,8 @@ if ($subaction == "id") // Looking at a SINGLE entry
 		{
 			$browseoutput .= "\t<tr>\n"
 			."\t\t<td bgcolor='#EFEFEF' valign='top' align='right' width='33%' style='padding-right: 5px'>"
-			."$setfont{$fnames[$i][2]}</font></td>\n"
-			."\t\t<td valign='top' align='left' style='padding-left: 5px'>$setfont"
+			."{$fnames[$i][2]}</font></td>\n"
+			."\t\t<td valign='top' align='left' style='padding-left: 5px'>"
 			.htmlspecialchars(getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]]), ENT_QUOTES)
 			."</font></td>\n"
 			."\t</tr>\n"

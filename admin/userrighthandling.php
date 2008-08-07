@@ -594,7 +594,7 @@ if ($action == "addusergroup")
 {
 	if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)  // for now only admins may do that
 	{
-		$usersummary = "<form action='$scriptname'  method='post'><table width='100%' border='0'>\n\t<tr><th colspan='2'>\n"
+		$usersummary = "<form action='$scriptname'  method='post'><table  width='100%' class='form2columns'>\n\t<tr><th colspan='2'>\n"
 		. "\t\t<strong>".$clang->gT("Add User Group")."</strong></th></tr>\n"
 		. "\t<tr>\n"
 		. "\t\t<td><strong>".$clang->gT("Name:")."</strong></td>\n"
