@@ -46,6 +46,7 @@ background-color:#EFEFEF;
 color:#777;
 font-family:Verdana;
 font-size:10px;
+direction: ltr;
 }
 
 .rank {
@@ -154,6 +155,10 @@ A:link,.clearall
 A:visited,.clearall
 A:active {
 text-decoration:none;
+}
+
+table.question {
+width: 100%;
 }
 
 table.question tr.array1:hover,table.question tr.array2:hover {

@@ -54,6 +54,7 @@ background-color:EFEFEF;
 color:#777;
 font-family:arial;
 font-size:8pt;
+direction: ltr;
 }
 
 .submit {
@@ -299,6 +300,10 @@ font-size:1em;
 
 table,.printouttable {
 width:100%;
+}
+
+table.question {
+width: 100%;
 }
 
 table.question tr.array1:hover,table.question tr.array2:hover {

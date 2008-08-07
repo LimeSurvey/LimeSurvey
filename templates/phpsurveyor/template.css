@@ -47,6 +47,10 @@ font-size:9pt;
 font-family:verdana;
 }
 
+.innergraph {
+direction: ltr;
+}
+
 .innergraph img {
 height:12px;
 vertical-align:top;
@@ -104,6 +108,10 @@ font-size:11px;
 font-size:12px;
 font-weight:700;
 color:RED;
+}
+
+table.question {
+width: 100%;
 }
 
 table.question tr.array1:hover,table.question tr.array2:hover {

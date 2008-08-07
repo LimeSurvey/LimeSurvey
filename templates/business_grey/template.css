@@ -81,6 +81,7 @@ background-color:EFEFEF;
 color:#777;
 font-family:arial;
 font-size:8pt;
+direction: ltr;
 }
 
 .array1 {
@@ -172,6 +173,10 @@ font-size:1em;
 .rank,.question {
 background-color:#E1E1E1;
 color:#777;
+}
+
+table.question {
+width: 100%;
 }
 
 table.question tr.array1:hover,table.question tr.array2:hover {

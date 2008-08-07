@@ -8,6 +8,7 @@ background-color:#999;
 table.question {
 border:1px;
 border-color:#aaa;
+width: 100%;
 }
 
 td {
@@ -61,6 +62,7 @@ font-weight:bold;
 .innergraph {
 font-family:verdana;
 font-size:10pt;
+direction: ltr;
 }
 
 .innergraph img {

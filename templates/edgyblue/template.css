@@ -36,6 +36,7 @@ background-color:#FFD1A4;
 color:#C86400;
 font-size:8pt;
 font-family:verdana;
+direction: ltr;
 }
 
 .rank {
@@ -142,6 +143,10 @@ color:#F93;
 font-size:12px;
 font-weight:700;
 color:RED;
+}
+
+table.question {
+width: 100%;
 }
 
 table.question tr.array1:hover,table.question tr.array2:hover {

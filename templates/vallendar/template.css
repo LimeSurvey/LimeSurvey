@@ -112,6 +112,14 @@ font-family:verdana;
 color:#17479E;
 }
 
+table.question {
+width: 100%;
+}
+
+.innergraph {
+direction: ltr;
+}
+
 .innergraph,.question {
 font-family:verdana;
 font-size:10pt;

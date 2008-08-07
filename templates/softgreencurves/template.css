@@ -71,6 +71,14 @@ font-size:12px;
 font-weight:bold;
 }
 
+table.question {
+width: 100%;
+}
+
+.innergraph {
+direction: ltr;
+}
+
 .innergraph img {
 height:12px;
 vertical-align:top;

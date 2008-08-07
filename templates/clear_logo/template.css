@@ -8,6 +8,7 @@ background-color:#efe5ca;
 table.question {
 border:1px;
 border-color:#aaa;
+width: 100%;
 }
 
 td {
@@ -60,6 +61,10 @@ font-style:italic;
 font-family:verdana;
 font-size:12px;
 font-weight:bold;
+}
+
+.innergraph {
+direction: ltr;
 }
 
 .innergraph img {
