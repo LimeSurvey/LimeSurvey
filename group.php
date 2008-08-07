@@ -416,7 +416,7 @@ echo " </script>\n\n";
 	echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 
 print <<<END
-
+<input type='hidden' id='runonce' value='0'>
 <!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
 <script type='text/javascript'>
 <!--
@@ -486,6 +486,7 @@ END;
  * $condition[n][5] => equal to [2], but concatenated in this time (why the same value 2 times?)
  * $condition[n][6] => method used to evaluate *NEW*
  */
+
 foreach ($conditions as $cd)
 {
 	if (trim($cd[6])=='') $cd[6]='==';
@@ -494,7 +495,16 @@ foreach ($conditions as $cd)
 		$java .= $endzone;
 		$endzone = "";
 		$cqcount=1;
+
+		//Only evaluate if this question source is on the same page, and the evaluation hasn't already happened once
+    	ereg("[0-9]+X([0-9]+)X.*",$cd[2],$sourceQuestionGid);
+    	if ($sourceQuestionGid[1] != $gid)
+    	{ // if question is not from same page then this should only be evaluated the first time the page is loaded	
+    	  $java .= "    if (document.getElementById('runonce').value == '0') 
+    {\n";
+		}
 		$java .= "\n\tif ((";
+    
 	}
 	if (!isset($oldcq) || !$oldcq)
 	{
@@ -644,9 +654,23 @@ foreach ($conditions as $cd)
 		$endzone .= "\t}\n";
 		$cqcount++;
 	}
+	//Close the expression for those where the question source is not on this page
+	if((isset($oldq) && $oldq != $cd[0] || !isset($oldq)) && $sourceQuestionGid[1] != $gid) 
+	{
+	  $endzone .= "    }\n";
+	}
+
 	$oldq = $cd[0]; //Update oldq for next loop
 	$oldcq = $cd[2];  //Update oldcq for next loop
 } // end foreach
+
+//Close the expression for those where the question source is not on this page
+//echo "OLDQ: $oldq, CD[0]: $cd[0], GID: $gid, sourceQuestionGid: $sourceQuestionGid[1]\n";
+if((isset($oldq) && $oldq != $cd[0] || !isset($oldq)) && $sourceQuestionGid[1] != $gid) 
+{
+  $endzone .= "    }\n";
+}
+
 $java .= $endzone;
 }
 
@@ -688,7 +712,8 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 }
 
 if (isset($java)) {echo $java;}
-echo "\t}\n"
+echo "document.getElementById('runonce').value=1\n"
+. "\t}\n"
 ."\t//-->\n"
 ."\t</script>\n\n"; // End checkconditions javascript function
 
