@@ -663,7 +663,7 @@ function checkIfNewGroup($ia)
 			{
 				$newgroup = "N";
 			}
-			if (!isset($_POST['lastgroupname'])) {$newgroup="Y";}
+			if (!isset($_POST['lastgroupname']) && isset($move)) {$newgroup="Y";}
 		}
 	}
 	return array($newgroup, $gid, $groupname, $groupdescription, $gl);
