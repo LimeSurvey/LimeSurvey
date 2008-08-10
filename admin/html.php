@@ -1923,8 +1923,6 @@ if($action == "exportstructure")
 {
     if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'])
     {
-    $xml_module_available=function_exists("domxml_new_doc");
-
     $exportstructure = "<form name='exportstructure' action='$scriptname' method='post'>\n" 
     ."<table width='100%' border='0' >\n\t<tr><td class='settingcaption'>"
     .$clang->gT("Export Survey Structure")."\n</td></tr>\n"
@@ -1934,17 +1932,9 @@ if($action == "exportstructure")
     ."<label for='surveycsv'>"
     .$clang->gT("LimeSurvey Survey File (*.csv)")."</label><br />\n"
     ."\t\t\t<input type='radio' class='radiobtn' name='type' value='structurequeXML'  id='queXML' onclick=\"this.form.action.value='exportstructurequexml'\"";
-    if (!$xml_module_available)
-    {
-    $exportstructure.=' disabled=disabled ';
-    }
     $exportstructure.="/>"
     ."<label for='queXML'>"
     .$clang->gT("queXML Survey XML Format (*.xml)")." ";
-    if (!$xml_module_available)
-    {
-    $exportstructure.= "<small class='warningtitle '>".$clang->gT("(XML module only in PHP 4 available)")."</small>";
-    }
     
     $exportstructure.="</label>\n"
     ."\t\t<br />&nbsp;</td>\n"
