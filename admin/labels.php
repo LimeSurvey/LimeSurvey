@@ -60,40 +60,20 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 	$labelsoutput.= "<table width='100%' border='0' >\n"
                     . "\t<tr>\n"
                     . "\t\t<td>\n"
-                    . "\t\t\t<table class='menubar'>\n"
-                    . "\t\t\t<tr >\n"
-                    . "\t\t\t\t<td colspan='2' height='8'>\n"
+                    . "\t\t\t<div class='menubar'>\n"
+                    . "\t\t\t<div class='menubar-title'>\n"
                     . "\t\t\t\t<strong>"
-	.$clang->gT("Label Sets Administration")."</strong></td></tr>\n"
-	."<tr >\n"
-	."\t<td>\n"
+	.$clang->gT("Label Sets Administration")."</strong>\n"
+	."</div>\n"
+    ."\t<div class='menubar-main'>\n"
+    ."\t<div class='menubar-left'>\n"
 	."\t<a href='$scriptname' onmouseout=\"hideTooltip()\" title=\"".$clang->gTview("Return to Survey Administration")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Return to Survey Administration", "js")."');return false\">" .
-			"<img name='Administration' src='$imagefiles/home.png' title='' alt='' align='left'  /></a>"
-	."\t<img src='$imagefiles/blank.gif' width='11' height='20' border='0' hspace='0' align='left' alt='' />\n"
-	."\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
-	."\t</td>\n"
-	."\t<td align='right' width='620'>\n"
-	."<a href=\"#\" onclick=\"showhelp('show')\"" 
-	."onmouseout=\"hideTooltip()\"" 
-	."title=\"".$clang->gTview("Show Help")."\"" 
-	."onmouseover=\"showTooltip(event,'".$clang->gT("Show Help", "js")."');return false\">" 
-	."<img src='$imagefiles/showhelp.png' name='ShowHelp' title=''" 
-	."alt='". $clang->gT("Show Help")."' align='right'  /></a>"	
-	."\t<img src='$imagefiles/blank.gif' width='5' height='20' align='right' hspace='0' border='0'  alt='' />\n"
-	//Logout button
-    . "\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=logout', '_top')\""
-    . "title=\"".$clang->gTview("Logout")."\" "
-    . "onmouseout=\"hideTooltip()\""
-	. "onmouseover=\"showTooltip(event,'".$clang->gT("Logout", "js")."');return false\">"
-    . "<img src='$imagefiles/logout.png' name='Logout'"
-	. "title='' alt='".$clang->gT("Logout")."' align='right'/></a>"
-	."\t<img src='$imagefiles/blank.gif' width='5' height='20' align='right' hspace='0' border='0'  alt='' />\n"
-	."\t<img src='$imagefiles/seperator.gif' align='right' hspace='0' border='0' alt='' />\n"
-	."<a href=\"#\" onclick=\"window.open('admin.php?action=newlabelset', '_top')\"" 
-	."onmouseout=\"hideTooltip()\"" 
-	."title=\"".$clang->gTview("Add New Label Set")."\"" 
-	."onmouseover=\"showTooltip(event,'".$clang->gT("Add New Label Set", "js")."');return false\">"
-	."<img src='$imagefiles/add.png' align='right' name='AddLabel' title='' alt='". $clang->gT("Add new label set")."' /></a>\n"	 
+			"<img name='Administration' src='$imagefiles/home.png' title='' alt='' /></a>"
+	."\t<img src='$imagefiles/blank.gif' width='11' height='20' alt='' />\n"
+	."\t<img src='$imagefiles/seperator.gif' alt='' />\n"
+	."\t</div>\n"
+    ."\t<div class='menubar-right'>\n"
+	."\t<img src='$imagefiles/blank.gif' width='5' height='20' alt='' />\n"
 	."\t<font class='boxcaption'>".$clang->gT("Labelsets").": </font>"
 	."\t<select onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
 	$labelsoutput.= "<option value=''";
@@ -111,12 +91,31 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 	}
 	
 	$labelsoutput.= "\t</select>\n"
-	."\t</td>\n"
-	."</tr>\n"
-	."\t</table>\n";
-
-
-	if ($action!='labels' || isset($lid))  {$labelsoutput.="<table ><tr><td></td></tr></table>\n";}
+    ."<a href=\"#\" onclick=\"window.open('admin.php?action=newlabelset', '_top')\"" 
+    ."onmouseout=\"hideTooltip()\"" 
+    ."title=\"".$clang->gTview("Add New Label Set")."\"" 
+    ."onmouseover=\"showTooltip(event,'".$clang->gT("Add New Label Set", "js")."');return false\">"
+    ."<img src='$imagefiles/add.png'  name='AddLabel' title='' alt='". $clang->gT("Add new label set")."' /></a>\n"     
+    //Logout button
+    ."\t<img src='$imagefiles/seperator.gif'  alt='' />\n"
+    ."\t<img src='$imagefiles/blank.gif' width='5' height='20' alt='' />\n"
+    . "\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=logout', '_top')\""
+    . "title=\"".$clang->gTview("Logout")."\" "
+    . "onmouseout=\"hideTooltip()\""
+    . "onmouseover=\"showTooltip(event,'".$clang->gT("Logout", "js")."');return false\">"
+    . "<img src='$imagefiles/logout.png' name='Logout'"
+    . "title='' alt='".$clang->gT("Logout")."' /></a>"
+    ."<a href=\"#\" onclick=\"showhelp('show')\"" 
+    ."onmouseout=\"hideTooltip()\"" 
+    ."title=\"".$clang->gTview("Show Help")."\"" 
+    ."onmouseover=\"showTooltip(event,'".$clang->gT("Show Help", "js")."');return false\">" 
+    ."<img src='$imagefiles/showhelp.png' name='ShowHelp' title=''" 
+    ."alt='". $clang->gT("Show Help")."' /></a>"    
+	."\t\t</div>\n"
+	."\t</div>\n"
+	."</div>\n";
+    $labelsoutput .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
+    
     	
 	//NEW SET
 	if ($action == "newlabelset" || $action == "editlabelset")
@@ -249,15 +248,13 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 		$result = db_execute_assoc($query);
 		while ($row=$result->FetchRow())
 		{
-			$labelsoutput.= "\t<table class='menubar'>\n"
-			."<tr><td height='4' colspan='2'>"
-			."<strong>".$clang->gT("Label Set").":</strong> {$row['label_name']}</td></tr>\n"
-			."<tr>\n"
-			."\t<td>\n"
-			."\t<input type='image' src='$imagefiles/close.gif' title='"
-			.$clang->gT("Close Window")."' align='right' "
-			."onclick=\"window.open('admin.php?action=labels', '_top')\" />\n"
-			."\t<img src='$imagefiles/blank.gif' width='50' height='20' border='0' hspace='0' align='left' alt='' />\n"
+			$labelsoutput.= "<div class='menubar'>\n"
+			."<div class='menubar-title'>\n"
+			."\t<strong>".$clang->gT("Label Set").":</strong> {$row['label_name']}\n"
+			."</div>\n"
+			."<div class='menubar-main'>\n"
+            ."\t<div class='menubar-left'>\n"
+			."\t<img src='$imagefiles/blank.gif' width='60' height='20' border='0' hspace='0' align='left' alt='' />\n"
 			."\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
 			."\t<a href='admin.php?action=editlabelset&amp;lid=$lid' onmouseout=\"hideTooltip()\" title=\"".$clang->gTview("Edit label set")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Edit label set", "js")."');return false\">" .
 			"<img name='EditLabelsetButton' src='$imagefiles/edit.png' alt='' align='left'  /></a>" 
@@ -268,9 +265,14 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 			."\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
 			."\t<a href='admin.php?action=dumplabel&amp;lid=$lid' onmouseout=\"hideTooltip()\" title=\"".$clang->gTview("Export Label Set")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Label Set", "js")."');return false\">" .
 					"<img src='$imagefiles/exportcsv.png' alt='".$clang->gT("Export Label Set")."' title='' align='left' /></a>" 
-			."\t</td>\n"
-			."</tr>\n"
-			."\t</table>\n";
+			."\t</div>\n"
+            ."\t<div class='menubar-right'>\n"
+            ."\t<input type='image' src='$imagefiles/close.gif' title='".$clang->gT("Close Window")."'"
+            ."onclick=\"window.open('admin.php?action=labels', '_top')\" />\n"
+            ."\t</div>\n"
+            ."\t</div>\n"
+			."\t</div>\n";
+            $labelsoutput .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
 		}
 
 
@@ -343,12 +345,12 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     			else
     			{
     				$labelsoutput.= "\t<input type='hidden' name='oldcode_{$row['sortorder']}' value=\"{$row['code']}\" />\n"; 
-    				$labelsoutput.= "\t<input type='text' name='code_{$row['sortorder']}' maxlength='5' size='10' value=\"{$row['code']}\" onkeypress=\"return catchenter(event,'saveallbtn');\" />\n";
+    				$labelsoutput.= "\t<input type='text' name='code_{$row['sortorder']}' maxlength='5' size='10' value=\"{$row['code']}\" onkeypress=\"return catchenter(event,'saveallbtn_$lslanguage');\" />\n";
     			}
     			
     			$labelsoutput.= "\t</td>\n"
     			."\t<td>\n"
-    			."\t<input type='text' name='title_{$row['language']}_{$row['sortorder']}' maxlength='3000' size='80' value=\"".html_escape($row['title'])."\" onkeypress=\"return catchenter(event,'saveallbtn');\"/>\n"
+    			."\t<input type='text' name='title_{$row['language']}_{$row['sortorder']}' maxlength='3000' size='80' value=\"".html_escape($row['title'])."\" onkeypress=\"return catchenter(event,'saveallbtn_$lslanguage');\"/>\n"
 			. getEditor("editlabel", "title_{$row['language']}_{$row['sortorder']}", "[".$clang->gT("Label:", "js")."](".$row['language'].")",'','','',$action)
     			."\t</td>\n"
     			."\t<td>\n";
@@ -372,7 +374,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     		}
     	    if ($labelcount>0)  
             {                       
-                $labelsoutput.= "\t<tr><td colspan='4'><center><input type='submit' name='method' value='".$clang->gT("Save All")."'  id='saveallbtn' />"
+                $labelsoutput.= "\t<tr><td colspan='4'><center><input type='submit' name='method' value='".$clang->gT("Save All")."'  id='saveallbtn_$lslanguage' />"
                 ."</center></td></tr>\n";
             }
 
@@ -389,7 +391,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     			."\t<input type='submit' name='method' value='".$clang->gT("Add new label")."' id='addnewlabelbtn' />\n"
     			."\t</td>\n"
     			."\t<td>\n"
-			."<input type='button' onclick=\"document.getElementById('formfixorder').submit();\" value=\"".$clang->gT('Fix Order')."\">\n"
+			    ."<input type='button' onclick=\"document.getElementById('formfixorder').submit();\" value=\"".$clang->gT('Fix Order')."\" />\n"
                 ."<script type='text/javascript'>\n"
     			."<!--\n"
     			."document.getElementById('addnewlabelcode').focus();\n"
@@ -458,16 +460,16 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 
 	$labelsoutput.= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Uploaded Resources Management")."</h2>\n"
 		. "\t<form enctype='multipart/form-data' name='importlabelresources' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
-		. "\t<input type='hidden' name='lid' value='$lid'>\n"
-		. "\t<input type='hidden' name='action' value='importlabelresources'>\n"
+		. "\t<input type='hidden' name='lid' value='$lid' />\n"
+		. "\t<input type='hidden' name='action' value='importlabelresources' />\n"
 		. "\t<table width='100%' class='form2columns'>\n"
 		. "\t<tbody align='center'>"
 		. "\t\t<tr><td></td><td>\n"
-		. "\t\t<input type='button' onclick='window.open(\"$fckeditordir/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php?\", \"_blank\")'/ value=\"".$clang->gT("Browse Uploaded Resources")."\" $disabledIfNoResources></td><td><td></tr>\n"
-		. "\t\t<tr><td></td><td><input type='button' onclick='window.open(\"$scriptname?action=exportlabelresources&amp;lid={$lid}\", \"_blank\")'/ value=\"".$clang->gT("Export Resources As ZIP Archive")."\" $disabledIfNoResources></td><td><td></tr>\n"
-		. "\t\t<tr></tr>&nbsp;<tr><td>".$clang->gT("Select ZIP File:")."</td>\n"
+		. "\t\t<input type='button' onclick='window.open(\"$fckeditordir/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php?\", \"_blank\")' value=\"".$clang->gT("Browse Uploaded Resources")."\" $disabledIfNoResources /></td><td><td></tr>\n"
+		. "\t\t<tr><td></td><td><input type='button' onclick='window.open(\"$scriptname?action=exportlabelresources&amp;lid={$lid}\", \"_blank\")' value=\"".$clang->gT("Export Resources As ZIP Archive")."\" $disabledIfNoResources /></td><td>&nbsp;</td></tr>\n"
+		. "\t\t<tr><td>".$clang->gT("Select ZIP File:")."</td>\n"
 		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"50\" /></td><td></td></tr>\n"
-		. "\t\t<tr><td></td><td><input type='button' value='".$clang->gT("Import Resources ZIP Archive")."' $ZIPimportAction/></td><td></td>\n"
+		. "\t\t<tr><td></td><td><input type='button' value='".$clang->gT("Import Resources ZIP Archive")."' $ZIPimportAction /></td><td></td>\n"
 		. "\t\t</tr>\n"
 		. "\t</tbody></table></form>\n";
 

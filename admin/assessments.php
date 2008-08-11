@@ -71,6 +71,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
 	. "\t\t</div>\n"
 	. "\t</div>\n"
     . "</div>\n";
+    $assessmentsoutput .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
 	
 	if ($surveyid == "") {
 		$assessmentsoutput.= $clang->gT("No SID Provided");

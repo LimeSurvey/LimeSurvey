@@ -215,7 +215,7 @@ function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=nu
 		$fieldtype == 'editlabel' ||
 		 $fieldtype == 'addlabel')
 	{
-		$imgopts = "width='14px' height='14px'";
+		$imgopts = "width='14' height='14'";
 	}
 
 	$htmlcode .= ""
