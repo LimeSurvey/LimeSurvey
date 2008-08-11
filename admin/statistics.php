@@ -1278,11 +1278,23 @@ $statisticsoutput .= "\t\t\t</table>\n"
 ." /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label></font></td></tr>\n"
 ."\t\t<tr><td align='center' class='settingcaption'>\n"
 ."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
-."\t\t\t\t<tr><td align='center'>".$clang->gT("Filter incomplete answers:")."<select name='filterinc'>\n"
+."\t\t\t\t<tr><td align='center'><label for='filterinc'>".$clang->gT("Filter incomplete answers:")."</label><select name='filterinc' id='filterinc' onchange='myVerticalSlide.toggle(); if (this.value==\"filter\") document.getElementById(\"noncompleted\").checked=false;'>\n"
 ."\t\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
 ."\t\t\t\t\t<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
 ."\t\t\t\t</select></td></tr>\n"
-."\t\t\t\t<tr><td align='center'><input type='checkbox' id='noncompleted' name='noncompleted'/><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses (only works when Filter incomplete answers is Disable)")."</label></font></td></tr>\n";
+."\t\t\t\t<tr><td align='center'>    <div id='vertical_slide' >";    
+if ($selectshow=="")
+    {
+
+$statisticsoutput .= "\t<script type='text/javascript'>
+      <!--
+         startslidestyle='hidden';        
+      //-->
+      </script>\n";
+    
+    }
+    
+$statisticsoutput.="<input type='checkbox' id='noncompleted' name='noncompleted'/><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses (only works when Filter incomplete answers is Disable)")."</label></font></div></td></tr>\n";
 
 //only show option to show graphs if jpgraph is enabled
 if (isset($usejpgraph) && $usejpgraph == 1)
