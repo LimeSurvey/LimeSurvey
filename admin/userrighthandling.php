@@ -231,23 +231,14 @@ if ($action == "setuserrights")
 		$usersummary = "<table width='100%' border='0'>\n\t<tr><td colspan='8' class='header' align='center'>\n"
 		. "\t\t".$clang->gT("Set User Rights").": ".htmlspecialchars(sanitize_user($_POST['user']))."</td></tr>\n";
 
-		// HERE WE LIST FOR USER RIGHTS YOU CAN SET
-		// TO THE USER
-		// YOU CAN ONLY SET AT MOST THE RIGHTS OF THE PARENT
-		//
-		// using $_SECTION['RIGHT... would be easieR
-		// Super admin may be able to too much rights
-		// to a user not beeing its own child
-		// and resulting in the user having more rights than
-		// its own child
-		// NOT SURE THIS IS A REAL ISSUE
-		// I LET THIS AS IS FOR NOW
+		// HERE WE LIST FOR USER RIGHTS YOU CAN SET TO a USER
+		// YOU CAN ONLY SET AT MOST THE RIGHTS YOU have yourself
 		$userlist = getuserlist();
 		foreach ($userlist as $usr)
 		{
 			if ($usr['uid'] == $postuserid)
 			{
-				$squery = "SELECT create_survey, configurator, create_user, delete_user, superadmin, manage_template, manage_label FROM {$dbprefix}users WHERE uid={$usr['parent_id']}";	//		added by Dennis
+				$squery = "SELECT create_survey, configurator, create_user, delete_user, superadmin, manage_template, manage_label FROM {$dbprefix}users WHERE uid={$_SESSION['loginID']}";	//		added by Dennis
 				$sresult = $connect->Execute($squery); //Checked
 				$parent = $sresult->FetchRow();
 

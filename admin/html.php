@@ -637,7 +637,7 @@ if ($surveyid)
             . "onmouseout=\"hideTooltip()\" "
             . "title=\"".$clang->gTview("Change Group Order")." - ".$clang->gTview("Disabled")."\" "
             . "onmouseover=\"showTooltip(event,'".$clang->gT("Change Group Order - Disabled", "js")."');return false\">"
-            . "<img src='$imagefiles/reorder_disabled.png' title='' alt='".$clang->gT("Change Group Order")." - ".$clang->gT("Disabled")."' name='ordergroups' /></a>\n";
+            . "<img src='$imagefiles/reorder_disabled.png' title='' alt='".$clang->gT("Change Group Order - Disabled")."' name='ordergroups' /></a>\n";
 		}
 
 		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'])
@@ -664,7 +664,7 @@ if ($surveyid)
 		}
 		else
 		{
-			$surveysummary .= "\t\t\tt<img src='$imagefiles/blank.gif' alt='' width='40'  />\n";
+			$surveysummary .= "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  />\n";
 		}
 		
 		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['edit_survey_property'])
@@ -677,7 +677,7 @@ if ($surveyid)
 		}
 		else
 		{
-			$surveysummary .= "\t\t\tt<img src='$imagefiles/blank.gif' alt='' width='40'  />\n";
+			$surveysummary .= "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  />\n";
 		}
 
 		if ($activated == "Y" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['browse_response']))
