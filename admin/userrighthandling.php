@@ -27,37 +27,30 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 		$grpresultcount = $grpresult->RecordCount();
 		$grow = array_map('htmlspecialchars', $grpresult->FetchRow());
 	}
-	$usergroupsummary = "<table width='100%' align='center' bgcolor='#DDDDDD' border='0'>\n";
-	$usergroupsummary .= "\t<tr>\n"
-	. "\t\t<td colspan='2'>\n"
-	. "\t\t\t<table class='menubar'>\n"
-	. "\t\t\t\t<tr><td colspan='2' height='4' align='left'>"
-	. "<strong>".$clang->gT("User Group")."</strong> ";
+	$usergroupsummary = "<div class='menubar'>\n"
+    . "\t\t\t<div class='menubar-title'>\n"
+	. "<strong>".$clang->gT("User Group")."</strong>";
 	if($ugid && $grpresultcount > 0)
 	{
-		$usergroupsummary .= "{$grow['name']}</td></tr>\n";
-	}
-	else
-	{
-		$usergroupsummary .= "</td></tr>\n";
+		$usergroupsummary .= " {$grow['name']}\n";
 	}
 
 
-	$usergroupsummary .= "\t\t\t\t<tr>\n"
-	. "\t\t\t\t\t<td>\n";
-
-	$usergroupsummary .=  "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='55' height='20' border='0' hspace='0' align='left' />\n"
-	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
+	$usergroupsummary .= "\t\t\t\t</div>\n"
+    . "\t\t\t<div class='menubar-main'>\n"
+    . "\t\t\t<div class='menubar-left'>\n"
+	. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='55' height='20' />\n"
+	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n";
 
 	if($ugid && $grpresultcount > 0)
 	{
 		$usergroupsummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=mailusergroup&amp;ugid=$ugid', '_top')\""
 		. "onmouseout=\"hideTooltip()\""
 		. "onmouseover=\"showTooltip(event,'".$clang->gT("Mail to all Members", "js")."');return false\"> " .
-		"<img src='$imagefiles/invite.png' title='' align='left' alt='' name='MailUserGroup' /></a>\n" ;
+		"<img src='$imagefiles/invite.png' title='' alt='' name='MailUserGroup' /></a>\n" ;
 	}
-	$usergroupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='135' height='20' border='0' hspace='0' align='left' />\n"
-	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
+	$usergroupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='135' height='20' />\n"
+	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n";
 
 	if($ugid && $grpresultcount > 0 &&
 		$_SESSION['loginID'] == $grow['owner_id'])
@@ -65,11 +58,11 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 		$usergroupsummary .=  "<a href=\"#\" onclick=\"window.open('$scriptname?action=editusergroup&amp;ugid=$ugid','_top')\""
 		. "onmouseout=\"hideTooltip()\""
 		. "onmouseover=\"showTooltip(event,'".$clang->gT("Edit Current User Group", "js")."');return false\">" .
-		"<img src='$imagefiles/edit.png' title='' alt='' name='EditUserGroup' align='left' /></a>\n" ;
+		"<img src='$imagefiles/edit.png' title='' alt='' name='EditUserGroup' /></a>\n" ;
 	}
 	else
 	{
-		$usergroupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='45' height='20' border='0' hspace='0' align='left' />\n";
+		$usergroupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='45' height='20' />\n";
 	}
 
 	if($ugid && $grpresultcount > 0 &&
@@ -79,36 +72,33 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 		$usergroupsummary .= "\t\t\t\t\t<a href='#' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')) {".get2post("$scriptname?action=delusergroup&amp;ugid=$ugid")."}\" "
 		. "onmouseout=\"hideTooltip()\" "
 		. "onmouseover=\"showTooltip(event,'".$clang->gT("Delete Current User Group", "js")."');return false\">"
-		. "<img src='$imagefiles/delete.png' alt='' name='DeleteUserGroup' title='' align='left' border='0' hspace='0' /></a>";
+		. "<img src='$imagefiles/delete.png' alt='' name='DeleteUserGroup' title='' /></a>";
 	}
 	else
 	{
-		$usergroupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='43' height='20' border='0' hspace='0' align='left' />\n";
+		$usergroupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='43' height='20' />\n";
 	}
-	$usergroupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='86' height='20' align='left' border='0' hspace='0' />\n"
-	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
-	. "\t\t\t\t\t</td>\n"
-	. "\t\t\t\t\t<td align='right' width='480'>\n"
-	. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' align='right' border='0' width='82' height='20' />\n"
-	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='right' border='0' hspace='0' />\n";
-	
-	if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-	{
-		$usergroupsummary .= "<a href='$scriptname?action=addusergroup'"
-		."onmouseout=\"hideTooltip()\""
-		."onmouseover=\"showTooltip(event,'".$clang->gT("Add New User Group", "js")."');return false\">" .
-		"<img src='$imagefiles/add.png' title='' alt='' " .
-		"align='right' name='AddNewUserGroup' onclick=\"window.open('', '_top')\" /></a>\n";
-	}
-	$usergroupsummary .= "\t\t\t\t\t<font class=\"boxcaption\">".$clang->gT("User Groups").":</font>&nbsp;<select name='ugid' "
+	$usergroupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='86' height='20' />\n"
+	. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n"
+	. "\t\t\t\t\t</div>\n"
+	. "\t\t\t\t\t<div class='menubar-right'>\n"
+	. "\t\t\t\t\t<font class=\"boxcaption\">".$clang->gT("User Groups").":</font>&nbsp;<select name='ugid' "
 	. "onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n"
 	. getusergrouplist()
-	. "\t\t\t\t\t</select>\n"
-	. "\t\t\t\t</td></tr>\n"
-	. "\t\t\t</table>\n"
-	. "\t\t</td>\n"
-	. "\t</tr>\n"
-	. "\n</table>\n";
+	. "\t\t\t\t\t</select>\n";
+    if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+    {
+        $usergroupsummary .= "<a href='$scriptname?action=addusergroup'"
+        ."onmouseout=\"hideTooltip()\""
+        ."onmouseover=\"showTooltip(event,'".$clang->gT("Add New User Group", "js")."');return false\">" 
+        ."<img src='$imagefiles/add.png' title='' alt='' " 
+        ."name='AddNewUserGroup' onclick=\"window.open('', '_top')\" /></a>\n";
+    }
+    $usergroupsummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n"
+    . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='82' height='20' />\n"
+	. "\t\t\t\t</div></div>\n"
+	. "\t\t\t</div>\n";
+
 }
 
 

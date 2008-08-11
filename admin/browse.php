@@ -56,7 +56,7 @@ else
 }
 
 
-$surveyoptions = browsemenubar();
+$surveyoptions = browsemenubar($clang->gT("Browse Responses"));
 $browseoutput = "<table><tr><td></td></tr></table>\n"
 ."<table class='menubar'>\n";
 
@@ -130,10 +130,8 @@ $qulanguage = GetBaseLanguageFromSurveyID($surveyid);
 if ($subaction == "id") // Looking at a SINGLE entry
 {
 	//SHOW HEADER
-	$browseoutput .= "\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Browse Responses").":</strong> $surveyname</td></tr>\n";
 	if (!isset($_POST['sql']) || !$_POST['sql']) {$browseoutput .= "$surveyoptions";} // Don't show options if coming from tokens script
-	$browseoutput .= "</table>\n"
-	."<table><tr><td></td></tr></table>\n";
+	$browseoutput .="<table><tr><td></td></tr></table>\n";
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
 	$fnquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups").", ".db_table_name("surveys")."
 	WHERE ".db_table_name("questions").".gid=".db_table_name("groups").".gid AND ".db_table_name("groups").".sid=".db_table_name("surveys").".sid
@@ -335,14 +333,13 @@ if ($subaction == "id") // Looking at a SINGLE entry
 
 elseif ($subaction == "all")
 {
-	$browseoutput .= ("\t<tr><td colspan='2' height='4'><strong>"
-	. $clang->gT("Browse Responses").":</strong> $surveyname</td></tr>\n");
 
 	if (!isset($_POST['sql']))
-	{$browseoutput .= "$surveyoptions";} //don't show options when called from another script with a filter on
+	{$browseoutput .= $surveyoptions;} //don't show options when called from another script with a filter on
 	else
 	{
-		$browseoutput .= "\n<tr><td><table width='100%' align='center' border='0' bgcolor='#EFEFEF'>\n"
+        $browseoutput .= "\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Browse Responses").":</strong> $surveyname</td></tr>\n"
+		."\n<tr><td><table width='100%' align='center' border='0' bgcolor='#EFEFEF'>\n"
 		."\t<tr>\n"
 		."\t\t<td align='center'>\n"
 		."\t\t\t".$clang->gT("Showing Filtered Results")."<br />\n"
@@ -703,10 +700,7 @@ elseif ($subaction == "all")
 }
 else
 {
-	$browseoutput .= "\t<tr><td colspan='2' height='4'><strong>"
-	. $clang->gT("Browse Responses").":</strong> $surveyname</td></tr>\n"
-	. $surveyoptions;
-	$browseoutput .= "</table>\n";
+	$browseoutput .= $surveyoptions;
 	$num_total_answers=0;
 	$num_completed_answers=0;
 	$gnquery = "SELECT count(id) FROM $surveytable";

@@ -130,10 +130,7 @@ if (!$style)
 
 
 	$afieldcount = count($excesscols);
-    $exportoutput .= "<table width='99%' align='center' class='menubar' cellpadding='1' cellspacing='0'>\n"
-    ."\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Export Results")."</font></td></tr>\n";
-    $exportoutput .= browsemenubar();
-    $exportoutput .= "</table>\n";	
+    $exportoutput .= browsemenubar($clang->gT("Export Results"));
 	$exportoutput .= "<br />\n"
 	."<form action='$scriptname?action=exportresults' method='post'>\n"
 	."<table align='center'><tr>"

@@ -151,6 +151,16 @@ if ($subaction == "delete" &&
 //Show Help
 $tokenoutput .= "<script type='text/javascript'>\n"
 ."<!--\n"
+. "function fillin(tofield, fromfield)\n"
+. "\t{\n"
+. "\t\tif (confirm(\"".$clang->gT("This will replace the existing text. Continue?","js")."\")) {\n"
+. "\t\t\tif (document.getElementById(tofield).readOnly == false)\n"
+. "\t\t\t{\n"
+. "\t\t\t\tdocument.getElementById(tofield).value = document.getElementById(fromfield).value;\n"
+. "\t\t\t}\n"
+. "\t\t\tupdateFCKeditor(tofield,document.getElementById(fromfield).value);\n"
+. "\t\t}\n"
+. "\t}\n"
 ."\tfunction showhelp(action)\n"
 ."\t\t{\n"
 ."\t\tvar name='help';\n"
@@ -171,7 +181,7 @@ $tokenoutput .= "<table width='100%' border='0' cellpadding='0' cellspacing='0'>
 ."\t\t<td valign='top' align='left' >\n"
 ."\t\t<table><tr><td></td></tr></table>\n";
 
-$tokenoutput .= "<table class='menubar' cellpadding='1' cellspacing='0'>\n";
+$tokenoutput .= "<table width='100%' border='0' cellpadding='0' cellspacing='0'><tr><td>\n";
 
 
 // MAKE SURE THAT THERE IS A SID
@@ -208,9 +218,10 @@ if (!$chcount)
 // A survey DOES exist
 while ($chrow = $chresult->FetchRow())
 {
-	$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
-	.$clang->gT("Token Control").":</strong> "
-	."{$chrow['surveyls_title']}</td></tr>\n";
+	$tokenoutput .= "\t<div class='menubar'>"
+    ."<div class='menubar-title'>"
+	."<strong>".$clang->gT("Token Control").":</strong> "
+	."{$chrow['surveyls_title']}</div>\n";
 	$surveyprivate = $chrow['private'];
 }
 
@@ -258,7 +269,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		if ($execresult==0 || $execresult==1)
 		{
 			
-			$tokenoutput .= "\t<tr>\n"
+			$tokenoutput .= "\t</div></td></tr><tr>\n"
 			."\t\t<td align='center'>\n"
 			. "<br />\n<table width='350' align='center' class='menubar' cellpadding='1' cellspacing='0'>\n" .
 			"<tr><td height='4'><font size='1'><strong><center>".$clang->gT("Token table could not be created.")."</center></strong></font></td></tr>\n" .
@@ -278,7 +289,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 			$createtokentableindex = $dict->CreateIndexSQL("{$tabname}_idx", $tabname, array('token'));
 			$dict->ExecuteSQLArray($createtokentableindex, false) or safe_die ("Failed to create token table index<br />$createtokentableindex<br /><br />".$connect->ErrorMsg());
 
-			$tokenoutput .= "\t<tr>\n"
+			$tokenoutput .= "\t</div></td></tr><tr>\n"
 			."\t\t<td align='center'>\n"
 			."\t\t\t<br /><br />\n"
 			."\t\t\t".$clang->gT("A token table has been created for this survey.")." (\"".$dbprefix."tokens_$surveyid\")<br /><br />\n"
@@ -300,7 +311,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 	{
 		$query = db_rename_table(returnglobal('oldtable') , db_table_name("tokens_$surveyid"));
 		$result=$connect->Execute($query) or safe_die("Failed Rename!<br />".$query."<br />".$connect->ErrorMsg());
-		$tokenoutput .= "\t<tr>\n"
+        $tokenoutput .= "\t</div></td></tr><tr>\n"
 		."\t\t<td align='center'>\n"
 		."\t\t\t<br /><br />\n"
 		."\t\t\t".$clang->gT("A token table has been created for this survey.")." (\"".$dbprefix."tokens_$surveyid\")<br /><br />\n"
@@ -325,7 +336,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 				$oldlist[]=$rows[0];
 			}
 		}
-		$tokenoutput .= "\t<tr>\n"
+        $tokenoutput .= "\t</div></td></tr><tr>\n"
 		."\t\t<td align='center'>\n"
 		."\t\t\t<br /><font color='red'><strong>".$clang->gT("Warning")."</strong></font><br />\n"
 		."\t\t\t<strong>".$clang->gT("Tokens have not been initialised for this survey.")."</strong><br /><br />\n";
@@ -395,19 +406,19 @@ if ($row["attribute1"]) {$attr1_name = $row["attribute1"];} else {$attr1_name=$c
 if ($row["attribute2"]) {$attr2_name = $row["attribute2"];} else {$attr2_name=$clang->gT("Attribute 2");}
 
 // IF WE MADE IT THIS FAR, THEN THERE IS A TOKENS TABLE, SO LETS DEVELOP THE MENU ITEMS
-$tokenoutput .= "\t<tr>\n"
-."\t\t<td>\n"
+$tokenoutput .= "\t<div class='menubar-main'>\n"
+."\t\t<div class='menubar-left'>\n"
 ."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" onmouseout=\"hideTooltip()\""
 ."onmouseover=\"showTooltip(event,'".$clang->gT("Return to Survey Administration", "js")."');return false\">" .
-"<img name='HomeButton' src='$imagefiles/home.png' align='left'  alt=''  /></a>\n"
-."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left' />\n"
+"<img name='HomeButton' src='$imagefiles/home.png' alt='' /></a>\n"
+."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' />\n"
+."\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n"
 ."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show Token Summary", "js")."');return false\" >" 
-."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
-."<img name='SummaryButton' src='$imagefiles/summary.png' title='' align='left'  alt=''  /></a>\n"
-."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
+."<img name='SummaryButton' src='$imagefiles/summary.png' title='' alt='' /></a>\n"
+."\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n"
 ."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse', '_top')\" onmouseout=\"hideTooltip()\""
 ."onmouseover=\"showTooltip(event,'".$clang->gT("Display Tokens", "js")."');return false\">" 
-."<img name='ViewAllButton' src='$imagefiles/document.png' title='' align='left'  alt=''  /></a>\n";
+."<img name='ViewAllButton' src='$imagefiles/document.png' title='' alt='' /></a>\n";
 
 if ($sumrows5['edit_survey_property'] || 
 	$sumrows5['activate_survey'] ||
@@ -415,47 +426,47 @@ if ($sumrows5['edit_survey_property'] ||
 {
 	$tokenoutput .= "\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnew', '_top')\" onmouseout=\"hideTooltip()\"" .
 	"onmouseover=\"showTooltip(event,'".$clang->gT("Add new token entry", "js")."');return false\">" .
-	"<img name='AddNewButton' src='$imagefiles/add.png' title='' align='left'  alt=''  /></a>\n"
-	."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
+	"<img name='AddNewButton' src='$imagefiles/add.png' title='' alt='' /></a>\n"
+	."\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n"
 	."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=import', '_top')\" onmouseout=\"hideTooltip()\" ".
-	"onmouseover=\"showTooltip(event,'".$clang->gT("Import Tokens from CSV File", "js")."');return false\"> <img name='ImportButton' src='$imagefiles/importcsv.png' title='' align='left' alt='' /></a>"
+	"onmouseover=\"showTooltip(event,'".$clang->gT("Import Tokens from CSV File", "js")."');return false\"> <img name='ImportButton' src='$imagefiles/importcsv.png' title='' alt='' /></a>"
 	."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=importldap', '_top')\" onmouseout=\"hideTooltip()\" ".
-	"onmouseover=\"showTooltip(event,'".$clang->gT("Import Tokens from LDAP Query", "js")."');return false\"> <img name='ImportLdapButton' src='$imagefiles/importldap.png' title=''  alt=''  align='left' /></a>";
+	"onmouseover=\"showTooltip(event,'".$clang->gT("Import Tokens from LDAP Query", "js")."');return false\"> <img name='ImportLdapButton' src='$imagefiles/importldap.png' title='' alt='' /></a>";
 }
 
 if ($sumrows5['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 {
 	$tokenoutput .= "\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=export', '_top')\" onmouseout=\"hideTooltip()\"" .
 	"onmouseover=\"showTooltip(event,'".$clang->gT("Export Tokens to CSV file", "js")."');return false\">".
-	"<img name='ExportButton' src='$imagefiles/exportcsv.png' align='left' alt='' /></a>\n";
+	"<img name='ExportButton' src='$imagefiles/exportcsv.png' alt='' /></a>\n";
 }
 if ($sumrows5['edit_survey_property'] || 
 	$sumrows5['activate_survey'] ||
 	$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 {
-	$tokenoutput .= "\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
+	$tokenoutput .= "\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n"
 	."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=emailsettings', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Edit Email Templates", "js")."');return false\">" .
-	"<img name='EmailSettingsButton' src='$imagefiles/emailsettings.png' title='' align='left'  alt='' /></a>\n"
+	"<img name='EmailSettingsButton' src='$imagefiles/emailsettings.png' title='' alt='' /></a>\n"
 	."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=email', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Send email invitation", "js")."');return false\">" .
-	"<img name='InviteButton' src='$imagefiles/invite.png' title='' align='left'  alt='' /></a>\n"
+	"<img name='InviteButton' src='$imagefiles/invite.png' title='' alt='' /></a>\n"
 	."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=remind', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Send email reminder", "js")."');return false\">" .
-	"<img name='RemindButton' src='$imagefiles/remind.png' title='' align='left'   alt='' /></a>\n"
-	."\t\t\t<img src='$imagefiles/seperator.gif'  border='0' hspace='0' align='left'  alt='' />\n"
+	"<img name='RemindButton' src='$imagefiles/remind.png' title='' alt='' /></a>\n"
+	."\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n"
 //	."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=tokenify', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Generate Tokens", "js")."');return false\">" .
 	."\t\t\t<a href=\"#\" onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=tokenify")."\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Generate Tokens", "js")."');return false\">" .
-	"<img name='TokenifyButton' src='$imagefiles/tokenify.png' title='' align='left'  alt='' /></a>\n"
-	."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left'  alt='' />\n"
+	"<img name='TokenifyButton' src='$imagefiles/tokenify.png' title='' alt='' /></a>\n"
+	."\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n"
 //	."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Drop tokens table", "js")."');return false\">" .
 	."\t\t\t<a href=\"#\" onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill")."\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Drop tokens table", "js")."');return false\">" .
-	"<img name='DeleteTokensButton' src='$imagefiles/delete.png' title='' align='left'  alt=''  /></a>\n";
+	"<img name='DeleteTokensButton' src='$imagefiles/delete.png' title='' alt=''  /></a>\n";
 }
 
-$tokenoutput .="\t\t\t<a href=\"#\" onclick=\"showhelp('show')\" onmouseout=\"hideTooltip()\""
+$tokenoutput .="\t\t\t</div><div class='menubar-right'><a href=\"#\" onclick=\"showhelp('show')\" onmouseout=\"hideTooltip()\""
                 ."onmouseover=\"showTooltip(event,'".$clang->gT("Show Help", "js")."');return false\">" .
                 "<img src='$imagefiles/showhelp.png' title='' align='right' alt='' /></a>\n";
 
 
-$tokenoutput .= "\t</td></tr>\n";
+$tokenoutput .= "\t</div></div></div></td></tr>\n";
 
 // SEE HOW MANY RECORDS ARE IN THE TOKEN TABLE
 $tkcount = $tkresult->RecordCount();
@@ -500,6 +511,7 @@ if ($subaction==''){
 	."<table ><tr><td></td></tr></table>\n";
 }
 
+
 $tokenoutput .= "<table width='99%' class='menubar' cellpadding='1' cellspacing='0'>\n";
 
 #############################################################################################
@@ -524,19 +536,7 @@ if ($subaction == "emailsettings")
 	}    
 
 	$tokenoutput .= PrepareEditorScript();
-	$tokenoutput .="<tr><td align='center'><script type='text/javascript'>\n"
-		. "<!--\n"
-		. "function fillin(tofield, fromfield)\n"
-		. "\t{\n"
-		. "\t\tif (confirm(\"".$clang->gT("This will replace the existing text. Continue?","js")."\")) {\n"
-		. "\t\t\tif (document.getElementById(tofield).readOnly == false)\n"
-		. "\t\t\t{\n"
-		. "\t\t\t\tdocument.getElementById(tofield).value = document.getElementById(fromfield).value;\n"
-		. "\t\t\t}\n"
-		. "\t\t\tupdateFCKeditor(tofield,document.getElementById(fromfield).value);\n"
-		. "\t\t}\n"
-		. "\t}\n"
-		. "--></script>\n"
+	$tokenoutput .="<tr><td align='center'>"
 		. "<form name='addnewsurvey' action='$scriptname' method='post'>\n"
 		. "<table width='100%' border='0'>\n\t<tr><td class='settingcaption'>"
 		. "\t\t".$clang->gT("Edit Email Settings")."</td></tr></table>\n"
@@ -948,7 +948,7 @@ if ($subaction == "browse" || $subaction == "search")
 		$tokenoutput .= "\t</tr>\n";
 	}
 	$tokenoutput .= "</table>\n"
-	."</td></tr></table>\n";
+	."</td></tr></table></td></tr></table>\n";
 }
 
 if ($subaction == "kill" && 
@@ -1001,7 +1001,7 @@ if ($subaction == "kill" &&
 		.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname?sid={$surveyid}', '_top')\" />\n"
 		."</span>\n";
 	}
-	$tokenoutput .= "</font></td></tr></table>\n"
+	$tokenoutput .= "</td></tr></table>\n"
 	."<table><tr><td></td></tr></table>\n";
 
 }
@@ -1539,7 +1539,7 @@ if ($subaction == "tokenify" &&
 		$message=str_replace("{TOKENCOUNT}", $newtokencount, $clang->gT("{TOKENCOUNT} tokens have been created"));
 		$tokenoutput .= "<br /><strong>$message</strong><br /><br />\n";
 	}
-	$tokenoutput .= "\t</font></td></tr></table>\n";
+	$tokenoutput .= "\t</td></tr></table>\n";
 }
 
 
@@ -1843,7 +1843,8 @@ if ($subaction == "importldap" &&
 	."\t\t</font></td>\n"
 	."\t</tr>\n"
 	."</table><br />\n"
-	."</td></tr></table>\n";
+	."</td></tr></table>\n"
+    ."</td></tr></table>\n";
 }
 
 if ($subaction == "upload" && 

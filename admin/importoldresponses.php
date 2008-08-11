@@ -32,12 +32,8 @@ if (!$subaction == "import")
 		$optionElements .= "\t\t\t<option>{$row[0]}</option>\n";
 	}
 
-	$importoldresponsesoutput = "";
-    $importoldresponsesoutput .= "<table width='99%' align='center' class='menubar' cellpadding='1' cellspacing='0'>\n"
-    ."\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Quick Statistics")."</strong></td></tr>\n";
     //Get the menubar
-    $importoldresponsesoutput .= browsemenubar();
-    $importoldresponsesoutput .= "</table>\n";
+    $importoldresponsesoutput = browsemenubar($clang->gT("Quick Statistics"));
 	$importoldresponsesoutput .= "<br /><table align='center' class='outlinetable'>
 		<tr>
 			<th colspan='2'>".$clang->gT("Import responses from an old (deactivated) survey table into an active survey")."</th>

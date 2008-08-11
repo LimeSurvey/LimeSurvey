@@ -132,13 +132,8 @@ $statisticsoutput .= "\t<script type='text/javascript'>
       </script>\n";
 
 
-//headline with all icons for available statistic options
-$statisticsoutput .= "<table width='99%' class='menubar' cellpadding='1' cellspacing='0'>\n"
-."\t<tr><td colspan='2' height='4'><font size='1'><strong>".$clang->gT("Quick Statistics")."</strong></font></td></tr>\n";
-//Get the menubar
-$statisticsoutput .= browsemenubar();
-$statisticsoutput .= "</table>\n"
-
+//Get the menubar with all icons for available statistic options
+$statisticsoutput .= browsemenubar($clang->gT("Quick Statistics"))
 //second row below options -> filter settings headline
 ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1'"
 ." cellspacing='0'>\n"
@@ -311,7 +306,7 @@ foreach ($filters as $flt)
 		$statisticsoutput .= "\t\t<tr><td align='center' class='settingcaption'>\n"
 		
 		//use current groupname and groupid as heading 
-		."\t\t<font size='1' face='verdana'><strong>$flt[4]</strong> (".$clang->gT("Group")." $flt[1])</font></td></tr>\n\t\t"
+		."\t\t<font size='1'><strong>$flt[4]</strong> (".$clang->gT("Group")." $flt[1])</font></td></tr>\n\t\t"
 		."<tr><td align='center'>\n"
 		."\t\t\t<table align='center' width='70%' class='statisticstable'><tr>\n";
 		
@@ -433,7 +428,7 @@ foreach ($filters as $flt)
 		    $myfield3="K{$myfield}".$row[0]."L";
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 			//question short code
-			$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'><strong>$flt[3]-".$row[0]."</strong></font>";
+			$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'><strong>$flt[3]-".$row[0]."</strong>";
 			//checkbox
 			$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield1'";
 			//check SGQA -> do we want to pre-check the checkbox?
@@ -1265,16 +1260,16 @@ else
 $statisticsoutput .= "\t\t\t</table>\n"
 ."\t\t</td></tr>\n"
 ."\t\t<tr><td align='center' class='settingcaption'>\n"
-."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
+."\t\t<font size='1'>&nbsp;</font></td></tr>\n"
 ."\t\t\t\t<tr><td align='center'><input type='radio' class='radiobtn' id='viewsummaryall' name='summary' value='$allfield'"
-." /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label></font></td></tr>\n"
+." /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label></td></tr>\n"
 ."\t\t<tr><td align='center' class='settingcaption'>\n"
-."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
+."\t\t<font size='1'>&nbsp;</font></td></tr>\n"
 ."\t\t\t\t<tr><td align='center'>".$clang->gT("Filter incomplete answers:")."<select name='filterinc'>\n"
 ."\t\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Enabled")."</option>\n"
 ."\t\t\t\t\t<option value='show' $selectshow>".$clang->gT("Disabled")."</option>\n"
 ."\t\t\t\t</select></td></tr>\n"
-."\t\t\t\t<tr><td align='center'><input type='checkbox' id='noncompleted' name='noncompleted'/><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses (only works when Filter incomplete answers is Disable)")."</label></font></td></tr>\n";
+."\t\t\t\t<tr><td align='center'><input type='checkbox' id='noncompleted' name='noncompleted'/><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses (only works when Filter incomplete answers is Disable)")."</label></td></tr>\n";
 
 //only show option to show graphs if jpgraph is enabled
 if (isset($usejpgraph) && $usejpgraph == 1)

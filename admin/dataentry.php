@@ -35,23 +35,7 @@ $actsurrows = $actsurresult->FetchRow();
 if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 {
 
-	$surveyoptions = browsemenubar();
-	if (!$database_exists)
-	{
-		//$dataentryoutput .= "</table>\n";
-		$dataentryoutput .= "<table width='99%' align='center' class='table2columns' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr'><td colspan='2' height='4' class='settingcaption'><strong>"
-		.$clang->gT("Data Entry")."</strong></td></tr>\n"
-		."\t<tr><td align='center'>\n"
-		."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
-		.$clang->gT("The defined LimeSurvey database does not exist")."<br />\n"
-		.$clang->gT("Either your selected database has not yet been created or there is a problem accessing it.")."<br /><br />\n"
-		."<input type='submit' value='"
-		.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /></font><br />\n"
-		."</td></tr></table>\n"
-		."</body>\n";
-		return;
-	}
+	$surveyoptions = browsemenubar($clang->gT("Browse Responses"));
 	if (!$surveyid && !$subaction)
 	{
 		//$dataentryoutput .= "</table>\n";
@@ -481,12 +465,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 
 	elseif ($subaction == "edit" || $subaction == "editsaved")
 	{
-		$dataentryoutput .= "<table class='menubar'>\n"
-		."\t<tr ><td colspan='2' height='4'><strong>"
-		.$clang->gT("Browse Responses")."</strong></td></tr>\n";
-		if (isset($surveyheader)) {$dataentryoutput .= $surveyheader;}
-		$dataentryoutput .= $surveyoptions
-		."</table>\n";
+		$dataentryoutput .= $surveyoptions;
 
 		if (!isset($_GET['language'])) $_GET['language'] = GetBaseLanguageFromSurveyID($surveyid);
 
@@ -1506,11 +1485,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		//This is the default, presenting a blank dataentry form
 		$fieldmap=createFieldMap($surveyid);
 		// PRESENT SURVEY DATAENTRY SCREEN
-		$dataentryoutput .= "<table><tr><td></td></tr></table><table class='menubar' >\n"
-		."\t<tr><td colspan='2' height='4'><strong>"
-		.$clang->gT("Browse Responses")."</strong></td></tr>\n"
-		.$surveyoptions
-		."</table><table><tr><td></td></tr></table>";
+		$dataentryoutput .= $surveyoptions
+		."<table><tr><td></td></tr></table>";
 
 		$dataentryoutput .= "<table width='100%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."<form action='$scriptname?action=dataentry' name='addsurvey' method='post' id='addsurvey'>\n"
