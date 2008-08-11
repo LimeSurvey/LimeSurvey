@@ -563,23 +563,23 @@ else
   	global $homeurl, $langdir,  $imagefiles;
   	global $surveyid, $gid, $qid, $action, $clang;
 
-    $helpoutput="\t\t<td id='help' width='200' valign='top' style='display: none' bgcolor='#CCCCCC'>\n"
+    $helpoutput="\t\t<td id='help' width='200' valign='top' style='display: none' bgcolor='#F8F8FF'>\n"
   	."\t\t\t<table width='100%'><tr><td>"
   	."<table width='100%' align='center' cellspacing='0'>\n"
   	."\t\t\t\t<tr>\n"
-  	."\t\t\t\t\t<td bgcolor='#555555' height='8'>\n"
-  	."\t\t\t\t\t\t<font color='white' size='1'><strong>"
+  	."\t\t\t\t\t<td bgcolor='#D2E0F2' height='8'>\n"
+  	."\t\t\t\t\t\t<font size='1'><strong>"
   	.$clang->gT("Help")."</strong>\n"
   	."\t\t\t\t\t</font></td>\n"
   	."\t\t\t\t</tr>\n"
   	."\t\t\t\t<tr>\n"
-  	."\t\t\t\t\t<td align='center' bgcolor='#AAAAAA' style='border-style: solid; border-width: 1px; border-color: #555555'>\n"
+  	."\t\t\t\t\t<td align='center' bgcolor='#EEF6FF' style='border-style: solid; border-width: 1px; border-color: #D2E0F2'>\n"
   	."\t\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' hspace='0' border='0' align='left' />\n"
   	."\t\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' name='CloseHelp' align='right' onclick=\"showhelp('hide')\" />\n"
   	."\t\t\t\t\t</td>\n"
   	."\t\t\t\t</tr>\n"
   	."\t\t\t\t<tr>\n"
-  	."\t\t\t\t\t<td bgcolor='silver' height='100%' style='border-style: solid; border-width: 1px; border-color: #333333'>\n";
+  	."\t\t\t\t\t<td bgcolor='#EEF6FF' height='100%' style='border-width: 0px;'>\n";
   	//determine which help document to show
   	if (!$surveyid && $action != "editusers")
   	{

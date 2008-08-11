@@ -366,7 +366,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 	        $adminmenu .= "\t\t\t\t</div>\n"
                         . "\t\t\t</div>\n"
                         . "\t\t</div>\n";
-            $adminmenu .= "<font style='size:1px;line-height:1px;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>"; //CSS Firefox 2 transition fix
+            $adminmenu .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
                         
             }                 
         return $adminmenu;

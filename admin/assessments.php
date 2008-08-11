@@ -57,20 +57,20 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
     $assessmentsoutput=  "<table width='100%' border='0' >\n"
         . "\t<tr>\n"
         . "\t\t<td>\n"
-        . "\t\t\t<table class='menubar'>\n"
-        . "\t\t\t<tr>\n"
-        . "\t\t\t\t<td colspan='2' height='8'>\n"
-        . "\t\t\t\t\t<strong>".$clang->gT("Assessments")."</strong></td></tr>\n";
+        . "<div class='menubar'>\n"
+        . "\t<div class='menubar-title'>\n"
+        . "\t\t<strong>".$clang->gT("Assessments")."</strong>\n";
 	
-	$assessmentsoutput.= "\t<tr >\n"
-	. "\t\t<td>\n"
+	$assessmentsoutput.= "\t</div>\n"
+    . "\t<div class='menubar-main'>\n"
+    . "\t\t<div class='menubar-left'>\n"
 	. "\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Return to Survey Administration", "js")."');return false\">" .
-			"<img name='Administration' src='$imagefiles/home.png' title='' alt='' align='left'  /></a>\n"
-	. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left' />\n"
-	. "\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
-	. "\t\t</td>\n"
-	. "\t</tr>\n";
-	$assessmentsoutput.= "</table>";
+			"<img name='Administration' src='$imagefiles/home.png' title='' alt='' /></a>\n"
+	. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'  />\n"
+	. "\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n"
+	. "\t\t</div>\n"
+	. "\t</div>\n"
+    . "</div>\n";
 	
 	if ($surveyid == "") {
 		$assessmentsoutput.= $clang->gT("No SID Provided");

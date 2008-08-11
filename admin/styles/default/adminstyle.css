@@ -74,6 +74,9 @@ div.menubar {
 }
 .menubar img {
 	vertical-align: middle;
+    max-height:40px;
+    border:0;
+    margin-left:-2px;
 }
 .menubar-title {
 	background-color: #EEF6FF;
@@ -435,4 +438,13 @@ table.alertbox {
   border: 1px solid;
   border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
  text-align: left;  
+}
+
+.menubar tr {
+ text-align:left;
+}
+
+div.menubar input {
+margin-left:-5px;
+vertical-align:top;
 }

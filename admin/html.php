@@ -746,7 +746,8 @@ if ($surveyid)
             . "onmouseover=\"showTooltip(event,'".$clang->gT("Add New Group to Survey", "js")."');return false\"> "
             . "<img src='$imagefiles/add.png' title='' alt='' name='AddNewGroup' /></a>\n";
         }
-        $surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' border='0' alt='' hspace='0' />\n"
+        $surveysummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n"
+        . "\t\t\t\t\t<img src='$imagefiles/blank.gif' width='19' alt=''  />\n"
         . "\t\t\t\t\t<input type='image' src='$imagefiles/minus.gif' title='". $clang->gT("Hide details of this Survey")."' "
         . "alt='". $clang->gT("Hide details of this Survey")."' name='MinimiseSurveyWindow' "
         . "onclick='document.getElementById(\"surveydetails\").style.display=\"none\";' />\n";
@@ -761,14 +762,13 @@ if ($surveyid)
         }
         else
         {
-            $surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' width='20' alt='' />\n";
+            $surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' width='18' alt='' />\n";
         }
         
-		$surveysummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' border='0' width='8' alt='' />\n"
-        . "\t\t\t\t</div>\n"
+		$surveysummary .= "\t\t\t\t</div>\n"
 		. "\t\t\t</div>\n"
 		. "\t\t</div>\n";
-        $surveysummary .= "<font style='size:1px;line-height:0;'>&nbsp;&nbsp;&nbsp;&nbsp;</font>"; //CSS Firefox 2 transition fix
+        $surveysummary .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
 
 
 		//SURVEY SUMMARY
@@ -956,23 +956,22 @@ if ($surveyid && $gid )   // Show the group toolbar
 	// Check if other questions/groups are dependent upon this group
 	$condarray=GetGroupDepsForConditions($surveyid,"all",$gid,"by-targgid");	
 
-	$groupsummary = "<table width='100%' align='center' bgcolor='#FFFFFF' border='0'>\n";
+    $groupsummary = "\t\t<div class='menubar'>\n"
+        . "\t\t\t<div class='menubar-title'>\n";
+
 	while ($grow = $grpresult->FetchRow())
 	{
         $grow = array_map('strip_tags', $grow);
 		//$grow = array_map('htmlspecialchars', $grow);
-		$groupsummary .= "\t<tr>\n"
-		. "\t\t<td colspan='2'>\n"
-		. "\t\t\t<table class='menubar'>\n"
-		. "\t\t\t\t<tr><td align='left' colspan='2' height='4'>"
-		. "<strong>".$clang->gT("Group")."</strong> "
-		. "<font class='basic'>{$grow['group_name']} (".$clang->gT("ID").":$gid)</font></td></tr>\n"
-		. "\t\t\t\t<tr>\n"
-		. "\t\t\t\t\t<td>\n"
-		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='55' height='20' border='0' hspace='0' align='left' />\n"
-		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
-		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='160' height='20' border='0' hspace='0' align='left' />\n"
-		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
+		$groupsummary .= '<strong>'.$clang->gT("Group").'</strong>&nbsp;'
+		. "<font class='basic'>{$grow['group_name']} (".$clang->gT("ID").":$gid)</font>\n"
+		. "\t\t\t\t</div>\n"
+        . "\t\t\t<div class='menubar-main'>\n"
+        . "\t\t\t<div class='menubar-left'>\n"
+		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='56' height='20'  />\n"
+		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  />\n"
+		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='170' height='20'  />\n"
+		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  />\n";
 
 		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
 		{
@@ -980,11 +979,11 @@ if ($surveyid && $gid )   // Show the group toolbar
 			. "onmouseout=\"hideTooltip()\""
 			. "title=\"".$clang->gTview("Edit Current Group")."\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Edit Current Group", "js")."');return false\">" .
-			"<img src='$imagefiles/edit.png' title='' alt='' name='EditGroup' align='left' /></a>\n" ;
+			"<img src='$imagefiles/edit.png' title='' alt='' name='EditGroup' /></a>\n" ;
 		}
 		else
 		{
-			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
+			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
 		}
 
 		if ((($sumcount4 == 0 && $activated != "Y") || $activated != "Y") &&($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions']))
@@ -996,7 +995,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 				. "onmouseout=\"hideTooltip()\""
 				. "title=\"".$clang->gTview("Delete Current Group")."\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("Delete Current Group", "js")."');return false\">"
-				. "<img src='$imagefiles/delete.png' alt='' name='DeleteWholeGroup' title='' align='left' border='0' hspace='0' /></a>";
+				. "<img src='$imagefiles/delete.png' alt='' name='DeleteWholeGroup' title=''  /></a>";
 				//get2post("$scriptname?action=delgroup&amp;sid=$surveyid&amp;gid=$gid");
 			}
 			else
@@ -1005,84 +1004,86 @@ if ($surveyid && $gid )   // Show the group toolbar
 				. "onmouseout=\"hideTooltip()\""
 				. "title=\"".$clang->gTview("Delete Current Group")."\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("Disabled","js")."-".$clang->gT("Delete Current Group", "js")."');return false\">"
-				. "<img src='$imagefiles/delete_disabled.png' alt='' name='DeleteWholeGroup' title='' align='left' border='0' hspace='0' /></a>";
+				. "<img src='$imagefiles/delete_disabled.png' alt='' name='DeleteWholeGroup' title='' /></a>";
 			}
 		}
 		else
 		{
-			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
+			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
 		}
-		if(($activated!="Y" && getQuestionSum($surveyid, $gid)>1) && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions']))
-		{
-			$groupsummary .= "<a href='$scriptname?action=orderquestions&amp;sid=$surveyid&amp;gid=$gid' onmouseout=\"hideTooltip()\""
-			. "title=\"".$clang->gTview("Change Question Order")."\" "
-			. "onmouseover=\"showTooltip(event,'".$clang->gT("Change Question Order", "js")."');return false\">"
-			. "<img src='$imagefiles/reorder.png' title='' alt='".$clang->gT("Change Question Order")."' name='updatequestionorder' align='left' /></a>" ;
-		}
-		else
-		{
-			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
-		}
-		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'])
-		{
+        $groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
 
-			$groupsummary .="<a href='$scriptname?action=dumpgroup&amp;sid=$surveyid&amp;gid=$gid' onmouseout=\"hideTooltip()\""
-			. "title=\"".$clang->gTview("Export Current Group")."\" "
-			. "onmouseover=\"showTooltip(event,'".$clang->gT("Export Current Group", "js")."');return false\">" .
-			"<img src='$imagefiles/exportcsv.png' title='' alt='' name='ExportGroup' align='left' /></a>";
-		}
-		else
-		{
-			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
-		}
 
-		$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
-		. "\t\t\t\t\t</td>\n"
-		. "\t\t\t\t\t<td align='right' width='500'>\n";
+        if(($activated!="Y" && getQuestionSum($surveyid, $gid)>1) && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions']))
+        {
+            $groupsummary .= "<a href='$scriptname?action=orderquestions&amp;sid=$surveyid&amp;gid=$gid' onmouseout=\"hideTooltip()\""
+            . "title=\"".$clang->gTview("Change Question Order")."\" "
+            . "onmouseover=\"showTooltip(event,'".$clang->gT("Change Question Order", "js")."');return false\">"
+            . "<img src='$imagefiles/reorder.png' title='' alt='".$clang->gT("Change Question Order")."' name='updatequestionorder' /></a>" ;
+        }
+        else
+        {
+            $groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
+        }
+        if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'])
+        {
 
-		if (!$qid)
-		{
-			$groupsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' title='"
-			. $clang->gT("Close this Group")."' alt='". $clang->gT("Close this Group")."' align='right'  name='CloseSurveyWindow' "
-			. "onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" />\n";
-		}
-		else
-		{
-			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' align='right' border='0' hspace='0' />\n";
-		}
-		$groupsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/plus.gif' title='"
-		. $clang->gT("Show Details of this Group")."' alt='". $clang->gT("Show Details of this Group")."' name='MaximiseGroupWindow' "
-		. "align='right' onclick='document.getElementById(\"groupdetails\").style.display=\"\";' />"
-		. "\t\t\t\t\t<input type='image' src='$imagefiles/minus.gif' title='"
-		. $clang->gT("Hide Details of this Group")."' alt='". $clang->gT("Hide Details of this Group")."' name='MinimiseGroupWindow' "
-		. "align='right'  onclick='document.getElementById(\"groupdetails\").style.display=\"none\";' />\n"
-		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' align='right' border='0' width='20' height='20' />\n"
-		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' align='right' border='0' hspace='0' />\n";
-		if ($activated == "Y")
-		{
-			$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' border='0' hspace='0' align='right' />\n";
-		}
-		elseif($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
-		{
-			$groupsummary .= "<a href='$scriptname?action=addquestion&amp;sid=$surveyid&amp;gid=$gid'"
-			."onmouseout=\"hideTooltip()\""
-			."title=\"".$clang->gTview("Add New Question to Group")."\""
-			."onmouseover=\"showTooltip(event,'".$clang->gT("Add New Question to Group", "js")."');return false\">" .
-			"<img src='$imagefiles/add.png' title='' alt='' " .
-			"align='right' name='AddNewQuestion' onclick=\"window.open('', '_top')\" /></a>\n";
-		}
-		$groupsummary .= "\t\t\t\t\t<font class=\"boxcaption\">".$clang->gT("Questions").":</font>&nbsp;<select class=\"listboxquestions\" name='qid' "
+            $groupsummary .="<a href='$scriptname?action=dumpgroup&amp;sid=$surveyid&amp;gid=$gid' onmouseout=\"hideTooltip()\""
+            . "title=\"".$clang->gTview("Export Current Group")."\" "
+            . "onmouseover=\"showTooltip(event,'".$clang->gT("Export Current Group", "js")."');return false\">" .
+            "<img src='$imagefiles/exportcsv.png' title='' alt='' name='ExportGroup'  /></a>";
+        }
+        else
+        {
+            $groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
+        }
+   		$groupsummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n"
+		. "\t\t\t\t\t</div>\n"
+        . "\t\t\t\t\t<div class='menubar-right'>\n"
+		. "\t\t\t\t\t<font class=\"boxcaption\">".$clang->gT("Questions").":</font>&nbsp;<select class=\"listboxquestions\" name='qid' "
 		. "onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n"
 		. getquestions($surveyid,$gid,$qid)
-		. "\t\t\t\t\t</select>\n"
-		. "\t\t\t\t</td></tr>\n"
-		. "\t\t\t</table>\n"
-		. "\t\t</td>\n"
-		. "\t</tr>\n";
+		. "\t\t\t\t\t</select>\n";
+        if ($activated == "Y")
+        {
+            $groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
+        }
+        elseif($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
+        {
+            $groupsummary .= "<a href='$scriptname?action=addquestion&amp;sid=$surveyid&amp;gid=$gid'"
+            ."onmouseout=\"hideTooltip()\""
+            ."title=\"".$clang->gTview("Add New Question to Group")."\""
+            ."onmouseover=\"showTooltip(event,'".$clang->gT("Add New Question to Group", "js")."');return false\">" .
+            "<img src='$imagefiles/add.png' title='' alt='' " .
+            " name='AddNewQuestion' onclick=\"window.open('', '_top')\" /></a>\n";
+        }
+        
+        $groupsummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  />\n";
+        $groupsummary.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' width='19' alt=''  />\n"
+        . "\t\t\t\t\t<input type='image' src='$imagefiles/minus.gif' title='"
+        . $clang->gT("Hide Details of this Group")."' alt='". $clang->gT("Hide Details of this Group")."' name='MinimiseGroupWindow' "
+        . " onclick='document.getElementById(\"groupdetails\").style.display=\"none\";' />\n";
+        $groupsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/plus.gif' title='"
+        . $clang->gT("Show Details of this Group")."' alt='". $clang->gT("Show Details of this Group")."' name='MaximiseGroupWindow' "
+        . " onclick='document.getElementById(\"groupdetails\").style.display=\"\";' />";
+        if (!$qid)
+        {
+            $groupsummary .= "\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' title='"
+            . $clang->gT("Close this Group")."' alt='". $clang->gT("Close this Group")."'  name='CloseSurveyWindow' "
+            . "onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" />\n";
+        }
+        else
+        {
+            $groupsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='18' />\n";
+        }        
+        $groupsummary .="\t\t\t\t</div></div>\n"
+		. "\t\t\t</div>\n";
+        $groupsummary .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
+        
 		if ($qid || $action=='editgroup'|| $action=='addquestion') {$gshowstyle="style='display: none'";}
 		else	  {$gshowstyle="";}
 
-		$groupsummary .= "\t<tr id='groupdetails' $gshowstyle><td><table class='table2columns' ><tr ><td width='20%' align='right'><strong>"
+		$groupsummary .= "\t<table class='table2columns' id='groupdetails' $gshowstyle ><tr ><td width='20%' align='right'><strong>"
 		. $clang->gT("Title").":</strong></td>\n"
 		. "\t<td align='left'>"
 		. "{$grow['group_name']} ({$grow['gid']})</td></tr>\n"
@@ -1108,7 +1109,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 			$groupsummary .= "\t</td></tr>";
 		}
 	}
-	$groupsummary .= "\n</table></td></tr></table>\n";
+	$groupsummary .= "\n</table>\n";
 }
 
 if ($surveyid && $gid && $qid)  // Show the question toolbar
@@ -1120,7 +1121,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 	$qct = $qrr->RecordCount();
 	$qrquery = "SELECT * FROM ".db_table_name('questions')." WHERE gid=$gid AND sid=$surveyid AND qid=$qid AND language='".$baselang."'";
 	$qrresult = db_execute_assoc($qrquery) or safe_die($qrquery."<br />".$connect->ErrorMsg()); //Checked
-	$questionsummary = "<table width='100%' align='center' border='0'>\n";
+	$questionsummary = "<div class='menubar'>\n";
 
 	// Check if other questions in the Survey are dependent upon this question
 	$condarray=GetQuestDepsForConditions($surveyid,"all","all",$qid,"by-targqid","outsidegroup");
@@ -1129,17 +1130,15 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 	{
         $qrrow = array_map('strip_tags', $qrrow);
 		//$qrrow = array_map('htmlspecialchars', $qrrow);
-		$questionsummary .= "\t<tr>\n"
-		. "\t\t<td colspan='2'>\n"
-		. "\t\t\t<table class='menubar'>\n"
-		. "\t\t\t\t<tr><td colspan='2' height='4' align='left'><strong>"
-		. $clang->gT("Question")."</strong> <font class='basic'>{$qrrow['question']} (".$clang->gT("ID").":$qid)</font></td></tr>\n"
-		. "\t\t\t\t<tr>\n"
-		. "\t\t\t\t\t<td>\n"
-		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='55' height='20' border='0' hspace='0' align='left' />\n"
-		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
-		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='160' height='20' border='0' hspace='0' align='left' />\n"
-		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
+		$questionsummary .= "\t<div class='menubar-title'>\n"
+		. "\t\t<strong>". $clang->gT("Question")."</strong> <font class='basic'>{$qrrow['question']} (".$clang->gT("ID").":$qid)</font>\n"
+		. "\t</div>\n"
+        . "\t<div class='menubar-main'>\n"
+        . "\t\t<div class='menubar-left'>\n"
+		. "\t\t<img src='$imagefiles/blank.gif' alt='' width='55' height='20' />\n"
+		. "\t\t<img src='$imagefiles/seperator.gif' alt='' />\n"
+		. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='171' height='20'  />\n"
+		. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n";
 
 		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
 		{
@@ -1147,11 +1146,11 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			"onmouseout=\"hideTooltip()\""
 			. "title=\"".$clang->gTview("Edit Current Question")."\""
 			."onmouseover=\"showTooltip(event,'".$clang->gT("Edit Current Question", "js")."');return false\">" .
-			"<img src='$imagefiles/edit.png' title='' alt='' align='left' name='EditQuestion' /></a>\n" ;
+			"<img src='$imagefiles/edit.png' title='' alt='' name='EditQuestion' /></a>\n" ;
 		}
 		else
 		{
-			$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
+			$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
 		}
 
 		if ((($qct == 0 && $activated != "Y") || $activated != "Y") && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions']))
@@ -1165,7 +1164,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 				. "onmouseout=\"hideTooltip()\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("Delete Current Question", "js")."');return false\">"
 				. "<img src='$imagefiles/delete.png' name='DeleteWholeQuestion' alt= '' title='' "
-				."align='left' border='0' hspace='0' /></a>\n";
+				. "border='0' hspace='0' /></a>\n";
 			}
 			else
 			{
@@ -1178,22 +1177,21 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 				."align='left' border='0' hspace='0' /></a>\n";
 			}
 		}
-		else {$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";}
-		$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
+		else {$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' />\n";}
+		$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='84' />\n";
 
 		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'])
 		{
 			$questionsummary .= "<a href='$scriptname?action=dumpquestion&amp;sid=$surveyid&amp;qid=$qid' onmouseout=\"hideTooltip()\""
 			. "title=\"".$clang->gTview("Export this Question")."\" " 
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Export this Question", "js")."');return false\">" .
-			"<img src='$imagefiles/exportcsv.png' title=''"
-			. "alt=''align='left' name='ExportQuestion' /></a>\n";
+			"<img src='$imagefiles/exportcsv.png' title='' alt='' name='ExportQuestion' /></a>\n";
 		}
 		else
 		{
-			$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
+			$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
 		}
-		$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
+		$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n";
 
 		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
 		{
@@ -1203,8 +1201,8 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 				"onmouseout=\"hideTooltip()\""
 				. "title=\"".$clang->gTview("Copy Current Question")."\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("Copy Current Question", "js")."');return false\">" .
-				"<img src='$imagefiles/copy.png' title='' alt='' align='left' name='CopyQuestion' /></a>\n"
-				. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
+				"<img src='$imagefiles/copy.png' title='' alt='' name='CopyQuestion' /></a>\n"
+				. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n";
 			}
 			else
 			{
@@ -1212,13 +1210,13 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 				"onmouseout=\"hideTooltip()\""
 				. "title=\"".$clang->gTview("Copy Current Question")."\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("Disabled","js")."-".$clang->gT("Copy Current Question", "js")."');return false\" onclick=\"alert('".$clang->gT("Copy question is not possible in an Active survey","js")."')\">" .
-				"<img src='$imagefiles/copy_disabled.png' title='' alt='' align='left' name='CopyQuestion' /></a>\n"
-				. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
+				"<img src='$imagefiles/copy_disabled.png' title='' alt='' name='CopyQuestion' /></a>\n"
+				. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n";
 			}
 		}
 		else
 		{
-			$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
+			$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
 		}
 		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
 		{
@@ -1226,12 +1224,12 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			. "onmouseout=\"hideTooltip()\""
 			. "title=\"".$clang->gTview("Set Conditions for this Question")."\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Set Conditions for this Question", "js")."');return false\">"
-			. "<img src='$imagefiles/conditions.png' title='' alt='' align='left' name='SetQuestionConditions' /></a>\n"
-			. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
+			. "<img src='$imagefiles/conditions.png' title='' alt=''  name='SetQuestionConditions' /></a>\n"
+			. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n";
 		}
 		else
 		{
-			$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
+			$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
 		}
 		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
 		{
@@ -1241,15 +1239,15 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			. "onmouseout=\"hideTooltip()\""
 			. "title=\"".$clang->gTview("Preview This Question")."\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Preview This Question", "js")."');return false\">"
-			. "<img src='$imagefiles/preview.png' title='' alt='' align='left' name='previewquestion' /></a>\n"
-			. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
+			. "<img src='$imagefiles/preview.png' title='' alt='' name='previewquestionimg' /></a>\n"
+			. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n";
 			} else {
 				$questionsummary .= "<a href=\"#\" accesskey='d' onclick=\"hideTooltip(); document.getElementById('printpopup').style.visibility='hidden'; document.getElementById('langpopup2').style.visibility='hidden'; document.getElementById('previewquestion').style.visibility='visible';\""
 				. "onmouseout=\"hideTooltip()\""
 				. "title=\"".$clang->gTview("Preview This Question")."\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("Preview This Question", "js")."');return false\">"
-				. "<img src='$imagefiles/preview.png' title='' alt='' align='left' name='previewquestion' /></a>\n"
-				. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
+				. "<img src='$imagefiles/preview.png' title='' alt='' name='previewquestionimg' /></a>\n"
+				. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  />\n";
 						
 				$tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 				$baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -1269,7 +1267,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		}
 		else
 		{
-			$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
+			$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
 		}
 		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
 		{
@@ -1280,31 +1278,32 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			"onmouseout=\"hideTooltip()\""
 			. "title=\"".$clang->gTview("Edit/Add Answers for this Question")."\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Edit/Add Answers for this Question", "js")."');return false\">" .
-			"<img src='$imagefiles/answers.png' alt='' title='' align='left' name='ViewAnswers' /></a>\n" ;
+			"<img src='$imagefiles/answers.png' alt='' title='' name='ViewAnswers' /></a>\n" ;
 			}
 		}
 		else
 		{
-			$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' align='left' border='0' hspace='0' />\n";
+			$questionsummary .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
 		}
-		$questionsummary .= "\t\t\t\t\t</td>\n"
-		. "\t\t\t\t\t<td align='right' width='400' valign='top'>\n"
-		. "\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' title='"
-		. $clang->gT("Close this Question")."' alt='". $clang->gT("Close this Question")."' align='right' name='CloseQuestionWindow' "
-		. "onclick=\"window.open('$scriptname?sid=$surveyid&amp;gid=$gid', '_top')\" />\n"
-		. "\t\t\t\t\t<input type='image' src='$imagefiles/plus.gif' title='"
-		. $clang->gT("Show Details of this Question")."'  alt='". $clang->gT("Show Details of this Question")."'align='right'  name='MaximiseQuestionWindow' "
+		$questionsummary .= "\t\t\t\t\t</div>\n"
+        . "\t\t<div class='menubar-right'>\n"
+        . "\t\t\t\t\t<input type='image' src='$imagefiles/minus.gif' title='"
+        . $clang->gT("Hide Details of this Question")."'  alt='". $clang->gT("Hide Details of this Question")."' name='MinimiseQuestionWindow' "
+        . "onclick='document.getElementById(\"questiondetails\").style.display=\"none\";' />\n"
+        . "\t\t\t\t\t<input type='image' src='$imagefiles/plus.gif' title='"
+		. $clang->gT("Show Details of this Question")."'  alt='". $clang->gT("Show Details of this Question")."' name='MaximiseQuestionWindow' "
 		. "onclick='document.getElementById(\"questiondetails\").style.display=\"\";' />"
-		. "\t\t\t\t\t<input type='image' src='$imagefiles/minus.gif' title='"
-		. $clang->gT("Hide Details of this Question")."'  alt='". $clang->gT("Hide Details of this Question")."'align='right'  name='MinimiseQuestionWindow' "
-		. "onclick='document.getElementById(\"questiondetails\").style.display=\"none\";' />\n"
-		. "\t\t\t\t</td></tr>\n"
-		. "\t\t\t</table>\n"
-		. "\t\t</td>\n"
-		. "\t</tr>\n";
+        . "\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' title='"
+        . $clang->gT("Close this Question")."' alt='". $clang->gT("Close this Question")."' name='CloseQuestionWindow' "
+        . "onclick=\"window.open('$scriptname?sid=$surveyid&amp;gid=$gid', '_top')\" />\n"
+		. "\t\t</div>\n"
+		. "\t</div>\n"
+        . "</div>\n";
+        $questionsummary .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
+        
 		if (returnglobal('viewanswer') || $action =="editquestion" || $action =="copyquestion")	{$qshowstyle = "style='display: none'";}
 		else							{$qshowstyle = "";}
-		$questionsummary .= "\t<tr $qshowstyle id='questiondetails'><td><table class='table2columns'><tr><td width='20%' align='right'><strong>"
+		$questionsummary .= "\t<table class='table2columns' id='questiondetails' $qshowstyle><tr><td width='20%' align='right'><strong>"
 		. $clang->gT("Code:")."</strong></td>\n"
 		. "\t<td align='left'>{$qrrow['title']}";
 		if ($qrrow['type'] != "X")
@@ -1426,7 +1425,6 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		$qid_attributes=getQuestionAttributes($qid);
         $questionsummary .= "</table>";        
 	}
-	$questionsummary .= "</td></tr></table>";
 }
 
 if (returnglobal('viewanswer'))
