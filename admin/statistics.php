@@ -52,7 +52,15 @@
 
 
 //MM: This setting will be put into config-defaults.php later
-$showaggregateddata = 0;
+$showaggregateddata = 1;
+
+//showaggregateddata doesn't work when this filter is set
+//therefore we disable the function
+if (isset($_POST["noncompleted"]) and ($_POST["noncompleted"] == "on"))
+{
+	
+    $showaggregateddata = 0;
+}
 
 
 //don't call this script directly!
@@ -1271,8 +1279,8 @@ $statisticsoutput .= "\t\t\t</table>\n"
 ."\t\t<tr><td align='center' class='settingcaption'>\n"
 ."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
 ."\t\t\t\t<tr><td align='center'>".$clang->gT("Filter incomplete answers:")."<select name='filterinc'>\n"
-."\t\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Enabled")."</option>\n"
-."\t\t\t\t\t<option value='show' $selectshow>".$clang->gT("Disabled")."</option>\n"
+."\t\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
+."\t\t\t\t\t<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
 ."\t\t\t\t</select></td></tr>\n"
 ."\t\t\t\t<tr><td align='center'><input type='checkbox' id='noncompleted' name='noncompleted'/><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses (only works when Filter incomplete answers is Disable)")."</label></font></td></tr>\n";
 
@@ -2221,7 +2229,7 @@ if (isset($summary) && $summary)
 					
 					//footer of question type "N"
 					$statisticsoutput .= "\t<tr>\n"
-					."\t\t<td colspan='3' align='center' bgcolor='#EEEEEE'>\n"
+					."\t\t<td colspan='4' align='center' bgcolor='#EEEEEE'>\n"
 					."\t\t\t<font size='1'>".$clang->gT("Null values are ignored in calculations")."<br />\n"
 					."\t\t\t".sprintf($clang->gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".$clang->gT("minitab method")."</a>")
 					."</font>\n"
@@ -2238,7 +2246,7 @@ if (isset($summary) && $summary)
 				{
 					//output
 					$statisticsoutput .= "\t<tr>\n"
-					."\t\t<td align='center'  colspan='3'>".$clang->gT("Not enough values for calculation")."</td>\n"
+					."\t\t<td align='center'  colspan='4'>".$clang->gT("Not enough values for calculation")."</td>\n"
 					."\t</tr>\n</table>\n";
 					unset($showem);
 				}
@@ -2292,10 +2300,7 @@ if (isset($summary) && $summary)
 				$qlid=$nrow[4];
                 $qlid1=$nrow[5];
 				$qother=$nrow[6];
-			}
-			
-			//put data into array
-			$alist[]=array("", $clang->gT("No answer"));
+			}		
 			
 			//check question types
 			switch($qtype)
@@ -2564,6 +2569,10 @@ if (isset($summary) && $summary)
 				
 			}	//end switch question type
 			
+			//MM moved because it's better to have "no answer" at the end of the list instead of the beginning
+			//put data into array
+			$alist[]=array("", $clang->gT("No answer"));
+			
 		}	//end else -> single option answers 
 
 		//foreach ($alist as $al) {$statisticsoutput .= "$al[0] - $al[1]<br />";} //debugging line
@@ -2578,24 +2587,16 @@ if (isset($summary) && $summary)
 		{
 			//output
 			$statisticsoutput .= "<table width='95%' align='center' border='1'  cellpadding='2' cellspacing='0' class='statisticstable'>\n"
-			."\t<tr><td colspan='3' align='center'><strong>"
+			."\t<tr><td colspan='4' align='center'><strong>"
 			
 			//headline
 			.$clang->gT("Field Summary for")." $qtitle:</strong>"
 			."</td></tr>\n"
-			."\t<tr><td colspan='3' align='center'><strong>"
+			."\t<tr><td colspan='4' align='center'><strong>"
 			
 			//question title
 			."$qquestion</strong></td></tr>\n"
-			."\t<tr>\n\t\t<td width='50%' align='center' >"
-			
-			//three columns
-			."<strong>".$clang->gT("Answer")."</strong></td>\n"
-			."\t\t<td width='25%' align='center' >"
-			."<strong>".$clang->gT("Count")."</strong></td>\n"
-			."\t\t<td width='25%' align='center' >"
-			."<strong>".$clang->gT("Percentage")."</strong></td>\n"
-			."\t</tr>\n";
+			."\t<tr>\n\t\t<td width='50%' align='center' >";
             
 			// this will count the answers considered completed
 			$TotalCompleted = 0;    
@@ -2714,6 +2715,40 @@ if (isset($summary) && $summary)
 					//MM: check if aggregated results should be shown
 					elseif ($showaggregateddata == 1 && isset($showaggregateddata))
 					{
+							
+						if(!isset($showheadline) || $showheadline != false)
+						{
+							if($qtype == "5" || $qtype == "A")
+							{
+								//MM moved 
+								//four columns
+								$statisticsoutput .= "<strong>".$clang->gT("Answer")."</strong></td>\n"
+								."\t\t<td width='20%' align='center' >"
+								."<strong>".$clang->gT("Count")."</strong></td>\n"
+								."\t\t<td width='20%' align='center' >"
+								."<strong>".$clang->gT("Percentage")."</strong></td>\n"
+								."\t\t<td width='10%' align='center' >"
+								."<strong>".$clang->gT("Sum")."</strong></td>\n"
+								."\t</tr>\n";
+								
+								$showheadline = false;							
+							}
+							else
+							{
+								//MM moved 
+								//four columns
+								$statisticsoutput .= "<strong>".$clang->gT("Answer")."</strong></td>\n"
+								."\t\t<td width='25%' align='center' >"
+								."<strong>".$clang->gT("Count")."</strong></td>\n"
+								."\t\t<td width='25%' align='center' >"
+								."<strong>".$clang->gT("Percentage")."</strong></td>\n"
+								."\t</tr>\n";
+								
+								$showheadline = false;
+							}
+							
+						}
+						
 						//text for answer column is always needed
 						$fname="$al[1] ($al[0])";
 						
@@ -2770,6 +2805,18 @@ if (isset($summary) && $summary)
 					//handling what's left
 					else
 					{
+						if(!isset($showheadline) || $showheadline != false)
+						{
+							//three columns
+							$statisticsoutput .= "<strong>".$clang->gT("Answer")."</strong></td>\n"
+							."\t\t<td width='25%' align='center' >"
+							."<strong>".$clang->gT("Count")."</strong></td>\n"
+							."\t\t<td width='25%' align='center' >"
+							."<strong>".$clang->gT("Percentage")."</strong></td>\n"
+							."\t</tr>\n";
+						
+							$showheadline = false;
+						}
 						//answer text
 						$fname="$al[1] ($al[0])";
 					}
@@ -2791,8 +2838,7 @@ if (isset($summary) && $summary)
 					if(!isset($justadded))
 					{
 						//put absolute data into array
-						$grawdata[]=$row[0];
-						
+						$grawdata[]=$row[0];						
 					}
 					else
 					{
@@ -2818,7 +2864,7 @@ if (isset($summary) && $summary)
             {
             	//is the checkbox "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)" checked?
                 if (isset($_POST["noncompleted"]) and ($_POST["noncompleted"] == "on"))
-                {
+                {                	
                 	//counter
                     $i=0;
                     
@@ -2883,6 +2929,10 @@ if (isset($summary) && $summary)
             //loop through all available answers
             while (isset($gdata[$i]))
             {
+            	//repeat header (answer, count, ...) for each new question
+            	unset($showheadline);
+            	
+            	
             	/*
             	 * there are 3 colums:
             	 * 
@@ -2894,7 +2944,7 @@ if (isset($summary) && $summary)
                 ."\t\t</td>\n"
                 
                 //output absolute number of records
-                ."\t\t<td width='25%' align='center' >" . $grawdata[$i] . "\n";
+                ."\t\t<td width='20%' align='center' >" . $grawdata[$i] . "\n";
                 
                 
                 //XXX $vp isn't used anywhere else?!? clean up?
@@ -2915,11 +2965,25 @@ if (isset($summary) && $summary)
                 if ($gdata[$i] == "N/A") 
                 {
                 	//MM new (moved from above)
-                	$statisticsoutput .= "\t\t</td><td width='25%' align='center' >";
+                	$statisticsoutput .= "\t\t</td><td width='20%' align='center' >";
                 	
                 	//percentage = 0
                     $statisticsoutput .= $gdata[$i];
                     $gdata[$i] = 0;
+                    
+                    //check if we have to adjust ouput due to $showaggregateddata setting
+                    if($showaggregateddata == 1 && isset($showaggregateddata))
+                    {
+                    	if($i == 0 && (isset($aggregated) && $aggregated == true))
+                    	{
+							$statisticsoutput .= "\t\t </td><td>";
+                  	  	}
+                  	  	elseif($i == 0 || (isset($aggregated) && $aggregated == true))
+                  	  	{
+							$statisticsoutput .= "\t\t </td><td>";
+                   		} 
+                    }              			
+                    		
                 }
                 
                 //data available
@@ -2928,75 +2992,149 @@ if (isset($summary) && $summary)
                 	//MM: check if data should be aggregated
                 	if($showaggregateddata == 1 && isset($showaggregateddata))
                 	{
-                		//cope with "normal" data of this question type
-                		//nothing special to do here, just adjust output
+                		//mark that we have done soemthing special here
+                		$aggregated = true;
+                		               		
+                		//MM: "no answer" answers shouldn't be taken into account when calculating percentage
+                		if($label[$i] == $clang->gT("No answer"))
+                		{
+                			//counter
+                			$noanswer = 0;
+                			
+                			////we need to know how often "no answer" is available
+                			$noanswervalue = $grawdata[$i];
+                		}
+                		//we need a counter because we have to recalculate percentage for items 1 - 5
+                		if(isset($noanswer) && $noanswer >= 5)
+                		{
+                			
+                			//all items re-calculated -> unset variable
+                			unset($noanswer);
+                		}
+                		else if(isset($noanswer))
+                		{
+                			$noanswer++;
+                		}                		
+                		
+                		
+                		//"no answer" & items 2 / 4 - nothing special to do here, just adjust output
 	                	if($gdata[$i] <= 100)
-	                	{
+	                	{	                		
+	                		if(isset($noanswer))
+	                		{
+	                			//re-calculate percentage
+	                			$percentage = ($grawdata[$i] / ($results - $noanswervalue)) * 100;
+	                		}
+	                		else
+	                		{
+	                			$percentage = $gdata[$i];
+	                		}
+	                		
 	                		//MM new (moved)
-	                		$statisticsoutput .= "\t\t</td><td width='25%' align='center' >";
+	                		$statisticsoutput .= "\t\t</td><td width='20%' align='center'>";
 	                		
 	                		//output percentage
-	                		$statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
-	                		$statisticsoutput .= "\t\t</td><td>";
+	                		$statisticsoutput .= sprintf("%01.2f", $percentage) . "%"; 
+	                		
+	                		//adjust output
+	                		if($qtype == "5" || $qtype == "A")
+	                		{
+	                			$statisticsoutput .= "\t\t </td><td>";
+	                		}
+	                		else
+	                		{
+	                			$statisticsoutput .= "\t\t ";
+	                		}
 	                	}
 	                	
-	                	//middle value -> just show results twice
+	                	//item 3 - just show results twice
 	                	if($gdata[$i] >= 400)
 	                	{         		
 	                		//remove "400" which was added before
-	                		//to get the original percentage
-	                		$gdata[$i] -= 400;	                		
+	                		$gdata[$i] -= 400;
+	                		
+	                		if(isset($noanswer))
+	                		{
+	                			//re-calculate percentage
+	                			$percentage = ($grawdata[$i] / ($results - $noanswervalue)) * 100;
+	                		}
+	                		else
+	                		{
+	                			//remove "400" which was added before
+	                			//to get the original percentage
+	                			$percentage = $gdata[$i];
+	                		}
 	                		
 	                		//output percentage
-	                		$statisticsoutput .= "\t\t</td><td width='12%' align='center' >";
-	                		$statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
+	                		$statisticsoutput .= "\t\t</td><td width='20%' align='center' >";
+	                		$statisticsoutput .= sprintf("%01.2f", $percentage) . "%";
 							
 							//output again (no real aggregation here)
-	                		$statisticsoutput .= "\t\t</td><td width='12%' align='right' >";
-	                		$statisticsoutput .= sprintf("%01.2f", $gdata[$i])."%";
+	                		$statisticsoutput .= "\t\t</td><td width='10%' align='center' >";
+	                		$statisticsoutput .= sprintf("%01.2f", $percentage)."%";
+	                		$statisticsoutput .= "\t\t";
 	                	}
 	                	
 	                	//FIRST value -> add percentage of item 1 + item 2
 	                	if($gdata[$i] >= 300 && $gdata[$i] < 400)
-	                	{   
+	                	{       
 	                		//remove "300" which was added before
-	                		$gdata[$i] -= 300;
-	                		
-	                		//calculate aggregated data
-	                		$index = $i + 1;
+	                		$gdata[$i] -= 300;    		
+	                		if(isset($noanswer))
+	                		{
+	                			//re-calculate percentage
+	                			$percentage = ($grawdata[$i] / ($results - $noanswervalue)) * 100;
+	                			$percentage2 = ($grawdata[$i + 1] / ($results - $noanswervalue)) * 100;
+	                		}
+	                		else
+	                		{
+	                			$percentage = $gdata[$i];
+	                			$percentage2 = $gdata[$i+1];
+	                		}
 	                		
 	                		//percentage of item 1 + item 2
-	                		$aggregatedgdata = $gdata[$i] + $gdata[$index];
+	                		$aggregatedgdata = $percentage + $percentage2;
 	                		
 	                		//output percentage
 	                		//MM new (moved)
-	                		$statisticsoutput .= "\t\t</td><td width='12%' align='center' >";
-	                		$statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
+	                		$statisticsoutput .= "\t\t</td><td width='20%' align='center' >";
+	                		$statisticsoutput .= sprintf("%01.2f", $percentage) . "%";
 							
 	                		//output aggregated data
-	                		$statisticsoutput .= "\t\t</td><td width='12%' align='right' >";
+	                		$statisticsoutput .= "\t\t</td><td width='10%' align='center' >";
 	                		$statisticsoutput .= sprintf("%01.2f", $aggregatedgdata)."%";
+	                		$statisticsoutput .= "\t\t";
 	                	}
 	                	
 	                	//LAST value -> add item 4 + item 5
 	                	if($gdata[$i] > 100 && $gdata[$i] < 300)
-	                	{	                		
+	                	{
 	                		//remove "200" which was added before
 	                		$gdata[$i] -= 200;
-	                		
-	                		//calculate aggregated data
-	                		$index = $i - 1;
+	                				    
+	                		if(isset($noanswer))
+	                		{
+	                			//re-calculate percentage
+	                			$percentage = ($grawdata[$i] / ($results - $noanswervalue)) * 100;
+	                			$percentage2= ($grawdata[$i - 1] / ($results - $noanswervalue)) * 100;
+	                		}
+	                		else
+	                		{	                			
+	                			$percentage = $gdata[$i];
+	                			$percentage2 = $gdata[$i-1];
+	                		}
 	                		
 	                		//item 4 + item 5
-	                		$aggregatedgdata = $gdata[$i] + $gdata[$index];
+	                		$aggregatedgdata = $percentage + $percentage2;
 	                		
 	                		//MM new (moved)
-	                		$statisticsoutput .= "\t\t</td><td width='12%' align='center' >";
-	                		$statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
+	                		$statisticsoutput .= "\t\t</td><td width='20%' align='center' >";
+	                		$statisticsoutput .= sprintf("%01.2f", $percentage) . "%";
 							
 	                		//output aggregated data
-	                		$statisticsoutput .= "\t\t</td><td width='12%' align='right' >";
+	                		$statisticsoutput .= "\t\t</td><td width='10%' align='center' >";
 	                		$statisticsoutput .= sprintf("%01.2f", $aggregatedgdata)."%";
+	                		$statisticsoutput .= "\t\t";
 	                	}
 	                	
                 	}	//end if -> show aggregated data
@@ -3005,14 +3143,16 @@ if (isset($summary) && $summary)
                 	else
                 	{                		
                 		//output percentage 
-	                	$statisticsoutput .= "\t\t</td><td width='25%' align='center' >";
+	                	$statisticsoutput .= "\t\t</td><td width='20%' align='center' >";
                 		$statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
+                		$statisticsoutput .= "\t\t";
                 	}
+                	
                 	                	                	
-                }	//end else -> $gdata[$i] != "N/A"                    
+                }	//end else -> $gdata[$i] != "N/A"        
                 
-                //end output per line
-                $statisticsoutput .= "\t\t</td>\n\t</tr>\n";
+              	//end output per line. there has to be a whitespace within the table cell to display correctly
+	            $statisticsoutput .= "\t\t&nbsp</td>\n\t</tr>\n";              
                 
                 //increase counter
                 $i++;
@@ -3033,9 +3173,9 @@ if (isset($summary) && $summary)
 				$p1 = "";
 				
 				//debugging
-				//                  $statisticsoutput .= "<pre>";
+				//                 $statisticsoutput .= "<pre>";
 				//                  $statisticsoutput .= "GDATA:\n";
-				//                  print_r($gdata);
+				 //                 print_r($gdata);
 				//                  $statisticsoutput .= "GRAWDATA\n";
 				//                  print_r($grawdata);
 				//                  $statisticsoutput .= "LABEL\n";
@@ -3044,7 +3184,7 @@ if (isset($summary) && $summary)
 				//                  print_r($justcode);
 				//                  $statisticsoutput .= "LBL\n";
 				//                  print_r($lbl);
-				//                  $statisticsoutput .= "</pre>";
+				 //                 $statisticsoutput .= "</pre>";
 				
 				//$gdata and $lbl are arrays built at the end of the last section
 				//that contain the values, and labels for the data we are about
@@ -3297,7 +3437,7 @@ if (isset($summary) && $summary)
 				$graph->Stroke($tempdir."/".$gfilename);
 				
 				//add graph to output
-				$statisticsoutput .= "<tr><td colspan='3' style=\"text-align:center\"><img src=\"$tempurl/".$gfilename."\" border='1'></td></tr>";
+				$statisticsoutput .= "<tr><td colspan='4' style=\"text-align:center\"><img src=\"$tempurl/".$gfilename."\" border='1'></td></tr>";
 				
 			}	//end if -> jpgraph enabled
 			
