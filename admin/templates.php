@@ -559,98 +559,95 @@ $templatesoutput= "<script type='text/javascript'>\n"
 ."\t\t}\n"
 ."\t}\n"
 ."//-->\n</script>\n";
-$templatesoutput.= "<table width='100%' border='0' bgcolor='#DDDDDD'>\n"
-. "\t<tr>\n"
-. "\t\t<td>\n"
-. "\t\t\t<table class='menubar'>\n"
-. "\t\t\t<tr>\n"
-. "\t\t\t\t<td colspan='2' height='8'>\n"
+$templatesoutput.= "<div class='menubar'>\n"
+. "\t\t\t<div class='menubar-title'>\n"
 . "\t\t\t\t\t<strong>".$clang->gT('Template Editor')."</strong>\n"
-. "\t\t\t\t</td>\n"
-. "\t\t\t</tr>\n"
-. "\t\t\t<tr >\n"
-. "\t\t\t\t<td>\n"
+. "\t\t\t\t</div>\n"
+. "\t\t\t<div class='menubar-main'>\n"
+. "\t\t\t<div class='menubar-left'>\n"
 . "\t\t\t\t\t<a href='$scriptname'" 
 . "onmouseout=\"hideTooltip()\" title=\"".$clang->gTview("Default Administration Page")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Default Administration Page", "js")."')\">" 
-. "<img src='$imagefiles/home.png' name='HomeButton' alt='' title='' align='left' /></a>\n"
-. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='10' border='0' hspace='0' align='left' />\n"
-. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />"
-. "</td><td align='right'>"
-. "<img src='$imagefiles/blank.gif' alt='' border='0' hspace='0' width='20' height='1' align='right'  />"
+. "<img src='$imagefiles/home.png' name='HomeButton' alt='' title='' /></a>\n"
+. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='10'  />\n"
+. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  />"
+. "</div>\n"
+. "\t\t\t<div class='menubar-right'>\n"
 
 //Logout Button
+
+."<font style='boxcaption'><strong>".$clang->gT("Template:")."</strong> </font>"
+."<select class=\"listboxtemplates\" name='templatedir' onchange='javascript: window.open(\"admin.php?action=templates&amp;editfile=$editfile&amp;screenname=".html_escape($screenname)."&amp;templatename=\"+this.value, \"_top\")'>\n"
+.makeoptions($templates, "name", "name", $templatename)
+."</select>\n"
+. "<a href='#' onclick=\"javascript: copyprompt('".$clang->gT("Create new template called:")."', '".$clang->gT("NewTemplate")."', 'default', 'copy')\"" 
+. " onmouseout=\"hideTooltip()\" title=\"".$clang->gTview("Create new template")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Create new template", "js")."')\">" 
+. "<img src='$imagefiles/add.png' alt=''  title='' /></a>\n"
+. "<img src='$imagefiles/seperator.gif' alt='' />"
 . "\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=logout', '_top')\""
 . "title=\"".$clang->gTview("Logout")."\" "
 . "onmouseout=\"hideTooltip()\""
 . "onmouseover=\"showTooltip(event,'".$clang->gT("Logout", "js")."');return false\">"
 . "<img src='$imagefiles/logout.png' name='Logout'"
-. "title='' alt='".$clang->gT("Logout")."' align='right'/></a>"
+. "title='' alt='".$clang->gT("Logout")."' /></a>"
+. "<img src='$imagefiles/blank.gif' alt='' width='20'  />"
+."</div></div></div>\n"
+."<font style='size:12px;line-height:2px;'>&nbsp;&nbsp;</font>"; //CSS Firefox 2 transition fix
 
-. "<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='right' />"
-. "<a href='#' onclick=\"javascript: copyprompt('".$clang->gT("Create new template called:")."', '".$clang->gT("NewTemplate")."', 'default', 'copy')\"" 
-. " onmouseout=\"hideTooltip()\" title=\"".$clang->gTview("Create new template")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Create new template", "js")."')\">" 
-. "<img src='$imagefiles/add.png' alt='' align='right' title='' /></a>\n"
-."<font style='boxcaption'><strong>".$clang->gT("Template:")."</strong> </font>"
-."<select class=\"listboxtemplates\" name='templatedir' onchange='javascript: window.open(\"admin.php?action=templates&amp;editfile=$editfile&amp;screenname=".html_escape($screenname)."&amp;templatename=\"+this.value, \"_top\")'>\n"
-.makeoptions($templates, "name", "name", $templatename)
-."</select>\n"
-."</td></tr></table>\n"
-."<table><tr><td height='1'></td></tr></table>\n";
 
 //TEMPLATE DETAILS
-$templatesoutput.= "\t\t\t<table class='menubar'>\n"
-. "\t\t\t<tr>\n"
-. "\t\t\t\t<td colspan='2' height='8'>\n"
+$templatesoutput.= "\t\t\t<div class='menubar'>\n"
+. "\t\t\t<div class='menubar-title'>\n"
 . "\t\t\t\t\t<strong>".$clang->gT("Template:")." <i>$templatename</i></strong>\n"
-. "\t\t\t\t</td>\n"
-. "\t\t\t</tr>\n"
-. "\t\t\t<tr>\n"
-. "\t\t\t\t<td>\n";
+. "\t\t\t\t</div>\n"
+. "\t\t\t<div class='menubar-main'>\n"
+. "\t\t\t<div class='menubar-left'>\n";
 if (is_writable("$publicdir/templates/$templatename") && ($templatename != "default") ) {
-	$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/trafficgreen.png' alt='' hspace='0' align='left'" 
+	$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/trafficgreen.png' alt='' " 
             		  ." onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("This template can be modified", "js")."')\" />\n";
 } else {
-	$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/trafficred.png' alt='' hspace='0' align='left'" 
+	$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/trafficred.png' alt='' '" 
             		  ." onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("This template cannot be modified", "js")."')\" />\n";
 }
-$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left' />\n"
-."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
-."\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='10' border='0' hspace='0' align='left' />\n"
-."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
+$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='40'/>\n"
+."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  />\n";
 
 if ($templatename == "default" && $debug<2) 
 {
         $templatesoutput.= "\t\t\t\t\t" .
-    		 "<img name='EditName' src='$imagefiles/noedit.png' alt='' align='left' title=''" .
+    		 "<img name='EditName' src='$imagefiles/noedit.png' alt='' title=''" .
     		 " onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("You can't edit the default template.", "js")."')\" ".
              " />";
 }
 else 
     {	
         $templatesoutput.= "\t\t\t\t\t<a href='#' onclick=\"javascript: copyprompt('".$clang->gT("Rename this template to:")."', '$templatename', '$templatename', 'rename')\">" .
-    		 "<img name='EditName' src='$imagefiles/edit.png' alt='' align='left' title=''" .
+    		 "<img name='EditName' src='$imagefiles/edit.png' alt='' title=''" .
     		 " onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Rename this template", "js")."')\" ".
              " /></a>";
     }
-$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' height='10' border='0' hspace='0' align='left' />\n"
+$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' height='10' />\n"
 ."\t\t\t\t\t<a href='#' onclick='javascript:window.open(\"admin.php?action=templatezip&amp;editfile=$editfile&amp;screenname=".html_escape($screenname)."&amp;templatename=$templatename\", \"_top\")'".
 		"onmouseout=\"hideTooltip()\" title=\"".$clang->gTview("Export Template")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Template", "js")."')\">" .
-				"<img name='Export' src='$imagefiles/export.png' alt='' align='left' title='' /></a>\n"
-."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
+				"<img name='Export' src='$imagefiles/export.png' alt='' title='' /></a>\n"
+."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' />\n"
 ."\t\t\t\t\t" .
 		"<a href='#' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Copy Template", "js")."')\" title=\"".$clang->gTview("Copy Template")."\" " .
 		"onclick=\"javascript: copyprompt('".$clang->gT("Make a copy of this template")."', '".$clang->gT("copy_of_")."$templatename', '$templatename', 'copy')\">" .
-		"<img name='MakeCopy' src='$imagefiles/copy.png' alt='' align='left' title='' /></a>"
-."</td><td align='right'>\n"
-."<img src='$imagefiles/blank.gif' align='right' alt='' border='0' hspace='0' width='60' height='10' />"
-."<img src='$imagefiles/seperator.gif' align='right' alt='minimise' border='0' hspace='0' />"
-."<img src='$imagefiles/blank.gif' width='35' align='right' alt='minimise' border='0' hspace='0' />"
+		"<img name='MakeCopy' src='$imagefiles/copy.png' alt='' title='' /></a>"
+."</div>\n"
+."<div class='menubar-right'>\n"
 ."<font style='boxcaption'><strong>".$clang->gT("Screen:")."</strong> </font>"
 . "<select class=\"listboxtemplates\" name='screenname' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;editfile=$editfile&amp;screenname=\"+this.value, \"_top\")'>\n"
 . makeoptions($screens, "name", "name", html_escape($screenname) )
-. "</select>&nbsp;\n"
-."</td></tr></table>\n"
-."<table><tr><td height='1'></td></tr></table>\n";
+. "</select>\n"
+."<img src='$imagefiles/blank.gif' width='45' height='10' alt='' />"
+."<img src='$imagefiles/seperator.gif' alt='' />"
+."<img src='$imagefiles/blank.gif' width='62' height='10' alt=''/>"
+."</div></div></div>\n"
+."<table width='100%' border='0' bgcolor='#FFFFFF'>\n"
+. "\t<tr>\n"
+. "\t\t<td>\n";
+
 
 //FILE CONTROL DETAILS
 $templatesoutput.= "\t\t\t<table class='menubar'>\n"
