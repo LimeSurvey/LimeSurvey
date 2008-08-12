@@ -1702,8 +1702,8 @@ function do_multiplechoice($ia)
 		}
 		$answer .= "\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='{$myfname}cbox' id='answer{$myfname}cbox'";
 		if (isset($_SESSION[$myfname]) && trim($_SESSION[$myfname])!='') {$answer .= " checked='checked'";}
-		$answer .= " onchange='".$callmaxanswscriptcheckbox."document.getElementById(\"answer$myfname\").value=\"\"'  />";
-		$answer .= "\t\t\t\t\t\t<label for='answer$myfname' class='answertext'>".$othertext.":</label> <input class='text' type='text' name='$myfname' id='answer$myfname'";
+		$answer .= " onchange='".$callmaxanswscriptcheckbox."document.getElementById(\"answer$myfname\").value=\"\"' />";
+		$answer .= "<label for='answer$myfname' class='answertext'>".$othertext.":</label> <input class='text' type='text' name='$myfname' id='answer$myfname'";
 		if (isset($_SESSION[$myfname])) {$answer .= " value='".htmlspecialchars($_SESSION[$myfname],ENT_QUOTES)."'";}
 		// --> START NEW FEATURE - SAVE
 		$answer .= " onkeypress='document.getElementById(\"{$myfname}cbox\").checked=true;' ".$callmaxanswscriptother."/>\n"
