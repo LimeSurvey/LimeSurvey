@@ -1,5 +1,6 @@
 <?php
 
+require_once(dirname(__FILE__).'/../classes/core/html_entity_decode_php4.php');
 require_once('checkphpversion.php');
 
 class PDF extends TCPDF

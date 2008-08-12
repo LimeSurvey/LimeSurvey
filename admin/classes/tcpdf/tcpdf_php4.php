@@ -5458,7 +5458,6 @@ if(!class_exists('TCPDF')) {
 			if (!$this->isunicode) {
 				return html_entity_decode($text_to_convert);
 			}
-			require_once(dirname(__FILE__).'/html_entity_decode_php4.php');
 			return html_entity_decode_php4($text_to_convert);
 		}
 		
