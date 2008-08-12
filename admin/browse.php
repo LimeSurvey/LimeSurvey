@@ -130,7 +130,7 @@ $qulanguage = GetBaseLanguageFromSurveyID($surveyid);
 if ($subaction == "id") // Looking at a SINGLE entry
 {
 	//SHOW HEADER
-	if (!isset($_POST['sql']) || !$_POST['sql']) {$browseoutput .= "$surveyoptions";} // Don't show options if coming from tokens script
+	if (!isset($_POST['sql']) || !$_POST['sql']) {$browseoutput .= '<tr><td>'.$surveyoptions;} // Don't show options if coming from tokens script
 	$browseoutput .="<table><tr><td></td></tr></table>\n";
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
 	$fnquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups").", ".db_table_name("surveys")."
@@ -335,7 +335,7 @@ elseif ($subaction == "all")
 {
 
 	if (!isset($_POST['sql']))
-	{$browseoutput .= $surveyoptions;} //don't show options when called from another script with a filter on
+	{$browseoutput .= '<tr><td>'.$surveyoptions;} //don't show options when called from another script with a filter on
 	else
 	{
         $browseoutput .= "\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Browse Responses").":</strong> $surveyname</td></tr>\n"
@@ -700,7 +700,7 @@ elseif ($subaction == "all")
 }
 else
 {
-	$browseoutput .= $surveyoptions;
+	$browseoutput .= '<tr><td>'.$surveyoptions;
 	$num_total_answers=0;
 	$num_completed_answers=0;
 	$gnquery = "SELECT count(id) FROM $surveytable";
@@ -715,7 +715,7 @@ else
 	.sprintf($clang->gT("%d full responses"), $num_completed_answers).", "
 	.sprintf($clang->gT("%d responses not completely filled out"), $num_total_answers-$num_completed_answers).")"
 	."\t</td></tr>\n"
-	."</table>\n";
+	."</table></table>\n";
 
 }
 
