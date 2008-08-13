@@ -45,6 +45,9 @@
 	Y - Yes/No 
 	Z - List (Flexible Labels) (Radio) 
 	! - List (Dropdown)
+
+	Debugging help:
+	echo '<script language="javascript" type="text/javascript">alert("HI");</script>';
  */
 
 //TODO: - Use real question and answer title and cut them off after X chars. 
@@ -52,7 +55,7 @@
 
 
 //MM: This setting will be put into config-defaults.php later
-$showaggregateddata = 1;
+$showaggregateddata = 0;
 
 //showaggregateddata doesn't work when this filter is set
 //therefore we disable the function
@@ -2604,7 +2607,7 @@ if (isset($summary) && $summary)
 		
 		//2. Collect and Display results #######################################################################
 		if (isset($alist) && $alist) //Make sure there really is an answerlist, and if so:
-		{
+		{                
 			//output
 			$statisticsoutput .= "<table width='95%' align='center' border='1'  cellpadding='2' cellspacing='0' class='statisticstable'>\n"
 			."\t<tr><td colspan='4' align='center'><strong>"
@@ -2946,6 +2949,9 @@ if (isset($summary) && $summary)
             //counter
             $i=0;
             
+            //we need to know which item we are editing
+      	    $itemcounter = 1;
+      	      
             //loop through all available answers
             while (isset($gdata[$i]))
             {
@@ -3008,42 +3014,45 @@ if (isset($summary) && $summary)
                 
                 //data available
                 else
-                {                        	
+                {
+                	
+                	                        	
                 	//MM: check if data should be aggregated
                 	if($showaggregateddata == 1 && isset($showaggregateddata))
                 	{
                 		//mark that we have done soemthing special here
-                		$aggregated = true;
-                		               		
-                		//MM: "no answer" answers shouldn't be taken into account when calculating percentage
-                		if($label[$i] == $clang->gT("No answer"))
-                		{
-                			//counter
-                			$noanswer = 0;
-                			
-                			////we need to know how often "no answer" is available
-                			$noanswervalue = $grawdata[$i];
-                		}
-                		//we need a counter because we have to recalculate percentage for items 1 - 5
-                		if(isset($noanswer) && $noanswer >= 5)
-                		{
-                			
-                			//all items re-calculated -> unset variable
-                			unset($noanswer);
-                		}
-                		else if(isset($noanswer))
-                		{
-                			$noanswer++;
-                		}                		
+                		$aggregated = true;           		
                 		
                 		
                 		//"no answer" & items 2 / 4 - nothing special to do here, just adjust output
 	                	if($gdata[$i] <= 100)
-	                	{	                		
-	                		if(isset($noanswer))
+	                	{
+	                		if($itemcounter == 2 && $label[$i+4] == $clang->gT("No answer"))
 	                		{
-	                			//re-calculate percentage
-	                			$percentage = ($grawdata[$i] / ($results - $noanswervalue)) * 100;
+	                			//prevent division by zero
+	                			if(($results - $grawdata[$i+4]) > 0)
+	                			{
+	                				//re-calculate percentage
+	                				$percentage = ($grawdata[$i] / ($results - $grawdata[$i+4])) * 100;
+	                			}
+	                			else
+	                			{
+	                				$percentage = 0;
+	                			}
+	                			
+	                		}
+	                		elseif($itemcounter == 4 && $label[$i+2] == $clang->gT("No answer"))
+	                		{
+	                			//prevent division by zero
+	                			if(($results - $grawdata[$i+2]) > 0)
+	                			{
+	                				//re-calculate percentage
+	                				$percentage = ($grawdata[$i] / ($results - $grawdata[$i+2])) * 100;
+	                			}
+	                			else
+	                			{
+	                				$percentage = 0;
+	                			}
 	                		}
 	                		else
 	                		{
@@ -3073,21 +3082,28 @@ if (isset($summary) && $summary)
 	                		//remove "400" which was added before
 	                		$gdata[$i] -= 400;
 	                		
-	                		if(isset($noanswer))
+	                		if($itemcounter == 3 && $label[$i+3] == $clang->gT("No answer"))
 	                		{
-	                			//re-calculate percentage
-	                			$percentage = ($grawdata[$i] / ($results - $noanswervalue)) * 100;
+	                			//prevent division by zero
+	                			if(($results - $grawdata[$i+3]) > 0)
+	                			{
+	                				//re-calculate percentage
+	                				$percentage = ($grawdata[$i] / ($results - $grawdata[$i+3])) * 100;
+	                			}
+	                			else
+	                			{
+	                				$percentage = 0;
+	                			}
 	                		}
 	                		else
-	                		{
-	                			//remove "400" which was added before
-	                			//to get the original percentage
+	                		{	                			
+	                			//get the original percentage
 	                			$percentage = $gdata[$i];
 	                		}
 	                		
 	                		//output percentage
 	                		$statisticsoutput .= "\t\t</td><td width='20%' align='center' >";
-	                		$statisticsoutput .= sprintf("%01.2f", $percentage) . "%";
+	                		$statisticsoutput .= sprintf("%01.2f", $percentage) . "%"; 
 							
 							//output again (no real aggregation here)
 	                		$statisticsoutput .= "\t\t</td><td width='10%' align='center' >";
@@ -3099,12 +3115,23 @@ if (isset($summary) && $summary)
 	                	if($gdata[$i] >= 300 && $gdata[$i] < 400)
 	                	{       
 	                		//remove "300" which was added before
-	                		$gdata[$i] -= 300;    		
-	                		if(isset($noanswer))
+	                		$gdata[$i] -= 300;   
+	                		 		
+	                		if($itemcounter == 1 && $label[$i+5] == $clang->gT("No answer"))
 	                		{
-	                			//re-calculate percentage
-	                			$percentage = ($grawdata[$i] / ($results - $noanswervalue)) * 100;
-	                			$percentage2 = ($grawdata[$i + 1] / ($results - $noanswervalue)) * 100;
+	                			//prevent division by zero
+	                			if(($results - $grawdata[$i+5]) > 0)
+	                			{
+	                				//re-calculate percentage
+	                				$percentage = ($grawdata[$i] / ($results - $grawdata[$i+5])) * 100;
+	                				$percentage2 = ($grawdata[$i + 1] / ($results - $grawdata[$i+5])) * 100;
+	                			}
+	                			else
+	                			{
+	                				$percentage = 0;
+	                				$percentage2 = 0;
+	                				
+	                			}
 	                		}
 	                		else
 	                		{
@@ -3116,9 +3143,8 @@ if (isset($summary) && $summary)
 	                		$aggregatedgdata = $percentage + $percentage2;
 	                		
 	                		//output percentage
-	                		//MM new (moved)
 	                		$statisticsoutput .= "\t\t</td><td width='20%' align='center' >";
-	                		$statisticsoutput .= sprintf("%01.2f", $percentage) . "%";
+	                		$statisticsoutput .= sprintf("%01.2f", $percentage) . "%"; 
 							
 	                		//output aggregated data
 	                		$statisticsoutput .= "\t\t</td><td width='10%' align='center' >";
@@ -3131,12 +3157,22 @@ if (isset($summary) && $summary)
 	                	{
 	                		//remove "200" which was added before
 	                		$gdata[$i] -= 200;
-	                				    
-	                		if(isset($noanswer))
+	                		                			   
+	                		if($itemcounter == 5 && $label[$i+1] == $clang->gT("No answer"))
 	                		{
-	                			//re-calculate percentage
-	                			$percentage = ($grawdata[$i] / ($results - $noanswervalue)) * 100;
-	                			$percentage2= ($grawdata[$i - 1] / ($results - $noanswervalue)) * 100;
+	                			//prevent division by zero
+	                			if(($results - $grawdata[$i+1]) > 0)
+	                			{
+	                				//re-calculate percentage
+	                				$percentage = ($grawdata[$i] / ($results - $grawdata[$i+1])) * 100;
+	                				$percentage2 = ($grawdata[$i - 1] / ($results - $grawdata[$i+1])) * 100;
+	                			}
+	                			else
+	                			{
+	                				$percentage = 0;
+	                				$percentage2 = 0;
+	                				
+	                			}	                			
 	                		}
 	                		else
 	                		{	                			
@@ -3147,7 +3183,7 @@ if (isset($summary) && $summary)
 	                		//item 4 + item 5
 	                		$aggregatedgdata = $percentage + $percentage2;
 	                		
-	                		//MM new (moved)
+	                		//output percentage
 	                		$statisticsoutput .= "\t\t</td><td width='20%' align='center' >";
 	                		$statisticsoutput .= sprintf("%01.2f", $percentage) . "%";
 							
@@ -3155,6 +3191,21 @@ if (isset($summary) && $summary)
 	                		$statisticsoutput .= "\t\t</td><td width='10%' align='center' >";
 	                		$statisticsoutput .= sprintf("%01.2f", $aggregatedgdata)."%";
 	                		$statisticsoutput .= "\t\t";
+	                		
+	                		//NEW: create new row "sum"
+	                		//calculate sum of items 1-5
+	                		$sumitems = $grawdata[$i] 
+	                		+ $grawdata[$i-1] 
+	                		+ $grawdata[$i-2]
+	                		+ $grawdata[$i-3]
+	                		+ $grawdata[$i-4];
+	                		
+	                		$statisticsoutput .= "\t\t&nbsp</td>\n\t</tr>\n";
+	                		$statisticsoutput .= "<tr><td width='50%' align='center'><strong>".$clang->gT("Sum")."</strong></td>";
+	                		$statisticsoutput .= "<td width='20%' align='center' ><strong>".$sumitems."</strong></td>";
+	                		$statisticsoutput .= "<td width='20%' align='center' ><strong>100.00%</strong></td>";
+	                		$statisticsoutput .= "<td width='10%' align='center' ><strong>100.00%</strong></td></tr>";
+	                		
 	                	}
 	                	
                 	}	//end if -> show aggregated data
@@ -3167,7 +3218,6 @@ if (isset($summary) && $summary)
                 		$statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
                 		$statisticsoutput .= "\t\t";
                 	}
-                	
                 	                	                	
                 }	//end else -> $gdata[$i] != "N/A"        
                 
@@ -3175,8 +3225,11 @@ if (isset($summary) && $summary)
 	            $statisticsoutput .= "\t\t&nbsp</td>\n\t</tr>\n";              
                 
                 //increase counter
-                $i++;
-            }
+                $i++;                
+                
+				$itemcounter++;
+            
+            }	//end while
 
             
             
@@ -3430,7 +3483,7 @@ if (isset($summary) && $summary)
                           //$Test->drawRoundedRectangle(5,5,295,195,5,230,230,230);  
                       
                     // Draw the pie chart  
-                    $Test->setFontProperties("../classes/pchart/Fonts/tahoma.ttf",10);  
+                    $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",10);  
                     $Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),220,round($gheight/2),170,TRUE,TRUE,50,20,5);  
                     $Test->drawPieLegend(430,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);  
 
@@ -3493,7 +3546,7 @@ if (isset($summary) && $summary)
 		unset ($alist);		
 		
 	}	// end foreach -> loop through all questions
-	
+		
 	//output
     $statisticsoutput .= "<br />&nbsp\n";
     
