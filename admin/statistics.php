@@ -84,7 +84,7 @@ if ($usejpgraph == 1 && isset($jpgraphdir)) //JPGRAPH CODING SUBMITTED BY Pieter
 	require_once ("$jpgraphdir/jpgraph_pie.php");
 	require_once ("$jpgraphdir/jpgraph_pie3d.php");
 	require_once ("$jpgraphdir/jpgraph_bar.php");
-
+	
     require_once('../classes/pchart/pchart/pChart.class');
     require_once('../classes/pchart/pchart/pData.class');
     
@@ -370,8 +370,13 @@ foreach ($filters as $flt)
 		$flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q" && $flt[2] != "1" && 
 		$flt[2] != "X" && $flt[2] != "W" && $flt[2] != "Z" && $flt[2] != "K") //Have to make an exception for these types!
 	{
+		//MM 88
+		//$flt[3] = shortenCode($flt[3], 10);
+		
 		$statisticsoutput .= "\t\t\t\t<td align='center'>"
-		."<strong>$flt[3]&nbsp;"; //Heading (Question No)
+		."<strong>".shortencode($flt[5], 10)."&nbsp;"; //Heading (Question No)
+		
+		//."<strong>".shortenCode($flt[5], 10)."</strong><br />\n"; //Heading (Question No)
 		
 		//multiple options:
 		if ($flt[2] == "M" || $flt[2] == "P") {$myfield = "M$myfield";}
@@ -397,7 +402,6 @@ foreach ($filters as $flt)
 		//show speaker symbol which contains full question text
 		$statisticsoutput .= " />&nbsp;".showSpeaker($niceqtext)."</strong>"
 		."<br />\n";
-		
 		//numerical question type -> add some HTML to the output
 		if ($flt[2] == "N") {$statisticsoutput .= "</font>";}
 		if ($flt[2] != "N") {$statisticsoutput .= "\t\t\t\t<select name='";}
@@ -1162,7 +1166,7 @@ foreach ($filters as $flt)
 
                 
                 $statisticsoutput .= " />&nbsp;"
-                    .showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
+                    .shortenCode($niceqtext." ".str_replace("'", "`", $row[1]), 10)//showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
                     ."<br />\n";
                 
                 /*
@@ -2956,7 +2960,7 @@ if (isset($summary) && $summary)
             	 * 2 (25%) = count (absolute)
             	 * 3 (25%) = percentage
             	 */
-                $statisticsoutput .= "\t<tr>\n\t\t<td width='50%' align='center' >" . $label[$i] ."\n"
+            	$statisticsoutput .= "\t<tr>\n\t\t<td width='50%' align='center' >" . $label[$i] ."\n"
                 ."\t\t</td>\n"
                 
                 //output absolute number of records
@@ -3329,8 +3333,7 @@ if (isset($summary) && $summary)
 					}
 					
 					//create new piegraph
-					$graph = new PieGraph(640,$gheight,'png');
-                    
+					$graph = new PieGraph(680,$gheight,'png');
 					
 					//some legend and font setting
 					$graph->legend->SetFont(constant($jpgraphfont), FS_NORMAL, $fontsize);
@@ -3415,7 +3418,7 @@ if (isset($summary) && $summary)
                     }
                 
                     //create new 3D pie chart
-                    $DataSet = new pData; 
+					$DataSet = new pData; 
                     $DataSet->AddPoint($gdata,"Serie1");  
                     $DataSet->AddPoint($lbl,"Serie2");  
                     $DataSet->AddAllSeries();
@@ -3431,6 +3434,7 @@ if (isset($summary) && $summary)
                     $Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),220,round($gheight/2),170,TRUE,TRUE,50,20,5);  
                     $Test->drawPieLegend(430,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);  
 
+					
 					$p1 = new PiePlot3d($gdata);
 					
 					//debugging
@@ -3467,7 +3471,7 @@ if (isset($summary) && $summary)
 				$gfilename="STATS_".date("d")."X".$currentuser."X".$surveyid."X".$ci.date("His").".png";
 				
 				//create graph
-                $Test->Render($tempdir."/".$gfilename);
+				$Test->Render($tempdir."/".$gfilename);
 				//$graph->Stroke($tempdir."/".$gfilename);
 				
 				//add graph to output
@@ -3566,5 +3570,26 @@ function showSpeaker($hinttext)
            ." onclick=\"alert('".$clang->gT("Question","js").": $hinttext')\" />";
   return $reshtml; 
 }
+
+
+//function needs to have the original string and the max chars which should be shown
+function shortenCode($string, $max)
+{
+	if(strlen($string) > ($max))
+	{
+		//create short string
+		$shortstring = substr($string, 0, $max);
+		
+		//output with hoover effect
+		$output = "<span title='$string' alt='$string'>".$shortstring."...</span></a>";
+	}
+	else
+	{
+		$output = $string;	
+	}
+	
+	return $output;
+}
+
 
 ?>
