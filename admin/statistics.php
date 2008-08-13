@@ -85,6 +85,10 @@ if ($usejpgraph == 1 && isset($jpgraphdir)) //JPGRAPH CODING SUBMITTED BY Pieter
 	require_once ("$jpgraphdir/jpgraph_pie3d.php");
 	require_once ("$jpgraphdir/jpgraph_bar.php");
 
+    require_once('../classes/pchart/pchart/pChart.class');
+    require_once('../classes/pchart/pchart/pData.class');
+    
+
 
 	//$currentuser is created as prefix for jpgraph files
 	if (isset($_SERVER['REDIRECT_REMOTE_USER']))
@@ -2865,7 +2869,7 @@ if (isset($summary) && $summary)
 					$justcode[]=$al[0];
 					
 					//edit labels and put them into antoher array
-                    $lbl[] = wordwrap(strip_tags($fname), 20, "\n");
+                    $lbl[] = wordwrap(strip_tags($fname), 25, "\n");
                     
                 }	//end while -> loop through results
                 
@@ -3326,6 +3330,7 @@ if (isset($summary) && $summary)
 					
 					//create new piegraph
 					$graph = new PieGraph(640,$gheight,'png');
+                    
 					
 					//some legend and font setting
 					$graph->legend->SetFont(constant($jpgraphfont), FS_NORMAL, $fontsize);
@@ -3410,6 +3415,22 @@ if (isset($summary) && $summary)
                     }
                 
                     //create new 3D pie chart
+                    $DataSet = new pData; 
+                    $DataSet->AddPoint($gdata,"Serie1");  
+                    $DataSet->AddPoint($lbl,"Serie2");  
+                    $DataSet->AddAllSeries();
+                    $DataSet->SetAbsciseLabelSerie("Serie2");
+                    
+                    
+                    $Test = new pChart(640,$gheight);  
+//                    $Test->drawFilledRoundedRectangle(7,7,293,193,5,240,240,240);  
+                          //$Test->drawRoundedRectangle(5,5,295,195,5,230,230,230);  
+                      
+                    // Draw the pie chart  
+                    $Test->setFontProperties("../classes/pchart/Fonts/tahoma.ttf",10);  
+                    $Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),220,round($gheight/2),170,TRUE,TRUE,50,20,5);  
+                    $Test->drawPieLegend(430,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);  
+
 					$p1 = new PiePlot3d($gdata);
 					
 					//debugging
@@ -3446,7 +3467,8 @@ if (isset($summary) && $summary)
 				$gfilename="STATS_".date("d")."X".$currentuser."X".$surveyid."X".$ci.date("His").".png";
 				
 				//create graph
-				$graph->Stroke($tempdir."/".$gfilename);
+                $Test->Render($tempdir."/".$gfilename);
+				//$graph->Stroke($tempdir."/".$gfilename);
 				
 				//add graph to output
 				$statisticsoutput .= "<tr><td colspan='4' style=\"text-align:center\"><img src=\"$tempurl/".$gfilename."\" border='1'></td></tr>";
