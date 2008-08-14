@@ -3013,21 +3013,10 @@ if (isset($summary) && $summary)
                 $i++;
             }
 
-            
-            
-            
-            
-            //-------------------------- JPGRAPH OUTPUT ----------------------------
-            
-            //JPGRAPH CODING ORIGINALLY SUBMITTED BY Pieterjan Heyse
-            
-            //jpgraph has to be enabled and we need some data
-			if ($usejpgraph == 1 && isset($_POST['usegraph']) && array_sum($gdata)>0) 
+			if ($usejpgraph == 1 && isset($_POST['usegraph']) && array_sum($gdata)>0) //JPGRAPH CODING ORIGINALLY SUBMITTED BY Pieterjan Heyse
 			{
 				$graph = "";
 				$p1 = "";
-				
-				//debugging
 				//                  $statisticsoutput .= "<pre>";
 				//                  $statisticsoutput .= "GDATA:\n";
 				//                  print_r($gdata);
@@ -3040,76 +3029,15 @@ if (isset($summary) && $summary)
 				//                  $statisticsoutput .= "LBL\n";
 				//                  print_r($lbl);
 				//                  $statisticsoutput .= "</pre>";
-				
+				//First, lets delete any earlier graphs from the tmp directory
 				//$gdata and $lbl are arrays built at the end of the last section
 				//that contain the values, and labels for the data we are about
 				//to send to jpgraph.
-				
-				/*
-				 * Multiple options = bar charts
-				 * 
-				 * M = multiple options
-				 * P = multiple options with comments
-				 */
-				if ($qtype == "M" || $qtype == "P") 
-				{ 
-					//TODO: adapt size depending on the number of answers
-					
-					//(TODO): improve colors/styles e.g. floating color (blue -> white)
-					
-					//(TODO): put absolute number on top of bar and don't use decimal numbers
-					
-					//TODO: show answer title (legend) left/right beside the chart
-					//		by turning it 90 degrees
-					
-					//TODO: order by absolute number decreasing (only seems suitable when using answer title instead of ocde)
-									
-					//TODO: Ranking type: Use charts like this to compare rankings: 
-					//		http://www.aditus.nu/jpgraph/img/gallery/mulyaxis.png (just one axis needed)
-					
-					//we always use the same size
-					//$graph = new Graph(640,320,'png');
-					
-					//MM: file size depending on number of answers
-					//there are about 500px to place the bars
-					
-					//get number of options
-					$totaloptions = count($grawdata);
-					
-					if($totaloptions <= 10)
-					{
-						$width = $totaloptions * 70;
-					}
-					if($totaloptions > 10 && $totaloptions <= 25)
-					{
-						$width = $totaloptions * 40;
-					}
-					if($totaloptions > 20 && $totaloptions <= 50)
-					{
-						$width = $totaloptions * 20;
-					}
-					if($totaloptions > 50 && $totaloptions <= 100)
-					{
-						$width = $totaloptions * 10;
-					}
-					
-					if($totaloptions > 100)
-					{
-						$width = $totaloptions * 8;
-					}
-					$graph = new Graph($width, 320, 'png');
-					
+				if ($qtype == "M" || $qtype == "P") { //Bar Graph
+					$graph = new Graph(640,320,'png');
 					$graph->SetScale("textint");
-					
-					//some margin for nicer layout
-					//decreased margin, original: $graph->img->SetMargin(50,50,50,50);
-					//MM: smaller margins
-					$graph->img->SetMargin(40,40,40,40);
-					
-					//use answercodes as labels
+					$graph->img->SetMargin(50,50,50,50);
 					$graph->xaxis->SetTickLabels($justcode);
-					
-					//some color and font setting (fonts from config.php)
 					$graph->xaxis->SetFont(constant($jpgraphfont), FS_NORMAL, 8);
 					$graph->xaxis->SetColor("black");
 				//	$graph->xaxis->title->Set($clang->gT("Code"));
@@ -3117,128 +3045,54 @@ if (isset($summary) && $summary)
 					$graph->xaxis->title->SetColor("black");
 					$graph->yaxis->SetFont(constant($jpgraphfont), FS_NORMAL, 8);
 					$graph->yaxis->SetColor("black");
-					
-					//use total number of records as y-axis title
-					//MM: I don't like this (therefore commented it out)
-					//$graph->yaxis->title->Set($clang->gT("Count")." / $results");
-					//$graph->yaxis->title->SetFont(constant($jpgraphfont), FS_BOLD, 9);
-					//$graph->yaxis->title->SetColor("black");
-					
-					//MM: this was commented out before
+					$graph->yaxis->title->Set($clang->gT("Count")." / $results");
+					$graph->yaxis->title->SetFont(constant($jpgraphfont), FS_BOLD, 9);
+					$graph->yaxis->title->SetColor("black");
 					//$graph->Set90AndMargin();
-				} 
+				} else { //Pie Charts
 				
-				
-				//TODO: edit colors e.g. use fixed colors for 1-x items, for greater numbers use standard colors
-				
-				//TODO: why are colors not used the same way at each question e.g. 1=red, 2=yellow, ... they are mixed?!
-				
-				//no multiple options -> Pie Charts
-				else 				
-				{ 
-					//counter (number of items which are not null)
                     $i = 0;
-                    
-                    //check number of items which are not null
                     foreach ($gdata as $data)
                     {
                         if ($data != 0){$i++;}
                     }	
-                    		
-                    //number of items which are not null
 					$totallines=$i;
-					
-					//heigth etc. depends on number of items (probably to adjust legend)
-					if ($totallines>15) 
-					{
+					if ($totallines>15) {
 						$gheight=320+(6.7*($totallines-15));
 						$fontsize=7;
 						$legendtop=0.01;
 						$setcentrey=0.5/(($gheight/320));
-					} 
-					
-					//less than 15 items
-					else 
-					{
-						//standard heigth
+					} else {
 						$gheight=320;
 						$fontsize=8;
 						$legendtop=0.07;
 						$setcentrey=0.5;
 					}
-					
-					//create new piegraph
-					$graph = new PieGraph(640,$gheight,'png');
-					
-					//some legend and font setting
+					$graph = new PieGraph(680,$gheight,'png');
 					$graph->legend->SetFont(constant($jpgraphfont), FS_NORMAL, $fontsize);
 					$graph->legend->SetPos(0.015, $legendtop, 'right', 'top');
 					$graph->legend->SetFillColor("white");
-    				
-					//use antialiasing if set in config.php
 					global $jpgraph_antialiasing;
 					if ($jpgraph_antialiasing == 1) $graph->SetAntiAliasing();
-					
-				}	//end else -> pie charts
-				
-				//white margin
+				}
+				$graph->title->SetColor("black");
 				$graph->SetMarginColor("#FFFFFF");
-								
-				//set font (set in config.php)
-				$graph->title->SetFont(constant($jpgraphfont),FS_BOLD,13);
-				
-				
-				// Create bar chart for multiple options
-				if ($qtype == "M" || $qtype == "P") 
-				{ 
-					//new bar chart using data from array $grawdata which contains percentage
+				// Set A title for the plot
+				// $graph->title->Set($qquestion); //disabled: printing titles is only a good solution if question texts are short
+				$graph->title->SetFont(constant($jpgraphfont),FS_BOLD,12);
+				// Create pie plot
+				if ($qtype == "M" || $qtype == "P") { //Bar Graph
 					$p1 = new BarPlot($grawdata);
 					$p1->SetWidth(0.8);
-					
-					//old: values positioned within the bar
-					//$p1->SetValuePos("center");
-					
-					//MM: values show on top of the bar
-					$p1->SetValuePos("top");
-					
-					
-					//blue bars
-					//MM: overwritten by the following statement (SetFillGradient)
+					$p1->SetValuePos("center");
 					$p1->SetFillColor("#4f81bd");
-					
-					//MM floating colors (blue) can be anothr nice option
-					//$p1->SetFillGradient("lightblue@0.9","navy",GRAD_HOR);
-					
-					//MM why not using floating lime green
-					$p1->SetFillGradient("#FFFFFF@0.9","lime",GRAD_HOR);
-					
-					//don't show shadows if any of the values are 0 - jpgraph bug
-					if (!in_array(0, $grawdata)) 
-					{ 
-						//original: $p1->SetShadow();
-						//MM: smaller shadow, introduced a color setting for shadow (default: "black")
-						$p1->SetShadow("lime", 1, 1);
+					if (!in_array(0, $grawdata)) { //don't show shadows if any of the values are 0 - jpgraph bug
+						$p1->SetShadow();
 					}
-					
-					//show values (absolute numbers)
 					$p1->value->Show();
 					$p1->value->SetFont(constant($jpgraphfont),FS_BOLD,8);
-					
-					//old show values in white					
-					//$p1->value->SetColor("#FFFFFF");
-					
-					//MM: switched to black because of brighter background
-					$p1->value->SetColor("#000000");
-					
-					//MM: set format -> no commas for absolute values
-					$p1->value->SetFormat('%01.00f');
-					
-					
-				}	//end if (bar chart)
-				
-				//Pie Chart
-				else 
-				{ 
+					$p1->value->SetColor("#FFFFFF");
+				} else { //Pie Chart
                     // this block is to remove the items with value == 0
                     $i = 0;
                     while (isset ($gdata[$i]))

@@ -786,8 +786,11 @@ if (isset($grouparray) && $grouparray) {
         $newvalues=array_values($grouprowdata);
         
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-        $ginsert = "insert INTO {$dbprefix}groups (".implode(',',array_keys($grouprowdata)).") VALUES (".implode(',',$newvalues).")"; 
-		$gres = $connect->Execute($ginsert) or safe_die($clang->gT("Error").": Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg());
+
+        if (isset($grouprowdata['gid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('groups')." ON");}
+        $ginsert = 'insert INTO '.db_table_name('groups').' ('.implode(',',array_keys($grouprowdata)).') VALUES ('.implode(',',$newvalues).')'; 
+		$gres = $connect->Execute($ginsert) or safe_die($clang->gT('Error').": Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg());
+        if (isset($grouprowdata['gid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('groups').' OFF');}
 		//GET NEW GID
 		if ($newgroup) {$newgid=$connect->Insert_ID("{$dbprefix}groups","gid");}
 
@@ -876,9 +879,13 @@ if (isset($grouparray) && $grouparray) {
 		    $questionrowdata['help']=translink('survey', $surveyid, $newsid, $questionrowdata['help']);
 
                     $newvalues=array_values($questionrowdata);
+                    if (isset($questionrowdata['qid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions').' ON');}
+
                     $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                     $qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
+
 					$qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg());
+                    if (isset($questionrowdata['qid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions').' OFF');}
 		            if ($newquestion)
 				{
 				 	$newqid=$connect->Insert_ID("{$dbprefix}questions","qid");
