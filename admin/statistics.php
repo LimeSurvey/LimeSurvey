@@ -1297,10 +1297,9 @@ $statisticsoutput .= "\t<script type='text/javascript'>
 $statisticsoutput.="<input type='checkbox' id='noncompleted' name='noncompleted'/><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses (only works when Filter incomplete answers is Disable)")."</label></font></div></td></tr>\n";
 
 //only show option to show graphs if jpgraph is enabled
-if (isset($usejpgraph) && $usejpgraph == 1)
-{
-	$statisticsoutput .= "\t\t\t\t<tr><td align='center'><input type='checkbox' id='usegraph' name='usegraph' checked='checked'/><label for='usergraph'>".$clang->gT("Show Graphs")."</label></font></td></tr>\n";
-}
+$statisticsoutput .= "\t\t\t\t<tr><td align='center'><input type='checkbox' id='usegraph' name='usegraph' ";
+if (isset($_POST['usegraph'])) {$statisticsoutput .= "checked='checked'";}
+$statisticsoutput .= "/><label for='usegraph'>".$clang->gT("Show Graphs")."</label></font></td></tr>\n";
 
 //very last lines of output
 $statisticsoutput .= "\t\t<tr><td align='center'>\n\t\t\t<br />\n"
@@ -1721,7 +1720,7 @@ if (isset($summary) && $summary)
 	$prb->moveStep($process_status);
 	
 	//check if jpgraph is available
-	if ($usejpgraph == 1 && isset($jpgraphdir)) //JPGRAPH CODING SUBMITTED BY Pieterjan Heyse
+	if (isset($_POST['usegraph'])) 
 	{
 		//Delete any old temp image files
 		deletePattern($tempdir, "STATS_".date("d")."X".$currentuser."X".$surveyid."X"."*.png");
