@@ -2472,7 +2472,7 @@ function check_quota($checkaction,$surveyid)
 					foreach($member['fieldnames'] as $fieldname)
 					{			
 						$fields_list[] = $fieldname;
-						$fields_query[] = "$fieldname = '{$member['value']}'";
+						$fields_query[] = db_quote_id($fieldname)." = '{$member['value']}'";
 						// Check which quota fields and codes match in session, for later use.
 						// Incase of multiple fields for an answer - only needs to match once.
 						if (isset($_SESSION[$fieldname]) && $_SESSION[$fieldname] == $member['value'])
@@ -2480,7 +2480,7 @@ function check_quota($checkaction,$surveyid)
 							$quota_info[$x]['members'][$y]['insession'] = "true";
 						}
 					}
-					$select_query.= implode(' OR ',$fields_query)." )";
+					$select_query.= implode(' OR ',$fields_query).' )';
 					$querycond[] = $select_query;
 					unset($fields_query);
 					$y++;
