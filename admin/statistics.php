@@ -77,21 +77,10 @@ require_once('classes/core/class.progressbar.php');
 $statisticsoutput ='';
 
 //for creating graphs we need some more scripts which are included here
-if ($usejpgraph == 1 && isset($jpgraphdir)) //JPGRAPH CODING SUBMITTED BY Pieterjan Heyse
+if (isset($_POST['usegraph'])) 
 {
-  if (isset($jpgraphfontdir) && $jpgraphfontdir!="")
-  {
-  DEFINE("TTF_DIR",$jpgraphfontdir); // url of fonts files
-  }
-	require_once ("$jpgraphdir/jpgraph.php");
-	require_once ("$jpgraphdir/jpgraph_pie.php");
-	require_once ("$jpgraphdir/jpgraph_pie3d.php");
-	require_once ("$jpgraphdir/jpgraph_bar.php");
-	
     require_once('../classes/pchart/pchart/pChart.class');
     require_once('../classes/pchart/pchart/pData.class');
-    
-
 
 	//$currentuser is created as prefix for jpgraph files
 	if (isset($_SERVER['REDIRECT_REMOTE_USER']))
@@ -3240,7 +3229,7 @@ if (isset($summary) && $summary)
             //JPGRAPH CODING ORIGINALLY SUBMITTED BY Pieterjan Heyse
             
             //jpgraph has to be enabled and we need some data
-			if ($usejpgraph == 1 && isset($_POST['usegraph']) && array_sum($gdata)>0) 
+			if (isset($_POST['usegraph']) && array_sum($gdata)>0) 
 			{
 				$graph = "";
 				$p1 = "";
@@ -3315,35 +3304,6 @@ if (isset($summary) && $summary)
 					{
 						$width = $totaloptions * 8;
 					}
-					$graph = new Graph($width, 320, 'png');
-					
-					$graph->SetScale("textint");
-					
-					//some margin for nicer layout
-					//decreased margin, original: $graph->img->SetMargin(50,50,50,50);
-					//MM: smaller margins
-					$graph->img->SetMargin(40,40,40,40);
-					
-					//use answercodes as labels
-					$graph->xaxis->SetTickLabels($justcode);
-					
-					//some color and font setting (fonts from config.php)
-					$graph->xaxis->SetFont(constant($jpgraphfont), FS_NORMAL, 8);
-					$graph->xaxis->SetColor("black");
-				//	$graph->xaxis->title->Set($clang->gT("Code"));
-					$graph->xaxis->title->SetFont(constant($jpgraphfont), FS_BOLD, 9);
-					$graph->xaxis->title->SetColor("black");
-					$graph->yaxis->SetFont(constant($jpgraphfont), FS_NORMAL, 8);
-					$graph->yaxis->SetColor("black");
-					
-					//use total number of records as y-axis title
-					//MM: I don't like this (therefore commented it out)
-					//$graph->yaxis->title->Set($clang->gT("Count")." / $results");
-					//$graph->yaxis->title->SetFont(constant($jpgraphfont), FS_BOLD, 9);
-					//$graph->yaxis->title->SetColor("black");
-					
-					//MM: this was commented out before
-					//$graph->Set90AndMargin();
 				} 
 				
 				
@@ -3385,72 +3345,60 @@ if (isset($summary) && $summary)
 						$setcentrey=0.5;
 					}
 					
-					//create new piegraph
-					$graph = new PieGraph(680,$gheight,'png');
-					
-					//some legend and font setting
-					$graph->legend->SetFont(constant($jpgraphfont), FS_NORMAL, $fontsize);
-					$graph->legend->SetPos(0.015, $legendtop, 'right', 'top');
-					$graph->legend->SetFillColor("white");
-    				
-					//use antialiasing if set in config.php
-					global $jpgraph_antialiasing;
-					if ($jpgraph_antialiasing == 1) $graph->SetAntiAliasing();
-					
 				}	//end else -> pie charts
-				
-				//white margin
-				$graph->SetMarginColor("#FFFFFF");
-								
-				//set font (set in config.php)
-				$graph->title->SetFont(constant($jpgraphfont),FS_BOLD,13);
 				
 				
 				// Create bar chart for multiple options
 				if ($qtype == "M" || $qtype == "P") 
 				{ 
 					//new bar chart using data from array $grawdata which contains percentage
-					$p1 = new BarPlot($grawdata);
-					$p1->SetWidth(0.8);
-					
-					//old: values positioned within the bar
-					//$p1->SetValuePos("center");
-					
-					//MM: values show on top of the bar
-					$p1->SetValuePos("top");
-					
-					
-					//blue bars
-					//MM: overwritten by the following statement (SetFillGradient)
-					$p1->SetFillColor("#4f81bd");
-					
-					//MM floating colors (blue) can be anothr nice option
-					//$p1->SetFillGradient("lightblue@0.9","navy",GRAD_HOR);
-					
-					//MM why not using floating lime green
-					$p1->SetFillGradient("#FFFFFF@0.9","lime",GRAD_HOR);
-					
-					//don't show shadows if any of the values are 0 - jpgraph bug
-					if (!in_array(0, $grawdata)) 
-					{ 
-						//original: $p1->SetShadow();
-						//MM: smaller shadow, introduced a color setting for shadow (default: "black")
-						$p1->SetShadow("lime", 1, 1);
-					}
-					
-					//show values (absolute numbers)
-					$p1->value->Show();
-					$p1->value->SetFont(constant($jpgraphfont),FS_BOLD,8);
-					
-					//old show values in white					
-					//$p1->value->SetColor("#FFFFFF");
-					
-					//MM: switched to black because of brighter background
-					$p1->value->SetColor("#000000");
-					
-					//MM: set format -> no commas for absolute values
-					$p1->value->SetFormat('%01.00f');
-					
+
+                    $DataSet = new pData;  
+                    $counter=0;
+                    $maxvalue=0;
+                    foreach ($grawdata as $datapoint)
+                    {
+                        $DataSet->AddPoint(array($datapoint),"Serie$counter");  
+                        $DataSet->AddSerie("Serie$counter");
+
+                        $counter++;
+                        if ($datapoint>$maxvalue) $maxvalue=$datapoint;
+                    }
+//                    $DataSet->AddPoint($justcode,"LabelX");
+//                    $DataSet->SetAbsciseLabelSerie("LabelX");  
+                    $counter=0;
+                    foreach ($lbl as $label)
+                    {
+                        $DataSet->SetSerieName($label,"Serie$counter");  
+                        $counter++;
+                    }
+                    
+                    //$DataSet->SetAbsciseLabelSerie();  
+
+                    
+                    $Test = new pChart(640,$gheight);  
+                    $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",8);  
+                    $Test->setGraphArea(50,30,500,$gheight-60);  
+                    $Test->drawFilledRoundedRectangle(7,7,633,$gheight-7,5,240,240,240);  
+                    $Test->drawRoundedRectangle(5,5,635,$gheight-5,5,230,230,230);  
+                    $Test->drawGraphArea(255,255,255,TRUE);  
+                    $Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),$maxvalue,150,150,150,TRUE,90,0,TRUE);  
+                    $Test->drawGrid(4,TRUE,230,230,230,50);     
+                                      // Draw the 0 line
+                     $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",6);
+                     $Test->drawTreshold(0,143,55,72,TRUE,TRUE);
+
+                     // Draw the bar graph
+                     $Test->drawBarGraph($DataSet->GetData(),$DataSet->GetDataDescription(),FALSE);
+                     //$Test->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),"Serie4","1","Important point!");   
+                     // Finish the graph
+                     $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",8);
+                     $Test->drawLegend(510,144,$DataSet->GetDataDescription(),255,255,255);
+                     $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",10);
+//Todo:                     $Test->drawTitle(50,22,"Example 12",50,50,50,585);
+
+                                        
+	
 					
 				}	//end if (bar chart)
 				
@@ -3483,31 +3431,10 @@ if (isset($summary) && $summary)
                           //$Test->drawRoundedRectangle(5,5,295,195,5,230,230,230);  
                       
                     // Draw the pie chart  
-                    $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",10);  
+                    $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",11);  
                     $Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),220,round($gheight/2),170,TRUE,TRUE,50,20,5);  
+                    $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",9);  
                     $Test->drawPieLegend(430,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);  
-
-					
-					$p1 = new PiePlot3d($gdata);
-					
-					//debugging
-					//                        $statisticsoutput .= "<pre>";print_r($lbl);$statisticsoutput .= "</pre>";
-					//                        $statisticsoutput .= "<pre>";print_r($gdata);$statisticsoutput .= "</pre>";
-					
-					//MM: color theme (see http://doc.async.com.br/jpgraph/html/4020pieplot.html#7_2_4)
-					$p1->SetTheme("earth");					
-					
-					$p1->SetLegends($lbl);
-					$p1->SetSize(200);
-					$p1->SetCenter(0.375,$setcentrey);
-					
-					//black
-					$p1->value->SetColor("#000000");
-					$p1->value->SetFont(constant($jpgraphfont),FS_NORMAL,12);
-					
-					//XXX can this be deleted?
-					// Set how many pixels each slice should explode
-					//$p1->Explode(array(0,15,15,25,15));
 					
 				}	//end else -> pie charts
 
@@ -3517,15 +3444,11 @@ if (isset($summary) && $summary)
 				//increase counter, start value -> 1
 				$ci++;
 				
-				//add graph
-				$graph->Add($p1);
-				
 				//filename of chart image
 				$gfilename="STATS_".date("d")."X".$currentuser."X".$surveyid."X".$ci.date("His").".png";
 				
 				//create graph
 				$Test->Render($tempdir."/".$gfilename);
-				//$graph->Stroke($tempdir."/".$gfilename);
 				
 				//add graph to output
 				$statisticsoutput .= "<tr><td colspan='4' style=\"text-align:center\"><img src=\"$tempurl/".$gfilename."\" border='1'></td></tr>";

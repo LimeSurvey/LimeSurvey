@@ -1144,11 +1144,12 @@
     {
      $GraphID      = 0;
      $Series       = count($DataDescription["Values"]);
-     $SeriesWidth  = $this->DivisionWidth / ($Series+1);
-     $SerieXOffset = $this->DivisionWidth / 2 - $SeriesWidth / 2;
+     $SeriesWidth  = $this->DivisionWidth / ($Series);
+     $SerieXOffset = 0; //($this->DivisionWidth / 2) - ($SeriesWidth / 2);
 
      $YZero  = $this->GArea_Y2 - ((0-$this->VMin) * $this->DivisionRatio);
      if ( $YZero > $this->GArea_Y2 ) { $YZero = $this->GArea_Y2; }
+     
 
      $SerieID = 0;
      foreach ( $DataDescription["Values"] as $Key2 => $ColName )
