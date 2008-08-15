@@ -351,9 +351,10 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         {
             //Automatically redirect the page to the "url" setting for the survey
             $url = $thissurvey['url'];
-            $url=str_replace("{SAVEDID}",$saved_id, $url);    // to activate the SAVEDID in the END URL
-            $url=str_replace("{TOKEN}",$clienttoken, $url);   // to activate the TOKEN in the END URL
-            $url=str_replace("{SID}", $surveyid, $url);       // to activate the SID in the RND URL
+            $url=str_replace("{SAVEDID}",$saved_id, $url);           // to activate the SAVEDID in the END URL
+            $url=str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
+            $url=str_replace("{SID}", $surveyid, $url);              // to activate the SID in the END URL
+            $url=str_replace("{LANG}", $clang->getlangcode(), $url); // to activate the LANG in the END URL
 
             header("Location: {$url}");
         }
