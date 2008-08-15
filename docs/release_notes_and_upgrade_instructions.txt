@@ -75,6 +75,23 @@ Thank you to everyone who helped with this new release!
 
 
 
+Changes from 1.71+ Build 5394 to 5424 -  Legend:   + = New  # = Changed  - = Fix
+-Fixed #2389: Survey crashes when quotas are enabled and using MSSQL DB (c_schmitz)
+-Fixed #2388: Importing multilingual survey with MS SQL Server DB fails (c_schmitz)
+-Fixed #2386: Extra space in front of "Other" option in "Multiple options" question (c_schmitz)
+-Fixed #2380: hint & layout bug (c_schmitz)
+-Fixed #2389: Fatal error in PDF creation (c_schmitz)
+-Fixed minor display issues (c_schmitz)
+-Fixed #2374: Any superadmin can accidently delete admin rights  (c_schmitz)) 
+-Fixed #2379: Changing language of mandatory question (in multiligual survey) cancels its mandatory characteristic in question-by-question mode (c_schmitz))
+-Make XML export available on PHP4 and 5 (c_schmitz)
+-Fixed #2381: Progress bar in RTL mode & table width alignment (el-matador-69) 
+-Several Layout & CSS Fixes (c_schmitz)
+-Fixed #02268: answer selections of conditional questions with IE browser are delayed but not with Firefox & Opera. Rewrote javascript to speed processing.(jcleeland)
+-Fixed #2376: Layout Problem on Widescreen Displays(c_schmitz) 
+#Minor changes to statistics (Mazi)
+#French language updated (b00z00)
+#German langauge updated (c_schmitz)
 
 Changes from 1.71+ Build 5372 to 5394 -  Legend:   + = New  # = Changed  - = Fix
 

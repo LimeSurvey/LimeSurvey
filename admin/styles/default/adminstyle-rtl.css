@@ -82,13 +82,16 @@ margin-right:3px;
 background-color:#EEF6FF;
 width:100%;
 float:right;
-border-color:#D2E0F2 #D2E0F2 #8195BA #8195BA;
+border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
 border-style:solid;
 border-width:1px;
 }
 
 .menubar img {
 vertical-align:middle;
+    max-height:40px;
+    border:0;
+    margin-right:-2px;
 }
 
 .menubar-title {
@@ -97,7 +100,7 @@ float:right;
 width:100%;
 font-size:11px;
 text-align:right;
-border-color:#D2E0F2 #D2E0F2 #D2E0F2 #8195BA;
+border-color: #D2E0F2 #8195BA #D2E0F2 #D2E0F2;
 border-style:solid;
 border-width:1px;
 }
@@ -106,14 +109,15 @@ border-width:1px;
 background-color:#EEF6FF;
 text-align:right;
 float:right;
-line-height:1em;
-width:55%;
+	clear: none;
+	margin: 0;
+	padding: 0;
 }
 
 .menubar-right {
 background-color:#EEF6FF;
 float:left;
-width:auto;
+line-height: 1em;
 }
 
 /* END menubar CSS */
@@ -517,5 +521,14 @@ table.alertbox {
   margin-right:auto;
   border: 1px solid;
   border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
- text-align: right;  
+ text-align: left;  
+}
+
+.menubar tr {
+ text-align:right;
+}
+
+div.menubar input {
+margin-right:-5px;
+vertical-align:top;
 }
