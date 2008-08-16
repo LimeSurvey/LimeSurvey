@@ -667,7 +667,7 @@ elseif ($subaction == "all")
 		."{$dtrow['id']}</a></font></td>\n";
 
 		$i = 0;
-		if ($private == "N")
+		if ($private == "N" && $dtrow['token'])
 		{
 			$SQL = "Select * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token=?";
 			if ( db_tables_exist(db_table_name_nq('tokens_'.$surveyid)) &&
