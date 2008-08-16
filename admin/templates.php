@@ -71,7 +71,7 @@ if (!isset($newname)) {$newname = sanitize_paranoid_string(returnglobal('newname
 if (!isset($copydir)) {$copydir = sanitize_paranoid_string(returnglobal('copydir'));}
 
 
-if (file_exists($publicdir."/templates/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
+if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 
 
 if (isset ($_POST['changes'])) {
@@ -87,7 +87,7 @@ if (isset ($_POST['changes'])) {
 if ($action != "newtemplate" && !$templatename) {$templatename = "default";}
 $template_a=gettemplatelist();
 foreach ($template_a as $tp) {
-	$templates[]=array("name"=>$tp, "dir"=>$publicdir."/templates/".$tp);
+	$templates[]=array("name"=>$tp, "dir"=>$tpldir."/".$tp);
 }
 unset($template_a);
 
@@ -98,7 +98,7 @@ if ($action=="templatesavechanges" && $changedtext) {
 	if ($editfile) {
         // Check if someone tries to submit a file other than one of the allowed filenames
         if (multiarray_search($files,'name',$editfile)===false) {die('Invalid template filename');}  // Die you sneaky bastard!
-		$savefilename=$publicdir."/templates/".$templatename."/".$editfile;
+		$savefilename=$tpldir."/".$templatename."/".$editfile;
 		if (is_writable($savefilename)) {
 			if (!$handle = fopen($savefilename, 'w')) {
 				echo "Could not open file ($savefilename)";
@@ -118,8 +118,8 @@ if ($action=="templatesavechanges" && $changedtext) {
 if ($action == "templatecopy" && isset($newname) && isset($copydir)) {
 	//Copies all the files from one template directory to a new one
 	//This is a security issue because it is allowing copying from get variables...
-	$newdirname=$publicdir."/templates/".$newname;
-	$copydirname=$publicdir."/templates/".$copydir;
+	$newdirname=$tpldir."/".$newname;
+	$copydirname=$tpldir."/".$copydir;
 	$mkdirresult=mkdir_p($newdirname);
 	if ($mkdirresult == 1) {
 		$copyfiles=getListOfFiles($copydirname);
@@ -140,8 +140,8 @@ if ($action == "templatecopy" && isset($newname) && isset($copydir)) {
 }
 
 if ($action == "templaterename" && isset($newname) && isset($copydir)) {
-	$newdirname=$publicdir."/templates/".$newname;
-	$olddirname=$publicdir."/templates/".$copydir;
+	$newdirname=$tpldir."/".$newname;
+	$olddirname=$tpldir."/".$copydir;
 	if (rename($olddirname, $newdirname)==false) {
         echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Directory could not be renamed to `%s`.","js"), $newname)." ".$clang->gT("Maybe you don't have permission.","js")."\");\n//-->\n</script>";
 	} else {
@@ -152,7 +152,7 @@ if ($action == "templaterename" && isset($newname) && isset($copydir)) {
 
 if ($action == "templateupload") 
   {
-      $the_full_file_path = $publicdir."/templates/".$templatename . "/" . $_FILES['the_file']['name']; //This is where the temp file is
+      $the_full_file_path = $tpldir."/".$templatename . "/" . $_FILES['the_file']['name']; //This is where the temp file is
       if ($extfile = strrchr($_FILES['the_file']['name'], '.'))
       {
          if  (!(stripos(','.$allowedtemplateuploads.',',','. substr($extfile,1).',') === false))
@@ -193,14 +193,14 @@ if ($action == "templateupload")
 }
 
 if ($action == "templatefiledelete") {
-	$the_full_file_path = $publicdir."/templates/".$templatename."/".$otherfile; //This is where the temp file is
+	$the_full_file_path = $tpldir."/".$templatename."/".$otherfile; //This is where the temp file is
 	unlink($the_full_file_path);
 }
 
 if ($action == "templatezip") {
 	require("classes/phpzip/phpzip.inc.php");
 	$z = new PHPZip();
-	$templatedir="$publicdir/templates/$templatename/";
+	$templatedir="$tpldir/$templatename/";
 	$zipfile="$tempdir/$templatename.zip";
 	$z -> Zip($templatedir, $zipfile);
 	if (is_file($zipfile)) {
@@ -225,7 +225,7 @@ $normalfiles=array("DUMMYENTRY", ".", "..", "preview.png");
 foreach ($files as $fl) {
 	$normalfiles[]=$fl["name"];
 }
-if (file_exists($publicdir."/templates/".$templatename."/template.css")) { $normalfiles[]="template.css"; }
+if (file_exists($tpldir."/".$templatename."/template.css")) { $normalfiles[]="template.css"; }
 
 
 
@@ -242,9 +242,9 @@ $printtemplate=array("startpage.pstpl", "printanswers.pstpl", "endpage.pstpl");
 
 //CHECK ALL FILES EXIST, AND IF NOT - COPY IT FROM DEFAULT DIRECTORY
 foreach ($files as $file) {
-	$thisfile="$publicdir/templates/$templatename/".$file['name'];
+	$thisfile="$tpldir/$templatename/".$file['name'];
 	if (!is_file($thisfile)) {
-		$copyfile="$publicdir/templates/default/".$file['name'];
+		$copyfile="$tpldir/default/".$file['name'];
 		$newfile=$thisfile;
 		if (!@copy($copyfile, $newfile)) {
             echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang-gT("Failed to copy %s to new template directory.","js"), $file['name'])."\");\n//-->\n</script>";
@@ -322,7 +322,7 @@ switch($screenname) {
 	$myoutput[]="";
 	foreach ($SurveyList as $qs) {
 		$files[]=array("name"=>$qs);
-		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/$qs"));
+		$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/$qs"));
 	}
     if (file_exists($publicdir."/templates/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 
@@ -338,33 +338,33 @@ switch($screenname) {
 	$myoutput[]="<meta http-equiv=\"Cache-Control\" content=\"no-store, no-cache, must-revalidate\" />\n";
 	$myoutput[]="<meta http-equiv=\"Cache-Control\" content=\"post-check=0, pre-check=0, false\" />\n";
 	$myoutput[]="<meta http-equiv=\"Pragma\" content=\"no-cache\" />\n";
-	$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/startpage.pstpl"));
-	$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/survey.pstpl"));
-	$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/startgroup.pstpl"));
-	$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/groupdescription.pstpl"));
+	$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/startpage.pstpl"));
+	$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/survey.pstpl"));
+	$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/startgroup.pstpl"));
+	$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/groupdescription.pstpl"));
 
 	$question="How many roads must a man walk down?";
 	$questioncode="1a";
 	$answer="<input type='radio' class='radiobtn' name='1' value='1' id='radio1' /><label class='answertext' for='radio1'>One</label><br /><input type='radio' class='radiobtn' name='1' value='2' id='radio2' /><label class='answertext' for='radio2'>Two</label><br /><input type='radio' class='radiobtn' name='1' value='3' id='radio3' /><label class='answertext' for='radio3'>Three</label><br />\n";
-	$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/question.pstpl"));
+	$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/question.pstpl"));
 
 	$question="Please explain your details:";
 	$questioncode="2";
 	$answer="<textarea class='textarea'>Some text in this answer</textarea>";
-	$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/question.pstpl"));
+	$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/question.pstpl"));
 
-	$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/endgroup.pstpl"));
-	$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/navigator.pstpl"));
-	$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/endpage.pstpl"));
+	$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/endgroup.pstpl"));
+	$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/navigator.pstpl"));
+	$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/endpage.pstpl"));
     if (file_exists($publicdir."/templates/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
-    
+
 	break;
 	case $clang->gT("Welcome Page", "unescaped"):
 	unset($files);
 	$myoutput[]="";
 	foreach ($Welcome as $qs) {
 		$files[]=array("name"=>$qs);
-		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/$qs"));
+		$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/$qs"));
 	}
     if (file_exists($publicdir."/templates/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 	break;
@@ -374,19 +374,19 @@ switch($screenname) {
 	foreach($Register as $qs) {
 		$files[]=array("name"=>$qs);
 	}
-	foreach(file("$publicdir/templates/$templatename/startpage.pstpl") as $op)
+	foreach(file("$tpldir/$templatename/startpage.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
-	foreach(file("$publicdir/templates/$templatename/survey.pstpl") as $op)
+	foreach(file("$tpldir/$templatename/survey.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
-	foreach(file("$publicdir/templates/$templatename/register.pstpl") as $op)
+	foreach(file("$tpldir/$templatename/register.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
-	foreach(file("$publicdir/templates/$templatename/endpage.pstpl") as $op)
+	foreach(file("$tpldir/$templatename/endpage.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
@@ -399,15 +399,15 @@ switch($screenname) {
 	foreach($Save as $qs) {
 		$files[]=array("name"=>$qs);
 	}
-	foreach(file("$publicdir/templates/$templatename/startpage.pstpl") as $op)
+	foreach(file("$tpldir/$templatename/startpage.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
-	foreach(file("$publicdir/templates/$templatename/save.pstpl") as $op)
+	foreach(file("$tpldir/$templatename/save.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
-	foreach(file("$publicdir/templates/$templatename/endpage.pstpl") as $op)
+	foreach(file("$tpldir/$templatename/endpage.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
@@ -420,15 +420,15 @@ switch($screenname) {
 	foreach($Load as $qs) {
 		$files[]=array("name"=>$qs);
 	}
-	foreach(file("$publicdir/templates/$templatename/startpage.pstpl") as $op)
+	foreach(file("$tpldir/$templatename/startpage.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
-	foreach(file("$publicdir/templates/$templatename/load.pstpl") as $op)
+	foreach(file("$tpldir/$templatename/load.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
-	foreach(file("$publicdir/templates/$templatename/endpage.pstpl") as $op)
+	foreach(file("$tpldir/$templatename/endpage.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
@@ -441,15 +441,15 @@ switch($screenname) {
 	foreach ($Clearall as $qs) {
 		$files[]=array("name"=>$qs);
 	}
-	foreach(file("$publicdir/templates/$templatename/startpage.pstpl") as $op)
+	foreach(file("$tpldir/$templatename/startpage.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
-	foreach(file("$publicdir/templates/$templatename/clearall.pstpl") as $op)
+	foreach(file("$tpldir/$templatename/clearall.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
-	foreach(file("$publicdir/templates/$templatename/endpage.pstpl") as $op)
+	foreach(file("$tpldir/$templatename/endpage.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
@@ -462,7 +462,7 @@ switch($screenname) {
 	$myoutput[]="";
 	foreach ($Completed as $qs) {
 		$files[]=array("name"=>$qs);
-		$myoutput = array_merge($myoutput, doreplacement("$publicdir/templates/$templatename/$qs"));
+		$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/$qs"));
 	}
     if (file_exists($publicdir."/templates/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 	break;
@@ -473,15 +473,15 @@ switch($screenname) {
     foreach ($printtemplate as $qs) {
         $files[]=array("name"=>$qs);
     }
-    foreach(file("$publicdir/templates/$templatename/startpage.pstpl") as $op)
+    foreach(file("$tpldir/$templatename/startpage.pstpl") as $op)
     {
         $myoutput[]=templatereplace($op);
     }
-    foreach(file("$publicdir/templates/$templatename/printanswers.pstpl") as $op)
+    foreach(file("$tpldir/$templatename/printanswers.pstpl") as $op)
     {
         $myoutput[]=templatereplace($op);
     }
-    foreach(file("$publicdir/templates/$templatename/endpage.pstpl") as $op)
+    foreach(file("$tpldir/$templatename/endpage.pstpl") as $op)
     {
         $myoutput[]=templatereplace($op);
     }
@@ -507,7 +507,7 @@ if (is_array($files)) {
 	}
 }
 //Get list of 'otherfiles'
-$dirloc=$publicdir."/templates/".$templatename;
+$dirloc=$tpldir."/".$templatename;
 if ($handle = opendir($dirloc)) {
 	while(false !== ($file = readdir($handle))) {
 		if (!array_search($file, $normalfiles)) {
@@ -683,7 +683,7 @@ if ($editfile) {
 	$templatesoutput.= textarea_encode(filetext($editfile));
 }
 $templatesoutput.= "</textarea><br />\n";
-if (is_writable("$publicdir/templates/$templatename")) {
+if (is_writable("$tpldir/$templatename")) {
 	$templatesoutput.= "<input align='right' type='submit' value='".$clang->gT("Save Changes")."'";
 	if ($templatename == "default" && $debug<2) {
 		$templatesoutput.= " disabled='disabled' alt='".$clang->gT("Changes cannot be saved to the default template.")."'";
@@ -848,9 +848,9 @@ function textarea_encode($html_code)
 
 //Load this editfile
 function filetext($templatefile) {
-	global $publicdir, $templatename;
+	global $tpldir, $templatename;
 	$output="";
-	foreach(file("$publicdir/templates/$templatename/$templatefile") as $line) {
+	foreach(file("$tpldir/$templatename/$templatefile") as $line) {
 		$output .= $line;
 	}
 	return $output;

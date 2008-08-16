@@ -2129,7 +2129,7 @@ function templatereplace($line)
 	global $publicurl, $templatedir, $token;
 	global $assessments, $s_lang;
 	global $errormsg, $clang;
-	global $saved_id;
+	global $saved_id, $tpldir;
 	global $totalBoilerplatequestions, $relativeurl;
     global $languagechanger;    
     global $printoutput, $captchapath, $loadname;
@@ -2197,15 +2197,7 @@ function templatereplace($line)
 	}
 
 	if (strpos($line, "{SID}") !== false) $line=str_replace("{SID}", $surveyid, $line);
-	if ($help) {
-		if (strpos($line, "{QUESTIONHELP}") !== false) $line=str_replace("{QUESTIONHELP}", "<img src='".$imagefiles."/help.gif' alt='Help' align='left' />".$help, $line);
-		if (strpos($line, "{QUESTIONHELPPLAINTEXT}") !== false) $line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
-	}
-	else
-	{
-		if (strpos($line, "{QUESTIONHELP}") !== false) $line=str_replace("{QUESTIONHELP}", $help, $line);
-		if (strpos($line, "{QUESTIONHELPPLAINTEXT}") !== false) $line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
-	}
+
 	while (strpos($line, "{INSERTANS:") !== false)
 	{
 		$answreplace=substr($line, strpos($line, "{INSERTANS:"), strpos($line, "}", strpos($line, "{INSERTANS:"))-strpos($line, "{INSERTANS:")+1);
@@ -2298,6 +2290,44 @@ function templatereplace($line)
         }
 		$line=str_replace("{TEMPLATEURL}", $templateurl, $line);
 	}
+    if ($help) {
+        if (strpos($line, "{QUESTIONHELP}") !== false) 
+        {
+           If (!isset($helpicon))
+           {
+              $templatedir="$tpldir/".$thissurvey['templatedir']."/";
+               if ($thissurvey['templatedir']) 
+               {
+                   $templateurl="$publicurl/templates/".validate_templatedir($thissurvey['templatedir'])."/";
+               }
+               else  {
+                   $templateurl="$publicurl/templates/{$defaulttemplate}/";
+               }                        
+               if (file_exists($templatedir.'/help.png'))
+              {
+                
+                  $helpicon=$templateurl.'/help.png';    
+              }
+              elseif (file_exists($templatedir.'/help.gif'))
+              {
+                
+                  $helpicon=$templateurl.'/help.gif';    
+              }
+              else 
+              {
+                  $helpicon=$imagefiles."/help.gif";
+              }
+           }
+           $line=str_replace("{QUESTIONHELP}", "<img src='$helpicon' alt='Help' align='left' />".$help, $line);
+           
+        }
+        if (strpos($line, "{QUESTIONHELPPLAINTEXT}") !== false) $line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
+    }
+    else
+    {
+        if (strpos($line, "{QUESTIONHELP}") !== false) $line=str_replace("{QUESTIONHELP}", $help, $line);
+        if (strpos($line, "{QUESTIONHELPPLAINTEXT}") !== false) $line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
+    }    
 	if (strpos($line, "{SUBMITCOMPLETE}") !== false) $line=str_replace("{SUBMITCOMPLETE}", "<strong>".$clang->gT("Thank You!")."<br /><br />".$clang->gT("You have completed answering the questions in this survey.")."</strong><br /><br />".$clang->gT("Click on 'Submit' now to complete the process and save your answers."), $line);
 	if (strpos($line, "{SUBMITREVIEW}") !== false) {
 		if (isset($thissurvey['allowprev']) && $thissurvey['allowprev'] == "N") {

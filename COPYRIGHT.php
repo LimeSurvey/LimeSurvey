@@ -85,12 +85,17 @@ Copyright:	2001 - 2003  Brent R. Matzelle
 License:	GNU Lesser General Public License (LGPL)
 
 Sanitize Library
----
+----
 Copyright:  2002,2003 Free Software Foundation
 License:	GNU General Public License (GPL)
 
 TCPDF Class
----
-Copyright: 2006 Nicola Asuni
-License: GNU Lesser General Public License (LGPL)
+----
+Copyright:  2006 Nicola Asuni
+License:    GNU Lesser General Public License (LGPL)
 
+mint_idea Template
+----
+Copyright:  David Kohout http://www.davidkohout.cz
+License:	GNU General Public License (GPL)
+ 
