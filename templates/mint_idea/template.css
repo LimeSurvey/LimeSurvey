@@ -1,0 +1,285 @@
+* { margin:0; padding:0; }
+body, div, span, p, a, img, ul, ol, li, table, th, tr, td, form, fieldset, legend, dl, dt, dd, blockquote, applet, object { border:0;border-style:none; }
+body { 
+  padding: 0 0; 
+  background: #192d40 url('bg.jpg') repeat-x; 
+  font-family: "arial",sans-serif; 
+  font-size: 13px;
+  line-height:24px;
+  color: #e8eaeb; 
+  text-align: center; 
+}
+
+table
+{border-style:none;}
+/* links --------------------------------------------------------------- */
+a {color:#fff;}
+a:link {color:#fff;}
+a:hover {color:#fff; text-decoration: none;}
+
+/* headings --------------------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6 { margin:15px 0 10px 0; }
+h1 { font-size:200%; }
+h2 { font-size:160%; font-family: 'Trebuchet MS', 'Geneva CE', lucida, sans-serif; font-weight: normal; }
+h3 { font-size:120%; margin-top: 25px; font-family: 'Trebuchet MS', 'Geneva CE', lucida, sans-serif;}
+h4 { font-size:120%; }
+h5 { font-size:100%; }
+
+/* layout ---------------------------------------------------------------------- */
+#layout { 
+  width:790px; 
+  margin:0 auto; 
+  text-align:left; 
+}
+  #container { 
+  padding-top: 12px;
+  }
+
+  	/* header ------------------------------------------------------------------ */
+  	#header { position:relative; padding-left: 7px;}
+  
+      #logo {
+        font-family: Impact, 'Techno CE', sans-serif;
+        font-weight: normal;
+        color: #fff;
+        position: relative; 
+        overflow: hidden; 
+        height: 110px;
+        font-size:260%;
+        margin: 0;
+        line-height: 130px;
+      }
+      #logo a{
+        color: #fff;
+        text-decoration: none;
+      }
+      
+      #logo .leaf {
+        position: absolute; 
+        left: 0; top: 20px; 
+        z-index: 1; 
+        width: 120px; height: 80px;
+        background: url('leaf.gif') 45px 5px no-repeat; 
+        cursor: pointer;
+      }
+      
+      #logo .light {
+        color: #3f576e;
+      }
+        
+    .content {
+      margin-left:auto; 
+      margin-right:auto; 
+      padding: 0 0 0 0;
+      width:570px;
+      z-index: 10;
+    }
+    .content .in{
+      padding: 0 0 0 10px;
+    }
+  
+  	/* columns ----------------------------------------------------------------- */
+  	#panel-left { float:left; width:200px; }
+  	.panel .in { padding: 10px; }
+    
+    #panel-left span  { color: #515f6a; }
+    
+    #panel-left p  { margin-top: 5px; }
+  
+  	/* footer ----------------------------------------------------------------- */
+  	#footer {
+      clear:both;
+      height: 30px;
+      margin-top: 20px;
+      border-top: 1px solid #324455;
+      padding:10px 3px;
+      color: #a0a9b0;
+      font-size: 90%;
+    }
+    
+    #footer a {
+      color: #a0a9b0;
+    }
+    
+      #footer p { margin:0; padding-top:10px; }
+
+
+
+
+/* paragraphs -------------------------------------------------------------------- */
+p { margin:15px 0; }
+
+/* tables --------------------------------------------------------------------- */
+table { border-collapse:collapse; border-spacing:0; font-size:100%; width: 100%;}
+
+/* lists --------------------------------------------------------------------- */
+ul, ol { display:block; margin:15px 0 15px 40px; }
+ul ul, ul ul ul, ol ol, ol ol ol { margin:0; margin-left:20px; }
+ol { list-style-type:decimal; }
+ol ol { list-style-type:upper-alpha; }
+ol ol ol {list-style-type:lower-alpha; }
+li { display:list-item; }
+ul li a { text-decoration:underline; }
+
+/* definitions -------------------------------------------------------------------- */
+dl { margin:15px 0; }
+dt { font-weight:bold; }
+dd { margin-left:30px; }
+
+/* universal --------------------------------------------------------------------- */
+fieldset { margin:15px 0; padding:10px; border:1px solid #CCC; }
+legend { margin-left:10px; font-size:100%; font-weight:bold; color:#000; }
+abbr, acronym, .help { border-bottom:1px dotted #CCC; cursor:help; }
+blockquote { margin:15px 20px; font-style:italic; }
+del, .del { text-decoration:line-through; }
+strong, .strong { font-weight:bold; }
+cite, em, q, var { font-style:italic; }
+code, kbd, samp  {font-family:monospace; font-size:110%; }
+hr { display:block; height:1px; margin:10px 0; padding:0; border:0 solid #CCC; background:#CCC; color:#CCC;} 
+.f-left {float:left;}
+.f-right {float:right;}
+.a-left, tr.a-left td {text-align:left;}
+.a-center, tr.a-center td {text-align:center;}
+.a-right, tr.a-right td {text-align:right;}
+.a-justify {text-align:justify;}
+.va-top {vertical-align:top;}
+.va-middle {vertical-align:middle;}
+.va-bottom {vertical-align:bottom;}
+.clear { clear:both; }
+.box { min-height:1px; }
+.box:after { display:block; visibility:hidden; clear:both; line-height:0; font-size:0; content:"."; }
+.noscreen { display:none; }
+
+.foto{  display: block;}
+.survey-privacy 
+{margin-top:30px;}
+
+.survey-survey-percent {
+width:160px;
+text-align:center;
+margin:0 auto;
+}
+
+.graph table {
+border-collapse: separate;
+border-top:1px solid #324455 !important;
+border-bottom:1px solid #324455 !important;
+}
+
+
+.innergraph img {
+height:12px;
+vertical-align:top;
+}
+
+.innergraph table {
+height:12px;
+border:1px solid #324455;
+table-layout:fixed !important;
+border-collapse:collapse;
+}
+
+.innergraph tr {
+height:12px;
+border-top-style:solid;
+border-bottom-style:solid;
+margin:0px;
+padding-top:0;
+
+}
+
+.innergraph table td {
+height:12px;
+font-size:1px;
+line-height:5px;
+}
+
+.survey-groupdescription {
+font-weight:400;
+border-bottom:1px solid #ddd;
+margin:0 0 30px;
+padding:0 0 2px 3px;
+}
+
+.survey-groupname {
+font-weight:700;
+font-size:16px;
+border-top:1px solid #ddd;
+margin:10px 0 0;
+padding:2px 0 0 3px;
+}
+
+.survey-question {
+
+border-top:1px solid #a0a9b0;
+margin:0 0 0 60px;
+padding-bottom:20px;
+padding-top:5px;
+
+}
+
+.survey-question-answer {
+display:block;
+font-weight:400;
+margin:10px;
+}
+
+.survey-question-answer button{
+height:24px;
+
+}
+
+.survey-question-help {
+line-height:24px;
+margin:2px 0 0 2px;
+}
+
+.survey-question-help img {
+padding:0 10px 0 0;
+}
+
+.survey-question-space {
+height:5px;
+}
+
+.survey-question-text {
+display:block;
+font-weight:700;
+}
+
+.answertext
+{
+ padding-left:5px;
+ padding-right:5px;
+}
+
+.textarea
+{
+   width:350px;
+   height:120px;
+}
+
+.register td
+{ 
+  padding: 2px;
+}
+
+.register table
+{
+width:auto;
+}
+
+.array1 {
+background-color:#192D40;
+text-align:center;
+}
+
+.array2 {
+background-color:#0C1C2B;
+text-align:center;
+}
+
+select
+{
+  min-width: 150px;
+}

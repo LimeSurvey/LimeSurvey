@@ -843,7 +843,7 @@ function do_list_dropdown($ia)
 		// --> START BUG FIX - text field for other was not repopulating when returning to page via << PREV
 		$answer .= "'";
 		$thisfieldname=$ia[1]."other";
-		if (isset($_SESSION[$thisfieldname])) { $answer .= "' value='".htmlspecialchars($_SESSION[$thisfieldname],ENT_QUOTES)."' ";}
+		if (isset($_SESSION[$thisfieldname])) { $answer .= " value='".htmlspecialchars($_SESSION[$thisfieldname],ENT_QUOTES)."' ";}
 		// --> END BUG FIX
 
 		// --> START NEW FEATURE - SAVE
@@ -1702,13 +1702,11 @@ function do_multiplechoice($ia)
 		}
 		$answer .= "\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='{$myfname}cbox' id='answer{$myfname}cbox'";
 		if (isset($_SESSION[$myfname]) && trim($_SESSION[$myfname])!='') {$answer .= " checked='checked'";}
-		$answer .= " onchange='".$callmaxanswscriptcheckbox."document.getElementById(\"answer$myfname\").value=\"\"' />";
+		$answer .= " onclick='".$callmaxanswscriptcheckbox."document.getElementById(\"answer$myfname\").value=\"\";' />";
 		$answer .= "<label for='answer$myfname' class='answertext'>".$othertext.":</label> <input class='text' type='text' name='$myfname' id='answer$myfname'";
 		if (isset($_SESSION[$myfname])) {$answer .= " value='".htmlspecialchars($_SESSION[$myfname],ENT_QUOTES)."'";}
-		// --> START NEW FEATURE - SAVE
-		$answer .= " onkeypress='document.getElementById(\"{$myfname}cbox\").checked=true;' ".$callmaxanswscriptother."/>\n"
+		$answer .= " onkeypress='document.getElementById(\"answer{$myfname}cbox\").checked=true;' ".$callmaxanswscriptother."/>\n"
 		. "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
-		// --> END NEW FEATURE - SAVE
 
 		if ($maxansw > 0)
 		{
@@ -1838,7 +1836,7 @@ function do_multiplechoice_withcomments($ia)
 			$answer .= " checked='checked'";
 		}
 		$answer .=" onclick='".$callmaxanswscriptcheckbox."checkconditions(this.value, this.name, this.type)' "
-  				. " onchange='document.getElementById(\"answer$myfname2\").value=\"\"'' />"
+  				. " onchange='document.getElementById(\"answer$myfname2\").value=\"\"' />"
 				. "<label for='answer$myfname' class='answertext'>"
 				. $ansrow['answer']."</label>\n";
 

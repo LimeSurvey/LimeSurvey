@@ -417,7 +417,7 @@ echo " </script>\n\n";
 	echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 
 print <<<END
-<input type='hidden' id='runonce' value='0'>
+<input type='hidden' id='runonce' value='0' />
 <!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
 <script type='text/javascript'>
 <!--
@@ -499,10 +499,10 @@ foreach ($conditions as $cd)
 
 		//Only evaluate if this question source is on the same page, and the evaluation hasn't already happened once
     	ereg("[0-9]+X([0-9]+)X.*",$cd[2],$sourceQuestionGid);
-    	if ($sourceQuestionGid[1] != $gid)
+    	if (isset($sourceQuestionGid[1]) && $sourceQuestionGid[1] != $gid)
     	{ // if question is not from same page then this should only be evaluated the first time the page is loaded	
-    	  $java .= "    if (document.getElementById('runonce').value == '0') 
-    {\n";
+    	  $java .= "    if (document.getElementById('runonce').value == '0')\n"
+                  ." {\n";
 		}
 		$java .= "\n\tif ((";
     
@@ -667,7 +667,7 @@ foreach ($conditions as $cd)
 
 //Close the expression for those where the question source is not on this page
 //echo "OLDQ: $oldq, CD[0]: $cd[0], GID: $gid, sourceQuestionGid: $sourceQuestionGid[1]\n";
-if((isset($oldq) && $oldq != $cd[0] || !isset($oldq)) && $sourceQuestionGid[1] != $gid) 
+if (isset($sourceQuestionGid[1]) && ((isset($oldq) && $oldq != $cd[0] || !isset($oldq)) && $sourceQuestionGid[1] != $gid))
 {
   $endzone .= "    }\n";
 }

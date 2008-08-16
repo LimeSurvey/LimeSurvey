@@ -1,0 +1,6 @@
+<div class="survey-question">
+	<div class="survey-question-text">{QUESTION_CODE}: {QUESTION}</div>
+	<div class="survey-question-answer">{ANSWER}</div>
+	<div class="survey-question-help">{QUESTIONHELP}</div>
+</div>
+<div class="survey-question-space"></div>

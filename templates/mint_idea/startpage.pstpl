@@ -1,0 +1,19 @@
+    <title>
+	   SURVEY: {SURVEYNAME}
+	</title>
+    <link rel="stylesheet" type="text/css" href="{TEMPLATEURL}template.css" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
+</head>
+<body>
+
+    <div id="layout">
+      
+      <div id="header">
+        
+        <h1 id="logo"><a href="./" title="Company">mint<span class="light">idea</span><span class="leaf">&nbsp;</span></a></h1>
+        <hr class="noscreen" />   
+     
+        <p class="noscreen noprint">
+          <em>Skip to <a href="#obsah">content</a>, <a href="#nav">navigation</a>.</em>
+        </p>
