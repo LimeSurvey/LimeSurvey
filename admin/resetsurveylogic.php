@@ -15,8 +15,7 @@
 
 //Ensure script is not run directly, avoid path disclosure
 include_once("login_check.php");
-if (isset($_GET['sid'])) {$surveyid = $_GET['sid'];}
-if (isset($_GET['ok'])) {$ok = $_GET['ok'];}
+$ok = returnglobal('ok');
 
 $resetsurveylogicoutput = "<br />\n";
 $resetsurveylogicoutput .= "<table class='alertbox' >\n";
@@ -60,7 +59,7 @@ else //delete conditions in the survey
 	$tablelist = $connect->MetaTables();
 	$dict = NewDataDictionary($connect);
 
-	$resetlogicquery = "DELETE c.* FROM {$dbprefix}conditions as c, {$dbprefix}questions as q WHERE c.qid=q.qid AND q.sid=$surveyid";
+	$resetlogicquery = "DELETE FROM {$dbprefix}conditions WHERE qid in (select qid from {$dbprefix}questions where sid=$surveyid)";
 	$resetlogicresult = $connect->Execute($resetlogicquery) or safe_die ("Couldn't delete conditions<br />$resetlogicquery<br />".$connect->ErrorMsg());
 
 	$resetsurveylogicoutput .= "\t<tr>\n";
